@@ -1,0 +1,18 @@
+{
+  "head": "b1e62928c205e318da615a77b4e457f1736fd7de",
+  "tree": "24cebffe7e6e8a2547b5106edde2cc9674e77d69",
+  "parent": "1c6bfc9e433d19990c01bbc5fdfbdcb43ff5dbd8",
+  "identity": "HyacinthHaru|hyacinth@haru.ac|HyacinthHaru|hyacinth@haru.ac",
+  "verifiedSignature": true,
+  "DCO": true,
+  "coauthor": false,
+  "exactPrecommitBytes": true,
+  "files": {
+    "packages/prototypes/base/src/slider/values-root.proto.ts": {
+      "sha256": "c28f034f076f49f242faa9046eeb10a59201da3865fc2ff9921b7dc19d90fbd5"
+    },
+    "packages/prototypes/base/test/slider-values-publication.test.ts": {
+      "sha256": "180ac79650683a9e64aa46dccd80f0a2cee4f228a850068e5e51416fb12d1c05"
+    }
+  }
+}

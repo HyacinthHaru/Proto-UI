@@ -1,0 +1,204 @@
+{
+  "head": "b1e62928c205e318da615a77b4e457f1736fd7de",
+  "productTree": "24cebffe7e6e8a2547b5106edde2cc9674e77d69",
+  "checkoutCommits": [
+    {
+      "sha": "a61e063cbf287f6309c7145cf53c626b24d8df9e",
+      "node_id": "C_kwDOMhQZjdoAKGE2MWUwNjNjYmYyODdmNjMwOWM3MTQ1Y2Y1M2M2MjZiMjRkOGRmOWU",
+      "url": "https://api.github.com/repos/Proto-UI/Proto-UI/git/commits/a61e063cbf287f6309c7145cf53c626b24d8df9e",
+      "html_url": "https://github.com/Proto-UI/Proto-UI/commit/a61e063cbf287f6309c7145cf53c626b24d8df9e",
+      "author": {
+        "name": "HaruHyacinth",
+        "email": "hyacinthharu@foxmail.com",
+        "date": "2026-10-12T11:07:50Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2026-10-12T11:07:50Z"
+      },
+      "tree": {
+        "sha": "24cebffe7e6e8a2547b5106edde2cc9674e77d69",
+        "url": "https://api.github.com/repos/Proto-UI/Proto-UI/git/trees/24cebffe7e6e8a2547b5106edde2cc9674e77d69"
+      },
+      "message": "Merge b1e62928c205e318da615a77b4e457f1736fd7de into ea19727838d85c05af5e4bca8d5fc235cb44e288",
+      "parents": [
+        {
+          "sha": "ea19727838d85c05af5e4bca8d5fc235cb44e288",
+          "url": "https://api.github.com/repos/Proto-UI/Proto-UI/git/commits/ea19727838d85c05af5e4bca8d5fc235cb44e288",
+          "html_url": "https://github.com/Proto-UI/Proto-UI/commit/ea19727838d85c05af5e4bca8d5fc235cb44e288"
+        },
+        {
+          "sha": "b1e62928c205e318da615a77b4e457f1736fd7de",
+          "url": "https://api.github.com/repos/Proto-UI/Proto-UI/git/commits/b1e62928c205e318da615a77b4e457f1736fd7de",
+          "html_url": "https://github.com/Proto-UI/Proto-UI/commit/b1e62928c205e318da615a77b4e457f1736fd7de"
+        }
+      ],
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJqzL+GCRC1aQ7uu5UhlAAA22wQAJxKV4plV69ElRp80zTaDdgr\noQ1DAU3VCFVqtuCjgs9Wm6JNOC4/EdgsbRzQjjYJGcInt73AIpETsWA7nhiyNHif\n7CZ4zNdcN5O3NokiJtP3EadxscZD/iflqtV65cWhc6FIRsbnbb7mS24o45PQbdDw\nd7CH6dOgvj4FiNUvxbcR91iotCK5qrRjsMqitmekdZdGRiP+BcVxxVzRStdV+zID\n2I2qMrsjOlpJ53G6LiyFeho+au7Mrp6yk/ow3bauQYDSbiPwtC/5j0gwnwPq6s3y\nH5v6PbYxa3nn9Ei56WkNqxPhk98lBU9p/Y1/uoJu90V69i9ORaj1X72jfvZY2528\nHHMTKXmb2m9RHPg51AxfZFFtClJpV/BMyrHOSKFk6MLOI5nLSQ9ICni2o5JUPIy6\nxW3ycRh9LHZo6vN64wXm84w7ahlxxYtvefkyH8vulxLZUTQmg0UV+GXhQ0GpBCQh\nCW1m3mfjRVPWMr0f9CeGoNjEXMDETExNsGOs0zSeM0XS10czbRGpXkJRdkejmIoI\nnu/zvYwKgEzD5XjijcAKeeaSIxTT99+22quZMEBHoQ2bzuSA5/JE6bjVnoPiqnS7\nxg0q3L0JWRIALIybvTA+qTjBamlqea5uaXzBqO2PXyvVXXOo0eE6B0nu8NpXhAxC\nZQlxLIQLQf6I48tCrSym\n=yhCT\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree 24cebffe7e6e8a2547b5106edde2cc9674e77d69\nparent ea19727838d85c05af5e4bca8d5fc235cb44e288\nparent b1e62928c205e318da615a77b4e457f1736fd7de\nauthor HaruHyacinth <hyacinthharu@foxmail.com> 1791803270 +0000\ncommitter GitHub <noreply@github.com> 1791803270 +0000\n\nMerge b1e62928c205e318da615a77b4e457f1736fd7de into ea19727838d85c05af5e4bca8d5fc235cb44e288\n",
+        "verified_at": "2026-10-12T11:07:50Z"
+      }
+    }
+  ],
+  "jobs": [
+    {
+      "jobId": 114782213968,
+      "name": "release-scan",
+      "conclusion": "success",
+      "checkoutShas": ["a61e063cbf287f6309c7145cf53c626b24d8df9e"],
+      "logSha256": "57f7c0fbaedfd7e4abbfd0fe3c4981330c232f6811a26d16396c1b46e72e5e9f"
+    },
+    {
+      "jobId": 114782214112,
+      "name": "rust-interop",
+      "conclusion": "success",
+      "checkoutShas": ["a61e063cbf287f6309c7145cf53c626b24d8df9e"],
+      "logSha256": "8f53acb2f26198b41a0dcb916351f5ad8ec71fb0d0e1242c100e25e34fadcbdb"
+    },
+    {
+      "jobId": 114782214129,
+      "name": "type-check",
+      "conclusion": "success",
+      "checkoutShas": ["a61e063cbf287f6309c7145cf53c626b24d8df9e"],
+      "logSha256": "9544265f6a1aa34c038a250f64157e376134592b6ab08d051e08412ab8cc5334"
+    },
+    {
+      "jobId": 114782214185,
+      "name": "rust-macos",
+      "conclusion": "success",
+      "checkoutShas": ["a61e063cbf287f6309c7145cf53c626b24d8df9e"],
+      "logSha256": "9cb6ac2ad8eaf285776e73ee255ad6909f18ac3c7fa4dc6f6ba6214ab0bed906"
+    },
+    {
+      "jobId": 114782214240,
+      "name": "public_package_plan",
+      "conclusion": "success",
+      "checkoutShas": ["a61e063cbf287f6309c7145cf53c626b24d8df9e"],
+      "logSha256": "3755fa2f3592417f929fba8b03d755016eed0a0245f135e9935f5c948db932ec"
+    },
+    {
+      "jobId": 114782214261,
+      "name": "test-plan",
+      "conclusion": "success",
+      "checkoutShas": ["a61e063cbf287f6309c7145cf53c626b24d8df9e"],
+      "logSha256": "e436a9ede5d6f4b4b6bdd4d613dfb203c629eb5dbc0ee4007ada6e2a4da2b05e"
+    },
+    {
+      "jobId": 114782214278,
+      "name": "rust",
+      "conclusion": "success",
+      "checkoutShas": ["a61e063cbf287f6309c7145cf53c626b24d8df9e"],
+      "logSha256": "f6cc89cd3bf4ccd1736304cc23f5bfd4177aa66c372c211ce8fca990f5ce6681"
+    },
+    {
+      "jobId": 114782214348,
+      "name": "lockstep-check",
+      "conclusion": "success",
+      "checkoutShas": ["a61e063cbf287f6309c7145cf53c626b24d8df9e"],
+      "logSha256": "52d2aa096d4565d0506092683545df8d09b2b61527e62de583c48626f3f8d406"
+    },
+    {
+      "jobId": 114784247838,
+      "name": "test-general",
+      "conclusion": "failure",
+      "checkoutShas": ["a61e063cbf287f6309c7145cf53c626b24d8df9e"],
+      "logSha256": "b5348597218a13d30a4d636dcbc7987985d8100f5cb9dfe05c74af087f0c75e5"
+    },
+    {
+      "jobId": 114784248071,
+      "name": "test-browser (7/8, browser-7-of-8)",
+      "conclusion": "failure",
+      "checkoutShas": ["a61e063cbf287f6309c7145cf53c626b24d8df9e"],
+      "logSha256": "96bc2c9ad6e7f20003f765567dd43e72e161e77e529c92c4fe49e33dc832833e"
+    },
+    {
+      "jobId": 114784248094,
+      "name": "test-browser (8/8, browser-8-of-8)",
+      "conclusion": "failure",
+      "checkoutShas": ["a61e063cbf287f6309c7145cf53c626b24d8df9e"],
+      "logSha256": "6b633813a66f288d81d3265f91e72b50d1a448a30f985d9ebcc4defaf65aa082"
+    },
+    {
+      "jobId": 114784248142,
+      "name": "test-browser (3/8, browser-3-of-8)",
+      "conclusion": "failure",
+      "checkoutShas": ["a61e063cbf287f6309c7145cf53c626b24d8df9e"],
+      "logSha256": "8f0553c004ff1b559710e291c7c9c711542b467a0cd1f5b0b5baed3b060af0c3"
+    },
+    {
+      "jobId": 114784248152,
+      "name": "test-browser (4/8, browser-4-of-8)",
+      "conclusion": "failure",
+      "checkoutShas": ["a61e063cbf287f6309c7145cf53c626b24d8df9e"],
+      "logSha256": "a6b1ff541ef188c6cf6e2bf4b07aa000d209febc0ab78a3802ff6da65c32d83c"
+    },
+    {
+      "jobId": 114784248166,
+      "name": "test-browser (6/8, browser-6-of-8)",
+      "conclusion": "failure",
+      "checkoutShas": ["a61e063cbf287f6309c7145cf53c626b24d8df9e"],
+      "logSha256": "5d228b92f87330fee2d673b1a89ca861cb5be9559c3e6becf807eb226e51b48b"
+    },
+    {
+      "jobId": 114784248213,
+      "name": "test-browser (5/8, browser-5-of-8)",
+      "conclusion": "failure",
+      "checkoutShas": ["a61e063cbf287f6309c7145cf53c626b24d8df9e"],
+      "logSha256": "4a5e5d011a7ef86ecb4a555c68995dc08865d22a38d2857e19247365dab9d484"
+    },
+    {
+      "jobId": 114784248218,
+      "name": "test-browser (1/8, browser-1-of-8)",
+      "conclusion": "failure",
+      "checkoutShas": ["a61e063cbf287f6309c7145cf53c626b24d8df9e"],
+      "logSha256": "e7a06bfb2056b8baca9c45ac392785a647be116c25b4d2cf14f580e56957132f"
+    },
+    {
+      "jobId": 114784248229,
+      "name": "test-browser (2/8, browser-2-of-8)",
+      "conclusion": "failure",
+      "checkoutShas": ["a61e063cbf287f6309c7145cf53c626b24d8df9e"],
+      "logSha256": "7c63cbf99d214f13d66f17f8d15ad367faf122380ad7099c2c244df3b90a556a"
+    },
+    {
+      "jobId": 114784307171,
+      "name": "release-consumer-react",
+      "conclusion": "success",
+      "checkoutShas": ["a61e063cbf287f6309c7145cf53c626b24d8df9e"],
+      "logSha256": "710c553f732612e4efad222c19d0361d96c02926ee20e3837bc4648a68650515"
+    },
+    {
+      "jobId": 114784307180,
+      "name": "release-stage",
+      "conclusion": "success",
+      "checkoutShas": ["a61e063cbf287f6309c7145cf53c626b24d8df9e"],
+      "logSha256": "83891e8367bf3eb5dc6b2b5ec923aa41c267c71f7f53bc8659d467b11dedf8f5"
+    },
+    {
+      "jobId": 114784307263,
+      "name": "public_package_build",
+      "conclusion": "success",
+      "checkoutShas": ["a61e063cbf287f6309c7145cf53c626b24d8df9e"],
+      "logSha256": "b023a8e86a9c16a0d071ab2794a845d8467a76b694a436727ee001ec143344c0"
+    },
+    {
+      "jobId": 114784307293,
+      "name": "cli-smoke",
+      "conclusion": "success",
+      "checkoutShas": ["a61e063cbf287f6309c7145cf53c626b24d8df9e"],
+      "logSha256": "940a65744c1759d57e019ebd1e1f1f41ab6aba210a39cd0d4ae87a8a0c11ec89"
+    },
+    {
+      "jobId": 114791551199,
+      "name": "test",
+      "conclusion": "failure",
+      "checkoutShas": ["a61e063cbf287f6309c7145cf53c626b24d8df9e"],
+      "logSha256": "282cf31df0c2086ed886ac023fdef7ee040620d1a989f0302fc6f417cb7be7cb"
+    }
+  ],
+  "all22CheckoutSame": true,
+  "allTreesExact": true
+}

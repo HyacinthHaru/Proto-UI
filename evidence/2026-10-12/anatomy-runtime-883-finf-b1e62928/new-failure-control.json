@@ -1,0 +1,59 @@
+{
+  "runs": [
+    {
+      "label": "baseline",
+      "head": "1c6bfc9e433d19990c01bbc5fdfbdcb43ff5dbd8",
+      "files": 3,
+      "passed": 10,
+      "failed": 1,
+      "failedTitles": [
+        {
+          "path": "packages/prototypes/shadcn/test/dropdown-destructive.test.ts",
+          "title": "Shadcn Dropdown destructive recipe over real Base states keeps rest transparent and reacts to focused light/dark changes without remounting"
+        }
+      ],
+      "trackedInputs": 399,
+      "allInputGitHashesVerified": true,
+      "changedFileIntersection": []
+    },
+    {
+      "label": "candidate",
+      "head": "b1e62928c205e318da615a77b4e457f1736fd7de",
+      "files": 3,
+      "passed": 9,
+      "failed": 2,
+      "failedTitles": [
+        {
+          "path": "packages/adapters/web-component/test/dialog-portal-owner.test.ts",
+          "title": "WC portal origin ownership reclaims open portals after origin removal (shadow origin=false)"
+        },
+        {
+          "path": "packages/prototypes/shadcn/test/dropdown-destructive.test.ts",
+          "title": "Shadcn Dropdown destructive recipe over real Base states keeps rest transparent and reacts to focused light/dark changes without remounting"
+        }
+      ],
+      "trackedInputs": 399,
+      "allInputGitHashesVerified": true,
+      "changedFileIntersection": []
+    }
+  ],
+  "newGeneralFailures": [
+    [
+      "packages/adapters/web-component/test/color-scheme.integration.test.ts",
+      "wc: colorScheme Adapter wiring refreshes mixed Prop/Meta styles without a Proto update or replacing the settled view"
+    ],
+    [
+      "packages/adapters/web-component/test/dialog-portal-owner.test.ts",
+      "WC portal origin ownership reclaims open portals after origin removal (shadow origin=false)"
+    ],
+    [
+      "packages/prototypes/shadcn/test/dropdown-destructive.test.ts",
+      "Shadcn Dropdown destructive recipe over real Base states keeps rest transparent and reacts to focused light/dark changes without remounting"
+    ]
+  ],
+  "allThreeReproducedBeforeChange": false,
+  "pairedFailedSetsEqual": false,
+  "claimsBoundary": "Original assertions and per-test timeout unchanged;same original3filesmax2/min1freshGit-pinned sources,not anotherfullgeneralrun or proof ofrootcause.",
+  "pairedTrackedInputSetsAndBytesIdentical": true,
+  "causality": "Three extra full-general failures retained. Two paired3filecontrols have identical399trackedinputs andzerointersectionwithSliderchanges but differ infailedsets;onlybaseline-provenfailurestated,remainingfailurecausenotresolved. No blanketgreenorall-inheritedclaim."
+}

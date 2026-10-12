@@ -1,0 +1,25 @@
+{
+  "at": "2026-10-12T11:05:14.989469+00:00",
+  "baseHead": "1c6bfc9e433d19990c01bbc5fdfbdcb43ff5dbd8",
+  "focused": {
+    "files": 10,
+    "passed": 354,
+    "exit": 0
+  },
+  "types": {
+    "exit": 0,
+    "AstroFiles": 852,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 11
+  },
+  "testsSha256": "180ac79650683a9e64aa46dccd80f0a2cee4f228a850068e5e51416fb12d1c05",
+  "workingFiles": {
+    "packages/prototypes/base/src/slider/values-root.proto.ts": {
+      "sha256": "c28f034f076f49f242faa9046eeb10a59201da3865fc2ff9921b7dc19d90fbd5"
+    },
+    "packages/prototypes/base/test/slider-values-publication.test.ts": {
+      "sha256": "180ac79650683a9e64aa46dccd80f0a2cee4f228a850068e5e51416fb12d1c05"
+    }
+  }
+}

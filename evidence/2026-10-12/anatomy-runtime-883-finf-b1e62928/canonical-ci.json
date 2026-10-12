@@ -1,0 +1,187 @@
+{
+  "head": "b1e62928c205e318da615a77b4e457f1736fd7de",
+  "tree": "24cebffe7e6e8a2547b5106edde2cc9674e77d69",
+  "runId": 38240676265,
+  "attempt": 1,
+  "status": "completed",
+  "conclusion": "failure",
+  "jobs": {
+    "success": 12,
+    "failure": 10
+  },
+  "all22JobLogs": true,
+  "allCheckoutTreesExact": true,
+  "completeBrowserSubset": {
+    "jobs": 5,
+    "counts": {
+      "failed": 46,
+      "passed": 566,
+      "skipped": 15
+    },
+    "notEightShardTotal": true
+  },
+  "deadline124Jobs": [
+    "test-browser (7/8, browser-7-of-8)",
+    "test-browser (8/8, browser-8-of-8)",
+    "test-browser (6/8, browser-6-of-8)"
+  ],
+  "testSummaries": [
+    {
+      "jobId": 114782214261,
+      "name": "test-plan",
+      "conclusion": "success",
+      "checkoutShas": ["a61e063cbf287f6309c7145cf53c626b24d8df9e"],
+      "logSha256": "e436a9ede5d6f4b4b6bdd4d613dfb203c629eb5dbc0ee4007ada6e2a4da2b05e",
+      "summaryLines": [],
+      "deadline124": false,
+      "finalTestSummary": null,
+      "completeBrowserReportClaim": false
+    },
+    {
+      "jobId": 114784247838,
+      "name": "test-general",
+      "conclusion": "failure",
+      "checkoutShas": ["a61e063cbf287f6309c7145cf53c626b24d8df9e"],
+      "logSha256": "b5348597218a13d30a4d636dcbc7987985d8100f5cb9dfe05c74af087f0c75e5",
+      "summaryLines": ["2026-10-12T11:17:42.6244570Z [public-docs] 82 drift issue(s) found:"],
+      "deadline124": false,
+      "finalTestSummary": null,
+      "completeBrowserReportClaim": false
+    },
+    {
+      "jobId": 114784248071,
+      "name": "test-browser (7/8, browser-7-of-8)",
+      "conclusion": "failure",
+      "checkoutShas": ["a61e063cbf287f6309c7145cf53c626b24d8df9e"],
+      "logSha256": "96bc2c9ad6e7f20003f765567dd43e72e161e77e529c92c4fe49e33dc832833e",
+      "summaryLines": [
+        "2026-10-12T11:32:02.0827698Z ##[error]Process completed with exit code 124."
+      ],
+      "deadline124": true,
+      "finalTestSummary": null,
+      "completeBrowserReportClaim": false
+    },
+    {
+      "jobId": 114784248094,
+      "name": "test-browser (8/8, browser-8-of-8)",
+      "conclusion": "failure",
+      "checkoutShas": ["a61e063cbf287f6309c7145cf53c626b24d8df9e"],
+      "logSha256": "6b633813a66f288d81d3265f91e72b50d1a448a30f985d9ebcc4defaf65aa082",
+      "summaryLines": [
+        "2026-10-12T11:33:03.1189608Z ##[error]Process completed with exit code 124."
+      ],
+      "deadline124": true,
+      "finalTestSummary": null,
+      "completeBrowserReportClaim": false
+    },
+    {
+      "jobId": 114784248142,
+      "name": "test-browser (3/8, browser-3-of-8)",
+      "conclusion": "failure",
+      "checkoutShas": ["a61e063cbf287f6309c7145cf53c626b24d8df9e"],
+      "logSha256": "8f0553c004ff1b559710e291c7c9c711542b467a0cd1f5b0b5baed3b060af0c3",
+      "summaryLines": [
+        "2026-10-12T11:24:59.2736745Z \u23af\u23af\u23af\u23af\u23af\u23af Failed Tests 22 \u23af\u23af\u23af\u23af\u23af\u23af\u23af",
+        "2026-10-12T11:24:59.3189676Z  Test Files  4 failed | 6 passed (10)",
+        "2026-10-12T11:24:59.3190289Z       Tests  22 failed | 46 passed (68)"
+      ],
+      "deadline124": false,
+      "finalTestSummary": "2026-10-12T11:24:59.3190289Z       Tests  22 failed | 46 passed (68)",
+      "lastSummaryCounts": {
+        "failed": 22,
+        "passed": 46
+      },
+      "completeBrowserReportClaim": true
+    },
+    {
+      "jobId": 114784248152,
+      "name": "test-browser (4/8, browser-4-of-8)",
+      "conclusion": "failure",
+      "checkoutShas": ["a61e063cbf287f6309c7145cf53c626b24d8df9e"],
+      "logSha256": "a6b1ff541ef188c6cf6e2bf4b07aa000d209febc0ab78a3802ff6da65c32d83c",
+      "summaryLines": [
+        "2026-10-12T11:27:15.7233560Z \u23af\u23af\u23af\u23af\u23af\u23af\u23af Failed Tests 9 \u23af\u23af\u23af\u23af\u23af\u23af\u23af",
+        "2026-10-12T11:27:15.7582487Z  Test Files  2 failed | 8 passed (10)",
+        "2026-10-12T11:27:15.7582879Z       Tests  9 failed | 73 passed (82)"
+      ],
+      "deadline124": false,
+      "finalTestSummary": "2026-10-12T11:27:15.7582879Z       Tests  9 failed | 73 passed (82)",
+      "lastSummaryCounts": {
+        "failed": 9,
+        "passed": 73
+      },
+      "completeBrowserReportClaim": true
+    },
+    {
+      "jobId": 114784248166,
+      "name": "test-browser (6/8, browser-6-of-8)",
+      "conclusion": "failure",
+      "checkoutShas": ["a61e063cbf287f6309c7145cf53c626b24d8df9e"],
+      "logSha256": "5d228b92f87330fee2d673b1a89ca861cb5be9559c3e6becf807eb226e51b48b",
+      "summaryLines": [
+        "2026-10-12T11:32:11.8662222Z ##[error]Process completed with exit code 124."
+      ],
+      "deadline124": true,
+      "finalTestSummary": null,
+      "completeBrowserReportClaim": false
+    },
+    {
+      "jobId": 114784248213,
+      "name": "test-browser (5/8, browser-5-of-8)",
+      "conclusion": "failure",
+      "checkoutShas": ["a61e063cbf287f6309c7145cf53c626b24d8df9e"],
+      "logSha256": "4a5e5d011a7ef86ecb4a555c68995dc08865d22a38d2857e19247365dab9d484",
+      "summaryLines": [
+        "2026-10-12T11:25:25.7055078Z \u23af\u23af\u23af\u23af\u23af\u23af\u23af Failed Tests 2 \u23af\u23af\u23af\u23af\u23af\u23af\u23af",
+        "2026-10-12T11:25:25.7272781Z  Test Files  2 failed | 7 passed | 1 skipped (10)",
+        "2026-10-12T11:25:25.7274408Z       Tests  2 failed | 172 passed | 15 skipped (189)"
+      ],
+      "deadline124": false,
+      "finalTestSummary": "2026-10-12T11:25:25.7274408Z       Tests  2 failed | 172 passed | 15 skipped (189)",
+      "lastSummaryCounts": {
+        "failed": 2,
+        "passed": 172,
+        "skipped": 15
+      },
+      "completeBrowserReportClaim": true
+    },
+    {
+      "jobId": 114784248218,
+      "name": "test-browser (1/8, browser-1-of-8)",
+      "conclusion": "failure",
+      "checkoutShas": ["a61e063cbf287f6309c7145cf53c626b24d8df9e"],
+      "logSha256": "e7a06bfb2056b8baca9c45ac392785a647be116c25b4d2cf14f580e56957132f",
+      "summaryLines": [
+        "2026-10-12T11:27:42.5139012Z \u23af\u23af\u23af\u23af\u23af\u23af\u23af Failed Tests 1 \u23af\u23af\u23af\u23af\u23af\u23af\u23af",
+        "2026-10-12T11:27:42.5388919Z  Test Files  1 failed | 9 passed (10)",
+        "2026-10-12T11:27:42.5390627Z       Tests  1 failed | 46 passed (47)"
+      ],
+      "deadline124": false,
+      "finalTestSummary": "2026-10-12T11:27:42.5390627Z       Tests  1 failed | 46 passed (47)",
+      "lastSummaryCounts": {
+        "failed": 1,
+        "passed": 46
+      },
+      "completeBrowserReportClaim": true
+    },
+    {
+      "jobId": 114784248229,
+      "name": "test-browser (2/8, browser-2-of-8)",
+      "conclusion": "failure",
+      "checkoutShas": ["a61e063cbf287f6309c7145cf53c626b24d8df9e"],
+      "logSha256": "7c63cbf99d214f13d66f17f8d15ad367faf122380ad7099c2c244df3b90a556a",
+      "summaryLines": [
+        "2026-10-12T11:34:04.4338252Z \u23af\u23af\u23af\u23af\u23af\u23af Failed Tests 12 \u23af\u23af\u23af\u23af\u23af\u23af\u23af",
+        "2026-10-12T11:34:04.4655430Z  Test Files  4 failed | 6 passed (10)",
+        "2026-10-12T11:34:04.4656243Z       Tests  12 failed | 229 passed (241)"
+      ],
+      "deadline124": false,
+      "finalTestSummary": "2026-10-12T11:34:04.4656243Z       Tests  12 failed | 229 passed (241)",
+      "lastSummaryCounts": {
+        "failed": 12,
+        "passed": 229
+      },
+      "completeBrowserReportClaim": true
+    }
+  ]
+}

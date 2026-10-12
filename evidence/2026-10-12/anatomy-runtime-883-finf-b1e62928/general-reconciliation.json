@@ -1,0 +1,83 @@
+{
+  "head": "b1e62928c205e318da615a77b4e457f1736fd7de",
+  "tree": "24cebffe7e6e8a2547b5106edde2cc9674e77d69",
+  "exit": {
+    "status": 1,
+    "signal": null,
+    "endedAt": "2026-10-12T11:14:23.079Z"
+  },
+  "assertions": {
+    "numTotalTestSuites": 2482,
+    "numPassedTestSuites": 2430,
+    "numFailedTestSuites": 52,
+    "numPendingTestSuites": 0,
+    "numTotalTests": 11962,
+    "numPassedTests": 11566,
+    "numFailedTests": 362,
+    "numPendingTests": 0,
+    "numTodoTests": 34
+  },
+  "allFailedTitles": 362,
+  "comparedWithExact1c6": {
+    "common": 359,
+    "new": [
+      {
+        "path": "packages/adapters/web-component/test/color-scheme.integration.test.ts",
+        "title": "wc: colorScheme Adapter wiring refreshes mixed Prop/Meta styles without a Proto update or replacing the settled view",
+        "failureMessages": [
+          "AssertionError: expected 'bg-white' to be 'bg-black' // Object.is equality\n    at [workspace]/packages/adapters/base/test-utils/color-scheme.ts:115:32\n    at run ([workspace]/packages/adapters/base/test-utils/color-scheme.ts:91:7)\n    at [workspace]/packages/adapters/base/test-utils/color-scheme.ts:102:7\n    at file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)\n    at startTests (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1271:3)\n    at file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:126:11"
+        ]
+      },
+      {
+        "path": "packages/adapters/web-component/test/dialog-portal-owner.test.ts",
+        "title": "WC portal origin ownership reclaims open portals after origin removal (shadow origin=false)",
+        "failureMessages": [
+          "AssertionError: expected true to be false // Object.is equality\n    at [workspace]/packages/adapters/web-component/test/dialog-portal-owner.test.ts:57:37\n    at file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)\n    at startTests (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1271:3)\n    at file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:126:11\n    at withEnv (file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:90:5)\n    at run (file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:112:3)"
+        ]
+      },
+      {
+        "path": "packages/prototypes/shadcn/test/dropdown-destructive.test.ts",
+        "title": "Shadcn Dropdown destructive recipe over real Base states keeps rest transparent and reacts to focused light/dark changes without remounting",
+        "failureMessages": [
+          "Error: Matcher did not succeed in 1000ms\n    at Proxy.<anonymous> (file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/vi.DgezovHB.js:66:37)\n    at [workspace]/packages/prototypes/shadcn/test/dropdown-destructive.test.ts:78:74\n    at file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)\n    at startTests (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1271:3)\n    at file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:126:11\n    at withEnv (file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:90:5)"
+        ]
+      }
+    ],
+    "removed": []
+  },
+  "CSelection": {
+    "files": 41,
+    "counts": {
+      "passed": 553
+    },
+    "allPassed": true
+  },
+  "unhandledSummary": [
+    "\u23af\u23af\u23af\u23af\u23af\u23af Unhandled Errors \u23af\u23af\u23af\u23af\u23af\u23af",
+    "     Errors  1 error"
+  ],
+  "logSha256": "160f6037f833e48f3c888c729eb4d672eda6f23cfe45d27ded446c895ae21376",
+  "fullJsonSha256": "784fd88d945a288653f941c4f81a4c6093d86d7140ede174f293f06c8c0721e3",
+  "notCanonicalCI": true,
+  "displaySummary": {
+    "files": {
+      "failed": 28,
+      "passed": 1123,
+      "skipped": 3,
+      "total": 1154
+    },
+    "assertions": {
+      "failed": 362,
+      "passed": 11566,
+      "TODO": 34,
+      "total": 11962
+    },
+    "unhandled": 1
+  },
+  "jsonFileStatusCounts": {
+    "passed": 1126,
+    "failed": 28
+  },
+  "jsonFileStatusNote": "Vitest JSON passed status includes3skippedfiles;printedactualfilecounts retainedindisplaySummary.",
+  "newFailureControl": "new-failure-reconciliation.json"
+}

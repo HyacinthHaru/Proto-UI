@@ -1,0 +1,81 @@
+{
+  "head": "b1e62928c205e318da615a77b4e457f1736fd7de",
+  "tree": "24cebffe7e6e8a2547b5106edde2cc9674e77d69",
+  "allTerminal": true,
+  "items": [
+    {
+      "runId": 38240676064,
+      "name": "Field family native evidence",
+      "jobId": 114782212000,
+      "conclusion": "failure",
+      "checkoutShas": ["b1e62928c205e318da615a77b4e457f1736fd7de"],
+      "treeExact": true,
+      "summary": [
+        "2026-10-12T11:11:56.8836435Z \u23af\u23af\u23af\u23af\u23af\u23af\u23af Failed Tests 3 \u23af\u23af\u23af\u23af\u23af\u23af\u23af",
+        "2026-10-12T11:11:56.8843750Z  \u276f apps/www/src/content/docs/zh-cn/demo-field-family.browser.test.ts:219:14",
+        "2026-10-12T11:11:56.9112644Z  Test Files  1 failed (1)",
+        "2026-10-12T11:11:56.9113345Z       Tests  3 failed | 22 passed (25)",
+        "2026-10-12T11:11:56.9381054Z ##[error]Process completed with exit code 1."
+      ],
+      "logSha256": "bf29dc80c760d5432f318c10485398fd7d6c3bf642515f5769b899a13539a047"
+    },
+    {
+      "runId": 38240676123,
+      "name": "Bootstrap state-controls evidence",
+      "jobId": 114782212535,
+      "conclusion": "failure",
+      "checkoutShas": ["b1e62928c205e318da615a77b4e457f1736fd7de"],
+      "treeExact": true,
+      "summary": [
+        "2026-10-12T11:08:24.4843406Z     throw new Error(`Draft family ${family} contains an unsupported physical style token.`);",
+        "2026-10-12T11:08:24.4844478Z Error: Draft family bootstrap-2-3-2 contains an unsupported physical style token.",
+        "2026-10-12T11:08:24.5490929Z ##[error]Process completed with exit code 1."
+      ],
+      "logSha256": "e9db7fa4ff0973d1474c1d5edb7a1238ad69411b4c30b762fce2addd1b29115e"
+    },
+    {
+      "runId": 38240676680,
+      "name": "Collapsible projection evidence",
+      "jobId": 114782214525,
+      "conclusion": "failure",
+      "checkoutShas": ["b1e62928c205e318da615a77b4e457f1736fd7de"],
+      "treeExact": true,
+      "summary": [
+        "2026-10-12T11:18:47.0751803Z \u23af\u23af\u23af\u23af\u23af\u23af\u23af Failed Tests 4 \u23af\u23af\u23af\u23af\u23af\u23af\u23af",
+        "2026-10-12T11:18:47.0800298Z  \u276f focused apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts:78:8",
+        "2026-10-12T11:18:47.1126486Z  Test Files  1 failed (1)",
+        "2026-10-12T11:18:47.1128043Z       Tests  4 failed | 32 passed (36)",
+        "2026-10-12T11:18:47.1180539Z ##[error]Error: Matcher did not succeed in 1000ms",
+        " \u276f focused apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts:78:8",
+        "2026-10-12T11:18:47.1198529Z ##[error]Error: Matcher did not succeed in 1000ms",
+        " \u276f focused apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts:78:8",
+        "2026-10-12T11:18:47.1205811Z ##[error]Error: Matcher did not succeed in 1000ms",
+        " \u276f focused apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts:78:8",
+        "2026-10-12T11:18:47.1211546Z ##[error]Error: Matcher did not succeed in 1000ms",
+        " \u276f focused apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts:78:8",
+        "2026-10-12T11:18:47.1431308Z ##[error]Process completed with exit code 1."
+      ],
+      "logSha256": "a053d289290ebf335c5a15e8a357c75246e50688336d4a8cbc63a5112fd4d75c"
+    }
+  ],
+  "results": {
+    "Field": {
+      "passed": 22,
+      "failed": 3,
+      "total": 25,
+      "failure": "LiquidGlass React/Vue/Vue2 physicalfocus219:14",
+      "nativeTestsExecuted": true
+    },
+    "Collapsible": {
+      "passed": 32,
+      "failed": 4,
+      "total": 36,
+      "failure": "LiquidGlass WC/React/Vue/Vue2 physicalfocused78:8/caller302:17",
+      "nativeTestsExecuted": true
+    },
+    "Bootstrap": {
+      "beforeNativeTests": true,
+      "failure": "unsupported bootstrap2-3-2 physical style token"
+    }
+  }
+}

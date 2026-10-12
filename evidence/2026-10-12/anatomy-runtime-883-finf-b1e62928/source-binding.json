@@ -1,0 +1,153 @@
+{
+  "head": "b1e62928c205e318da615a77b4e457f1736fd7de",
+  "tree": "24cebffe7e6e8a2547b5106edde2cc9674e77d69",
+  "foundation": "15317b8bc4e25b9bb6f3673a3e8550a345862bfa",
+  "netPaths": 28,
+  "sourcePaths": 18,
+  "testPaths": 6,
+  "draftDocs": 3,
+  "historicBudgetRecord": 1,
+  "items": [
+    {
+      "path": "internal/contracts/prototype-base/form-completion.v0.md",
+      "gitBlob": "230d8e979d5fae4cba6fb1601e6fa477d5109e82",
+      "sha256": "8cadb32b9e22bf6e228908823019965750c0f61aee66720b6360324194da75bc"
+    },
+    {
+      "path": "internal/contracts/prototype-base/notification-completion.v0.md",
+      "gitBlob": "78ee8b9e4ee5f34c8cbb22853602966877ac2c14",
+      "sha256": "4eb0220d4dfa9bcc561fed3d9c23b92d9c21a622c010ab9132211dd023be96a5"
+    },
+    {
+      "path": "internal/contracts/prototype-base/search-selection-completion.v0.md",
+      "gitBlob": "9f4c55f7dbd9ca3ff0ffba40875b2472ff878af9",
+      "sha256": "7b8a22c7468f4e2b5fcf88293a4a89512425354b381169a5911a628ed4da5d9b"
+    },
+    {
+      "path": "internal/records/2026-10-10-anatomy-runtime-lifecycle-budget.json",
+      "gitBlob": "8ff7877799707f035a5b139abfff4fe0d7f4a0c3",
+      "sha256": "cdf4bbed30eb0d039858d56eff5bf5a1961bbc2afe572c0978ab4f402b3371bd"
+    },
+    {
+      "path": "packages/prototypes/base/src/accordion/root.proto.ts",
+      "gitBlob": "1219b99de84bfddb1ec22bb46d9a8ec86fab8ca0",
+      "sha256": "5176dbc3c1a9ed075cce4b4eb5ff35feaa4ef1d4caa448637e43b4b8beea4a7b"
+    },
+    {
+      "path": "packages/prototypes/base/src/calendar/index.ts",
+      "gitBlob": "568a324c599c3829e1bce32ac952a3d53a5dcf08",
+      "sha256": "6049e33cc24d1da715eb4f7f728ac5960c67c9d127c190e248016d044ea7f1bc"
+    },
+    {
+      "path": "packages/prototypes/base/src/carousel/index.ts",
+      "gitBlob": "64c3a44e6ec021f2415dded0d3edaedc2ae9b5ae",
+      "sha256": "f3717c3125f64db2353c9dd5d6c98dfa386f7eb71081f7fe5c362613c7c7940c"
+    },
+    {
+      "path": "packages/prototypes/base/src/checkbox-group/root.proto.ts",
+      "gitBlob": "f6a36f32bb7fabf6d90c3e9a50fa812c42e650c8",
+      "sha256": "5676be7fd397f214e2b577aa8a3a2c82fd2349963837529b2b927adbe23bba32"
+    },
+    {
+      "path": "packages/prototypes/base/src/context-menu/root.proto.ts",
+      "gitBlob": "bbea2bcc219daa17aa26d3fc45f313d35dce524e",
+      "sha256": "ce6ccf47c1d527cec5844f5e404f8737a6d024cb2e99bfe37f69889885dda2df"
+    },
+    {
+      "path": "packages/prototypes/base/src/data-table/index.ts",
+      "gitBlob": "438297fd8bbd1ef6713acdf958e5a5bcd3553db7",
+      "sha256": "736586503ba4f741f7e2a7e0e1d4c44733f59470b065abab308cbb1c6a8d3bc6"
+    },
+    {
+      "path": "packages/prototypes/base/src/drawer/snap.ts",
+      "gitBlob": "3981d7413ec1ca44c077da9fe616cd455ff960ab",
+      "sha256": "6f4a6d1e206ea157418c36faf5502bbde9c6e368d9d1f6e602637af25e210b88"
+    },
+    {
+      "path": "packages/prototypes/base/src/field/control.proto.ts",
+      "gitBlob": "fea23009cd10a964ad41415b4ba342f719e9929f",
+      "sha256": "a39428853bb52207bf3b4c5fae681b9bda1524713e553ba75f8b793901c84c1b"
+    },
+    {
+      "path": "packages/prototypes/base/src/form/root.proto.ts",
+      "gitBlob": "eeb14735082c1f03c6efe7e18040281588c2fb72",
+      "sha256": "6ddc1d42afc9d8443dd94d1d0c843e66a9d354835c4fc4ade9844558b9c9c988"
+    },
+    {
+      "path": "packages/prototypes/base/src/input-otp/root.proto.ts",
+      "gitBlob": "6ea71d0e37c9fa971712f4e8cb6b2893261f67b1",
+      "sha256": "af55478de25bb51d928db14591c6585059f567e8df7830611d514d0cef4c378e"
+    },
+    {
+      "path": "packages/prototypes/base/src/menu-primitives/family.ts",
+      "gitBlob": "f8811294b2e1ed5ed8bb6c99cd4d8d59f77ef2fb",
+      "sha256": "04e700b6dc562bd544f47c2a305b4debfcd3eacf3c9b9575d636f4621ea92583"
+    },
+    {
+      "path": "packages/prototypes/base/src/number-field/root.proto.ts",
+      "gitBlob": "d6e35bdc817b290b780bcff0bd55cf5b49f8fa91",
+      "sha256": "05e67c05dc46df2cc6d7bc9fec35e46d99b4325e372f9dc8d4738c4a3fff349f"
+    },
+    {
+      "path": "packages/prototypes/base/src/search-primitives/family.ts",
+      "gitBlob": "b13fdf4257338b5526d8df953d124800514aaedd",
+      "sha256": "45bd383a3827d1903ff7539e61bb8fe9f14b7e48c37febe946dad6ded47e3d4d"
+    },
+    {
+      "path": "packages/prototypes/base/src/slider/root.proto.ts",
+      "gitBlob": "a71827fa8fd5410a6c668a372a733d43bbcf87f5",
+      "sha256": "16599d46bf693784f8fba11368672619125da100d8279c4586aca0e3a1b36272"
+    },
+    {
+      "path": "packages/prototypes/base/src/slider/values-root.proto.ts",
+      "gitBlob": "7f974c32f20d6546def842a81c3a71558c87d3cc",
+      "sha256": "c28f034f076f49f242faa9046eeb10a59201da3865fc2ff9921b7dc19d90fbd5"
+    },
+    {
+      "path": "packages/prototypes/base/src/toast/root.proto.ts",
+      "gitBlob": "962ea3d61c2b5e90eb2696ae97cf3610274933f8",
+      "sha256": "de3f767364c82794d34ed84e0f68a72482e5589546bb99476c039b52ab8d999c"
+    },
+    {
+      "path": "packages/prototypes/base/src/toolbar/separator.proto.ts",
+      "gitBlob": "7e37e9a2c3578b440d794cfa4746d467fb959715",
+      "sha256": "df2276f27a7ca0d4aa3bf43f5ea26b4fca210fcd4452382c77f369b0721c276d"
+    },
+    {
+      "path": "packages/prototypes/base/src/tree/index.ts",
+      "gitBlob": "bad90d40518d28d2a01c09ac3eb8521ddefe366c",
+      "sha256": "eac4bf86e5bf682398b4b3b0329c6e075ecc02cf5a1b77fa29b14549a4ebc8cd"
+    },
+    {
+      "path": "packages/prototypes/base/test/notification-retirement-lifecycle.test.ts",
+      "gitBlob": "8316c656a254f731c1c5066d3e2269f2189d80e8",
+      "sha256": "9ec059e028f1df79c70fb484ef68715bd466ca8384b0e472ef5008be1e99a559"
+    },
+    {
+      "path": "packages/prototypes/base/test/popup-snap-validation-lifecycle.test.ts",
+      "gitBlob": "676e8eff95f8a45546c8b9a98eed9691472a2190",
+      "sha256": "b43edcf14cb048ecbf76541fb18d969734c5b89bd762fd43b564beb201d58f86"
+    },
+    {
+      "path": "packages/prototypes/base/test/selection-reset-lifecycle.test.ts",
+      "gitBlob": "faf4a8c11fdb1ab7c8ff2a5082e946af5d2052fb",
+      "sha256": "887fe8880dc636004519c85a5599febfaa7bed4bf43bd26ad88cd8db7c5fccf7"
+    },
+    {
+      "path": "packages/prototypes/base/test/slider-root-lifecycle.test.ts",
+      "gitBlob": "5ba9272dd8132501d6cbd012f336beddfb17f840",
+      "sha256": "724d3b854c248868fb4cbd38d7eb864db41229ea1b8f72a37e9be3b0080445a9"
+    },
+    {
+      "path": "packages/prototypes/base/test/slider-values-publication.test.ts",
+      "gitBlob": "4a1b2ea35b573e78fe7d843fa57e04349502cfcf",
+      "sha256": "180ac79650683a9e64aa46dccd80f0a2cee4f228a850068e5e51416fb12d1c05"
+    },
+    {
+      "path": "packages/prototypes/base/test/toolbar-separator-lifecycle.test.ts",
+      "gitBlob": "ae9e47e7eb1c589dce2062d0d9ff2048ce1caa72",
+      "sha256": "b72e41357dd600117aef7d3fb0740c50014e5b6056b859790d9dd06b9aa904ff"
+    }
+  ],
+  "unchangedBudgetAndWorkflow": true
+}
