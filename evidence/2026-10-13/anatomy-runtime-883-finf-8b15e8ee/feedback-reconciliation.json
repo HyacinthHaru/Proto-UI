@@ -1,0 +1,40 @@
+{
+  "head": "8b15e8ee5d5795ec76bf4c6355a9ad9a9b47a6a6",
+  "tree": "b4bb8316f9e01b509dbf757fad255cb89172c320",
+  "at": "2026-10-13T03:28:58.441449+00:00",
+  "feedback": [
+    {
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/872#discussion_r4252722844",
+      "subject": "Searchduplicatechoice",
+      "finding": "confirmedandfixed,25samebytes16pass9fail\u219225pass;allsourcebytesretained8b",
+      "scope": "actualWC/RuntimeHappyDOMnotnativeAT"
+    },
+    {
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/872#discussion_r4248471221",
+      "subject": "Accordionretirement",
+      "finding": "alreadycoveredbyretained884guards;8Root/Itemcontrols pass;nonewsourcefix"
+    },
+    {
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/872#discussion_r4250665292",
+      "subject": "Calendarvaluecontinuation",
+      "finding": "confirmed9retiredfail3normalpass\u219212pass;sourceowner/epochguardsretained8b"
+    },
+    {
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/872#discussion_r4253356056",
+      "subject": "Calendarnativeactivation",
+      "finding": "sourceWeb/GPUIclick\u2192PressCommitroutealreadyexists;noestablishedCdefect;notATexecutionorformalreviewdismissal"
+    },
+    {
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/872#discussion_r4254178835",
+      "subject": "Formpreparationretirement",
+      "finding": "targets3cewithout884guards;current15passvsonefileoldForm6pass9fail,307boundinputs;alreadycovered,noadditionalproductcommit"
+    },
+    {
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/872#discussion_r4254178846",
+      "subject": "residentmotiondocumentadoption",
+      "finding": "AdapterownerboundaryoutsidecurrentC;notinvestigatedorrepairedhere"
+    }
+  ],
+  "reviewThreadsNotMutated": true,
+  "noThirdClaim": true
+}

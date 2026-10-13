@@ -1,0 +1,641 @@
+{
+  "head": "8b15e8ee5d5795ec76bf4c6355a9ad9a9b47a6a6",
+  "tree": "b4bb8316f9e01b509dbf757fad255cb89172c320",
+  "receipt": {
+    "head": "8b15e8ee5d5795ec76bf4c6355a9ad9a9b47a6a6",
+    "tree": "b4bb8316f9e01b509dbf757fad255cb89172c320",
+    "startedAt": "2026-10-13T02:45:24.763Z",
+    "plan": {
+      "needsServer": false,
+      "args": [
+        "--minWorkers=1",
+        "--maxWorkers=2",
+        "--exclude",
+        "packages/adapters/base/test/focus-intent-retries.browser.test.ts",
+        "--exclude",
+        "packages/adapters/react/test/focus-entry-readiness.browser.test.ts",
+        "--exclude",
+        "packages/adapters/vue/test/focus-request-readiness.browser.test.ts",
+        "--exclude",
+        "apps/www/test/template-style.browser.test.ts",
+        "--exclude",
+        "apps/www/test/evidence/brutalist-spinner.capture.browser.test.ts",
+        "--exclude",
+        "apps/www/test/evidence/brutalist-fonts.browser.test.ts",
+        "--exclude",
+        "apps/www/src/components/documentation-image-preview.browser.test.ts",
+        "--exclude",
+        "apps/www/test/message-composition.browser.test.ts",
+        "--exclude",
+        "apps/www/test/color-scheme.browser.test.ts",
+        "--exclude",
+        "apps/www/test/preferences.browser.test.ts",
+        "--exclude",
+        "apps/www/test/button-view-lifetime.browser.test.ts",
+        "--exclude",
+        "apps/www/test/radio-group-entry.browser.test.ts",
+        "--exclude",
+        "apps/www/test/tree-navigation.browser.test.ts",
+        "--exclude",
+        "apps/www/test/virtual-list-resize.browser.test.ts",
+        "--exclude",
+        "apps/workspace/test/lifecycle.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/contrast-probe.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-base-image.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-base-table.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/table-react19.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-base-collapsible.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-field-family.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-accordion-family.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-passive-atoms.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-shadcn-card.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-base-controls.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-base-input.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-brutalist-button.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-brutalist-controls.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-brutalist-checkbox.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-brutalist-dialog.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-brutalist-remaining.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-brutalist-spinner.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-composed-style-isolation.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-prototype-style-closure.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-ring-offset-default.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-shadow-split-s1.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-shadow-split-s2.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-shadow-split-s3.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4-paint.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-shadow-split-s5.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-shadcn-controls.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-shadcn-dialog.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-shadcn-input.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-shadcn-scroll-area.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/scroll-chrome-display.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/scroll-area-corner.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/scroll-end-follow.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-shadcn-tooltip.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/code-surfaces.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/code-surface-grammar.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/runtime-preview-surface.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/site-copy-commands.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-select-first-paint.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-select-draft-projections.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/docs-content-flow.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/home-demo-runtime.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/overlay-scrollbar-geometry.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/overlay-portal-direction.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/runtime-layout-parity.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/runtime-loading-mask.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/base-accordion-layout-parity.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/quick-start-first-frame.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/quick-start-first-frame-fragment-control.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/library-cards-first-frame.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/header-select-elevation.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/site-typography.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/site-native-links.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/prototype-projection-scope.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-matrix.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-new-projection-families.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-bootstrap-state-controls.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/demo-liquid-glass-material.browser.test.ts",
+        "--exclude",
+        "packages/adapters/web-component/test/shadow-closeout.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/finf-drawer-intrinsic.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/finf-drawer-command-density.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/finf-popover-command-density.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/finf-neo-popover-title.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/finf-popover-title.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/finf-dropdown-recipes.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/finf-slider-upstream.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/finf-representative-features.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/liquid-elevation-control.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/library-liquid-card-producer.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/site-startup-theme.browser.test.ts",
+        "--exclude",
+        "apps/www/src/content/docs/zh-cn/site-search-production.browser.test.ts",
+        "--exclude",
+        "packages/adapters/base/test/resident-motion.browser.test.ts",
+        "--exclude",
+        "packages/prototypes/shadcn/test/switch-motion.browser.test.ts",
+        "--exclude",
+        "packages/prototypes/brutalist/test/switch-motion.browser.test.ts",
+        "--exclude",
+        "packages/web-conformance/test/select-target-alignment.browser.test.ts",
+        "--exclude",
+        "packages/web-conformance/test/select-group.browser.test.ts"
+      ]
+    },
+    "node": "v24.21.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "kind": "actual full general plan diagnostic, not canonical CI or full pnpm test",
+    "completedAt": "2026-10-13T02:53:17.942Z",
+    "exit": 1,
+    "signal": null,
+    "finalHead": "8b15e8ee5d5795ec76bf4c6355a9ad9a9b47a6a6",
+    "finalStatus": ""
+  },
+  "testCounts": {
+    "numTotalTestSuites": 2528,
+    "numPassedTestSuites": 2488,
+    "numFailedTestSuites": 40,
+    "numPendingTestSuites": 0,
+    "numTotalTests": 12264,
+    "numPassedTests": 11876,
+    "numFailedTests": 352,
+    "numPendingTests": 0,
+    "numTodoTests": 36
+  },
+  "consoleFileSummary": "22 failed | 1152 passed | 3 skipped (1177)",
+  "consoleTestSummary": "352 failed | 11876 passed | 36 todo (12264)",
+  "unhandledSummary": ["     Errors  1 error"],
+  "comparison67": {
+    "commonFailures": 351,
+    "new": [
+      {
+        "path": "packages/prototypes/shadcn/test/dropdown-destructive.test.ts",
+        "title": "Shadcn Dropdown destructive recipe over real Base states keeps rest transparent and reacts to focused light/dark changes without remounting",
+        "failureMessages": [
+          "Error: Matcher did not succeed in 1000ms\n    at Proxy.<anonymous> (file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/vi.DgezovHB.js:66:37)\n    at [workspace]/packages/prototypes/shadcn/test/dropdown-destructive.test.ts:78:74\n    at file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)\n    at startTests (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1271:3)\n    at file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:126:11\n    at withEnv (file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:90:5)"
+        ]
+      }
+    ],
+    "removed": [
+      {
+        "path": "apps/www/src/components/site-native-controls.test.ts",
+        "title": "website native anchor composition data-site-header-navigation retains navigation current feedback on the actual passive surface"
+      },
+      {
+        "path": "packages/adapters/web-component/test/dialog-portal-owner.test.ts",
+        "title": "WC portal origin ownership reclaims open portals after origin removal (shadow origin=false)"
+      },
+      {
+        "path": "packages/cli/test/cli.test.ts",
+        "title": "@proto.ui/cli renders the official prototype token set without unsupported-token comments"
+      },
+      {
+        "path": "packages/cli/test/family-style-closure.test.ts",
+        "title": "real family preset inherited physical closure bootstrap-2-3-2 includes the actual inherited Drawer scrollport CSS"
+      },
+      {
+        "path": "packages/cli/test/family-style-closure.test.ts",
+        "title": "real family preset inherited physical closure brutalist includes the actual inherited Drawer scrollport CSS"
+      },
+      {
+        "path": "packages/cli/test/family-style-closure.test.ts",
+        "title": "real family preset inherited physical closure liquid-glass includes the actual inherited Drawer scrollport CSS"
+      },
+      {
+        "path": "packages/cli/test/family-style-closure.test.ts",
+        "title": "real family preset inherited physical closure shadcn includes the actual inherited Drawer scrollport CSS"
+      },
+      {
+        "path": "packages/prototypes/shadcn/test/drawer-command-density.test.ts",
+        "title": "Shadcn Drawer command default density with bounded label wrapping keeps complete-family Document and Shadow closure without banning other components old utilities"
+      },
+      {
+        "path": "packages/prototypes/shadcn/test/popover-command-density.test.ts",
+        "title": "Shadcn Popover command default Nova density keeps complete-family Document and Shadow closure without banning other components old utilities"
+      },
+      {
+        "path": "packages/prototypes/shadcn/test/popover-title.test.ts",
+        "title": "Shadcn Popover Title bounded Nova presentation lowers the complete family input through Document and Shadow without losing the existing text scale"
+      }
+    ],
+    "limit": "matchingtitlesnotproofsamerootcause;allnewfailuresretainexactmessages"
+  },
+  "CSelection": {
+    "files": [
+      {
+        "path": "packages/adapters/gpui-peer/test/collapsible-projections.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 12
+        }
+      },
+      {
+        "path": "packages/adapters/vue/test/collapsible.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 25
+        }
+      },
+      {
+        "path": "packages/adapters/react/test/collapsible.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 25
+        }
+      },
+      {
+        "path": "packages/adapters/vue2/test/collapsible.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 25
+        }
+      },
+      {
+        "path": "packages/adapters/web-component/test/collapsible.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 25
+        }
+      },
+      {
+        "path": "packages/prototypes/base/test/form-toast-reentry.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 13
+        }
+      },
+      {
+        "path": "packages/prototypes/base/test/notification-retirement-lifecycle.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 75
+        }
+      },
+      {
+        "path": "packages/prototypes/base/test/popup-snap-validation-lifecycle.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 41
+        }
+      },
+      {
+        "path": "packages/prototypes/base/test/search-retirement-probe.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 34
+        }
+      },
+      {
+        "path": "packages/prototypes/base/test/selection-reset-lifecycle.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 69
+        }
+      },
+      {
+        "path": "packages/prototypes/base/test/slider-root-lifecycle.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 13
+        }
+      },
+      {
+        "path": "packages/prototypes/base/test/slider-values-publication.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 54
+        }
+      },
+      {
+        "path": "packages/prototypes/base/test/toolbar-separator-lifecycle.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 1
+        }
+      },
+      {
+        "path": "packages/modules/anatomy/test/catalog-boundary.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 3
+        }
+      },
+      {
+        "path": "packages/modules/anatomy/test/domain-scope-query.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 1
+        }
+      },
+      {
+        "path": "packages/modules/anatomy/test/impl-spec.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 12
+        }
+      },
+      {
+        "path": "packages/modules/anatomy/test/scoped-query.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 4
+        }
+      },
+      {
+        "path": "packages/modules/anatomy/test/terminal-domain-retirement.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 8
+        }
+      },
+      {
+        "path": "packages/runtime/test/contract/anatomy.catalog-lifecycle.contract.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 1
+        }
+      },
+      {
+        "path": "packages/runtime/test/contract/anatomy.order.v0.contract.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 5
+        }
+      },
+      {
+        "path": "packages/runtime/test/contract/context-lifecycle.v1.contract.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 1
+        }
+      },
+      {
+        "path": "packages/runtime/test/contract/delay.v0.contract.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 14
+        }
+      },
+      {
+        "path": "packages/runtime/test/contract/expose-lifecycle.v1.contract.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 1
+        }
+      },
+      {
+        "path": "packages/runtime/test/contract/hit-participation.catalog-lifecycle.contract.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 1
+        }
+      },
+      {
+        "path": "packages/runtime/test/contract/lifecycle-with-host.v0.contract.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 5
+        }
+      },
+      {
+        "path": "packages/runtime/test/contract/lifecycle.checkpoints.v0.contract.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 4
+        }
+      },
+      {
+        "path": "packages/runtime/test/contract/lifecycle.domain.cp0.v0.contract.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 1
+        }
+      },
+      {
+        "path": "packages/runtime/test/contract/lifecycle.module-resources.v1.contract.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 20
+        }
+      },
+      {
+        "path": "packages/runtime/test/contract/lifecycle.registration.v0.contract.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 1
+        }
+      },
+      {
+        "path": "packages/runtime/test/contract/lifecycle.same-checkpoint-order.contract.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 1
+        }
+      },
+      {
+        "path": "packages/runtime/test/contract/lifecycle.session.transitions.v1.contract.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 14
+        }
+      },
+      {
+        "path": "packages/runtime/test/contract/lifecycle.session.update-epoch.v1.contract.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 13
+        }
+      },
+      {
+        "path": "packages/runtime/test/contract/lifecycle.session.v1.contract.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 3
+        }
+      },
+      {
+        "path": "packages/runtime/test/contract/lifecycle.update-order.strict.v0.contract.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 1
+        }
+      },
+      {
+        "path": "packages/runtime/test/contract/lifecycle.view-intent.v1.contract.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 6
+        }
+      },
+      {
+        "path": "packages/runtime/test/contract/rule.color-scheme-lifecycle.contract.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 11
+        }
+      },
+      {
+        "path": "packages/runtime/test/contract/rule.lifecycle-catalog.contract.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 3
+        }
+      },
+      {
+        "path": "packages/runtime/test/contract/rule.preferences-lifecycle.contract.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 11
+        }
+      },
+      {
+        "path": "packages/runtime/test/contract/rule.style-support-lifecycle.contract.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 10
+        }
+      },
+      {
+        "path": "packages/runtime/test/contract/state-lifecycle.v1.contract.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 1
+        }
+      },
+      {
+        "path": "packages/spec/fixtures/test/lifecycle-callback-order.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 1
+        }
+      },
+      {
+        "path": "packages/prototypes/base/test/navigation-overlays/search.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 25
+        }
+      },
+      {
+        "path": "packages/modules/anatomy/test/contract/anatomy-order.v0.contract.test.ts",
+        "status": "passed",
+        "counts": {
+          "passed": 3
+        }
+      }
+    ],
+    "fileCount": 43,
+    "counts": {
+      "passed": 597
+    },
+    "allPassed": true
+  },
+  "broadGroups": {
+    "Runtime": {
+      "files": 76,
+      "fileStatusCounts": {
+        "passed": 76
+      },
+      "testStatusCounts": {
+        "passed": 703,
+        "todo": 34
+      }
+    },
+    "Anatomy": {
+      "files": 6,
+      "fileStatusCounts": {
+        "passed": 6
+      },
+      "testStatusCounts": {
+        "passed": 31
+      }
+    }
+  },
+  "incomingCLI": [
+    {
+      "path": "packages/cli/test/family-style-closure.test.ts",
+      "status": "passed",
+      "counts": {
+        "passed": 5
+      }
+    },
+    {
+      "path": "packages/cli/test/proto-style-css.test.ts",
+      "status": "passed",
+      "counts": {
+        "passed": 57
+      }
+    }
+  ],
+  "logSha256": "472f369743d0a29130122e7e44984ac97309c1f232915b712ffbd7dc85790177",
+  "jsonSha256": "cb92ad8ad24dc88191ca30b1b1bc21223bf2d41e62b7ff90ff9497eb5474bb08",
+  "notCanonicalCI": true,
+  "limits": [
+    "General includesactualChromiumScroll;notallnonbrowser",
+    "JSON nestednumTotalTestSuitesarenotfilecounts; consolefilesummaryauthoritative",
+    "Unhandlederror remainsvisible;Csubsetnotwholegreen"
+  ]
+}

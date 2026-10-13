@@ -1,0 +1,84 @@
+{
+  "observedAt": "2026-10-13T03:28:58.441449+00:00",
+  "commits": [
+    {
+      "head": "cb8f070a6cd5b2ba2ec5c868f878bc9b11a415ca",
+      "tree": "485bf5f498c0d92f132afc670e269c5bf22650ed",
+      "parents": [
+        "b1e62928c205e318da615a77b4e457f1736fd7de",
+        "533275191fe08aa0de679c764592721c1aa3720c"
+      ],
+      "author": "HyacinthHaru <hyacinth@haru.ac>",
+      "committer": "HyacinthHaru <hyacinth@haru.ac>",
+      "subject": "Merge latest Finf foundation",
+      "sshSignatureVerified": true,
+      "matchingDCO": true,
+      "coauthor": false,
+      "url": "https://github.com/Proto-UI/Proto-UI/commit/cb8f070a6cd5b2ba2ec5c868f878bc9b11a415ca"
+    },
+    {
+      "head": "b2941728244c9c0c8fa905247bcd35dadc655c36",
+      "tree": "8e73bae68bf94e57e3015cce5f15b8b124c52bd5",
+      "parents": ["cb8f070a6cd5b2ba2ec5c868f878bc9b11a415ca"],
+      "author": "HyacinthHaru <hyacinth@haru.ac>",
+      "committer": "HyacinthHaru <hyacinth@haru.ac>",
+      "subject": "fix(runtime): preserve failed creation errors",
+      "sshSignatureVerified": true,
+      "matchingDCO": true,
+      "coauthor": false,
+      "url": "https://github.com/Proto-UI/Proto-UI/commit/b2941728244c9c0c8fa905247bcd35dadc655c36"
+    },
+    {
+      "head": "edfa6bb2b60c65630dee80a80b09a5059f04d481",
+      "tree": "35b74a3636e1b92c1e91f62f5491a9887e34d41a",
+      "parents": ["b2941728244c9c0c8fa905247bcd35dadc655c36"],
+      "author": "HyacinthHaru <hyacinth@haru.ac>",
+      "committer": "HyacinthHaru <hyacinth@haru.ac>",
+      "subject": "fix(base): guard selection admission and completion",
+      "sshSignatureVerified": true,
+      "matchingDCO": true,
+      "coauthor": false,
+      "url": "https://github.com/Proto-UI/Proto-UI/commit/edfa6bb2b60c65630dee80a80b09a5059f04d481"
+    },
+    {
+      "head": "949ed000bf0d16055fcfb47c8f9f540c95712760",
+      "tree": "477482582ff5b49c3541568167a2045eaaf8af33",
+      "parents": ["edfa6bb2b60c65630dee80a80b09a5059f04d481"],
+      "author": "HyacinthHaru <hyacinth@haru.ac>",
+      "committer": "HyacinthHaru <hyacinth@haru.ac>",
+      "subject": "test(runtime): observe cleanup checks outside callbacks",
+      "sshSignatureVerified": true,
+      "matchingDCO": true,
+      "coauthor": false,
+      "url": "https://github.com/Proto-UI/Proto-UI/commit/949ed000bf0d16055fcfb47c8f9f540c95712760"
+    },
+    {
+      "head": "67eb84e47d5e7ef8d0846328dbf8432f1e274685",
+      "tree": "170211c2ca52fe9b72b8ef604f9fdaf0a10607f1",
+      "parents": ["949ed000bf0d16055fcfb47c8f9f540c95712760"],
+      "author": "HyacinthHaru <hyacinth@haru.ac>",
+      "committer": "HyacinthHaru <hyacinth@haru.ac>",
+      "subject": "fix(spec): register failed-created lifecycle fixture",
+      "sshSignatureVerified": true,
+      "matchingDCO": true,
+      "coauthor": false,
+      "url": "https://github.com/Proto-UI/Proto-UI/commit/67eb84e47d5e7ef8d0846328dbf8432f1e274685"
+    },
+    {
+      "head": "8b15e8ee5d5795ec76bf4c6355a9ad9a9b47a6a6",
+      "tree": "b4bb8316f9e01b509dbf757fad255cb89172c320",
+      "parents": [
+        "67eb84e47d5e7ef8d0846328dbf8432f1e274685",
+        "3ce1b6acdab94eee3dff93409dd43dd8ce3702aa"
+      ],
+      "author": "HyacinthHaru <hyacinth@haru.ac>",
+      "committer": "HyacinthHaru <hyacinth@haru.ac>",
+      "subject": "Merge latest Finf foundation",
+      "sshSignatureVerified": true,
+      "matchingDCO": true,
+      "coauthor": false,
+      "url": "https://github.com/Proto-UI/Proto-UI/commit/8b15e8ee5d5795ec76bf4c6355a9ad9a9b47a6a6"
+    }
+  ],
+  "scope": "Only6newdevelopmentcommits;importedWIPfoundationnotcountedasnewCimplementation"
+}

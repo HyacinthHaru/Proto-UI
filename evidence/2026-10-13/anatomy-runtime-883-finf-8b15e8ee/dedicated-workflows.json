@@ -1,0 +1,498 @@
+{
+  "schemaVersion": 1,
+  "kind": "independent-dedicated-ci-readback",
+  "observedAt": "2026-10-13T03:04:06.151139+00:00",
+  "executionMode": "human-assisted",
+  "modeSource": "current-user",
+  "assessment": "unassessed/advisory",
+  "disposition": "partial/ABSTAIN",
+  "head": "8b15e8ee5d5795ec76bf4c6355a9ad9a9b47a6a6",
+  "tree": "b4bb8316f9e01b509dbf757fad255cb89172c320",
+  "allThreeExactHeadCheckoutBindings": true,
+  "threeWorkflowTerminalSummary": {
+    "total": 3,
+    "success": 0,
+    "failure": 3
+  },
+  "workflows": [
+    {
+      "name": "Bootstrap",
+      "runId": 38338357128,
+      "attempt": 1,
+      "jobId": 115103498151,
+      "runUrl": "https://github.com/Proto-UI/Proto-UI/actions/runs/38338357128",
+      "status": "completed",
+      "conclusion": "failure",
+      "allJobPagesCollected": true,
+      "jobPages": 1,
+      "reportedAndCollectedJobs": 1,
+      "sourceBinding": "dedicated/38338357128/source-checkout.json",
+      "metadata": {
+        "run": "dedicated/38338357128/run.json",
+        "runSha256": "ae5b76d9347cb0820d8a3d31ae533a0a9e5520130a7e6dff0e5c5dc43811ca12",
+        "jobsPage": "dedicated/38338357128/jobs-page-1.json",
+        "jobsPageSha256": "bea4aecde42a199eb84fb47c1b2733ed4f735ba0fa0eef5601a45756f3ae1df2"
+      },
+      "rawLog": {
+        "path": "dedicated/38338357128/job-115103498151.log",
+        "sha256": "da7620321c9725aebc409341dd96a13fd0c2a8e0e23e52c5abad50cf8e927789",
+        "bytes": 92377,
+        "completeDownload": true
+      },
+      "environment": {
+        "node": {
+          "version": "24.21.0",
+          "evidence": [
+            {
+              "line": 150,
+              "text": "2026-10-13T02:45:01.3777081Z node: v24.21.0"
+            }
+          ]
+        },
+        "pnpm": {
+          "version": "10.32.1",
+          "evidence": [
+            {
+              "line": 234,
+              "text": "2026-10-13T02:45:08.3626972Z Done in 5.3s using pnpm v10.32.1"
+            }
+          ]
+        },
+        "vitest": {
+          "version": "2.1.9",
+          "evidence": [
+            {
+              "line": 311,
+              "text": "2026-10-13T02:45:22.3873142Z  RUN  v2.1.9 [ci-workspace]"
+            }
+          ]
+        },
+        "Chrome": {
+          "version": null,
+          "printedExecutable": "/usr/bin/google-chrome",
+          "limit": "No Chrome version string printed in the downloaded job log. Field redirects --version to an uploaded artifact; that artifact was not downloaded/read here. No version inferred."
+        }
+      },
+      "failedSteps": [
+        {
+          "number": 8,
+          "name": "Collect real four-runtime evidence"
+        }
+      ],
+      "skippedSteps": [
+        {
+          "number": 19,
+          "name": "Post Run actions/setup-node@v4"
+        }
+      ],
+      "setup": {
+        "fixtureBoundaryNodeTests": {
+          "passed": 9,
+          "failed": 0
+        },
+        "preset": "passed, including current draft physical token closure",
+        "paletteNodeTests": {
+          "passed": 12,
+          "failed": 0
+        },
+        "oldUnsupportedTokenGate": "passed in this run; do not reuse the older pre-browser-blocked classification"
+      },
+      "vitest": {
+        "files": 4,
+        "passedFiles": 3,
+        "failedFiles": 1,
+        "tests": 45,
+        "passed": 44,
+        "failed": 1,
+        "skipped": 0,
+        "summaryEvidence": [
+          {
+            "line": 895,
+            "text": "2026-10-13T02:46:54.5905283Z  Test Files  1 failed | 3 passed (4)"
+          },
+          {
+            "line": 896,
+            "text": "2026-10-13T02:46:54.5907057Z       Tests  1 failed | 44 passed (45)"
+          }
+        ]
+      },
+      "perFile": {
+        "demo-bootstrap-state-controls.browser.test.ts": {
+          "tests": 15,
+          "passed": 15,
+          "failed": 0,
+          "actualBrowserExecuted": true,
+          "logLine": 490
+        },
+        "native-editor-evidence.test.ts": {
+          "tests": 9,
+          "passed": 9,
+          "failed": 0,
+          "logLine": 506
+        },
+        "controls.test.ts": {
+          "tests": 11,
+          "passed": 10,
+          "failed": 1,
+          "logLine": 507
+        },
+        "bootstrap-disabled-paint.test.ts": {
+          "tests": 10,
+          "passed": 10,
+          "failed": 0,
+          "logLine": 510
+        }
+      },
+      "firstFailedAssertion": {
+        "file": "packages/prototypes/bootstrap-2-3-2/test/controls.test.ts",
+        "line": 219,
+        "title": "bootstrap-2-3-2: Base state/text parts (simulated WC host) > closes the whole source vocabulary through the physical translator",
+        "message": "expected token arrays to deeply equal; collected source tokens differ from DRAFT_FAMILY_STYLE_TOKENS[name]",
+        "logLines": [514, 515, 885, 888],
+        "nextAssertionNotExecuted": "line220 renderProtoStyleTokenCss unsupported-token assertion in the failed test is after the failed equality"
+      },
+      "notEstablished": [
+        "Workflow success or complete Bootstrap acceptance",
+        "Renderer correctness for the failed controls-test closure by its unexecuted next assertion",
+        "Review of uploaded screenshot bytes or visual/AT acceptance"
+      ]
+    },
+    {
+      "name": "Collapsible",
+      "runId": 38338357114,
+      "attempt": 1,
+      "jobId": 115103498246,
+      "runUrl": "https://github.com/Proto-UI/Proto-UI/actions/runs/38338357114",
+      "status": "completed",
+      "conclusion": "failure",
+      "allJobPagesCollected": true,
+      "jobPages": 1,
+      "reportedAndCollectedJobs": 1,
+      "sourceBinding": "dedicated/38338357114/source-checkout.json",
+      "metadata": {
+        "run": "dedicated/38338357114/run.json",
+        "runSha256": "dfc64d51d7d8c94f172d4189ed118aac63319e1d7b0cbbe6a1169a48c4c55809",
+        "jobsPage": "dedicated/38338357114/jobs-page-1.json",
+        "jobsPageSha256": "bd32d170eb590142280a965a05e136f11ed29759ba27f944a943865797f21d9c"
+      },
+      "rawLog": {
+        "path": "dedicated/38338357114/job-115103498246.log",
+        "sha256": "ba9e3634ef2aa6ff5d1f755717bf02ce465b5c62d598985643cf3641d2bcc3e0",
+        "bytes": 60759,
+        "completeDownload": true
+      },
+      "environment": {
+        "node": {
+          "version": "24.21.0",
+          "evidence": [
+            {
+              "line": 146,
+              "text": "2026-10-13T02:44:59.3732313Z node: v24.21.0"
+            }
+          ]
+        },
+        "pnpm": {
+          "version": "10.32.1",
+          "evidence": [
+            {
+              "line": 207,
+              "text": "2026-10-13T02:45:06.6412787Z Done in 5.8s using pnpm v10.32.1"
+            }
+          ]
+        },
+        "vitest": {
+          "version": "2.1.9",
+          "evidence": [
+            {
+              "line": 229,
+              "text": "2026-10-13T02:45:09.4284951Z  RUN  v2.1.9 [ci-workspace]"
+            }
+          ]
+        },
+        "Chrome": {
+          "version": null,
+          "printedExecutable": "/usr/bin/google-chrome",
+          "limit": "No Chrome version string printed in the downloaded job log. Field redirects --version to an uploaded artifact; that artifact was not downloaded/read here. No version inferred."
+        }
+      },
+      "failedSteps": [
+        {
+          "number": 6,
+          "name": "Capture actual four-family four-runtime disclosures"
+        }
+      ],
+      "skippedSteps": [
+        {
+          "number": 13,
+          "name": "Post Run actions/setup-node@v4"
+        }
+      ],
+      "vitest": {
+        "files": 1,
+        "passedFiles": 0,
+        "failedFiles": 1,
+        "tests": 36,
+        "passed": 32,
+        "failed": 4,
+        "skipped": 0,
+        "actualBrowserExecuted": true,
+        "summaryEvidence": [
+          {
+            "line": 492,
+            "text": "2026-10-13T02:51:54.6501785Z  Test Files  1 failed (1)"
+          },
+          {
+            "line": 493,
+            "text": "2026-10-13T02:51:54.6507332Z       Tests  4 failed | 32 passed (36)"
+          }
+        ]
+      },
+      "failedCases": [
+        {
+          "family": "liquid-glass",
+          "runtime": "wc",
+          "title": "preserves disclosure ownership through native input and view lifetimes"
+        },
+        {
+          "family": "liquid-glass",
+          "runtime": "react",
+          "title": "preserves disclosure ownership through native input and view lifetimes"
+        },
+        {
+          "family": "liquid-glass",
+          "runtime": "vue",
+          "title": "preserves disclosure ownership through native input and view lifetimes"
+        },
+        {
+          "family": "liquid-glass",
+          "runtime": "vue2",
+          "title": "preserves disclosure ownership through native input and view lifetimes"
+        }
+      ],
+      "firstFailedAssertion": {
+        "file": "apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts",
+        "helperLine": 78,
+        "callerLine": 302,
+        "message": "Matcher did not succeed in1000ms",
+        "boundary": "Initial pointer click and expanded/visible/controls checks were passed; first focused(button) assertion fails before Space and Enter rematerialization loops.",
+        "logLines": [480, 481, 488]
+      },
+      "diagnostic": {
+        "readOnlyFocusDiagnosticUnavailable": 4,
+        "error": "Read-only focus diagnostic exceeded1000ms",
+        "logLines": [421, 424, 427, 430],
+        "inferenceLimit": "No current focused/activeElement payload was obtained; do not reuse old-head focused:true observations or infer actual loss of focus from this absence."
+      },
+      "notExecutedInFailedJourneys": [
+        "Subsequent Space/Enter rematerialization assertions",
+        "Later retained/removed-view and lifetime assertions after the firstfocus check"
+      ],
+      "notEstablished": [
+        "C lifecycle causality",
+        "Product focus false vs browser-evaluation/runner delay root cause",
+        "New visual/AT acceptance"
+      ]
+    },
+    {
+      "name": "Field",
+      "runId": 38338357205,
+      "attempt": 1,
+      "jobId": 115103499942,
+      "runUrl": "https://github.com/Proto-UI/Proto-UI/actions/runs/38338357205",
+      "status": "completed",
+      "conclusion": "failure",
+      "allJobPagesCollected": true,
+      "jobPages": 1,
+      "reportedAndCollectedJobs": 1,
+      "sourceBinding": "dedicated/38338357205/source-checkout.json",
+      "metadata": {
+        "run": "dedicated/38338357205/run.json",
+        "runSha256": "80fa283eeab3922db3c2f58abdb9f482091b8425617de2c242fdbce538a2a78a",
+        "jobsPage": "dedicated/38338357205/jobs-page-1.json",
+        "jobsPageSha256": "2df586e5d5aa682cfe8d5ba4af19a90beaba6888ee171cddb24ba58372fe1b13"
+      },
+      "rawLog": {
+        "path": "dedicated/38338357205/job-115103499942.log",
+        "sha256": "f0469fd0f43be7104041fb3b767290a59fd784876aa8d827385322843f9bb024",
+        "bytes": 68962,
+        "completeDownload": true
+      },
+      "environment": {
+        "node": {
+          "version": "24.21.0",
+          "evidence": [
+            {
+              "line": 150,
+              "text": "2026-10-13T02:53:18.3074816Z node: v24.21.0"
+            }
+          ]
+        },
+        "pnpm": {
+          "version": "10.32.1",
+          "evidence": [
+            {
+              "line": 217,
+              "text": "2026-10-13T02:53:24.4480015Z Done in 4.9s using pnpm v10.32.1"
+            }
+          ]
+        },
+        "vitest": {
+          "version": "2.1.9",
+          "evidence": [
+            {
+              "line": 400,
+              "text": "2026-10-13T02:53:39.8698203Z  RUN  v2.1.9 [ci-workspace]"
+            }
+          ]
+        },
+        "Chrome": {
+          "version": null,
+          "printedExecutable": "/usr/bin/google-chrome",
+          "limit": "No Chrome version string printed in the downloaded job log. Field redirects --version to an uploaded artifact; that artifact was not downloaded/read here. No version inferred."
+        }
+      },
+      "failedSteps": [
+        {
+          "number": 8,
+          "name": "Run all 25 native Field journeys and capture same-source comparisons"
+        }
+      ],
+      "skippedSteps": [
+        {
+          "number": 19,
+          "name": "Post Run actions/setup-node@v4"
+        }
+      ],
+      "setup": {
+        "CJKfontInstallation": "success",
+        "inputSurfaceContractNodeTests": {
+          "passed": 76,
+          "failed": 0
+        },
+        "devToolbarPreference": "disabled and false readback observed"
+      },
+      "vitest": {
+        "files": 1,
+        "passedFiles": 0,
+        "failedFiles": 1,
+        "tests": 25,
+        "passed": 22,
+        "failed": 3,
+        "skipped": 0,
+        "actualBrowserExecuted": true,
+        "summaryEvidence": [
+          {
+            "line": 625,
+            "text": "2026-10-13T02:58:22.3323222Z  Test Files  1 failed (1)"
+          },
+          {
+            "line": 626,
+            "text": "2026-10-13T02:58:22.3324318Z       Tests  3 failed | 22 passed (25)"
+          }
+        ]
+      },
+      "failedCases": [
+        {
+          "family": "liquid-glass",
+          "runtime": "react",
+          "title": "labels, native editing, validity lease, focus and screenshots"
+        },
+        {
+          "family": "liquid-glass",
+          "runtime": "vue",
+          "title": "labels, native editing, validity lease, focus and screenshots"
+        },
+        {
+          "family": "liquid-glass",
+          "runtime": "vue2",
+          "title": "labels, native editing, validity lease, focus and screenshots"
+        }
+      ],
+      "firstFailedAssertion": {
+        "file": "apps/www/src/content/docs/zh-cn/demo-field-family.browser.test.ts",
+        "line": 219,
+        "message": "Matcher did not succeed in1000ms",
+        "boundary": "After label association checks and requiredLabel.click(), focus polling did not complete successfully; before Tab validity and editing assertions.",
+        "logLines": [611, 614, 615, 618]
+      },
+      "diagnostic": {
+        "payloads": [
+          {
+            "family": "liquid-glass",
+            "runtime": "react",
+            "atFailure": {
+              "nodeTimeOrigin": 1791860019973.44,
+              "observedAt": 173309.603343,
+              "attempts": [
+                {
+                  "attempt": 1,
+                  "startedAt": 172308.955261,
+                  "state": "pending"
+                }
+              ],
+              "diagnosticErrors": 0
+            }
+          },
+          {
+            "family": "liquid-glass",
+            "runtime": "vue",
+            "atFailure": {
+              "nodeTimeOrigin": 1791860019973.44,
+              "observedAt": 212171.413693,
+              "attempts": [
+                {
+                  "attempt": 1,
+                  "startedAt": 211170.825813,
+                  "state": "pending"
+                }
+              ],
+              "diagnosticErrors": 0
+            }
+          },
+          {
+            "family": "liquid-glass",
+            "runtime": "vue2",
+            "atFailure": {
+              "nodeTimeOrigin": 1791860019973.44,
+              "observedAt": 252042.250909,
+              "attempts": [
+                {
+                  "attempt": 1,
+                  "startedAt": 251041.379704,
+                  "state": "pending"
+                }
+              ],
+              "diagnosticErrors": 0
+            }
+          }
+        ],
+        "inferenceLimit": "At-failure payload records a pending first evaluation attempt and zero diagnosticErrors, not a completed focused:false/true sample. Do not infer root cause from pending state."
+      },
+      "notExecutedInFailedJourneys": [
+        "Later Tab validity/editing/controlled-value assertions afterfocus219"
+      ],
+      "postVitestCheck": {
+        "command": "node scripts/test/field-evidence.mjs check <vitest.json>",
+        "status": "not reached after failed Vitest pipeline under set-euo-pipefail",
+        "basis": "Logged command sequence and shell failure, not an observed success for the final inventory checker"
+      },
+      "notEstablished": [
+        "C lifecycle causality",
+        "Native acceptance for all25 cases",
+        "New visual/AT acceptance"
+      ]
+    }
+  ],
+  "findings": [],
+  "limits": [
+    "This is execution-evidence reconciliation, not a new source review or GitHub approval. Actual workflow failures remain.",
+    "Only three new8b15 dedicated workflows were collected; historical67 runs and mainCI were not polled or relabeled.",
+    "No test/build/browser/rerun/cancel or external write performed.",
+    "Artifact upload steps succeeded but their uploaded screenshots/manifests were not downloaded or visually reviewed here.",
+    "Root-reported local general11876passed352failed36TODO/one unhandled and Dropdown pairedcontrol are separate evidence not independently reviewed in this receipt."
+  ],
+  "rawCommitMetadata": {
+    "path": "dedicated/checkout-commit-8b15e8ee.json",
+    "sha256": "ca3121ede93c34a1d6ee2314390afa8282a01052e7ef2e5b9b14c2d7f3a50246"
+  }
+}

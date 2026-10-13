@@ -1,0 +1,183 @@
+{
+  "schemaVersion": 1,
+  "kind": "bounded-static-failure-ownership-trace",
+  "observedAt": "2026-10-13T03:25:10.388353+00:00",
+  "head": "8b15e8ee5d5795ec76bf4c6355a9ad9a9b47a6a6",
+  "tree": "b4bb8316f9e01b509dbf757fad255cb89172c320",
+  "executionMode": "human-assisted",
+  "modeSource": "current-user",
+  "assessment": "unassessed/advisory",
+  "disposition": "partial/ABSTAIN",
+  "noNewTests": true,
+  "evidence": {
+    "pairedOriginalFile": {
+      "before67": "5passed/exit0",
+      "after8b": "1failed4passed/exit1",
+      "sameLoadedTrackedPathsAndSha256": true,
+      "count": 386,
+      "incomingCLIIntersection": [],
+      "directFilesystemInterception": false
+    },
+    "failure": "The light→dark change passed; following removal of dark failed to restore the plain bg-destructive/10 token in data-pui-style within1000ms at test78. No epoch, source notification or effective colorScheme sample was recorded at that failing boundary.",
+    "readbackHashes": {
+      "reconciliation.json": "bce3d3d1551ac7e372cc51ce01301002c5ae18b6474b67618023f5d7ca75d480",
+      "before67/run.log": "6da56af47f5e4ee4ae8d1f34df48a6c3a80c5a7ded4abf3c0422086c27c99326",
+      "after8b/run.log": "40577a5cce2f5ce82ed50320dcf25ae6ae1b7896f1c1dc0c6882b12a5ccb8cdd",
+      "before67/loaded-inputs.json": "83c78a3683ed3b51509aa3d0471fd1fecb20fec170f1fc97d7e0a7dc3fc0c928",
+      "after8b/loaded-inputs.json": "984b5073060831082096596665bbb38f50b0cf1773e19717858bab1efbebae73"
+    },
+    "generalReconciliationSha256": "37a75b07e80b329fb6781bb6d023bd33ceabd56e98cc457e3f6b04dcd327de6f"
+  },
+  "staticChain": [
+    {
+      "step": 1,
+      "owner": "Shadcn presentation recipe",
+      "path": "packages/prototypes/shadcn/src/dropdown/item.proto.ts:52-79",
+      "fact": "Destructive plus any existing active/hovered/focused/focusVisible/pressed fact yields bg-destructive/10; the later matching dark-meta Rule replaces the background with bg-destructive/20. Base remains state owner."
+    },
+    {
+      "step": 2,
+      "owner": "Default Web host colorScheme resolver/source",
+      "path": "packages/adapters/base/src/platform/web-preferences.ts:20-34; web-color-scheme-source.ts:29-58",
+      "fact": "Root dark data-theme/class wins, then explicit light, then matchMedia dark, then light fallback. Removing dark does not itself mandate light if another marker/system fact saysdark. MutationObserver(class/data-theme) and MQL changes queue a coalesced current-generation notification only when final effective value changes."
+    },
+    {
+      "step": 3,
+      "owner": "WC getter/source wiring",
+      "path": "packages/adapters/web-component/src/color-scheme-source.ts:6-36; adapt.ts:240-247,548-553; runtime/modules.ts:1029-1033",
+      "fact": "Default getter and rebindable source are paired through RuleMeta caps; wrapper rereads getter and notifies only changed effective value. This test passes no explicit custom getMeta or Shadow split option."
+    },
+    {
+      "step": 4,
+      "owner": "Rule Meta lifecycle lease and Rule executor",
+      "path": "packages/modules/rule-meta/src/create.ts:90-133; packages/modules/rule/src/impl.ts:126-128,219-281",
+      "fact": "Onlyalive/mounted/eligible authoredmeta dependency with matchinggetter holdslease; source invalidation requests existing evaluator, usingcurrentfacts and replacingtheoneFeedbackruntimecontribution. Releasedleasegeneration rejectsoldnotification."
+    },
+    {
+      "step": 5,
+      "owner": "Feedback / WC host presentation",
+      "path": "packages/adapters/web-component/src/adapt.ts:941-953; feedback-style.ts:56-62,88-103,124+",
+      "fact": "ExistingWebEffects/owned-tokenapplier projects currenttokens todata-pui-style. styleContains reads thatattribute, notcomputedCSS orCLIrendered styles."
+    }
+  ],
+  "authority": {
+    "allRelevantEntities": "draft; no stable admission claimed",
+    "prototypeCriterion": "P-SHADCN-DROPDOWN-MENU-ITEM-DESTRUCTIVE-PALETTE",
+    "colorSchemeCriteria": {
+      "A": "singlefullcurrentRule/Feedback contribution",
+      "B": "environmentrequestwithoutPropswatch/Statewrite/structuralrender",
+      "C_D": "eligible mountedlease andretirement/pairing",
+      "E_F": "effectivefallback/orderandbatchedhostinvalidation",
+      "H": "supportedrecipes agree afterpresentation settles",
+      "L": "currentFeedback/Effects binding, no retiredviewwrite"
+    },
+    "CGroupBoundary": "The Runtime authored-created-J fix and C retirement/Delay/Anatomy completion rules are not contradicted by a token-only failedpoll: no authored-created throw, disposal, viewepoch change, retiredcallback or stale-viewwrite is observed here. RuleMeta lease and currentEffects binding remain cross-owner possibilities until the missing runtime facts are known."
+  },
+  "ownershipAssessment": {
+    "classification": "A/theme host-resource → RuleMeta/Rule/Feedback handoff candidate, with lifecycle lease boundary potentially cross-owner; mechanism unknown.",
+    "whyNotFilenameOnly": "Classification follows actual rootmarker→source→lease→Rule contribution→hosttoken chain and the assertion endpoint.",
+    "confirmedCRegression": false,
+    "confirmedInheritedFailure": false,
+    "confirmedFlake": false,
+    "semanticDriftProven": false,
+    "conditionalGovernedFailure": "If effectivecolorScheme trulybecamelight,subjectremainedeligiblemounted/focused,andpresentation settled,yetold20/absent10 persisted, that would conflict with draftcolorSchemeA/H andpalettecriterion. Currentlog doesnotrecordthoseconditions, so itcannotselectthebrokenstage."
+  },
+  "notEstablished": [
+    "Identical386loadedbytes do not establish identical environment, directFSinputs, runtimehistory or scheduling, and do not prove inheritedfailure or flakiness.",
+    "No currentlog proves thegetterreturnedlight aftermarkerremoval, theinvalidationwasdelivered, theleasewasactive, or thecurrentviewreceivedthenewRuleframe.",
+    "No proofthatupstreamCLI4-pathchange causes thisfailure; thosepaths areabsentfromrecordedloadedclosure andtheassertiondoesnotexerciseCLI CSStranslation.",
+    "No blanketexclusionofRuntime/lease mediation or acceptanceoftheknownredtest."
+  ],
+  "minimalDiscriminatingObservationsIfOwnerContinues": [
+    "Atfailure:rootclass/data-theme,MQL.matches,effectivegettervalue,focused/active/pressed handles,currentdata-pui-style.",
+    "Sourceinvalidationdelivery +RuleMeta lease/generation/mountphase, thenRuleplan/Feedbackframe/currenthostbinding; preserveoriginaloracleandtimeout."
+  ],
+  "sourceBindings": [
+    {
+      "path": "packages/prototypes/shadcn/test/dropdown-destructive.test.ts",
+      "lines": [63, 71, 73, 74, 77, 78, 80],
+      "gitBlob": "01639c2fd5de358a70779b0552e9951db7930ccd",
+      "sha256": "02c85329aec43b065eedbf74ee8dc8e61515a9d614a8007af1a93e013a291906"
+    },
+    {
+      "path": "packages/prototypes/test-utils/style.ts",
+      "lines": [1],
+      "gitBlob": "9b0e6547d0a875bdd58460d68313378fe6eecc0e",
+      "sha256": "77a1e7c9199a8622a3372247005502a3677f050748f02c8853f6a054b1e51fc3"
+    },
+    {
+      "path": "packages/prototypes/shadcn/src/dropdown/item.proto.ts",
+      "lines": [52, 64, 66, 69, 79],
+      "gitBlob": "8a9c2dc7909de0c63366a625abf01199d22033ea",
+      "sha256": "96e2c7635ac681ceda96c3f1b4b75a19ecc48ade37e306c7225fecb26d72c87c"
+    },
+    {
+      "path": "packages/adapters/base/src/platform/web-preferences.ts",
+      "lines": [20, 27, 28, 30, 42],
+      "gitBlob": "6121a52f296546e94f8d154ff72ac0daac24dbe3",
+      "sha256": "dc1a06a6bac32781d40bc8ddb79fd059b5060fcb35047749ea5559bddc779804"
+    },
+    {
+      "path": "packages/adapters/base/src/platform/web-color-scheme-source.ts",
+      "lines": [29, 35, 36, 39, 42, 49, 50, 61],
+      "gitBlob": "4d5463d06a11c48a17d174de4d7d08262487e01b",
+      "sha256": "9c88826ff1831fdf6b3f47c3d5b89d0ccd6a1db535a89a80d08961d383de2fd1"
+    },
+    {
+      "path": "packages/adapters/web-component/src/color-scheme-source.ts",
+      "lines": [6, 11, 19, 23, 30],
+      "gitBlob": "4232f966d77a5b0ad1b89bff70fb3db40c35d408",
+      "sha256": "dfefd972179ce2e8713c462bbd0ddf21a6adafb9abd9014cd6f130679abe39df"
+    },
+    {
+      "path": "packages/adapters/web-component/src/adapt.ts",
+      "lines": [240, 244, 548, 947],
+      "gitBlob": "df66ce079f21d9b2d2d4e6eb8149c43ea760b60d",
+      "sha256": "c000da5228b45b9b95f627592a72700009e198cd34791a6c43bd0c0012590faa"
+    },
+    {
+      "path": "packages/adapters/web-component/src/runtime/modules.ts",
+      "lines": [1029, 1032],
+      "gitBlob": "79bd7830d8285b11d3e0c495dffd00a4ba2687a3",
+      "sha256": "62c21daa1447668de3692797fe2de6f7d4eac982116d2d17679cc9edaa707b64"
+    },
+    {
+      "path": "packages/modules/rule-meta/src/create.ts",
+      "lines": [90, 99, 111, 120, 125, 128],
+      "gitBlob": "a4cc1d77b1454c363423cb6d677d5747e9927a15",
+      "sha256": "5b0b740b0b47f5b9abe8fa98d3a1bd0aaef28b599d9bfdd0714526282cebfdc9"
+    },
+    {
+      "path": "packages/modules/rule/src/impl.ts",
+      "lines": [126, 219, 241, 272],
+      "gitBlob": "ac1fc9c98926d9a3d298190984fe409e4d46f77e",
+      "sha256": "6462158b4ec41880b47980bc81d088e5503a54485ffe3524fb688554c9108b53"
+    },
+    {
+      "path": "packages/adapters/web-component/src/feedback-style.ts",
+      "lines": [56, 88, 96, 124],
+      "gitBlob": "58942af4731e29ccac0c2edf45a428625742461b",
+      "sha256": "3bbedfdf239bb03efe701cf91232de8ceb3952b718fad6260c1aac5222df8782"
+    },
+    {
+      "path": "spec/prototypes/P-SHADCN-DROPDOWN-MENU-ITEM.yaml",
+      "lines": [4, 54],
+      "gitBlob": "0defc9222433a5915adff90ebe9c3457803b44b1",
+      "sha256": "528e5733b4633c201aa4c872e4afb2ed47e0c55a50c73641a3fb112839ae2521"
+    },
+    {
+      "path": "spec/contracts/C-RULE-COLOR-SCHEME-0001.yaml",
+      "lines": [4, 13, 17, 22, 27, 31, 40, 50, 60],
+      "gitBlob": "b2fbf5ec685969d5481ada8af6be4a2d6c9abbf7",
+      "sha256": "80bade4b0d4724c2389003d1c6ced559217b32ef6a344be4f83d76004bb2d184"
+    },
+    {
+      "path": "spec/contracts/C-LIFECYCLE-0002.yaml",
+      "lines": [],
+      "gitBlob": "54f751e00d9c9fd4f60a328ed58f261bac14e27e",
+      "sha256": "24cb2c28e6b99b4063440639530852c218ce3aa18d06264f317f795d6a66be97"
+    }
+  ],
+  "newActionableSourceFindings": [],
+  "notPerformed": ["newtests", "browser", "build", "sourceedits", "GitHubwrites", "mainCIpoll"]
+}

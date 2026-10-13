@@ -1,0 +1,229 @@
+{
+  "observedAt": "2026-10-13T03:07:06.811560+00:00",
+  "mode": "human-assisted/current-user",
+  "assessment": "unassessed",
+  "disposition": "partial/ABSTAIN",
+  "feedback": "https://github.com/Proto-UI/Proto-UI/pull/872#discussion_r4254178835",
+  "feedbackHead": "3ce1b6acdab94eee3dff93409dd43dd8ce3702aa",
+  "verifiedCurrent": "8b15e8ee5d5795ec76bf4c6355a9ad9a9b47a6a6",
+  "result": "Current8b existing884Form guards coverfeedback atbothpreparation callbackboundaries; no newsourcefix proposed orneeded bythisprobe.",
+  "runs": {
+    "current-8b": {
+      "files": 1,
+      "total": 15,
+      "passed": 15,
+      "failed": 0,
+      "pending": 0,
+      "cases": [
+        {
+          "title": "Form preparation pending-cancel preserves only current authority: normal",
+          "status": "passed",
+          "failureMessages": []
+        },
+        {
+          "title": "Form preparation pending-cancel preserves only current authority: unmount",
+          "status": "passed",
+          "failureMessages": []
+        },
+        {
+          "title": "Form preparation pending-cancel preserves only current authority: dispose",
+          "status": "passed",
+          "failureMessages": []
+        },
+        {
+          "title": "Form preparation pending-cancel preserves only current authority: remount",
+          "status": "passed",
+          "failureMessages": []
+        },
+        {
+          "title": "Form preparation pending-cancel preserves only current authority: nested",
+          "status": "passed",
+          "failureMessages": []
+        },
+        {
+          "title": "Form preparation submitted-clear preserves only current authority: normal",
+          "status": "passed",
+          "failureMessages": []
+        },
+        {
+          "title": "Form preparation submitted-clear preserves only current authority: unmount",
+          "status": "passed",
+          "failureMessages": []
+        },
+        {
+          "title": "Form preparation submitted-clear preserves only current authority: dispose",
+          "status": "passed",
+          "failureMessages": []
+        },
+        {
+          "title": "Form preparation submitted-clear preserves only current authority: remount",
+          "status": "passed",
+          "failureMessages": []
+        },
+        {
+          "title": "Form preparation submitted-clear preserves only current authority: nested",
+          "status": "passed",
+          "failureMessages": []
+        },
+        {
+          "title": "Form validation failure ends only its own submission: normal",
+          "status": "passed",
+          "failureMessages": []
+        },
+        {
+          "title": "Form validation failure ends only its own submission: throw",
+          "status": "passed",
+          "failureMessages": []
+        },
+        {
+          "title": "Form validation failure ends only its own submission: nested-throw",
+          "status": "passed",
+          "failureMessages": []
+        },
+        {
+          "title": "Form validation failure ends only its own submission: dispose-throw",
+          "status": "passed",
+          "failureMessages": []
+        },
+        {
+          "title": "Form validation failure ends only its own submission: remount-throw",
+          "status": "passed",
+          "failureMessages": []
+        }
+      ]
+    },
+    "only-form-3ce": {
+      "files": 1,
+      "total": 15,
+      "passed": 6,
+      "failed": 9,
+      "pending": 0,
+      "cases": [
+        {
+          "title": "Form preparation pending-cancel preserves only current authority: normal",
+          "status": "passed",
+          "failureMessages": []
+        },
+        {
+          "title": "Form preparation pending-cancel preserves only current authority: unmount",
+          "status": "failed",
+          "failureMessages": [
+            "AssertionError: expected true to be false // Object.is equality\n    at [task-state]/continue-20261013T010617Z/form-preparation-retirement/form-preparation.test.ts:271:37\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)\n    at startTests (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1271:3)\n    at file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:126:11\n    at withEnv (file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:90:5)\n    at run (file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:112:3)"
+          ]
+        },
+        {
+          "title": "Form preparation pending-cancel preserves only current authority: dispose",
+          "status": "failed",
+          "failureMessages": [
+            "AssertionError: expected Error: [Runtime] base-form-root is dispos… to be undefined\n    at [task-state]/continue-20261013T010617Z/form-preparation-retirement/form-preparation.test.ts:235:22\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)\n    at startTests (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1271:3)\n    at file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:126:11\n    at withEnv (file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:90:5)\n    at run (file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:112:3)"
+          ]
+        },
+        {
+          "title": "Form preparation pending-cancel preserves only current authority: remount",
+          "status": "failed",
+          "failureMessages": [
+            "AssertionError: expected true to be false // Object.is equality\n    at [task-state]/continue-20261013T010617Z/form-preparation-retirement/form-preparation.test.ts:271:37\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)\n    at startTests (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1271:3)\n    at file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:126:11\n    at withEnv (file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:90:5)\n    at run (file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:112:3)"
+          ]
+        },
+        {
+          "title": "Form preparation pending-cancel preserves only current authority: nested",
+          "status": "failed",
+          "failureMessages": [
+            "AssertionError: expected [ +0, 1, +0, 1 ] to deeply equal [ +0, 1 ]\n    at [task-state]/continue-20261013T010617Z/form-preparation-retirement/form-preparation.test.ts:263:35\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)\n    at startTests (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1271:3)\n    at file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:126:11\n    at withEnv (file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:90:5)\n    at run (file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:112:3)"
+          ]
+        },
+        {
+          "title": "Form preparation submitted-clear preserves only current authority: normal",
+          "status": "passed",
+          "failureMessages": []
+        },
+        {
+          "title": "Form preparation submitted-clear preserves only current authority: unmount",
+          "status": "failed",
+          "failureMessages": [
+            "AssertionError: expected true to be false // Object.is equality\n    at [task-state]/continue-20261013T010617Z/form-preparation-retirement/form-preparation.test.ts:271:37\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)\n    at startTests (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1271:3)\n    at file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:126:11\n    at withEnv (file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:90:5)\n    at run (file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:112:3)"
+          ]
+        },
+        {
+          "title": "Form preparation submitted-clear preserves only current authority: dispose",
+          "status": "failed",
+          "failureMessages": [
+            "AssertionError: expected Error: [Runtime] base-form-root is dispos… to be undefined\n    at [task-state]/continue-20261013T010617Z/form-preparation-retirement/form-preparation.test.ts:235:22\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)\n    at startTests (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1271:3)\n    at file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:126:11\n    at withEnv (file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:90:5)\n    at run (file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:112:3)"
+          ]
+        },
+        {
+          "title": "Form preparation submitted-clear preserves only current authority: remount",
+          "status": "failed",
+          "failureMessages": [
+            "AssertionError: expected [ +0, 1 ] to deeply equal []\n    at [task-state]/continue-20261013T010617Z/form-preparation-retirement/form-preparation.test.ts:272:35\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)\n    at startTests (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1271:3)\n    at file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:126:11\n    at withEnv (file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:90:5)\n    at run (file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:112:3)"
+          ]
+        },
+        {
+          "title": "Form preparation submitted-clear preserves only current authority: nested",
+          "status": "failed",
+          "failureMessages": [
+            "AssertionError: expected [ +0, 1, +0, 1 ] to deeply equal [ +0, 1 ]\n    at [task-state]/continue-20261013T010617Z/form-preparation-retirement/form-preparation.test.ts:263:35\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)\n    at startTests (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1271:3)\n    at file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:126:11\n    at withEnv (file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:90:5)\n    at run (file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:112:3)"
+          ]
+        },
+        {
+          "title": "Form validation failure ends only its own submission: normal",
+          "status": "passed",
+          "failureMessages": []
+        },
+        {
+          "title": "Form validation failure ends only its own submission: throw",
+          "status": "failed",
+          "failureMessages": [
+            "AssertionError: expected true to be false // Object.is equality\n    at [task-state]/continue-20261013T010617Z/form-preparation-retirement/form-preparation.test.ts:350:42\n    at processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)\n    at startTests (file://[workspace]/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1271:3)\n    at file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:126:11\n    at withEnv (file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:90:5)\n    at run (file://[workspace]/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:112:3)"
+          ]
+        },
+        {
+          "title": "Form validation failure ends only its own submission: nested-throw",
+          "status": "passed",
+          "failureMessages": []
+        },
+        {
+          "title": "Form validation failure ends only its own submission: dispose-throw",
+          "status": "passed",
+          "failureMessages": []
+        },
+        {
+          "title": "Form validation failure ends only its own submission: remount-throw",
+          "status": "passed",
+          "failureMessages": []
+        }
+      ]
+    }
+  },
+  "sourceBinding": "source-binding.json",
+  "observations": ["current-8b/observations.json", "only-form-3ce/observations.json"],
+  "definition": "ExistingForm-completion draft owner/epoch/attemptsupersession plusactiveC-LIFECYCLE-0008; no definitionchange.",
+  "actualCurrentCoverage": [
+    "pending cancellation publication:normal/unmount/dispose/remount/nested",
+    "submitted clearing publication:normal/unmount/dispose/remount/nested",
+    "normal/throw/nested-throw/dispose-throw/remount-throw validationcontrols"
+  ],
+  "controlFindings": "OnlyoldFormoverrideproduces8preparation failures (retiredpendingtrue,terminalStateaccess,continuedvalidationor doublenestedvalidation) plusoldvalidationthrow leavespendingtrue. Sixcontrols pass. This isnotwhole3ce run andnot anonly-two-lines mutation proof.",
+  "publicAPI": "FormRoot requestSubmit/external readonlyState.subscribe andpublicRuntimeSession owner lifecycle. Field fixtures areactualdefinePrototype/State/anatomy roleproviders, notfullFormField/editor implementations. pending validity isauthoredfixtureState; complete+__fieldChanged modelsField completion notification.",
+  "limitations": [
+    "No fullWC/otherAdapter/nativeinput/AT/paint evidence",
+    "SyntheticHostEventTarget/synchronouscommit+schedule makeorderingexplicit; DOMremoveisnotclaimed synchronousRuntime retirement.",
+    "Privateevidence added; repositorytestfiles notchanged andno blanketC/wholeForm acceptance.",
+    "Current15passdoesnot replaceexistingfullgeneral95015 orCI98119 outcome.",
+    "Oldercontrol source lacksotherFormguards too; failures establishdiscriminatingold-source behavior, notuniquecausal attributiontooneguard."
+  ],
+  "sourceHashes": {
+    "current": {
+      "sha256": "6ddc1d42afc9d8443dd94d1d0c843e66a9d354835c4fc4ade9844558b9c9c988",
+      "blob": "eeb14735082c1f03c6efe7e18040281588c2fb72"
+    },
+    "old": {
+      "sha256": "515ae0d67fee6b93b26567f261a35e80c152bb8e71430a725c0a90ad6370f075",
+      "blob": "3a7f9734f50c6cf17d52359ec2fce9d8ac63543f"
+    }
+  },
+  "productSourceEdited": false,
+  "sourcePatchCreated": false,
+  "githubWrites": false,
+  "newCommits": false
+}

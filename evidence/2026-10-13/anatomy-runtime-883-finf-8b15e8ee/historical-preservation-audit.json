@@ -1,0 +1,1020 @@
+{
+  "schemaVersion": 1,
+  "kind": "bounded-final-source-preservation-audit",
+  "observedAt": "2026-10-13T01:55:19.876819+00:00",
+  "executionMode": "human-assisted",
+  "modeSource": "current-user",
+  "assessment": "unassessed/advisory",
+  "disposition": "partial",
+  "recommendedAction": "ABSTAIN",
+  "revisions": {
+    "originalFoundation": "15317b8bc4e25b9bb6f3673a3e8550a345862bfa",
+    "oldOwnB1": "b1e62928c205e318da615a77b4e457f1736fd7de",
+    "latestFoundation": "533275191fe08aa0de679c764592721c1aa3720c",
+    "mergedCb8": "cb8f070a6cd5b2ba2ec5c868f878bc9b11a415ca",
+    "final949": "949ed000bf0d16055fcfb47c8f9f540c95712760"
+  },
+  "counts": {
+    "oldB1NetPathsAgainst15317": 28,
+    "oldOwnIncomingOverlapPaths": 3,
+    "cb8NetPathsAgainst533": 27,
+    "final949NetPathsAgainst533": 33,
+    "laterRepairPathsCb8to949": 11,
+    "newFinalNetPathsAbsentFromOldB1Net": 6,
+    "oldOwnExceptCalendarTreeDrawerUnchangedAtMerge": 25
+  },
+  "oldOwnIncomingOverlapPaths": [
+    "packages/prototypes/base/src/calendar/index.ts",
+    "packages/prototypes/base/src/drawer/snap.ts",
+    "packages/prototypes/base/src/tree/index.ts"
+  ],
+  "final33Paths": [
+    {
+      "path": "internal/contracts/lifecycle/component-lifecycle.v0.md",
+      "status": "M",
+      "classification": "new-reviewed-own-delta-after-cb8",
+      "blobByRevision": {
+        "oldB1": "aee68e826e7387f808aa9a140250fd13d4dfb61d",
+        "latestFoundation": "b1d4b3eaee6dc9e16fc20cfaf5238adca8802160",
+        "mergeCb8": "b1d4b3eaee6dc9e16fc20cfaf5238adca8802160",
+        "final949": "eb02aa94f15f3b98b19a7f7c94c0fba561e8102a"
+      },
+      "finalSha256": "ad13d303e4435ffc8607dde8614d3742e29f90ce4777ec676aaf5eecb8cb8c60",
+      "finalBytes": 4569
+    },
+    {
+      "path": "internal/contracts/prototype-base/form-completion.v0.md",
+      "status": "M",
+      "classification": "old-own-byte-identical-at-final",
+      "blobByRevision": {
+        "oldB1": "230d8e979d5fae4cba6fb1601e6fa477d5109e82",
+        "latestFoundation": "178d49834294658b0dbaecddc2461dea642fa51e",
+        "mergeCb8": "230d8e979d5fae4cba6fb1601e6fa477d5109e82",
+        "final949": "230d8e979d5fae4cba6fb1601e6fa477d5109e82"
+      },
+      "finalSha256": "8cadb32b9e22bf6e228908823019965750c0f61aee66720b6360324194da75bc",
+      "finalBytes": 2656
+    },
+    {
+      "path": "internal/contracts/prototype-base/notification-completion.v0.md",
+      "status": "A",
+      "classification": "old-own-preserved-plus-reviewed-final-extension",
+      "blobByRevision": {
+        "oldB1": "78ee8b9e4ee5f34c8cbb22853602966877ac2c14",
+        "latestFoundation": null,
+        "mergeCb8": "78ee8b9e4ee5f34c8cbb22853602966877ac2c14",
+        "final949": "01cf63d74f732b779824f9c572886bcb09a53bcf"
+      },
+      "finalSha256": "52940a389fb77a891205aff7ee26de795e78df033190ece9d26faeed47a27426",
+      "finalBytes": 2848
+    },
+    {
+      "path": "internal/contracts/prototype-base/search-selection-completion.v0.md",
+      "status": "M",
+      "classification": "old-own-preserved-plus-reviewed-final-extension",
+      "blobByRevision": {
+        "oldB1": "9f4c55f7dbd9ca3ff0ffba40875b2472ff878af9",
+        "latestFoundation": "95668bb852c4ae189b294db96a6f681727309fd4",
+        "mergeCb8": "9f4c55f7dbd9ca3ff0ffba40875b2472ff878af9",
+        "final949": "b7b1954c41a5e6a64db2800be1fbf8603c2c960f"
+      },
+      "finalSha256": "5af4599dfb5d10187805bb690bad3d973ead6a84f48ec73d3f171da261efc382",
+      "finalBytes": 3722
+    },
+    {
+      "path": "internal/records/2026-10-10-anatomy-runtime-lifecycle-budget.json",
+      "status": "A",
+      "classification": "old-own-byte-identical-at-final",
+      "blobByRevision": {
+        "oldB1": "8ff7877799707f035a5b139abfff4fe0d7f4a0c3",
+        "latestFoundation": null,
+        "mergeCb8": "8ff7877799707f035a5b139abfff4fe0d7f4a0c3",
+        "final949": "8ff7877799707f035a5b139abfff4fe0d7f4a0c3"
+      },
+      "finalSha256": "cdf4bbed30eb0d039858d56eff5bf5a1961bbc2afe572c0978ab4f402b3371bd",
+      "finalBytes": 9908
+    },
+    {
+      "path": "packages/prototypes/base/src/accordion/root.proto.ts",
+      "status": "M",
+      "classification": "old-own-byte-identical-at-final",
+      "blobByRevision": {
+        "oldB1": "1219b99de84bfddb1ec22bb46d9a8ec86fab8ca0",
+        "latestFoundation": "e65a00adc8b853f2ac5c6e154a99880dfd7820c3",
+        "mergeCb8": "1219b99de84bfddb1ec22bb46d9a8ec86fab8ca0",
+        "final949": "1219b99de84bfddb1ec22bb46d9a8ec86fab8ca0"
+      },
+      "finalSha256": "5176dbc3c1a9ed075cce4b4eb5ff35feaa4ef1d4caa448637e43b4b8beea4a7b",
+      "finalBytes": 6951
+    },
+    {
+      "path": "packages/prototypes/base/src/calendar/index.ts",
+      "status": "M",
+      "classification": "old-calendar-preserved-plus-upstream-activation-plus-new-value-guard",
+      "blobByRevision": {
+        "oldB1": "568a324c599c3829e1bce32ac952a3d53a5dcf08",
+        "latestFoundation": "3b992a6fffc0fe8913024473daa1beac8e2b172e",
+        "mergeCb8": "014838660f978ad889f5d152741a29d451489d4a",
+        "final949": "9d05dd58f673a8b70223835733112fcb8ad82ca3"
+      },
+      "finalSha256": "e759154d231b9615b0290e4162505c3dc8fb9eb893d8bbc749fdc5385bfbda5f",
+      "finalBytes": 25353
+    },
+    {
+      "path": "packages/prototypes/base/src/carousel/index.ts",
+      "status": "M",
+      "classification": "old-own-byte-identical-at-final",
+      "blobByRevision": {
+        "oldB1": "64c3a44e6ec021f2415dded0d3edaedc2ae9b5ae",
+        "latestFoundation": "b1e4c752e5d5bee48506ad5686afea66d27423e4",
+        "mergeCb8": "64c3a44e6ec021f2415dded0d3edaedc2ae9b5ae",
+        "final949": "64c3a44e6ec021f2415dded0d3edaedc2ae9b5ae"
+      },
+      "finalSha256": "f3717c3125f64db2353c9dd5d6c98dfa386f7eb71081f7fe5c362613c7c7940c",
+      "finalBytes": 11070
+    },
+    {
+      "path": "packages/prototypes/base/src/checkbox-group/root.proto.ts",
+      "status": "M",
+      "classification": "old-own-byte-identical-at-final",
+      "blobByRevision": {
+        "oldB1": "f6a36f32bb7fabf6d90c3e9a50fa812c42e650c8",
+        "latestFoundation": "ee60be648d9da27011716fc3d81538250888f5cc",
+        "mergeCb8": "f6a36f32bb7fabf6d90c3e9a50fa812c42e650c8",
+        "final949": "f6a36f32bb7fabf6d90c3e9a50fa812c42e650c8"
+      },
+      "finalSha256": "5676be7fd397f214e2b577aa8a3a2c82fd2349963837529b2b927adbe23bba32",
+      "finalBytes": 8150
+    },
+    {
+      "path": "packages/prototypes/base/src/context-menu/root.proto.ts",
+      "status": "M",
+      "classification": "old-own-byte-identical-at-final",
+      "blobByRevision": {
+        "oldB1": "bbea2bcc219daa17aa26d3fc45f313d35dce524e",
+        "latestFoundation": "6f3fd6a3fb8db2a696b887f44e182a2a4abd6bb1",
+        "mergeCb8": "bbea2bcc219daa17aa26d3fc45f313d35dce524e",
+        "final949": "bbea2bcc219daa17aa26d3fc45f313d35dce524e"
+      },
+      "finalSha256": "ce6ccf47c1d527cec5844f5e404f8737a6d024cb2e99bfe37f69889885dda2df",
+      "finalBytes": 6181
+    },
+    {
+      "path": "packages/prototypes/base/src/data-table/index.ts",
+      "status": "M",
+      "classification": "old-own-byte-identical-at-final",
+      "blobByRevision": {
+        "oldB1": "438297fd8bbd1ef6713acdf958e5a5bcd3553db7",
+        "latestFoundation": "eeb455591a85d98b6bd9771eb5b1f4fda00eb6c6",
+        "mergeCb8": "438297fd8bbd1ef6713acdf958e5a5bcd3553db7",
+        "final949": "438297fd8bbd1ef6713acdf958e5a5bcd3553db7"
+      },
+      "finalSha256": "736586503ba4f741f7e2a7e0e1d4c44733f59470b065abab308cbb1c6a8d3bc6",
+      "finalBytes": 16368
+    },
+    {
+      "path": "packages/prototypes/base/src/field/control.proto.ts",
+      "status": "M",
+      "classification": "old-own-byte-identical-at-final",
+      "blobByRevision": {
+        "oldB1": "fea23009cd10a964ad41415b4ba342f719e9929f",
+        "latestFoundation": "98c087048a9e5028d25f692462cf98f7c5851997",
+        "mergeCb8": "fea23009cd10a964ad41415b4ba342f719e9929f",
+        "final949": "fea23009cd10a964ad41415b4ba342f719e9929f"
+      },
+      "finalSha256": "a39428853bb52207bf3b4c5fae681b9bda1524713e553ba75f8b793901c84c1b",
+      "finalBytes": 10450
+    },
+    {
+      "path": "packages/prototypes/base/src/form/root.proto.ts",
+      "status": "M",
+      "classification": "old-own-byte-identical-at-final",
+      "blobByRevision": {
+        "oldB1": "eeb14735082c1f03c6efe7e18040281588c2fb72",
+        "latestFoundation": "3a7f9734f50c6cf17d52359ec2fce9d8ac63543f",
+        "mergeCb8": "eeb14735082c1f03c6efe7e18040281588c2fb72",
+        "final949": "eeb14735082c1f03c6efe7e18040281588c2fb72"
+      },
+      "finalSha256": "6ddc1d42afc9d8443dd94d1d0c843e66a9d354835c4fc4ade9844558b9c9c988",
+      "finalBytes": 8420
+    },
+    {
+      "path": "packages/prototypes/base/src/input-otp/root.proto.ts",
+      "status": "M",
+      "classification": "old-own-byte-identical-at-final",
+      "blobByRevision": {
+        "oldB1": "6ea71d0e37c9fa971712f4e8cb6b2893261f67b1",
+        "latestFoundation": "06093d67b44398397d7d1922b59f12eb78e60604",
+        "mergeCb8": "6ea71d0e37c9fa971712f4e8cb6b2893261f67b1",
+        "final949": "6ea71d0e37c9fa971712f4e8cb6b2893261f67b1"
+      },
+      "finalSha256": "af55478de25bb51d928db14591c6585059f567e8df7830611d514d0cef4c378e",
+      "finalBytes": 6206
+    },
+    {
+      "path": "packages/prototypes/base/src/menu-primitives/family.ts",
+      "status": "M",
+      "classification": "old-own-byte-identical-at-final",
+      "blobByRevision": {
+        "oldB1": "f8811294b2e1ed5ed8bb6c99cd4d8d59f77ef2fb",
+        "latestFoundation": "18a1babc702888705d50f9d2ede9f6ec92f4f622",
+        "mergeCb8": "f8811294b2e1ed5ed8bb6c99cd4d8d59f77ef2fb",
+        "final949": "f8811294b2e1ed5ed8bb6c99cd4d8d59f77ef2fb"
+      },
+      "finalSha256": "04e700b6dc562bd544f47c2a305b4debfcd3eacf3c9b9575d636f4621ea92583",
+      "finalBytes": 24267
+    },
+    {
+      "path": "packages/prototypes/base/src/number-field/root.proto.ts",
+      "status": "M",
+      "classification": "old-own-byte-identical-at-final",
+      "blobByRevision": {
+        "oldB1": "d6e35bdc817b290b780bcff0bd55cf5b49f8fa91",
+        "latestFoundation": "0136f4ada47ee4cf613a562e4818b16b57e5f8c0",
+        "mergeCb8": "d6e35bdc817b290b780bcff0bd55cf5b49f8fa91",
+        "final949": "d6e35bdc817b290b780bcff0bd55cf5b49f8fa91"
+      },
+      "finalSha256": "05e67c05dc46df2cc6d7bc9fec35e46d99b4325e372f9dc8d4738c4a3fff349f",
+      "finalBytes": 7992
+    },
+    {
+      "path": "packages/prototypes/base/src/search-primitives/family.ts",
+      "status": "M",
+      "classification": "old-own-preserved-plus-reviewed-final-extension",
+      "blobByRevision": {
+        "oldB1": "b13fdf4257338b5526d8df953d124800514aaedd",
+        "latestFoundation": "a87625a7de75e9fe795d76cb08f5d3b2ddcbd617",
+        "mergeCb8": "b13fdf4257338b5526d8df953d124800514aaedd",
+        "final949": "a1c809b923f2330e2aa95eeb12d99d811ef40c0d"
+      },
+      "finalSha256": "e077dd47cadc5907c261f49ea816c7a01ea82476d3c7017c8630b75c2955b2c5",
+      "finalBytes": 28345
+    },
+    {
+      "path": "packages/prototypes/base/src/slider/root.proto.ts",
+      "status": "M",
+      "classification": "old-own-byte-identical-at-final",
+      "blobByRevision": {
+        "oldB1": "a71827fa8fd5410a6c668a372a733d43bbcf87f5",
+        "latestFoundation": "9f66e1f2162794fc5ec439d977b32f20a6871ede",
+        "mergeCb8": "a71827fa8fd5410a6c668a372a733d43bbcf87f5",
+        "final949": "a71827fa8fd5410a6c668a372a733d43bbcf87f5"
+      },
+      "finalSha256": "16599d46bf693784f8fba11368672619125da100d8279c4586aca0e3a1b36272",
+      "finalBytes": 8144
+    },
+    {
+      "path": "packages/prototypes/base/src/slider/values-root.proto.ts",
+      "status": "M",
+      "classification": "old-own-byte-identical-at-final",
+      "blobByRevision": {
+        "oldB1": "7f974c32f20d6546def842a81c3a71558c87d3cc",
+        "latestFoundation": "257344f7ec06f03795787e010daa855f3d3ecb8c",
+        "mergeCb8": "7f974c32f20d6546def842a81c3a71558c87d3cc",
+        "final949": "7f974c32f20d6546def842a81c3a71558c87d3cc"
+      },
+      "finalSha256": "c28f034f076f49f242faa9046eeb10a59201da3865fc2ff9921b7dc19d90fbd5",
+      "finalBytes": 22289
+    },
+    {
+      "path": "packages/prototypes/base/src/toast/root.proto.ts",
+      "status": "M",
+      "classification": "old-own-byte-identical-at-final",
+      "blobByRevision": {
+        "oldB1": "962ea3d61c2b5e90eb2696ae97cf3610274933f8",
+        "latestFoundation": "799b5912c6c08de59c79d2f3cdbf3115bb82b978",
+        "mergeCb8": "962ea3d61c2b5e90eb2696ae97cf3610274933f8",
+        "final949": "962ea3d61c2b5e90eb2696ae97cf3610274933f8"
+      },
+      "finalSha256": "de3f767364c82794d34ed84e0f68a72482e5589546bb99476c039b52ab8d999c",
+      "finalBytes": 7666
+    },
+    {
+      "path": "packages/prototypes/base/src/toolbar/separator.proto.ts",
+      "status": "M",
+      "classification": "old-own-byte-identical-at-final",
+      "blobByRevision": {
+        "oldB1": "7e37e9a2c3578b440d794cfa4746d467fb959715",
+        "latestFoundation": "3bbb48e282cc9e0085adc5cf0a71a47a49b2f818",
+        "mergeCb8": "7e37e9a2c3578b440d794cfa4746d467fb959715",
+        "final949": "7e37e9a2c3578b440d794cfa4746d467fb959715"
+      },
+      "finalSha256": "df2276f27a7ca0d4aa3bf43f5ea26b4fca210fcd4452382c77f369b0721c276d",
+      "finalBytes": 1503
+    },
+    {
+      "path": "packages/prototypes/base/src/tree/index.ts",
+      "status": "M",
+      "classification": "old-tree-preserved-plus-upstream-activation-and-navigation",
+      "blobByRevision": {
+        "oldB1": "bad90d40518d28d2a01c09ac3eb8521ddefe366c",
+        "latestFoundation": "80630e1e4d3ef51bdb0fbf1d690b3d6776d08b9c",
+        "mergeCb8": "a170cb5cee0e0cb0a726e0ba83c62f3ab953ea0f",
+        "final949": "a170cb5cee0e0cb0a726e0ba83c62f3ab953ea0f"
+      },
+      "finalSha256": "97cdede5f2ff0d8c2c056b3f0d62a1c024dd3d5b2267b5ec165e0b9677663bec",
+      "finalBytes": 15297
+    },
+    {
+      "path": "packages/prototypes/base/test/navigation-overlays/search.test.ts",
+      "status": "M",
+      "classification": "new-reviewed-own-delta-after-cb8",
+      "blobByRevision": {
+        "oldB1": "f62cb009d8f4dce0b3d528b645a09e2fbe4a4528",
+        "latestFoundation": "f62cb009d8f4dce0b3d528b645a09e2fbe4a4528",
+        "mergeCb8": "f62cb009d8f4dce0b3d528b645a09e2fbe4a4528",
+        "final949": "b5b0f17efe2a238d34083471d87fe621e3b40da4"
+      },
+      "finalSha256": "0050ac5ff305fd1be521df6e1e913a517bd63c6a8b042092121d7bff827cf5e9",
+      "finalBytes": 10761
+    },
+    {
+      "path": "packages/prototypes/base/test/notification-retirement-lifecycle.test.ts",
+      "status": "A",
+      "classification": "old-own-preserved-plus-reviewed-final-extension",
+      "blobByRevision": {
+        "oldB1": "8316c656a254f731c1c5066d3e2269f2189d80e8",
+        "latestFoundation": null,
+        "mergeCb8": "8316c656a254f731c1c5066d3e2269f2189d80e8",
+        "final949": "df83bc2f9856861c7ebbd097f4530419f2155cf9"
+      },
+      "finalSha256": "7ceec4043473629668db3fe9185f08fb931cba09798efbd8bf5f39aadef84665",
+      "finalBytes": 16746
+    },
+    {
+      "path": "packages/prototypes/base/test/popup-snap-validation-lifecycle.test.ts",
+      "status": "A",
+      "classification": "old-own-byte-identical-at-final",
+      "blobByRevision": {
+        "oldB1": "676e8eff95f8a45546c8b9a98eed9691472a2190",
+        "latestFoundation": null,
+        "mergeCb8": "676e8eff95f8a45546c8b9a98eed9691472a2190",
+        "final949": "676e8eff95f8a45546c8b9a98eed9691472a2190"
+      },
+      "finalSha256": "b43edcf14cb048ecbf76541fb18d969734c5b89bd762fd43b564beb201d58f86",
+      "finalBytes": 13244
+    },
+    {
+      "path": "packages/prototypes/base/test/selection-reset-lifecycle.test.ts",
+      "status": "A",
+      "classification": "old-own-byte-identical-at-final",
+      "blobByRevision": {
+        "oldB1": "faf4a8c11fdb1ab7c8ff2a5082e946af5d2052fb",
+        "latestFoundation": null,
+        "mergeCb8": "faf4a8c11fdb1ab7c8ff2a5082e946af5d2052fb",
+        "final949": "faf4a8c11fdb1ab7c8ff2a5082e946af5d2052fb"
+      },
+      "finalSha256": "887fe8880dc636004519c85a5599febfaa7bed4bf43bd26ad88cd8db7c5fccf7",
+      "finalBytes": 19023
+    },
+    {
+      "path": "packages/prototypes/base/test/slider-root-lifecycle.test.ts",
+      "status": "A",
+      "classification": "old-own-byte-identical-at-final",
+      "blobByRevision": {
+        "oldB1": "5ba9272dd8132501d6cbd012f336beddfb17f840",
+        "latestFoundation": null,
+        "mergeCb8": "5ba9272dd8132501d6cbd012f336beddfb17f840",
+        "final949": "5ba9272dd8132501d6cbd012f336beddfb17f840"
+      },
+      "finalSha256": "724d3b854c248868fb4cbd38d7eb864db41229ea1b8f72a37e9be3b0080445a9",
+      "finalBytes": 4103
+    },
+    {
+      "path": "packages/prototypes/base/test/slider-values-publication.test.ts",
+      "status": "M",
+      "classification": "old-own-byte-identical-at-final",
+      "blobByRevision": {
+        "oldB1": "4a1b2ea35b573e78fe7d843fa57e04349502cfcf",
+        "latestFoundation": "00303f4d8dcae8331568c7075bbb17d4f1ac724d",
+        "mergeCb8": "4a1b2ea35b573e78fe7d843fa57e04349502cfcf",
+        "final949": "4a1b2ea35b573e78fe7d843fa57e04349502cfcf"
+      },
+      "finalSha256": "180ac79650683a9e64aa46dccd80f0a2cee4f228a850068e5e51416fb12d1c05",
+      "finalBytes": 21287
+    },
+    {
+      "path": "packages/prototypes/base/test/toolbar-separator-lifecycle.test.ts",
+      "status": "A",
+      "classification": "old-own-byte-identical-at-final",
+      "blobByRevision": {
+        "oldB1": "ae9e47e7eb1c589dce2062d0d9ff2048ce1caa72",
+        "latestFoundation": null,
+        "mergeCb8": "ae9e47e7eb1c589dce2062d0d9ff2048ce1caa72",
+        "final949": "ae9e47e7eb1c589dce2062d0d9ff2048ce1caa72"
+      },
+      "finalSha256": "b72e41357dd600117aef7d3fb0740c50014e5b6056b859790d9dd06b9aa904ff",
+      "finalBytes": 1691
+    },
+    {
+      "path": "packages/runtime/src/instance/session.ts",
+      "status": "M",
+      "classification": "new-reviewed-own-delta-after-cb8",
+      "blobByRevision": {
+        "oldB1": "25db98eae10eed601aec17bafedbf17bbbc7f3d5",
+        "latestFoundation": "a5f26cc925808db02c45e560c9d0b8841e5fa77b",
+        "mergeCb8": "a5f26cc925808db02c45e560c9d0b8841e5fa77b",
+        "final949": "d5ed5c77d2885c3244c0a4fb97cf5266c7151c7f"
+      },
+      "finalSha256": "3bdad28a03dd369ea0cf65f7d1fea618e3ffc2eab5ce0228a008c9089891128e",
+      "finalBytes": 21512
+    },
+    {
+      "path": "packages/runtime/test/contract/delay.v0.contract.test.ts",
+      "status": "M",
+      "classification": "new-reviewed-own-delta-after-cb8",
+      "blobByRevision": {
+        "oldB1": "bf4958d53f9491cccdd9a648028a2d5571d4649f",
+        "latestFoundation": "bf4958d53f9491cccdd9a648028a2d5571d4649f",
+        "mergeCb8": "bf4958d53f9491cccdd9a648028a2d5571d4649f",
+        "final949": "9fbb5e27d4417e204e04090954f118f06b7d56b2"
+      },
+      "finalSha256": "eb9355f22fad6fc0f9c1af94aaa156efcd2a551e0761de06ab9a8ee07a406a9d",
+      "finalBytes": 13035
+    },
+    {
+      "path": "packages/runtime/test/contract/lifecycle.module-resources.v1.contract.test.ts",
+      "status": "M",
+      "classification": "new-reviewed-own-delta-after-cb8",
+      "blobByRevision": {
+        "oldB1": "e63242549fe51020d808cb3bc8c66697342dd593",
+        "latestFoundation": "98e32d7a9be5870570fa04aebfb07628623e3240",
+        "mergeCb8": "98e32d7a9be5870570fa04aebfb07628623e3240",
+        "final949": "0ab23313d91d9188854f5d6e6d2c3b3e463894d3"
+      },
+      "finalSha256": "8ee4365ef0b6421aba031267994307e05226712d3608ab360fc1eae89cae8a23",
+      "finalBytes": 15992
+    },
+    {
+      "path": "spec/contracts/C-LIFECYCLE-0002.yaml",
+      "status": "M",
+      "classification": "new-reviewed-own-delta-after-cb8",
+      "blobByRevision": {
+        "oldB1": "4ae8610fb4f96e5a70ff5b6881dac19d82aece86",
+        "latestFoundation": "9def852e8871155678c8d824a4307d988d2c22d4",
+        "mergeCb8": "9def852e8871155678c8d824a4307d988d2c22d4",
+        "final949": "54f751e00d9c9fd4f60a328ed58f261bac14e27e"
+      },
+      "finalSha256": "24cb2c28e6b99b4063440639530852c218ce3aa18d06264f317f795d6a66be97",
+      "finalBytes": 9063
+    }
+  ],
+  "old28Preservation": [
+    {
+      "path": "internal/contracts/prototype-base/form-completion.v0.md",
+      "blobByRevision": {
+        "originalFoundation": "178d49834294658b0dbaecddc2461dea642fa51e",
+        "oldB1": "230d8e979d5fae4cba6fb1601e6fa477d5109e82",
+        "latestFoundation": "178d49834294658b0dbaecddc2461dea642fa51e",
+        "mergeCb8": "230d8e979d5fae4cba6fb1601e6fa477d5109e82",
+        "final949": "230d8e979d5fae4cba6fb1601e6fa477d5109e82"
+      },
+      "classification": "old-own-identical-through-merge",
+      "preservationProof": "b1→cb8 byte-identical.",
+      "hasLaterReviewedRepair": false,
+      "retainedInFinalNet": true
+    },
+    {
+      "path": "internal/contracts/prototype-base/notification-completion.v0.md",
+      "blobByRevision": {
+        "originalFoundation": null,
+        "oldB1": "78ee8b9e4ee5f34c8cbb22853602966877ac2c14",
+        "latestFoundation": null,
+        "mergeCb8": "78ee8b9e4ee5f34c8cbb22853602966877ac2c14",
+        "final949": "01cf63d74f732b779824f9c572886bcb09a53bcf"
+      },
+      "classification": "old-own-identical-through-merge",
+      "preservationProof": "b1→cb8 byte-identical.",
+      "hasLaterReviewedRepair": true,
+      "retainedInFinalNet": true
+    },
+    {
+      "path": "internal/contracts/prototype-base/search-selection-completion.v0.md",
+      "blobByRevision": {
+        "originalFoundation": "95668bb852c4ae189b294db96a6f681727309fd4",
+        "oldB1": "9f4c55f7dbd9ca3ff0ffba40875b2472ff878af9",
+        "latestFoundation": "95668bb852c4ae189b294db96a6f681727309fd4",
+        "mergeCb8": "9f4c55f7dbd9ca3ff0ffba40875b2472ff878af9",
+        "final949": "b7b1954c41a5e6a64db2800be1fbf8603c2c960f"
+      },
+      "classification": "old-own-identical-through-merge",
+      "preservationProof": "b1→cb8 byte-identical.",
+      "hasLaterReviewedRepair": true,
+      "retainedInFinalNet": true
+    },
+    {
+      "path": "internal/records/2026-10-10-anatomy-runtime-lifecycle-budget.json",
+      "blobByRevision": {
+        "originalFoundation": null,
+        "oldB1": "8ff7877799707f035a5b139abfff4fe0d7f4a0c3",
+        "latestFoundation": null,
+        "mergeCb8": "8ff7877799707f035a5b139abfff4fe0d7f4a0c3",
+        "final949": "8ff7877799707f035a5b139abfff4fe0d7f4a0c3"
+      },
+      "classification": "old-own-identical-through-merge",
+      "preservationProof": "b1→cb8 byte-identical.",
+      "hasLaterReviewedRepair": false,
+      "retainedInFinalNet": true
+    },
+    {
+      "path": "packages/prototypes/base/src/accordion/root.proto.ts",
+      "blobByRevision": {
+        "originalFoundation": "e65a00adc8b853f2ac5c6e154a99880dfd7820c3",
+        "oldB1": "1219b99de84bfddb1ec22bb46d9a8ec86fab8ca0",
+        "latestFoundation": "e65a00adc8b853f2ac5c6e154a99880dfd7820c3",
+        "mergeCb8": "1219b99de84bfddb1ec22bb46d9a8ec86fab8ca0",
+        "final949": "1219b99de84bfddb1ec22bb46d9a8ec86fab8ca0"
+      },
+      "classification": "old-own-identical-through-merge",
+      "preservationProof": "b1→cb8 byte-identical.",
+      "hasLaterReviewedRepair": false,
+      "retainedInFinalNet": true
+    },
+    {
+      "path": "packages/prototypes/base/src/calendar/index.ts",
+      "blobByRevision": {
+        "originalFoundation": "a9d8341ed953f84c8da01d14a8aa5c9a680ee626",
+        "oldB1": "568a324c599c3829e1bce32ac952a3d53a5dcf08",
+        "latestFoundation": "3b992a6fffc0fe8913024473daa1beac8e2b172e",
+        "mergeCb8": "014838660f978ad889f5d152741a29d451489d4a",
+        "final949": "9d05dd58f673a8b70223835733112fcb8ad82ca3"
+      },
+      "classification": "auto-merged-with-upstream",
+      "preservationProof": "Removing onlyknownincomingactivation/navigationedits recovers entireb1filebyte-for-byte; oldCblocks preserved.",
+      "hasLaterReviewedRepair": true,
+      "retainedInFinalNet": true
+    },
+    {
+      "path": "packages/prototypes/base/src/carousel/index.ts",
+      "blobByRevision": {
+        "originalFoundation": "b1e4c752e5d5bee48506ad5686afea66d27423e4",
+        "oldB1": "64c3a44e6ec021f2415dded0d3edaedc2ae9b5ae",
+        "latestFoundation": "b1e4c752e5d5bee48506ad5686afea66d27423e4",
+        "mergeCb8": "64c3a44e6ec021f2415dded0d3edaedc2ae9b5ae",
+        "final949": "64c3a44e6ec021f2415dded0d3edaedc2ae9b5ae"
+      },
+      "classification": "old-own-identical-through-merge",
+      "preservationProof": "b1→cb8 byte-identical.",
+      "hasLaterReviewedRepair": false,
+      "retainedInFinalNet": true
+    },
+    {
+      "path": "packages/prototypes/base/src/checkbox-group/root.proto.ts",
+      "blobByRevision": {
+        "originalFoundation": "ee60be648d9da27011716fc3d81538250888f5cc",
+        "oldB1": "f6a36f32bb7fabf6d90c3e9a50fa812c42e650c8",
+        "latestFoundation": "ee60be648d9da27011716fc3d81538250888f5cc",
+        "mergeCb8": "f6a36f32bb7fabf6d90c3e9a50fa812c42e650c8",
+        "final949": "f6a36f32bb7fabf6d90c3e9a50fa812c42e650c8"
+      },
+      "classification": "old-own-identical-through-merge",
+      "preservationProof": "b1→cb8 byte-identical.",
+      "hasLaterReviewedRepair": false,
+      "retainedInFinalNet": true
+    },
+    {
+      "path": "packages/prototypes/base/src/context-menu/root.proto.ts",
+      "blobByRevision": {
+        "originalFoundation": "6f3fd6a3fb8db2a696b887f44e182a2a4abd6bb1",
+        "oldB1": "bbea2bcc219daa17aa26d3fc45f313d35dce524e",
+        "latestFoundation": "6f3fd6a3fb8db2a696b887f44e182a2a4abd6bb1",
+        "mergeCb8": "bbea2bcc219daa17aa26d3fc45f313d35dce524e",
+        "final949": "bbea2bcc219daa17aa26d3fc45f313d35dce524e"
+      },
+      "classification": "old-own-identical-through-merge",
+      "preservationProof": "b1→cb8 byte-identical.",
+      "hasLaterReviewedRepair": false,
+      "retainedInFinalNet": true
+    },
+    {
+      "path": "packages/prototypes/base/src/data-table/index.ts",
+      "blobByRevision": {
+        "originalFoundation": "eeb455591a85d98b6bd9771eb5b1f4fda00eb6c6",
+        "oldB1": "438297fd8bbd1ef6713acdf958e5a5bcd3553db7",
+        "latestFoundation": "eeb455591a85d98b6bd9771eb5b1f4fda00eb6c6",
+        "mergeCb8": "438297fd8bbd1ef6713acdf958e5a5bcd3553db7",
+        "final949": "438297fd8bbd1ef6713acdf958e5a5bcd3553db7"
+      },
+      "classification": "old-own-identical-through-merge",
+      "preservationProof": "b1→cb8 byte-identical.",
+      "hasLaterReviewedRepair": false,
+      "retainedInFinalNet": true
+    },
+    {
+      "path": "packages/prototypes/base/src/drawer/snap.ts",
+      "blobByRevision": {
+        "originalFoundation": "1e48bb548a12c59b86bf4bfe1e95b70bad8eb014",
+        "oldB1": "3981d7413ec1ca44c077da9fe616cd455ff960ab",
+        "latestFoundation": "0d8e59f2b76f3ae47f9a7cd9d6da25849545fd4e",
+        "mergeCb8": "0d8e59f2b76f3ae47f9a7cd9d6da25849545fd4e",
+        "final949": "0d8e59f2b76f3ae47f9a7cd9d6da25849545fd4e"
+      },
+      "classification": "upstream-absorbed-and-refined",
+      "preservationProof": "Final/merge exact533; oldfinally/epochprotections retained, ownerlease/requestSequenceadded upstream.",
+      "hasLaterReviewedRepair": false,
+      "retainedInFinalNet": false
+    },
+    {
+      "path": "packages/prototypes/base/src/field/control.proto.ts",
+      "blobByRevision": {
+        "originalFoundation": "98c087048a9e5028d25f692462cf98f7c5851997",
+        "oldB1": "fea23009cd10a964ad41415b4ba342f719e9929f",
+        "latestFoundation": "98c087048a9e5028d25f692462cf98f7c5851997",
+        "mergeCb8": "fea23009cd10a964ad41415b4ba342f719e9929f",
+        "final949": "fea23009cd10a964ad41415b4ba342f719e9929f"
+      },
+      "classification": "old-own-identical-through-merge",
+      "preservationProof": "b1→cb8 byte-identical.",
+      "hasLaterReviewedRepair": false,
+      "retainedInFinalNet": true
+    },
+    {
+      "path": "packages/prototypes/base/src/form/root.proto.ts",
+      "blobByRevision": {
+        "originalFoundation": "3a7f9734f50c6cf17d52359ec2fce9d8ac63543f",
+        "oldB1": "eeb14735082c1f03c6efe7e18040281588c2fb72",
+        "latestFoundation": "3a7f9734f50c6cf17d52359ec2fce9d8ac63543f",
+        "mergeCb8": "eeb14735082c1f03c6efe7e18040281588c2fb72",
+        "final949": "eeb14735082c1f03c6efe7e18040281588c2fb72"
+      },
+      "classification": "old-own-identical-through-merge",
+      "preservationProof": "b1→cb8 byte-identical.",
+      "hasLaterReviewedRepair": false,
+      "retainedInFinalNet": true
+    },
+    {
+      "path": "packages/prototypes/base/src/input-otp/root.proto.ts",
+      "blobByRevision": {
+        "originalFoundation": "06093d67b44398397d7d1922b59f12eb78e60604",
+        "oldB1": "6ea71d0e37c9fa971712f4e8cb6b2893261f67b1",
+        "latestFoundation": "06093d67b44398397d7d1922b59f12eb78e60604",
+        "mergeCb8": "6ea71d0e37c9fa971712f4e8cb6b2893261f67b1",
+        "final949": "6ea71d0e37c9fa971712f4e8cb6b2893261f67b1"
+      },
+      "classification": "old-own-identical-through-merge",
+      "preservationProof": "b1→cb8 byte-identical.",
+      "hasLaterReviewedRepair": false,
+      "retainedInFinalNet": true
+    },
+    {
+      "path": "packages/prototypes/base/src/menu-primitives/family.ts",
+      "blobByRevision": {
+        "originalFoundation": "18a1babc702888705d50f9d2ede9f6ec92f4f622",
+        "oldB1": "f8811294b2e1ed5ed8bb6c99cd4d8d59f77ef2fb",
+        "latestFoundation": "18a1babc702888705d50f9d2ede9f6ec92f4f622",
+        "mergeCb8": "f8811294b2e1ed5ed8bb6c99cd4d8d59f77ef2fb",
+        "final949": "f8811294b2e1ed5ed8bb6c99cd4d8d59f77ef2fb"
+      },
+      "classification": "old-own-identical-through-merge",
+      "preservationProof": "b1→cb8 byte-identical.",
+      "hasLaterReviewedRepair": false,
+      "retainedInFinalNet": true
+    },
+    {
+      "path": "packages/prototypes/base/src/number-field/root.proto.ts",
+      "blobByRevision": {
+        "originalFoundation": "0136f4ada47ee4cf613a562e4818b16b57e5f8c0",
+        "oldB1": "d6e35bdc817b290b780bcff0bd55cf5b49f8fa91",
+        "latestFoundation": "0136f4ada47ee4cf613a562e4818b16b57e5f8c0",
+        "mergeCb8": "d6e35bdc817b290b780bcff0bd55cf5b49f8fa91",
+        "final949": "d6e35bdc817b290b780bcff0bd55cf5b49f8fa91"
+      },
+      "classification": "old-own-identical-through-merge",
+      "preservationProof": "b1→cb8 byte-identical.",
+      "hasLaterReviewedRepair": false,
+      "retainedInFinalNet": true
+    },
+    {
+      "path": "packages/prototypes/base/src/search-primitives/family.ts",
+      "blobByRevision": {
+        "originalFoundation": "a87625a7de75e9fe795d76cb08f5d3b2ddcbd617",
+        "oldB1": "b13fdf4257338b5526d8df953d124800514aaedd",
+        "latestFoundation": "a87625a7de75e9fe795d76cb08f5d3b2ddcbd617",
+        "mergeCb8": "b13fdf4257338b5526d8df953d124800514aaedd",
+        "final949": "a1c809b923f2330e2aa95eeb12d99d811ef40c0d"
+      },
+      "classification": "old-own-identical-through-merge",
+      "preservationProof": "b1→cb8 byte-identical.",
+      "hasLaterReviewedRepair": true,
+      "retainedInFinalNet": true
+    },
+    {
+      "path": "packages/prototypes/base/src/slider/root.proto.ts",
+      "blobByRevision": {
+        "originalFoundation": "9f66e1f2162794fc5ec439d977b32f20a6871ede",
+        "oldB1": "a71827fa8fd5410a6c668a372a733d43bbcf87f5",
+        "latestFoundation": "9f66e1f2162794fc5ec439d977b32f20a6871ede",
+        "mergeCb8": "a71827fa8fd5410a6c668a372a733d43bbcf87f5",
+        "final949": "a71827fa8fd5410a6c668a372a733d43bbcf87f5"
+      },
+      "classification": "old-own-identical-through-merge",
+      "preservationProof": "b1→cb8 byte-identical.",
+      "hasLaterReviewedRepair": false,
+      "retainedInFinalNet": true
+    },
+    {
+      "path": "packages/prototypes/base/src/slider/values-root.proto.ts",
+      "blobByRevision": {
+        "originalFoundation": "257344f7ec06f03795787e010daa855f3d3ecb8c",
+        "oldB1": "7f974c32f20d6546def842a81c3a71558c87d3cc",
+        "latestFoundation": "257344f7ec06f03795787e010daa855f3d3ecb8c",
+        "mergeCb8": "7f974c32f20d6546def842a81c3a71558c87d3cc",
+        "final949": "7f974c32f20d6546def842a81c3a71558c87d3cc"
+      },
+      "classification": "old-own-identical-through-merge",
+      "preservationProof": "b1→cb8 byte-identical.",
+      "hasLaterReviewedRepair": false,
+      "retainedInFinalNet": true
+    },
+    {
+      "path": "packages/prototypes/base/src/toast/root.proto.ts",
+      "blobByRevision": {
+        "originalFoundation": "799b5912c6c08de59c79d2f3cdbf3115bb82b978",
+        "oldB1": "962ea3d61c2b5e90eb2696ae97cf3610274933f8",
+        "latestFoundation": "799b5912c6c08de59c79d2f3cdbf3115bb82b978",
+        "mergeCb8": "962ea3d61c2b5e90eb2696ae97cf3610274933f8",
+        "final949": "962ea3d61c2b5e90eb2696ae97cf3610274933f8"
+      },
+      "classification": "old-own-identical-through-merge",
+      "preservationProof": "b1→cb8 byte-identical.",
+      "hasLaterReviewedRepair": false,
+      "retainedInFinalNet": true
+    },
+    {
+      "path": "packages/prototypes/base/src/toolbar/separator.proto.ts",
+      "blobByRevision": {
+        "originalFoundation": "3bbb48e282cc9e0085adc5cf0a71a47a49b2f818",
+        "oldB1": "7e37e9a2c3578b440d794cfa4746d467fb959715",
+        "latestFoundation": "3bbb48e282cc9e0085adc5cf0a71a47a49b2f818",
+        "mergeCb8": "7e37e9a2c3578b440d794cfa4746d467fb959715",
+        "final949": "7e37e9a2c3578b440d794cfa4746d467fb959715"
+      },
+      "classification": "old-own-identical-through-merge",
+      "preservationProof": "b1→cb8 byte-identical.",
+      "hasLaterReviewedRepair": false,
+      "retainedInFinalNet": true
+    },
+    {
+      "path": "packages/prototypes/base/src/tree/index.ts",
+      "blobByRevision": {
+        "originalFoundation": "4f11e2e6b907a6c81f130dabdc058bcf61521243",
+        "oldB1": "bad90d40518d28d2a01c09ac3eb8521ddefe366c",
+        "latestFoundation": "80630e1e4d3ef51bdb0fbf1d690b3d6776d08b9c",
+        "mergeCb8": "a170cb5cee0e0cb0a726e0ba83c62f3ab953ea0f",
+        "final949": "a170cb5cee0e0cb0a726e0ba83c62f3ab953ea0f"
+      },
+      "classification": "auto-merged-with-upstream",
+      "preservationProof": "Removing onlyknownincomingactivation/navigationedits recovers entireb1filebyte-for-byte; oldCblocks preserved.",
+      "hasLaterReviewedRepair": false,
+      "retainedInFinalNet": true
+    },
+    {
+      "path": "packages/prototypes/base/test/notification-retirement-lifecycle.test.ts",
+      "blobByRevision": {
+        "originalFoundation": null,
+        "oldB1": "8316c656a254f731c1c5066d3e2269f2189d80e8",
+        "latestFoundation": null,
+        "mergeCb8": "8316c656a254f731c1c5066d3e2269f2189d80e8",
+        "final949": "df83bc2f9856861c7ebbd097f4530419f2155cf9"
+      },
+      "classification": "old-own-identical-through-merge",
+      "preservationProof": "b1→cb8 byte-identical.",
+      "hasLaterReviewedRepair": true,
+      "retainedInFinalNet": true
+    },
+    {
+      "path": "packages/prototypes/base/test/popup-snap-validation-lifecycle.test.ts",
+      "blobByRevision": {
+        "originalFoundation": null,
+        "oldB1": "676e8eff95f8a45546c8b9a98eed9691472a2190",
+        "latestFoundation": null,
+        "mergeCb8": "676e8eff95f8a45546c8b9a98eed9691472a2190",
+        "final949": "676e8eff95f8a45546c8b9a98eed9691472a2190"
+      },
+      "classification": "old-own-identical-through-merge",
+      "preservationProof": "b1→cb8 byte-identical.",
+      "hasLaterReviewedRepair": false,
+      "retainedInFinalNet": true
+    },
+    {
+      "path": "packages/prototypes/base/test/selection-reset-lifecycle.test.ts",
+      "blobByRevision": {
+        "originalFoundation": null,
+        "oldB1": "faf4a8c11fdb1ab7c8ff2a5082e946af5d2052fb",
+        "latestFoundation": null,
+        "mergeCb8": "faf4a8c11fdb1ab7c8ff2a5082e946af5d2052fb",
+        "final949": "faf4a8c11fdb1ab7c8ff2a5082e946af5d2052fb"
+      },
+      "classification": "old-own-identical-through-merge",
+      "preservationProof": "b1→cb8 byte-identical.",
+      "hasLaterReviewedRepair": false,
+      "retainedInFinalNet": true
+    },
+    {
+      "path": "packages/prototypes/base/test/slider-root-lifecycle.test.ts",
+      "blobByRevision": {
+        "originalFoundation": null,
+        "oldB1": "5ba9272dd8132501d6cbd012f336beddfb17f840",
+        "latestFoundation": null,
+        "mergeCb8": "5ba9272dd8132501d6cbd012f336beddfb17f840",
+        "final949": "5ba9272dd8132501d6cbd012f336beddfb17f840"
+      },
+      "classification": "old-own-identical-through-merge",
+      "preservationProof": "b1→cb8 byte-identical.",
+      "hasLaterReviewedRepair": false,
+      "retainedInFinalNet": true
+    },
+    {
+      "path": "packages/prototypes/base/test/slider-values-publication.test.ts",
+      "blobByRevision": {
+        "originalFoundation": "00303f4d8dcae8331568c7075bbb17d4f1ac724d",
+        "oldB1": "4a1b2ea35b573e78fe7d843fa57e04349502cfcf",
+        "latestFoundation": "00303f4d8dcae8331568c7075bbb17d4f1ac724d",
+        "mergeCb8": "4a1b2ea35b573e78fe7d843fa57e04349502cfcf",
+        "final949": "4a1b2ea35b573e78fe7d843fa57e04349502cfcf"
+      },
+      "classification": "old-own-identical-through-merge",
+      "preservationProof": "b1→cb8 byte-identical.",
+      "hasLaterReviewedRepair": false,
+      "retainedInFinalNet": true
+    },
+    {
+      "path": "packages/prototypes/base/test/toolbar-separator-lifecycle.test.ts",
+      "blobByRevision": {
+        "originalFoundation": null,
+        "oldB1": "ae9e47e7eb1c589dce2062d0d9ff2048ce1caa72",
+        "latestFoundation": null,
+        "mergeCb8": "ae9e47e7eb1c589dce2062d0d9ff2048ce1caa72",
+        "final949": "ae9e47e7eb1c589dce2062d0d9ff2048ce1caa72"
+      },
+      "classification": "old-own-identical-through-merge",
+      "preservationProof": "b1→cb8 byte-identical.",
+      "hasLaterReviewedRepair": false,
+      "retainedInFinalNet": true
+    }
+  ],
+  "newSixNetPaths": [
+    "internal/contracts/lifecycle/component-lifecycle.v0.md",
+    "packages/prototypes/base/test/navigation-overlays/search.test.ts",
+    "packages/runtime/src/instance/session.ts",
+    "packages/runtime/test/contract/delay.v0.contract.test.ts",
+    "packages/runtime/test/contract/lifecycle.module-resources.v1.contract.test.ts",
+    "spec/contracts/C-LIFECYCLE-0002.yaml"
+  ],
+  "drawerAbsorption": {
+    "oldB1Blob": "3981d7413ec1ca44c077da9fe616cd455ff960ab",
+    "upstream533Blob": "0d8e59f2b76f3ae47f9a7cd9d6da25849545fd4e",
+    "cb8Blob": "0d8e59f2b76f3ae47f9a7cd9d6da25849545fd4e",
+    "949Blob": "0d8e59f2b76f3ae47f9a7cd9d6da25849545fd4e",
+    "finalMatchesUpstream": true,
+    "scope": "Latest1277f6e upstream authored implementation explicitly references884finally; it retains localterminalreleasefinally/epoch and refines to logicalRootid/leasegeneration/declarationDisposed/requestSequence. It is not dropped function or a new independent884contribution."
+  },
+  "calendarAutoMerge": "Onlyupstreama11y.action(activate) was added tob1 atcb8; entireoldb1 file is recoveredby removingthatline. Final949 addsalready-reviewedrequestValue owner/epochchecks andnothingelse toCalendar.",
+  "treeAutoMerge": "cb8adds upstreamactivate and validateskeyboardtarget belongs tocandidate list. Reversingonlytheseincomingedits exactlyrecoversb1, includingoldterminalowner/publication guards. Final949Tree isunchangedfromcb8.",
+  "foundationAndOwnBoundaries": {
+    "packages/modules/anatomy": {
+      "pathsDifferentFrom533AtCb8": [],
+      "pathsDifferentFrom533At949": [],
+      "incomingChangedPaths153to533": []
+    },
+    "packages/adapters/web-component": {
+      "pathsDifferentFrom533AtCb8": [],
+      "pathsDifferentFrom533At949": [],
+      "incomingChangedPaths153to533": [
+        "packages/adapters/web-component/README.md",
+        "packages/adapters/web-component/src/adapt.ts",
+        "packages/adapters/web-component/src/portal-mount.ts",
+        "packages/adapters/web-component/src/runtime/modules.ts",
+        "packages/adapters/web-component/src/runtime/session.ts",
+        "packages/adapters/web-component/src/shadow-inner-surface.ts",
+        "packages/adapters/web-component/test/contract/a11y.v0.contract.test.ts",
+        "packages/adapters/web-component/test/fixtures/shadow-split-runtime.ts",
+        "packages/adapters/web-component/test/focus-entry-observer.test.ts",
+        "packages/adapters/web-component/test/focus-portal-parent-release.integration.test.ts",
+        "packages/adapters/web-component/test/focus-terminal-cleanup.integration.test.ts",
+        "packages/adapters/web-component/test/shadow-split-prototype-admission.test.ts"
+      ]
+    },
+    "packages/runtime": {
+      "pathsDifferentFrom533AtCb8": [],
+      "pathsDifferentFrom533At949": [
+        "packages/runtime/src/instance/session.ts",
+        "packages/runtime/test/contract/delay.v0.contract.test.ts",
+        "packages/runtime/test/contract/lifecycle.module-resources.v1.contract.test.ts"
+      ],
+      "incomingChangedPaths153to533": [
+        "packages/runtime/README.md",
+        "packages/runtime/src/instance/execute/callback-scope.ts",
+        "packages/runtime/src/instance/session.ts",
+        "packages/runtime/test/contract/focus.v0.contract.test.ts",
+        "packages/runtime/test/contract/lifecycle.module-resources.v1.contract.test.ts"
+      ]
+    },
+    "RuntimeOwnFinalDelta": [
+      "packages/runtime/src/instance/session.ts",
+      "packages/runtime/test/contract/delay.v0.contract.test.ts",
+      "packages/runtime/test/contract/lifecycle.module-resources.v1.contract.test.ts"
+    ]
+  },
+  "groupSummary": {
+    "unchangedOldProtocolSources": [
+      "FormRoot",
+      "MenuPrimitives",
+      "ScalarSliderRoot",
+      "SliderValuesRoot",
+      "ToastRoot",
+      "AccordionRoot",
+      "Carousel",
+      "CheckboxGroup",
+      "ContextMenu",
+      "DataTable",
+      "FieldControl",
+      "InputOTP",
+      "NumberField",
+      "ToolbarSeparator"
+    ],
+    "Search": "Oldretirement/selection/Trigger/Item guards preserved; finalonlyaddsgovernedglobalregisteredvalueuniqueness beforefilteredoptionadmission andmatchingtests/draft, free-textpathunchanged.",
+    "Calendar": "PriorCmonth/publication guard retained plusnewvaluecontinuationguard.",
+    "Runtime": "cb8session/callback-scope andotherRuntimechanges areexact533foundation; currentownfinalnet iscreated-J holder/erroridentity +resource/Delaytests andfinalDelayoracle. Do notattributewholeRuntimefoundationcleanuprewrite to884.",
+    "Anatomy": "All module-anatomy finalbytes equal533; no module-anatomy netpath in33. Olderacquired/reparent work hasalreadybeen integrated in priorfoundation, not a newownpatch inthissync.",
+    "WC": "Allweb-component finalbytes equal533, includingnative/Shadow/resourcechanges. No incomingWC/Compilerformatterdrift retained.",
+    "Budget": "Theold2026-10-10budgetJSON remainshistoricalownrecord; currentbudgetscript/policyisnotin33andisnotnewnumericacceptance."
+  },
+  "gitAuthorshipFacts": {
+    "currentOwnCommits": [
+      {
+        "sha": "cb8f070a6cd5b2ba2ec5c868f878bc9b11a415ca",
+        "parents": [
+          "b1e62928c205e318da615a77b4e457f1736fd7de",
+          "533275191fe08aa0de679c764592721c1aa3720c"
+        ],
+        "authorName": "HyacinthHaru",
+        "authorEmail": "hyacinth@haru.ac",
+        "committerName": "HyacinthHaru",
+        "committerEmail": "hyacinth@haru.ac",
+        "subject": "Merge latest Finf foundation"
+      },
+      {
+        "sha": "b2941728244c9c0c8fa905247bcd35dadc655c36",
+        "parents": ["cb8f070a6cd5b2ba2ec5c868f878bc9b11a415ca"],
+        "authorName": "HyacinthHaru",
+        "authorEmail": "hyacinth@haru.ac",
+        "committerName": "HyacinthHaru",
+        "committerEmail": "hyacinth@haru.ac",
+        "subject": "fix(runtime): preserve failed creation errors"
+      },
+      {
+        "sha": "edfa6bb2b60c65630dee80a80b09a5059f04d481",
+        "parents": ["b2941728244c9c0c8fa905247bcd35dadc655c36"],
+        "authorName": "HyacinthHaru",
+        "authorEmail": "hyacinth@haru.ac",
+        "committerName": "HyacinthHaru",
+        "committerEmail": "hyacinth@haru.ac",
+        "subject": "fix(base): guard selection admission and completion"
+      },
+      {
+        "sha": "949ed000bf0d16055fcfb47c8f9f540c95712760",
+        "parents": ["edfa6bb2b60c65630dee80a80b09a5059f04d481"],
+        "authorName": "HyacinthHaru",
+        "authorEmail": "hyacinth@haru.ac",
+        "committerName": "HyacinthHaru",
+        "committerEmail": "hyacinth@haru.ac",
+        "subject": "test(runtime): observe cleanup checks outside callbacks"
+      }
+    ],
+    "relevantIncomingCommits": [
+      {
+        "sha": "60efbe9cfe13d7a1ea1601d601b75007a85290a2",
+        "gitAuthorName": "cyjin.yl",
+        "gitAuthorEmail": "chenyejin2004@foxmail.com",
+        "subject": "fix(base): preserve eligible Tree navigation and activation"
+      },
+      {
+        "sha": "6055a44fdf2d341e287b72c23f2d482a8be4b7b9",
+        "gitAuthorName": "cyjin-yl",
+        "gitAuthorEmail": "cyjin.yl@gmail.com",
+        "subject": "fix: integrate native source repairs and alias-safe admission into Finf"
+      },
+      {
+        "sha": "1277f6e6eddbd265ee3fd55fc36e2878a8325a0c",
+        "gitAuthorName": "cyjin.yl",
+        "gitAuthorEmail": "chenyejin2004@foxmail.com",
+        "subject": "fix(base): retire stale Select and Drawer continuations"
+      },
+      {
+        "sha": "0e9a176a500537909aea1847f1a981d38243ce25",
+        "gitAuthorName": "cyjin.yl",
+        "gitAuthorEmail": "chenyejin2004@foxmail.com",
+        "subject": "fix(base): declare portable selection activation"
+      }
+    ],
+    "interpretation": "Git author/commit provenance only. This auditdoesnotclaimexclusiveintellectualauthorshiporplatformpermissionfrom names; upstreamowningwork andhistoricalreference remain distinct."
+  },
+  "findings": [],
+  "limits": [
+    "No newsource semanticsreview, tests/build/browser/fullsuite orremoteGitHubrequest/write.",
+    "Preservationauditforfixed949againstfixed533, notwholeFinf/A/Bacceptance or a live-latestclaim.",
+    "Earlier172/433andDelayoracle14evidence retainsactualexecution/sourcebindings; no re-execution inferred.",
+    "Rootgeneral5921/CIcollector20913notaccessed; no greenclaim basedonpendingjobs."
+  ]
+}

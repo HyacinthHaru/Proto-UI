@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "kind": "bounded-local-final-commit-binding",
+  "observedAt": "2026-10-13T02:47:17.399015+00:00",
+  "executionMode": "human-assisted",
+  "modeSource": "current-user",
+  "assessment": "unassessed/advisory",
+  "disposition": "partial/ABSTAIN",
+  "githubDisposition": null,
+  "head": "8b15e8ee5d5795ec76bf4c6355a9ad9a9b47a6a6",
+  "tree": "b4bb8316f9e01b509dbf757fad255cb89172c320",
+  "parents": [
+    "67eb84e47d5e7ef8d0846328dbf8432f1e274685",
+    "3ce1b6acdab94eee3dff93409dd43dd8ce3702aa"
+  ],
+  "matchesReviewedCandidateTree": true,
+  "matchesExpectedParents": true,
+  "identity": {
+    "author": "HyacinthHaru <hyacinth@haru.ac>",
+    "committer": "HyacinthHaru <hyacinth@haru.ac>",
+    "matchingSignedOffBy": true,
+    "coauthorCount": 0,
+    "sshSignature": {
+      "verificationCommand": "git verify-commit 8b15e8ee5d5795ec76bf4c6355a9ad9a9b47a6a6",
+      "observedExit": 0,
+      "observedKey": "SHA256:RWDxJ0JCS9WIN0anD3VUGv9yBp1UtQmZM6HYa98uj7M",
+      "source": "read-only command output in reviewer transcript; no private ModelTrace input read"
+    }
+  },
+  "priorReview": {
+    "path": "independent-preservation-review.json",
+    "sha256": "0d5ceb3e3953ba589609671cbd441d76b8eb10adf4b44dfac736711e2b5ee3ec",
+    "findings": 0
+  },
+  "preservation": {
+    "retainedCPaths": 35,
+    "exactImportedCLIPaths": 4,
+    "all39BlobMatches": true,
+    "blobMismatches": [],
+    "433InputLedger": "independent-final/source-input-binding.json",
+    "ledgerSha256": "612354b7eaaa0b9190ac4f8fe10d39a61eb4d54abe95944459e7cd9e02fe6999",
+    "executedSourceSha256Matches": 433,
+    "loadedMismatches": [],
+    "newCLIIntersection": [],
+    "originalRunNotRepeated": true
+  },
+  "validationReadback": {
+    "sourceAttribution": "Precommit merged source bytes, identical to final commit tree. pnpm test overlaps commit timing and is not relabeled as a postcommit exact-head run. Normal hooks did not change the final tree.",
+    "focused": {
+      "files": 45,
+      "passedTests": 659,
+      "result": "exit0"
+    },
+    "preset": {
+      "result": "exit0",
+      "nodeTestsPassed": 12
+    },
+    "types": {
+      "result": "exit0",
+      "AstroFiles": 860,
+      "errors": 0,
+      "warnings": 0,
+      "hints": 11,
+      "localBuild": "CLI1/47 only"
+    },
+    "originalPnpmTest": {
+      "result": "exit1",
+      "observedFailure": "prototype-catalog537",
+      "passedEarlierGate": "advanced beyond previous Bootstrap unsupported-token preflight",
+      "notFullGeneralPass": true
+    },
+    "logs": {
+      "focused": {
+        "log": "focused.log",
+        "sha256": "4d4b67b79ed7e1d71eeafbae2b555dcf865ba6a58be97ca195fc6df4785e0b8f",
+        "exit": 0
+      },
+      "preset": {
+        "log": "preset.log",
+        "sha256": "4909f46ee4a46884400c2ea4a46c0d6f6987e35a823b6f61d2ce07443fb6db84",
+        "exit": 0
+      },
+      "types": {
+        "log": "types.log",
+        "sha256": "8f878ad07b2849a1ba19d3ca9f5286dc4ace52399d3383d263d8255e0f8ed5c6",
+        "exit": 0
+      },
+      "pnpm-test": {
+        "log": "pnpm-test.log",
+        "sha256": "96f83a48cc5e7f5664c6fc2c35d918d19729513132a7df2ed100eeee0071a403",
+        "exit": 1
+      }
+    }
+  },
+  "publicationReadback": {
+    "source": "root saved push-receipt.json; no new GitHub query by reviewer",
+    "receiptSha256": "a9f6380e968a0b0ec15e2ea562f838cc654897efa867e0e85346febe4251dca9",
+    "savedPRHeadMatches": true,
+    "noGitHubApprovalClaim": true
+  },
+  "pendingAtReview": [
+    "Exact8b15 full general run is owned by root and remains unassessed here.",
+    "Fresh canonical CI / full integration and independent maintainer acceptance."
+  ],
+  "worktreeAtRead": {
+    "HEAD": "8b15e8ee5d5795ec76bf4c6355a9ad9a9b47a6a6",
+    "clean": true
+  },
+  "findings": [],
+  "limits": [
+    "Own SSH/DCO checks do not establish aggregate DCO App acceptance or independent GitHub approval.",
+    "Recorded433 input-byte equality is not new execution, environmental equality, or proof of unrecorded filesystem/dependency inputs.",
+    "Upstream3ce remains WIP; this report does not accept the whole foundation."
+  ],
+  "notPerformed": ["test/build/browser reruns", "product edits", "external writes"]
+}

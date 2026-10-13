@@ -1,0 +1,10 @@
+{
+  "head": "8b15e8ee5d5795ec76bf4c6355a9ad9a9b47a6a6",
+  "baselineTree": "485bf5f498c0d92f132afc670e269c5bf22650ed",
+  "exactOrderedFindingsEqual": true,
+  "exactFindingSetEqual": true,
+  "findings": 537,
+  "finalSource": "pnpm-test.log, actualcatalogstageafterpresetpassed",
+  "baselineBlobsVerified": 10993,
+  "parserCorrection": "Initial packages-onlyfilterexcludednonpackagefindings;full537lines nowcomparedexactly,no newrun"
+}

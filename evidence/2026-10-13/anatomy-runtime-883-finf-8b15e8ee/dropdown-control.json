@@ -1,0 +1,25 @@
+{
+  "results": {
+    "before67": {
+      "head": "67eb84e47d5e7ef8d0846328dbf8432f1e274685",
+      "exit": 0,
+      "summary": [" Test Files  1 passed (1)", "      Tests  5 passed (5)"],
+      "trackedLoadedInputs": 386,
+      "mismatches": []
+    },
+    "after8b": {
+      "head": "8b15e8ee5d5795ec76bf4c6355a9ad9a9b47a6a6",
+      "exit": 1,
+      "summary": [
+        "\u23af\u23af\u23af\u23af\u23af\u23af\u23af Failed Tests 1 \u23af\u23af\u23af\u23af\u23af\u23af\u23af",
+        " FAIL  packages/prototypes/shadcn/test/dropdown-destructive.test.ts > Shadcn Dropdown destructive recipe over real Base states > keeps rest transparent and reacts to focused light/dark changes without remounting",
+        " Test Files  1 failed (1)",
+        "      Tests  1 failed | 4 passed (5)"
+      ],
+      "trackedLoadedInputs": 386,
+      "mismatches": []
+    }
+  },
+  "differentLoadedPaths": [],
+  "scope": "Onepairedoriginalfilecontrol; noassertion/timeoutchange; directFSnotintercepted; fullrunfailurepreserved;no rootcause/flakeclaim"
+}

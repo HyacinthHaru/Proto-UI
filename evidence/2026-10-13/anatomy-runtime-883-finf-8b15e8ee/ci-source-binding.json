@@ -1,0 +1,204 @@
+{
+  "head": "8b15e8ee5d5795ec76bf4c6355a9ad9a9b47a6a6",
+  "productTree": "b4bb8316f9e01b509dbf757fad255cb89172c320",
+  "checkoutCommits": [
+    {
+      "sha": "90cdcef0ec26befaa62a6162410bcdb58759205d",
+      "node_id": "C_kwDOMhQZjdoAKDkwY2RjZWYwZWMyNmJlZmFhNjJhNjE2MjQxMGJjZGI1ODc1OTIwNWQ",
+      "url": "https://api.github.com/repos/Proto-UI/Proto-UI/git/commits/90cdcef0ec26befaa62a6162410bcdb58759205d",
+      "html_url": "https://github.com/Proto-UI/Proto-UI/commit/90cdcef0ec26befaa62a6162410bcdb58759205d",
+      "author": {
+        "name": "HaruHyacinth",
+        "email": "hyacinthharu@foxmail.com",
+        "date": "2026-10-13T02:44:47Z"
+      },
+      "committer": {
+        "name": "GitHub",
+        "email": "noreply@github.com",
+        "date": "2026-10-13T02:44:47Z"
+      },
+      "tree": {
+        "sha": "b4bb8316f9e01b509dbf757fad255cb89172c320",
+        "url": "https://api.github.com/repos/Proto-UI/Proto-UI/git/trees/b4bb8316f9e01b509dbf757fad255cb89172c320"
+      },
+      "message": "Merge 8b15e8ee5d5795ec76bf4c6355a9ad9a9b47a6a6 into ea19727838d85c05af5e4bca8d5fc235cb44e288",
+      "parents": [
+        {
+          "sha": "ea19727838d85c05af5e4bca8d5fc235cb44e288",
+          "url": "https://api.github.com/repos/Proto-UI/Proto-UI/git/commits/ea19727838d85c05af5e4bca8d5fc235cb44e288",
+          "html_url": "https://github.com/Proto-UI/Proto-UI/commit/ea19727838d85c05af5e4bca8d5fc235cb44e288"
+        },
+        {
+          "sha": "8b15e8ee5d5795ec76bf4c6355a9ad9a9b47a6a6",
+          "url": "https://api.github.com/repos/Proto-UI/Proto-UI/git/commits/8b15e8ee5d5795ec76bf4c6355a9ad9a9b47a6a6",
+          "html_url": "https://github.com/Proto-UI/Proto-UI/commit/8b15e8ee5d5795ec76bf4c6355a9ad9a9b47a6a6"
+        }
+      ],
+      "verification": {
+        "verified": true,
+        "reason": "valid",
+        "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJqzZsfCRC1aQ7uu5UhlAAA3/gQADv2sjRhgOxtg7NJDf2c6dCu\nCnIIWgiu/IskpBaWXvHIx3UWy/gzOZcladlv3xUZPSJpmkPOZkWn0c6tvA4AUF3N\nGIBCNMVK2y1q6YDU2DnN4SrQJOxYozIk4vDju6fv+be7pQb565073dpOgcj858dH\nUml00vHglm+VbllV7N/gp+jRcED/ru1A7GFeD3Ecw4QrAwIcuvrNxyq6sVu+rPdf\nqANlHA0BaG18BA5BewyLr/uCwUHbhxULxCXrXv0hk0VzDn6/K0C+vdN/GJPJ65Ok\nX6asvoF3okjNaYWjwNFJY37eYkLzgQpJsXaXDiisZTVMUjATT3KA0xLCAtXaFMGD\ncJAU7tYWwjn7WCf0paouxbs800eULNvrfyHfa8BCIsrqigvSxJMixPkbUxobeswm\nUJL/cWmVkwv6dbpoN3OyM2Ff+UDfS3gT+najOoS1Sve73Dr1X/mmWE6tXWch+dZ9\nvPrb0x1EwRnI+CKFhkMugQzR2b4vdTRG7r2IACFe8awwMLY7yCArMUGAsqxzWgyT\nvuOy0W+0EgogJuLTnK31NBSv1SbwiwdFq7EHc5YGNw30lwmmhDxUE36C3BeeFRML\n71kEOHnvGu14tQnRdUSz84ZUszvL7GP69OC/jtt0FAmb3B0lnJnEfXgHfHNTGDpW\nl+xs2kuxBAKUHpGr8b0k\n=1Liv\n-----END PGP SIGNATURE-----\n",
+        "payload": "tree b4bb8316f9e01b509dbf757fad255cb89172c320\nparent ea19727838d85c05af5e4bca8d5fc235cb44e288\nparent 8b15e8ee5d5795ec76bf4c6355a9ad9a9b47a6a6\nauthor HaruHyacinth <hyacinthharu@foxmail.com> 1791859487 +0800\ncommitter GitHub <noreply@github.com> 1791859487 +0800\n\nMerge 8b15e8ee5d5795ec76bf4c6355a9ad9a9b47a6a6 into ea19727838d85c05af5e4bca8d5fc235cb44e288\n",
+        "verified_at": "2026-10-13T02:44:48Z"
+      }
+    }
+  ],
+  "jobs": [
+    {
+      "jobId": 115103498857,
+      "name": "rust-interop",
+      "conclusion": "success",
+      "checkoutShas": ["90cdcef0ec26befaa62a6162410bcdb58759205d"],
+      "logSha256": "c0b55d87e883aace73e953841c50a0ae1b389443cdb9c3588c170e3a088255a1"
+    },
+    {
+      "jobId": 115103499045,
+      "name": "test-plan",
+      "conclusion": "success",
+      "checkoutShas": ["90cdcef0ec26befaa62a6162410bcdb58759205d"],
+      "logSha256": "c83ef124261762305d69c5be15b48e1fafd0c07cd535dc0cdf676d30f460ce10"
+    },
+    {
+      "jobId": 115103499048,
+      "name": "rust-macos",
+      "conclusion": "success",
+      "checkoutShas": ["90cdcef0ec26befaa62a6162410bcdb58759205d"],
+      "logSha256": "5e89305b0f2572f3fac02ebe8eda87f48049a808b24061313781465a8c083979"
+    },
+    {
+      "jobId": 115103499059,
+      "name": "type-check",
+      "conclusion": "success",
+      "checkoutShas": ["90cdcef0ec26befaa62a6162410bcdb58759205d"],
+      "logSha256": "517ed4cb5fce290535bd89fd0a0f29de0e300a5de2161097250eedc3387cf6bd"
+    },
+    {
+      "jobId": 115103499092,
+      "name": "rust",
+      "conclusion": "success",
+      "checkoutShas": ["90cdcef0ec26befaa62a6162410bcdb58759205d"],
+      "logSha256": "1a1ee5493b69f8e06ac52f061e14c46acce5b36f176e7dc0042e5c14633e3b35"
+    },
+    {
+      "jobId": 115103499093,
+      "name": "release-scan",
+      "conclusion": "success",
+      "checkoutShas": ["90cdcef0ec26befaa62a6162410bcdb58759205d"],
+      "logSha256": "8b7ea69fc25884241a610b6070e3d229d549dbc879332fb4ee644e9009371830"
+    },
+    {
+      "jobId": 115103499170,
+      "name": "public_package_plan",
+      "conclusion": "success",
+      "checkoutShas": ["90cdcef0ec26befaa62a6162410bcdb58759205d"],
+      "logSha256": "35fff565e2d45490faf7ef77f55f063e60c44bc23e8d1006d1d13e1210564a5d"
+    },
+    {
+      "jobId": 115103499226,
+      "name": "lockstep-check",
+      "conclusion": "success",
+      "checkoutShas": ["90cdcef0ec26befaa62a6162410bcdb58759205d"],
+      "logSha256": "b5e351c24ef5401f31ae2f5d616edbd16226d411ba9afa81fdc0b0882b875683"
+    },
+    {
+      "jobId": 115104371595,
+      "name": "test-general",
+      "conclusion": "failure",
+      "checkoutShas": ["90cdcef0ec26befaa62a6162410bcdb58759205d"],
+      "logSha256": "6ceaa909b4e5a0087e77af2f0cf58fb6e015d5d1e1e18063bc3278358318574c"
+    },
+    {
+      "jobId": 115104371608,
+      "name": "test-browser (6/8, browser-6-of-8)",
+      "conclusion": "failure",
+      "checkoutShas": ["90cdcef0ec26befaa62a6162410bcdb58759205d"],
+      "logSha256": "54d0e28086c916bed09adb61293b623f772bb1b7af2e3562339d0846a94302e8"
+    },
+    {
+      "jobId": 115104371628,
+      "name": "test-browser (5/8, browser-5-of-8)",
+      "conclusion": "failure",
+      "checkoutShas": ["90cdcef0ec26befaa62a6162410bcdb58759205d"],
+      "logSha256": "9bd38179599107c264d9a8d24348b526de811eb75a9885e331a44ec0bd8e7ded"
+    },
+    {
+      "jobId": 115104371672,
+      "name": "test-browser (3/8, browser-3-of-8)",
+      "conclusion": "failure",
+      "checkoutShas": ["90cdcef0ec26befaa62a6162410bcdb58759205d"],
+      "logSha256": "f092d6c81479140601b23561102940390599880af990063dbc702a3c604200f9"
+    },
+    {
+      "jobId": 115104371673,
+      "name": "test-browser (1/8, browser-1-of-8)",
+      "conclusion": "failure",
+      "checkoutShas": ["90cdcef0ec26befaa62a6162410bcdb58759205d"],
+      "logSha256": "5a3f1a98f5fc6733d7f7a71e3199b8e9cac211ebf267a4ea7365237cce7294e9"
+    },
+    {
+      "jobId": 115104371794,
+      "name": "test-browser (2/8, browser-2-of-8)",
+      "conclusion": "failure",
+      "checkoutShas": ["90cdcef0ec26befaa62a6162410bcdb58759205d"],
+      "logSha256": "d987059fe3d568c57495c5928770f81af87ecaa310b830a87bb37902a3f69756"
+    },
+    {
+      "jobId": 115104371824,
+      "name": "test-browser (4/8, browser-4-of-8)",
+      "conclusion": "failure",
+      "checkoutShas": ["90cdcef0ec26befaa62a6162410bcdb58759205d"],
+      "logSha256": "b5697f5aa1ed415bed839d0b62e8a354a68fe20132fa2bd514513b2eb48b6a98"
+    },
+    {
+      "jobId": 115104371854,
+      "name": "test-browser (7/8, browser-7-of-8)",
+      "conclusion": "failure",
+      "checkoutShas": ["90cdcef0ec26befaa62a6162410bcdb58759205d"],
+      "logSha256": "afe588e1d21a29121e55e864074da7c9fbe9ca4157ac4f1e666764e0e01a889b"
+    },
+    {
+      "jobId": 115104371866,
+      "name": "test-browser (8/8, browser-8-of-8)",
+      "conclusion": "failure",
+      "checkoutShas": ["90cdcef0ec26befaa62a6162410bcdb58759205d"],
+      "logSha256": "9b5b7cfc3b4d1408fc9804d8a47a37b6326f65f837d86da1b96a7823dd88b124"
+    },
+    {
+      "jobId": 115104955926,
+      "name": "release-stage",
+      "conclusion": "success",
+      "checkoutShas": ["90cdcef0ec26befaa62a6162410bcdb58759205d"],
+      "logSha256": "3a9214e59fa24d76a67628e56140593cfb994c925a84c8f935cc42499187471f"
+    },
+    {
+      "jobId": 115104955938,
+      "name": "cli-smoke",
+      "conclusion": "success",
+      "checkoutShas": ["90cdcef0ec26befaa62a6162410bcdb58759205d"],
+      "logSha256": "dc3ee96dfd91714843a29441edfaed8f79907bf150c7f6e83e9feaab3c5a81e6"
+    },
+    {
+      "jobId": 115104955991,
+      "name": "release-consumer-react",
+      "conclusion": "success",
+      "checkoutShas": ["90cdcef0ec26befaa62a6162410bcdb58759205d"],
+      "logSha256": "dca2a4afbd00e126ab30550798a2f66189bf7c0951b993857c4910a92cfa2d76"
+    },
+    {
+      "jobId": 115104956006,
+      "name": "public_package_build",
+      "conclusion": "success",
+      "checkoutShas": ["90cdcef0ec26befaa62a6162410bcdb58759205d"],
+      "logSha256": "b587a367bc47f3d4ae67d0161fae71e30255066239d6d1d6dd1748bda1ce4cf7"
+    },
+    {
+      "jobId": 115110752646,
+      "name": "test",
+      "conclusion": "failure",
+      "checkoutShas": ["90cdcef0ec26befaa62a6162410bcdb58759205d"],
+      "logSha256": "cfd35b61c122a8ee179117d9a1b16fb907e68d76abbb2b0de1d1aa0863e4fc9e"
+    }
+  ],
+  "all22CheckoutSame": true,
+  "allTreesExact": true
+}
