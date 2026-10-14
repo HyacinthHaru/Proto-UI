@@ -1,0 +1,60 @@
+id: T-LIQUID-GLASS-TOGGLE-0001
+type: test
+title: Liquid Toggle semantics, material ownership and delivery evidence
+status: draft
+since: 0.3.0-alpha.1
+lifecycleRationale: Local semantic and translation checks do not establish exact-head optical or native/compiler acceptance.
+summary: Test one Base owner, persistent active versus transient press, candidate cardinality, opaque restoration and real four-Web optical/fallback delivery.
+cases:
+  - id: T-LIQUID-GLASS-TOGGLE-0001-CASE-SEMANTIC
+    title: Base identity, controlled and uncontrolled selection, focus and disabled cancellation
+    covers: [P-LIQUID-GLASS-TOGGLE-BASE, P-LIQUID-GLASS-TOGGLE-VISUAL]
+    expectation: base-owned-selection-with-noncolor-fixed-geometry
+  - id: T-LIQUID-GLASS-TOGGLE-0001-CASE-MATERIAL
+    title: One slot and candidate, active glass retention, raw removal and no-provider fallback
+    covers: [P-LIQUID-GLASS-TOGGLE-MATERIAL, P-LIQUID-GLASS-TOGGLE-GATES]
+    expectation: complete-regular-material-or-readable-opaque-fallback
+  - id: T-LIQUID-GLASS-TOGGLE-0001-CASE-DELIVERY
+    title: Source-only registry, exports and four Web facade closure
+    covers: [P-LIQUID-GLASS-TOGGLE-DELIVERY]
+    expectation: same-prototype-in-each-family-fixed-consumer
+  - id: T-LIQUID-GLASS-TOGGLE-0001-CASE-BROWSER
+    title: Exact-candidate real optical active, inactive, press and strict fallback evidence
+    covers: [P-LIQUID-GLASS-TOGGLE-BASE, P-LIQUID-GLASS-TOGGLE-VISUAL, P-LIQUID-GLASS-TOGGLE-MATERIAL, P-LIQUID-GLASS-TOGGLE-GATES, P-LIQUID-GLASS-TOGGLE-DELIVERY]
+    expectation: real-four-web-optical-and-fallback-input-evidence
+implementations:
+  - id: liquid-glass-toggle-contract
+    kind: module-test
+    status: passing
+    path: packages/prototypes/liquid-glass/test/toggle.test.ts
+    required: true
+    consumesCases: [T-LIQUID-GLASS-TOGGLE-0001-CASE-SEMANTIC, T-LIQUID-GLASS-TOGGLE-0001-CASE-MATERIAL]
+  - id: liquid-glass-toggle-delivery
+    kind: module-test
+    status: passing
+    path: packages/cli/test/liquid-toggle-delivery.test.ts
+    required: true
+    consumesCases: [T-LIQUID-GLASS-TOGGLE-0001-CASE-DELIVERY]
+  - id: liquid-glass-toggle-registration
+    kind: module-test
+    status: passing
+    path: apps/www/src/components/PrototypePreviewer/liquid-toggle-registration.test.ts
+    required: true
+    consumesCases: [T-LIQUID-GLASS-TOGGLE-0001-CASE-DELIVERY]
+  - id: liquid-glass-toggle-browser
+    kind: runtime-test
+    status: planned
+    path: apps/www/src/content/docs/zh-cn/demo-liquid-glass-toggle.browser.test.ts
+    required: true
+    consumesCases: [T-LIQUID-GLASS-TOGGLE-0001-CASE-BROWSER]
+    notes:
+      - Exact-publication-head real browser execution is pending. Unit snapshots and emitted intent do not prove optical paint, contrast or broader native/compiler support.
+exercises:
+  prototypes: [P-LIQUID-GLASS-TOGGLE]
+sources:
+  - path: packages/prototypes/liquid-glass/test/toggle.test.ts
+revisions:
+  - version: 0.3.0-alpha.1
+    change: introduced
+    summary: Define bounded standalone Toggle semantic/material checks and explicitly pending exact-head optical browser acceptance.
+tags: [test, liquid-glass, toggle]

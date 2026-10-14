@@ -1,5 +1,6 @@
 export { default as liquidGlassButton } from './button';
 export * from './button';
+export * from './toggle';
 export * from './theme';
 
 export { default as LiquidGlassSurfaceRoot, surfaceRoot } from './surface';

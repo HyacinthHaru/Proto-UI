@@ -53,3 +53,9 @@ These are private, release-excluded development artifacts, not public package ad
 Run `pnpm test:draft-packages` from the repository root for the complete offline tarball install, JavaScript ESM and strict NodeNext declaration smoke. Run this build-bearing suite separately from other package builds.
 
 The draft builder admits only the two named prototype families and their current dependency shape. It is not a general private-package build API; adding workspace dependencies that occur only in peer or optional fields requires extending and testing its closure planning first.
+
+## Standalone Toggle (Proto extension)
+
+`liquidGlassToggle` / `./toggle` inherits `asToggle()` once: Base owns `active`, `defaultActive`, `disabled`, `activeChange`, focus and activation. The only added prop is `material: auto | opaque` (default `auto`). Enabled auto keeps regular glass in both active states; transient `pressed` changes the existing deformation phase. Active uses an underline and a stronger border color at the same one-pixel width, preserving surface bounds and a non-color selection cue. It does not substitute solid paint when selected.
+
+Selected tint is not supported by the current material API. This independently authored Proto design-language extension does not claim an Apple Toggle recipe or native shader parity. Its fallback fill/foreground remain unchanged across selection. Opaque or disabled withdraws the candidate; shared source, transparency, contrast and provider gates retain readable fallback. No Surface wrapper or Toggle Group alias is involved. Exact-candidate optical browser evidence remains required separately from unit intent checks.

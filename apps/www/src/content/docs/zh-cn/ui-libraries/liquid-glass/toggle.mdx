@@ -1,0 +1,74 @@
+---
+title: 'Liquid Glass Toggle'
+description: 'Base 持久 active 状态、regular 玻璃与可读回退。'
+---
+
+import PrototypePreviewer from '@/components/PrototypePreviewer/PrototypePreviewer.astro';
+import AdapterPanelScript from '@/components/PrototypePreviewer/AdapterPanelScript.astro';
+import DraftProjectionStyle from '@/components/DraftProjectionStyle.astro';
+
+<DraftProjectionStyle />
+
+这是 [Base Toggle](/zh-cn/ui-libraries/base/toggle/) 的 Proto 设计语言扩展草案，不是 Apple Toggle 复刻，也不声明 Apple 光学效果完全等价。
+
+未激活与已激活状态均请求同一种 regular 玻璃。已激活状态增加下划线，并将已有 1px 边框改为 ring 色，几何尺寸保持不变。当前 material API 没有 selected-tint 意图。指针短暂按压引起的形变与持久 active 状态分别处理。
+
+用页面顶部选择器切换 Web Components、React、Vue 3、Vue 2。Bold 初始未激活，Italic 初始已激活；点击、Space 和 Enter 发出 active 变更请求。Unavailable 禁用后仍保留 active。状态文本只观察真实 Base activeChange 信号。
+
+<div data-adapter-panel="wc">
+  <PrototypePreviewer
+    demoId="demo-liquid-glass-toggle"
+    initialRuntime="wc"
+    toolbar={true}
+    runtimes={['wc']}
+    codePanel={false}
+  />
+</div>
+<div data-adapter-panel="react" style="display:none;">
+  <PrototypePreviewer
+    demoId="demo-liquid-glass-toggle"
+    initialRuntime="react"
+    toolbar={true}
+    runtimes={['react']}
+    codePanel={false}
+  />
+</div>
+<div data-adapter-panel="vue" style="display:none;">
+  <PrototypePreviewer
+    demoId="demo-liquid-glass-toggle"
+    initialRuntime="vue"
+    toolbar={true}
+    runtimes={['vue']}
+    codePanel={false}
+  />
+</div>
+<div data-adapter-panel="vue2" style="display:none;">
+  <PrototypePreviewer
+    demoId="demo-liquid-glass-toggle"
+    initialRuntime="vue2"
+    toolbar={true}
+    runtimes={['vue2']}
+    codePanel={false}
+  />
+</div>
+
+<AdapterPanelScript />
+
+## API
+
+- active?: boolean：受控选择。activeChange 只请求下一个值，owner 可拒绝或延后更新。
+- defaultActive?: boolean：非受控初始值，默认 false。
+- disabled?: boolean：默认 false。抑制激活，清除瞬时交互，保留 active 选择。
+- material?: 'auto' | 'opaque'：默认 auto。opaque 主动关闭光学增强。
+- activeChange：{ active: boolean }。Previewer 使用 onActiveChange 观察 outward signal；它不是 Toggle 的语义 prop。
+- role="button"、aria-pressed 对应持久 active；exposed pressed 表示短暂指针按压。焦点与键盘行为直接继承 Base Toggle。
+
+## 材质与可访问性
+
+共享 Web provider 只采样 Previewer 提供的可见应用 canvas，不捕获任意 DOM 或浏览器 compositor。来源缺失、撤销、被其他绘制遮挡，以及偏好未知、减弱透明度、增强对比度、强制颜色时，均保留不透明回退；减弱动态效果使用静态光学路径。禁用与 material="opaque" 同样回退。光学绘制不可用时，下划线仍能标识已激活状态。
+
+控件之间需为扩展的光学绘制留出空间。此示例使用 32px 间距；更宽的控件可能需要更大间距。重叠绘制会被主动拒绝，不代表已支持堆叠玻璃。
+
+[Apple Materials 指南](https://developer.apple.com/design/human-interface-guidelines/materials) 说明材质应响应透明度与对比度偏好；[Meet Liquid Glass](https://developer.apple.com/videos/play/wwdc2025/219/) 也讨论减弱动态效果。本原型使用自身共享 provider 的严格门控，保留可读主题填色和前景色，不模拟未支持的光学能力。
+
+源码包仍为 private/unreleased。四个 Web Adapter 仍须 exact-head 浏览器证据。完整 Compiler、GPUI/Flutter/Qt、Apple 原生呈现、selected tint 与 group/morph 等价性不属于此交付。

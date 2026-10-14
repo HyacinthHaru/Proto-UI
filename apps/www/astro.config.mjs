@@ -1189,6 +1189,11 @@ export default defineConfig({
                   slug: 'ui-libraries/liquid-glass/button',
                 },
                 {
+                  label: 'Toggle (Draft)',
+                  translations: { en: 'Toggle (Draft)', 'zh-CN': 'Toggle（草案）' },
+                  slug: 'ui-libraries/liquid-glass/toggle',
+                },
+                {
                   label: 'Label',
                   translations: { en: 'Label', 'zh-CN': 'Label' },
                   slug: 'ui-libraries/liquid-glass/label',

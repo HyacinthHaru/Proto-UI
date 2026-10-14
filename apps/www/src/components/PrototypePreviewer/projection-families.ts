@@ -1485,6 +1485,12 @@ const LIQUID_GLASS_MANIFEST = {
       recipePrototypeIds: ['liquid-glass-button'],
       parts: { root: { basePrototypeId: 'P-BASE-BUTTON', prototypeId: 'liquid-glass-button' } },
     },
+    toggle: {
+      baseFamilyId: 'P-BASE-TOGGLE',
+      recipeId: 'demo-liquid-glass-toggle',
+      recipePrototypeIds: ['liquid-glass-toggle'],
+      parts: { root: { basePrototypeId: 'P-BASE-TOGGLE', prototypeId: 'liquid-glass-toggle' } },
+    },
   },
 } as const satisfies ProjectionFamilyManifest;
 

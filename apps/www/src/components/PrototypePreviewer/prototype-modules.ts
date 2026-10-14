@@ -461,6 +461,10 @@ const manualPrototypeModules: Record<string, PrototypeModuleLoader> = {
     const mod = await import('@proto.ui/prototypes-bootstrap-2-3-2/separator');
     registerPrototype('bootstrap-2-3-2-separator-root', mod.separatorRoot);
   },
+  'liquid-glass-toggle': async () => {
+    const mod = await import('@proto.ui/prototypes-liquid-glass/toggle');
+    registerPrototype('liquid-glass-toggle', mod.liquidGlassToggle);
+  },
   'liquid-glass-button': async () => {
     const mod = await import('@proto.ui/prototypes-liquid-glass/button');
     registerPrototype('liquid-glass-button', mod.default);

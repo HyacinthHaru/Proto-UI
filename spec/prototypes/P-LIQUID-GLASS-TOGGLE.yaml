@@ -1,0 +1,50 @@
+id: P-LIQUID-GLASS-TOGGLE
+type: prototype
+title: Liquid Glass standalone Toggle over Base active ownership
+status: draft
+since: 0.3.0-alpha.1
+lifecycleRationale: Independently authored Proto design-language extension. Exact-candidate optical browser evidence, independent review and broader native/compiler acceptance remain separate; this is not Apple component or shader parity.
+summary: A standalone persistent Toggle retains regular material in both active states with non-color selection feedback and an explicit opaque fallback.
+statement:
+  en: Toggle inherits Base active/defaultActive/disabled and activeChange. material is auto | opaque, default auto. Both active states request the same regular material while enabled and auto; selected tint is unsupported and is not simulated by changing fallback colors. Persistent selection is shown by underline, equal-width border color and Base aria-pressed, independently of transient press deformation.
+criteria:
+  - id: P-LIQUID-GLASS-TOGGLE-BASE
+    text:
+      en: Invoke asToggle once. Base exclusively owns controlled/uncontrolled active, activeChange, keyboard/pointer activation, cancellation, disabled and focus. Do not alias ToggleGroupItem, wrap Surface or create another interaction or material owner.
+  - id: P-LIQUID-GLASS-TOGGLE-VISUAL
+    text:
+      en: Active uses underline and border-ring; inactive uses no-underline and border-border. Both retain the same one-pixel border, padding, capsule geometry, bg-secondary and text-secondary-foreground, so selection does not invalidate optical bounds or rely only on color. Existing focus-visible ring remains visible; disabled retains active feedback while suppressing transient press/hover and shadow.
+  - id: P-LIQUID-GLASS-TOGGLE-MATERIAL
+    text:
+      en: Declare exactly one V2 rounded-rect style-geometry slot with in-app-backdrop and style-owned fill/foreground fallback. Enabled auto contributes exactly one complete regular liquid-glass candidate with rest or pressed phase from Base pressed. active does not remove material. Explicit opaque and disabled contribute zero candidates while preserving fallback. Raw material removal restores auto. No new shader, selected-tint field or custom material provider is introduced.
+  - id: P-LIQUID-GLASS-TOGGLE-GATES
+    text:
+      en: Existing shared provider owns source availability, preference, geometry, contrast and actual optical admission. Missing source, unsupported or unknown inputs and reduced transparency retain readable opaque fallback. Reduced motion limits deformation without pretending to mean reduced transparency. Same-instance state changes, source loss and view disposal must not retain stale paint or ownership. Only exact-head real optical evidence may establish the tested Web behavior.
+  - id: P-LIQUID-GLASS-TOGGLE-DELIVERY
+    text:
+      en: Package subpath, root export, source-only CLI registration, family-fixed demo mapping and four Web facades consume the same prototype. Every style token has existing finite translation; www owns no substitute Toggle state or material implementation. The family remains private/unreleased; no general Compiler or native platform acceptance follows.
+sources:
+  - path: packages/prototypes/liquid-glass/src/toggle/toggle.proto.ts
+  - path: packages/prototypes/liquid-glass/src/toggle/types.ts
+  - path: packages/prototypes/liquid-glass/src/button/button.proto.ts
+  - path: https://developer.apple.com/design/human-interface-guidelines/materials
+  - path: https://developer.apple.com/videos/play/wwdc2025/219/
+dependsOn:
+  contracts:
+    - C-CORE-SYNTAX-0003
+    - C-AS-HOOK-0001
+    - C-RULE-INTENT-FEEDBACK-STYLE-0001
+    - C-PROTOTYPE-STYLE-CLOSURE-0001
+    - C-FEEDBACK-MATERIAL-0001
+    - C-RULE-INTENT-FEEDBACK-MATERIAL-0001
+inherits:
+  prototypes:
+    - P-BASE-TOGGLE
+verifies:
+  tests:
+    - T-LIQUID-GLASS-TOGGLE-0001
+revisions:
+  - version: 0.3.0-alpha.1
+    change: introduced
+    summary: Add a standalone Proto Toggle projection with regular optical intent in both selected states, equal geometry and explicit selected-tint and native/compiler limits.
+tags: [prototype, liquid-glass, toggle]
