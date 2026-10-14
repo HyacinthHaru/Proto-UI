@@ -213,7 +213,7 @@ describe('Field focus getter diagnostics (synthetic host controls, not native ac
     const markup = input.outerHTML;
     const focus = vi.spyOn(input, 'focus');
     const blur = vi.spyOn(input, 'blur');
-    expect(recordFieldFocusSample(input, 1)).toBe(true);
+    expect(recordFieldFocusSample([input], 1)).toBe(true);
     const [sample] = (window as any).__fieldFocusEvidence;
     expect(sample).toMatchObject({
       attempt: 1,
@@ -243,7 +243,7 @@ describe('Field focus getter diagnostics (synthetic host controls, not native ac
     other.dataset.demoRef = 'other';
     document.body.append(input, other);
     other.focus();
-    expect(recordFieldFocusSample(input, 1)).toBe(false);
+    expect(recordFieldFocusSample([input], 1)).toBe(false);
     expect((window as any).__fieldFocusEvidence[0]).toMatchObject({
       value: false,
       connected: true,
@@ -264,7 +264,7 @@ describe('Field focus getter diagnostics (synthetic host controls, not native ac
     input.focus();
     expect(shadow.activeElement).toBe(input);
     expect(document.activeElement).toBe(host);
-    expect(recordFieldFocusSample(input, 1)).toBe(false);
+    expect(recordFieldFocusSample([input], 1)).toBe(false);
     expect((window as any).__fieldFocusEvidence[0]).toMatchObject({
       value: false,
       rootKind: 'shadow',
@@ -276,7 +276,7 @@ describe('Field focus getter diagnostics (synthetic host controls, not native ac
 
   it('records a disconnected target without treating the retained reference as active', () => {
     const input = document.createElement('input');
-    expect(recordFieldFocusSample(input, 1)).toBe(false);
+    expect(recordFieldFocusSample([input], 1)).toBe(false);
     expect((window as any).__fieldFocusEvidence[0]).toMatchObject({
       value: false,
       connected: false,
@@ -292,7 +292,7 @@ describe('Field focus getter diagnostics (synthetic host controls, not native ac
     vi.spyOn(input, 'closest').mockImplementation(() => {
       throw new Error('synthetic diagnostic failure');
     });
-    expect(recordFieldFocusSample(input, 7)).toBe(true);
+    expect(recordFieldFocusSample([input], 7)).toBe(true);
     expect((window as any).__fieldFocusEvidence).toEqual([
       { attempt: 7, value: true, diagnosticError: true },
     ]);
@@ -305,7 +305,7 @@ describe('Field focus getter diagnostics (synthetic host controls, not native ac
     const input = document.createElement('input');
     document.body.append(input);
     input.focus();
-    expect(callback(input, 3)).toBe(true);
+    expect(callback([input], 3)).toBe(true);
     expect((window as any).__fieldFocusEvidence[0]).toMatchObject({ attempt: 3, value: true });
   });
 
@@ -314,7 +314,19 @@ describe('Field focus getter diagnostics (synthetic host controls, not native ac
     document.body.append(input);
     input.focus();
     (window as any).__fieldFocusEvidence = Object.freeze([]);
-    expect(recordFieldFocusSample(input, 1)).toBe(true);
+    expect(recordFieldFocusSample([input], 1)).toBe(true);
     expect(document.activeElement).toBe(input);
+  });
+
+  it.each([0, 2])('rejects %i current editors before recording a focus result', (count) => {
+    const inputs = Array.from({ length: count }, () => document.createElement('input'));
+    document.body.append(...inputs);
+    inputs[0]?.focus();
+    const active = document.activeElement;
+    expect(() => recordFieldFocusSample(inputs, 1)).toThrow(
+      `Expected one current Field editor, received ${count}`
+    );
+    expect((window as any).__fieldFocusEvidence).toBeUndefined();
+    expect(document.activeElement).toBe(active);
   });
 });

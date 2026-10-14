@@ -214,7 +214,9 @@ describe('Field real browser journeys', () => {
           await ref(previewer, 'requiredLabel').click();
           await expect
             .poll(() =>
-              focusObservation.observe((attempt) => input.evaluate(recordFieldFocusSample, attempt))
+              focusObservation.observe((attempt) =>
+                input.evaluateAll(recordFieldFocusSample, attempt)
+              )
             )
             .toBe(true);
           await page.keyboard.press('Tab');

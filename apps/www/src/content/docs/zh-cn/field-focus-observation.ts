@@ -72,9 +72,12 @@ export function createFieldFocusObservation(
   };
 }
 
-/** Standalone Locator.evaluate callback. Keep the original predicate and return
+/** Standalone Locator.evaluateAll callback. Keep the original predicate and return
  * value; the sidecar reads identities only, never text, editor values or URLs. */
-export function recordFieldFocusSample(el: Element, attempt: number): boolean {
+export function recordFieldFocusSample(elements: Element[], attempt: number): boolean {
+  if (elements.length !== 1)
+    throw new Error(`Expected one current Field editor, received ${elements.length}`);
+  const el = elements[0];
   const value = el === document.activeElement;
   const targetWindow = window as typeof window & { __fieldFocusEvidence?: unknown[] };
   try {
