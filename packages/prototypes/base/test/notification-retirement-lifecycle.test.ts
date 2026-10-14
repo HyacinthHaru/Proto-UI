@@ -742,3 +742,70 @@ it.each(['normal', 'unmount', 'dispose', 'nested', 'remount'] as const)(
     }
   }
 );
+
+it('Field Root retains newer validation entered during Context and pending publication', async () => {
+  const { make, setActionCallback } = runtimeHarness();
+  const root = make(fieldRoot, null, {
+    externalValidation: true,
+    validationMode: 'manual',
+  });
+  const control = make(fieldControl, root.target, { defaultValue: 'same' });
+  let armed = false,
+    contextCalls = 0,
+    pendingCalls = 0,
+    older: string | null = null,
+    newer: string | null = null,
+    stop: (() => void) | undefined;
+  const emitted: string[] = [];
+  setActionCallback((name, payload) => {
+    if (name === 'validationRequest') emitted.push(payload.requestId);
+  });
+  const observer = make(
+    definePrototype({
+      name: 'field-context-nested-pending-observer',
+      setup(def) {
+        def.context.subscribe(FIELD_CONTEXT, (_run, next) => {
+          if (!armed || contextCalls || !next.dirty) return;
+          contextCalls++;
+          root.session.invokeInCallbackScope(() => {
+            older = root.exposes.validate();
+          });
+        });
+      },
+    }),
+    root.target
+  );
+  const parts = [root, control, observer];
+  try {
+    for (const part of parts) await part.session.mount();
+    stop = root.exposes.pending.subscribe((event: any) => {
+      if (event.type !== 'next' || event.next !== true || pendingCalls) return;
+      pendingCalls++;
+      root.session.invokeInCallbackScope(() => {
+        newer = root.exposes.validate();
+      });
+    });
+    armed = true;
+    expect(() => control.input('changed', false)).not.toThrow();
+    const emittedAtReturn = [...emitted];
+    const pendingBeforeResolve = root.exposes.pending.get();
+    let oldAccepted = false,
+      currentAccepted = false;
+    root.session.invokeInCallbackScope(() => {
+      oldAccepted = root.exposes.resolveValidation(older, { invalid: false });
+      currentAccepted = root.exposes.resolveValidation(newer, { invalid: false });
+    });
+    expect(contextCalls).toBe(1);
+    expect(pendingCalls).toBe(1);
+    expect(typeof older).toBe('string');
+    expect(typeof newer).toBe('string');
+    expect(older).not.toBe(newer);
+    expect(pendingBeforeResolve).toBe(true);
+    expect(oldAccepted).toBe(false);
+    expect(currentAccepted).toBe(true);
+    expect(emittedAtReturn).toEqual([newer]);
+  } finally {
+    stop?.();
+    for (const part of [...parts].reverse()) await part.session.dispose();
+  }
+});

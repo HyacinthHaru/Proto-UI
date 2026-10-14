@@ -248,6 +248,7 @@ function setupFieldRoot(def: DefHandle<FieldRootProps, FieldRootExposes>) {
       // Pending is not a successful validation; retain an explicit unvalidated status.
       status = 'unvalidated';
       publish();
+      if (run !== current || pending !== request) return requestId;
       const emit = () => {
         if (run !== current || pending !== request) return;
         current.expose.emit('validationRequest', {

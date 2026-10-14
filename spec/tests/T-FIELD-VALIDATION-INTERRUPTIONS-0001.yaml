@@ -57,6 +57,7 @@ implementations:
     notes:
       - Four actual RuntimeSession controls cover normal and terminal disposal during State or FIELD_CONTEXT notification, with a synthetic TextControl host. Callback-scope results are captured inside the callback; no native focus, label activation or assistive-technology acceptance is claimed.
       - Five further RuntimeSession controls enter validate during dirty publication and cover queued pending notification with normal, cancel, reset, terminal disposal and newer validation. Retired requests are not emitted; current request IDs and result acceptance remain usable within the same synchronous Field publication chain.
+      - One further RuntimeSession control enters validation from FIELD_CONTEXT and immediately replaces it from pending notification. At the outer input return only the newer request has been emitted; the older result is refused and the newer result remains usable.
 sources:
   - path: packages/prototypes/base/src/field/control-binding.proto.ts
   - path: packages/prototypes/base/src/field/root.proto.ts
