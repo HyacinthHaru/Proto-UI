@@ -1,3 +1,4 @@
+import type { ObservedStateHandle } from '@proto.ui/core';
 import { ExposeEvent, ExposeMethod, ExposeState, FocusRequestOptions, State } from '@proto.ui/core';
 
 export interface ToggleProps {
@@ -20,8 +21,8 @@ export type ToggleExposes = {
 export type ToggleStateHandles = {
   disabled: State<boolean>;
   hovered: State<boolean>;
-  focused: State<boolean>;
-  focusVisible: State<boolean>;
+  focused: ObservedStateHandle<boolean, ToggleProps>;
+  focusVisible: ObservedStateHandle<boolean, ToggleProps>;
   pressed: State<boolean>;
   active: State<boolean>;
 };

@@ -1,4 +1,5 @@
 import type {
+  ObservedStateHandle,
   ExposeEvent,
   ExposeMethod,
   ExposeState,
@@ -43,7 +44,7 @@ export type ToggleGroupItemAsHookContract = {
   state: {
     active: State<boolean>;
     disabled: State<boolean>;
-    focused: State<boolean>;
-    focusVisible: State<boolean>;
+    focused: ObservedStateHandle<boolean, ToggleGroupItemProps>;
+    focusVisible: ObservedStateHandle<boolean, ToggleGroupItemProps>;
   };
 };

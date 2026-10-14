@@ -1,5 +1,6 @@
 import type { useOpenState } from '../tools/use-open-state';
 import type {
+  ObservedStateHandle,
   BorrowedStateHandle,
   ExposeEvent,
   ExposeMethod,
@@ -61,8 +62,8 @@ export type DropdownTriggerExposes = {
 export type DropdownCommandStateHandles = {
   disabled: State<boolean>;
   hovered: State<boolean>;
-  focused: State<boolean>;
-  focusVisible: State<boolean>;
+  focused: ObservedStateHandle<boolean, DropdownTriggerProps>;
+  focusVisible: ObservedStateHandle<boolean, DropdownTriggerProps>;
   pressed: State<boolean>;
 };
 

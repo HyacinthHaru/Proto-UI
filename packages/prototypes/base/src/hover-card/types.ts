@@ -1,4 +1,5 @@
 import type {
+  ObservedStateHandle,
   BorrowedStateHandle,
   ExposeEvent,
   ExposeMethod,
@@ -60,8 +61,8 @@ export type HoverCardTriggerExposes = {
 export type HoverCardTriggerStateHandles = {
   disabled: State<boolean>;
   hovered: State<boolean>;
-  focused: State<boolean>;
-  focusVisible: State<boolean>;
+  focused: ObservedStateHandle<boolean, HoverCardTriggerProps>;
+  focusVisible: ObservedStateHandle<boolean, HoverCardTriggerProps>;
 };
 
 export type HoverCardTriggerAsHookContract = {

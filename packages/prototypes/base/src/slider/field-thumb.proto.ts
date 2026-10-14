@@ -1,5 +1,5 @@
 import type { SliderFieldThumbExposes } from './types';
-import type { State } from '@proto.ui/core';
+import type { ObservedStateHandle, State } from '@proto.ui/core';
 import { defineAsHook, definePrototype, type DefHandle } from '@proto.ui/core';
 import { setupSliderPart } from './part-setup';
 import type { SliderPartProps } from './types';
@@ -15,7 +15,7 @@ export const asSliderFieldThumb = defineAsHook<
       readOnly: State<boolean>;
       orientation: State<string>;
       direction: State<string>;
-      focusVisible: State<boolean>;
+      focusVisible: ObservedStateHandle<boolean, SliderPartProps>;
       hovered: State<boolean>;
       pressed: State<boolean>;
     };

@@ -1,4 +1,10 @@
-import type { ExposeState, ExposeMethod, ExposeEvent, State } from '@proto.ui/core';
+import type {
+  ObservedStateHandle,
+  ExposeState,
+  ExposeMethod,
+  ExposeEvent,
+  State,
+} from '@proto.ui/core';
 import type { TransitionProps, TransitionExposes } from '../transition/types';
 export interface ToastViewportProps {
   a11yLabel?: string;
@@ -41,6 +47,10 @@ export type ToastCloseExposes = {
 };
 export type ToastActionExposes = ToastCloseExposes & { action: ExposeEvent<void> };
 export type ToastCloseAsHookContract = {
-  state: { disabled: State<boolean>; focused: State<boolean>; focusVisible: State<boolean> };
+  state: {
+    disabled: State<boolean>;
+    focused: ObservedStateHandle<boolean, ToastCloseProps>;
+    focusVisible: ObservedStateHandle<boolean, ToastCloseProps>;
+  };
 };
 export type ToastActionAsHookContract = ToastCloseAsHookContract;

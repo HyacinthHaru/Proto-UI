@@ -1,4 +1,5 @@
 import type {
+  ObservedStateHandle,
   CollectionItemSnapshot,
   ExposeEvent,
   ExposeMethod,
@@ -64,8 +65,8 @@ export type RadioGroupItemStateHandles = {
   checked: State<boolean>;
   disabled: State<boolean>;
   hovered: State<boolean>;
-  focused: State<boolean>;
-  focusVisible: State<boolean>;
+  focused: ObservedStateHandle<boolean, RadioGroupItemProps>;
+  focusVisible: ObservedStateHandle<boolean, RadioGroupItemProps>;
   pressed: State<boolean>;
 };
 

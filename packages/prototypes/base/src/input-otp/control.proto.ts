@@ -1,5 +1,5 @@
 import type { InputOtpControlExposes } from './types';
-import type { State } from '@proto.ui/core';
+import type { ObservedStateHandle, State } from '@proto.ui/core';
 import { defineAsHook, definePrototype } from '@proto.ui/core';
 import { declareTextControl } from '@proto.ui/module-text-control';
 import type { InputOtpInputProps } from './types';
@@ -8,7 +8,10 @@ export const asInputOtpControl = defineAsHook<
   InputOtpInputProps,
   InputOtpControlExposes,
   {
-    state: { disabled: State<boolean>; focusVisible: State<boolean> };
+    state: {
+      disabled: State<boolean>;
+      focusVisible: ObservedStateHandle<boolean, InputOtpInputProps>;
+    };
     asHooks: { 'as-field-control': import('../field').FieldControlBindingHandles };
   }
 >({

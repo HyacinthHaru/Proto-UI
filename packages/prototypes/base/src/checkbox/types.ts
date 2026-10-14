@@ -1,3 +1,4 @@
+import type { ObservedStateHandle } from '@proto.ui/core';
 import { ExposeEvent, ExposeMethod, ExposeState, FocusRequestOptions, State } from '@proto.ui/core';
 
 export type CheckboxCheckedChangeDetail = {
@@ -29,8 +30,8 @@ export type CheckboxRootExposes = {
 export type CheckboxRootStateHandles = {
   disabled: State<boolean>;
   hovered: State<boolean>;
-  focused: State<boolean>;
-  focusVisible: State<boolean>;
+  focused: ObservedStateHandle<boolean, CheckboxRootProps>;
+  focusVisible: ObservedStateHandle<boolean, CheckboxRootProps>;
   pressed: State<boolean>;
   checked: State<boolean>;
   indeterminate: State<boolean>;

@@ -1,4 +1,5 @@
 import type {
+  ObservedStateHandle,
   CollectionExposes,
   CollectionItemExposes,
   ExposeEvent,
@@ -79,8 +80,8 @@ export type DataTableRowAsHookContract = {
     rowKey: State<string>;
     selected: State<boolean>;
     hidden: State<boolean>;
-    focused: State<boolean>;
-    focusVisible: State<boolean>;
+    focused: ObservedStateHandle<boolean, DataTableRowProps>;
+    focusVisible: ObservedStateHandle<boolean, DataTableRowProps>;
   };
 };
 export type DataTableCellAsHookContract = { state: { displayValue: State<string> } };

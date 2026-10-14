@@ -1,4 +1,10 @@
-import type { ExposeState, ExposeMethod, ExposeEvent, State } from '@proto.ui/core';
+import type {
+  ObservedStateHandle,
+  ExposeState,
+  ExposeMethod,
+  ExposeEvent,
+  State,
+} from '@proto.ui/core';
 export type { ResizableRootProps, ResizablePanelProps } from './index';
 export type ResizableHandleProps = Record<string, never>;
 export type ResizableRootExposes = {
@@ -24,6 +30,6 @@ export type ResizableHandleAsHookContract = {
     max: State<number>;
     orientation: State<string>;
     disabled: State<boolean>;
-    focusVisible: State<boolean>;
+    focusVisible: ObservedStateHandle<boolean, ResizableHandleProps>;
   };
 };

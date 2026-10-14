@@ -1,4 +1,5 @@
 import type {
+  ObservedStateHandle,
   BorrowedStateHandle,
   ExposeEvent,
   ExposeMethod,
@@ -61,8 +62,8 @@ export type DialogTriggerAsHookContract = {
 export type DialogCommandStateHandles = {
   disabled: State<boolean>;
   hovered: State<boolean>;
-  focused: State<boolean>;
-  focusVisible: State<boolean>;
+  focused: ObservedStateHandle<boolean, DialogTriggerProps>;
+  focusVisible: ObservedStateHandle<boolean, DialogTriggerProps>;
   pressed: State<boolean>;
 };
 

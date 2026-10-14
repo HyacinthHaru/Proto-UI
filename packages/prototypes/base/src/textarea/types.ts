@@ -1,4 +1,5 @@
 import type {
+  ObservedStateHandle,
   ExposeEvent,
   ExposeMethod,
   ExposeState,
@@ -60,8 +61,8 @@ export type TextareaRootStateHandles = {
   value: State<string>;
   disabled: State<boolean>;
   readOnly: State<boolean>;
-  focused: State<boolean>;
-  focusVisible: State<boolean>;
+  focused: ObservedStateHandle<boolean, TextareaRootProps>;
+  focusVisible: ObservedStateHandle<boolean, TextareaRootProps>;
   composing: State<boolean>;
 };
 

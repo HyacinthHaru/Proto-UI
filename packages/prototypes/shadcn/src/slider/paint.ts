@@ -2,6 +2,7 @@ import {
   tw,
   type AnatomyFamily,
   type BorrowedStateHandle,
+  type ObservedStateHandle,
   type DefHandle,
   type RendererHandle,
 } from '@proto.ui/core';
@@ -12,7 +13,7 @@ import { SLIDER_FAMILY, type SliderPartProps } from '@proto.ui/prototypes-base/s
 // The existing Part root remains the sole input/focus target.
 export function refreshSliderPaint(
   def: DefHandle<SliderPartProps, any>,
-  states: readonly BorrowedStateHandle<any, SliderPartProps>[],
+  states: readonly ObservedStateHandle<any, SliderPartProps>[],
   families: readonly AnatomyFamily[] = [SLIDER_FAMILY]
 ) {
   let disposing = false;
@@ -49,7 +50,7 @@ export function sliderThumbPaint(
     disabled: BorrowedStateHandle<boolean, SliderPartProps>;
     hovered: BorrowedStateHandle<boolean, SliderPartProps>;
     pressed: BorrowedStateHandle<boolean, SliderPartProps>;
-    focusVisible: BorrowedStateHandle<boolean, SliderPartProps>;
+    focusVisible: ObservedStateHandle<boolean, SliderPartProps>;
   },
   families: readonly AnatomyFamily[] = [SLIDER_FAMILY]
 ) {

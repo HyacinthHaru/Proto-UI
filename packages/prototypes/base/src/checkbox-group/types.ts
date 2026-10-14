@@ -1,4 +1,5 @@
 import type {
+  ObservedStateHandle,
   ExposeEvent,
   ExposeMethod,
   ExposeState,
@@ -48,5 +49,8 @@ export type CheckboxGroupItemExposes = {
 };
 export type CheckboxGroupRootAsHookContract = { state: CheckboxGroupState };
 export type CheckboxGroupItemAsHookContract = {
-  state: CheckboxGroupState & { focused: State<boolean>; focusVisible: State<boolean> };
+  state: CheckboxGroupState & {
+    focused: ObservedStateHandle<boolean, CheckboxGroupItemProps>;
+    focusVisible: ObservedStateHandle<boolean, CheckboxGroupItemProps>;
+  };
 };

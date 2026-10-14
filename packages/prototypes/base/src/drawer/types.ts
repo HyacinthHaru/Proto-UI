@@ -1,5 +1,6 @@
 import type { useOpenState } from '../tools/use-open-state';
 import type {
+  ObservedStateHandle,
   BorrowedStateHandle,
   AvailableLayoutLength,
   ExposeEvent,
@@ -63,8 +64,8 @@ export type DrawerTriggerAsHookContract = {
 export type DrawerCommandStateHandles = {
   disabled: State<boolean>;
   hovered: State<boolean>;
-  focused: State<boolean>;
-  focusVisible: State<boolean>;
+  focused: ObservedStateHandle<boolean, DrawerTriggerProps>;
+  focusVisible: ObservedStateHandle<boolean, DrawerTriggerProps>;
   pressed: State<boolean>;
 };
 
@@ -199,8 +200,8 @@ export type DrawerHandleAsHookContract = {
     /** Read-only captured accepted side for optional family presentation. */
     side: State<string>;
     disabled: State<boolean>;
-    focused: State<boolean>;
-    focusVisible: State<boolean>;
+    focused: ObservedStateHandle<boolean, DrawerHandleProps>;
+    focusVisible: ObservedStateHandle<boolean, DrawerHandleProps>;
   };
 };
 

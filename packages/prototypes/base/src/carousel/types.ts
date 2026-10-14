@@ -1,4 +1,5 @@
 import type {
+  ObservedStateHandle,
   CollectionExposes,
   CollectionItemExposes,
   ExposeState,
@@ -31,7 +32,9 @@ export type CarouselRootAsHookContract = {
     a11yLabel: State<string>;
   };
 };
-export type CarouselViewportAsHookContract = { state: { focusVisible: State<boolean> } };
+export type CarouselViewportAsHookContract = {
+  state: { focusVisible: ObservedStateHandle<boolean, CarouselViewportProps> };
+};
 export type CarouselSlideAsHookContract = {
   state: {
     collectionIndex: State<number>;

@@ -1,4 +1,5 @@
 import type {
+  ObservedStateHandle,
   ExposeEvent,
   ExposeMethod,
   ExposeState,
@@ -58,8 +59,8 @@ export type SearchInputExposes = {
 };
 export type SearchInputAsHookContract = {
   state: {
-    focused: State<boolean>;
-    focusVisible: State<boolean>;
+    focused: ObservedStateHandle<boolean, SearchInputProps>;
+    focusVisible: ObservedStateHandle<boolean, SearchInputProps>;
     composing: State<boolean>;
     disabled: State<boolean>;
   };
@@ -105,5 +106,9 @@ export type SearchTriggerExposes = {
   focusVisible: ExposeState<boolean>;
 };
 export type SearchTriggerAsHookContract = {
-  state: { disabled: State<boolean>; focused: State<boolean>; focusVisible: State<boolean> };
+  state: {
+    disabled: State<boolean>;
+    focused: ObservedStateHandle<boolean, SearchTriggerProps>;
+    focusVisible: ObservedStateHandle<boolean, SearchTriggerProps>;
+  };
 };

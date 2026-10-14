@@ -1,4 +1,5 @@
 import type {
+  ObservedStateHandle,
   CollectionExposes,
   CollectionItemExposes,
   ExposeEvent,
@@ -79,8 +80,8 @@ export type TreeItemContract = {
     setSize: State<number>;
     branch: State<boolean>;
     expandedText: State<string>;
-    focused: State<boolean>;
-    focusVisible: State<boolean>;
+    focused: ObservedStateHandle<boolean, TreeItemProps>;
+    focusVisible: ObservedStateHandle<boolean, TreeItemProps>;
   };
 };
 export type TreeGroupAsHookContract = {};

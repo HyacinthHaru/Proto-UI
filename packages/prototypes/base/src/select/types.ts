@@ -1,4 +1,5 @@
 import type {
+  ObservedStateHandle,
   BorrowedStateHandle,
   ExposeEvent,
   ExposeMethod,
@@ -68,8 +69,8 @@ export type SelectTriggerExposes = {
 export type SelectCommandStateHandles = {
   disabled: State<boolean>;
   hovered: State<boolean>;
-  focused: State<boolean>;
-  focusVisible: State<boolean>;
+  focused: ObservedStateHandle<boolean, SelectTriggerProps>;
+  focusVisible: ObservedStateHandle<boolean, SelectTriggerProps>;
   pressed: State<boolean>;
 };
 export type SelectTriggerAsHookContract = {

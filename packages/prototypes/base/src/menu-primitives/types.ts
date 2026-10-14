@@ -1,4 +1,5 @@
 import type {
+  ObservedStateHandle,
   ExposeState,
   ExposeEvent,
   ExposeMethod,
@@ -38,8 +39,8 @@ export type MenuTriggerAsHookContract = {
   state: {
     expanded: State<boolean>;
     disabled: State<boolean>;
-    focused: State<boolean>;
-    focusVisible: State<boolean>;
+    focused: ObservedStateHandle<boolean, MenuTriggerProps>;
+    focusVisible: ObservedStateHandle<boolean, MenuTriggerProps>;
   };
 };
 export type MenuContentProps = TransitionProps & {
@@ -67,7 +68,11 @@ export type MenuItemExposes = {
   select: ExposeEvent<{ value: string; menuValue: string }>;
 };
 export type MenuItemAsHookContract = {
-  state: { disabled: State<boolean>; focused: State<boolean>; focusVisible: State<boolean> };
+  state: {
+    disabled: State<boolean>;
+    focused: ObservedStateHandle<boolean, MenuItemProps>;
+    focusVisible: ObservedStateHandle<boolean, MenuItemProps>;
+  };
 };
 export interface MenuLinkProps extends MenuItemProps {
   href: string;

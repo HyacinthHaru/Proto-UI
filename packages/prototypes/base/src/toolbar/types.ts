@@ -1,4 +1,5 @@
 import type {
+  ObservedStateHandle,
   ExposeState,
   ExposeEvent,
   ExposeMethod,
@@ -32,7 +33,11 @@ export type ToolbarButtonExposes = {
   action: ExposeEvent<{ value: string }>;
 };
 export type ToolbarButtonAsHookContract = {
-  state: { disabled: State<boolean>; focused: State<boolean>; focusVisible: State<boolean> };
+  state: {
+    disabled: State<boolean>;
+    focused: ObservedStateHandle<boolean, ToolbarButtonProps>;
+    focusVisible: ObservedStateHandle<boolean, ToolbarButtonProps>;
+  };
 };
 export interface ToolbarSeparatorProps {}
 export type ToolbarSeparatorExposes = {};
