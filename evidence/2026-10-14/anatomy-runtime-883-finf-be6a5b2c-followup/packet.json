@@ -1,0 +1,420 @@
+{
+  "schemaVersion": 1,
+  "preparedAt": "2026-10-14T16:30:29.476154+00:00",
+  "status": "local additive source-bound checkpoint; FIFO exactbe6 local validation passed;8afe officialField/forms failures retained;be6 Field25SUCCESS withtraceoptin but other newCI incomplete;partial/ABSTAIN;notpublished or approved",
+  "publishedHistory": {
+    "commit": "50441cd1c809dad1d871ef7bd87a6a0e4f06ff8b",
+    "url": "https://github.com/HyacinthHaru/Proto-UI/tree/50441cd1c809dad1d871ef7bd87a6a0e4f06ff8b/evidence/2026-10-14/anatomy-runtime-883-finf-8afe6628",
+    "filesNotRecopied": 259
+  },
+  "fieldFormsEvidence": {
+    "head": "8afe6628df8639418b12c4207c4c6dd1bf48a2d3",
+    "tree": "5720ba41fc4c88d536620cedee7f8fce2dd4f629",
+    "field": {
+      "run": 38591514564,
+      "job": 115947316858,
+      "artifact": 11908975084,
+      "passed": 24,
+      "failed": 1,
+      "failedCase": "LiquidGlass/Vue Checking-to-Available original1000ms",
+      "timingSummary": "final-8afe6628/field-timing-analysis/timing-summary.json",
+      "boundary": "Demo callback ended6.878–7.605ms before failure; Node getter settled Available48.536ms after failure. Not a business callback still running at deadline. Scene tick occupancy is measured association, not inner cost/old root cause."
+    },
+    "forms": {
+      "run": 38591514512,
+      "job": 115947320138,
+      "artifact": 11907729138,
+      "passed": 10,
+      "failed": 2,
+      "runtime": "React",
+      "failedCases": ["shadcn-form", "brutalist-form"],
+      "firstFailedAssertion": "finf-representative-features.browser.test.ts:597 invalid.label.color === invalid.error.color",
+      "observedFirstDivergence": [
+        {
+          "family": "shadcn",
+          "revision": "8afe6628df8639418b12c4207c4c6dd1bf48a2d3",
+          "tree": "5720ba41fc4c88d536620cedee7f8fce2dd4f629",
+          "firstEditorFocused": true,
+          "errorText": "This field is required.",
+          "fieldColor": "lab(2.75381 0 0)",
+          "labelColor": "lab(2.75381 0 0)",
+          "errorColor": "lab(48.4493 77.4328 61.5452)",
+          "dataInvalidPresent": true,
+          "ariaInvalidTruePresent": true,
+          "domSha256": "a6e3534f6008112eaf88630470222186afcb85b7be7e817b468165b199c5f1e7",
+          "captureErrors": [],
+          "pageErrors": [
+            "[Context] provider missing for key: base-field",
+            "[Context] provider missing for key: base-field"
+          ]
+        },
+        {
+          "family": "brutalist",
+          "revision": "8afe6628df8639418b12c4207c4c6dd1bf48a2d3",
+          "tree": "5720ba41fc4c88d536620cedee7f8fce2dd4f629",
+          "firstEditorFocused": true,
+          "errorText": "This field is required.",
+          "fieldColor": "rgb(0, 0, 0)",
+          "labelColor": "rgb(0, 0, 0)",
+          "errorColor": "rgb(159, 18, 57)",
+          "dataInvalidPresent": true,
+          "ariaInvalidTruePresent": true,
+          "domSha256": "b537ce75db8c8b622b99502daf8b41812ab6aa8bd32de2270b523969091034b7",
+          "captureErrors": [],
+          "pageErrors": []
+        }
+      ],
+      "limits": [
+        "Both captured invalid markers, error text and first editor focus exist; color assertion fails before corrected-submit/reset tail.",
+        "Shadcn retains TWO base-field provider-missing page errors; no relation to color failure or lifecycle cause established by this packet.",
+        "Bootstrap/Liquid form positive case records retained, but full four-Adapter/native acceptance not implied.",
+        "hostClock2026-10-10T12:00:00Z is intentionally fixed scene data; actual run time is from CI logs, not hostClock."
+      ]
+    },
+    "rawTraceBoundary": "Three raw traces are already hosted in official Actionsartifact11908975084; downloaded originals retained, not mirrored here."
+  },
+  "FIFO": {
+    "at": "2026-10-14T16:27:11.861010+00:00",
+    "fix": "e3d5234123ebdc1be47eaeaec5c74efeac40d73f",
+    "fixTree": "352f5b00704941494ebced6c884ae2ed6be76ae8",
+    "head": "be6a5b2c1a82532377ec2a5f9aa6caf0ef996367",
+    "tree": "58aaa090f3c165186438f1452f5ec69aff45106c",
+    "sourceBinding": "new-feedback-addendum-staging/fifo-final-binding.json",
+    "independentBinding": "toggle-notification-fifo/independent-final-binding-be6a5b2c.json",
+    "sourcePaths": [
+      {
+        "path": "packages/prototypes/base/src/toggle-group/root.proto.ts",
+        "snapshotPath": "new-feedback-addendum-staging/fifo-source/packages/prototypes/base/src/toggle-group/root.proto.ts",
+        "sha256": "02575dc7d6b4d70c9ef674b3119d70b9100dd89769cca3cdf26b582db4ac5be1",
+        "bytes": 5644,
+        "fixBlob": "d07468a731c4a377ed11d52edfd6b7f303aa86bd",
+        "finalBlob": "d07468a731c4a377ed11d52edfd6b7f303aa86bd",
+        "equalsReviewedCandidateAndBothCommits": true
+      },
+      {
+        "path": "packages/prototypes/base/test/notification-retirement-lifecycle.test.ts",
+        "snapshotPath": "new-feedback-addendum-staging/fifo-source/packages/prototypes/base/test/notification-retirement-lifecycle.test.ts",
+        "sha256": "60df970a167c1391ace7711faeca5993a83052a6ca7f9965bf6925ad47c6c5cb",
+        "bytes": 33534,
+        "fixBlob": "e703d7836e404881508d00dc925bbaab00518aae",
+        "finalBlob": "e703d7836e404881508d00dc925bbaab00518aae",
+        "equalsReviewedCandidateAndBothCommits": true
+      },
+      {
+        "path": "spec/prototypes/P-BASE-TOGGLE-GROUP.yaml",
+        "snapshotPath": "new-feedback-addendum-staging/fifo-source/spec/prototypes/P-BASE-TOGGLE-GROUP.yaml",
+        "sha256": "cbc9f352d2355a439b0e1c8d33f9b4304cc25df0289ca2db24f5afa73bf678bc",
+        "bytes": 4798,
+        "fixBlob": "06951cd997e84b1ac52d17feb066975699286a2b",
+        "finalBlob": "06951cd997e84b1ac52d17feb066975699286a2b",
+        "equalsReviewedCandidateAndBothCommits": true
+      },
+      {
+        "path": "spec/tests/T-TOGGLE-GROUP-REQUEST-RETIREMENT-0001.yaml",
+        "snapshotPath": "new-feedback-addendum-staging/fifo-source/spec/tests/T-TOGGLE-GROUP-REQUEST-RETIREMENT-0001.yaml",
+        "sha256": "6dab966b90e38b444ad5632b9d17abc25ef993f2eedf27e8579685fc1c228506",
+        "bytes": 3408,
+        "fixBlob": "1869c12028caa178bafa864b4080ef6eb89071f9",
+        "finalBlob": "1869c12028caa178bafa864b4080ef6eb89071f9",
+        "equalsReviewedCandidateAndBothCommits": true
+      }
+    ],
+    "precommitEvidence": {
+      "baseHead": "8afe6628df8639418b12c4207c4c6dd1bf48a2d3",
+      "privateOverride": "actual working four-path candidate, not clean final commit execution",
+      "baseline": {
+        "failed": 1,
+        "skipped": 95,
+        "events": ["b", "d", "c", "a"]
+      },
+      "green": {
+        "passed": 96,
+        "events": ["b", "c", "d", "a"]
+      },
+      "sameFinalFormalTestSHA256": "60df970a167c1391ace7711faeca5993a83052a6ca7f9965bf6925ad47c6c5cb",
+      "old95casePrefixPreserved": true,
+      "acceptedRequestsAndFinalSelection": "Accepted request assertions pass in both. Candidate final logical selection D is asserted. Baseline getValue() was not asserted after the earlier event-order failure; no baseline final-selection observation is claimed. Assertions remain outside delivery callbacks."
+    },
+    "ownerLocalRepair": "Keep afterPublication as the active drain queue and hold publicationDepth while callbacks run; accepted notificationD joins behind already queuedC. Existing owner/viewEpoch checks and requestToggle true result remain. No global Context policy or arbitrary infinite reentry guarantee.",
+    "definition": "P-BASE-TOGGLE-GROUP and new T-TOGGLE-GROUP-REQUEST-RETIREMENT-0001 staydraft; T covers existingfive direct +fivequeued +newone drain11Togglecases, not all96filecases or native/Compiler acceptance.",
+    "catalog": {
+      "first": 537,
+      "afterMissingExercisesEdgeFixed": 536,
+      "result": "stillred",
+      "control": "589 exact8afe P/T plus catalog/debt scripts, currentprototype symlink with unchanged static declarations; ordered536diagnostics match. Limited catalog-input control, not fullbaselineproductexecution."
+    },
+    "postcommitExactBe6Validation": {
+      "receipt": "final-be6a5b2c/validation-receipt.json",
+      "c67": {
+        "files": 67,
+        "passed": 1111
+      },
+      "types": {
+        "files": 883,
+        "errors": 0,
+        "warnings": 0,
+        "hints": 11
+      },
+      "authoring": {
+        "base": "a404cb8862d0e99f64c1954b4c44d5371f10aea1",
+        "exit": 0
+      },
+      "allCommandsExit": 0,
+      "cleanAfter": true,
+      "actualWindows": [
+        {
+          "name": "c67",
+          "start": "2026-10-14T16:22:26.294276+00:00",
+          "end": "2026-10-14T16:22:42.871279+00:00",
+          "exit": 0
+        },
+        {
+          "name": "types",
+          "start": "2026-10-14T16:22:26.294479+00:00",
+          "end": "2026-10-14T16:23:08.553591+00:00",
+          "exit": 0
+        },
+        {
+          "name": "authoring",
+          "start": "2026-10-14T16:22:26.295566+00:00",
+          "end": "2026-10-14T16:22:43.504809+00:00",
+          "exit": 0
+        }
+      ]
+    },
+    "normalPush": "toggle-notification-fifo/push-receipt.json",
+    "newBe6CI": {
+      "snapshotPath": "new-feedback-addendum-staging/be6-ci-checkpoint-20261014T162645.json",
+      "sourcePath": "final-be6a5b2c/live-canonical/checkpoint.json",
+      "sourceSHA256": "8216d77d1814848b32cdc1a9596bc9fb913c2b16f03da6e06cb0278883c3fbec",
+      "at": "2026-10-14T16:26:45.391697+00:00",
+      "field": {
+        "run": 38597226533,
+        "job": 115966959731,
+        "status": "completed",
+        "conclusion": "success",
+        "passed": 25,
+        "failed": 0,
+        "successReceipt": "final-be6a5b2c/live-canonical/field-success-receipt.json",
+        "rawLog": "final-be6a5b2c/live-canonical/field-job-115966959731.log",
+        "rawLogSHA256": "3349e33f334757e9bc3afd157b52dea89658c6cc97121d93c195776f524f48ca",
+        "scope": "Workflow trace opt-in enabled; committed test scopes it to Liquid React/Vue/Vue2. This preparer did not download new raw artifact. Success does not establish prior timing cause fixed."
+      },
+      "main": "queued/in_progress; incomplete",
+      "representative": "queued/in_progress; incomplete",
+      "collapsible": "in_progress",
+      "limit": "Not evidence FIFO repaired old Field material timing. Original8afe red and images stay8afe."
+    },
+    "relationshipToFieldForms": "Separate FIFO source/spec repair. Does not repair or explain the8afe Field deadline/Formscolor/provider errors.",
+    "localReviewDisposition": "partial/ABSTAIN; no formalGitHubapproval"
+  },
+  "historical8afeTerminalCI": {
+    "at": "2026-10-14T16:27:11.860691+00:00",
+    "head": "8afe6628df8639418b12c4207c4c6dd1bf48a2d3",
+    "checkout": "a2448b34044c4fcdc46f04097ca1945a8477394d",
+    "checkoutTree": "5720ba41fc4c88d536620cedee7f8fce2dd4f629",
+    "treeEqualProduct": true,
+    "main": {
+      "run": 38591514394,
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38591514394",
+      "conclusion": "cancelled",
+      "jobs": 22,
+      "success": 12,
+      "failure": 9,
+      "cancelled": 1,
+      "completeShardTotals": {
+        "passed": 381,
+        "failed": 37,
+        "skipped": 15,
+        "shards": [2, 4, 5, 6]
+      },
+      "incompleteShards": {
+        "deadline124": [3, 7, 8],
+        "cancelled": [1]
+      },
+      "browserRawLogPointers": [
+        {
+          "id": 115950104649,
+          "name": "test-browser (6/8, browser-6-of-8)",
+          "conclusion": "failure",
+          "summary": "5 failed | 114 passed (119)",
+          "deadline124": false,
+          "rawLogSha256": "a605656ee46921b5fd124d8029e2b8d274138284f7beaf98d11f8b8bc6348e9e",
+          "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38591514394/job/115950104649"
+        },
+        {
+          "id": 115950104725,
+          "name": "test-browser (7/8, browser-7-of-8)",
+          "conclusion": "failure",
+          "summary": null,
+          "deadline124": true,
+          "rawLogSha256": "a21a3fc51952d0b4773f708d639e4d116f43cbb3eb271aeb08de377e518c806f",
+          "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38591514394/job/115950104725"
+        },
+        {
+          "id": 115950104832,
+          "name": "test-browser (4/8, browser-4-of-8)",
+          "conclusion": "failure",
+          "summary": "22 failed | 42 passed (64)",
+          "deadline124": false,
+          "rawLogSha256": "5a02ce6dd077de7bdf59018c80225dfc4b9a0f03ebfe35550e62040006881092",
+          "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38591514394/job/115950104832"
+        },
+        {
+          "id": 115950104922,
+          "name": "test-browser (8/8, browser-8-of-8)",
+          "conclusion": "failure",
+          "summary": null,
+          "deadline124": true,
+          "rawLogSha256": "d765087f86ebb7b758e7a763356ab18bd2b089d10a8317afa6ac29d2a42898de",
+          "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38591514394/job/115950104922"
+        },
+        {
+          "id": 115950104941,
+          "name": "test-browser (3/8, browser-3-of-8)",
+          "conclusion": "failure",
+          "summary": null,
+          "deadline124": true,
+          "rawLogSha256": "b987597f4c90a3bd1fc65fd7b35a03e8385057e2070889d16abbcb131b4e1592",
+          "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38591514394/job/115950104941"
+        },
+        {
+          "id": 115950104964,
+          "name": "test-browser (2/8, browser-2-of-8)",
+          "conclusion": "failure",
+          "summary": "1 failed | 78 passed (79)",
+          "deadline124": false,
+          "rawLogSha256": "13ea2611d89f8155bf938b0eaff9cd343866ba0cf88eac4649d619df5ddded1f",
+          "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38591514394/job/115950104964"
+        },
+        {
+          "id": 115950105065,
+          "name": "test-browser (1/8, browser-1-of-8)",
+          "conclusion": "cancelled",
+          "summary": null,
+          "deadline124": false,
+          "rawLogSha256": "13bb5a2152f1a2fe70c6c26a8a700e8c7a536b4acbcc23da380e714e81b22848",
+          "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38591514394/job/115950105065"
+        },
+        {
+          "id": 115950105226,
+          "name": "test-browser (5/8, browser-5-of-8)",
+          "conclusion": "failure",
+          "summary": "9 failed | 147 passed | 15 skipped (171)",
+          "deadline124": false,
+          "rawLogSha256": "6bb71ddb814823efc733c1773f30b852dcd259b35a97cdfec6c83f232e407fed",
+          "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38591514394/job/115950105226"
+        }
+      ]
+    },
+    "dedicated": {
+      "field": {
+        "run": 38591514564,
+        "conclusion": "failure",
+        "passed": 24,
+        "failed": 1
+      },
+      "collapsible": {
+        "run": 38591514377,
+        "conclusion": "success",
+        "passed": 36
+      },
+      "representative": {
+        "run": 38591514512,
+        "conclusion": "cancelled",
+        "jobs": 18,
+        "jobOutcomes": {
+          "success": 11,
+          "failure": 7
+        },
+        "formsSubset": {
+          "passed": 10,
+          "failed": 2
+        }
+      }
+    },
+    "package": {
+      "actualBuilds": 47,
+      "manifestChecks": 47,
+      "measurements": 9,
+      "PASS": 4,
+      "ADVISORY": 5,
+      "limit": "Not all budgets pass or strict whole-entry acceptance; exact nine measurement lines are retained in terminal-reconciliation."
+    },
+    "cancellation": {
+      "explicitActionRerunOrCancellationRequested": false,
+      "workflowCancelInProgress": true,
+      "boundary": "The root records a normal new push replacing the previous run under workflow concurrency; cancelled is not pass. No Actions rerun/cancel performed by this preparation."
+    },
+    "boundedRawLogPointers": [
+      {
+        "run": 38591514394,
+        "job": 115950104751,
+        "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38591514394/job/115950104751",
+        "rawSource": "final-8afe6628/ci/38591514394/job-115950104751.log",
+        "rawSHA256": "948030716287e6401c0edebb5e103f477bdf3b6bfe4c8e853a3f48bf82de7fed",
+        "rawBytes": 147292,
+        "mirroredRawLog": false,
+        "selectedResultLines": [
+          "2026-10-14T15:53:20.5668843Z [public-docs] 78 drift issue(s) found:"
+        ]
+      },
+      {
+        "run": 38591514394,
+        "job": 115950193898,
+        "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38591514394/job/115950193898",
+        "rawSource": "final-8afe6628/ci/38591514394/job-115950193898.log",
+        "rawSHA256": "8038855de6f3944d57a9b7d506c4ae8d0d1a385de26a16d253c04e335875d520",
+        "rawBytes": 69574,
+        "mirroredRawLog": false,
+        "selectedResultLines": [
+          "2026-10-14T16:10:03.0917924Z [build:packages] complete: 47/47 public packages",
+          "2026-10-14T16:10:03.3592637Z checked 47 public manifests",
+          "2026-10-14T16:10:05.5897340Z [package-budgets] {\"node\":\"v24.21.0\",\"zlib\":\"1.3.2.1-motley-8002e91\",\"esbuild\":\"0.25.12\",\"platform\":\"linux\",\"arch\":\"x64\"}",
+          "2026-10-14T16:10:05.5901970Z [package-budgets] policy={\"mode\":\"finf-development-advisory\",\"scope\":\"Proto-UI/Proto-UI Finf #870/#872: current nine whole-entry measurements only\",\"advisoryEntries\":[\"packages/prototypes/lucide/src/icons/x.ts\",\"packages/prototypes/lucide/src/index.ts\",\"packages/core/src/index.ts\",\"packages/runtime/src/index.ts\",\"packages/adapters/react/src/index.ts\",\"packages/adapters/vue/src/index.ts\",\"packages/adapters/web-component/src/index.ts\",\"packages/prototypes/base/src/button/index.ts\",\"packages/prototypes/shadcn/src/button/index.ts\"],\"expiresWhen\":\"All 68 full-delivery/closeout items are recorded complete, or the explicit Finf opt-in is removed\",\"ledger\":\"internal/coverage-matrices/prototype-coverage-matrix.json\",\"ledgerSha256\":\"14195b286bcb62a80e0703fcd2113d76519fa30b5231aa9a4d7151013e75e8c9\",\"recordedCompleteItems\":5,\"totalItems\":68,\"completionIsAcceptance\":false}"
+        ]
+      },
+      {
+        "run": 38591514377,
+        "job": 115947316936,
+        "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/38591514377/job/115947316936",
+        "rawSource": "final-8afe6628/ci/38591514377/job-115947316936.log",
+        "rawSHA256": "8f3e0ba8e2be07796d45792fbc838673cea450e4d0030050465871e0190f4ee3",
+        "rawBytes": 81421,
+        "mirroredRawLog": false,
+        "selectedResultLines": ["2026-10-14T15:47:36.6323670Z       Tests  36 passed (36)"]
+      }
+    ],
+    "newBe6CI": "pending at this source/local-validation addendum checkpoint; none of these8afe outcomes relabeledbe6"
+  },
+  "historicalPreparationRecord": "field-forms-summary.json retains its original pending FIFO state; this wrapper and final summary supersede that metadata without rewriting the raw record.",
+  "archive": {
+    "path": "records.tar.gz",
+    "sha256": "8d0ae2de202b9b9101fe3e8d3bbf7df4d409e01b8da67d4a5bc216da940e9e8b",
+    "bytes": 203229,
+    "members": 88
+  },
+  "inputs": {
+    "rawFiles": 90,
+    "rawBytes": 2033417,
+    "originalViewedPNGs": 3,
+    "sourceAllowlistSHA256": "4fb75b2a27378994a36c3e6c230bdef809433601f212598f44c5f214d9770a3f"
+  },
+  "notClaimed": [
+    "Field/Forms failure fixed by FIFO",
+    "Old deadline rootcause established",
+    "Newbe6全CIpass",
+    "CompleteC/Finf/optical/AT acceptance",
+    "GitHub approval",
+    "Rawtrace/ZIPmirrored",
+    "Historical259files recopied"
+  ],
+  "evidenceCorrection": {
+    "subject": "FIFO baseline final logical selection",
+    "priorWrapper": "payload-v2 README table and unqualified packet summary",
+    "basis": "Same final test fails at event-order assertion line942 in baseline; subsequent getValue assertion line943 is not executed. Candidate reaches and passes it.",
+    "archivedRecord": "records/new-feedback-addendum-staging/fifo-final-summary.json",
+    "archivedRecordBoundary": "The unqualified acceptedRequestsAndFinalSelection shorthand refers to the candidate result only; it is not proof of the baseline final selection. Original bytes and raw/public mapping remain preserved.",
+    "newExecution": false
+  }
+}

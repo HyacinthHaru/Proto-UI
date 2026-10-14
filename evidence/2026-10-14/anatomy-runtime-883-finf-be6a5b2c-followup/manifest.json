@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "excludesItself": true,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 7078,
+      "sha256": "ddee13ac15f50b25090ffd7967bc969ef738ece3919ba47fab27ec3435138beb"
+    },
+    {
+      "path": "images/field-official-failure-image/8afe6628df86-liquid-glass-vue-failure.png",
+      "bytes": 311307,
+      "sha256": "8a3cd5c97274652aeadc653c4be49f07a4d147419eb399a7b6c6878bb5992f0d"
+    },
+    {
+      "path": "images/forms-official-failure-images/brutalist-form-invalid-submit-first-focus.png",
+      "bytes": 37890,
+      "sha256": "46055634708ced4d41ba04709e818f4b016b10bf9ad24cc560a9ad9c39644741"
+    },
+    {
+      "path": "images/forms-official-failure-images/shadcn-form-invalid-submit-first-focus.png",
+      "bytes": 36917,
+      "sha256": "13c3ace0c8d3c1e7fcf565c868bbcec771a6429ce4bf1e5dd39b9a15f3b761ca"
+    },
+    {
+      "path": "images.md",
+      "bytes": 643,
+      "sha256": "9209b215aa8309a508eb7494ac108ddf56132561f83de9887dbc0f05cc6dd6bc"
+    },
+    {
+      "path": "packet.json",
+      "bytes": 20142,
+      "sha256": "eb48f3abdfee4daf1180c6bc82cf36d5529ea6b3e755d13c3dd7f2446babb6fa"
+    },
+    {
+      "path": "raw-public-map.json",
+      "bytes": 60422,
+      "sha256": "a45054dccffc24eecdc071dd19c4c40b5b9766e415dfbacf939c55c5cd9732f4"
+    },
+    {
+      "path": "records.tar.gz",
+      "bytes": 203229,
+      "sha256": "8d0ae2de202b9b9101fe3e8d3bbf7df4d409e01b8da67d4a5bc216da940e9e8b"
+    }
+  ],
+  "publicationState": "local candidate only"
+}
