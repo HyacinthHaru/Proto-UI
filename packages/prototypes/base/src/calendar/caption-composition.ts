@@ -114,7 +114,19 @@ export function bindCalendarCaption(
     dispose() {
       if (disposed) return;
       disposed = true;
-      for (const unsubscribe of subscriptions.splice(0)) unsubscribe();
+      let failed = false;
+      let failure: unknown;
+      for (const unsubscribe of subscriptions.splice(0)) {
+        try {
+          unsubscribe();
+        } catch (error) {
+          if (!failed) {
+            failed = true;
+            failure = error;
+          }
+        }
+      }
+      if (failed) throw failure;
     },
   };
   try {
