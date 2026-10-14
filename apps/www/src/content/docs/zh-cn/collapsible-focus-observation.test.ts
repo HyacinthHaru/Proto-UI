@@ -1,5 +1,6 @@
 import { expect, it, vi } from 'vitest';
 import {
+  collectCollapsibleViewConnections,
   collectCollapsibleFocusFailure,
   collectCollapsibleFocusSample,
 } from './collapsible-focus-observation';
@@ -196,4 +197,50 @@ it('normal sampling observes replacement identity rather than accepting a stale 
   } finally {
     replacement.remove();
   }
+});
+
+it('view sampling rejects the old loop empty-evidence gap', () => {
+  expect(() => collectCollapsibleViewConnections([])).toThrow('original Collapsible views');
+});
+
+it('view sampling retains every original entry including order and duplicates', () => {
+  const detached = document.createElement('div');
+  const connected = document.createElement('div');
+  document.body.append(connected);
+  try {
+    expect(collectCollapsibleViewConnections([detached, connected, detached, connected])).toEqual([
+      false,
+      true,
+      false,
+      true,
+    ]);
+  } finally {
+    connected.remove();
+  }
+});
+
+it('view sampling does not requery connected replacements of the original nodes', () => {
+  const original = document.createElement('div');
+  original.id = 'original-view';
+  document.body.append(original);
+  const replacement = original.cloneNode() as Element;
+  original.replaceWith(replacement);
+  try {
+    expect(replacement.isConnected).toBe(true);
+    expect(collectCollapsibleViewConnections([original])).toEqual([false]);
+  } finally {
+    replacement.remove();
+  }
+});
+
+it('view sampling propagates connection read failures without dropping entries', () => {
+  const first = document.createElement('div');
+  const broken = document.createElement('div');
+  const error = new Error('connection read failed');
+  Object.defineProperty(broken, 'isConnected', {
+    get: () => {
+      throw error;
+    },
+  });
+  expect(() => collectCollapsibleViewConnections([first, broken, first])).toThrow(error);
 });
