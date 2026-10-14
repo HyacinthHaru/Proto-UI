@@ -72,11 +72,93 @@ async function expanded(button: Locator, value: boolean): Promise<void> {
 }
 
 async function focused(button: Locator): Promise<void> {
+  // Observe the existing evaluate path, including an evaluation still pending
+  // when expect.poll expires. Post-timeout focus is not a prior successful sample.
+  const startedAt = performance.now();
+  const route = button.page().url();
+  const maxRecordedSamples = 32;
+  const samples: Array<{
+    index: number;
+    startedMs: number;
+    settledMs?: number;
+    result?: boolean;
+    browser?: unknown;
+    error?: string;
+  }> = [];
+  let failed = false;
   try {
     await expect
-      .poll(() => button.evaluate((element) => document.activeElement === element))
+      .poll(async () => {
+        // Vitest may retry a pending callback even after its outer timeout.
+        // Keep that original behavior, but never extend this diagnostic's
+        // lifetime or storage. Only pre-timeout samples can settle late below.
+        if (failed || samples.length >= maxRecordedSamples)
+          return button.evaluate((element) => document.activeElement === element);
+        const sample: (typeof samples)[number] = {
+          index: samples.length,
+          startedMs: performance.now() - startedAt,
+        };
+        samples.push(sample);
+        try {
+          const observation = await button.evaluate((element) => {
+            const browserNow = performance.now();
+            const active = document.activeElement;
+            const identify = (node: Element | null) =>
+              node
+                ? {
+                    tag: node.tagName,
+                    id: node.id,
+                    role: node.getAttribute('role'),
+                    ref: node.closest('[data-demo-ref]')?.getAttribute('data-demo-ref') ?? null,
+                    connected: node.isConnected,
+                  }
+                : null;
+            const host = element.closest('[data-previewer-id]') as
+              | (HTMLElement & { __puiCollapsibleLastPointerTarget?: Element | null })
+              | null;
+            const pointerTarget = host?.__puiCollapsibleLastPointerTarget;
+            return {
+              focused: document.activeElement === element,
+              browserNow,
+              browserTimeOrigin: performance.timeOrigin,
+              expected: identify(element),
+              active: identify(active),
+              // Exact identity comparisons, not equality of descriptive fields.
+              expectedIsPointerTarget: pointerTarget ? element === pointerTarget : null,
+              activeIsPointerTarget: pointerTarget ? active === pointerTarget : null,
+            };
+          });
+          sample.result = observation.focused;
+          sample.browser = observation;
+          return observation.focused;
+        } catch (sampleError) {
+          sample.error = String(sampleError);
+          throw sampleError;
+        } finally {
+          sample.settledMs = performance.now() - startedAt;
+          if (failed)
+            console.error(
+              '[collapsible-focus-poll-late-settlement]',
+              JSON.stringify({ route, nodeStartedAt: startedAt, sample })
+            );
+        }
+      })
       .toBe(true);
   } catch (error) {
+    failed = true;
+    console.error(
+      '[collapsible-focus-poll-timeout]',
+      JSON.stringify({
+        route,
+        nodeTimeOrigin: performance.timeOrigin,
+        nodeStartedAt: startedAt,
+        failedMs: performance.now() - startedAt,
+        maxRecordedSamples,
+        sampleLimitReached: samples.length === maxRecordedSamples,
+        error: String(error),
+        samples,
+      })
+    );
     let timer: ReturnType<typeof setTimeout> | undefined;
     try {
       const facts = await Promise.race([
