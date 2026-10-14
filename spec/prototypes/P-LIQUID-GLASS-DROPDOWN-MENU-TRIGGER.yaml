@@ -15,12 +15,18 @@ criteria:
     text:
       zh-CN: 全部行为继续遵守共同定义；本家源码配方和实际绘制证据分开验收，不能用fallback冒充光学效果完成。
       en: All behavior follows the common definition; source recipes and actual paint require separate acceptance, and fallback does not prove optical material completion.
+  - id: P-LIQUID-GLASS-DROPDOWN-MENU-TRIGGER-MATERIAL-INTENT
+    text:
+      zh-CN: Trigger 声明一个共享 V2 rounded-rect/in-app-backdrop 材质槽，geometry 与完整不透明 fallback 来自最终 style；借用已有 Dropdown pressed 状态选择互斥 rest/pressed 候选，不新增 press 或状态 owner。禁用与取消仍由 Base 管理。不可用的 host/source/preferences 保留可读 fallback，不以 native blur 冒充显式玻璃。
+      en: Trigger declares one shared V2 rounded-rect/in-app-backdrop material slot with geometry and complete opaque fallback from final style. Existing Dropdown pressed state selects mutually exclusive rest/pressed candidates without another press or state owner. Base retains disabled and cancellation semantics. Unavailable host/source/preferences preserve readable fallback, never native blur substituted for explicit glass.
 dependsOn:
+  contracts: [C-FEEDBACK-MATERIAL-0001, C-RULE-INTENT-FEEDBACK-MATERIAL-0001]
   prototypes: [P-BASE-DROPDOWN-MENU-TRIGGER]
 verifies:
-  tests: [T-BASE-DROPDOWN-COMPOSITION-0001]
+  tests: [T-BASE-DROPDOWN-COMPOSITION-0001, T-LIQUID-GLASS-DROPDOWN-MATERIAL-0001]
 sources:
   - path: packages/prototypes/liquid-glass/src/dropdown/trigger.proto.ts
+  - path: packages/prototypes/liquid-glass/test/dropdown-material.test.ts
 revisions:
   - version: 0.3.0-alpha.1
     change: introduced
