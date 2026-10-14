@@ -214,6 +214,8 @@ implementations:
     path: packages/modules/overlay/test/host-callback-reentrancy.test.ts
     required: true
     consumesCases: [T-OVERLAY-CATALOG-0001-CASE-HOST-REENTRY]
+    notes:
+      - Six focused Module controls cover capability replacement and layer-release failure at detach and terminal cleanup, queued replacement reconciliation, and first raw zero versus replacement-only failure. Acquired host resources and logical subscriptions retain their distinct lifetimes; no whole-Runtime recovery or native acceptance is claimed.
 verifies:
   contracts:
     - id: C-AS-OVERLAY-0001
