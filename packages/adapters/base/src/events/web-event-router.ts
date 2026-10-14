@@ -1,4 +1,5 @@
 // packages/adapters/base/src/events/web-event-router.ts
+import { createWebPointerContactWriter, type WebPointerContact } from './pointer-contact';
 
 type Unsub = () => void;
 const PRESS_COMMIT_EMITTED_ROOTS = Symbol.for('@proto.ui/router/press-commit-emitted-roots');
@@ -66,18 +67,101 @@ export function createWebProtoEventRouter(opt: {
   // proto semantic bus: press.*, pointer.*, key.*, context.menu...
   const protoRootBus = new EventTarget();
   const protoGlobalBus = new EventTarget();
+  const physicalRootDeliveries = new WeakSet<Event>();
 
   const rootEl = opt.rootEl;
   const globalEl = opt.globalEl ?? window;
   const routerIdentity = {};
   activeRouterByRoot.set(rootEl, routerIdentity);
   const isEnabled = () => activeRouterByRoot.get(rootEl) === routerIdentity && opt.isEnabled();
+  const contactWriter = createWebPointerContactWriter(rootEl);
   let suppressFollowupDirectClick = false;
+  let contact: {
+    pointerId: number;
+    rect: DOMRect;
+    startX: number;
+    startY: number;
+    value: WebPointerContact;
+  } | null = null;
+  const sampled = new WeakSet<Event>();
+  function endContact(reason: WebPointerContact['reason']) {
+    if (!contact) return;
+    const value = { ...contact.value, active: false, reason };
+    contact = null;
+    contactWriter.publish(value);
+  }
+  function sampleContact(native: PointerEvent) {
+    if (sampled.has(native)) return;
+    sampled.add(native);
+    const pointerId = Number.isFinite(native.pointerId) ? native.pointerId : 0;
+    if (native.type === 'pointerdown') {
+      if ((typeof native.button === 'number' && native.button !== 0) || native.isPrimary === false)
+        return;
+      endContact('replaced');
+      const rect = rootEl.getBoundingClientRect();
+      if (
+        ![rect.x, rect.y, rect.width, rect.height, native.clientX, native.clientY].every(
+          Number.isFinite
+        ) ||
+        rect.width <= 0 ||
+        rect.height <= 0
+      )
+        return;
+      contact = {
+        pointerId,
+        rect,
+        startX: native.clientX,
+        startY: native.clientY,
+        value: {
+          active: true,
+          session: contactWriter.nextSession(),
+          x: 0.5,
+          y: 0.5,
+          deltaX: 0,
+          deltaY: 0,
+          reason: 'down',
+        },
+      };
+    }
+    if (!contact || contact.pointerId !== pointerId) return;
+    if (native.type === 'pointercancel') {
+      endContact('cancel');
+      return;
+    }
+    const { rect, startX, startY } = contact;
+    if (Number.isFinite(native.clientX) && Number.isFinite(native.clientY)) {
+      const clamp = (value: number, min: number, max: number) =>
+        Math.max(min, Math.min(max, value));
+      contact.value = {
+        ...contact.value,
+        x: clamp((native.clientX - rect.x) / rect.width, 0, 1),
+        y: clamp((native.clientY - rect.y) / rect.height, 0, 1),
+        deltaX: clamp((native.clientX - startX) / rect.width, -1, 1),
+        deltaY: clamp((native.clientY - startY) / rect.height, -1, 1),
+        reason: native.type === 'pointerdown' ? 'down' : 'move',
+      };
+    }
+    if (native.type === 'pointerup') {
+      endContact('up');
+      return;
+    }
+    contactWriter.publish(contact.value);
+  }
 
   // --- helper: emit proto event to proto bus ---
   function emit(target: EventTarget, type: string, native: any) {
+    if (
+      target === protoRootBus &&
+      ['pointer.down', 'pointer.move', 'pointer.up', 'pointer.cancel'].includes(type)
+    )
+      sampleContact(native);
     const ev = new CustomEvent(type, { detail: createProtoEventPayload(type, native) });
     target.dispatchEvent(ev);
+  }
+
+  function emitFromPhysicalRoot(type: string, native: Event) {
+    if (GLOBAL_ROOT_EVENT_TYPES[native.type] === type) physicalRootDeliveries.add(native);
+    emit(protoRootBus, type, native);
   }
 
   function emitPressCommitOnce(native: Event) {
@@ -277,6 +361,17 @@ export function createWebProtoEventRouter(opt: {
     // ordinary no-demand fast path. Unrelated routes cannot consume the flag.
     const consumesPendingPressCommit = native.type === 'click' && suppressFollowupDirectClick;
     if (!hasMappedListener && !resetsPressCommit && !consumesPendingPressCommit) return false;
+    // A Shadow boundary retargets native.target for the global listener. Skip
+    // only input already delivered by this physical root; a path-only check
+    // would incorrectly consume a real global/slot fallback with no root ingress.
+    if (
+      physicalRootDeliveries.has(native) &&
+      typeof native.composedPath === 'function' &&
+      native.composedPath().includes(rootEl)
+    ) {
+      physicalRootDeliveries.delete(native);
+      return false;
+    }
     if (isWithinRoot(native.target)) return false;
     return shouldRouteToCurrentRoot(native, options);
   }
@@ -331,25 +426,25 @@ export function createWebProtoEventRouter(opt: {
       // global/portal fallback. A descendant owner's input is not our input.
       if (!shouldRouteToCurrentRoot(e, { includeActiveFallback: false })) return;
       suppressFollowupDirectClick = false;
-      emit(protoRootBus, 'pointer.down', e);
+      emitFromPhysicalRoot('pointer.down', e);
     })
   );
   unsubs.push(
     listen(rootEl, 'pointermove', (e) => {
       if (!isEnabled()) return;
-      emit(protoRootBus, 'pointer.move', e);
+      emitFromPhysicalRoot('pointer.move', e);
     })
   );
   unsubs.push(
     listen(rootEl, 'pointerup', (e) => {
       if (!isEnabled()) return;
-      emit(protoRootBus, 'pointer.up', e);
+      emitFromPhysicalRoot('pointer.up', e);
     })
   );
   unsubs.push(
     listen(rootEl, 'pointercancel', (e) => {
       if (!isEnabled()) return;
-      emit(protoRootBus, 'pointer.cancel', e);
+      emitFromPhysicalRoot('pointer.cancel', e);
     })
   );
   unsubs.push(
@@ -365,10 +460,34 @@ export function createWebProtoEventRouter(opt: {
     })
   );
 
+  unsubs.push(
+    listen(rootEl, 'lostpointercapture', (e: PointerEvent) => {
+      if (!isEnabled() || !shouldRouteToCurrentRoot(e, { includeActiveFallback: false })) return;
+      // Normal pointerup already ended this contact. Its implicit capture
+      // release must not cancel surviving hover or a later keyboard gesture.
+      if (!contact || contact.pointerId !== e.pointerId) return;
+      endContact('lostcapture');
+      emit(protoRootBus, 'pointer.cancel', e);
+    })
+  );
+  unsubs.push(
+    listen(globalEl, 'blur', (e) => {
+      endContact('blur');
+      if (isEnabled()) emit(protoRootBus, 'press.cancel', e);
+    })
+  );
+
   // portal fallback: globally mounted nodes do not bubble pointer events to rootEl
   unsubs.push(
     listen(globalEl, 'pointerdown', (e) => {
-      if (!isEnabled()) return;
+      if (!isEnabled()) {
+        endContact('cancel');
+        return;
+      }
+      // A fresh primary gesture elsewhere retires the old visual session,
+      // without routing that new gesture into this semantic owner.
+      if (contact && !sampled.has(e) && e.button === 0 && e.isPrimary !== false)
+        endContact('replaced');
       if (!shouldRouteGlobalRootEvent(e, { includeActiveFallback: false })) return;
       suppressFollowupDirectClick = false;
       emit(protoRootBus, 'pointer.down', e);
@@ -377,7 +496,11 @@ export function createWebProtoEventRouter(opt: {
 
   unsubs.push(
     listen(globalEl, 'pointermove', (e) => {
-      if (!isEnabled()) return;
+      if (!isEnabled()) {
+        endContact('cancel');
+        return;
+      }
+      if (contact) sampleContact(e);
       if (!shouldRouteGlobalRootEvent(e, { includeActiveFallback: false })) return;
       emit(protoRootBus, 'pointer.move', e);
     })
@@ -385,7 +508,11 @@ export function createWebProtoEventRouter(opt: {
 
   unsubs.push(
     listen(globalEl, 'pointerup', (e) => {
-      if (!isEnabled()) return;
+      if (!isEnabled()) {
+        endContact('cancel');
+        return;
+      }
+      if (contact) sampleContact(e);
       if (!shouldRouteGlobalRootEvent(e, { includeActiveFallback: false })) return;
       emit(protoRootBus, 'pointer.up', e);
     })
@@ -393,7 +520,11 @@ export function createWebProtoEventRouter(opt: {
 
   unsubs.push(
     listen(globalEl, 'pointercancel', (e) => {
-      if (!isEnabled()) return;
+      if (!isEnabled()) {
+        endContact('cancel');
+        return;
+      }
+      if (contact) sampleContact(e);
       if (!shouldRouteGlobalRootEvent(e, { includeActiveFallback: false })) return;
       emit(protoRootBus, 'pointer.cancel', e);
     })
@@ -450,7 +581,7 @@ export function createWebProtoEventRouter(opt: {
       if (!isNativeMouseClick(e)) return;
       if (!shouldRouteToCurrentRoot(e)) return;
       if (shouldSuppressFollowupClick(e)) return;
-      emit(protoRootBus, 'press.commit', e);
+      emitFromPhysicalRoot('press.commit', e);
     })
   );
 
@@ -468,7 +599,7 @@ export function createWebProtoEventRouter(opt: {
   unsubs.push(
     listen(rootEl, 'contextmenu', (e) => {
       if (!isEnabled()) return;
-      emit(protoRootBus, 'context.menu', e);
+      emitFromPhysicalRoot('context.menu', e);
     })
   );
 
@@ -508,6 +639,7 @@ export function createWebProtoEventRouter(opt: {
     },
 
     dispose() {
+      endContact('unmount');
       if (activeRouterByRoot.get(rootEl) === routerIdentity) activeRouterByRoot.delete(rootEl);
       for (const u of unsubs.splice(0)) u();
       rootProxy.__dispose?.();
@@ -527,6 +659,7 @@ function createProtoEventPayload(type: string, native: any) {
     nativeEvent: native,
     target: native?.target,
     key: typeof native?.key === 'string' ? native.key : undefined,
+    repeat: typeof native?.repeat === 'boolean' ? native.repeat : undefined,
     shiftKey: typeof native?.shiftKey === 'boolean' ? native.shiftKey : undefined,
     altKey: typeof native?.altKey === 'boolean' ? native.altKey : undefined,
     ctrlKey: typeof native?.ctrlKey === 'boolean' ? native.ctrlKey : undefined,

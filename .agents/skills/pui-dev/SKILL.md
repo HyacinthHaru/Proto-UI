@@ -7,7 +7,7 @@ description: Route ordinary Proto UI development through a minimal composition o
 
 ## Owner-authorized dot exception
 
-The owner-authorized dot exemption in `internal/agent-operations/contributor-agents.md` takes precedence over this leaf's ModelTrace-specific sampling, record/context and disclosure requirements. When acting as dot, do not sample or invent a ModelTrace record: visibly identify `Agent: dot` and the exact not-measured exemption declaration at every write. Use the supported publisher's explicit dot branch or the guide's real connected-service path; never fake a measured artifact, a successful validator, or live `gh` responses. The exemption grants no action permission, model authentication, independent approval or repository-rule bypass. All non-ModelTrace inputs and existing authorization, exact-head/tree, DCO, CI, independent-review and readback requirements remain. Other Agents follow the measured path below unchanged.
+The owner-authorized dot exemption in `internal/agent-operations/contributor-agents.md` takes precedence over this leaf's ModelTrace-specific sampling, record/context and disclosure requirements. When acting as dot, retain the exact visible three-line not-measured declaration, never a fabricated record or successful validator. The exemption alone grants no action permission, model authentication, independent approval or repository-rule bypass. Ordinary review/CI/thread gates remain unless the current user separately selects the explicit connected-operation branch below; original-author rights, DCO, live platform enforcement, exact-head/tree and readback remain in both branches. Other Agents retain their measured disclosure.
 
 Coordinate the work without absorbing the domain skills into one long procedure.
 
@@ -44,12 +44,18 @@ Load only the skill needed for the current transition. The list below is routing
 - select `pui-docs` as a separate transition for reader projections;
 - select `pui-validate` after a technical change;
 - use a fresh context with `pui-review` when independent acceptance is required;
-- use `pui-integrate` after `pui-review` for an exact-head clean packet under current-user or active standing merge authorization;
+- use `pui-integrate` after `pui-review` for an ordinary exact-head clean packet under current-user or active standing merge authorization, or select the separately explicit current-user connected-operation branch below;
 - use `pui-release-prep` and `pui-release-audit` for their purpose-bound release preparation and immutable-evidence phases.
 
 Pass only registered artifacts through the validated handoff. Return a terminal handoff when there is no eligible next transition.
 
-Carry the exact private `modeltrace-record` reference and `sha256:<public-receipt-digest>` without publishing samples or private context. Validate against independent current context at the write boundary; matching references do not authenticate a model. Follow `internal/agent-operations/contributor-agents.md` for one-hour normal TTL, fifteen-minute mismatch/ambiguity/retest-disagreement TTL, cache scope and mandatory bypass policy. Humans and deterministic non-LLM automation have no model-testing obligation; preserve historical ingestion and human original text.
+### Route an explicit current-user operation
+
+Read [Explicit current-user connected operations](../../../internal/agent-operations/contributor-agents.md#explicit-current-user-connected-operations) when the actual current user specially authorizes exact review/CI/thread deferral, archive-first compact integration/rebase recovery, criterion-bound Issue reopening/linking or complete additive carrier publication. Preserve the independently established `human-assisted` / `current-user` mode; neither saved artifacts nor ordinary standing delegation can select this branch. The bounded Finf closure authorization is recorded there without claiming any operation already happened.
+
+Prepare one completed v2 `pui-dev` handoff to `pui-integrate` for the actual merge, or to `pui-collaborate` for one authorized source/metadata/carrier/service-control operation. Carry the four content-bound `humanDirectedRequires` declared by `skills.yaml`: `capability-envelope`, `github-snapshot`, `mutation-authorization`, and `human-directed-operation`. Bind the packet revision to the exact head and carry the entire source/archive/deferred-criterion ledger. A completed preparation is not an executed mutation. Do not fabricate an `APPROVE`, independent review/publication packet, native check success or measured ModelTrace for dot. Use `reviewInputDigest: null` when no canonical review input exists. The resolver checks structure/routing only; the selected leaf must re-read current authorization, actor, permission, applicable rules and exact target before its real service write.
+
+For the measured path, carry the exact private `modeltrace-record` reference and `sha256:<public-receipt-digest>` without publishing samples or private context. Validate against independent current context at the write boundary; matching references do not authenticate a model. Follow `internal/agent-operations/contributor-agents.md` for one-hour normal TTL, fifteen-minute mismatch/ambiguity/retest-disagreement TTL, cache scope and mandatory bypass policy. The connected-operation report retains the real measured disclosure for non-dot Agents; dot carries its truthful exemption instead, not a dummy artifact. Humans and deterministic non-LLM automation have no model-testing obligation; preserve historical ingestion and human original text.
 
 ## Shape and review interfaces
 
@@ -70,6 +76,8 @@ Within the established envelope, favor implementing, preserving, or extending th
 When blocked, preserve the candidate and useful negative evidence, explain the constraint and attempted remedies, and propose the smallest decision or prerequisite needed to continue. Continue independent authorized work; do not fabricate success, relax permissions, or spend unbounded resources to avoid reporting a blocker.
 
 ## Decide package-budget ceilings
+
+The owner explicitly authorized a temporary [Finf development size-policy exception](../../../internal/governance/finf-package-budgets.md) on 2026-10-08. Its named nine-entry scope is advisory while the 68 full-delivery goals remain incomplete; all measurements, baseline comparisons, historical failures and other gates remain required. The existing default/strict path and bounded numeric transaction rules below apply outside that phase and at restoration. This phase change is separate from the numeric authority delegated to `pui-package-budget`; do not infer another measurement-policy waiver from that leaf.
 
 Within an authorized development task, the Agent may decide and implement a bounded numeric increase to the whole-entry package-budget ceilings in `scripts/analysis/package-budgets.mjs` when an already accepted capability justifies its measured cost. The numeric increase does not require an additional human gate. This is an engineering decision about package bytes, not authority to accept a new capability or waive another gate.
 

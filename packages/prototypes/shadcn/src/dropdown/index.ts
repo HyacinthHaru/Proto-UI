@@ -16,6 +16,7 @@ export type {
   ShadcnDropdownItemProps,
   ShadcnDropdownItemExposes,
   ShadcnDropdownItemAsHookContract,
+  ShadcnDropdownLabelProps,
 } from './types';
 
 export { dropdownRoot, dropdownTrigger, dropdownContent, dropdownItem };
@@ -23,3 +24,11 @@ export { default as shadcnDropdownRoot } from './root.proto';
 export { default as shadcnDropdownTrigger } from './trigger.proto';
 export { default as shadcnDropdownContent } from './content.proto';
 export { default as shadcnDropdownItem } from './item.proto';
+
+export { default as dropdownGroup } from './group.proto';
+
+export { default as dropdownLabel } from './label.proto';
+
+export { default as dropdownSeparator } from './separator.proto';
+
+export { default as dropdownShortcut } from './shortcut.proto';

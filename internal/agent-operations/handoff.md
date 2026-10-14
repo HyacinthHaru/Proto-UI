@@ -8,6 +8,12 @@ Version 1 remains a completed, singleton compatibility format. Version 2 adds re
 
 Interrupted handoffs cannot enter write consumers or supply a completed review. Destination prerequisites, mode/source checks and pending autonomous attended decisions still apply.
 
+### Explicit current-user connected-operation intake
+
+The ordinary independent-review handoff remains unchanged. For the separately authorized [human-directed connected path](contributor-agents.md#explicit-current-user-connected-operations), `pui-integrate` and `pui-collaborate` declare `humanDirectedRequires` in `skills.yaml`: `capability-envelope`, `github-snapshot`, `mutation-authorization` and `human-directed-operation`. A marker artifact selects this alternative only in completed v2 development with `human-assisted` / `current-user`, from `pui-dev` or those operation leaves. It cannot convert an interrupted/ordinary review into approval, select an unrelated leaf or activate a standing grant. Each input carries its actual SHA-256 content digest; the operation's revision equals `binding.headSha`. `reviewInputDigest` may be null when no canonical input was produced. A preparation handoff's `outcome: completed` says preparation completed, not that the write occurred.
+
+The operation report binds the actual current instruction, actor/snapshot/ruleset permissions, exact target/base/head/tree or metadata state, full deferred-criterion and original-source/archive ledger, precise connected-service request and expected-head/lease/CAS/readback boundary. Preserve all four inputs in the terminal handoff with the actual `mutation-receipt`. The report is not a clean review packet, published approval or measured ModelTrace record; do not invent those to fill the ordinary path. Non-dot Agents still retain their real measurement/disclosure inside the report. The resolver checks structural relationships, not the authenticity of current-user instructions, archive reachability, content truth, permission or execution. Existing review/collaboration writer CLI admission is unchanged; real connected-service reports do not claim those CLIs validated or ran.
+
 After diagnosis or an authorized repair:
 
     pnpm agent:skill:resume -- interruption.json completed-continuation.json current-artifacts.json

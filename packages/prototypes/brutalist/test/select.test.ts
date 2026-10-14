@@ -54,7 +54,11 @@ function createSelect(options?: {
   setElementProps(value, options?.value ?? {});
   setElementProps(
     content,
-    options?.content ?? { side: 'right', align: 'start', avoidCollisions: false }
+    options?.content ?? {
+      side: 'right',
+      align: 'start',
+      avoidCollisions: false,
+    }
   );
   trigger.appendChild(value);
   root.append(trigger, content);
@@ -99,17 +103,17 @@ describe('prototypes/brutalist: select', () => {
     // T-BRUTALIST-SELECT-0001-CASE-2
     const { trigger } = createSelect();
     await flush();
-    expect(styleContains(trigger, 'h-9')).toBe(true);
+    expect(styleContains(trigger, 'h-10')).toBe(true);
     expect(styleContains(trigger, 'h-8')).toBe(false);
 
     trigger.setProps({ size: 'sm' });
     await flush();
     expect(styleContains(trigger, 'h-8')).toBe(true);
-    expect(styleContains(trigger, 'h-9')).toBe(false);
+    expect(styleContains(trigger, 'h-10')).toBe(false);
 
     trigger.setProps({});
     await flush();
-    expect(styleContains(trigger, 'h-9')).toBe(true);
+    expect(styleContains(trigger, 'h-10')).toBe(true);
     expect(styleContains(trigger, 'h-8')).toBe(false);
   });
 
@@ -179,7 +183,7 @@ describe('prototypes/brutalist: select', () => {
     trigger.setProps({});
     await settle();
     expect(styleContains(trigger, depth)).toBe(false);
-    expect(styleContains(trigger, 'h-9')).toBe(true);
+    expect(styleContains(trigger, 'h-10')).toBe(true);
     expect(trigger.getExposes().disabled.get()).toBe(false);
     expect(styleContains(trigger, 'translate-x-1')).toBe(false);
     expect(styleContains(trigger, 'hit-envelope-translate-1')).toBe(false);
@@ -204,6 +208,10 @@ describe('prototypes/brutalist: select', () => {
     expect(value.getExposes().displayValue.get()).toBe('Pick one');
     expect(value.textContent).toBe('Pick one');
     const chevron = trigger.querySelector('svg');
+    expect(chevron?.parentElement?.getAttribute('data-pui-style') ?? '').not.toContain(
+      'opacity-50'
+    );
+    expect(chevron?.parentElement?.className ?? '').not.toContain('opacity-50');
     expect(chevron?.getAttribute('width')).toBe('16');
     expect(chevron?.getAttribute('height')).toBe('16');
     expect(chevron?.querySelector('path')?.getAttribute('d')).toBe('m6 9 6 6 6-6');
@@ -329,10 +337,12 @@ describe('prototypes/brutalist: select', () => {
     expect(content.hasAttribute('data-pui-view-detached')).toBe(true);
   });
 
-  it('migrates selected pair and check indicator through real Item selection', async () => {
+  it('keeps selection check-only while active and focused items receive the accent pair', async () => {
     // T-BRUTALIST-SELECT-0001-CASE-7
     vi.useFakeTimers();
-    const { root, trigger, value, items } = createSelect({ root: { defaultValue: 'alpha' } });
+    const { root, trigger, value, items } = createSelect({
+      root: { defaultValue: 'alpha' },
+    });
     await settle();
     const alpha = items[0];
     const beta = items[1];
@@ -341,13 +351,26 @@ describe('prototypes/brutalist: select', () => {
     expect(alpha.getExposes().selected.get()).toBe(true);
     expect(alpha.getAttribute('aria-selected')).toBe('true');
     expect(alpha.hasAttribute('data-selected')).toBe(true);
-    expect(styleContains(alpha, 'data-[selected]:bg-main')).toBe(true);
-    expect(styleContains(alpha, 'data-[selected]:text-main-foreground')).toBe(true);
+    expect(styleContains(alpha, 'data-[selected]:bg-main')).toBe(false);
+    expect(styleContains(alpha, 'bg-main')).toBe(false);
+    expect(styleContains(alpha, 'border-black')).toBe(false);
+    expect(styleContains(alpha, 'data-[selected]:text-main-foreground')).toBe(false);
     expect(alpha.querySelector('svg')?.querySelector('path')?.getAttribute('d')).toBe(
       'm20 6-11 11-5-5'
     );
     expect(beta.querySelector('svg')).toBeNull();
-    for (const token of ['rounded-base', 'w-full', 'font-sans', 'text-sm', 'justify-between']) {
+    const glyph = alpha.querySelector('svg');
+    const glyphFrame = glyph?.parentElement;
+    expect(glyph?.getAttribute('width')).toBe('16');
+    expect(glyph?.getAttribute('height')).toBe('16');
+    if (!glyphFrame) throw new Error('Expected owned glyph frame.');
+    for (const token of ['flex', 'size-4', 'shrink-0'])
+      expect(styleContains(glyphFrame, token)).toBe(true);
+    const indicator = glyphFrame.parentElement;
+    expect(indicator).toBeTruthy();
+    for (const token of ['absolute', 'right-2', 'size-3.5'])
+      expect(styleContains(indicator!, token)).toBe(true);
+    for (const token of ['rounded-base', 'w-full', 'font-sans', 'text-sm', 'pl-2', 'pr-8']) {
       expect(styleContains(alpha, token)).toBe(true);
     }
 
@@ -356,6 +379,13 @@ describe('prototypes/brutalist: select', () => {
     beta.dispatchEvent(new PointerEvent('pointerenter', { bubbles: true }));
     await flush();
     expect(beta.getExposes().active.get()).toBe(true);
+    expect(alpha.getExposes().selected.get()).toBe(true);
+    beta.focus();
+    await settle();
+    expect(alpha.getExposes().active.get()).toBe(false);
+    expect(beta.getExposes().focused.get()).toBe(true);
+    expect(styleContains(alpha, 'bg-main')).toBe(false);
+    expect(alpha.querySelector('svg')).not.toBeNull();
     expect(styleContains(beta, 'bg-main')).toBe(true);
     expect(styleContains(beta, 'text-main-foreground')).toBe(true);
     beta.click();

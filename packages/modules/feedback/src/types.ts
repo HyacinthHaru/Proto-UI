@@ -1,10 +1,30 @@
-import type { StyleHandle, ModuleInstance } from '@proto.ui/core';
+import type {
+  StyleHandle,
+  ResidentMotionDeclaration,
+  ModuleInstance,
+  MaterialSlot,
+  MaterialCandidate,
+  MaterialIntentFrame,
+} from '@proto.ui/core';
 import type { ModuleFacade, ModuleHooks, ModuleScope } from '@proto.ui/core';
 
 export type FeedbackRuntimeStyleDisposer = (options?: { flush?: boolean }) => void;
 
 export interface FeedbackFacade extends ModuleFacade {
+  presence: import('@proto.ui/core').PresenceOwnerRuntime & {
+    owner(): import('@proto.ui/core').PresenceOwnerDeclaration<any>;
+    /** Runtime setup registry bridge; not exposed on author def/run. */
+    registerSource(source: object): void;
+  };
+  material: {
+    /** Setup-only single owned slot and whole candidate contributions. */
+    declare(slot: MaterialSlot): () => void;
+    use(candidate: MaterialCandidate): () => void;
+  };
   style: {
+    presence: (declaration: import('@proto.ui/core').PresencePresentationDeclaration) => () => void;
+    /** setup-only; presentation never owns State or presence */
+    transition: (declaration: ResidentMotionDeclaration) => () => void;
     /** setup-only */
     use: (...handles: StyleHandle[]) => () => void;
 
@@ -23,6 +43,15 @@ export interface FeedbackFacade extends ModuleFacade {
 }
 
 export type FeedbackPort = {
+  /** Replaces a Rule's style and material together before one visual flush. */
+  replaceVisualRuntime?: (
+    previous: FeedbackRuntimeStyleDisposer | null,
+    handles: readonly StyleHandle[],
+    candidates: readonly MaterialCandidate[]
+  ) => FeedbackRuntimeStyleDisposer | null;
+  exportMaterialFrame?: () => MaterialIntentFrame;
+  materialDiagnostics?: () => readonly string[];
+  motionDiagnostics?: () => readonly string[];
   /** Private material integration: keep relevant Rules in the evaluator. */
   shouldRetainStyleRule?: (tokens: readonly string[]) => boolean;
   /**

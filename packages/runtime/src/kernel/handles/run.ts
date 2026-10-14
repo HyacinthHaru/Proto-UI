@@ -40,6 +40,7 @@ export const createRunHandle = <P extends PropsBaseType>(
     context: {
       read: (key) => context.read(key),
       tryRead: (key) => context.tryRead(key),
+      tryReadAncestor: (key) => context.tryReadAncestor(key),
       update: (key, next) => context.update(key, next),
       tryUpdate: (key, next) => context.tryUpdate(key, next),
     },
@@ -47,6 +48,11 @@ export const createRunHandle = <P extends PropsBaseType>(
       emit: (key, payload, options) => exposeEvent.emit(key, payload, options),
     },
     feedback: {
+      presence: {
+        publish: (writer, frame) => feedback.presence.publish(writer, frame),
+        isCurrent: (writer, receipt) => feedback.presence.isCurrent(writer, receipt),
+        settle: (writer, outcome) => feedback.presence.settle(writer, outcome),
+      },
       style: {
         patch: (...handles) => feedback.style.patch(...handles),
         suppress: (...handles) => feedback.style.suppress(...handles),
@@ -66,6 +72,10 @@ export const createRunHandle = <P extends PropsBaseType>(
         if (!anatomy) throw new Error(`[Anatomy] module unavailable`);
         return anatomy.partsOf(family, role, options as any);
       }) as RunHandle<P>['anatomy']['partsOf'],
+      descendantsOf: (family, ancestor, role) => {
+        if (!anatomy) throw new Error(`[Anatomy] module unavailable`);
+        return anatomy.descendantsOf(family, ancestor, role);
+      },
       order: {
         version: ((family: any, options: any) => {
           if (!anatomy) throw new Error(`[Anatomy] module unavailable`);

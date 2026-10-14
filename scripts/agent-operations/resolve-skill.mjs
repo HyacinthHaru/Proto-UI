@@ -142,6 +142,9 @@ try {
             taskClass: skill.taskClass,
             mutation: skill.mutation,
             requires: skill.requires,
+            ...(skill.humanDirectedRequires
+              ? { humanDirectedRequires: skill.humanDirectedRequires }
+              : {}),
             produces: skill.produces,
             ...(skill.allowedNextSkillIds
               ? { allowedNextSkillIds: skill.allowedNextSkillIds }

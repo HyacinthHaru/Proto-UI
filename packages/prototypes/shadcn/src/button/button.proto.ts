@@ -7,33 +7,26 @@ import type {
   ShadcnButtonVariant,
 } from './types';
 
-// Shared button skeleton copied from shadcn/ui and reduced to the plain
-// utility tokens that Proto UI v0 can express in feedback.style today.
-const BUTTON_BASE_TOKENS = [
-  'group/button',
-  'inline-flex',
-  'shrink-0',
-  'items-center',
-  'justify-center',
-  'rounded-lg',
-  'border',
-  'bg-clip-padding',
-  'text-sm',
-  'font-medium',
-  'whitespace-nowrap',
-  'transition-all',
-  'outline-none',
-  'select-none',
-].join(' ');
+import {
+  SHADCN_BUTTON_BASE_TOKENS,
+  SHADCN_BUTTON_DEFAULT_SIZE_TOKENS,
+  SHADCN_BUTTON_WRAP_DEFAULT_SIZE_TOKENS,
+  SHADCN_BUTTON_DEFAULT_VARIANT_TOKENS,
+  SHADCN_BUTTON_OUTLINE_VARIANT_TOKENS,
+  SHADCN_BUTTON_DEFAULT_HOVER_TOKENS,
+  SHADCN_BUTTON_OUTLINE_HOVER_TOKENS,
+  SHADCN_BUTTON_FOCUS_TOKENS,
+  SHADCN_BUTTON_DISABLED_TOKENS,
+} from './paint';
 
 // Variant rules stay composable and only encode the stable visual surface.
 // Pseudo selectors such as hover/focus-visible/dark are left to
 // dedicated rule extensions because the current feedback token contract does
 // not accept selector-style utilities directly.
 const VARIANT_TOKENS: Record<ShadcnButtonVariant, string> = {
-  default: 'border-transparent bg-primary text-primary-foreground',
+  default: SHADCN_BUTTON_DEFAULT_VARIANT_TOKENS,
   destructive: 'border-transparent bg-destructive/10 text-destructive',
-  outline: 'border-border bg-background text-foreground',
+  outline: SHADCN_BUTTON_OUTLINE_VARIANT_TOKENS,
   secondary: 'border-transparent bg-secondary text-secondary-foreground',
   ghost: 'border-transparent bg-transparent text-foreground',
   link: 'border-transparent bg-transparent text-primary underline-offset-4',
@@ -43,11 +36,17 @@ const VARIANT_TOKENS: Record<ShadcnButtonVariant, string> = {
 // also contain xs-style variants, but those are not part of this prototype API
 // yet, so they are intentionally left out here.
 const SIZE_TOKENS: Record<ShadcnButtonSize, string> = {
-  default: 'h-8 gap-1.5 px-2.5',
-  sm: 'h-7 gap-1 rounded-[min(var(--radius-md),12px)] px-2.5 text-[0.8rem]',
-  lg: 'h-9 gap-1.5 px-2.5',
-  icon: 'size-8',
+  default: SHADCN_BUTTON_DEFAULT_SIZE_TOKENS,
+  sm: 'h-8 gap-1.5 px-3 whitespace-nowrap',
+  lg: 'h-10 gap-2 px-6 whitespace-nowrap',
+  icon: 'size-9 gap-2 whitespace-nowrap',
 };
+
+const WRAP_SIZE_TOKENS = {
+  default: SHADCN_BUTTON_WRAP_DEFAULT_SIZE_TOKENS,
+  sm: 'min-h-8 h-auto gap-1.5 px-3 py-1 min-w-0 max-w-full whitespace-normal break-words',
+  lg: 'min-h-10 h-auto gap-2 px-6 py-1 min-w-0 max-w-full whitespace-normal break-words',
+} as const;
 
 const button = definePrototype<ShadcnButtonProps, ShadcnButtonExposes>({
   name: 'shadcn-button',
@@ -61,11 +60,13 @@ const button = definePrototype<ShadcnButtonProps, ShadcnButtonExposes>({
       },
       size: { type: 'enum', empty: 'fallback', options: ['default', 'sm', 'lg', 'icon'] },
       disabled: { type: 'boolean', empty: 'fallback' },
+      wrap: { type: 'boolean', empty: 'fallback' },
     });
     def.props.setDefaults({
       variant: 'default',
       size: 'default',
       disabled: false,
+      wrap: false,
     });
 
     // P-SHADCN-BUTTON-BASE-INHERITANCE,
@@ -80,7 +81,7 @@ const button = definePrototype<ShadcnButtonProps, ShadcnButtonExposes>({
 
     // P-SHADCN-BUTTON-DIRECT-ENTRY
     // Base skeleton shared by every shadcn-style button.
-    def.feedback.style.use(tw(BUTTON_BASE_TOKENS));
+    def.feedback.style.use(tw(SHADCN_BUTTON_BASE_TOKENS));
 
     // Variant surface rules map the public `variant` prop to visual tokens.
     (Object.keys(VARIANT_TOKENS) as ShadcnButtonVariant[]).forEach((variant) => {
@@ -93,11 +94,28 @@ const button = definePrototype<ShadcnButtonProps, ShadcnButtonExposes>({
     // Size rules are isolated so later icon-density refinements can layer on
     // top without re-encoding every variant.
     (Object.keys(SIZE_TOKENS) as ShadcnButtonSize[]).forEach((size) => {
+      // Keep each rule callback in the statically modeled DSL shape. The
+      // setup-time size branch must not hide rule dependencies in a ternary.
+      if (size === 'icon') {
+        def.rule({
+          when: (w) => w.prop('size').eq(size),
+          intent: (i) => i.feedback.style.use(tw(SIZE_TOKENS[size])),
+        });
+        return;
+      }
       def.rule({
-        when: (w) => w.prop('size').eq(size),
+        when: (w) => w.all(w.prop('size').eq(size), w.prop('wrap').eq(false)),
         intent: (i) => i.feedback.style.use(tw(SIZE_TOKENS[size])),
       });
     });
+
+    // Optional, reusable label wrapping. Fixed icon density is deliberately unchanged.
+    for (const size of ['default', 'sm', 'lg'] as const) {
+      def.rule({
+        when: (w) => w.all(w.prop('size').eq(size), w.prop('wrap').eq(true)),
+        intent: (i) => i.feedback.style.use(tw(WRAP_SIZE_TOKENS[size])),
+      });
+    }
 
     // P-SHADCN-BUTTON-INTERACTION-STYLES
     // Focus/press are shared interaction states exposed by `asButton()`, so
@@ -105,7 +123,7 @@ const button = definePrototype<ShadcnButtonProps, ShadcnButtonExposes>({
     // host-specific pseudo selectors.
     def.rule({
       when: (w) => w.state(focusVisible).eq(true),
-      intent: (i) => i.feedback.style.use(tw('border-ring ring-3 ring-ring/50')),
+      intent: (i) => i.feedback.style.use(tw(SHADCN_BUTTON_FOCUS_TOKENS)),
     });
 
     def.rule({
@@ -122,7 +140,7 @@ const button = definePrototype<ShadcnButtonProps, ShadcnButtonExposes>({
     // can replace them cleanly without duplicating the base variant tokens.
     def.rule({
       when: (w) => w.all(w.state(hovered).eq(true), w.prop('variant').eq('default')),
-      intent: (i) => i.feedback.style.use(tw('bg-primary/80')),
+      intent: (i) => i.feedback.style.use(tw(SHADCN_BUTTON_DEFAULT_HOVER_TOKENS)),
     });
     def.rule({
       when: (w) => w.all(w.state(hovered).eq(true), w.prop('variant').eq('secondary')),
@@ -130,11 +148,11 @@ const button = definePrototype<ShadcnButtonProps, ShadcnButtonExposes>({
     });
     def.rule({
       when: (w) => w.all(w.state(hovered).eq(true), w.prop('variant').eq('outline')),
-      intent: (i) => i.feedback.style.use(tw('bg-muted text-foreground')),
+      intent: (i) => i.feedback.style.use(tw(SHADCN_BUTTON_OUTLINE_HOVER_TOKENS)),
     });
     def.rule({
       when: (w) => w.all(w.state(hovered).eq(true), w.prop('variant').eq('ghost')),
-      intent: (i) => i.feedback.style.use(tw('bg-muted text-foreground')),
+      intent: (i) => i.feedback.style.use(tw('bg-accent text-accent-foreground')),
     });
     def.rule({
       when: (w) => w.all(w.state(hovered).eq(true), w.prop('variant').eq('link')),
@@ -183,12 +201,21 @@ const button = definePrototype<ShadcnButtonProps, ShadcnButtonExposes>({
         ),
       intent: (i) => i.feedback.style.use(tw('ring-destructive/40')),
     });
+    def.rule({
+      when: (w) =>
+        w.all(
+          w.meta('colorScheme').eq('dark'),
+          w.state(hovered).eq(true),
+          w.prop('variant').eq('ghost')
+        ),
+      intent: (i) => i.feedback.style.use(tw('bg-accent/50')),
+    });
     // Disabled remains a standalone rule because it semantically cuts across
     // every variant and size, and we now source it from the shared button
     // behavior instead of duplicating prop semantics locally.
     def.rule({
       when: (w) => w.state(disabled).eq(true),
-      intent: (i) => i.feedback.style.use(tw('pointer-events-none opacity-50')),
+      intent: (i) => i.feedback.style.use(tw(SHADCN_BUTTON_DISABLED_TOKENS)),
     });
   },
 });

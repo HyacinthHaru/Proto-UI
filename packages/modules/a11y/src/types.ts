@@ -25,6 +25,7 @@ export type A11yFacade = AccessibleHandle;
 export type A11yStateBinding = {
   key: A11yStateKey;
   handle: State<unknown>;
+  when?: State<boolean>;
 };
 
 export type A11yRelationBinding = {
@@ -54,6 +55,10 @@ export type A11yPort = ModulePort & {
   prepareViewPresence(present: boolean): void;
   setRelation(key: A11yRelationKey, spec: A11yRelationSpec): void;
   removeRelation(key: A11yRelationKey): void;
+  /** Derived Label naming never replaces an authored name or relation. */
+  claimControlLabelName(
+    target: A11ySemanticObjectRef
+  ): { dispose(): void; isActive(): boolean } | null;
 };
 
 export type A11yModule = ModuleInstance<A11yFacade> & {

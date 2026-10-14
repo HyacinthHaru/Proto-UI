@@ -1,0 +1,51 @@
+---
+title: 'Drawer'
+description: '可从四个边缘显示的模态面板。'
+---
+
+import { PrototypePreviewer } from '@/components/PrototypePreviewer';
+
+可从四个边缘显示的模态面板。
+
+<PrototypePreviewer
+  demoId="demo-shadcn-drawer"
+  initialRuntime="wc"
+  runtimes={['wc', 'react', 'vue', 'vue2']}
+  codePanel={false}
+/>
+
+Header 与 Footer 现在各自拥有 padding；Content 改用纵向 flex 布局，不再统一添加容器 padding，自定义正文需要自行定义间距。Header 仅在已接受 top/bottom 方向时居中，其他情况继承对齐；非法方向更新保留最后已接受的呈现。Title 继承字号与行高。Content 已移除 shadow；统一 border 和圆角仍不同于固定 New York 的方向边缘绘制。底部 Handle 现为正常流中的 100px 宽、0.5rem 高、1rem 上间距和 muted 填充；保留拖动与 resize，包括其他方向的可见控制，因此尚不等同于上游仅底部显示的装饰指示条或整块 Content 拖动。响应式 Header、方向边缘和上游 extent 尺寸仍未完成。
+
+短内容示例采用上游 demo 的居中、全宽且 max-w-sm 内容列，这是消费方组合，不是所有 Drawer 的最大宽度。Trigger 与 Close 使用固定 New York outline Button 配方，默认高度 2.25rem、横向 padding 1rem；需要长标签时可显式设置 wrap=true，采用本项目的最小高度与多行适配。theme 圆角缩放、深色 outline 绘制和完整 Button 对齐仍为独立待办。
+
+top/bottom Content 默认按内容高度显示；目前保留的兼容最大高度为可用高度减去 6 个根文本单位，始终受安全可用区域约束。它尚未实现 New York 的 viewport 相对 max-h-80vh 及独立 mt-24/mb-24 间距。Content.minExtent/maxExtent 接受中立长度：unit 为 logical、root-text、available 或 available-minus-root-text，value 为非负有限数字。最小高度超过安全上限时以上限优先。本纵向草稿中，left/right 保留既有受限 20rem 呈现。
+
+本项目将 Content 组合为纵向 Scroll surface；固定 New York DrawerContent wrapper 本身未声明 overflow utility。长内容示例的 Close 仍在同一滚动区域内。
+
+Root 支持受控 open 或非受控 defaultOpen。禁用命令不激活。调用方拒绝关闭请求时，拖动预览恢复到实际受控状态。
+
+snapPoints 缺省、null 或空数组时按内容高度显示；非空有效数组启用显式吸附，点为大于 0 且不超过 1 的比例，并排序去重。单独 snapPoint 不开启吸附。显式比例的分母为完整安全上限，不再隐含乘以 85%。defaultSnapPoint 为本地状态；snapPoint 与 snapPointChange 为受控状态。非法纵向 points 或长度记录会被拒绝，不转成满高度。
+
+内容自适应模式的 Handle 是 aria-hidden 的专用指针把手，不提供键盘 resize，也不会因 Enter/Space 变成 Close。显式 snap 保留有名称的 separator、方向键、Home/End 和范围值。Content.dragDismissible=false 禁止拖动关闭；独立 Close、Escape 和外部关闭仍遵循既有协议。接触中断和受控请求拒绝会恢复已接受的呈现。
+
+运行中非法尺寸更新令 extentValid=false，取消 Handle 输入并保留最后有效意图，宿主仍按当前安全约束重算。初始非法输入会在呈现前被拒绝：Root 保留逻辑 open 值，Mask 等待唯一有效的 Content 声明。这些示例使用静态验证的合法输入；本草稿不宣称任意输入安全，也不代表 native、编译器、打包消费或完整 Finf 验收完成。
+
+### 长内容
+
+<PrototypePreviewer
+  demoId="demo-shadcn-drawer-scroll"
+  initialRuntime="wc"
+  runtimes={['wc', 'react', 'vue', 'vue2']}
+  codePanel={false}
+/>
+
+### 显式半开/全开吸附
+
+此例保留显式 resize 交互并播报已提交的变化。
+
+<PrototypePreviewer
+  demoId="demo-shadcn-drawer-snap"
+  initialRuntime="wc"
+  runtimes={['wc', 'react', 'vue', 'vue2']}
+  codePanel={false}
+/>

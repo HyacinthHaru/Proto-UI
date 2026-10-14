@@ -14,7 +14,7 @@ const legacy = JSON.parse(
 delete legacy.$schema;
 delete legacy.$id;
 Object.assign(legacy.properties.artifacts.items, {
-  if: { properties: { type: { const: 'modeltrace-record' } } },
+  if: { properties: { type: { enum: ['modeltrace-record', 'human-directed-operation'] } } },
   then: { required: ['digest'] },
 });
 const registry = loadSkillRegistry();
@@ -23,6 +23,7 @@ const types = [
     registry.skills
       .flatMap((skill) => [
         ...skill.requires,
+        ...(skill.humanDirectedRequires ?? []),
         ...skill.produces,
         ...(skill.conditionalProduces ?? []).map((x) => x.artifact),
       ])
@@ -100,6 +101,62 @@ v2.allOf = types
       },
     },
   }));
+v2.allOf.push({
+  if: {
+    properties: {
+      artifacts: {
+        contains: {
+          type: 'object',
+          properties: { type: { const: 'human-directed-operation' } },
+          required: ['type'],
+        },
+      },
+    },
+  },
+  then: {
+    properties: {
+      entrypoint: { const: 'development' },
+      executionMode: { const: 'human-assisted' },
+      executionModeSource: { const: 'current-user' },
+      outcome: { const: 'completed' },
+      fromId: { enum: ['pui-dev', 'pui-integrate', 'pui-collaborate'] },
+      nextSkillId: { enum: ['pui-integrate', 'pui-collaborate', null] },
+      artifacts: {
+        contains: {
+          type: 'object',
+          properties: { type: { const: 'human-directed-operation' } },
+          required: ['type', 'digest', 'revision'],
+        },
+      },
+    },
+    allOf: ['capability-envelope', 'github-snapshot', 'mutation-authorization'].map((type) => ({
+      properties: {
+        artifacts: {
+          contains: {
+            type: 'object',
+            properties: { type: { const: type } },
+            required: ['type', 'digest'],
+          },
+        },
+      },
+    })),
+  },
+});
+legacy.allOf = [
+  {
+    properties: {
+      artifacts: {
+        not: {
+          contains: {
+            type: 'object',
+            properties: { type: { const: 'human-directed-operation' } },
+            required: ['type'],
+          },
+        },
+      },
+    },
+  },
+];
 v2.allOf.push({
   if: { properties: { outcome: { const: 'interrupted' } } },
   then: {

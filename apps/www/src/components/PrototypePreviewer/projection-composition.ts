@@ -14,6 +14,8 @@ import {
 import {
   PROJECTION_FAMILY_MANIFESTS,
   resolveProjectionPart,
+  resolveProjectionSelectParts,
+  type ProjectionSelectParts,
   type ProjectionComponentId,
   type ProjectionFamilyId,
   type ProjectionFamilyManifest,
@@ -41,6 +43,8 @@ export type ProjectionControlOption<Value extends string = string> = Readonly<{
 
 export type ProjectionControlConfig<Value extends string> = Readonly<{
   label: string;
+  /** Runtime Box may use a genuine controlled Tabs composition. */
+  presentation?: 'select' | 'tabs';
   placeholder?: string;
   /** Consumer opt-in for full selected values under narrow/text-enlarged layout. */
   wrapValue?: boolean;
@@ -504,7 +508,7 @@ function createSelectControl<Value extends string>(
   id: ProjectionControlId,
   currentValue: Value,
   config: ProjectionControlConfig<Value>,
-  selectParts: Readonly<Record<'root' | 'trigger' | 'value' | 'content' | 'item', string>>,
+  selectParts: ProjectionSelectParts,
   coordinateAttrs: DemoBoxAttrs,
   themeSurfaceStyle: DemoSurfaceStyle | undefined,
   locked: boolean
@@ -557,29 +561,51 @@ function createSelectControl<Value extends string>(
         ? { appearance: triggerAppearance(config, selectParts.trigger) }
         : {}),
     },
-    // The website owns control density, through the Adapter's normalized surface channel.
+    // The consumer owns available width; Shadcn keeps its Prototype density.
     surfaceStyle: {
       width: '100%',
       minWidth: '0',
       maxWidth: '100%',
-      minHeight: 'var(--site-select-control-height, var(--site-control-height, 2.25rem))',
-      paddingBlock: 'var(--site-select-control-padding-block, 0.5rem)',
+      ...(selectParts.surface
+        ? {}
+        : {
+            minHeight: 'var(--site-select-control-height, var(--site-control-height, 2.25rem))',
+            paddingBlock: 'var(--site-select-control-padding-block, 0.5rem)',
+          }),
       ...(config.wrapValue ? { height: 'auto' } : {}),
     },
     children: [value],
   });
+  const items = config.options.map((option) =>
+    createProjectedProto(selectParts.item, coordinateAttrs, themeSurfaceStyle, {
+      props: {
+        value: option.value,
+        textValue: option.label,
+        disabled: option.disabled === true,
+      },
+      children: selectParts.itemText
+        ? [
+            createProjectedProto(selectParts.itemText, coordinateAttrs, themeSurfaceStyle, {
+              children: [option.label],
+            }),
+          ]
+        : [option.label],
+    })
+  );
   const content = createProjectedProto(selectParts.content, coordinateAttrs, themeSurfaceStyle, {
-    props: { position: 'popper', align: 'start' },
-    children: config.options.map((option) =>
-      createProjectedProto(selectParts.item, coordinateAttrs, themeSurfaceStyle, {
-        props: {
-          value: option.value,
-          textValue: option.label,
-          disabled: option.disabled === true,
-        },
-        children: [option.label],
-      })
-    ),
+    ...(selectParts.surface ? {} : { props: { position: 'popper', align: 'start' } }),
+    children:
+      selectParts.surface && selectParts.viewport
+        ? [
+            createProjectedProto(selectParts.surface, coordinateAttrs, themeSurfaceStyle, {
+              children: [
+                createProjectedProto(selectParts.viewport, coordinateAttrs, themeSurfaceStyle, {
+                  children: items,
+                }),
+              ],
+            }),
+          ]
+        : items,
   });
   const root = createProjectedProto(selectParts.root, coordinateAttrs, themeSurfaceStyle, {
     ref: refs.root,
@@ -702,16 +728,19 @@ export function createProjectionComposition(
   if (componentRootPrototypeId !== null && !allowedPrototypeIds.has(componentRootPrototypeId))
     throw new Error('[PrototypePreviewer] content recipe root must be declared.');
   const coordinateAttrs = createCoordinateAttrs(options);
-  const selectParts = Object.fromEntries(
-    // A fixed-family, toolbar-free preview needs only its real component parts.
-    // Requesting controls still requires that family's complete Select anatomy.
-    (controlIds.length ? (['root', 'trigger', 'value', 'content', 'item'] as const) : []).map(
-      (partId) => [
-        partId,
-        resolveProjectionPart(options.projectionFamilyId, 'select', partId).prototypeId,
-      ]
-    )
-  ) as Record<'root' | 'trigger' | 'value' | 'content' | 'item', string>;
+  const runtimeTabs =
+    controlIds.includes('runtime') && options.controls.runtime.presentation === 'tabs';
+  const selectParts = resolveProjectionSelectParts(options.projectionFamilyId);
+  const tabsParts = Object.fromEntries(
+    (runtimeTabs ? (['root', 'list', 'trigger', 'content'] as const) : []).map((partId) => [
+      partId,
+      resolveProjectionPart(options.projectionFamilyId, 'tabs', partId).prototypeId,
+    ])
+  ) as Record<'root' | 'list' | 'trigger' | 'content', string>;
+  const runtimeTriggerRef = (value: string) =>
+    value === options.runtimeId
+      ? CONTROL_REFS.runtime.trigger
+      : `${CONTROL_REFS.runtime.trigger}_${value}`;
 
   let locked = options.locked === true;
   let eventGateOpen = options.eventGateOpen ?? !locked;
@@ -729,8 +758,41 @@ export function createProjectionComposition(
     componentRootPrototypeId
   );
 
-  const controls = controlIds.map((id) =>
-    createSelectControl(
+  const controls = controlIds.map((id) => {
+    if (id === 'runtime' && runtimeTabs) {
+      return {
+        kind: 'box',
+        ref: CONTROL_REFS.runtime.box,
+        className: 'pui-projection-control pui-runtime-tabs-control',
+        attrs: {
+          ...coordinateAttrs,
+          'data-projection-control': 'runtime',
+          'data-runtime-tabs': '',
+          'aria-disabled': String(locked),
+        },
+        children: [
+          createProjectedProto(tabsParts.list, coordinateAttrs, rendererThemeSurfaceStyle, {
+            props: {
+              appearance: 'underline',
+              a11yLabel: options.controls.runtime.label,
+              loop: true,
+            },
+            children: options.controls.runtime.options.map((option) =>
+              createProjectedProto(tabsParts.trigger, coordinateAttrs, rendererThemeSurfaceStyle, {
+                ref: runtimeTriggerRef(option.value),
+                props: {
+                  value: option.value,
+                  disabled: option.disabled === true,
+                  appearance: 'underline',
+                },
+                children: [option.label],
+              })
+            ),
+          }),
+        ],
+      } satisfies DemoBoxNode;
+    }
+    return createSelectControl(
       id,
       controlValues[id],
       options.controls[id] as ProjectionControlConfig<string>,
@@ -738,8 +800,8 @@ export function createProjectionComposition(
       coordinateAttrs,
       rendererThemeSurfaceStyle,
       locked
-    )
-  );
+    );
+  });
 
   const applyLocked = (context: DemoSetupContext): void => {
     const scope = context.refs[SCOPE_REF];
@@ -749,6 +811,9 @@ export function createProjectionComposition(
     for (const id of controlIds) {
       const refs = CONTROL_REFS[id];
       context.refs[refs.box]?.setAttribute('aria-disabled', String(locked));
+      // The generation host already owns inertness and the callback event gate.
+      // Tabs' disabled input describes unavailable runtimes, not host readiness.
+      if (id === 'runtime' && runtimeTabs) continue;
       if (locked) {
         context.api.call(refs.root, 'close', 'projection composition locked');
       }
@@ -780,6 +845,7 @@ export function createProjectionComposition(
     for (const prototypeId of new Set([
       ...allowedPrototypeIds,
       ...Object.values(selectParts),
+      ...Object.values(tabsParts),
       ...(controlIds.length ? [`${options.projectionFamilyId}-text-root`] : []),
     ])) {
       prototypeMarkers.set(markerClass('prototype', prototypeId), prototypeId);
@@ -843,19 +909,21 @@ export function createProjectionComposition(
         if (!trigger) {
           throw new Error(`[PrototypePreviewer] projection ${id} control trigger is missing.`);
         }
-        trigger.setAttribute('aria-label', options.controls[id].label);
+        if (!(id === 'runtime' && runtimeTabs))
+          trigger.setAttribute('aria-label', options.controls[id].label);
         const config = options.controls[id] as ProjectionControlConfig<string>;
-        appearanceCleanups.push(
-          bindSiteSelectDismissal(context.refs[CONTROL_REFS[id].box]!, (reason) => {
-            if (activeContext === context)
-              context.api.call(rootRef, 'requestOpen', {
-                open: false,
-                reason,
-                focusReason: 'programmatic',
-              });
-          })
-        );
-        if (config.compactTriggerAppearance) {
+        if (!(id === 'runtime' && runtimeTabs))
+          appearanceCleanups.push(
+            bindSiteSelectDismissal(context.refs[CONTROL_REFS[id].box]!, (reason) => {
+              if (activeContext === context)
+                context.api.call(rootRef, 'requestOpen', {
+                  open: false,
+                  reason,
+                  focusReason: 'programmatic',
+                });
+            })
+          );
+        if (config.compactTriggerAppearance && !(id === 'runtime' && runtimeTabs)) {
           const compact = view.matchMedia?.('(max-width: 47.999rem)');
           const applyAppearance = () => {
             if (activeContext !== context) return;
@@ -872,7 +940,8 @@ export function createProjectionComposition(
           if (value === undefined) return;
           if (activeContext !== context) return;
           // Close before callbacks can begin an async generation replacement.
-          context.api.call(rootRef, 'close', 'projection control valueChange');
+          if (!(id === 'runtime' && runtimeTabs))
+            context.api.call(rootRef, 'close', 'projection control valueChange');
           if (locked || !eventGateOpen) return;
           const control = options.controls[id] as ProjectionControlConfig<string>;
           if (!control.options.some((option) => option.value === value && !option.disabled)) return;
@@ -882,7 +951,10 @@ export function createProjectionComposition(
           // Web Components expose protocol events as bubbling CustomEvents.
           // Do not also install the callback prop or one physical selection
           // could request the next generation twice.
-          const listener: EventListener = (event) => handleValueChange(eventValue(event));
+          const listener: EventListener = (event) => {
+            if (id === 'runtime' && runtimeTabs && event.target !== element) return;
+            handleValueChange(eventValue(event));
+          };
           element.addEventListener('valueChange', listener);
           listeners.push({ element, listener });
         } else {
@@ -945,6 +1017,7 @@ export function createProjectionComposition(
       attempt(stopObservingMarkerChanges);
       for (const cleanup of appearanceCleanups) attempt(cleanup);
       for (const id of controlIds) {
+        if (id === 'runtime' && runtimeTabs) continue;
         attempt(() =>
           context.api.call(CONTROL_REFS[id].root, 'close', 'projection composition cleanup')
         );
@@ -964,6 +1037,21 @@ export function createProjectionComposition(
     };
   };
 
+  const contentNode: DemoBoxNode = {
+    kind: 'box',
+    ref: CONTENT_REF,
+    className: 'pui-projection-content',
+    attrs: {
+      ...coordinateAttrs,
+      'data-projection-content': '',
+      'data-projection-id': options.contentRecipe?.id ?? options.componentId,
+      ...(componentRootPrototypeId
+        ? { 'data-projection-prototype': componentRootPrototypeId }
+        : {}),
+    },
+    children: [projectedChild],
+  };
+
   const demo: DemoSpec = {
     type: 'demo',
     setup,
@@ -979,28 +1067,46 @@ export function createProjectionComposition(
         'data-projection-state': 'preparing',
         'aria-busy': 'true',
       },
-      children: [
-        {
-          kind: 'box',
-          className: 'pui-projection-controls',
-          attrs: coordinateAttrs,
-          children: controls,
-        },
-        {
-          kind: 'box',
-          ref: CONTENT_REF,
-          className: 'pui-projection-content',
-          attrs: {
-            ...coordinateAttrs,
-            'data-projection-content': '',
-            'data-projection-id': options.contentRecipe?.id ?? options.componentId,
-            ...(componentRootPrototypeId
-              ? { 'data-projection-prototype': componentRootPrototypeId }
-              : {}),
-          },
-          children: [projectedChild],
-        },
-      ],
+      children: runtimeTabs
+        ? [
+            createProjectedProto(tabsParts.root, coordinateAttrs, rendererThemeSurfaceStyle, {
+              ref: CONTROL_REFS.runtime.root,
+              props: {
+                value: options.runtimeId,
+                orientation: 'horizontal',
+                activationMode: 'manual',
+              },
+              surfaceStyle: { width: '100%', minWidth: '0', gap: '1rem' },
+              children: [
+                {
+                  kind: 'box',
+                  className: 'pui-projection-controls pui-runtime-tabs-controls',
+                  attrs: coordinateAttrs,
+                  children: controls,
+                },
+                ...options.controls.runtime.options.map((option) =>
+                  createProjectedProto(
+                    tabsParts.content,
+                    coordinateAttrs,
+                    rendererThemeSurfaceStyle,
+                    {
+                      props: { value: option.value, keepMounted: true },
+                      children: option.value === options.runtimeId ? [contentNode] : [],
+                    }
+                  )
+                ),
+              ],
+            }),
+          ]
+        : [
+            {
+              kind: 'box',
+              className: 'pui-projection-controls',
+              attrs: coordinateAttrs,
+              children: controls,
+            },
+            contentNode,
+          ],
     },
   };
   assertDemoSpec(demo);

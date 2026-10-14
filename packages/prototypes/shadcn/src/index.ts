@@ -129,6 +129,7 @@ export type {
   ShadcnDropdownItemProps,
   ShadcnDropdownItemExposes,
   ShadcnDropdownItemAsHookContract,
+  ShadcnDropdownLabelProps,
 } from './dropdown/types';
 export type {
   ShadcnSelectRootProps,
@@ -262,3 +263,102 @@ export * from './text';
 export { default as ShadcnSurfaceRoot, surfaceRoot } from './surface';
 
 export type { SurfaceRootProps, SurfaceRootExposes } from './surface';
+
+export * from './label';
+
+export * from './collapsible';
+export * from './accordion';
+
+export * from './field';
+
+export * from './card';
+
+export * from './alert-dialog';
+
+export * from './drawer';
+
+export * from './popover';
+
+export * from './progress';
+
+export * from './meter';
+
+export * from './calendar';
+
+export * from './toggle-group';
+
+export * from './toolbar';
+
+export * from './toast';
+
+export * from './fieldset';
+
+export * from './form';
+
+export * from './checkbox-group';
+
+export * from './autocomplete';
+
+export * from './combobox';
+
+export * from './command';
+
+export * from './menubar';
+
+export * from './navigation-menu';
+
+export * from './context-menu';
+
+export * from './slider';
+
+export * from './number-field';
+
+export * from './input-otp';
+
+export * from './tree';
+
+export * from './message-scroller';
+
+export * from './resizable';
+
+export * from './carousel';
+
+export * from './virtual-list';
+
+export * from './date-picker';
+
+export * from './data-table';
+
+export { default as selectSurface, default as shadcnSelectSurface } from './select/surface.proto';
+export {
+  default as selectViewport,
+  default as shadcnSelectViewport,
+} from './select/viewport.proto';
+export {
+  default as selectItemText,
+  default as shadcnSelectItemText,
+} from './select/item-text.proto';
+
+export { default as selectGroup, default as shadcnSelectGroup } from './select/group.proto';
+export type {
+  ShadcnSelectGroupProps,
+  ShadcnSelectGroupExposes,
+  ShadcnSelectGroupAsHookContract,
+} from './select/types';
+
+export { default as selectLabel, default as shadcnSelectLabel } from './select/label.proto';
+export type {
+  ShadcnSelectLabelProps,
+  ShadcnSelectLabelExposes,
+  ShadcnSelectLabelAsHookContract,
+} from './select/types';
+
+export {
+  default as selectSeparator,
+  default as shadcnSelectSeparator,
+} from './select/separator.proto';
+export type {
+  ShadcnSelectSeparatorProps,
+  ShadcnSelectSeparatorExposes,
+  ShadcnSelectSeparatorAsHookContract,
+} from './select/types';

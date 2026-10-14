@@ -29,8 +29,8 @@ criteria:
       contracts: [C-TEMPLATE-0001, C-AS-TRANSITION-0001]
   - id: P-BASE-TRANSITION-PERCEPTUAL-OWNER
     text:
-      zh-CN: Transition 只拥有 closed、entering、entered、leaving 感知 phase 与由其派生的 isPresent；不得把感知状态伪装成实际 mount、DOM 存在或 Proto instance disposal 的真相。
-      en: Transition owns only the closed, entering, entered, and leaving perceptual phases and the isPresent fact derived from them; it must not disguise perceptual state as the truth of actual mount, DOM existence, or Proto instance disposal.
+      zh-CN: Transition 只拥有 closed、entering、entered、leaving phase、显式冷准备的 preparing，以及由其派生的资源保留投射 isPresent；不得把感知状态伪装成实际 mount、DOM 存在或 Proto instance disposal 的真相。
+      en: Transition owns only the closed, entering, entered, and leaving phases, explicit cold preparing, and the derived isPresent resource-retention projection; it must not disguise perceptual state as the truth of actual mount, DOM existence, or Proto instance disposal.
     dependsOn:
       contracts: [C-AS-TRANSITION-0001, C-LIFECYCLE-0008, C-STATE-0001]
   - id: P-BASE-TRANSITION-PROPS
@@ -41,8 +41,8 @@ criteria:
       contracts: [C-PROPS-0001, C-PROPS-0003, C-AS-TRANSITION-0001]
   - id: P-BASE-TRANSITION-PUBLIC-SURFACE
     text:
-      zh-CN: Transition 必须 expose `transitionState`、`isPresent`、`enter`、`leave`、`complete`、分组 `controls`，以及 `beforeEnter`、`afterEnter`、`beforeLeave`、`afterLeave` signals；authored asHook handle 必须投射对应 state、controls 与 setup-only `configure`。
-      en: Transition must expose `transitionState`, `isPresent`, `enter`, `leave`, `complete`, grouped `controls`, and the `beforeEnter`, `afterEnter`, `beforeLeave`, and `afterLeave` signals; the authored-asHook handle must project the corresponding state, controls, and setup-only `configure`.
+      zh-CN: Transition 必须 expose `transitionState`、`isPresent`、`enter`、`leave`、`complete`、分组 `controls`，以及 `beforeEnter`、`afterEnter`、`beforeLeave`、`afterLeave` signals；authored asHook handle 必须投射对应 state、controls 与 setup-only `configure` 与 `bindInitialOpen`；后者通过捕获 method 投射，任何 runtime route 调用仍必须拒绝。
+      en: Transition must expose `transitionState`, `isPresent`, `enter`, `leave`, `complete`, grouped `controls`, and the `beforeEnter`, `afterEnter`, `beforeLeave`, and `afterLeave` signals; the authored-asHook handle must project the corresponding state, controls, and setup-only `configure` and `bindInitialOpen`; the latter is projected through a captured method and must still reject calls through every runtime route.
     dependsOn:
       contracts: [C-EXPOSE-STATE-0001, C-EXPOSE-EVENT-0001, C-EXPOSE-0002, C-AS-TRANSITION-0001]
   - id: P-BASE-TRANSITION-ENTER-SEQUENCING
@@ -87,6 +87,17 @@ criteria:
       en: Base Transition does not define CSS classes, keyframes, easing, physics, layout or shared-element motion, staggering, child orchestration, host animation-event detection, or a component semantic role; these visual and host-projection responsibilities belong to downstream prototypes, adapters, or later capabilities.
     dependsOn:
       knowledge: [K-DESIGN-TRADEOFF-0001]
+  - id: P-BASE-TRANSITION-REENTRANT-CONTINUATION
+    text:
+      zh-CN: 同步 before/after 信号、状态投射或视图请求中出现更新目标、重新初始化、卸载或销毁时，旧阶段操作不得继续覆盖新目标、发出过期 after 信号或撤销新视图；同向重复开始请求保持幂等。未被取代的正常事件顺序、持续时间与中断策略不变。本条不定义 CSS 轨迹，也不声明任意宿主调度器注册重入已获支持。
+      en: When a synchronous before/after signal, state projection, or view request changes the target, reinitializes, unmounts, or disposes the machine, an obsolete phase operation must not overwrite the new target, emit stale after signals, or withdraw a new view; repeated same-direction start requests remain idempotent. Uninterrupted event ordering, durations, and interruption policy remain unchanged. This criterion neither defines CSS trajectories nor claims support for arbitrary host scheduler-registration reentrancy.
+    dependsOn:
+      contracts: [C-AS-TRANSITION-0001]
+  - id: P-BASE-TRANSITION-PRESENTATION-COMPLETION
+    text:
+      en: Opt-in presentation completion publishes a lexical owner reference with a private writer, resolved duration, and independent logical phase attempt before synchronous phase observers. Only current physical-binding receipts may consume the existing completion path. A bounded Core delay watchdog includes acknowledgement wait and interpolation; zero duration settles immediately, invalid duration reaching the bound rejects without animation, and failed settlement or cancellation cannot retain a leaving view. Retirement, disposal and reentrant replacement invalidate old acknowledgements. Omitted or timer policy preserves default timer completion. The Drawer 1000 ms bound is engineering policy rather than upstream choreography.
+    dependsOn:
+      contracts: [C-FEEDBACK-PRESENCE-PRESENTATION-0001]
 openQuestions:
   - id: P-BASE-TRANSITION-Q-REDUCED-MOTION-SOURCE
     question:
@@ -102,6 +113,7 @@ sources:
   - path: packages/prototypes/base/src/transition/as-transition.proto.ts
   - path: packages/prototypes/base/src/transition/machine.ts
   - path: packages/prototypes/base/test/as-transition.test.ts
+  - path: packages/prototypes/base/test/transition-presentation.test.ts
   - path: spec/contracts/C-AS-TRANSITION-0001.yaml
   - path: spec/tests/T-AS-TRANSITION-0001.yaml
   - path: https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions.html
@@ -127,11 +139,20 @@ dependsOn:
     ]
   decisions: [D-PROTOTYPE-ENTITY-NAMING-0001]
 relates:
+  contracts:
+    - id: C-TRANSITION-COLD-PREPARATION-0001
+      since: 0.3.0-alpha.1
   prototypes: [P-BASE-DIALOG-CONTENT, P-BASE-HOVER-CARD-CONTENT, P-BASE-SELECT-CONTENT]
   decisions: [D-AS-HOOK-NO-ARG-ONCE-0001, D-AS-HOOK-CALLER-NAME-0001]
 verifies: { tests: [T-BASE-TRANSITION-0001] }
 revisions:
+  - version: 0.3.0-alpha.1
+    change: clarified
+    summary: Distinguished optional cold preparation and resource-retention projection from actual view mount and from unchanged default phases.
   - version: 0.2.0-rc.0
     change: introduced
     summary: Cataloged standalone and authored-asHook Transition entries, perceptual phase and ViewIntent boundaries, public controls, interruption, fallback completion, host neutrality, and reduced-motion behavior.
+  - version: 0.2.0-rc.0
+    change: refined
+    summary: Added the setup-only initial boolean context-source binding to the authored handle without changing the phase machine.
 tags: [prototype, base, transition, as-hook, lifecycle, view-intent, reduced-motion, accessibility]

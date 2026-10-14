@@ -38,6 +38,9 @@ export type OverlayConfigPatch = Readonly<{
   sideOffset?: number;
   alignOffset?: number;
   anchored?: boolean;
+  /** Project a host-root available region without choosing placement or visual gutters. */
+  availableSpace?: boolean;
+  availableLayout?: import('./positioning').AvailableLayoutBinding;
   strategy?: AnchoredPositionStrategy;
   avoidCollisions?: boolean;
   collisionBoundary?: AnchoredCollisionBoundary;
@@ -64,6 +67,8 @@ export type OverlayConfig = Readonly<{
   sideOffset: number;
   alignOffset: number;
   anchored: boolean;
+  availableSpace?: boolean;
+  availableLayout?: import('./positioning').AvailableLayoutBinding;
   strategy: AnchoredPositionStrategy;
   avoidCollisions: boolean;
   collisionBoundary: AnchoredCollisionBoundary;
@@ -110,6 +115,21 @@ export type OverlayPresenceBinding<P extends PropsBaseType = PropsBaseType> = Re
   present: ObservedStateHandle<boolean, any>;
 }>;
 
+/** Runtime-only safe-part association; no host target reaches the author. */
+export type OverlayTargetAlignmentBinding = Readonly<{
+  family: import('./anatomy').AnatomyFamily;
+  surface: AnatomyPartView;
+  scrollport: AnatomyPartView;
+  blockReference: AnatomyPartView;
+  inlineReference: AnatomyPartView;
+  blockTarget: AnatomyPartView;
+  inlineTarget: AnatomyPartView;
+  atStart: boolean;
+  atEnd: boolean;
+  constraints: import('./positioning').TargetAlignmentConstraints;
+  onAlignment(status: import('./positioning').TargetAlignmentStatus): void;
+}>;
+
 export interface OverlayModuleHandle<P extends PropsBaseType = PropsBaseType> {
   open: ObservedStateHandle<boolean, P>;
 
@@ -123,8 +143,11 @@ export interface OverlayModuleHandle<P extends PropsBaseType = PropsBaseType> {
 
   registerTrigger(target: unknown): void;
   registerAnchor(target: unknown): void;
+  /** Position only; existing anatomy still owns dismissal and focus restoration. */
+  registerInputAnchor(anchor: import('./context-menu-input').InputOriginAnchor | null): void;
   registerAnchorPart(part: AnatomyPartView): void;
   registerContent(target: unknown): void;
+  registerTargetAlignment(binding: OverlayTargetAlignmentBinding | null): void;
   getPositionSnapshot(): AnchoredPositionSnapshot | null;
 }
 

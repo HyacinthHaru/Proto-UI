@@ -1,0 +1,51 @@
+---
+title: 'Drawer'
+description: 'An edge-attached modal panel with four placement choices.'
+---
+
+import { PrototypePreviewer } from '@/components/PrototypePreviewer';
+
+An edge-attached modal panel with four placement choices.
+
+<PrototypePreviewer
+  demoId="demo-shadcn-drawer"
+  initialRuntime="wc"
+  runtimes={['wc', 'react', 'vue', 'vue2']}
+  codePanel={false}
+/>
+
+Header and Footer now own their padding; Content uses a vertical flex layout without shared container padding, so custom body content must supply its own spacing. Header centers only for accepted top/bottom directions and otherwise inherits alignment; rejected direction updates keep the last accepted presentation. Title inherits font size and line height. Content has no shadow. Its uniform border and radius still differ from the pinned New York direction-specific edges. The bottom Handle now occupies normal flow with a 100px width, 0.5rem height, 1rem top margin and muted fill. Its drag/resize behavior is retained, including visible controls on other sides, so it is not yet the upstream bottom-only decorative indicator or whole-Content drag surface. Responsive Header rules, directional edges and upstream extent sizing remain unfinished.
+
+The short example uses the upstream demo’s centered full-width, max-w-sm interior column; this is consumer composition rather than a maximum width imposed on every Drawer. Trigger and Close use the fixed New York outline Button recipe with default 2.25rem height and 1rem inline padding. Set their optional wrap prop to true for the project’s minimum-height, multiline-label adaptation. Theme radius scaling, dark outline paint and complete Button equivalence remain separate gaps.
+
+Top/bottom Content fits its content by default. Its retained compatibility maximum is the available height minus 6 root-text units, always bounded by the safe available region. This does not implement New York’s viewport-relative max-h-80vh and separate mt-24/mb-24 spacing. Content.minExtent and maxExtent accept neutral lengths with unit logical, root-text, available or available-minus-root-text and a nonnegative finite value. A minimum above the safe cap is clamped. Left/right retain the existing capped 20rem presentation in this vertical-only draft.
+
+The project composes Content as a vertical Scroll surface. The pinned New York DrawerContent wrapper does not itself declare an overflow utility. The long example keeps Close inside the same scrollport.
+
+Root supports controlled open or uncontrolled defaultOpen. Disabled commands do not activate. Controlled close requests can be refused; drag preview then returns to the accepted owner state.
+
+Omitted, null or empty snapPoints selects content-fit mode. A nonempty valid array selects explicit snaps: positive fractions up to one, sorted and deduplicated. snapPoint alone does not enable snapping. Explicit snap fractions use the full capped extent, not an implicit 85% multiplier. defaultSnapPoint is local; snapPoint with snapPointChange is owner-controlled. Invalid vertical point arrays or length records are rejected, not converted to full height.
+
+In content-fit mode Handle is a pointer-only, aria-hidden drag affordance, without keyboard resizing or an Enter/Space close action. Explicit snaps retain the named separator, arrows, Home/End and range values. Content.dragDismissible=false prevents drag dismissal; independent Close, Escape and outside dismissal retain their existing protocol. Interrupted gestures and rejected controlled requests restore the accepted presentation.
+
+Runtime invalid extent updates expose extentValid=false, cancel Handle input and retain the last valid intent while current safety constraints still apply. Initial malformed input is rejected before presentation: Root keeps its logical open value, while Mask waits for one valid Content declaration. These examples use statically validated legal inputs. This draft does not claim arbitrary-input safety or native, compiler, packed-consumer or full Finf acceptance.
+
+### Long content
+
+<PrototypePreviewer
+  demoId="demo-shadcn-drawer-scroll"
+  initialRuntime="wc"
+  runtimes={['wc', 'react', 'vue', 'vue2']}
+  codePanel={false}
+/>
+
+### Explicit half/full snaps
+
+This example retains the explicit resizing interaction and announces committed changes.
+
+<PrototypePreviewer
+  demoId="demo-shadcn-drawer-snap"
+  initialRuntime="wc"
+  runtimes={['wc', 'react', 'vue', 'vue2']}
+  codePanel={false}
+/>

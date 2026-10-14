@@ -1,0 +1,97 @@
+{
+  "kind": "finf-owner-directed-source-closure",
+  "date": "2026-10-14",
+  "scope": "Eight original Finf source pull requests with all deferred criteria retained; not a release or technical acceptance.",
+  "mode": "human-assisted/current-user",
+  "currentUserDecision": "Explicitly authorize required Skill/execution-policy changes, author-owned DCO signing, archive-first source recovery, integration with recorded review/CI/thread deferral, complete followup publication and criterion tracking.",
+  "sourceArchives": [
+    {
+      "number": 872,
+      "originalHead": "7f18c4e5a5fd4ab0a87675b7bccbd18082a398e1",
+      "archiveRef": "refs/heads/archive/finf-200/pr872-7f18c4e5",
+      "commitUrl": "https://github.com/Proto-UI/Proto-UI/commit/7f18c4e5a5fd4ab0a87675b7bccbd18082a398e1"
+    },
+    {
+      "number": 872,
+      "originalHead": "8a2d8897d710ab4f1c47a564f4077920b5203bf4",
+      "archiveRef": "refs/heads/archive/finf-200/pr872-8a2d8897",
+      "commitUrl": "https://github.com/Proto-UI/Proto-UI/commit/8a2d8897d710ab4f1c47a564f4077920b5203bf4"
+    },
+    {
+      "number": 878,
+      "originalHead": "02800620b911c5d60a262c770999869e71026c7e",
+      "archiveRef": "refs/heads/archive/finf-200/pr878-02800620",
+      "commitUrl": "https://github.com/Proto-UI/Proto-UI/commit/02800620b911c5d60a262c770999869e71026c7e"
+    },
+    {
+      "number": 869,
+      "originalHead": "5242ea83793050035ecebd9c3e23761600d3dd15",
+      "archiveRef": "refs/heads/archive/finf-200/pr869-5242ea83",
+      "commitUrl": "https://github.com/Proto-UI/Proto-UI/commit/5242ea83793050035ecebd9c3e23761600d3dd15"
+    },
+    {
+      "number": 884,
+      "originalHead": "136e16b57c19de961532fa17cef51961f926bd7e",
+      "archiveRef": "refs/heads/archive/finf-200/pr884-136e16b5",
+      "commitUrl": "https://github.com/Proto-UI/Proto-UI/commit/136e16b57c19de961532fa17cef51961f926bd7e"
+    },
+    {
+      "number": 886,
+      "originalHead": "caef71a43310d11fdd3f314f8706d62b57071a70",
+      "archiveRef": "refs/heads/archive/finf-200/pr886-caef71a4",
+      "commitUrl": "https://github.com/Proto-UI/Proto-UI/commit/caef71a43310d11fdd3f314f8706d62b57071a70"
+    },
+    {
+      "number": 885,
+      "originalHead": "1699b70ecf5ff51459aebb3f7bedeed92f9f111b",
+      "archiveRef": "refs/heads/archive/finf-200/pr885-1699b70e",
+      "commitUrl": "https://github.com/Proto-UI/Proto-UI/commit/1699b70ecf5ff51459aebb3f7bedeed92f9f111b"
+    },
+    {
+      "number": 879,
+      "originalHead": "a24eb91d2609252d5419ad58dd64d8cdb4ea6422",
+      "archiveRef": "refs/heads/archive/finf-200/pr879-a24eb91d",
+      "commitUrl": "https://github.com/Proto-UI/Proto-UI/commit/a24eb91d2609252d5419ad58dd64d8cdb4ea6422"
+    },
+    {
+      "number": 846,
+      "originalHead": "8218c3e9c6af3851ae79d973f792444b9dbf4ba6",
+      "archiveRef": "refs/heads/archive/finf-200/pr846-8218c3e9",
+      "commitUrl": "https://github.com/Proto-UI/Proto-UI/commit/8218c3e9c6af3851ae79d973f792444b9dbf4ba6"
+    }
+  ],
+  "baselineMain": "ea19727838d85c05af5e4bca8d5fc235cb44e288",
+  "source872LatestPreserved": "8a2d8897d710ab4f1c47a564f4077920b5203bf4",
+  "originalDcoCompleteEvaluation": {
+    "pinnedUpstreamRevision": "50de0ecd867606da6b521fa313b50cfe45cd3af8",
+    "original872CommitCount": 558,
+    "original884CommitCount": 557,
+    "failedSignoffs": 0,
+    "missingTrailerNegativeControlRejected": true,
+    "installedNativeAppSuccessNotClaimedForTheseOriginalLargeHeads": true
+  },
+  "recovery": "Original immutable histories remain reachable in verified durable archive refs. The new compact source head preserves the original product tree and authorized policy projections; actual source/Fork lease and native DCO remain separate enforced operation boundaries.",
+  "sourcePreservation": {
+    "allDistinctPaths": 3703,
+    "sourceRows": 7265,
+    "conflictFiles": 16,
+    "conflictBlocks": 75,
+    "featureRuntimeAcceptanceNotClaimed": true,
+    "introducedReadinessOmissions": "Two precisely recovered source notification/oracle choices, exercised through focused41consumer tests and actual first-error fanout helper; source886 recovery is applied at its own stage."
+  },
+  "deferredCriteria": {
+    "fullSourceAndHistoricalRecords": 1042,
+    "conservativeUncheckedSourceRecords": 955,
+    "originalHigRows": 158,
+    "allOriginalSourceBodiesAndCompoundConditionsRetained": true,
+    "allFourPreparedAdditiveCarrierPartsMustPublish": true,
+    "sourceRecordCountIsNotBugCount": true,
+    "ordinaryApprovalAndTechnicalCiNotClaimedPassed": true
+  },
+  "skillPolicyDecision": "A real explicit current-user connected-operation branch preserves actor/platform/DCO/source/head/readback safeguards without pretending the ordinary independent-review path passed. The existing independent-review path remains available.",
+  "integrationReceipts": [],
+  "followupPullRequestUrl": null,
+  "agent": "dot",
+  "modelTrace": "not measured — owner-authorized dot exemption (2026-10-06)",
+  "roleDeclaration": "This role declaration is not authenticated model identity, permission, independent review, or acceptance."
+}

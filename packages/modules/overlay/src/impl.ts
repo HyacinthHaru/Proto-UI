@@ -1,3 +1,4 @@
+import { OverlayTargetAlignment } from './target-alignment-binding';
 import { joinEscapeScope, ownsEscapeSample } from './escape-coordinator';
 import type {
   BoundaryHandle,
@@ -12,6 +13,7 @@ import type {
   OverlayReason,
   OverlayRegistration,
   AnchoredPositionHandle,
+  AvailableSpaceHandle,
   AnchoredPositionSnapshot,
   AnatomyPartView,
 } from '@proto.ui/core';
@@ -26,6 +28,7 @@ import {
   OVERLAY_GLOBAL_MOUNT_CAP,
   OVERLAY_LAYER_SCHEDULER_CAP,
   OVERLAY_MODAL_CAP,
+  OVERLAY_TARGET_HOST_CAP,
   type OverlayGlobalMount,
   type OverlayLayerScheduler,
   type OverlayModal,
@@ -43,6 +46,7 @@ const DEFAULT_CONFIG: OverlayConfig = Object.freeze({
   sideOffset: 4,
   alignOffset: 0,
   anchored: false,
+  availableSpace: false,
   strategy: 'absolute',
   avoidCollisions: true,
   collisionBoundary: 'clippingAncestors',
@@ -100,12 +104,29 @@ function pushOverrideWarning(warnings: string[], field: string, prev: unknown, n
   warnings.push(`[Overlay] ${field} overridden: ${String(prev)} -> ${String(next)}`);
 }
 
+type HostResourceLease = {
+  target?: unknown;
+  acquiring: boolean;
+  revoked: boolean;
+  release: (() => void) | null;
+};
+
+function revokeHostResource(lease: HostResourceLease): void {
+  lease.revoked = true;
+  if (lease.acquiring) return;
+  const release = lease.release;
+  lease.release = null;
+  release?.();
+}
+
 export class OverlayModuleImpl extends ModuleBase {
   private config: OverlayConfig = DEFAULT_CONFIG;
   private presenceBound = false;
   private readonly prototypeName: string;
   private readonly warnings: string[] = [];
+  private targetIssue: string | null = null;
   private readonly boundary: BoundaryHandle<any>;
+  private openRevision = 0;
   private lastReason: OverlayReason | undefined = undefined;
   private viewReconciliationVersion = 0;
   private registration: OverlayRegistration = Object.freeze({
@@ -119,11 +140,15 @@ export class OverlayModuleImpl extends ModuleBase {
   private globalMount: OverlayGlobalMount | null = null;
   private modalLock: OverlayModal | null = null;
   private layerScheduler: OverlayLayerScheduler | null = null;
-  private mountedHost: HTMLElement | null = null;
+  private portalLease: HostResourceLease | null = null;
+  private mountedEpoch = 0;
+  private reconcilingView = false;
+  private reconcileViewAgain = false;
   private anchorPart: AnatomyPartView | null = null;
-  private layerDetach: (() => void) | null = null;
-  private layerHost: HTMLElement | null = null;
-  private modalLocked = false;
+  private readonly targetAlignment: OverlayTargetAlignment;
+  private inputAnchor: import('@proto.ui/core').InputOriginAnchor | null = null;
+  private layerLease: HostResourceLease | null = null;
+  private modalLease: HostResourceLease | null = null;
   private readonly boundaryDisposers: Record<
     'trigger' | 'anchor' | 'content',
     (() => void) | null
@@ -156,14 +181,22 @@ export class OverlayModuleImpl extends ModuleBase {
     private readonly boundaryPort: BoundaryPort,
     private readonly eventPort: EventPort,
     private readonly anatomyPort: AnatomyPort,
-    private readonly anchoredPosition: AnchoredPositionHandle
+    private readonly anchoredPosition: AnchoredPositionHandle,
+    private readonly availableSpace: AvailableSpaceHandle | null = null
   ) {
     super(caps);
+    this.targetAlignment = new OverlayTargetAlignment(anatomyPort, boundaryPort, () => {
+      if (this.viewActive) this.reconcileViewResourcesAfterCallback();
+    });
     this.prototypeName = prototypeName;
     this.boundary = boundary;
     this.refreshHostCaps();
-    this.offBoundaryOutside = this.boundary.subscribeOutside(() => {
+    this.offBoundaryOutside = this.boundary.subscribeOutside((event) => {
       if (!this.isOpen()) return;
+      if (event.observation === 'focus.move') {
+        if (this.config.closeOnFocusOutside) this.close('focus.outside');
+        return;
+      }
       if (!this.config.closeOnOutsidePress) return;
       this.close('outside.press');
     });
@@ -172,6 +205,9 @@ export class OverlayModuleImpl extends ModuleBase {
   private installDismissSampling(): void {
     if (this.config.closeOnOutsidePress) {
       this.boundaryPort.observe('pointer.press');
+    }
+    if (this.config.closeOnFocusOutside) {
+      this.boundaryPort.observe('focus.move');
     }
     if (this.config.closeOnEscape && !this.escapeSamplingInstalled) {
       this.escapeSamplingInstalled = true;
@@ -194,16 +230,22 @@ export class OverlayModuleImpl extends ModuleBase {
   override onProtoPhase(phase: ProtoPhase): void {
     super.onProtoPhase(phase);
     if (phase !== 'unmounted') return;
+    this.viewReconciliationVersion += 1;
     this.leaveEscapeScope?.();
     this.leaveEscapeScope = null;
     this.escapeScope = null;
     this.teardownMountedViewSideEffects();
     this.clearBoundaryRegistrations();
     this.offBoundaryOutside?.();
+    this.targetAlignment.dispose();
   }
 
   override onMountPhase(phase: MountPhase, epoch: number): void {
+    if (this.mountPhase !== phase || this.mountedEpoch !== epoch) {
+      this.viewReconciliationVersion += 1;
+    }
     super.onMountPhase(phase, epoch);
+    this.mountedEpoch = epoch;
     this.syncEscapeCandidate();
     if (phase === 'unmounting' || phase === 'detached') {
       this.teardownMountedViewSideEffects();
@@ -215,6 +257,11 @@ export class OverlayModuleImpl extends ModuleBase {
   }
 
   private refreshHostCaps(): void {
+    this.deferResourceReentry(() => this.refreshCurrentHostCaps());
+  }
+
+  private refreshCurrentHostCaps(): void {
+    const epoch = this.caps.epoch;
     const globalMount = this.caps.has(OVERLAY_GLOBAL_MOUNT_CAP)
       ? this.caps.get(OVERLAY_GLOBAL_MOUNT_CAP)
       : null;
@@ -224,8 +271,11 @@ export class OverlayModuleImpl extends ModuleBase {
       : null;
     // Release through the provider that acquired each resource before replacing it.
     if (globalMount !== this.globalMount) this.unmountGlobalIfNeeded();
+    if (epoch !== this.caps.epoch) return;
     if (modalLock !== this.modalLock) this.unlockModalIfNeeded();
+    if (epoch !== this.caps.epoch) return;
     if (layerScheduler !== this.layerScheduler) this.clearLayer();
+    if (epoch !== this.caps.epoch) return;
     this.globalMount = globalMount;
     this.modalLock = modalLock;
     this.layerScheduler = layerScheduler;
@@ -242,95 +292,225 @@ export class OverlayModuleImpl extends ModuleBase {
     }
   }
 
-  private resolveHostElement(): HTMLElement | null {
-    let hostEl: HTMLElement | null =
-      this.registration.content instanceof HTMLElement ? this.registration.content : null;
-    if (hostEl) return hostEl;
-    if (!this.caps.has(HOST_ELEMENT_CAP)) return null;
-    const capHost = this.caps.get(HOST_ELEMENT_CAP);
-    return capHost instanceof HTMLElement ? capHost : null;
+  private resolveHostElement(): unknown | null {
+    if (this.caps.has(OVERLAY_TARGET_HOST_CAP)) {
+      const epoch = this.caps.epoch;
+      const version = this.viewReconciliationVersion;
+      const registration = this.registration;
+      const host = this.caps.get(OVERLAY_TARGET_HOST_CAP);
+      const candidate = this.registration.content ?? host.root();
+      const resolved =
+        candidate !== null && typeof candidate === 'object' ? host.resolve(candidate) : null;
+      if (
+        epoch !== this.caps.epoch ||
+        version !== this.viewReconciliationVersion ||
+        registration !== this.registration
+      )
+        return null;
+      if (resolved !== null && typeof resolved === 'object') {
+        this.targetIssue = null;
+        return resolved;
+      }
+      this.targetIssue = '[Overlay] host target unavailable or foreign';
+      return null;
+    }
+    // Compatibility for existing Web-only providers. A native peer has no
+    // HTMLElement global; absence is not permission to accept a foreign token.
+    const candidate =
+      this.registration.content ??
+      (this.caps.has(HOST_ELEMENT_CAP) ? this.caps.get(HOST_ELEMENT_CAP) : null);
+    if (typeof HTMLElement !== 'undefined' && candidate instanceof HTMLElement) {
+      this.targetIssue = null;
+      return candidate;
+    }
+    this.targetIssue = '[Overlay] host target capability unavailable';
+    return null;
   }
 
-  private mountGlobalIfNeeded(hostEl: HTMLElement): void {
-    if (!this.config.portal || !this.globalMount) return;
-
-    if (this.mountedHost === hostEl) return;
-
-    if (this.mountedHost && this.mountedHost !== hostEl) {
-      this.globalMount.unmount(this.mountedHost);
-      this.mountedHost = null;
+  private mountGlobalIfNeeded(hostEl: unknown, current: () => boolean): void {
+    const provider = this.globalMount;
+    if (!this.config.portal || !provider || this.portalLease?.target === hostEl) return;
+    this.unmountGlobalIfNeeded();
+    if (!current()) return;
+    const lease: HostResourceLease = {
+      target: hostEl,
+      acquiring: true,
+      revoked: false,
+      release: () => provider.unmount(hostEl),
+    };
+    this.portalLease = lease;
+    let acquired = false;
+    try {
+      provider.mount(hostEl);
+      acquired = true;
+    } finally {
+      lease.acquiring = false;
+      if (!acquired || lease.revoked || !current() || this.portalLease !== lease) {
+        if (this.portalLease === lease) this.portalLease = null;
+        revokeHostResource(lease);
+      }
     }
-
-    this.globalMount.mount(hostEl);
-    this.mountedHost = hostEl;
   }
 
   private unmountGlobalIfNeeded(): void {
-    if (!this.mountedHost || !this.globalMount) return;
-    this.globalMount.unmount(this.mountedHost);
-    this.mountedHost = null;
+    const lease = this.portalLease;
+    this.portalLease = null;
+    if (lease) revokeHostResource(lease);
   }
 
-  private applyLayerIfNeeded(hostEl: HTMLElement): void {
-    if (!this.layerScheduler) return;
-
-    if (this.layerDetach && this.layerHost === hostEl) return;
-
+  private applyLayerIfNeeded(hostEl: unknown, current: () => boolean): void {
+    const provider = this.layerScheduler;
+    if (!provider || this.layerLease?.target === hostEl) return;
     this.clearLayer();
-    this.layerDetach = this.layerScheduler.attach(hostEl, {
-      role: this.config.layerRole,
-      offset: this.config.layerOffset,
-      modal: this.config.modal,
-      portal: this.config.portal,
-      meta: this.config.meta,
-    });
-    this.layerHost = hostEl;
+    if (!current()) return;
+    const lease: HostResourceLease = {
+      target: hostEl,
+      acquiring: true,
+      revoked: false,
+      release: null,
+    };
+    this.layerLease = lease;
+    let acquired = false;
+    try {
+      lease.release = provider.attach(hostEl, {
+        role: this.config.layerRole,
+        offset: this.config.layerOffset,
+        modal: this.config.modal,
+        portal: this.config.portal,
+        meta: this.config.meta,
+      });
+      acquired = true;
+    } finally {
+      lease.acquiring = false;
+      if (!acquired || lease.revoked || !current() || this.layerLease !== lease) {
+        if (this.layerLease === lease) this.layerLease = null;
+        revokeHostResource(lease);
+      }
+    }
   }
 
   private clearLayer(): void {
-    this.layerHost = null;
-    if (!this.layerDetach) return;
-    try {
-      this.layerDetach();
-    } finally {
-      this.layerDetach = null;
-    }
+    const lease = this.layerLease;
+    this.layerLease = null;
+    if (lease) revokeHostResource(lease);
   }
 
-  private lockModalIfNeeded(): void {
-    if (!this.config.modal || !this.modalLock || this.modalLocked) return;
-    this.modalLock.lock();
-    this.modalLocked = true;
+  private lockModalIfNeeded(current: () => boolean): void {
+    const provider = this.modalLock;
+    if (!this.config.modal || !provider || this.modalLease || !current()) return;
+    const lease: HostResourceLease = {
+      acquiring: true,
+      revoked: false,
+      release: () => provider.unlock(),
+    };
+    this.modalLease = lease;
+    let acquired = false;
+    try {
+      provider.lock();
+      acquired = true;
+    } finally {
+      lease.acquiring = false;
+      if (!acquired || lease.revoked || !current() || this.modalLease !== lease) {
+        if (this.modalLease === lease) this.modalLease = null;
+        revokeHostResource(lease);
+      }
+    }
   }
 
   private unlockModalIfNeeded(): void {
-    if (!this.modalLock || !this.modalLocked) return;
-    this.modalLock.unlock();
-    this.modalLocked = false;
+    const lease = this.modalLease;
+    this.modalLease = null;
+    if (lease) revokeHostResource(lease);
+  }
+
+  private currentViewGuard(): () => boolean {
+    const version = this.viewReconciliationVersion;
+    const epoch = this.caps.epoch;
+    const mountedEpoch = this.mountedEpoch;
+    return () =>
+      version === this.viewReconciliationVersion &&
+      epoch === this.caps.epoch &&
+      mountedEpoch === this.mountedEpoch &&
+      this.mountPhase === 'mounted' &&
+      this.viewActive;
   }
 
   private syncViewSideEffects(): void {
-    if (this.mountPhase !== 'mounted') return;
-    this.syncAnchorPartRegistration();
-    const hostEl = this.resolveHostElement();
-    if (hostEl) {
-      this.mountGlobalIfNeeded(hostEl);
-      this.applyLayerIfNeeded(hostEl);
+    // Host callbacks can replace providers or detach/re-enter synchronously.
+    // Finish retiring their in-flight lease before acquiring the next one.
+    if (this.reconcilingView) {
+      this.reconcileViewAgain = true;
+      return;
     }
-    this.syncAnchoredPosition();
-    this.lockModalIfNeeded();
+    this.reconcilingView = true;
+    try {
+      do {
+        this.reconcileViewAgain = false;
+        this.syncCurrentViewSideEffects();
+      } while (this.reconcileViewAgain && this.mountPhase === 'mounted' && this.viewActive);
+    } finally {
+      this.reconcilingView = false;
+    }
+  }
+
+  private syncCurrentViewSideEffects(): void {
+    const validView = this.currentViewGuard();
+    if (!validView()) return;
+    this.syncAnchorPartRegistration();
+    if (!validView()) return;
+    this.targetAlignment.syncSurface();
+    if (!validView()) return;
+    const registration = this.registration;
+    const config = this.config;
+    const current = () =>
+      validView() && registration === this.registration && config === this.config;
+    const hostEl = this.resolveHostElement();
+    if (!current()) return;
+    if (!hostEl) {
+      this.teardownMountedViewSideEffects();
+      return;
+    }
+    this.mountGlobalIfNeeded(hostEl, current);
+    if (!current()) return;
+    this.applyLayerIfNeeded(hostEl, current);
+    if (!current()) return;
+    this.syncAnchoredPosition(hostEl, current);
+    if (!current()) return;
+    this.lockModalIfNeeded(current);
+  }
+
+  private deferResourceReentry(work: () => void): void {
+    if (this.reconcilingView) {
+      work();
+      return;
+    }
+    this.reconcilingView = true;
+    try {
+      work();
+    } finally {
+      this.reconcilingView = false;
+    }
+    if (this.reconcileViewAgain) this.syncViewSideEffects();
   }
 
   private deactivateViewSideEffects(): void {
-    this.anchoredPosition.disconnect();
-    this.unlockModalIfNeeded();
+    this.deferResourceReentry(() => {
+      this.targetAlignment.clearPhysical();
+      this.anchoredPosition.disconnect();
+      this.availableSpace?.disconnect();
+      this.unlockModalIfNeeded();
+    });
   }
 
   private teardownMountedViewSideEffects(): void {
-    this.clearLayer();
-    this.anchoredPosition.disconnect();
-    this.unmountGlobalIfNeeded();
-    this.unlockModalIfNeeded();
+    this.deferResourceReentry(() => {
+      this.clearLayer();
+      this.targetAlignment.clearPhysical();
+      this.anchoredPosition.disconnect();
+      this.availableSpace?.disconnect();
+      this.unmountGlobalIfNeeded();
+      this.unlockModalIfNeeded();
+    });
   }
 
   private setOpen(next: boolean, reason?: OverlayReason) {
@@ -347,7 +527,9 @@ export class OverlayModuleImpl extends ModuleBase {
       this.leaveEscapeScope = null;
       this.escapeScope = null;
     }
+    const revision = ++this.openRevision;
     this.openState.set(next, reason);
+    if (revision !== this.openRevision) return;
     this.syncEscapeCandidate();
 
     if (next) {
@@ -375,7 +557,7 @@ export class OverlayModuleImpl extends ModuleBase {
     this.syncEscapeCandidate();
     this.viewReconciliationVersion += 1;
     if (active) {
-      if (this.mountPhase === 'mounted') this.lockModalIfNeeded();
+      if (this.mountPhase === 'mounted') this.reconcileViewResourcesAfterCallback();
       return;
     }
     this.deactivateViewSideEffects();
@@ -412,6 +594,11 @@ export class OverlayModuleImpl extends ModuleBase {
     prevTarget: unknown,
     nextTarget: unknown
   ) {
+    if (role === 'content' && this.targetAlignment.hasBinding()) {
+      this.boundaryDisposers.content?.();
+      this.boundaryDisposers.content = null;
+      return;
+    }
     if (Object.is(prevTarget, nextTarget)) return;
     this.boundaryDisposers[role]?.();
     this.boundaryDisposers[role] = null;
@@ -440,6 +627,16 @@ export class OverlayModuleImpl extends ModuleBase {
   configure(patch: OverlayConfigPatch): void {
     this.ensureSetup('overlay.configure');
 
+    const layout = patch.availableLayout ?? this.config.availableLayout;
+    const hasAvailableSpace = patch.availableSpace ?? this.config.availableSpace;
+    if (layout && !hasAvailableSpace)
+      throw new Error('[Overlay] availableLayout requires availableSpace.');
+    if (patch.availableLayout !== undefined) {
+      if (!this.availableSpace?.bindLayout)
+        throw new Error('[Overlay] available layout capability unavailable.');
+      this.availableSpace.bindLayout(patch.availableLayout);
+    }
+
     this.patchValue('defaultOpen', patch.defaultOpen);
     this.patchValue('closeOnEscape', patch.closeOnEscape);
     this.patchValue('closeOnOutsidePress', patch.closeOnOutsidePress);
@@ -451,6 +648,8 @@ export class OverlayModuleImpl extends ModuleBase {
     this.patchValue('sideOffset', patch.sideOffset);
     this.patchValue('alignOffset', patch.alignOffset);
     this.patchValue('anchored', patch.anchored);
+    this.patchValue('availableSpace', patch.availableSpace);
+    this.patchValue('availableLayout', patch.availableLayout);
     this.patchValue('strategy', patch.strategy);
     this.patchValue('avoidCollisions', patch.avoidCollisions);
     this.patchValue('collisionBoundary', patch.collisionBoundary);
@@ -491,7 +690,7 @@ export class OverlayModuleImpl extends ModuleBase {
     assign('collisionBoundary', patch.collisionBoundary);
     assign('collisionPadding', patch.collisionPadding);
     assign('excludeAnchorTranslation', patch.excludeAnchorTranslation);
-    if (this.viewActive) this.syncAnchoredPosition();
+    if (this.viewActive) this.reconcileViewResourcesAfterCallback();
   }
 
   open(reason?: OverlayReason): void {
@@ -515,7 +714,7 @@ export class OverlayModuleImpl extends ModuleBase {
   }
 
   getWarnings(): readonly string[] {
-    return Object.freeze(this.warnings.slice());
+    return Object.freeze([...this.warnings, ...(this.targetIssue ? [this.targetIssue] : [])]);
   }
 
   getLastReason(): OverlayReason | undefined {
@@ -544,20 +743,34 @@ export class OverlayModuleImpl extends ModuleBase {
     this.replaceRegistration({ anchor: target ?? null });
   }
 
-  private syncAnchoredPosition(): void {
+  private syncAnchoredPosition(availableTarget: unknown, current: () => boolean): void {
+    if (!current()) return;
+    if (
+      this.config.availableSpace &&
+      this.viewActive &&
+      this.mountPhase === 'mounted' &&
+      availableTarget
+    ) {
+      this.availableSpace?.connect({ target: availableTarget, boundary: 'root-content' });
+    } else this.availableSpace?.disconnect();
+    if (!current()) return;
     if (!this.config.anchored || !this.viewActive || this.mountPhase !== 'mounted') {
       this.anchoredPosition.disconnect();
       return;
     }
-    const anchor = this.resolveAnchorTarget();
-    const floating = this.registration.content ?? this.resolveHostElement();
+    const anchor = this.inputAnchor ?? this.resolveAnchorTarget();
+    if (!current()) return;
+    const floating = availableTarget;
     if (!anchor || !floating) {
       this.anchoredPosition.disconnect();
       return;
     }
+    const alignment = this.targetAlignment.resolve();
+    if (!current()) return;
     this.anchoredPosition.connect({
       anchor,
       floating,
+      ...(alignment ?? {}),
       config: {
         side: this.config.placement,
         align: this.config.align,
@@ -583,9 +796,27 @@ export class OverlayModuleImpl extends ModuleBase {
     if (this.viewActive) this.reconcileViewResourcesAfterCallback();
   }
 
+  registerInputAnchor(anchor: import('@proto.ui/core').InputOriginAnchor | null): void {
+    if (this.inputAnchor === anchor) return;
+    this.inputAnchor = anchor;
+    if (this.viewActive) this.reconcileViewResourcesAfterCallback();
+  }
+
   registerAnchorPart(part: AnatomyPartView): void {
     this.anchorPart = part;
     this.syncAnchorPartRegistration();
+    if (this.viewActive) this.reconcileViewResourcesAfterCallback();
+  }
+
+  registerTargetAlignment(
+    binding: import('@proto.ui/core').OverlayTargetAlignmentBinding | null
+  ): void {
+    this.sys?.ensureRuntime('overlay.registerTargetAlignment');
+    if (this.protoPhase === 'unmounted') return;
+    this.targetAlignment.set(binding);
+    this.boundaryDisposers.content?.();
+    this.boundaryDisposers.content = null;
+    if (!binding) this.syncBoundaryRegistration('content', null, this.registration.content);
     if (this.viewActive) this.reconcileViewResourcesAfterCallback();
   }
 
@@ -593,9 +824,6 @@ export class OverlayModuleImpl extends ModuleBase {
     this.replaceRegistration({ content: target });
 
     if (!this.viewActive) return;
-
-    const hostEl = this.resolveHostElement();
-    if (!hostEl) return;
     this.reconcileViewResourcesAfterCallback();
   }
 
@@ -609,8 +837,10 @@ export class OverlayModuleImpl extends ModuleBase {
     updatePosition: (patch: OverlayPositionPatch) => this.updatePosition(patch),
     registerTrigger: (target: unknown) => this.registerTrigger(target),
     registerAnchor: (target: unknown) => this.registerAnchor(target),
+    registerInputAnchor: (anchor) => this.registerInputAnchor(anchor),
     registerAnchorPart: (part: AnatomyPartView) => this.registerAnchorPart(part),
     registerContent: (target: unknown) => this.registerContent(target),
+    registerTargetAlignment: (binding) => this.registerTargetAlignment(binding),
     getPositionSnapshot: () => this.getPositionSnapshot(),
   };
 }

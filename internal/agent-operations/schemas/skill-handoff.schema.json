@@ -51,7 +51,11 @@
               "reference": { "type": "string", "minLength": 1, "maxLength": 1000 },
               "digest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
             },
-            "if": { "properties": { "type": { "const": "modeltrace-record" } } },
+            "if": {
+              "properties": {
+                "type": { "enum": ["modeltrace-record", "human-directed-operation"] }
+              }
+            },
             "then": { "required": ["digest"] }
           }
         },
@@ -61,7 +65,22 @@
           "items": { "type": "string", "minLength": 1, "maxLength": 120 }
         },
         "notes": { "type": "array", "items": { "type": "string", "maxLength": 1000 } }
-      }
+      },
+      "allOf": [
+        {
+          "properties": {
+            "artifacts": {
+              "not": {
+                "contains": {
+                  "type": "object",
+                  "properties": { "type": { "const": "human-directed-operation" } },
+                  "required": ["type"]
+                }
+              }
+            }
+          }
+        }
+      ]
     },
     {
       "title": "Proto UI skill handoff",
@@ -132,6 +151,7 @@
                   "governance-question",
                   "governance-report",
                   "governed-behavior",
+                  "human-directed-operation",
                   "implementation-authorization",
                   "interruption-receipt",
                   "issue-report",
@@ -171,7 +191,11 @@
               "revision": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
               "result": { "enum": ["passed", "failed", "not-run", "partial"] }
             },
-            "if": { "properties": { "type": { "const": "modeltrace-record" } } },
+            "if": {
+              "properties": {
+                "type": { "enum": ["modeltrace-record", "human-directed-operation"] }
+              }
+            },
             "then": { "required": ["digest"] }
           }
         },
@@ -501,6 +525,19 @@
               "contains": {
                 "type": "object",
                 "properties": { "type": { "const": "governed-behavior" } },
+                "required": ["type"]
+              },
+              "minContains": 0,
+              "maxContains": 1
+            }
+          }
+        },
+        {
+          "properties": {
+            "artifacts": {
+              "contains": {
+                "type": "object",
+                "properties": { "type": { "const": "human-directed-operation" } },
                 "required": ["type"]
               },
               "minContains": 0,
@@ -896,6 +933,71 @@
               "minContains": 0,
               "maxContains": 1
             }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "artifacts": {
+                "contains": {
+                  "type": "object",
+                  "properties": { "type": { "const": "human-directed-operation" } },
+                  "required": ["type"]
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "entrypoint": { "const": "development" },
+              "executionMode": { "const": "human-assisted" },
+              "executionModeSource": { "const": "current-user" },
+              "outcome": { "const": "completed" },
+              "fromId": { "enum": ["pui-dev", "pui-integrate", "pui-collaborate"] },
+              "nextSkillId": { "enum": ["pui-integrate", "pui-collaborate", null] },
+              "artifacts": {
+                "contains": {
+                  "type": "object",
+                  "properties": { "type": { "const": "human-directed-operation" } },
+                  "required": ["type", "digest", "revision"]
+                }
+              }
+            },
+            "allOf": [
+              {
+                "properties": {
+                  "artifacts": {
+                    "contains": {
+                      "type": "object",
+                      "properties": { "type": { "const": "capability-envelope" } },
+                      "required": ["type", "digest"]
+                    }
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "artifacts": {
+                    "contains": {
+                      "type": "object",
+                      "properties": { "type": { "const": "github-snapshot" } },
+                      "required": ["type", "digest"]
+                    }
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "artifacts": {
+                    "contains": {
+                      "type": "object",
+                      "properties": { "type": { "const": "mutation-authorization" } },
+                      "required": ["type", "digest"]
+                    }
+                  }
+                }
+              }
+            ]
           }
         },
         {
