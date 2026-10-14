@@ -11,6 +11,17 @@ import { renderProtoStyleTokenCss } from '../../../cli/src/services/proto-style-
 import path from 'node:path';
 import button from '../src/button';
 import { THEME, renderThemeCss } from '../src/theme';
+import { bootstrapButtonFill, bootstrapButtonActiveFill } from '../src/button/paint';
+
+const colorCases = [
+  ['default', '#fff', '#e6e6e6', '#f5f5f5'],
+  ['primary', '#08c', '#04c', '#006dcc'],
+  ['warning', '#fbb450', '#f89406', '#faa732'],
+  ['danger', '#ee5f5b', '#bd362f', '#da4f49'],
+  ['success', '#62c462', '#51a351', '#5bb75b'],
+  ['info', '#5bc0de', '#2f96b4', '#49afcd'],
+  ['inverse', '#444', '#222', '#363636'],
+] as const;
 
 function mount(rawProps: Record<string, unknown> = {}) {
   const root = new EventTarget();
@@ -47,9 +58,13 @@ describe('bootstrap-2-3-2 Button draft projection', () => {
     expect((button as any).__asHooks).toContainEqual(
       expect.objectContaining({ name: 'as-button', mode: 'once' })
     );
-    expect(controller.getRuleStyleTokens()).toContain('bg-[linear-gradient(#08c,#04c)]');
+    expect(controller.getRuleStyleTokens()).toContain(
+      'bg-[#006dcc_linear-gradient(#08c,#04c)_0_0_repeat-x]'
+    );
     controller.applyRawProps({});
-    expect(controller.getRuleStyleTokens()).toContain('bg-[linear-gradient(#fff,#e6e6e6)]');
+    expect(controller.getRuleStyleTokens()).toContain(
+      'bg-[#f5f5f5_linear-gradient(#fff,#e6e6e6)_0_0_repeat-x]'
+    );
     await invokeUnmounted();
   });
   it('derives press, focus and disabled feedback from Base state', async () => {
@@ -69,9 +84,9 @@ describe('bootstrap-2-3-2 Button draft projection', () => {
     expect(controller.getRuleStyleTokens()).not.toContain('opacity-65');
     await invokeUnmounted();
   });
-  it.each(['default', 'primary'])(
+  it.each(colorCases)(
     'switches exclusive sizes and removes provided size for %s',
-    async (variant) => {
+    async (variant, start, end, base) => {
       const sizes = {
         default: ['px-[12px]', 'py-[4px]', 'text-[14px]', 'rounded-[4px]'],
         large: ['px-[19px]', 'py-[11px]', 'text-[17.5px]', 'rounded-[6px]'],
@@ -99,13 +114,92 @@ describe('bootstrap-2-3-2 Button draft projection', () => {
       controller.applyRawProps({ variant });
       assertSize('default');
       expect(controller.getRuleStyleTokens()).toContain(
-        variant === 'primary'
-          ? 'bg-[linear-gradient(#08c,#04c)]'
-          : 'bg-[linear-gradient(#fff,#e6e6e6)]'
+        `bg-[${base}_linear-gradient(${start},${end})_0_0_repeat-x]`
       );
       await invokeUnmounted();
     }
   );
+  it.each(colorCases)(
+    'projects %s source paint through inherited interaction states',
+    async (variant, start, end, base) => {
+      const rest = `bg-[${base}_linear-gradient(${start},${end})_0_0_repeat-x]`;
+      const interactive = `bg-[${end}_linear-gradient(${start},${end})_0_-15px_repeat-x]`;
+      const flat = `bg-[${end}_none_0_0_repeat-x]`;
+      const { controller, root, global, invokeUnmounted } = mount({ variant });
+      expect(controller.getRuleStyleTokens()).toContain(rest);
+      expect(controller.getRuleStyleTokens()).toContain(
+        variant === 'default'
+          ? 'text-paint-[#333_0_1px_1px_rgb(255_255_255/75%)]'
+          : 'text-paint-[#fff_0_-1px_0_rgb(0_0_0/25%)]'
+      );
+      expect(controller.getRuleStyleTokens()).toContain(
+        variant === 'default'
+          ? 'border-[rgb(0_0_0/10%)_rgb(0_0_0/10%)_#b3b3b3_rgb(0_0_0/10%)]'
+          : 'border-[rgb(0_0_0/10%)_rgb(0_0_0/10%)_rgb(0_0_0/25%)_rgb(0_0_0/10%)]'
+      );
+      global.dispatchEvent(new CustomEvent('key.down'));
+      root.dispatchEvent(new CustomEvent('host:focus'));
+      expect(controller.getRuleStyleTokens()).toContain(interactive);
+      expect(controller.getRuleStyleTokens()).not.toContain(rest);
+      expect(controller.getRuleStyleTokens()).toContain('ring-2');
+      root.dispatchEvent(new CustomEvent('host:blur'));
+      root.dispatchEvent(new CustomEvent('pointer.enter'));
+      expect(controller.getRuleStyleTokens()).toContain(interactive);
+      root.dispatchEvent(new CustomEvent('pointer.down'));
+      expect(controller.getRuleStyleTokens()).toContain(`bg-[${end}_none_0_-15px_repeat-x]`);
+      expect(controller.getRuleStyleTokens()).not.toContain(interactive);
+      expect(controller.getRuleStyleTokens()).toContain(
+        'shadow-[inset_0_2px_4px_rgb(0_0_0/15%),0_1px_2px_rgb(0_0_0/5%)]'
+      );
+      controller.applyRawProps({ variant, disabled: true });
+      expect(controller.getRuleStyleTokens()).toContain(flat);
+      expect(controller.getRuleStyleTokens()).toContain('shadow-none');
+      expect(controller.getRuleStyleTokens()).not.toContain(
+        'shadow-[inset_0_2px_4px_rgb(0_0_0/15%),0_1px_2px_rgb(0_0_0/5%)]'
+      );
+      controller.applyRawProps({ variant });
+      root.dispatchEvent(new CustomEvent('pointer.up'));
+      root.dispatchEvent(new CustomEvent('pointer.leave'));
+      root.dispatchEvent(new CustomEvent('host:blur'));
+      expect(controller.getRuleStyleTokens()).toContain(rest);
+      // An exposed press without hover/focus must keep the unshifted endpoint.
+      root.dispatchEvent(new CustomEvent('pointer.down'));
+      expect(controller.getRuleStyleTokens()).toContain(flat);
+      root.dispatchEvent(new CustomEvent('pointer.up'));
+      expect(controller.getRuleStyleTokens()).toContain(rest);
+      controller.applyRawProps({});
+      expect(controller.getRuleStyleTokens()).toContain(
+        'bg-[#f5f5f5_linear-gradient(#fff,#e6e6e6)_0_0_repeat-x]'
+      );
+      await invokeUnmounted();
+    }
+  );
+  it('switches every variant on the same sized instance without stale paint', async () => {
+    const { controller, invokeUnmounted } = mount({ size: 'mini' });
+    for (const [variant, start, end, base] of colorCases) {
+      controller.applyRawProps({ variant, size: 'mini' });
+      const tokens = controller.getRuleStyleTokens();
+      expect(tokens.filter((token) => token.startsWith('bg-'))).toEqual([
+        `bg-[${base}_linear-gradient(${start},${end})_0_0_repeat-x]`,
+      ]);
+      expect(tokens).toContain('text-[10.5px]');
+      expect(tokens).toContain('rounded-[3px]');
+    }
+    controller.applyRawProps({});
+    const tokens = controller.getRuleStyleTokens();
+    expect(tokens.filter((token) => token.startsWith('bg-'))).toEqual([
+      'bg-[#f5f5f5_linear-gradient(#fff,#e6e6e6)_0_0_repeat-x]',
+    ]);
+    expect(tokens).toContain('text-[14px]');
+    await invokeUnmounted();
+  });
+  it('preserves passive legacy paint exports used by other component owners', () => {
+    expect(bootstrapButtonFill).toEqual({
+      default: 'bg-[linear-gradient(#fff,#e6e6e6)] text-foreground border-border',
+      primary: 'bg-[linear-gradient(#08c,#04c)] text-primary-foreground border-primary',
+    });
+    expect(bootstrapButtonActiveFill).toEqual({ default: 'bg-[#e6e6e6]', primary: 'bg-[#04c]' });
+  });
   it('preserves the fixed v2.3.2 pixel dimensions in source-derived CSS', async () => {
     // twbs/bootstrap v2.3.2 docs/assets/css/bootstrap.css:3198-3226.
     // Source/CSS evidence only; root16/root32 actual layout is a browser case.
@@ -141,9 +235,12 @@ describe('bootstrap-2-3-2 Button draft projection', () => {
       path.resolve('packages/prototypes/bootstrap-2-3-2/src')
     )) as string[];
     expect(tokens.length).toBeGreaterThan(15);
-    for (const state of ['hovered', 'pressed', 'disabled']) {
-      expect(tokens).toContain(`data-[${state}]:bg-[#04c]`);
-      expect(tokens).toContain(`data-[${state}]:bg-[#e6e6e6]`);
+    for (const fill of [
+      'bg-[#04c]',
+      'bg-[#e6e6e6]',
+      'bg-[#04c_linear-gradient(#08c,#04c)_0_-15px_repeat-x]',
+    ]) {
+      expect(tokens.some((token) => token.endsWith(fill))).toBe(true);
     }
     const css = renderProtoStyleTokenCss(tokens);
     expect(css).not.toContain('Unsupported Proto UI style tokens');

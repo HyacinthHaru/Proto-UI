@@ -5,6 +5,7 @@ import path from 'node:path';
 import type { Browser, BrowserContext, ElementHandle, Page } from 'playwright-core';
 import { beforeAll, afterAll, describe, expect, it } from 'vitest';
 import { launchBrowser, startServer, stopServer, RUNTIMES } from './browser-harness';
+import { isUnpaintedBootstrapBoxShadow } from './bootstrap-disabled-paint';
 
 const ROUTE = '/en/test/new-projection-families/';
 const FAMILIES = ['bootstrap-2-3-2', 'liquid-glass'] as const;
@@ -54,11 +55,11 @@ afterAll(async () => {
           runtimes: RUNTIMES,
           bootstrapSizingSource: {
             version: 'twbs/bootstrap v2.3.2',
-            url: 'https://github.com/twbs/bootstrap/blob/v2.3.2/docs/assets/css/bootstrap.css#L3198-L3329',
+            url: 'https://github.com/twbs/bootstrap/blob/v2.3.2/docs/assets/css/bootstrap.css#L3198-L3559',
             blob: 'b725064aab21e434d29209d259d3892478aa9536',
           },
           scope:
-            'Bootstrap 2.3.2 default/primary Button and Liquid Glass opaque fallback only. No native/Compiler/material parity.',
+            'Bootstrap 2.3.2 seven-color/four-size Button and Liquid Glass opaque fallback only. No native/Compiler/material parity.',
           observations,
         },
         null,
@@ -204,7 +205,9 @@ describe.sequential('draft family real Web host evidence', () => {
           .toBe('false');
         if (family === 'bootstrap-2-3-2') {
           await button.hover();
-          expect(await button.evaluate((el) => getComputedStyle(el).backgroundImage)).toBe('none');
+          expect(await button.evaluate((el) => getComputedStyle(el).backgroundImage)).toContain(
+            'linear-gradient'
+          );
         }
       }
     }
@@ -409,6 +412,233 @@ describe.sequential('draft family real Web host evidence', () => {
         await capture(`bootstrap-button-v2.3.2-${size}-root${rootFont}`);
       }
       for (const handle of originalControls.values()) await handle.dispose();
+    },
+    180000
+  );
+
+  it.each(RUNTIMES.flatMap((runtime) => [16, 32].map((rootFont) => ({ runtime, rootFont }))))(
+    'checks seven Bootstrap palette/state endpoints through $runtime at root$rootFont',
+    async ({ runtime, rootFont }) => {
+      // Modern final CSS cascade, fixed v2.3.2:3198-3559; not IE fallback colors.
+      const palette = [
+        ['default', '#fff', '#e6e6e6', '#f5f5f5'],
+        ['primary', '#08c', '#04c', '#006dcc'],
+        ['warning', '#fbb450', '#f89406', '#faa732'],
+        ['danger', '#ee5f5b', '#bd362f', '#da4f49'],
+        ['success', '#62c462', '#51a351', '#5bb75b'],
+        ['info', '#5bc0de', '#2f96b4', '#49afcd'],
+        ['inverse', '#444', '#222', '#363636'],
+      ] as const;
+      const rgb = (hex: string) => {
+        const value =
+          hex.length === 4
+            ? hex
+                .slice(1)
+                .split('')
+                .map((c) => c + c)
+                .join('')
+            : hex.slice(1);
+        return `rgb(${[0, 2, 4].map((offset) => parseInt(value.slice(offset, offset + 2), 16)).join(', ')})`;
+      };
+      await open('light');
+      await page.evaluate((value) => {
+        document.documentElement.style.fontSize = `${value}px`;
+      }, rootFont);
+      await expect
+        .poll(() => page.evaluate(() => getComputedStyle(document.documentElement).fontSize))
+        .toBe(`${rootFont}px`);
+      const key = `bootstrap-2-3-2-${runtime}`;
+      const host = page.locator(`[data-runtime-host="${key}"]`);
+      const control = host.getByRole('button', { name: 'Continue', exact: true });
+      const previous = host.getByRole('button', { name: 'Back', exact: true });
+      const output = page.locator(`[data-count="${key}"]`);
+      const original = await control.elementHandle();
+      if (!original) throw new Error(`Missing original ${key}`);
+      const identity = () =>
+        control.evaluate((el, first) => el === first && el.isConnected, original);
+      const paint = () =>
+        control.evaluate((el) => {
+          const css = getComputedStyle(el);
+          return {
+            background: css.backgroundColor,
+            image: css.backgroundImage,
+            position: css.backgroundPosition,
+            repeat: css.backgroundRepeat,
+            color: css.color,
+            textShadow: css.textShadow,
+            borders: [
+              css.borderTopColor,
+              css.borderRightColor,
+              css.borderBottomColor,
+              css.borderLeftColor,
+            ],
+            shadow: css.boxShadow,
+            ring: css.getPropertyValue('--pui-ring-width').trim(),
+            opacity: css.opacity,
+          };
+        });
+      let count = 0;
+      for (const [variant, start, end, base] of palette) {
+        await previous.focus();
+        await page.mouse.move(0, 0);
+        await page.evaluate(
+          ({ key, variant }) => {
+            (window as any).projectionFamilyFixture.setProps(key, 'primary', {
+              variant,
+              size: 'default',
+              disabled: false,
+            });
+          },
+          { key, variant }
+        );
+        await expect.poll(() => control.getAttribute('aria-disabled')).toBe('false');
+        const fixedPaint = {
+          repeat: 'repeat-x',
+          color: variant === 'default' ? rgb('#333') : rgb('#fff'),
+          textShadow:
+            variant === 'default'
+              ? 'rgba(255, 255, 255, 0.75) 0px 1px 1px'
+              : 'rgba(0, 0, 0, 0.25) 0px -1px 0px',
+          borders: [
+            'rgba(0, 0, 0, 0.1)',
+            'rgba(0, 0, 0, 0.1)',
+            variant === 'default' ? rgb('#b3b3b3') : 'rgba(0, 0, 0, 0.25)',
+            'rgba(0, 0, 0, 0.1)',
+          ],
+        };
+        const image = `linear-gradient(${rgb(start)}, ${rgb(end)})`;
+        const assertPaint = async (
+          state: string,
+          background: string,
+          expectedImage: string,
+          position: string,
+          opacity = '1'
+        ) => {
+          await expect
+            .poll(paint, { message: `${key}/${variant}/${state}` })
+            .toMatchObject({ ...fixedPaint, background, image: expectedImage, position, opacity });
+          await expect.poll(identity).toBe(true);
+          observations.push({
+            key,
+            variant,
+            rootFont,
+            state,
+            source: 'twbs/bootstrap v2.3.2',
+            paint: await paint(),
+          });
+          if (evidence) {
+            await mkdir(evidence, { recursive: true });
+            await host.locator('..').screenshot({
+              path: path.join(
+                evidence,
+                `bootstrap-v2.3.2-${runtime}-root${rootFont}-${variant}-${state}.png`
+              ),
+            });
+          }
+        };
+        await assertPaint('rest', rgb(base), image, '0px 0px');
+        expect((await paint()).shadow).toContain('rgba(255, 255, 255, 0.2) 0px 1px 0px 0px inset');
+        // Check every size remains available under every newly selected color.
+        for (const [size, padding, fontSize, radius, height] of [
+          ['large', '11px 19px', '17.5px', '6px', 44],
+          ['mini', '0px 6px', '10.5px', '3px', 22],
+          ['small', '2px 10px', '11.9px', '3px', 26],
+          ['default', '4px 12px', '14px', '4px', 30],
+        ] as const) {
+          await page.evaluate(
+            ({ key, size }) =>
+              (window as any).projectionFamilyFixture.setProps(key, 'primary', { size }),
+            { key, size }
+          );
+          await expect
+            .poll(() =>
+              control.evaluate((el) => {
+                const css = getComputedStyle(el);
+                return {
+                  padding: css.padding,
+                  fontSize: css.fontSize,
+                  radius: css.borderRadius,
+                  height: el.getBoundingClientRect().height,
+                  lineHeight: css.lineHeight,
+                  borderWidth: css.borderWidth,
+                };
+              })
+            )
+            .toEqual({ padding, fontSize, radius, height, lineHeight: '20px', borderWidth: '1px' });
+          observations.push({
+            key,
+            variant,
+            size,
+            rootFont,
+            source: 'twbs/bootstrap v2.3.2',
+            metrics: await control.evaluate((el) => {
+              const css = getComputedStyle(el);
+              return {
+                padding: css.padding,
+                fontSize: css.fontSize,
+                radius: css.borderRadius,
+                height: el.getBoundingClientRect().height,
+                lineHeight: css.lineHeight,
+                borderWidth: css.borderWidth,
+              };
+            }),
+          });
+          await expect.poll(identity).toBe(true);
+        }
+        await previous.press('Tab');
+        await expect.poll(() => control.evaluate((el) => el === document.activeElement)).toBe(true);
+        await assertPaint('focused', rgb(end), image, '0px -15px');
+        expect((await paint()).ring).toBe('2px');
+        expect((await paint()).shadow).toContain('0px 0px 0px 4px');
+        expect((await paint()).shadow).toContain('0px 0px 0px 2px');
+        await previous.focus();
+        await control.hover();
+        await assertPaint('hovered', rgb(end), image, '0px -15px');
+        await page.mouse.down();
+        await assertPaint('pressed', rgb(end), 'none', '0px -15px');
+        expect((await paint()).shadow).toContain('rgba(0, 0, 0, 0.15) 0px 2px 4px 0px inset');
+        await page.mouse.up();
+        await expect.poll(() => output.innerText()).toBe(`${++count} activations`);
+        await control.press('Enter');
+        await expect.poll(() => output.innerText()).toBe(`${++count} activations`);
+        await control.press('Space');
+        await expect.poll(() => output.innerText()).toBe(`${++count} activations`);
+        // Disable from an active press: no click on release and no pressed shadow.
+        await control.hover();
+        await page.mouse.down();
+        await page.evaluate(
+          (key) =>
+            (window as any).projectionFamilyFixture.setProps(key, 'primary', { disabled: true }),
+          key
+        );
+        await expect.poll(() => control.getAttribute('aria-disabled')).toBe('true');
+        await assertPaint('disabled', rgb(end), 'none', '0px 0px', '0.65');
+        expect(isUnpaintedBootstrapBoxShadow((await paint()).shadow)).toBe(true);
+        await page.mouse.up();
+        await control.click({ force: true });
+        await control.press('Enter');
+        await control.press('Space');
+        expect(await output.innerText()).toBe(`${count} activations`);
+      }
+      // Public patch API requires explicit restoration; raw removal is unit-only.
+      await page.evaluate(
+        (key) =>
+          (window as any).projectionFamilyFixture.setProps(key, 'primary', {
+            variant: 'default',
+            size: 'default',
+            disabled: false,
+          }),
+        key
+      );
+      await previous.focus();
+      await page.mouse.move(0, 0);
+      await expect.poll(paint).toMatchObject({
+        background: rgb('#f5f5f5'),
+        image: `linear-gradient(${rgb('#fff')}, ${rgb('#e6e6e6')})`,
+        opacity: '1',
+      });
+      await expect.poll(identity).toBe(true);
+      await original.dispose();
     },
     180000
   );

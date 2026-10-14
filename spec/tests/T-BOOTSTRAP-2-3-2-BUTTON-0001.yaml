@@ -51,6 +51,22 @@ cases:
       - P-BOOTSTRAP-2-3-2-BUTTON-BASE
       - P-BOOTSTRAP-2-3-2-BUTTON-API
     expectation: fixed-size-metrics-input-disabled-and-explicit-restoration
+  - id: T-BOOTSTRAP-2-3-2-BUTTON-0001-CASE-PALETTE
+    title: Seven palette states, actual merged ownership and unchanged legacy consumers
+    covers:
+      - P-BOOTSTRAP-2-3-2-BUTTON-PALETTE
+      - P-BOOTSTRAP-2-3-2-BUTTON-STATE-PAINT
+      - P-BOOTSTRAP-2-3-2-BUTTON-PAINT-OWNERS
+      - P-BOOTSTRAP-2-3-2-BUTTON-CLOSURE
+    expectation: source-aligned-paint-states-and-finite-closure
+  - id: T-BOOTSTRAP-2-3-2-BUTTON-0001-CASE-PALETTE-BROWSER
+    title: Seven palettes and five real-input paint states through four Web runtimes
+    covers:
+      - P-BOOTSTRAP-2-3-2-BUTTON-PALETTE
+      - P-BOOTSTRAP-2-3-2-BUTTON-STATE-PAINT
+      - P-BOOTSTRAP-2-3-2-BUTTON-DIMENSIONS
+      - P-BOOTSTRAP-2-3-2-BUTTON-BASE
+    expectation: real-input-palette-state-and-size-matrix
 implementations:
   - id: bootstrap-2-3-2-button-contract
     kind: module-test
@@ -62,6 +78,7 @@ implementations:
       - T-BOOTSTRAP-2-3-2-BUTTON-0001-CASE-TOKENS
       - T-BOOTSTRAP-2-3-2-BUTTON-0001-CASE-PIXEL-CSS
       - T-BOOTSTRAP-2-3-2-BUTTON-0001-CASE-SIZES
+      - T-BOOTSTRAP-2-3-2-BUTTON-0001-CASE-PALETTE
   - id: bootstrap-2-3-2-button-browser
     kind: runtime-test
     status: passing
@@ -92,6 +109,25 @@ implementations:
     notes:
       - Same mounted real controls switch large/mini/small/default at root16/root32 through WC, React, Vue 3 and Vue 2, with computed dimensions, activation and disabled checks for both variants. PNG/JSON evidence is bound to source SHA and upstream version when the workflow runs; no current native pass is claimed.
       - The public demo API uses explicit restoration. Actual prop removal is unit evidence only; browser zoom and native/compiler targets remain unverified.
+  - id: bootstrap-2-3-2-button-paint-css
+    kind: module-test
+    status: passing
+    path: packages/cli/test/bootstrap-button-paint.test.ts
+    required: true
+    consumesCases:
+      - T-BOOTSTRAP-2-3-2-BUTTON-0001-CASE-PALETTE
+    notes:
+      - Checks exact document/Shadow declarations, actual semantic merging, unsupported/injected recipe rejection and byte-identical exact-base legacy passive paint CSS.
+  - id: bootstrap-2-3-2-button-palette-browser
+    kind: runtime-test
+    status: planned
+    path: apps/www/src/content/docs/zh-cn/demo-new-projection-families.browser.test.ts
+    required: true
+    consumesCases:
+      - T-BOOTSTRAP-2-3-2-BUTTON-0001-CASE-PALETTE-BROWSER
+    notes:
+      - Rest/focused/hovered/pressed/disabled computed background/image/position/repeat/text-shadow/four-edge colors, focus ring, disabled shadow priority, per-input counts, node identity and four-size compatibility are authored for seven variants and four real Web runtimes. Exact-head browser execution and PNG/JSON remain pending.
+      - Tests do not claim 100ms motion, browser zoom, real patch-API prop removal, contrast acceptance or native/compiler support. Explicit restoration and unit raw-prop removal remain distinct.
 exercises:
   prototypes:
     - P-BOOTSTRAP-2-3-2-BUTTON
@@ -110,6 +146,9 @@ revisions:
   - version: 0.3.0-alpha.1
     change: revised
     summary: Added passing unit size-switch/removal coverage and a separately planned all-size real-four-Web browser matrix; historical passes do not establish the new case.
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Added seven-palette unit and finite complete-paint closure evidence, plus separately planned real-input state/size browser coverage; historical browser results do not establish this matrix.
 tags:
   - test
   - bootstrap-2-3-2
