@@ -181,7 +181,11 @@ export class OverlayModuleImpl extends ModuleBase {
 
   private syncEscapeCandidate(): void {
     const scope =
-      this.isOpen() && this.viewActive && this.mountPhase === 'mounted' && this.config.closeOnEscape
+      this.protoPhase !== 'unmounted' &&
+      this.isOpen() &&
+      this.viewActive &&
+      this.mountPhase === 'mounted' &&
+      this.config.closeOnEscape
         ? (this.eventPort.getGlobalInputScope?.() ?? null)
         : null;
     if (scope === this.escapeScope) return;
@@ -459,6 +463,7 @@ export class OverlayModuleImpl extends ModuleBase {
       version === this.viewReconciliationVersion &&
       epoch === this.caps.epoch &&
       mountedEpoch === this.mountedEpoch &&
+      this.protoPhase !== 'unmounted' &&
       this.mountPhase === 'mounted' &&
       this.viewActive;
   }

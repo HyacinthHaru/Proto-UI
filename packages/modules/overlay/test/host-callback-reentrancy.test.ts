@@ -2,6 +2,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { CapsVault, SYS_CAP } from '@proto.ui/module-base';
 import { OverlayModuleImpl } from '../src/impl';
+import { joinEscapeScope, ownsEscapeSample } from '../src/escape-coordinator';
 import {
   OVERLAY_TARGET_HOST_CAP,
   OVERLAY_GLOBAL_MOUNT_CAP,
@@ -9,7 +10,7 @@ import {
   OVERLAY_MODAL_CAP,
 } from '../src/caps';
 
-function fixture() {
+function fixture(eventPort: Record<string, unknown> = {}) {
   const caps = new CapsVault();
   caps.attachBase([
     [
@@ -41,7 +42,7 @@ function fixture() {
       },
     } as any,
     {} as any,
-    {} as any,
+    eventPort as any,
     {} as any,
     positioning as any,
     available
@@ -370,5 +371,66 @@ it('provider replacement finishes old releases before reconciling a reentrant mo
   } finally {
     f.module.onMountPhase('detached', 2);
     f.module.onProtoPhase('unmounted');
+  }
+});
+
+for (const stage of ['detach', 'unmount'] as const) {
+  it(`terminal replacement during ${stage} release cannot reacquire resources`, () => {
+    const f = fixture();
+    const failure = new Error('terminal replacement release failure');
+    try {
+      f.activate();
+      const release = f.a[stage].getMockImplementation()!;
+      f.a[stage].mockImplementationOnce(() => {
+        release();
+        f.install(f.b);
+        throw failure;
+      });
+      let caught: unknown;
+      try {
+        f.module.onProtoPhase('unmounted');
+      } catch (error) {
+        caught = error;
+      }
+      expect(caught).toBe(failure);
+      expect(f.a.active).toEqual({ portal: 0, layer: 0, modal: 0 });
+      expect(f.b.active).toEqual({ portal: 0, layer: 0, modal: 0 });
+      expect(f.b.mount).not.toHaveBeenCalled();
+      expect(f.b.attach).not.toHaveBeenCalled();
+      expect(f.b.lock).not.toHaveBeenCalled();
+      expect(f.logical).toEqual({ outside: 0, regions: 0 });
+    } finally {
+      f.module.onMountPhase('detached', 1);
+    }
+  });
+}
+
+it('terminal replacement cannot rejoin Escape scope after cleanup', () => {
+  const scope = {},
+    survivor = {};
+  const leave = joinEscapeScope(scope, survivor);
+  const f = fixture({ getGlobalInputScope: () => scope, onGlobal() {} });
+  const failure = new Error('terminal portal release failure');
+  try {
+    f.module.configure({ closeOnEscape: true });
+    f.activate();
+    expect(ownsEscapeSample(scope, {}, survivor)).toBe(false);
+    const release = f.a.unmount.getMockImplementation()!;
+    f.a.unmount.mockImplementationOnce(() => {
+      release();
+      f.install(f.b);
+      throw failure;
+    });
+    let caught: unknown;
+    try {
+      f.module.onProtoPhase('unmounted');
+    } catch (error) {
+      caught = error;
+    }
+    expect(caught).toBe(failure);
+    expect(ownsEscapeSample(scope, {}, survivor)).toBe(true);
+  } finally {
+    f.module.onMountPhase('detached', 1);
+    leave();
   }
 });
