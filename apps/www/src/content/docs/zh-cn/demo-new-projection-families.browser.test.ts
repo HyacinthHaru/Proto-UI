@@ -206,6 +206,88 @@ describe.sequential('draft family real Web host evidence', () => {
     await capture('families-interaction');
   }, 90000);
 
+  it('keeps Bootstrap pixel dimensions and activation at root16 and root32', async () => {
+    // Fixed source: twbs/bootstrap v2.3.2 docs/assets/css/bootstrap.css:3198-3226.
+    // Changing root font size is not browser zoom. Real browser zoom remains unverified.
+    const expected = {
+      padding: '4px 12px',
+      fontSize: '14px',
+      lineHeight: '20px',
+      radius: '4px',
+      borderWidth: '1px',
+      height: 30,
+    };
+    for (const rootFont of [16, 32]) {
+      await open('light');
+      await page.evaluate((size) => {
+        document.documentElement.style.fontSize = `${size}px`;
+      }, rootFont);
+      expect(await page.locator('html').evaluate((el) => getComputedStyle(el).fontSize)).toBe(
+        `${rootFont}px`
+      );
+      await capture(`bootstrap-button-root${rootFont}-default-primary`);
+      for (const runtime of RUNTIMES) {
+        const key = `bootstrap-2-3-2-${runtime}`;
+        const host = page.locator(`[data-runtime-host="${key}"]`);
+        const output = page.locator(`[data-count="${key}"]`);
+        const button = host.getByRole('button', { name: 'Back', exact: true });
+        const primary = host.getByRole('button', { name: 'Continue', exact: true });
+        for (const control of [button, primary]) {
+          const readMetrics = () =>
+            control.evaluate((el) => {
+              const style = getComputedStyle(el);
+              return {
+                padding: style.padding,
+                fontSize: style.fontSize,
+                lineHeight: style.lineHeight,
+                radius: style.borderRadius,
+                borderWidth: style.borderWidth,
+                height: el.getBoundingClientRect().height,
+              };
+            });
+          await expect
+            .poll(readMetrics, { message: `${key}/root${rootFont}/fixed px metrics` })
+            .toEqual(expected);
+          observations.push({
+            key,
+            rootFont,
+            label: await control.innerText(),
+            metrics: await readMetrics(),
+          });
+        }
+        await button.click();
+        await button.press('Enter');
+        await button.press('Space');
+        await expect.poll(() => output.innerText()).toBe('3 activations');
+        await page.evaluate((key) => {
+          (window as any).projectionFamilyFixture.setProps(key, 'primary', { disabled: true });
+        }, key);
+        await expect.poll(() => primary.getAttribute('aria-disabled')).toBe('true');
+        await primary.click({ force: true });
+        await primary.press('Enter');
+        await primary.press('Space');
+        expect(await output.innerText()).toBe('3 activations');
+        // The public demo API patches props, so restore explicit values here.
+        // Neither an empty patch nor undefined removes a provided key. Actual
+        // raw-prop removal is covered by the controller unit test, not this fixture.
+        await page.evaluate((key) => {
+          (window as any).projectionFamilyFixture.setProps(key, 'primary', {
+            variant: 'default',
+            disabled: false,
+          });
+        }, key);
+        await expect.poll(() => primary.getAttribute('aria-disabled')).toBe('false');
+        await page.mouse.move(0, 0);
+        await expect
+          .poll(() => primary.evaluate((el) => getComputedStyle(el).backgroundImage))
+          .toBe('linear-gradient(rgb(255, 255, 255), rgb(230, 230, 230))');
+        await primary.press('Enter');
+        await expect.poll(() => output.innerText()).toBe('4 activations');
+      }
+      await capture(`bootstrap-button-root${rootFont}-restored-props`);
+    }
+  }, 120000);
+
   it('updates props repeatedly and removes all real hosts on disposal', async () => {
     await open('dark');
     expect(await page.locator('[data-runtime-host]').getByRole('button').count()).toBe(24);

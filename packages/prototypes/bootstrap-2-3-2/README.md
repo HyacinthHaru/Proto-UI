@@ -4,7 +4,7 @@ A private, unreleased, real Base-inheriting projection source package. It is a p
 
 | Component | Real parts / owner | Bootstrap 2.3.2 reference and deliberate difference |
 | --- | --- | --- |
-| Button | Button / `asButton()` | [Archived buttons](https://getbootstrap.com/2.3.2/base-css.html#buttons), default/primary gradient and raised/inset grammar; stronger focus ring, scalable metrics, no jQuery |
+| Button | Button / `asButton()` | [Archived buttons](https://getbootstrap.com/2.3.2/base-css.html#buttons), default/primary gradient and raised/inset grammar; stronger focus ring, fixed upstream 4px/12px padding and 14px/20px type, no jQuery |
 | Checkbox | Root + Indicator / `asCheckboxRoot()` + `asCheckboxIndicator()` | [Archived forms](https://getbootstrap.com/2.3.2/base-css.html#forms); custom square and original check/mixed glyph rather than the original native checkbox skin |
 | Switch | Root + Thumb / `asSwitchRoot()` + `asSwitchThumb()` | Design-language extension using the archived control palette and relief; core 2.3.2 has no Switch |
 | Toggle | Toggle / `asToggle()` | Design-language extension using [stateful button appearance](https://getbootstrap.com/2.3.2/javascript.html#buttons); Base owns active state, not the original jQuery plugin |
@@ -43,3 +43,5 @@ These are private, release-excluded development artifacts, not public package ad
 Run `pnpm test:draft-packages` from the repository root for the complete offline tarball install, JavaScript ESM and strict NodeNext declaration smoke. Run this build-bearing suite separately from other package builds.
 
 The draft builder admits only the two named prototype families and their current dependency shape. It is not a general private-package build API; adding workspace dependencies that occur only in peer or optional fields requires extending and testing its closure planning first.
+
+Button default/primary preserve the archived CSS pixel dimensions when the root font size changes. This supersedes the initial scalable-metrics deviation for Button only; other projections retain their separately tracked sizing work. Browser zoom and native/compiler verification are separate from root-font tests.

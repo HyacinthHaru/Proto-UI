@@ -1105,6 +1105,9 @@ function renderUtility(utility: string): string[] | null {
   const spacingRule = renderSpacingUtility(utility);
   if (spacingRule) return spacingRule;
 
+  const typographyRule = renderPixelTypographyUtility(utility);
+  if (typographyRule) return typographyRule;
+
   const colorRule = renderColorUtility(utility);
   if (colorRule) return colorRule;
 
@@ -1115,6 +1118,14 @@ function renderUtility(utility: string): string[] | null {
   if (transformRule) return transformRule;
 
   return null;
+}
+
+/** The same nonnegative decimal length grammar as split-host lengths, limited to px. */
+function renderPixelTypographyUtility(utility: string): string[] | null {
+  const match = utility.match(/^(text|leading)-\[(\d*\.?\d+)px\]$/);
+  if (!match || !Number.isFinite(Number(match[2]))) return null;
+  const value = spacingValue(`[${match[2]}px]`);
+  return [`${match[1] === 'text' ? 'font-size' : 'line-height'}: ${value};`];
 }
 
 function renderSpacingUtility(utility: string): string[] | null {

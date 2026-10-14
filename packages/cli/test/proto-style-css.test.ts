@@ -13,6 +13,38 @@ import {
 import { BRUTALIST_STYLE_TOKENS } from '../src/generated/brutalist-style-tokens';
 
 describe('proto style css renderer', () => {
+  it('renders nonnegative finite pixel typography without accepting arbitrary CSS', () => {
+    for (const render of [renderProtoStyleTokenCss, renderProtoShadowStyleTokenCss]) {
+      for (const value of ['0', '0.5', '.5', '14', '20', '17.5']) {
+        const css = render([`text-[${value}px]`, `leading-[${value}px]`]);
+        expect(css).not.toContain('Unsupported Proto UI style tokens');
+        expect(css).toContain(`font-size: ${value}px;`);
+        expect(css).toContain(`line-height: ${value}px;`);
+      }
+      for (const value of [
+        '-1px',
+        '+1px',
+        'NaNpx',
+        'Infinitypx',
+        '1e3px',
+        '1.px',
+        '1..2px',
+        '14PX',
+        '14px;color:red',
+        'var(--size)',
+        'calc(14px)',
+        '14 px',
+        '14px_!important',
+        `${'9'.repeat(400)}px`,
+      ]) {
+        for (const prefix of ['text', 'leading']) {
+          const css = render([`${prefix}-[${value}]`]);
+          expect(css).toContain('Unsupported Proto UI style tokens');
+          expect(css).not.toMatch(/(?:^|\n)\s*(?:font-size|line-height):/);
+        }
+      }
+    }
+  });
   it('renders literal black rings independently of theme ring in document and Shadow output', () => {
     for (const render of [renderProtoStyleTokenCss, renderProtoShadowStyleTokenCss]) {
       const css = render([

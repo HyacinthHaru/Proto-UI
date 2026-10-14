@@ -13,7 +13,7 @@ export interface ButtonProjectionProps {
 }
 
 // Independently expressed Proto UI projection of Bootstrap v2.3.2 buttons.less.
-// Changed from upstream: Base owns all interaction/a11y; scalable token spacing,
+// Changed from upstream: Base owns all interaction/a11y; original pixel dimensions,
 // a stronger focus ring, no legacy browser hacks, text-shadow or jQuery plugin.
 // Upstream source attribution and license: ../../THIRD_PARTY_NOTICES.md.
 
@@ -31,7 +31,7 @@ export default definePrototype<ButtonProjectionProps, ButtonExposes>({
 
     def.feedback.style.use(
       tw(
-        'inline-flex shrink-0 items-center justify-center rounded-[4px] border px-3 py-1 text-sm font-normal leading-5 whitespace-nowrap select-none cursor-pointer'
+        'inline-flex shrink-0 items-center justify-center rounded-[4px] border px-[12px] py-[4px] text-[14px] font-normal leading-[20px] whitespace-nowrap select-none cursor-pointer'
       )
     );
     def.feedback.style.use(tw(bootstrapButtonRaised));

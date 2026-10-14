@@ -4,9 +4,9 @@ title: Bootstrap 2.3.2 Button projection over Base Button
 status: draft
 since: 0.3.0-alpha.1
 lifecycleRationale: A user-directed, independently authored visual foundation. Full family/component coverage, material capability where applicable, generated/native evidence and stable admission remain open; source package availability is not release or conformance admission.
-summary: The default/primary Button uses the archived 2.3.2 vertical gradient and raised/inset shadow grammar, 4px corners, normal weight and 14/20 typography at a 16px root. Scalable spacing, stronger focus ring, omitted text-shadow/border-bottom tint/animated gradient and absent other variants are documented differences. The legacy palette is retained in both host color schemes.
+summary: The default/primary Button uses the archived 2.3.2 vertical gradient and raised/inset shadow grammar, 4px corners, normal weight, fixed 4px 12px padding and 14px/20px typography independent of root font size. Stronger focus ring, omitted text-shadow/border-bottom tint/animated gradient and absent other variants are documented differences. The legacy palette is retained in both host color schemes.
 statement:
-  en: The default/primary Button uses the archived 2.3.2 vertical gradient and raised/inset shadow grammar, 4px corners, normal weight and 14/20 typography at a 16px root. Scalable spacing, stronger focus ring, omitted text-shadow/border-bottom tint/animated gradient and absent other variants are documented differences. The legacy palette is retained in both host color schemes. variant is default | primary, default default; disabled is inherited and defaults false.
+  en: The default/primary Button uses the archived 2.3.2 vertical gradient and raised/inset shadow grammar, 4px corners, normal weight, fixed 4px 12px padding and 14px/20px typography independent of root font size. Stronger focus ring, omitted text-shadow/border-bottom tint/animated gradient and absent other variants are documented differences. The legacy palette is retained in both host color schemes. variant is default | primary, default default; disabled is inherited and defaults false.
 criteria:
   - id: P-BOOTSTRAP-2-3-2-BUTTON-BASE
     text:
@@ -16,7 +16,10 @@ criteria:
       en: variant is default | primary, default default; disabled is inherited and defaults false. Removing a prop restores its default.
   - id: P-BOOTSTRAP-2-3-2-BUTTON-VISUAL
     text:
-      en: The default/primary Button uses the archived 2.3.2 vertical gradient and raised/inset shadow grammar, 4px corners, normal weight and 14/20 typography at a 16px root. Scalable spacing, stronger focus ring, omitted text-shadow/border-bottom tint/animated gradient and absent other variants are documented differences. The legacy palette is retained in both host color schemes.
+      en: The default/primary Button uses the archived 2.3.2 vertical gradient and raised/inset shadow grammar, 4px corners, normal weight, fixed 4px 12px padding and 14px/20px typography independent of root font size. Stronger focus ring, omitted text-shadow/border-bottom tint/animated gradient and absent other variants are documented differences. The legacy palette is retained in both host color schemes.
+  - id: P-BOOTSTRAP-2-3-2-BUTTON-DIMENSIONS
+    text:
+      en: Default and primary retain the fixed v2.3.2 CSS pixel units at root font sizes 16px and 32px. Padding is 4px vertically and 12px horizontally, font size 14px, line height 20px, border 1px and radius 4px; a single-line control has a 30px border-box height. Root font-size changes are not browser zoom.
   - id: P-BOOTSTRAP-2-3-2-BUTTON-CLOSURE
     text:
       en: Appearance is authored in feedback tokens and state/prop Rules; every token has an explicit physical translation. Standalone Web output must not depend on website component CSS or reset rules.
@@ -28,6 +31,7 @@ sources:
   - path: packages/prototypes/bootstrap-2-3-2/src/theme.ts
   - path: packages/prototypes/bootstrap-2-3-2/README.md
   - path: https://github.com/Proto-UI/Proto-UI/issues/792
+  - path: https://github.com/twbs/bootstrap/blob/v2.3.2/docs/assets/css/bootstrap.css#L3198-L3226
 dependsOn:
   contracts:
     - C-CORE-SYNTAX-0003
@@ -44,6 +48,9 @@ revisions:
   - version: 0.3.0-alpha.1
     change: introduced
     summary: Cataloged the draft Base-inheriting visual Button foundation with explicit material, release and host limits.
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Replaced the original scalable-metrics deviation with fixed upstream pixel units under the PR872 sizing decision; default/primary scope and draft lifecycle remain unchanged.
 tags:
   - prototype
   - bootstrap-2-3-2

@@ -69,6 +69,36 @@ describe('bootstrap-2-3-2 Button draft projection', () => {
     expect(controller.getRuleStyleTokens()).not.toContain('opacity-65');
     await invokeUnmounted();
   });
+  it('preserves the fixed v2.3.2 pixel dimensions in source-derived CSS', async () => {
+    // twbs/bootstrap v2.3.2 docs/assets/css/bootstrap.css:3198-3226.
+    // Source/CSS evidence only; root16/root32 actual layout is a browser case.
+    const tokens = (await collectProtoStyleTokens(
+      path.resolve('packages/prototypes/bootstrap-2-3-2/src/button')
+    )) as string[];
+    for (const token of [
+      'px-[12px]',
+      'py-[4px]',
+      'text-[14px]',
+      'leading-[20px]',
+      'rounded-[4px]',
+    ]) {
+      expect(tokens).toContain(token);
+    }
+    for (const token of ['px-3', 'py-1', 'text-sm', 'leading-5']) {
+      expect(tokens).not.toContain(token);
+    }
+    const css = renderProtoStyleTokenCss(tokens);
+    for (const declaration of [
+      'padding-inline: 12px;',
+      'padding-block: 4px;',
+      'font-size: 14px;',
+      'line-height: 20px;',
+      'border-radius: 4px;',
+    ]) {
+      expect(css).toContain(declaration);
+    }
+    expect(css).not.toContain('Unsupported Proto UI style tokens');
+  });
   it('closes every source token through the real physical style translator', async () => {
     const tokens = (await collectProtoStyleTokens(
       path.resolve('packages/prototypes/bootstrap-2-3-2/src')

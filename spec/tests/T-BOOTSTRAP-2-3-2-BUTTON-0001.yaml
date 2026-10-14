@@ -25,6 +25,19 @@ cases:
       - P-BOOTSTRAP-2-3-2-BUTTON-VISUAL
       - P-BOOTSTRAP-2-3-2-BUTTON-CLOSURE
     expectation: real-web-host-button-appearance-and-interaction
+  - id: T-BOOTSTRAP-2-3-2-BUTTON-0001-CASE-PIXEL-CSS
+    title: Fixed upstream pixel units in source-derived CSS
+    covers:
+      - P-BOOTSTRAP-2-3-2-BUTTON-DIMENSIONS
+      - P-BOOTSTRAP-2-3-2-BUTTON-CLOSURE
+    expectation: source-derived-pixel-dimensions
+  - id: T-BOOTSTRAP-2-3-2-BUTTON-0001-CASE-ROOT-FONT
+    title: Real four-Web root16/root32 dimensions and input transitions
+    covers:
+      - P-BOOTSTRAP-2-3-2-BUTTON-DIMENSIONS
+      - P-BOOTSTRAP-2-3-2-BUTTON-BASE
+      - P-BOOTSTRAP-2-3-2-BUTTON-API
+    expectation: root-font-independent-pixel-metrics-and-activation
 implementations:
   - id: bootstrap-2-3-2-button-contract
     kind: module-test
@@ -34,6 +47,7 @@ implementations:
     consumesCases:
       - T-BOOTSTRAP-2-3-2-BUTTON-0001-CASE-INHERITANCE
       - T-BOOTSTRAP-2-3-2-BUTTON-0001-CASE-TOKENS
+      - T-BOOTSTRAP-2-3-2-BUTTON-0001-CASE-PIXEL-CSS
   - id: bootstrap-2-3-2-button-browser
     kind: runtime-test
     status: passing
@@ -45,6 +59,15 @@ implementations:
       - This is a Web-only fixture; it does not establish native or Prototype Compiler parity.
       - Passed at source 9c10090bd497b73890a4599459bebf3c828aa157 in GitHub Actions run 37119252013, Node 24.21.0 and Chrome 154.0.8037.57. The five browser cases cover only the Bootstrap 2.3.2 default/primary Button and Liquid Glass opaque fallback through WC, React, Vue 3 and Vue 2; no translucent material or wider family/native support is admitted.
       - The exact-head artifact contains paired pressed/focus states, light/dark/mobile captures and disposal metadata. Official project-local Astro devToolbar.enabled=false was read back; all 24 fixture controls and runtime roots were removed, with no page-wide survivor in that capture run.
+  - id: bootstrap-2-3-2-button-root-font-browser
+    kind: runtime-test
+    status: planned
+    path: apps/www/src/content/docs/zh-cn/demo-new-projection-families.browser.test.ts
+    required: true
+    consumesCases:
+      - T-BOOTSTRAP-2-3-2-BUTTON-0001-CASE-ROOT-FONT
+    notes:
+      - Root16/root32 metric, activation, disabled and explicit-prop-restoration assertions are authored; exact-candidate real browser execution and screenshots remain pending. The patch-only public fixture does not establish actual prop-removal behavior; that remains unit evidence only. This is not browser zoom or native/compiler evidence.
 exercises:
   prototypes:
     - P-BOOTSTRAP-2-3-2-BUTTON
@@ -57,6 +80,9 @@ revisions:
   - version: 0.3.0-alpha.1
     change: revised
     summary: Recorded passing four-Web Button fixture evidence at source 9c10090 and Actions run 37119252013, preserving draft lifecycle and explicit opaque-material, family-coverage and native/compiler limits.
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Added source-derived fixed-pixel regression and separately planned root-font browser coverage without extending the historical browser pass to the new case.
 tags:
   - test
   - bootstrap-2-3-2
