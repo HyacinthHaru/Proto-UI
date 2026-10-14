@@ -1193,6 +1193,7 @@ function renderRoundedUtility(utility: string): string[] | null {
   if (utility === 'rounded-lg') return ['border-radius: var(--pui-radius-lg);'];
   if (utility === 'rounded-md') return ['border-radius: var(--pui-radius-md);'];
   if (utility === 'rounded-sm') return ['border-radius: var(--pui-radius-sm);'];
+  if (utility === 'rounded-[3px]') return ['border-radius: 3px;'];
   if (utility === 'rounded-[4px]') return ['border-radius: 4px;'];
   if (utility === 'rounded-[6px]') return ['border-radius: 6px;'];
   if (utility === 'rounded-[min(var(--radius-md),12px)]') {

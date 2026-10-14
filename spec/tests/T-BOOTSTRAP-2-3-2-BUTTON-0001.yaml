@@ -38,6 +38,19 @@ cases:
       - P-BOOTSTRAP-2-3-2-BUTTON-BASE
       - P-BOOTSTRAP-2-3-2-BUTTON-API
     expectation: root-font-independent-pixel-metrics-and-activation
+  - id: T-BOOTSTRAP-2-3-2-BUTTON-0001-CASE-SIZES
+    title: Exclusive size switching, disabled state and actual raw-prop removal
+    covers:
+      - P-BOOTSTRAP-2-3-2-BUTTON-API
+      - P-BOOTSTRAP-2-3-2-BUTTON-DIMENSIONS
+    expectation: exclusive-size-rules-and-default-restoration
+  - id: T-BOOTSTRAP-2-3-2-BUTTON-0001-CASE-SIZES-BROWSER
+    title: All sizes and both variants in the real four-Web root-font matrix
+    covers:
+      - P-BOOTSTRAP-2-3-2-BUTTON-DIMENSIONS
+      - P-BOOTSTRAP-2-3-2-BUTTON-BASE
+      - P-BOOTSTRAP-2-3-2-BUTTON-API
+    expectation: fixed-size-metrics-input-disabled-and-explicit-restoration
 implementations:
   - id: bootstrap-2-3-2-button-contract
     kind: module-test
@@ -48,6 +61,7 @@ implementations:
       - T-BOOTSTRAP-2-3-2-BUTTON-0001-CASE-INHERITANCE
       - T-BOOTSTRAP-2-3-2-BUTTON-0001-CASE-TOKENS
       - T-BOOTSTRAP-2-3-2-BUTTON-0001-CASE-PIXEL-CSS
+      - T-BOOTSTRAP-2-3-2-BUTTON-0001-CASE-SIZES
   - id: bootstrap-2-3-2-button-browser
     kind: runtime-test
     status: passing
@@ -68,6 +82,16 @@ implementations:
       - T-BOOTSTRAP-2-3-2-BUTTON-0001-CASE-ROOT-FONT
     notes:
       - Root16/root32 metric, activation, disabled and explicit-prop-restoration assertions are authored; exact-candidate real browser execution and screenshots remain pending. The patch-only public fixture does not establish actual prop-removal behavior; that remains unit evidence only. This is not browser zoom or native/compiler evidence.
+  - id: bootstrap-2-3-2-button-sizes-browser
+    kind: runtime-test
+    status: planned
+    path: apps/www/src/content/docs/zh-cn/demo-new-projection-families.browser.test.ts
+    required: true
+    consumesCases:
+      - T-BOOTSTRAP-2-3-2-BUTTON-0001-CASE-SIZES-BROWSER
+    notes:
+      - Same mounted real controls switch large/mini/small/default at root16/root32 through WC, React, Vue 3 and Vue 2, with computed dimensions, activation and disabled checks for both variants. PNG/JSON evidence is bound to source SHA and upstream version when the workflow runs; no current native pass is claimed.
+      - The public demo API uses explicit restoration. Actual prop removal is unit evidence only; browser zoom and native/compiler targets remain unverified.
 exercises:
   prototypes:
     - P-BOOTSTRAP-2-3-2-BUTTON
@@ -83,6 +107,9 @@ revisions:
   - version: 0.3.0-alpha.1
     change: revised
     summary: Added source-derived fixed-pixel regression and separately planned root-font browser coverage without extending the historical browser pass to the new case.
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Added passing unit size-switch/removal coverage and a separately planned all-size real-four-Web browser matrix; historical passes do not establish the new case.
 tags:
   - test
   - bootstrap-2-3-2

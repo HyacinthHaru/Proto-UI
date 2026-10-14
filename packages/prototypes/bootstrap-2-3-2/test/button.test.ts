@@ -69,6 +69,43 @@ describe('bootstrap-2-3-2 Button draft projection', () => {
     expect(controller.getRuleStyleTokens()).not.toContain('opacity-65');
     await invokeUnmounted();
   });
+  it.each(['default', 'primary'])(
+    'switches exclusive sizes and removes provided size for %s',
+    async (variant) => {
+      const sizes = {
+        default: ['px-[12px]', 'py-[4px]', 'text-[14px]', 'rounded-[4px]'],
+        large: ['px-[19px]', 'py-[11px]', 'text-[17.5px]', 'rounded-[6px]'],
+        small: ['px-[10px]', 'py-[2px]', 'text-[11.9px]', 'rounded-[3px]'],
+        mini: ['px-[6px]', 'py-[0px]', 'text-[10.5px]', 'rounded-[3px]'],
+      };
+      const { controller, invokeUnmounted } = mount({ variant });
+      const assertSize = (size: keyof typeof sizes) => {
+        const tokens = controller.getRuleStyleTokens();
+        for (const token of sizes[size]) expect(tokens).toContain(token);
+        for (const token of new Set(Object.values(sizes).flat())) {
+          if (!sizes[size].includes(token)) expect(tokens).not.toContain(token);
+        }
+      };
+      assertSize('default');
+      for (const size of ['large', 'mini', 'small', 'default', 'large'] as const) {
+        controller.applyRawProps({ variant, size, disabled: true });
+        assertSize(size);
+        expect(controller.getRuleStyleTokens()).toContain('opacity-65');
+        controller.applyRawProps({ variant, size, disabled: false });
+        assertSize(size);
+        expect(controller.getRuleStyleTokens()).not.toContain('opacity-65');
+      }
+      // Full raw snapshots really remove size; the demo patch API cannot do this.
+      controller.applyRawProps({ variant });
+      assertSize('default');
+      expect(controller.getRuleStyleTokens()).toContain(
+        variant === 'primary'
+          ? 'bg-[linear-gradient(#08c,#04c)]'
+          : 'bg-[linear-gradient(#fff,#e6e6e6)]'
+      );
+      await invokeUnmounted();
+    }
+  );
   it('preserves the fixed v2.3.2 pixel dimensions in source-derived CSS', async () => {
     // twbs/bootstrap v2.3.2 docs/assets/css/bootstrap.css:3198-3226.
     // Source/CSS evidence only; root16/root32 actual layout is a browser case.
@@ -82,7 +119,7 @@ describe('bootstrap-2-3-2 Button draft projection', () => {
       'leading-[20px]',
       'rounded-[4px]',
     ]) {
-      expect(tokens).toContain(token);
+      expect(tokens.map((value) => value.split(':').at(-1))).toContain(token);
     }
     for (const token of ['px-3', 'py-1', 'text-sm', 'leading-5']) {
       expect(tokens).not.toContain(token);

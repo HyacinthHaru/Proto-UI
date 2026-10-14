@@ -2,7 +2,7 @@
 import { execFileSync } from 'node:child_process';
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import type { Browser, BrowserContext, Page } from 'playwright-core';
+import type { Browser, BrowserContext, ElementHandle, Page } from 'playwright-core';
 import { beforeAll, afterAll, describe, expect, it } from 'vitest';
 import { launchBrowser, startServer, stopServer, RUNTIMES } from './browser-harness';
 
@@ -52,6 +52,11 @@ afterAll(async () => {
           browser: browser?.version(),
           viewport: { width: 1440, height: 1050 },
           runtimes: RUNTIMES,
+          bootstrapSizingSource: {
+            version: 'twbs/bootstrap v2.3.2',
+            url: 'https://github.com/twbs/bootstrap/blob/v2.3.2/docs/assets/css/bootstrap.css#L3198-L3329',
+            blob: 'b725064aab21e434d29209d259d3892478aa9536',
+          },
           scope:
             'Bootstrap 2.3.2 default/primary Button and Liquid Glass opaque fallback only. No native/Compiler/material parity.',
           observations,
@@ -287,6 +292,126 @@ describe.sequential('draft family real Web host evidence', () => {
       await capture(`bootstrap-button-root${rootFont}-restored-props`);
     }
   }, 120000);
+
+  it.each([16, 32])(
+    'switches all Bootstrap sizes on real controls at root%d',
+    async (rootFont) => {
+      // Fixed v2.3.2 CSS:3198-3329. These are root-font changes, not browser zoom.
+      const dimensions = {
+        default: { padding: '4px 12px', fontSize: '14px', radius: '4px', height: 30 },
+        large: { padding: '11px 19px', fontSize: '17.5px', radius: '6px', height: 44 },
+        small: { padding: '2px 10px', fontSize: '11.9px', radius: '3px', height: 26 },
+        mini: { padding: '0px 6px', fontSize: '10.5px', radius: '3px', height: 22 },
+      };
+      await open('light');
+      await page.evaluate((value) => {
+        document.documentElement.style.fontSize = `${value}px`;
+      }, rootFont);
+      expect(await page.locator('html').evaluate((el) => getComputedStyle(el).fontSize)).toBe(
+        `${rootFont}px`
+      );
+      const counts = new Map<string, number>();
+      const originalControls = new Map<string, ElementHandle<HTMLElement | SVGElement>>();
+      for (const runtime of RUNTIMES) {
+        const key = `bootstrap-2-3-2-${runtime}`;
+        const host = page.locator(`[data-runtime-host="${key}"]`);
+        for (const [ref, label] of [
+          ['default', 'Back'],
+          ['primary', 'Continue'],
+        ] as const) {
+          const handle = await host
+            .getByRole('button', { name: label, exact: true })
+            .elementHandle();
+          if (!handle) throw new Error(`Missing original ${key}/${ref}`);
+          originalControls.set(`${key}/${ref}`, handle);
+        }
+      }
+      // Keep the same mounted instances and switch in nonmonotonic order, then
+      // explicitly restore default through the public patch API (not undefined).
+      for (const size of ['large', 'mini', 'small', 'default'] as const) {
+        for (const runtime of RUNTIMES) {
+          const key = `bootstrap-2-3-2-${runtime}`;
+          const host = page.locator(`[data-runtime-host="${key}"]`);
+          const output = page.locator(`[data-count="${key}"]`);
+          for (const [ref, label] of [
+            ['default', 'Back'],
+            ['primary', 'Continue'],
+          ] as const) {
+            const control = host.getByRole('button', { name: label, exact: true });
+            const original = originalControls.get(`${key}/${ref}`)!;
+            const sameConnectedNode = () =>
+              control.evaluate((el, initial) => el === initial && el.isConnected, original);
+            await page.evaluate(
+              ({ key, ref, size }) => {
+                (window as any).projectionFamilyFixture.setProps(key, ref, {
+                  size,
+                  variant: ref,
+                  disabled: false,
+                });
+              },
+              { key, ref, size }
+            );
+            await expect.poll(() => control.getAttribute('aria-disabled')).toBe('false');
+            await expect.poll(sameConnectedNode).toBe(true);
+            const readMetrics = () =>
+              control.evaluate((el) => {
+                const style = getComputedStyle(el);
+                return {
+                  padding: style.padding,
+                  fontSize: style.fontSize,
+                  radius: style.borderRadius,
+                  height: el.getBoundingClientRect().height,
+                  lineHeight: style.lineHeight,
+                  borderWidth: style.borderWidth,
+                };
+              });
+            const expected = { ...dimensions[size], lineHeight: '20px', borderWidth: '1px' };
+            await expect
+              .poll(readMetrics, { message: `${key}/${ref}/${size}/root${rootFont}` })
+              .toEqual(expected);
+            observations.push({ key, variant: ref, size, rootFont, metrics: await readMetrics() });
+            let count = counts.get(key) ?? 0;
+            for (const activate of [
+              () => control.click(),
+              () => control.press('Enter'),
+              () => control.press('Space'),
+            ]) {
+              await activate();
+              count += 1;
+              await expect.poll(() => output.innerText()).toBe(`${count} activations`);
+            }
+            counts.set(key, count);
+            await page.evaluate(
+              ({ key, ref }) => {
+                (window as any).projectionFamilyFixture.setProps(key, ref, { disabled: true });
+              },
+              { key, ref }
+            );
+            await expect.poll(() => control.getAttribute('aria-disabled')).toBe('true');
+            await expect.poll(sameConnectedNode).toBe(true);
+            await expect.poll(readMetrics).toEqual(expected);
+            await control.click({ force: true });
+            await control.press('Enter');
+            await control.press('Space');
+            expect(await output.innerText()).toBe(`${count} activations`);
+            await page.evaluate(
+              ({ key, ref }) => {
+                (window as any).projectionFamilyFixture.setProps(key, ref, { disabled: false });
+              },
+              { key, ref }
+            );
+            await expect.poll(() => control.getAttribute('aria-disabled')).toBe('false');
+            await expect.poll(sameConnectedNode).toBe(true);
+            await expect.poll(readMetrics).toEqual(expected);
+          }
+        }
+        await page.mouse.move(0, 0);
+        await capture(`bootstrap-button-v2.3.2-${size}-root${rootFont}`);
+      }
+      for (const handle of originalControls.values()) await handle.dispose();
+    },
+    180000
+  );
 
   it('updates props repeatedly and removes all real hosts on disposal', async () => {
     await open('dark');

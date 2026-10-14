@@ -13,6 +13,25 @@ import {
 import { BRUTALIST_STYLE_TOKENS } from '../src/generated/brutalist-style-tokens';
 
 describe('proto style css renderer', () => {
+  it('renders the finite 3px corner token without admitting arbitrary radius CSS', () => {
+    for (const render of [renderProtoStyleTokenCss, renderProtoShadowStyleTokenCss]) {
+      for (const value of [3, 4, 6]) {
+        const css = render([`rounded-[${value}px]`]);
+        expect(css).toContain(`border-radius: ${value}px;`);
+        expect(css).not.toContain('Unsupported Proto UI style tokens');
+      }
+      for (const token of [
+        'rounded-[3.5px]',
+        'rounded-[-3px]',
+        'rounded-[3px;color:red]',
+        'rounded-[var(--radius)]',
+      ]) {
+        const css = render([token]);
+        expect(css).toContain('Unsupported Proto UI style tokens');
+        expect(css).not.toMatch(/(?:^|\n)\s*border-radius:/);
+      }
+    }
+  });
   it('renders nonnegative finite pixel typography without accepting arbitrary CSS', () => {
     for (const render of [renderProtoStyleTokenCss, renderProtoShadowStyleTokenCss]) {
       for (const value of ['0', '0.5', '.5', '14', '20', '17.5']) {

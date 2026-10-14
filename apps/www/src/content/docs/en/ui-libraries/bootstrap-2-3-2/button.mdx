@@ -20,11 +20,13 @@ Use the page runtime selector to compare the same real Prototype. Click Back to 
   codePanel={false}
 />
 
-Default and primary use the fixed upstream dimensions: 4px 12px padding, 14px font size, 20px line height, 1px border and 4px corners. Changing the root font size does not rescale these pixel values. This does not establish browser-zoom or native-target acceptance.
+At default size, both variants use the fixed upstream dimensions: 4px 12px padding, 14px font size, 20px line height, 1px border and 4px corners. Changing the root font size does not rescale these pixel values. This does not establish browser-zoom or native-target acceptance.
 
 ## API
 
 - variant: default / primary
+- size: default / large / small / mini, default default
+- All sizes keep 20px line height and 1px borders. Large: 11px 19px padding, 17.5px font, 6px corners (44px single-line height). Small: 2px 10px, 11.9px, 3px (26px). Mini: 0px 6px, 10.5px, 3px (22px).
 - disabled: boolean, default false
 - Activation, focus, keyboard and disabled behavior are inherited from Base Button; the visual layer owns no second interaction state.
 
