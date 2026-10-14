@@ -57,14 +57,14 @@ describe('prototypes/shadcn: button', () => {
     let tokens = controller.getRuleStyleTokens();
     expect(tokens).toContain('bg-primary');
     expect(tokens).not.toContain('border-border');
-    expect(tokens).toContain('h-8');
+    expect(tokens).toContain('h-9');
     expect(tokens).not.toContain('opacity-50');
 
     rawProps = { variant: 'destructive', size: 'lg', disabled: true };
     controller.applyRawProps(rawProps as any);
     tokens = controller.getRuleStyleTokens();
     expect(tokens).toContain('bg-destructive/10');
-    expect(tokens).toContain('h-9');
+    expect(tokens).toContain('h-10');
     expect(tokens).toContain('opacity-50');
 
     rawProps = { variant: 'outline', size: 'default', disabled: false };
@@ -72,12 +72,48 @@ describe('prototypes/shadcn: button', () => {
     tokens = controller.getRuleStyleTokens();
     expect(tokens).toContain('border-border');
 
+    rawProps = { wrap: true, size: 'default' };
+    controller.applyRawProps(rawProps as any);
+    tokens = controller.getRuleStyleTokens();
+    expect(tokens).toContain('whitespace-normal');
+    expect(tokens).toContain('min-h-9');
+    expect(tokens).toContain('max-w-full');
+    expect(tokens).not.toContain('h-9');
+    expect(tokens).not.toContain('whitespace-nowrap');
+    rawProps = { wrap: true, size: 'icon' };
+    controller.applyRawProps(rawProps as any);
+    tokens = controller.getRuleStyleTokens();
+    expect(tokens).toContain('size-9');
+    expect(tokens).not.toContain('whitespace-normal');
+
+    // Preserve every public size/wrap combination while keeping icon density fixed.
+    for (const size of ['default', 'sm', 'lg', 'icon'] as const) {
+      for (const wrap of [false, true]) {
+        rawProps = { size, wrap };
+        controller.applyRawProps(rawProps as any);
+        const actual = controller.getRuleStyleTokens();
+        if (size === 'icon') {
+          expect(actual).toContain('size-9');
+          expect(actual).toContain('whitespace-nowrap');
+          expect(actual).not.toContain('h-auto');
+          expect(actual).not.toContain('whitespace-normal');
+        } else {
+          const height = { default: '9', sm: '8', lg: '10' }[size];
+          expect(actual).toContain(`${wrap ? 'min-h' : 'h'}-${height}`);
+          expect(actual).toContain(wrap ? 'whitespace-normal' : 'whitespace-nowrap');
+          expect(actual).not.toContain(wrap ? 'whitespace-nowrap' : 'whitespace-normal');
+          expect(actual.includes('h-auto')).toBe(wrap);
+          expect(actual.includes('max-w-full')).toBe(wrap);
+        }
+      }
+    }
+
     rawProps = {};
     controller.applyRawProps(rawProps as any);
     tokens = controller.getRuleStyleTokens();
     expect(tokens).toContain('bg-primary');
     expect(tokens).not.toContain('border-border');
-    expect(tokens).toContain('h-8');
+    expect(tokens).toContain('h-9');
     expect(tokens).not.toContain('opacity-50');
   });
 

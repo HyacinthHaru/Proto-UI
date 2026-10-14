@@ -1,4 +1,11 @@
+import type {
+  PresencePresentationDeclaration,
+  PresenceOwnerDeclaration,
+  PresenceOwnerRuntime,
+} from './presence-presentation';
+import type { ResidentMotionDeclaration } from './resident-motion';
 // packages/core/src/handles.ts
+import type { MaterialCandidate, MaterialSlot } from './material';
 import {
   EventListenerToken,
   ExtensionEventType,
@@ -67,8 +74,13 @@ export type RuleDep<Props extends PropsBaseType> =
   | { kind: 'meta'; key: string };
 
 export type WhenLiteral = string | number | boolean | null;
-export type WhenComparable<T> =
-  Extract<T, WhenLiteral> extends never ? WhenLiteral : Extract<T, WhenLiteral>;
+export type WhenComparable<T> = 0 extends 1 & T
+  ? any
+  : [T] extends [readonly number[]]
+    ? never
+    : Extract<T, WhenLiteral> extends never
+      ? WhenLiteral
+      : Extract<T, WhenLiteral>;
 
 export type WhenValue<Props extends PropsBaseType> =
   | { type: 'prop'; key: keyof Props }
@@ -104,6 +116,7 @@ export interface WhenBuilder<Props extends PropsBaseType> {
 
 export type RuleOp<Props extends PropsBaseType = PropsBaseType> =
   | { kind: 'feedback.style.use'; handles: StyleHandle[] }
+  | { kind: 'feedback.material.use'; candidate: MaterialCandidate }
   | {
       kind: 'state.set';
       handle: OwnedStateHandle<any> | BorrowedStateHandle<any, Props>;
@@ -122,6 +135,7 @@ export interface StateIntentBuilder<T> {
 
 export interface IntentBuilder<Props extends PropsBaseType = PropsBaseType> {
   feedback: {
+    material: { use(candidate: MaterialCandidate): void };
     style: {
       use(...handles: StyleHandle[]): void;
     };
@@ -177,6 +191,8 @@ export interface RunHandle<Props extends PropsBaseType> {
   context: {
     read<T extends JsonObject>(key: ContextKey<T>): T;
     tryRead<T extends JsonObject>(key: ContextKey<T>): T | null;
+    /** Optional strict-ancestor read; requires prior trySubscribeAncestor. */
+    tryReadAncestor<T extends JsonObject>(key: ContextKey<T>): T | null;
     update<T extends JsonObject>(key: ContextKey<T>, next: T | ((prev: T) => T)): void;
     tryUpdate<T extends JsonObject>(key: ContextKey<T>, next: T | ((prev: T) => T)): boolean;
   };
@@ -186,6 +202,7 @@ export interface RunHandle<Props extends PropsBaseType> {
   };
 
   feedback: {
+    presence: PresenceOwnerRuntime;
     style: {
       patch: (...handles: StyleHandle[]) => void;
       suppress: (...handles: StyleHandle[]) => void;
@@ -198,6 +215,12 @@ export interface RunHandle<Props extends PropsBaseType> {
     has(family: AnatomyFamily, role: string): boolean;
     parts(family: AnatomyFamily): ReadonlyArray<AnatomyPartView>;
     partsOf(family: AnatomyFamily, role: string): ReadonlyArray<AnatomyPartView>;
+    /** Current-domain strict logical descendants; never host targets or readiness. */
+    descendantsOf(
+      family: AnatomyFamily,
+      ancestor: AnatomyPartView,
+      role: string
+    ): ReadonlyArray<AnatomyPartView>;
     order: AnatomyOrderView;
   };
 }
@@ -226,8 +249,15 @@ export interface DefHandle<Props extends PropsBaseType, Exposes = Record<string,
   };
 
   feedback: {
+    presence: { owner(): PresenceOwnerDeclaration<Props> };
+    material: {
+      declare(slot: MaterialSlot): UnUse;
+      use(candidate: MaterialCandidate): UnUse;
+    };
     style: {
       use: (...handles: StyleHandle[]) => UnUse;
+      transition: (declaration: ResidentMotionDeclaration) => UnUse;
+      presence: (declaration: PresencePresentationDeclaration) => UnUse;
     };
   };
 
@@ -274,6 +304,11 @@ export interface DefHandle<Props extends PropsBaseType, Exposes = Record<string,
       onChange?: ContextOnChange<Props, T>
     ): Unsubscribe;
     trySubscribe<T extends JsonObject>(
+      key: ContextKey<T>,
+      onChange?: ContextOnChangeOptional<Props, T>
+    ): Unsubscribe;
+    /** Observe the nearest ancestor provider, excluding this instance's provider. */
+    trySubscribeAncestor<T extends JsonObject>(
       key: ContextKey<T>,
       onChange?: ContextOnChangeOptional<Props, T>
     ): Unsubscribe;

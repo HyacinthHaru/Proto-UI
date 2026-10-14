@@ -1,3 +1,6 @@
+import { createTargetAlignmentLease } from './target-alignment-host';
+import { resolveWebInputOriginAnchor } from './input-origin-anchor';
+import { observeRootSpace } from './root-space-observer';
 import {
   autoUpdate,
   computePosition,
@@ -102,21 +105,31 @@ function middlewareFor(config: AnchoredPositionConfig, isCurrent: () => boolean)
   return middleware;
 }
 
-export function createFloatingUiAnchoredPositionHost(): AnchoredPositionHost {
+function createEdgeAnchoredPositionHost(): AnchoredPositionHost {
   return {
     attach(initial): AnchoredPositionHostLease {
       let connection = initial;
       let disposed = false;
       let generation = 0;
       let cleanup: (() => void) | null = null;
+      const referenceFor = (anchor: unknown, config: AnchoredPositionConfig) => {
+        if (isElement(anchor))
+          return {
+            element: anchor,
+            reference: positionReference(anchor, config),
+            isLive: () => true,
+          };
+        return resolveWebInputOriginAnchor(anchor);
+      };
 
       const position = async () => {
         const current = connection;
         const { anchor, floating, config } = current;
         const version = ++generation;
-        const isCurrent = () => !disposed && version === generation;
-        if (disposed || !isElement(anchor) || !isElement(floating)) return;
-        const result = await computePosition(positionReference(anchor, config), floating, {
+        const reference = referenceFor(anchor, config);
+        const isCurrent = () => !disposed && version === generation && !!reference?.isLive();
+        if (disposed || !reference || !isElement(floating)) return;
+        const result = await computePosition(reference.reference, floating, {
           placement: toPlacement(config),
           strategy: config.strategy,
           middleware: middlewareFor(config, isCurrent),
@@ -137,8 +150,24 @@ export function createFloatingUiAnchoredPositionHost(): AnchoredPositionHost {
         cleanup?.();
         cleanup = null;
         const { anchor, floating } = connection;
-        if (!isElement(anchor) || !isElement(floating)) return;
-        cleanup = autoUpdate(anchor, floating, position, { animationFrame: false });
+        const reference = referenceFor(anchor, connection.config);
+        if (!reference || !isElement(floating)) return;
+        const stopAuto = autoUpdate(reference.reference, floating, position, {
+          animationFrame: false,
+        });
+        const stopRoot = observeRootSpace(reference.element.ownerDocument, () => {
+          void position();
+        });
+        const stopInvalidation = resolveWebInputOriginAnchor(anchor)?.subscribeInvalidation(() => {
+          generation++;
+          cleanup?.();
+          cleanup = null;
+        });
+        cleanup = () => {
+          stopAuto();
+          stopRoot();
+          stopInvalidation?.();
+        };
       };
 
       restart();
@@ -162,6 +191,52 @@ export function createFloatingUiAnchoredPositionHost(): AnchoredPositionHost {
           generation += 1;
           cleanup?.();
           cleanup = null;
+        },
+      };
+    },
+  };
+}
+
+/** Both policies share one host capability; the descriptor selects geometry, not a component. */
+export function createFloatingUiAnchoredPositionHost(): AnchoredPositionHost {
+  const edge = createEdgeAnchoredPositionHost();
+  return {
+    supportsTargetAlignment: true,
+    attach(initial) {
+      let connection = initial;
+      let disposed = false;
+      const acquire = (next: AnchoredPositionConnection) =>
+        next.targetAlignment ? createTargetAlignmentLease(next) : edge.attach(next);
+      let lease: ReturnType<typeof acquire> | null = acquire(initial);
+      let generation = 0;
+      return {
+        update(next) {
+          if (disposed) return;
+          const changed = Boolean(connection.targetAlignment) !== Boolean(next.targetAlignment);
+          connection = next;
+          if (!changed && lease) {
+            lease.update(next);
+            return;
+          }
+          const request = ++generation;
+          const previous = lease;
+          lease = null;
+          previous?.dispose();
+          if (disposed || request !== generation || connection !== next) return;
+          const acquired = acquire(next);
+          if (disposed || request !== generation || connection !== next) acquired.dispose();
+          else lease = acquired;
+        },
+        requestUpdate() {
+          if (!disposed) lease?.requestUpdate();
+        },
+        dispose() {
+          if (disposed) return;
+          disposed = true;
+          generation++;
+          const previous = lease;
+          lease = null;
+          previous?.dispose();
         },
       };
     },

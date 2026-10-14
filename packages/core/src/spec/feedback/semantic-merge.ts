@@ -55,6 +55,8 @@ const TEXT_SIZE_TOKENS = new Set([
   '9xl',
 ]);
 
+const TEXT_ALIGN_TOKENS = new Set(['left', 'right', 'center', 'justify', 'start', 'end']);
+
 export function getSemanticGroupKeyV0(token: string): string {
   // Keep allowlisted selector targets isolated from the element's ordinary
   // style groups, while still resolving conflicts within the target by the
@@ -64,6 +66,9 @@ export function getSemanticGroupKeyV0(token: string): string {
   if (token.startsWith(selectionPrefix)) {
     return `${selectionPrefix}${getSemanticGroupKeyV0(token.slice(selectionPrefix.length))}`;
   }
+
+  const translateAxis = token.match(/^-?translate-([xy])-/);
+  if (translateAxis) return `translate-${translateAxis[1]}-`;
 
   // One content-selection affordance per subject. This is independent of
   // selection:* paint and never owns a selection range or control state.
@@ -108,6 +113,7 @@ export function getSemanticGroupKeyV0(token: string): string {
   if (token.startsWith('bg-clip-')) return 'bg-clip-';
   if (token.startsWith('text-')) {
     const suffix = token.slice('text-'.length);
+    if (TEXT_ALIGN_TOKENS.has(suffix)) return 'text-align';
     if (TEXT_SIZE_TOKENS.has(suffix) || suffix.startsWith('[')) return 'text-size';
     return 'text-color';
   }

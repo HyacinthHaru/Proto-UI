@@ -1,0 +1,47 @@
+---
+title: 'Drawer'
+description: '可从四个边缘显示的模态面板。'
+---
+
+import { PrototypePreviewer } from '@/components/PrototypePreviewer';
+
+可从四个边缘显示的模态面板。
+
+<PrototypePreviewer
+  demoId="demo-liquid-glass-drawer"
+  initialRuntime="wc"
+  runtimes={['wc', 'react', 'vue', 'vue2']}
+  codePanel={false}
+/>
+
+top/bottom Content 默认按内容高度显示，最大高度为可用高度，始终受安全可用区域约束。Content.minExtent/maxExtent 接受中立长度：unit 为 logical、root-text、available 或 available-minus-root-text，value 为非负有限数字。最小高度超过安全上限时以上限优先。本纵向草稿中，left/right 保留既有受限 20rem 呈现。
+
+本项目将 Content 组合为 overflow-y-auto 滚动区域；这是项目的组合选择，不等同于固定 Shadcn/Neo 参考 wrapper 的 overflow-hidden Content 加显式滚动 body。长内容示例的 Close 仍在同一滚动区域内。
+
+Root 支持受控 open 或非受控 defaultOpen。禁用命令不激活。调用方拒绝关闭请求时，拖动预览恢复到实际受控状态。
+
+snapPoints 缺省、null 或空数组时按内容高度显示；非空有效数组启用显式吸附，点为大于 0 且不超过 1 的比例，并排序去重。单独 snapPoint 不开启吸附。显式比例的分母为完整安全上限，不再隐含乘以 85%。defaultSnapPoint 为本地状态；snapPoint 与 snapPointChange 为受控状态。非法纵向 points 或长度记录会被拒绝，不转成满高度。
+
+内容自适应模式的 Handle 是 aria-hidden 的专用指针把手，不提供键盘 resize，也不会因 Enter/Space 变成 Close。显式 snap 保留有名称的 separator、方向键、Home/End 和范围值。Content.dragDismissible=false 禁止拖动关闭；独立 Close、Escape 和外部关闭仍遵循既有协议。接触中断和受控请求拒绝会恢复已接受的呈现。
+
+运行中非法尺寸更新令 extentValid=false，取消 Handle 输入并保留最后有效意图，宿主仍按当前安全约束重算。初始非法输入会在呈现前被拒绝：Root 保留逻辑 open 值，Mask 等待唯一有效的 Content 声明。这些示例使用静态验证的合法输入；本草稿不宣称任意输入安全，也不代表 native、编译器、打包消费或完整 Finf 验收完成。
+
+### 长内容
+
+<PrototypePreviewer
+  demoId="demo-liquid-glass-drawer-scroll"
+  initialRuntime="wc"
+  runtimes={['wc', 'react', 'vue', 'vue2']}
+  codePanel={false}
+/>
+
+### 显式半开/全开吸附
+
+此例保留显式 resize 交互并播报已提交的变化。
+
+<PrototypePreviewer
+  demoId="demo-liquid-glass-drawer-snap"
+  initialRuntime="wc"
+  runtimes={['wc', 'react', 'vue', 'vue2']}
+  codePanel={false}
+/>

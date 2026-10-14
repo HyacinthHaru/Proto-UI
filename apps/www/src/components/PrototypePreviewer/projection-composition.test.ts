@@ -128,8 +128,12 @@ describe('Website projection composition', () => {
           width: '100%',
           minWidth: '0',
           maxWidth: '100%',
-          minHeight: 'var(--site-select-control-height, var(--site-control-height, 2.25rem))',
-          paddingBlock: 'var(--site-select-control-padding-block, 0.5rem)',
+          ...(projectionFamilyId === 'shadcn'
+            ? {}
+            : {
+                minHeight: 'var(--site-select-control-height, var(--site-control-height, 2.25rem))',
+                paddingBlock: 'var(--site-select-control-padding-block, 0.5rem)',
+              }),
         },
       });
       expect(part('value')).toMatchObject({
@@ -142,7 +146,16 @@ describe('Website projection composition', () => {
       });
       expect(part('item')).toMatchObject({
         props: { value: 'wc', textValue: 'Web Components' },
-        children: ['Web Components'],
+        children:
+          projectionFamilyId === 'shadcn'
+            ? [
+                expect.objectContaining({
+                  kind: 'proto',
+                  prototypeId: 'shadcn-select-item-text',
+                  children: ['Web Components'],
+                }),
+              ]
+            : ['Web Components'],
       });
     }
   );
@@ -1011,7 +1024,7 @@ describe('Website native-only content recipes', () => {
 
 describe('toolbar-free partial-family compositions', () => {
   for (const family of ['bootstrap-2-3-2', 'liquid-glass'] as const) {
-    it(`${family} needs no Select when controls are absent, but refuses requested controls`, () => {
+    it(`${family} needs only content when controls are absent and uses its real Select/Text when requested`, () => {
       const options = {
         ownerId: `partial-${family}`,
         runtimeId: 'wc' as const,
@@ -1035,8 +1048,19 @@ describe('toolbar-free partial-family compositions', () => {
         if (node.kind === 'proto') ids.push(node.prototypeId);
       });
       expect(ids).toEqual([`${family}-button`]);
-      expect(() => createProjectionComposition({ ...options, controlIds: ['runtime'] })).toThrow(
-        /no family select/
+      const withToolbar = createProjectionComposition({ ...options, controlIds: ['runtime'] });
+      const toolbarIds = new Set<string>();
+      walk(withToolbar.demo.root, (node) => {
+        if (node.kind === 'proto') toolbarIds.add(node.prototypeId);
+      });
+      expect(toolbarIds).toEqual(
+        new Set([
+          `${family}-button`,
+          `${family}-text-root`,
+          ...['root', 'trigger', 'value', 'content', 'item'].map(
+            (part) => `${family}-select-${part}`
+          ),
+        ])
       );
     });
   }
@@ -1071,11 +1095,14 @@ it('keeps full-value wrapping an explicit consumer opt-in rather than changing p
       },
     });
     expect(trigger).toMatchObject({
-      surfaceStyle: {
-        minHeight: 'var(--site-select-control-height, var(--site-control-height, 2.25rem))',
-        paddingBlock: 'var(--site-select-control-padding-block, 0.5rem)',
-      },
+      surfaceStyle: { width: '100%', minWidth: '0', maxWidth: '100%' },
     });
+    expect((trigger as Extract<DemoNode, { kind: 'proto' }>).surfaceStyle).not.toHaveProperty(
+      'minHeight'
+    );
+    expect((trigger as Extract<DemoNode, { kind: 'proto' }>).surfaceStyle).not.toHaveProperty(
+      'paddingBlock'
+    );
     if (wrapValue) {
       expect(value).toMatchObject({
         surfaceStyle: { overflowWrap: 'anywhere', overflow: 'visible' },

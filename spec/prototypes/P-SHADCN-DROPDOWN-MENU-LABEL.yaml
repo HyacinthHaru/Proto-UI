@@ -1,0 +1,39 @@
+id: P-SHADCN-DROPDOWN-MENU-LABEL
+type: prototype
+title: shadcn Dropdown Menu label
+status: draft
+since: 0.3.0-alpha.1
+lifecycleRationale:
+  zh-CN: 组成语义和源码投影已明确；本家实际绘制、全宿主、native/GPUI、打包和独立审查尚未完成。
+  en: Composition semantics and source projection are bounded; family paint, all hosts, native/GPUI, packed consumers and independent review remain pending.
+summary: Family-owned passive paint over the explicit Dropdown label definition.
+statement:
+  zh-CN: 本原型只在共同的 label 定义上添加本家排版、间距与视觉反馈，不增加焦点、快捷键或press owner。
+  en: This prototype adds family typography, spacing and feedback to the common label definition without adding a focus, shortcut or press owner.
+criteria:
+  - id: P-SHADCN-DROPDOWN-MENU-LABEL-SEMANTICS-AND-PAINT
+    text:
+      zh-CN: 保留对应Base定义的语义与生命周期；视觉源、偏差和未验证边界须显式记录。
+      en: Preserve the corresponding Base semantics and lifecycle; record the visual reference, deviations and unverified boundaries explicitly.
+  - id: P-SHADCN-DROPDOWN-MENU-LABEL-INSET
+    text:
+      zh-CN: 本家 inset 视觉 prop 默认 false；true 投射固定 Nova 的 pl-7，动态变更不改变 Base 的最近 Group 命名、被动焦点边界或生命周期。
+      en: The family-only inset visual prop defaults to false; true projects the fixed Nova pl-7 recipe. Dynamic changes do not alter Base nearest-Group naming, passive focus boundaries or lifecycle.
+dependsOn:
+  prototypes: [P-BASE-DROPDOWN-MENU-LABEL]
+verifies:
+  tests: [T-BASE-DROPDOWN-COMPOSITION-0001, T-SHADCN-DROPDOWN-MENU-LABEL-0001]
+sources:
+  - path: https://github.com/shadcn-ui/ui/blob/c2a67849be260701852b0977ba15eb5f3a0ce2a4/apps/v4/registry/styles/style-nova.css
+    label: Fixed Nova Label inset recipe; historical registry snapshot byte equivalence not claimed.
+  - path: packages/prototypes/shadcn/src/dropdown/types.ts
+  - path: packages/prototypes/shadcn/test/dropdown-label.test.ts
+  - path: packages/prototypes/shadcn/src/dropdown/label.proto.ts
+revisions:
+  - version: 0.3.0-alpha.1
+    change: refined
+    summary: Added the bounded family-only inset visual prop over unchanged Base label semantics; complete host and visual acceptance remains pending.
+  - version: 0.3.0-alpha.1
+    change: introduced
+    summary: Defined the passive family projection without admitting unverified visual or platform parity.
+tags: [prototype, shadcn, dropdown-menu, composition]

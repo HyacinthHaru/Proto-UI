@@ -1,5 +1,5 @@
 schemaVersion: 2
-registryVersion: 2026-10-06.modeltrace-prior-handoff-1
+registryVersion: 2026-10-14.human-directed-connected-operation-1
 entrypoints:
   development: pui-dev
   maintenance: pui-maintain
@@ -207,7 +207,7 @@ skills:
   - id: pui-integrate
     entrypoints: [development]
     loadPath: .agents/skills/pui-integrate/SKILL.md
-    transition: independently reviewed exact-head pull request -> rule-compliant integration receipt
+    transition: independently reviewed or explicitly human-directed exact head -> real integration receipt
     autonomousMinimumBand: C2
     taskClass: integrate-reviewed-pull-request
     mutation: conditional-pull-request-merge
@@ -219,6 +219,8 @@ skills:
         mutation-authorization,
         modeltrace-record,
       ]
+    humanDirectedRequires:
+      [capability-envelope, github-snapshot, mutation-authorization, human-directed-operation]
     produces: [mutation-receipt]
   - id: pui-collaborate
     entrypoints: [development]
@@ -235,6 +237,8 @@ skills:
         collaboration-request,
         modeltrace-record,
       ]
+    humanDirectedRequires:
+      [capability-envelope, github-snapshot, mutation-authorization, human-directed-operation]
     produces: [mutation-receipt]
   - id: pui-issue
     entrypoints: [development]

@@ -11,6 +11,7 @@ import type {
   A11yRelationSpec,
   A11yRole,
   A11ySemanticObjectSnapshot,
+  A11ySemanticObjectRef,
   A11yStateKey,
   A11yTextAlternative,
   A11yTreeBehavior,
@@ -52,6 +53,7 @@ class A11yModuleImpl extends ModuleBase {
   private partOwner: A11yPartOwner | null = null;
   private readonly partWatchOffs = new Map<State<unknown>, Unsubscribe>();
   private readonly familyWatchOffs = new Map<AnatomyFamily, Unsubscribe>();
+  private controlLabelName: { target: A11ySemanticObjectRef } | null = null;
 
   constructor(
     caps: ModuleFactoryArgs['caps'],
@@ -64,7 +66,10 @@ class A11yModuleImpl extends ModuleBase {
   override onInstancePhase(phase: InstancePhase): void {
     super.onInstancePhase(phase);
     if (phase === 'alive' && isState(this.ir.level)) resolveA11yLevel(this.ir.level);
-    if (phase === 'alive') this.refreshParts();
+    if (phase === 'alive') {
+      for (const binding of this.ir.states.values()) validateStateCondition(binding.when);
+      this.refreshParts();
+    }
     if (phase !== 'disposing' || this.projectionDisposed) return;
     this.projectionDisposed = true;
     this.projectionActive = false;
@@ -105,9 +110,11 @@ class A11yModuleImpl extends ModuleBase {
       this.ir.description = { kind: 'text', value };
       this.applyProjection();
     },
-    state: <V>(key: A11yStateKey, handle: State<V>) => {
+    state: <V>(key: A11yStateKey, handle: State<V>, options?: { when?: State<boolean> }) => {
       this.ensureSetup('asAccessible.state');
-      this.ir.states.set(key, { key, handle: handle as State<unknown> });
+      const when = options?.when;
+      validateStateCondition(when);
+      this.ir.states.set(key, { key, handle: handle as State<unknown>, when });
       this.applyProjection();
     },
     action: (key: A11yActionKey, spec: A11yActionSpec = {}) => {
@@ -168,6 +175,39 @@ class A11yModuleImpl extends ModuleBase {
       if (!this.ir.relations.delete(key)) return;
       this.clearRelationWatch(key);
       this.applyProjection();
+    },
+    claimControlLabelName: (target) => {
+      this.sys.ensureNotDisposed('a11y.port.claimControlLabelName');
+      if (!isA11ySemanticObjectRef(target))
+        throw new TypeError('[A11y] invalid Label semantic reference');
+      const canName = () =>
+        !this.hasAuthoredControlLabelName() && this.activeProjector?.hasAuthoredName?.() === false;
+      if (this.controlLabelName || !canName()) return null;
+      const contribution = { target };
+      this.controlLabelName = contribution;
+      try {
+        this.applyProjection();
+      } catch (error) {
+        // No lease is returned on failure. Release this contribution now so a
+        // retry can claim naming; never erase a reentrantly installed successor.
+        if (this.controlLabelName === contribution) {
+          this.controlLabelName = null;
+          try {
+            this.applyProjection();
+          } catch {
+            // The original projection failure remains the observable error.
+          }
+        }
+        throw error;
+      }
+      return {
+        isActive: () => this.controlLabelName === contribution && canName(),
+        dispose: () => {
+          if (this.controlLabelName !== contribution) return;
+          this.controlLabelName = null;
+          this.applyProjection();
+        },
+      };
     },
   };
 
@@ -355,6 +395,19 @@ class A11yModuleImpl extends ModuleBase {
     if (this.stateWatchesInstalled) this.watchRelation(key);
     this.applyProjection();
   }
+
+  private hasAuthoredControlLabelName(): boolean {
+    const name = resolveTextAlternative(this.ir.name);
+    if (name?.kind === 'text' && String(name.value ?? '').trim()) return true;
+    const target = this.ir.relations.get('labelledBy')?.spec.target;
+    if (target === undefined) return false;
+    // Text Control declares empty State-backed inputs by default. An empty
+    // string is not an authored name; structured/part relationships still own
+    // their declared slot and cannot be replaced by a Label contribution.
+    if (isPartTarget(target)) return true;
+    const value = resolveRelationTarget(target);
+    return typeof value === 'string' ? value.trim().length > 0 : value != null;
+  }
   private installStateWatches(): void {
     if (this.stateWatchesInstalled) return;
 
@@ -363,6 +416,13 @@ class A11yModuleImpl extends ModuleBase {
         this.applyProjection();
       });
       this.stateWatchOffs.push(off);
+      if (binding.when) {
+        this.stateWatchOffs.push(
+          this.statePort.watch(binding.when as OwnedStateHandle<boolean>, () => {
+            this.applyProjection();
+          })
+        );
+      }
     }
 
     if (isState(this.ir.id)) {
@@ -451,7 +511,9 @@ class A11yModuleImpl extends ModuleBase {
   private getSnapshot(): A11ySemanticObjectSnapshot {
     const states: Record<string, unknown> = {};
     for (const [key, binding] of this.ir.states) {
-      states[key] = binding.handle.get();
+      // Read the source even when inactive; applicability must not mask State errors.
+      const value = binding.handle.get();
+      if (binding.when === undefined || binding.when.get() === true) states[key] = value;
     }
 
     const relations: A11ySemanticObjectSnapshot['relations'] = {};
@@ -467,6 +529,10 @@ class A11yModuleImpl extends ModuleBase {
         relationship.target ? [relationship.target] : []
       );
       relationModes[relationship.relation] = 'append';
+    }
+    if (this.controlLabelName && !this.hasAuthoredControlLabelName()) {
+      relations.labelledBy = Object.freeze([this.controlLabelName.target]);
+      relationModes.labelledBy = 'append';
     }
 
     const tree = this.ir.tree
@@ -553,6 +619,13 @@ function isState(value: unknown): value is State<unknown> {
   return (
     !!value && typeof value === 'object' && typeof (value as State<unknown>).get === 'function'
   );
+}
+
+function validateStateCondition(when: State<boolean> | undefined): void {
+  if (when === undefined) return;
+  if (!isState(when) || typeof when.get() !== 'boolean') {
+    throw new TypeError('[A11y] state condition when must be a Boolean State');
+  }
 }
 
 function resolveA11yLevel(value: number | State<number>): number {

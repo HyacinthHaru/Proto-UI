@@ -16,6 +16,12 @@ const DIGEST = /^sha256:[a-f0-9]{64}$/;
 const BAND_ORDER = ['U0', 'C1', 'C2', 'C3', 'C4'];
 const ENTRYPOINTS = ['development', 'maintenance'];
 const EXECUTION_MODES = ['human-assisted', 'autonomous'];
+const HUMAN_DIRECTED_ARTIFACTS = [
+  'capability-envelope',
+  'github-snapshot',
+  'mutation-authorization',
+  'human-directed-operation',
+];
 const MODE_SOURCES = {
   'human-assisted': new Set(['current-user', 'active-human-loop']),
   autonomous: new Set(['maintainer-invocation', 'schedule', 'governed-queue']),
@@ -122,6 +128,7 @@ export function validateSkillRegistryDocument(registry, policy, { root = DEFAULT
         'mutation',
         'requires',
         'produces',
+        ...(Object.hasOwn(skill, 'humanDirectedRequires') ? ['humanDirectedRequires'] : []),
         ...(Object.hasOwn(skill, 'conditionalProduces') ? ['conditionalProduces'] : []),
         ...(Object.hasOwn(skill, 'allowedNextSkillIds') ? ['allowedNextSkillIds'] : []),
         ...(Object.hasOwn(skill, 'interruptions') ? ['interruptions'] : []),
@@ -178,6 +185,20 @@ export function validateSkillRegistryDocument(registry, policy, { root = DEFAULT
     );
     assertStringList(skill.requires, `${label}.requires`, { nonempty: true });
     assertStringList(skill.produces, `${label}.produces`, { nonempty: true });
+    if (Object.hasOwn(skill, 'humanDirectedRequires')) {
+      assert(
+        ['pui-integrate', 'pui-collaborate'].includes(skill.id),
+        `${label}.humanDirectedRequires is limited to connected integration and collaboration`
+      );
+      assertStringList(skill.humanDirectedRequires, `${label}.humanDirectedRequires`, {
+        nonempty: true,
+      });
+      for (const required of HUMAN_DIRECTED_ARTIFACTS)
+        assert(
+          skill.humanDirectedRequires.includes(required),
+          `${label}.humanDirectedRequires is missing ${required}`
+        );
+    }
     if (Object.hasOwn(skill, 'allowedNextSkillIds')) {
       assert(
         Array.isArray(skill.allowedNextSkillIds) && skill.allowedNextSkillIds.length > 0,
@@ -287,7 +308,10 @@ function validateArtifact(artifact, index, handoff) {
       artifact.reference.length <= 1000,
     `handoff.artifacts[${index}].reference is invalid`
   );
-  if (artifact.type === 'modeltrace-record' || artifact.digest !== undefined)
+  if (
+    ['modeltrace-record', 'human-directed-operation'].includes(artifact.type) ||
+    artifact.digest !== undefined
+  )
     assert(DIGEST.test(artifact.digest), `handoff.artifacts[${index}].digest is invalid`);
 }
 
@@ -599,6 +623,7 @@ export function validateSkillHandoff(
       registry.skills
         .flatMap((skill) => [
           ...skill.requires,
+          ...(skill.humanDirectedRequires ?? []),
           ...skill.produces,
           ...(skill.conditionalProduces ?? []).map((value) => value.artifact),
         ])
@@ -668,6 +693,33 @@ export function validateSkillHandoff(
     );
     artifactTypes.add(artifact.type);
   });
+  const humanDirected = artifactTypes.has('human-directed-operation');
+  if (humanDirected) {
+    assert(
+      handoff.schemaVersion === 2 &&
+        handoff.outcome === 'completed' &&
+        handoff.entrypoint === 'development' &&
+        handoff.executionMode === 'human-assisted' &&
+        handoff.executionModeSource === 'current-user',
+      'human-directed operation requires completed v2 current-user human-assisted development'
+    );
+    assert(
+      [expectedEntrypoint, 'pui-integrate', 'pui-collaborate'].includes(handoff.fromId),
+      'human-directed operation must originate at development or its connected operation leaf'
+    );
+    assert(
+      getHandoffArtifacts(handoff, 'human-directed-operation')[0].revision ===
+        handoff.binding.headSha,
+      'human-directed operation must bind its exact current head'
+    );
+    for (const required of HUMAN_DIRECTED_ARTIFACTS) {
+      const artifact = getHandoffArtifacts(handoff, required)[0];
+      assert(
+        artifact && DIGEST.test(artifact.digest),
+        `human-directed operation requires content-bound ${required}`
+      );
+    }
+  }
   if (fromLeaf && handoff.outcome !== 'interrupted') {
     for (const produced of fromLeaf.produces) {
       assert(
@@ -729,7 +781,12 @@ export function validateSkillHandoff(
     nextSkill.entrypoints.includes(handoff.entrypoint),
     `handoff.entrypoint is not allowed by next leaf ${nextSkill.id}`
   );
-  for (const required of nextSkill.requires) {
+  if (humanDirected)
+    assert(
+      nextSkill.humanDirectedRequires,
+      'next leaf does not admit a human-directed connected operation'
+    );
+  for (const required of humanDirected ? nextSkill.humanDirectedRequires : nextSkill.requires) {
     assert(
       artifactTypes.has(required),
       `handoff lacks artifact required by ${nextSkill.id}: ${required}`
@@ -740,7 +797,12 @@ export function validateSkillHandoff(
       assert(candidate.digest !== undefined, 'package-budget entry candidate requires its digest');
   if (handoff.fromId === 'pui-validate' && nextSkill.id === 'pui-review')
     validateRefreshedEvidence(handoff, priorHandoff, registry);
-  return { handoff, nextSkill };
+  return {
+    handoff,
+    nextSkill: humanDirected
+      ? { ...nextSkill, requires: nextSkill.humanDirectedRequires }
+      : nextSkill,
+  };
 }
 
 export function resolveSkill(id, registry = loadSkillRegistry()) {

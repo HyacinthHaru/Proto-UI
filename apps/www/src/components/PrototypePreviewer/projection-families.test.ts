@@ -26,10 +26,24 @@ const EXPECTED_SHARED_BASE_FAMILY_IDS = [
 ] as const;
 
 const EXPECTED_COMPONENT_IDS = {
-  shadcn: [...EXPECTED_SHARED_BASE_FAMILY_IDS, 'input', 'checkbox', 'radio-group'],
+  shadcn: [
+    ...EXPECTED_SHARED_BASE_FAMILY_IDS,
+    'card',
+    'accordion',
+    'field',
+    'collapsible',
+    'label',
+    'input',
+    'checkbox',
+    'radio-group',
+  ],
   brutalist: [
     ...EXPECTED_SHARED_BASE_FAMILY_IDS,
+    'accordion',
+    'field',
+    'collapsible',
     'checkbox',
+    'label',
     'badge',
     'card',
     'skeleton',
@@ -40,12 +54,23 @@ const EXPECTED_COMPONENT_IDS = {
 } as const;
 
 const EXPECTED_REQUIRED_PART_IDS = {
+  field: ['root', 'label', 'control', 'description', 'error', 'validity'],
+  label: ['root'],
   button: ['root'],
   toggle: ['root'],
   switch: ['root', 'thumb'],
   tabs: ['root', 'list', 'trigger', 'content'],
   'hover-card': ['root', 'trigger', 'content'],
-  'dropdown-menu': ['root', 'trigger', 'content', 'item'],
+  'dropdown-menu': [
+    'root',
+    'trigger',
+    'content',
+    'item',
+    'group',
+    'label',
+    'separator',
+    'shortcut',
+  ],
   select: ['root', 'trigger', 'value', 'content', 'item'],
   dialog: [
     'root',
@@ -84,6 +109,25 @@ const EXPECTED_THEME_REFERENCES = {
 
 const EXPECTED_LANE_ONLY_FAMILIES = {
   shadcn: {
+    card: {
+      baseFamilyId: null,
+      recipeId: 'demo-shadcn-card',
+      recipePrototypeIds: [
+        'shadcn-card-root',
+        'shadcn-card-header',
+        'shadcn-card-content',
+        'shadcn-card-footer',
+        'shadcn-text-root',
+      ],
+      auxiliaryPrototypes: [{ basePrototypeId: 'P-BASE-TEXT', prototypeId: 'shadcn-text-root' }],
+      parts: {
+        root: { basePrototypeId: null, prototypeId: 'shadcn-card-root' },
+        header: { basePrototypeId: null, prototypeId: 'shadcn-card-header' },
+        content: { basePrototypeId: null, prototypeId: 'shadcn-card-content' },
+        footer: { basePrototypeId: null, prototypeId: 'shadcn-card-footer' },
+      },
+    },
+
     checkbox: {
       baseFamilyId: 'P-BASE-CHECKBOX',
       recipeId: 'demo-shadcn-checkbox',
@@ -233,12 +277,22 @@ const EXPECTED_RECIPE_PROTOTYPE_IDS = {
       'shadcn-dropdown-trigger',
       'shadcn-dropdown-content',
       'shadcn-dropdown-item',
+      'shadcn-dropdown-group',
+      'shadcn-dropdown-label',
+      'shadcn-dropdown-separator',
+      'shadcn-dropdown-shortcut',
     ],
     select: [
       'shadcn-select-root',
       'shadcn-select-trigger',
       'shadcn-select-value',
       'shadcn-select-content',
+      'shadcn-select-surface',
+      'shadcn-select-viewport',
+      'shadcn-select-item-text',
+      'shadcn-select-group',
+      'shadcn-select-label',
+      'shadcn-select-separator',
       'shadcn-select-item',
     ],
     dialog: [
@@ -278,6 +332,10 @@ const EXPECTED_RECIPE_PROTOTYPE_IDS = {
       'brutalist-dropdown-trigger',
       'brutalist-dropdown-content',
       'brutalist-dropdown-item',
+      'brutalist-dropdown-group',
+      'brutalist-dropdown-label',
+      'brutalist-dropdown-separator',
+      'brutalist-dropdown-shortcut',
     ],
     select: [
       'brutalist-select-root',
@@ -442,6 +500,30 @@ const EXPECTED_SELECT_PARTS = {
       prototypeId: 'shadcn-select-content',
     },
     item: { basePrototypeId: 'P-BASE-SELECT-ITEM', prototypeId: 'shadcn-select-item' },
+    surface: {
+      basePrototypeId: 'P-BASE-SELECT-ALIGNMENT-PARTS',
+      prototypeId: 'shadcn-select-surface',
+    },
+    viewport: {
+      basePrototypeId: 'P-BASE-SELECT-ALIGNMENT-PARTS',
+      prototypeId: 'shadcn-select-viewport',
+    },
+    itemText: {
+      basePrototypeId: 'P-BASE-SELECT-ALIGNMENT-PARTS',
+      prototypeId: 'shadcn-select-item-text',
+    },
+    group: {
+      basePrototypeId: 'P-BASE-SELECT-STRUCTURAL-PARTS',
+      prototypeId: 'shadcn-select-group',
+    },
+    label: {
+      basePrototypeId: 'P-BASE-SELECT-STRUCTURAL-PARTS',
+      prototypeId: 'shadcn-select-label',
+    },
+    separator: {
+      basePrototypeId: 'P-BASE-SELECT-STRUCTURAL-PARTS',
+      prototypeId: 'shadcn-select-separator',
+    },
   },
   brutalist: {
     root: { basePrototypeId: 'P-BASE-SELECT', prototypeId: 'brutalist-select-root' },
@@ -526,7 +608,14 @@ describe('Website projection-family manifests', () => {
         expect(
           Object.keys(actual.parts).sort(),
           `${projectionFamilyId}/${familyId}/required parts`
-        ).toEqual([...EXPECTED_REQUIRED_PART_IDS[familyId]].sort());
+        ).toEqual(
+          [
+            ...EXPECTED_REQUIRED_PART_IDS[familyId],
+            ...(projectionFamilyId === 'shadcn' && familyId === 'select'
+              ? ['surface', 'viewport', 'itemText', 'group', 'label', 'separator']
+              : []),
+          ].sort()
+        );
       }
 
       expect(JSON.stringify(manifest.families)).not.toContain('--pui-');
@@ -551,7 +640,10 @@ describe('Website projection-family manifests', () => {
     }
 
     expect(tryResolveProjectionRecipe('demo-brutalist-radio-group')).toBeNull();
-    expect(tryResolveProjectionRecipe('demo-shadcn-card')).toBeNull();
+    expect(tryResolveProjectionRecipe('demo-shadcn-card')).toEqual({
+      projectionFamilyId: 'shadcn',
+      familyId: 'card',
+    });
   });
 
   it('resolves the admitted Checkbox recipe and rejects unadmitted anatomy', () => {
@@ -597,13 +689,9 @@ describe('Website projection-family manifests', () => {
   it('declares every required Base Select part with a concrete same-lane Prototype identity', () => {
     for (const projectionFamilyId of ['shadcn', 'brutalist'] as const) {
       const select = PROJECTION_FAMILY_MANIFESTS[projectionFamilyId].families.select;
-      expect(Object.keys(select.parts).sort()).toEqual([
-        'content',
-        'item',
-        'root',
-        'trigger',
-        'value',
-      ]);
+      expect(Object.keys(select.parts).sort()).toEqual(
+        Object.keys(EXPECTED_SELECT_PARTS[projectionFamilyId]).sort()
+      );
       expect(select.parts).toEqual(EXPECTED_SELECT_PARTS[projectionFamilyId]);
 
       for (const partId of Object.keys(EXPECTED_SELECT_PARTS[projectionFamilyId])) {
@@ -685,6 +773,75 @@ describe('Website projection-family manifests', () => {
 
   it('classifies every recipe Prototype with explicit part or auxiliary lineage', () => {
     const expectedAuxiliaries = {
+      'shadcn/card': [{ basePrototypeId: 'P-BASE-TEXT', prototypeId: 'shadcn-text-root' }],
+      'bootstrap-2-3-2/select': [
+        { basePrototypeId: 'P-BASE-BUTTON', prototypeId: 'bootstrap-2-3-2-button' },
+      ],
+      'liquid-glass/select': [
+        { basePrototypeId: 'P-BASE-BUTTON', prototypeId: 'liquid-glass-button' },
+      ],
+      'shadcn/field': [{ basePrototypeId: 'P-BASE-BUTTON', prototypeId: 'shadcn-button' }],
+      'brutalist/field': [{ basePrototypeId: 'P-BASE-BUTTON', prototypeId: 'brutalist-button' }],
+      'bootstrap-2-3-2/field': [
+        { basePrototypeId: 'P-BASE-BUTTON', prototypeId: 'bootstrap-2-3-2-button' },
+      ],
+      'liquid-glass/field': [
+        { basePrototypeId: 'P-BASE-BUTTON', prototypeId: 'liquid-glass-button' },
+      ],
+
+      'shadcn/label': [
+        { basePrototypeId: 'P-BASE-CHECKBOX', prototypeId: 'base-checkbox-root' },
+        { basePrototypeId: 'P-BASE-SWITCH', prototypeId: 'base-switch-root' },
+        { basePrototypeId: 'P-BASE-RADIO-GROUP', prototypeId: 'base-radio-group-root' },
+        { basePrototypeId: 'P-BASE-RADIO-GROUP-ITEM', prototypeId: 'base-radio-group-item' },
+        { basePrototypeId: 'P-BASE-INPUT', prototypeId: 'base-input-root' },
+        { basePrototypeId: 'P-BASE-TEXTAREA', prototypeId: 'base-textarea-root' },
+      ],
+      'brutalist/label': [
+        { basePrototypeId: 'P-BASE-CHECKBOX', prototypeId: 'base-checkbox-root' },
+        { basePrototypeId: 'P-BASE-SWITCH', prototypeId: 'base-switch-root' },
+        { basePrototypeId: 'P-BASE-RADIO-GROUP', prototypeId: 'base-radio-group-root' },
+        { basePrototypeId: 'P-BASE-RADIO-GROUP-ITEM', prototypeId: 'base-radio-group-item' },
+        { basePrototypeId: 'P-BASE-INPUT', prototypeId: 'base-input-root' },
+        { basePrototypeId: 'P-BASE-TEXTAREA', prototypeId: 'base-textarea-root' },
+      ],
+      'bootstrap-2-3-2/label': [
+        { basePrototypeId: 'P-BASE-CHECKBOX', prototypeId: 'base-checkbox-root' },
+        { basePrototypeId: 'P-BASE-SWITCH', prototypeId: 'base-switch-root' },
+        { basePrototypeId: 'P-BASE-RADIO-GROUP', prototypeId: 'base-radio-group-root' },
+        { basePrototypeId: 'P-BASE-RADIO-GROUP-ITEM', prototypeId: 'base-radio-group-item' },
+        { basePrototypeId: 'P-BASE-INPUT', prototypeId: 'base-input-root' },
+        { basePrototypeId: 'P-BASE-TEXTAREA', prototypeId: 'base-textarea-root' },
+      ],
+      'liquid-glass/label': [
+        { basePrototypeId: 'P-BASE-CHECKBOX', prototypeId: 'base-checkbox-root' },
+        { basePrototypeId: 'P-BASE-SWITCH', prototypeId: 'base-switch-root' },
+        { basePrototypeId: 'P-BASE-RADIO-GROUP', prototypeId: 'base-radio-group-root' },
+        { basePrototypeId: 'P-BASE-RADIO-GROUP-ITEM', prototypeId: 'base-radio-group-item' },
+        { basePrototypeId: 'P-BASE-INPUT', prototypeId: 'base-input-root' },
+        { basePrototypeId: 'P-BASE-TEXTAREA', prototypeId: 'base-textarea-root' },
+      ],
+
+      'shadcn/accordion': [{ basePrototypeId: 'P-BASE-BUTTON', prototypeId: 'shadcn-button' }],
+      'brutalist/accordion': [
+        { basePrototypeId: 'P-BASE-BUTTON', prototypeId: 'brutalist-button' },
+      ],
+      'bootstrap-2-3-2/accordion': [
+        { basePrototypeId: 'P-BASE-BUTTON', prototypeId: 'bootstrap-2-3-2-button' },
+      ],
+      'liquid-glass/accordion': [
+        { basePrototypeId: 'P-BASE-BUTTON', prototypeId: 'liquid-glass-button' },
+      ],
+      'shadcn/collapsible': [{ basePrototypeId: 'P-BASE-BUTTON', prototypeId: 'shadcn-button' }],
+      'brutalist/collapsible': [
+        { basePrototypeId: 'P-BASE-BUTTON', prototypeId: 'brutalist-button' },
+      ],
+      'bootstrap-2-3-2/collapsible': [
+        { basePrototypeId: 'P-BASE-BUTTON', prototypeId: 'bootstrap-2-3-2-button' },
+      ],
+      'liquid-glass/collapsible': [
+        { basePrototypeId: 'P-BASE-BUTTON', prototypeId: 'liquid-glass-button' },
+      ],
       'shadcn/toggle': [{ basePrototypeId: null, prototypeId: 'lucide-icon' }],
       'shadcn/dialog': [{ basePrototypeId: 'P-BASE-BUTTON', prototypeId: 'shadcn-button' }],
       'brutalist/card': [{ basePrototypeId: 'P-BASE-BUTTON', prototypeId: 'brutalist-button' }],
@@ -763,22 +920,117 @@ describe('partial new projection families', () => {
       const manifest = PROJECTION_FAMILY_MANIFESTS[family];
       expect(Object.keys(manifest.families)).toEqual(
         family === 'bootstrap-2-3-2'
-          ? ['button', 'checkbox', 'switch', 'toggle', 'input', 'textarea', 'separator']
-          : ['button']
+          ? [
+              'text',
+              'tabs',
+              'select',
+              'field',
+              'accordion',
+              'collapsible',
+              'label',
+              'button',
+              'checkbox',
+              'switch',
+              'toggle',
+              'input',
+              'textarea',
+              'separator',
+            ]
+          : ['text', 'tabs', 'select', 'field', 'accordion', 'collapsible', 'label', 'button']
       );
       expect(() => validateProjectionFamilyManifest(manifest)).not.toThrow();
       expect(resolveProjectionPart(family, 'button', 'root').prototypeId).toBe(`${family}-button`);
       for (const kind of family === 'bootstrap-2-3-2'
-        ? ['select', 'dialog', 'tabs', 'radio-group', 'tooltip']
-        : ['select', 'switch', 'dialog', 'tabs', 'checkbox']) {
+        ? ['dialog', 'radio-group', 'tooltip']
+        : ['switch', 'dialog', 'checkbox']) {
         expect(() => resolveProjectionPart(family, kind, 'root')).toThrow(
           /no family.*fallback is forbidden/
         );
       }
+      for (const part of ['root', 'trigger', 'value', 'content', 'item']) {
+        expect(resolveProjectionPart(family, 'select', part)).toEqual({
+          prototypeId: `${family}-select-${part}`,
+          basePrototypeId: `P-BASE-SELECT${part === 'root' ? '' : '-' + part.toUpperCase()}`,
+        });
+      }
+      expect(resolveProjectionPart(family, 'text', 'root')).toEqual({
+        basePrototypeId: 'P-BASE-TEXT',
+        prototypeId: `${family}-text-root`,
+      });
       expect(resolveProjectionRecipe(`demo-${family}-button`)).toEqual({
         projectionFamilyId: family,
         familyId: 'button',
       });
     });
+  }
+});
+
+describe('Collapsible projection manifest closure', () => {
+  for (const family of ['shadcn', 'brutalist', 'bootstrap-2-3-2', 'liquid-glass'] as const) {
+    it(`${family} resolves the real three parts and separate controlled acceptance Button`, () => {
+      expect(resolveProjectionRecipe(`demo-${family}-collapsible`)).toEqual({
+        projectionFamilyId: family,
+        familyId: 'collapsible',
+      });
+      for (const part of ['root', 'trigger', 'content']) {
+        expect(resolveProjectionPart(family, 'collapsible', part)).toEqual({
+          prototypeId: `${family}-collapsible-${part}`,
+          basePrototypeId: `P-BASE-COLLAPSIBLE${part === 'root' ? '' : '-' + part.toUpperCase()}`,
+        });
+      }
+      expect(PROJECTION_FAMILY_MANIFESTS[family].families.collapsible.auxiliaryPrototypes).toEqual([
+        { basePrototypeId: 'P-BASE-BUTTON', prototypeId: `${family}-button` },
+      ]);
+    });
+  }
+});
+
+describe('Accordion exact family projection admission', () => {
+  for (const family of ['shadcn', 'brutalist', 'bootstrap-2-3-2', 'liquid-glass'] as const) {
+    it(`${family} owns its real five-atom recipe and never borrows the site default theme`, () => {
+      expect(resolveProjectionRecipe(`demo-${family}-accordion`)).toEqual({
+        projectionFamilyId: family,
+        familyId: 'accordion',
+      });
+      const manifest = PROJECTION_FAMILY_MANIFESTS[family].families.accordion;
+      expect(Object.keys(manifest.parts)).toEqual([
+        'root',
+        'item',
+        'heading',
+        'trigger',
+        'content',
+      ]);
+      for (const role of ['root', 'item', 'heading', 'trigger', 'content'])
+        expect(resolveProjectionPart(family, 'accordion', role).prototypeId).toBe(
+          `${family}-accordion-${role}`
+        );
+      expect(manifest.auxiliaryPrototypes).toEqual([
+        { basePrototypeId: 'P-BASE-BUTTON', prototypeId: `${family}-button` },
+      ]);
+    });
+  }
+});
+
+describe('Grouped Dropdown recipe admission', () => {
+  for (const family of ['shadcn', 'brutalist'] as const) {
+    for (const part of ['group', 'label', 'separator', 'shortcut'] as const) {
+      it(`${family} declares the actual ${part} lineage and rejects its removal`, () => {
+        const manifest = PROJECTION_FAMILY_MANIFESTS[family];
+        const dropdown = manifest.families['dropdown-menu'];
+        expect(resolveProjectionPart(family, 'dropdown-menu', part)).toEqual({
+          basePrototypeId: `P-BASE-DROPDOWN-MENU-${part.toUpperCase()}`,
+          prototypeId: `${family}-dropdown-${part}`,
+        });
+        expect(dropdown.recipePrototypeIds).toContain(`${family}-dropdown-${part}`);
+        const { [part]: removed, ...parts } = dropdown.parts;
+        expect(removed).toBeDefined();
+        expect(() =>
+          validateProjectionFamilyManifest({
+            ...manifest,
+            families: { ...manifest.families, 'dropdown-menu': { ...dropdown, parts } },
+          })
+        ).toThrow(new RegExp(part));
+      });
+    }
   }
 });

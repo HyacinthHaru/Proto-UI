@@ -7,6 +7,15 @@ import * as tree from '../src/platform/instance-tree';
 const flush = async () => {
   for (let i = 0; i < 30; i++) await Promise.resolve();
 };
+const settlePortalConceal = async () => {
+  // The admitted portal paint barrier owns two rendering opportunities before
+  // view-epoch teardown; microtasks alone do not exercise that boundary.
+  await flush();
+  await new Promise<void>((resolve) =>
+    requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+  );
+  await flush();
+};
 for (const mode of [
   'normal',
   'old-focus-throw',
@@ -241,6 +250,10 @@ it.each(['close', 'external-remove', 'close-to-detached-parent'] as const)(
   async (mode) => {
     let setups = 0,
       disposed = 0;
+    let completeUnmount!: () => void;
+    const unmounted = new Promise<void>((resolve) => {
+      completeUnmount = resolve;
+    });
     const proto = definePrototype({
       name: `wc-terminal-portal-${mode}`,
       setup(def) {
@@ -254,7 +267,13 @@ it.each(['close', 'external-remove', 'close-to-detached-parent'] as const)(
         return () => 'Portal content';
       },
     });
-    AdaptToWebComponent(proto);
+    AdaptToWebComponent(proto, {
+      diagnostics: {
+        onLifecycleEvent(event) {
+          if (event.type === 'unmount.done') completeUnmount();
+        },
+      },
+    });
     const host = document.createElement('div'),
       next = document.createElement('span'),
       content: any = document.createElement(proto.name);
@@ -271,6 +290,8 @@ it.each(['close', 'external-remove', 'close-to-detached-parent'] as const)(
         if (mode === 'close-to-detached-parent') host.remove();
         content.getExposes().actions.close();
       }
+      // Revocation follows the actual view completion, not a microtask count.
+      await unmounted;
       await flush();
       if (mode === 'external-remove') {
         expect(content.isConnected).toBe(false);

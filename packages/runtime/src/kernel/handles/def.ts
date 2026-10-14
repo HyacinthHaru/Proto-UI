@@ -69,6 +69,7 @@ export const createDefHandle = <P extends PropsBaseType, E = Record<string, unkn
     const rt = getAsHookRuntime(def as object);
     const name = (handle as any)?.__stateName;
     rt?.registerStateName(name, (handle as any)?.__stateId);
+    feedback.presence.registerSource(handle as object);
   };
 
   const facades = modules.getFacades();
@@ -166,7 +167,51 @@ export const createDefHandle = <P extends PropsBaseType, E = Record<string, unkn
     },
 
     feedback: {
+      presence: {
+        owner() {
+          ensureSetup('def.feedback.presence.owner');
+          return feedback.presence.owner();
+        },
+      },
+      material: {
+        declare(slot) {
+          ensureSetup('def.feedback.material.declare');
+          const off = feedback.material.declare(slot);
+          recordCaptured(def, 'feedback', off);
+          return () => {
+            ensureSetup('def.feedback.material.declare:dispose');
+            off();
+          };
+        },
+        use(candidate) {
+          ensureSetup('def.feedback.material.use');
+          const off = feedback.material.use(candidate);
+          recordCaptured(def, 'feedback', off);
+          return () => {
+            ensureSetup('def.feedback.material.use:dispose');
+            off();
+          };
+        },
+      },
       style: {
+        presence(declaration) {
+          ensureSetup('def.feedback.style.presence');
+          const off = feedback.style.presence(declaration);
+          recordCaptured(def, 'feedback', off);
+          return () => {
+            ensureSetup('def.feedback.style.presence:dispose');
+            off();
+          };
+        },
+        transition(declaration) {
+          ensureSetup('def.feedback.style.transition');
+          const off = feedback.style.transition(declaration);
+          recordCaptured(def, 'feedback', off);
+          return () => {
+            ensureSetup('def.feedback.style.transition:dispose');
+            off();
+          };
+        },
         use: (...handles: StyleHandle[]) => {
           ensureSetup(`def.feedback.style.use`);
           const unUse = feedback.style.use(...handles);
@@ -318,6 +363,13 @@ export const createDefHandle = <P extends PropsBaseType, E = Record<string, unkn
         recordCaptured(def, 'state', handle);
         return handle;
       },
+      numberList(semantic, defaultValue) {
+        ensureSetup('def.state.numberList');
+        const handle = state.numberList(semantic, defaultValue);
+        registerStateHandle(def, handle);
+        recordCaptured(def, 'state', handle);
+        return handle;
+      },
       numberDiscrete(semantic, defaultValue, spec) {
         ensureSetup('def.state.numberDiscrete');
         const handle = state.numberDiscrete(semantic, defaultValue, spec);
@@ -357,6 +409,19 @@ export const createDefHandle = <P extends PropsBaseType, E = Record<string, unkn
           cb(ctx as RunHandle<P>, next, prev)
         );
         recordCaptured(def, 'context', { op: 'trySubscribe', key, hasCallback: true, off });
+        return off;
+      },
+      trySubscribeAncestor(key, cb) {
+        ensureSetup('def.context.trySubscribeAncestor');
+        if (!cb) {
+          const off = context.trySubscribeAncestor(key);
+          recordCaptured(def, 'context', { op: 'trySubscribeAncestor', key, off });
+          return off;
+        }
+        const off = context.trySubscribeAncestor(key, (ctx, next, prev) =>
+          cb(ctx as RunHandle<P>, next, prev)
+        );
+        recordCaptured(def, 'context', { op: 'trySubscribeAncestor', key, hasCallback: true, off });
         return off;
       },
     },

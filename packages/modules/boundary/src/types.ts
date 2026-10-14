@@ -27,7 +27,7 @@ export type BoundaryPort = ModulePort & {
   classify(sample?: BoundarySample): BoundaryClassification;
   notify(sample?: BoundarySample): BoundaryClassification;
   /**
-   * Requests one runtime-owned host pointer sample stream for this boundary.
+   * Requests a runtime-owned host pointer or current-focus sample stream for this boundary.
    * Event transports samples; Boundary remains the sole classifier.
    */
   observe(observation: BoundaryObservation): void;
@@ -35,6 +35,8 @@ export type BoundaryPort = ModulePort & {
   getConfig(): BoundaryConfig;
   getWarnings(): readonly string[];
   getRegions(): readonly BoundaryRegion[];
+  /** Privileged current-view replacement of the automatic owner-root region. */
+  replaceImplicitRoot(target: unknown | null): () => void;
 };
 
 export type BoundaryModule = ModuleInstance<BoundaryFacade> & {

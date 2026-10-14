@@ -1,10 +1,14 @@
+import type { StatePort } from '@proto.ui/module-state';
+import type { AnatomyPort } from '@proto.ui/module-anatomy';
+import { ContextMenuInputModuleImpl } from './context-menu-input';
 import { createModule, defineModule, type ModuleFactoryArgs } from '@proto.ui/module-base';
 import { PositioningModuleImpl } from './impl';
 import type { PositioningFacade, PositioningModule, PositioningPort } from './types';
 
 export function createPositioningModule(ctx: ModuleFactoryArgs): PositioningModule {
   const { init, caps, deps } = ctx;
-  const impl = new PositioningModuleImpl(caps);
+  const impl = new PositioningModuleImpl(caps, deps.requirePort<StatePort>('state'));
+  const input = new ContextMenuInputModuleImpl(caps, deps.requirePort<AnatomyPort>('anatomy'));
 
   return createModule<'positioning', 'instance', PositioningFacade, PositioningPort>({
     name: 'positioning',
@@ -13,10 +17,23 @@ export function createPositioningModule(ctx: ModuleFactoryArgs): PositioningModu
     caps,
     deps,
     build: () => ({
-      facade: { getAnchoredPosition: () => impl.handle },
-      port: { getAnchoredPosition: () => impl.handle },
+      facade: {
+        declareContextMenuInput: () => input.declare(),
+        getAnchoredPosition: () => impl.handle,
+        getAvailableSpace: () => impl.availableHandle,
+      },
+      port: {
+        setCallbackDispatcher: (dispatch) => impl.setCallbackDispatcher(dispatch),
+        getAnchoredPosition: () => impl.handle,
+        getAvailableSpace: () => impl.availableHandle,
+      },
       hooks: {
         onProtoPhase: (phase) => impl.onProtoPhase(phase),
+        onMountPhase: (phase, epoch) => input.onMountPhase(phase, epoch),
+        dispose: () => {
+          input.dispose();
+          impl.dispose();
+        },
       },
     }),
   }) as PositioningModule;
@@ -25,6 +42,6 @@ export function createPositioningModule(ctx: ModuleFactoryArgs): PositioningModu
 export const PositioningModuleDef = defineModule({
   name: 'positioning',
   resourceOwnership: 'mixed',
-  deps: [],
+  deps: ['anatomy', 'state'],
   create: createPositioningModule,
 });

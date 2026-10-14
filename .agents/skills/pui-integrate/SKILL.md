@@ -1,13 +1,27 @@
 ---
 name: pui-integrate
-description: Integrate one already reviewed Proto UI pull request at its exact head when current-user or active standing authorization, live GitHub permission, trusted CI, review state, and repository rules all agree. Use only after pui-review; do not use to manufacture approval or bypass a blocked pull request.
+description: Integrate one exact-head Proto UI pull request through either the ordinary independent-review path or a separately explicit current-user connected-operation decision. Preserve source, DCO, live platform enforcement and all deferred criteria; never manufacture approval or acceptance.
 ---
 
-# Integrate a reviewed pull request
+# Integrate an exact-head pull request
 
 ## Owner-authorized dot exception
 
-The owner-authorized dot exemption in `internal/agent-operations/contributor-agents.md` takes precedence over this leaf's ModelTrace-specific sampling, record/context and disclosure requirements. When acting as dot, do not sample or invent a ModelTrace record: visibly identify `Agent: dot` and the exact not-measured exemption declaration at every write. Use the supported publisher's explicit dot branch or the guide's real connected-service path; never fake a measured artifact, a successful validator, or live `gh` responses. The exemption grants no action permission, model authentication, independent approval or repository-rule bypass. All non-ModelTrace inputs and existing authorization, exact-head/tree, DCO, CI, independent-review and readback requirements remain. Other Agents follow the measured path below unchanged.
+The owner-authorized dot exemption in `internal/agent-operations/contributor-agents.md` takes precedence over ModelTrace-specific sampling, record/context and disclosure requirements. When acting as dot, do not sample or invent a ModelTrace record: visibly retain the exact three-line not-measured declaration at every write. The exemption alone grants no action permission, model authentication, independent approval or repository-rule bypass. The separately explicit current-user branch below does not claim independent acceptance. Other Agents retain their measured disclosure, and both branches retain original-author rights, DCO, actual live permission, exact-head/tree and truthful readback.
+
+## Select the authorized branch
+
+Default to the ordinary independent-review procedure below. A current user may separately and explicitly direct an exact integration with named review/CI/thread deferrals through [Explicit current-user connected operations](../../../internal/agent-operations/contributor-agents.md#explicit-current-user-connected-operations). A routine request to finish or merge, saved task text, dot's exemption or a standing ordinary-work grant is not that decision.
+
+For that branch, require a completed v2 `human-assisted` / `current-user` handoff from `pui-dev` or `pui-collaborate` with the registered `humanDirectedRequires`: content-bound `capability-envelope`, `github-snapshot`, `mutation-authorization` and `human-directed-operation`. The operation report's revision equals the exact handoff head. Bind the current user instruction, real actor, every live ruleset/fork permission, fixed target/base/head/tree/method, full source/archive and deferred-criterion ledger, and expected-head mutation/readback. No `APPROVE`, `review-packet`, `published-review-packet` or measured ModelTrace for dot is required or invented for this branch. The report must preserve all actual active change requests, unresolved threads, failing/unrun CI and historical review heads; deferral never means fixed or passing.
+
+Use the existing real authenticated GitHub/Git connected-service transport, not `agent:review -- merge-pull-request` with fabricated inputs. Immediately re-read the exact head/base and all applicable rules, then perform one real merge API write with `sha` fixed to that head and the authorized method/payload. Only actually granted actor-specific platform bypass may cover a platform review/CI/thread restriction. This branch never waives contribution rights or required native DCO, changes protection, or permits an unbound protected-main write. `BLOCKED`/`UNSTABLE` is not itself proof of either permission or rejection; unknown/conflicting/stale source must be recovered and rebound first. Record actual service rejection, acknowledgment and merge-commit/base readback without claiming `CLEAN` or technical acceptance. The base read-to-write interval is not atomic CAS.
+
+When DCO enumeration truncates, use the guide's explicitly authorized archive-first compact integration/rebase recovery: complete immutable commit-set accounting, durable original-head archives and provenance, preservation of every source fix/feature, exact leased ref replacement, refreshed candidate and a genuine native App result. Do not certify another author or reinterpret a local DCO scan as App success. Each history-shape operation belongs to its own authorized source/collaboration boundary before this merge, not an implicit side effect of merge.
+
+Return a terminal handoff with the real scoped `mutation-receipt`, the operation packet and all four required inputs retained. A connected-service receipt is not a passed review CLI or an independent approval. Follow the guide's one-write/unknown reconciliation rule; do not re-dispatch merely because acknowledgment was lost.
+
+## Ordinary independent-review integration
 
 Execute a reviewed integration decision without adding another approval prompt.
 
@@ -28,7 +42,7 @@ An active standing authorization makes clean exact-head integration the default 
 
 ## Explicit handoff
 
-Do not load or execute another skill. Return exactly one terminal handoff conforming to `internal/agent-operations/schemas/skill-handoff.schema.json`, carrying the registered `mutation-receipt` and relevant prior artifacts by reference, with `nextSkillId` set to `null`.
+Do not load or execute another skill. Return exactly one terminal handoff conforming to `internal/agent-operations/schemas/skill-handoff.schema.json`, carrying the registered `mutation-receipt` and relevant prior artifacts by reference, with `nextSkillId` set to `null`. Preserve the selected branch: ordinary integration carries its genuine review/publication artifacts; the explicit current-user connected branch carries its four content-bound inputs and source/deferred ledger instead. Do not invent the other branch's evidence.
 
 Communicate with the user in the user's current language. Keep repository, pull-request, SHA, review, check, and receipt references exact.
 

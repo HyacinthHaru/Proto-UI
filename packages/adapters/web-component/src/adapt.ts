@@ -1,3 +1,20 @@
+import type { WebResidentMotionOptions } from '@proto.ui/adapter-base';
+import {
+  NATIVE_LINK_DECLARATION,
+  resolveWebNativeLinkLocalName,
+} from '@proto.ui/module-native-link';
+import type { EffectsPort } from '@proto.ui/core';
+import {
+  createRootStyleEffect,
+  readRootStyleEntries,
+  type RootStyleEntry,
+} from '@proto.ui/core/internal';
+import type { FinalStyleSink } from '@proto.ui/module-feedback/internal/final-style-sink';
+import {
+  createDeferredViewVisualSink,
+  type VisualFeedbackFrame,
+  type VisualFeedbackSink,
+} from '@proto.ui/module-feedback';
 // packages/adapters/web-component/src/adapt.ts
 import {
   getModuleDeclaration,
@@ -6,6 +23,7 @@ import {
 } from '@proto.ui/core';
 import { PropsBaseType } from '@proto.ui/types';
 
+import type { AnatomyPort } from '@proto.ui/module-anatomy';
 import { type RawPropsSource } from '@proto.ui/module-props';
 
 import {
@@ -37,9 +55,11 @@ import {
   bindController,
   bindElementSurfaceProjection,
   getElementProps,
+  getElementAssociations,
   setElementProps,
   unbindController,
 } from './props';
+import { createOwnedVisualSurface, isOwnedVisualNode } from './visual-surface';
 import { SlotProjector } from './slot-projector';
 import { createOwnedTwTokenApplier } from './feedback-style';
 import { installDebugHooks, removeDebugHooks } from './debug/hooks';
@@ -55,6 +75,12 @@ import {
   bindLogicalEventTarget,
   resolveLogicalTriggerEventRouteForTarget,
   isLogicalEventRouteCandidate,
+  getLogicalParent,
+  getLogicalRoot,
+  setProtoParent,
+  registerNativeFocusReadiness,
+  isFocusTargetOwnerReady,
+  subscribeFocusTargetOwnerReady,
   markProtoInstance,
   unbindProtoInstance,
   unbindLogicalEventTarget,
@@ -66,15 +92,15 @@ import {
   createOwnedMaterialBinding,
 } from '@proto.ui/module-feedback/internal/owned-slot';
 import { createOpaqueMaterialVisualSink } from './material/owned-texture-sink';
-import { createOwnedVisualSurface } from './visual-surface';
-import type { FinalStyleSink } from '@proto.ui/module-feedback/internal/final-style-sink';
+
 import { createShadowTextControlSurface } from './shadow-text-control-surface';
 import {
   createRebindableWebOverlayModal,
   createWebComponentModules,
   createWebComponentOwnerModules,
+  type FocusIntentState,
 } from './runtime/modules';
-import { createWebComponentHostSession } from './runtime/session';
+import { completeCleanup, createWebComponentHostSession } from './runtime/session';
 import { createShadowOwnerShell } from './shadow-owner-shell';
 import { normalizeShadowProfile, type WebComponentShadowSplitOptions } from './shadow-profile';
 import { createShadowSplitResources, type ShadowSplitResources } from './shadow-split-resources';
@@ -83,7 +109,11 @@ import {
   hasVerifiedShadowSplitBaseRecipe,
 } from './shadow-split-effects';
 import { createPortalConcealBarrier } from './portal-conceal';
-import { adoptWebComponentPortalProjections, isWebComponentPortaled } from './portal-mount';
+import {
+  abandonWebComponentPortalProjection,
+  adoptWebComponentPortalProjections,
+  isWebComponentPortaled,
+} from './portal-mount';
 import { createRebindableColorSchemeSource } from './color-scheme-source';
 import { createRebindableWebKeyedMetaSources } from './keyed-meta-sources';
 import type { WebComponentAdapterConstructor } from './types';
@@ -110,6 +140,9 @@ function assertKebabCase(tag: string) {
 }
 
 export interface WebComponentAdapterOptions<Props extends PropsBaseType = PropsBaseType> {
+  residentMotion?: WebResidentMotionOptions;
+  /** Draft V2 host provider; one fresh sink per physical view. */
+  createVisualSink?: (host: HTMLElement, effects: EffectsPort) => VisualFeedbackSink | null;
   shadow?: boolean | WebComponentShadowSplitOptions;
   register?: boolean;
   registerAs?: string;
@@ -146,10 +179,12 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
   assertKebabCase(tagName);
   const textControl = getModuleDeclaration(proto, TEXT_CONTROL_DECLARATION)?.config;
   const imageView = getModuleDeclaration(proto, IMAGE_VIEW_DECLARATION)?.config;
+  const nativeLink = getModuleDeclaration(proto, NATIVE_LINK_DECLARATION)?.config;
 
   const profile = normalizeShadowProfile(opt.shadow);
   const split = typeof profile === 'object' ? profile : null;
   const shadow = profile !== false;
+  if (split && nativeLink) throw new Error('shadow-split:native-link unsupported');
   if (split && imageView) {
     throw new Error('shadow-split:image-view');
   }
@@ -186,13 +221,24 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
     private _runtimeGeneration = 0;
     private _instanceToken: LogicalInstanceToken;
     private _invokeUnmounted: (() => void | Promise<void>) | null = null;
-    private _splitOwnerDisposing = false;
+    private _terminalDisposing = false;
+    private _terminalReconnectRequested = false;
+    private _pendingViewCleanup: (() => void) | null = null;
+    private _releaseOwnerResources: (() => void) | null = null;
+    private _terminalCleanupComplete = false;
     private _disconnectVersion = 0;
     private _pendingOwnedTokens: string[] | null = null;
     private _controller: RuntimeController | null = null;
+    private _anatomyPort: AnatomyPort | null = null;
     private _focusTargetReadyListeners = new Set<() => void>();
+    private _documentChangeListeners = new Set<
+      (document: Document, phase: 'retire' | 'ready') => void
+    >();
+    private _pendingPresentationDocument: Document | null = null;
+    private _presentationDocument = this.ownerDocument;
     private _focusTargetRetryScheduled = false;
     private _focusTargetRetryCount = 0;
+    private _focusIntentState: FocusIntentState = {};
     private _defaultMetaGetter = opt.getMeta
       ? undefined
       : createDefaultMetaGetter(this.ownerDocument);
@@ -209,12 +255,12 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
 
     private _root: Element | ShadowRoot;
     private _splitResources: ShadowSplitResources | null = null;
-    private _initializationCleanup: (() => void) | null = null;
     private _portalConceal = createPortalConcealBarrier(this);
     private _slotProjector: SlotProjector | null = null;
     private _hostDisplay: HostDisplayController | null = null;
     private _textControlTarget: WebTextControl | null = null;
     private _imageViewTarget: HTMLImageElement | null = null;
+    private _nativeLinkTarget: HTMLAnchorElement | null = null;
     private _surfaceProjection: HostSurfaceProjection<HTMLElement>;
     private readonly _a11yProjection: HostSurfaceProjection<HTMLElement>;
 
@@ -226,28 +272,34 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
       this._globalEventTarget.setTarget(this.ownerDocument.defaultView);
       this._overlayModal = createRebindableWebOverlayModal(this.ownerDocument);
       this._root = shadow ? (this.attachShadow({ mode: 'open' }) as ShadowRoot) : this;
-      if (textControl && imageView) {
-        throw new Error('WC:text/image conflict');
+      if ([textControl, imageView, nativeLink].filter(Boolean).length > 1) {
+        throw new Error('WC:text/image/native-link conflict');
       }
       if (textControl) {
-        this._textControlTarget = document.createElement(
+        this._textControlTarget = this.ownerDocument.createElement(
           resolveWebTextControlLocalName(textControl)
         );
         this._textControlTarget.setAttribute('part', 'control');
       }
       if (imageView) {
-        this._imageViewTarget = document.createElement(resolveWebImageLocalName());
+        this._imageViewTarget = this.ownerDocument.createElement(resolveWebImageLocalName());
         this._imageViewTarget.setAttribute('part', 'image');
+      }
+      if (nativeLink) {
+        this._nativeLinkTarget = this.ownerDocument.createElement(resolveWebNativeLinkLocalName());
+        this._nativeLinkTarget.setAttribute('part', 'link');
       }
       this._surfaceProjection = createHostSurfaceProjection<HTMLElement>(
         this,
-        split ? null : (this._textControlTarget ?? this._imageViewTarget ?? this)
+        split
+          ? null
+          : (this._textControlTarget ?? this._imageViewTarget ?? this._nativeLinkTarget ?? this)
       );
       // C-HOST-SURFACE-PROJECTION-0001-D: an ordinary split surface only
       // paints. Native controls retain Main's live physical a11y projection;
       // other controls retain their logical trigger/boundary target.
       this._a11yProjection =
-        split && !textControl && !imageView
+        split && !textControl && !imageView && !nativeLink
           ? createHostSurfaceProjection<HTMLElement>(this)
           : this._surfaceProjection;
       bindElementSurfaceProjection(this, this._surfaceProjection);
@@ -256,6 +308,10 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
     }
 
     override focus(options?: FocusOptions): void {
+      if (this._nativeLinkTarget) {
+        this._nativeLinkTarget.focus(options);
+        return;
+      }
       if (this._textControlTarget) {
         this._textControlTarget.focus(options);
         return;
@@ -264,6 +320,10 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
     }
 
     override blur(): void {
+      if (this._nativeLinkTarget) {
+        this._nativeLinkTarget.blur();
+        return;
+      }
       if (this._textControlTarget) {
         this._textControlTarget.blur();
         return;
@@ -271,108 +331,224 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
       super.blur();
     }
 
-    adoptedCallback(_oldDocument: Document, newDocument: Document) {
-      this._portalConceal.cancel();
-      if (!opt.getMeta) this._defaultMetaGetter = createDefaultMetaGetter(newDocument);
-      // Adoption detaches the host from its old physical tree before the
-      // destination can connect it. Drop that stale logical edge here; a
-      // subsequent connection will bind the destination parent. Same-document
-      // portal moves deliberately retain their projected logical ownership.
-      bindLogicalParent(this._instanceToken, null);
-      adoptWebComponentPortalProjections(this, newDocument);
-      this._defaultKeyedMetaSources?.adoptDocument(newDocument);
-      this._defaultColorSchemeSource?.adoptDocument(newDocument);
-      this._globalEventTarget.setTarget(newDocument.defaultView);
-      this._overlayModal.adoptDocument(newDocument);
-      this._splitResources?.environment.adoptDocument(newDocument);
-      this._hostDisplay?.sync();
-      this[NOTIFY_FOCUS_TARGET_READY]();
+    static get observedAttributes() {
+      return ['instance-associations', 'control-label-ref'];
+    }
+
+    attributeChangedCallback(name: string, _previous: string | null, next: string | null) {
+      if (next !== null)
+        throw new TypeError(
+          `[Web Component] ${name} has no instance-association attribute lowering; use setElementAssociations`
+        );
+    }
+
+    adoptedCallback(_oldDocument?: Document, newDocument: Document = this.ownerDocument) {
+      if (this._presentationDocument !== newDocument) {
+        this._presentationDocument = newDocument;
+        this._pendingPresentationDocument = newDocument;
+        this._notifyPresentationDocument(newDocument, 'retire');
+      }
+      try {
+        this._portalConceal.cancel();
+        if (!opt.getMeta) this._defaultMetaGetter = createDefaultMetaGetter(newDocument);
+        // Adoption detaches the host from its old physical tree before the
+        // destination can connect it. Drop that stale logical edge here; a
+        // subsequent connection will bind the destination parent. Same-document
+        // portal moves deliberately retain their projected logical ownership.
+        bindLogicalParent(this._instanceToken, null);
+        adoptWebComponentPortalProjections(this, newDocument);
+        this._defaultKeyedMetaSources?.adoptDocument(newDocument);
+        this._defaultColorSchemeSource?.adoptDocument(newDocument);
+        this._globalEventTarget.setTarget(newDocument.defaultView);
+        this._overlayModal.adoptDocument(newDocument);
+        this._splitResources?.environment.adoptDocument(newDocument);
+        this._hostDisplay?.sync();
+        this._controller?.update();
+        this[NOTIFY_FOCUS_TARGET_READY]();
+      } finally {
+        if (this._pendingPresentationDocument === newDocument) {
+          this._pendingPresentationDocument = null;
+          this._notifyPresentationDocument(newDocument, 'ready');
+        }
+      }
+    }
+
+    private _notifyPresentationDocument(document: Document, phase: 'retire' | 'ready') {
+      for (const listener of Array.from(this._documentChangeListeners)) {
+        if (this._terminalDisposing || this._presentationDocument !== document) break;
+        if (!this._documentChangeListeners.has(listener)) continue;
+        // A presentation observer cannot take over the Adapter's adoption lifecycle.
+        try {
+          listener(document, phase);
+        } catch {
+          /* Per-sink guards still validate document identity. */
+        }
+      }
     }
 
     connectedCallback() {
-      // Reuse is valid for synchronous moves, not once terminal teardown starts.
-      // The predecessor owns host-wide resources until its complete cleanup;
-      // coalesce reconnects and initialize only after it can no longer write.
-      if (split && this._splitOwnerDisposing) return;
+      if (this._terminalDisposing) {
+        this._terminalReconnectRequested = true;
+        return;
+      }
+      if (this.hasAttribute('instance-associations') || this.hasAttribute('control-label-ref')) {
+        throw new TypeError(
+          '[Web Component] instance-association attributes have no lowering; use setElementAssociations'
+        );
+      }
       const initializing = !this._mountedOnce;
       try {
         this._connectOwner();
       } catch (error) {
-        if (split && initializing) {
-          // A failed activation is retryable on a later connection, never a half-owner.
-          try {
-            this._initializationCleanup?.();
-          } catch {}
-          this._initializationCleanup = null;
-          try {
-            this._releaseSplitResources();
-          } catch {}
-          this._hostDisplay?.disconnect();
-          this._hostDisplay = null;
-          unbindController(this);
-          removeDebugHooks(this);
-          unbindProtoInstance(this._instanceToken, this);
-          bindLogicalParent(this._instanceToken, null);
-          this._controller = null;
-          this._invokeUnmounted = null;
-          this._exposes = {};
-          this._mountedOnce = false;
-          this.setAttribute(PUI_VIEW_DETACHED_ATTR, '');
-        }
+        // Preserve the synchronous failure; the guarded terminal transaction
+        // also owns partial activation and callback reentry for every profile.
+        if (initializing) void this.retireOwner().catch(() => {});
         throw error;
       }
     }
 
-    private _releaseSplitResources() {
-      const resources = this._splitResources;
+    private _releaseSplitResources(resources = this._splitResources) {
+      if (this._splitResources !== resources) return;
       this._splitResources = null;
-      try {
-        this._surfaceProjection.setSurfaceTarget(null);
-      } finally {
-        resources?.dispose();
-      }
+      if (!resources) return;
+      completeCleanup([
+        () => this._surfaceProjection.setSurfaceTarget(null),
+        () => resources.dispose(),
+      ]);
     }
 
     private _connectOwner() {
       this._globalEventTarget.setTarget(this.ownerDocument.defaultView);
-      this._focusTargetRetryCount = 0;
-
       if (this._mountedOnce) {
-        // Refresh the logical parent link after a synchronous DOM move.
-        // Portal ownership is retained in Adapter metadata while parentNode
-        // continues to report the physical DOM tree.
-        markProtoInstance(
-          this,
-          proto as Prototype<any>,
-          this._instanceToken,
-          !isWebComponentPortaled(this)
-        );
+        const previousParent = getLogicalParent(this._instanceToken);
+        const previousRoot = previousParent ? getLogicalRoot(previousParent) : null;
+        try {
+          if (!isWebComponentPortaled(this)) setProtoParent(this, null);
+          markProtoInstance(
+            this,
+            proto as Prototype<any>,
+            this._instanceToken,
+            !isWebComponentPortaled(this)
+          );
+          this._anatomyPort?.syncStructure();
+        } catch (error) {
+          try {
+            setProtoParent(this, previousRoot);
+            this._anatomyPort?.syncStructure();
+          } catch (rollbackError) {
+            throw new AggregateError([error, rollbackError]);
+          }
+          throw error;
+        }
         if (this._pendingOwnedTokens?.length) {
           this._applier?.apply(this._pendingOwnedTokens);
         }
         this._hostDisplay?.sync();
         this._pendingOwnedTokens = null;
         this._controller?.update();
-        schedule(() => this[NOTIFY_FOCUS_TARGET_READY]());
+        const token = this._instanceToken;
+        schedule(() => {
+          if (this._instanceToken === token && !this._terminalDisposing)
+            this[NOTIFY_FOCUS_TARGET_READY]();
+        });
         return;
       }
+      this._terminalCleanupComplete = false;
+      this._focusIntentState = {};
+      this._focusTargetRetryCount = 0;
       if (this._runtimeGeneration > 0) {
-        // Confirmed terminal teardown ends the predecessor's logical
-        // participation. View detach and synchronous moves never reach this
-        // branch, so their retained token keeps its existing ancestry.
         bindLogicalParent(this._instanceToken, null);
         this._instanceToken = createLogicalInstance(proto as Prototype<any>);
       }
-      // The constructor ran before the element had a DOM parent.
-      markProtoInstance(this, proto as Prototype<any>, this._instanceToken);
+      const instanceToken = this._instanceToken;
+      // Claim this owner before marker publication can synchronously reenter.
       this._runtimeGeneration += 1;
       this._mountedOnce = true;
-
       const thisEl = this;
       const thisRoot = this._root;
+      const nativeLinkTarget = this._nativeLinkTarget;
+      let nativeLinkProjectionObserver: MutationObserver | null = null;
+      const owner = createViewEpochOwner<Props>({ prototypeName: tagName });
+      let splitResources: ShadowSplitResources | null = null;
+      let defaultKeyedMetaSources = this._defaultKeyedMetaSources;
+      const propsObservers = new Set<MutationObserver>();
+      let runFocusCallbackScope: ((fn: () => void) => void) | null = null;
+      const scopedExposesReader = createScopedExposesReader(() => runFocusCallbackScope);
+      let releaseCurrentView: (() => void) | null = null;
+      let ownerResourcesReleased = false;
+      const releaseOwnerResources = () => {
+        if (ownerResourcesReleased) return;
+        ownerResourcesReleased = true;
+        this._documentChangeListeners.clear();
+        this._pendingPresentationDocument = null;
+        completeCleanup([
+          () => {
+            const cleanup = releaseCurrentView;
+            releaseCurrentView = null;
+            if (this._pendingViewCleanup === cleanup) this._pendingViewCleanup = null;
+            cleanup?.();
+          },
+          () => {
+            nativeLinkProjectionObserver?.disconnect();
+            nativeLinkProjectionObserver = null;
+          },
+          () => {
+            for (const observer of propsObservers) observer.disconnect();
+            propsObservers.clear();
+          },
+          () => {
+            const source = defaultKeyedMetaSources;
+            defaultKeyedMetaSources = undefined;
+            if (this._defaultKeyedMetaSources === source) this._defaultKeyedMetaSources = undefined;
+            source?.dispose();
+          },
+          () => {
+            const applier = this._applier;
+            this._applier = null;
+            applier?.clear();
+          },
+          () => {
+            const display = this._hostDisplay;
+            this._hostDisplay = null;
+            display?.disconnect();
+          },
+          () => this._releaseSplitResources(splitResources),
+          () => {
+            scopedExposesReader.invalidate();
+            runFocusCallbackScope = null;
+            this._anatomyPort = null;
+            this._exposes = {};
+            this._focusTargetReadyListeners.clear();
+          },
+          () => unbindController(this),
+          () => removeDebugHooks(this),
+        ]);
+      };
+      this._releaseOwnerResources = releaseOwnerResources;
+      this._invokeUnmounted = () => owner.dispose();
+      // Retain acquired owner cleanup before marker/source publication can
+      // reenter or fail; Finf's guarded retirement still owns reconnects.
+      markProtoInstance(this, proto as Prototype<any>, instanceToken);
+      const transferNativeLinkChildren = () => {
+        if (!nativeLinkTarget || shadow) return;
+        for (const node of Array.from(thisEl.childNodes)) {
+          if (node !== nativeLinkTarget && !isOwnedVisualNode(thisEl, node))
+            nativeLinkTarget.appendChild(node);
+        }
+      };
+      const mountNativeLink = () => {
+        if (!nativeLinkTarget || nativeLinkTarget.parentNode === thisRoot) return;
+        transferNativeLinkChildren();
+        thisRoot.appendChild(nativeLinkTarget);
+        if (!shadow) {
+          nativeLinkProjectionObserver = new MutationObserver(transferNativeLinkChildren);
+          nativeLinkProjectionObserver.observe(thisEl, { childList: true });
+        }
+      };
+      mountNativeLink();
       thisEl.setAttribute('data-pui-root', '');
       if (split) {
-        this._splitResources = createShadowSplitResources({
+        splitResources = this._splitResources = createShadowSplitResources({
           host: thisEl,
           shell: createShadowOwnerShell(thisRoot as ShadowRoot),
           artifact: split.styleArtifact,
@@ -391,24 +567,21 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
         );
         this._surfaceProjection.setSurfaceTarget(this._splitResources.surface.element);
       }
-      const splitResources = this._splitResources;
+      splitResources = this._splitResources;
       const ownerGetMeta = splitResources?.getMeta ?? this._getMeta;
-      const defaultKeyedMetaSources = opt.getMeta
+      defaultKeyedMetaSources = opt.getMeta
         ? undefined
         : createRebindableWebKeyedMetaSources(ownerGetMeta, this.ownerDocument);
       this._defaultKeyedMetaSources = defaultKeyedMetaSources;
       const preferenceSource = defaultKeyedMetaSources?.preferenceSource;
       const styleSupportSource = defaultKeyedMetaSources?.styleSupportSource;
-      const disposeDefaultKeyedMetaSources = () => {
-        defaultKeyedMetaSources?.dispose();
-        if (this._defaultKeyedMetaSources === defaultKeyedMetaSources)
-          this._defaultKeyedMetaSources = undefined;
-      };
       // Split reserves colorScheme for its retained environment, not the document getter.
-      const runtimeColorSchemeSource = splitResources
+      const ownerSplitResources = splitResources;
+      const runtimeColorSchemeSource = ownerSplitResources
         ? {
             getter: ownerGetMeta,
-            subscribe: (listener: () => void) => splitResources.environment.subscribe(listener),
+            subscribe: (listener: () => void) =>
+              ownerSplitResources.environment.subscribe(listener),
           }
         : this._defaultColorSchemeSource;
       this._hostDisplay = installDefaultHostDisplay(thisEl, {
@@ -431,12 +604,15 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
             }
           });
 
+          propsObservers.add(mo);
           mo.observe(thisEl, { attributes: true });
-          return () => mo.disconnect();
+          return () => {
+            mo.disconnect();
+            propsObservers.delete(mo);
+          };
         },
       };
 
-      let runFocusCallbackScope: ((fn: () => void) => void) | null = null;
       const runInCallbackScope = (fn: () => void) => {
         if (runFocusCallbackScope) {
           runFocusCallbackScope(fn);
@@ -444,25 +620,19 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
         }
         fn();
       };
-      const scopedExposesReader = createScopedExposesReader(() => runFocusCallbackScope);
       const setExposes = (record: Record<string, unknown>) => {
+        if (ownerResourcesReleased || this._terminalDisposing) return;
         this._exposes = record;
       };
 
-      const owner = createViewEpochOwner<Props>({ prototypeName: tagName });
-      this._initializationCleanup = () => {
-        try {
-          void owner.dispose().catch(() => {});
-        } finally {
-          disposeDefaultKeyedMetaSources();
-        }
-      };
+      let focusIngressReady = false;
       let currentEventGate: ReturnType<typeof createEventGate> | null = null;
       let currentRouter: ReturnType<typeof createWebProtoEventRouter> | null = null;
 
       const clearSlotProjector = () => {
-        this._slotProjector?.disconnect();
+        const projector = this._slotProjector;
         this._slotProjector = null;
+        projector?.disconnect();
       };
 
       const setViewDetached = (detached: boolean) => {
@@ -471,9 +641,18 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
           currentEventGate?.disable();
           return;
         }
+        const gate = currentEventGate;
         schedule(() => {
-          if (!thisEl.isConnected || thisEl.hasAttribute(PUI_VIEW_DETACHED_ATTR)) return;
-          currentEventGate?.enable();
+          if (
+            ownerResourcesReleased ||
+            this._terminalDisposing ||
+            this._instanceToken !== instanceToken ||
+            currentEventGate !== gate ||
+            !thisEl.isConnected ||
+            thisEl.hasAttribute(PUI_VIEW_DETACHED_ATTR)
+          )
+            return;
+          gate?.enable();
           thisEl[NOTIFY_FOCUS_TARGET_READY]();
           for (const descendant of thisEl.querySelectorAll<ProtoElement>('[data-pui-root]')) {
             descendant[NOTIFY_FOCUS_TARGET_READY]?.();
@@ -482,10 +661,32 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
       };
 
       const releaseRenderedChildren = () => {
+        if (nativeLinkTarget) {
+          nativeLinkProjectionObserver?.disconnect();
+          nativeLinkProjectionObserver = null;
+          if (!shadow) {
+            const external =
+              this._slotProjector?.collectSlotPoolBeforeCommit() ??
+              Array.from(nativeLinkTarget.childNodes);
+            clearSlotProjector();
+            nativeLinkTarget.replaceChildren();
+            nativeLinkTarget.remove();
+            thisEl.append(...external);
+          } else {
+            nativeLinkTarget.replaceChildren();
+            nativeLinkTarget.remove();
+            clearSlotProjector();
+          }
+          return;
+        }
         if (shadow) {
-          if (splitResources) splitResources.surface.clearRenderedChildren();
-          else thisRoot.replaceChildren();
-          clearSlotProjector();
+          completeCleanup([
+            () => {
+              if (splitResources) splitResources.surface.clearRenderedChildren();
+              else thisRoot.replaceChildren();
+            },
+            clearSlotProjector,
+          ]);
           return;
         }
 
@@ -507,16 +708,23 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
           tagName,
           shadow,
           host: thisEl,
-          root: thisRoot,
+          root: nativeLinkTarget ?? thisRoot,
           shadowViewTarget: splitResources?.surface,
           schedule,
           rawPropsSource,
+          getInstanceAssociations: () => getElementAssociations(thisEl),
           textControlTarget: this._textControlTarget,
           imageViewTarget: this._imageViewTarget,
           wiring,
           eventGate: {
             enable: () => {
-              if (!thisEl.hasAttribute(PUI_VIEW_DETACHED_ATTR)) currentEventGate?.enable();
+              mountNativeLink();
+              if (
+                !ownerResourcesReleased &&
+                !this._terminalDisposing &&
+                !thisEl.hasAttribute(PUI_VIEW_DETACHED_ATTR)
+              )
+                currentEventGate?.enable();
             },
             disable: () => currentEventGate?.disable(),
             dispose: () => owner.disposeView(),
@@ -525,155 +733,386 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
             dispose: () => owner.disposeView(),
           },
           onLifecycleCheckpoint: opt.diagnostics?.onLifecycleCheckpoint,
-          onLifecycleEvent: opt.diagnostics?.onLifecycleEvent,
+          onLifecycleEvent: (event) => {
+            opt.diagnostics?.onLifecycleEvent?.(event);
+            if (event.type === 'mount.phase') {
+              focusIngressReady = event.phase === 'mounted';
+              if (focusIngressReady) this[NOTIFY_FOCUS_TARGET_READY]();
+            }
+          },
           getSlotProjector: () => this._slotProjector,
           ensureSlotProjector: () => {
-            if (!this._slotProjector) this._slotProjector = new SlotProjector(thisEl);
+            if (!this._slotProjector)
+              this._slotProjector = new SlotProjector(nativeLinkTarget ?? thisEl);
             return this._slotProjector;
           },
           clearSlotProjector,
           onAfterUnmount: () => {
-            scopedExposesReader.invalidate();
-            runFocusCallbackScope = null;
-            this._exposes = {};
-            this._applier?.clear();
-            this._applier = null;
-            this._hostDisplay?.disconnect();
-            this._hostDisplay = null;
             try {
-              if (splitResources && this._splitResources === splitResources)
-                this._releaseSplitResources();
+              releaseOwnerResources();
             } finally {
-              unbindController(this);
-              removeDebugHooks(this);
+              this._terminalCleanupComplete = true;
             }
           },
           initialMount: 'manual',
         });
 
-      const attachView = () => {
+      const attachView = (initial = false) => {
+        if (ownerResourcesReleased || this._terminalDisposing) return;
         if (owner.hasView) {
           setViewDetached(false);
           return;
         }
 
-        if (splitResources && this._textControlTarget)
-          splitResources.surface.replaceRenderedChildren([this._textControlTarget]);
-        const splitEffects = splitResources
-          ? createShadowSplitEffectsPort({
-              host: thisEl,
-              surface: splitResources.surface.element,
-              artifact: splitResources.artifact.artifact,
-              prototypeName: proto.name,
-            })
-          : null;
-        const eventGate = createEventGate();
-        const router = createWebProtoEventRouter({
-          rootEl: thisEl,
-          focusEventTarget: this._textControlTarget ?? undefined,
-          instanceToken: this._instanceToken,
-          resolveSemanticEventRoute: resolveLogicalTriggerEventRouteForTarget,
-          isSemanticEventRouteCandidate: isLogicalEventRouteCandidate,
-          globalEl: this._globalEventTarget,
-          isEnabled: () => eventGate.isEnabled?.() ?? true,
-        });
-        bindLogicalEventTarget(this._instanceToken, router.rootTarget);
-        const applier = splitEffects
-          ? null
-          : createOwnedTwTokenApplier(this._textControlTarget ?? this._imageViewTarget ?? thisEl, {
-              onChange: () => {
-                this._hostDisplay?.sync();
-              },
-            });
-        currentEventGate = eventGate;
-        currentRouter = router;
-        this._applier = applier;
-        // Focus/blur subscriptions bind directly to the physical editor.
-        // A second host listener would see Shadow-retargeted focus and could
-        // overwrite native :focus-visible with the shell's false result.
-
-        // The Adapter acquires the sink before capability attachment can fail.
-        // Both Feedback and rollback retire the same lease, including before
-        // any frame exists. Mark it retired before calling user cleanup.
-        let finalStyleSink: FinalStyleSink | undefined;
-        let sinkReleased = false;
-        let sinkView = 0;
-        const releaseSink = (view = sinkView) => {
-          if (sinkReleased || !finalStyleSink) return;
-          sinkReleased = true;
-          finalStyleSink.release(view);
+        // Share the acquired final-style lease between Feedback and rollback.
+        // Acquisition may succeed before any frame or capability attachment;
+        // retire before invoking user cleanup so throwing cleanup is once-only.
+        let acquiredFinalStyleSink: FinalStyleSink | undefined;
+        let finalStyleSinkReleased = false;
+        let finalStyleSinkView = 0;
+        const releaseFinalStyleSink = (view = finalStyleSinkView) => {
+          if (finalStyleSinkReleased || !acquiredFinalStyleSink) return;
+          finalStyleSinkReleased = true;
+          acquiredFinalStyleSink.release(view);
         };
         let disposed = false;
+        let focusRetryGeneration = 0;
+        let disposeFocusBridge: (() => void) | null = null;
+        let releaseRequestedTargetReady: (() => void) | undefined;
+        const resources: {
+          eventGate?: ReturnType<typeof createEventGate>;
+          router?: ReturnType<typeof createWebProtoEventRouter>;
+          applier?: ReturnType<typeof createOwnedTwTokenApplier>;
+          splitEffects?: ReturnType<typeof createShadowSplitEffectsPort>;
+          nativeReadiness?: ReturnType<typeof registerNativeFocusReadiness>;
+        } = {};
         const disposeView = () => {
           if (disposed) return;
           disposed = true;
-          try {
-            releaseSink();
-          } finally {
-            eventGate.disable();
-            eventGate.dispose();
-            unbindLogicalEventTarget(this._instanceToken, router.rootTarget);
-            router.dispose();
-            applier?.clear();
-            splitEffects?.dispose();
-            releaseRenderedChildren();
-            if (currentEventGate === eventGate) currentEventGate = null;
-            if (currentRouter === router) currentRouter = null;
-            if (this._applier === applier) this._applier = null;
-            this._hostDisplay?.sync();
+          focusRetryGeneration += 1;
+          const releases = [
+            releaseFinalStyleSink,
+            () => resources.eventGate?.disable(),
+            () => resources.eventGate?.dispose(),
+            () => {
+              const release = releaseRequestedTargetReady;
+              releaseRequestedTargetReady = undefined;
+              release?.();
+            },
+            () =>
+              resources.router &&
+              unbindLogicalEventTarget(instanceToken, resources.router.rootTarget),
+            () => resources.router?.dispose(),
+            () => {
+              const release = disposeFocusBridge;
+              disposeFocusBridge = null;
+              release?.();
+            },
+            () => resources.applier?.clear(),
+            () => resources.splitEffects?.dispose(),
+            releaseRenderedChildren,
+            () => {
+              if (currentEventGate === resources.eventGate) {
+                currentEventGate = null;
+                this._focusTargetRetryScheduled = false;
+              }
+              if (currentRouter === resources.router) currentRouter = null;
+              if (this._applier === resources.applier) this._applier = null;
+              this._hostDisplay?.sync();
+            },
+            // Invalidation can synchronously replay user focus. Release the
+            // old view first, and retain that failure after all cleanup.
+            () => resources.nativeReadiness?.(),
+          ];
+          let failed = false;
+          let firstError: unknown;
+          for (const release of releases) {
+            try {
+              release();
+            } catch (error) {
+              if (!failed) {
+                failed = true;
+                firstError = error;
+              }
+            }
           }
+          if (releaseCurrentView === disposeView) releaseCurrentView = null;
+          if (this._pendingViewCleanup === disposeView) this._pendingViewCleanup = null;
+          if (failed) throw firstError;
         };
-
+        releaseCurrentView = this._pendingViewCleanup = disposeView;
         try {
-          finalStyleSink = applier
-            ? (getExperimentalVisualConsumer(proto)?.(
-                thisEl,
+          if (splitResources && this._textControlTarget)
+            splitResources.surface.replaceRenderedChildren([this._textControlTarget]);
+          const splitEffects = (resources.splitEffects = splitResources
+            ? createShadowSplitEffectsPort({
+                host: thisEl,
+                surface: splitResources.surface.element,
+                artifact: splitResources.artifact.artifact,
+                prototypeName: proto.name,
+              })
+            : undefined);
+          const eventGate = (resources.eventGate = createEventGate());
+          const router = (resources.router = createWebProtoEventRouter({
+            rootEl: thisEl,
+            // The eager native bridge owns focus/blur before provider construction.
+            // Router subscriptions stay on a private target, avoiding a second
+            // Shadow-retargeted host observation of the same physical event.
+            focusEventTarget:
+              this._textControlTarget || nativeLinkTarget ? new EventTarget() : undefined,
+            isSemanticEventRouteCandidate: isLogicalEventRouteCandidate,
+            instanceToken: instanceToken,
+            resolveSemanticEventRoute: resolveLogicalTriggerEventRouteForTarget,
+            globalEl: this._globalEventTarget,
+            isEnabled: () => eventGate.isEnabled?.() ?? true,
+          }));
+          bindLogicalEventTarget(instanceToken, router.rootTarget);
+          let finalStyleEntries: readonly RootStyleEntry[] = [];
+          let splitOwnedTokens = new Set<string>();
+          const applier = (resources.applier = splitEffects
+            ? {
+                apply(tokens: string[]) {
+                  if (disposed) return;
+                  const byToken = new Map(finalStyleEntries.map((entry) => [entry.token, entry]));
+                  const entries = tokens.map((token) => {
+                    const entry = byToken.get(token);
+                    if (!entry) throw new Error(`shadow-split:missing visual provenance:${token}`);
+                    return entry;
+                  });
+                  effectsPort.queueStyle(createRootStyleEffect(entries));
+                  effectsPort.requestFlush();
+                  splitOwnedTokens = new Set(tokens);
+                },
+                clear() {
+                  splitOwnedTokens.clear();
+                  // Terminal cleanup retires effects separately, even if another
+                  // release throws. Never write through an already-retired view.
+                  if (disposed) return;
+                  effectsPort.queueStyle(createRootStyleEffect([]));
+                  effectsPort.requestFlush();
+                },
+                getOwned: () => splitOwnedTokens,
+              }
+            : createOwnedTwTokenApplier(
+                this._textControlTarget ??
+                  this._imageViewTarget ??
+                  this._nativeLinkTarget ??
+                  thisEl,
+                {
+                  onChange: () => this._hostDisplay?.sync(),
+                }
+              ));
+          currentEventGate = eventGate;
+          currentRouter = router;
+          // Split owns its role-aware styles across synchronous DOM moves.
+          this._applier = splitEffects ? null : applier;
+          if (this._textControlTarget || nativeLinkTarget) {
+            // Native focus/blur do not bubble from the physical text control.
+            // Route the trusted physical event through the adapter-private host
+            // ingress: Proto focus facts update without emitting a second public
+            // native-looking event from the custom-element boundary.
+            const control: HTMLElement = (this._textControlTarget ?? nativeLinkTarget)!;
+            // Bind native focus/blur directly on the known control so the
+            // callback receives the real DOM event object with target/currentTarget
+            // intact. The private transport preserves both the declared type and
+            // the physical event identity without dispatching a second public
+            // boundary event.
+            const onFocus = (event: FocusEvent) => {
+              if (event.target === control) router.dispatchHostRootEvent('focus', event);
+            };
+            const onBlur = (event: FocusEvent) => {
+              if (event.target === control) router.dispatchHostRootEvent('blur', event);
+            };
+            disposeFocusBridge = () => {
+              control.removeEventListener('focus', onFocus);
+              control.removeEventListener('blur', onBlur);
+            };
+            control.addEventListener('focus', onFocus);
+            control.addEventListener('blur', onBlur);
+          }
+
+          resources.nativeReadiness = registerNativeFocusReadiness(
+            instanceToken,
+            {
+              isReady: () =>
+                !disposed &&
+                !ownerResourcesReleased &&
+                !this._terminalDisposing &&
+                this._instanceToken === instanceToken &&
+                currentEventGate === eventGate &&
+                focusIngressReady &&
+                eventGate.isEnabled() &&
+                thisEl.isConnected &&
+                !thisEl.closest(`[${PUI_VIEW_DETACHED_ATTR}]`),
+              // Text controls use a physical control target while logical ownership
+              // stays on the custom element. Both are roots of this same view.
+              getNativeTarget: () => this._textControlTarget ?? nativeLinkTarget ?? thisEl,
+              subscribe: (listener) => {
+                this._focusTargetReadyListeners.add(listener);
+                return () => this._focusTargetReadyListeners.delete(listener);
+              },
+            },
+            { deferPublication: true }
+          );
+
+          // Rules finish their semantic replacement even when a host sink fails.
+          // During acquisition, retain a split admission failure without queuing
+          // an observer error, then reject the complete view transaction below.
+          // Once acquired, ordinary projection failures keep their usual path.
+          let acquiringProjection = true;
+          let acquisitionFailed = false;
+          let acquisitionError: unknown;
+          const project = (action: () => void) => {
+            if (acquiringProjection && acquisitionFailed) return;
+            try {
+              action();
+            } catch (error) {
+              if (!acquiringProjection) throw error;
+              acquisitionFailed = true;
+              acquisitionError = error;
+            }
+          };
+          const effectsPort: EffectsPort = splitEffects
+            ? {
+                queueStyle: (handle) => project(() => splitEffects.queueStyle(handle)),
+                requestFlush: () => project(() => splitEffects.requestFlush()),
+                flushNow: () => project(() => splitEffects.flushNow?.()),
+              }
+            : createWebEffectsPort(applier);
+          const deferredVisualSink = opt.createVisualSink
+            ? createDeferredViewVisualSink(
+                () => opt.createVisualSink!(thisEl, effectsPort),
+                (frame) => {
+                  effectsPort.queueStyle({ ...frame.style, tokens: [...frame.style.tokens] });
+                  effectsPort.requestFlush();
+                }
+              )
+            : undefined;
+          // View acquisition installs capabilities and evaluates initial Rules in
+          // one synchronous transaction. Intermediate snapshots are not a
+          // committed host frame and must not retire a valid server paint lease.
+          let pendingVisualFrame: VisualFeedbackFrame | null = null;
+          const visualFeedbackSink: VisualFeedbackSink | undefined = deferredVisualSink
+            ? {
+                commit(frame) {
+                  if (acquiringProjection) pendingVisualFrame = frame;
+                  else deferredVisualSink.commit(frame);
+                },
+                release(view) {
+                  if (pendingVisualFrame?.view === view) pendingVisualFrame = null;
+                  deferredVisualSink.release(view);
+                },
+              }
+            : undefined;
+          const visualTarget = thisEl;
+          const rawFinalStyleSink = visualFeedbackSink
+            ? undefined
+            : (getExperimentalVisualConsumer(proto)?.(
+                visualTarget,
                 applier,
                 createOwnedVisualSurface(thisEl, thisRoot)
               ) ??
               (proto.modules?.some((declaration) => declaration.id === OWNED_MATERIAL_ID)
-                ? createOpaqueMaterialVisualSink(thisEl, applier)
-                : undefined))
+                ? createOpaqueMaterialVisualSink(visualTarget, applier)
+                : undefined));
+          acquiredFinalStyleSink = rawFinalStyleSink;
+          const finalStyleSink: FinalStyleSink | undefined = rawFinalStyleSink
+            ? {
+                commit(frame) {
+                  if (finalStyleSinkReleased) throw new Error('Retired material visual sink');
+                  finalStyleSinkView = frame.view;
+                  if (splitEffects) {
+                    if (!('entries' in frame.style))
+                      throw new Error('shadow-split:root-provenance');
+                    finalStyleEntries = readRootStyleEntries(
+                      { ...frame.style, tokens: [...frame.style.tokens] },
+                      'setup'
+                    );
+                  }
+                  rawFinalStyleSink.commit(frame);
+                },
+                release: releaseFinalStyleSink,
+              }
             : undefined;
           owner.attachView({
             modules: createWebComponentModules({
               el: thisEl,
               surfaceProjection: this._a11yProjection,
-              instanceToken: this._instanceToken,
+              feedbackSurfaceProjection: this._surfaceProjection,
+              instanceToken: instanceToken,
               router,
               rawPropsSource,
-              effectsPort: splitEffects ?? createWebEffectsPort(applier!),
-              materialBindingFactory:
-                applier &&
-                proto.modules?.some((declaration) => declaration.id === OWNED_MATERIAL_ID)
-                  ? createOwnedMaterialBinding
-                  : undefined,
-              finalStyleSink: finalStyleSink
-                ? {
-                    commit(frame) {
-                      if (sinkReleased) throw new Error('Retired material visual sink');
-                      sinkView = frame.view;
-                      finalStyleSink!.commit(frame);
-                    },
-                    release: releaseSink,
-                  }
+              effectsPort,
+              visualFeedbackSink,
+              residentMotion: opt.residentMotion,
+              subscribeDocumentChange: (listener) => {
+                this._documentChangeListeners.add(listener);
+                if (this._pendingPresentationDocument)
+                  listener(this._pendingPresentationDocument, 'retire');
+                return () => {
+                  this._documentChangeListeners.delete(listener);
+                };
+              },
+              materialBindingFactory: proto.modules?.some(
+                (declaration) => declaration.id === OWNED_MATERIAL_ID
+              )
+                ? createOwnedMaterialBinding
                 : undefined,
+              finalStyleSink,
               getMeta: ownerGetMeta,
               colorSchemeSource: runtimeColorSchemeSource,
               preferenceSource,
               styleSupportSource,
               textControlTarget: this._textControlTarget,
               imageViewTarget: this._imageViewTarget,
+              nativeLinkTarget,
               overlayModal: this._overlayModal,
               exposeStateWebMode,
               scrollProjection,
               setExposes,
               runInCallbackScope,
               isViewReady: () =>
-                thisEl.isConnected && !thisEl.closest(`[${PUI_VIEW_DETACHED_ATTR}]`),
+                !disposed &&
+                !ownerResourcesReleased &&
+                !this._terminalDisposing &&
+                thisEl.isConnected &&
+                !thisEl.closest(`[${PUI_VIEW_DETACHED_ATTR}]`),
+              isEntryAcquisitionReady: (target) => {
+                releaseRequestedTargetReady?.();
+                releaseRequestedTargetReady = undefined;
+                if (isFocusTargetOwnerReady(target)) return true;
+                releaseRequestedTargetReady = subscribeFocusTargetOwnerReady(target, () => {
+                  if (disposed || ownerResourcesReleased || this._terminalDisposing) return;
+                  releaseRequestedTargetReady?.();
+                  releaseRequestedTargetReady = undefined;
+                  this[NOTIFY_FOCUS_TARGET_READY]();
+                });
+                return false;
+              },
               subscribeTargetReady: (listener: () => void) => {
                 this._focusTargetReadyListeners.add(listener);
                 return () => this._focusTargetReadyListeners.delete(listener);
+              },
+              focusIntentState: this._focusIntentState,
+              onFocusIntent: () => {
+                this._focusTargetRetryCount = 0;
+                focusRetryGeneration += 1;
+                this._focusTargetRetryScheduled = false;
+              },
+              onFocusPendingReleased: () => {
+                focusRetryGeneration += 1;
+                this._focusTargetRetryScheduled = false;
+                const release = releaseRequestedTargetReady;
+                releaseRequestedTargetReady = undefined;
+                release?.();
+              },
+              onFocusAcquired: () => {
+                this._focusTargetRetryCount = 0;
+                // Completion retires queued work for this intent in the current view.
+                focusRetryGeneration += 1;
+                this._focusTargetRetryScheduled = false;
+                releaseRequestedTargetReady?.();
+                releaseRequestedTargetReady = undefined;
               },
               retryTargetReady: () => {
                 if (
@@ -684,9 +1123,17 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
                 }
                 this._focusTargetRetryScheduled = true;
                 this._focusTargetRetryCount += 1;
+                const generation = focusRetryGeneration;
                 scheduleAfterWebLayout(
                   this,
                   () => {
+                    if (
+                      disposed ||
+                      ownerResourcesReleased ||
+                      this._terminalDisposing ||
+                      generation !== focusRetryGeneration
+                    )
+                      return;
                     this._focusTargetRetryScheduled = false;
                     this[NOTIFY_FOCUS_TARGET_READY]();
                   },
@@ -698,15 +1145,31 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
             disposeView,
             createSession: createHostSession,
           });
+          acquiringProjection = false;
+          if (acquisitionFailed) throw acquisitionError;
+          if (pendingVisualFrame) {
+            const frame = pendingVisualFrame;
+            pendingVisualFrame = null;
+            deferredVisualSink!.commit(frame);
+          }
         } catch (error) {
+          // Initial failure is retired by the guarded connection transaction,
+          // so callback reentry cannot race a partly cleaned logical owner.
+          if (initial) throw error;
+          // Retained remount failure releases the view while preserving its owner.
+          try {
+            if (owner.hasView) void owner.detachView().catch(() => {});
+          } catch {}
           try {
             disposeView();
-          } catch {
-            /* Preserve the attachment failure after retiring its resources. */
-          }
+          } catch {}
           throw error;
         }
+        // A retained owner already has its terminal disposer and public binding.
+        // Publication failure leaves this fully owned view available for cleanup.
+        // The initial connection's enclosing transaction still rolls back on it.
         setViewDetached(false);
+        resources.nativeReadiness!.publish();
       };
 
       let latestIntentVersion = 0;
@@ -714,6 +1177,7 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
       let initializingOwner = true;
       let initialPresent = true;
       const reconcileIntent = (snapshot: { present: boolean }) => {
+        if (ownerResourcesReleased || this._terminalDisposing) return;
         if (initializingOwner) {
           initialPresent = snapshot.present;
           return;
@@ -731,6 +1195,8 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
           reconciliation = reconciliation
             .then(async () => {
               if (
+                ownerResourcesReleased ||
+                this._terminalDisposing ||
                 requestVersion !== latestIntentVersion ||
                 !thisEl.isConnected ||
                 this._controller !== hostSession.controller
@@ -743,6 +1209,8 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
                 const conceal = this._portalConceal.wait();
                 if (conceal) await conceal;
                 if (
+                  ownerResourcesReleased ||
+                  this._terminalDisposing ||
                   requestVersion !== latestIntentVersion ||
                   !thisEl.isConnected ||
                   this._controller !== hostSession.controller
@@ -761,7 +1229,7 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
 
       const ownerModules = createWebComponentOwnerModules({
         el: thisEl,
-        instanceToken: this._instanceToken,
+        instanceToken,
         rawPropsSource,
         getMeta: ownerGetMeta,
         colorSchemeSource: runtimeColorSchemeSource,
@@ -769,6 +1237,7 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
         styleSupportSource,
         textControlTarget: this._textControlTarget,
         imageViewTarget: this._imageViewTarget,
+        nativeLinkTarget,
         exposeStateWebMode,
         setExposes,
         runInCallbackScope,
@@ -781,26 +1250,10 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
       });
       initializingOwner = false;
       runFocusCallbackScope = hostSession.invokeInCallbackScope;
+      this._anatomyPort = hostSession.caps.getPort<AnatomyPort>('anatomy') ?? null;
 
-      try {
-        if (initialPresent) attachView();
-        else setViewDetached(true);
-      } catch (error) {
-        // Failed initial projection still owns a live logical/runtime session.
-        // Retire it immediately and permit a later fresh connection attempt.
-        try {
-          void owner.dispose().catch(() => {});
-        } catch {
-          /* Keep the setup error. */
-        }
-        disposeDefaultKeyedMetaSources();
-        unbindProtoInstance(this._instanceToken, this);
-        bindLogicalParent(this._instanceToken, null);
-        this._controller = null;
-        this._mountedOnce = false;
-        this._pendingOwnedTokens = null;
-        throw error;
-      }
+      if (initialPresent) attachView(true);
+      else setViewDetached(true);
 
       const { controller, kernel } = hostSession;
       if (kernel && kernel.run) {
@@ -825,37 +1278,36 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
 
       this._controller = controller;
       bindController(this, controller);
-
-      this._invokeUnmounted = () => {
-        try {
-          return owner.dispose();
-        } finally {
-          disposeDefaultKeyedMetaSources();
-        }
-      };
-      this._initializationCleanup = null;
     }
 
     private [NOTIFY_FOCUS_TARGET_READY](): void {
-      for (const listener of Array.from(this._focusTargetReadyListeners)) listener();
-      const active = this.ownerDocument.activeElement;
-      if (
-        active === this ||
-        this.contains(active) ||
-        (this.shadowRoot?.activeElement ?? null) !== null
-      ) {
-        this._focusTargetRetryCount = 0;
+      if (this._terminalDisposing) return;
+      let failed = false;
+      let firstError: unknown;
+      for (const listener of Array.from(this._focusTargetReadyListeners)) {
+        try {
+          listener();
+        } catch (error) {
+          if (!failed) {
+            failed = true;
+            firstError = error;
+          }
+        }
       }
+      if (failed) throw firstError;
     }
 
     disconnectedCallback() {
+      if (this._terminalDisposing) return;
       this._pendingOwnedTokens = this._applier ? Array.from(this._applier.getOwned()) : null;
       this._applier?.clear();
       this._hostDisplay?.sync();
 
       const disconnectVersion = ++this._disconnectVersion;
+      const instanceToken = this._instanceToken;
 
       queueMicrotask(async () => {
+        if (this._instanceToken !== instanceToken) return;
         if (this._disconnectVersion !== disconnectVersion) {
           if (this._pendingOwnedTokens?.length) {
             this._applier?.apply(this._pendingOwnedTokens);
@@ -869,46 +1321,116 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
           return;
         }
 
-        this._globalEventTarget.setTarget(null);
-
-        if (this._invokeUnmounted) {
-          this._portalConceal.cancel();
-          const fn = this._invokeUnmounted;
-          this._invokeUnmounted = null;
-          // Install before invoking user lifecycle callbacks: they may reconnect
-          // synchronously, before fn() even returns its disposal promise.
-          if (split) this._splitOwnerDisposing = true;
+        await this.retireOwner();
+      });
+    }
+    private async retireOwner(): Promise<void> {
+      if (this._terminalDisposing) return;
+      this._terminalDisposing = true;
+      this._terminalReconnectRequested = false;
+      const token = this._instanceToken;
+      const dispose = this._invokeUnmounted;
+      this._invokeUnmounted = null;
+      const pendingViewCleanup = this._pendingViewCleanup;
+      this._pendingViewCleanup = null;
+      const releaseOwnerResources = this._releaseOwnerResources;
+      this._releaseOwnerResources = null;
+      let pending: void | Promise<void>;
+      let failed = false;
+      let firstError: unknown;
+      let cleanupFailed = false;
+      let cleanupError: unknown;
+      let released = false;
+      const releaseTerminal = () => {
+        if (released) return;
+        released = true;
+        const reconnectRequested = this._terminalReconnectRequested;
+        this._terminalReconnectRequested = false;
+        this._terminalDisposing = false;
+        if (reconnectRequested && this.isConnected)
+          queueMicrotask(() => {
+            if (this.isConnected && !this._mountedOnce && !this._terminalDisposing)
+              this.connectedCallback();
+          });
+      };
+      try {
+        try {
+          abandonWebComponentPortalProjection(this);
+        } catch (error) {
+          failed = true;
+          firstError = error;
+        }
+        try {
+          pending = dispose?.();
+        } catch (error) {
+          if (!failed) {
+            failed = true;
+            firstError = error;
+          }
+        }
+        // Retire the old published owner before awaiting its callback result.
+        // Reentrant connects are held until all session cleanup has settled.
+        for (const release of [
+          () => this._portalConceal.cancel(),
+          () => this._globalEventTarget.setTarget(null),
+          () => pendingViewCleanup?.(),
+          () => releaseOwnerResources?.(),
+          () => this._defaultKeyedMetaSources?.dispose(),
+          () => this._releaseSplitResources(),
+          () => {
+            this._slotProjector?.disconnect();
+            this._slotProjector = null;
+          },
+          () => {
+            this._applier?.clear();
+            this._applier = null;
+          },
+          () => {
+            this._hostDisplay?.disconnect();
+            this._hostDisplay = null;
+          },
+          () => {
+            this._focusTargetReadyListeners.clear();
+            this._exposes = {};
+          },
+          () => unbindController(this),
+          () => removeDebugHooks(this),
+          () => unbindProtoInstance(token, this),
+          () => bindLogicalParent(token, null),
+          () => {
+            this._controller = null;
+            this._anatomyPort = null;
+            this._mountedOnce = false;
+            this._pendingOwnedTokens = null;
+          },
+        ]) {
           try {
-            let disposed: void | Promise<void>;
-            try {
-              disposed = fn();
-            } finally {
-              unbindProtoInstance(this._instanceToken, this);
-              bindLogicalParent(this._instanceToken, null);
-              this._controller = null;
-              this._mountedOnce = false;
-              this._pendingOwnedTokens = null;
-            }
-            await disposed;
-          } finally {
-            if (split) {
-              this._splitOwnerDisposing = false;
-              // Keep reconnect failures separate from a rejected disposal, and
-              // recheck latest connectivity after repeated remove/append calls.
-              queueMicrotask(() => {
-                if (this.isConnected && !this._mountedOnce && !this._splitOwnerDisposing)
-                  this.connectedCallback();
-              });
+            release();
+          } catch (error) {
+            if (!cleanupFailed) {
+              cleanupFailed = true;
+              cleanupError = error;
             }
           }
-          return;
         }
-        unbindProtoInstance(this._instanceToken, this);
-        bindLogicalParent(this._instanceToken, null);
-        this._controller = null;
-        this._mountedOnce = false;
-        this._pendingOwnedTokens = null;
-      });
+        // Unlock only after both the session tail and this invocation's
+        // published-owner cleanup are complete. Normal reconnect stays sync.
+        if (this._terminalCleanupComplete) releaseTerminal();
+        try {
+          await pending!;
+        } catch (error) {
+          if (!failed) {
+            failed = true;
+            firstError = error;
+          }
+        }
+      } finally {
+        // Once-only release cannot alter a newer owner while an older error
+        // promise completes after an ordinary synchronous reconnect.
+        releaseTerminal();
+      }
+      if (failed) throw firstError;
+      if (cleanupFailed) throw cleanupError;
     }
   }
 

@@ -1,6 +1,13 @@
 import { GlobalRegistrator } from '@happy-dom/global-registrator';
+import {
+  assertStyledButton,
+  assertStyledSwitch,
+  assertSwitchThumbState,
+  loadConsumerStyles,
+} from './consumer-smoke-css.mjs';
 
 GlobalRegistrator.register();
+loadConsumerStyles(document, { evidenceName: 'react-vite' });
 (globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT: boolean }).IS_REACT_ACT_ENVIRONMENT =
   true;
 
@@ -25,28 +32,22 @@ async function mountAndAssert(label: string) {
   const button = container.querySelector('.consumer-button');
   assert(button?.getAttribute('tabindex') === '0', `${label}: Button is not focusable`);
   assert(button?.getAttribute('aria-disabled') === 'false', `${label}: Button prop update failed`);
-  assert(
-    button?.getAttribute('data-pui-style')?.includes('group/button'),
-    `${label}: Button prototype styles are missing`
-  );
+  assertStyledButton(button, `${label}: Button`);
 
   const switchRoot = container.querySelector('.consumer-switch');
+  assertStyledSwitch(switchRoot, label);
   assert(switchRoot?.getAttribute('role') === 'switch', `${label}: Switch role is missing`);
   assert(switchRoot?.getAttribute('aria-checked') === 'true', `${label}: Switch state is missing`);
   const switchThumb = switchRoot?.firstElementChild;
   assert(switchThumb?.hasAttribute('data-checked'), `${label}: Switch Thumb state is missing`);
-  assert(
-    switchThumb
-      ?.getAttribute('data-pui-style')
-      ?.includes('data-[checked]:translate-x-[calc(100%_-_2px)]'),
-    `${label}: Switch Thumb checked translation is missing`
-  );
+  assertSwitchThumbState(switchRoot, true, `${label}: initial checked`);
   await React.act(async () => {
     switchRoot?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
     await flush();
   });
   assert(switchRoot?.getAttribute('aria-checked') === 'false', `${label}: Switch click failed`);
   assert(!switchThumb?.hasAttribute('data-checked'), `${label}: Switch Thumb did not update`);
+  assertSwitchThumbState(switchRoot, false, `${label}: after click`);
 
   const selectTrigger = container.querySelector('.consumer-select-trigger');
   assert(selectTrigger?.getAttribute('role') === 'combobox', `${label}: Select role is missing`);

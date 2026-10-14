@@ -139,8 +139,10 @@ Canonical scope and evidence: [profile decision](../../../spec/decisions/D-WEB-C
 - `@proto.ui/module-a11y`
 - `@proto.ui/module-anatomy`
 - `@proto.ui/module-as-trigger`
+- `@proto.ui/module-axis-input`
 - `@proto.ui/module-boundary`
 - `@proto.ui/module-context`
+- `@proto.ui/module-control-label`
 - `@proto.ui/module-event`
 - `@proto.ui/module-expose-event`
 - `@proto.ui/module-expose-state`
@@ -149,6 +151,7 @@ Canonical scope and evidence: [profile decision](../../../spec/decisions/D-WEB-C
 - `@proto.ui/module-focus`
 - `@proto.ui/module-hit-participation`
 - `@proto.ui/module-image-view`
+- `@proto.ui/module-native-link`
 - `@proto.ui/module-overlay`
 - `@proto.ui/module-positioning`
 - `@proto.ui/module-props`

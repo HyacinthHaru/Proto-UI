@@ -3,7 +3,7 @@ import { asDropdownItem } from '@proto.ui/prototypes-base/dropdown';
 import type { ShadcnDropdownItemExposes, ShadcnDropdownItemProps } from './types';
 
 const ITEM_BASE_TOKENS =
-  'relative flex w-full cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-left text-sm outline-none transition-colors';
+  'relative flex w-full cursor-default select-none items-center gap-1.5 rounded-md px-1.5 py-1 text-left text-sm outline-none transition-colors';
 
 const dropdownItem = definePrototype<ShadcnDropdownItemProps, ShadcnDropdownItemExposes>({
   name: 'shadcn-dropdown-item',
@@ -28,7 +28,7 @@ const dropdownItem = definePrototype<ShadcnDropdownItemProps, ShadcnDropdownItem
     // P-SHADCN-DROPDOWN-MENU-ITEM-STATE-DRIVEN-STYLES
     def.rule({
       when: (w) => w.prop('inset').eq(true),
-      intent: (i) => i.feedback.style.use(tw('pl-8')),
+      intent: (i) => i.feedback.style.use(tw('pl-7')),
     });
     def.rule({
       when: (w) => w.prop('variant').eq('destructive'),
@@ -36,20 +36,50 @@ const dropdownItem = definePrototype<ShadcnDropdownItemProps, ShadcnDropdownItem
     });
     def.rule({
       when: (w) =>
-        w.any(
-          w.state(active).eq(true),
-          w.state(hovered).eq(true),
-          w.state(focused).eq(true),
-          w.state(focusVisible).eq(true)
+        w.all(
+          w.prop('variant').eq('default'),
+          w.any(
+            w.state(active).eq(true),
+            w.state(hovered).eq(true),
+            w.state(focused).eq(true),
+            w.state(focusVisible).eq(true)
+          )
         ),
       intent: (i) => i.feedback.style.use(tw('bg-accent text-accent-foreground')),
     });
+    // P-SHADCN-DROPDOWN-MENU-ITEM-DESTRUCTIVE-PALETTE: retain the Nova tint
+    // during the existing local press feedback; Base remains the state owner.
     def.rule({
-      when: (w) => w.all(w.state(active).eq(true), w.prop('variant').eq('destructive')),
+      when: (w) =>
+        w.all(
+          w.prop('variant').eq('destructive'),
+          w.any(
+            w.state(active).eq(true),
+            w.state(hovered).eq(true),
+            w.state(focused).eq(true),
+            w.state(focusVisible).eq(true),
+            w.state(pressed).eq(true)
+          )
+        ),
       intent: (i) => i.feedback.style.use(tw('bg-destructive/10 text-destructive')),
     });
     def.rule({
-      when: (w) => w.state(pressed).eq(true),
+      when: (w) =>
+        w.all(
+          w.meta('colorScheme').eq('dark'),
+          w.prop('variant').eq('destructive'),
+          w.any(
+            w.state(active).eq(true),
+            w.state(hovered).eq(true),
+            w.state(focused).eq(true),
+            w.state(focusVisible).eq(true),
+            w.state(pressed).eq(true)
+          )
+        ),
+      intent: (i) => i.feedback.style.use(tw('bg-destructive/20')),
+    });
+    def.rule({
+      when: (w) => w.all(w.prop('variant').eq('default'), w.state(pressed).eq(true)),
       intent: (i) => i.feedback.style.use(tw('bg-accent/80')),
     });
     def.rule({

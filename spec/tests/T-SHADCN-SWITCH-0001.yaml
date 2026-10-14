@@ -5,6 +5,15 @@ status: draft
 since: 0.2.0-rc.0
 summary: Covers Switch Root identity, Base inheritance, Root/Thumb behavior, the replaceable default-Thumb preset, current styles, intentional asChild omission, and its bounded upstream compatibility claim.
 cases:
+  - id: T-SHADCN-SWITCH-0001-CASE-VISUAL-SIZE
+    title: Family-only default and sm sizes follow the actual logical Root across updates and remounts
+    covers:
+      [
+        P-SHADCN-SWITCH-VISUAL-SIZE-PROP,
+        P-SHADCN-SWITCH-VISUAL-SIZE-OWNER,
+        P-SHADCN-SWITCH-VISUAL-SIZE-LIFECYCLE,
+      ]
+    expectation: shadcn-switch-size-is-current-owner-bound-without-value-events
   - id: T-SHADCN-SWITCH-0001-CASE-IDENTITY-AND-INHERITANCE
     title: Root is a direct unofficial projection that inherits Base Switch
     covers:
@@ -20,6 +29,7 @@ cases:
     covers:
       [
         P-SHADCN-SWITCH-CURRENT-VISUAL-SURFACE,
+        P-SHADCN-SWITCH-STATIC-ACQUISITION,
         P-SHADCN-SWITCH-STATE-DRIVEN-STYLES,
         C-FEEDBACK-STYLE-0003-E,
       ]
@@ -33,27 +43,58 @@ cases:
     covers: [P-SHADCN-SWITCH-COMPONENT-PRESET, D-COMPONENT-PRESET-MATERIALIZATION-0001-F]
     expectation: shadcn-switch-generated-facades-support-context-safe-default-replacement-and-omission
 implementations:
+  - id: t-shadcn-switch-0001-size-lifecycle
+    kind: module-test
+    status: planned
+    path: packages/prototypes/shadcn/test/switch-size-lifecycle.test.ts
+    required: true
+    consumesCases: [T-SHADCN-SWITCH-0001-CASE-VISUAL-SIZE]
+    exercises: [P-SHADCN-SWITCH, P-SHADCN-SWITCH-THUMB]
+    notes:
+      - Deterministic Runtime tests cover repeated detach/remount, current-owner rebinding, subscription count and parent-first terminal disposal; no rendered or native-input acceptance.
+  - id: t-shadcn-switch-0001-size-generated-preset
+    kind: module-test
+    status: planned
+    path: packages/prototypes/shadcn/test/switch-size-preset.test.ts
+    required: true
+    consumesCases: [T-SHADCN-SWITCH-0001-CASE-VISUAL-SIZE]
+    exercises: [P-SHADCN-SWITCH, P-SHADCN-SWITCH-THUMB]
+    notes:
+      - Executes the actual generated WC facade against real prototypes for default, replacement and omission; other adapters and packed consumers retain separate gates.
+  - id: prototypes-shadcn-switch-new-york-browser
+    kind: module-test
+    status: planned
+    path: packages/prototypes/shadcn/test/switch-motion.browser.test.ts
+    required: true
+    consumesCases: [T-SHADCN-SWITCH-0001-CASE-FAMILY-AND-VISUALS]
+    exercises: [P-SHADCN-SWITCH, P-SHADCN-SWITCH-THUMB]
+    notes:
+      - New York default/sm root-16/root-32 browser evidence must be collected afresh for document and shadow surfaces; source/token assertions are not rendered geometry or native activation acceptance.
   - id: prototypes-shadcn-switch-root-contract
     kind: module-test
-    status: passing
+    status: planned
     path: packages/prototypes/shadcn/test/switch.test.ts
     required: true
     consumesCases:
       [
+        T-SHADCN-SWITCH-0001-CASE-VISUAL-SIZE,
         T-SHADCN-SWITCH-0001-CASE-IDENTITY-AND-INHERITANCE,
         T-SHADCN-SWITCH-0001-CASE-FAMILY-AND-VISUALS,
         T-SHADCN-SWITCH-0001-CASE-COMPATIBILITY-SUBSET,
       ]
     exercises: [P-SHADCN-SWITCH, P-BASE-SWITCH]
     notes:
-      - Positive tests cover only the current Proto UI guarantee; asChild omission and remaining parity gaps are bounded by the decision, declared surface, source review, and centralized compatibility question.
+      - 'Historical evidence note before the 2026-10-10 recipe migration: Positive tests cover only the current Proto UI guarantee; asChild omission and remaining parity gaps are bounded by the decision, declared surface, source review, and centralized compatibility question.'
+      - Historical passing evidence predates the 2026-10-12 New York presentation migration; new source, CSS, packed consumer and browser evidence must be verified separately.
   - id: cli-shadcn-switch-component-preset
     kind: module-test
-    status: passing
+    status: planned
     path: packages/cli/test/cli.test.ts
     required: true
     consumesCases: [T-SHADCN-SWITCH-0001-CASE-COMPONENT-PRESET]
     exercises: [P-SHADCN-SWITCH]
+    notes:
+      - Historical passing evidence predates the 2026-10-12 New York presentation migration; new source, CSS, packed consumer and browser evidence must be verified separately.
   - id: prototypes-shadcn-switch-component-preset-recipe
     kind: module-test
     status: passing
@@ -63,11 +104,13 @@ implementations:
     exercises: [P-SHADCN-SWITCH]
   - id: release-packed-cli-switch-component-preset
     kind: workspace-check
-    status: passing
+    status: planned
     path: scripts/release/consumer-smoke-cli.mjs
     required: true
     consumesCases: [T-SHADCN-SWITCH-0001-CASE-COMPONENT-PRESET]
     exercises: [P-SHADCN-SWITCH, P-SHADCN-SWITCH-THUMB]
+    notes:
+      - Historical passing evidence predates the 2026-10-12 New York presentation migration; new source, CSS, packed consumer and browser evidence must be verified separately.
 verifies:
   contracts:
     - id: C-FEEDBACK-STYLE-0003
@@ -80,11 +123,15 @@ verifies:
     - id: P-SHADCN-SWITCH
       anchors:
         [
+          P-SHADCN-SWITCH-VISUAL-SIZE-PROP,
+          P-SHADCN-SWITCH-VISUAL-SIZE-OWNER,
+          P-SHADCN-SWITCH-VISUAL-SIZE-LIFECYCLE,
           P-SHADCN-SWITCH-UPSTREAM-IDENTITY,
           P-SHADCN-SWITCH-BASE-INHERITANCE,
           P-SHADCN-SWITCH-CURRENT-BASE-DEVIATIONS,
           P-SHADCN-SWITCH-DIRECT-ENTRY,
           P-SHADCN-SWITCH-CURRENT-VISUAL-SURFACE,
+          P-SHADCN-SWITCH-STATIC-ACQUISITION,
           P-SHADCN-SWITCH-STATE-DRIVEN-STYLES,
           P-SHADCN-SWITCH-COMPATIBILITY-SUBSET,
           P-SHADCN-SWITCH-AS-CHILD-OMISSION,
@@ -105,4 +152,10 @@ revisions:
   - version: 0.2.0-rc.6
     change: expanded
     summary: Added corrected checked geometry and component-local direct-child preset recipe coverage.
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Specify content-pinned base-nova default geometry and state palettes; retain semantic ownership and planned fresh evidence.
+  - version: 0.3.0-alpha.1
+    change: expanded
+    summary: Add owner-bound default/sm size cases for initial and dynamic sizing, mixed Switch domains, composition and lifecycle; rendered evidence remains planned.
 tags: [prototype, shadcn, switch, root, delta, compatibility, test]

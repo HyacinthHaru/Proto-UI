@@ -1,5 +1,17 @@
+import { createPresenceController } from './presence/controller';
+import { PRESENCE_PRESENTATION_SINK_CAP, PRESENCE_RUN_IN_CALLBACK_CAP } from './presence/sink';
+import type { StatePort } from '@proto.ui/module-state';
+import { snapshotResidentMotion, type ResidentMotionDeclaration } from '@proto.ui/core';
+import { RESIDENT_MOTION_SINK_CAP, type ResidentMotionSink } from './motion/sink';
 import type { MountPhase, ProtoPhase, StyleHandle } from '@proto.ui/core';
-import { illegalPhase } from '@proto.ui/core';
+import {
+  illegalPhase,
+  snapshotMaterialCandidate,
+  snapshotMaterialSlot,
+  type MaterialCandidate,
+  type MaterialSlot,
+  type MaterialIntentFrame,
+} from '@proto.ui/core';
 import { FeedbackStyleRecorder } from '@proto.ui/core';
 
 import { createModule, defineModule, ModuleBase } from '@proto.ui/module-base';
@@ -12,6 +24,8 @@ import type {
   FeedbackRuntimeStyleDisposer,
 } from './types';
 import { EFFECTS_CAP } from './caps';
+import { VISUAL_FEEDBACK_SINK_CAP, type VisualFeedbackSink } from './material/shared-sink';
+import { OWNED_MATERIAL_ID } from './material/declaration-id';
 import {
   MATERIAL_BINDING_FACTORY_CAP,
   type MaterialBinding,
@@ -20,6 +34,7 @@ import {
 import {
   FINAL_STYLE_SINK_CAP,
   finalStyleFrame,
+  snapshotFinalStyle,
   type FinalStyleSink,
 } from './material/final-style-sink';
 
@@ -34,17 +49,184 @@ export function createFeedbackModule(ctx: ModuleFactoryArgs): FeedbackModule {
     deps,
     build: ({ init, caps }) => {
       class Impl extends ModuleBase {
+        private presence = createPresenceController({
+          setup: (op) => this.ensureSetup(op),
+          runtime: (op) => {
+            this.ensureRuntime(op);
+            this.sys?.ensureCallback(op);
+          },
+          invalidate: () => {
+            this.markDirty();
+            if (this.sys?.execPhase() === 'callback' && this.sys.deferAfterCallback)
+              this.sys.deferAfterCallback(() => {
+                if (!this.disposed) this.flushIfPossible();
+              });
+            else this.flushIfPossible();
+          },
+          callbackContext: () => this.sys?.getCallbackCtx(),
+          dispatch: (callback) => {
+            if (this.sys?.execPhase() === 'callback') callback();
+            else if (this.caps.has(PRESENCE_RUN_IN_CALLBACK_CAP))
+              this.caps.get(PRESENCE_RUN_IN_CALLBACK_CAP)(callback);
+            else throw new Error('[feedback.presence] Callback scope capability unavailable');
+          },
+          watch: (source, callback) => {
+            const state = deps.tryPort<StatePort>('state');
+            if (!state) throw new Error('[feedback.presence] State registry unavailable');
+            return state.watch(
+              source as import('@proto.ui/core').OwnedStateHandle<string>,
+              (_run, event) => {
+                if (event.type === 'next') callback();
+              }
+            );
+          },
+          sink: () =>
+            this.caps.has(PRESENCE_PRESENTATION_SINK_CAP)
+              ? this.caps.get(PRESENCE_PRESENTATION_SINK_CAP)
+              : null,
+          fallback: (style) => {
+            if (this.caps.has(EFFECTS_CAP)) {
+              const effects = this.caps.get(EFFECTS_CAP);
+              effects.queueStyle(style);
+              effects.requestFlush();
+            }
+          },
+        });
+        presenceFacade() {
+          return this.presence.facade;
+        }
+        declarePresence(value: import('@proto.ui/core').PresencePresentationDeclaration) {
+          if (this.motionDeclarations.size)
+            throw new Error('[feedback.presence] Resident/presence channel ownership overlap');
+          return this.presence.declare(value);
+        }
+        private motionDeclarations = new Set<ResidentMotionDeclaration>();
+        private motionSink: ResidentMotionSink | null = null;
+        private motionView = 0;
+        declareMotion(declaration: ResidentMotionDeclaration): () => void {
+          this.ensureSetup('def.feedback.style.transition');
+          if (this.presence.declared)
+            throw new Error('[feedback.presence] Resident/presence channel ownership overlap');
+          const copy = snapshotResidentMotion(declaration);
+          if (
+            [...this.motionDeclarations].some((existing) =>
+              existing.properties.some((p) => copy.properties.includes(p))
+            )
+          )
+            throw new Error('[feedback.motion] Overlapping channel declarations');
+          this.motionDeclarations.add(copy);
+          this.markDirty();
+          return () => {
+            this.ensureSetup('def.feedback.style.transition:dispose');
+            this.motionDeclarations.delete(copy);
+            this.markDirty();
+          };
+        }
+        private releaseMotionSink(): void {
+          const sink = this.motionSink;
+          this.motionSink = null;
+          sink?.release(this.motionView);
+        }
         private recorder = new FeedbackStyleRecorder();
         private dirty = false;
-        private flushRequested = false;
         private disposed = false;
         private viewEpoch = 0;
         private visualRevision = 0;
-        private visualSink: FinalStyleSink | null = null;
+        private visualSink: FinalStyleSink | VisualFeedbackSink | null = null;
+        private visualSinkKind: 'visual' | 'final' | null = null;
         private visualSinkView = 0;
         private pendingProjection: StyleHandle | null = null;
         private material: MaterialBinding | null = null;
         private materialFactory: MaterialBindingFactory | null = null;
+        private sharedSlot: MaterialSlot | null = null;
+        private materialContributions = new Map<object, readonly MaterialCandidate[]>();
+
+        declareMaterial(slot: MaterialSlot): () => void {
+          this.ensureSetup('def.feedback.material.declare');
+          if (this.sharedSlot || init.declarations.some((item) => item.id === OWNED_MATERIAL_ID))
+            throw new Error('One material slot per instance; private and shared slots cannot mix');
+          const owned = snapshotMaterialSlot(slot);
+          this.sharedSlot = owned;
+          this.markDirty();
+          return () => {
+            this.ensureSetup('def.feedback.material.declare:dispose');
+            if (this.sharedSlot !== owned) return;
+            this.sharedSlot = null;
+            this.materialContributions.clear();
+            this.markDirty();
+          };
+        }
+
+        useMaterial(candidate: MaterialCandidate): () => void {
+          this.ensureSetup('def.feedback.material.use');
+          if (!this.sharedSlot) throw new Error('Declare the material slot before contributing');
+          const key = {};
+          this.materialContributions.set(key, [snapshotMaterialCandidate(candidate)]);
+          this.markDirty();
+          return () => {
+            this.ensureSetup('def.feedback.material.use:dispose');
+            if (this.materialContributions.delete(key)) this.markDirty();
+          };
+        }
+
+        exportMaterialFrame(): MaterialIntentFrame {
+          return Object.freeze({
+            slot: this.sharedSlot,
+            candidates: Object.freeze(
+              this.sharedSlot ? [...this.materialContributions.values()].flat() : []
+            ),
+          });
+        }
+
+        motionDiagnostics(): readonly string[] {
+          return Object.freeze(
+            this.motionDeclarations.size && !this.caps.has(RESIDENT_MOTION_SINK_CAP)
+              ? ['resident-motion-host-unavailable']
+              : [...(this.motionSink?.diagnostics?.() ?? [])]
+          );
+        }
+
+        materialDiagnostics(): readonly string[] {
+          return Object.freeze(
+            this.sharedSlot && !this.caps.has(VISUAL_FEEDBACK_SINK_CAP)
+              ? ['material-host-unavailable']
+              : []
+          );
+        }
+
+        replaceVisualRuntime(
+          previous: FeedbackRuntimeStyleDisposer | null,
+          handles: readonly StyleHandle[],
+          candidates: readonly MaterialCandidate[]
+        ): FeedbackRuntimeStyleDisposer | null {
+          this.ensureRuntime('rule.feedback.visual.replace');
+          if (candidates.length && !this.sharedSlot)
+            throw new Error('Material Rule requires a declared slot');
+          // Validate complete replacements before retiring the previous owner.
+          const copied = candidates.map(snapshotMaterialCandidate);
+          const unUse = handles.length ? this.recorder.useRuntime(...handles) : null;
+          const key = {};
+          previous?.({ flush: false });
+          if (copied.length) this.materialContributions.set(key, copied);
+          this.markDirty();
+          try {
+            this.flushIfPossible();
+          } catch (error) {
+            queueMicrotask(() => {
+              throw error;
+            });
+          }
+          if (!unUse && !copied.length) return null;
+          let removed = false;
+          return (options = {}) => {
+            if (this.disposed || removed) return;
+            removed = true;
+            unUse?.();
+            this.materialContributions.delete(key);
+            this.markDirty();
+            if (options.flush !== false) this.flushIfPossible();
+          };
+        }
 
         /** setup-only */
         useStyle(handles: StyleHandle[]): () => void {
@@ -97,6 +279,13 @@ export function createFeedbackModule(ctx: ModuleFactoryArgs): FeedbackModule {
           try {
             this.flushIfPossible();
           } catch (error) {
+            if (this.mountPhase === 'mounting') {
+              // The disposer cannot reach Rule while activation throws. Release
+              // that contribution before the host rolls back this view epoch.
+              next?.();
+              this.markDirty();
+              throw error;
+            }
             // Rule's semantic replacement is complete even if the host fails.
             // Return its disposer so subsequent evaluations can remove it, and
             // let later semantic observers run. Projection remains retryable.
@@ -151,6 +340,10 @@ export function createFeedbackModule(ctx: ModuleFactoryArgs): FeedbackModule {
 
         /** pure snapshot */
         shouldRetainStyleRule(tokens: readonly string[]): boolean {
+          // Until the optimizer supplies complete final geometry/paint
+          // provenance, shared material keeps every style Rule in the
+          // evaluator. A token-prefix guess is not complete provenance.
+          if (this.sharedSlot || this.motionDeclarations.size) return true;
           return (
             this.material !== null &&
             tokens.some((token) => /^(bg-|backdrop-|shadow|rounded|text-)/.test(token))
@@ -173,7 +366,15 @@ export function createFeedbackModule(ctx: ModuleFactoryArgs): FeedbackModule {
           this.viewEpoch = epoch;
           if (phase === 'unmounting' || phase === 'detached' || epoch !== oldEpoch) {
             this.markDirty();
-            this.releaseVisualSink();
+            try {
+              this.releaseVisualSink();
+            } finally {
+              try {
+                this.releaseMotionSink();
+              } finally {
+                this.presence.release();
+              }
+            }
           }
           if (phase === 'mounting') {
             this.ensureMaterialBinding();
@@ -181,25 +382,45 @@ export function createFeedbackModule(ctx: ModuleFactoryArgs): FeedbackModule {
             // A fresh view epoch owns a fresh EffectsPort. Replay the retained
             // instance style before the host commit so the first materialized
             // frame already carries its baseline tokens.
-            this.replayStyleForViewEpoch();
+            this.afterRenderCommit();
           }
         }
 
         protected override onCapsEpoch(_epoch: number): void {
           if (this.disposed) return;
           this.ensureMaterialBinding();
-          const next = this.caps.has(FINAL_STYLE_SINK_CAP)
-            ? this.caps.get(FINAL_STYLE_SINK_CAP)
-            : null;
+          if (
+            this.motionSink &&
+            (!this.caps.has(RESIDENT_MOTION_SINK_CAP) ||
+              this.motionSink !== this.caps.get(RESIDENT_MOTION_SINK_CAP))
+          )
+            this.releaseMotionSink();
+          const next = this.caps.has(VISUAL_FEEDBACK_SINK_CAP)
+            ? this.caps.get(VISUAL_FEEDBACK_SINK_CAP)
+            : this.caps.has(FINAL_STYLE_SINK_CAP)
+              ? this.caps.get(FINAL_STYLE_SINK_CAP)
+              : null;
+          const nextKind = this.caps.has(VISUAL_FEEDBACK_SINK_CAP)
+            ? 'visual'
+            : this.caps.has(FINAL_STYLE_SINK_CAP)
+              ? 'final'
+              : null;
           this.markDirty();
-          if (this.visualSink && this.visualSink !== next) this.releaseVisualSink();
+          if (this.visualSink && (this.visualSink !== next || this.visualSinkKind !== nextKind))
+            this.releaseVisualSink();
           // Capability replacement must replay the current logical result even
           // when the previous host had already consumed it.
           this.flushIfPossible();
         }
 
         private hasOutput(): boolean {
-          return this.caps.has(FINAL_STYLE_SINK_CAP) || this.caps.has(EFFECTS_CAP);
+          return (
+            this.caps.has(PRESENCE_PRESENTATION_SINK_CAP) ||
+            this.caps.has(RESIDENT_MOTION_SINK_CAP) ||
+            this.caps.has(VISUAL_FEEDBACK_SINK_CAP) ||
+            this.caps.has(FINAL_STYLE_SINK_CAP) ||
+            this.caps.has(EFFECTS_CAP)
+          );
         }
 
         private ensureMaterialBinding(): void {
@@ -223,6 +444,7 @@ export function createFeedbackModule(ctx: ModuleFactoryArgs): FeedbackModule {
           const sink = this.visualSink;
           const view = this.visualSinkView;
           this.visualSink = null;
+          this.visualSinkKind = null;
           if (sink) sink.release(view);
         }
 
@@ -233,11 +455,46 @@ export function createFeedbackModule(ctx: ModuleFactoryArgs): FeedbackModule {
 
         private projectFinalStyle(handle: StyleHandle): void {
           const revision = ++this.visualRevision;
-          const pending = structuredClone(handle);
+          const style = snapshotFinalStyle(handle);
+          const pending = { ...style, tokens: [...style.tokens] };
           try {
-            if (this.caps.has(FINAL_STYLE_SINK_CAP)) {
+            if (this.presence.declared) {
+              if (this.sharedSlot || this.material)
+                throw new Error('[feedback.presence] Combined material projection unavailable');
+              this.presence.commit(pending, this.viewEpoch, revision);
+            } else if (this.motionDeclarations.size && this.caps.has(RESIDENT_MOTION_SINK_CAP)) {
+              // Optical material needs an atomic combined consumer; never let two
+              // independently scheduled writers contend for paint ownership.
+              if (this.sharedSlot || this.material)
+                throw new Error('[feedback.motion] Combined material projection unavailable');
+              const sink = this.caps.get(RESIDENT_MOTION_SINK_CAP);
+              this.motionSink = sink;
+              this.motionView = this.viewEpoch;
+              sink.commit(
+                Object.freeze({
+                  view: this.viewEpoch,
+                  revision,
+                  style: pending,
+                  declarations: Object.freeze([...this.motionDeclarations]),
+                })
+              );
+            } else if (this.caps.has(VISUAL_FEEDBACK_SINK_CAP)) {
+              const sink = this.caps.get(VISUAL_FEEDBACK_SINK_CAP);
+              this.visualSink = sink;
+              this.visualSinkKind = 'visual';
+              this.visualSinkView = this.viewEpoch;
+              sink.commit(
+                Object.freeze({
+                  view: this.viewEpoch,
+                  revision,
+                  style,
+                  material: this.exportMaterialFrame(),
+                })
+              );
+            } else if (this.caps.has(FINAL_STYLE_SINK_CAP)) {
               const sink = this.caps.get(FINAL_STYLE_SINK_CAP);
               this.visualSink = sink;
+              this.visualSinkKind = 'final';
               this.visualSinkView = this.viewEpoch;
               sink.commit(
                 finalStyleFrame(handle, this.viewEpoch, revision, this.material?.snapshot() ?? null)
@@ -245,7 +502,6 @@ export function createFeedbackModule(ctx: ModuleFactoryArgs): FeedbackModule {
             } else {
               const effects = this.caps.get(EFFECTS_CAP);
               effects.queueStyle(handle);
-              this.flushRequested = true;
               effects.requestFlush();
             }
             if (revision === this.visualRevision) this.pendingProjection = null;
@@ -295,13 +551,6 @@ export function createFeedbackModule(ctx: ModuleFactoryArgs): FeedbackModule {
         afterRenderCommit(): void {
           if (!this.canProject()) return;
           // A structural commit may replace the current materialized root.
-          if (!this.hasOutput()) return;
-          const merged = this.recorder.exportRootEffect();
-          this.projectFinalStyle(merged);
-        }
-
-        private replayStyleForViewEpoch(): void {
-          if (!this.canProject()) return;
           // Runtime ProtoPhase intentionally remains `setup` until the first
           // commit completes. Mounting is nevertheless after prototype setup,
           // so replay must not use flushIfPossible's setup-phase guard.
@@ -311,15 +560,16 @@ export function createFeedbackModule(ctx: ModuleFactoryArgs): FeedbackModule {
 
         /** optional: runtime/adapter can call this after flush tick */
         onEffectsFlushed(): void {
-          this.flushRequested = false;
           if (!this.canProject()) return;
-          if (this.dirty && this.caps.has(FINAL_STYLE_SINK_CAP)) {
+          if (
+            this.dirty &&
+            (this.caps.has(VISUAL_FEEDBACK_SINK_CAP) || this.caps.has(FINAL_STYLE_SINK_CAP))
+          ) {
             this.flushIfPossible();
             return;
           }
           if (this.dirty && this.caps.has(EFFECTS_CAP)) {
             this.caps.get(EFFECTS_CAP).requestFlush();
-            this.flushRequested = true;
           }
         }
 
@@ -327,15 +577,24 @@ export function createFeedbackModule(ctx: ModuleFactoryArgs): FeedbackModule {
           if (this.disposed) return;
           this.disposed = true;
           try {
-            this.releaseVisualSink();
+            try {
+              try {
+                this.presence.dispose();
+              } finally {
+                this.releaseVisualSink();
+              }
+            } finally {
+              this.releaseMotionSink();
+            }
           } finally {
             try {
               this.material?.dispose();
             } finally {
               this.recorder = new FeedbackStyleRecorder();
+              this.sharedSlot = null;
+              this.materialContributions.clear();
               this.dirty = false;
               this.pendingProjection = null;
-              this.flushRequested = false;
               // Discard deferred view work while its entry guards are terminal.
               this.flushPending();
             }
@@ -388,7 +647,14 @@ export function createFeedbackModule(ctx: ModuleFactoryArgs): FeedbackModule {
       const impl = new Impl(caps);
 
       const facade: FeedbackFacade = {
+        presence: impl.presenceFacade(),
+        material: {
+          declare: (slot) => impl.declareMaterial(slot),
+          use: (candidate) => impl.useMaterial(candidate),
+        },
         style: {
+          transition: (declaration) => impl.declareMotion(declaration),
+          presence: (declaration) => impl.declarePresence(declaration),
           use: (...handles) => impl.useStyle(handles),
           patch: (...handles) => impl.patchStyle(handles),
           suppress: (...handles) => impl.suppressStyle(handles),
@@ -400,6 +666,11 @@ export function createFeedbackModule(ctx: ModuleFactoryArgs): FeedbackModule {
       return {
         facade,
         port: {
+          replaceVisualRuntime: (previous, handles, candidates) =>
+            impl.replaceVisualRuntime(previous, handles, candidates),
+          exportMaterialFrame: () => impl.exportMaterialFrame(),
+          materialDiagnostics: () => impl.materialDiagnostics(),
+          motionDiagnostics: () => impl.motionDiagnostics(),
           shouldRetainStyleRule: (tokens) => impl.shouldRetainStyleRule(tokens),
           applyMergedStyle: (h) => impl.applyMergedStyle(h),
           useStyleRuntime: (...handles) => impl.useStyleRuntime(handles),

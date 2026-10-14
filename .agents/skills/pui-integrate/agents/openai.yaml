@@ -1,7 +1,7 @@
 interface:
   display_name: 'Proto UI Integrate'
-  short_description: 'Merge a reviewed exact head through repository rules'
-  default_prompt: 'Use $pui-integrate to integrate this reviewed Proto UI pull request at its exact head.'
+  short_description: 'Integrate an exact head under its authorized evidence path'
+  default_prompt: 'Use $pui-integrate to integrate this exact Proto UI head through ordinary independent review or a separately explicit current-user connected-operation decision, preserving source, DCO, deferred criteria and platform enforcement.'
 
 policy:
   allow_implicit_invocation: false

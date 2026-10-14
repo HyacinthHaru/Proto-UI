@@ -1,0 +1,48 @@
+id: C-DRAWER-AUTO-CONSUMER-0001
+type: contract
+title: Drawer valid vertical content-fit consumer
+status: draft
+since: 0.3.0-alpha.1
+lifecycleRationale: Portable integration now includes logical Content admission; native geometry and modal/focus acceptance remain separate.
+summary: Connects the pure Drawer extent model to shared available layout, pointer dismissal and mode-appropriate accessibility.
+statement:
+  en: Drawer owns mode, accepted input and gesture policy in the portable prototype; the generic host realizes constrained extent and independent displacement.
+  zh-CN: Drawer 在可移植原型中拥有模式、已接受输入及手势策略；通用宿主实现受限尺寸与独立位移。
+criteria:
+  - id: C-DRAWER-AUTO-CONSUMER-0001-LAYOUT
+    text:
+      en: Valid top/bottom input consumes the extent model and shared available-layout binding. Intrinsic extent fits content within minimum and the current safe maximum; explicit snap fractions use the full capped extent without the former implicit 0.85 multiplier. Base defaults to available one. Neo 3306a802 and the retained Shadcn compatibility recipe use available-minus-root-text six through family prop defaults; the latter is not the current New York 02cad611 max-h-80vh target. Left/right retain legacy presentation. Content remains the project-authored vertical scrollport; New York DrawerContent itself declares no overflow utility.
+      zh-CN: 有效 top/bottom 输入消费尺寸模型及共享 available-layout binding。intrinsic 在最小值与当前安全上限内适配内容；显式 snap 比例以完整安全上限为分母，移除旧隐式 0.85。Base 默认 available one；Neo 固定参考及 Shadcn 保留的兼容配方由 family props 提供 available-minus-root-text six，后者不等价于当前 New York 02cad611 的 max-h-80vh。left/right 保留旧呈现。Content 的纵向滚动区域是本项目组合；New York DrawerContent 本身未声明 overflow utility。
+  - id: C-DRAWER-AUTO-CONSUMER-0001-HANDLE
+    text:
+      en: Intrinsic Handle is an aria-hidden pointer affordance, excluded from keyboard focus, with no separator range or Enter/Space close action. Fraction mode retains named separator and existing resize keys. Switching a focused Handle to intrinsic withdraws focus as well as range fields. Intrinsic drag changes outward displacement rather than content extent, using cancel-on-extent-change; snap retains preserve-start resizing. Mode, accepted configuration, invalid updates and disabled state cancel active contacts and release capture. Controlled refusal restores the accepted owner presentation.
+      zh-CN: intrinsic Handle 为 aria-hidden 指针把手，排除键盘焦点，不提供 separator 范围或 Enter/Space 关闭。fraction 保留有名称 separator 与既有 resize 键。已聚焦 Handle 切 intrinsic 时同时撤销焦点及范围。intrinsic 拖动改变向外位移并用 cancel-on-extent-change；snap 保留 preserve-start resize。模式、配置、非法更新及禁用取消接触并释放 capture。受控拒绝恢复已接受状态。
+  - id: C-DRAWER-AUTO-CONSUMER-0001-INVALID
+    text:
+      en: Runtime malformed extent or side input sets readonly extentValid false, cancels Handle input and retains the complete last accepted edge, mode, lengths, points and selection. Current host safety facts still constrain that intent. Close and Root dismissal remain independent. Later valid input restores validity. Initial malformed input throws before Content's own Overlay/Focus activation. C-DRAWER-CONTENT-ADMISSION-0001 gates the independently mounted Mask on a validated logical Content; native modal/focus verification remains separate. No NaN sentinel, forced full-height fallback or hidden unique Close may substitute for rejection.
+      zh-CN: 运行中非法尺寸或 side 令只读 extentValid=false，取消 Handle 输入并保留完整已接受 edge、mode、lengths、points 与 selection，宿主仍按当前安全事实约束。Close 与 Root 关闭独立保留；有效输入恢复 validity。初始非法输入在 Content 自身 Overlay/Focus 激活前抛错；C-DRAWER-CONTENT-ADMISSION-0001 将独立 Mask 呈现约束于有效逻辑 Content，native modal/focus 验证仍独立。不能用 NaN、强制满高度或隐藏唯一 Close 代替拒绝。
+  - id: C-DRAWER-AUTO-CONSUMER-0001-EVIDENCE
+    text:
+      en: Public examples use legal statically preflighted input and separate short intrinsic, long scrolling and explicit snap cases. Source and synthetic CSSOM evidence cannot certify native content height, current cap, actual scrollTop or Close reachability. Native/GPUI mappings, Compiler and packed-consumer composition remain separately blocking acceptance work.
+      zh-CN: 公开示例使用静态预检合法输入，分开短内容 intrinsic、长内容滚动及显式 snap。源码与合成 CSSOM 不证明 native 内容高度、当前 cap、真实 scrollTop 或 Close 可达。native/GPUI、Compiler 与打包组合仍分别阻塞验收。
+  - id: C-DRAWER-AUTO-CONSUMER-0001-SCROLL
+    text:
+      en: Content declares the existing semantic Scroll surface with vertical axes and system projection to own vertical scrolling and horizontal clipping. Prototype code does not manipulate host overflow or targets. An ordinary split host binds the current inner content surface as the single scrollport, subject to explicit readiness and exclusive policy admission; unresolved host support does not certify native geometry.
+      zh-CN: Content 使用现有语义 Scroll surface 声明 vertical axes 和 system projection，负责纵向滚动及横向裁切。原型不操作宿主 overflow 或 target。普通 split host 在显式 readiness 和独占 policy 准入后，以当前内内容表面作为唯一 scrollport；未解决的 host 支持不代表 native 几何已验证。
+dependsOn:
+  contracts:
+    [C-DRAWER-EXTENT-MODEL-0001, C-AVAILABLE-SPACE-LAYOUT-0001, C-AXIS-INPUT-CONTACT-BASIS-0001]
+verifies:
+  tests: [T-DRAWER-AUTO-CONSUMER-0001]
+openQuestions:
+  - id: C-DRAWER-AUTO-CONSUMER-0001-Q-NATIVE
+    question: Which exact-source native receipts establish short/long geometry, safety cap, scrolling and Close reachability across supported runtimes?
+    blocks: [activation:C-DRAWER-AUTO-CONSUMER-0001]
+revisions:
+  - version: 0.3.0-alpha.1
+    change: introduced
+    summary: Integrate the valid-input path while retaining the failing initial-invalid family boundary and native acceptance gaps.
+  - version: 0.3.0-alpha.1
+    change: clarified
+    summary: Label the retained Shadcn cap as compatibility behavior rather than the current New York viewport-relative target.
+tags: [drawer, intrinsic, layout, accessibility]

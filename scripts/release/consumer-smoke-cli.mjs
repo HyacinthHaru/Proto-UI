@@ -14,6 +14,7 @@ import { spawnSync } from 'node:child_process';
 
 import { getAllPackages, ROOT_DIR, selectPackages } from './lib.mjs';
 import { readVersion } from './version-utils.mjs';
+import { runNoStylesConsumer } from './consumer-smoke-no-styles.mjs';
 
 const RENDER_FIXTURE_DIR = join(ROOT_DIR, 'packages', 'cli', 'test', 'smoke-render');
 const CONSUMER_FIXTURE_DIR = join(ROOT_DIR, 'scripts', 'release', 'consumer-smoke');
@@ -140,10 +141,16 @@ try {
     ],
     { cwd: consumerDir }
   );
+  cpSync(
+    join(ROOT_DIR, 'scripts', 'release', 'consumer-smoke-css.mjs'),
+    join(consumerDir, 'consumer-smoke-css.mjs')
+  );
   for (const renderer of ['react.mjs', 'vue.mjs', 'wc.mjs']) {
     cpSync(join(RENDER_FIXTURE_DIR, renderer), join(consumerDir, renderer));
     run(process.execPath, ['--import', 'tsx', `./${renderer}`], { cwd: consumerDir });
   }
+
+  runNoStylesConsumer({ consumerDir, cli, fixtureDir: join(ROOT_DIR, 'scripts', 'release'), run });
 
   runVue2Consumer({
     consumerDir: vue2ConsumerDir,
@@ -238,6 +245,10 @@ function runVue2Consumer({ consumerDir, expectedPackages, packageByName, release
     assert(facade.includes(expected), `generated Vue 2 facade is missing ${expected}`);
   }
 
+  cpSync(
+    join(ROOT_DIR, 'scripts', 'release', 'consumer-smoke-css.mjs'),
+    join(consumerDir, 'consumer-smoke-css.mjs')
+  );
   cpSync(join(RENDER_FIXTURE_DIR, 'vue2.mjs'), join(consumerDir, 'vue2.mjs'));
   run(process.execPath, ['--import', 'tsx', './vue2.mjs'], { cwd: consumerDir });
   console.log(

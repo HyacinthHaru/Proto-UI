@@ -1,0 +1,47 @@
+---
+title: 'Drawer'
+description: 'An edge-attached modal panel with four placement choices.'
+---
+
+import { PrototypePreviewer } from '@/components/PrototypePreviewer';
+
+An edge-attached modal panel with four placement choices.
+
+<PrototypePreviewer
+  demoId="demo-base-drawer"
+  initialRuntime="wc"
+  runtimes={['wc', 'react', 'vue', 'vue2']}
+  codePanel={false}
+/>
+
+Top/bottom Content fits its content by default. Its maximum is the available height, always bounded by the safe available region. Content.minExtent and maxExtent accept neutral lengths with unit logical, root-text, available or available-minus-root-text and a nonnegative finite value. A minimum above the safe cap is clamped. Left/right retain the existing capped 20rem presentation in this vertical-only draft.
+
+The project composes Content as an overflow-y-auto scrollport. This differs from the fixed Shadcn/Neo reference wrappers' overflow-hidden Content with an explicitly authored scrolling body. The long example keeps Close inside the same scrollport.
+
+Root supports controlled open or uncontrolled defaultOpen. Disabled commands do not activate. Controlled close requests can be refused; drag preview then returns to the accepted owner state.
+
+Omitted, null or empty snapPoints selects content-fit mode. A nonempty valid array selects explicit snaps: positive fractions up to one, sorted and deduplicated. snapPoint alone does not enable snapping. Explicit snap fractions use the full capped extent, not an implicit 85% multiplier. defaultSnapPoint is local; snapPoint with snapPointChange is owner-controlled. Invalid vertical point arrays or length records are rejected, not converted to full height.
+
+In content-fit mode Handle is a pointer-only, aria-hidden drag affordance, without keyboard resizing or an Enter/Space close action. Explicit snaps retain the named separator, arrows, Home/End and range values. Content.dragDismissible=false prevents drag dismissal; independent Close, Escape and outside dismissal retain their existing protocol. Interrupted gestures and rejected controlled requests restore the accepted presentation.
+
+Runtime invalid extent updates expose extentValid=false, cancel Handle input and retain the last valid intent while current safety constraints still apply. Initial malformed input is rejected before presentation: Root keeps its logical open value, while Mask waits for one valid Content declaration. These examples use statically validated legal inputs. This draft does not claim arbitrary-input safety or native, compiler, packed-consumer or full Finf acceptance.
+
+### Long content
+
+<PrototypePreviewer
+  demoId="demo-base-drawer-scroll"
+  initialRuntime="wc"
+  runtimes={['wc', 'react', 'vue', 'vue2']}
+  codePanel={false}
+/>
+
+### Explicit half/full snaps
+
+This example retains the explicit resizing interaction and announces committed changes.
+
+<PrototypePreviewer
+  demoId="demo-base-drawer-snap"
+  initialRuntime="wc"
+  runtimes={['wc', 'react', 'vue', 'vue2']}
+  codePanel={false}
+/>
