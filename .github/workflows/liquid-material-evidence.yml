@@ -17,6 +17,9 @@ on:
       - 'apps/www/src/content/docs/**/ui-libraries/bootstrap-2-3-2/**'
       - 'apps/www/src/content/docs/zh-cn/demo-liquid-glass-material.browser.test.ts'
       - 'apps/www/src/content/docs/zh-cn/demo-liquid-glass-toggle.browser.test.ts'
+      - 'apps/www/src/content/docs/zh-cn/liquid-toggle-failure-diagnostics.ts'
+      - 'apps/www/src/content/docs/zh-cn/liquid-toggle-failure-diagnostics.test.ts'
+      - 'apps/www/scripts/diagnose-select-click.ts'
       - 'apps/www/src/content/docs/demo_components/liquid-glass/**'
       - 'apps/www/src/content/docs/zh-cn/browser-harness.ts'
       - 'apps/www/astro.config.mjs'
@@ -73,11 +76,13 @@ jobs:
           corepack pnpm@10.32.1 check:styles:preset
           corepack pnpm@10.32.1 exec vitest run \
             packages/prototypes/liquid-glass/test/material.test.ts \
+            packages/prototypes/liquid-glass/test/toggle.test.ts \
             packages/adapters/base/test/web-material-program.test.ts \
             packages/adapters/base/test/web-material-style.test.ts \
             packages/adapters/base/test/web-material-source.test.ts \
             packages/adapters/base/test/web-material-sink.test.ts \
             apps/www/src/content/docs/zh-cn/material-paint-observation.test.ts \
+            apps/www/src/content/docs/zh-cn/liquid-toggle-failure-diagnostics.test.ts \
             apps/www/src/content/docs/zh-cn/demo-liquid-glass-material.browser.test.ts \
             apps/www/src/content/docs/zh-cn/demo-liquid-glass-portal.browser.test.ts \
             apps/www/src/content/docs/zh-cn/demo-liquid-glass-toggle.browser.test.ts \

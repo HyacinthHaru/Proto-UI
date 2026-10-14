@@ -40,6 +40,9 @@ for (const file of [
   'packages/hooks/src/index.ts',
   'apps/www/src/pages/en/test/liquid-glass-toggle.astro',
   'apps/www/src/content/docs/zh-cn/demo-liquid-glass-toggle.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/liquid-toggle-failure-diagnostics.ts',
+  'apps/www/src/content/docs/zh-cn/liquid-toggle-failure-diagnostics.test.ts',
+  'apps/www/scripts/diagnose-select-click.ts',
   'apps/www/src/content/docs/demo_components/liquid-glass/demo-liquid-glass-toggle.demo.ts',
   'apps/www/src/content/docs/en/ui-libraries/liquid-glass/toggle.mdx',
   'apps/www/src/content/docs/zh-cn/ui-libraries/liquid-glass/toggle.mdx',
@@ -66,6 +69,14 @@ test('Liquid Toggle executes in the retained exact-head optical evidence job', (
   assert.ok(
     job.steps.some((step) => step.run?.includes('demo-liquid-glass-toggle.browser.test.ts'))
   );
+  for (const suite of [
+    'packages/prototypes/liquid-glass/test/toggle.test.ts',
+    'apps/www/src/content/docs/zh-cn/liquid-toggle-failure-diagnostics.test.ts',
+  ])
+    assert.ok(
+      job.steps.some((step) => step.run?.includes(suite)),
+      `Missing Toggle regression: ${suite}`
+    );
   assert.ok(
     job.steps.some((step) => step.if === 'always()' && step.uses === 'actions/upload-artifact@v4')
   );

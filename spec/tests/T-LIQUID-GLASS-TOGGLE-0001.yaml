@@ -20,7 +20,14 @@ cases:
     expectation: same-prototype-in-each-family-fixed-consumer
   - id: T-LIQUID-GLASS-TOGGLE-0001-CASE-BROWSER
     title: Exact-candidate real optical active, inactive, press and strict fallback evidence
-    covers: [P-LIQUID-GLASS-TOGGLE-BASE, P-LIQUID-GLASS-TOGGLE-VISUAL, P-LIQUID-GLASS-TOGGLE-MATERIAL, P-LIQUID-GLASS-TOGGLE-GATES, P-LIQUID-GLASS-TOGGLE-DELIVERY]
+    covers:
+      [
+        P-LIQUID-GLASS-TOGGLE-BASE,
+        P-LIQUID-GLASS-TOGGLE-VISUAL,
+        P-LIQUID-GLASS-TOGGLE-MATERIAL,
+        P-LIQUID-GLASS-TOGGLE-GATES,
+        P-LIQUID-GLASS-TOGGLE-DELIVERY,
+      ]
     expectation: real-four-web-optical-and-fallback-input-evidence
 implementations:
   - id: liquid-glass-toggle-contract
@@ -28,7 +35,8 @@ implementations:
     status: passing
     path: packages/prototypes/liquid-glass/test/toggle.test.ts
     required: true
-    consumesCases: [T-LIQUID-GLASS-TOGGLE-0001-CASE-SEMANTIC, T-LIQUID-GLASS-TOGGLE-0001-CASE-MATERIAL]
+    consumesCases:
+      [T-LIQUID-GLASS-TOGGLE-0001-CASE-SEMANTIC, T-LIQUID-GLASS-TOGGLE-0001-CASE-MATERIAL]
   - id: liquid-glass-toggle-delivery
     kind: module-test
     status: passing
@@ -43,12 +51,13 @@ implementations:
     consumesCases: [T-LIQUID-GLASS-TOGGLE-0001-CASE-DELIVERY]
   - id: liquid-glass-toggle-browser
     kind: runtime-test
-    status: planned
+    status: failing
     path: apps/www/src/content/docs/zh-cn/demo-liquid-glass-toggle.browser.test.ts
     required: true
     consumesCases: [T-LIQUID-GLASS-TOGGLE-0001-CASE-BROWSER]
     notes:
-      - Exact-publication-head real browser execution is pending. Unit snapshots and emitted intent do not prove optical paint, contrast or broader native/compiler support.
+      - Exact-head b2a90f89f4b75a8afcb420c82d9588f7317e7c63 run 38633799501 executed 11 cases with one passing and ten failing. Eight runtime/theme cases reached committed inactive optics before disabled fallback failed; both public locale cases stalled on the shared header Select click. These failures remain acceptance blockers until a later exact-head native run verifies the repairs.
+      - The disabled prototype repair removes whole-host translucency rather than weakening opaque-fallback admission. Source-level checks do not establish the unexecuted remainder of the native journeys, public Select recovery, or broader native/compiler support.
 exercises:
   prototypes: [P-LIQUID-GLASS-TOGGLE]
 sources:

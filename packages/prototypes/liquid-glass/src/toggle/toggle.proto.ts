@@ -70,8 +70,9 @@ export default definePrototype<ToggleProjectionProps, ToggleExposes>({
     });
     def.rule({
       when: (w) => w.state(disabled).eq(true),
-      intent: (i) =>
-        i.feedback.style.use(tw('opacity-50 pointer-events-none cursor-default shadow-none')),
+      // Keep the declared fallback opaque. Whole-host opacity would make its
+      // fill/foreground depend on the backdrop and fail shared-provider admission.
+      intent: (i) => i.feedback.style.use(tw('pointer-events-none cursor-default shadow-none')),
     });
   },
 });

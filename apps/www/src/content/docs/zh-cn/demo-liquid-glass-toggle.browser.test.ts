@@ -8,8 +8,13 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { isUnpaintedBootstrapBoxShadow as isUnpaintedComposedShadow } from './bootstrap-disabled-paint';
 import { observeOwnedMaterialPaint } from './material-paint-observation';
 import {
+  attachLiquidToggleFailureDiagnostics,
+  readLiquidToggleTriggerFacts,
+} from './liquid-toggle-failure-diagnostics';
+import {
   RUNTIMES,
   choosePreviewRuntime,
+  runtimeSelectTrigger,
   chromeExecutable,
   startServer,
   stopServer,
@@ -352,6 +357,16 @@ describe.sequential('Liquid Toggle native input and self-optical material', () =
           expect(await subject('initial-active').getAttribute('aria-pressed')).toBe('true');
           await quality(subject('opaque'), 'opaque-fallback');
           await quality(subject('disabled'), 'opaque-fallback');
+          const initiallyDisabled = await capture(
+            `${runtime}-${theme}-initial-disabled`,
+            subject('disabled'),
+            observations
+          );
+          expect(initiallyDisabled.opacity).toBe('1');
+          expect(initiallyDisabled.background[3]).toBe(255);
+          expect(initiallyDisabled.fallbackContrast).toBeGreaterThanOrEqual(4.5);
+          expect(initiallyDisabled.active).toBe('true');
+          expect(initiallyDisabled.underline).toContain('underline');
           const bare = page.locator(
             `[data-toggle-no-provider="${runtime}"] [data-demo-ref="bare"]`
           );
@@ -442,7 +457,9 @@ describe.sequential('Liquid Toggle native input and self-optical material', () =
           const disabled = await capture(`${runtime}-${theme}-disabled`, target, observations);
           expect(disabled.active).toBe('true');
           expect(disabled.underline).toContain('underline');
-          expect(disabled.opacity).toBe('0.5');
+          expect(disabled.opacity).toBe('1');
+          expect(disabled.background[3]).toBe(255);
+          expect(disabled.fallbackContrast).toBeGreaterThanOrEqual(4.5);
           expect(disabled.pointerEvents).toBe('none');
           expect(disabled.image).toBe('none');
           expect(isUnpaintedComposedShadow(disabled.shadow)).toBe(true);
@@ -584,17 +601,39 @@ describe.sequential('Liquid Toggle native input and self-optical material', () =
 
   for (const locale of ['en', 'zh-cn'])
     it(`${locale}: actual public Toggle page uses the shared optical path across all four runtimes`, async () => {
-      const { context, page } = await newPage();
+      const { context, page, cdp } = await newPage();
+      const diagnostics = attachLiquidToggleFailureDiagnostics(page, cdp, {
+        locale,
+        stage: 'navigate',
+      });
+      const selectorObservations: unknown[] = [];
+      let failure: string | null = null;
+      let failureScreenshot: string | null = null;
+      const diagnosticErrors: Array<{ operation: string; error: string }> = [];
       try {
         await page.goto(`${baseUrl}/${locale}/ui-libraries/liquid-glass/toggle/`, {
           waitUntil: 'networkidle',
         });
+        await diagnostics.init();
         const selector = page.locator('.site-header-runtime').first();
         for (const runtime of RUNTIMES) {
+          diagnostics.stage({ runtime, stage: 'runtime-select' });
+          // Read-only, bounded pre-click facts. A diagnostic read failure must
+          // neither replace the real reader interaction nor suppress its error.
+          try {
+            selectorObservations.push({
+              runtime,
+              trigger: await readLiquidToggleTriggerFacts(runtimeSelectTrigger(selector)),
+            });
+          } catch (error) {
+            selectorObservations.push({ runtime, diagnosticError: String(error) });
+          }
           await choosePreviewRuntime(page, selector, runtime);
+          diagnostics.stage({ stage: 'panel-visible' });
           const panel = page.locator(`[data-adapter-panel="${runtime}"]`);
           await panel.waitFor({ state: 'visible' });
           const target = panel.getByRole('button', { name: 'Bold', exact: true });
+          diagnostics.stage({ stage: 'inactive-optics' });
           await quality(target, 'self-optical');
           const identity = await target.elementHandle();
           const inactive = await capture(`public-${locale}-${runtime}-inactive`, target, results, {
@@ -603,7 +642,9 @@ describe.sequential('Liquid Toggle native input and self-optical material', () =
             publicRoute: page.url(),
           });
           optical(inactive);
+          diagnostics.stage({ stage: 'toggle-click' });
           await target.click();
+          diagnostics.stage({ stage: 'active-optics' });
           await expect.poll(() => target.getAttribute('aria-pressed')).toBe('true');
           await quality(target, 'self-optical');
           const active = await capture(`public-${locale}-${runtime}-active`, target, results, {
@@ -623,8 +664,64 @@ describe.sequential('Liquid Toggle native input and self-optical material', () =
               path: path.join(output, `public-${locale}-${runtime}-scene.png`),
             });
         }
+        diagnostics.stage({ stage: 'complete' });
+      } catch (error) {
+        failure = String(error);
+        try {
+          await diagnostics.collectFailure(error);
+        } catch (diagnosticError) {
+          diagnosticErrors.push({ operation: 'collect', error: String(diagnosticError) });
+        }
+        if (output) {
+          try {
+            await page.screenshot({
+              path: path.join(output, `public-${locale}-failure.png`),
+              fullPage: true,
+              timeout: 3000,
+            });
+            failureScreenshot = 'captured';
+          } catch (screenshotError) {
+            failureScreenshot = String(screenshotError);
+          }
+        }
+        throw error;
       } finally {
-        await context.close();
+        // The Node-side record survives a renderer that cannot answer evaluate
+        // or screenshot. Debugger stacks are failure diagnostics, not acceptance.
+        try {
+          await diagnostics.dispose();
+        } catch (diagnosticError) {
+          diagnosticErrors.push({ operation: 'dispose', error: String(diagnosticError) });
+        }
+        const entry = {
+          name: `public-${locale}-diagnostics`,
+          locale,
+          failure,
+          failureScreenshot,
+          selectorObservations,
+          diagnosticErrors,
+          diagnostics: diagnostics.receipt(),
+        };
+        results.push(entry);
+        try {
+          if (output)
+            await writeFile(
+              path.join(output, `public-${locale}-diagnostics.json`),
+              JSON.stringify({ ...source, ...entry }, null, 2)
+            );
+        } catch (writeError) {
+          diagnosticErrors.push({ operation: 'write-receipt', error: String(writeError) });
+          // Keep the native error authoritative when diagnostic persistence
+          // fails. A failure-free run must still surface missing artifacts.
+          if (failure === null) throw writeError;
+        } finally {
+          try {
+            await context.close();
+          } catch (closeError) {
+            diagnosticErrors.push({ operation: 'close-context', error: String(closeError) });
+            if (failure === null) throw closeError;
+          }
+        }
       }
     }, 150_000);
 });
