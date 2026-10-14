@@ -1,0 +1,13 @@
+{
+  "name": "@proto.ui/module-material-contact",
+  "version": "0.3.0-alpha.1",
+  "private": true,
+  "type": "module",
+  "description": "Unregistered experimental material contact association; fake-host evidence only.",
+  "dependencies": {
+    "@proto.ui/core": "workspace:*",
+    "@proto.ui/module-anatomy": "workspace:*",
+    "@proto.ui/module-base": "workspace:*",
+    "@proto.ui/module-feedback": "workspace:*"
+  }
+}

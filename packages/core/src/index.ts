@@ -35,3 +35,11 @@ export * from './native-link';
 export * from './resident-motion';
 
 export * from './presence-presentation';
+
+// Experimental declarations; no production MaterialContact provider is registered.
+export type {
+  MaterialContactLink,
+  MaterialContactPlacement,
+  MaterialContactPaintDeclaration,
+  MaterialContactHandle,
+} from './material-contact';

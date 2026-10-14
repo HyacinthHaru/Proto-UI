@@ -1,0 +1,29 @@
+id: HC-MATERIAL-CONTACT-0001
+type: host-cap
+title: Material contact host supplies current views and read-only input registrations
+status: draft
+since: 0.3.0-alpha.1
+lifecycleRationale: A typed fake host is the only provider evidence. No Adapter provides this capability in production, and optical projection/transport are outside this slice.
+summary: Trusted private registry facts bind one input stream and one paint lease without granting input control.
+criteria:
+  - id: HC-MATERIAL-CONTACT-0001-REGISTRATION
+    text: Current views expose opaque logical instance, physical target, document, binding identity and view epoch. The input read lease pins the exact owner instance/target/document/view identity and owner epoch. isCurrentInput consults the live host registry, not fields self-reported by an author. Replacement revokes the prior read lease before issuing its successor.
+  - id: HC-MATERIAL-CONTACT-0001-STREAM
+    text: The existing input owner publishes pending, active, released or cancelled snapshots with opaque session identity and monotonically increasing revisions. Raw finite down/current positions and coordinate-space identity remain host-private; they are not reconstructed from clamped AxisInput data. Accepted starts preserve the existing session; release freezes its last sample and cancellation withdraws it before public input callbacks. Router-to-recognizer handover requires separately evidenced authority and is not inferred by material.
+  - id: HC-MATERIAL-CONTACT-0001-LEASE
+    text: A paint lease receives only admitted private visual samples and has bounded clear/dispose behavior. Its binding isCurrent guard must protect deferred work. Host observation creates no additional event owner, capture, activation or value update. Production optical sinks must additionally satisfy geometry, current-source, preference and paint-ownership contracts; host attachment alone proves no optical outcome.
+satisfies:
+  contracts: [C-MATERIAL-CONTACT-0001]
+references:
+  tests: [T-MATERIAL-CONTACT-0001]
+sources:
+  - path: packages/modules/material-contact/src/caps.ts
+openQuestions:
+  - id: HC-MATERIAL-CONTACT-0001-Q-PROVIDER
+    question: Which actual Input/Adapter providers implement authority, ordering and handover without changing existing input ownership?
+    blocks: [activation:HC-MATERIAL-CONTACT-0001]
+revisions:
+  - version: 0.3.0-alpha.1
+    change: introduced
+    summary: Defined trusted current-registry and visual read-lease obligations with fake-host-only evidence.
+tags: [host-capability, material, contact]
