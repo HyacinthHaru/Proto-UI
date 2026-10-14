@@ -897,3 +897,52 @@ it.each(['normal', 'nested', 'unmount', 'dispose', 'remount'] as const)(
     }
   }
 );
+
+it('Toggle Group retains queued notification order when a valueChange callback reenters', async () => {
+  const { make, setActionCallback } = runtimeHarness();
+  const root = make(toggleGroupRoot);
+  const items = ['a', 'b', 'c', 'd'].map((value) => make(toggleGroupItem, root.target, { value }));
+  let armed = false;
+  const seen = new Set<string>();
+  const emitted: string[][] = [];
+  const nested: boolean[] = [];
+  const request = (value: string) => {
+    let accepted: boolean | undefined;
+    root.session.invokeInCallbackScope(() => {
+      accepted = root.exposes.requestToggle(value);
+    });
+    return accepted;
+  };
+  setActionCallback((name, payload) => {
+    if (name !== 'valueChange') return;
+    emitted.push([...payload.value]);
+    if (payload.value[0] === 'b') nested.push(request('d')!);
+  });
+  const observer = make(
+    definePrototype({
+      name: 'toggle-group-notification-reentry-observer',
+      setup(def) {
+        def.context.subscribe(TOGGLE_GROUP_CONTEXT, (_run, next) => {
+          if (!armed || next.value.length !== 1 || seen.has(next.value[0])) return;
+          const value = next.value[0];
+          seen.add(value);
+          if (value === 'a') nested.push(request('b')!);
+          else if (value === 'b') nested.push(request('c')!);
+        });
+      },
+    }),
+    root.target
+  );
+  const parts = [root, ...items, observer];
+  try {
+    for (const part of parts) await part.session.mount();
+    armed = true;
+    expect(request('a')).toBe(true);
+    expect(nested).toEqual([true, true, true]);
+    expect(emitted).toEqual([['b'], ['c'], ['d'], ['a']]);
+    expect(root.exposes.getValue()).toEqual(['d']);
+  } finally {
+    armed = false;
+    for (const part of [...parts].reverse()) await part.session.dispose();
+  }
+});

@@ -71,9 +71,15 @@ function setup(def: DefHandle<ToggleGroupRootProps, ToggleGroupRootExposes>) {
     } finally {
       publicationDepth--;
       if (publicationDepth === 0) {
-        const notifications = afterPublication;
-        afterPublication = [];
-        if (completed) for (const notify of notifications) notify();
+        if (completed) {
+          publicationDepth++;
+          try {
+            while (afterPublication.length) afterPublication.shift()!();
+          } finally {
+            publicationDepth--;
+            afterPublication = [];
+          }
+        } else afterPublication = [];
       }
     }
   };

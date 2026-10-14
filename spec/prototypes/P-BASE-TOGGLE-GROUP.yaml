@@ -1,13 +1,13 @@
 id: P-BASE-TOGGLE-GROUP
 type: prototype
-title: ToggleGroup orientation remains Base-owned across family layout projections
+title: ToggleGroup owns orientation and view-bound request notifications
 status: draft
 since: 0.3.0-alpha.1
 lifecycleRationale:
-  en: Bounded draft orientation slice; complete ToggleGroup cataloging, real-host layout, native and Compiler composition and independent admission remain incomplete.
-summary: One Base orientation drives accessibility, keyboard navigation and four family layout axes without defining additional ToggleGroup capabilities.
+  en: Bounded draft orientation and request-lifecycle slices; complete ToggleGroup cataloging, real-host layout, native and Compiler composition and independent admission remain incomplete.
+summary: Base owns orientation across family layouts and retires accepted request notifications with their originating view.
 statement:
-  en: ToggleGroup Root owns the effective orientation, horizontal when omitted. Existing Props normalization remains authoritative. Accessibility orientation, roving axis and the typed asToggleGroupRoot orientation state describe the same effective value. Family recipes only read this borrowed state; this is a recipe constraint, not a new read-only hook capability. No AppMaker orientation expose is introduced.
+  en: ToggleGroup Root owns the effective orientation, horizontal when omitted. Existing Props normalization remains authoritative. Accessibility orientation, roving axis and the typed asToggleGroupRoot orientation state describe the same effective value. Family recipes only read this borrowed state; this is a recipe constraint, not a new read-only hook capability. No AppMaker orientation expose is introduced. Accepted request notifications retain their originating owner and view epoch and drain in the local publication queue order.
 criteria:
   - id: P-BASE-TOGGLE-GROUP-OWNER
     text:
@@ -18,6 +18,12 @@ criteria:
   - id: P-BASE-TOGGLE-GROUP-EVIDENCE
     text:
       en: Verify initial and dynamic axes, default horizontal preservation, invalid and empty prop normalization, typed hook boundaries, selection retention and orientation-aware navigation separately from real-host geometry and screenshots. Synthetic host checks alone cannot admit complete visual or native and Compiler conformance.
+  - id: P-BASE-TOGGLE-GROUP-REQUEST-RETIREMENT
+    text:
+      en: An accepted requestToggle retains its true return even when synchronous Context publication unmounts, disposes or remounts its Root. Its old valueChange notification must not run after that originating owner or view epoch retires. A fresh request after remount remains usable. This does not roll back accepted logical selection or change controlled-owner authority.
+  - id: P-BASE-TOGGLE-GROUP-NOTIFICATION-ORDER
+    text:
+      en: Accepted notifications deferred within one finite Root publication chain retain their queue order. A valueChange callback may enter another accepted request, but its notification joins the same queue behind already queued work. Each delivery rechecks its originating owner and view epoch. This is a local proposal-notification rule, not a global Context order, latest-value-only policy or guarantee for author-created infinite reentry.
 openQuestions:
   - id: P-BASE-TOGGLE-GROUP-Q-ADMISSION
     question:
@@ -39,11 +45,18 @@ dependsOn:
     - C-AS-FOCUS-ROVING-0001
     - C-A11Y-0001
     - C-RULE-INTENT-FEEDBACK-STYLE-0001
+    - C-LIFECYCLE-0007
+    - C-LIFECYCLE-0008
+    - C-CONTEXT-0010
 verifies:
   tests:
     - T-TOGGLE-GROUP-ORIENTATION-0001
+    - T-TOGGLE-GROUP-REQUEST-RETIREMENT-0001
 revisions:
   - version: 0.3.0-alpha.1
     change: introduced
     summary: Define bounded Base-owned orientation and read-only recipe use of borrowed state, retaining native and full-catalog gates.
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Catalog view-bound request retirement and finite local notification ordering with executable Runtime coverage; draft admission remains unchanged.
 tags: [prototype, base, toggle-group, orientation, projection]
