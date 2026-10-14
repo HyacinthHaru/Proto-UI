@@ -4,7 +4,7 @@ import { execFileSync } from 'node:child_process';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { chromium, type Browser, type Locator } from 'playwright-core';
+import { chromium, type Browser, type Locator, type Page } from 'playwright-core';
 import { afterAll, beforeAll, expect, it } from 'vitest';
 import {
   RUNTIMES,
@@ -70,6 +70,76 @@ const observe = (target: Locator) =>
       browserTimeOrigin: performance.timeOrigin,
     };
   });
+// Post-open-screenshot observation only. It is not an optical acceptance vote.
+async function observeContent(page: Page) {
+  const nodeStartedAt = performance.now(),
+    nodeTimeOrigin = performance.timeOrigin;
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try {
+    // The bound does not cancel evaluate; its late completion only reads and cannot append logs.
+    const sample = await Promise.race([
+      page
+        .evaluate(() => {
+          const rect = (element: Element) => {
+            const box = element.getBoundingClientRect();
+            return { x: box.x, y: box.y, width: box.width, height: box.height };
+          };
+          const menus = [...document.querySelectorAll<HTMLElement>('[role="menu"]')].filter(
+            (element) => {
+              const css = getComputedStyle(element);
+              return element.isConnected && css.display !== 'none' && css.visibility !== 'hidden';
+            }
+          );
+          const sources = [
+            ...document.querySelectorAll<HTMLCanvasElement>(
+              '[data-material-scene="visible-app-canvas"] > canvas[data-material-backdrop]'
+            ),
+          ];
+          // Preserve ambiguity rather than silently choosing one menu/source.
+          const menu = menus.length === 1 ? menus[0]! : null;
+          const css = menu ? getComputedStyle(menu) : null;
+          return {
+            browserNow: performance.now(),
+            browserTimeOrigin: performance.timeOrigin,
+            menuCount: menus.length,
+            content: menu
+              ? {
+                  connected: menu.isConnected,
+                  quality: menu.dataset.materialQuality ?? null,
+                  reason: menu.dataset.materialReason ?? null,
+                  rect: rect(menu),
+                  color: css!.color,
+                  backgroundColor: css!.backgroundColor,
+                  backgroundImagePresent: css!.backgroundImage !== 'none',
+                  opacity: css!.opacity,
+                  insideMaterialScene: !!menu.closest('[data-material-scene="visible-app-canvas"]'),
+                }
+              : null,
+            sources: sources.map((canvas) => ({
+              connected: canvas.isConnected,
+              rect: rect(canvas),
+              containsContent: !!menu && !!canvas.parentElement?.contains(menu),
+            })),
+          };
+        })
+        .then((value) => ({ status: 'sampled' as const, value })),
+      new Promise<{ status: 'timeout' }>((resolve) => {
+        timer = setTimeout(() => resolve({ status: 'timeout' }), 1000);
+      }),
+    ]);
+    return { nodeStartedAt, nodeTimeOrigin, nodeFinishedAt: performance.now(), sample };
+  } catch {
+    // Do not replace an existing assertion or expose arbitrary page/error text.
+    return {
+      nodeStartedAt,
+      nodeTimeOrigin,
+      nodeFinishedAt: performance.now(),
+      sample: { status: 'read-error' },
+    };
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
+}
 for (const runtime of RUNTIMES)
   for (const scheme of COLOR_SCHEMES)
     it(`Liquid Dropdown ${runtime} ${scheme} real Trigger material and menu ownership`, async () => {
@@ -85,6 +155,7 @@ for (const runtime of RUNTIMES)
       const observations: unknown[] = [],
         deniedRequests: string[] = [];
       let lastMaterialObservation: Awaited<ReturnType<typeof observe>> | null = null;
+      let contentObservation: Awaited<ReturnType<typeof observeContent>> | null = null;
       let stage = 'navigate',
         held = false,
         failure: string | null = null;
@@ -153,6 +224,7 @@ for (const runtime of RUNTIMES)
         await expect.poll(() => trigger.getAttribute('aria-expanded')).toBe('true');
         await expect.poll(() => page.getByRole('menu').isVisible()).toBe(true);
         await capture('open');
+        contentObservation = await observeContent(page);
         await page.keyboard.press('Escape');
         await expect.poll(() => trigger.getAttribute('aria-expanded')).toBe('false');
         stage = 'disabled';
@@ -199,6 +271,7 @@ for (const runtime of RUNTIMES)
                 failure,
                 observations,
                 lastMaterialObservation,
+                contentObservation,
                 deniedRequests,
                 scope:
                   'Current public Liquid Dropdown source; fallback is not optical completion; no Apple/GPUI parity.',
