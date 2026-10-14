@@ -1,0 +1,199 @@
+{
+  "schemaVersion": 1,
+  "preparedAt": "2026-10-14T17:39:38.491866+00:00",
+  "status": "local source-bound preparation; exactA75 source/push and boundednative complete; incomingoriginal19/1x2 and broaderdocs380/5 remainred;partial/ABSTAIN;notpublished or approved",
+  "source": {
+    "preparedAt": "2026-10-14T16:57:03.444513+00:00",
+    "baseHead": "be6a5b2c1a82532377ec2a5f9aa6caf0ef996367",
+    "actualExecutedTestSHA256": "375e21995383b8937a3a3ba00e9e4f067164f42c9a6c5d599e5fcb45958728fa",
+    "nativeExecution": "precommit working onefilecandidate,1pass35skip; fiveoriginalcaptures rootviewed",
+    "zeroMatchControl": "0executed36skip exit0; no browserlaunch; not pass",
+    "finalCommit": "a75d06db34ff47d97446e43e0f2352cb14f568e2",
+    "finalTree": "e81863ebc5fd2acae148cc3c9d0e0a5aa05cb665",
+    "published": false,
+    "assessment": "partial/ABSTAIN",
+    "oldLinuxRun": "https://github.com/Proto-UI/Proto-UI/actions/runs/38597226587",
+    "oldLinuxResult": "original36cases32pass4Liquidtotal60000mstimeout, followed independent8dataLossfail36skip; separate unchanged history",
+    "exactLocalChromeVersion": "Not independently printed in the selected execution receipts; do not borrow an older run version. Native environment is the root-recorded local macOS launcher context; ASTrecord separately has actualNode24.21/TypeScript5.9.3.",
+    "sourceCommit": "21ddb7fb886fbb928bbc8e0db1245fd604e84e45",
+    "sourceCommitTree": "212c54a76e04952ba7ae502a9db45c7f4b35eb3e",
+    "parents": [
+      "21ddb7fb886fbb928bbc8e0db1245fd604e84e45",
+      "9cafed4a1d7dc630719dd11e3a85bc0d7f58e868"
+    ],
+    "sourceBinding": "collapsible-capture-timing/public-staging/final-source-binding.json",
+    "pushReceipt": "final-after-9cafed4a/push-receipt.json",
+    "nativeReceipt": "final-after-9cafed4a/native-liquid-wc/receipt.json",
+    "newCanonical": "not collected; no success prediction",
+    "sourceOnlyLocalCommit": "21dd was localsigned before finalmerge; never claimed pushed asremotehead"
+  },
+  "checkpoint": {
+    "at": "2026-10-14T17:35:38.626596+00:00",
+    "head": "a75d06db34ff47d97446e43e0f2352cb14f568e2",
+    "tree": "e81863ebc5fd2acae148cc3c9d0e0a5aa05cb665",
+    "sourceDriverSHA256": "375e21995383b8937a3a3ba00e9e4f067164f42c9a6c5d599e5fcb45958728fa",
+    "sourceCommit": "21ddb7fb886fbb928bbc8e0db1245fd604e84e45",
+    "base": "9cafed4a1d7dc630719dd11e3a85bc0d7f58e868",
+    "union": {
+      "entries": 11080,
+      "ownPaths": 18,
+      "incomingPaths": 16,
+      "intersection": 0,
+      "exact": true
+    },
+    "normalPush": {
+      "remoteBefore": "be6a5b2c1a82532377ec2a5f9aa6caf0ef996367",
+      "remoteAfter": "a75d06db34ff47d97446e43e0f2352cb14f568e2",
+      "completedAt": "2026-10-14T17:28:51.706990+00:00",
+      "source": "final-after-9cafed4a/push-receipt.json",
+      "note": "21dd was a signed local ancestor, never claimed to have been the prior remote head."
+    },
+    "postcommitValidation": {
+      "c67": {
+        "files": 67,
+        "passed": 1111
+      },
+      "types": {
+        "files": 883,
+        "errors": 0,
+        "warnings": 0,
+        "hints": 11
+      },
+      "authoring": "exit0 against9cf",
+      "presets": "generator andcheck exit0",
+      "agentProjection": "generate/check exit0",
+      "docsDirectory": {
+        "passed": 71,
+        "scope": "scripts/docs/test/*.test.mjs",
+        "receipt": "final-after-9cafed4a/docs-directory-receipt.json"
+      },
+      "earlierPolicyOnly": {
+        "passed": 13,
+        "scope": "scripts/docs/test/check-public-docs.test.mjs",
+        "log": "final-after-9cafed4a/docs71-scope.log",
+        "not71": true
+      },
+      "broaderDocs": {
+        "passed": 380,
+        "failed": 5,
+        "unresolved": true
+      },
+      "incomingOriginalFive": {
+        "runs": 2,
+        "eachPassed": 19,
+        "eachFailed": 1,
+        "failedPath": "packages/prototypes/shadcn/test/dropdown-destructive.test.ts:78",
+        "failure": "after dark class removal, original bg-destructive/10 predicate remainsfalse through1000ms; causeunresolved"
+      }
+    },
+    "incomingControls": [
+      {
+        "name": "upstream9cf samefive",
+        "passed": 20,
+        "configuration": "full9cf source control with existingdependency symlinks; earlier singlefile5pass and missingAstroconfigwarning retained separately",
+        "notRepair": true
+      },
+      {
+        "name": "candidate single destructivefile",
+        "passed": 5,
+        "notFullFive": true,
+        "notRepair": true
+      },
+      {
+        "name": "privateOverlay source pair",
+        "passed": [20, 20],
+        "loadedInputs": [404, 404],
+        "onlyDifferentPath": "packages/modules/overlay/src/impl.ts",
+        "configuration": "privateconfig/inputledger instrumentation; otherloadedhashes identical; canperturb timing",
+        "notRepairOrCause": true
+      },
+      {
+        "name": "originalconfig passivepredicate control",
+        "passed": 20,
+        "samples": 2,
+        "first": "light/focused/connected,currentdocument; originalpredicatefalse,bg-destructive/20",
+        "secondAfterMs": 52.250792,
+        "second": "samefacts; originalpredicatetrue,bg-destructive/10",
+        "configuration": "one originalstyleContains call plus bounded synchronous memoryreads; no newawait/write/focus/update/observer/retry, but nonzero observationoverhead; originaltest/index/config restored",
+        "notOriginalFailureReproduced": true,
+        "notCauseProof": true
+      }
+    ],
+    "native": {
+      "historical": {
+        "head": "be6a5b2c1a82532377ec2a5f9aa6caf0ef996367",
+        "sourceDirty": true,
+        "precommit": true,
+        "passed": 1,
+        "skipped": 35,
+        "stageRecords": 50,
+        "PNG": 5,
+        "startedAt": "2026-10-14T16:52:16.903312+00:00",
+        "endedAt": "2026-10-14T16:52:32.143048+00:00"
+      },
+      "current": {
+        "head": "a75d06db34ff47d97446e43e0f2352cb14f568e2",
+        "sourceDirty": false,
+        "postcommit": true,
+        "passed": 1,
+        "filtered": 35,
+        "stageRecords": 50,
+        "PNG": 5,
+        "startedAt": "2026-10-14T17:25:37.029185+00:00",
+        "endedAt": "2026-10-14T17:25:52.786655+00:00"
+      },
+      "zeroMatch": {
+        "executed": 0,
+        "skipped": 36,
+        "browserLaunched": false,
+        "notPass": true
+      },
+      "limits": "Local oneLiquidWC journey only; no all36/Linux/AT/opticalacceptance or oldtimeoutcausefix."
+    },
+    "currentCI": "notcollected; no newCI forecast or success claim",
+    "publicMetadataBoundary": "Only exact source/execution/signature/DCO/normalpush facts. ModelTrace and operational/private authorization metadata omitted.",
+    "disposition": "localpreparedpartial/ABSTAIN; independent sourcebinding0finding doesnotclose verificationdebts"
+  },
+  "archive": {
+    "path": "records.tar.gz",
+    "sha256": "c2aa1af08cafd6553f54b738fe701c90d2465556e2959a9fd47fd960f388a3c8",
+    "bytes": 170239,
+    "members": 92
+  },
+  "inputs": {
+    "rawFiles": 101,
+    "originalPNGs": 10,
+    "sourceAllowlistSHA256": "0d7697e7a34b9b6bedd05ad71341dea2a4c0fda4d781bc801b986b6dff7c4e7d"
+  },
+  "astBoundary": {
+    "removedDeclarations": 2,
+    "removedSynchronousCalls": 10,
+    "wholeOriginalBe6ASTAndTextRestored": true,
+    "awaitBeforeAfter": [137, 137],
+    "assertionsTimeoutsInputOrderOriginal36AndEightDiagnosticBranchRetained": true
+  },
+  "stageMeaning": {
+    "directory": "existingmkdir/await",
+    "source": "existinggitrev-parse/trim",
+    "layout": "entireexisting evaluateRPC+DOMstylegeometryreads+transport+settlement",
+    "png": "entireoriginalscreenshot/settlement",
+    "record": "gitstatus+viewport/path/JSONargumentconstruction+writeFile/settlement"
+  },
+  "stageLimits": "Inclusive wall intervals with addedNodeobserveroverhead; notCPUselftime, proofmissingdonecause, Linuxrootcause or zeroimpactequivalence.",
+  "verificationDebt": [
+    "Originalincomingfive suites19pass1fail twice remainunresolved",
+    "Broaderdocs380pass5fail",
+    "Originalbe6Linux32pass4total60stimeouts and separate8trace-dataLoss failures",
+    "NewexactheadcanonicalCI notincluded",
+    "Whole36/nativeallAdapters/optical/AT/Finfacceptance"
+  ],
+  "notClaimed": [
+    "21dd existed asremotebranchhead",
+    "Oldprecommit runexecuted aftercommit",
+    "Privateorpassivecontrolsrepair original19/1",
+    "Overlay/Rule/Meta/sourcecause proved",
+    "OldLinux timeoutfixed",
+    "allchecks green",
+    "ModelTrace identityorpermission claims"
+  ]
+}

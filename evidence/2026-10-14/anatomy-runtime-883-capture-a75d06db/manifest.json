@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "excludesItself": true,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 6501,
+      "sha256": "94430b0081b059187b50f2bae7a150421cb4ed6f7bc65fc239c9d6b6f20d3ef4"
+    },
+    {
+      "path": "images/capture-timing-precommit-native/liquid-glass-wc-controlled-accepted.png",
+      "bytes": 151317,
+      "sha256": "6e6f20073949fcea8e5c7a1b42b61a744f7e2d2ce1e45a61c64d4be6ef85bcee"
+    },
+    {
+      "path": "images/capture-timing-precommit-native/liquid-glass-wc-initial.png",
+      "bytes": 157775,
+      "sha256": "96ab2424346cc0c704d556e67cc04fb8cddf3a754fa13b61e43dc69cf7377de6"
+    },
+    {
+      "path": "images/capture-timing-precommit-native/liquid-glass-wc-keyboard-focus-closed.png",
+      "bytes": 151417,
+      "sha256": "3f7ce3d843780001e209addbc476dc929730d6a43521f24e30f7867cb39b25ed"
+    },
+    {
+      "path": "images/capture-timing-precommit-native/liquid-glass-wc-keyboard-focus-open.png",
+      "bytes": 170459,
+      "sha256": "d96a8fbad3ecb8bfe2f9ec7f9fe6cc5f7642175010adca7b495f243442bf896f"
+    },
+    {
+      "path": "images/capture-timing-precommit-native/liquid-glass-wc-open.png",
+      "bytes": 172188,
+      "sha256": "7975a471425ccd2143c816d510a0d1f17551bf2bf5686a106ff19f82631cd3af"
+    },
+    {
+      "path": "images/current-A75-native/liquid-glass-wc-controlled-accepted.png",
+      "bytes": 151317,
+      "sha256": "6e6f20073949fcea8e5c7a1b42b61a744f7e2d2ce1e45a61c64d4be6ef85bcee"
+    },
+    {
+      "path": "images/current-A75-native/liquid-glass-wc-initial.png",
+      "bytes": 157775,
+      "sha256": "96ab2424346cc0c704d556e67cc04fb8cddf3a754fa13b61e43dc69cf7377de6"
+    },
+    {
+      "path": "images/current-A75-native/liquid-glass-wc-keyboard-focus-closed.png",
+      "bytes": 150340,
+      "sha256": "ef13ce5ccd7888c56f9ce1fcea97b7186a01e113a010ea9e0a67d53f6bb24007"
+    },
+    {
+      "path": "images/current-A75-native/liquid-glass-wc-keyboard-focus-open.png",
+      "bytes": 170459,
+      "sha256": "d96a8fbad3ecb8bfe2f9ec7f9fe6cc5f7642175010adca7b495f243442bf896f"
+    },
+    {
+      "path": "images/current-A75-native/liquid-glass-wc-open.png",
+      "bytes": 172188,
+      "sha256": "7975a471425ccd2143c816d510a0d1f17551bf2bf5686a106ff19f82631cd3af"
+    },
+    {
+      "path": "images.md",
+      "bytes": 1743,
+      "sha256": "7a5f144fb35a28d65ecb6c477575bff58670c7dec23587a37f925087468b01e7"
+    },
+    {
+      "path": "packet.json",
+      "bytes": 8469,
+      "sha256": "27eb5e24c0736a589c0c0062c745697a5d34891ba0408e72563b8dc902611ad0"
+    },
+    {
+      "path": "raw-public-map.json",
+      "bytes": 73613,
+      "sha256": "ae507fac9480e995dd5bc74804b24149fb108a60743b36a63cae529bd3841a15"
+    },
+    {
+      "path": "records.tar.gz",
+      "bytes": 170239,
+      "sha256": "c2aa1af08cafd6553f54b738fe701c90d2465556e2959a9fd47fd960f388a3c8"
+    }
+  ],
+  "publicationState": "localpreparation only"
+}
