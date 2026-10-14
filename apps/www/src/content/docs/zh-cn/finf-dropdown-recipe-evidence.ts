@@ -80,6 +80,8 @@ export async function observeDropdownGeometry(locator: Locator) {
       height: rect.height,
       textX,
       paddingLeft: Number.parseFloat(css.paddingLeft),
+      paddingRight: Number.parseFloat(css.paddingRight),
+      direction: css.direction,
       rem: Number.parseFloat(getComputedStyle(document.documentElement).fontSize),
       icon:
         svg && icon

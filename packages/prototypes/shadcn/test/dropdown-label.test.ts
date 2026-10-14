@@ -48,11 +48,18 @@ it('projects inset dynamically while preserving the live group label relationshi
   await flush();
   const id = label.id;
   expect(id).not.toBe('');
-  expect(styleContains(label, 'pl-7')).toBe(false);
+  expect(styleContains(label, 'pl-8')).toBe(false);
   for (const inset of [true, false, true]) {
     setElementProps(label, { inset });
+    setElementProps(item, { inset });
     await flush();
-    expect(styleContains(label, 'pl-7')).toBe(inset);
+    for (const node of [label, item]) {
+      expect(styleContains(node, 'pl-8')).toBe(inset);
+      expect(styleContains(node, 'pl-2')).toBe(!inset);
+      expect(styleContains(node, 'pr-2')).toBe(true);
+      expect(styleContains(node, 'px-1.5')).toBe(false);
+      expect(styleContains(node, 'px-2')).toBe(false);
+    }
     expect(group.getAttribute('aria-labelledby')).toBe(id);
     expect(label.hasAttribute('tabindex')).toBe(false);
     expect(root.getExposes().getCollectionCount()).toBe(1);
@@ -65,6 +72,6 @@ it('projects inset dynamically while preserving the live group label relationshi
   await flush();
   expect(label.id).toBe(id);
   expect(group.getAttribute('aria-labelledby')).toBe(id);
-  expect(styleContains(label, 'pl-7')).toBe(true);
+  expect(styleContains(label, 'pl-8')).toBe(true);
   expect(root.getExposes().getCollectionCount()).toBe(1);
 });

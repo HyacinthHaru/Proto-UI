@@ -3,7 +3,7 @@ import { asDropdownItem } from '@proto.ui/prototypes-base/dropdown';
 import type { ShadcnDropdownItemExposes, ShadcnDropdownItemProps } from './types';
 
 const ITEM_BASE_TOKENS =
-  'relative flex w-full cursor-default select-none items-center gap-1.5 rounded-md px-1.5 py-1 text-left text-sm outline-none transition-colors';
+  'relative flex w-full cursor-default select-none items-center gap-2 rounded-sm py-1.5 text-left text-sm outline-none transition-colors';
 
 const dropdownItem = definePrototype<ShadcnDropdownItemProps, ShadcnDropdownItemExposes>({
   name: 'shadcn-dropdown-item',
@@ -26,9 +26,15 @@ const dropdownItem = definePrototype<ShadcnDropdownItemProps, ShadcnDropdownItem
     // P-SHADCN-DROPDOWN-MENU-ITEM-CURRENT-VISUAL-SURFACE
     def.feedback.style.use(tw(ITEM_BASE_TOKENS));
     // P-SHADCN-DROPDOWN-MENU-ITEM-STATE-DRIVEN-STYLES
+    // Fixed New York uses physical LEFT inset, including RTL (not inline-start).
+    // Mutually exclusive complete sides avoid overlapping px/pl declarations.
+    def.rule({
+      when: (w) => w.prop('inset').eq(false),
+      intent: (i) => i.feedback.style.use(tw('pl-2 pr-2')),
+    });
     def.rule({
       when: (w) => w.prop('inset').eq(true),
-      intent: (i) => i.feedback.style.use(tw('pl-7')),
+      intent: (i) => i.feedback.style.use(tw('pl-8 pr-2')),
     });
     def.rule({
       when: (w) => w.prop('variant').eq('destructive'),
@@ -47,7 +53,7 @@ const dropdownItem = definePrototype<ShadcnDropdownItemProps, ShadcnDropdownItem
         ),
       intent: (i) => i.feedback.style.use(tw('bg-accent text-accent-foreground')),
     });
-    // P-SHADCN-DROPDOWN-MENU-ITEM-DESTRUCTIVE-PALETTE: retain the Nova tint
+    // P-SHADCN-DROPDOWN-MENU-ITEM-DESTRUCTIVE-PALETTE: retain the fixed New York tint
     // during the existing local press feedback; Base remains the state owner.
     def.rule({
       when: (w) =>
