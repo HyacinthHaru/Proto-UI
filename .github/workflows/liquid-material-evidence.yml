@@ -19,6 +19,8 @@ on:
       - 'apps/www/src/content/docs/zh-cn/demo-liquid-glass-toggle.browser.test.ts'
       - 'apps/www/src/content/docs/zh-cn/liquid-toggle-failure-diagnostics.ts'
       - 'apps/www/src/content/docs/zh-cn/liquid-toggle-failure-diagnostics.test.ts'
+      - 'apps/www/src/content/docs/zh-cn/liquid-toggle-snapshot.ts'
+      - 'apps/www/src/content/docs/zh-cn/liquid-toggle-snapshot.test.ts'
       - 'apps/www/scripts/diagnose-select-click.ts'
       - 'apps/www/src/content/docs/demo_components/liquid-glass/**'
       - 'apps/www/src/content/docs/zh-cn/browser-harness.ts'
@@ -83,6 +85,7 @@ jobs:
             packages/adapters/base/test/web-material-sink.test.ts \
             apps/www/src/content/docs/zh-cn/material-paint-observation.test.ts \
             apps/www/src/content/docs/zh-cn/liquid-toggle-failure-diagnostics.test.ts \
+            apps/www/src/content/docs/zh-cn/liquid-toggle-snapshot.test.ts \
             apps/www/src/content/docs/zh-cn/demo-liquid-glass-material.browser.test.ts \
             apps/www/src/content/docs/zh-cn/demo-liquid-glass-portal.browser.test.ts \
             apps/www/src/content/docs/zh-cn/demo-liquid-glass-toggle.browser.test.ts \

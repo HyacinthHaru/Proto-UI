@@ -6,7 +6,7 @@ import path from 'node:path';
 import { chromium, type Browser, type CDPSession, type Locator, type Page } from 'playwright-core';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { isUnpaintedBootstrapBoxShadow as isUnpaintedComposedShadow } from './bootstrap-disabled-paint';
-import { observeOwnedMaterialPaint } from './material-paint-observation';
+import { observeLiquidToggleSnapshot } from './liquid-toggle-snapshot';
 import {
   attachLiquidToggleFailureDiagnostics,
   readLiquidToggleTriggerFacts,
@@ -135,102 +135,9 @@ async function quality(target: Locator, expected: string) {
     .toBe(expected);
 }
 async function observe(target: Locator) {
-  return target.evaluate(async (element) => {
-    const el = element as HTMLElement;
-    const css = getComputedStyle(el),
-      rect = el.getBoundingClientRect();
-    const ctx = new OffscreenCanvas(1, 1).getContext('2d')!;
-    const rgba = (value: string) => {
-      if (!CSS.supports('color', value)) throw new Error(`Unresolved observed color ${value}`);
-      ctx.clearRect(0, 0, 1, 1);
-      ctx.fillStyle = value;
-      ctx.fillRect(0, 0, 1, 1);
-      return Array.from(ctx.getImageData(0, 0, 1, 1).data);
-    };
-    const background = rgba(css.backgroundColor),
-      foreground = rgba(css.color);
-    const luminance = (rgb: number[]) =>
-      rgb
-        .slice(0, 3)
-        .map((n) => n / 255)
-        .map((v) => (v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4))
-        .reduce((sum, value, i) => sum + value * [0.2126, 0.7152, 0.0722][i], 0);
-    const lum = [luminance(background), luminance(foreground)].sort((a, b) => b - a);
-    const carrierCss = getComputedStyle(el, '::before');
-    const carrierMarker = el.getAttribute('data-pui-material-carrier');
-    const materialImage =
-      carrierMarker === 'contact-v1' ? carrierCss.backgroundImage : css.backgroundImage;
-    const uri =
-      materialImage.match(/url\(["']?(data:image\/png;base64,[^"')]+)["']?\)/)?.[1] ?? null;
-    let pixels: {
-      width: number;
-      height: number;
-      uniqueColors: number;
-      min: number;
-      max: number;
-    } | null = null;
-    if (uri) {
-      const image = new Image();
-      image.src = uri;
-      await image.decode();
-      const canvas = new OffscreenCanvas(image.width, image.height),
-        paint = canvas.getContext('2d')!;
-      paint.drawImage(image, 0, 0);
-      const data = paint.getImageData(0, 0, image.width, image.height).data;
-      const colors = new Set<string>();
-      let min = 255,
-        max = 0;
-      for (let i = 0; i < data.length; i += 4) {
-        colors.add(`${data[i]},${data[i + 1]},${data[i + 2]}`);
-        min = Math.min(min, data[i], data[i + 1], data[i + 2]);
-        max = Math.max(max, data[i], data[i + 1], data[i + 2]);
-      }
-      pixels = { width: image.width, height: image.height, uniqueColors: colors.size, min, max };
-    }
-    return {
-      active: el.getAttribute('aria-pressed'),
-      disabled: el.getAttribute('aria-disabled'),
-      width: rect.width,
-      height: rect.height,
-      radius: css.borderTopLeftRadius,
-      border: [
-        css.borderTopWidth,
-        css.borderRightWidth,
-        css.borderBottomWidth,
-        css.borderLeftWidth,
-      ],
-      borderColor: rgba(css.borderTopColor),
-      ringColor: rgba(css.getPropertyValue('--pui-ring').trim()),
-      underline: css.textDecorationLine,
-      shadow: css.boxShadow,
-      opacity: css.opacity,
-      pointerEvents: css.pointerEvents,
-      background,
-      foreground,
-      fallbackContrast: (lum[0] + 0.05) / (lum[1] + 0.05),
-      quality: el.dataset.materialQuality,
-      reason: el.dataset.materialReason,
-      source: el.dataset.materialSource,
-      phase: el.dataset.materialPhase,
-      motion: el.dataset.materialMotion,
-      backdropFilter: css.backdropFilter,
-      childCanvases: el.querySelectorAll('canvas').length,
-      image: materialImage,
-      hostImage: css.backgroundImage,
-      carrier: {
-        marker: carrierMarker,
-        content: carrierCss.content,
-        image: carrierCss.backgroundImage,
-        pointerEvents: carrierCss.pointerEvents,
-        zIndex: carrierCss.zIndex,
-        visibility: carrierCss.visibility,
-        opacity: carrierCss.opacity,
-      },
-      uri,
-      pixels,
-    };
-  });
+  return target.evaluate(observeLiquidToggleSnapshot);
 }
+
 function optical(facts: Awaited<ReturnType<typeof observe>>) {
   expect(facts.quality).toBe('self-optical');
   expect(facts.source).toBe('visible-app-canvas');
@@ -246,6 +153,9 @@ function optical(facts: Awaited<ReturnType<typeof observe>>) {
     opacity: '1',
   });
   expect(facts.carrier.image).toBe(facts.image);
+  expect(facts.receipt.ownedImage).toBe(facts.image);
+  expect(facts.receipt.frame).toMatch(/^\d+$/);
+  expect(facts.snapshot.verifiedAfterDecode).toBe(true);
   expect(facts.hostImage).toBe('none');
   expect(facts.pixels!.uniqueColors).toBeGreaterThan(20);
   expect(facts.pixels!.max - facts.pixels!.min).toBeGreaterThan(5);
@@ -258,12 +168,13 @@ async function capture(
   details: Record<string, unknown> = {}
 ) {
   const facts = await observe(subject);
-  const paint = await subject.evaluate(observeOwnedMaterialPaint);
+  const paint = facts.paint;
   if (facts.quality === 'self-optical') {
     expect(paint.committed).toBe(true);
     expect(paint.geometryMatches).toBe(true);
   }
-  const { uri, image, ...summary } = facts;
+  const { uri, image, paint: _paint, receipt: _receipt, ...summary } = facts;
+  const { ownedImage, ...receipt } = facts.receipt;
   let screenshotSha256: string | undefined;
   let materialSha256: string | undefined;
   if (output) {
@@ -282,6 +193,9 @@ async function capture(
     ...details,
     ...summary,
     carrier: carrierObservation,
+    receipt,
+    screenshotTiming:
+      'Native screenshot follows the verified optical sample; a dynamic scene may advance.',
     paint: paintObservation,
     screenshotSha256,
     materialSha256,

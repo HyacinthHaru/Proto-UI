@@ -42,6 +42,8 @@ for (const file of [
   'apps/www/src/content/docs/zh-cn/demo-liquid-glass-toggle.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/liquid-toggle-failure-diagnostics.ts',
   'apps/www/src/content/docs/zh-cn/liquid-toggle-failure-diagnostics.test.ts',
+  'apps/www/src/content/docs/zh-cn/liquid-toggle-snapshot.ts',
+  'apps/www/src/content/docs/zh-cn/liquid-toggle-snapshot.test.ts',
   'apps/www/scripts/diagnose-select-click.ts',
   'apps/www/src/content/docs/demo_components/liquid-glass/demo-liquid-glass-toggle.demo.ts',
   'apps/www/src/content/docs/en/ui-libraries/liquid-glass/toggle.mdx',
@@ -72,6 +74,7 @@ test('Liquid Toggle executes in the retained exact-head optical evidence job', (
   for (const suite of [
     'packages/prototypes/liquid-glass/test/toggle.test.ts',
     'apps/www/src/content/docs/zh-cn/liquid-toggle-failure-diagnostics.test.ts',
+    'apps/www/src/content/docs/zh-cn/liquid-toggle-snapshot.test.ts',
   ])
     assert.ok(
       job.steps.some((step) => step.run?.includes(suite)),
