@@ -60,7 +60,7 @@ import DraftProjectionStyle from '@/components/DraftProjectionStyle.astro';
 - defaultActive?: boolean：非受控初始值，默认 false。
 - disabled?: boolean：默认 false。抑制激活，清除瞬时交互，保留 active 选择。
 - material?: 'auto' | 'opaque'：默认 auto。opaque 主动关闭光学增强。
-- activeChange：{ active: boolean }。Previewer 使用 onActiveChange 观察 outward signal；它不是 Toggle 的语义 prop。
+- activeChange：`{ active: boolean }`。Previewer 使用 onActiveChange 观察 outward signal；它不是 Toggle 的语义 prop。
 - role="button"、aria-pressed 对应持久 active；exposed pressed 表示短暂指针按压。焦点与键盘行为直接继承 Base Toggle。
 
 ## 材质与可访问性
