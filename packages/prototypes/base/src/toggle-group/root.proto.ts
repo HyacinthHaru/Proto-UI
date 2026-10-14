@@ -51,6 +51,7 @@ function setup(def: DefHandle<ToggleGroupRootProps, ToggleGroupRootExposes>) {
   let value: string[] = [];
   let current = '';
   let runNow: RunHandle<ToggleGroupRootProps> | null = null;
+  let viewEpoch = 0;
   let snapshot: ToggleGroupContext = { value, current, disabled: false, readOnly: false };
   def.context.provide(TOGGLE_GROUP_CONTEXT, snapshot);
   const publish = (run: RunHandle<ToggleGroupRootProps>) => {
@@ -72,6 +73,7 @@ function setup(def: DefHandle<ToggleGroupRootProps, ToggleGroupRootExposes>) {
   def.expose.method('requestToggle', (itemValue) => {
     const run = runNow;
     if (!run || disabled.get() || run.props.get().readOnly) return false;
+    const epoch = viewEpoch;
     const matches = getItems(run).filter((i) => i.value === itemValue);
     if (!itemValue || matches.length !== 1 || matches[0].disabled) return false;
     const next = value.includes(itemValue)
@@ -82,6 +84,7 @@ function setup(def: DefHandle<ToggleGroupRootProps, ToggleGroupRootExposes>) {
     if (!run.props.isProvided('value')) value = next;
     current = matches[0].id;
     publish(run);
+    if (runNow !== run || viewEpoch !== epoch) return true;
     run.expose.emit('valueChange', { value: next });
     return true;
   });
@@ -104,6 +107,7 @@ function setup(def: DefHandle<ToggleGroupRootProps, ToggleGroupRootExposes>) {
   def.lifecycle.onCreated((run) => sync(run, true));
   def.lifecycle.onMounted((run) => sync(run));
   def.lifecycle.onUnmounted(() => {
+    viewEpoch++;
     runNow = null;
   });
   def.props.watchAll((run) => sync(run));

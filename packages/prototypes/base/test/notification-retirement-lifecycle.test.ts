@@ -17,6 +17,8 @@ import {
 } from '@proto.ui/module-as-trigger';
 import { EXPOSES_RECORD_SINK_CAP } from '@proto.ui/module-expose-state';
 import { fieldRoot, fieldControl, FIELD_CONTEXT } from '../src/field';
+import { toggleGroupRoot, toggleGroupItem } from '../src/toggle-group';
+import { TOGGLE_GROUP_CONTEXT } from '../src/toggle-group/shared';
 import {
   TEXT_CONTROL_HOST_CAP,
   TEXT_CONTROL_RUN_IN_CALLBACK_CAP,
@@ -652,6 +654,91 @@ it.each(['normal', 'cancel', 'reset', 'dispose', 'newer'] as const)(
       await retirement;
       await control.session.dispose();
       await root.session.dispose();
+    }
+  }
+);
+
+it.each(['normal', 'unmount', 'dispose', 'nested', 'remount'] as const)(
+  'Toggle Group stops old Context publication after %s',
+  async (operation) => {
+    const { make, actions } = runtimeHarness();
+    const root = make(toggleGroupRoot);
+    const items = ['a', 'b'].map((value) => make(toggleGroupItem, root.target, { value }));
+    let armed = false,
+      observed = 0,
+      nested: boolean | undefined;
+    const transitions: Promise<void>[] = [];
+    const phases: Array<{ mount: string; epoch: number }> = [];
+    const request = (value: string) => {
+      let accepted: boolean | undefined;
+      root.session.invokeInCallbackScope(() => {
+        accepted = root.exposes.requestToggle(value);
+      });
+      return accepted;
+    };
+    const observer = make(
+      definePrototype({
+        name: 'toggle-group-retirement-observer',
+        setup(def) {
+          def.context.subscribe(TOGGLE_GROUP_CONTEXT, (_run, next) => {
+            if (!armed || observed || next.value.length !== 1 || next.value[0] !== 'a') return;
+            observed++;
+            if (operation === 'nested') nested = request('b');
+            else if (operation === 'unmount' || operation === 'dispose')
+              transitions.push(root.session[operation]());
+            else if (operation === 'remount') {
+              phases.push({ mount: root.session.mountPhase, epoch: root.session.mountEpoch });
+              transitions.push(root.session.unmount());
+              phases.push({ mount: root.session.mountPhase, epoch: root.session.mountEpoch });
+              transitions.push(root.session.mount());
+              phases.push({ mount: root.session.mountPhase, epoch: root.session.mountEpoch });
+            }
+          });
+        },
+      }),
+      root.target
+    );
+    const parts = [root, ...items, observer];
+    try {
+      for (const part of parts) await part.session.mount();
+      expect(root.exposes.getValue()).toEqual([]);
+      expect(root.exposes.count.get()).toBe(2);
+      const initialEpoch = root.session.mountEpoch;
+      actions.length = 0;
+      armed = true;
+      let accepted: boolean | undefined;
+      expect(() => {
+        accepted = request('a');
+      }).not.toThrow();
+      await Promise.all(transitions);
+      expect(observed).toBe(1);
+      expect(accepted).toBe(true);
+      const oldNotifications = actions.filter((name) => name === 'valueChange');
+      if (operation === 'remount') {
+        expect(phases).toEqual([
+          { mount: 'mounted', epoch: initialEpoch },
+          { mount: 'detached', epoch: initialEpoch },
+          { mount: 'mounted', epoch: initialEpoch + 1 },
+        ]);
+        const beforeFresh = actions.length;
+        expect(request('b')).toBe(true);
+        expect(root.exposes.getValue()).toEqual(['b']);
+        expect(actions.slice(beforeFresh).filter((name) => name === 'valueChange')).toHaveLength(1);
+      }
+      expect(oldNotifications).toHaveLength(
+        operation === 'normal' ? 1 : operation === 'nested' ? 2 : 0
+      );
+      if (operation === 'nested') {
+        expect(nested).toBe(true);
+        expect(root.exposes.getValue()).toEqual(['b']);
+      } else if (operation === 'normal') expect(root.exposes.getValue()).toEqual(['a']);
+      else if (operation !== 'remount') {
+        expect(root.session.mountPhase).toBe('detached');
+        expect(root.session.instancePhase).toBe(operation === 'dispose' ? 'disposed' : 'alive');
+      }
+    } finally {
+      await Promise.all(transitions);
+      for (const part of [...parts].reverse()) await part.session.dispose();
     }
   }
 );
