@@ -23,6 +23,7 @@ import {
   recordFieldFocusSample,
   type FieldFocusSnapshot,
 } from './field-focus-observation';
+import { createFieldAsyncObservation } from './field-async-observation';
 const families = ['base', 'shadcn', 'brutalist', 'bootstrap-2-3-2', 'liquid-glass'];
 let browser: Browser,
   baseUrl = '';
@@ -106,8 +107,7 @@ beforeAll(async () => {
   browser = await launchBrowser();
 }, 120000);
 afterAll(async () => {
-  await browser?.close();
-  await stopServer();
+  await Promise.all([browser?.close(), stopServer()]);
 });
 describe('Field real browser journeys', () => {
   for (const family of families)
@@ -120,6 +120,10 @@ describe('Field real browser journeys', () => {
         } = await openRoute(browser, baseUrl, route(family), { width: 1100, height: 1000 });
         let previewer: Locator | undefined;
         const focusObservation = createFieldFocusObservation();
+        const asyncObservation =
+          family === 'liquid-glass' && runtime !== 'wc'
+            ? createFieldAsyncObservation(browser, page, `${family}-${runtime}`)
+            : undefined;
         try {
           previewer = mountedPreviewer;
           await selectRuntime(page, previewer, runtime, 'input', 6);
@@ -237,13 +241,18 @@ describe('Field real browser journeys', () => {
           expect(await editor(previewer, 'readonly').isEditable()).toBe(false);
           expect(await editor(previewer, 'readonly').isDisabled()).toBe(false);
           expect(await editor(previewer, 'disabled').isDisabled()).toBe(true);
+          if (asyncObservation) await asyncObservation.start();
           await editor(previewer, 'async').fill('taken');
           await expect
             .poll(() => editor(previewer!, 'async').getAttribute('aria-busy'))
             .toBe('true');
           await editor(previewer, 'async').fill('newer');
           await expect
-            .poll(() => ref(previewer!, 'asyncStatus').textContent())
+            .poll(() =>
+              asyncObservation
+                ? asyncObservation.observe(() => ref(previewer!, 'asyncStatus').textContent())
+                : ref(previewer!, 'asyncStatus').textContent()
+            )
             .toContain('Available');
           expect(await editor(previewer, 'async').getAttribute('aria-invalid')).toBe('false');
           await editor(previewer, 'async').fill('taken');
@@ -281,6 +290,7 @@ describe('Field real browser journeys', () => {
           expect(evidence.some((e: any) => e.type === 'keydown' && e.trusted)).toBe(true);
           expect(evidence.some((e: any) => e.type === 'input' && e.trusted)).toBe(true);
         } catch (error) {
+          asyncObservation?.markFailure(error);
           let focusAtFailure: FieldFocusSnapshot | undefined;
           // Retain the Node-side deadline boundary even if the browser cannot
           // complete the existing screenshot/evidence capture.
@@ -305,6 +315,10 @@ describe('Field real browser journeys', () => {
             });
           throw error;
         } finally {
+          if (asyncObservation)
+            await asyncObservation.finish().catch((error) => {
+              console.error('[Field async diagnostic]', error);
+            });
           await context.close();
         }
       }, 120000);
