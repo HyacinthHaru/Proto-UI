@@ -222,8 +222,30 @@ async function trackInput(previewer: Locator): Promise<void> {
 async function capture(previewer: Locator, name: string): Promise<void> {
   const directory = process.env.PROTO_UI_COLLAPSIBLE_SCREENSHOT_DIR;
   if (!directory) return;
+  const captureStartedAt = name.startsWith('liquid-glass-') ? performance.now() : null;
+  const captureStage = (stage: string, phase: 'start' | 'done') => {
+    if (captureStartedAt === null) return;
+    const nodeNow = performance.now();
+    console.error(
+      '[collapsible-capture-stage]',
+      JSON.stringify({
+        name,
+        stage,
+        phase,
+        captureStartedAt,
+        nodeNow,
+        nodeTimeOrigin: performance.timeOrigin,
+        elapsedMs: nodeNow - captureStartedAt,
+      })
+    );
+  };
+  captureStage('directory', 'start');
   await mkdir(directory, { recursive: true });
+  captureStage('directory', 'done');
+  captureStage('source', 'start');
   const sourceSha = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+  captureStage('source', 'done');
+  captureStage('layout', 'start');
   const observation = await previewer.evaluate((element) => {
     const host = element as HTMLElement & { __puiCollapsibleEvidence?: ObservedInput[] };
     return {
@@ -279,11 +301,15 @@ async function capture(previewer: Locator, name: string): Promise<void> {
       }),
     };
   });
+  captureStage('layout', 'done');
   const imageName = `${name}.png`;
+  captureStage('png', 'start');
   await previewer.screenshot({
     path: path.join(directory, imageName),
     style: 'astro-dev-toolbar { visibility: hidden; }',
   });
+  captureStage('png', 'done');
+  captureStage('record', 'start');
   await writeFile(
     path.join(directory, `${name}.json`),
     JSON.stringify(
@@ -309,6 +335,7 @@ async function capture(previewer: Locator, name: string): Promise<void> {
       2
     ) + '\n'
   );
+  captureStage('record', 'done');
 }
 
 beforeAll(async () => {
