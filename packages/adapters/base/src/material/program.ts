@@ -315,18 +315,24 @@ function prefilter(pixels: Uint8Array, width: number, height: number): Uint8Arra
     for (let y = 0; y < height; y++)
       for (let x = 0; x < width; x++) {
         const at = (y * width + x) * 4;
-        for (let channel = 0; channel < 3; channel++) {
-          let sum = 0;
-          for (let k = -3; k <= 3; k++)
-            sum +=
-              input[
-                (Math.max(0, Math.min(height - 1, y + (pass ? k : 0))) * width +
-                  Math.max(0, Math.min(width - 1, x + (pass ? 0 : k)))) *
-                  4 +
-                  channel
-              ] * weights[k + 3];
-          target[at + channel] = Math.round(sum / 64);
+        // All RGB channels sample the same seven pixels. Compute each clamped
+        // offset once, preserving each channel's tap order and per-pass rounding.
+        let red = 0,
+          green = 0,
+          blue = 0;
+        for (let k = -3; k <= 3; k++) {
+          const sample =
+            (Math.max(0, Math.min(height - 1, y + (pass ? k : 0))) * width +
+              Math.max(0, Math.min(width - 1, x + (pass ? 0 : k)))) *
+            4;
+          const weight = weights[k + 3];
+          red += input[sample] * weight;
+          green += input[sample + 1] * weight;
+          blue += input[sample + 2] * weight;
         }
+        target[at] = Math.round(red / 64);
+        target[at + 1] = Math.round(green / 64);
+        target[at + 2] = Math.round(blue / 64);
         target[at + 3] = 255;
       }
   }
