@@ -330,12 +330,21 @@ for (const recipe of Object.keys(DROPDOWN_DEMOS) as DropdownRecipe[])
               expect(await ref(labelName!).getAttribute('tabindex')).toBeNull();
             }
             await capture('inset', { copy, cut, label, inset, paste, rename }, menu);
-            // Direction is an environment input. No CSS or prop answer is injected by the test:
-            // the visible demo button updates props through the normal runtime renderer API.
+            // Set the consumer author boundary: Starlight's nearer main[dir] overrides html.
+            // Never write direction on the portalled menu or inject its computed-style answer.
+            // The visible demo button updates inset through the normal runtime renderer API.
+            const originalDirection = await previewer.getAttribute('dir');
             for (const direction of ['ltr', 'rtl'] as const) {
-              await page.evaluate((dir) => {
-                document.documentElement.dir = dir;
-              }, direction);
+              await previewer.evaluate(
+                (element, dir) => element.setAttribute('dir', dir),
+                direction
+              );
+              await expect
+                .poll(() => trigger.evaluate((element) => getComputedStyle(element).direction))
+                .toBe(direction);
+              await expect
+                .poll(() => menu.evaluate((element) => getComputedStyle(element).direction))
+                .toBe(direction);
               for (const [step, enabled] of [true, false, true].entries()) {
                 if (step > 0) {
                   await page.keyboard.press('Escape');
@@ -363,9 +372,10 @@ for (const recipe of Object.keys(DROPDOWN_DEMOS) as DropdownRecipe[])
                 );
               }
             }
-            await page.evaluate(() => {
-              document.documentElement.dir = 'ltr';
-            });
+            await previewer.evaluate((element, original) => {
+              if (original === null) element.removeAttribute('dir');
+              else element.setAttribute('dir', original);
+            }, originalDirection);
             stage = 'passive-label-navigation';
             for (const next of ['cut', 'paste', 'rename']) {
               await page.keyboard.press('ArrowDown');

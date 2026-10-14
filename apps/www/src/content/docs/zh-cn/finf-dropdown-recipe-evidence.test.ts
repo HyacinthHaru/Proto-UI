@@ -179,3 +179,18 @@ it('drives inset changes through the public demo control and keeps the fixed phy
   expect(source).toContain('geometry.direction');
   expect(source).toContain('.toBe(enabled ? 2 : 0.5)');
 });
+
+it('sets direction at the demo author boundary and observes portal propagation before geometry', () => {
+  // Starlight gives main its own locale direction, so changing html alone is insufficient.
+  expect(source).toContain('await previewer.evaluate(');
+  expect(source).toContain("(element, dir) => element.setAttribute('dir', dir)");
+  expect(source).toContain(
+    '.poll(() => trigger.evaluate((element) => getComputedStyle(element).direction))'
+  );
+  expect(source).toContain(
+    '.poll(() => menu.evaluate((element) => getComputedStyle(element).direction))'
+  );
+  expect(source).not.toContain('document.documentElement.dir = dir');
+  expect(source).toContain('expect(geometry.direction).toBe(direction)');
+  expect(source).toContain("if (original === null) element.removeAttribute('dir')");
+});
