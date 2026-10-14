@@ -50,6 +50,7 @@ const EXPECTED_COMPONENT_IDS = {
     'spinner',
     'scroll-area',
     'tooltip',
+    'input',
   ],
 } as const;
 
@@ -358,6 +359,7 @@ const EXPECTED_RECIPE_PROTOTYPE_IDS = {
       'brutalist-button',
     ],
     separator: ['brutalist-separator-root'],
+    input: ['brutalist-input-root'],
     textarea: ['brutalist-textarea-root'],
   },
 } as const;
@@ -478,6 +480,11 @@ const EXPECTED_FAMILIES = {
         basePrototypeId: 'P-BASE-SEPARATOR',
         prototypeId: 'brutalist-separator-root',
       },
+    },
+    input: {
+      baseFamilyId: 'P-BASE-INPUT',
+      recipeId: 'demo-brutalist-input',
+      root: { basePrototypeId: 'P-BASE-INPUT', prototypeId: 'brutalist-input-root' },
     },
     textarea: {
       baseFamilyId: 'P-BASE-TEXTAREA',

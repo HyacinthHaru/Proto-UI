@@ -1400,6 +1400,11 @@ export default defineConfig({
                   badge: inProgressBadge,
                 },
                 {
+                  label: 'Input',
+                  translations: { en: 'Input', 'zh-CN': 'Input' },
+                  slug: 'ui-libraries/brutalist/components/input',
+                },
+                {
                   label: 'Textarea',
                   translations: { en: 'Textarea', 'zh-CN': 'Textarea' },
                   slug: 'ui-libraries/brutalist/components/textarea',

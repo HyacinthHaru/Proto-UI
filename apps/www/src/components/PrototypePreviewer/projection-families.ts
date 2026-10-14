@@ -856,6 +856,12 @@ const BRUTALIST_MANIFEST = {
         },
       },
     },
+    input: {
+      baseFamilyId: 'P-BASE-INPUT',
+      recipeId: 'demo-brutalist-input',
+      recipePrototypeIds: ['brutalist-input-root'],
+      parts: { root: { basePrototypeId: 'P-BASE-INPUT', prototypeId: 'brutalist-input-root' } },
+    },
     textarea: {
       baseFamilyId: 'P-BASE-TEXTAREA',
       recipeId: 'demo-brutalist-textarea',

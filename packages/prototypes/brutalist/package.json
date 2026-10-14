@@ -284,6 +284,11 @@
       "types": "./dist/data-table/index.d.ts",
       "import": "./dist/data-table/index.js",
       "default": "./dist/data-table/index.js"
+    },
+    "./input": {
+      "types": "./dist/input/index.d.ts",
+      "import": "./dist/input/index.js",
+      "default": "./dist/input/index.js"
     }
   },
   "description": "Neo-Brutalist Proto UI prototype library with package and CLI family imports.",

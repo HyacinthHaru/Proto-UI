@@ -818,6 +818,12 @@ const ALL_COMPONENT_ENTRIES: Record<string, ComponentEntry> = {
     'brutalistSpinnerRoot',
     'BrutalistSpinnerRoot'
   ),
+  'brutalist-input': brutalist(
+    'brutalist-input',
+    'Brutalist Input',
+    'brutalistInputRoot',
+    'BrutalistInputRoot'
+  ),
   'brutalist-textarea': brutalist(
     'brutalist-textarea',
     'Brutalist Textarea',

@@ -1,0 +1,58 @@
+id: P-BRUTALIST-INPUT
+type: prototype
+title: Brutalist standalone Input inherits the Base single-line editor
+status: draft
+since: 0.3.0-alpha.1
+lifecycleRationale: Source-pinned presentation increment; real-browser, Compiler and native evidence and upstream compatibility gaps remain open before activation.
+summary: A standalone contentless Neo Input projection, independent of FieldControl, with Base-owned text editing.
+statement:
+  en: Inherit P-BASE-INPUT once through asInputRoot. Project the plain-text visual subset of neobrutalism-components 3306a802724874a85f93079702b2795370a279d4 src/components/ui/input.tsx lines 5-18. This is an unofficial implementation, not full upstream input API compatibility.
+criteria:
+  - id: P-BRUTALIST-INPUT-BASE
+    text:
+      en: Preserve asInputRoot.modules and invoke asInputRoot once. Base owns controlled/uncontrolled value, normalization, editing and composition events, hints, accessibility, disabled/readOnly and focus. Add no competing editor, Field owner, validation, form, selection or arbitrary type API.
+  - id: P-BRUTALIST-INPUT-SURFACE
+    text:
+      en: Render null and apply feedback to the one Base host-owned single-line input. Use flex h-10 w-full rounded-base border-2 border-border bg-secondary-background px-3 py-2 text-sm font-sans font-medium text-foreground and selection:bg-main selection:text-main-foreground. Preserve 2.5rem height, 0.75rem horizontal and 0.5rem vertical padding, 0.875rem font with 1.25rem line height; never replace these relative values with default pixel results. Existing Neo theme maps upstream font-base to weight 500 and supplies DM Sans. No hard shadow or motion is introduced.
+  - id: P-BRUTALIST-INPUT-STATES
+    text:
+      en: Inherited focusVisible alone adds outline-none ring-2 ring-black ring-offset-2. Inherited disabled adds cursor-not-allowed opacity-50, without a second disabled owner. Preserve native readOnly and the same physical editor over repeated updates. The black focus ring follows this Input source, not a theme-ring substitution.
+  - id: P-BRUTALIST-INPUT-ENTRIES
+    text:
+      en: Export the standalone projection through the package root and input subpath, register brutalist-input in CLI and brutalist-input-root in the real website preview. Demos must instantiate this prototype rather than FieldControl or a page-local native substitute.
+  - id: P-BRUTALIST-INPUT-EVIDENCE
+    text:
+      en: Keep source/CSS and simulated editing evidence separate from browser rendering and real input. Browser acceptance checks all four Web runtimes, light/dark, editable/disabled/readOnly, keyboard focus, 320px width and 200 percent root font size with source-bound captures. Synthetic composition events do not prove operating-system IME or native-target acceptance.
+openQuestions:
+  - id: P-BRUTALIST-INPUT-Q-PARITY
+    question:
+      en: Close remaining upstream compatibility and target evidence before stable admission.
+    context:
+      en: Upstream arbitrary type including file controls, className and DOM prop forwarding are outside the current Base plain-text protocol. Placeholder foreground/50 and file pseudo-element styles remain unimplemented under existing style syntax. The existing outline-none token emits the transparent 2px outline and offset corresponding to upstream outline-hidden; actual forced-color visibility and upstream focus-offset/default theme comparison remain unverified. These are unresolved gaps, not approved permanent omissions. Actual browser, OS IME, Compiler and native-target evidence remains required; this increment does not close full upstream conformance.
+    blocks: [activation:P-BRUTALIST-INPUT]
+sources:
+  - path: packages/prototypes/brutalist/src/input/root.proto.ts
+  - path: packages/prototypes/brutalist/src/input/types.ts
+  - path: https://github.com/ekmas/neobrutalism-components/blob/3306a802724874a85f93079702b2795370a279d4/src/components/ui/input.tsx#L5-L18
+    label: Static source inspection; Git blob 8887ff487008dbb5fd5a0ab91924f3b7f5253366
+  - path: apps/www/src/content/docs/en/ui-libraries/brutalist/components/input.mdx
+dependsOn:
+  contracts:
+    [
+      C-AS-HOOK-0001,
+      C-HOST-SURFACE-PROJECTION-0001,
+      C-RULE-INTENT-FEEDBACK-STYLE-0001,
+      C-PROTOTYPE-STYLE-CLOSURE-0001,
+      C-FEEDBACK-STYLE-0004,
+    ]
+inherits:
+  prototypes: [P-BASE-INPUT]
+relates:
+  knowledge: [K-BRUTALIST-0001]
+verifies:
+  tests: [T-BRUTALIST-INPUT-0001]
+revisions:
+  - version: 0.3.0-alpha.1
+    change: introduced
+    summary: Added the missing standalone Neo plain-text Input projection with pinned source and explicit remaining parity/evidence gaps.
+tags: [prototype, brutalist, input, text-control, visual, delta]

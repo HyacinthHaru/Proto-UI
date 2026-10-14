@@ -1,0 +1,16 @@
+---
+title: 'Input'
+description: 'Standalone Neobrutalist single-line text input.'
+---
+
+import PrototypePreviewer from '@/components/PrototypePreviewer/PrototypePreviewer.astro';
+
+This draft standalone Input inherits Base Input. It is independent of FieldControl: Base owns the one plain-text editor, controlled/uncontrolled value, normalized editing and composition events, disabled/read-only state, accessible naming and physical focus.
+
+Its visual reference is [Neo input.tsx at 3306a802](https://github.com/ekmas/neobrutalism-components/blob/3306a802724874a85f93079702b2795370a279d4/src/components/ui/input.tsx#L5-L18). The recipe preserves 2.5rem height, 0.75rem horizontal/0.5rem vertical padding, 0.875rem text, a 2px border, rounded-base corners and no resting shadow. Inherited focus-visible adds a black ring; disabled adds cursor and opacity. Dimensions remain font-relative when root text size changes.
+
+<PrototypePreviewer demoId="demo-brutalist-input" initialRuntime="wc" />
+
+Import `brutalistInputRoot` from `@proto.ui/prototypes-brutalist/input` or the package root. The CLI key is `brutalist-input`. This is workspace draft source, not a claim that a published npm version includes it.
+
+This is an unofficial, bounded projection. Upstream arbitrary input types, file controls, caller className/DOM prop forwarding, placeholder color and forced-color outline parity remain open. It does not add form submission, validation or a second editor. Real four-runtime browser evidence, operating-system IME, Compiler and native-target acceptance remain separate and pending; source and simulated-DOM tests are not visual acceptance.
