@@ -363,11 +363,35 @@ for (const family of FAMILIES) {
   describe.sequential(`${family} Collapsible public browser evidence`, () => {
     for (const runtime of RUNTIMES) {
       it(`${runtime} preserves disclosure ownership through native input and view lifetimes`, async () => {
+        const caseStartedAt = performance.now();
+        // Node-only diagnostic. "done" records callback progress, not Vitest
+        // acceptance: timed-out async work can settle after the next case starts.
+        const tailStage = (stage: string, phase: 'start' | 'done') => {
+          if (family !== 'liquid-glass') return;
+          const nodeNow = performance.now();
+          console.error(
+            '[collapsible-tail-stage]',
+            JSON.stringify({
+              family,
+              runtime,
+              caseStartedAt,
+              stage,
+              phase,
+              nodeNow,
+              nodeTimeOrigin: performance.timeOrigin,
+              elapsedMs: nodeNow - caseStartedAt,
+            })
+          );
+        };
+        tailStage('case-body', 'start');
+        tailStage('open-route', 'start');
         const { context, page, previewer } = await openRoute(browser, baseUrl, ROUTE, {
           width: 1280,
           height: 900,
         });
+        tailStage('open-route', 'done');
         try {
+          tailStage('native-journey', 'start');
           await trackInput(previewer);
           await selectCollapsibleRuntime(page, previewer, family, runtime);
           const uncontrolled = disclosure(previewer, 'uncontrolled');
@@ -461,20 +485,10 @@ for (const family of FAMILIES) {
           await focused(accept);
           await expanded(button, false);
           await expanded(trigger(retained), false);
+          tailStage('native-journey', 'done');
+          tailStage('controlled-capture', 'start');
           await capture(previewer, `${family}-${runtime}-controlled-accepted`);
-
-          const tailStage = (stage: string, phase: 'start' | 'done') => {
-            if (family === 'liquid-glass' && runtime === 'vue')
-              console.error(
-                '[collapsible-vue-tail-stage]',
-                JSON.stringify({
-                  stage,
-                  phase,
-                  nodeNow: performance.now(),
-                  nodeTimeOrigin: performance.timeOrigin,
-                })
-              );
-          };
+          tailStage('controlled-capture', 'done');
 
           // Changing the actual renderer terminally removes the old host views.
           // Host IDs may be reused by new owners; disconnection, not ID spelling,
@@ -490,32 +504,17 @@ for (const family of FAMILIES) {
           const oldConnections = await page.evaluate(collectCollapsibleViewConnections, oldViews);
           expect(oldConnections).toEqual(oldViews.map(() => false));
           tailStage('old-view-disconnection', 'done');
-          tailStage('final-expanded', 'start');
+          tailStage('final-expanded-uncontrolled', 'start');
           await expanded(trigger(disclosure(previewer, 'uncontrolled')), false);
+          tailStage('final-expanded-uncontrolled', 'done');
+          tailStage('final-expanded-controlled', 'start');
           await expanded(trigger(disclosure(previewer, 'controlled')), false);
-          tailStage('final-expanded', 'done');
+          tailStage('final-expanded-controlled', 'done');
+          tailStage('case-body', 'done');
         } finally {
-          if (family === 'liquid-glass' && runtime === 'vue')
-            console.error(
-              '[collapsible-vue-tail-stage]',
-              JSON.stringify({
-                stage: 'context-close',
-                phase: 'start',
-                nodeNow: performance.now(),
-                nodeTimeOrigin: performance.timeOrigin,
-              })
-            );
+          tailStage('context-close', 'start');
           await context.close();
-          if (family === 'liquid-glass' && runtime === 'vue')
-            console.error(
-              '[collapsible-vue-tail-stage]',
-              JSON.stringify({
-                stage: 'context-close',
-                phase: 'done',
-                nodeNow: performance.now(),
-                nodeTimeOrigin: performance.timeOrigin,
-              })
-            );
+          tailStage('context-close', 'done');
         }
       }, 60_000);
     }
