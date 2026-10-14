@@ -5,6 +5,10 @@ status: draft
 since: 0.2.0-rc.0
 summary: Covers Shadcn Toggle's reversible Base inheritance, current absence of Base-behavior reversals, direct entry, visual API, state-driven styles, intentional asChild omission, and centralized upstream compatibility boundary.
 cases:
+  - id: T-SHADCN-TOGGLE-0001-CASE-NEW-YORK-RECIPE
+    title: Pinned New York dimensions and state palettes in light and dark
+    covers: [P-SHADCN-TOGGLE-NEW-YORK-RECIPE]
+    expectation: exact-pinned-size-variant-state-recipe-with-native-evidence-separate
   - id: T-SHADCN-TOGGLE-0001-CASE-CONTENT-SELECTION
     title: Action subject suppresses accidental label selection while activation is retained
     covers: [P-SHADCN-TOGGLE-CONTENT-SELECTION]
@@ -35,6 +39,24 @@ cases:
       - P-SHADCN-TOGGLE-AS-CHILD-OMISSION
     expectation: shadcn-toggle-does-not-overclaim-upstream-parity
 implementations:
+  - id: prototypes-shadcn-toggle-new-york
+    kind: module-test
+    status: passing
+    path: packages/prototypes/shadcn/test/toggle-new-york.test.ts
+    required: true
+    consumesCases: [T-SHADCN-TOGGLE-0001-CASE-NEW-YORK-RECIPE]
+    exercises: [P-SHADCN-TOGGLE, P-BASE-TOGGLE]
+    notes:
+      - Fixed upstream recipe is independently asserted; baseline fails and candidate passes. Runtime tokens and physical CSS declarations are not native pixel evidence. The public browser fixture is pending hosted execution and does not expand this passing claim.
+  - id: website-shadcn-toggle-new-york-native
+    kind: adapter-test
+    status: planned
+    path: apps/www/src/content/docs/zh-cn/finf-shadcn-toggle.browser.test.ts
+    required: true
+    consumesCases: [T-SHADCN-TOGGLE-0001-CASE-NEW-YORK-RECIPE]
+    exercises: [P-SHADCN-TOGGLE, P-BASE-TOGGLE]
+    notes:
+      - Official exact-head representative-feature workflow owns four runtime cases with two themes each. Actual dimensions, normalized native colors, outline, active, and disabled facts plus source-bound PNG/JSON remain unexecuted until hosted verification. Unit passing does not fulfill this native implementation.
   - id: prototypes-shadcn-toggle-contract
     kind: module-test
     status: passing
@@ -53,6 +75,7 @@ verifies:
   prototypes:
     - id: P-SHADCN-TOGGLE
       anchors:
+        - P-SHADCN-TOGGLE-NEW-YORK-RECIPE
         - P-SHADCN-TOGGLE-CONTENT-SELECTION
         - P-SHADCN-TOGGLE-UPSTREAM-IDENTITY
         - P-SHADCN-TOGGLE-BASE-INHERITANCE
@@ -67,7 +90,7 @@ exercises:
 revisions:
   - version: 0.3.0-alpha.1
     change: revised
-    summary: Added the action-subject content-selection criterion and executable projection coverage.
+    summary: Added fixed New York recipe assertions and public native evidence fixture while retaining action-subject selection and inherited Toggle behavior coverage.
   - version: 0.2.0-rc.0
     change: introduced
     summary: Added delta-style Shadcn Toggle coverage for reversible Base inheritance, current visual API, inherited state-driven styles, intentional asChild omission, and centralized upstream compatibility differences.

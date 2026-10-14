@@ -6,11 +6,11 @@ since: 0.2.0-rc.0
 summary: Shadcn Toggle is an unofficial Proto UI-maintained projection that inherits Base Toggle by default and adds the currently implemented shadcn-style variant, size, and state-driven visual surface without duplicating Base semantics.
 statement:
   zh-CN: >-
-    Shadcn Toggle 是在 `P-BASE-TOGGLE` 之上提供 shadcn/ui Toggle 外观与 API 投射的 direct prototype。当前协议保留 Base Toggle 的 persistent active state、activation、focus、disabled、a11y 与 `activeChange` outward signal，并新增两种 `variant`、三种 `size`，以及由 inherited Toggle state 驱动的 active、hover、focus 与 disabled 视觉反馈。兼容比较基线固定到 shadcn-ui/ui revision `f31ed81983653919dd4fe77aee4b4859f610f1dc` 的 v4 new-york Toggle；`asChild` 是明确不提供的 API，其他未对齐项统一记录为 compatibility differences。
+    Shadcn Toggle 是在 `P-BASE-TOGGLE` 之上提供 shadcn/ui Toggle 外观与 API 投射的 direct prototype。当前协议保留 Base Toggle 的 persistent active state、activation、focus、disabled、a11y 与 `activeChange` outward signal，并新增两种 `variant`、三种 `size`，以及由 inherited Toggle state 驱动的 active、hover、focus 与 disabled 视觉反馈。兼容比较基线固定到 shadcn-ui/ui revision `02cad61166c4c20edbc8a3f71bd720eed4c1f49b` 的 v4 new-york Toggle；`asChild` 是明确不提供的 API，其他未对齐项统一记录为 compatibility differences。
 
 
   en: >-
-    Shadcn Toggle is a direct prototype that projects the shadcn/ui Toggle appearance and API over `P-BASE-TOGGLE`. The current protocol retains Base Toggle persistent active state, activation, focus, disabled, accessibility, and the `activeChange` outward signal while adding two `variant` values, three `size` values, and active, hover, focus, and disabled visual feedback driven by inherited Toggle state. Its compatibility baseline is the v4 new-york Toggle at shadcn-ui/ui revision `f31ed81983653919dd4fe77aee4b4859f610f1dc`; `asChild` is explicitly unavailable, and every other divergence is tracked as a compatibility difference.
+    Shadcn Toggle is a direct prototype that projects the shadcn/ui Toggle appearance and API over `P-BASE-TOGGLE`. The current protocol retains Base Toggle persistent active state, activation, focus, disabled, accessibility, and the `activeChange` outward signal while adding two `variant` values, three `size` values, and active, hover, focus, and disabled visual feedback driven by inherited Toggle state. Its compatibility baseline is the v4 new-york Toggle at shadcn-ui/ui revision `02cad61166c4c20edbc8a3f71bd720eed4c1f49b`; `asChild` is explicitly unavailable, and every other divergence is tracked as a compatibility difference.
 
 
 criteria:
@@ -78,6 +78,10 @@ criteria:
               P-BASE-TOGGLE-FOCUSABLE,
               P-BASE-TOGGLE-DISABLED-EXPOSE,
             ]
+  - id: P-SHADCN-TOGGLE-NEW-YORK-RECIPE
+    text:
+      zh-CN: 对照 New York 02cad611 Toggle，default/sm/lg 使用 h-9/min-w-9/px-2、h-8/min-w-8/px-1.5、h-10/min-w-10/px-2.5；共同使用 gap-2、rounded-md 与 color/box-shadow transition。outline 增加 border-input 与 shadow-xs；active 使用 accent/accent-foreground，非 active default hover 使用 muted/muted-foreground，非 active outline hover 使用 accent/accent-foreground。两主题使用同一语义 token 配方；disabled 保持 Base 禁用语义与 opacity-50。select-none 是已声明的 action-surface policy，不声称来自上游。
+      en: Against New York 02cad611 Toggle, default/sm/lg use h-9/min-w-9/px-2, h-8/min-w-8/px-1.5, and h-10/min-w-10/px-2.5, with gap-2, rounded-md and color/box-shadow transitions. Outline adds border-input and shadow-xs. Active uses accent/accent-foreground; inactive default hover uses muted/muted-foreground; inactive outline hover uses accent/accent-foreground. Both themes use the same semantic token recipe. Disabled preserves Base suppression and opacity-50. Select-none remains the declared action-surface policy rather than an upstream claim.
   - id: P-SHADCN-TOGGLE-COMPATIBILITY-SUBSET
     text:
       zh-CN: 当前实体只声明已测试的 inherited active/disabled behavior、variant、size 与 style behavior；对固定 upstream baseline 的所有差异必须集中维护在唯一 compatibility open question 中，并区分 intentional deviation 与尚未实现或待评审的 parity gap。
@@ -94,15 +98,17 @@ openQuestions:
       zh-CN: 相较固定的 shadcn/ui Toggle baseline，当前全部差异分别是有意偏离还是待实现 gap，以及待实现项应按什么顺序收敛？
       en: Against the pinned shadcn/ui Toggle baseline, which current differences are intentional deviations versus implementation gaps, and in what order should the implementation gaps converge?
     context:
-      zh-CN: 已确定的 intentional deviation 是不提供 `asChild`，且内容保留或元素投射不等价于 Radix Slot。当前待实现/待评审差异至少包括 upstream `pressed`、`defaultPressed` 与 `onPressedChange` 相对 Proto UI `active`、`defaultActive` 与 `activeChange` 的 API 映射，className 与 native button prop forwarding、`data-slot`、aria-invalid 与 dark styling、nested SVG handling，以及现有 size、gap、radius、transition、outline shadow、active/hover surface tokens 与 upstream 的精确差异。current passing guarantee 在这些项目实现并通过测试前不得扩大。
-      en: The decided intentional deviation is omission of `asChild`, and content preservation or element projection is not a Radix Slot equivalent. Current implementation or review gaps include at least mapping upstream `pressed`, `defaultPressed`, and `onPressedChange` to Proto UI `active`, `defaultActive`, and `activeChange`; className and native-button prop forwarding; `data-slot`; aria-invalid and dark styling; nested-SVG handling; and exact differences in current size, gap, radius, transition, outline shadow, and active or hover surface tokens. The current passing guarantee must not expand until an item is implemented and tested.
+      zh-CN: 已确定的 intentional deviation 是不提供 `asChild`，且内容保留或元素投射不等价于 Radix Slot。当前待实现/待评审差异至少包括 upstream `pressed`、`defaultPressed` 与 `onPressedChange` 相对 Proto UI `active`、`defaultActive` 与 `activeChange` 的 API 映射，className 与 native button prop forwarding、`data-slot`、aria-invalid 与 dark styling、nested SVG handling，以及已实现配方的四 runtime/双主题原生 cascade、像素与 packed/GPUI 验收。current passing guarantee 在这些项目实现并通过测试前不得扩大。
+      en: The decided intentional deviation is omission of `asChild`, and content preservation or element projection is not a Radix Slot equivalent. Current implementation or review gaps include at least mapping upstream `pressed`, `defaultPressed`, and `onPressedChange` to Proto UI `active`, `defaultActive`, and `activeChange`; className and native-button prop forwarding; `data-slot`; aria-invalid and dark styling; nested-SVG handling; and native four-runtime/two-theme cascade, pixel, packed and GPUI acceptance of the implemented recipe. The current passing guarantee must not expand until an item is implemented and tested.
     blocks: [shadcn toggle parity roadmap]
 sources:
   - path: internal/records/2026-07-18-external-prototype-library-governance.zh-CN.md
   - path: packages/prototypes/shadcn/src/toggle/toggle.proto.ts
   - path: packages/prototypes/shadcn/src/toggle/types.ts
   - path: packages/prototypes/shadcn/test/toggle.test.ts
-  - path: https://github.com/shadcn-ui/ui/blob/f31ed81983653919dd4fe77aee4b4859f610f1dc/apps/v4/registry/new-york-v4/ui/toggle.tsx
+  - path: packages/prototypes/shadcn/test/toggle-new-york.test.ts
+  - path: apps/www/src/content/docs/zh-cn/finf-shadcn-toggle.browser.test.ts
+  - path: https://github.com/shadcn-ui/ui/blob/02cad61166c4c20edbc8a3f71bd720eed4c1f49b/apps/v4/registry/new-york-v4/ui/toggle.tsx
     label: shadcn/ui v4 new-york Toggle pinned baseline
 dependsOn:
   contracts:
@@ -124,7 +130,7 @@ verifies: { tests: [T-SHADCN-TOGGLE-0001] }
 revisions:
   - version: 0.3.0-alpha.1
     change: revised
-    summary: Declared subject-local content-selection suppression without changing inherited activation or value ownership.
+    summary: Retained subject-local selection policy; pinned New York 02cad611 and declared bounded dimensions, variant and state paint recipe without changing inherited activation or value ownership.
   - version: 0.2.0-rc.0
     change: introduced
     summary: Introduced delta-style Shadcn Toggle cataloging with reversible Base inheritance, pinned upstream identity, current visual API guarantees, intentional asChild omission, and centralized compatibility differences.
