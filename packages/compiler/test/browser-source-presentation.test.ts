@@ -8,7 +8,6 @@ import { fileURLToPath } from 'node:url';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { createServer as createViteServer } from '../../../apps/workspace/node_modules/vite/dist/node/index.js';
 import { launchBrowser } from '../../../apps/www/src/content/docs/zh-cn/browser-harness';
-import { assertChildStyleProjection } from './source-presentation-projection';
 import type { Browser, Page } from '../../../apps/www/node_modules/playwright-core/types/types';
 
 type Target = 'reference' | 'runtime' | 'source' | 'source-duplicate-activation';
@@ -321,8 +320,7 @@ beforeAll(async () => {
           'finite source-presentation/presentation.css; no general Tailwind/preset coverage',
         projection: {
           feedback: 'Root[data-pui-style]',
-          templateAdapter: 'child[data-pui-style] + compatibility child.class',
-          templateSource: 'child[data-pui-style]',
+          template: 'ordinary child computed style and layout; host-private carriers are not the oracle',
         },
         observationUrls: ['reference', 'runtime', 'source', 'source-duplicate-activation'].map(
           (target) => `${baseUrl}/?target=${target}`
@@ -439,18 +437,6 @@ function assertOracle(
     axName: step.text ?? 'Presentation 0',
     axDisabled: ['disable', 'disabled-pointer', 'disabled-space', 'disabled-tab'].includes(step.id),
   });
-  assertChildStyleProjection(target, data);
-  const tokens = data.rootTokens as string[];
-  expect(tokens).not.toContain('bg-yellow-500');
-  expect(tokens).not.toContain('p-2');
-  const expectedColor =
-    step.color === purple ? 'bg-purple-500' : step.color === red ? 'bg-red-500' : 'bg-green-500';
-  expect(tokens.filter((token) => token.startsWith('bg-'))).toEqual([expectedColor]);
-  expect(tokens.filter((token) => token.startsWith('w-'))).toEqual(
-    step.id === 'suppress-width'
-      ? []
-      : [`w-${step.width === 288 ? 72 : step.width === 256 ? 64 : 56}`]
-  );
   if (
     [
       'withdraw-opacity-rule',
@@ -603,11 +589,9 @@ async function collect(target: Target, trace: Observation[], enforceOracle: bool
   }
 }
 
-// All paths require the PUI carrier; Adapter compatibility classes are checked
-// independently above and retained in raw observations, not semantic parity.
 function semantic(trace: Observation[]) {
   return trace.map(({ step, inputSources, data }) => {
-    const { childClassTokens: _classes, inputs: _inputs, ...observed } = data;
+    const { inputs: _inputs, ...observed } = data;
     return { step, inputSources, data: observed };
   });
 }

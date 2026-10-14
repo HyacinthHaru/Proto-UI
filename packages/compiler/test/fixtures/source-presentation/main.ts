@@ -140,17 +140,6 @@ render();
         held!.count === ref.current!.getExposes().count &&
         held!.setLater === ref.current!.getExposes().setLater,
       rootCount: host.querySelectorAll('[data-pui-root]').length,
-      rootTokens: node?.getAttribute('data-pui-style')?.split(/\s+/).filter(Boolean).sort() ?? [],
-      childTokens: (child?.getAttribute('data-pui-style') ?? '')
-        .split(/\s+/)
-        .filter(Boolean)
-        .sort(),
-      childClassTokens: (child?.className ?? '').split(/\s+/).filter(Boolean).sort(),
-      childProjection: child?.hasAttribute('data-pui-style')
-        ? 'data-pui-style'
-        : child?.className
-          ? 'class'
-          : null,
       text: node?.textContent ?? null,
       width: box?.width ?? null,
       height: box?.height ?? null,
