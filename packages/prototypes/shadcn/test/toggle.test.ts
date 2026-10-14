@@ -29,7 +29,10 @@ describe('prototypes/shadcn: toggle', () => {
     document.body.appendChild(root);
     await new Promise((resolve) => setTimeout(resolve, 0));
     try {
-      expect(styleContains(root, 'select-none')).toBe(true);
+      for (const token of ['select-none', 'gap-2', 'rounded-md', 'transition-[color,box-shadow]'])
+        expect(styleContains(root, token)).toBe(true);
+      expect(styleContains(root, 'rounded-lg')).toBe(false);
+      expect(styleContains(root, 'border')).toBe(false);
       expect(root.getAttribute('role')).toBe('button');
       expect(root.getAttribute('aria-pressed')).toBe('false');
       root.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, button: 0 }));
@@ -110,14 +113,14 @@ describe('prototypes/shadcn: toggle', () => {
     );
 
     let tokens = controller.getRuleStyleTokens();
-    expect(tokens).toContain('h-8');
+    expect(tokens).toContain('h-9');
     expect(tokens).toContain('bg-transparent');
-    expect(tokens).toContain('text-foreground');
+    expect(tokens).not.toContain('text-muted-foreground');
 
     rootTarget.dispatchEvent(new CustomEvent('press.commit'));
     tokens = controller.getRuleStyleTokens();
-    expect(tokens).toContain('bg-muted');
-    expect(tokens).toContain('text-foreground');
+    expect(tokens).toContain('bg-accent');
+    expect(tokens).toContain('text-accent-foreground');
     expect(tokens).not.toContain('bg-muted/60');
     expect(tokens).not.toContain('text-muted-foreground');
     expect(activeChanges).toEqual([{ active: true }]);
@@ -130,9 +133,9 @@ describe('prototypes/shadcn: toggle', () => {
     controller.applyRawProps(rawProps as any);
     tokens = controller.getRuleStyleTokens();
     expect(tokens).toContain('border-input');
-    expect(tokens).toContain('h-7');
+    expect(tokens).toContain('h-8');
     expect(tokens).toContain('opacity-50');
-    expect(tokens).not.toContain('bg-accent');
-    expect(tokens).not.toContain('text-accent-foreground');
+    expect(tokens).toContain('bg-accent');
+    expect(tokens).toContain('text-accent-foreground');
   });
 });

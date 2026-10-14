@@ -1,0 +1,47 @@
+id: T-LIQUID-GLASS-DROPDOWN-MATERIAL-0001
+type: test
+title: Liquid Dropdown Trigger shared material and public paint evidence
+status: draft
+since: 0.3.0-alpha.1
+lifecycleRationale: Intent tests do not establish actual optical paint. Exact-head four-Web theme captures and independent visual review remain pending; no native Apple or GPUI parity is claimed.
+summary: Separate real Runtime intent coverage from planned public-page rest, pressed, open and disabled screenshots.
+cases:
+  - id: T-LIQUID-GLASS-DROPDOWN-MATERIAL-0001-CASE-INTENT
+    title: One optical slot consumes existing command state and preserves fallback and lifetime
+    covers:
+      - P-LIQUID-GLASS-DROPDOWN-MENU-TRIGGER-MATERIAL-INTENT
+    expectation: One rounded style-derived slot, mutually exclusive rest/pressed candidates, disabled and cancel suppression, unchanged menu requests, missing visual host diagnosis and complete opaque style, and released/remounted view epochs.
+  - id: T-LIQUID-GLASS-DROPDOWN-MATERIAL-0001-CASE-PUBLIC-PAINT
+    title: Four public runtimes and two themes retain actual optical and disabled behavior
+    covers:
+      - P-LIQUID-GLASS-DROPDOWN-MENU-TRIGGER-MATERIAL-INTENT
+      - P-LIQUID-GLASS-DROPDOWN-MENU-TRIGGER-SEMANTICS-AND-PAINT
+    expectation: Real public runtime selection and pointer/keyboard input produce source-bound rest, pressed, open and authored-disabled screenshots. Rest and pressed require self-optical output; ordinary fallback is not optical completion. Public startup or material failures remain failures.
+implementations:
+  - id: liquid-dropdown-material-intent
+    kind: module-test
+    status: passing
+    path: packages/prototypes/liquid-glass/test/dropdown-material.test.ts
+    required: true
+    consumesCases: [T-LIQUID-GLASS-DROPDOWN-MATERIAL-0001-CASE-INTENT]
+    notes:
+      - Three isolated Runtime tests cover intent and semantics only; no browser or GPU paint inference.
+  - id: liquid-dropdown-public-material
+    kind: runtime-test
+    status: planned
+    path: apps/www/src/content/docs/zh-cn/finf-liquid-dropdown.browser.test.ts
+    required: true
+    consumesCases: [T-LIQUID-GLASS-DROPDOWN-MATERIAL-0001-CASE-PUBLIC-PAINT]
+    notes:
+      - Existing representative-feature workflow liquid-dropdown group owns eight exact-head cases. Local native execution is unavailable; screenshots must be collected by CI and independently reviewed before visual acceptance.
+exercises:
+  prototypes: [P-LIQUID-GLASS-DROPDOWN-MENU-TRIGGER]
+sources:
+  - path: packages/prototypes/liquid-glass/test/dropdown-material.test.ts
+  - path: apps/www/src/content/docs/zh-cn/finf-liquid-dropdown.browser.test.ts
+  - path: .github/workflows/finf-representative-features-evidence.yml
+revisions:
+  - version: 0.3.0-alpha.1
+    change: introduced
+    summary: Bounded intent tests and explicitly unexecuted four-Web optical evidence without changing lifecycle admission.
+tags: [test, liquid-glass, dropdown-menu, material, draft]

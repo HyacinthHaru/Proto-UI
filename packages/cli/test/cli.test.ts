@@ -176,6 +176,7 @@ describe('@proto.ui/cli', () => {
       'brutalist-dialog',
       'brutalist-dropdown',
       'brutalist-hover-card',
+      'brutalist-input',
       'brutalist-label',
       'brutalist-scroll-area',
       'brutalist-select',

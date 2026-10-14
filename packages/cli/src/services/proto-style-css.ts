@@ -1156,6 +1156,7 @@ function renderSpacingUtility(utility: string): string[] | null {
 }
 
 function renderColorUtility(utility: string): string[] | null {
+  if (utility === 'ring-black') return ['--pui-ring-color: #000000;', ...ringShadow()];
   if (utility === 'bg-black/50') return ['background-color: rgb(0 0 0 / 0.5);'];
   if (utility === 'bg-black/80') return ['background-color: rgb(0 0 0 / 0.8);'];
 
