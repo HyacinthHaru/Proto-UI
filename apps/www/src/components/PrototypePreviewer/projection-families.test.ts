@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import liquidDropdownDemo from '../../content/docs/demo-liquid-glass-dropdown-menu.demo';
 
 import {
   PROJECTION_FAMILY_MANIFESTS,
@@ -943,7 +944,17 @@ describe('partial new projection families', () => {
               'textarea',
               'separator',
             ]
-          : ['text', 'tabs', 'select', 'field', 'accordion', 'collapsible', 'label', 'button']
+          : [
+              'text',
+              'tabs',
+              'select',
+              'field',
+              'accordion',
+              'collapsible',
+              'dropdown-menu',
+              'label',
+              'button',
+            ]
       );
       expect(() => validateProjectionFamilyManifest(manifest)).not.toThrow();
       expect(resolveProjectionPart(family, 'button', 'root').prototypeId).toBe(`${family}-button`);
@@ -1040,4 +1051,40 @@ describe('Grouped Dropdown recipe admission', () => {
       });
     }
   }
+});
+
+describe('Liquid Dropdown public projection admission', () => {
+  it('selects the explicit Liquid family and accounts for every real demo prototype', () => {
+    expect(tryResolveProjectionRecipe('demo-liquid-glass-dropdown-menu')).toEqual({
+      projectionFamilyId: 'liquid-glass',
+      familyId: 'dropdown-menu',
+    });
+    const ids = new Set<string>();
+    const visit = (node: unknown): void => {
+      if (!node || typeof node !== 'object') return;
+      const entry = node as { kind?: string; prototypeId?: string; children?: unknown[] };
+      if (entry.kind === 'proto') ids.add(entry.prototypeId!);
+      entry.children?.forEach(visit);
+    };
+    visit(liquidDropdownDemo.root);
+    const family: ProjectionComponentFamilyManifest =
+      PROJECTION_FAMILY_MANIFESTS['liquid-glass'].families['dropdown-menu'];
+    expect([...ids].sort()).toEqual([...family.recipePrototypeIds].sort());
+    expect(Object.keys(family.parts).sort()).toEqual(
+      ['root', 'trigger', 'content', 'item', 'group', 'label', 'separator', 'shortcut'].sort()
+    );
+    expect(family.auxiliaryPrototypes ?? []).toEqual([]);
+    for (const part of Object.keys(family.parts)) {
+      expect(resolveProjectionPart('liquid-glass', 'dropdown-menu', part)).toEqual({
+        basePrototypeId:
+          part === 'root' ? 'P-BASE-DROPDOWN-MENU' : `P-BASE-DROPDOWN-MENU-${part.toUpperCase()}`,
+        prototypeId: `liquid-glass-dropdown-${part}`,
+      });
+      expect(() =>
+        validateProjectionFamilyManifest(
+          withoutPart(PROJECTION_FAMILY_MANIFESTS['liquid-glass'], 'dropdown-menu', part)
+        )
+      ).toThrow(new RegExp(part));
+    }
+  });
 });
