@@ -63,7 +63,7 @@ describe('prototypes/shadcn: dropdown-menu', () => {
     expect(styleContains(trigger, 'rounded-lg')).toBe(true);
     expect(trigger.querySelector('svg')).toBeNull();
     expect(content.hasAttribute('data-pui-view-detached')).toBe(true);
-    expect(styleContains(item, 'rounded-md')).toBe(true);
+    expect(styleContains(item, 'rounded-sm')).toBe(true);
     expect(styleContains(destructive, 'text-destructive')).toBe(true);
 
     trigger.click();
