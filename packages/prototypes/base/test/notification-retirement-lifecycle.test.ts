@@ -16,7 +16,7 @@ import {
   AS_TRIGGER_GET_PROTO_CAP,
 } from '@proto.ui/module-as-trigger';
 import { EXPOSES_RECORD_SINK_CAP } from '@proto.ui/module-expose-state';
-import { fieldRoot, fieldControl } from '../src/field';
+import { fieldRoot, fieldControl, FIELD_CONTEXT } from '../src/field';
 import {
   TEXT_CONTROL_HOST_CAP,
   TEXT_CONTROL_RUN_IN_CALLBACK_CAP,
@@ -509,6 +509,79 @@ for (const test of cases.filter((test) =>
       } finally {
         if (observer) await observer.session.dispose();
         await root.session.dispose();
+      }
+    }
+  );
+
+for (const boundary of ['State', 'Context'] as const)
+  it.each(['normal', 'dispose'] as const)(
+    `Field Root stops pending publication through ${boundary} after %s`,
+    async (operation) => {
+      const { make, actions } = runtimeHarness();
+      const root = make(fieldRoot, null, {
+          externalValidation: true,
+          validationMode: 'manual',
+        }),
+        control = make(fieldControl, root.target, { defaultValue: 'same' });
+      const parts = [root, control];
+      let armed = false,
+        observed = 0,
+        retirement: Promise<void> | undefined,
+        stop: (() => void) | undefined;
+      const retire = () => {
+        if (!armed || observed) return;
+        observed++;
+        if (operation === 'dispose') retirement = root.session.dispose();
+      };
+      if (boundary === 'Context')
+        parts.push(
+          make(
+            definePrototype({
+              name: 'field-pending-context-observer',
+              setup(def) {
+                def.context.subscribe(FIELD_CONTEXT, (_run, next) => {
+                  if (next.pending) retire();
+                });
+              },
+            }),
+            root.target
+          )
+        );
+      try {
+        for (const part of parts) await part.session.mount();
+        if (boundary === 'State')
+          stop = root.exposes.pending.subscribe((event: any) => {
+            if (event.type === 'next' && event.next === true) retire();
+          });
+        actions.length = 0;
+        armed = true;
+        let request: string | null = null;
+        expect(() =>
+          root.session.invokeInCallbackScope(() => {
+            request = root.exposes.validate();
+          })
+        ).not.toThrow();
+        await retirement;
+        expect(observed).toBe(1);
+        expect(typeof request).toBe('string');
+        expect(actions.filter((name) => name === 'validationRequest')).toHaveLength(
+          operation === 'normal' ? 1 : 0
+        );
+        if (operation === 'normal') {
+          expect(root.exposes.pending.get()).toBe(true);
+          let accepted = false;
+          root.session.invokeInCallbackScope(() => {
+            accepted = root.exposes.resolveValidation(request, { invalid: false });
+          });
+          expect(accepted).toBe(true);
+        } else {
+          expect(root.session.instancePhase).toBe('disposed');
+          expect(root.session.mountPhase).toBe('detached');
+        }
+      } finally {
+        stop?.();
+        await retirement;
+        for (const part of [...parts].reverse()) await part.session.dispose();
       }
     }
   );

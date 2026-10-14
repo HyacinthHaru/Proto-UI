@@ -25,6 +25,11 @@ cases:
     covers:
       - C-FIELD-0001-ASYNC
     expectation: Invalid whole reports, blocked input/change and compositionend still reporting composing true do not clear composition. A duplicate completed end does not retire a new explicit readOnly request. A newer composition started by the public end callback remains authoritative and blocks validation.
+  - id: T-FIELD-VALIDATION-INTERRUPTIONS-0001-CASE-PUBLICATION
+    title: Pending publication retains only the current request and owner
+    covers:
+      - C-FIELD-0001-ASYNC
+    expectation: Synchronous pending publication may cancel, reset, replace or terminally dispose the current request. The retired publication stops before further State writes or validationRequest emission. Normal requests and legal nested validation remain usable, and an already allocated request retains its return convention.
 verifies:
   contracts:
     - C-FIELD-0001
@@ -38,8 +43,19 @@ implementations:
       - T-FIELD-VALIDATION-INTERRUPTIONS-0001-CASE-END
       - T-FIELD-VALIDATION-INTERRUPTIONS-0001-CASE-DEFAULTS
       - T-FIELD-VALIDATION-INTERRUPTIONS-0001-CASE-ATOMIC
+      - T-FIELD-VALIDATION-INTERRUPTIONS-0001-CASE-PUBLICATION
     notes:
       - Twenty tests. The unchanged 63a8d424 baseline fails twelve intended assertions and passes eight real-policy negative controls. This is synthetic DOM evidence, not native IME execution.
+      - Four additional public Web Component controls exercise normal, cancel, reset and newer validation during pending State notification. Only the current request is emitted and its result remains usable.
+  - id: field-pending-publication-retirement
+    kind: runtime-test
+    status: passing
+    path: packages/prototypes/base/test/notification-retirement-lifecycle.test.ts
+    required: true
+    consumesCases:
+      - T-FIELD-VALIDATION-INTERRUPTIONS-0001-CASE-PUBLICATION
+    notes:
+      - Four actual RuntimeSession controls cover normal and terminal disposal during State or FIELD_CONTEXT notification, with a synthetic TextControl host. Callback-scope results are captured inside the callback; no native focus, label activation or assistive-technology acceptance is claimed.
 sources:
   - path: packages/prototypes/base/src/field/control-binding.proto.ts
   - path: packages/prototypes/base/src/field/root.proto.ts
@@ -47,6 +63,9 @@ revisions:
   - version: 0.3.0-alpha.1
     change: introduced
     summary: Reproduced and repaired two independent validation interruptions without changing the draft Field contract or its lifecycle.
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Added current-request publication and State/Context retirement controls without changing the draft Field contract or lifecycle.
 tags:
   - field
   - validation

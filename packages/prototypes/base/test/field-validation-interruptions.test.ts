@@ -295,3 +295,43 @@ describe('Default-only updates are not policy revisions', () => {
     expect(f.requests).toHaveLength(1);
   });
 });
+
+describe('Field pending request publication', () => {
+  it.each(['normal', 'cancel', 'reset', 'newer'] as const)(
+    'keeps only the current request through a pending %s callback',
+    async (operation) => {
+      const f = await mount();
+      let observed = 0,
+        newer: string | null = null;
+      const stop = f.api.pending.subscribe((event: any) => {
+        if (event.type !== 'next' || event.next !== true || observed) return;
+        observed++;
+        if (operation === 'cancel') f.api.cancelValidation();
+        else if (operation === 'reset') f.api.resetValidation();
+        else if (operation === 'newer') newer = f.api.validate();
+      });
+      try {
+        const request = f.api.validate();
+        expect(observed).toBe(1);
+        expect(typeof request).toBe('string');
+        if (operation === 'normal') {
+          expect(f.requests).toEqual([{ requestId: request, value: 'same', reason: 'manual' }]);
+          expect(f.api.pending.get()).toBe(true);
+          expect(f.api.resolveValidation(request, { invalid: false })).toBe(true);
+        } else if (operation === 'newer') {
+          expect(typeof newer).toBe('string');
+          expect(newer).not.toBe(request);
+          expect(f.requests).toEqual([{ requestId: newer, value: 'same', reason: 'manual' }]);
+          expect(f.api.resolveValidation(request, { invalid: false })).toBe(false);
+          expect(f.api.resolveValidation(newer, { invalid: false })).toBe(true);
+        } else {
+          expect(f.requests).toEqual([]);
+          expect(f.api.pending.get()).toBe(false);
+          expect(f.api.resolveValidation(request, { invalid: false })).toBe(false);
+        }
+      } finally {
+        stop();
+      }
+    }
+  );
+});
