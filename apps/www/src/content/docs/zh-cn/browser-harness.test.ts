@@ -11,7 +11,11 @@ import {
 
 describe('runtime evidence counts the original demonstrated slot', () => {
   afterEach(() => document.body.replaceChildren());
-  async function observed(runtime: 'wc' | 'react' | 'vue' | 'vue2') {
+  async function observed(
+    runtime: 'wc' | 'react' | 'vue' | 'vue2',
+    selector = '[data-pui-root]',
+    count = 2
+  ) {
     let result: boolean | undefined;
     const page = {
       locator: (selector: string) =>
@@ -28,7 +32,7 @@ describe('runtime evidence counts the original demonstrated slot', () => {
         result = predicate(args);
       },
     } as unknown as Page;
-    await waitForPreviewRuntime(page, runtime, '[data-pui-root]', 2);
+    await waitForPreviewRuntime(page, runtime, selector, count);
     return result;
   }
   function mount(runtime: 'wc' | 'react' | 'vue' | 'vue2') {
@@ -51,6 +55,31 @@ describe('runtime evidence counts the original demonstrated slot', () => {
         __vue__: {},
       });
   }
+  it.each(['wc', 'react', 'vue', 'vue2'] as const)(
+    'admits the committed %s generic Dropdown shell without an AdapterPanel',
+    async (runtime) => {
+      mount(runtime);
+      const root = document.querySelector<HTMLElement>('[data-previewer-id]')!;
+      delete root.dataset.projectionMode;
+      const surface = root.querySelector<HTMLElement>('.pui-runtime-preview-surface')!;
+      root.querySelector('.host')!.replaceChildren(surface);
+      const tabs = document.createElement('div');
+      tabs.dataset.runtimeTabsMount = '';
+      const label = { wc: 'Web Components', react: 'React', vue: 'Vue', vue2: 'Vue 2' }[runtime];
+      tabs.innerHTML = `<div data-runtime-tabs-root><button role="tab" data-runtime-tab="${runtime}" aria-selected="true">${label}</button></div>`;
+      root.prepend(tabs);
+      const triggers = [...surface.querySelectorAll<HTMLElement>('[data-pui-root]')];
+      for (const trigger of triggers) trigger.setAttribute('aria-haspopup', 'menu');
+      triggers[1]!.setAttribute('aria-disabled', 'true');
+      expect(root.closest('[data-adapter-panel]')).toBeNull();
+      expect(await observed(runtime, '[aria-haspopup="menu"]', 2)).toBe(true);
+      Object.assign(root, { __previewer__: { getCurrentRuntime: () => null } });
+      expect(await observed(runtime, '[aria-haspopup="menu"]', 2)).toBe(false);
+      Object.assign(root, { __previewer__: { getCurrentRuntime: () => runtime } });
+      triggers[1]!.removeAttribute('aria-haspopup');
+      expect(await observed(runtime, '[aria-haspopup="menu"]', 2)).toBe(false);
+    }
+  );
   it('does not admit a generic renderer until its public commit and passive shell both exist', async () => {
     mount('react');
     const root = document.querySelector<HTMLElement>('[data-previewer-id]')!;
@@ -780,4 +809,29 @@ describe('documentation server readiness diagnostics', () => {
     expect(cancel).toHaveBeenCalledOnce();
     expect(output).not.toHaveBeenCalled();
   });
+});
+
+// The Liquid Dropdown route uses a single generic preview, not AdapterPanel.
+it('keeps public Dropdown readiness on the actual committed preview shell', () => {
+  const source = readFileSync(
+    'apps/www/src/content/docs/zh-cn/demo-liquid-glass-portal.browser.test.ts',
+    'utf8'
+  );
+  for (const locale of ['en', 'zh-cn']) {
+    const route = readFileSync(
+      `apps/www/src/content/docs/${locale}/ui-libraries/liquid-glass/dropdown-menu.mdx`,
+      'utf8'
+    );
+    expect(route).toContain('demoId="demo-liquid-glass-dropdown-menu"');
+    expect(route).not.toContain('data-adapter-panel');
+  }
+  expect(source).not.toContain('data-adapter-panel');
+  expect(source).toContain(
+    `await waitForPreviewRuntime(page, runtime, '[aria-haspopup="menu"]', 2)`
+  );
+  expect(source).toContain(`preview.getByRole('button', { name: 'Open menu', exact: true })`);
+  expect(source).toContain(
+    `await choosePreviewRuntime(page, page.locator('.site-header-runtime').first(), runtime)`
+  );
+  expect(source).toContain(`.toBe('self-optical')`);
 });

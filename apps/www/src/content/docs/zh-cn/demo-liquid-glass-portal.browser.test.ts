@@ -11,6 +11,7 @@ import {
   stopServer,
   RUNTIMES,
   choosePreviewRuntime,
+  waitForPreviewRuntime,
 } from './browser-harness';
 const ROUTE = '/en/test/liquid-glass-portal/';
 const evidence = process.env.PROTO_UI_MATERIAL_EVIDENCE_DIR;
@@ -424,9 +425,10 @@ describe.sequential('real Liquid Dropdown Content in a bounded scene portal', ()
             });
             const preview = page.locator('[data-previewer-id]').first();
             await choosePreviewRuntime(page, page.locator('.site-header-runtime').first(), runtime);
-            const panel = page.locator(`[data-adapter-panel="${runtime}"]`);
-            await panel.waitFor({ state: 'visible' });
-            const trigger = panel.getByRole('button', { name: 'Open menu', exact: true });
+            // This public route owns one generic Previewer, not AdapterPanel.
+            // Require its actual committed runtime and both authored menu triggers.
+            await waitForPreviewRuntime(page, runtime, '[aria-haspopup="menu"]', 2);
+            const trigger = preview.getByRole('button', { name: 'Open menu', exact: true });
             await page.evaluate(() => {
               (window as any).publicPortalFirstFocus = null;
               document.addEventListener(
