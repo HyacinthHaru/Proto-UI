@@ -1,0 +1,75 @@
+{
+  "kind": "finf.followup-source-continuation",
+  "date": "2026-10-14",
+  "sourceBaseMain": "ce17c567b997ca1d74e7cfdbe3814beadbdcf335",
+  "sourceBaseTree": "ac4aebb24f3851c42b2b531f4545167b03bd938e",
+  "originalWipParent": "7f18c4e5a5fd4ab0a87675b7bccbd18082a398e1",
+  "preservedTrackedSourcePaths": [
+    "apps/www/scripts/contrast-anatomy.mjs",
+    "apps/www/scripts/contrast-anatomy.test.mjs",
+    "internal/contracts/as-hook/as-hook.v0.md",
+    "packages/compiler/test/react.test.ts",
+    "packages/core/src/prototype.ts",
+    "packages/prototypes/base/src/collapsible/types.ts",
+    "packages/runtime/src/kernel/as-hook.ts",
+    "packages/runtime/test/contract/as-hook.v0.contract.test.ts"
+  ],
+  "preservedNewSourceFiles": [
+    {
+      "path": "apps/www/scripts/fixtures/contrast-anatomy-f889-sources.json",
+      "sha256": "db3c11c5afcccb231f452358b9b7f7289d58aa948a75675399f9461d5b83e2d2"
+    },
+    {
+      "path": "packages/prototypes/base/test/collapsible-capture.types.ts",
+      "sha256": "bd1f294b44dfff815b1784f024e7add9def7ccd66967ad0b00609a7164b435f2"
+    }
+  ],
+  "changes": [
+    "Captured observed Focus facts retain get/watch without invented setDefault/set methods; author-writable states keep Borrowed capabilities.",
+    "Public caller types reflect nested useOpenState capture and observed Focus facts without flattening or escalation.",
+    "Historical f889 anatomy replay imports the exact SHA-256-bound authored plans rather than current edited demos; native observations remain unchanged.",
+    "Existing generic compiler admission tests cover entry/hook setup and helper-context tags without changing Compiler/IR implementation."
+  ],
+  "red": {
+    "observedCapture": "actual consumer regression failed because setDefault was a function"
+  },
+  "checks": {
+    "runtimeAsHook": 22,
+    "compilerReact": 8,
+    "collapsible": 24,
+    "immutableAnatomyModels": 101,
+    "allFocusedTestsPassed": true,
+    "actualRuntimeConsumer": {
+      "observedFactsReadOnly": true,
+      "borrowedWritableDefaultTrue": true,
+      "nativeFocusOrPaintClaimed": false
+    },
+    "workspaceTypes": "passed after running the normal style-source generator prerequisite",
+    "docsTypes": {
+      "files": 876,
+      "errors": 0,
+      "warnings": 0,
+      "hints": 11
+    },
+    "fullSuiteOrFreshNativeMatrix": "not claimed; all earlier failures, cancelled tests and evidence debt remain"
+  },
+  "sourceDebt": {
+    "path": "internal/records/2026-10-14-finf-followup-source-debt.json",
+    "sourceRecords": 997,
+    "allSixLiteralCommentPartsRequired": true
+  },
+  "definitionLifecycle": "All relevant capability/capture entities remain draft. Specific no-escalation direction is implemented; generic projection wording consistency remains explicit review debt, not silent stable admission.",
+  "compilerIrImplementationModified": false,
+  "temporarySmokeSourceRemoved": true,
+  "agent": "dot",
+  "modelTrace": "not measured — owner-authorized dot exemption (2026-10-06)",
+  "roleDeclaration": "Not authenticated model identity, permission, independent approval or acceptance.",
+  "completeIntegratedSourceAccounting": {
+    "actualMain": "ce17c567b997ca1d74e7cfdbe3814beadbdcf335",
+    "trackedPaths": 11049,
+    "unaccountedSourceLosses": 0,
+    "latest872SourcePaths": 19,
+    "allOriginalSevenSourceStagesPreserved": true,
+    "byteProofIsNotRuntimeAcceptance": true
+  }
+}

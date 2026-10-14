@@ -99,10 +99,16 @@ export default definePrototype({name:'caller',setup(){asPart();}});`;
       'part.proto.ts': `import {defineAsHook} from '@proto.ui/core';
 export const asPart = defineAsHook({name:'as-part',setup(){}});`,
     };
-    for (const target of ['entry', 'hook']) {
+    for (const [target, context] of [
+      ['entry', 'setup'],
+      ['hook', 'setup'],
+      ['entry', 'helper'],
+      ['hook', 'helper'],
+    ] as const) {
       const parsed = parsePrototype(source, { files });
       if (!parsed.ok) throw new Error(JSON.stringify(parsed.diagnostics));
       const setup = target === 'entry' ? parsed.value.setup : parsed.value.hooks[0].setup;
+      setup.context = context;
       setup.returnType = 'null';
       setup.body.push({
         kind: 'return',

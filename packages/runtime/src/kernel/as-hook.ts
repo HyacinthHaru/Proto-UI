@@ -179,6 +179,7 @@ function createBorrowedHandle<P extends PropsBaseType, V>(
 
 function projectStateValue<P extends PropsBaseType>(port: StatePort, value: any): any {
   if (isStateHandleLike(value)) {
+    if (typeof value.set !== 'function' || typeof value.setDefault !== 'function') return value;
     return createBorrowedHandle<P, any>(port, value);
   }
   if (Array.isArray(value)) {

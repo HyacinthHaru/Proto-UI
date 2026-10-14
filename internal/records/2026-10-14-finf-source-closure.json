@@ -81,32 +81,120 @@
   },
   "deferredCriteria": {
     "fullSourceAndHistoricalRecords": 1042,
-    "conservativeUncheckedSourceRecords": 955,
+    "conservativeUncheckedSourceRecords": 997,
     "originalHigRows": 158,
     "allOriginalSourceBodiesAndCompoundConditionsRetained": true,
     "allFourPreparedAdditiveCarrierPartsMustPublish": true,
     "sourceRecordCountIsNotBugCount": true,
-    "ordinaryApprovalAndTechnicalCiNotClaimedPassed": true
+    "ordinaryApprovalAndTechnicalCiNotClaimedPassed": true,
+    "original955AndAdditional26AndFinal16Retained": true,
+    "allSixCompleteAdditiveCarrierPartsMustPublish": true
   },
   "skillPolicyDecision": "A real explicit current-user connected-operation branch preserves actor/platform/DCO/source/head/readback safeguards without pretending the ordinary independent-review path passed. The existing independent-review path remains available.",
   "integrationReceipts": [
     {
       "number": 872,
-      "head": "991cc33ac38421dfba2a4a800a886ec275bc4c71",
-      "merge": "9c5bc249495c69be1d1c27f43bdd791cf41e87e8",
-      "url": "https://github.com/Proto-UI/Proto-UI/pull/872"
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/872",
+      "sourceHead": "991cc33ac38421dfba2a4a800a886ec275bc4c71",
+      "mergeCommit": "9c5bc249495c69be1d1c27f43bdd791cf41e87e8",
+      "merged": true,
+      "nativeDco": {
+        "app": 1861,
+        "id": 115693913319,
+        "conclusion": "success"
+      },
+      "independentApprovalOrCompleteFeatureAcceptanceNotClaimed": true
+    },
+    {
+      "number": 884,
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/884",
+      "sourceHead": "1e8df39f9524af063a139b8e08d07fa092b5c72a",
+      "mergeCommit": "a247ae2c9fa6b8a54467fe6072048d4692f57e1c",
+      "merged": true,
+      "nativeDco": {
+        "app": 1861,
+        "id": 115708661470,
+        "conclusion": "success"
+      },
+      "independentApprovalOrCompleteFeatureAcceptanceNotClaimed": true
+    },
+    {
+      "number": 886,
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/886",
+      "sourceHead": "9d64fb08d82e12550285eb8681c9aa182b8f7522",
+      "mergeCommit": "9f360300ff25e69793d6f029470a759bda1298b0",
+      "merged": true,
+      "nativeDco": {
+        "app": 1861,
+        "id": 115716035220,
+        "conclusion": "success"
+      },
+      "independentApprovalOrCompleteFeatureAcceptanceNotClaimed": true
+    },
+    {
+      "number": 885,
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/885",
+      "sourceHead": "63fc86e5105038d194eb2b5ac1a59c3f717bd5f5",
+      "mergeCommit": "955fa64bf5eb7ab26c25f4b2c0958721d6b507d8",
+      "merged": true,
+      "nativeDco": {
+        "app": 1861,
+        "id": 115716036536,
+        "conclusion": "success"
+      },
+      "independentApprovalOrCompleteFeatureAcceptanceNotClaimed": true
     },
     {
       "number": 879,
-      "head": "a24eb91d2609252d5419ad58dd64d8cdb4ea6422",
-      "merge": "14df5b5e30ab8f1cc720030ade7269a26d3a5158",
-      "url": "https://github.com/Proto-UI/Proto-UI/pull/879"
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/879",
+      "sourceHead": "a24eb91d2609252d5419ad58dd64d8cdb4ea6422",
+      "mergeCommit": "14df5b5e30ab8f1cc720030ade7269a26d3a5158",
+      "merged": true,
+      "nativeDco": {
+        "app": 1861,
+        "id": 113897006840,
+        "conclusion": "success"
+      },
+      "independentApprovalOrCompleteFeatureAcceptanceNotClaimed": true
     },
     {
       "number": 869,
-      "head": "5242ea83793050035ecebd9c3e23761600d3dd15",
-      "merge": "3eb8adcd69c3cb1eed85279650ea4b468dca31be",
-      "url": "https://github.com/Proto-UI/Proto-UI/pull/869"
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/869",
+      "sourceHead": "5242ea83793050035ecebd9c3e23761600d3dd15",
+      "mergeCommit": "3eb8adcd69c3cb1eed85279650ea4b468dca31be",
+      "merged": true,
+      "nativeDco": {
+        "app": 1861,
+        "id": 115593620844,
+        "conclusion": "success"
+      },
+      "independentApprovalOrCompleteFeatureAcceptanceNotClaimed": true
+    },
+    {
+      "number": 846,
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/846",
+      "sourceHead": "9bc86756da7cb0655949649b54af4161d1f56716",
+      "mergeCommit": "ce17c567b997ca1d74e7cfdbe3814beadbdcf335",
+      "merged": true,
+      "nativeDco": {
+        "app": 1861,
+        "id": 115716034995,
+        "conclusion": "success"
+      },
+      "independentApprovalOrCompleteFeatureAcceptanceNotClaimed": true
+    },
+    {
+      "number": 878,
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/878",
+      "sourceHead": "152fe45aadafbc4db362597ea55082c7e0109386",
+      "mergeCommit": "3e266baf201736d7f3ef19f1384db8e78ddb5c95",
+      "merged": true,
+      "nativeDco": {
+        "app": 1861,
+        "id": 115716041366,
+        "conclusion": "success"
+      },
+      "independentApprovalOrCompleteFeatureAcceptanceNotClaimed": true
     }
   ],
   "followupPullRequestUrl": null,
@@ -123,5 +211,6 @@
       "preservedSourcePaths": 38,
       "originalAuthorCertificationNotChanged": true
     }
-  ]
+  ],
+  "actualIntegratedMain": "ce17c567b997ca1d74e7cfdbe3814beadbdcf335"
 }

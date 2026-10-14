@@ -10,8 +10,6 @@ import { asFocusable } from '@proto.ui/hooks';
 
 /**
  * Runtime Contract (v0): asHook
- *
- * Skeleton only. Implementation pending.
  */
 describe('runtime contract: asHook (v0)', () => {
   const resolvedStateKeyNames = (stateHandles: unknown): string[] =>
@@ -609,6 +607,37 @@ describe('runtime contract: asHook (v0)', () => {
       mode: 'once',
     });
     expect(typeof (result?.asHooks?.[0]?.result as any)?.focused?.watch).toBe('function');
+  });
+
+  it('keeps introduced Focus facts observed when synthesizing an authored caller result', async () => {
+    let result: any;
+    const asObservedFocus = defineAsHook({
+      name: 'asObservedFocus',
+      setup(def) {
+        const focus = asFocusable();
+        def.expose.state('focused', focus.focused);
+        def.expose.state('focusVisible', focus.focusVisible);
+      },
+    });
+    const P = definePrototype({
+      name: 'x-as-hook-observed-focus',
+      setup() {
+        result = asObservedFocus();
+      },
+    });
+    const { host } = createHost(P.name);
+    const runtime = executeWithHost(P, host);
+    try {
+      for (const name of ['focused', 'focusVisible']) {
+        const observed = result.getState(name);
+        expect(observed.get()).toBe(false);
+        expect(typeof observed.watch).toBe('function');
+        expect(observed.setDefault).toBeUndefined();
+        expect(observed.set).toBeUndefined();
+      }
+    } finally {
+      await runtime.session.dispose();
+    }
   });
 
   it('AS-HOOK-0550: setup return must follow prototype contract (render function or void)', () => {
