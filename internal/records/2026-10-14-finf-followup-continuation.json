@@ -71,5 +71,350 @@
     "latest872SourcePaths": 19,
     "allOriginalSevenSourceStagesPreserved": true,
     "byteProofIsNotRuntimeAcceptance": true
-  }
+  },
+  "actualFollowupUrl": "https://github.com/Proto-UI/Proto-UI/pull/887",
+  "actualTestedSourceHead": "7ee28b4732970e9df21c409ac19569d16a73c9c3",
+  "completePublicSourceCarriers": [
+    {
+      "part": 1,
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/887#issuecomment-6164193320",
+      "sourceRecords": 289
+    },
+    {
+      "part": 2,
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/887#issuecomment-6164197088",
+      "sourceRecords": 248
+    },
+    {
+      "part": 3,
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/887#issuecomment-6164201032",
+      "sourceRecords": 252
+    },
+    {
+      "part": 4,
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/887#issuecomment-6164204577",
+      "sourceRecords": 166
+    },
+    {
+      "part": 5,
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/887#issuecomment-6164208236",
+      "sourceRecords": 26
+    },
+    {
+      "part": 6,
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/887#issuecomment-6164211613",
+      "sourceRecords": 16
+    }
+  ],
+  "openCriterionOwnerReferences": [
+    {
+      "number": 377,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/377",
+      "criterion": "Historical routing entry remains open; current matrix navigation moves to #870/followup while the exact old body snapshot and owners remain retained."
+    },
+    {
+      "number": 420,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/420",
+      "criterion": "Every eligible website surface reaches its actual PUI owner/evidence outcome; reader/source/bundle/import boundaries, native/SSR exemptions and original matrix IDs remain intact."
+    },
+    {
+      "number": 495,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/495",
+      "criterion": "Resolve bounded drag-to-value, sibling geometry and interruptible value motion ownership from evidence; not automatic all-deferred-policy implementation."
+    },
+    {
+      "number": 496,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/496",
+      "criterion": "Select item-aligned positioning design/adoption boundaries and evidence, distinct from viewport positioning or appearance."
+    },
+    {
+      "number": 498,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/498",
+      "criterion": "Switch constrained drag policy: single activation, controlled truth/refusal, Move substrate, cancel/threshold and unchanged keyboard/A11y ownership."
+    },
+    {
+      "number": 513,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/513",
+      "criterion": "Complete all eligible Harness matrix rows and user journeys, generic ownership, streaming/session/lifetime/IME/accessibility/responsive and consumer enforcement; no ready/research/blocked row at program closure."
+    },
+    {
+      "number": 514,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/514",
+      "criterion": "Single63-row Harness inventory, exemptions/re-review triggers, actual primary host/consumer allowlist/baselines and complete child index. Matrix-source presence is not a runnable Harness."
+    },
+    {
+      "number": 515,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/515",
+      "criterion": "First actual fixed three-region all-PUI Harness journey: sessions/transcript/send/stream/stop/tool/approval/retry/artifact, independently governed private compositions and full lifecycle/A11y/responsive evidence."
+    },
+    {
+      "number": 518,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/518",
+      "criterion": "Composer anatomy/submit-cancel/IME keyboard table, Textarea/Button ownership, App/service facts, announcement and actual WC/React/Vue/remount evidence."
+    },
+    {
+      "number": 520,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/520",
+      "criterion": "Portable visual anchor identity, capture/update/layout/apply ordering, active-user precedence, removal/degraded/stale/target cleanup and actual prepend/reflow evidence."
+    },
+    {
+      "number": 521,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/521",
+      "criterion": "Logical Collection versus bounded physical window identity, geometry lease, range/focus/selection/A11y/degradation, ordering with end-follow/anchor and real host evidence."
+    },
+    {
+      "number": 522,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/522",
+      "criterion": "Bounded two-pane normalized controlled/uncontrolled adjustment, one handle, #495 dependency, keyboard/A11y/geometry/Move ownership and replacement/resize/cleanup evidence; new N-pane scope is separate."
+    },
+    {
+      "number": 523,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/523",
+      "criterion": "Real hierarchy/relationship identities, Collection/Focus/selection/A11y split, dynamic/RTL/controlled/lifetime and real AT evidence; windowing is separately bounded."
+    },
+    {
+      "number": 524,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/524",
+      "criterion": "App-local Tool Invocation/Approval with App-owned truth, explicit exactly-once data requests, no render/remount effects, composed generic owners and functional/lifetime/A11y evidence."
+    },
+    {
+      "number": 525,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/525",
+      "criterion": "App-local Reasoning/Run/AgentLane presentation, public activity only, truthful progress, bounded announcement, stable streaming/focus and explicit action/ownership evidence."
+    },
+    {
+      "number": 526,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/526",
+      "criterion": "Authored Questionnaire fields/actions, sole existing control owners, App validation/submission, IME/announcement/focus and two reusable App-owned cases; not arbitrary schema/Form backend."
+    },
+    {
+      "number": 527,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/527",
+      "criterion": "Secure picker-first File Intake with data descriptors/opaque resource leases, result/lifetime table, user activation/privacy and host evidence; upload/storage remains App-owned."
+    },
+    {
+      "number": 528,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/528",
+      "criterion": "Bounded Attachment composition/slots/actions, App resource/status truth, File Intake/Image dependencies, reuse and responsive/A11y/lifetime evidence without upload ownership."
+    },
+    {
+      "number": 529,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/529",
+      "criterion": "App-local Artifact Workspace/static Diff composition using actual PUI owners, App-computed immutable diff truth, exactly-once actions and functional/A11y/lifetime matrix."
+    },
+    {
+      "number": 530,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/530",
+      "criterion": "Research-only Terminal versus engine/PTY/App/Proto/HC/chrome boundary, input/IME/A11y/resize/performance/lifetime, smallest slice or defer and matrix/re-review projection."
+    },
+    {
+      "number": 532,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/532",
+      "criterion": "Research-only preview trust/use classes, App/sandbox/Proto/HC/chrome, focus/A11y/navigation/message/security/lifetime and honest defer/exemption/next proposal; no executable-content admission from this batch."
+    },
+    {
+      "number": 533,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/533",
+      "criterion": "Harness third-party UI/import/generic-state-machine/matrix/bundle/side-effect enforcement against #514's reviewed host/allowlist with real positive/negative evidence."
+    },
+    {
+      "number": 558,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/558",
+      "criterion": "App-local branch/checkpoint UI with VCS/services outside Proto, authored confirmation/exactly-once actions, stale/focus/A11y/lifetime and matrix proof."
+    },
+    {
+      "number": 559,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/559",
+      "criterion": "Native anchor semantics/SSR/no-JS/context-menu/modifier/history stay browser-owned while real PUI passive visual owners and source-bound focus/hover/current/layout evidence satisfy the website rows."
+    },
+    {
+      "number": 561,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/561",
+      "criterion": "Inherited ExpressiveCode copy/feedback and overflow-region focus remain user-facing obligations, not Shiki exemption; keyboard/clipboard failures/timers/remount/resize/A11y and actual evidence."
+    },
+    {
+      "number": 621,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/621",
+      "criterion": "Original Table opaque A11y/topology/cardinality/span/header-key/isolation/churn and all4 bounded Web/reader/catalog evidence with independent acceptance. Source on main is not whole lifecycle or new DataTable completion."
+    },
+    {
+      "number": 640,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/640",
+      "criterion": "Demand-backed prioritization of at most one Overlay ownership policy or explicit defer, with Focus/Boundary/Trigger/Presence/A11y tracing; no blanket deferred-policy adoption."
+    },
+    {
+      "number": 732,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/732",
+      "criterion": "Definition-bound restricted source→checkedIR→target and independent Adapter/generated contracts, real input/paint/AX differential and deterministic diagnostics/consumer ownership/evidence matrix; no business-policy embedding."
+    },
+    {
+      "number": 733,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/733",
+      "criterion": "Actual native/generated mixed-tree consumer with same-input internal and host effects across updates/detach/rebind/disposal; real identity/context/lifetime and honest target/helper limits."
+    },
+    {
+      "number": 745,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/745",
+      "criterion": "Project the accepted #531 editor recommendation into exact harness.future.editor-chrome/editor-engine rows and re-review triggers, link #513/#514 without reopening or rewriting the original research."
+    },
+    {
+      "number": 746,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/746",
+      "criterion": "Harness transcript follow-tail composition over completed generic Scroll: following/paused/resumed, user precedence/explicit jump, real React host and row/index evidence."
+    },
+    {
+      "number": 792,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/792",
+      "criterion": "Genuine Base-inheriting Bootstrap2.3.2/Liquid families, full actual parts/tokens/standalone4-Web/consumer material fallback and separate Compiler/GPUI/Flutter/Qt evidence; no partial-family alias/N-A waiver."
+    },
+    {
+      "number": 793,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/793",
+      "criterion": "Governed preference and host material support vocabulary/unknown/fallback/replacement/lease cleanup, actual reduced-transparency/contrast/motion/forced-colors4-Web plus separate native/generated evidence."
+    },
+    {
+      "number": 799,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/799",
+      "criterion": "Both new families' specified8 state/text-control parts with Base-owned values/editor/IME, standalone4-Web states/focus/theme/mobile and honest generated/native evidence; not whole material effect completion."
+    },
+    {
+      "number": 828,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/828",
+      "criterion": "Actual canonical compiler inside browser WASM Worker, shared AST/IR/emitters, bounded revision/queue/diagnostic/disposal and independent parity; keep142 in-scope admission failures and zero page migrations explicit. #817 wider editing/preview remains open."
+    },
+    {
+      "number": 853,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/853",
+      "criterion": "Actual rounded ScrollArea visible paint or truthful unsupported instrument profile, exact owner/fingerprints/PNG/input negatives and unexercised contrast journeys; geometry is not paint or WCAG approval."
+    },
+    {
+      "number": 860,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/860",
+      "criterion": "Contrast collector's cold Tooltip→warm sibling Group handoff with exact physical owners/IDREF/timing/content closure, native positive/negative and create-only source receipts; other semantic Tooltip tests do not certify collector coverage."
+    },
+    {
+      "number": 568,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/568",
+      "criterion": "Continuous actual4-runtime RuntimeBox/Demo Matrix remount/loading/fallback/stale/focus/responsive/A11y/input evidence and per-finding owner/source rows."
+    },
+    {
+      "number": 803,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/803",
+      "criterion": "Website-wide real PUI typography owners, native semantics/labels/selection/IDs/anchors, exact slogans/CTA, glyph—not stack—evidence, real4-runtime rollback/lifetime and font-scaled/light-dark/RTL visual acceptance."
+    },
+    {
+      "number": 784,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/784",
+      "criterion": "Current article revealed only inside actual nearest sidebar owner on load/route/history/mobile, no document scroll/focus theft, respect manual input, bounded settlement/cleanup and real source-bound geometry/images."
+    },
+    {
+      "number": 785,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/785",
+      "criterion": "Single real family code/preview/install/terminal surface/toolbar/Copy ownership, payload/clipboard/selection/no-JS/lifetime and exact 320/390/desktop locale/theme/runtime visual/input evidence; CodeExample tabs and specialized Copy debt remain explicit."
+    },
+    {
+      "number": 786,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/786",
+      "criterion": "Inventory all RuntimeBox/shell/loading/error/retry/code categories; one deliberate family display boundary, original demo/source/native semantics/transaction cleanup and all-category matched visual evidence."
+    },
+    {
+      "number": 842,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/842",
+      "criterion": "Existing #777 post-merge index: #815/#816 actual integration/base/evidence and remaining owner dispositions. Its historical explicit transfer prevents pretending #776 closure resolved every descendant."
+    },
+    {
+      "number": 843,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/843",
+      "criterion": "Separately requested real moving/resizing TOC in-view highlight with unique current-link truth, public family owner, input/history/reduced-motion and lifetime/performance evidence; static or state-only fixes do not fulfill it."
+    },
+    {
+      "number": 848,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/848",
+      "criterion": "Current Search original1s readiness source/causal repair and exact before/after evidence; reported1000→5000 metric change is not a repair; production1s guard distinct. #846 medians do not evaluate this acceptance."
+    },
+    {
+      "number": 856,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/856",
+      "criterion": "Reported full Select labels/cold initial styling/open-menu theme/control survival and real reusable Shadcn surface/material owners with source-bound baseline/candidate evidence; no page-local imitation."
+    },
+    {
+      "number": 852,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/852",
+      "criterion": "Independent audit journeys: native Dialog outside press/focus, Button Space and Enter exactly-once/default/disabled, HoverCard Trigger→Content bridge/leave, exact owners/source/negative evidence. Frame counts do not close them."
+    },
+    {
+      "number": 854,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/854",
+      "criterion": "Separate future Range contextual-fragment and CSSModules/ICSS provenance profiles, resolver/source/negative controls and independent admission; ordinary source gate is not arbitrary DOM/CSS closure."
+    },
+    {
+      "number": 834,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/834",
+      "criterion": "Current dynamic Shiki/serialized markup and icon-snapshot producer→consumer/lifetime provenance in exact website rows; opaque snapshots stay unverified, no exploit/general-string or broad-name exception inferred."
+    },
+    {
+      "number": 788,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/788",
+      "criterion": "Ordinary static Template tw carrier across4Web with class/resolver/root/slot/caller ownership and real generated-CSS evidence; historical prerequisite source implementation is not every dynamic topology/profile accepted."
+    },
+    {
+      "number": 637,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/637",
+      "criterion": "Complete semantic-accessor consumer/export/Runtime/package migration and approved Tooltip ownership/retirement, preserve Rule/expose evidence and breaking-change documentation. Exact Select9737c1a8 candidate alone does not close it."
+    },
+    {
+      "number": 638,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/638",
+      "criterion": "Accepted bounded Presence compatibility/removal decision and implementation matrix covering view/logical lifetimes, pending operations/failures/cleanup; no delete-from-consumer-search or automatic lifecycle promotion."
+    },
+    {
+      "number": 817,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/817",
+      "criterion": "Actual website-wide eligible canonical-proto→browserWASM→supported generated target→RuntimeBox→optional editing/diagnostics/security/lifetime chain. First Button/Worker slice is not website closure or GPUI-on-WASM."
+    },
+    {
+      "number": 584,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/584",
+      "criterion": "Compiler feasibility background only; preserve research versus later separately authorized implementation. References do not turn this older discussion into general compiler readiness or a Finf completion claim."
+    }
+  ],
+  "criterionOwnerActualLinks": [
+    {
+      "number": 861,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/861#issuecomment-6164279701"
+    },
+    {
+      "number": 870,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/870#issuecomment-6164283050"
+    },
+    {
+      "number": 469,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/469#issuecomment-6164286522"
+    },
+    {
+      "number": 687,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/687#issuecomment-6164291592"
+    },
+    {
+      "number": 883,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/883#issuecomment-6164294869"
+    },
+    {
+      "number": 388,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/388#issuecomment-6164300120"
+    },
+    {
+      "number": 864,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/864#issuecomment-6164305393"
+    },
+    {
+      "number": 865,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/865#issuecomment-6164310786"
+    },
+    {
+      "number": 612,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/612#issuecomment-6164314812"
+    }
+  ],
+  "actualCompilerUrlNotification": "delivered to the existing actual compiler pane with the real PR URL; no restart or input clearing"
 }

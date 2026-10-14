@@ -197,7 +197,7 @@
       "independentApprovalOrCompleteFeatureAcceptanceNotClaimed": true
     }
   ],
-  "followupPullRequestUrl": null,
+  "followupPullRequestUrl": "https://github.com/Proto-UI/Proto-UI/pull/887",
   "agent": "dot",
   "modelTrace": "not measured — owner-authorized dot exemption (2026-10-06)",
   "roleDeclaration": "This role declaration is not authenticated model identity, permission, independent review, or acceptance.",
@@ -212,5 +212,78 @@
       "originalAuthorCertificationNotChanged": true
     }
   ],
-  "actualIntegratedMain": "ce17c567b997ca1d74e7cfdbe3814beadbdcf335"
+  "actualIntegratedMain": "ce17c567b997ca1d74e7cfdbe3814beadbdcf335",
+  "completePublicCarrierUrls": [
+    {
+      "part": 1,
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/887#issuecomment-6164193320",
+      "sourceRecords": 289
+    },
+    {
+      "part": 2,
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/887#issuecomment-6164197088",
+      "sourceRecords": 248
+    },
+    {
+      "part": 3,
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/887#issuecomment-6164201032",
+      "sourceRecords": 252
+    },
+    {
+      "part": 4,
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/887#issuecomment-6164204577",
+      "sourceRecords": 166
+    },
+    {
+      "part": 5,
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/887#issuecomment-6164208236",
+      "sourceRecords": 26
+    },
+    {
+      "part": 6,
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/887#issuecomment-6164211613",
+      "sourceRecords": 16
+    }
+  ],
+  "criterionOwnerLinks": [
+    {
+      "number": 861,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/861#issuecomment-6164279701"
+    },
+    {
+      "number": 870,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/870#issuecomment-6164283050"
+    },
+    {
+      "number": 469,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/469#issuecomment-6164286522"
+    },
+    {
+      "number": 687,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/687#issuecomment-6164291592"
+    },
+    {
+      "number": 883,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/883#issuecomment-6164294869"
+    },
+    {
+      "number": 388,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/388#issuecomment-6164300120"
+    },
+    {
+      "number": 864,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/864#issuecomment-6164305393"
+    },
+    {
+      "number": 865,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/865#issuecomment-6164310786"
+    },
+    {
+      "number": 612,
+      "url": "https://github.com/Proto-UI/Proto-UI/issues/612#issuecomment-6164314812"
+    }
+  ],
+  "issue861CurrentTrackingRecovered": true,
+  "compilerActualFollowupUrlDelivered": true,
+  "requestedDeadTargetDisposition": "Exact identity absent from current complete owned tmux server/socket inventory; no unrelated pane removed."
 }
