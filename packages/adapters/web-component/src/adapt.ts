@@ -110,6 +110,7 @@ import {
 } from './shadow-split-effects';
 import { createPortalConcealBarrier } from './portal-conceal';
 import {
+  refreshWebComponentPortalProjection,
   abandonWebComponentPortalProjection,
   adoptWebComponentPortalProjections,
   isWebComponentPortaled,
@@ -1319,6 +1320,10 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
           this._pendingOwnedTokens = null;
           return;
         }
+        // Revoke material at the existing disconnect checkpoint. Removing a
+        // live destination is outside continuity guarantees; do not relocate a
+        // focused subtree or add a second close owner to recover it.
+        refreshWebComponentPortalProjection(this);
         if (this.isConnected) {
           this._pendingOwnedTokens = null;
           return;

@@ -13,18 +13,39 @@ criteria:
     text:
       en: A portal bridge projects a mounted Overlay target into a host-global location and revokes that projection on view detach or provider replacement. Renderer-owned targets use renderer projection primitives; the logical instance and ancestry remain intact.
       zh-CN: Portal bridge 将 mounted Overlay target 投射到宿主全局位置，并在 view detach 或 provider 替换时撤销。renderer-owned target 使用 renderer projection primitive；logical instance 与 ancestry 保持有效。
+  - id: HC-OVERLAY-PORTAL-0001-SCENE
+    text:
+      en: An optional host-only application scene registration may select its owned overlay mount instead of the ordinary document body destination. The scene contains both the author origin and a distinct destination in its composed tree. Resolve the nearest explicit scene from the author origin; an invalid nearest registration falls back to body rather than a different scene. The destination must be connected, same-document, outside the target subtree, and have no clipping or fixed-coordinate-changing composed ancestor. Actual computed styles establish these facts; a caller assertion is insufficient. No DOM target or selector enters a portable Prototype API.
+      zh-CN: 可选的宿主应用场景注册可选择其自有 overlay mount 替代默认 document body。场景的组合树同时包含作者来源与不同的目的节点；从作者来源解析最近显式场景，最近注册无效时回 body 而非跨到其他场景。目的节点必须连接、同 document、位于目标子树外，且组合祖先无裁剪或改变 fixed 坐标的样式；依据实际 computed style 而非调用者布尔声明。可移植原型 API 不接受 DOM target 或 selector。
+  - id: HC-OVERLAY-PORTAL-0001-BINDING
+    text:
+      en: Registry replacement and disposal are identity-bound leases. Each physical view epoch fixes its destination before focus admission. Relevant origin or registry changes during that epoch defer destination selection until close/detach and the next view; they suspend and release material immediately without moving the live host or inventing a projection commit. Unrelated scene changes do not suspend the view. The application must retain the destination node until that view releases; externally removing it does not promise focus or view continuity and follows existing detach handling without a second open-state owner. Superseded leases cannot restore, clear or publish over replacements. No polling or application reparent observer is added.
+      zh-CN: 注册替换与撤销使用身份绑定租约。每个物理 view epoch 在焦点准入前固定目的地；期间相关来源或登记变化将目的地选择延迟至关闭/分离后的下一 view，立即暂停并释放材质，不搬动 live host、不虚构投射 commit。无关场景变化不暂停该 view。应用必须保留目的节点直至 view 释放；外部移除目的节点不承诺焦点或 view 连续性，按既有分离处理且不增加 open-state owner。旧租约不得覆盖新租约，不增加轮询或应用搬节点 observer。
+  - id: HC-OVERLAY-PORTAL-0001-CONTAINER
+    text:
+      en: A renderer may project into an Adapter-owned stable container to preserve renderer ownership and child host identity within one live view epoch. The React realization uses exactly one display-contents container without role, tabindex, authored paint or transformed geometry. The Adapter moves and retires only its own container; React owns all rendered children. Default destination remains body but its previous direct-child DOM shape is not guaranteed. Nonportal shape is unchanged. Direct-child CSS or parentElement consumers require migration review; no native, accessibility or Shadow DOM equivalence is inferred from this structural policy.
+      zh-CN: Renderer 可投射到 Adapter 自有稳定容器，以在同一 live view epoch 内保持 renderer 所有权与子 host 身份；不承诺跨 epoch 的 DOM 身份。React实现使用恰一个display-contents容器，不含role、tabindex、自有绘制或变换几何。Adapter仅移动和退役自有容器，React拥有其渲染children。默认目的地仍body，但旧direct-child DOM形状不再保证；nonportal结构不变。依赖直接子选择器或parentElement的消费者需迁移审查，不能由此结构策略推断原生、无障碍或Shadow DOM等价性。
+  - id: HC-OVERLAY-PORTAL-0001-MATERIAL
+    text:
+      en: Destination selection is not optical admission. A suspended view cannot reacquire a material sink on later frames or provider changes; only a new physical view epoch resets suspension. A material consumer rebinds at the actual physical projection commit and can retry a previously missing provider only on a relevant binding or provider change. Every enhanced frame independently proves current visible source pixels, scope containment, complete paint coverage, no omitted foreground or own-output sampling, preferences and resource budgets. Unsupported sources retain the complete opaque fallback; body projection cannot invent background pixels.
+      zh-CN: 目的地选择不等于光学准入。暂停中的 view 不得因后续 frame 或 provider 变化重新获取材质 sink；只有下一物理 view epoch 的实际投射可解除暂停。材质消费者在真实物理投射 commit 后重绑定，仅在相关绑定或 provider 变化时重试此前缺失的 provider。每个增强帧独立证明当前可见源像素、scope 包含、完整 paint 覆盖、无遗漏前景或自身输出采样、偏好与资源预算。不支持的源保留完整 opaque fallback；body 投射不能虚构背景像素。
 relates:
   contracts:
     - C-AS-OVERLAY-0001
 verifies:
   tests:
     - T-OVERLAY-CATALOG-0001
+    - id: T-WEB-PORTAL-DESTINATION-0001
+      since: 0.3.0-alpha.1
 sources:
   - path: packages/modules/overlay/src/caps.ts
 revisions:
   - version: 0.3.0-alpha.0
     change: introduced
     summary: Cataloged the bounded Overlay host resource and cleanup responsibility.
+  - version: 0.3.0-alpha.1
+    change: updated
+    summary: Define bounded application-scene destinations and material-independent physical binding; native admission remains open.
 tags:
   - overlay
   - host-capability

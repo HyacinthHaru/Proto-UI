@@ -127,16 +127,42 @@ async function openDialog(page: Page): Promise<void> {
   );
 }
 
+// Portal targets are either direct body children or children of the one
+// adapter-owned React mount. Do not accept arbitrary nested wrappers.
+const BODY_PORTAL_HOST = 'body > [data-pui-root], body > [data-pui-portal-mount] > [data-pui-root]';
+
 async function closeDialog(page: Page): Promise<void> {
+  await page.evaluate(() => {
+    for (const mount of document.querySelectorAll('body > [data-pui-portal-mount]')) {
+      if (
+        !(mount instanceof HTMLElement) ||
+        mount.parentElement !== document.body ||
+        getComputedStyle(mount).display !== 'contents' ||
+        mount.hasAttribute('role') ||
+        mount.hasAttribute('tabindex') ||
+        mount.children.length !== 1 ||
+        !mount.firstElementChild?.hasAttribute('data-pui-root')
+      )
+        throw new Error('Invalid adapter-owned portal mount');
+    }
+  });
   await page
     .locator(
-      'body > [data-pui-root][role="dialog"][data-is-present] [data-pui-a11y-actions="activate"]'
+      BODY_PORTAL_HOST.split(', ')
+        .map((host) => `${host}[role="dialog"][data-is-present] [data-pui-a11y-actions="activate"]`)
+        .join(', ')
     )
     .first()
     .click();
   await page.waitForFunction(
-    () => document.querySelectorAll('body > [data-pui-root][data-is-present]').length === 0,
-    undefined,
+    (selector) =>
+      document.querySelectorAll(
+        selector
+          .split(', ')
+          .map((host) => `${host}[data-is-present]`)
+          .join(', ')
+      ).length === 0,
+    BODY_PORTAL_HOST,
     { timeout: 20_000 }
   );
 }

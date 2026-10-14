@@ -1,0 +1,276 @@
+---
+import DraftProjectionStyle from '../../../components/DraftProjectionStyle.astro';
+import { renderThemeCss } from '../../../../../../packages/prototypes/liquid-glass/src/theme';
+---
+
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Liquid Glass: real Dropdown portal source evidence</title>
+    <DraftProjectionStyle />
+    <style is:global data-material-theme set:html={renderThemeCss()}></style>
+    <script is:inline>
+      const params = new URLSearchParams(location.search);
+      document.documentElement.dataset.theme = params.get('theme') === 'dark' ? 'dark' : 'light';
+      document.documentElement.style.fontSize = params.get('font') === 'large' ? '24px' : '16px';
+    </script>
+  </head>
+  <body>
+    <main>
+      <h1>Dropdown on its visible application canvas</h1>
+      <p>
+        The official Liquid Glass Dropdown uses its normal Base semantics and selected Web Adapter.
+        Its renderer-owned portal stays inside this real canvas scene. Ordinary page content is
+        never captured. A source or input limitation retains the opaque fallback.
+      </p>
+      <div data-portal-fixture-host></div>
+      <button id="outside" type="button">Outside action</button>
+    </main>
+    <script>
+      import {
+        dropdownRoot,
+        dropdownTrigger,
+        dropdownContent,
+        dropdownItem,
+      } from '@proto.ui/prototypes-liquid-glass/dropdown';
+      import { inspectCanvasBackdrop } from '@proto.ui/adapter-base/web-material';
+      import { registerWebPortalDestination } from '@proto.ui/adapter-base';
+      import { createPreviewMaterialScene } from '../../../components/PrototypePreviewer/preview-material-scene';
+      import { registerPrototype } from '../../../components/PrototypePreviewer/registry';
+      import { renderDemo } from '../../../components/PrototypePreviewer/demo-renderer';
+      import type {
+        DemoRenderResult,
+        DemoSpec,
+      } from '../../../components/PrototypePreviewer/demo-types';
+      import type { RuntimeId } from '../../../components/PrototypePreviewer/runtimes/ids';
+      const prototypes = {
+        'liquid-glass-dropdown-root': dropdownRoot,
+        'liquid-glass-dropdown-trigger': dropdownTrigger,
+        'liquid-glass-dropdown-content': dropdownContent,
+        'liquid-glass-dropdown-item': dropdownItem,
+      };
+      for (const [name, prototype] of Object.entries(prototypes))
+        registerPrototype(name, prototype);
+      const requested = new URLSearchParams(location.search).get('runtime');
+      const runtime: RuntimeId = ['wc', 'react', 'vue', 'vue2'].includes(requested ?? '')
+        ? (requested as RuntimeId)
+        : 'wc';
+      const host = document.querySelector<HTMLElement>('[data-portal-fixture-host]')!;
+      host.dataset.runtime = runtime;
+      const scene = createPreviewMaterialScene(host);
+      scene.pause(true);
+      // The application fixture explicitly owns this registration generation so
+      // it can exercise the public registration/release lifetime. It never
+      // calls private projection notifications or reparents a renderer host.
+      let destinationRegistration: (() => void) | undefined = registerWebPortalDestination(
+        scene.scope,
+        scene.overlayMount
+      );
+      let record: DemoRenderResult | undefined;
+      let overlapping: HTMLElement | undefined;
+      const focusEntries: Array<Record<string, unknown>> = [];
+      let focusStart = 0,
+        blurCount = 0,
+        openChangeCount = 0,
+        closeCount = 0;
+      const menuFor = (event: FocusEvent) =>
+        event.target instanceof Element ? event.target.closest<HTMLElement>('[role="menu"]') : null;
+      const focused = (event: FocusEvent) => {
+        const menu = menuFor(event);
+        if (!menu) return;
+        const parent = menu.parentElement;
+        const destination = parent?.matches('[data-pui-portal-mount]')
+          ? parent.parentElement
+          : parent;
+        focusEntries.push({
+          targetRole: (event.target as Element).getAttribute('role'),
+          contentConnected: menu.isConnected,
+          scopeContains: scene.scope.contains(menu),
+          destinationOwns: scene.overlayMount.contains(menu),
+          physicalDestinationIsOverlay: destination === scene.overlayMount,
+          physicalDestinationIsBody: destination === document.body,
+        });
+      };
+      const blurred = (event: FocusEvent) => {
+        if (menuFor(event)) blurCount++;
+      };
+      document.addEventListener('focusin', focused, true);
+      document.addEventListener('blur', blurred, true);
+      const demo: DemoSpec = {
+        type: 'demo',
+        root: {
+          kind: 'proto',
+          prototypeId: 'liquid-glass-dropdown-root',
+          ref: 'menu',
+          children: [
+            {
+              kind: 'proto',
+              prototypeId: 'liquid-glass-dropdown-trigger',
+              ref: 'trigger',
+              children: ['Open account menu'],
+            },
+            {
+              kind: 'proto',
+              prototypeId: 'liquid-glass-dropdown-content',
+              ref: 'content',
+              props: { align: 'start' },
+              surfaceStyle: 'w-48',
+              children: ['Profile', 'Billing', 'Settings', 'Log out'].map((label) => ({
+                kind: 'proto',
+                prototypeId: 'liquid-glass-dropdown-item',
+                props: { value: label, textValue: label },
+                children: [label],
+              })),
+            },
+          ],
+        },
+        setup({ api }) {
+          api.setProps('menu', {
+            onOpenChange: (event: { open: boolean }) => {
+              openChangeCount++;
+              if (!event.open) closeCount++;
+            },
+          });
+        },
+      };
+      const content = () => document.querySelector<HTMLElement>('[data-demo-ref="content"]')!;
+      const canvas = scene.scope.querySelector('canvas')!;
+      const bounds = (element: Element) => {
+        const { x, y, width, height, left, top, right, bottom } = element.getBoundingClientRect();
+        return { x, y, width, height, left, top, right, bottom };
+      };
+      (window as any).liquidPortalFixture = {
+        beginFocusObservation() {
+          focusStart = focusEntries.length;
+        },
+        activity() {
+          const target = content();
+          return {
+            firstFocus: focusEntries[focusStart] ?? null,
+            blurCount,
+            openChangeCount,
+            closeCount,
+            scrollX,
+            scrollY,
+            contentScrollTop: target?.scrollTop ?? 0,
+            contentScrollLeft: target?.scrollLeft ?? 0,
+          };
+        },
+        geometry() {
+          const target = content();
+          const frame = scene.lease.current();
+          return {
+            runtime,
+            dpr: devicePixelRatio,
+            font: getComputedStyle(document.documentElement).fontSize,
+            content: bounds(target),
+            canvas: bounds(canvas),
+            // Official Dropdown Content declares no contact deformation: its
+            // full paintOutset is zero. Contact extents are separately covered
+            // by the shared scene/source unit tests and Button evidence suite.
+            paintOutset: 0,
+            source: frame
+              ? { width: frame.width, height: frame.height, revision: frame.revision }
+              : null,
+            admission: inspectCanvasBackdrop(target, frame, 0),
+            scopeContains: scene.scope.contains(target),
+            destinationOwns: scene.overlayMount.contains(target),
+            quality: target.dataset.materialQuality,
+            reason: target.dataset.materialReason,
+            sourceKind: target.dataset.materialSource,
+            image: target.style.backgroundImage,
+            foreground: getComputedStyle(target).color,
+            fallbackFill: getComputedStyle(target).backgroundColor,
+            backdropFilter: getComputedStyle(target).backdropFilter,
+            contentCount: document.querySelectorAll('[data-demo-ref="content"]').length,
+          };
+        },
+        source(value: boolean) {
+          scene.sourceAvailable(value);
+        },
+        undersize(value: boolean) {
+          canvas.style.height = value
+            ? `${content().getBoundingClientRect().bottom - canvas.getBoundingClientRect().top - 1}px`
+            : '100%';
+          scene.redraw();
+        },
+        overlap(value: boolean) {
+          overlapping?.remove();
+          overlapping = undefined;
+          if (value) {
+            const target = content().getBoundingClientRect();
+            const source = scene.scope.getBoundingClientRect();
+            overlapping = document.createElement('div');
+            Object.assign(overlapping.style, {
+              position: 'absolute',
+              left: `${target.left - source.left + 8}px`,
+              top: `${target.top - source.top + 8}px`,
+              width: '20px',
+              height: '20px',
+              background: 'red',
+              zIndex: '3',
+            });
+            scene.scope.append(overlapping);
+          }
+          scene.redraw();
+        },
+        destination(value: boolean) {
+          if (value) {
+            destinationRegistration = registerWebPortalDestination(scene.scope, scene.overlayMount);
+          } else {
+            destinationRegistration?.();
+            destinationRegistration = undefined;
+            // A live destination stays connected until its physical view is
+            // released. Revocation retires paint now; next open chooses anew.
+          }
+        },
+        async dispose() {
+          destinationRegistration?.();
+          destinationRegistration = undefined;
+          await record?.destroy();
+          document.removeEventListener('focusin', focused, true);
+          document.removeEventListener('blur', blurred, true);
+          scene.dispose();
+        },
+      };
+      void renderDemo({ runtime, demo, host: scene.mount })
+        .then((result) => {
+          record = result;
+          document.documentElement.dataset.portalReady = 'true';
+        })
+        .catch((error) => {
+          document.documentElement.dataset.portalError = String(error);
+          console.error(error);
+        });
+    </script>
+  </body>
+</html>
+<style is:global>
+  body {
+    margin: 0;
+    color: var(--pui-foreground);
+    background: var(--pui-background);
+    font-family: system-ui, sans-serif;
+  }
+  main {
+    margin: 32px;
+    max-width: 50rem;
+  }
+  h1 {
+    font-size: 1.5rem;
+  }
+  p {
+    line-height: 1.5;
+    max-width: 65ch;
+  }
+  [data-portal-fixture-host] {
+    width: 420px;
+    max-width: 100%;
+  }
+  #outside {
+    margin-top: 48px;
+  }
+</style>

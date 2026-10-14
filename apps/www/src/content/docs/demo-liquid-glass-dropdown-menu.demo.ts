@@ -2,7 +2,7 @@ export default {
   'type': 'demo',
   'root': {
     'kind': 'box',
-    'className': 'flex min-w-0 flex-wrap items-center gap-6 p-6',
+    'className': 'flex min-w-0 flex-wrap items-center gap-6',
     'children': [
       {
         'kind': 'proto',

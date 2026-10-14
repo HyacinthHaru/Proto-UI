@@ -1,3 +1,10 @@
+import {
+  getWebPortalDestinationGeneration,
+  resolveWebPortalDestinationBinding,
+  subscribeWebPortalDestinations,
+  notifyWebPortalProjection,
+  beginWebPortalMaterialEpoch,
+} from '@proto.ui/adapter-base';
 import type { WebResidentMotionOptions } from '@proto.ui/adapter-base';
 import {
   NATIVE_LINK_DECLARATION,
@@ -234,6 +241,86 @@ export function createVueAdapter(runtime: VueRuntime) {
       setup(props: any, ctx: any) {
         const rootRef = runtime.ref<HTMLElement | null>(null);
         const portalOriginRef = runtime.ref<HTMLElement | null>(null);
+        const portalDestination = runtime.shallowRef<HTMLElement | null>(null);
+        let portalEpoch: {
+          host: HTMLElement;
+          destination: HTMLElement;
+          registration: object | null;
+          material: ReturnType<typeof beginWebPortalMaterialEpoch>;
+        } | null = null;
+        let lastPortalProjection: { host: HTMLElement; parent: Node | null } | null = null;
+        const refreshPortalDestination = () => {
+          const host = rootRef.value;
+          if (!host || !shouldExist.value) {
+            const previous = portalEpoch;
+            portalEpoch = null;
+            portalDestination.value = null;
+            lastPortalProjection = null;
+            previous?.material.release();
+            return;
+          }
+          if (owner.session?.caps.getPort<OverlayPort>('overlay')?.getConfig().portal !== true)
+            return;
+          const registryRevision = getWebPortalDestinationGeneration();
+          const { destination: next, registration } = resolveWebPortalDestinationBinding(
+            portalOriginRef.value ?? host,
+            host
+          );
+          if (registryRevision !== getWebPortalDestinationGeneration() || rootRef.value !== host)
+            return;
+          if (portalEpoch?.host === host) {
+            if (portalEpoch.destination !== next || portalEpoch.registration !== registration)
+              portalEpoch.material.suspend();
+          } else {
+            const previous = portalEpoch;
+            portalEpoch = null;
+            previous?.material.release();
+            if (
+              rootRef.value !== host ||
+              !shouldExist.value ||
+              portalEpoch !== null ||
+              registryRevision !== getWebPortalDestinationGeneration()
+            )
+              return;
+            const material = beginWebPortalMaterialEpoch(host);
+            if (
+              rootRef.value !== host ||
+              !shouldExist.value ||
+              portalEpoch !== null ||
+              registryRevision !== getWebPortalDestinationGeneration()
+            ) {
+              material.release();
+              return;
+            }
+            portalEpoch = { host, destination: next, registration, material };
+            if (portalDestination.value !== next) portalDestination.value = next;
+          }
+          const committedEpoch = portalEpoch;
+          if (!committedEpoch || host.parentNode !== committedEpoch.destination) return;
+          committedEpoch.material.commitProjection();
+          if (
+            rootRef.value !== host ||
+            portalEpoch !== committedEpoch ||
+            host.parentNode !== committedEpoch.destination
+          )
+            return;
+          if (
+            lastPortalProjection?.host !== host ||
+            lastPortalProjection.parent !== host.parentNode
+          ) {
+            lastPortalProjection = { host, parent: host.parentNode };
+            notifyWebPortalProjection(host);
+          }
+        };
+        const offPortalDestination = subscribeWebPortalDestinations(refreshPortalDestination);
+        runtime.onBeforeUnmount(() => {
+          offPortalDestination();
+          const previous = portalEpoch;
+          portalEpoch = null;
+          previous?.material.release();
+        });
+        runtime.onMounted(refreshPortalDestination);
+        runtime.onUpdated?.(refreshPortalDestination);
         const renderChildren = runtime.shallowRef<any>(null);
         const commitVersion = runtime.ref(0);
         const hostTokens = runtime.shallowRef<string[]>([]);
@@ -261,9 +348,21 @@ export function createVueAdapter(runtime: VueRuntime) {
         let focusTargetRetryScheduled = false;
         let focusTargetRetryCount = 0;
         const focusIntentState: FocusIntentState = {};
+        const portalIsCommitted = () => {
+          if (
+            owner.session?.caps.getPort<OverlayPort>('overlay')?.getConfig().portal !== true ||
+            !runtime.Teleport
+          )
+            return true;
+          return (
+            !!portalEpoch &&
+            portalEpoch.host === rootRef.value &&
+            portalEpoch.host.parentNode === portalEpoch.destination
+          );
+        };
         const notifyFocusTargetReady = () => {
           const target = rootRef.value;
-          if (!viewReady || !target?.isConnected) return;
+          if (!portalIsCommitted() || !viewReady || !target?.isConnected) return;
           let failed = false;
           let firstError: unknown;
           for (const listener of Array.from(focusTargetReadyListeners)) {
@@ -481,6 +580,7 @@ export function createVueAdapter(runtime: VueRuntime) {
                 !viewDisposed &&
                 shouldExist.value &&
                 viewReady &&
+                portalIsCommitted() &&
                 eventGate.isEnabled() &&
                 rootRef.value === rootEl &&
                 rootEl.isConnected &&
@@ -593,7 +693,10 @@ export function createVueAdapter(runtime: VueRuntime) {
             // view, so readiness has to consult the subtree, not just this host.
             // Keep committed effects/blur/A11y independent of acquisition.
             isViewReady: () =>
-              viewReady && !viewDisposed && !rootRef.value?.closest(`[${PUI_VIEW_DETACHED_ATTR}]`),
+              viewReady &&
+              portalIsCommitted() &&
+              !viewDisposed &&
+              !rootRef.value?.closest(`[${PUI_VIEW_DETACHED_ATTR}]`),
             isEntryAcquisitionReady: (target) => {
               releaseRequestedTargetReady?.();
               releaseRequestedTargetReady = undefined;
@@ -789,7 +892,9 @@ export function createVueAdapter(runtime: VueRuntime) {
             rendered as any
           );
           if (present && overlayPort?.getConfig().portal === true && runtime.Teleport) {
-            const portal = runtime.h(runtime.Teleport, { to: 'body' }, [content]);
+            const portal = runtime.h(runtime.Teleport, { to: portalDestination.value ?? 'body' }, [
+              content,
+            ]);
             return runtime.Fragment
               ? runtime.h(runtime.Fragment, null, [
                   runtime.h('span', {

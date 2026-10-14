@@ -66,6 +66,14 @@ npm install @proto.ui/adapter-react@0.3.0-alpha.1
 - `@proto.ui/runtime`
 - `@proto.ui/types`
 
+## Portal destination compatibility (draft)
+
+Portal views use native React `createPortal` with a stable adapter-owned container. The default destination is still `document.body`; an eligible registered scene can supply another destination. Non-portal views retain their existing DOM structure.
+
+The portal host is now a child of one `div[data-pui-portal-mount]` container, rather than a direct child of the destination. The container has `display: contents`, no role or tabindex, and no painted box. React owns its children; only the adapter's container is placed once per physical view epoch. Open views defer destination changes until close/detach and the next view, immediately releasing material instead of moving a focused subtree. Disposal removes that container. The application must retain the destination until view release; external removal does not guarantee focus or view continuity.
+
+Consumers using selectors such as `body > [data-pui-root]` must account for this single wrapper. Descendant inheritance and selector matching can differ in a scene; applications must test their own direct-child CSS, direction, focus and dismissal. This contract does not promise native Shadow DOM event or style equivalence. A scene must satisfy the same-document, connected, cycle and clipping/transform guards; invalid destinations fall back to body rather than broadening material source scope.
+
 ## License
 
 MIT

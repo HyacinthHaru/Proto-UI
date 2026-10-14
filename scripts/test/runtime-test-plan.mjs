@@ -7,6 +7,7 @@ export const READY_ROUTES = Object.freeze([
   '/en/test/new-projection-families/',
   '/en/test/bootstrap-state-controls/',
   '/en/test/liquid-glass-material/',
+  '/en/test/liquid-glass-portal/',
   '/en/ui-libraries/base/image/',
   '/en/ui-libraries/base/collapsible/',
   '/en/ui-libraries/shadcn/collapsible/',
@@ -156,6 +157,7 @@ export const BROWSER_SUITES = Object.freeze([
   'apps/www/src/content/docs/zh-cn/demo-new-projection-families.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-bootstrap-state-controls.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-liquid-glass-material.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-liquid-glass-portal.browser.test.ts',
   'packages/adapters/web-component/test/shadow-closeout.browser.test.ts',
 ]);
 

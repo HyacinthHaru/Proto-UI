@@ -30,6 +30,9 @@ on:
       - 'pnpm-lock.yaml'
       - 'vitest.config.ts'
       - 'apps/www/src/pages/en/test/liquid-glass-material.astro'
+      - 'apps/www/src/content/docs/demo-liquid-glass-dropdown-menu.demo.ts'
+      - 'apps/www/src/content/docs/zh-cn/demo-liquid-glass-portal.browser.test.ts'
+      - 'apps/www/src/pages/en/test/liquid-glass-portal.astro'
       - 'apps/www/src/pages/en/test/liquid-glass-toggle.astro'
   workflow_dispatch:
 permissions:
@@ -76,6 +79,7 @@ jobs:
             packages/adapters/base/test/web-material-sink.test.ts \
             apps/www/src/content/docs/zh-cn/material-paint-observation.test.ts \
             apps/www/src/content/docs/zh-cn/demo-liquid-glass-material.browser.test.ts \
+            apps/www/src/content/docs/zh-cn/demo-liquid-glass-portal.browser.test.ts \
             apps/www/src/content/docs/zh-cn/demo-liquid-glass-toggle.browser.test.ts \
             --maxWorkers=1 --minWorkers=1
       - name: Retain exact-source evidence

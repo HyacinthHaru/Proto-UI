@@ -15,6 +15,7 @@ type HookInstance = {
   pendingEffects: Array<() => void>;
   hostEl: HTMLElement;
   rootEl: HTMLElement | null;
+  rootNodes: HTMLElement[];
   component: any;
   props: any;
   ref: any;
@@ -86,10 +87,19 @@ export function createFakeReactRuntime(
         children: flatChildren,
       };
     },
-    createPortal(children: any, container: Element) {
-      return options.createPortal?.(children, container) ?? children;
-    },
   };
+
+  // The default lightweight harness renders inline and must not advertise a
+  // portal capability it does not realize. Tests opt in explicitly, and that
+  // path now projects into the requested container rather than returning an
+  // inline child while the Adapter believes a portal has committed.
+  if (options.createPortal) {
+    runtime.createPortal = (children, container) => ({
+      __fakePortal: true,
+      children: options.createPortal!(children, container) ?? children,
+      container,
+    });
+  }
 
   if (options.context) {
     runtime.createContext = <T>(defaultValue: T) => {
@@ -117,6 +127,7 @@ export function createFakeReactRuntime(
       pendingEffects: [],
       hostEl,
       rootEl: null,
+      rootNodes: [],
       component: Component,
       props,
       ref,
@@ -239,8 +250,24 @@ function runInstance(inst: HookInstance) {
     const vnode = render(inst.props, inst.ref);
     CURRENT = null;
 
-    inst.rootEl = renderVNode(vnode, inst.rootEl);
-    syncHost(inst);
+    const previous = new Set(inst.rootNodes);
+    const placements = flattenRootVNodes(vnode).map(({ vnode: child, container }) => {
+      const refTarget = child.props?.ref?.current;
+      const existing = previous.has(refTarget)
+        ? refTarget
+        : ([...previous].find((node) => node.tagName.toLowerCase() === child.type) ?? null);
+      if (existing) previous.delete(existing);
+      return { node: renderVNode(child, existing)!, container: container ?? inst.hostEl };
+    });
+    for (const retired of previous) retired.remove();
+    inst.rootNodes = placements.map(({ node }) => node);
+    // The Adapter's physical host stays the observable root even when React
+    // returns an additional sibling origin marker through a root array.
+    inst.rootEl =
+      inst.rootNodes.find((node) => node.hasAttribute('data-pui-root')) ??
+      inst.rootNodes[0] ??
+      null;
+    syncHost(inst, placements);
 
     for (const effect of inst.pendingLayoutEffects) effect();
     for (const effect of inst.pendingEffects) effect();
@@ -249,14 +276,35 @@ function runInstance(inst: HookInstance) {
   } while (inst.dirty && loops < 20);
 }
 
-function syncHost(inst: HookInstance) {
-  if (
-    inst.rootEl?.parentNode === inst.hostEl &&
-    inst.hostEl.childNodes.length === 1
-  ) {
-    return;
+function flattenRootVNodes(
+  vnode: any,
+  container?: Element
+): Array<{ vnode: any; container?: Element }> {
+  if (vnode == null || vnode === false) return [];
+  if (Array.isArray(vnode)) return vnode.flatMap((child) => flattenRootVNodes(child, container));
+  if (vnode.__fakePortal) return flattenRootVNodes(vnode.children, vnode.container);
+  if (vnode.type?.__fakeContext) return flattenRootVNodes(vnode.children, container);
+  return [{ vnode, container }];
+}
+
+function syncHost(
+  inst: HookInstance,
+  placements: Array<{ node: HTMLElement; container: Element }>
+) {
+  const groups = new Map<Element, HTMLElement[]>([[inst.hostEl, []]]);
+  for (const { node, container } of placements) {
+    const nodes = groups.get(container) ?? [];
+    nodes.push(node);
+    groups.set(container, nodes);
   }
-  inst.hostEl.replaceChildren(...(inst.rootEl ? [inst.rootEl] : []));
+  for (const [container, nodes] of groups) {
+    if (
+      container.childNodes.length === nodes.length &&
+      nodes.every((node, index) => container.childNodes[index] === node)
+    )
+      continue;
+    container.replaceChildren(...nodes);
+  }
 }
 
 function appendHost() {
@@ -389,8 +437,9 @@ function renderChild(child: any): Node | null {
 }
 
 function depsEqual(a?: any[], b?: any[]) {
-  if (a === b) return true;
+  // Omitted dependencies run on every commit; only an explicit array is memoized.
   if (!a || !b) return false;
+  if (a === b) return true;
   if (a.length !== b.length) return false;
   for (let i = 0; i < a.length; i++) {
     if (!Object.is(a[i], b[i])) return false;
