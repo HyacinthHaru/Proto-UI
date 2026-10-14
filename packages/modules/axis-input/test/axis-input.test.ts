@@ -12,7 +12,7 @@ import type { AnatomyPort } from '@proto.ui/module-anatomy';
 import { createAxisInputModule } from '../src/create';
 import { AXIS_INPUT_HOST_CAP, AXIS_INPUT_RUN_IN_CALLBACK_CAP } from '../src/caps';
 
-function harness(withHost = true) {
+function harness(withHost = true, travelRole = false) {
   let phase: 'setup' | 'callback' = 'setup';
   const run = { update() {} } as RunHandle<Record<string, unknown>>;
   const sys = {
@@ -60,11 +60,20 @@ function harness(withHost = true) {
     roles: {
       root: { cardinality: { min: 1, max: 1 } },
       handle: { cardinality: { min: 1, max: '*' } },
+      indicator: { cardinality: { min: 0, max: '*' } },
     },
   });
   const root = { role: 'root' } as AnatomyPartView;
   const self = { role: 'handle' } as AnatomyPartView;
   const other = { role: 'handle' } as AnatomyPartView;
+  let selfPart = self;
+  let domain = {};
+  const indicator = { role: 'indicator' } as AnatomyPartView;
+  const duplicate = { role: 'indicator' } as AnatomyPartView;
+  let indicators: AnatomyPartView[] = [indicator];
+  let foreign = false;
+  const travelTarget = {};
+  const foreignRoot = {};
   let target: object | null = {};
   const geometry = {};
   const watchers = new Set<() => void>();
@@ -75,12 +84,23 @@ function harness(withHost = true) {
   const anatomy = {
     resolveSelfRole: () => 'handle',
     resolveSelfInstance: () => self,
-    resolvePartInstance: (part: AnatomyPartView) => part,
-    resolveAncestorInstance: () => root,
+    resolvePartInstance: (part: AnatomyPartView) => (part === selfPart ? self : part),
+    resolveDomainScope: () => domain,
+    isCurrentPart: (_family: unknown, part: AnatomyPartView) =>
+      [root, selfPart, other, ...indicators].includes(part),
+    resolveAncestorInstance: (_family: unknown, part: AnatomyPartView) =>
+      foreign && indicators.includes(part) ? foreignRoot : root,
     resolvePartTarget: (part: AnatomyPartView) =>
-      part === self ? target : part === root ? geometry : {},
+      part === selfPart
+        ? target
+        : part === root
+          ? geometry
+          : indicators.includes(part)
+            ? travelTarget
+            : {},
     order: {
-      partsOf: (_family: unknown, role: string) => (role === 'handle' ? [other, self] : [root]),
+      partsOf: (_family: unknown, role: string) =>
+        role === 'handle' ? [other, selfPart] : role === 'indicator' ? indicators : [root],
     },
     subscribeOrder: subscribe,
     subscribeTargets: subscribe,
@@ -98,7 +118,12 @@ function harness(withHost = true) {
     },
   });
   const input = module.facade.declare();
-  input.configure({ anatomy: family, inputRole: 'handle', geometryRole: 'root' });
+  input.configure({
+    anatomy: family,
+    inputRole: 'handle',
+    geometryRole: 'root',
+    ...(travelRole ? { travelRole: 'indicator' } : {}),
+  });
   const samples: AxisInputSample[] = [];
   input.on((_run, sample) => {
     expect(_run).toBe(run);
@@ -124,6 +149,23 @@ function harness(withHost = true) {
     watchers,
     target,
     geometry,
+    travelTarget,
+    notify: () => watchers.forEach((fn) => fn()),
+    reassociate: () => {
+      domain = {};
+    },
+    replaceSilently: () => {
+      target = {};
+    },
+    replaceClaim: () => {
+      selfPart = { role: 'handle' } as AnatomyPartView;
+    },
+    setTravelCount: (count: number) => {
+      indicators = count === 0 ? [] : count === 1 ? [indicator] : [indicator, duplicate];
+    },
+    setForeign: (value: boolean) => {
+      foreign = value;
+    },
   };
 }
 const sample = (phase: 'start' | 'move' | 'end'): AxisInputSample => ({
@@ -205,6 +247,7 @@ describe('axis-input module ownership', () => {
       readOnly: false,
       reverse: false,
       contactBasis: 'preserve-start',
+      activation: 'immediate',
     });
     h.records[0].binding.onSample(sample('start'));
     expect(h.samples).toEqual([]);
@@ -252,4 +295,95 @@ describe('contact basis policy configuration', () => {
       h.module.hooks.dispose?.();
     }
   );
+});
+
+// T-AXIS-INPUT-DIRECTIONAL-0001-CASE-COMPATIBILITY / TRAVEL / LIFETIME
+// Nonbrowser module evidence only: no claim about native scrolling or paint.
+describe('draft directional input ownership', () => {
+  it('defaults to immediate, retains partial policy and rejects invalid updates atomically', () => {
+    const h = harness();
+    h.mount();
+    expect(h.records[0].binding.config.activation).toBe('immediate');
+    h.callback(() => h.input.sync({ activation: 'directional' }));
+    const directional = h.records.at(-1)!;
+    h.callback(() => h.input.sync({ activation: undefined, reverse: true }));
+    expect(directional.binding.config.activation).toBe('directional');
+    const before = directional.binding;
+    h.callback(() => h.input.sync({ activation: 'directional' }));
+    expect(directional.binding).toBe(before);
+    for (const value of [null, '', 'unknown', 0]) {
+      expect(() => h.callback(() => h.input.sync({ activation: value as any }))).toThrow(
+        /activation/
+      );
+      expect(directional.binding).toBe(before);
+    }
+    h.callback(() => h.input.sync({ activation: 'immediate' }));
+    expect(h.records.at(-1)!.binding.config.activation).toBe('immediate');
+    h.module.hooks.dispose?.();
+  });
+  it.each([false, true])(
+    'invalidates same-target domain reassociation with travel=%s',
+    (travel) => {
+      const h = harness(true, travel);
+      h.callback(() => h.input.sync({ activation: 'directional' }));
+      h.mount();
+      const old = h.records[0];
+      old.binding.onSample(sample('start'));
+      h.reassociate();
+      // Notification can arrive after an already queued native sample.
+      old.binding.onSample(sample('end'));
+      expect(old.disposed).toBe(true);
+      expect(h.samples.map((s) => s.phase)).toEqual(['start', 'cancel']);
+      h.notify();
+      old.binding.onSample(sample('end'));
+      expect(h.records).toHaveLength(2);
+      expect(h.samples).toHaveLength(2);
+      h.module.hooks.dispose?.();
+    }
+  );
+  it('rejects a delayed end after same-claim target replacement before notification', () => {
+    const h = harness();
+    h.callback(() => h.input.sync({ activation: 'directional' }));
+    h.mount();
+    const old = h.records[0];
+    old.binding.onSample(sample('start'));
+    h.replaceSilently();
+    old.binding.onSample(sample('end'));
+    expect(old.disposed).toBe(true);
+    expect(h.samples.map((s) => s.phase)).toEqual(['start', 'cancel']);
+    h.module.hooks.dispose?.();
+  });
+  it('invalidates a replaced claim even when instance and host target are reused', () => {
+    const h = harness();
+    h.callback(() => h.input.sync({ activation: 'directional' }));
+    h.mount();
+    const old = h.records[0];
+    old.binding.onSample(sample('start'));
+    h.replaceClaim();
+    h.notify();
+    old.binding.onSample(sample('end'));
+    expect(old.disposed).toBe(true);
+    expect(h.samples.map((s) => s.phase)).toEqual(['start', 'cancel']);
+    h.module.hooks.dispose?.();
+  });
+  it('uses exactly one same-owner travel target and refuses missing, duplicate or foreign geometry', () => {
+    const h = harness(true, true);
+    h.mount();
+    expect(h.records[0].binding.travelTarget).toBe(h.travelTarget);
+    for (const count of [0, 2]) {
+      h.setTravelCount(count);
+      h.notify();
+      expect(h.records.at(-1)!.disposed).toBe(true);
+      const length = h.records.length;
+      h.notify();
+      expect(h.records).toHaveLength(length);
+      h.setTravelCount(1);
+      h.notify();
+      expect(h.records.at(-1)!.disposed).toBe(false);
+    }
+    h.setForeign(true);
+    h.notify();
+    expect(h.records.at(-1)!.disposed).toBe(true);
+    h.module.hooks.dispose?.();
+  });
 });

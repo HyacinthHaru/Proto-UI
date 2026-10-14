@@ -21,6 +21,7 @@ export type SliderContext = {
   max: number;
   step: number;
   percentage: number;
+  displayPercentage: number;
   disabled: boolean;
   controlDisabled: boolean;
   controlReadOnly: boolean;

@@ -39,12 +39,14 @@ function setup(def: DefHandle<SliderRootProps, SliderRootExposes>) {
   });
   const value = def.state.numberDiscrete('value', 0),
     percentageState = def.state.numberRange('percentage', 0, { min: 0, max: 100 }),
+    displayPercentage = def.state.numberRange('displayPercentage', 0, { min: 0, max: 100 }),
     disabled = def.state.bool('disabled', false),
     readOnly = def.state.bool('readOnly', false),
     dragging = def.state.bool('dragging', false),
     orientation = def.state.string('orientation', 'horizontal');
   def.expose.state('value', value);
   def.expose.state('percentage', percentageState);
+  def.expose.state('displayPercentage', displayPercentage);
   def.expose.state('disabled', disabled);
   def.expose.state('readOnly', readOnly);
   def.expose.state('dragging', dragging);
@@ -58,6 +60,7 @@ function setup(def: DefHandle<SliderRootProps, SliderRootExposes>) {
     max: 100,
     step: 1,
     percentage: 0,
+    displayPercentage: 0,
     disabled: false,
     readOnly: false,
     controlDisabled: false,
@@ -69,6 +72,14 @@ function setup(def: DefHandle<SliderRootProps, SliderRootExposes>) {
   });
   let run: RunHandle<SliderRootProps> | null = null,
     initial = 0;
+  // Synchronous state/context observers can cancel or replace an interaction
+  // without replacing the RunHandle. Retire their suspended continuations too.
+  let interactionEpoch = 0;
+  let previewRevision = 0;
+  let previewValue: number | null = null;
+  let previewBasis = '';
+  const basisKey = (p: SliderRootProps) =>
+    JSON.stringify([p.min, p.max, p.step, p.orientation, p.direction]);
   let interactionPhase: 'idle' | 'active' | 'commit' | 'cancel' = 'idle';
   const bounds = () => range(run?.props.get().min, run?.props.get().max);
   const normalize = (v: number) => {
@@ -78,28 +89,41 @@ function setup(def: DefHandle<SliderRootProps, SliderRootExposes>) {
   const publish = () => {
     if (!run) return false;
     const current = run;
+    const epoch = interactionEpoch;
+    const revision = previewRevision;
+    const isCurrent = () =>
+      run === current && interactionEpoch === epoch && previewRevision === revision;
     const p = run.props.get(),
       b = bounds();
     disabled.set(
       !!p.disabled || !!run.context.tryRead(FIELD_CONTEXT)?.disabled,
       'reason: slider policy'
     );
-    if (run !== current) return false;
+    if (!isCurrent()) return false;
     readOnly.set(
       !!p.readOnly || !!run.context.tryRead(FIELD_CONTEXT)?.readOnly,
       'reason: slider policy'
     );
-    if (run !== current) return false;
+    if (!isCurrent()) return false;
     orientation.set(p.orientation ?? 'horizontal', 'reason: slider orientation');
-    if (run !== current) return false;
+    if (!isCurrent()) return false;
     percentageState.set(percentage(value.get(), b.min, b.max), 'reason: slider ratio');
-    if (run !== current) return false;
+    if (!isCurrent()) return false;
+    displayPercentage.set(
+      dragging.get() && previewValue !== null
+        ? percentage(previewValue, b.min, b.max)
+        : percentageState.get(),
+      'reason: slider provisional display'
+    );
+    if (!isCurrent()) return false;
+    previewBasis = basisKey(p);
     run.context.update(SLIDER_CONTEXT, {
       value: value.get(),
       interactionPhase,
       ...b,
       step: finite(p.step, 1),
       percentage: percentageState.get(),
+      displayPercentage: displayPercentage.get(),
       disabled: disabled.get(),
       readOnly: readOnly.get(),
       controlDisabled: !!p.disabled,
@@ -109,14 +133,19 @@ function setup(def: DefHandle<SliderRootProps, SliderRootExposes>) {
       valueText: p.valueText || String(value.get()),
       label: p.ariaLabel ?? '',
     });
-    return run === current;
+    return isCurrent();
   };
   const cancel = () => {
     if (!dragging.get()) return;
-    dragging.set(false, 'reason: slider interaction canceled');
+    const current = run;
+    const epoch = ++interactionEpoch;
+    previewValue = null;
     interactionPhase = 'cancel';
+    dragging.set(false, 'reason: slider interaction canceled');
+    if (run !== current || interactionEpoch !== epoch) return;
     if (run && !run.props.isProvided('value')) {
       value.set(normalize(initial), 'reason: slider cancel restores start');
+      if (run !== current || interactionEpoch !== epoch) return;
       if (publish()) run.expose.emit('valueChange', { value: value.get() });
     } else publish();
   };
@@ -133,29 +162,46 @@ function setup(def: DefHandle<SliderRootProps, SliderRootExposes>) {
       run.anatomy.partsOf(SLIDER_FAMILY, 'thumb').length !== 1
     )
       return false;
+    const current = run;
+    const epoch = ++interactionEpoch;
     initial = value.get();
-    dragging.set(true, 'reason: slider interaction start');
+    previewValue = initial;
     interactionPhase = 'active';
+    dragging.set(true, 'reason: slider interaction start');
+    if (run !== current || interactionEpoch !== epoch) return false;
     return publish();
   });
   def.expose.method('requestValue', (next) => {
     if (!run || disabled.get() || readOnly.get() || !Number.isFinite(next)) return false;
     const current = run;
+    const epoch = interactionEpoch;
+    const revision = previewRevision;
+    const isCurrent = () =>
+      run === current && interactionEpoch === epoch && previewRevision === revision;
     next = normalize(next);
-    if (next === value.get()) return false;
+    if (dragging.get()) previewValue = next;
+    if (next === value.get()) {
+      if (dragging.get()) publish();
+      return false;
+    }
     if (!run.props.isProvided('value')) value.set(next, 'reason: slider accepted value');
-    if (run !== current || !publish()) return false;
+    if (!isCurrent() || !publish() || !isCurrent()) return false;
     run.expose.emit('valueChange', { value: next });
-    if (run !== current) return false;
+    // A synchronous owner acceptance changes truth/preview, but does not end
+    // this interaction or suppress the existing Field input report.
+    if (run !== current || interactionEpoch !== epoch) return false;
     const report = run?.anatomy.partsOf(SLIDER_FAMILY, 'thumb')[0]?.getExpose('__fieldInput');
     if (typeof report === 'function') report();
     return true;
   });
   def.expose.method('commitValue', () => {
     if (!run || disabled.get() || readOnly.get()) return;
-    dragging.set(false, 'reason: slider commit');
+    const current = run;
+    const epoch = ++interactionEpoch;
+    previewValue = null;
     interactionPhase = 'commit';
-    if (!publish()) return;
+    dragging.set(false, 'reason: slider commit');
+    if (run !== current || interactionEpoch !== epoch || !publish()) return;
     run.expose.emit('valueCommit', { value: value.get() });
   });
   def.expose.method('cancelInteraction', cancel);
@@ -166,12 +212,14 @@ function setup(def: DefHandle<SliderRootProps, SliderRootExposes>) {
   def.expose.method('resetValue', () => {
     if (!run) return false;
     const current = run;
+    const epoch = ++interactionEpoch;
     const next = normalize(initialValue);
     if (!run.props.isProvided('value')) value.set(next, 'reason: slider value reset');
-    if (run !== current) return false;
-    dragging.set(false, 'reason: slider reset cancels gesture');
+    if (run !== current || interactionEpoch !== epoch) return false;
+    previewValue = null;
     interactionPhase = 'cancel';
-    if (!publish()) return false;
+    dragging.set(false, 'reason: slider reset cancels gesture');
+    if (run !== current || interactionEpoch !== epoch || !publish()) return false;
     if (run.props.isProvided('value')) run.expose.emit('valueChange', { value: next });
     return true;
   });
@@ -194,10 +242,17 @@ function setup(def: DefHandle<SliderRootProps, SliderRootExposes>) {
   });
   def.props.watchAll((current) => {
     run = current;
+    const previousValue = value.get();
+    const changedBasis = basisKey(current.props.get()) !== previewBasis;
     if (current.props.isProvided('value'))
       value.set(normalize(finite(current.props.get().value, 0)), 'reason: slider controlled value');
     else value.set(normalize(value.get()), 'reason: slider new bounds');
     if (run !== current) return;
+    if (value.get() !== previousValue || changedBasis) {
+      previewRevision++;
+      if (changedBasis) interactionEpoch++;
+      previewValue = null;
+    }
     if (current.props.get().disabled || current.props.get().readOnly) cancel();
     publish();
   });
@@ -206,6 +261,7 @@ function setup(def: DefHandle<SliderRootProps, SliderRootExposes>) {
     run = null;
   });
   def.lifecycle.onBeforeDispose(() => {
+    interactionEpoch++;
     run = null;
   });
   return (r: RendererHandle<any>) => r.slot();

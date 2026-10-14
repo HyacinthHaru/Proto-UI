@@ -3,6 +3,10 @@ import { createAnatomyFamily, createContextKey } from '@proto.ui/core';
 export type SwitchContextValue = {
   checked: boolean;
   disabled: boolean;
+  percentage: number;
+  dragging: boolean;
+  draggable: boolean;
+  direction: 'ltr' | 'rtl';
 };
 
 // P-BASE-SWITCH-ANATOMY-FAMILY, P-BASE-SWITCH-FAMILY-ROLES

@@ -1,5 +1,10 @@
 // packages/adapters/base/src/events/web-event-router.ts
 import { createWebPointerContactWriter, type WebPointerContact } from './pointer-contact';
+import {
+  observeDirectionalPointerDown,
+  observeDirectionalPointerUp,
+  suppressDirectionalClick,
+} from '../gestures/web-move-click-arbitration';
 
 type Unsub = () => void;
 const PRESS_COMMIT_EMITTED_ROOTS = Symbol.for('@proto.ui/router/press-commit-emitted-roots');
@@ -421,6 +426,7 @@ export function createWebProtoEventRouter(opt: {
   // pointer -> pointer.*
   unsubs.push(
     listen(rootEl, 'pointerdown', (e) => {
+      observeDirectionalPointerDown(rootEl, e);
       if (!isEnabled()) return;
       // C-EVENT-0003-E: the root path uses the same owner boundary as its
       // global/portal fallback. A descendant owner's input is not our input.
@@ -437,12 +443,14 @@ export function createWebProtoEventRouter(opt: {
   );
   unsubs.push(
     listen(rootEl, 'pointerup', (e) => {
+      observeDirectionalPointerUp(rootEl, e);
       if (!isEnabled()) return;
       emitFromPhysicalRoot('pointer.up', e);
     })
   );
   unsubs.push(
     listen(rootEl, 'pointercancel', (e) => {
+      observeDirectionalPointerUp(rootEl, e);
       if (!isEnabled()) return;
       emitFromPhysicalRoot('pointer.cancel', e);
     })
@@ -480,6 +488,7 @@ export function createWebProtoEventRouter(opt: {
   // portal fallback: globally mounted nodes do not bubble pointer events to rootEl
   unsubs.push(
     listen(globalEl, 'pointerdown', (e) => {
+      observeDirectionalPointerDown(rootEl, e);
       if (!isEnabled()) {
         endContact('cancel');
         return;
@@ -508,6 +517,7 @@ export function createWebProtoEventRouter(opt: {
 
   unsubs.push(
     listen(globalEl, 'pointerup', (e) => {
+      observeDirectionalPointerUp(rootEl, e);
       if (!isEnabled()) {
         endContact('cancel');
         return;
@@ -520,6 +530,7 @@ export function createWebProtoEventRouter(opt: {
 
   unsubs.push(
     listen(globalEl, 'pointercancel', (e) => {
+      observeDirectionalPointerUp(rootEl, e);
       if (!isEnabled()) {
         endContact('cancel');
         return;
@@ -580,7 +591,7 @@ export function createWebProtoEventRouter(opt: {
       if (!isEnabled()) return;
       if (!isNativeMouseClick(e)) return;
       if (!shouldRouteToCurrentRoot(e)) return;
-      if (shouldSuppressFollowupClick(e)) return;
+      if (suppressDirectionalClick(rootEl, e) || shouldSuppressFollowupClick(e)) return;
       emitFromPhysicalRoot('press.commit', e);
     })
   );
@@ -590,7 +601,7 @@ export function createWebProtoEventRouter(opt: {
       if (!isEnabled()) return;
       if (!isNativeMouseClick(e)) return;
       if (!shouldRouteGlobalRootEvent(e, { includeActiveFallback: false })) return;
-      if (shouldSuppressFollowupClick(e)) return;
+      if (suppressDirectionalClick(rootEl, e) || shouldSuppressFollowupClick(e)) return;
       emit(protoRootBus, 'press.commit', e);
     })
   );

@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it } from 'vitest';
 import { AdaptToWebComponent, setElementProps } from '@proto.ui/adapter-web-component';
 import type { Prototype } from '@proto.ui/core';
 import type { A11ySemanticObjectSnapshot } from '@proto.ui/core';
@@ -339,5 +339,269 @@ describe('prototypes/base: switch', () => {
 
     exposes.focusSelf({ reason: 'programmatic' });
     expect(ctx.focusRequests).toHaveLength(1);
+  });
+});
+
+// T-AXIS-INPUT-DIRECTIONAL-0001-CASE-PREVIEW / CLICK / LIFETIME
+// Actual WC runtime + synthetic host geometry/input; not native layout evidence.
+describe('base Switch draft directional preview', () => {
+  afterEach(async () => {
+    document.body.replaceChildren();
+    await Promise.resolve();
+  });
+  async function fixture(props: Record<string, unknown> = {}, thumbCount = 1) {
+    const root = document.createElement('base-switch-root') as HTMLElement & { getExposes(): any };
+    root.style.cssText = 'box-sizing:border-box;width:32px;height:20px;border:1px solid;padding:0';
+    root.getBoundingClientRect = () => ({ left: 0, top: 0, width: 32, height: 20 }) as DOMRect;
+    const thumbs = Array.from({ length: thumbCount }, () => {
+      const thumb = document.createElement('base-switch-thumb') as HTMLElement & {
+        getExposes(): any;
+      };
+      thumb.style.cssText = 'width:16px;height:16px';
+      thumb.getBoundingClientRect = () => ({ left: 1, top: 2, width: 16, height: 16 }) as DOMRect;
+      root.append(thumb);
+      return thumb;
+    });
+    setElementProps(root, { draggable: true, ...props });
+    const changes: boolean[] = [];
+    const progressAtRequest: number[] = [];
+    root.addEventListener('checkedChange', (event) => {
+      changes.push((event as CustomEvent).detail.checked);
+      progressAtRequest.push(root.getExposes().percentage.get());
+    });
+    document.body.append(root);
+    await Promise.resolve();
+    await Promise.resolve();
+    const send = (type: string, x = 9, y = 10, to: EventTarget = root, detail = 1) => {
+      const event = new PointerEvent(type, {
+        bubbles: true,
+        cancelable: true,
+        pointerId: 31,
+        pointerType: 'mouse',
+        isPrimary: true,
+        button: 0,
+        clientX: x,
+        clientY: y,
+        detail,
+      });
+      to.dispatchEvent(event);
+      return event;
+    };
+    return { root, thumbs, changes, progressAtRequest, send, ex: root.getExposes() };
+  }
+  it('follows normalized Root progress, keeps Thumb eventless and requests only the released endpoint', async () => {
+    const f = await fixture();
+    f.send('pointerdown', 9, 10, f.thumbs[0]);
+    f.send('pointermove', 16);
+    expect(f.ex.dragging.get()).toBe(true);
+    expect(f.ex.percentage.get()).toBe(50);
+    expect(f.ex.checked.get()).toBe(false);
+    expect(f.root.getAttribute('aria-checked')).toBe('false');
+    expect(f.thumbs[0].getExposes().percentage.get()).toBe(50);
+    expect(f.thumbs[0].getExposes().checked.get()).toBe(false);
+    expect(f.thumbs[0].getExposes().focusSelf).toBeUndefined();
+    expect(f.changes).toEqual([]);
+    f.send('pointerleave', 16);
+    expect(f.ex.pressed.get()).toBe(true);
+    f.send('pointerup', 16);
+    f.send('click', 16);
+    expect(f.changes).toEqual([true]);
+    expect(f.ex.checked.get()).toBe(true);
+    expect(f.ex.percentage.get()).toBe(100);
+    expect(f.ex.dragging.get()).toBe(false);
+  });
+  it.each([2, 15])(
+    'preserves the grab anchor at x=%s rather than jumping to sample position',
+    async (start) => {
+      const f = await fixture();
+      f.send('pointerdown', start);
+      f.send('pointermove', start + 7);
+      expect(f.ex.percentage.get()).toBe(50);
+      f.send('pointerup', start + 7);
+      f.send('click', start + 7);
+      expect(f.changes).toEqual([true]);
+    }
+  );
+  it('rolls controlled preview back before emitting a refused request', async () => {
+    const f = await fixture({ checked: false });
+    f.send('pointerdown');
+    f.send('pointermove', 23);
+    expect(f.ex.percentage.get()).toBe(100);
+    expect(f.ex.checked.get()).toBe(false);
+    f.send('pointerup', 23);
+    f.send('click', 23);
+    expect(f.changes).toEqual([true]);
+    expect(f.progressAtRequest).toEqual([0]);
+    expect(f.ex.percentage.get()).toBe(0);
+    expect(f.ex.checked.get()).toBe(false);
+  });
+  it('makes no request when the released endpoint matches persistent truth', async () => {
+    const f = await fixture();
+    f.send('pointerdown');
+    f.send('pointermove', 14);
+    f.send('pointerup', 14);
+    f.send('click', 14);
+    expect(f.changes).toEqual([]);
+    expect(f.ex.percentage.get()).toBe(0);
+  });
+  it('uses host-normalized RTL once and leaves keyboard activation on Root', async () => {
+    const f = await fixture({ direction: 'rtl' });
+    f.send('pointerdown', 23);
+    f.send('pointermove', 16);
+    f.send('pointerup', 16);
+    f.send('click', 16);
+    expect(f.changes).toEqual([true]);
+    f.root.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', bubbles: true }));
+    expect(f.changes).toEqual([true, false]);
+  });
+  it.each(['disabled', 'direction', 'draggable', 'checked'])(
+    'cancels preview on changed %s without a stale release request',
+    async (key) => {
+      const f = await fixture({ checked: false });
+      f.send('pointerdown');
+      f.send('pointermove', 16);
+      expect(f.ex.percentage.get()).toBe(50);
+      const patch =
+        key === 'disabled'
+          ? { disabled: true }
+          : key === 'direction'
+            ? { direction: 'rtl' }
+            : key === 'draggable'
+              ? { draggable: false }
+              : { checked: true };
+      setElementProps(f.root, { draggable: true, checked: false, ...patch });
+      await Promise.resolve();
+      expect(f.ex.dragging.get()).toBe(false);
+      expect(f.ex.percentage.get()).toBe(key === 'checked' ? 100 : 0);
+      f.send('pointerup', 23);
+      f.send('click', 23);
+      expect(f.changes).toEqual([]);
+    }
+  );
+  it.each([0, 2])(
+    'keeps ordinary tap available when travel geometry has %s thumbs',
+    async (count) => {
+      const f = await fixture({}, count);
+      f.send('pointerdown');
+      f.send('pointermove', 23);
+      f.send('pointerup', 23);
+      expect(f.ex.dragging.get()).toBe(false);
+      expect(f.ex.percentage.get()).toBe(0);
+      f.send('click', 23);
+      expect(f.changes).toEqual([true]);
+    }
+  );
+  it('keeps opt-out immediate tap semantics and ignores movement as an enhancement', async () => {
+    const f = await fixture({ draggable: false });
+    f.send('pointerdown');
+    f.send('pointermove', 23);
+    f.send('pointerup', 23);
+    f.send('click', 23);
+    expect(f.changes).toEqual([true]);
+    expect(f.ex.dragging.get()).toBe(false);
+  });
+  it('does not restore pressed when a dragging observer disables synchronously', async () => {
+    const f = await fixture({ checked: false });
+    const off = f.ex.dragging.subscribe((event: any) => {
+      if (event.type === 'next' && event.next === true)
+        setElementProps(f.root, { checked: false, draggable: true, disabled: true });
+    });
+    f.send('pointerdown');
+    f.send('pointermove', 16);
+    await Promise.resolve();
+    expect(f.ex.disabled.get()).toBe(true);
+    expect(f.ex.dragging.get()).toBe(false);
+    expect(f.ex.pressed.get()).toBe(false);
+    expect(f.ex.percentage.get()).toBe(0);
+    expect(f.changes).toEqual([]);
+    off();
+  });
+
+  it.each(['draggable', 'direction', 'checked'])(
+    'does not continue start after a dragging observer changes %s synchronously',
+    async (key) => {
+      const f = await fixture({ checked: false });
+      const off = f.ex.dragging.subscribe((event: any) => {
+        if (event.type !== 'next' || event.next !== true) return;
+        const patch =
+          key === 'draggable'
+            ? { draggable: false }
+            : key === 'direction'
+              ? { direction: 'rtl' }
+              : { checked: true };
+        setElementProps(f.root, { checked: false, draggable: true, ...patch });
+      });
+      f.send('pointerdown');
+      f.send('pointermove', 16);
+      f.send('pointerup', 23);
+      f.send('click', 23);
+      expect(f.ex.dragging.get()).toBe(false);
+      expect(f.ex.pressed.get()).toBe(false);
+      expect(f.ex.percentage.get()).toBe(key === 'checked' ? 100 : 0);
+      expect(f.changes).toEqual([]);
+      off();
+    }
+  );
+  it.each(['pointerup', 'pointercancel'])(
+    'leaves an accepted drag intact after another contact sends %s',
+    async (type) => {
+      const f = await fixture({ checked: false });
+      f.send('pointerdown');
+      f.send('pointermove', 16);
+      f.root.dispatchEvent(
+        new PointerEvent(type, {
+          bubbles: true,
+          cancelable: true,
+          pointerId: 99,
+          pointerType: 'touch',
+          isPrimary: false,
+          button: 0,
+          clientX: 16,
+          clientY: 10,
+        })
+      );
+      expect(f.ex.dragging.get()).toBe(true);
+      expect(f.ex.pressed.get()).toBe(true);
+      expect(f.ex.percentage.get()).toBe(50);
+      f.send('pointerup', 23);
+      f.send('click', 23);
+      expect(f.changes).toEqual([true]);
+    }
+  );
+  it('does not let an old release clear a new session started by a dragging observer', async () => {
+    const f = await fixture({ checked: false });
+    const touch = (type: string, x = 9) =>
+      f.root.dispatchEvent(
+        new PointerEvent(type, {
+          bubbles: true,
+          cancelable: true,
+          pointerId: 32,
+          pointerType: 'touch',
+          isPrimary: true,
+          button: 0,
+          clientX: x,
+          clientY: 10,
+          detail: 1,
+        })
+      );
+    f.send('pointerdown');
+    f.send('pointermove', 16);
+    let replaced = false;
+    const off = f.ex.dragging.subscribe((event: any) => {
+      if (replaced || event.type !== 'next' || event.next !== false) return;
+      replaced = true;
+      touch('pointerdown');
+      touch('pointermove', 16);
+    });
+    f.send('pointerup', 23);
+    f.send('click', 23);
+    expect(f.ex.dragging.get()).toBe(true);
+    expect(f.ex.pressed.get()).toBe(true);
+    expect(f.ex.percentage.get()).toBe(50);
+    expect(f.changes).toEqual([]);
+    touch('pointerup', 23);
+    touch('click', 23);
+    expect(f.changes).toEqual([true]);
+    off();
   });
 });

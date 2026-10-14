@@ -98,7 +98,10 @@ for (const field of [false, true]) {
     expect(styleContains(body(f.track), 'w-1')).toBe(true);
     expect(styleContains(f.indicator, 'data-[orientation=vertical]:w-1')).toBe(true);
     expect(
-      styleContains(f.thumb, 'data-[orientation=vertical]:bottom-[calc(var(--pui-percentage)*1%)]')
+      styleContains(
+        f.thumb,
+        'data-[orientation=vertical]:bottom-[calc(var(--pui-display-percentage)*1%)]'
+      )
     ).toBe(true);
     setElementProps(f.root, { defaultValue: 25, orientation: 'horizontal', direction: 'rtl' });
     await flush();
@@ -106,7 +109,7 @@ for (const field of [false, true]) {
     expect(
       styleContains(
         f.thumb,
-        'data-[direction=rtl]:data-[orientation=horizontal]:right-[calc(var(--pui-percentage)*1%)]'
+        'data-[direction=rtl]:data-[orientation=horizontal]:right-[calc(var(--pui-display-percentage)*1%)]'
       )
     ).toBe(true);
   });

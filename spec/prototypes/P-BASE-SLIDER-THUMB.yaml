@@ -8,6 +8,10 @@ summary: A single Slider Thumb owns focus and transient pointer facts while the 
 statement:
   en: The existing Thumb owner exposes hovered and pressed through both its direct and authored-asHook entries. It borrows focus from asFocusable and derives accepted pointer pressing from the Root session already driven by Track AxisInput; it adds no Trigger, independent recognizer, geometry reader or second value owner.
 criteria:
+  - id: P-BASE-SLIDER-THUMB-DISPLAY-PREVIEW
+    text: Scalar Thumb and FieldThumb derive displayPercentage from Root context under C-AXIS-INPUT-DIRECTIONAL-0001. Display may follow the latest active normalized request while value, percentage, valueNow and valueText retain persistent truth. Direct and asHook entries expose the same finite [0,100] display fact. Styling changes no input or focus owner and no valueChange or valueCommit cadence.
+    dependsOn:
+      contracts: [C-AXIS-INPUT-DIRECTIONAL-0001]
   - id: P-BASE-SLIDER-THUMB-FACTS
     text: Hover follows semantic pointer enter/leave while enabled. Pressed requires a pointer origin on this Thumb and an accepted Root interaction session. Keyboard edits and rejected disabled/readOnly input do not activate pressed. ReadOnly remains focusable and hoverable.
   - id: P-BASE-SLIDER-THUMB-LIFETIME
@@ -17,7 +21,7 @@ criteria:
 dependsOn:
   contracts: [C-AS-HOOK-0001, C-EXPOSE-STATE-0001, C-EVENT-0002, C-TEMPLATE-0002, C-TEMPLATE-0003]
 verifies:
-  tests: [T-BASE-SLIDER-THUMB-0001]
+  tests: [T-BASE-SLIDER-THUMB-0001, T-AXIS-INPUT-DIRECTIONAL-0001]
 sources:
   - path: packages/prototypes/base/src/slider/root.proto.ts
   - path: packages/prototypes/base/src/slider/track.proto.ts
@@ -26,6 +30,9 @@ sources:
   - path: packages/prototypes/base/src/slider/types.ts
   - path: packages/prototypes/base/src/slider/shared.ts
 revisions:
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Add truth-independent scalar displayPercentage for common family pointer preview.
   - version: 0.3.0-alpha.1
     change: introduced
     summary: Cataloged only same-owner transient pointer facts and lifecycle; no stable Slider or host-fidelity admission.
