@@ -50,3 +50,39 @@ export function collectCollapsibleFocusFailure(elements: Element[]) {
     recentInput: input?.slice(-30) ?? [],
   };
 }
+
+// Serialized by Playwright for normal polling. This deliberately preserves the
+// document.activeElement identity contract, including Shadow DOM retargeting:
+// it does not traverse shadowRoot.activeElement or switch to ownerDocument.
+// evaluateAll re-resolves every sample; no old handle or first-match shortcut.
+export function collectCollapsibleFocusSample(elements: Element[]) {
+  if (elements.length !== 1)
+    throw new Error(`Expected exactly one Collapsible focus target; received ${elements.length}`);
+  const element = elements[0]!;
+  const browserNow = performance.now();
+  const active = document.activeElement;
+  const identify = (node: Element | null) =>
+    node
+      ? {
+          tag: node.tagName,
+          id: node.id,
+          role: node.getAttribute('role'),
+          ref: node.closest('[data-demo-ref]')?.getAttribute('data-demo-ref') ?? null,
+          connected: node.isConnected,
+        }
+      : null;
+  const host = element.closest('[data-previewer-id]') as
+    | (HTMLElement & { __puiCollapsibleLastPointerTarget?: Element | null })
+    | null;
+  const pointerTarget = host?.__puiCollapsibleLastPointerTarget;
+  return {
+    matchCount: elements.length,
+    focused: element.isConnected && active === element,
+    browserNow,
+    browserTimeOrigin: performance.timeOrigin,
+    expected: identify(element),
+    active: identify(active),
+    expectedIsPointerTarget: pointerTarget ? element === pointerTarget : null,
+    activeIsPointerTarget: pointerTarget ? active === pointerTarget : null,
+  };
+}

@@ -15,7 +15,10 @@ import {
   stopServer,
 } from './browser-harness';
 import { revealHeaderPreferences } from './site-header-browser';
-import { collectCollapsibleFocusFailure } from './collapsible-focus-observation';
+import {
+  collectCollapsibleFocusFailure,
+  collectCollapsibleFocusSample,
+} from './collapsible-focus-observation';
 import { probeCollapsibleFocusPaths } from './collapsible-focus-path-probe';
 
 const FAMILIES = ['shadcn', 'brutalist', 'bootstrap-2-3-2', 'liquid-glass'] as const;
@@ -73,7 +76,8 @@ async function expanded(button: Locator, value: boolean): Promise<void> {
 }
 
 async function focused(button: Locator): Promise<void> {
-  // Observe the existing evaluate path, including an evaluation still pending
+  // Read one strict current match without locator handle acquisition/layout reads.
+  // Keep observing an evaluation still pending
   // when expect.poll expires. Post-timeout focus is not a prior successful sample.
   const startedAt = performance.now();
   const route = button.page().url();
@@ -94,41 +98,14 @@ async function focused(button: Locator): Promise<void> {
         // Keep that original behavior, but never extend this diagnostic's
         // lifetime or storage. Only pre-timeout samples can settle late below.
         if (failed || samples.length >= maxRecordedSamples)
-          return button.evaluate((element) => document.activeElement === element);
+          return (await button.evaluateAll(collectCollapsibleFocusSample)).focused;
         const sample: (typeof samples)[number] = {
           index: samples.length,
           startedMs: performance.now() - startedAt,
         };
         samples.push(sample);
         try {
-          const observation = await button.evaluate((element) => {
-            const browserNow = performance.now();
-            const active = document.activeElement;
-            const identify = (node: Element | null) =>
-              node
-                ? {
-                    tag: node.tagName,
-                    id: node.id,
-                    role: node.getAttribute('role'),
-                    ref: node.closest('[data-demo-ref]')?.getAttribute('data-demo-ref') ?? null,
-                    connected: node.isConnected,
-                  }
-                : null;
-            const host = element.closest('[data-previewer-id]') as
-              | (HTMLElement & { __puiCollapsibleLastPointerTarget?: Element | null })
-              | null;
-            const pointerTarget = host?.__puiCollapsibleLastPointerTarget;
-            return {
-              focused: document.activeElement === element,
-              browserNow,
-              browserTimeOrigin: performance.timeOrigin,
-              expected: identify(element),
-              active: identify(active),
-              // Exact identity comparisons, not equality of descriptive fields.
-              expectedIsPointerTarget: pointerTarget ? element === pointerTarget : null,
-              activeIsPointerTarget: pointerTarget ? active === pointerTarget : null,
-            };
-          });
+          const observation = await button.evaluateAll(collectCollapsibleFocusSample);
           sample.result = observation.focused;
           sample.browser = observation;
           return observation.focused;
