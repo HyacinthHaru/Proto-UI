@@ -18,6 +18,7 @@ import { revealHeaderPreferences } from './site-header-browser';
 import {
   collectCollapsibleFocusFailure,
   collectCollapsibleFocusSample,
+  collectCollapsibleViewConnections,
 } from './collapsible-focus-observation';
 import { probeCollapsibleFocusPaths } from './collapsible-focus-path-probe';
 
@@ -486,8 +487,8 @@ for (const family of FAMILIES) {
           await selectCollapsibleRuntime(page, previewer, family, nextRuntime);
           tailStage('runtime-switch', 'done');
           tailStage('old-view-disconnection', 'start');
-          for (const view of oldViews)
-            expect(await view.evaluate((element) => element.isConnected)).toBe(false);
+          const oldConnections = await page.evaluate(collectCollapsibleViewConnections, oldViews);
+          expect(oldConnections).toEqual(oldViews.map(() => false));
           tailStage('old-view-disconnection', 'done');
           tailStage('final-expanded', 'start');
           await expanded(trigger(disclosure(previewer, 'uncontrolled')), false);

@@ -86,3 +86,11 @@ export function collectCollapsibleFocusSample(elements: Element[]) {
     activeIsPointerTarget: pointerTarget ? active === pointerTarget : null,
   };
 }
+
+// The caller passes the original ElementHandles, never a selector for new views.
+// The old loop silently accepted an empty array; that cannot prove teardown of
+// the already asserted four disclosures. Reject that evidence gap explicitly.
+export function collectCollapsibleViewConnections(elements: Node[]) {
+  if (!elements.length) throw new Error('Expected original Collapsible views before teardown');
+  return elements.map((element) => element.isConnected);
+}
