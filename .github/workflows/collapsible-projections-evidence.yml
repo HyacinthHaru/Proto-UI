@@ -11,6 +11,7 @@ on:
       - 'apps/www/src/content/docs/**/collapsible.mdx'
       - 'apps/www/src/content/docs/demo-*-collapsible.demo.ts'
       - 'apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts'
+      - 'apps/www/src/content/docs/zh-cn/collapsible-focus-observation*'
       - 'apps/www/src/content/docs/zh-cn/collapsible-focus-path-probe*'
       - 'apps/www/src/components/PrototypePreviewer/**'
 permissions:
