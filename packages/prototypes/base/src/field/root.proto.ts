@@ -116,7 +116,9 @@ function setupFieldRoot(def: DefHandle<FieldRootProps, FieldRootExposes>) {
     const snapshot = read() as FieldControlSnapshot;
     return snapshot?.active ? { source: parts[0].getExpose('__fieldLease'), snapshot } : null;
   };
-  const publish = () => {
+  let publicationDepth = 0;
+  let afterPublication: (() => void) | null = null;
+  const publishCurrent = () => {
     if (!run || !initialized) return;
     const current = run;
     const p = run.props.get(),
@@ -194,6 +196,21 @@ function setupFieldRoot(def: DefHandle<FieldRootProps, FieldRootExposes>) {
       if (run !== current || revision !== publication) return;
     }
   };
+  const publish = () => {
+    publicationDepth++;
+    let completed = false;
+    try {
+      publishCurrent();
+      completed = true;
+    } finally {
+      publicationDepth--;
+      if (publicationDepth === 0) {
+        const notify = afterPublication;
+        afterPublication = null;
+        if (completed) notify?.();
+      }
+    }
+  };
   const emitResult = () => {
     if (run)
       run.expose.emit('validityChange', {
@@ -231,8 +248,16 @@ function setupFieldRoot(def: DefHandle<FieldRootProps, FieldRootExposes>) {
       // Pending is not a successful validation; retain an explicit unvalidated status.
       status = 'unvalidated';
       publish();
-      if (run !== current || pending !== request) return requestId;
-      current.expose.emit('validationRequest', { requestId, value: copyFieldValue(value), reason });
+      const emit = () => {
+        if (run !== current || pending !== request) return;
+        current.expose.emit('validationRequest', {
+          requestId,
+          value: copyFieldValue(value),
+          reason,
+        });
+      };
+      if (publicationDepth) afterPublication = emit;
+      else emit();
       return requestId;
     }
     publish();

@@ -38,7 +38,7 @@ import { menubarRoot, menubarTrigger, MENUBAR_FAMILY } from '../src/menubar';
 function runtimeHarness() {
   const parents = new Map<any, any>(),
     protos = new Map<any, any>();
-  let actionCallback = (_name: string) => {};
+  let actionCallback = (_name: string, _payload?: any) => {};
   const actions: string[] = [];
   function make(proto: any, parent: any = null, props: any = {}) {
     const listeners = new Map<string, Set<any>>();
@@ -123,9 +123,9 @@ function runtimeHarness() {
         w.attach('expose-event', [
           [
             EXPOSE_EVENT_SINK_CAP,
-            (name: string) => {
+            (name: string, payload: any) => {
               actions.push(name);
-              actionCallback(name);
+              actionCallback(name, payload);
             },
           ],
         ]);
@@ -134,12 +134,12 @@ function runtimeHarness() {
     return {
       session,
       target,
-      input(value: string) {
+      input(value: string, composing = true) {
         textValue = value;
         connection.onEvent({
           type: 'input',
           value,
-          composing: true,
+          composing,
           data: 'x',
           inputType: 'insertText',
         });
@@ -153,7 +153,7 @@ function runtimeHarness() {
   return {
     make,
     actions,
-    setActionCallback(fn: (name: string) => void) {
+    setActionCallback(fn: (name: string, payload?: any) => void) {
       actionCallback = fn;
     },
   };
@@ -585,3 +585,73 @@ for (const boundary of ['State', 'Context'] as const)
       }
     }
   );
+
+it.each(['normal', 'cancel', 'reset', 'dispose', 'newer'] as const)(
+  'Field Root retires queued pending publication entered from dirty after %s',
+  async (operation) => {
+    const { make, actions, setActionCallback } = runtimeHarness();
+    const root = make(fieldRoot, null, {
+      externalValidation: true,
+      validationMode: 'manual',
+    });
+    const control = make(fieldControl, root.target, { defaultValue: 'same' });
+    let request: string | null = null,
+      newer: string | null = null,
+      observed = 0,
+      retirement: Promise<void> | undefined;
+    const stops: (() => void)[] = [];
+    const emitted: string[] = [];
+    setActionCallback((name, payload) => {
+      if (name === 'validationRequest') emitted.push(payload.requestId);
+    });
+    try {
+      await root.session.mount();
+      await control.session.mount();
+      stops.push(
+        root.exposes.dirty.subscribe((event: any) => {
+          if (event.type === 'next' && event.next === true && request === null)
+            root.session.invokeInCallbackScope(() => {
+              request = root.exposes.validate();
+            });
+        })
+      );
+      stops.push(
+        root.exposes.pending.subscribe((event: any) => {
+          if (event.type !== 'next' || event.next !== true || observed) return;
+          observed++;
+          root.session.invokeInCallbackScope(() => {
+            if (operation === 'cancel') root.exposes.cancelValidation();
+            else if (operation === 'reset') root.exposes.resetValidation();
+            else if (operation === 'dispose') retirement = root.session.dispose();
+            else if (operation === 'newer') newer = root.exposes.validate();
+          });
+        })
+      );
+      actions.length = 0;
+      expect(() => control.input('changed', false)).not.toThrow();
+      await retirement;
+      expect(observed).toBe(1);
+      expect(typeof request).toBe('string');
+      expect(actions.filter((name) => name === 'validationRequest')).toHaveLength(
+        operation === 'normal' || operation === 'newer' ? 1 : 0
+      );
+      expect(emitted).toEqual(
+        operation === 'normal' ? [request] : operation === 'newer' ? [newer] : []
+      );
+      if (operation === 'normal' || operation === 'newer') {
+        let accepted = false;
+        root.session.invokeInCallbackScope(() => {
+          accepted = root.exposes.resolveValidation(operation === 'newer' ? newer : request, {
+            invalid: false,
+          });
+        });
+        expect(accepted).toBe(true);
+      }
+    } finally {
+      for (const stop of stops) stop();
+      await retirement;
+      await control.session.dispose();
+      await root.session.dispose();
+    }
+  }
+);
