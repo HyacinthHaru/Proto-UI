@@ -809,3 +809,91 @@ it('Field Root retains newer validation entered during Context and pending publi
     for (const part of [...parts].reverse()) await part.session.dispose();
   }
 });
+
+it.each(['normal', 'nested', 'unmount', 'dispose', 'remount'] as const)(
+  'Toggle Group waits for queued Context retirement after %s',
+  async (operation) => {
+    const { make, setActionCallback } = runtimeHarness();
+    const root = make(toggleGroupRoot);
+    const items = ['a', 'b', 'c'].map((value) => make(toggleGroupItem, root.target, { value }));
+    let armed = false;
+    const seen = new Set<string>();
+    const nested: boolean[] = [];
+    const emitted: string[][] = [];
+    const transitions: Promise<void>[] = [];
+    const request = (value: string) => {
+      let accepted: boolean | undefined;
+      root.session.invokeInCallbackScope(() => {
+        accepted = root.exposes.requestToggle(value);
+      });
+      return accepted;
+    };
+    setActionCallback((name, payload) => {
+      if (name === 'valueChange') emitted.push([...payload.value]);
+    });
+    const observer = make(
+      definePrototype({
+        name: 'toggle-group-queued-retirement-observer',
+        setup(def) {
+          def.context.subscribe(TOGGLE_GROUP_CONTEXT, (_run, next) => {
+            if (!armed || next.value.length !== 1 || seen.has(next.value[0])) return;
+            const value = next.value[0];
+            seen.add(value);
+            if (value === 'a' && operation !== 'normal') nested.push(request('b')!);
+            else if (value === 'b') {
+              if (operation === 'nested') nested.push(request('c')!);
+              else if (operation === 'unmount' || operation === 'dispose')
+                transitions.push(root.session[operation]());
+              else if (operation === 'remount') {
+                transitions.push(root.session.unmount());
+                transitions.push(root.session.mount());
+              }
+            }
+          });
+        },
+      }),
+      root.target
+    );
+    const parts = [root, ...items, observer];
+    try {
+      for (const part of parts) await part.session.mount();
+      const initialEpoch = root.session.mountEpoch;
+      emitted.length = 0;
+      armed = true;
+      const accepted = request('a');
+      const emittedAtReturn = emitted.map((value) => [...value]);
+      await Promise.all(transitions);
+      let fresh:
+        | { accepted: boolean | undefined; emitted: string[][]; value: string[] }
+        | undefined;
+      if (operation === 'remount') {
+        emitted.length = 0;
+        fresh = {
+          accepted: request('c'),
+          emitted: emitted.map((value) => [...value]),
+          value: root.exposes.getValue(),
+        };
+      }
+      expect(accepted).toBe(true);
+      expect([...seen]).toContain('a');
+      expect(nested).toEqual(
+        operation === 'normal' ? [] : operation === 'nested' ? [true, true] : [true]
+      );
+      expect(emittedAtReturn).toEqual(
+        operation === 'normal' ? [['a']] : operation === 'nested' ? [['b'], ['c'], ['a']] : []
+      );
+      if (operation === 'normal') expect(root.exposes.getValue()).toEqual(['a']);
+      if (operation === 'nested') expect(root.exposes.getValue()).toEqual(['c']);
+      if (operation === 'unmount') expect(root.session.mountPhase).toBe('detached');
+      if (operation === 'dispose') expect(root.session.instancePhase).toBe('disposed');
+      if (operation === 'remount') {
+        expect(root.session.mountEpoch).toBe(initialEpoch + 1);
+        expect(fresh).toEqual({ accepted: true, emitted: [['c']], value: ['c'] });
+      }
+    } finally {
+      armed = false;
+      await Promise.all(transitions);
+      for (const part of [...parts].reverse()) await part.session.dispose();
+    }
+  }
+);

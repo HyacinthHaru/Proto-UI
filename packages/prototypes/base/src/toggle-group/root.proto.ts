@@ -52,6 +52,8 @@ function setup(def: DefHandle<ToggleGroupRootProps, ToggleGroupRootExposes>) {
   let current = '';
   let runNow: RunHandle<ToggleGroupRootProps> | null = null;
   let viewEpoch = 0;
+  let publicationDepth = 0;
+  let afterPublication: Array<() => void> = [];
   let snapshot: ToggleGroupContext = { value, current, disabled: false, readOnly: false };
   def.context.provide(TOGGLE_GROUP_CONTEXT, snapshot);
   const publish = (run: RunHandle<ToggleGroupRootProps>) => {
@@ -61,7 +63,19 @@ function setup(def: DefHandle<ToggleGroupRootProps, ToggleGroupRootExposes>) {
     const next = { value, current, disabled: disabled.get(), readOnly: !!run.props.get().readOnly };
     if (JSON.stringify(next) === JSON.stringify(snapshot)) return;
     snapshot = next;
-    run.context.update(TOGGLE_GROUP_CONTEXT, next);
+    publicationDepth++;
+    let completed = false;
+    try {
+      run.context.update(TOGGLE_GROUP_CONTEXT, next);
+      completed = true;
+    } finally {
+      publicationDepth--;
+      if (publicationDepth === 0) {
+        const notifications = afterPublication;
+        afterPublication = [];
+        if (completed) for (const notify of notifications) notify();
+      }
+    }
   };
   def.expose.method('getValue', () => [...value]);
   def.expose.method('setCurrent', (id) => {
@@ -85,7 +99,12 @@ function setup(def: DefHandle<ToggleGroupRootProps, ToggleGroupRootExposes>) {
     current = matches[0].id;
     publish(run);
     if (runNow !== run || viewEpoch !== epoch) return true;
-    run.expose.emit('valueChange', { value: next });
+    const emit = () => {
+      if (runNow !== run || viewEpoch !== epoch) return;
+      run.expose.emit('valueChange', { value: next });
+    };
+    if (publicationDepth) afterPublication.push(emit);
+    else emit();
     return true;
   });
   const sync = (run: RunHandle<ToggleGroupRootProps>, initial = false) => {
