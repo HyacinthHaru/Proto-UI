@@ -200,3 +200,92 @@ describe('expanded contact bounds and matched diagnostic controls (spy)', () => 
     }
   });
 });
+
+// Frozen pre-optimization reference: compare the actual regular texture upload.
+function referencePrefilter(pixels: Uint8Array, width: number, height: number): Uint8Array {
+  const weights = [1, 6, 15, 20, 15, 6, 1],
+    scratch = new Uint8Array(pixels.length),
+    output = new Uint8Array(pixels.length);
+  for (let pass = 0; pass < 2; pass++) {
+    const input = pass ? scratch : pixels,
+      target = pass ? output : scratch;
+    for (let y = 0; y < height; y++)
+      for (let x = 0; x < width; x++) {
+        const at = (y * width + x) * 4;
+        for (let channel = 0; channel < 3; channel++) {
+          let sum = 0;
+          for (let k = -3; k <= 3; k++)
+            sum +=
+              input[
+                (Math.max(0, Math.min(height - 1, y + (pass ? k : 0))) * width +
+                  Math.max(0, Math.min(width - 1, x + (pass ? 0 : k)))) *
+                  4 +
+                  channel
+              ] * weights[k + 3];
+          target[at + channel] = Math.round(sum / 64);
+        }
+        target[at + 3] = 255;
+      }
+  }
+  return output;
+}
+
+describe('regular prefilter byte equivalence (CPU and GL spy only)', () => {
+  it.each([
+    [1, 1],
+    [1, 17],
+    [19, 1],
+    [2, 3],
+    [3, 2],
+    [6, 7],
+    [7, 6],
+    [13, 11],
+    [64, 37],
+    [257, 129],
+  ])(
+    'preserves both rounded passes, edge clamping, and all channels for %ix%i',
+    (width, height) => {
+      const f = fixture();
+      let seed = 0x88799a;
+      try {
+        for (const pattern of ['zero', 'white', 'edges', 'random']) {
+          const pixels = new Uint8Array(width * height * 4);
+          for (let i = 0; i < pixels.length; i++) {
+            seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+            pixels[i] =
+              i % 4 === 3
+                ? 255
+                : pattern === 'zero'
+                  ? 0
+                  : pattern === 'white'
+                    ? 255
+                    : pattern === 'edges'
+                      ? ((i * 29 + Math.floor(i / (width * 4))) % 2) * 255
+                      : seed >>> 24;
+          }
+          const before = pixels.slice();
+          const source = { ...f.frame.source, width, height, pixels };
+          f.program.render({ ...f.frame, source });
+          const upload = f.gl.texImage2D.mock.calls.at(-1)![8] as Uint8Array;
+          expect(upload).toEqual(referencePrefilter(pixels, width, height));
+          expect(upload).not.toBe(pixels);
+          expect(pixels).toEqual(before);
+          expect(upload.every((value, index) => index % 4 !== 3 || value === 255)).toBe(true);
+        }
+        expect(f.program.inspect()).toMatchObject({ sourcePreparations: 4, sourceUploads: 4 });
+      } finally {
+        f.program.dispose();
+      }
+    }
+  );
+  it('still rejects nonopaque source before texture upload', () => {
+    const f = fixture();
+    f.frame.source.pixels[3] = 254;
+    try {
+      expect(() => f.program.render(f.frame)).toThrow('nonopaque-optical-source');
+      expect(f.gl.texImage2D).not.toHaveBeenCalled();
+    } finally {
+      f.program.dispose();
+    }
+  });
+});
