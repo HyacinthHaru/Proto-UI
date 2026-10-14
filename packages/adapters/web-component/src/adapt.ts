@@ -653,10 +653,13 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
           )
             return;
           gate?.enable();
-          thisEl[NOTIFY_FOCUS_TARGET_READY]();
-          for (const descendant of thisEl.querySelectorAll<ProtoElement>('[data-pui-root]')) {
-            descendant[NOTIFY_FOCUS_TARGET_READY]?.();
-          }
+          completeCleanup([
+            () => thisEl[NOTIFY_FOCUS_TARGET_READY](),
+            ...Array.from(
+              thisEl.querySelectorAll<ProtoElement>('[data-pui-root]'),
+              (descendant) => () => descendant[NOTIFY_FOCUS_TARGET_READY]?.()
+            ),
+          ]);
         });
       };
 

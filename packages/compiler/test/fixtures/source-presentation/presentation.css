@@ -1,6 +1,6 @@
 /* Deliberately finite preset, shared by all three paths; not a Tailwind browser claim.
-   Feedback projects on Root[data-pui-style]; all Template paths use the child
-   data-pui-style carrier. Adapter paths also retain compatibility classes. */
+   Feedback projects on Root[data-pui-style]; ordinary child styles may use class,
+   data-pui-style, or both. The preset maps either carrier to identical CSS. */
 * {
   box-sizing: border-box;
 }

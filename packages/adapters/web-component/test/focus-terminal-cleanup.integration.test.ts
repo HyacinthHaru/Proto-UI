@@ -290,7 +290,8 @@ it.each(['close', 'external-remove', 'close-to-detached-parent'] as const)(
         if (mode === 'close-to-detached-parent') host.remove();
         content.getExposes().actions.close();
       }
-      // Revocation follows the actual view completion, not a microtask count.
+      // Revocation follows actual view completion, including conceal frames and
+      // origin-observer delivery. Promise-only flushing is not that boundary.
       await unmounted;
       await flush();
       if (mode === 'external-remove') {
