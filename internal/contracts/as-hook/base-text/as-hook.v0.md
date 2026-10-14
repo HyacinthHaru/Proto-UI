@@ -103,7 +103,7 @@ asHook 在 v0 中提供：
 其结构必须是一个对象，形态对齐 def 句柄风格：
 
 - `props`：模块结果（通常为 disposers）
-- `state`：BorrowedStateHandle（或其集合）
+- `state`：BorrowedStateHandle 或保持只读的 ObservedStateHandle（或其集合）
 - `context`：模块结果（订阅/发布句柄或 disposers）
 - `event`：模块结果（disposers）
 - `feedback`：模块结果（disposers）
@@ -111,7 +111,7 @@ asHook 在 v0 中提供：
 - `asHooks`：当前 asHook setup frame 直接调用的 child asHook entries
 - 允许出现 **自定义字段**（用于扩展）
 
-> 仅 `state` 强制为 Borrowed 视图；其转换由 state module 提供的 SPI 完成。
+> Owned 与 Borrowed `state` 贡献投影为 Borrowed 视图；已经是 Observed 的视图保持只读，capture 不得添加 `setDefault` 或 `set`（`C-STATE-0003-C`、`C-STATE-0009-D/E`）。其转换由 state module 提供的 SPI 完成，其他 Module handles 保留所属 Module 的能力边界。
 
 ### 4.1.1 定制 caller handle 投射
 
@@ -124,7 +124,8 @@ asHook 在 v0 中提供：
 ### 4.2 模块结果的语义约束
 
 - `state`：
-  - 由 asHook 引入的 state handle 必须投影为 Borrowed 视图。
+  - 由 asHook 引入的作者可写 state handles 必须投影为 Borrowed 视图。
+  - 已经是 Observed 的 state handles 必须保持只读，不得升级为可写视图。
 - 其它模块（`props/context/event/feedback/...`）：
   - 返回值应以 disposer 为主（取消订阅/撤销副作用）。
   - 允许返回与模块定义一致的句柄/能力对象。
