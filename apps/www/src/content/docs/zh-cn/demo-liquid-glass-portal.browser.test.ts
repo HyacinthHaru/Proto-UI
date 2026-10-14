@@ -338,8 +338,30 @@ describe.sequential('real Liquid Dropdown Content in a bounded scene portal', ()
           { 'forced-colors': 'active' },
         ] as Record<string, string>[]) {
           await preferences(cdp, 'light', override);
-          await expect.poll(async () => (await geometry(page)).quality).toBe('opaque-fallback');
-          expect((await geometry(page)).image).toBe('none');
+          try {
+            await expect
+              .poll(async () => (await geometry(page)).quality, {
+                message: `${runtime} preference ${JSON.stringify(override)}`,
+              })
+              .toBe('opaque-fallback');
+            expect((await geometry(page)).image).toBe('none');
+            expect((await geometry(page)).reason).toBe('transparency-or-contrast-override');
+          } finally {
+            // Retain the failing iteration too: the old all-or-nothing journey
+            // record could not distinguish reduced transparency from UA colors.
+            const snapshot = await geometry(page);
+            const forcedColorAdjust = await page
+              .locator('[data-demo-ref="content"]')
+              .evaluate((el) => getComputedStyle(el).forcedColorAdjust);
+            observations.push({
+              runtime,
+              checkpoint: 'preference-fallback',
+              override,
+              forcedColorAdjust,
+              snapshot,
+            });
+            await capture(page, `${runtime}-preference-${Object.keys(override)[0]}`);
+          }
           await preferences(cdp);
           await optical(page);
         }

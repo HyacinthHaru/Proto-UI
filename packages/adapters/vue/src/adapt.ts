@@ -895,19 +895,20 @@ export function createVueAdapter(runtime: VueRuntime) {
             const portal = runtime.h(runtime.Teleport, { to: portalDestination.value ?? 'body' }, [
               content,
             ]);
-            return runtime.Fragment
-              ? runtime.h(runtime.Fragment, null, [
-                  runtime.h('span', {
-                    ref: (el: HTMLElement | null) => {
-                      portalOriginRef.value = el;
-                    },
-                    hidden: true,
-                    'aria-hidden': true,
-                    'data-pui-portal-origin': '',
-                  }),
-                  portal,
-                ])
-              : portal;
+            const children = [
+              runtime.h('span', {
+                ref: (el: HTMLElement | null) => {
+                  portalOriginRef.value = el;
+                },
+                hidden: true,
+                'aria-hidden': true,
+                'data-pui-portal-origin': '',
+              }),
+              portal,
+            ];
+            // Vue normalizes array roots into a Fragment even when the optional
+            // Fragment export is not supplied to the Adapter runtime.
+            return runtime.Fragment ? runtime.h(runtime.Fragment, null, children) : children;
           }
           return content;
         };

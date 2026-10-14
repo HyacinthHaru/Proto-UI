@@ -34,6 +34,16 @@ function notifyProviderChanges() {
     }
   }
 }
+function physicalAncestry(host: HTMLElement): Node[] {
+  const result: Node[] = [];
+  const seen = new Set<Node>();
+  for (let node: Node | null = host.parentNode; node && !seen.has(node); ) {
+    seen.add(node);
+    result.push(node);
+    node = node.parentNode ?? (node.nodeType === 11 ? ((node as ShadowRoot).host ?? null) : null);
+  }
+  return result;
+}
 /** A physical-view proxy survives a missing first provider. It only rebinds at
  * actual adapter projection commits or explicit provider registration changes;
  * neither a registry entry nor a logical origin grants optical admission. */
@@ -42,6 +52,8 @@ export const createPreviewMaterialSink: PreviewMaterialFactory = (host, effects)
   let current: VisualFeedbackFrame | null = null;
   let factory: ProviderEntry | null = null;
   let sink: VisualFeedbackSink | null = null;
+  let acquiredAncestors: Node[] = [];
+  let acquiredDocument: Document | null = null;
   let generation = 0;
   let rebinding = false;
   let attempted = false;
@@ -87,6 +99,8 @@ export const createPreviewMaterialSink: PreviewMaterialFactory = (host, effects)
         return;
       }
       sink = acquired;
+      acquiredAncestors = physicalAncestry(host);
+      acquiredDocument = host.ownerDocument;
       if (sink) sink.commit(current ?? frame);
       else ordinary(current ?? frame);
     } catch (error) {
@@ -102,6 +116,18 @@ export const createPreviewMaterialSink: PreviewMaterialFactory = (host, effects)
     }
   };
   const offProjection = subscribeWebPortalProjection(host, () => {
+    // The epoch admission commit and its physical-projection notification are
+    // distinct facts, but can describe the same already acquired binding. Keep
+    // that live sink; missing providers still retry on a real projection signal.
+    const ancestors = physicalAncestry(host);
+    if (
+      sink &&
+      ancestors.length === acquiredAncestors.length &&
+      ancestors.every((node, i) => node === acquiredAncestors[i]) &&
+      acquiredDocument === host.ownerDocument &&
+      factory === eligibleProvider()
+    )
+      return;
     ++generation;
     attempted = false;
     refresh();

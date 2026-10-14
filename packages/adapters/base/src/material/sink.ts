@@ -434,12 +434,20 @@ function createDocumentMaterialSink(
       }
       const css = win!.getComputedStyle(host),
         rect = host.getBoundingClientRect();
+      const foregroundPreferences = preferences.current();
+      if (!currentDocument()) return;
       const foregroundCss = css.color;
       const foreground = resolvePaletteColor(foregroundCss, {});
-      if (
-        !foreground ||
-        foreground.some((value, i) => Math.abs(value - resolved.foreground![i]) > 1 / 255)
-      ) {
+      // Forced-color auto lets the UA replace author RGB with its system palette.
+      // That palette is not an external author conflict. The shared policy below
+      // still forbids optical paint and selects the complete opaque fallback;
+      // never opt out of the user's palette or adopt computed CSS as style IR.
+      const uaForcedPalette =
+        foregroundPreferences.forcedColors === 'active' && css.forcedColorAdjust === 'auto';
+      const foregroundMatches =
+        foreground &&
+        foreground.every((value, i) => Math.abs(value - resolved.foreground![i]) <= 1 / 255);
+      if (!uaForcedPalette && !foregroundMatches) {
         ordinary('external-foreground-mismatch');
         return;
       }
@@ -488,8 +496,15 @@ function createDocumentMaterialSink(
         }
         revisions.source = source!.revision;
       } else sourceOwner = null;
+      // Source/host reads may synchronously change preferences. Preserve the
+      // existing fresh policy read and never turn a former UA-color exemption
+      // into optical admission after forced colors has been withdrawn.
       const prefs = preferences.current();
       if (!currentDocument()) return;
+      if (!foregroundMatches && prefs.forcedColors !== 'active') {
+        ordinary('external-foreground-mismatch');
+        return;
+      }
       const geometry = {
         width: rect.width,
         height: rect.height,

@@ -233,3 +233,90 @@ it('holds material pending until the new physical epoch actually commits', () =>
   expect(allocate).toHaveBeenCalledOnce();
   epoch.release();
 });
+
+it('acquires one sink for epoch commit followed by its physical projection notification', () => {
+  const f = fixture();
+  f.a.append(f.host);
+  const provider = { commit: vi.fn(), release: vi.fn() };
+  const allocate = vi.fn(() => provider);
+  releases.push(registerPreviewMaterialProvider(f.a, allocate));
+  const epoch = beginWebPortalMaterialEpoch(f.host);
+  f.sink.commit(frame());
+  epoch.commitProjection();
+  notifyWebPortalProjection(f.host);
+  expect(allocate).toHaveBeenCalledOnce();
+  expect(provider.commit).toHaveBeenCalledOnce();
+  expect(provider.release).not.toHaveBeenCalled();
+  f.sink.release(1);
+  expect(provider.release).toHaveBeenCalledOnce();
+  epoch.release();
+});
+it('still rebinds a different physical parent inside the same provider scope', () => {
+  const f = fixture();
+  const nested = document.createElement('div');
+  f.a.append(nested, f.host);
+  const first = { commit: vi.fn(), release: vi.fn() };
+  const second = { commit: vi.fn(), release: vi.fn() };
+  const allocate = vi.fn().mockReturnValueOnce(first).mockReturnValue(second);
+  releases.push(registerPreviewMaterialProvider(f.a, allocate));
+  f.sink.commit(frame());
+  nested.append(f.host);
+  notifyWebPortalProjection(f.host);
+  expect(allocate).toHaveBeenCalledTimes(2);
+  expect(first.release).toHaveBeenCalledOnce();
+  expect(second.commit).toHaveBeenCalledWith(frame());
+});
+
+it('does not deduplicate a new document with the same parent and provider identities', () => {
+  const f = fixture();
+  f.a.append(f.host);
+  const first = { commit: vi.fn(), release: vi.fn() };
+  const second = { commit: vi.fn(), release: vi.fn() };
+  const allocate = vi.fn().mockReturnValueOnce(first).mockReturnValue(second);
+  releases.push(registerPreviewMaterialProvider(f.a, allocate));
+  f.sink.commit(frame());
+  const nextDocument = document.implementation.createHTMLDocument('next');
+  nextDocument.body.append(nextDocument.adoptNode(f.a));
+  // happy-dom does not recursively adopt descendants; use real adoptNode for each.
+  f.a.append(nextDocument.adoptNode(f.host));
+  expect(f.host.ownerDocument).toBe(nextDocument);
+  notifyWebPortalProjection(f.host);
+  expect(allocate).toHaveBeenCalledTimes(2);
+  expect(first.release).toHaveBeenCalledOnce();
+  expect(second.commit).toHaveBeenCalledWith(frame());
+  f.sink.release(1);
+  f.a.remove();
+});
+it('ignores a redundant projection signal emitted during the first committed paint', () => {
+  const f = fixture();
+  f.a.append(f.host);
+  const provider = {
+    commit: vi.fn(() => notifyWebPortalProjection(f.host)),
+    release: vi.fn(),
+  };
+  const allocate = vi.fn(() => provider);
+  releases.push(registerPreviewMaterialProvider(f.a, allocate));
+  f.sink.commit(frame());
+  expect(allocate).toHaveBeenCalledOnce();
+  expect(provider.commit).toHaveBeenCalledOnce();
+  expect(provider.release).not.toHaveBeenCalled();
+});
+
+it('rebinds a moved renderer-owned container even when the host parent is unchanged', () => {
+  const f = fixture();
+  const mount = document.createElement('div');
+  const destination = document.createElement('div');
+  f.a.append(mount, destination);
+  mount.append(f.host);
+  const first = { commit: vi.fn(), release: vi.fn() };
+  const second = { commit: vi.fn(), release: vi.fn() };
+  const allocate = vi.fn().mockReturnValueOnce(first).mockReturnValue(second);
+  releases.push(registerPreviewMaterialProvider(f.a, allocate));
+  f.sink.commit(frame());
+  destination.append(mount);
+  expect(f.host.parentNode).toBe(mount);
+  notifyWebPortalProjection(f.host);
+  expect(allocate).toHaveBeenCalledTimes(2);
+  expect(first.release).toHaveBeenCalledOnce();
+  expect(second.commit).toHaveBeenCalledWith(frame());
+});

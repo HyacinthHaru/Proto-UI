@@ -71,6 +71,8 @@ function fixture(delayed = false) {
   let paletteRevision = 1;
   const paletteListeners = new Set<() => void>();
   let contrast: 'no-preference' | 'more' = 'no-preference';
+  let forcedColors: 'none' | 'active' = 'none';
+  let onSourceRead = () => {};
   let tokens: string[] = [];
   const flush = () => host.setAttribute('data-pui-style', tokens.join(' '));
   const sink = createWebMaterialSink(
@@ -85,7 +87,10 @@ function fixture(delayed = false) {
     },
     {
       source: {
-        current: () => source,
+        current: () => {
+          onSourceRead();
+          return source;
+        },
         subscribe(fn) {
           sourceListeners.add(fn);
           return () => {
@@ -113,7 +118,7 @@ function fixture(delayed = false) {
           reducedMotion,
           reducedTransparency,
           contrast,
-          forcedColors: 'none',
+          forcedColors,
         }),
         subscribe(fn) {
           preferenceListeners.add(fn);
@@ -147,6 +152,9 @@ function fixture(delayed = false) {
     frame,
     flush,
     sourceListeners,
+    onSourceRead(fn: () => void) {
+      onSourceRead = fn;
+    },
     preferenceListeners,
     palette() {
       paletteRevision++;
@@ -188,6 +196,10 @@ function fixture(delayed = false) {
     },
     motion(value: typeof reducedMotion) {
       reducedMotion = value;
+      for (const fn of preferenceListeners) fn();
+    },
+    forcedColors(value: typeof forcedColors) {
+      forcedColors = value;
       for (const fn of preferenceListeners) fn();
     },
     transparency(value: typeof reducedTransparency) {
@@ -1347,3 +1359,93 @@ it.each([undefined, null, false, 0, ''])(
     expect(sourceDelete).toHaveBeenCalledOnce();
   }
 );
+
+describe('forced-color UA palette versus authored foreground ownership', () => {
+  function computedForeground(host: HTMLElement, color: string, adjustment: string) {
+    const read = window.getComputedStyle.bind(window);
+    return vi.spyOn(window, 'getComputedStyle').mockImplementation((element, pseudo) => {
+      const css = read(element, pseudo);
+      if (element !== host) return css;
+      // Inject the browser-resolved system palette, not an author style write.
+      return new Proxy(css, {
+        get(target, key) {
+          if (key === 'color') return color;
+          if (key === 'forcedColorAdjust') return adjustment;
+          const value = Reflect.get(target, key, target);
+          return typeof value === 'function' ? value.bind(target) : value;
+        },
+      });
+    });
+  }
+  it('withdraws optics for the UA forced palette and restores only after preference reset', () => {
+    const f = fixture();
+    f.sink.commit(f.frame(1));
+    expect(f.host.dataset.materialQuality).toBe('self-optical');
+    const authorColor = f.host.style.color;
+    const ua = computedForeground(f.host, 'rgb(0, 0, 0)', 'auto');
+    const paints = optical.render.mock.calls.length;
+    f.forcedColors('active');
+    expect(f.host.dataset.materialQuality).toBe('opaque-fallback');
+    expect(f.host.dataset.materialReason).toBe('transparency-or-contrast-override');
+    expect(f.host.style.backgroundImage).toBe('none');
+    expect(f.host.style.color).toBe(authorColor);
+    expect(f.host.style.forcedColorAdjust).not.toBe('none');
+    expect(optical.render).toHaveBeenCalledTimes(paints);
+    ua.mockRestore();
+    f.forcedColors('none');
+    expect(f.host.dataset.materialQuality).toBe('self-optical');
+    f.sink.release(1);
+  });
+  it('reads preference changes made during source lookup before any new optical render', () => {
+    const f = fixture();
+    f.sink.commit(f.frame(1));
+    const paints = optical.render.mock.calls.length;
+    f.onSourceRead(() => {
+      f.onSourceRead(() => {});
+      f.forcedColors('active');
+    });
+    f.source(true, 2);
+    expect(f.host.dataset.materialQuality).toBe('opaque-fallback');
+    expect(f.host.style.backgroundImage).toBe('none');
+    expect(optical.render).toHaveBeenCalledTimes(paints);
+    f.sink.release(1);
+  });
+  it('cannot promote an earlier UA palette exemption after a reentrant preference reset', () => {
+    const f = fixture();
+    f.sink.commit(f.frame(1));
+    const paints = optical.render.mock.calls.length;
+    computedForeground(f.host, 'rgb(0, 0, 0)', 'auto');
+    f.onSourceRead(() => {
+      f.onSourceRead(() => {});
+      f.forcedColors('none');
+    });
+    f.forcedColors('active');
+    expect(f.host.dataset.materialQuality).toBe('unavailable');
+    expect(f.host.dataset.materialReason).toBe('external-foreground-mismatch');
+    expect(f.host.style.backgroundImage).not.toContain('data:image');
+    expect(optical.render).toHaveBeenCalledTimes(paints);
+    f.sink.release(1);
+  });
+  it.each(['none', 'preserve-parent-color'])(
+    'rejects mismatched author colors when forced-color-adjust is %s',
+    (adjustment) => {
+      const f = fixture();
+      f.sink.commit(f.frame(1));
+      computedForeground(f.host, 'rgb(255, 0, 0)', adjustment);
+      f.forcedColors('active');
+      expect(f.host.dataset.materialQuality).toBe('unavailable');
+      expect(f.host.dataset.materialReason).toBe('external-foreground-mismatch');
+      expect(f.host.style.backgroundImage).not.toContain('data:image');
+      f.sink.release(1);
+    }
+  );
+  it('keeps the ordinary foreground mismatch gate under reduced transparency alone', () => {
+    const f = fixture();
+    f.sink.commit(f.frame(1));
+    computedForeground(f.host, 'rgb(255, 0, 0)', 'auto');
+    f.transparency('reduce');
+    expect(f.host.dataset.materialQuality).toBe('unavailable');
+    expect(f.host.dataset.materialReason).toBe('external-foreground-mismatch');
+    f.sink.release(1);
+  });
+});
