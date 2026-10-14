@@ -1,0 +1,515 @@
+{
+  "schemaVersion": 1,
+  "preparedAt": "2026-10-14T15:50:27.287614+00:00",
+  "status": "local prepared exact8afe C evidence checkpoint; source repairs and local native passed; incoming CLI2 and trackedGPUI fixture remain red; current hosted CI incomplete; partial/ABSTAIN; not published or approved",
+  "currentTarget": {
+    "head": "8afe6628df8639418b12c4207c4c6dd1bf48a2d3",
+    "tree": "5720ba41fc4c88d536620cedee7f8fce2dd4f629",
+    "base": "69b346b96d5f39929bf010d3acb3ad6315dbbd72",
+    "sourceBinding": "foundation-69b346b9/independent-final-binding-8afe6628.json",
+    "unionReceipt": "foundation-69b346b9/union-receipt.json",
+    "pushReceipt": "final-8afe6628/push-receipt.json",
+    "nativeReceipts": [
+      "final-8afe6628/native/field/run-receipt.json",
+      "final-8afe6628/native/collapsible/run-receipt.json"
+    ],
+    "ciCheckpoint": "public-final-8afe-staging/ci-checkpoint-from-root-collector.json",
+    "ciState": "queued/in-progress at frozen root-owned collector snapshot; no current-run complete result claimed",
+    "assessment": "partial/ABSTAIN",
+    "published": false,
+    "finalized": false,
+    "sourceReview": "Four specific platform C findings repaired at source with actual retained baselines/candidates and local advisory independent reviews; not full C/Finf acceptance.",
+    "legacyPacket": "Historical c82 payload-v3 was staged locally but not published; it remains unchanged."
+  },
+  "archive": {
+    "path": "records.tar.gz",
+    "sha256": "48b9bbaeea41516edb7bdb0a2ecab4e71c55f0af86f01e79863a895d0a07eb8d",
+    "bytes": 2341968,
+    "members": 1065
+  },
+  "inputs": {
+    "rawFiles": 1316,
+    "rawBytes": 63713751,
+    "records": 1064,
+    "viewedOriginalPNGs": 252,
+    "PNGBytes": 38330830,
+    "sourceAllowlistSHA256": "123f7e04cdc0e08d1c7900e91dadc46813deb2a7086fdb943cb920a9a471d5d7"
+  },
+  "historicalC82PreparedCheckpoint": {
+    "source": "public-packet-v2-staging/payload-v3/packet.json",
+    "sourceSHA256": "7d80fd4d43f07555ccd8765342b5634dcff626c96328ce43b55475a75a756d86",
+    "publicationState": "locally staged candidate only; not published at this preparation checkpoint",
+    "currentSource": {
+      "head": "c82b9919294b78277a0778ed26185348663114db",
+      "tree": "1f5a7045bdce8953a8a1c72af434c7280ac2dfb2",
+      "sourceReceipt": "final-c82b9919/source-commit-receipt.json",
+      "unionReceipt": "foundation-9c448/union-receipt.json",
+      "independentBinding": "foundation-9c448/independent-final-binding-c82b9919.json"
+    },
+    "currentValidation": {
+      "c67": {
+        "files": 67,
+        "passed": 1102
+      },
+      "incomingMaterial": {
+        "files": 16,
+        "passed": 310
+      },
+      "types": {
+        "files": 879,
+        "errors": 0,
+        "warnings": 0,
+        "hints": 11
+      },
+      "receipt": "final-c82b9919/validation-receipt.json"
+    },
+    "currentNative": [
+      {
+        "family": "field",
+        "head": "c82b9919294b78277a0778ed26185348663114db",
+        "tree": "1f5a7045bdce8953a8a1c72af434c7280ac2dfb2",
+        "passed": 25,
+        "actualStart": "2026-10-14T14:29:38.614827+00:00",
+        "actualEnd": "2026-10-14T14:31:34.999624+00:00",
+        "receipt": "final-c82b9919/native/field/run-receipt.json",
+        "availablePNGCount": 40,
+        "reviewedPNGCount": 40,
+        "privateOverride": false,
+        "optInTrace": false,
+        "scope": "actualcleanlocalmacOS/Chrome; not LinuxCI/OSAT/optical acceptance"
+      },
+      {
+        "family": "collapsible",
+        "head": "c82b9919294b78277a0778ed26185348663114db",
+        "tree": "1f5a7045bdce8953a8a1c72af434c7280ac2dfb2",
+        "passed": 36,
+        "actualStart": "2026-10-14T14:31:35.058106+00:00",
+        "actualEnd": "2026-10-14T14:33:33.394004+00:00",
+        "receipt": "final-c82b9919/native/collapsible/run-receipt.json",
+        "availablePNGCount": 180,
+        "reviewedPNGCount": 44,
+        "privateOverride": false,
+        "optInTrace": false,
+        "scope": "actualcleanlocalmacOS/Chrome; not LinuxCI/OSAT/optical acceptance"
+      }
+    ],
+    "currentCI": {
+      "generalCheckpoint": "final-c82b9919/ci/checkpoint-20261014T1438.json",
+      "general": {
+        "run": 38581222758,
+        "job": 115913299506,
+        "conclusion": "failure",
+        "publicDocsDriftIssues": 78,
+        "beforeVitest": true,
+        "logSha256": "c49764cd97640790b48e1dd90b2c2a177e10ed09d7322561eeb990933fbbd42b"
+      },
+      "dedicatedFieldCheckpoint": "final-c82b9919/ci/field-artifact/field-success-checkpoint.json",
+      "dedicatedField": {
+        "run": 38581222900,
+        "job": 115911306676,
+        "counts": "1file25tests25pass",
+        "exit": 0,
+        "optInTimeline": "3Liquidframeworkcases only;rest22no timeline",
+        "scope": "Linuxinstrumentedpositive, not rootcauseproof or untraceddefaultpass"
+      },
+      "remainingMainCI": "incomplete at immutable checkpoint; not final all22 summary",
+      "rootCause": "Old Linux async and first Mac cleanup root causes remain unknown"
+    },
+    "historicalNative": [
+      {
+        "head": "6d150e127461c99d26122dd68642539c841f4190",
+        "family": "Field",
+        "caseCount": 25,
+        "passed": 25,
+        "reviewedPNGCount": 40,
+        "actualStart": "2026-10-14T13:12:31.267710+00:00",
+        "actualEnd": "2026-10-14T13:15:39.288444+00:00"
+      },
+      {
+        "head": "58d39e1fb06fdd437ae75ad6be26836cfd4e00ac",
+        "family": "Collapsible",
+        "caseCount": 36,
+        "passed": 36,
+        "reviewedPNGCount": 44,
+        "availablePNGCount": 180,
+        "actualStart": "2026-10-14T12:26:18.525525+00:00",
+        "actualEnd": "2026-10-14T12:28:19.401342+00:00"
+      }
+    ],
+    "historicalCI": {
+      "58dMainRun": "38563529622 failure; exact21dc0b86 tree; 12success/10failure jobs; general stopped before Vitest",
+      "6dFieldRun": "38569846801 failure; 22pass/3fail; Liquid React/Vue/Vue2 Checking-to-Available1000ms; root cause unresolved"
+    },
+    "retainedDiagnosticFailures": {
+      "firstTwoControls": "each1pass24skip but afterAll 10000 ms suiteexit1",
+      "v2All25": "actualprecommit6b diagnostic 25 pass; differentcategories/filter/cleanup, no rootcause conclusion",
+      "derivedTimingSummary": "field-async-timing-plan/native-v2-analysis/timing-summary.json",
+      "rawTraceBytesExcluded": true,
+      "hostedTraceBoundary": "Official Actions artifact11903407079 contains the three Linuxrawtraces; downloaded originals retained; none mirrored in this immutable public evidence packet"
+    }
+  },
+  "currentSource": {
+    "head": "8afe6628df8639418b12c4207c4c6dd1bf48a2d3",
+    "tree": "5720ba41fc4c88d536620cedee7f8fce2dd4f629",
+    "base": "69b346b96d5f39929bf010d3acb3ad6315dbbd72",
+    "sourceBinding": "foundation-69b346b9/independent-final-binding-8afe6628.json",
+    "unionReceipt": "foundation-69b346b9/union-receipt.json",
+    "pushReceipt": "final-8afe6628/push-receipt.json",
+    "ownPaths": 15,
+    "incomingPaths": 44,
+    "intersection": 0
+  },
+  "currentValidation": {
+    "c67": {
+      "files": 67,
+      "passed": 1110
+    },
+    "incomingUnit7": {
+      "files": 7,
+      "passed": 146,
+      "failed": 2,
+      "failedTitles": [
+        "@proto.ui/cli > initializes proto-ui workspace and default style files",
+        "@proto.ui/cli > renders the official prototype token set without unsupported-token comments"
+      ],
+      "observed": "Both expect data-[active]:bg-muted, while generated new New York recipe contains data-[active]:bg-accent. No assertion or production change made to turn them green."
+    },
+    "material": {
+      "files": 16,
+      "passed": 310
+    },
+    "runtimePlan": {
+      "passed": 125
+    },
+    "types": {
+      "files": 883,
+      "errors": 0,
+      "warnings": 0,
+      "hints": 11
+    },
+    "specAuthoring": {
+      "changedEntities": 2,
+      "exitCode": 0
+    },
+    "agentProjection": "generate/check exit0",
+    "receipts": [
+      "final-8afe6628/validation-receipt.json",
+      "final-8afe6628/validation-continuation-receipt.json"
+    ]
+  },
+  "currentGpuiDiagnostic": {
+    "receipt": "final-8afe6628/gpui-style-diagnostic/receipt.json",
+    "comparison": "final-8afe6628/gpui-style-diagnostic/comparison.json",
+    "privateGenerateExit": 0,
+    "privateCheckExit": 0,
+    "trackedCheckExit": 1,
+    "trackedUnchanged": true,
+    "generatedCounts": {
+      "tokens": 499,
+      "compiled": 494,
+      "noDeclarations": 4,
+      "unsupportedSelectors": 1
+    },
+    "trackedCounts": {
+      "tokens": 373,
+      "compiled": 366,
+      "noDeclarations": 6,
+      "unsupportedSelectors": 1
+    },
+    "boundary": "Private generator output is a diagnostic, not an applied repair. Ring-black is one concrete new input, but the full drift is not attributed solely to incoming055. No C ownership takeover of style/compiler/GPUI."
+  },
+  "currentNative": [
+    {
+      "family": "field",
+      "head": "8afe6628df8639418b12c4207c4c6dd1bf48a2d3",
+      "tree": "5720ba41fc4c88d536620cedee7f8fce2dd4f629",
+      "passed": 25,
+      "actualStart": "2026-10-14T15:37:29.138196+00:00",
+      "actualEnd": "2026-10-14T15:39:24.799141+00:00",
+      "receipt": "final-8afe6628/native/field/run-receipt.json",
+      "availablePNGCount": 40,
+      "reviewedPNGCount": 40,
+      "sourceOverrides": false,
+      "optInTrace": false,
+      "node": "v24.21.0",
+      "pnpm": "10.32.1",
+      "chrome": "Google Chrome 155.0.8059.40",
+      "platform": "darwin-arm64",
+      "scope": "actual clean local macOS run; default Linux-visible assertion/deadline path retained; not canonical Linux success or OS AT/optical acceptance"
+    },
+    {
+      "family": "collapsible",
+      "head": "8afe6628df8639418b12c4207c4c6dd1bf48a2d3",
+      "tree": "5720ba41fc4c88d536620cedee7f8fce2dd4f629",
+      "passed": 36,
+      "actualStart": "2026-10-14T15:39:24.858252+00:00",
+      "actualEnd": "2026-10-14T15:41:19.398096+00:00",
+      "receipt": "final-8afe6628/native/collapsible/run-receipt.json",
+      "availablePNGCount": 180,
+      "reviewedPNGCount": 44,
+      "sourceOverrides": false,
+      "optInTrace": false,
+      "node": "v24.21.0",
+      "pnpm": "10.32.1",
+      "chrome": "Google Chrome 155.0.8059.40",
+      "platform": "darwin-arm64",
+      "scope": "actual clean local macOS run; default Linux-visible assertion/deadline path retained; not canonical Linux success or OS AT/optical acceptance"
+    }
+  ],
+  "currentCI": {
+    "snapshotReadAt": "2026-10-14T15:46:41.409177+00:00",
+    "source": "final-8afe6628/ci/collector-current.json",
+    "sourceSHA256": "f45e60b69bc65dd86601d301abd00ab610b12f608839cf9e4a33a848e4ed2834",
+    "record": {
+      "startedAt": "2026-10-14T15:42:31.687519+00:00",
+      "at": "2026-10-14T15:46:36.624536+00:00",
+      "runs": [
+        {
+          "id": 38591514394,
+          "head": "8afe6628df8639418b12c4207c4c6dd1bf48a2d3",
+          "attempt": 1,
+          "status": "queued",
+          "conclusion": null,
+          "jobs": [
+            {
+              "id": 115947315958,
+              "name": "public_package_plan",
+              "status": "queued",
+              "conclusion": null
+            },
+            {
+              "id": 115947316279,
+              "name": "lockstep-check",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "id": 115947316387,
+              "name": "test-plan",
+              "status": "queued",
+              "conclusion": null
+            },
+            {
+              "id": 115947316515,
+              "name": "rust",
+              "status": "queued",
+              "conclusion": null
+            },
+            {
+              "id": 115947316590,
+              "name": "release-scan",
+              "status": "queued",
+              "conclusion": null
+            },
+            {
+              "id": 115947316603,
+              "name": "rust-interop",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "id": 115947316626,
+              "name": "rust-macos",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "id": 115947316777,
+              "name": "type-check",
+              "status": "queued",
+              "conclusion": null
+            }
+          ]
+        },
+        {
+          "id": 38591514564,
+          "head": "8afe6628df8639418b12c4207c4c6dd1bf48a2d3",
+          "attempt": 1,
+          "status": "queued",
+          "conclusion": null,
+          "jobs": [
+            {
+              "id": 115947316858,
+              "name": "browser-evidence",
+              "status": "queued",
+              "conclusion": null
+            }
+          ]
+        },
+        {
+          "id": 38591514512,
+          "head": "8afe6628df8639418b12c4207c4c6dd1bf48a2d3",
+          "attempt": 1,
+          "status": "queued",
+          "conclusion": null,
+          "jobs": [
+            {
+              "id": 115947319729,
+              "name": "representative-features (disclosure-overlays)",
+              "status": "in_progress",
+              "conclusion": null
+            },
+            {
+              "id": 115947320138,
+              "name": "representative-features (forms)",
+              "status": "queued",
+              "conclusion": null
+            },
+            {
+              "id": 115947320142,
+              "name": "representative-features (drawer-command-density)",
+              "status": "queued",
+              "conclusion": null
+            },
+            {
+              "id": 115947320185,
+              "name": "representative-features (modal-overlays)",
+              "status": "queued",
+              "conclusion": null
+            },
+            {
+              "id": 115947320189,
+              "name": "representative-features (popover-command-density)",
+              "status": "queued",
+              "conclusion": null
+            },
+            {
+              "id": 115947320190,
+              "name": "representative-features (calendar)",
+              "status": "in_progress",
+              "conclusion": null
+            },
+            {
+              "id": 115947320273,
+              "name": "representative-features (drawer-intrinsic)",
+              "status": "queued",
+              "conclusion": null
+            },
+            {
+              "id": 115947320360,
+              "name": "representative-features (liquid-dropdown)",
+              "status": "queued",
+              "conclusion": null
+            },
+            {
+              "id": 115947320402,
+              "name": "representative-features (dropdown)",
+              "status": "queued",
+              "conclusion": null
+            },
+            {
+              "id": 115947320438,
+              "name": "representative-features (neo-popover-title)",
+              "status": "queued",
+              "conclusion": null
+            },
+            {
+              "id": 115947320454,
+              "name": "representative-features (resident-motion-capability)",
+              "status": "queued",
+              "conclusion": null
+            },
+            {
+              "id": 115947320575,
+              "name": "representative-features (slider)",
+              "status": "queued",
+              "conclusion": null
+            },
+            {
+              "id": 115947320926,
+              "name": "representative-features (popover-title)",
+              "status": "queued",
+              "conclusion": null
+            },
+            {
+              "id": 115947320955,
+              "name": "representative-features (runtime-tabs)",
+              "status": "queued",
+              "conclusion": null
+            },
+            {
+              "id": 115947323037,
+              "name": "representative-features (shadcn-toggle)",
+              "status": "queued",
+              "conclusion": null
+            },
+            {
+              "id": 115947323074,
+              "name": "representative-features (shadcn-switch-consumer)",
+              "status": "queued",
+              "conclusion": null
+            },
+            {
+              "id": 115947323235,
+              "name": "representative-features (brutalist-switch-consumer)",
+              "status": "queued",
+              "conclusion": null
+            },
+            {
+              "id": 115947323294,
+              "name": "representative-features (shadcn-drawer-presence)",
+              "status": "queued",
+              "conclusion": null
+            }
+          ]
+        },
+        {
+          "id": 38591514377,
+          "head": "8afe6628df8639418b12c4207c4c6dd1bf48a2d3",
+          "attempt": 1,
+          "status": "in_progress",
+          "conclusion": null,
+          "jobs": [
+            {
+              "id": 115947316936,
+              "name": "browser-evidence",
+              "status": "in_progress",
+              "conclusion": null
+            }
+          ]
+        }
+      ],
+      "logsAttemptedOnce": 3,
+      "logErrors": []
+    },
+    "scope": "Immutable copy of one existing root collector state; no independent collection, no terminal conclusion inferred."
+  },
+  "specificPlatformCFeedback": [
+    {
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/888#discussion_r4270798986",
+      "slice": "Field queued State publication",
+      "sourceStatus": "locally repaired and covered; retained external-State limitation"
+    },
+    {
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/888#discussion_r4271328764",
+      "slice": "Field current deferred emitter slot",
+      "sourceStatus": "locally repaired and covered"
+    },
+    {
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/888#discussion_r4272267609",
+      "slice": "Overlay terminal mounted-side reconciliation",
+      "sourceStatus": "locally repaired and covered"
+    },
+    {
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/888#discussion_r4272267620",
+      "slice": "Toggle queued Context notification retirement",
+      "sourceStatus": "locally repaired and covered"
+    }
+  ],
+  "feedbackBoundary": "Source repair status only. No GitHub thread resolution, approval or complete C/Finf acceptance inferred.",
+  "retainedWrongPremise": "The private Toggle normal/Error/raw0 pair has one pass/two failed expectations on each source. Both really emit [b,c,a], return true and have no outward throw because ExposeEvent catches the host sink error. The rejected test draft is preserved and was not applied; neither log is relabeled as a product regression or a passing test run.",
+  "remainingDebt": [
+    "Current exact8afe canonical CI final results",
+    "Incoming CLI assertion debt and tracked GPUI generated-fixture debt",
+    "Independent packet/privacy review and separately authorized publication",
+    "Broader Finf/optical/AT/installed-package evidence"
+  ],
+  "notClaimed": [
+    "Whole Finf or all C acceptance",
+    "Final green hosted CI",
+    "GitHub approval or merge permission",
+    "Linux async/focus root cause fixed",
+    "Historical evidence rerun on a newer head",
+    "B implementation or generator repair by this C contribution"
+  ]
+}

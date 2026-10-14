@@ -1,0 +1,1305 @@
+{
+  "schemaVersion": 1,
+  "excludesItself": true,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 3779,
+      "sha256": "0838de50ff4dc7882949e9dcadb99e2541ef3d8bc7b1ae37cf69a939b23b2d4b"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/bootstrap-2-3-2-react-keyboard-focus-open.png",
+      "bytes": 75391,
+      "sha256": "9e6f20bbb8f6fdda64dea335ea99c5ed75fe6ff234155d349e529805709ff7b0"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/bootstrap-2-3-2-vue-keyboard-focus-open.png",
+      "bytes": 75406,
+      "sha256": "15520cb9e26f2283fe74e21a18faa0ebf31e8d4cc1a99692aaf6bb7ef0bdf368"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/bootstrap-2-3-2-vue2-keyboard-focus-open.png",
+      "bytes": 75387,
+      "sha256": "7c16c4541bd17c6bfd164fc73ed0838c6ceb487d4f1aa1e9054eb71b0b20c33c"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/bootstrap-2-3-2-vue2-zh-cn-390-open.png",
+      "bytes": 64936,
+      "sha256": "c5dd5c57e5484737f6d4ffee137b7c6f174f8e75f976a8e1824f6cb6538fb44f"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/bootstrap-2-3-2-wc-320-text200-dark-open.png",
+      "bytes": 218714,
+      "sha256": "19f8c403f90c92276a959c0c5546b337f8b7c1e2efe4c284cd989d2772bccd6b"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/bootstrap-2-3-2-wc-320-text200-light-open.png",
+      "bytes": 219266,
+      "sha256": "2ba24f16c63503b2a4b799ddc21b7a7d4126b5a1fef9754de6e56c40144e1ef6"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/bootstrap-2-3-2-wc-controlled-accepted.png",
+      "bytes": 57791,
+      "sha256": "7928bcf4f27c815aa08d98f72acafd7d4bf26071681d8d1675c9fce8e37003fd"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/bootstrap-2-3-2-wc-initial.png",
+      "bytes": 59818,
+      "sha256": "5d22782075fa126aa581cbfe8363d1a4bfc84dff468a9d4533e376968b0a9dcf"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/bootstrap-2-3-2-wc-keyboard-focus-closed.png",
+      "bytes": 60190,
+      "sha256": "0173345f90e328eaa4144709df694d824b5e6cbd2360bfaadae9db315bcbc7dd"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/bootstrap-2-3-2-wc-keyboard-focus-open.png",
+      "bytes": 75381,
+      "sha256": "efb70e6cd3b466cf65bbb53d99850ec89a84c9a4bbfbfe6bdbdc18b724e98fc5"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/bootstrap-2-3-2-wc-open.png",
+      "bytes": 74926,
+      "sha256": "185cc545fa3051e339383e3a1e3bc5eca7adad414ed86e2abcb5539804fbf9fd"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/brutalist-react-keyboard-focus-open.png",
+      "bytes": 78037,
+      "sha256": "bf6ccafcd80bff1d99afdcc0ad099c5f475c86456fc000a6be4b1ca111278ef4"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/brutalist-vue-keyboard-focus-open.png",
+      "bytes": 77695,
+      "sha256": "2cb87cc5f36e3631b8187e166517dff95711cc7f670b69d2de4a62c8cfb3fb25"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/brutalist-vue2-keyboard-focus-open.png",
+      "bytes": 77896,
+      "sha256": "bef012049603614ca6b04261eb86e26dc456a7be0d7141938343cd8464e18e45"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/brutalist-vue2-zh-cn-390-open.png",
+      "bytes": 72810,
+      "sha256": "4b607044da4b6ea261f8d3f56700da5f5fa66ec2cd1fee27c6ec93859d18ea75"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/brutalist-wc-320-text200-dark-open.png",
+      "bytes": 193423,
+      "sha256": "add0dffbda245c44de2ad55112172b3c86f2c51b0260555a8829b0b177ddc182"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/brutalist-wc-320-text200-light-open.png",
+      "bytes": 193635,
+      "sha256": "1291bdde5cee72d6925acb62493e3ae4bc009eee1f876027dfd725cffc1bcff3"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/brutalist-wc-controlled-accepted.png",
+      "bytes": 61056,
+      "sha256": "301d26b44e1afdcd7ac25d90796f8925658dc5adf603e73d5361a766f69e5607"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/brutalist-wc-initial.png",
+      "bytes": 62923,
+      "sha256": "a43028c22a328d6c4235ee3fcd8f9597c0fa20331da5b7ec136f8d81cc2735b6"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/brutalist-wc-keyboard-focus-closed.png",
+      "bytes": 63553,
+      "sha256": "63f2dc839bdd0895ec96710772355799bc1769a0486351d06af5fe2d77a40605"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/brutalist-wc-keyboard-focus-open.png",
+      "bytes": 79113,
+      "sha256": "785cafa5eedcf0cd62f3c36a38661fde7fabf27857ba0b049c9d623ed76a4401"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/brutalist-wc-open.png",
+      "bytes": 78739,
+      "sha256": "5d7b329d4d37b20bf51376cf3745a973f0d2660b29cdc5317555947132971975"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/liquid-glass-react-keyboard-focus-open.png",
+      "bytes": 170779,
+      "sha256": "f7e0551f1ea044f2a940504ac7fa62fbcd27bd947cc710963b243963b5521ddd"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/liquid-glass-vue-keyboard-focus-open.png",
+      "bytes": 170661,
+      "sha256": "083a1407f0dc623d19121dd8be04f1158c291d1b82f56ae880f825f4cacc730a"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/liquid-glass-vue2-keyboard-focus-open.png",
+      "bytes": 170662,
+      "sha256": "29d27711b8a2b2e169d6c4b4f07242d309d8d8a9aedd9b9eb30c50cc0a7c2e65"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/liquid-glass-vue2-zh-cn-390-open.png",
+      "bytes": 164498,
+      "sha256": "408d2af814948d621629e7c6f2da5ee40d495b50ea9103c65492dc179c660a3b"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/liquid-glass-wc-320-text200-dark-open.png",
+      "bytes": 334771,
+      "sha256": "bf2e000492b0f72564fa58d0c4602d746650fbad670fc090b4dfbc466159c887"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/liquid-glass-wc-320-text200-light-open.png",
+      "bytes": 360148,
+      "sha256": "e5a8b782389ecd69d6d868e481c1e0340eb344b20253c496554c646c14483e8e"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/liquid-glass-wc-controlled-accepted.png",
+      "bytes": 151317,
+      "sha256": "6e6f20073949fcea8e5c7a1b42b61a744f7e2d2ce1e45a61c64d4be6ef85bcee"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/liquid-glass-wc-initial.png",
+      "bytes": 157775,
+      "sha256": "96ab2424346cc0c704d556e67cc04fb8cddf3a754fa13b61e43dc69cf7377de6"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/liquid-glass-wc-keyboard-focus-closed.png",
+      "bytes": 150094,
+      "sha256": "21a466d3407f8bad907b74b49494e7be749150163efd09a5d01876e93fbcc8e7"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/liquid-glass-wc-keyboard-focus-open.png",
+      "bytes": 170459,
+      "sha256": "d96a8fbad3ecb8bfe2f9ec7f9fe6cc5f7642175010adca7b495f243442bf896f"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/liquid-glass-wc-open.png",
+      "bytes": 172188,
+      "sha256": "7975a471425ccd2143c816d510a0d1f17551bf2bf5686a106ff19f82631cd3af"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/shadcn-react-keyboard-focus-open.png",
+      "bytes": 75125,
+      "sha256": "fac08ef965bd77878bea8e43b944621380e58ec0dce9d364a222e1564f9e2a50"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/shadcn-vue-keyboard-focus-open.png",
+      "bytes": 75107,
+      "sha256": "18ae06d9b5675e4a3975a1e412305894a5c3828cadcdcd175653790ceeb2d9f9"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/shadcn-vue2-keyboard-focus-open.png",
+      "bytes": 75125,
+      "sha256": "70bcb684feb9eddd31d7cc9c52577e15cff294715803a47e51522a0b4a1acdc0"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/shadcn-vue2-zh-cn-390-open.png",
+      "bytes": 63816,
+      "sha256": "dd2e990ac71f992b93e5a05021c2f6b21e4fa66830442297ff0ce263bd83f762"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/shadcn-wc-320-text200-dark-open.png",
+      "bytes": 205343,
+      "sha256": "0d9122faa56c236e38c0a019b8143244fd823fbafb96298ec06db19897351028"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/shadcn-wc-320-text200-light-open.png",
+      "bytes": 202039,
+      "sha256": "7ccb85833c6a5832ef2852007f51f070623e35964a563b56c01ab93bb5ede5c4"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/shadcn-wc-controlled-accepted.png",
+      "bytes": 57490,
+      "sha256": "fd140b59cdf71a9686de335d8d56f3098f480f374e2d0676619f1799fa908763"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/shadcn-wc-initial.png",
+      "bytes": 59359,
+      "sha256": "173ed76cb291c634bef4dc08b7cab5727aa072035be8a9f71e6021156ed8dae2"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/shadcn-wc-keyboard-focus-closed.png",
+      "bytes": 59798,
+      "sha256": "c30bb77992df508a7c10bf6185e93e6d11a81864d620d0bcf6ef892f39ac205f"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/shadcn-wc-keyboard-focus-open.png",
+      "bytes": 75093,
+      "sha256": "e74627cef39046cfd23d9a1b5fcdfaf931d881d888a4836b7d5b532783db7713"
+    },
+    {
+      "path": "images/current-c82-collapsible-native/shadcn-wc-open.png",
+      "bytes": 74659,
+      "sha256": "7d2e9ff811828d96406599c8c649494f07529ff290c4ebe9b82359a0705af0aa"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-base-react-dark-narrow-200.png",
+      "bytes": 152369,
+      "sha256": "a0144c21bd8dab252a25a747a4f9f61c74fdf2383ddd936a5ff0474862da8f4f"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-base-react-light.png",
+      "bytes": 136739,
+      "sha256": "0d71fb341c88700e96a12248f0fcc21d99652da54563e686b43d66dce1ab48ab"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-base-vue-dark-narrow-200.png",
+      "bytes": 154411,
+      "sha256": "55ba51e2f32161f0af26032337e88b6eceb61b364021402717d9e2aa89108861"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-base-vue-light.png",
+      "bytes": 136724,
+      "sha256": "4323614a81db2334e96b4d5a78599fd753649cd4b75ae598ae8dc7ed2f891acd"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-base-vue2-dark-narrow-200.png",
+      "bytes": 154411,
+      "sha256": "55ba51e2f32161f0af26032337e88b6eceb61b364021402717d9e2aa89108861"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-base-vue2-light.png",
+      "bytes": 136748,
+      "sha256": "a75686b9782eefa49a510d684e69a4260495fcc77870882dcedfe631d791544f"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-base-wc-dark-narrow-200.png",
+      "bytes": 154411,
+      "sha256": "55ba51e2f32161f0af26032337e88b6eceb61b364021402717d9e2aa89108861"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-base-wc-light.png",
+      "bytes": 136689,
+      "sha256": "a9741d33db33949ee17098e0b1e9b610324c87e97c735ff3521bad934d2c25db"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-bootstrap-2-3-2-react-dark-narrow-200.png",
+      "bytes": 148951,
+      "sha256": "aaa0fe0ed12d8ee07798bfdf6b9e2cd604c59c7141ce081063e6b79710a2db5e"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-bootstrap-2-3-2-react-light.png",
+      "bytes": 115024,
+      "sha256": "0261b416eabc0d880d842ccf408ade1aa4b24f3c154d36ec97cc69a39367ea78"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-bootstrap-2-3-2-vue-dark-narrow-200.png",
+      "bytes": 148951,
+      "sha256": "aaa0fe0ed12d8ee07798bfdf6b9e2cd604c59c7141ce081063e6b79710a2db5e"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-bootstrap-2-3-2-vue-light.png",
+      "bytes": 115039,
+      "sha256": "07ac34c281bde251a4cbd947a7eb1f799425871550bc6e28e065040132f61ab1"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-bootstrap-2-3-2-vue2-dark-narrow-200.png",
+      "bytes": 148951,
+      "sha256": "aaa0fe0ed12d8ee07798bfdf6b9e2cd604c59c7141ce081063e6b79710a2db5e"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-bootstrap-2-3-2-vue2-light.png",
+      "bytes": 115024,
+      "sha256": "b9818cd8a17b91b9334c84d80016f15d15a41aad270df71e7a549c9ac53799be"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-bootstrap-2-3-2-wc-dark-narrow-200.png",
+      "bytes": 148479,
+      "sha256": "981ee2e40d8bb6e861f701ef188abd37246bdae162d432692e5ebb901c7259f7"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-bootstrap-2-3-2-wc-light.png",
+      "bytes": 115019,
+      "sha256": "f32c6e1b3dbb660bdf0daff7e0a51f902055deda470bde1f0c92a417bb1cdba3"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-brutalist-react-dark-narrow-200.png",
+      "bytes": 142958,
+      "sha256": "4d079848408753bf1352cb3f5949e7c41673e87e651fd85188e6f4f4b148d977"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-brutalist-react-light.png",
+      "bytes": 137741,
+      "sha256": "84bb6be54d84b0b4719185a071c937034763e7d0538a96bdd20d609173cb1257"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-brutalist-vue-dark-narrow-200.png",
+      "bytes": 142958,
+      "sha256": "4d079848408753bf1352cb3f5949e7c41673e87e651fd85188e6f4f4b148d977"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-brutalist-vue-light.png",
+      "bytes": 137719,
+      "sha256": "a4174f4252c8b3020ea0cc777f2f0bec40b6109e473168a56f2d678a7bf309cc"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-brutalist-vue2-dark-narrow-200.png",
+      "bytes": 142958,
+      "sha256": "4d079848408753bf1352cb3f5949e7c41673e87e651fd85188e6f4f4b148d977"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-brutalist-vue2-light.png",
+      "bytes": 137762,
+      "sha256": "bce28a382a642ca566522ea4ad4ae75ee6a2282e1bc74cce63e5eec085b6ef0e"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-brutalist-wc-dark-narrow-200.png",
+      "bytes": 143036,
+      "sha256": "ba54773d3e80853046c7bbf087bc611c7b3f1a88cdc38f7b7e3406c03246bc1d"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-brutalist-wc-light.png",
+      "bytes": 137719,
+      "sha256": "73ada6437c39be8b790c0821cb15b5bd7e90ade54315954e3a3ef97c46742683"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-liquid-glass-react-dark-narrow-200.png",
+      "bytes": 464115,
+      "sha256": "3a59e31c9b36d4a3d41d9d61e4344b2469708e55c44c848ac0d40f54ecdf26a5"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-liquid-glass-react-light.png",
+      "bytes": 328563,
+      "sha256": "66f6320869ea4b2f4b92a33344d1d06ad15fc199d35ac9990a596fb153441140"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-liquid-glass-vue-dark-narrow-200.png",
+      "bytes": 456811,
+      "sha256": "f5f5f00d20e2932664a34feee603db8d9fcc65249ae2b9aed65db760fc852d9b"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-liquid-glass-vue-light.png",
+      "bytes": 328105,
+      "sha256": "90c216feaa41220913419e2ffc45c502e83e5261db1f358dfaabf5233fa555d3"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-liquid-glass-vue2-dark-narrow-200.png",
+      "bytes": 457653,
+      "sha256": "efd8e83ec92c418dab3cba4b597aeb2bbdcbe55609e5761c3d8564fce046879b"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-liquid-glass-vue2-light.png",
+      "bytes": 328113,
+      "sha256": "0acc53e5afecbf4fe61035077f4dda175489ecfb3528a43ba8044e77b5f7dff9"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-liquid-glass-wc-dark-narrow-200.png",
+      "bytes": 462317,
+      "sha256": "cce8393d8474ef9dd72c3c765cbd624e0879dfc530eaa1ce5a54492be8688b94"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-liquid-glass-wc-light.png",
+      "bytes": 278413,
+      "sha256": "13ea7e7aa22b01a73223698eb78ba74d87bb3dc845b2d8dba34c499c94f5ebc9"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-shadcn-react-dark-narrow-200.png",
+      "bytes": 141428,
+      "sha256": "ff408ca7f55a9095ed6ca34ddd07820983e25c48cea0d04d56d6071583a49516"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-shadcn-react-light.png",
+      "bytes": 116904,
+      "sha256": "55e7e91851dc3aa8fcfdcfa98cc66e16202be1c0146c1b0d44bcdbc9f7720b9c"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-shadcn-vue-dark-narrow-200.png",
+      "bytes": 141428,
+      "sha256": "ff408ca7f55a9095ed6ca34ddd07820983e25c48cea0d04d56d6071583a49516"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-shadcn-vue-light.png",
+      "bytes": 116889,
+      "sha256": "0616e2e7edc857deae669034e5420dff8096ff6c8061e122dd7325700e8860fa"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-shadcn-vue2-dark-narrow-200.png",
+      "bytes": 141428,
+      "sha256": "ff408ca7f55a9095ed6ca34ddd07820983e25c48cea0d04d56d6071583a49516"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-shadcn-vue2-light.png",
+      "bytes": 116903,
+      "sha256": "de431d92b5aa5c0b11a9a731ac264c4fe3ab83d6ee26692076899f6c76899eff"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-shadcn-wc-dark-narrow-200.png",
+      "bytes": 141502,
+      "sha256": "735cd3a9ed5f2619f9ac734db3976402a712185ba33224952b0294b9a3aa9d1a"
+    },
+    {
+      "path": "images/current-c82-field-native/c82b9919294b-shadcn-wc-light.png",
+      "bytes": 116871,
+      "sha256": "7feae4756f6ed8fcb70a31b00f0a1952bcd823b955dbf698d425fc2c6400ae4d"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/bootstrap-2-3-2-react-keyboard-focus-open.png",
+      "bytes": 75391,
+      "sha256": "9e6f20bbb8f6fdda64dea335ea99c5ed75fe6ff234155d349e529805709ff7b0"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/bootstrap-2-3-2-vue-keyboard-focus-open.png",
+      "bytes": 75406,
+      "sha256": "15520cb9e26f2283fe74e21a18faa0ebf31e8d4cc1a99692aaf6bb7ef0bdf368"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/bootstrap-2-3-2-vue2-keyboard-focus-open.png",
+      "bytes": 75387,
+      "sha256": "7c16c4541bd17c6bfd164fc73ed0838c6ceb487d4f1aa1e9054eb71b0b20c33c"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/bootstrap-2-3-2-vue2-zh-cn-390-open.png",
+      "bytes": 64936,
+      "sha256": "c5dd5c57e5484737f6d4ffee137b7c6f174f8e75f976a8e1824f6cb6538fb44f"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/bootstrap-2-3-2-wc-320-text200-dark-open.png",
+      "bytes": 218714,
+      "sha256": "19f8c403f90c92276a959c0c5546b337f8b7c1e2efe4c284cd989d2772bccd6b"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/bootstrap-2-3-2-wc-320-text200-light-open.png",
+      "bytes": 219266,
+      "sha256": "2ba24f16c63503b2a4b799ddc21b7a7d4126b5a1fef9754de6e56c40144e1ef6"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/bootstrap-2-3-2-wc-controlled-accepted.png",
+      "bytes": 57791,
+      "sha256": "7928bcf4f27c815aa08d98f72acafd7d4bf26071681d8d1675c9fce8e37003fd"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/bootstrap-2-3-2-wc-initial.png",
+      "bytes": 59818,
+      "sha256": "5d22782075fa126aa581cbfe8363d1a4bfc84dff468a9d4533e376968b0a9dcf"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/bootstrap-2-3-2-wc-keyboard-focus-closed.png",
+      "bytes": 60190,
+      "sha256": "0173345f90e328eaa4144709df694d824b5e6cbd2360bfaadae9db315bcbc7dd"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/bootstrap-2-3-2-wc-keyboard-focus-open.png",
+      "bytes": 75381,
+      "sha256": "efb70e6cd3b466cf65bbb53d99850ec89a84c9a4bbfbfe6bdbdc18b724e98fc5"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/bootstrap-2-3-2-wc-open.png",
+      "bytes": 74926,
+      "sha256": "185cc545fa3051e339383e3a1e3bc5eca7adad414ed86e2abcb5539804fbf9fd"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/brutalist-react-keyboard-focus-open.png",
+      "bytes": 78037,
+      "sha256": "bf6ccafcd80bff1d99afdcc0ad099c5f475c86456fc000a6be4b1ca111278ef4"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/brutalist-vue-keyboard-focus-open.png",
+      "bytes": 77695,
+      "sha256": "2cb87cc5f36e3631b8187e166517dff95711cc7f670b69d2de4a62c8cfb3fb25"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/brutalist-vue2-keyboard-focus-open.png",
+      "bytes": 77896,
+      "sha256": "bef012049603614ca6b04261eb86e26dc456a7be0d7141938343cd8464e18e45"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/brutalist-vue2-zh-cn-390-open.png",
+      "bytes": 72810,
+      "sha256": "4b607044da4b6ea261f8d3f56700da5f5fa66ec2cd1fee27c6ec93859d18ea75"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/brutalist-wc-320-text200-dark-open.png",
+      "bytes": 193423,
+      "sha256": "add0dffbda245c44de2ad55112172b3c86f2c51b0260555a8829b0b177ddc182"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/brutalist-wc-320-text200-light-open.png",
+      "bytes": 193635,
+      "sha256": "1291bdde5cee72d6925acb62493e3ae4bc009eee1f876027dfd725cffc1bcff3"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/brutalist-wc-controlled-accepted.png",
+      "bytes": 61056,
+      "sha256": "301d26b44e1afdcd7ac25d90796f8925658dc5adf603e73d5361a766f69e5607"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/brutalist-wc-initial.png",
+      "bytes": 62923,
+      "sha256": "a43028c22a328d6c4235ee3fcd8f9597c0fa20331da5b7ec136f8d81cc2735b6"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/brutalist-wc-keyboard-focus-closed.png",
+      "bytes": 63553,
+      "sha256": "63f2dc839bdd0895ec96710772355799bc1769a0486351d06af5fe2d77a40605"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/brutalist-wc-keyboard-focus-open.png",
+      "bytes": 79113,
+      "sha256": "785cafa5eedcf0cd62f3c36a38661fde7fabf27857ba0b049c9d623ed76a4401"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/brutalist-wc-open.png",
+      "bytes": 78739,
+      "sha256": "5d7b329d4d37b20bf51376cf3745a973f0d2660b29cdc5317555947132971975"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/liquid-glass-react-keyboard-focus-open.png",
+      "bytes": 170779,
+      "sha256": "f7e0551f1ea044f2a940504ac7fa62fbcd27bd947cc710963b243963b5521ddd"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/liquid-glass-vue-keyboard-focus-open.png",
+      "bytes": 170661,
+      "sha256": "083a1407f0dc623d19121dd8be04f1158c291d1b82f56ae880f825f4cacc730a"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/liquid-glass-vue2-keyboard-focus-open.png",
+      "bytes": 170662,
+      "sha256": "29d27711b8a2b2e169d6c4b4f07242d309d8d8a9aedd9b9eb30c50cc0a7c2e65"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/liquid-glass-vue2-zh-cn-390-open.png",
+      "bytes": 164498,
+      "sha256": "408d2af814948d621629e7c6f2da5ee40d495b50ea9103c65492dc179c660a3b"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/liquid-glass-wc-320-text200-dark-open.png",
+      "bytes": 334771,
+      "sha256": "bf2e000492b0f72564fa58d0c4602d746650fbad670fc090b4dfbc466159c887"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/liquid-glass-wc-320-text200-light-open.png",
+      "bytes": 360148,
+      "sha256": "e5a8b782389ecd69d6d868e481c1e0340eb344b20253c496554c646c14483e8e"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/liquid-glass-wc-controlled-accepted.png",
+      "bytes": 151403,
+      "sha256": "61da66a0dca73cbfe32cd7b5c2a3f6b5f7fcae34ac35ce7cfc61f60740d38592"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/liquid-glass-wc-initial.png",
+      "bytes": 158801,
+      "sha256": "0d747cbcc72e60100f07ccac53c2aa640af3a44a0215188f9db22e833ac19fe5"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/liquid-glass-wc-keyboard-focus-closed.png",
+      "bytes": 151417,
+      "sha256": "3f7ce3d843780001e209addbc476dc929730d6a43521f24e30f7867cb39b25ed"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/liquid-glass-wc-keyboard-focus-open.png",
+      "bytes": 171907,
+      "sha256": "67ce145dc17a66c1aedabacfabb0b841c9859dd16572217f0ccdfd179e875ec6"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/liquid-glass-wc-open.png",
+      "bytes": 173435,
+      "sha256": "8f99eed4fa7b6da70d95541170b43990b22e88a0f9c88159a0bfc822c29d2882"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/shadcn-react-keyboard-focus-open.png",
+      "bytes": 75125,
+      "sha256": "fac08ef965bd77878bea8e43b944621380e58ec0dce9d364a222e1564f9e2a50"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/shadcn-vue-keyboard-focus-open.png",
+      "bytes": 75107,
+      "sha256": "18ae06d9b5675e4a3975a1e412305894a5c3828cadcdcd175653790ceeb2d9f9"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/shadcn-vue2-keyboard-focus-open.png",
+      "bytes": 75125,
+      "sha256": "70bcb684feb9eddd31d7cc9c52577e15cff294715803a47e51522a0b4a1acdc0"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/shadcn-vue2-zh-cn-390-open.png",
+      "bytes": 63816,
+      "sha256": "dd2e990ac71f992b93e5a05021c2f6b21e4fa66830442297ff0ce263bd83f762"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/shadcn-wc-320-text200-dark-open.png",
+      "bytes": 205343,
+      "sha256": "0d9122faa56c236e38c0a019b8143244fd823fbafb96298ec06db19897351028"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/shadcn-wc-320-text200-light-open.png",
+      "bytes": 202039,
+      "sha256": "7ccb85833c6a5832ef2852007f51f070623e35964a563b56c01ab93bb5ede5c4"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/shadcn-wc-controlled-accepted.png",
+      "bytes": 57490,
+      "sha256": "fd140b59cdf71a9686de335d8d56f3098f480f374e2d0676619f1799fa908763"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/shadcn-wc-initial.png",
+      "bytes": 59359,
+      "sha256": "173ed76cb291c634bef4dc08b7cab5727aa072035be8a9f71e6021156ed8dae2"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/shadcn-wc-keyboard-focus-closed.png",
+      "bytes": 59798,
+      "sha256": "c30bb77992df508a7c10bf6185e93e6d11a81864d620d0bcf6ef892f39ac205f"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/shadcn-wc-keyboard-focus-open.png",
+      "bytes": 75093,
+      "sha256": "e74627cef39046cfd23d9a1b5fcdfaf931d881d888a4836b7d5b532783db7713"
+    },
+    {
+      "path": "images/final-8afe-collapsible-native/shadcn-wc-open.png",
+      "bytes": 74659,
+      "sha256": "7d2e9ff811828d96406599c8c649494f07529ff290c4ebe9b82359a0705af0aa"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-base-react-dark-narrow-200.png",
+      "bytes": 154411,
+      "sha256": "55ba51e2f32161f0af26032337e88b6eceb61b364021402717d9e2aa89108861"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-base-react-light.png",
+      "bytes": 136739,
+      "sha256": "0d71fb341c88700e96a12248f0fcc21d99652da54563e686b43d66dce1ab48ab"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-base-vue-dark-narrow-200.png",
+      "bytes": 154411,
+      "sha256": "55ba51e2f32161f0af26032337e88b6eceb61b364021402717d9e2aa89108861"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-base-vue-light.png",
+      "bytes": 136724,
+      "sha256": "4323614a81db2334e96b4d5a78599fd753649cd4b75ae598ae8dc7ed2f891acd"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-base-vue2-dark-narrow-200.png",
+      "bytes": 152369,
+      "sha256": "a0144c21bd8dab252a25a747a4f9f61c74fdf2383ddd936a5ff0474862da8f4f"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-base-vue2-light.png",
+      "bytes": 136748,
+      "sha256": "a75686b9782eefa49a510d684e69a4260495fcc77870882dcedfe631d791544f"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-base-wc-dark-narrow-200.png",
+      "bytes": 154411,
+      "sha256": "55ba51e2f32161f0af26032337e88b6eceb61b364021402717d9e2aa89108861"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-base-wc-light.png",
+      "bytes": 136689,
+      "sha256": "a9741d33db33949ee17098e0b1e9b610324c87e97c735ff3521bad934d2c25db"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-bootstrap-2-3-2-react-dark-narrow-200.png",
+      "bytes": 148951,
+      "sha256": "aaa0fe0ed12d8ee07798bfdf6b9e2cd604c59c7141ce081063e6b79710a2db5e"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-bootstrap-2-3-2-react-light.png",
+      "bytes": 115024,
+      "sha256": "0261b416eabc0d880d842ccf408ade1aa4b24f3c154d36ec97cc69a39367ea78"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-bootstrap-2-3-2-vue-dark-narrow-200.png",
+      "bytes": 148951,
+      "sha256": "aaa0fe0ed12d8ee07798bfdf6b9e2cd604c59c7141ce081063e6b79710a2db5e"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-bootstrap-2-3-2-vue-light.png",
+      "bytes": 115039,
+      "sha256": "07ac34c281bde251a4cbd947a7eb1f799425871550bc6e28e065040132f61ab1"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-bootstrap-2-3-2-vue2-dark-narrow-200.png",
+      "bytes": 148951,
+      "sha256": "aaa0fe0ed12d8ee07798bfdf6b9e2cd604c59c7141ce081063e6b79710a2db5e"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-bootstrap-2-3-2-vue2-light.png",
+      "bytes": 115024,
+      "sha256": "b9818cd8a17b91b9334c84d80016f15d15a41aad270df71e7a549c9ac53799be"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-bootstrap-2-3-2-wc-dark-narrow-200.png",
+      "bytes": 148479,
+      "sha256": "981ee2e40d8bb6e861f701ef188abd37246bdae162d432692e5ebb901c7259f7"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-bootstrap-2-3-2-wc-light.png",
+      "bytes": 115019,
+      "sha256": "f32c6e1b3dbb660bdf0daff7e0a51f902055deda470bde1f0c92a417bb1cdba3"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-brutalist-react-dark-narrow-200.png",
+      "bytes": 142958,
+      "sha256": "4d079848408753bf1352cb3f5949e7c41673e87e651fd85188e6f4f4b148d977"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-brutalist-react-light.png",
+      "bytes": 137741,
+      "sha256": "84bb6be54d84b0b4719185a071c937034763e7d0538a96bdd20d609173cb1257"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-brutalist-vue-dark-narrow-200.png",
+      "bytes": 142958,
+      "sha256": "4d079848408753bf1352cb3f5949e7c41673e87e651fd85188e6f4f4b148d977"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-brutalist-vue-light.png",
+      "bytes": 137719,
+      "sha256": "a4174f4252c8b3020ea0cc777f2f0bec40b6109e473168a56f2d678a7bf309cc"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-brutalist-vue2-dark-narrow-200.png",
+      "bytes": 142958,
+      "sha256": "4d079848408753bf1352cb3f5949e7c41673e87e651fd85188e6f4f4b148d977"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-brutalist-vue2-light.png",
+      "bytes": 137762,
+      "sha256": "bce28a382a642ca566522ea4ad4ae75ee6a2282e1bc74cce63e5eec085b6ef0e"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-brutalist-wc-dark-narrow-200.png",
+      "bytes": 143036,
+      "sha256": "ba54773d3e80853046c7bbf087bc611c7b3f1a88cdc38f7b7e3406c03246bc1d"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-brutalist-wc-light.png",
+      "bytes": 137719,
+      "sha256": "73ada6437c39be8b790c0821cb15b5bd7e90ade54315954e3a3ef97c46742683"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-liquid-glass-react-dark-narrow-200.png",
+      "bytes": 457326,
+      "sha256": "60fa301db9d51a08db41a112ade3ed3a9c591dc1225008418b1d23ca3b10d07c"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-liquid-glass-react-light.png",
+      "bytes": 328097,
+      "sha256": "ad34fabf6b607f93a4a25028b00aa6a19abfc5330207b4c9f416d58a10df92f6"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-liquid-glass-vue-dark-narrow-200.png",
+      "bytes": 458636,
+      "sha256": "4a211e0bff3c5c3d0516ad8de1814232b7b87312377221de83dc921afcc041f2"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-liquid-glass-vue-light.png",
+      "bytes": 327416,
+      "sha256": "ee68812bee7c6c5e12a599671c189971068ddf3f2f90ab1d41a26518b91d0326"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-liquid-glass-vue2-dark-narrow-200.png",
+      "bytes": 457326,
+      "sha256": "60fa301db9d51a08db41a112ade3ed3a9c591dc1225008418b1d23ca3b10d07c"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-liquid-glass-vue2-light.png",
+      "bytes": 328049,
+      "sha256": "5c6c3ced81317606ee36831296a302297c690b6dc270c658ba05fa9846930c17"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-liquid-glass-wc-dark-narrow-200.png",
+      "bytes": 462317,
+      "sha256": "cce8393d8474ef9dd72c3c765cbd624e0879dfc530eaa1ce5a54492be8688b94"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-liquid-glass-wc-light.png",
+      "bytes": 279294,
+      "sha256": "d6fbfa2ccb355d0fb4fa5605efa717ac93d1ac97afab6dbb4116a9fc17eeb0fa"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-shadcn-react-dark-narrow-200.png",
+      "bytes": 141428,
+      "sha256": "ff408ca7f55a9095ed6ca34ddd07820983e25c48cea0d04d56d6071583a49516"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-shadcn-react-light.png",
+      "bytes": 116904,
+      "sha256": "55e7e91851dc3aa8fcfdcfa98cc66e16202be1c0146c1b0d44bcdbc9f7720b9c"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-shadcn-vue-dark-narrow-200.png",
+      "bytes": 141428,
+      "sha256": "ff408ca7f55a9095ed6ca34ddd07820983e25c48cea0d04d56d6071583a49516"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-shadcn-vue-light.png",
+      "bytes": 116889,
+      "sha256": "0616e2e7edc857deae669034e5420dff8096ff6c8061e122dd7325700e8860fa"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-shadcn-vue2-dark-narrow-200.png",
+      "bytes": 141428,
+      "sha256": "ff408ca7f55a9095ed6ca34ddd07820983e25c48cea0d04d56d6071583a49516"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-shadcn-vue2-light.png",
+      "bytes": 116903,
+      "sha256": "de431d92b5aa5c0b11a9a731ac264c4fe3ab83d6ee26692076899f6c76899eff"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-shadcn-wc-dark-narrow-200.png",
+      "bytes": 141502,
+      "sha256": "735cd3a9ed5f2619f9ac734db3976402a712185ba33224952b0294b9a3aa9d1a"
+    },
+    {
+      "path": "images/final-8afe-field-native/8afe6628df86-shadcn-wc-light.png",
+      "bytes": 116871,
+      "sha256": "7feae4756f6ed8fcb70a31b00f0a1952bcd823b955dbf698d425fc2c6400ae4d"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/bootstrap-2-3-2-react-keyboard-focus-open.png",
+      "bytes": 75391,
+      "sha256": "9e6f20bbb8f6fdda64dea335ea99c5ed75fe6ff234155d349e529805709ff7b0"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/bootstrap-2-3-2-vue-keyboard-focus-open.png",
+      "bytes": 75406,
+      "sha256": "15520cb9e26f2283fe74e21a18faa0ebf31e8d4cc1a99692aaf6bb7ef0bdf368"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/bootstrap-2-3-2-vue2-keyboard-focus-open.png",
+      "bytes": 75387,
+      "sha256": "7c16c4541bd17c6bfd164fc73ed0838c6ceb487d4f1aa1e9054eb71b0b20c33c"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/bootstrap-2-3-2-vue2-zh-cn-390-open.png",
+      "bytes": 64936,
+      "sha256": "c5dd5c57e5484737f6d4ffee137b7c6f174f8e75f976a8e1824f6cb6538fb44f"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/bootstrap-2-3-2-wc-320-text200-dark-open.png",
+      "bytes": 218714,
+      "sha256": "19f8c403f90c92276a959c0c5546b337f8b7c1e2efe4c284cd989d2772bccd6b"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/bootstrap-2-3-2-wc-320-text200-light-open.png",
+      "bytes": 219266,
+      "sha256": "2ba24f16c63503b2a4b799ddc21b7a7d4126b5a1fef9754de6e56c40144e1ef6"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/bootstrap-2-3-2-wc-controlled-accepted.png",
+      "bytes": 57791,
+      "sha256": "7928bcf4f27c815aa08d98f72acafd7d4bf26071681d8d1675c9fce8e37003fd"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/bootstrap-2-3-2-wc-initial.png",
+      "bytes": 59818,
+      "sha256": "5d22782075fa126aa581cbfe8363d1a4bfc84dff468a9d4533e376968b0a9dcf"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/bootstrap-2-3-2-wc-keyboard-focus-closed.png",
+      "bytes": 60190,
+      "sha256": "0173345f90e328eaa4144709df694d824b5e6cbd2360bfaadae9db315bcbc7dd"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/bootstrap-2-3-2-wc-keyboard-focus-open.png",
+      "bytes": 75381,
+      "sha256": "efb70e6cd3b466cf65bbb53d99850ec89a84c9a4bbfbfe6bdbdc18b724e98fc5"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/bootstrap-2-3-2-wc-open.png",
+      "bytes": 74926,
+      "sha256": "185cc545fa3051e339383e3a1e3bc5eca7adad414ed86e2abcb5539804fbf9fd"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/brutalist-react-keyboard-focus-open.png",
+      "bytes": 78037,
+      "sha256": "bf6ccafcd80bff1d99afdcc0ad099c5f475c86456fc000a6be4b1ca111278ef4"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/brutalist-vue-keyboard-focus-open.png",
+      "bytes": 77695,
+      "sha256": "2cb87cc5f36e3631b8187e166517dff95711cc7f670b69d2de4a62c8cfb3fb25"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/brutalist-vue2-keyboard-focus-open.png",
+      "bytes": 77896,
+      "sha256": "bef012049603614ca6b04261eb86e26dc456a7be0d7141938343cd8464e18e45"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/brutalist-vue2-zh-cn-390-open.png",
+      "bytes": 72810,
+      "sha256": "4b607044da4b6ea261f8d3f56700da5f5fa66ec2cd1fee27c6ec93859d18ea75"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/brutalist-wc-320-text200-dark-open.png",
+      "bytes": 193423,
+      "sha256": "add0dffbda245c44de2ad55112172b3c86f2c51b0260555a8829b0b177ddc182"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/brutalist-wc-320-text200-light-open.png",
+      "bytes": 193635,
+      "sha256": "1291bdde5cee72d6925acb62493e3ae4bc009eee1f876027dfd725cffc1bcff3"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/brutalist-wc-controlled-accepted.png",
+      "bytes": 61056,
+      "sha256": "301d26b44e1afdcd7ac25d90796f8925658dc5adf603e73d5361a766f69e5607"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/brutalist-wc-initial.png",
+      "bytes": 62923,
+      "sha256": "a43028c22a328d6c4235ee3fcd8f9597c0fa20331da5b7ec136f8d81cc2735b6"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/brutalist-wc-keyboard-focus-closed.png",
+      "bytes": 63553,
+      "sha256": "63f2dc839bdd0895ec96710772355799bc1769a0486351d06af5fe2d77a40605"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/brutalist-wc-keyboard-focus-open.png",
+      "bytes": 79113,
+      "sha256": "785cafa5eedcf0cd62f3c36a38661fde7fabf27857ba0b049c9d623ed76a4401"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/brutalist-wc-open.png",
+      "bytes": 78739,
+      "sha256": "5d7b329d4d37b20bf51376cf3745a973f0d2660b29cdc5317555947132971975"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/liquid-glass-react-keyboard-focus-open.png",
+      "bytes": 170646,
+      "sha256": "9b8f95352ef49c5e4502fb9ff5e3e939290b882e06874c95d0afe203b51df740"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/liquid-glass-vue-keyboard-focus-open.png",
+      "bytes": 172283,
+      "sha256": "7eae39a97ed5e9d757aecc3d69cb531649cc2e428bad01f6b0edf996e054b8d3"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/liquid-glass-vue2-keyboard-focus-open.png",
+      "bytes": 172281,
+      "sha256": "904d5026f84d48e001f0f25d089b390b91e63bc77af7cf747d35e4413e9878ea"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/liquid-glass-vue2-zh-cn-390-open.png",
+      "bytes": 164498,
+      "sha256": "408d2af814948d621629e7c6f2da5ee40d495b50ea9103c65492dc179c660a3b"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/liquid-glass-wc-320-text200-dark-open.png",
+      "bytes": 337418,
+      "sha256": "9b8ece9dea0feaa4f6e41692f359b75d5dd031571d2eb78ef4401e3c75d484ad"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/liquid-glass-wc-320-text200-light-open.png",
+      "bytes": 363083,
+      "sha256": "6796995c40ee61a78f5c5bd9de1f50315235532c92995a473c22514c1dbf8ffb"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/liquid-glass-wc-controlled-accepted.png",
+      "bytes": 150259,
+      "sha256": "838316aaeeb78c190796218efdc8ab76d86ccbb77865d691c937030003d438c5"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/liquid-glass-wc-initial.png",
+      "bytes": 157729,
+      "sha256": "e9bc5b071a06b30c542fa3b339e899562dc05c2fbd124818d632e2847da75cd6"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/liquid-glass-wc-keyboard-focus-closed.png",
+      "bytes": 149805,
+      "sha256": "37a27cba247dc8edbbec029c5bdff61347baf60314f57a55d3d53ecbb0edfbfa"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/liquid-glass-wc-keyboard-focus-open.png",
+      "bytes": 170303,
+      "sha256": "ff25829afadb93c9e96ab7f39c7dd4e12b7bfbc09d2d327fda5f615b03aa6b06"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/liquid-glass-wc-open.png",
+      "bytes": 172294,
+      "sha256": "c6012722a1ba88f10070a7ebbd823c28a3622123213d96c4b9a53db3addd7eb1"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/shadcn-react-keyboard-focus-open.png",
+      "bytes": 75125,
+      "sha256": "fac08ef965bd77878bea8e43b944621380e58ec0dce9d364a222e1564f9e2a50"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/shadcn-vue-keyboard-focus-open.png",
+      "bytes": 75107,
+      "sha256": "18ae06d9b5675e4a3975a1e412305894a5c3828cadcdcd175653790ceeb2d9f9"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/shadcn-vue2-keyboard-focus-open.png",
+      "bytes": 75125,
+      "sha256": "70bcb684feb9eddd31d7cc9c52577e15cff294715803a47e51522a0b4a1acdc0"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/shadcn-vue2-zh-cn-390-open.png",
+      "bytes": 63816,
+      "sha256": "dd2e990ac71f992b93e5a05021c2f6b21e4fa66830442297ff0ce263bd83f762"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/shadcn-wc-320-text200-dark-open.png",
+      "bytes": 205343,
+      "sha256": "0d9122faa56c236e38c0a019b8143244fd823fbafb96298ec06db19897351028"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/shadcn-wc-320-text200-light-open.png",
+      "bytes": 202039,
+      "sha256": "7ccb85833c6a5832ef2852007f51f070623e35964a563b56c01ab93bb5ede5c4"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/shadcn-wc-controlled-accepted.png",
+      "bytes": 57490,
+      "sha256": "fd140b59cdf71a9686de335d8d56f3098f480f374e2d0676619f1799fa908763"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/shadcn-wc-initial.png",
+      "bytes": 59359,
+      "sha256": "173ed76cb291c634bef4dc08b7cab5727aa072035be8a9f71e6021156ed8dae2"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/shadcn-wc-keyboard-focus-closed.png",
+      "bytes": 59798,
+      "sha256": "c30bb77992df508a7c10bf6185e93e6d11a81864d620d0bcf6ef892f39ac205f"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/shadcn-wc-keyboard-focus-open.png",
+      "bytes": 75093,
+      "sha256": "e74627cef39046cfd23d9a1b5fcdfaf931d881d888a4836b7d5b532783db7713"
+    },
+    {
+      "path": "images/historical-58d-collapsible-native/shadcn-wc-open.png",
+      "bytes": 74659,
+      "sha256": "7d2e9ff811828d96406599c8c649494f07529ff290c4ebe9b82359a0705af0aa"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-base-react-dark-narrow-200.png",
+      "bytes": 152369,
+      "sha256": "a0144c21bd8dab252a25a747a4f9f61c74fdf2383ddd936a5ff0474862da8f4f"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-base-react-light.png",
+      "bytes": 136739,
+      "sha256": "0d71fb341c88700e96a12248f0fcc21d99652da54563e686b43d66dce1ab48ab"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-base-vue-dark-narrow-200.png",
+      "bytes": 152369,
+      "sha256": "a0144c21bd8dab252a25a747a4f9f61c74fdf2383ddd936a5ff0474862da8f4f"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-base-vue-light.png",
+      "bytes": 136724,
+      "sha256": "4323614a81db2334e96b4d5a78599fd753649cd4b75ae598ae8dc7ed2f891acd"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-base-vue2-dark-narrow-200.png",
+      "bytes": 154411,
+      "sha256": "55ba51e2f32161f0af26032337e88b6eceb61b364021402717d9e2aa89108861"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-base-vue2-light.png",
+      "bytes": 136748,
+      "sha256": "a75686b9782eefa49a510d684e69a4260495fcc77870882dcedfe631d791544f"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-base-wc-dark-narrow-200.png",
+      "bytes": 152432,
+      "sha256": "9fe0e13858e1d66d54f336757f64d65e4373755aca5d72168823629272384145"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-base-wc-light.png",
+      "bytes": 136689,
+      "sha256": "a9741d33db33949ee17098e0b1e9b610324c87e97c735ff3521bad934d2c25db"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-bootstrap-2-3-2-react-dark-narrow-200.png",
+      "bytes": 148951,
+      "sha256": "aaa0fe0ed12d8ee07798bfdf6b9e2cd604c59c7141ce081063e6b79710a2db5e"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-bootstrap-2-3-2-react-light.png",
+      "bytes": 115024,
+      "sha256": "0261b416eabc0d880d842ccf408ade1aa4b24f3c154d36ec97cc69a39367ea78"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-bootstrap-2-3-2-vue-dark-narrow-200.png",
+      "bytes": 148951,
+      "sha256": "aaa0fe0ed12d8ee07798bfdf6b9e2cd604c59c7141ce081063e6b79710a2db5e"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-bootstrap-2-3-2-vue-light.png",
+      "bytes": 115039,
+      "sha256": "07ac34c281bde251a4cbd947a7eb1f799425871550bc6e28e065040132f61ab1"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-bootstrap-2-3-2-vue2-dark-narrow-200.png",
+      "bytes": 148951,
+      "sha256": "aaa0fe0ed12d8ee07798bfdf6b9e2cd604c59c7141ce081063e6b79710a2db5e"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-bootstrap-2-3-2-vue2-light.png",
+      "bytes": 115024,
+      "sha256": "b9818cd8a17b91b9334c84d80016f15d15a41aad270df71e7a549c9ac53799be"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-bootstrap-2-3-2-wc-dark-narrow-200.png",
+      "bytes": 148479,
+      "sha256": "981ee2e40d8bb6e861f701ef188abd37246bdae162d432692e5ebb901c7259f7"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-bootstrap-2-3-2-wc-light.png",
+      "bytes": 115019,
+      "sha256": "f32c6e1b3dbb660bdf0daff7e0a51f902055deda470bde1f0c92a417bb1cdba3"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-brutalist-react-dark-narrow-200.png",
+      "bytes": 142958,
+      "sha256": "4d079848408753bf1352cb3f5949e7c41673e87e651fd85188e6f4f4b148d977"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-brutalist-react-light.png",
+      "bytes": 137741,
+      "sha256": "84bb6be54d84b0b4719185a071c937034763e7d0538a96bdd20d609173cb1257"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-brutalist-vue-dark-narrow-200.png",
+      "bytes": 142958,
+      "sha256": "4d079848408753bf1352cb3f5949e7c41673e87e651fd85188e6f4f4b148d977"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-brutalist-vue-light.png",
+      "bytes": 137719,
+      "sha256": "a4174f4252c8b3020ea0cc777f2f0bec40b6109e473168a56f2d678a7bf309cc"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-brutalist-vue2-dark-narrow-200.png",
+      "bytes": 142958,
+      "sha256": "4d079848408753bf1352cb3f5949e7c41673e87e651fd85188e6f4f4b148d977"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-brutalist-vue2-light.png",
+      "bytes": 137762,
+      "sha256": "bce28a382a642ca566522ea4ad4ae75ee6a2282e1bc74cce63e5eec085b6ef0e"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-brutalist-wc-dark-narrow-200.png",
+      "bytes": 143036,
+      "sha256": "ba54773d3e80853046c7bbf087bc611c7b3f1a88cdc38f7b7e3406c03246bc1d"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-brutalist-wc-light.png",
+      "bytes": 137719,
+      "sha256": "73ada6437c39be8b790c0821cb15b5bd7e90ade54315954e3a3ef97c46742683"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-liquid-glass-react-dark-narrow-200.png",
+      "bytes": 464807,
+      "sha256": "34c12188c07ed80a59751d301b98771a499e998e87ee764181195e675cb8c398"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-liquid-glass-react-light.png",
+      "bytes": 330533,
+      "sha256": "ba7a72d69550291d93e33abc58de81621d419ec35946fcb10bfc0e5fb27bbff7"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-liquid-glass-vue-dark-narrow-200.png",
+      "bytes": 464045,
+      "sha256": "ba4864212851f34f6949efdf66e357c91a3b8a63e460c8fae0062980df35152e"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-liquid-glass-vue-light.png",
+      "bytes": 327538,
+      "sha256": "ccd743f2a98d778c887bd987c70c73a03d8f2183aa3a9e3650a67650eccf53f4"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-liquid-glass-vue2-dark-narrow-200.png",
+      "bytes": 464045,
+      "sha256": "fe93553e09d19268b3340cef31554230e1cc042c591aae47e263869ec2b304fb"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-liquid-glass-vue2-light.png",
+      "bytes": 327578,
+      "sha256": "a163f09a9a3d59c0e0f63c7492ce17775da77f610e8cecaec0530e2f5e33ef0d"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-liquid-glass-wc-dark-narrow-200.png",
+      "bytes": 462846,
+      "sha256": "e0f9e3fbe660be5d11a4bd25555c6e9b9327be41f56414cb04147d3b4d50ae0a"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-liquid-glass-wc-light.png",
+      "bytes": 278923,
+      "sha256": "136c7400c0d1ac34d9fbb0f63f756d95a33b23300f1875d9df1ab8ac4d0d066a"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-shadcn-react-dark-narrow-200.png",
+      "bytes": 141428,
+      "sha256": "ff408ca7f55a9095ed6ca34ddd07820983e25c48cea0d04d56d6071583a49516"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-shadcn-react-light.png",
+      "bytes": 116904,
+      "sha256": "55e7e91851dc3aa8fcfdcfa98cc66e16202be1c0146c1b0d44bcdbc9f7720b9c"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-shadcn-vue-dark-narrow-200.png",
+      "bytes": 141428,
+      "sha256": "ff408ca7f55a9095ed6ca34ddd07820983e25c48cea0d04d56d6071583a49516"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-shadcn-vue-light.png",
+      "bytes": 116889,
+      "sha256": "0616e2e7edc857deae669034e5420dff8096ff6c8061e122dd7325700e8860fa"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-shadcn-vue2-dark-narrow-200.png",
+      "bytes": 141428,
+      "sha256": "ff408ca7f55a9095ed6ca34ddd07820983e25c48cea0d04d56d6071583a49516"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-shadcn-vue2-light.png",
+      "bytes": 116903,
+      "sha256": "de431d92b5aa5c0b11a9a731ac264c4fe3ab83d6ee26692076899f6c76899eff"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-shadcn-wc-dark-narrow-200.png",
+      "bytes": 141502,
+      "sha256": "735cd3a9ed5f2619f9ac734db3976402a712185ba33224952b0294b9a3aa9d1a"
+    },
+    {
+      "path": "images/historical-6d-field-native/6d150e127461-shadcn-wc-light.png",
+      "bytes": 116871,
+      "sha256": "7feae4756f6ed8fcb70a31b00f0a1952bcd823b955dbf698d425fc2c6400ae4d"
+    },
+    {
+      "path": "images.md",
+      "bytes": 35415,
+      "sha256": "ea9b350bc9cb1278f6c408b26041ff5b9356a56c9f285532e95f5533738aa77f"
+    },
+    {
+      "path": "packet.json",
+      "bytes": 19126,
+      "sha256": "58ab63002a8fe63489ecfac033adf0f5745a82cf15d1e14d2003bcba35c30f5f"
+    },
+    {
+      "path": "raw-public-map.json",
+      "bytes": 939129,
+      "sha256": "b1e6f541ef7d0c13bfc153512357a3b7fe4a6cfa25605970447cc162e3940afc"
+    },
+    {
+      "path": "records.tar.gz",
+      "bytes": 2341968,
+      "sha256": "48b9bbaeea41516edb7bdb0a2ecab4e71c55f0af86f01e79863a895d0a07eb8d"
+    },
+    {
+      "path": "technical-walkthrough.md",
+      "bytes": 16940,
+      "sha256": "4ffa1ba8ef1f6a67f133bdaead94581179a6b8ae13fb1dddd576f3ad4fee265b"
+    }
+  ],
+  "generatedWrappers": [
+    "README.md",
+    "technical-walkthrough.md",
+    "images.md",
+    "packet.json",
+    "raw-public-map.json",
+    "archive-members.json"
+  ],
+  "publicationState": "local preparation only"
+}
