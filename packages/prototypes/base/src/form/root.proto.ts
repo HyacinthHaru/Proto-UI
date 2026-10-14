@@ -31,6 +31,7 @@ function setup(def: DefHandle<FormRootProps, FormRootExposes>) {
   a.state('disabled', disabled);
   def.context.provide(FORM_CONTEXT, { disabled: false, pending: false, submitted: false });
   let run: RunHandle<FormRootProps> | null = null,
+    viewEpoch = 0,
     sequence = 0,
     cancellation = 0,
     waiting: { id: number; key: string } | null = null,
@@ -71,9 +72,13 @@ function setup(def: DefHandle<FormRootProps, FormRootExposes>) {
       });
   };
   const cancel = () => {
+    const current = run,
+      epoch = viewEpoch;
     cancellation++;
+    const generation = cancellation;
     waiting = null;
     pending.set(false, 'reason: form submission canceled');
+    if (run !== current || viewEpoch !== epoch || cancellation !== generation) return;
     publish();
   };
   const finish = () => {
@@ -118,11 +123,22 @@ function setup(def: DefHandle<FormRootProps, FormRootExposes>) {
   def.expose.method('cancelSubmit', cancel);
   const requestSubmit = () => {
     if (!run || disabled.get()) return false;
+    const current = run,
+      epoch = viewEpoch,
+      generation = cancellation + 1;
+    let id = sequence;
+    const isCurrent = () =>
+      run === current && viewEpoch === epoch && cancellation === generation && sequence === id;
     cancel();
+    if (!isCurrent()) return true;
     submitted.set(false, 'reason: form new submission');
-    waiting = { id: ++sequence, key: JSON.stringify(values()) };
+    if (!isCurrent()) return true;
+    id = ++sequence;
+    waiting = { id, key: JSON.stringify(values()) };
     pending.set(true, 'reason: form validating');
+    if (!isCurrent()) return true;
     publish();
+    if (!isCurrent()) return true;
     validating = true;
     try {
       for (const part of parts()) {
@@ -130,7 +146,11 @@ function setup(def: DefHandle<FormRootProps, FormRootExposes>) {
         if (snapshot?.disabled) continue;
         const validate = part.getExpose('validate');
         if (typeof validate === 'function') validate('manual');
+        if (!isCurrent()) return true;
       }
+    } catch (error) {
+      if (isCurrent()) cancel();
+      throw error;
     } finally {
       validating = false;
     }
@@ -157,30 +177,43 @@ function setup(def: DefHandle<FormRootProps, FormRootExposes>) {
     requestSubmit();
   });
   def.expose.method('resetValidation', () => {
+    const current = run,
+      epoch = viewEpoch;
+    const isCurrent = () => run === current && viewEpoch === epoch;
     cancel();
+    if (!isCurrent()) return;
     for (const part of parts()) {
       const reset = part.getExpose('resetValidation');
       if (typeof reset === 'function') reset();
+      if (!isCurrent()) return;
     }
     submitted.set(false, 'reason: form reset validation');
+    if (!isCurrent()) return;
     publish();
   });
   def.expose.method('requestReset', () => {
     if (!run) return false;
+    const current = run,
+      epoch = viewEpoch;
+    const isCurrent = () => run === current && viewEpoch === epoch;
     cancel();
+    if (!isCurrent()) return false;
     validating = true;
     let complete = true;
     try {
       for (const part of parts()) {
         const reset = part.getExpose('__formReset');
         if (typeof reset !== 'function' || reset() !== true) complete = false;
+        if (!isCurrent()) return false;
       }
     } finally {
       validating = false;
     }
     submitted.set(false, 'reason: form reset');
+    if (!isCurrent()) return false;
     publish();
-    run?.expose.emit('reset', {});
+    if (!isCurrent()) return false;
+    current.expose.emit('reset', {});
     return complete;
   });
   const sync = (current: RunHandle<FormRootProps>) => {
@@ -191,12 +224,18 @@ function setup(def: DefHandle<FormRootProps, FormRootExposes>) {
     publish();
   };
   def.lifecycle.onCreated(sync);
-  def.lifecycle.onMounted(sync);
-  def.props.watchAll(sync);
-  def.lifecycle.onUnmounted(() => {
-    cancel();
-    run = null;
+  def.lifecycle.onMounted((run) => {
+    viewEpoch++;
+    sync(run);
   });
+  def.props.watchAll(sync);
+  const retireView = () => {
+    viewEpoch++;
+    run = null;
+    cancel();
+  };
+  def.lifecycle.onUnmounted(retireView);
+  def.lifecycle.onBeforeDispose(retireView);
   def.anatomy.subscribeParts(FORM_FAMILY, 'field', () => {
     if (waiting) cancel();
   });

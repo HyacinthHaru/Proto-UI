@@ -167,9 +167,11 @@ function setupRoot(def: DefHandle<CalendarRootProps, CalendarRootExposes>) {
   def.expose.event('valueChange', { payload: 'json' });
   def.expose.event('monthChange', { payload: 'json' });
   let owner: RunHandle<CalendarRootProps> | null = null;
+  let viewEpoch = 0;
   let pendingNavigation: { month: string; date: string; fromMonth: string } | null = null;
   let focusRequestId = 0;
   const publish = (run: RunHandle<CalendarRootProps>, active?: string) => {
+    const epoch = viewEpoch;
     const p = run.props.get(),
       old = run.context.read(CALENDAR_CONTEXT);
     const next: CalendarContext = {
@@ -192,6 +194,7 @@ function setupRoot(def: DefHandle<CalendarRootProps, CalendarRootExposes>) {
       focusRequest: null,
     };
     weekCount.set(next.weekCount, 'calendar visible week count');
+    if (owner !== run || viewEpoch !== epoch) return;
     const navigation = pendingNavigation;
     const acceptedNavigation = navigation?.month === next.month && !next.disabled;
     if (acceptedNavigation) next.active = navigation!.date;
@@ -223,6 +226,8 @@ function setupRoot(def: DefHandle<CalendarRootProps, CalendarRootExposes>) {
   };
   const requestMonth = (next: string, navigationDate?: string) => {
     if (!owner || owner.props.get().disabled || !parseDate(`${next}-01`)) return false;
+    const current = owner,
+      epoch = viewEpoch;
     const c = owner.context.read(CALENDAR_CONTEXT);
     const validNavigation =
       navigationDate &&
@@ -236,14 +241,18 @@ function setupRoot(def: DefHandle<CalendarRootProps, CalendarRootExposes>) {
       return !!validNavigation;
     }
     if (!owner.props.isProvided('month')) month.set(next, 'calendar month request');
+    if (owner !== current || viewEpoch !== epoch) return true;
     publish(owner);
+    if (owner !== current || viewEpoch !== epoch) return true;
     owner.expose.emit('monthChange', { month: next });
     return true;
   };
   def.expose.method('requestMonth', requestMonth);
   def.expose.method('requestValue', (next: string) => {
     if (!owner) return false;
-    const c = owner.context.read(CALENDAR_CONTEXT);
+    const current = owner,
+      epoch = viewEpoch;
+    const c = current.context.read(CALENDAR_CONTEXT);
     if (
       c.disabled ||
       c.readOnly ||
@@ -252,10 +261,13 @@ function setupRoot(def: DefHandle<CalendarRootProps, CalendarRootExposes>) {
     )
       return false;
     pendingNavigation = null;
-    if (!owner.props.isProvided('value')) value.set(next, 'calendar date request');
-    publish(owner, next);
+    if (!current.props.isProvided('value')) value.set(next, 'calendar date request');
+    if (owner !== current || viewEpoch !== epoch) return true;
+    publish(current, next);
+    if (owner !== current || viewEpoch !== epoch) return true;
     requestMonth(next.slice(0, 7));
-    owner.expose.emit('valueChange', { value: next });
+    if (owner !== current || viewEpoch !== epoch) return true;
+    current.expose.emit('valueChange', { value: next });
     return true;
   });
   const sync = (run: RunHandle<CalendarRootProps>, created = false) => {
@@ -281,7 +293,11 @@ function setupRoot(def: DefHandle<CalendarRootProps, CalendarRootExposes>) {
   def.lifecycle.onMounted((run) => sync(run));
   def.props.watchAll((run) => sync(run));
   def.lifecycle.onUnmounted(() => {
+    viewEpoch++;
     pendingNavigation = null;
+    owner = null;
+  });
+  def.lifecycle.onBeforeDispose(() => {
     owner = null;
   });
 }

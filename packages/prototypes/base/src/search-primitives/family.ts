@@ -147,6 +147,7 @@ export function createSearchFamily(slug: string, mode: 'autocomplete' | 'combobo
       );
     };
     const publish = (run: RunHandle<T.SearchRootProps>) => {
+      const epoch = viewEpoch;
       if (
         !queryEdited &&
         !run.props.isProvided('inputValue') &&
@@ -156,10 +157,12 @@ export function createSearchFamily(slug: string, mode: 'autocomplete' | 'combobo
         const initial = itemsOf(run).find((i) => i.value === value.get());
         if (initial) query.set(initial.text, 'reason: search initial label');
       }
+      if (currentRun !== run || viewEpoch !== epoch) return;
       const items = visibleItems(run);
       if (!items.some((i) => i.id === active && !i.disabled))
         active = inline ? (items.find((i) => !i.disabled)?.id ?? '') : '';
       count.set(items.length, 'reason: search filtered count');
+      if (currentRun !== run || viewEpoch !== epoch) return;
       const next = {
         id,
         value: value.get(),
@@ -185,30 +188,38 @@ export function createSearchFamily(slug: string, mode: 'autocomplete' | 'combobo
         next === open.get()
       )
         return;
+      const epoch = viewEpoch;
       if (!run.props.isProvided('open')) open.set(next, 'reason: search open request');
+      if (currentRun !== run || viewEpoch !== epoch) return;
       if (!next) active = '';
       publish(run);
+      if (currentRun !== run || viewEpoch !== epoch) return;
       run.expose.emit('openChange', { open: next, reason });
     };
     const requestQuery = (next: string, composing = false) => {
       const run = currentRun;
       if (!run || run.props.get().disabled || run.props.get().readOnly) return;
+      const epoch = viewEpoch;
       queryEdited = true;
       if (!composing && !run.props.isProvided('inputValue'))
         query.set(next, 'reason: search query request');
+      if (currentRun !== run || viewEpoch !== epoch) return;
       if (!composing) {
         active = '';
         publish(run);
+        if (currentRun !== run || viewEpoch !== epoch) return;
         requestOpen(true, 'input');
+        if (currentRun !== run || viewEpoch !== epoch) return;
       }
       run.expose.emit('inputValueChange', { value: next, composing });
     };
     const select = (selectedValue: string, reason = 'programmatic') => {
       const run = currentRun;
       if (!run || run.props.get().disabled || run.props.get().readOnly) return false;
+      const free = mode === 'autocomplete' && reason === 'free-text' && !!selectedValue;
+      if (!free && itemsOf(run).filter((i) => i.value === selectedValue).length !== 1) return false;
       const matching = visibleItems(run).filter((i) => i.value === selectedValue);
       const candidate = matching.length === 1 && !matching[0].disabled ? matching[0] : null;
-      const free = mode === 'autocomplete' && reason === 'free-text' && !!selectedValue;
       if (!candidate && !free) return false;
       const epoch = viewEpoch;
       const selection = ++selectionSequence;
@@ -218,9 +229,12 @@ export function createSearchFamily(slug: string, mode: 'autocomplete' | 'combobo
       const result = mode === 'autocomplete' ? text : selectedValue;
       if (mode !== 'command' && !run.props.isProvided('value'))
         value.set(result, 'reason: search accepted selection');
+      if (!isCurrent()) return true;
       if (mode !== 'command' && !run.props.isProvided('inputValue'))
         query.set(text, 'reason: search selected label');
+      if (!isCurrent()) return true;
       publish(run);
+      if (!isCurrent()) return true;
       const detail = { value: result, textValue: text, reason };
       run.expose.emit(mode === 'command' ? 'execute' : 'valueChange', detail);
       if (!isCurrent()) return true;
@@ -248,6 +262,7 @@ export function createSearchFamily(slug: string, mode: 'autocomplete' | 'combobo
     def.expose.method('__navigate', (direction) => {
       const run = currentRun;
       if (!run || run.props.get().disabled || run.props.get().readOnly) return;
+      const epoch = viewEpoch;
       const choices = visibleItems(run).filter((i) => !i.disabled);
       if (direction === 'commit') {
         const item = choices.find((i) => i.id === active);
@@ -260,6 +275,7 @@ export function createSearchFamily(slug: string, mode: 'autocomplete' | 'combobo
         return;
       }
       requestOpen(true, 'keyboard');
+      if (currentRun !== run || viewEpoch !== epoch) return;
       if (!choices.length) return;
       const index = choices.findIndex((i) => i.id === active);
       const raw =
@@ -552,11 +568,21 @@ export function createSearchFamily(slug: string, mode: 'autocomplete' | 'combobo
         'reason: search selection'
       );
     };
+    let mounted = false,
+      viewEpoch = 0;
     def.context.subscribe(context, sync);
     def.lifecycle.onMounted((run) => {
+      mounted = true;
+      viewEpoch++;
       sync(run, run.context.read(context));
       invoke(run, '__refresh');
     });
+    const retireView = () => {
+      mounted = false;
+      viewEpoch++;
+    };
+    def.lifecycle.onUnmounted(retireView);
+    def.lifecycle.onBeforeDispose(retireView);
     def.props.watchAll((run) => {
       invoke(run, '__refresh');
       sync(run, run.context.read(context));
@@ -572,10 +598,14 @@ export function createSearchFamily(slug: string, mode: 'autocomplete' | 'combobo
       if (visible.get() && !disabled.get()) invoke(run, '__activate', id);
     });
     def.event.on('press.commit', (run) => {
+      if (!mounted) return;
+      const epoch = viewEpoch;
       if (
         visible.get() &&
         !disabled.get() &&
-        invoke(run, 'select', run.props.get().value, 'pointer')
+        invoke(run, 'select', run.props.get().value, 'pointer') &&
+        mounted &&
+        epoch === viewEpoch
       )
         run.expose.emit('select', { value: run.props.get().value });
     });
@@ -622,8 +652,20 @@ export function createSearchFamily(slug: string, mode: 'autocomplete' | 'combobo
       expanded.set(ctx.open, 'reason: search trigger expanded');
       focus.setDisabled(disabled.get());
     };
+    let mounted = false,
+      viewEpoch = 0;
     def.context.subscribe(context, sync);
     def.lifecycle.onCreated((run) => sync(run, run.context.read(context)));
+    def.lifecycle.onMounted(() => {
+      mounted = true;
+      viewEpoch++;
+    });
+    const retireView = () => {
+      mounted = false;
+      viewEpoch++;
+    };
+    def.lifecycle.onUnmounted(retireView);
+    def.lifecycle.onBeforeDispose(retireView);
     def.props.watchAll((run) => sync(run, run.context.read(context)));
     def.event.onGlobal('key.down', (_run, event) => {
       if (event.key === ' ' && focus.focused.get() && !disabled.get())
@@ -633,8 +675,10 @@ export function createSearchFamily(slug: string, mode: 'autocomplete' | 'combobo
         });
     });
     def.event.on('press.commit', (run) => {
-      if (disabled.get()) return;
+      if (!mounted || disabled.get()) return;
+      const epoch = viewEpoch;
       invoke(run, expanded.get() ? 'close' : 'openPopup');
+      if (!mounted || epoch !== viewEpoch) return;
       inputFocus(run);
     });
   }

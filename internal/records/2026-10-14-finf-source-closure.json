@@ -89,9 +89,39 @@
     "ordinaryApprovalAndTechnicalCiNotClaimedPassed": true
   },
   "skillPolicyDecision": "A real explicit current-user connected-operation branch preserves actor/platform/DCO/source/head/readback safeguards without pretending the ordinary independent-review path passed. The existing independent-review path remains available.",
-  "integrationReceipts": [],
+  "integrationReceipts": [
+    {
+      "number": 872,
+      "head": "991cc33ac38421dfba2a4a800a886ec275bc4c71",
+      "merge": "9c5bc249495c69be1d1c27f43bdd791cf41e87e8",
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/872"
+    },
+    {
+      "number": 879,
+      "head": "a24eb91d2609252d5419ad58dd64d8cdb4ea6422",
+      "merge": "14df5b5e30ab8f1cc720030ade7269a26d3a5158",
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/879"
+    },
+    {
+      "number": 869,
+      "head": "5242ea83793050035ecebd9c3e23761600d3dd15",
+      "merge": "3eb8adcd69c3cb1eed85279650ea4b468dca31be",
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/869"
+    }
+  ],
   "followupPullRequestUrl": null,
   "agent": "dot",
   "modelTrace": "not measured — owner-authorized dot exemption (2026-10-06)",
-  "roleDeclaration": "This role declaration is not authenticated model identity, permission, independent review, or acceptance."
+  "roleDeclaration": "This role declaration is not authenticated model identity, permission, independent review, or acceptance.",
+  "currentMainReanchoringDecision": "Current user prioritizes exact preserved source rebinding to actual main, genuine native DCO and rapid integration before opening the complete Finf followup.",
+  "compactSourceStages": [
+    {
+      "number": 884,
+      "originalHead": "136e16b57c19de961532fa17cef51961f926bd7e",
+      "originalAuthor": "HyacinthHaru",
+      "durableArchiveRef": "refs/heads/archive/finf-200/pr884-136e16b5",
+      "preservedSourcePaths": 38,
+      "originalAuthorCertificationNotChanged": true
+    }
+  ]
 }
