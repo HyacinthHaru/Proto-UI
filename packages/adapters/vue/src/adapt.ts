@@ -251,7 +251,7 @@ export function createVueAdapter(runtime: VueRuntime) {
         let lastPortalProjection: { host: HTMLElement; parent: Node | null } | null = null;
         const refreshPortalDestination = () => {
           const host = rootRef.value;
-          if (!host || !shouldExist.value) {
+          if (!runtime.Teleport || !host || !shouldExist.value) {
             const previous = portalEpoch;
             portalEpoch = null;
             portalDestination.value = null;
@@ -887,6 +887,8 @@ export function createVueAdapter(runtime: VueRuntime) {
                   }),
               ref: (el: HTMLElement | null) => {
                 rootRef.value = el;
+                // Marker-first portals acquire their first root after onMounted.
+                if (el) installViewVisibilityRule(el.ownerDocument);
               },
               class: mergeHostClass([props.surfaceClass, props.hostClass, ctx.attrs.class]),
               style: mergeHostStyle([props.surfaceStyle, props.hostStyle, ctx.attrs.style]),
@@ -902,9 +904,14 @@ export function createVueAdapter(runtime: VueRuntime) {
             rendered as any
           );
           if (present && overlayPort?.getConfig().portal === true && runtime.Teleport) {
-            const portal = runtime.h(runtime.Teleport, { to: portalDestination.value ?? 'body' }, [
-              content,
-            ]);
+            // A selector target is resolved by Vue's renderer document, which
+            // may differ from a same-origin iframe author tree. Commit the
+            // origin first when needed, then use its actual Document's body.
+            const target =
+              portalDestination.value ??
+              portalOriginRef.value?.ownerDocument.body ??
+              rootRef.value?.ownerDocument.body;
+            const portal = target ? runtime.h(runtime.Teleport, { to: target }, [content]) : null;
             const children = [
               runtime.h('span', {
                 ref: (el: HTMLElement | null) => {
