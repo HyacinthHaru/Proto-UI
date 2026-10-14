@@ -1,5 +1,6 @@
 import type {
   ExposeMethod,
+  ObservedStateHandle,
   ExposeState,
   ScrollEndFollowState,
   ScrollEndFollowRequestStatus,
@@ -35,9 +36,15 @@ export type MessageScrollerRootAsHookContract = {
 export type MessageScrollerViewportAsHookContract = {
   state: {
     a11yLabel: State<string>;
-    '@scroll/verticalAtEnd': State<boolean>;
-    '@scroll/endFollowState': State<ScrollEndFollowState>;
-    '@scroll/endFollowRequestStatus': State<ScrollEndFollowRequestStatus>;
+    '@scroll/verticalAtEnd': ObservedStateHandle<boolean, MessageScrollerViewportProps>;
+    '@scroll/endFollowState': ObservedStateHandle<
+      ScrollEndFollowState,
+      MessageScrollerViewportProps
+    >;
+    '@scroll/endFollowRequestStatus': ObservedStateHandle<
+      ScrollEndFollowRequestStatus,
+      MessageScrollerViewportProps
+    >;
   };
   asHooks: { 'as-scroll-area-viewport': ReturnType<typeof asScrollAreaViewport> };
 };

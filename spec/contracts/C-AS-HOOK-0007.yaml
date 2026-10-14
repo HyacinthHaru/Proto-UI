@@ -1,31 +1,31 @@
 id: C-AS-HOOK-0007
 type: contract
-title: asHook state handles project to borrowed views
+title: asHook state projection preserves write authority and observation boundaries
 status: draft
 since: 0.1.0
-summary: State handles introduced by an asHook must be exposed to the caller as borrowed views keyed by state declaration names, and nested asHook state handles must stay inside child asHook entries rather than being flattened into the outer result.
+summary: Owned and borrowed state handles introduced by an asHook project to borrowed views, while observed handles retain read-only observation. Capture keys come from state declaration names, and nested state handles stay inside child asHook entries rather than being flattened into the outer result.
 statement:
   zh-CN: >-
-    asHook 内部创建或引入的 state 不应以调用者完全 owned state 的身份暴露。调用者通过 asHook result 获得这些 state 时，必须得到 borrowed view：调用者可以读取、设置默认值、设置运行时值并 watch，但该 state 的来源仍然是 asHook 引入的可共享逻辑，而不是调用者直接声明的 owned state。该投影义务覆盖当前 asHook setup frame 直接引入的全部 state handles，而不只覆盖通过 `expose.state` 进入 App Maker surface 的 state。named state handle 的 key 必须来自 state declaration 的稳定 state name；`expose.state` 的 expose key 不得参与或覆盖该 identity。嵌套 asHook 的 state handles 必须保留在 child asHook entry 的 result 中，不得被 runtime 自动摊平进外层 asHook result。
+    asHook 内部创建或引入的 state 不应以调用者完全 owned state 的身份暴露。调用者通过 asHook result 获得 owned 或 borrowed state 时，必须得到 borrowed view：调用者可以读取、设置默认值、设置运行时值并 watch，但该 state 的来源仍然是 asHook 引入的可共享逻辑，而不是调用者直接声明的 owned state。已经是 observed 的 state 必须保持只读 observed view，只允许 get 与 watch，不得通过 capture 获得 setDefault 或 set。该投影义务覆盖当前 asHook setup frame 直接引入的全部 state handles，而不只覆盖通过 `expose.state` 进入 App Maker surface 的 state。named state handle 的 key 必须来自 state declaration 的稳定 state name；`expose.state` 的 expose key 不得参与或覆盖该 identity。嵌套 asHook 的 state handles 必须保留在 child asHook entry 的 result 中，不得被 runtime 自动摊平进外层 asHook result。
 
 
   en: >-
-    State created or introduced inside an asHook should not be exposed to the caller as fully owned state. When the caller receives these states through the asHook result, they must be borrowed views: the caller may read, set defaults, set runtime values, and watch, but the state source remains reusable logic introduced by the asHook rather than owned state directly declared by the caller. This projection obligation covers every state handle directly introduced in the current asHook setup frame, not only states that enter the App Maker surface through `expose.state`. Named state handle keys must come from the stable state name declared by the state declaration; the expose key passed to `expose.state` must not participate in or override that identity. Nested asHook state handles must remain in the child asHook entry result and must not be automatically flattened by runtime into the outer asHook result.
+    State created or introduced inside an asHook should not be exposed to the caller as fully owned state. When the caller receives owned or borrowed states through the asHook result, they must be borrowed views: the caller may read, set defaults, set runtime values, and watch, but the state source remains reusable logic introduced by the asHook rather than owned state directly declared by the caller. An already observed state must retain its read-only observed view, supporting only get and watch; capture must not add setDefault or set. This projection obligation covers every state handle directly introduced in the current asHook setup frame, not only states that enter the App Maker surface through `expose.state`. Named state handle keys must come from the stable state name declared by the state declaration; the expose key passed to `expose.state` must not participate in or override that identity. Nested asHook state handles must remain in the child asHook entry result and must not be automatically flattened by runtime into the outer asHook result.
 
 
 criteria:
   - id: C-AS-HOOK-0007-A
     text:
-      zh-CN: asHook result 暴露的 state handle 必须投影为 borrowed view。
-      en: State handles exposed by an asHook result must be projected to borrowed views.
+      zh-CN: asHook result 暴露的 owned 与 borrowed state handles 必须投影为 borrowed view；已经是 observed 的 handles 必须保持 observed view。
+      en: Owned and borrowed state handles exposed by an asHook result must be projected to borrowed views; already observed handles must remain observed views.
   - id: C-AS-HOOK-0007-B
     text:
-      zh-CN: asHook result 暴露的 named state handles 必须使用 borrowed view。
-      en: Named state handles exposed by an asHook result must use borrowed views.
+      zh-CN: asHook result 暴露的 named state handles 必须遵守同样的能力边界：owned 与 borrowed 投影为 borrowed，observed 保持只读。
+      en: Named state handles exposed by an asHook result must preserve the same capability boundary; owned and borrowed project to borrowed, while observed remains read-only.
   - id: C-AS-HOOK-0007-C
     text:
-      zh-CN: asHook state projection 不得让调用者获得 owned-only 能力。
-      en: asHook state projection must not grant the caller owned-only capabilities.
+      zh-CN: asHook state projection 不得让调用者获得 owned-only 能力，也不得将 observed view 升级为可写 borrowed view。
+      en: asHook state projection must not grant the caller owned-only capabilities or upgrade an observed view to a writable borrowed view.
   - id: C-AS-HOOK-0007-D
     text:
       zh-CN: asHook 内部声明的 interaction state 必须归属调用者所在交互主体，而不是成为 asHook 私有 state。
@@ -64,6 +64,8 @@ dependsOn:
     - C-AS-HOOK-0005
     - C-STATE-0002
     - C-STATE-0008
+    - C-STATE-0003
+    - C-STATE-0009
 relates:
   contracts:
     - C-STATE-INTERACTION-0003
@@ -82,7 +84,11 @@ revisions:
   - version: 0.1.3
     change: clarified
     summary: Clarified that nested state handles are preserved through automatic child asHook entries.
+  - version: 0.3.0-alpha.1
+    change: clarified
+    summary: Clarified capability-preserving capture for already observed handles, consistent with the state-view contracts; owned and borrowed projection, declaration naming, and nested capture remain unchanged.
 tags:
   - as-hook
   - state
   - borrowed
+  - observed

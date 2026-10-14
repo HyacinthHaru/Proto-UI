@@ -1,0 +1,5 @@
+{
+  "extends": "../../../../tsconfig.json",
+  "include": ["message-scroller-capture.types.ts", "message-scroller-capture.test.ts"],
+  "exclude": []
+}
