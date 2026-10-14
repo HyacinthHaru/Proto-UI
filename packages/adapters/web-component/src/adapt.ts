@@ -388,6 +388,10 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
     }
 
     connectedCallback() {
+      // A queued connect reaction can run after an ancestor's reaction has
+      // detached this element. Do not publish a false owner/topology change
+      // or request a terminal reconnect; a real later connection retries.
+      if (!this.isConnected) return;
       if (this._terminalDisposing) {
         this._terminalReconnectRequested = true;
         return;
