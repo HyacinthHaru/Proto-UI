@@ -16,6 +16,7 @@ import {
 } from './browser-harness';
 import { revealHeaderPreferences } from './site-header-browser';
 import { collectCollapsibleFocusFailure } from './collapsible-focus-observation';
+import { probeCollapsibleFocusPaths } from './collapsible-focus-path-probe';
 
 const FAMILIES = ['shadcn', 'brutalist', 'bootstrap-2-3-2', 'liquid-glass'] as const;
 const route = (family: string, language = 'en') =>
@@ -342,6 +343,40 @@ afterAll(async () => {
   await stopServer();
 }, 60_000);
 
+// Runs only in a separate post-failure workflow step, never as an acceptance replacement.
+if (process.env.PROTO_UI_COLLAPSIBLE_FOCUS_PATH_DIAGNOSTIC === '1') {
+  describe.sequential('Collapsible independent focus-path diagnostic', () => {
+    for (const runtime of RUNTIMES) {
+      for (const order of ['AB', 'BA'] as const) {
+        it(`${runtime} ${order} uses a fresh context`, async () => {
+          const directory = process.env.PROTO_UI_COLLAPSIBLE_SCREENSHOT_DIR;
+          if (!directory) throw new Error('Source-bound diagnostic output directory is required');
+          await probeCollapsibleFocusPaths({
+            browser,
+            url: `${baseUrl}${route('liquid-glass')}`,
+            directory: path.join(directory, 'diagnostics'),
+            sourceSha: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
+            runtime,
+            order,
+            async prepare(page) {
+              const previewer = page.locator('[data-previewer-id]').first();
+              await trackInput(previewer);
+              await selectCollapsibleRuntime(page, previewer, 'liquid-glass', runtime);
+              return trigger(disclosure(previewer, 'uncontrolled'));
+            },
+            async verifyExpanded(page, button) {
+              const root = disclosure(page.locator('[data-previewer-id]').first(), 'uncontrolled');
+              await expanded(button, true);
+              await expect.poll(() => content(root).isVisible()).toBe(true);
+              await controls(root);
+            },
+          });
+        }, 100_000);
+      }
+    }
+  });
+}
+
 // T-COLLAPSIBLE-PROJECTIONS-0001: native activation, relationship, L1, retention,
 // disabled, controlled ownership, domain isolation and terminal view cleanup.
 // SDK/simulated-DOM evidence cannot establish these Chromium surface facts.
@@ -450,18 +485,59 @@ for (const family of FAMILIES) {
           await expanded(trigger(retained), false);
           await capture(previewer, `${family}-${runtime}-controlled-accepted`);
 
+          const tailStage = (stage: string, phase: 'start' | 'done') => {
+            if (family === 'liquid-glass' && runtime === 'vue')
+              console.error(
+                '[collapsible-vue-tail-stage]',
+                JSON.stringify({
+                  stage,
+                  phase,
+                  nodeNow: performance.now(),
+                  nodeTimeOrigin: performance.timeOrigin,
+                })
+              );
+          };
+
           // Changing the actual renderer terminally removes the old host views.
           // Host IDs may be reused by new owners; disconnection, not ID spelling,
           // proves the old physical views no longer belong to the live surface.
+          tailStage('old-views', 'start');
           const oldViews = await previewer.locator('.host [data-pui-root]').elementHandles();
+          tailStage('old-views', 'done');
           const nextRuntime = RUNTIMES[(RUNTIMES.indexOf(runtime) + 1) % RUNTIMES.length]!;
+          tailStage('runtime-switch', 'start');
           await selectCollapsibleRuntime(page, previewer, family, nextRuntime);
+          tailStage('runtime-switch', 'done');
+          tailStage('old-view-disconnection', 'start');
           for (const view of oldViews)
             expect(await view.evaluate((element) => element.isConnected)).toBe(false);
+          tailStage('old-view-disconnection', 'done');
+          tailStage('final-expanded', 'start');
           await expanded(trigger(disclosure(previewer, 'uncontrolled')), false);
           await expanded(trigger(disclosure(previewer, 'controlled')), false);
+          tailStage('final-expanded', 'done');
         } finally {
+          if (family === 'liquid-glass' && runtime === 'vue')
+            console.error(
+              '[collapsible-vue-tail-stage]',
+              JSON.stringify({
+                stage: 'context-close',
+                phase: 'start',
+                nodeNow: performance.now(),
+                nodeTimeOrigin: performance.timeOrigin,
+              })
+            );
           await context.close();
+          if (family === 'liquid-glass' && runtime === 'vue')
+            console.error(
+              '[collapsible-vue-tail-stage]',
+              JSON.stringify({
+                stage: 'context-close',
+                phase: 'done',
+                nodeNow: performance.now(),
+                nodeTimeOrigin: performance.timeOrigin,
+              })
+            );
         }
       }, 60_000);
     }
