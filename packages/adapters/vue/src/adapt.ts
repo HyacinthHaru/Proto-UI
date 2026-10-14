@@ -875,6 +875,16 @@ export function createVueAdapter(runtime: VueRuntime) {
           const content = runtime.h(
             rootTag,
             {
+              // Native VNode hooks retain post-commit reconciliation when the
+              // optional component-updated hook is absent, including renders
+              // whose root, origin, presence and destination refs are unchanged.
+              ...(runtime.onUpdated
+                ? {}
+                : {
+                    onVnodeMounted: refreshPortalDestination,
+                    onVnodeUpdated: refreshPortalDestination,
+                    onVnodeUnmounted: refreshPortalDestination,
+                  }),
               ref: (el: HTMLElement | null) => {
                 rootRef.value = el;
               },

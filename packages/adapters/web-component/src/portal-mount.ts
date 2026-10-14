@@ -92,9 +92,23 @@ export function createWebComponentPortalMount() {
   let revoke: (() => void) | null = null;
   return {
     mount(el: HTMLElement) {
-      if (revoke || el.parentElement === el.ownerDocument.body) return;
+      if (revoke) return;
       const parent = el.parentNode;
       if (!parent) return;
+      // A direct body child can still belong to an explicitly registered body
+      // scene. This preflight has no lease yet: host reads may synchronously
+      // mount, move or retire this target, so never supersede their ownership.
+      if (parent === el.ownerDocument.body) {
+        const previousEpoch = projectionEpochs.get(el);
+        const revision = getWebPortalDestinationGeneration();
+        const initial = resolveWebPortalDestinationBinding(parent, el);
+        if (revoke || el.parentNode !== parent || projectionEpochs.get(el) !== previousEpoch)
+          return;
+        // A superseded read returns body as a safety fallback. It cannot prove
+        // the current policy is a no-op; the guarded acquisition below resolves it.
+        if (revision === getWebPortalDestinationGeneration() && initial.destination === parent)
+          return;
+      }
       const epoch = {};
       projectionEpochs.set(el, epoch);
       const isCurrent = () => revoke === restore && projectionEpochs.get(el) === epoch;

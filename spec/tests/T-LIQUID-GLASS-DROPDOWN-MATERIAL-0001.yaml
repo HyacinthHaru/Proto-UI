@@ -25,7 +25,7 @@ implementations:
     required: true
     consumesCases: [T-LIQUID-GLASS-DROPDOWN-MATERIAL-0001-CASE-INTENT]
     notes:
-      - Three isolated Runtime tests cover intent and semantics only; no browser or GPU paint inference.
+      - Three isolated Runtime cases cover intent and semantics; two light/dark disabled cases use generated style declarations and the real Web sink to verify opaque fallback with host opacity 1. Unit layout is injected and cascade layers are flattened; no native browser, GPU or optical paint inference.
   - id: liquid-dropdown-public-material
     kind: runtime-test
     status: planned

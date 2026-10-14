@@ -250,6 +250,11 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
       // mount. Relocating the mount keeps createPortal's container identity and
       // therefore does not replace the physical host or its event capabilities.
       const portalMountRef = runtime.useRef<HTMLElement | null>(null);
+      const [portalDocument, setPortalDocument] = runtime.useState<Document | null>(null);
+      runtime.useLayoutEffect(() => {
+        const origin = portalOriginRef.current;
+        if (origin?.isConnected && !portalMountRef.current) setPortalDocument(origin.ownerDocument);
+      });
       const portalProjectionRef = runtime.useRef<{
         host: HTMLElement;
         destination: HTMLElement;
@@ -870,7 +875,7 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
           }
           throw error;
         }
-      }, [shouldExist]);
+      }, [shouldExist, portalDocument]);
 
       // React StrictMode replays layout effects. Detach immediately so view
       // resources follow the replay, but defer terminal owner disposal by one
@@ -1001,8 +1006,10 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
         overlayPort?.getConfig().portal === true &&
         typeof runtime.createPortal === 'function' &&
         typeof document !== 'undefined';
-      if (portalEnabled && !portalMountRef.current) {
-        const mount = document.createElement('div');
+      if (portalEnabled && portalDocument && !portalMountRef.current) {
+        // The first author marker commits before the portal host is created.
+        // Allocate in its actual Document, including same-origin iframe roots.
+        const mount = portalDocument.createElement('div');
         mount.dataset.puiPortalMount = '';
         mount.style.display = 'contents';
         portalMountRef.current = mount;
@@ -1044,7 +1051,7 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
       const portal = portalContainer
         ? runtime.createPortal!(content, portalContainer, 'pui-portal-content')
         : null;
-      const origin = portalContainer
+      const origin = portalEnabled
         ? runtime.createElement('span', {
             key: 'pui-portal-origin',
             ref: portalOriginRef,
@@ -1053,7 +1060,7 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
             'data-pui-portal-origin': '',
           })
         : null;
-      const projectedContent = portalContainer
+      const projectedContent = portalEnabled
         ? runtime.Fragment
           ? runtime.createElement(runtime.Fragment, null, origin, portal)
           : [origin, portal]

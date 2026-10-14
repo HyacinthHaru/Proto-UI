@@ -42,7 +42,9 @@ export default definePrototype<DropdownTriggerProps, DropdownTriggerExposes>({
     });
     def.rule({
       when: (w) => w.state(state.disabled).eq(true),
-      intent: (i) => i.feedback.style.use(tw('opacity-50')),
+      // Preserve the complete opaque fallback and governed foreground contrast.
+      // Whole-host opacity composites both over an uncontrolled backdrop.
+      intent: (i) => i.feedback.style.use(tw('cursor-default shadow-none')),
     });
   },
 });
