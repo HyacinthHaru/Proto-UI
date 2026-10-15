@@ -189,8 +189,12 @@ import { renderThemeCss } from '../../../../../../packages/prototypes/liquid-gla
           scene.scope.querySelector<HTMLCanvasElement>(
             'canvas[data-material-backdrop]'
           )!.style.clipPath = 'inset(4px)';
-        if (id === 'accordion-tight')
+        if (id === 'accordion-tight') {
           scene.mount.querySelector<HTMLElement>('.liquid-hover-inset')!.style.padding = '0px';
+          // Retain this negative's real destination overlap: the Item's 1px
+          // bottom border leaves a 1px gap, inside the 35px contact footprint.
+          scene.mount.style.paddingBottom = '0px';
+        }
         scene.pause(true);
       }
       async function mount() {

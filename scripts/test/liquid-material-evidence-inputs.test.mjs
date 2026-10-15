@@ -55,6 +55,8 @@ for (const file of [
   'apps/www/src/content/docs/zh-cn/ui-libraries/liquid-glass/toggle.mdx',
   'apps/www/src/content/docs/zh-cn/browser-harness.ts',
   'apps/www/src/content/docs/zh-cn/material-paint-observation.ts',
+  'apps/www/src/content/docs/zh-cn/liquid-material-observation.ts',
+  'apps/www/src/content/docs/zh-cn/public-portal-diagnostic.ts',
   'apps/www/src/content/docs/zh-cn/material-paint-observation.test.ts',
   'scripts/docs/test/liquid-toggle-mdx.test.mjs',
   'scripts/test/runtime-test-plan.mjs',
@@ -134,7 +136,6 @@ test('Liquid command interaction keeps original optical journeys and adds a sepa
     'apps/www/src/content/docs/zh-cn/demo-liquid-glass-material.browser.test.ts',
     'apps/www/src/content/docs/zh-cn/demo-liquid-glass-portal.browser.test.ts',
     'apps/www/src/content/docs/zh-cn/demo-liquid-glass-toggle.browser.test.ts',
-    'apps/www/src/content/docs/zh-cn/demo-liquid-glass-hover.browser.test.ts',
   ])
     assert.ok(
       steps.some((step) => step.run?.includes(suite)),
@@ -188,4 +189,56 @@ test('Main-command tint uses independent runtime shards without replacing origin
     job.steps.some((step) => step.if === 'always()' && step.uses === 'actions/upload-artifact@v4')
   );
   assert.equal(workflow.jobs['browser-evidence']['timeout-minutes'], 20);
+});
+
+test('Liquid hover runs all four runtime shards without sharing the optical job deadline', () => {
+  const job = workflow.jobs['hover-evidence'];
+  assert.ok(job, 'Missing independent hover evidence job');
+  assert.equal(job['timeout-minutes'], 20);
+  assert.equal(job.strategy['fail-fast'], false);
+  assert.deepEqual(job.strategy.matrix.runtime, ['wc', 'react', 'vue', 'vue2']);
+  assert.equal(job.steps[0].with.ref, '${{ env.CANDIDATE_SHA }}');
+  assert.equal(job.steps[0].with['persist-credentials'], false);
+  assert.equal(job.needs, undefined, 'Hover must not wait for the optical job');
+  const native = 'apps/www/src/content/docs/zh-cn/demo-liquid-glass-hover.browser.test.ts';
+  const commands = job.steps.filter((step) => step.run?.includes(native));
+  assert.equal(commands.length, 1);
+  assert.equal(commands[0].env.PROTO_UI_HOVER_RUNTIME, '${{ matrix.runtime }}');
+  assert.equal(commands[0].env.PROTO_UI_BROWSER_BASE_URL, undefined);
+  assert.match(commands[0].run, /--maxWorkers=1 --minWorkers=1/);
+  assert.equal(workflow.jobs['browser-evidence']['timeout-minutes'], 20);
+  assert.ok(!workflow.jobs['browser-evidence'].steps.some((step) => step.run?.includes(native)));
+  const artifact = job.steps.find((step) => step.uses === 'actions/upload-artifact@v4');
+  assert.equal(artifact.if, 'always()');
+  assert.match(artifact.with.name, /matrix\.runtime/);
+  assert.match(artifact.with.name, /env\.CANDIDATE_SHA/);
+  assert.match(artifact.with.name, /github\.run_id/);
+  assert.match(artifact.with.name, /github\.run_attempt/);
+  assert.equal(artifact.with.path, '${{ runner.temp }}/liquid-material-evidence');
+});
+
+test('Liquid hover plan and every command owner remain path-triggered', () => {
+  for (const file of [
+    'apps/www/src/content/docs/zh-cn/liquid-hover-plan.ts',
+    'apps/www/src/content/docs/zh-cn/liquid-hover-plan.test.ts',
+    'packages/prototypes/liquid-glass/src/button/button.proto.ts',
+    'packages/prototypes/liquid-glass/src/toggle/toggle.proto.ts',
+    'packages/prototypes/liquid-glass/src/form/submit.proto.ts',
+    'packages/prototypes/liquid-glass/src/form/reset.proto.ts',
+    'packages/prototypes/liquid-glass/src/accordion/trigger.proto.ts',
+    'packages/prototypes/liquid-glass/src/collapsible/trigger.proto.ts',
+    'packages/prototypes/liquid-glass/src/select/trigger.proto.ts',
+    'packages/prototypes/liquid-glass/src/dropdown/trigger.proto.ts',
+  ]) {
+    assert.ok(readFileSync(new URL(file, root), 'utf8').length > 0);
+    assert.ok(covered(file), `Missing planned hover input: ${file}`);
+  }
+  assert.ok(
+    Object.values(workflow.jobs).some((job) =>
+      job.steps?.some((step) =>
+        step.run?.includes('apps/www/src/content/docs/zh-cn/liquid-hover-plan.test.ts')
+      )
+    ),
+    'CI must validate the shard union and checkpoint behavior'
+  );
 });
