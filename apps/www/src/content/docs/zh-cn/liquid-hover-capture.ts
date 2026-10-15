@@ -22,6 +22,18 @@ export type LiquidHoverFramingEvidence = {
   after?: LiquidHoverFrame;
   actions: Array<{ kind: 'scroll-into-view' | 'scroll-by'; delta?: { x: number; y: number } }>;
   failure?: string;
+  attempts?: LiquidHoverIdleAttempt[];
+};
+export type LiquidHoverIdleAttempt = {
+  number: number;
+  setup: LiquidHoverFramingEvidence;
+  reads: LiquidHoverFrame[];
+  ready?: LiquidHoverFrame;
+  observed?: LiquidHoverFrame;
+  materialGeometry?: ScreenshotRect;
+  materialPaintOutset?: number;
+  accepted: boolean;
+  failure?: string;
 };
 export type LiquidHoverFramingIO = {
   readFrame(): Promise<LiquidHoverFrame>;
@@ -29,6 +41,101 @@ export type LiquidHoverFramingIO = {
   scrollBy(delta: { x: number; y: number }): Promise<unknown>;
   settleFrames(): Promise<unknown>;
 };
+export type LiquidHoverIdleIO<T> = LiquidHoverFramingIO & {
+  settleMaterial(remainingMilliseconds: number): Promise<unknown>;
+  observeMaterial(): Promise<{ value: T; geometry: ScreenshotRect; paintOutset: number }>;
+  now?(): number;
+};
+
+export async function observeLiquidHoverIdle<T>(
+  io: LiquidHoverIdleIO<T>,
+  evidence: LiquidHoverFramingEvidence
+): Promise<T> {
+  // Four complete attempts bound test evidence acquisition, not component
+  // behavior. A stable setup is never a lease across an awaited readiness or
+  // image decode. Every failed geometry attempt remains in the receipt.
+  evidence.attempts = [];
+  const now = io.now ?? (() => performance.now());
+  const deadline = now() + 8000;
+  const remaining = () => {
+    const value = deadline - now();
+    if (!Number.isFinite(value) || value <= 0)
+      throw new Error('Idle material capture exceeded the existing 8000ms readiness budget');
+    return value;
+  };
+  let baseline: LiquidHoverFrame | undefined;
+  let attempt: LiquidHoverIdleAttempt | undefined;
+  try {
+    for (let number = 1; number <= 4; number++) {
+      remaining();
+      attempt = {
+        number,
+        setup: { boundary: evidence.boundary, actions: [] },
+        reads: [],
+        accepted: false,
+      };
+      evidence.attempts.push(attempt);
+      const readFrame = async () => {
+        const frame = copy(await io.readFrame());
+        attempt!.reads.push(frame);
+        evidence.after = copy(frame);
+        remaining();
+        validateFrame(frame);
+        baseline ??= copy(frame);
+        evidence.before ??= copy(baseline);
+        assertFramingPreserves(baseline, frame);
+        assertLiquidHoverContextReframeEligibility(eligibility(frame, evidence.boundary));
+        return frame;
+      };
+      let prepared: LiquidHoverFrame;
+      try {
+        prepared = await prepareLiquidHoverFrame({ ...io, readFrame }, attempt.setup);
+      } finally {
+        evidence.actions.push(...attempt.setup.actions);
+      }
+      await io.settleMaterial(remaining());
+      remaining();
+      attempt.ready = await readFrame();
+      const sameGeometry = (left: ScreenshotFrame, right: ScreenshotFrame) =>
+        equal(left.subject, right.subject) &&
+        equal(left.viewport, right.viewport) &&
+        equal(left.scroll, right.scroll);
+      if (!sameGeometry(prepared, attempt.ready)) {
+        attempt.failure = 'Idle geometry moved during material readiness';
+        continue;
+      }
+      const material = await io.observeMaterial();
+      remaining();
+      attempt.materialGeometry = copy(material.geometry);
+      attempt.materialPaintOutset = material.paintOutset;
+      attempt.observed = await readFrame();
+      if (
+        !sameGeometry(attempt.ready, attempt.observed) ||
+        !equal(material.geometry, attempt.observed.subject)
+      ) {
+        attempt.failure = 'Idle geometry moved during material observation';
+        continue;
+      }
+      if (
+        !liquidHoverContextCapture(
+          attempt.observed.subject,
+          attempt.observed.viewport,
+          material.paintOutset
+        ).fullyPadded
+      ) {
+        attempt.failure = 'Fresh material requires additional screenshot context';
+        continue;
+      }
+      attempt.accepted = true;
+      return material.value;
+    }
+    throw new Error('Idle material capture did not stabilize within four attempts');
+  } catch (error) {
+    if (attempt) attempt.failure = errorText(error);
+    evidence.failure = errorText(error);
+    throw error;
+  }
+}
 
 const errorText = (error: unknown) => (error instanceof Error ? error.message : String(error));
 const copy = <T>(value: T): T => structuredClone(value);

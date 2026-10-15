@@ -14,7 +14,7 @@ import {
   liquidHoverContextCapture,
 } from './liquid-hover-fixture';
 import {
-  prepareLiquidHoverFrame,
+  observeLiquidHoverIdle,
   captureLiquidHoverClips,
   type LiquidHoverFramingEvidence,
 } from './liquid-hover-capture';
@@ -198,7 +198,13 @@ const errorText = (error: unknown) =>
 
 /** Readiness waits are observational, not acceptance assertions. On any wait or
  * decode failure capture() still writes the actual root PNG and raw receipt. */
-async function settle(page: Page, target: Locator, quality?: string, contact?: string) {
+async function settle(
+  page: Page,
+  target: Locator,
+  quality?: string,
+  contact?: string,
+  timeout = 8000
+) {
   // Viewport setup belongs only to explicit neutral boundaries below.
   // Active hover/press/focus captures never reposition their subject here.
   if (quality || contact)
@@ -219,7 +225,7 @@ async function settle(page: Page, target: Locator, quality?: string, contact?: s
         quality,
         contact,
       },
-      { timeout: 8000 }
+      { timeout }
     );
   await page.evaluate(
     () =>
@@ -256,38 +262,44 @@ async function observedStates(page: Page, runtime: string, part: string) {
     )
   );
 }
-async function readIdleFrame(page: Page, target: Locator, runtime: string, part: string) {
-  const geometry = await target.evaluate((el) => {
-    const box = el.getBoundingClientRect();
-    return {
-      subject: { x: box.x, y: box.y, width: box.width, height: box.height },
-      viewport: { width: innerWidth, height: innerHeight },
-      scroll: { x: scrollX, y: scrollY },
-    };
-  });
-  // Read the real current receipt, including explicit fallback before an
-  // offscreen source becomes visible. Never synthesize a material state.
+async function readIdleFrame(_page: Page, target: Locator, runtime: string, part: string) {
+  // Decode first: that await can outlive a native scroll or input transition.
+  // The final live frame must not reuse geometry / eligibility from before it.
   const receipt = await target.evaluate(observeLiquidToggleSnapshot);
-  return {
-    ...geometry,
-    states: await observedStates(page, runtime, part),
-    requests: await fixture(page, runtime, part, 'requests'),
-    material: {
-      quality: receipt.quality,
-      contact: receipt.receipt.contact,
-      carrier: receipt.carrier.marker,
-      paintOutset: receipt.paint.paintOutset,
+  return target.evaluate(
+    (el, { runtime, part, stateNames, paintOutset }) => {
+      const box = el.getBoundingClientRect();
+      const fixture = (window as any).liquidHoverFixture;
+      // These fixture getters are synchronous. Geometry, Base state, requests
+      // and current DOM material eligibility belong to the same browser task.
+      return {
+        subject: { x: box.x, y: box.y, width: box.width, height: box.height },
+        viewport: { width: innerWidth, height: innerHeight },
+        scroll: { x: scrollX, y: scrollY },
+        states: Object.fromEntries(
+          stateNames.map((name) => [name, fixture.state(runtime, part, name)])
+        ),
+        requests: fixture.requests(runtime, part),
+        material: {
+          quality: el.getAttribute('data-material-quality'),
+          contact: el.getAttribute('data-material-contact'),
+          carrier: el.getAttribute('data-pui-material-carrier'),
+          paintOutset,
+        },
+      };
     },
-  };
+    { runtime, part, stateNames: observedStateNames, paintOutset: receipt.paint.paintOutset }
+  );
 }
-async function prepareIdleFrame(
+async function observeIdleFrame(
   page: Page,
   target: Locator,
   runtime: string,
   part: string,
-  evidence: LiquidHoverFramingEvidence
+  evidence: LiquidHoverFramingEvidence,
+  readiness?: { quality?: string; contact?: string }
 ) {
-  return prepareLiquidHoverFrame(
+  return observeLiquidHoverIdle(
     {
       readFrame: () => readIdleFrame(page, target, runtime, part),
       scrollIntoView: () => target.scrollIntoViewIfNeeded(),
@@ -303,6 +315,17 @@ async function prepareIdleFrame(
               requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
             )
         ),
+      settleMaterial: (remaining) =>
+        settle(page, target, readiness?.quality, readiness?.contact, remaining),
+      observeMaterial: async () => {
+        const value = await target.evaluate(observeLiquidToggleSnapshot);
+        const host = value.paint.hostGeometry;
+        return {
+          value,
+          geometry: { x: host.left, y: host.top, width: host.width, height: host.height },
+          paintOutset: value.paint.paintOutset,
+        };
+      },
     },
     evidence
   );
@@ -324,17 +347,16 @@ async function capture(
     ? { boundary: stage, actions: [] }
     : undefined;
   try {
-    if (contextFraming) await prepareIdleFrame(page, target, runtime, part, contextFraming);
-    // Freeze a new material snapshot only after actual viewport setup and the
-    // original readiness wait. No old receipt or translated PNG is reused.
-    await settle(page, target, readiness?.quality, readiness?.contact);
+    if (contextFraming)
+      facts = await observeIdleFrame(page, target, runtime, part, contextFraming, readiness);
+    else await settle(page, target, readiness?.quality, readiness?.contact);
   } catch (error) {
     observationError = errorText(error);
     if (contextFraming) contextFraming.failure = observationError;
   }
   // A readiness timeout must not suppress the actual current material PNG.
   try {
-    facts = await target.evaluate(observeLiquidToggleSnapshot);
+    if (!facts) facts = await target.evaluate(observeLiquidToggleSnapshot);
   } catch (error) {
     observationError = [observationError, errorText(error)].filter(Boolean).join('\n');
   }

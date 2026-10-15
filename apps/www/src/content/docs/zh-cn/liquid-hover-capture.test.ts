@@ -1,7 +1,11 @@
+import { readFileSync } from 'node:fs';
+import { runInNewContext } from 'node:vm';
+import { transformSync } from 'esbuild';
 import { describe, expect, it } from 'vitest';
 import {
   captureLiquidHoverClips,
   prepareLiquidHoverFrame,
+  observeLiquidHoverIdle,
   type LiquidHoverCaptureIO,
   type LiquidHoverFrame,
   type LiquidHoverFramingEvidence,
@@ -302,6 +306,220 @@ describe('shared idle framing controller (offline IO evidence)', () => {
   });
 });
 
+describe('idle observation across awaited material readiness (offline IO)', () => {
+  function observation() {
+    const test = framing();
+    let reads = 0;
+    let waits = 0;
+    const io = {
+      ...test.io,
+      settleMaterial: async () => {
+        waits++;
+      },
+      observeMaterial: async () => ({
+        value: `fresh-material-${++reads}`,
+        geometry: clone(test.current().subject),
+        paintOutset: test.current().material.paintOutset,
+      }),
+    };
+    return { ...test, io, reads: () => reads, waits: () => waits };
+  }
+  function lateScroll(test: ReturnType<typeof observation>, delta: number) {
+    test.current().scroll.y += delta;
+    test.current().subject.y -= delta;
+  }
+
+  it('resamples a fully visible no-op setup that scrolls 962px during readiness', async () => {
+    const test = observation();
+    let once = true;
+    test.io.settleMaterial = async () => {
+      if (once) {
+        once = false;
+        lateScroll(test, 962);
+      }
+    };
+    await observeLiquidHoverIdle(test.io, test.evidence);
+    const screenshot = capture(test.current());
+    const receipt = await captureLiquidHoverClips(screenshot.io, geometry(test.current()), 30);
+    expect(receipt.errors).toEqual([]);
+    expect(test.evidence.attempts).toHaveLength(2);
+    expect(test.evidence.attempts![0].failure).toContain('readiness');
+    expect(test.evidence.attempts![0].ready!.subject.y).toBe(-762);
+    expect(test.evidence.attempts![1].accepted).toBe(true);
+    expect(test.current().subject.y + test.current().scroll.y).toBe(1200);
+    expect(test.current().requests).toEqual([]);
+  });
+
+  it('takes a fresh material observation after movement during snapshot decoding', async () => {
+    const test = observation();
+    const observe = test.io.observeMaterial;
+    let once = true;
+    test.io.observeMaterial = async () => {
+      const snapshot = await observe();
+      if (once) {
+        once = false;
+        lateScroll(test, 962);
+      }
+      return snapshot;
+    };
+    expect(await observeLiquidHoverIdle(test.io, test.evidence)).toBe('fresh-material-2');
+    expect(test.evidence.attempts).toHaveLength(2);
+    expect(test.evidence.attempts![0].failure).toContain('observation');
+    expect(test.evidence.attempts![0].materialGeometry!.y).toBe(200);
+    expect(test.evidence.attempts![0].observed!.subject.y).toBe(-762);
+  });
+
+  it('fails after four unstable attempts instead of accepting a moving idle subject', async () => {
+    const test = observation();
+    test.io.settleMaterial = async () => {
+      lateScroll(test, 1);
+    };
+    await expect(observeLiquidHoverIdle(test.io, test.evidence)).rejects.toThrow('four attempts');
+    expect(test.evidence.attempts).toHaveLength(4);
+    expect(test.evidence.attempts!.every((attempt) => !attempt.accepted && attempt.failure)).toBe(
+      true
+    );
+    expect(test.moves).toEqual([]);
+  });
+
+  it.each([
+    ['hovered', true],
+    ['pressed', true],
+    ['focused', true],
+    ['focusVisible', true],
+  ])('rejects readiness-time %s activation before any corrective scroll', async (state, value) => {
+    const test = observation();
+    test.io.settleMaterial = async () => {
+      lateScroll(test, 962);
+      test.current().states[state] = value;
+    };
+    await expect(observeLiquidHoverIdle(test.io, test.evidence)).rejects.toThrow('Base states');
+    expect(test.moves).toEqual([]);
+    expect(test.calls).not.toContain('scroll-into-view');
+  });
+
+  it.each(['requests', 'document layout', 'viewport'])(
+    'rejects readiness-time %s mutation',
+    async (kind) => {
+      const test = observation();
+      test.io.settleMaterial = async () => {
+        if (kind === 'requests') test.current().requests = ['unexpected-commit'];
+        else if (kind === 'viewport') test.current().viewport.width += 1;
+        else test.current().subject.y += 1;
+      };
+      await expect(observeLiquidHoverIdle(test.io, test.evidence)).rejects.toThrow(
+        kind === 'requests' ? 'semantic requests' : 'document layout'
+      );
+      expect(test.moves).toEqual([]);
+    }
+  );
+
+  it('keeps a stable eligible capture to one new material observation', async () => {
+    const test = observation();
+    expect(await observeLiquidHoverIdle(test.io, test.evidence)).toBe('fresh-material-1');
+    expect(test.reads()).toBe(1);
+    expect(test.waits()).toBe(1);
+    expect(test.evidence.attempts).toHaveLength(1);
+    expect(test.evidence.attempts![0].accepted).toBe(true);
+    expect(test.evidence.actions).toEqual([]);
+  });
+
+  it('shares the existing eight-second readiness budget across repeated attempts', async () => {
+    const test = observation();
+    let clock = 0;
+    const budgets: number[] = [];
+    const io = {
+      ...test.io,
+      now: () => clock,
+      settleMaterial: async (budget: number) => {
+        budgets.push(budget);
+        clock += 5000;
+        lateScroll(test, 1);
+      },
+    };
+    await expect(observeLiquidHoverIdle(io, test.evidence)).rejects.toThrow('8000ms');
+    expect(budgets).toEqual([8000, 3000]);
+    expect(test.evidence.attempts).toHaveLength(2);
+    expect(test.evidence.attempts!.every((attempt) => !attempt.accepted)).toBe(true);
+  });
+
+  it('does not accept a material observation that completes after the readiness budget', async () => {
+    const test = observation();
+    let clock = 0;
+    const io = {
+      ...test.io,
+      now: () => clock,
+      observeMaterial: async () => {
+        clock = 8001;
+        return test.io.observeMaterial();
+      },
+    };
+    await expect(observeLiquidHoverIdle(io, test.evidence)).rejects.toThrow('8000ms');
+    expect(test.evidence.attempts![0].accepted).toBe(false);
+  });
+
+  it('preserves every rejected actual frame and refuses a newly held contact before moving', async () => {
+    const test = observation();
+    test.io.settleMaterial = async () => {
+      lateScroll(test, 962);
+      test.current().material.contact = 'held';
+    };
+    await expect(observeLiquidHoverIdle(test.io, test.evidence)).rejects.toThrow();
+    expect(test.evidence.attempts![0].reads.at(-1)!.material.contact).toBe('held');
+    expect(test.evidence.attempts![0].reads.at(-1)!.subject.y).toBe(-762);
+    expect(test.calls).not.toContain('scroll-into-view');
+  });
+
+  it('retains readiness errors without starting a corrective scroll or material retry', async () => {
+    const test = observation();
+    test.io.settleMaterial = async () => {
+      throw new Error('original readiness timeout');
+    };
+    await expect(observeLiquidHoverIdle(test.io, test.evidence)).rejects.toThrow(
+      'original readiness timeout'
+    );
+    expect(test.evidence.attempts).toHaveLength(1);
+    expect(test.reads()).toBe(0);
+    expect(test.calls).not.toContain('scroll-into-view');
+  });
+
+  it('requires the new observed material outset instead of trusting the setup margin', async () => {
+    const test = observation();
+    test.current().subject.y = 40;
+    test.current().material.paintOutset = 0;
+    const observe = test.io.observeMaterial;
+    let once = true;
+    test.io.observeMaterial = async () => {
+      if (once) {
+        once = false;
+        test.current().material.paintOutset = 30;
+      }
+      return observe();
+    };
+    expect(await observeLiquidHoverIdle(test.io, test.evidence)).toBe('fresh-material-2');
+    expect(test.evidence.attempts![0].failure).toContain('additional screenshot context');
+    expect(test.evidence.attempts![0].materialPaintOutset).toBe(30);
+    expect(test.evidence.actions).toHaveLength(1);
+  });
+
+  it('fails a persistently mismatched material receipt without translating its pixels', async () => {
+    const test = observation();
+    const observe = test.io.observeMaterial;
+    test.io.observeMaterial = async () => {
+      const result = await observe();
+      result.geometry.y += 1;
+      return result;
+    };
+    await expect(observeLiquidHoverIdle(test.io, test.evidence)).rejects.toThrow('four attempts');
+    expect(test.evidence.attempts).toHaveLength(4);
+    expect(test.reads()).toBe(4);
+    expect(test.evidence.attempts!.every((attempt) => attempt.materialGeometry!.y === 201)).toBe(
+      true
+    );
+    expect(test.evidence.actions).toEqual([]);
+  });
+});
+
 describe('shared viewport capture controller (offline IO evidence)', () => {
   it('uses integer-enclosed viewport CSS clips at nonzero document scroll', async () => {
     const frozen = frame();
@@ -512,5 +730,176 @@ describe('shared viewport capture controller (offline IO evidence)', () => {
     expect(result.context.bytes).toBeDefined();
     expect(result.errors).toEqual(['Native context crop lacks required surrounding pixels']);
     expect(test.current()).toEqual(geometry(start));
+  });
+});
+
+// Execute the actual native read boundary without importing browser hooks or
+// launching a browser. The fake host only supplies DOM / fixture observations.
+function nativeIdleReader() {
+  const source = readFileSync(
+    'apps/www/src/content/docs/zh-cn/demo-liquid-glass-hover.browser.test.ts',
+    'utf8'
+  );
+  const start = source.indexOf('async function readIdleFrame(');
+  const end = source.indexOf('async function observeIdleFrame(', start);
+  if (start < 0 || end <= start) throw new Error('Missing native idle read function');
+  const code = transformSync(source.slice(start, end), { loader: 'ts', target: 'es2022' }).code;
+  const current = frame();
+  const names = [...Object.keys(current.states), 'collapseBlocked'];
+  const calls: string[] = [];
+  let reads = 0;
+  let duringDecode = () => {};
+  const marker = () => {};
+  const environment = {
+    observeLiquidToggleSnapshot: marker,
+    observedStateNames: names,
+    observedStates: async () => clone(current.states),
+    fixture: async () => clone(current.requests),
+    get innerWidth() {
+      return current.viewport.width;
+    },
+    get innerHeight() {
+      return current.viewport.height;
+    },
+    get scrollX() {
+      return current.scroll.x;
+    },
+    get scrollY() {
+      return current.scroll.y;
+    },
+    window: {
+      liquidHoverFixture: {
+        state: (_runtime: string, _part: string, name: string) => current.states[name],
+        requests: () => current.requests,
+      },
+    },
+  };
+  const read = runInNewContext(`${code}\nreadIdleFrame`, environment, { timeout: 1000 }) as (
+    page: unknown,
+    target: unknown,
+    runtime: string,
+    part: string
+  ) => Promise<LiquidHoverFrame>;
+  const element = {
+    getBoundingClientRect: () => {
+      calls.push('geometry');
+      return clone(current.subject);
+    },
+    getAttribute: (name: string) =>
+      ({
+        'data-material-quality': current.material.quality,
+        'data-material-contact': current.material.contact,
+        'data-pui-material-carrier': current.material.carrier,
+      })[name] ?? null,
+  };
+  const target = {
+    evaluate: async (fn: unknown, arg?: unknown) => {
+      if (fn === marker) {
+        calls.push('decode');
+        const receipt = {
+          quality: current.material.quality,
+          receipt: { contact: current.material.contact },
+          carrier: { marker: current.material.carrier },
+          paint: { paintOutset: current.material.paintOutset },
+        };
+        await Promise.resolve();
+        reads++;
+        duringDecode();
+        return receipt;
+      }
+      return (fn as (el: unknown, arg: unknown) => unknown)(element, arg);
+    },
+  };
+  return {
+    current,
+    calls,
+    read: () => read({}, target, 'vue', 'reset'),
+    mutateDuringDecode: (change: () => void) => {
+      duringDecode = change;
+    },
+    reads: () => reads,
+  };
+}
+
+describe('native idle frame read boundary', () => {
+  it('reads actual geometry after the awaited material decode', async () => {
+    const test = nativeIdleReader();
+    test.mutateDuringDecode(() => {
+      test.current.subject.y -= 962;
+      test.current.scroll.y += 962;
+    });
+    const actual = await test.read();
+    expect(actual.subject.y).toBe(-762);
+    expect(actual.scroll.y).toBe(1962);
+    expect(test.calls).toEqual(['decode', 'geometry']);
+  });
+
+  it.each(['hovered', 'pressed', 'focused', 'focusVisible'])(
+    'pairs fresh %s state with post-decode geometry',
+    async (state) => {
+      const test = nativeIdleReader();
+      test.mutateDuringDecode(() => {
+        test.current.subject.y -= 962;
+        test.current.scroll.y += 962;
+        test.current.states[state] = true;
+      });
+      const actual = await test.read();
+      expect(actual.subject.y).toBe(-762);
+      expect(actual.states[state]).toBe(true);
+    }
+  );
+
+  it('uses current DOM material eligibility instead of a pre-decode rest receipt', async () => {
+    const test = nativeIdleReader();
+    test.mutateDuringDecode(() => {
+      test.current.material.quality = 'opaque-fallback';
+      test.current.material.contact = 'held';
+      test.current.material.carrier = null;
+      test.current.requests = [{ kind: 'press' }];
+    });
+    const actual = await test.read();
+    expect(actual.material).toEqual(test.current.material);
+    expect(actual.requests).toEqual([{ kind: 'press' }]);
+  });
+
+  it('repeats the complete real read / observation sequence after final-read decode movement', async () => {
+    const test = nativeIdleReader();
+    test.mutateDuringDecode(() => {
+      if (test.reads() !== 3) return;
+      test.current.subject.y -= 962;
+      test.current.scroll.y += 962;
+    });
+    const evidence: LiquidHoverFramingEvidence = { boundary: 'reenabled-owner', actions: [] };
+    let observations = 0;
+    const result = await observeLiquidHoverIdle(
+      {
+        readFrame: test.read,
+        scrollIntoView: async () => {
+          const delta = test.current.subject.y - 200;
+          test.current.subject.y -= delta;
+          test.current.scroll.y += delta;
+        },
+        scrollBy: async ({ x, y }) => {
+          test.current.subject.x -= x;
+          test.current.scroll.x += x;
+          test.current.subject.y -= y;
+          test.current.scroll.y += y;
+        },
+        settleFrames: async () => {},
+        settleMaterial: async () => {},
+        observeMaterial: async () => ({
+          value: ++observations,
+          geometry: clone(test.current.subject),
+          paintOutset: 30,
+        }),
+      },
+      evidence
+    );
+    expect(result).toBe(2);
+    expect(evidence.attempts).toHaveLength(2);
+    expect(evidence.attempts!.map(({ accepted }) => accepted)).toEqual([false, true]);
+    expect(evidence.attempts![0].failure).toBe('Idle geometry moved during material observation');
+    expect(evidence.actions).toEqual([{ kind: 'scroll-into-view' }]);
+    expect(evidence.after!.subject.y).toBe(200);
   });
 });
