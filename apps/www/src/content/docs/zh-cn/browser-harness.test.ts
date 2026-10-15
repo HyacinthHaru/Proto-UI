@@ -1,3 +1,4 @@
+import { publicPortalSnapshot } from './public-portal-diagnostic';
 import type { Locator, Page } from 'playwright-core';
 import { readFileSync } from 'node:fs';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -834,4 +835,73 @@ it('keeps public Dropdown readiness on the actual committed preview shell', () =
     `await choosePreviewRuntime(page, page.locator('.site-header-runtime').first(), runtime)`
   );
   expect(source).toContain(`.toBe('self-optical')`);
+});
+
+it('records actual fallback facts without changing DOM or requiring an admitted source', async () => {
+  const scope = document.createElement('div');
+  scope.dataset.materialScene = 'visible-app-canvas';
+  scope.innerHTML =
+    '<canvas data-material-backdrop width="512" height="400"></canvas><div class="real-layout-wrapper"><button>Trigger</button></div><div data-material-overlay-mount><div role="menu" data-material-quality="opaque-fallback" data-material-reason="source-overlapping-content"><div role="menuitem">Account</div></div></div>';
+  document.body.append(scope);
+  const before = document.body.innerHTML;
+  const page = { evaluate: async (fn: () => unknown) => fn() } as unknown as Page;
+  try {
+    const snapshot = await publicPortalSnapshot(page);
+    expect(snapshot.menus).toHaveLength(1);
+    const menu = snapshot.menus[0];
+    expect(menu.content.attributes['data-material-reason']).toBe('source-overlapping-content');
+    expect(menu.content.attributes['data-material-quality']).toBe('opaque-fallback');
+    expect(menu.source).toMatchObject({ pixelWidth: 512, pixelHeight: 400 });
+    expect(menu.ancestors.map((item) => item.tag)).toContain('BODY');
+    expect(menu.sceneElements.find((item) => item.class === 'real-layout-wrapper')).toMatchObject({
+      containsContent: false,
+      insideContent: false,
+    });
+    expect(document.body.innerHTML).toBe(before);
+    scope.remove();
+    document.body.append(scope.querySelector('[role="menu"]')!);
+    const noSource = await publicPortalSnapshot(page);
+    expect(noSource.menus[0].source).toBeNull();
+    expect(noSource.menus[0].scope).toBeNull();
+    expect(noSource.menus[0].sceneElements).toEqual([]);
+  } finally {
+    document.body.replaceChildren();
+  }
+});
+
+it('persists public failure evidence before teardown and rethrows the original assertion', () => {
+  const source = readFileSync(
+    'apps/www/src/content/docs/zh-cn/demo-liquid-glass-portal.browser.test.ts',
+    'utf8'
+  );
+  const publicJourney = source.slice(
+    source.indexOf('  // The public demo is an acceptance target too.')
+  );
+  const failure = publicJourney.slice(publicJourney.indexOf('          } catch (error) {'));
+  expect(failure).toContain('report.snapshot = await publicPortalSnapshot(page)');
+  expect(failure).toContain('report.snapshotError = String(snapshotError)');
+  expect(failure).toContain('report.screenshotError = String(screenshotError)');
+  expect(failure).toContain('await retainContainerDiagnostic(name, report)');
+  expect(failure.indexOf('throw error;')).toBeGreaterThan(
+    failure.indexOf('await retainContainerDiagnostic(name, report)')
+  );
+  expect(failure.indexOf('await context.close();')).toBeGreaterThan(
+    failure.indexOf('throw error;')
+  );
+  expect(publicJourney).toContain(".toBe('self-optical')");
+  expect(publicJourney).toContain("await page.keyboard.press('Escape')");
+});
+
+it('bounds a stalled read-only public snapshot without replacing its caller failure', async () => {
+  vi.useFakeTimers();
+  try {
+    const page = { evaluate: () => new Promise(() => {}) } as unknown as Page;
+    const pending = publicPortalSnapshot(page);
+    const rejected = expect(pending).rejects.toThrow('Public portal snapshot exceeded 5000ms');
+    await vi.advanceTimersByTimeAsync(5000);
+    await rejected;
+    expect(vi.getTimerCount()).toBe(0);
+  } finally {
+    vi.useRealTimers();
+  }
 });

@@ -14,6 +14,7 @@ import {
   choosePreviewRuntime,
   waitForPreviewRuntime,
 } from './browser-harness';
+import { publicPortalSnapshot } from './public-portal-diagnostic';
 const ROUTE = '/en/test/liquid-glass-portal/';
 const evidence = process.env.PROTO_UI_MATERIAL_EVIDENCE_DIR;
 const observations: unknown[] = [];
@@ -733,6 +734,10 @@ async function retainContainerDiagnostic(name: string, report: Record<string, un
           'apps/www/src/pages/en/test/liquid-glass-portal.astro',
           'packages/adapters/base/src/platform/portal-destination.ts',
           'packages/adapters/base/src/platform/portal-inline-size.ts',
+          'apps/www/src/content/docs/zh-cn/public-portal-diagnostic.ts',
+          'apps/www/src/components/PrototypePreviewer/preview-material-scene.ts',
+          'packages/adapters/base/src/material/source.ts',
+          'packages/adapters/base/src/material/sink.ts',
         ].map((file) => ({
           file,
           sha256: createHash('sha256').update(readFileSync(file)).digest('hex'),
@@ -1095,6 +1100,45 @@ describe.sequential('real Liquid Dropdown Content in a bounded scene portal', ()
               reopenedOptical: true,
               outsideDismissal: true,
             });
+          } catch (error) {
+            // Retain the failing original route before context teardown. Evidence
+            // errors are separate and must never replace the acceptance failure.
+            const name = `${runtime}-${locale}-${theme}-public-dropdown-failure`;
+            const report: Record<string, unknown> = {
+              runtime,
+              locale,
+              theme,
+              error: String(error),
+            };
+            try {
+              report.snapshot = await publicPortalSnapshot(page);
+            } catch (snapshotError) {
+              report.snapshotError = String(snapshotError);
+            }
+            if (evidence) {
+              try {
+                await mkdir(path.join(evidence, 'portal'), { recursive: true });
+                const buffer = await page.screenshot({
+                  path: path.join(evidence, 'portal', `${name}.png`),
+                  timeout: 5000,
+                });
+                report.screenshot = {
+                  file: `portal/${name}.png`,
+                  sha256: createHash('sha256').update(buffer).digest('hex'),
+                };
+              } catch (screenshotError) {
+                report.screenshotError = String(screenshotError);
+              }
+              try {
+                await retainContainerDiagnostic(name, report);
+              } catch (evidenceError) {
+                console.error(
+                  'Public Dropdown failure evidence could not be retained',
+                  evidenceError
+                );
+              }
+            }
+            throw error;
           } finally {
             await context.close();
           }
