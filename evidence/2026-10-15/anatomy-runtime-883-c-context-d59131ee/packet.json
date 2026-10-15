@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "preparedAt": "2026-10-15T05:44:29.805137+00:00",
+  "status": "local prepared checkpoint; not published or approved; partial/ABSTAIN",
+  "sourceAndScope": {
+    "schemaVersion": 1,
+    "checkpoint": "d59131ee local source/native checkpoint",
+    "head": "d59131ee35ea0289741c7d68b57a9928585a31b7",
+    "tree": "31ed9e4cda276d7882c40d10c8eec8e6ad5b2e2b",
+    "parents": [
+      "29b44b92ec8c893c3d26dde37414e5cd4e8409fc",
+      "68007df4873664f7367fad26496a802511373c51"
+    ],
+    "status": "local preparation; not published or approved",
+    "assessment": "human-assisted; unassessed/advisory; partial/ABSTAIN",
+    "remotePush": {
+      "receipt": "final-d59131ee/push-receipt.json",
+      "from": "070b75ff67ad2b658d079039eadab28ff0c3323d",
+      "to": "d59131ee35ea0289741c7d68b57a9928585a31b7",
+      "endedAt": "2026-10-15T05:37:17.515871+00:00",
+      "normalNoForce": true,
+      "historicalUnpublishedFields": "Preserved as original commit-time observations, not current remote status."
+    },
+    "canonicalCI": "not collected by this packet; no success forecast",
+    "pendingBeforeFreeze": [],
+    "sourceExecutionBoundary": "Combined C67/types/authoring/47build/manifests/budgets ran at f516+Fieldcandidate. Independent source bindings retain those results without claiming reruns. Actual d591 postcommit types904/0/0/13, preset generate/check, CLI-only1/47 build, Agent projection and original Field25/Coll36 native runs are separate receipts.",
+    "privateFieldInputCount": 395,
+    "nativeActual": {
+      "field": {
+        "passed": 25,
+        "start": "2026-10-15T05:31:35.583752+00:00",
+        "end": "2026-10-15T05:33:26.872676+00:00"
+      },
+      "collapsible": {
+        "passed": 36,
+        "start": "2026-10-15T05:33:26.971293+00:00",
+        "end": "2026-10-15T05:35:23.838452+00:00"
+      },
+      "sourceClean": true,
+      "platform": "local macOS arm64; not canonical Linux"
+    },
+    "knownFailures": [
+      "Incoming57 actual1381pass1Sliderstyleclosurefail, priorFieldcandidate; unchanged original predicate",
+      "Historical070/e036 Forms10pass2colorfail; provider errors2 only070, e036zero does not prove repair",
+      "Local Form onecase failed unchangedcolorpredicate, no providererror reproduced",
+      "Historical070 Coll32/4 and e03631/5; separate8dataLoss diagnostic failures each",
+      "Private raw0 outwardthrow premise failed on both sources; not accepted new exception policy"
+    ],
+    "excluded": [
+      "ModelTrace/raw identity/context/session/nonce/authorization/handoff/operation notes",
+      "raw trace/ZIP/dependency cache/generated bundle",
+      "all220nativePNG/unviewed images",
+      "entire baseline checkouts or old large packets"
+    ],
+    "nativeVisualScope": {
+      "generatedPNG": 220,
+      "d591ActuallyViewedByRoot": 10,
+      "unassessedD591PNG": 210,
+      "mirroredD591PNG": 10,
+      "earlierFormPNG": 4,
+      "formUniquePixelHashes": 3,
+      "limits": [
+        "Fixed site header occludes some captured component content.",
+        "Narrow Field captures contain clipping/truncation at the image right edge.",
+        "Narrow Liquid Collapsible capture has an extremely narrow column and very long vertical wrapping; passing geometric assertions does not establish readability.",
+        "Material source backdrop text competes with foreground; no optical/Apple/AT/native-platform equivalence claim."
+      ]
+    },
+    "actualPostcommitTypes": {
+      "files": 904,
+      "errors": 0,
+      "warnings": 0,
+      "hints": 13,
+      "receipt": "final-d59131ee/types-postcommit-receipt.json"
+    }
+  },
+  "archive": {
+    "path": "records.tar.gz",
+    "sha256": "11fd4565f15c87bebcc0050525f08c83e098badf4317c1b49357402156fd6777",
+    "bytes": 369706,
+    "members": 126
+  },
+  "inputs": {
+    "rawFiles": 139,
+    "originalPNGs": 14,
+    "allowlistSHA256": "6ffa5932ba503dc54d8462cdb3764f160fd12efb7ac89b8f1bb2979355fe3ce0"
+  },
+  "historicalReceiptBoundary": "Historical unpublished/pending/precommit fields are retained as recorded. This wrapper states the later source and native checkpoint without editing original evidence."
+}

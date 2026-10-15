@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "excludesItself": true,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 8327,
+      "sha256": "28b57101d634c3ec06d1b320888a3a99207f2ac141c5cd359bedf8fdc16e1e7b"
+    },
+    {
+      "path": "images/d591-collapsible/bootstrap-2-3-2-wc-keyboard-focus-closed.png",
+      "bytes": 60328,
+      "sha256": "654b384c42a37833de46782c1d4b4b63dd47ba8d8178cd254a20902bd14af224"
+    },
+    {
+      "path": "images/d591-collapsible/brutalist-vue2-open.png",
+      "bytes": 77523,
+      "sha256": "6e076cbb76baa2f60770d450a17ede44e390220cf4e2156de6b3a11cb992ea34"
+    },
+    {
+      "path": "images/d591-collapsible/liquid-glass-react-320-text200-dark-before-text-assertion.png",
+      "bytes": 345692,
+      "sha256": "1de341fa34ad84362494e95065737a5f376e1ac832223ddbdf1844c8f521de3f"
+    },
+    {
+      "path": "images/d591-collapsible/liquid-glass-wc-controlled-accepted.png",
+      "bytes": 145224,
+      "sha256": "0bd85743f90b4d4b7d32fd06803c62d7b928e3fb18c5dd9280ca54ba8cc00615"
+    },
+    {
+      "path": "images/d591-collapsible/liquid-glass-wc-keyboard-focus-open.png",
+      "bytes": 178528,
+      "sha256": "2628d55a923461c6e0b803eec18918a97744c79465a5be67a3daac93f7c35924"
+    },
+    {
+      "path": "images/d591-collapsible/shadcn-vue-keyboard-focus-open.png",
+      "bytes": 75107,
+      "sha256": "18ae06d9b5675e4a3975a1e412305894a5c3828cadcdcd175653790ceeb2d9f9"
+    },
+    {
+      "path": "images/d591-field/d59131ee35ea-base-wc-light.png",
+      "bytes": 136689,
+      "sha256": "a9741d33db33949ee17098e0b1e9b610324c87e97c735ff3521bad934d2c25db"
+    },
+    {
+      "path": "images/d591-field/d59131ee35ea-bootstrap-2-3-2-vue-dark-narrow-200.png",
+      "bytes": 207753,
+      "sha256": "48d9132ebc580430804f1f04442545ec48d4426f429b3c530a69bf0934221aab"
+    },
+    {
+      "path": "images/d591-field/d59131ee35ea-liquid-glass-vue2-light.png",
+      "bytes": 341025,
+      "sha256": "53621f02ca049686bd81cfc91fb51192968bbdadf7828af8f14b7f33263d66df"
+    },
+    {
+      "path": "images/d591-field/d59131ee35ea-shadcn-react-dark-narrow-200.png",
+      "bytes": 141428,
+      "sha256": "ff408ca7f55a9095ed6ca34ddd07820983e25c48cea0d04d56d6071583a49516"
+    },
+    {
+      "path": "images/form-local/shadcn-form-failed-previewer.png",
+      "bytes": 38545,
+      "sha256": "7f9550a291a053d7908bed47c342edad7788aba79a0daa6248eb5d6ce1863865"
+    },
+    {
+      "path": "images/form-local/shadcn-form-failed.png",
+      "bytes": 124133,
+      "sha256": "db8eb3a908cf13d53e20e2f470352ee4c90638bbf4b3bd606bfb0f9cc27e82a6"
+    },
+    {
+      "path": "images/form-local/shadcn-form-invalid-submit-first-focus.png",
+      "bytes": 38545,
+      "sha256": "7f9550a291a053d7908bed47c342edad7788aba79a0daa6248eb5d6ce1863865"
+    },
+    {
+      "path": "images/form-local/shadcn-form-rest.png",
+      "bytes": 36120,
+      "sha256": "b4affdbc8be8ec67ffdc3febea2019c04902861b22bd24c2aed9fc51b9864fa1"
+    },
+    {
+      "path": "images.md",
+      "bytes": 4932,
+      "sha256": "1fec19b8d831b6fec1b6a069b02bf0740ad780352d063f6d0ed4b0a67a54ede8"
+    },
+    {
+      "path": "packet.json",
+      "bytes": 4148,
+      "sha256": "86ee76df00a9bd4370bf8b6f695e98898896eb539565f47986d4b272b4125044"
+    },
+    {
+      "path": "raw-public-map.json",
+      "bytes": 91249,
+      "sha256": "8d2acd6f8635c10c6c3a5b5f7b8f00de218b93dc5a0eaeb3cdabc4423b8d1129"
+    },
+    {
+      "path": "records.tar.gz",
+      "bytes": 369706,
+      "sha256": "11fd4565f15c87bebcc0050525f08c83e098badf4317c1b49357402156fd6777"
+    },
+    {
+      "path": "source-walkthrough.md",
+      "bytes": 3219,
+      "sha256": "0f85232a882d3dcade7827dd59a33940ef89318de7f37b2d6261ddf52ace815c"
+    }
+  ],
+  "publicationState": "local preparation only"
+}
