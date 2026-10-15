@@ -32,6 +32,12 @@ const switchRoot = definePrototype<BrutalistSwitchRootProps, BrutalistSwitchRoot
   setup(def) {
     // P-BRUTALIST-SWITCH-BASE-INHERITANCE
     const switchState = asSwitchRoot().stateHandles;
+    // P-BRUTALIST-SWITCH-DRAG-DEFERRED: the pinned Thumb's 1.25rem travel
+    // is not the zero-padding Root content interval. Reject this extension
+    // until one declared range can drive both input and direct presentation.
+    def.props.define({
+      draggable: { type: 'boolean', empty: 'fallback', validator: (value) => value === false },
+    });
     if (!switchState) {
       throw new Error(
         '[brutalist-switch-root] asSwitchRoot must project Switch root state handles.'

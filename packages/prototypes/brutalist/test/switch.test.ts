@@ -161,3 +161,102 @@ describe('prototypes/brutalist: switch', () => {
     }
   });
 });
+
+// T-BRUTALIST-SWITCH-0001-CASE-DRAG-DEFERRED
+// Real WC and shared Axis implementation with synthetic source-resolved metrics.
+// These checks do not substitute for native layout/input evidence.
+describe('Brutalist Switch temporary drag non-admission', () => {
+  function input(root: HTMLElement, type: string, x = 14) {
+    return root.dispatchEvent(
+      new PointerEvent(type, {
+        bubbles: true,
+        cancelable: true,
+        pointerId: 73,
+        pointerType: 'mouse',
+        isPrimary: true,
+        button: 0,
+        clientX: x,
+        clientY: 12,
+        detail: 1,
+      })
+    );
+  }
+  function geometry(root: HTMLElement, thumb: HTMLElement, rem: number) {
+    root.style.cssText = `box-sizing:border-box;width:${3 * rem}px;height:${1.5 * rem}px;border:2px solid;padding:0;`;
+    root.getBoundingClientRect = () => new DOMRect(0, 0, 3 * rem, 1.5 * rem);
+    thumb.getBoundingClientRect = () => new DOMRect(2 + rem / 4, 2, rem, rem);
+  }
+  for (const rem of [16, 32])
+    for (const direction of ['ltr', 'rtl']) {
+      it(`rejects raw draggable=true without a drag request at ${rem}px/${direction}`, async () => {
+        const { root, thumb } = createSwitch({ draggable: true, direction });
+        await flush();
+        geometry(root, thumb, rem);
+        const capture = vi.fn();
+        root.setPointerCapture = capture;
+        const changes: boolean[] = [];
+        root.addEventListener('checkedChange', (event) =>
+          changes.push((event as CustomEvent).detail.checked)
+        );
+        input(root, 'pointerdown');
+        input(root, 'pointermove', direction === 'rtl' ? -30 : 60);
+        expect(root.getExposes().dragging.get()).toBe(false);
+        expect(root.getExposes().percentage.get()).toBe(0);
+        expect(root.getExposes().checked.get()).toBe(false);
+        expect(capture).not.toHaveBeenCalled();
+        input(root, 'pointerup', direction === 'rtl' ? -30 : 60);
+        expect(changes).toEqual([]); // No release-generated checked request.
+        expect(root.getExposes().pressed.get()).toBe(false);
+        expect(styleContains(root, 'p-0')).toBe(true);
+        expect(styleContains(root, 'w-12')).toBe(true);
+        expect(styleContains(thumb, 'size-4')).toBe(true);
+        input(root, 'pointerdown');
+        input(root, 'pointerup');
+        input(root, 'click');
+        expect(changes).toEqual([true]); // Ordinary tap still activates once.
+        expect(styleContains(thumb, 'translate-x-5')).toBe(true);
+        root.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, key: ' ' }));
+        expect(changes).toEqual([true, false]);
+      });
+    }
+  it('keeps controlled refusal and dynamic raw true updates on the ordinary activation path', async () => {
+    const { root, thumb } = createSwitch({ checked: true });
+    await flush();
+    geometry(root, thumb, 16);
+    setElementProps(root, { checked: true, draggable: true });
+    await flush();
+    const changes: boolean[] = [];
+    root.addEventListener('checkedChange', (event) =>
+      changes.push((event as CustomEvent).detail.checked)
+    );
+    input(root, 'pointerdown', 34);
+    input(root, 'pointermove', 14);
+    input(root, 'pointerup', 14);
+    expect(root.getExposes().dragging.get()).toBe(false);
+    expect(root.getExposes().percentage.get()).toBe(100);
+    expect(changes).toEqual([]);
+    input(root, 'pointerdown');
+    input(root, 'pointerup');
+    input(root, 'click');
+    expect(changes).toEqual([false]);
+    expect(root.getExposes().checked.get()).toBe(true);
+    expect(root.getAttribute('aria-checked')).toBe('true');
+  });
+  it('keeps disabled activation inert when the raw drag flag is true', async () => {
+    const { root, thumb } = createSwitch({ draggable: true, disabled: true });
+    await flush();
+    geometry(root, thumb, 16);
+    const changes: boolean[] = [];
+    root.addEventListener('checkedChange', (event) =>
+      changes.push((event as CustomEvent).detail.checked)
+    );
+    input(root, 'pointerdown');
+    input(root, 'pointermove', 40);
+    input(root, 'pointerup', 40);
+    input(root, 'click', 40);
+    root.dispatchEvent(new KeyboardEvent('keydown', { bubbles: true, key: ' ' }));
+    expect(root.getExposes().dragging.get()).toBe(false);
+    expect(root.getExposes().checked.get()).toBe(false);
+    expect(changes).toEqual([]);
+  });
+});
