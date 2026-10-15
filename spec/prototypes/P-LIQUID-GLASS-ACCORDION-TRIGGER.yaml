@@ -25,12 +25,18 @@ criteria:
       zh-CN: Trigger 消费显式共享光学意图；宿主缺少 visual sink 时实际渲染仍为 opaque fallback。完整 native optical/material 与 GPUI 证据仍须完成。
   - id: P-LIQUID-GLASS-ACCORDION-TRIGGER-MATERIAL
     text:
-      en: The Trigger declares one shared v2 rounded-rect/style in-app-backdrop slot with style-resolved fill/foreground fallback. Mutually exclusive Rules submit one liquid-glass candidate with Base pressed/rest deformation. It neither stacks a static candidate under the Rules nor substitutes adaptive-blur or infers a button profile. Missing host capability is diagnosed and remains opaque; intent/runtime evidence is not optical/native paint acceptance.
-      zh-CN: Trigger 声明一个共享 v2 rounded-rect/style、in-app-backdrop slot，fill/foreground fallback 从 style 解析。互斥 Rules 消费 Base pressed/rest，并提交唯一 liquid-glass candidate；不叠加 static candidate，不换成 adaptive-blur，不推断 button profile。缺失宿主 capability 时诊断并保留 opaque；意图/runtime 证据不是光学/native paint 验收。
+      en: The Trigger declares one shared v2 rounded-rect/style in-app-backdrop slot with style-resolved fill/foreground fallback. Mutually exclusive Rules submit one liquid-glass candidate with Base pressed/rest deformation. It neither stacks a static candidate under the Rules nor substitutes adaptive-blur or infers a button profile. Missing host capability is diagnosed and remains opaque; intent/runtime evidence is not optical/native paint acceptance. Exactly one candidate includes existing pointer self-contact only while eligible; disabled or collapseBlocked contributes zero candidates while retaining the slot and readable fallback. This does not grant pointer-following hover optics.
+      zh-CN: Trigger 声明一个共享 v2 rounded-rect/style、in-app-backdrop slot，fill/foreground fallback 从 style 解析。互斥 Rules 消费 Base pressed/rest，并提交唯一 liquid-glass candidate；不叠加 static candidate，不换成 adaptive-blur，不推断 button profile。缺失宿主 capability 时诊断并保留 opaque；意图/runtime 证据不是光学/native paint 验收。 仅可交互时唯一候选包含既有 pointer self-contact；disabled 或 collapseBlocked 时保留 slot 和可读 fallback，但提交零候选。这不代表已实现跟随指针的 hover 光学。
     dependsOn:
       contracts:
         - C-FEEDBACK-MATERIAL-0001
         - C-RULE-INTENT-FEEDBACK-MATERIAL-0001
+  - id: P-LIQUID-GLASS-ACCORDION-TRIGGER-COMMAND-INTERACTION
+    text:
+      en: Follow the bounded shared command recipe; eligible static hover is independent of pressed, persistent selection and focus-visible. Base owns all transient and semantic state; the family only projects data-only physical tokens through Rules in its owning setup. Disabled commands retain readable same-state opaque fallback without whole-host opacity. Exact-head native images and current contact footprint acceptance remain required.
+      zh-CN: 遵守有界共享 command 配方：可交互静态 hover 与 pressed、持久选择和 focus-visible 独立。所有瞬态及语义状态仍由 Base 拥有，family 仅在本 setup 内通过 Rules 投影数据型物理 tokens。禁用后保留可读的同状态不透明 fallback，不降低整个宿主的透明度。仍须精确源码 native 图像与当前 contact 绘制边界验收。
+    dependsOn:
+      contracts: [C-LIQUID-GLASS-COMMAND-INTERACTION-0001]
 inherits:
   prototypes:
     - P-BASE-ACCORDION-TRIGGER
@@ -39,6 +45,7 @@ dependsOn:
     - C-FEEDBACK-STYLE-0003
 verifies:
   tests:
+    - T-LIQUID-GLASS-COMMAND-INTERACTION-0001
     - T-BASE-ACCORDION-0001
     - T-ACCORDION-RECIPES-0001
 sources:
@@ -46,6 +53,9 @@ sources:
   - path: packages/prototypes/liquid-glass/src/accordion/index.ts
   - path: packages/prototypes/liquid-glass/test/accordion-material.test.ts
 revisions:
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Bind independent static hover, focus, quiet disabled paint and existing self-contact to the shared six-part draft recipe without introducing input ownership or claiming Apple-native equivalence.
   - version: 0.3.0-alpha.1
     change: introduced
     summary: Added the independent Base-consuming presentation, without claiming release or complete material/native parity.

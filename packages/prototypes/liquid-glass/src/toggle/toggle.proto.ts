@@ -1,3 +1,9 @@
+import {
+  COMMAND_HOVER,
+  COMMAND_PRESS,
+  COMMAND_FOCUS,
+  COMMAND_DISABLED,
+} from '../interactive-surface';
 import { definePrototype, tw, delay } from '@proto.ui/core';
 import { asToggle } from '@proto.ui/prototypes-base/toggle';
 import type { ToggleProjectionProps, ToggleExposes } from './types';
@@ -31,12 +37,17 @@ export default definePrototype<ToggleProjectionProps, ToggleExposes>({
     });
     def.rule({
       when: (w) =>
-        w.all(w.state(hovered).eq(true), w.state(pressed).eq(false), w.state(disabled).eq(false)),
-      intent: (i) => i.feedback.style.use(tw('shadow-md')),
+        w.all(
+          w.state(hovered).eq(true),
+          w.state(pressed).eq(false),
+          w.state(disabled).eq(false),
+          w.state(focusVisible).eq(false)
+        ),
+      intent: (i) => i.feedback.style.use(tw(COMMAND_HOVER)),
     });
     def.rule({
       when: (w) => w.all(w.state(pressed).eq(true), w.state(disabled).eq(false)),
-      intent: (i) => i.feedback.style.use(tw('shadow-xs')),
+      intent: (i) => i.feedback.style.use(tw(COMMAND_PRESS)),
     });
     def.feedback.material.declare({
       version: 2,
@@ -67,16 +78,13 @@ export default definePrototype<ToggleProjectionProps, ToggleExposes>({
         });
     def.rule({
       when: (w) => w.state(focusVisible).eq(true),
-      intent: (i) =>
-        i.feedback.style.use(
-          tw('forced-colors-focus-outline ring-2 ring-ring ring-offset-2 ring-offset-background')
-        ),
+      intent: (i) => i.feedback.style.use(tw(COMMAND_FOCUS)),
     });
     def.rule({
       when: (w) => w.state(disabled).eq(true),
       // Keep the declared fallback opaque. Whole-host opacity would make its
       // fill/foreground depend on the backdrop and fail shared-provider admission.
-      intent: (i) => i.feedback.style.use(tw('pointer-events-none cursor-default shadow-none')),
+      intent: (i) => i.feedback.style.use(tw(COMMAND_DISABLED)),
     });
     // The ordinary template owns only this decorative marker. Reserve its space
     // in both states, preserving slotted content, naming and the Base root owner.

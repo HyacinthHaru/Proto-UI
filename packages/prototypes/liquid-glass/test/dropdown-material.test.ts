@@ -150,7 +150,7 @@ async function fixture(sink = true) {
 }
 const candidate = (phase: 'rest' | 'pressed') => ({
   intent: 'liquid-glass',
-  deformation: { kind: 'press', phase },
+  deformation: { kind: 'press', phase, contact: 'pointer' },
 });
 
 describe('Liquid Dropdown shared material consumer (source-less fallback, no optical paint claim)', () => {
@@ -210,7 +210,7 @@ describe('Liquid Dropdown shared material consumer (source-less fallback, no opt
       );
       try {
         const frame = f.trigger.frames.at(-1)!;
-        expect(frame.material.candidates).toEqual([candidate('rest')]);
+        expect(frame.material.candidates).toEqual([]);
         sink.commit(frame);
         expect(
           host.dataset.materialQuality,
@@ -260,7 +260,7 @@ describe('Liquid Dropdown shared material consumer (source-less fallback, no opt
       f.trigger.input('pointer.down');
       f.trigger.set({ disabled: true });
       expect(f.trigger.exposes.pressed.get()).toBe(false);
-      expect(f.trigger.frames.at(-1)?.material.candidates).toEqual([candidate('rest')]);
+      expect(f.trigger.frames.at(-1)?.material.candidates).toEqual([]);
       f.trigger.input('press.commit');
       expect(f.root.exposes.open.get()).toBe(false);
       expect(f.trigger.frames.at(-1)?.style.tokens).not.toContain('opacity-50');

@@ -23,6 +23,12 @@ criteria:
   - id: P-LIQUID-GLASS-TOGGLE-DELIVERY
     text:
       en: Package subpath, root export, source-only CLI registration, family-fixed demo mapping and four Web facades consume the same prototype. Every style token has existing finite translation; www owns no substitute Toggle state or material implementation. The family remains private/unreleased; no general Compiler or native platform acceptance follows.
+  - id: P-LIQUID-GLASS-TOGGLE-COMMAND-INTERACTION
+    text:
+      en: Follow the bounded shared command recipe; eligible static hover is independent of pressed, persistent selection and focus-visible. Base owns all transient and semantic state; the family only projects data-only physical tokens through Rules in its owning setup. Disabled commands retain readable same-state opaque fallback without whole-host opacity. Exact-head native images and current contact footprint acceptance remain required.
+      zh-CN: 遵守有界共享 command 配方：可交互静态 hover 与 pressed、持久选择和 focus-visible 独立。所有瞬态及语义状态仍由 Base 拥有，family 仅在本 setup 内通过 Rules 投影数据型物理 tokens。禁用后保留可读的同状态不透明 fallback，不降低整个宿主的透明度。仍须精确源码 native 图像与当前 contact 绘制边界验收。
+    dependsOn:
+      contracts: [C-LIQUID-GLASS-COMMAND-INTERACTION-0001]
 sources:
   - path: packages/prototypes/liquid-glass/src/toggle/toggle.proto.ts
   - path: packages/prototypes/liquid-glass/src/toggle/types.ts
@@ -48,8 +54,12 @@ inherits:
     - P-BASE-TOGGLE
 verifies:
   tests:
+    - T-LIQUID-GLASS-COMMAND-INTERACTION-0001
     - T-LIQUID-GLASS-TOGGLE-0001
 revisions:
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Bind independent static hover, focus, quiet disabled paint and existing self-contact to the shared six-part draft recipe without introducing input ownership or claiming Apple-native equivalence.
   - version: 0.3.0-alpha.1
     change: revised
     summary: Replace text underline with a permanently reserved decorative currentColor check for text and icon-only selection, retaining Base accessible naming, disabled selection, independent focus and state-stable geometry.

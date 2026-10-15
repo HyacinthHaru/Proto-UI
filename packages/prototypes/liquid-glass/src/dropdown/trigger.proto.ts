@@ -1,3 +1,10 @@
+import {
+  COMMAND_HOVER,
+  COMMAND_PRESS,
+  COMMAND_FOCUS_INSET,
+  COMMAND_DISABLED_FOCUSABLE,
+  COMMAND_FOCUSED_ELEVATION,
+} from '../interactive-surface';
 import { definePrototype, tw } from '@proto.ui/core';
 import {
   asDropdownTrigger,
@@ -19,11 +26,15 @@ export default definePrototype<DropdownTriggerProps, DropdownTriggerExposes>({
     });
     for (const isPressed of [false, true]) {
       def.rule({
-        when: (w) => w.state(state.pressed).eq(isPressed),
+        when: (w) => w.all(w.state(state.pressed).eq(isPressed), w.state(state.disabled).eq(false)),
         intent: (i) =>
           i.feedback.material.use({
             intent: 'liquid-glass',
-            deformation: { kind: 'press', phase: isPressed ? 'pressed' : 'rest' },
+            deformation: {
+              kind: 'press',
+              phase: isPressed ? 'pressed' : 'rest',
+              contact: 'pointer',
+            },
           }),
       });
     }
@@ -33,18 +44,39 @@ export default definePrototype<DropdownTriggerProps, DropdownTriggerExposes>({
       )
     );
     def.rule({
-      when: (w) => w.any(w.state(state.hovered).eq(true), w.state(state.focused).eq(true)),
-      intent: (i) => i.feedback.style.use(tw('shadow-md')),
+      when: (w) =>
+        w.all(
+          w.state(state.hovered).eq(true),
+          w.state(state.pressed).eq(false),
+          w.state(state.disabled).eq(false),
+          w.state(state.focusVisible).eq(false)
+        ),
+      intent: (i) => i.feedback.style.use(tw(COMMAND_HOVER)),
+    });
+    // Retain pointer/programmatic focus elevation separately from hover and keyboard focus.
+    def.rule({
+      when: (w) =>
+        w.all(
+          w.state(state.focused).eq(true),
+          w.state(state.focusVisible).eq(false),
+          w.state(state.pressed).eq(false),
+          w.state(state.disabled).eq(false)
+        ),
+      intent: (i) => i.feedback.style.use(tw(COMMAND_FOCUSED_ELEVATION)),
+    });
+    def.rule({
+      when: (w) => w.all(w.state(state.pressed).eq(true), w.state(state.disabled).eq(false)),
+      intent: (i) => i.feedback.style.use(tw(COMMAND_PRESS)),
     });
     def.rule({
       when: (w) => w.state(state.focusVisible).eq(true),
-      intent: (i) => i.feedback.style.use(tw('ring-2 ring-ring ring-inset')),
+      intent: (i) => i.feedback.style.use(tw(COMMAND_FOCUS_INSET)),
     });
     def.rule({
       when: (w) => w.state(state.disabled).eq(true),
       // Preserve the complete opaque fallback and governed foreground contrast.
       // Whole-host opacity composites both over an uncontrolled backdrop.
-      intent: (i) => i.feedback.style.use(tw('cursor-default shadow-none')),
+      intent: (i) => i.feedback.style.use(tw(COMMAND_DISABLED_FOCUSABLE)),
     });
   },
 });

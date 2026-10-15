@@ -14,6 +14,10 @@ Button、Surface、Text、Label、Collapsible、Accordion 和五 part Select 已
 
 [Toggle（草案）](/zh-cn/ui-libraries/liquid-glass/toggle/) 增加直接 Base 持久 active 投影：两态使用 regular 材质，选中态使用受界 style tint 与固定占位的勾形标记。染色必须保留有结构的背景响应，切换选择不改变控件几何尺寸。这是 Proto 扩展，不声明 Apple 完全等价。
 
+## Hover 与按压（草案）
+
+Button、Toggle、Accordion Trigger、Collapsible Trigger、Select Trigger 与 Dropdown Trigger 在 Base 拥有的状态上共享静态 hover 基础。Hover、按压、持久选择与键盘焦点保持独立；禁用或受阻控件不产生交互强调。配方使用克制的抬升与内缘，不缩放控件。这是参考 [iPadOS 26 指针设计](https://developer.apple.com/videos/play/wwdc2025/208/?time=560) 的 Proto 选择，尚未实现 Apple 随目标移动的折射高光层。既有按住指针接触是独立路径，扩大绘制边界无法安全采样时保留明确回退。精确版本的视觉验收仍待完成；Form Submit/Reset 和其他家族角色另行推进。
+
 <PrototypeLibraryOverview library="liquid-glass" locale="zh-cn" />
 
 [完整覆盖进度](https://github.com/Proto-UI/Proto-UI/issues/792)

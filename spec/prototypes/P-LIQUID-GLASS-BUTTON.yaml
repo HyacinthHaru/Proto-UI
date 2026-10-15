@@ -26,6 +26,12 @@ criteria:
   - id: P-LIQUID-GLASS-BUTTON-MATERIAL
     text:
       en: Enabled regular auto contributes one complete V2 liquid-glass candidate with finite press deformation driven by existing Base state and a finite pointer-contact request to the existing host input owner. Held drag tracking is visual-only and does not change Base activation or pointer-leave semantics. Disabled, opaque opt-out and prominent contribute zero candidates, retaining the declared opaque fallback. Provider policy resolves final style ownership, current source scope, geometry and preferences. Reduced or unknown motion selects static optics when supported; reduced/unknown transparency and unsafe contrast withdraw enhancement. No browser observer, GPU uniform or input owner belongs to this Prototype.
+  - id: P-LIQUID-GLASS-BUTTON-COMMAND-INTERACTION
+    text:
+      en: Follow the bounded shared command recipe; eligible static hover is independent of pressed, persistent selection and focus-visible. Base owns all transient and semantic state; the family only projects data-only physical tokens through Rules in its owning setup. Disabled commands retain readable same-state opaque fallback without whole-host opacity. Exact-head native images and current contact footprint acceptance remain required.
+      zh-CN: 遵守有界共享 command 配方：可交互静态 hover 与 pressed、持久选择和 focus-visible 独立。所有瞬态及语义状态仍由 Base 拥有，family 仅在本 setup 内通过 Rules 投影数据型物理 tokens。禁用后保留可读的同状态不透明 fallback，不降低整个宿主的透明度。仍须精确源码 native 图像与当前 contact 绘制边界验收。
+    dependsOn:
+      contracts: [C-LIQUID-GLASS-COMMAND-INTERACTION-0001]
 sources:
   - path: packages/prototypes/liquid-glass/src/button/button.proto.ts
   - path: packages/prototypes/liquid-glass/src/theme.ts
@@ -45,9 +51,13 @@ inherits:
     - id: P-BASE-BUTTON
 verifies:
   tests:
+    - T-LIQUID-GLASS-COMMAND-INTERACTION-0001
     - T-LIQUID-GLASS-BUTTON-0001
     - T-LIQUID-GLASS-MATERIAL-0001
 revisions:
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Bind independent static hover, focus, quiet disabled paint and existing self-contact to the shared six-part draft recipe without introducing input ownership or claiming Apple-native equivalence.
   - version: 0.3.0-alpha.1
     change: introduced
     summary: Cataloged the draft Base-inheriting visual Button foundation with explicit material, release and host limits.

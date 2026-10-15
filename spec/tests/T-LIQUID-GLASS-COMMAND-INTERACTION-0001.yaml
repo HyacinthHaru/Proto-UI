@@ -1,0 +1,69 @@
+id: T-LIQUID-GLASS-COMMAND-INTERACTION-0001
+type: test
+title: Liquid Glass command hover and existing press-contact conformance
+status: draft
+since: 0.3.0-alpha.1
+lifecycleRationale: The new shared recipe has passing local portable/closure evidence and planned exact-head native evidence. Source availability does not admit all family roles, moving hover optics or cross-host equivalence.
+summary: Separate semantic ownership, generated physical closure and exact-head native hover/material evidence for six existing command parts.
+cases:
+  - id: T-LIQUID-GLASS-COMMAND-INTERACTION-0001-CASE-STATE
+    title: Borrowed Base states preserve action and persistent semantics
+    covers:
+      [
+        C-LIQUID-GLASS-COMMAND-INTERACTION-0001-OWNERSHIP,
+        C-LIQUID-GLASS-COMMAND-INTERACTION-0001-HOVER,
+        C-LIQUID-GLASS-COMMAND-INTERACTION-0001-PRESS,
+        C-LIQUID-GLASS-COMMAND-INTERACTION-0001-FOCUS,
+      ]
+    expectation: six-parts-exclusive-css-feedback-base-owned-state-and-request-counts
+  - id: T-LIQUID-GLASS-COMMAND-INTERACTION-0001-CASE-CLOSURE
+    title: Private token data resolves through real style extraction and supported lowering
+    covers:
+      [C-LIQUID-GLASS-COMMAND-INTERACTION-0001-HOVER, C-LIQUID-GLASS-COMMAND-INTERACTION-0001-FOCUS]
+    expectation: source-derived-conditional-css-and-existing-lowering-no-page-repair
+  - id: T-LIQUID-GLASS-COMMAND-INTERACTION-0001-CASE-NATIVE
+    title: Four runtime dual theme state sequences retain real material or explicit fallback
+    covers:
+      [
+        C-LIQUID-GLASS-COMMAND-INTERACTION-0001-SAFETY,
+        C-LIQUID-GLASS-COMMAND-INTERACTION-0001-EVIDENCE,
+      ]
+    expectation: exact-source-hover-press-focus-source-geometry-and-pref-evidence
+implementations:
+  - id: liquid-command-portable
+    kind: module-test
+    status: passing
+    path: packages/prototypes/liquid-glass/test/interactive-surface.test.ts
+    required: true
+    consumesCases:
+      [
+        T-LIQUID-GLASS-COMMAND-INTERACTION-0001-CASE-STATE,
+        T-LIQUID-GLASS-COMMAND-INTERACTION-0001-CASE-CLOSURE,
+      ]
+  - id: liquid-command-native
+    kind: runtime-test
+    status: planned
+    path: apps/www/src/content/docs/zh-cn/demo-liquid-glass-hover.browser.test.ts
+    required: true
+    consumesCases: [T-LIQUID-GLASS-COMMAND-INTERACTION-0001-CASE-NATIVE]
+    notes:
+      [
+        No local browser or GPU result is claimed; natural exact-head CI and independent visual review are required.,
+      ]
+exercises:
+  prototypes:
+    - P-LIQUID-GLASS-BUTTON
+    - P-LIQUID-GLASS-TOGGLE
+    - P-LIQUID-GLASS-ACCORDION-TRIGGER
+    - P-LIQUID-GLASS-COLLAPSIBLE-TRIGGER
+    - P-LIQUID-GLASS-SELECT-TRIGGER
+    - P-LIQUID-GLASS-DROPDOWN-MENU-TRIGGER
+verifies:
+  contracts: [C-LIQUID-GLASS-COMMAND-INTERACTION-0001]
+sources:
+  - path: packages/prototypes/liquid-glass/src/interactive-surface.ts
+revisions:
+  - version: 0.3.0-alpha.1
+    change: introduced
+    summary: Define state, closure and native obligations without borrowing old Toggle acceptance or weakening optical gates.
+tags: [test, liquid-glass, hover, prototype]

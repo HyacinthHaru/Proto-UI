@@ -14,6 +14,10 @@ Button, Surface, Text, Label, Collapsible, Accordion and the five-part Select no
 
 [Toggle (Draft)](/en/ui-libraries/liquid-glass/toggle/) adds a direct Base persistent-active projection: both states use regular material; selection uses bounded style tint and a fixed-space checkmark. Tint must preserve structured backdrop response, and selection does not resize the control. This is a Proto extension, not exact Apple parity.
 
+## Hover and press (draft)
+
+Button, Toggle, Accordion Trigger, Collapsible Trigger, Select Trigger and Dropdown Trigger use the same static hover foundation over Base-owned states. Hover, press, persistent selection and keyboard focus stay distinct; disabled or blocked controls stay quiet. The recipe adds restrained elevation and an inner edge without resizing the control. It is a Proto design choice informed by [iPadOS 26 pointer guidance](https://developer.apple.com/videos/play/wwdc2025/208/?time=560), not Apple's moving refractive highlight platter. Existing held-pointer contact remains separate, with safe fallback when its expanded paint bounds cannot be sampled. Exact-head visual acceptance is pending. Form Submit/Reset and the remaining family roles are separate follow-up slices.
+
 <PrototypeLibraryOverview library="liquid-glass" locale="en" />
 
 [Full coverage progress](https://github.com/Proto-UI/Proto-UI/issues/792)

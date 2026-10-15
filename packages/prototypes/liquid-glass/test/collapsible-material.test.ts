@@ -143,7 +143,7 @@ async function fixture(sink = true) {
 }
 const candidate = (phase: 'rest' | 'pressed') => ({
   intent: 'liquid-glass',
-  deformation: { kind: 'press', phase },
+  deformation: { kind: 'press', phase, contact: 'pointer' },
 });
 
 describe('Liquid Collapsible shared material consumer (intent only, no paint claim)', () => {
@@ -167,7 +167,7 @@ describe('Liquid Collapsible shared material consumer (intent only, no paint cla
       f.trigger.input('pointer.down');
       f.root.set({ disabled: true });
       expect(f.trigger.exposes.pressed.get()).toBe(false);
-      expect(f.trigger.frames.at(-1)?.material.candidates).toEqual([candidate('rest')]);
+      expect(f.trigger.frames.at(-1)?.material.candidates).toEqual([]);
       // Setup can project an unresolved empty candidate with the opaque fallback;
       // no complete frame may combine conflicting rest/pressed candidates.
       expect(f.trigger.frames.every((frame) => frame.material.candidates.length <= 1)).toBe(true);

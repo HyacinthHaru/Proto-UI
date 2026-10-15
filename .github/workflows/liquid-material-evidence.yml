@@ -45,6 +45,9 @@ on:
       - 'apps/www/src/content/docs/zh-cn/demo-liquid-glass-portal.browser.test.ts'
       - 'apps/www/src/pages/en/test/liquid-glass-portal.astro'
       - 'apps/www/src/pages/en/test/liquid-glass-toggle.astro'
+      - 'apps/www/src/pages/en/test/liquid-glass-hover.astro'
+      - 'apps/www/src/content/docs/zh-cn/demo-liquid-glass-hover.browser.test.ts'
+      - 'apps/www/src/content/docs/zh-cn/liquid-hover-*'
   workflow_dispatch:
 permissions:
   contents: read
@@ -85,6 +88,11 @@ jobs:
           corepack pnpm@10.32.1 exec vitest run \
             packages/prototypes/liquid-glass/test/material.test.ts \
             packages/prototypes/liquid-glass/test/toggle.test.ts \
+            packages/prototypes/liquid-glass/test/interactive-surface.test.ts \
+            packages/prototypes/liquid-glass/test/accordion-material.test.ts \
+            packages/prototypes/liquid-glass/test/collapsible-material.test.ts \
+            packages/prototypes/liquid-glass/test/dropdown-material.test.ts \
+            packages/prototypes/liquid-glass/test/select-material.test.ts \
             packages/adapters/base/test/portal-destination.test.ts \
             packages/adapters/base/test/portal-inline-size.test.ts \
             packages/adapters/base/test/web-material-program.test.ts \
@@ -98,9 +106,11 @@ jobs:
             apps/www/src/content/docs/zh-cn/liquid-toggle-snapshot.test.ts \
             apps/www/src/content/docs/zh-cn/liquid-toggle-detail-metrics.test.ts \
             apps/www/src/content/docs/zh-cn/liquid-toggle-detail-probe.test.ts \
+            apps/www/src/content/docs/zh-cn/liquid-hover-fixture.test.ts \
             apps/www/src/content/docs/zh-cn/demo-liquid-glass-material.browser.test.ts \
             apps/www/src/content/docs/zh-cn/demo-liquid-glass-portal.browser.test.ts \
             apps/www/src/content/docs/zh-cn/demo-liquid-glass-toggle.browser.test.ts \
+            apps/www/src/content/docs/zh-cn/demo-liquid-glass-hover.browser.test.ts \
             --maxWorkers=1 --minWorkers=1
       - name: Retain exact-source evidence
         if: always()
