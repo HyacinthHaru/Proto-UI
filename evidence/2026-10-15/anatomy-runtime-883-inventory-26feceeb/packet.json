@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 1,
+  "preparedAt": "2026-10-15T06:45:55.263864+00:00",
+  "status": "prepared local source-bound checkpoint; not published or approved; partial/ABSTAIN",
+  "facts": {
+    "schemaVersion": 1,
+    "head": "26feceeb769ed9688ad652262631bc953cc43b9a",
+    "tree": "870e018a40edc2302dd8586230ba2360e710db62",
+    "status": "local publication preparation; partial/ABSTAIN; not published or approved",
+    "parentDelta": {
+      "paths": 1,
+      "linesAdded": 3,
+      "linesRemoved": 0,
+      "totalTrackedEntries": 11179,
+      "otherEntriesUnchanged": 11178
+    },
+    "push": {
+      "normalNonForce": true,
+      "actualRemote": "26feceeb769ed9688ad652262631bc953cc43b9a",
+      "endedAt": "2026-10-15T06:35:20.494059+00:00"
+    },
+    "inventoryRedGreen": {
+      "sameTestBytes": true,
+      "baseline": {
+        "executed": 93,
+        "pass": 62,
+        "fail": 31
+      },
+      "candidate": {
+        "executed": 125,
+        "pass": 125,
+        "fail": 0
+      },
+      "notSameInstantiatedCount": true,
+      "candidateRunIsPrecommit": true
+    },
+    "finalLocalPlan": {
+      "head": "26feceeb769ed9688ad652262631bc953cc43b9a",
+      "generalFiles": 1256,
+      "ordinaryBrowserShardFileCounts": [11, 11, 10, 10, 10, 10, 10, 10],
+      "dedicatedProductionExcluded": 23,
+      "notGitHubExecution": true
+    },
+    "f5Local": {
+      "types": [908, 0, 0, 13],
+      "packages": {
+        "actualBuilds": 47,
+        "manifests": 47,
+        "budgets": {
+          "PASS": 4,
+          "ADVISORY": 5
+        }
+      },
+      "normalPnpmTest": "exit1 at stale packageBOM before Vitest",
+      "native": {
+        "Field": {
+          "pass": 25
+        },
+        "Collapsible": {
+          "pass": 36
+        },
+        "PortalDirection": {
+          "pass": 2,
+          "fail": 6
+        }
+      }
+    },
+    "f5Canonical": {
+      "head": "f5a683b44b1ad0ffec22cb882cff7b5253dc47e1",
+      "CI": "failed test-plan: unregisteredhover;general andoneunexpandedbrowsermatrixjobskipped",
+      "eightActualBrowserInstanceJobsCreated": false,
+      "FieldPass": 25,
+      "CollapsibleOriginal": {
+        "pass": 32,
+        "fail": 4
+      },
+      "CollapsibleIndependent": {
+        "pass": 8,
+        "originalSkipped": 36
+      },
+      "Forms": {
+        "pass": 10,
+        "fail": 2,
+        "pageErrors": []
+      }
+    },
+    "current26CI": "Outside this packet; no statement about later26 job outcomes. f5 evidence remains at its actual historical execution head.",
+    "visual": {
+      "mirroredPNG": 10,
+      "f5FieldCollPNG": 220,
+      "f5FieldCollActuallyViewed": 10,
+      "f5FieldCollUnassessed": 210,
+      "portalPNG": 48,
+      "portalActuallyViewed": 0,
+      "portalMirrored": 0,
+      "limits": [
+        "Fixed header occludes mid-page Field content.",
+        "Narrow 200% Field examples clip right-side text in viewed Shadcn and Bootstrap captures.",
+        "Liquid narrow 200% Collapsible has an extremely thin text column and lengthy vertical wrapping; passing geometry is not readability acceptance.",
+        "Liquid backdrop text competes with component content.",
+        "Only selected ten raw captures actually viewed, not all visual/native/AT/Apple/platform or installed-package acceptance."
+      ]
+    },
+    "pendingBeforeFreeze": [],
+    "excluded": [
+      "Earlierd591packet",
+      "privateidentity/ModelTrace/context/nonce/authorization/handoff/operationnotes",
+      "rawtraces/ZIPs/dependencycache/fullsourcecheckouts",
+      "unviewedimages",
+      "futureCIresults"
+    ],
+    "postcommitExecutionHead": "f5a683b44b1ad0ffec22cb882cff7b5253dc47e1",
+    "postcommitExecutionTree": "4e886b166b11acbef61377974f610f5a33284479",
+    "precommitFocused": {
+      "files": 76,
+      "pass": 1311,
+      "fail": 1,
+      "failure": "CLI lowered-hook coverage scanner",
+      "actualHead": "d59131ee35ea0289741c7d68b57a9928585a31b7",
+      "stagedIncoming": "a62ba0ba9a04498c7050cbe6707c9b13525c9851",
+      "stagedTree": "4e886b166b11acbef61377974f610f5a33284479",
+      "start": "2026-10-15T06:09:11.737295+00:00",
+      "end": "2026-10-15T06:09:28.539272+00:00",
+      "sourceMeaning": "precommit exact-tree evidence; same tree as laterf5, not an execution at f5",
+      "originalReceipt": "records/foundation-a62ba0ba/focused-combined-receipt.json"
+    },
+    "groupNamesMeaning": "Archive/map groups are organizational scopes, not execution-head claims; original source/time receipts govern."
+  },
+  "archive": {
+    "path": "records.tar.gz",
+    "sha256": "7160c23307a68091cc4450ef77cb676e46e7871dc1431d3f5b9346e89e5ab075",
+    "bytes": 162369,
+    "members": 55
+  },
+  "inputs": {
+    "rawFiles": 64,
+    "originalPNGs": 10,
+    "allowlistSHA256": "a4e6fe02e2591e8c94e9dd07f3be8363d64f15d4cd80d50a57724c35547f460c"
+  },
+  "historicalReceiptBoundary": "Original unpublished/pending statements remain tied to their receipt times. This wrapper records the later completed normal push and actual f5 native results. No historical raw evidence was rewritten.",
+  "wrapperCorrection": {
+    "finding": "INV26-PACKET-PRECOMMIT-SOURCE-001",
+    "at": "2026-10-15T06:57:47.033308+00:00",
+    "previousPacketSHA256": "eea57b4e3255fe42271253748145dcf41ba4641a438f196f1d37ff7102503d2d",
+    "scope": "Only README/packet source wording corrected. v1, archive, map, PNGs and raw evidence retained unchanged."
+  }
+}

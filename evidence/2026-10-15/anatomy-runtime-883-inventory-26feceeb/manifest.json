@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "excludesItself": true,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 5319,
+      "sha256": "c567f1ee9f4800e3d8780d88214e4690053aef631f30ee7e73060a117d7f9b94"
+    },
+    {
+      "path": "images/f5-collapsible/bootstrap-2-3-2-wc-keyboard-focus-closed.png",
+      "bytes": 60328,
+      "sha256": "654b384c42a37833de46782c1d4b4b63dd47ba8d8178cd254a20902bd14af224"
+    },
+    {
+      "path": "images/f5-collapsible/brutalist-vue2-open.png",
+      "bytes": 77523,
+      "sha256": "6e076cbb76baa2f60770d450a17ede44e390220cf4e2156de6b3a11cb992ea34"
+    },
+    {
+      "path": "images/f5-collapsible/liquid-glass-react-320-text200-dark-before-text-assertion.png",
+      "bytes": 342059,
+      "sha256": "9235393bf0705a2396993da6b611a8bd979facce4308267739fb44cc23d39024"
+    },
+    {
+      "path": "images/f5-collapsible/liquid-glass-wc-controlled-accepted.png",
+      "bytes": 99348,
+      "sha256": "97dfbd583935f29a1731d137641f6a8de53f147822b71fb272e2ee7c9e1670d9"
+    },
+    {
+      "path": "images/f5-collapsible/liquid-glass-wc-keyboard-focus-open.png",
+      "bytes": 132369,
+      "sha256": "1b4e384206c487cf41928146d879ad58b787a74a86f109548497683284d1e111"
+    },
+    {
+      "path": "images/f5-collapsible/shadcn-vue-keyboard-focus-open.png",
+      "bytes": 75107,
+      "sha256": "18ae06d9b5675e4a3975a1e412305894a5c3828cadcdcd175653790ceeb2d9f9"
+    },
+    {
+      "path": "images/f5-field/f5a683b44b1a-base-wc-light.png",
+      "bytes": 136689,
+      "sha256": "a9741d33db33949ee17098e0b1e9b610324c87e97c735ff3521bad934d2c25db"
+    },
+    {
+      "path": "images/f5-field/f5a683b44b1a-bootstrap-2-3-2-vue-dark-narrow-200.png",
+      "bytes": 207753,
+      "sha256": "48d9132ebc580430804f1f04442545ec48d4426f429b3c530a69bf0934221aab"
+    },
+    {
+      "path": "images/f5-field/f5a683b44b1a-liquid-glass-vue2-light.png",
+      "bytes": 340540,
+      "sha256": "d613fe21d14aab39231d805fe7332420c704a26026eaef799d54425d45fabfe8"
+    },
+    {
+      "path": "images/f5-field/f5a683b44b1a-shadcn-react-dark-narrow-200.png",
+      "bytes": 141428,
+      "sha256": "ff408ca7f55a9095ed6ca34ddd07820983e25c48cea0d04d56d6071583a49516"
+    },
+    {
+      "path": "images.md",
+      "bytes": 3763,
+      "sha256": "8c7a9010956a9b405099dfd08ea7fb84304eb0148eedb971e7ec75b851337991"
+    },
+    {
+      "path": "packet.json",
+      "bytes": 5373,
+      "sha256": "5b0455c263136e400b006a8df320ac109f6397123c1ad4bd2a37b449b45b8059"
+    },
+    {
+      "path": "raw-public-map.json",
+      "bytes": 44046,
+      "sha256": "5e590319c366bd5c4c45d9920b151cced083a053ffdc2dbdd5269025e6aa016b"
+    },
+    {
+      "path": "records.tar.gz",
+      "bytes": 162369,
+      "sha256": "7160c23307a68091cc4450ef77cb676e46e7871dc1431d3f5b9346e89e5ab075"
+    }
+  ],
+  "publicationState": "local preparation only"
+}

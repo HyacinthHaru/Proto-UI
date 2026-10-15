@@ -1,0 +1,26 @@
+# Inventory registration and the f5 execution checkpoint
+
+Agent paraphrase: continue the existing Issue #883 C follow-up, preserve the latest foundation, restore complete test planning for its new Liquid hover suite, and report the remaining integration failures without weakening acceptance.
+
+This is **local publication preparation, partial / ABSTAIN**, not approval or a complete CI result. Final source is `26feceeb769ed9688ad652262631bc953cc43b9a`, tree `870e018a40edc2302dd8586230ba2360e710db62`, normally pushed at 06:35:20 UTC. Its only change from `f5a683b44b1ad0ffec22cb882cff7b5253dc47e1` is three added lines in `scripts/test/runtime-test-plan.mjs`: the dedicated Liquid hover suite and its existing workflow owner. The full tree has **11,179 entries; the other 11,178 mode/kind/blob entries are unchanged**. Signatures, DCO, source hashes and exact diff are retained.
+
+[Machine receipt](packet.json), [sanitized records](records.tar.gz), [raw/public SHA map](raw-public-map.json), [original images](images.md) and [manifest](manifest.json) define this packet. The [earlier d591 evidence](https://github.com/HyacinthHaru/Proto-UI/tree/3a99b086d55c33391e226b3e41e61cee7d19e237/evidence/2026-10-15/anatomy-runtime-883-c-context-d59131ee) remains unchanged and is not copied here.
+
+The unchanged Node test file produced **93 executed tests: 62 pass / 31 fail** before registration, then **125 pass** with the three-line working candidate. The file SHA is identical; the instantiated counts are not. Both raw logs remain. The later clean-26 local plan lists 1,256 general files, ordinary shard file counts `11/11/10/10/10/10/10/10`, and 23 dedicated exclusions. This is planning output, not execution of those suites. The original hover test, its official-only guard, ordinary shard algorithm and workflow were not changed.
+
+The focused check ran **before the f5 commit**, at `d59131ee35ea0289741c7d68b57a9928585a31b7` plus the staged a62 integration, from 06:09:11 to 06:09:28 UTC. Its staged tree `4e886b166b11acbef61377974f610f5a33284479` exactly matches the later f5 tree; this is precommit evidence, not execution at f5. Types, package builds, projection checks, ordinary `pnpm test` and the native files below actually ran after the f5 commit. None is relabeled as execution after the planner commit.
+
+| Local evidence | Actual result |
+| --- | --- |
+| Precommit focused C plus incoming selection | 76 files: **1311 pass / 1 fail**, in the CLI exhaustive lowered-hook scanner; no baseline-cause inference. |
+| Full types | **908 files / 0 errors / 0 warnings / 13 hints**. |
+| Public packages | **47 builds / 47 manifests**; budgets **4 PASS / 5 ADVISORY**, not all thresholds passing. |
+| Preset and Agent projections | Generate/check completed without tracked drift. |
+| Ordinary `pnpm test` | **Exit 1 at stale release BOM**, before Vitest. |
+| Original native full files | Field **25 pass**, Collapsible **36 pass**, portal-direction **2 pass / 6 fail**. These local macOS results are not Linux acceptance. |
+
+The [f5 canonical CI](https://github.com/Proto-UI/Proto-UI/actions/runs/38691011417) failed before ordinary test execution: the planner rejected the unregistered hover file. General was skipped, and the browser matrix was **not expanded**; one skipped placeholder job is not eight executed or skipped shard instances. Independent official [Field](https://github.com/Proto-UI/Proto-UI/actions/runs/38691011574) passed 25 with its async observer enabled. [Collapsible](https://github.com/Proto-UI/Proto-UI/actions/runs/38691011649) was 32 pass / 4 narrow-geometry failures; its later eight diagnostic passes are separate. [Forms](https://github.com/Proto-UI/Proto-UI/actions/runs/38691011313/job/116276696170) was 10 pass / 2 color failures, with both `pageErrors` arrays empty. Empty errors do not prove the older provider-error cause was fixed. **26 canonical validation is outside this packet**; no statement about its later job outcomes is inferred from local planning.
+
+Only **10 original f5 PNGs** are mirrored: four Field and six Collapsible images individually viewed by root. Of their 220 captures, 210 remain visually unassessed. All 48 portal-direction images remain unassessed and are excluded; its failing log and observations are retained. Fixed headers obscure content, narrow Field text clips at the right edge, and the narrow Liquid Collapsible column wraps excessively while backdrop text competes with foreground. Geometry passing is not readability, optical, AT, Apple or native-platform acceptance. Equal pixel hashes across historical runs do not merge their source/time provenance.
+
+Archive/map group names organize the integrated scope; they do not identify an execution head. Each original receipt retains its own actual source and timing. Known machine paths and complete PATH values are sanitized. Every admitted input has raw/public byte counts and SHA256; transformations are explicit. Derived code/log bytes were not the original executed bytes and are not standalone recipes. PNG bytes are unchanged. Raw identity/ModelTrace/context/nonce/auth/handoff/operation material, trace/ZIP archives, caches, entire source checkouts and unviewed images are excluded. This packet preparation ran no tests, builds or browsers and performed no product or external mutation.
