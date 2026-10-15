@@ -124,3 +124,29 @@ it('distinguishes the workspace-only Spinner, npm packages and draft ecosystem t
     );
   }
 });
+
+it.each([
+  ['zh-cn', 'Proto 草案', '固定占位装饰勾选', '选中 style-fill tint', '不透明回退'],
+  [
+    'en',
+    'Proto draft',
+    'fixed-space decorative checkmark',
+    'selected style-fill tint',
+    'opaque fallback',
+  ],
+] as const)(
+  'keeps the %s Liquid Toggle card aligned with its draft selection projection',
+  (locale, draft, marker, tint, fallback) => {
+    // P-LIQUID-GLASS-TOGGLE-VISUAL/MATERIAL: this is copy coverage, not optical acceptance.
+    const liquid = source.match(/'liquid-glass': \[([\s\S]*?)\n  \],/)?.[1];
+    const toggle = liquid?.match(/id: 'toggle',[\s\S]*?href: '\.\/toggle\/'/)?.[0];
+    const descriptions = toggle?.match(/description: isZh\s*\? '([^']*)'\s*: '([^']*)'/);
+    const description = descriptions?.[locale === 'zh-cn' ? 1 : 2];
+    expect(description).toBeDefined();
+    for (const claim of [draft, marker, tint, fallback]) {
+      expect(description).toContain(claim);
+    }
+    expect(description).not.toMatch(/下划线|underline/i);
+    expect(source).toContain('<p>{entry.description}</p>');
+  }
+);
