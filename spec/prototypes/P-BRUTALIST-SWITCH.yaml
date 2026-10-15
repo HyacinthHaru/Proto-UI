@@ -21,6 +21,17 @@ criteria:
         该 prototype 必须通过 `asSwitchRoot()` 一次性继承 Base Switch，不得重定义 Base 的 checked、pressed、focus-visible 或 disabled 协议语义；视觉投射只能消费投影出的 state handles（`checked`、`disabled`、`focusVisible`、`pressed`）。
 
 
+  - id: P-BRUTALIST-SWITCH-DRAG-DEFERRED
+    since: 0.3.0-alpha.1
+    text:
+      en: >-
+        This family temporarily accepts draggable only as false or omitted. A runtime true value is invalid and resolves to the inherited false fallback, without changing checked, tap, keyboard, focus or disabled ownership. Its fixed zero-padding Root content interval does not match the source-defined 1.25rem Thumb travel, so it must not admit directional preview or release requests until one declared endpoint range governs both input normalization and direct presentation. This is an explicit unsupported extension, not completed drag support; dimensions, padding and checked endpoints remain unchanged.
+
+
+      zh-CN: >-
+        此 family 暂时仅接受 draggable 为 false 或省略。运行时 true 属于无效值，回退到继承的 false；checked、tap、键盘、focus 与 disabled 的 owner 不变。零 padding Root 的 content 区间不等于来源定义的 1.25rem Thumb 行程，在同一显式端点区间能够同时约束输入归一化和直接展示之前，不准入方向拖动预览或松手请求。这是明确不支持的扩展，不代表完成拖动；尺寸、padding 与 checked 端点保持不变。
+
+
   - id: P-BRUTALIST-SWITCH-ENTRY
     text:
       en: The direct prototype entry name is `brutalist-switch-root` and is the only public Switch Root entry in this foundation slice.
@@ -66,6 +77,9 @@ inherits:
     - id: P-BASE-SWITCH
 verifies: { tests: [T-BRUTALIST-SWITCH-0001] }
 revisions:
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Temporarily reject the inherited drag extension rather than normalize against an interval inconsistent with the pinned zero-padding painted endpoints.
   - version: 0.3.0-alpha.1
     change: revised
     summary: Aligned draft visual grammar with neobrutalism-components 3306a802; preserved Base semantics and documented Proto UI extensions.

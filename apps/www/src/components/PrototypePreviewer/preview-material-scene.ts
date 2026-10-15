@@ -1,9 +1,11 @@
+import { registerWebPortalDestination } from '@proto.ui/adapter-base';
 import {
   createCanvasBackdropLease,
   createWebMaterialSink,
   createWebMaterialPreferences,
   type MaterialPaletteSnapshot,
 } from '@proto.ui/adapter-base/web-material';
+import { contactPaintOutset } from '../../../../../packages/adapters/base/src/material/contact-profile';
 import { THEME } from '../../../../../packages/prototypes/liquid-glass/src/theme';
 import { registerPreviewMaterialProvider } from './preview-material-provider';
 /** This canvas is the visible preview background and the ONLY sampled plane.
@@ -14,14 +16,26 @@ export function createPreviewMaterialScene(parent: HTMLElement) {
     win = doc.defaultView!;
   const scope = doc.createElement('div'),
     canvas = doc.createElement('canvas'),
-    mount = doc.createElement('div');
+    mount = doc.createElement('div'),
+    overlayMount = doc.createElement('div');
   scope.dataset.materialScene = 'visible-app-canvas';
   Object.assign(scope.style, {
     position: 'relative',
     isolation: 'isolate',
     width: '100%',
     minWidth: '0',
+    // A finite, responsive application stage. Its height is actual flow/popup
+    // extent below, not a hidden full-page capture surface. Enlarged fonts or
+    // DPR may exceed the source budget; the unchanged lease then fails closed.
+    maxWidth: '32rem',
+    boxSizing: 'border-box',
+    padding: '2rem',
   });
+  // This visible scene already owns preview padding and popup space. A nested
+  // centered RuntimeBox reserve would leave real flow boxes behind the popup,
+  // which cannot be omitted from the canvas source's foreground checks.
+  scope.style.setProperty('--runtime-box-content-min', '0px');
+  scope.style.setProperty('--runtime-box-content-padding', '0px');
   canvas.setAttribute('aria-hidden', 'true');
   canvas.dataset.materialBackdrop = '';
   Object.assign(canvas.style, {
@@ -33,8 +47,13 @@ export function createPreviewMaterialScene(parent: HTMLElement) {
     zIndex: '0',
   });
   Object.assign(mount.style, { position: 'relative', zIndex: '1', minWidth: '0', width: '100%' });
-  scope.append(canvas, mount);
+  // The extended plane is visibly painted application layout, not a hidden
+  // sampling texture. Overlay content remains above this same real canvas.
+  overlayMount.dataset.materialOverlayMount = '';
+  Object.assign(overlayMount.style, { position: 'relative', zIndex: '2', height: '0' });
+  scope.append(canvas, mount, overlayMount);
   parent.append(scope);
+  const unregisterDestination = registerWebPortalDestination(scope, overlayMount);
   const lease = createCanvasBackdropLease(scope, canvas),
     preferences = createWebMaterialPreferences(win);
   let retired = false,
@@ -45,7 +64,9 @@ export function createPreviewMaterialScene(parent: HTMLElement) {
     previousTime = -Infinity,
     dark = false,
     intersecting = true;
+  let layoutRaf: number | null = null;
   let lastSourceSignature = '';
+  const observed = new Set<Element>();
   let palette: MaterialPaletteSnapshot = { revision: 0, colors: THEME.light };
   const paletteListeners = new Set<() => void>();
   const isDark = () => {
@@ -57,6 +78,45 @@ export function createPreviewMaterialScene(parent: HTMLElement) {
     }
     return win.matchMedia?.('(prefers-color-scheme: dark)').matches === true;
   };
+  // Fixed/absolute portals do not contribute to CSS flow. Reserve their real
+  // visible footprint in this application scene, including the maximum shared
+  // contact paint envelope. This observer only measures; the Adapter exclusively
+  // owns projection. Left/top overflow and over-budget scenes still fail the
+  // ordinary source checks rather than moving controls or inventing pixels.
+  function layout() {
+    const scene = scope.getBoundingClientRect();
+    const flow = mount.getBoundingClientRect();
+    const padding = parseFloat(win.getComputedStyle(scope).paddingBottom) || 0;
+    let bottom = flow.bottom + padding;
+    for (const element of overlayMount.querySelectorAll<HTMLElement>('*')) {
+      if (element.closest('[data-material-scene]') !== scope) continue;
+      const css = win.getComputedStyle(element);
+      const rect = element.getBoundingClientRect();
+      if (
+        css.display === 'none' ||
+        css.visibility === 'hidden' ||
+        rect.width <= 0 ||
+        rect.height <= 0
+      )
+        continue;
+      bottom = Math.max(
+        bottom,
+        rect.bottom + contactPaintOutset(rect.width, rect.height) + padding
+      );
+    }
+    const height = Math.max(0, Math.ceil(bottom - scene.top));
+    if (Number.isFinite(height) && scope.style.minHeight !== `${height}px`)
+      scope.style.minHeight = `${height}px`;
+  }
+  function scheduleLayout() {
+    if (retired || layoutRaf !== null) return;
+    layoutRaf = win.requestAnimationFrame(() => {
+      layoutRaf = null;
+      if (retired) return;
+      layout();
+      refresh();
+    });
+  }
   function draw(force = false) {
     if (retired || !available) return;
     const nextDark = isDark();
@@ -143,8 +203,31 @@ export function createPreviewMaterialScene(parent: HTMLElement) {
       },
     })
   );
-  const resize = win.ResizeObserver ? new win.ResizeObserver(refresh) : null;
+  const resize = win.ResizeObserver ? new win.ResizeObserver(scheduleLayout) : null;
   resize?.observe(scope);
+  resize?.observe(mount);
+  // Subscribe to newly projected sizes and retire removed targets. Attribute
+  // changes also cover placement updates, including an unchanged popup size.
+  const overlayChanges = new win.MutationObserver(() => {
+    const current = new Set(overlayMount.querySelectorAll('*'));
+    for (const element of observed) {
+      if (current.has(element)) continue;
+      resize?.unobserve(element);
+      observed.delete(element);
+    }
+    for (const element of current) {
+      if (observed.has(element)) continue;
+      observed.add(element);
+      resize?.observe(element);
+    }
+    scheduleLayout();
+  });
+  overlayChanges.observe(overlayMount, {
+    childList: true,
+    subtree: true,
+    attributes: true,
+    attributeFilter: ['style', 'class', 'hidden'],
+  });
   const visibility = win.IntersectionObserver
     ? new win.IntersectionObserver((entries) => {
         intersecting = entries.at(-1)?.isIntersecting ?? false;
@@ -163,6 +246,7 @@ export function createPreviewMaterialScene(parent: HTMLElement) {
     resolution?.removeEventListener('change', resolutionChanged);
     resolution = win.matchMedia?.(`(resolution: ${win.devicePixelRatio}dppx)`);
     resolution?.addEventListener('change', resolutionChanged);
+    layout();
     refresh();
   };
   resolutionChanged();
@@ -175,6 +259,7 @@ export function createPreviewMaterialScene(parent: HTMLElement) {
   return {
     mount,
     scope,
+    overlayMount,
     lease,
     pause(value: boolean) {
       paused = value;
@@ -193,6 +278,9 @@ export function createPreviewMaterialScene(parent: HTMLElement) {
       if (retired) return;
       retired = true;
       if (raf !== null) win.cancelAnimationFrame(raf);
+      if (layoutRaf !== null) win.cancelAnimationFrame(layoutRaf);
+      overlayChanges.disconnect();
+      observed.clear();
       resize?.disconnect();
       visibility?.disconnect();
       appearance.disconnect();
@@ -201,6 +289,7 @@ export function createPreviewMaterialScene(parent: HTMLElement) {
       scheme?.removeEventListener('change', refresh);
       doc.removeEventListener('visibilitychange', refresh);
       win.removeEventListener('resize', refresh);
+      unregisterDestination();
       unregister();
       try {
         lease.dispose();

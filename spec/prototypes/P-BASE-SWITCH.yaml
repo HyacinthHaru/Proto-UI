@@ -35,6 +35,13 @@ anatomy:
       parent: root
       child: thumb
 criteria:
+  - id: P-BASE-SWITCH-DIRECTIONAL-PREVIEW
+    text:
+      en: The draft draggable enhancement is opt-in and defaults to false. Root owns one horizontal directional Axis Input using root input/geometry and the unique same-domain thumb as a read-only travel target. Multiple or missing thumbs retain tap/keyboard behavior but refuse drag. Root exposes percentage in [0,100] and dragging; JSON context additionally carries draggable and direction for family-owned presentation; percentage follows checked at rest. During drag q = clamp(startCheckedProgress + totalDelta, 0, 1), where startCheckedProgress is 0 or 1; exposed percentage is 100*q, without changing checked or aria-checked. The trial direction prop defaults to ltr and supports rtl exactly once. Normal release requests the endpoint false when q is below 0.5 and true when q is at or above 0.5, at most once and only if changed. This threshold is a Proto UI choice. Preview is cleared to current persistent truth before requesting checkedChange, including controlled refusal. Cancel, disable, changed controlled checked, direction change and invalidated ownership clear preview with no drag request. Keyboard, label and ordinary tap retain their existing toggle semantics. The presentation contains no pixels, native contact IDs, geometry reads or event ownership in Thumb.
+    dependsOn:
+      contracts:
+        - id: C-AXIS-INPUT-DIRECTIONAL-0001
+          since: 0.3.0-alpha.1
   - id: P-BASE-SWITCH-EXTERNAL-LABEL
     text:
       en: An independent Base Label may associate through the explicit typed InstanceAssociations.controlLabel input and C-CONTROL-LABEL-0001. This is not a Props value, label text Prop or new Anatomy part. A qualifying label request shares the existing value-request operation, retaining disabled, controlled value and outward-signal ownership. Naming and activation remain independent, and a stale pair cannot perform subsequent target effects.
@@ -57,8 +64,8 @@ criteria:
           note: Switch contrasts with Button command semantics.
   - id: P-BASE-SWITCH-DISPLAY-AND-INPUT
     text:
-      zh-CN: Switch 同时承担状态展示与状态输入责任；它只展示符合开关语义的持久二值状态。
-      en: Switch is both a state display and a state input; it displays only persistent binary state that fits switch semantics.
+      zh-CN: Switch 同时承担状态展示与状态输入责任；其持久可访问值保持二值；显式启用的方向拖动可按 P-BASE-SWITCH-DIRECTIONAL-PREVIEW 展示临时移动进度。
+      en: Switch is both a state display and a state input; its persistent accessible value remains binary; an opt-in directional session may additionally display provisional movement as defined by P-BASE-SWITCH-DIRECTIONAL-PREVIEW.
     dependsOn:
       knowledge:
         - K-COMPONENT-INTERACTION-0001
@@ -133,8 +140,8 @@ criteria:
         - C-ANATOMY-0005
   - id: P-BASE-SWITCH-THUMB-INDICATOR
     text:
-      zh-CN: Switch thumb 若作为官方 part 存在，只能作为 same-domain indicator 反映 root 的 checked/on-off state，不得拥有 activation 或 value 语义。
-      en: If Switch thumb exists as an official part, it may only reflect the root checked/on-off state as a same-domain indicator and must not own activation or value semantics.
+      zh-CN: Switch thumb 若作为官方 part 存在，只能作为 same-domain indicator 反映 root 的 checked/on-off state 与 root 拥有的临时进度，不得拥有 activation、contact recognition 或 value 语义。
+      en: If Switch thumb exists as an official part, it may reflect root checked/on-off state and Root-owned provisional progress as a same-domain indicator, and must not own activation, contact recognition or value semantics.
     dependsOn:
       contracts:
         - C-ANATOMY-0008
@@ -708,7 +715,12 @@ owns:
 verifies:
   tests:
     - T-BASE-SWITCH-0001
+    - id: T-AXIS-INPUT-DIRECTIONAL-0001
+      since: 0.3.0-alpha.1
 revisions:
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Define opt-in Root-owned directional preview while retaining eventless Thumb and persistent binary value ownership.
   - version: 0.3.0-alpha.1
     change: revised
     summary: Added opt-in independent Label association through a separate typed input without changing JSON Props or control Anatomy.

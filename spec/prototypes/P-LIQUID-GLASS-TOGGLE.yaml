@@ -1,0 +1,62 @@
+id: P-LIQUID-GLASS-TOGGLE
+type: prototype
+title: Liquid Glass standalone Toggle over Base active ownership
+status: draft
+since: 0.3.0-alpha.1
+lifecycleRationale: Independently authored Proto design-language extension. Exact-candidate optical browser evidence, independent review and broader native/compiler acceptance remain separate; this is not Apple component or shader parity.
+summary: A persistent Toggle uses opt-in style-fill tint while selected, reserves a decorative non-color check for text and icon-only content, preserves state-stable geometry, and retains the same-state opaque fallback.
+statement:
+  en: Toggle inherits Base active/defaultActive/disabled and activeChange. material is auto | opaque, default auto. Both active states request regular material while enabled and auto. The selected state requests finite style-fill tint from its governed primary fill with primary-foreground; inactive retains neutral secondary fill/foreground. A trailing decorative currentColor check supplies a non-color selection marker for text and icon-only content independently of transient press deformation. Its space and template tree remain present in both states; only glyph opacity changes. This is a Proto design-language choice, not an Apple-mandated symbol or an implementation of a platform Differentiate Without Color preference.
+criteria:
+  - id: P-LIQUID-GLASS-TOGGLE-BASE
+    text:
+      en: Invoke asToggle once. Base exclusively owns controlled/uncontrolled active, activeChange, keyboard/pointer activation, cancellation, disabled and focus. Do not alias ToggleGroupItem, wrap Surface or create another interaction or material owner.
+  - id: P-LIQUID-GLASS-TOGGLE-VISUAL
+    text:
+      en: Active uses border-ring; inactive uses border-border, without imposing text underline. Both retain the same one-pixel border, padding and capsule geometry. Active uses bg-primary and text-primary-foreground; inactive uses bg-secondary and text-secondary-foreground. A permanently reserved trailing size-3 slot renders a currentColor SVG check with opacity 1 when active and 0 otherwise; content and outer geometry must not shift on selection. The glyph is noninteractive and aria-hidden, adds no text, and adds no naming owner and preserves Base button/pressed semantics. Icon-only consumers must supply an accessible name; production-projection tests cover an explicit aria-labelledby relation. The non-color marker works for text and icon-only content, including disabled active. Focus has a separate focus-visible ring and forced-colors outline. Forced colors retain UA palette ownership and currentColor for the check; no separate Web Differentiate Without Color preference or API is claimed. Disabled suppresses transient press/hover and shadow.
+  - id: P-LIQUID-GLASS-TOGGLE-MATERIAL
+    text:
+      en: Declare exactly one V2 rounded-rect style-geometry slot with in-app-backdrop and style-owned fill/foreground fallback. Enabled auto contributes exactly one complete regular liquid-glass candidate with rest or pressed phase from Base pressed. Active adds optional style-fill tint and does not remove material. Selected optical appearance must retain structured, visible source response rather than merely reporting a material backend beneath a near-solid color; readable opaque fallback is a separate declared path. Explicit opaque and disabled contribute zero candidates while preserving fallback. Raw material removal restores auto. No component-owned renderer or new interaction owner is introduced. The shared host must explicitly support the requested tint/variant/motion profile or use the same current opaque fallback; it may not silently substitute neutral glass.
+  - id: P-LIQUID-GLASS-TOGGLE-GATES
+    text:
+      en: Existing shared provider owns source availability, preference, geometry, contrast and actual optical admission. Missing source, unsupported tint, unsupported or unknown inputs and reduced transparency retain readable same-state opaque fallback. Forced colors retain UA palette control. The style owner keeps foreground synchronized with the palette used for optical contrast validation. Reduced motion limits deformation without pretending to mean reduced transparency. Same-instance state changes, source loss and view disposal must not retain stale paint or ownership. Only exact-head real optical evidence may establish the tested Web behavior.
+  - id: P-LIQUID-GLASS-TOGGLE-DELIVERY
+    text:
+      en: Package subpath, root export, source-only CLI registration, family-fixed demo mapping and four Web facades consume the same prototype. Every style token has existing finite translation; www owns no substitute Toggle state or material implementation. The family remains private/unreleased; no general Compiler or native platform acceptance follows.
+sources:
+  - path: packages/prototypes/liquid-glass/src/toggle/toggle.proto.ts
+  - path: packages/prototypes/liquid-glass/src/toggle/types.ts
+  - path: packages/prototypes/liquid-glass/src/button/button.proto.ts
+  - path: https://developer.apple.com/documentation/swiftui/togglestyle/button
+  - path: https://developer.apple.com/design/human-interface-guidelines/toggles
+  - path: https://developer.apple.com/design/human-interface-guidelines/materials
+  - path: https://developer.apple.com/videos/play/wwdc2025/219/
+dependsOn:
+  contracts:
+    - C-CORE-SYNTAX-0003
+    - C-CORE-SYNTAX-0006
+    - C-TEMPLATE-0001
+    - C-TEMPLATE-0003
+    - C-TEMPLATE-0005
+    - C-AS-HOOK-0001
+    - C-RULE-INTENT-FEEDBACK-STYLE-0001
+    - C-PROTOTYPE-STYLE-CLOSURE-0001
+    - C-FEEDBACK-MATERIAL-0001
+    - C-RULE-INTENT-FEEDBACK-MATERIAL-0001
+inherits:
+  prototypes:
+    - P-BASE-TOGGLE
+verifies:
+  tests:
+    - T-LIQUID-GLASS-TOGGLE-0001
+revisions:
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Replace text underline with a permanently reserved decorative currentColor check for text and icon-only selection, retaining Base accessible naming, disabled selection, independent focus and state-stable geometry.
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Add finite selected style-fill tint with same-state readable foreground and fallback; text underline and fixed geometry remain, while icon-only and exact-head optical acceptance stay separate.
+  - version: 0.3.0-alpha.1
+    change: introduced
+    summary: Add a standalone Proto Toggle projection with regular optical intent in both selected states, equal geometry and explicit selected-tint and native/compiler limits.
+tags: [prototype, liquid-glass, toggle]

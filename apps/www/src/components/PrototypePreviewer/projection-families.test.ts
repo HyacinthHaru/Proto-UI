@@ -954,6 +954,7 @@ describe('partial new projection families', () => {
               'dropdown-menu',
               'label',
               'button',
+              'toggle',
             ]
       );
       expect(() => validateProjectionFamilyManifest(manifest)).not.toThrow();

@@ -11,6 +11,7 @@ export const asSliderFieldThumb = defineAsHook<
     state: {
       value: State<number>;
       percentage: State<number>;
+      displayPercentage: State<number>;
       disabled: State<boolean>;
       readOnly: State<boolean>;
       orientation: State<string>;

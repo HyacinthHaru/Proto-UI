@@ -15,6 +15,7 @@ export interface SliderRootProps {
 export type SliderStates = {
   value: State<number>;
   percentage: State<number>;
+  displayPercentage: State<number>;
   disabled: State<boolean>;
   readOnly: State<boolean>;
   dragging: State<boolean>;
@@ -23,6 +24,7 @@ export type SliderStates = {
 export type SliderRootExposes = {
   value: ExposeState<number>;
   percentage: ExposeState<number>;
+  displayPercentage: ExposeState<number>;
   disabled: ExposeState<boolean>;
   readOnly: ExposeState<boolean>;
   dragging: ExposeState<boolean>;
@@ -42,6 +44,7 @@ export interface SliderPartProps {}
 export type SliderPartExposes = {
   value: ExposeState<number>;
   percentage: ExposeState<number>;
+  displayPercentage: ExposeState<number>;
   disabled: ExposeState<boolean>;
   readOnly: ExposeState<boolean>;
   orientation: ExposeState<string>;

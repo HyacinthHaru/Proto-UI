@@ -12,8 +12,14 @@ function setupSwitchThumb(def: DefHandle<SwitchThumbProps, SwitchThumbExposes>):
   const checked = def.state.bool('checked', false);
   // P-BASE-SWITCH-THUMB-DERIVED-DISABLED
   const disabled = def.state.bool('disabled', false);
+  const percentage = def.state.numberRange('percentage', 0, { min: 0, max: 100 });
+  const dragging = def.state.bool('dragging', false);
+  const draggable = def.state.bool('draggable', false);
+  const direction = def.state.string('direction', 'ltr');
 
   def.expose.state('checked', checked);
+  def.expose.state('percentage', percentage);
+  def.expose.state('dragging', dragging);
 
   def.expose.method('isChecked', () => {
     return checked.get();
@@ -22,6 +28,10 @@ function setupSwitchThumb(def: DefHandle<SwitchThumbProps, SwitchThumbExposes>):
   const syncContext = (next: SwitchContextValue) => {
     checked.set(!!next.checked, 'reason: switch thumb context checked sync');
     disabled.set(!!next.disabled, 'reason: switch thumb context disabled sync');
+    percentage.set(next.percentage, 'reason: switch thumb Root display progress');
+    dragging.set(next.dragging, 'reason: switch thumb Root dragging');
+    draggable.set(next.draggable, 'reason: switch thumb Root enhancement');
+    direction.set(next.direction, 'reason: switch thumb Root direction');
   };
 
   // P-BASE-SWITCH-THUMB-CONTEXT-SUBSCRIBE, P-BASE-SWITCH-THUMB-CONTEXT-REQUIRED

@@ -8,6 +8,11 @@ summary: >-
 
 
 cases:
+  - id: T-BRUTALIST-SWITCH-0001-CASE-DRAG-DEFERRED
+    since: 0.3.0-alpha.1
+    title: Unsupported drag requests retain source geometry and ordinary activation without release commits
+    covers: [P-BRUTALIST-SWITCH-DRAG-DEFERRED]
+    expectation: false-only-family-extension-no-capture-preview-or-release-request-tap-keyboard-preserved
   - id: T-BRUTALIST-SWITCH-0001-CASE-RESIDENT
     title: Real prototype resident targets preserve timing, acknowledged reversal and lifecycle ownership
     covers: [P-BRUTALIST-SWITCH-THUMB-RESIDENT-MOTION]
@@ -99,6 +104,7 @@ implementations:
       - T-BRUTALIST-SWITCH-0001-CASE-3
       - T-BRUTALIST-SWITCH-0001-CASE-4
       - T-BRUTALIST-SWITCH-0001-CASE-5
+      - T-BRUTALIST-SWITCH-0001-CASE-DRAG-DEFERRED
     exercises:
       - P-BASE-SWITCH
       - P-BASE-SWITCH-THUMB
@@ -125,6 +131,9 @@ exercises:
     - P-BRUTALIST-SWITCH
     - P-BRUTALIST-SWITCH-THUMB
 revisions:
+  - version: 0.3.0-alpha.1
+    change: expanded
+    summary: Add explicit unsupported-drag admission, source-size invariance and unchanged ordinary activation regressions; continuous drag remains pending.
   - version: 0.3.0-alpha.1
     change: expanded
     summary: Add source, deterministic Runtime and planned real-browser resident Thumb acceptance without promoting draft host support.

@@ -19,6 +19,11 @@ import type {
   RuntimeLifecycleEvent,
 } from '@proto.ui/runtime';
 import {
+  getWebPortalDestinationGeneration,
+  resolveWebPortalDestinationBinding,
+  subscribeWebPortalDestinations,
+  notifyWebPortalProjection,
+  beginWebPortalMaterialEpoch,
   createDeferredOwnerDisposal,
   createEventGate,
   createDefaultWebColorSchemeSource,
@@ -84,7 +89,7 @@ export type ReactRuntime = ReactRenderRuntime & {
   forwardRef: (render: (props: any, ref: any) => any) => any;
   createElement: (type: any, props?: any, ...children: any[]) => any;
   Fragment?: any;
-  createPortal?: (children: any, container: Element) => any;
+  createPortal?: (children: any, container: Element, key?: string) => any;
   createContext?: <T>(defaultValue: T) => { Provider: any };
   // Context is an opaque runtime handle to the adapter. Keeping the input
   // structural would incorrectly require React.useContext to accept a partial
@@ -241,6 +246,97 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
     const Component = runtime.forwardRef((props: ReactAdapterProps<Props>, ref: any) => {
       const rootRef = runtime.useRef<HTMLElement | null>(null);
       const portalOriginRef = runtime.useRef<HTMLElement | null>(null);
+      // React owns the children, while this Adapter owns one stable portal
+      // mount. Relocating the mount keeps createPortal's container identity and
+      // therefore does not replace the physical host or its event capabilities.
+      const portalMountRef = runtime.useRef<HTMLElement | null>(null);
+      const [portalDocument, setPortalDocument] = runtime.useState<Document | null>(null);
+      runtime.useLayoutEffect(() => {
+        const origin = portalOriginRef.current;
+        if (origin?.isConnected && !portalMountRef.current) setPortalDocument(origin.ownerDocument);
+      });
+      const portalProjectionRef = runtime.useRef<{
+        host: HTMLElement;
+        destination: HTMLElement;
+        registration: object | null;
+        material: ReturnType<typeof beginWebPortalMaterialEpoch>;
+      } | null>(null);
+      const refreshPortalDestination = () => {
+        const host = rootRef.current;
+        const mount = portalMountRef.current;
+        if (!mount) return;
+        if (!host || host.parentNode !== mount || !portalOriginRef.current?.isConnected) {
+          const previous = portalProjectionRef.current;
+          portalProjectionRef.current = null;
+          previous?.material.release();
+          if (!portalProjectionRef.current) mount.remove();
+          return;
+        }
+        const registryRevision = getWebPortalDestinationGeneration();
+        const { destination, registration } = resolveWebPortalDestinationBinding(
+          portalOriginRef.current,
+          host
+        );
+        if (
+          registryRevision !== getWebPortalDestinationGeneration() ||
+          rootRef.current !== host ||
+          portalMountRef.current !== mount
+        )
+          return;
+        const fixed = portalProjectionRef.current;
+        if (fixed?.host === host) {
+          if (
+            fixed.destination !== destination ||
+            fixed.registration !== registration ||
+            mount.parentNode !== fixed.destination
+          )
+            fixed.material.suspend();
+          return;
+        }
+        portalProjectionRef.current = null;
+        fixed?.material.release();
+        if (
+          rootRef.current !== host ||
+          portalMountRef.current !== mount ||
+          portalProjectionRef.current !== null ||
+          registryRevision !== getWebPortalDestinationGeneration()
+        )
+          return;
+        const material = beginWebPortalMaterialEpoch(host);
+        if (
+          rootRef.current !== host ||
+          portalMountRef.current !== mount ||
+          portalProjectionRef.current !== null ||
+          registryRevision !== getWebPortalDestinationGeneration()
+        ) {
+          material.release();
+          return;
+        }
+        portalProjectionRef.current = { host, destination, registration, material };
+        if (mount.parentNode !== destination) destination.appendChild(mount);
+        if (
+          rootRef.current !== host ||
+          portalMountRef.current !== mount ||
+          mount.parentNode !== destination
+        ) {
+          material.release();
+          return;
+        }
+        material.commitProjection();
+        if (portalProjectionRef.current?.material === material && mount.parentNode === destination)
+          notifyWebPortalProjection(host);
+      };
+      runtime.useLayoutEffect(() => {
+        const off = subscribeWebPortalDestinations(refreshPortalDestination);
+        return () => {
+          off();
+          const previous = portalProjectionRef.current;
+          portalProjectionRef.current = null;
+          previous?.material.release();
+          if (!portalProjectionRef.current) portalMountRef.current?.remove();
+        };
+      }, []);
+      runtime.useLayoutEffect(refreshPortalDestination);
       const instanceTokenRef = runtime.useRef(createLogicalInstance(proto as Prototype<any>));
       const parentToken =
         logicalOwnerContext && runtime.useContext
@@ -273,9 +369,30 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
       const focusTargetRetryScheduledRef = runtime.useRef(false);
       const focusTargetRetryCountRef = runtime.useRef(0);
       const focusIntentStateRef = runtime.useRef<FocusIntentState>({});
+      const portalIsCommitted = () => {
+        if (
+          ownerRef.current?.session?.caps.getPort<OverlayPort>('overlay')?.getConfig().portal !==
+            true ||
+          typeof runtime.createPortal !== 'function'
+        )
+          return true;
+        const projection = portalProjectionRef.current;
+        const mount = portalMountRef.current;
+        return (
+          !!projection &&
+          projection.host === rootRef.current &&
+          mount?.parentNode === projection.destination &&
+          projection.host.parentNode === mount
+        );
+      };
       const notifyFocusTargetReady = () => {
         const target = rootRef.current;
-        if (!viewReadyRef.current || !eventGateRef.current?.isEnabled() || !target?.isConnected) {
+        if (
+          !portalIsCommitted() ||
+          !viewReadyRef.current ||
+          !eventGateRef.current?.isEnabled() ||
+          !target?.isConnected
+        ) {
           return;
         }
         let failed = false;
@@ -517,6 +634,7 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
             isReady: () =>
               !viewDisposed &&
               viewReadyRef.current &&
+              portalIsCommitted() &&
               eventGate.isEnabled() &&
               rootRef.current === rootEl &&
               rootEl.isConnected &&
@@ -641,6 +759,7 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
           // programmatic requests retain their synchronous Module-fact rule.
           isViewReady: () =>
             projectionReadyRef.current &&
+            portalIsCommitted() &&
             !viewDisposed &&
             !rootRef.current?.closest(`[${PUI_VIEW_DETACHED_ATTR}]`),
           // Entry does not own descendant facts. Wait for the actual target's
@@ -756,7 +875,7 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
           }
           throw error;
         }
-      }, [shouldExist]);
+      }, [shouldExist, portalDocument]);
 
       // React StrictMode replays layout effects. Detach immediately so view
       // resources follow the replay, but defer terminal owner disposal by one
@@ -882,13 +1001,20 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
       const renderedChildren = Array.isArray(rendered) ? rendered : [rendered];
 
       const overlayPort = ownerRef.current?.session?.caps.getPort<OverlayPort>('overlay');
-      const portalContainer =
+      const portalEnabled =
         shouldExist &&
         overlayPort?.getConfig().portal === true &&
         typeof runtime.createPortal === 'function' &&
-        typeof document !== 'undefined'
-          ? document.body
-          : null;
+        typeof document !== 'undefined';
+      if (portalEnabled && portalDocument && !portalMountRef.current) {
+        // The first author marker commits before the portal host is created.
+        // Allocate in its actual Document, including same-origin iframe roots.
+        const mount = portalDocument.createElement('div');
+        mount.dataset.puiPortalMount = '';
+        mount.style.display = 'contents';
+        portalMountRef.current = mount;
+      }
+      const portalContainer = portalEnabled ? portalMountRef.current : null;
 
       // Overlay content is detached, not unmounted, when it is not present: the
       // host element and the authored children stay put so collection members
@@ -922,21 +1048,22 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
               // authored children stand in for it.
               ...(shouldExist ? renderedChildren : [props.children])
             );
-      const portal = portalContainer ? runtime.createPortal!(content, portalContainer) : null;
-      const projectedContent = portalContainer
+      const portal = portalContainer
+        ? runtime.createPortal!(content, portalContainer, 'pui-portal-content')
+        : null;
+      const origin = portalEnabled
+        ? runtime.createElement('span', {
+            key: 'pui-portal-origin',
+            ref: portalOriginRef,
+            hidden: true,
+            'aria-hidden': true,
+            'data-pui-portal-origin': '',
+          })
+        : null;
+      const projectedContent = portalEnabled
         ? runtime.Fragment
-          ? runtime.createElement(
-              runtime.Fragment,
-              null,
-              runtime.createElement('span', {
-                ref: portalOriginRef,
-                hidden: true,
-                'aria-hidden': true,
-                'data-pui-portal-origin': '',
-              }),
-              portal
-            )
-          : portal
+          ? runtime.createElement(runtime.Fragment, null, origin, portal)
+          : [origin, portal]
         : content;
       if (!logicalOwnerContext) return projectedContent;
       return runtime.createElement(

@@ -8,7 +8,7 @@ export default definePrototype<SliderPartProps, SliderThumbExposes>({
     const inherited = asSliderThumb();
     def.feedback.style.use(
       tw(
-        'absolute left-[calc(var(--pui-percentage)*1%)] top-1/2 block size-5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-primary bg-background outline-none'
+        'absolute left-[calc(var(--pui-display-percentage)*1%)] top-1/2 block size-5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-primary bg-background outline-none'
       )
     );
     def.rule({
@@ -23,7 +23,7 @@ export default definePrototype<SliderPartProps, SliderThumbExposes>({
       when: (w) => w.state(inherited.stateHandles!.orientation).eq('vertical'),
       intent: (i) =>
         i.feedback.style.use(
-          tw('left-1/2 top-auto bottom-[calc(var(--pui-percentage)*1%)] translate-y-1/2')
+          tw('left-1/2 top-auto bottom-[calc(var(--pui-display-percentage)*1%)] translate-y-1/2')
         ),
     });
     def.feedback.material.declare({
@@ -41,7 +41,7 @@ export default definePrototype<SliderPartProps, SliderThumbExposes>({
         ),
       intent: (i) =>
         i.feedback.style.use(
-          tw('left-auto right-[calc(var(--pui-percentage)*1%)] translate-x-1/2')
+          tw('left-auto right-[calc(var(--pui-display-percentage)*1%)] translate-x-1/2')
         ),
     });
     return inherited.render;

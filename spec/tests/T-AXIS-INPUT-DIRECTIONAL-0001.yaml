@@ -1,0 +1,99 @@
+id: T-AXIS-INPUT-DIRECTIONAL-0001
+type: test
+title: Directional input and bounded preview conformance
+status: draft
+since: 0.3.0-alpha.1
+lifecycleRationale: Focused synthetic host and consumer evidence exists; planned native input, four-runtime, Switch-family motion and cross-host evidence remain missing. No stable admission is implied.
+summary: Exercises compatible defaults, direction recognition, travel geometry, exact click arbitration and consumer preview ownership.
+cases:
+  - id: T-AXIS-INPUT-DIRECTIONAL-0001-CASE-COMPATIBILITY
+    title: Existing immediate consumers retain defaults and invalid or partial updates are deterministic
+    covers: [C-AXIS-INPUT-DIRECTIONAL-0001-COMPATIBILITY]
+    expectation: omitted-immediate-partial-retains-invalid-rejected-no-default-drift
+  - id: T-AXIS-INPUT-DIRECTIONAL-0001-CASE-DIRECTION
+    title: Pending taps remain taps while cross-axis touch yields and primary displacement activates once
+    covers: [C-AXIS-INPUT-DIRECTIONAL-0001-RECOGNITION, C-AXIS-INPUT-DIRECTIONAL-0001-WEB-PROFILE]
+    expectation: threshold-equality-primary-accepted-diagonal-tie-yields-no-early-capture
+  - id: T-AXIS-INPUT-DIRECTIONAL-0001-CASE-TRAVEL
+    title: Grabbing different handle points follows usable travel with RTL and explicit geometry cardinality
+    covers: [C-AXIS-INPUT-DIRECTIONAL-0001-TRAVEL]
+    expectation: no-grab-jump-missing-duplicate-foreign-target-refuses-drag-tap-survives
+  - id: T-AXIS-INPUT-DIRECTIONAL-0001-CASE-CLICK
+    title: Accepted drag has no second activation and never consumes keyboard or another contact
+    covers: [C-AXIS-INPUT-DIRECTIONAL-0001-CLICK]
+    expectation: correlated-click-only-terminal-record-bounded-future-activation-preserved
+  - id: T-AXIS-INPUT-DIRECTIONAL-0001-CASE-LIFETIME
+    title: Disable, replacement, reparent, resize and disposal invalidate stale continuations
+    covers: [C-AXIS-INPUT-DIRECTIONAL-0001-LIFETIME]
+    expectation: zero-cancel-requests-first-terminal-wins-translation-preserves-extent
+  - id: T-AXIS-INPUT-DIRECTIONAL-0001-CASE-PREVIEW
+    title: Switch and Slider families show preview without changing truth ownership or request cadence
+    covers: [C-AXIS-INPUT-DIRECTIONAL-0001-PREVIEW]
+    expectation: switch-release-only-slider-default-immediate-controlled-preview-rollback
+implementations:
+  - id: directional-host
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/base/test/web-directional-input.test.ts
+    required: true
+    consumesCases:
+      [T-AXIS-INPUT-DIRECTIONAL-0001-CASE-DIRECTION, T-AXIS-INPUT-DIRECTIONAL-0001-CASE-CLICK]
+  - id: directional-axis
+    kind: module-test
+    status: passing
+    path: packages/modules/axis-input/test/axis-input.test.ts
+    required: true
+    consumesCases:
+      [
+        T-AXIS-INPUT-DIRECTIONAL-0001-CASE-COMPATIBILITY,
+        T-AXIS-INPUT-DIRECTIONAL-0001-CASE-TRAVEL,
+        T-AXIS-INPUT-DIRECTIONAL-0001-CASE-LIFETIME,
+      ]
+  - id: switch-preview
+    kind: module-test
+    status: passing
+    path: packages/prototypes/base/test/switch.test.ts
+    required: true
+    consumesCases: [T-AXIS-INPUT-DIRECTIONAL-0001-CASE-PREVIEW]
+  - id: directional-travel-host
+    kind: adapter-test
+    status: passing
+    path: packages/adapters/base/test/web-axis-input-host.test.ts
+    required: true
+    consumesCases:
+      [T-AXIS-INPUT-DIRECTIONAL-0001-CASE-TRAVEL, T-AXIS-INPUT-DIRECTIONAL-0001-CASE-LIFETIME]
+  - id: scalar-slider-family-preview
+    kind: adapter-test
+    status: passing
+    path: packages/prototypes/base/test/slider-thumb-interaction.test.ts
+    required: true
+    consumesCases: [T-AXIS-INPUT-DIRECTIONAL-0001-CASE-PREVIEW]
+    notes:
+      - Actual WC runtime with synthetic PointerEvents and geometry across Base and four scalar families, ordinary and FieldThumb. Not native touch or final paint evidence.
+  - id: real-input-and-family-projection
+    kind: adapter-test
+    status: planned
+    required: true
+    consumesCases:
+      [
+        T-AXIS-INPUT-DIRECTIONAL-0001-CASE-DIRECTION,
+        T-AXIS-INPUT-DIRECTIONAL-0001-CASE-TRAVEL,
+        T-AXIS-INPUT-DIRECTIONAL-0001-CASE-CLICK,
+        T-AXIS-INPUT-DIRECTIONAL-0001-CASE-LIFETIME,
+        T-AXIS-INPUT-DIRECTIONAL-0001-CASE-PREVIEW,
+      ]
+    notes:
+      - Synthetic PointerEvent tests do not prove native touch scrolling, final family paint or Compiler support.
+verifies:
+  contracts: [C-AXIS-INPUT-DIRECTIONAL-0001]
+exercises:
+  prototypes: [P-BASE-SLIDER-THUMB, P-BASE-SWITCH, P-BASE-SWITCH-THUMB]
+openQuestions:
+  - id: T-AXIS-INPUT-DIRECTIONAL-0001-Q-EVIDENCE
+    question: Which exact source-bound tests and real-input captures establish every case across supported consumers?
+    blocks: [activation:T-AXIS-INPUT-DIRECTIONAL-0001]
+revisions:
+  - version: 0.3.0-alpha.1
+    change: introduced
+    summary: Record directional and preview acceptance without treating older immediate tests as passing new behavior.
+tags: [test, axis-input, switch, slider]

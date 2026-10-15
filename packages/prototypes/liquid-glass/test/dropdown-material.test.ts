@@ -26,6 +26,9 @@ import {
   FOCUS_PARENT_CAP,
   FOCUS_ROOT_TARGET_CAP,
 } from '@proto.ui/module-focus';
+import { renderProtoStyleTokenCss } from '../../../cli/src/services/proto-style-css';
+import { createWebMaterialSink } from '../../../adapters/base/src/material/sink';
+import { THEME, renderThemeCss } from '../src/theme';
 import { dropdownRoot, dropdownTrigger, dropdownContent } from '../src/dropdown';
 
 async function fixture(sink = true) {
@@ -150,7 +153,90 @@ const candidate = (phase: 'rest' | 'pressed') => ({
   deformation: { kind: 'press', phase },
 });
 
-describe('Liquid Dropdown shared material consumer (intent only, no paint claim)', () => {
+describe('Liquid Dropdown shared material consumer (source-less fallback, no optical paint claim)', () => {
+  it.each(['light', 'dark'] as const)(
+    'retains an opaque disabled %s fallback through real style translation and the Web sink',
+    async (theme) => {
+      const f = await fixture();
+      f.trigger.set({ disabled: true });
+      const host = document.createElement('button');
+      host.dataset.theme = theme;
+      const sheet = document.createElement('style');
+      sheet.textContent =
+        renderThemeCss({
+          lightSelector: '[data-theme="light"]',
+          darkSelector: '[data-theme="dark"]',
+        }) +
+        // happy-dom does not implement cascade layers. Keep the generated
+        // declarations/selectors intact; this does not test layer precedence.
+        renderProtoStyleTokenCss([...f.trigger.frames.at(-1)!.style.tokens]).replace(
+          /@layer proto-ui \{\n([\s\S]*)\n\}\n$/,
+          '$1'
+        );
+      document.head.append(sheet);
+      document.body.append(host);
+      // Only the unit DOM's absent layout is injected. CSS, frame, fallback
+      // admission and diagnostics come from the real production paths. No GPU
+      // or native optical acceptance is claimed by this source-less check.
+      const bounds = vi
+        .spyOn(host, 'getBoundingClientRect')
+        .mockReturnValue(new DOMRect(0, 0, 120, 38));
+      let tokens: string[] = [];
+      const sink = createWebMaterialSink(
+        host,
+        {
+          queueStyle(style) {
+            tokens = style.tokens;
+          },
+          requestFlush() {
+            host.setAttribute('data-pui-style', tokens.join(' '));
+          },
+        },
+        {
+          source: {
+            current: () => null,
+            subscribe: () => () => {},
+            draw() {
+              throw new Error('This fallback-only fixture has no source.');
+            },
+            revoke() {},
+            dispose() {},
+          },
+          palette: {
+            current: () => ({ revision: 1, colors: THEME[theme] }),
+            subscribe: () => () => {},
+          },
+        }
+      );
+      try {
+        const frame = f.trigger.frames.at(-1)!;
+        expect(frame.material.candidates).toEqual([candidate('rest')]);
+        sink.commit(frame);
+        expect(
+          host.dataset.materialQuality,
+          JSON.stringify({
+            reason: host.dataset.materialReason,
+            opacity: getComputedStyle(host).opacity,
+            color: getComputedStyle(host).color,
+            tokens: host.dataset.puiStyle,
+          })
+        ).toBe('opaque-fallback');
+        expect(getComputedStyle(host).opacity).toBe('1');
+        expect(f.trigger.exposes.disabled.get()).toBe(true);
+        f.trigger.input('press.commit');
+        expect(f.root.exposes.open.get()).toBe(false);
+        expect(host.style.backgroundImage).toBe('none');
+        expect(host.dataset.puiMaterialCarrier).toBeUndefined();
+      } finally {
+        sink.release(f.trigger.frames.at(-1)!.view);
+        await f.dispose();
+        bounds.mockRestore();
+        host.remove();
+        sheet.remove();
+      }
+    }
+  );
+
   it('declares one Trigger slot and consumes Base pressed/rest as mutually exclusive whole candidates', async () => {
     const f = await fixture();
     try {
@@ -177,7 +263,8 @@ describe('Liquid Dropdown shared material consumer (intent only, no paint claim)
       expect(f.trigger.frames.at(-1)?.material.candidates).toEqual([candidate('rest')]);
       f.trigger.input('press.commit');
       expect(f.root.exposes.open.get()).toBe(false);
-      expect(f.trigger.frames.at(-1)?.style.tokens).toContain('opacity-50');
+      expect(f.trigger.frames.at(-1)?.style.tokens).not.toContain('opacity-50');
+      expect(f.trigger.frames.at(-1)?.style.tokens).toContain('shadow-none');
       // Setup can project an unresolved empty candidate with the opaque fallback;
       // no complete frame may combine conflicting rest/pressed candidates.
       expect(f.trigger.frames.every((frame) => frame.material.candidates.length <= 1)).toBe(true);
@@ -217,7 +304,12 @@ describe('Liquid Dropdown shared material consumer (intent only, no paint claim)
       expect(f.root.exposes.open.get()).toBe(false);
       expect(f.trigger.exposes.pressed.get()).toBe(false);
       expect(f.trigger.styles.at(-1)?.tokens).toEqual(
-        expect.arrayContaining(['bg-secondary', 'text-secondary-foreground', 'opacity-50'])
+        expect.arrayContaining([
+          'bg-secondary',
+          'text-secondary-foreground',
+          'cursor-default',
+          'shadow-none',
+        ])
       );
       expect(f.trigger.feedback.materialDiagnostics?.()).toEqual(['material-host-unavailable']);
     } finally {

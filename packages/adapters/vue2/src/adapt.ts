@@ -1,3 +1,4 @@
+import { refreshVue2PortalDestination } from './runtime/modules';
 import type { WebResidentMotionOptions } from '@proto.ui/adapter-base';
 import {
   NATIVE_LINK_DECLARATION,
@@ -464,6 +465,7 @@ export function createVue2Adapter(runtime: Vue2Runtime) {
       updated() {
         notifyPropsChange(this, autoUpdate);
         const target = getRootElement(this);
+        if (target) refreshVue2PortalDestination(target);
         const state = getState<Props>(this);
         if (target && target !== state.lastInitRoot && (this as any).__puiShouldExist) {
           afterVueCommit(runtime, this, () => {

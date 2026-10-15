@@ -1,3 +1,4 @@
+import { expectStableReactPortalMount } from './portal-destination.assertions';
 import { describe, expect, it } from 'vitest';
 import { definePrototype } from '@proto.ui/core';
 
@@ -163,7 +164,12 @@ describe('adapter-react: dialog integration', () => {
 
     try {
       expect(portalContainers.length).toBeGreaterThan(0);
-      expect(portalContainers.every((container) => container === document.body)).toBe(true);
+      const mount = portalContainers[0] as HTMLElement;
+      // Explicit portal-capable fake renderer realizes the requested container.
+      // The separate native integration tests still own framework-level evidence.
+      expectStableReactPortalMount(mounted.root!, document.body);
+      expect(mounted.root!.parentElement).toBe(mount);
+      expect(portalContainers.every((container) => container === mount)).toBe(true);
     } finally {
       mounted.unmount();
     }

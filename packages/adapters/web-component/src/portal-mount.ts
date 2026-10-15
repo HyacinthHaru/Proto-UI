@@ -1,4 +1,13 @@
 import {
+  beginWebPortalMaterialEpoch,
+  getWebPortalDestinationGeneration,
+  resolveWebPortalDestinationBinding,
+  subscribeWebPortalDestinations,
+  notifyWebPortalProjection,
+  type WebPortalDestinationBinding,
+  type WebPortalMaterialEpoch,
+} from '@proto.ui/adapter-base';
+import {
   getPrototypeByInstance,
   isProtoInstance,
   markProtoInstance,
@@ -10,7 +19,16 @@ import {
  * No open-state writes or Runtime disposal here: restore the DOM projection
  * and let normal Custom Element disconnection settle the owner lifetime.
  */
+const refreshProjections = new WeakMap<HTMLElement, () => void>();
+export function refreshWebComponentPortalProjection(el: HTMLElement): void {
+  refreshProjections.get(el)?.();
+}
+
 const activeProjections = new WeakMap<HTMLElement, (restoreToOrigin?: boolean) => void>();
+// A retired mount can synchronously create another mount for the same host.
+// Keep its last epoch even after retirement: a replacement that also retires
+// must not make an older cleanup authoritative again.
+const projectionEpochs = new WeakMap<HTMLElement, object>();
 const adoptedProjections = new WeakMap<HTMLElement, Set<(document: Document) => void>>();
 const projectionByOriginMarker = new WeakMap<Node, HTMLElement>();
 const originMarkerByProjection = new WeakMap<HTMLElement, Node>();
@@ -72,31 +90,76 @@ function portalLogicalParent(node: Node): HTMLElement | null {
 
 export function createWebComponentPortalMount() {
   let revoke: (() => void) | null = null;
-  let generation = 0;
   return {
     mount(el: HTMLElement) {
-      if (revoke || el.parentElement === el.ownerDocument.body) return;
+      if (revoke) return;
       const parent = el.parentNode;
       if (!parent) return;
-      const lease = ++generation;
+      // A direct body child can still belong to an explicitly registered body
+      // scene. This preflight has no lease yet: host reads may synchronously
+      // mount, move or retire this target, so never supersede their ownership.
+      if (parent === el.ownerDocument.body) {
+        const previousEpoch = projectionEpochs.get(el);
+        const revision = getWebPortalDestinationGeneration();
+        const initial = resolveWebPortalDestinationBinding(parent, el);
+        if (revoke || el.parentNode !== parent || projectionEpochs.get(el) !== previousEpoch)
+          return;
+        // A superseded read returns body as a safety fallback. It cannot prove
+        // the current policy is a no-op; the guarded acquisition below resolves it.
+        if (revision === getWebPortalDestinationGeneration() && initial.destination === parent)
+          return;
+      }
+      const epoch = {};
+      projectionEpochs.set(el, epoch);
+      const isCurrent = () => revoke === restore && projectionEpochs.get(el) === epoch;
       // A stable marker survives while adjacent siblings are portaled. A
       // captured nextSibling does not: restoring A before still-portaled B in
       // [A, B, C] would otherwise append A after C.
       const marker = el.ownerDocument.createComment('proto-ui-portal-origin');
       let projected = false;
       let projectionBody: HTMLElement | null = null;
+      let binding: WebPortalDestinationBinding | null = null;
+      let materialEpoch: WebPortalMaterialEpoch | null = null;
       const ownsProjection = () => projected && el.parentNode === projectionBody;
       let unbindAdoption: (() => void) | null = null;
       let observer: MutationObserver | null = null;
       let observedDocument: Document | null = null;
+      let offDestination = () => {};
+      const refreshDestination = () => {
+        if (!isCurrent()) return;
+        if (!ownsProjection() || !marker.isConnected || !projectionBody?.isConnected) {
+          materialEpoch?.suspend();
+          return;
+        }
+        const registryRevision = getWebPortalDestinationGeneration();
+        const next = resolveWebPortalDestinationBinding(marker, el);
+        if (
+          registryRevision !== getWebPortalDestinationGeneration() ||
+          !isCurrent() ||
+          !ownsProjection()
+        )
+          return;
+        // The selected physical parent is fixed for this view epoch. A policy
+        // change revokes optical admission without remove/reinsert blur, even
+        // when that policy later switches back to the original destination.
+        if (
+          next.destination !== binding?.destination ||
+          next.registration !== binding?.registration
+        )
+          materialEpoch?.suspend();
+      };
       const transferProjection = (document: Document): boolean => {
         const previousBody = projectionBody;
-        if (revoke !== restore || !ownsProjection() || !document.body) return false;
+        if (!isCurrent() || !ownsProjection() || !document.body) return false;
         if (el.ownerDocument === document) return true;
+        // Document adoption is an existing lifecycle boundary, not a claimed
+        // focus-preserving destination switch. Its old pixel lease is unusable.
+        materialEpoch?.suspend();
+        if (!isCurrent() || !ownsProjection()) return false;
         document.adoptNode(el);
         // Adoption invokes author callbacks synchronously. The old lease may
         // have retired, or an external owner may have taken the node already.
-        if (revoke !== restore) return false;
+        if (!isCurrent()) return false;
         if (
           projectionBody !== previousBody ||
           el.parentNode !== null ||
@@ -107,12 +170,15 @@ export function createWebComponentPortalMount() {
           restore();
           return false;
         }
-        projectionBody = document.body;
+        binding = resolveWebPortalDestinationBinding(marker, el);
+        if (!isCurrent()) return false;
+        projectionBody = binding.destination;
         projectionBody.appendChild(el);
-        return revoke === restore && ownsProjection();
+        if (isCurrent() && ownsProjection()) notifyWebPortalProjection(el);
+        return isCurrent() && ownsProjection();
       };
       const adopt = (document: Document) => {
-        if (revoke !== restore) return;
+        if (!isCurrent()) return;
         if (!ownsProjection()) {
           revoke?.();
           return;
@@ -136,7 +202,7 @@ export function createWebComponentPortalMount() {
         };
       };
       const onMutation = () => {
-        if (revoke !== restore) return;
+        if (!isCurrent()) return;
         // Mutation delivery observes the settled tree, preserving sync moves.
         if (
           !parent.isConnected ||
@@ -148,14 +214,18 @@ export function createWebComponentPortalMount() {
           const token = (el as any)._instanceToken;
           if (proto && token) {
             setProtoParent(el, portalLogicalParent(parent));
+            if (!isCurrent()) return;
             markProtoInstance(el, proto, token);
+            if (!isCurrent()) return;
           }
           bindAdoption();
           observeOriginTrees();
+          refreshDestination();
         }
       };
       let observedTrees: Node[] = [];
       function observeOriginTrees() {
+        if (!isCurrent()) return;
         const nextDocument = parent!.ownerDocument ?? el.ownerDocument;
         if (projected && el.ownerDocument !== nextDocument && !transferProjection(nextDocument))
           return;
@@ -182,13 +252,15 @@ export function createWebComponentPortalMount() {
       const restore = (restoreToOrigin = true) => {
         if (revoke !== restore) return;
         revoke = null;
+        offDestination();
         unbindAdoption?.();
         const wasProjected = projected;
         const ownedProjection = ownsProjection();
         projected = false;
         projectionByOriginMarker.delete(marker);
-        originMarkerByProjection.delete(el);
-        activeProjections.delete(el);
+        if (originMarkerByProjection.get(el) === marker) originMarkerByProjection.delete(el);
+        if (activeProjections.get(el) === restore) activeProjections.delete(el);
+        if (refreshProjections.get(el) === refreshDestination) refreshProjections.delete(el);
         observer?.disconnect();
         const errors: unknown[] = [];
         const cleanup = (work: () => void) => {
@@ -198,16 +270,20 @@ export function createWebComponentPortalMount() {
             errors.push(error);
           }
         };
-        cleanup(() => setProtoParent(el, null));
-        // Revoking the logical parent notifies author-owned consumers. They
-        // may reparent this element or establish a newer projection lease.
-        const unchanged = generation === lease && revoke === null;
-        const stillOwned = unchanged && ownedProjection && el.parentNode === projectionBody;
+        const isLastRetired = () =>
+          projectionEpochs.get(el) === epoch && revoke === null && !activeProjections.has(el);
+        cleanup(() => materialEpoch?.release());
+        // Each synchronous cleanup notification can establish a newer host
+        // epoch, including through a different mount instance. Never clear its
+        // logical projection, move its node, or publish our stale completion.
+        if (isLastRetired()) cleanup(() => setProtoParent(el, null));
+        const stillOwned = isLastRetired() && ownedProjection && el.parentNode === projectionBody;
         if (restoreToOrigin && marker.parentNode === parent) {
-          if (stillOwned || (unchanged && !wasProjected && el.parentNode === parent))
+          if (stillOwned || (isLastRetired() && !wasProjected && el.parentNode === parent))
             cleanup(() => parent.insertBefore(el, marker));
         } else if (restoreToOrigin && stillOwned) cleanup(() => el.remove());
         cleanup(() => marker.remove());
+        if (isLastRetired()) cleanup(() => notifyWebPortalProjection(el));
         if (errors.length === 1) throw errors[0];
         if (errors.length > 1) throw new AggregateError(errors, 'Portal projection cleanup failed');
       };
@@ -215,16 +291,47 @@ export function createWebComponentPortalMount() {
       try {
         bindAdoption();
         setProtoParent(el, portalLogicalParent(parent));
+        if (!isCurrent()) {
+          restore();
+          return;
+        }
         // Observe each containing tree: document does not see mutations inside
         // an open ShadowRoot, and that ShadowRoot does not see its host removal.
         observeOriginTrees();
+        if (!isCurrent()) {
+          restore();
+          return;
+        }
         parent.insertBefore(marker, el);
+        if (!isCurrent()) {
+          restore();
+          return;
+        }
         projected = true;
         activeProjections.set(el, restore);
+        refreshProjections.set(el, refreshDestination);
         projectionByOriginMarker.set(marker, el);
         originMarkerByProjection.set(el, marker);
-        projectionBody = el.ownerDocument.body;
+        binding = resolveWebPortalDestinationBinding(marker, el);
+        if (!isCurrent()) {
+          restore();
+          return;
+        }
+        projectionBody = binding.destination;
+        offDestination = subscribeWebPortalDestinations(refreshDestination);
+        const acquiredMaterial = beginWebPortalMaterialEpoch(el);
+        if (!isCurrent()) {
+          acquiredMaterial.release();
+          restore();
+          return;
+        }
+        materialEpoch = acquiredMaterial;
         projectionBody.appendChild(el);
+        if (isCurrent() && ownsProjection()) {
+          refreshDestination();
+          if (isCurrent() && ownsProjection()) materialEpoch.commitProjection();
+          if (isCurrent() && ownsProjection()) notifyWebPortalProjection(el);
+        }
       } catch (error) {
         restore();
         throw error;

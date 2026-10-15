@@ -12,22 +12,99 @@ import type {
 import { createWebMoveGestureHost } from './web-move-gesture-host';
 
 type Geometry = { origin: number; span: number; sign: 1 | -1 };
-type Session = { geometry: Geometry; onSample: AxisInputHostBinding['onSample'] };
+type Session = { geometry: Geometry; onSample: AxisInputHostBinding['onSample']; started: boolean };
 
 function webTarget(value: unknown): HTMLElement {
   if (!(value instanceof HTMLElement))
     throw new TypeError('[AxisInput] Web host requires HTMLElement targets.');
   return value;
 }
-function geometryOf(target: HTMLElement, config: AxisInputConfig): Geometry | null {
+function axisAligned(target: HTMLElement): boolean {
+  const win = target.ownerDocument.defaultView;
+  if (!win) return false;
+  for (let node: Element | null = target; node; ) {
+    const style = win.getComputedStyle(node);
+    // A rotated/skewed/perspective layout has no single viewport-axis interval.
+    const transform = style.transform;
+    if (transform && transform !== 'none') {
+      const match = /^matrix\(([^)]+)\)$/.exec(transform);
+      if (!match) return false;
+      const values = match[1].split(',').map(Number);
+      if (
+        values.length !== 6 ||
+        !values.every(Number.isFinite) ||
+        values[0] <= 0 ||
+        values[3] <= 0 ||
+        values[1] !== 0 ||
+        values[2] !== 0
+      )
+        return false;
+    }
+    const rotation = style.getPropertyValue('rotate');
+    if (rotation && rotation !== 'none' && rotation !== '0deg') return false;
+    const scaling = style.getPropertyValue('scale');
+    if (scaling && scaling !== 'none') {
+      const scales = scaling.trim().split(/\s+/).map(Number);
+      if (scales.length > 2 || !scales.every((value) => Number.isFinite(value) && value > 0))
+        return false;
+    }
+    if (style.perspective && style.perspective !== 'none') return false;
+    const root = node.getRootNode();
+    node = node.parentElement ?? ('host' in root ? (root as ShadowRoot).host : null);
+  }
+  return true;
+}
+function geometryOf(
+  target: HTMLElement,
+  config: AxisInputConfig,
+  travel?: HTMLElement
+): Geometry | null {
   if (!target.isConnected) return null;
   const rect = target.getBoundingClientRect();
-  const origin = config.axis === 'horizontal' ? rect.left : rect.top;
-  const span = config.axis === 'horizontal' ? rect.width : rect.height;
+  const horizontal = config.axis === 'horizontal';
+  let origin = horizontal ? rect.left : rect.top;
+  let span = horizontal ? rect.width : rect.height;
   if (!Number.isFinite(origin) || !Number.isFinite(span) || span <= 0) return null;
-  const reverse = (config.axis === 'horizontal' && config.direction === 'rtl') !== config.reverse;
+  if (travel) {
+    if (
+      !travel.isConnected ||
+      travel.ownerDocument !== target.ownerDocument ||
+      !axisAligned(target) ||
+      !axisAligned(travel)
+    )
+      return null;
+    const style = target.ownerDocument.defaultView!.getComputedStyle(target);
+    const read = (value: string) => (value === '' ? 0 : Number.parseFloat(value));
+    const before =
+      read(horizontal ? style.borderLeftWidth : style.borderTopWidth) +
+      read(horizontal ? style.paddingLeft : style.paddingTop);
+    const after =
+      read(horizontal ? style.borderRightWidth : style.borderBottomWidth) +
+      read(horizontal ? style.paddingRight : style.paddingBottom);
+    const specified = Number.parseFloat(horizontal ? style.width : style.height);
+    // Computed CSS extents and border/padding are untransformed. Convert their
+    // inset to the same viewport CSS-pixel space as the two measured boxes.
+    const cssBorderBox = style.boxSizing === 'border-box' ? specified : specified + before + after;
+    if (!Number.isFinite(cssBorderBox) || cssBorderBox <= 0) return null;
+    const scale = span / cssBorderBox;
+    const handleRect = travel.getBoundingClientRect();
+    const handle = horizontal ? handleRect.width : handleRect.height;
+    if (
+      ![before, after, scale, handle].every(Number.isFinite) ||
+      before < 0 ||
+      after < 0 ||
+      scale <= 0 ||
+      handle <= 0
+    )
+      return null;
+    origin += before * scale + handle / 2;
+    span -= (before + after) * scale + handle;
+    if (!Number.isFinite(origin) || !Number.isFinite(span) || span <= 0) return null;
+  }
+  const reverse = (horizontal && config.direction === 'rtl') !== config.reverse;
   return { origin, span, sign: reverse ? -1 : 1 };
 }
+
 function normalized(
   sample: MoveGestureSample,
   config: AxisInputConfig,
@@ -53,11 +130,18 @@ function sameConfig(a: AxisInputConfig, b: AxisInputConfig): boolean {
     a.reverse === b.reverse &&
     a.disabled === b.disabled &&
     a.readOnly === b.readOnly &&
-    (a.contactBasis ?? 'preserve-start') === (b.contactBasis ?? 'preserve-start')
+    (a.contactBasis ?? 'preserve-start') === (b.contactBasis ?? 'preserve-start') &&
+    (a.activation ?? 'immediate') === (b.activation ?? 'immediate')
   );
 }
 
 function validateContactBasis(config: AxisInputConfig): void {
+  if (
+    config.activation !== undefined &&
+    config.activation !== 'immediate' &&
+    config.activation !== 'directional'
+  )
+    throw new TypeError('[AxisInput] Invalid activation policy.');
   if (
     config.contactBasis !== undefined &&
     config.contactBasis !== 'preserve-start' &&
@@ -77,6 +161,8 @@ export function createWebAxisInputHost(
       let binding = initial;
       let input = webTarget(binding.inputTarget);
       let geometryTarget = webTarget(binding.geometryTarget);
+      let travelTarget =
+        binding.travelTarget === undefined ? undefined : webTarget(binding.travelTarget);
       let moveLease: MoveGestureHostLease | null = null;
       let session: Session | null = null;
       let pending: Geometry | null = null;
@@ -95,7 +181,7 @@ export function createWebAxisInputHost(
         session = null;
         pending = null;
         stopObserver();
-        old?.onSample(Object.freeze({ phase: 'cancel', reason }));
+        if (old?.started) old.onSample(Object.freeze({ phase: 'cancel', reason }));
       };
       const connect = () => {
         if (disposed || binding.config.disabled || binding.config.readOnly) return;
@@ -103,7 +189,7 @@ export function createWebAxisInputHost(
         const lease = move.attach({
           target: input,
           axis: binding.config.axis,
-          activation: 'immediate',
+          activation: binding.config.activation ?? 'immediate',
           shouldStart(sample) {
             if (disposed || currentEpoch !== epoch || !input.isConnected) return false;
             if (binding.config.contactBasis === 'cancel-on-extent-change') {
@@ -115,12 +201,12 @@ export function createWebAxisInputHost(
               )
                 return false;
             }
-            pending = geometryOf(geometryTarget, binding.config);
+            pending = geometryOf(geometryTarget, binding.config, travelTarget);
             return !!pending && !!normalized(sample, binding.config, pending, 'start');
           },
           onStart(sample) {
             if (disposed || currentEpoch !== epoch || !pending) return;
-            session = { geometry: pending, onSample: binding.onSample };
+            session = { geometry: pending, onSample: binding.onSample, started: false };
             pending = null;
             const event = normalized(sample, binding.config, session.geometry, 'start');
             if (!event) {
@@ -128,12 +214,15 @@ export function createWebAxisInputHost(
               return;
             }
             const current = session;
+            if (!validBasis(current, currentEpoch)) return;
             if (typeof MutationObserver === 'function') {
               observer = new MutationObserver(() => {
                 if (
                   session === current &&
                   currentEpoch === epoch &&
-                  (!input.isConnected || !geometryTarget.isConnected)
+                  (!input.isConnected ||
+                    !geometryTarget.isConnected ||
+                    (travelTarget && !travelTarget.isConnected))
                 )
                   restart('target-detached');
               });
@@ -143,6 +232,7 @@ export function createWebAxisInputHost(
               });
             }
             observeBasis(current, currentEpoch);
+            current.started = true;
             current.onSample(event);
           },
           onMove(sample) {
@@ -168,11 +258,15 @@ export function createWebAxisInputHost(
       };
       const validBasis = (current: Session, currentEpoch: number): boolean => {
         if (disposed || currentEpoch !== epoch || session !== current) return false;
-        if (!input.isConnected || !geometryTarget.isConnected) {
+        if (
+          !input.isConnected ||
+          !geometryTarget.isConnected ||
+          (travelTarget && !travelTarget.isConnected)
+        ) {
           restart('target-detached');
           return false;
         }
-        const live = geometryOf(geometryTarget, binding.config);
+        const live = geometryOf(geometryTarget, binding.config, travelTarget);
         if (disposed || currentEpoch !== epoch || session !== current) return false;
         if (!live) {
           restart('invalid-geometry');
@@ -220,11 +314,15 @@ export function createWebAxisInputHost(
           validateContactBasis(next.config);
           const nextInput = webTarget(next.inputTarget);
           const nextGeometry = webTarget(next.geometryTarget);
-          const replaced = input !== nextInput || geometryTarget !== nextGeometry;
+          const nextTravel =
+            next.travelTarget === undefined ? undefined : webTarget(next.travelTarget);
+          const replaced =
+            input !== nextInput || geometryTarget !== nextGeometry || travelTarget !== nextTravel;
           const changed = !sameConfig(binding.config, next.config);
           binding = next;
           input = nextInput;
           geometryTarget = nextGeometry;
+          travelTarget = nextTravel;
           if (replaced || changed)
             restart(
               replaced

@@ -1,4 +1,5 @@
 import type {
+  AnatomyPartView,
   AxisInputBinding,
   AxisInputCancelReason,
   AxisInputConfig,
@@ -26,8 +27,21 @@ const INITIAL_CONFIG: AxisInputConfig = Object.freeze({
   readOnly: false,
   reverse: false,
   contactBasis: 'preserve-start',
+  activation: 'immediate',
 });
 type Listener = (run: RunHandle<PropsBaseType>, sample: AxisInputSample) => void;
+type Targets = {
+  input: unknown;
+  geometry: unknown;
+  travel?: unknown;
+  ownership?: {
+    domain: unknown;
+    input: unknown;
+    geometry: unknown;
+    travel?: unknown;
+    parts: readonly AnatomyPartView[];
+  };
+};
 
 class AxisInputModuleImpl extends ModuleBase {
   private declared = false;
@@ -37,7 +51,7 @@ class AxisInputModuleImpl extends ModuleBase {
   private subscriptions: (() => void)[] = [];
   private lease: AxisInputHostLease | null = null;
   private host: AxisInputHost | null = null;
-  private targets: { input: unknown; geometry: unknown } | null = null;
+  private targets: Targets | null = null;
   private epoch = 0;
   private active = false;
   private deliveryEpoch = 0;
@@ -60,7 +74,8 @@ class AxisInputModuleImpl extends ModuleBase {
         if (this.binding) throw new Error('[AxisInput] Input anatomy may be configured only once.');
         if (
           !binding.anatomy.decl.roles[binding.inputRole] ||
-          !binding.anatomy.decl.roles[binding.geometryRole]
+          !binding.anatomy.decl.roles[binding.geometryRole] ||
+          (binding.travelRole !== undefined && !binding.anatomy.decl.roles[binding.travelRole])
         ) {
           throw new Error(
             '[AxisInput] Input and geometry roles must belong to the anatomy family.'
@@ -78,6 +93,12 @@ class AxisInputModuleImpl extends ModuleBase {
       sync: (patch) => {
         this.sys.ensureCallback('axisInput.sync');
         if (
+          patch.activation !== undefined &&
+          patch.activation !== 'immediate' &&
+          patch.activation !== 'directional'
+        )
+          throw new TypeError('[AxisInput] Invalid activation policy.');
+        if (
           patch.contactBasis !== undefined &&
           patch.contactBasis !== 'preserve-start' &&
           patch.contactBasis !== 'cancel-on-extent-change'
@@ -91,6 +112,7 @@ class AxisInputModuleImpl extends ModuleBase {
           readOnly: patch.readOnly ?? this.config.readOnly,
           reverse: patch.reverse ?? this.config.reverse,
           contactBasis: patch.contactBasis ?? this.config.contactBasis,
+          activation: patch.activation ?? this.config.activation,
         });
         if (
           Object.keys(INITIAL_CONFIG).every(
@@ -105,7 +127,7 @@ class AxisInputModuleImpl extends ModuleBase {
     };
   }
 
-  private resolveTargets() {
+  private resolveTargets(): Targets | null {
     const binding = this.binding;
     if (!binding || this.anatomy.resolveSelfRole(binding.anatomy) !== binding.inputRole)
       return null;
@@ -129,7 +151,61 @@ class AxisInputModuleImpl extends ModuleBase {
     if (!geometry) return null;
     const inputTarget = this.anatomy.resolvePartTarget(input);
     const geometryTarget = this.anatomy.resolvePartTarget(geometry);
-    return inputTarget && geometryTarget ? { input: inputTarget, geometry: geometryTarget } : null;
+    if (!inputTarget || !geometryTarget) return null;
+    let travelPart: AnatomyPartView | undefined;
+    if (binding.travelRole !== undefined) {
+      const travelParts = this.anatomy.order
+        .partsOf(binding.anatomy, binding.travelRole, {
+          missing: 'empty',
+        })
+        .filter(
+          (part) =>
+            this.anatomy.resolveAncestorInstance(binding.anatomy, part, binding.geometryRole) ===
+            geometryInstance
+        );
+      if (travelParts.length !== 1) return null;
+      travelPart = travelParts[0];
+    }
+    const travel = travelPart ? this.anatomy.resolvePartTarget(travelPart) : undefined;
+    if (travelPart && !travel) return null;
+    const targets: Targets = { input: inputTarget, geometry: geometryTarget, travel };
+    if (this.config.activation === 'directional' || binding.travelRole !== undefined) {
+      const domain = this.anatomy.resolveDomainScope(binding.anatomy);
+      if (domain === null) return null;
+      targets.ownership = {
+        domain,
+        input: self,
+        geometry: geometryInstance,
+        travel: travelPart ? this.anatomy.resolvePartInstance(travelPart) : undefined,
+        parts: travelPart ? [input, geometry, travelPart] : [input, geometry],
+      };
+    }
+    return targets;
+  }
+
+  private sameTargets(next: Targets | null): boolean {
+    if (
+      !next ||
+      !this.targets ||
+      next.input !== this.targets.input ||
+      next.geometry !== this.targets.geometry ||
+      next.travel !== this.targets.travel
+    )
+      return false;
+    return this.sameOwnership(next);
+  }
+
+  private sameOwnership(next: Targets | null): boolean {
+    const old = this.targets?.ownership;
+    const current = next?.ownership;
+    if (!old || !current) return old === current;
+    return (
+      old.domain === current.domain &&
+      old.input === current.input &&
+      old.geometry === current.geometry &&
+      old.travel === current.travel &&
+      old.parts.every((part) => this.anatomy.isCurrentPart(this.binding!.anatomy, part))
+    );
   }
 
   protected override onCapsEpoch(): void {
@@ -144,15 +220,11 @@ class AxisInputModuleImpl extends ModuleBase {
     if (this.disposed) return;
     const host = this.caps.has(AXIS_INPUT_HOST_CAP) ? this.caps.get(AXIS_INPUT_HOST_CAP) : null;
     const targets = this.mountPhase === 'mounted' && host ? this.resolveTargets() : null;
-    if (
-      this.lease &&
-      host === this.host &&
-      targets?.input === this.targets?.input &&
-      targets?.geometry === this.targets?.geometry
-    ) {
+    if (this.lease && host === this.host && this.sameTargets(targets)) {
       this.lease.update({
         inputTarget: targets!.input,
         geometryTarget: targets!.geometry,
+        ...(targets!.travel ? { travelTarget: targets!.travel } : {}),
         config: this.config,
         onSample: this.receiver(this.epoch),
       });
@@ -168,6 +240,7 @@ class AxisInputModuleImpl extends ModuleBase {
     const lease = host.attach({
       inputTarget: targets.input,
       geometryTarget: targets.geometry,
+      ...(targets.travel ? { travelTarget: targets.travel } : {}),
       config: this.config,
       onSample: this.receiver(epoch),
     });
@@ -181,6 +254,12 @@ class AxisInputModuleImpl extends ModuleBase {
   private receiver(epoch: number) {
     return (sample: AxisInputSample) => {
       if (epoch !== this.epoch || this.disposed || this.mountPhase !== 'mounted') return;
+      // A delayed host callback cannot revive a reassociated logical owner even
+      // if every host object was reused and notification delivery is still pending.
+      if (this.targets?.ownership && !this.sameTargets(this.resolveTargets())) {
+        this.refresh();
+        return;
+      }
       if (sample.phase === 'start') {
         if (this.active || this.config.disabled || this.config.readOnly) return;
         this.active = true;

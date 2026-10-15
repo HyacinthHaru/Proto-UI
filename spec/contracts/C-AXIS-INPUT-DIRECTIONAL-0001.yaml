@@ -1,0 +1,52 @@
+id: C-AXIS-INPUT-DIRECTIONAL-0001
+type: contract
+title: Opt-in directional Axis Input preserves taps and cross-axis scrolling
+status: draft
+since: 0.3.0-alpha.1
+lifecycleRationale: Explicit draft B candidate for Switch drag; new typed seams, independent review, real input and cross-host evidence remain required. Existing immediate consumers retain their behavior.
+summary: A host recognizes a directional contact before delivering normalized movement, preserves the perpendicular default action, and prevents the accepted contact from causing a second semantic activation.
+statement:
+  en: Directional input is an opt-in extension of bounded Move and normalized Axis Input. Physical contact identity, geometry, thresholds, capture and correlated click arbitration remain host-owned. Domain values, preview, commit and controlled refusal remain consumer-owned. This draft does not claim Apple parameter equivalence, Drag and Drop, material effects or Compiler support.
+  zh-CN: Directional input 是有界 Move 与无量纲 Axis Input 的显式 opt-in 扩展。接触身份、几何、阈值、capture 与相关 click 仲裁由宿主拥有；领域值、preview、提交与受控拒绝由消费者拥有。此 draft 不声称 Apple 参数等价、Drag and Drop、材质效果或 Compiler 支持。
+criteria:
+  - id: C-AXIS-INPUT-DIRECTIONAL-0001-COMPATIBILITY
+    text:
+      en: An initial omitted activation means immediate. A partial sync omitting activation retains the current policy; explicit immediate resets it. Invalid policies fail before changing the current binding. Same-policy updates are inert. Existing Scroll, Slider, Resize and other immediate consumers do not acquire a threshold, click suppression or altered touch-action from this extension.
+  - id: C-AXIS-INPUT-DIRECTIONAL-0001-RECOGNITION
+    text:
+      en: A directional binding requires one horizontal or vertical axis. Pending observation reserves the contact against competing Move recognizers but does not capture, prevent pointerdown defaults or emit start; it does not implement recognizer-to-recognizer handover. Acceptance emits one start using the original contact origin, followed by ordered samples, and an accepted contact has exactly one end or cancel. A below-threshold release remains an ordinary tap. Perpendicular intent yields to the host default action without a domain request; its trailing click is disqualified as an activation even though no movement start is emitted. No pending listener or observer survives termination, target replacement, detach or disposal.
+  - id: C-AXIS-INPUT-DIRECTIONAL-0001-WEB-PROFILE
+    text:
+      en: The experimental Web profile uses a four-CSS-pixel displacement threshold. It accepts when absolute primary-axis displacement is at least four and strictly greater than cross-axis displacement; it rejects when cross-axis displacement is at least four and greater than or equal to primary displacement. Equality yields to the perpendicular default action. Horizontal input leases pan-y and vertical input pan-x, restoring prior styles when the binding lease ends. These constants are Proto UI trial choices, not Apple facts or portable author inputs.
+  - id: C-AXIS-INPUT-DIRECTIONAL-0001-TRAVEL
+    text:
+      en: Optional travelRole resolves exactly one presentational geometry part contained by the same geometry-owner domain, without making it an input or focus owner. Missing, duplicate, detached or foreign-domain travel targets refuse the enhancement while ordinary tap activation remains available. For the Web trial, the center interval begins at the geometry owner's content-box start plus half the travel target's border-box extent and ends at its content-box end minus half that extent, all measured in viewport CSS pixels on an axis-aligned layout. Borders and padding are excluded from the content box. Position is the contact coordinate normalized and clamped to this center interval; delta and totalDelta use its unclamped signed span. Nonfinite, unsupported or nonpositive travel refuses start. A visual family opting in must align its painted endpoint centers with this interval; endpoint insets may not be inferred from the thumb's current placement. Omission preserves the existing whole-rectangle basis. The consumer may add normalized totalDelta to its session-start progress so grabbing an edge does not jump the indicator to the contact point. RTL reverses logical displacement once. Geometry, pixels and target objects never enter prototype samples.
+  - id: C-AXIS-INPUT-DIRECTIONAL-0001-CLICK
+    text:
+      en: An accepted directional contact cannot also produce a press.commit from its correlated native click. Arbitration is host-private and specific to the original contact and target generation. It never consumes keyboard or assistive activation, an unrelated pointer, a subsequent contact or another control. No unbounded global suppress-next-click flag is permitted. Cancellation emits no domain request and still prevents a trailing click belonging to an accepted cancelled contact from reviving it; terminal arbitration expires without swallowing a later valid activation.
+  - id: C-AXIS-INPUT-DIRECTIONAL-0001-LIFETIME
+    text:
+      en: Disable, changed configuration, geometry or travel target replacement, domain reassociation, detach, ownership loss and disposal invalidate the old contact before any later sample or release. No stale callback revives it. Travel extent changes follow the declared contactBasis policy; translation alone is not an extent change. Accepted input outside its initial hit region continues only while host ownership remains valid. Root focus is preserved for subsequent keyboard use.
+  - id: C-AXIS-INPUT-DIRECTIONAL-0001-PREVIEW
+    text:
+      en: Continuous display progress is separate from persistent domain truth and the outward request cadence. It is a reusable Base capability for every Switch and Slider visual family. Switch preview emits no checkedChange until normal release, requests at most one changed endpoint, and clears preview before a controlled request. Slider retains its existing immediate request/commit cadence by default; a preview enhancement must not silently replace it with Switch release-only semantics. Existing scalar Slider Root additionally exposes displayPercentage, the bounded percentage of the latest normalized request during its active interaction and the persistent percentage otherwise. Existing value, percentage and ARIA remain truth-based; valueChange and valueCommit cadence are unchanged. External value or basis updates, cancel, disable and release discard preview. Same-value controlled rerenders do not falsely end preview. Styled Thumb, FieldThumb and Indicator may consume displayPercentage, without adding an input owner. The additive multi-value Slider family and its planned pointer association are outside this scalar slice. Accessible persistent value remains governed by each control contract, never by material paint.
+dependsOn:
+  contracts: [C-MOVE-GESTURE-0001, C-AXIS-INPUT-CONTACT-BASIS-0001]
+  decisions: [D-MOVE-GESTURE-0001]
+verifies:
+  tests: [T-AXIS-INPUT-DIRECTIONAL-0001]
+sources:
+  - path: packages/core/src/move.ts
+  - path: packages/core/src/axis-input.ts
+  - path: packages/modules/axis-input/src/create.ts
+  - path: packages/adapters/base/src/gestures/web-axis-input-host.ts
+  - path: packages/adapters/base/src/gestures/web-move-gesture-host.ts
+openQuestions:
+  - id: C-AXIS-INPUT-DIRECTIONAL-0001-Q-ADMISSION
+    question: Do independent review and real pointer, touch, lifecycle, four-runtime, Compiler and applicable non-Web evidence establish this draft without changing immediate defaults?
+    blocks: [activation:C-AXIS-INPUT-DIRECTIONAL-0001]
+revisions:
+  - version: 0.3.0-alpha.1
+    change: introduced
+    summary: Introduce an explicit draft directional candidate with compatible defaults, eventless geometry targets and family-independent preview boundaries.
+tags: [axis-input, move, switch, slider, preview, cancellation]

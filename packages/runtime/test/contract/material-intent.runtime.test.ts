@@ -27,6 +27,7 @@ function fixture(
   options: {
     sink?: boolean;
     static?: boolean;
+    tint?: boolean;
     onFrame?: (frame: VisualFeedbackFrame) => void;
     setup?: (def: DefHandle<any>, active: State<boolean>) => void;
   } = {}
@@ -61,9 +62,18 @@ function fixture(
             current.rule({
               when: (w) => w.all(w.state(activeState).eq(active), w.state(visibleState).eq(true)),
               intent: (i) => {
-                i.feedback.style.use(tw(active ? 'rounded-xl' : 'rounded-lg'));
+                i.feedback.style.use(
+                  tw(
+                    options.tint && active
+                      ? 'rounded-xl bg-primary text-primary-foreground'
+                      : active
+                        ? 'rounded-xl'
+                        : 'rounded-lg'
+                  )
+                );
                 i.feedback.material.use({
                   intent: 'liquid-glass',
+                  ...(options.tint && active ? { tint: 'style-fill' as const } : {}),
                   deformation: { kind: 'press', phase: active ? 'pressed' : 'rest' },
                 });
               },
@@ -117,6 +127,38 @@ function fixture(
 }
 
 describe('shared material author and Rule runtime (no paint claim)', () => {
+  it('preserves optional tint and its final style in one visual frame through both Rule transitions', async () => {
+    const f = fixture({ tint: true });
+    await f.session.mount();
+    expect(f.frames.at(-1)?.material.candidates[0]).not.toHaveProperty('tint');
+    f.set({ active: true });
+    const selected = f.frames.at(-1)!;
+    expect(selected.material.candidates).toHaveLength(1);
+    expect(selected.material.candidates[0]).toMatchObject({ tint: 'style-fill' });
+    expect(selected.style.tokens).toEqual(
+      expect.arrayContaining(['bg-primary', 'text-primary-foreground'])
+    );
+    expect(selected.style.tokens).not.toContain('bg-white');
+    f.set({ active: false });
+    const rest = f.frames.at(-1)!;
+    expect(rest.material.candidates).toHaveLength(1);
+    expect(rest.material.candidates[0]).not.toHaveProperty('tint');
+    expect(rest.style.tokens).toEqual(expect.arrayContaining(['bg-white', 'text-black']));
+    await f.session.dispose();
+  });
+  it('rejects malformed tint inside an inactive Rule without invoking any host', () => {
+    expect(() =>
+      fixture({
+        setup: (def) =>
+          def.rule({
+            when: (w) => w.f(),
+            intent: (i) =>
+              i.feedback.material.use({ intent: 'liquid-glass', tint: 'rgba(1,2,3,1)' } as any),
+          }),
+      })
+    ).toThrow();
+  });
+
   it('serializes a reentrant host invalidation before replacing the Rule contribution again', async () => {
     let enabled = false;
     const f = fixture({

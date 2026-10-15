@@ -1,0 +1,37 @@
+id: C-MATERIAL-CONTACT-0001
+type: contract
+title: Finite material contact binds an existing input owner to one paint target
+status: draft
+since: 0.3.0-alpha.1
+lifecycleRationale: Only portable declarations and an unregistered module with fake-host evidence exist. Production input authority, real material paint, geometry/source completeness, four-Adapter and Compiler composition remain unimplemented.
+summary: Explicit bilateral same-domain visual observation never transfers input or value ownership.
+statement:
+  en: Material contact is a visual-only association. The input consumer retains recognition, capture, activation, domain value and focus. A separate paint part may observe only a uniquely paired, currently registered input owner in the same Anatomy family/domain and host document. This draft does not register a production module or promise optical support.
+  zh-CN: Material contact 是纯视觉关联。输入消费者保留识别、capture、激活、领域值与焦点；独立 paint part 仅可观察同 Anatomy family/domain 和宿主 document 内唯一配对的当前输入 owner。本 draft 不注册生产 module，也不承诺光学支持。
+criteria:
+  - id: C-MATERIAL-CONTACT-0001-DECLARATION
+    text: Setup-only offer and receive admit a family, exact nonempty key of at most 64 characters and declared owner/paint roles. Part receive requires an explicit link; self receive forbids one. Each declaration is a strict own-data snapshot rejecting getters, inherited or extra fields. Each paint instance has at most one receiver; duplicate declarations fail closed, never last-write-wins. No author coordinate, target, input callback or capture operation is admitted.
+  - id: C-MATERIAL-CONTACT-0001-SCOPE
+    text: Resolve the full family identity, opaque nearest-root domain, protocol key and role tuple using current Anatomy parts. Exactly one logical offer and one logical receiver qualify; missing or duplicate endpoints never select a DOM-order winner. Both current physical views must match their logical instance, target and view epoch and share a document. The host input registry must identify the offered owner. A broken delegated link never silently observes the paint part's own router.
+  - id: C-MATERIAL-CONTACT-0001-LIFETIME
+    text: Detach, replacement including a new epoch on the same physical target, domain/document movement, capability loss and disposal revoke the old lease before cleanup. Reentrant cleanup cannot erase a successor. Late receivers do not inherit pending, held or released contact; only a newly witnessed pending session can start observation. Cancelled or retired sessions and stale revisions cannot revive. An input registration is immutable for its read lease; any observed malformed, mismatched or changed registration quarantines that reader. A fresh reader and handshake are required for recovery. Session retirement and revision high-water marks survive paint-only reattachment for the full input reader lifetime. Reentrant reads and paint cleanup cannot deliver an older sample after a newer one.
+  - id: C-MATERIAL-CONTACT-0001-NONINTERFERENCE
+    text: Association and failure do not create or reroute input, capture, click suppression, touch-action, value requests, focus or accessibility. Switch Root retains its unique input/value/focus ownership and Thumb stays eventless. Slider Root retains values, Track retains pointer recognition and Thumb retains its existing focus/keyboard semantics. Same-host finite contact remains a separate compatible consumer; static material requires no contact.
+  - id: C-MATERIAL-CONTACT-0001-OPTICAL-BOUNDARY
+    text: A valid contact association is not an optical paint receipt. Any future moving paint must separately establish style-owned pure translation, a shape lifetime distinct from placement-exact pixel tickets, complete current backdrop including any claimed track and excluding own output, and fresh safety/foreign-ownership checks. Reduced motion must not disable Base direct manipulation. Unknown capabilities, stale placement decode or missing backdrop remain unavailable or fallback; fake-host evidence cannot close those obligations.
+dependsOn:
+  contracts: [C-ANATOMY-0001, C-FEEDBACK-MATERIAL-0001]
+references:
+  tests: [T-MATERIAL-CONTACT-0001]
+sources:
+  - path: packages/core/src/material-contact.ts
+  - path: packages/modules/material-contact/src/create.ts
+openQuestions:
+  - id: C-MATERIAL-CONTACT-0001-Q-PRODUCTION
+    question: Which separately reviewed Runtime registration, input authority/handover, real paint and Compiler evidence admits this declaration beyond fake-host association?
+    blocks: [activation:C-MATERIAL-CONTACT-0001]
+revisions:
+  - version: 0.3.0-alpha.1
+    change: introduced
+    summary: Cataloged bilateral finite visual association with explicit unimplemented production and optical boundaries.
+tags: [material, contact, anatomy, lifecycle]

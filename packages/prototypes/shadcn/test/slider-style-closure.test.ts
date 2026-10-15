@@ -46,10 +46,10 @@ it('closes borrowed-state Slider Rule tokens without relying on other components
     'data-[orientation=vertical]:h-full',
     'data-[orientation=vertical]:w-3',
     'data-[orientation=vertical]:w-1',
-    'data-[orientation=vertical]:bottom-[calc(var(--pui-percentage)*1%)]',
+    'data-[orientation=vertical]:bottom-[calc(var(--pui-display-percentage)*1%)]',
     'data-[disabled]:opacity-50',
     'data-[disabled]:pointer-events-none',
-    'data-[direction=rtl]:data-[orientation=horizontal]:right-[calc(var(--pui-percentage)*1%)]',
+    'data-[direction=rtl]:data-[orientation=horizontal]:right-[calc(var(--pui-display-percentage)*1%)]',
   ];
   // This regression must remain red until the shared collector understands the
   // existing authored-asHook state handles. No component whitelist or manually

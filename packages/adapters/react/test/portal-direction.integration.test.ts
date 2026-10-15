@@ -1,3 +1,4 @@
+import { expectStableReactPortalMount } from './portal-destination.assertions';
 import { expect, it } from 'vitest';
 import * as React from 'react';
 import { act } from 'react';
@@ -59,7 +60,7 @@ it('real React portal preserves the intervening author wrapper, explicit dir and
     await settle();
     const target = document.querySelector<HTMLElement>('.portal-direction-target')!;
     const author = host.querySelector<HTMLElement>('[data-direction-author]')!;
-    expect(target.parentElement).toBe(document.body);
+    const mount = expectStableReactPortalMount(target, document.body);
     expect(target.dir).toBe('ltr');
     expect(author.querySelector('[data-pui-portal-origin]')).not.toBeNull();
     author.dir = 'rtl';
@@ -77,6 +78,8 @@ it('real React portal preserves the intervening author wrapper, explicit dir and
     await act(async () => root.unmount());
     await settle();
     expect(target.isConnected).toBe(false);
+    expect(mount.isConnected).toBe(false);
+    expect(document.querySelectorAll('[data-pui-portal-mount]')).toHaveLength(0);
     expect(target.getAttribute('dir')).toBe(null);
     expect(host.querySelector('[data-pui-portal-origin]')).toBe(null);
     author.dir = 'ltr';

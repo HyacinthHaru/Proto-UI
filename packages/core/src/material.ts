@@ -3,6 +3,7 @@ export type MaterialCandidate =
   | Readonly<{
       intent: 'liquid-glass';
       variant?: 'regular' | 'clear';
+      tint?: 'style-fill';
       deformation?: Readonly<{ kind: 'press'; phase: 'rest' | 'pressed'; contact?: 'pointer' }>;
     }>
   | Readonly<{ intent: 'adaptive-blur'; tone?: 'system' | 'light' | 'dark' }>;
@@ -45,9 +46,9 @@ function record(value: unknown, required: readonly string[], optional: readonly 
 }
 
 export function snapshotMaterialCandidate(value: unknown): MaterialCandidate {
-  const kind = record(value, ['intent'], ['variant', 'deformation', 'tone']);
+  const kind = record(value, ['intent'], ['variant', 'deformation', 'tone', 'tint']);
   if (kind?.intent === 'liquid-glass') {
-    const candidate = record(value, ['intent'], ['variant', 'deformation']);
+    const candidate = record(value, ['intent'], ['variant', 'deformation', 'tint']);
     if (!candidate) throw new Error('Invalid liquid-glass material intent');
     if (
       Object.hasOwn(candidate, 'variant') &&
@@ -55,6 +56,8 @@ export function snapshotMaterialCandidate(value: unknown): MaterialCandidate {
       candidate.variant !== 'clear'
     )
       throw new Error('Invalid liquid-glass variant');
+    if (Object.hasOwn(candidate, 'tint') && candidate.tint !== 'style-fill')
+      throw new Error('Invalid liquid-glass tint');
     let deformation: Extract<MaterialCandidate, { intent: 'liquid-glass' }>['deformation'];
     if (Object.hasOwn(candidate, 'deformation')) {
       const data = record(candidate.deformation, ['kind', 'phase'], ['contact']);
@@ -72,6 +75,7 @@ export function snapshotMaterialCandidate(value: unknown): MaterialCandidate {
       intent: 'liquid-glass',
       ...(candidate.variant ? { variant: candidate.variant as 'regular' | 'clear' } : {}),
       ...(deformation ? { deformation } : {}),
+      ...(candidate.tint === 'style-fill' ? { tint: 'style-fill' as const } : {}),
     });
   }
   if (kind?.intent === 'adaptive-blur') {

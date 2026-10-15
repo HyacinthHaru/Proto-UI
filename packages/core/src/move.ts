@@ -9,7 +9,8 @@ export type MoveGesturePoint = Readonly<{
 
 export type MoveGestureAxis = 'horizontal' | 'vertical' | 'both';
 export type MoveGestureInput = 'mouse' | 'touch' | 'pen' | 'unknown';
-export type MoveGestureActivation = 'immediate';
+/** Directional recognition is an opt-in draft; immediate remains the default consumer policy. */
+export type MoveGestureActivation = 'immediate' | 'directional';
 
 export type MoveGestureSample = Readonly<{
   input: MoveGestureInput;
