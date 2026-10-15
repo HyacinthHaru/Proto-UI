@@ -192,6 +192,13 @@ export function createProminentTintPlan(shard?: string) {
   return { runtimes, cases };
 }
 export type TintCheckpointStatus = { status: string; error?: string };
+/** Executed but unresolved work is interrupted, never labeled unexecuted. */
+export function finalizeProminentTintStatus(record: TintCheckpointStatus) {
+  if (record.status === 'not-run') return { ...record, status: 'blocked-at-normal-finalization' };
+  if (['running', 'captured-before-assertion'].includes(record.status))
+    return { ...record, status: 'interrupted-at-normal-finalization' };
+  return record;
+}
 /** Cancellation cannot execute afterAll. Running snapshots therefore retain
  * not-run entries; only normal finalization labels them terminal blocked. */
 export function createProminentTintCheckpoint(
@@ -204,9 +211,7 @@ export function createProminentTintCheckpoint(
 ) {
   const terminal = (record: TintCheckpointStatus | undefined) => {
     const result = record ?? { status: 'not-run' };
-    return phase === 'terminal' && ['not-run', 'running'].includes(result.status)
-      ? { ...result, status: 'blocked-at-normal-finalization' }
-      : result;
+    return phase === 'terminal' ? finalizeProminentTintStatus(result) : result;
   };
   return {
     schemaVersion: 1,

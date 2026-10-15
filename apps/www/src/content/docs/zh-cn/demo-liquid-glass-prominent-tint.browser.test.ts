@@ -4,12 +4,14 @@ import { createHash } from 'node:crypto';
 import { mkdir, writeFile, rename } from 'node:fs/promises';
 import path from 'node:path';
 import { chromium, type Browser, type Page, type CDPSession } from 'playwright-core';
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it, onTestFailed } from 'vitest';
 import { RUNTIMES, chromeExecutable, startServer, stopServer } from './browser-harness';
 import {
   PROMINENT_TINT_CONTROLS,
   createProminentTintPlan,
   createProminentTintCheckpoint,
+  finalizeProminentTintStatus,
+  type TintCheckpointStatus,
   prominentTintPreferenceStages,
   PROMINENT_TINT_SOURCES,
   type TintControl,
@@ -24,6 +26,12 @@ import {
   type TintPair,
 } from './liquid-prominent-tint-metrics';
 import { liquidHoverContextCapture } from './liquid-hover-fixture';
+import {
+  installProminentTintPreferenceProbe,
+  runProminentTintCase,
+  awaitProminentTintCheckpoint,
+  PROMINENT_TINT_OBSERVATION_PROGRESS,
+} from './liquid-prominent-tint-test-harness';
 import type { captureProminentTintFrame } from './liquid-prominent-tint-capture';
 
 // Native only in official exact-candidate CI. Independent bounded shard per
@@ -59,6 +67,16 @@ const captureCoverage = new Map<string, { status: string; error?: string }>(
     entry.captures.map((id) => [id, { status: 'not-run' }] as const)
   )
 );
+const captureOwners = new Map(
+  collectionPlan.cases.flatMap((entry) => entry.captures.map((id) => [id, entry.id] as const))
+);
+const captureCaseRunning = (name: string) =>
+  !checkpointFinalized && coverage.get(captureOwners.get(name)!)?.status === 'running';
+function recordCapture(name: string, record: TintCheckpointStatus) {
+  if (!captureCaseRunning(name)) return false;
+  captureCoverage.set(name, record);
+  return true;
+}
 const behaviorCoverage = new Map<string, string>();
 const opticalCoverage = new Map<string, string>();
 let checkpointEnabled = false,
@@ -145,6 +163,15 @@ beforeAll(async () => {
 }, 150_000);
 afterAll(async () => {
   try {
+    // Use one terminal reconciliation for both checkpoint and final results.
+    // A timeout has executed; only untouched entries may become blocked.
+    for (const [name, record] of coverage) {
+      coverage.set(name, finalizeProminentTintStatus(record));
+      if (record.status === 'running' && behaviorCoverage.get(name) !== 'passed')
+        behaviorCoverage.set(name, 'interrupted');
+    }
+    for (const [name, record] of captureCoverage)
+      captureCoverage.set(name, finalizeProminentTintStatus(record));
     if (checkpointEnabled) await checkpoint('terminal');
     if (checkpointEnabled)
       await json('results', {
@@ -152,16 +179,9 @@ afterAll(async () => {
         browser: browser?.version(),
         node: process.version,
         route,
-        coverage: Object.fromEntries(
-          [...coverage].map(([name, record]) => [
-            name,
-            record.status === 'not-run'
-              ? { ...record, status: 'blocked-before-case-execution' }
-              : record,
-          ])
-        ),
+        coverage: Object.fromEntries(coverage),
         behavior: Object.fromEntries(
-          ['passed', 'failed', 'not-run'].map((status) => [
+          ['passed', 'failed', 'interrupted', 'not-run'].map((status) => [
             status,
             [...behaviorCoverage.values()].filter((value) => value === status).length,
           ])
@@ -186,14 +206,7 @@ afterAll(async () => {
             ]
           )
         ),
-        captureCoverage: Object.fromEntries(
-          [...captureCoverage].map(([name, record]) => [
-            name,
-            record.status === 'not-run'
-              ? { ...record, status: 'blocked-by-earlier-case-failure' }
-              : record,
-          ])
-        ),
+        captureCoverage: Object.fromEntries(captureCoverage),
         results,
         visualAcceptance:
           'pending actual-size manual review; numerical diagnostic passes do not establish visual acceptance',
@@ -220,33 +233,7 @@ async function open(runtime: string, theme: string, part: TintPart, content: Tin
   );
   // Unsupported-query injection is explicitly a synthetic host capability
   // probe. Known preference cases use native Chromium CDP media emulation.
-  await context.addInitScript(() => {
-    const original = window.matchMedia.bind(window),
-      records: { query: string; real: MediaQueryList; proxy: EventTarget }[] = [];
-    let unknown: string | null = null;
-    window.matchMedia = ((query: string) => {
-      const real = original(query),
-        proxy = new EventTarget() as EventTarget & Partial<MediaQueryList>;
-      Object.defineProperties(proxy, {
-        matches: {
-          get: () => (unknown && query.startsWith(`(${unknown}:`) ? false : real.matches),
-        },
-        media: { get: () => real.media },
-        onchange: { value: null, writable: true },
-      });
-      (proxy as any).addListener = (listener: EventListener) =>
-        proxy.addEventListener('change', listener);
-      (proxy as any).removeListener = (listener: EventListener) =>
-        proxy.removeEventListener('change', listener);
-      real.addEventListener('change', () => proxy.dispatchEvent(new Event('change')));
-      records.push({ query, real, proxy });
-      return proxy as MediaQueryList;
-    }) as typeof window.matchMedia;
-    (window as any).tintUnknownPreference = (value: string | null) => {
-      unknown = value;
-      for (const record of records) record.proxy.dispatchEvent(new Event('change'));
-    };
-  });
+  await context.addInitScript(installProminentTintPreferenceProbe);
   const page = await context.newPage(),
     cdp = await context.newCDPSession(page);
   page.setDefaultTimeout(8000);
@@ -288,8 +275,13 @@ async function sample(
   contact?: string
 ) {
   if (!captureCoverage.has(name)) throw new Error(`Undeclared prominent tint capture ${name}`);
-  captureCoverage.set(name, { status: 'running' });
-  await checkpoint('running');
+  if (!recordCapture(name, { status: 'running' }))
+    throw new Error(`Prominent tint case is no longer running: ${name}`);
+  await awaitProminentTintCheckpoint(
+    name,
+    () => checkpoint('running'),
+    () => captureCaseRunning(name)
+  );
   try {
     const element = target(page, control);
     await element.scrollIntoViewIfNeeded();
@@ -427,7 +419,8 @@ async function sample(
         : null,
       image: 'retained in interior-plane or native subject PNG',
     });
-    captureCoverage.set(name, { status: 'captured-before-assertion' });
+    if (!recordCapture(name, { status: 'captured-before-assertion' }))
+      throw new Error(`Prominent tint case ended during capture: ${name}`);
     try {
       expect(readinessError, `${name}: readiness`).toBeNull();
       expect(facts.binding, `${name}: atomic source/carrier binding`).toBe(true);
@@ -444,34 +437,49 @@ async function sample(
         expect(facts.snapshot.uri).toBeNull();
         expect(facts.snapshot.fallbackContrast).toBeGreaterThanOrEqual(4.5);
       }
-      captureCoverage.set(name, { status: 'passed-observation-checks' });
+      recordCapture(name, { status: 'passed-observation-checks' });
     } catch (error) {
-      captureCoverage.set(name, { status: 'failed', error: errorText(error) });
+      recordCapture(name, { status: 'failed', error: errorText(error) });
       throw error;
     }
-    await checkpoint('running');
+    await awaitProminentTintCheckpoint(
+      name,
+      () => checkpoint('running'),
+      () => captureCaseRunning(name)
+    );
     return record;
   } catch (error) {
-    captureCoverage.set(name, { status: 'failed', error: errorText(error) });
+    recordCapture(name, { status: 'failed', error: errorText(error) });
     await checkpoint('running');
     throw error;
   }
 }
 async function runCase(name: string, run: () => Promise<void>) {
-  coverage.set(name, { status: 'running' });
-  await checkpoint('running');
-  try {
-    await run();
-    coverage.set(name, { status: 'completed' });
-    if (name.endsWith('-preferences')) behaviorCoverage.set(name, 'passed');
-    await checkpoint('running');
-  } catch (error) {
-    coverage.set(name, { status: 'failed', error: errorText(error) });
-    if (behaviorCoverage.get(name) !== 'passed') behaviorCoverage.set(name, 'failed');
-    await json(`${name}-failure`, { ...revision, name, error: errorText(error) });
-    await checkpoint('running');
-    throw error;
-  }
+  return runProminentTintCase(run, onTestFailed, {
+    async running() {
+      coverage.set(name, { status: 'running' });
+      await checkpoint('running');
+    },
+    async completed() {
+      if (checkpointFinalized) return;
+      coverage.set(name, { status: 'completed' });
+      if (name.endsWith('-preferences')) behaviorCoverage.set(name, 'passed');
+      await checkpoint('running');
+    },
+    async failed(error) {
+      if (checkpointFinalized) return;
+      const failure = errorText(error);
+      coverage.set(name, { status: 'failed', error: failure });
+      if (behaviorCoverage.get(name) !== 'passed') behaviorCoverage.set(name, 'failed');
+      for (const capture of collectionPlan.cases.find((entry) => entry.id === name)!.captures) {
+        const record = captureCoverage.get(capture)!;
+        if (['running', 'captured-before-assertion'].includes(record.status))
+          captureCoverage.set(capture, { status: 'interrupted-by-case-failure', error: failure });
+      }
+      await json(`${name}-failure`, { ...revision, name, error: failure });
+      await checkpoint('running');
+    },
+  });
 }
 for (const runtime of runtimes)
   for (const theme of ['light', 'dark'] as const)
@@ -563,7 +571,8 @@ for (const runtime of runtimes)
                         height: observed.geometry.height,
                       }).toEqual({ width: idle.geometry.width, height: idle.geometry.height });
                   }
-                  behaviorCoverage.set(name, 'passed');
+                  if (!checkpointFinalized && coverage.get(name)?.status === 'running')
+                    behaviorCoverage.set(name, 'passed');
                   const pairs: unknown[] = [];
                   for (const source of PROMINENT_TINT_SOURCES) {
                     const frames = new Map<TintControl, Awaited<ReturnType<typeof sample>>[]>();
@@ -642,9 +651,10 @@ for (const runtime of runtimes)
                   }
                   await json(`${name}-summary`, {
                     ...revision,
+                    ...PROMINENT_TINT_OBSERVATION_PROGRESS,
                     journey: journey.length,
                     pairs,
-                    terminal: 'completed; inconclusive/diagnostic-only are not visually accepted',
+                    visualAcceptance: 'inconclusive/diagnostic-only are not visually accepted',
                   });
                 } finally {
                   await context.close();
@@ -797,7 +807,7 @@ for (const runtime of runtimes)
                 await take('remounted');
                 await json(`${name}-summary`, {
                   ...revision,
-                  terminal: 'completed',
+                  ...PROMINENT_TINT_OBSERVATION_PROGRESS,
                   captures: index,
                   initialRequests: count,
                   preferenceProvenance:

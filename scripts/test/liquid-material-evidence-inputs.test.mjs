@@ -154,6 +154,8 @@ for (const file of [
   'apps/www/src/content/docs/zh-cn/demo-liquid-glass-prominent-tint.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/liquid-prominent-tint-fixture.ts',
   'apps/www/src/content/docs/zh-cn/liquid-prominent-tint-fixture.test.ts',
+  'apps/www/src/content/docs/zh-cn/liquid-prominent-tint-test-harness.ts',
+  'apps/www/src/content/docs/zh-cn/liquid-prominent-tint-test-harness.test.ts',
   'apps/www/src/content/docs/zh-cn/liquid-prominent-tint-capture.ts',
   'apps/www/src/content/docs/zh-cn/liquid-prominent-tint-metrics.ts',
   'apps/www/src/content/docs/zh-cn/liquid-prominent-tint-metrics.test.ts',
@@ -185,6 +187,7 @@ test('Main-command tint uses independent runtime shards without replacing origin
     'packages/prototypes/liquid-glass/test/interactive-surface.test.ts',
     'packages/prototypes/base/test/form-actions-material.test.ts',
     'apps/www/src/content/docs/zh-cn/liquid-prominent-tint-fixture.test.ts',
+    'apps/www/src/content/docs/zh-cn/liquid-prominent-tint-test-harness.test.ts',
     'apps/www/src/content/docs/zh-cn/liquid-prominent-tint-metrics.test.ts',
   ])
     assert.ok(evidence.run.includes(suite), `Missing main-command tint regression: ${suite}`);

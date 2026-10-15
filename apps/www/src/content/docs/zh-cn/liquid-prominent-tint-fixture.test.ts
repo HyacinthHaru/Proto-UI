@@ -81,6 +81,8 @@ describe('real prominent command fixture ownership', () => {
       cases: { [first.id]: { status: 'running' } },
       captures: {
         [first.captures[0]]: { status: 'failed', error: 'registered PNG size mismatch' },
+        [first.captures[1]]: { status: 'running' },
+        [first.captures[2]]: { status: 'captured-before-assertion' },
       },
     };
     const running = JSON.parse(
@@ -88,10 +90,15 @@ describe('real prominent command fixture ownership', () => {
     );
     expect(running.cases[0].status).toBe('running');
     expect(running.cases[0].captures[0].status).toBe('failed');
-    expect(running.cases[0].captures[1].status).toBe('not-run');
+    expect(running.cases[0].captures[1].status).toBe('running');
+    expect(running.cases[0].captures[3].status).toBe('not-run');
     const final = createProminentTintCheckpoint(plan, state, 'terminal');
     expect(final.partial).toBe(false);
-    expect(final.cases[0].status).toBe('blocked-at-normal-finalization');
+    expect(final.cases[0].status).toBe('interrupted-at-normal-finalization');
     expect(final.cases[0].captures[0].status).toBe('failed');
+    expect(final.cases[0].captures[1].status).toBe('interrupted-at-normal-finalization');
+    expect(final.cases[0].captures[2].status).toBe('interrupted-at-normal-finalization');
+    expect(final.cases[0].captures[3].status).toBe('blocked-at-normal-finalization');
+    expect(final.cases[1].status).toBe('blocked-at-normal-finalization');
   });
 });
