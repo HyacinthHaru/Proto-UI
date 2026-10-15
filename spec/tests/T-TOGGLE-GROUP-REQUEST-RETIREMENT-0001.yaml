@@ -10,7 +10,7 @@ cases:
   - id: T-TOGGLE-GROUP-REQUEST-RETIREMENT-0001-CASE-LIFETIME
     title: Synchronous Context retirement
     covers: [P-BASE-TOGGLE-GROUP-REQUEST-RETIREMENT]
-    expectation: Normal requests emit once. Unmount, disposal or unmount followed by remount during Context publication prevents the old request notification without changing its accepted true return. A current request after remount remains usable.
+    expectation: Normal requests emit once. Unmount, disposal or unmount followed by remount during Context publication prevents the old request notification without changing its accepted true return. A current request after remount remains usable. A created Root that has never mounted also retires its owner before terminal disposal, while live item membership is observed through the existing collection query.
   - id: T-TOGGLE-GROUP-REQUEST-RETIREMENT-0001-CASE-QUEUED
     title: Queued Context observers retain the retirement boundary
     covers: [P-BASE-TOGGLE-GROUP-REQUEST-RETIREMENT, P-BASE-TOGGLE-GROUP-NOTIFICATION-ORDER]
@@ -19,6 +19,10 @@ cases:
     title: Reentry during notification drain joins the existing queue
     covers: [P-BASE-TOGGLE-GROUP-NOTIFICATION-ORDER]
     expectation: With B and C already queued, B's valueChange callback may accept D. Delivery is B then C then D before the outer A tail; D must not overtake C. Accepted returns remain true and current logical selection is D.
+  - id: T-TOGGLE-GROUP-REQUEST-RETIREMENT-0001-CASE-CALLBACK-ERROR
+    title: Accepted nested notification survives a later Context error
+    covers: [P-BASE-TOGGLE-GROUP-NOTIFICATION-ORDER]
+    expectation: An early Context subscriber may accept nested B before a later subscriber throws an Error during A. After Context drains A and B, B's current notification is delivered before the original Error escapes. The throwing outer A call does not gain a notification, and the original Error identity is preserved.
 verifies:
   prototypes:
     - id: P-BASE-TOGGLE-GROUP
@@ -26,7 +30,7 @@ verifies:
 implementations:
   - id: toggle-group-runtime-retirement
     kind: runtime-test
-    status: passing
+    status: needs-review
     path: packages/prototypes/base/test/notification-retirement-lifecycle.test.ts
     required: true
     exercises: [P-BASE-TOGGLE-GROUP]
@@ -34,8 +38,9 @@ implementations:
       - T-TOGGLE-GROUP-REQUEST-RETIREMENT-0001-CASE-LIFETIME
       - T-TOGGLE-GROUP-REQUEST-RETIREMENT-0001-CASE-QUEUED
       - T-TOGGLE-GROUP-REQUEST-RETIREMENT-0001-CASE-REENTRY
+      - T-TOGGLE-GROUP-REQUEST-RETIREMENT-0001-CASE-CALLBACK-ERROR
     notes:
-      - Eleven Toggle Group cases cover five direct Context paths, five queued Context paths and one notification-drain reentry. The file also covers other prototypes; only its Toggle Group cases implement this entity. Synthetic RuntimeSession checks do not establish native focus, geometry, assistive-technology or complete Adapter conformance.
+      - Fourteen Toggle Group cases cover five direct Context paths, five queued Context paths, one notification-drain reentry, two never-mounted owner controls and one accepted-notification callback-error path. The file also covers other prototypes; only its Toggle Group cases implement this entity. Synthetic RuntimeSession checks do not establish native focus, geometry, assistive-technology or complete Adapter conformance.
 sources:
   - path: packages/prototypes/base/src/toggle-group/root.proto.ts
 exercises:

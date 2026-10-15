@@ -64,22 +64,18 @@ function setup(def: DefHandle<ToggleGroupRootProps, ToggleGroupRootExposes>) {
     if (JSON.stringify(next) === JSON.stringify(snapshot)) return;
     snapshot = next;
     publicationDepth++;
-    let completed = false;
     try {
       run.context.update(TOGGLE_GROUP_CONTEXT, next);
-      completed = true;
     } finally {
       publicationDepth--;
       if (publicationDepth === 0) {
-        if (completed) {
-          publicationDepth++;
-          try {
-            while (afterPublication.length) afterPublication.shift()!();
-          } finally {
-            publicationDepth--;
-            afterPublication = [];
-          }
-        } else afterPublication = [];
+        publicationDepth++;
+        try {
+          while (afterPublication.length) afterPublication.shift()!();
+        } finally {
+          publicationDepth--;
+          afterPublication = [];
+        }
       }
     }
   };
@@ -132,6 +128,10 @@ function setup(def: DefHandle<ToggleGroupRootProps, ToggleGroupRootExposes>) {
   def.lifecycle.onCreated((run) => sync(run, true));
   def.lifecycle.onMounted((run) => sync(run));
   def.lifecycle.onUnmounted(() => {
+    viewEpoch++;
+    runNow = null;
+  });
+  def.lifecycle.onBeforeDispose(() => {
     viewEpoch++;
     runNow = null;
   });

@@ -946,3 +946,109 @@ it('Toggle Group retains queued notification order when a valueChange callback r
     for (const part of [...parts].reverse()) await part.session.dispose();
   }
 });
+
+it.each(['normal', 'dispose'] as const)(
+  'Toggle Group retires a detached owner during Context %s',
+  async (operation) => {
+    const { make, setActionCallback } = runtimeHarness();
+    const root = make(toggleGroupRoot);
+    const item = make(toggleGroupItem, root.target, { value: 'a' });
+    let armed = false;
+    const transitions: Promise<void>[] = [];
+    const emitted: string[][] = [];
+    setActionCallback((name, payload) => {
+      if (name === 'valueChange') emitted.push([...payload.value]);
+    });
+    const observer = make(
+      definePrototype({
+        name: 'toggle-group-detached-disposal-observer',
+        setup(def) {
+          def.context.subscribe(TOGGLE_GROUP_CONTEXT, (_run, next) => {
+            if (armed && next.value[0] === 'a' && operation === 'dispose')
+              transitions.push(root.session.dispose());
+          });
+        },
+      }),
+      root.target
+    );
+    const parts = [root, item, observer];
+    try {
+      await item.session.mount();
+      await observer.session.mount();
+      expect(root.session.mountPhase).toBe('detached');
+      expect(root.session.instancePhase).toBe('alive');
+      expect(root.exposes.getCollectionCount()).toBe(1);
+      armed = true;
+      let accepted: boolean | undefined;
+      expect(() => {
+        root.session.invokeInCallbackScope(() => {
+          accepted = root.exposes.requestToggle('a');
+        });
+      }).not.toThrow();
+      await Promise.all(transitions);
+      expect(accepted).toBe(true);
+      expect(emitted).toEqual(operation === 'normal' ? [['a']] : []);
+      expect(root.session.instancePhase).toBe(operation === 'normal' ? 'alive' : 'disposed');
+    } finally {
+      armed = false;
+      await Promise.all(transitions);
+      for (const part of [...parts].reverse()) await part.session.dispose();
+    }
+  }
+);
+
+it('Toggle Group drains an accepted nested notification before a Context callback error escapes', async () => {
+  const { make, setActionCallback } = runtimeHarness();
+  const root = make(toggleGroupRoot);
+  const items = ['a', 'b'].map((value) => make(toggleGroupItem, root.target, { value }));
+  const failure = new Error('later Context observer failed');
+  let armed = false;
+  let nested: boolean | undefined;
+  const emitted: string[][] = [];
+  const observed: string[] = [];
+  const request = (value: string) => {
+    let accepted: boolean | undefined;
+    root.session.invokeInCallbackScope(() => {
+      accepted = root.exposes.requestToggle(value);
+    });
+    return accepted;
+  };
+  setActionCallback((name, payload) => {
+    if (name === 'valueChange') emitted.push([...payload.value]);
+  });
+  const observer = make(
+    definePrototype({
+      name: 'toggle-group-accepted-before-context-error-observer',
+      setup(def) {
+        def.context.subscribe(TOGGLE_GROUP_CONTEXT, (_run, next) => {
+          if (!armed || next.value.length !== 1) return;
+          observed.push(next.value[0]);
+          if (next.value[0] === 'a') nested = request('b');
+        });
+        def.context.subscribe(TOGGLE_GROUP_CONTEXT, (_run, next) => {
+          if (armed && next.value[0] === 'a') throw failure;
+        });
+      },
+    }),
+    root.target
+  );
+  const parts = [root, ...items, observer];
+  try {
+    for (const part of parts) await part.session.mount();
+    armed = true;
+    let caught: unknown;
+    try {
+      request('a');
+    } catch (error) {
+      caught = error;
+    }
+    expect(caught).toBe(failure);
+    expect(nested).toBe(true);
+    expect(observed).toEqual(['a', 'b']);
+    expect(root.exposes.getValue()).toEqual(['b']);
+    expect(emitted).toEqual([['b']]);
+  } finally {
+    armed = false;
+    for (const part of [...parts].reverse()) await part.session.dispose();
+  }
+});
