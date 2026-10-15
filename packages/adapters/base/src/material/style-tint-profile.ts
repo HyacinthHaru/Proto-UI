@@ -35,8 +35,10 @@ const helpers = `
 `;
 const mapping = `
           // Lighting is included before the bounded tint map, never added after it.
-          float styleTintDetail = clamp(dot(styleTintLinear(clamp(final.rgb, 0.0, 1.0)),
-                                            vec3(0.2126, 0.7152, 0.0722)), 0.0, 1.0);
+          // Keep source chroma and perceptual detail. Converting dark source
+          // RGB to one linear-light scalar collapses real detail at 8-bit output.
+          // Each channel stays in [0,1], so the same fallback luminance bound holds.
+          vec3 styleTintDetail = clamp(final.rgb, 0.0, 1.0);
           vec3 styleTintBase = styleTintLinear(u_tint.rgb);
           vec3 styleTintDark = styleTintBase * (0.68 + 0.32 * styleTintDetail);
           vec3 styleTintLight = mix(styleTintBase, vec3(1.0), 0.32 * styleTintDetail);

@@ -8,6 +8,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { isUnpaintedBootstrapBoxShadow as isUnpaintedComposedShadow } from './bootstrap-disabled-paint';
 import { observeLiquidToggleSnapshot } from './liquid-toggle-snapshot';
 import type { runLiquidToggleTintProbe } from './liquid-toggle-tint-probe';
+import { deadline } from '../../../../scripts/diagnose-select-click';
 import {
   attachLiquidToggleFailureDiagnostics,
   readLiquidToggleTriggerFacts,
@@ -555,6 +556,34 @@ describe.sequential('Liquid Toggle native input and self-optical material', () =
           observations.push({ disposed });
         } catch (error) {
           failure = String(error);
+          // Failure-only observation, not a retry or an extension of the functional
+          // deadline. The sampled state may have advanced since the original error.
+          try {
+            observations.push({
+              failurePreferenceSample: await deadline(
+                'post-failure-material-preferences',
+                () =>
+                  page.evaluate((runtime) => {
+                    const target = document.querySelector<HTMLElement>(
+                      `[data-toggle-host="${runtime}"] [data-demo-ref="regular"]`
+                    );
+                    return {
+                      sampledAfterFailure: true,
+                      wallTime: Date.now(),
+                      reduced: matchMedia('(prefers-reduced-motion: reduce)').matches,
+                      noPreference: matchMedia('(prefers-reduced-motion: no-preference)').matches,
+                      motion: target?.getAttribute('data-material-motion') ?? null,
+                      quality: target?.getAttribute('data-material-quality') ?? null,
+                      reason: target?.getAttribute('data-material-reason') ?? null,
+                      provider: (window as any).liquidToggleFixture?.metrics(),
+                    };
+                  }, runtime),
+                1000
+              ),
+            });
+          } catch (diagnosticError) {
+            observations.push({ failurePreferenceSampleError: String(diagnosticError) });
+          }
           if (output)
             await page
               .screenshot({
@@ -649,6 +678,18 @@ describe.sequential('Liquid Toggle native input and self-optical material', () =
         );
 
       expect(report.records).toHaveLength(9 * 2 * 4);
+      expect(report.isolatedRenderAttempts).toBe(9 * 2 * 4 * 3);
+      expect(report.interleavedRenderAttempts).toBe(9 * 2 * 4 * 2);
+      // One shared owner sees alternating neutral/tinted consumers, including
+      // static/contact transitions. No per-frame recompile or stale source reuse.
+      expect(report.programMetrics.sharedInterleaved.programBuilds).toBe(4);
+      expect(report.programMetrics.neutral.programBuilds).toBe(2);
+      for (const metrics of Object.values(report.programMetrics)) {
+        expect(metrics.sourcePreparations).toBe(9);
+        expect(metrics.sourceUploads).toBe(9);
+      }
+      expect(report.programMetrics.tinted.programBuilds).toBe(2);
+      expect(report.programMetrics.zeroRefraction.programBuilds).toBe(2);
       expect(report.gpu?.version).toMatch(/WebGL/);
       for (const row of report.records) {
         const label = `${row.sourceKind}/${row.theme}/${row.phase}`;
@@ -659,7 +700,7 @@ describe.sequential('Liquid Toggle native input and self-optical material', () =
         expect(row.expectedTintProfile, label).toBe(
           row.phase === 'static' ? 'pui-regular-style-tint-1' : 'pui-regular-style-tint-contact-1'
         );
-        for (const name of ['tinted', 'zeroRefraction'] as const) {
+        for (const name of ['tinted', 'zeroRefraction', 'interleavedTint'] as const) {
           const rendered = row.controls[name];
           expect(rendered.status, `${label}/${name}`).toBe('rendered');
           if (rendered.status !== 'rendered')
@@ -672,6 +713,27 @@ describe.sequential('Liquid Toggle native input and self-optical material', () =
           expect(rendered.statistics.blueDominantFraction, label).toBe(1);
           expect(rendered.decodedSha256, label).toMatch(/^[a-f\d]{64}$/);
         }
+        const sharedNeutral = row.controls.interleavedNeutral;
+        const isolatedNeutral = row.controls.neutral;
+        expect(sharedNeutral.status, label).toBe(isolatedNeutral.status);
+        if (sharedNeutral.status === 'rendered' && isolatedNeutral.status === 'rendered') {
+          expect(sharedNeutral.decodedSha256, label).toBe(isolatedNeutral.decodedSha256);
+          expect(row.sharedNeutralVsIsolated?.validPixels, label).toBeGreaterThan(0);
+          expect(row.sharedNeutralVsIsolated?.changedPixels, label).toBe(0);
+          expect(row.sharedNeutralVsIsolated?.changedAlphaPixels, label).toBe(0);
+        } else if (sharedNeutral.status === 'rejected' && isolatedNeutral.status === 'rejected') {
+          expect(sharedNeutral.reason, label).toBe(isolatedNeutral.reason);
+          expect(row.sharedNeutralVsIsolated, label).toBeNull();
+        }
+        const shared = row.controls.interleavedTint;
+        const isolated = row.controls.tinted;
+        if (shared.status !== 'rendered' || isolated.status !== 'rendered')
+          throw new Error(`${label}: shared tint render unavailable`);
+        expect(shared.decodedSha256, label).toBe(isolated.decodedSha256);
+        expect(row.sharedTintVsIsolated?.validPixels, label).toBeGreaterThan(0);
+        expect(row.sharedTintVsIsolated?.changedPixels, label).toBe(0);
+        expect(row.sharedTintVsIsolated?.changedAlphaPixels, label).toBe(0);
+        expect(row.sharedTintVsIsolated?.absoluteRgbDifference, label).toBe(0);
         if (row.sourceKind.startsWith('dark-detail')) {
           // Same fill and foreground as tint, with a deliberately dark detailed
           // source so the original neutral guard can truthfully admit both.

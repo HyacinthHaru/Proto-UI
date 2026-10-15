@@ -34,12 +34,18 @@ export function createWebOpticalProgram(
   canvas: HTMLCanvasElement,
   diagnostic: 'zero-refraction' | 'zero-deformation' | 'zero-aberration' | null = null
 ) {
+  type PipelineKey = `${'static' | 'contact'}:${'neutral' | 'style-tint'}`;
+  type Pipeline = {
+    program: WebGLProgram;
+    locations: Record<string, WebGLUniformLocation | null>;
+    attribute: number;
+  };
   let gl: WebGLRenderingContext | null = null,
-    pipeline: WebGLProgram | null = null,
     buffer: WebGLBuffer | null = null;
-  let pipelineKey = '';
-  let textures: WebGLTexture[] = [],
-    locations: Record<string, WebGLUniformLocation | null> = {};
+  // At most four finite first-party profiles share the document's one context.
+  // Switching consumers must not recompile shaders or discard the same source.
+  const pipelines = new Map<PipelineKey, Pipeline>();
+  let textures: WebGLTexture[] = [];
   const metrics = {
     renders: 0,
     programBuilds: 0,
@@ -58,17 +64,19 @@ export function createWebOpticalProgram(
     if (!gl) return;
     for (const texture of textures) gl.deleteTexture(texture);
     if (buffer) gl.deleteBuffer(buffer);
-    if (pipeline) gl.deleteProgram(pipeline);
+    for (const pipeline of pipelines.values()) gl.deleteProgram(pipeline.program);
+    pipelines.clear();
     textures = [];
     buffer = null;
-    pipeline = null;
-    locations = {};
   }
-  function initialize(contact: boolean, tinted: boolean) {
-    const key = `${contact ? 'contact' : 'static'}:${tinted ? 'style-tint' : 'neutral'}`;
-    if (pipeline && pipelineKey !== key) clear();
-    if (pipeline) return;
-    pipelineKey = key;
+  function initialize(contact: boolean, tinted: boolean): Pipeline {
+    const key: PipelineKey = `${contact ? 'contact' : 'static'}:${tinted ? 'style-tint' : 'neutral'}`;
+    if (gl?.isContextLost()) {
+      clear();
+      throw new Error('webgl-unavailable');
+    }
+    const existing = pipelines.get(key);
+    if (existing) return existing;
     metrics.programBuilds++;
     gl ??= canvas.getContext('webgl', {
       alpha: true,
@@ -79,6 +87,7 @@ export function createWebOpticalProgram(
     if (!gl || gl.isContextLost()) throw new Error('webgl-unavailable');
     const g = gl,
       shaders: WebGLShader[] = [];
+    let program: WebGLProgram | null = null;
     try {
       for (const [kind, code] of [
         [g.VERTEX_SHADER, vertex],
@@ -100,38 +109,54 @@ export function createWebOpticalProgram(
         g.compileShader(shader);
         if (!g.getShaderParameter(shader, g.COMPILE_STATUS)) throw new Error('shader-compilation');
       }
-      pipeline = g.createProgram();
-      if (!pipeline) throw new Error('program-allocation');
-      for (const shader of shaders) g.attachShader(pipeline, shader);
-      g.linkProgram(pipeline);
-      if (!g.getProgramParameter(pipeline, g.LINK_STATUS)) throw new Error('program-link');
-      g.useProgram(pipeline);
-      locations = Object.fromEntries(
+      program = g.createProgram();
+      if (!program) throw new Error('program-allocation');
+      for (const shader of shaders) g.attachShader(program, shader);
+      g.linkProgram(program);
+      if (!g.getProgramParameter(program, g.LINK_STATUS)) throw new Error('program-link');
+      const locations = Object.fromEntries(
         [...uniformNames, 'u_contactShape', ...(tinted ? ['u_styleTintLightForeground'] : [])].map(
-          (name) => [name, g.getUniformLocation(pipeline!, name)]
+          (name) => [name, g.getUniformLocation(program!, name)]
         )
       );
-      buffer = g.createBuffer();
-      if (!buffer) throw new Error('buffer-allocation');
-      g.bindBuffer(g.ARRAY_BUFFER, buffer);
-      g.bufferData(g.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), g.STATIC_DRAW);
-      const attribute = g.getAttribLocation(pipeline, 'a_position');
-      if (attribute < 0) throw new Error('position-attribute');
-      g.enableVertexAttribArray(attribute);
-      g.vertexAttribPointer(attribute, 2, g.FLOAT, false, 0, 0);
-      for (let i = 0; i < 3; i++) {
-        const texture = g.createTexture();
-        if (!texture) throw new Error('texture-allocation');
-        textures.push(texture);
-        g.activeTexture(g.TEXTURE0 + i);
-        g.bindTexture(g.TEXTURE_2D, texture);
-        g.texParameteri(g.TEXTURE_2D, g.TEXTURE_MIN_FILTER, g.LINEAR);
-        g.texParameteri(g.TEXTURE_2D, g.TEXTURE_MAG_FILTER, g.LINEAR);
-        g.texParameteri(g.TEXTURE_2D, g.TEXTURE_WRAP_S, g.CLAMP_TO_EDGE);
-        g.texParameteri(g.TEXTURE_2D, g.TEXTURE_WRAP_T, g.CLAMP_TO_EDGE);
-        g.texImage2D(g.TEXTURE_2D, 0, g.RGBA, 1, 1, 0, g.RGBA, g.UNSIGNED_BYTE, new Uint8Array(4));
+      if (!buffer) {
+        buffer = g.createBuffer();
+        if (!buffer) throw new Error('buffer-allocation');
+        g.bindBuffer(g.ARRAY_BUFFER, buffer);
+        g.bufferData(g.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), g.STATIC_DRAW);
       }
+      const attribute = g.getAttribLocation(program, 'a_position');
+      if (attribute < 0) throw new Error('position-attribute');
+      // These texture bindings/source bytes are shared across programs, while
+      // every program keeps its own uniform locations and sampler assignments.
+      if (textures.length === 0)
+        for (let i = 0; i < 3; i++) {
+          const texture = g.createTexture();
+          if (!texture) throw new Error('texture-allocation');
+          textures.push(texture);
+          g.activeTexture(g.TEXTURE0 + i);
+          g.bindTexture(g.TEXTURE_2D, texture);
+          g.texParameteri(g.TEXTURE_2D, g.TEXTURE_MIN_FILTER, g.LINEAR);
+          g.texParameteri(g.TEXTURE_2D, g.TEXTURE_MAG_FILTER, g.LINEAR);
+          g.texParameteri(g.TEXTURE_2D, g.TEXTURE_WRAP_S, g.CLAMP_TO_EDGE);
+          g.texParameteri(g.TEXTURE_2D, g.TEXTURE_WRAP_T, g.CLAMP_TO_EDGE);
+          g.texImage2D(
+            g.TEXTURE_2D,
+            0,
+            g.RGBA,
+            1,
+            1,
+            0,
+            g.RGBA,
+            g.UNSIGNED_BYTE,
+            new Uint8Array(4)
+          );
+        }
+      const pipeline = { program, locations, attribute };
+      pipelines.set(key, pipeline);
+      return pipeline;
     } catch (error) {
+      if (program) g.deleteProgram(program);
       clear();
       throw error;
     } finally {
@@ -206,12 +231,16 @@ export function createWebOpticalProgram(
       const strength = contact ? clamp(contact.strength, 0, 1) : pressed ? 1 : 0;
       const blend = (rest: number, held: number) =>
         strength === 1 ? held : rest + (held - rest) * strength;
-      initialize(!!contact, !!frame.tint);
-      const g = gl!;
+      const pipeline = initialize(!!contact, !!frame.tint),
+        { locations } = pipeline,
+        g = gl!;
       if (canvas.width !== width) canvas.width = width;
       if (canvas.height !== height) canvas.height = height;
       g.viewport(0, 0, width, height);
-      g.useProgram(pipeline);
+      g.useProgram(pipeline.program);
+      g.bindBuffer(g.ARRAY_BUFFER, buffer);
+      g.enableVertexAttribArray(pipeline.attribute);
+      g.vertexAttribPointer(pipeline.attribute, 2, g.FLOAT, false, 0, 0);
       g.activeTexture(g.TEXTURE0);
       g.bindTexture(g.TEXTURE_2D, textures[0]);
       g.pixelStorei(g.UNPACK_ALIGNMENT, 1);
@@ -303,10 +332,16 @@ export function createWebOpticalProgram(
       g.drawArrays(g.TRIANGLE_STRIP, 0, 4);
       // readPixels is the required synchronization point; a preceding finish
       // needlessly blocks the main thread a second time.
-      if (g.getError() !== g.NO_ERROR || g.isContextLost()) throw new Error('gpu-frame-failed');
+      if (g.getError() !== g.NO_ERROR || g.isContextLost()) {
+        clear();
+        throw new Error('gpu-frame-failed');
+      }
       const pixels = new Uint8Array(width * height * 4);
       g.readPixels(0, 0, width, height, g.RGBA, g.UNSIGNED_BYTE, pixels);
-      if (g.getError() !== g.NO_ERROR) throw new Error('gpu-readback-failed');
+      if (g.getError() !== g.NO_ERROR || g.isContextLost()) {
+        clear();
+        throw new Error('gpu-readback-failed');
+      }
       let opaqueSamples = 0;
       for (let at = 0; at < pixels.length; at += 4) {
         const alpha = pixels[at + 3];

@@ -26,7 +26,9 @@ const SOURCE_KINDS = [
 const PHASES = ['static', 'rest', 'pressed', 'release'] as const;
 type SourceKind = (typeof SOURCE_KINDS)[number];
 const CONTROL_NAMES = ['neutral', 'tinted', 'zeroRefraction'] as const;
-type ControlName = (typeof CONTROL_NAMES)[number];
+const PROGRAM_NAMES = [...CONTROL_NAMES, 'sharedInterleaved'] as const;
+type ProgramName = (typeof PROGRAM_NAMES)[number];
+type ControlName = (typeof CONTROL_NAMES)[number] | 'interleavedNeutral' | 'interleavedTint';
 
 function rgba(hex: string): OpaqueRgba {
   const channel = (at: number) => parseInt(hex.slice(at, at + 2), 16) / 255;
@@ -186,6 +188,8 @@ export type LiquidToggleTintProbeRecord = {
   foreground: OpaqueRgba;
   expectedTintProfile: string;
   controls: Record<ControlName, RenderedControl | RejectedControl>;
+  sharedNeutralVsIsolated: ReturnType<typeof difference> | null;
+  sharedTintVsIsolated: ReturnType<typeof difference> | null;
   neutralVsTint: ReturnType<typeof difference> | null;
   tintVsZeroRefraction: ReturnType<typeof difference> | null;
   invertedSourceVsOriginal: ReturnType<typeof difference> | null;
@@ -199,7 +203,7 @@ export async function runLiquidToggleTintProbe(host: HTMLElement) {
   sourceCanvas.setAttribute('aria-label', 'Fixed owned diagnostic source');
   host.append(sourceCanvas);
   const programs = Object.fromEntries(
-    CONTROL_NAMES.map((name) => {
+    PROGRAM_NAMES.map((name) => {
       const figure = document.createElement('figure'),
         caption = document.createElement('figcaption'),
         canvas = document.createElement('canvas');
@@ -219,7 +223,7 @@ export async function runLiquidToggleTintProbe(host: HTMLElement) {
       ];
     })
   ) as Record<
-    ControlName,
+    ProgramName,
     { canvas: HTMLCanvasElement; program: ReturnType<typeof createWebOpticalProgram> }
   >;
   host.scrollIntoView({ block: 'start' });
@@ -282,10 +286,20 @@ export async function runLiquidToggleTintProbe(host: HTMLElement) {
           const frameSignature = JSON.stringify({ ...frame, source: sourceSha256 });
           const controls = {} as LiquidToggleTintProbeRecord['controls'];
           const decoded: Partial<Record<ControlName, Decoded>> = {};
-          for (const name of CONTROL_NAMES) {
+          // The document pool shares a program across neutral and tinted controls.
+          // Exercise that interleaving too; isolated programs alone hid recompile churn.
+          for (const name of [...CONTROL_NAMES, 'interleavedNeutral', 'interleavedTint'] as const) {
             try {
               const { tint: _tint, ...neutralFrame } = frame;
-              const uri = programs[name].program.render(name === 'neutral' ? neutralFrame : frame);
+              const program =
+                programs[
+                  name === 'interleavedTint' || name === 'interleavedNeutral'
+                    ? 'sharedInterleaved'
+                    : name
+                ].program;
+              const uri = program.render(
+                name === 'neutral' || name === 'interleavedNeutral' ? neutralFrame : frame
+              );
               const image = await decode(uri);
               decoded[name] = image;
               controls[name] = {
@@ -326,6 +340,14 @@ export async function runLiquidToggleTintProbe(host: HTMLElement) {
             expectedTintProfile:
               phase === 'static' ? 'pui-regular-style-tint-1' : 'pui-regular-style-tint-contact-1',
             controls,
+            sharedNeutralVsIsolated:
+              decoded.interleavedNeutral && decoded.neutral
+                ? difference(decoded.interleavedNeutral, decoded.neutral, frame.geometry)
+                : null,
+            sharedTintVsIsolated:
+              decoded.interleavedTint && decoded.tinted
+                ? difference(decoded.interleavedTint, decoded.tinted, frame.geometry)
+                : null,
             neutralVsTint:
               decoded.neutral && decoded.tinted
                 ? difference(decoded.neutral, decoded.tinted, frame.geometry)
@@ -351,12 +373,16 @@ export async function runLiquidToggleTintProbe(host: HTMLElement) {
       };
     return {
       scope: 'algorithm-only direct GPU controls; no provider admission or four-runtime acceptance',
+      isolatedRenderAttempts: records.length * 3,
+      interleavedRenderAttempts: records.length * 2,
+      interleaving:
+        'interleavedNeutral and interleavedTint use one context/program owner, with identical inputs to the isolated neutral and tinted controls; finite static/contact profiles must compile once and share current source uploads',
       frozenInputs:
-        'same source object/revision/bytes, geometry, contact, fill, foreground and fixed shader time for each three-way comparison; only tint mode or zero-refraction diagnostic changes',
+        'same source object/revision/bytes, geometry, contact, fill, foreground and fixed shader time for each matched comparison; only tint mode or zero-refraction diagnostic changes',
       gpu,
       records,
       programMetrics: Object.fromEntries(
-        CONTROL_NAMES.map((name) => [name, programs[name].program.inspect()])
+        PROGRAM_NAMES.map((name) => [name, programs[name].program.inspect()])
       ),
     };
   } finally {

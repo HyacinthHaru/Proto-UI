@@ -8,18 +8,20 @@ import { fragment } from '../src/material/liquidgl-kernel.generated';
 import { contactFragment } from '../src/material/contact-profile';
 import { colorContrast, type OpaqueRgba } from '../src/material/style';
 
-// Independent scalar oracle for the finite shader contract; these tests prove
+// Independent numeric oracle for the finite shader contract; these tests prove
 // numerical bounds, not GPU execution or exact native shader output.
 const linear = (x: number) => (x <= 0.04045 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4);
 const srgb = (x: number) => (x <= 0.0031308 ? x * 12.92 : 1.055 * x ** (1 / 2.4) - 0.055);
 function oracle(fill: OpaqueRgba, light: boolean, sample: number[]): OpaqueRgba {
-  const detail = sample
-    .map((x) => linear(Math.max(0, Math.min(1, x))))
-    .reduce((a, x, i) => a + x * [0.2126, 0.7152, 0.0722][i], 0);
+  const detail = sample.map((x) => Math.max(0, Math.min(1, x)));
   const output = fill
     .slice(0, 3)
-    .map((x) =>
-      srgb(light ? linear(x) * (0.68 + 0.32 * detail) : linear(x) + (1 - linear(x)) * 0.32 * detail)
+    .map((x, i) =>
+      srgb(
+        light
+          ? linear(x) * (0.68 + 0.32 * detail[i])
+          : linear(x) + (1 - linear(x)) * 0.32 * detail[i]
+      )
     );
   return [output[0], output[1], output[2], 1];
 }
@@ -60,11 +62,37 @@ describe('bounded style-fill profile: independent numeric oracle, no GPU claim',
           expect(output.every(Number.isFinite)).toBe(true);
           expect(output.every((x) => x >= 0 && x <= 1 + 1e-12)).toBe(true);
           expect(colorContrast(output, foreground)).toBeGreaterThanOrEqual(baseline - 1e-9);
+          for (let channel = 0; channel < 3; channel++)
+            if (light) expect(output[channel]).toBeLessThanOrEqual(fill[channel] + 1e-12);
+            else expect(output[channel]).toBeGreaterThanOrEqual(fill[channel] - 1e-12);
         }
       expect(count).toBeGreaterThan(0);
       expect(oracle(fill, light, [0, 0, 0])).not.toEqual(oracle(fill, light, [1, 1, 1]));
     }
   );
+  it('retains source chroma that an equal-luminance scalar would erase at 8-bit output', () => {
+    const fill = pairs[1][0];
+    const neutral = [0.2, 0.2, 0.2];
+    const chromatic = [
+      0.2,
+      srgb((linear(0.2) * (0.7152 + 0.0722) - linear(0.35) * 0.0722) / 0.7152),
+      0.35,
+    ];
+    const lum = (rgb: number[]) =>
+      rgb.reduce((sum, c, i) => sum + linear(c) * [0.2126, 0.7152, 0.0722][i], 0);
+    expect(lum(chromatic)).toBeCloseTo(lum(neutral), 12);
+    const quantized = (rgb: number[]) =>
+      oracle(fill, true, rgb)
+        .slice(0, 3)
+        .map((c) => Math.round(c * 255));
+    expect(quantized(chromatic)).not.toEqual(quantized(neutral));
+    // The retired scalar loses this actual source distinction entirely.
+    const legacy = (rgb: number[]) =>
+      oracle(fill, true, [lum(rgb), lum(rgb), lum(rgb)])
+        .slice(0, 3)
+        .map((c) => Math.round(c * 255));
+    expect(legacy(chromatic)).toEqual(legacy(neutral));
+  });
   it('refuses unreadable or nonopaque palette pairs before selecting a profile', () => {
     for (const [fill, fg] of [
       [
@@ -86,14 +114,16 @@ describe('bounded style-fill profile: independent numeric oracle, no GPU claim',
   });
   it('maps all lighting before contrast bounding and preserves the source refraction code', () => {
     for (const profile of [styleTintFragment, styleTintContactFragment]) {
-      expect(profile.indexOf('float styleTintDetail')).toBeGreaterThan(
+      expect(profile.indexOf('vec3 styleTintDetail')).toBeGreaterThan(
         profile.indexOf('if (u_specular)')
       );
-      expect(profile.indexOf('float styleTintDetail')).toBeLessThan(
+      expect(profile.indexOf('vec3 styleTintDetail')).toBeLessThan(
         profile.lastIndexOf('if (u_revealType == 1)')
       );
       expect(profile).toContain('refracted = mapped + offset - tiltOffset');
       expect(profile).toContain('0.68 + 0.32 * styleTintDetail');
+      expect(profile).toContain('vec3 styleTintDetail = clamp(final.rgb, 0.0, 1.0)');
+      expect(profile).not.toContain('clamp(dot(styleTintLinear');
       expect(profile).not.toContain(
         'final.rgb = mix(final.rgb, final.rgb * u_tint.rgb, u_tint.a);'
       );

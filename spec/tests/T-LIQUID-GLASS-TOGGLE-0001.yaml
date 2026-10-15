@@ -61,6 +61,7 @@ implementations:
     notes:
       - Exact-head b2a90f89f4b75a8afcb420c82d9588f7317e7c63 run 38633799501 executed 11 cases with one passing and ten failing. Eight runtime/theme cases reached committed inactive optics before disabled fallback failed; both public locale cases stalled on the shared header Select click. This is retained historical failure evidence, not the current tint result.
       - Baseline 04a2191 passed all eleven original Toggle scenarios in run 38654570729 job 116161164963; baseline 347edd6 passed all eleven again in run 38656454140 job 116167274475. Those exact-head results predate selected tint and do not satisfy the revised tint contract.
+      - Exact-head e5f3312b4d9b3fd364b4c4a63b7f44c740d84f38 run 38660687376 passed unknown preferences and the isolated algorithm probe but failed ten other cases. Four dark cases lost optical detail, four light cases failed the existing static preference deadline, and both public cases exhausted the unchanged four coherent snapshot attempts. The 72 tinted algorithm records had fully opaque content and minimum contrast 5.0229, but do not override the failed integration journeys.
       - The new tint candidate must run the same eleven complete scenarios plus frozen source algorithm controls naturally in exact-head CI. Source guards and opaque-fallback admission remain unchanged; local CPU or mocked GPU results are not browser acceptance.
 exercises:
   prototypes: [P-LIQUID-GLASS-TOGGLE]

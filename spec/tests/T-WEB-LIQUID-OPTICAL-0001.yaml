@@ -41,8 +41,17 @@ cases:
     expectation: bounded-first-party-tint-with-nonempty-source-bound-pixels-and-negative-controls
     notes:
       - Neutral shader literals and no-tint behavior remain unchanged. Unsupported variant or profile uses same-state fallback. Tint identity participates in pipeline, paint leases and diagnostic profile; old seed profiles reject tint.
-      - Scalar oracle and mocked ABI are not GPU evidence. Fixed source revision, geometry and motion must distinguish tinted optical pixels from neutral and zero-refraction controls without mistaking opaque overlay or empty samples for success.
+      - The finite shared-context pipeline cache must keep program-specific uniforms and attributes, current source uploads, bounded resources and complete cleanup. Interleaved neutral/tint GPU output must match independent controls without per-frame recompilation.
+      - Numerical oracle and mocked ABI are not GPU evidence. Fixed source revision, geometry and motion must distinguish tinted optical pixels from neutral and zero-refraction controls without mistaking opaque overlay or empty samples for success.
 implementations:
+  - id: web-optical-preferences-sequence
+    kind: module-test
+    status: passing
+    path: packages/adapters/base/test/web-material-preferences-sequence.test.ts
+    required: true
+    consumesCases: [T-WEB-LIQUID-OPTICAL-0001-CASE-VIEW]
+    notes:
+      - Real preference resolver with synthetic MediaQueryList delivery and mocked GPU; current preferences reject late held decode across source/material transitions. This does not prove browser event delivery latency.
   - id: web-optical-style-tint
     kind: module-test
     status: passing
@@ -50,7 +59,7 @@ implementations:
     required: true
     consumesCases: [T-WEB-LIQUID-OPTICAL-0001-CASE-TINT]
     notes:
-      - Independent scalar oracle and shader source ordering only; real GPU evidence remains pending exact-head CI.
+      - Independent numerical oracle and shader source ordering only; real GPU evidence remains pending exact-head CI.
   - id: web-optical-toggle-tint-browser
     kind: runtime-test
     status: planned
@@ -102,6 +111,9 @@ sources:
   - path: packages/adapters/base/src/material/program.ts
   - path: scripts/build/generate-web-material-kernel.mjs
 revisions:
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Retain contrast and optical thresholds while adding shared-profile interleaving, chromatic detail and live preference regressions after exact-head tint failures.
   - version: 0.3.0-alpha.1
     change: revised
     summary: Add opt-in style-fill profile bounds, ownership and fixed-source optical tint controls without changing neutral shader semantics.
