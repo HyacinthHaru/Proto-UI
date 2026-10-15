@@ -5,6 +5,10 @@ status: draft
 since: 0.2.0-rc.0
 summary: Covers collection snapshots, menuitem semantics, active navigation, select signaling, commit-close policy, disabled behavior, and absence of persistent selection.
 cases:
+  - id: T-BASE-DROPDOWN-MENU-ITEM-0001-CASE-TRANSIENT-CLEANUP
+    title: Cancellation and view withdrawal clear transient state while preserving semantic owner facts
+    covers: [P-BASE-DROPDOWN-MENU-ITEM-TRANSIENT-CLEANUP]
+    expectation: cancellation-and-unmount-clear-hovered-and-pressed-without-activation-or-semantic-state-change
   - id: T-BASE-DROPDOWN-MENU-ITEM-0001-CASE-COLLECTION-A11Y
     title: Item publishes ordered collection and accessible menu-action facts
     covers:
@@ -27,6 +31,16 @@ cases:
     covers: [P-BASE-DROPDOWN-MENU-ITEM-NO-SELECTION]
     expectation: dropdown-item-value-and-active-never-project-selected-or-checked
 implementations:
+  - id: prototypes-base-dropdown-menu-item-transient-cleanup
+    kind: module-test
+    status: passing
+    path: packages/prototypes/base/test/command-cancel-lifetime.test.ts
+    required: true
+    consumesCases: [T-BASE-DROPDOWN-MENU-ITEM-0001-CASE-TRANSIENT-CLEANUP]
+    exercises: [P-BASE-DROPDOWN-MENU-ITEM]
+    notes:
+      - Real Runtime sessions cover controlled/uncontrolled owner facts, press.cancel, pointer.cancel, native-source blur through the existing Web router, and unmount/remount without prior cancellation.
+      - Happy DOM synthetic native-event-source tests are not browser, visual, assistive-technology, or stable-admission evidence.
   - id: prototypes-base-dropdown-item-contract
     kind: module-test
     status: passing
@@ -56,4 +70,7 @@ revisions:
   - version: 0.2.0-rc.0
     change: introduced
     summary: Added Item collection, a11y, active, select, close, disabled, and no-selection coverage.
+  - version: 0.3.0-alpha.1
+    change: clarified
+    summary: Map cancellation and uncancelled view-withdrawal regression evidence for Base transient cleanup.
 tags: [prototype, base, dropdown-menu, item, a11y, test]

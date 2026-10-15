@@ -5,6 +5,10 @@ status: draft
 since: 0.2.0-rc.0
 summary: Covers independent command state, combobox relationships, pointer and keyboard entry, disabled gating, and absence of selection ownership.
 cases:
+  - id: T-BASE-SELECT-TRIGGER-0001-CASE-TRANSIENT-CLEANUP
+    title: Cancellation and view withdrawal clear transient state while preserving semantic owner facts
+    covers: [P-BASE-SELECT-TRIGGER-TRANSIENT-CLEANUP]
+    expectation: cancellation-and-unmount-clear-hovered-and-pressed-without-activation-or-semantic-state-change
   - id: T-BASE-SELECT-TRIGGER-0001-CASE-COLD-TAB
     title: Trigger owns early cold Tab with exactly one controlled close request
     covers: [P-BASE-SELECT-TRIGGER-COLD-TAB]
@@ -27,6 +31,16 @@ cases:
     covers: [P-BASE-SELECT-TRIGGER-DISABLED]
     expectation: disabled-select-trigger-never-opens-or-focuses
 implementations:
+  - id: prototypes-base-select-trigger-transient-cleanup
+    kind: module-test
+    status: passing
+    path: packages/prototypes/base/test/command-cancel-lifetime.test.ts
+    required: true
+    consumesCases: [T-BASE-SELECT-TRIGGER-0001-CASE-TRANSIENT-CLEANUP]
+    exercises: [P-BASE-SELECT-TRIGGER]
+    notes:
+      - Real Runtime sessions cover controlled/uncontrolled owner facts, press.cancel, pointer.cancel, native-source blur through the existing Web router, and unmount/remount without prior cancellation.
+      - Happy DOM synthetic native-event-source tests are not browser, visual, assistive-technology, or stable-admission evidence.
   - id: shadcn-select-trigger-cold-tab
     kind: module-test
     status: passing
@@ -61,4 +75,7 @@ revisions:
   - version: 0.2.0-rc.0
     change: introduced
     summary: Added Trigger command, combobox a11y, keyboard, disabled, and selection-boundary coverage.
+  - version: 0.3.0-alpha.1
+    change: clarified
+    summary: Map cancellation and uncancelled view-withdrawal regression evidence for Base transient cleanup.
 tags: [prototype, base, select, trigger, keyboard, a11y, test]

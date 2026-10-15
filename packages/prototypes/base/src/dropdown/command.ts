@@ -74,6 +74,7 @@ export function setupDropdownCommand(
   });
   def.event.on('pointer.leave', () => clearTransient(`reason: ${reasonPrefix} pointer.leave`));
   def.event.on('pointer.cancel', () => clearTransient(`reason: ${reasonPrefix} pointer.cancel`));
+  def.event.on('press.cancel', () => clearTransient(`reason: ${reasonPrefix} press.cancel`));
   def.event.on('pointer.down', () => {
     if (!disabled.get()) pressed.set(true, `reason: ${reasonPrefix} pointer.down`);
   });
@@ -81,6 +82,9 @@ export function setupDropdownCommand(
   def.event.on('press.commit', () => {
     pressed.set(false, `reason: ${reasonPrefix} press.commit`);
   });
+  def.lifecycle.onUnmounted(() =>
+    clearTransient(`reason: ${reasonPrefix} view unmounted => reset interaction`)
+  );
 
   return {
     disabled,

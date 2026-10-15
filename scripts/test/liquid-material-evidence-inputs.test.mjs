@@ -106,3 +106,32 @@ test('Liquid portal capability controls execute alongside unchanged native optic
     );
   }
 });
+
+for (const file of [
+  'packages/prototypes/liquid-glass/src/interactive-surface.ts',
+  'packages/prototypes/liquid-glass/test/interactive-surface.test.ts',
+  'apps/www/src/pages/en/test/liquid-glass-hover.astro',
+  'apps/www/src/content/docs/zh-cn/demo-liquid-glass-hover.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/liquid-hover-fixture.ts',
+  'apps/www/src/content/docs/zh-cn/liquid-hover-fixture.test.ts',
+]) {
+  test(`Liquid command interaction evidence covers source input ${file}`, () => {
+    assert.ok(readFileSync(new URL(file, root), 'utf8').length > 0);
+    assert.ok(covered(file), `Missing hover evidence input: ${file}`);
+  });
+}
+test('Liquid command interaction keeps original optical journeys and adds a separate native matrix', () => {
+  const steps = workflow.jobs['browser-evidence'].steps;
+  for (const suite of [
+    'packages/prototypes/liquid-glass/test/interactive-surface.test.ts',
+    'apps/www/src/content/docs/zh-cn/liquid-hover-fixture.test.ts',
+    'apps/www/src/content/docs/zh-cn/demo-liquid-glass-material.browser.test.ts',
+    'apps/www/src/content/docs/zh-cn/demo-liquid-glass-portal.browser.test.ts',
+    'apps/www/src/content/docs/zh-cn/demo-liquid-glass-toggle.browser.test.ts',
+    'apps/www/src/content/docs/zh-cn/demo-liquid-glass-hover.browser.test.ts',
+  ])
+    assert.ok(
+      steps.some((step) => step.run?.includes(suite)),
+      `Missing suite: ${suite}`
+    );
+});

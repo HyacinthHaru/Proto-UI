@@ -1,3 +1,9 @@
+import {
+  COMMAND_HOVER,
+  COMMAND_PRESS,
+  COMMAND_FOCUS,
+  COMMAND_DISABLED,
+} from '../interactive-surface';
 import { definePrototype, tw } from '@proto.ui/core';
 import { asCollapsibleTrigger } from '@proto.ui/prototypes-base/collapsible';
 import type {
@@ -27,11 +33,15 @@ const collapsibleTrigger = definePrototype<
     });
     for (const isPressed of [false, true]) {
       def.rule({
-        when: (w) => w.state(pressed).eq(isPressed),
+        when: (w) => w.all(w.state(pressed).eq(isPressed), w.state(disabled).eq(false)),
         intent: (i) =>
           i.feedback.material.use({
             intent: 'liquid-glass',
-            deformation: { kind: 'press', phase: isPressed ? 'pressed' : 'rest' },
+            deformation: {
+              kind: 'press',
+              phase: isPressed ? 'pressed' : 'rest',
+              contact: 'pointer',
+            },
           }),
       });
     }
@@ -43,25 +53,26 @@ const collapsibleTrigger = definePrototype<
       )
     );
     def.rule({
-      when: (w) => w.state(hovered).eq(true),
-      intent: (i) => i.feedback.style.use(tw('shadow-md')),
+      when: (w) =>
+        w.all(
+          w.state(hovered).eq(true),
+          w.state(pressed).eq(false),
+          w.state(disabled).eq(false),
+          w.state(focusVisible).eq(false)
+        ),
+      intent: (i) => i.feedback.style.use(tw(COMMAND_HOVER)),
     });
     def.rule({
-      when: (w) => w.state(pressed).eq(true),
-      intent: (i) => i.feedback.style.use(tw('shadow-xs')),
+      when: (w) => w.all(w.state(pressed).eq(true), w.state(disabled).eq(false)),
+      intent: (i) => i.feedback.style.use(tw(COMMAND_PRESS)),
     });
     def.rule({
       when: (w) => w.state(focusVisible).eq(true),
-      intent: (i) =>
-        i.feedback.style.use(
-          tw(
-            'outline-none forced-colors-focus-outline ring-2 ring-ring ring-offset-2 ring-offset-background'
-          )
-        ),
+      intent: (i) => i.feedback.style.use(tw(COMMAND_FOCUS)),
     });
     def.rule({
       when: (w) => w.state(disabled).eq(true),
-      intent: (i) => i.feedback.style.use(tw('opacity-50 pointer-events-none cursor-default')),
+      intent: (i) => i.feedback.style.use(tw(COMMAND_DISABLED)),
     });
   },
 });

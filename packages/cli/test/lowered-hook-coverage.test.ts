@@ -1666,6 +1666,71 @@ describe('lowered hook coverage', () => {
     }
   });
 
+  it.each(['asFormSubmit', 'asFormReset'])(
+    'lowers only the five declared command states for %s',
+    async (hook) => {
+      const expected = new Map([
+        ['disabled', 'data-[disabled]'],
+        ['hovered', 'data-[hovered]'],
+        ['focused', 'data-[focused]'],
+        ['focusVisible', 'data-[focus-visible]'],
+        ['pressed', 'data-[pressed]'],
+      ]);
+      expect(loweredHookStates(hook)).toEqual(expected);
+      expect(loweredHookStates(hook)?.has('pending')).toBe(false);
+      expect(loweredHookStates(hook)?.has('submitted')).toBe(false);
+      expect(loweredHookStates(hook)?.has('madeUpState')).toBe(false);
+
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-form-command-'));
+      try {
+        // Match the real family binding, including its optional-bag assertion.
+        const source = [
+          `const inherited = ${hook}();`,
+          'const state = inherited.stateHandles!;',
+          ...Array.from(expected.keys(), (state) => rule(`w.state(state.${state}).eq(true)`)),
+          rule(
+            'w.all(w.state(state.hovered).eq(true), w.state(state.pressed).eq(false), w.state(state.disabled).eq(false), w.state(state.focusVisible).eq(false))'
+          ),
+        ].join('\n');
+        await writeFile(path.join(dir, 'action.proto.ts'), source);
+        expect(scanRuleStateReads(source).unresolved).toEqual([]);
+        const tokens = await collectProtoStyleTokens(dir);
+        for (const variant of expected.values()) {
+          expect(tokens).toContain(`${variant}:bg-primary`);
+        }
+        expect(tokens).toContain(
+          'data-[hovered]:not-[data-disabled]:not-[data-focus-visible]:not-[data-pressed]:bg-primary'
+        );
+        expect(tokens).not.toContain('hover:bg-primary');
+        expect(tokens).not.toContain('active:bg-primary');
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    }
+  );
+
+  it('does not infer command states for unknown Form hooks or unknown state members', async () => {
+    expect(loweredHookStates('asUnknownFormAction')).toBeNull();
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-form-negative-'));
+    try {
+      await writeFile(
+        path.join(dir, 'unknown.proto.ts'),
+        [
+          'const unknown = asUnknownFormAction().stateHandles;',
+          'const submit = asFormSubmit().stateHandles;',
+          'const reset = asFormReset().stateHandles;',
+          rule('w.state(unknown.hovered).eq(true)'),
+          rule('w.state(submit.madeUpState).eq(true)'),
+          rule('w.state(reset.madeUpState).eq(true)'),
+        ].join('\n')
+      );
+      const tokens = (await collectProtoStyleTokens(dir)) as string[];
+      expect(tokens.filter((token) => token.includes(':'))).toEqual([]);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
   it('keeps Field required aliases bound to the declared fieldRequired state', async () => {
     const dir = await mkdtemp(path.join(tmpdir(), 'lowered-field-required-'));
     try {

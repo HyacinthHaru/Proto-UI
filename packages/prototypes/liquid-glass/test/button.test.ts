@@ -63,7 +63,8 @@ describe('liquid-glass Button draft projection', () => {
     root.dispatchEvent(new CustomEvent('host:focus'));
     expect(controller.getRuleStyleTokens()).toContain('ring-2');
     controller.applyRawProps({ disabled: true });
-    expect(controller.getRuleStyleTokens()).toContain('opacity-50');
+    expect(controller.getRuleStyleTokens()).not.toContain('opacity-50');
+    expect(controller.getRuleStyleTokens()).toContain('shadow-none');
     expect(controller.getRuleStyleTokens()).toContain('pointer-events-none');
     controller.applyRawProps({});
     expect(controller.getRuleStyleTokens()).not.toContain('opacity-50');

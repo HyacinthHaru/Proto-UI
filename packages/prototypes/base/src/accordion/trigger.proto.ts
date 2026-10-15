@@ -126,6 +126,7 @@ function setupAccordionTrigger(def: DefHandle<AccordionTriggerProps, AccordionTr
   def.event.on('pointer.up', () => pressed.set(false, 'reason: accordion release'));
   def.event.on('pointer.leave', clear);
   def.event.on('pointer.cancel', clear);
+  def.event.on('press.cancel', clear);
 }
 export const asAccordionTrigger = defineAsHook<
   AccordionTriggerProps,
