@@ -1,4 +1,4 @@
-import { definePrototype, tw } from '@proto.ui/core';
+import { definePrototype, tw, delay } from '@proto.ui/core';
 import { asToggle } from '@proto.ui/prototypes-base/toggle';
 import type { ToggleProjectionProps, ToggleExposes } from './types';
 
@@ -16,19 +16,18 @@ export default definePrototype<ToggleProjectionProps, ToggleExposes>({
     const { active, pressed, hovered, focusVisible, disabled } = state;
     def.feedback.style.use(
       tw(
-        'inline-flex shrink-0 items-center justify-center rounded-full border px-5 py-2 text-sm font-medium whitespace-nowrap select-none cursor-pointer shadow-sm bg-secondary text-secondary-foreground'
+        'inline-flex shrink-0 items-center justify-center gap-2 rounded-full border px-5 py-2 text-sm font-medium whitespace-nowrap select-none cursor-pointer shadow-sm bg-secondary text-secondary-foreground'
       )
     );
-    // Selection never changes border width or material geometry. Underline also
-    // distinguishes the persistent selection without relying on color or tint.
+    // Selection never changes border width or material geometry. A reserved
+    // decorative glyph below distinguishes selection without color or text decoration.
     def.rule({
       when: (w) => w.state(active).eq(false),
-      intent: (i) => i.feedback.style.use(tw('border-border no-underline')),
+      intent: (i) => i.feedback.style.use(tw('border-border')),
     });
     def.rule({
       when: (w) => w.state(active).eq(true),
-      intent: (i) =>
-        i.feedback.style.use(tw('bg-primary text-primary-foreground border-ring underline')),
+      intent: (i) => i.feedback.style.use(tw('bg-primary text-primary-foreground border-ring')),
     });
     def.rule({
       when: (w) =>
@@ -70,7 +69,7 @@ export default definePrototype<ToggleProjectionProps, ToggleExposes>({
       when: (w) => w.state(focusVisible).eq(true),
       intent: (i) =>
         i.feedback.style.use(
-          tw('outline-none ring-2 ring-ring ring-offset-2 ring-offset-background')
+          tw('forced-colors-focus-outline ring-2 ring-ring ring-offset-2 ring-offset-background')
         ),
     });
     def.rule({
@@ -79,5 +78,42 @@ export default definePrototype<ToggleProjectionProps, ToggleExposes>({
       // fill/foreground depend on the backdrop and fail shared-provider admission.
       intent: (i) => i.feedback.style.use(tw('pointer-events-none cursor-default shadow-none')),
     });
+    // The ordinary template owns only this decorative marker. Reserve its space
+    // in both states, preserving slotted content, naming and the Base root owner.
+    let renderTask: { cancel(): void } | null = null;
+    active.watch((run, event) => {
+      if (event.type !== 'next') return;
+      renderTask?.cancel();
+      renderTask = delay(0, () => {
+        renderTask = null;
+        run.update();
+      });
+    });
+    def.lifecycle.onUnmounted(() => {
+      renderTask?.cancel();
+      renderTask = null;
+    });
+    return (renderer) => [
+      renderer.slot(),
+      renderer.el(
+        'span',
+        { style: tw('pointer-events-none flex size-3 shrink-0 items-center justify-center') },
+        renderer.svg.root(
+          {
+            viewBox: '0 0 16 16',
+            width: '100%',
+            height: '100%',
+            'aria-hidden': 'true',
+            fill: 'none',
+            stroke: 'currentColor',
+            strokeWidth: 2,
+            strokeLinecap: 'round',
+            strokeLinejoin: 'round',
+            opacity: active.get() ? 1 : 0,
+          },
+          renderer.svg.path({ d: 'm13 4-7 8-3-3' })
+        )
+      ),
+    ];
   },
 });

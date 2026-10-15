@@ -23,8 +23,8 @@ import { renderThemeCss } from '../../../../../../packages/prototypes/liquid-gla
       <p>
         One Base Toggle projection through four Web runtimes. Inactive uses neutral regular
         material; active requests style-fill tint from its governed primary fill and foreground. The
-        persistent underline and fixed 1px selection border remain. Pointer pressing is a separate
-        transient state.
+        fixed-size decorative selection mark and fixed 1px border remain. The mark does not alter
+        accessible names or move content when selection changes. Pointer pressing is separate.
       </p>
       <p>
         The existing shared provider samples only the visible application-owned canvas. Source loss
@@ -41,6 +41,7 @@ import { renderThemeCss } from '../../../../../../packages/prototypes/liquid-gla
               <a href="#toggle-matrix" data-focus-start={runtime}>
                 Keyboard entry
               </a>
+              <span id={`toggle-icon-label-${runtime}`}>Toggle bold formatting</span>
               <div class="toggle-scene" data-toggle-host={runtime} />
               <output data-toggle-events={runtime}>0 activeChange requests</output>
               <p>No material provider:</p>
@@ -57,13 +58,16 @@ import { renderThemeCss } from '../../../../../../packages/prototypes/liquid-gla
           do not replace provider admission or the four real runtime journeys above.
         </p>
         <div id="toggle-tint-probe"></div>
+        <div id="toggle-detail-probe"></div>
       </section>
     </main>
     <script>
       import toggle from '@proto.ui/prototypes-liquid-glass/toggle';
+      import boldIcon from '../../../../../../packages/prototypes/lucide/src/icons/bold';
       import { createPreviewMaterialScene } from '../../../components/PrototypePreviewer/preview-material-scene';
       import { inspectWebOpticalResources } from '../../../../../../packages/adapters/base/src/material/program-pool';
       import { runLiquidToggleTintProbe } from '../../../content/docs/zh-cn/liquid-toggle-tint-probe';
+      import { runLiquidToggleDetailProbe } from '../../../content/docs/zh-cn/liquid-toggle-detail-probe';
       import { registerPrototype } from '../../../components/PrototypePreviewer/registry';
       import { renderDemo } from '../../../components/PrototypePreviewer/demo-renderer';
       import type {
@@ -77,6 +81,7 @@ import { renderThemeCss } from '../../../../../../packages/prototypes/liquid-gla
       if (new URLSearchParams(location.search).has('unknown'))
         Object.defineProperty(window, 'matchMedia', { value: undefined, configurable: true });
       registerPrototype('liquid-glass-toggle', toggle);
+      registerPrototype('liquid-toggle-bold-icon', boldIcon);
       // The same prototype under a fixture alias avoids Previewer automatic scene provisioning.
       // This is an ordinary Adapter with no registered material provider.
       registerPrototype('toggle-no-provider', toggle);
@@ -88,6 +93,8 @@ import { renderThemeCss } from '../../../../../../packages/prototypes/liquid-gla
         metrics: () => inspectWebOpticalResources(document),
         tintProbe: () =>
           runLiquidToggleTintProbe(document.querySelector<HTMLElement>('#toggle-tint-probe')!),
+        detailProbe: () =>
+          runLiquidToggleDetailProbe(document.querySelector<HTMLElement>('#toggle-detail-probe')!),
         pause(value: boolean) {
           for (const scene of scenes.values()) scene.pause(value);
         },
@@ -158,15 +165,44 @@ import { renderThemeCss } from '../../../../../../packages/prototypes/liquid-gla
                 {
                   kind: 'proto',
                   prototypeId: 'liquid-glass-toggle',
+                  ref: 'icon-only',
+                  children: [
+                    {
+                      kind: 'box',
+                      tag: 'span',
+                      attrs: { 'aria-hidden': 'true', 'data-liquid-toggle-icon-content': '' },
+                      children: [
+                        {
+                          kind: 'proto',
+                          prototypeId: 'liquid-toggle-bold-icon',
+                          props: { size: 16 },
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  kind: 'proto',
+                  prototypeId: 'liquid-glass-toggle',
                   ref: 'disabled',
                   props: { defaultActive: true, disabled: true },
                   children: ['Unavailable'],
                 },
               ],
             },
-            setup({ api }) {
+            setup({ api, refs }) {
               apis.set(runtime, api);
-              for (const ref of ['regular', 'initial-active', 'controlled', 'opaque', 'disabled'])
+              // Explicit host naming through the existing supported label relation;
+              // the decorative icon and check never supply or change this name.
+              refs['icon-only'].setAttribute('aria-labelledby', `toggle-icon-label-${runtime}`);
+              for (const ref of [
+                'regular',
+                'initial-active',
+                'controlled',
+                'opaque',
+                'disabled',
+                'icon-only',
+              ])
                 api.setProps(ref, {
                   onActiveChange: (detail: { active: boolean }) => {
                     const entries = requests.get(runtime)!;

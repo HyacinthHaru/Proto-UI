@@ -11,7 +11,7 @@ import DraftProjectionStyle from '@/components/DraftProjectionStyle.astro';
 
 这是 [Base Toggle](/zh-cn/ui-libraries/base/toggle/) 的 Proto 设计语言扩展草案，不是 Apple Toggle 复刻，也不声明 Apple 光学效果完全等价。
 
-未激活状态请求中性的 regular 玻璃，使用主题 secondary 填色与前景色。已激活状态从已治理的 primary 填色请求 regular style-fill tint，并使用 primary-foreground。下划线与已有的 1px ring 色边框继续提供非颜色、几何不变的选择反馈。指针短暂按压引起的形变与持久 active 状态分别处理。
+未激活状态请求中性的 regular 玻璃，使用主题 secondary 填色与前景色。已激活状态从已治理的 primary 填色请求 regular style-fill tint，并使用 primary-foreground。小型 currentColor 装饰勾选在两个状态中占据相同的预留空间，提供非颜色选择标记，不再默认添加下划线。已有的 1px 选择边框与外部几何保持不变。指针短暂按压引起的形变与持久 active 状态分别处理。
 
 用页面顶部选择器切换 Web Components、React、Vue 3、Vue 2。Bold 初始未激活，Italic 初始已激活；点击、Space 和 Enter 发出 active 变更请求。Unavailable 禁用后仍保留 active。状态文本只观察真实 Base activeChange 信号。
 
@@ -65,7 +65,7 @@ import DraftProjectionStyle from '@/components/DraftProjectionStyle.astro';
 
 ## 材质与可访问性
 
-共享 Web provider 只采样 Previewer 提供的可见应用 canvas，不捕获任意 DOM 或浏览器 compositor。来源缺失、撤销、被其他绘制遮挡，以及偏好未知、减弱透明度、增强对比度、强制颜色时，均保留不透明回退；减弱动态效果使用静态光学路径。禁用与 material="opaque" 同样回退。回退保留当前状态完整的不透明颜色对：active 使用 primary/primary-foreground，inactive 使用 secondary/secondary-foreground。不支持 tint profile 时同样回退，不静默改成中性玻璃。光学绘制不可用时，下划线仍能标识已激活状态；强制颜色仍由用户代理控制。
+共享 Web provider 只采样 Previewer 提供的可见应用 canvas，不捕获任意 DOM 或浏览器 compositor。来源缺失、撤销、被其他绘制遮挡，以及偏好未知、减弱透明度、增强对比度、强制颜色时，均保留不透明回退；减弱动态效果使用静态光学路径。禁用与 material="opaque" 同样回退。回退保留当前状态完整的不透明颜色对：active 使用 primary/primary-foreground，inactive 使用 secondary/secondary-foreground。不支持 tint profile 时同样回退，不静默改成中性玻璃。光学绘制不可用时，勾选仍能标识已激活状态；强制颜色仍由用户代理控制。
 
 控件之间需为扩展的光学绘制留出空间。此示例使用 32px 间距；更宽的控件可能需要更大间距。重叠绘制会被主动拒绝，不代表已支持堆叠玻璃。
 
@@ -73,4 +73,6 @@ import DraftProjectionStyle from '@/components/DraftProjectionStyle.astro';
 
 源码包仍为 private/unreleased。此 selected-tint 切片仍是草案，须补齐四个 Web Adapter 的 exact-head 浏览器证据。证据必须将解码后的内容区域像素与同一冻结 receipt、前景色配对，要求有效采样非空且对比度至少 4.5，并另做固定来源的 neutral/tinted 与 tinted/zero-refraction GPU 对照。透明 host 背景或变化的图像 hash 不构成光学对比度或 tint 证据。直接 program 诊断仅证明算法，不替代 provider 与公共页面验收。
 
-此切片覆盖文字标签 Toggle。icon-only 还需单独定义可见的非颜色选择标记，aria-pressed 本身不是该视觉标记。完整 Compiler、GPUI/Flutter/Qt、Apple 原生呈现与 group/morph 等价性仍不属于此交付。
+共享原型为文字与 icon-only 内容提供同一个非颜色勾选标记；icon-only 消费者仍须提供明确的可访问名称，测试页使用既有 aria-labelledby 关联。该标记是 Proto 的设计选择，不是 Apple 的强制符号，也不声称映射了 Apple 的 Differentiate Without Color 设置。完整 Compiler、GPUI/Flutter/Qt、Apple 原生呈现与 group/morph 等价性仍不属于此交付。
+
+[Apple 的 Liquid Glass 着色说明](https://developer.apple.com/videos/play/wwdc2025/219/?time=1023)要求着色后仍与背后内容保持视觉关联；选中着色不表示应把玻璃替换成纯色填充。新增的粗粒度图案测试分别度量内容内部的变化幅度、空间结构与同直方图来源换位响应，纯色、噪声和已退役的窄幅着色是负控。这些是工程验收条件，不是 Apple 给出的数值；整图颜色数量或交互测试通过都不能单独证明玻璃观感。

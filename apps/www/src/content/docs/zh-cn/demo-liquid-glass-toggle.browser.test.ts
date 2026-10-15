@@ -8,6 +8,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { isUnpaintedBootstrapBoxShadow as isUnpaintedComposedShadow } from './bootstrap-disabled-paint';
 import { observeLiquidToggleSnapshot } from './liquid-toggle-snapshot';
 import type { runLiquidToggleTintProbe } from './liquid-toggle-tint-probe';
+import type { runLiquidToggleDetailProbe } from './liquid-toggle-detail-probe';
 import { deadline } from '../../../../scripts/diagnose-select-click';
 import {
   attachLiquidToggleFailureDiagnostics,
@@ -187,7 +188,7 @@ function optical(facts: Awaited<ReturnType<typeof observe>>) {
   expect(facts.pixels!.max - facts.pixels!.min).toBeGreaterThan(5);
   expect(facts.border).toEqual(['1px', '1px', '1px', '1px']);
   expect(facts.receipt.profile).toBe(
-    facts.active === 'true' ? 'pui-regular-style-tint-contact-1' : 'liquidgl-v2-contact-canvas-1'
+    facts.active === 'true' ? 'pui-regular-style-tint-contact-2' : 'liquidgl-v2-contact-canvas-1'
   );
 }
 async function capture(
@@ -196,7 +197,31 @@ async function capture(
   entries: unknown[],
   details: Record<string, unknown> = {}
 ) {
+  const marker = subject.locator('svg[aria-hidden="true"]:has(path[d="m13 4-7 8-3-3"])');
+  await expect.poll(() => marker.count()).toBe(1);
+  await expect
+    .poll(async () => marker.evaluate((el) => getComputedStyle(el).opacity))
+    .toBe((await subject.getAttribute('aria-pressed')) === 'true' ? '1' : '0');
   const facts = await observe(subject);
+  const selectionMarker = await marker.evaluate((el) => {
+    const css = getComputedStyle(el),
+      box = el.getBoundingClientRect();
+    const pixel = document.createElement('canvas');
+    pixel.width = pixel.height = 1;
+    const context = pixel.getContext('2d');
+    if (!context) throw new Error('Marker color observation requires a 2D context');
+    context.fillStyle = css.stroke;
+    context.fillRect(0, 0, 1, 1);
+    return {
+      opacity: css.opacity,
+      stroke: css.stroke,
+      strokeRgba: Array.from(context.getImageData(0, 0, 1, 1).data),
+      hiddenFromAccessibility: el.getAttribute('aria-hidden'),
+      width: box.width,
+      height: box.height,
+      pointerEvents: css.pointerEvents,
+    };
+  });
   const paint = facts.paint;
 
   const { uri, image, paint: _paint, receipt: _receipt, ...summary } = facts;
@@ -218,6 +243,7 @@ async function capture(
     name,
     ...details,
     ...summary,
+    selectionMarker,
     carrier: carrierObservation,
     receipt,
     screenshotTiming:
@@ -233,6 +259,13 @@ async function capture(
       JSON.stringify({ ...source, ...entry }, null, 2)
     );
   // Persist the frozen observation before assertions so a rejected ROI remains diagnosable.
+  expect(selectionMarker.opacity).toBe(facts.active === 'true' ? '1' : '0');
+  expect(selectionMarker.hiddenFromAccessibility).toBe('true');
+  expect(selectionMarker.width).toBe(12);
+  expect(selectionMarker.height).toBe(12);
+  expect(selectionMarker.pointerEvents).toBe('none');
+  expect(facts.underline).toBe('none');
+  expect(selectionMarker.strokeRgba).toEqual(facts.foreground);
   if (facts.quality === 'self-optical') {
     expect(paint.committed).toBe(true);
     expect(paint.geometryMatches).toBe(true);
@@ -250,14 +283,18 @@ async function capture(
       expect(facts.foreground).toEqual(facts.palette.primaryForeground);
       expect(facts.receipt.profile).toBe(
         facts.carrier.marker === 'contact-v1'
-          ? 'pui-regular-style-tint-contact-1'
-          : 'pui-regular-style-tint-1'
+          ? 'pui-regular-style-tint-contact-2'
+          : 'pui-regular-style-tint-2'
       );
-      expect(facts.pixels!.tint.blueDominantFraction).toBe(1);
-      expect(facts.pixels!.tint.meanAbsoluteDistanceToPrimary).toBeLessThan(45);
+      // Selected tint remains accent-directed, but environmental hue/brightness
+      // must not be constrained to an almost constant distance from solid blue.
+      const mean = facts.pixels!.tint.meanRgb;
+      if (!mean) throw new Error('Selected content has no measured mean RGB');
+      expect(mean[2]).toBeGreaterThan(mean[0]);
+      expect(mean[2]).toBeGreaterThan(mean[1]);
     } else expect(facts.foreground).toEqual(facts.palette.secondaryForeground);
   }
-  return facts;
+  return { ...facts, selectionMarker };
 }
 
 // Both selection directions are measured on the same retained native host.
@@ -333,7 +370,7 @@ describe.sequential('Liquid Toggle native input and self-optical material', () =
           expect(initiallyDisabled.background[3]).toBe(255);
           expect(initiallyDisabled.fallbackContrast).toBeGreaterThanOrEqual(4.5);
           expect(initiallyDisabled.active).toBe('true');
-          expect(initiallyDisabled.underline).toContain('underline');
+          expect(initiallyDisabled.underline).toBe('none');
           opaqueState(initiallyDisabled, theme, true);
           const bare = page.locator(
             `[data-toggle-no-provider="${runtime}"] [data-demo-ref="bare"]`
@@ -357,10 +394,54 @@ describe.sequential('Liquid Toggle native input and self-optical material', () =
           );
           expect(bareActive.quality).not.toBe('self-optical');
           expect(['', 'none']).toContain(bareActive.image);
-          expect(bareActive.underline).toContain('underline');
+          expect(bareActive.underline).toBe('none');
           opaqueState(bareActive, theme, true);
           expect(bareActive.background).not.toEqual(bareInactive.background);
           expect(await subject('disabled').getAttribute('aria-pressed')).toBe('true');
+
+          const iconOnly = subject('icon-only');
+          const iconContent = iconOnly.locator('[data-liquid-toggle-icon-content]');
+          const iconIdentity = await iconContent.elementHandle();
+          expect(iconIdentity).not.toBeNull();
+          expect(
+            await host
+              .getByRole('button', { name: 'Toggle bold formatting', exact: true })
+              .getAttribute('data-demo-ref')
+          ).toBe('icon-only');
+          await quality(iconOnly, 'self-optical');
+          const iconInactive = await capture(
+            `${runtime}-${theme}-icon-inactive`,
+            iconOnly,
+            observations
+          );
+          expect(iconInactive.active).toBe('false');
+          await iconOnly.click();
+          await expect.poll(() => iconOnly.getAttribute('aria-pressed')).toBe('true');
+          const iconActive = await capture(
+            `${runtime}-${theme}-icon-active`,
+            iconOnly,
+            observations
+          );
+          expect(iconActive.width).toBe(iconInactive.width);
+          expect(iconActive.height).toBe(iconInactive.height);
+          expect(iconActive.selectionMarker.opacity).toBe('1');
+          expect(
+            await host
+              .getByRole('button', { name: 'Toggle bold formatting', exact: true })
+              .getAttribute('data-demo-ref')
+          ).toBe('icon-only');
+          await iconOnly.focus();
+          await page.keyboard.press('Space');
+          await expect.poll(() => iconOnly.getAttribute('aria-pressed')).toBe('false');
+          await page.keyboard.press('Space');
+          await expect.poll(() => iconOnly.getAttribute('aria-pressed')).toBe('true');
+          expect(
+            await host
+              .getByRole('button', { name: 'Toggle bold formatting', exact: true })
+              .getAttribute('data-demo-ref')
+          ).toBe('icon-only');
+
+          expect(await iconContent.evaluate((el, first) => el === first, iconIdentity)).toBe(true);
 
           await target.hover();
           await page.mouse.down();
@@ -377,7 +458,7 @@ describe.sequential('Liquid Toggle native input and self-optical material', () =
           await expect.poll(() => target.getAttribute('data-material-phase')).toBe('rest');
           const active = await capture(`${runtime}-${theme}-active`, target, observations);
           optical(active);
-          expect(active.underline).toContain('underline');
+          expect(active.underline).toBe('none');
           expect(active.borderColor).toEqual(active.ringColor);
           expect(active.background).toEqual(inactive.background);
           expect(active.background).toEqual([0, 0, 0, 0]);
@@ -435,7 +516,7 @@ describe.sequential('Liquid Toggle native input and self-optical material', () =
           await quality(target, 'opaque-fallback');
           const disabled = await capture(`${runtime}-${theme}-disabled`, target, observations);
           expect(disabled.active).toBe('true');
-          expect(disabled.underline).toContain('underline');
+          expect(disabled.underline).toBe('none');
           expect(disabled.opacity).toBe('1');
           expect(disabled.background[3]).toBe(255);
           expect(disabled.fallbackContrast).toBeGreaterThanOrEqual(4.5);
@@ -506,7 +587,7 @@ describe.sequential('Liquid Toggle native input and self-optical material', () =
           const lost = await capture(`${runtime}-${theme}-source-lost`, target, observations);
           expect(lost.image).toBe('none');
           expect(lost.active).toBe('true');
-          expect(lost.underline).toContain('underline');
+          expect(lost.underline).toBe('none');
           expect(lost.fallbackContrast).toBeGreaterThanOrEqual(4.5);
           opaqueState(lost, theme, true);
           await fixture(page, runtime, 'source', true);
@@ -530,8 +611,71 @@ describe.sequential('Liquid Toggle native input and self-optical material', () =
             const fallback = await capture(`${runtime}-${theme}-${feature}`, target, observations);
             expect(fallback.image).toBe('none');
             expect(fallback.active).toBe('true');
-            expect(fallback.underline).toContain('underline');
-            if (feature !== 'forced-colors') {
+            expect(fallback.underline).toBe('none');
+            if (feature === 'forced-colors') {
+              expect(fallback.fallbackContrast).toBeGreaterThanOrEqual(4.5);
+              const iconFallback = await capture(
+                `${runtime}-${theme}-icon-forced-colors`,
+                iconOnly,
+                observations
+              );
+              expect(iconFallback.active).toBe('true');
+              expect(iconFallback.fallbackContrast).toBeGreaterThanOrEqual(4.5);
+              expect(await iconContent.evaluate((el, first) => el === first, iconIdentity)).toBe(
+                true
+              );
+              await target.focus();
+              await page.keyboard.press('Tab');
+              await page.keyboard.press('Shift+Tab');
+              await expect
+                .poll(() => target.evaluate((el) => document.activeElement === el))
+                .toBe(true);
+              await expect.poll(() => state(page, runtime, 'regular', 'focusVisible')).toBe(true);
+              const forcedFocus = await target.evaluate((el) => {
+                const css = getComputedStyle(el);
+                const canvas = document.createElement('canvas');
+                canvas.width = canvas.height = 1;
+                const context = canvas.getContext('2d');
+                if (!context) throw new Error('Outline color observation requires a 2D context');
+                const rgba = (color: string) => {
+                  context.clearRect(0, 0, 1, 1);
+                  context.fillStyle = color;
+                  context.fillRect(0, 0, 1, 1);
+                  return Array.from(context.getImageData(0, 0, 1, 1).data);
+                };
+                const outline = rgba(css.outlineColor),
+                  background = rgba(css.backgroundColor);
+                const composited = outline
+                  .slice(0, 3)
+                  .map(
+                    (channel, i) =>
+                      (channel * outline[3]) / 255 + background[i] * (1 - outline[3] / 255)
+                  );
+                const luminance = (rgb: number[]) =>
+                  rgb.slice(0, 3).reduce((total, channel, i) => {
+                    const value = channel / 255;
+                    return (
+                      total +
+                      (value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4) *
+                        [0.2126, 0.7152, 0.0722][i]
+                    );
+                  }, 0);
+                const lumas = [luminance(composited), luminance(background)].sort((a, b) => b - a);
+                return {
+                  width: css.outlineWidth,
+                  style: css.outlineStyle,
+                  color: css.outlineColor,
+                  outline,
+                  background,
+                  contrast: background[3] === 255 ? (lumas[0] + 0.05) / (lumas[1] + 0.05) : null,
+                };
+              });
+              observations.push({ forcedColorsFocus: forcedFocus });
+              expect(parseFloat(forcedFocus.width)).toBeGreaterThanOrEqual(2);
+              expect(forcedFocus.style).toBe('solid');
+              expect(forcedFocus.outline[3]).toBeGreaterThan(0);
+              expect(forcedFocus.contrast).toBeGreaterThanOrEqual(3);
+            } else {
               expect(fallback.fallbackContrast).toBeGreaterThanOrEqual(4.5);
               opaqueState(fallback, theme, true);
             }
@@ -615,7 +759,7 @@ describe.sequential('Liquid Toggle native input and self-optical material', () =
         const facts = await capture(`${runtime}-unknown-preferences`, target, results, { runtime });
         expect(facts.active).toBe('true');
         expect(facts.image).toBe('none');
-        expect(facts.underline).toContain('underline');
+        expect(facts.underline).toBe('none');
         expect(facts.fallbackContrast).toBeGreaterThanOrEqual(4.5);
         opaqueState(facts, 'light', true);
       }
@@ -623,6 +767,95 @@ describe.sequential('Liquid Toggle native input and self-optical material', () =
       await context.close();
     }
   }, 90_000);
+
+  it('algorithm-only: selected glass retains structured inner detail above frozen noise and flat-fill controls', async () => {
+    const { context, page } = await newPage();
+    try {
+      await page.goto(`${baseUrl}${route}`, { waitUntil: 'networkidle' });
+      await page.waitForFunction(
+        () => document.documentElement.dataset.liquidToggleReady === 'true',
+        undefined,
+        { timeout: 60_000 }
+      );
+      await page.evaluate(() => (window as any).liquidToggleFixture.pause(true));
+      const report = await page.evaluate<Awaited<ReturnType<typeof runLiquidToggleDetailProbe>>>(
+        () => (window as any).liquidToggleFixture.detailProbe()
+      );
+      const rows = [];
+      const sources = new Set<string>();
+      for (const row of report.records) {
+        const { sourcePng, controls, ...input } = row;
+        const sourceName = `detail-source-${row.kind}-${row.inverted ? 'reordered' : 'original'}.png`;
+        const bytes = Buffer.from(sourcePng.split(',')[1], 'base64');
+        if (output && !sources.has(sourceName)) {
+          await writeFile(path.join(output, sourceName), bytes);
+          sources.add(sourceName);
+        }
+        const saved: Record<string, unknown> = {};
+        for (const [name, control] of Object.entries(controls)) {
+          const { uri, ...facts } = control;
+          if (uri) {
+            const material = Buffer.from(uri.split(',')[1], 'base64');
+            const materialFile = `detail-${row.kind}-${row.inverted ? 'reordered' : 'original'}-${row.theme}-${row.phase}-${name}.png`;
+            if (output) await writeFile(path.join(output, materialFile), material);
+            saved[name] = {
+              ...facts,
+              materialFile,
+              pngSha256: createHash('sha256').update(material).digest('hex'),
+            };
+          } else saved[name] = facts;
+        }
+        rows.push({
+          ...input,
+          sourceFile: sourceName,
+          sourcePngSha256: createHash('sha256').update(bytes).digest('hex'),
+          controls: saved,
+        });
+      }
+      const evidence = { ...source, ...report, records: rows };
+      results.push({ name: 'algorithm-only-structured-detail', ...evidence });
+      if (output)
+        await writeFile(
+          path.join(output, 'detail-source-controls.json'),
+          JSON.stringify(evidence, null, 2)
+        );
+      // Retain all failures and source-bound PNGs before enforcing the policy
+      // frozen independently of the candidate. These are not Apple thresholds.
+      expect(report.records).toHaveLength(32);
+      expect(report.pairs).toHaveLength(16);
+      expect(report.renderAttempts).toBe(96);
+      expect(report.gpu?.version).toMatch(/WebGL/);
+      for (const row of report.records) {
+        expect(row.sourceUnchanged).toBe(true);
+        expect(row.frameUnchanged).toBe(true);
+        expect(row.fixedTime).toBe(0);
+        expect(row.sourceSha256).toMatch(/^[a-f\d]{64}$/);
+        for (const control of Object.values(row.controls)) {
+          expect(control.status, `${row.kind}/${row.inverted}/${row.theme}/${row.phase}`).toBe(
+            'rendered'
+          );
+          if (control.status !== 'rendered') continue;
+          expect(control.contentPixels).toBeGreaterThan(0);
+          expect(control.opaqueContentPixels).toBe(control.contentPixels);
+          expect(control.minimumForegroundContrast).toBeGreaterThanOrEqual(4.5);
+        }
+        expect(row.zeroRefractionMeasurementError).toBeNull();
+        expect(row.zeroRefractionDifference?.fullyOpaque).toBe(true);
+      }
+      for (const pair of report.pairs) {
+        const label = `${pair.kind}/${pair.theme}/${pair.phase}`;
+        expect(pair.sameSourceHistogram, label).toBe(true);
+        expect(pair.distinctSourcePixels, label).toBe(true);
+        expect(pair.blockers, label).toEqual([]);
+        expect(pair.status, label).toBe('measured');
+        expect(pair.result?.failures, label).toEqual([]);
+        expect(pair.result?.passed, label).toBe(true);
+      }
+      expect(report.passed).toBe(true);
+    } finally {
+      await context.close();
+    }
+  }, 120_000);
 
   it('algorithm-only: fixed-source tint keeps real refraction and contrast across themes and motion', async () => {
     const { context, page } = await newPage();
@@ -698,7 +931,7 @@ describe.sequential('Liquid Toggle native input and self-optical material', () =
         expect(row.frameUnchanged, label).toBe(true);
         expect(row.fixedTime, label).toBe(0);
         expect(row.expectedTintProfile, label).toBe(
-          row.phase === 'static' ? 'pui-regular-style-tint-1' : 'pui-regular-style-tint-contact-1'
+          row.phase === 'static' ? 'pui-regular-style-tint-2' : 'pui-regular-style-tint-contact-2'
         );
         for (const name of ['tinted', 'zeroRefraction', 'interleavedTint'] as const) {
           const rendered = row.controls[name];
@@ -710,7 +943,16 @@ describe.sequential('Liquid Toggle native input and self-optical material', () =
           expect(rendered.statistics.opaquePixels, label).toBe(rendered.statistics.contentPixels);
           expect(rendered.statistics.nonopaquePixels, label).toBe(0);
           expect(rendered.statistics.minForegroundContrast, label).toBeGreaterThanOrEqual(4.5);
-          expect(rendered.statistics.blueDominantFraction, label).toBe(1);
+          // Black sources may have no chromatic signal. Other controlled
+          // sources keep a blue-directed mean, not every-pixel fixed hue.
+          if (row.sourceKind !== 'black') {
+            expect(rendered.statistics.meanRgb![2], label).toBeGreaterThan(
+              rendered.statistics.meanRgb![0]
+            );
+            expect(rendered.statistics.meanRgb![2], label).toBeGreaterThan(
+              rendered.statistics.meanRgb![1]
+            );
+          }
           expect(rendered.decodedSha256, label).toMatch(/^[a-f\d]{64}$/);
         }
         const sharedNeutral = row.controls.interleavedNeutral;
@@ -819,7 +1061,7 @@ describe.sequential('Liquid Toggle native input and self-optical material', () =
             runtime,
           });
           optical(active);
-          expect(active.underline).toContain('underline');
+          expect(active.underline).toBe('none');
           expect(active.width).toBe(inactive.width);
           expect(active.height).toBe(inactive.height);
           expect(await target.evaluate((el, first) => el === first, identity)).toBe(true);

@@ -1,5 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { createRuntimeSession } from '@proto.ui/runtime';
+import type { TemplateChildren } from '@proto.ui/core';
+import { commitChildren } from '@proto.ui/adapter-web-component';
 import { EVENT_GLOBAL_TARGET_CAP, EVENT_ROOT_TARGET_CAP } from '@proto.ui/module-event';
 import {
   AS_TRIGGER_GET_PROTO_CAP,
@@ -8,7 +10,7 @@ import {
 } from '@proto.ui/module-as-trigger';
 import { EXPOSE_STATE_SET_EXPOSES_CAP } from '@proto.ui/module-expose-state';
 import { EXPOSE_EVENT_SINK_CAP } from '@proto.ui/module-expose-event';
-import { A11Y_PROJECT_CAP } from '@proto.ui/module-a11y';
+import { A11Y_PROJECT_CAP, createWebA11yProjector } from '@proto.ui/module-a11y';
 import {
   EFFECTS_CAP,
   VISUAL_FEEDBACK_SINK_CAP,
@@ -30,7 +32,12 @@ import {
 import { createWebMaterialSink } from '../../../adapters/base/src/material/sink';
 import { renderThemeCss } from '../src/theme';
 
-async function fixture(initial: Record<string, unknown> = {}, visual = true) {
+async function fixture(
+  initial: Record<string, unknown> = {},
+  visual = true,
+  content: Node[] = [],
+  labelledBy?: string
+) {
   let props = initial,
     exposes: Record<string, any> = {};
   const frames: VisualFeedbackFrame[] = [],
@@ -38,13 +45,25 @@ async function fixture(initial: Record<string, unknown> = {}, visual = true) {
     a11y: any[] = [];
   let tokens: string[] = [];
   const root = new EventTarget(),
+    host = document.createElement('button'),
     global = new EventTarget(),
     release = vi.fn();
+  if (labelledBy) host.setAttribute('aria-labelledby', labelledBy);
+  const projectA11y = createWebA11yProjector(host);
+  const commits: TemplateChildren[] = [];
   const session = createRuntimeSession(toggle, {
     prototypeName: toggle.name,
     getRawProps: () => props,
     schedule: (fn) => fn(),
-    commit: (_, signal) => signal?.done(),
+    scheduleDelay(duration, task) {
+      const id = setTimeout(task, duration);
+      return { cancel: () => clearTimeout(id) };
+    },
+    commit(children, signal) {
+      commits.push(children);
+      commitChildren(host, children, { slotPool: content });
+      signal?.done();
+    },
     onRuntimeReady(w) {
       w.attach('event', [
         [EVENT_ROOT_TARGET_CAP, () => root],
@@ -66,7 +85,15 @@ async function fixture(initial: Record<string, unknown> = {}, visual = true) {
       w.attach('expose-event', [
         [EXPOSE_EVENT_SINK_CAP, (key: string, payload: unknown) => events.push({ key, payload })],
       ]);
-      w.attach('a11y', [[A11Y_PROJECT_CAP, (next: unknown) => a11y.push(next)]]);
+      w.attach('a11y', [
+        [
+          A11Y_PROJECT_CAP,
+          Object.assign((next: Parameters<typeof projectA11y>[0]) => {
+            a11y.push(next);
+            projectA11y(next);
+          }, projectA11y),
+        ],
+      ]);
       w.attach('feedback', [
         [
           EFFECTS_CAP,
@@ -90,6 +117,8 @@ async function fixture(initial: Record<string, unknown> = {}, visual = true) {
   await session.mount();
   return {
     root,
+    host,
+    commits,
     global,
     frames,
     events,
@@ -115,6 +144,103 @@ const candidate = (phase: 'rest' | 'pressed', active = false) => ({
 });
 
 describe('Liquid Toggle shared semantic and material projection', () => {
+  it.each(['text', 'icon-only'] as const)(
+    'renders a stable decorative check for %s content without changing its name or Base semantics',
+    async (kind) => {
+      const content =
+        kind === 'text' ? document.createTextNode('Pin') : document.createElement('span');
+      if (content instanceof HTMLElement) {
+        content.setAttribute('aria-hidden', 'true');
+        content.append(document.createElementNS('http://www.w3.org/2000/svg', 'svg'));
+      }
+      const label = document.createElement('span');
+      label.id = 'toggle-icon-name';
+      label.textContent = 'Pin';
+      document.body.append(label);
+      const f = await fixture(
+        { active: false },
+        true,
+        [content],
+        kind === 'icon-only' ? 'toggle-icon-name' : undefined
+      );
+      const marker = () => f.host.lastElementChild?.querySelector('svg');
+      const tree = () => JSON.parse(JSON.stringify(f.commits.at(-1)));
+      const initialTree = tree();
+      const assertNameAndSemantics = (active: boolean) => {
+        expect(f.host.getAttribute('role')).toBe('button');
+        expect(f.host.getAttribute('aria-pressed')).toBe(String(active));
+        expect(f.host.getAttribute('aria-label')).toBeNull();
+        expect(f.host.getAttribute('aria-labelledby')).toBe(
+          kind === 'icon-only' ? 'toggle-icon-name' : null
+        );
+        if (kind === 'icon-only')
+          expect(
+            document.getElementById(f.host.getAttribute('aria-labelledby')!)?.textContent
+          ).toBe('Pin');
+        expect(f.host.textContent).toBe(kind === 'text' ? 'Pin' : '');
+        expect(f.host.contains(content)).toBe(true);
+        expect(f.a11y.at(-1).name).toEqual({ kind: 'content' });
+        expect(marker()?.getAttribute('aria-hidden')).toBe('true');
+        expect(marker()?.getAttribute('stroke')).toBe('currentColor');
+        expect(marker()?.querySelector('path')).not.toBeNull();
+        expect(marker()?.querySelector('title, text, a, foreignObject')).toBeNull();
+        expect(f.host.querySelector('[tabindex], input, select, textarea, a, button')).toBeNull();
+        expect(marker()?.parentElement?.getAttribute('data-pui-style')).toContain(
+          'pointer-events-none'
+        );
+        expect(marker()?.parentElement?.getAttribute('data-pui-style')).toContain('size-3');
+        expect(f.tokens()).not.toContain('underline');
+        expect(f.tokens()).not.toContain('no-underline');
+      };
+      try {
+        expect(marker()?.getAttribute('opacity')).toBe('0');
+        assertNameAndSemantics(false);
+        f.fire('press.commit');
+        await new Promise((resolve) => setTimeout(resolve, 0));
+        expect(marker()?.getAttribute('opacity')).toBe('0');
+        expect(tree()).toEqual(initialTree);
+        f.update({ active: true });
+        await vi.waitFor(() => expect(marker()?.getAttribute('opacity')).toBe('1'));
+        assertNameAndSemantics(true);
+        const selectedTree = tree();
+        selectedTree[1].children.props.opacity = 0;
+        expect(selectedTree).toEqual(initialTree);
+        f.global.dispatchEvent(new CustomEvent('key.down'));
+        f.fire('host:focus');
+        expect(f.tokens()).toEqual(
+          expect.arrayContaining(['ring-2', 'forced-colors-focus-outline'])
+        );
+        f.fire('pointer.down');
+        f.fire('pointer.cancel');
+        expect(marker()?.getAttribute('opacity')).toBe('1');
+        f.update({ active: true, disabled: true });
+        expect(marker()?.getAttribute('opacity')).toBe('1');
+        expect(f.host.getAttribute('aria-disabled')).toBe('true');
+        assertNameAndSemantics(true);
+        f.update({ active: false });
+        await vi.waitFor(() => expect(marker()?.getAttribute('opacity')).toBe('0'));
+        expect(tree()).toEqual(initialTree);
+        assertNameAndSemantics(false);
+      } finally {
+        await f.session.unmount();
+        label.remove();
+      }
+    }
+  );
+
+  it('coalesces interrupted selection renders and cancels pending work on unmount', async () => {
+    const f = await fixture();
+    f.fire('press.commit');
+    f.fire('press.commit');
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(f.host.querySelector('svg')?.getAttribute('opacity')).toBe('0');
+    f.fire('press.commit');
+    await f.session.unmount();
+    const committed = f.commits.length;
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(f.commits).toHaveLength(committed);
+  });
+
   it.each(
     (['light', 'dark'] as const).flatMap((theme) =>
       [false, true].map((active) => ({ theme, active }))
@@ -224,12 +350,13 @@ describe('Liquid Toggle shared semantic and material projection', () => {
     const f = await fixture({ defaultActive: true });
     expect((toggle as any).__asHooks.filter((h: any) => h.name === 'as-toggle')).toHaveLength(1);
     expect(f.state().active.get()).toBe(true);
+    expect(f.host.querySelector('svg')?.getAttribute('opacity')).toBe('1');
     expect(f.a11y.at(-1)).toMatchObject({
       role: 'button',
       states: { pressed: true, disabled: false },
     });
     expect(f.tokens()).toEqual(
-      expect.arrayContaining(['underline', 'border-ring', 'bg-primary', 'text-primary-foreground'])
+      expect.arrayContaining(['border-ring', 'bg-primary', 'text-primary-foreground'])
     );
     expect(f.frames.at(-1)?.material.slot).toMatchObject({
       version: 2,
@@ -246,6 +373,7 @@ describe('Liquid Toggle shared semantic and material projection', () => {
     expect(f.state().active.get()).toBe(false);
     expect(f.events).toEqual([{ key: 'activeChange', payload: { active: false } }]);
     expect(f.tokens()).not.toContain('underline');
+    await vi.waitFor(() => expect(f.host.querySelector('svg')?.getAttribute('opacity')).toBe('0'));
     expect(f.frames.at(-1)?.material.candidates).toEqual([candidate('rest')]);
     await f.session.unmount();
     expect(f.release).toHaveBeenCalledTimes(1);
@@ -306,8 +434,9 @@ describe('Liquid Toggle shared semantic and material projection', () => {
     await f.session.unmount();
     const absent = await fixture({ defaultActive: true }, false);
     expect(absent.tokens()).toEqual(
-      expect.arrayContaining(['bg-primary', 'text-primary-foreground', 'underline'])
+      expect.arrayContaining(['bg-primary', 'text-primary-foreground'])
     );
+    expect(absent.host.querySelector('svg')?.getAttribute('opacity')).toBe('1');
     await absent.session.unmount();
     const fresh = await fixture();
     expect(fresh.state().active.get()).toBe(false);
@@ -322,6 +451,8 @@ describe('Liquid Toggle shared semantic and material projection', () => {
     const tokens = extracted.filter((token): token is string => typeof token === 'string');
     for (const render of [renderProtoStyleTokenCss, renderProtoShadowStyleTokenCss])
       expect(render(tokens)).not.toContain('Unsupported Proto UI style tokens');
+    expect(renderProtoStyleTokenCss(tokens)).toContain('@media (forced-colors: active)');
+    expect(renderProtoStyleTokenCss(tokens)).toContain('outline-color: Highlight;');
     const f = await fixture({ active: false });
     const before = f.tokens().filter((t) => /^(border$|border-\d|p[xylrtb]?-|rounded)/.test(t));
     f.update({ active: true });

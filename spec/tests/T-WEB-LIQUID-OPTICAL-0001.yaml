@@ -42,8 +42,26 @@ cases:
     notes:
       - Neutral shader literals and no-tint behavior remain unchanged. Unsupported variant or profile uses same-state fallback. Tint identity participates in pipeline, paint leases and diagnostic profile; old seed profiles reject tint.
       - The finite shared-context pipeline cache must keep program-specific uniforms and attributes, current source uploads, bounded resources and complete cleanup. Interleaved neutral/tint GPU output must match independent controls without per-frame recompilation.
+      - Style-tint profile 2 retains source code-luma and chroma across the original fallback-luminance safe side instead of the retired 0.68/0.32 near-solid envelope. Per-channel fill bounds and every-pixel fixed blue hue are not the definition of readable tint. Pixel contrast remains at least 4.5; no-tint shaders and admission guards remain unchanged.
+      - Whole-image color count is only a coarse diagnostic, not an appearance acceptance criterion. The independently frozen inner-content challenge requires structured amplitude and same-histogram source response against flat, noise and retired-map controls. Its engineering thresholds are not Apple numeric criteria; actual public selected appearance still requires independent exact-head visual review.
       - Numerical oracle and mocked ABI are not GPU evidence. Fixed source revision, geometry and motion must distinguish tinted optical pixels from neutral and zero-refraction controls without mistaking opaque overlay or empty samples for success.
 implementations:
+  - id: web-optical-detail-metrics
+    kind: module-test
+    status: passing
+    path: apps/www/src/content/docs/zh-cn/liquid-toggle-detail-metrics.test.ts
+    required: true
+    consumesCases: [T-WEB-LIQUID-OPTICAL-0001-CASE-TINT]
+    notes:
+      - Pure arithmetic positive and negative controls, including flat fill, many-color and one-code noise, fixed highlights, stale source and the retired flattening map; no GPU or human-perception claim.
+  - id: web-optical-detail-probe
+    kind: module-test
+    status: passing
+    path: apps/www/src/content/docs/zh-cn/liquid-toggle-detail-probe.test.ts
+    required: true
+    consumesCases: [T-WEB-LIQUID-OPTICAL-0001-CASE-TINT]
+    notes:
+      - Mocked orchestration retains 32 records, 16 pairs, 96 attempts, all rejections and owner cleanup. The real direct-GPU case remains part of the planned Toggle browser test.
   - id: web-optical-preferences-sequence
     kind: module-test
     status: passing
@@ -111,6 +129,9 @@ sources:
   - path: packages/adapters/base/src/material/program.ts
   - path: scripts/build/generate-web-material-kernel.mjs
 revisions:
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Add predeclared inner-content amplitude and spatial-response controls after 371225d passed coarse optics while selected output remained visibly flat; retain contrast, source, fallback and exact-head evidence boundaries.
   - version: 0.3.0-alpha.1
     change: revised
     summary: Retain contrast and optical thresholds while adding shared-profile interleaving, chromatic detail and live preference regressions after exact-head tint failures.

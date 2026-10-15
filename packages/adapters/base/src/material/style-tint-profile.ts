@@ -6,8 +6,8 @@ import { colorContrast, opaqueRgba, type OpaqueRgba } from './style';
  * author parameters. Refraction and contact still sample the admitted source;
  * the complete light contribution is mapped inside the fallback contrast bound.
  * The original neutral shaders remain byte-for-byte unchanged. */
-export const styleTintProfile = 'pui-regular-style-tint-1';
-export const styleTintContactProfile = 'pui-regular-style-tint-contact-1';
+export const styleTintProfile = 'pui-regular-style-tint-2';
+export const styleTintContactProfile = 'pui-regular-style-tint-contact-2';
 
 function luminance(value: OpaqueRgba) {
   const linear = value
@@ -34,16 +34,28 @@ const helpers = `
         }
 `;
 const mapping = `
-          // Lighting is included before the bounded tint map, never added after it.
-          // Keep source chroma and perceptual detail. Converting dark source
-          // RGB to one linear-light scalar collapses real detail at 8-bit output.
-          // Each channel stays in [0,1], so the same fallback luminance bound holds.
+          // Retain the admitted optical source's spatial tone and chroma.
+          // The safe bound is luminance, not a narrow per-channel solid-fill band.
           vec3 styleTintDetail = clamp(final.rgb, 0.0, 1.0);
           vec3 styleTintBase = styleTintLinear(u_tint.rgb);
-          vec3 styleTintDark = styleTintBase * (0.68 + 0.32 * styleTintDetail);
-          vec3 styleTintLight = mix(styleTintBase, vec3(1.0), 0.32 * styleTintDetail);
-          final.rgb = styleTintSrgb(mix(styleTintLight, styleTintDark,
-                                        u_styleTintLightForeground));
+          vec3 styleTintWeights = vec3(0.2126, 0.7152, 0.0722);
+          float styleTintTone = dot(styleTintDetail, styleTintWeights);
+          vec3 styleTintHue = mix(styleTintBase, styleTintLinear(styleTintDetail), 0.25);
+          float styleTintBaseLuma = dot(styleTintBase, styleTintWeights);
+          // 2^-12 remains normal at the inherited minimum mediump precision.
+          // Both branches must stay finite, including black/white endpoints.
+          vec3 styleTintDark = styleTintHue *
+            (styleTintBaseLuma * styleTintTone /
+             max(dot(styleTintHue, styleTintWeights), 0.000244140625));
+          vec3 styleTintComplement = vec3(1.0) - styleTintHue;
+          vec3 styleTintLight = vec3(1.0) - styleTintComplement *
+            ((1.0 - styleTintBaseLuma) * (1.0 - styleTintTone) /
+             max(dot(styleTintComplement, styleTintWeights), 0.000244140625));
+          // Gamut clipping only moves farther onto the original safe side:
+          // down in luminance for light text, up for dark text. Readback guards
+          // still reject any finite-precision or near-opaque contrast failure.
+          final.rgb = styleTintSrgb(clamp(mix(styleTintLight, styleTintDark,
+                                             u_styleTintLightForeground), 0.0, 1.0));
 
 `;
 function derive(source: string): string {
