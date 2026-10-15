@@ -31,6 +31,11 @@ export function createPreviewMaterialScene(parent: HTMLElement) {
     boxSizing: 'border-box',
     padding: '2rem',
   });
+  // This visible scene already owns preview padding and popup space. A nested
+  // centered RuntimeBox reserve would leave real flow boxes behind the popup,
+  // which cannot be omitted from the canvas source's foreground checks.
+  scope.style.setProperty('--runtime-box-content-min', '0px');
+  scope.style.setProperty('--runtime-box-content-padding', '0px');
   canvas.setAttribute('aria-hidden', 'true');
   canvas.dataset.materialBackdrop = '';
   Object.assign(canvas.style, {

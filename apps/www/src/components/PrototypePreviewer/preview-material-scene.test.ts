@@ -90,6 +90,24 @@ function resize() {
   }
 }
 describe('bounded visible Previewer source layout', () => {
+  it('owns scene spacing without a second centered preview reserve or outside overrides', () => {
+    const parent = document.createElement('div');
+    parent.style.setProperty('--runtime-box-content-min', '10rem');
+    parent.style.setProperty('--runtime-box-content-padding', '1.5rem 1rem');
+    document.body.append(parent);
+    const outside = document.createElement('div');
+    parent.append(outside);
+    const s = scene(parent);
+    expect(s.scope.style.padding).toBe('2rem');
+    expect(s.scope.style.getPropertyValue('--runtime-box-content-min')).toBe('0px');
+    expect(s.scope.style.getPropertyValue('--runtime-box-content-padding')).toBe('0px');
+    expect(parent.style.getPropertyValue('--runtime-box-content-min')).toBe('10rem');
+    expect(parent.style.getPropertyValue('--runtime-box-content-padding')).toBe('1.5rem 1rem');
+    expect(outside.style.cssText).toBe('');
+    expect(s.mount.style.display).not.toBe('contents');
+    expect(s.mount.style.opacity).not.toBe('0');
+  });
+
   it('registers the real scope and preserves nested projected author ancestry', () => {
     const s = scene();
     const origin = document.createElement('span');

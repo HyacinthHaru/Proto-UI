@@ -40,6 +40,9 @@ export async function publicPortalSnapshot(page: Page) {
       'top',
       'width',
       'height',
+      'min-height',
+      '--runtime-box-content-min',
+      '--runtime-box-content-padding',
       'border-left-width',
       'border-top-width',
     ];
@@ -99,6 +102,14 @@ export async function publicPortalSnapshot(page: Page) {
       scroll: { x: scrollX, y: scrollY },
       firstFocus: (window as any).publicPortalFirstFocus ?? null,
       activeElement: document.activeElement ? sample(document.activeElement) : null,
+      scenes: Array.from(document.querySelectorAll('[data-material-scene]')).map((scope) => ({
+        scope: sample(scope),
+        flow: scope.children[1] ? sample(scope.children[1]) : null,
+        previewSurfaces: Array.from(scope.querySelectorAll('.pui-runtime-preview-surface')).map(
+          sample
+        ),
+        triggers: Array.from(scope.querySelectorAll('[aria-haspopup="menu"]')).map(sample),
+      })),
       menus: menus.map((menu) => {
         const scope = menu.closest<HTMLElement>('[data-material-scene]');
         const canvas = Array.from(scope?.children ?? []).find(

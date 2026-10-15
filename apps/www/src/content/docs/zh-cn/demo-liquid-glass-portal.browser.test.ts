@@ -717,6 +717,40 @@ describe.sequential(
   }
 );
 
+// The scene measures projected flow on rAF. Retain stable closed dimensions,
+// not the immediate aria-expanded mutation; viewport coordinates may change
+// when the outside-dismissal target scrolls into view.
+async function settledPublicLayout(
+  page: Page,
+  record: Record<string, unknown>,
+  expected?: { width: number; height: number }
+) {
+  let previous: { width: number; height: number } | undefined;
+  let final: Awaited<ReturnType<typeof publicPortalSnapshot>> | undefined;
+  const samples: Array<{ timestamp: number; width: number; height: number }> = [];
+  record.samples = samples;
+  await expect
+    .poll(
+      async () => {
+        const snapshot = await publicPortalSnapshot(page);
+        const rect = snapshot.scenes[0]?.scope.rect;
+        record.final = snapshot;
+        final = snapshot;
+        if (!rect || rect.width <= 0 || rect.height <= 0) return false;
+        const size = { width: rect.width, height: rect.height };
+        samples.push({ timestamp: snapshot.timestamp, ...size });
+        const near = (other: { width: number; height: number }) =>
+          Math.abs(size.width - other.width) <= 1 && Math.abs(size.height - other.height) <= 1;
+        const stable = !!previous && near(previous) && (!expected || near(expected));
+        previous = size;
+        return stable;
+      },
+      { timeout: 5000, interval: 100 }
+    )
+    .toBe(true);
+  return final!;
+}
+
 async function retainContainerDiagnostic(name: string, report: Record<string, unknown>) {
   if (!evidence) return;
   await mkdir(path.join(evidence, 'portal'), { recursive: true });
@@ -1007,6 +1041,7 @@ describe.sequential('real Liquid Dropdown Content in a bounded scene portal', ()
           const page = await context.newPage();
           const cdp = await context.newCDPSession(page);
           await preferences(cdp, theme);
+          const layoutEvidence: Record<string, unknown> = { runtime, locale, theme };
           try {
             await page.goto(`${baseUrl}/${locale}/ui-libraries/liquid-glass/dropdown-menu/`, {
               waitUntil: 'networkidle',
@@ -1042,12 +1077,20 @@ describe.sequential('real Liquid Dropdown Content in a bounded scene portal', ()
                 true
               );
             });
+            let closedSize: { width: number; height: number } | undefined;
+            if (evidence) {
+              const closed: Record<string, unknown> = {};
+              layoutEvidence.closed = closed;
+              const snapshot = await settledPublicLayout(page, closed);
+              closedSize = snapshot.scenes[0].scope.rect;
+            }
             await trigger.click();
             const content = page.getByRole('menu');
             await content.waitFor({ state: 'visible' });
             await expect
               .poll(() => content.getAttribute('data-material-quality'), { timeout: 20000 })
               .toBe('self-optical');
+            if (evidence) layoutEvidence.open = await publicPortalSnapshot(page);
             expect(
               await content.evaluate((el) => el.closest('[data-material-scene]') !== null)
             ).toBe(true);
@@ -1090,6 +1133,15 @@ describe.sequential('real Liquid Dropdown Content in a bounded scene portal', ()
               .toBe('self-optical');
             await page.locator('h1').first().click();
             await expect.poll(() => trigger.getAttribute('aria-expanded')).toBe('false');
+            if (evidence) {
+              const restored: Record<string, unknown> = {};
+              layoutEvidence.closedAfterDismissal = restored;
+              await settledPublicLayout(page, restored, closedSize);
+              await retainContainerDiagnostic(
+                `${runtime}-${locale}-${theme}-public-dropdown-layout`,
+                layoutEvidence
+              );
+            }
             observations.push({
               runtime,
               route: `/${locale}/ui-libraries/liquid-glass/dropdown-menu/`,
@@ -1109,6 +1161,7 @@ describe.sequential('real Liquid Dropdown Content in a bounded scene portal', ()
               locale,
               theme,
               error: String(error),
+              layoutEvidence,
             };
             try {
               report.snapshot = await publicPortalSnapshot(page);
