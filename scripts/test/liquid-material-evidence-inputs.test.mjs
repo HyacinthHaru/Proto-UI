@@ -114,6 +114,10 @@ for (const file of [
   'apps/www/src/content/docs/zh-cn/demo-liquid-glass-hover.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/liquid-hover-fixture.ts',
   'apps/www/src/content/docs/zh-cn/liquid-hover-fixture.test.ts',
+  'apps/www/src/content/docs/zh-cn/liquid-hover-source-layout.test.ts',
+  'apps/www/src/components/PrototypePreviewer/demo-types.ts',
+  'apps/www/src/components/PrototypePreviewer/demo-renderer.ts',
+  'apps/www/src/components/PrototypePreviewer/demo-renderer.hover-reenable.test.ts',
 ]) {
   test(`Liquid command interaction evidence covers source input ${file}`, () => {
     assert.ok(readFileSync(new URL(file, root), 'utf8').length > 0);
@@ -125,6 +129,8 @@ test('Liquid command interaction keeps original optical journeys and adds a sepa
   for (const suite of [
     'packages/prototypes/liquid-glass/test/interactive-surface.test.ts',
     'apps/www/src/content/docs/zh-cn/liquid-hover-fixture.test.ts',
+    'apps/www/src/content/docs/zh-cn/liquid-hover-source-layout.test.ts',
+    'apps/www/src/components/PrototypePreviewer/demo-renderer.hover-reenable.test.ts',
     'apps/www/src/content/docs/zh-cn/demo-liquid-glass-material.browser.test.ts',
     'apps/www/src/content/docs/zh-cn/demo-liquid-glass-portal.browser.test.ts',
     'apps/www/src/content/docs/zh-cn/demo-liquid-glass-toggle.browser.test.ts',

@@ -107,6 +107,8 @@ jobs:
             apps/www/src/content/docs/zh-cn/liquid-toggle-detail-metrics.test.ts \
             apps/www/src/content/docs/zh-cn/liquid-toggle-detail-probe.test.ts \
             apps/www/src/content/docs/zh-cn/liquid-hover-fixture.test.ts \
+            apps/www/src/content/docs/zh-cn/liquid-hover-source-layout.test.ts \
+            apps/www/src/components/PrototypePreviewer/demo-renderer.hover-reenable.test.ts \
             apps/www/src/content/docs/zh-cn/demo-liquid-glass-material.browser.test.ts \
             apps/www/src/content/docs/zh-cn/demo-liquid-glass-portal.browser.test.ts \
             apps/www/src/content/docs/zh-cn/demo-liquid-glass-toggle.browser.test.ts \

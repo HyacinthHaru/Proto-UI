@@ -98,6 +98,12 @@ export function liquidHoverDemo(
   };
 }
 
+/** Withdraw a real authored key; an undefined patch is still a provided value. */
+export function liquidHoverRemoveProp(api: DemoRuntimeApi, ref: string, name: string) {
+  if (!api.removeProps) throw new Error('Hover fixture requires authored-prop withdrawal');
+  api.removeProps(ref, [name]);
+}
+
 /** Test-only screenshot geometry, not material sampling or input geometry. */
 export function liquidHoverContextCapture(
   subject: { x: number; y: number; width: number; height: number },

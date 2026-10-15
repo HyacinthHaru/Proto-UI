@@ -242,6 +242,21 @@ async function capture(
       y: box.y,
       documentX: box.x + scrollX,
       documentY: box.y + scrollY,
+      portalDestination: (() => {
+        const scope = el.closest('[data-material-scene]');
+        const destination = scope?.querySelector<HTMLElement>(
+          ':scope > [data-material-overlay-mount]'
+        );
+        if (!destination) return null;
+        const rect = destination.getBoundingClientRect();
+        return {
+          x: rect.x,
+          y: rect.y,
+          width: rect.width,
+          height: rect.height,
+          gapBelowSubject: rect.top - box.bottom,
+        };
+      })(),
       width: box.width,
       height: box.height,
       transform: css.transform,
@@ -370,7 +385,10 @@ async function capture(
   return { facts, raw, states, requests };
 }
 type Capture = Awaited<ReturnType<typeof capture>>;
-function optical({ facts }: Capture) {
+function optical({ facts, raw }: Capture) {
+  // Observe real flow rather than claiming outer canvas padding proves separation.
+  expect(raw.portalDestination).not.toBeNull();
+  expect(raw.portalDestination!.gapBelowSubject).toBeGreaterThan(facts.paint.paintOutset);
   expect(facts.quality).toBe('self-optical');
   expect(facts.source).toBe('visible-app-canvas');
   expect(facts.backdropFilter).toBe('none');

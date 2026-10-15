@@ -9,6 +9,7 @@ import {
   LIQUID_HOVER_NEGATIVES,
   liquidHoverDemo,
   liquidHoverContextCapture,
+  liquidHoverRemoveProp,
   type HoverRequest,
 } from './liquid-hover-fixture';
 
@@ -120,5 +121,26 @@ describe('native screenshot context retains outer visual evidence', () => {
     expect(() =>
       liquidHoverContextCapture({ x: 100, y: 100, width: NaN, height: 48 }, viewport)
     ).toThrow('Invalid');
+  });
+});
+
+describe('hover fixture authored-prop withdrawal', () => {
+  it('requests deletion through the preview capability without an undefined patch', () => {
+    const api: DemoRuntimeApi = {
+      call: vi.fn(),
+      getExposes: vi.fn(),
+      setProps: vi.fn(),
+      removeProps: vi.fn(),
+    };
+    liquidHoverRemoveProp(api, 'subject', 'disabled');
+    expect(api.removeProps).toHaveBeenCalledWith('subject', ['disabled']);
+    expect(api.setProps).not.toHaveBeenCalled();
+  });
+  it('fails explicitly when an external preview API lacks the capability', () => {
+    const api: DemoRuntimeApi = { call: vi.fn(), getExposes: vi.fn(), setProps: vi.fn() };
+    expect(() => liquidHoverRemoveProp(api, 'subject', 'material')).toThrow(
+      'authored-prop withdrawal'
+    );
+    expect(api.setProps).not.toHaveBeenCalled();
   });
 });
