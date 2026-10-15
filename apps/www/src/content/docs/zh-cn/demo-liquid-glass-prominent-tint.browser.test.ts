@@ -28,6 +28,7 @@ import {
 import { liquidHoverContextCapture } from './liquid-hover-fixture';
 import {
   installProminentTintPreferenceProbe,
+  runProminentTintSyntheticCancel,
   runProminentTintCase,
   awaitProminentTintCheckpoint,
   PROMINENT_TINT_OBSERVATION_PROGRESS,
@@ -768,16 +769,18 @@ for (const runtime of runtimes)
                 await page.mouse.down();
                 await take('cancel-held', 'self-optical', 'held');
                 const before = (await call(page, 'requests', control)).length;
-                await el.dispatchEvent('pointercancel', {
-                  pointerId: 1,
-                  pointerType: 'mouse',
-                  button: 0,
-                  buttons: 0,
+                await runProminentTintSyntheticCancel({
+                  target: el,
+                  mouse: page.mouse,
+                  assertCancelled: async () => {
+                    const cancel = await take('injected-cancel', 'self-optical', 'rest');
+                    expect(cancel.states.pressed).toBe(false);
+                    expect(cancel.requests).toHaveLength(before);
+                  },
+                  assertReleasedOutside: async () => {
+                    expect((await call(page, 'requests', control)).length).toBe(before);
+                  },
                 });
-                await page.mouse.up();
-                const cancel = await take('injected-cancel', 'self-optical', 'rest');
-                expect(cancel.states.pressed).toBe(false);
-                expect(cancel.requests).toHaveLength(before);
                 for (const ref of part === 'submit' ? ['subject', 'owner'] : ['subject']) {
                   await el.hover();
                   await page.mouse.down();
@@ -812,6 +815,8 @@ for (const runtime of runtimes)
                   initialRequests: count,
                   preferenceProvenance:
                     'CDP media emulation; unknown categories explicitly synthetic matchMedia capability probes',
+                  cancellationProvenance:
+                    'Synthetic DOM pointercancel checked before native outside release; not browser/OS-generated cancellation evidence',
                 });
               } finally {
                 await context.close();

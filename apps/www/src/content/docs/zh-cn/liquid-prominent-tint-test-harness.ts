@@ -92,3 +92,32 @@ export async function runProminentTintCase(
     throw error;
   }
 }
+
+export type TintSyntheticCancelProbe = {
+  target: {
+    dispatchEvent(type: string, eventInit: Record<string, unknown>): Promise<void>;
+  };
+  mouse: {
+    move(x: number, y: number): Promise<void>;
+    up(): Promise<void>;
+  };
+  assertCancelled(): Promise<void>;
+  assertReleasedOutside(): Promise<void>;
+};
+
+/** Test-only injected cancellation, not a browser/OS-generated pointer cancel.
+ * DOM dispatch does not end Playwright's native held-button session. */
+export async function runProminentTintSyntheticCancel(probe: TintSyntheticCancelProbe) {
+  await probe.target.dispatchEvent('pointercancel', {
+    pointerId: 1,
+    pointerType: 'mouse',
+    button: 0,
+    buttons: 0,
+  });
+  await probe.assertCancelled();
+  // The native button is still down. Release away from its original target so
+  // cleanup cannot generate an unrelated click after the synthetic cancel.
+  await probe.mouse.move(0, 0);
+  await probe.mouse.up();
+  await probe.assertReleasedOutside();
+}

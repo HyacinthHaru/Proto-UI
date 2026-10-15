@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { runInThisContext } from 'node:vm';
 import {
   installProminentTintPreferenceProbe,
+  runProminentTintSyntheticCancel,
   runProminentTintCase,
   awaitProminentTintCheckpoint,
   PROMINENT_TINT_OBSERVATION_PROGRESS,
@@ -287,5 +288,122 @@ describe('runner timeout reconciliation', () => {
     expect(failed.transitions.failed).toHaveBeenCalledTimes(1);
     await failed.timeout();
     expect(failed.transitions.failed).toHaveBeenCalledTimes(1);
+  });
+});
+
+/** Deterministic input model, not browser evidence. Synthetic DOM cancellation
+ * clears component contact but leaves the native mouse session held. A later
+ * mouseup over its down target still emits one click; an outside release does not. */
+function syntheticCancelInput() {
+  const requests = ['first action', 'second action'];
+  const state = { pressed: true, contact: 'held', nativeHeld: true, overTarget: true };
+  const events: string[] = [];
+  const target = {
+    dispatchEvent: vi.fn(async (type: string, init: Record<string, unknown>) => {
+      expect(type).toBe('pointercancel');
+      expect(init).toEqual({ pointerId: 1, pointerType: 'mouse', button: 0, buttons: 0 });
+      state.pressed = false;
+      state.contact = 'rest';
+      events.push('synthetic-cancel');
+    }),
+  };
+  const mouse = {
+    move: vi.fn(async (x: number, y: number) => {
+      expect([x, y]).toEqual([0, 0]);
+      state.overTarget = false;
+      events.push('move-outside');
+    }),
+    up: vi.fn(async () => {
+      if (state.nativeHeld && state.overTarget) requests.push('later native click');
+      state.nativeHeld = false;
+      events.push('native-release');
+    }),
+  };
+  const assertCancelled = vi.fn(async () => {
+    expect(requests).toHaveLength(2);
+    expect(state).toMatchObject({ pressed: false, contact: 'rest', nativeHeld: true });
+    events.push('assert-cancelled');
+  });
+  const assertReleasedOutside = vi.fn(async () => {
+    expect(requests).toHaveLength(2);
+    expect(state.nativeHeld).toBe(false);
+    events.push('assert-released-outside');
+  });
+  return { target, mouse, assertCancelled, assertReleasedOutside, requests, state, events };
+}
+
+describe('synthetic cancellation checkpoint and native input cleanup', () => {
+  it('asserts unchanged requests immediately after cancel, then moves outside and asserts again after release', async () => {
+    const input = syntheticCancelInput();
+    await runProminentTintSyntheticCancel(input);
+    expect(input.events).toEqual([
+      'synthetic-cancel',
+      'assert-cancelled',
+      'move-outside',
+      'native-release',
+      'assert-released-outside',
+    ]);
+    expect(input.assertCancelled).toHaveBeenCalledOnce();
+    expect(input.assertReleasedOutside).toHaveBeenCalledOnce();
+    expect(input.requests).toHaveLength(2);
+  });
+
+  it('retains the discriminating control: synthetic cancel followed by an on-target native release adds a request', async () => {
+    const input = syntheticCancelInput();
+    await input.target.dispatchEvent('pointercancel', {
+      pointerId: 1,
+      pointerType: 'mouse',
+      button: 0,
+      buttons: 0,
+    });
+    await input.assertCancelled();
+    await input.mouse.up();
+    expect(input.requests).toHaveLength(3);
+    expect(input.requests[2]).toBe('later native click');
+  });
+
+  it('retains an immediate cancellation failure before any native cleanup can mask it', async () => {
+    const input = syntheticCancelInput();
+    const dispatch = input.target.dispatchEvent;
+    input.target.dispatchEvent = vi.fn(async (type, init) => {
+      await dispatch(type, init);
+      input.requests.push('unexpected cancellation action');
+    });
+    await expect(runProminentTintSyntheticCancel(input)).rejects.toThrow('length of 2');
+    expect(input.mouse.move).not.toHaveBeenCalled();
+    expect(input.mouse.up).not.toHaveBeenCalled();
+    expect(input.assertReleasedOutside).not.toHaveBeenCalled();
+  });
+
+  it('retains a separate failure if outside release unexpectedly creates a request', async () => {
+    const input = syntheticCancelInput();
+    const release = input.mouse.up;
+    input.mouse.up = vi.fn(async () => {
+      await release();
+      input.requests.push('unexpected outside-release action');
+    });
+    await expect(runProminentTintSyntheticCancel(input)).rejects.toThrow('length of 2');
+    expect(input.assertCancelled).toHaveBeenCalledOnce();
+    expect(input.assertReleasedOutside).toHaveBeenCalledOnce();
+  });
+
+  it('awaits the immediate checkpoint before moving or releasing the held native input', async () => {
+    const input = syntheticCancelInput();
+    const checkpoint = deferred(),
+      entered = deferred();
+    const done = runProminentTintSyntheticCancel({
+      ...input,
+      assertCancelled: async () => {
+        entered.resolve();
+        await checkpoint.promise;
+        await input.assertCancelled();
+      },
+    });
+    await entered.promise;
+    expect(input.mouse.move).not.toHaveBeenCalled();
+    expect(input.mouse.up).not.toHaveBeenCalled();
+    checkpoint.resolve();
+    await done;
+    expect(input.assertReleasedOutside).toHaveBeenCalledOnce();
   });
 });
