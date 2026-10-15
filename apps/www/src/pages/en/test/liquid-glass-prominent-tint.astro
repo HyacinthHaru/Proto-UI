@@ -1,0 +1,204 @@
+---
+import DraftProjectionStyle from '../../../components/DraftProjectionStyle.astro';
+import { renderThemeCss } from '../../../../../../packages/prototypes/liquid-glass/src/theme';
+---
+
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" /><meta name="viewport" content="width=device-width" /><meta
+      name="robots"
+      content="noindex, nofollow"
+    />
+    <title>Prominent command tint: source-bound evidence</title>
+    <DraftProjectionStyle /><style is:global data-material-theme set:html={renderThemeCss()}
+    ></style>
+    <script is:inline>
+      document.documentElement.dataset.theme =
+        new URLSearchParams(location.search).get('theme') === 'dark' ? 'dark' : 'light';
+    </script>
+  </head>
+  <body
+    ><main>
+      <h1>Prominent command tint</h1>
+      <p>
+        Real command prototypes over visible owned application canvases. Neutral, primary tint and
+        primary opaque keep their real foreground policies. Form Reset keeps its own action, label
+        and intrinsic size; it is a family reference, not a tint-only pixel control.
+      </p>
+      <p>
+        Structured and foreground-backing measurements are separate. A faint neutral reference is
+        inconclusive. Near-isoluminant chromatic regions are diagnostic, not a color-fidelity
+        requirement.
+      </p>
+      <div id="prominent-tint-matrix"></div>
+    </main>
+    <script>
+      import button from '@proto.ui/prototypes-liquid-glass/button';
+      import { formRoot, formSubmit, formReset } from '@proto.ui/prototypes-liquid-glass/form';
+      import { registerPrototype } from '../../../components/PrototypePreviewer/registry';
+      import { renderDemo } from '../../../components/PrototypePreviewer/demo-renderer';
+      import { createPreviewMaterialScene } from '../../../components/PrototypePreviewer/preview-material-scene';
+      import {
+        prominentTintDemo,
+        paintProminentTintSource,
+        PROMINENT_TINT_CONTROLS,
+        type TintPart,
+        type TintControl,
+        type TintContent,
+        type TintSource,
+        type TintRequest,
+      } from '../../../content/docs/zh-cn/liquid-prominent-tint-fixture';
+      import {
+        captureProminentTintFrame,
+        decodeProminentTintPng,
+      } from '../../../content/docs/zh-cn/liquid-prominent-tint-capture';
+      import type {
+        DemoRenderResult,
+        DemoRuntimeApi,
+      } from '../../../components/PrototypePreviewer/demo-types';
+      import type { RuntimeId } from '../../../components/PrototypePreviewer/runtimes/ids';
+      for (const prototype of [button, formRoot, formSubmit, formReset])
+        registerPrototype(prototype.name, prototype);
+      const query = new URLSearchParams(location.search),
+        runtime = (query.get('runtime') ?? 'wc') as RuntimeId;
+      if (!['wc', 'react', 'vue', 'vue2'].includes(runtime)) throw new Error('Unknown runtime');
+      const part: TintPart = query.get('part') === 'submit' ? 'submit' : 'button',
+        content: TintContent = query.get('content') === 'icon-only' ? 'icon-only' : 'text',
+        theme = document.documentElement.dataset.theme as 'light' | 'dark';
+      const scenes = new Map<TintControl, ReturnType<typeof createPreviewMaterialScene>>(),
+        apis = new Map<TintControl, DemoRuntimeApi>(),
+        requests = new Map<TintControl, TintRequest[]>(),
+        renders: DemoRenderResult[] = [];
+      const subject = (control: TintControl) =>
+        scenes.get(control)!.mount.querySelector<HTMLElement>('[data-demo-ref="subject"]')!;
+      const fixture = {
+        runtime,
+        part,
+        content,
+        paint(source: TintSource, phase: 0 | 1) {
+          for (const scene of scenes.values()) {
+            scene.pause(true);
+            scene.lease.draw((ctx, width, height) =>
+              paintProminentTintSource(ctx, width, height, source, theme, phase, devicePixelRatio)
+            );
+          }
+          return { source, phase, fixedSourceTime: 0 };
+        },
+        state(control: TintControl, name: string) {
+          return (
+            apis.get(control)?.getExposes('subject')?.[name] as { get?: () => unknown } | undefined
+          )?.get?.();
+        },
+        requests(control: TintControl) {
+          return requests.get(control) ?? [];
+        },
+        setProps(control: TintControl, ref: string, patch: Record<string, unknown>) {
+          apis.get(control)!.setProps(ref, patch);
+        },
+        removeProp(control: TintControl, ref: string, name: string) {
+          const api = apis.get(control)!;
+          if (!api.removeProps) throw new Error('Prop withdrawal unavailable');
+          api.removeProps(ref, [name]);
+        },
+        sourceAvailable(control: TintControl, available: boolean) {
+          scenes.get(control)!.sourceAvailable(available);
+        },
+        unsafe(control: TintControl, value: boolean) {
+          scenes.get(control)!.scope.querySelector<HTMLCanvasElement>('canvas')!.style.clipPath =
+            value ? 'inset(4px)' : 'none';
+        },
+        sourceRevision(control: TintControl) {
+          return scenes.get(control)?.lease.current()?.revision ?? null;
+        },
+        capture(control: TintControl) {
+          return captureProminentTintFrame(subject(control), scenes.get(control)!);
+        },
+        decode: decodeProminentTintPng,
+        async dispose() {
+          for (const render of renders.splice(0).reverse()) await render.destroy();
+          for (const scene of scenes.values()) scene.dispose();
+          scenes.clear();
+          apis.clear();
+        },
+      };
+      (window as unknown as { prominentTintFixture: typeof fixture }).prominentTintFixture =
+        fixture;
+      async function mount() {
+        for (const control of PROMINENT_TINT_CONTROLS) {
+          const section = document.createElement('section');
+          section.dataset.tintControl = control;
+          const title = document.createElement('h2');
+          title.textContent = control;
+          const entry = document.createElement('a');
+          entry.href = '#prominent-tint-matrix';
+          entry.dataset.tintFocus = control;
+          entry.textContent = 'Keyboard entry';
+          const host = document.createElement('div');
+          section.append(title, entry, host);
+          document.querySelector('#prominent-tint-matrix')!.append(section);
+          const scene = createPreviewMaterialScene(host);
+          scene.scope.style.padding = '48px';
+          scene.mount.style.paddingBottom = '48px';
+          scenes.set(control, scene);
+          const events: TintRequest[] = [];
+          requests.set(control, events);
+          renders.push(
+            await renderDemo({
+              runtime,
+              host: scene.mount,
+              demo: prominentTintDemo(
+                part,
+                control,
+                content,
+                (api) => apis.set(control, api),
+                events
+              ),
+            })
+          );
+          scene.pause(true);
+        }
+        await new Promise<void>((resolve) =>
+          requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+        );
+        fixture.paint('pastel', 0);
+        document.documentElement.dataset.prominentTintReady = 'true';
+      }
+      window.addEventListener('pagehide', () => void fixture.dispose(), { once: true });
+      void mount().catch((error) => {
+        document.documentElement.dataset.prominentTintError = String(error);
+        console.error(error);
+      });
+    </script>
+  </body>
+</html>
+<style is:global>
+  body {
+    margin: 0;
+    background: var(--pui-background);
+    color: var(--pui-foreground);
+    font-family: ui-sans-serif, system-ui, sans-serif;
+  }
+  main {
+    max-width: 1120px;
+    margin: auto;
+    padding: 32px;
+  }
+  p {
+    max-width: 95ch;
+    line-height: 1.6;
+  }
+  #prominent-tint-matrix {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+  }
+  [data-tint-control] {
+    min-width: 0;
+  }
+  .prominent-tint-layout {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+</style>

@@ -61,23 +61,26 @@ export default definePrototype<ButtonProjectionProps, ButtonExposes>({
       source: { kind: 'in-app-backdrop' },
       fallback: { fill: 'style', foreground: 'style' },
     });
-    for (const phase of [false, true]) {
-      def.rule({
-        when: (w) =>
-          w.all(
-            w.prop('variant').eq('regular'),
-            w.prop('material').eq('auto'),
-            w.state(disabled).eq(false),
-            w.state(pressed).eq(phase)
-          ),
-        intent: (i) =>
-          i.feedback.material.use({
-            intent: 'liquid-glass',
-            variant: 'regular',
-            deformation: { kind: 'press', phase: phase ? 'pressed' : 'rest', contact: 'pointer' },
-          }),
-      });
-    }
+    // Prominence selects only style-owned tint; Base remains the sole input owner.
+    for (const variant of ['regular', 'prominent'] as const)
+      for (const phase of [false, true]) {
+        def.rule({
+          when: (w) =>
+            w.all(
+              w.prop('variant').eq(variant),
+              w.prop('material').eq('auto'),
+              w.state(disabled).eq(false),
+              w.state(pressed).eq(phase)
+            ),
+          intent: (i) =>
+            i.feedback.material.use({
+              intent: 'liquid-glass',
+              variant: 'regular',
+              ...(variant === 'prominent' ? { tint: 'style-fill' as const } : {}),
+              deformation: { kind: 'press', phase: phase ? 'pressed' : 'rest', contact: 'pointer' },
+            }),
+        });
+      }
     def.rule({
       when: (w) => w.all(w.state(pressed).eq(true), w.state(disabled).eq(false)),
       intent: (i) => i.feedback.style.use(tw(COMMAND_PRESS)),

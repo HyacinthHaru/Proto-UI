@@ -1,6 +1,6 @@
 id: T-LIQUID-GLASS-BUTTON-0001
 type: test
-title: Liquid Glass fallback Button evidence
+title: Liquid Glass Button fallback and prominent tint evidence
 status: draft
 since: 0.3.0-alpha.1
 lifecycleRationale: Tests cover the bounded visual foundation; stable and cross-host admission are not implied.
@@ -25,7 +25,22 @@ cases:
       - P-LIQUID-GLASS-BUTTON-VISUAL
       - P-LIQUID-GLASS-BUTTON-CLOSURE
     expectation: real-web-host-button-appearance-and-interaction
+  - id: T-LIQUID-GLASS-BUTTON-0001-CASE-PROMINENT
+    title: Prominent auto tint at rest and press preserves same-variant fallback and raw prop removal
+    covers:
+      - P-LIQUID-GLASS-BUTTON-API
+      - P-LIQUID-GLASS-BUTTON-MATERIAL
+      - P-LIQUID-GLASS-BUTTON-VISUAL
+    expectation: one-complete-tinted-prominent-candidate-neutral-regular-zero-opaque-or-disabled
 implementations:
+  - id: liquid-glass-button-prominent-policy
+    kind: module-test
+    status: passing
+    path: packages/prototypes/liquid-glass/test/material.test.ts
+    required: true
+    consumesCases: [T-LIQUID-GLASS-BUTTON-0001-CASE-PROMINENT]
+    notes:
+      - Replaces only the historical enabled prominent zero-candidate assertion after the explicit draft revision; opaque and disabled remain zero. Portable intent does not prove optical paint.
   - id: liquid-glass-button-contract
     kind: module-test
     status: passing
@@ -51,6 +66,9 @@ exercises:
 sources:
   - path: packages/prototypes/liquid-glass/test/button.test.ts
 revisions:
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Add exact prominent tint/default/cancellation obligations after revising the draft solid-prominent rule; retain prior opaque browser receipts without applying them to the new tint path.
   - version: 0.3.0-alpha.1
     change: introduced
     summary: Added bounded family-state and physical-token closure cases; browser evidence remains explicitly planned until run.

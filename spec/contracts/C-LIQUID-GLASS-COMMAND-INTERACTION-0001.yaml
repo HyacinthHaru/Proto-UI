@@ -13,7 +13,7 @@ criteria:
   - id: C-LIQUID-GLASS-COMMAND-INTERACTION-0001-HOVER
     text: Static hover applies only when hovered is true, pressed is false and the command is eligible. Eligibility excludes disabled, and for Accordion also excludes collapseBlocked without changing its focus or ARIA semantics. Hover preserves geometry, hitbox, slotted content, selected tint/marker and same-state fallback colors. The family-private recipe is data only and physical token Rules remain in their owning setup. No host scale/translation, opaque overlay replacing glass, arbitrary shader input or page-local style/effect is introduced. Recipe intensity is a project choice requiring actual visual review, not an Apple numeric specification.
   - id: C-LIQUID-GLASS-COMMAND-INTERACTION-0001-PRESS
-    text: Eligible material-enabled commands contribute one complete liquid-glass candidate with existing Base rest/pressed deformation and optional existing pointer self-contact. Hover does not set pressed or create contact. Button prominent remains solid and material opaque contributes no candidate. Disabled and Accordion collapseBlocked contribute no candidate while retaining the declared slot and readable current-state opaque fallback. Held contact can intentionally survive Base pointerleave; CSS hover/pressed exclusion does not claim optical contact termination. Existing host contact cancellation, source admission and view ownership remain authoritative.
+    text: Eligible material-enabled commands contribute one complete liquid-glass candidate with existing Base rest/pressed deformation and optional existing pointer self-contact. Hover does not set pressed or create contact. Main-action tint follows C-LIQUID-GLASS-MAIN-COMMAND-TINT-0001; material opaque contributes no candidate. Disabled and Accordion collapseBlocked contribute no candidate while retaining the declared slot and readable current-state opaque fallback. Held contact can intentionally survive Base pointerleave; CSS hover/pressed exclusion does not claim optical contact termination. Existing host contact cancellation, source admission and view ownership remain authoritative.
   - id: C-LIQUID-GLASS-COMMAND-INTERACTION-0001-FOCUS
     text: Focus-visible has an independent visible ring/forced-colors outline. Hover ring tokens withdraw while focus-visible is true so shared custom properties cannot erase focus through CSS ordering. Dropdown's existing focused-but-not-focus-visible elevation remains separately explicit. Disabled feedback is quiet without whole-host opacity, removes interactive elevation and does not erase current Toggle selection. Focus, disabled and persistent semantics must not be inferred from hover.
   - id: C-LIQUID-GLASS-COMMAND-INTERACTION-0001-SAFETY
@@ -25,6 +25,7 @@ dependsOn:
     - C-AS-HOOK-0001
     - C-STATE-INTERACTION-0003
     - C-PROTOTYPE-STYLE-CLOSURE-0001
+    - C-LIQUID-GLASS-MAIN-COMMAND-TINT-0001
     - C-FEEDBACK-MATERIAL-0001
     - C-RULE-INTENT-FEEDBACK-MATERIAL-0001
 references:
@@ -43,6 +44,9 @@ openQuestions:
     question: Which exact-head native material receipts and independently reviewed images accept the static project recipe and changed contact footprint across the eight parts?
     blocks: [activation:C-LIQUID-GLASS-COMMAND-INTERACTION-0001]
 revisions:
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Supersede only the draft solid-prominent exception with the separately defined Button prominent/Form Submit tint slice; shared interaction and source-safety obligations remain unchanged.
   - version: 0.3.0-alpha.1
     change: introduced
     summary: Define the bounded prototype-first command recipe, role eligibility and exact evidence limits before implementation; cursor-following and cross-part contact remain separate capability work.

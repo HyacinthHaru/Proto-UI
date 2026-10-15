@@ -423,7 +423,14 @@ describe('Liquid command interaction recipe over eight implemented Base owners',
         expect(f.control.frame().material.candidates).toHaveLength(1);
         if (command.name === 'Button') {
           f.control.set({ variant: 'prominent' });
-          expect(f.control.frame().material.candidates).toEqual([]);
+          expect(f.control.frame().material.candidates).toEqual([
+            {
+              intent: 'liquid-glass',
+              variant: 'regular',
+              tint: 'style-fill',
+              deformation: { kind: 'press', phase: 'rest', contact: 'pointer' },
+            },
+          ]);
           expect(f.control.tokens()).toContain('bg-primary');
           expect(f.control.tokens()).toContain('text-primary-foreground');
         }

@@ -4,9 +4,9 @@ title: Liquid Glass optical-intent Button projection over Base Button
 status: draft
 since: 0.3.0-alpha.1
 lifecycleRationale: A user-directed, independently authored visual foundation. Full family/component coverage, material capability where applicable, generated/native evidence and stable admission remain open; source package availability is not release or conformance admission.
-summary: A regular functional Button submits V2 liquid-glass optical intent with Base press deformation, source-owned opaque fallback and solid prominent action.
+summary: A regular functional Button submits V2 liquid-glass optical intent with Base press deformation, source-owned opaque fallback and style-fill tinted prominent action.
 statement:
-  en: A regular functional Button submits V2 liquid-glass optical intent with Base press deformation, source-owned opaque fallback and solid prominent action. material is auto | opaque (default auto); variant is regular | prominent. Base remains the sole interaction owner. The host owns source, preference and actual paint admission; missing support retains opaque style. Reduced motion limits deformation without implying reduced transparency.
+  en: A regular functional Button submits V2 liquid-glass optical intent with Base press deformation, source-owned opaque fallback and style-fill tinted prominent action. material is auto | opaque (default auto); variant is regular | prominent. Base remains the sole interaction owner. The host owns source, preference and actual paint admission; missing support retains opaque style. Reduced motion limits deformation without implying reduced transparency.
 criteria:
   - id: P-LIQUID-GLASS-BUTTON-BASE
     text:
@@ -16,7 +16,7 @@ criteria:
       en: variant is regular | prominent (default regular), material is auto | opaque (default auto), and inherited disabled defaults false. Removing a visual prop restores its default.
   - id: P-LIQUID-GLASS-BUTTON-VISUAL
     text:
-      en: The regular functional surface uses capsule geometry and readable source-owned light/dark colors. Auto requests explicit liquid-glass through the shared material slot; only an evidenced self-optical provider may enhance it. CSS blur and native adaptive blur are not substitutes. Prominent remains solid. No Apple-private or cross-engine equivalence is promised.
+      en: The regular functional surface uses capsule geometry and readable source-owned light/dark colors. Auto requests explicit liquid-glass through the shared material slot; only an evidenced self-optical provider may enhance it. CSS blur and native adaptive blur are not substitutes. Enabled prominent auto requests the same regular optics with style-fill tint from the governed primary palette; prominence does not change control size. No Apple-private or cross-engine equivalence is promised.
   - id: P-LIQUID-GLASS-BUTTON-CLOSURE
     text:
       en: Appearance is authored in feedback tokens and state/prop Rules; every token has an explicit physical translation. Standalone Web output must not depend on website component CSS or reset rules.
@@ -25,7 +25,7 @@ criteria:
       en: The package is private and unreleased. Initial source and Web evidence do not establish general Prototype Compiler, GPUI, Flutter or Qt support. Homepage and full component coverage remain separate work.
   - id: P-LIQUID-GLASS-BUTTON-MATERIAL
     text:
-      en: Enabled regular auto contributes one complete V2 liquid-glass candidate with finite press deformation driven by existing Base state and a finite pointer-contact request to the existing host input owner. Held drag tracking is visual-only and does not change Base activation or pointer-leave semantics. Disabled, opaque opt-out and prominent contribute zero candidates, retaining the declared opaque fallback. Provider policy resolves final style ownership, current source scope, geometry and preferences. Reduced or unknown motion selects static optics when supported; reduced/unknown transparency and unsafe contrast withdraw enhancement. No browser observer, GPU uniform or input owner belongs to this Prototype.
+      en: Enabled auto contributes one complete V2 regular liquid-glass candidate with finite press deformation driven by existing Base state and a finite pointer-contact request to the existing host input owner. Held drag tracking is visual-only and does not change Base activation or pointer-leave semantics. Regular omits tint; prominent uses style-fill tint in both rest and pressed phases. Disabled and opaque opt-out contribute zero candidates, retaining their declared same-variant opaque fallback. Provider policy resolves final style ownership, current source scope, geometry and preferences. Reduced or unknown motion selects static optics when supported; reduced/unknown transparency and unsafe contrast withdraw enhancement. No browser observer, GPU uniform or input owner belongs to this Prototype.
   - id: P-LIQUID-GLASS-BUTTON-COMMAND-INTERACTION
     text:
       en: Follow the bounded shared command recipe; eligible static hover is independent of pressed, persistent selection and focus-visible. Base owns all transient and semantic state; the family only projects data-only physical tokens through Rules in its owning setup. Disabled commands retain readable same-state opaque fallback without whole-host opacity. Exact-head native images and current contact footprint acceptance remain required.
@@ -44,6 +44,7 @@ dependsOn:
     - C-AS-HOOK-0001
     - C-RULE-INTENT-FEEDBACK-STYLE-0001
     - C-PROTOTYPE-STYLE-CLOSURE-0001
+    - C-LIQUID-GLASS-MAIN-COMMAND-TINT-0001
     - C-FEEDBACK-MATERIAL-0001
     - C-RULE-INTENT-FEEDBACK-MATERIAL-0001
 inherits:
@@ -52,9 +53,13 @@ inherits:
 verifies:
   tests:
     - T-LIQUID-GLASS-COMMAND-INTERACTION-0001
+    - T-LIQUID-GLASS-MAIN-COMMAND-TINT-0001
     - T-LIQUID-GLASS-BUTTON-0001
     - T-LIQUID-GLASS-MATERIAL-0001
 revisions:
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Replace the earlier draft solid-prominent/zero-candidate choice for enabled auto with selective style-fill tint, informed by WWDC25/219 at 17:03. Preserve explicit opaque/disabled fallback and historical evidence; this project choice needs new source-bound visual acceptance and does not claim Apple equivalence.
   - version: 0.3.0-alpha.1
     change: revised
     summary: Bind independent static hover, focus, quiet disabled paint and existing self-contact to the shared six-part draft recipe without introducing input ownership or claiming Apple-native equivalence.

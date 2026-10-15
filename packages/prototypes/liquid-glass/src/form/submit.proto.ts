@@ -51,6 +51,7 @@ export default definePrototype<LiquidGlassFormActionProps, FormActionExposes>({
         i.feedback.material.use({
           intent: 'liquid-glass',
           variant: 'regular',
+          tint: 'style-fill',
           deformation: { kind: 'press', phase: 'rest', contact: 'pointer' },
         }),
     });
@@ -65,6 +66,7 @@ export default definePrototype<LiquidGlassFormActionProps, FormActionExposes>({
         i.feedback.material.use({
           intent: 'liquid-glass',
           variant: 'regular',
+          tint: 'style-fill',
           deformation: { kind: 'press', phase: 'pressed', contact: 'pointer' },
         }),
     });

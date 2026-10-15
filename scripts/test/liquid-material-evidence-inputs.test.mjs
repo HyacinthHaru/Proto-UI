@@ -141,3 +141,51 @@ test('Liquid command interaction keeps original optical journeys and adds a sepa
       `Missing suite: ${suite}`
     );
 });
+
+for (const file of [
+  'packages/prototypes/liquid-glass/src/button/button.proto.ts',
+  'packages/prototypes/liquid-glass/src/form/submit.proto.ts',
+  'packages/prototypes/liquid-glass/src/form/reset.proto.ts',
+  'apps/www/src/pages/en/test/liquid-glass-prominent-tint.astro',
+  'apps/www/src/content/docs/zh-cn/demo-liquid-glass-prominent-tint.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/liquid-prominent-tint-fixture.ts',
+  'apps/www/src/content/docs/zh-cn/liquid-prominent-tint-fixture.test.ts',
+  'apps/www/src/content/docs/zh-cn/liquid-prominent-tint-capture.ts',
+  'apps/www/src/content/docs/zh-cn/liquid-prominent-tint-metrics.ts',
+  'apps/www/src/content/docs/zh-cn/liquid-prominent-tint-metrics.test.ts',
+  'spec/contracts/C-LIQUID-GLASS-MAIN-COMMAND-TINT-0001.yaml',
+  'spec/tests/T-LIQUID-GLASS-MAIN-COMMAND-TINT-0001.yaml',
+  'spec/prototypes/P-LIQUID-GLASS-BUTTON.yaml',
+  'spec/tests/T-LIQUID-GLASS-BUTTON-0001.yaml',
+]) {
+  test(`Main-command tint evidence covers source input ${file}`, () => {
+    assert.ok(readFileSync(new URL(file, root), 'utf8').length > 0);
+    assert.ok(covered(file), `Missing prominent tint evidence input: ${file}`);
+  });
+}
+test('Main-command tint uses independent runtime shards without replacing original journeys', () => {
+  const job = workflow.jobs['prominent-tint-evidence'];
+  assert.deepEqual(job.strategy.matrix.runtime, ['wc', 'react', 'vue', 'vue2']);
+  assert.equal(job.strategy['fail-fast'], false);
+  assert.equal(job['timeout-minutes'], 20);
+  assert.equal(job.steps[0].with.ref, '${{ env.CANDIDATE_SHA }}');
+  assert.equal(job.steps[0].with['persist-credentials'], false);
+  const evidence = job.steps.find((step) =>
+    step.run?.includes('demo-liquid-glass-prominent-tint.browser.test.ts')
+  );
+  assert.ok(evidence);
+  assert.equal(evidence.env.PROTO_UI_PROMINENT_TINT_RUNTIME, '${{ matrix.runtime }}');
+  for (const suite of [
+    'packages/prototypes/liquid-glass/test/button.test.ts',
+    'packages/prototypes/liquid-glass/test/material.test.ts',
+    'packages/prototypes/liquid-glass/test/interactive-surface.test.ts',
+    'packages/prototypes/base/test/form-actions-material.test.ts',
+    'apps/www/src/content/docs/zh-cn/liquid-prominent-tint-fixture.test.ts',
+    'apps/www/src/content/docs/zh-cn/liquid-prominent-tint-metrics.test.ts',
+  ])
+    assert.ok(evidence.run.includes(suite), `Missing main-command tint regression: ${suite}`);
+  assert.ok(
+    job.steps.some((step) => step.if === 'always()' && step.uses === 'actions/upload-artifact@v4')
+  );
+  assert.equal(workflow.jobs['browser-evidence']['timeout-minutes'], 20);
+});
