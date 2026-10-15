@@ -97,7 +97,12 @@ for (const family of ['shadcn', 'brutalist', 'bootstrap-2-3-2', 'liquid-glass'])
       tokens.some((x) => x.includes('focus-visible') && x.includes('ring-')),
       tokens.join('\n')
     ).toBe(true);
-    expect(tokens.some((x) => x.includes('disabled') && x.includes('opacity-'))).toBe(true);
+    if (family === 'liquid-glass') {
+      expect(tokens.some((x) => x.includes('disabled') && x.endsWith('shadow-none'))).toBe(true);
+      expect(tokens.some((x) => x.includes('disabled') && x.includes('opacity-'))).toBe(false);
+    } else {
+      expect(tokens.some((x) => x.includes('disabled') && x.includes('opacity-'))).toBe(true);
+    }
     expect(
       tokens.some(
         (x) => x.includes('pressed') && (x.includes('shadow-') || x.includes('translate-'))

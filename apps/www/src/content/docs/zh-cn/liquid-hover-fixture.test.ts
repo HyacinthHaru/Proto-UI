@@ -26,10 +26,12 @@ function walk(
   ];
 }
 describe('Liquid hover first-party fixture composition (source only)', () => {
-  it('keeps the bounded six-part slice and explicit carrier-negative controls', () => {
+  it('keeps the eight-part slice and explicit carrier-negative controls', () => {
     expect(LIQUID_HOVER_PARTS).toEqual([
       'button',
       'toggle',
+      'submit',
+      'reset',
       'accordion',
       'collapsible',
       'select',
@@ -55,18 +57,20 @@ describe('Liquid hover first-party fixture composition (source only)', () => {
       expect(targets).toHaveLength(1);
       const { node, ancestry } = targets[0];
       expect(node.kind === 'proto' && node.prototypeId).toBe(
-        `liquid-glass-${part === 'button' || part === 'toggle' ? part : `${part}-trigger`}`
+        `liquid-glass-${part === 'button' || part === 'toggle' ? part : part === 'submit' || part === 'reset' ? `form-${part}` : `${part}-trigger`}`
       );
       expect(ancestry).toEqual(
         part === 'button' || part === 'toggle'
           ? []
-          : part === 'accordion'
-            ? [
-                'liquid-glass-accordion-root',
-                'liquid-glass-accordion-item',
-                'liquid-glass-accordion-heading',
-              ]
-            : [`liquid-glass-${part}-root`]
+          : part === 'submit' || part === 'reset'
+            ? ['liquid-glass-form-root']
+            : part === 'accordion'
+              ? [
+                  'liquid-glass-accordion-root',
+                  'liquid-glass-accordion-item',
+                  'liquid-glass-accordion-heading',
+                ]
+              : [`liquid-glass-${part}-root`]
       );
       expect(
         nodes.filter(
@@ -78,7 +82,16 @@ describe('Liquid hover first-party fixture composition (source only)', () => {
       expect(setProps).toHaveBeenCalledTimes(1);
       const [ref, patch] = setProps.mock.calls[0];
       expect(ref).toBe(part === 'button' || part === 'toggle' ? 'subject' : 'owner');
-      const event = part === 'button' ? 'Click' : part === 'toggle' ? 'ActiveChange' : 'OpenChange';
+      const event =
+        part === 'button'
+          ? 'Click'
+          : part === 'toggle'
+            ? 'ActiveChange'
+            : part === 'submit'
+              ? 'Submit'
+              : part === 'reset'
+                ? 'Reset'
+                : 'OpenChange';
       expect(Object.keys(patch)).toEqual([`on${event}`]);
       patch[`on${event}`]({ value: 'observed' });
       expect(requests).toEqual([{ kind: event, detail: { value: 'observed' } }]);

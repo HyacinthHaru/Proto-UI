@@ -17,7 +17,7 @@ import { RUNTIMES, chromeExecutable, startServer, stopServer } from './browser-h
 
 // C/T-LIQUID-GLASS-COMMAND-INTERACTION-0001. This adds evidence, never replaces
 // or relaxes the existing thirteen Toggle scenarios or structured-detail gates.
-// Form Submit/Reset remain deferred pending separate CLI borrowed-state closure.
+// Eight-part source includes the separately reviewed Form CLI borrowed-state prerequisite.
 const route = '/en/test/liquid-glass-hover/';
 const evidenceRoot = process.env.PROTO_UI_MATERIAL_EVIDENCE_DIR;
 const output = evidenceRoot ? path.join(evidenceRoot, 'hover') : undefined;
@@ -461,7 +461,7 @@ async function keyboardFocus(page: Page, runtime: string, part: string) {
 describe.sequential('Liquid command static hover and existing self-contact native evidence', () => {
   for (const runtime of RUNTIMES)
     for (const theme of ['light', 'dark'] as const) {
-      it(`${runtime}/${theme}: six real owners, hover/press/focus and cancellation`, async () => {
+      it(`${runtime}/${theme}: eight real owners, hover/press/focus and cancellation`, async () => {
         const { context, page, cdp } = await newPage(runtime, theme);
         const failures: string[] = [];
         try {
@@ -515,6 +515,8 @@ describe.sequential('Liquid command static hover and existing self-contact nativ
               optical(released);
               expect(released.states.pressed).toBe(false);
               expect(released.requests).toHaveLength(1);
+              if (part === 'submit' || part === 'reset')
+                expect(released.requests[0].kind).toBe(part === 'submit' ? 'Submit' : 'Reset');
               expect(released.facts.active).toBe(idle.facts.active);
               sameGeometry(idle, released);
               await page.mouse.move(0, 0);
@@ -819,8 +821,8 @@ describe.sequential('Liquid command static hover and existing self-contact nativ
                 optical(enabled);
                 expect(enabled.states.disabled).toBe(false);
               }
-              // Existing material prop removal restores auto on Button and Toggle.
-              if (['button', 'toggle'].includes(part)) {
+              // Existing material prop removal restores auto on these four parts.
+              if (['button', 'toggle', 'submit', 'reset'].includes(part)) {
                 await fixture(page, runtime, part, 'setProps', 'subject', { material: 'opaque' });
                 fallback(await sample('explicit-opaque', { quality: 'opaque-fallback' }));
                 await fixture(page, runtime, part, 'removeProp', 'subject', 'material');

@@ -9,6 +9,8 @@ import type {
 export const LIQUID_HOVER_PARTS = [
   'button',
   'toggle',
+  'submit',
+  'reset',
   'accordion',
   'collapsible',
   'select',
@@ -39,7 +41,7 @@ export function liquidHoverDemo(
     kind: 'box',
     tag: 'span',
     attrs: { 'data-liquid-hover-slot': '' },
-    children: [`Glass ${part}`],
+    children: [part === 'submit' ? 'Submit' : part === 'reset' ? 'Reset' : `Glass ${part}`],
   };
   // Layout is application-owned and transparent. The inset keeps the material's
   // expanded idle carrier away from the Accordion Item's actual painted border.
@@ -51,6 +53,10 @@ export function liquidHoverDemo(
   let root: DemoNode;
   if (part === 'button' || part === 'toggle')
     root = atom(part, 'subject', part === 'toggle' ? { active: false } : {}, [slot]);
+  else if (part === 'submit' || part === 'reset')
+    root = atom('form-root', 'owner', { ariaLabel: `Native ${part} evidence` }, [
+      atom(`form-${part}`, 'subject', {}, [slot]),
+    ]);
   else if (part === 'accordion')
     root = atom(
       'accordion-root',
@@ -90,7 +96,16 @@ export function liquidHoverDemo(
     root: { kind: 'box', className: 'liquid-hover-layout', children: [root] },
     setup({ api }) {
       capture(api);
-      const event = part === 'button' ? 'Click' : part === 'toggle' ? 'ActiveChange' : 'OpenChange';
+      const event =
+        part === 'button'
+          ? 'Click'
+          : part === 'toggle'
+            ? 'ActiveChange'
+            : part === 'submit'
+              ? 'Submit'
+              : part === 'reset'
+                ? 'Reset'
+                : 'OpenChange';
       api.setProps(part === 'button' || part === 'toggle' ? 'subject' : 'owner', {
         [`on${event}`]: (detail: unknown) => requests.push({ kind: event, detail }),
       });

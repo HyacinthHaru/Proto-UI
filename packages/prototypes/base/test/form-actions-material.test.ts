@@ -165,7 +165,8 @@ describe('Liquid Form action material intent and opaque fallback', () => {
         });
         f.root.set({ disabled: true });
         expect(f.control.frames.at(-1)?.material.candidates).toEqual([]);
-        expect(f.control.frames.at(-1)?.style.tokens).toContain('opacity-50');
+        expect(f.control.frames.at(-1)?.style.tokens).toContain('shadow-none');
+        expect(f.control.frames.at(-1)?.style.tokens).not.toContain('opacity-50');
         f.root.set({ disabled: false });
         f.control.set({ material: 'opaque' });
         expect(f.control.frames.at(-1)?.material.candidates).toEqual([]);
