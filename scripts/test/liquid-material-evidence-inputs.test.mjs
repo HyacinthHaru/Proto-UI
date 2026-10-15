@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { matchesGlob } from 'node:path';
+import { basename, matchesGlob } from 'node:path';
 import test from 'node:test';
 import { parse } from 'yaml';
 
@@ -10,6 +10,39 @@ const workflow = parse(
 );
 const paths = workflow.on.pull_request.paths;
 const covered = (file) => paths.some((pattern) => matchesGlob(file, pattern));
+const commandSpecInputs = [
+  'spec/contracts/C-LIQUID-GLASS-COMMAND-INTERACTION-0001.yaml',
+  'spec/tests/T-LIQUID-GLASS-COMMAND-INTERACTION-0001.yaml',
+  'spec/prototypes/P-LIQUID-GLASS-TOGGLE.yaml',
+  'spec/tests/T-LIQUID-GLASS-TOGGLE-0001.yaml',
+];
+for (const file of commandSpecInputs) {
+  test(`Liquid command evidence covers governing entity ${file}`, () => {
+    const entity = parse(readFileSync(new URL(file, root), 'utf8'));
+    assert.equal(entity.id, basename(file, '.yaml'));
+    assert.ok(covered(file), `Missing command evidence definition: ${file}`);
+  });
+}
+test('Liquid evidence retains the bounded command, Toggle, tint and Button spec input union', () => {
+  assert.deepEqual(
+    paths.filter((pattern) => pattern.startsWith('spec/')).sort(),
+    [
+      ...commandSpecInputs,
+      'spec/contracts/C-LIQUID-GLASS-MAIN-COMMAND-TINT-0001.yaml',
+      'spec/tests/T-LIQUID-GLASS-MAIN-COMMAND-TINT-0001.yaml',
+      'spec/prototypes/P-LIQUID-GLASS-BUTTON.yaml',
+      'spec/tests/T-LIQUID-GLASS-BUTTON-0001.yaml',
+    ].sort()
+  );
+  for (const file of [
+    'spec/README.md',
+    'spec/contracts/C-CORE-SYNTAX-0003.yaml',
+    'spec/prototypes/P-SHADCN-TOGGLE.yaml',
+  ]) {
+    assert.ok(readFileSync(new URL(file, root), 'utf8').length > 0);
+    assert.equal(covered(file), false, `Unrelated spec input must remain excluded: ${file}`);
+  }
+});
 for (const file of [
   'packages/modules/feedback/src/material/shared-policy.ts',
   'packages/modules/feedback/src/material/visual-result.ts',

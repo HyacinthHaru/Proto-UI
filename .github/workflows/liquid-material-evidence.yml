@@ -57,6 +57,10 @@ on:
       - 'spec/tests/T-LIQUID-GLASS-MAIN-COMMAND-TINT-0001.yaml'
       - 'spec/prototypes/P-LIQUID-GLASS-BUTTON.yaml'
       - 'spec/tests/T-LIQUID-GLASS-BUTTON-0001.yaml'
+      - 'spec/contracts/C-LIQUID-GLASS-COMMAND-INTERACTION-0001.yaml'
+      - 'spec/tests/T-LIQUID-GLASS-COMMAND-INTERACTION-0001.yaml'
+      - 'spec/prototypes/P-LIQUID-GLASS-TOGGLE.yaml'
+      - 'spec/tests/T-LIQUID-GLASS-TOGGLE-0001.yaml'
   workflow_dispatch:
 permissions:
   contents: read
