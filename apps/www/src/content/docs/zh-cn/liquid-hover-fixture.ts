@@ -152,3 +152,64 @@ export function liquidHoverContextCapture(
       bottom >= subject.y + subject.height + margin,
   };
 }
+
+/** Fail closed before test-only framing can move any input or material geometry. */
+export function assertLiquidHoverContextReframeEligibility(state: {
+  boundary: string;
+  hovered: unknown;
+  pressed: unknown;
+  focused: unknown;
+  focusVisible: unknown;
+  contact: unknown;
+  quality: unknown;
+  carrier: unknown;
+}): void {
+  if (
+    ![
+      'idle',
+      'policy-idle',
+      'negative-idle',
+      'collapse-blocked',
+      'reenabled-subject',
+      'reenabled-item',
+      'reenabled-owner',
+    ].includes(state.boundary) ||
+    state.hovered !== false ||
+    state.pressed !== false ||
+    state.focused !== false ||
+    state.focusVisible !== false ||
+    !(
+      state.contact === 'rest' ||
+      (state.contact === null && state.quality === 'opaque-fallback' && state.carrier === null)
+    )
+  )
+    throw new Error('Screenshot context reframe requires a verified idle boundary');
+}
+
+/**
+ * Pure scrollBy delta for screenshot framing only; it does not scroll or assert
+ * that the browser applied the plan. The caller must resample and check padding.
+ */
+export function liquidHoverContextReframe(
+  context: ReturnType<typeof liquidHoverContextCapture>,
+  state: Parameters<typeof assertLiquidHoverContextReframeEligibility>[0]
+): { needed: boolean; delta: { x: number; y: number } } {
+  if (context.fullyPadded) return { needed: false, delta: { x: 0, y: 0 } };
+  assertLiquidHoverContextReframeEligibility(state);
+  const { subject, viewport, margin } = context;
+  if (subject.width + 2 * margin > viewport.width || subject.height + 2 * margin > viewport.height)
+    throw new Error('Screenshot context cannot fit required padding in the viewport');
+  return {
+    needed: true,
+    delta: {
+      x:
+        subject.x < margin || subject.x + subject.width + margin > viewport.width
+          ? subject.x + subject.width / 2 - viewport.width / 2
+          : 0,
+      y:
+        subject.y < margin || subject.y + subject.height + margin > viewport.height
+          ? subject.y + subject.height / 2 - viewport.height / 2
+          : 0,
+    },
+  };
+}

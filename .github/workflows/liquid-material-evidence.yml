@@ -116,6 +116,7 @@ jobs:
             apps/www/src/content/docs/zh-cn/liquid-toggle-detail-metrics.test.ts \
             apps/www/src/content/docs/zh-cn/liquid-toggle-detail-probe.test.ts \
             apps/www/src/content/docs/zh-cn/liquid-hover-fixture.test.ts \
+            apps/www/src/content/docs/zh-cn/liquid-hover-capture.test.ts \
             apps/www/src/content/docs/zh-cn/liquid-hover-plan.test.ts \
             apps/www/src/content/docs/zh-cn/liquid-hover-source-layout.test.ts \
             apps/www/src/components/PrototypePreviewer/demo-renderer.hover-reenable.test.ts \

@@ -115,7 +115,9 @@ for (const file of [
   'apps/www/src/pages/en/test/liquid-glass-hover.astro',
   'apps/www/src/content/docs/zh-cn/demo-liquid-glass-hover.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/liquid-hover-fixture.ts',
+  'apps/www/src/content/docs/zh-cn/liquid-hover-capture.ts',
   'apps/www/src/content/docs/zh-cn/liquid-hover-fixture.test.ts',
+  'apps/www/src/content/docs/zh-cn/liquid-hover-capture.test.ts',
   'apps/www/src/content/docs/zh-cn/liquid-hover-source-layout.test.ts',
   'apps/www/src/components/PrototypePreviewer/demo-types.ts',
   'apps/www/src/components/PrototypePreviewer/demo-renderer.ts',
@@ -131,6 +133,7 @@ test('Liquid command interaction keeps original optical journeys and adds a sepa
   for (const suite of [
     'packages/prototypes/liquid-glass/test/interactive-surface.test.ts',
     'apps/www/src/content/docs/zh-cn/liquid-hover-fixture.test.ts',
+    'apps/www/src/content/docs/zh-cn/liquid-hover-capture.test.ts',
     'apps/www/src/content/docs/zh-cn/liquid-hover-source-layout.test.ts',
     'apps/www/src/components/PrototypePreviewer/demo-renderer.hover-reenable.test.ts',
     'apps/www/src/content/docs/zh-cn/demo-liquid-glass-material.browser.test.ts',

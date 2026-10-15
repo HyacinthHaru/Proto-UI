@@ -13,6 +13,11 @@ import {
   LIQUID_HOVER_NEGATIVES,
   liquidHoverContextCapture,
 } from './liquid-hover-fixture';
+import {
+  prepareLiquidHoverFrame,
+  captureLiquidHoverClips,
+  type LiquidHoverFramingEvidence,
+} from './liquid-hover-capture';
 import { RUNTIMES, chromeExecutable, startServer, stopServer } from './browser-harness';
 import {
   LiquidHoverCheckpoint,
@@ -194,7 +199,8 @@ const errorText = (error: unknown) =>
 /** Readiness waits are observational, not acceptance assertions. On any wait or
  * decode failure capture() still writes the actual root PNG and raw receipt. */
 async function settle(page: Page, target: Locator, quality?: string, contact?: string) {
-  await target.scrollIntoViewIfNeeded();
+  // Viewport setup belongs only to explicit neutral boundaries below.
+  // Active hover/press/focus captures never reposition their subject here.
   if (quality || contact)
     await page.waitForFunction(
       ({ selector, quality, contact }) => {
@@ -222,8 +228,89 @@ async function settle(page: Page, target: Locator, quality?: string, contact?: s
       )
   );
 }
+const idleFramingBoundaries = new Set([
+  'idle',
+  'policy-idle',
+  'negative-idle',
+  'collapse-blocked',
+  'reenabled-subject',
+  'reenabled-item',
+  'reenabled-owner',
+]);
+const observedStateNames = [
+  'hovered',
+  'pressed',
+  'focusVisible',
+  'focused',
+  'disabled',
+  'active',
+  'collapseBlocked',
+] as const;
+async function observedStates(page: Page, runtime: string, part: string) {
+  return Object.fromEntries(
+    await Promise.all(
+      observedStateNames.map(async (name) => [
+        name,
+        await fixture(page, runtime, part, 'state', name),
+      ])
+    )
+  );
+}
+async function readIdleFrame(page: Page, target: Locator, runtime: string, part: string) {
+  const geometry = await target.evaluate((el) => {
+    const box = el.getBoundingClientRect();
+    return {
+      subject: { x: box.x, y: box.y, width: box.width, height: box.height },
+      viewport: { width: innerWidth, height: innerHeight },
+      scroll: { x: scrollX, y: scrollY },
+    };
+  });
+  // Read the real current receipt, including explicit fallback before an
+  // offscreen source becomes visible. Never synthesize a material state.
+  const receipt = await target.evaluate(observeLiquidToggleSnapshot);
+  return {
+    ...geometry,
+    states: await observedStates(page, runtime, part),
+    requests: await fixture(page, runtime, part, 'requests'),
+    material: {
+      quality: receipt.quality,
+      contact: receipt.receipt.contact,
+      carrier: receipt.carrier.marker,
+      paintOutset: receipt.paint.paintOutset,
+    },
+  };
+}
+async function prepareIdleFrame(
+  page: Page,
+  target: Locator,
+  runtime: string,
+  part: string,
+  evidence: LiquidHoverFramingEvidence
+) {
+  return prepareLiquidHoverFrame(
+    {
+      readFrame: () => readIdleFrame(page, target, runtime, part),
+      scrollIntoView: () => target.scrollIntoViewIfNeeded(),
+      scrollBy: (delta) =>
+        page.evaluate(
+          ({ x, y }) => window.scrollBy({ left: x, top: y, behavior: 'instant' }),
+          delta
+        ),
+      settleFrames: () =>
+        page.evaluate(
+          () =>
+            new Promise<void>((resolve) =>
+              requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+            )
+        ),
+    },
+    evidence
+  );
+}
+
 async function capture(
   name: string,
+  stage: string,
   page: Page,
   target: Locator,
   runtime: string,
@@ -233,10 +320,17 @@ async function capture(
 ) {
   let observationError: string | null = null;
   let facts: Awaited<ReturnType<typeof observeLiquidToggleSnapshot>> | null = null;
+  const contextFraming: LiquidHoverFramingEvidence | undefined = idleFramingBoundaries.has(stage)
+    ? { boundary: stage, actions: [] }
+    : undefined;
   try {
+    if (contextFraming) await prepareIdleFrame(page, target, runtime, part, contextFraming);
+    // Freeze a new material snapshot only after actual viewport setup and the
+    // original readiness wait. No old receipt or translated PNG is reused.
     await settle(page, target, readiness?.quality, readiness?.contact);
   } catch (error) {
     observationError = errorText(error);
+    if (contextFraming) contextFraming.failure = observationError;
   }
   // A readiness timeout must not suppress the actual current material PNG.
   try {
@@ -259,6 +353,8 @@ async function capture(
       y: box.y,
       documentX: box.x + scrollX,
       documentY: box.y + scrollY,
+      viewport: { width: innerWidth, height: innerHeight },
+      scroll: { x: scrollX, y: scrollY },
       portalDestination: (() => {
         const scope = el.closest('[data-material-scene]');
         const destination = scope?.querySelector<HTMLElement>(
@@ -304,50 +400,71 @@ async function capture(
       slotText: el.querySelector('[data-liquid-hover-slot]')?.textContent,
     };
   });
-  const states = Object.fromEntries(
-    await Promise.all(
-      [
-        'hovered',
-        'pressed',
-        'focusVisible',
-        'focused',
-        'disabled',
-        'active',
-        'collapseBlocked',
-      ].map(async (name) => [name, await fixture(page, runtime, part, 'state', name)])
+  if (facts) {
+    const frozenHost = facts.paint.hostGeometry;
+    if (
+      frozenHost.left !== raw.x ||
+      frozenHost.top !== raw.y ||
+      frozenHost.width !== raw.width ||
+      frozenHost.height !== raw.height
     )
-  );
+      observationError = [
+        observationError,
+        'Subject geometry changed after the frozen material observation',
+      ]
+        .filter(Boolean)
+        .join('\n');
+  }
+  const states = await observedStates(page, runtime, part);
   const requests = await fixture(page, runtime, part, 'requests');
   let screenshotSha256: string | undefined;
   let contextScreenshotSha256: string | undefined;
   let contextGeometry: ReturnType<typeof liquidHoverContextCapture> | undefined;
+  let screenshotGeometryChecks:
+    | Awaited<ReturnType<typeof captureLiquidHoverClips>>['geometryChecks']
+    | undefined;
+  let screenshotClips:
+    | { root: { clip?: unknown; errors: string[] }; context: { clip?: unknown; errors: string[] } }
+    | undefined;
   let materialSha256: string | undefined;
   let screenshotError: string | null = null;
   if (output) {
-    try {
-      screenshotSha256 = hash(
-        await target.screenshot({ path: path.join(output, `${name}.png`), timeout: 5000 })
-      );
-      // The root crop remains useful, but cannot show outer shadows/focus outlines.
-      // Retain an additional actual page crop with surrounding source pixels.
-      const subjectBox = await target.boundingBox();
-      if (!subjectBox) throw new Error('No context screenshot geometry');
-      const viewport = await page.evaluate(() => ({ width: innerWidth, height: innerHeight }));
-      contextGeometry = liquidHoverContextCapture(
-        subjectBox,
-        viewport,
-        facts?.paint.paintOutset ?? 0
-      );
-      contextScreenshotSha256 = hash(
-        await page.screenshot({
-          path: path.join(output, `${name}-context.png`),
-          clip: contextGeometry.clip,
-          timeout: 5000,
-        })
-      );
-    } catch (error) {
-      screenshotError = errorText(error);
-    }
+    const clips = await captureLiquidHoverClips(
+      {
+        readGeometry: () =>
+          target.evaluate((el) => {
+            const box = el.getBoundingClientRect();
+            return {
+              subject: { x: box.x, y: box.y, width: box.width, height: box.height },
+              viewport: { width: innerWidth, height: innerHeight },
+              scroll: { x: scrollX, y: scrollY },
+            };
+          }),
+        // Page clips are viewport-relative. Playwright accounts for scroll;
+        // Locator.screenshot would silently scroll an active subject into view.
+        screenshotViewportClip: (kind, clip) =>
+          page.screenshot({
+            path: path.join(output!, `${name}${kind === 'context' ? '-context' : ''}.png`),
+            clip,
+            timeout: 5000,
+          }),
+      },
+      {
+        subject: { x: raw.x, y: raw.y, width: raw.width, height: raw.height },
+        viewport: raw.viewport,
+        scroll: raw.scroll,
+      },
+      facts?.paint.paintOutset ?? 0
+    );
+    if (clips.root.bytes) screenshotSha256 = hash(clips.root.bytes);
+    if (clips.context.bytes) contextScreenshotSha256 = hash(clips.context.bytes);
+    contextGeometry = clips.context.geometry;
+    screenshotGeometryChecks = clips.geometryChecks;
+    screenshotClips = {
+      root: { clip: clips.root.clip, errors: clips.root.errors },
+      context: { clip: clips.context.clip, errors: clips.context.errors },
+    };
+    screenshotError = clips.errors.length ? clips.errors.join('\n') : null;
     if (facts?.uri) {
       const png = Buffer.from(facts.uri.split(',')[1], 'base64');
       materialSha256 = hash(png);
@@ -383,11 +500,14 @@ async function capture(
     screenshotSha256,
     contextScreenshotSha256,
     contextGeometry,
+    screenshotGeometryChecks,
+    screenshotClips,
+    contextFraming,
     materialSha256,
     observationError,
     screenshotError,
     screenshotTiming:
-      'Actual native root PNG follows the frozen verified material receipt; dynamic contact may advance. No old or synthetic image is substituted.',
+      'Actual viewport root/context PNGs follow a freshly verified material receipt; before/between/after checks reject scroll, viewport or subject geometry drift. Dynamic contact pixels may advance. No old or synthetic image is substituted.',
   };
   observations.push(record);
   if (output) await writeFile(path.join(output, `${name}.json`), JSON.stringify(record, null, 2));
@@ -499,6 +619,7 @@ describe.sequential('Liquid command static hover and existing self-contact nativ
                     checkpoint.capture(interactionId, part, stage, () =>
                       capture(
                         `${runtime}-${theme}-${part}-${stage}`,
+                        stage,
                         page,
                         target,
                         runtime,
@@ -801,6 +922,7 @@ describe.sequential('Liquid command static hover and existing self-contact nativ
                       checkpoint.capture(policyId, part, stage, () =>
                         capture(
                           `${runtime}-${theme}-${part}-${stage}`,
+                          stage,
                           page,
                           target,
                           runtime,
