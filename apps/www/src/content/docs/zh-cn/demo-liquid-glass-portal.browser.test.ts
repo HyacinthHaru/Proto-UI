@@ -2,6 +2,7 @@
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { mkdir, writeFile } from 'node:fs/promises';
+import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import type { Browser, BrowserContext, CDPSession, Page } from 'playwright-core';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
@@ -165,6 +166,539 @@ afterAll(async () => {
   await browser?.close();
   await stopServer();
 }, 60000);
+// Native diagnostics are deliberately ahead of the failing public optical
+// matrix. They do not weaken those acceptance assertions or alter PageFrame.
+describe.sequential(
+  'Liquid portal container diagnostics (observation, not guard relaxation)',
+  () => {
+    it('separates the real portal guard from native fixed-position containment', async () => {
+      const { context, page } = await fixture('wc');
+      const report: Record<string, unknown> = { checkpoint: 'native-container-controls' };
+      observations.push(report);
+      try {
+        report.result = await page.evaluate(async () => {
+          const policy = (window as any).liquidPortalFixture.portalDiagnostic;
+          const root = document.createElement('div');
+          root.style.cssText = 'display:block;height:2600px;padding:0;border:0;';
+          document.body.append(root);
+          const originalScroll = { x: scrollX, y: scrollY };
+          const frame = () =>
+            new Promise<void>((resolve, reject) => {
+              const timer = setTimeout(() => {
+                cancelAnimationFrame(id);
+                reject(new Error('diagnostic frame timeout'));
+              }, 2000);
+              const id = requestAnimationFrame(() => {
+                clearTimeout(timer);
+                resolve();
+              });
+            });
+          const rect = (el: Element) => el.getBoundingClientRect().toJSON();
+          const properties = [
+            'container-type',
+            'contain',
+            'transform',
+            'translate',
+            'rotate',
+            'scale',
+            'perspective',
+            'filter',
+            'backdrop-filter',
+            'overflow',
+            'overflow-x',
+            'overflow-y',
+            'clip',
+            'clip-path',
+            'mask-image',
+            'will-change',
+            'transform-style',
+            'content-visibility',
+            'zoom',
+            'display',
+            'visibility',
+          ];
+          const controls = [
+            { name: 'normal', property: 'container-type', value: 'normal' },
+            { name: 'inline-size', property: 'container-type', value: 'inline-size' },
+            { name: 'layout', property: 'contain', value: 'layout' },
+            { name: 'transform', property: 'transform', value: 'translate(23px, 19px)' },
+          ];
+          const results: Array<Record<string, unknown>> = [];
+          const output: Record<string, any> = {
+            userAgent: navigator.userAgent,
+            timeOrigin: performance.timeOrigin,
+            rootFont: getComputedStyle(document.documentElement).fontSize,
+            originalScroll,
+            viewport: { width: innerWidth, height: innerHeight, dpr: devicePixelRatio },
+            interpretation:
+              'inline-size is observational: a conservative guard rejection does not prove a fixed containing block',
+            specification: 'https://drafts.csswg.org/css-conditional-5/#container-type',
+            results,
+          };
+          try {
+            for (const control of controls) {
+              const scope = document.createElement('div');
+              scope.style.cssText =
+                'position:relative;width:300px;height:160px;margin:100px 37px;padding:0;border:0;';
+              scope.style.setProperty(control.property, control.value);
+              const origin = document.createElement('span');
+              const destination = document.createElement('div');
+              const child = document.createElement('div');
+              child.style.cssText = 'position:fixed;top:13px;left:11px;width:20px;height:20px;';
+              destination.append(child);
+              scope.append(origin, destination);
+              root.append(scope);
+              const release = policy.register(scope, destination);
+              const sample = () => {
+                const binding = policy.resolve(origin, child);
+                const ancestors = [];
+                for (let el: Element | null = destination; el; el = el.parentElement) {
+                  const css = getComputedStyle(el);
+                  ancestors.push({
+                    tag: el.tagName,
+                    isControl: el === scope,
+                    style: Object.fromEntries(
+                      properties.map((key) => [key, css.getPropertyValue(key)])
+                    ),
+                  });
+                }
+                return {
+                  timestamp: performance.now(),
+                  scroll: { x: scrollX, y: scrollY },
+                  scope: rect(scope),
+                  fixed: rect(child),
+                  ancestors,
+                  resolver: {
+                    destination:
+                      binding.destination === destination
+                        ? 'registered'
+                        : binding.destination === document.body
+                          ? 'body'
+                          : 'other',
+                    registrationPresent: binding.registration !== null,
+                    // The production helper returns no rejection reason. This is
+                    // a controlled changed-property experiment, not an API receipt.
+                    reportedReason: null,
+                  },
+                };
+              };
+              try {
+                scrollTo(0, 0);
+                await frame();
+                const before = sample();
+                scrollTo(0, 120);
+                await frame();
+                const after = sample();
+                const delta = after.fixed.top - before.fixed.top;
+                const scrollDelta = after.scroll.y - before.scroll.y;
+                results.push({
+                  ...control,
+                  before,
+                  after,
+                  scrollDelta,
+                  fixedTopDelta: delta,
+                  nativeClassification:
+                    Math.abs(delta) < 0.5
+                      ? 'viewport-fixed'
+                      : Math.abs(delta + scrollDelta) < 0.5
+                        ? 'ancestor-fixed'
+                        : 'other',
+                  policyReasonEvidence: 'only the named property differs from the normal control',
+                });
+              } finally {
+                release();
+                scope.remove();
+              }
+            }
+          } catch (error) {
+            output.error = String(error);
+          } finally {
+            root.remove();
+            scrollTo(originalScroll.x, originalScroll.y);
+          }
+          return output;
+        });
+        expect((report.result as any).error).toBeUndefined();
+        const results = (report.result as any).results;
+        expect(results).toHaveLength(4);
+        for (const result of results) {
+          expect(result.scrollDelta).toBe(120);
+          expect(result.before.resolver.registrationPresent).toBe(true);
+          expect(result.after.resolver.registrationPresent).toBe(true);
+          expect(result.before.resolver.destination).toBe(
+            result.name === 'normal' ? 'registered' : 'body'
+          );
+          expect(result.after.resolver.destination).toBe(result.before.resolver.destination);
+          for (const sample of [result.before, result.after]) {
+            expect(sample.fixed.width).toBe(20);
+            expect(sample.fixed.height).toBe(20);
+            expect(Number.isFinite(sample.fixed.top)).toBe(true);
+          }
+          // Normal, explicit layout containment and transform are semantic controls.
+          // The latest Conditional 5 draft removed automatic layout containment
+          // from dimensional containers. Do not pre-choose Chromium's result for it.
+          if (result.name !== 'inline-size')
+            expect(result.nativeClassification).toBe(
+              result.name === 'normal' ? 'viewport-fixed' : 'ancestor-fixed'
+            );
+        }
+      } catch (error) {
+        report.error = String(error);
+        throw error;
+      } finally {
+        try {
+          await retainContainerDiagnostic('native-container-controls', report);
+        } finally {
+          await context.close();
+        }
+      }
+    }, 60000);
+
+    it('measures the actual docs-shell fixed point with a disposable containment handover', async () => {
+      const sourcePaths = [
+        'apps/www/src/components/override/PageFrame.astro',
+        'apps/www/src/components/override/TwoColumnContent.astro',
+        'apps/www/src/styles/global.css',
+      ];
+      const sources = sourcePaths.map((file) => {
+        const text = readFileSync(file, 'utf8');
+        return { file, text, sha256: createHash('sha256').update(text).digest('hex') };
+      });
+      const query = sources[1].text.match(
+        /@media \(min-width: ([\d.]+)rem\)\s*\{\s*@container docs-canvas \(max-width: ([\d.]+)rem\)/
+      );
+      expect(query).not.toBeNull();
+      const media = `(min-width: ${query![1]}rem)`;
+      const containerRem = Number(query![2]);
+      const context = await browser.newContext({ viewport: { width: 1440, height: 1100 } });
+      await context.route('**/*', (route) =>
+        new URL(route.request().url()).origin === new URL(baseUrl).origin
+          ? route.continue()
+          : route.abort()
+      );
+      const page = await context.newPage();
+      await preferences(await context.newCDPSession(page));
+      const report: Record<string, any> = {
+        checkpoint: 'docs-shell-containment-handover',
+        route: '/en/ui-libraries/liquid-glass/dropdown-menu/',
+        media,
+        containerRem,
+        sources,
+        cases: [],
+        scope:
+          'actual documentation DOM/CSS in a separate test-owned page; temporary manual CSS handover only; no observer or production fix',
+      };
+      observations.push(report);
+      try {
+        await page.goto(`${baseUrl}${report.route}`, { waitUntil: 'networkidle' });
+        await choosePreviewRuntime(page, page.locator('.site-header-runtime').first(), 'wc');
+        await waitForPreviewRuntime(page, 'wc', '[aria-haspopup="menu"]', 2);
+        await page.evaluate(() => document.fonts.ready.then(() => undefined));
+        // Nine bounded cases, not a cross-product. The boundary width is derived
+        // below from the actual shell padding/borders at the selected root font.
+        for (const control of [
+          { name: 'regular', font: 16, zoom: 1 },
+          { name: 'large-text', font: 32, zoom: 1 },
+          // Chromium's default initial-font control, not the overridden root font.
+          { name: 'media-below', font: 32, zoom: 1, viewport: 1279 },
+          { name: 'media-at', font: 32, zoom: 1, viewport: 1280 },
+          { name: 'media-above', font: 32, zoom: 1, viewport: 1281 },
+          { name: 'boundary-below', font: 20, zoom: 1, edge: -1 },
+          { name: 'boundary-at', font: 20, zoom: 1, edge: 0 },
+          { name: 'boundary-above', font: 20, zoom: 1, edge: 1 },
+          { name: 'css-zoom', font: 16, zoom: 1.25 },
+        ]) {
+          await page.setViewportSize({ width: 1440, height: 1100 });
+          const boundary = await page.evaluate(
+            ({ font, containerRem }) => {
+              const shell = document.querySelector<HTMLElement>('.docs-shell')!;
+              const old = document.documentElement.getAttribute('style');
+              try {
+                document.documentElement.style.setProperty('font-size', `${font}px`, 'important');
+                const css = getComputedStyle(shell);
+                return (
+                  containerRem * font +
+                  ['paddingLeft', 'paddingRight', 'borderLeftWidth', 'borderRightWidth'].reduce(
+                    (sum, key) => sum + parseFloat((css as any)[key]),
+                    0
+                  ) +
+                  innerWidth -
+                  document.documentElement.clientWidth
+                );
+              } finally {
+                if (old === null) document.documentElement.removeAttribute('style');
+                else document.documentElement.setAttribute('style', old);
+              }
+            },
+            { font: control.font, containerRem }
+          );
+          if ('edge' in control)
+            await page.setViewportSize({
+              width: Math.round(boundary + control.edge!),
+              height: 1100,
+            });
+          if ('viewport' in control)
+            await page.setViewportSize({ width: control.viewport!, height: 1100 });
+          const result = await page.evaluate(
+            async ({ control, media, containerRem }) => {
+              const html = document.documentElement;
+              const shell = document.querySelector<HTMLElement>('.docs-shell')!;
+              const columns = shell.querySelector<HTMLElement>('.docs-reading-columns')!;
+              const toc = columns.querySelector<HTMLElement>('.right-sidebar-container')!;
+              const main = columns.querySelector<HTMLElement>('.main-pane')!;
+              const originals = {
+                rootStyle: html.getAttribute('style'),
+                shellStyle: shell.getAttribute('style'),
+                scroll: { x: scrollX, y: scrollY },
+              };
+              const injected = document.createElement('style');
+              injected.dataset.portalContainerDiagnostic = '';
+              const frame = () =>
+                new Promise<void>((resolve, reject) => {
+                  const timer = setTimeout(() => {
+                    cancelAnimationFrame(id);
+                    reject(new Error('diagnostic frame timeout'));
+                  }, 2000);
+                  const id = requestAnimationFrame(() => {
+                    clearTimeout(timer);
+                    resolve();
+                  });
+                });
+              const contentRules: string[] = [];
+              const searchRules = (rules: CSSRuleList) => {
+                for (const rule of rules) {
+                  const nested = rule as CSSRule & {
+                    containerName?: string;
+                    conditionText?: string;
+                    cssRules?: CSSRuleList;
+                  };
+                  if (
+                    nested.containerName === 'docs-canvas' &&
+                    nested.conditionText?.includes(`${containerRem}rem`)
+                  )
+                    contentRules.push(
+                      ...Array.from(nested.cssRules ?? [], (child) => child.cssText)
+                    );
+                  else if (nested.cssRules) searchRules(nested.cssRules);
+                }
+              };
+              const rect = (el: Element) => el.getBoundingClientRect().toJSON();
+              const sample = () => {
+                const css = getComputedStyle(shell);
+                const rootFont = parseFloat(getComputedStyle(html).fontSize);
+                const contentWidth =
+                  parseFloat(css.width) -
+                  (css.boxSizing === 'border-box'
+                    ? ['paddingLeft', 'paddingRight', 'borderLeftWidth', 'borderRightWidth'].reduce(
+                        (sum, key) => sum + parseFloat((css as any)[key]),
+                        0
+                      )
+                    : 0);
+                const mediaMatches = matchMedia(media).matches;
+                return {
+                  timestamp: performance.now(),
+                  rootFont,
+                  mediaMatches,
+                  contentWidth,
+                  threshold: containerRem * rootFont,
+                  predicate: mediaMatches && contentWidth <= containerRem * rootFont,
+                  viewport: {
+                    width: innerWidth,
+                    height: innerHeight,
+                    clientWidth: html.clientWidth,
+                    dpr: devicePixelRatio,
+                    visualScale: visualViewport?.scale,
+                  },
+                  shell: rect(shell),
+                  columns: rect(columns),
+                  toc: rect(toc),
+                  main: rect(main),
+                  css: {
+                    containerType: css.containerType,
+                    contain: css.contain,
+                    transform: css.transform,
+                    width: css.width,
+                    maxWidth: css.maxWidth,
+                    paddingLeft: css.paddingLeft,
+                    paddingRight: css.paddingRight,
+                    boxSizing: css.boxSizing,
+                    rootZoom: getComputedStyle(html).zoom,
+                    columnsDirection: getComputedStyle(columns).flexDirection,
+                    tocPosition: getComputedStyle(toc).position,
+                  },
+                };
+              };
+              const result: Record<string, any> = {
+                control,
+                originals,
+                timeOrigin: performance.timeOrigin,
+                userAgent: navigator.userAgent,
+                inaccessibleSheets: [],
+                mediaEdgeAssumption:
+                  '1279/1280/1281px probes Chromium default initial font 16px; actual matchMedia is retained independently of root font',
+                baseline: [],
+                handover: [],
+              };
+              try {
+                for (const sheet of document.styleSheets) {
+                  try {
+                    searchRules(sheet.cssRules);
+                  } catch (error) {
+                    result.inaccessibleSheets.push({ href: sheet.href, error: String(error) });
+                    throw error;
+                  }
+                }
+                result.copiedRuleCount = contentRules.length;
+                if (contentRules.length === 0)
+                  throw new Error('Actual docs-canvas CSS rule missing');
+                html.style.setProperty('font-size', `${control.font}px`, 'important');
+                html.style.setProperty('zoom', String(control.zoom), 'important');
+                for (let index = 0; index < 3; index++) {
+                  await frame();
+                  result.baseline.push(sample());
+                }
+                const baseline = result.baseline as ReturnType<typeof sample>[];
+                const last = baseline.at(-1)!;
+                const deltas = baseline.map((entry) => ({
+                  predicateChanged: entry.predicate !== last.predicate,
+                  maxGeometryDelta: Math.max(
+                    Math.abs(entry.contentWidth - last.contentWidth),
+                    ...(['shell', 'columns', 'toc', 'main'] as const).flatMap((box) =>
+                      ['left', 'top', 'width', 'height'].map((key) =>
+                        Math.abs(entry[box][key] - last[box][key])
+                      )
+                    )
+                  ),
+                }));
+                result.baselineStability = {
+                  deltas,
+                  stable: deltas.every(
+                    (entry) => !entry.predicateChanged && entry.maxGeometryDelta <= 1
+                  ),
+                };
+                result.attribution = result.baselineStability.stable
+                  ? 'bounded stable baseline'
+                  : 'inconclusive: baseline changed before handover';
+                document.head.append(injected);
+                shell.style.setProperty('container-type', 'normal', 'important');
+                // Deliberately manual and bounded: record each measurement and
+                // resulting class of styles, including oscillation rather than
+                // installing a ResizeObserver that could hang the test runner.
+                for (let index = 0; index < 6; index++) {
+                  const before = sample();
+                  injected.textContent = before.predicate
+                    ? `@media ${media} { ${contentRules.join('\n')} }`
+                    : '';
+                  await frame();
+                  result.handover.push({
+                    appliedPredicate: before.predicate,
+                    before,
+                    after: sample(),
+                  });
+                }
+              } catch (error) {
+                result.error = String(error);
+              } finally {
+                injected.remove();
+                for (const [el, old] of [
+                  [html, originals.rootStyle],
+                  [shell, originals.shellStyle],
+                ] as const)
+                  if (old === null) el.removeAttribute('style');
+                  else el.setAttribute('style', old);
+                scrollTo(originals.scroll.x, originals.scroll.y);
+                result.restored = {
+                  rootStyle: html.getAttribute('style'),
+                  shellStyle: shell.getAttribute('style'),
+                  injectedStylePresent: injected.isConnected,
+                };
+              }
+              return result;
+            },
+            { control, media, containerRem }
+          );
+          result.requestedViewport = page.viewportSize();
+          report.cases.push(result);
+          await retainContainerDiagnostic('docs-shell-containment-handover', report);
+        }
+        // Keep all nine observations even if one disproves the handover hypothesis.
+        for (const result of report.cases) {
+          expect(result.error, result.control.name).toBeUndefined();
+          expect(result.restored).toEqual({
+            rootStyle: result.originals.rootStyle,
+            shellStyle: result.originals.shellStyle,
+            injectedStylePresent: false,
+          });
+          expect(result.baselineStability.stable, result.control.name).toBe(true);
+          const baseline = result.baseline.at(-1);
+          expect(baseline.css.containerType).toBe('inline-size');
+          // Outside the nested query, retain the original upstream layout as
+          // observed; do not invent a negative-query column direction.
+          if (baseline.predicate) expect(baseline.css.columnsDirection).toBe('column');
+          if (result.control.name.startsWith('media-'))
+            expect(baseline.mediaMatches).toBe(result.control.name !== 'media-below');
+          for (const entry of result.handover.slice(-3)) {
+            expect(entry.after.css.containerType).toBe('normal');
+            expect(entry.appliedPredicate).toBe(entry.after.predicate);
+            expect(entry.after.predicate).toBe(baseline.predicate);
+            expect(Math.abs(entry.after.contentWidth - baseline.contentWidth)).toBeLessThanOrEqual(
+              0.5
+            );
+            for (const box of ['shell', 'columns', 'toc', 'main'])
+              for (const key of ['left', 'top', 'width', 'height'])
+                expect(
+                  Math.abs(entry.after[box][key] - baseline[box][key]),
+                  `${result.control.name} ${box}.${key}`
+                ).toBeLessThanOrEqual(1);
+          }
+          if (result.control.name.startsWith('boundary-'))
+            expect(baseline.contentWidth - baseline.threshold).toBeCloseTo(result.control.edge, 0);
+        }
+      } catch (error) {
+        report.error = String(error);
+        throw error;
+      } finally {
+        try {
+          await retainContainerDiagnostic('docs-shell-containment-handover', report);
+        } finally {
+          await context.close();
+        }
+      }
+    }, 90000);
+  }
+);
+
+async function retainContainerDiagnostic(name: string, report: Record<string, unknown>) {
+  if (!evidence) return;
+  await mkdir(path.join(evidence, 'portal'), { recursive: true });
+  await writeFile(
+    path.join(evidence, 'portal', `${name}.json`),
+    JSON.stringify(
+      {
+        sourceSha: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
+        sourceTree: execFileSync('git', ['rev-parse', 'HEAD^{tree}'], { encoding: 'utf8' }).trim(),
+        trackedDiff: execFileSync('git', ['diff', '--name-only', 'HEAD'], {
+          encoding: 'utf8',
+        }).trim(),
+        sourceFiles: [
+          'apps/www/src/content/docs/zh-cn/demo-liquid-glass-portal.browser.test.ts',
+          'apps/www/src/pages/en/test/liquid-glass-portal.astro',
+          'packages/adapters/base/src/platform/portal-destination.ts',
+        ].map((file) => ({
+          file,
+          sha256: createHash('sha256').update(readFileSync(file)).digest('hex'),
+        })),
+        node: process.version,
+        browser: browser?.version(),
+        capturedAt: new Date().toISOString(),
+        report,
+      },
+      null,
+      2
+    )
+  );
+}
+
 describe.sequential('real Liquid Dropdown Content in a bounded scene portal', () => {
   for (const runtime of RUNTIMES)
     for (const theme of ['light', 'dark'])

@@ -37,7 +37,10 @@ import { renderThemeCss } from '../../../../../../packages/prototypes/liquid-gla
         dropdownItem,
       } from '@proto.ui/prototypes-liquid-glass/dropdown';
       import { inspectCanvasBackdrop } from '@proto.ui/adapter-base/web-material';
-      import { registerWebPortalDestination } from '@proto.ui/adapter-base';
+      import {
+        registerWebPortalDestination,
+        resolveWebPortalDestinationBinding,
+      } from '@proto.ui/adapter-base';
       import { createPreviewMaterialScene } from '../../../components/PrototypePreviewer/preview-material-scene';
       import { registerPrototype } from '../../../components/PrototypePreviewer/registry';
       import { renderDemo } from '../../../components/PrototypePreviewer/demo-renderer';
@@ -143,6 +146,11 @@ import { renderThemeCss } from '../../../../../../packages/prototypes/liquid-gla
         return { x, y, width, height, left, top, right, bottom };
       };
       (window as any).liquidPortalFixture = {
+        // Test-only access to the real policy, not a duplicate clipping guard.
+        portalDiagnostic: {
+          register: registerWebPortalDestination,
+          resolve: resolveWebPortalDestinationBinding,
+        },
         beginFocusObservation() {
           focusStart = focusEntries.length;
         },
