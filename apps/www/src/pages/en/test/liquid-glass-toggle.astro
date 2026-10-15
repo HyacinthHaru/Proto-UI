@@ -21,9 +21,10 @@ import { renderThemeCss } from '../../../../../../packages/prototypes/liquid-gla
     <main id="toggle-matrix">
       <h1>Liquid Glass Toggle</h1>
       <p>
-        One Base Toggle projection through four Web runtimes. Active and inactive both use regular
-        material, with a persistent underline and a fixed 1px selection border. Pointer pressing is
-        a separate transient state.
+        One Base Toggle projection through four Web runtimes. Inactive uses neutral regular
+        material; active requests style-fill tint from its governed primary fill and foreground. The
+        persistent underline and fixed 1px selection border remain. Pointer pressing is a separate
+        transient state.
       </p>
       <p>
         The existing shared provider samples only the visible application-owned canvas. Source loss
@@ -48,11 +49,21 @@ import { renderThemeCss } from '../../../../../../packages/prototypes/liquid-gla
           ))
         }
       </div>
+      <section aria-labelledby="tint-probe-heading">
+        <h2 id="tint-probe-heading">Algorithm-only fixed-source tint controls</h2>
+        <p>
+          Invoked only by the native evidence test. These visible owned canvases compare neutral,
+          tinted and zero-refraction GPU output with fixed source bytes, geometry and motion. They
+          do not replace provider admission or the four real runtime journeys above.
+        </p>
+        <div id="toggle-tint-probe"></div>
+      </section>
     </main>
     <script>
       import toggle from '@proto.ui/prototypes-liquid-glass/toggle';
       import { createPreviewMaterialScene } from '../../../components/PrototypePreviewer/preview-material-scene';
       import { inspectWebOpticalResources } from '../../../../../../packages/adapters/base/src/material/program-pool';
+      import { runLiquidToggleTintProbe } from '../../../content/docs/zh-cn/liquid-toggle-tint-probe';
       import { registerPrototype } from '../../../components/PrototypePreviewer/registry';
       import { renderDemo } from '../../../components/PrototypePreviewer/demo-renderer';
       import type {
@@ -75,6 +86,8 @@ import { renderThemeCss } from '../../../../../../packages/prototypes/liquid-gla
       const requests = new Map<string, Array<{ ref: string; active: boolean }>>();
       const fixture = {
         metrics: () => inspectWebOpticalResources(document),
+        tintProbe: () =>
+          runLiquidToggleTintProbe(document.querySelector<HTMLElement>('#toggle-tint-probe')!),
         pause(value: boolean) {
           for (const scene of scenes.values()) scene.pause(value);
         },
@@ -239,6 +252,19 @@ import { renderThemeCss } from '../../../../../../packages/prototypes/liquid-gla
   output {
     display: block;
     min-height: 2em;
+  }
+  #toggle-tint-probe {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    min-height: 160px;
+  }
+  #toggle-tint-probe figure {
+    margin: 0;
+  }
+  #toggle-tint-probe canvas {
+    display: block;
   }
   @media (max-width: 700px) {
     main {

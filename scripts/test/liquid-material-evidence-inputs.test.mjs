@@ -42,6 +42,7 @@ for (const file of [
   'apps/www/src/content/docs/zh-cn/demo-liquid-glass-toggle.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/liquid-toggle-failure-diagnostics.ts',
   'apps/www/src/content/docs/zh-cn/liquid-toggle-failure-diagnostics.test.ts',
+  'apps/www/src/content/docs/zh-cn/liquid-toggle-tint-probe.ts',
   'apps/www/src/content/docs/zh-cn/liquid-toggle-snapshot.ts',
   'apps/www/src/content/docs/zh-cn/liquid-toggle-snapshot.test.ts',
   'apps/www/scripts/diagnose-select-click.ts',

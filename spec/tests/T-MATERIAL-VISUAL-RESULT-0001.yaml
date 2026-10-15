@@ -135,7 +135,7 @@ implementations:
     consumesCases:
       - T-MATERIAL-VISUAL-RESULT-0001-CASE-SHARED-CONTRIBUTION
     notes:
-      - Real Runtime with a scripted intent sink; independent review pending, no Adapter paint admission.
+      - Real Runtime with a scripted intent sink; optional finite tint and state palette travel in the same visual frame and are removed together. Invalid tint in an inactive Rule is rejected. No Runtime production behavior is added; independent review and Adapter paint admission remain separate.
   - id: material-shared-optimizer
     kind: module-test
     status: planned
@@ -153,7 +153,7 @@ implementations:
     consumesCases:
       - T-MATERIAL-VISUAL-RESULT-0001-CASE-GRAMMAR
     notes:
-      - Version 2 shared data vectors; execution alone is not independent review or provider admission.
+      - Version 2 shared data vectors include finite style-fill tint, no-tint shape/byte compatibility and safe own-data snapshots; execution alone is not independent review or provider admission.
   - id: material-shared-policy
     kind: module-test
     status: planned
@@ -257,6 +257,9 @@ sources:
   - path: packages/adapters/base/test/feedback-effects-conformance.test.ts
     label: Existing style-only sink coverage; not material or physical paint evidence
 revisions:
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Extend shared grammar and Runtime evidence notes for optional style-fill tint and atomic palette contributions; no private v1 resolver extension or host paint claim.
   - version: 0.3.0-alpha.1
     change: introduced
     summary: Mapped private resolver/state-machine cases separately from planned Runtime provenance and real host atomicity evidence.

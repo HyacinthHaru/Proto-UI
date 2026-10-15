@@ -7,6 +7,7 @@ import { chromium, type Browser, type CDPSession, type Locator, type Page } from
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { isUnpaintedBootstrapBoxShadow as isUnpaintedComposedShadow } from './bootstrap-disabled-paint';
 import { observeLiquidToggleSnapshot } from './liquid-toggle-snapshot';
+import type { runLiquidToggleTintProbe } from './liquid-toggle-tint-probe';
 import {
   attachLiquidToggleFailureDiagnostics,
   readLiquidToggleTriggerFacts,
@@ -137,6 +138,30 @@ async function quality(target: Locator, expected: string) {
 async function observe(target: Locator) {
   return target.evaluate(observeLiquidToggleSnapshot);
 }
+function expectedPalette(theme: string) {
+  return theme === 'dark'
+    ? {
+        primary: [10, 108, 219, 255],
+        primaryForeground: [255, 255, 255, 255],
+        secondary: [44, 44, 46, 255],
+        secondaryForeground: [245, 245, 247, 255],
+      }
+    : {
+        primary: [0, 97, 204, 255],
+        primaryForeground: [255, 255, 255, 255],
+        secondary: [255, 255, 255, 255],
+        secondaryForeground: [29, 29, 31, 255],
+      };
+}
+function opaqueState(facts: Awaited<ReturnType<typeof observe>>, theme: string, active: boolean) {
+  const palette = expectedPalette(theme);
+  expect(facts.active).toBe(String(active));
+  expect(facts.background).toEqual(active ? palette.primary : palette.secondary);
+  expect(facts.foreground).toEqual(
+    active ? palette.primaryForeground : palette.secondaryForeground
+  );
+  expect(facts.fallbackContrast).toBeGreaterThanOrEqual(4.5);
+}
 
 function optical(facts: Awaited<ReturnType<typeof observe>>) {
   expect(facts.quality).toBe('self-optical');
@@ -160,6 +185,9 @@ function optical(facts: Awaited<ReturnType<typeof observe>>) {
   expect(facts.pixels!.uniqueColors).toBeGreaterThan(20);
   expect(facts.pixels!.max - facts.pixels!.min).toBeGreaterThan(5);
   expect(facts.border).toEqual(['1px', '1px', '1px', '1px']);
+  expect(facts.receipt.profile).toBe(
+    facts.active === 'true' ? 'pui-regular-style-tint-contact-1' : 'liquidgl-v2-contact-canvas-1'
+  );
 }
 async function capture(
   name: string,
@@ -169,10 +197,7 @@ async function capture(
 ) {
   const facts = await observe(subject);
   const paint = facts.paint;
-  if (facts.quality === 'self-optical') {
-    expect(paint.committed).toBe(true);
-    expect(paint.geometryMatches).toBe(true);
-  }
+
   const { uri, image, paint: _paint, receipt: _receipt, ...summary } = facts;
   const { ownedImage, ...receipt } = facts.receipt;
   let screenshotSha256: string | undefined;
@@ -206,6 +231,31 @@ async function capture(
       path.join(output, `${name}.json`),
       JSON.stringify({ ...source, ...entry }, null, 2)
     );
+  // Persist the frozen observation before assertions so a rejected ROI remains diagnosable.
+  if (facts.quality === 'self-optical') {
+    expect(paint.committed).toBe(true);
+    expect(paint.geometryMatches).toBe(true);
+    expect(facts.snapshot.verifiedAfterDecode).toBe(true);
+    expect(facts.foreground[3]).toBe(255);
+    expect(facts.fallbackContrast).toBeNull();
+    expect(facts.pixels!.content.contentPixels).toBeGreaterThan(0);
+    expect(facts.pixels!.content.validPixels).toBeGreaterThan(0);
+    expect(facts.pixels!.content.opaquePixels).toBe(facts.pixels!.content.contentPixels);
+    expect(facts.pixels!.content.partialAlphaPixels).toBe(0);
+    expect(facts.pixels!.content.transparentPixels).toBe(0);
+    expect(facts.pixels!.content.foreground).toEqual(facts.foreground);
+    expect(facts.pixels!.content.minForegroundContrast).toBeGreaterThanOrEqual(4.5);
+    if (facts.active === 'true') {
+      expect(facts.foreground).toEqual(facts.palette.primaryForeground);
+      expect(facts.receipt.profile).toBe(
+        facts.carrier.marker === 'contact-v1'
+          ? 'pui-regular-style-tint-contact-1'
+          : 'pui-regular-style-tint-1'
+      );
+      expect(facts.pixels!.tint.blueDominantFraction).toBe(1);
+      expect(facts.pixels!.tint.meanAbsoluteDistanceToPrimary).toBeLessThan(45);
+    } else expect(facts.foreground).toEqual(facts.palette.secondaryForeground);
+  }
   return facts;
 }
 
@@ -234,6 +284,8 @@ describe.sequential('Liquid Toggle native input and self-optical material', () =
           optical(inactive);
           expect(inactive.active).toBe('false');
           expect(inactive.underline).toBe('none');
+          expect(inactive.palette).toEqual(expectedPalette(theme));
+          expect(inactive.foreground).toEqual(expectedPalette(theme).secondaryForeground);
           await quality(subject('initial-active'), 'self-optical');
           await quality(subject('controlled'), 'self-optical');
           const layout = await host.locator('[data-demo-ref]').evaluateAll((elements) =>
@@ -281,6 +333,7 @@ describe.sequential('Liquid Toggle native input and self-optical material', () =
           expect(initiallyDisabled.fallbackContrast).toBeGreaterThanOrEqual(4.5);
           expect(initiallyDisabled.active).toBe('true');
           expect(initiallyDisabled.underline).toContain('underline');
+          opaqueState(initiallyDisabled, theme, true);
           const bare = page.locator(
             `[data-toggle-no-provider="${runtime}"] [data-demo-ref="bare"]`
           );
@@ -293,6 +346,7 @@ describe.sequential('Liquid Toggle native input and self-optical material', () =
           expect(['', 'none']).toContain(bareInactive.image);
           expect(bareInactive.background[3]).toBe(255);
           expect(bareInactive.fallbackContrast).toBeGreaterThanOrEqual(4.5);
+          opaqueState(bareInactive, theme, false);
           await bare.click();
           await expect.poll(() => bare.getAttribute('aria-pressed')).toBe('true');
           const bareActive = await capture(
@@ -303,7 +357,8 @@ describe.sequential('Liquid Toggle native input and self-optical material', () =
           expect(bareActive.quality).not.toBe('self-optical');
           expect(['', 'none']).toContain(bareActive.image);
           expect(bareActive.underline).toContain('underline');
-          expect(bareActive.background).toEqual(bareInactive.background);
+          opaqueState(bareActive, theme, true);
+          expect(bareActive.background).not.toEqual(bareInactive.background);
           expect(await subject('disabled').getAttribute('aria-pressed')).toBe('true');
 
           await target.hover();
@@ -324,7 +379,8 @@ describe.sequential('Liquid Toggle native input and self-optical material', () =
           expect(active.underline).toContain('underline');
           expect(active.borderColor).toEqual(active.ringColor);
           expect(active.background).toEqual(inactive.background);
-          expect(active.foreground).toEqual(inactive.foreground);
+          expect(active.background).toEqual([0, 0, 0, 0]);
+          expect(active.foreground).toEqual(expectedPalette(theme).primaryForeground);
           expect(active.width).toBe(inactive.width);
           expect(active.height).toBe(inactive.height);
           expect(active.radius).toBe(inactive.radius);
@@ -360,6 +416,14 @@ describe.sequential('Liquid Toggle native input and self-optical material', () =
           await target.hover();
           await page.mouse.down();
           await expect.poll(() => state(page, runtime, 'regular', 'pressed')).toBe(true);
+          await expect.poll(() => target.getAttribute('data-material-phase')).toBe('pressed');
+          const selectedPressed = await capture(
+            `${runtime}-${theme}-selected-pressed`,
+            target,
+            observations
+          );
+          optical(selectedPressed);
+          expect(selectedPressed.active).toBe('true');
           await fixture(page, runtime, 'setProps', 'regular', { disabled: true });
           await expect.poll(() => target.getAttribute('aria-disabled')).toBe('true');
           await expect.poll(() => state(page, runtime, 'regular', 'pressed')).toBe(false);
@@ -379,6 +443,7 @@ describe.sequential('Liquid Toggle native input and self-optical material', () =
           expect(isUnpaintedComposedShadow(disabled.shadow)).toBe(true);
           expect(await state(page, runtime, 'regular', 'focusVisible')).toBe(false);
           expect(disabled.carrier.marker).toBe(null);
+          opaqueState(disabled, theme, true);
           expect((await fixture(page, runtime, 'requests', 'regular')).length).toBe(3);
           await page.mouse.move(0, 0);
           await fixture(page, runtime, 'setProps', 'regular', { disabled: false });
@@ -400,11 +465,24 @@ describe.sequential('Liquid Toggle native input and self-optical material', () =
               (entry: any) => entry.active
             )
           ).toEqual([true, true]);
-          await capture(`${runtime}-${theme}-controlled-rejected`, controlled, observations);
+          const rejected = await capture(
+            `${runtime}-${theme}-controlled-rejected`,
+            controlled,
+            observations
+          );
+          optical(rejected);
+          expect(rejected.active).toBe('false');
+          expect(rejected.foreground).toEqual(expectedPalette(theme).secondaryForeground);
           await fixture(page, runtime, 'setProps', 'controlled', { active: true });
           await expect.poll(() => controlled.getAttribute('aria-pressed')).toBe('true');
           await quality(controlled, 'self-optical');
-          await capture(`${runtime}-${theme}-controlled-late-active`, controlled, observations);
+          const lateActive = await capture(
+            `${runtime}-${theme}-controlled-late-active`,
+            controlled,
+            observations
+          );
+          optical(lateActive);
+          expect(lateActive.foreground).toEqual(expectedPalette(theme).primaryForeground);
           await controlled.click();
           await expect
             .poll(async () => (await fixture(page, runtime, 'requests', 'controlled')).length)
@@ -429,6 +507,7 @@ describe.sequential('Liquid Toggle native input and self-optical material', () =
           expect(lost.active).toBe('true');
           expect(lost.underline).toContain('underline');
           expect(lost.fallbackContrast).toBeGreaterThanOrEqual(4.5);
+          opaqueState(lost, theme, true);
           await fixture(page, runtime, 'source', true);
           await quality(target, 'self-optical');
           await fixture(page, runtime, 'setProps', 'regular', { material: 'opaque' });
@@ -451,8 +530,10 @@ describe.sequential('Liquid Toggle native input and self-optical material', () =
             expect(fallback.image).toBe('none');
             expect(fallback.active).toBe('true');
             expect(fallback.underline).toContain('underline');
-            if (feature !== 'forced-colors')
+            if (feature !== 'forced-colors') {
               expect(fallback.fallbackContrast).toBeGreaterThanOrEqual(4.5);
+              opaqueState(fallback, theme, true);
+            }
             await preferences(cdp, theme);
             await quality(target, 'self-optical');
           }
@@ -507,11 +588,121 @@ describe.sequential('Liquid Toggle native input and self-optical material', () =
         expect(facts.image).toBe('none');
         expect(facts.underline).toContain('underline');
         expect(facts.fallbackContrast).toBeGreaterThanOrEqual(4.5);
+        opaqueState(facts, 'light', true);
       }
     } finally {
       await context.close();
     }
   }, 90_000);
+
+  it('algorithm-only: fixed-source tint keeps real refraction and contrast across themes and motion', async () => {
+    const { context, page } = await newPage();
+    try {
+      await page.goto(`${baseUrl}${route}`, { waitUntil: 'networkidle' });
+      await page.waitForFunction(
+        () => document.documentElement.dataset.liquidToggleReady === 'true',
+        undefined,
+        { timeout: 60_000 }
+      );
+      await page.evaluate(() => (window as any).liquidToggleFixture.pause(true));
+      const report = await page.evaluate<Awaited<ReturnType<typeof runLiquidToggleTintProbe>>>(() =>
+        (window as any).liquidToggleFixture.tintProbe()
+      );
+      // Persist every outcome before asserting. Unsafe neutral controls remain
+      // genuine rejected controls with no fabricated image or contrast result.
+      const rows = [];
+      const savedSources = new Set<string>();
+      for (const row of report.records) {
+        const { sourcePng, controls, ...input } = row;
+        const sourceBytes = Buffer.from(sourcePng.split(',')[1], 'base64');
+        if (output && !savedSources.has(row.sourceKind)) {
+          await writeFile(path.join(output, `tint-source-${row.sourceKind}.png`), sourceBytes);
+          savedSources.add(row.sourceKind);
+        }
+        const savedControls: Record<string, unknown> = {};
+        for (const [name, result] of Object.entries(controls)) {
+          if (result.status === 'rejected') savedControls[name] = result;
+          else {
+            const { uri, ...statistics } = result;
+            const png = Buffer.from(uri.split(',')[1], 'base64');
+            const materialFile = `tint-${row.sourceKind}-${row.theme}-${row.phase}-${name}.png`;
+            if (output) await writeFile(path.join(output, materialFile), png);
+            savedControls[name] = {
+              ...statistics,
+              materialFile,
+              pngSha256: createHash('sha256').update(png).digest('hex'),
+            };
+          }
+        }
+        rows.push({
+          ...input,
+          sourcePngSha256: createHash('sha256').update(sourceBytes).digest('hex'),
+          controls: savedControls,
+        });
+      }
+      const evidence = { ...report, records: rows };
+      results.push({ name: 'algorithm-only-fixed-source-tint', ...evidence });
+      if (output)
+        await writeFile(
+          path.join(output, 'tint-fixed-source-controls.json'),
+          JSON.stringify({ ...source, ...evidence }, null, 2)
+        );
+
+      expect(report.records).toHaveLength(9 * 2 * 4);
+      expect(report.gpu?.version).toMatch(/WebGL/);
+      for (const row of report.records) {
+        const label = `${row.sourceKind}/${row.theme}/${row.phase}`;
+        expect(row.sourceSha256, label).toMatch(/^[a-f\d]{64}$/);
+        expect(row.sourceUnchanged, label).toBe(true);
+        expect(row.frameUnchanged, label).toBe(true);
+        expect(row.fixedTime, label).toBe(0);
+        expect(row.expectedTintProfile, label).toBe(
+          row.phase === 'static' ? 'pui-regular-style-tint-1' : 'pui-regular-style-tint-contact-1'
+        );
+        for (const name of ['tinted', 'zeroRefraction'] as const) {
+          const rendered = row.controls[name];
+          expect(rendered.status, `${label}/${name}`).toBe('rendered');
+          if (rendered.status !== 'rendered')
+            throw new Error(`${label}/${name}: ${rendered.reason}`);
+          expect(rendered.statistics.contentPixels, label).toBeGreaterThan(0);
+          expect(rendered.statistics.validPixels, label).toBeGreaterThan(0);
+          expect(rendered.statistics.opaquePixels, label).toBe(rendered.statistics.contentPixels);
+          expect(rendered.statistics.nonopaquePixels, label).toBe(0);
+          expect(rendered.statistics.minForegroundContrast, label).toBeGreaterThanOrEqual(4.5);
+          expect(rendered.statistics.blueDominantFraction, label).toBe(1);
+          expect(rendered.decodedSha256, label).toMatch(/^[a-f\d]{64}$/);
+        }
+        if (row.sourceKind.startsWith('dark-detail')) {
+          // Same fill and foreground as tint, with a deliberately dark detailed
+          // source so the original neutral guard can truthfully admit both.
+          expect(row.controls.neutral.status, label).toBe('rendered');
+          expect(row.neutralVsTint?.validPixels, label).toBeGreaterThan(0);
+          expect(row.neutralVsTint?.changedFraction, label).toBeGreaterThan(0.9);
+          expect(row.neutralVsTint?.absoluteRgbDifference, label).toBeGreaterThan(0);
+        } else if (row.controls.neutral.status === 'rejected') {
+          expect(row.controls.neutral.reason, label).toBe('rendered-contrast-unsafe');
+          expect(row.neutralVsTint, label).toBeNull();
+        }
+        if (row.sourceKind.startsWith('dark-detail') || row.sourceKind === 'high-frequency') {
+          // Pixel deltas use the same opaque content coordinates; dynamic
+          // background hashes and transparent/changed-alpha edges do not count.
+          expect(row.tintVsZeroRefraction?.validPixels, label).toBeGreaterThan(0);
+          expect(row.tintVsZeroRefraction?.changedPixels, label).toBeGreaterThan(0);
+          expect(row.tintVsZeroRefraction?.absoluteRgbDifference, label).toBeGreaterThan(0);
+          expect(row.tintVsZeroRefraction?.changedAlphaPixels, label).toBe(0);
+        }
+        if (row.sourceKind === 'dark-detail-inverted') {
+          // Same two-color histogram, reordered spatially: an opaque fill or
+          // source-independent highlight cannot supply this additional proof.
+          expect(row.invertedSourceVsOriginal?.validPixels, label).toBeGreaterThan(0);
+          expect(row.invertedSourceVsOriginal?.changedPixels, label).toBeGreaterThan(0);
+          expect(row.invertedSourceVsOriginal?.changedAlphaPixels, label).toBe(0);
+        }
+      }
+    } finally {
+      await context.close();
+    }
+  }, 180_000);
 
   for (const locale of ['en', 'zh-cn'])
     it(`${locale}: actual public Toggle page uses the shared optical path across all four runtimes`, async () => {

@@ -22,7 +22,11 @@ import {
 import path from 'node:path';
 import toggle from '../src/toggle';
 import { THEME } from '../src/theme';
-import { resolveMaterialStyle } from '../../../adapters/base/src/material/style';
+import {
+  colorContrast,
+  resolvePaletteColor,
+  resolveMaterialStyle,
+} from '../../../adapters/base/src/material/style';
 import { createWebMaterialSink } from '../../../adapters/base/src/material/sink';
 import { renderThemeCss } from '../src/theme';
 
@@ -103,9 +107,10 @@ async function fixture(initial: Record<string, unknown> = {}, visual = true) {
     },
   };
 }
-const candidate = (phase: 'rest' | 'pressed') => ({
+const candidate = (phase: 'rest' | 'pressed', active = false) => ({
   intent: 'liquid-glass',
   variant: 'regular',
+  ...(active ? { tint: 'style-fill' } : {}),
   deformation: { kind: 'press', phase, contact: 'pointer' },
 });
 
@@ -203,10 +208,14 @@ describe('Liquid Toggle shared semantic and material projection', () => {
       f.update({ active: true });
       const selected = resolveMaterialStyle(f.tokens(), THEME[theme]);
       expect(selected.provenance).toBe('post-patch-complete');
-      expect(selected.fill).toEqual(resting.fill);
-      expect(selected.foreground).toEqual(resting.foreground);
+      expect(resting.fill).toEqual(resolvePaletteColor(THEME[theme].secondary, THEME[theme]));
+      expect(selected.fill).toEqual(resolvePaletteColor(THEME[theme].primary, THEME[theme]));
+      expect(selected.foreground).toEqual(
+        resolvePaletteColor(THEME[theme]['primary-foreground'], THEME[theme])
+      );
+      expect(colorContrast(selected.fill!, selected.foreground!)).toBeGreaterThanOrEqual(4.5);
       expect(selected.competingPaint).toEqual([]);
-      expect(f.frames.at(-1)?.material.candidates).toEqual([candidate('rest')]);
+      expect(f.frames.at(-1)?.material.candidates).toEqual([candidate('rest', true)]);
       await f.session.unmount();
     }
   );
@@ -220,23 +229,18 @@ describe('Liquid Toggle shared semantic and material projection', () => {
       states: { pressed: true, disabled: false },
     });
     expect(f.tokens()).toEqual(
-      expect.arrayContaining([
-        'underline',
-        'border-ring',
-        'bg-secondary',
-        'text-secondary-foreground',
-      ])
+      expect.arrayContaining(['underline', 'border-ring', 'bg-primary', 'text-primary-foreground'])
     );
     expect(f.frames.at(-1)?.material.slot).toMatchObject({
       version: 2,
       source: { kind: 'in-app-backdrop' },
       fallback: { fill: 'style', foreground: 'style' },
     });
-    expect(f.frames.at(-1)?.material.candidates).toEqual([candidate('rest')]);
+    expect(f.frames.at(-1)?.material.candidates).toEqual([candidate('rest', true)]);
     f.fire('pointer.down');
     expect(f.state().active.get()).toBe(true);
     expect(f.state().pressed.get()).toBe(true);
-    expect(f.frames.at(-1)?.material.candidates).toEqual([candidate('pressed')]);
+    expect(f.frames.at(-1)?.material.candidates).toEqual([candidate('pressed', true)]);
     f.fire('pointer.up');
     f.fire('press.commit');
     expect(f.state().active.get()).toBe(false);
@@ -255,7 +259,7 @@ describe('Liquid Toggle shared semantic and material projection', () => {
     expect(f.state().active.get()).toBe(false);
     f.update({ active: true });
     expect(f.state().active.get()).toBe(true);
-    expect(f.frames.at(-1)?.material.candidates).toEqual([candidate('rest')]);
+    expect(f.frames.at(-1)?.material.candidates).toEqual([candidate('rest', true)]);
     f.update({});
     f.fire('press.commit');
     expect(f.state().active.get()).toBe(false);
@@ -273,7 +277,7 @@ describe('Liquid Toggle shared semantic and material projection', () => {
       f.fire('pointer.cancel');
       expect(f.state().active.get()).toBe(active);
       expect(f.state().pressed.get()).toBe(false);
-      expect(f.frames.at(-1)?.material.candidates).toEqual([candidate('rest')]);
+      expect(f.frames.at(-1)?.material.candidates).toEqual([candidate('rest', active)]);
       f.fire('pointer.down');
       f.update({ active, disabled: true });
       expect(f.state().pressed.get()).toBe(false);
@@ -286,7 +290,7 @@ describe('Liquid Toggle shared semantic and material projection', () => {
       expect(f.events).toHaveLength(0);
       expect(f.state().active.get()).toBe(active);
       f.update({ active });
-      expect(f.frames.at(-1)?.material.candidates).toEqual([candidate('rest')]);
+      expect(f.frames.at(-1)?.material.candidates).toEqual([candidate('rest', active)]);
       expect(f.tokens()).not.toContain('opacity-50');
       await f.session.unmount();
     }
@@ -294,15 +298,15 @@ describe('Liquid Toggle shared semantic and material projection', () => {
   it('restores auto after true raw prop removal and never replaces opaque fallback', async () => {
     const f = await fixture({ material: 'opaque', active: true });
     expect(f.frames.at(-1)?.material.candidates).toEqual([]);
-    expect(f.tokens()).toContain('bg-secondary');
+    expect(f.tokens()).toContain('bg-primary');
     f.update({ active: true });
-    expect(f.frames.at(-1)?.material.candidates).toEqual([candidate('rest')]);
+    expect(f.frames.at(-1)?.material.candidates).toEqual([candidate('rest', true)]);
     f.update({ active: true, material: 'opaque' });
     expect(f.frames.at(-1)?.material.candidates).toEqual([]);
     await f.session.unmount();
     const absent = await fixture({ defaultActive: true }, false);
     expect(absent.tokens()).toEqual(
-      expect.arrayContaining(['bg-secondary', 'text-secondary-foreground', 'underline'])
+      expect.arrayContaining(['bg-primary', 'text-primary-foreground', 'underline'])
     );
     await absent.session.unmount();
     const fresh = await fixture();

@@ -27,7 +27,8 @@ export default definePrototype<ToggleProjectionProps, ToggleExposes>({
     });
     def.rule({
       when: (w) => w.state(active).eq(true),
-      intent: (i) => i.feedback.style.use(tw('border-ring underline')),
+      intent: (i) =>
+        i.feedback.style.use(tw('bg-primary text-primary-foreground border-ring underline')),
     });
     def.rule({
       when: (w) =>
@@ -44,23 +45,27 @@ export default definePrototype<ToggleProjectionProps, ToggleExposes>({
       source: { kind: 'in-app-backdrop' },
       fallback: { fill: 'style', foreground: 'style' },
     });
-    // Both active states request the same regular material. The existing API
-    // has no selected-tint intent; do not fake it by changing fallback colors.
-    for (const phase of [false, true])
-      def.rule({
-        when: (w) =>
-          w.all(
-            w.prop('material').eq('auto'),
-            w.state(disabled).eq(false),
-            w.state(pressed).eq(phase)
-          ),
-        intent: (i) =>
-          i.feedback.material.use({
-            intent: 'liquid-glass',
-            variant: 'regular',
-            deformation: { kind: 'press', phase: phase ? 'pressed' : 'rest', contact: 'pointer' },
-          }),
-      });
+    // Selection colors remain governed final style. The optional whole-value
+    // tint requests host realization; unsupported hosts keep the same state's
+    // readable opaque pair instead of silently rendering neutral glass.
+    for (const selected of [false, true])
+      for (const phase of [false, true])
+        def.rule({
+          when: (w) =>
+            w.all(
+              w.prop('material').eq('auto'),
+              w.state(disabled).eq(false),
+              w.state(active).eq(selected),
+              w.state(pressed).eq(phase)
+            ),
+          intent: (i) =>
+            i.feedback.material.use({
+              intent: 'liquid-glass',
+              variant: 'regular',
+              ...(selected ? { tint: 'style-fill' as const } : {}),
+              deformation: { kind: 'press', phase: phase ? 'pressed' : 'rest', contact: 'pointer' },
+            }),
+        });
     def.rule({
       when: (w) => w.state(focusVisible).eq(true),
       intent: (i) =>

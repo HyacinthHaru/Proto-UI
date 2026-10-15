@@ -36,13 +36,23 @@ function fixture(onDecode: (call: number) => void | Promise<void> = () => {}) {
     borderRightWidth: '1px',
     borderBottomWidth: '1px',
     borderLeftWidth: '1px',
+    paddingLeft: '12px',
+    paddingRight: '12px',
+    paddingTop: '8px',
+    paddingBottom: '8px',
     borderTopColor: 'rgb(255, 255, 255)',
     textDecorationLine: 'none',
     boxShadow: 'none',
     opacity: '1',
     pointerEvents: 'auto',
     backdropFilter: 'none',
-    getPropertyValue: () => 'rgb(255, 255, 255)',
+    getPropertyValue: (name: string) =>
+      ({
+        '--pui-primary': 'rgb(0, 97, 204)',
+        '--pui-primary-foreground': 'rgb(255, 255, 255)',
+        '--pui-secondary': 'rgb(255, 255, 255)',
+        '--pui-secondary-foreground': 'rgb(29, 29, 31)',
+      })[name] ?? 'rgb(255, 255, 255)',
   };
   const pseudo = {
     backgroundImage: imageA,
@@ -65,19 +75,38 @@ function fixture(onDecode: (call: number) => void | Promise<void> = () => {}) {
     (_el, part) => (part ? pseudo : css) as unknown as CSSStyleDeclaration
   );
   vi.stubGlobal('CSS', { supports: () => true });
+  const pixels = {
+    at: (x: number, _y: number): number[] => (x % 2 ? [20, 40, 60, 255] : [80, 100, 120, 255]),
+  };
   class Canvas {
     constructor(
       public width: number,
       public height: number
     ) {}
     getContext() {
-      return {
+      const ctx = {
         fillStyle: '',
         clearRect() {},
         fillRect() {},
         drawImage() {},
-        getImageData: () => ({ data: new Uint8ClampedArray([20, 40, 60, 255, 80, 100, 120, 255]) }),
+        getImageData: () => {
+          if (this.width === 1 && this.height === 1) {
+            const values = ctx.fillStyle.match(/[\d.]+/g)!.map(Number);
+            return {
+              data: new Uint8ClampedArray([
+                ...values.slice(0, 3),
+                values.length > 3 ? values[3] * 255 : 255,
+              ]),
+            };
+          }
+          const data = new Uint8ClampedArray(this.width * this.height * 4);
+          for (let y = 0; y < this.height; y++)
+            for (let x = 0; x < this.width; x++)
+              data.set(pixels.at(x, y), (y * this.width + x) * 4);
+          return { data };
+        },
       };
+      return ctx;
     }
   }
   vi.stubGlobal('OffscreenCanvas', Canvas);
@@ -100,6 +129,7 @@ function fixture(onDecode: (call: number) => void | Promise<void> = () => {}) {
     css,
     pseudo,
     decode,
+    pixels,
     updateImage() {
       pseudo.backgroundImage = imageB;
       host.style.setProperty('--pui-material-image', imageB);
@@ -137,6 +167,72 @@ describe('Liquid Toggle immutable committed snapshot (modeled decode timing, not
     expect(facts.paint).toMatchObject(observeOwnedMaterialPaint(f.host));
     expect(facts.snapshot).toEqual({ attempts: 1, verifiedAfterDecode: true });
     expect(f.decode).toHaveBeenCalledOnce();
+  });
+  it('measures a nonempty content ROI against the foreground from that exact receipt', async () => {
+    const f = fixture();
+    const facts = await observeLiquidToggleSnapshot(f.host);
+    expect(facts.pixels!.content).toMatchObject({
+      roi: { left: 13, top: 9, right: 87, bottom: 31 },
+      contentPixels: 74 * 22,
+      validPixels: 74 * 22,
+      opaquePixels: 74 * 22,
+      partialAlphaPixels: 0,
+      transparentPixels: 0,
+      foreground: [255, 255, 255, 255],
+    });
+    expect(facts.pixels!.content.minForegroundContrast).toBeGreaterThanOrEqual(4.5);
+    expect(facts.pixels!.tint).toMatchObject({
+      meanRgb: [50, 70, 90],
+      primary: [0, 97, 204, 255],
+      blueDominantFraction: 1,
+    });
+  });
+  it('excludes the outer carrier shadow from content contrast and tint statistics', async () => {
+    const f = fixture();
+    f.pixels.at = (x, y) =>
+      x >= 22 && x < 96 && y >= 18 && y < 40 ? [0, 97, 204, 255] : [255, 255, 255, 32];
+    const facts = await observeLiquidToggleSnapshot(f.host);
+    expect(facts.pixels!.content.partialAlphaPixels).toBe(0);
+    expect(facts.pixels!.content.minForegroundContrast).toBeGreaterThanOrEqual(4.5);
+    expect(facts.pixels!.tint.meanRgb).toEqual([0, 97, 204]);
+    expect(facts.pixels!.tint.meanAbsoluteDistanceToPrimary).toBe(0);
+  });
+  it('does not use transparent host fallback contrast as optical contrast', async () => {
+    const f = fixture();
+    f.css.backgroundColor = 'rgba(0, 0, 0, 0)';
+    const facts = await observeLiquidToggleSnapshot(f.host);
+    expect(facts.fallbackContrast).toBeNull();
+    expect(facts.pixels!.content.minForegroundContrast).toBeGreaterThanOrEqual(4.5);
+  });
+  it('composites partial alpha conservatively instead of treating dark decoded RGB as opaque', async () => {
+    const f = fixture();
+    f.pixels.at = () => [0, 0, 0, 128];
+    const facts = await observeLiquidToggleSnapshot(f.host);
+    expect(facts.pixels!.content.validPixels).toBeGreaterThan(0);
+    expect(facts.pixels!.content.partialAlphaPixels).toBe(facts.pixels!.content.validPixels);
+    expect(facts.pixels!.content.minForegroundContrast).toBeLessThan(4.5);
+  });
+  it('does not pass transparent pixels or an empty content ROI by vacuous minimum', async () => {
+    const f = fixture();
+    f.pixels.at = () => [0, 97, 204, 0];
+    const transparent = await observeLiquidToggleSnapshot(f.host);
+    expect(transparent.pixels!.content.validPixels).toBe(0);
+    expect(transparent.pixels!.content.minForegroundContrast).toBe(1);
+    expect(transparent.pixels!.tint.meanRgb).toBeNull();
+    f.css.paddingLeft = '100px';
+    const empty = await observeLiquidToggleSnapshot(f.host);
+    expect(empty.pixels!.content.contentPixels).toBe(0);
+    expect(empty.pixels!.content.minForegroundContrast).toBeNull();
+    expect(empty.pixels!.tint.blueDominantFraction).toBeNull();
+  });
+  it('retries a changed foreground and never pairs old pixels with the old foreground', async () => {
+    const f = fixture((call) => {
+      if (call === 1) f.css.color = 'rgb(0, 0, 0)';
+    });
+    const facts = await observeLiquidToggleSnapshot(f.host);
+    expect(facts.pixels!.content.foreground).toEqual([0, 0, 0, 255]);
+    expect(facts.pixels!.content.minForegroundContrast).toBeLessThan(4.5);
+    expect(f.decode).toHaveBeenCalledTimes(2);
   });
   it('detects a new receipt even when the encoded image is unchanged', async () => {
     const f = fixture((call) => {

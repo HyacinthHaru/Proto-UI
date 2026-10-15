@@ -4,6 +4,7 @@ import { observeWebPointerContact } from '../events/pointer-contact';
 import { createContactMotion } from './contact-motion';
 import { createContactCarrier, inspectContactCarrier } from './contact-carrier';
 import { contactProfile, contactPaintOutset } from './contact-profile';
+import { styleTintProfile, styleTintContactProfile } from './style-tint-profile';
 import { prepareOpticalImage } from './image-prepare';
 import { observeMaterialGeometry } from './geometry-watch';
 import type { EffectsPort } from '@proto.ui/core';
@@ -467,6 +468,15 @@ function createDocumentMaterialSink(
       const wantsContact =
         requestedCandidate?.intent === 'liquid-glass' &&
         requestedCandidate.deformation?.contact === 'pointer';
+      const wantsTint =
+        requestedCandidate?.intent === 'liquid-glass' && requestedCandidate.tint === 'style-fill';
+      const selectedProfile = wantsTint
+        ? wantsContact
+          ? styleTintContactProfile
+          : styleTintProfile
+        : wantsContact
+          ? contactProfile
+          : 'liquidgl-v2-app-canvas-1';
       const paintOutset = wantsContact ? contactPaintOutset(rect.width, rect.height) : 0;
       const admission = inspectCanvasBackdrop(host, source, paintOutset);
       const carrierConflict =
@@ -530,12 +540,13 @@ function createDocumentMaterialSink(
           : null,
         provider: {
           backend: 'self-optical',
-          profile: wantsContact ? contactProfile : 'liquidgl-v2-app-canvas-1',
+          profile: selectedProfile,
           ready: !program.lost,
           sourceKind: 'in-app-backdrop',
           staticSupported: true,
           pressDeformationSupported: true,
           variants: ['regular', 'clear'],
+          styleTintVariants: ['regular'],
           tones: [],
           maxSurfacePixels: 1048576,
         },
@@ -608,6 +619,7 @@ function createDocumentMaterialSink(
           current.intent === 'liquid-glass' &&
           current.deformation?.contact === 'pointer' &&
           current.variant === candidate.variant &&
+          current.tint === candidate.tint &&
           JSON.stringify(last.material.slot) === JSON.stringify(frame.material.slot)
         );
       };
@@ -621,6 +633,8 @@ function createDocumentMaterialSink(
         resolved.foreground,
         tracksContact,
         candidate.variant,
+        candidate.tint,
+        selectedProfile,
       ]);
       const installPaint = (image: string, currentCss: CSSStyleDeclaration) => {
         if (tracksContact) {
@@ -660,7 +674,7 @@ function createDocumentMaterialSink(
         report('materialQuality', 'self-optical');
         report('materialReason', 'rendered');
         report('materialBackend', 'self-optical');
-        report('materialProfile', contactProfile);
+        report('materialProfile', selectedProfile);
         report('materialSource', 'visible-app-canvas');
         report('materialFrame', String(++renders));
         report('materialSourceRevision', String(neutral.sourceRevision));
@@ -720,6 +734,7 @@ function createDocumentMaterialSink(
           candidate.deformation?.phase === 'pressed',
         contact: tracksContact ? motionFrame.contact : undefined,
         variant: candidate.variant ?? 'regular',
+        ...(candidate.tint ? { tint: candidate.tint } : {}),
         fill: resolved.fill,
         foreground: resolved.foreground,
       };
@@ -850,7 +865,7 @@ function createDocumentMaterialSink(
             report('materialQuality', 'self-optical');
             report('materialReason', 'rendered');
             report('materialBackend', 'self-optical');
-            report('materialProfile', tracksContact ? contactProfile : 'liquidgl-v2-app-canvas-1');
+            report('materialProfile', selectedProfile);
             report('materialSource', 'visible-app-canvas');
             report('materialFrame', String(++renders));
             report('materialSourceRevision', String(source.revision));

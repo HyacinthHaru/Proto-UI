@@ -1326,3 +1326,51 @@ describe('finite initial-paint scene contrast inputs', () => {
     expect(initialPaintSceneColors('light', true)).toEqual(expected);
   });
 });
+
+describe('unversioned seed refuses opt-in style tint', () => {
+  it('rejects tint requested by either the portable candidate or resolved optical frame', async () => {
+    const f = fixture();
+    const visual: VisualFeedbackFrame = {
+      ...f.visual,
+      material: {
+        ...f.visual.material,
+        candidates: [{ intent: 'liquid-glass', tint: 'style-fill' }],
+      },
+    };
+    await expect(receiptFromAdmittedPaint(f.layout, visual, f.optical, f.image)).rejects.toThrow(
+      'seed-only-supports-static-rest-surface'
+    );
+    await expect(
+      receiptFromAdmittedPaint(f.layout, f.visual, { ...f.optical, tint: 'style-fill' }, f.image)
+    ).rejects.toThrow('seed-only-supports-static-rest-surface');
+    const { receipt } = await f.artifact();
+    expect(() =>
+      parseInitialPaintReceipt(
+        JSON.stringify({
+          ...receipt,
+          materialKey: JSON.stringify({
+            slot: visual.material.slot,
+            candidates: visual.material.candidates,
+          }),
+        })
+      )
+    ).toThrow('seed-style-tint-profile-unavailable');
+  });
+  it('cannot adopt a neutral receipt into a same-palette tint frame', async () => {
+    const f = fixture();
+    const { serialized, binding } = await f.show();
+    const prepared = await prepareExperimentalInitialPaint(f.host, serialized, binding, f.options);
+    const lease = readInternalInitialPaintLease(f.host)!;
+    const visual: VisualFeedbackFrame = {
+      ...f.visual,
+      material: {
+        ...f.visual.material,
+        candidates: [{ intent: 'liquid-glass', tint: 'style-fill' }],
+      },
+    };
+    expect(lease.matches(visual, { ...f.optical, tint: 'style-fill' })).toBe(false);
+    expect(lease.matches(f.visual, { ...f.optical, tint: 'style-fill' })).toBe(false);
+    expect(lease.matches(visual, f.optical)).toBe(false);
+    prepared.dispose();
+  });
+});

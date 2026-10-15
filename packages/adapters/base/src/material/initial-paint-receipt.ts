@@ -115,6 +115,22 @@ const keys = (value: unknown, expected: string[]) =>
 export function parseInitialPaintReceipt(serialized: string): InitialPaintReceipt {
   if (serialized.length > 16_200_000) throw new Error('seed-artifact-budget');
   const value = JSON.parse(serialized);
+  // This unversioned static seed profile predates opt-in tint. A valid outer
+  // receipt/hash must not be treated as evidence for a different renderer.
+  let candidateKey: { candidates?: Array<{ intent?: string; tint?: unknown }> } | null = null;
+  try {
+    candidateKey = JSON.parse(value?.materialKey);
+  } catch {
+    // Preserve the historical opaque key grammar; matching live intent remains
+    // mandatory at adoption. Only newly requested tint is rejected here.
+  }
+  if (
+    Array.isArray(candidateKey?.candidates) &&
+    candidateKey.candidates.some(
+      (candidate) => candidate?.intent === 'liquid-glass' && Object.hasOwn(candidate, 'tint')
+    )
+  )
+    throw new Error('seed-style-tint-profile-unavailable');
   if (
     !keys(value, [
       'version',
@@ -240,12 +256,14 @@ export async function receiptFromAdmittedPaint(
   image: string
 ): Promise<InitialPaintReceipt> {
   if (
+    optical.tint ||
     optical.pressed ||
     optical.contact ||
     (optical.geometry.paintOutset ?? 0) !== 0 ||
     visual.material.candidates.length !== 1 ||
     visual.material.candidates[0].intent !== 'liquid-glass' ||
-    visual.material.candidates[0].deformation
+    visual.material.candidates[0].deformation ||
+    visual.material.candidates[0].tint
   )
     throw new Error('seed-only-supports-static-rest-surface');
   // Snapshot every scalar before hashing can yield; do not read mutable source

@@ -18,6 +18,7 @@ export type MaterialProviderFacts = Readonly<{
   staticSupported: boolean;
   pressDeformationSupported: boolean;
   variants: readonly ('regular' | 'clear')[];
+  styleTintVariants?: readonly ('regular' | 'clear')[];
   tones: readonly ('system' | 'light' | 'dark')[];
   maxSurfacePixels: number;
 }>;
@@ -76,6 +77,36 @@ function opaque(value: unknown): value is Rgba {
       (i) => Object.hasOwn(value, i) && Number.isFinite(value[i]) && value[i] >= 0 && value[i] <= 1
     )
   );
+}
+
+// Treat the optional capability as data, not executable provider code. A malformed
+// announcement cannot leave a previous optical paint in place by throwing. This
+// check is deliberately never consulted for an untinted candidate.
+function supportsStyleTint(provider: MaterialProviderFacts, variant: 'regular' | 'clear'): boolean {
+  try {
+    const fact = Object.getOwnPropertyDescriptor(provider, 'styleTintVariants');
+    if (!fact?.enumerable || !('value' in fact) || !Array.isArray(fact.value)) return false;
+    const variants: unknown[] = fact.value;
+    if (Object.getPrototypeOf(variants) !== Array.prototype) return false;
+    const length = Object.getOwnPropertyDescriptor(variants, 'length')?.value;
+    if (!Number.isSafeInteger(length) || length < 0) return false;
+    const keys = Reflect.ownKeys(variants);
+    if (keys.length !== length + 1) return false;
+    let supported = false;
+    for (let index = 0; index < length; index++) {
+      const entry = Object.getOwnPropertyDescriptor(variants, index);
+      if (
+        !entry?.enumerable ||
+        !('value' in entry) ||
+        (entry.value !== 'regular' && entry.value !== 'clear')
+      )
+        return false;
+      if (entry.value === variant) supported = true;
+    }
+    return supported;
+  } catch {
+    return false;
+  }
 }
 
 /** Pure policy only: no resource acquisition, computed CSS, input or host paint. */
@@ -225,6 +256,14 @@ export function resolveMaterialPolicy(input: MaterialPolicyInput): MaterialPolic
     pixels > provider.maxSurfacePixels
   ) {
     result.diagnostics.push('geometry-or-provider-budget-unavailable');
+    return finish();
+  }
+  if (
+    candidate.intent === 'liquid-glass' &&
+    candidate.tint === 'style-fill' &&
+    !supportsStyleTint(provider, candidate.variant ?? 'regular')
+  ) {
+    result.diagnostics.push('style-tint-unavailable');
     return finish();
   }
   result.decision = 'eligible';

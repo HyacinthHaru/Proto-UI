@@ -289,3 +289,136 @@ describe('regular prefilter byte equivalence (CPU and GL spy only)', () => {
     }
   });
 });
+
+describe('opt-in style tint optical ABI (spy only; actual pixels require CI)', () => {
+  it('uses the isolated profile and full pipeline identity, then restores identical neutral inputs', async () => {
+    const { styleTintFragment, styleTintContactFragment } =
+      await import('../src/material/style-tint-profile');
+    const f = fixture();
+    f.program.render(f.frame);
+    const neutralTint = f.writes.get('u_tint');
+    f.program.render({ ...f.frame, tint: 'style-fill' });
+    expect(f.shaderSources.at(-1)).toBe(styleTintFragment);
+    expect(f.writes.get('u_tint')).toEqual(f.frame.fill);
+    expect(f.writes.get('u_styleTintLightForeground')).toBe(0);
+    f.program.render({ ...f.frame, tint: 'style-fill' });
+    expect(f.program.inspect().programBuilds).toBe(2);
+    f.program.render({
+      ...f.frame,
+      tint: 'style-fill',
+      contact: { x: 0.5, y: 0.5, deltaX: 0, deltaY: 0, strength: 1 },
+    });
+    expect(f.shaderSources.at(-1)).toBe(styleTintContactFragment);
+    f.program.render(f.frame);
+    expect(f.shaderSources.at(-1)).toBe(fragment);
+    expect(f.writes.get('u_tint')).toEqual(neutralTint);
+    expect(f.program.inspect().programBuilds).toBe(4);
+    f.program.dispose();
+  });
+  it('sets the governed fill and bright-foreground polarity without exposing arbitrary uniforms', () => {
+    const f = fixture();
+    f.gl.readPixels = (
+      _x: number,
+      _y: number,
+      _w: number,
+      _h: number,
+      _format: number,
+      _type: number,
+      pixels: Uint8Array
+    ) => {
+      pixels.fill(0);
+      for (let i = 3; i < pixels.length; i += 4) pixels[i] = 255;
+    };
+    const fill = [0, 97 / 255, 204 / 255, 1] as const;
+    f.program.render({ ...f.frame, tint: 'style-fill', fill, foreground: [1, 1, 1, 1] });
+    expect(f.writes.get('u_tint')).toEqual(fill);
+    expect(f.writes.get('u_styleTintLightForeground')).toBe(1);
+    f.program.dispose();
+  });
+  it('refuses unsupported tint, clear tint and unreadable pairs before GPU allocation', () => {
+    const f = fixture();
+    expect(() => f.program.render({ ...f.frame, tint: 'css-red' as any })).toThrow(
+      'style-tint-profile-unavailable'
+    );
+    expect(() => f.program.render({ ...f.frame, tint: 'style-fill', variant: 'clear' })).toThrow(
+      'style-tint-profile-unavailable'
+    );
+    expect(() =>
+      f.program.render({ ...f.frame, tint: 'style-fill', foreground: [1, 1, 1, 1] })
+    ).toThrow('invalid-style-tint-palette');
+    expect(f.shaderSources).toHaveLength(0);
+    f.program.dispose();
+  });
+  it('cannot certify an empty tinted interior or bypass the existing rendered contrast guard', () => {
+    const f = fixture();
+    f.gl.readPixels = (
+      _x: number,
+      _y: number,
+      _w: number,
+      _h: number,
+      _format: number,
+      _type: number,
+      pixels: Uint8Array
+    ) => pixels.fill(0);
+    expect(() => f.program.render({ ...f.frame, tint: 'style-fill' })).toThrow(
+      'rendered-style-tint-empty'
+    );
+    f.gl.readPixels = (
+      _x: number,
+      _y: number,
+      _w: number,
+      _h: number,
+      _format: number,
+      _type: number,
+      pixels: Uint8Array
+    ) => {
+      pixels.fill(0);
+      for (let i = 3; i < pixels.length; i += 4) pixels[i] = 255;
+    };
+    expect(() => f.program.render({ ...f.frame, tint: 'style-fill' })).toThrow(
+      'rendered-contrast-unsafe'
+    );
+    f.program.dispose();
+  });
+  it('rejects near-opaque pixels whose composited contrast fails, without changing neutral behavior', () => {
+    const f = fixture();
+    const fill = [118 / 255, 118 / 255, 118 / 255, 1] as const;
+    const foreground = [1, 1, 1, 1] as const;
+    f.gl.readPixels = (
+      _x: number,
+      _y: number,
+      _w: number,
+      _h: number,
+      _format: number,
+      _type: number,
+      pixels: Uint8Array
+    ) => {
+      for (let at = 0; at < pixels.length; at += 4) pixels.set([118, 118, 118, 255], at);
+      pixels.set([116, 116, 116, 250], 0);
+    };
+    // Raw 116 looks safe (~4.67); white-backdrop composition is ~121 (~4.35).
+    expect(() => f.program.render({ ...f.frame, fill, foreground })).not.toThrow();
+    expect(() => f.program.render({ ...f.frame, fill, foreground, tint: 'style-fill' })).toThrow(
+      'rendered-contrast-unsafe'
+    );
+    f.program.dispose();
+  });
+  it('requires full opaque coverage evidence rather than counting only near-opaque AA', () => {
+    const f = fixture();
+    f.gl.readPixels = (
+      _x: number,
+      _y: number,
+      _w: number,
+      _h: number,
+      _format: number,
+      _type: number,
+      pixels: Uint8Array
+    ) => {
+      for (let at = 0; at < pixels.length; at += 4) pixels.set([250, 250, 250, 250], at);
+    };
+    expect(() => f.program.render({ ...f.frame, tint: 'style-fill' })).toThrow(
+      'rendered-style-tint-empty'
+    );
+    f.program.dispose();
+  });
+});

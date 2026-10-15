@@ -4,7 +4,7 @@ title: Liquid Toggle semantics, material ownership and delivery evidence
 status: draft
 since: 0.3.0-alpha.1
 lifecycleRationale: Local semantic and translation checks do not establish exact-head optical or native/compiler acceptance.
-summary: Test one Base owner, persistent active versus transient press, candidate cardinality, opaque restoration and real four-Web optical/fallback delivery.
+summary: Test one Base owner, persistent active versus transient press, candidate cardinality, same-state opaque restoration, source-bound selected tint and real four-Web optical/fallback delivery.
 cases:
   - id: T-LIQUID-GLASS-TOGGLE-0001-CASE-SEMANTIC
     title: Base identity, controlled and uncontrolled selection, focus and disabled cancellation
@@ -19,7 +19,7 @@ cases:
     covers: [P-LIQUID-GLASS-TOGGLE-DELIVERY]
     expectation: same-prototype-in-each-family-fixed-consumer
   - id: T-LIQUID-GLASS-TOGGLE-0001-CASE-BROWSER
-    title: Exact-candidate real optical active, inactive, press and strict fallback evidence
+    title: Exact-candidate selected tint, neutral inactive, press and strict fallback evidence
     covers:
       [
         P-LIQUID-GLASS-TOGGLE-BASE,
@@ -29,6 +29,9 @@ cases:
         P-LIQUID-GLASS-TOGGLE-DELIVERY,
       ]
     expectation: real-four-web-optical-and-fallback-input-evidence
+    notes:
+      - Preserve all eleven original complete browser scenarios and their source, input, preference, controlled, geometry and cleanup assertions. Replace only the superseded same-fill or same-foreground restrictions with state-specific governed palette assertions.
+      - Frozen same-source tint and zero-refraction controls plus nonempty decoded content-pixel contrast prove more than transparent host CSS or changing image hashes. Text underline remains the non-color marker; icon-only is not accepted by this slice.
 implementations:
   - id: liquid-glass-toggle-contract
     kind: module-test
@@ -51,18 +54,22 @@ implementations:
     consumesCases: [T-LIQUID-GLASS-TOGGLE-0001-CASE-DELIVERY]
   - id: liquid-glass-toggle-browser
     kind: runtime-test
-    status: failing
+    status: planned
     path: apps/www/src/content/docs/zh-cn/demo-liquid-glass-toggle.browser.test.ts
     required: true
     consumesCases: [T-LIQUID-GLASS-TOGGLE-0001-CASE-BROWSER]
     notes:
-      - Exact-head b2a90f89f4b75a8afcb420c82d9588f7317e7c63 run 38633799501 executed 11 cases with one passing and ten failing. Eight runtime/theme cases reached committed inactive optics before disabled fallback failed; both public locale cases stalled on the shared header Select click. These failures remain acceptance blockers until a later exact-head native run verifies the repairs.
-      - The disabled prototype repair removes whole-host translucency rather than weakening opaque-fallback admission. Source-level checks do not establish the unexecuted remainder of the native journeys, public Select recovery, or broader native/compiler support.
+      - Exact-head b2a90f89f4b75a8afcb420c82d9588f7317e7c63 run 38633799501 executed 11 cases with one passing and ten failing. Eight runtime/theme cases reached committed inactive optics before disabled fallback failed; both public locale cases stalled on the shared header Select click. This is retained historical failure evidence, not the current tint result.
+      - Baseline 04a2191 passed all eleven original Toggle scenarios in run 38654570729 job 116161164963; baseline 347edd6 passed all eleven again in run 38656454140 job 116167274475. Those exact-head results predate selected tint and do not satisfy the revised tint contract.
+      - The new tint candidate must run the same eleven complete scenarios plus frozen source algorithm controls naturally in exact-head CI. Source guards and opaque-fallback admission remain unchanged; local CPU or mocked GPU results are not browser acceptance.
 exercises:
   prototypes: [P-LIQUID-GLASS-TOGGLE]
 sources:
   - path: packages/prototypes/liquid-glass/test/toggle.test.ts
 revisions:
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Replace only superseded same-color restrictions with selected tint and state-specific contrast evidence while preserving the original eleven browser scenarios and exact-head evidence boundaries.
   - version: 0.3.0-alpha.1
     change: introduced
     summary: Define bounded standalone Toggle semantic/material checks and explicitly pending exact-head optical browser acceptance.
