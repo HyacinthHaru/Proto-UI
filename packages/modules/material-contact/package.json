@@ -4,6 +4,11 @@
   "private": true,
   "type": "module",
   "description": "Unregistered experimental material contact association; fake-host evidence only.",
+  "protoUi": {
+    "release": {
+      "scan": false
+    }
+  },
   "dependencies": {
     "@proto.ui/core": "workspace:*",
     "@proto.ui/module-anatomy": "workspace:*",
