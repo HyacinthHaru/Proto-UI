@@ -166,6 +166,7 @@ export const BROWSER_SUITES = Object.freeze([
 // Liquid Card candidate fixture, whose own workflow uses an isolated dev server.
 export const PRODUCTION_BROWSER_SUITES = Object.freeze([
   'apps/www/src/content/docs/zh-cn/demo-liquid-glass-toggle.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-liquid-glass-hover.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/finf-drawer-intrinsic.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/finf-drawer-command-density.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/finf-popover-command-density.browser.test.ts',
@@ -192,6 +193,8 @@ export const PRODUCTION_BROWSER_SUITES = Object.freeze([
 // Each dedicated suite has an executable owner; exclusion is never a skip.
 export const PRODUCTION_BROWSER_OWNERS = Object.freeze({
   'apps/www/src/content/docs/zh-cn/demo-liquid-glass-toggle.browser.test.ts':
+    '.github/workflows/liquid-material-evidence.yml',
+  'apps/www/src/content/docs/zh-cn/demo-liquid-glass-hover.browser.test.ts':
     '.github/workflows/liquid-material-evidence.yml',
   'apps/www/src/content/docs/zh-cn/finf-button-ghost-component.browser.test.ts':
     '.github/workflows/finf-button-ghost-component-evidence.yml',
