@@ -3,6 +3,7 @@ import { definePrototype, type Prototype } from '@proto.ui/core';
 import { asFocusable, asFocusScope, asOverlay } from '@proto.ui/hooks';
 import { expectStableReactPortalMount } from './portal-destination.assertions';
 import {
+  isWebPortalMaterialSuspended,
   registerWebPortalDestination,
   subscribeWebPortalDestinations,
   getWebPortalProjectionGeneration,
@@ -10,6 +11,7 @@ import {
 
 export type DestinationMount = {
   stablePortalContainer?: boolean;
+  authorAdoptionTransfersProjection?: boolean;
   run(work: () => void): Promise<void>;
   flush(): Promise<void>;
   refresh(): Promise<void>;
@@ -152,6 +154,53 @@ export function portalDestinationContract(name: string, mount: Mount) {
   }
 
   describe(`${name}: fixed-view-epoch portal destination contract`, () => {
+    it('suspends a default-body epoch when its connected author is adopted into another document', async () => {
+      const f = await fixture(true, false);
+      const iframe = document.createElement('iframe');
+      document.body.append(iframe);
+      const foreign = iframe.contentDocument!;
+      const target = f.current();
+      const parent = target.parentNode;
+      const targetDocument = target.ownerDocument;
+      const projectionGeneration = getWebPortalProjectionGeneration(target);
+      try {
+        expect(isWebPortalMaterialSuspended(target)).toBe(false);
+        // Happy DOM does not recursively adopt descendants. Explicitly adopt
+        // every author node to model native deep adoption, leaving the portal
+        // target outside that subtree. This is not native focus evidence.
+        const adopt = (node: Node) => {
+          const children = Array.from(node.childNodes);
+          foreign.adoptNode(node);
+          for (const child of children) {
+            adopt(child);
+            node.appendChild(child);
+          }
+        };
+        await f.run(() => {
+          adopt(f.host);
+          foreign.body.append(f.host);
+        });
+        await f.flush();
+        await f.refresh();
+        expect(isWebPortalMaterialSuspended(target)).toBe(true);
+        if (!f.authorAdoptionTransfersProjection) {
+          expect(f.current()).toBe(target);
+          expect(target.parentNode).toBe(parent);
+          expect(target.ownerDocument).toBe(targetDocument);
+          expect(target.isConnected).toBe(true);
+          expect(getWebPortalProjectionGeneration(target)).toBe(projectionGeneration);
+          expect(f.actions().isOpen()).toBe(true);
+          expect(f.counts).toEqual({ setup: 1, disposed: 0 });
+          expect(f.changes).toEqual([]);
+        }
+        // WC explicitly retains its pre-existing adoption/detach lifecycle.
+        // Its passing suspension assertion is not a same-parent continuity claim.
+      } finally {
+        await f.cleanup();
+        iframe.remove();
+      }
+    });
+
     it('keeps the ordinary body default and leaves nonportal targets in their author tree', async () => {
       const fallback = await fixture(true, false);
       try {

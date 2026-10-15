@@ -15,6 +15,10 @@ export type WebPortalDestinationBinding = Readonly<{
   registration: object | null;
 }>;
 
+// A default-body epoch must observe its author leaving the target document,
+// even though its physical destination stays fixed. This opaque identity is
+// only invalidation metadata; it never grants source or optical eligibility.
+const crossDocumentFallbackPolicy = Object.freeze({});
 const destinations = new WeakMap<Element, Registration>();
 const registry: Signal = { generation: 0, notifying: false, listeners: new Set() };
 const projections = new WeakMap<HTMLElement, Signal>();
@@ -87,8 +91,16 @@ export function resolveWebPortalDestinationBinding(
   const doc = target?.ownerDocument ?? documentOf(origin!);
   // Geometry/host reads may replace body or adopt the target reentrantly.
   // Resolve fallback at return time rather than returning a detached/foreign body.
-  const fallbackBody = () => (target?.ownerDocument ?? documentOf(origin!)).body;
-  const fallback = () => ({ destination: fallbackBody(), registration: null });
+  const fallback = (registration: object | null = null): WebPortalDestinationBinding => {
+    const currentDocument = target?.ownerDocument ?? documentOf(origin!);
+    return {
+      destination: currentDocument.body,
+      registration:
+        origin && documentOf(origin) !== currentDocument
+          ? crossDocumentFallbackPolicy
+          : registration,
+    };
+  };
   if (!target || !origin?.isConnected || documentOf(origin) !== doc) return fallback();
   const generation = registry.generation;
   const authorChain = ancestry(origin);
@@ -97,7 +109,7 @@ export function resolveWebPortalDestinationBinding(
     const scope = node as Element;
     const entry = destinations.get(scope);
     if (!entry) continue;
-    const unavailable = () => ({ destination: fallbackBody(), registration: entry.token });
+    const unavailable = () => fallback(entry.token);
     const destination = entry.destination;
     const destinationChain = ancestry(destination);
     if (

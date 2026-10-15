@@ -44,6 +44,72 @@ function register(scope: Element, destination: HTMLElement) {
 }
 
 describe('explicit Web portal destination policy', () => {
+  it.each(['return', 'throw'])(
+    'retains cross-document invalidation after a reentrant %s from style reads',
+    (outcome) => {
+      const f = fixture();
+      register(f.scope, f.destination);
+      const initial = resolveWebPortalDestinationBinding(f.origin, f.target);
+      const iframe = document.createElement('iframe');
+      document.body.append(iframe);
+      const foreign = iframe.contentDocument!;
+      const computed = window.getComputedStyle.bind(window);
+      let changed = false;
+      vi.spyOn(window, 'getComputedStyle').mockImplementation((element) => {
+        const css = computed(element);
+        if (!changed) {
+          changed = true;
+          foreign.adoptNode(f.origin);
+          foreign.body.append(f.origin);
+          if (outcome === 'throw') throw new Error('style read interrupted by adoption');
+        }
+        return css;
+      });
+      const crossed = resolveWebPortalDestinationBinding(f.origin, f.target);
+      expect(crossed.destination).toBe(document.body);
+      expect(crossed.registration).not.toBe(initial.registration);
+      expect(crossed.registration).not.toBeNull();
+      expect(resolveWebPortalDestinationBinding(f.origin, f.target).registration).toBe(
+        crossed.registration
+      );
+    }
+  );
+  it('distinguishes live foreign author origin from the retained default body binding', () => {
+    const f = fixture();
+    document.body.append(f.target);
+    const original = resolveWebPortalDestinationBinding(f.origin, f.target);
+    const epoch = beginWebPortalMaterialEpoch(f.target);
+    retain(() => epoch.release());
+    epoch.commitProjection();
+    const iframe = document.createElement('iframe');
+    document.body.append(iframe);
+    const foreign = iframe.contentDocument!;
+    // Happy DOM installs a nonconfigurable own ownerDocument on first adoption.
+    // Keep that test property configurable so its second adoptNode can model
+    // native return adoption; both document changes still use adoptNode itself.
+    Object.defineProperty(f.origin, 'ownerDocument', { value: document, configurable: true });
+    foreign.adoptNode(f.origin);
+    foreign.body.append(f.origin);
+    const crossed = resolveWebPortalDestinationBinding(f.origin, f.target);
+    expect(crossed.destination).toBe(document.body);
+    expect(crossed.registration).not.toBe(original.registration);
+    expect(resolveWebPortalDestinationBinding(f.origin, f.target).registration).toBe(
+      crossed.registration
+    );
+    if (
+      crossed.destination !== original.destination ||
+      crossed.registration !== original.registration
+    )
+      epoch.suspend();
+    expect(isWebPortalMaterialSuspended(f.target)).toBe(true);
+    document.adoptNode(f.origin);
+    f.component.append(f.origin);
+    expect(resolveWebPortalDestinationBinding(f.origin, f.target)).toEqual(original);
+    epoch.commitProjection();
+    expect(isWebPortalMaterialSuspended(f.target)).toBe(true);
+    expect(f.target.parentElement).toBe(document.body);
+  });
+
   it('returns a nearest opaque policy identity independently of destination eligibility', () => {
     const f = fixture();
     expect(resolveWebPortalDestinationBinding(f.origin, f.target)).toEqual({

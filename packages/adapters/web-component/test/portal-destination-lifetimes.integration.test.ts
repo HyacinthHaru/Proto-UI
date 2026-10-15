@@ -16,6 +16,7 @@ portalDestinationContract('WC owned native projection', async (host, ownerProto,
     for (let i = 0; i < 30; i++) await Promise.resolve();
   };
   return {
+    authorAdoptionTransfersProjection: true,
     flush,
     run: async (work) => {
       work();
