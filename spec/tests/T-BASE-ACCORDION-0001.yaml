@@ -11,6 +11,10 @@ statement:
   zh-CN: 已执行synthetic-DOM测试只覆盖各自断言；浏览器与GPUI旅程是必需的未完成验收，不从JSON transport或token存在推断。
   en: Executed synthetic-DOM tests cover only their named assertions. Browser and GPUI journeys are mandatory open acceptance work, never inferred from JSON transport or token presence.
 cases:
+  - id: T-BASE-ACCORDION-0001-CASE-TRANSIENT-CLEANUP
+    title: Cancellation and view withdrawal clear transient state while preserving semantic owner facts
+    covers: [P-BASE-ACCORDION-TRIGGER-TRANSIENT-CLEANUP]
+    expectation: cancellation-and-unmount-clear-hovered-and-pressed-without-activation-or-semantic-state-change
   - id: T-BASE-ACCORDION-0001-CASE-ROOT-OWNER
     title: root owner boundary
     covers:
@@ -87,6 +91,16 @@ cases:
       - P-LIQUID-GLASS-ACCORDION-TRIGGER-MATERIAL
     expectation: 'Runtime executes the actual LiquidGlass Accordion Trigger: rest/press/release/disabled choose at most one liquid-glass candidate, missing visual capability diagnoses and keeps opaque style, detach/remount uses fresh view epochs, and disposal cannot revive a sink. No host optical renderer, image comparison, native input, OS A11y or GPUI paint is certified.'
 implementations:
+  - id: prototypes-base-accordion-trigger-transient-cleanup
+    kind: module-test
+    status: passing
+    path: packages/prototypes/base/test/command-cancel-lifetime.test.ts
+    required: true
+    consumesCases: [T-BASE-ACCORDION-0001-CASE-TRANSIENT-CLEANUP]
+    exercises: [P-BASE-ACCORDION-TRIGGER]
+    notes:
+      - Real Runtime sessions cover controlled/uncontrolled owner facts, press.cancel, pointer.cancel, native-source blur through the existing Web router, and unmount/remount without prior cancellation.
+      - Happy DOM synthetic native-event-source tests are not browser, visual, assistive-technology, or stable-admission evidence.
   - id: base-accordion
     kind: runtime-test
     status: passing
@@ -255,6 +269,9 @@ revisions:
   - version: 0.3.0-alpha.1
     change: introduced
     summary: Bounded source tests and explicit uncompleted native acceptance.
+  - version: 0.3.0-alpha.1
+    change: clarified
+    summary: Map cancellation and uncancelled view-withdrawal regression evidence for Base transient cleanup.
 tags:
   - test
   - accordion

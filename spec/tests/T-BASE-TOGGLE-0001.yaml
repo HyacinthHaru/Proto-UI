@@ -5,6 +5,10 @@ status: draft
 since: 0.1.0
 summary: Contract test coverage for the Base Toggle prototype protocol, including active state ownership, independent authoring entries, activation, focus and interaction state, accessibility pressed projection, and deferred extension surfaces.
 cases:
+  - id: T-BASE-TOGGLE-0001-CASE-TRANSIENT-CLEANUP
+    title: Cancellation and view withdrawal clear transient state while preserving semantic owner facts
+    covers: [P-BASE-TOGGLE-TRANSIENT-CLEANUP]
+    expectation: cancellation-and-unmount-clear-hovered-and-pressed-without-activation-or-semantic-state-change
   - id: T-BASE-TOGGLE-0001-CASE-AUTHORING-ENTRIES
     title: base-toggle and asToggle remain authoring entries of one independent Toggle protocol
     covers:
@@ -67,6 +71,16 @@ cases:
       - P-BASE-TOGGLE-NO-VISUAL-VARIANT-CORE
     expectation: toggle-a11y-and-deferred-surfaces-remain-explicit
 implementations:
+  - id: prototypes-base-toggle-transient-cleanup
+    kind: module-test
+    status: passing
+    path: packages/prototypes/base/test/command-cancel-lifetime.test.ts
+    required: true
+    consumesCases: [T-BASE-TOGGLE-0001-CASE-TRANSIENT-CLEANUP]
+    exercises: [P-BASE-TOGGLE]
+    notes:
+      - Real Runtime sessions cover controlled/uncontrolled owner facts, press.cancel, pointer.cancel, native-source blur through the existing Web router, and unmount/remount without prior cancellation.
+      - Happy DOM synthetic native-event-source tests are not browser, visual, assistive-technology, or stable-admission evidence.
   - id: prototypes-base-toggle-contract
     kind: module-test
     status: passing
@@ -100,6 +114,9 @@ revisions:
   - version: 0.1.0
     change: introduced
     summary: Introduced Base Toggle protocol test entity aligned to P-BASE-TOGGLE criteria.
+  - version: 0.3.0-alpha.1
+    change: clarified
+    summary: Map cancellation and uncancelled view-withdrawal regression evidence for Base transient cleanup.
 tags:
   - prototype
   - base

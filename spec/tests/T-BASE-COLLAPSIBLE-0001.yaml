@@ -11,6 +11,10 @@ statement:
   zh-CN: 五个 focused implementation 覆盖 Base 与四种 Web Adapter；第六个 public-browser mapping 单独承担实际输入与可见 surface 的证据，当前尚未执行。各 mapping 的 notes 限定已检查的子范围；passing 标记不是新鲜运行、native browser 或独立 approval，运行结果仍须由 provenance 绑定实际源 revision。稳定准入与实现完成是分开的决定。
   en: Five focused implementations cover Base and four Web Adapters; a sixth public-browser mapping separately exercises actual input and visible surfaces and is unexecuted. Each mapping’s notes bound its checked subsets. A passing label is neither a fresh run, native browser evidence nor independent approval; execution results still require provenance bound to the actual source revision. Stable admission and implementation completion remain separate decisions.
 cases:
+  - id: T-BASE-COLLAPSIBLE-0001-CASE-TRANSIENT-CLEANUP
+    title: Cancellation and view withdrawal clear transient state while preserving semantic owner facts
+    covers: [P-BASE-COLLAPSIBLE-TRIGGER-TRANSIENT-CLEANUP]
+    expectation: cancellation-and-unmount-clear-hovered-and-pressed-without-activation-or-semantic-state-change
   - id: T-BASE-COLLAPSIBLE-0001-CASE-UNCONTROLLED
     title: Uncontrolled creation and requests keep one canonical open fact
     covers:
@@ -128,6 +132,16 @@ cases:
       - P-BASE-COLLAPSIBLE-CONTENT-NO-FOCUS
     expectation: Real consumers use collapsibleRoot/Trigger/Content and asCollapsibleRoot/Trigger/Content through @proto.ui/prototypes-base/collapsible with the canonical names and COLLAPSIBLE_FAMILY/COLLAPSIBLE_CONTEXT. Both authoring entries support the same canonical Root requests and part facts without importing a different Base protocol, Accordion group ownership, heading/region, roving, Overlay, new Host Capability or automatic focus behavior.
 implementations:
+  - id: prototypes-base-collapsible-trigger-transient-cleanup
+    kind: module-test
+    status: passing
+    path: packages/prototypes/base/test/command-cancel-lifetime.test.ts
+    required: true
+    consumesCases: [T-BASE-COLLAPSIBLE-0001-CASE-TRANSIENT-CLEANUP]
+    exercises: [P-BASE-COLLAPSIBLE-TRIGGER]
+    notes:
+      - Real Runtime sessions cover controlled/uncontrolled owner facts, press.cancel, pointer.cancel, native-source blur through the existing Web router, and unmount/remount without prior cancellation.
+      - Happy DOM synthetic native-event-source tests are not browser, visual, assistive-technology, or stable-admission evidence.
   - id: prototypes-base-collapsible-contract
     kind: module-test
     status: passing
@@ -354,4 +368,7 @@ revisions:
   - version: 0.3.0-alpha.1
     change: introduced
     summary: Defined eleven bounded cases, precise prototype mappings, five executed synthetic-DOM implementations and a separately unexecuted public-browser implementation; retained draft and independent stable-admission review.
+  - version: 0.3.0-alpha.1
+    change: clarified
+    summary: Map cancellation and uncancelled view-withdrawal regression evidence for Base transient cleanup.
 tags: [test, prototype, base, collapsible, disclosure, adapter, lifecycle]

@@ -68,6 +68,10 @@ function setupToggle(def: DefHandle<ToggleProps, ToggleExposes>): void {
     hovered.set(false, reason);
     pressed.set(false, reason);
   };
+  // P-BASE-TOGGLE-TRANSIENT-CLEANUP: active belongs to the logical instance.
+  def.lifecycle.onUnmounted(() =>
+    clearTransientInteraction('reason: toggle view unmounted => reset interaction')
+  );
 
   // P-BASE-TOGGLE-DISABLED-EXPOSE, P-BASE-TOGGLE-DISABLED-CLEAR-TRANSIENT
   const syncDisabled = (nextDisabled: boolean) => {
@@ -126,6 +130,9 @@ function setupToggle(def: DefHandle<ToggleProps, ToggleExposes>): void {
     hovered.set(false, 'reason: toggle pointer.cancel => hovered');
     pressed.set(false, 'reason: toggle pointer.cancel => pressed');
   });
+  def.event.on('press.cancel', () =>
+    clearTransientInteraction('reason: toggle press.cancel => reset interaction')
+  );
 
   // P-BASE-TOGGLE-PRESS-LIFECYCLE
   def.event.on('pointer.down', () => {

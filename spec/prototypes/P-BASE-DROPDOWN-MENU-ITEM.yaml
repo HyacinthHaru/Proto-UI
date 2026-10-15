@@ -8,6 +8,12 @@ statement:
   zh-CN: Dropdown Menu Item 是 Content 中可重复出现的 menu action。它发布 value/textValue collection snapshot、host-neutral menuitem semantics 与瞬时 active state。focus 或 enabled pointer intent 更新 active；Enter、Space 或 pointer activation 发出 `select` 并按 Item/Root policy 请求 close。disabled Item 保留 menu 内焦点能力以便被感知，但必须抑制 select、commit 与 close request。
   en: Dropdown Menu Item is a repeatable menu action within Content. It publishes value and textValue collection snapshots, host-neutral menuitem semantics, and transient active state. Focus or enabled pointer intent updates active; Enter, Space, or pointer activation emits `select` and requests close according to Item and Root policy. A disabled Item remains focusable within the menu so it can be perceived but must suppress selection, commit, and close requests.
 criteria:
+  - id: P-BASE-DROPDOWN-MENU-ITEM-TRANSIENT-CLEANUP
+    text:
+      zh-CN: 'press.cancel、pointer.cancel 与 view unmount 必须清除本 part 的 hovered/pressed；清理不得改变 canonical Root open 或发出 activation/request。逻辑实例 remount 不得重放旧瞬态；pointer.leave 的语义清理不等于取消 Host 持有的 contact。'
+      en: "press.cancel, pointer.cancel and view unmount must clear this part's hovered/pressed without changing canonical Root open or emitting activation/requests. Logical-instance remount must not replay stale transient state; semantic pointer.leave cleanup does not cancel a Host-owned contact."
+    dependsOn:
+      contracts: [C-EVENT-TYPE-0002, C-LIFECYCLE-0008]
   - id: P-BASE-DROPDOWN-MENU-ITEM-AUTHORING-ENTRIES
     text:
       zh-CN: '`base-dropdown-item` 与 `asDropdownItem` 必须是同一 Item protocol 的 authoring entries。'
@@ -48,4 +54,7 @@ revisions:
   - version: 0.2.0-rc.0
     change: introduced
     summary: Cataloged Item collection, active navigation, selection signal, close policy, and focusable-disabled behavior.
+  - version: 0.3.0-alpha.1
+    change: clarified
+    summary: Clarify draft cancellation and retained-view transient cleanup without changing semantic ownership or Host contact lifetime.
 tags: [prototype, base, dropdown-menu, item, collection, a11y]
