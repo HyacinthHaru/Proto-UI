@@ -198,16 +198,14 @@ function setupFieldRoot(def: DefHandle<FieldRootProps, FieldRootExposes>) {
   };
   const publish = () => {
     publicationDepth++;
-    let completed = false;
     try {
       publishCurrent();
-      completed = true;
     } finally {
       publicationDepth--;
       if (publicationDepth === 0) {
         const notify = afterPublication;
         afterPublication = null;
-        if (completed) notify?.();
+        notify?.();
       }
     }
   };

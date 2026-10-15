@@ -1052,3 +1052,96 @@ it('Toggle Group drains an accepted nested notification before a Context callbac
     for (const part of [...parts].reverse()) await part.session.dispose();
   }
 });
+
+it.each(['normal', 'error'] as const)(
+  'Field Root retains current validation after later Context subscriber %s',
+  async (mode) => {
+    const { make, setActionCallback } = runtimeHarness();
+    const root = make(fieldRoot, null, {
+      externalValidation: true,
+      validationMode: 'manual',
+    });
+    const control = make(fieldControl, root.target, { defaultValue: 'same' });
+    const failure = new Error('later Field Context subscriber');
+    let armed = false,
+      requested = false,
+      raised = false,
+      requestId: string | null = null;
+    const delivered: Array<{ observer: string; pending: boolean }> = [];
+    const emitted: string[] = [];
+    setActionCallback((name, payload) => {
+      if (name === 'validationRequest') emitted.push(payload.requestId);
+    });
+    const early = make(
+      definePrototype({
+        name: 'field-context-early-validation',
+        setup(def) {
+          def.context.subscribe(FIELD_CONTEXT, (_run, next) => {
+            if (!armed || !next.dirty) return;
+            delivered.push({ observer: 'early', pending: next.pending });
+            if (requested) return;
+            requested = true;
+            root.session.invokeInCallbackScope(() => {
+              requestId = root.exposes.validate();
+            });
+          });
+        },
+      }),
+      root.target
+    );
+    const late = make(
+      definePrototype({
+        name: 'field-context-late-error',
+        setup(def) {
+          def.context.subscribe(FIELD_CONTEXT, (_run, next) => {
+            if (!armed || !next.dirty) return;
+            delivered.push({ observer: 'late', pending: next.pending });
+            if (!next.pending && !raised) {
+              raised = true;
+              if (mode !== 'normal') throw failure;
+            }
+          });
+        },
+      }),
+      root.target
+    );
+    const parts = [root, control, early, late];
+    try {
+      for (const part of parts) await part.session.mount();
+      armed = true;
+      let threw = false,
+        caught: unknown;
+      try {
+        control.input('changed', false);
+      } catch (error) {
+        threw = true;
+        caught = error;
+      }
+      const emittedAtReturn = [...emitted];
+      const pendingAtReturn = root.exposes.pending.get();
+      const validityAtReturn = root.exposes.getValidity();
+      const deliveredAtReturn = [...delivered];
+      let accepted = false;
+      root.session.invokeInCallbackScope(() => {
+        accepted = root.exposes.resolveValidation(requestId, { invalid: false });
+      });
+      expect(threw).toBe(mode !== 'normal');
+      if (mode !== 'normal') expect(caught).toBe(failure);
+      expect(typeof requestId).toBe('string');
+      expect(deliveredAtReturn).toEqual([
+        { observer: 'early', pending: false },
+        { observer: 'late', pending: false },
+        { observer: 'early', pending: true },
+        { observer: 'late', pending: true },
+      ]);
+      expect(pendingAtReturn).toBe(true);
+      expect(validityAtReturn.pending).toBe(true);
+      expect(accepted).toBe(true);
+      expect(root.exposes.pending.get()).toBe(false);
+      expect(emittedAtReturn).toEqual([requestId]);
+    } finally {
+      armed = false;
+      for (const part of [...parts].reverse()) await part.session.dispose();
+    }
+  }
+);
