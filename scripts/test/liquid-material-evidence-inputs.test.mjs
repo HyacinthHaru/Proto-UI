@@ -56,6 +56,7 @@ for (const file of [
   'apps/www/src/content/docs/zh-cn/browser-harness.ts',
   'apps/www/src/content/docs/zh-cn/material-paint-observation.ts',
   'apps/www/src/content/docs/zh-cn/material-paint-observation.test.ts',
+  'scripts/docs/test/liquid-toggle-mdx.test.mjs',
   'scripts/test/runtime-test-plan.mjs',
   'apps/www/astro.config.mjs',
   'pnpm-lock.yaml',

@@ -11,6 +11,7 @@ on:
       - 'packages/modules/**'
       - 'packages/cli/**'
       - 'scripts/test/liquid-material-evidence-inputs.test.mjs'
+      - 'scripts/docs/test/liquid-toggle-mdx.test.mjs'
       - 'packages/adapters/**'
       - 'apps/www/src/components/**'
       - 'apps/www/src/content/docs/**/ui-libraries/liquid-glass/**'
