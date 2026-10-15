@@ -1677,6 +1677,8 @@ function resolveKnownAsHookStateHandles(node) {
   ];
 
   if (
+    hookName === 'asFormSubmit' ||
+    hookName === 'asFormReset' ||
     hookName === 'asDialogTrigger' ||
     hookName === 'asDialogClose' ||
     hookName === 'asDropdownTrigger' ||
