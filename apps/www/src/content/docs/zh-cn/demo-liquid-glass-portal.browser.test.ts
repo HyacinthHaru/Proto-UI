@@ -181,6 +181,10 @@ describe.sequential(
           const root = document.createElement('div');
           root.style.cssText = 'display:block;height:2600px;padding:0;border:0;';
           document.body.append(root);
+          const hostileStyle = document.createElement('style');
+          hostileStyle.textContent =
+            'body > [inert][aria-hidden="true"] { position: static !important; visibility: visible !important; transform: translate(400px, 300px) !important; width: 999px !important; }';
+          document.head.append(hostileStyle);
           const originalScroll = { x: scrollX, y: scrollY };
           const frame = () =>
             new Promise<void>((resolve, reject) => {
@@ -222,6 +226,30 @@ describe.sequential(
             { name: 'inline-size', property: 'container-type', value: 'inline-size' },
             { name: 'layout', property: 'contain', value: 'layout' },
             { name: 'transform', property: 'transform', value: 'translate(23px, 19px)' },
+            {
+              name: 'inline-layout',
+              property: 'container-type',
+              value: 'inline-size',
+              extra: ['contain', 'layout'],
+            },
+            {
+              name: 'inline-transform',
+              property: 'container-type',
+              value: 'inline-size',
+              extra: ['transform', 'translate(23px, 19px)'],
+            },
+            {
+              name: 'inline-paint',
+              property: 'container-type',
+              value: 'inline-size',
+              extra: ['contain', 'paint'],
+            },
+            {
+              name: 'inline-overflow',
+              property: 'container-type',
+              value: 'inline-size',
+              extra: ['overflow', 'hidden'],
+            },
           ];
           const results: Array<Record<string, unknown>> = [];
           const output: Record<string, any> = {
@@ -231,8 +259,9 @@ describe.sequential(
             originalScroll,
             viewport: { width: innerWidth, height: innerHeight, dpr: devicePixelRatio },
             interpretation:
-              'inline-size is observational: a conservative guard rejection does not prove a fixed containing block',
+              'native geometry and private capability admission are distinct; inline-size alone may pass only after the document probe, while combined guards stay effective',
             specification: 'https://drafts.csswg.org/css-conditional-5/#container-type',
+            hostileProbeCss: hostileStyle.textContent,
             results,
           };
           try {
@@ -241,6 +270,7 @@ describe.sequential(
               scope.style.cssText =
                 'position:relative;width:300px;height:160px;margin:100px 37px;padding:0;border:0;';
               scope.style.setProperty(control.property, control.value);
+              if (control.extra) scope.style.setProperty(control.extra[0], control.extra[1]);
               const origin = document.createElement('span');
               const destination = document.createElement('div');
               const child = document.createElement('div');
@@ -250,6 +280,9 @@ describe.sequential(
               root.append(scope);
               const release = policy.register(scope, destination);
               const sample = () => {
+                const bodyChildren = Array.from(document.body.children);
+                const focused = document.activeElement;
+                const scroll = { x: scrollX, y: scrollY };
                 const binding = policy.resolve(origin, child);
                 const ancestors = [];
                 for (let el: Element | null = destination; el; el = el.parentElement) {
@@ -269,6 +302,13 @@ describe.sequential(
                   fixed: rect(child),
                   ancestors,
                   resolver: {
+                    probeClean:
+                      bodyChildren.length === document.body.children.length &&
+                      bodyChildren.every(
+                        (element, index) => element === document.body.children[index]
+                      ),
+                    focusPreserved: focused === document.activeElement,
+                    scrollPreserved: scroll.x === scrollX && scroll.y === scrollY,
                     destination:
                       binding.destination === destination
                         ? 'registered'
@@ -303,7 +343,8 @@ describe.sequential(
                       : Math.abs(delta + scrollDelta) < 0.5
                         ? 'ancestor-fixed'
                         : 'other',
-                  policyReasonEvidence: 'only the named property differs from the normal control',
+                  policyReasonEvidence:
+                    'only the listed property and optional extra property differ from the normal control',
                 });
               } finally {
                 release();
@@ -313,6 +354,7 @@ describe.sequential(
           } catch (error) {
             output.error = String(error);
           } finally {
+            hostileStyle.remove();
             root.remove();
             scrollTo(originalScroll.x, originalScroll.y);
           }
@@ -320,16 +362,22 @@ describe.sequential(
         });
         expect((report.result as any).error).toBeUndefined();
         const results = (report.result as any).results;
-        expect(results).toHaveLength(4);
+        expect(results).toHaveLength(8);
         for (const result of results) {
           expect(result.scrollDelta).toBe(120);
           expect(result.before.resolver.registrationPresent).toBe(true);
           expect(result.after.resolver.registrationPresent).toBe(true);
           expect(result.before.resolver.destination).toBe(
-            result.name === 'normal' ? 'registered' : 'body'
+            result.name === 'normal' ||
+              (result.name === 'inline-size' && result.nativeClassification === 'viewport-fixed')
+              ? 'registered'
+              : 'body'
           );
           expect(result.after.resolver.destination).toBe(result.before.resolver.destination);
           for (const sample of [result.before, result.after]) {
+            expect(sample.resolver.probeClean).toBe(true);
+            expect(sample.resolver.focusPreserved).toBe(true);
+            expect(sample.resolver.scrollPreserved).toBe(true);
             expect(sample.fixed.width).toBe(20);
             expect(sample.fixed.height).toBe(20);
             expect(Number.isFinite(sample.fixed.top)).toBe(true);
@@ -337,7 +385,7 @@ describe.sequential(
           // Normal, explicit layout containment and transform are semantic controls.
           // The latest Conditional 5 draft removed automatic layout containment
           // from dimensional containers. Do not pre-choose Chromium's result for it.
-          if (result.name !== 'inline-size')
+          if (!['inline-size', 'inline-overflow'].includes(result.name))
             expect(result.nativeClassification).toBe(
               result.name === 'normal' ? 'viewport-fixed' : 'ancestor-fixed'
             );
@@ -684,6 +732,7 @@ async function retainContainerDiagnostic(name: string, report: Record<string, un
           'apps/www/src/content/docs/zh-cn/demo-liquid-glass-portal.browser.test.ts',
           'apps/www/src/pages/en/test/liquid-glass-portal.astro',
           'packages/adapters/base/src/platform/portal-destination.ts',
+          'packages/adapters/base/src/platform/portal-inline-size.ts',
         ].map((file) => ({
           file,
           sha256: createHash('sha256').update(readFileSync(file)).digest('hex'),

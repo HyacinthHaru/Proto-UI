@@ -10,6 +10,10 @@ cases:
     title: Nearest bounded scene with actual destination eligibility
     covers: [HC-OVERLAY-PORTAL-0001-SCENE]
     expectation: Default body, nested registrations, disconnected and foreign-document targets, cycles, destination outside scene and actual clipping or fixed-coordinate transforms are independently exercised; invalid nearest scene cannot leak to a different one.
+  - id: T-WEB-PORTAL-DESTINATION-0001-CASE-INLINE-SIZE
+    title: Private document-scoped inline-size engine capability
+    covers: [HC-OVERLAY-PORTAL-0001-INLINE-SIZE, HC-OVERLAY-PORTAL-0001-SCENE]
+    expectation: Real geometry controls distinguish viewport-fixed inline-size from layout/transform containing blocks. Controlled unit evidence covers supported, unsupported and inconclusive measurements, cleanup and reentrancy, different documents, changed body/view and bounded lifecycle retry without a MutationObserver loop. Every existing independent guard combined with inline-size remains effective. Capability admission never establishes canvas coverage or optical quality; unchanged original public Dropdown and Toggle journeys remain native acceptance gates.
   - id: T-WEB-PORTAL-DESTINATION-0001-CASE-LEASE
     title: Identity-bound registry and committed projection notifications
     covers: [HC-OVERLAY-PORTAL-0001-BINDING]
@@ -35,6 +39,12 @@ implementations:
     required: true
     consumesCases:
       [T-WEB-PORTAL-DESTINATION-0001-CASE-SELECTION, T-WEB-PORTAL-DESTINATION-0001-CASE-LEASE]
+  - id: web-portal-inline-size-capability
+    kind: module-test
+    status: needs-review
+    path: packages/adapters/base/test/portal-inline-size.test.ts
+    required: true
+    consumesCases: [T-WEB-PORTAL-DESTINATION-0001-CASE-INLINE-SIZE]
   - id: web-portal-react-destination
     kind: runtime-test
     status: needs-review
@@ -58,7 +68,8 @@ implementations:
     status: needs-review
     path: apps/www/src/content/docs/zh-cn/demo-liquid-glass-portal.browser.test.ts
     required: true
-    consumesCases: [T-WEB-PORTAL-DESTINATION-0001-CASE-NATIVE]
+    consumesCases:
+      [T-WEB-PORTAL-DESTINATION-0001-CASE-NATIVE, T-WEB-PORTAL-DESTINATION-0001-CASE-INLINE-SIZE]
   - id: web-portal-react-lifetimes
     kind: adapter-test
     status: needs-review

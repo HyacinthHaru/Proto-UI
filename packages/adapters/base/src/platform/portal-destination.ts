@@ -1,3 +1,5 @@
+import { hasViewportFixedInlineSize } from './portal-inline-size';
+
 type Registration = { destination: HTMLElement; document: Document; token: object };
 type Signal = { generation: number; notifying: boolean; listeners: Set<() => void> };
 type MaterialEpochState = Signal & { owner: object | null; suspended: boolean };
@@ -56,7 +58,8 @@ export function resolveWebPortalDestination(origin: Node | null, target: HTMLEle
 /**
  * Resolve from the logical author position, not the target's projected parent.
  * The Adapter re-resolves on author reparenting, destination invalidation and
- * view lifecycle changes. This helper neither observes nor moves any DOM.
+ * view lifecycle changes. This helper never moves an application node. A private, cached engine
+ * capability check may briefly insert an inert geometry fixture.
  * Before a target exists, keep the body default until cycle checks are possible.
  */
 export function resolveWebPortalDestination(
@@ -82,8 +85,11 @@ export function resolveWebPortalDestinationBinding(
   target?: HTMLElement
 ): WebPortalDestinationBinding {
   const doc = target?.ownerDocument ?? documentOf(origin!);
-  const fallback = { destination: doc.body, registration: null };
-  if (!target || !origin?.isConnected || documentOf(origin) !== doc) return fallback;
+  // Geometry/host reads may replace body or adopt the target reentrantly.
+  // Resolve fallback at return time rather than returning a detached/foreign body.
+  const fallbackBody = () => (target?.ownerDocument ?? documentOf(origin!)).body;
+  const fallback = () => ({ destination: fallbackBody(), registration: null });
+  if (!target || !origin?.isConnected || documentOf(origin) !== doc) return fallback();
   const generation = registry.generation;
   const authorChain = ancestry(origin);
   for (const node of authorChain) {
@@ -91,7 +97,7 @@ export function resolveWebPortalDestinationBinding(
     const scope = node as Element;
     const entry = destinations.get(scope);
     if (!entry) continue;
-    const unavailable = { destination: doc.body, registration: entry.token };
+    const unavailable = () => ({ destination: fallbackBody(), registration: entry.token });
     const destination = entry.destination;
     const destinationChain = ancestry(destination);
     if (
@@ -104,38 +110,53 @@ export function resolveWebPortalDestinationBinding(
       !destinationChain.includes(scope) ||
       destinationChain.includes(target)
     ) {
-      return unavailable;
+      return unavailable();
     }
     // Admission is based on actual computed ancestor styles, not a caller's
     // "clipping safe" assertion. Include the destination, slots and shadow hosts.
     const view = doc.defaultView;
-    if (!view) return unavailable;
+    if (!view) return unavailable();
+    const body = doc.body;
+    let inlineSize = false;
     try {
       for (const ancestor of destinationChain) {
-        if (
-          ancestor.nodeType === 1 &&
-          !isClippingSafe(view.getComputedStyle(ancestor as Element))
-        ) {
-          return unavailable;
+        if (ancestor.nodeType !== 1) continue;
+        const css = view.getComputedStyle(ancestor as Element);
+        if (!isClippingSafe(css, true)) return unavailable();
+        inlineSize ||= css.getPropertyValue('container-type').trim() === 'inline-size';
+      }
+      if (inlineSize) {
+        if (!hasViewportFixedInlineSize(doc)) return unavailable();
+        // Fixture insertion/removal can alter :has() or :last-child selectors.
+        // Read actual eligibility again after cleanup, even for cached support.
+        for (const ancestor of destinationChain) {
+          if (
+            ancestor.nodeType === 1 &&
+            !isClippingSafe(view.getComputedStyle(ancestor as Element), true)
+          )
+            return unavailable();
         }
       }
     } catch {
-      return unavailable;
+      return unavailable();
     }
     // Host reads can be reentrant. Never publish a registration superseded
     // during validation; the subscription's newer reconciliation owns that turn.
-    return registry.generation === generation &&
+    return doc.body === body &&
+      doc.defaultView === view &&
+      registry.generation === generation &&
       destinations.get(scope) === entry &&
       destination.isConnected &&
       destination.ownerDocument === doc &&
+      target.ownerDocument === doc &&
       origin.isConnected &&
       documentOf(origin) === doc &&
       sameChain(authorChain, ancestry(origin)) &&
       sameChain(destinationChain, ancestry(destination))
       ? { destination, registration: entry.token }
-      : fallback;
+      : fallback();
   }
-  return fallback;
+  return fallback();
 }
 
 /** Called by an Adapter only after its renderer/native projection commits. */
@@ -291,7 +312,7 @@ function sameChain(a: Node[], b: Node[]): boolean {
   return a.length === b.length && a.every((node, index) => node === b[index]);
 }
 
-function isClippingSafe(css: CSSStyleDeclaration): boolean {
+function isClippingSafe(css: CSSStyleDeclaration, inlineSize: boolean): boolean {
   const neutral = (key: string, allowed: string) => {
     const value = css.getPropertyValue(key).trim();
     return !value || value === allowed;
@@ -329,7 +350,8 @@ function isClippingSafe(css: CSSStyleDeclaration): boolean {
   return (
     neutral('clip', 'auto') &&
     neutral('transform-style', 'flat') &&
-    neutral('container-type', 'normal') &&
+    (neutral('container-type', 'normal') ||
+      (inlineSize && css.getPropertyValue('container-type').trim() === 'inline-size')) &&
     neutral('content-visibility', 'visible') &&
     (neutral('zoom', 'normal') || neutral('zoom', '1')) &&
     css.display !== 'none' &&

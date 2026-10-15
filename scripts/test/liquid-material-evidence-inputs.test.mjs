@@ -85,3 +85,19 @@ test('Liquid Toggle executes in the retained exact-head optical evidence job', (
     job.steps.some((step) => step.if === 'always()' && step.uses === 'actions/upload-artifact@v4')
   );
 });
+
+test('Liquid portal capability controls execute alongside unchanged native optical journeys', () => {
+  const steps = workflow.jobs['browser-evidence'].steps;
+  for (const suite of [
+    'packages/adapters/base/test/portal-destination.test.ts',
+    'packages/adapters/base/test/portal-inline-size.test.ts',
+    'apps/www/src/content/docs/zh-cn/demo-liquid-glass-portal.browser.test.ts',
+    'apps/www/src/content/docs/zh-cn/demo-liquid-glass-toggle.browser.test.ts',
+  ]) {
+    assert.ok(covered(suite), `Missing portal capability evidence trigger: ${suite}`);
+    assert.ok(
+      steps.some((step) => step.run?.includes(suite)),
+      `Missing portal capability suite: ${suite}`
+    );
+  }
+});
