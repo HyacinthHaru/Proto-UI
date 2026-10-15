@@ -66,6 +66,7 @@ function world() {
     cleared: number;
     disposed: number;
   }> = [];
+  let anatomyOffHook: (() => void) | null = null;
   let attachHook: ((binding: MaterialContactHostBinding) => void) | null = null;
   let disposeHook: (() => void) | null = null;
   let clearHook: (() => void) | null = null;
@@ -215,12 +216,14 @@ function world() {
         watchers.add(callback);
         return () => {
           watchers.delete(callback);
+          anatomyOffHook?.();
         };
       },
       subscribeTargets: (_f: unknown, callback: () => void) => {
         watchers.add(callback);
         return () => {
           watchers.delete(callback);
+          anatomyOffHook?.();
         };
       },
     } as unknown as AnatomyPort;
@@ -313,7 +316,7 @@ function world() {
     return { owner, paint, input };
   };
   cleanup.push(() => {
-    attachHook = disposeHook = clearHook = null;
+    anatomyOffHook = attachHook = disposeHook = clearHook = null;
     for (const m of members) m.dispose();
   });
   return {
@@ -331,6 +334,9 @@ function world() {
     link,
     topology,
     notifyHost,
+    onAnatomyOff: (fn: typeof anatomyOffHook) => {
+      anatomyOffHook = fn;
+    },
     onAttach: (fn: typeof attachHook) => {
       attachHook = fn;
     },
@@ -922,4 +928,120 @@ describe('cleanup and boundary controls', () => {
     expect(sample.current.x).toBe(20);
     expect(Object.isFrozen(sample.current)).toBe(true);
   });
+});
+
+const values = [
+  ['undefined', undefined],
+  ['null', null],
+  ['zero', 0],
+  ['false', false],
+  ['empty string', ''],
+] as const;
+const scenarios = [
+  { path: 'disconnect', first: 'input', later: false },
+  { path: 'disconnect', first: 'input', later: true },
+  { path: 'disconnect', first: 'paint', later: false },
+  { path: 'dispose', first: 'input', later: false },
+  { path: 'dispose', first: 'input', later: true },
+  { path: 'dispose', first: 'paint', later: false },
+  { path: 'dispose', first: 'paint', later: true },
+  { path: 'dispose', first: 'host', later: false },
+  { path: 'dispose', first: 'host', later: true },
+  { path: 'dispose', first: 'anatomy', later: false },
+] as const;
+function capture(action: () => void) {
+  let didThrow = false;
+  let value: unknown;
+  try {
+    action();
+  } catch (error) {
+    didThrow = true;
+    value = error;
+  }
+  return { didThrow, value };
+}
+describe('exact cleanup failure values', () => {
+  for (const [label, firstValue] of values) {
+    for (const scenario of scenarios) {
+      it(`${scenario.path}: first ${scenario.first} throws ${label}; later=${scenario.later}`, () => {
+        const w = world();
+        let armed = false;
+        const calls: string[] = [];
+        const validity: boolean[] = [];
+        const lateError = { independentLaterFailure: true };
+        const order = ['input', 'paint', 'host', 'anatomy'];
+        const cleanup = (stage: string) => {
+          if (!armed) return;
+          calls.push(stage);
+          validity.push(w.records[0].binding.isCurrent());
+          if (stage === scenario.first) throw firstValue;
+          if (scenario.later && order.indexOf(stage) > order.indexOf(scenario.first))
+            throw lateError;
+        };
+        const subscribeHost = w.host.subscribe;
+        w.host.subscribe = (callback) => {
+          const off = subscribeHost(callback);
+          return () => {
+            off();
+            cleanup('host');
+          };
+        };
+        const owner = w.member('root'),
+          paint = w.member('thumb');
+        owner.module.facade.offer(w.link());
+        paint.module.facade.receive({ source: 'part', link: w.link(), placement: 'fixed' });
+        const input = w.addInput(owner);
+        const subscribeInput = input.lease.subscribe;
+        let savedCallback: (() => void) | undefined;
+        input.lease.subscribe = (callback) => {
+          savedCallback = callback;
+          const off = subscribeInput(callback);
+          return () => {
+            off();
+            cleanup('input');
+          };
+        };
+        owner.mount();
+        paint.mount();
+        expect(w.records).toHaveLength(1);
+        const old = w.records[0];
+        expect(old.binding.isCurrent()).toBe(true);
+        input.emit('pending');
+        const sampleCount = old.samples.length;
+        const oldAnatomyCallbacks = [...paint.watchers];
+        const oldHostCallbacks = [...w.hostListeners];
+        w.onDispose(() => cleanup('paint'));
+        w.onAnatomyOff(() => cleanup('anatomy'));
+        const retire = () => (scenario.path === 'disconnect' ? paint.detach(2) : paint.dispose());
+        armed = true;
+        const outcome = capture(retire);
+        armed = false;
+        // Check cleanup even when the thrown-value assertions are expected red.
+        expect(calls).toEqual(
+          scenario.path === 'disconnect'
+            ? ['input', 'paint']
+            : ['input', 'paint', 'host', 'anatomy', 'anatomy']
+        );
+        expect(validity.every((value) => value === false)).toBe(true);
+        expect(input.listeners.size).toBe(0);
+        expect(old.disposed).toBe(1);
+        expect(old.binding.isCurrent()).toBe(false);
+        if (scenario.path === 'dispose') {
+          expect(paint.watchers.size).toBe(0);
+          expect(w.hostListeners.size).toBe(1);
+        }
+        savedCallback?.();
+        for (const callback of oldAnatomyCallbacks) callback();
+        for (const callback of oldHostCallbacks) callback();
+        expect(old.samples.length).toBe(sampleCount);
+        expect(w.records).toHaveLength(1);
+        expect(capture(retire).didThrow).toBe(false);
+        expect(old.disposed).toBe(1);
+        expect.soft(outcome.didThrow, 'a caught throw is separate from its value').toBe(true);
+        expect
+          .soft(Object.is(outcome.value, firstValue), 'first exception value must survive exactly')
+          .toBe(true);
+      });
+    }
+  }
 });

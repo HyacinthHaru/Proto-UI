@@ -334,15 +334,19 @@ class MaterialContactModuleImpl extends ModuleBase {
       lease = old.lease;
     old.off = null;
     old.lease = null;
+    let hasFailure = false;
     let failure: unknown;
     for (const dispose of [off, lease && (() => lease.dispose())]) {
       try {
         dispose?.();
       } catch (error) {
-        failure ??= error;
+        if (!hasFailure) {
+          hasFailure = true;
+          failure = error;
+        }
       }
     }
-    if (failure) throw failure;
+    if (hasFailure) throw failure;
   }
   private receiveContact(connection: Connection) {
     const delivery = ++connection.delivery;
@@ -575,6 +579,7 @@ class MaterialContactModuleImpl extends ModuleBase {
   dispose() {
     if (this.disposed) return;
     this.disposed = true;
+    let hasFailure = false;
     let failure: unknown;
     const cleanups = [() => this.disconnect(), this.hostOff, ...this.offs.splice(0)];
     this.hostOff = null;
@@ -584,10 +589,13 @@ class MaterialContactModuleImpl extends ModuleBase {
       try {
         cleanup?.();
       } catch (error) {
-        failure ??= error;
+        if (!hasFailure) {
+          hasFailure = true;
+          failure = error;
+        }
       }
     }
-    if (failure) throw failure;
+    if (hasFailure) throw failure;
   }
 }
 
