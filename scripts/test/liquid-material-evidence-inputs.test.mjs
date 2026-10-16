@@ -351,3 +351,83 @@ test('Tint stage browser suite has one dedicated owner and never enters the unit
     assert.ok(!part.args.includes(suite));
   }
 });
+
+for (const file of [
+  'apps/www/src/pages/en/test/liquid-visible-refraction-diagnostic.astro',
+  'apps/www/src/content/docs/zh-cn/demo-liquid-visible-refraction-diagnostic.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/liquid-visible-refraction-diagnostic.ts',
+  'apps/www/src/content/docs/zh-cn/liquid-visible-refraction-diagnostic.test.ts',
+]) {
+  test(`Visible refraction diagnostics cover their test-only input ${file}`, () => {
+    assert.ok(readFileSync(new URL(file, root), 'utf8').length > 0);
+    assert.ok(covered(file), `Missing visible-refraction trigger: ${file}`);
+  });
+}
+
+test('Visible refraction diagnostics isolate collection cost and preserve existing evidence jobs', () => {
+  const job = workflow.jobs['visible-refraction-diagnostic'];
+  assert.ok(job);
+  assert.equal(job['timeout-minutes'], 20);
+  assert.equal(job.needs, undefined);
+  assert.equal(
+    job.strategy,
+    undefined,
+    'Renderer frames do not establish component/runtime parity'
+  );
+  assert.equal(job.steps[0].with.ref, '${{ env.CANDIDATE_SHA }}');
+  assert.equal(job.steps[0].with['persist-credentials'], false);
+  const suite =
+    'apps/www/src/content/docs/zh-cn/demo-liquid-visible-refraction-diagnostic.browser.test.ts';
+  const commands = job.steps.filter((step) => step.run?.includes(suite));
+  assert.equal(commands.length, 1);
+  assert.equal(
+    commands[0].env.PROTO_UI_MATERIAL_EVIDENCE_DIR,
+    '${{ runner.temp }}/liquid-visible-refraction-diagnostic'
+  );
+  assert.equal(commands[0].env.PROTO_UI_BROWSER_BASE_URL, undefined);
+  assert.match(commands[0].run, /liquid-visible-refraction-diagnostic\.test\.ts/);
+  assert.match(commands[0].run, /--maxWorkers=1 --minWorkers=1/);
+  for (const id of [
+    'browser-evidence',
+    'prominent-tint-evidence',
+    'hover-evidence',
+    'tint-stage-diagnostic',
+  ]) {
+    assert.ok(workflow.jobs[id]);
+    assert.equal(workflow.jobs[id]['timeout-minutes'], 20);
+    assert.ok(!workflow.jobs[id].steps.some((step) => step.run?.includes(suite)));
+  }
+  const artifact = job.steps.find((step) => step.uses === 'actions/upload-artifact@v4');
+  assert.equal(artifact.if, 'always()');
+  assert.equal(artifact.with.path, '${{ runner.temp }}/liquid-visible-refraction-diagnostic');
+  assert.match(artifact.with.name, /env\.CANDIDATE_SHA/);
+  assert.match(artifact.with.name, /github\.run_id/);
+  assert.match(artifact.with.name, /github\.run_attempt/);
+  for (const dependency of [
+    'packages/adapters/base/src/material/program.ts',
+    'packages/adapters/base/src/material/style-tint.ts',
+    'packages/adapters/base/src/material/contact.ts',
+    'apps/www/src/content/docs/zh-cn/liquid-tint-stage-inputs/frozen.json',
+    'apps/www/src/content/docs/zh-cn/liquid-tint-stage-inputs/source.png',
+  ])
+    assert.ok(covered(dependency), `Missing diagnostic source closure: ${dependency}`);
+  assert.equal(covered('apps/www/src/content/docs/zh-cn/unrelated-visible-diagnostic.ts'), false);
+});
+
+test('Visible refraction browser suite has one dedicated owner and is excluded from shared phases', () => {
+  const suite =
+    'apps/www/src/content/docs/zh-cn/demo-liquid-visible-refraction-diagnostic.browser.test.ts';
+  assertBrowserInventory();
+  assert.ok(PRODUCTION_BROWSER_SUITES.includes(suite));
+  assert.equal(PRODUCTION_BROWSER_SUITES.filter((item) => item === suite).length, 1);
+  assert.ok(!BROWSER_SUITES.includes(suite));
+  assert.equal(PRODUCTION_BROWSER_OWNERS[suite], '.github/workflows/liquid-material-evidence.yml');
+  const [general, browser] = createRuntimeTestPlan([]);
+  assert.equal(general.args.filter((arg) => arg === suite).length, 1);
+  assert.equal(general.args[general.args.indexOf(suite) - 1], '--exclude');
+  assert.ok(!browser.args.includes(suite));
+  for (let shard = 1; shard <= 8; shard++) {
+    const [part] = createRuntimeTestPlan([], { phase: 'browser', shard: `${shard}/8` });
+    assert.ok(!part.args.includes(suite));
+  }
+});
