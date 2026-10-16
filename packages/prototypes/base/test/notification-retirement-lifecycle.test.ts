@@ -1145,3 +1145,71 @@ it.each(['normal', 'error'] as const)(
     }
   }
 );
+
+it.each(['normal', 'error'] as const)(
+  'Field Root retains a top-level request after pending Context subscriber %s',
+  async (mode) => {
+    const { make, setActionCallback } = runtimeHarness();
+    const root = make(fieldRoot, null, {
+      externalValidation: true,
+      validationMode: 'manual',
+    });
+    const control = make(fieldControl, root.target, { defaultValue: 'same' });
+    const failure = new Error('Field pending Context subscriber');
+    let armed = false,
+      observed = 0,
+      requestId: string | null = null;
+    const emitted: Array<{ requestId: string; value: string; reason: string }> = [];
+    setActionCallback((name, payload) => {
+      if (name === 'validationRequest') emitted.push(payload);
+    });
+    const observer = make(
+      definePrototype({
+        name: 'field-top-level-pending-error',
+        setup(def) {
+          def.context.subscribe(FIELD_CONTEXT, (_run, next) => {
+            if (!armed || !next.pending || observed) return;
+            observed++;
+            if (mode === 'error') throw failure;
+          });
+        },
+      }),
+      root.target
+    );
+    const parts = [root, control, observer];
+    try {
+      for (const part of parts) await part.session.mount();
+      armed = true;
+      let caught: unknown;
+      try {
+        root.session.invokeInCallbackScope(() => {
+          requestId = root.exposes.validate();
+        });
+      } catch (error) {
+        caught = error;
+      }
+      expect(caught).toBe(mode === 'error' ? failure : undefined);
+      expect(observed).toBe(1);
+      expect(emitted).toHaveLength(1);
+      const current = emitted[0].requestId;
+      expect(typeof current).toBe('string');
+      expect(emitted[0]).toEqual({ requestId: current, value: 'same', reason: 'manual' });
+      expect(requestId).toBe(mode === 'error' ? null : current);
+      expect(root.exposes.getValidity().pending).toBe(true);
+      let accepted = false,
+        duplicate = true;
+      root.session.invokeInCallbackScope(() => {
+        accepted = root.exposes.resolveValidation(current, { invalid: false });
+        duplicate = root.exposes.resolveValidation(current, { invalid: false });
+      });
+      expect(accepted).toBe(true);
+      expect(duplicate).toBe(false);
+      expect(root.exposes.pending.get()).toBe(false);
+      expect(root.exposes.getValidity().pending).toBe(false);
+      expect(emitted).toHaveLength(1);
+    } finally {
+      armed = false;
+      for (const part of [...parts].reverse()) await part.session.dispose();
+    }
+  }
+);

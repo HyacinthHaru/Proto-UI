@@ -29,7 +29,7 @@ cases:
     title: Pending publication retains only the current request and owner
     covers:
       - C-FIELD-0001-ASYNC
-    expectation: Synchronous pending publication may cancel, reset, replace or terminally dispose the current request. The retired publication stops before further State writes or validationRequest emission. Normal requests and legal nested validation remain usable, and an already allocated request retains its return convention. If Context drains the nested pending transition before reporting a later subscriber Error, the still-current request is emitted before that original Error escapes.
+    expectation: Synchronous pending publication may cancel, reset, replace or terminally dispose the current request. The retired publication stops before further State writes or validationRequest emission. Normal requests and legal nested validation remain usable, and an already allocated request retains its return convention. If Context commits a pending transition before reporting a subscriber Error, the still-current request is emitted before that original Error escapes, including top-level validation.
 verifies:
   contracts:
     - C-FIELD-0001
@@ -59,6 +59,7 @@ implementations:
       - Five further RuntimeSession controls enter validate during dirty publication and cover queued pending notification with normal, cancel, reset, terminal disposal and newer validation. Retired requests are not emitted; current request IDs and result acceptance remain usable within the same synchronous Field publication chain.
       - One further RuntimeSession control enters validation from FIELD_CONTEXT and immediately replaces it from pending notification. At the outer input return only the newer request has been emitted; the older result is refused and the newer result remains usable.
       - Two further RuntimeSession controls cover normal and later-Context-Error delivery after an early nested validate. The current request emits, pending state and result acceptance remain usable, and the original Error identity is preserved. These controls do not identify the browser provider-missing errors.
+      - Two top-level RuntimeSession controls cover normal and pending-Context-Error delivery. The current request remains reachable through its validationRequest payload and resolves once; the original Error escapes unchanged. This does not establish atomic State/Context projection after a callback failure.
 sources:
   - path: packages/prototypes/base/src/field/control-binding.proto.ts
   - path: packages/prototypes/base/src/field/root.proto.ts
