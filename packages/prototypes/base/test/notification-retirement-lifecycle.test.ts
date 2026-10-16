@@ -16,7 +16,9 @@ import {
   AS_TRIGGER_GET_PROTO_CAP,
 } from '@proto.ui/module-as-trigger';
 import { EXPOSES_RECORD_SINK_CAP } from '@proto.ui/module-expose-state';
-import { fieldRoot, fieldControl } from '../src/field';
+import { fieldRoot, fieldControl, FIELD_CONTEXT } from '../src/field';
+import { toggleGroupRoot, toggleGroupItem } from '../src/toggle-group';
+import { TOGGLE_GROUP_CONTEXT } from '../src/toggle-group/shared';
 import {
   TEXT_CONTROL_HOST_CAP,
   TEXT_CONTROL_RUN_IN_CALLBACK_CAP,
@@ -38,7 +40,7 @@ import { menubarRoot, menubarTrigger, MENUBAR_FAMILY } from '../src/menubar';
 function runtimeHarness() {
   const parents = new Map<any, any>(),
     protos = new Map<any, any>();
-  let actionCallback = (_name: string) => {};
+  let actionCallback = (_name: string, _payload?: any) => {};
   const actions: string[] = [];
   function make(proto: any, parent: any = null, props: any = {}) {
     const listeners = new Map<string, Set<any>>();
@@ -123,9 +125,9 @@ function runtimeHarness() {
         w.attach('expose-event', [
           [
             EXPOSE_EVENT_SINK_CAP,
-            (name: string) => {
+            (name: string, payload: any) => {
               actions.push(name);
-              actionCallback(name);
+              actionCallback(name, payload);
             },
           ],
         ]);
@@ -134,12 +136,12 @@ function runtimeHarness() {
     return {
       session,
       target,
-      input(value: string) {
+      input(value: string, composing = true) {
         textValue = value;
         connection.onEvent({
           type: 'input',
           value,
-          composing: true,
+          composing,
           data: 'x',
           inputType: 'insertText',
         });
@@ -153,7 +155,7 @@ function runtimeHarness() {
   return {
     make,
     actions,
-    setActionCallback(fn: (name: string) => void) {
+    setActionCallback(fn: (name: string, payload?: any) => void) {
       actionCallback = fn;
     },
   };
@@ -512,3 +514,702 @@ for (const test of cases.filter((test) =>
       }
     }
   );
+
+for (const boundary of ['State', 'Context'] as const)
+  it.each(['normal', 'dispose'] as const)(
+    `Field Root stops pending publication through ${boundary} after %s`,
+    async (operation) => {
+      const { make, actions } = runtimeHarness();
+      const root = make(fieldRoot, null, {
+          externalValidation: true,
+          validationMode: 'manual',
+        }),
+        control = make(fieldControl, root.target, { defaultValue: 'same' });
+      const parts = [root, control];
+      let armed = false,
+        observed = 0,
+        retirement: Promise<void> | undefined,
+        stop: (() => void) | undefined;
+      const retire = () => {
+        if (!armed || observed) return;
+        observed++;
+        if (operation === 'dispose') retirement = root.session.dispose();
+      };
+      if (boundary === 'Context')
+        parts.push(
+          make(
+            definePrototype({
+              name: 'field-pending-context-observer',
+              setup(def) {
+                def.context.subscribe(FIELD_CONTEXT, (_run, next) => {
+                  if (next.pending) retire();
+                });
+              },
+            }),
+            root.target
+          )
+        );
+      try {
+        for (const part of parts) await part.session.mount();
+        if (boundary === 'State')
+          stop = root.exposes.pending.subscribe((event: any) => {
+            if (event.type === 'next' && event.next === true) retire();
+          });
+        actions.length = 0;
+        armed = true;
+        let request: string | null = null;
+        expect(() =>
+          root.session.invokeInCallbackScope(() => {
+            request = root.exposes.validate();
+          })
+        ).not.toThrow();
+        await retirement;
+        expect(observed).toBe(1);
+        expect(typeof request).toBe('string');
+        expect(actions.filter((name) => name === 'validationRequest')).toHaveLength(
+          operation === 'normal' ? 1 : 0
+        );
+        if (operation === 'normal') {
+          expect(root.exposes.pending.get()).toBe(true);
+          let accepted = false;
+          root.session.invokeInCallbackScope(() => {
+            accepted = root.exposes.resolveValidation(request, { invalid: false });
+          });
+          expect(accepted).toBe(true);
+        } else {
+          expect(root.session.instancePhase).toBe('disposed');
+          expect(root.session.mountPhase).toBe('detached');
+        }
+      } finally {
+        stop?.();
+        await retirement;
+        for (const part of [...parts].reverse()) await part.session.dispose();
+      }
+    }
+  );
+
+it.each(['normal', 'cancel', 'reset', 'dispose', 'newer'] as const)(
+  'Field Root retires queued pending publication entered from dirty after %s',
+  async (operation) => {
+    const { make, actions, setActionCallback } = runtimeHarness();
+    const root = make(fieldRoot, null, {
+      externalValidation: true,
+      validationMode: 'manual',
+    });
+    const control = make(fieldControl, root.target, { defaultValue: 'same' });
+    let request: string | null = null,
+      newer: string | null = null,
+      observed = 0,
+      retirement: Promise<void> | undefined;
+    const stops: (() => void)[] = [];
+    const emitted: string[] = [];
+    setActionCallback((name, payload) => {
+      if (name === 'validationRequest') emitted.push(payload.requestId);
+    });
+    try {
+      await root.session.mount();
+      await control.session.mount();
+      stops.push(
+        root.exposes.dirty.subscribe((event: any) => {
+          if (event.type === 'next' && event.next === true && request === null)
+            root.session.invokeInCallbackScope(() => {
+              request = root.exposes.validate();
+            });
+        })
+      );
+      stops.push(
+        root.exposes.pending.subscribe((event: any) => {
+          if (event.type !== 'next' || event.next !== true || observed) return;
+          observed++;
+          root.session.invokeInCallbackScope(() => {
+            if (operation === 'cancel') root.exposes.cancelValidation();
+            else if (operation === 'reset') root.exposes.resetValidation();
+            else if (operation === 'dispose') retirement = root.session.dispose();
+            else if (operation === 'newer') newer = root.exposes.validate();
+          });
+        })
+      );
+      actions.length = 0;
+      expect(() => control.input('changed', false)).not.toThrow();
+      await retirement;
+      expect(observed).toBe(1);
+      expect(typeof request).toBe('string');
+      expect(actions.filter((name) => name === 'validationRequest')).toHaveLength(
+        operation === 'normal' || operation === 'newer' ? 1 : 0
+      );
+      expect(emitted).toEqual(
+        operation === 'normal' ? [request] : operation === 'newer' ? [newer] : []
+      );
+      if (operation === 'normal' || operation === 'newer') {
+        let accepted = false;
+        root.session.invokeInCallbackScope(() => {
+          accepted = root.exposes.resolveValidation(operation === 'newer' ? newer : request, {
+            invalid: false,
+          });
+        });
+        expect(accepted).toBe(true);
+      }
+    } finally {
+      for (const stop of stops) stop();
+      await retirement;
+      await control.session.dispose();
+      await root.session.dispose();
+    }
+  }
+);
+
+it.each(['normal', 'unmount', 'dispose', 'nested', 'remount'] as const)(
+  'Toggle Group stops old Context publication after %s',
+  async (operation) => {
+    const { make, actions } = runtimeHarness();
+    const root = make(toggleGroupRoot);
+    const items = ['a', 'b'].map((value) => make(toggleGroupItem, root.target, { value }));
+    let armed = false,
+      observed = 0,
+      nested: boolean | undefined;
+    const transitions: Promise<void>[] = [];
+    const phases: Array<{ mount: string; epoch: number }> = [];
+    const request = (value: string) => {
+      let accepted: boolean | undefined;
+      root.session.invokeInCallbackScope(() => {
+        accepted = root.exposes.requestToggle(value);
+      });
+      return accepted;
+    };
+    const observer = make(
+      definePrototype({
+        name: 'toggle-group-retirement-observer',
+        setup(def) {
+          def.context.subscribe(TOGGLE_GROUP_CONTEXT, (_run, next) => {
+            if (!armed || observed || next.value.length !== 1 || next.value[0] !== 'a') return;
+            observed++;
+            if (operation === 'nested') nested = request('b');
+            else if (operation === 'unmount' || operation === 'dispose')
+              transitions.push(root.session[operation]());
+            else if (operation === 'remount') {
+              phases.push({ mount: root.session.mountPhase, epoch: root.session.mountEpoch });
+              transitions.push(root.session.unmount());
+              phases.push({ mount: root.session.mountPhase, epoch: root.session.mountEpoch });
+              transitions.push(root.session.mount());
+              phases.push({ mount: root.session.mountPhase, epoch: root.session.mountEpoch });
+            }
+          });
+        },
+      }),
+      root.target
+    );
+    const parts = [root, ...items, observer];
+    try {
+      for (const part of parts) await part.session.mount();
+      expect(root.exposes.getValue()).toEqual([]);
+      expect(root.exposes.count.get()).toBe(2);
+      const initialEpoch = root.session.mountEpoch;
+      actions.length = 0;
+      armed = true;
+      let accepted: boolean | undefined;
+      expect(() => {
+        accepted = request('a');
+      }).not.toThrow();
+      await Promise.all(transitions);
+      expect(observed).toBe(1);
+      expect(accepted).toBe(true);
+      const oldNotifications = actions.filter((name) => name === 'valueChange');
+      if (operation === 'remount') {
+        expect(phases).toEqual([
+          { mount: 'mounted', epoch: initialEpoch },
+          { mount: 'detached', epoch: initialEpoch },
+          { mount: 'mounted', epoch: initialEpoch + 1 },
+        ]);
+        const beforeFresh = actions.length;
+        expect(request('b')).toBe(true);
+        expect(root.exposes.getValue()).toEqual(['b']);
+        expect(actions.slice(beforeFresh).filter((name) => name === 'valueChange')).toHaveLength(1);
+      }
+      expect(oldNotifications).toHaveLength(
+        operation === 'normal' ? 1 : operation === 'nested' ? 2 : 0
+      );
+      if (operation === 'nested') {
+        expect(nested).toBe(true);
+        expect(root.exposes.getValue()).toEqual(['b']);
+      } else if (operation === 'normal') expect(root.exposes.getValue()).toEqual(['a']);
+      else if (operation !== 'remount') {
+        expect(root.session.mountPhase).toBe('detached');
+        expect(root.session.instancePhase).toBe(operation === 'dispose' ? 'disposed' : 'alive');
+      }
+    } finally {
+      await Promise.all(transitions);
+      for (const part of [...parts].reverse()) await part.session.dispose();
+    }
+  }
+);
+
+it('Field Root retains newer validation entered during Context and pending publication', async () => {
+  const { make, setActionCallback } = runtimeHarness();
+  const root = make(fieldRoot, null, {
+    externalValidation: true,
+    validationMode: 'manual',
+  });
+  const control = make(fieldControl, root.target, { defaultValue: 'same' });
+  let armed = false,
+    contextCalls = 0,
+    pendingCalls = 0,
+    older: string | null = null,
+    newer: string | null = null,
+    stop: (() => void) | undefined;
+  const emitted: string[] = [];
+  setActionCallback((name, payload) => {
+    if (name === 'validationRequest') emitted.push(payload.requestId);
+  });
+  const observer = make(
+    definePrototype({
+      name: 'field-context-nested-pending-observer',
+      setup(def) {
+        def.context.subscribe(FIELD_CONTEXT, (_run, next) => {
+          if (!armed || contextCalls || !next.dirty) return;
+          contextCalls++;
+          root.session.invokeInCallbackScope(() => {
+            older = root.exposes.validate();
+          });
+        });
+      },
+    }),
+    root.target
+  );
+  const parts = [root, control, observer];
+  try {
+    for (const part of parts) await part.session.mount();
+    stop = root.exposes.pending.subscribe((event: any) => {
+      if (event.type !== 'next' || event.next !== true || pendingCalls) return;
+      pendingCalls++;
+      root.session.invokeInCallbackScope(() => {
+        newer = root.exposes.validate();
+      });
+    });
+    armed = true;
+    expect(() => control.input('changed', false)).not.toThrow();
+    const emittedAtReturn = [...emitted];
+    const pendingBeforeResolve = root.exposes.pending.get();
+    let oldAccepted = false,
+      currentAccepted = false;
+    root.session.invokeInCallbackScope(() => {
+      oldAccepted = root.exposes.resolveValidation(older, { invalid: false });
+      currentAccepted = root.exposes.resolveValidation(newer, { invalid: false });
+    });
+    expect(contextCalls).toBe(1);
+    expect(pendingCalls).toBe(1);
+    expect(typeof older).toBe('string');
+    expect(typeof newer).toBe('string');
+    expect(older).not.toBe(newer);
+    expect(pendingBeforeResolve).toBe(true);
+    expect(oldAccepted).toBe(false);
+    expect(currentAccepted).toBe(true);
+    expect(emittedAtReturn).toEqual([newer]);
+  } finally {
+    stop?.();
+    for (const part of [...parts].reverse()) await part.session.dispose();
+  }
+});
+
+it.each(['normal', 'nested', 'unmount', 'dispose', 'remount'] as const)(
+  'Toggle Group waits for queued Context retirement after %s',
+  async (operation) => {
+    const { make, setActionCallback } = runtimeHarness();
+    const root = make(toggleGroupRoot);
+    const items = ['a', 'b', 'c'].map((value) => make(toggleGroupItem, root.target, { value }));
+    let armed = false;
+    const seen = new Set<string>();
+    const nested: boolean[] = [];
+    const emitted: string[][] = [];
+    const transitions: Promise<void>[] = [];
+    const request = (value: string) => {
+      let accepted: boolean | undefined;
+      root.session.invokeInCallbackScope(() => {
+        accepted = root.exposes.requestToggle(value);
+      });
+      return accepted;
+    };
+    setActionCallback((name, payload) => {
+      if (name === 'valueChange') emitted.push([...payload.value]);
+    });
+    const observer = make(
+      definePrototype({
+        name: 'toggle-group-queued-retirement-observer',
+        setup(def) {
+          def.context.subscribe(TOGGLE_GROUP_CONTEXT, (_run, next) => {
+            if (!armed || next.value.length !== 1 || seen.has(next.value[0])) return;
+            const value = next.value[0];
+            seen.add(value);
+            if (value === 'a' && operation !== 'normal') nested.push(request('b')!);
+            else if (value === 'b') {
+              if (operation === 'nested') nested.push(request('c')!);
+              else if (operation === 'unmount' || operation === 'dispose')
+                transitions.push(root.session[operation]());
+              else if (operation === 'remount') {
+                transitions.push(root.session.unmount());
+                transitions.push(root.session.mount());
+              }
+            }
+          });
+        },
+      }),
+      root.target
+    );
+    const parts = [root, ...items, observer];
+    try {
+      for (const part of parts) await part.session.mount();
+      const initialEpoch = root.session.mountEpoch;
+      emitted.length = 0;
+      armed = true;
+      const accepted = request('a');
+      const emittedAtReturn = emitted.map((value) => [...value]);
+      await Promise.all(transitions);
+      let fresh:
+        | { accepted: boolean | undefined; emitted: string[][]; value: string[] }
+        | undefined;
+      if (operation === 'remount') {
+        emitted.length = 0;
+        fresh = {
+          accepted: request('c'),
+          emitted: emitted.map((value) => [...value]),
+          value: root.exposes.getValue(),
+        };
+      }
+      expect(accepted).toBe(true);
+      expect([...seen]).toContain('a');
+      expect(nested).toEqual(
+        operation === 'normal' ? [] : operation === 'nested' ? [true, true] : [true]
+      );
+      expect(emittedAtReturn).toEqual(
+        operation === 'normal' ? [['a']] : operation === 'nested' ? [['b'], ['c'], ['a']] : []
+      );
+      if (operation === 'normal') expect(root.exposes.getValue()).toEqual(['a']);
+      if (operation === 'nested') expect(root.exposes.getValue()).toEqual(['c']);
+      if (operation === 'unmount') expect(root.session.mountPhase).toBe('detached');
+      if (operation === 'dispose') expect(root.session.instancePhase).toBe('disposed');
+      if (operation === 'remount') {
+        expect(root.session.mountEpoch).toBe(initialEpoch + 1);
+        expect(fresh).toEqual({ accepted: true, emitted: [['c']], value: ['c'] });
+      }
+    } finally {
+      armed = false;
+      await Promise.all(transitions);
+      for (const part of [...parts].reverse()) await part.session.dispose();
+    }
+  }
+);
+
+it('Toggle Group retains queued notification order when a valueChange callback reenters', async () => {
+  const { make, setActionCallback } = runtimeHarness();
+  const root = make(toggleGroupRoot);
+  const items = ['a', 'b', 'c', 'd'].map((value) => make(toggleGroupItem, root.target, { value }));
+  let armed = false;
+  const seen = new Set<string>();
+  const emitted: string[][] = [];
+  const nested: boolean[] = [];
+  const request = (value: string) => {
+    let accepted: boolean | undefined;
+    root.session.invokeInCallbackScope(() => {
+      accepted = root.exposes.requestToggle(value);
+    });
+    return accepted;
+  };
+  setActionCallback((name, payload) => {
+    if (name !== 'valueChange') return;
+    emitted.push([...payload.value]);
+    if (payload.value[0] === 'b') nested.push(request('d')!);
+  });
+  const observer = make(
+    definePrototype({
+      name: 'toggle-group-notification-reentry-observer',
+      setup(def) {
+        def.context.subscribe(TOGGLE_GROUP_CONTEXT, (_run, next) => {
+          if (!armed || next.value.length !== 1 || seen.has(next.value[0])) return;
+          const value = next.value[0];
+          seen.add(value);
+          if (value === 'a') nested.push(request('b')!);
+          else if (value === 'b') nested.push(request('c')!);
+        });
+      },
+    }),
+    root.target
+  );
+  const parts = [root, ...items, observer];
+  try {
+    for (const part of parts) await part.session.mount();
+    armed = true;
+    expect(request('a')).toBe(true);
+    expect(nested).toEqual([true, true, true]);
+    expect(emitted).toEqual([['b'], ['c'], ['d'], ['a']]);
+    expect(root.exposes.getValue()).toEqual(['d']);
+  } finally {
+    armed = false;
+    for (const part of [...parts].reverse()) await part.session.dispose();
+  }
+});
+
+it.each(['normal', 'dispose'] as const)(
+  'Toggle Group retires a detached owner during Context %s',
+  async (operation) => {
+    const { make, setActionCallback } = runtimeHarness();
+    const root = make(toggleGroupRoot);
+    const item = make(toggleGroupItem, root.target, { value: 'a' });
+    let armed = false;
+    const transitions: Promise<void>[] = [];
+    const emitted: string[][] = [];
+    setActionCallback((name, payload) => {
+      if (name === 'valueChange') emitted.push([...payload.value]);
+    });
+    const observer = make(
+      definePrototype({
+        name: 'toggle-group-detached-disposal-observer',
+        setup(def) {
+          def.context.subscribe(TOGGLE_GROUP_CONTEXT, (_run, next) => {
+            if (armed && next.value[0] === 'a' && operation === 'dispose')
+              transitions.push(root.session.dispose());
+          });
+        },
+      }),
+      root.target
+    );
+    const parts = [root, item, observer];
+    try {
+      await item.session.mount();
+      await observer.session.mount();
+      expect(root.session.mountPhase).toBe('detached');
+      expect(root.session.instancePhase).toBe('alive');
+      expect(root.exposes.getCollectionCount()).toBe(1);
+      armed = true;
+      let accepted: boolean | undefined;
+      expect(() => {
+        root.session.invokeInCallbackScope(() => {
+          accepted = root.exposes.requestToggle('a');
+        });
+      }).not.toThrow();
+      await Promise.all(transitions);
+      expect(accepted).toBe(true);
+      expect(emitted).toEqual(operation === 'normal' ? [['a']] : []);
+      expect(root.session.instancePhase).toBe(operation === 'normal' ? 'alive' : 'disposed');
+    } finally {
+      armed = false;
+      await Promise.all(transitions);
+      for (const part of [...parts].reverse()) await part.session.dispose();
+    }
+  }
+);
+
+it('Toggle Group drains an accepted nested notification before a Context callback error escapes', async () => {
+  const { make, setActionCallback } = runtimeHarness();
+  const root = make(toggleGroupRoot);
+  const items = ['a', 'b'].map((value) => make(toggleGroupItem, root.target, { value }));
+  const failure = new Error('later Context observer failed');
+  let armed = false;
+  let nested: boolean | undefined;
+  const emitted: string[][] = [];
+  const observed: string[] = [];
+  const request = (value: string) => {
+    let accepted: boolean | undefined;
+    root.session.invokeInCallbackScope(() => {
+      accepted = root.exposes.requestToggle(value);
+    });
+    return accepted;
+  };
+  setActionCallback((name, payload) => {
+    if (name === 'valueChange') emitted.push([...payload.value]);
+  });
+  const observer = make(
+    definePrototype({
+      name: 'toggle-group-accepted-before-context-error-observer',
+      setup(def) {
+        def.context.subscribe(TOGGLE_GROUP_CONTEXT, (_run, next) => {
+          if (!armed || next.value.length !== 1) return;
+          observed.push(next.value[0]);
+          if (next.value[0] === 'a') nested = request('b');
+        });
+        def.context.subscribe(TOGGLE_GROUP_CONTEXT, (_run, next) => {
+          if (armed && next.value[0] === 'a') throw failure;
+        });
+      },
+    }),
+    root.target
+  );
+  const parts = [root, ...items, observer];
+  try {
+    for (const part of parts) await part.session.mount();
+    armed = true;
+    let caught: unknown;
+    try {
+      request('a');
+    } catch (error) {
+      caught = error;
+    }
+    expect(caught).toBe(failure);
+    expect(nested).toBe(true);
+    expect(observed).toEqual(['a', 'b']);
+    expect(root.exposes.getValue()).toEqual(['b']);
+    expect(emitted).toEqual([['b']]);
+  } finally {
+    armed = false;
+    for (const part of [...parts].reverse()) await part.session.dispose();
+  }
+});
+
+it.each(['normal', 'error'] as const)(
+  'Field Root retains current validation after later Context subscriber %s',
+  async (mode) => {
+    const { make, setActionCallback } = runtimeHarness();
+    const root = make(fieldRoot, null, {
+      externalValidation: true,
+      validationMode: 'manual',
+    });
+    const control = make(fieldControl, root.target, { defaultValue: 'same' });
+    const failure = new Error('later Field Context subscriber');
+    let armed = false,
+      requested = false,
+      raised = false,
+      requestId: string | null = null;
+    const delivered: Array<{ observer: string; pending: boolean }> = [];
+    const emitted: string[] = [];
+    setActionCallback((name, payload) => {
+      if (name === 'validationRequest') emitted.push(payload.requestId);
+    });
+    const early = make(
+      definePrototype({
+        name: 'field-context-early-validation',
+        setup(def) {
+          def.context.subscribe(FIELD_CONTEXT, (_run, next) => {
+            if (!armed || !next.dirty) return;
+            delivered.push({ observer: 'early', pending: next.pending });
+            if (requested) return;
+            requested = true;
+            root.session.invokeInCallbackScope(() => {
+              requestId = root.exposes.validate();
+            });
+          });
+        },
+      }),
+      root.target
+    );
+    const late = make(
+      definePrototype({
+        name: 'field-context-late-error',
+        setup(def) {
+          def.context.subscribe(FIELD_CONTEXT, (_run, next) => {
+            if (!armed || !next.dirty) return;
+            delivered.push({ observer: 'late', pending: next.pending });
+            if (!next.pending && !raised) {
+              raised = true;
+              if (mode !== 'normal') throw failure;
+            }
+          });
+        },
+      }),
+      root.target
+    );
+    const parts = [root, control, early, late];
+    try {
+      for (const part of parts) await part.session.mount();
+      armed = true;
+      let threw = false,
+        caught: unknown;
+      try {
+        control.input('changed', false);
+      } catch (error) {
+        threw = true;
+        caught = error;
+      }
+      const emittedAtReturn = [...emitted];
+      const pendingAtReturn = root.exposes.pending.get();
+      const validityAtReturn = root.exposes.getValidity();
+      const deliveredAtReturn = [...delivered];
+      let accepted = false;
+      root.session.invokeInCallbackScope(() => {
+        accepted = root.exposes.resolveValidation(requestId, { invalid: false });
+      });
+      expect(threw).toBe(mode !== 'normal');
+      if (mode !== 'normal') expect(caught).toBe(failure);
+      expect(typeof requestId).toBe('string');
+      expect(deliveredAtReturn).toEqual([
+        { observer: 'early', pending: false },
+        { observer: 'late', pending: false },
+        { observer: 'early', pending: true },
+        { observer: 'late', pending: true },
+      ]);
+      expect(pendingAtReturn).toBe(true);
+      expect(validityAtReturn.pending).toBe(true);
+      expect(accepted).toBe(true);
+      expect(root.exposes.pending.get()).toBe(false);
+      expect(emittedAtReturn).toEqual([requestId]);
+    } finally {
+      armed = false;
+      for (const part of [...parts].reverse()) await part.session.dispose();
+    }
+  }
+);
+
+it.each(['normal', 'error'] as const)(
+  'Field Root retains a top-level request after pending Context subscriber %s',
+  async (mode) => {
+    const { make, setActionCallback } = runtimeHarness();
+    const root = make(fieldRoot, null, {
+      externalValidation: true,
+      validationMode: 'manual',
+    });
+    const control = make(fieldControl, root.target, { defaultValue: 'same' });
+    const failure = new Error('Field pending Context subscriber');
+    let armed = false,
+      observed = 0,
+      requestId: string | null = null;
+    const emitted: Array<{ requestId: string; value: string; reason: string }> = [];
+    setActionCallback((name, payload) => {
+      if (name === 'validationRequest') emitted.push(payload);
+    });
+    const observer = make(
+      definePrototype({
+        name: 'field-top-level-pending-error',
+        setup(def) {
+          def.context.subscribe(FIELD_CONTEXT, (_run, next) => {
+            if (!armed || !next.pending || observed) return;
+            observed++;
+            if (mode === 'error') throw failure;
+          });
+        },
+      }),
+      root.target
+    );
+    const parts = [root, control, observer];
+    try {
+      for (const part of parts) await part.session.mount();
+      armed = true;
+      let caught: unknown;
+      try {
+        root.session.invokeInCallbackScope(() => {
+          requestId = root.exposes.validate();
+        });
+      } catch (error) {
+        caught = error;
+      }
+      expect(caught).toBe(mode === 'error' ? failure : undefined);
+      expect(observed).toBe(1);
+      expect(emitted).toHaveLength(1);
+      const current = emitted[0].requestId;
+      expect(typeof current).toBe('string');
+      expect(emitted[0]).toEqual({ requestId: current, value: 'same', reason: 'manual' });
+      expect(requestId).toBe(mode === 'error' ? null : current);
+      expect(root.exposes.getValidity().pending).toBe(true);
+      let accepted = false,
+        duplicate = true;
+      root.session.invokeInCallbackScope(() => {
+        accepted = root.exposes.resolveValidation(current, { invalid: false });
+        duplicate = root.exposes.resolveValidation(current, { invalid: false });
+      });
+      expect(accepted).toBe(true);
+      expect(duplicate).toBe(false);
+      expect(root.exposes.pending.get()).toBe(false);
+      expect(root.exposes.getValidity().pending).toBe(false);
+      expect(emitted).toHaveLength(1);
+    } finally {
+      armed = false;
+      for (const part of [...parts].reverse()) await part.session.dispose();
+    }
+  }
+);

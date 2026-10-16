@@ -116,8 +116,11 @@ function setupFieldRoot(def: DefHandle<FieldRootProps, FieldRootExposes>) {
     const snapshot = read() as FieldControlSnapshot;
     return snapshot?.active ? { source: parts[0].getExpose('__fieldLease'), snapshot } : null;
   };
-  const publish = () => {
+  let publicationDepth = 0;
+  let afterPublication: (() => void) | null = null;
+  const publishCurrent = () => {
     if (!run || !initialized) return;
+    const current = run;
     const p = run.props.get(),
       found = control(),
       snapshot = found?.snapshot;
@@ -182,11 +185,29 @@ function setupFieldRoot(def: DefHandle<FieldRootProps, FieldRootExposes>) {
       next.focused = false;
       next.status = 'unvalidated';
     }
-    const previous = run.context.read(FIELD_CONTEXT);
-    if (JSON.stringify(previous) !== JSON.stringify(next)) run.context.update(FIELD_CONTEXT, next);
-    const canonical = run.context.read(FIELD_CONTEXT);
-    for (const key of Object.keys(states) as (keyof typeof states)[])
+    const publication = revision;
+    const previous = current.context.read(FIELD_CONTEXT);
+    if (JSON.stringify(previous) !== JSON.stringify(next))
+      current.context.update(FIELD_CONTEXT, next);
+    if (run !== current || revision !== publication) return;
+    const canonical = current.context.read(FIELD_CONTEXT);
+    for (const key of Object.keys(states) as (keyof typeof states)[]) {
       states[key].set(canonical[key], 'reason: field canonical ' + key);
+      if (run !== current || revision !== publication) return;
+    }
+  };
+  const publish = () => {
+    publicationDepth++;
+    try {
+      publishCurrent();
+    } finally {
+      publicationDepth--;
+      if (publicationDepth === 0) {
+        const notify = afterPublication;
+        afterPublication = null;
+        notify?.();
+      }
+    }
   };
   const emitResult = () => {
     if (run)
@@ -218,12 +239,22 @@ function setupFieldRoot(def: DefHandle<FieldRootProps, FieldRootExposes>) {
     localErrors = [];
     status = localInvalid ? 'invalid' : 'valid';
     if (!localInvalid && p.externalValidation) {
+      const current = run;
       const requestId = 'field-' + rootId + '-' + revision + '-' + ++sequence;
-      pending = { requestId, revision, source: found.source };
+      const request = { requestId, revision, source: found.source };
+      pending = request;
       // Pending is not a successful validation; retain an explicit unvalidated status.
       status = 'unvalidated';
+      const emit = () => {
+        if (run !== current || pending !== request) return;
+        current.expose.emit('validationRequest', {
+          requestId,
+          value: copyFieldValue(value),
+          reason,
+        });
+      };
+      afterPublication = emit;
       publish();
-      run.expose.emit('validationRequest', { requestId, value: copyFieldValue(value), reason });
       return requestId;
     }
     publish();

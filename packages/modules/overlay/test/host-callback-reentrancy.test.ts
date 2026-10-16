@@ -2,6 +2,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { CapsVault, SYS_CAP } from '@proto.ui/module-base';
 import { OverlayModuleImpl } from '../src/impl';
+import { joinEscapeScope, ownsEscapeSample } from '../src/escape-coordinator';
 import {
   OVERLAY_TARGET_HOST_CAP,
   OVERLAY_GLOBAL_MOUNT_CAP,
@@ -9,7 +10,7 @@ import {
   OVERLAY_MODAL_CAP,
 } from '../src/caps';
 
-function fixture() {
+function fixture(eventPort: Record<string, unknown> = {}) {
   const caps = new CapsVault();
   caps.attachBase([
     [
@@ -23,18 +24,25 @@ function fixture() {
     ],
   ]);
   const target = {};
+  const logical = { outside: 0, regions: 0 };
   const available = { connect: vi.fn(), disconnect: vi.fn(), requestUpdate: vi.fn() };
   const positioning = { connect: vi.fn(), disconnect: vi.fn() };
   const module = new OverlayModuleImpl(
     caps,
     'overlay-host-callback-reentry',
     {
-      subscribeOutside: () => () => {},
+      subscribeOutside: () => {
+        logical.outside++;
+        return () => logical.outside--;
+      },
       setStackActive() {},
-      registerRegion: () => () => {},
+      registerRegion: () => {
+        logical.regions++;
+        return () => logical.regions--;
+      },
     } as any,
     {} as any,
-    {} as any,
+    eventPort as any,
     {} as any,
     positioning as any,
     available
@@ -86,7 +94,7 @@ function fixture() {
     module.setViewActive(true);
     module.onMountPhase('mounted', 1);
   };
-  return { caps, target, module, a, b, install, activate, available, positioning };
+  return { caps, target, module, a, b, install, activate, available, positioning, logical };
 }
 
 for (const stage of ['mount', 'attach', 'lock'] as const) {
@@ -230,3 +238,199 @@ for (const replacement of ['new-provider', 'new-epoch', 'provider-and-epoch'] as
     expect(currentProvider.detach).toHaveBeenCalledTimes(1);
   });
 }
+
+for (const boundary of ['detach', 'terminal'] as const) {
+  it(`${boundary} finishes remaining cleanup before rethrowing a layer release failure`, () => {
+    const f = fixture();
+    const failure = boundary === 'terminal' ? 0 : new Error('layer release failure');
+    try {
+      f.module.configure({ anchored: true });
+      f.module.registerTrigger(f.target);
+      f.module.registerAnchor(f.target);
+      f.activate();
+      expect(f.a.active).toEqual({ portal: 1, layer: 1, modal: 1 });
+      expect(f.positioning.connect).toHaveBeenCalled();
+      expect(f.available.connect).toHaveBeenCalled();
+      expect(f.logical).toEqual({ outside: 1, regions: 2 });
+      f.positioning.disconnect.mockClear();
+      f.available.disconnect.mockClear();
+      const release = f.a.detach.getMockImplementation()!;
+      f.a.detach.mockImplementationOnce(() => {
+        release();
+        throw failure;
+      });
+      let threw = false;
+      let caught: unknown;
+      try {
+        if (boundary === 'terminal') f.module.onProtoPhase('unmounted');
+        else f.module.onMountPhase('detached', 1);
+      } catch (error) {
+        threw = true;
+        caught = error;
+      }
+      expect(threw).toBe(true);
+      expect(caught).toBe(failure);
+      expect(f.a.active).toEqual({ portal: 0, layer: 0, modal: 0 });
+      expect(f.positioning.disconnect).toHaveBeenCalledTimes(1);
+      expect(f.available.disconnect).toHaveBeenCalledTimes(1);
+      expect(f.logical).toEqual(
+        boundary === 'terminal' ? { outside: 0, regions: 0 } : { outside: 1, regions: 2 }
+      );
+    } finally {
+      f.module.onMountPhase('detached', 1);
+      f.module.onProtoPhase('unmounted');
+    }
+  });
+}
+
+it('finishes queued replacement reconciliation before rethrowing a layer release failure', () => {
+  const f = fixture();
+  const failure = new Error('retired layer release failure');
+  try {
+    f.activate();
+    const release = f.a.detach.getMockImplementation()!;
+    f.a.detach.mockImplementationOnce(() => {
+      release();
+      f.install(f.b);
+      f.module.onMountPhase('mounted', 2);
+      throw failure;
+    });
+    let caught: unknown;
+    try {
+      f.module.onMountPhase('detached', 1);
+    } catch (error) {
+      caught = error;
+    }
+    expect(caught).toBe(failure);
+    expect(f.a.active).toEqual({ portal: 0, layer: 0, modal: 0 });
+    expect(f.b.active).toEqual({ portal: 1, layer: 1, modal: 1 });
+    expect(f.b.attach).toHaveBeenCalledTimes(1);
+  } finally {
+    f.module.onMountPhase('detached', 2);
+    f.module.onProtoPhase('unmounted');
+  }
+});
+
+for (const releaseFails of [false, true]) {
+  it(`queued replacement failure preserves ${releaseFails ? 'the first raw zero' : 'the replacement error'}`, () => {
+    const f = fixture();
+    const replacementFailure = new Error('replacement layer acquisition failure');
+    try {
+      f.activate();
+      const release = f.a.detach.getMockImplementation()!;
+      f.a.detach.mockImplementationOnce(() => {
+        release();
+        f.install(f.b);
+        f.module.onMountPhase('mounted', 2);
+        if (releaseFails) throw 0;
+      });
+      f.b.attach.mockImplementationOnce(() => {
+        throw replacementFailure;
+      });
+      let threw = false;
+      let caught: unknown;
+      try {
+        f.module.onMountPhase('detached', 1);
+      } catch (error) {
+        threw = true;
+        caught = error;
+      }
+      expect(threw).toBe(true);
+      expect(caught).toBe(releaseFails ? 0 : replacementFailure);
+      expect(f.b.attach).toHaveBeenCalledTimes(1);
+      expect(f.a.active).toEqual({ portal: 0, layer: 0, modal: 0 });
+      expect(f.b.active).toEqual({ portal: 1, layer: 0, modal: 0 });
+    } finally {
+      f.module.onMountPhase('detached', 2);
+      f.module.onProtoPhase('unmounted');
+    }
+  });
+}
+
+it('provider replacement finishes old releases before reconciling a reentrant mount', () => {
+  const f = fixture();
+  const failure = new Error('old portal release failure');
+  try {
+    f.activate();
+    const release = f.a.unmount.getMockImplementation()!;
+    f.a.unmount.mockImplementationOnce(() => {
+      release();
+      f.module.onMountPhase('mounted', 2);
+      throw failure;
+    });
+    let caught: unknown;
+    try {
+      f.install(f.b);
+    } catch (error) {
+      caught = error;
+    }
+    expect(caught).toBe(failure);
+    expect(f.a.active).toEqual({ portal: 0, layer: 0, modal: 0 });
+    expect(f.b.active).toEqual({ portal: 1, layer: 1, modal: 1 });
+    expect(f.a.mount).toHaveBeenCalledTimes(1);
+  } finally {
+    f.module.onMountPhase('detached', 2);
+    f.module.onProtoPhase('unmounted');
+  }
+});
+
+for (const stage of ['detach', 'unmount'] as const) {
+  it(`terminal replacement during ${stage} release cannot reacquire resources`, () => {
+    const f = fixture();
+    const failure = new Error('terminal replacement release failure');
+    try {
+      f.activate();
+      const release = f.a[stage].getMockImplementation()!;
+      f.a[stage].mockImplementationOnce(() => {
+        release();
+        f.install(f.b);
+        throw failure;
+      });
+      let caught: unknown;
+      try {
+        f.module.onProtoPhase('unmounted');
+      } catch (error) {
+        caught = error;
+      }
+      expect(caught).toBe(failure);
+      expect(f.a.active).toEqual({ portal: 0, layer: 0, modal: 0 });
+      expect(f.b.active).toEqual({ portal: 0, layer: 0, modal: 0 });
+      expect(f.b.mount).not.toHaveBeenCalled();
+      expect(f.b.attach).not.toHaveBeenCalled();
+      expect(f.b.lock).not.toHaveBeenCalled();
+      expect(f.logical).toEqual({ outside: 0, regions: 0 });
+    } finally {
+      f.module.onMountPhase('detached', 1);
+    }
+  });
+}
+
+it('terminal replacement cannot rejoin Escape scope after cleanup', () => {
+  const scope = {},
+    survivor = {};
+  const leave = joinEscapeScope(scope, survivor);
+  const f = fixture({ getGlobalInputScope: () => scope, onGlobal() {} });
+  const failure = new Error('terminal portal release failure');
+  try {
+    f.module.configure({ closeOnEscape: true });
+    f.activate();
+    expect(ownsEscapeSample(scope, {}, survivor)).toBe(false);
+    const release = f.a.unmount.getMockImplementation()!;
+    f.a.unmount.mockImplementationOnce(() => {
+      release();
+      f.install(f.b);
+      throw failure;
+    });
+    let caught: unknown;
+    try {
+      f.module.onProtoPhase('unmounted');
+    } catch (error) {
+      caught = error;
+    }
+    expect(caught).toBe(failure);
+    expect(ownsEscapeSample(scope, {}, survivor)).toBe(true);
+  } finally {
+    f.module.onMountPhase('detached', 1);
+    leave();
+  }
+});

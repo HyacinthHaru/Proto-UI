@@ -22,6 +22,8 @@ on:
       - 'apps/www/src/content/docs/demo-*-field.demo.ts'
       - 'apps/www/src/content/docs/zh-cn/demo-field-family.browser.test.ts'
       - 'apps/www/src/content/docs/zh-cn/field-browser-oracle.ts'
+      - 'apps/www/src/content/docs/zh-cn/field-focus-observation*'
+      - 'apps/www/src/content/docs/zh-cn/field-async-observation*'
       - 'apps/www/src/content/docs/zh-cn/browser-harness.ts'
       - 'apps/www/src/components/PrototypePreviewer/**'
       - 'scripts/test/server-readiness*'
@@ -82,6 +84,7 @@ jobs:
         timeout-minutes: 20
         env:
           PROTO_UI_FIELD_SCREENSHOT_DIR: ${{ runner.temp }}/field-family/screenshots
+          PROTO_UI_FIELD_ASYNC_TRACE_DIR: ${{ runner.temp }}/field-family/async-traces
         run: |
           set -euo pipefail
           # Supplementary direct evidence only. The standard required CI inventory

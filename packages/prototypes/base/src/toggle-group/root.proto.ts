@@ -51,6 +51,9 @@ function setup(def: DefHandle<ToggleGroupRootProps, ToggleGroupRootExposes>) {
   let value: string[] = [];
   let current = '';
   let runNow: RunHandle<ToggleGroupRootProps> | null = null;
+  let viewEpoch = 0;
+  let publicationDepth = 0;
+  let afterPublication: Array<() => void> = [];
   let snapshot: ToggleGroupContext = { value, current, disabled: false, readOnly: false };
   def.context.provide(TOGGLE_GROUP_CONTEXT, snapshot);
   const publish = (run: RunHandle<ToggleGroupRootProps>) => {
@@ -60,7 +63,21 @@ function setup(def: DefHandle<ToggleGroupRootProps, ToggleGroupRootExposes>) {
     const next = { value, current, disabled: disabled.get(), readOnly: !!run.props.get().readOnly };
     if (JSON.stringify(next) === JSON.stringify(snapshot)) return;
     snapshot = next;
-    run.context.update(TOGGLE_GROUP_CONTEXT, next);
+    publicationDepth++;
+    try {
+      run.context.update(TOGGLE_GROUP_CONTEXT, next);
+    } finally {
+      publicationDepth--;
+      if (publicationDepth === 0) {
+        publicationDepth++;
+        try {
+          while (afterPublication.length) afterPublication.shift()!();
+        } finally {
+          publicationDepth--;
+          afterPublication = [];
+        }
+      }
+    }
   };
   def.expose.method('getValue', () => [...value]);
   def.expose.method('setCurrent', (id) => {
@@ -72,6 +89,7 @@ function setup(def: DefHandle<ToggleGroupRootProps, ToggleGroupRootExposes>) {
   def.expose.method('requestToggle', (itemValue) => {
     const run = runNow;
     if (!run || disabled.get() || run.props.get().readOnly) return false;
+    const epoch = viewEpoch;
     const matches = getItems(run).filter((i) => i.value === itemValue);
     if (!itemValue || matches.length !== 1 || matches[0].disabled) return false;
     const next = value.includes(itemValue)
@@ -82,7 +100,13 @@ function setup(def: DefHandle<ToggleGroupRootProps, ToggleGroupRootExposes>) {
     if (!run.props.isProvided('value')) value = next;
     current = matches[0].id;
     publish(run);
-    run.expose.emit('valueChange', { value: next });
+    if (runNow !== run || viewEpoch !== epoch) return true;
+    const emit = () => {
+      if (runNow !== run || viewEpoch !== epoch) return;
+      run.expose.emit('valueChange', { value: next });
+    };
+    if (publicationDepth) afterPublication.push(emit);
+    else emit();
     return true;
   });
   const sync = (run: RunHandle<ToggleGroupRootProps>, initial = false) => {
@@ -104,6 +128,11 @@ function setup(def: DefHandle<ToggleGroupRootProps, ToggleGroupRootExposes>) {
   def.lifecycle.onCreated((run) => sync(run, true));
   def.lifecycle.onMounted((run) => sync(run));
   def.lifecycle.onUnmounted(() => {
+    viewEpoch++;
+    runNow = null;
+  });
+  def.lifecycle.onBeforeDispose(() => {
+    viewEpoch++;
     runNow = null;
   });
   def.props.watchAll((run) => sync(run));

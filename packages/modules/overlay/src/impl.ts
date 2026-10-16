@@ -119,6 +119,22 @@ function revokeHostResource(lease: HostResourceLease): void {
   release?.();
 }
 
+function completeOverlayResourceWork(steps: readonly (() => void)[]): void {
+  let failed = false;
+  let firstError: unknown;
+  for (const step of steps) {
+    try {
+      step();
+    } catch (error) {
+      if (!failed) {
+        failed = true;
+        firstError = error;
+      }
+    }
+  }
+  if (failed) throw firstError;
+}
+
 export class OverlayModuleImpl extends ModuleBase {
   private config: OverlayConfig = DEFAULT_CONFIG;
   private presenceBound = false;
@@ -165,7 +181,11 @@ export class OverlayModuleImpl extends ModuleBase {
 
   private syncEscapeCandidate(): void {
     const scope =
-      this.isOpen() && this.viewActive && this.mountPhase === 'mounted' && this.config.closeOnEscape
+      this.protoPhase !== 'unmounted' &&
+      this.isOpen() &&
+      this.viewActive &&
+      this.mountPhase === 'mounted' &&
+      this.config.closeOnEscape
         ? (this.eventPort.getGlobalInputScope?.() ?? null)
         : null;
     if (scope === this.escapeScope) return;
@@ -234,10 +254,12 @@ export class OverlayModuleImpl extends ModuleBase {
     this.leaveEscapeScope?.();
     this.leaveEscapeScope = null;
     this.escapeScope = null;
-    this.teardownMountedViewSideEffects();
-    this.clearBoundaryRegistrations();
-    this.offBoundaryOutside?.();
-    this.targetAlignment.dispose();
+    completeOverlayResourceWork([
+      () => this.teardownMountedViewSideEffects(),
+      () => this.clearBoundaryRegistrations(),
+      () => this.offBoundaryOutside?.(),
+      () => this.targetAlignment.dispose(),
+    ]);
   }
 
   override onMountPhase(phase: MountPhase, epoch: number): void {
@@ -270,16 +292,26 @@ export class OverlayModuleImpl extends ModuleBase {
       ? this.caps.get(OVERLAY_LAYER_SCHEDULER_CAP)
       : null;
     // Release through the provider that acquired each resource before replacing it.
-    if (globalMount !== this.globalMount) this.unmountGlobalIfNeeded();
-    if (epoch !== this.caps.epoch) return;
-    if (modalLock !== this.modalLock) this.unlockModalIfNeeded();
-    if (epoch !== this.caps.epoch) return;
-    if (layerScheduler !== this.layerScheduler) this.clearLayer();
-    if (epoch !== this.caps.epoch) return;
-    this.globalMount = globalMount;
-    this.modalLock = modalLock;
-    this.layerScheduler = layerScheduler;
-    if (this.viewActive) this.reconcileViewResourcesAfterCallback();
+    completeOverlayResourceWork([
+      () => {
+        if (globalMount !== this.globalMount) this.unmountGlobalIfNeeded();
+      },
+      () => {
+        if (epoch !== this.caps.epoch) return;
+        if (modalLock !== this.modalLock) this.unlockModalIfNeeded();
+      },
+      () => {
+        if (epoch !== this.caps.epoch) return;
+        if (layerScheduler !== this.layerScheduler) this.clearLayer();
+      },
+      () => {
+        if (epoch !== this.caps.epoch) return;
+        this.globalMount = globalMount;
+        this.modalLock = modalLock;
+        this.layerScheduler = layerScheduler;
+        if (this.viewActive) this.reconcileViewResourcesAfterCallback();
+      },
+    ]);
   }
 
   private ensureSetup(op: string) {
@@ -431,6 +463,7 @@ export class OverlayModuleImpl extends ModuleBase {
       version === this.viewReconciliationVersion &&
       epoch === this.caps.epoch &&
       mountedEpoch === this.mountedEpoch &&
+      this.protoPhase !== 'unmounted' &&
       this.mountPhase === 'mounted' &&
       this.viewActive;
   }
@@ -485,12 +518,18 @@ export class OverlayModuleImpl extends ModuleBase {
       return;
     }
     this.reconcilingView = true;
-    try {
-      work();
-    } finally {
-      this.reconcilingView = false;
-    }
-    if (this.reconcileViewAgain) this.syncViewSideEffects();
+    completeOverlayResourceWork([
+      () => {
+        try {
+          work();
+        } finally {
+          this.reconcilingView = false;
+        }
+      },
+      () => {
+        if (this.reconcileViewAgain) this.syncViewSideEffects();
+      },
+    ]);
   }
 
   private deactivateViewSideEffects(): void {
@@ -504,12 +543,14 @@ export class OverlayModuleImpl extends ModuleBase {
 
   private teardownMountedViewSideEffects(): void {
     this.deferResourceReentry(() => {
-      this.clearLayer();
-      this.targetAlignment.clearPhysical();
-      this.anchoredPosition.disconnect();
-      this.availableSpace?.disconnect();
-      this.unmountGlobalIfNeeded();
-      this.unlockModalIfNeeded();
+      completeOverlayResourceWork([
+        () => this.clearLayer(),
+        () => this.targetAlignment.clearPhysical(),
+        () => this.anchoredPosition.disconnect(),
+        () => this.availableSpace?.disconnect(),
+        () => this.unmountGlobalIfNeeded(),
+        () => this.unlockModalIfNeeded(),
+      ]);
     });
   }
 

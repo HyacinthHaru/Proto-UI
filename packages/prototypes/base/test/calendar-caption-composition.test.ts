@@ -224,6 +224,64 @@ describe('Calendar public caption composition', () => {
     expect(f.yearControl.setValue).not.toHaveBeenCalled();
     expect(f.source.requestMonth).not.toHaveBeenCalled();
   });
+
+  it.each([new Error('Month release failed'), undefined, null, false, 0, ''])(
+    'releases both subscriptions before preserving the first thrown value %j',
+    (failure) => {
+      const month = state('2024-02');
+      const disabled = state(false);
+      const released: string[] = [];
+      const throwing = <Value>(
+        source: CalendarCaptionState<Value>,
+        name: string,
+        error: unknown
+      ) => ({
+        get: () => source.get(),
+        subscribe(listener: () => void) {
+          const unsubscribe = source.subscribe(listener);
+          return () => {
+            released.push(name);
+            unsubscribe();
+            throw error;
+          };
+        },
+      });
+      const control = { setValue: vi.fn(), setDisabled: vi.fn() };
+      const requestMonth = vi.fn(() => true);
+      const binding = bindCalendarCaption(
+        {
+          month: throwing(month, 'month', failure),
+          disabled: throwing(disabled, 'disabled', new Error('Disabled release failed')),
+          requestMonth,
+        },
+        { month: control, year: control }
+      );
+      let didThrow = false;
+      let received: unknown;
+      try {
+        binding.dispose();
+      } catch (error) {
+        didThrow = true;
+        received = error;
+      }
+      expect(didThrow).toBe(true);
+      expect(received).toBe(failure);
+      expect(released).toEqual(['month', 'disabled']);
+      expect(month.listeners.size).toBe(0);
+      expect(disabled.listeners.size).toBe(0);
+      control.setValue.mockClear();
+      control.setDisabled.mockClear();
+      binding.dispose();
+      for (const callback of [...month.historicalListeners, ...disabled.historicalListeners])
+        callback();
+      binding.sync();
+      expect(binding.requestMonth('3')).toBe(false);
+      expect(control.setValue).not.toHaveBeenCalled();
+      expect(control.setDisabled).not.toHaveBeenCalled();
+      expect(requestMonth).not.toHaveBeenCalled();
+      expect(released).toEqual(['month', 'disabled']);
+    }
+  );
 });
 
 for (const prototype of [
