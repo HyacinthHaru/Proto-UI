@@ -21,12 +21,19 @@ import {
   type OpaqueRgba,
 } from '../../../../../../packages/adapters/base/src/material/style';
 import type { TintCell, TintRect } from './liquid-prominent-tint-metrics';
+import {
+  TINT_PROFILE4_FIXTURE,
+  tintProfile4Fragment,
+  tintProfile4ContactFragment,
+} from './liquid-tint-profile4-fixture';
 
 export const TINT_STAGE_POLICY = Object.freeze({
   version: 'tint4-stage-continuous-tone-1',
   candidateGeneralTransfer: 'rejected-analytically',
   expectedCompleteDiagnosticStatus: 'diagnostic-rejected-on-continuous-tone',
   productAccepted: false,
+  executionScope: 'historical-profile4-replay-on-current-profile5-host',
+  currentProductValidation: false,
   statistic:
     'same-frame GPU postlighting clamped encoded luma; exact inShape == 1; includes foreground backing',
   packing:
@@ -284,12 +291,7 @@ export const TINT_STAGE_KINDS = [
 export type TintStageKind = (typeof TINT_STAGE_KINDS)[number];
 export function tintStageShader(kind: TintStageKind, contact = true) {
   if (!TINT_STAGE_KINDS.includes(kind)) throw new Error('tint-stage-unknown-stage');
-  if (
-    styleTintProfile !== 'pui-regular-style-tint-4' ||
-    styleTintContactProfile !== 'pui-regular-style-tint-contact-4'
-  )
-    throw new Error('tint-stage-profile-drift');
-  let source = contact ? styleTintContactFragment : styleTintFragment;
+  let source = contact ? tintProfile4ContactFragment : tintProfile4Fragment;
   for (const anchor of [MAIN, DETAIL, TARGET, DECODE])
     if (source.split(anchor).length !== 2) throw new Error('tint-stage-shader-anchor-drift');
   if (kind === 'baseline') return source;
@@ -430,8 +432,84 @@ export function verifyTintStageSafety(
   };
 }
 
-/** Wrap only this owned canvas context. No WebGL prototype or host provider patch. */
+/** Exact-source, single-pipeline substitution. A drifted host must fail before
+ * any diagnostic draw, never silently compile current production as history. */
+export function createTintStageHistoricalSubstitution(
+  host: { profile: string; fragment: string; vertex: string },
+  contact = true
+) {
+  const expectedHost = contact ? 'pui-regular-style-tint-contact-5' : 'pui-regular-style-tint-5';
+  const historical = contact ? tintProfile4ContactFragment : tintProfile4Fragment;
+  const uniforms = (source: string) =>
+    [
+      ...source.matchAll(
+        /\buniform\s+(?:(?:lowp|mediump|highp)\s+)?\w+\s+\w+(?:\s*\[[^\]]+\])?\s*;/g
+      ),
+    ]
+      .map((match) => match[0].replace(/\s+/g, ' '))
+      .sort();
+  if (host.profile !== expectedHost || host.fragment === historical)
+    throw new Error('tint-stage-current-host-profile-drift');
+  if (JSON.stringify(uniforms(host.fragment)) !== JSON.stringify(uniforms(historical)))
+    throw new Error('tint-stage-historical-uniform-schema-drift');
+  const counts = { vertex: 0, fragment: 0 };
+  return {
+    source(kind: 'vertex' | 'fragment', source: string) {
+      if (kind !== 'vertex' && kind !== 'fragment')
+        throw new Error('tint-stage-unexpected-shader-type');
+      if (source !== host[kind] || counts[kind] !== 0)
+        throw new Error(`tint-stage-current-${kind}-source-or-count-drift`);
+      counts[kind]++;
+      return kind === 'fragment' ? historical : source;
+    },
+    complete() {
+      if (counts.vertex !== 1 || counts.fragment !== 1)
+        throw new Error('tint-stage-historical-substitution-count-drift');
+      return { vertexSources: counts.vertex, fragmentReplacements: counts.fragment };
+    },
+  };
+}
+export type TintStageKernelReceipt = {
+  scope: string;
+  currentProductValidation: boolean;
+  currentAdapter: { profile: string; requestedFragmentSha256: string };
+  compiledKernel: { profile: string; fragmentSha256: string; head: string; tree: string };
+  vertexSha256: string;
+  vertexSources: number;
+  fragmentReplacements: number;
+};
+/** A historical replay cannot become profile5 evidence by changing a label. */
+export function assertTintStageHistoricalKernelReceipt(receipt?: TintStageKernelReceipt) {
+  if (
+    !receipt ||
+    receipt.scope !== TINT_STAGE_POLICY.executionScope ||
+    receipt.currentProductValidation !== false ||
+    receipt.currentAdapter?.profile !== 'pui-regular-style-tint-contact-5' ||
+    !/^[a-f0-9]{64}$/.test(receipt.currentAdapter.requestedFragmentSha256) ||
+    receipt.currentAdapter.requestedFragmentSha256 === TINT_PROFILE4_FIXTURE.contact.sha256 ||
+    receipt.compiledKernel?.profile !== TINT_PROFILE4_FIXTURE.contact.profile ||
+    receipt.compiledKernel.fragmentSha256 !== TINT_PROFILE4_FIXTURE.contact.sha256 ||
+    receipt.compiledKernel.head !== TINT_PROFILE4_FIXTURE.head ||
+    receipt.compiledKernel.tree !== TINT_PROFILE4_FIXTURE.tree ||
+    !/^[a-f0-9]{64}$/.test(receipt.vertexSha256) ||
+    receipt.vertexSources !== 1 ||
+    receipt.fragmentReplacements !== 1
+  )
+    throw new Error('tint-stage-not-historical-profile4-evidence');
+}
+
+/** Wrap only this owned canvas context. No WebGL prototype or host provider patch.
+ * The current adapter supplies preparation/uniforms; its profile5 fragment is
+ * replaced before compilation. These draws validate only the historical kernel. */
 function captureProduction(frame: OpticalFrame) {
+  const substitution = createTintStageHistoricalSubstitution(
+    {
+      profile: frame.contact ? styleTintContactProfile : styleTintProfile,
+      fragment: frame.contact ? styleTintContactFragment : styleTintFragment,
+      vertex,
+    },
+    !!frame.contact
+  );
   const canvas = document.createElement('canvas');
   const gl = canvas.getContext('webgl', {
     alpha: true,
@@ -447,10 +525,16 @@ function captureProduction(frame: OpticalFrame) {
     readbackCalls = 0,
     uploadedBytes = 0;
   const shaders: string[] = [],
+    requestedShaders: string[] = [],
     restores: (() => void)[] = [];
-  const wrap = (name: string, observe: (args: any[], result: any) => void) => {
+  const wrap = (
+    name: string,
+    observe: (args: any[], result: any) => void,
+    before?: (args: any[]) => void
+  ) => {
     const original = (gl as any)[name];
     (gl as any)[name] = function (...args: any[]) {
+      before?.(args);
       const result = original.apply(gl, args);
       observe(args, result);
       return result;
@@ -465,7 +549,24 @@ function captureProduction(frame: OpticalFrame) {
   wrap('activeTexture', (args) => {
     textureUnit = args[0];
   });
-  wrap('shaderSource', (args) => shaders.push(args[1]));
+  wrap(
+    'shaderSource',
+    (args) => shaders.push(args[1]),
+    (args) => {
+      const kind = gl.getShaderParameter(args[0], gl.SHADER_TYPE);
+      if (kind !== gl.VERTEX_SHADER && kind !== gl.FRAGMENT_SHADER)
+        throw new Error('tint-stage-unexpected-shader-type');
+      requestedShaders.push(args[1]);
+      args[1] = substitution.source(kind === gl.VERTEX_SHADER ? 'vertex' : 'fragment', args[1]);
+    }
+  );
+  wrap(
+    'drawArrays',
+    () => {},
+    () => {
+      substitution.complete();
+    }
+  );
   wrap('readPixels', () => {
     readbackCalls++;
   });
@@ -494,6 +595,7 @@ function captureProduction(frame: OpticalFrame) {
   const program = createWebOpticalProgram(canvas);
   try {
     const png = program.render(frame);
+    const replacementCounts = substitution.complete();
     const productionInternalReadbacks = readbackCalls;
     if (!prepared) throw new Error('tint-stage-missing-actual-prefilter');
     const activeProgram = gl.getParameter(gl.CURRENT_PROGRAM);
@@ -516,6 +618,8 @@ function captureProduction(frame: OpticalFrame) {
       prepared: prepared as Uint8Array,
       uniforms,
       shaders,
+      requestedShaders,
+      replacementCounts,
       metrics: program.inspect(),
       productionInternalReadbacks,
       captureReadbacks: readbackCalls - productionInternalReadbacks,
@@ -537,6 +641,8 @@ function captureProduction(frame: OpticalFrame) {
       tintStagePartial: {
         stagePngs,
         uniformUploads: uniforms,
+        requestedShaderSources: requestedShaders,
+        submittedShaderSources: shaders,
         productionMetrics: program.inspect(),
         productionDimensions: [canvas.width, canvas.height],
       },
@@ -819,6 +925,7 @@ export function failedTintStageResult<T extends Record<string, any>>(partial: T,
     status: 'failed' as const,
     failure: error instanceof Error ? error.message : String(error),
     candidateGeneralTransfer: TINT_STAGE_POLICY.candidateGeneralTransfer,
+    currentProductValidation: false as const,
     productAccepted: false as const,
   };
 }
@@ -901,6 +1008,13 @@ async function executeTintStageFrame(input: StageInput, partial: Record<string, 
     };
   }
   if (frame.contactPhase !== 'rest') throw new Error('tint-stage-only-frozen-rest');
+  if (frame.profile !== TINT_PROFILE4_FIXTURE.contact.profile)
+    throw new Error('tint-stage-historical-input-profile-mismatch');
+  if (
+    (await tintStageHash(tintProfile4ContactFragment)) !== TINT_STAGE_POLICY.shaderSha256.contact ||
+    (await tintStageHash(tintProfile4Fragment)) !== TINT_STAGE_POLICY.shaderSha256.static
+  )
+    throw new Error('tint-stage-shader-hash-drift');
   const optical: OpticalFrame = {
     source: {
       revision: frame.source.revision,
@@ -932,6 +1046,23 @@ async function executeTintStageFrame(input: StageInput, partial: Record<string, 
   };
   const actual = captureProduction(optical);
   try {
+    const kernelExecution: TintStageKernelReceipt = {
+      scope: TINT_STAGE_POLICY.executionScope,
+      currentProductValidation: false,
+      currentAdapter: {
+        profile: styleTintContactProfile,
+        requestedFragmentSha256: await tintStageHash(styleTintContactFragment),
+      },
+      compiledKernel: {
+        profile: TINT_PROFILE4_FIXTURE.contact.profile,
+        fragmentSha256: await tintStageHash(tintProfile4ContactFragment),
+        head: TINT_PROFILE4_FIXTURE.head,
+        tree: TINT_PROFILE4_FIXTURE.tree,
+      },
+      vertexSha256: await tintStageHash(vertex),
+      ...actual.replacementCounts,
+    };
+    assertTintStageHistoricalKernelReceipt(kernelExecution);
     const width = actual.canvas.width,
       height = actual.canvas.height;
     if (width * height > TINT_STAGE_POLICY.maximumCarrierPixels)
@@ -944,6 +1075,8 @@ async function executeTintStageFrame(input: StageInput, partial: Record<string, 
       originalHead: frame.sourceOrigin === 'archived-first-party-input' ? frame.head : null,
       originalTree: frame.sourceOrigin === 'archived-first-party-input' ? frame.tree : null,
       kernelSource: { head: frame.head, tree: frame.tree },
+      kernelExecution,
+      currentProductValidation: false,
       inputPngs: frame.files,
       sourceImage,
       material,
@@ -953,7 +1086,9 @@ async function executeTintStageFrame(input: StageInput, partial: Record<string, 
       sourceSha256: sourceHash,
       uniformUploads: actual.uniforms,
       productionMetrics: actual.metrics,
+      productionMetricsScope: 'current-host-program-with-historical-profile4-fragment',
       productionReadback: {
+        compiledProfile: TINT_PROFILE4_FIXTURE.contact.profile,
         sha256: await tintStageHash(actual.pixels),
         width,
         height,
@@ -965,16 +1100,14 @@ async function executeTintStageFrame(input: StageInput, partial: Record<string, 
     Object.assign(partial, common);
     partial.stagePngs['production-carrier'] = actual.png;
     if (
-      frame.profile !== styleTintContactProfile ||
-      !actual.shaders.includes(styleTintContactFragment) ||
-      !actual.shaders.includes(vertex)
+      actual.shaders.length !== 2 ||
+      !actual.shaders.includes(tintProfile4ContactFragment) ||
+      !actual.shaders.includes(vertex) ||
+      actual.requestedShaders.length !== 2 ||
+      !actual.requestedShaders.includes(styleTintContactFragment) ||
+      !actual.requestedShaders.includes(vertex)
     )
       throw new Error('tint-stage-production-profile-mismatch');
-    if (
-      (await tintStageHash(styleTintContactFragment)) !== TINT_STAGE_POLICY.shaderSha256.contact ||
-      (await tintStageHash(styleTintFragment)) !== TINT_STAGE_POLICY.shaderSha256.static
-    )
-      throw new Error('tint-stage-shader-hash-drift');
     const stagePngs: Record<string, string> = {
       prepared: rawPng(actual.prepared, source.width, source.height),
       'production-carrier': actual.png,
@@ -1192,6 +1325,7 @@ type TintStageNativeReceipt = {
   status?: string;
   ramp?: { id: string };
   veto?: { verdict: string; intervals: readonly { side: string }[] };
+  kernelExecution?: TintStageKernelReceipt;
 };
 /** Analytic rejection is unconditional; an observed native rejection is not.
  * Archived controls never count toward the 16 frozen + 12 ramp GPU obligations.
@@ -1201,6 +1335,14 @@ export function summarizeTintStageNativeStatus(
   coverage: Readonly<Record<string, { status: string; executed?: boolean }>>,
   results: ReadonlyMap<string, TintStageNativeReceipt>
 ) {
+  const isHistorical = (result?: TintStageNativeReceipt) => {
+    try {
+      assertTintStageHistoricalKernelReceipt(result?.kernelExecution);
+      return true;
+    } catch {
+      return false;
+    }
+  };
   const expectedIds = [...frozenTintedIds, ...TINT_STAGE_RAMPS.map((ramp) => ramp.id)];
   const allExpectedGpuEvidenceComplete =
     frozenTintedIds.length === 16 &&
@@ -1211,7 +1353,8 @@ export function summarizeTintStageNativeStatus(
         coverage[id]?.status === 'passed' &&
         coverage[id]?.executed === true &&
         result?.evidenceKind === 'native-diagnostic' &&
-        result.status === 'collected-native-diagnostic'
+        result.status === 'collected-native-diagnostic' &&
+        isHistorical(result)
       );
     });
   const allFullDomainEndpointVetoesConfirmed = TINT_STAGE_RAMPS.filter(
@@ -1223,6 +1366,7 @@ export function summarizeTintStageNativeStatus(
       coverage[ramp.id]?.executed === true &&
       result?.evidenceKind === 'native-diagnostic' &&
       result.status === 'collected-native-diagnostic' &&
+      isHistorical(result) &&
       result.ramp?.id === ramp.id &&
       result.veto?.verdict === 'rejected-continuous-tone' &&
       ['low', 'high'].every((side) =>
@@ -1282,7 +1426,7 @@ export async function runTintStageRamp(request: TintStageRamp) {
     cells: [],
     exclusions: [],
     outset: 0,
-    profile: styleTintContactProfile,
+    profile: TINT_PROFILE4_FIXTURE.contact.profile,
     contactPhase: 'rest',
     fill,
     foreground,

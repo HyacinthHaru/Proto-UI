@@ -336,7 +336,60 @@ async function collect(entry: (typeof plan)[number]) {
       expect(capture.draws).toBe(1);
       expect(capture.productionReadbacks).toBe(1);
       expect(capture.safety.minimumContrast).toBeGreaterThanOrEqual(4.5);
+      // saveResult above persists even unknown/unavailable capability evidence
+      // before assertions. Neither masked strings nor precision imply a branch.
+      const capability = capture.capabilities;
+      expect(capability.scope).toBe('same-owned-material-canvas-context');
+      expect(capability.requestedContext).toBe('webgl');
+      for (const field of ['version', 'shadingLanguageVersion', 'renderer']) {
+        expect(capability[field].status).toBe('available');
+        expect(capability[field].value.length).toBeGreaterThan(0);
+      }
+      for (const precision of ['HIGH_FLOAT', 'MEDIUM_FLOAT']) {
+        const evidence = capability.fragmentPrecision[precision];
+        expect(evidence.status).toBe('available');
+        for (const field of ['rangeMin', 'rangeMax', 'precision'])
+          expect(Number.isInteger(evidence.value[field]) && evidence.value[field] >= 0).toBe(true);
+      }
+      expect(capability.contextLost).toEqual({ status: 'available', value: false });
+      expect(capability.branchProbe.status).toBe('identified');
+      expect(['highp', 'mediump']).toContain(capability.branchProbe.selectedBranch);
+      expect(capability.branchProbe.draws).toBe(0);
+      if (capability.debugRenderer.status === 'unavailable')
+        expect(capability.debugRenderer).not.toHaveProperty('renderer');
+      const fragments = capture.shaders.filter((shader: any) => shader.kind === 35632);
+      expect(fragments).toHaveLength(1);
+      const fragment = fragments[0],
+        binding = fragment.capabilityBinding;
+      expect(fragment.originalSha256).toBe(
+        entry.staticProfile
+          ? REFRACTION_POLICY.shaderSha256.static
+          : REFRACTION_POLICY.shaderSha256.contact
+      );
+      expect(binding.capabilitySha256).toBe(hash(JSON.stringify(capability)));
+      expect(binding.originalShaderSha256).toBe(fragment.originalSha256);
+      expect(binding.actualShaderSha256).toBe(fragment.actualSha256);
+      expect(binding.compiled).toBe(true);
+      expect(binding.linked).toBe(true);
+      expect(binding.status).toBe('identified');
+      expect(binding.selectedPrecisionBranch).toBe(capability.branchProbe.selectedBranch);
+      expect(binding.refractionBranch).toBe(
+        capability.branchProbe.selectedBranch === 'highp'
+          ? 'profile5-budgeted-shoulder'
+          : 'profile5-retained-old-offset'
+      );
+      expect(binding.offsetControl).toBe(
+        capture.mode === 'strict-warp-off' ? 'strict-final-offset-zero' : 'production-offset'
+      );
+      expect(
+        capture.mode === 'strict-warp-off'
+          ? fragment.actualSha256 !== fragment.originalSha256
+          : fragment.actualSha256 === fragment.originalSha256
+      ).toBe(true);
     }
+    expect(result.captures[0].capabilities.branchProbe.selectedBranch).toBe(
+      result.captures[1].capabilities.branchProbe.selectedBranch
+    );
     expect(result.captures.length).toBe(entry.sequenceIndex === 0 && !entry.staticProfile ? 4 : 2);
     coverage[id].status = 'passed';
   } catch (error) {

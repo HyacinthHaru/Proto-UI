@@ -56,6 +56,7 @@ on:
       - 'apps/www/src/pages/en/test/liquid-tint-stage-diagnostic.astro'
       - 'apps/www/src/content/docs/zh-cn/demo-liquid-tint-stage-diagnostic.browser.test.ts'
       - 'apps/www/src/content/docs/zh-cn/liquid-tint-stage-*'
+      - 'apps/www/src/content/docs/zh-cn/liquid-tint-profile4-fixture.ts'
       - 'apps/www/src/content/docs/zh-cn/liquid-tint-stage-inputs/**'
       - 'apps/www/src/pages/en/test/liquid-visible-refraction-diagnostic.astro'
       - 'apps/www/src/content/docs/zh-cn/demo-liquid-visible-refraction-diagnostic.browser.test.ts'

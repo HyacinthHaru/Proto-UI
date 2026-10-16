@@ -188,7 +188,7 @@ function optical(facts: Awaited<ReturnType<typeof observe>>) {
   expect(facts.pixels!.max - facts.pixels!.min).toBeGreaterThan(5);
   expect(facts.border).toEqual(['1px', '1px', '1px', '1px']);
   expect(facts.receipt.profile).toBe(
-    facts.active === 'true' ? 'pui-regular-style-tint-contact-4' : 'liquidgl-v2-contact-canvas-1'
+    facts.active === 'true' ? 'pui-regular-style-tint-contact-5' : 'liquidgl-v2-contact-canvas-1'
   );
 }
 async function capture(
@@ -283,8 +283,8 @@ async function capture(
       expect(facts.foreground).toEqual(facts.palette.primaryForeground);
       expect(facts.receipt.profile).toBe(
         facts.carrier.marker === 'contact-v1'
-          ? 'pui-regular-style-tint-contact-4'
-          : 'pui-regular-style-tint-4'
+          ? 'pui-regular-style-tint-contact-5'
+          : 'pui-regular-style-tint-5'
       );
       // Selected tint remains accent-directed, but environmental hue/brightness
       // must not be constrained to an almost constant distance from solid blue.
@@ -931,7 +931,7 @@ describe.sequential('Liquid Toggle native input and self-optical material', () =
         expect(row.frameUnchanged, label).toBe(true);
         expect(row.fixedTime, label).toBe(0);
         expect(row.expectedTintProfile, label).toBe(
-          row.phase === 'static' ? 'pui-regular-style-tint-4' : 'pui-regular-style-tint-contact-4'
+          row.phase === 'static' ? 'pui-regular-style-tint-5' : 'pui-regular-style-tint-contact-5'
         );
         for (const name of ['tinted', 'zeroRefraction', 'interleavedTint'] as const) {
           const rendered = row.controls[name];

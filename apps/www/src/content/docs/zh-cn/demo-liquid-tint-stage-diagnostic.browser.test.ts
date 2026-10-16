@@ -11,6 +11,7 @@ import {
   TINT_STAGE_POLICY,
   TINT_STAGE_RAMPS,
   summarizeTintStageNativeStatus,
+  assertTintStageHistoricalKernelReceipt,
   type FrozenTintFrame,
 } from './liquid-tint-stage-diagnostic';
 import {
@@ -18,12 +19,25 @@ import {
   classifyProminentTintEvidence,
   type TintPair,
 } from './liquid-prominent-tint-metrics';
+import {
+  styleTintContactProfile,
+  styleTintContactFragment,
+} from '../../../../../../packages/adapters/base/src/material/style-tint-profile';
 const route = '/en/test/liquid-tint-stage-diagnostic/';
 const inputDirectory = path.resolve('apps/www/src/content/docs/zh-cn/liquid-tint-stage-inputs');
 const frozen = JSON.parse(readFileSync(path.join(inputDirectory, 'manifest.json'), 'utf8')) as {
   frames: FrozenTintFrame[];
 };
 const hash = (value: Buffer | string) => createHash('sha256').update(value).digest('hex');
+// This current candidate owns the host/preparation code. The compiled fragment
+// is explicitly historical; its identity lives in each kernelExecution receipt.
+const currentHostSources = Object.fromEntries(
+  [
+    'packages/adapters/base/src/material/program.ts',
+    'packages/adapters/base/src/material/style-tint-profile.ts',
+    'packages/adapters/base/src/material/liquidgl-kernel.generated.ts',
+  ].map((file) => [file, { sha256: hash(readFileSync(path.resolve(file))) }])
+);
 const evidenceRoot = process.env.PROTO_UI_MATERIAL_EVIDENCE_DIR;
 const output = evidenceRoot ? path.join(evidenceRoot, 'tint-stage-diagnostic') : null;
 const candidate = {
@@ -74,6 +88,8 @@ function checkpoint(phase: 'planned' | 'running' | 'terminal') {
       manifestSha256: hash(readFileSync(path.join(inputDirectory, 'manifest.json'))),
     },
     policy: TINT_STAGE_POLICY,
+    currentHostSources,
+    currentProductValidation: false,
     sequence: ++sequence,
     phase,
     updatedAt: new Date().toISOString(),
@@ -128,6 +144,8 @@ function saveResult(id: string, result: any) {
   const payload = {
     candidate,
     ...receipt,
+    currentHostSources,
+    currentProductValidation: false,
     originalInput: frozen.frames.find((f) => f.id === id) ?? null,
     material: material ? { width: material.width, height: material.height } : null,
     candidateImage: candidateImage
@@ -217,6 +235,18 @@ async function boundedCase(id: string, operation: (page: Page) => Promise<any>) 
     if (result.status === 'failed') throw new Error(result.failure);
     expect(result.productAccepted).toBe(false);
     if (result.control === 'tinted') {
+      assertTintStageHistoricalKernelReceipt(result.kernelExecution);
+      expect(result.currentProductValidation).toBe(false);
+      expect(result.kernelExecution.currentAdapter.profile).toBe(styleTintContactProfile);
+      expect(result.kernelExecution.currentAdapter.requestedFragmentSha256).toBe(
+        hash(styleTintContactFragment)
+      );
+      expect(result.kernelExecution.compiledKernel.fragmentSha256).toBe(
+        TINT_STAGE_POLICY.shaderSha256.contact
+      );
+      expect(result.stageReceipts.baseline.shaderSha256).toBe(
+        result.kernelExecution.compiledKernel.fragmentSha256
+      );
       expect(result.baselineReplay).toBe('byte-identical-raw-premultiplied-bottom-up');
       expect(result.productionReadback.sha256).toBe(
         result.stageReceipts.baseline.rawBottomUpSha256
@@ -251,7 +281,7 @@ async function boundedCase(id: string, operation: (page: Page) => Promise<any>) 
     await page?.close().catch(() => {});
   }
 }
-describe('matched Tint4 stages and expected continuous-tone veto', () => {
+describe('historical profile4 replay on current profile5 host and expected continuous-tone veto', () => {
   for (const frame of frozen.frames)
     it(
       frame.id,
@@ -320,7 +350,7 @@ afterAll(async () => {
               ? classifyProminentTintEvidence(controls.neutral, controls.candidate, controls.opaque)
               : null,
             interpretation:
-              'tinted-only GPU diagnostics plus frozen historical neutral/opaque own-geometry controls; no UI/runtime acceptance; weak neutral stays inconclusive',
+              'historical profile4 GPU replay on current profile5 host plus frozen historical neutral/opaque own-geometry controls; no current profile5 validation or UI/runtime acceptance; weak neutral stays inconclusive',
             candidateGeneralTransfer: 'rejected-analytically',
             productAccepted: false,
           });
@@ -331,6 +361,8 @@ afterAll(async () => {
         browser: browser?.version(),
         node: process.version,
         policy: TINT_STAGE_POLICY,
+        currentHostSources,
+        currentProductValidation: false,
         coverage,
         pairs,
         candidateGeneralTransfer: 'rejected-analytically',

@@ -338,7 +338,7 @@ export async function runLiquidToggleTintProbe(host: HTMLElement) {
             fill: frame.fill,
             foreground: frame.foreground,
             expectedTintProfile:
-              phase === 'static' ? 'pui-regular-style-tint-4' : 'pui-regular-style-tint-contact-4',
+              phase === 'static' ? 'pui-regular-style-tint-5' : 'pui-regular-style-tint-contact-5',
             controls,
             sharedNeutralVsIsolated:
               decoded.interleavedNeutral && decoded.neutral

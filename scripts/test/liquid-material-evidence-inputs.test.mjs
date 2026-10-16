@@ -293,6 +293,7 @@ for (const file of [
   'apps/www/src/pages/en/test/liquid-tint-stage-diagnostic.astro',
   'apps/www/src/content/docs/zh-cn/demo-liquid-tint-stage-diagnostic.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/liquid-tint-stage-diagnostic.ts',
+  'apps/www/src/content/docs/zh-cn/liquid-tint-profile4-fixture.ts',
   'apps/www/src/content/docs/zh-cn/liquid-tint-stage-diagnostic.test.ts',
 ]) {
   test(`Tint stage diagnostics cover their test-only input ${file}`, () => {

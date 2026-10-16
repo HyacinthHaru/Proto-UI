@@ -22,8 +22,19 @@ import {
   applyTintStageDither,
   failedTintStageResult,
   summarizeTintStageNativeStatus,
+  createTintStageHistoricalSubstitution,
+  assertTintStageHistoricalKernelReceipt,
+  type TintStageKernelReceipt,
 } from './liquid-tint-stage-diagnostic';
+import { vertex } from '../../../../../../packages/adapters/base/src/material/liquidgl-kernel.generated';
 import {
+  TINT_PROFILE4_FIXTURE,
+  tintProfile4Fragment,
+  tintProfile4ContactFragment,
+} from './liquid-tint-profile4-fixture';
+import {
+  styleTintProfile,
+  styleTintContactProfile,
   styleTintFragment,
   styleTintContactFragment,
 } from '../../../../../../packages/adapters/base/src/material/style-tint-profile';
@@ -52,6 +63,25 @@ const samples = (tones: number[], mean: number, bound: number, light: boolean): 
       opaque: true,
     };
   });
+function historicalKernelReceipt(): TintStageKernelReceipt {
+  return {
+    scope: TINT_STAGE_POLICY.executionScope,
+    currentProductValidation: false,
+    currentAdapter: {
+      profile: styleTintContactProfile,
+      requestedFragmentSha256: hash(styleTintContactFragment),
+    },
+    compiledKernel: {
+      profile: TINT_PROFILE4_FIXTURE.contact.profile,
+      fragmentSha256: TINT_PROFILE4_FIXTURE.contact.sha256,
+      head: TINT_PROFILE4_FIXTURE.head,
+      tree: TINT_PROFILE4_FIXTURE.tree,
+    },
+    vertexSha256: hash(vertex),
+    vertexSources: 1,
+    fragmentReplacements: 1,
+  };
+}
 function nativeSummaryFixture() {
   const frozenIds = Array.from({ length: 16 }, (_, i) => `frozen-tinted-${i}`);
   const ids = [...frozenIds, ...TINT_STAGE_RAMPS.map((ramp) => ramp.id)];
@@ -63,13 +93,18 @@ function nativeSummaryFixture() {
     {
       status: string;
       evidenceKind: string;
+      kernelExecution?: TintStageKernelReceipt;
       ramp?: { id: string };
       veto?: ReturnType<typeof continuousTintVeto>;
     }
   >(
     ids.map((id) => [
       id,
-      { status: 'collected-native-diagnostic', evidenceKind: 'native-diagnostic' },
+      {
+        status: 'collected-native-diagnostic',
+        evidenceKind: 'native-diagnostic',
+        kernelExecution: historicalKernelReceipt(),
+      },
     ])
   );
   for (const ramp of TINT_STAGE_RAMPS) {
@@ -151,11 +186,17 @@ describe('test-only Tint4 stage diagnosis, never product acceptance', () => {
     expect(TINT_STAGE_POLICY.candidateGeneralTransfer).toBe('rejected-analytically');
     expect(TINT_STAGE_POLICY.productAccepted).toBe(false);
   });
-  it('binds exact current profile4 shader identities and finite derivative anchors', () => {
-    expect(hash(styleTintFragment)).toBe(TINT_STAGE_POLICY.shaderSha256.static);
-    expect(hash(styleTintContactFragment)).toBe(TINT_STAGE_POLICY.shaderSha256.contact);
-    expect(tintStageShader('baseline')).toBe(styleTintContactFragment);
-    expect(tintStageShader('baseline', false)).toBe(styleTintFragment);
+  it('binds frozen profile4 bytes independently of current profile5 and finite derivative anchors', () => {
+    expect(styleTintProfile).toBe('pui-regular-style-tint-5');
+    expect(styleTintContactProfile).toBe('pui-regular-style-tint-contact-5');
+    expect(hash(styleTintFragment)).not.toBe(TINT_STAGE_POLICY.shaderSha256.static);
+    expect(hash(styleTintContactFragment)).not.toBe(TINT_STAGE_POLICY.shaderSha256.contact);
+    expect(hash(tintProfile4Fragment)).toBe(TINT_STAGE_POLICY.shaderSha256.static);
+    expect(hash(tintProfile4ContactFragment)).toBe(TINT_STAGE_POLICY.shaderSha256.contact);
+    expect(Buffer.byteLength(tintProfile4Fragment)).toBe(10692);
+    expect(Buffer.byteLength(tintProfile4ContactFragment)).toBe(10945);
+    expect(tintStageShader('baseline')).toBe(tintProfile4ContactFragment);
+    expect(tintStageShader('baseline', false)).toBe(tintProfile4Fragment);
     for (const kind of TINT_STAGE_KINDS) {
       const source = tintStageShader(kind);
       expect(source.split('void main(){')).toHaveLength(2);
@@ -166,6 +207,107 @@ describe('test-only Tint4 stage diagnosis, never product acceptance', () => {
     expect(tintStageShader('postlight-r')).toContain('tintStagePack(final.r, 2.0, inShape)');
     expect(tintStageShader('target-clamp')).toContain('tintStageRaw < tintStageLow');
     expect(() => tintStageShader('author-code' as any)).toThrow('unknown-stage');
+  });
+  it('substitutes the complete current source exactly once and preserves the uniform schema', () => {
+    for (const contact of [false, true]) {
+      const host = {
+        profile: contact ? styleTintContactProfile : styleTintProfile,
+        fragment: contact ? styleTintContactFragment : styleTintFragment,
+        vertex,
+      };
+      const historical = contact ? tintProfile4ContactFragment : tintProfile4Fragment;
+      const replacement = createTintStageHistoricalSubstitution(host, contact);
+      expect(() => replacement.complete()).toThrow('substitution-count-drift');
+      expect(replacement.source('vertex', vertex)).toBe(vertex);
+      expect(() => replacement.complete()).toThrow('substitution-count-drift');
+      expect(replacement.source('fragment', host.fragment)).toBe(historical);
+      expect(replacement.complete()).toEqual({ vertexSources: 1, fragmentReplacements: 1 });
+      expect(() => replacement.source('fragment', host.fragment)).toThrow('source-or-count-drift');
+      expect(() => replacement.source('vertex', vertex)).toThrow('source-or-count-drift');
+      expect(() =>
+        createTintStageHistoricalSubstitution({ ...host, profile: 'profile5' }, contact)
+      ).toThrow('current-host-profile-drift');
+      expect(() =>
+        createTintStageHistoricalSubstitution({ ...host, fragment: historical }, contact)
+      ).toThrow('current-host-profile-drift');
+      expect(() =>
+        createTintStageHistoricalSubstitution(
+          { ...host, fragment: host.fragment + '\nuniform float unapproved;' },
+          contact
+        )
+      ).toThrow('historical-uniform-schema-drift');
+      const stale = createTintStageHistoricalSubstitution(host, contact);
+      expect(() => stale.source('fragment', host.fragment + '\n')).toThrow('source-or-count-drift');
+      expect(() => stale.source('fragment', historical)).toThrow('source-or-count-drift');
+      expect(() => stale.source('vertex', vertex + '\n')).toThrow('source-or-count-drift');
+      expect(() => stale.source('unknown' as any, vertex)).toThrow('unexpected-shader-type');
+      expect(() => stale.complete()).toThrow('substitution-count-drift');
+    }
+  });
+  it('forbids relabeling historical replay as current profile5 evidence or dropping replacement receipts', () => {
+    expect(() => assertTintStageHistoricalKernelReceipt(historicalKernelReceipt())).not.toThrow();
+    const mutations: ((receipt: TintStageKernelReceipt) => void)[] = [
+      (r) => {
+        r.scope = 'current-production';
+      },
+      (r) => {
+        r.currentProductValidation = true;
+      },
+      (r) => {
+        r.currentAdapter.profile = TINT_PROFILE4_FIXTURE.contact.profile;
+      },
+      (r) => {
+        r.currentAdapter.requestedFragmentSha256 = TINT_PROFILE4_FIXTURE.contact.sha256;
+      },
+      (r) => {
+        r.compiledKernel.profile = styleTintContactProfile;
+      },
+      (r) => {
+        r.compiledKernel.fragmentSha256 = hash(styleTintContactFragment);
+      },
+      (r) => {
+        r.compiledKernel.head = 'current';
+      },
+      (r) => {
+        r.compiledKernel.tree = 'current';
+      },
+      (r) => {
+        r.vertexSha256 = '';
+      },
+      (r) => {
+        r.vertexSources = 0;
+      },
+      (r) => {
+        r.fragmentReplacements = 0;
+      },
+      (r) => {
+        r.fragmentReplacements = 2;
+      },
+    ];
+    for (const mutate of mutations) {
+      const receipt = historicalKernelReceipt();
+      mutate(receipt);
+      expect(() => assertTintStageHistoricalKernelReceipt(receipt)).toThrow(
+        'not-historical-profile4-evidence'
+      );
+      const { frozenIds, coverage, results } = nativeSummaryFixture();
+      results.get(frozenIds[0])!.kernelExecution = receipt;
+      expect(summarizeTintStageNativeStatus(frozenIds, coverage, results).candidateStatus).toBe(
+        'incomplete-native-diagnostic'
+      );
+    }
+    const { frozenIds, coverage, results } = nativeSummaryFixture();
+    delete results.get(frozenIds[0])!.kernelExecution;
+    expect(summarizeTintStageNativeStatus(frozenIds, coverage, results).candidateStatus).toBe(
+      'incomplete-native-diagnostic'
+    );
+    const rampId = TINT_STAGE_RAMPS.find((ramp) => ramp.low === 0)!.id;
+    results.get(rampId)!.kernelExecution!.currentProductValidation = true;
+    expect(
+      summarizeTintStageNativeStatus(frozenIds, coverage, results)
+        .allFullDomainEndpointVetoesConfirmed
+    ).toBe(false);
+    expect(TINT_STAGE_POLICY.currentProductValidation).toBe(false);
   });
   it('disables RGBA8 dithering for every packed tap and preserves observed product state for final output', () => {
     const calls: string[] = [];
@@ -202,6 +344,7 @@ describe('test-only Tint4 stage diagnosis, never product acceptance', () => {
       stagePngs: { baseline: 'data:image/png;base64,owned' },
       stageReceipts: { baseline: { sourceSha256: 'exact' } },
       productAccepted: true,
+      currentProductValidation: true,
     };
     for (const error of [
       'tint-stage-baseline-mismatch',
@@ -214,6 +357,7 @@ describe('test-only Tint4 stage diagnosis, never product acceptance', () => {
       expect(result.stagePngs).toEqual(partial.stagePngs);
       expect(result.stageReceipts).toEqual(partial.stageReceipts);
       expect(result.productAccepted).toBe(false);
+      expect(result.currentProductValidation).toBe(false);
     }
   });
   it('predeclares both directions, three byte domains and both foreground polarities', () => {
@@ -388,7 +532,8 @@ describe('test-only Tint4 stage diagnosis, never product acceptance', () => {
     }
   });
   it('is imported only by its dedicated test route/tests, with no production package export', () => {
-    const owners: string[] = [];
+    const owners: string[] = [],
+      fixtureOwners: string[] = [];
     const compilerConfig = ts.readConfigFile(
       path.join(root, 'tsconfig.json'),
       ts.sys.readFile
@@ -412,11 +557,21 @@ describe('test-only Tint4 stage diagnosis, never product acceptance', () => {
           for (const { fileName } of imports) {
             const resolved = ts.resolveModuleName(fileName, file, options, ts.sys).resolvedModule
               ?.resolvedFileName;
+            if (
+              resolved ===
+                path.join(
+                  root,
+                  'apps/www/src/content/docs/zh-cn/liquid-tint-profile4-fixture.ts'
+                ) ||
+              fileName.includes('liquid-tint-profile4-fixture')
+            )
+              fixtureOwners.push(path.relative(root, file));
             if (resolved === target || fileName.includes('liquid-tint-stage-diagnostic'))
               owners.push(path.relative(root, file));
           }
         } else if (entry.name === 'package.json' || entry.name.startsWith('tsconfig')) {
           expect(fs.readFileSync(file, 'utf8')).not.toContain('liquid-tint-stage-diagnostic');
+          expect(fs.readFileSync(file, 'utf8')).not.toContain('liquid-tint-profile4-fixture');
         }
       }
     }
@@ -424,9 +579,22 @@ describe('test-only Tint4 stage diagnosis, never product acceptance', () => {
     walk(path.join(root, 'apps/www/src'));
     expect([...new Set(owners)].sort()).toEqual([
       'apps/www/src/content/docs/zh-cn/demo-liquid-tint-stage-diagnostic.browser.test.ts',
+      'apps/www/src/content/docs/zh-cn/demo-liquid-visible-refraction-diagnostic.browser.test.ts',
       'apps/www/src/content/docs/zh-cn/liquid-tint-stage-diagnostic.test.ts',
+      'apps/www/src/content/docs/zh-cn/liquid-visible-refraction-diagnostic.ts',
       'apps/www/src/pages/en/test/liquid-tint-stage-diagnostic.astro',
     ]);
+    expect([...new Set(fixtureOwners)].sort()).toEqual([
+      'apps/www/src/content/docs/zh-cn/liquid-tint-stage-diagnostic.test.ts',
+      'apps/www/src/content/docs/zh-cn/liquid-tint-stage-diagnostic.ts',
+    ]);
+    const fixture = fs.readFileSync(
+      path.join(root, 'apps/www/src/content/docs/zh-cn/liquid-tint-profile4-fixture.ts'),
+      'utf8'
+    );
+    expect(ts.preProcessFile(fixture, true, true).importedFiles).toHaveLength(0);
+    expect(fixture).toContain('Copyright (c) NaughtyDuk');
+    expect(fixture).toContain('88f681ab7035fd55b04f63edff1841e32c4199e9');
     const production = fs.readFileSync(
       path.join(root, 'packages/adapters/base/src/material/program.ts'),
       'utf8'

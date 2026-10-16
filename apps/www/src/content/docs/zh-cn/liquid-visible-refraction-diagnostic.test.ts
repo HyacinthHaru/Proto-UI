@@ -13,12 +13,16 @@ import {
   refractionCollectionBudget,
   terminalRefractionCoverage,
   summarizeRefractionSequence,
+  collectRefractionCapabilities,
+  bindRefractionCapability,
   type RefractionImage,
 } from './liquid-visible-refraction-diagnostic';
 import {
   styleTintFragment,
   styleTintContactFragment,
 } from '../../../../../../packages/adapters/base/src/material/style-tint-profile';
+import { fragment as neutralFragment } from '../../../../../../packages/adapters/base/src/material/liquidgl-kernel.generated';
+import { contactFragment as neutralContactFragment } from '../../../../../../packages/adapters/base/src/material/contact-profile';
 const image = (w = 120, h = 70, dpr = 1): RefractionImage =>
   structuredRefractionSource(w * dpr, h * dpr, dpr);
 function transform(
@@ -50,16 +54,80 @@ const regions = (a: RefractionImage, dpr = 1) =>
     },
     []
   );
+// Mocked WebGL query/compile ABI only. These tests are not native GPU evidence.
+function capabilityContext(
+  options: {
+    branch?: 'highp' | 'mediump';
+    compilation?: 'both-pass' | 'both-fail' | 'missing';
+    missingPrecision?: boolean;
+    debugExtension?: boolean;
+    lost?: boolean;
+    missingStrings?: boolean;
+  } = {}
+) {
+  const sources = new Map<object, string>(),
+    deleted: object[] = [];
+  const gl = {
+    FRAGMENT_SHADER: 35632,
+    COMPILE_STATUS: 35713,
+    VERSION: 7938,
+    SHADING_LANGUAGE_VERSION: 35724,
+    RENDERER: 7937,
+    VENDOR: 7936,
+    HIGH_FLOAT: 36338,
+    MEDIUM_FLOAT: 36337,
+    getParameter: (key: number) =>
+      options.missingStrings
+        ? null
+        : {
+            7938: 'WebGL 1.0 (mock)',
+            35724: 'WebGL GLSL ES 1.0 (mock)',
+            7937: 'mock masked renderer',
+            7936: 'mock vendor',
+            37446: 'mock unmasked renderer',
+            37445: 'mock unmasked vendor',
+          }[key],
+    getShaderPrecisionFormat: (_kind: number, precision: number) =>
+      options.missingPrecision
+        ? null
+        : precision === 36338 && options.branch === 'mediump'
+          ? { rangeMin: 0, rangeMax: 0, precision: 0 }
+          : { rangeMin: 127, rangeMax: 127, precision: precision === 36338 ? 23 : 10 },
+    getExtension: () =>
+      options.debugExtension
+        ? { UNMASKED_RENDERER_WEBGL: 37446, UNMASKED_VENDOR_WEBGL: 37445 }
+        : null,
+    createShader: () => ({}),
+    shaderSource: (shader: object, source: string) => sources.set(shader, source),
+    compileShader: (_shader: object) => {},
+    getShaderParameter: (shader: object) => {
+      const source = sources.get(shader)!;
+      if (options.compilation === 'missing') return null;
+      if (options.compilation === 'both-pass') return true;
+      if (options.compilation === 'both-fail') return false;
+      if (source.includes('expected_highp')) return options.branch !== 'mediump';
+      if (source.includes('expected_mediump')) return options.branch === 'mediump';
+      return true;
+    },
+    getShaderInfoLog: () => 'mock compiler result',
+    deleteShader: (shader: object) => deleted.push(shader),
+    isContextLost: () => options.lost ?? false,
+  };
+  return { gl: gl as unknown as WebGLRenderingContext, sources, deleted };
+}
 describe('bounded visible-refraction diagnostics, never appearance acceptance', () => {
   it('has one surgical test-only warp edit and unchanged native sampler branch', () => {
-    for (const s of [styleTintFragment, styleTintContactFragment]) {
+    for (const s of [
+      styleTintFragment,
+      styleTintContactFragment,
+      neutralFragment,
+      neutralContactFragment,
+    ]) {
+      const anchor = s.includes('vec2 offset = finalOffset;')
+        ? 'vec2 offset = finalOffset;'
+        : 'vec2 offset = refractDir * offsetAmt * centreBlend;';
       const altered = strictWarpOffShader(s);
-      expect(
-        altered.replace(
-          'vec2 offset = vec2(0.0);',
-          'vec2 offset = refractDir * offsetAmt * centreBlend;'
-        )
-      ).toBe(s);
+      expect(altered.replace(/(^[ \t]*)vec2 offset = vec2\(0\.0\);/m, `$1${anchor}`)).toBe(s);
       expect(altered).toContain('vec2 chroma = offset * u_aberration;');
       expect(altered).toContain('(lensUV - 0.5) / u_magnify + 0.5');
       expect(altered).toContain('if (u_aberration > 0.0)');
@@ -68,6 +136,217 @@ describe('bounded visible-refraction diagnostics, never appearance acceptance', 
     expect(() => strictWarpOffShader(styleTintFragment + styleTintFragment)).toThrow(
       'unique-offset'
     );
+  });
+  for (const lateWrite of [
+    'offset = vec2(1.0);',
+    'offset += vec2(1.0);',
+    'offset.x = 1.0;',
+    'offset.xy *= 2.0;',
+    'offset[0] = 1.0;',
+    'offset.x++;',
+    '++offset.y;',
+    'offset.y--;',
+    '--offset.x;',
+    'mutateOffset(offset);',
+    'mutateOffsetComponent(offset[0]);',
+    '  vec2 offset = finalOffset;',
+  ])
+    it(`rejects unapproved post-anchor offset use: ${lateWrite}`, () => {
+      for (const source of [neutralFragment, styleTintFragment, styleTintContactFragment]) {
+        const drift = source.replace(
+          'vec2 refracted = mapped + offset - tiltOffset;',
+          `${lateWrite}\nvec2 refracted = mapped + offset - tiltOffset;`
+        );
+        expect(() => strictWarpOffShader(drift)).toThrow('offset');
+      }
+    });
+  it('rejects mixed anchors, comment-only anchors, and an early anchor with later final work', () => {
+    expect(() =>
+      strictWarpOffShader('// vec2 offset = refractDir * offsetAmt * centreBlend;')
+    ).toThrow('offset');
+    expect(() =>
+      strictWarpOffShader(
+        neutralFragment.replace(
+          'vec2 refracted = mapped + offset - tiltOffset;',
+          'vec2 finalOffset = offset;\nvec2 refracted = mapped + offset - tiltOffset;'
+        )
+      )
+    ).toThrow('offset');
+    expect(() => strictWarpOffShader(neutralFragment + '\nvec2 offset = finalOffset;')).toThrow(
+      'offset'
+    );
+  });
+  it('requires the final profile5 anchor after all additions and before source sampling', () => {
+    for (const source of [styleTintFragment, styleTintContactFragment]) {
+      expect(source).toContain('vec2 offset = finalOffset;');
+      const altered = strictWarpOffShader(source);
+      expect(altered.indexOf('finalOffset = oldOffset + budgetLambda * budgetDelta;')).toBeLessThan(
+        altered.search(/^[ \t]*vec2 offset = vec2\(0\.0\);/m)
+      );
+      for (const drift of [
+        source.replace('vec2 offset = finalOffset;', ''),
+        source.replace(
+          'vec2 offset = finalOffset;',
+          'vec2 offset = refractDir * offsetAmt * centreBlend;'
+        ),
+        source.replace(
+          'vec2 offset = finalOffset;',
+          'vec4 tooEarly = sampleSource(mapped);\nvec2 offset = finalOffset;'
+        ),
+        source.replace(
+          'vec2 refracted = mapped + offset - tiltOffset;',
+          'finalOffset += vec2(0.1);\nvec2 refracted = mapped + offset - tiltOffset;'
+        ),
+        source
+          .replace(
+            'finalOffset = oldOffset + budgetLambda * budgetDelta;',
+            'vec2 offset = finalOffset;\nfinalOffset = oldOffset + budgetLambda * budgetDelta;'
+          )
+          .replace(/\n[ \t]*vec2 offset = finalOffset;\n[ \t]*vec2 refracted/, '\nvec2 refracted'),
+      ])
+        expect(() => strictWarpOffShader(drift)).toThrow('offset');
+    }
+  });
+  it('pins candidate profile5 shader identity separately from frozen image provenance', () => {
+    expect(REFRACTION_POLICY.baselineTree).toBe('20bb2794c8ef1f71f6fac1ec649e033677c818cf');
+    expect(REFRACTION_POLICY.shaderSha256.static).toBe(
+      createHash('sha256').update(styleTintFragment).digest('hex')
+    );
+    expect(REFRACTION_POLICY.shaderSha256.contact).toBe(
+      createHash('sha256').update(styleTintContactFragment).digest('hex')
+    );
+  });
+  for (const branch of ['highp', 'mediump'] as const)
+    it(`binds same-context ${branch} compile evidence to actual shader hashes without drawing`, async () => {
+      const mock = capabilityContext({ branch });
+      const capability = await collectRefractionCapabilities(mock.gl);
+      expect(capability.branchProbe.selectedBranch).toBe(branch);
+      expect(capability.branchProbe.status).toBe('identified');
+      expect(capability.branchProbe.draws).toBe(0);
+      expect(mock.deleted).toHaveLength(3);
+      expect(new Set(mock.deleted).size).toBe(3);
+      expect(capability.version).toEqual({ status: 'available', value: 'WebGL 1.0 (mock)' });
+      expect(capability.renderer).toEqual({ status: 'available', value: 'mock masked renderer' });
+      expect(capability.fragmentPrecision.HIGH_FLOAT.status).toBe('available');
+      expect(capability.fragmentPrecision.MEDIUM_FLOAT.status).toBe('available');
+      expect(capability.debugRenderer.status).toBe('unavailable');
+      expect(JSON.stringify(capability.debugRenderer)).not.toContain('mock masked renderer');
+      const actual = strictWarpOffShader(styleTintFragment);
+      const bound = await bindRefractionCapability(
+        capability,
+        styleTintFragment,
+        actual,
+        true,
+        true
+      );
+      expect(bound.status).toBe('identified');
+      expect(bound.selectedPrecisionBranch).toBe(branch);
+      expect(bound.refractionBranch).toBe(
+        branch === 'highp' ? 'profile5-budgeted-shoulder' : 'profile5-retained-old-offset'
+      );
+      expect(bound.offsetControl).toBe('strict-final-offset-zero');
+      if (branch === 'mediump')
+        expect(capability.fragmentPrecision.HIGH_FLOAT).toEqual({
+          status: 'available',
+          value: { rangeMin: 0, rangeMax: 0, precision: 0, supported: false },
+        });
+      expect(bound.actualShaderSha256).toBe(createHash('sha256').update(actual).digest('hex'));
+      expect(bound.originalShaderSha256).toBe(
+        createHash('sha256').update(styleTintFragment).digest('hex')
+      );
+      expect(bound.capabilitySha256).toBe(
+        createHash('sha256').update(JSON.stringify(capability)).digest('hex')
+      );
+      expect(bound.actualShaderSha256).not.toBe(bound.originalShaderSha256);
+    });
+  for (const compilation of ['both-pass', 'both-fail', 'missing'] as const)
+    it(`does not infer a branch from precision when compile evidence is ${compilation}`, async () => {
+      const { gl } = capabilityContext({ compilation });
+      const capabilities = await collectRefractionCapabilities(gl);
+      expect(capabilities.branchProbe.selectedBranch).toBe('unknown');
+      expect(capabilities.branchProbe.status).toBe('unknown');
+      const bound = await bindRefractionCapability(
+        capabilities,
+        styleTintFragment,
+        styleTintFragment,
+        true,
+        true
+      );
+      expect(bound.status).toBe('unknown');
+      expect(bound.refractionBranch).toBe('unknown');
+    });
+  it('retains unavailable queries, context loss and optional debug-extension absence honestly', async () => {
+    const absent = await collectRefractionCapabilities(
+      capabilityContext({ missingPrecision: true, missingStrings: true, lost: true }).gl
+    );
+    expect(absent.version.status).toBe('unavailable');
+    expect(absent.renderer.status).toBe('unavailable');
+    expect(absent.fragmentPrecision.HIGH_FLOAT.status).toBe('unavailable');
+    expect(absent.fragmentPrecision.MEDIUM_FLOAT.status).toBe('unavailable');
+    expect(absent.branchProbe.selectedBranch).toBe('unknown');
+    expect(absent.debugRenderer).not.toHaveProperty('renderer');
+    const present = await collectRefractionCapabilities(
+      capabilityContext({ debugExtension: true }).gl
+    );
+    expect(present.debugRenderer).toEqual({
+      status: 'available',
+      renderer: { status: 'available', value: 'mock unmasked renderer' },
+      vendor: { status: 'available', value: 'mock unmasked vendor' },
+    });
+  });
+  it('retains shader allocation failures, missing compiler logs and thrown capability queries', async () => {
+    const failed = capabilityContext();
+    failed.gl.createShader = () => null;
+    failed.gl.getExtension = () => {
+      throw new Error('mock extension query unavailable');
+    };
+    failed.gl.getShaderPrecisionFormat = () => {
+      throw new Error('mock precision query unavailable');
+    };
+    const missing = await collectRefractionCapabilities(failed.gl);
+    expect(missing.branchProbe.selectedBranch).toBe('unknown');
+    expect(
+      missing.branchProbe.probes.every((probe) => probe.compiled.status === 'unavailable')
+    ).toBe(true);
+    expect(missing.fragmentPrecision.HIGH_FLOAT.status).toBe('unavailable');
+    expect(missing.debugRenderer.status).toBe('unavailable');
+    const noLog = capabilityContext();
+    noLog.gl.getShaderInfoLog = () => null;
+    const evidence = await collectRefractionCapabilities(noLog.gl);
+    expect(evidence.branchProbe.probes.every((probe) => probe.log?.status === 'unavailable')).toBe(
+      true
+    );
+  });
+  it('withholds branch binding for uncompiled, unlinked, altered-guard or macro-overridden shaders', async () => {
+    const capabilities = await collectRefractionCapabilities(capabilityContext().gl);
+    for (const [compiled, linked] of [
+      [false, true],
+      [true, false],
+      [null, true],
+    ] as const) {
+      const bound = await bindRefractionCapability(
+        capabilities,
+        styleTintFragment,
+        styleTintFragment,
+        compiled,
+        linked
+      );
+      expect(bound.status).toBe('unknown');
+    }
+    for (const source of [
+      'precision mediump float; void main() {}',
+      `#define GL_FRAGMENT_PRECISION_HIGH 1\n${styleTintFragment}`,
+      styleTintFragment.replace('#ifdef GL_FRAGMENT_PRECISION_HIGH', '#if 1'),
+    ]) {
+      const bound = await bindRefractionCapability(
+        capabilities,
+        styleTintFragment,
+        source,
+        true,
+        true
+      );
+      expect(bound.status).toBe('unknown');
+    }
   });
   it('freezes source and regions without post-measurement selection', () => {
     const a = image();

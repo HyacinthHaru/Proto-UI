@@ -18,7 +18,7 @@ import {
 } from './liquid-tint-stage-diagnostic';
 
 export const REFRACTION_POLICY = Object.freeze({
-  version: 'test-visible-refraction-1',
+  version: 'test-visible-refraction-2-profile5-capability-bound',
   productAccepted: false,
   evidenceKind: 'scripted-renderer-sequence',
   sourceAdmissionProved: false,
@@ -28,7 +28,13 @@ export const REFRACTION_POLICY = Object.freeze({
   maximumDraws: 144,
   maximumMilliseconds: 12 * 60_000,
   maximumSourcePixels: 131072,
-  baselineTree: 'bec3ca3ed457692643c107bd45400346a18276f0',
+  baselineTree: '20bb2794c8ef1f71f6fac1ec649e033677c818cf',
+  baselineMeaning:
+    'local product-increment input tree; not the archived image source or an executed GPU candidate',
+  shaderSha256: {
+    static: '25260040b10ba143e849d30fe70e07fd0d14365542e44e9c20742eecce735a68',
+    contact: 'c3c3fbdb148fcdc4f515da9d86e807943b77f1e308e865c62b54a850d331cae5',
+  },
   comparison: 'same-source same-geometry same-float32-uniform strict-offset-zero',
   uncertainty: 'bounded correspondence resolution/ambiguity, not a statistical confidence interval',
   appearanceThreshold: null,
@@ -73,12 +79,216 @@ export type RefractionRequest = {
   sequenceIndex: number;
   staticProfile?: boolean;
 };
-const OFFSET = 'vec2 offset = refractDir * offsetAmt * centreBlend;';
+const EARLY_OFFSET = 'vec2 offset = refractDir * offsetAmt * centreBlend;';
+const FINAL_OFFSET = 'vec2 offset = finalOffset;';
+const REFRACTED = 'vec2 refracted = mapped + offset - tiltOffset;';
+const CHROMA = 'vec2 chroma = offset * u_aberration;';
+// Preserve character positions so a comment can never supply a replacement anchor.
+const shaderCode = (source: string) =>
+  source.replace(/\/\*[\s\S]*?\*\/|\/\/[^\r\n]*/g, (comment) => comment.replace(/[^\r\n]/g, ' '));
 /** The shader's magnification, chroma sampler branch, shape and lighting survive.
  * With zero offset, chroma is zero without changing u_aberration or its branch. */
 export function strictWarpOffShader(source: string) {
-  if (source.split(OFFSET).length !== 2) throw new Error('refraction-unique-offset-required');
-  return source.replace(OFFSET, 'vec2 offset = vec2(0.0);');
+  const code = shaderCode(source),
+    earlyCount = code.split(EARLY_OFFSET).length - 1,
+    finalCount = code.split(FINAL_OFFSET).length - 1;
+  if (earlyCount + finalCount !== 1) throw new Error('refraction-unique-offset-required');
+  const anchor = finalCount ? FINAL_OFFSET : EARLY_OFFSET,
+    at = code.indexOf(anchor),
+    tail = code.slice(at + anchor.length),
+    mains = [...code.matchAll(/\bvoid\s+main\s*\(\s*\)\s*\{/g)];
+  if (
+    mains.length !== 1 ||
+    mains[0].index >= at ||
+    /\bsampleSource\s*\(|\btexture2D\s*\(\s*u_tex\b/.test(code.slice(mains[0].index, at)) ||
+    code.split(REFRACTED).length !== 2 ||
+    code.split(CHROMA).length !== 2 ||
+    code.indexOf(REFRACTED) <= at ||
+    code.indexOf(CHROMA) <= code.indexOf(REFRACTED) ||
+    (code.match(/\boffset\b/g) ?? []).length !== 3 ||
+    /\boffset\b/.test(code.replace(anchor, '').replace(REFRACTED, '').replace(CHROMA, ''))
+  )
+    throw new Error('refraction-offset-use-drift');
+  if (finalCount) {
+    const finalAssignment = 'finalOffset = oldOffset + budgetLambda * budgetDelta;';
+    if (
+      code.split('vec2 finalOffset = oldOffset;').length !== 2 ||
+      code.split(finalAssignment).length !== 2 ||
+      code.indexOf(finalAssignment) >= at ||
+      /\bfinalOffset\b/.test(tail) ||
+      !tail.trimStart().startsWith(REFRACTED)
+    )
+      throw new Error('refraction-final-offset-order-drift');
+  } else if (/\b(?:finalOffset|oldOffset|budgetDelta|budgetLambda)\b/.test(code)) {
+    throw new Error('refraction-early-offset-profile-drift');
+  }
+  return source.slice(0, at) + 'vec2 offset = vec2(0.0);' + source.slice(at + anchor.length);
+}
+
+type Observation<T> = { status: 'available'; value: T } | { status: 'unavailable'; reason: string };
+function observe<T>(read: () => T, valid: (value: T) => boolean): Observation<T> {
+  try {
+    const value = read();
+    return valid(value)
+      ? { status: 'available', value }
+      : { status: 'unavailable', reason: 'missing-or-invalid-query-result' };
+  } catch (error) {
+    return { status: 'unavailable', reason: String(error) };
+  }
+}
+const validString = (value: unknown): value is string =>
+  typeof value === 'string' && value.length > 0;
+const PRECISION_SELECTION =
+  /#ifdef\s+GL_FRAGMENT_PRECISION_HIGH\s+precision highp float;\s+#else\s+precision mediump float;\s+#endif/;
+const probeSources = {
+  control: 'precision mediump float;\nvoid main() { gl_FragColor = vec4(0.0); }',
+  highp:
+    '#ifndef GL_FRAGMENT_PRECISION_HIGH\nrefraction_expected_highp_branch_missing\n#endif\nprecision mediump float;\nvoid main() { gl_FragColor = vec4(0.0); }',
+  mediump:
+    '#ifdef GL_FRAGMENT_PRECISION_HIGH\nrefraction_expected_mediump_branch_missing\n#endif\nprecision mediump float;\nvoid main() { gl_FragColor = vec4(0.0); }',
+};
+/** Test-only, compile-only controls on the SAME context as the material draw.
+ * No probe program, draw, uniform, texture or production shader is changed.
+ * Precision reports alone do not identify a preprocessor branch. */
+export async function collectRefractionCapabilities(gl: WebGLRenderingContext) {
+  const stringParameter = (parameter: number) =>
+    observe(() => gl.getParameter(parameter) as string, validString);
+  const precision = (kind: number) =>
+    observe(
+      () => {
+        const value = gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER, kind);
+        return value
+          ? {
+              rangeMin: value.rangeMin,
+              rangeMax: value.rangeMax,
+              precision: value.precision,
+              supported: value.precision > 0,
+            }
+          : null;
+      },
+      (value) =>
+        value !== null &&
+        [value.rangeMin, value.rangeMax, value.precision].every(
+          (n) => Number.isInteger(n) && n >= 0
+        )
+    );
+  const debugExtension = observe(
+    () => gl.getExtension('WEBGL_debug_renderer_info'),
+    (value) =>
+      value !== null &&
+      value !== undefined &&
+      Number.isInteger(value.UNMASKED_RENDERER_WEBGL) &&
+      Number.isInteger(value.UNMASKED_VENDOR_WEBGL)
+  );
+  const debugRenderer =
+    debugExtension.status === 'available'
+      ? {
+          status: 'available' as const,
+          renderer: stringParameter(debugExtension.value!.UNMASKED_RENDERER_WEBGL),
+          vendor: stringParameter(debugExtension.value!.UNMASKED_VENDOR_WEBGL),
+        }
+      : { status: 'unavailable' as const, reason: debugExtension.reason };
+  const probes = await Promise.all(
+    Object.entries(probeSources).map(async ([branch, source]) => {
+      let shader: WebGLShader | null = null;
+      const compiled = observe(
+        () => {
+          shader = gl.createShader(gl.FRAGMENT_SHADER);
+          if (!shader) throw new Error('refraction-probe-shader-unavailable');
+          gl.shaderSource(shader, source);
+          gl.compileShader(shader);
+          return gl.getShaderParameter(shader, gl.COMPILE_STATUS) as boolean;
+        },
+        (value) => typeof value === 'boolean'
+      );
+      const log = shader
+        ? observe(
+            () => gl.getShaderInfoLog(shader!),
+            (value) => typeof value === 'string'
+          )
+        : null;
+      if (shader) gl.deleteShader(shader);
+      return { branch, sourceSha256: await tintStageHash(source), compiled, log };
+    })
+  );
+  const compiled = (name: string) => {
+    const observed = probes.find((p) => p.branch === name)!.compiled;
+    return observed.status === 'available' ? observed.value : null;
+  };
+  const contextLost = observe(
+    () => gl.isContextLost(),
+    (value) => typeof value === 'boolean'
+  );
+  const selectedBranch =
+    contextLost.status === 'available' && !contextLost.value && compiled('control') === true
+      ? compiled('highp') === true && compiled('mediump') === false
+        ? 'highp'
+        : compiled('highp') === false && compiled('mediump') === true
+          ? 'mediump'
+          : 'unknown'
+      : 'unknown';
+  return {
+    scope: 'same-owned-material-canvas-context',
+    requestedContext: 'webgl',
+    version: stringParameter(gl.VERSION),
+    shadingLanguageVersion: stringParameter(gl.SHADING_LANGUAGE_VERSION),
+    renderer: stringParameter(gl.RENDERER),
+    vendor: stringParameter(gl.VENDOR),
+    fragmentPrecision: {
+      HIGH_FLOAT: precision(gl.HIGH_FLOAT),
+      MEDIUM_FLOAT: precision(gl.MEDIUM_FLOAT),
+    },
+    debugRenderer,
+    contextLost,
+    branchProbe: {
+      method: 'same-context-complementary-preprocessor-compile-controls',
+      selectedBranch,
+      status: selectedBranch === 'unknown' ? 'unknown' : 'identified',
+      probes,
+      draws: 0,
+      interpretation:
+        'Compiler conditional selection only; no probe draw, arithmetic accuracy or real-device performance claim',
+    },
+  };
+}
+
+/** Bind the compile observation to the actual submitted production fragment. */
+export async function bindRefractionCapability(
+  capabilities: Awaited<ReturnType<typeof collectRefractionCapabilities>>,
+  originalSource: string,
+  actualSource: string,
+  compiled: boolean | null,
+  linked: boolean | null
+) {
+  const branch = capabilities.branchProbe.selectedBranch,
+    sourceGuardRecognized =
+      PRECISION_SELECTION.test(shaderCode(actualSource)) &&
+      !/^\s*#\s*(?:define|undef)\s+GL_FRAGMENT_PRECISION_HIGH\b/m.test(shaderCode(actualSource)),
+    identified =
+      sourceGuardRecognized && compiled === true && linked === true && branch !== 'unknown';
+  return {
+    capabilitySha256: await tintStageHash(JSON.stringify(capabilities)),
+    originalShaderSha256: await tintStageHash(originalSource),
+    actualShaderSha256: await tintStageHash(actualSource),
+    sourceGuardRecognized,
+    compiled,
+    linked,
+    status: identified ? 'identified' : 'unknown',
+    selectedPrecisionBranch: identified ? branch : 'unknown',
+    offsetControl: /\bvec2 offset = vec2\(0\.0\);/.test(shaderCode(actualSource))
+      ? 'strict-final-offset-zero'
+      : [FINAL_OFFSET, EARLY_OFFSET].some((anchor) => shaderCode(actualSource).includes(anchor))
+        ? 'production-offset'
+        : 'unknown',
+    refractionBranch:
+      identified && shaderCode(originalSource).includes(FINAL_OFFSET)
+        ? branch === 'highp'
+          ? 'profile5-budgeted-shoulder'
+          : 'profile5-retained-old-offset'
+        : 'unknown',
+    interpretation:
+      'Same-context compile selection bound to submitted fragment and link status; no claim that every fragment reaches the offset expression',
+  };
 }
 /** Predeclared moderate-tone straight grid plus asymmetric rectangular landmarks.
  * Fixed before rendering or measurement; no noise or response-dependent contrast. */
@@ -533,12 +743,19 @@ async function capture(frame: OpticalFrame, mode: Mode) {
       antialias: false,
     });
   if (!gl) throw new Error('refraction-webgl-unavailable');
+  const capabilities = await collectRefractionCapabilities(gl);
   const restores: (() => void)[] = [],
     locations = new Map<WebGLUniformLocation, string>(),
     uniforms: Record<string, unknown> = {},
     floatReadback: Record<string, unknown> = {},
     optimizedOut: string[] = [],
-    shaders: { original: string; actual: string; kind: number }[] = [];
+    shaders: {
+      shader: WebGLShader;
+      original: string;
+      actual: string;
+      kind: number;
+      compiled: boolean | null;
+    }[] = [];
   let readbacks = 0,
     draws = 0,
     prepared: Uint8Array | undefined,
@@ -560,8 +777,17 @@ async function capture(frame: OpticalFrame, mode: Mode) {
       if (source !== expected) throw new Error('refraction-baseline-shader-drift');
       if (mode === 'strict-warp-off') args[1] = strictWarpOffShader(source);
     }
-    shaders.push({ original: source, actual: args[1], kind });
+    shaders.push({ shader: args[0], original: source, actual: args[1], kind, compiled: null });
     return original.apply(gl, args);
+  });
+  wrap('compileShader', (original, args) => {
+    const result = original.apply(gl, args),
+      receipt = shaders.find((s) => s.shader === args[0]);
+    if (receipt) {
+      const compiled = gl.getShaderParameter(args[0], gl.COMPILE_STATUS);
+      receipt.compiled = typeof compiled === 'boolean' ? compiled : null;
+    }
+    return result;
   });
   wrap('getUniformLocation', (original, args) => {
     const result = original.apply(gl, args);
@@ -605,8 +831,8 @@ async function capture(frame: OpticalFrame, mode: Mode) {
     return original.apply(gl, args);
   });
   const expectedShaderHash = frame.contact
-    ? TINT_STAGE_POLICY.shaderSha256.contact
-    : TINT_STAGE_POLICY.shaderSha256.static;
+    ? REFRACTION_POLICY.shaderSha256.contact
+    : REFRACTION_POLICY.shaderSha256.static;
   if (
     (await tintStageHash(frame.contact ? styleTintContactFragment : styleTintFragment)) !==
     expectedShaderHash
@@ -677,11 +903,23 @@ async function capture(frame: OpticalFrame, mode: Mode) {
       uniforms,
       floatReadback,
       optimizedOut,
+      capabilities,
       shaders: await Promise.all(
         shaders.map(async (s) => ({
           kind: s.kind,
           originalSha256: await tintStageHash(s.original),
           actualSha256: await tintStageHash(s.actual),
+          compiled: s.compiled,
+          capabilityBinding:
+            s.kind === gl.FRAGMENT_SHADER
+              ? await bindRefractionCapability(
+                  capabilities,
+                  s.original,
+                  s.actual,
+                  s.compiled,
+                  active ? gl.getProgramParameter(active, gl.LINK_STATUS) : null
+                )
+              : null,
         }))
       ),
       shaderPath: frame.contact ? 'styleTintContactFragment' : 'styleTintFragment',
@@ -874,6 +1112,19 @@ export async function runVisibleRefractionFrame(request: RefractionRequest) {
       'synthetic diagnostic snapshot revision; unchanged across contact-only states',
     originalHead: frame.head,
     originalTree: frame.tree,
+    originalProvenanceMeaning:
+      'archived source image/frame inputs only; not the candidate profile5 shader origin',
+    executedShaderProvenance: {
+      profile: request.staticProfile
+        ? 'pui-regular-style-tint-5'
+        : 'pui-regular-style-tint-contact-5',
+      expectedSha256: request.staticProfile
+        ? REFRACTION_POLICY.shaderSha256.static
+        : REFRACTION_POLICY.shaderSha256.contact,
+      candidateBinding:
+        'official collector candidate SHA/tree and patch hash in this frame receipt',
+      originalSourceAndActualControlHashes: 'captures[].shaders[]',
+    },
     geometry,
     regions,
     regionsSha256,
