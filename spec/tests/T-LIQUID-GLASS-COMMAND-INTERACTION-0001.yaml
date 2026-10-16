@@ -4,7 +4,7 @@ title: Liquid Glass command hover and existing press-contact conformance
 status: draft
 since: 0.3.0-alpha.1
 lifecycleRationale: The new shared recipe has passing local portable/closure evidence and planned exact-head native evidence. Source availability does not admit all family roles, moving hover optics or cross-host equivalence.
-summary: Separate semantic ownership, generated physical closure and exact-head native hover/material evidence for six existing command parts.
+summary: Separate semantic ownership, generated physical closure and exact-head native hover/material evidence for eight existing command parts.
 cases:
   - id: T-LIQUID-GLASS-COMMAND-INTERACTION-0001-CASE-STATE
     title: Borrowed Base states preserve action and persistent semantics
@@ -15,7 +15,15 @@ cases:
         C-LIQUID-GLASS-COMMAND-INTERACTION-0001-PRESS,
         C-LIQUID-GLASS-COMMAND-INTERACTION-0001-FOCUS,
       ]
-    expectation: six-parts-exclusive-css-feedback-base-owned-state-and-request-counts
+    expectation: eight-parts-exclusive-css-feedback-base-owned-state-and-request-counts
+  - id: T-LIQUID-GLASS-COMMAND-INTERACTION-0001-CASE-FORM
+    title: Form actions preserve sole ownership, inherited render, default removal and request counts
+    covers:
+      [
+        C-LIQUID-GLASS-COMMAND-INTERACTION-0001-OWNERSHIP,
+        C-LIQUID-GLASS-COMMAND-INTERACTION-0001-FOCUS,
+      ]
+    expectation: two-real-form-actions-one-owner-one-request-no-extra-button-hook-quiet-disabled-and-auto-restoration
   - id: T-LIQUID-GLASS-COMMAND-INTERACTION-0001-CASE-CLOSURE
     title: Private token data resolves through real style extraction and supported lowering
     covers:
@@ -39,6 +47,7 @@ implementations:
       [
         T-LIQUID-GLASS-COMMAND-INTERACTION-0001-CASE-STATE,
         T-LIQUID-GLASS-COMMAND-INTERACTION-0001-CASE-CLOSURE,
+        T-LIQUID-GLASS-COMMAND-INTERACTION-0001-CASE-FORM,
       ]
   - id: liquid-command-native
     kind: runtime-test
@@ -62,8 +71,15 @@ verifies:
   contracts: [C-LIQUID-GLASS-COMMAND-INTERACTION-0001]
 sources:
   - path: packages/prototypes/liquid-glass/src/interactive-surface.ts
+  - path: packages/prototypes/liquid-glass/src/form/submit.proto.ts
+  - path: packages/prototypes/liquid-glass/src/form/reset.proto.ts
+  - path: packages/prototypes/base/test/form-actions-material.test.ts
+  - path: packages/prototypes/base/test/form-actions-quality.test.ts
 revisions:
   - version: 0.3.0-alpha.1
     change: introduced
     summary: Define state, closure and native obligations without borrowing old Toggle acceptance or weakening optical gates.
+  - version: 0.3.0-alpha.1
+    change: updated
+    summary: Add Form actions to the existing portable and sixteen-scenario four-runtime dual-theme native matrix without relaxing any six-part assertion or original Toggle gate.
 tags: [test, liquid-glass, hover, prototype]

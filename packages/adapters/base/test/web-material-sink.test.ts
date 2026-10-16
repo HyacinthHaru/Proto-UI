@@ -1058,11 +1058,11 @@ describe('continuous contact scheduler (mock GPU/decode, not optical evidence)',
       f.source(true, 2);
       f.send(0.5, 'cancel');
       expect(f.host.style.getPropertyValue('--pui-material-image')).toBe(f.neutral);
-      expect(f.host.dataset.materialProfile).toBe('pui-regular-style-tint-contact-2');
+      expect(f.host.dataset.materialProfile).toBe('pui-regular-style-tint-contact-4');
       f.callbacks[0]();
       expect(f.host.style.getPropertyValue('--pui-material-image')).toBe(f.neutral);
       f.callbacks.at(-1)!();
-      expect(f.host.dataset.materialProfile).toBe('pui-regular-style-tint-contact-2');
+      expect(f.host.dataset.materialProfile).toBe('pui-regular-style-tint-contact-4');
     } finally {
       f.sink.release(1);
     }
@@ -1108,7 +1108,7 @@ describe('continuous contact scheduler (mock GPU/decode, not optical evidence)',
       expect(f.host.style.getPropertyValue('--pui-material-image')).toBe('');
       expect(f.host.style.backgroundColor).toBe('rgb(0, 0, 0)');
       f.callbacks.at(-1)!();
-      expect(f.host.dataset.materialProfile).toBe('pui-regular-style-tint-contact-2');
+      expect(f.host.dataset.materialProfile).toBe('pui-regular-style-tint-contact-4');
     } finally {
       f.sink.release(1);
     }
@@ -1573,9 +1573,62 @@ describe('style-fill tint ownership (mock GPU/decode, not pixel evidence)', () =
       fill: [1, 1, 1, 1],
       foreground: [23 / 255, 23 / 255, 23 / 255, 1],
     });
-    expect(f.host.dataset.materialProfile).toBe('pui-regular-style-tint-2');
+    expect(f.host.dataset.materialProfile).toBe('pui-regular-style-tint-4');
     expect(f.host.dataset.materialQuality).toBe('self-optical');
     f.sink.release(1);
+  });
+  it.each(['style-tint-empty-budget', 'rendered-contrast-unsafe'])(
+    'retains complete same-state fallback when the profile reports %s',
+    (reason) => {
+      const f = fixture();
+      try {
+        f.sink.commit(tinted(f.frame(1)));
+        expect(f.host.dataset.materialQuality).toBe('self-optical');
+        optical.render.mockImplementation(() => {
+          throw new Error(reason);
+        });
+        f.source(true, 2);
+        expect(f.host.dataset.materialQuality).toBe('opaque-fallback');
+        expect(f.host.dataset.materialReason).toBe(reason);
+        expect(f.host.style.backgroundImage).toBe('none');
+        expect(f.host.style.backgroundColor).toBe('rgb(255, 255, 255)');
+        expect(f.host.style.color).toBe('rgb(23, 23, 23)');
+      } finally {
+        f.sink.release(1);
+      }
+    }
+  );
+  it('invalidates a delayed tinted lease when only the governed foreground changes', () => {
+    const f = fixture();
+    const callbacks: Array<() => void> = [];
+    decoding.prepare.mockImplementation((_doc, _source, ready) => {
+      callbacks.push(ready);
+      return () => {};
+    });
+    try {
+      f.sink.commit(tinted(f.frame(1)));
+      const first = optical.render.mock.calls.at(-1)?.[0];
+      f.host.style.color = 'rgb(0, 0, 0)';
+      f.sink.commit(tinted(f.frame(2, ['bg-background', 'text-black', 'rounded-lg'])));
+      expect(optical.render.mock.calls.at(-1)?.[0]).toMatchObject({
+        fill: [1, 1, 1, 1],
+        foreground: [0, 0, 0, 1],
+        tint: 'style-fill',
+      });
+      expect(first).toMatchObject({
+        fill: [1, 1, 1, 1],
+        foreground: [23 / 255, 23 / 255, 23 / 255, 1],
+      });
+      expect(callbacks).toHaveLength(2);
+      callbacks[0]();
+      expect(f.host.dataset.materialQuality).toBe('opaque-fallback');
+      expect(f.host.style.backgroundImage).toBe('none');
+      callbacks[1]();
+      expect(f.host.dataset.materialQuality).toBe('self-optical');
+      expect(f.host.dataset.materialProfile).toBe('pui-regular-style-tint-4');
+    } finally {
+      f.sink.release(1);
+    }
   });
   it('retains the old no-tint path and refuses unsupported clear+tint rather than ignoring it', () => {
     const f = fixture();
@@ -1607,7 +1660,7 @@ describe('style-fill tint ownership (mock GPU/decode, not pixel evidence)', () =
     expect(f.host.dataset.materialProfile).toBe('liquidgl-v2-app-canvas-1');
     f.sink.commit(tinted(f.frame(4)));
     callbacks[2]();
-    expect(f.host.dataset.materialProfile).toBe('pui-regular-style-tint-2');
+    expect(f.host.dataset.materialProfile).toBe('pui-regular-style-tint-4');
     f.sink.release(1);
   });
   it('retains tint under reduced motion and synchronously withdraws it for forced colors and source loss', () => {

@@ -3,6 +3,7 @@ import {
   styleTintFragment,
   styleTintContactFragment,
   styleTintLightForeground,
+  styleTintEnvelope,
 } from './style-tint-profile';
 import { vertex, fragment, uniformNames } from './liquidgl-kernel.generated';
 import { colorContrast, type OpaqueRgba } from './style';
@@ -115,9 +116,11 @@ export function createWebOpticalProgram(
       g.linkProgram(program);
       if (!g.getProgramParameter(program, g.LINK_STATUS)) throw new Error('program-link');
       const locations = Object.fromEntries(
-        [...uniformNames, 'u_contactShape', ...(tinted ? ['u_styleTintLightForeground'] : [])].map(
-          (name) => [name, g.getUniformLocation(program!, name)]
-        )
+        [
+          ...uniformNames,
+          'u_contactShape',
+          ...(tinted ? ['u_styleTintLightForeground', 'u_styleTintLuminanceBound'] : []),
+        ].map((name) => [name, g.getUniformLocation(program!, name)])
       );
       if (!buffer) {
         buffer = g.createBuffer();
@@ -177,7 +180,7 @@ export function createWebOpticalProgram(
       const { source, geometry, pressed, variant } = frame;
       if (frame.tint !== undefined && (frame.tint !== 'style-fill' || variant !== 'regular'))
         throw new Error('style-tint-profile-unavailable');
-      const tintLight = frame.tint ? styleTintLightForeground(frame.fill, frame.foreground) : false;
+      const tintEnvelope = frame.tint ? styleTintEnvelope(frame.fill, frame.foreground) : null;
       const outset = geometry.paintOutset ?? 0;
       const width = Math.ceil((geometry.width + 2 * outset) * geometry.dpr),
         height = Math.ceil((geometry.height + 2 * outset) * geometry.dpr);
@@ -303,7 +306,10 @@ export function createWebOpticalProgram(
             ? [0.45, 0.45, 0.48, variant === 'clear' ? 0.35 : 0.65]
             : [1.05, 1.05, 1.06, variant === 'clear' ? 0.15 : 0.45]
       );
-      if (frame.tint) f('u_styleTintLightForeground', tintLight ? 1 : 0);
+      if (tintEnvelope) {
+        f('u_styleTintLightForeground', tintEnvelope.lightForeground ? 1 : 0);
+        f('u_styleTintLuminanceBound', tintEnvelope.luminanceBound);
+      }
       i('u_stack', 1);
       v4('u_stackMapping', [0, 0, 0, 0]);
       v4('u_stackRegion', [0, 0, 0, 0]);
@@ -346,11 +352,12 @@ export function createWebOpticalProgram(
       for (let at = 0; at < pixels.length; at += 4) {
         const alpha = pixels[at + 3];
         if (alpha === 255) opaqueSamples++;
-        if (frame.tint && alpha >= 250 && alpha < 255) {
+        if (tintEnvelope && alpha >= 250) {
           // The shader writes premultiplied RGB. Near-opaque AA must be safe
           // after composition, not merely when its raw channels look darker.
-          // Black/white bound every backdrop; require the original safe side.
-          for (const backdrop of [0, 1]) {
+          // Black/white bound every backdrop, including alpha 255. Use the
+          // same worst semantic foreground as the current frame's bound uniform.
+          for (const backdrop of alpha === 255 ? [0] : [0, 1]) {
             const composite: OpaqueRgba = [
               pixels[at] / 255 + (1 - alpha / 255) * backdrop,
               pixels[at + 1] / 255 + (1 - alpha / 255) * backdrop,
@@ -359,8 +366,9 @@ export function createWebOpticalProgram(
             ];
             if (
               composite.slice(0, 3).some((channel) => channel > 1) ||
-              colorContrast(composite, frame.foreground) < 4.5 ||
-              styleTintLightForeground(composite, frame.foreground) !== tintLight
+              colorContrast(composite, tintEnvelope.worstForeground) < 4.5 ||
+              styleTintLightForeground(composite, tintEnvelope.worstForeground) !==
+                tintEnvelope.lightForeground
             )
               throw new Error('rendered-contrast-unsafe');
           }

@@ -107,11 +107,8 @@ const commands = [
     content: dropdownContent,
   },
 ] as const;
-// Form recipes remain at the baseline until the existing source-token collector
-// recognizes asFormSubmit/asFormReset borrowed command handles.
-const implementedCommands = commands.filter(
-  (command) => command.name !== 'Submit' && command.name !== 'Reset'
-);
+// Form state extraction uses the separately reviewed two-hook CLI prerequisite.
+const implementedCommands = commands;
 type Command = (typeof commands)[number];
 const HOVER = ['shadow-md', 'ring-1', 'ring-inset', 'ring-border'];
 
@@ -242,7 +239,7 @@ async function fixture(
 }
 
 // Portable frames establish ownership and recipe behavior only, not optical paint.
-describe('Liquid command interaction recipe over six implemented Base owners', () => {
+describe('Liquid command interaction recipe over eight implemented Base owners', () => {
   it('keeps the family-private recipe as physical token data without geometry or input ownership', async () => {
     const source = await fs.readFile(
       path.resolve('packages/prototypes/liquid-glass/src/interactive-surface.ts'),
@@ -414,7 +411,7 @@ describe('Liquid command interaction recipe over six implemented Base owners', (
     }
   });
 
-  it.each(commands.slice(0, 2))(
+  it.each(commands.slice(0, 4))(
     '$name honors material opaque and restores auto on raw prop removal',
     async (command) => {
       const f = await fixture(command, { material: 'opaque' });
@@ -426,7 +423,14 @@ describe('Liquid command interaction recipe over six implemented Base owners', (
         expect(f.control.frame().material.candidates).toHaveLength(1);
         if (command.name === 'Button') {
           f.control.set({ variant: 'prominent' });
-          expect(f.control.frame().material.candidates).toEqual([]);
+          expect(f.control.frame().material.candidates).toEqual([
+            {
+              intent: 'liquid-glass',
+              variant: 'regular',
+              tint: 'style-fill',
+              deformation: { kind: 'press', phase: 'rest', contact: 'pointer' },
+            },
+          ]);
           expect(f.control.tokens()).toContain('bg-primary');
           expect(f.control.tokens()).toContain('text-primary-foreground');
         }
@@ -444,6 +448,19 @@ describe('Liquid command interaction recipe over six implemented Base owners', (
       const hooks = (command.prototype as any).__asHooks ?? [];
       expect(hooks.filter((hook: any) => hook.name === command.hook)).toHaveLength(1);
       expect(hooks.some((hook: any) => hook.name === 'as-button')).toBe(false);
+      const source = await fs.readFile(
+        path.resolve('packages/prototypes/liquid-glass/src', command.file),
+        'utf8'
+      );
+      expect(source.match(/return inherited\.render;/g)).toHaveLength(1);
+      expect(
+        source.match(
+          new RegExp(
+            `const inherited = ${command.name === 'Submit' ? 'asFormSubmit' : 'asFormReset'}\\(\\);`,
+            'g'
+          )
+        )
+      ).toHaveLength(1);
       try {
         f.control.input('pointer.enter');
         f.control.input('pointer.down');
@@ -459,6 +476,14 @@ describe('Liquid command interaction recipe over six implemented Base owners', (
         f.root!.set({});
         expect(f.control.state().disabled.get()).toBe(false);
         expect(f.control.frame().material.candidates).toHaveLength(1);
+        f.control.set({ disabled: true });
+        f.control.input('press.commit');
+        expect(f.root!.events.filter((entry) => entry.key === event)).toHaveLength(1);
+        expect(f.control.tokens()).toContain('shadow-none');
+        expect(f.control.tokens()).not.toContain('opacity-50');
+        f.control.set({});
+        f.control.input('press.commit');
+        expect(f.root!.events.filter((entry) => entry.key === event)).toHaveLength(2);
       } finally {
         await f.dispose();
       }

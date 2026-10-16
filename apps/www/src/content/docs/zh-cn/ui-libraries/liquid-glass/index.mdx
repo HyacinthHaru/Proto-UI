@@ -16,7 +16,7 @@ Button、Surface、Text、Label、Collapsible、Accordion 和五 part Select 已
 
 ## Hover 与按压（草案）
 
-Button、Toggle、Accordion Trigger、Collapsible Trigger、Select Trigger 与 Dropdown Trigger 在 Base 拥有的状态上共享静态 hover 基础。Hover、按压、持久选择与键盘焦点保持独立；禁用或受阻控件不产生交互强调。配方使用克制的抬升与内缘，不缩放控件。这是参考 [iPadOS 26 指针设计](https://developer.apple.com/videos/play/wwdc2025/208/?time=560) 的 Proto 选择，尚未实现 Apple 随目标移动的折射高光层。既有按住指针接触是独立路径，扩大绘制边界无法安全采样时保留明确回退。精确版本的视觉验收仍待完成；Form Submit/Reset 和其他家族角色另行推进。
+Button、Toggle、Form Submit/Reset、Accordion Trigger、Collapsible Trigger、Select Trigger 与 Dropdown Trigger 在 Base 拥有的状态上共享静态 hover 基础。Hover、按压、持久选择与键盘焦点保持独立；禁用或受阻控件不产生交互强调。配方使用克制的抬升与内缘，不缩放控件。这是参考 [iPadOS 26 指针设计](https://developer.apple.com/videos/play/wwdc2025/208/?time=560) 的 Proto 选择，尚未实现 Apple 随目标移动的折射高光层。既有按住指针接触是独立路径，扩大绘制边界无法安全采样时保留明确回退。精确版本的视觉验收仍待完成。Form 操作保留唯一 Base Form owner、继承 render 与 auto/opaque 材质默认值；禁用时抑制请求，不降低整个控件透明度。本次 Form 扩展依赖单独的 CLI 借用状态闭包修复，其他家族角色另行推进。
 
 <PrototypeLibraryOverview library="liquid-glass" locale="zh-cn" />
 

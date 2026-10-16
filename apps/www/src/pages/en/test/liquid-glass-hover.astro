@@ -19,7 +19,7 @@ import { renderThemeCss } from '../../../../../../packages/prototypes/liquid-gla
   </head>
   <body>
     <main>
-      <h1>Six real Liquid Glass command parts</h1>
+      <h1>Eight real Liquid Glass command parts</h1>
       <p>
         Static hover is a Proto UI approximation. Base owns input, requests, focus and cancellation.
         This page provides only visible canvas sources and application layout; it supplies no
@@ -36,6 +36,7 @@ import { renderThemeCss } from '../../../../../../packages/prototypes/liquid-gla
     <script>
       import button from '@proto.ui/prototypes-liquid-glass/button';
       import toggle from '@proto.ui/prototypes-liquid-glass/toggle';
+      import { formRoot, formSubmit, formReset } from '@proto.ui/prototypes-liquid-glass/form';
       import {
         accordionRoot,
         accordionItem,
@@ -67,6 +68,7 @@ import { renderThemeCss } from '../../../../../../packages/prototypes/liquid-gla
         LIQUID_HOVER_PARTS,
         LIQUID_HOVER_NEGATIVES,
         liquidHoverDemo,
+        liquidHoverRemoveProp,
         type LiquidHoverPart,
         type HoverRequest,
       } from '../../../content/docs/zh-cn/liquid-hover-fixture';
@@ -78,6 +80,9 @@ import { renderThemeCss } from '../../../../../../packages/prototypes/liquid-gla
       const prototypes = {
         button,
         toggle,
+        formRoot,
+        formSubmit,
+        formReset,
         accordionRoot,
         accordionItem,
         accordionHeading,
@@ -116,7 +121,9 @@ import { renderThemeCss } from '../../../../../../packages/prototypes/liquid-gla
           api.setProps(ref, patch);
         },
         removeProp(runtime: string, part: string, ref: string, name: string) {
-          fixture.setProps(runtime, part, ref, { [name]: undefined });
+          const api = apis.get(key(runtime, part));
+          if (!api) throw new Error(`Missing fixture ${runtime}/${part}`);
+          liquidHoverRemoveProp(api, ref, name);
         },
         source(runtime: string, part: string, available: boolean) {
           scenes.get(key(runtime, part))?.sourceAvailable(available);
@@ -151,6 +158,10 @@ import { renderThemeCss } from '../../../../../../packages/prototypes/liquid-gla
         const scene = createPreviewMaterialScene(host);
         // Ordinary layout only, never a shader parameter or an admission override.
         scene.scope.style.padding = id === 'source-edge' ? '0px' : '48px';
+        // The scene's zero-height portal destination follows mount in real flow.
+        // Keep it beyond the contact carrier; outer source padding alone cannot
+        // separate a sibling positioned exactly at the subject's bottom edge.
+        scene.mount.style.paddingBottom = '48px';
         scene.scope.dataset.hoverControl = id;
         scenes.set(key(runtime, id), scene);
         const events: HoverRequest[] = [];
@@ -178,8 +189,12 @@ import { renderThemeCss } from '../../../../../../packages/prototypes/liquid-gla
           scene.scope.querySelector<HTMLCanvasElement>(
             'canvas[data-material-backdrop]'
           )!.style.clipPath = 'inset(4px)';
-        if (id === 'accordion-tight')
+        if (id === 'accordion-tight') {
           scene.mount.querySelector<HTMLElement>('.liquid-hover-inset')!.style.padding = '0px';
+          // Retain this negative's real destination overlap: the Item's 1px
+          // bottom border leaves a 1px gap, inside the 35px contact footprint.
+          scene.mount.style.paddingBottom = '0px';
+        }
         scene.pause(true);
       }
       async function mount() {

@@ -2,7 +2,11 @@ import { describe, expect, it, vi } from 'vitest';
 import { createWebOpticalProgram, type OpticalFrame } from '../src/material/program';
 import { vertex, fragment } from '../src/material/liquidgl-kernel.generated';
 import { contactFragment } from '../src/material/contact-profile';
-import { styleTintFragment, styleTintContactFragment } from '../src/material/style-tint-profile';
+import {
+  styleTintFragment,
+  styleTintContactFragment,
+  styleTintEnvelope,
+} from '../src/material/style-tint-profile';
 import { acquireWebOpticalProgram, inspectWebOpticalResources } from '../src/material/program-pool';
 function fixture(
   control: 'zero-refraction' | 'zero-deformation' | 'zero-aberration' | null = null
@@ -317,6 +321,9 @@ describe('opt-in style tint optical ABI (spy only; actual pixels require CI)', (
     expect(f.shaderSources.at(-1)).toBe(styleTintFragment);
     expect(f.writes.get('u_tint')).toEqual(f.frame.fill);
     expect(f.writes.get('u_styleTintLightForeground')).toBe(0);
+    expect(f.writes.get('u_styleTintLuminanceBound')).toBe(
+      styleTintEnvelope(f.frame.fill, f.frame.foreground).luminanceBound
+    );
     f.program.render({ ...f.frame, tint: 'style-fill' });
     expect(f.program.inspect().programBuilds).toBe(2);
     f.program.render({
@@ -417,7 +424,7 @@ describe('opt-in style tint optical ABI (spy only; actual pixels require CI)', (
       _type: number,
       pixels: Uint8Array
     ) => {
-      for (let at = 0; at < pixels.length; at += 4) pixels.set([118, 118, 118, 255], at);
+      for (let at = 0; at < pixels.length; at += 4) pixels.set([114, 114, 114, 255], at);
       pixels.set([116, 116, 116, 250], 0);
     };
     // Raw 116 looks safe (~4.67); white-backdrop composition is ~121 (~4.35).
@@ -491,6 +498,10 @@ describe('bounded shared optical pipelines (GL state spy, not GPU evidence)', ()
           expect(f.writes.get('u_tint')).toEqual(
             frame.tint ? frame.fill : [1.05, 1.05, 1.06, 0.45]
           );
+          if (frame.tint)
+            expect(f.writes.get('u_styleTintLuminanceBound')).toBe(
+              styleTintEnvelope(frame.fill, frame.foreground).luminanceBound
+            );
           for (const [name, unit] of [
             ['u_tex', 0],
             ['u_stack', 1],
@@ -703,5 +714,137 @@ describe('bounded shared optical pipelines (GL state spy, not GPU evidence)', ()
       sourceUploads: 2,
     });
     f.program.dispose();
+  });
+});
+
+describe('same-frame profile 4 proof inputs (GL spy, no precision certification)', () => {
+  it('rewrites the bound and polarity on every static/contact frame without touching neutral ABI', () => {
+    const f = fixture();
+    const sourcePairs = [
+      [
+        [0, 97 / 255, 204 / 255, 1],
+        [1, 1, 1, 1],
+      ],
+      [
+        [0, 97 / 255, 204 / 255, 1],
+        [0.95, 0.95, 0.95, 1],
+      ],
+      [
+        [0.08, 0.12, 0.18, 1],
+        [0.75, 0.8, 0.85, 1],
+      ],
+      [
+        [0.85, 0.7, 0.95, 1],
+        [0.05, 0.05, 0.05, 1],
+      ],
+      [
+        [0, 97 / 255, 204 / 255, 1],
+        [1, 1, 1, 1],
+      ],
+    ] as const;
+    expect(sourcePairs[1][0]).toEqual(sourcePairs[0][0]);
+    expect(styleTintEnvelope(...sourcePairs[1]).luminanceBound).not.toBe(
+      styleTintEnvelope(...sourcePairs[0]).luminanceBound
+    );
+    let expectedWrites = 0;
+    try {
+      for (const [fill, foreground] of sourcePairs)
+        for (const contact of [
+          undefined,
+          { x: 0.2, y: 0.8, deltaX: 0.3, deltaY: -0.4, strength: 0 },
+          { x: 0.2, y: 0.8, deltaX: 0.3, deltaY: -0.4, strength: 1 },
+        ]) {
+          const envelope = styleTintEnvelope(fill, foreground);
+          f.gl.readPixels = (...args: unknown[]) => {
+            const pixels = args[6] as Uint8Array;
+            for (let at = 0; at < pixels.length; at += 4)
+              pixels.set(envelope.lightForeground ? [0, 0, 0, 255] : [255, 255, 255, 255], at);
+          };
+          f.program.render({ ...f.frame, fill, foreground, contact, tint: 'style-fill' });
+          expectedWrites++;
+          expect(f.writes.get('u_styleTintLuminanceBound')).toBe(envelope.luminanceBound);
+          expect(f.writes.get('u_styleTintLightForeground')).toBe(Number(envelope.lightForeground));
+          expect(f.writes.get('u_tint')).toEqual(fill);
+          const boundWrites = () =>
+            f.gl.uniform1f.mock.calls.filter(
+              ([location]: [{ name: string }]) => location.name === 'u_styleTintLuminanceBound'
+            );
+          expect(boundWrites()).toHaveLength(expectedWrites);
+          // Identical neutral source and uniform writes survive every interleave.
+          const firstWrite = f.gl.uniform1f.mock.calls.length;
+          f.program.render({ ...f.frame, fill, foreground, contact });
+          expect(boundWrites()).toHaveLength(expectedWrites);
+          expect(
+            f.gl.uniform1f.mock.calls
+              .slice(firstWrite)
+              .every(([location]: [{ name: string }]) => !location.name.startsWith('u_styleTint'))
+          ).toBe(true);
+        }
+      expect(f.program.inspect()).toMatchObject({ programBuilds: 4, sourceUploads: 1 });
+      expect(f.shaderSources.filter((s) => !s.includes('styleTint'))).toContain(fragment);
+      expect(f.shaderSources.filter((s) => !s.includes('styleTint'))).toContain(contactFragment);
+    } finally {
+      f.program.dispose();
+    }
+  });
+  it('rejects opaque bytes safe only for nominal foreground, retaining neutral behavior', () => {
+    const f = fixture();
+    f.gl.readPixels = (...args: unknown[]) => {
+      const pixels = args[6] as Uint8Array;
+      for (let at = 0; at < pixels.length; at += 4) pixels.set([118, 118, 118, 255], at);
+    };
+    const frame = {
+      ...f.frame,
+      fill: [0, 97 / 255, 204 / 255, 1] as const,
+      foreground: [1, 1, 1, 1] as const,
+    };
+    try {
+      expect(() => f.program.render(frame)).not.toThrow();
+      expect(() => f.program.render({ ...frame, tint: 'style-fill' })).toThrow(
+        'rendered-contrast-unsafe'
+      );
+      expect(f.canvas.toDataURL).toHaveBeenCalledTimes(1);
+    } finally {
+      f.program.dispose();
+    }
+  });
+  it.each([250, 251, 252, 253, 254, 255])(
+    'checks same-worst-foreground black/white composition at alpha %i',
+    (alpha) => {
+      for (const light of [true, false]) {
+        const f = fixture();
+        const foreground = (light ? [1, 1, 1, 1] : [0, 0, 0, 1]) as OpticalFrame['foreground'];
+        const fill = (light ? [0, 0, 0, 1] : [1, 1, 1, 1]) as OpticalFrame['fill'];
+        const frame: OpticalFrame = { ...f.frame, fill, foreground, tint: 'style-fill' };
+        let safe = true;
+        f.gl.readPixels = (...args: unknown[]) => {
+          const pixels = args[6] as Uint8Array;
+          for (let at = 0; at < pixels.length; at += 4)
+            pixels.set(light ? [0, 0, 0, 255] : [255, 255, 255, 255], at);
+          const code = safe ? (light ? 0 : alpha) : light ? 122 - (255 - alpha) : 114;
+          pixels.set([code, code, code, alpha], 0);
+        };
+        try {
+          expect(() => f.program.render(frame)).not.toThrow();
+          safe = false;
+          expect(() => f.program.render(frame)).toThrow('rendered-contrast-unsafe');
+          expect(f.canvas.toDataURL).toHaveBeenCalledTimes(1);
+        } finally {
+          f.program.dispose();
+        }
+      }
+    }
+  );
+  it('rejects an empty proof budget before allocating GPU resources', () => {
+    const f = fixture();
+    try {
+      expect(() =>
+        f.program.render({ ...f.frame, tint: 'style-fill', foreground: [0.46, 0.46, 0.46, 1] })
+      ).toThrow('style-tint-empty-budget');
+      expect(f.shaderSources).toEqual([]);
+      expect(f.canvas.toDataURL).not.toHaveBeenCalled();
+    } finally {
+      f.program.dispose();
+    }
   });
 });

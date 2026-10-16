@@ -9,6 +9,9 @@ import {
   LIQUID_HOVER_NEGATIVES,
   liquidHoverDemo,
   liquidHoverContextCapture,
+  assertLiquidHoverContextReframeEligibility,
+  liquidHoverContextReframe,
+  liquidHoverRemoveProp,
   type HoverRequest,
 } from './liquid-hover-fixture';
 
@@ -25,10 +28,12 @@ function walk(
   ];
 }
 describe('Liquid hover first-party fixture composition (source only)', () => {
-  it('keeps the bounded six-part slice and explicit carrier-negative controls', () => {
+  it('keeps the eight-part slice and explicit carrier-negative controls', () => {
     expect(LIQUID_HOVER_PARTS).toEqual([
       'button',
       'toggle',
+      'submit',
+      'reset',
       'accordion',
       'collapsible',
       'select',
@@ -54,18 +59,20 @@ describe('Liquid hover first-party fixture composition (source only)', () => {
       expect(targets).toHaveLength(1);
       const { node, ancestry } = targets[0];
       expect(node.kind === 'proto' && node.prototypeId).toBe(
-        `liquid-glass-${part === 'button' || part === 'toggle' ? part : `${part}-trigger`}`
+        `liquid-glass-${part === 'button' || part === 'toggle' ? part : part === 'submit' || part === 'reset' ? `form-${part}` : `${part}-trigger`}`
       );
       expect(ancestry).toEqual(
         part === 'button' || part === 'toggle'
           ? []
-          : part === 'accordion'
-            ? [
-                'liquid-glass-accordion-root',
-                'liquid-glass-accordion-item',
-                'liquid-glass-accordion-heading',
-              ]
-            : [`liquid-glass-${part}-root`]
+          : part === 'submit' || part === 'reset'
+            ? ['liquid-glass-form-root']
+            : part === 'accordion'
+              ? [
+                  'liquid-glass-accordion-root',
+                  'liquid-glass-accordion-item',
+                  'liquid-glass-accordion-heading',
+                ]
+              : [`liquid-glass-${part}-root`]
       );
       expect(
         nodes.filter(
@@ -77,7 +84,16 @@ describe('Liquid hover first-party fixture composition (source only)', () => {
       expect(setProps).toHaveBeenCalledTimes(1);
       const [ref, patch] = setProps.mock.calls[0];
       expect(ref).toBe(part === 'button' || part === 'toggle' ? 'subject' : 'owner');
-      const event = part === 'button' ? 'Click' : part === 'toggle' ? 'ActiveChange' : 'OpenChange';
+      const event =
+        part === 'button'
+          ? 'Click'
+          : part === 'toggle'
+            ? 'ActiveChange'
+            : part === 'submit'
+              ? 'Submit'
+              : part === 'reset'
+                ? 'Reset'
+                : 'OpenChange';
       expect(Object.keys(patch)).toEqual([`on${event}`]);
       patch[`on${event}`]({ value: 'observed' });
       expect(requests).toEqual([{ kind: event, detail: { value: 'observed' } }]);
@@ -120,5 +136,235 @@ describe('native screenshot context retains outer visual evidence', () => {
     expect(() =>
       liquidHoverContextCapture({ x: 100, y: 100, width: NaN, height: 48 }, viewport)
     ).toThrow('Invalid');
+  });
+});
+
+describe('pure screenshot context reframe planning', () => {
+  const viewport = { width: 800, height: 600 };
+  const idle = {
+    boundary: 'policy-idle',
+    hovered: false,
+    pressed: false,
+    focused: false,
+    focusVisible: false,
+    contact: 'rest',
+    quality: 'self-optical',
+    carrier: { marker: 'contact-v1' },
+  };
+  const clipped = () =>
+    liquidHoverContextCapture({ x: 200, y: 20, width: 160, height: 48 }, viewport, 30);
+
+  it.each([
+    {
+      part: 'Accordion',
+      subject: { x: 249, y: 0.28125, width: 334, height: 50 },
+      outset: 28,
+      margin: 44,
+      deltaY: -524.71875,
+    },
+    {
+      part: 'Collapsible',
+      subject: { x: 800, y: 0.28125, width: 416, height: 46 },
+      outset: 35,
+      margin: 51,
+      deltaY: -526.71875,
+    },
+  ])('$part: preserves the recorded top-edge failure and plans full padding', (sample) => {
+    // Recorded native geometry; this is mathematical framing evidence, not a browser rerun.
+    const original = liquidHoverContextCapture(
+      sample.subject,
+      { width: 1440, height: 1100 },
+      sample.outset
+    );
+    expect(original.margin).toBe(sample.margin);
+    expect(original.fullyPadded).toBe(false);
+    const plan = liquidHoverContextReframe(original, idle);
+    expect(plan).toEqual({ needed: true, delta: { x: 0, y: sample.deltaY } });
+    const framed = liquidHoverContextCapture(
+      {
+        ...sample.subject,
+        x: sample.subject.x - plan.delta.x,
+        y: sample.subject.y - plan.delta.y,
+      },
+      original.viewport,
+      sample.outset
+    );
+    expect(framed.margin).toBe(sample.margin);
+    expect(framed.fullyPadded).toBe(true);
+    expect(original.fullyPadded).toBe(false);
+  });
+
+  it.each([
+    { edge: 'top', x: 200, y: 20, delta: { x: 0, y: -256 } },
+    { edge: 'bottom', x: 200, y: 550, delta: { x: 0, y: 274 } },
+    { edge: 'left', x: 20, y: 200, delta: { x: -300, y: 0 } },
+    { edge: 'right', x: 620, y: 200, delta: { x: 300, y: 0 } },
+    { edge: 'top-left', x: 20, y: 20, delta: { x: -300, y: -256 } },
+  ])('centers only the insufficiently padded axes at the $edge edge', ({ x, y, delta }) => {
+    const subject = { x, y, width: 160, height: 48 };
+    const original = liquidHoverContextCapture(subject, viewport, 30);
+    expect(original.fullyPadded).toBe(false);
+    const plan = liquidHoverContextReframe(original, idle);
+    expect(plan).toEqual({ needed: true, delta });
+    const framed = liquidHoverContextCapture(
+      { ...subject, x: x - plan.delta.x, y: y - plan.delta.y },
+      viewport,
+      30
+    );
+    expect(framed.margin).toBe(46);
+    expect(framed.fullyPadded).toBe(true);
+  });
+
+  it('does not move, mutate, or require an input-state observation when already padded', () => {
+    const subject = Object.freeze({ x: 200, y: 200, width: 160, height: 48 });
+    const context = Object.freeze(liquidHoverContextCapture(subject, viewport, 30));
+    const unobserved = new Proxy({} as Parameters<typeof liquidHoverContextReframe>[1], {
+      get() {
+        throw new Error('A no-op must not read or invent input state');
+      },
+    });
+    expect(liquidHoverContextReframe(context, unobserved)).toEqual({
+      needed: false,
+      delta: { x: 0, y: 0 },
+    });
+    expect(context.subject).toBe(subject);
+    expect(subject).toEqual({ x: 200, y: 200, width: 160, height: 48 });
+  });
+
+  it('accepts an exact fit without reducing the required margin', () => {
+    const subject = { x: 40, y: 40, width: 708, height: 508 };
+    const context = liquidHoverContextCapture(subject, viewport, 30);
+    const plan = liquidHoverContextReframe(context, idle);
+    expect(context.fullyPadded).toBe(false);
+    expect(plan).toEqual({ needed: true, delta: { x: -6, y: -6 } });
+    const framed = liquidHoverContextCapture(
+      { ...subject, x: subject.x - plan.delta.x, y: subject.y - plan.delta.y },
+      viewport,
+      30
+    );
+    expect(framed.margin).toBe(46);
+    expect(framed.fullyPadded).toBe(true);
+  });
+
+  it.each([
+    { width: 709, height: 48 },
+    { width: 160, height: 509 },
+  ])('rejects an impossible padded viewport for $width x $height', (size) => {
+    const context = liquidHoverContextCapture({ x: 0, y: 0, ...size }, viewport, 30);
+    expect(context.fullyPadded).toBe(false);
+    expect(() => liquidHoverContextReframe(context, idle)).toThrow('cannot fit required padding');
+    expect(context.margin).toBe(46);
+  });
+
+  const idleBoundaries = [
+    'idle',
+    'policy-idle',
+    'negative-idle',
+    'collapse-blocked',
+    'reenabled-subject',
+    'reenabled-item',
+    'reenabled-owner',
+  ];
+  it.each(idleBoundaries)('allows the verified resting state at %s', (boundary) => {
+    const state = { ...idle, boundary };
+    expect(() => assertLiquidHoverContextReframeEligibility(state)).not.toThrow();
+    expect(liquidHoverContextReframe(clipped(), state).needed).toBe(true);
+  });
+
+  it.each(idleBoundaries)('allows verified no-carrier opaque fallback at %s', (boundary) => {
+    const state = {
+      ...idle,
+      boundary,
+      contact: null,
+      quality: 'opaque-fallback',
+      carrier: null,
+    };
+    expect(() => assertLiquidHoverContextReframeEligibility(state)).not.toThrow();
+    expect(liquidHoverContextReframe(clipped(), state).needed).toBe(true);
+  });
+
+  it.each([
+    { quality: 'self-optical', carrier: null },
+    { quality: 'unknown', carrier: null },
+    { quality: undefined, carrier: null },
+    { quality: null, carrier: null },
+    { quality: 'opaque-fallback', carrier: undefined },
+    { quality: 'opaque-fallback', carrier: false },
+    { quality: 'opaque-fallback', carrier: { marker: 'contact-v1' } },
+  ])('rejects null contact without a verified no-carrier fallback: %j', (observation) => {
+    const state = { ...idle, contact: null, ...observation };
+    expect(() => assertLiquidHoverContextReframeEligibility(state)).toThrow('verified idle');
+    expect(() => liquidHoverContextReframe(clipped(), state)).toThrow('verified idle');
+  });
+
+  it.each(['active', 'held', 'drag', 'dragging', undefined])(
+    'never infers rest from opaque fallback when contact is %j',
+    (contact) => {
+      const state = { ...idle, contact, quality: 'opaque-fallback', carrier: null };
+      expect(() => assertLiquidHoverContextReframeEligibility(state)).toThrow('verified idle');
+      expect(() => liquidHoverContextReframe(clipped(), state)).toThrow('verified idle');
+    }
+  );
+
+  it.each([
+    '',
+    'hover',
+    'down',
+    'held',
+    'held-leave',
+    'held-reenter',
+    'drag',
+    'focus-visible',
+    'source-restored',
+    'disabled-subject',
+    'reenabled-heading',
+    'reenabled-subject-extra',
+    'policy-idle-extra',
+    'idle ',
+    'unknown',
+  ])('rejects an ineligible or unknown boundary %j even if states appear idle', (boundary) => {
+    const state = { ...idle, boundary };
+    expect(() => assertLiquidHoverContextReframeEligibility(state)).toThrow('verified idle');
+    expect(() => liquidHoverContextReframe(clipped(), state)).toThrow('verified idle');
+  });
+
+  for (const field of ['hovered', 'pressed', 'focused', 'focusVisible'] as const)
+    it.each([true, undefined, null, 0, '', 'false'])(
+      `rejects ${field}=%j rather than treating it as an observed false`,
+      (value) => {
+        const state = { ...idle, [field]: value };
+        expect(() => assertLiquidHoverContextReframeEligibility(state)).toThrow('verified idle');
+        expect(() => liquidHoverContextReframe(clipped(), state)).toThrow('verified idle');
+      }
+    );
+
+  it.each(['active', 'held', 'drag', 'dragging', 'settling', 'unknown', undefined, null, false])(
+    'rejects non-rest or unobserved contact %j',
+    (contact) => {
+      const state = { ...idle, contact };
+      expect(() => assertLiquidHoverContextReframeEligibility(state)).toThrow('verified idle');
+      expect(() => liquidHoverContextReframe(clipped(), state)).toThrow('verified idle');
+    }
+  );
+});
+
+describe('hover fixture authored-prop withdrawal', () => {
+  it('requests deletion through the preview capability without an undefined patch', () => {
+    const api: DemoRuntimeApi = {
+      call: vi.fn(),
+      getExposes: vi.fn(),
+      setProps: vi.fn(),
+      removeProps: vi.fn(),
+    };
+    liquidHoverRemoveProp(api, 'subject', 'disabled');
+    expect(api.removeProps).toHaveBeenCalledWith('subject', ['disabled']);
+    expect(api.setProps).not.toHaveBeenCalled();
+  });
+  it('fails explicitly when an external preview API lacks the capability', () => {
+    const api: DemoRuntimeApi = { call: vi.fn(), getExposes: vi.fn(), setProps: vi.fn() };
+    expect(() => liquidHoverRemoveProp(api, 'subject', 'material')).toThrow(
+      'authored-prop withdrawal'
+    );
+    expect(api.setProps).not.toHaveBeenCalled();
   });
 });

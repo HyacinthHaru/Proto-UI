@@ -28,7 +28,7 @@ implementations:
     consumesCases:
       - T-LIQUID-GLASS-MATERIAL-0001-CASE-POLICY
     notes:
-      - Five focused cases on the real Prototype and Runtime; provider presence is distinct from committed paint. No browser result is inferred.
+      - Portable cases on the real Prototype and Runtime, including the separately revised prominent tint path; provider presence is distinct from committed paint. No browser result is inferred.
   - id: liquid-glass-material-browser
     kind: runtime-test
     status: planned
@@ -46,6 +46,9 @@ sources:
   - path: packages/prototypes/liquid-glass/test/material.test.ts
   - path: .github/workflows/liquid-material-evidence.yml
 revisions:
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Retain material policy mapping after the explicit main-command tint revision; record expanded portable scope without reusing opaque browser receipts.
   - version: 0.3.0-alpha.1
     change: introduced
     summary: Added finite material policy evidence and planned actual-Web consumer capture without promoting the draft.

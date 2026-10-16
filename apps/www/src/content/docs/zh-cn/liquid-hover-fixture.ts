@@ -9,6 +9,8 @@ import type {
 export const LIQUID_HOVER_PARTS = [
   'button',
   'toggle',
+  'submit',
+  'reset',
   'accordion',
   'collapsible',
   'select',
@@ -39,7 +41,7 @@ export function liquidHoverDemo(
     kind: 'box',
     tag: 'span',
     attrs: { 'data-liquid-hover-slot': '' },
-    children: [`Glass ${part}`],
+    children: [part === 'submit' ? 'Submit' : part === 'reset' ? 'Reset' : `Glass ${part}`],
   };
   // Layout is application-owned and transparent. The inset keeps the material's
   // expanded idle carrier away from the Accordion Item's actual painted border.
@@ -51,6 +53,10 @@ export function liquidHoverDemo(
   let root: DemoNode;
   if (part === 'button' || part === 'toggle')
     root = atom(part, 'subject', part === 'toggle' ? { active: false } : {}, [slot]);
+  else if (part === 'submit' || part === 'reset')
+    root = atom('form-root', 'owner', { ariaLabel: `Native ${part} evidence` }, [
+      atom(`form-${part}`, 'subject', {}, [slot]),
+    ]);
   else if (part === 'accordion')
     root = atom(
       'accordion-root',
@@ -90,12 +96,27 @@ export function liquidHoverDemo(
     root: { kind: 'box', className: 'liquid-hover-layout', children: [root] },
     setup({ api }) {
       capture(api);
-      const event = part === 'button' ? 'Click' : part === 'toggle' ? 'ActiveChange' : 'OpenChange';
+      const event =
+        part === 'button'
+          ? 'Click'
+          : part === 'toggle'
+            ? 'ActiveChange'
+            : part === 'submit'
+              ? 'Submit'
+              : part === 'reset'
+                ? 'Reset'
+                : 'OpenChange';
       api.setProps(part === 'button' || part === 'toggle' ? 'subject' : 'owner', {
         [`on${event}`]: (detail: unknown) => requests.push({ kind: event, detail }),
       });
     },
   };
+}
+
+/** Withdraw a real authored key; an undefined patch is still a provided value. */
+export function liquidHoverRemoveProp(api: DemoRuntimeApi, ref: string, name: string) {
+  if (!api.removeProps) throw new Error('Hover fixture requires authored-prop withdrawal');
+  api.removeProps(ref, [name]);
 }
 
 /** Test-only screenshot geometry, not material sampling or input geometry. */
@@ -129,5 +150,66 @@ export function liquidHoverContextCapture(
       top <= subject.y - margin &&
       right >= subject.x + subject.width + margin &&
       bottom >= subject.y + subject.height + margin,
+  };
+}
+
+/** Fail closed before test-only framing can move any input or material geometry. */
+export function assertLiquidHoverContextReframeEligibility(state: {
+  boundary: string;
+  hovered: unknown;
+  pressed: unknown;
+  focused: unknown;
+  focusVisible: unknown;
+  contact: unknown;
+  quality: unknown;
+  carrier: unknown;
+}): void {
+  if (
+    ![
+      'idle',
+      'policy-idle',
+      'negative-idle',
+      'collapse-blocked',
+      'reenabled-subject',
+      'reenabled-item',
+      'reenabled-owner',
+    ].includes(state.boundary) ||
+    state.hovered !== false ||
+    state.pressed !== false ||
+    state.focused !== false ||
+    state.focusVisible !== false ||
+    !(
+      state.contact === 'rest' ||
+      (state.contact === null && state.quality === 'opaque-fallback' && state.carrier === null)
+    )
+  )
+    throw new Error('Screenshot context reframe requires a verified idle boundary');
+}
+
+/**
+ * Pure scrollBy delta for screenshot framing only; it does not scroll or assert
+ * that the browser applied the plan. The caller must resample and check padding.
+ */
+export function liquidHoverContextReframe(
+  context: ReturnType<typeof liquidHoverContextCapture>,
+  state: Parameters<typeof assertLiquidHoverContextReframeEligibility>[0]
+): { needed: boolean; delta: { x: number; y: number } } {
+  if (context.fullyPadded) return { needed: false, delta: { x: 0, y: 0 } };
+  assertLiquidHoverContextReframeEligibility(state);
+  const { subject, viewport, margin } = context;
+  if (subject.width + 2 * margin > viewport.width || subject.height + 2 * margin > viewport.height)
+    throw new Error('Screenshot context cannot fit required padding in the viewport');
+  return {
+    needed: true,
+    delta: {
+      x:
+        subject.x < margin || subject.x + subject.width + margin > viewport.width
+          ? subject.x + subject.width / 2 - viewport.width / 2
+          : 0,
+      y:
+        subject.y < margin || subject.y + subject.height + margin > viewport.height
+          ? subject.y + subject.height / 2 - viewport.height / 2
+          : 0,
+    },
   };
 }

@@ -144,49 +144,85 @@ describe('Liquid Form action material intent and opaque fallback', () => {
     async (action) => {
       const f = await fixture(true, action);
       try {
+        // Submit revises the earlier untinted exact candidate; Reset is its neutral control.
+        const candidate = (phase: 'rest' | 'pressed') => [
+          {
+            intent: 'liquid-glass',
+            variant: 'regular',
+            ...(action === formSubmit ? { tint: 'style-fill' } : {}),
+            deformation: { kind: 'press', phase, contact: 'pointer' },
+          },
+        ];
+        const pair =
+          action === formSubmit
+            ? ['bg-primary', 'text-primary-foreground']
+            : ['bg-secondary', 'text-secondary-foreground'];
+        const hooks = (action as any).__asHooks ?? [];
+        expect(
+          hooks.filter(
+            (hook: any) =>
+              hook.name === (action === formSubmit ? 'as-form-submit' : 'as-form-reset')
+          )
+        ).toHaveLength(1);
+        expect(hooks.some((hook: any) => hook.name === 'as-button')).toBe(false);
         expect(f.control.frames.at(-1)?.material.slot?.fallback).toEqual({
           fill: 'style',
           foreground: 'style',
         });
-        expect(f.control.frames.at(-1)?.material.candidates).toEqual([
-          {
-            intent: 'liquid-glass',
-            variant: 'regular',
-            deformation: { kind: 'press', phase: 'rest', contact: 'pointer' },
-          },
-        ]);
+        expect(f.control.frames.at(-1)?.style.tokens).toEqual(expect.arrayContaining(pair));
+        expect(f.control.frames.at(-1)?.material.candidates).toEqual(candidate('rest'));
+        for (const exit of ['pointer.up', 'pointer.leave', 'pointer.cancel', 'press.cancel']) {
+          f.control.input('pointer.enter');
+          expect(f.control.frames.at(-1)?.material.candidates).toEqual(candidate('rest'));
+          f.control.input('pointer.down');
+          expect(f.control.frames.at(-1)?.material.candidates).toEqual(candidate('pressed'));
+          f.control.input(exit);
+          expect(f.control.frames.at(-1)?.material.candidates).toEqual(candidate('rest'));
+        }
         f.control.input('pointer.down');
-        expect(f.control.frames.at(-1)?.material.candidates[0]).toMatchObject({
-          deformation: { phase: 'pressed' },
-        });
-        f.control.input('pointer.cancel');
-        expect(f.control.frames.at(-1)?.material.candidates[0]).toMatchObject({
-          deformation: { phase: 'rest' },
-        });
         f.root.set({ disabled: true });
         expect(f.control.frames.at(-1)?.material.candidates).toEqual([]);
-        expect(f.control.frames.at(-1)?.style.tokens).toContain('opacity-50');
-        f.root.set({ disabled: false });
+        expect(f.control.frames.at(-1)?.style.tokens).toEqual(
+          expect.arrayContaining([...pair, 'shadow-none'])
+        );
+        expect(f.control.frames.at(-1)?.style.tokens).not.toContain('opacity-50');
+        f.root.set({});
+        expect(f.control.frames.at(-1)?.material.candidates).toEqual(candidate('rest'));
+        f.control.input('pointer.down');
+        f.control.set({ disabled: true });
+        expect(f.control.frames.at(-1)?.material.candidates).toEqual([]);
+        expect(f.control.frames.at(-1)?.style.tokens).toEqual(expect.arrayContaining(pair));
         f.control.set({ material: 'opaque' });
         expect(f.control.frames.at(-1)?.material.candidates).toEqual([]);
-        expect(f.control.frames.at(-1)?.style.tokens).toContain(
-          action === formSubmit ? 'bg-primary' : 'bg-secondary'
-        );
+        expect(f.control.frames.at(-1)?.style.tokens).toEqual(expect.arrayContaining(pair));
         f.control.set({});
-        expect(f.control.frames.at(-1)?.material.candidates).toHaveLength(1);
+        expect(f.control.frames.at(-1)?.material.candidates).toEqual(candidate('rest'));
+        f.control.input('pointer.down');
+        await f.control.session.unmount();
+        expect(f.control.release).toHaveBeenCalledOnce();
+        await f.control.session.mount();
+        expect(f.control.frames.at(-1)?.material.candidates).toEqual(candidate('rest'));
         expect(f.control.frames.every((frame) => frame.material.candidates.length <= 1)).toBe(true);
       } finally {
         await f.dispose();
       }
     }
   );
-  it('retains complete opaque fill without an optical sink', async () => {
-    const f = await fixture(false);
-    try {
-      expect(f.control.styles.at(-1)?.tokens).toContain('bg-primary');
-      expect(f.control.styles.at(-1)?.tokens).toContain('text-primary-foreground');
-    } finally {
-      await f.dispose();
+  it.each([formSubmit, formReset])(
+    '$name retains complete opaque fill without an optical sink',
+    async (action) => {
+      const f = await fixture(false, action);
+      try {
+        expect(f.control.styles.at(-1)?.tokens).toEqual(
+          expect.arrayContaining(
+            action === formSubmit
+              ? ['bg-primary', 'text-primary-foreground']
+              : ['bg-secondary', 'text-secondary-foreground']
+          )
+        );
+      } finally {
+        await f.dispose();
+      }
     }
-  });
+  );
 });
