@@ -1,0 +1,18 @@
+{
+  "kind": "finf-v1.owner-delegated-dco-remediation",
+  "repository": "Proto-UI/Proto-UI",
+  "sourcePr": 887,
+  "sourceHead": "16d54adf7c371b8d767fbd7b02164cc3eb50b46f",
+  "certifiedAuthor": "cyjin.yl <chenyejin2004@foxmail.com>",
+  "actualAuthenticatedUser": "cyjin-yl",
+  "certifiedOriginalCommits": [
+    "5378ebf5e7c4b00eb602bdd5b4b0d300009d32e5",
+    "6882c82945c1dbe935482055086b6cc88c22ea97"
+  ],
+  "method": "Forward remediation commit with actual original-author declaration under explicit current-user delegation; no original message or source rewrite.",
+  "originalAuthorAndCommitterRawVerified": true,
+  "originalSourceTreesUnchanged": true,
+  "foreignCertificationNotGranted": true,
+  "maintainerIntegrationNotTechnicalAcceptance": true,
+  "unfinishedWorkWillRemainInFinfV2": true
+}
