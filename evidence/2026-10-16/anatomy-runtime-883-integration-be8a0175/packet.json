@@ -1,0 +1,266 @@
+{
+  "schemaVersion": 1,
+  "preparedAt": "2026-10-16T03:15:21.828294+00:00",
+  "status": "frozen source-bound checkpoint; local partial/ABSTAIN; publication verified separately",
+  "facts": {
+    "head": "be8a0175cf573058eb61aa1a43ae4fa8fae9b686",
+    "tree": "742400b0a255ac89a62240bd55dab0dca5db4d55",
+    "base": "2b8757f4516da60d3a3b31e9ec4df7401b3d3195",
+    "sourceExecutedAt": "HistoricalField/Coll26+ac; historicalFormclean84; portalcandidate421+exactfb71bytes and canonical84/421/fb71; Fieldformal candidatefb71+3files; newnativeField/Formactualcleanbe8; canonicalbe8 all5targets terminal; localoriginalHomecontrol at cleanbe8",
+    "pendingBeforeFreeze": [],
+    "scope": "ExistingIssue883GroupC,latest887 combination and confirmedFieldpending publication ownership repair; no A/Bpaint/CompilerIR takeover",
+    "evidenceDisposition": "partial/ABSTAIN",
+    "actualImages": 42,
+    "unassessedFieldCollImages": 246,
+    "paraphrase": "Agent sanitized paraphrase of the current authorized request: synchronize existing Group C PR888 onto latest887, preserve hover/prominent inventory, verify Field focus, full Form Context behavior and Collapsible, and repair only confirmed C defects.",
+    "sourceTreeAudit": {
+      "entries": 11206,
+      "incomingPathsPreserved": 65,
+      "ownPathsPreserved": 18,
+      "planner": "exact2b, eachdedicatedsuite/owneronce",
+      "concretePreservationFindings": 0
+    },
+    "canonicalKnownSoFar": {
+      "historical84": "canonical-84ce84fd/ci-terminal-reconciliation.json",
+      "historical421": "canonical-421208ca/ci-terminal-reconciliation.json",
+      "historicalfb71": "canonical-fb71c01c/ci-terminal-reconciliation.json",
+      "finalbe8": "canonical-be8a0175/ci-terminal-reconciliation.json"
+    },
+    "functionalAcceptance": "Both-close portal fixture recovery passes in actualcurrentordinary andspecialty paths; Fieldrequestownership formalredgreen/103pass+C1118; accuratecleanbe8Field25/Form2pass; all5canonical targets terminal, overallCIremainsFAIL and no globalacceptance.",
+    "currentFieldChange": {
+      "commit": "be8a0175cf573058eb61aa1a43ae4fa8fae9b686",
+      "parent": "fb71c01c6e8854028b903aedec781cddad2c8444",
+      "diff": "3files72+/5-",
+      "sourceDelta": "6lines guardedemitterinstallation beforepublish",
+      "formalSameTestSHA256": "9819d01406180b70b93ceba0222cf0096ad1e8399bb970a818574211a1c2912b",
+      "baseline": "1red1normalcontrol101filtered",
+      "green": "notification103pass inside expanded76/1181pass4ASTfail",
+      "C67": "1118pass",
+      "types": "923/0/0/14",
+      "spec": "160pass1Dropdowntextfail;50relevantinputsidentical887",
+      "actualNativeField": "25pass,40PNG/40JSON,6viewed34unassessed",
+      "actualNativeForm": "actualcleanbe8 twoReactjourneys/6fivefieldcallbacksIDs2/3/5/14imagesviewed/744actualrequestedtrackedinputs/6775sourcebeforeafterequalbe8; driveroldac120metadata-onlylabelpreservedandcorrectedexplicitly",
+      "publicPolicy": "draftTonlyclarifiescurrentconsumerIDdelivery; no globalStateContextatomicity"
+    },
+    "currentNative": {
+      "Field": {
+        "passed": 25,
+        "head": "be8a0175cf573058eb61aa1a43ae4fa8fae9b686",
+        "tree": "742400b0a255ac89a62240bd55dab0dca5db4d55",
+        "images40": true,
+        "actuallyViewed": 6,
+        "unassessed": 34
+      },
+      "Form": {
+        "passed": 2,
+        "callbacks": 6,
+        "IDsPerFamily": [2, 3, 5],
+        "actualTrackedRequests": 744,
+        "trackedBeforeAfter": 6775,
+        "sameHeadTreeSource": true,
+        "allErrorArraysEmpty": true,
+        "actuallyViewedImages": 14,
+        "staleDiagnosticLabel": "candidateWorkingTree ac120 remainsinraw; metadata-label-correction.json documents physicalheadbe8/tree7424 and exactinputs; no raw relabel/rerun"
+      }
+    },
+    "historicalLocal84MergeResults": {
+      "CFocused": {
+        "files": 67,
+        "passed": 1116
+      },
+      "incoming": {
+        "files": 19,
+        "passed": 529,
+        "failed": 4,
+        "failure": "CheckboxGroup staticdata-state tokenclosure;56inputsexact2b"
+      },
+      "plannerNode": 126,
+      "inventoryNode": 72,
+      "Field": 25,
+      "Collapsible": 36,
+      "FormBehavior": {
+        "cases": 2,
+        "passed": 2,
+        "submitCallbacks": 6,
+        "IDsPerFamily": [2, 3, 5],
+        "trackedSourceInputsBound": 6775,
+        "requestedSourceFilesMappedToGit": 744,
+        "totalRequests": 831,
+        "errorArraysEmpty": true,
+        "callbackObservationOverride": true,
+        "notConfigured": [
+          "asyncvalidator",
+          "callbackreentry/cancel",
+          "unmount/dispose/remount",
+          "controlledresethandshake",
+          "fullAdapter/AT"
+        ]
+      },
+      "types": {
+        "files": 923,
+        "errors": 0,
+        "warnings": 0,
+        "hints": 14
+      },
+      "publicPackages": 47,
+      "manifests": 47,
+      "budgets": "4PASS5ADVISORY, unchangedfinf-development policy",
+      "generation": "styles/componentpresets/agent generatedandchecked, nodrift",
+      "authoring": "4changedcataloginputspassedvs2b",
+      "ordinaryTestEntry": "exit1staleBOMbeforelaterstages",
+      "catalog": "536diagnosticsfail, unmodifiedcoveragegapsscope",
+      "publicDocs": "failunclassifiedfamily/exports"
+    },
+    "portalTestChanges": {
+      "commit": "fb71c01c6e8854028b903aedec781cddad2c8444",
+      "diff": "onefile21+/19- vs421; aggregate vs84 21+/4-",
+      "meaning": "freshContent/parent per case-local helper invocation at bothcloses; originalassertions/deadlines/55cases retained; timingexplicitlywaitsphysicalprerequisite",
+      "original421NoCapture": "1fail54skip at421line937 firstreopen; no actualparent or epochsample",
+      "official421Ordinary": "WCrestoration1smatcherred3154ms; no precisestack; local937not substituted",
+      "candidateFourRuntimeCaptureOff": "4pass51skip",
+      "candidateFourRuntimeCaptureOn": "4pass51skip",
+      "candidateFull55CaptureOff": "54pass1csszoomfail; fourrestorationand16publicDropdownpass",
+      "candidateTypes": "923files0errors0warnings14hints serialexit0",
+      "firstWrapperNameError": "raw4passlogretained; commandexitnotpersisted; correctedrunner actualexit0separate"
+    },
+    "latestCChange": {
+      "commit": "be8a0175cf573058eb61aa1a43ae4fa8fae9b686",
+      "parent": "fb71c01c6e8854028b903aedec781cddad2c8444",
+      "diff": "3files72+/5-",
+      "sourceDelta": "6lines guardedemitterinstallation beforepublish",
+      "formalSameTestSHA256": "9819d01406180b70b93ceba0222cf0096ad1e8399bb970a818574211a1c2912b",
+      "baseline": "1red1normalcontrol101filtered",
+      "green": "notification103pass inside expanded76/1181pass4ASTfail",
+      "C67": "1118pass",
+      "types": "923/0/0/14",
+      "spec": "160pass1Dropdowntextfail;50relevantinputsidentical887",
+      "actualNativeField": "25pass,40PNG/40JSON,6viewed34unassessed",
+      "actualNativeForm": "actualcleanbe8 twoReactjourneys/6fivefieldcallbacksIDs2/3/5/14imagesviewed/744actualrequestedtrackedinputs/6775sourcebeforeafterequalbe8; driveroldac120metadata-onlylabelpreservedandcorrectedexplicitly",
+      "publicPolicy": "draftTonlyclarifiescurrentconsumerIDdelivery; no globalStateContextatomicity"
+    },
+    "historicalSourceReuseToFb71": {
+      "allTreeEntries": 11206,
+      "entriesUnchangedFrom84": 11205,
+      "packagesSourceFilesUnchanged": 5268,
+      "FormActualTrackedRequestsEqualFinal": 744,
+      "FormHistoricalAllSourceInputsEqualFinal": 6774,
+      "FormHistoricalAllSourceInputsChangedFinal": 1,
+      "actualExecutionLabelsPreserved": true,
+      "finalBinding": "portal-close-symmetry-fix/final-binding-fb71c01c.json",
+      "currentLimit": "The fb71 all5268unchanged/744oldFormunchanged binding is historical. be8 intentionally changes FieldRoot; exactnewnative and finalsource report are present in sourceReuse/currentNative."
+    },
+    "sourceReuse": {
+      "head": "be8a0175cf573058eb61aa1a43ae4fa8fae9b686",
+      "finalBinding": "field-pending-publication-fix/final-binding-be8a0175.json",
+      "totalTreeEntries": 11206,
+      "unchangedFromFb71": 11203,
+      "changedPaths": 3,
+      "netPathsVs887": 19,
+      "packagesSourceSameFromFb71": 5267,
+      "packagesSourceChanged": 1,
+      "changedPackageSource": "packages/prototypes/base/src/field/root.proto.ts",
+      "oldFormTrackedRequestsSame": 743,
+      "oldFormTrackedRequestsChanged": 1,
+      "oldFormFullSourceSame": 6773,
+      "oldFormFullSourceChanged": 2,
+      "newFormActualTrackedRequests": 744,
+      "newFormActualFullSource": 6775,
+      "allNewFormInputsMatchBe8": true,
+      "nativeFieldAccuratePostcommit": true,
+      "sourceReview": "0concretefinding; unassessedhuman-assistedpartial/ABSTAIN; no submittedreview/approval"
+    },
+    "currentCandidateValidation": {
+      "basis": "physicalfb71+exactcommitted3filecandidate",
+      "C67": {
+        "files": 67,
+        "passed": 1118
+      },
+      "expanded": {
+        "files": 76,
+        "passed": 1181,
+        "failed": 4,
+        "failure": "CheckboxGroup AST tokenclosure, same192 and unchanged56inputstool/Checkboxsource"
+      },
+      "notificationFile": {
+        "passed": 103,
+        "formalSameTestSHA256": "9819d01406180b70b93ceba0222cf0096ad1e8399bb970a818574211a1c2912b"
+      },
+      "formalRed": "1fail1normalpass101filtered",
+      "specAuthoring": "PASSvs2b",
+      "specSuite": {
+        "files": 24,
+        "passed": 160,
+        "failed": 1,
+        "failure": "Dropdownnote0evidence-text33;50relevantinputssame2b; no baseline commandrerun"
+      },
+      "types": {
+        "files": 923,
+        "errors": 0,
+        "warnings": 0,
+        "hints": 14
+      }
+    },
+    "canonicalFinal": {
+      "head": "be8a0175cf573058eb61aa1a43ae4fa8fae9b686",
+      "tree": "742400b0a255ac89a62240bd55dab0dca5db4d55",
+      "CI": {
+        "run": 38839992376,
+        "jobs": 22,
+        "success": 12,
+        "failure": 10
+      },
+      "ordinaryBrowser": {
+        "completeShards": [3, 4, 5, 6, 7],
+        "passed": 458,
+        "failed": 53,
+        "skipped": 61,
+        "separateSuiteHookFailures": 1,
+        "incompleteOriginal900sExit124": [1, 2, 8],
+        "all8Total": null
+      },
+      "portal": {
+        "ordinary4restoration": "PASS",
+        "specialty4restoration": "PASS",
+        "ordinary55": "54pass1csszoomfail",
+        "specialty55": "54pass1csszoomfail",
+        "ordinaryShardWhole": "124failure"
+      },
+      "types": {
+        "files": 923,
+        "errors": 0,
+        "warnings": 0,
+        "hints": 14
+      },
+      "package": {
+        "builds": 47,
+        "manifests": 47,
+        "policyTests": 9,
+        "budgets": "4PASS5ADVISORY",
+        "measurementBinding": "samegzip/minifiedsize/minifiedSHAasfb71, actualnewcanonicalLinuxnotnewlocalbuild/no gzipfilebytecomparison"
+      },
+      "Field": "25pass,existingasyncobserverboundaries",
+      "Collapsible": "32pass4Liquidnarrow320.4375>320; separate8diagnosticpass36skip; no original60stimeout",
+      "Forms": "10pass2colorfail597; actual2currentJSONpageErrors/captureErrors=[]; doesnotcrossoriginalcolorGate",
+      "Finf": "18jobs11success7failure",
+      "Liquid": "browser780pass3fail; hover16/16,prominent32/48 plus103unitnotmixed",
+      "sources": "23selectedrawlogs:11maincheckout699293/tree7424 exactbe8,12dedicateddirectbe8; all22mainmetadataheadmatches",
+      "allHeadInventory": "30runs19success11failure;94checks55success39failure;DCOsuccess;Vercelgit/authorize separate",
+      "newIncompleteConditions": [
+        "ContrastbeforeAll30sFAILbeforefirstpageready;46casesNOTRUN,separatesuitefailure",
+        "HomefocusjourneyCIstopchooseControl303 familyoptionbrutalistcount0beforefocus;localoriginalselected1pass4filtered; causeunknown/not assumedFieldorinherited"
+      ]
+    }
+  },
+  "archive": {
+    "path": "records.tar.gz",
+    "sha256": "4ce27fb899ed7771f0d27ff5fe688753c822328fef11e715ee1595e82719cd59",
+    "bytes": 4690049,
+    "members": 646
+  },
+  "inputs": {
+    "rawFiles": 687,
+    "originalPNGs": 42,
+    "allowlistSHA256": "b63a4f5caaef764b6c525ba66f75bea3d5d2f394ebdac9300a8771300c048a55"
+  },
+  "historicalReceiptBoundary": "Field/Collapsible ran beforecommit with physical26fe and stagedtreeac120, unchanged in84ce; historical source-bound reuse tofb71 is explicit; be8 changes FieldRoot and reruns Field/Form. First portalfix ran precommit84+exact421testbytes; finalboth-closefix ran precommit421+exactfb71testbytes.421ordinaryfailure remains historical. Form ran at clean84ce with app-authored callback observation override. CanonicalCI is separate. Originalraw receipts and earlierfailed/pendingstatements retain their observationtime; no historicalraw relabeling."
+}

@@ -1,0 +1,242 @@
+{
+  "schemaVersion": 1,
+  "excludesItself": true,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 12657,
+      "sha256": "326ddd492a6a56c84f18a5807b5db7c0fa02cf0e2d82584ac749859f531f9aa6"
+    },
+    {
+      "path": "images/Collapsible/liquid-glass-react-320-text200-dark-before-text-assertion.png",
+      "bytes": 342067,
+      "sha256": "b3df59682421c508a9a47bbfd21897e77f74e3f1ad8fdcaf3f1bdb6d5645fc1f"
+    },
+    {
+      "path": "images/Collapsible/liquid-glass-react-open.png",
+      "bytes": 132080,
+      "sha256": "848bce7a63bc78ccf2843861bcd3434b8d2975f78b76bf7be2dde830661ea36b"
+    },
+    {
+      "path": "images/Field/26feceeb769e-base-wc-light.png",
+      "bytes": 136689,
+      "sha256": "a9741d33db33949ee17098e0b1e9b610324c87e97c735ff3521bad934d2c25db"
+    },
+    {
+      "path": "images/Field/26feceeb769e-bootstrap-2-3-2-wc-light.png",
+      "bytes": 116615,
+      "sha256": "c470ce13e88d26760ece24911a8dcd583ffccb58d618db7e6fe524c2728135b2"
+    },
+    {
+      "path": "images/Field/26feceeb769e-brutalist-wc-light.png",
+      "bytes": 137719,
+      "sha256": "73ada6437c39be8b790c0821cb15b5bd7e90ade54315954e3a3ef97c46742683"
+    },
+    {
+      "path": "images/Field/26feceeb769e-liquid-glass-react-dark-narrow-200.png",
+      "bytes": 437188,
+      "sha256": "7556b53af108661ebebced9700b133215caa359f922419d17eee42fbdaa69881"
+    },
+    {
+      "path": "images/Field/26feceeb769e-liquid-glass-react-light.png",
+      "bytes": 339872,
+      "sha256": "d582eeb68381e1d88b798028dbce963d1061b9c8ad07b9f1ca8da33ac8f0e843"
+    },
+    {
+      "path": "images/Field/26feceeb769e-shadcn-wc-light.png",
+      "bytes": 116871,
+      "sha256": "7feae4756f6ed8fcb70a31b00f0a1952bcd823b955dbf698d425fc2c6400ae4d"
+    },
+    {
+      "path": "images/Form-brutalist/brutalist-form-behavior-after-reset-submit.png",
+      "bytes": 39067,
+      "sha256": "d252418f1d9df99969846dc02324f434c438dd3479d45754cc06bcfa9441a67c"
+    },
+    {
+      "path": "images/Form-brutalist/brutalist-form-behavior-composite-submit.png",
+      "bytes": 42678,
+      "sha256": "1a79aacd7aa92d751d149dd2d821cbecc4458299c00bb68bb191bb46f70405f9"
+    },
+    {
+      "path": "images/Form-brutalist/brutalist-form-behavior-corrected-submit.png",
+      "bytes": 40419,
+      "sha256": "a2e5e17d25ee74340ac0ee1feeb7126f9ebac98e98a9c29fd2709d34f46eb171"
+    },
+    {
+      "path": "images/Form-brutalist/brutalist-form-behavior-invalid.png",
+      "bytes": 40573,
+      "sha256": "ee1a702840f8d04502c5446f3211ee7e2aca299213bc2ec115211305cd245d3f"
+    },
+    {
+      "path": "images/Form-brutalist/brutalist-form-behavior-reset.png",
+      "bytes": 42288,
+      "sha256": "94d9b5fec6efb1ef6ceb681d1be76e022afdcbb5a1dfc58c299daa4fc65210c3"
+    },
+    {
+      "path": "images/Form-brutalist/brutalist-form-behavior-rest.png",
+      "bytes": 37963,
+      "sha256": "e2c76cb973446b8216ff3483692b91755ccaadebc49c764a0b60a8afb24acd3d"
+    },
+    {
+      "path": "images/Form-brutalist/brutalist-form-final.png",
+      "bytes": 129694,
+      "sha256": "e7bd27b56ab8d0c5176afba6d4a91f2c004e46d83c12b883fb8d1b10721bfcd8"
+    },
+    {
+      "path": "images/Form-shadcn/shadcn-form-behavior-after-reset-submit.png",
+      "bytes": 37440,
+      "sha256": "d86ee9d3a3f840ba97e6709d51dd4ac909f247282593ed3bdb5af0ebc6b4d1d5"
+    },
+    {
+      "path": "images/Form-shadcn/shadcn-form-behavior-composite-submit.png",
+      "bytes": 40416,
+      "sha256": "5001a3d5bb21e5946cef56c9768850142f623d191520d6f4bb53476f9b3a9a33"
+    },
+    {
+      "path": "images/Form-shadcn/shadcn-form-behavior-corrected-submit.png",
+      "bytes": 38438,
+      "sha256": "65317039fc31dd6b9c7bc7547b04da714c249a0115612a5638772cba9a41302c"
+    },
+    {
+      "path": "images/Form-shadcn/shadcn-form-behavior-invalid.png",
+      "bytes": 38545,
+      "sha256": "7f9550a291a053d7908bed47c342edad7788aba79a0daa6248eb5d6ce1863865"
+    },
+    {
+      "path": "images/Form-shadcn/shadcn-form-behavior-reset.png",
+      "bytes": 40191,
+      "sha256": "0ee83eb474b9ff3b40186103ed1436517c5bdbd87ab83f95dc528773b78e75c7"
+    },
+    {
+      "path": "images/Form-shadcn/shadcn-form-behavior-rest.png",
+      "bytes": 36120,
+      "sha256": "b4affdbc8be8ec67ffdc3febea2019c04902861b22bd24c2aed9fc51b9864fa1"
+    },
+    {
+      "path": "images/Form-shadcn/shadcn-form-final.png",
+      "bytes": 123171,
+      "sha256": "ff67acf4c4617837a9cb92c8f2d82e71c2821c43d9679ff51e6fd9632a5b15e6"
+    },
+    {
+      "path": "images/be8-form-context/brutalist-form-behavior-after-reset-submit.png",
+      "bytes": 39067,
+      "sha256": "d252418f1d9df99969846dc02324f434c438dd3479d45754cc06bcfa9441a67c"
+    },
+    {
+      "path": "images/be8-form-context/brutalist-form-behavior-composite-submit.png",
+      "bytes": 42678,
+      "sha256": "1a79aacd7aa92d751d149dd2d821cbecc4458299c00bb68bb191bb46f70405f9"
+    },
+    {
+      "path": "images/be8-form-context/brutalist-form-behavior-corrected-submit.png",
+      "bytes": 40419,
+      "sha256": "a2e5e17d25ee74340ac0ee1feeb7126f9ebac98e98a9c29fd2709d34f46eb171"
+    },
+    {
+      "path": "images/be8-form-context/brutalist-form-behavior-invalid.png",
+      "bytes": 40573,
+      "sha256": "ee1a702840f8d04502c5446f3211ee7e2aca299213bc2ec115211305cd245d3f"
+    },
+    {
+      "path": "images/be8-form-context/brutalist-form-behavior-reset.png",
+      "bytes": 42288,
+      "sha256": "94d9b5fec6efb1ef6ceb681d1be76e022afdcbb5a1dfc58c299daa4fc65210c3"
+    },
+    {
+      "path": "images/be8-form-context/brutalist-form-behavior-rest.png",
+      "bytes": 37963,
+      "sha256": "e2c76cb973446b8216ff3483692b91755ccaadebc49c764a0b60a8afb24acd3d"
+    },
+    {
+      "path": "images/be8-form-context/brutalist-form-final.png",
+      "bytes": 129694,
+      "sha256": "e7bd27b56ab8d0c5176afba6d4a91f2c004e46d83c12b883fb8d1b10721bfcd8"
+    },
+    {
+      "path": "images/be8-form-context/shadcn-form-behavior-after-reset-submit.png",
+      "bytes": 37440,
+      "sha256": "d86ee9d3a3f840ba97e6709d51dd4ac909f247282593ed3bdb5af0ebc6b4d1d5"
+    },
+    {
+      "path": "images/be8-form-context/shadcn-form-behavior-composite-submit.png",
+      "bytes": 40416,
+      "sha256": "5001a3d5bb21e5946cef56c9768850142f623d191520d6f4bb53476f9b3a9a33"
+    },
+    {
+      "path": "images/be8-form-context/shadcn-form-behavior-corrected-submit.png",
+      "bytes": 38438,
+      "sha256": "65317039fc31dd6b9c7bc7547b04da714c249a0115612a5638772cba9a41302c"
+    },
+    {
+      "path": "images/be8-form-context/shadcn-form-behavior-invalid.png",
+      "bytes": 38545,
+      "sha256": "7f9550a291a053d7908bed47c342edad7788aba79a0daa6248eb5d6ce1863865"
+    },
+    {
+      "path": "images/be8-form-context/shadcn-form-behavior-reset.png",
+      "bytes": 40191,
+      "sha256": "0ee83eb474b9ff3b40186103ed1436517c5bdbd87ab83f95dc528773b78e75c7"
+    },
+    {
+      "path": "images/be8-form-context/shadcn-form-behavior-rest.png",
+      "bytes": 36120,
+      "sha256": "b4affdbc8be8ec67ffdc3febea2019c04902861b22bd24c2aed9fc51b9864fa1"
+    },
+    {
+      "path": "images/be8-form-context/shadcn-form-final.png",
+      "bytes": 123171,
+      "sha256": "ff67acf4c4617837a9cb92c8f2d82e71c2821c43d9679ff51e6fd9632a5b15e6"
+    },
+    {
+      "path": "images/be8-native-field/be8a0175cf57-base-wc-dark-narrow-200.png",
+      "bytes": 154411,
+      "sha256": "55ba51e2f32161f0af26032337e88b6eceb61b364021402717d9e2aa89108861"
+    },
+    {
+      "path": "images/be8-native-field/be8a0175cf57-base-wc-light.png",
+      "bytes": 136689,
+      "sha256": "a9741d33db33949ee17098e0b1e9b610324c87e97c735ff3521bad934d2c25db"
+    },
+    {
+      "path": "images/be8-native-field/be8a0175cf57-bootstrap-2-3-2-vue-light.png",
+      "bytes": 116637,
+      "sha256": "21dbe4c6ca23616328d7d1e0770f38b474dc1773413c9a8e444143b29b36322f"
+    },
+    {
+      "path": "images/be8-native-field/be8a0175cf57-brutalist-react-dark-narrow-200.png",
+      "bytes": 142958,
+      "sha256": "4d079848408753bf1352cb3f5949e7c41673e87e651fd85188e6f4f4b148d977"
+    },
+    {
+      "path": "images/be8-native-field/be8a0175cf57-liquid-glass-vue2-light.png",
+      "bytes": 340877,
+      "sha256": "59b183b70bbc001d022d6449e6f6a977dcd040b33e3b21d910d07c1201cfc953"
+    },
+    {
+      "path": "images/be8-native-field/be8a0175cf57-shadcn-react-light.png",
+      "bytes": 116904,
+      "sha256": "55e7e91851dc3aa8fcfdcfa98cc66e16202be1c0146c1b0d44bcdbc9f7720b9c"
+    },
+    {
+      "path": "images.md",
+      "bytes": 15267,
+      "sha256": "dfff3ed35aac33a2ecafad155aa9d96273fecd4607f561fcc437835c6c0bf257"
+    },
+    {
+      "path": "packet.json",
+      "bytes": 12679,
+      "sha256": "dbccc80ab76c3e9a9697c18d4c95877685e0b59acbc5c8d4147b11c642db2fd7"
+    },
+    {
+      "path": "raw-public-map.json",
+      "bytes": 471012,
+      "sha256": "aae3b6d7d50b9c1b65d2d17a0e56662e0582272be6aa8d3026b7207ccce11581"
+    },
+    {
+      "path": "records.tar.gz",
+      "bytes": 4690049,
+      "sha256": "4ce27fb899ed7771f0d27ff5fe688753c822328fef11e715ee1595e82719cd59"
+    }
+  ],
+  "publicationState": "frozen for signed publication; remote verification is a separate receipt"
+}
