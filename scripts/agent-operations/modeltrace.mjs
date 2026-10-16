@@ -761,27 +761,35 @@ export function assertModelTraceInputsOutsideCheckout({
   assert(typeof contextPath === 'string' && contextPath.length > 0, 'context path is required');
   const checkout = fs.realpathSync(checkoutRoot);
   const resolvedInputs = new Map();
+  const inputIdentities = [];
+  const aliasesInput = (resolved, identity) =>
+    resolvedInputs.has(resolved) ||
+    inputIdentities.some((input) => input.dev === identity.dev && input.ino === identity.ino);
   for (const [label, input] of [
     ['record', recordPath],
     ['context', contextPath],
   ]) {
     const resolved = fs.realpathSync(input);
+    const identity = fs.statSync(resolved, { bigint: true });
     const relative = path.relative(checkout, resolved);
     assert(
       relative === '..' || relative.startsWith(`..${path.sep}`) || path.isAbsolute(relative),
       'private ModelTrace record/context inputs must remain outside the checkout and must not alias pre-admission artifacts'
     );
     assert(
-      !resolvedInputs.has(resolved),
+      !aliasesInput(resolved, identity),
       'private ModelTrace record/context inputs must not alias each other or pre-admission artifacts'
     );
     resolvedInputs.set(resolved, label);
+    inputIdentities.push(identity);
   }
   for (const forbidden of forbiddenPaths) {
     if (typeof forbidden !== 'string' || forbidden.length === 0) continue;
     let resolved;
+    let identity;
     try {
       resolved = fs.realpathSync(forbidden);
+      identity = fs.statSync(resolved, { bigint: true });
     } catch (error) {
       // An absent later artifact cannot alias either existing private input.
       // Its owning admission step must still report absence after mode binding.
@@ -789,7 +797,7 @@ export function assertModelTraceInputsOutsideCheckout({
       throw error;
     }
     assert(
-      !resolvedInputs.has(resolved),
+      !aliasesInput(resolved, identity),
       'private ModelTrace record/context inputs must not alias each other or pre-admission artifacts'
     );
   }
