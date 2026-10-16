@@ -6,7 +6,8 @@ export type LifecycleCallbackOrderExpectation =
   | 'repeatable-unmounted-preserves-instance-until-terminal-dispose'
   | 'setup-created-once-mounted-unmounted-per-epoch'
   | 'direct-and-hook-callbacks-run-in-registration-order'
-  | 'failed-created-primary-preserved-acquired-resources-terminally-released';
+  | 'failed-created-primary-preserved-acquired-resources-terminally-released'
+  | 'ordinary-authored-failfast-private-retirement-error-visible';
 
 export type LifecycleTracePoint =
   | 'setup'
@@ -119,6 +120,18 @@ export const LIFECYCLE_CALLBACK_ORDER_CASES = [
     expectation: 'failed-created-primary-preserved-acquired-resources-terminally-released',
     notes: [
       'This fixture records the portable expectation; resource and Delay runtime tests provide executable evidence.',
+    ],
+  },
+  {
+    id: 'ordinary-authored-disposal-failfast',
+    title:
+      'ordinary authored disposal stops after its first failure while private resource retirement completes',
+    specCase: 'T-LIFECYCLE-0001-CASE-ORDINARY-DISPOSAL-FAILFAST',
+    covers: ['C-LIFECYCLE-0002-G', 'C-LIFECYCLE-0002-K'],
+    expectation: 'ordinary-authored-failfast-private-retirement-error-visible',
+    notes: [
+      'This fixture records the portable expectation; resource runtime tests observe the identical sole authored failure, skipped later authors, private retirement, and existing aggregation with a falsy authored value.',
+      'The exhaustive failed-created cleanup governed by J remains a separate path.',
     ],
   },
 ] as const satisfies readonly LifecycleCallbackOrderCase[];
