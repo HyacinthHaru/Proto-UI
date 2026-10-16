@@ -1,0 +1,37 @@
+id: M-MATERIAL-CONTACT-0001
+type: module
+title: Material Contact owns bilateral visual association leases
+status: draft
+since: 0.3.0-alpha.1
+lifecycleRationale: This private experimental module is intentionally absent from the production Runtime assembly. Its fake-host handshake tests do not establish a real input provider or paint sink.
+summary: The module validates declarations and current Anatomy, view, input-registration and session identities before forwarding host-private visual samples.
+criteria:
+  - id: M-MATERIAL-CONTACT-0001-REGISTRY
+    text: A module-owned registry keys finite declarations by family/domain/key/roles without making Anatomy an instance registry. Logical multiplicity remains visible even when an endpoint has no mounted view. Only the currently claimed own role and current part target can qualify.
+  - id: M-MATERIAL-CONTACT-0001-HANDSHAKE
+    text: The receiving material slot, both view epochs, same document and immutable live input registration are revalidated at attachment, sample delivery and deferred isCurrent checks. A read lease exposes no writer or input operations. Unknown or missing capabilities remain diagnostic and inert.
+  - id: M-MATERIAL-CONTACT-0001-CLEANUP
+    text: Retire current identities before disposing resources. Attempt all owned terminal cleanup. Old callbacks, old subscriptions and late held sessions cannot install new paint leases or affect a successor. No Runtime driver or production provider is introduced by the standalone module factory.
+owns:
+  contracts: [C-MATERIAL-CONTACT-0001]
+satisfies:
+  contracts: [C-MATERIAL-CONTACT-0001]
+dependsOn:
+  modules: [M-ANATOMY-0001, M-FEEDBACK-0001]
+requires:
+  hostCaps: [HC-MATERIAL-CONTACT-0001]
+references:
+  tests: [T-MATERIAL-CONTACT-0001]
+sources:
+  - path: packages/modules/material-contact/src/create.ts
+  - path: packages/modules/material-contact/src/registry.ts
+  - path: packages/modules/material-contact/src/validation.ts
+openQuestions:
+  - id: M-MATERIAL-CONTACT-0001-Q-REGISTRATION
+    question: When will the existing Runtime owner admit production module assembly and an actual independently verified provider?
+    blocks: [activation:M-MATERIAL-CONTACT-0001]
+revisions:
+  - version: 0.3.0-alpha.1
+    change: introduced
+    summary: Added the unregistered fake-host association module with no optics support claim.
+tags: [module, material, contact]

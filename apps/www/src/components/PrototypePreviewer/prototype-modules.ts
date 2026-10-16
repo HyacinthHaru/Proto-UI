@@ -461,6 +461,10 @@ const manualPrototypeModules: Record<string, PrototypeModuleLoader> = {
     const mod = await import('@proto.ui/prototypes-bootstrap-2-3-2/separator');
     registerPrototype('bootstrap-2-3-2-separator-root', mod.separatorRoot);
   },
+  'liquid-glass-toggle': async () => {
+    const mod = await import('@proto.ui/prototypes-liquid-glass/toggle');
+    registerPrototype('liquid-glass-toggle', mod.liquidGlassToggle);
+  },
   'liquid-glass-button': async () => {
     const mod = await import('@proto.ui/prototypes-liquid-glass/button');
     registerPrototype('liquid-glass-button', mod.default);
@@ -621,6 +625,10 @@ const manualPrototypeModules: Record<string, PrototypeModuleLoader> = {
   'base-table-cell': async () => {
     const mod = await import('@proto.ui/prototypes-base/table');
     registerPrototype('base-table-cell', mod.tableCell);
+  },
+  'brutalist-input-root': async () => {
+    const mod = await import('@proto.ui/prototypes-brutalist/input');
+    registerPrototype('brutalist-input-root', mod.brutalistInputRoot);
   },
   'brutalist-textarea-root': async () => {
     const mod = await import('@proto.ui/prototypes-brutalist/textarea');

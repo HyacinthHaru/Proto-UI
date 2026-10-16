@@ -1,4 +1,5 @@
 import type {
+  ObservedStateHandle,
   BorrowedStateHandle,
   ExposeEvent,
   ExposeMethod,
@@ -128,8 +129,8 @@ export type FieldControlStates = {
   value: State<string>;
   disabled: State<boolean>;
   readOnly: State<boolean>;
-  focused: State<boolean>;
-  focusVisible: State<boolean>;
+  focused: ObservedStateHandle<boolean, FieldControlProps>;
+  focusVisible: ObservedStateHandle<boolean, FieldControlProps>;
   composing: State<boolean>;
   inputAriaLabel: State<string>;
 };

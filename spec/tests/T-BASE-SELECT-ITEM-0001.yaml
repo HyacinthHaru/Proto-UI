@@ -5,6 +5,10 @@ status: draft
 since: 0.2.0-rc.0
 summary: Covers ordered option metadata, option a11y, active and selected separation, controlled and uncontrolled commits, close policy, and disabled gating.
 cases:
+  - id: T-BASE-SELECT-ITEM-0001-CASE-TRANSIENT-CLEANUP
+    title: Cancellation and view withdrawal clear transient state while preserving semantic owner facts
+    covers: [P-BASE-SELECT-ITEM-TRANSIENT-CLEANUP]
+    expectation: cancellation-and-unmount-clear-hovered-and-pressed-without-activation-or-semantic-state-change
   - id: T-BASE-SELECT-ITEM-0001-CASE-METADATA-FOCUS-ORDER
     title: Disabled focused selection retires to Trigger and enabled repair restores eligibility
     covers: [P-BASE-SELECT-ITEM-METADATA-FOCUS-ORDER]
@@ -35,6 +39,16 @@ cases:
     covers: [P-BASE-SELECT-ITEM-DISABLED]
     expectation: disabled-select-item-never-focuses-selects-or-closes
 implementations:
+  - id: prototypes-base-select-item-transient-cleanup
+    kind: module-test
+    status: passing
+    path: packages/prototypes/base/test/command-cancel-lifetime.test.ts
+    required: true
+    consumesCases: [T-BASE-SELECT-ITEM-0001-CASE-TRANSIENT-CLEANUP]
+    exercises: [P-BASE-SELECT-ITEM]
+    notes:
+      - Real Runtime sessions cover controlled/uncontrolled owner facts, press.cancel, pointer.cancel, native-source blur through the existing Web router, and unmount/remount without prior cancellation.
+      - Happy DOM synthetic native-event-source tests are not browser, visual, assistive-technology, or stable-admission evidence.
   - id: select-item-metadata-synchronous-disposal
     kind: module-test
     status: passing
@@ -80,4 +94,7 @@ revisions:
   - version: 0.2.0-rc.0
     change: introduced
     summary: Added Item collection, a11y, state separation, commit, controlled ownership, close policy, and disabled coverage.
+  - version: 0.3.0-alpha.1
+    change: clarified
+    summary: Map cancellation and uncancelled view-withdrawal regression evidence for Base transient cleanup.
 tags: [prototype, base, select, item, option, selection, test]

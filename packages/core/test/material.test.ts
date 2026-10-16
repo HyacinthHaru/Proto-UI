@@ -92,3 +92,116 @@ it('admits only a finite pointer contact request, never author coordinates or pr
       })
     ).toThrow();
 });
+
+describe('finite liquid-glass style-fill tint', () => {
+  it.each([undefined, 'regular', 'clear'] as const)(
+    'copies an explicit tint with variant %s without adding a default variant',
+    (variant) => {
+      const original = {
+        intent: 'liquid-glass',
+        ...(variant ? { variant } : {}),
+        tint: 'style-fill',
+        deformation: { kind: 'press', phase: 'pressed', contact: 'pointer' },
+      };
+      const snapshot = snapshotMaterialCandidate(original);
+      expect(snapshot).toEqual(original);
+      expect(snapshot).not.toBe(original);
+      expect(Object.isFrozen(snapshot)).toBe(true);
+      expect(snapshot.intent === 'liquid-glass' && Object.isFrozen(snapshot.deformation)).toBe(
+        true
+      );
+      original.tint = 'changed';
+      original.deformation.phase = 'rest';
+      expect(snapshot).toMatchObject({
+        tint: 'style-fill',
+        deformation: { phase: 'pressed' },
+      });
+      expect(Object.hasOwn(snapshot, 'variant')).toBe(variant !== undefined);
+    }
+  );
+
+  it('keeps every untinted fixture byte-for-byte unchanged and tint absent', () => {
+    for (const value of vectors.valid) {
+      const snapshot = snapshotMaterialCandidate(value);
+      expect(JSON.stringify(snapshot)).toBe(JSON.stringify(value));
+      expect(Object.keys(snapshot)).toEqual(Object.keys(value));
+      expect(Object.hasOwn(snapshot, 'tint')).toBe(false);
+    }
+  });
+
+  it.each([
+    undefined,
+    null,
+    false,
+    true,
+    0,
+    NaN,
+    Infinity,
+    'none',
+    'primary',
+    '#0061cc',
+    'rgba(0, 0, 0, 1)',
+    [0, 0, 1, 1],
+    { fill: 'style' },
+    new String('style-fill'),
+    Symbol('style-fill'),
+    () => 'style-fill',
+  ])('rejects a non-finite or non-enumerated tint %s', (tint) => {
+    expect(() => snapshotMaterialCandidate({ intent: 'liquid-glass', tint })).toThrow();
+  });
+
+  it('rejects tint on adaptive-blur and author-supplied capability or profile fields', () => {
+    for (const candidate of [
+      { intent: 'adaptive-blur', tint: 'style-fill' },
+      { intent: 'adaptive-blur', tone: 'system', tint: 'style-fill' },
+      { intent: 'liquid-glass', tint: 'style-fill', styleTintVariants: ['regular'] },
+      { intent: 'liquid-glass', tint: 'style-fill', profile: 'tinted' },
+      { intent: 'liquid-glass', tint: 'style-fill', foreground: [1, 1, 1, 1] },
+      { intent: 'liquid-glass', tint: 'style-fill', alpha: 0.7 },
+    ])
+      expect(() => snapshotMaterialCandidate(candidate)).toThrow();
+  });
+
+  it('accepts a plain null-prototype tint value and rejects inherited or polluted fields', () => {
+    const candidate = Object.assign(Object.create(null), {
+      intent: 'liquid-glass',
+      tint: 'style-fill',
+    });
+    expect(snapshotMaterialCandidate(candidate)).toEqual({
+      intent: 'liquid-glass',
+      tint: 'style-fill',
+    });
+    for (const invalid of [
+      Object.assign(Object.create({ tint: 'style-fill' }), { intent: 'liquid-glass' }),
+      Object.assign(Object.create({ intent: 'liquid-glass' }), { tint: 'style-fill' }),
+      JSON.parse(' {"intent":"liquid-glass","tint":"style-fill","__proto__":{"ready":true}}'),
+      { intent: 'liquid-glass', tint: 'style-fill', [Symbol('field')]: true },
+      Object.defineProperty({ intent: 'liquid-glass' }, 'tint', { value: 'style-fill' }),
+    ])
+      expect(() => snapshotMaterialCandidate(invalid)).toThrow();
+  });
+
+  it('rejects tint accessors without executing author code', () => {
+    let reads = 0;
+    const candidate = {
+      intent: 'liquid-glass',
+      get tint() {
+        reads++;
+        return 'style-fill';
+      },
+    };
+    expect(() => snapshotMaterialCandidate(candidate)).toThrow();
+    expect(reads).toBe(0);
+    expect(() =>
+      snapshotMaterialCandidate(
+        Object.defineProperty({ intent: 'liquid-glass' }, 'tint', {
+          enumerable: true,
+          set(_) {
+            reads++;
+          },
+        })
+      )
+    ).toThrow();
+    expect(reads).toBe(0);
+  });
+});

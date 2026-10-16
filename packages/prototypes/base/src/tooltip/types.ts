@@ -1,4 +1,10 @@
-import type { ExposeEvent, ExposeMethod, ExposeState, State } from '@proto.ui/core';
+import type {
+  ObservedStateHandle,
+  ExposeEvent,
+  ExposeMethod,
+  ExposeState,
+  State,
+} from '@proto.ui/core';
 import type { TransitionExposes, TransitionHandles, TransitionProps } from '../transition/types';
 
 export type TooltipSide = 'top' | 'right' | 'bottom' | 'left';
@@ -47,8 +53,8 @@ export type TooltipTriggerExposes = {
 export type TooltipTriggerStateHandles = {
   disabled: State<boolean>;
   hovered: State<boolean>;
-  focused: State<boolean>;
-  focusVisible: State<boolean>;
+  focused: ObservedStateHandle<boolean, TooltipTriggerProps>;
+  focusVisible: ObservedStateHandle<boolean, TooltipTriggerProps>;
 };
 export type TooltipTriggerAsHookContract = { state: TooltipTriggerStateHandles };
 

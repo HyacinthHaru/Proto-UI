@@ -1,7 +1,7 @@
 import type { NumberFieldInputExposes } from './types';
 import { FIELD_LABEL_PAIR } from '../field/shared';
 import { asFieldControl } from '../field/control-binding.proto';
-import type { State } from '@proto.ui/core';
+import type { ObservedStateHandle, State } from '@proto.ui/core';
 import { defineAsHook, definePrototype, type DefHandle, type RunHandle } from '@proto.ui/core';
 import { asAccessible, asFocusable, asTextControl, asControlLabel } from '@proto.ui/hooks';
 import { declareTextControl } from '@proto.ui/module-text-control';
@@ -172,10 +172,10 @@ export const asNumberFieldInput = defineAsHook<
   {
     state: {
       disabled: State<boolean>;
-      focusVisible: State<boolean>;
+      focusVisible: ObservedStateHandle<boolean, NumberFieldPartProps>;
       value: State<number>;
       readOnly: State<boolean>;
-      focused: State<boolean>;
+      focused: ObservedStateHandle<boolean, NumberFieldPartProps>;
     };
   }
 >({

@@ -164,7 +164,7 @@ describe('Accordion explicit material consumer, without native paint claims', ()
         fallback: { fill: 'style', foreground: 'style' },
       });
       const candidate = (phase: string) => [
-        { intent: 'liquid-glass', deformation: { kind: 'press', phase } },
+        { intent: 'liquid-glass', deformation: { kind: 'press', phase, contact: 'pointer' } },
       ];
       expect(f.frames.at(-1)?.material.candidates).toEqual(candidate('rest'));
       f.target.dispatchEvent(new Event('pointer.down'));
@@ -175,9 +175,9 @@ describe('Accordion explicit material consumer, without native paint claims', ()
       f.target.dispatchEvent(new Event('pointer.down'));
       f.setRoot({ disabled: true });
       expect(f.exposes[3].pressed.get()).toBe(false);
-      expect(f.frames.at(-1)?.material.candidates).toEqual(candidate('rest'));
+      expect(f.frames.at(-1)?.material.candidates).toEqual([]);
       f.target.dispatchEvent(new Event('pointer.down'));
-      expect(f.frames.at(-1)?.material.candidates).toEqual(candidate('rest'));
+      expect(f.frames.at(-1)?.material.candidates).toEqual([]);
       expect(f.frames.every((frame) => frame.material.candidates.length <= 1)).toBe(true);
       expect(
         f.frames.every((frame) =>
@@ -200,7 +200,10 @@ describe('Accordion explicit material consumer, without native paint claims', ()
       expect(f.styles.at(-1)?.tokens).toContain('text-start');
       expect(f.styles.at(-1)?.tokens).toContain('text-foreground');
       expect(f.port.exportMaterialFrame?.().candidates).toEqual([
-        { intent: 'liquid-glass', deformation: { kind: 'press', phase: 'rest' } },
+        {
+          intent: 'liquid-glass',
+          deformation: { kind: 'press', phase: 'rest', contact: 'pointer' },
+        },
       ]);
     } finally {
       await f.dispose();
@@ -218,7 +221,10 @@ describe('Accordion explicit material consumer, without native paint claims', ()
       expect(f.frames.length).toBeGreaterThan(count);
       expect(f.frames.at(-1)!.view).toBeGreaterThan(first);
       expect(f.frames.at(-1)?.material.candidates).toEqual([
-        { intent: 'liquid-glass', deformation: { kind: 'press', phase: 'rest' } },
+        {
+          intent: 'liquid-glass',
+          deformation: { kind: 'press', phase: 'rest', contact: 'pointer' },
+        },
       ]);
     } finally {
       await f.dispose();

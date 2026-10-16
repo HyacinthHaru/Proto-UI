@@ -296,3 +296,144 @@ for (const field of [false, true])
     document.body.replaceChildren();
     await flush();
   });
+
+// T-AXIS-INPUT-DIRECTIONAL-0001-CASE-PREVIEW
+// Scalar families share a preview fact; persistent percentage and ARIA stay truthful.
+for (const family of Object.keys(families))
+  for (const field of [false, true])
+    it(`${family} follows controlled display preview without changing request cadence, field=${field}`, async () => {
+      const f = await fixture(family, field, { value: 25 });
+      const changes: number[] = [],
+        commits: number[] = [],
+        atCommit: number[] = [];
+      f.root.addEventListener('valueChange', (event: CustomEvent) =>
+        changes.push(event.detail.value)
+      );
+      f.root.addEventListener('valueCommit', (event: CustomEvent) => {
+        commits.push(event.detail.value);
+        atCommit.push(f.facts.displayPercentage.get());
+      });
+      f.thumb.dispatchEvent(pointer('pointerdown'));
+      f.track.dispatchEvent(pointer('pointermove', { clientX: 160 }));
+      await flush();
+      expect(f.facts.displayPercentage.get()).toBe(75);
+      expect(f.root.getExposes().displayPercentage.get()).toBe(75);
+      expect(f.facts.value.get()).toBe(25);
+      expect(f.facts.percentage.get()).toBe(25);
+      expect(f.thumb.getAttribute('aria-valuenow')).toBe('25');
+      expect(f.thumb.style.getPropertyValue('--pui-display-percentage')).toBe('75');
+      f.track.dispatchEvent(pointer('pointermove', { clientX: 110 }));
+      f.track.dispatchEvent(pointer('pointerup', { clientX: 110 }));
+      await flush();
+      expect(changes).toEqual([75, 50, 50]);
+      expect(commits).toEqual([25]); // Existing scalar controlled commit semantics.
+      expect(atCommit).toEqual([25]);
+      expect(f.facts.displayPercentage.get()).toBe(25);
+    });
+
+it('scalar Slider clears provisional display on external truth, cancel and policy changes', async () => {
+  const f = await fixture('base', false, { value: 25 });
+  f.thumb.dispatchEvent(pointer('pointerdown'));
+  f.track.dispatchEvent(pointer('pointermove', { clientX: 160 }));
+  expect(f.facts.displayPercentage.get()).toBe(75);
+  setElementProps(f.root, { value: 60 });
+  await flush();
+  expect(f.facts.displayPercentage.get()).toBe(60);
+  f.track.dispatchEvent(pointer('pointermove', { clientX: 110 }));
+  expect(f.facts.displayPercentage.get()).toBe(50);
+  setElementProps(f.root, { value: 60 });
+  await flush();
+  expect(f.facts.displayPercentage.get()).toBe(50); // Same-value render is not a new owner answer.
+  f.track.dispatchEvent(pointer('pointercancel'));
+  await flush();
+  expect(f.facts.displayPercentage.get()).toBe(60);
+  f.thumb.dispatchEvent(pointer('pointerdown'));
+  f.track.dispatchEvent(pointer('pointermove', { clientX: 160 }));
+  setElementProps(f.root, { value: 60, disabled: true });
+  await flush();
+  expect(f.facts.displayPercentage.get()).toBe(60);
+  expect(f.root.getExposes().dragging.get()).toBe(false);
+});
+
+it('scalar Slider preview cannot survive a reentrant refusal that disables the control', async () => {
+  const f = await fixture('base', false, { value: 25 });
+  const commits: number[] = [];
+  f.root.addEventListener('valueChange', () =>
+    setElementProps(f.root, { value: 25, disabled: true })
+  );
+  f.root.addEventListener('valueCommit', (event: CustomEvent) => commits.push(event.detail.value));
+  f.thumb.dispatchEvent(pointer('pointerdown'));
+  f.track.dispatchEvent(pointer('pointermove', { clientX: 160 }));
+  await flush();
+  f.track.dispatchEvent(pointer('pointerup', { clientX: 160 }));
+  expect(f.facts.displayPercentage.get()).toBe(25);
+  expect(f.facts.value.get()).toBe(25);
+  expect(commits).toEqual([]);
+});
+
+it('scalar Slider stops the old request when a display observer cancels synchronously', async () => {
+  const f = await fixture('base', false, { value: 25 });
+  const changes: number[] = [];
+  f.root.addEventListener('valueChange', (event: CustomEvent) => changes.push(event.detail.value));
+  const off = f.root.getExposes().displayPercentage.subscribe((event: any) => {
+    if (event.type === 'next' && event.next === 75) f.root.getExposes().cancelInteraction();
+  });
+  f.thumb.dispatchEvent(pointer('pointerdown'));
+  f.track.dispatchEvent(pointer('pointermove', { clientX: 160 }));
+  await flush();
+  expect(changes).toEqual([]);
+  expect(f.facts.displayPercentage.get()).toBe(25);
+  expect(f.root.getExposes().dragging.get()).toBe(false);
+  off();
+});
+
+for (const action of ['reset', 'commit', 'replace', 'external-truth'])
+  it(`scalar Slider retires a suspended preview request after reentrant ${action}`, async () => {
+    const f = await fixture('base', false, { value: 25 });
+    const ex = f.root.getExposes();
+    const changes: number[] = [],
+      commits: number[] = [];
+    f.root.addEventListener('valueChange', (event: CustomEvent) =>
+      changes.push(event.detail.value)
+    );
+    f.root.addEventListener('valueCommit', (event: CustomEvent) =>
+      commits.push(event.detail.value)
+    );
+    const off = ex.displayPercentage.subscribe((event: any) => {
+      if (event.type !== 'next' || event.next !== 75) return;
+      if (action === 'reset') ex.resetValue();
+      else if (action === 'commit') ex.commitValue();
+      else if (action === 'external-truth') setElementProps(f.root, { value: 60 });
+      else {
+        ex.cancelInteraction();
+        expect(ex.beginInteraction()).toBe(true);
+      }
+    });
+    f.thumb.dispatchEvent(pointer('pointerdown'));
+    f.track.dispatchEvent(pointer('pointermove', { clientX: 160 }));
+    await flush();
+    expect(changes).toEqual(action === 'reset' ? [25] : []);
+    expect(commits).toEqual(action === 'commit' ? [25] : []);
+    expect(ex.displayPercentage.get()).toBe(action === 'external-truth' ? 60 : 25);
+    expect(ex.dragging.get()).toBe(action === 'replace' || action === 'external-truth');
+    off();
+  });
+
+it('scalar controlled Slider preserves Field change reporting after synchronous owner acceptance', async () => {
+  const f = await fixture('base', true, { value: 25 });
+  const owner = f.root.parentElement;
+  setElementProps(owner, { externalValidation: true, validationMode: 'onChange' });
+  await flush();
+  const requests: any[] = [];
+  owner.addEventListener('validationRequest', (event: CustomEvent) => requests.push(event.detail));
+  f.root.addEventListener('valueChange', (event: CustomEvent) =>
+    setElementProps(f.root, { value: event.detail.value })
+  );
+  f.thumb.dispatchEvent(pointer('pointerdown'));
+  f.track.dispatchEvent(pointer('pointermove', { clientX: 160 }));
+  await flush();
+  expect(f.root.getExposes().value.get()).toBe(75);
+  expect(requests).toHaveLength(1);
+  expect(requests[0]).toMatchObject({ value: 75, reason: 'change' });
+  expect(typeof requests[0].requestId).toBe('string');
+});

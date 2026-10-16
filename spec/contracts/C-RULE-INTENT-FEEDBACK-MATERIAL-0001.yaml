@@ -17,12 +17,12 @@ criteria:
       zh-CN: def.feedback.material.declare/use 及其 disposer 均为 setup-only；每实例只允许一个 live slot。静态意图不要求 Button、exposed state 名或后端 model；私有 v1 与共享 v2 不得同时拥有同一 slot。
   - id: C-RULE-INTENT-FEEDBACK-MATERIAL-0001-WHOLE
     text:
-      en: Validate immutable whole candidates even in inactive Rules. Active contributions preserve cardinality, including identical duplicates. Zero candidates retain the slot and fallback; a tombstone removes the slot. A material-only Rule with no style tokens still executes.
-      zh-CN: inactive Rule 的整值 candidate 也必须校验并冻结；active contribution 保留基数，包括相同重复项。零候选保留 slot/fallback；tombstone 移除 slot。没有 style token 的 material-only Rule 仍须执行。
+      en: 'Validate immutable whole candidates even in inactive Rules, including the optional finite liquid-glass tint: style-fill field. Preserve an absent tint as absent, reject invalid or unknown fields, and never merge a tint from a different contribution. Active contributions preserve cardinality, including identical duplicates. Zero candidates retain the slot and fallback; a tombstone removes the slot. A material-only Rule with no style tokens still executes.'
+      zh-CN: 'inactive Rule 的整值 candidate 也必须校验并冻结，包括 liquid-glass 的有限可选 tint: style-fill 字段；缺省 tint 保持缺省，拒绝非法/未知字段，不得从其他 contribution 合并 tint；active contribution 保留基数，包括相同重复项。零候选保留 slot/fallback；tombstone 移除 slot。没有 style token 的 material-only Rule 仍须执行。'
   - id: C-RULE-INTENT-FEEDBACK-MATERIAL-0001-REPLACE
     text:
-      en: Replace one Rule owner's style and material together before projecting. Reentrant reevaluation waits for the current contribution ownership transfer; a retired disposer cannot remove a newer owner or leave an obsolete candidate behind. Detached views receive no host writes, remount replays the current instance intent, and terminal cleanup cannot resurrect it.
-      zh-CN: 一个 Rule owner 的 style/material 在 projection 前共同替换。重入 reevaluation 须等待当前 contribution ownership 转移；退役 disposer 不得移除新 owner 或遗留旧候选。detached view 不写宿主，remount 重放当前实例意图，terminal cleanup 后不得复活。
+      en: Replace one Rule owner's style and material together before projecting, including the style-fill tint request and the governed final style colors it consumes. A state change must not publish a new foreground with an obsolete tinted material contribution. Reentrant reevaluation waits for the current contribution ownership transfer; a retired disposer cannot remove a newer owner or leave an obsolete candidate behind. Detached views receive no host writes, remount replays the current instance intent, and terminal cleanup cannot resurrect it.
+      zh-CN: 一个 Rule owner 的 style/material 在 projection 前共同替换，包括 style-fill tint 请求及其消费的受治理最终 style 配色；状态变化不得将新 foreground 与过期 tinted material contribution 一并发布。重入 reevaluation 须等待当前 contribution ownership 转移；退役 disposer 不得移除新 owner 或遗留旧候选。detached view 不写宿主，remount 重放当前实例意图，terminal cleanup 后不得复活。
   - id: C-RULE-INTENT-FEEDBACK-MATERIAL-0001-LOWERING
     text:
       en: Material-bearing Rules remain evaluator-owned rather than being filtered by style-only optimization. Until complete geometry and paint provenance is available, an instance with a shared material slot retains its style Rules too. Compiler front-end lowering preserves the same portable values and explicit tombstones; it cannot claim backend generation or paint from that IR alone.
@@ -56,6 +56,9 @@ openQuestions:
       - activation:C-RULE-INTENT-FEEDBACK-MATERIAL-0001
       - implementation:T-MATERIAL-VISUAL-RESULT-0001#material-host-atomic-integration
 revisions:
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Included finite optional style-fill tint in immutable whole-value validation and joint style/material replacement without claiming host paint or Compiler realization.
   - version: 0.3.0-alpha.1
     change: introduced
     summary: Defined shared finite material contribution ownership without claiming provider or full Compiler support.

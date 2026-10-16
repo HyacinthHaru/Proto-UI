@@ -38,15 +38,14 @@ const output =
 const revision = execFileSync('git', ['rev-parse', 'HEAD']).toString().trim();
 const tree = execFileSync('git', ['rev-parse', 'HEAD^{tree}']).toString().trim();
 const references = {
-  upstreamCommit: 'c2a67849be260701852b0977ba15eb5f3a0ce2a4',
-  novaCssBlob: '514a3e8e00deac2ef59fee04c57cb10fd277ef39',
-  url: 'https://github.com/shadcn-ui/ui/blob/c2a67849be260701852b0977ba15eb5f3a0ce2a4/apps/v4/registry/styles/style-nova.css',
+  upstreamCommit: '02cad61166c4c20edbc8a3f71bd720eed4c1f49b',
+  url: 'https://github.com/shadcn-ui/ui/blob/02cad61166c4c20edbc8a3f71bd720eed4c1f49b/apps/v4/registry/new-york-v4/ui/dropdown-menu.tsx',
   criteria: [
     'P-SHADCN-DROPDOWN-MENU-ITEM-DESTRUCTIVE-PALETTE',
     'P-SHADCN-DROPDOWN-MENU-LABEL-INSET',
   ],
   limits:
-    'Source-derived Nova tint/inset oracle; pressed is the local same-palette extension. Not a same-state upstream pixel comparison or native/packed acceptance.',
+    'Source-derived fixed New York tint/physical-left inset oracle; pressed is the local same-palette extension. Not a same-state upstream pixel comparison or native/packed acceptance.',
 };
 const writeJson = (name: string, value: unknown) =>
   writeFile(path.join(output, name), JSON.stringify(value, null, 2) + '\n');
@@ -306,11 +305,11 @@ for (const recipe of Object.keys(DROPDOWN_DEMOS) as DropdownRecipe[])
             const inset = await observeDropdownGeometry(ref('more-label'));
             const paste = await observeDropdownGeometry(ref('paste'));
             const rename = await observeDropdownGeometry(ref('rename'));
-            expect(label.paddingLeft).toBeCloseTo(label.rem * 0.375, 3);
+            expect(label.paddingLeft).toBeCloseTo(label.rem * 0.5, 3);
             for (const measured of [inset, paste, rename]) {
-              expect(measured.paddingLeft).toBeCloseTo(measured.rem * 1.75, 3);
+              expect(measured.paddingLeft).toBeCloseTo(measured.rem * 2, 3);
               expect(measured.textX).not.toBeNull();
-              expect(measured.textX! - measured.x).toBeCloseTo(measured.rem * 1.75, 3);
+              expect(measured.textX! - measured.x).toBeCloseTo(measured.rem * 2, 3);
               expect(measured.icon).toBeNull();
             }
             expect(Math.abs(paste.textX! - copy.textX!)).toBeLessThan(0.5);
@@ -331,6 +330,52 @@ for (const recipe of Object.keys(DROPDOWN_DEMOS) as DropdownRecipe[])
               expect(await ref(labelName!).getAttribute('tabindex')).toBeNull();
             }
             await capture('inset', { copy, cut, label, inset, paste, rename }, menu);
+            // Set the consumer author boundary: Starlight's nearer main[dir] overrides html.
+            // Never write direction on the portalled menu or inject its computed-style answer.
+            // The visible demo button updates inset through the normal runtime renderer API.
+            const originalDirection = await previewer.getAttribute('dir');
+            for (const direction of ['ltr', 'rtl'] as const) {
+              await previewer.evaluate(
+                (element, dir) => element.setAttribute('dir', dir),
+                direction
+              );
+              await expect
+                .poll(() => trigger.evaluate((element) => getComputedStyle(element).direction))
+                .toBe(direction);
+              await expect
+                .poll(() => menu.evaluate((element) => getComputedStyle(element).direction))
+                .toBe(direction);
+              for (const [step, enabled] of [true, false, true].entries()) {
+                if (step > 0) {
+                  await page.keyboard.press('Escape');
+                  await expect.poll(() => trigger.getAttribute('aria-expanded')).toBe('false');
+                  await previewer.locator('[data-demo-ref="toggle-inset"]').click();
+                  menu = await openMenu(page, trigger);
+                }
+                const observations = [];
+                for (const name of ['more-label', 'paste', 'rename']) {
+                  await expect
+                    .poll(async () => {
+                      const geometry = await observeDropdownGeometry(ref(name));
+                      return geometry.paddingLeft / geometry.rem;
+                    })
+                    .toBe(enabled ? 2 : 0.5);
+                  const geometry = await observeDropdownGeometry(ref(name));
+                  expect(geometry.paddingRight).toBeCloseTo(geometry.rem * 0.5, 3);
+                  expect(geometry.direction).toBe(direction);
+                  observations.push({ name, ...geometry });
+                }
+                await capture(
+                  `inset-${direction}-${step}-${enabled ? 'on' : 'off'}`,
+                  observations,
+                  menu
+                );
+              }
+            }
+            await previewer.evaluate((element, original) => {
+              if (original === null) element.removeAttribute('dir');
+              else element.setAttribute('dir', original);
+            }, originalDirection);
             stage = 'passive-label-navigation';
             for (const next of ['cut', 'paste', 'rename']) {
               await page.keyboard.press('ArrowDown');

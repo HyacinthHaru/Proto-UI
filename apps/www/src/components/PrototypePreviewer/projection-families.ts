@@ -856,6 +856,12 @@ const BRUTALIST_MANIFEST = {
         },
       },
     },
+    input: {
+      baseFamilyId: 'P-BASE-INPUT',
+      recipeId: 'demo-brutalist-input',
+      recipePrototypeIds: ['brutalist-input-root'],
+      parts: { root: { basePrototypeId: 'P-BASE-INPUT', prototypeId: 'brutalist-input-root' } },
+    },
     textarea: {
       baseFamilyId: 'P-BASE-TEXTAREA',
       recipeId: 'demo-brutalist-textarea',
@@ -1403,6 +1409,54 @@ const LIQUID_GLASS_MANIFEST = {
         },
       },
     },
+    'dropdown-menu': {
+      baseFamilyId: 'P-BASE-DROPDOWN-MENU',
+      recipeId: 'demo-liquid-glass-dropdown-menu',
+      recipePrototypeIds: [
+        'liquid-glass-dropdown-root',
+        'liquid-glass-dropdown-trigger',
+        'liquid-glass-dropdown-content',
+        'liquid-glass-dropdown-item',
+        'liquid-glass-dropdown-group',
+        'liquid-glass-dropdown-label',
+        'liquid-glass-dropdown-separator',
+        'liquid-glass-dropdown-shortcut',
+      ],
+      parts: {
+        root: {
+          basePrototypeId: 'P-BASE-DROPDOWN-MENU',
+          prototypeId: 'liquid-glass-dropdown-root',
+        },
+        trigger: {
+          basePrototypeId: 'P-BASE-DROPDOWN-MENU-TRIGGER',
+          prototypeId: 'liquid-glass-dropdown-trigger',
+        },
+        content: {
+          basePrototypeId: 'P-BASE-DROPDOWN-MENU-CONTENT',
+          prototypeId: 'liquid-glass-dropdown-content',
+        },
+        item: {
+          basePrototypeId: 'P-BASE-DROPDOWN-MENU-ITEM',
+          prototypeId: 'liquid-glass-dropdown-item',
+        },
+        group: {
+          basePrototypeId: 'P-BASE-DROPDOWN-MENU-GROUP',
+          prototypeId: 'liquid-glass-dropdown-group',
+        },
+        label: {
+          basePrototypeId: 'P-BASE-DROPDOWN-MENU-LABEL',
+          prototypeId: 'liquid-glass-dropdown-label',
+        },
+        separator: {
+          basePrototypeId: 'P-BASE-DROPDOWN-MENU-SEPARATOR',
+          prototypeId: 'liquid-glass-dropdown-separator',
+        },
+        shortcut: {
+          basePrototypeId: 'P-BASE-DROPDOWN-MENU-SHORTCUT',
+          prototypeId: 'liquid-glass-dropdown-shortcut',
+        },
+      },
+    },
     label: {
       baseFamilyId: 'P-BASE-LABEL',
       recipeId: 'demo-liquid-glass-label',
@@ -1430,6 +1484,12 @@ const LIQUID_GLASS_MANIFEST = {
       recipeId: 'demo-liquid-glass-button',
       recipePrototypeIds: ['liquid-glass-button'],
       parts: { root: { basePrototypeId: 'P-BASE-BUTTON', prototypeId: 'liquid-glass-button' } },
+    },
+    toggle: {
+      baseFamilyId: 'P-BASE-TOGGLE',
+      recipeId: 'demo-liquid-glass-toggle',
+      recipePrototypeIds: ['liquid-glass-toggle'],
+      parts: { root: { basePrototypeId: 'P-BASE-TOGGLE', prototypeId: 'liquid-glass-toggle' } },
     },
   },
 } as const satisfies ProjectionFamilyManifest;

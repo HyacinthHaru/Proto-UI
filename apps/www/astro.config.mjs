@@ -1189,6 +1189,11 @@ export default defineConfig({
                   slug: 'ui-libraries/liquid-glass/button',
                 },
                 {
+                  label: 'Toggle (Draft)',
+                  translations: { en: 'Toggle (Draft)', 'zh-CN': 'Toggle（草案）' },
+                  slug: 'ui-libraries/liquid-glass/toggle',
+                },
+                {
                   label: 'Label',
                   translations: { en: 'Label', 'zh-CN': 'Label' },
                   slug: 'ui-libraries/liquid-glass/label',
@@ -1398,6 +1403,11 @@ export default defineConfig({
                   translations: { en: 'Skeleton', 'zh-CN': 'Skeleton' },
                   slug: 'ui-libraries/brutalist/components/skeleton',
                   badge: inProgressBadge,
+                },
+                {
+                  label: 'Input',
+                  translations: { en: 'Input', 'zh-CN': 'Input' },
+                  slug: 'ui-libraries/brutalist/components/input',
                 },
                 {
                   label: 'Textarea',

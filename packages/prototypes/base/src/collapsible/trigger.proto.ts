@@ -102,6 +102,7 @@ function setupCollapsibleTrigger(
   });
   def.event.on('pointer.leave', clearTransient);
   def.event.on('pointer.cancel', clearTransient);
+  def.event.on('press.cancel', clearTransient);
 }
 
 export const asCollapsibleTrigger = defineAsHook<

@@ -7,6 +7,7 @@ export const READY_ROUTES = Object.freeze([
   '/en/test/new-projection-families/',
   '/en/test/bootstrap-state-controls/',
   '/en/test/liquid-glass-material/',
+  '/en/test/liquid-glass-portal/',
   '/en/ui-libraries/base/image/',
   '/en/ui-libraries/base/collapsible/',
   '/en/ui-libraries/shadcn/collapsible/',
@@ -52,6 +53,7 @@ export const READY_ROUTES = Object.freeze([
   '/en/ui-libraries/brutalist/components/card/',
   '/en/ui-libraries/brutalist/components/dialog/',
   '/en/ui-libraries/brutalist/components/hover-card/',
+  '/en/ui-libraries/brutalist/components/input/',
   '/en/ui-libraries/brutalist/components/select/',
   '/en/ui-libraries/brutalist/components/separator/',
   '/en/ui-libraries/brutalist/components/skeleton/',
@@ -105,6 +107,7 @@ export const BROWSER_SUITES = Object.freeze([
   'apps/www/src/content/docs/zh-cn/demo-base-input.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-brutalist-button.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-brutalist-controls.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-brutalist-input.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-brutalist-checkbox.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-brutalist-dialog.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-brutalist-remaining.browser.test.ts',
@@ -154,6 +157,7 @@ export const BROWSER_SUITES = Object.freeze([
   'apps/www/src/content/docs/zh-cn/demo-new-projection-families.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-bootstrap-state-controls.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/demo-liquid-glass-material.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-liquid-glass-portal.browser.test.ts',
   'packages/adapters/web-component/test/shadow-closeout.browser.test.ts',
 ]);
 
@@ -161,6 +165,11 @@ export const BROWSER_SUITES = Object.freeze([
 // The historical PRODUCTION_* names include built-site checks and the private
 // Liquid Card candidate fixture, whose own workflow uses an isolated dev server.
 export const PRODUCTION_BROWSER_SUITES = Object.freeze([
+  'apps/www/src/content/docs/zh-cn/demo-liquid-glass-toggle.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-liquid-glass-hover.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-liquid-glass-prominent-tint.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-liquid-tint-stage-diagnostic.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/demo-liquid-visible-refraction-diagnostic.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/finf-drawer-intrinsic.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/finf-drawer-command-density.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/finf-popover-command-density.browser.test.ts',
@@ -168,8 +177,10 @@ export const PRODUCTION_BROWSER_SUITES = Object.freeze([
   'apps/www/src/content/docs/zh-cn/finf-button-ghost-component.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/finf-neo-popover-title.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/finf-popover-title.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/finf-liquid-dropdown.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/finf-dropdown-recipes.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/finf-slider-upstream.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/finf-shadcn-toggle.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/finf-representative-features.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/liquid-elevation-control.browser.test.ts',
   'apps/www/src/content/docs/zh-cn/library-liquid-card-producer.browser.test.ts',
@@ -184,6 +195,16 @@ export const PRODUCTION_BROWSER_SUITES = Object.freeze([
 
 // Each dedicated suite has an executable owner; exclusion is never a skip.
 export const PRODUCTION_BROWSER_OWNERS = Object.freeze({
+  'apps/www/src/content/docs/zh-cn/demo-liquid-glass-toggle.browser.test.ts':
+    '.github/workflows/liquid-material-evidence.yml',
+  'apps/www/src/content/docs/zh-cn/demo-liquid-glass-hover.browser.test.ts':
+    '.github/workflows/liquid-material-evidence.yml',
+  'apps/www/src/content/docs/zh-cn/demo-liquid-glass-prominent-tint.browser.test.ts':
+    '.github/workflows/liquid-material-evidence.yml',
+  'apps/www/src/content/docs/zh-cn/demo-liquid-tint-stage-diagnostic.browser.test.ts':
+    '.github/workflows/liquid-material-evidence.yml',
+  'apps/www/src/content/docs/zh-cn/demo-liquid-visible-refraction-diagnostic.browser.test.ts':
+    '.github/workflows/liquid-material-evidence.yml',
   'apps/www/src/content/docs/zh-cn/finf-button-ghost-component.browser.test.ts':
     '.github/workflows/finf-button-ghost-component-evidence.yml',
   'apps/www/src/content/docs/zh-cn/finf-button-ghost.browser.test.ts':
@@ -198,9 +219,13 @@ export const PRODUCTION_BROWSER_OWNERS = Object.freeze({
     '.github/workflows/finf-representative-features-evidence.yml',
   'apps/www/src/content/docs/zh-cn/finf-popover-title.browser.test.ts':
     '.github/workflows/finf-representative-features-evidence.yml',
+  'apps/www/src/content/docs/zh-cn/finf-liquid-dropdown.browser.test.ts':
+    '.github/workflows/finf-representative-features-evidence.yml',
   'apps/www/src/content/docs/zh-cn/finf-dropdown-recipes.browser.test.ts':
     '.github/workflows/finf-representative-features-evidence.yml',
   'apps/www/src/content/docs/zh-cn/finf-slider-upstream.browser.test.ts':
+    '.github/workflows/finf-representative-features-evidence.yml',
+  'apps/www/src/content/docs/zh-cn/finf-shadcn-toggle.browser.test.ts':
     '.github/workflows/finf-representative-features-evidence.yml',
   'apps/www/src/content/docs/zh-cn/finf-representative-features.browser.test.ts':
     '.github/workflows/finf-representative-features-evidence.yml',

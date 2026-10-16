@@ -34,6 +34,21 @@ afterEach(async () => {
   await flush();
 });
 
+// Use a physically connected host while retaining synchronous fail-fast
+// assertions. The scoped no-op suppresses only happy-dom's automatic reaction;
+// the captured native callback is restored before the test invokes it.
+function connectForFailureAssertion(host: HTMLElement): () => void {
+  const callback = (host as any).connectedCallback;
+  const suppressed = vi.spyOn(host as any, 'connectedCallback').mockImplementation(() => {});
+  try {
+    document.body.append(host);
+  } finally {
+    suppressed.mockRestore();
+  }
+  expect(host.isConnected).toBe(true);
+  return () => callback.call(host);
+}
+
 // D-WEB-COMPONENT-SHADOW-PROFILE-0001 G-J; D-WEB-COMPONENT-SHADOW-STYLE-0001 K/N.
 describe('public WC Shadow split profile', () => {
   // C-RULE-COLOR-SCHEME-0001 C/D/G/K and D-WEB-COMPONENT-SHADOW-STYLE-0001 E/I/K:
@@ -372,9 +387,11 @@ describe('public WC Shadow split profile', () => {
     const C = AdaptToWebComponent(proto, { shadow });
     const host = new C();
     try {
-      expect(() => (host as any).connectedCallback()).toThrow('creation canary');
+      expect(connectForFailureAssertion(host)).toThrow('creation canary');
       expect(host.shadowRoot!.childNodes).toHaveLength(0);
       expect(events).toEqual(['dispose:1']);
+      host.remove();
+      await flush();
       document.body.append(host);
       await flush();
       await vi.advanceTimersByTimeAsync(50);
@@ -557,8 +574,8 @@ describe('public WC Shadow split profile', () => {
         schedule: (task) => task(),
       });
       const el = new C();
-      // Invoke the native callback directly to assert fail-fast errors (DOM CE reactions report them).
-      expect(() => (el as any).connectedCallback()).toThrow(
+      // DOM CE reactions report errors, so invoke the captured callback while connected.
+      expect(connectForFailureAssertion(el)).toThrow(
         failure === 'token' ? /translate-x-2/ : /canary/
       );
       await flush();
@@ -567,6 +584,8 @@ describe('public WC Shadow split profile', () => {
       expect(el.hasAttribute('data-pui-color-scheme')).toBe(false);
       expect(el.hasAttribute('data-pui-split-root-style')).toBe(false);
       fail = false;
+      el.remove();
+      await flush();
       document.body.append(el);
       await flush();
       expect(el.shadowRoot!.querySelector('[part="surface"]')).not.toBeNull();

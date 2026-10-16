@@ -1,0 +1,72 @@
+id: T-MATERIAL-CONTACT-0001
+type: test
+title: Finite material contact declaration and fake-host lifetime evidence
+status: draft
+since: 0.3.0-alpha.1
+lifecycleRationale: Type and fake-host tests are bounded association evidence only. Real input ownership, shared sink integration and dynamic optical output remain unimplemented.
+summary: Covers strict declarations, bilateral scope, exact view/input epochs and fresh-session observation without claiming production optics.
+cases:
+  - id: T-MATERIAL-CONTACT-0001-CASE-TYPES
+    title: Portable declarations have no physical samples or input operations
+    covers: [C-MATERIAL-CONTACT-0001-DECLARATION]
+    expectation: finite-self-or-part-declaration-with-no-target-capture-or-activation
+  - id: T-MATERIAL-CONTACT-0001-CASE-SCOPE
+    title: Bilateral matching rejects wrong, missing and duplicate owners
+    covers:
+      [
+        C-MATERIAL-CONTACT-0001-DECLARATION,
+        C-MATERIAL-CONTACT-0001-SCOPE,
+        C-MATERIAL-CONTACT-0001-NONINTERFERENCE,
+      ]
+    expectation: exact-family-domain-key-role-and-document-no-first-match-no-self-fallback
+  - id: T-MATERIAL-CONTACT-0001-CASE-LIFETIME
+    title: Current registration and fresh-session fences survive replacement and reentrancy
+    covers: [C-MATERIAL-CONTACT-0001-LIFETIME]
+    expectation: stale-epochs-and-held-contact-inert-all-owned-resources-retired
+  - id: T-MATERIAL-CONTACT-0001-CASE-OPTICS
+    title: Actual self, Switch and Slider input and optical composition
+    covers: [C-MATERIAL-CONTACT-0001-OPTICAL-BOUNDARY]
+    expectation: current-placement-real-backdrop-optical-frames-and-safe-lifecycle-with-independent-input-ownership
+implementations:
+  - id: material-contact-public-types
+    kind: fixture
+    status: passing
+    path: packages/core/test/material-contact.types.test.ts
+    required: true
+    consumesCases: [T-MATERIAL-CONTACT-0001-CASE-TYPES]
+    notes:
+      [
+        TypeScript negative expressions are never executed; the workspace type check is required in addition to Vitest.,
+      ]
+  - id: material-contact-module-fakehost
+    kind: module-test
+    status: passing
+    path: packages/modules/material-contact/test/material-contact.test.ts
+    required: true
+    consumesCases: [T-MATERIAL-CONTACT-0001-CASE-SCOPE, T-MATERIAL-CONTACT-0001-CASE-LIFETIME]
+    notes:
+      [
+        Standalone unregistered module with fake views and input streams; no real browser or optical evidence.,
+      ]
+  - id: material-contact-production-optics
+    kind: adapter-test
+    status: planned
+    required: true
+    consumesCases: [T-MATERIAL-CONTACT-0001-CASE-OPTICS]
+verifies:
+  contracts: [C-MATERIAL-CONTACT-0001]
+sources:
+  - path: packages/modules/material-contact/test/material-contact.test.ts
+openQuestions:
+  - id: T-MATERIAL-CONTACT-0001-Q-COMPOSITION
+    question: Which exact-head real-input, optical, native and Compiler evidence closes the planned production case?
+    blocks:
+      [
+        activation:T-MATERIAL-CONTACT-0001,
+        'implementation:T-MATERIAL-CONTACT-0001#material-contact-production-optics',
+      ]
+revisions:
+  - version: 0.3.0-alpha.1
+    change: introduced
+    summary: Separated public type and fake-host association tests from planned actual optical composition.
+tags: [test, material, contact, lifecycle]

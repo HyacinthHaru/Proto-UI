@@ -9,6 +9,7 @@ export function setupSliderPart(def: DefHandle<SliderPartProps>, role: string, f
   def.anatomy.claim(SLIDER_FAMILY, { role });
   const value = def.state.numberDiscrete('value', 0),
     percentage = def.state.numberRange('percentage', 0, { min: 0, max: 100 }),
+    displayPercentage = def.state.numberRange('displayPercentage', 0, { min: 0, max: 100 }),
     disabled = def.state.bool('disabled', false),
     readOnly = def.state.bool('readOnly', false),
     orientation = def.state.string('orientation', 'horizontal'),
@@ -20,6 +21,7 @@ export function setupSliderPart(def: DefHandle<SliderPartProps>, role: string, f
   for (const [key, s] of Object.entries({
     value,
     percentage,
+    displayPercentage,
     disabled,
     readOnly,
     orientation,
@@ -83,6 +85,7 @@ export function setupSliderPart(def: DefHandle<SliderPartProps>, role: string, f
     binding?.setPolicy({ disabled: c.controlDisabled, readOnly: c.controlReadOnly });
     value.set(c.value, 'reason: slider part');
     percentage.set(c.percentage, 'reason: slider part');
+    displayPercentage.set(c.displayPercentage, 'reason: slider Root display preview');
     disabled.set(c.disabled, 'reason: slider policy');
     readOnly.set(c.readOnly, 'reason: slider policy');
     if (c.disabled || c.readOnly) clearPointer('reason: slider input policy', c.disabled);

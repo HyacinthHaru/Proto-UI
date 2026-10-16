@@ -14,6 +14,17 @@ statement:
 
 
 criteria:
+  - id: P-BASE-SWITCH-THUMB-DERIVED-PREVIEW
+    text:
+      en: Thumb may derive percentage and dragging only from Root-provided Switch context under P-BASE-SWITCH-DIRECTIONAL-PREVIEW. These are display state, not checked truth or a new input, focus or accessibility owner. Its geometry may be a uniquely resolved read-only travel target; no listener, capture, coordinate or contact identity is introduced on Thumb. Repeatable Thumb remains valid presentation, while ambiguous travel geometry refuses only the drag enhancement.
+    dependsOn:
+      contracts:
+        - id: C-AXIS-INPUT-DIRECTIONAL-0001
+          since: 0.3.0-alpha.1
+    references:
+      prototypes:
+        - id: P-BASE-SWITCH
+          anchors: [P-BASE-SWITCH-DIRECTIONAL-PREVIEW]
   - id: P-BASE-SWITCH-THUMB-ROLE-INDICATOR
     text:
       zh-CN: Switch Thumb 只能作为 Switch root state 的 visual indicator；它不是 value control，也不是 command control。
@@ -260,7 +271,12 @@ references:
 verifies:
   tests:
     - T-BASE-SWITCH-THUMB-0001
+    - id: T-AXIS-INPUT-DIRECTIONAL-0001
+      since: 0.3.0-alpha.1
 revisions:
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Permit Root-owned provisional display while preserving eventless repeatable indicators.
   - version: 0.1.0
     change: introduced
     summary: Introduced the Base Switch Thumb prototype contract draft as a context-driven, eventless visual indicator part.

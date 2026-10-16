@@ -29,6 +29,8 @@ export type AxisInputConfig = Readonly<{
   readOnly: boolean;
   /** Additional reversal, useful for a vertical value axis increasing upwards. */
   reverse: boolean;
+  /** Draft opt-in recognition. Omitted initially means immediate; partial sync retains. */
+  activation?: 'immediate' | 'directional';
   /** Omitted initial policy preserves start geometry; partial sync keeps the current policy. */
   contactBasis?: 'preserve-start' | 'cancel-on-extent-change';
 }>;
@@ -39,6 +41,8 @@ export type AxisInputBinding = Readonly<{
   inputRole: string;
   /** The same part or its nearest same-family ancestor with this role. */
   geometryRole: string;
+  /** Optional unique same-domain presentation part whose extent is excluded from travel. */
+  travelRole?: string;
 }>;
 
 export type AxisInputHandle<P extends PropsBaseType = PropsBaseType> = Readonly<{
@@ -51,6 +55,8 @@ export type AxisInputHandle<P extends PropsBaseType = PropsBaseType> = Readonly<
 export type AxisInputHostBinding = Readonly<{
   inputTarget: unknown;
   geometryTarget: unknown;
+  /** Host-private presentation geometry; never becomes an input or focus target. */
+  travelTarget?: unknown;
   config: AxisInputConfig;
   onSample(sample: AxisInputSample): void;
 }>;

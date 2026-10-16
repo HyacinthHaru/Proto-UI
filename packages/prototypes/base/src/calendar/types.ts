@@ -1,4 +1,5 @@
 import type {
+  ObservedStateHandle,
   ExposeEvent,
   ExposeMethod,
   ExposeState,
@@ -71,8 +72,8 @@ export type CalendarDayContract = {
     pressed: State<boolean>;
     dateLabel: State<string>;
     current: State<string>;
-    focused: State<boolean>;
-    focusVisible: State<boolean>;
+    focused: ObservedStateHandle<boolean, CalendarDayProps>;
+    focusVisible: ObservedStateHandle<boolean, CalendarDayProps>;
   };
 };
 

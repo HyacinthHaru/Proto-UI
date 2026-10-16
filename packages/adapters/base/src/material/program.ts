@@ -1,4 +1,10 @@
 import { contactFragment } from './contact-profile';
+import {
+  styleTintFragment,
+  styleTintContactFragment,
+  styleTintLightForeground,
+  styleTintEnvelope,
+} from './style-tint-profile';
 import { vertex, fragment, uniformNames } from './liquidgl-kernel.generated';
 import { colorContrast, type OpaqueRgba } from './style';
 import type { CanvasBackdropFrame } from './source';
@@ -18,6 +24,8 @@ export type OpticalFrame = {
   /** Adapter-private, finite contact profile. No author shader uniforms. */
   contact?: { x: number; y: number; deltaX: number; deltaY: number; strength: number };
   variant: 'regular' | 'clear';
+  /** Host-resolved opt-in, never an arbitrary author color or shader parameter. */
+  tint?: 'style-fill';
   fill: OpaqueRgba;
   foreground: OpaqueRgba;
 };
@@ -27,12 +35,18 @@ export function createWebOpticalProgram(
   canvas: HTMLCanvasElement,
   diagnostic: 'zero-refraction' | 'zero-deformation' | 'zero-aberration' | null = null
 ) {
+  type PipelineKey = `${'static' | 'contact'}:${'neutral' | 'style-tint'}`;
+  type Pipeline = {
+    program: WebGLProgram;
+    locations: Record<string, WebGLUniformLocation | null>;
+    attribute: number;
+  };
   let gl: WebGLRenderingContext | null = null,
-    pipeline: WebGLProgram | null = null,
     buffer: WebGLBuffer | null = null;
-  let contactPipeline = false;
-  let textures: WebGLTexture[] = [],
-    locations: Record<string, WebGLUniformLocation | null> = {};
+  // At most four finite first-party profiles share the document's one context.
+  // Switching consumers must not recompile shaders or discard the same source.
+  const pipelines = new Map<PipelineKey, Pipeline>();
+  let textures: WebGLTexture[] = [];
   const metrics = {
     renders: 0,
     programBuilds: 0,
@@ -51,16 +65,19 @@ export function createWebOpticalProgram(
     if (!gl) return;
     for (const texture of textures) gl.deleteTexture(texture);
     if (buffer) gl.deleteBuffer(buffer);
-    if (pipeline) gl.deleteProgram(pipeline);
+    for (const pipeline of pipelines.values()) gl.deleteProgram(pipeline.program);
+    pipelines.clear();
     textures = [];
     buffer = null;
-    pipeline = null;
-    locations = {};
   }
-  function initialize(contact: boolean) {
-    if (pipeline && contactPipeline !== contact) clear();
-    if (pipeline) return;
-    contactPipeline = contact;
+  function initialize(contact: boolean, tinted: boolean): Pipeline {
+    const key: PipelineKey = `${contact ? 'contact' : 'static'}:${tinted ? 'style-tint' : 'neutral'}`;
+    if (gl?.isContextLost()) {
+      clear();
+      throw new Error('webgl-unavailable');
+    }
+    const existing = pipelines.get(key);
+    if (existing) return existing;
     metrics.programBuilds++;
     gl ??= canvas.getContext('webgl', {
       alpha: true,
@@ -71,10 +88,20 @@ export function createWebOpticalProgram(
     if (!gl || gl.isContextLost()) throw new Error('webgl-unavailable');
     const g = gl,
       shaders: WebGLShader[] = [];
+    let program: WebGLProgram | null = null;
     try {
       for (const [kind, code] of [
         [g.VERTEX_SHADER, vertex],
-        [g.FRAGMENT_SHADER, contact ? contactFragment : fragment],
+        [
+          g.FRAGMENT_SHADER,
+          tinted
+            ? contact
+              ? styleTintContactFragment
+              : styleTintFragment
+            : contact
+              ? contactFragment
+              : fragment,
+        ],
       ] as const) {
         const shader = g.createShader(kind);
         if (!shader) throw new Error('shader-allocation');
@@ -83,39 +110,56 @@ export function createWebOpticalProgram(
         g.compileShader(shader);
         if (!g.getShaderParameter(shader, g.COMPILE_STATUS)) throw new Error('shader-compilation');
       }
-      pipeline = g.createProgram();
-      if (!pipeline) throw new Error('program-allocation');
-      for (const shader of shaders) g.attachShader(pipeline, shader);
-      g.linkProgram(pipeline);
-      if (!g.getProgramParameter(pipeline, g.LINK_STATUS)) throw new Error('program-link');
-      g.useProgram(pipeline);
-      locations = Object.fromEntries(
-        [...uniformNames, 'u_contactShape'].map((name) => [
-          name,
-          g.getUniformLocation(pipeline!, name),
-        ])
+      program = g.createProgram();
+      if (!program) throw new Error('program-allocation');
+      for (const shader of shaders) g.attachShader(program, shader);
+      g.linkProgram(program);
+      if (!g.getProgramParameter(program, g.LINK_STATUS)) throw new Error('program-link');
+      const locations = Object.fromEntries(
+        [
+          ...uniformNames,
+          'u_contactShape',
+          ...(tinted ? ['u_styleTintLightForeground', 'u_styleTintLuminanceBound'] : []),
+        ].map((name) => [name, g.getUniformLocation(program!, name)])
       );
-      buffer = g.createBuffer();
-      if (!buffer) throw new Error('buffer-allocation');
-      g.bindBuffer(g.ARRAY_BUFFER, buffer);
-      g.bufferData(g.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), g.STATIC_DRAW);
-      const attribute = g.getAttribLocation(pipeline, 'a_position');
-      if (attribute < 0) throw new Error('position-attribute');
-      g.enableVertexAttribArray(attribute);
-      g.vertexAttribPointer(attribute, 2, g.FLOAT, false, 0, 0);
-      for (let i = 0; i < 3; i++) {
-        const texture = g.createTexture();
-        if (!texture) throw new Error('texture-allocation');
-        textures.push(texture);
-        g.activeTexture(g.TEXTURE0 + i);
-        g.bindTexture(g.TEXTURE_2D, texture);
-        g.texParameteri(g.TEXTURE_2D, g.TEXTURE_MIN_FILTER, g.LINEAR);
-        g.texParameteri(g.TEXTURE_2D, g.TEXTURE_MAG_FILTER, g.LINEAR);
-        g.texParameteri(g.TEXTURE_2D, g.TEXTURE_WRAP_S, g.CLAMP_TO_EDGE);
-        g.texParameteri(g.TEXTURE_2D, g.TEXTURE_WRAP_T, g.CLAMP_TO_EDGE);
-        g.texImage2D(g.TEXTURE_2D, 0, g.RGBA, 1, 1, 0, g.RGBA, g.UNSIGNED_BYTE, new Uint8Array(4));
+      if (!buffer) {
+        buffer = g.createBuffer();
+        if (!buffer) throw new Error('buffer-allocation');
+        g.bindBuffer(g.ARRAY_BUFFER, buffer);
+        g.bufferData(g.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), g.STATIC_DRAW);
       }
+      const attribute = g.getAttribLocation(program, 'a_position');
+      if (attribute < 0) throw new Error('position-attribute');
+      // These texture bindings/source bytes are shared across programs, while
+      // every program keeps its own uniform locations and sampler assignments.
+      if (textures.length === 0)
+        for (let i = 0; i < 3; i++) {
+          const texture = g.createTexture();
+          if (!texture) throw new Error('texture-allocation');
+          textures.push(texture);
+          g.activeTexture(g.TEXTURE0 + i);
+          g.bindTexture(g.TEXTURE_2D, texture);
+          g.texParameteri(g.TEXTURE_2D, g.TEXTURE_MIN_FILTER, g.LINEAR);
+          g.texParameteri(g.TEXTURE_2D, g.TEXTURE_MAG_FILTER, g.LINEAR);
+          g.texParameteri(g.TEXTURE_2D, g.TEXTURE_WRAP_S, g.CLAMP_TO_EDGE);
+          g.texParameteri(g.TEXTURE_2D, g.TEXTURE_WRAP_T, g.CLAMP_TO_EDGE);
+          g.texImage2D(
+            g.TEXTURE_2D,
+            0,
+            g.RGBA,
+            1,
+            1,
+            0,
+            g.RGBA,
+            g.UNSIGNED_BYTE,
+            new Uint8Array(4)
+          );
+        }
+      const pipeline = { program, locations, attribute };
+      pipelines.set(key, pipeline);
+      return pipeline;
     } catch (error) {
+      if (program) g.deleteProgram(program);
       clear();
       throw error;
     } finally {
@@ -134,6 +178,9 @@ export function createWebOpticalProgram(
     render(frame: OpticalFrame): string {
       const started = performance.now();
       const { source, geometry, pressed, variant } = frame;
+      if (frame.tint !== undefined && (frame.tint !== 'style-fill' || variant !== 'regular'))
+        throw new Error('style-tint-profile-unavailable');
+      const tintEnvelope = frame.tint ? styleTintEnvelope(frame.fill, frame.foreground) : null;
       const outset = geometry.paintOutset ?? 0;
       const width = Math.ceil((geometry.width + 2 * outset) * geometry.dpr),
         height = Math.ceil((geometry.height + 2 * outset) * geometry.dpr);
@@ -187,12 +234,16 @@ export function createWebOpticalProgram(
       const strength = contact ? clamp(contact.strength, 0, 1) : pressed ? 1 : 0;
       const blend = (rest: number, held: number) =>
         strength === 1 ? held : rest + (held - rest) * strength;
-      initialize(!!contact);
-      const g = gl!;
+      const pipeline = initialize(!!contact, !!frame.tint),
+        { locations } = pipeline,
+        g = gl!;
       if (canvas.width !== width) canvas.width = width;
       if (canvas.height !== height) canvas.height = height;
       g.viewport(0, 0, width, height);
-      g.useProgram(pipeline);
+      g.useProgram(pipeline.program);
+      g.bindBuffer(g.ARRAY_BUFFER, buffer);
+      g.enableVertexAttribArray(pipeline.attribute);
+      g.vertexAttribPointer(pipeline.attribute, 2, g.FLOAT, false, 0, 0);
       g.activeTexture(g.TEXTURE0);
       g.bindTexture(g.TEXTURE_2D, textures[0]);
       g.pixelStorei(g.UNPACK_ALIGNMENT, 1);
@@ -249,10 +300,16 @@ export function createWebOpticalProgram(
       const dark = frame.foreground[0] + frame.foreground[1] + frame.foreground[2] > 1.5;
       v4(
         'u_tint',
-        dark
-          ? [0.45, 0.45, 0.48, variant === 'clear' ? 0.35 : 0.65]
-          : [1.05, 1.05, 1.06, variant === 'clear' ? 0.15 : 0.45]
+        frame.tint
+          ? [...frame.fill]
+          : dark
+            ? [0.45, 0.45, 0.48, variant === 'clear' ? 0.35 : 0.65]
+            : [1.05, 1.05, 1.06, variant === 'clear' ? 0.15 : 0.45]
       );
+      if (tintEnvelope) {
+        f('u_styleTintLightForeground', tintEnvelope.lightForeground ? 1 : 0);
+        f('u_styleTintLuminanceBound', tintEnvelope.luminanceBound);
+      }
       i('u_stack', 1);
       v4('u_stackMapping', [0, 0, 0, 0]);
       v4('u_stackRegion', [0, 0, 0, 0]);
@@ -281,19 +338,51 @@ export function createWebOpticalProgram(
       g.drawArrays(g.TRIANGLE_STRIP, 0, 4);
       // readPixels is the required synchronization point; a preceding finish
       // needlessly blocks the main thread a second time.
-      if (g.getError() !== g.NO_ERROR || g.isContextLost()) throw new Error('gpu-frame-failed');
+      if (g.getError() !== g.NO_ERROR || g.isContextLost()) {
+        clear();
+        throw new Error('gpu-frame-failed');
+      }
       const pixels = new Uint8Array(width * height * 4);
       g.readPixels(0, 0, width, height, g.RGBA, g.UNSIGNED_BYTE, pixels);
-      if (g.getError() !== g.NO_ERROR) throw new Error('gpu-readback-failed');
-      for (let at = 0; at < pixels.length; at += 4)
-        if (
-          pixels[at + 3] >= 250 &&
-          colorContrast(
-            [pixels[at] / 255, pixels[at + 1] / 255, pixels[at + 2] / 255, 1],
-            frame.foreground
-          ) < 4.5
-        )
-          throw new Error('rendered-contrast-unsafe');
+      if (g.getError() !== g.NO_ERROR || g.isContextLost()) {
+        clear();
+        throw new Error('gpu-readback-failed');
+      }
+      let opaqueSamples = 0;
+      for (let at = 0; at < pixels.length; at += 4) {
+        const alpha = pixels[at + 3];
+        if (alpha === 255) opaqueSamples++;
+        if (tintEnvelope && alpha >= 250) {
+          // The shader writes premultiplied RGB. Near-opaque AA must be safe
+          // after composition, not merely when its raw channels look darker.
+          // Black/white bound every backdrop, including alpha 255. Use the
+          // same worst semantic foreground as the current frame's bound uniform.
+          for (const backdrop of alpha === 255 ? [0] : [0, 1]) {
+            const composite: OpaqueRgba = [
+              pixels[at] / 255 + (1 - alpha / 255) * backdrop,
+              pixels[at + 1] / 255 + (1 - alpha / 255) * backdrop,
+              pixels[at + 2] / 255 + (1 - alpha / 255) * backdrop,
+              1,
+            ];
+            if (
+              composite.slice(0, 3).some((channel) => channel > 1) ||
+              colorContrast(composite, tintEnvelope.worstForeground) < 4.5 ||
+              styleTintLightForeground(composite, tintEnvelope.worstForeground) !==
+                tintEnvelope.lightForeground
+            )
+              throw new Error('rendered-contrast-unsafe');
+          }
+        } else if (alpha >= 250) {
+          if (
+            colorContrast(
+              [pixels[at] / 255, pixels[at + 1] / 255, pixels[at + 2] / 255, 1],
+              frame.foreground
+            ) < 4.5
+          )
+            throw new Error('rendered-contrast-unsafe');
+        }
+      }
+      if (frame.tint && opaqueSamples === 0) throw new Error('rendered-style-tint-empty');
       const encoding = performance.now();
       const result = canvas.toDataURL('image/png');
       metrics.renders++;
@@ -315,18 +404,24 @@ function prefilter(pixels: Uint8Array, width: number, height: number): Uint8Arra
     for (let y = 0; y < height; y++)
       for (let x = 0; x < width; x++) {
         const at = (y * width + x) * 4;
-        for (let channel = 0; channel < 3; channel++) {
-          let sum = 0;
-          for (let k = -3; k <= 3; k++)
-            sum +=
-              input[
-                (Math.max(0, Math.min(height - 1, y + (pass ? k : 0))) * width +
-                  Math.max(0, Math.min(width - 1, x + (pass ? 0 : k)))) *
-                  4 +
-                  channel
-              ] * weights[k + 3];
-          target[at + channel] = Math.round(sum / 64);
+        // All RGB channels sample the same seven pixels. Compute each clamped
+        // offset once, preserving each channel's tap order and per-pass rounding.
+        let red = 0,
+          green = 0,
+          blue = 0;
+        for (let k = -3; k <= 3; k++) {
+          const sample =
+            (Math.max(0, Math.min(height - 1, y + (pass ? k : 0))) * width +
+              Math.max(0, Math.min(width - 1, x + (pass ? 0 : k)))) *
+            4;
+          const weight = weights[k + 3];
+          red += input[sample] * weight;
+          green += input[sample + 1] * weight;
+          blue += input[sample + 2] * weight;
         }
+        target[at] = Math.round(red / 64);
+        target[at + 1] = Math.round(green / 64);
+        target[at + 2] = Math.round(blue / 64);
         target[at + 3] = 255;
       }
   }

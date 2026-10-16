@@ -8,6 +8,12 @@ statement:
   zh-CN: Dropdown Menu Trigger 是 Root 同域中至多一个的 menu-button command。它发布 host-neutral button、expanded、has-popup 与 controls semantics；pointer/Enter/Space 请求 toggle 或 open，ArrowDown 请求打开并进入首项，ArrowUp 请求打开并进入末项。Trigger 只提交 Root request，不持有 Content visibility 或 dismissal policy。
   en: Dropdown Menu Trigger is the optional, at-most-one menu-button command in the Root domain. It publishes host-neutral button, expanded, has-popup, and controls semantics; pointer, Enter, and Space request toggle or open, ArrowDown requests opening at the first item, and ArrowUp requests opening at the last item. Trigger only submits Root requests and owns neither Content visibility nor dismissal policy.
 criteria:
+  - id: P-BASE-DROPDOWN-MENU-TRIGGER-TRANSIENT-CLEANUP
+    text:
+      zh-CN: 'press.cancel、pointer.cancel 与 view unmount 必须清除本 part 的 hovered/pressed；清理不得改变 canonical Root open 或发出 activation/request。逻辑实例 remount 不得重放旧瞬态；pointer.leave 的语义清理不等于取消 Host 持有的 contact。'
+      en: "press.cancel, pointer.cancel and view unmount must clear this part's hovered/pressed without changing canonical Root open or emitting activation/requests. Logical-instance remount must not replay stale transient state; semantic pointer.leave cleanup does not cancel a Host-owned contact."
+    dependsOn:
+      contracts: [C-EVENT-TYPE-0002, C-LIFECYCLE-0008]
   - id: P-BASE-DROPDOWN-MENU-TRIGGER-AUTHORING-ENTRIES
     text:
       zh-CN: '`base-dropdown-trigger` 与 `asDropdownTrigger` 必须是同一 Trigger protocol 的 authoring entries。'
@@ -40,4 +46,7 @@ revisions:
   - version: 0.2.0-rc.0
     change: introduced
     summary: Cataloged Trigger command semantics, accessible popup relations, and keyboard entry requests.
+  - version: 0.3.0-alpha.1
+    change: clarified
+    summary: Clarify draft cancellation and retained-view transient cleanup without changing semantic ownership or Host contact lifetime.
 tags: [prototype, base, dropdown-menu, trigger, a11y, keyboard]

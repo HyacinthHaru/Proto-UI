@@ -1,4 +1,5 @@
 import type {
+  ObservedStateHandle,
   ExposeEvent,
   ExposeMethod,
   ExposeState,
@@ -66,8 +67,8 @@ export type AccordionTriggerAsHookContract = {
     collapseBlocked: State<boolean>;
     hovered: State<boolean>;
     pressed: State<boolean>;
-    focused: State<boolean>;
-    focusVisible: State<boolean>;
+    focused: ObservedStateHandle<boolean, AccordionTriggerProps>;
+    focusVisible: ObservedStateHandle<boolean, AccordionTriggerProps>;
   };
 };
 export interface AccordionContentProps {

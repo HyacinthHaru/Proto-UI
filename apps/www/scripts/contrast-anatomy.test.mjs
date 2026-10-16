@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { transform } from 'esbuild';
 import { PROJECTION_FAMILY_MANIFESTS } from '../src/components/PrototypePreviewer/projection-families.ts';
 import { compileContrastAnatomy, compareContrastAnatomy } from './contrast-anatomy.mjs';
 import { discoverContrastSources } from './contrast-audit-plan.mjs';
@@ -256,14 +258,50 @@ test('extra materialized copies cannot satisfy authored multiplicities', async (
   assert.equal(result.extras.length, 1);
 });
 
-// Raw source-bound native observations from the failing f8894c3c PR run. This
-// reruns only the structural model, not Chromium, paint, or interaction input.
+// Raw source-bound native observations from the failing f8894c3c PR run. Replay
+// their immutable authored recipe/manifest, not today's possibly changed demo.
+// This reruns only the structural model, not Chromium, paint or interaction input.
 const native = JSON.parse(
   readFileSync(new URL('./fixtures/contrast-anatomy-f889-native.json', import.meta.url), 'utf8')
 );
+const recordedSources = JSON.parse(
+  readFileSync(new URL('./fixtures/contrast-anatomy-f889-sources.json', import.meta.url), 'utf8')
+);
+assert.equal(recordedSources.sourceHead, native.sourceHead);
+const recordedModules = new Map();
+async function importRecorded(shard, identity) {
+  const recorded = native.sources
+    .find((source) => source.shard === shard)
+    ?.sources.find((source) => source.identity === identity);
+  assert.ok(recorded, `Missing recorded source binding: ${shard}/${identity}`);
+  let loaded = recordedModules.get(recorded.digest);
+  if (!loaded) {
+    const source = recordedSources.sources[identity];
+    assert.equal(
+      `sha256:${createHash('sha256').update(source.content).digest('hex')}`,
+      recorded.digest,
+      `Captured source differs from native recording: ${identity}`
+    );
+    const { code } = await transform(source.content, {
+      loader: 'ts',
+      format: 'esm',
+      sourcefile: source.path,
+    });
+    loaded = import(`data:text/javascript;base64,${Buffer.from(code).toString('base64')}`);
+    recordedModules.set(recorded.digest, loaded);
+  }
+  return loaded;
+}
+async function loadRecorded(frame) {
+  const [{ default: demo }, { PROJECTION_FAMILY_MANIFESTS: manifests }] = await Promise.all([
+    importRecorded(frame.shard, `recipe-${frame.family}`),
+    importRecorded(frame.shard, 'projection-manifest'),
+  ]);
+  return compileContrastAnatomy(demo, manifests.brutalist.families[frame.family]);
+}
 for (const frame of native.frames)
   test(`replays recorded native anatomy: ${frame.name}`, async () => {
-    const plan = await load(frame.family);
+    const plan = await loadRecorded(frame);
     const observed = { ...frame.observed, surfaces: native.surfaceSets[frame.surfaceSet] };
     const result = compareContrastAnatomy(plan, observed, {
       requirePrimaryOpen: frame.requirePrimaryOpen,
@@ -283,8 +321,8 @@ const retainedContent = (sample) =>
 // structural-model controls, not claims that a browser produced these states.
 for (const family of ['dropdown-menu', 'select', 'dialog', 'tooltip', 'tabs']) {
   test(`${family} retained shell cannot borrow identity, paint, lease, parent or portal ownership`, async () => {
-    const plan = await load(family);
     const frame = retainedFrame(family);
+    const plan = await loadRecorded(frame);
     const mutations = {
       'wrong active ID': (shell) => (shell.id = 'unrelated-active-target'),
       'painted shell': (shell) => {
@@ -319,8 +357,8 @@ for (const family of ['dropdown-menu', 'select', 'dialog', 'tooltip', 'tabs']) {
 
 for (const family of ['dropdown-menu', 'select', 'dialog']) {
   test(`${family} retained shell requires all authored hidden children and cannot replace an open target`, async () => {
-    const plan = await load(family);
     const frame = retainedFrame(family);
+    const plan = await loadRecorded(frame);
     const missing = replay(frame);
     const shell = retainedContent(missing);
     const child = missing.surfaces.find((surface) => surface.parent === shell.uid);
@@ -347,7 +385,7 @@ for (const family of ['dropdown-menu', 'select', 'dialog']) {
 }
 
 test('retained Tooltip shells stay within their exact Root and never satisfy required open capture', async () => {
-  const plan = await load('tooltip');
+  const plan = await loadRecorded(retainedFrame('tooltip'));
   const sample = replay(retainedFrame('tooltip'));
   const shells = sample.surfaces.filter((surface) => surface.prototypeId.endsWith('-content'));
   shells[0].parent = shells[1].parent;
@@ -361,7 +399,7 @@ test('retained Tooltip shells stay within their exact Root and never satisfy req
 });
 
 test('retained inactive Tabs shell cannot satisfy selected or keepMounted view requirements', async () => {
-  const plan = await load('tabs');
+  const plan = await loadRecorded(retainedFrame('tabs'));
   const sample = replay(retainedFrame('tabs'));
   const inactive = sample.surfaces.find((surface) => surface.ariaSelected === 'false');
   inactive.ariaSelected = 'true';
@@ -377,8 +415,8 @@ test('retained inactive Tabs shell cannot satisfy selected or keepMounted view r
 });
 
 test('anonymous in-content Mask cannot bypass closed-shell guards but a portaled leave remains allowed', async () => {
-  const plan = await load('dialog');
   const frame = retainedFrame('dialog');
+  const plan = await loadRecorded(frame);
   for (const kind of ['painted', 'unsupported', 'stale']) {
     const sample = replay(frame);
     const mask = sample.surfaces.find((surface) => surface.prototypeId === 'brutalist-dialog-mask');

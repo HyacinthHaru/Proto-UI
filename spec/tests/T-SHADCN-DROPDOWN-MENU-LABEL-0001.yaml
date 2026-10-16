@@ -11,7 +11,7 @@ cases:
   - id: T-SHADCN-DROPDOWN-MENU-LABEL-0001-CASE-INSET
     title: Inset changes preserve passive label ownership and live Group naming
     covers: [P-SHADCN-DROPDOWN-MENU-LABEL-INSET]
-    expectation: optional-inset-default-false-dynamic-pl7-and-unchanged-base-label-relations
+    expectation: optional-inset-default-false-dynamic-physical-left-pl8-right-pr2-ltr-rtl-and-unchanged-base-label-relations
 implementations:
   - id: www-shadcn-dropdown-label-native-browser
     kind: adapter-test
@@ -21,7 +21,7 @@ implementations:
     consumesCases: [T-SHADCN-DROPDOWN-MENU-LABEL-0001-CASE-INSET]
     exercises: [P-SHADCN-DROPDOWN-MENU-LABEL]
     notes:
-      - Planned exact-head Actions-only journey for the real public demo across WC, React, Vue and Vue 2 in light/dark. Definition and type checks do not establish executed browser paint, native GPUI/Qt, contrast or upstream pixel equivalence.
+      - Planned exact-head Actions-only journey for the real public demo across WC, React, Vue and Vue 2 in light/dark, LTR/RTL and true-false-true inset changes. Definition and type checks do not establish executed browser paint, native GPUI/Qt, contrast or upstream pixel equivalence.
   - id: shadcn-dropdown-label-inset
     kind: module-test
     status: passing

@@ -93,36 +93,147 @@ describe('Liquid Glass Button V2 portable intent, not an optical paint claim', (
     await f.session.dispose();
     expect(f.release).toHaveBeenCalled();
   });
-  it.each([{ material: 'opaque' }, { variant: 'prominent' }])(
-    'keeps deliberate safe presentation for %j',
-    async (props) => {
-      const f = await fixture(props);
-      expect(f.frames.at(-1)?.material.candidates).toEqual([]);
-      expect(f.frames.at(-1)?.style.tokens).toContain(
-        'variant' in props ? 'bg-primary' : 'bg-secondary'
+  // The earlier draft grouped prominent with opaque as zero-candidate choices.
+  // The 2026-10-15 main-command tint revision changes only enabled prominent auto.
+  it('prominent auto supplies exactly one complete style-fill candidate through repeated exits', async () => {
+    const f = await fixture({ variant: 'prominent' });
+    const candidate = (phase: 'rest' | 'pressed') => [
+      {
+        intent: 'liquid-glass',
+        variant: 'regular',
+        tint: 'style-fill',
+        deformation: { kind: 'press', phase, contact: 'pointer' },
+      },
+    ];
+    try {
+      expect(f.frames.at(-1)?.material.candidates).toEqual(candidate('rest'));
+      expect(f.frames.at(-1)?.material.slot?.fallback).toEqual({
+        fill: 'style',
+        foreground: 'style',
+      });
+      expect(f.frames.at(-1)?.style.tokens).toEqual(
+        expect.arrayContaining(['bg-primary', 'text-primary-foreground'])
       );
+      for (const exit of [
+        'pointer.up',
+        'pointer.leave',
+        'pointer.cancel',
+        'press.cancel',
+        'press.commit',
+      ]) {
+        f.root.dispatchEvent(new Event('pointer.enter'));
+        expect(f.frames.at(-1)?.material.candidates).toEqual(candidate('rest'));
+        f.root.dispatchEvent(new Event('pointer.down'));
+        expect(f.frames.at(-1)?.material.candidates).toEqual(candidate('pressed'));
+        f.root.dispatchEvent(new Event(exit));
+        expect(f.frames.at(-1)?.material.candidates).toEqual(candidate('rest'));
+      }
+      expect(f.frames.every((frame) => frame.material.candidates.length <= 1)).toBe(true);
+    } finally {
       await f.session.dispose();
     }
+  });
+  it.each(['regular', 'prominent'] as const)(
+    '%s opaque and disabled preserve zero candidates and the complete same-variant fallback',
+    async (variant) => {
+      const f = await fixture({ variant, material: 'opaque' });
+      const pair =
+        variant === 'prominent'
+          ? ['bg-primary', 'text-primary-foreground']
+          : ['bg-secondary', 'text-secondary-foreground'];
+      try {
+        for (const props of [
+          { variant, material: 'opaque' },
+          { variant, disabled: true },
+        ]) {
+          f.setProps(props);
+          f.root.dispatchEvent(new Event('pointer.down'));
+          expect(f.frames.at(-1)?.material.candidates).toEqual([]);
+          expect(f.frames.at(-1)?.style.tokens).toEqual(expect.arrayContaining(pair));
+        }
+      } finally {
+        await f.session.dispose();
+      }
+    }
   );
-  it('an ordinary Adapter without a provider retains source-owned opaque style', async () => {
-    const f = await fixture({}, false);
-    expect(f.styles.at(-1)?.tokens).toContain('bg-secondary');
-    expect(f.styles.at(-1)?.tokens).toContain('text-secondary-foreground');
-    await f.session.dispose();
-  });
-  it('disabled Base state resets press and remount obtains a fresh visual lease', async () => {
-    const f = await fixture();
-    f.root.dispatchEvent(new Event('pointer.down'));
-    f.setProps({ disabled: true });
-    expect(f.frames.at(-1)?.material.candidates).toHaveLength(0);
-    await f.session.unmount();
-    expect(f.release).toHaveBeenCalledOnce();
-    await f.session.mount();
-    expect(f.frames.at(-1)?.material.candidates).toHaveLength(0);
-    f.setProps({ disabled: false });
-    expect(f.frames.at(-1)?.material.candidates[0]).toMatchObject({
-      deformation: { phase: 'rest', contact: 'pointer' },
+  it('real prop removal restores neutral regular, and material removal restores current-variant auto', async () => {
+    const f = await fixture({ variant: 'prominent', material: 'opaque' });
+    const neutral = (phase: 'rest' | 'pressed') => ({
+      intent: 'liquid-glass',
+      variant: 'regular',
+      deformation: { kind: 'press', phase, contact: 'pointer' },
     });
-    await f.session.dispose();
+    try {
+      expect(f.frames.at(-1)?.material.candidates).toEqual([]);
+      f.setProps({ variant: 'prominent' });
+      expect(f.frames.at(-1)?.material.candidates).toEqual([
+        { ...neutral('rest'), tint: 'style-fill' },
+      ]);
+      f.root.dispatchEvent(new Event('pointer.down'));
+      f.setProps({});
+      expect(f.frames.at(-1)?.material.candidates).toEqual([neutral('pressed')]);
+      expect(f.frames.at(-1)?.style.tokens).toEqual(
+        expect.arrayContaining(['bg-secondary', 'text-secondary-foreground'])
+      );
+      expect(f.frames.at(-1)?.style.tokens).not.toContain('bg-primary');
+      f.setProps({ variant: 'prominent' });
+      expect(f.frames.at(-1)?.material.candidates).toEqual([
+        { ...neutral('pressed'), tint: 'style-fill' },
+      ]);
+      f.root.dispatchEvent(new Event('pointer.up'));
+      f.setProps({ material: 'opaque' });
+      expect(f.frames.at(-1)?.material.candidates).toEqual([]);
+      f.setProps({});
+      expect(f.frames.at(-1)?.material.candidates).toEqual([neutral('rest')]);
+      expect(f.frames.every((frame) => frame.material.candidates.length <= 1)).toBe(true);
+    } finally {
+      await f.session.dispose();
+    }
   });
+  it.each(['regular', 'prominent'] as const)(
+    '%s without a provider retains source-owned complete opaque style',
+    async (variant) => {
+      const f = await fixture({ variant }, false);
+      try {
+        expect(f.styles.at(-1)?.tokens).toEqual(
+          expect.arrayContaining(
+            variant === 'prominent'
+              ? ['bg-primary', 'text-primary-foreground']
+              : ['bg-secondary', 'text-secondary-foreground']
+          )
+        );
+      } finally {
+        await f.session.dispose();
+      }
+    }
+  );
+  it.each(['regular', 'prominent'] as const)(
+    '%s disabled Base state resets press and remount obtains a fresh visual lease',
+    async (variant) => {
+      const f = await fixture({ variant });
+      const rest = {
+        intent: 'liquid-glass',
+        variant: 'regular',
+        ...(variant === 'prominent' ? { tint: 'style-fill' } : {}),
+        deformation: { kind: 'press', phase: 'rest', contact: 'pointer' },
+      };
+      try {
+        f.root.dispatchEvent(new Event('pointer.down'));
+        f.setProps({ variant, disabled: true });
+        expect(f.frames.at(-1)?.material.candidates).toEqual([]);
+        await f.session.unmount();
+        expect(f.release).toHaveBeenCalledOnce();
+        await f.session.mount();
+        expect(f.frames.at(-1)?.material.candidates).toEqual([]);
+        f.setProps({ variant });
+        expect(f.frames.at(-1)?.material.candidates).toEqual([rest]);
+        f.root.dispatchEvent(new Event('pointer.down'));
+        await f.session.unmount();
+        await f.session.mount();
+        expect(f.frames.at(-1)?.material.candidates).toEqual([rest]);
+      } finally {
+        await f.session.dispose();
+      }
+    }
+  );
 });

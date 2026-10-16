@@ -1,5 +1,6 @@
 import type { useOpenState } from '../tools/use-open-state';
 import type {
+  ObservedStateHandle,
   BorrowedStateHandle,
   ExposeEvent,
   ExposeMethod,
@@ -60,8 +61,8 @@ export type AlertDialogTriggerAsHookContract = {
 export type AlertDialogCommandStateHandles = {
   disabled: State<boolean>;
   hovered: State<boolean>;
-  focused: State<boolean>;
-  focusVisible: State<boolean>;
+  focused: ObservedStateHandle<boolean, AlertDialogTriggerProps>;
+  focusVisible: ObservedStateHandle<boolean, AlertDialogTriggerProps>;
   pressed: State<boolean>;
 };
 

@@ -212,6 +212,18 @@ const baseCompound = (
 
 const ALL_COMPONENT_ENTRIES: Record<string, ComponentEntry> = {
   ...FINF_WORKSPACE_COMPONENT_ENTRIES,
+  'liquid-glass-toggle': {
+    ...defineSimple(
+      'liquid-glass-toggle',
+      'Liquid Glass Toggle (workspace source)',
+      '@proto.ui/prototypes-liquid-glass',
+      '@proto.ui/prototypes-liquid-glass/toggle',
+      'liquidGlassToggle',
+      'LiquidGlassToggle',
+      { stylePreset: 'liquid-glass' }
+    ),
+    sourceOnly: true,
+  },
   'base-field': {
     ...defineCompound(
       'base-field',
@@ -817,6 +829,12 @@ const ALL_COMPONENT_ENTRIES: Record<string, ComponentEntry> = {
     'Brutalist Spinner',
     'brutalistSpinnerRoot',
     'BrutalistSpinnerRoot'
+  ),
+  'brutalist-input': brutalist(
+    'brutalist-input',
+    'Brutalist Input',
+    'brutalistInputRoot',
+    'BrutalistInputRoot'
   ),
   'brutalist-textarea': brutalist(
     'brutalist-textarea',

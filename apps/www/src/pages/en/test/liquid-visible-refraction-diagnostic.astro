@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head
+    ><meta charset="utf-8" /><meta name="robots" content="noindex,nofollow" /><title>
+      Test-only visible refraction diagnostics
+    </title></head
+  >
+  <body>
+    <main>
+      <h1>Test-only visible refraction diagnostics</h1><p>
+        Fixed source and scripted renderer frames at DPR 1. Strict warp-off changes only the shader
+        offset. These material-only images are not a recording of component interaction, source
+        admission, preference behavior or accepted product appearance.
+      </p>
+    </main>
+    <script>
+      import { runVisibleRefractionFrame } from '../../../content/docs/zh-cn/liquid-visible-refraction-diagnostic';
+      (window as unknown as { visibleRefractionDiagnostic: unknown }).visibleRefractionDiagnostic =
+        { runVisibleRefractionFrame };
+      document.documentElement.dataset.visibleRefractionReady = 'true';
+    </script>
+  </body>
+</html>

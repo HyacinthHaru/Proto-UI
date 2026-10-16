@@ -1,0 +1,106 @@
+id: T-WEB-PORTAL-DESTINATION-0001
+type: test
+title: Bounded Web application-scene portal destination and material rebind
+status: draft
+since: 0.3.0-alpha.1
+lifecycleRationale: Destination selection and source-level framework wiring do not establish native optical, input, clipping or accessibility admission. Exact-head browser evidence remains required.
+summary: Keep default body behavior while binding renderer-owned overlays to an explicitly registered application scene without granting optical support.
+cases:
+  - id: T-WEB-PORTAL-DESTINATION-0001-CASE-SELECTION
+    title: Nearest bounded scene with actual destination eligibility
+    covers: [HC-OVERLAY-PORTAL-0001-SCENE]
+    expectation: Default body, nested registrations, disconnected and foreign-document targets, cycles, destination outside scene and actual clipping or fixed-coordinate transforms are independently exercised; invalid nearest scene cannot leak to a different one.
+  - id: T-WEB-PORTAL-DESTINATION-0001-CASE-INLINE-SIZE
+    title: Private document-scoped inline-size engine capability
+    covers: [HC-OVERLAY-PORTAL-0001-INLINE-SIZE, HC-OVERLAY-PORTAL-0001-SCENE]
+    expectation: Real geometry controls distinguish viewport-fixed inline-size from layout/transform containing blocks. Controlled unit evidence covers supported, unsupported and inconclusive measurements, cleanup and reentrancy, different documents, changed body/view and bounded lifecycle retry without a MutationObserver loop. Every existing independent guard combined with inline-size remains effective. Capability admission never establishes canvas coverage or optical quality; unchanged original public Dropdown and Toggle journeys remain native acceptance gates.
+  - id: T-WEB-PORTAL-DESTINATION-0001-CASE-LEASE
+    title: Identity-bound registry and committed projection notifications
+    covers: [HC-OVERLAY-PORTAL-0001-BINDING]
+    expectation: Old disposers preserve replacement registrations; reentrant notifications and host reads cannot publish stale generations. Registry changes and actual physical projection commits remain distinct signals.
+  - id: T-WEB-PORTAL-DESTINATION-0001-CASE-ADAPTER
+    title: Native framework projection preserves logical ownership
+    covers:
+      [HC-OVERLAY-PORTAL-0001-A, HC-OVERLAY-PORTAL-0001-BINDING, HC-OVERLAY-PORTAL-0001-CONTAINER]
+    expectation: React createPortal, Vue Teleport and WC/Vue2 owned projection use the bounded destination, preserve author direction and logical instance, and retire or replace view resources without duplicate semantic input. During a live epoch, relevant origin/registry changes suspend material but preserve host parent and focus without physical relocation; close/detach then reopen selects the pending destination. Unrelated scene registration leaves material eligible. External destination removal is outside continuity guarantees and uses existing detach handling.
+  - id: T-WEB-PORTAL-DESTINATION-0001-CASE-MATERIAL
+    title: Missing provider and real projection rebind
+    covers: [HC-OVERLAY-PORTAL-0001-MATERIAL]
+    expectation: First null lookup retains ordinary style; a real binding or provider change can acquire a new sink. Suspension releases the acquiring provider; later frames and provider changes cannot reacquire until the next view epoch. Stale or reentrant completion cannot paint, and no unrelated frame polling is introduced.
+  - id: T-WEB-PORTAL-DESTINATION-0001-CASE-NATIVE
+    title: Real Content optical paint and negative admission boundaries
+    covers: [HC-OVERLAY-PORTAL-0001-MATERIAL]
+    expectation: Exact-head four-runtime Dropdown screenshots and source observations establish committed Content optics only when the genuine visible canvas covers Content plus paintOutset within budgets. Source withdrawal, preferences, foreground obstruction and insufficient coverage retain readable fallback. Source-level tests are not native evidence.
+implementations:
+  - id: web-portal-destination-policy
+    kind: module-test
+    status: needs-review
+    path: packages/adapters/base/test/portal-destination.test.ts
+    required: true
+    consumesCases:
+      [T-WEB-PORTAL-DESTINATION-0001-CASE-SELECTION, T-WEB-PORTAL-DESTINATION-0001-CASE-LEASE]
+  - id: web-portal-inline-size-capability
+    kind: module-test
+    status: needs-review
+    path: packages/adapters/base/test/portal-inline-size.test.ts
+    required: true
+    consumesCases: [T-WEB-PORTAL-DESTINATION-0001-CASE-INLINE-SIZE]
+  - id: web-portal-react-destination
+    kind: runtime-test
+    status: needs-review
+    path: packages/adapters/react/test/portal-destination.integration.test.ts
+    required: true
+    consumesCases: [T-WEB-PORTAL-DESTINATION-0001-CASE-ADAPTER]
+  - id: web-portal-vue-destination
+    kind: runtime-test
+    status: needs-review
+    path: packages/adapters/vue/test/portal-destination.integration.test.ts
+    required: true
+    consumesCases: [T-WEB-PORTAL-DESTINATION-0001-CASE-ADAPTER]
+  - id: web-preview-material-rebind
+    kind: runtime-test
+    status: needs-review
+    path: apps/www/src/components/PrototypePreviewer/preview-material-rebind.test.ts
+    required: true
+    consumesCases: [T-WEB-PORTAL-DESTINATION-0001-CASE-MATERIAL]
+  - id: web-portal-native-content
+    kind: adapter-test
+    status: needs-review
+    path: apps/www/src/content/docs/zh-cn/demo-liquid-glass-portal.browser.test.ts
+    required: true
+    consumesCases:
+      [T-WEB-PORTAL-DESTINATION-0001-CASE-NATIVE, T-WEB-PORTAL-DESTINATION-0001-CASE-INLINE-SIZE]
+  - id: web-portal-react-lifetimes
+    kind: adapter-test
+    status: needs-review
+    path: packages/adapters/react/test/portal-destination-lifetimes.integration.test.ts
+    required: true
+    consumesCases: [T-WEB-PORTAL-DESTINATION-0001-CASE-ADAPTER]
+  - id: web-portal-vue-lifetimes
+    kind: adapter-test
+    status: needs-review
+    path: packages/adapters/vue/test/portal-destination-lifetimes.integration.test.ts
+    required: true
+    consumesCases: [T-WEB-PORTAL-DESTINATION-0001-CASE-ADAPTER]
+  - id: web-portal-vue2-lifetimes
+    kind: adapter-test
+    status: needs-review
+    path: packages/adapters/vue2/test/portal-destination-lifetimes.integration.test.ts
+    required: true
+    consumesCases: [T-WEB-PORTAL-DESTINATION-0001-CASE-ADAPTER]
+  - id: web-portal-wc-lifetimes
+    kind: adapter-test
+    status: needs-review
+    path: packages/adapters/web-component/test/portal-destination-lifetimes.integration.test.ts
+    required: true
+    consumesCases: [T-WEB-PORTAL-DESTINATION-0001-CASE-ADAPTER]
+exercises:
+  contracts: [C-AS-OVERLAY-0001, C-FEEDBACK-MATERIAL-0001]
+sources:
+  - path: packages/adapters/base/src/platform/portal-destination.ts
+  - path: apps/www/src/components/PrototypePreviewer/preview-material-provider.ts
+revisions:
+  - version: 0.3.0-alpha.1
+    change: introduced
+    summary: Define application-scene portal destinations separately from optical admission and the existing Overlay lifecycle.
+tags: [overlay, material, web, draft]

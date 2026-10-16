@@ -1,3 +1,4 @@
+import type { ObservedStateHandle } from '@proto.ui/core';
 import { ExposeEvent, ExposeMethod, ExposeState, FocusRequestOptions, State } from '@proto.ui/core';
 import type { TabsActivationMode, TabsOrientation } from './shared';
 
@@ -75,8 +76,8 @@ export type TabsTriggerExposes = {
 export type TabsTriggerStateHandles = {
   disabled: State<boolean>;
   hovered: State<boolean>;
-  focused: State<boolean>;
-  focusVisible: State<boolean>;
+  focused: ObservedStateHandle<boolean, TabsTriggerProps>;
+  focusVisible: ObservedStateHandle<boolean, TabsTriggerProps>;
   pressed: State<boolean>;
   selected: State<boolean>;
 };

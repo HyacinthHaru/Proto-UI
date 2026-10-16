@@ -527,8 +527,100 @@ describe.sequential('styled Scroll Area corner / actual family geometry', () => 
               rect(vThumb),
               rect(hThumb),
             ]);
-            close(vt.y + vt.height, v.y + v.height - 2);
-            close(ht.x + ht.width, h.x + h.width - 2);
+            try {
+              close(vt.y + vt.height, v.y + v.height - 2);
+              close(ht.x + ht.width, h.x + h.width - 2);
+            } catch (error) {
+              // These are the exact original assertion inputs, not a new layout read.
+              // Any further observation is post-failure and cannot repair acceptance.
+              let diagnosticTimer: ReturnType<typeof setTimeout> | undefined;
+              try {
+                console.error(
+                  '[scroll-corner-minimum-thumb-assertion-failure]',
+                  JSON.stringify({
+                    sourceSha,
+                    family: family.name,
+                    runtime,
+                    nodeTimeOrigin: performance.timeOrigin,
+                    nodeNow: performance.now(),
+                    scope: 'Original assertion rectangles; separate earlier reads, not atomic',
+                    rectangles: {
+                      vertical: v,
+                      horizontal: h,
+                      verticalThumb: vt,
+                      horizontalThumb: ht,
+                    },
+                    expectedTrailingEdges: {
+                      vertical: v.y + v.height - 2,
+                      horizontal: h.x + h.width - 2,
+                    },
+                  })
+                );
+                const afterFailure = await Promise.race([
+                  Promise.all([
+                    viewport.evaluate((el) => ({
+                      scrollTop: el.scrollTop,
+                      scrollLeft: el.scrollLeft,
+                      scrollHeight: el.scrollHeight,
+                      scrollWidth: el.scrollWidth,
+                      clientHeight: el.clientHeight,
+                      clientWidth: el.clientWidth,
+                      connected: el.isConnected,
+                      browserNow: performance.now(),
+                      browserTimeOrigin: performance.timeOrigin,
+                    })),
+                    ...[vThumb, hThumb].map((thumb) =>
+                      thumb.evaluateAll((elements) => {
+                        const element = elements.length === 1 ? (elements[0] as HTMLElement) : null;
+                        const numericStyle = (name: string) => {
+                          const value = Number.parseFloat(
+                            element?.style.getPropertyValue(name) ?? ''
+                          );
+                          return Number.isFinite(value) ? value : null;
+                        };
+                        return {
+                          matches: elements.length,
+                          connected: element?.isConnected ?? null,
+                          offset: numericStyle('--proto-ui-scroll-thumb-offset'),
+                          size: numericStyle('--proto-ui-scroll-thumb-size'),
+                          browserNow: performance.now(),
+                          browserTimeOrigin: performance.timeOrigin,
+                        };
+                      })
+                    ),
+                  ]),
+                  new Promise<never>((_, reject) => {
+                    diagnosticTimer = setTimeout(
+                      () => reject(new Error('Post-failure scroll observation exceeded 1000ms')),
+                      1000
+                    );
+                  }),
+                ]);
+                console.error(
+                  '[scroll-corner-minimum-thumb-after-failure]',
+                  JSON.stringify({
+                    sourceSha,
+                    family: family.name,
+                    runtime,
+                    scope:
+                      'Post-failure only; viewport, vertical thumb, horizontal thumb; not original assertion evidence',
+                    observations: afterFailure,
+                  })
+                );
+              } catch (diagnosticError) {
+                try {
+                  console.error(
+                    '[scroll-corner-diagnostic-unavailable]',
+                    String(diagnosticError).slice(0, 500)
+                  );
+                } catch {
+                  /* Diagnostic logging must not replace the assertion error. */
+                }
+              } finally {
+                clearTimeout(diagnosticTimer);
+              }
+              throw error;
+            }
             await capture('minimum-thumbs-end', await checkCorner());
             await content.evaluate((el, original) => {
               const style = (el as HTMLElement).style;

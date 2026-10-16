@@ -1,3 +1,9 @@
+import {
+  COMMAND_HOVER,
+  COMMAND_PRESS,
+  COMMAND_FOCUS,
+  COMMAND_BLOCKED,
+} from '../interactive-surface';
 import { definePrototype, tw, delay } from '@proto.ui/core';
 import {
   asAccordionTrigger,
@@ -19,11 +25,16 @@ export default definePrototype<AccordionTriggerProps, AccordionTriggerExposes>({
     // underneath the pressed Rule, and no button profile is inferred by name.
     for (const pressed of [false, true]) {
       def.rule({
-        when: (w) => w.state(state.pressed).eq(pressed),
+        when: (w) =>
+          w.all(
+            w.state(state.pressed).eq(pressed),
+            w.state(state.disabled).eq(false),
+            w.state(state.collapseBlocked).eq(false)
+          ),
         intent: (i) =>
           i.feedback.material.use({
             intent: 'liquid-glass',
-            deformation: { kind: 'press', phase: pressed ? 'pressed' : 'rest' },
+            deformation: { kind: 'press', phase: pressed ? 'pressed' : 'rest', contact: 'pointer' },
           }),
       });
     }
@@ -33,25 +44,41 @@ export default definePrototype<AccordionTriggerProps, AccordionTriggerExposes>({
       )
     );
     def.rule({
-      when: (w) => w.state(state.hovered).eq(true),
-      intent: (i) => i.feedback.style.use(tw('bg-secondary')),
+      when: (w) =>
+        w.all(
+          w.state(state.hovered).eq(true),
+          w.state(state.pressed).eq(false),
+          w.state(state.disabled).eq(false),
+          w.state(state.focusVisible).eq(false),
+          w.state(state.collapseBlocked).eq(false)
+        ),
+      intent: (i) => i.feedback.style.use(tw(COMMAND_HOVER)),
     });
     def.rule({
       when: (w) => w.state(state.focusVisible).eq(true),
-      intent: (i) =>
-        i.feedback.style.use(tw('ring-2 ring-ring ring-offset-2 ring-offset-background')),
+      intent: (i) => i.feedback.style.use(tw(COMMAND_FOCUS)),
     });
     def.rule({
-      when: (w) => w.state(state.pressed).eq(true),
-      intent: (i) => i.feedback.style.use(tw('bg-secondary')),
+      when: (w) =>
+        w.all(
+          w.state(state.pressed).eq(true),
+          w.state(state.disabled).eq(false),
+          w.state(state.collapseBlocked).eq(false)
+        ),
+      intent: (i) => i.feedback.style.use(tw(COMMAND_PRESS)),
     });
     def.rule({
       when: (w) => w.state(state.expanded).eq(true),
       intent: (i) => i.feedback.style.use(tw('text-foreground')),
     });
+    // Each unavailable reason independently owns the same quiet physical tokens.
     def.rule({
       when: (w) => w.state(state.disabled).eq(true),
-      intent: (i) => i.feedback.style.use(tw('opacity-50 cursor-not-allowed')),
+      intent: (i) => i.feedback.style.use(tw(COMMAND_BLOCKED)),
+    });
+    def.rule({
+      when: (w) => w.state(state.collapseBlocked).eq(true),
+      intent: (i) => i.feedback.style.use(tw(COMMAND_BLOCKED)),
     });
     let pending: { cancel(): void } | null = null;
     state.expanded.watch((run, event) => {

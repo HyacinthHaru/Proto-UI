@@ -110,6 +110,7 @@ import {
 } from './shadow-split-effects';
 import { createPortalConcealBarrier } from './portal-conceal';
 import {
+  refreshWebComponentPortalProjection,
   abandonWebComponentPortalProjection,
   adoptWebComponentPortalProjections,
   isWebComponentPortaled,
@@ -387,6 +388,10 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
     }
 
     connectedCallback() {
+      // A queued connect reaction can run after an ancestor's reaction has
+      // detached this element. Do not publish a false owner/topology change
+      // or request a terminal reconnect; a real later connection retries.
+      if (!this.isConnected) return;
       if (this._terminalDisposing) {
         this._terminalReconnectRequested = true;
         return;
@@ -1319,6 +1324,10 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
           this._pendingOwnedTokens = null;
           return;
         }
+        // Revoke material at the existing disconnect checkpoint. Removing a
+        // live destination is outside continuity guarantees; do not relocate a
+        // focused subtree or add a second close owner to recover it.
+        refreshWebComponentPortalProjection(this);
         if (this.isConnected) {
           this._pendingOwnedTokens = null;
           return;

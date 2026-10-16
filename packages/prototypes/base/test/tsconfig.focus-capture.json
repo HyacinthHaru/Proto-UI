@@ -1,0 +1,5 @@
+{
+  "extends": "../../../../tsconfig.json",
+  "include": ["focus-capture.types.ts"],
+  "exclude": []
+}

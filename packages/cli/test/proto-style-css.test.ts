@@ -13,6 +13,78 @@ import {
 import { BRUTALIST_STYLE_TOKENS } from '../src/generated/brutalist-style-tokens';
 
 describe('proto style css renderer', () => {
+  it('renders the finite 3px corner token without admitting arbitrary radius CSS', () => {
+    for (const render of [renderProtoStyleTokenCss, renderProtoShadowStyleTokenCss]) {
+      for (const value of [3, 4, 6]) {
+        const css = render([`rounded-[${value}px]`]);
+        expect(css).toContain(`border-radius: ${value}px;`);
+        expect(css).not.toContain('Unsupported Proto UI style tokens');
+      }
+      for (const token of [
+        'rounded-[3.5px]',
+        'rounded-[-3px]',
+        'rounded-[3px;color:red]',
+        'rounded-[var(--radius)]',
+      ]) {
+        const css = render([token]);
+        expect(css).toContain('Unsupported Proto UI style tokens');
+        expect(css).not.toMatch(/(?:^|\n)\s*border-radius:/);
+      }
+    }
+  });
+  it('renders nonnegative finite pixel typography without accepting arbitrary CSS', () => {
+    for (const render of [renderProtoStyleTokenCss, renderProtoShadowStyleTokenCss]) {
+      for (const value of ['0', '0.5', '.5', '14', '20', '17.5']) {
+        const css = render([`text-[${value}px]`, `leading-[${value}px]`]);
+        expect(css).not.toContain('Unsupported Proto UI style tokens');
+        expect(css).toContain(`font-size: ${value}px;`);
+        expect(css).toContain(`line-height: ${value}px;`);
+      }
+      for (const value of [
+        '-1px',
+        '+1px',
+        'NaNpx',
+        'Infinitypx',
+        '1e3px',
+        '1.px',
+        '1..2px',
+        '14PX',
+        '14px;color:red',
+        'var(--size)',
+        'calc(14px)',
+        '14 px',
+        '14px_!important',
+        `${'9'.repeat(400)}px`,
+      ]) {
+        for (const prefix of ['text', 'leading']) {
+          const css = render([`${prefix}-[${value}]`]);
+          expect(css).toContain('Unsupported Proto UI style tokens');
+          expect(css).not.toMatch(/(?:^|\n)\s*(?:font-size|line-height):/);
+        }
+      }
+    }
+  });
+  it('renders literal black rings independently of theme ring in document and Shadow output', () => {
+    for (const render of [renderProtoStyleTokenCss, renderProtoShadowStyleTokenCss]) {
+      const css = render([
+        'ring-2',
+        'ring-black',
+        'data-[focus-visible]:ring-black',
+        'ring-ring',
+        'ring-ring/50',
+      ]);
+      expect(css).not.toContain('Unsupported Proto UI style tokens');
+      expect(css).toContain('--pui-ring-color: #000000;');
+      expect(css).toContain('--pui-ring-color: var(--pui-ring);');
+      expect(css).toContain('var(--pui-ring) 50%, transparent');
+      expect(css).toContain('box-shadow: var(--pui-ring-offset-shadow');
+      for (const unsupported of ['ring-black/50', 'ring-[#000]', 'ring-black;color:red']) {
+        const rejected = render([unsupported]);
+        expect(rejected).toContain('Unsupported Proto UI style tokens');
+        expect(rejected).not.toContain('--pui-ring-color: #000000;');
+      }
+    }
+  });
   it.each([
     ['w-72', 'width: 18rem;'],
     ['text-[1.3125rem]', 'font-size: 1.3125rem;'],

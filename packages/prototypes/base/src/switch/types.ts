@@ -1,9 +1,13 @@
+import type { ObservedStateHandle } from '@proto.ui/core';
 import { ExposeEvent, ExposeMethod, ExposeState, FocusRequestOptions, State } from '@proto.ui/core';
 
 export interface SwitchRootProps {
   checked?: boolean;
   defaultChecked?: boolean;
   disabled?: boolean;
+  /** Draft enhancement; persistent value requests still occur only at release. */
+  draggable?: boolean;
+  direction?: 'ltr' | 'rtl';
 }
 
 export type SwitchRootExposes = {
@@ -13,6 +17,8 @@ export type SwitchRootExposes = {
   focusVisible: ExposeState<boolean>;
   pressed: ExposeState<boolean>;
   checked: ExposeState<boolean>;
+  percentage: ExposeState<number>;
+  dragging: ExposeState<boolean>;
   focusSelf: ExposeMethod<(options?: FocusRequestOptions) => void>;
   checkedChange: ExposeEvent<{ checked: boolean }>;
 };
@@ -20,10 +26,14 @@ export type SwitchRootExposes = {
 export type SwitchRootStateHandles = {
   disabled: State<boolean>;
   hovered: State<boolean>;
-  focused: State<boolean>;
-  focusVisible: State<boolean>;
+  focused: ObservedStateHandle<boolean, SwitchRootProps>;
+  focusVisible: ObservedStateHandle<boolean, SwitchRootProps>;
   pressed: State<boolean>;
   checked: State<boolean>;
+  percentage: State<number>;
+  dragging: State<boolean>;
+  draggable: State<boolean>;
+  direction: State<string>;
 };
 
 export type SwitchRootAsHookContract = {
@@ -37,11 +47,17 @@ export interface SwitchThumbProps {}
 
 export type SwitchThumbExposes = {
   checked: ExposeState<boolean>;
+  percentage: ExposeState<number>;
+  dragging: ExposeState<boolean>;
   isChecked: ExposeMethod<() => boolean | null>;
 };
 
 export type SwitchThumbStateHandles = {
   checked: State<boolean>;
+  percentage: State<number>;
+  dragging: State<boolean>;
+  draggable: State<boolean>;
+  direction: State<string>;
   disabled: State<boolean>;
 };
 

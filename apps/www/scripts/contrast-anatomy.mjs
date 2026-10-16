@@ -4,8 +4,8 @@
 const presence = new Map([
   ['P-BASE-DIALOG-CONTENT', 'expanded'],
   ['P-BASE-DIALOG-MASK', 'expanded-mask'],
-  ['P-BASE-SELECT-CONTENT', 'expanded'],
   ['P-BASE-DROPDOWN-MENU-CONTENT', 'expanded'],
+  ['P-BASE-SELECT-CONTENT', 'expanded'],
   ['P-BASE-TOOLTIP-CONTENT', 'description'],
   ['P-BASE-HOVER-CARD-CONTENT', 'intent'],
   ['P-BASE-TABS-CONTENT', 'selected'],

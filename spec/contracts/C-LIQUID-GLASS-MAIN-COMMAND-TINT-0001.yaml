@@ -1,0 +1,42 @@
+id: C-LIQUID-GLASS-MAIN-COMMAND-TINT-0001
+type: contract
+title: Liquid Glass main commands request selective style-owned tint
+status: draft
+since: 0.3.0-alpha.1
+lifecycleRationale: Bounded Button prominent and Form Submit projection over the existing finite material API. Exact-source four-Web optical evidence, typical-background visual review and stable admission remain open; declared tint is not proof of perceived glass.
+summary: Main actions reuse one regular glass candidate tinted by their final primary style while neutral commands, fallback and sole Base ownership remain intact.
+statement:
+  en: Enabled auto Button prominent and Form Submit request style-fill tint in both rest and pressed complete regular liquid-glass candidates. This deliberately revises the earlier draft solid-prominent exception using the existing material contract. Selective primary-action tint is informed by Apple's Liquid Glass guidance; this independent project treatment does not reproduce native appearance, animation or numeric parameters. Regular Button and Form Reset remain neutral.
+criteria:
+  - id: C-LIQUID-GLASS-MAIN-COMMAND-TINT-0001-CANDIDATE
+    text: At every enabled auto rest/pressed state, Button prominent and Form Submit contribute exactly one complete candidate with intent liquid-glass, variant regular, tint style-fill and existing press deformation/contact pointer. Tint never becomes a second candidate, a partial field merge, a new public prop, an arbitrary color or a second fill/foreground owner. Regular Button and Form Reset preserve their complete untinted candidate. No candidate explicitly assigns an undefined tint.
+  - id: C-LIQUID-GLASS-MAIN-COMMAND-TINT-0001-FALLBACK
+    text: Existing governed primary fill and primary foreground remain the complete same-state opaque fallback for prominent/Submit; regular/Reset retain secondary colors. Disabled and explicit opaque request zero candidates. Missing source/provider/tint support and restrictive or unknown transparency/contrast/forced-colors use the existing fail-closed material policy without neutral substitution or guard changes. Reduced/unknown motion may retain supported static tint. Removing material restores auto; removing Button variant restores neutral regular. No new token, geometry, size or theme value is introduced.
+  - id: C-LIQUID-GLASS-MAIN-COMMAND-TINT-0001-OWNERSHIP
+    text: Base remains the sole input, focus, disabled, activation and cancellation owner. Button invokes asButton once; Submit invokes asFormSubmit once and returns its inherited render without another Button hook. Submit does not acquire selected state, validation policy, pending policy or direct submit/reset calls. Tint persists across hover, press, release and cancellation according to the current variant; it never creates a semantic action. Direct/inherited Form disable, leave, cancel, lost capture, window blur and unmount retain existing Base cleanup and action counts.
+  - id: C-LIQUID-GLASS-MAIN-COMMAND-TINT-0001-EVIDENCE
+    text: Portable evidence records exact complete candidates, raw prop removal, repeated transitions, cancellation, fresh remount, no-provider fallback and unchanged owner/request counts. Native evidence separately requires four Web runtimes and light/dark source-bound neutral/tinted/opaque controls at actual control sizes, text and icon-only accessible names, press/rest recovery and preference exits. Interior content ROI excludes text, icons, edges and shadows; changed source regions must produce corresponding interior changes. Preserve pure-color, unrelated-noise and old-flat controls, foreground contrast and existing source guards. Inconclusive neutral source signal is not a pass. Real screenshots and independent visual review remain required; no API-use or synthetic fixture pass alone resolves flat typical-background appearance.
+dependsOn:
+  contracts:
+    - C-AS-HOOK-0001
+    - C-FEEDBACK-MATERIAL-0001
+    - C-RULE-INTENT-FEEDBACK-MATERIAL-0001
+    - C-PROTOTYPE-STYLE-CLOSURE-0001
+references:
+  tests: [T-LIQUID-GLASS-MAIN-COMMAND-TINT-0001]
+sources:
+  - path: packages/prototypes/liquid-glass/src/button/button.proto.ts
+  - path: packages/prototypes/liquid-glass/src/form/submit.proto.ts
+  - path: packages/prototypes/liquid-glass/src/form/reset.proto.ts
+  - path: internal/contracts/prototype-base/form-completion.v0.md
+  - path: https://developer.apple.com/videos/play/wwdc2025/219/?time=1023
+  - path: https://developer.apple.com/design/human-interface-guidelines/buttons
+openQuestions:
+  - id: C-LIQUID-GLASS-MAIN-COMMAND-TINT-0001-Q-VISUAL
+    question: Which exact-source native captures and independent actual-size visual review establish readable source-linked glass on typical backgrounds for both main commands?
+    blocks: [activation:C-LIQUID-GLASS-MAIN-COMMAND-TINT-0001]
+revisions:
+  - version: 0.3.0-alpha.1
+    change: introduced
+    summary: Define the bounded main-action tint revision before implementation, preserving neutral controls, Base ownership, fallback and independent optical/visual acceptance.
+tags: [liquid-glass, tint, button, form, prototype, draft]

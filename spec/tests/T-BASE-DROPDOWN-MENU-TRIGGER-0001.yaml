@@ -5,6 +5,10 @@ status: draft
 since: 0.2.0-rc.0
 summary: Covers Trigger command state, accessible relationships, disabled behavior, and pointer and keyboard entry requests.
 cases:
+  - id: T-BASE-DROPDOWN-MENU-TRIGGER-0001-CASE-TRANSIENT-CLEANUP
+    title: Cancellation and view withdrawal clear transient state while preserving semantic owner facts
+    covers: [P-BASE-DROPDOWN-MENU-TRIGGER-TRANSIENT-CLEANUP]
+    expectation: cancellation-and-unmount-clear-hovered-and-pressed-without-activation-or-semantic-state-change
   - id: T-BASE-DROPDOWN-MENU-TRIGGER-0001-CASE-COMMAND-A11Y
     title: Trigger is an independent accessible menu-button command
     covers:
@@ -23,6 +27,16 @@ cases:
     covers: [P-BASE-DROPDOWN-MENU-TRIGGER-DISABLED]
     expectation: disabled-dropdown-trigger-never-opens
 implementations:
+  - id: prototypes-base-dropdown-menu-trigger-transient-cleanup
+    kind: module-test
+    status: passing
+    path: packages/prototypes/base/test/command-cancel-lifetime.test.ts
+    required: true
+    consumesCases: [T-BASE-DROPDOWN-MENU-TRIGGER-0001-CASE-TRANSIENT-CLEANUP]
+    exercises: [P-BASE-DROPDOWN-MENU-TRIGGER]
+    notes:
+      - Real Runtime sessions cover controlled/uncontrolled owner facts, press.cancel, pointer.cancel, native-source blur through the existing Web router, and unmount/remount without prior cancellation.
+      - Happy DOM synthetic native-event-source tests are not browser, visual, assistive-technology, or stable-admission evidence.
   - id: prototypes-base-dropdown-trigger-contract
     kind: module-test
     status: passing
@@ -50,4 +64,7 @@ revisions:
   - version: 0.2.0-rc.0
     change: introduced
     summary: Added Trigger command, a11y, keyboard, and disabled coverage.
+  - version: 0.3.0-alpha.1
+    change: clarified
+    summary: Map cancellation and uncancelled view-withdrawal regression evidence for Base transient cleanup.
 tags: [prototype, base, dropdown-menu, trigger, keyboard, test]

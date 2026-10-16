@@ -2,31 +2,31 @@ import { definePrototype, tw } from '@proto.ui/core';
 import { asToggle } from '@proto.ui/prototypes-base/toggle';
 import type { ShadcnToggleExposes, ShadcnToggleProps } from './types';
 
+// shadcn-ui/ui 02cad611, new-york-v4/ui/toggle.tsx.
+// Preserve Base ownership; select-none remains the declared action-surface policy.
 const TOGGLE_BASE_TOKENS = [
-  'group/toggle',
   'inline-flex',
   'items-center',
   'justify-center',
-  'gap-1',
-  'rounded-lg',
+  'gap-2',
+  'rounded-md',
   'text-sm',
   'font-medium',
-  'transition-all',
+  'transition-[color,box-shadow]',
   'outline-none',
-  'border',
   'whitespace-nowrap',
   'select-none',
 ].join(' ');
 
 const VARIANT_TOKENS: Record<NonNullable<ShadcnToggleProps['variant']>, string> = {
-  default: 'border-transparent bg-transparent text-foreground',
-  outline: 'border-input bg-transparent text-foreground',
+  default: 'bg-transparent',
+  outline: 'border border-input bg-transparent shadow-xs',
 };
 
 const SIZE_TOKENS: Record<NonNullable<ShadcnToggleProps['size']>, string> = {
-  default: 'h-8 min-w-8 px-2.5',
-  sm: 'h-7 min-w-7 px-2',
-  lg: 'h-9 min-w-9 px-3',
+  default: 'h-9 min-w-9 px-2',
+  sm: 'h-8 min-w-8 px-1.5',
+  lg: 'h-10 min-w-10 px-2.5',
 };
 
 const toggle = definePrototype<ShadcnToggleProps, ShadcnToggleExposes>({
@@ -79,12 +79,27 @@ const toggle = definePrototype<ShadcnToggleProps, ShadcnToggleExposes>({
     // P-SHADCN-TOGGLE-STATE-DRIVEN-STYLES
     def.rule({
       when: (w) => w.state(active).eq(true),
-      intent: (i) => i.feedback.style.use(tw('bg-muted')),
+      intent: (i) => i.feedback.style.use(tw('bg-accent text-accent-foreground')),
     });
 
     def.rule({
-      when: (w) => w.all(w.state(hovered).eq(true), w.state(active).eq(false)),
-      intent: (i) => i.feedback.style.use(tw('bg-muted text-foreground')),
+      when: (w) =>
+        w.all(
+          w.prop('variant').eq('default'),
+          w.state(hovered).eq(true),
+          w.state(active).eq(false)
+        ),
+      intent: (i) => i.feedback.style.use(tw('bg-muted text-muted-foreground')),
+    });
+
+    def.rule({
+      when: (w) =>
+        w.all(
+          w.prop('variant').eq('outline'),
+          w.state(hovered).eq(true),
+          w.state(active).eq(false)
+        ),
+      intent: (i) => i.feedback.style.use(tw('bg-accent text-accent-foreground')),
     });
 
     def.rule({
@@ -104,7 +119,8 @@ const toggle = definePrototype<ShadcnToggleProps, ShadcnToggleExposes>({
  * The one catalog open question centralizes every upstream difference.
  * P-SHADCN-TOGGLE-AS-CHILD-OMISSION is intentional under D-AS-CHILD-OMISSION-0001;
  * pressed API aliases, native/className forwarding, invalid/SVG selectors, and
- * exact size and visual-token parity remain implementation or review gaps.
+ * native cascade/pixel parity remain review gaps. The size and state recipe
+ * follows New York 02cad611; Base activation/active ownership is unchanged.
  */
 
 export type {

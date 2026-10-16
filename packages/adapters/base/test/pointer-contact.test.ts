@@ -78,15 +78,18 @@ describe('bounded router-owned visual contact; not activation or GPU evidence', 
     f.pointer(event);
     expect(f.contact.current()).toMatchObject({ active: false, reason });
   });
-  it('keeps visual capture cancellation separate from a later native click activation', () => {
+  it.each([
+    ['pointercancel', 'cancel'],
+    ['lostpointercapture', 'lostcapture'],
+  ] as const)('keeps visual %s separate from a later native click activation', (event, reason) => {
     const f = fixture();
     const commit = vi.fn();
     f.router.rootTarget.addEventListener('press.commit', commit);
     f.pointer('pointerdown');
     f.pointer('gotpointercapture');
-    f.pointer('lostpointercapture');
+    f.pointer(event);
     const cancelled = f.contact.current();
-    expect(cancelled).toMatchObject({ active: false, reason: 'lostcapture' });
+    expect(cancelled).toMatchObject({ active: false, reason });
     expect(commit).not.toHaveBeenCalled();
     f.pointer('pointerup');
     expect(commit).not.toHaveBeenCalled();

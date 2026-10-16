@@ -15,7 +15,12 @@ import {
   stopServer,
 } from './browser-harness';
 import { revealHeaderPreferences } from './site-header-browser';
-import { collectCollapsibleFocusFailure } from './collapsible-focus-observation';
+import {
+  collectCollapsibleFocusFailure,
+  collectCollapsibleFocusSample,
+  collectCollapsibleViewConnections,
+} from './collapsible-focus-observation';
+import { probeCollapsibleFocusPaths } from './collapsible-focus-path-probe';
 
 const FAMILIES = ['shadcn', 'brutalist', 'bootstrap-2-3-2', 'liquid-glass'] as const;
 const route = (family: string, language = 'en') =>
@@ -72,11 +77,67 @@ async function expanded(button: Locator, value: boolean): Promise<void> {
 }
 
 async function focused(button: Locator): Promise<void> {
+  // Read one strict current match without locator handle acquisition/layout reads.
+  // Keep observing an evaluation still pending
+  // when expect.poll expires. Post-timeout focus is not a prior successful sample.
+  const startedAt = performance.now();
+  const route = button.page().url();
+  const maxRecordedSamples = 32;
+  const samples: Array<{
+    index: number;
+    startedMs: number;
+    settledMs?: number;
+    result?: boolean;
+    browser?: unknown;
+    error?: string;
+  }> = [];
+  let failed = false;
   try {
     await expect
-      .poll(() => button.evaluate((element) => document.activeElement === element))
+      .poll(async () => {
+        // Vitest may retry a pending callback even after its outer timeout.
+        // Keep that original behavior, but never extend this diagnostic's
+        // lifetime or storage. Only pre-timeout samples can settle late below.
+        if (failed || samples.length >= maxRecordedSamples)
+          return (await button.evaluateAll(collectCollapsibleFocusSample)).focused;
+        const sample: (typeof samples)[number] = {
+          index: samples.length,
+          startedMs: performance.now() - startedAt,
+        };
+        samples.push(sample);
+        try {
+          const observation = await button.evaluateAll(collectCollapsibleFocusSample);
+          sample.result = observation.focused;
+          sample.browser = observation;
+          return observation.focused;
+        } catch (sampleError) {
+          sample.error = String(sampleError);
+          throw sampleError;
+        } finally {
+          sample.settledMs = performance.now() - startedAt;
+          if (failed)
+            console.error(
+              '[collapsible-focus-poll-late-settlement]',
+              JSON.stringify({ route, nodeStartedAt: startedAt, sample })
+            );
+        }
+      })
       .toBe(true);
   } catch (error) {
+    failed = true;
+    console.error(
+      '[collapsible-focus-poll-timeout]',
+      JSON.stringify({
+        route,
+        nodeTimeOrigin: performance.timeOrigin,
+        nodeStartedAt: startedAt,
+        failedMs: performance.now() - startedAt,
+        maxRecordedSamples,
+        sampleLimitReached: samples.length === maxRecordedSamples,
+        error: String(error),
+        samples,
+      })
+    );
     let timer: ReturnType<typeof setTimeout> | undefined;
     try {
       const facts = await Promise.race([
@@ -260,6 +321,40 @@ afterAll(async () => {
   await stopServer();
 }, 60_000);
 
+// Runs only in a separate post-failure workflow step, never as an acceptance replacement.
+if (process.env.PROTO_UI_COLLAPSIBLE_FOCUS_PATH_DIAGNOSTIC === '1') {
+  describe.sequential('Collapsible independent focus-path diagnostic', () => {
+    for (const runtime of RUNTIMES) {
+      for (const order of ['AB', 'BA'] as const) {
+        it(`${runtime} ${order} uses a fresh context`, async () => {
+          const directory = process.env.PROTO_UI_COLLAPSIBLE_SCREENSHOT_DIR;
+          if (!directory) throw new Error('Source-bound diagnostic output directory is required');
+          await probeCollapsibleFocusPaths({
+            browser,
+            url: `${baseUrl}${route('liquid-glass')}`,
+            directory: path.join(directory, 'diagnostics'),
+            sourceSha: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
+            runtime,
+            order,
+            async prepare(page) {
+              const previewer = page.locator('[data-previewer-id]').first();
+              await trackInput(previewer);
+              await selectCollapsibleRuntime(page, previewer, 'liquid-glass', runtime);
+              return trigger(disclosure(previewer, 'uncontrolled'));
+            },
+            async verifyExpanded(page, button) {
+              const root = disclosure(page.locator('[data-previewer-id]').first(), 'uncontrolled');
+              await expanded(button, true);
+              await expect.poll(() => content(root).isVisible()).toBe(true);
+              await controls(root);
+            },
+          });
+        }, 100_000);
+      }
+    }
+  });
+}
+
 // T-COLLAPSIBLE-PROJECTIONS-0001: native activation, relationship, L1, retention,
 // disabled, controlled ownership, domain isolation and terminal view cleanup.
 // SDK/simulated-DOM evidence cannot establish these Chromium surface facts.
@@ -268,11 +363,35 @@ for (const family of FAMILIES) {
   describe.sequential(`${family} Collapsible public browser evidence`, () => {
     for (const runtime of RUNTIMES) {
       it(`${runtime} preserves disclosure ownership through native input and view lifetimes`, async () => {
+        const caseStartedAt = performance.now();
+        // Node-only diagnostic. "done" records callback progress, not Vitest
+        // acceptance: timed-out async work can settle after the next case starts.
+        const tailStage = (stage: string, phase: 'start' | 'done') => {
+          if (family !== 'liquid-glass') return;
+          const nodeNow = performance.now();
+          console.error(
+            '[collapsible-tail-stage]',
+            JSON.stringify({
+              family,
+              runtime,
+              caseStartedAt,
+              stage,
+              phase,
+              nodeNow,
+              nodeTimeOrigin: performance.timeOrigin,
+              elapsedMs: nodeNow - caseStartedAt,
+            })
+          );
+        };
+        tailStage('case-body', 'start');
+        tailStage('open-route', 'start');
         const { context, page, previewer } = await openRoute(browser, baseUrl, ROUTE, {
           width: 1280,
           height: 900,
         });
+        tailStage('open-route', 'done');
         try {
+          tailStage('native-journey', 'start');
           await trackInput(previewer);
           await selectCollapsibleRuntime(page, previewer, family, runtime);
           const uncontrolled = disclosure(previewer, 'uncontrolled');
@@ -366,20 +485,36 @@ for (const family of FAMILIES) {
           await focused(accept);
           await expanded(button, false);
           await expanded(trigger(retained), false);
+          tailStage('native-journey', 'done');
+          tailStage('controlled-capture', 'start');
           await capture(previewer, `${family}-${runtime}-controlled-accepted`);
+          tailStage('controlled-capture', 'done');
 
           // Changing the actual renderer terminally removes the old host views.
           // Host IDs may be reused by new owners; disconnection, not ID spelling,
           // proves the old physical views no longer belong to the live surface.
+          tailStage('old-views', 'start');
           const oldViews = await previewer.locator('.host [data-pui-root]').elementHandles();
+          tailStage('old-views', 'done');
           const nextRuntime = RUNTIMES[(RUNTIMES.indexOf(runtime) + 1) % RUNTIMES.length]!;
+          tailStage('runtime-switch', 'start');
           await selectCollapsibleRuntime(page, previewer, family, nextRuntime);
-          for (const view of oldViews)
-            expect(await view.evaluate((element) => element.isConnected)).toBe(false);
+          tailStage('runtime-switch', 'done');
+          tailStage('old-view-disconnection', 'start');
+          const oldConnections = await page.evaluate(collectCollapsibleViewConnections, oldViews);
+          expect(oldConnections).toEqual(oldViews.map(() => false));
+          tailStage('old-view-disconnection', 'done');
+          tailStage('final-expanded-uncontrolled', 'start');
           await expanded(trigger(disclosure(previewer, 'uncontrolled')), false);
+          tailStage('final-expanded-uncontrolled', 'done');
+          tailStage('final-expanded-controlled', 'start');
           await expanded(trigger(disclosure(previewer, 'controlled')), false);
+          tailStage('final-expanded-controlled', 'done');
+          tailStage('case-body', 'done');
         } finally {
+          tailStage('context-close', 'start');
           await context.close();
+          tailStage('context-close', 'done');
         }
       }, 60_000);
     }

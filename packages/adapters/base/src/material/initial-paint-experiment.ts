@@ -465,6 +465,10 @@ async function prepareReservedInitialPaint(
           optical.source === source &&
           !optical.pressed &&
           !optical.contact &&
+          !optical.tint &&
+          !visual.material.candidates.some(
+            (candidate) => candidate.intent === 'liquid-glass' && candidate.tint !== undefined
+          ) &&
           same(geometry, receipt.geometry) &&
           optical.variant === receipt.variant &&
           same(optical.fill, receipt.fill) &&

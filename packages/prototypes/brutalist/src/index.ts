@@ -255,3 +255,6 @@ export * from './virtual-list';
 export * from './date-picker';
 
 export * from './data-table';
+
+export { default as inputRoot, default as brutalistInputRoot } from './input';
+export type { BrutalistInputRootProps, BrutalistInputRootExposes } from './input';

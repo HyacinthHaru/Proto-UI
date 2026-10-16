@@ -44,12 +44,15 @@ describe('liquid-glass Button draft projection', () => {
   it('inherits Base once and restores defaults after prop removal', async () => {
     const { controller, invokeUnmounted } = mount({ variant: 'prominent' });
     expect(button.name).toBe('liquid-glass-button');
-    expect((button as any).__asHooks).toContainEqual(
-      expect.objectContaining({ name: 'as-button', mode: 'once' })
-    );
+    expect((button as any).__asHooks.filter((hook: any) => hook.name === 'as-button')).toEqual([
+      expect.objectContaining({ name: 'as-button', mode: 'once' }),
+    ]);
     expect(controller.getRuleStyleTokens()).toContain('bg-primary');
+    expect(controller.getRuleStyleTokens()).toContain('text-primary-foreground');
     controller.applyRawProps({});
     expect(controller.getRuleStyleTokens()).toContain('bg-secondary');
+    expect(controller.getRuleStyleTokens()).toContain('text-secondary-foreground');
+    expect(controller.getRuleStyleTokens()).not.toContain('bg-primary');
     await invokeUnmounted();
   });
   it('derives press, focus and disabled feedback from Base state', async () => {
@@ -63,7 +66,8 @@ describe('liquid-glass Button draft projection', () => {
     root.dispatchEvent(new CustomEvent('host:focus'));
     expect(controller.getRuleStyleTokens()).toContain('ring-2');
     controller.applyRawProps({ disabled: true });
-    expect(controller.getRuleStyleTokens()).toContain('opacity-50');
+    expect(controller.getRuleStyleTokens()).not.toContain('opacity-50');
+    expect(controller.getRuleStyleTokens()).toContain('shadow-none');
     expect(controller.getRuleStyleTokens()).toContain('pointer-events-none');
     controller.applyRawProps({});
     expect(controller.getRuleStyleTokens()).not.toContain('opacity-50');

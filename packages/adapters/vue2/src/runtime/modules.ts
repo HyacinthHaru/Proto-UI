@@ -1,3 +1,12 @@
+import {
+  beginWebPortalMaterialEpoch,
+  getWebPortalDestinationGeneration,
+  resolveWebPortalDestinationBinding,
+  subscribeWebPortalDestinations,
+  notifyWebPortalProjection,
+  type WebPortalDestinationBinding,
+  type WebPortalMaterialEpoch,
+} from '@proto.ui/adapter-base';
 import { createWebPresencePresentationSink } from '@proto.ui/adapter-base';
 import {
   PRESENCE_PRESENTATION_SINK_CAP,
@@ -162,54 +171,136 @@ type Vue2OwnerModulesArgs<Props extends PropsBaseType> = {
   overlayLayerScheduler?: OverlayLayerScheduler;
 };
 
+const portalDestinationRefreshers = new WeakMap<HTMLElement, () => void>();
+const portalDestinationEpochs = new WeakMap<HTMLElement, number>();
+export function refreshVue2PortalDestination(host: HTMLElement): void {
+  portalDestinationRefreshers.get(host)?.();
+}
+
 export function createVue2OverlayGlobalMount(
   instanceToken: LogicalInstanceToken,
   getPortalOrigin?: () => Node | null
 ): OverlayGlobalMount<HTMLElement> {
-  const directionLeases = new WeakMap<HTMLElement, () => void>();
-  const anchors = new WeakMap<HTMLElement, Comment>();
-
+  const leases = new WeakMap<HTMLElement, { release: () => void }>();
   return {
     mount(hostEl: HTMLElement) {
-      const parentToken = getLogicalParent(instanceToken);
-      setProtoParent(hostEl, parentToken ? getLogicalRoot(parentToken) : null);
-      if (!directionLeases.has(hostEl)) {
-        const originalParent = hostEl.parentNode;
-        directionLeases.set(
-          hostEl,
-          retainWebPortalDirection(hostEl, () => getPortalOrigin?.() ?? originalParent)
-        );
+      if (leases.has(hostEl)) {
+        refreshVue2PortalDestination(hostEl);
+        return;
       }
-
-      const document = hostEl.ownerDocument;
-      const body = document?.body;
       const parent = hostEl.parentNode;
-      if (!body || !parent || hostEl.parentNode === body) return;
-
+      if (!parent) return;
+      const document = hostEl.ownerDocument;
+      const epoch = (portalDestinationEpochs.get(hostEl) ?? 0) + 1;
+      portalDestinationEpochs.set(hostEl, epoch);
+      const unchanged = () => portalDestinationEpochs.get(hostEl) === epoch;
       const anchor = document.createComment('pui-vue2-portal');
-      parent.insertBefore(anchor, hostEl);
-      body.appendChild(hostEl);
-      anchors.set(hostEl, anchor);
+      const origin = () => getPortalOrigin?.() ?? anchor;
+      let retired = false;
+      let projectedParent: HTMLElement | null = null;
+      let binding: WebPortalDestinationBinding | null = null;
+      let materialEpoch: WebPortalMaterialEpoch | null = null;
+      let offDestination = () => {};
+      let releaseDirection = () => {};
+      const refresh = () => {
+        if (retired || !unchanged()) return;
+        if (
+          !anchor.parentNode?.isConnected ||
+          (projectedParent &&
+            (!projectedParent.isConnected || hostEl.parentNode !== projectedParent))
+        ) {
+          materialEpoch?.suspend();
+          return;
+        }
+        const revision = getWebPortalDestinationGeneration();
+        const next = resolveWebPortalDestinationBinding(origin(), hostEl);
+        if (retired || !unchanged() || revision !== getWebPortalDestinationGeneration()) return;
+        if (binding) {
+          if (
+            next.destination !== binding.destination ||
+            next.registration !== binding.registration
+          )
+            materialEpoch?.suspend();
+          return;
+        }
+        // Select once before focus enters this view. Registry changes later in
+        // this epoch withdraw material without moving a focused native subtree.
+        binding = next;
+        projectedParent = next.destination;
+        if (hostEl.parentNode === projectedParent) {
+          materialEpoch?.commitProjection();
+          return;
+        }
+        projectedParent.appendChild(hostEl);
+        if (!retired && unchanged() && hostEl.parentNode === projectedParent) {
+          materialEpoch?.commitProjection();
+          if (!retired && unchanged() && hostEl.parentNode === projectedParent)
+            notifyWebPortalProjection(hostEl);
+        }
+      };
+      const lease = {
+        release: () => {
+          if (retired) return;
+          retired = true;
+          offDestination();
+          if (portalDestinationRefreshers.get(hostEl) === refresh)
+            portalDestinationRefreshers.delete(hostEl);
+          leases.delete(hostEl);
+          try {
+            // Direction's author snapshot belongs to this view. Restore it
+            // before material listeners can synchronously mount a replacement
+            // that would otherwise capture our projected dir as author input.
+            releaseDirection();
+          } finally {
+            try {
+              materialEpoch?.release();
+            } finally {
+              try {
+                if (unchanged() && hostEl.parentNode === projectedParent) {
+                  if (anchor.parentNode) anchor.parentNode.insertBefore(hostEl, anchor);
+                  else hostEl.remove();
+                }
+                anchor.remove();
+              } finally {
+                if (unchanged()) clearProtoParentProjection(hostEl);
+                if (unchanged()) notifyWebPortalProjection(hostEl);
+              }
+            }
+          }
+        },
+      };
+      leases.set(hostEl, lease);
+      try {
+        parent.insertBefore(anchor, hostEl);
+        const parentToken = getLogicalParent(instanceToken);
+        setProtoParent(hostEl, parentToken ? getLogicalRoot(parentToken) : null);
+        if (retired) return;
+        const acquiredDirection = retainWebPortalDirection(hostEl, origin);
+        if (retired || !unchanged()) {
+          acquiredDirection();
+          return;
+        }
+        releaseDirection = acquiredDirection;
+        const acquiredMaterial = beginWebPortalMaterialEpoch(hostEl);
+        if (retired || !unchanged()) {
+          acquiredMaterial.release();
+          return;
+        }
+        materialEpoch = acquiredMaterial;
+        offDestination = subscribeWebPortalDestinations(refresh);
+        if (retired || !unchanged()) {
+          offDestination();
+          return;
+        }
+        portalDestinationRefreshers.set(hostEl, refresh);
+        refresh();
+      } catch (error) {
+        lease.release();
+        throw error;
+      }
     },
     unmount(hostEl: HTMLElement) {
-      const releaseDirection = directionLeases.get(hostEl);
-      directionLeases.delete(hostEl);
-      releaseDirection?.();
-      const anchor = anchors.get(hostEl);
-      anchors.delete(hostEl);
-      // Only a host this mount moved is ours to put back. Returning it to the
-      // anchor hands it to the position Vue owns, so ordinary teardown removes
-      // it; if the anchor's parent is gone there is nowhere to return it to and
-      // detaching is the only way not to leave an adapter-owned body node.
-      if (anchor) {
-        const parent = anchor.parentNode;
-        if (parent) parent.insertBefore(hostEl, anchor);
-        else hostEl.remove();
-        anchor.remove();
-      }
-      // The retained Proto instance stays in its logical tree while its Vue2
-      // view epoch is torn down and will receive a fresh projection on remount.
-      clearProtoParentProjection(hostEl);
+      leases.get(hostEl)?.release();
     },
   };
 }

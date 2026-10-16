@@ -1,3 +1,4 @@
+import type { ObservedStateHandle } from '@proto.ui/core';
 import { ExposeState, State } from '@proto.ui/core';
 
 export interface ScrollAreaRootProps {}
@@ -27,8 +28,8 @@ export type ScrollAreaViewportExposes = {
 };
 
 export type ScrollAreaViewportStateHandles = {
-  focused: State<boolean>;
-  focusVisible: State<boolean>;
+  focused: ObservedStateHandle<boolean, ScrollAreaViewportProps>;
+  focusVisible: ObservedStateHandle<boolean, ScrollAreaViewportProps>;
 };
 
 /** Styled projections read the focus facts of the surface; they install none. */

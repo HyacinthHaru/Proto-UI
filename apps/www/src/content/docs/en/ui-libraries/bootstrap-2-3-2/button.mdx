@@ -20,10 +20,16 @@ Use the page runtime selector to compare the same real Prototype. Click Back to 
   codePanel={false}
 />
 
+At default size, all variants use the fixed upstream dimensions: 4px 12px padding, 14px font size, 20px line height, 1px border and 4px corners. Changing the root font size does not rescale these pixel values. This does not establish browser-zoom or native-target acceptance.
+
 ## API
 
-- variant: default / primary
+- variant: default / primary / warning / danger / success / info / inverse
+- size: default / large / small / mini, default default
+- All sizes keep 20px line height and 1px borders. Large: 11px 19px padding, 17.5px font, 6px corners (44px single-line height). Small: 2px 10px, 11.9px, 3px (26px). Mini: 0px 6px, 10.5px, 3px (22px).
 - disabled: boolean, default false
 - Activation, focus, keyboard and disabled behavior are inherited from Base Button; the visual layer owns no second interaction state.
 
 This is a draft, private, unreleased source projection. The archived light palette stays fixed in dark hosts. The Web demo does not establish general Prototype Compiler or GPUI, Flutter, or Qt conformance. [Browse the implemented subset](../).
+
+The seven palettes retain v2.3.2 text shadows and final border colors. Hover/focus preserves the shifted gradient; pressed/disabled uses its flat endpoint. The focus-visible ring remains. The original 100ms motion, contrast acceptance and full target evidence are still pending; static endpoints are not complete upstream parity.

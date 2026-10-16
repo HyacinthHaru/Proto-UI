@@ -1,0 +1,16 @@
+---
+title: 'Input 输入框'
+description: '独立的 Neobrutalist 单行纯文本输入原型。'
+---
+
+import PrototypePreviewer from '@/components/PrototypePreviewer/PrototypePreviewer.astro';
+
+这个 draft 是独立的 Input 原型，不以 FieldControl 代替。它继承 Base Input，保留唯一纯文本编辑面、受控/非受控 value、标准化编辑与组合事件、disabled/readOnly、无障碍命名和物理焦点。
+
+视觉参考为 [Neo input.tsx 固定版本 3306a802](https://github.com/ekmas/neobrutalism-components/blob/3306a802724874a85f93079702b2795370a279d4/src/components/ui/input.tsx#L5-L18)。保留 2.5rem 高度、0.75rem 横向/0.5rem 纵向内边距、0.875rem 字号、2px 边框、rounded-base 圆角，无静止阴影。继承的 focusVisible 添加黑色焦点环，disabled 添加 cursor/opacity；尺寸不写死为默认字体下的像素。
+
+<PrototypePreviewer demoId="demo-brutalist-input" initialRuntime="wc" />
+
+从 `@proto.ui/prototypes-brutalist/input` 或包根导入 `brutalistInputRoot`，CLI key 为 `brutalist-input`。这是工作区 draft source，不代表已发布的 npm 版本包含此组件。
+
+这是有界的非官方投射，不宣称完整上游一致。任意 type、file 控件、className/DOM prop forwarding、placeholder 配色及 forced-color outline 一致性仍待补足。没有新增 form submission、validation 或第二编辑面。四种 Web runtime 真实浏览器、操作系统 IME、Compiler 与原生目标验收仍分别待验证；源码和模拟 DOM 测试不等于视觉验收。

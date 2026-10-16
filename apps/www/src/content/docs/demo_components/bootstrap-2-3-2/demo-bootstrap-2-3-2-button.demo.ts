@@ -24,6 +24,22 @@ export default {
         props: { disabled: true },
         children: ['Unavailable'],
       },
+      ...(['warning', 'danger', 'success', 'info', 'inverse'] as const).map((variant) => ({
+        kind: 'proto' as const,
+        prototypeId: 'bootstrap-2-3-2-button',
+        ref: variant,
+        props: { variant },
+        children: [variant],
+      })),
+      ...(['large', 'small', 'mini'] as const).flatMap((size) =>
+        (['default', 'primary'] as const).map((variant) => ({
+          kind: 'proto' as const,
+          prototypeId: 'bootstrap-2-3-2-button',
+          ref: `${size}-${variant}`,
+          props: { size, variant },
+          children: [`${size} ${variant}`],
+        }))
+      ),
       {
         kind: 'box',
         ref: 'count',
@@ -38,5 +54,13 @@ export default {
       refs.count.textContent = `${++count} activations`;
     };
     api.setProps('action', { onClick: update });
+    for (const variant of ['warning', 'danger', 'success', 'info', 'inverse']) {
+      api.setProps(variant, { onClick: update });
+    }
+    for (const size of ['large', 'small', 'mini']) {
+      for (const variant of ['default', 'primary']) {
+        api.setProps(`${size}-${variant}`, { onClick: update });
+      }
+    }
   },
 } satisfies DemoSpec;

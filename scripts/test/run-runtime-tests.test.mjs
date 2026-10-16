@@ -1139,6 +1139,31 @@ describe('bounded CI runtime shards (no browser or server)', () => {
   });
   const receipts = () =>
     selections.map((selection) => ({ ...selection, report: report(selection) }));
+  it('registers standalone Neo Input once and preserves its captures in the uploaded runtime directory', () => {
+    const suite = 'apps/www/src/content/docs/zh-cn/demo-brutalist-input.browser.test.ts';
+    assert.equal(BROWSER_SUITES.filter((entry) => entry === suite).length, 1);
+    assert.ok(READY_ROUTES.includes('/en/ui-libraries/brutalist/components/input/'));
+    assert.equal(
+      browserShards()
+        .flat()
+        .filter((entry) => entry === suite).length,
+      1
+    );
+    const source = readFileSync(path.join(runtimeRoot, suite), 'utf8');
+    assert.ok(source.includes("join(process.env.PROTO_UI_RUNTIME_EVIDENCE_DIR, 'neo-input')"));
+    assert.ok(source.includes('sourceTreeSha256'));
+    assert.ok(source.includes('screenshotSha256'));
+    const workflow = YAML.parse(
+      readFileSync(path.join(runtimeRoot, '.github/workflows/ci.yml'), 'utf8')
+    );
+    assert.ok(
+      workflow.jobs['test-browser'].steps.some(
+        (step) =>
+          step.uses === 'actions/upload-artifact@v4' &&
+          step.with.path === '${{ runner.temp }}/runtime-ci'
+      )
+    );
+  });
   it('keeps all development suites exactly once in deterministic nonempty bounded shards', () => {
     const shards = browserShards();
     assert.equal(shards.length, BROWSER_SHARD_COUNT);

@@ -1,0 +1,74 @@
+id: T-LIQUID-GLASS-MAIN-COMMAND-TINT-0001
+type: test
+title: Liquid Glass main-command tint evidence
+status: draft
+since: 0.3.0-alpha.1
+lifecycleRationale: Exact portable material/owner assertions and planned native source-response evidence are separate. Native paint, typical-background appearance and independent acceptance remain unverified.
+summary: Distinguish one complete tinted main-command candidate from neutral and opaque controls without claiming native optics from portable intent.
+cases:
+  - id: T-LIQUID-GLASS-MAIN-COMMAND-TINT-0001-CASE-CANDIDATE
+    title: Main commands tint only enabled auto with complete neutral and opaque controls
+    covers:
+      [
+        C-LIQUID-GLASS-MAIN-COMMAND-TINT-0001-CANDIDATE,
+        C-LIQUID-GLASS-MAIN-COMMAND-TINT-0001-FALLBACK,
+      ]
+    expectation: exact-complete-candidates-and-current-fallback-across-default-removal-and-press
+  - id: T-LIQUID-GLASS-MAIN-COMMAND-TINT-0001-CASE-OWNERSHIP
+    title: Transient exits and remount keep one Base owner and existing action semantics
+    covers: [C-LIQUID-GLASS-MAIN-COMMAND-TINT-0001-OWNERSHIP]
+    expectation: one-hook-no-new-semantic-request-cancel-remount-and-direct-inherited-disable
+  - id: T-LIQUID-GLASS-MAIN-COMMAND-TINT-0001-CASE-NATIVE
+    title: Actual-size source-linked tint remains readable across four Web runtimes and themes
+    covers: [C-LIQUID-GLASS-MAIN-COMMAND-TINT-0001-EVIDENCE]
+    expectation: exact-source-neutral-tinted-opaque-controls-interior-response-and-human-visual-review
+implementations:
+  - id: liquid-main-command-button-policy
+    kind: module-test
+    status: passing
+    path: packages/prototypes/liquid-glass/test/material.test.ts
+    required: true
+    consumesCases:
+      [
+        T-LIQUID-GLASS-MAIN-COMMAND-TINT-0001-CASE-CANDIDATE,
+        T-LIQUID-GLASS-MAIN-COMMAND-TINT-0001-CASE-OWNERSHIP,
+      ]
+  - id: liquid-main-command-form-policy
+    kind: module-test
+    status: passing
+    path: packages/prototypes/base/test/form-actions-material.test.ts
+    required: true
+    consumesCases:
+      [
+        T-LIQUID-GLASS-MAIN-COMMAND-TINT-0001-CASE-CANDIDATE,
+        T-LIQUID-GLASS-MAIN-COMMAND-TINT-0001-CASE-OWNERSHIP,
+      ]
+  - id: liquid-main-command-form-actions
+    kind: module-test
+    status: failing
+    path: packages/prototypes/base/test/form-actions-quality.test.ts
+    notes:
+      - All nine Form cases pass; the full file retains four Checkbox Group token-closure failures reproduced on the complete dependency tree 7bfd70801eff93a6887517bfce64270418e31245. This implementation is not recorded as a full-file pass.
+    required: true
+    consumesCases: [T-LIQUID-GLASS-MAIN-COMMAND-TINT-0001-CASE-OWNERSHIP]
+  - id: liquid-main-command-native
+    kind: runtime-test
+    status: planned
+    path: apps/www/src/content/docs/zh-cn/demo-liquid-glass-prominent-tint.browser.test.ts
+    required: true
+    consumesCases: [T-LIQUID-GLASS-MAIN-COMMAND-TINT-0001-CASE-NATIVE]
+    notes:
+      - Exact-source native fixture and independent actual-size review remain required; local browser launch is unavailable and no previous Toggle or opaque Button receipt is new tint evidence.
+verifies:
+  contracts: [C-LIQUID-GLASS-MAIN-COMMAND-TINT-0001]
+exercises:
+  prototypes: [P-LIQUID-GLASS-BUTTON]
+sources:
+  - path: packages/prototypes/liquid-glass/test/material.test.ts
+  - path: packages/prototypes/base/test/form-actions-material.test.ts
+  - path: packages/prototypes/base/test/form-actions-quality.test.ts
+revisions:
+  - version: 0.3.0-alpha.1
+    change: introduced
+    summary: Specify red/green complete candidate and ownership coverage separately from source-bound native and perceptual acceptance.
+tags: [test, liquid-glass, tint, button, form, draft]

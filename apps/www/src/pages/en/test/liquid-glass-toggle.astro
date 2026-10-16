@@ -1,0 +1,313 @@
+---
+import DraftProjectionStyle from '../../../components/DraftProjectionStyle.astro';
+import { renderThemeCss } from '../../../../../../packages/prototypes/liquid-glass/src/theme';
+---
+
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Liquid Glass Toggle: real Base state and optical evidence</title>
+    <DraftProjectionStyle />
+    <style is:global data-material-theme set:html={renderThemeCss()}></style>
+    <script is:inline>
+      document.documentElement.dataset.theme =
+        new URLSearchParams(location.search).get('theme') === 'dark' ? 'dark' : 'light';
+    </script>
+  </head>
+  <body>
+    <main id="toggle-matrix">
+      <h1>Liquid Glass Toggle</h1>
+      <p>
+        One Base Toggle projection through four Web runtimes. Inactive uses neutral regular
+        material; active requests style-fill tint from its governed primary fill and foreground. The
+        fixed-size decorative selection mark and fixed 1px border remain. The mark does not alter
+        accessible names or move content when selection changes. Pointer pressing is separate.
+      </p>
+      <p>
+        The existing shared provider samples only the visible application-owned canvas. Source loss
+        and restrictive or unknown preferences keep opaque fallback. This is a Proto extension; no
+        Apple, native-platform or full Compiler equivalence is claimed.
+      </p>
+      <div class="toggle-grid">
+        {
+          ['wc', 'react', 'vue', 'vue2'].map((runtime) => (
+            <section data-toggle-card={runtime}>
+              <h2>
+                {{ wc: 'Web Components', react: 'React', vue: 'Vue 3', vue2: 'Vue 2' }[runtime]}
+              </h2>
+              <a href="#toggle-matrix" data-focus-start={runtime}>
+                Keyboard entry
+              </a>
+              <span id={`toggle-icon-label-${runtime}`}>Toggle bold formatting</span>
+              <div class="toggle-scene" data-toggle-host={runtime} />
+              <output data-toggle-events={runtime}>0 activeChange requests</output>
+              <p>No material provider:</p>
+              <div data-toggle-no-provider={runtime} />
+            </section>
+          ))
+        }
+      </div>
+      <section aria-labelledby="tint-probe-heading">
+        <h2 id="tint-probe-heading">Algorithm-only fixed-source tint controls</h2>
+        <p>
+          Invoked only by the native evidence test. These visible owned canvases compare neutral,
+          tinted and zero-refraction GPU output with fixed source bytes, geometry and motion. They
+          do not replace provider admission or the four real runtime journeys above.
+        </p>
+        <div id="toggle-tint-probe"></div>
+        <div id="toggle-detail-probe"></div>
+      </section>
+    </main>
+    <script>
+      import toggle from '@proto.ui/prototypes-liquid-glass/toggle';
+      import boldIcon from '../../../../../../packages/prototypes/lucide/src/icons/bold';
+      import { createPreviewMaterialScene } from '../../../components/PrototypePreviewer/preview-material-scene';
+      import { inspectWebOpticalResources } from '../../../../../../packages/adapters/base/src/material/program-pool';
+      import { runLiquidToggleTintProbe } from '../../../content/docs/zh-cn/liquid-toggle-tint-probe';
+      import { runLiquidToggleDetailProbe } from '../../../content/docs/zh-cn/liquid-toggle-detail-probe';
+      import { registerPrototype } from '../../../components/PrototypePreviewer/registry';
+      import { renderDemo } from '../../../components/PrototypePreviewer/demo-renderer';
+      import type {
+        DemoRenderResult,
+        DemoRuntimeApi,
+        DemoSpec,
+      } from '../../../components/PrototypePreviewer/demo-types';
+      import type { RuntimeId } from '../../../components/PrototypePreviewer/runtimes/ids';
+
+      // A negative preference control; no material policy or shader lives in this fixture.
+      if (new URLSearchParams(location.search).has('unknown'))
+        Object.defineProperty(window, 'matchMedia', { value: undefined, configurable: true });
+      registerPrototype('liquid-glass-toggle', toggle);
+      registerPrototype('liquid-toggle-bold-icon', boldIcon);
+      // The same prototype under a fixture alias avoids Previewer automatic scene provisioning.
+      // This is an ordinary Adapter with no registered material provider.
+      registerPrototype('toggle-no-provider', toggle);
+      const records: DemoRenderResult[] = [];
+      const scenes = new Map<string, ReturnType<typeof createPreviewMaterialScene>>();
+      const apis = new Map<string, DemoRuntimeApi>();
+      const requests = new Map<string, Array<{ ref: string; active: boolean }>>();
+      const fixture = {
+        metrics: () => inspectWebOpticalResources(document),
+        tintProbe: () =>
+          runLiquidToggleTintProbe(document.querySelector<HTMLElement>('#toggle-tint-probe')!),
+        detailProbe: () =>
+          runLiquidToggleDetailProbe(document.querySelector<HTMLElement>('#toggle-detail-probe')!),
+        pause(value: boolean) {
+          for (const scene of scenes.values()) scene.pause(value);
+        },
+        source(runtime: string, value: boolean) {
+          scenes.get(runtime)?.sourceAvailable(value);
+        },
+        setProps(runtime: string, ref: string, patch: Record<string, unknown>) {
+          const api = apis.get(runtime);
+          if (!api) throw new Error(`Missing runtime ${runtime}`);
+          api.setProps(ref, patch);
+        },
+        state(runtime: string, ref: string, key: string) {
+          const state = apis.get(runtime)?.getExposes(ref)?.[key] as
+            | { get?: () => unknown }
+            | undefined;
+          return state?.get?.();
+        },
+        requests(runtime: string, ref: string) {
+          return requests.get(runtime)?.filter((entry) => entry.ref === ref) ?? [];
+        },
+        async dispose() {
+          for (const record of records.splice(0).reverse()) await record.destroy();
+          for (const scene of scenes.values()) scene.dispose();
+          scenes.clear();
+          apis.clear();
+        },
+      };
+      (window as unknown as { liquidToggleFixture: typeof fixture }).liquidToggleFixture = fixture;
+      async function mount() {
+        for (const runtime of ['wc', 'react', 'vue', 'vue2'] as RuntimeId[]) {
+          const host = document.querySelector<HTMLElement>(`[data-toggle-host="${runtime}"]`)!;
+          const scene = createPreviewMaterialScene(host);
+          scenes.set(runtime, scene);
+          requests.set(runtime, []);
+          const demo: DemoSpec = {
+            type: 'demo',
+            root: {
+              kind: 'box',
+              className: 'toggle-controls',
+              children: [
+                {
+                  kind: 'proto',
+                  prototypeId: 'liquid-glass-toggle',
+                  ref: 'regular',
+                  children: ['Bold'],
+                },
+                {
+                  kind: 'proto',
+                  prototypeId: 'liquid-glass-toggle',
+                  ref: 'initial-active',
+                  props: { defaultActive: true },
+                  children: ['Italic'],
+                },
+                {
+                  kind: 'proto',
+                  prototypeId: 'liquid-glass-toggle',
+                  ref: 'controlled',
+                  props: { active: false },
+                  children: ['Controlled'],
+                },
+                {
+                  kind: 'proto',
+                  prototypeId: 'liquid-glass-toggle',
+                  ref: 'opaque',
+                  props: { material: 'opaque' },
+                  children: ['Opaque'],
+                },
+                {
+                  kind: 'proto',
+                  prototypeId: 'liquid-glass-toggle',
+                  ref: 'icon-only',
+                  children: [
+                    {
+                      kind: 'box',
+                      tag: 'span',
+                      attrs: { 'aria-hidden': 'true', 'data-liquid-toggle-icon-content': '' },
+                      children: [
+                        {
+                          kind: 'proto',
+                          prototypeId: 'liquid-toggle-bold-icon',
+                          props: { size: 16 },
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  kind: 'proto',
+                  prototypeId: 'liquid-glass-toggle',
+                  ref: 'disabled',
+                  props: { defaultActive: true, disabled: true },
+                  children: ['Unavailable'],
+                },
+              ],
+            },
+            setup({ api, refs }) {
+              apis.set(runtime, api);
+              // Explicit host naming through the existing supported label relation;
+              // the decorative icon and check never supply or change this name.
+              refs['icon-only'].setAttribute('aria-labelledby', `toggle-icon-label-${runtime}`);
+              for (const ref of [
+                'regular',
+                'initial-active',
+                'controlled',
+                'opaque',
+                'disabled',
+                'icon-only',
+              ])
+                api.setProps(ref, {
+                  onActiveChange: (detail: { active: boolean }) => {
+                    const entries = requests.get(runtime)!;
+                    entries.push({ ref, active: detail.active });
+                    document.querySelector<HTMLOutputElement>(
+                      `[data-toggle-events="${runtime}"]`
+                    )!.value = `${entries.length} activeChange requests · ${ref}: ${detail.active}`;
+                  },
+                });
+            },
+          };
+          records.push(await renderDemo({ runtime, demo, host: scene.mount }));
+          records.push(
+            await renderDemo({
+              runtime,
+              host: document.querySelector<HTMLElement>(`[data-toggle-no-provider="${runtime}"]`)!,
+              demo: {
+                type: 'demo',
+                root: {
+                  kind: 'proto',
+                  prototypeId: 'toggle-no-provider',
+                  ref: 'bare',
+                  children: ['No provider'],
+                },
+              },
+            })
+          );
+        }
+        document.documentElement.dataset.liquidToggleReady = 'true';
+      }
+      window.addEventListener(
+        'pagehide',
+        () => {
+          void fixture.dispose();
+        },
+        { once: true }
+      );
+      void mount().catch((error) => {
+        document.documentElement.dataset.liquidToggleError = String(error);
+        console.error(error);
+      });
+    </script>
+  </body>
+</html>
+<style is:global>
+  body {
+    margin: 0;
+    color: var(--pui-foreground);
+    background: var(--pui-background);
+    font-family: ui-sans-serif, system-ui, sans-serif;
+  }
+  main {
+    max-width: 1200px;
+    padding: 32px;
+    margin: auto;
+  }
+  h1 {
+    font-size: 32px;
+    letter-spacing: -0.03em;
+  }
+  p {
+    line-height: 1.6;
+    max-width: 90ch;
+  }
+  .toggle-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+  }
+  section {
+    min-width: 0;
+  }
+  .toggle-scene {
+    margin: 12px 0;
+  }
+  .toggle-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 32px;
+    padding: 28px 20px;
+  }
+  output {
+    display: block;
+    min-height: 2em;
+  }
+  #toggle-tint-probe {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    min-height: 160px;
+  }
+  #toggle-tint-probe figure {
+    margin: 0;
+  }
+  #toggle-tint-probe canvas {
+    display: block;
+  }
+  @media (max-width: 700px) {
+    main {
+      padding: 20px;
+    }
+    .toggle-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

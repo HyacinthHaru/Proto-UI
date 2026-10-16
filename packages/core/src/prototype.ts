@@ -2,7 +2,7 @@
 import type { PropsBaseType } from '@proto.ui/types';
 import type { DefHandle, RendererHandle } from './handles';
 import type { TemplateChildren } from './spec';
-import type { BorrowedStateHandle, State } from './state';
+import type { BorrowedStateHandle, ObservedStateHandle, OwnedStateHandle, State } from './state';
 import { getActiveAsHookContext } from './internal';
 
 const MODULE_DECLARATION_TOKEN_BRAND = Symbol('@proto.ui/module-declaration-token');
@@ -111,7 +111,13 @@ export type AsHookBorrowedStates<
   Props extends PropsBaseType,
   States extends AsHookStateMap,
 > = Readonly<{
-  [K in keyof States]: States[K] extends State<infer V> ? BorrowedStateHandle<V, Props> : never;
+  [K in keyof States]: States[K] extends OwnedStateHandle<infer V>
+    ? BorrowedStateHandle<V, Props>
+    : States[K] extends ObservedStateHandle<infer V, any>
+      ? ObservedStateHandle<V, Props>
+      : States[K] extends State<infer V>
+        ? BorrowedStateHandle<V, Props>
+        : never;
 }>;
 
 export type AsHookEventKeys<Events extends AsHookEventMap> = Readonly<{

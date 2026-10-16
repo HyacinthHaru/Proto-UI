@@ -25,6 +25,7 @@ export * from './platform/web-preference-source';
 export * from './platform/web-style-support-source';
 
 export * from './platform/portal-direction';
+export * from './platform/portal-destination';
 export { createWebAxisInputHost } from './gestures/web-axis-input-host';
 export * from './motion/web-resident-motion';
 

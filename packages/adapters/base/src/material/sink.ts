@@ -4,6 +4,7 @@ import { observeWebPointerContact } from '../events/pointer-contact';
 import { createContactMotion } from './contact-motion';
 import { createContactCarrier, inspectContactCarrier } from './contact-carrier';
 import { contactProfile, contactPaintOutset } from './contact-profile';
+import { styleTintProfile, styleTintContactProfile } from './style-tint-profile';
 import { prepareOpticalImage } from './image-prepare';
 import { observeMaterialGeometry } from './geometry-watch';
 import type { EffectsPort } from '@proto.ui/core';
@@ -434,12 +435,20 @@ function createDocumentMaterialSink(
       }
       const css = win!.getComputedStyle(host),
         rect = host.getBoundingClientRect();
+      const foregroundPreferences = preferences.current();
+      if (!currentDocument()) return;
       const foregroundCss = css.color;
       const foreground = resolvePaletteColor(foregroundCss, {});
-      if (
-        !foreground ||
-        foreground.some((value, i) => Math.abs(value - resolved.foreground![i]) > 1 / 255)
-      ) {
+      // Forced-color auto lets the UA replace author RGB with its system palette.
+      // That palette is not an external author conflict. The shared policy below
+      // still forbids optical paint and selects the complete opaque fallback;
+      // never opt out of the user's palette or adopt computed CSS as style IR.
+      const uaForcedPalette =
+        foregroundPreferences.forcedColors === 'active' && css.forcedColorAdjust === 'auto';
+      const foregroundMatches =
+        foreground &&
+        foreground.every((value, i) => Math.abs(value - resolved.foreground![i]) <= 1 / 255);
+      if (!uaForcedPalette && !foregroundMatches) {
         ordinary('external-foreground-mismatch');
         return;
       }
@@ -459,6 +468,15 @@ function createDocumentMaterialSink(
       const wantsContact =
         requestedCandidate?.intent === 'liquid-glass' &&
         requestedCandidate.deformation?.contact === 'pointer';
+      const wantsTint =
+        requestedCandidate?.intent === 'liquid-glass' && requestedCandidate.tint === 'style-fill';
+      const selectedProfile = wantsTint
+        ? wantsContact
+          ? styleTintContactProfile
+          : styleTintProfile
+        : wantsContact
+          ? contactProfile
+          : 'liquidgl-v2-app-canvas-1';
       const paintOutset = wantsContact ? contactPaintOutset(rect.width, rect.height) : 0;
       const admission = inspectCanvasBackdrop(host, source, paintOutset);
       const carrierConflict =
@@ -488,8 +506,15 @@ function createDocumentMaterialSink(
         }
         revisions.source = source!.revision;
       } else sourceOwner = null;
+      // Source/host reads may synchronously change preferences. Preserve the
+      // existing fresh policy read and never turn a former UA-color exemption
+      // into optical admission after forced colors has been withdrawn.
       const prefs = preferences.current();
       if (!currentDocument()) return;
+      if (!foregroundMatches && prefs.forcedColors !== 'active') {
+        ordinary('external-foreground-mismatch');
+        return;
+      }
       const geometry = {
         width: rect.width,
         height: rect.height,
@@ -515,12 +540,13 @@ function createDocumentMaterialSink(
           : null,
         provider: {
           backend: 'self-optical',
-          profile: wantsContact ? contactProfile : 'liquidgl-v2-app-canvas-1',
+          profile: selectedProfile,
           ready: !program.lost,
           sourceKind: 'in-app-backdrop',
           staticSupported: true,
           pressDeformationSupported: true,
           variants: ['regular', 'clear'],
+          styleTintVariants: ['regular'],
           tones: [],
           maxSurfacePixels: 1048576,
         },
@@ -593,6 +619,7 @@ function createDocumentMaterialSink(
           current.intent === 'liquid-glass' &&
           current.deformation?.contact === 'pointer' &&
           current.variant === candidate.variant &&
+          current.tint === candidate.tint &&
           JSON.stringify(last.material.slot) === JSON.stringify(frame.material.slot)
         );
       };
@@ -606,6 +633,8 @@ function createDocumentMaterialSink(
         resolved.foreground,
         tracksContact,
         candidate.variant,
+        candidate.tint,
+        selectedProfile,
       ]);
       const installPaint = (image: string, currentCss: CSSStyleDeclaration) => {
         if (tracksContact) {
@@ -645,7 +674,7 @@ function createDocumentMaterialSink(
         report('materialQuality', 'self-optical');
         report('materialReason', 'rendered');
         report('materialBackend', 'self-optical');
-        report('materialProfile', contactProfile);
+        report('materialProfile', selectedProfile);
         report('materialSource', 'visible-app-canvas');
         report('materialFrame', String(++renders));
         report('materialSourceRevision', String(neutral.sourceRevision));
@@ -705,6 +734,7 @@ function createDocumentMaterialSink(
           candidate.deformation?.phase === 'pressed',
         contact: tracksContact ? motionFrame.contact : undefined,
         variant: candidate.variant ?? 'regular',
+        ...(candidate.tint ? { tint: candidate.tint } : {}),
         fill: resolved.fill,
         foreground: resolved.foreground,
       };
@@ -835,7 +865,7 @@ function createDocumentMaterialSink(
             report('materialQuality', 'self-optical');
             report('materialReason', 'rendered');
             report('materialBackend', 'self-optical');
-            report('materialProfile', tracksContact ? contactProfile : 'liquidgl-v2-app-canvas-1');
+            report('materialProfile', selectedProfile);
             report('materialSource', 'visible-app-canvas');
             report('materialFrame', String(++renders));
             report('materialSourceRevision', String(source.revision));

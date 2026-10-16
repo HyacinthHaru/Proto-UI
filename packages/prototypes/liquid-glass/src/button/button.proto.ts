@@ -1,3 +1,9 @@
+import {
+  COMMAND_HOVER,
+  COMMAND_PRESS,
+  COMMAND_FOCUS,
+  COMMAND_DISABLED,
+} from '../interactive-surface';
 import { definePrototype, tw } from '@proto.ui/core';
 import { asButton, type ButtonExposes } from '@proto.ui/prototypes-base/button';
 
@@ -14,8 +20,6 @@ const FILLS = {
   regular: 'bg-secondary text-secondary-foreground',
   prominent: 'bg-primary text-primary-foreground',
 };
-// Elevation changes on hover without replacing a translucent surface with an opaque fill.
-const HOVER = { regular: 'shadow-md', prominent: 'bg-primary' };
 
 export default definePrototype<ButtonProjectionProps, ButtonExposes>({
   name: 'liquid-glass-button',
@@ -40,10 +44,16 @@ export default definePrototype<ButtonProjectionProps, ButtonExposes>({
         when: (w) => w.prop('variant').eq(variant),
         intent: (i) => i.feedback.style.use(tw(FILLS[variant])),
       });
-      def.rule({
-        when: (w) => w.all(w.prop('variant').eq(variant), w.state(hovered).eq(true)),
-        intent: (i) => i.feedback.style.use(tw(HOVER[variant])),
-      });
+    });
+    def.rule({
+      when: (w) =>
+        w.all(
+          w.state(hovered).eq(true),
+          w.state(pressed).eq(false),
+          w.state(disabled).eq(false),
+          w.state(focusVisible).eq(false)
+        ),
+      intent: (i) => i.feedback.style.use(tw(COMMAND_HOVER)),
     });
     def.feedback.material.declare({
       version: 2,
@@ -51,37 +61,37 @@ export default definePrototype<ButtonProjectionProps, ButtonExposes>({
       source: { kind: 'in-app-backdrop' },
       fallback: { fill: 'style', foreground: 'style' },
     });
-    for (const phase of [false, true]) {
-      def.rule({
-        when: (w) =>
-          w.all(
-            w.prop('variant').eq('regular'),
-            w.prop('material').eq('auto'),
-            w.state(disabled).eq(false),
-            w.state(pressed).eq(phase)
-          ),
-        intent: (i) =>
-          i.feedback.material.use({
-            intent: 'liquid-glass',
-            variant: 'regular',
-            deformation: { kind: 'press', phase: phase ? 'pressed' : 'rest', contact: 'pointer' },
-          }),
-      });
-    }
+    // Prominence selects only style-owned tint; Base remains the sole input owner.
+    for (const variant of ['regular', 'prominent'] as const)
+      for (const phase of [false, true]) {
+        def.rule({
+          when: (w) =>
+            w.all(
+              w.prop('variant').eq(variant),
+              w.prop('material').eq('auto'),
+              w.state(disabled).eq(false),
+              w.state(pressed).eq(phase)
+            ),
+          intent: (i) =>
+            i.feedback.material.use({
+              intent: 'liquid-glass',
+              variant: 'regular',
+              ...(variant === 'prominent' ? { tint: 'style-fill' as const } : {}),
+              deformation: { kind: 'press', phase: phase ? 'pressed' : 'rest', contact: 'pointer' },
+            }),
+        });
+      }
     def.rule({
-      when: (w) => w.state(pressed).eq(true),
-      intent: (i) => i.feedback.style.use(tw('shadow-xs')),
+      when: (w) => w.all(w.state(pressed).eq(true), w.state(disabled).eq(false)),
+      intent: (i) => i.feedback.style.use(tw(COMMAND_PRESS)),
     });
     def.rule({
       when: (w) => w.state(focusVisible).eq(true),
-      intent: (i) =>
-        i.feedback.style.use(
-          tw('outline-none ring-2 ring-ring ring-offset-2 ring-offset-background')
-        ),
+      intent: (i) => i.feedback.style.use(tw(COMMAND_FOCUS)),
     });
     def.rule({
       when: (w) => w.state(disabled).eq(true),
-      intent: (i) => i.feedback.style.use(tw('opacity-50 pointer-events-none cursor-default')),
+      intent: (i) => i.feedback.style.use(tw(COMMAND_DISABLED)),
     });
   },
 });

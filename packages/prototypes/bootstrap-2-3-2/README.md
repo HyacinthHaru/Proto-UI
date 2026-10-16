@@ -4,7 +4,7 @@ A private, unreleased, real Base-inheriting projection source package. It is a p
 
 | Component | Real parts / owner | Bootstrap 2.3.2 reference and deliberate difference |
 | --- | --- | --- |
-| Button | Button / `asButton()` | [Archived buttons](https://getbootstrap.com/2.3.2/base-css.html#buttons), default/primary gradient and raised/inset grammar; stronger focus ring, scalable metrics, no jQuery |
+| Button | Button / `asButton()` | [Archived buttons](https://getbootstrap.com/2.3.2/base-css.html#buttons), seven-color gradient and raised/inset grammar; stronger focus ring, fixed upstream 4px/12px padding and 14px/20px type, no jQuery |
 | Checkbox | Root + Indicator / `asCheckboxRoot()` + `asCheckboxIndicator()` | [Archived forms](https://getbootstrap.com/2.3.2/base-css.html#forms); custom square and original check/mixed glyph rather than the original native checkbox skin |
 | Switch | Root + Thumb / `asSwitchRoot()` + `asSwitchThumb()` | Design-language extension using the archived control palette and relief; core 2.3.2 has no Switch |
 | Toggle | Toggle / `asToggle()` | Design-language extension using [stateful button appearance](https://getbootstrap.com/2.3.2/javascript.html#buttons); Base owns active state, not the original jQuery plugin |
@@ -43,3 +43,9 @@ These are private, release-excluded development artifacts, not public package ad
 Run `pnpm test:draft-packages` from the repository root for the complete offline tarball install, JavaScript ESM and strict NodeNext declaration smoke. Run this build-bearing suite separately from other package builds.
 
 The draft builder admits only the two named prototype families and their current dependency shape. It is not a general private-package build API; adding workspace dependencies that occur only in peer or optional fields requires extending and testing its closure planning first.
+
+Button default/primary preserve the archived CSS pixel dimensions when the root font size changes. This supersedes the initial scalable-metrics deviation for Button only; other projections retain their separately tracked sizing work. Browser zoom and native/compiler verification are separate from root-font tests.
+
+Button size accepts `default`, `large`, `small`, and `mini` (default `default`) for both variants. Fixed v2.3.2 padding/font/radius/height values are respectively `4px 12px / 14px / 4px / 30px`, `11px 19px / 17.5px / 6px / 44px`, `2px 10px / 11.9px / 3px / 26px`, and `0px 6px / 10.5px / 3px / 22px`; all retain 20px line height and 1px borders. Height values describe a single line, not an added fixed-height constraint. Link/block and icon-sprite offsets are not included.
+
+Button variants are `default`, `primary`, `warning`, `danger`, `success`, `info`, and `inverse`. The v2.3.2 text shadows and final modern-browser border colors are retained. Hover/focus keeps the gradient at its -15px endpoint; pressed/disabled removes it. The stronger focus-visible ring remains. This is static/state-endpoint alignment: the original 100ms motion and full contrast/target acceptance are still open. Complete finite paint recipes respect current token-group merging; old passive exports remain unchanged for other component owners.

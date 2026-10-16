@@ -4,6 +4,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import type { Browser, BrowserContext, CDPSession, Page } from 'playwright-core';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { observeOwnedMaterialPaint } from './material-paint-observation';
 import {
   launchBrowser,
   startServer,
@@ -116,13 +117,8 @@ describe.sequential('V2 optical paint through four real Web Adapter runtimes', (
       for (const runtime of RUNTIMES) {
         const host = page.locator(`[data-material-host="${runtime}"]`),
           button = host.getByRole('button', { name: 'Regular action', exact: true });
-        const first = await button.evaluate((el) => ({
-          image: (el as HTMLElement).style.backgroundImage,
-          quality: (el as HTMLElement).dataset.materialQuality,
-          source: (el as HTMLElement).dataset.materialSource,
-          blur: getComputedStyle(el).backdropFilter,
-          canvas: el.querySelectorAll('canvas').length,
-        }));
+        const first = await button.evaluate(observeOwnedMaterialPaint);
+        expect(first.committed).toBe(true);
         expect(first.quality).toBe('self-optical');
         expect(first.source).toBe('visible-app-canvas');
         expect(first.blur).toBe('none');
@@ -160,7 +156,11 @@ describe.sequential('V2 optical paint through four real Web Adapter runtimes', (
             document.querySelector<HTMLElement>(selector)?.dataset.materialPhase === 'pressed',
           `[data-material-host="${runtime}"] [data-demo-ref="regular"]`
         );
-        const pressed = await button.evaluate((el) => (el as HTMLElement).style.backgroundImage);
+        const pressedPaint = await button.evaluate(observeOwnedMaterialPaint);
+        expect(pressedPaint.committed).toBe(true);
+        expect(pressedPaint.quality).toBe('self-optical');
+        expect(pressedPaint.source).toBe('visible-app-canvas');
+        const pressed = pressedPaint.image;
         expect(pressed).not.toBe(first.image);
         const changed = await page.evaluate(
           async ({ a, b }) => {
@@ -207,9 +207,7 @@ describe.sequential('V2 optical paint through four real Web Adapter runtimes', (
         await expect
           .poll(() => button.getAttribute('data-material-quality'))
           .toBe('opaque-fallback');
-        expect(await button.evaluate((el) => (el as HTMLElement).style.backgroundImage)).toBe(
-          'none'
-        );
+        expect((await button.evaluate(observeOwnedMaterialPaint)).image).toBe('none');
         await capture(`${theme}-${runtime}-source-lost`);
         await page.evaluate(
           (runtime) => (window as any).liquidMaterialFixture.source(runtime, true),
@@ -262,10 +260,13 @@ describe.sequential('V2 optical paint through four real Web Adapter runtimes', (
       await preference(theme);
       await quality('self-optical');
       // Moving the same controls must resample the same visible source coordinates.
-      const firstImage = await page
+      const firstPaint = await page
         .locator('[data-demo-ref="regular"]')
         .first()
-        .evaluate((el) => (el as HTMLElement).style.backgroundImage);
+        .evaluate(observeOwnedMaterialPaint);
+      expect(firstPaint.committed).toBe(true);
+      expect(firstPaint.quality).toBe('self-optical');
+      expect(firstPaint.source).toBe('visible-app-canvas');
       await page
         .locator('[data-demo-ref="regular"]')
         .first()
@@ -278,9 +279,17 @@ describe.sequential('V2 optical paint through four real Web Adapter runtimes', (
           page
             .locator('[data-demo-ref="regular"]')
             .first()
-            .evaluate((el) => (el as HTMLElement).style.backgroundImage)
+            .evaluate(observeOwnedMaterialPaint)
+            .then(
+              (paint) =>
+                paint.committed &&
+                paint.quality === 'self-optical' &&
+                paint.source === 'visible-app-canvas' &&
+                paint.image.includes('data:image/png;base64,') &&
+                paint.image !== firstPaint.image
+            )
         )
-        .not.toBe(firstImage);
+        .toBe(true);
       await page.setViewportSize({ width: 1100, height: 1000 });
       await quality('self-optical');
       await cdp.send('Emulation.setDeviceMetricsOverride', {

@@ -412,6 +412,196 @@ const staticUtilities: Record<string, string[]> = {
     'background-color: #006dcc;',
     'background-image: linear-gradient(to bottom, #08c, #04c);',
   ],
+  // Finite complete paint recipes: bg/text-color/border-color each has one
+  // semantic owner. Do not split these into colliding v0 utility groups.
+  'bg-[#f5f5f5_linear-gradient(#fff,#e6e6e6)_0_0_repeat-x]': [
+    'background-color: #f5f5f5;',
+    'background-image: linear-gradient(to bottom, #fff, #e6e6e6);',
+    'background-position: 0 0;',
+    'background-repeat: repeat-x;',
+  ],
+  'bg-[#e6e6e6_linear-gradient(#fff,#e6e6e6)_0_-15px_repeat-x]': [
+    'background-color: #e6e6e6;',
+    'background-image: linear-gradient(to bottom, #fff, #e6e6e6);',
+    'background-position: 0 -15px;',
+    'background-repeat: repeat-x;',
+  ],
+  'bg-[#e6e6e6_none_0_0_repeat-x]': [
+    'background-color: #e6e6e6;',
+    'background-image: none;',
+    'background-position: 0 0;',
+    'background-repeat: repeat-x;',
+  ],
+  'bg-[#e6e6e6_none_0_-15px_repeat-x]': [
+    'background-color: #e6e6e6;',
+    'background-image: none;',
+    'background-position: 0 -15px;',
+    'background-repeat: repeat-x;',
+  ],
+  'bg-[#006dcc_linear-gradient(#08c,#04c)_0_0_repeat-x]': [
+    'background-color: #006dcc;',
+    'background-image: linear-gradient(to bottom, #08c, #04c);',
+    'background-position: 0 0;',
+    'background-repeat: repeat-x;',
+  ],
+  'bg-[#04c_linear-gradient(#08c,#04c)_0_-15px_repeat-x]': [
+    'background-color: #04c;',
+    'background-image: linear-gradient(to bottom, #08c, #04c);',
+    'background-position: 0 -15px;',
+    'background-repeat: repeat-x;',
+  ],
+  'bg-[#04c_none_0_0_repeat-x]': [
+    'background-color: #04c;',
+    'background-image: none;',
+    'background-position: 0 0;',
+    'background-repeat: repeat-x;',
+  ],
+  'bg-[#04c_none_0_-15px_repeat-x]': [
+    'background-color: #04c;',
+    'background-image: none;',
+    'background-position: 0 -15px;',
+    'background-repeat: repeat-x;',
+  ],
+  'bg-[#faa732_linear-gradient(#fbb450,#f89406)_0_0_repeat-x]': [
+    'background-color: #faa732;',
+    'background-image: linear-gradient(to bottom, #fbb450, #f89406);',
+    'background-position: 0 0;',
+    'background-repeat: repeat-x;',
+  ],
+  'bg-[#f89406_linear-gradient(#fbb450,#f89406)_0_-15px_repeat-x]': [
+    'background-color: #f89406;',
+    'background-image: linear-gradient(to bottom, #fbb450, #f89406);',
+    'background-position: 0 -15px;',
+    'background-repeat: repeat-x;',
+  ],
+  'bg-[#f89406_none_0_0_repeat-x]': [
+    'background-color: #f89406;',
+    'background-image: none;',
+    'background-position: 0 0;',
+    'background-repeat: repeat-x;',
+  ],
+  'bg-[#f89406_none_0_-15px_repeat-x]': [
+    'background-color: #f89406;',
+    'background-image: none;',
+    'background-position: 0 -15px;',
+    'background-repeat: repeat-x;',
+  ],
+  'bg-[#da4f49_linear-gradient(#ee5f5b,#bd362f)_0_0_repeat-x]': [
+    'background-color: #da4f49;',
+    'background-image: linear-gradient(to bottom, #ee5f5b, #bd362f);',
+    'background-position: 0 0;',
+    'background-repeat: repeat-x;',
+  ],
+  'bg-[#bd362f_linear-gradient(#ee5f5b,#bd362f)_0_-15px_repeat-x]': [
+    'background-color: #bd362f;',
+    'background-image: linear-gradient(to bottom, #ee5f5b, #bd362f);',
+    'background-position: 0 -15px;',
+    'background-repeat: repeat-x;',
+  ],
+  'bg-[#bd362f_none_0_0_repeat-x]': [
+    'background-color: #bd362f;',
+    'background-image: none;',
+    'background-position: 0 0;',
+    'background-repeat: repeat-x;',
+  ],
+  'bg-[#bd362f_none_0_-15px_repeat-x]': [
+    'background-color: #bd362f;',
+    'background-image: none;',
+    'background-position: 0 -15px;',
+    'background-repeat: repeat-x;',
+  ],
+  'bg-[#5bb75b_linear-gradient(#62c462,#51a351)_0_0_repeat-x]': [
+    'background-color: #5bb75b;',
+    'background-image: linear-gradient(to bottom, #62c462, #51a351);',
+    'background-position: 0 0;',
+    'background-repeat: repeat-x;',
+  ],
+  'bg-[#51a351_linear-gradient(#62c462,#51a351)_0_-15px_repeat-x]': [
+    'background-color: #51a351;',
+    'background-image: linear-gradient(to bottom, #62c462, #51a351);',
+    'background-position: 0 -15px;',
+    'background-repeat: repeat-x;',
+  ],
+  'bg-[#51a351_none_0_0_repeat-x]': [
+    'background-color: #51a351;',
+    'background-image: none;',
+    'background-position: 0 0;',
+    'background-repeat: repeat-x;',
+  ],
+  'bg-[#51a351_none_0_-15px_repeat-x]': [
+    'background-color: #51a351;',
+    'background-image: none;',
+    'background-position: 0 -15px;',
+    'background-repeat: repeat-x;',
+  ],
+  'bg-[#49afcd_linear-gradient(#5bc0de,#2f96b4)_0_0_repeat-x]': [
+    'background-color: #49afcd;',
+    'background-image: linear-gradient(to bottom, #5bc0de, #2f96b4);',
+    'background-position: 0 0;',
+    'background-repeat: repeat-x;',
+  ],
+  'bg-[#2f96b4_linear-gradient(#5bc0de,#2f96b4)_0_-15px_repeat-x]': [
+    'background-color: #2f96b4;',
+    'background-image: linear-gradient(to bottom, #5bc0de, #2f96b4);',
+    'background-position: 0 -15px;',
+    'background-repeat: repeat-x;',
+  ],
+  'bg-[#2f96b4_none_0_0_repeat-x]': [
+    'background-color: #2f96b4;',
+    'background-image: none;',
+    'background-position: 0 0;',
+    'background-repeat: repeat-x;',
+  ],
+  'bg-[#2f96b4_none_0_-15px_repeat-x]': [
+    'background-color: #2f96b4;',
+    'background-image: none;',
+    'background-position: 0 -15px;',
+    'background-repeat: repeat-x;',
+  ],
+  'bg-[#363636_linear-gradient(#444,#222)_0_0_repeat-x]': [
+    'background-color: #363636;',
+    'background-image: linear-gradient(to bottom, #444, #222);',
+    'background-position: 0 0;',
+    'background-repeat: repeat-x;',
+  ],
+  'bg-[#222_linear-gradient(#444,#222)_0_-15px_repeat-x]': [
+    'background-color: #222;',
+    'background-image: linear-gradient(to bottom, #444, #222);',
+    'background-position: 0 -15px;',
+    'background-repeat: repeat-x;',
+  ],
+  'bg-[#222_none_0_0_repeat-x]': [
+    'background-color: #222;',
+    'background-image: none;',
+    'background-position: 0 0;',
+    'background-repeat: repeat-x;',
+  ],
+  'bg-[#222_none_0_-15px_repeat-x]': [
+    'background-color: #222;',
+    'background-image: none;',
+    'background-position: 0 -15px;',
+    'background-repeat: repeat-x;',
+  ],
+  'text-paint-[#333_0_1px_1px_rgb(255_255_255/75%)]': [
+    'color: #333;',
+    'text-shadow: 0 1px 1px rgb(255 255 255 / 0.75);',
+  ],
+  'text-paint-[#fff_0_-1px_0_rgb(0_0_0/25%)]': [
+    'color: #fff;',
+    'text-shadow: 0 -1px 0 rgb(0 0 0 / 0.25);',
+  ],
+  'border-[rgb(0_0_0/10%)_rgb(0_0_0/10%)_#b3b3b3_rgb(0_0_0/10%)]': [
+    'border-top-color: rgb(0 0 0 / 0.1);',
+    'border-right-color: rgb(0 0 0 / 0.1);',
+    'border-bottom-color: #b3b3b3;',
+    'border-left-color: rgb(0 0 0 / 0.1);',
+  ],
+  'border-[rgb(0_0_0/10%)_rgb(0_0_0/10%)_rgb(0_0_0/25%)_rgb(0_0_0/10%)]': [
+    'border-top-color: rgb(0 0 0 / 0.1);',
+    'border-right-color: rgb(0 0 0 / 0.1);',
+    'border-bottom-color: rgb(0 0 0 / 0.25);',
+    'border-left-color: rgb(0 0 0 / 0.1);',
+  ],
   // Bootstrap 2.3.2 dropdown option highlight and popup elevation.
   'bg-[linear-gradient(#0077b3,#005580)]': [
     'background-color: #006699;',
@@ -1105,6 +1295,9 @@ function renderUtility(utility: string): string[] | null {
   const spacingRule = renderSpacingUtility(utility);
   if (spacingRule) return spacingRule;
 
+  const typographyRule = renderPixelTypographyUtility(utility);
+  if (typographyRule) return typographyRule;
+
   const colorRule = renderColorUtility(utility);
   if (colorRule) return colorRule;
 
@@ -1115,6 +1308,14 @@ function renderUtility(utility: string): string[] | null {
   if (transformRule) return transformRule;
 
   return null;
+}
+
+/** The same nonnegative decimal length grammar as split-host lengths, limited to px. */
+function renderPixelTypographyUtility(utility: string): string[] | null {
+  const match = utility.match(/^(text|leading)-\[(\d*\.?\d+)px\]$/);
+  if (!match || !Number.isFinite(Number(match[2]))) return null;
+  const value = spacingValue(`[${match[2]}px]`);
+  return [`${match[1] === 'text' ? 'font-size' : 'line-height'}: ${value};`];
 }
 
 function renderSpacingUtility(utility: string): string[] | null {
@@ -1156,6 +1357,7 @@ function renderSpacingUtility(utility: string): string[] | null {
 }
 
 function renderColorUtility(utility: string): string[] | null {
+  if (utility === 'ring-black') return ['--pui-ring-color: #000000;', ...ringShadow()];
   if (utility === 'bg-black/50') return ['background-color: rgb(0 0 0 / 0.5);'];
   if (utility === 'bg-black/80') return ['background-color: rgb(0 0 0 / 0.8);'];
 
@@ -1181,6 +1383,7 @@ function renderRoundedUtility(utility: string): string[] | null {
   if (utility === 'rounded-lg') return ['border-radius: var(--pui-radius-lg);'];
   if (utility === 'rounded-md') return ['border-radius: var(--pui-radius-md);'];
   if (utility === 'rounded-sm') return ['border-radius: var(--pui-radius-sm);'];
+  if (utility === 'rounded-[3px]') return ['border-radius: 3px;'];
   if (utility === 'rounded-[4px]') return ['border-radius: 4px;'];
   if (utility === 'rounded-[6px]') return ['border-radius: 6px;'];
   if (utility === 'rounded-[min(var(--radius-md),12px)]') {

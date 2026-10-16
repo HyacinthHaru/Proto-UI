@@ -428,3 +428,131 @@ describe('opt-in physical extent basis', () => {
     h.lease.dispose();
   });
 });
+
+// T-AXIS-INPUT-DIRECTIONAL-0001-CASE-TRAVEL / LIFETIME
+// Nonbrowser geometry fixtures; native layout/family alignment is separate evidence.
+describe('draft travel-target normalization', () => {
+  const leases: { dispose(): void }[] = [];
+  afterEach(() => leases.splice(0).forEach((lease) => lease.dispose()));
+  function fixture(extra: Partial<AxisInputConfig> = {}) {
+    const root = target(10, 20, 48, 24);
+    root.style.cssText =
+      'box-sizing:border-box;width:48px;height:24px;border:2px solid;padding:0 4px';
+    const thumb = target(16, 24, 16, 16);
+    root.append(thumb);
+    const samples: AxisInputSample[] = [];
+    const binding: AxisInputHostBinding = {
+      inputTarget: root,
+      geometryTarget: root,
+      travelTarget: thumb,
+      config: {
+        ...config,
+        activation: 'directional',
+        contactBasis: 'cancel-on-extent-change',
+        ...extra,
+      },
+      onSample: (s) => samples.push(s),
+    };
+    const lease = createWebAxisInputHost().attach(binding);
+    leases.push(lease);
+    return { root, thumb, samples, binding, lease };
+  }
+  it.each([16, 24, 31])(
+    'keeps grab anchor at x=%s and normalizes by the 20px content-box travel',
+    (start) => {
+      const h = fixture();
+      expect(pointer(h.thumb, 'pointerdown', start).defaultPrevented).toBe(false);
+      expect(h.samples).toEqual([]);
+      pointer(h.root, 'pointermove', start + 4);
+      pointer(h.root, 'pointerup', start + 10);
+      expect(h.samples[0]).toMatchObject({ phase: 'start', totalDelta: 0 });
+      expect(h.samples[1]).toMatchObject({ phase: 'move', totalDelta: 0.2 });
+      expect(h.samples[2]).toMatchObject({ phase: 'end', totalDelta: 0.5 });
+    }
+  );
+  it('uses the handle-center interval for position and reverses logical movement exactly once', () => {
+    const h = fixture({ direction: 'rtl' });
+    pointer(h.thumb, 'pointerdown', 24);
+    pointer(h.root, 'pointermove', 28);
+    pointer(h.root, 'pointerup', 34);
+    expect(h.samples).toEqual([
+      { phase: 'start', position: 1, delta: -0, totalDelta: -0 },
+      { phase: 'move', position: 0.8, delta: -0.2, totalDelta: -0.2 },
+      { phase: 'end', position: 0.5, delta: -0.3, totalDelta: -0.5 },
+    ]);
+  });
+  it('cancels changing thumb extent but ignores its placement during the same contact', () => {
+    const h = fixture();
+    pointer(h.thumb, 'pointerdown', 24);
+    pointer(h.root, 'pointermove', 28);
+    h.thumb.getBoundingClientRect = () =>
+      ({ left: 100, top: 500, width: 16, height: 16 }) as DOMRect;
+    pointer(h.root, 'pointermove', 30);
+    expect(h.samples.at(-1)).toMatchObject({ phase: 'move', totalDelta: 0.3 });
+    h.thumb.getBoundingClientRect = () =>
+      ({ left: 100, top: 500, width: 18, height: 16 }) as DOMRect;
+    pointer(h.root, 'pointerup', 34);
+    expect(h.samples.at(-1)).toEqual({ phase: 'cancel', reason: 'basis-changed' });
+    expect(h.samples.some((s) => s.phase === 'end')).toBe(false);
+  });
+  it('refuses invalid travel and preserves pending pointerdown defaults', () => {
+    const h = fixture();
+    h.thumb.getBoundingClientRect = () => ({ left: 0, top: 0, width: 48, height: 16 }) as DOMRect;
+    const down = pointer(h.root, 'pointerdown', 24);
+    pointer(h.root, 'pointermove', 40);
+    pointer(h.root, 'pointerup', 40);
+    expect(down.defaultPrevented).toBe(false);
+    expect(h.samples).toEqual([]);
+  });
+  it('cancels a replaced or detached travel target before release', () => {
+    const h = fixture();
+    pointer(h.thumb, 'pointerdown', 24);
+    pointer(h.root, 'pointermove', 28);
+    const next = target(16, 24, 16, 16);
+    h.lease.update({ ...h.binding, travelTarget: next });
+    pointer(h.root, 'pointerup', 34);
+    expect(h.samples.at(-1)).toEqual({ phase: 'cancel', reason: 'target-replaced' });
+    pointer(h.root, 'pointerdown', 24);
+    pointer(h.root, 'pointermove', 28);
+    next.remove();
+    pointer(h.root, 'pointerup', 34);
+    expect(h.samples.at(-1)).toEqual({ phase: 'cancel', reason: 'target-detached' });
+  });
+  it('does not accept a stale pending extent and rejects rotated travel geometry', () => {
+    const h = fixture();
+    pointer(h.thumb, 'pointerdown', 24);
+    h.root.style.paddingLeft = '6px';
+    pointer(h.root, 'pointermove', 28);
+    pointer(h.root, 'pointerup', 34);
+    expect(h.samples).toEqual([]);
+    h.root.style.paddingLeft = '4px';
+    h.thumb.style.transform = 'matrix(0, 1, -1, 0, 0, 0)';
+    pointer(h.root, 'pointerdown', 24);
+    pointer(h.root, 'pointermove', 28);
+    expect(h.samples.some((s) => s.phase === 'start')).toBe(false);
+  });
+  it.each(['negative-scale', 'unresolved-size'])(
+    'refuses unsupported travel layout: %s',
+    (kind) => {
+      const h = fixture();
+      if (kind === 'negative-scale') h.root.style.setProperty('scale', '-1 1');
+      else h.root.style.width = 'auto';
+      pointer(h.root, 'pointerdown', 24);
+      pointer(h.root, 'pointermove', 28);
+      pointer(h.root, 'pointerup', 34);
+      expect(h.samples).toEqual([]);
+    }
+  );
+  it('preserves immediate defaults and treats undefined/immediate updates equivalently', () => {
+    const h = fixture({ activation: undefined });
+    pointer(h.root, 'pointerdown', 24);
+    expect(h.samples[0]).toMatchObject({ phase: 'start' });
+    h.lease.update({ ...h.binding, config: { ...h.binding.config, activation: 'immediate' } });
+    expect(h.samples.map((s) => s.phase)).toEqual(['start']);
+    expect(() =>
+      h.lease.update({ ...h.binding, config: { ...h.binding.config, activation: null as any } })
+    ).toThrow(/activation/);
+    pointer(h.root, 'pointerup', 34);
+    expect(h.samples.at(-1)).toMatchObject({ phase: 'end' });
+  });
+});

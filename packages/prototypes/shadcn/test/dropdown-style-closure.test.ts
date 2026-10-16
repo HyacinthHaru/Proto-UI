@@ -12,7 +12,14 @@ it('collects the complete Dropdown source and generates document and Shadow dest
   );
   expect(collected.every((token) => typeof token === 'string')).toBe(true);
   const tokens = collected as string[];
-  for (const token of ['bg-destructive/10', 'bg-destructive/20', 'text-destructive', 'pl-7'])
+  for (const token of [
+    'bg-destructive/10',
+    'bg-destructive/20',
+    'text-destructive',
+    'pl-8',
+    'pl-2',
+    'pr-2',
+  ])
     expect(tokens).toContain(token);
   for (const render of [renderProtoStyleTokenCss, renderProtoShadowStyleTokenCss]) {
     const css = render(tokens);
@@ -23,6 +30,7 @@ it('collects the complete Dropdown source and generates document and Shadow dest
     expect(css).toContain(
       'background-color: color-mix(in oklab, var(--pui-destructive) 20%, transparent);'
     );
-    expect(css).toContain('padding-left: 1.75rem;');
+    expect(css).toContain('padding-left: 2rem;');
+    expect(css).toContain('padding-right: 0.5rem;');
   }
 });

@@ -129,7 +129,10 @@ It must be an object and may contain:
 - `asHooks`
 - custom fields
 
-Only `state` is required to be projected as Borrowed view.
+Owned and Borrowed `state` contributions are projected as Borrowed views. An already Observed
+view retains its read-only capabilities: capture must not add `setDefault` or `set`
+(`C-STATE-0003-C`, `C-STATE-0009-D/E`, and the specific Focus fact boundary in
+`C-AS-FOCUSABLE-0001-C`). Other Module handles retain their Module-owned capabilities.
 
 ### 4.1.1 Custom caller handle projection
 
@@ -143,7 +146,8 @@ Only `state` is required to be projected as Borrowed view.
 ### 4.2 Module Result Constraints
 
 - `state`
-  - state handles introduced by asHook must be projected as Borrowed handles
+  - author-writable state handles introduced by asHook are projected as Borrowed handles
+  - an Observed view stays Observed; capture is not a write-authority escalation
 - other modules
   - should primarily return disposers
   - may also return module-specific handles/capabilities

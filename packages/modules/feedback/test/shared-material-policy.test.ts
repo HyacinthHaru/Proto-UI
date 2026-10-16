@@ -235,3 +235,245 @@ describe('shared material policy (eligibility, never paint evidence)', () => {
     ).toContain('geometry-or-provider-budget-unavailable');
   });
 });
+
+describe('explicit style tint provider admission', () => {
+  function tinted(): MaterialPolicyInput {
+    const data = input();
+    return {
+      ...data,
+      candidates: [{ intent: 'liquid-glass', tint: 'style-fill' }],
+      provider: { ...data.provider!, styleTintVariants: ['regular'] },
+    };
+  }
+
+  it.each([undefined, 'regular', 'clear'] as const)(
+    'requires explicit capability for the actual variant %s',
+    (variant) => {
+      const data = tinted();
+      const candidates = [
+        { intent: 'liquid-glass', tint: 'style-fill', ...(variant ? { variant } : {}) },
+      ] as MaterialPolicyInput['candidates'];
+      const regularOnly = resolveMaterialPolicy({ ...data, candidates });
+      expect(regularOnly.decision).toBe(variant === 'clear' ? 'opaque-fallback' : 'eligible');
+      expect(regularOnly.diagnostics).toEqual(
+        variant === 'clear' ? ['style-tint-unavailable'] : []
+      );
+      const bothVariants = resolveMaterialPolicy({
+        ...data,
+        candidates,
+        provider: { ...data.provider!, styleTintVariants: Object.freeze(['regular', 'clear']) },
+      });
+      expect(bothVariants).toMatchObject({
+        decision: 'eligible',
+        selectedProfile: 'test-heightfield-v1',
+        effectiveMotion: 'static',
+        diagnostics: [],
+      });
+      expect(Object.isFrozen(bothVariants)).toBe(true);
+    }
+  );
+
+  it('does not infer regular capability from clear, even when the variant is omitted', () => {
+    const data = tinted();
+    expect(
+      resolveMaterialPolicy({
+        ...data,
+        provider: { ...data.provider!, styleTintVariants: ['clear'] },
+      })
+    ).toMatchObject({ decision: 'opaque-fallback', diagnostics: ['style-tint-unavailable'] });
+  });
+
+  it('falls back with one deterministic diagnostic when the optional fact is absent', () => {
+    const data = input();
+    expect(
+      resolveMaterialPolicy({
+        ...data,
+        candidates: [{ intent: 'liquid-glass', tint: 'style-fill' }],
+      })
+    ).toMatchObject({
+      decision: 'opaque-fallback',
+      requestedIntent: 'liquid-glass',
+      fallback: { fill: data.finalStyle.fill, foreground: data.finalStyle.foreground },
+      preserveStyle: false,
+      selectedBackend: null,
+      selectedProfile: null,
+      effectiveMotion: null,
+      diagnostics: ['style-tint-unavailable'],
+    });
+  });
+
+  const malformedFacts: unknown[] = [
+    undefined,
+    null,
+    false,
+    true,
+    'regular',
+    1,
+    {},
+    { 0: 'regular', length: 1 },
+    new Set(['regular']),
+    [],
+    ['unknown'],
+    ['regular', 'unknown'],
+    ['regular', undefined],
+    ['regular', null],
+    ['regular', ['clear']],
+    Array(1),
+    Object.assign(['regular'], { extra: true }),
+    Object.assign(['regular'], { [Symbol('extra')]: true }),
+    Object.defineProperty(['regular'], '0', { enumerable: false }),
+    Object.setPrototypeOf(['regular'], null),
+  ];
+
+  it.each(malformedFacts.map((fact, index) => [index, fact] as const))(
+    'fails closed on malformed capability %s without affecting untinted candidates',
+    (_, styleTintVariants) => {
+      const data = tinted();
+      const provider = { ...data.provider!, styleTintVariants } as MaterialPolicyInput['provider'];
+      expect(resolveMaterialPolicy({ ...data, provider })).toMatchObject({
+        decision: 'opaque-fallback',
+        selectedBackend: null,
+        diagnostics: ['style-tint-unavailable'],
+      });
+      const untinted = input();
+      expect(resolveMaterialPolicy({ ...untinted, provider })).toEqual(
+        resolveMaterialPolicy(untinted)
+      );
+    }
+  );
+
+  it('rejects capability getters, element getters and inherited facts without executing them', () => {
+    let reads = 0;
+    const get = () => {
+      reads++;
+      throw new Error('must not run');
+    };
+    const data = input();
+    const providers = [
+      Object.defineProperty({ ...data.provider! }, 'styleTintVariants', { enumerable: true, get }),
+      {
+        ...data.provider!,
+        styleTintVariants: Object.defineProperty(['regular'], '0', { enumerable: true, get }),
+      },
+      Object.assign(Object.create({ styleTintVariants: ['regular'] }), data.provider),
+      Object.defineProperty({ ...data.provider! }, 'styleTintVariants', { value: ['regular'] }),
+    ];
+    for (const provider of providers) {
+      expect(resolveMaterialPolicy({ ...tinted(), provider })).toMatchObject({
+        decision: 'opaque-fallback',
+        diagnostics: ['style-tint-unavailable'],
+      });
+      expect(resolveMaterialPolicy({ ...data, provider })).toEqual(resolveMaterialPolicy(data));
+    }
+    expect(reads).toBe(0);
+  });
+
+  it('contains a throwing reflection trap in the optional fact as a fallback diagnostic', () => {
+    const data = tinted();
+    const styleTintVariants = new Proxy(['regular'], {
+      ownKeys() {
+        throw new Error('provider fact unavailable');
+      },
+    }) as readonly 'regular'[];
+    expect(
+      resolveMaterialPolicy({ ...data, provider: { ...data.provider!, styleTintVariants } })
+    ).toMatchObject({ decision: 'opaque-fallback', diagnostics: ['style-tint-unavailable'] });
+  });
+
+  it.each(['reduce', 'unknown'] as const)(
+    'retains explicitly supported static tint under %s motion',
+    (reducedMotion) => {
+      const data = tinted();
+      expect(
+        resolveMaterialPolicy({
+          ...data,
+          candidates: [
+            {
+              intent: 'liquid-glass',
+              tint: 'style-fill',
+              deformation: { kind: 'press', phase: 'pressed', contact: 'pointer' },
+            },
+          ],
+          preferences: { ...data.preferences, reducedMotion },
+        })
+      ).toMatchObject({
+        decision: 'eligible',
+        effectiveMotion: 'static',
+        diagnostics: [],
+        overrides: [reducedMotion === 'reduce' ? 'reduced-motion' : 'unknown-motion'],
+      });
+    }
+  );
+
+  it('leaves every existing guard and diagnostic ahead of unavailable tint', () => {
+    const data = { ...tinted(), provider: input().provider };
+    const cases: Array<[Partial<MaterialPolicyInput>, string]> = [
+      [{ finalStyle: { ...data.finalStyle, fill: null } }, 'unresolved-owned-opaque-fallback'],
+      [{ candidates: [] }, 'no-active-material-candidate'],
+      [{ candidates: [data.candidates[0], data.candidates[0]] }, 'material-candidate-conflict'],
+      [
+        { candidates: [{ intent: 'liquid-glass', tint: 'unknown' } as never] },
+        'invalid-material-candidate',
+      ],
+      [
+        { preferences: { ...data.preferences, reducedTransparency: 'unknown' } },
+        'transparency-or-contrast-override',
+      ],
+      [
+        { preferences: { ...data.preferences, reducedTransparency: 'reduce' } },
+        'transparency-or-contrast-override',
+      ],
+      [
+        { preferences: { ...data.preferences, forcedColors: 'active' } },
+        'transparency-or-contrast-override',
+      ],
+      [
+        { preferences: { ...data.preferences, contrast: 'more' } },
+        'transparency-or-contrast-override',
+      ],
+      [{ source: null }, 'source-lease-unavailable-or-mismatched'],
+      [{ source: { ...data.source!, sameScope: false } }, 'source-lease-unavailable-or-mismatched'],
+      [{ provider: null }, 'provider-unavailable-or-mismatched'],
+      [{ provider: { ...data.provider!, ready: false } }, 'provider-unavailable-or-mismatched'],
+      [{ provider: { ...data.provider!, backend: 'system-native' } }, 'intent-backend-mismatch'],
+      [{ provider: { ...data.provider!, staticSupported: false } }, 'static-material-unavailable'],
+      [
+        {
+          candidates: [
+            {
+              intent: 'liquid-glass',
+              tint: 'style-fill',
+              deformation: { kind: 'press', phase: 'rest' },
+            },
+          ],
+          provider: { ...data.provider!, pressDeformationSupported: false },
+        },
+        'press-deformation-unavailable',
+      ],
+      [{ provider: { ...data.provider!, variants: [] } }, 'material-parameters-unavailable'],
+      [{ geometry: { ...data.geometry, width: 0 } }, 'geometry-or-provider-budget-unavailable'],
+      [
+        { provider: { ...data.provider!, maxSurfacePixels: 1 } },
+        'geometry-or-provider-budget-unavailable',
+      ],
+    ];
+    for (const [change, diagnostic] of cases) {
+      const result = resolveMaterialPolicy({ ...data, ...change });
+      expect(result.diagnostics, diagnostic).toEqual([diagnostic]);
+      expect(result.selectedBackend, diagnostic).toBeNull();
+    }
+  });
+
+  it('does not let provider capability rescue tint on adaptive blur or unknown candidate fields', () => {
+    const data = tinted();
+    for (const candidate of [
+      { intent: 'adaptive-blur', tint: 'style-fill' },
+      { intent: 'liquid-glass', tint: 'style-fill', extra: true },
+      { intent: 'liquid-glass', tint: 'style-fill', styleTintVariants: ['regular'] },
+    ]) {
+      expect(
+        resolveMaterialPolicy({ ...data, candidates: [candidate] } as MaterialPolicyInput)
+      ).toMatchObject({ decision: 'opaque-fallback', diagnostics: ['invalid-material-candidate'] });
+    }
+  });
+});

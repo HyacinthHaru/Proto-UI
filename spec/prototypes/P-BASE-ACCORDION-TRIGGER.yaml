@@ -11,6 +11,12 @@ statement:
   zh-CN: 独立编写的 Proto UI 协议。APG及风格库提供比较证据，不是实现授权或继承API。复用 Collection、Anatomy、Context、A11y、asTrigger、asFocusable及L1 lifecycle。
   en: An independently authored Proto UI protocol. APG and design libraries provide comparison evidence, not implementation authority or inherited APIs. Shared capabilities are Collection, Anatomy, Context, A11y, asTrigger, asFocusable and L1 lifecycle.
 criteria:
+  - id: P-BASE-ACCORDION-TRIGGER-TRANSIENT-CLEANUP
+    text:
+      zh-CN: 'press.cancel、pointer.cancel 与 view unmount 必须清除本 part 的 hovered/pressed；清理不得改变 canonical Root openItems or derived expanded 或发出 activation/request。逻辑实例 remount 不得重放旧瞬态；pointer.leave 的语义清理不等于取消 Host 持有的 contact。'
+      en: "press.cancel, pointer.cancel and view unmount must clear this part's hovered/pressed without changing canonical Root openItems or derived expanded or emitting activation/requests. Logical-instance remount must not replay stale transient state; semantic pointer.leave cleanup does not cancel a Host-owned contact."
+    dependsOn:
+      contracts: [C-EVENT-TYPE-0002, C-LIFECYCLE-0008]
   - id: P-BASE-ACCORDION-TRIGGER-ACTIVATION
     text:
       zh-CN: button-like Trigger 复用 asTrigger/asFocusable；Enter/Space 或 pointer press commit 请求一次 toggle，取消/未完成按压不请求。所有启用 header 保留自然 Tab 顺序，单纯聚焦不改变选择。
@@ -54,6 +60,9 @@ revisions:
   - version: 0.3.0-alpha.1
     change: introduced
     summary: Cataloged the bounded Accordion family independently; retained draft admission and explicit native evidence debt.
+  - version: 0.3.0-alpha.1
+    change: clarified
+    summary: Clarify draft cancellation and retained-view transient cleanup without changing semantic ownership or Host contact lifetime.
 tags:
   - prototype
   - base

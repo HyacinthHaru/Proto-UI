@@ -394,6 +394,20 @@ async function renderDemoWc(
       const el = refs[ref] as DemoInstance & HTMLElement;
       return el?.getExposes?.();
     },
+    removeProps(ref, names) {
+      if (!ownsLease(opt, lease)) return;
+      const el = refs[ref];
+      const current = el && wcRawProps.get(el);
+      if (!current) return;
+      const keys = [...names];
+      if (!ownsLease(opt, lease)) return;
+      // Authored callbacks are owned listeners in WC, so withdrawal retires
+      // those bindings before projecting the full raw snapshot.
+      callbacks.patch(el, Object.fromEntries(keys.map((name) => [name, undefined])));
+      if (!ownsLease(opt, lease)) return;
+      for (const name of keys) delete current[name];
+      api.setProps(ref, {});
+    },
     setProps(ref, next) {
       if (!ownsLease(opt, lease)) return;
       const el = refs[ref] as DemoInstance &
@@ -515,10 +529,13 @@ async function renderDemoReact(
       scopedCache.set(componentKey, Component);
     }
     const kids = (node.children ?? []).map((child) => renderNode(child));
-    const mergedProps: Record<string, unknown> = { ...(node.props ?? {}) };
+    // Refs are initialized with all authored props once. Reapplying node.props
+    // here would resurrect a key explicitly withdrawn through removeProps.
+    const mergedProps: Record<string, unknown> = {
+      ...(node.ref ? (propsMap.get(node.ref) ?? {}) : (node.props ?? {})),
+    };
     if (node.ref) {
       mergedProps['data-demo-ref'] = node.ref;
-      Object.assign(mergedProps, propsMap.get(node.ref) ?? {});
       mergedProps.ref = (instance: unknown) => {
         if (instance) componentRefs.set(node.ref!, instance as DemoInstance);
         else componentRefs.delete(node.ref!);
@@ -597,6 +614,15 @@ async function renderDemoReact(
     getExposes(ref) {
       const inst = componentRefs.get(ref);
       return inst?.getExposes?.();
+    },
+    removeProps(ref, names) {
+      if (!ownsLease(opt, lease)) return;
+      const current = propsMap.get(ref);
+      if (!current) return;
+      const keys = [...names];
+      if (!ownsLease(opt, lease)) return;
+      for (const name of keys) delete current[name];
+      api.setProps(ref, {});
     },
     setProps(ref, next) {
       if (!ownsLease(opt, lease)) return;
@@ -689,10 +715,13 @@ async function renderDemoVue(
       scopedCache.set(componentKey, Component);
     }
     const kids = (node.children ?? []).map((child) => renderNode(child));
-    const mergedProps: Record<string, unknown> = { ...(node.props ?? {}) };
+    // Refs are initialized with all authored props once. Reapplying node.props
+    // here would resurrect a key explicitly withdrawn through removeProps.
+    const mergedProps: Record<string, unknown> = {
+      ...(node.ref ? (propsMap[node.ref] ?? {}) : (node.props ?? {})),
+    };
     if (node.ref) {
       mergedProps['data-demo-ref'] = node.ref;
-      Object.assign(mergedProps, propsMap[node.ref] ?? {});
       mergedProps.ref = (el: unknown) => {
         if (el) componentRefs.set(node.ref!, el as DemoInstance);
       };
@@ -750,6 +779,13 @@ async function renderDemoVue(
     getExposes(ref) {
       const inst = componentRefs.get(ref);
       return inst?.getExposes?.();
+    },
+    removeProps(ref, names) {
+      if (!ownsLease(opt, lease) || !Object.hasOwn(propsMap, ref)) return;
+      const keys = [...names];
+      if (!ownsLease(opt, lease)) return;
+      for (const name of keys) delete propsMap[ref][name];
+      // Vue owns the reactive deletion commit just as it owns setProps.
     },
     setProps(ref, next) {
       if (propsMap[ref]) {
@@ -837,10 +873,13 @@ async function renderDemoVue2(
       scopedCache.set(componentKey, Component);
     }
     const kids = (node.children ?? []).map((child) => renderNode(child, h));
-    const mergedProps: Record<string, unknown> = { ...(node.props ?? {}) };
+    // Refs are initialized with all authored props once. Reapplying node.props
+    // here would resurrect a key explicitly withdrawn through removeProps.
+    const mergedProps: Record<string, unknown> = {
+      ...(node.ref ? (propsMap[node.ref] ?? {}) : (node.props ?? {})),
+    };
     if (node.ref) {
       componentRefNames.add(node.ref);
-      Object.assign(mergedProps, propsMap[node.ref] ?? {});
       mergedProps['data-demo-ref'] = node.ref;
     }
     mergedProps.instanceAssociations = associations.resolve(node.associations);
@@ -918,6 +957,16 @@ async function renderDemoVue2(
       refreshComponentRefs(app);
       const inst = componentRefs.get(ref);
       return inst?.getExposes?.();
+    },
+    removeProps(ref, names) {
+      if (!ownsLease(opt, lease) || !Object.hasOwn(propsMap, ref)) return;
+      const keys = [...names];
+      if (!ownsLease(opt, lease)) return;
+      for (const name of keys) {
+        if (typeof Vue.delete === 'function') Vue.delete(propsMap[ref], name);
+        else delete propsMap[ref][name];
+      }
+      app.$forceUpdate?.();
     },
     setProps(ref, next) {
       if (!propsMap[ref]) setReactive(propsMap, ref, {});

@@ -71,6 +71,8 @@ function fixture(delayed = false) {
   let paletteRevision = 1;
   const paletteListeners = new Set<() => void>();
   let contrast: 'no-preference' | 'more' = 'no-preference';
+  let forcedColors: 'none' | 'active' = 'none';
+  let onSourceRead = () => {};
   let tokens: string[] = [];
   const flush = () => host.setAttribute('data-pui-style', tokens.join(' '));
   const sink = createWebMaterialSink(
@@ -85,7 +87,10 @@ function fixture(delayed = false) {
     },
     {
       source: {
-        current: () => source,
+        current: () => {
+          onSourceRead();
+          return source;
+        },
         subscribe(fn) {
           sourceListeners.add(fn);
           return () => {
@@ -113,7 +118,7 @@ function fixture(delayed = false) {
           reducedMotion,
           reducedTransparency,
           contrast,
-          forcedColors: 'none',
+          forcedColors,
         }),
         subscribe(fn) {
           preferenceListeners.add(fn);
@@ -147,6 +152,9 @@ function fixture(delayed = false) {
     frame,
     flush,
     sourceListeners,
+    onSourceRead(fn: () => void) {
+      onSourceRead = fn;
+    },
     preferenceListeners,
     palette() {
       paletteRevision++;
@@ -188,6 +196,10 @@ function fixture(delayed = false) {
     },
     motion(value: typeof reducedMotion) {
       reducedMotion = value;
+      for (const fn of preferenceListeners) fn();
+    },
+    forcedColors(value: typeof forcedColors) {
+      forcedColors = value;
       for (const fn of preferenceListeners) fn();
     },
     transparency(value: typeof reducedTransparency) {
@@ -633,7 +645,7 @@ describe('continuous contact scheduler (mock GPU/decode, not optical evidence)',
       }
     }
   );
-  function neutralFixture() {
+  function neutralFixture(tint = false) {
     let image = 0;
     optical.render.mockImplementation(() => `data:image/png;base64,${btoa(String(++image))}`);
     const f = setup();
@@ -645,6 +657,7 @@ describe('continuous contact scheduler (mock GPU/decode, not optical evidence)',
         candidates: [
           {
             intent: 'liquid-glass',
+            ...(tint ? { tint: 'style-fill' as const } : {}),
             deformation: {
               kind: 'press',
               phase: 'rest',
@@ -1038,6 +1051,109 @@ describe('continuous contact scheduler (mock GPU/decode, not optical evidence)',
     expect(optical.render.mock.calls.length).toBe(count);
     f.sink.release(1);
   });
+
+  it('restores the tinted neutral contact profile and rejects an obsolete held completion', () => {
+    const f = neutralFixture(true);
+    try {
+      f.source(true, 2);
+      f.send(0.5, 'cancel');
+      expect(f.host.style.getPropertyValue('--pui-material-image')).toBe(f.neutral);
+      expect(f.host.dataset.materialProfile).toBe('pui-regular-style-tint-contact-5');
+      f.callbacks[0]();
+      expect(f.host.style.getPropertyValue('--pui-material-image')).toBe(f.neutral);
+      f.callbacks.at(-1)!();
+      expect(f.host.dataset.materialProfile).toBe('pui-regular-style-tint-contact-5');
+    } finally {
+      f.sink.release(1);
+    }
+  });
+  it('cannot bridge removed tint after a held decode and pointer cancellation', () => {
+    const f = neutralFixture(true);
+    try {
+      f.source(true, 2);
+      f.sink.commit({
+        ...f.rest,
+        revision: 3,
+        material: {
+          ...f.rest.material,
+          candidates: [
+            {
+              intent: 'liquid-glass',
+              deformation: { kind: 'press', phase: 'rest', contact: 'pointer' },
+            },
+          ],
+        },
+      });
+      expect(f.host.style.getPropertyValue('--pui-material-image')).toBe('');
+      f.send(0.5, 'cancel');
+      expect(f.host.style.getPropertyValue('--pui-material-image')).not.toBe(f.neutral);
+      f.callbacks[0]();
+      expect(f.host.style.getPropertyValue('--pui-material-image')).not.toBe(f.neutral);
+      f.callbacks.at(-1)!();
+      expect(f.host.dataset.materialProfile).toBe('liquidgl-v2-contact-canvas-1');
+    } finally {
+      f.sink.release(1);
+    }
+  });
+  it('withdraws old tinted pixels before a new fill and foreground decode is ready', () => {
+    const f = neutralFixture(true);
+    try {
+      f.host.style.color = 'rgb(255, 255, 255)';
+      f.sink.commit({
+        ...f.rest,
+        revision: 3,
+        style: { kind: 'tw', tokens: ['bg-black', 'text-white', 'rounded-lg'] },
+      });
+      expect(f.host.dataset.materialQuality).toBe('opaque-fallback');
+      expect(f.host.style.getPropertyValue('--pui-material-image')).toBe('');
+      expect(f.host.style.backgroundColor).toBe('rgb(0, 0, 0)');
+      f.callbacks.at(-1)!();
+      expect(f.host.dataset.materialProfile).toBe('pui-regular-style-tint-contact-5');
+    } finally {
+      f.sink.release(1);
+    }
+  });
+  it('rejects an obsolete tinted decode when rendering reenters with a neutral candidate', () => {
+    const f = setup();
+    try {
+      const first: VisualFeedbackFrame = {
+        ...f.frame,
+        revision: 2,
+        material: {
+          ...f.frame.material,
+          candidates: [
+            {
+              intent: 'liquid-glass',
+              tint: 'style-fill',
+              deformation: { kind: 'press', phase: 'rest', contact: 'pointer' },
+            },
+          ],
+        },
+      };
+      const second = { ...f.frame, revision: 3 };
+      let entered = false;
+      optical.render.mockImplementation(() => {
+        if (!entered) {
+          entered = true;
+          f.sink.commit(second);
+        }
+        return 'data:image/png;base64,AA==';
+      });
+      const callbacks: Array<() => void> = [];
+      decoding.prepare.mockImplementation((_doc, _source, ready) => {
+        callbacks.push(ready);
+        return () => {};
+      });
+      f.sink.commit(first);
+      expect(callbacks).toHaveLength(2);
+      callbacks[0]();
+      expect(f.host.dataset.materialQuality).toBe('opaque-fallback');
+      callbacks[1]();
+      expect(f.host.dataset.materialProfile).toBe('liquidgl-v2-contact-canvas-1');
+    } finally {
+      f.sink.release(1);
+    }
+  });
 });
 
 describe('independent-review R2: failed carrier must become idle', () => {
@@ -1347,3 +1463,223 @@ it.each([undefined, null, false, 0, ''])(
     expect(sourceDelete).toHaveBeenCalledOnce();
   }
 );
+
+describe('forced-color UA palette versus authored foreground ownership', () => {
+  function computedForeground(host: HTMLElement, color: string, adjustment: string) {
+    const read = window.getComputedStyle.bind(window);
+    return vi.spyOn(window, 'getComputedStyle').mockImplementation((element, pseudo) => {
+      const css = read(element, pseudo);
+      if (element !== host) return css;
+      // Inject the browser-resolved system palette, not an author style write.
+      return new Proxy(css, {
+        get(target, key) {
+          if (key === 'color') return color;
+          if (key === 'forcedColorAdjust') return adjustment;
+          const value = Reflect.get(target, key, target);
+          return typeof value === 'function' ? value.bind(target) : value;
+        },
+      });
+    });
+  }
+  it('withdraws optics for the UA forced palette and restores only after preference reset', () => {
+    const f = fixture();
+    f.sink.commit(f.frame(1));
+    expect(f.host.dataset.materialQuality).toBe('self-optical');
+    const authorColor = f.host.style.color;
+    const ua = computedForeground(f.host, 'rgb(0, 0, 0)', 'auto');
+    const paints = optical.render.mock.calls.length;
+    f.forcedColors('active');
+    expect(f.host.dataset.materialQuality).toBe('opaque-fallback');
+    expect(f.host.dataset.materialReason).toBe('transparency-or-contrast-override');
+    expect(f.host.style.backgroundImage).toBe('none');
+    expect(f.host.style.color).toBe(authorColor);
+    expect(f.host.style.forcedColorAdjust).not.toBe('none');
+    expect(optical.render).toHaveBeenCalledTimes(paints);
+    ua.mockRestore();
+    f.forcedColors('none');
+    expect(f.host.dataset.materialQuality).toBe('self-optical');
+    f.sink.release(1);
+  });
+  it('reads preference changes made during source lookup before any new optical render', () => {
+    const f = fixture();
+    f.sink.commit(f.frame(1));
+    const paints = optical.render.mock.calls.length;
+    f.onSourceRead(() => {
+      f.onSourceRead(() => {});
+      f.forcedColors('active');
+    });
+    f.source(true, 2);
+    expect(f.host.dataset.materialQuality).toBe('opaque-fallback');
+    expect(f.host.style.backgroundImage).toBe('none');
+    expect(optical.render).toHaveBeenCalledTimes(paints);
+    f.sink.release(1);
+  });
+  it('cannot promote an earlier UA palette exemption after a reentrant preference reset', () => {
+    const f = fixture();
+    f.sink.commit(f.frame(1));
+    const paints = optical.render.mock.calls.length;
+    computedForeground(f.host, 'rgb(0, 0, 0)', 'auto');
+    f.onSourceRead(() => {
+      f.onSourceRead(() => {});
+      f.forcedColors('none');
+    });
+    f.forcedColors('active');
+    expect(f.host.dataset.materialQuality).toBe('unavailable');
+    expect(f.host.dataset.materialReason).toBe('external-foreground-mismatch');
+    expect(f.host.style.backgroundImage).not.toContain('data:image');
+    expect(optical.render).toHaveBeenCalledTimes(paints);
+    f.sink.release(1);
+  });
+  it.each(['none', 'preserve-parent-color'])(
+    'rejects mismatched author colors when forced-color-adjust is %s',
+    (adjustment) => {
+      const f = fixture();
+      f.sink.commit(f.frame(1));
+      computedForeground(f.host, 'rgb(255, 0, 0)', adjustment);
+      f.forcedColors('active');
+      expect(f.host.dataset.materialQuality).toBe('unavailable');
+      expect(f.host.dataset.materialReason).toBe('external-foreground-mismatch');
+      expect(f.host.style.backgroundImage).not.toContain('data:image');
+      f.sink.release(1);
+    }
+  );
+  it('keeps the ordinary foreground mismatch gate under reduced transparency alone', () => {
+    const f = fixture();
+    f.sink.commit(f.frame(1));
+    computedForeground(f.host, 'rgb(255, 0, 0)', 'auto');
+    f.transparency('reduce');
+    expect(f.host.dataset.materialQuality).toBe('unavailable');
+    expect(f.host.dataset.materialReason).toBe('external-foreground-mismatch');
+    f.sink.release(1);
+  });
+});
+
+describe('style-fill tint ownership (mock GPU/decode, not pixel evidence)', () => {
+  const tinted = (
+    base: VisualFeedbackFrame,
+    variant: 'regular' | 'clear' = 'regular'
+  ): VisualFeedbackFrame => ({
+    ...base,
+    material: {
+      ...base.material,
+      candidates: [{ intent: 'liquid-glass', variant, tint: 'style-fill' }],
+    },
+  });
+  it('passes only the governed palette with an explicitly identified supported profile', () => {
+    const f = fixture();
+    f.sink.commit(tinted(f.frame(1)));
+    expect(optical.render.mock.calls.at(-1)?.[0]).toMatchObject({
+      tint: 'style-fill',
+      fill: [1, 1, 1, 1],
+      foreground: [23 / 255, 23 / 255, 23 / 255, 1],
+    });
+    expect(f.host.dataset.materialProfile).toBe('pui-regular-style-tint-5');
+    expect(f.host.dataset.materialQuality).toBe('self-optical');
+    f.sink.release(1);
+  });
+  it.each(['style-tint-empty-budget', 'rendered-contrast-unsafe'])(
+    'retains complete same-state fallback when the profile reports %s',
+    (reason) => {
+      const f = fixture();
+      try {
+        f.sink.commit(tinted(f.frame(1)));
+        expect(f.host.dataset.materialQuality).toBe('self-optical');
+        optical.render.mockImplementation(() => {
+          throw new Error(reason);
+        });
+        f.source(true, 2);
+        expect(f.host.dataset.materialQuality).toBe('opaque-fallback');
+        expect(f.host.dataset.materialReason).toBe(reason);
+        expect(f.host.style.backgroundImage).toBe('none');
+        expect(f.host.style.backgroundColor).toBe('rgb(255, 255, 255)');
+        expect(f.host.style.color).toBe('rgb(23, 23, 23)');
+      } finally {
+        f.sink.release(1);
+      }
+    }
+  );
+  it('invalidates a delayed tinted lease when only the governed foreground changes', () => {
+    const f = fixture();
+    const callbacks: Array<() => void> = [];
+    decoding.prepare.mockImplementation((_doc, _source, ready) => {
+      callbacks.push(ready);
+      return () => {};
+    });
+    try {
+      f.sink.commit(tinted(f.frame(1)));
+      const first = optical.render.mock.calls.at(-1)?.[0];
+      f.host.style.color = 'rgb(0, 0, 0)';
+      f.sink.commit(tinted(f.frame(2, ['bg-background', 'text-black', 'rounded-lg'])));
+      expect(optical.render.mock.calls.at(-1)?.[0]).toMatchObject({
+        fill: [1, 1, 1, 1],
+        foreground: [0, 0, 0, 1],
+        tint: 'style-fill',
+      });
+      expect(first).toMatchObject({
+        fill: [1, 1, 1, 1],
+        foreground: [23 / 255, 23 / 255, 23 / 255, 1],
+      });
+      expect(callbacks).toHaveLength(2);
+      callbacks[0]();
+      expect(f.host.dataset.materialQuality).toBe('opaque-fallback');
+      expect(f.host.style.backgroundImage).toBe('none');
+      callbacks[1]();
+      expect(f.host.dataset.materialQuality).toBe('self-optical');
+      expect(f.host.dataset.materialProfile).toBe('pui-regular-style-tint-5');
+    } finally {
+      f.sink.release(1);
+    }
+  });
+  it('retains the old no-tint path and refuses unsupported clear+tint rather than ignoring it', () => {
+    const f = fixture();
+    f.sink.commit(tinted(f.frame(1), 'clear'));
+    expect(optical.render).not.toHaveBeenCalled();
+    expect(f.host.dataset.materialReason).toBe('style-tint-unavailable');
+    expect(f.host.dataset.materialQuality).toBe('opaque-fallback');
+    f.sink.commit(f.frame(2));
+    expect(optical.render.mock.calls.at(-1)?.[0]).not.toHaveProperty('tint');
+    expect(f.host.dataset.materialProfile).toBe('liquidgl-v2-app-canvas-1');
+    f.sink.release(1);
+  });
+  it('never bridges or publishes an obsolete tint mode when fill/foreground remain identical', () => {
+    const f = fixture();
+    f.sink.commit(f.frame(1));
+    const callbacks: Array<() => void> = [];
+    decoding.prepare.mockImplementation((_doc, _source, ready) => {
+      callbacks.push(ready);
+      return () => {};
+    });
+    f.sink.commit(tinted(f.frame(2)));
+    expect(f.host.style.backgroundImage).toBe('none');
+    expect(f.host.dataset.materialQuality).toBe('opaque-fallback');
+    f.sink.commit(f.frame(3));
+    expect(callbacks).toHaveLength(2);
+    callbacks[0]();
+    expect(f.host.dataset.materialQuality).toBe('opaque-fallback');
+    callbacks[1]();
+    expect(f.host.dataset.materialProfile).toBe('liquidgl-v2-app-canvas-1');
+    f.sink.commit(tinted(f.frame(4)));
+    callbacks[2]();
+    expect(f.host.dataset.materialProfile).toBe('pui-regular-style-tint-5');
+    f.sink.release(1);
+  });
+  it('retains tint under reduced motion and synchronously withdraws it for forced colors and source loss', () => {
+    const f = fixture();
+    const value = tinted(f.frame(1));
+    f.sink.commit(value);
+    f.motion('reduce');
+    expect(optical.render.mock.calls.at(-1)?.[0]).toMatchObject({
+      tint: 'style-fill',
+      pressed: false,
+    });
+    expect(f.host.dataset.materialMotion).toBe('static');
+    f.forcedColors('active');
+    expect(f.host.dataset.materialQuality).toBe('opaque-fallback');
+    expect(f.host.style.backgroundImage).toBe('none');
+    f.forcedColors('none');
+    f.source(false);
+    expect(f.host.dataset.materialQuality).toBe('opaque-fallback');
+    expect(f.host.style.backgroundImage).toBe('none');
+    f.sink.release(1);
+  });
+});

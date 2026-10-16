@@ -15,13 +15,33 @@ criteria:
     text:
       zh-CN: 全部行为继续遵守共同定义；本家源码配方和实际绘制证据分开验收，不能用fallback冒充光学效果完成。
       en: All behavior follows the common definition; source recipes and actual paint require separate acceptance, and fallback does not prove optical material completion.
+  - id: P-LIQUID-GLASS-DROPDOWN-MENU-TRIGGER-MATERIAL-INTENT
+    text:
+      zh-CN: Trigger 声明一个共享 V2 rounded-rect/in-app-backdrop 材质槽，geometry 与完整不透明 fallback 来自最终 style；借用已有 Dropdown pressed 状态选择互斥 rest/pressed 候选，不新增 press 或状态 owner。禁用与取消仍由 Base 管理。不可用的 host/source/preferences 保留可读 fallback，不以 native blur 冒充显式玻璃。 仅可交互时唯一候选包含既有 pointer self-contact；disabled 时保留 slot 和可读 fallback，但提交零候选。这不代表已实现跟随指针的 hover 光学。
+      en: Trigger declares one shared V2 rounded-rect/in-app-backdrop material slot with geometry and complete opaque fallback from final style. Existing Dropdown pressed state selects mutually exclusive rest/pressed candidates without another press or state owner. Base retains disabled and cancellation semantics. Unavailable host/source/preferences preserve readable fallback, never native blur substituted for explicit glass. Exactly one candidate includes existing pointer self-contact only while eligible; disabled contributes zero candidates while retaining the slot and readable fallback. This does not grant pointer-following hover optics.
+  - id: P-LIQUID-GLASS-DROPDOWN-MENU-TRIGGER-COMMAND-INTERACTION
+    text:
+      en: Follow the bounded shared command recipe; eligible static hover is independent of pressed, persistent selection and focus-visible. Base owns all transient and semantic state; the family only projects data-only physical tokens through Rules in its owning setup. Disabled commands retain readable same-state opaque fallback without whole-host opacity. Exact-head native images and current contact footprint acceptance remain required.
+      zh-CN: 遵守有界共享 command 配方：可交互静态 hover 与 pressed、持久选择和 focus-visible 独立。所有瞬态及语义状态仍由 Base 拥有，family 仅在本 setup 内通过 Rules 投影数据型物理 tokens。禁用后保留可读的同状态不透明 fallback，不降低整个宿主的透明度。仍须精确源码 native 图像与当前 contact 绘制边界验收。
+    dependsOn:
+      contracts: [C-LIQUID-GLASS-COMMAND-INTERACTION-0001]
 dependsOn:
+  contracts: [C-FEEDBACK-MATERIAL-0001, C-RULE-INTENT-FEEDBACK-MATERIAL-0001]
   prototypes: [P-BASE-DROPDOWN-MENU-TRIGGER]
 verifies:
-  tests: [T-BASE-DROPDOWN-COMPOSITION-0001]
+  tests:
+    [
+      T-LIQUID-GLASS-COMMAND-INTERACTION-0001,
+      T-BASE-DROPDOWN-COMPOSITION-0001,
+      T-LIQUID-GLASS-DROPDOWN-MATERIAL-0001,
+    ]
 sources:
   - path: packages/prototypes/liquid-glass/src/dropdown/trigger.proto.ts
+  - path: packages/prototypes/liquid-glass/test/dropdown-material.test.ts
 revisions:
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Bind independent static hover, focus, quiet disabled paint and existing self-contact to the shared six-part draft recipe without introducing input ownership or claiming Apple-native equivalence.
   - version: 0.3.0-alpha.1
     change: introduced
     summary: Added the missing family projection without broader compatibility or platform admission.

@@ -1,0 +1,58 @@
+id: T-BRUTALIST-INPUT-0001
+type: test
+title: Brutalist standalone Input inheritance and presentation evidence
+status: draft
+since: 0.3.0-alpha.1
+lifecycleRationale: New projection requires source, simulated runtime and separate real browser evidence; no stable admission is claimed.
+summary: Exercises one Base editor, state ownership, source-relative style output and real-consumer acceptance separately.
+cases:
+  - id: T-BRUTALIST-INPUT-0001-CASE-BASE
+    title: One Base editor preserves editing, controlled acceptance/refusal, composition, disabled/readOnly and focus
+    covers: [P-BRUTALIST-INPUT-BASE, P-BRUTALIST-INPUT-STATES]
+    expectation: one-base-editor-without-new-value-or-field-owner
+  - id: T-BRUTALIST-INPUT-0001-CASE-SURFACE
+    title: Source-relative geometry and black focus ring close through generated style output
+    covers: [P-BRUTALIST-INPUT-SURFACE, P-BRUTALIST-INPUT-STATES]
+    expectation: neo-input-rem-geometry-and-conditional-presentation
+  - id: T-BRUTALIST-INPUT-0001-CASE-ENTRIES
+    title: Package, CLI and real website previews expose standalone Input
+    covers: [P-BRUTALIST-INPUT-ENTRIES]
+    expectation: standalone-input-entries-without-field-substitution
+  - id: T-BRUTALIST-INPUT-0001-CASE-BROWSER
+    title: Real four-runtime preview preserves editing and native focus across light/dark and narrow enlarged-text layouts
+    covers: [P-BRUTALIST-INPUT-SURFACE, P-BRUTALIST-INPUT-STATES, P-BRUTALIST-INPUT-EVIDENCE]
+    expectation: source-bound-browser-captures-and-real-input-checks-separate-from-os-ime
+implementations:
+  - id: brutalist-input-contract
+    kind: module-test
+    status: planned
+    path: packages/prototypes/brutalist/test/input.test.ts
+    required: true
+    consumesCases:
+      [
+        T-BRUTALIST-INPUT-0001-CASE-BASE,
+        T-BRUTALIST-INPUT-0001-CASE-SURFACE,
+        T-BRUTALIST-INPUT-0001-CASE-ENTRIES,
+      ]
+  - id: brutalist-input-browser
+    kind: adapter-test
+    status: planned
+    path: apps/www/src/content/docs/zh-cn/demo-brutalist-input.browser.test.ts
+    required: true
+    consumesCases: [T-BRUTALIST-INPUT-0001-CASE-BROWSER]
+    notes:
+      [
+        Synthetic composition checks do not prove OS IME. Browser execution and native-target acceptance remain pending.,
+      ]
+verifies:
+  prototypes: [P-BRUTALIST-INPUT]
+exercises:
+  prototypes: [P-BASE-INPUT, P-BRUTALIST-INPUT]
+sources:
+  - path: packages/prototypes/brutalist/test/input.test.ts
+  - path: apps/www/src/content/docs/zh-cn/demo-brutalist-input.browser.test.ts
+revisions:
+  - version: 0.3.0-alpha.1
+    change: introduced
+    summary: Added standalone Neo Input evidence obligations without treating unit checks as visual acceptance.
+tags: [test, brutalist, input, visual]

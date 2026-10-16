@@ -7,6 +7,10 @@ import type {
   MoveGesturePoint,
   MoveGestureSample,
 } from '@proto.ui/core';
+import {
+  beginDirectionalClickContact,
+  observeDirectionalPointerUp,
+} from './web-move-click-arbitration';
 
 type ActiveMove = {
   pointerId: number;
@@ -16,6 +20,8 @@ type ActiveMove = {
   target: HTMLElement;
   binding: MoveGestureHostBinding;
   started: boolean;
+  down: PointerEvent;
+  startSample: MoveGestureSample;
 };
 
 type TargetStyleSnapshot = Readonly<{
@@ -29,7 +35,10 @@ type TargetStyleSnapshot = Readonly<{
 const contactOwners = new WeakMap<Document, Map<number, ActiveMove>>();
 const targetOwners = new WeakMap<HTMLElement, ActiveMove>();
 const acceptedDownEvents = new WeakSet<Event>();
-const targetStyles = new WeakMap<HTMLElement, { count: number; original: TargetStyleSnapshot }>();
+const targetStyles = new WeakMap<
+  HTMLElement,
+  { count: number; policy: string; original: TargetStyleSnapshot }
+>();
 
 function contacts(target: HTMLElement): Map<number, ActiveMove> {
   let owners = contactOwners.get(target.ownerDocument);
@@ -39,16 +48,18 @@ function contacts(target: HTMLElement): Map<number, ActiveMove> {
   }
   return owners;
 }
-function retainStyles(target: HTMLElement): () => void {
+function retainStyles(target: HTMLElement, policy: string): (() => void) | null {
   let entry = targetStyles.get(target);
+  if (entry && entry.policy !== policy) return null;
   if (entry) entry.count++;
   else {
     entry = {
       count: 1,
+      policy,
       original: { touchAction: target.style.touchAction, userSelect: target.style.userSelect },
     };
     targetStyles.set(target, entry);
-    target.style.touchAction = 'none';
+    target.style.touchAction = policy;
     target.style.userSelect = 'none';
   }
   return () => {
@@ -88,6 +99,31 @@ function isPrimaryContact(event: PointerEvent): boolean {
   return event.isPrimary !== false;
 }
 
+function recognize(
+  current: ActiveMove,
+  event: PointerEvent
+): 'pending' | 'accept' | 'yield' | 'invalid' {
+  const x = Math.abs(event.clientX - current.start.x);
+  const y = Math.abs(event.clientY - current.start.y);
+  const main = current.binding.axis === 'horizontal' ? x : y;
+  const cross = current.binding.axis === 'horizontal' ? y : x;
+  if (!Number.isFinite(main) || !Number.isFinite(cross)) return 'invalid';
+  // Proto UI's draft trial threshold, not an inferred Apple parameter.
+  if (cross >= 4 && cross >= main) return 'yield';
+  return main >= 4 && main > cross ? 'accept' : 'pending';
+}
+
+function validate(binding: MoveGestureHostBinding): void {
+  if (binding.activation !== 'immediate' && binding.activation !== 'directional')
+    throw new TypeError('[MoveGesture] Invalid activation policy.');
+  if (
+    binding.activation === 'directional' &&
+    binding.axis !== 'horizontal' &&
+    binding.axis !== 'vertical'
+  )
+    throw new TypeError('[MoveGesture] Directional recognition requires one axis.');
+}
+
 function requireWebTarget(target: unknown): HTMLElement {
   if (!(target instanceof HTMLElement)) {
     throw new TypeError('[MoveGesture] Web host requires an HTMLElement target.');
@@ -103,6 +139,7 @@ function requireWebTarget(target: unknown): HTMLElement {
 export function createWebMoveGestureHost(): MoveGestureHost {
   return {
     attach(initialBinding: MoveGestureHostBinding): MoveGestureHostLease {
+      validate(initialBinding);
       let binding = initialBinding;
       let target = requireWebTarget(binding.target);
       let disposed = false;
@@ -170,6 +207,11 @@ export function createWebMoveGestureHost(): MoveGestureHost {
         )
           return;
         const startSample = sampleOf(event);
+        if (
+          binding.activation === 'directional' &&
+          ![event.clientX, event.clientY].every(Number.isFinite)
+        )
+          return;
         const startingRevision = revision;
         const startingBinding = binding;
         if (startingBinding.shouldStart && !startingBinding.shouldStart(startSample)) return;
@@ -184,7 +226,7 @@ export function createWebMoveGestureHost(): MoveGestureHost {
         )
           return;
 
-        event.preventDefault();
+        if (startingBinding.activation !== 'directional') event.preventDefault();
         acceptedDownEvents.add(event);
         const start = startSample.position;
         const current: ActiveMove = {
@@ -195,6 +237,8 @@ export function createWebMoveGestureHost(): MoveGestureHost {
           target,
           binding: startingBinding,
           started: false,
+          down: event,
+          startSample,
         };
         active = current;
         targetOwners.set(target, current);
@@ -212,30 +256,47 @@ export function createWebMoveGestureHost(): MoveGestureHost {
           doc.removeEventListener('pointercancel', onPointerCancel, true);
           win?.removeEventListener('blur', onBlur);
         };
+        observeDetach();
+        if (startingBinding.activation !== 'directional') accept(current);
+      };
+
+      const accept = (current: ActiveMove) => {
+        if (active !== current || disposed) return;
+        const startingRevision = revision;
+        if (current.binding.activation === 'directional')
+          beginDirectionalClickContact(target, current.down);
         try {
-          target.setPointerCapture?.(event.pointerId);
+          target.setPointerCapture?.(current.pointerId);
         } catch {
-          // Capture is a Web strategy, not a portable precondition. Continue
-          // with the stream the host can provide and cancel if ownership is lost.
+          // Capture is a Web strategy, not a portable precondition.
         }
         if (active !== current || disposed) return;
-        if (startingRevision !== revision) {
+        if (revision !== startingRevision) {
           cancel('target-replaced');
           return;
         }
-        observeDetach();
         current.started = true;
-        current.binding.onStart(startSample);
+        current.binding.onStart(current.startSample);
       };
 
       const onPointerMove = (event: PointerEvent) => {
         const current = active;
-        if (!current?.started || event.pointerId !== current.pointerId || handledSamples.has(event))
-          return;
+        if (!current || event.pointerId !== current.pointerId || handledSamples.has(event)) return;
         handledSamples.add(event);
         if (!target.isConnected) {
           cancel('target-detached');
           return;
+        }
+        if (!current.started) {
+          const decision = recognize(current, event);
+          if (decision === 'yield') beginDirectionalClickContact(target, current.down);
+          if (decision === 'yield' || decision === 'invalid') {
+            cancel('host-cancel');
+            return;
+          }
+          if (decision === 'pending') return;
+          accept(current);
+          if (active !== current || !current.started || disposed) return;
         }
         event.preventDefault();
         const next = sampleOf(event, current);
@@ -245,14 +306,28 @@ export function createWebMoveGestureHost(): MoveGestureHost {
 
       const onPointerUp = (event: PointerEvent) => {
         const current = active;
-        if (!current?.started || event.pointerId !== current.pointerId || handledSamples.has(event))
-          return;
+        if (!current || event.pointerId !== current.pointerId || handledSamples.has(event)) return;
         handledSamples.add(event);
         if (!target.isConnected) {
           cancel('target-detached');
           return;
         }
+        if (!current.started) {
+          const decision = recognize(current, event);
+          if (decision === 'yield') {
+            beginDirectionalClickContact(target, current.down);
+            observeDirectionalPointerUp(target, event);
+          }
+          if (decision !== 'accept') {
+            cancel('host-cancel');
+            return;
+          }
+          accept(current);
+          if (active !== current || !current.started || disposed) return;
+        }
         event.preventDefault();
+        if (current.binding.activation === 'directional')
+          observeDirectionalPointerUp(target, event);
         const endSample = sampleOf(event, current);
         active = null;
         stopDetachObserver();
@@ -274,7 +349,14 @@ export function createWebMoveGestureHost(): MoveGestureHost {
       const onNativeDragStart = (event: DragEvent) => event.preventDefault();
 
       const connect = () => {
-        releaseStyles = retainStyles(target);
+        const policy =
+          binding.activation === 'directional'
+            ? binding.axis === 'horizontal'
+              ? 'pan-y'
+              : 'pan-x'
+            : 'none';
+        releaseStyles = retainStyles(target, policy);
+        if (!releaseStyles) return;
         target.addEventListener('pointerdown', onPointerDown);
         target.addEventListener('pointermove', onPointerMove);
         target.addEventListener('pointerup', onPointerUp);
@@ -299,9 +381,14 @@ export function createWebMoveGestureHost(): MoveGestureHost {
       return {
         update(nextBinding) {
           if (disposed) return;
+          validate(nextBinding);
           const nextTarget = requireWebTarget(nextBinding.target);
           const currentRevision = ++revision;
-          if (nextTarget === target) {
+          if (
+            nextTarget === target &&
+            ((nextBinding.activation === 'immediate' && binding.activation === 'immediate') ||
+              (nextBinding.axis === binding.axis && nextBinding.activation === binding.activation))
+          ) {
             binding = nextBinding;
             return;
           }

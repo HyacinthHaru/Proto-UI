@@ -50,6 +50,12 @@ export type DemoRuntimeApi = {
    * a nonfunction patch removes that callback. Initial DemoNode.props stay JSON-like.
    */
   setProps(ref: string, next: Record<string, unknown>): void;
+  /**
+   * Withdraw authored prop keys from the next host snapshot. Unlike setProps with
+   * undefined, this supplies missing keys to Props and restores their defaults.
+   * Available in all four built-in renderers; optional for existing custom APIs.
+   */
+  removeProps?(ref: string, names: readonly string[]): void;
   /** Website composition surface channel; available in all four built-in renderers. */
   setSurfaceStyle?(ref: string, next: Record<string, string>): void;
 };

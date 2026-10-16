@@ -107,6 +107,15 @@ const entriesByLibrary: Record<LibraryId, PrototypeEntry[]> = {
   ],
   'liquid-glass': [
     {
+      id: 'toggle',
+      name: 'Toggle',
+      demoId: 'demo-liquid-glass-toggle',
+      description: isZh
+        ? 'Proto 草案：Base 持久 active；固定占位装饰勾选、选中 style-fill tint 与不透明回退。'
+        : 'Proto draft: persistent Base active state, a fixed-space decorative checkmark, selected style-fill tint and opaque fallback.',
+      href: './toggle/',
+    },
+    {
       id: 'select',
       name: 'Select',
       demoId: 'demo-liquid-glass-select',
@@ -580,6 +589,15 @@ const entriesByLibrary: Record<LibraryId, PrototypeEntry[]> = {
         ? '可见的轨道、滑块与原生滚动。'
         : 'Visible track and thumb over native scrolling.',
       href: './components/scroll-area/',
+    },
+    {
+      id: 'input',
+      name: 'Input',
+      demoId: 'demo-brutalist-input',
+      description: isZh
+        ? '继承 Base 的单行纯文本输入。'
+        : 'Single-line plain-text editing inherited from Base.',
+      href: './components/input/',
     },
     {
       id: 'textarea',

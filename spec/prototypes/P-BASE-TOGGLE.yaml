@@ -14,6 +14,12 @@ statement:
 
 
 criteria:
+  - id: P-BASE-TOGGLE-TRANSIENT-CLEANUP
+    text:
+      zh-CN: 'press.cancel、pointer.cancel 与 view unmount 必须清除本 part 的 hovered/pressed；清理不得改变 persistent active 或发出 activation/request。逻辑实例 remount 不得重放旧瞬态；pointer.leave 的语义清理不等于取消 Host 持有的 contact。'
+      en: "press.cancel, pointer.cancel and view unmount must clear this part's hovered/pressed without changing persistent active or emitting activation/requests. Logical-instance remount must not replay stale transient state; semantic pointer.leave cleanup does not cancel a Host-owned contact."
+    dependsOn:
+      contracts: [C-EVENT-TYPE-0002, C-LIFECYCLE-0008]
   - id: P-BASE-TOGGLE-ROLE-ACTIVE-CONTROL
     text:
       zh-CN: Toggle 表示一个 button-like persistent active control，而不是触发离散 action 的纯 command control，也不是 on/off value control。
@@ -587,6 +593,9 @@ revisions:
   - version: 0.1.0
     change: introduced
     summary: Introduced the first Base Toggle prototype contract draft with active state naming, button-like activation, accessibility pressed projection, and Button/Switch boundaries.
+  - version: 0.3.0-alpha.1
+    change: clarified
+    summary: Clarify draft cancellation and retained-view transient cleanup without changing semantic ownership or Host contact lifetime.
 tags:
   - prototype
   - base

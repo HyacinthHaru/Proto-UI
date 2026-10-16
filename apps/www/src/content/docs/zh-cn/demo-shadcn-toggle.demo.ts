@@ -7,6 +7,7 @@ export default {
       {
         kind: 'proto',
         prototypeId: 'shadcn-toggle',
+        ref: 'default',
         children: [
           {
             kind: 'proto',
@@ -20,6 +21,7 @@ export default {
       {
         kind: 'proto',
         prototypeId: 'shadcn-toggle',
+        ref: 'active-outline',
         props: { variant: 'outline', defaultActive: true },
         children: [
           {
@@ -34,6 +36,7 @@ export default {
       {
         kind: 'proto',
         prototypeId: 'shadcn-toggle',
+        ref: 'small',
         props: { size: 'sm' },
         children: [
           {
@@ -48,6 +51,7 @@ export default {
       {
         kind: 'proto',
         prototypeId: 'shadcn-toggle',
+        ref: 'disabled-active',
         props: { disabled: true, defaultActive: true },
         children: [
           {
@@ -58,6 +62,20 @@ export default {
           },
           { kind: 'box', className: 'sr-only', children: ['Strikethrough'] },
         ],
+      },
+      {
+        kind: 'proto',
+        prototypeId: 'shadcn-toggle',
+        ref: 'large',
+        props: { size: 'lg' },
+        children: ['Large'],
+      },
+      {
+        kind: 'proto',
+        prototypeId: 'shadcn-toggle',
+        ref: 'outline',
+        props: { variant: 'outline' },
+        children: ['Outline'],
       },
     ],
   },

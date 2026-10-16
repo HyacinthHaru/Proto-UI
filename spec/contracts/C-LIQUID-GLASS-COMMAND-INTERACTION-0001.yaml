@@ -1,0 +1,56 @@
+id: C-LIQUID-GLASS-COMMAND-INTERACTION-0001
+type: contract
+title: Liquid Glass command parts separate static hover, press, selection and focus
+status: draft
+since: 0.3.0-alpha.1
+lifecycleRationale: A bounded eight-part Prototype-layer recipe over existing Base states and existing self-contact. Exact-head four-Web optical and visual evidence, broader family roles and platform equivalence remain unaccepted.
+summary: Shared private physical tokens never add an input owner or portray Boolean hover as pointer-following optical contact.
+statement:
+  en: This slice covers Liquid Glass Button, Toggle, Form Submit, Form Reset, Accordion Trigger, Collapsible Trigger, Select Trigger and Dropdown Trigger. Each owning setup borrows its existing Base state handles and applies shared data-only family tokens through explicit Rules. Base retains activation, open/value/selection, focus and cancellation. Hover is a static project approximation informed by iPadOS 26 interaction references, not an implementation of Apple's moving highlight platter.
+criteria:
+  - id: C-LIQUID-GLASS-COMMAND-INTERACTION-0001-OWNERSHIP
+    text: Compose the matching Base owner exactly once. Family paint does not install input listeners, set borrowed state, recognize/capture pointers, submit or reset a Form, request open/selection/value changes, or change keyboard/default-action policy. Form Submit/Reset retain exactly one matching asFormSubmit/asFormReset hook and its inherited render; no additional asButton hook, direct submission/reset request or second Form owner is introduced. Their material prop defaults to auto, accepts opaque, and raw prop removal restores auto. Direct action and inherited Form Root disable suppress requests; re-enabling restores the existing action path. No readonly prop is invented.
+  - id: C-LIQUID-GLASS-COMMAND-INTERACTION-0001-HOVER
+    text: Static hover applies only when hovered is true, pressed is false and the command is eligible. Eligibility excludes disabled, and for Accordion also excludes collapseBlocked without changing its focus or ARIA semantics. Hover preserves geometry, hitbox, slotted content, selected tint/marker and same-state fallback colors. The family-private recipe is data only and physical token Rules remain in their owning setup. No host scale/translation, opaque overlay replacing glass, arbitrary shader input or page-local style/effect is introduced. Recipe intensity is a project choice requiring actual visual review, not an Apple numeric specification.
+  - id: C-LIQUID-GLASS-COMMAND-INTERACTION-0001-PRESS
+    text: Eligible material-enabled commands contribute one complete liquid-glass candidate with existing Base rest/pressed deformation and optional existing pointer self-contact. Hover does not set pressed or create contact. Main-action tint follows C-LIQUID-GLASS-MAIN-COMMAND-TINT-0001; material opaque contributes no candidate. Disabled and Accordion collapseBlocked contribute no candidate while retaining the declared slot and readable current-state opaque fallback. Held contact can intentionally survive Base pointerleave; CSS hover/pressed exclusion does not claim optical contact termination. Existing host contact cancellation, source admission and view ownership remain authoritative.
+  - id: C-LIQUID-GLASS-COMMAND-INTERACTION-0001-FOCUS
+    text: Focus-visible has an independent visible ring/forced-colors outline. Hover ring tokens withdraw while focus-visible is true so shared custom properties cannot erase focus through CSS ordering. Dropdown's existing focused-but-not-focus-visible elevation remains separately explicit. Disabled feedback is quiet without whole-host opacity, removes interactive elevation and does not erase current Toggle selection. Focus, disabled and persistent semantics must not be inferred from hover.
+  - id: C-LIQUID-GLASS-COMMAND-INTERACTION-0001-SAFETY
+    text: Existing material/source/provider guards are unchanged. Adding self-contact requires current rest/idle admission evidence because its expanded paint footprint and private carrier may reject source boundaries, overlapping output, clipping or authored pseudo-elements. Such rejection remains explicit safe fallback, never a guard bypass or assumed visual compatibility. Reduced/unknown motion disables optional elastic contact while retaining supported static material; restrictive transparency, forced colors and unsafe contrast retain readable fallback. Pure surface/content containers acquire no automatic command interaction.
+  - id: C-LIQUID-GLASS-COMMAND-INTERACTION-0001-EVIDENCE
+    text: Portable and generated-style tests cover all eight parts, Base cancellation and unmount prerequisites, raw prop removal, selected/unselected transitions, role-blocked/disabled states, focus/hover conflicts and exactly-one candidate ownership. Exact-head four-runtime light/dark native evidence covers idle/hover/press/release/leave, held leave/re-entry, blur/cancel/lost capture, no-contact hover, touch/nonprimary input, same layout and content identity, source/carrier negative controls and accessibility preferences. Existing thirteen Toggle scenarios and structured-detail/contrast thresholds remain unchanged. Source-only, fake-host or nonzero image differences do not grant optical or Apple equivalence.
+dependsOn:
+  contracts:
+    - C-AS-HOOK-0001
+    - C-STATE-INTERACTION-0003
+    - C-PROTOTYPE-STYLE-CLOSURE-0001
+    - C-LIQUID-GLASS-MAIN-COMMAND-TINT-0001
+    - C-FEEDBACK-MATERIAL-0001
+    - C-RULE-INTENT-FEEDBACK-MATERIAL-0001
+references:
+  tests: [T-LIQUID-GLASS-COMMAND-INTERACTION-0001]
+sources:
+  - path: packages/prototypes/liquid-glass/src/interactive-surface.ts
+  - path: packages/prototypes/liquid-glass/src/button/button.proto.ts
+  - path: packages/prototypes/liquid-glass/src/toggle/toggle.proto.ts
+  - path: packages/prototypes/liquid-glass/src/form/submit.proto.ts
+  - path: packages/prototypes/liquid-glass/src/form/reset.proto.ts
+  - path: internal/contracts/prototype-base/form-completion.v0.md
+  - path: https://developer.apple.com/videos/play/wwdc2025/208/?time=560
+  - path: https://developer.apple.com/design/human-interface-guidelines/motion
+openQuestions:
+  - id: C-LIQUID-GLASS-COMMAND-INTERACTION-0001-Q-NATIVE
+    question: Which exact-head native material receipts and independently reviewed images accept the static project recipe and changed contact footprint across the eight parts?
+    blocks: [activation:C-LIQUID-GLASS-COMMAND-INTERACTION-0001]
+revisions:
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Supersede only the draft solid-prominent exception with the separately defined Button prominent/Form Submit tint slice; shared interaction and source-safety obligations remain unchanged.
+  - version: 0.3.0-alpha.1
+    change: introduced
+    summary: Define the bounded prototype-first command recipe, role eligibility and exact evidence limits before implementation; cursor-following and cross-part contact remain separate capability work.
+  - version: 0.3.0-alpha.1
+    change: updated
+    summary: Extend the bounded recipe to Form Submit/Reset after separate CLI hook-recognition closure; retain Base Form ownership, default/removal behavior and native evidence gates.
+tags: [liquid-glass, hover, prototype, interaction, draft]

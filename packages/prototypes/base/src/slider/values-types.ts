@@ -1,4 +1,10 @@
-import type { ExposeEvent, ExposeMethod, ExposeState, State } from '@proto.ui/core';
+import type {
+  ObservedStateHandle,
+  ExposeEvent,
+  ExposeMethod,
+  ExposeState,
+  State,
+} from '@proto.ui/core';
 
 import type { SliderValuesCollisionBehavior } from './values-collision';
 
@@ -96,5 +102,8 @@ export type SliderValuesThumbExposes = SliderValuesPartExposes & {
   getSlotInfo: ExposeMethod<() => { index: number; disabled: boolean; readOnly: boolean }>;
 };
 export type SliderValuesThumbAsHookContract = {
-  state: SliderValuesPartStates & { focusVisible: State<boolean>; hovered: State<boolean> };
+  state: SliderValuesPartStates & {
+    focusVisible: ObservedStateHandle<boolean, SliderValuesPartProps>;
+    hovered: State<boolean>;
+  };
 };

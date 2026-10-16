@@ -18,6 +18,10 @@
       "types": "./src/button/index.ts",
       "default": "./src/button/index.ts"
     },
+    "./toggle": {
+      "types": "./src/toggle/index.ts",
+      "default": "./src/toggle/index.ts"
+    },
     "./theme": {
       "types": "./src/theme.ts",
       "default": "./src/theme.ts"

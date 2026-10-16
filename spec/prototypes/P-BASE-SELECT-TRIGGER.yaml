@@ -8,6 +8,12 @@ statement:
   zh-CN: Select Trigger 是同域 Root 中至多一个的 focusable command。它投射 select-only combobox role、expanded/controls/disabled facts 与 content-derived name，并将 pointer、Enter、Space、ArrowDown、ArrowUp 的 open intent 提交到 Root；它不得拥有 open 或 selection。
   en: Select Trigger is the optional, at-most-one focusable command in the Root domain. It projects a select-only combobox role, expanded, controls, and disabled facts, and a content-derived name, and submits pointer, Enter, Space, ArrowDown, and ArrowUp open intent to Root; it must not own open state or selection.
 criteria:
+  - id: P-BASE-SELECT-TRIGGER-TRANSIENT-CLEANUP
+    text:
+      zh-CN: 'press.cancel、pointer.cancel 与 view unmount 必须清除本 part 的 hovered/pressed；清理不得改变 canonical Root open/value or committed selected 或发出 activation/request。逻辑实例 remount 不得重放旧瞬态；pointer.leave 的语义清理不等于取消 Host 持有的 contact。'
+      en: "press.cancel, pointer.cancel and view unmount must clear this part's hovered/pressed without changing canonical Root open/value or committed selected or emitting activation/requests. Logical-instance remount must not replay stale transient state; semantic pointer.leave cleanup does not cancel a Host-owned contact."
+    dependsOn:
+      contracts: [C-EVENT-TYPE-0002, C-LIFECYCLE-0008]
   - id: P-BASE-SELECT-TRIGGER-COLD-TAB
     text:
       zh-CN: 已提交 open=true 且 Trigger 持焦时，Trigger 自己对 Tab 发出一次关闭请求，不阻止默认动作，也不依赖 Content 已 mounted；受控拒绝维持逻辑 open。各 Item 只接收自身持焦的局部 Tab，避免同一次冒泡事件重复请求。
@@ -58,4 +64,7 @@ revisions:
   - version: 0.3.0-alpha.1
     change: clarified
     summary: Require clearing transient pointer state when a view unmounts while its logical Select Trigger survives.
+  - version: 0.3.0-alpha.1
+    change: clarified
+    summary: Clarify draft cancellation and retained-view transient cleanup without changing semantic ownership or Host contact lifetime.
 tags: [prototype, base, select, trigger, combobox, keyboard, a11y]

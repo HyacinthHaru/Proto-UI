@@ -1,3 +1,4 @@
+import type { ObservedStateHandle } from '@proto.ui/core';
 import { ExposeEvent, ExposeMethod, ExposeState, FocusRequestOptions, State } from '@proto.ui/core';
 
 export interface ButtonProps {
@@ -25,8 +26,8 @@ export type ButtonExposes = {
 export type ButtonStateHandles = {
   disabled: State<boolean>;
   hovered: State<boolean>;
-  focused: State<boolean>;
-  focusVisible: State<boolean>;
+  focused: ObservedStateHandle<boolean, ButtonProps>;
+  focusVisible: ObservedStateHandle<boolean, ButtonProps>;
   pressed: State<boolean>;
 };
 

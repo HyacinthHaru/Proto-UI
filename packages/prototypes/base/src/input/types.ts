@@ -1,4 +1,5 @@
 import type {
+  ObservedStateHandle,
   ExposeEvent,
   ExposeMethod,
   ExposeState,
@@ -58,8 +59,8 @@ export type InputRootStateHandles = {
   value: State<string>;
   disabled: State<boolean>;
   readOnly: State<boolean>;
-  focused: State<boolean>;
-  focusVisible: State<boolean>;
+  focused: ObservedStateHandle<boolean, InputRootProps>;
+  focusVisible: ObservedStateHandle<boolean, InputRootProps>;
   composing: State<boolean>;
 };
 

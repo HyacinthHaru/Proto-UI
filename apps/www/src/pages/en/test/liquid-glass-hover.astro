@@ -1,0 +1,283 @@
+---
+import DraftProjectionStyle from '../../../components/DraftProjectionStyle.astro';
+import { renderThemeCss } from '../../../../../../packages/prototypes/liquid-glass/src/theme';
+---
+
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Liquid Glass command interaction: native evidence</title>
+    <DraftProjectionStyle />
+    <style is:global data-material-theme set:html={renderThemeCss()}></style>
+    <script is:inline>
+      document.documentElement.dataset.theme =
+        new URLSearchParams(location.search).get('theme') === 'dark' ? 'dark' : 'light';
+    </script>
+  </head>
+  <body>
+    <main>
+      <h1>Eight real Liquid Glass command parts</h1>
+      <p>
+        Static hover is a Proto UI approximation. Base owns input, requests, focus and cancellation.
+        This page provides only visible canvas sources and application layout; it supplies no
+        interaction paint or optical policy.
+      </p>
+      <p>
+        Each command has a separate material box and generous source margin. Negative controls
+        deliberately test the enlarged idle carrier near source boundaries, authored
+        pseudo-elements, neighboring paint and clipping. Rejection must remain explicit safe
+        fallback.
+      </p>
+      <div id="liquid-hover-matrix"></div>
+    </main>
+    <script>
+      import button from '@proto.ui/prototypes-liquid-glass/button';
+      import toggle from '@proto.ui/prototypes-liquid-glass/toggle';
+      import { formRoot, formSubmit, formReset } from '@proto.ui/prototypes-liquid-glass/form';
+      import {
+        accordionRoot,
+        accordionItem,
+        accordionHeading,
+        accordionTrigger,
+        accordionContent,
+      } from '@proto.ui/prototypes-liquid-glass/accordion';
+      import {
+        collapsibleRoot,
+        collapsibleTrigger,
+        collapsibleContent,
+      } from '@proto.ui/prototypes-liquid-glass/collapsible';
+      import {
+        selectRoot,
+        selectTrigger,
+        selectContent,
+        selectItem,
+      } from '@proto.ui/prototypes-liquid-glass/select';
+      import {
+        dropdownRoot,
+        dropdownTrigger,
+        dropdownContent,
+        dropdownItem,
+      } from '@proto.ui/prototypes-liquid-glass/dropdown';
+      import { createPreviewMaterialScene } from '../../../components/PrototypePreviewer/preview-material-scene';
+      import { registerPrototype } from '../../../components/PrototypePreviewer/registry';
+      import { renderDemo } from '../../../components/PrototypePreviewer/demo-renderer';
+      import {
+        LIQUID_HOVER_PARTS,
+        LIQUID_HOVER_NEGATIVES,
+        liquidHoverDemo,
+        liquidHoverRemoveProp,
+        type LiquidHoverPart,
+        type HoverRequest,
+      } from '../../../content/docs/zh-cn/liquid-hover-fixture';
+      import type {
+        DemoRenderResult,
+        DemoRuntimeApi,
+      } from '../../../components/PrototypePreviewer/demo-types';
+      import type { RuntimeId } from '../../../components/PrototypePreviewer/runtimes/ids';
+      const prototypes = {
+        button,
+        toggle,
+        formRoot,
+        formSubmit,
+        formReset,
+        accordionRoot,
+        accordionItem,
+        accordionHeading,
+        accordionTrigger,
+        accordionContent,
+        collapsibleRoot,
+        collapsibleTrigger,
+        collapsibleContent,
+        selectRoot,
+        selectTrigger,
+        selectContent,
+        selectItem,
+        dropdownRoot,
+        dropdownTrigger,
+        dropdownContent,
+        dropdownItem,
+      };
+      for (const prototype of Object.values(prototypes))
+        registerPrototype(prototype.name, prototype);
+      const records: DemoRenderResult[] = [];
+      const scenes = new Map<string, ReturnType<typeof createPreviewMaterialScene>>();
+      const apis = new Map<string, DemoRuntimeApi>();
+      const requests = new Map<string, HoverRequest[]>();
+      const key = (runtime: string, part: string) => `${runtime}-${part}`;
+      const fixture = {
+        state(runtime: string, part: string, name: string) {
+          return (
+            apis.get(key(runtime, part))?.getExposes('subject')?.[name] as
+              | { get?: () => unknown }
+              | undefined
+          )?.get?.();
+        },
+        setProps(runtime: string, part: string, ref: string, patch: Record<string, unknown>) {
+          const api = apis.get(key(runtime, part));
+          if (!api) throw new Error(`Missing fixture ${runtime}/${part}`);
+          api.setProps(ref, patch);
+        },
+        removeProp(runtime: string, part: string, ref: string, name: string) {
+          const api = apis.get(key(runtime, part));
+          if (!api) throw new Error(`Missing fixture ${runtime}/${part}`);
+          liquidHoverRemoveProp(api, ref, name);
+        },
+        source(runtime: string, part: string, available: boolean) {
+          scenes.get(key(runtime, part))?.sourceAvailable(available);
+        },
+        requests(runtime: string, part: string) {
+          return requests.get(key(runtime, part)) ?? [];
+        },
+        pause(value: boolean) {
+          for (const scene of scenes.values()) scene.pause(value);
+        },
+        async dispose() {
+          for (const record of records.splice(0).reverse()) await record.destroy();
+          for (const scene of scenes.values()) scene.dispose();
+          scenes.clear();
+          apis.clear();
+        },
+      };
+      (window as unknown as { liquidHoverFixture: typeof fixture }).liquidHoverFixture = fixture;
+      async function cell(runtime: RuntimeId, id: string, part: LiquidHoverPart, blocked = false) {
+        const section = document.createElement('section');
+        section.dataset.hoverCell = key(runtime, id);
+        const heading = document.createElement('h2');
+        heading.textContent = `${runtime} · ${id}`;
+        const entry = document.createElement('a');
+        entry.href = '#liquid-hover-matrix';
+        entry.dataset.focusStart = key(runtime, id);
+        entry.textContent = 'Keyboard entry';
+        const host = document.createElement('div');
+        host.dataset.hoverHost = key(runtime, id);
+        section.append(heading, entry, host);
+        document.querySelector('#liquid-hover-matrix')!.append(section);
+        const scene = createPreviewMaterialScene(host);
+        // Ordinary layout only, never a shader parameter or an admission override.
+        scene.scope.style.padding = id === 'source-edge' ? '0px' : '48px';
+        // The scene's zero-height portal destination follows mount in real flow.
+        // Keep it beyond the contact carrier; outer source padding alone cannot
+        // separate a sibling positioned exactly at the subject's bottom edge.
+        scene.mount.style.paddingBottom = '48px';
+        scene.scope.dataset.hoverControl = id;
+        scenes.set(key(runtime, id), scene);
+        const events: HoverRequest[] = [];
+        requests.set(key(runtime, id), events);
+        records.push(
+          await renderDemo({
+            runtime,
+            host: scene.mount,
+            demo: liquidHoverDemo(part, (api) => apis.set(key(runtime, id), api), events, blocked),
+          })
+        );
+        const subject = scene.mount.querySelector<HTMLElement>('[data-demo-ref="subject"]')!;
+        if (id === 'source-edge') scene.mount.classList.add('liquid-hover-source-edge');
+        if (id === 'authored-before') subject.classList.add('liquid-hover-authored-before');
+        if (id === 'neighbor') {
+          const neighbor = document.createElement('span');
+          neighbor.dataset.hoverNeighbor = '';
+          neighbor.setAttribute('aria-hidden', 'true');
+          // Adjacent DOM paint intersects only the new carrier's footprint.
+          const wrapper = subject.parentElement!;
+          wrapper.classList.add('liquid-hover-neighbor-layout');
+          wrapper.append(neighbor);
+        }
+        if (id === 'clipped-source')
+          scene.scope.querySelector<HTMLCanvasElement>(
+            'canvas[data-material-backdrop]'
+          )!.style.clipPath = 'inset(4px)';
+        if (id === 'accordion-tight') {
+          scene.mount.querySelector<HTMLElement>('.liquid-hover-inset')!.style.padding = '0px';
+          // Retain this negative's real destination overlap: the Item's 1px
+          // bottom border leaves a 1px gap, inside the 35px contact footprint.
+          scene.mount.style.paddingBottom = '0px';
+        }
+        scene.pause(true);
+      }
+      async function mount() {
+        const requestedRuntime = new URLSearchParams(location.search).get('runtime');
+        // CI isolates one runtime per page to avoid unrelated offscreen resource pressure.
+        // With no query the same page renders all four real runtime variants.
+        for (const runtime of ['wc', 'react', 'vue', 'vue2'] as RuntimeId[]) {
+          if (requestedRuntime && requestedRuntime !== runtime) continue;
+          for (const part of LIQUID_HOVER_PARTS) await cell(runtime, part, part);
+          await cell(runtime, 'accordion-blocked', 'accordion', true);
+          await cell(runtime, 'accordion-tight', 'accordion');
+          for (const negative of LIQUID_HOVER_NEGATIVES) await cell(runtime, negative, 'button');
+        }
+        document.documentElement.dataset.liquidHoverReady = 'true';
+      }
+      window.addEventListener('pagehide', () => void fixture.dispose(), { once: true });
+      void mount().catch((error) => {
+        document.documentElement.dataset.liquidHoverError = String(error);
+        console.error(error);
+      });
+    </script>
+  </body>
+</html>
+<style is:global>
+  body {
+    margin: 0;
+    background: var(--pui-background);
+    color: var(--pui-foreground);
+    font-family: ui-sans-serif, system-ui, sans-serif;
+  }
+  main {
+    max-width: 1120px;
+    margin: auto;
+    padding: 32px;
+  }
+  p {
+    max-width: 90ch;
+    line-height: 1.6;
+  }
+  #liquid-hover-matrix {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 64px;
+  }
+  [data-hover-cell] {
+    min-width: 0;
+  }
+  [data-hover-host] {
+    margin-top: 16px;
+  }
+  .liquid-hover-layout {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+  .liquid-hover-inset {
+    padding: 40px;
+  }
+  .liquid-hover-source-edge .liquid-hover-layout {
+    padding: 2px;
+  }
+  .liquid-hover-authored-before::before {
+    content: '•';
+    position: absolute;
+    left: 2px;
+    top: 2px;
+    color: currentColor;
+  }
+  .liquid-hover-neighbor-layout {
+    position: relative;
+    width: max-content;
+  }
+  [data-hover-neighbor] {
+    position: absolute;
+    left: calc(100% + 1px);
+    top: 14px;
+    width: 4px;
+    height: 8px;
+    background: #9453d2;
+  }
+  @media (max-width: 700px) {
+    #liquid-hover-matrix {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

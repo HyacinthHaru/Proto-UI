@@ -1,5 +1,5 @@
 import type { NumberFieldControlExposes } from './types';
-import type { State } from '@proto.ui/core';
+import type { ObservedStateHandle, State } from '@proto.ui/core';
 import { defineAsHook, definePrototype } from '@proto.ui/core';
 import { declareTextControl } from '@proto.ui/module-text-control';
 import type { NumberFieldPartProps } from './types';
@@ -10,10 +10,10 @@ export const asNumberFieldControl = defineAsHook<
   {
     state: {
       disabled: State<boolean>;
-      focusVisible: State<boolean>;
+      focusVisible: ObservedStateHandle<boolean, NumberFieldPartProps>;
       value: State<number>;
       readOnly: State<boolean>;
-      focused: State<boolean>;
+      focused: ObservedStateHandle<boolean, NumberFieldPartProps>;
     };
     asHooks: { 'as-field-control': import('../field').FieldControlBindingHandles };
   }
