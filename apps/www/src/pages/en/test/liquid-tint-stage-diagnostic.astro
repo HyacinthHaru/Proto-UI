@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head
+    ><meta charset="utf-8" /><meta name="robots" content="noindex,nofollow" /><title>
+      Test-only Tint4 stage diagnostics
+    </title></head
+  >
+  <body
+    ><main>
+      <h1>Test-only Tint4 stage diagnostics</h1><p>
+        The mean-anchored unit-slope general transfer is rejected analytically. This route collects
+        bounded GPU causal evidence only. It is not a production profile or UI acceptance.
+      </p>
+    </main>
+    <script>
+      import {
+        runTintStageFrame,
+        runTintStageRamp,
+      } from '../../../content/docs/zh-cn/liquid-tint-stage-diagnostic';
+      (window as unknown as { tintStageDiagnostic: unknown }).tintStageDiagnostic = {
+        runTintStageFrame,
+        runTintStageRamp,
+      };
+      document.documentElement.dataset.tintStageReady = 'true';
+    </script></body
+  >
+</html>

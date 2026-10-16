@@ -3,6 +3,13 @@ import { readFileSync } from 'node:fs';
 import { basename, matchesGlob } from 'node:path';
 import test from 'node:test';
 import { parse } from 'yaml';
+import {
+  assertBrowserInventory,
+  BROWSER_SUITES,
+  PRODUCTION_BROWSER_SUITES,
+  PRODUCTION_BROWSER_OWNERS,
+  createRuntimeTestPlan,
+} from './runtime-test-plan.mjs';
 
 const root = new URL('../../', import.meta.url);
 const workflow = parse(
@@ -280,4 +287,67 @@ test('Liquid hover plan and every command owner remain path-triggered', () => {
     ),
     'CI must validate the shard union and checkpoint behavior'
   );
+});
+
+for (const file of [
+  'apps/www/src/pages/en/test/liquid-tint-stage-diagnostic.astro',
+  'apps/www/src/content/docs/zh-cn/demo-liquid-tint-stage-diagnostic.browser.test.ts',
+  'apps/www/src/content/docs/zh-cn/liquid-tint-stage-diagnostic.ts',
+  'apps/www/src/content/docs/zh-cn/liquid-tint-stage-diagnostic.test.ts',
+]) {
+  test(`Tint stage diagnostics cover their test-only input ${file}`, () => {
+    assert.ok(readFileSync(new URL(file, root), 'utf8').length > 0);
+    assert.ok(covered(file), `Missing diagnostic trigger: ${file}`);
+  });
+}
+
+test('Tint stage diagnostics isolate cost and preserve all component evidence jobs', () => {
+  const job = workflow.jobs['tint-stage-diagnostic'];
+  assert.ok(job);
+  assert.equal(job['timeout-minutes'], 20);
+  assert.equal(job.needs, undefined);
+  assert.equal(job.strategy, undefined, 'A kernel diagnostic does not claim four-runtime parity');
+  assert.equal(job.steps[0].with.ref, '${{ env.CANDIDATE_SHA }}');
+  assert.equal(job.steps[0].with['persist-credentials'], false);
+  const suite = 'apps/www/src/content/docs/zh-cn/demo-liquid-tint-stage-diagnostic.browser.test.ts';
+  const commands = job.steps.filter((step) => step.run?.includes(suite));
+  assert.equal(commands.length, 1);
+  assert.equal(
+    commands[0].env.PROTO_UI_MATERIAL_EVIDENCE_DIR,
+    '${{ runner.temp }}/liquid-tint-stage-diagnostic'
+  );
+  assert.equal(commands[0].env.PROTO_UI_BROWSER_BASE_URL, undefined);
+  assert.match(commands[0].run, /liquid-tint-stage-diagnostic\.test\.ts/);
+  assert.match(commands[0].run, /--maxWorkers=1 --minWorkers=1/);
+  for (const id of ['browser-evidence', 'prominent-tint-evidence', 'hover-evidence']) {
+    assert.ok(workflow.jobs[id]);
+    assert.equal(workflow.jobs[id]['timeout-minutes'], 20);
+    assert.ok(!workflow.jobs[id].steps.some((step) => step.run?.includes(suite)));
+  }
+  const artifact = job.steps.find((step) => step.uses === 'actions/upload-artifact@v4');
+  assert.equal(artifact.if, 'always()');
+  assert.equal(artifact.with.path, '${{ runner.temp }}/liquid-tint-stage-diagnostic');
+  assert.match(artifact.with.name, /env\.CANDIDATE_SHA/);
+  assert.match(artifact.with.name, /github\.run_id/);
+  assert.match(artifact.with.name, /github\.run_attempt/);
+  assert.ok(covered('apps/www/src/content/docs/zh-cn/liquid-tint-stage-inputs/frozen.json'));
+  assert.ok(covered('apps/www/src/content/docs/zh-cn/liquid-tint-stage-inputs/source.png'));
+  assert.equal(covered('apps/www/src/content/docs/zh-cn/unrelated-diagnostic.ts'), false);
+});
+
+test('Tint stage browser suite has one dedicated owner and never enters the unit/shared-browser phase', () => {
+  const suite = 'apps/www/src/content/docs/zh-cn/demo-liquid-tint-stage-diagnostic.browser.test.ts';
+  assertBrowserInventory();
+  assert.ok(PRODUCTION_BROWSER_SUITES.includes(suite));
+  assert.equal(PRODUCTION_BROWSER_SUITES.filter((item) => item === suite).length, 1);
+  assert.ok(!BROWSER_SUITES.includes(suite));
+  assert.equal(PRODUCTION_BROWSER_OWNERS[suite], '.github/workflows/liquid-material-evidence.yml');
+  const [general, browser] = createRuntimeTestPlan([]);
+  assert.equal(general.args.filter((arg) => arg === suite).length, 1);
+  assert.equal(general.args[general.args.indexOf(suite) - 1], '--exclude');
+  assert.ok(!browser.args.includes(suite));
+  for (let shard = 1; shard <= 8; shard++) {
+    const [part] = createRuntimeTestPlan([], { phase: 'browser', shard: `${shard}/8` });
+    assert.ok(!part.args.includes(suite));
+  }
 });

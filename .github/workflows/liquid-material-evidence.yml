@@ -53,6 +53,10 @@ on:
       - 'apps/www/src/pages/en/test/liquid-glass-prominent-tint.astro'
       - 'apps/www/src/content/docs/zh-cn/demo-liquid-glass-prominent-tint.browser.test.ts'
       - 'apps/www/src/content/docs/zh-cn/liquid-prominent-tint-*'
+      - 'apps/www/src/pages/en/test/liquid-tint-stage-diagnostic.astro'
+      - 'apps/www/src/content/docs/zh-cn/demo-liquid-tint-stage-diagnostic.browser.test.ts'
+      - 'apps/www/src/content/docs/zh-cn/liquid-tint-stage-*'
+      - 'apps/www/src/content/docs/zh-cn/liquid-tint-stage-inputs/**'
       - 'spec/contracts/C-LIQUID-GLASS-MAIN-COMMAND-TINT-0001.yaml'
       - 'spec/tests/T-LIQUID-GLASS-MAIN-COMMAND-TINT-0001.yaml'
       - 'spec/prototypes/P-LIQUID-GLASS-BUTTON.yaml'
@@ -227,5 +231,45 @@ jobs:
         with:
           name: liquid-hover-${{ matrix.runtime }}-${{ env.CANDIDATE_SHA }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/liquid-material-evidence
+          if-no-files-found: warn
+          retention-days: 30
+
+  tint-stage-diagnostic:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.CANDIDATE_SHA }}
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Install locked dependencies
+        run: |
+          corepack enable
+          corepack pnpm@10.32.1 install --frozen-lockfile
+          CHROME=$(command -v google-chrome || command -v chromium || command -v chromium-browser)
+          echo "CHROME_PATH=$CHROME" >> "$GITHUB_ENV"
+      - name: Configure official evidence surface
+        run: |
+          corepack pnpm@10.32.1 --filter apps-www exec astro preferences disable devToolbar
+          corepack pnpm@10.32.1 --filter apps-www exec astro preferences list
+      - name: Collect test-only tint stages and continuous-tone rejection evidence
+        env:
+          PROTO_UI_MATERIAL_EVIDENCE_DIR: ${{ runner.temp }}/liquid-tint-stage-diagnostic
+        run: |
+          node --test scripts/test/liquid-material-evidence-inputs.test.mjs
+          node scripts/build/generate-web-material-kernel.mjs --check
+          corepack pnpm@10.32.1 exec vitest run \
+            apps/www/src/content/docs/zh-cn/liquid-tint-stage-diagnostic.test.ts \
+            apps/www/src/content/docs/zh-cn/demo-liquid-tint-stage-diagnostic.browser.test.ts \
+            --maxWorkers=1 --minWorkers=1
+      - name: Retain diagnostic results without claiming material acceptance
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: liquid-tint-stage-diagnostic-${{ env.CANDIDATE_SHA }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/liquid-tint-stage-diagnostic
           if-no-files-found: warn
           retention-days: 30
