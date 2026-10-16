@@ -492,8 +492,18 @@ export function createRuntimeSession<P extends PropsBaseType>(
         callbackScope.run(
           run,
           () => {
-            for (const cb of lifecycle.beforeDispose)
-              attemptCleanup(() => cb(run), recordCleanupFailure);
+            if (completeFailedCreation) {
+              for (const cb of lifecycle.beforeDispose)
+                attemptCleanup(() => cb(run), recordCleanupFailure);
+            } else {
+              try {
+                for (const cb of lifecycle.beforeDispose) cb(run);
+              } catch (error) {
+                // Stop authored callbacks, but retain the error for rejection
+                // after private teardown and the existing error aggregation.
+                recordCleanupFailure(error);
+              }
+            }
           },
           completeFailedCreation ? (_error: unknown) => {} : undefined
         ),

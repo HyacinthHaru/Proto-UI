@@ -68,6 +68,15 @@ cases:
       - Existing resource-owner cases observe cleared exposed state, invalid retained handles, and the identical created failure when beforeDispose also throws.
       - Existing Delay cases observe that failed-created queued work never runs, including after a throwing beforeDispose callback.
       - Does not certify arbitrary pre-return factory failures or general lifecycle callback recovery.
+  - id: T-LIFECYCLE-0001-CASE-ORDINARY-DISPOSAL-FAILFAST
+    title: Ordinary authored disposal stops after the first failure without skipping private retirement or rejecting silently
+    covers:
+      - C-LIFECYCLE-0002-G
+      - C-LIFECYCLE-0002-K
+    expectation: ordinary-authored-failfast-private-retirement-error-visible
+    notes:
+      - Observes the identical sole authored error, no later authored callback, cleared exposed state, and invalid retained State after terminal disposal.
+      - A separate falsy authored failure plus a throwing real Props subscription release retains the existing rejection aggregation while private retirement completes.
 implementations:
   - id: runtime-lifecycle-same-checkpoint-order
     kind: runtime-test
@@ -147,6 +156,7 @@ implementations:
     required: true
     consumesCases:
       - T-LIFECYCLE-0001-CASE-FAILED-CREATED-TERMINAL-CLEANUP
+      - T-LIFECYCLE-0001-CASE-ORDINARY-DISPOSAL-FAILFAST
   - id: runtime-failed-created-delay-cancellation
     kind: runtime-test
     status: passing
@@ -168,6 +178,7 @@ verifies:
         - C-LIFECYCLE-0002-H
         - C-LIFECYCLE-0002-I
         - C-LIFECYCLE-0002-J
+        - C-LIFECYCLE-0002-K
 exercises:
   contracts:
     - id: C-LIFECYCLE-0001
@@ -188,6 +199,9 @@ revisions:
   - version: 0.3.0-alpha.1
     change: revised
     summary: Mapped acquired failed-created primary-error preservation, terminal handle invalidation and queued Delay cancellation to existing executable resource and Delay cases; retained draft lifecycle.
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Mapped ordinary authored beforeDispose fail-fast and visible rejection to real acquired-resource consumers while retaining failed-created cleanup coverage and draft lifecycle.
 tags:
   - lifecycle
   - contract-test
