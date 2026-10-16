@@ -950,8 +950,23 @@ describe.sequential('real Liquid Dropdown Content in a bounded scene portal', ()
         expect(await trigger.getAttribute('aria-expanded')).toBe('true');
         expect((await geometry(page)).image).not.toContain('data:image');
         expect((await geometry(page)).admission.reason).toBe('source-scope-unavailable');
-        await page.keyboard.press('Escape');
-        await expect.poll(() => trigger.getAttribute('aria-expanded')).toBe('false');
+        const bodyProjection = await page
+          .locator('[data-demo-ref="content"]')
+          .evaluateHandle((content) => ({ content, parent: content.parentElement }));
+        try {
+          await page.keyboard.press('Escape');
+          await expect.poll(() => trigger.getAttribute('aria-expanded')).toBe('false');
+          // Logical close can precede conceal and physical projection retirement.
+          await expect
+            .poll(() =>
+              bodyProjection.evaluate(
+                ({ content, parent }) => !content.isConnected || content.parentElement !== parent
+              )
+            )
+            .toBe(true);
+        } finally {
+          await bodyProjection.dispose();
+        }
         await page.evaluate(() => (window as any).liquidPortalFixture.destination(true));
         await open(page);
         await optical(page);
