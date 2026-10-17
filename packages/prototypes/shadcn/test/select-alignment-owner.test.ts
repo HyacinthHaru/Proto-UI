@@ -108,6 +108,21 @@ function facts() {
     if (this.tagName === 'SHADCN-SELECT-ITEM-TEXT') return box(13, 37, 50, 20);
     return box(0, 0, 180, 32);
   });
+  vi.spyOn(HTMLElement.prototype, 'offsetLeft', 'get').mockImplementation(function (
+    this: HTMLElement
+  ) {
+    if (this.tagName === 'SHADCN-SELECT-TRIGGER') return 180;
+    if (this.tagName === 'SHADCN-SELECT-VALUE') return 193;
+    if (this.tagName === 'SHADCN-SELECT-ITEM-TEXT') return 13;
+    return 0;
+  });
+  vi.spyOn(HTMLElement.prototype, 'offsetWidth', 'get').mockImplementation(function (
+    this: HTMLElement
+  ) {
+    return this.tagName === 'SHADCN-SELECT-VALUE' || this.tagName === 'SHADCN-SELECT-ITEM-TEXT'
+      ? 50
+      : 180;
+  });
   vi.spyOn(HTMLElement.prototype, 'offsetHeight', 'get').mockImplementation(function (
     this: HTMLElement
   ) {
