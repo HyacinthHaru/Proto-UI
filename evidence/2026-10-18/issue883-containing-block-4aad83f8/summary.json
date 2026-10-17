@@ -1,0 +1,17 @@
+{
+  "preparedAt": "2026-10-17T18:07:29.264287+00:00",
+  "head": "4aad83f80ab29e0a5d4f3c0b63af17e3dcf64e06",
+  "tree": "cd35b1f9f6d60c24a99c886ccca9958af0e4227b",
+  "sourceSHA256": "0142b9bdfd5baeb605ae8f17852ad7ae9c5ce9bde603eb5b527ddc9de5bca02a",
+  "diagnostic": "82insertions2deletions inoriginalgeometrycallback; alloutsidebytes,7reads/4asserts/137await and320/200%/overflow1/deadlines retained; readonlybadbounds metadata to8ancestors, catches ownerrors",
+  "native": "Macoriginalonecase1pass35filtered; failurebranchnotexecuted; exactsavedcandidatebeforecommit",
+  "types": "934files0errors0warnings14hints",
+  "sourceCensus": "11329trackedentries unchanged bothstages; ignoresnotcovered",
+  "review": "0specificfinding,localpartial/ABSTAIN,notGitHubAPPROVE",
+  "currentLinux": "new4aadCIpendingatpreparation; olddd31532pass4LiquidlightRoot right320.4375 remainsred",
+  "forms": "actualdd315artifact12109715424 SHA f59249610ba8cb0806124ba12632c89adb2fa7d1bbd8e4fd566bbabddf63321d,run39055231026;2failedcases Label/FieldblackErrorred,invalid/text/firstfocuspresent,page/captureerrors[]; notfulljourney/oldproviderrootcauseclosure",
+  "rawSources": 26,
+  "archiveMembers": 27,
+  "pngs": 2,
+  "archiveSHA256": "82c3fbf9c32e947b9d5026ec1cffced13b9671d7a017e38808cb8f8a00876eb3"
+}
