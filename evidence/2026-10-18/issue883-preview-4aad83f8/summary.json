@@ -1,0 +1,51 @@
+{
+  "preparedAt": "2026-10-17T18:19:31.554657+00:00",
+  "head": "4aad83f80ab29e0a5d4f3c0b63af17e3dcf64e06",
+  "tree": "cd35b1f9f6d60c24a99c886ccca9958af0e4227b",
+  "run": 39056666060,
+  "artifact": 12109493824,
+  "generation": "p921-r39056666060-a1",
+  "completeArtifact": {
+    "bytes": 21145390,
+    "sha256": "224f7065dbd8968d73b458ef3d42f04e3050a2fc9c51f621f56f5e27402e4f83",
+    "files": 3835,
+    "html": 669,
+    "expandedBytes": 104045490,
+    "allMembersPreserved": true,
+    "originalZIP": "Retainedprivately,notinthisevidenceZIP"
+  },
+  "canonicalGeneratedArtifactRegression": {
+    "actualPassed": 1,
+    "actualFailed": 0,
+    "completeFiles": 3835,
+    "selfPackagedCompressedBytes": 21209997,
+    "expandedBytes": 104045490,
+    "ActionsZIPIsSeparate": true
+  },
+  "native": {
+    "start": "2026-10-17T18:14:14.634635+00:00",
+    "end": "2026-10-17T18:14:25.122961+00:00",
+    "browser": "155.0.8059.80",
+    "copyJourneysPassed": 8,
+    "eachDistinctSentinelConfirmedBeforeNativeCopy": true,
+    "trustedClicks": {
+      "shadcn": 12,
+      "brutalist": 4
+    },
+    "casePageErrors": "8emptyarrays,catalognotseparatelyinstrumented",
+    "serverExit": 0
+  },
+  "visual": {
+    "actualNewPNG": 9,
+    "allIndividuallyViewedByIndependentReviewer": true,
+    "rootViewed": 3,
+    "outerDuplicates": 3,
+    "dimensions": "8case1280x813,catalog1280x633",
+    "limits": "Visiblecopyfeedback;longReact/Vue2/Brutalistcodecontinuesoutsidecapture. Notfullpagelayout/firstpaint/AT/upstreampixelcomparison."
+  },
+  "review": "0specificfinding,human-assistedunassessedpartial/ABSTAIN,notGitHubapproval",
+  "CI": "Fullcurrent4aadCIandCollownerresolutionremainseparate",
+  "rawSources": 33,
+  "archiveMembers": 34,
+  "archiveSHA256": "94c6f45308b489f08bfa23f7d4b5e97b51b4e2ab3b0989459d47c96f7b0b7282"
+}

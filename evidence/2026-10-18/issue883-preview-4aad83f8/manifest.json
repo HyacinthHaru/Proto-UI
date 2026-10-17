@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "head": "4aad83f80ab29e0a5d4f3c0b63af17e3dcf64e06",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 2971,
+      "sha256": "389384a367572e2428aedc47b99caa474229db5e14bded4f9f1c6e1a1068cd56"
+    },
+    {
+      "path": "actual-catalog.png",
+      "bytes": 47666,
+      "sha256": "ceba1aa743799b0b1b930e0ce2a44c67f3902f8186852280f2415c0ce8129a61"
+    },
+    {
+      "path": "brutalist-vue.png",
+      "bytes": 141136,
+      "sha256": "4ca76fc92ec7b063200c19900ca85d04c9de4463cf1edcb3050b7f1a9a37995c"
+    },
+    {
+      "path": "evidence.zip",
+      "bytes": 1404757,
+      "sha256": "94c6f45308b489f08bfa23f7d4b5e97b51b4e2ab3b0989459d47c96f7b0b7282"
+    },
+    {
+      "path": "shadcn-vue.png",
+      "bytes": 129638,
+      "sha256": "061a85aec3f4c9c054d86eb9c9e7397560d193ae23bdd203348afc5db2c8e4ac"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 1804,
+      "sha256": "ed4b1050fc91346063b5fc1157ae205d305c711313bfdb64ee59c1450a3dea9a"
+    }
+  ]
+}
