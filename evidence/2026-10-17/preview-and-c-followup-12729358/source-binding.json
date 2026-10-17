@@ -1,0 +1,148 @@
+{
+  "base": "404a7417ef8dc22c8c7fe6d9ff9f3c8a5d40a17b",
+  "head": "12729358cc89dff007fb2e6d84a98401d66f5ff2",
+  "tree": "9788c9eb76cf486a6213d7b599738c678a374576",
+  "paths": [
+    {
+      "path": ".github/workflows/intranet-preview-build.yml",
+      "sha256": "a44265f315c10819a2bc81b85fc8980af88a1a0122cf271a66ace9e79da1817c",
+      "gitBlob": "7f1652f49733c064ba5cfa28c963e30b709ac01c"
+    },
+    {
+      "path": "apps/www/astro.config.mjs",
+      "sha256": "771e7cfc6b2ad49f6d2f2cd27f53859c4f6168dcf8373c34fa85d0342d1ee4d0",
+      "gitBlob": "8908f86c47d511e92a66e71e24400d906108de17"
+    },
+    {
+      "path": "apps/www/src/components/SiteCopyBootstrap.astro",
+      "sha256": "25f62b734b220cb862a5321fe70ac0e4aea927157d6454b7c7e208002e768ba3",
+      "gitBlob": "50b701c4577a2dd5fba7e624248ca72074de687b"
+    },
+    {
+      "path": "apps/www/src/components/SiteLibraryStyle.astro",
+      "sha256": "7fec23169c164d43f266b8fc71efbf55aaadba2bb4561f8670dc69e3d8c49e33",
+      "gitBlob": "66373a322469f02f22e51a1796993faf69739ce1"
+    },
+    {
+      "path": "apps/www/src/content/docs/zh-cn/browser-harness.test.ts",
+      "sha256": "bc9e26ea8de170a15f49e39f44eb9aee2b057dc61c4a50a9792ef973ac98417a",
+      "gitBlob": "fb98d3b9591112033f5b754ada54012cd83a44e6"
+    },
+    {
+      "path": "apps/www/src/content/docs/zh-cn/browser-harness.ts",
+      "sha256": "e3792a3e0003b79385c3aae90b08728c51d7564bf1abd16a32a47ff9f37fca9d",
+      "gitBlob": "628a358dbc57730ec82d7fd504327dfc83ae1b6c"
+    },
+    {
+      "path": "apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts",
+      "sha256": "ad7cf43441c2f209bad310e9a48ccb3bc27d2006f31a809e64a4c999a661b5fb",
+      "gitBlob": "268f4534211b52a109a02310244a4719d0a66019"
+    },
+    {
+      "path": "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+      "sha256": "181f88d9a711103f00437fd1866a30e5a383612c14aad8b0a63c46a043b5df88",
+      "gitBlob": "fd70d12b3d62f8c80943dc065f92b3b4b223171b"
+    },
+    {
+      "path": "apps/www/src/content/docs/zh-cn/overlay-scrollbar-geometry.browser.test.ts",
+      "sha256": "8fc15390ec8f76550295533217d918762854c435acc3c93afde7a95d59aaa7ae",
+      "gitBlob": "37a96bc9accac6ccc70d31aabd2db13c877c66a3"
+    },
+    {
+      "path": "apps/www/src/content/docs/zh-cn/prototype-projection-scope.browser.test.ts",
+      "sha256": "72d3b9a10eb4d3b215ad2475e785058e2f786e574e651eba460d643f8f64487a",
+      "gitBlob": "2a7c50a54c351de40291cd4a1713a5fe4f9dae37"
+    },
+    {
+      "path": "apps/www/src/pages/styles/site-code-startup.css.ts",
+      "sha256": "5e87c66122bbc90b9e9d571688093bb4b432db53df86b5ef79fe01180c0ac45e",
+      "gitBlob": "234e4c27db7222dac40806f169058b9cba6aefe0"
+    },
+    {
+      "path": "apps/www/src/pages/styles/site-library-theme.css.ts",
+      "sha256": "2ae87b2122b6701e747dea06834387f06a7f4d869bf119d663323fc3b2bbee91",
+      "gitBlob": "8c5c20cdc6db584a4460da23ec9d018ccdb6a4d0"
+    },
+    {
+      "path": "packages/adapters/react/test/select-presence-remount.integration.test.ts",
+      "sha256": "ab60596bad8223f4370195c27665ec6e87289e82cfcb424374d5351ccac6d304",
+      "gitBlob": "ca85a1bc31e35fde8d1cb65349f0c58670eba7aa"
+    },
+    {
+      "path": "packages/modules/positioning/src/web/target-alignment-host.ts",
+      "sha256": "5ba56d964638e5401927743be8e3631fd2c457ba9a8896c1eff61f2027e093b3",
+      "gitBlob": "899d1c6b6d3dd021658c36ae416edec5273823fa"
+    },
+    {
+      "path": "packages/modules/positioning/test/target-alignment-host.test.ts",
+      "sha256": "1fe098bd879b09ff28c116569fc0679735953d8b4de0a58924d7d119ac048317",
+      "gitBlob": "4fbfe6fb9367a5cccf85515f3bc5a4e2fba4d3fb"
+    },
+    {
+      "path": "packages/prototypes/base/src/select/alignment-controller.ts",
+      "sha256": "38f6e1d0a304c937f4a4393ad1ff2094d36a69225fe86c7549692602c5de89a5",
+      "gitBlob": "8394c3b66485f5b309f74c2fc42fbd69aae160be"
+    },
+    {
+      "path": "packages/prototypes/base/test/select-alignment-controller.test.ts",
+      "sha256": "9c3e37d539e2bc098636b62c6b73366e72dd1684391a7d3ba1d3743b2aa9d40e",
+      "gitBlob": "e4f8c5039c6f920e5b5804470208616e7e64f7ac"
+    },
+    {
+      "path": "packages/prototypes/base/test/select-alignment-owner.test.ts",
+      "sha256": "54876071802db2b33906f9ba79b1641aae2ccf382de0bd80e250e37fcb19ca91",
+      "gitBlob": "4d629338f740076547d49e0288b5fe84dba55bdb"
+    },
+    {
+      "path": "packages/prototypes/shadcn/test/select-alignment-owner.test.ts",
+      "sha256": "d6420f82827eef124d6768a7d94f095be254010c5c3e55308675fbd076c20851",
+      "gitBlob": "f181fbd5197bc61289bdacd3239113259e1bbd0d"
+    },
+    {
+      "path": "packages/web-conformance/test/select-target-alignment-fixture.test.ts",
+      "sha256": "b1add57b8daa019e2849ab2a10e8674eb7f2aed848dafff20162355a746fa22e",
+      "gitBlob": "4268a0d0cd2bfb870ecd963967026e6e9ab0134d"
+    },
+    {
+      "path": "scripts/preview/README.md",
+      "sha256": "2263340751602592beec67104396af557315a782a0eef1e427f063eaf41e32d5",
+      "gitBlob": "9f32e7ebe4e928537b53d32f5d8c6bddd23c044e"
+    },
+    {
+      "path": "scripts/preview/generated-artifact.test.mjs",
+      "sha256": "a7c0fd04a58fb0ceb5d5919e2243c4e24009d0e9fc8edea33892708a8fcb4398",
+      "gitBlob": "61c6982e302f5ee5c1f34d6194f2fc5b6fc14a4f"
+    },
+    {
+      "path": "scripts/test/check-dialog-baseline-evidence.mjs",
+      "sha256": "92b0c55a9dd8056145e84eea67ac0ae47f65ab895486e9913e86adfd5cdc035c",
+      "gitBlob": "0dbe0fbe3279d74581e1a55bf970dc9ed898ecac"
+    },
+    {
+      "path": "spec/contracts/C-TARGET-ALIGNMENT-BINDING-0001.yaml",
+      "sha256": "e28750e81a72c7f4c87e6fe26be40196eaf5fc7d86e13399545104229251a069",
+      "gitBlob": "e1e2ad31f1a1cea4aa89cc7dc53c44b8fc870496"
+    },
+    {
+      "path": "spec/contracts/C-TARGET-ALIGNMENT-PLAN-0001.md",
+      "sha256": "86f40a318fcc3d3edd7905eb0ee6111d38c486d0b30b8cdff6364e7c383ff933",
+      "gitBlob": "36bb811011449ff14ae4344c4016b230ed10967e"
+    },
+    {
+      "path": "spec/prototypes/P-SHADCN-SELECT-TRIGGER.yaml",
+      "sha256": "2b8b448e20db817db80457aa4e6366f79cc5fdc216d0eee8810dee30b51edee4",
+      "gitBlob": "6ac4b9049c4a4d3f91529927ee0fdd3cc17f46ce"
+    },
+    {
+      "path": "spec/tests/T-BASE-SELECT-CONTENT-0001.yaml",
+      "sha256": "5742442099d3a869580870680fab98d3be953244e2f003a4fc228938678fade4",
+      "gitBlob": "40cfcfc15b5709a46b7e088f685b63dae2ec980e"
+    },
+    {
+      "path": "spec/tests/T-TARGET-ALIGNMENT-BINDING-0001.yaml",
+      "sha256": "942cd9464d0482db6038edc47056ac6944207dcaff009907cc1f6318a78d3302",
+      "gitBlob": "9766c937f2c4bc908f5b830fc6e40d17f542cce0"
+    }
+  ],
+  "scope": "Final preview/C source delta; test-only final increments preserve production checkpoint; evidencebranch never merged"
+}
