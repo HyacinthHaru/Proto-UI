@@ -291,6 +291,11 @@ export function createSelectAlignmentController(options: {
     },
     unmounted() {
       mounted = false;
+      // Blocked admission can recover through an explicit structural or policy repair.
+      if (!['structure-invalid', 'unsupported-selection', 'geometry-unavailable'].includes(phase))
+        settled = false;
+      ++request;
+      lastKey = '';
       applied = null;
     },
     dispose() {
