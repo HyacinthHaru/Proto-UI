@@ -1,0 +1,90 @@
+{
+  "preparedAt": "2026-10-17T18:50:50.618234+00:00",
+  "head": "4aad83f80ab29e0a5d4f3c0b63af17e3dcf64e06",
+  "tree": "cd35b1f9f6d60c24a99c886ccca9958af0e4227b",
+  "canonical": {
+    "run": 39056665955,
+    "attempt": 1,
+    "terminal": "FAILURE",
+    "jobs": 22,
+    "success": 12,
+    "failure": 10,
+    "browserLogs": 8,
+    "checkout": "a247346fd6cbbdaccef82aec13fc6317b69b3dcc",
+    "checkoutTree": "cd35b1f9f6d60c24a99c886ccca9958af0e4227b",
+    "completeShards": ["3/8", "4/8", "5/8", "6/8", "7/8"],
+    "completedSubset": {
+      "pass": 541,
+      "fail": 17,
+      "skip": 15
+    },
+    "incompleteOriginalExit124": ["1/8", "2/8", "8/8"],
+    "all8TestTotal": null,
+    "currentColor": "9/9passed; whole5shard84/6/15stillred",
+    "general": "78public-docs beforeVitest",
+    "type": "934/0errors/0warnings/14hints",
+    "package": "39actualbuild/47manifest/9policy;4PASS5ADVISORY",
+    "Field": "25pass",
+    "Forms": "10pass2colorfail",
+    "Collapsible": "32pass4geometryfail+8separatediagnostics"
+  },
+  "localCcore": {
+    "actualPostcommit": true,
+    "files": 67,
+    "pass": 1120,
+    "fail": 0,
+    "sourceChanges": 0,
+    "notCanonicalCI": true
+  },
+  "FormBehavior": {
+    "source": "Actual4aad completebuiltartifact12109493824",
+    "actualUTC": "2026-10-17T18:38:32–18:38:40Z",
+    "families": ["shadcn/react", "brutalist/react"],
+    "diagnosticPass": 2,
+    "officialColorStillFailed": true,
+    "publicFiveFieldSubmitStatuses": 6,
+    "callbackOverride": false,
+    "callbackCountOrSubmissionIDClaim": false,
+    "trustedClicks": 20,
+    "trustedInput": 8,
+    "trustedChange": 8,
+    "runtimeTabUntrustedClicks": 2,
+    "actualContext": {
+      "viewport": "1440x1000",
+      "locale": "en-US",
+      "colorScheme": "light",
+      "timezone": "notfixed/notobserved"
+    },
+    "officialFixtureContext": "1365x1000/zh-CN/UTC; notcontext-equivalent",
+    "contextCorrection": "FORM4AAD-CONTEXT-PROVENANCE-001, additive correction; originalwrongreport retained, no rerun",
+    "PNGs": 14,
+    "DOM": 14,
+    "AX": 14,
+    "pageConsoleFailedRequests": "Bothcasesempty",
+    "builtFiles": 3835,
+    "trackedInputs": 11329,
+    "allBeforeAfterBytesEqual": true,
+    "serverExit": 0,
+    "independentReview": {
+      "metadataFindingCount": 1,
+      "closedThroughAdditiveCorrection": 1,
+      "openFindingCount": 0,
+      "formalApproval": false
+    },
+    "requestRecordsMatchedToMembers": 149
+  },
+  "GridControl": {
+    "source": "Separate4aadWC/Mac320/200%inline-parent-gridA/B/A,notoriginaltest",
+    "rootTrack": "170.609→14→170.609",
+    "rejectedBecause": "Root14 butscroll82/client14 =>68pxoverflow; Content82/scalablepadding32",
+    "ancestorChain": "Materialscene176−64×2=48; readingpane256−40×2=176",
+    "coordinateConfound": "Restoredleft+4;scrollXnotrecorded; notexactatomicA/B/A",
+    "sourcePatch": false,
+    "PNGs": 3
+  },
+  "triage": "2 confirmed family/test direction mismatches;0 newCproductionrootcausesconfirmed; Tooltip/Select/Portal remainpurpose-boundunknowns,notfixed/closed",
+  "rawSources": 155,
+  "archiveMembers": 156,
+  "PNGCount": 17,
+  "archiveSHA256": "c16d41a5bd62e079019d8bbfd0c5ca14da6b3e43dcbdaeafe62bbb93991ba6de"
+}

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "head": "4aad83f80ab29e0a5d4f3c0b63af17e3dcf64e06",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 5509,
+      "sha256": "0a582b5bceb815330d2ee9b88d1c6e44ed2f724f3bb7e918f63b3571400dbfb0"
+    },
+    {
+      "path": "brutalist-submit.png",
+      "bytes": 42631,
+      "sha256": "70b22431892542ec019776e98416129f4de00705d4a9ee0d3815f707717c26d6"
+    },
+    {
+      "path": "evidence.zip",
+      "bytes": 5040735,
+      "sha256": "c16d41a5bd62e079019d8bbfd0c5ca14da6b3e43dcbdaeafe62bbb93991ba6de"
+    },
+    {
+      "path": "rejected-grid-control.png",
+      "bytes": 28721,
+      "sha256": "85632edd5eab937996d821fc0143f6aaa70d3dde0c674faa5755815be7f36239"
+    },
+    {
+      "path": "shadcn-invalid.png",
+      "bytes": 38478,
+      "sha256": "4b3e679de3d02d23674f1b4c194c3e248d7ce95b901c8f1d13204427a76a7373"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 3190,
+      "sha256": "b7cf5ebb0e4af34b0b6158ddb0c57ca28f0236b68ef77b6f6296d0a15e49d1d8"
+    }
+  ]
+}
