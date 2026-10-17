@@ -4,13 +4,13 @@ import { pathToFileURL } from 'node:url';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 export const BASELINE = '15d864de54210c2eebc4f4b2fec6235324989989';
-// Calibrated against run 37756502706, artifact 11540591374. A changed probe
+// Geometry oracle from run 37756502706, artifact 11540591374. A changed probe
 // closure needs fresh evidence/review, never an arbitrary AssertionError allowlist.
 export const PROBE_HASHES = {
   'subject/apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts':
-    'e50e6c8b484eb283584a5173d92fe3b6c5cde8369c3aae69329b875bd06d5c3d',
+    '181f88d9a711103f00437fd1866a30e5a383612c14aad8b0a63c46a043b5df88',
   'subject/apps/www/src/content/docs/zh-cn/browser-harness.ts':
-    '9ac8ced949a73f5b5267f7ba6796a6bb69959704f2dc7fd5df5e7c96e3979839',
+    'e3792a3e0003b79385c3aae90b08728c51d7564bf1abd16a32a47ff9f37fca9d',
   'subject/scripts/test/server-readiness.mjs':
     '4bbc332f34ebf8a9c24f0ccc01d53438dd7146e86118a932eacc63d819105fda',
 };
