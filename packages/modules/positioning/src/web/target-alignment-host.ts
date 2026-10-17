@@ -33,6 +33,21 @@ function layoutTop(node: HTMLElement): number {
 const relativeTop = (node: HTMLElement, ancestor: HTMLElement) =>
   layoutTop(node) - layoutTop(ancestor) - ancestor.clientTop;
 
+function layoutLeft(node: HTMLElement): number {
+  let left = 0;
+  let current: HTMLElement | null = node;
+  while (current) {
+    left += current.offsetLeft;
+    const parent: Element | null = current.offsetParent;
+    if (!element(parent)) break;
+    left += parent.clientLeft;
+    current = parent;
+  }
+  for (let parent = node.parentElement; parent; parent = parent.parentElement)
+    left -= parent.scrollLeft;
+  return left;
+}
+
 type StyleClaim = { before: string; priority: string; written: string };
 const styleOwners = new WeakMap<HTMLElement, Map<string, StyleClaim>>();
 
@@ -202,8 +217,12 @@ export function createTargetAlignmentLease(
       }
       const reference = targets.blockReference.getBoundingClientRect();
       const value = targets.inlineReference.getBoundingClientRect();
-      const surface = targets.surface.getBoundingClientRect();
-      const text = targets.inlineTarget.getBoundingClientRect();
+      // Floating layout uses CSSOM offset precision, not the Surface's animated paint bounds.
+      // Keep the neutral Frame origin and reference/value viewport fractions.
+      const origin = frame.getBoundingClientRect().left - layoutLeft(frame);
+      const surfaceLeft = origin + layoutLeft(targets.surface);
+      const surfaceWidth = targets.surface.offsetWidth;
+      const textLeft = origin + layoutLeft(targets.inlineTarget);
       if (targets.blockTarget.offsetHeight <= 0 || reference.height <= 0) {
         report({ status: 'pending-target', reason: 'missing-target' });
         return null;
@@ -225,9 +244,9 @@ export function createTargetAlignmentLease(
             valueRight: value.right,
           },
           surface: {
-            left: surface.left,
-            right: surface.right,
-            width: surface.width,
+            left: surfaceLeft,
+            right: surfaceLeft + surfaceWidth,
+            width: surfaceWidth,
             clientHeight: targets.surface.clientHeight,
             borderTop: css(paint.borderTopWidth),
             borderBottom: css(paint.borderBottomWidth),
@@ -235,8 +254,8 @@ export function createTargetAlignmentLease(
             paddingBottom: css(paint.paddingBottom),
           },
           target: {
-            textLeft: text.left,
-            textRight: text.right,
+            textLeft,
+            textRight: textLeft + targets.inlineTarget.offsetWidth,
             offset: relativeTop(targets.blockTarget, targets.scrollport),
             height: targets.blockTarget.offsetHeight,
             atStart: descriptor.atStart,

@@ -40,10 +40,12 @@ implementations:
     consumesCases: [T-TARGET-ALIGNMENT-BINDING-0001-CASE-ASSOCIATION]
   - id: target-host
     kind: module-test
-    status: passing
+    status: needs-review
     path: packages/modules/positioning/test/target-alignment-host.test.ts
     required: true
     consumesCases: [T-TARGET-ALIGNMENT-BINDING-0001-CASE-HOST]
+    notes:
+      - Covers stable layout through Surface paint scale, fractional reference coordinates, RTL, offset origins and actual horizontal scroll alongside existing lease and convergence controls. Floating offset/width facts retain the declared CSSOM integer precision; no universal subpixel paint equivalence is claimed.
   - id: target-status
     kind: module-test
     status: passing
