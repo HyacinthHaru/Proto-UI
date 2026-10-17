@@ -328,6 +328,7 @@ export function createVueAdapter(runtime: VueRuntime) {
         const controllerRef = runtime.ref<RuntimeController | null>(null);
         // The gate is an opaque resource: deep ref proxies break view-epoch identity checks.
         const eventGateRef = runtime.shallowRef<ReturnType<typeof createEventGate> | null>(null);
+        let revealedGate: ReturnType<typeof createEventGate> | null = null;
         const exposesRef = runtime.ref<Record<string, unknown>>({});
         const invokeRef = runtime.ref<((fn: () => void) => void) | null>(null);
         const scopedExposesReader = createScopedExposesReader(() => invokeRef.value);
@@ -508,7 +509,6 @@ export function createVueAdapter(runtime: VueRuntime) {
             const gate = eventGateRef.value;
             pendingSignal = null;
             await runtime.nextTick();
-            const wasReady = viewReady;
             viewReady = true;
             notifyFocusTargetReady();
             signal?.done?.();
@@ -521,10 +521,12 @@ export function createVueAdapter(runtime: VueRuntime) {
             )
               return;
             const revealedRoot = rootRef.value;
+            const firstReveal = revealedGate !== gate;
+            revealedGate = gate;
             // Keep the first authored style from transitioning from the unstyled host.
-            if (!wasReady) revealedRoot?.setAttribute(PUI_VIEW_REVEALING_ATTR, '');
+            if (firstReveal) revealedRoot?.setAttribute(PUI_VIEW_REVEALING_ATTR, '');
             revealedRoot?.removeAttribute(PUI_VIEW_PENDING_ATTR);
-            if (!wasReady && revealedRoot) {
+            if (firstReveal && revealedRoot) {
               scheduleAfterWebLayout(
                 revealedRoot,
                 () => {
@@ -915,7 +917,10 @@ export function createVueAdapter(runtime: VueRuntime) {
               dir: ctx.attrs.dir ?? props.dir,
               'data-pui-root': '',
               [PUI_VIEW_DETACHED_ATTR]: detached ? '' : undefined,
-              [PUI_VIEW_PENDING_ATTR]: viewReady ? undefined : '',
+              [PUI_VIEW_PENDING_ATTR]:
+                viewReady && revealedGate !== null && revealedGate === eventGateRef.value
+                  ? undefined
+                  : '',
               ...(createVisualSink
                 ? {}
                 : { 'data-pui-style': serializeStyleTokens(hostTokens.value) }),
