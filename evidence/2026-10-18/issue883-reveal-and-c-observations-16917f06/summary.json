@@ -1,0 +1,25 @@
+{
+  "head": "16917f0666d8916b92d5d5d3656029369295488c",
+  "executionDateUTC": "2026-10-17",
+  "clientDate": "2026-10-18 Asia/Singapore",
+  "mode": "human-assisted/current-user",
+  "result": "partial; bounded color repair verified, portfolio debts remain",
+  "evidenceMembers": 264,
+  "pngMemberFiles": 35,
+  "nativeColorSequence": [
+    "originalmain8failed",
+    "Switchoracleonly7passed1Vuefailed",
+    "diagnosticVue1failed7filtered; realtransparent-to-.2CSSTransition150ms",
+    "Vueguard originalcomplete8passed"
+  ],
+  "vueFinal": "86files430passed5baselineDialogfailed; same5onoriginalmain2filecontrol6passed; beforefocusfixture429passed6failed retained",
+  "types": "934files0errors0warnings14hints",
+  "publicPackages": "47/47build;47manifestschecked",
+  "packageBudgetMode": "Finfdevelopment4PASS5ADVISORY, notstrict9PASS",
+  "collapsible": "OriginalmainMacWC1pass35filtered and diagnosticcandidateMacWC1pass35filtered. ConditionalfailureloggernotexercisedonMac; Linux4right 320.4375failureunresolved.",
+  "s5": "1failed1filteredlocale oncandidate;150s case timeout;late60swaitexception and18WCsplit transition-all/used-value-rounding errors. Allfourvisual/DOMfacts capture attempts unavailable aftertargetclosed. Causalclosuremissing, existingstyle-role guardpreserved.",
+  "form": "CurrentmainpushCIhasnoFormsspecialjob. Existingconditionalstylecollector gap isseparateowner; no newnativeFormpassclaimed.",
+  "review": "Independentlocal0specificsourcefindings, unassessedpartialABSTAIN; notGitHubAPPROVE",
+  "mainCI": "042 CI39014779791 22jobs12success10failure; ordinary5 75passed14failed15skipped; general78docsdrift beforeVitest",
+  "publicationStatus": "Prepared additive evidence; actual anonymous readback receipt must be recorded separately."
+}

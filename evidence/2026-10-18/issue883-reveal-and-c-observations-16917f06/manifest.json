@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "sourceHead": "16917f0666d8916b92d5d5d3656029369295488c",
+  "archiveSHA256": "1bceaab14b1ce7ce26b6eaba93d943fa9cd94d3e9745ce9a958507342ba6106e",
+  "outerFiles": [
+    {
+      "path": "README.md",
+      "bytes": 3604,
+      "sha256": "a93af5329021de61c0ae6ea1457c641b6445f1364af215667f3deed984db1b96"
+    },
+    {
+      "path": "execution-evidence.zip",
+      "bytes": 20609703,
+      "sha256": "1bceaab14b1ce7ce26b6eaba93d943fa9cd94d3e9745ce9a958507342ba6106e"
+    },
+    {
+      "path": "source-binding.json",
+      "bytes": 6989,
+      "sha256": "37bf0b276722c0db57dd520027a5a7d8de7f6cee2f8eea5b779efd57a36c7c58"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 1764,
+      "sha256": "b20d9ebf37d6a4d97632dacfebe987f25082aed86fe8dc8e09995363b873b89f"
+    },
+    {
+      "path": "vue-dark.png",
+      "bytes": 54292,
+      "sha256": "64230a78345279e788b6ec5e48fe9efeb589c303645ae140486e1ea268bea414"
+    },
+    {
+      "path": "vue-light.png",
+      "bytes": 52244,
+      "sha256": "c2fb1a368b69f27b967f6dd6178efad6ce46704c1b2302dce945e6a35cdb59c9"
+    },
+    {
+      "path": "vue-portal.png",
+      "bytes": 2554,
+      "sha256": "5ac2de884c458c201e27e747db80f4ba8ac1c7dfa618ca9f75e71d7239b5c757"
+    }
+  ],
+  "archiveMembers": 264,
+  "originalSourcesMapped": 263,
+  "pngMemberFiles": 35,
+  "imageBytesUnchanged": true,
+  "notes": [
+    "ThreeouterPNGsduplicatepassinglifetimemembers;notthreeadditionalnativeexecutions.",
+    "Anonymouspublicationandreadbackwillhaveaseparatereceipt."
+  ]
+}

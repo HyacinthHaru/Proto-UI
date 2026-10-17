@@ -1,0 +1,57 @@
+{
+  "head": "16917f0666d8916b92d5d5d3656029369295488c",
+  "tree": "e218cb9c9298677c9e5441fea8f8ea898aca9087",
+  "base": "042f1e5740e1a809b9ca238593f5bb01a1f8a8e3",
+  "commits": [
+    {
+      "sha": "aba61937a93e456c9b822a6e84b8715bfebc6d97",
+      "tree": "886b74f34474624862aefd416f8ede885d3eb2a4",
+      "parents": "042f1e5740e1a809b9ca238593f5bb01a1f8a8e3",
+      "subject": "fix(vue): stabilize styles through initial reveal",
+      "author": "HyacinthHaru <hyacinth@haru.ac>",
+      "committer": "HyacinthHaru <hyacinth@haru.ac>",
+      "signatureVerified": true,
+      "message": "fix(vue): stabilize styles through initial reveal\n\nModelTrace: {\"anomalies\":[\"context-uncalibrated\",\"harness-label-unavailable\",\"system-label-unavailable\",\"unknown-model-not-excluded\"],\"declared\":{\"harnessModel\":null,\"systemModel\":null},\"expiresAt\":\"2026-10-17T17:39:15.393Z\",\"id\":\"sha256:141553937e241ad6ba56931f9680fe3a0e1056bfff3a3cf24c80b88ce1c7f6f9\",\"kind\":\"proto-ui.modeltrace-receipt\",\"measuredAt\":\"2026-10-17T16:39:15.393Z\",\"priorReceiptDigest\":null,\"result\":{\"candidates\":[{\"familyId\":\"gpt\",\"modelId\":\"gpt-6-astra\",\"probability\":0.9611794339484915,\"score\":1.5944348046736583},{\"familyId\":\"gpt\",\"modelId\":\"gpt-6-sol\",\"probability\":0.03878103401816934,\"score\":1.3269156551526293},{\"familyId\":\"gpt\",\"modelId\":\"gpt-5.6-sol\",\"probability\":0.00002911296905043471,\"score\":0.7273737513687397}],\"familyId\":\"gpt\",\"margin\":0.9223983999303221,\"modelId\":\"gpt-6-astra\",\"probability\":0.9611794339484915,\"status\":\"candidate\"},\"sampling\":{\"contextCalibrated\":false,\"counts\":[218,233,247],\"method\":\"active-model-literals\",\"queries\":3,\"sampleDigests\":[\"f0abda015165fae466ea0091a7526193b61305e03fc3da6489d6a49d75d17e9d\",\"6e0fd35d964a81cb0906a0ee8256d9eb5bb04d31fd0317a4771a2a3ab5bb66fd\",\"7950046c5d2bba2ed995982b89c9b025e28b84901211065409d5bd28b80d0967\"]},\"schemaVersion\":1,\"scope\":{\"contextDigest\":\"259a725b494371cebb80edf6e05fc66410cba11bfbcf6694ed720e055dca4b54\",\"repositoryId\":\"github.com:Proto-UI/Proto-UI\",\"routeDigest\":\"12f2ab0a3f3e106b781d81d11d167c5f06d2e821072e71fefc6e8697ca5c6709\",\"sessionDigest\":\"0418167056fad1b075fb8d53fe8aff8c2cb48343ea43bfec6dd9cd4321b00831\"},\"source\":{\"bankDigest\":\"e514c76928ea38d23bc0f14d3935f23c97b1efb6d96b18a19bdc88ad2d830536\",\"challengeDigest\":\"34db9fd4000956c1d88f1558106fad68f5e15c77b2af04f65aa71a07857ad426\",\"policyVersion\":\"proto-ui.modeltrace.2026-10-04.1\",\"repository\":\"https://github.com/xqy2006/ModelTrace\",\"revision\":\"d4131b30243dfa05e70180b5eedde742103f1d73\",\"scorerDigest\":\"83fa5bd611e18f8339122582335123c8ea168ed242298bb31f4e363abeeb6e4a\"},\"trust\":{\"backendAuthenticated\":false,\"grantsPermission\":false,\"signed\":false,\"unknownModelDetectable\":false}}\nSigned-off-by: HyacinthHaru <hyacinth@haru.ac>"
+    },
+    {
+      "sha": "16917f0666d8916b92d5d5d3656029369295488c",
+      "tree": "e218cb9c9298677c9e5441fea8f8ea898aca9087",
+      "parents": "aba61937a93e456c9b822a6e84b8715bfebc6d97",
+      "subject": "test(collapsible): retain narrow overflow geometry",
+      "author": "HyacinthHaru <hyacinth@haru.ac>",
+      "committer": "HyacinthHaru <hyacinth@haru.ac>",
+      "signatureVerified": true,
+      "message": "test(collapsible): retain narrow overflow geometry\n\nModelTrace: {\"anomalies\":[\"context-uncalibrated\",\"harness-label-unavailable\",\"system-label-unavailable\",\"unknown-model-not-excluded\"],\"declared\":{\"harnessModel\":null,\"systemModel\":null},\"expiresAt\":\"2026-10-17T17:39:15.393Z\",\"id\":\"sha256:141553937e241ad6ba56931f9680fe3a0e1056bfff3a3cf24c80b88ce1c7f6f9\",\"kind\":\"proto-ui.modeltrace-receipt\",\"measuredAt\":\"2026-10-17T16:39:15.393Z\",\"priorReceiptDigest\":null,\"result\":{\"candidates\":[{\"familyId\":\"gpt\",\"modelId\":\"gpt-6-astra\",\"probability\":0.9611794339484915,\"score\":1.5944348046736583},{\"familyId\":\"gpt\",\"modelId\":\"gpt-6-sol\",\"probability\":0.03878103401816934,\"score\":1.3269156551526293},{\"familyId\":\"gpt\",\"modelId\":\"gpt-5.6-sol\",\"probability\":0.00002911296905043471,\"score\":0.7273737513687397}],\"familyId\":\"gpt\",\"margin\":0.9223983999303221,\"modelId\":\"gpt-6-astra\",\"probability\":0.9611794339484915,\"status\":\"candidate\"},\"sampling\":{\"contextCalibrated\":false,\"counts\":[218,233,247],\"method\":\"active-model-literals\",\"queries\":3,\"sampleDigests\":[\"f0abda015165fae466ea0091a7526193b61305e03fc3da6489d6a49d75d17e9d\",\"6e0fd35d964a81cb0906a0ee8256d9eb5bb04d31fd0317a4771a2a3ab5bb66fd\",\"7950046c5d2bba2ed995982b89c9b025e28b84901211065409d5bd28b80d0967\"]},\"schemaVersion\":1,\"scope\":{\"contextDigest\":\"259a725b494371cebb80edf6e05fc66410cba11bfbcf6694ed720e055dca4b54\",\"repositoryId\":\"github.com:Proto-UI/Proto-UI\",\"routeDigest\":\"12f2ab0a3f3e106b781d81d11d167c5f06d2e821072e71fefc6e8697ca5c6709\",\"sessionDigest\":\"0418167056fad1b075fb8d53fe8aff8c2cb48343ea43bfec6dd9cd4321b00831\"},\"source\":{\"bankDigest\":\"e514c76928ea38d23bc0f14d3935f23c97b1efb6d96b18a19bdc88ad2d830536\",\"challengeDigest\":\"34db9fd4000956c1d88f1558106fad68f5e15c77b2af04f65aa71a07857ad426\",\"policyVersion\":\"proto-ui.modeltrace.2026-10-04.1\",\"repository\":\"https://github.com/xqy2006/ModelTrace\",\"revision\":\"d4131b30243dfa05e70180b5eedde742103f1d73\",\"scorerDigest\":\"83fa5bd611e18f8339122582335123c8ea168ed242298bb31f4e363abeeb6e4a\"},\"trust\":{\"backendAuthenticated\":false,\"grantsPermission\":false,\"signed\":false,\"unknownModelDetectable\":false}}\nSigned-off-by: HyacinthHaru <hyacinth@haru.ac>"
+    }
+  ],
+  "netPaths": [
+    "apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts",
+    "apps/www/test/color-scheme.browser.test.ts",
+    "packages/adapters/vue/src/adapt.ts",
+    "packages/adapters/vue/test/focus-entry-retries.integration.test.ts"
+  ],
+  "files": [
+    {
+      "path": "apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts",
+      "gitBlob": "57b083154010f5edfe9c2ee42384c6715980fe25",
+      "sha256": "be9211ae1b3d5f7c8397cac57a3931c251a610a9292ce0ef87b42b467d4f5958"
+    },
+    {
+      "path": "apps/www/test/color-scheme.browser.test.ts",
+      "gitBlob": "badda351a6812a4abfa3fc7f32212a703cbd1b34",
+      "sha256": "8a991624c064eb488bc6007138e7d9ede1dd0931fc7e6a3076ec0530fad61a14"
+    },
+    {
+      "path": "packages/adapters/vue/src/adapt.ts",
+      "gitBlob": "5ac2bc6560b7a40e20edd29be384eee92b00d549",
+      "sha256": "afaae49558e53836730f5bdfc0cb4a9eefc48580168291233d63f89cfb0147d8"
+    },
+    {
+      "path": "packages/adapters/vue/test/focus-entry-retries.integration.test.ts",
+      "gitBlob": "51f4bc2cf4a75c69a22f1e0890a88036c2d5fd22",
+      "sha256": "c2f25cc517f988f2d46e552da64cc51433d72588cec3545f5df756ef51708391"
+    }
+  ],
+  "validationIsPrecommitSourceBound": true,
+  "canonicalCI": "Not yet run for this source head; do not substitute main39014779791 or prior127 CI."
+}
