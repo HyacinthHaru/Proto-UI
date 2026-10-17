@@ -10,7 +10,7 @@ Adopted wrapper: shadcn-ui/ui f31ed81983653919dd4fe77aee4b4859f610f1dc, apps/v4/
 
 ## Facts and requested constraints
 
-Inputs are one immutable host-local coordinate-space sample: layout viewport, reference (trigger and value edges), painted surface rectangle and insets, row extent/offset relative to scroll content, associated text edges, scrollport extents/insets and semantic content-edge flags. Frame and paint surface are distinct roles. Constraints declare margin M, minimum target-span count N, preserve-start inline overflow and opt-in scroll expansion. Source profile uses M=10, N=5. First/last flags refer to all collection records, including disabled records. They are semantic inputs, never host collection queries.
+Inputs are one immutable host-local coordinate-space sample: layout viewport, reference (trigger and value edges), paint Surface layout rectangle and insets before that Surface's visual transform, row extent/offset relative to scroll content, associated layout text edges, scrollport extents/insets and semantic content-edge flags. Frame and paint surface are distinct roles. Constraints declare margin M, minimum target-span count N, preserve-start inline overflow and opt-in scroll expansion. Source profile uses M=10, N=5. First/last flags refer to all collection records, including disabled records. They are semantic inputs, never host collection queries.
 
 ### Initial inline plan
 
@@ -32,7 +32,7 @@ Otherwise: start pin; requested height = max(T, surface.borderTop + scrollport.o
 
 Both return margin M, minimum height, maximum height A and initial content alignment `normal`. These are requested constraints, not final used rectangles. Tiny positive viewports may produce minimum > maximum; retain this source-plan fact rather than inventing a popper fallback. Invalid physical input extents are distinct from constrained or overflowing plans.
 
-The fixed source parses border and padding with parseInt. Exact source vectors supply normalized integer values; a host may supply fractional facts only under an explicitly adopted precision policy. The solver must not silently truncate or reinterpret the host sample.
+The fixed source parses border and padding with parseInt. Exact source vectors supply normalized integer values; a host may supply fractional facts only under an explicitly adopted precision policy. The solver must not silently truncate or reinterpret the host sample. The Web binding supplies floating inline origins through the native CSSOM offset chain and widths through offsetWidth, with actual intervening horizontal scroll retained. Those offset/width facts have CSSOM integer precision; the Frame viewport origin and reference/value BCR retain their measured fractions. This excludes Surface-owned visual transforms from layout feedback and does not claim preservation of fractional floating widths rounded by offsetWidth. Painted interaction-region hit testing remains separate.
 
 ### Scroll expansion
 

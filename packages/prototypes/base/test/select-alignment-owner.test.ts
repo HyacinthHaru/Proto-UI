@@ -108,6 +108,21 @@ function facts() {
     if (this.tagName === 'BASE-SELECT-ITEM-TEXT') return box(13, 37, 50, 20);
     return box(0, 0, 180, 32);
   });
+  vi.spyOn(HTMLElement.prototype, 'offsetLeft', 'get').mockImplementation(function (
+    this: HTMLElement
+  ) {
+    if (this.tagName === 'BASE-SELECT-TRIGGER') return 180;
+    if (this.tagName === 'BASE-SELECT-VALUE') return 193;
+    if (this.tagName === 'BASE-SELECT-ITEM-TEXT') return 13;
+    return 0;
+  });
+  vi.spyOn(HTMLElement.prototype, 'offsetWidth', 'get').mockImplementation(function (
+    this: HTMLElement
+  ) {
+    return this.tagName === 'BASE-SELECT-VALUE' || this.tagName === 'BASE-SELECT-ITEM-TEXT'
+      ? 50
+      : 180;
+  });
   vi.spyOn(HTMLElement.prototype, 'offsetHeight', 'get').mockImplementation(function (
     this: HTMLElement
   ) {

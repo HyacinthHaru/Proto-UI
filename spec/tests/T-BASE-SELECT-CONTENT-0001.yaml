@@ -76,6 +76,15 @@ implementations:
         T-BASE-SELECT-CONTENT-0001-CASE-DISMISS,
       ]
     exercises: [P-BASE-SELECT-CONTENT]
+  - id: adapter-react-select-retained-alignment
+    kind: adapter-test
+    status: needs-review
+    path: packages/adapters/react/test/select-presence-remount.integration.test.ts
+    required: true
+    consumesCases: [T-BASE-SELECT-CONTENT-0001-CASE-ALIGNMENT-ADMISSION]
+    exercises: [P-BASE-SELECT-CONTENT]
+    notes:
+      - Real React with bounded Happy DOM geometry covers Base and Shadcn popper/item-aligned close and reentry; native direction and paint remain separate evidence.
   - id: adapter-react-select-content-entry-stability
     kind: adapter-test
     status: passing

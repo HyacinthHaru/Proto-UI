@@ -33,6 +33,16 @@ it('connects real prototype parts, applies neutral host facts, releases cold ent
     if (this.getAttribute('data-demo-ref')?.startsWith('text-')) return box(13, 37, 50, 20);
     return box(0, 0, 180, 32);
   });
+  vi.spyOn(HTMLElement.prototype, 'offsetLeft', 'get').mockImplementation(function (
+    this: HTMLElement
+  ) {
+    return this.getAttribute('data-demo-ref')?.startsWith('text-') ? 13 : 0;
+  });
+  vi.spyOn(HTMLElement.prototype, 'offsetWidth', 'get').mockImplementation(function (
+    this: HTMLElement
+  ) {
+    return this.getAttribute('data-demo-ref')?.startsWith('text-') ? 50 : 180;
+  });
   vi.spyOn(HTMLElement.prototype, 'offsetHeight', 'get').mockImplementation(function (
     this: HTMLElement
   ) {

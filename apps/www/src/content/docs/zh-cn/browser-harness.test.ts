@@ -157,6 +157,16 @@ describe('runtime evidence counts the original demonstrated slot', () => {
       expect(await observed(runtime)).toBe(true);
     }
   );
+  it('keeps independent code command scopes outside the demonstrated host', async () => {
+    mount('wc');
+    const root = document.querySelector('[data-previewer-id]')!;
+    const command = document.createElement('figure');
+    command.innerHTML = '<div data-site-copy><div data-projection-scope></div></div>';
+    root.append(command);
+    expect(await observed('wc')).toBe(true);
+    root.querySelector('.host')!.append(command.querySelector('[data-projection-scope]')!);
+    expect(await observed('wc')).toBe(false);
+  });
   it.each([
     'missing',
     'extra-inside',

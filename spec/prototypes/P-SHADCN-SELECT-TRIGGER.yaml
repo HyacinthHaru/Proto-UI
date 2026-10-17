@@ -94,8 +94,8 @@ openQuestions:
         and Icon composition parity converge?,
       }
     context:
-      zh-CN: intentional deviation 是省略对外 `asChild`。待核对项包括 w-fit、transition-[color,box-shadow]、disabled cursor、aria-invalid、dark styles、Value line-clamp 与 nested SVG rules、data-slot/data-size、className/native forwarding，以及官方 Radix Icon wrapper 相对直接 SVG。当前额外 hover surface，以及本项目采用的 `translate-y-px` pressed delta 在未来 parity 收敛中是否保留，仍需评审；两者均不声称来自固定 upstream baseline。
-      en: The intentional deviation is outward `asChild` omission. Gaps include w-fit, transition color and box-shadow, disabled cursor, aria-invalid, dark styles, Value line-clamp and nested-SVG rules, data-slot and data-size, forwarding, and upstream Radix Icon wrapper versus direct SVG. The current extra hover surface and whether the project-adopted `translate-y-px` pressed delta should remain during future parity convergence still need review; neither is claimed to come from the pinned upstream baseline.
+      zh-CN: intentional deviation 是省略对外 `asChild`。待核对项包括 w-fit、transition-[color,box-shadow]、disabled cursor、aria-invalid、dark styles、Value line-clamp 与 nested SVG rules、data-slot/data-size、className/native forwarding，以及官方 Radix Icon wrapper 相对直接 SVG。旧 `translate-y-px` pressed delta 已由当前 state-driven criteria 撤回；本问题不恢复该位移或 light default hover 填充。其余列出的 parity gaps 仍待评审。
+      en: The intentional deviation is outward `asChild` omission. Gaps include w-fit, transition color and box-shadow, disabled cursor, aria-invalid, dark styles, Value line-clamp and nested-SVG rules, data-slot and data-size, forwarding, and upstream Radix Icon wrapper versus direct SVG. The earlier `translate-y-px` pressed delta is withdrawn by the current state-driven criteria; this question does not restore it or a light default hover fill. The other listed parity gaps still need review.
     blocks: [shadcn select trigger parity roadmap]
 sources:
   - path: packages/prototypes/shadcn/src/select/trigger.proto.ts

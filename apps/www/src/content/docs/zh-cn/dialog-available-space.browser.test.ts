@@ -58,7 +58,7 @@ async function facts(dialog: Locator) {
   return dialog.evaluate((e) => {
     const r = e.getBoundingClientRect(),
       s = getComputedStyle(e);
-    const mask = Array.from(document.body.children).find(
+    const mask = Array.from(document.body.querySelectorAll('*')).find(
       (n) =>
         n !== e &&
         n.hasAttribute('data-is-present') &&
