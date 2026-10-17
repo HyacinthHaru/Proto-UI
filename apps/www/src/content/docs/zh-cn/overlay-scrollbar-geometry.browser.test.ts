@@ -6,8 +6,10 @@ import path from 'node:path';
 import { chromium, type Browser, type Locator, type Page } from 'playwright-core';
 import { afterAll, beforeAll, expect, it } from 'vitest';
 import { chromeExecutable, RUNTIMES, startServer, stopServer } from './browser-harness';
+import { revealHeaderPreferences } from './site-header-browser';
 
 // Controlled layout conditions around actual public Select/Dialog consumers.
+// Select uses the Homepage Brutalist popper profile, not Shadcn item alignment.
 // No injected rectangles, positioning coordinates, fake controls or offset repair.
 // Authority: C-ANCHORED-POSITIONING-0001-C/D/E/F and HC-OVERLAY-MODAL-0001-A
 // are draft; this is bounded native evidence, not lifecycle promotion.
@@ -87,6 +89,35 @@ async function ready(page: Page, runtime: string, direction: string) {
     document.documentElement.dir = direction;
   }, direction);
 }
+async function selectBrutalist(page: Page, runtime: string) {
+  await revealHeaderPreferences(page);
+  const trigger = page.locator(
+    '[data-homepage-runtime] [data-projection-generation-state="active"] [data-projection-control="family"] [role="combobox"]'
+  );
+  await trigger.click();
+  const id = await trigger.getAttribute('aria-controls');
+  expect(id).toBeTruthy();
+  await page
+    .locator(`[id=${JSON.stringify(id)}]`)
+    .getByRole('option', { name: 'Brutalist', exact: true })
+    .click();
+  await page.waitForFunction(
+    (runtime) => {
+      const root = document.querySelector<HTMLElement>('[data-homepage-runtime]');
+      const demo = document.querySelector<HTMLElement>('[data-home-showcase]');
+      return (
+        root?.dataset.runtimeState === 'ready' &&
+        root.dataset.runtime === runtime &&
+        root.dataset.family === 'brutalist' &&
+        demo?.dataset.runnerState === 'ready' &&
+        demo.dataset.runnerRuntime === runtime &&
+        demo.dataset.projectionFamily === 'brutalist'
+      );
+    },
+    runtime,
+    { timeout: 45_000 }
+  );
+}
 async function layout(
   page: Page,
   overflow: 'hidden' | 'scroll',
@@ -122,6 +153,8 @@ async function pair(page: Page, anchor: Locator, floating: Locator) {
       const root = document.documentElement;
       const style = getComputedStyle(f);
       return {
+        family:
+          document.querySelector<HTMLElement>('[data-home-showcase]')?.dataset.projectionFamily,
         anchor: anchor.toJSON(),
         floating: popup.toJSON(),
         centerDelta: popup.x + popup.width / 2 - anchor.x - anchor.width / 2,
@@ -182,11 +215,12 @@ async function pair(page: Page, anchor: Locator, floating: Locator) {
 }
 for (const runtime of RUNTIMES)
   for (const direction of ['ltr', 'rtl']) {
-    it(`${runtime}/${direction}: Select tracks real scrollbar and nested-scroll changes`, async () => {
+    it(`${runtime}/${direction}: Brutalist popper Select tracks scrollbar geometry`, async () => {
       const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
       const samples: Awaited<ReturnType<typeof pair>>[] = [];
       try {
         await ready(page, runtime, direction);
+        await selectBrutalist(page, runtime);
         const anchor = page.getByRole('combobox', { name: '通知方式', exact: true });
         await layout(page, 'hidden');
         await anchor.click();
@@ -194,7 +228,6 @@ for (const runtime of RUNTIMES)
         expect(id).toBeTruthy();
         const popup = page.locator(`[id=${JSON.stringify(id)}]`);
         await popup.waitFor({ state: 'visible' });
-        await settled(popup);
         for (const state of [
           'none',
           'classic',
@@ -218,11 +251,15 @@ for (const runtime of RUNTIMES)
             });
             await frames(page);
           }
+          await settled(popup);
           const facts = await pair(page, anchor, popup);
           samples.push(facts);
           await capture(page, `${runtime}-${direction}-select-${state}`, facts);
         }
         for (const facts of samples) {
+          // Homepage explicitly uses start; equal widths make the center/collision oracle equivalent.
+          expect(facts.align).toBe('start');
+          expect(facts.floating.width).toBe(facts.anchor.width);
           expect(facts.position).toBe('fixed');
           expect(facts.portalledOutsideShowcase).toBe(true);
           expect(Math.abs(facts.collisionAdjustedDelta)).toBeLessThanOrEqual(1);
