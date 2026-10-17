@@ -579,6 +579,14 @@ for (const family of FAMILIES) {
                   paddingRight: parseFloat(style.paddingRight),
                 };
               });
+              if (
+                !(geometry.width > 0 && geometry.left >= 0 && geometry.right <= 320) ||
+                !(geometry.scrollWidth - geometry.clientWidth <= 1)
+              )
+                console.error(
+                  `[collapsible-narrow-geometry] ${family}/${runtime}/${theme}/${target === root ? 'root' : 'content'}`,
+                  JSON.stringify(geometry)
+                );
               expect(geometry.width).toBeGreaterThan(0);
               expect(geometry.left).toBeGreaterThanOrEqual(0);
               expect(geometry.right).toBeLessThanOrEqual(320);
