@@ -179,7 +179,7 @@ describe.sequential('default-document colorScheme browser contract', () => {
         await expect.poll(async () => alpha((await paint(probe)).background)).toBe(0.2);
         await expect.poll(async () => alpha((await paint(outline)).background)).toBe(0.045);
         await expect.poll(async () => alpha((await paint(checkbox)).background)).toBe(0.045);
-        await expect.poll(async () => alpha((await paint(switchRoot)).background)).toBe(0.075);
+        await expect.poll(async () => alpha((await paint(switchRoot)).background)).toBe(0.12);
         expect(await stats(page)).toEqual(initialStats);
         expect(await button.evaluate((node, old) => node === old, oldButton)).toBe(true);
         expect(await textarea.evaluate((node, old) => node === old, oldEditor)).toBe(true);
@@ -518,7 +518,7 @@ describe.sequential('default-document colorScheme browser contract', () => {
           button: 0.2,
           outline: 0.045,
           checkbox: 0.045,
-          switch: 0.075,
+          switch: 0.12,
           textarea: 0.045,
           probe: 0.2,
         })) {

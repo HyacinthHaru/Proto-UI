@@ -36,6 +36,7 @@ import {
   installViewVisibilityRule,
   PUI_VIEW_DETACHED_ATTR,
   PUI_VIEW_PENDING_ATTR,
+  PUI_VIEW_REVEALING_ATTR,
   type ProtoAdapterExposes,
   type ProtoAdapterProps,
   scheduleAfterWebLayout,
@@ -507,6 +508,7 @@ export function createVueAdapter(runtime: VueRuntime) {
             const gate = eventGateRef.value;
             pendingSignal = null;
             await runtime.nextTick();
+            const wasReady = viewReady;
             viewReady = true;
             notifyFocusTargetReady();
             signal?.done?.();
@@ -518,7 +520,25 @@ export function createVueAdapter(runtime: VueRuntime) {
               !shouldExist.value
             )
               return;
-            rootRef.value?.removeAttribute(PUI_VIEW_PENDING_ATTR);
+            const revealedRoot = rootRef.value;
+            // Keep the first authored style from transitioning from the unstyled host.
+            if (!wasReady) revealedRoot?.setAttribute(PUI_VIEW_REVEALING_ATTR, '');
+            revealedRoot?.removeAttribute(PUI_VIEW_PENDING_ATTR);
+            if (!wasReady && revealedRoot) {
+              scheduleAfterWebLayout(
+                revealedRoot,
+                () => {
+                  if (
+                    rootRef.value === revealedRoot &&
+                    gate === eventGateRef.value &&
+                    !revealedRoot.hasAttribute(PUI_VIEW_PENDING_ATTR)
+                  ) {
+                    revealedRoot.removeAttribute(PUI_VIEW_REVEALING_ATTR);
+                  }
+                },
+                schedule
+              );
+            }
             gate?.enable();
             // onUpdated can schedule a Vue removal or replacement. Announce
             // observation readiness after that host commit has settled.
