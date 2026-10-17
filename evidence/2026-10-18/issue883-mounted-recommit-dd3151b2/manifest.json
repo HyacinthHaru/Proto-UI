@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "head": "dd3151b2efc97b8c3d541e68d374f0a87f1dcdfa",
+  "files": [
+    {
+      "path": "169-brutalist-vue.png",
+      "sha256": "9e6f47befba4ee9675ee4acd597cd33b13854a7951e0e134532a003053ce52fb",
+      "bytes": 141144
+    },
+    {
+      "path": "169-shadcn-vue.png",
+      "sha256": "c9fa51d45432371a430757da5412e4954e89e382bcde1528bba07e8a94391842",
+      "bytes": 129609
+    },
+    {
+      "path": "README.md",
+      "sha256": "2053964159397c6977bf21ac1c891063a36c2a108a8f9ab972fc9edeebb1c314",
+      "bytes": 3249
+    },
+    {
+      "path": "summary.json",
+      "sha256": "0b491a598ccc2b24051a8ac7cd0c1ced7bddb78f10a965a15a820d3eff6dc01a",
+      "bytes": 1471
+    },
+    {
+      "path": "supplement.zip",
+      "sha256": "40161f7a9eb1ad244a20063b4841e73194d33e6cc88cd8d097281326c812376d",
+      "bytes": 2184330
+    }
+  ]
+}

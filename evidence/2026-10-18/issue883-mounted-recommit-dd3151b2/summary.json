@@ -1,0 +1,20 @@
+{
+  "head": "dd3151b2efc97b8c3d541e68d374f0a87f1dcdfa",
+  "tree": "75e67527f51932f75e3dfa684321c4be8a12fa30",
+  "base": "16917f0666d8916b92d5d5d3656029369295488c",
+  "P2": "6237404593,actualplainVueunitandnative reproducedthenfixed",
+  "unit": "1pass1fail→2pass sametestSHA",
+  "native": "1fail8filtered→full9pass samebrowser/fixtureSHA; original8and12rAFpreserved",
+  "Vue": "87files432pass5baselineDialogfail",
+  "Spec": "24files160pass1baselineDropdownfail; originalspeccontrol1fail3pass. Newunitpathinitiallyuntrackedthenenrolledinrealindex, integritypass.",
+  "catalog": "536findinglistexact169control",
+  "types": "934files0errors0warnings14hints",
+  "packages": "Local47/47actualbuild47manifest;Finf4PASS5ADVISORY,Vuegzip142687,notcanonicaldd315",
+  "projections": "Generators/agentdocpassed,ignoredoutputsnotcommitted",
+  "review": "Local0specificfinding,partial/ABSTAIN; notGitHubapprove",
+  "canonical": "dd315 CI/preview pending atpreparation. 169officialtypes934/0/0/14; Forms10/2colors597; Field25; Coll32/4lightRoot right320.4375,left143,width177.4375; general78preVitest; package39/47actualbuild47manifest9policytests4PASS5ADVISORY.",
+  "169preview": "ActualGitHubartifact12107814815/run39052330622 admitted by existingpublisher;3835files669HTML104045457expanded,allmembersbyteequal;8postclickclipboardequal9PNG,serverexit0;notremotehosted/freshwrite/allpagevisualacceptance.",
+  "archiveMembers": 118,
+  "rawSources": 117,
+  "pngFilesInArchive": 26
+}
