@@ -1,0 +1,56 @@
+{
+  "base": "404a7417ef8dc22c8c7fe6d9ff9f3c8a5d40a17b",
+  "head": "ba50383230a3ca63da2bc0ae099276cb5226330b",
+  "commits": [
+    "ea8e8901b5ca7fc2390292d65e323f2464d680f9",
+    "ba50383230a3ca63da2bc0ae099276cb5226330b"
+  ],
+  "paths": [
+    {
+      "path": ".github/workflows/intranet-preview-build.yml",
+      "sha256": "a44265f315c10819a2bc81b85fc8980af88a1a0122cf271a66ace9e79da1817c",
+      "gitBlob": "7f1652f49733c064ba5cfa28c963e30b709ac01c"
+    },
+    {
+      "path": "apps/www/astro.config.mjs",
+      "sha256": "771e7cfc6b2ad49f6d2f2cd27f53859c4f6168dcf8373c34fa85d0342d1ee4d0",
+      "gitBlob": "8908f86c47d511e92a66e71e24400d906108de17"
+    },
+    {
+      "path": "apps/www/src/components/SiteCopyBootstrap.astro",
+      "sha256": "25f62b734b220cb862a5321fe70ac0e4aea927157d6454b7c7e208002e768ba3",
+      "gitBlob": "50b701c4577a2dd5fba7e624248ca72074de687b"
+    },
+    {
+      "path": "apps/www/src/components/SiteLibraryStyle.astro",
+      "sha256": "7fec23169c164d43f266b8fc71efbf55aaadba2bb4561f8670dc69e3d8c49e33",
+      "gitBlob": "66373a322469f02f22e51a1796993faf69739ce1"
+    },
+    {
+      "path": "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+      "sha256": "181f88d9a711103f00437fd1866a30e5a383612c14aad8b0a63c46a043b5df88",
+      "gitBlob": "fd70d12b3d62f8c80943dc065f92b3b4b223171b"
+    },
+    {
+      "path": "apps/www/src/pages/styles/site-code-startup.css.ts",
+      "sha256": "5e87c66122bbc90b9e9d571688093bb4b432db53df86b5ef79fe01180c0ac45e",
+      "gitBlob": "234e4c27db7222dac40806f169058b9cba6aefe0"
+    },
+    {
+      "path": "apps/www/src/pages/styles/site-library-theme.css.ts",
+      "sha256": "2ae87b2122b6701e747dea06834387f06a7f4d869bf119d663323fc3b2bbee91",
+      "gitBlob": "8c5c20cdc6db584a4460da23ec9d018ccdb6a4d0"
+    },
+    {
+      "path": "scripts/preview/README.md",
+      "sha256": "2263340751602592beec67104396af557315a782a0eef1e427f063eaf41e32d5",
+      "gitBlob": "9f32e7ebe4e928537b53d32f5d8c6bddd23c044e"
+    },
+    {
+      "path": "scripts/preview/generated-artifact.test.mjs",
+      "sha256": "a7c0fd04a58fb0ceb5d5919e2243c4e24009d0e9fc8edea33892708a8fcb4398",
+      "gitBlob": "61c6982e302f5ee5c1f34d6194f2fc5b6fc14a4f"
+    }
+  ],
+  "scope": "preview8 paths plus Dialog1; subsequent uncommitted Select repair excluded"
+}

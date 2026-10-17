@@ -1,0 +1,964 @@
+{
+  "at": "2026-10-17T01:56:25.863643+00:00",
+  "mapping": [
+    {
+      "path": "actual-preview-lease-expiry.json",
+      "rawSHA256": "1498dc2992c67e5bb364312ebfb924308f5256059d961540dfaab7ec4a66268d",
+      "publicSHA256": "1498dc2992c67e5bb364312ebfb924308f5256059d961540dfaab7ec4a66268d",
+      "rawBytes": 304,
+      "publicBytes": 304,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "actual-preview-worker-rejection.json",
+      "rawSHA256": "d7601365a975a07e8d5637e9c035fe5982b642cbc2aefdf19edfbd087b443f9a",
+      "publicSHA256": "d7601365a975a07e8d5637e9c035fe5982b642cbc2aefdf19edfbd087b443f9a",
+      "rawBytes": 260,
+      "publicBytes": 260,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "baseline-artifact-regression.json",
+      "rawSHA256": "0c1623f7ee9e2e3ef4db9173b6b7043694c76e65cd21b2c6af3f100521f70c04",
+      "publicSHA256": "a18b2a2738f91861f559b40abee3a5a301bb3912c53780c0eb634276c5925932",
+      "rawBytes": 333,
+      "publicBytes": 306,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "baseline-artifact-regression.log",
+      "rawSHA256": "d3412235e08a280e6e063f2277c40391baecd47a4bb4d27f8915189b71be0e00",
+      "publicSHA256": "a4d61695105fba701c9285fec0642794a3d3b3ecf803aff574bfe3cb13001e12",
+      "rawBytes": 1133,
+      "publicBytes": 957,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "baseline-build-receipt.json",
+      "rawSHA256": "b71af0669ffc3fc2efa986fb85e3dd7725bcc64f4cf78e3b853260853d805d81",
+      "publicSHA256": "b71af0669ffc3fc2efa986fb85e3dd7725bcc64f4cf78e3b853260853d805d81",
+      "rawBytes": 302,
+      "publicBytes": 302,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "baseline-build.log",
+      "rawSHA256": "383e84c10dfc022b7522a572ab3c9592173a0efddaceb599fbf54a2578d0d704",
+      "publicSHA256": "3cf48314af8072b56d17da5bce2ef8be73ffe5f1516254b215b008cbdbb65396",
+      "rawBytes": 412193,
+      "publicBytes": 411973,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "baseline-dist-inventory.json",
+      "rawSHA256": "3d96466ab1910042b6b6aa061e4d63624efedc4ab8040fc149602e2c92e63d1f",
+      "publicSHA256": "3d96466ab1910042b6b6aa061e4d63624efedc4ab8040fc149602e2c92e63d1f",
+      "rawBytes": 611598,
+      "publicBytes": 611598,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "c-diagnostics/dialog-mask-fix/candidate.patch",
+      "rawSHA256": "7d7ac33f5039930214f2fc82526740953ccd7c336fc76875eb8914026aeda79b",
+      "publicSHA256": "7d7ac33f5039930214f2fc82526740953ccd7c336fc76875eb8914026aeda79b",
+      "rawBytes": 492,
+      "publicBytes": 492,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "c-diagnostics/dialog-mask-fix/candidate.test.ts",
+      "rawSHA256": "181f88d9a711103f00437fd1866a30e5a383612c14aad8b0a63c46a043b5df88",
+      "publicSHA256": "181f88d9a711103f00437fd1866a30e5a383612c14aad8b0a63c46a043b5df88",
+      "rawBytes": 24793,
+      "publicBytes": 24793,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "c-diagnostics/dialog-mask-fix/dialog-brutalist-react/receipt.json",
+      "rawSHA256": "b096aee1c09a06672bacd47f7b9a29b16268b85b55742dbd12777f0817b513f6",
+      "publicSHA256": "8604735ed9b5f9c5bbfc82e8efc759c25ac72ade566a749a775bb46c56109c00",
+      "rawBytes": 1363,
+      "publicBytes": 1343,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "c-diagnostics/dialog-mask-fix/dialog-brutalist-react/run.log",
+      "rawSHA256": "ccc3b387ce8d483fba09587f159df8106ed40dca6317549bf8c86240c853a4b0",
+      "publicSHA256": "7d5a71b718f0cf6a434ddcc224610b9823f7b0503acac8a0c7aa0c89eb4a9078",
+      "rawBytes": 7647,
+      "publicBytes": 7603,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "c-diagnostics/dialog-mask-fix/dialog-brutalist-react/source-after.json",
+      "rawSHA256": "354b4772616b95d05154e5b4cd58630c465c1b036dc9256c88880942ebb68f90",
+      "publicSHA256": "354b4772616b95d05154e5b4cd58630c465c1b036dc9256c88880942ebb68f90",
+      "rawBytes": 5109,
+      "publicBytes": 5109,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "c-diagnostics/dialog-mask-fix/dialog-brutalist-react/source-before.json",
+      "rawSHA256": "354b4772616b95d05154e5b4cd58630c465c1b036dc9256c88880942ebb68f90",
+      "publicSHA256": "354b4772616b95d05154e5b4cd58630c465c1b036dc9256c88880942ebb68f90",
+      "rawBytes": 5109,
+      "publicBytes": 5109,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "c-diagnostics/dialog-mask-fix/environment.json",
+      "rawSHA256": "87772e04c0ee3f51571891b423b88dee40f31e88b8956e5cc6d5e8a30ee86cd8",
+      "publicSHA256": "186ad30302907563e9f6a069254736a7d32303a6de935d3bf6ce350cc1890ced",
+      "rawBytes": 1770,
+      "publicBytes": 378,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "c-diagnostics/dialog-mask-fix/pair-receipt.json",
+      "rawSHA256": "766b268aec4b0fbb15f6f61a0e5bb22c139df70bfa7a352d0246a6017e0cedd3",
+      "publicSHA256": "79aa1e02dba9c1dc9769554040f613f69af94da9a5aba51958e002915f01e100",
+      "rawBytes": 1816,
+      "publicBytes": 1796,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "c-diagnostics/dialog-mask-fix/run.py",
+      "rawSHA256": "572205202faab2a2b040ace578846d358ff7a156a47cf84a0f350d2d541eb418",
+      "publicSHA256": "3a83e4313e668b7f5def3d02be2acac35dd1a76700d0cca2ad3b8b5ab0277970",
+      "rawBytes": 5917,
+      "publicBytes": 5779,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "c-diagnostics/dialog-mask-fix/source-initial.json",
+      "rawSHA256": "354b4772616b95d05154e5b4cd58630c465c1b036dc9256c88880942ebb68f90",
+      "publicSHA256": "354b4772616b95d05154e5b4cd58630c465c1b036dc9256c88880942ebb68f90",
+      "rawBytes": 5109,
+      "publicBytes": 5109,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "c-diagnostics/dialog-mask-observation/artifacts/facts.json",
+      "rawSHA256": "af6564ff954a45160cbe9a2a2436cd2dd41b12137e71137079be5d586f56861b",
+      "publicSHA256": "206f7b962d268f66141a6bd2bc8aef38ce4ae5701961420b21372dc75e8bee5a",
+      "rawBytes": 8377,
+      "publicBytes": 8378,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "c-diagnostics/dialog-mask-observation/artifacts/failure.png",
+      "rawSHA256": "601aa2184b2e9fbd6fc70f418602a495ce01c00f25c80a60cabe01eb8dbf10fb",
+      "publicSHA256": "601aa2184b2e9fbd6fc70f418602a495ce01c00f25c80a60cabe01eb8dbf10fb",
+      "rawBytes": 56500,
+      "publicBytes": 56500,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "c-diagnostics/dialog-mask-observation/diagnostic.patch",
+      "rawSHA256": "248890c45a615dfe042e58f8cbe306c7311a220123cacccb350c341c0a91f23b",
+      "publicSHA256": "248890c45a615dfe042e58f8cbe306c7311a220123cacccb350c341c0a91f23b",
+      "rawBytes": 2606,
+      "publicBytes": 2606,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "c-diagnostics/dialog-mask-observation/diagnostic.test.ts",
+      "rawSHA256": "c043efa1932fdef0415de5ff83aa826f0855992cd5f255e3ef98eb87b72e06e6",
+      "publicSHA256": "c043efa1932fdef0415de5ff83aa826f0855992cd5f255e3ef98eb87b72e06e6",
+      "rawBytes": 26817,
+      "publicBytes": 26817,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "c-diagnostics/dialog-mask-observation/original.test.ts",
+      "rawSHA256": "e50e6c8b484eb283584a5173d92fe3b6c5cde8369c3aae69329b875bd06d5c3d",
+      "publicSHA256": "e50e6c8b484eb283584a5173d92fe3b6c5cde8369c3aae69329b875bd06d5c3d",
+      "rawBytes": 24780,
+      "publicBytes": 24780,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "c-diagnostics/dialog-mask-observation/receipt.json",
+      "rawSHA256": "33129915ba02ab577adb391db2979537b0b68ffb733f90799b6756d2f3a6aa83",
+      "publicSHA256": "7e14f229d55361590aa3983bf8cf89d65bf86ad6412671344e989058521ea2cf",
+      "rawBytes": 3463,
+      "publicBytes": 2095,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "c-diagnostics/dialog-mask-observation/run.log",
+      "rawSHA256": "ffd0345e0b6172d1cb48aafbd9c38080e3ffa37f2c30a59b931e1219227e91ca",
+      "publicSHA256": "f4c22adc18d422289e25e453f8fb90f9d67f6b7cbfbd63641e104f8dce48b835",
+      "rawBytes": 9020,
+      "publicBytes": 8976,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "c-diagnostics/dialog-mask-observation/run.py",
+      "rawSHA256": "70e549e109021aad04b2083f318a26992785c7f580868a8118e1284c87efd690",
+      "publicSHA256": "96580309026408c42b5f933bb46e89c4b8a49fd5f8a06d8a8d0ff188052bbe17",
+      "rawBytes": 5601,
+      "publicBytes": 5490,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "c-diagnostics/dialog-mask-observation/visual-review.json",
+      "rawSHA256": "5b87d6e3e0bac1ce319c3ac8def49ac32d5c76773c486ca36da577ee7e04a4e9",
+      "publicSHA256": "5b87d6e3e0bac1ce319c3ac8def49ac32d5c76773c486ca36da577ee7e04a4e9",
+      "rawBytes": 1702,
+      "publicBytes": 1702,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "candidate-artifact-final-receipt.json",
+      "rawSHA256": "4b9213d3400130d622b86e23e5a1c659313d0fcee42d5b64889d669f39ce258a",
+      "publicSHA256": "4b9213d3400130d622b86e23e5a1c659313d0fcee42d5b64889d669f39ce258a",
+      "rawBytes": 205,
+      "publicBytes": 205,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "candidate-artifact-final.log",
+      "rawSHA256": "e268646f74f7c1fd53ee1cfbf9ec7df675644366fe2be9920ec3dac818a567cb",
+      "publicSHA256": "e268646f74f7c1fd53ee1cfbf9ec7df675644366fe2be9920ec3dac818a567cb",
+      "rawBytes": 290,
+      "publicBytes": 290,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "candidate-artifact-regression.json",
+      "rawSHA256": "ffbe1b32bae1669aa1eba9d4e7e9fe0f4ecde6e5f00641e118ee8c70c97cdb44",
+      "publicSHA256": "20a226d01188fa3da6296b106f07e8b3c4941773398c88d42936e715db0ce083",
+      "rawBytes": 322,
+      "publicBytes": 278,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "candidate-artifact-regression.log",
+      "rawSHA256": "0e753b5f9a532c6c90af077fecf7fb204a921afbbf1aa2726c58dd0ea766eac7",
+      "publicSHA256": "0e753b5f9a532c6c90af077fecf7fb204a921afbbf1aa2726c58dd0ea766eac7",
+      "rawBytes": 290,
+      "publicBytes": 290,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "candidate-build-receipt.json",
+      "rawSHA256": "da643ca88796c68ec1cbb03f01ffb29d5c02006f50f3977c98f77ddbb6fc635f",
+      "publicSHA256": "da643ca88796c68ec1cbb03f01ffb29d5c02006f50f3977c98f77ddbb6fc635f",
+      "rawBytes": 362,
+      "publicBytes": 362,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "candidate-build.log",
+      "rawSHA256": "0eadaa0db228655efc6b97cda045ee7214b2df27db4641ca885ad81d138d199e",
+      "publicSHA256": "59cff266baf5ef435a17b8585f794abc78faa5eea820280c838b14c83aa8ab06",
+      "rawBytes": 412452,
+      "publicBytes": 412232,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "candidate-dist-inventory.json",
+      "rawSHA256": "5b8985b7fbc6a5e2e7f933a40cd6008208b2a4505497fa7248969081a4e748b4",
+      "publicSHA256": "5b8985b7fbc6a5e2e7f933a40cd6008208b2a4505497fa7248969081a4e748b4",
+      "rawBytes": 618439,
+      "publicBytes": 618439,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "canonical-artifact-privacy-scan.json",
+      "rawSHA256": "36bb24d1682b004dc47d50e994add680485c1a45af2eb109f33ca8a4ef1165f6",
+      "publicSHA256": "36bb24d1682b004dc47d50e994add680485c1a45af2eb109f33ca8a4ef1165f6",
+      "rawBytes": 288,
+      "publicBytes": 288,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "canonical-artifact-receipt.json",
+      "rawSHA256": "f07e58607fb7613eeda3c0661b59e5d08b2f85eb12940557623aa3b26f978543",
+      "publicSHA256": "b4aca8c405e4f3bd296fc3ec461a9c261996ea555666d01964197efcfed70711",
+      "rawBytes": 491,
+      "publicBytes": 492,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "canonical-brutalist-copy/observations.json",
+      "rawSHA256": "43fc3750bc7c021b4b5cb3ef0a051e2dd5ca47a8bc3a0ac46bbeacf08f24afeb",
+      "publicSHA256": "d55895689bdd0c2af6be50b4869a01dd3823e283a8be9cfe3834f25ae6b13320",
+      "rawBytes": 3527,
+      "publicBytes": 3528,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "canonical-brutalist-copy/react.png",
+      "rawSHA256": "324f28cefb63fc1bc3f88c710011f0075bb82ace357b7f3d42347c3a2a7c97e6",
+      "publicSHA256": "324f28cefb63fc1bc3f88c710011f0075bb82ace357b7f3d42347c3a2a7c97e6",
+      "rawBytes": 141463,
+      "publicBytes": 141463,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "canonical-brutalist-copy/vue.png",
+      "rawSHA256": "9e6f47befba4ee9675ee4acd597cd33b13854a7951e0e134532a003053ce52fb",
+      "publicSHA256": "9e6f47befba4ee9675ee4acd597cd33b13854a7951e0e134532a003053ce52fb",
+      "rawBytes": 141144,
+      "publicBytes": 141144,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "canonical-brutalist-copy/vue2.png",
+      "rawSHA256": "50d250bef136f9b08ed46729232179c4e28b4e76346d3d0608bb90a2d0ae10f5",
+      "publicSHA256": "50d250bef136f9b08ed46729232179c4e28b4e76346d3d0608bb90a2d0ae10f5",
+      "rawBytes": 141366,
+      "publicBytes": 141366,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "canonical-brutalist-copy/wc.png",
+      "rawSHA256": "20345a3212e8e973c9f8923ba7550aee486f48a103100e91a013a893576b11d8",
+      "publicSHA256": "20345a3212e8e973c9f8923ba7550aee486f48a103100e91a013a893576b11d8",
+      "rawBytes": 142538,
+      "publicBytes": 142538,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "canonical-brutalist-copy.mjs",
+      "rawSHA256": "e309f5b684f03f57efb612d2f2d20962f18f7db6c684570290eb827727256f3d",
+      "publicSHA256": "1390cf250df966b328d334de5dea6357687a053826c0c2009836042bf175c930",
+      "rawBytes": 3179,
+      "publicBytes": 3135,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "canonical-materialized-inventory.json",
+      "rawSHA256": "23070c00760769fcbbaeaeceb343e0dbc9e4204a6fb195501c9963f661455566",
+      "publicSHA256": "23070c00760769fcbbaeaeceb343e0dbc9e4204a6fb195501c9963f661455566",
+      "rawBytes": 618276,
+      "publicBytes": 618276,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "canonical-published-member-binding.json",
+      "rawSHA256": "8946301823ab6ddb5a93c5ac015c38fb6c294c758473cca1c9d838379cc192b0",
+      "publicSHA256": "8946301823ab6ddb5a93c5ac015c38fb6c294c758473cca1c9d838379cc192b0",
+      "rawBytes": 353,
+      "publicBytes": 353,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "canonical-shadcn-interactions/actual-catalog.png",
+      "rawSHA256": "8791535c5dc2c8afcbccb52e1830ee91524e6ab59156a4d0c69d66273bec2b91",
+      "publicSHA256": "8791535c5dc2c8afcbccb52e1830ee91524e6ab59156a4d0c69d66273bec2b91",
+      "rawBytes": 47611,
+      "publicBytes": 47611,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "canonical-shadcn-interactions/catalog.json",
+      "rawSHA256": "3c8ac543e6b0bb5cab1de0444dd6f17d6d8315de08e42be88c94475496d67eb1",
+      "publicSHA256": "c46af0ef69be575ae8fbbd768d675826370c949938b41d80cfe256d02a1ddd5d",
+      "rawBytes": 706,
+      "publicBytes": 707,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "canonical-shadcn-interactions/observations.json",
+      "rawSHA256": "bdc0b2ab110f5aabe45a7b36e26eff9b40c0b28d989807744632986f2ea90920",
+      "publicSHA256": "2592985d825169715a197ca7ffe217704b1dab7249eec71ccff678f519b7d65f",
+      "rawBytes": 3281,
+      "publicBytes": 3282,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "canonical-shadcn-interactions/shadcn-react.png",
+      "rawSHA256": "9c19c7cb9757b459e0a6cab2f6e8bd1c77ae16ff839700c50fcb5279995edda1",
+      "publicSHA256": "9c19c7cb9757b459e0a6cab2f6e8bd1c77ae16ff839700c50fcb5279995edda1",
+      "rawBytes": 128677,
+      "publicBytes": 128677,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "canonical-shadcn-interactions/shadcn-vue.png",
+      "rawSHA256": "396b6a64f4565542a96907eb392b9acc11ce0f8a4a04c40b76f0ea2c54ad35d2",
+      "publicSHA256": "396b6a64f4565542a96907eb392b9acc11ce0f8a4a04c40b76f0ea2c54ad35d2",
+      "rawBytes": 129624,
+      "publicBytes": 129624,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "canonical-shadcn-interactions/shadcn-vue2.png",
+      "rawSHA256": "23045502a65a1a5819d842ff879e9738a50c7001c459dc8549e96b18f24968ef",
+      "publicSHA256": "23045502a65a1a5819d842ff879e9738a50c7001c459dc8549e96b18f24968ef",
+      "rawBytes": 128443,
+      "publicBytes": 128443,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "canonical-shadcn-interactions/shadcn-wc.png",
+      "rawSHA256": "065d77a9c3ea2f9dfb2356ca69ed53312ead5ec49cfc75da278955f614743fd4",
+      "publicSHA256": "065d77a9c3ea2f9dfb2356ca69ed53312ead5ec49cfc75da278955f614743fd4",
+      "rawBytes": 122003,
+      "publicBytes": 122003,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "canonical-shadcn-interactions.mjs",
+      "rawSHA256": "f8af22a6bdf6bca03b38089a7297f7a9361b7edcf450e2dc359d54bb4458632c",
+      "publicSHA256": "551531e1a40f7062925682687495f7b3ade46d3fa73937fa417edb54b9152896",
+      "rawBytes": 5099,
+      "publicBytes": 5055,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "dialog-ci-candidate.log",
+      "rawSHA256": "2e8d7531563294eaeaaec97225e26396f2a43da3897d47071d70d336b3ebf0c8",
+      "publicSHA256": "d4cb6c64f73b2f1ddbdc7b57656555d067be83100c8b6d7966347ed89b14d9ac",
+      "rawBytes": 50516,
+      "publicBytes": 50108,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "live-publisher/current.json",
+      "rawSHA256": "7debaff8c673f95a0a3afb93bf1c77c3462dda5787e6e86ca660a83c06a99ca7",
+      "publicSHA256": "7debaff8c673f95a0a3afb93bf1c77c3462dda5787e6e86ca660a83c06a99ca7",
+      "rawBytes": 1016,
+      "publicBytes": 1016,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "live-publisher-receipt.json",
+      "rawSHA256": "6f44c6562f00d53ab1fe6305f88b85de52cbd8e371f7a7b514fe615920eab0d8",
+      "publicSHA256": "6461e44cfaa89536e4fbd089b1f8f0b312ff7da0a7ded0574aa74d6ac214dce8",
+      "rawBytes": 1140,
+      "publicBytes": 1113,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "live-publisher.log",
+      "rawSHA256": "f6747c71bfe59a390a225a7d764ada05c4823fa083a65b47256a8c0ada6bbe55",
+      "publicSHA256": "f6747c71bfe59a390a225a7d764ada05c4823fa083a65b47256a8c0ada6bbe55",
+      "rawBytes": 663,
+      "publicBytes": 663,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "old-artifact-actual-admission-red.json",
+      "rawSHA256": "aa92b4d2c02283d73e0586b15ca3c4b15ed46d486b7aabb72ac3d7b7f951dc26",
+      "publicSHA256": "aa92b4d2c02283d73e0586b15ca3c4b15ed46d486b7aabb72ac3d7b7f951dc26",
+      "rawBytes": 431,
+      "publicBytes": 431,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "old-artifact-size-analysis.json",
+      "rawSHA256": "45ad977a511bffaa3190836ad1cae3152367b0e3af14baa3ef541be09ff051cd",
+      "publicSHA256": "45ad977a511bffaa3190836ad1cae3152367b0e3af14baa3ef541be09ff051cd",
+      "rawBytes": 388573,
+      "publicBytes": 388573,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "pr-publication-reconciled-receipt.json",
+      "rawSHA256": "f893e4572d9b5e4ac6db355155173443f558e89020961400c0cc5c4dcb2679d1",
+      "publicSHA256": "f893e4572d9b5e4ac6db355155173443f558e89020961400c0cc5c4dcb2679d1",
+      "rawBytes": 695,
+      "publicBytes": 695,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preservation-analysis.json",
+      "rawSHA256": "f6128f87ccafbe32d3fb37f7e584e057365af2bdba43b2316ab7d493c0ef0f90",
+      "publicSHA256": "f6128f87ccafbe32d3fb37f7e584e057365af2bdba43b2316ab7d493c0ef0f90",
+      "rawBytes": 91812,
+      "publicBytes": 91812,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preservation-html-normalized-final.json",
+      "rawSHA256": "90c5d6e47ad895cf7f433e2ef93768b9ba73a791ff15e1260196cb6571596a06",
+      "publicSHA256": "90c5d6e47ad895cf7f433e2ef93768b9ba73a791ff15e1260196cb6571596a06",
+      "rawBytes": 446,
+      "publicBytes": 446,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preservation-normalized.json",
+      "rawSHA256": "b50b1150d64a4755331dc9a118518ff914ac9656a1a9889f886905cd948ea8f9",
+      "publicSHA256": "b50b1150d64a4755331dc9a118518ff914ac9656a1a9889f886905cd948ea8f9",
+      "rawBytes": 61220,
+      "publicBytes": 61220,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preview-authority-review.json",
+      "rawSHA256": "ec8b6a895709739937e964a0838cab584d3bb3e22d17d5acb67535a36a8eb784",
+      "publicSHA256": "ec8b6a895709739937e964a0838cab584d3bb3e22d17d5acb67535a36a8eb784",
+      "rawBytes": 31854,
+      "publicBytes": 31854,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preview-authority-review.md",
+      "rawSHA256": "5b283e044de8b1853de73e04bd33a41e99ba1c2c60e18250810f2f4d83637fc3",
+      "publicSHA256": "5b283e044de8b1853de73e04bd33a41e99ba1c2c60e18250810f2f4d83637fc3",
+      "rawBytes": 4538,
+      "publicBytes": 4538,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preview-brutalist-copy/observations.json",
+      "rawSHA256": "e6bd0a140cbdc1a58b436d828797ca9c197390fba18cbea3ed11ba319dcb3e80",
+      "publicSHA256": "ba59db215bbc336f248b02f2859f33e3349ae4d743024a2e236a462ccadfee69",
+      "rawBytes": 3511,
+      "publicBytes": 3512,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preview-brutalist-copy/react.png",
+      "rawSHA256": "324f28cefb63fc1bc3f88c710011f0075bb82ace357b7f3d42347c3a2a7c97e6",
+      "publicSHA256": "324f28cefb63fc1bc3f88c710011f0075bb82ace357b7f3d42347c3a2a7c97e6",
+      "rawBytes": 141463,
+      "publicBytes": 141463,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "preview-brutalist-copy/vue.png",
+      "rawSHA256": "ab94dcd0ebaca988ff9ee068ba8db7053370894918a522ec87617b4f40bd2245",
+      "publicSHA256": "ab94dcd0ebaca988ff9ee068ba8db7053370894918a522ec87617b4f40bd2245",
+      "rawBytes": 141139,
+      "publicBytes": 141139,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "preview-brutalist-copy/vue2.png",
+      "rawSHA256": "50d250bef136f9b08ed46729232179c4e28b4e76346d3d0608bb90a2d0ae10f5",
+      "publicSHA256": "50d250bef136f9b08ed46729232179c4e28b4e76346d3d0608bb90a2d0ae10f5",
+      "rawBytes": 141366,
+      "publicBytes": 141366,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "preview-brutalist-copy/wc.png",
+      "rawSHA256": "9a18b6bf1cf366df1f774cb3675fdaef059cb3686926daa8b09c5af95be51d18",
+      "publicSHA256": "9a18b6bf1cf366df1f774cb3675fdaef059cb3686926daa8b09c5af95be51d18",
+      "rawBytes": 142477,
+      "publicBytes": 142477,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "preview-brutalist-copy.mjs",
+      "rawSHA256": "758449a04f51055c629bc07691addd047a016b072e071717470b1255ea9af1f6",
+      "publicSHA256": "d348f799fb92df674b646b8a7780998d7778bfac4d0e84bf4e6e0380242552ee",
+      "rawBytes": 3151,
+      "publicBytes": 3107,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preview-candidate-preservation-review.json",
+      "rawSHA256": "ee736baf9938e245f9028cc3878349f44d42fd25119ae71fe45a0abfba90a1b9",
+      "publicSHA256": "a70532ede8bb276a4d1a20c63fb136aaa5d3e1e7d8795d7251873bf8dd1134a3",
+      "rawBytes": 14223,
+      "publicBytes": 13629,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preview-candidate-preservation-review.md",
+      "rawSHA256": "1f5982ff4e2b33ae51fea699b22419312f12bd9678e4f8250c498a7128c55ef2",
+      "publicSHA256": "1f5982ff4e2b33ae51fea699b22419312f12bd9678e4f8250c498a7128c55ef2",
+      "rawBytes": 2566,
+      "publicBytes": 2566,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preview-candidate-working-review.json",
+      "rawSHA256": "6d19dda57c66ab48c7d583ce83448172d75cf27a9d850d57886b61b28974ea0c",
+      "publicSHA256": "b5e4f6dbd23d95c1c1eac56c18034a41e4883121e88fc26dd24a782000e045d9",
+      "rawBytes": 12796,
+      "publicBytes": 12337,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preview-candidate-working-review.md",
+      "rawSHA256": "69a3d9356ca13ee5edaee4a8b56c69383dcf9328150c09d7aa03f8d91482cfa2",
+      "publicSHA256": "69a3d9356ca13ee5edaee4a8b56c69383dcf9328150c09d7aa03f8d91482cfa2",
+      "rawBytes": 1862,
+      "publicBytes": 1862,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preview-canonical-chain-review.json",
+      "rawSHA256": "03dc64ea4d713985823c0c677b153fc10312104795a4bb66508741074609a9cc",
+      "publicSHA256": "c65df66928d8215289de4b874d8174811b113f266e494ba59fed1d963a5a42d0",
+      "rawBytes": 17667,
+      "publicBytes": 17640,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preview-canonical-chain-review.md",
+      "rawSHA256": "fab3ce2a821fd42f6578a234381eb7622a54b7074bf71d0f1bb4dd81108de9ba",
+      "publicSHA256": "fab3ce2a821fd42f6578a234381eb7622a54b7074bf71d0f1bb4dd81108de9ba",
+      "rawBytes": 3029,
+      "publicBytes": 3029,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preview-ci-artifacts.json",
+      "rawSHA256": "926229c512d09643b70fae22398209a518bd66f2bb76d4ea676d0439d93bf726",
+      "publicSHA256": "fdac127af08b2fd52453eec91747f210974bc23c242954fff1c8b25949f1a09c",
+      "rawBytes": 1532,
+      "publicBytes": 1963,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preview-ci-build.log",
+      "rawSHA256": "39593d98b959a8caacb28e05ceac39a4825b5969d2fe18f5e1f6870c4b35ef9e",
+      "publicSHA256": "8efdbb980742d0879701c68571f2fcc9bd490312c1ff71343bcc85c6cc29bd8b",
+      "rawBytes": 747263,
+      "publicBytes": 746931,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preview-dialog-final-binding.json",
+      "rawSHA256": "822908c98503f32798180cba6bcd1179323583d08d22dd4c8e9a2f98d2e9fd8b",
+      "publicSHA256": "6b36b4f2b6f343cba2dcbb97385b70e3031f165b5baa686f15010965769ca870",
+      "rawBytes": 18440,
+      "publicBytes": 18359,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preview-dialog-final-binding.md",
+      "rawSHA256": "9e87580c5285620fc3319601293b878057da74bc70e6ceb0aaa4455529dc8059",
+      "publicSHA256": "9e87580c5285620fc3319601293b878057da74bc70e6ceb0aaa4455529dc8059",
+      "rawBytes": 2608,
+      "publicBytes": 2608,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preview-interactions/observations.json",
+      "rawSHA256": "cd137aa09ea96d512c6028df3ed5bdf4c21df51d78131302ffddd745d2cde615",
+      "publicSHA256": "d8dabf062006baf8401faeca181634b5ac84ff4c98bff31fe11ff9572800c9dc",
+      "rawBytes": 4132,
+      "publicBytes": 4106,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preview-interactions/shadcn-react.png",
+      "rawSHA256": "0dd15f6431e69f3c34a8f868ba3caac80187cf88a03668924bda57c0732cbd5b",
+      "publicSHA256": "0dd15f6431e69f3c34a8f868ba3caac80187cf88a03668924bda57c0732cbd5b",
+      "rawBytes": 128892,
+      "publicBytes": 128892,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "preview-interactions/shadcn-vue.png",
+      "rawSHA256": "4d1dc1473f5b3f51ff8db3d64f3cc49ade906a55171edc53b8b6a9fc85a4b907",
+      "publicSHA256": "4d1dc1473f5b3f51ff8db3d64f3cc49ade906a55171edc53b8b6a9fc85a4b907",
+      "rawBytes": 129635,
+      "publicBytes": 129635,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "preview-interactions/shadcn-vue2.png",
+      "rawSHA256": "cbc0eac73580463c398fbeeccd9d46a01d48ae50a3f6f124d91417c98e18f3ba",
+      "publicSHA256": "cbc0eac73580463c398fbeeccd9d46a01d48ae50a3f6f124d91417c98e18f3ba",
+      "rawBytes": 128462,
+      "publicBytes": 128462,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "preview-interactions/shadcn-wc.png",
+      "rawSHA256": "3dc0fd8d3cbd5f48f9dcacf8e5dcce7aa203826c45c2aaa78dd51528fb541d2b",
+      "publicSHA256": "3dc0fd8d3cbd5f48f9dcacf8e5dcce7aa203826c45c2aaa78dd51528fb541d2b",
+      "rawBytes": 121921,
+      "publicBytes": 121921,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "preview-interactions.mjs",
+      "rawSHA256": "122fc514fc437d982cbec11891782d5461b6b773070e10e63907a15690321af1",
+      "publicSHA256": "d779250de106b206c0b4bfdb463dc76acbbaaeef5c7c01f91741692413184b14",
+      "rawBytes": 4157,
+      "publicBytes": 4113,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preview-native/brutalist-wc-ready.png",
+      "rawSHA256": "02319f924c9f51b1bc8ae1a2b38248a78e143e935b93255be0a1ea218fb8126a",
+      "publicSHA256": "02319f924c9f51b1bc8ae1a2b38248a78e143e935b93255be0a1ea218fb8126a",
+      "rawBytes": 106441,
+      "publicBytes": 106441,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "preview-native/local-catalog.png",
+      "rawSHA256": "91e687821a7090417c5d5c7e2efc55c51e3501a8ee4125da513bf4545e0a47fd",
+      "publicSHA256": "91e687821a7090417c5d5c7e2efc55c51e3501a8ee4125da513bf4545e0a47fd",
+      "rawBytes": 32966,
+      "publicBytes": 32966,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "preview-native/observations.json",
+      "rawSHA256": "06886ffd09e875e09b03bb66dcccecab19cb4f8b9ff095138d40facd6254b923",
+      "publicSHA256": "6b58aae770e72e87f7a5f2bb61ad5284dd8ea7a94d2230737a08c157b502ce2e",
+      "rawBytes": 36682,
+      "publicBytes": 36683,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preview-native/shadcn-wc-ready.png",
+      "rawSHA256": "f86a9a62e6b5d2c614cfc1134b629b5a08094980561fe4106a28b0290657a014",
+      "publicSHA256": "f86a9a62e6b5d2c614cfc1134b629b5a08094980561fe4106a28b0290657a014",
+      "rawBytes": 86124,
+      "publicBytes": 86124,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "preview-native-initial-route-failure/baseline-noscript-shadcn-1280.png",
+      "rawSHA256": "99697c7222510ae56b41efc098f4a68649e7425eefbb1bc14d0a56fbab22ec4f",
+      "publicSHA256": "99697c7222510ae56b41efc098f4a68649e7425eefbb1bc14d0a56fbab22ec4f",
+      "rawBytes": 153023,
+      "publicBytes": 153023,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "preview-native-initial-route-failure/baseline-noscript-shadcn-390.png",
+      "rawSHA256": "e1fafc04c5bb3c3f97011b88c2f4985d2eb2db2d6804086488e5ad7b934c9abd",
+      "publicSHA256": "e1fafc04c5bb3c3f97011b88c2f4985d2eb2db2d6804086488e5ad7b934c9abd",
+      "rawBytes": 34788,
+      "publicBytes": 34788,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "preview-native-initial-route-failure/candidate-noscript-shadcn-1280.png",
+      "rawSHA256": "99697c7222510ae56b41efc098f4a68649e7425eefbb1bc14d0a56fbab22ec4f",
+      "publicSHA256": "99697c7222510ae56b41efc098f4a68649e7425eefbb1bc14d0a56fbab22ec4f",
+      "rawBytes": 153023,
+      "publicBytes": 153023,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "preview-native-initial-route-failure/candidate-noscript-shadcn-390.png",
+      "rawSHA256": "e1fafc04c5bb3c3f97011b88c2f4985d2eb2db2d6804086488e5ad7b934c9abd",
+      "publicSHA256": "e1fafc04c5bb3c3f97011b88c2f4985d2eb2db2d6804086488e5ad7b934c9abd",
+      "rawBytes": 34788,
+      "publicBytes": 34788,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "preview-native-initial-route-failure/observations.json",
+      "rawSHA256": "ac71386221f55042c9e8f42bd6f70eca4e4cf3b5cf5ede6474d34194d08616f0",
+      "publicSHA256": "5c1f42bdce6dac119e232945a4c29d877294a867e90667e63b30c241b132913a",
+      "rawBytes": 9971,
+      "publicBytes": 9945,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preview-native-initial-route-failure.log",
+      "rawSHA256": "cd9a4ce0402c878c6ee378bf50514a175cca43684f48373978e4f6f917829d01",
+      "publicSHA256": "b04d96e6a4bec8bf967dd6ad8732322e1a094500935562c8493d064bfc05b8b4",
+      "rawBytes": 523,
+      "publicBytes": 496,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preview-native-initial-route-failure.mjs",
+      "rawSHA256": "928aaebd48df7fcd1f2d5ea66d356ad4a2d2aa3344378963d2e619c6bfea692f",
+      "publicSHA256": "4635227faedb05a70e4c1454f4796d35bcfd1ed42499805874c285f80598cbc2",
+      "rawBytes": 5158,
+      "publicBytes": 5114,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preview-native-projected-selector-failure/observations.json",
+      "rawSHA256": "e4cd755cef564fd8fe39f7ae00cdac61e0dac7cb900a872620f96131a0f7a72d",
+      "publicSHA256": "c63b996403a74d9b5bb292a1188fe6ff66e23a3680a16ae35119e593e2ea11ce",
+      "rawBytes": 450,
+      "publicBytes": 424,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preview-native-projected-selector-failure.log",
+      "rawSHA256": "85364b162dd0f605582eee8ba717fe0ef1e8441aa22643ca373ba334ca282439",
+      "publicSHA256": "d8fdb8cd95336ac2fd92d611c4f18d2cfecf9cce6c3e4ad575b12af6cb9f6ce9",
+      "rawBytes": 248,
+      "publicBytes": 221,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preview-native-projected-selector-failure.mjs",
+      "rawSHA256": "6b7e63e850c78dec803fc224debe058b27da55caeeda3f5c08a7cd728cf13779",
+      "publicSHA256": "e33063ad2c72479b77f5cfe3b6bb0ba0da80d0084ddb177238c7fd8fc3905127",
+      "rawBytes": 5141,
+      "publicBytes": 5097,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preview-native-readiness-probe-failure/baseline-noscript-brutalist-1280.png",
+      "rawSHA256": "4ce3e73ab30b19d71d9ac32a58db4960086e3e82279d675e6f4efee11c0d6d1d",
+      "publicSHA256": "4ce3e73ab30b19d71d9ac32a58db4960086e3e82279d675e6f4efee11c0d6d1d",
+      "rawBytes": 76451,
+      "publicBytes": 76451,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "preview-native-readiness-probe-failure/baseline-noscript-brutalist-390.png",
+      "rawSHA256": "e82eed3d2a5ea3752f481a9ab3a7cd3eee14aa49f9fcfdbb66167d716d2ff244",
+      "publicSHA256": "e82eed3d2a5ea3752f481a9ab3a7cd3eee14aa49f9fcfdbb66167d716d2ff244",
+      "rawBytes": 43330,
+      "publicBytes": 43330,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "preview-native-readiness-probe-failure/baseline-noscript-shadcn-1280.png",
+      "rawSHA256": "99697c7222510ae56b41efc098f4a68649e7425eefbb1bc14d0a56fbab22ec4f",
+      "publicSHA256": "99697c7222510ae56b41efc098f4a68649e7425eefbb1bc14d0a56fbab22ec4f",
+      "rawBytes": 153023,
+      "publicBytes": 153023,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "preview-native-readiness-probe-failure/baseline-noscript-shadcn-390.png",
+      "rawSHA256": "e1fafc04c5bb3c3f97011b88c2f4985d2eb2db2d6804086488e5ad7b934c9abd",
+      "publicSHA256": "e1fafc04c5bb3c3f97011b88c2f4985d2eb2db2d6804086488e5ad7b934c9abd",
+      "rawBytes": 34788,
+      "publicBytes": 34788,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "preview-native-readiness-probe-failure/candidate-noscript-brutalist-1280.png",
+      "rawSHA256": "4ce3e73ab30b19d71d9ac32a58db4960086e3e82279d675e6f4efee11c0d6d1d",
+      "publicSHA256": "4ce3e73ab30b19d71d9ac32a58db4960086e3e82279d675e6f4efee11c0d6d1d",
+      "rawBytes": 76451,
+      "publicBytes": 76451,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "preview-native-readiness-probe-failure/candidate-noscript-brutalist-390.png",
+      "rawSHA256": "e82eed3d2a5ea3752f481a9ab3a7cd3eee14aa49f9fcfdbb66167d716d2ff244",
+      "publicSHA256": "e82eed3d2a5ea3752f481a9ab3a7cd3eee14aa49f9fcfdbb66167d716d2ff244",
+      "rawBytes": 43330,
+      "publicBytes": 43330,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "preview-native-readiness-probe-failure/candidate-noscript-shadcn-1280.png",
+      "rawSHA256": "99697c7222510ae56b41efc098f4a68649e7425eefbb1bc14d0a56fbab22ec4f",
+      "publicSHA256": "99697c7222510ae56b41efc098f4a68649e7425eefbb1bc14d0a56fbab22ec4f",
+      "rawBytes": 153023,
+      "publicBytes": 153023,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "preview-native-readiness-probe-failure/candidate-noscript-shadcn-390.png",
+      "rawSHA256": "e1fafc04c5bb3c3f97011b88c2f4985d2eb2db2d6804086488e5ad7b934c9abd",
+      "publicSHA256": "e1fafc04c5bb3c3f97011b88c2f4985d2eb2db2d6804086488e5ad7b934c9abd",
+      "rawBytes": 34788,
+      "publicBytes": 34788,
+      "transformation": "unchanged PNG bytes"
+    },
+    {
+      "path": "preview-native-readiness-probe-failure/observations.json",
+      "rawSHA256": "bda93556670525af3b296ab3c0a6ccd9b58a7a49dc34fc131d38f4d6a3429f76",
+      "publicSHA256": "ade8a76a9f0cc9028b4de8d7d1b8af86d52f0d90f6173bafa5364ee0be11e2ff",
+      "rawBytes": 18024,
+      "publicBytes": 17998,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preview-native-readiness-probe-failure.log",
+      "rawSHA256": "ba3ca43b75bb94992813d6d2170d4c58ea3b07b99e4d6062a1490dda364808ad",
+      "publicSHA256": "7e43ec271c9370beb8774f6d017205e16f4e09f745d208553c4e3c4d19d6b65f",
+      "rawBytes": 248,
+      "publicBytes": 221,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preview-native-readiness-probe-failure.mjs",
+      "rawSHA256": "47b6e6e9f7dcab553e707f066077289ce4afc42e897dd68dee9b78f6612c4c4d",
+      "publicSHA256": "276f0f9ab3589356e6d4e6cf1dbf18ba905df5cab16a36fbf96ab9e97060269f",
+      "rawBytes": 5209,
+      "publicBytes": 5165,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preview-native.mjs",
+      "rawSHA256": "967622b529c5c738037d84f40fc8c6a5269d60059360d20f06e2e4535ddadd59",
+      "publicSHA256": "4b7407ca55e904217f62ae2927c6dd22113265415c076ddb4161253f3d47be7b",
+      "rawBytes": 5327,
+      "publicBytes": 5283,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preview-unit-receipt.json",
+      "rawSHA256": "a572c1266c4ccf9763041814dac5a5617cb3727ff07dcb1e19920ff15581d2d9",
+      "publicSHA256": "a572c1266c4ccf9763041814dac5a5617cb3727ff07dcb1e19920ff15581d2d9",
+      "rawBytes": 426,
+      "publicBytes": 426,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preview-unit.log",
+      "rawSHA256": "0ef250100ac71204883b1a4beb17aebf9c0bd29ff57e8d15ed80570f19e7ffea",
+      "publicSHA256": "0ef250100ac71204883b1a4beb17aebf9c0bd29ff57e8d15ed80570f19e7ffea",
+      "rawBytes": 5689,
+      "publicBytes": 5689,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "preview-visual-review-receipt.json",
+      "rawSHA256": "fe8f4857d0d078442b03fdd3ee08e91c998e1f6eff7ad078e0f8ce58d549eb33",
+      "publicSHA256": "fe8f4857d0d078442b03fdd3ee08e91c998e1f6eff7ad078e0f8ce58d549eb33",
+      "rawBytes": 10050,
+      "publicBytes": 10050,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "run-38990834145-jobs.json",
+      "rawSHA256": "10aa1591c7d2de5eef45adb63725de8483b6552fb0e10e73dbc2d6eba3b19d8b",
+      "publicSHA256": "2833138ae099379c3651eb2de13e076438f6925a450224501d7a7f327ffa7449",
+      "rawBytes": 6473,
+      "publicBytes": 9800,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "startup-unit-receipt.json",
+      "rawSHA256": "b8fe599226fbd1689ee1c69941a496318f8a06e295688e9ff79c0462c17a3d0e",
+      "publicSHA256": "b8fe599226fbd1689ee1c69941a496318f8a06e295688e9ff79c0462c17a3d0e",
+      "rawBytes": 484,
+      "publicBytes": 484,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "startup-unit.log",
+      "rawSHA256": "9c44c7143bab2e99a3672c24611083908cd7da716c930096e94f4412f8cb4114",
+      "publicSHA256": "e28d8e1b937fde08b025545df36465aba54d369ebdc6e38c2caab379c121495c",
+      "rawBytes": 4888,
+      "publicBytes": 4844,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "types-receipt.json",
+      "rawSHA256": "2123171bceb0e065016ee7995caa5bf77222101305ec112b1ae67591d8646cb8",
+      "publicSHA256": "2123171bceb0e065016ee7995caa5bf77222101305ec112b1ae67591d8646cb8",
+      "rawBytes": 183,
+      "publicBytes": 183,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    },
+    {
+      "path": "types.log",
+      "rawSHA256": "ef7d0750eeeafea97cc2cc02c1234114bea2a0b7879b615b8efa1f62c6b7e168",
+      "publicSHA256": "541b63ccf307e658b5539300a74895cf3b20db6e37ed26a9a664bc7b6796d49f",
+      "rawBytes": 6039,
+      "publicBytes": 5863,
+      "transformation": "privacy-redacted derived text; raw execution bytes retained privately"
+    }
+  ],
+  "unavailable": [],
+  "bounds": [
+    "Explicit whitelist; no request/context/authorization/ModelTrace raw sampling files selected",
+    "No full canonical ZIP published: immutable official artifact URL and digest retained, original private ZIP not modified",
+    "Some original helper code is privacy-redacted and not claimed to be original executed bytes or turnkey reproduction",
+    "Images copied unchanged; actual viewed captions are source-stage specific"
+  ]
+}

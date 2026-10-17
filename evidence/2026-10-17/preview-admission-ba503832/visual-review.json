@@ -1,0 +1,172 @@
+{
+  "at": "2026-10-17T01:48:07.186868+00:00",
+  "count": 33,
+  "images": [
+    {
+      "path": "images/c-diagnostics/dialog-mask-observation/artifacts/failure.png",
+      "sha256": "601aa2184b2e9fbd6fc70f418602a495ce01c00f25c80a60cabe01eb8dbf10fb",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    },
+    {
+      "path": "images/canonical-brutalist-copy/react.png",
+      "sha256": "324f28cefb63fc1bc3f88c710011f0075bb82ace357b7f3d42347c3a2a7c97e6",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    },
+    {
+      "path": "images/canonical-brutalist-copy/vue.png",
+      "sha256": "9e6f47befba4ee9675ee4acd597cd33b13854a7951e0e134532a003053ce52fb",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    },
+    {
+      "path": "images/canonical-brutalist-copy/vue2.png",
+      "sha256": "50d250bef136f9b08ed46729232179c4e28b4e76346d3d0608bb90a2d0ae10f5",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    },
+    {
+      "path": "images/canonical-brutalist-copy/wc.png",
+      "sha256": "20345a3212e8e973c9f8923ba7550aee486f48a103100e91a013a893576b11d8",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    },
+    {
+      "path": "images/canonical-shadcn-interactions/actual-catalog.png",
+      "sha256": "8791535c5dc2c8afcbccb52e1830ee91524e6ab59156a4d0c69d66273bec2b91",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    },
+    {
+      "path": "images/canonical-shadcn-interactions/shadcn-react.png",
+      "sha256": "9c19c7cb9757b459e0a6cab2f6e8bd1c77ae16ff839700c50fcb5279995edda1",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    },
+    {
+      "path": "images/canonical-shadcn-interactions/shadcn-vue.png",
+      "sha256": "396b6a64f4565542a96907eb392b9acc11ce0f8a4a04c40b76f0ea2c54ad35d2",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    },
+    {
+      "path": "images/canonical-shadcn-interactions/shadcn-vue2.png",
+      "sha256": "23045502a65a1a5819d842ff879e9738a50c7001c459dc8549e96b18f24968ef",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    },
+    {
+      "path": "images/canonical-shadcn-interactions/shadcn-wc.png",
+      "sha256": "065d77a9c3ea2f9dfb2356ca69ed53312ead5ec49cfc75da278955f614743fd4",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    },
+    {
+      "path": "images/preview-brutalist-copy/react.png",
+      "sha256": "324f28cefb63fc1bc3f88c710011f0075bb82ace357b7f3d42347c3a2a7c97e6",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    },
+    {
+      "path": "images/preview-brutalist-copy/vue.png",
+      "sha256": "ab94dcd0ebaca988ff9ee068ba8db7053370894918a522ec87617b4f40bd2245",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    },
+    {
+      "path": "images/preview-brutalist-copy/vue2.png",
+      "sha256": "50d250bef136f9b08ed46729232179c4e28b4e76346d3d0608bb90a2d0ae10f5",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    },
+    {
+      "path": "images/preview-brutalist-copy/wc.png",
+      "sha256": "9a18b6bf1cf366df1f774cb3675fdaef059cb3686926daa8b09c5af95be51d18",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    },
+    {
+      "path": "images/preview-interactions/shadcn-react.png",
+      "sha256": "0dd15f6431e69f3c34a8f868ba3caac80187cf88a03668924bda57c0732cbd5b",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    },
+    {
+      "path": "images/preview-interactions/shadcn-vue.png",
+      "sha256": "4d1dc1473f5b3f51ff8db3d64f3cc49ade906a55171edc53b8b6a9fc85a4b907",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    },
+    {
+      "path": "images/preview-interactions/shadcn-vue2.png",
+      "sha256": "cbc0eac73580463c398fbeeccd9d46a01d48ae50a3f6f124d91417c98e18f3ba",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    },
+    {
+      "path": "images/preview-interactions/shadcn-wc.png",
+      "sha256": "3dc0fd8d3cbd5f48f9dcacf8e5dcce7aa203826c45c2aaa78dd51528fb541d2b",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    },
+    {
+      "path": "images/preview-native/brutalist-wc-ready.png",
+      "sha256": "02319f924c9f51b1bc8ae1a2b38248a78e143e935b93255be0a1ea218fb8126a",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    },
+    {
+      "path": "images/preview-native/local-catalog.png",
+      "sha256": "91e687821a7090417c5d5c7e2efc55c51e3501a8ee4125da513bf4545e0a47fd",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    },
+    {
+      "path": "images/preview-native/shadcn-wc-ready.png",
+      "sha256": "f86a9a62e6b5d2c614cfc1134b629b5a08094980561fe4106a28b0290657a014",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    },
+    {
+      "path": "images/preview-native-initial-route-failure/baseline-noscript-shadcn-1280.png",
+      "sha256": "99697c7222510ae56b41efc098f4a68649e7425eefbb1bc14d0a56fbab22ec4f",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    },
+    {
+      "path": "images/preview-native-initial-route-failure/baseline-noscript-shadcn-390.png",
+      "sha256": "e1fafc04c5bb3c3f97011b88c2f4985d2eb2db2d6804086488e5ad7b934c9abd",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    },
+    {
+      "path": "images/preview-native-initial-route-failure/candidate-noscript-shadcn-1280.png",
+      "sha256": "99697c7222510ae56b41efc098f4a68649e7425eefbb1bc14d0a56fbab22ec4f",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    },
+    {
+      "path": "images/preview-native-initial-route-failure/candidate-noscript-shadcn-390.png",
+      "sha256": "e1fafc04c5bb3c3f97011b88c2f4985d2eb2db2d6804086488e5ad7b934c9abd",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    },
+    {
+      "path": "images/preview-native-readiness-probe-failure/baseline-noscript-brutalist-1280.png",
+      "sha256": "4ce3e73ab30b19d71d9ac32a58db4960086e3e82279d675e6f4efee11c0d6d1d",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    },
+    {
+      "path": "images/preview-native-readiness-probe-failure/baseline-noscript-brutalist-390.png",
+      "sha256": "e82eed3d2a5ea3752f481a9ab3a7cd3eee14aa49f9fcfdbb66167d716d2ff244",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    },
+    {
+      "path": "images/preview-native-readiness-probe-failure/baseline-noscript-shadcn-1280.png",
+      "sha256": "99697c7222510ae56b41efc098f4a68649e7425eefbb1bc14d0a56fbab22ec4f",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    },
+    {
+      "path": "images/preview-native-readiness-probe-failure/baseline-noscript-shadcn-390.png",
+      "sha256": "e1fafc04c5bb3c3f97011b88c2f4985d2eb2db2d6804086488e5ad7b934c9abd",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    },
+    {
+      "path": "images/preview-native-readiness-probe-failure/candidate-noscript-brutalist-1280.png",
+      "sha256": "4ce3e73ab30b19d71d9ac32a58db4960086e3e82279d675e6f4efee11c0d6d1d",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    },
+    {
+      "path": "images/preview-native-readiness-probe-failure/candidate-noscript-brutalist-390.png",
+      "sha256": "e82eed3d2a5ea3752f481a9ab3a7cd3eee14aa49f9fcfdbb66167d716d2ff244",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    },
+    {
+      "path": "images/preview-native-readiness-probe-failure/candidate-noscript-shadcn-1280.png",
+      "sha256": "99697c7222510ae56b41efc098f4a68649e7425eefbb1bc14d0a56fbab22ec4f",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    },
+    {
+      "path": "images/preview-native-readiness-probe-failure/candidate-noscript-shadcn-390.png",
+      "sha256": "e1fafc04c5bb3c3f97011b88c2f4985d2eb2db2d6804086488e5ad7b934c9abd",
+      "inspection": "root actually viewed via view_image, original PNG bytes retained"
+    }
+  ],
+  "scope": "named original figures only; duplicate bytes can render as deduplicated tool images; no screenshot reencoding/cropping; not universal design/AT acceptance"
+}
