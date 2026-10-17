@@ -65,6 +65,8 @@ Run `node publish.mjs <publish-config.json>` as a finite supervised command. The
 node --test scripts/preview/*.test.mjs
 ```
 
+The build workflow also packages the complete canonical `apps/www/dist` tree and runs `generated-artifact.test.mjs` with `PREVIEW_GENERATED_ARTIFACT` and `PREVIEW_GENERATED_SOURCE`. This checks the compressed bound, default ZIP admission and sanitation, and compares every admitted file with the producer's bytes. It neither filters pages/assets nor replaces the trusted publisher's independent artifact identity and live-head checks.
+
 Runtime acceptance additionally requires a real Actions artifact, actual catalog/page/assets and WC/React/Vue/Vue2 browser behavior, separate generation origins, worker rejection and observed head/failure/close or lease revocation. Unit checks alone do not prove deployment.
 
 The old Poppy build/bootstrap/deploy/close/security workflows and both integration copies are removed from source. Their registered platform workflows, preview-only secrets, Pages resources, deployed bot/edge routes and OAuth callback settings must be reconciled against live ownership before declaring external retirement complete. Preserve unrelated Poppy OAuth, broker, reports and Control Room features; preserve historical SQLite rows and dated engineering records. Do not remove shared Cloudflare credentials merely because preview no longer uses them.
