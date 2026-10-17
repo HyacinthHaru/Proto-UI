@@ -9,6 +9,7 @@ import { runModelTraceCli } from '../modeltrace-cli.mjs';
 import {
   assertModelTraceDisclosure,
   assertModelTraceFresh,
+  assertModelTraceInputsOutsideCheckout,
   buildModelTraceRecord,
   computeModelTraceChallengeDigest,
   computeModelTraceReceiptDigest,
@@ -1088,6 +1089,48 @@ test('challenge and score require new private outputs and expose only public sum
     assert.equal(fs.readFileSync(out, 'utf8'), original);
     assert.equal(stdout, '');
   }
+});
+
+test('private record and context cannot share a hardlinked filesystem identity', (t) => {
+  const directory = fs.mkdtempSync(path.join(tmpdir(), 'modeltrace-input-identity-'));
+  t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  const checkoutRoot = path.join(directory, 'checkout');
+  fs.mkdirSync(checkoutRoot);
+  const recordPath = path.join(directory, 'record.json');
+  const contextPath = path.join(directory, 'context.json');
+  fs.writeFileSync(recordPath, '{}');
+  fs.linkSync(recordPath, contextPath);
+
+  assert.notEqual(fs.realpathSync(recordPath), fs.realpathSync(contextPath));
+  assert.throws(
+    () => assertModelTraceInputsOutsideCheckout({ recordPath, contextPath, checkoutRoot }),
+    /must not alias/
+  );
+});
+
+test('a later task artifact cannot hardlink private context after an absent artifact', (t) => {
+  const directory = fs.mkdtempSync(path.join(tmpdir(), 'modeltrace-task-identity-'));
+  t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
+  const checkoutRoot = path.join(directory, 'checkout');
+  fs.mkdirSync(checkoutRoot);
+  const recordPath = path.join(directory, 'record.json');
+  const contextPath = path.join(directory, 'context.json');
+  const laterArtifact = path.join(directory, 'later-artifact.json');
+  fs.writeFileSync(recordPath, '{}');
+  fs.writeFileSync(contextPath, '{}');
+  fs.linkSync(contextPath, laterArtifact);
+
+  assert.notEqual(fs.realpathSync(contextPath), fs.realpathSync(laterArtifact));
+  assert.throws(
+    () =>
+      assertModelTraceInputsOutsideCheckout({
+        recordPath,
+        contextPath,
+        checkoutRoot,
+        forbiddenPaths: [path.join(directory, 'absent-later-artifact.json'), laterArtifact],
+      }),
+    /must not alias/
+  );
 });
 
 test('private output preflight precedes context reads and challenge creation', (t) => {
