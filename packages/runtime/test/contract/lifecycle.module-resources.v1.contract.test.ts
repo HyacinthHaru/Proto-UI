@@ -38,6 +38,89 @@ function createImmediateHost(
 }
 
 describe('runtime contract: lifecycle module resource ownership (v1)', () => {
+  it('stops ordinary authored disposal callbacks after failure while retiring acquired resources', async () => {
+    const failure = new Error('authored disposal failure');
+    const calls: string[] = [];
+    const records: Record<string, unknown>[] = [];
+    let retained!: OwnedStateHandle<boolean>;
+    const proto = definePrototype({
+      name: 'lifecycle-ordinary-disposal-failfast',
+      setup(def) {
+        retained = def.state.bool('retained', false);
+        def.expose.state('retained', retained);
+        def.lifecycle.onBeforeDispose(() => {
+          calls.push('first');
+          throw failure;
+        });
+        def.lifecycle.onBeforeDispose(() => calls.push('unreached'));
+      },
+    });
+    const session = createRuntimeSession(
+      proto,
+      createImmediateHost((wiring) => {
+        wiring.attach('expose-state', [
+          [EXPOSES_RECORD_SINK_CAP, (record: Record<string, unknown>) => records.push(record)],
+        ]);
+      })
+    );
+
+    await expect(session.dispose()).rejects.toBe(failure);
+    expect(calls).toEqual(['first']);
+    expect(records.at(-1)).toEqual({});
+    expect(session.instancePhase).toBe('disposed');
+    expect(() => retained.get()).toThrow();
+  });
+
+  it('retains a falsy authored failure alongside a private release failure without continuing authors', async () => {
+    const releaseFailure = new Error('private Props release failure');
+    const calls: string[] = [];
+    let released = 0;
+    let retained!: OwnedStateHandle<boolean>;
+    const proto = definePrototype({
+      name: 'lifecycle-ordinary-falsy-disposal-failure',
+      setup(def) {
+        def.props.define({ step: { type: 'number' } });
+        retained = def.state.bool('retained', false);
+        def.lifecycle.onBeforeDispose(() => {
+          calls.push('first');
+          throw undefined;
+        });
+        def.lifecycle.onBeforeDispose(() => calls.push('unreached'));
+      },
+    });
+    const session = createRuntimeSession(
+      proto,
+      createImmediateHost((wiring) => {
+        wiring.attach('props', [
+          [
+            RAW_PROPS_SOURCE_CAP,
+            {
+              get: () => ({ step: 0 }),
+              subscribe: () => () => {
+                released += 1;
+                throw releaseFailure;
+              },
+            },
+          ],
+        ]);
+      })
+    );
+    let rejected = false;
+    let failure: unknown;
+    await session.dispose().catch((error) => {
+      rejected = true;
+      failure = error;
+    });
+
+    expect(rejected).toBe(true);
+    expect(failure).toBeInstanceOf(AggregateError);
+    expect((failure as AggregateError).errors).toEqual([releaseFailure, undefined]);
+    expect(calls).toEqual(['first']);
+    expect(released).toBe(1);
+    expect(session.instancePhase).toBe('disposed');
+    expect(() => retained.get()).toThrow();
+  });
+
   it('releases a failed created instance while preserving the original failure', () => {
     const failure = new Error('created callback rejected the composition');
     const records: Record<string, unknown>[] = [];

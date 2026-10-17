@@ -54,6 +54,10 @@ criteria:
     text:
       zh-CN: Runtime 已取得 instance 后，若同步 `created` callback 抛错，必须在重新抛出同一原始值之前完成所有可达的已取得资源的 terminal cleanup，取消已排队的 Delay 并使 instance-scoped handle 失效。清理 callback、diagnostic 或 release 的次级错误不得替换该原始值；该边界不承诺回收未返回资源的失败 factory，也不定义其它 lifecycle callback 的一般错误恢复。
       en: After Runtime acquires an instance, a synchronous `created` callback failure must complete all reachable acquired-resource terminal cleanup, cancel queued Delay work, and invalidate instance-scoped handles before rethrowing the identical initiating value. Secondary cleanup callback, diagnostic, or release errors must not replace that value. This boundary does not promise to reclaim resources never returned by a failing factory or define general error recovery for other lifecycle callbacks.
+  - id: C-LIFECYCLE-0002-K
+    text:
+      zh-CN: 普通 terminal disposal 的 authored `beforeDispose` callback 序列必须在首个 callback 抛错后停止，不得执行其余 authored callback。Runtime 仍必须尝试其已取得资源的私有 terminal cleanup，并在清理后拒绝 disposal，不能静默成功；只有该错误时必须保留同一抛出值，包括 falsy 值。该规则不改变其它清理错误的既有聚合行为，也不限制 J 要求的 failed-created 完整清理。
+      en: During ordinary terminal disposal, the authored `beforeDispose` callback sequence must stop after the first callback throws and must not invoke the remaining authored callbacks. Runtime must still attempt private terminal cleanup of its acquired resources and reject disposal after cleanup rather than silently succeed; when this is the only error, the identical thrown value, including a falsy value, must be preserved. This rule does not change existing aggregation of other cleanup errors or limit the exhaustive failed-created cleanup required by J.
 sources:
   - path: packages/runtime/test/contract/lifecycle.same-checkpoint-order.contract.test.ts
   - path: internal/contracts/lifecycle/component-lifecycle.v0.md
@@ -80,11 +84,11 @@ dependsOn:
 openQuestions:
   - id: C-LIFECYCLE-0002-Q-CALLBACK-ERRORS
     question:
-      zh-CN: 除 J 治理的已取得 instance 的同步 `created` 失败外，lifecycle callback 抛错后的传播、后续 callback 是否继续执行、以及是否进入 dispose 是否应由本契约定义？
-      en: Beyond the acquired-instance synchronous `created` failure governed by J, should this contract define error propagation, whether later lifecycle callbacks continue, and whether disposal proceeds after a lifecycle callback throws?
+      zh-CN: 除 J 治理的已取得 instance 的同步 `created` 失败与 K 治理的普通 authored `beforeDispose` 序列外，其它 lifecycle callback 抛错后的传播、后续 callback 是否继续执行、以及是否进入 dispose 是否应由本契约定义？
+      en: Beyond the acquired-instance synchronous `created` failure governed by J and the ordinary authored `beforeDispose` sequence governed by K, should this contract define propagation, continuation, and disposal after other lifecycle callback failures?
     context:
-      zh-CN: J 只关闭同步创建失败的原始错误与可达资源清理边界；其它 callback 的传播、继续执行与恢复仍是 adapter/runtime 断口，不因此提升 draft lifecycle。
-      en: J closes only the initiating-error and reachable-resource cleanup boundary for synchronous failed creation. Propagation, continuation, and recovery for other callbacks remain a runtime/adapter gap, without promoting this draft lifecycle.
+      zh-CN: J 关闭同步创建失败的原始错误与可达资源清理边界，K 只关闭普通 authored `beforeDispose` 的 fail-fast 与错误可见性；其它 callback 的传播、继续执行与恢复仍是 adapter/runtime 断口，不因此提升 draft lifecycle。
+      en: J closes the initiating-error and reachable-resource boundary for synchronous failed creation, and K closes only ordinary authored `beforeDispose` fail-fast behavior and error visibility. Propagation, continuation, and recovery for other callbacks remain a runtime/adapter gap, without promoting this draft lifecycle.
     blocks:
       - C-LIFECYCLE-0002
 revisions:
@@ -109,6 +113,9 @@ revisions:
   - version: 0.3.0-alpha.1
     change: revised
     summary: 'Defined the accepted acquired-instance synchronous created-failure boundary as criterion J: preserve the initiating thrown value while completing reachable terminal cleanup; broader callback error recovery remains open and draft.'
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: 'Defined the explicitly selected ordinary authored beforeDispose fail-fast boundary as K without suppressing rejection, skipping private resource retirement, widening other callback recovery, or activating the draft lifecycle.'
 tags:
   - lifecycle
   - callbacks

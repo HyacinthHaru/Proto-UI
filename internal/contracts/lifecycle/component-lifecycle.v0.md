@@ -129,7 +129,9 @@ The draft `C-LIFECYCLE-0002-J` defines one bounded failed-creation path. After R
 
 Props synchronization or watcher dispatch failures while entering that failed-creation cleanup cannot skip registered `beforeDispose` releases. Ordinary callback entry and normal disposal retain their existing preparation-error behavior.
 
-This does not promise recovery of resources never returned by a failing factory. General lifecycle callback propagation and recovery remain open in `C-LIFECYCLE-0002-Q-CALLBACK-ERRORS`; this draft rule is not stable lifecycle admission.
+The explicitly selected draft `C-LIFECYCLE-0002-K` governs ordinary terminal disposal: the authored `beforeDispose` sequence stops at the first thrown value, including a falsy value. Later authored callbacks do not run, but Runtime still attempts private terminal cleanup of its acquired resources. Disposal rejects after cleanup rather than silently succeeding; when the authored failure is the only error, the identical value is retained. Other cleanup-error aggregation stays unchanged. The exhaustive failed-created cleanup in J is a separate path, not weakened by ordinary authored fail-fast behavior.
+
+This does not promise recovery of resources never returned by a failing factory. Other lifecycle callback propagation and recovery remain open in `C-LIFECYCLE-0002-Q-CALLBACK-ERRORS`; these draft rules are not stable lifecycle admission.
 
 ---
 
