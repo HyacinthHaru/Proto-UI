@@ -252,6 +252,44 @@ try {
               scheme: getComputedStyle(node).colorScheme,
             };
           };
+          const measureVisibleRegion = (node) => {
+            const box = (element) => {
+              const { x, y, width, height } = element.getBoundingClientRect();
+              return { x, y, width, height };
+            };
+            const image = box(node);
+            const headers = [...new Set(document.querySelectorAll('header, [role="banner"], .header'))]
+              .filter((element) => {
+                const style = getComputedStyle(element);
+                const rect = element.getBoundingClientRect();
+                return style.display !== 'none' && style.visibility !== 'hidden' &&
+                  Number(style.opacity) > 0 && rect.width > 0 && rect.height > 0;
+              })
+              .map((element) => ({ ...box(element), position: getComputedStyle(element).position }));
+            const overlaps = (a, b) =>
+              a.x < b.x + b.width && a.x + a.width > b.x &&
+              a.y < b.y + b.height && a.y + a.height > b.y;
+            const headerOverlap = headers.filter((header) => overlaps(image, header));
+            const topInset = Math.max(0, ...headers
+              .filter((header) => header.y <= 1 && header.y + header.height > 0 &&
+                header.x < image.x + image.width && header.x + header.width > image.x)
+              .map((header) => header.y + header.height));
+            const fullyInViewport = image.x >= 0 && image.y >= 0 &&
+              image.x + image.width <= innerWidth && image.y + image.height <= innerHeight;
+            return {
+              image, headers, headerOverlap, topInset, fullyInViewport,
+              fullyVisible: fullyInViewport && headerOverlap.length === 0,
+              fitsUnobstructedViewport: image.width <= innerWidth &&
+                image.height + topInset + 16 <= innerHeight,
+              viewport: { width: innerWidth, height: innerHeight },
+              scroll: { x: scrollX, y: scrollY },
+              documentImage: { ...image, x: image.x + scrollX, y: image.y + scrollY },
+              document: {
+                width: Math.max(document.documentElement.scrollWidth, document.body.scrollWidth),
+                height: Math.max(document.documentElement.scrollHeight, document.body.scrollHeight),
+              },
+            };
+          };
           const bindMeasurement = (measurement, expected) => {
             assert.equal(measurement.src, origin + expected.asset, 'Use the viewport-selected allowlisted asset');
             assert.equal(measurement.naturalWidth, expected.width);
@@ -297,6 +335,9 @@ try {
               assert.ok(await page.evaluate(() =>
                 document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1
               ), 'The article must not introduce horizontal overflow');
+              // A viewport article image may be partial. Record that explicitly;
+              // do not equate source dimensions with unobstructed visibility.
+              measurement.visibleRegion = await image.evaluate(measureVisibleRegion);
             }
             if (expected.name === 'mobile' && size.width === 390 && size.height === 844) {
               assert.ok(measurement.minimumRenderedFontSize >= 16, '390 px article labels meet the project-specific 16 px target');
@@ -316,9 +357,93 @@ try {
           const filename = `${id}-article.png`;
           await page.screenshot({ path: path.join(out, filename) });
           entry.screenshots.push(filename);
+          if (profile.figure === 'evolution-feedback') {
+            entry.articleCapture = {
+              kind: 'viewport', file: filename, viewport, source: entry.image,
+              screenshotSha256: createHash('sha256').update(await fs.readFile(path.join(out, filename))).digest('hex'),
+            };
+          }
           const figure = `${id}-figure.png`;
-          await image.screenshot({ path: path.join(out, figure) });
-          entry.screenshots.push(figure);
+          if (profile.figure !== 'evolution-feedback') {
+            await image.screenshot({ path: path.join(out, figure) });
+            entry.screenshots.push(figure);
+          } else {
+            const originalRegion = await image.evaluate(measureVisibleRegion);
+            assert.ok(originalRegion.headers.length > 0, 'Measure the actual site header');
+            const configuredViewport = page.viewportSize();
+            assert.deepEqual(configuredViewport, viewport);
+            const fullPage = !originalRegion.fitsUnobstructedViewport;
+            const kind = fullPage ? 'document-region' : 'viewport-region';
+            const figureFile = `${id}-figure-${fullPage ? 'document' : 'viewport'}.png`;
+            entry.figureCapture = { kind, file: figureFile, originalRegion, outcome: 'running' };
+            try {
+              // Only genuine scrolling changes the view. Tall figures need a
+              // document-region capture at the same responsive viewport size.
+              await page.evaluate(({ fullPage, region }) => {
+                window.scrollTo({
+                  left: fullPage ? 0 : region.scroll.x,
+                  top: fullPage ? 0 : Math.max(0, region.documentImage.y - region.topInset - 8),
+                  behavior: 'instant',
+                });
+              }, { fullPage, region: originalRegion });
+              await page.evaluate(() => new Promise((resolve) =>
+                requestAnimationFrame(() => requestAnimationFrame(resolve))
+              ));
+              const positioned = await image.evaluate(measureVisibleRegion);
+              Object.assign(entry.figureCapture, { positioned });
+              assert.ok(positioned.headers.length > 0, 'The header remains present during figure capture');
+              assert.deepEqual(positioned.viewport, viewport, 'Capture must keep the real responsive viewport');
+              assert.equal(positioned.headerOverlap.length, 0, 'The complete figure must not intersect the site header');
+              if (fullPage) {
+                assert.deepEqual(positioned.scroll, { x: 0, y: 0 }, 'Document capture starts at the real document top');
+              } else {
+                assert.ok(positioned.fullyVisible, 'Natural scrolling must expose the complete figure below the header');
+              }
+              const bounds = fullPage ? positioned.documentImage : positioned.image;
+              const clip = {
+                x: Math.floor(bounds.x), y: Math.floor(bounds.y),
+                width: Math.ceil(bounds.x + bounds.width) - Math.floor(bounds.x),
+                height: Math.ceil(bounds.y + bounds.height) - Math.floor(bounds.y),
+              };
+              const limit = fullPage ? positioned.document : positioned.viewport;
+              assert.ok(clip.x >= 0 && clip.y >= 0 && clip.width > 0 && clip.height > 0);
+              assert.ok(clip.x + clip.width <= limit.width && clip.y + clip.height <= limit.height,
+                'The outward-rounded clip must contain the full image without document/viewport trimming');
+              entry.figureCapture.clip = clip;
+              entry.figureCapture.source = bindMeasurement(await image.evaluate(measureImage), selected);
+              // Playwright 1.58.2 Chromium uses native captureBeyondViewport for
+              // fullPage + clip; it does not resize the responsive layout viewport.
+              await page.screenshot({
+                path: path.join(out, figureFile), fullPage, clip,
+                scale: 'css', caret: 'initial', animations: 'allow',
+              });
+              entry.screenshots.push(figureFile);
+              const png = await fs.readFile(path.join(out, figureFile));
+              assert.equal(png.subarray(0, 8).toString('hex'), '89504e470d0a1a0a');
+              const dimensions = { width: png.readUInt32BE(16), height: png.readUInt32BE(20) };
+              Object.assign(entry.figureCapture, {
+                dimensions, screenshotSha256: createHash('sha256').update(png).digest('hex'),
+              });
+              assert.deepEqual(dimensions, { width: clip.width, height: clip.height });
+              assert.deepEqual(page.viewportSize(), configuredViewport);
+              const after = await image.evaluate(measureVisibleRegion);
+              entry.figureCapture.after = after;
+              assert.deepEqual(after.viewport, positioned.viewport);
+              assert.deepEqual(after.scroll, positioned.scroll);
+              assert.deepEqual(after.documentImage, positioned.documentImage);
+              assert.equal(after.headerOverlap.length, 0);
+              entry.figureCapture.afterSource = bindMeasurement(await image.evaluate(measureImage), selected);
+              entry.figureCapture.outcome = 'passed';
+            } catch (error) {
+              entry.figureCapture.outcome = 'failed';
+              entry.figureCapture.error = String(error);
+              throw error;
+            } finally {
+              await page.evaluate(({ x, y }) =>
+                window.scrollTo({ left: x, top: y, behavior: 'instant' }), originalRegion.scroll
+              );
+            }
+          }
           // Exercise the actual enhanced page control and themed Dialog. Never
           // substitute direct SVG navigation for a broken production preview.
           const trigger = page.locator('[data-docs-image-trigger]').filter({ has: image });
