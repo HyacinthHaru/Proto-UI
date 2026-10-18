@@ -12,6 +12,113 @@ afterEach(() => {
 });
 
 describe('event route traversal work', () => {
+  it('does not give a handled Enter to the new focused owner after its original owner retires', () => {
+    const tree = createInstanceTreeMarkers('@proto.ui/adapter-vue/__proto_instance');
+    const proto = { name: 'keyboard-owner', setup: () => undefined };
+    const trigger = document.createElement('div');
+    const item = document.createElement('div');
+    trigger.tabIndex = item.tabIndex = 0;
+    document.body.append(trigger, item);
+    cleanup.push(() => {
+      trigger.remove();
+      item.remove();
+    });
+    const triggerToken = tree.markProtoInstance(trigger, proto);
+    const itemToken = tree.markProtoInstance(item, proto);
+    tree.mergeLogicalTriggerGroup(triggerToken, triggerToken);
+    tree.mergeLogicalTriggerGroup(itemToken, itemToken);
+    const route = (rootEl: HTMLElement, instanceToken: typeof triggerToken) =>
+      createWebProtoEventRouter({
+        rootEl,
+        instanceToken,
+        resolveSemanticEventRoute: tree.resolveLogicalTriggerEventRouteForTarget,
+        isSemanticEventRouteCandidate: tree.isLogicalEventRouteCandidate,
+        isEnabled: () => true,
+      });
+    const triggerRouter = route(trigger, triggerToken);
+    const itemRouter = route(item, itemToken);
+    cleanup.push(
+      () => triggerRouter.dispose(),
+      () => itemRouter.dispose()
+    );
+    const triggerPress = vi.fn();
+    const globalKey = vi.fn();
+    const rootKey = vi.fn();
+    const itemPress = vi.fn(() => {
+      itemRouter.dispose();
+      tree.unbindProtoInstance(itemToken, item);
+      item.remove();
+      trigger.focus();
+    });
+    triggerRouter.rootTarget.addEventListener('press.commit', triggerPress);
+    triggerRouter.rootTarget.addEventListener('key.down', rootKey);
+    triggerRouter.globalTarget.addEventListener('key.down', globalKey);
+    itemRouter.rootTarget.addEventListener('press.commit', itemPress);
+    item.focus();
+    item.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    expect(itemPress).toHaveBeenCalledOnce();
+    expect(document.activeElement).toBe(trigger);
+    expect(globalKey).toHaveBeenCalledOnce();
+    expect({
+      keys: rootKey.mock.calls.length,
+      presses: triggerPress.mock.calls.length,
+    }).toEqual({ keys: 0, presses: 0 });
+    trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    expect(triggerPress).toHaveBeenCalledOnce();
+    expect(rootKey).toHaveBeenCalledOnce();
+    expect(globalKey).toHaveBeenCalledTimes(2);
+  });
+
+  it('does not let an unconsumed descendant key claim its enclosing press owner', () => {
+    const parent = document.createElement('div');
+    const child = document.createElement('div');
+    child.tabIndex = 0;
+    parent.append(child);
+    document.body.append(parent);
+    cleanup.push(() => parent.remove());
+    const outer = createWebProtoEventRouter({ rootEl: parent, isEnabled: () => true });
+    const inner = createWebProtoEventRouter({ rootEl: child, isEnabled: () => true });
+    cleanup.push(
+      () => outer.dispose(),
+      () => inner.dispose()
+    );
+    const press = vi.fn();
+    outer.rootTarget.addEventListener('press.commit', press);
+    child.focus();
+    child.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    expect(press).toHaveBeenCalledOnce();
+  });
+
+  it('keeps an unclaimed keyboard event eligible for its active Portal owner', () => {
+    const tree = createInstanceTreeMarkers('@proto.ui/adapter-vue/__proto_instance');
+    const proto = { name: 'keyboard-portal-owner', setup: () => undefined };
+    const root = document.createElement('div');
+    const portal = document.createElement('div');
+    const input = document.createElement('input');
+    portal.append(input);
+    document.body.append(root, portal);
+    cleanup.push(() => {
+      root.remove();
+      portal.remove();
+    });
+    const token = tree.markProtoInstance(root, proto);
+    tree.mergeLogicalTriggerGroup(token, token);
+    tree.setProtoParent(portal, root);
+    const router = createWebProtoEventRouter({
+      rootEl: root,
+      instanceToken: token,
+      resolveSemanticEventRoute: tree.resolveLogicalTriggerEventRouteForTarget,
+      isSemanticEventRouteCandidate: tree.isLogicalEventRouteCandidate,
+      isEnabled: () => true,
+    });
+    cleanup.push(() => router.dispose());
+    const press = vi.fn();
+    router.rootTarget.addEventListener('press.commit', press);
+    input.focus();
+    document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    expect(press).toHaveBeenCalledOnce();
+  });
+
   it('snapshots once/signal options at binding time like the native EventTarget', () => {
     const root = document.createElement('div');
     const target = document.createElement('div');

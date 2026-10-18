@@ -8,6 +8,7 @@ import {
 
 type Unsub = () => void;
 const PRESS_COMMIT_EMITTED_ROOTS = Symbol.for('@proto.ui/router/press-commit-emitted-roots');
+const KEYBOARD_PRESS_OWNER = Symbol.for('@proto.ui/router/keyboard-press-owner');
 const PROTO_PARENT_INSTANCE_MARK = Symbol.for('@proto.ui/adapter-base/__proto_parent_instance');
 const PROTO_INSTANCE_MARKS = [
   Symbol.for('@proto.ui/adapter-web-component/__proto_instance'),
@@ -172,6 +173,12 @@ export function createWebProtoEventRouter(opt: {
 
   function emitPressCommitOnce(native: Event) {
     if (hasPressCommitBeenEmittedForRoot(native)) return;
+    const keyboard = native as Event & { [KEYBOARD_PRESS_OWNER]?: object };
+    if (native.type === 'keydown' && keyboard[KEYBOARD_PRESS_OWNER]) return;
+    // A consumed key keeps its owner when that callback retires its view and moves focus.
+    if (native.type === 'keydown' && rootProxy.__hasProtoListeners('press.commit')) {
+      keyboard[KEYBOARD_PRESS_OWNER] = opt.instanceToken ?? rootEl;
+    }
     markPressCommitEmittedForRoot(native);
     suppressFollowupDirectClick = true;
     emit(protoRootBus, 'press.commit', native);
@@ -335,6 +342,15 @@ export function createWebProtoEventRouter(opt: {
   }
 
   function shouldRouteToCurrentRoot(native: Event, options?: { includeActiveFallback?: boolean }) {
+    const acceptedOwner = (native as Event & { [KEYBOARD_PRESS_OWNER]?: object })[
+      KEYBOARD_PRESS_OWNER
+    ];
+    if (
+      native.type === 'keydown' &&
+      acceptedOwner &&
+      acceptedOwner !== (opt.instanceToken ?? rootEl)
+    )
+      return false;
     if (opt.isSemanticEventRouteCandidate) {
       const targets = typeof native.composedPath === 'function' ? native.composedPath() : [];
       if (native.target) targets.push(native.target);
