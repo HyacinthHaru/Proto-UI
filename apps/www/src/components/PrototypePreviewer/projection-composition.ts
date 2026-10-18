@@ -48,6 +48,8 @@ export type ProjectionControlConfig<Value extends string> = Readonly<{
   placeholder?: string;
   /** Consumer opt-in for full selected values under narrow/text-enlarged layout. */
   wrapValue?: boolean;
+  /** Consumer-owned minimum target height. */
+  minHeight?: string;
   /** Explicit Brutalist Trigger presentation; other families keep their own recipe. */
   brutalistTriggerAppearance?: 'flat' | 'elevated';
   /** Shadcn presentation; Brutalist retains its separate explicit appearance. */
@@ -573,6 +575,7 @@ function createSelectControl<Value extends string>(
             paddingBlock: 'var(--site-select-control-padding-block, 0.5rem)',
           }),
       ...(config.wrapValue ? { height: 'auto' } : {}),
+      ...(config.minHeight ? { minHeight: config.minHeight } : {}),
     },
     children: [value],
   });
