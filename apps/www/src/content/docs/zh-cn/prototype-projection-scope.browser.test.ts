@@ -300,6 +300,7 @@ async function chooseControl(
   const optionLabel = (CONTROL_OPTION_LABELS[control] as Readonly<Record<string, string>>)[value];
   if (!optionLabel) throw new Error(`Unknown ${control} projection option ${value}.`);
   const option = portal.getByRole('option', { name: optionLabel, exact: true });
+  await option.waitFor({ state: 'visible', timeout: 10_000 });
   expect(await option.count(), `${control} option ${value}`).toBe(1);
   await option.click();
 
@@ -466,6 +467,13 @@ async function assertTaskPartInventory(
         `${family}-${suffix}`
       )
     ),
+    ...(family === 'shadcn'
+      ? [
+          ...Array(3).fill('shadcn-select-item-text'),
+          'shadcn-select-surface',
+          'shadcn-select-viewport',
+        ]
+      : []),
     ...Array(6).fill(`${family}-surface-root`),
     ...Array(24).fill(`${family}-text-root`),
   ].sort();
@@ -475,7 +483,9 @@ async function assertTaskPartInventory(
   expect(actualIds, 'all declared gallery instances, including closed/portaled parts').toEqual(
     expectedIds
   );
-  expect(new Set(actualIds).size, 'complete declared task recipe').toBe(37);
+  expect(new Set(actualIds).size, 'complete declared task recipe').toBe(
+    family === 'shadcn' ? 40 : 37
+  );
   await assertSurfacesShareCoordinate(parts, expected, 'every actual task part coordinate');
   const owners = await parts.evaluateAll((elements) =>
     elements.map((element) => element.getAttribute('data-projection-owner'))
@@ -562,14 +572,14 @@ async function assertSelectFingerprint(
   }
 
   if (projectionFamilyId === 'shadcn') {
-    // Appearance + state is a compound public rule. Assert its actual pressed
-    // projection and pixel displacement, not an unconditional lowered token.
+    // The current default recipe retains the pressed border box without a
+    // displacement; keep the native press and subsequent open journey.
     await trigger.hover();
     const before = await trigger.boundingBox();
     await page.mouse.down();
-    await expect.poll(() => dataPuiStyleTokens(trigger)).toContain('translate-y-px');
+    await expect.poll(() => dataPuiStyleTokens(trigger)).not.toContain('translate-y-px');
     const pressed = await trigger.boundingBox();
-    expect(pressed!.y - before!.y).toBeCloseTo(1, 1);
+    expect(pressed!.y - before!.y).toBeCloseTo(0, 1);
     await page.mouse.up();
   } else await trigger.click();
   const portal = await portalControlledBy(page, trigger);
@@ -587,7 +597,7 @@ async function assertSelectFingerprint(
   await page.keyboard.press('Escape');
 
   // Clear the real hover fact before measuring each family's own press
-  // projection: source-aligned Brutalist stays flat, while Shadcn shifts 1px.
+  // projection: both current family recipes keep the pressed border box flat.
   await page.mouse.move(0, 0);
   await expect
     .poll(() => trigger.evaluate((element) => element.hasAttribute('data-hovered')), {
@@ -609,7 +619,7 @@ async function assertSelectFingerprint(
       .toBe(true);
     await expect
       .poll(async () => (await trigger.boundingBox())?.y, { timeout: 10_000 })
-      .toBeCloseTo(restingBounds.y + (projectionFamilyId === 'brutalist' ? 0 : 1), 3);
+      .toBeCloseTo(restingBounds.y, 3);
     expect((await trigger.boundingBox())?.x).toBeCloseTo(restingBounds.x, 3);
   } finally {
     await page.mouse.up();

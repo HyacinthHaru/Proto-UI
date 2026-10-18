@@ -42,12 +42,16 @@ function fixture() {
     offsetParent: surface,
   });
   dimensions(surface, {
+    offsetLeft: 0,
+    offsetWidth: 180,
     offsetTop: 0,
     offsetHeight: 106,
     clientHeight: 104,
+    clientLeft: 1,
     clientTop: 1,
     offsetParent: frame,
   });
+  dimensions(inlineTarget, { offsetLeft: 12, offsetWidth: 50, offsetParent: scrollport });
   dimensions(frame, { offsetTop: 0, offsetParent: null });
   blockReference.getBoundingClientRect = () => rect(180, 240, 180, 36);
   inlineReference.getBoundingClientRect = () => rect(193, 248, 50, 20);
@@ -190,6 +194,107 @@ describe('neutral target geometry host', () => {
     expect(f.onAlignment).not.toHaveBeenCalled();
     expect(f.frame.style.position).toBe('');
   });
+  for (const direction of ['ltr', 'rtl'] as const) {
+    it(`keeps ${direction} layout alignment when the painted surface scales after applied`, () => {
+      const f = fixture();
+      const { blockReference, inlineReference, inlineTarget } = f.connection.targetAlignment!;
+      const wrapper = document.createElement('div');
+      f.surface.append(wrapper);
+      wrapper.append(f.scrollport);
+      dimensions(wrapper, { offsetLeft: 11, clientLeft: 3, offsetParent: f.surface });
+      dimensions(f.scrollport, {
+        offsetLeft: 5,
+        clientLeft: 2,
+        offsetParent: wrapper,
+        offsetHeight: 312,
+        scrollHeight: 312,
+      });
+      dimensions(f.blockTarget, { offsetLeft: 1, clientLeft: 1, offsetTop: 8, offsetHeight: 104 });
+      dimensions(inlineTarget as HTMLElement, { offsetLeft: 1, offsetParent: f.blockTarget });
+      dimensions(f.surface, { offsetHeight: 314, clientHeight: 312 });
+      let width = 320;
+      let referenceLeft = 41.25;
+      let scale = 1;
+      vi.spyOn(window, 'innerWidth', 'get').mockImplementation(() => width);
+      vi.spyOn(window, 'innerHeight', 'get').mockReturnValue(900);
+      f.frame.style.direction = direction;
+      const edge = direction === 'ltr' ? 'left' : 'right';
+      const inset = () => Number.parseFloat(f.frame.style[edge]) || 0;
+      const layoutWidth = () => Math.min(315.4375, width - inset());
+      const layoutLeft = () => (direction === 'ltr' ? inset() : width - inset() - layoutWidth());
+      // The CSSOM layout facts stay unscaled; the painted rectangles include the Surface transform.
+      Object.defineProperty(f.surface, 'offsetWidth', {
+        configurable: true,
+        get: () => Math.round(layoutWidth()),
+      });
+      Object.defineProperty(inlineTarget, 'offsetWidth', {
+        configurable: true,
+        get: () => Math.round(layoutWidth() - 98),
+      });
+      f.frame.getBoundingClientRect = () => rect(layoutLeft(), 0, layoutWidth(), 314);
+      f.surface.getBoundingClientRect = () =>
+        rect(
+          layoutLeft() + (layoutWidth() * (1 - scale)) / 2,
+          0,
+          layoutWidth() * scale,
+          314 * scale
+        );
+      (inlineTarget as HTMLElement).getBoundingClientRect = () =>
+        rect(
+          f.surface.getBoundingClientRect().left + 25 * scale,
+          21,
+          (layoutWidth() - 98) * scale,
+          80 * scale
+        );
+      (blockReference as HTMLElement).getBoundingClientRect = () =>
+        rect(referenceLeft, 628, 238, 114);
+      (inlineReference as HTMLElement).getBoundingClientRect = () =>
+        rect(referenceLeft + 25, 645, 156, 80);
+      const lease = createTargetAlignmentLease(f.connection);
+      try {
+        expect(f.onAlignment).toHaveBeenLastCalledWith({ status: 'applied' });
+        expect(f.frame.style[edge]).toBe('10px');
+        scale = 0.95;
+        f.surface.style.transform = 'scale(0.95)';
+        f.onAlignment.mockClear();
+        lease.update({ ...f.connection });
+        expect(f.onAlignment).toHaveBeenLastCalledWith({ status: 'applied' });
+        expect(f.frame.style[edge]).toBe('10px');
+        expect(f.frame.style.minWidth).toBe(direction === 'ltr' ? '238px' : '254px');
+        width = 600;
+        referenceLeft = 180.25;
+        lease.requestUpdate();
+        expect(f.frame.style[edge]).toBe(direction === 'ltr' ? '180.25px' : '165.75px');
+        expect(f.onAlignment).not.toHaveBeenCalledWith({
+          status: 'unavailable',
+          reason: 'invalid-geometry',
+        });
+      } finally {
+        lease.dispose();
+      }
+      expect(f.surface.style.transform).toBe('scale(0.95)');
+    });
+    it(`retains actual signed inline scrolling in ${direction}`, () => {
+      const f = fixture();
+      const inlineTarget = f.connection.targetAlignment!.inlineTarget as HTMLElement;
+      f.frame.style.direction = direction;
+      inlineTarget.getBoundingClientRect = () => rect(13 - f.scrollport.scrollLeft, 37, 50, 20);
+      const lease = createTargetAlignmentLease(f.connection);
+      try {
+        expect(f.onAlignment).toHaveBeenLastCalledWith({ status: 'applied' });
+        const scroll = direction === 'ltr' ? 5 : -5;
+        f.scrollport.scrollLeft = scroll;
+        expect(f.scrollport.scrollLeft).toBe(scroll);
+        lease.update({ ...f.connection });
+        expect(f.onAlignment).toHaveBeenLastCalledWith({ status: 'applied' });
+        expect(f.frame.style[direction === 'ltr' ? 'left' : 'right']).toBe(
+          direction === 'ltr' ? '185px' : `${window.innerWidth - 355}px`
+        );
+      } finally {
+        lease.dispose();
+      }
+    });
+  }
 });
 
 it('remeasures preceding-row wrapping after inline constraints before applied', () => {

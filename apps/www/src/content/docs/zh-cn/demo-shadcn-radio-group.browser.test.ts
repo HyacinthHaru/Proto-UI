@@ -321,7 +321,8 @@ describe.sequential('Shadcn Radio Group public browser acceptance', () => {
         expect(await value.textContent()).toBe('Value: default');
         await preview.screenshot({ path: path.join(evidenceDir, `${evidenceKey}-narrow.png`) });
         await applyColorScheme(page, 'light');
-        await expect.poll(async () => alpha((await itemState(first)).background)).toBe(0);
+        await expect.poll(async () => alpha((await itemState(first)).background)).toBe(1);
+        await expect.poll(async () => alpha((await itemState(selected)).background)).toBe(0);
         expect(await value.textContent()).toBe('Value: default');
         expect(errors).toEqual([]);
         observations.errors = errors;

@@ -309,7 +309,7 @@ async function waitForRuntimeAt(
       const root = roots[0]!;
       const hosts = root.querySelectorAll<HTMLElement>('.host');
       const host = hosts.length === 1 ? hosts[0] : null;
-      const scopes = root.querySelectorAll<HTMLElement>('[data-projection-scope]');
+      const scopes = host?.querySelectorAll<HTMLElement>('[data-projection-scope]') ?? [];
       const scope = scopes.length === 1 ? scopes[0] : null;
       const fixed = root.dataset.projectionMode === 'fixed-family';
       const content = fixed ? scope?.querySelector<HTMLElement>('[data-projection-content]') : host;
