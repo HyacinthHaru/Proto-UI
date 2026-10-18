@@ -1,0 +1,158 @@
+{
+  "schemaVersion": 1,
+  "checkpointAt": "2026-10-18T17:00:05.771934+00:00",
+  "source": {
+    "head": "67d8f62b4bb2ea4048638b524ab7910ed98604c5",
+    "tree": "5f43b2a41f0390630fd1bff6e884025817cd2722",
+    "main": "042f1e5740e1a809b9ca238593f5bb01a1f8a8e3",
+    "netPaths": 24,
+    "netAdditions": 634,
+    "netDeletions": 32
+  },
+  "currentLocal": {
+    "node": {
+      "files": 129,
+      "passed": 1803,
+      "failed": 4
+    },
+    "native": {
+      "files": 2,
+      "passed": 120,
+      "failed": 0
+    },
+    "settings": {
+      "passed": 1,
+      "filtered": 10
+    },
+    "build": {
+      "files": 3836,
+      "html": 669,
+      "bytes": 104048335
+    },
+    "clientGraph": {
+      "moduleIds": 5406,
+      "chunks": 2407,
+      "trackedModuleIds": 5362,
+      "uniqueTrackedUnderlyingFiles": 5360,
+      "vendorIds": 37,
+      "otherVirtualIds": 6,
+      "generatedIds": 1,
+      "wholeGraphMirrored": false
+    },
+    "testSourcePreservation": {
+      "allTestFilesEqual26": true,
+      "homepageMatchers": 171,
+      "keyboardOwnerPassed": 17
+    }
+  },
+  "precommitHeader": {
+    "physicalHead": "26d424545857e3bd26c2f461c4a554b4bb88b519",
+    "finalIdenticalTwoSourceFiles": true,
+    "sourceControlsPassed": 103,
+    "nativePassed": 1,
+    "nativeFiltered": 8,
+    "typesFiles": 934,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 14
+  },
+  "historical26": {
+    "nodeFiles": 127,
+    "passed": 1748,
+    "failed": 4,
+    "nativePassed": 119,
+    "nativeFailed": 1,
+    "failure": "Header38<44"
+  },
+  "formOld0ec": {
+    "artifact": 12137477831,
+    "cases": 4,
+    "originalColorFailures": 2,
+    "separateContinuationPasses": 2,
+    "postSmsResubmit": false,
+    "current67OriginalFormSuitePassClaim": false
+  },
+  "official67": {
+    "producerRun": 39145617029,
+    "producerJob": 117728720860,
+    "artifact": 12143527171,
+    "archiveBytes": 21140804,
+    "archiveSHA256": "1b77eec8747981829a96790db21b429bd72b1c125039415328836eb025734eec",
+    "files": 3835,
+    "html": 669,
+    "expandedBytes": 104046033,
+    "admissionStart": "2026-10-18T16:51:51.283Z",
+    "admissionEnd": "2026-10-18T16:52:14.345Z",
+    "unfilteredPublisherCLIExecuted": false,
+    "nativeStart": "2026-10-18T16:52:14.508393+00:00",
+    "nativeEnd": "2026-10-18T16:53:12.090822+00:00",
+    "nativePassed": 3,
+    "nativeFiltered": 17,
+    "serverClosed": true,
+    "remoteHostingVerified": false
+  },
+  "officialCICheckpoint": {
+    "generalJob": 117729868700,
+    "generalDocsDriftBeforeVitest": 78,
+    "packageJob": 117728901281,
+    "manifestCount": 47,
+    "budgetPass": 4,
+    "budgetAdvisory": 5,
+    "fullDefaultCIAllGreenClaim": false
+  },
+  "acceptance": {
+    "disposition": "partial",
+    "reviewDecision": "ABSTAIN",
+    "formalIndependentApproval": false,
+    "fullVisualATApproval": false,
+    "issueClosure": false
+  },
+  "pendingRootAdditions": [
+    "Additional exact-head canonical CI terminal reconciliation, if separately prepared"
+  ],
+  "boundaries": [
+    "Current build3836 and official3835 are separate actual environments; neither is relabelled.",
+    "Whole graph originals/large ZIPs remain private; hash-bound metadata only.",
+    "Original historical negative results are not overwritten.",
+    "All public code/log transforms are hash mapped and not exact executed/standalone source."
+  ],
+  "official26Diagnosis": {
+    "stage": "family-commit",
+    "originalPollMs": 1000,
+    "originalOutcome": "failure",
+    "runtimeBreakpointOwnerLoopEntered": false,
+    "laterState": "Brutalist/WC/gen2 ready",
+    "deadlinePassOrTimingRootCauseClaim": false
+  },
+  "counts": {
+    "rawFiles": 329,
+    "rawBytes": 19381312,
+    "publicRecordBytes": 20122636,
+    "transformedFiles": 171,
+    "pngCaptureFiles": 41,
+    "uniquePNGHashes": 28,
+    "groups": {
+      "portal": 21,
+      "preference": 16,
+      "form": 70,
+      "source": 3,
+      "validation": 12,
+      "focus-input-history": 82,
+      "postcommit-26d42454": 33,
+      "postcommit-67d8f62b": 18,
+      "header-consumer": 15,
+      "maintainer-26": 9,
+      "official-preview-67": 44,
+      "official-ci-checkpoint": 6
+    }
+  },
+  "archive": {
+    "file": "records.zip",
+    "bytes": 3916520,
+    "sha256": "16a01400df04d175b589f9c46678765d3e6139dab0d4a8323fd2d6afb4963cd8",
+    "memberCount": 330
+  },
+  "publicMappingSHA256": "21c0631dac7b74e246a1cee161888b637cfe564c24db5ef66007080fea291587",
+  "preparation": "Local prepared packet only; no upload, approval or merge claim.",
+  "outerFormatting": "Preformatted before publication; archive PUBLIC-MAPPING matches outer raw-public-map exactly. Original selected record/PNG bytes unchanged by this outer sealing step."
+}

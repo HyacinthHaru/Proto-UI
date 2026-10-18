@@ -1,0 +1,230 @@
+{
+  "excludesItself": true,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 7821,
+      "sha256": "ab74c32173050175a03b6b3ff04c56e3509956bfc9702e9205c1bedea7eef0e1"
+    },
+    {
+      "path": "images/contents-symbol-native/failure-evidence/contents-activation-brutalist-react-Enter.png",
+      "bytes": 44879,
+      "sha256": "64748d40ac8e15e697456e4105ef9044fc5c1cbc68cdb948bfd6ccaadfab650f"
+    },
+    {
+      "path": "images/current-head-26d42454/native-lifecycle/evidence/contents-command/brutalist-react-keyboard-focus.png",
+      "bytes": 44953,
+      "sha256": "b3d3561ef9329206b32b8a411072defd432c3b5246e650e36aea6c8c7164fc60"
+    },
+    {
+      "path": "images/current-head-26d42454/native-lifecycle/evidence/contents-command/brutalist-vue-keyboard-focus.png",
+      "bytes": 44969,
+      "sha256": "168a00af91be5acdcbd5b5fc126014739acc3a14f6efe52f6ef6cadd3ce2d9c8"
+    },
+    {
+      "path": "images/current-head-26d42454/native-lifecycle/evidence/contents-command/brutalist-vue2-keyboard-focus.png",
+      "bytes": 44982,
+      "sha256": "efd87f82e747d550980867f0e076ac01f1ac75f7ef806c6c222deda63452e65d"
+    },
+    {
+      "path": "images/current-head-26d42454/native-lifecycle/evidence/contents-command/brutalist-wc-keyboard-focus.png",
+      "bytes": 44865,
+      "sha256": "420591181aface50692800a8eec573466d845ac5dbb3603e71aab936b976e822"
+    },
+    {
+      "path": "images/current-head-26d42454/native-lifecycle/evidence/contents-command/shadcn-react-keyboard-focus.png",
+      "bytes": 35889,
+      "sha256": "9647d327b5b2882b129b3434300e47c0fbd3d36a31370c1e853e6006e001002e"
+    },
+    {
+      "path": "images/current-head-26d42454/native-lifecycle/evidence/contents-command/shadcn-vue-keyboard-focus.png",
+      "bytes": 35778,
+      "sha256": "a41c60d95d79d419b97653c7e52f6b15bbce7475a2cd906e7688c7aaee34e231"
+    },
+    {
+      "path": "images/current-head-26d42454/native-lifecycle/evidence/contents-command/shadcn-vue2-keyboard-focus.png",
+      "bytes": 33819,
+      "sha256": "00c63bcd65530478a422ef53f29b3a7abd043fcd72af59353634b2374de0ec8c"
+    },
+    {
+      "path": "images/current-head-26d42454/native-lifecycle/evidence/contents-command/shadcn-wc-keyboard-focus.png",
+      "bytes": 39050,
+      "sha256": "d69a87403a13a5866544627b288bea7efc6798b44fed4e3626cd4dc031bec70b"
+    },
+    {
+      "path": "images/form-probe-run/evidence/brutalist-color-failed.png",
+      "bytes": 40573,
+      "sha256": "ee1a702840f8d04502c5446f3211ee7e2aca299213bc2ec115211305cd245d3f"
+    },
+    {
+      "path": "images/form-probe-run/evidence/brutalist-color-invalid-submit-first-focus.png",
+      "bytes": 40573,
+      "sha256": "ee1a702840f8d04502c5446f3211ee7e2aca299213bc2ec115211305cd245d3f"
+    },
+    {
+      "path": "images/form-probe-run/evidence/brutalist-color-rest.png",
+      "bytes": 37963,
+      "sha256": "e2c76cb973446b8216ff3483692b91755ccaadebc49c764a0b60a8afb24acd3d"
+    },
+    {
+      "path": "images/form-probe-run/evidence/brutalist-continuation-corrected-submit.png",
+      "bytes": 39641,
+      "sha256": "17c545b86679a74c8d58cd14cc5cef8ae05ef8f1a8310766584ec347b6acfe8f"
+    },
+    {
+      "path": "images/form-probe-run/evidence/brutalist-continuation-edited.png",
+      "bytes": 39798,
+      "sha256": "2872f88ead17b7280578c557ef3cbb9aeaa0346763128a114865bd460ecb4a10"
+    },
+    {
+      "path": "images/form-probe-run/evidence/brutalist-continuation-final.png",
+      "bytes": 39798,
+      "sha256": "2872f88ead17b7280578c557ef3cbb9aeaa0346763128a114865bd460ecb4a10"
+    },
+    {
+      "path": "images/form-probe-run/evidence/brutalist-continuation-invalid-submit-first-focus.png",
+      "bytes": 40573,
+      "sha256": "ee1a702840f8d04502c5446f3211ee7e2aca299213bc2ec115211305cd245d3f"
+    },
+    {
+      "path": "images/form-probe-run/evidence/brutalist-continuation-reset.png",
+      "bytes": 40466,
+      "sha256": "298b63625324d9400c4a80aa88627233162e7eed912d06b522c9d025381b31fd"
+    },
+    {
+      "path": "images/form-probe-run/evidence/brutalist-continuation-rest.png",
+      "bytes": 37963,
+      "sha256": "e2c76cb973446b8216ff3483692b91755ccaadebc49c764a0b60a8afb24acd3d"
+    },
+    {
+      "path": "images/form-probe-run/evidence/shadcn-color-failed.png",
+      "bytes": 38545,
+      "sha256": "7f9550a291a053d7908bed47c342edad7788aba79a0daa6248eb5d6ce1863865"
+    },
+    {
+      "path": "images/form-probe-run/evidence/shadcn-color-invalid-submit-first-focus.png",
+      "bytes": 38545,
+      "sha256": "7f9550a291a053d7908bed47c342edad7788aba79a0daa6248eb5d6ce1863865"
+    },
+    {
+      "path": "images/form-probe-run/evidence/shadcn-color-rest.png",
+      "bytes": 36120,
+      "sha256": "b4affdbc8be8ec67ffdc3febea2019c04902861b22bd24c2aed9fc51b9864fa1"
+    },
+    {
+      "path": "images/form-probe-run/evidence/shadcn-continuation-corrected-submit.png",
+      "bytes": 37492,
+      "sha256": "05b1531bf07e664a9cde6103cb543d07cee7c6b90f6615cec6d9caf0e22777c1"
+    },
+    {
+      "path": "images/form-probe-run/evidence/shadcn-continuation-edited.png",
+      "bytes": 37535,
+      "sha256": "7ca31495a65aa4e384dd2a2dcb8e00dc33dc5a4cec2e9fc5b4fd2de5f82332b4"
+    },
+    {
+      "path": "images/form-probe-run/evidence/shadcn-continuation-final.png",
+      "bytes": 37535,
+      "sha256": "7ca31495a65aa4e384dd2a2dcb8e00dc33dc5a4cec2e9fc5b4fd2de5f82332b4"
+    },
+    {
+      "path": "images/form-probe-run/evidence/shadcn-continuation-invalid-submit-first-focus.png",
+      "bytes": 38545,
+      "sha256": "7f9550a291a053d7908bed47c342edad7788aba79a0daa6248eb5d6ce1863865"
+    },
+    {
+      "path": "images/form-probe-run/evidence/shadcn-continuation-reset.png",
+      "bytes": 38381,
+      "sha256": "d29da0d095ed59db48fbdb3841f5b24d2b9649e60fb7b2de1dca8b870460e39e"
+    },
+    {
+      "path": "images/form-probe-run/evidence/shadcn-continuation-rest.png",
+      "bytes": 36120,
+      "sha256": "b4affdbc8be8ec67ffdc3febea2019c04902861b22bd24c2aed9fc51b9864fa1"
+    },
+    {
+      "path": "images/head-native-four-observed/failure-evidence/contents-activation-brutalist-react-Enter.png",
+      "bytes": 44879,
+      "sha256": "64748d40ac8e15e697456e4105ef9044fc5c1cbc68cdb948bfd6ccaadfab650f"
+    },
+    {
+      "path": "images/head-native-four-observed/failure-evidence/escape-focus-unknown-vue2-none.png",
+      "bytes": 119217,
+      "sha256": "a9bcd41ab125d93da05f5255e01ef1dac1a6ef4a7e1f158e01e60a9fba619a42"
+    },
+    {
+      "path": "images/head-native-four-observed/failure-evidence/language-options-shadcn-unknown-none.png",
+      "bytes": 201503,
+      "sha256": "62a2c487d604b5592c55aaf2d590a8a3ccb419a17789c30f5b9cc17d11407900"
+    },
+    {
+      "path": "images/head-native-four-observed/failure-evidence/preference-height-unknown-unknown-none.png",
+      "bytes": 32800,
+      "sha256": "796e83ab523d3658ab0b02d8a5b370831d2375d29029e2249ae9dddae99867c0"
+    },
+    {
+      "path": "images/maintainer-26-followup/artifact-12142609776/selected/header-breakpoint/brutalist-failure.png",
+      "bytes": 32791,
+      "sha256": "29e0b1e08fcee04eb6139d8253a094a7db00a3b145594df35b0315909088f8ba"
+    },
+    {
+      "path": "images/official-preview-targeted-plan/execution-67d8f62b4bb2-r39145617029/evidence/contents-command/brutalist-react-keyboard-focus.png",
+      "bytes": 44879,
+      "sha256": "64748d40ac8e15e697456e4105ef9044fc5c1cbc68cdb948bfd6ccaadfab650f"
+    },
+    {
+      "path": "images/official-preview-targeted-plan/execution-67d8f62b4bb2-r39145617029/evidence/contents-command/brutalist-vue-keyboard-focus.png",
+      "bytes": 44907,
+      "sha256": "243c253ad5aace90633ad05e8a1c1879b420aa0a94e4bc14c3969bd68dddb150"
+    },
+    {
+      "path": "images/official-preview-targeted-plan/execution-67d8f62b4bb2-r39145617029/evidence/contents-command/brutalist-vue2-keyboard-focus.png",
+      "bytes": 44907,
+      "sha256": "3e22693857163ecb177fb09da482871379c2270b598425557e97be78d70e9957"
+    },
+    {
+      "path": "images/official-preview-targeted-plan/execution-67d8f62b4bb2-r39145617029/evidence/contents-command/brutalist-wc-keyboard-focus.png",
+      "bytes": 44928,
+      "sha256": "798f5e503f7ecd5188a165ae732f41d130184a4c9cc0f41eac1fd89a540047b7"
+    },
+    {
+      "path": "images/official-preview-targeted-plan/execution-67d8f62b4bb2-r39145617029/evidence/contents-command/shadcn-react-keyboard-focus.png",
+      "bytes": 35856,
+      "sha256": "9437704cd39c38557b857af2228ed4e667f9fc6ee52a8c6a5c90b38419c442f0"
+    },
+    {
+      "path": "images/official-preview-targeted-plan/execution-67d8f62b4bb2-r39145617029/evidence/contents-command/shadcn-vue-keyboard-focus.png",
+      "bytes": 35778,
+      "sha256": "a41c60d95d79d419b97653c7e52f6b15bbce7475a2cd906e7688c7aaee34e231"
+    },
+    {
+      "path": "images/official-preview-targeted-plan/execution-67d8f62b4bb2-r39145617029/evidence/contents-command/shadcn-vue2-keyboard-focus.png",
+      "bytes": 33819,
+      "sha256": "00c63bcd65530478a422ef53f29b3a7abd043fcd72af59353634b2374de0ec8c"
+    },
+    {
+      "path": "images/official-preview-targeted-plan/execution-67d8f62b4bb2-r39145617029/evidence/contents-command/shadcn-wc-keyboard-focus.png",
+      "bytes": 39026,
+      "sha256": "32ddf1c30766b318ff0860eed6053704e45b154a8ae4fb4a4c8be6a433c95248"
+    },
+    {
+      "path": "images/portal-preference-trace/ci-browser-2-artifact/selected/header-breakpoint/brutalist-failure.png",
+      "bytes": 32791,
+      "sha256": "29e0b1e08fcee04eb6139d8253a094a7db00a3b145594df35b0315909088f8ba"
+    },
+    {
+      "path": "packet.json",
+      "bytes": 4661,
+      "sha256": "08d54a2d29dbb072e4c5f8bd330ac72f15f834f97bac1ac7fc6f5cb517b9beda"
+    },
+    {
+      "path": "raw-public-map.json",
+      "bytes": 235109,
+      "sha256": "21c0631dac7b74e246a1cee161888b637cfe564c24db5ef66007080fea291587"
+    },
+    {
+      "path": "records.zip",
+      "bytes": 3916520,
+      "sha256": "16a01400df04d175b589f9c46678765d3e6139dab0d4a8323fd2d6afb4963cd8"
+    }
+  ]
+}
