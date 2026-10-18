@@ -1008,6 +1008,10 @@ for (const family of ['shadcn', 'brutalist'] as const) {
     const records: unknown[] = [];
     const ringFailures: string[] = [];
     const errors: string[] = [];
+    const consoleErrors: string[] = [];
+    page.on('console', (message) => {
+      if (message.type() === 'error') consoleErrors.push(message.text());
+    });
     page.on('pageerror', (error) => errors.push(error.message));
     let stage = 'navigate';
     const save = async (name: string, facts: unknown) => {
@@ -1030,24 +1034,30 @@ for (const family of ['shadcn', 'brutalist'] as const) {
     };
     try {
       await page.goto(`${baseUrl}/zh-cn/`, { waitUntil: 'networkidle' });
+      stage = 'initial-ready';
       await ready(page, 'wc');
       if (family === 'brutalist') {
+        stage = 'family-open';
         await revealHeaderPreferences(page);
         const control = page.locator(
           '#home-preferences [data-projection-control="family"] [role="combobox"]'
         );
         await control.click();
         const id = await control.getAttribute('aria-controls');
+        stage = 'family-choice';
         await page
           .locator(`[id=${JSON.stringify(id)}]`)
           .getByRole('option', { name: 'Brutalist', exact: true })
           .click();
+        stage = 'family-commit';
         await expect
           .poll(() => page.locator('[data-homepage-runtime]').getAttribute('data-family'))
           .toBe(family);
+        stage = 'family-ready';
         await ready(page, 'wc');
       }
       for (const runtime of RUNTIMES) {
+        stage = `${runtime}-setup`;
         await page.setViewportSize({ width: 390, height: 844 });
         await switchRuntime(page, runtime);
         const header = page.locator('[data-homepage-runtime]');
@@ -1227,12 +1237,56 @@ for (const family of ['shadcn', 'brutalist'] as const) {
         []
       );
     } catch (error) {
-      await save('failure', { stage, message: String(error), records, ringFailures, errors });
+      const failureState = await page
+        .evaluate(() => {
+          const header = document.querySelector<HTMLElement>('[data-homepage-runtime]');
+          const demo = document.querySelector<HTMLElement>('[data-home-showcase]');
+          const trigger = header?.querySelector<HTMLElement>(
+            '[data-projection-control="family"] [role="combobox"]'
+          );
+          const portalId = trigger?.getAttribute('aria-controls');
+          const portal = portalId ? document.getElementById(portalId) : null;
+          const sample = (element: HTMLElement | null | undefined) =>
+            element
+              ? {
+                  tag: element.tagName,
+                  id: element.id,
+                  connected: element.isConnected,
+                  dataset: { ...element.dataset },
+                  busy: element.getAttribute('aria-busy'),
+                  hidden: !!element.closest('[hidden], [inert]'),
+                }
+              : null;
+          return {
+            header: sample(header),
+            showcase: sample(demo),
+            status: header?.querySelector('[data-homepage-runtime-status]')?.textContent,
+            transaction: (
+              header as HTMLElement & { __homepageRuntime__?: { getSnapshot(): unknown } }
+            )?.__homepageRuntime__?.getSnapshot(),
+            generations: Array.from(
+              header?.querySelectorAll<HTMLElement>('[data-projection-generation-state]') ?? []
+            ).map(sample),
+            familyTrigger: sample(trigger),
+            familyValue: trigger?.textContent,
+            portal: sample(portal),
+          };
+        })
+        .catch((captureError) => ({ captureError: String(captureError) }));
+      await save('failure', {
+        stage,
+        message: String(error),
+        records,
+        ringFailures,
+        errors,
+        consoleErrors,
+        failureState,
+      });
       throw error;
     } finally {
       await writeFile(
         path.join(evidenceDirectory, `${family}-lifecycle.json`),
-        JSON.stringify({ source, family, records, ringFailures, errors }, null, 2)
+        JSON.stringify({ source, family, records, ringFailures, errors, consoleErrors }, null, 2)
       );
       await context.close();
     }
