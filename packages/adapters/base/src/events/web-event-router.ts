@@ -13,6 +13,7 @@ const PROTO_INSTANCE_MARKS = [
   Symbol.for('@proto.ui/adapter-web-component/__proto_instance'),
   Symbol.for('@proto.ui/adapter-react/__proto_instance'),
   Symbol.for('@proto.ui/adapter-vue/__proto_instance'),
+  Symbol.for('@proto.ui/adapter-vue2/__proto_instance'),
 ] as const;
 const TRIGGER_OWNER_MARK = Symbol.for('@proto.ui/as-trigger/confirm-owner');
 const REJECTED_TRIGGER_ROUTE = Symbol('rejected-trigger-route');
