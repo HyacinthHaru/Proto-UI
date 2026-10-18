@@ -98,7 +98,10 @@ The whitepaper provides philosophical direction. Spec refines the parts that can
 
 <figure class="whitepaper-figure">
   <button type="button" data-diagram-open aria-haspopup="dialog" aria-label="Open full-size diagram">
-    <img src="/diagrams/whitepaper-evolution-feedback.en.svg" alt="Theory and kernel, prototype libraries and translation face practice; classified evidence guides explicit revisions to the relevant layer." width="960" height="928" class="whitepaper-diagram" loading="lazy" />
+    <picture>
+      <source media="(max-width: 639px)" srcset="/diagrams/whitepaper-evolution-feedback.mobile.en.svg" width="500" height="1000" />
+      <img src="/diagrams/whitepaper-evolution-feedback.en.svg" alt="Theory and kernel, prototype libraries and translation face practice; classified evidence guides explicit revisions to the relevant layer." width="960" height="928" class="whitepaper-diagram" loading="lazy" />
+    </picture>
   </button>
   <figcaption>Open full-size diagram</figcaption>
 </figure>

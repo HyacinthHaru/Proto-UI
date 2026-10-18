@@ -98,7 +98,10 @@ Proto UI 所期望的演进循环是：提出近似，将其写成 Prototype，�
 
 <figure class="whitepaper-figure">
   <button type="button" data-diagram-open aria-haspopup="dialog" aria-label="点击查看大图">
-    <img src="/diagrams/whitepaper-evolution-feedback.zh-cn.svg" alt="理论与内核、原型库、翻译层共同接受实践检验；证据经过归因，推动对应层的明确修正。" width="960" height="928" class="whitepaper-diagram" loading="lazy" />
+    <picture>
+      <source media="(max-width: 639px)" srcset="/diagrams/whitepaper-evolution-feedback.mobile.zh-cn.svg" width="500" height="1000" />
+      <img src="/diagrams/whitepaper-evolution-feedback.zh-cn.svg" alt="理论与内核、原型库、翻译层共同接受实践检验；证据经过归因，推动对应层的明确修正。" width="960" height="928" class="whitepaper-diagram" loading="lazy" />
+    </picture>
   </button>
   <figcaption>点击查看大图</figcaption>
 </figure>
