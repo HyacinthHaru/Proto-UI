@@ -1,0 +1,215 @@
+{
+  "schemaVersion": 1,
+  "packetPreparedAt": "2026-10-18T03:27:08.884675+00:00",
+  "status": "prepared locally; not published by this task",
+  "assessment": "unassessed",
+  "disposition": "partial",
+  "reviewDecision": "ABSTAIN",
+  "head": "0b68e7ec96f5857a6e1b7b6463b192c695ee753f",
+  "tree": "ef466bb2f3fe4f253f7fd8aeae1f7958b86a443e",
+  "run": 39092692110,
+  "artifact": 12123581535,
+  "generation": "p921-r39092692110-a1",
+  "actualOfficialArtifact": {
+    "bytes": 21141396,
+    "sha256": "7c74cd946fd2256ddd00afcfa5866ded51dc2b1c352eae446c3e2410fd45a23d",
+    "files": 3835,
+    "HTML": 669,
+    "expandedBytes": 104045964,
+    "allMemberNamesAndServedBytesEqual": true,
+    "fullArtifactNotMirrored": true
+  },
+  "chronology": {
+    "publisherStart": "2026-10-18T03:17:13.573043+00:00",
+    "catalogCheckedAt": "2026-10-18T03:17:15.318Z",
+    "publisherCompleted": "2026-10-18T03:18:30.171826+00:00",
+    "independentDownloadStart": "2026-10-18T03:19:10.698Z",
+    "independentDownloadEnd": "2026-10-18T03:19:17.707Z",
+    "savedMemberComparisonAt": "2026-10-18T03:19:26.917620+00:00",
+    "nativeStart": "2026-10-18T03:19:31.111836+00:00",
+    "nativeEnd": "2026-10-18T03:19:41.794825+00:00",
+    "laterReviewRehash": "The independent review repeated local hashes after the native run; it does not backdate that review action."
+  },
+  "publicationBoundary": "Existing trusted publisher used actual live APIs and an actual fcntl.flock for its child lifetime. This was a new local output and temporary local server, not a remote intranet deployment or service change.",
+  "native": {
+    "families": ["shadcn", "brutalist"],
+    "runtimes": ["wc", "react", "vue", "vue2"],
+    "freshSentinelConfirmedCopies": 8,
+    "shadcnTrustedClicks": 12,
+    "brutalistTrustedClicks": 4,
+    "catalogAnchorSeparate": true,
+    "shadcnClipboardBytes": [447, 574, 537, 582],
+    "brutalistClipboardBytes": [447, 447, 447, 447],
+    "allRecordedPageErrorsEmpty": true,
+    "consoleAndNetworkNotComprehensivelyCollected": true,
+    "browser": "155.0.8059.80",
+    "exit": 0,
+    "serverExit": 0,
+    "port": 58166,
+    "noListenerConfirmedByIndependentReview": true,
+    "sourceOfCounts": "The two original observations and driver assertions, not screenshot text."
+  },
+  "runtimeAndDemoLimits": "Runtime was selected using the existing preference before navigation, followed by runtime/identity checks; this is not a Header Runtime-menu journey. Brutalist copies one authored React example through each runtime Copy view. Demo clicks do not establish business callback counts.",
+  "visual": {
+    "captureFiles": 9,
+    "actuallyViewedByIndependentReviewer": 9,
+    "reviewSHA256": "98d7b24bf3f24c4ee7505d50ca66c3ce11fffa028c583fa93909c9088bfee894",
+    "images": [
+      {
+        "path": "native-brutalist-copy/react.png",
+        "sha256": "62c358c7b32b2022ea68d40c61c3202f5fc7872645b9e9ad9b6061d95f2675c7",
+        "bytes": 141403,
+        "dimensions": {
+          "width": 1280,
+          "height": 813
+        },
+        "family": "brutalist",
+        "runtime": "react",
+        "viewed": true,
+        "viewMethod": "Each of these nine new originalPNGfiles was individually opened with tools.view_image in this review; no oldcc3visualreview reused.",
+        "observation": "Blue Brutalist Text article, matching runtime label and Copy success check mark are visible. The long authored React code line extends past the visible right edge of the code panel, and later code lies below the capture. The complete clipboard equality is supported by execution, not full-source visibility in this image."
+      },
+      {
+        "path": "native-brutalist-copy/vue.png",
+        "sha256": "f5b01ba247ed54be01e6c9ba0eea751353e3c5aec4109776176e227ebd65a413",
+        "bytes": 141117,
+        "dimensions": {
+          "width": 1280,
+          "height": 813
+        },
+        "family": "brutalist",
+        "runtime": "vue",
+        "viewed": true,
+        "viewMethod": "Each of these nine new originalPNGfiles was individually opened with tools.view_image in this review; no oldcc3visualreview reused.",
+        "observation": "Blue Brutalist Text article, matching runtime label and Copy success check mark are visible. The long authored React code line extends past the visible right edge of the code panel, and later code lies below the capture. The complete clipboard equality is supported by execution, not full-source visibility in this image."
+      },
+      {
+        "path": "native-brutalist-copy/vue2.png",
+        "sha256": "ed5c84f0384458e6407f1c07453f4a9ff02a1ebba49cedc11a06fe8ee7e6685b",
+        "bytes": 141357,
+        "dimensions": {
+          "width": 1280,
+          "height": 813
+        },
+        "family": "brutalist",
+        "runtime": "vue2",
+        "viewed": true,
+        "viewMethod": "Each of these nine new originalPNGfiles was individually opened with tools.view_image in this review; no oldcc3visualreview reused.",
+        "observation": "Blue Brutalist Text article, matching runtime label and Copy success check mark are visible. The long authored React code line extends past the visible right edge of the code panel, and later code lies below the capture. The complete clipboard equality is supported by execution, not full-source visibility in this image."
+      },
+      {
+        "path": "native-brutalist-copy/wc.png",
+        "sha256": "d97c44c754dff60b4c77ff7434b06609975bda3fd5ef8a1fb534d616099ea2e3",
+        "bytes": 142475,
+        "dimensions": {
+          "width": 1280,
+          "height": 813
+        },
+        "family": "brutalist",
+        "runtime": "wc",
+        "viewed": true,
+        "viewMethod": "Each of these nine new originalPNGfiles was individually opened with tools.view_image in this review; no oldcc3visualreview reused.",
+        "observation": "Blue Brutalist Text article, matching runtime label and Copy success check mark are visible. The long authored React code line extends past the visible right edge of the code panel, and later code lies below the capture. The complete clipboard equality is supported by execution, not full-source visibility in this image."
+      },
+      {
+        "path": "native-shadcn-interactions/actual-catalog.png",
+        "sha256": "cc85399141c4072498e300975f270d0f72354d6163a490b94aa4e520d9161586",
+        "bytes": 47249,
+        "dimensions": {
+          "width": 1280,
+          "height": 633
+        },
+        "family": null,
+        "runtime": null,
+        "viewed": true,
+        "viewMethod": "Each of these nine new originalPNGfiles was individually opened with tools.view_image in this review; no oldcc3visualreview reused.",
+        "observation": "Catalog visibly lists PR921 at exact0b68 as ready; otherlistedPRs are unavailable. This is the real local publisher catalog, not a remote-service screenshot."
+      },
+      {
+        "path": "native-shadcn-interactions/shadcn-react.png",
+        "sha256": "9c19c7cb9757b459e0a6cab2f6e8bd1c77ae16ff839700c50fcb5279995edda1",
+        "bytes": 128677,
+        "dimensions": {
+          "width": 1280,
+          "height": 813
+        },
+        "family": "shadcn",
+        "runtime": "react",
+        "viewed": true,
+        "viewMethod": "Each of these nine new originalPNGfiles was individually opened with tools.view_image in this review; no oldcc3visualreview reused.",
+        "observation": "Header runtime label matches the case. The Button demo and expanded code panel are visible, and Copy shows a success check mark. No target/header overlap is apparent in this captured desktop region. The lower part of the code example continues beyond the bottom capture edge, so the image does not prove the whole source is visually readable at once."
+      },
+      {
+        "path": "native-shadcn-interactions/shadcn-vue.png",
+        "sha256": "c9fa51d45432371a430757da5412e4954e89e382bcde1528bba07e8a94391842",
+        "bytes": 129609,
+        "dimensions": {
+          "width": 1280,
+          "height": 813
+        },
+        "family": "shadcn",
+        "runtime": "vue",
+        "viewed": true,
+        "viewMethod": "Each of these nine new originalPNGfiles was individually opened with tools.view_image in this review; no oldcc3visualreview reused.",
+        "observation": "Header runtime label matches the case. The Button demo and expanded code panel are visible, and Copy shows a success check mark. No target/header overlap is apparent in this captured desktop region. The lower part of the code example continues beyond the bottom capture edge, so the image does not prove the whole source is visually readable at once."
+      },
+      {
+        "path": "native-shadcn-interactions/shadcn-vue2.png",
+        "sha256": "23045502a65a1a5819d842ff879e9738a50c7001c459dc8549e96b18f24968ef",
+        "bytes": 128443,
+        "dimensions": {
+          "width": 1280,
+          "height": 813
+        },
+        "family": "shadcn",
+        "runtime": "vue2",
+        "viewed": true,
+        "viewMethod": "Each of these nine new originalPNGfiles was individually opened with tools.view_image in this review; no oldcc3visualreview reused.",
+        "observation": "Header runtime label matches the case. The Button demo and expanded code panel are visible, and Copy shows a success check mark. No target/header overlap is apparent in this captured desktop region. The lower part of the code example continues beyond the bottom capture edge, so the image does not prove the whole source is visually readable at once."
+      },
+      {
+        "path": "native-shadcn-interactions/shadcn-wc.png",
+        "sha256": "f085de228a451ef71f98f2e38185b960e6a9f475415958399a00f82626485a30",
+        "bytes": 121955,
+        "dimensions": {
+          "width": 1280,
+          "height": 813
+        },
+        "family": "shadcn",
+        "runtime": "wc",
+        "viewed": true,
+        "viewMethod": "Each of these nine new originalPNGfiles was individually opened with tools.view_image in this review; no oldcc3visualreview reused.",
+        "observation": "Header runtime label matches the case. The Button demo and expanded code panel are visible, and Copy shows a success check mark. No target/header overlap is apparent in this captured desktop region. The ten-line WC example fits inside the visible code panel; lower page and sidebar content are still outside the capture."
+      }
+    ],
+    "boundary": "These are nine new official0b68 capture files, separate from the two earlier identical-pixel precommit failure/hydrated captures. The configured case viewport1280x900 differs from actual1280x813 PNGs; catalog PNG1280x633 had no explicit viewport. Cause was not observed. Source extends below/right beyond captures; clipboard equality is execution evidence, not full-code visibility. No first-frame/all-pages/visual/AT/HIG acceptance."
+  },
+  "warnings": "Original server.log retains FileHandle garbage-collection warnings and DEP0137. Recorded driver/server exits are0; no universal absence-of-warnings claim.",
+  "generatedArtifactAdmission": {
+    "receipt": "records/official-0b68-generated-admission/receipt.json",
+    "start": "2026-10-18T03:20:19.769105+00:00",
+    "end": "2026-10-18T03:20:22.456141+00:00",
+    "sourceHead": "0b68e7ec96f5857a6e1b7b6463b192c695ee753f",
+    "cleanBeforeAfter": true,
+    "passed": 1,
+    "failed": 0,
+    "skipped": 0,
+    "input": "The newly downloaded official ZIP and actual publisher generation; not the earlier local3836-file ZIP."
+  },
+  "earlierCSSPacket": "../payload-v1 remains byte-identical. Its preview not-included statement describes that earlier checkpoint; this additive record supplies actual official preview evidence without rewriting it. Local3836 and official3835 output hashes are not asserted equal.",
+  "canonicalCI": "Main CI39092692003 is separate. This packet makes no whole-CI outcome claim; terminal main CI evidence will be appended separately.",
+  "archive": {
+    "file": "official-preview-records.zip",
+    "sha256": "6300b8b3839c780069cf7fb6054a7e0ae168f01b9e14f88d36f89fc301c59cf0",
+    "bytes": 1327607,
+    "rawInputs": 27,
+    "members": 28,
+    "transformedInputs": 5,
+    "originalPNGs": 9
+  },
+  "exclusions": [
+    "Full official ZIP and publisher sites/current/catalog for other PRs",
+    "Private attribution/authorization/context/handoff/credential records",
+    "Unrelated CI logs and old cc3 preview captures"
+  ]
+}

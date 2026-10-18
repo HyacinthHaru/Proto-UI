@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "scope": "Prepared 0b68 local evidence increment; manifest excludes itself. Original cc3 published packet is unchanged.",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 4235,
+      "sha256": "927a77c7c67640984a58d3853983cd087875d257f735de26053e5dbeb605f321"
+    },
+    {
+      "path": "candidate-hydrated.png",
+      "bytes": 100395,
+      "sha256": "f10eba94c534c83ba9a6b6bbd197dc3188bd9b01856756462ad6f5de4883ad69"
+    },
+    {
+      "path": "copy-staging-records.zip",
+      "bytes": 950379,
+      "sha256": "f6854019b1e29b9891063c1f7d6ebe7643bf33648d319cc22422428c03282634"
+    },
+    {
+      "path": "original-red.png",
+      "bytes": 100395,
+      "sha256": "f10eba94c534c83ba9a6b6bbd197dc3188bd9b01856756462ad6f5de4883ad69"
+    },
+    {
+      "path": "raw-public-map.json",
+      "bytes": 38515,
+      "sha256": "f091a1abd979bc9e001c6f512f75886283bae56abd5a379f5d608763736207b1"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 11681,
+      "sha256": "de27d23866c74d140d0f2f8c6e29ca82225339279ce3f53c24553a7f05e87376"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "scope": "Third additive exact0b68 canonical CI packet; manifest excludes itself. Earlier two packets are not changed.",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 3710,
+      "sha256": "c6ca55f16ad13b503bfd6d6b2afefefe9f558deb5b4be3b36bd7d5ba2e8b52cd"
+    },
+    {
+      "path": "canonical-ci.zip",
+      "bytes": 298494,
+      "sha256": "1145719952c33c801a7a8c958b8861e5f0a71a43ca144badd8a488c83a5efdaa"
+    },
+    {
+      "path": "ci-summary.json",
+      "bytes": 13905,
+      "sha256": "a734b0ff95b345ddda63b2cafa456e9725503c79f099eb6aac8b17e3b16b5a87"
+    },
+    {
+      "path": "raw-public-map.json",
+      "bytes": 15115,
+      "sha256": "1cc8adff0a0c81baffe661ad3b4ec7c626115f3c403da46ce58d45907dbb7b55"
+    }
+  ]
+}

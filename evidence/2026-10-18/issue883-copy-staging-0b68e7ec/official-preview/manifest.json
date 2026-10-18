@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "scope": "Official0b68 additive preparation. Manifest excludes itself; earlier local CSS payload-v1 is not modified.",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 3215,
+      "sha256": "ba58507512e9df245917c2933363ec544c64aa7d9427ad92697982a14d06dbfd"
+    },
+    {
+      "path": "official-preview-map.json",
+      "bytes": 13360,
+      "sha256": "53da0ad4344c0b079196bf63bf030f5aa6fe4aa38f03e3c910845e2a4dab402e"
+    },
+    {
+      "path": "official-preview-records.zip",
+      "bytes": 1327607,
+      "sha256": "6300b8b3839c780069cf7fb6054a7e0ae168f01b9e14f88d36f89fc301c59cf0"
+    },
+    {
+      "path": "official-preview-summary.json",
+      "bytes": 12371,
+      "sha256": "a197dd89df9252540cf817c09f5d53f850c1e9f89f2ca0b44ac6d9fefdd203b0"
+    }
+  ]
+}

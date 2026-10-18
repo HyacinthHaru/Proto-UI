@@ -1,0 +1,356 @@
+{
+  "schemaVersion": 1,
+  "packetPreparedAt": "2026-10-18T03:42:26.393499+00:00",
+  "status": "prepared locally; not published by this task",
+  "assessment": "unassessed",
+  "disposition": "partial",
+  "reviewDecision": "ABSTAIN",
+  "sourceHead": "0b68e7ec96f5857a6e1b7b6463b192c695ee753f",
+  "sourceTree": "ef466bb2f3fe4f253f7fd8aeae1f7958b86a443e",
+  "mainRun": {
+    "id": 39092692003,
+    "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39092692003",
+    "status": "completed",
+    "conclusion": "failure",
+    "jobs": 22,
+    "success": 13,
+    "failure": 9,
+    "startedAt": "2026-10-18T03:10:38Z",
+    "updatedAt": "2026-10-18T03:36:07Z"
+  },
+  "checkout": {
+    "actualSyntheticCommit": "e1da47770df00be90e2350b4ef34513c83899549",
+    "tree": "ef466bb2f3fe4f253f7fd8aeae1f7958b86a443e",
+    "treeEqualsSource0b68": true,
+    "source": "records/head-0b68-live/checkout-commit.json",
+    "boundary": "Main CI ran the synthetic checkout, whose exact Git tree matches0b68. Dedicated QuickStart/Collapsible jobs checked out0b68 directly; do not replace their identities with the synthetic SHA."
+  },
+  "ordinaryBrowserShards": [
+    {
+      "shard": 1,
+      "job": 117573666035,
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39092692003/job/117573666035",
+      "conclusion": "failure",
+      "exit": 1,
+      "completeFinalSummary": true,
+      "passed": 219,
+      "failed": 21,
+      "skipped": 0,
+      "total": 240,
+      "rawLogMember": "records/head-0b68-live/completed-logs/117573666035.log"
+    },
+    {
+      "shard": 2,
+      "job": 117573666128,
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39092692003/job/117573666128",
+      "conclusion": "failure",
+      "exit": 124,
+      "completeFinalSummary": false,
+      "passed": null,
+      "failed": null,
+      "skipped": null,
+      "total": null,
+      "rawLogMember": "records/head-0b68-live/completed-logs/117573666128.log"
+    },
+    {
+      "shard": 3,
+      "job": 117573666088,
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39092692003/job/117573666088",
+      "conclusion": "failure",
+      "exit": 1,
+      "completeFinalSummary": true,
+      "passed": 58,
+      "failed": 3,
+      "skipped": 0,
+      "total": 61,
+      "rawLogMember": "records/head-0b68-live/completed-logs/117573666088.log"
+    },
+    {
+      "shard": 4,
+      "job": 117573666043,
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39092692003/job/117573666043",
+      "conclusion": "failure",
+      "exit": 1,
+      "completeFinalSummary": true,
+      "passed": 122,
+      "failed": 2,
+      "skipped": 0,
+      "total": 124,
+      "rawLogMember": "records/head-0b68-live/completed-logs/117573666043.log"
+    },
+    {
+      "shard": 5,
+      "job": 117573666048,
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39092692003/job/117573666048",
+      "conclusion": "failure",
+      "exit": 1,
+      "completeFinalSummary": true,
+      "passed": 88,
+      "failed": 2,
+      "skipped": 15,
+      "total": 105,
+      "rawLogMember": "records/head-0b68-live/completed-logs/117573666048.log"
+    },
+    {
+      "shard": 6,
+      "job": 117573666050,
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39092692003/job/117573666050",
+      "conclusion": "success",
+      "exit": 0,
+      "completeFinalSummary": true,
+      "passed": 169,
+      "failed": 0,
+      "skipped": 0,
+      "total": 169,
+      "rawLogMember": "records/head-0b68-live/completed-logs/117573666050.log"
+    },
+    {
+      "shard": 7,
+      "job": 117573666095,
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39092692003/job/117573666095",
+      "conclusion": "failure",
+      "exit": 1,
+      "completeFinalSummary": true,
+      "passed": 113,
+      "failed": 1,
+      "skipped": 0,
+      "total": 114,
+      "rawLogMember": "records/head-0b68-live/completed-logs/117573666095.log"
+    },
+    {
+      "shard": 8,
+      "job": 117573666078,
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39092692003/job/117573666078",
+      "conclusion": "failure",
+      "exit": 124,
+      "completeFinalSummary": false,
+      "passed": null,
+      "failed": null,
+      "skipped": null,
+      "total": null,
+      "rawLogMember": "records/head-0b68-live/completed-logs/117573666078.log"
+    }
+  ],
+  "sixCompleteShardTotals": {
+    "passed": 769,
+    "failed": 29,
+    "skipped": 15,
+    "total": 813,
+    "shards": [1, 3, 4, 5, 6, 7],
+    "notAnAllEightTotal": true
+  },
+  "incompleteShards": {
+    "shards": [2, 8],
+    "exit": 124,
+    "noFinalSummary": true,
+    "boundary": "Their printed partial suites remain in full logs. They are not skipped, passed, empty, or safely added to the six complete summary totals."
+  },
+  "importantObservedPaths": {
+    "ordinaryQuickStart": {
+      "shard": 8,
+      "job": 117573666078,
+      "originalCasesPassed": 20,
+      "wholeShard": false
+    },
+    "ordinarySettings": {
+      "shard": 1,
+      "job": 117573666035,
+      "case": "completes the settings task and resets local state through both libraries and all runtimes",
+      "passed": true,
+      "otherTestsInFileFailed": 2
+    },
+    "dedicatedQuickStart": {
+      "run": 39092692063,
+      "job": 117572582791,
+      "original20Passed": true,
+      "separate4FragmentControlPassed": true
+    },
+    "dedicatedCollapsible": {
+      "run": 39092692008,
+      "job": 117572582498,
+      "original36Passed": true
+    }
+  },
+  "types": {
+    "files": 934,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 14,
+    "job": 117572582789
+  },
+  "package": {
+    "job": 117573627670,
+    "actualBuilds": 42,
+    "declaredPublicPackages": 47,
+    "publicManifestsChecked": 47,
+    "budgetPolicyTestsPassed": 9,
+    "wholeEntryPass": 4,
+    "wholeEntryAdvisory": 5,
+    "measurements": [
+      {
+        "status": "PASS",
+        "entry": "lucide/icons/x",
+        "gzipBytes": 1737,
+        "ceiling": 3000,
+        "overBudget": 0,
+        "minifiedBytes": 4670,
+        "sha256": "2aa1af1ef3a197cc72f2c421083b37d7da42610907ad014c103570abab1aff50"
+      },
+      {
+        "status": "PASS",
+        "entry": "lucide root",
+        "gzipBytes": 635749,
+        "ceiling": 700000,
+        "overBudget": 0,
+        "minifiedBytes": 4083209,
+        "sha256": "d4cea01272140e6dfbbf37a4871f2011481789fca83be7e569a37d2eacb634ad"
+      },
+      {
+        "status": "ADVISORY",
+        "entry": "core root",
+        "gzipBytes": 8940,
+        "ceiling": 7600,
+        "overBudget": 1340,
+        "minifiedBytes": 28128,
+        "sha256": "0618d20711054f616b0bb51e266fe427d898173b169cf84f4223b3263c5faf4a"
+      },
+      {
+        "status": "ADVISORY",
+        "entry": "runtime root",
+        "gzipBytes": 90651,
+        "ceiling": 78500,
+        "overBudget": 12151,
+        "minifiedBytes": 350526,
+        "sha256": "323066fe3ecf5c85be483818fa7084d2c6eb57829503352d9f74eaa28f721a80"
+      },
+      {
+        "status": "ADVISORY",
+        "entry": "adapter-react root",
+        "gzipBytes": 143060,
+        "ceiling": 106000,
+        "overBudget": 37060,
+        "minifiedBytes": 505348,
+        "sha256": "45e67007289748724e59ec4eb1bdae56731b3257501f713748969327845c0d96"
+      },
+      {
+        "status": "ADVISORY",
+        "entry": "adapter-vue root",
+        "gzipBytes": 142751,
+        "ceiling": 106000,
+        "overBudget": 36751,
+        "minifiedBytes": 503626,
+        "sha256": "7d9890b414ddef6d8e7df8d61a2893f5ed5dc8624f59841c8dcd82bc27248854"
+      },
+      {
+        "status": "ADVISORY",
+        "entry": "adapter-web-component root",
+        "gzipBytes": 169976,
+        "ceiling": 132000,
+        "overBudget": 37976,
+        "minifiedBytes": 585715,
+        "sha256": "05696f8db603ae915542d21ce8a11b0f3ededee44600bfca5336233a2b3993a5"
+      },
+      {
+        "status": "PASS",
+        "entry": "prototypes-base/button",
+        "gzipBytes": 3948,
+        "ceiling": 6000,
+        "overBudget": 0,
+        "minifiedBytes": 13707,
+        "sha256": "2bf46e0160ec35e12005b5874ce9863f19853a0e4021d0ac80043229fb89d53d"
+      },
+      {
+        "status": "PASS",
+        "entry": "prototypes-shadcn/button",
+        "gzipBytes": 4952,
+        "ceiling": 7000,
+        "overBudget": 0,
+        "minifiedBytes": 18079,
+        "sha256": "5970dcc7a557419cd02a6a51fefd7f7e0f16f8d07deb00e8481c6bb3719a7463"
+      }
+    ],
+    "environment": {
+      "node": "v24.21.0",
+      "zlib": "1.3.2.1-motley-8002e91",
+      "esbuild": "0.25.12",
+      "platform": "linux",
+      "arch": "x64"
+    },
+    "boundary": "Successful job and policy tests do not mean all nine whole-entry budgets PASS. Measurement line equality versus cc3 is limited to the recorded normalized comparison, not global functional equality."
+  },
+  "general": {
+    "job": 117573666047,
+    "publicDocDriftFindings": 78,
+    "failedBeforeVitest": true,
+    "normalizedListEqualsCc3": true,
+    "notIndependentMainReproduction": true,
+    "boundary": "No general Vitest test total is inferred; repeated normalized findings do not prove a common root cause."
+  },
+  "independentReview": {
+    "file": "records/head-0b68-live/independent-review/final-ci-review.json",
+    "rawSHA256": "3ce46ef1102eda5fdd2497cfb43eb9c32eb48d4772b0666488e6f2c94b28be54",
+    "markdown": "records/head-0b68-live/independent-review/final-ci-review.md",
+    "boundary": "Retained in full as a source-bound review. Remaining failure ownership is not blanket classified as inherited or outside C."
+  },
+  "remainingFailures": {
+    "newProductionRegressionAttributedToLateCopyCSS": false,
+    "currentCRelatedFailuresRemain": [
+      {
+        "subject": "Shadow closeout portal restoration",
+        "firstDivergence": "Mounted/body and removed facts match; restored.parentNodeIsOrigin and restored.presentInOriginQuery arefalse at original3455 assertion.",
+        "currentLog": "117573666035.log:775–805",
+        "classification": "Concrete current restoration failure; cause unresolved. Do not infer a newly introduced CSS/Runtime regression or dismiss the failure by file ownership."
+      },
+      {
+        "subject": "Brutalist Dialog overlay geometry",
+        "firstDivergence": "OriginalreadOverlayGeometry61 uses directbodychildren withdata-pui-root/data-is-present; throws no mask/contentpair atcaller190.",
+        "currentLog": "117573666035.log:811–823",
+        "classification": "Could be unavailable/current topology or an invalid read assumption; no failureDOM/ownerchain was collected here. No claim that a mask was physically absent everywhere."
+      },
+      {
+        "subject": "S1/S2 split boundaries",
+        "firstDivergence": "CurrentS2 includes90swholecase deadlines,30shover and30sclick; S1 includes90scase and30sclickdeadlines.",
+        "classification": "Some cases are now visible because the run progressed farther. Later lifecycle/teardown assertions may not execute. Matching title is not an owner-cause diagnosis."
+      },
+      {
+        "subject": "Brutalist React Header focus feedback",
+        "firstDivergence": "Two currentHeadercases reach originalfocused=true check and then tokens lackring-2; sourceassertion222.",
+        "classification": "Readiness/feedback/owner timing remains untraced; no failure-time logicalstatechain. Newly visible failurenames alone do not prove the3lineCSS caused it."
+      },
+      {
+        "subject": "Shadcn Card ink",
+        "firstDivergence": "4cases expectrgb(93,100,107) but receive lab(48.496 0 0) at108.",
+        "classification": "Do not assume only an equivalent-color serialization difference; currentfamily/paint expectation remains to be reconciled."
+      },
+      {
+        "subject": "CurrentDrawer shadow sample",
+        "firstDivergence": "Partial2/8 has28.1307373046875 against<15 in its originalshadowcase.",
+        "classification": "Currentgeometry/timing failure remains unclassified without its sampledphase/ownerfacts."
+      }
+    ],
+    "knownCompleteReportGroups": "S4init2/S5init2/S4paintclick1/Liquidopacity2/Checkboxshadow1 remain in complete3/4/5/7reports. Priorboundedrecipe/oracle classification is not a currentpass orpermission tochangefamilypaint.",
+    "ScrollCorner": "The unchanged2casefile passes in current4/8. Its cc3react158pxred and priorunknownHost/fixturetiming remain historical; currentpass does not demonstrate thatCopyCSS fixedScrollrootcause.",
+    "QuickStart": "The currentordinary8/8file explicitlypasses all20originalcases, including all8former14pxoverflowcases. Dedicatedoriginal20plusseparatefragment4also pass. This is actualcurrenthead confirmation, not a relabelledcc3result.",
+    "settings": "The exactcurrentordinarysettingscase passes in completedshard1, spanning originaltwofamilies/fourruntimes. Its containingHomepagefile still has2otherfailures.",
+    "explicitOwnerExceptionScan": {
+      "hits": [],
+      "boundary": "Only explicit known signature scan over these logs; not proof of absence in unexecutedwork."
+    }
+  },
+  "historicalBoundary": "The earlier interim-reconciliation ordinaryBrowserFinal pending and five-complete totals are historical. Final shard1 actually emitted219pass21fail/exit1; only2and8 ended124. This additive summary supersedes count status without altering older evidence. The CSS/official-preview packets remain unchanged.",
+  "archive": {
+    "file": "canonical-ci.zip",
+    "sha256": "1145719952c33c801a7a8c958b8861e5f0a71a43ca144badd8a488c83a5efdaa",
+    "bytes": 298494,
+    "rawInputs": 22,
+    "members": 23,
+    "logs": 13,
+    "ordinaryBrowserLogs": 8,
+    "textTransforms": 13
+  },
+  "limits": [
+    "No new test/browser/build/Actions rerun/cancellation/download or external mutation occurred in preparation.",
+    "The main run remains FAILURE despite the relevant QuickStart/settings/Collapsible passes.",
+    "No whole CI, release, full visual/AT/HIG acceptance, formal GitHub approval or #883 closure is asserted."
+  ]
+}

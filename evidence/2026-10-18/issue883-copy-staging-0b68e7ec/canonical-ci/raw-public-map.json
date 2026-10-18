@@ -1,0 +1,435 @@
+{
+  "schemaVersion": 1,
+  "rawRootAlias": "<PRIVATE_STATE>",
+  "scope": "Exact0b68 canonical CI plus two separately identified dedicated workflows; no snapshot of unrelated workflows/PRs.",
+  "records": [
+    {
+      "rawRelative": "head-0b68-live/completed-logs/117572582789.log",
+      "member": "records/head-0b68-live/completed-logs/117572582789.log",
+      "rawSHA256": "57abcc4e5edb751c73bc72a7d4bf6bee05f5f66d6b922806e6e7b897e078478b",
+      "rawBytes": 26689,
+      "publicSHA256": "ba81dceb2eb5e606d2767c8a30627a73aeba705aa20aac167ff9555536e465c3",
+      "publicBytes": 26522,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_SOURCE_ROOT>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_TEMP>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_TOOLCACHE>"
+        }
+      ],
+      "lineCountPreserved": true
+    },
+    {
+      "rawRelative": "head-0b68-live/completed-logs/117572582791.log",
+      "member": "records/head-0b68-live/completed-logs/117572582791.log",
+      "rawSHA256": "3d2b91ed8c5a35a50df8bdf4b6c8f9227d0bfeb287e059bb84edae22d1a91de8",
+      "rawBytes": 87222,
+      "publicSHA256": "e7ecd8b17f9285bd5476dc7f793bb22a8de2711232f45054f8cd6c93e4a0f697",
+      "publicBytes": 86966,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_SOURCE_ROOT>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_TEMP>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_TOOLCACHE>"
+        }
+      ],
+      "lineCountPreserved": true
+    },
+    {
+      "rawRelative": "head-0b68-live/completed-logs/117573627670.log",
+      "member": "records/head-0b68-live/completed-logs/117573627670.log",
+      "rawSHA256": "8913766390ae01d24766e51d93d3a13f64b0abe80e3598b54053a1c5abd28bb9",
+      "rawBytes": 70194,
+      "publicSHA256": "a3140ab1a6519aa998e38a529172124096de6c68206f9f475a0988f12e5b162b",
+      "publicBytes": 69970,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_SOURCE_ROOT>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_TEMP>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_TOOLCACHE>"
+        }
+      ],
+      "lineCountPreserved": true
+    },
+    {
+      "rawRelative": "head-0b68-live/completed-logs/117573666035.log",
+      "member": "records/head-0b68-live/completed-logs/117573666035.log",
+      "rawSHA256": "b9529c377524e980c7d5b580f99d210d6a66d8731d34d64a3c5fbe4158b232b6",
+      "rawBytes": 192891,
+      "publicSHA256": "77beba8621f79cd101c863de8786baee64eadabf21a2ae38cad5c18d06f296c8",
+      "publicBytes": 192630,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_SOURCE_ROOT>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_TEMP>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_TOOLCACHE>"
+        },
+        {
+          "kind": "host-temp-path",
+          "replacement": "<CI_TEMP>"
+        }
+      ],
+      "lineCountPreserved": true
+    },
+    {
+      "rawRelative": "head-0b68-live/completed-logs/117573666043.log",
+      "member": "records/head-0b68-live/completed-logs/117573666043.log",
+      "rawSHA256": "16460f5e74d007f51ee773ab049991ee31b78fe363af2455d1e46f408ebf1661",
+      "rawBytes": 112659,
+      "publicSHA256": "ade56996241bc3af0b5a5e2353c233d36510b101b41ef6aac275db20887ca818",
+      "publicBytes": 112362,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_SOURCE_ROOT>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_TEMP>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_TOOLCACHE>"
+        },
+        {
+          "kind": "host-temp-path",
+          "replacement": "<CI_TEMP>"
+        }
+      ],
+      "lineCountPreserved": true
+    },
+    {
+      "rawRelative": "head-0b68-live/completed-logs/117573666047.log",
+      "member": "records/head-0b68-live/completed-logs/117573666047.log",
+      "rawSHA256": "b98ff2eb4e847ef4e61e9562482a4918affc24d15b56b79fec72399db288c1cc",
+      "rawBytes": 147428,
+      "publicSHA256": "9b44b1aabcf5d630fd703f9a38e7badbcb30c723385405adc02fc191e94dd05d",
+      "publicBytes": 147266,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_SOURCE_ROOT>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_TEMP>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_TOOLCACHE>"
+        }
+      ],
+      "lineCountPreserved": true
+    },
+    {
+      "rawRelative": "head-0b68-live/completed-logs/117573666048.log",
+      "member": "records/head-0b68-live/completed-logs/117573666048.log",
+      "rawSHA256": "0f6ec8104a62671386d4678a1bab779ba1f92c2a1b597f9b6dfb04038ac7a884",
+      "rawBytes": 137777,
+      "publicSHA256": "2068073730fe56a0281aeb679685ee67e772fbd5cecf5a62f17627459b9cafca",
+      "publicBytes": 137489,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_SOURCE_ROOT>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_TEMP>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_TOOLCACHE>"
+        },
+        {
+          "kind": "host-temp-path",
+          "replacement": "<CI_TEMP>"
+        }
+      ],
+      "lineCountPreserved": true
+    },
+    {
+      "rawRelative": "head-0b68-live/completed-logs/117573666050.log",
+      "member": "records/head-0b68-live/completed-logs/117573666050.log",
+      "rawSHA256": "eb12091fc35c61763bf604dc83686c2e744a634664e0a49422571ee49f999205",
+      "rawBytes": 105903,
+      "publicSHA256": "e11bf48c7fba8ade38a584b6d22841f31090be3e2614e1f28beba6b8c8ecfe16",
+      "publicBytes": 105670,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_SOURCE_ROOT>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_TEMP>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_TOOLCACHE>"
+        }
+      ],
+      "lineCountPreserved": true
+    },
+    {
+      "rawRelative": "head-0b68-live/completed-logs/117573666078.log",
+      "member": "records/head-0b68-live/completed-logs/117573666078.log",
+      "rawSHA256": "d870d0a44e56b0d817c529522e1d5e56f2b2f75620f7c422d07687ad0b3f2dad",
+      "rawBytes": 123654,
+      "publicSHA256": "46f5330f969f0f1bad56e448ead91417492e930982d0f46f5a698a5117f9050e",
+      "publicBytes": 123435,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_SOURCE_ROOT>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_TEMP>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_TOOLCACHE>"
+        }
+      ],
+      "lineCountPreserved": true
+    },
+    {
+      "rawRelative": "head-0b68-live/completed-logs/117573666088.log",
+      "member": "records/head-0b68-live/completed-logs/117573666088.log",
+      "rawSHA256": "e2cddce67ab569bf23f3e1d97efd38b9a686669cf55703aa9a1d034eca2e707b",
+      "rawBytes": 108224,
+      "publicSHA256": "b6dcb9e8971228440b623a333e75c185880a746d03bb1de4f26f994a4b93ea7e",
+      "publicBytes": 107972,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_SOURCE_ROOT>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_TEMP>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_TOOLCACHE>"
+        },
+        {
+          "kind": "host-temp-path",
+          "replacement": "<CI_TEMP>"
+        }
+      ],
+      "lineCountPreserved": true
+    },
+    {
+      "rawRelative": "head-0b68-live/completed-logs/117573666095.log",
+      "member": "records/head-0b68-live/completed-logs/117573666095.log",
+      "rawSHA256": "b1ab92b1bce2a18312b320116dcd2ab1ffbe940a9e74a13e9630fd173a046eb6",
+      "rawBytes": 108059,
+      "publicSHA256": "b493d534ac9d4118b8fb66546b66c6edb09a44fea244e51a6390e3e0eae0f666",
+      "publicBytes": 107826,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_SOURCE_ROOT>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_TEMP>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_TOOLCACHE>"
+        }
+      ],
+      "lineCountPreserved": true
+    },
+    {
+      "rawRelative": "head-0b68-live/completed-logs/117573666128.log",
+      "member": "records/head-0b68-live/completed-logs/117573666128.log",
+      "rawSHA256": "e686f0105c4f61afd69997a2e8f7c9e723740571cad326b0f660779e901c6aea",
+      "rawBytes": 317622,
+      "publicSHA256": "87784c786a461e02dda08301720eae29f8155d992aaddec29d04b3e366b51725",
+      "publicBytes": 302431,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_SOURCE_ROOT>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_TEMP>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_TOOLCACHE>"
+        }
+      ],
+      "lineCountPreserved": true
+    },
+    {
+      "rawRelative": "head-0b68-live/job-logs/117572582498.log",
+      "member": "records/head-0b68-live/job-logs/117572582498.log",
+      "rawSHA256": "d2be80a54b06d91e758b55d65e42c1818b4f1d6dc30389d50e8ea56736647ca8",
+      "rawBytes": 228863,
+      "publicSHA256": "c6337420fc19990e5114d9a875302b65f62525c8f4aa3f12fada0f5fbebd6e1a",
+      "publicBytes": 228668,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_SOURCE_ROOT>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_TEMP>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CI_TOOLCACHE>"
+        }
+      ],
+      "lineCountPreserved": true
+    },
+    {
+      "rawRelative": "head-0b68-live/final-run.json",
+      "member": "records/head-0b68-live/final-run.json",
+      "rawSHA256": "b65689b69067fecdfaed4980fcabfaface6dc3112f525f3a2c297cb1d012fd56",
+      "rawBytes": 15920,
+      "publicSHA256": "b65689b69067fecdfaed4980fcabfaface6dc3112f525f3a2c297cb1d012fd56",
+      "publicBytes": 15920,
+      "transformed": false,
+      "transformRules": [],
+      "lineCountPreserved": null
+    },
+    {
+      "rawRelative": "head-0b68-live/final-jobs.json",
+      "member": "records/head-0b68-live/final-jobs.json",
+      "rawSHA256": "9abecaa0b20b6a2f235b45c06ac75c42ef6941f8919a987ae11b0f45c179fa2a",
+      "rawBytes": 81134,
+      "publicSHA256": "9abecaa0b20b6a2f235b45c06ac75c42ef6941f8919a987ae11b0f45c179fa2a",
+      "publicBytes": 81134,
+      "transformed": false,
+      "transformRules": [],
+      "lineCountPreserved": null
+    },
+    {
+      "rawRelative": "head-0b68-live/checkout-commit.json",
+      "member": "records/head-0b68-live/checkout-commit.json",
+      "rawSHA256": "018bb1a481946080e225a8162d867e44d93de7cf3d0c530b43dfb4c50b8e2539",
+      "rawBytes": 2817,
+      "publicSHA256": "018bb1a481946080e225a8162d867e44d93de7cf3d0c530b43dfb4c50b8e2539",
+      "publicBytes": 2817,
+      "transformed": false,
+      "transformRules": [],
+      "lineCountPreserved": null
+    },
+    {
+      "rawRelative": "head-0b68-live/checkout-binding-receipt.json",
+      "member": "records/head-0b68-live/checkout-binding-receipt.json",
+      "rawSHA256": "2e06ee9b2354ea90c065cdbfe9138ef5b5adec293a4e776f8e1c4af10966dd42",
+      "rawBytes": 499,
+      "publicSHA256": "2e06ee9b2354ea90c065cdbfe9138ef5b5adec293a4e776f8e1c4af10966dd42",
+      "publicBytes": 499,
+      "transformed": false,
+      "transformRules": [],
+      "lineCountPreserved": null
+    },
+    {
+      "rawRelative": "head-0b68-live/completed-logs/117572582791.json",
+      "member": "records/head-0b68-live/completed-logs/117572582791.json",
+      "rawSHA256": "047305316a3b0425a8091e4429fbfd2cf6e86d3d2d8838d3b59b0b3ef1ba4d74",
+      "rawBytes": 4369,
+      "publicSHA256": "047305316a3b0425a8091e4429fbfd2cf6e86d3d2d8838d3b59b0b3ef1ba4d74",
+      "publicBytes": 4369,
+      "transformed": false,
+      "transformRules": [],
+      "lineCountPreserved": null
+    },
+    {
+      "rawRelative": "head-0b68-live/job-logs/117572582498.json",
+      "member": "records/head-0b68-live/job-logs/117572582498.json",
+      "rawSHA256": "e5b8eb75c9d1ca8ab5676af4c493d30c9a996816142331ad7ed4966ad14ff511",
+      "rawBytes": 437,
+      "publicSHA256": "e5b8eb75c9d1ca8ab5676af4c493d30c9a996816142331ad7ed4966ad14ff511",
+      "publicBytes": 437,
+      "transformed": false,
+      "transformRules": [],
+      "lineCountPreserved": null
+    },
+    {
+      "rawRelative": "head-0b68-live/interim-reconciliation.json",
+      "member": "records/head-0b68-live/interim-reconciliation.json",
+      "rawSHA256": "e9774d94d4f972960e63f1d634cfc7859bfb8ffe6bf8836084149f11beb32bac",
+      "rawBytes": 2559,
+      "publicSHA256": "e9774d94d4f972960e63f1d634cfc7859bfb8ffe6bf8836084149f11beb32bac",
+      "publicBytes": 2559,
+      "transformed": false,
+      "transformRules": [],
+      "lineCountPreserved": null
+    },
+    {
+      "rawRelative": "head-0b68-live/independent-review/final-ci-review.json",
+      "member": "records/head-0b68-live/independent-review/final-ci-review.json",
+      "rawSHA256": "3ce46ef1102eda5fdd2497cfb43eb9c32eb48d4772b0666488e6f2c94b28be54",
+      "rawBytes": 65228,
+      "publicSHA256": "3ce46ef1102eda5fdd2497cfb43eb9c32eb48d4772b0666488e6f2c94b28be54",
+      "publicBytes": 65228,
+      "transformed": false,
+      "transformRules": [],
+      "lineCountPreserved": null
+    },
+    {
+      "rawRelative": "head-0b68-live/independent-review/final-ci-review.md",
+      "member": "records/head-0b68-live/independent-review/final-ci-review.md",
+      "rawSHA256": "310a54a578f46a6e6019efecc8c27ad78ba7a862d78663ea8933c55355de506b",
+      "rawBytes": 4471,
+      "publicSHA256": "310a54a578f46a6e6019efecc8c27ad78ba7a862d78663ea8933c55355de506b",
+      "publicBytes": 4471,
+      "transformed": false,
+      "transformRules": [],
+      "lineCountPreserved": null
+    }
+  ],
+  "transformBoundary": "All13 complete job logs retain their lines, timestamps and outcomes; only known machine paths/environment values are redacted. Public derivatives are not the original raw bytes. Public GitHub run/commit metadata is retained; private attribution/context/auth/handoff records are excluded."
+}

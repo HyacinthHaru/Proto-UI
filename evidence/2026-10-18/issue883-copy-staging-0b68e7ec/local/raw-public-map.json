@@ -1,0 +1,975 @@
+{
+  "schemaVersion": 1,
+  "scope": "Private preparation of a bounded 0b68 Copy-staging increment; no publication by this builder.",
+  "rawRootAlias": "<PRIVATE_STATE>",
+  "sourceHead": "0b68e7ec96f5857a6e1b7b6463b192c695ee753f",
+  "records": [
+    {
+      "rawRelative": "final-binding-0b68.json",
+      "member": "records/final-binding-0b68.json",
+      "group": "sourceAndBinding",
+      "rawSHA256": "bdc2afb4e8cc46af0b84035eecb47b89027f0dca746a020f4e334c43b5d2133f",
+      "rawBytes": 15973,
+      "publicSHA256": "bdc2afb4e8cc46af0b84035eecb47b89027f0dca746a020f4e334c43b5d2133f",
+      "publicBytes": 15973,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "copy-staging-final-source-binding.json",
+      "member": "records/copy-staging-final-source-binding.json",
+      "group": "sourceAndBinding",
+      "rawSHA256": "c6c073690f843bcfbabf8b07bae1248129bfe38e963ad84b70031aec4e44f84e",
+      "rawBytes": 571,
+      "publicSHA256": "c6c073690f843bcfbabf8b07bae1248129bfe38e963ad84b70031aec4e44f84e",
+      "publicBytes": 571,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "quick-start-copy-staging-review/independent-git-blob-check-0b68.json",
+      "member": "records/quick-start-copy-staging-review/independent-git-blob-check-0b68.json",
+      "group": "sourceAndBinding",
+      "rawSHA256": "69afe99814af25356a0b2afa13dfc7d212d59e4d6db9a89e67e4f2203987689c",
+      "rawBytes": 343,
+      "publicSHA256": "69afe99814af25356a0b2afa13dfc7d212d59e4d6db9a89e67e4f2203987689c",
+      "publicBytes": 343,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "quick-start-copy-staging-review/signature-0b68.log",
+      "member": "records/quick-start-copy-staging-review/signature-0b68.log",
+      "group": "sourceAndBinding",
+      "rawSHA256": "a03bd8a23bf5a4175f6132d9b9453545f832fd6ecddf5935b23616f7545a94e1",
+      "rawBytes": 110,
+      "publicSHA256": "a03bd8a23bf5a4175f6132d9b9453545f832fd6ecddf5935b23616f7545a94e1",
+      "publicBytes": 110,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "commit-copy-receipt.json",
+      "member": "records/commit-copy-receipt.json",
+      "group": "sourceAndBinding",
+      "rawSHA256": "276766866da5b9c502b4997ca81ab47b5771864e9cb0e7a4b2ba0526c2d05a3e",
+      "rawBytes": 235,
+      "publicSHA256": "276766866da5b9c502b4997ca81ab47b5771864e9cb0e7a4b2ba0526c2d05a3e",
+      "publicBytes": 235,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "push-copy-receipt.json",
+      "member": "records/push-copy-receipt.json",
+      "group": "sourceAndBinding",
+      "rawSHA256": "1c3889006da93372f022845d7b61f049e74af59eb5ebed307cab138c4bd18d07",
+      "rawBytes": 476,
+      "publicSHA256": "1c3889006da93372f022845d7b61f049e74af59eb5ebed307cab138c4bd18d07",
+      "publicBytes": 476,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "quick-start-copy-source-freeze.json",
+      "member": "records/quick-start-copy-source-freeze.json",
+      "group": "sourceAndBinding",
+      "rawSHA256": "5602a529824d0502e74504409de5de2b101864fa1179310b428884a90b1b5c78",
+      "rawBytes": 1907746,
+      "publicSHA256": "5602a529824d0502e74504409de5de2b101864fa1179310b428884a90b1b5c78",
+      "publicBytes": 1907746,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "quick-start-copy-setup-boundary.json",
+      "member": "records/quick-start-copy-setup-boundary.json",
+      "group": "scopeAndSetup",
+      "rawSHA256": "d4ea6b286824a72e60b4d749845f96395869af7f097cf500d321ca0a7bede93a",
+      "rawBytes": 442,
+      "publicSHA256": "d4ea6b286824a72e60b4d749845f96395869af7f097cf500d321ca0a7bede93a",
+      "publicBytes": 442,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "quick-start-copy-candidate-report.json",
+      "member": "records/quick-start-copy-candidate-report.json",
+      "group": "scopeAndSetup",
+      "rawSHA256": "53df814a4d17e92f8d0c779e91aec7bc98d2a76718b81346494477fc206e2aaf",
+      "rawBytes": 2520,
+      "publicSHA256": "53df814a4d17e92f8d0c779e91aec7bc98d2a76718b81346494477fc206e2aaf",
+      "publicBytes": 2520,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "quick-start-current-red/receipt.json",
+      "member": "records/quick-start-current-red/receipt.json",
+      "group": "redAndSameOriginalGreen",
+      "rawSHA256": "b98cbd7c7d396934cc0a51a9c854ebb9765726bbb230968d67b0e2686684c765",
+      "rawBytes": 1042,
+      "publicSHA256": "2ab3c44c87cc1cd01ad7dbd36e1de438fdd0a9049cd6dc8387ba9b752de63028",
+      "publicBytes": 919,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<PRIVATE_STATE>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CHROMIUM_APP>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "quick-start-current-red/run.log",
+      "member": "records/quick-start-current-red/run.log",
+      "group": "redAndSameOriginalGreen",
+      "rawSHA256": "315a30c7f101be24a640bcab2ceb4e28957a0fd0a958d16f9043a86628f9a6b7",
+      "rawBytes": 128,
+      "publicSHA256": "ac0a406e81bd7465a86508d7de1c17767fc12f4f4c16d350aa4ec695fcb4c3f9",
+      "publicBytes": 75,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<PRIVATE_STATE>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "quick-start-current-red/vitest.json",
+      "member": "records/quick-start-current-red/vitest.json",
+      "group": "redAndSameOriginalGreen",
+      "rawSHA256": "e5737083af7a31290fdd071308613c8761621b2c1206de57cfe759329714ea24",
+      "rawBytes": 7172,
+      "publicSHA256": "44de2ef6214922a02add06b506dba9306499c3e0b19ac66a9f29a60dfd0c70fa",
+      "publicBytes": 7128,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<SOURCE_ROOT>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "quick-start-current-red-v2/receipt.json",
+      "member": "records/quick-start-current-red-v2/receipt.json",
+      "group": "redAndSameOriginalGreen",
+      "rawSHA256": "a8d26e160afe420a35142e11d2e1f7eebcb923bbc720326bab1fe9d9ae7c1f8b",
+      "rawBytes": 1010,
+      "publicSHA256": "8a628db2c5fb0018b0ebcf93d959a98ad6a5b5352672e25c6475aedad6368834",
+      "publicBytes": 887,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<PRIVATE_STATE>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CHROMIUM_APP>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "quick-start-current-red-v2/run.log",
+      "member": "records/quick-start-current-red-v2/run.log",
+      "group": "redAndSameOriginalGreen",
+      "rawSHA256": "094c2c9bf6dcee5fe4ec96124057b67da5b4e4c3b83f92f1b630312a9c55b191",
+      "rawBytes": 131,
+      "publicSHA256": "75d4627701e9099af2ea00912125d7185949b83ca8c557cd0071019f540afc23",
+      "publicBytes": 78,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<PRIVATE_STATE>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "quick-start-current-red-v2/vitest.json",
+      "member": "records/quick-start-current-red-v2/vitest.json",
+      "group": "redAndSameOriginalGreen",
+      "rawSHA256": "87f0ff2c9b34431f3dd32059104f812ffd7db516758dcdc2a50e5ab1708bbb01",
+      "rawBytes": 91948,
+      "publicSHA256": "a93e2dac9b1ed155ae15bbe2057d7f2401c97dbecff0d152281c7b5867deac98",
+      "publicBytes": 91464,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<SOURCE_ROOT>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "quick-start-copy-staging-original-green/receipt.json",
+      "member": "records/quick-start-copy-staging-original-green/receipt.json",
+      "group": "redAndSameOriginalGreen",
+      "rawSHA256": "e9e0d09bee78454927eec779cc98127ce105f4e30ec14cf8e51e39779610c85e",
+      "rawBytes": 1202,
+      "publicSHA256": "b377af610c86622d68d66fd41804cd36f95a9a0ec1b40798cc02d72ed8c481eb",
+      "publicBytes": 1079,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<PRIVATE_STATE>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CHROMIUM_APP>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "quick-start-copy-staging-original-green/run.log",
+      "member": "records/quick-start-copy-staging-original-green/run.log",
+      "group": "redAndSameOriginalGreen",
+      "rawSHA256": "e3394a8d6a2de5ece5ed6df2e3f8df55332d5b9f0a9f44a94c1e26b4680a2269",
+      "rawBytes": 144,
+      "publicSHA256": "a6e572f40bc9baac13a6a5e41656b0eb38244bf6937a9d7908c5d111d38a8076",
+      "publicBytes": 91,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<PRIVATE_STATE>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "quick-start-copy-staging-original-green/vitest.json",
+      "member": "records/quick-start-copy-staging-original-green/vitest.json",
+      "group": "redAndSameOriginalGreen",
+      "rawSHA256": "87a39bdd43850b9f69f8172102406ef2958aed09d5927a70b0523c7437c82f3d",
+      "rawBytes": 7205,
+      "publicSHA256": "6381a915d98e761abd9990fe5389ce6f04dc9da9a7a4c946a4d86a2bb0737c04",
+      "publicBytes": 7161,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<SOURCE_ROOT>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "quick-start-current-red-v2/evidence/wc-390-dark-cold-frame-transitions.json",
+      "member": "records/quick-start-current-red-v2/evidence/wc-390-dark-cold-frame-transitions.json",
+      "group": "redAndSameOriginalGreen",
+      "rawSHA256": "6a0e0feea67ff3879f47f982c9e183c830a493777983b69a61e4441e145b9346",
+      "rawBytes": 192835,
+      "publicSHA256": "6a0e0feea67ff3879f47f982c9e183c830a493777983b69a61e4441e145b9346",
+      "publicBytes": 192835,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "quick-start-copy-staging-original-green/evidence/wc-390-dark-cold-frame-transitions.json",
+      "member": "records/quick-start-copy-staging-original-green/evidence/wc-390-dark-cold-frame-transitions.json",
+      "group": "redAndSameOriginalGreen",
+      "rawSHA256": "5e89a32ae13893cc16e5362cc2814ac9d6cb7b6ed28f1bdfa8dbf67ebd247c89",
+      "rawBytes": 72180,
+      "publicSHA256": "5e89a32ae13893cc16e5362cc2814ac9d6cb7b6ed28f1bdfa8dbf67ebd247c89",
+      "publicBytes": 72180,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "quick-start-staging-control/probe.mjs",
+      "member": "records/quick-start-staging-control/probe.mjs",
+      "group": "control",
+      "rawSHA256": "cf55140f02b683afa9f8ee7a311308532efd64c09102a24f357f6efeea027d47",
+      "rawBytes": 2737,
+      "publicSHA256": "a67be322bb588186c0fec6449d6a277376d71133c07d25288c4811f5425b30f8",
+      "publicBytes": 2676,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<SOURCE_ROOT>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CHROMIUM_APP>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "quick-start-staging-control/observations.json",
+      "member": "records/quick-start-staging-control/observations.json",
+      "group": "control",
+      "rawSHA256": "55f9e035acd16cfaf864267feb089034b7e9e25e4d894799c9d22527843c1f26",
+      "rawBytes": 44188,
+      "publicSHA256": "55f9e035acd16cfaf864267feb089034b7e9e25e4d894799c9d22527843c1f26",
+      "publicBytes": 44188,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "quick-start-staging-control-early/probe.mjs",
+      "member": "records/quick-start-staging-control-early/probe.mjs",
+      "group": "control",
+      "rawSHA256": "260b157702f827aeee8a86a1bb8d94bfdab7e40701cf38ea27006bc56f6d1bbe",
+      "rawBytes": 2685,
+      "publicSHA256": "7088200d6babba914d2af32b055047c88033c188ef8032d10251cc49f14de483",
+      "publicBytes": 2624,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<SOURCE_ROOT>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CHROMIUM_APP>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "quick-start-staging-control-early/observations.json",
+      "member": "records/quick-start-staging-control-early/observations.json",
+      "group": "control",
+      "rawSHA256": "00e9100fed6adcde65a22dba1c72f60bb226265b1511deda33b61aeace16f083",
+      "rawBytes": 4784,
+      "publicSHA256": "00e9100fed6adcde65a22dba1c72f60bb226265b1511deda33b61aeace16f083",
+      "publicBytes": 4784,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "quick-start-copy-staging-combination/receipt.json",
+      "member": "records/quick-start-copy-staging-combination/receipt.json",
+      "group": "staticAndDefaultFullResults",
+      "rawSHA256": "fe4a1091eb9b558ac16126d7a327736e96dd0297c811e68a30402586ce0d0f36",
+      "rawBytes": 1218,
+      "publicSHA256": "b50d813035198e083428f6ef5e644c8e066f490971b1ceabac61d7822982d2e6",
+      "publicBytes": 1095,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<PRIVATE_STATE>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CHROMIUM_APP>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "quick-start-copy-staging-combination/run.log",
+      "member": "records/quick-start-copy-staging-combination/run.log",
+      "group": "staticAndDefaultFullResults",
+      "rawSHA256": "2611aa61af4b7deb33e0753c60a4492cb2b2eab97d4ad77cc56c7e2e5d610fba",
+      "rawBytes": 141,
+      "publicSHA256": "7cd2747a7f760fe08614d1b766bfe75c1ef9d3a6f9d26f22849de05b84510c7b",
+      "publicBytes": 88,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<PRIVATE_STATE>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "quick-start-copy-staging-combination/vitest.json",
+      "member": "records/quick-start-copy-staging-combination/vitest.json",
+      "group": "staticAndDefaultFullResults",
+      "rawSHA256": "71a71e1aa4786be4e746c43d3afa289203ce1cfece181535bdbe53975cdab1a7",
+      "rawBytes": 17479,
+      "publicSHA256": "69f2e1d61f51c5494288840c9e5292ea4871c89fd0b23808f7009f61868bd945",
+      "publicBytes": 16511,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<SOURCE_ROOT>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "quick-start-copy-staging-original-harness/receipt.json",
+      "member": "records/quick-start-copy-staging-original-harness/receipt.json",
+      "group": "staticAndDefaultFullResults",
+      "rawSHA256": "30205663659e1ce859be4f64e9a666e4e2188cbb3d902246bcff6ea3ded89ac7",
+      "rawBytes": 1095,
+      "publicSHA256": "ad12babf87024d9c109fb4f61cc1bebee0e46ff24b4c82222e95d690301d1381",
+      "publicBytes": 972,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<PRIVATE_STATE>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CHROMIUM_APP>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "quick-start-copy-staging-original-harness/run.log",
+      "member": "records/quick-start-copy-staging-original-harness/run.log",
+      "group": "staticAndDefaultFullResults",
+      "rawSHA256": "985b8bfabb8e1e49249e986ab94bf7064dda83667fdf25be49ae67466d22412f",
+      "rawBytes": 146,
+      "publicSHA256": "a3453763d77b953a93d5445592dd41fccd9ad54c624ec9a5273ab19e0bc42dcb",
+      "publicBytes": 93,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<PRIVATE_STATE>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "quick-start-copy-staging-original-harness/vitest.json",
+      "member": "records/quick-start-copy-staging-original-harness/vitest.json",
+      "group": "staticAndDefaultFullResults",
+      "rawSHA256": "95fe14160d57b9eb8c63aa5fece2174768115189af2e3a9c7ee11102950f69e4",
+      "rawBytes": 7741,
+      "publicSHA256": "4c220d7dd7f772ac7498b5f8e1c3d59af3e82f1d1e2accc6ce6107a3141bd0bf",
+      "publicBytes": 7697,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<SOURCE_ROOT>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "quick-start-copy-staging-build/receipt.json",
+      "member": "records/quick-start-copy-staging-build/receipt.json",
+      "group": "buildAndAdmission",
+      "rawSHA256": "e34ed36d9b5cb0f6758a7b200837098bac4ce88f95c2bf5f674222ce985adfbb",
+      "rawBytes": 575,
+      "publicSHA256": "e34ed36d9b5cb0f6758a7b200837098bac4ce88f95c2bf5f674222ce985adfbb",
+      "publicBytes": 575,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "quick-start-copy-staging-build/run.log",
+      "member": "records/quick-start-copy-staging-build/run.log",
+      "group": "buildAndAdmission",
+      "rawSHA256": "4ad3a0b49d97da8ccbc8620ae7dab46ef03f898d6cea45079ca3adbb847e3101",
+      "rawBytes": 95,
+      "publicSHA256": "68f91b039db8c7ab0ac7e16e13f65fc730a8dddd76ea5289f461aec0da869ad4",
+      "publicBytes": 51,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<SOURCE_ROOT>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "quick-start-copy-staging-build-v2/receipt.json",
+      "member": "records/quick-start-copy-staging-build-v2/receipt.json",
+      "group": "buildAndAdmission",
+      "rawSHA256": "4e1f9100103e798b5da9202e72359be05e9217f286e0057ea1789099fcc77fc7",
+      "rawBytes": 570,
+      "publicSHA256": "4e1f9100103e798b5da9202e72359be05e9217f286e0057ea1789099fcc77fc7",
+      "publicBytes": 570,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "quick-start-copy-staging-build-v2/run.log",
+      "member": "records/quick-start-copy-staging-build-v2/run.log",
+      "group": "buildAndAdmission",
+      "rawSHA256": "bec0c5f87ea2abf89d58637b1a5064c59b50432f897c7ce52a885397e3bee202",
+      "rawBytes": 412368,
+      "publicSHA256": "e3db5f6a6d710171970105248a618d66c21a390bc8abec1dabe1d5fb815171d7",
+      "publicBytes": 412148,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<SOURCE_ROOT>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "copy-staging-complete-admission/inventory.json",
+      "member": "records/copy-staging-complete-admission/inventory.json",
+      "group": "buildAndAdmission",
+      "rawSHA256": "8438199db24d145a07cf6e7dbe21b37900e9f89be13d8c7035b55e0a64068f5d",
+      "rawBytes": 200,
+      "publicSHA256": "8438199db24d145a07cf6e7dbe21b37900e9f89be13d8c7035b55e0a64068f5d",
+      "publicBytes": 200,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "copy-staging-complete-admission-result/receipt.json",
+      "member": "records/copy-staging-complete-admission-result/receipt.json",
+      "group": "buildAndAdmission",
+      "rawSHA256": "d65704cf2b0f7d2bf4a53620128c9b31dbee77d8f678a414a084d1efde75810e",
+      "rawBytes": 822,
+      "publicSHA256": "8ee7af4bdb932d0df598c3733cffce9055fc9f27218eebf4fc52340c0383bf8b",
+      "publicBytes": 725,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<PRIVATE_STATE>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<SOURCE_ROOT>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "copy-staging-complete-admission-result/run.log",
+      "member": "records/copy-staging-complete-admission-result/run.log",
+      "group": "buildAndAdmission",
+      "rawSHA256": "55505aaaf474f8b30bb523595d469a6b824577a30f96cdf30caf3bc17eb45d03",
+      "rawBytes": 290,
+      "publicSHA256": "55505aaaf474f8b30bb523595d469a6b824577a30f96cdf30caf3bc17eb45d03",
+      "publicBytes": 290,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "copy-staging-final-unit-combination/receipt.json",
+      "member": "records/copy-staging-final-unit-combination/receipt.json",
+      "group": "postcommitCombination",
+      "rawSHA256": "e16ad68ac59a80765ea45acecacb93adb7a08fb550bf4fe89497633c4e58f4c1",
+      "rawBytes": 7189,
+      "publicSHA256": "a8f2b2380305c0abc6d67c1e0f06c1b06aaf098c60a68a30191d2c708c727f13",
+      "publicBytes": 7136,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<PRIVATE_STATE>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "copy-staging-final-unit-combination/run.log",
+      "member": "records/copy-staging-final-unit-combination/run.log",
+      "group": "postcommitCombination",
+      "rawSHA256": "39e3870e90d1ce9b2fea640bc5fa0967e10fd4d5064583559c1f562687b9594c",
+      "rawBytes": 140,
+      "publicSHA256": "0f12d684e0638a2ff7bffe7ec5b8b4a34a9a2f0c93bc51f19e0efd31b2c6ce48",
+      "publicBytes": 87,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<PRIVATE_STATE>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "copy-staging-final-unit-combination/vitest.json",
+      "member": "records/copy-staging-final-unit-combination/vitest.json",
+      "group": "postcommitCombination",
+      "rawSHA256": "f5c9255939ce3426766a6474d8eaef4d8a177a51eac9d5cb84adab606865b874",
+      "rawBytes": 439505,
+      "publicSHA256": "40190992a659fc4eab0d4788cf3917db4082a6695ac2c289c5f986eaeb9d20ac",
+      "publicBytes": 435369,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<SOURCE_ROOT>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "copy-staging-final-browser-combination/receipt.json",
+      "member": "records/copy-staging-final-browser-combination/receipt.json",
+      "group": "postcommitCombination",
+      "rawSHA256": "281e6d08631083f459295b2227f351ee9cb3623f332a48582c93499b3a604ac8",
+      "rawBytes": 1056,
+      "publicSHA256": "68f4edbb744f5bfee7bb3f366826f7428dc04f5c306c1bdbd37932b4a12cbaf1",
+      "publicBytes": 986,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<PRIVATE_STATE>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CHROMIUM_APP>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "copy-staging-final-browser-combination/run.log",
+      "member": "records/copy-staging-final-browser-combination/run.log",
+      "group": "postcommitCombination",
+      "rawSHA256": "525b833d81a658829a96c5c2b99c65f82b0ec7080994d14c054aed384a72f172",
+      "rawBytes": 143,
+      "publicSHA256": "ed6de09d7707d3ea7e5434391ee91ca91c7987a19aaf567b8469c9b1cdfcb4c6",
+      "publicBytes": 90,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<PRIVATE_STATE>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "copy-staging-final-browser-combination/vitest.json",
+      "member": "records/copy-staging-final-browser-combination/vitest.json",
+      "group": "postcommitCombination",
+      "rawSHA256": "fee7a356425d01fc3f20db099f47240208ed9a5f718a24d216b4b5a3ca959307",
+      "rawBytes": 25781,
+      "publicSHA256": "4ef83c7c21fb26135301c706af6796710f0086e481fb52d30cbb3fa0746a3744",
+      "publicBytes": 25605,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<SOURCE_ROOT>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "copy-staging-final-settings/receipt.json",
+      "member": "records/copy-staging-final-settings/receipt.json",
+      "group": "postcommitCombination",
+      "rawSHA256": "60fa924c9e184ca1213a3d58cbf8ee9b00fda63d2c63dd3c371cc66914d140ea",
+      "rawBytes": 862,
+      "publicSHA256": "738e5f8bd732d41e15f81452804850b40525be2d61dc720773b8b9ab6a64d244",
+      "publicBytes": 792,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<PRIVATE_STATE>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CHROMIUM_APP>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "copy-staging-final-settings/run.log",
+      "member": "records/copy-staging-final-settings/run.log",
+      "group": "postcommitCombination",
+      "rawSHA256": "809223d5f4ff71a0a5a91023825a29269fc1c63e182d6f685fff2f5bfdc96ebf",
+      "rawBytes": 132,
+      "publicSHA256": "3e7dcf3559e2ad50b8bec185449d93cb17934e8aad965930b139d7ff4b7abd76",
+      "publicBytes": 79,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<PRIVATE_STATE>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "copy-staging-final-settings/vitest.json",
+      "member": "records/copy-staging-final-settings/vitest.json",
+      "group": "postcommitCombination",
+      "rawSHA256": "ebe68d33eeaecd79de921a78c1b75478193b671637fe6c894dd6b9ce5dec4ea5",
+      "rawBytes": 4431,
+      "publicSHA256": "b3a72f81243ce3e22f664f3f3701127bf51b56538c98037a5c0d17d9d401c01e",
+      "publicBytes": 4387,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<SOURCE_ROOT>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "quick-start-copy-staging-review/report.json",
+      "member": "records/quick-start-copy-staging-review/report.json",
+      "group": "independentReview",
+      "rawSHA256": "e9f469d697da7132cf812a505fd0bda2552135521eed5aa152a915f73a401833",
+      "rawBytes": 101218,
+      "publicSHA256": "104ecc42892136eb8c3ee8832358ecd43c92ad3b3512412594d09cc24d63fa7e",
+      "publicBytes": 100938,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<PRIVATE_STATE>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CHROMIUM_APP>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "quick-start-copy-staging-review/report.md",
+      "member": "records/quick-start-copy-staging-review/report.md",
+      "group": "independentReview",
+      "rawSHA256": "e311e285431c4b8e374d04444ee39b0bc4e1a3a292024e9e5c60f7c8f6836320",
+      "rawBytes": 2958,
+      "publicSHA256": "e311e285431c4b8e374d04444ee39b0bc4e1a3a292024e9e5c60f7c8f6836320",
+      "publicBytes": 2958,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "quick-start-copy-staging-review/final-review.json",
+      "member": "records/quick-start-copy-staging-review/final-review.json",
+      "group": "independentReview",
+      "rawSHA256": "f6bd8248b8a0004eef45859e0b529c6f351c1fa38f33f89c9d9b14893cfafee8",
+      "rawBytes": 5169,
+      "publicSHA256": "644d5e02bda9360ae4fbb405b5e4b5ece9330ca4eabd0069be789e3e0bf37f0b",
+      "publicBytes": 5046,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<PRIVATE_STATE>"
+        },
+        {
+          "kind": "literal-path",
+          "replacement": "<CHROMIUM_APP>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "quick-start-copy-staging-review/final-review.md",
+      "member": "records/quick-start-copy-staging-review/final-review.md",
+      "group": "independentReview",
+      "rawSHA256": "fa6ff315ae6bbc65331ed81772b743ccf523f6d9aeb938e3f10dc2fcadcc4a26",
+      "rawBytes": 1667,
+      "publicSHA256": "fa6ff315ae6bbc65331ed81772b743ccf523f6d9aeb938e3f10dc2fcadcc4a26",
+      "publicBytes": 1667,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "quick-start-current-red-v2/evidence/wc-390-dark-cold-failure.png",
+      "member": "records/quick-start-current-red-v2/evidence/wc-390-dark-cold-failure.png",
+      "group": "twoAlreadyViewedPNGs",
+      "rawSHA256": "f10eba94c534c83ba9a6b6bbd197dc3188bd9b01856756462ad6f5de4883ad69",
+      "rawBytes": 100395,
+      "publicSHA256": "f10eba94c534c83ba9a6b6bbd197dc3188bd9b01856756462ad6f5de4883ad69",
+      "publicBytes": 100395,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "quick-start-copy-staging-original-green/evidence/wc-390-dark-cold-hydrated.png",
+      "member": "records/quick-start-copy-staging-original-green/evidence/wc-390-dark-cold-hydrated.png",
+      "group": "twoAlreadyViewedPNGs",
+      "rawSHA256": "f10eba94c534c83ba9a6b6bbd197dc3188bd9b01856756462ad6f5de4883ad69",
+      "rawBytes": 100395,
+      "publicSHA256": "f10eba94c534c83ba9a6b6bbd197dc3188bd9b01856756462ad6f5de4883ad69",
+      "publicBytes": 100395,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "quick-start-current-red-v2/evidence/wc-390-dark-cold-failure.json",
+      "member": "records/quick-start-current-red-v2/evidence/wc-390-dark-cold-failure.json",
+      "group": "twoAlreadyViewedPNGs",
+      "rawSHA256": "1942a87ebb69ade7f86bc3bcaef8f8759a58245509d0ef62be49b3b59b4d9168",
+      "rawBytes": 84907,
+      "publicSHA256": "b1e1401f9d06a8dde0937838e35ca32341cf3b2283b6c5a8f8aaac9e8d416c8a",
+      "publicBytes": 84467,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "literal-path",
+          "replacement": "<SOURCE_ROOT>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "quick-start-copy-staging-original-green/evidence/wc-390-dark-cold-hydrated.json",
+      "member": "records/quick-start-copy-staging-original-green/evidence/wc-390-dark-cold-hydrated.json",
+      "group": "twoAlreadyViewedPNGs",
+      "rawSHA256": "5d4b743a637214525d0282cb3ed489429980e4156ac3efa7847f8a13e5385ea7",
+      "rawBytes": 17427,
+      "publicSHA256": "5d4b743a637214525d0282cb3ed489429980e4156ac3efa7847f8a13e5385ea7",
+      "publicBytes": 17427,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "quick-start-current-red-v2/evidence/wc-390-dark-cold-first-frame.json",
+      "member": "records/quick-start-current-red-v2/evidence/wc-390-dark-cold-first-frame.json",
+      "group": "originalNativeObservations",
+      "rawSHA256": "fadd70ac3b837b1642b603cfa16c53bbfb033a4b4ea6de0c8c749025a727d56c",
+      "rawBytes": 17372,
+      "publicSHA256": "fadd70ac3b837b1642b603cfa16c53bbfb033a4b4ea6de0c8c749025a727d56c",
+      "publicBytes": 17372,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "quick-start-current-red-v2/evidence/wc-390-dark-cold-hydrated.json",
+      "member": "records/quick-start-current-red-v2/evidence/wc-390-dark-cold-hydrated.json",
+      "group": "originalNativeObservations",
+      "rawSHA256": "6eb2cdc85b4fa0878f9acc5104be351bdf9222e8cabd6773f7fd2616ed32b51f",
+      "rawBytes": 17428,
+      "publicSHA256": "6eb2cdc85b4fa0878f9acc5104be351bdf9222e8cabd6773f7fd2616ed32b51f",
+      "publicBytes": 17428,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "quick-start-current-red-v2/evidence/wc-390-dark-cold-progress.json",
+      "member": "records/quick-start-current-red-v2/evidence/wc-390-dark-cold-progress.json",
+      "group": "originalNativeObservations",
+      "rawSHA256": "7352c8d3b3a75e5a722aa7ab6edd293ce146c0726afd2959c39d6e7ad756d33b",
+      "rawBytes": 288,
+      "publicSHA256": "7352c8d3b3a75e5a722aa7ab6edd293ce146c0726afd2959c39d6e7ad756d33b",
+      "publicBytes": 288,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "quick-start-copy-staging-original-green/evidence/wc-390-dark-cold-first-frame.json",
+      "member": "records/quick-start-copy-staging-original-green/evidence/wc-390-dark-cold-first-frame.json",
+      "group": "originalNativeObservations",
+      "rawSHA256": "1378e10d558261561a2f02d1702f57420c245a589481de0e3b11e2e992e3debb",
+      "rawBytes": 17371,
+      "publicSHA256": "1378e10d558261561a2f02d1702f57420c245a589481de0e3b11e2e992e3debb",
+      "publicBytes": 17371,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "quick-start-copy-staging-original-green/evidence/wc-390-dark-cold-progress.json",
+      "member": "records/quick-start-copy-staging-original-green/evidence/wc-390-dark-cold-progress.json",
+      "group": "originalNativeObservations",
+      "rawSHA256": "8450cd4bf5b656a086c31f7c94954b3e0c31e95f4339844cf6c464fc2e550f37",
+      "rawBytes": 284,
+      "publicSHA256": "8450cd4bf5b656a086c31f7c94954b3e0c31e95f4339844cf6c464fc2e550f37",
+      "publicBytes": 284,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "quick-start-copy-staging-original-green/evidence/wc-390-dark-refresh-first-frame.json",
+      "member": "records/quick-start-copy-staging-original-green/evidence/wc-390-dark-refresh-first-frame.json",
+      "group": "originalNativeObservations",
+      "rawSHA256": "1378e10d558261561a2f02d1702f57420c245a589481de0e3b11e2e992e3debb",
+      "rawBytes": 17371,
+      "publicSHA256": "1378e10d558261561a2f02d1702f57420c245a589481de0e3b11e2e992e3debb",
+      "publicBytes": 17371,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "quick-start-copy-staging-original-green/evidence/wc-390-dark-refresh-frame-transitions.json",
+      "member": "records/quick-start-copy-staging-original-green/evidence/wc-390-dark-refresh-frame-transitions.json",
+      "group": "originalNativeObservations",
+      "rawSHA256": "5e89a32ae13893cc16e5362cc2814ac9d6cb7b6ed28f1bdfa8dbf67ebd247c89",
+      "rawBytes": 72180,
+      "publicSHA256": "5e89a32ae13893cc16e5362cc2814ac9d6cb7b6ed28f1bdfa8dbf67ebd247c89",
+      "publicBytes": 72180,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "quick-start-copy-staging-original-green/evidence/wc-390-dark-refresh-hydrated.json",
+      "member": "records/quick-start-copy-staging-original-green/evidence/wc-390-dark-refresh-hydrated.json",
+      "group": "originalNativeObservations",
+      "rawSHA256": "5d4b743a637214525d0282cb3ed489429980e4156ac3efa7847f8a13e5385ea7",
+      "rawBytes": 17427,
+      "publicSHA256": "5d4b743a637214525d0282cb3ed489429980e4156ac3efa7847f8a13e5385ea7",
+      "publicBytes": 17427,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "quick-start-copy-staging-original-green/evidence/wc-390-dark-refresh-progress.json",
+      "member": "records/quick-start-copy-staging-original-green/evidence/wc-390-dark-refresh-progress.json",
+      "group": "originalNativeObservations",
+      "rawSHA256": "7fefd617585966f7e4b1d33ecc0fa9b6a3f4115699b1a7f77db6cdc0f2b634b7",
+      "rawBytes": 284,
+      "publicSHA256": "7fefd617585966f7e4b1d33ecc0fa9b6a3f4115699b1a7f77db6cdc0f2b634b7",
+      "publicBytes": 284,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "copy-staging-original-copy-artifacts-receipt.json",
+      "member": "records/copy-staging-original-copy-artifacts-receipt.json",
+      "group": "privateCaptureInventoryOnly",
+      "rawSHA256": "2e55e63d3c56c36645e2fc414d978c6a201ea02e9ccf932e90449b607253bff0",
+      "rawBytes": 28041,
+      "publicSHA256": "7740a70256f75f1e9ae622f0520eaebd8bcd1f0e2632b85481c97785e541d020",
+      "publicBytes": 27972,
+      "transformed": true,
+      "transformRules": [
+        {
+          "kind": "host-temp-path",
+          "replacement": "<HOST_TEMP>"
+        }
+      ]
+    },
+    {
+      "rawRelative": "copy-staging-public/raw-source/baseline-cc3e-site-copy-command.css",
+      "member": "source/baseline-cc3e-site-copy-command.css",
+      "group": "exactGitSource",
+      "rawSHA256": "c2e9da1c31b32219544de4683476cfbce158fc623c85e31be3e1a6a339f82c03",
+      "rawBytes": 1243,
+      "publicSHA256": "c2e9da1c31b32219544de4683476cfbce158fc623c85e31be3e1a6a339f82c03",
+      "publicBytes": 1243,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "copy-staging-public/raw-source/candidate-0b68-site-copy-command.css",
+      "member": "source/candidate-0b68-site-copy-command.css",
+      "group": "exactGitSource",
+      "rawSHA256": "c5f912ebecc2078450b12161894e292bdf7edf5340e6ba3961a1304e9558dcdf",
+      "rawBytes": 1329,
+      "publicSHA256": "c5f912ebecc2078450b12161894e292bdf7edf5340e6ba3961a1304e9558dcdf",
+      "publicBytes": 1329,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "copy-staging-public/raw-source/copy-staging.patch",
+      "member": "source/copy-staging.patch",
+      "group": "exactGitSource",
+      "rawSHA256": "bb63ea5505a1355af0787068fdfc1cb53d92d91fe72fa97e2a4a600413f1634a",
+      "rawBytes": 561,
+      "publicSHA256": "bb63ea5505a1355af0787068fdfc1cb53d92d91fe72fa97e2a4a600413f1634a",
+      "publicBytes": 561,
+      "transformed": false,
+      "transformRules": []
+    },
+    {
+      "rawRelative": "copy-staging-public/raw-source/git-export-binding.json",
+      "member": "source/git-export-binding.json",
+      "group": "exactGitSource",
+      "rawSHA256": "aeb595204ea7275150a57578f9b6a80f6e79cfd6254d90b74ab95b76bfc4efeb",
+      "rawBytes": 1354,
+      "publicSHA256": "aeb595204ea7275150a57578f9b6a80f6e79cfd6254d90b74ab95b76bfc4efeb",
+      "publicBytes": 1354,
+      "transformed": false,
+      "transformRules": []
+    }
+  ],
+  "exclusions": [
+    "ModelTrace raw samples/context/session/authorization/handoff records",
+    "complete generated site ZIP/dist/dependencies/caches",
+    "unreviewed bulk screenshots and unrelated prior evidence"
+  ],
+  "codeBoundary": "Path-redacted diagnostic scripts and logs are public derivatives; they are not the original execution bytes or a standalone runnable recipe. Raw hashes preserve the original identity. Untransformed Git CSS exports are byte-identical source snapshots."
+}
