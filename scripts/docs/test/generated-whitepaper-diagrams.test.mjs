@@ -194,3 +194,19 @@ test('handwritten font subsets cover visible labels and retain content hashes', 
       assert.ok(!svg.includes(fonts.find((font) => font.family.endsWith('CJK')).woff2));
   }
 });
+
+// Proposed visual-label guard. Real article/Dialog renders still decide readability.
+for (const locale of ['en', 'zh-cn']) {
+  test(`Evolution visible labels retain the fixed canvas and larger type (${locale})`, async () => {
+    const svg = await readFile(new URL(`whitepaper-evolution-feedback.${locale}.svg`, diagrams), 'utf8');
+    assert.match(svg, /viewBox="0 0 960 928"/);
+    const sizes = [...svg.matchAll(/<text\b[^>]*font-size="([0-9.]+)"/g)].map((m) => Number(m[1]));
+    assert.ok(sizes.length > 0);
+    assert.ok(sizes.every((size) => size >= 36), 'visible labels at least 36 SVG units');
+    for (const label of locale === 'en'
+      ? ['Three concurrent lines of work', 'Practice provides evidence', 'Which layer needs revision?', 'Implementation drift', 'Host capability gap', 'Omission or overfitting', 'Relation challenged', 'Revise explicitly, then test again.']
+      : ['三条主线并行推进', '实践提供证据', '归因：哪一层需要修正？', '实现偏差', 'Host 能力缺口', '义务遗漏或过拟合', '基础关系出现反例', '明确修正，再次检验。']) {
+      assert.ok(svg.includes(label), label);
+    }
+  });
+}

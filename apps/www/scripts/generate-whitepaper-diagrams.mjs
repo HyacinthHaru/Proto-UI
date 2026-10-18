@@ -307,21 +307,16 @@ function evolution() {
       )
     )}</desc>`
   );
-  heading(
-    '08',
-    tr('实践怎样修正当前近似', 'How practice revises the current approximation'),
-    tr(
-      '三条主线并行推进，用证据判断应该修改哪一层',
-      'Three concurrent lines of work; evidence identifies the layer to revise'
-    )
-  );
+  // Keep details in the chapter and accessible description; prioritize labels at article width.
+  text(48, 74, tr('实践、证据与明确修正', 'Practice, evidence, explicit revision'), 40, 'start', 'strong');
+  text(48, 132, tr('三条主线并行推进', 'Three concurrent lines of work'), 36, 'start', 'muted');
   const xs = [112, 400, 688];
   const labels = [
-    tr('理论与内核|提供表达与运行基础', 'Theory and kernel|Define and execute'),
-    tr('原型库|探索 Component 身份', 'Prototype libraries|Explore identity'),
-    tr('翻译层|面对真实 Host', 'Translation layer|Meet real Hosts'),
+    tr('理论|与内核', 'Theory|and kernel'),
+    tr('原型库', 'Prototype|libraries'),
+    tr('翻译层', 'Translation|layer'),
   ];
-  xs.forEach((x, i) => box(x, 181, 224, 115, labels[i], ['blue', 'green', 'amber'][i], 21));
+  xs.forEach((x, i) => box(x, 181, 224, 115, labels[i], ['blue', 'green', 'amber'][i], 36));
   path('M336 225 H397');
   path('M400 254 H339');
   path('M624 225 H685');
@@ -334,11 +329,11 @@ function evolution() {
     800,
     100,
     tr(
-      '实现、符合性测试与真实使用|收集行为结果、失败与反例',
-      'Implementations, conformance tests, and real use|Collect outcomes, failures, and counterexamples'
+      '实践提供证据|行为结果、失败与反例',
+      'Practice provides evidence|Outcomes, failures, counterexamples'
     ),
     'panel',
-    24
+    36
   );
   path('M512 476 V521');
   box(
@@ -346,9 +341,9 @@ function evolution() {
     521,
     800,
     68,
-    tr('归因：证据指出哪一层的问题？', 'Classify: which layer does the evidence challenge?'),
+    tr('归因：哪一层需要修正？', 'Which layer needs revision?'),
     'blue',
-    25
+    36
   );
   const cards = [
     [112, 631, tr('实现偏差|修正实现', 'Implementation drift|Fix implementation')],
@@ -358,21 +353,15 @@ function evolution() {
       748,
       tr('义务遗漏或过拟合|修正 Prototype', 'Omission or overfitting|Revise the Prototype'),
     ],
-    [528, 748, tr('基础关系出现反例|重审理论', 'Counterexample to relations|Revisit the theory')],
+    [528, 748, tr('基础关系出现反例|重审理论', 'Relation challenged|Revisit the theory')],
   ];
   path('M512 589 V615');
   rect(100, 615, 824, 238, 'scope');
   // The four panels are alternative diagnoses, not sequential stages.
-  cards.forEach(([x, y, label]) => box(x, y, 384, 92, label, 'panel', 23));
+  cards.forEach(([x, y, label]) => box(x, y, 384, 92, label, 'panel', 36));
   path('M100 734 H72 V164 H800', false);
   xs.forEach((x) => path(`M${x + 112} 164 V178`));
-  foot(
-    886,
-    tr(
-      '明确修正并重新检验；实现结果不会自动成为新标准。',
-      'Make an explicit revision and test again; behavior does not silently become a rule.'
-    )
-  );
+  text(48, 886, tr('明确修正，再次检验。', 'Revise explicitly, then test again.'), 36, 'start', 'muted');
   return 928;
 }
 
