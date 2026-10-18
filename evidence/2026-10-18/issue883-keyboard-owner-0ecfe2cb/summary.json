@@ -1,0 +1,1953 @@
+{
+  "at": "2026-10-18T13:23:27.994330+00:00",
+  "head": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+  "tree": "3db37329aae1b2cc3466ab08852b2a9eea6b9d52",
+  "parent": "0b68e7ec96f5857a6e1b7b6463b192c695ee753f",
+  "main": "042f1e5740e1a809b9ca238593f5bb01a1f8a8e3",
+  "sourceFiles": {
+    "packages/adapters/base/src/events/web-event-router.ts": "921f1fe504efe7fed8a549a6a16d0eb3398b5381985260cbc72b0c36462b4d5e",
+    "packages/adapters/base/test/event-router-work.test.ts": "521fb46243202f84204a36c9259959d91c3ee7eb293df39053cfbd8b5555326d"
+  },
+  "tests": {
+    "focused-baseline": {
+      "files": 1,
+      "passed": 15,
+      "failed": 2,
+      "filteredOrPending": 0,
+      "receipt": {
+        "start": "2026-10-18T13:06:31.130765+00:00",
+        "argv": [
+          "corepack",
+          "pnpm@10.32.1",
+          "exec",
+          "vitest",
+          "run",
+          "packages/adapters/base/test/event-router-work.test.ts",
+          "--maxWorkers=1",
+          "--minWorkers=1",
+          "--reporter=json",
+          "--outputFile=<PRIVATE_STATE>/focused-baseline/vitest.json"
+        ],
+        "environmentOverrides": {},
+        "head": "0b68e7ec96f5857a6e1b7b6463b192c695ee753f",
+        "tree": "ef466bb2f3fe4f253f7fd8aeae1f7958b86a443e",
+        "diffBefore": ".../adapters/base/test/event-router-work.test.ts   | 43 ++++++++++++++++++++++\n 1 file changed, 43 insertions(+)",
+        "node": "v24.21.0",
+        "end": "2026-10-18T13:06:31.912718+00:00",
+        "exit": 1,
+        "diffAfter": ".../adapters/base/test/event-router-work.test.ts   | 43 ++++++++++++++++++++++\n 1 file changed, 43 insertions(+)"
+      }
+    },
+    "focused-green": {
+      "files": 1,
+      "passed": 17,
+      "failed": 0,
+      "filteredOrPending": 0,
+      "receipt": {
+        "start": "2026-10-18T13:09:02.808657+00:00",
+        "argv": [
+          "corepack",
+          "pnpm@10.32.1",
+          "exec",
+          "vitest",
+          "run",
+          "packages/adapters/base/test/event-router-work.test.ts",
+          "--maxWorkers=1",
+          "--minWorkers=1",
+          "--reporter=json",
+          "--outputFile=<PRIVATE_STATE>/focused-green/vitest.json"
+        ],
+        "environmentOverrides": {},
+        "head": "0b68e7ec96f5857a6e1b7b6463b192c695ee753f",
+        "tree": "ef466bb2f3fe4f253f7fd8aeae1f7958b86a443e",
+        "diffBefore": ".../adapters/base/src/events/web-event-router.ts   |  6 ++-\n .../adapters/base/test/event-router-work.test.ts   | 43 ++++++++++++++++++++++\n 2 files changed, 48 insertions(+), 1 deletion(-)",
+        "node": "v24.21.0",
+        "end": "2026-10-18T13:09:03.638826+00:00",
+        "exit": 0,
+        "diffAfter": ".../adapters/base/src/events/web-event-router.ts   |  6 ++-\n .../adapters/base/test/event-router-work.test.ts   | 43 ++++++++++++++++++++++\n 2 files changed, 48 insertions(+), 1 deletion(-)"
+      }
+    },
+    "head-combination": {
+      "files": 98,
+      "passed": 1303,
+      "failed": 0,
+      "filteredOrPending": 0,
+      "receipt": {
+        "start": "2026-10-18T13:12:20.839354+00:00",
+        "argv": [
+          "corepack",
+          "pnpm@10.32.1",
+          "exec",
+          "vitest",
+          "run",
+          "packages/adapters/gpui-peer/test/collapsible-projections.test.ts",
+          "packages/adapters/react/test/collapsible.test.ts",
+          "packages/adapters/vue/test/collapsible.test.ts",
+          "packages/adapters/vue2/test/collapsible.test.ts",
+          "packages/adapters/web-component/test/collapsible.test.ts",
+          "packages/modules/anatomy/test/catalog-boundary.test.ts",
+          "packages/modules/anatomy/test/domain-scope-query.test.ts",
+          "packages/modules/anatomy/test/impl-spec.test.ts",
+          "packages/modules/anatomy/test/scoped-query.test.ts",
+          "packages/modules/anatomy/test/terminal-domain-retirement.test.ts",
+          "packages/prototypes/base/test/form-toast-reentry.test.ts",
+          "packages/prototypes/base/test/notification-retirement-lifecycle.test.ts",
+          "packages/prototypes/base/test/popup-snap-validation-lifecycle.test.ts",
+          "packages/prototypes/base/test/search-retirement-probe.test.ts",
+          "packages/prototypes/base/test/selection-reset-lifecycle.test.ts",
+          "packages/prototypes/base/test/slider-root-lifecycle.test.ts",
+          "packages/prototypes/base/test/slider-values-publication.test.ts",
+          "packages/prototypes/base/test/toolbar-separator-lifecycle.test.ts",
+          "packages/runtime/test/contract/anatomy.catalog-lifecycle.contract.test.ts",
+          "packages/runtime/test/contract/anatomy.order.v0.contract.test.ts",
+          "packages/runtime/test/contract/context-lifecycle.v1.contract.test.ts",
+          "packages/runtime/test/contract/delay.v0.contract.test.ts",
+          "packages/runtime/test/contract/expose-lifecycle.v1.contract.test.ts",
+          "packages/runtime/test/contract/hit-participation.catalog-lifecycle.contract.test.ts",
+          "packages/runtime/test/contract/lifecycle-with-host.v0.contract.test.ts",
+          "packages/runtime/test/contract/lifecycle.checkpoints.v0.contract.test.ts",
+          "packages/runtime/test/contract/lifecycle.domain.cp0.v0.contract.test.ts",
+          "packages/runtime/test/contract/lifecycle.module-resources.v1.contract.test.ts",
+          "packages/runtime/test/contract/lifecycle.registration.v0.contract.test.ts",
+          "packages/runtime/test/contract/lifecycle.same-checkpoint-order.contract.test.ts",
+          "packages/runtime/test/contract/lifecycle.session.transitions.v1.contract.test.ts",
+          "packages/runtime/test/contract/lifecycle.session.update-epoch.v1.contract.test.ts",
+          "packages/runtime/test/contract/lifecycle.session.v1.contract.test.ts",
+          "packages/runtime/test/contract/lifecycle.update-order.strict.v0.contract.test.ts",
+          "packages/runtime/test/contract/lifecycle.view-intent.v1.contract.test.ts",
+          "packages/runtime/test/contract/rule.color-scheme-lifecycle.contract.test.ts",
+          "packages/runtime/test/contract/rule.lifecycle-catalog.contract.test.ts",
+          "packages/runtime/test/contract/rule.preferences-lifecycle.contract.test.ts",
+          "packages/runtime/test/contract/rule.style-support-lifecycle.contract.test.ts",
+          "packages/runtime/test/contract/state-lifecycle.v1.contract.test.ts",
+          "packages/spec/fixtures/test/lifecycle-callback-order.test.ts",
+          "packages/modules/anatomy/test/contract/anatomy-order.v0.contract.test.ts",
+          "packages/prototypes/base/test/navigation-overlays/search.test.ts",
+          "packages/runtime/test/contract/as-hook.v0.contract.test.ts",
+          "packages/prototypes/base/test/field-validation-interruptions.test.ts",
+          "packages/prototypes/base/test/field.test.ts",
+          "packages/prototypes/base/test/field-review-regressions.test.ts",
+          "packages/prototypes/base/test/field-public-boundaries.test.ts",
+          "packages/prototypes/base/test/calendar-caption-composition.test.ts",
+          "packages/prototypes/base/test/calendar.test.ts",
+          "apps/www/src/content/docs/zh-cn/field-focus-observation.test.ts",
+          "apps/www/src/content/docs/zh-cn/collapsible-focus-observation.test.ts",
+          "apps/www/src/content/docs/zh-cn/collapsible-focus-path-probe.test.ts",
+          "packages/adapters/web-component/test/field.test.ts",
+          "packages/adapters/react/test/field.test.ts",
+          "packages/adapters/vue/test/field.test.ts",
+          "packages/adapters/vue2/test/field.test.ts",
+          "packages/prototypes/base/test/field-current-value-admission-review.test.ts",
+          "packages/prototypes/base/test/field-nested-consumer.test.ts",
+          "packages/prototypes/base/test/toggle-group-orientation.test.ts",
+          "packages/prototypes/base/test/navigation-overlays/controls.test.ts",
+          "packages/prototypes/base/test/selection-activate.test.ts",
+          "packages/modules/overlay/test/host-callback-reentrancy.test.ts",
+          "packages/modules/overlay/test/host-neutral-target.test.ts",
+          "packages/modules/overlay/test/modal-lock.test.ts",
+          "packages/modules/overlay/test/resource-lifetime.test.ts",
+          "packages/modules/overlay/test/target-alignment-binding.test.ts",
+          "apps/www/src/components/PrototypePreviewer/collapsible-projections.test.ts",
+          "apps/www/src/components/PrototypePreviewer/preview-material-scene.test.ts",
+          "apps/www/src/components/site-header-layout.test.ts",
+          "apps/www/src/components/PrototypePreviewer/preview-material-rebind.test.ts",
+          "apps/www/src/components/PrototypePreviewer/preview-material-public-style.test.ts",
+          "packages/adapters/base/test/contract/pointer-root-ownership.v0.contract.test.ts",
+          "packages/adapters/base/test/native-focus-event-router.test.ts",
+          "packages/adapters/base/test/shadow-retarget-routing.test.ts",
+          "packages/adapters/base/test/pointer-contact.test.ts",
+          "packages/adapters/base/test/logical-parent-authority.test.ts",
+          "packages/adapters/base/test/event-router-work.test.ts",
+          "packages/adapters/base/test/keyboard-repeat-payload.test.ts",
+          "packages/adapters/web-component/test/router.spec.test.ts",
+          "packages/adapters/web-component/test/dialog-overlay.test.ts",
+          "packages/adapters/react/test/event-routing.test.ts",
+          "packages/adapters/react/test/event.test.ts",
+          "packages/adapters/vue/test/event-routing.test.ts",
+          "packages/adapters/vue/test/event.test.ts",
+          "packages/adapters/vue2/test/event.test.ts",
+          "packages/adapters/react/test/select.test.ts",
+          "packages/adapters/vue/test/select.test.ts",
+          "packages/adapters/vue2/test/select.test.ts",
+          "packages/adapters/react/test/select-keyboard.integration.test.ts",
+          "packages/adapters/react/test/select-presence-remount.integration.test.ts",
+          "packages/adapters/web-component/test/contract/event.router.no-dedupe.v0.contract.test.ts",
+          "packages/adapters/web-component/test/contract/event.router.dual-path.v0.contract.test.ts",
+          "packages/adapters/base/test/contract/event-target-requirements.v0.contract.test.ts",
+          "packages/adapters/web-component/test/contract/event.router.mapping.v0.contract.test.ts",
+          "packages/adapters/base/test/event-gate.test.ts",
+          "packages/adapters/base/test/teardown.test.ts",
+          "packages/adapters/base/test/contract/event-default-action.v0.contract.test.ts",
+          "--maxWorkers=2",
+          "--minWorkers=1",
+          "--reporter=json",
+          "--outputFile=<PRIVATE_STATE>/head-combination/vitest.json"
+        ],
+        "environmentOverrides": {},
+        "head": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "tree": "3db37329aae1b2cc3466ab08852b2a9eea6b9d52",
+        "diffBefore": "",
+        "node": "v24.21.0",
+        "end": "2026-10-18T13:12:38.585916+00:00",
+        "exit": 0,
+        "diffAfter": ""
+      }
+    },
+    "head-native-C": {
+      "files": 4,
+      "passed": 71,
+      "failed": 0,
+      "filteredOrPending": 0,
+      "receipt": {
+        "start": "2026-10-18T13:14:08.472214+00:00",
+        "argv": [
+          "corepack",
+          "pnpm@10.32.1",
+          "exec",
+          "vitest",
+          "run",
+          "apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-shadcn-tooltip.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-brutalist-button.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-field-family.browser.test.ts",
+          "--maxWorkers=1",
+          "--minWorkers=1",
+          "--reporter=json",
+          "--outputFile=<PRIVATE_STATE>/head-native-C/vitest.json"
+        ],
+        "environmentOverrides": {
+          "PROTO_UI_BROWSER_BASE_URL": "http://127.0.0.1:62171",
+          "CHROME_PATH": "<CHROMIUM_APP>/Contents/MacOS/Google Chrome",
+          "PROTO_UI_RUNTIME_EVIDENCE_DIR": "<PRIVATE_STATE>/head-native-C/evidence"
+        },
+        "head": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "tree": "3db37329aae1b2cc3466ab08852b2a9eea6b9d52",
+        "diffBefore": "",
+        "node": "v24.21.0",
+        "end": "2026-10-18T13:17:05.818544+00:00",
+        "exit": 0,
+        "diffAfter": ""
+      }
+    },
+    "head-native-settings": {
+      "files": 1,
+      "passed": 1,
+      "failed": 0,
+      "filteredOrPending": 10,
+      "receipt": {
+        "start": "2026-10-18T13:17:05.865132+00:00",
+        "argv": [
+          "corepack",
+          "pnpm@10.32.1",
+          "exec",
+          "vitest",
+          "run",
+          "apps/www/src/content/docs/zh-cn/home-demo-runtime.browser.test.ts",
+          "--testNamePattern=completes the settings task",
+          "--maxWorkers=1",
+          "--minWorkers=1",
+          "--reporter=json",
+          "--outputFile=<PRIVATE_STATE>/head-native-settings/vitest.json"
+        ],
+        "environmentOverrides": {
+          "PROTO_UI_BROWSER_BASE_URL": "http://127.0.0.1:62171",
+          "CHROME_PATH": "<CHROMIUM_APP>/Contents/MacOS/Google Chrome",
+          "PROTO_UI_RUNTIME_EVIDENCE_DIR": "<PRIVATE_STATE>/head-native-settings/evidence"
+        },
+        "head": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "tree": "3db37329aae1b2cc3466ab08852b2a9eea6b9d52",
+        "diffBefore": "",
+        "node": "v24.21.0",
+        "end": "2026-10-18T13:17:17.418069+00:00",
+        "exit": 0,
+        "diffAfter": ""
+      }
+    },
+    "official-preview-native": {
+      "files": 2,
+      "passed": 3,
+      "failed": 0,
+      "filteredOrPending": 10,
+      "receipt": {
+        "start": "2026-10-18T13:19:56.580390+00:00",
+        "argv": [
+          "corepack",
+          "pnpm@10.32.1",
+          "exec",
+          "vitest",
+          "run",
+          "apps/www/src/content/docs/zh-cn/home-demo-runtime.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-shadcn-tooltip.browser.test.ts",
+          "--testNamePattern=completes the settings task|Tooltip",
+          "--maxWorkers=1",
+          "--minWorkers=1",
+          "--reporter=json",
+          "--outputFile=<PRIVATE_STATE>/official-preview-native/vitest.json"
+        ],
+        "environmentOverrides": {
+          "PROTO_UI_BROWSER_BASE_URL": "http://127.0.0.1:55901",
+          "CHROME_PATH": "<CHROMIUM_APP>/Contents/MacOS/Google Chrome",
+          "PROTO_UI_RUNTIME_EVIDENCE_DIR": "<PRIVATE_STATE>/official-preview-native/evidence"
+        },
+        "head": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "tree": "3db37329aae1b2cc3466ab08852b2a9eea6b9d52",
+        "diffBefore": "",
+        "node": "v24.21.0",
+        "end": "2026-10-18T13:20:13.262402+00:00",
+        "exit": 0,
+        "diffAfter": ""
+      }
+    }
+  },
+  "nativePair": {
+    "startedAt": "2026-10-18T13:18:33.771Z",
+    "head": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+    "tree": "3db37329aae1b2cc3466ab08852b2a9eea6b9d52",
+    "dirty": "",
+    "esbuild": "0.25.12",
+    "node": "v24.21.0",
+    "bundles": [
+      {
+        "label": "baseline",
+        "bundleSHA256": "bb1ed6cda1f20207ee73c65c2ef7817765d9e57942c02dd7ae9dde4381eff071",
+        "inputs": [
+          {
+            "path": "packages/adapters/base/src/events/pointer-contact.ts",
+            "tracked": true,
+            "sha256": "8979916b5ca021cf4770168292681c99b0816e46b2cd47caa4bd361543bc0f09",
+            "gitBlob": "2d3e6fea704ce9339272a1d650ce10ecd2cc58e1",
+            "revision": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+            "baselineRouterOverride": false
+          },
+          {
+            "path": "packages/adapters/base/src/gestures/web-move-click-arbitration.ts",
+            "tracked": true,
+            "sha256": "e50190686ca91ad112649ac36d1f0c59504b610b2f7ee499a18a3a47b9907a7a",
+            "gitBlob": "7472eb7fba7556ac9ae830d9f246a0085e358b54",
+            "revision": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+            "baselineRouterOverride": false
+          },
+          {
+            "path": "packages/adapters/base/src/events/web-event-router.ts",
+            "tracked": true,
+            "sha256": "260131772d59989258d327bbd5f6c1a30199ccf042ec403667a388631188cad7",
+            "gitBlob": "4a6d124ac885208d6bac62c5eedd55b1202e251e",
+            "revision": "0b68e7ec96f5857a6e1b7b6463b192c695ee753f",
+            "baselineRouterOverride": true
+          },
+          {
+            "path": "packages/adapters/base/src/platform/instance-tree.ts",
+            "tracked": true,
+            "sha256": "6176f121214f9f4dd516e87942c12919458fdfa599bd7c4de5ee32c7de0c654b",
+            "gitBlob": "29736afa27b5a662fedd5b4c27e349a5fd360c26",
+            "revision": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+            "baselineRouterOverride": false
+          },
+          {
+            "path": "../../../task-state/proto-ui-883/keyboard-owner-p2-20261018T1302Z/native-plan/fixture.ts",
+            "tracked": false,
+            "sha256": "6bd91499299f303d96a88c0bfbb8bbb2e8aded556dda8a2804da98b7d998b29f",
+            "gitBlob": null,
+            "revision": null,
+            "baselineRouterOverride": false
+          }
+        ],
+        "metafileSHA256": "ed22a324fc93f60539b81cb1c74cad1064d26bd2319b864368a730acc498cba1",
+        "fixtureSHA256": "6bd91499299f303d96a88c0bfbb8bbb2e8aded556dda8a2804da98b7d998b29f",
+        "driverSHA256": "ecbb5d59fa73a8e2778066994a08e8421e7e44838bc0adf09c4e9af36549b9d1"
+      },
+      {
+        "label": "candidate",
+        "bundleSHA256": "1574a0c53ffe296cf7a77f1cef8f1322ea69b7f99b5dd624b4b4d06454360ab8",
+        "inputs": [
+          {
+            "path": "packages/adapters/base/src/events/pointer-contact.ts",
+            "tracked": true,
+            "sha256": "8979916b5ca021cf4770168292681c99b0816e46b2cd47caa4bd361543bc0f09",
+            "gitBlob": "2d3e6fea704ce9339272a1d650ce10ecd2cc58e1",
+            "revision": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+            "baselineRouterOverride": false
+          },
+          {
+            "path": "packages/adapters/base/src/gestures/web-move-click-arbitration.ts",
+            "tracked": true,
+            "sha256": "e50190686ca91ad112649ac36d1f0c59504b610b2f7ee499a18a3a47b9907a7a",
+            "gitBlob": "7472eb7fba7556ac9ae830d9f246a0085e358b54",
+            "revision": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+            "baselineRouterOverride": false
+          },
+          {
+            "path": "packages/adapters/base/src/events/web-event-router.ts",
+            "tracked": true,
+            "sha256": "921f1fe504efe7fed8a549a6a16d0eb3398b5381985260cbc72b0c36462b4d5e",
+            "gitBlob": "42f8639df570bedf94144e6e1c5997af18192e18",
+            "revision": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+            "baselineRouterOverride": false
+          },
+          {
+            "path": "packages/adapters/base/src/platform/instance-tree.ts",
+            "tracked": true,
+            "sha256": "6176f121214f9f4dd516e87942c12919458fdfa599bd7c4de5ee32c7de0c654b",
+            "gitBlob": "29736afa27b5a662fedd5b4c27e349a5fd360c26",
+            "revision": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+            "baselineRouterOverride": false
+          },
+          {
+            "path": "../../../task-state/proto-ui-883/keyboard-owner-p2-20261018T1302Z/native-plan/fixture.ts",
+            "tracked": false,
+            "sha256": "6bd91499299f303d96a88c0bfbb8bbb2e8aded556dda8a2804da98b7d998b29f",
+            "gitBlob": null,
+            "revision": null,
+            "baselineRouterOverride": false
+          }
+        ],
+        "metafileSHA256": "489dbd2646211702779ed2167ed3b394534a6f7402711ab36052d2ab1770ca8a",
+        "fixtureSHA256": "6bd91499299f303d96a88c0bfbb8bbb2e8aded556dda8a2804da98b7d998b29f",
+        "driverSHA256": "ecbb5d59fa73a8e2778066994a08e8421e7e44838bc0adf09c4e9af36549b9d1"
+      }
+    ],
+    "serverClosed": true,
+    "browserClosed": true,
+    "port": 55758,
+    "browser": "155.0.8059.80",
+    "results": [
+      {
+        "label": "baseline",
+        "passed": 0,
+        "cases": [
+          {
+            "key": "Enter",
+            "outcome": "assertion-failed",
+            "stage": "router-assert",
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    global: 1,\n+   root: 0\n-   root: 1\n  }\n"
+          },
+          {
+            "key": "Space",
+            "outcome": "assertion-failed",
+            "stage": "router-assert",
+            "error": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    global: 1,\n+   root: 0\n-   root: 1\n  }\n"
+          }
+        ]
+      },
+      {
+        "label": "candidate",
+        "passed": 2,
+        "cases": [
+          {
+            "key": "Enter",
+            "outcome": "passed",
+            "counts": {
+              "root": 1,
+              "global": 1
+            }
+          },
+          {
+            "key": "Space",
+            "outcome": "passed",
+            "counts": {
+              "root": 1,
+              "global": 1
+            }
+          }
+        ]
+      }
+    ],
+    "exit": 0,
+    "endedAt": "2026-10-18T13:18:36.129Z"
+  },
+  "officialArtifact": {
+    "at": "2026-10-18T13:19:08.472143+00:00",
+    "head": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+    "run": "39130514939",
+    "artifact": "12137477831",
+    "generation": "p921-r39130514939-a1",
+    "files": 3836,
+    "html": 669,
+    "expandedBytes": 104046910,
+    "memberNamesExact": true,
+    "allMemberBytesEqual": true,
+    "limits": "Everyregularfile/namedresource retained; not everypagevisual/AT/remotehosted acceptance"
+  },
+  "ciSnapshot": {
+    "at": "2026-10-18T13:20:48.313535+00:00",
+    "head": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+    "checks": {
+      "queued": 32,
+      "in_progress": 20,
+      "failure": 10,
+      "success": 38
+    },
+    "workflowRuns": 34,
+    "standardRun": 39130514855,
+    "standardStatus": "queued",
+    "standardConclusion": null,
+    "jobs": [
+      {
+        "id": 117684541972,
+        "name": "rust-macos",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 117684542086,
+        "name": "type-check",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 117684542093,
+        "name": "release-scan",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 117684542109,
+        "name": "rust",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 117684542151,
+        "name": "test-plan",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 117684542183,
+        "name": "public_package_plan",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 117684542190,
+        "name": "lockstep-check",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 117684542276,
+        "name": "rust-interop",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 117685276145,
+        "name": "test-general",
+        "status": "completed",
+        "conclusion": "failure"
+      },
+      {
+        "id": 117685276182,
+        "name": "test-browser (1/8, browser-1-of-8)",
+        "status": "in_progress",
+        "conclusion": null
+      },
+      {
+        "id": 117685276189,
+        "name": "test-browser (6/8, browser-6-of-8)",
+        "status": "in_progress",
+        "conclusion": null
+      },
+      {
+        "id": 117685276199,
+        "name": "test-browser (7/8, browser-7-of-8)",
+        "status": "in_progress",
+        "conclusion": null
+      },
+      {
+        "id": 117685276202,
+        "name": "test-browser (3/8, browser-3-of-8)",
+        "status": "in_progress",
+        "conclusion": null
+      },
+      {
+        "id": 117685276239,
+        "name": "test-browser (8/8, browser-8-of-8)",
+        "status": "queued",
+        "conclusion": null
+      },
+      {
+        "id": 117685276263,
+        "name": "test-browser (4/8, browser-4-of-8)",
+        "status": "queued",
+        "conclusion": null
+      },
+      {
+        "id": 117685276274,
+        "name": "test-browser (2/8, browser-2-of-8)",
+        "status": "queued",
+        "conclusion": null
+      },
+      {
+        "id": 117685276286,
+        "name": "test-browser (5/8, browser-5-of-8)",
+        "status": "queued",
+        "conclusion": null
+      },
+      {
+        "id": 117685644537,
+        "name": "cli-smoke",
+        "status": "queued",
+        "conclusion": null
+      },
+      {
+        "id": 117685644546,
+        "name": "public_package_build",
+        "status": "queued",
+        "conclusion": null
+      },
+      {
+        "id": 117685644571,
+        "name": "release-stage",
+        "status": "queued",
+        "conclusion": null
+      },
+      {
+        "id": 117685644714,
+        "name": "release-consumer-react",
+        "status": "queued",
+        "conclusion": null
+      }
+    ],
+    "reviews": 0,
+    "reviewThreads": 0,
+    "reviewDecision": "REVIEW_REQUIRED",
+    "mergeable": "MERGEABLE",
+    "mergeStateStatus": "BLOCKED",
+    "errors": []
+  },
+  "scope": "P2 false owner claim only; original15 unit assertions, Portal/freshKey/retirement, legacy ancestor press dispatch retained. All spec lifecycle remains draft. Historical old-head evidence not recounted as this run.",
+  "limits": [
+    "Native host fixture only uses real router and markers; not installed package/allAdapter/AT coverage.",
+    "One baseline Enter console404 had no URL recorded; no favicon/root-cause inference. No pageErrors or cleanupErrors.",
+    "98files1303 contains original17; local native71 and settings1 overlap official3; counts are separate, not additive unique totals.",
+    "Official artifact admission/publication was local trusted publisher against real GitHub inputs. Browser rerun uses a separate temporary localhost static server of its exact admitted bytes, not remote service deployment proof.",
+    "Source-attributed bundles measured only targeted native fixture4 tracked inputs plus1 private fixture, not whole website dependency closure.",
+    "Canonical CI has current failures and unfinished jobs; technical focused success is not maintainerapproval/merge/whole-project completion."
+  ],
+  "visualContactReview": {
+    "schemaVersion": 1,
+    "reviewedAt": "2026-10-18T13:24:16.226249+00:00",
+    "mode": "human-assisted",
+    "modeSource": "current-user",
+    "assessment": "unassessed",
+    "disposition": "partial",
+    "reviewDecision": "ABSTAIN",
+    "scope": "Ancillary visualcontact review of currentC combination captures;6originalcontact sheets actually opened, all48mappedtiles inspected,4selectedoriginalPNGs additionally opened. No newtest/browser/capture/imageedit.",
+    "head": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+    "tree": "3db37329aae1b2cc3466ab08852b2a9eea6b9d52",
+    "sourceDeltaVs0b68": [
+      "packages/adapters/base/src/events/web-event-router.ts",
+      "packages/adapters/base/test/event-router-work.test.ts"
+    ],
+    "indexSHA256": "612466e4de3b3d269d6418a7e6a82b99fc1c246382b3b40c3ce5db542ccce719",
+    "run": {
+      "receiptSHA256": "9d7a9de00253dfa70abf9500b6cd5faea9c0794e85c214dbf4aa0d671f288a85",
+      "resultSHA256": "c4bcc4df844a66546474be4f8c3a2d737220dcfc2fc948cc0c24ed6a747b25df",
+      "start": "2026-10-18T13:14:08.472214+00:00",
+      "end": "2026-10-18T13:17:05.818544+00:00",
+      "node": "v24.21.0",
+      "physicalHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+      "cleanBeforeAfter": true,
+      "externalStaticBaseURL": "http://127.0.0.1:62171",
+      "files": 4,
+      "passed": 71,
+      "failed": 0,
+      "boundary": "Run counts are read from original receipts/results, not inferred from screenshots. Thisreviewdoesnotreverifythe servedbundle/buildclosure oreveryassertion."
+    },
+    "coverage": {
+      "contactSheetsActuallyViewed": 6,
+      "mappedOriginalPNGFiles": 48,
+      "mappedTilesViewed": 48,
+      "originalPNGsIndividuallyOpened": 4,
+      "originalIndices": [2, 26, 34, 41],
+      "families": {
+        "BrutalistButton": 8,
+        "Field": 40
+      },
+      "FieldFamilies": ["base", "bootstrap-2-3-2", "brutalist", "liquid-glass", "shadcn"],
+      "runtimes": ["react", "vue", "vue2", "wc"],
+      "noCollapsibleOrTooltipPNGInThisContactIndex": true,
+      "all48SidecarsBindExactHeadAndClean": true
+    },
+    "captureMethod": {
+      "Field": "Originaltestcapture uses previewer.screenshot with the existing astro-dev-toolbar visibility style; these are locator-region captures, not full-page screenshots.",
+      "BrutalistButton": "Originaltestcaptures previewer.locator(.host).screenshot.",
+      "contactSheets": "Pre-existingrootcontact sheets thumbnail the originalcaptures; surrounding gray is sheetbackground, not productblankness. No sheet or PNG was edited/reencoded here."
+    },
+    "sheets": [
+      {
+        "path": "sheet-1.jpg",
+        "sha256": "fa10880427c366c39e0f0975c1ae71f0e18ab18ce1f9f1d54432cfe0cde6fc7b",
+        "bytes": 258988,
+        "actuallyViewed": true,
+        "tool": "tools.view_image(detail=original)",
+        "contactSheetDimensions": [1920, 1200],
+        "indices": [1, 2, 3, 4, 5, 6, 7, 8],
+        "subject": "Brutalist Button,4runtimes ×320px/100%and200%",
+        "observations": [
+          "All8tiles contain the expected button demo; no all-blank/errorpage tile.",
+          "At100%, button groups are visible in rows, with runtime-tab text clipped at the right capture edge.",
+          "At200%, the column becomes extremely narrow with multi-line word/letter wrapping. A site Header strip crosses the column; the Mint area is not visible and the upper Lavender region is obscured. Originalindex2 confirms the occlusion."
+        ],
+        "limits": "A frozen capture cannot establish whether a focused target was obscured during input, hit testing, fullpageoverflow or exact visible geometry."
+      },
+      {
+        "path": "sheet-2.jpg",
+        "sha256": "523e35807c08e8175bdb16b03fbc4c773aa871b61bdd9dcfaf387ca0e2dfe680",
+        "bytes": 197879,
+        "actuallyViewed": true,
+        "tool": "tools.view_image(detail=original)",
+        "contactSheetDimensions": [1920, 1200],
+        "indices": [9, 10, 11, 12, 13, 14, 15, 16],
+        "subject": "Base Field,4runtimes ×light/dark-narrow-200",
+        "observations": [
+          "All8tiles contain Field sections rather than a blank/errorpage.",
+          "Light tiles show account/availability/owner-invalid/read-only/disabled/long-label sections. A navigation/header strip crosses the early portion of the captured preview.",
+          "Narrowdark tiles are heavily scaled down; Header is visible at the top and the text/control areas are difficult to assess at thumbnail scale."
+        ],
+        "limits": "No exact readability, labelassociation, focus, contrast or right-edgegeometry is certified by the contact sheet."
+      },
+      {
+        "path": "sheet-3.jpg",
+        "sha256": "091ae38f35302f90ced650a21431bdba7222a7b732bdcdac77837fc327adb36d",
+        "bytes": 217138,
+        "actuallyViewed": true,
+        "tool": "tools.view_image(detail=original)",
+        "contactSheetDimensions": [1920, 1200],
+        "indices": [17, 18, 19, 20, 21, 22, 23, 24],
+        "subject": "Bootstrap2.3.2 Field,4runtimes ×light/dark-narrow-200",
+        "observations": [
+          "All8tiles contain Field sections, inputs and buttons; none is an obvious startup/errorpage.",
+          "The narrow captures form a very tall white content column beneath dark sitechrome, with heavy text wrapping. This is observed appearance, not a new theme-correctness verdict.",
+          "The light tiles show a header/navigation strip crossing an early Field area; controls and text outside the small tile are not fully assessable."
+        ],
+        "limits": "No palette-equivalence or completecontrolvisibility verdict; thumbnails do not prove dimensions or offscreencontent."
+      },
+      {
+        "path": "sheet-4.jpg",
+        "sha256": "c932f02a4c086b337de412bbc6e4caecb3e9575b2a4c8ce0efdd8741de29322e",
+        "bytes": 244260,
+        "actuallyViewed": true,
+        "tool": "tools.view_image(detail=original)",
+        "contactSheetDimensions": [1920, 1200],
+        "indices": [25, 26, 27, 28, 29, 30, 31, 32],
+        "subject": "Brutalist Field,4runtimes ×light/dark-narrow-200",
+        "observations": [
+          "All8tiles contain the blue/light or dark Field demo with outlined controls.",
+          "The light Header band visibly covers the region between the first Field help and availability editor; originalindex26 confirms the band and partial editor edge.",
+          "Narrowdark tiles show substantial right-edge text/control truncation at capture boundaries."
+        ],
+        "limits": "Visiblecaptureocclusion is not evidence of the originalnativeclick target or a newrouterregression; no fullpagehorizontaloverflow is inferred."
+      },
+      {
+        "path": "sheet-5.jpg",
+        "sha256": "a098650b39192962bac3fb4b94d4662d9bfb8588cb664c65305d245c49d3b762",
+        "bytes": 262210,
+        "actuallyViewed": true,
+        "tool": "tools.view_image(detail=original)",
+        "contactSheetDimensions": [1920, 1200],
+        "indices": [33, 34, 35, 36, 37, 38, 39, 40],
+        "subject": "LiquidGlass Field,4runtimes ×light/dark-narrow-200",
+        "observations": [
+          "All8tiles contain the Field demo over the patterned live backdrop; no blank/errorpage.",
+          "Backdrop words and diagonal bands compete visibly with foreground labels/help/status. Originalindex34 confirms overlapping text layers.",
+          "A Header band crosses the light capture and obscures the availability area. The narrowdark captures remain a very thin, dense column."
+        ],
+        "limits": "No opticalquality/materialcorrectness/contrast conclusion; no newcausal attribution to the keyboard-owner condition."
+      },
+      {
+        "path": "sheet-6.jpg",
+        "sha256": "cbd79400003e1acbd1e04cbedb7bed689e00d155410e2925ad333ca06a8cacac",
+        "bytes": 227797,
+        "actuallyViewed": true,
+        "tool": "tools.view_image(detail=original)",
+        "contactSheetDimensions": [1920, 1200],
+        "indices": [41, 42, 43, 44, 45, 46, 47, 48],
+        "subject": "Shadcn Field,4runtimes ×light/dark-narrow-200",
+        "observations": [
+          "All8tiles contain the expected Field sections and visible owner-invalid error content.",
+          "Narrowdark captures visibly cut long labels, editor values and action text at the right image edge; originalindex41 confirms extensive clipping.",
+          "Originalindex41 also shows the top Header covering part of the account label. Light tiles have the corresponding navigation band across the early part of the preview."
+        ],
+        "limits": "Imageboundaries may reflect locatorcapture/viewport limits. No pageoverflow amount, keyboardfocusocclusion or AT result is inferred."
+      }
+    ],
+    "images": [
+      {
+        "index": 1,
+        "path": "head-native-C/evidence/brutalist-button-reflow/react-320-font-100.png",
+        "width": 288,
+        "height": 446,
+        "sheet": "sheet-1.jpg",
+        "sha256": "22c8caeaa04988f0f51ed10bf07a44e36e490de71a0750cb37840a0f32b94fbe",
+        "bytes": 17844,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/brutalist-button-reflow/react-320-font-100.json",
+        "sidecarSHA256": "33931ccb75e2d6d41eb72c260f4e67e4163ab64eb289d244b8e44e490ec0b485",
+        "family": "brutalist-button",
+        "runtime": "react",
+        "viewport": {
+          "width": 320,
+          "height": 1000
+        },
+        "state": null,
+        "fontScale": 1,
+        "capturedAt": "2026-10-18T13:15:29.028Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 2,
+        "path": "head-native-C/evidence/brutalist-button-reflow/react-320-font-200.png",
+        "width": 256,
+        "height": 1686,
+        "sheet": "sheet-1.jpg",
+        "sha256": "048483a090cc677c53957dd27765e91f93ad1b8cb34dd28e86586e83b57410ca",
+        "bytes": 38322,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/brutalist-button-reflow/react-320-font-200.json",
+        "sidecarSHA256": "6ad126fd3f3063156b824f23aff5ec1e541a73e5c36c51070862989bfedd4957",
+        "family": "brutalist-button",
+        "runtime": "react",
+        "viewport": {
+          "width": 320,
+          "height": 1000
+        },
+        "state": null,
+        "fontScale": 2,
+        "capturedAt": "2026-10-18T13:15:29.168Z",
+        "viewMethod": "contact sheet plus original view_image",
+        "fullOriginalOpened": true
+      },
+      {
+        "index": 3,
+        "path": "head-native-C/evidence/brutalist-button-reflow/vue-320-font-100.png",
+        "width": 288,
+        "height": 446,
+        "sheet": "sheet-1.jpg",
+        "sha256": "45cb3a15cef24988ce26f969d7786987bb1f05111c68075582aaf6a83abec3b8",
+        "bytes": 17818,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/brutalist-button-reflow/vue-320-font-100.json",
+        "sidecarSHA256": "600cf6b77f38b427dc7fd38ba3256e8d21a6b964ad89792c52dcf267631ed518",
+        "family": "brutalist-button",
+        "runtime": "vue",
+        "viewport": {
+          "width": 320,
+          "height": 1000
+        },
+        "state": null,
+        "fontScale": 1,
+        "capturedAt": "2026-10-18T13:15:30.830Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 4,
+        "path": "head-native-C/evidence/brutalist-button-reflow/vue-320-font-200.png",
+        "width": 256,
+        "height": 1686,
+        "sheet": "sheet-1.jpg",
+        "sha256": "048483a090cc677c53957dd27765e91f93ad1b8cb34dd28e86586e83b57410ca",
+        "bytes": 38322,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/brutalist-button-reflow/vue-320-font-200.json",
+        "sidecarSHA256": "d3a2ce4863cc7280a6a5cd9b7a0e41b324316e5d29fdabf2906ac4c4965e4a19",
+        "family": "brutalist-button",
+        "runtime": "vue",
+        "viewport": {
+          "width": 320,
+          "height": 1000
+        },
+        "state": null,
+        "fontScale": 2,
+        "capturedAt": "2026-10-18T13:15:30.960Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 5,
+        "path": "head-native-C/evidence/brutalist-button-reflow/vue2-320-font-100.png",
+        "width": 288,
+        "height": 446,
+        "sheet": "sheet-1.jpg",
+        "sha256": "ac1916e71481475c28a2f030e05422954fcd960e31c893401a624fc84f248bf9",
+        "bytes": 17598,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/brutalist-button-reflow/vue2-320-font-100.json",
+        "sidecarSHA256": "b31dd56184066098a50148947500969f9b8915f276c07fc8c8e4e1fdf480e9f5",
+        "family": "brutalist-button",
+        "runtime": "vue2",
+        "viewport": {
+          "width": 320,
+          "height": 1000
+        },
+        "state": null,
+        "fontScale": 1,
+        "capturedAt": "2026-10-18T13:15:32.576Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 6,
+        "path": "head-native-C/evidence/brutalist-button-reflow/vue2-320-font-200.png",
+        "width": 256,
+        "height": 1686,
+        "sheet": "sheet-1.jpg",
+        "sha256": "048483a090cc677c53957dd27765e91f93ad1b8cb34dd28e86586e83b57410ca",
+        "bytes": 38322,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/brutalist-button-reflow/vue2-320-font-200.json",
+        "sidecarSHA256": "7a464d6243751bb31efe6d362d0d08f866838441c600497aea37cd1f47b8df01",
+        "family": "brutalist-button",
+        "runtime": "vue2",
+        "viewport": {
+          "width": 320,
+          "height": 1000
+        },
+        "state": null,
+        "fontScale": 2,
+        "capturedAt": "2026-10-18T13:15:32.712Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 7,
+        "path": "head-native-C/evidence/brutalist-button-reflow/wc-320-font-100.png",
+        "width": 288,
+        "height": 446,
+        "sheet": "sheet-1.jpg",
+        "sha256": "9c0515726e0111deaf7e793a95ef32b5c48d9c487d5a05b0c3070d3b40aa02d2",
+        "bytes": 17706,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/brutalist-button-reflow/wc-320-font-100.json",
+        "sidecarSHA256": "0879a1b030feb7f803fbbca871ae02361131bbe8beb7ee659ad188eb11b5260c",
+        "family": "brutalist-button",
+        "runtime": "wc",
+        "viewport": {
+          "width": 320,
+          "height": 1000
+        },
+        "state": null,
+        "fontScale": 1,
+        "capturedAt": "2026-10-18T13:15:27.204Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 8,
+        "path": "head-native-C/evidence/brutalist-button-reflow/wc-320-font-200.png",
+        "width": 256,
+        "height": 1686,
+        "sheet": "sheet-1.jpg",
+        "sha256": "866d9949f22828b86e39e1b87552fe8c983649ce960eec385914ee77a0d1ac62",
+        "bytes": 38414,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/brutalist-button-reflow/wc-320-font-200.json",
+        "sidecarSHA256": "ea5407b4434c61345e50320f133f7841bcb438314f685eef3767b30b5c78f159",
+        "family": "brutalist-button",
+        "runtime": "wc",
+        "viewport": {
+          "width": 320,
+          "height": 1000
+        },
+        "state": null,
+        "fontScale": 2,
+        "capturedAt": "2026-10-18T13:15:27.334Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 9,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-base-react-dark-narrow-200.png",
+        "width": 326,
+        "height": 2944,
+        "sheet": "sheet-2.jpg",
+        "sha256": "ed9b80e5c3a44dd444b66fc391d11446c0c4c966754c374b33bb6060fb4329d7",
+        "bytes": 148676,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-base-react-dark-narrow-200.json",
+        "sidecarSHA256": "2700f94e5df71df3e700483f54ec955ecd21dcdc981f381152fef938fbe67322",
+        "family": "base",
+        "runtime": "react",
+        "viewport": {
+          "width": 390,
+          "height": 1000
+        },
+        "state": "dark-narrow-200-percent",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:15:40.963Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 10,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-base-react-light.png",
+        "width": 672,
+        "height": 1507,
+        "sheet": "sheet-2.jpg",
+        "sha256": "0d71fb341c88700e96a12248f0fcc21d99652da54563e686b43d66dce1ab48ab",
+        "bytes": 136739,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-base-react-light.json",
+        "sidecarSHA256": "0aa6f28ac950acf6dc695a5f4a2f4b86ca54f775ebe285ce5d21e2a6b8769a00",
+        "family": "base",
+        "runtime": "react",
+        "viewport": {
+          "width": 1100,
+          "height": 1000
+        },
+        "state": "light-valid-and-owner-invalid",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:15:40.499Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 11,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-base-vue-dark-narrow-200.png",
+        "width": 326,
+        "height": 2944,
+        "sheet": "sheet-2.jpg",
+        "sha256": "ed9b80e5c3a44dd444b66fc391d11446c0c4c966754c374b33bb6060fb4329d7",
+        "bytes": 148676,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-base-vue-dark-narrow-200.json",
+        "sidecarSHA256": "1ac5c9510902681614ccab5684422733f807fc095e17ede65a185002781655e6",
+        "family": "base",
+        "runtime": "vue",
+        "viewport": {
+          "width": 390,
+          "height": 1000
+        },
+        "state": "dark-narrow-200-percent",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:15:44.716Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 12,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-base-vue-light.png",
+        "width": 672,
+        "height": 1507,
+        "sheet": "sheet-2.jpg",
+        "sha256": "4323614a81db2334e96b4d5a78599fd753649cd4b75ae598ae8dc7ed2f891acd",
+        "bytes": 136724,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-base-vue-light.json",
+        "sidecarSHA256": "f35f0ad3171541e670cf38647ca819d867616717da1865f6d173635f9c25376c",
+        "family": "base",
+        "runtime": "vue",
+        "viewport": {
+          "width": 1100,
+          "height": 1000
+        },
+        "state": "light-valid-and-owner-invalid",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:15:44.269Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 13,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-base-vue2-dark-narrow-200.png",
+        "width": 326,
+        "height": 2944,
+        "sheet": "sheet-2.jpg",
+        "sha256": "ed9b80e5c3a44dd444b66fc391d11446c0c4c966754c374b33bb6060fb4329d7",
+        "bytes": 148676,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-base-vue2-dark-narrow-200.json",
+        "sidecarSHA256": "5e60fa965d2040c8941104608bde31147ec43ec90db94eb2656a904ac07faeb5",
+        "family": "base",
+        "runtime": "vue2",
+        "viewport": {
+          "width": 390,
+          "height": 1000
+        },
+        "state": "dark-narrow-200-percent",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:15:48.442Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 14,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-base-vue2-light.png",
+        "width": 672,
+        "height": 1507,
+        "sheet": "sheet-2.jpg",
+        "sha256": "a75686b9782eefa49a510d684e69a4260495fcc77870882dcedfe631d791544f",
+        "bytes": 136748,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-base-vue2-light.json",
+        "sidecarSHA256": "3e9202fa79b49343f21d76da8258277fcb7f142a62e9a9742e4cfd7e0a1c7b0d",
+        "family": "base",
+        "runtime": "vue2",
+        "viewport": {
+          "width": 1100,
+          "height": 1000
+        },
+        "state": "light-valid-and-owner-invalid",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:15:47.975Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 15,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-base-wc-dark-narrow-200.png",
+        "width": 326,
+        "height": 2944,
+        "sheet": "sheet-2.jpg",
+        "sha256": "ed9b80e5c3a44dd444b66fc391d11446c0c4c966754c374b33bb6060fb4329d7",
+        "bytes": 148676,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-base-wc-dark-narrow-200.json",
+        "sidecarSHA256": "8be59795ab4f274ad38b0f23f1dedb6f416177200d6fe79f69b033030acd8c22",
+        "family": "base",
+        "runtime": "wc",
+        "viewport": {
+          "width": 390,
+          "height": 1000
+        },
+        "state": "dark-narrow-200-percent",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:15:37.226Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 16,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-base-wc-light.png",
+        "width": 672,
+        "height": 1507,
+        "sheet": "sheet-2.jpg",
+        "sha256": "a9741d33db33949ee17098e0b1e9b610324c87e97c735ff3521bad934d2c25db",
+        "bytes": 136689,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-base-wc-light.json",
+        "sidecarSHA256": "78de55a84f376aec779d0b24e24d2f0eb84b3b90c306c449bf302e463410fa8f",
+        "family": "base",
+        "runtime": "wc",
+        "viewport": {
+          "width": 1100,
+          "height": 1000
+        },
+        "state": "light-valid-and-owner-invalid",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:15:36.758Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 17,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-bootstrap-2-3-2-react-dark-narrow-200.png",
+        "width": 326,
+        "height": 4052,
+        "sheet": "sheet-3.jpg",
+        "sha256": "345aef9e0ff1d7f8c1c59f9a215abd7a5c9a19ebda23edca09c9eff9bb916d7f",
+        "bytes": 244585,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-bootstrap-2-3-2-react-dark-narrow-200.json",
+        "sidecarSHA256": "ecc8c660adcad25a1a246198d852bdd8957e02aa27a038170a39c1112df0ebdd",
+        "family": "bootstrap-2-3-2",
+        "runtime": "react",
+        "viewport": {
+          "width": 390,
+          "height": 1000
+        },
+        "state": "dark-narrow-200-percent",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:16:27.091Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 18,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-bootstrap-2-3-2-react-light.png",
+        "width": 672,
+        "height": 1259,
+        "sheet": "sheet-3.jpg",
+        "sha256": "93bcf1ff114d416cf6dc5806fe479033bbe59f077c048530c3783323b1eee2ba",
+        "bytes": 116591,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-bootstrap-2-3-2-react-light.json",
+        "sidecarSHA256": "ba44ad4a1214c1ce42b234b05f27b003f1750e1a1c11d3ed90ba0646c6013fef",
+        "family": "bootstrap-2-3-2",
+        "runtime": "react",
+        "viewport": {
+          "width": 1100,
+          "height": 1000
+        },
+        "state": "light-valid-and-owner-invalid",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:16:26.636Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 19,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-bootstrap-2-3-2-vue-dark-narrow-200.png",
+        "width": 326,
+        "height": 4052,
+        "sheet": "sheet-3.jpg",
+        "sha256": "345aef9e0ff1d7f8c1c59f9a215abd7a5c9a19ebda23edca09c9eff9bb916d7f",
+        "bytes": 244585,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-bootstrap-2-3-2-vue-dark-narrow-200.json",
+        "sidecarSHA256": "5cc2ce21411f4b694030ba1b7e7944af10e3ef7f751477a2db7f348057b4c0a9",
+        "family": "bootstrap-2-3-2",
+        "runtime": "vue",
+        "viewport": {
+          "width": 390,
+          "height": 1000
+        },
+        "state": "dark-narrow-200-percent",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:16:30.961Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 20,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-bootstrap-2-3-2-vue-light.png",
+        "width": 672,
+        "height": 1259,
+        "sheet": "sheet-3.jpg",
+        "sha256": "086539cb639ddc40bbd9caa816bd25b1818a4741f6b2b78ce0c49f8434829bf0",
+        "bytes": 116603,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-bootstrap-2-3-2-vue-light.json",
+        "sidecarSHA256": "0969c8a23737b04a06a271e875d56fa0ef68426c8b3172d6f5729cf87e333467",
+        "family": "bootstrap-2-3-2",
+        "runtime": "vue",
+        "viewport": {
+          "width": 1100,
+          "height": 1000
+        },
+        "state": "light-valid-and-owner-invalid",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:16:30.522Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 21,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-bootstrap-2-3-2-vue2-dark-narrow-200.png",
+        "width": 326,
+        "height": 4052,
+        "sheet": "sheet-3.jpg",
+        "sha256": "345aef9e0ff1d7f8c1c59f9a215abd7a5c9a19ebda23edca09c9eff9bb916d7f",
+        "bytes": 244585,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-bootstrap-2-3-2-vue2-dark-narrow-200.json",
+        "sidecarSHA256": "96669c8bf5e160a3b961f509cf0bf3ac6b26599e71adfe86d495c04735bff868",
+        "family": "bootstrap-2-3-2",
+        "runtime": "vue2",
+        "viewport": {
+          "width": 390,
+          "height": 1000
+        },
+        "state": "dark-narrow-200-percent",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:16:34.779Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 22,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-bootstrap-2-3-2-vue2-light.png",
+        "width": 672,
+        "height": 1259,
+        "sheet": "sheet-3.jpg",
+        "sha256": "750eac99536a9d237c77f36f333d2044c16a07ef6ae2ac7941efcb107edaab11",
+        "bytes": 116589,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-bootstrap-2-3-2-vue2-light.json",
+        "sidecarSHA256": "f0dbdabac957433ae917f0c306ebe128598967b3665f7174261cfe9b61d5479b",
+        "family": "bootstrap-2-3-2",
+        "runtime": "vue2",
+        "viewport": {
+          "width": 1100,
+          "height": 1000
+        },
+        "state": "light-valid-and-owner-invalid",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:16:34.320Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 23,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-bootstrap-2-3-2-wc-dark-narrow-200.png",
+        "width": 326,
+        "height": 4052,
+        "sheet": "sheet-3.jpg",
+        "sha256": "345aef9e0ff1d7f8c1c59f9a215abd7a5c9a19ebda23edca09c9eff9bb916d7f",
+        "bytes": 244585,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-bootstrap-2-3-2-wc-dark-narrow-200.json",
+        "sidecarSHA256": "b76fef8ff58d083dc5f50d2e47e3caa7c9a9bbc5f036f7bab2defcb652de4d49",
+        "family": "bootstrap-2-3-2",
+        "runtime": "wc",
+        "viewport": {
+          "width": 390,
+          "height": 1000
+        },
+        "state": "dark-narrow-200-percent",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:16:23.042Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 24,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-bootstrap-2-3-2-wc-light.png",
+        "width": 672,
+        "height": 1259,
+        "sheet": "sheet-3.jpg",
+        "sha256": "bf291498cd93cef659765c0e1a3c27d22f7b50339c2109d291606b29e5c8885d",
+        "bytes": 116581,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-bootstrap-2-3-2-wc-light.json",
+        "sidecarSHA256": "ef4b5c2dd24ffd5b7c704287e9a6235b5f506d8161dd2f8f71badd2985fd6fea",
+        "family": "bootstrap-2-3-2",
+        "runtime": "wc",
+        "viewport": {
+          "width": 1100,
+          "height": 1000
+        },
+        "state": "light-valid-and-owner-invalid",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:16:22.519Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 25,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-brutalist-react-dark-narrow-200.png",
+        "width": 326,
+        "height": 3842,
+        "sheet": "sheet-4.jpg",
+        "sha256": "c02214392a73d23352f520f883edda55abbb6ffa69d16441cc0d6aade3e078f1",
+        "bytes": 192266,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-brutalist-react-dark-narrow-200.json",
+        "sidecarSHA256": "ee058f93e69ea5581db6f06e9406f36e74c7fd55b2637344ff9152213812ab90",
+        "family": "brutalist",
+        "runtime": "react",
+        "viewport": {
+          "width": 390,
+          "height": 1000
+        },
+        "state": "dark-narrow-200-percent",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:16:11.107Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 26,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-brutalist-react-light.png",
+        "width": 672,
+        "height": 1433,
+        "sheet": "sheet-4.jpg",
+        "sha256": "84bb6be54d84b0b4719185a071c937034763e7d0538a96bdd20d609173cb1257",
+        "bytes": 137741,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-brutalist-react-light.json",
+        "sidecarSHA256": "025af64369058d2ff4516140cd62b9644e8f3cb4c1fa58acb37ac33ed55fc6dd",
+        "family": "brutalist",
+        "runtime": "react",
+        "viewport": {
+          "width": 1100,
+          "height": 1000
+        },
+        "state": "light-valid-and-owner-invalid",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:16:10.705Z",
+        "viewMethod": "contact sheet plus original view_image",
+        "fullOriginalOpened": true
+      },
+      {
+        "index": 27,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-brutalist-vue-dark-narrow-200.png",
+        "width": 326,
+        "height": 3842,
+        "sheet": "sheet-4.jpg",
+        "sha256": "c02214392a73d23352f520f883edda55abbb6ffa69d16441cc0d6aade3e078f1",
+        "bytes": 192266,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-brutalist-vue-dark-narrow-200.json",
+        "sidecarSHA256": "033d1d9b4a9b2b6fa9817b83e99ae776a64f114a3787f74d4adefa22b950700e",
+        "family": "brutalist",
+        "runtime": "vue",
+        "viewport": {
+          "width": 390,
+          "height": 1000
+        },
+        "state": "dark-narrow-200-percent",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:16:15.037Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 28,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-brutalist-vue-light.png",
+        "width": 672,
+        "height": 1433,
+        "sheet": "sheet-4.jpg",
+        "sha256": "a4174f4252c8b3020ea0cc777f2f0bec40b6109e473168a56f2d678a7bf309cc",
+        "bytes": 137719,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-brutalist-vue-light.json",
+        "sidecarSHA256": "a085efab48dce2dbf5933a8a3258bdae4bae49bf424db76b695218349c96d2ed",
+        "family": "brutalist",
+        "runtime": "vue",
+        "viewport": {
+          "width": 1100,
+          "height": 1000
+        },
+        "state": "light-valid-and-owner-invalid",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:16:14.535Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 29,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-brutalist-vue2-dark-narrow-200.png",
+        "width": 326,
+        "height": 3842,
+        "sheet": "sheet-4.jpg",
+        "sha256": "c02214392a73d23352f520f883edda55abbb6ffa69d16441cc0d6aade3e078f1",
+        "bytes": 192266,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-brutalist-vue2-dark-narrow-200.json",
+        "sidecarSHA256": "74b206b035482fc19dce4b077a80cc27638616517436e77b3c49d52583ecfb44",
+        "family": "brutalist",
+        "runtime": "vue2",
+        "viewport": {
+          "width": 390,
+          "height": 1000
+        },
+        "state": "dark-narrow-200-percent",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:16:19.047Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 30,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-brutalist-vue2-light.png",
+        "width": 672,
+        "height": 1433,
+        "sheet": "sheet-4.jpg",
+        "sha256": "bce28a382a642ca566522ea4ad4ae75ee6a2282e1bc74cce63e5eec085b6ef0e",
+        "bytes": 137762,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-brutalist-vue2-light.json",
+        "sidecarSHA256": "dede8016b08f9737a61966637f43d194f8b7261e8bc6c9d7ee120ab4c3c83b9d",
+        "family": "brutalist",
+        "runtime": "vue2",
+        "viewport": {
+          "width": 1100,
+          "height": 1000
+        },
+        "state": "light-valid-and-owner-invalid",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:16:18.543Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 31,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-brutalist-wc-dark-narrow-200.png",
+        "width": 326,
+        "height": 3842,
+        "sheet": "sheet-4.jpg",
+        "sha256": "c02214392a73d23352f520f883edda55abbb6ffa69d16441cc0d6aade3e078f1",
+        "bytes": 192266,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-brutalist-wc-dark-narrow-200.json",
+        "sidecarSHA256": "0aad40d313548fb3cf05a9adc7e8b87fe1dc3b60a6adc4d8a333f48e093c3ff4",
+        "family": "brutalist",
+        "runtime": "wc",
+        "viewport": {
+          "width": 390,
+          "height": 1000
+        },
+        "state": "dark-narrow-200-percent",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:16:07.321Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 32,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-brutalist-wc-light.png",
+        "width": 672,
+        "height": 1433,
+        "sheet": "sheet-4.jpg",
+        "sha256": "73ada6437c39be8b790c0821cb15b5bd7e90ade54315954e3a3ef97c46742683",
+        "bytes": 137719,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-brutalist-wc-light.json",
+        "sidecarSHA256": "f9d8d68939609307d90e46f43830d7a67bc911e25acbba6208db5af53796f2d4",
+        "family": "brutalist",
+        "runtime": "wc",
+        "viewport": {
+          "width": 1100,
+          "height": 1000
+        },
+        "state": "light-valid-and-owner-invalid",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:16:06.857Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 33,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-liquid-glass-react-dark-narrow-200.png",
+        "width": 326,
+        "height": 3868,
+        "sheet": "sheet-5.jpg",
+        "sha256": "93442842f5d1761f13c81e4f163a58076e1e5737376c63dc8f3f2cfcfef85807",
+        "bytes": 573960,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-liquid-glass-react-dark-narrow-200.json",
+        "sidecarSHA256": "2fd0770a1129ce267f1bfc4c895b71b26ee765c87415ba1a8b55f3c5633171c3",
+        "family": "liquid-glass",
+        "runtime": "react",
+        "viewport": {
+          "width": 390,
+          "height": 1000
+        },
+        "state": "dark-narrow-200-percent",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:16:45.315Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 34,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-liquid-glass-react-light.png",
+        "width": 672,
+        "height": 1530,
+        "sheet": "sheet-5.jpg",
+        "sha256": "0df4a560707a662a1ad278fd3ae0239a9443ab89393430a6910836298fdd4308",
+        "bytes": 342297,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-liquid-glass-react-light.json",
+        "sidecarSHA256": "8396029707297c75efc78110c0e04c4ce3d0372d00ac974cb5fe72d949ff5530",
+        "family": "liquid-glass",
+        "runtime": "react",
+        "viewport": {
+          "width": 1100,
+          "height": 1000
+        },
+        "state": "light-valid-and-owner-invalid",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:16:44.548Z",
+        "viewMethod": "contact sheet plus original view_image",
+        "fullOriginalOpened": true
+      },
+      {
+        "index": 35,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-liquid-glass-vue-dark-narrow-200.png",
+        "width": 326,
+        "height": 3868,
+        "sheet": "sheet-5.jpg",
+        "sha256": "5bc22bb6a6dbef966f1f4fff08443e16c4ac03e6be79abdb5373df0d20e4772b",
+        "bytes": 573950,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-liquid-glass-vue-dark-narrow-200.json",
+        "sidecarSHA256": "3fffcb5988810c581adbec10a871cf67bfdf66df611b92e47345ce6c4bb1d976",
+        "family": "liquid-glass",
+        "runtime": "vue",
+        "viewport": {
+          "width": 390,
+          "height": 1000
+        },
+        "state": "dark-narrow-200-percent",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:16:52.037Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 36,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-liquid-glass-vue-light.png",
+        "width": 672,
+        "height": 1530,
+        "sheet": "sheet-5.jpg",
+        "sha256": "f35b98dfe87cc7b753fc95a8554ebba78a4eeebc3075f8ffa3be50be86f1e62d",
+        "bytes": 341306,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-liquid-glass-vue-light.json",
+        "sidecarSHA256": "62d05b55559ead51d95b66c50b05d29bafebd79e0dca2d09bdb33e5c4b6a4f9c",
+        "family": "liquid-glass",
+        "runtime": "vue",
+        "viewport": {
+          "width": 1100,
+          "height": 1000
+        },
+        "state": "light-valid-and-owner-invalid",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:16:51.287Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 37,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-liquid-glass-vue2-dark-narrow-200.png",
+        "width": 326,
+        "height": 3868,
+        "sheet": "sheet-5.jpg",
+        "sha256": "21efee5e5bae920e32d01d17921de7615a98aa18fc59b301edc4e0c30eac511f",
+        "bytes": 574264,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-liquid-glass-vue2-dark-narrow-200.json",
+        "sidecarSHA256": "fda19fa0c3ca22968ad21524565b425bb8df07be60e3a0b6e1bb53902f785402",
+        "family": "liquid-glass",
+        "runtime": "vue2",
+        "viewport": {
+          "width": 390,
+          "height": 1000
+        },
+        "state": "dark-narrow-200-percent",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:16:58.937Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 38,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-liquid-glass-vue2-light.png",
+        "width": 672,
+        "height": 1530,
+        "sheet": "sheet-5.jpg",
+        "sha256": "39f2daa0624f6deb069d7fa6a815ff8effc8623f8c633de8a4aa8ffb09006a0a",
+        "bytes": 342051,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-liquid-glass-vue2-light.json",
+        "sidecarSHA256": "a15cedbdbb8821b5b5ad635de3098d476ef47dcc3b27b3908e7ae08ed3542a57",
+        "family": "liquid-glass",
+        "runtime": "vue2",
+        "viewport": {
+          "width": 1100,
+          "height": 1000
+        },
+        "state": "light-valid-and-owner-invalid",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:16:58.180Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 39,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-liquid-glass-wc-dark-narrow-200.png",
+        "width": 326,
+        "height": 3868,
+        "sheet": "sheet-5.jpg",
+        "sha256": "e895b838a74342ea69b55b6728ef4ead24a4f19e06277b96dbc0b6f2cc2443cc",
+        "bytes": 569059,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-liquid-glass-wc-dark-narrow-200.json",
+        "sidecarSHA256": "32488fe5500ef0e586afc5ea487c11f35a2bf800aa3da9131744244e5c5424ed",
+        "family": "liquid-glass",
+        "runtime": "wc",
+        "viewport": {
+          "width": 390,
+          "height": 1000
+        },
+        "state": "dark-narrow-200-percent",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:16:38.644Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 40,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-liquid-glass-wc-light.png",
+        "width": 672,
+        "height": 1530,
+        "sheet": "sheet-5.jpg",
+        "sha256": "02ab56721660591dd4d9abd83e7473ebd94ebf4aed841550bbc674e025a2b3ac",
+        "bytes": 297168,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-liquid-glass-wc-light.json",
+        "sidecarSHA256": "2b47c97a0d26ffad049a3a24aee7713eb9a07b5eae457c3e603cea405510a3fb",
+        "family": "liquid-glass",
+        "runtime": "wc",
+        "viewport": {
+          "width": 1100,
+          "height": 1000
+        },
+        "state": "light-valid-and-owner-invalid",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:16:38.093Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 41,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-shadcn-react-dark-narrow-200.png",
+        "width": 326,
+        "height": 3422,
+        "sheet": "sheet-6.jpg",
+        "sha256": "d627ce5194dea2f2da02f9151763f5ff90e5808ef1dbd8d7f3d54989a4819a70",
+        "bytes": 197793,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-shadcn-react-dark-narrow-200.json",
+        "sidecarSHA256": "b8b428773ab95aca55fee0348f11ee9377cc8decba3369623201ad8a3e1dfbb1",
+        "family": "shadcn",
+        "runtime": "react",
+        "viewport": {
+          "width": 390,
+          "height": 1000
+        },
+        "state": "dark-narrow-200-percent",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:15:56.058Z",
+        "viewMethod": "contact sheet plus original view_image",
+        "fullOriginalOpened": true
+      },
+      {
+        "index": 42,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-shadcn-react-light.png",
+        "width": 672,
+        "height": 1324,
+        "sheet": "sheet-6.jpg",
+        "sha256": "55e7e91851dc3aa8fcfdcfa98cc66e16202be1c0146c1b0d44bcdbc9f7720b9c",
+        "bytes": 116904,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-shadcn-react-light.json",
+        "sidecarSHA256": "a2c6f064f576a7535a34e8cef475528326c931058033355a0885dc85f5a34ae7",
+        "family": "shadcn",
+        "runtime": "react",
+        "viewport": {
+          "width": 1100,
+          "height": 1000
+        },
+        "state": "light-valid-and-owner-invalid",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:15:55.582Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 43,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-shadcn-vue-dark-narrow-200.png",
+        "width": 326,
+        "height": 3422,
+        "sheet": "sheet-6.jpg",
+        "sha256": "d627ce5194dea2f2da02f9151763f5ff90e5808ef1dbd8d7f3d54989a4819a70",
+        "bytes": 197793,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-shadcn-vue-dark-narrow-200.json",
+        "sidecarSHA256": "9725414f2488aca1051183d4591aa8f883b6c62d09dfb1ee90fd6ed300a4313b",
+        "family": "shadcn",
+        "runtime": "vue",
+        "viewport": {
+          "width": 390,
+          "height": 1000
+        },
+        "state": "dark-narrow-200-percent",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:15:59.897Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 44,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-shadcn-vue-light.png",
+        "width": 672,
+        "height": 1324,
+        "sheet": "sheet-6.jpg",
+        "sha256": "0616e2e7edc857deae669034e5420dff8096ff6c8061e122dd7325700e8860fa",
+        "bytes": 116889,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-shadcn-vue-light.json",
+        "sidecarSHA256": "1c90526b16bdac39f95395da94866fd46d701a79cb88766ac5ab5a7e30072c97",
+        "family": "shadcn",
+        "runtime": "vue",
+        "viewport": {
+          "width": 1100,
+          "height": 1000
+        },
+        "state": "light-valid-and-owner-invalid",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:15:59.413Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 45,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-shadcn-vue2-dark-narrow-200.png",
+        "width": 326,
+        "height": 3422,
+        "sheet": "sheet-6.jpg",
+        "sha256": "d627ce5194dea2f2da02f9151763f5ff90e5808ef1dbd8d7f3d54989a4819a70",
+        "bytes": 197793,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-shadcn-vue2-dark-narrow-200.json",
+        "sidecarSHA256": "378f8fbc5f88f73a0e281284a92664f1f2bf115bfabacc776a0fa09c00a727f7",
+        "family": "shadcn",
+        "runtime": "vue2",
+        "viewport": {
+          "width": 390,
+          "height": 1000
+        },
+        "state": "dark-narrow-200-percent",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:16:03.745Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 46,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-shadcn-vue2-light.png",
+        "width": 672,
+        "height": 1324,
+        "sheet": "sheet-6.jpg",
+        "sha256": "de431d92b5aa5c0b11a9a731ac264c4fe3ab83d6ee26692076899f6c76899eff",
+        "bytes": 116903,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-shadcn-vue2-light.json",
+        "sidecarSHA256": "24435515e81a7a7e4d9e591f85d99ce3bf6fc1c4eed7c2ba990499d606d9b363",
+        "family": "shadcn",
+        "runtime": "vue2",
+        "viewport": {
+          "width": 1100,
+          "height": 1000
+        },
+        "state": "light-valid-and-owner-invalid",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:16:03.243Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 47,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-shadcn-wc-dark-narrow-200.png",
+        "width": 326,
+        "height": 3422,
+        "sheet": "sheet-6.jpg",
+        "sha256": "d627ce5194dea2f2da02f9151763f5ff90e5808ef1dbd8d7f3d54989a4819a70",
+        "bytes": 197793,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-shadcn-wc-dark-narrow-200.json",
+        "sidecarSHA256": "a042d25c58aa8500284355482709e516d110b6dab7282ee922cf843b0dd51fb8",
+        "family": "shadcn",
+        "runtime": "wc",
+        "viewport": {
+          "width": 390,
+          "height": 1000
+        },
+        "state": "dark-narrow-200-percent",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:15:52.243Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      },
+      {
+        "index": 48,
+        "path": "head-native-C/evidence/field/0ecfe2cb7623-shadcn-wc-light.png",
+        "width": 672,
+        "height": 1324,
+        "sheet": "sheet-6.jpg",
+        "sha256": "7feae4756f6ed8fcb70a31b00f0a1952bcd823b955dbf698d425fc2c6400ae4d",
+        "bytes": 116871,
+        "sourceHead": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+        "dirtyWorktree": false,
+        "sidecar": "head-native-C/evidence/field/0ecfe2cb7623-shadcn-wc-light.json",
+        "sidecarSHA256": "adfd782ec7d2131d74bfdf49745ce32a847cef5d779f4f6cb40e178f5ac2dc68",
+        "family": "shadcn",
+        "runtime": "wc",
+        "viewport": {
+          "width": 1100,
+          "height": 1000
+        },
+        "state": "light-valid-and-owner-invalid",
+        "fontScale": null,
+        "capturedAt": "2026-10-18T13:15:51.724Z",
+        "viewMethod": "contact sheet thumbnail only",
+        "fullOriginalOpened": false
+      }
+    ],
+    "overallObservations": {
+      "blankOrWrongErrorPageSeen": false,
+      "visibleOcclusionAndClippingRemain": true,
+      "fullVisualPassClaim": false,
+      "newSourceRegressionEstablishedByThisReview": false,
+      "keyLimits": [
+        "Header visibly crosses parts of the captured controls.",
+        "200%Brutalist column has severe word/letter wrapping; right-side runtime labels can be outside capture.",
+        "Fieldnarrow captures truncate right-side labels/values/actiontext; this is not itself a measured whole-pageoverflow oracle.",
+        "Liquidbackdrop text competes with foreground content.",
+        "No comparison pair was executed to assign any of these visual observations to the newroutercondition."
+      ]
+    },
+    "notAssessed": [
+      "Pixel-level inspection of all48originalPNGs",
+      "Full-page layout and everyintermediateframe",
+      "Actualfocus/hittarget state at the captured pixels",
+      "New keyboardP2 baseline/after counts beyond parent-provided reports",
+      "AT/HIG/opticalcontrast acceptance",
+      "UncapturedCollapsible/Tooltipvisualoutput"
+    ],
+    "conclusion": "Thecontact index is correctlyboundandshowsrenderedcomponentcontent,buttheseoriginalcapturesretainconcreteocclusion/clipping/readabilitylimitations. Do notdescribe48individualfull-imageinspectionorallvisual/ATpass. Thisreviewdoesnotestablisha newP2productionregression."
+  }
+}

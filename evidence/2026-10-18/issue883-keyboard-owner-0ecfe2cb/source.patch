@@ -1,0 +1,71 @@
+diff --git a/packages/adapters/base/src/events/web-event-router.ts b/packages/adapters/base/src/events/web-event-router.ts
+index 4a6d124ac..42f8639df 100644
+--- a/packages/adapters/base/src/events/web-event-router.ts
++++ b/packages/adapters/base/src/events/web-event-router.ts
+@@ -176,7 +176,11 @@ export function createWebProtoEventRouter(opt: {
+     const keyboard = native as Event & { [KEYBOARD_PRESS_OWNER]?: object };
+     if (native.type === 'keydown' && keyboard[KEYBOARD_PRESS_OWNER]) return;
+     // A consumed key keeps its owner when that callback retires its view and moves focus.
+-    if (native.type === 'keydown' && rootProxy.__hasProtoListeners('press.commit')) {
++    if (
++      native.type === 'keydown' &&
++      rootProxy.__hasProtoListeners('press.commit') &&
++      shouldRouteToCurrentRoot(native)
++    ) {
+       keyboard[KEYBOARD_PRESS_OWNER] = opt.instanceToken ?? rootEl;
+     }
+     markPressCommitEmittedForRoot(native);
+diff --git a/packages/adapters/base/test/event-router-work.test.ts b/packages/adapters/base/test/event-router-work.test.ts
+index 3ab7d45b3..cffd572da 100644
+--- a/packages/adapters/base/test/event-router-work.test.ts
++++ b/packages/adapters/base/test/event-router-work.test.ts
+@@ -89,6 +89,49 @@ describe('event route traversal work', () => {
+     expect(press).toHaveBeenCalledOnce();
+   });
+ 
++  it.each(['Enter', ' '])('keeps a marked child %j key with its root key.down listener', (key) => {
++    const tree = createInstanceTreeMarkers('@proto.ui/adapter-vue/__proto_instance');
++    const proto = { name: 'keyboard-child-owner', setup: () => undefined };
++    const parent = document.createElement('div');
++    const child = document.createElement('div');
++    child.tabIndex = 0;
++    parent.append(child);
++    document.body.append(parent);
++    const parentToken = tree.markProtoInstance(parent, proto);
++    const childToken = tree.markProtoInstance(child, proto);
++    cleanup.push(() => {
++      tree.unbindProtoInstance(childToken, child);
++      tree.unbindProtoInstance(parentToken, parent);
++      parent.remove();
++    });
++    const outer = createWebProtoEventRouter({
++      rootEl: parent,
++      instanceToken: parentToken,
++      isEnabled: () => true,
++    });
++    const inner = createWebProtoEventRouter({
++      rootEl: child,
++      instanceToken: childToken,
++      isEnabled: () => true,
++    });
++    cleanup.push(
++      () => outer.dispose(),
++      () => inner.dispose()
++    );
++    const parentPress = vi.fn();
++    const childKey = vi.fn();
++    const globalKey = vi.fn();
++    outer.rootTarget.addEventListener('press.commit', parentPress);
++    inner.rootTarget.addEventListener('key.down', childKey);
++    inner.globalTarget.addEventListener('key.down', globalKey);
++    child.focus();
++    child.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true }));
++    expect({
++      root: childKey.mock.calls.length,
++      global: globalKey.mock.calls.length,
++    }).toEqual({ root: 1, global: 1 });
++  });
++
+   it('keeps an unclaimed keyboard event eligible for its active Portal owner', () => {
+     const tree = createInstanceTreeMarkers('@proto.ui/adapter-vue/__proto_instance');
+     const proto = { name: 'keyboard-portal-owner', setup: () => undefined };

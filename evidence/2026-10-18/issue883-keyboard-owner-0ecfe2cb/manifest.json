@@ -1,0 +1,40 @@
+{
+  "head": "0ecfe2cb76236aa37fee78730423a72a0ddebb7c",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 5965,
+      "sha256": "9abca58280f1affdd8f9cacb25da76bca29ebef9e274284add73807a39adbaf3"
+    },
+    {
+      "path": "button-wc-narrow-200.png",
+      "bytes": 38414,
+      "sha256": "866d9949f22828b86e39e1b87552fe8c983649ce960eec385914ee77a0d1ac62"
+    },
+    {
+      "path": "evidence.zip",
+      "bytes": 9800594,
+      "sha256": "b3b552ba726703877f04961c3ed179816b9b5cd0720eab740cd9bd177538b4b5"
+    },
+    {
+      "path": "field-vue2-dark-narrow.png",
+      "bytes": 148676,
+      "sha256": "ed9b80e5c3a44dd444b66fc391d11446c0c4c966754c374b33bb6060fb4329d7"
+    },
+    {
+      "path": "public-mapping.json",
+      "bytes": 59731,
+      "sha256": "39cb6844c1a60b6ce44cf39f08a334ecfa8a52512654120a22c80bb554433f50"
+    },
+    {
+      "path": "source.patch",
+      "bytes": 3258,
+      "sha256": "e5ff20977d20cf1da893b07cb69e201471ed982f5b7bfca0a7c63ff5882cc728"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 82415,
+      "sha256": "e9797697d194fdae70c09850a873da1ff980c900cce4261ab268911fc29fd4b4"
+    }
+  ]
+}
