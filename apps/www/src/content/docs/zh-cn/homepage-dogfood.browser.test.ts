@@ -238,7 +238,7 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
       expect(await link.isVisible()).toBe(true);
       const destination = await link.getAttribute('href');
       const opened = context.waitForEvent('page');
-      await link.click({ modifiers: ['Control'] });
+      await link.click({ modifiers: ['ControlOrMeta'] });
       const newPage = await opened;
       await newPage.waitForURL(`**${destination}`);
       await newPage.close();
@@ -484,6 +484,7 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
         const languagePortal = page.locator(`[id=${JSON.stringify(languagePortalId)}]`);
         await languagePortal.waitFor({ state: 'visible' });
         expect(await languagePortal.getAttribute('data-site-control-family')).toBe(route.family);
+        await languagePortal.getByRole('option').first().waitFor({ state: 'visible' });
         expect(await languagePortal.getByRole('option').count()).toBeGreaterThan(1);
         await page.keyboard.press('Escape');
         await languagePortal.waitFor({ state: 'hidden' });
