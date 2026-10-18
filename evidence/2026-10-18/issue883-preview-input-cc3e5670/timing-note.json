@@ -1,0 +1,9 @@
+{
+  "scope": "Additive correction to inherited outer-summary time interpretation before first publication",
+  "originalRawReference": "evidence.zip/final-validation-reconciliation.json",
+  "originalRawObservedAt": "2026-10-18T02:32:03.333263+00:00",
+  "interpretation": "initialLocalValidationObservedAt belongs to the original local validation snapshot; later official preview/copy/member-audit/static-test receipts retain their own actual times. It is not an observation time for every later section.",
+  "packetAssembledAt": "2026-10-18T02:47:01.328806+00:00",
+  "originalArchiveAndMappingsUnchanged": true,
+  "archiveSHA256": "b107b15e3464e137b4853d58502bdf1ada757b25e7d27b931635f4e17b3ff7b5"
+}

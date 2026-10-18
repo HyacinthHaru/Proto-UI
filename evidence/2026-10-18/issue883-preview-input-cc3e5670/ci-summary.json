@@ -1,0 +1,521 @@
+{
+  "schemaVersion": 1,
+  "preparedAt": "2026-10-18T03:06:34.006532+00:00",
+  "classification": "Historical exact-cc3e canonical FAILURE checkpoint; not finalcurrent-sourceacceptance",
+  "head": "cc3e5670a3a83d4f797fa2af7d942aae876b0f2b",
+  "tree": "7b7a3140ce12156a7f8555174778d0580df3d588",
+  "mainRun": {
+    "id": 39089820847,
+    "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39089820847",
+    "attempt": 1,
+    "status": "completed",
+    "conclusion": "failure",
+    "createdAt": "2026-10-18T02:21:57Z",
+    "updatedAt": "2026-10-18T02:46:50Z",
+    "jobs": 22,
+    "success": 13,
+    "failure": 9,
+    "jobsComplete": true
+  },
+  "checkout": {
+    "sha": "1285bf1198ba390bd6b29aa69f52797cc4f1a39a",
+    "tree": "7b7a3140ce12156a7f8555174778d0580df3d588",
+    "sourceTreeEqual": true,
+    "metadataMember": "metadata/checkout-commit.json",
+    "mainSelectedLogsAllObserveThisCheckout": true
+  },
+  "browserShards": [
+    {
+      "shard": 1,
+      "job": 117564441404,
+      "name": "test-browser (1/8, browser-1-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39089820847/job/117564441404",
+      "checkoutObserved": ["1285bf1198ba390bd6b29aa69f52797cc4f1a39a"],
+      "summaryComplete": false,
+      "testSummary": null,
+      "counts": null,
+      "exit124": true,
+      "logMember": "logs/117564441404.log",
+      "rawLogSHA256": "f4c888927bbc85708c28a77183406186f1b1ead3764dae57d45ecb0a70684a91"
+    },
+    {
+      "shard": 2,
+      "job": 117564441343,
+      "name": "test-browser (2/8, browser-2-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39089820847/job/117564441343",
+      "checkoutObserved": ["1285bf1198ba390bd6b29aa69f52797cc4f1a39a"],
+      "summaryComplete": false,
+      "testSummary": null,
+      "counts": null,
+      "exit124": true,
+      "logMember": "logs/117564441343.log",
+      "rawLogSHA256": "ef031701665d214c6cbbe5245ca7622cadf547559835c01b93be99a2e62965a3"
+    },
+    {
+      "shard": 3,
+      "job": 117564441362,
+      "name": "test-browser (3/8, browser-3-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39089820847/job/117564441362",
+      "checkoutObserved": ["1285bf1198ba390bd6b29aa69f52797cc4f1a39a"],
+      "summaryComplete": true,
+      "testSummary": "2026-10-18T02:39:20.1997193Z       Tests  3 failed | 58 passed (61)",
+      "counts": {
+        "passed": 58,
+        "failed": 3,
+        "skipped": 0
+      },
+      "exit124": false,
+      "logMember": "logs/117564441362.log",
+      "rawLogSHA256": "ffa7ed22059b73a2714c04bfe91f9f112da2b170f36dfeef44845942fc83a2ee"
+    },
+    {
+      "shard": 4,
+      "job": 117564441376,
+      "name": "test-browser (4/8, browser-4-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39089820847/job/117564441376",
+      "checkoutObserved": ["1285bf1198ba390bd6b29aa69f52797cc4f1a39a"],
+      "summaryComplete": true,
+      "testSummary": "2026-10-18T02:41:00.3392942Z       Tests  3 failed | 121 passed (124)",
+      "counts": {
+        "passed": 121,
+        "failed": 3,
+        "skipped": 0
+      },
+      "exit124": false,
+      "logMember": "logs/117564441376.log",
+      "rawLogSHA256": "d62a3c2615cd28220d58e75ef0569b86a8241dece54d1286e201740e586ab2f6"
+    },
+    {
+      "shard": 5,
+      "job": 117564441313,
+      "name": "test-browser (5/8, browser-5-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39089820847/job/117564441313",
+      "checkoutObserved": ["1285bf1198ba390bd6b29aa69f52797cc4f1a39a"],
+      "summaryComplete": true,
+      "testSummary": "2026-10-18T02:39:54.6352582Z       Tests  2 failed | 88 passed | 15 skipped (105)",
+      "counts": {
+        "passed": 88,
+        "failed": 2,
+        "skipped": 15
+      },
+      "exit124": false,
+      "logMember": "logs/117564441313.log",
+      "rawLogSHA256": "186c4d7cf4d25b7d3c6e3caceecf404023809ff52e62c7708eddb0ec4bbef7f6"
+    },
+    {
+      "shard": 6,
+      "job": 117564441336,
+      "name": "test-browser (6/8, browser-6-of-8)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39089820847/job/117564441336",
+      "checkoutObserved": ["1285bf1198ba390bd6b29aa69f52797cc4f1a39a"],
+      "summaryComplete": true,
+      "testSummary": "2026-10-18T02:34:49.0864443Z       Tests  169 passed (169)",
+      "counts": {
+        "passed": 169,
+        "failed": 0,
+        "skipped": 0
+      },
+      "exit124": false,
+      "logMember": "logs/117564441336.log",
+      "rawLogSHA256": "1f4ba2081a5b9c98593216271055916f368b39a5d4eb76e9856fabc58e4decfb"
+    },
+    {
+      "shard": 7,
+      "job": 117564441349,
+      "name": "test-browser (7/8, browser-7-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39089820847/job/117564441349",
+      "checkoutObserved": ["1285bf1198ba390bd6b29aa69f52797cc4f1a39a"],
+      "summaryComplete": true,
+      "testSummary": "2026-10-18T02:45:02.9836689Z       Tests  1 failed | 113 passed (114)",
+      "counts": {
+        "passed": 113,
+        "failed": 1,
+        "skipped": 0
+      },
+      "exit124": false,
+      "logMember": "logs/117564441349.log",
+      "rawLogSHA256": "8027883822ab4058d03e894e59c54ad10398004375e5e9f3d54b93e4beca5aac"
+    },
+    {
+      "shard": 8,
+      "job": 117564441320,
+      "name": "test-browser (8/8, browser-8-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39089820847/job/117564441320",
+      "checkoutObserved": ["1285bf1198ba390bd6b29aa69f52797cc4f1a39a"],
+      "summaryComplete": false,
+      "testSummary": null,
+      "counts": null,
+      "exit124": true,
+      "logMember": "logs/117564441320.log",
+      "rawLogSHA256": "7595f263ec5340957485ddaf5c7e5db6155dc142b7ab29a1d4e8cbb133cc3609"
+    }
+  ],
+  "fiveCompleteShardsOnly": {
+    "shards": [3, 4, 5, 6, 7],
+    "passed": 549,
+    "failed": 9,
+    "skipped": 15
+  },
+  "incompleteOriginal124Shards": [1, 2, 8],
+  "allEightTestsTotal": null,
+  "quickStartCResidual": {
+    "classification": "Current C-related documentation/preview layout failure requiring source investigation; not generic other/inherited and not hidden by shardtimeout",
+    "file": "apps/www/src/content/docs/zh-cn/quick-start-first-frame.browser.test.ts",
+    "sourceHead": "cc3e5670a3a83d4f797fa2af7d942aae876b0f2b",
+    "job": 117564441320,
+    "caseCount": 20,
+    "passed": 12,
+    "failed": 8,
+    "originalHeader": "2026-10-18T02:34:41.8337020Z  ❯ apps/www/src/content/docs/zh-cn/quick-start-first-frame.browser.test.ts (20 tests | 8 failed) 103825ms",
+    "failedCaseTitles": [
+      "quick-start first-frame continuity > wc zh-cn default 390 dark: readable first paint, cold hydration and refresh 4062ms",
+      "quick-start first-frame continuity > react zh-cn default 390 dark: readable first paint, cold hydration and refresh 4215ms",
+      "quick-start first-frame continuity > vue zh-cn default 390 dark: readable first paint, cold hydration and refresh 4321ms",
+      "quick-start first-frame continuity > vue2 zh-cn default 390 dark: readable first paint, cold hydration and refresh 4109ms",
+      "quick-start first-frame continuity > react zh-cn apple 320 light: readable first paint, cold hydration and refresh 4369ms",
+      "quick-start first-frame continuity > react zh-cn apple 390 light: readable first paint, cold hydration and refresh 4506ms",
+      "quick-start first-frame continuity > react en apple 320 light: readable first paint, cold hydration and refresh 4625ms",
+      "quick-start first-frame continuity > react en apple 390 light: readable first paint, cold hydration and refresh 4704ms"
+    ],
+    "assertion": "expected 14 to be less than or equal to 1",
+    "meaning": "320px and390px narrowdocumentoverflow14px beyond1pxallowed; fulloriginaldiagnostic arraysretainedinlog",
+    "cause": "Notestablishedbythispack. Rootis investigating mainpane/codecopy boundary; noautomatic inheritedclassification",
+    "shardBoundary": "Subset20finished; entirebrowser8 timedout124withoutfinalaggregate.",
+    "failedViewportCounts": {
+      "320": 2,
+      "390": 6
+    }
+  },
+  "general": {
+    "job": 117564441358,
+    "result": "failure",
+    "publicDocsDriftFindings": 78,
+    "reachedVitest": false,
+    "noGeneralUnitTestTotal": true
+  },
+  "types": {
+    "job": 117564400090,
+    "result": "success",
+    "files": 934,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 14
+  },
+  "package": {
+    "job": 117564556621,
+    "result": "success",
+    "actualBuildRecords": 42,
+    "possiblePublicPackages": 47,
+    "checkedManifests": 47,
+    "policyTests": {
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0
+    },
+    "budgetMode": "finf-development-advisory",
+    "budgetCounts": {
+      "PASS": 4,
+      "ADVISORY": 5
+    },
+    "budgetEntries": [
+      {
+        "name": "lucide/icons/x",
+        "status": "PASS",
+        "gzipBytes": 1737,
+        "ceiling": 3000,
+        "overBudget": 0,
+        "minifiedBytes": 4670,
+        "sha256": "2aa1af1ef3a197cc72f2c421083b37d7da42610907ad014c103570abab1aff50"
+      },
+      {
+        "name": "lucide root",
+        "status": "PASS",
+        "gzipBytes": 635749,
+        "ceiling": 700000,
+        "overBudget": 0,
+        "minifiedBytes": 4083209,
+        "sha256": "d4cea01272140e6dfbbf37a4871f2011481789fca83be7e569a37d2eacb634ad"
+      },
+      {
+        "name": "core root",
+        "status": "ADVISORY",
+        "gzipBytes": 8940,
+        "ceiling": 7600,
+        "overBudget": 1340,
+        "minifiedBytes": 28128,
+        "sha256": "0618d20711054f616b0bb51e266fe427d898173b169cf84f4223b3263c5faf4a"
+      },
+      {
+        "name": "runtime root",
+        "status": "ADVISORY",
+        "gzipBytes": 90651,
+        "ceiling": 78500,
+        "overBudget": 12151,
+        "minifiedBytes": 350526,
+        "sha256": "323066fe3ecf5c85be483818fa7084d2c6eb57829503352d9f74eaa28f721a80"
+      },
+      {
+        "name": "adapter-react root",
+        "status": "ADVISORY",
+        "gzipBytes": 143060,
+        "ceiling": 106000,
+        "overBudget": 37060,
+        "minifiedBytes": 505348,
+        "sha256": "45e67007289748724e59ec4eb1bdae56731b3257501f713748969327845c0d96"
+      },
+      {
+        "name": "adapter-vue root",
+        "status": "ADVISORY",
+        "gzipBytes": 142751,
+        "ceiling": 106000,
+        "overBudget": 36751,
+        "minifiedBytes": 503626,
+        "sha256": "7d9890b414ddef6d8e7df8d61a2893f5ed5dc8624f59841c8dcd82bc27248854"
+      },
+      {
+        "name": "adapter-web-component root",
+        "status": "ADVISORY",
+        "gzipBytes": 169976,
+        "ceiling": 132000,
+        "overBudget": 37976,
+        "minifiedBytes": 585715,
+        "sha256": "05696f8db603ae915542d21ce8a11b0f3ededee44600bfca5336233a2b3993a5"
+      },
+      {
+        "name": "prototypes-base/button",
+        "status": "PASS",
+        "gzipBytes": 3948,
+        "ceiling": 6000,
+        "overBudget": 0,
+        "minifiedBytes": 13707,
+        "sha256": "2bf46e0160ec35e12005b5874ce9863f19853a0e4021d0ac80043229fb89d53d"
+      },
+      {
+        "name": "prototypes-shadcn/button",
+        "status": "PASS",
+        "gzipBytes": 4952,
+        "ceiling": 7000,
+        "overBudget": 0,
+        "minifiedBytes": 18079,
+        "sha256": "5970dcc7a557419cd02a6a51fefd7f7e0f16f8d07deb00e8481c6bb3719a7463"
+      }
+    ],
+    "environment": {
+      "node": "v24.21.0",
+      "zlib": "1.3.2.1-motley-8002e91",
+      "esbuild": "0.25.12",
+      "platform": "linux",
+      "arch": "x64"
+    },
+    "limits": "Advisoryoveragesremainactualoverages; not9strictbudgetpasses. Entrygzipsnotadditive."
+  },
+  "dedicatedCollapsible": {
+    "run": 39089820658,
+    "job": 117563990095,
+    "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39089820658/job/117563990095",
+    "status": "completed",
+    "conclusion": "success",
+    "checkout": "cc3e5670a3a83d4f797fa2af7d942aae876b0f2b",
+    "checkoutType": "directexacthead, notmain syntheticmerge",
+    "testsPassed": 36,
+    "testsFailed": 0,
+    "noWholeCIGreenClaim": true
+  },
+  "jobs": [
+    {
+      "id": 117564399865,
+      "name": "test-plan",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39089820847/job/117564399865"
+    },
+    {
+      "id": 117564400033,
+      "name": "public_package_plan",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39089820847/job/117564400033"
+    },
+    {
+      "id": 117564400090,
+      "name": "type-check",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39089820847/job/117564400090"
+    },
+    {
+      "id": 117564400094,
+      "name": "rust-macos",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39089820847/job/117564400094"
+    },
+    {
+      "id": 117564400106,
+      "name": "release-scan",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39089820847/job/117564400106"
+    },
+    {
+      "id": 117564400108,
+      "name": "lockstep-check",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39089820847/job/117564400108"
+    },
+    {
+      "id": 117564400131,
+      "name": "rust",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39089820847/job/117564400131"
+    },
+    {
+      "id": 117564400154,
+      "name": "rust-interop",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39089820847/job/117564400154"
+    },
+    {
+      "id": 117564441313,
+      "name": "test-browser (5/8, browser-5-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39089820847/job/117564441313"
+    },
+    {
+      "id": 117564441320,
+      "name": "test-browser (8/8, browser-8-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39089820847/job/117564441320"
+    },
+    {
+      "id": 117564441336,
+      "name": "test-browser (6/8, browser-6-of-8)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39089820847/job/117564441336"
+    },
+    {
+      "id": 117564441343,
+      "name": "test-browser (2/8, browser-2-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39089820847/job/117564441343"
+    },
+    {
+      "id": 117564441349,
+      "name": "test-browser (7/8, browser-7-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39089820847/job/117564441349"
+    },
+    {
+      "id": 117564441358,
+      "name": "test-general",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39089820847/job/117564441358"
+    },
+    {
+      "id": 117564441362,
+      "name": "test-browser (3/8, browser-3-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39089820847/job/117564441362"
+    },
+    {
+      "id": 117564441376,
+      "name": "test-browser (4/8, browser-4-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39089820847/job/117564441376"
+    },
+    {
+      "id": 117564441404,
+      "name": "test-browser (1/8, browser-1-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39089820847/job/117564441404"
+    },
+    {
+      "id": 117564556533,
+      "name": "cli-smoke",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39089820847/job/117564556533"
+    },
+    {
+      "id": 117564556586,
+      "name": "release-stage",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39089820847/job/117564556586"
+    },
+    {
+      "id": 117564556621,
+      "name": "public_package_build",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39089820847/job/117564556621"
+    },
+    {
+      "id": 117564556626,
+      "name": "release-consumer-react",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39089820847/job/117564556626"
+    },
+    {
+      "id": 117568393066,
+      "name": "test",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39089820847/job/117568393066"
+    }
+  ],
+  "records": {
+    "rawSources": 16,
+    "archiveMembers": 17,
+    "logFiles": 12,
+    "browserLogs": 8,
+    "archiveSHA256": "577add9bae76bcac208f08008cf565dcd7759487b2856873bd00a0f6fe8f2465",
+    "archiveBytes": 285178
+  },
+  "independentReview": {
+    "status": "Availableasaseparatereport; notpartofthis16sourcearchive",
+    "sourceReference": "ci-final-review/final-ci-review.json",
+    "rawSHA256": "72da9c4dbe31aa549bbb8136906fc4b4a2c4d49346fc62ac5b3ff2a49efe56ac",
+    "disposition": "partial/ABSTAIN",
+    "formalApproval": false,
+    "scope": "Sameexactcc3eCI count/source/residual reconciliation; QuickStartC-relatedriskremainsopen"
+  },
+  "limits": [
+    "All8logscompleteasdownloaded; 3jobsdidnotcompleteallplannedtestexecution.",
+    "549/9/15 excludesallpartialshardcounts; quickstart20/8 isseparatesubsetevidence andnotaddedtothistotal.",
+    "QuickstartCregression remainsunderinvestigation; no sourcecause/fix/fullgreenclaim.",
+    "Originalrawfilesunchanged; no test/build/browser/GitHubmutation ornewlogdownload.",
+    "Existing12-fileevidencepacketanditsmainZIPremainuntouched; thisisaseparateadditivecandidate.",
+    "PublicGitHubmaskedcredentials/publiccanonicalModelTracereceiptsmayremain; no privateModelTracecontext/samples orauthhandoffsareselected.",
+    "human-assisted/unassessed/partial/ABSTAIN, notformalapproval/merge/Issueclosure."
+  ]
+}

@@ -1,0 +1,214 @@
+{
+  "head": "cc3e5670a3a83d4f797fa2af7d942aae876b0f2b",
+  "tree": "7b7a3140ce12156a7f8555174778d0580df3d588",
+  "main": "042f1e5740e1a809b9ca238593f5bb01a1f8a8e3",
+  "commits": [
+    "4c2cabbffae7573b8ca700c60635c3efa64153c4",
+    "554597a969e7bbda090703743f03f588b7104bd9",
+    "cc3e5670a3a83d4f797fa2af7d942aae876b0f2b"
+  ],
+  "localUnit": {
+    "files": 94,
+    "passed": 1285,
+    "failed": 0,
+    "skip": 0,
+    "precommit": true,
+    "fullSourceBinding": "final-select-source-binding.json"
+  },
+  "localOriginalBrowserCombination": {
+    "files": 4,
+    "passed": 71,
+    "failed": 0,
+    "skip": 0,
+    "postcommit": true,
+    "cases": [
+      {
+        "file": "demo-brutalist-button.browser.test.ts",
+        "tests": 8
+      },
+      {
+        "file": "demo-collapsible-projections.browser.test.ts",
+        "tests": 36
+      },
+      {
+        "file": "demo-field-family.browser.test.ts",
+        "tests": 25
+      },
+      {
+        "file": "demo-shadcn-tooltip.browser.test.ts",
+        "tests": 2
+      }
+    ]
+  },
+  "originalSettings": {
+    "passed": 1,
+    "failed": 0,
+    "filtered": 10,
+    "familyRuntimeLoops": 8,
+    "precommit": true,
+    "sameAssertionAnd240sTimeout": true
+  },
+  "uniqueOriginalBrowserTests": 72,
+  "observerRepeatNotAddedAsUnique": true,
+  "types": {
+    "files": 934,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 14,
+    "postcommit": true
+  },
+  "completeLocalBuild": {
+    "AstroProducedPages": 651,
+    "files": 3836,
+    "HTML": 669,
+    "expandedBytes": 104048135,
+    "ZIPBytes": 21212099,
+    "ZIPSHA256": "8e7f30eba546cac458560831bf25e8a22371d0fbaf3c0a60932c0e857243712e",
+    "originalAdmissionTests": 1,
+    "failed": 0,
+    "skipped": 0,
+    "sourceBuildWasPrecommitThenAll11329InputsGitBound": true,
+    "ActionsArtifactIsSeparate": true
+  },
+  "unchangedOriginalBrowserBindings": [
+    {
+      "path": "apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts",
+      "beforeBlob": "04ec50f6f7cf9972cf2351e02b967bcf065515da",
+      "finalBlob": "04ec50f6f7cf9972cf2351e02b967bcf065515da",
+      "equal": true
+    },
+    {
+      "path": "apps/www/src/content/docs/zh-cn/demo-shadcn-tooltip.browser.test.ts",
+      "beforeBlob": "22e62a7f0b6665259ffdc0e8f535b6ff9fc6418a",
+      "finalBlob": "22e62a7f0b6665259ffdc0e8f535b6ff9fc6418a",
+      "equal": true
+    },
+    {
+      "path": "apps/www/src/content/docs/zh-cn/demo-brutalist-button.browser.test.ts",
+      "beforeBlob": "dcefcc976e6313d4164a93026e46bad73f9f7d65",
+      "finalBlob": "dcefcc976e6313d4164a93026e46bad73f9f7d65",
+      "equal": true
+    },
+    {
+      "path": "apps/www/src/content/docs/zh-cn/demo-field-family.browser.test.ts",
+      "beforeBlob": "99329104336ad901e56c973ad95b6563595ac4ec",
+      "finalBlob": "99329104336ad901e56c973ad95b6563595ac4ec",
+      "equal": true
+    },
+    {
+      "path": "apps/www/src/content/docs/zh-cn/home-demo-runtime.browser.test.ts",
+      "beforeBlob": "7043d6e0fb55ae00d9a6d9280c8c7b4911ca24b3",
+      "finalBlob": "7043d6e0fb55ae00d9a6d9280c8c7b4911ca24b3",
+      "equal": true
+    }
+  ],
+  "baselineSources": "Originalcomplete4aad Actionsartifact12109493824 for owner and Select red; preliminarylayout controlsretaininjectedCSSboundary; earliercanonicalredandnegativeonegridcontrolremainpublicR7history",
+  "sourceScope": "3app layout sources+directtests, oneVue2 marker+matrix, oneacceptedkeyboardowner guard+threeboundedcases; no budget/workflow/compiler changes",
+  "visuals": {
+    "themeBoundary": "The narrow control explicitly sets document theme attributes/classes for geometry. It is not a native theme-menu journey or acceptance of all material optical palettes.",
+    "selectedRegion": "Finalframednarrowimage showsfirstdisclosuretop underheader and partofexpandedbody; no entiretallroot/fullpageclaim",
+    "TooltipLogicalPressed": "No direct logicalpressed handle read from originalartifact; actualtrustedinput/owner topology, scale/token projection and same-source matrix establishboundedroutefix",
+    "SelectIdentity": "observer WeakMap identifiers are run-local; baseline pageprojection generation3 didnotestablishgenerationincrement; someclosedContentnodesretainedhidden",
+    "primaryInspected": "All selected PNGs original bytes, including final light/dark WC320x900 root200%; TooltipfinalVue2; actualSelectredandgreen"
+  },
+  "officialCI": {
+    "run": 39089820847,
+    "previewRun": 39089820629,
+    "stateAtPacket": "CIstillrunning/queued; actualpreviewbuildsuccess; currentproducer localadmission/nativeQAseparate",
+    "allCIGreen": false
+  },
+  "independentReview": "0specificsourcefindings in bounded crosscontextpartialreviews; sameGitHubauthorcontext/ABSTAIN notAPPROVE",
+  "notDemonstrated": [
+    "fullrepositoryCI",
+    "maintainerapproval/merge",
+    "allbrowsers/installpackages/AT",
+    "allmaterialopticalpaletteorfirstframeacceptance",
+    "callbackexactlyoncecounts"
+  ],
+  "evidenceDisposition": "complete for named localCregression/combination scope; overallacceptance partial",
+  "officialPreview": {
+    "run": 39089820629,
+    "artifact": 12121993854,
+    "ZIPBytes": 21142412,
+    "ZIP_SHA256": "55f6546c22edd3439d49f8f153ecdf3950bd15b1854b3a4234ef6f02363812fe",
+    "files": 3835,
+    "HTML": 669,
+    "expandedBytes": 104045802,
+    "allMembersEqualOriginal": true,
+    "trustedPublisher": "actualliveAPIs, nativeflock, currentReadyhead duringrun; no fakecatalog",
+    "nativeCopyJourneys": 8,
+    "fourRuntimesTwoFamilies": true,
+    "clipboardSentinelConfirmedEach": true,
+    "trustedClickCounts": {
+      "shadcn": 12,
+      "brutalist": 4
+    },
+    "runtimeSelection": "preference, not runtime-menu native click",
+    "PNGs": 9,
+    "publisherNativeServerExit": 0,
+    "extraOriginalTestsOnCanonicalBytes": {
+      "testsPassed": 3,
+      "filtered": 10,
+      "role": "sameSettings+Tooltip, repeatedresultsnotaddedtouniquecount",
+      "serverCleanup": "SIGTERM aftertests exit0, server exit-15 as recorded"
+    },
+    "notRemoteDeployment": true,
+    "chronology": {
+      "trustedPublisherReadyBeforeCopy": true,
+      "nativeCopyUTC": "02:32:10–02:32:20",
+      "independentDownloadUTC": "02:32:46–02:32:54",
+      "allMemberComparisonUTC": "02:33:23",
+      "independentMemberAuditAfterCopy": true,
+      "notClaimed": "Independent member comparison before clipboard run"
+    },
+    "capture": {
+      "configuredViewport": "1280x900",
+      "actualCasePNGDimensions": "1280x813 for8images",
+      "actualCatalogPNGDimensions": "1280x633",
+      "reason": "not measured; no inferred explanation or rerun",
+      "scope": "Visible captured regions only, not wholepage/source-codevisualcompleteness"
+    },
+    "visualInspection": "peer actually viewed all9previewPNGs; root localfixfigures separately",
+    "canonicalOriginalTestReceipt": "preview-final/canonical-tests-binding-receipt.json"
+  },
+  "rawSources": 263,
+  "archiveMembers": 264,
+  "PNGCount": 38,
+  "archiveSHA256": "b107b15e3464e137b4853d58502bdf1ada757b25e7d27b931635f4e17b3ff7b5",
+  "limits": [
+    "Text is path-sanitized derived evidence, not exact executed source or guaranteed runnable. PNG bytes are original.",
+    "All runner results keep original dates, checkout heads, page sources and filters. Precommit frozen source is separately bound to final Git blobs.",
+    "Preliminary four-edge padding/grid controls are separate interventions, not execution of the final inline-only source fix.",
+    "Initial Tooltip syntax/readiness setup failures are preserved; zero collected product facts are not a product regression.",
+    "Tooltip pressed visual/token effect and native owner topology are observed; absent DOM data-pressed is not a direct logical-state read.",
+    "Select physical/opaque-owner observer numbers are run-local identities; projection generation remained3 in baseline, not proven incremented.",
+    "One settings test contains eight family/runtime loops; observer repetition is not an additional unique test or all-browser/AT/long-term stability proof.",
+    "Local complete-site ZIP is distinct from Actions upload artifact; all pages/resources and admission limits are retained.",
+    "Canonical final-head CI and review have separate live receipts; local tests/partial peer reviews do not mean full CI or GitHub approval."
+  ],
+  "initialLocalValidationObservedAt": "2026-10-18T02:32:03.333263+00:00",
+  "packetAssembledAt": "2026-10-18T02:52:14.498956+00:00",
+  "timeBoundary": "initialLocalValidationObservedAt belongs to the original local validation snapshot; later official preview/copy/member-audit/static-test receipts retain their own actual times. It is not an observation time for every later section.",
+  "visualLimitations": {
+    "BrutalistHistoricalCaptures": "8 original element crops from precommit4aad+8files (later source-bound5545); 100% tabs crop at right,200% mobileHeader obscures Mint/partLavender and labels wrapnarrowly; no unobscured/fullreadability claim",
+    "rootFinalLayoutTheme": "controlled document attributes/classes for geometry, not native theme-menu/optical-palette admission",
+    "peerPreviewActualPNG": "8cases1280x813/catalog1280x633; configured1280x900 kept separate",
+    "focusedVisibilityControl": {
+      "source": "finalcc3e WC/Brutalist localbuiltpage,320x1000/root32px",
+      "actualUTC": "02:47:26–02:47:29",
+      "setup": "Mint programmaticfocus clearlynotnative navigation",
+      "input": "3trustednativeTabs Lavender/Coral/Sky",
+      "observation": "AllfocusedBCRs fullybelowstickyHeaderbottom192 andinsideviewport;centerhit-tests truetoown target",
+      "result": "No focus-occlusion counterexample in this boundedcurrentsequence. Historicalelementcrop overlap/readabilitylimits remain; no source repair inferred",
+      "scope": "oneWCcontrol, notallRuntime/allpage/AT"
+    }
+  },
+  "focusSupplement": {
+    "sources": 10,
+    "members": 11,
+    "PNGFiles": 1,
+    "archiveSHA256": "f34817d5832c5b6cfeb3f753c3e16836652883521c692ce90b13d49854cda9ed",
+    "outerPNGDuplicatesSupplement": 1
+  },
+  "visualInspectionScope": "All38main-archivePNGfiles were viewed by root/peers within their respective scopes; one newcontrolPNG was viewed by peer. Identical image bytes across several historicalcaptures do not represent extra runs."
+}

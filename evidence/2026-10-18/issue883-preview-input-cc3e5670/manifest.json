@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "head": "cc3e5670a3a83d4f797fa2af7d942aae876b0f2b",
+  "tree": "7b7a3140ce12156a7f8555174778d0580df3d588",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 7419,
+      "sha256": "81b7857a45b12f4c516e0d02e3803ad3ec2277fa6338bd2dcdc4d5637af027c0"
+    },
+    {
+      "path": "canonical-ci.zip",
+      "bytes": 285178,
+      "sha256": "577add9bae76bcac208f08008cf565dcd7759487b2856873bd00a0f6fe8f2465"
+    },
+    {
+      "path": "ci-summary.json",
+      "bytes": 18937,
+      "sha256": "4b0896d27e89e7d3338b362ca1c4f014aa2a04ef676db98e78ba108661a9c696"
+    },
+    {
+      "path": "evidence.zip",
+      "bytes": 5461729,
+      "sha256": "b107b15e3464e137b4853d58502bdf1ada757b25e7d27b931635f4e17b3ff7b5"
+    },
+    {
+      "path": "focus-control.zip",
+      "bytes": 38928,
+      "sha256": "f34817d5832c5b6cfeb3f753c3e16836652883521c692ce90b13d49854cda9ed"
+    },
+    {
+      "path": "focus-visibility.png",
+      "bytes": 21284,
+      "sha256": "28331069f5e1bf12878647ee070856b3995eaf152f3d80b470a82a2d76f067a4"
+    },
+    {
+      "path": "narrow-dark.png",
+      "bytes": 60316,
+      "sha256": "3ed191922426349968ba0ee385aee15bc1c341f2007c56e7ae79594d630525fe"
+    },
+    {
+      "path": "narrow-light.png",
+      "bytes": 63088,
+      "sha256": "9b5c811973ef78934f383a88a81130c2ec1c15501e5ac4b7378db953d6414d22"
+    },
+    {
+      "path": "select-after.png",
+      "bytes": 114002,
+      "sha256": "789931129af5943b2e44f3989f225069798c07d57e40c30b5ef8e695097382ab"
+    },
+    {
+      "path": "select-before.png",
+      "bytes": 112715,
+      "sha256": "36c9c3c0fe6aa92a5ffd23cf4b9cbd7bbde609aef0f0f03d4204f0bf3ee628d2"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 10242,
+      "sha256": "40931ebb58ba4d902e42f6f8546af13a1b8539b59a7956e37f00cca612a577dc"
+    },
+    {
+      "path": "timing-note.json",
+      "bytes": 699,
+      "sha256": "096367f4b552a8bdfc038ebb3457ab55449e6798a64c6e1a6cb90cfe0239e1e1"
+    },
+    {
+      "path": "tooltip-vue2-held.png",
+      "bytes": 67573,
+      "sha256": "637a31cb99aac5f5a49fb33b6052308b8ad23e5af02c25a1a70c8f86e18ff5ad"
+    }
+  ]
+}
