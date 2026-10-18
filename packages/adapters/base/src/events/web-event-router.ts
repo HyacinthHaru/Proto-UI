@@ -176,7 +176,11 @@ export function createWebProtoEventRouter(opt: {
     const keyboard = native as Event & { [KEYBOARD_PRESS_OWNER]?: object };
     if (native.type === 'keydown' && keyboard[KEYBOARD_PRESS_OWNER]) return;
     // A consumed key keeps its owner when that callback retires its view and moves focus.
-    if (native.type === 'keydown' && rootProxy.__hasProtoListeners('press.commit')) {
+    if (
+      native.type === 'keydown' &&
+      rootProxy.__hasProtoListeners('press.commit') &&
+      shouldRouteToCurrentRoot(native)
+    ) {
       keyboard[KEYBOARD_PRESS_OWNER] = opt.instanceToken ?? rootEl;
     }
     markPressCommitEmittedForRoot(native);
