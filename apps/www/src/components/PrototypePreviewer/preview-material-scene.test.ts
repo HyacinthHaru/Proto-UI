@@ -98,7 +98,8 @@ describe('bounded visible Previewer source layout', () => {
     const outside = document.createElement('div');
     parent.append(outside);
     const s = scene(parent);
-    expect(s.scope.style.padding).toBe('2rem');
+    expect(s.scope.style.paddingBlock).toBe('2rem');
+    expect(s.scope.style.paddingInline).toBe('min(2rem, 8%)');
     expect(s.scope.style.getPropertyValue('--runtime-box-content-min')).toBe('0px');
     expect(s.scope.style.getPropertyValue('--runtime-box-content-padding')).toBe('0px');
     expect(parent.style.getPropertyValue('--runtime-box-content-min')).toBe('10rem');

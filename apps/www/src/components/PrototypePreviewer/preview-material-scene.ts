@@ -29,7 +29,8 @@ export function createPreviewMaterialScene(parent: HTMLElement) {
     // DPR may exceed the source budget; the unchanged lease then fails closed.
     maxWidth: '32rem',
     boxSizing: 'border-box',
-    padding: '2rem',
+    paddingBlock: '2rem',
+    paddingInline: 'min(2rem, 8%)',
   });
   // This visible scene already owns preview padding and popup space. A nested
   // centered RuntimeBox reserve would leave real flow boxes behind the popup,
