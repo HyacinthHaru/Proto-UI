@@ -1,0 +1,50 @@
+{
+  "excludesItself": true,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 7547,
+      "sha256": "76a91e42e778e18544d6bd67bf877e3d2d9622f6dc1f4a85f8e7c987dbd6e281"
+    },
+    {
+      "path": "images/brutalist-failure.png",
+      "bytes": 32894,
+      "sha256": "f7d943a0b9dba151ec02c680217edc88c6584c7401c90e90542ac284cdc2a6a7"
+    },
+    {
+      "path": "images/brutalist-react-runtime-narrow-focus-ring.png",
+      "bytes": 12831,
+      "sha256": "dc640c0542fbf4b5f2173135a8502d0cd2a98551a44e9c3f56e160f02080223e"
+    },
+    {
+      "path": "images/brutalist-vue-runtime-narrow-focus-ring.png",
+      "bytes": 12541,
+      "sha256": "6244f2a84487e82044cee1f9e31b15048ffc02b79812a5c00959955b4493426e"
+    },
+    {
+      "path": "images/brutalist-vue2-runtime-narrow-focus-ring.png",
+      "bytes": 12727,
+      "sha256": "49b992350673afff70f5aba0d4c95f8a571eb3f5398d1d2eb298dd22f9354850"
+    },
+    {
+      "path": "images/brutalist-wc-runtime-narrow-focus-ring.png",
+      "bytes": 14016,
+      "sha256": "4d2275720779f6e00806ec9b4f59331893cc3cf56bfd3331efd651df867d8a61"
+    },
+    {
+      "path": "packet.json",
+      "bytes": 13991,
+      "sha256": "c601206819bd5f984db09124173419ba442294f0a79754709daa3f443f02a677"
+    },
+    {
+      "path": "raw-public-map.json",
+      "bytes": 292740,
+      "sha256": "c41209e35c0836a8ad6b3bb616b650a1f1298093dbb0d48c197c2da52db8c723"
+    },
+    {
+      "path": "records.zip",
+      "bytes": 1235888,
+      "sha256": "4ebb7eede2a28fa848b4c1711ab86425f599048a3c5ee7c1a5f6846bf9aa6ea6"
+    }
+  ]
+}

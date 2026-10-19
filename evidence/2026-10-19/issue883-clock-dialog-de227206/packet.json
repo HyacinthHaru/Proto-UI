@@ -1,0 +1,357 @@
+{
+  "schemaVersion": 1,
+  "preparedCheckpointAt": "2026-10-19T15:21:30.528761+00:00",
+  "state": "Prepared local additive evidence with terminalDEcanonicalfailure andcomplete15:11GitHubcheckpoint; notpublication oracceptance.",
+  "source": {
+    "head": "de2272060fd47cd5b37991e4f7a049c254beabda",
+    "tree": "3db4ccee88a9df35c4b71633f0792f6ca0c6b2b0",
+    "parent": "dd56f700cee9505939f740b30ac54b338226f821",
+    "main": "042f1e5740e1a809b9ca238593f5bb01a1f8a8e3",
+    "currentDelta": "Dialog test installs existing pinned HappyDOM callback keeper; adjacent .d.mts declares existing helper. Original case body,20ms and expected values retained. No productionPortal change, dependency upgrade or vendor patch."
+  },
+  "clockEpochs": {
+    "precommitV1": "8c plusfirstclockcandidate, distinct execution",
+    "precommitV2": "8c plusfinalclockcandidate, distinct execution",
+    "DD": "signedclock-observation commit, clean native120; officialHomepage9/9 but wholebrowser2exit124",
+    "DE": "Finalkeeperfixture/declaration commit: canonicalterminalfailed, currentHomepage7pass2fail; originalBrutalist1000msreject preserved."
+  },
+  "actualLocalEvidence": {
+    "DDOriginal129Max2": {
+      "passed": 1802,
+      "failed": 5,
+      "DialogFalse": "failed originalisConnected assertion"
+    },
+    "DDNative": {
+      "passed": 120,
+      "failed": 0
+    },
+    "privateThreeSourcesJSONOnly": {
+      "passed": 1803,
+      "failed": 4,
+      "traceCapture": "failed; no retainedconsole trace"
+    },
+    "setupError": {
+      "testsExecuted": 0,
+      "classification": "nestedwrapper/staleoutput setup error, not test failure"
+    },
+    "privateThreeSourcesDefaultAndJSON": {
+      "passed": 1803,
+      "failed": 4,
+      "events": [142, 154],
+      "outcome": "positivecontrols only"
+    },
+    "postFailureSettlement": {
+      "passed": 1802,
+      "failed": 5,
+      "factsPersistedAfterPromiseAndTaskComplete": true
+    },
+    "postFailureListenerInventory": {
+      "passed": 1803,
+      "failed": 4,
+      "onlyPassedMarkers": true,
+      "naturalFailureWeakRefInventory": false
+    },
+    "isolatedRealGC": {
+      "ESM": [1, 1, 1],
+      "CJS": [1, 1, 1],
+      "expected": [1, 2, 2],
+      "explicitNativeGC": true,
+      "notNaturalDialogGCCauseProof": true
+    },
+    "existingKeeperRegression": {
+      "nodeTestsPassed": 1,
+      "unshimmedNegativeRetained": true,
+      "repairedNotifications": 6,
+      "retainedAfterDisconnect": 0
+    },
+    "keeperFocused": {
+      "DialogPassed": 2,
+      "failed": 0
+    },
+    "types": {
+      "first": "TS7016 failure retained",
+      "final": "precommit candidate934files,0errors,0warnings,14hints; declaration-provenance addendum retained"
+    },
+    "DEPostcommit129": {
+      "passed": 1803,
+      "failed": 4,
+      "DialogPassed": 2,
+      "keyboardOwnerPassed": 17,
+      "remainingFailures": "four authored CheckboxGroup token expectations; not all attributed to Form nestedsubject"
+    }
+  },
+  "officialDD": {
+    "head": "dd56f700cee9505939f740b30ac54b338226f821",
+    "run": 39264150677,
+    "browser2Job": 118100123809,
+    "HomepagePassed": 9,
+    "HomepageFailed": 0,
+    "wholeShardExit": 124,
+    "wholeShardCompleteSummary": false,
+    "pollFulfilledMs": 712.944262,
+    "conditionalMODeliveryRelativeMs": [601.807054, 603.145828],
+    "clockBoundary": "Assumes same document and approximatelystable relative clock/rate. MO delivery isnot DOMmutationinstant; setupRPC mayprewarm. Historical8c failure isnot reclassified.",
+    "general": "78public-docdrift beforeordinaryVitest",
+    "package": {
+      "job": 118101480142,
+      "actualBuilt": 44,
+      "declared": 47,
+      "manifests": 47,
+      "policyTestsPassed": 9,
+      "PASS": 4,
+      "ADVISORY": 5
+    }
+  },
+  "CLI": {
+    "mailbox": "https://github.com/Proto-UI/Proto-UI/issues/902#issuecomment-6268946005",
+    "coordination": "https://github.com/Proto-UI/Proto-UI/issues/890#issuecomment-6269763641",
+    "ownerAcknowledgement": "pending; authorrequests are notownerack",
+    "scope": "Prior exactsource nestedinheritedFieldRoot subject gap isrouted tocollectionowner;906downstream; noCSS/whitelist workaround.",
+    "routingReceipt": "records/r13/final-head/coordination/routing-receipt.json"
+  },
+  "visual": {
+    "developmentServer": {
+      "sourceHead": "dd56f700cee9505939f740b30ac54b338226f821",
+      "nativePNGCount": 48,
+      "rootViewedSelected": 4,
+      "other44": "not individually reviewed byselectedreceipt; PNG bytesnot mirrored",
+      "viewport": {
+        "width": 320,
+        "height": 300
+      },
+      "boundary": "Selecteddevelopment-server Runtimefocuscaptures, not originaldeadlineframes, fullpage/allstates/optical/ATor remotehostingacceptance."
+    },
+    "hostedFailure": {
+      "sourceHead": "de2272060fd47cd5b37991e4f7a049c254beabda",
+      "artifact": 12197281330,
+      "captureAt": "2026-10-19T14:51:06.985Z",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "rootActuallyViewed": true,
+      "boundary": "Late-readyWCBrutalistHeadercapture afteroriginalfailure,notdeadlineinstant. SameoriginalPNGbytesasold8c capture, retainedseparatecurrentmetadata; noediting/relabel."
+    },
+    "totalSelectedPNG": 5,
+    "uniquePNGHashesInThisPacket": 5,
+    "other44DevelopmentPNG": "not individually reviewed byselectedreceipt andnotmirrored"
+  },
+  "pendingRootAppend": [
+    {
+      "kind": "explicitcollectionownerack",
+      "state": "pendingRootAppend; latest902/890comments areownhandoff/index only"
+    }
+  ],
+  "acceptance": {
+    "disposition": "partial",
+    "reviewDecision": "ABSTAIN",
+    "formalApproval": false,
+    "allCanonicalPassed": false,
+    "merged": false,
+    "issueClosed": false
+  },
+  "priorEvidence": {
+    "url": "https://github.com/HyacinthHaru/Proto-UI/tree/cf42f104cabc5c7f9f8e7e5975a8eadc35c7ad97/evidence/2026-10-19/issue883-family-commit-poll-8c14e0d5",
+    "policy": "immutable priorR12 checkpoint referenced, not duplicatedas newexecution"
+  },
+  "currentDE": {
+    "head": "de2272060fd47cd5b37991e4f7a049c254beabda",
+    "tree": "3db4ccee88a9df35c4b71633f0792f6ca0c6b2b0",
+    "canonicalRun": 39271118740,
+    "canonicalConclusion": "failure",
+    "canonicalJobs": 22,
+    "jobConclusions": {
+      "success": 13,
+      "failure": 9
+    },
+    "completeBrowserShards": ["3/8", "7/8", "4/8", "6/8", "5/8"],
+    "completeOnlyBrowserTests": {
+      "passed": 550,
+      "failed": 8,
+      "skipped": 15,
+      "todo": 0
+    },
+    "incompleteBrowserShards": ["2/8", "1/8", "8/8"],
+    "incompleteExit": 124,
+    "allEightTotalKnown": false,
+    "Homepage": {
+      "passed": 7,
+      "failed": 2,
+      "failures": ["originalBrutalistfamilycommit1000msmatcher", "mobileDocsShellcase"],
+      "doesNotBorrowDD9of9": true
+    },
+    "Brutalist": {
+      "job": 118124818149,
+      "artifact": 12197281330,
+      "outcome": "rejected",
+      "configuredMatcherMs": 1000,
+      "observedRejectionMs": 1001.1362579999986,
+      "thirdReturnRelativeMs": 1223.4336729999923,
+      "thirdReturnAfterRejectMs": 222.297415,
+      "conditionalMODeliveryRelativeMs": [965.8613360000163, 1010.587337000019],
+      "DOMBeforeDeadlineEstablished": false,
+      "reason": "Conditionaldeliveryintervalcrossesdeadline; MOcallbackdeliveryisnotDOMsettertime, setupRPC/observercanperturb; no rootcauseclosure."
+    },
+    "General": "78public-docdrift beforeordinaryVitest",
+    "types": {
+      "files": 934,
+      "errors": 0,
+      "warnings": 0,
+      "hints": 14
+    },
+    "package": {
+      "actualBuilt": 44,
+      "declaredPackages": 47,
+      "manifests": 47,
+      "policyTestsPassed": 9,
+      "PASS": 4,
+      "ADVISORY": 5
+    },
+    "failureArchive": {
+      "bytes": 57766265,
+      "sha256": "aa565599986fd6bf5fef1659c6d1e93135c3c7005ca062e32a788fadf44b97fe",
+      "members": 229,
+      "selectedMembers": 4,
+      "largeArchiveMirrored": false
+    },
+    "wholeGitHubCheckpoint": {
+      "readStart": "2026-10-19T15:11:18.423627+00:00",
+      "readEnd": "2026-10-19T15:11:34.960169+00:00",
+      "workflows": 37,
+      "workflowConclusions": {
+        "success": 26,
+        "failure": 11
+      },
+      "checkCount": 105,
+      "checkConclusions": {
+        "failure": 36,
+        "success": 69
+      },
+      "allWorkflowsAndJobsTerminal": true,
+      "comments": 28,
+      "reviews": 0,
+      "threads": 0,
+      "mergeState": "BLOCKED",
+      "reviewDecision": "REVIEW_REQUIRED",
+      "externalVercelStatus": "failure:forkauthorization; separatefromGitHubcanonicaltests",
+      "DCO": "success"
+    },
+    "earlier1506Checkpoint": "Retainedasactualhistorical26success10failure1running metadata; supersededonlybycurrent15:11checkpoint."
+  },
+  "currentResult": "failed",
+  "remaining": [
+    "OriginalBrutalisttimeout andmobileDocsShellfailure remain",
+    "Othercanonical/native/stylefailures notblanketclassifiedasinherited ornewC",
+    "Fourlocaltokenfailuresremain; nestedFormsubjectdoesnotexplainall",
+    "ExplicitCLIcollectionownerack andformalreview/acceptance remain"
+  ],
+  "attributionProjectionBoundary": "Already-public Gitcommit attributionreceiptlines areomitted atdeclaredJSONpaths. RawGitobjects/records remainunchanged; signatures/digestsrefer torawobjects, notprojectedmessages.",
+  "terminalPeerReview": {
+    "record": "records/r13/final-head/ci/independent-terminal-clock-review.json",
+    "rawSHA256": "1e7d73f69e7f63a81e08f618e029637f32416255735feccda240ac1cab5abdfb",
+    "findingCount": 0,
+    "disposition": "partial",
+    "reviewDecision": "ABSTAIN",
+    "scope": "source/arithmetic/artifactbytecheck, no newpixelreview/formalapproval"
+  },
+  "counts": {
+    "rawInputs": 280,
+    "rawBytes": 7774110,
+    "publicRecordBytes": 9031300,
+    "derivedRecords": 175,
+    "PNGFiles": 5,
+    "uniquePNGHashes": 5,
+    "groups": {
+      "clock-candidates": 7,
+      "clock-static-review": 3,
+      "clock-executions": 10,
+      "clock-types": 4,
+      "dd-source": 7,
+      "dd-owner-controls": 1,
+      "dd-clean-node-red": 3,
+      "dd-native": 5,
+      "dd-native-sidecars": 58,
+      "selected-native-PNG": 4,
+      "private3-source": 6,
+      "private3-design-and-run": 10,
+      "private3-json-only": 4,
+      "setup-error-zero-test": 2,
+      "private3-default-json": 4,
+      "transport-source-receipts": 10,
+      "transport-reconciliation": 3,
+      "postfailure-completion": 13,
+      "postfailure-listener-inventory": 11,
+      "dialog-source-analysis": 11,
+      "isolated-GC-negative": 6,
+      "upstream-reference": 3,
+      "host-profile-review": 1,
+      "keeper-local-validation": 9,
+      "keeper-source-final": 14,
+      "keeper-repository-source": 3,
+      "final-de-node": 3,
+      "CLI-owner-mailbox": 3,
+      "official-dd-clock-and-package": 11,
+      "execution-wrapper": 1,
+      "final-de-canonical-jobs": 24,
+      "final-de-canonical-binding": 10,
+      "final-de-hosted-failure": 8,
+      "final-de-validation-routing": 6,
+      "final-de-terminal-peer-review": 2
+    }
+  },
+  "archive": {
+    "file": "records.zip",
+    "members": 281,
+    "bytes": 1235888,
+    "sha256": "4ebb7eede2a28fa848b4c1711ab86425f599048a3c5ee7c1a5f6846bf9aa6ea6"
+  },
+  "publicMappingSHA256": "c41209e35c0836a8ad6b3bb616b650a1f1298093dbb0d48c197c2da52db8c723",
+  "selectedImages": [
+    {
+      "outer": "images/brutalist-wc-runtime-narrow-focus-ring.png",
+      "member": "records/r13/current-head/native-lifecycle/evidence/header-breakpoint/brutalist-wc-runtime-narrow-focus-ring.png",
+      "source": "<R13>/current-head/native-lifecycle/evidence/header-breakpoint/brutalist-wc-runtime-narrow-focus-ring.png",
+      "sha256": "4d2275720779f6e00806ec9b4f59331893cc3cf56bfd3331efd651df867d8a61",
+      "bytes": 14016
+    },
+    {
+      "outer": "images/brutalist-react-runtime-narrow-focus-ring.png",
+      "member": "records/r13/current-head/native-lifecycle/evidence/header-breakpoint/brutalist-react-runtime-narrow-focus-ring.png",
+      "source": "<R13>/current-head/native-lifecycle/evidence/header-breakpoint/brutalist-react-runtime-narrow-focus-ring.png",
+      "sha256": "dc640c0542fbf4b5f2173135a8502d0cd2a98551a44e9c3f56e160f02080223e",
+      "bytes": 12831
+    },
+    {
+      "outer": "images/brutalist-vue-runtime-narrow-focus-ring.png",
+      "member": "records/r13/current-head/native-lifecycle/evidence/header-breakpoint/brutalist-vue-runtime-narrow-focus-ring.png",
+      "source": "<R13>/current-head/native-lifecycle/evidence/header-breakpoint/brutalist-vue-runtime-narrow-focus-ring.png",
+      "sha256": "6244f2a84487e82044cee1f9e31b15048ffc02b79812a5c00959955b4493426e",
+      "bytes": 12541
+    },
+    {
+      "outer": "images/brutalist-vue2-runtime-narrow-focus-ring.png",
+      "member": "records/r13/current-head/native-lifecycle/evidence/header-breakpoint/brutalist-vue2-runtime-narrow-focus-ring.png",
+      "source": "<R13>/current-head/native-lifecycle/evidence/header-breakpoint/brutalist-vue2-runtime-narrow-focus-ring.png",
+      "sha256": "49b992350673afff70f5aba0d4c95f8a571eb3f5398d1d2eb298dd22f9354850",
+      "bytes": 12727
+    },
+    {
+      "outer": "images/brutalist-failure.png",
+      "member": "records/r13/final-head/official-browser2-artifact/selected/header-breakpoint/brutalist-failure.png",
+      "source": "<R13>/final-head/official-browser2-artifact/selected/header-breakpoint/brutalist-failure.png",
+      "sha256": "f7d943a0b9dba151ec02c680217edc88c6584c7401c90e90542ac284cdc2a6a7",
+      "bytes": 32894
+    }
+  ],
+  "projection": {
+    "builderSHA256": "8affbabf2e87aeef41a7750c13b13b52eb63e3d22078f118fbd0af1ea07b617d",
+    "formatterVersion": "3.8.1",
+    "formatterConfigSHA256": "e7835f5220f445791624fb5542481bef2f0dad438eea2990a5911175cf30f995",
+    "ZIPTimestamp": "2026-10-19T00:00:00",
+    "compression": "DEFLATE level9",
+    "mappingMatchesEmbeddedZIPMapping": true,
+    "rawRecordsUnmodified": true,
+    "sourcesAreNotStandaloneRecipes": true
+  },
+  "publication": "Prepared private staging only; no commit/push/upload/comment performed by this builder."
+}
