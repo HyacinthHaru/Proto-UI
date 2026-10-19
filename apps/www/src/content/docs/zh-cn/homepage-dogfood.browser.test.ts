@@ -10,7 +10,7 @@ import {
   headerPreferenceLeaseIssues,
   measureHeaderPreferenceFocusRing,
 } from './site-header-breakpoint-evidence';
-import type { Browser, ElementHandle, Page } from 'playwright-core';
+import type { Browser, ElementHandle, JSHandle, Page } from 'playwright-core';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { launchBrowser, RUNTIMES, startServer, stopServer } from './browser-harness';
 const LABELS = { wc: 'Web Components', react: 'React', vue: 'Vue', vue2: 'Vue 2' } as const;
@@ -1029,6 +1029,91 @@ for (const family of ['shadcn', 'brutalist'] as const) {
       calls: familyCommitCalls,
       rejectionSnapshot: null as typeof familyCommitCalls | null,
     };
+    const observeFamilyMutation = () => {
+      const target = document.querySelector<HTMLElement>('[data-homepage-runtime]')!;
+      const deliveries: Array<{
+        deliveredMs: number;
+        oldValues: Array<string | null>;
+        currentValueAtDelivery: string | null;
+        connected: boolean;
+      }> = [];
+      let retainedRecords = 0;
+      let droppedRecords = 0;
+      let observerError: string | null = null;
+      const observer = new MutationObserver((records) => {
+        try {
+          const deliveredMs = performance.now();
+          const retained = records.slice(0, 64 - retainedRecords);
+          retainedRecords += retained.length;
+          droppedRecords += records.length - retained.length;
+          if (retained.length)
+            deliveries.push({
+              deliveredMs,
+              oldValues: retained.map((record) => record.oldValue),
+              currentValueAtDelivery: target.getAttribute('data-family'),
+              connected: target.isConnected,
+            });
+        } catch (error) {
+          observerError = String(error);
+        }
+      });
+      observer.observe(target, {
+        attributes: true,
+        attributeFilter: ['data-family'],
+        attributeOldValue: true,
+      });
+      return {
+        target,
+        observer,
+        deliveries,
+        getDroppedRecords: () => droppedRecords,
+        getObserverError: () => observerError,
+        initialValue: target.getAttribute('data-family'),
+        timeOrigin: performance.timeOrigin,
+        setupPageMs: performance.now(),
+      };
+    };
+    let familyMutationHandle: JSHandle<ReturnType<typeof observeFamilyMutation>> | null = null;
+    const familyMutationTiming = {
+      clock: 'Browser performance.now() milliseconds; MutationObserver delivery, not mutation time',
+      setup: null as { nodeStartedMs: number; nodeReturnedMs: number } | null,
+      collect: null as { nodeStartedMs: number; nodeReturnedMs: number } | null,
+      facts: null as unknown,
+      errors: [] as string[],
+    };
+    const collectFamilyMutation = async () => {
+      const handle = familyMutationHandle;
+      if (!handle) return;
+      familyMutationHandle = null;
+      const nodeStartedMs = performance.now();
+      try {
+        familyMutationTiming.facts = await handle.evaluate((state) => {
+          const pending = state.observer.takeRecords();
+          const pendingOldValues = pending.slice(0, 64).map((record) => record.oldValue);
+          state.observer.disconnect();
+          return {
+            timeOrigin: state.timeOrigin,
+            collectedTimeOrigin: performance.timeOrigin,
+            setupPageMs: state.setupPageMs,
+            collectedPageMs: performance.now(),
+            initialValue: state.initialValue,
+            deliveries: state.deliveries,
+            pendingOldValues,
+            pendingDroppedRecords: Math.max(0, pending.length - pendingOldValues.length),
+            currentValueAtCollection: state.target.getAttribute('data-family'),
+            currentRootSame: document.querySelector('[data-homepage-runtime]') === state.target,
+            connected: state.target.isConnected,
+            droppedRecords: state.getDroppedRecords(),
+            observerError: state.getObserverError(),
+          };
+        });
+      } catch (error) {
+        familyMutationTiming.errors.push(String(error));
+      } finally {
+        familyMutationTiming.collect = { nodeStartedMs, nodeReturnedMs: performance.now() };
+        await handle.dispose().catch((error) => familyMutationTiming.errors.push(String(error)));
+      }
+    };
     page.on('console', (message) => {
       if (message.type() === 'error') consoleErrors.push(message.text());
     });
@@ -1057,6 +1142,15 @@ for (const family of ['shadcn', 'brutalist'] as const) {
       stage = 'initial-ready';
       await ready(page, 'wc');
       if (family === 'brutalist') {
+        // Bracket a page-clock sample before input; keep the original click/poll interval intact.
+        const nodeStartedMs = performance.now();
+        try {
+          familyMutationHandle = await page.evaluateHandle(observeFamilyMutation);
+        } catch (error) {
+          familyMutationTiming.errors.push(String(error));
+        } finally {
+          familyMutationTiming.setup = { nodeStartedMs, nodeReturnedMs: performance.now() };
+        }
         stage = 'family-open';
         await revealHeaderPreferences(page);
         const control = page.locator(
@@ -1100,6 +1194,7 @@ for (const family of ['shadcn', 'brutalist'] as const) {
           .toBe(family);
         familyCommitTiming.finishedMs = performance.now();
         familyCommitTiming.outcome = 'fulfilled';
+        await collectFamilyMutation();
         stage = 'family-ready';
         await ready(page, 'wc');
       }
@@ -1289,6 +1384,7 @@ for (const family of ['shadcn', 'brutalist'] as const) {
         familyCommitTiming.outcome = 'rejected';
         familyCommitTiming.rejectionSnapshot = familyCommitCalls.map((call) => ({ ...call }));
       }
+      await collectFamilyMutation();
       const failureState = await page
         .evaluate(() => {
           const header = document.querySelector<HTMLElement>('[data-homepage-runtime]');
@@ -1329,6 +1425,7 @@ for (const family of ['shadcn', 'brutalist'] as const) {
         stage,
         message: String(error),
         familyCommitTiming,
+        familyMutationTiming,
         records,
         ringFailures,
         errors,
@@ -1340,13 +1437,25 @@ for (const family of ['shadcn', 'brutalist'] as const) {
       await writeFile(
         path.join(evidenceDirectory, `${family}-lifecycle.json`),
         JSON.stringify(
-          { source, family, records, ringFailures, errors, consoleErrors, familyCommitTiming },
+          {
+            source,
+            family,
+            records,
+            ringFailures,
+            errors,
+            consoleErrors,
+            familyCommitTiming,
+            familyMutationTiming,
+          },
           null,
           2
         )
       );
       if (family === 'brutalist') {
-        console.info('[family-commit-poll-timing]', JSON.stringify({ source, familyCommitTiming }));
+        console.info(
+          '[family-commit-poll-timing]',
+          JSON.stringify({ source, familyCommitTiming, familyMutationTiming })
+        );
       }
       await context.close();
     }
