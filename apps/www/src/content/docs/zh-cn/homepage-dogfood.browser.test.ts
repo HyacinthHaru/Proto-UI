@@ -1010,6 +1010,25 @@ for (const family of ['shadcn', 'brutalist'] as const) {
     const ringFailures: string[] = [];
     const errors: string[] = [];
     const consoleErrors: string[] = [];
+    const familyCommitCalls: Array<{
+      call: number;
+      startedMs: number;
+      returnedMs?: number;
+      value?: string | null;
+      error?: string;
+    }> = [];
+    const familyCommitTiming = {
+      clock: 'Node performance.now() milliseconds',
+      timeOrigin: performance.timeOrigin,
+      startedMs: null as number | null,
+      finishedMs: null as number | null,
+      outcome: 'not-run',
+      totalCalls: 0,
+      droppedCalls: 0,
+      observerError: false,
+      calls: familyCommitCalls,
+      rejectionSnapshot: null as typeof familyCommitCalls | null,
+    };
     page.on('console', (message) => {
       if (message.type() === 'error') consoleErrors.push(message.text());
     });
@@ -1051,9 +1070,36 @@ for (const family of ['shadcn', 'brutalist'] as const) {
           .getByRole('option', { name: 'Brutalist', exact: true })
           .click();
         stage = 'family-commit';
+        familyCommitTiming.startedMs = performance.now();
+        familyCommitTiming.outcome = 'pending';
         await expect
-          .poll(() => page.locator('[data-homepage-runtime]').getAttribute('data-family'))
+          .poll(() => {
+            const call: (typeof familyCommitCalls)[number] = {
+              call: ++familyCommitTiming.totalCalls,
+              startedMs: performance.now(),
+            };
+            if (familyCommitCalls.length < 64) familyCommitCalls.push(call);
+            else familyCommitTiming.droppedCalls += 1;
+            const request = page.locator('[data-homepage-runtime]').getAttribute('data-family');
+            void request
+              .then(
+                (value) => {
+                  call.returnedMs = performance.now();
+                  call.value = value;
+                },
+                (error) => {
+                  call.returnedMs = performance.now();
+                  call.error = String(error);
+                }
+              )
+              .catch(() => {
+                familyCommitTiming.observerError = true;
+              });
+            return request;
+          })
           .toBe(family);
+        familyCommitTiming.finishedMs = performance.now();
+        familyCommitTiming.outcome = 'fulfilled';
         stage = 'family-ready';
         await ready(page, 'wc');
       }
@@ -1238,6 +1284,11 @@ for (const family of ['shadcn', 'brutalist'] as const) {
         []
       );
     } catch (error) {
+      if (stage === 'family-commit') {
+        familyCommitTiming.finishedMs = performance.now();
+        familyCommitTiming.outcome = 'rejected';
+        familyCommitTiming.rejectionSnapshot = familyCommitCalls.map((call) => ({ ...call }));
+      }
       const failureState = await page
         .evaluate(() => {
           const header = document.querySelector<HTMLElement>('[data-homepage-runtime]');
@@ -1277,6 +1328,7 @@ for (const family of ['shadcn', 'brutalist'] as const) {
       await save('failure', {
         stage,
         message: String(error),
+        familyCommitTiming,
         records,
         ringFailures,
         errors,
@@ -1287,8 +1339,15 @@ for (const family of ['shadcn', 'brutalist'] as const) {
     } finally {
       await writeFile(
         path.join(evidenceDirectory, `${family}-lifecycle.json`),
-        JSON.stringify({ source, family, records, ringFailures, errors, consoleErrors }, null, 2)
+        JSON.stringify(
+          { source, family, records, ringFailures, errors, consoleErrors, familyCommitTiming },
+          null,
+          2
+        )
       );
+      if (family === 'brutalist') {
+        console.info('[family-commit-poll-timing]', JSON.stringify({ source, familyCommitTiming }));
+      }
       await context.close();
     }
   }, 180_000);
