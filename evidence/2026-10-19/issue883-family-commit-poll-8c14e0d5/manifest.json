@@ -1,0 +1,75 @@
+{
+  "excludesItself": true,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 8564,
+      "sha256": "cac5c9d79b065688944dbddda1c1cf9d4cce35dd46a06fa907b1a2653cfdfe40"
+    },
+    {
+      "path": "images/r11/current-head-67d8f62b/official-browser2-artifact/selected/header-breakpoint/brutalist-failure.png",
+      "bytes": 32894,
+      "sha256": "f7d943a0b9dba151ec02c680217edc88c6584c7401c90e90542ac284cdc2a6a7"
+    },
+    {
+      "path": "images/r12/official-browser2-artifact/selected/header-breakpoint/brutalist-failure.png",
+      "bytes": 32894,
+      "sha256": "f7d943a0b9dba151ec02c680217edc88c6584c7401c90e90542ac284cdc2a6a7"
+    },
+    {
+      "path": "images/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/brutalist-react-keyboard-focus.png",
+      "bytes": 44953,
+      "sha256": "b3d3561ef9329206b32b8a411072defd432c3b5246e650e36aea6c8c7164fc60"
+    },
+    {
+      "path": "images/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/brutalist-vue-keyboard-focus.png",
+      "bytes": 44907,
+      "sha256": "243c253ad5aace90633ad05e8a1c1879b420aa0a94e4bc14c3969bd68dddb150"
+    },
+    {
+      "path": "images/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/brutalist-vue2-keyboard-focus.png",
+      "bytes": 44982,
+      "sha256": "efd87f82e747d550980867f0e076ac01f1ac75f7ef806c6c222deda63452e65d"
+    },
+    {
+      "path": "images/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/brutalist-wc-keyboard-focus.png",
+      "bytes": 44865,
+      "sha256": "420591181aface50692800a8eec573466d845ac5dbb3603e71aab936b976e822"
+    },
+    {
+      "path": "images/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/shadcn-react-keyboard-focus.png",
+      "bytes": 35889,
+      "sha256": "9647d327b5b2882b129b3434300e47c0fbd3d36a31370c1e853e6006e001002e"
+    },
+    {
+      "path": "images/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/shadcn-vue-keyboard-focus.png",
+      "bytes": 35778,
+      "sha256": "a41c60d95d79d419b97653c7e52f6b15bbce7475a2cd906e7688c7aaee34e231"
+    },
+    {
+      "path": "images/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/shadcn-vue2-keyboard-focus.png",
+      "bytes": 33819,
+      "sha256": "00c63bcd65530478a422ef53f29b3a7abd043fcd72af59353634b2374de0ec8c"
+    },
+    {
+      "path": "images/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/shadcn-wc-keyboard-focus.png",
+      "bytes": 39073,
+      "sha256": "0415f939565c9cbebd0d2b1c4557683a8c547b137305079f73a56145dd6a8a4c"
+    },
+    {
+      "path": "packet.json",
+      "bytes": 4369,
+      "sha256": "085111dd88f80033e9e5ffa281c7936d70f06b2eac88b1f38c9471b86a5b4888"
+    },
+    {
+      "path": "raw-public-map.json",
+      "bytes": 107370,
+      "sha256": "8ba495881ddc62cb603a38eb674988fd63d952a57028b4c021db81f1ae78be6f"
+    },
+    {
+      "path": "records.zip",
+      "bytes": 1269195,
+      "sha256": "c882ad93690b709e71ff30ac77999e3684f9187e1c2204c5e71e75db92ea622a"
+    }
+  ]
+}

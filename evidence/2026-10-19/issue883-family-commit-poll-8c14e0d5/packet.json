@@ -1,0 +1,157 @@
+{
+  "schemaVersion": 1,
+  "checkpointAt": "2026-10-19T12:59:38.143397+00:00",
+  "source": {
+    "head": "8c14e0d56c4402e9e54401c6d12ef994e0bde526",
+    "tree": "3ddd326b5891c5cb230cadaa75ccdabf10cb95ae",
+    "main": "042f1e5740e1a809b9ca238593f5bb01a1f8a8e3",
+    "latestPaths": 1,
+    "latestAdditions": 61,
+    "latestDeletions": 2
+  },
+  "hostedPoll": {
+    "run": 39252003235,
+    "job": 118059224444,
+    "artifact": 12187263780,
+    "outcome": "rejected",
+    "configuredMatcherMs": 1000,
+    "observedRejectionMs": 1001.650426,
+    "call3StartMs": 364.825557,
+    "call3ReturnMs": 1134.289297,
+    "lateReturnAfterRejectMs": 132.638871,
+    "dropped": 0,
+    "observerError": false,
+    "beforeOwnerLoop": true,
+    "DOMCommitTimeEstablished": false
+  },
+  "local": {
+    "original129Max2": {
+      "passed": 1802,
+      "failed": 5
+    },
+    "isolatedDialog": {
+      "passed": 2,
+      "failed": 0
+    },
+    "original129Max1": {
+      "passed": 1803,
+      "failed": 4
+    },
+    "privateObserved129Max2": {
+      "passed": 1803,
+      "failed": 4,
+      "failureSnapshotTriggered": false,
+      "restored": true
+    },
+    "native": {
+      "passed": 120,
+      "failed": 0
+    },
+    "currentOwnerControlsPassed": 17,
+    "CLI": {
+      "passed": 2,
+      "failed": 2,
+      "isolatedSourceOnly": true
+    }
+  },
+  "officialPreview": {
+    "run": 39252002967,
+    "job": 118057828610,
+    "artifact": 12185508935,
+    "archiveBytes": 21139555,
+    "archiveSHA256": "3c9b5ac0440660763ce365aea876edd6d66713cd0bf7cc621b76795100a5e43c",
+    "files": 3835,
+    "html": 669,
+    "expandedBytes": 104046139,
+    "nativePassed": 4,
+    "filtered": 16,
+    "allMemberBytesEqual": true,
+    "remoteHostingAcceptance": false
+  },
+  "CI": {
+    "at": "2026-10-19T12:54:27.350471+00:00",
+    "head": "8c14e0d56c4402e9e54401c6d12ef994e0bde526",
+    "main": "042f1e5740e1a809b9ca238593f5bb01a1f8a8e3",
+    "comments": 24,
+    "reviews": 0,
+    "threads": 0,
+    "checkCounts": {
+      "failure": 35,
+      "success": 69
+    },
+    "runCounts": {
+      "success": 26,
+      "failure": 10
+    },
+    "CI": {
+      "run": 39252003235,
+      "status": "completed",
+      "conclusion": "failure",
+      "jobs": {
+        "success": 13,
+        "failure": 9
+      }
+    },
+    "errors": []
+  },
+  "acceptance": {
+    "disposition": "partial",
+    "reviewDecision": "ABSTAIN",
+    "formalIndependentApproval": false,
+    "merged": false,
+    "issueClosed": false
+  },
+  "remaining": [
+    "Actual DOM commit timestamp versus read transport/main-thread scheduling not established",
+    "Original max2 Dialog origin failure not explained by positive controls",
+    "CLI nested-handle Rule collection gap remains with owning workstream",
+    "Other canonical docs/browser failures,exacthead independent acceptance and integration remain"
+  ],
+  "canonicalPackageBuild": {
+    "job": 118058348699,
+    "actualBuilt": 44,
+    "declaredPackages": 47,
+    "correction": "records/r12/ci-logs/package-count-correction.json",
+    "originalWrongDerivedPreserved": true
+  },
+  "counts": {
+    "rawSources": 144,
+    "rawBytes": 5879657,
+    "publicRecordBytes": 6510377,
+    "transformedSources": 73,
+    "pngFiles": 10,
+    "uniquePNGHashes": 9,
+    "groups": {
+      "poll-design": 9,
+      "baseline67": 2,
+      "precommit-focused": 4,
+      "precommit-types": 2,
+      "precommit-summary": 1,
+      "source8c": 5,
+      "node-max2": 3,
+      "isolated-dialog": 3,
+      "node-max1": 3,
+      "native8c": 5,
+      "cli-current-probe": 15,
+      "cli-owner-trace": 6,
+      "official-preview8c": 33,
+      "historical67-official-failure": 6,
+      "official8c-partial-ci": 4,
+      "official-poll-8c": 10,
+      "final-local-audit": 3,
+      "dialog-controls": 12,
+      "source-publication": 1,
+      "canonical-ci": 16,
+      "canonical-count-correction": 1
+    }
+  },
+  "archive": {
+    "file": "records.zip",
+    "bytes": 1269195,
+    "sha256": "c882ad93690b709e71ff30ac77999e3684f9187e1c2204c5e71e75db92ea622a",
+    "members": 145
+  },
+  "publicMappingSHA256": "8ba495881ddc62cb603a38eb674988fd63d952a57028b4c021db81f1ae78be6f",
+  "preparation": "Local prepared packet only; no upload, approval or merge claim.",
+  "formattingBoundary": "Outer Markdown/JSON formatted before hashes; ZIP PUBLIC-MAPPING equals the outer map. Projected source records and PNGs are not reformatted."
+}

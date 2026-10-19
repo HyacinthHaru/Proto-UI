@@ -1,0 +1,2596 @@
+{
+  "schemaVersion": 1,
+  "counts": {
+    "rawSources": 144,
+    "rawBytes": 5879657,
+    "publicRecordBytes": 6510377,
+    "transformedSources": 73,
+    "pngFiles": 10,
+    "uniquePNGHashes": 9,
+    "groups": {
+      "poll-design": 9,
+      "baseline67": 2,
+      "precommit-focused": 4,
+      "precommit-types": 2,
+      "precommit-summary": 1,
+      "source8c": 5,
+      "node-max2": 3,
+      "isolated-dialog": 3,
+      "node-max1": 3,
+      "native8c": 5,
+      "cli-current-probe": 15,
+      "cli-owner-trace": 6,
+      "official-preview8c": 33,
+      "historical67-official-failure": 6,
+      "official8c-partial-ci": 4,
+      "official-poll-8c": 10,
+      "final-local-audit": 3,
+      "dialog-controls": 12,
+      "source-publication": 1,
+      "canonical-ci": 16,
+      "canonical-count-correction": 1
+    }
+  },
+  "mapping": [
+    {
+      "source": "<R12>/poll-timing-design/original.browser.test.ts",
+      "member": "records/r12/poll-timing-design/original.browser.test.ts",
+      "group": "poll-design",
+      "kind": "text",
+      "rawBytes": 60080,
+      "rawSHA256": "ff9593a6b49d91ed5bfbd8f67bc779e1ff0524f4a7dd0fc8b63f3f974091ef40",
+      "publicBytes": 60080,
+      "publicSHA256": "ff9593a6b49d91ed5bfbd8f67bc779e1ff0524f4a7dd0fc8b63f3f974091ef40",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/poll-timing-design/candidate.browser.test.ts",
+      "member": "records/r12/poll-timing-design/candidate.browser.test.ts",
+      "group": "poll-design",
+      "kind": "text",
+      "rawBytes": 62195,
+      "rawSHA256": "93c5c0e71e9b9815305a8e7047116ca9077d63a896c2468e7045255161d0cbd0",
+      "publicBytes": 62195,
+      "publicSHA256": "93c5c0e71e9b9815305a8e7047116ca9077d63a896c2468e7045255161d0cbd0",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/poll-timing-design/candidate.patch",
+      "member": "records/r12/poll-timing-design/candidate.patch",
+      "group": "poll-design",
+      "kind": "text",
+      "rawBytes": 3807,
+      "rawSHA256": "9e9025c1bb97d22230a42fdfabcb193c834fcb03dd9bacfdbc7c924ee0476dab",
+      "publicBytes": 3807,
+      "publicSHA256": "9e9025c1bb97d22230a42fdfabcb193c834fcb03dd9bacfdbc7c924ee0476dab",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/poll-timing-design/source-binding.json",
+      "member": "records/r12/poll-timing-design/source-binding.json",
+      "group": "poll-design",
+      "kind": "json",
+      "rawBytes": 1065,
+      "rawSHA256": "47953bb76428901ccbcd023382c5e58790f1717e60ba156abe26c56721e4c4f7",
+      "publicBytes": 1065,
+      "publicSHA256": "47953bb76428901ccbcd023382c5e58790f1717e60ba156abe26c56721e4c4f7",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/poll-timing-design/ast-preservation.json",
+      "member": "records/r12/poll-timing-design/ast-preservation.json",
+      "group": "poll-design",
+      "kind": "json",
+      "rawBytes": 1091,
+      "rawSHA256": "2412dedb475aa64ba62a29c7a41c88fb091f5108119897e634a50a1dd513e4c5",
+      "publicBytes": 1091,
+      "publicSHA256": "2412dedb475aa64ba62a29c7a41c88fb091f5108119897e634a50a1dd513e4c5",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/poll-timing-design/design.json",
+      "member": "records/r12/poll-timing-design/design.json",
+      "group": "poll-design",
+      "kind": "json",
+      "rawBytes": 15154,
+      "rawSHA256": "ecde0573f41f5891569a2e078767a249473eabc0a4e4f6d1e183a0f2f5dedcc4",
+      "publicBytes": 15055,
+      "publicSHA256": "1084a1ae9744154c3493abc070a13823d257244869bd7f521665fbdca842fa72",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.executionMode"
+        },
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.modeSource"
+        },
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.assessment"
+        },
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/poll-timing-design/design.md",
+      "member": "records/r12/poll-timing-design/design.md",
+      "group": "poll-design",
+      "kind": "text",
+      "rawBytes": 1880,
+      "rawSHA256": "4bbabfd0a5970a746fe49db1c6812cde58440fd559413c76b4a3000917611d93",
+      "publicBytes": 1880,
+      "publicSHA256": "4bbabfd0a5970a746fe49db1c6812cde58440fd559413c76b4a3000917611d93",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/poll-timing-design/design-source-correction.json",
+      "member": "records/r12/poll-timing-design/design-source-correction.json",
+      "group": "poll-design",
+      "kind": "json",
+      "rawBytes": 843,
+      "rawSHA256": "a6d0af0c33a110308fda573424fb54953635c165160284fe91f4b3fb2d939ce5",
+      "publicBytes": 843,
+      "publicSHA256": "a6d0af0c33a110308fda573424fb54953635c165160284fe91f4b3fb2d939ce5",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/poll-timing-design/apply-receipt.json",
+      "member": "records/r12/poll-timing-design/apply-receipt.json",
+      "group": "poll-design",
+      "kind": "json",
+      "rawBytes": 481,
+      "rawSHA256": "6110d843e2898b55e3ef781681252e6486d5e7dbda81db1e237022684a7c8057",
+      "publicBytes": 438,
+      "publicSHA256": "92ac6e6ad3e0f0e52520bfee5ead7ee62dec26a202da0481d900173b62ec4778",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 1
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/baseline/receipt.json",
+      "member": "records/r12/baseline/receipt.json",
+      "group": "baseline67",
+      "kind": "json",
+      "rawBytes": 569,
+      "rawSHA256": "117ef77434b62748dc4ae410fdd6bf1cdf9341e51a44fdef8cdb8b8223834f15",
+      "publicBytes": 569,
+      "publicSHA256": "117ef77434b62748dc4ae410fdd6bf1cdf9341e51a44fdef8cdb8b8223834f15",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/baseline/homepage-dogfood.browser.test.ts",
+      "member": "records/r12/baseline/homepage-dogfood.browser.test.ts",
+      "group": "baseline67",
+      "kind": "text",
+      "rawBytes": 60080,
+      "rawSHA256": "ff9593a6b49d91ed5bfbd8f67bc779e1ff0524f4a7dd0fc8b63f3f974091ef40",
+      "publicBytes": 60080,
+      "publicSHA256": "ff9593a6b49d91ed5bfbd8f67bc779e1ff0524f4a7dd0fc8b63f3f974091ef40",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/poll-focused/receipt.json",
+      "member": "records/r12/poll-focused/receipt.json",
+      "group": "precommit-focused",
+      "kind": "json",
+      "rawBytes": 1148,
+      "rawSHA256": "3eec43d7bed88b7390def532a1fb2ed70aea89ce76f408a9c958ec2e79e5b462",
+      "publicBytes": 1022,
+      "publicSHA256": "525c3cfd373a699b194364aaff0a5a1b9968b5db43f311937bf3cfe8f69e8d12",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R12>",
+          "count": 2
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/poll-focused/run.log",
+      "member": "records/r12/poll-focused/run.log",
+      "group": "precommit-focused",
+      "kind": "text",
+      "rawBytes": 117,
+      "rawSHA256": "fa124b500a49467e6d1273bf93aeffda43dad6e85b0f9b813f7c4e4b5da2ea5d",
+      "publicBytes": 54,
+      "publicSHA256": "648bf57b174d5a2919cb2172da0c33cf0d733bd1ed58f9bca613d8931283834a",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R12>",
+          "count": 1
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/poll-focused/vitest.json",
+      "member": "records/r12/poll-focused/vitest.json",
+      "group": "precommit-focused",
+      "kind": "json",
+      "rawBytes": 3554,
+      "rawSHA256": "69d2377bbf3feabece6937c6fc768504c891dd19c63f94fe0af627245ece2b79",
+      "publicBytes": 4662,
+      "publicSHA256": "e2ec06d7839789cbbd9b5a80c4be674ec82e0c34867a9f482441db230e72d790",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 1
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/poll-focused/evidence/header-breakpoint/brutalist-lifecycle.json",
+      "member": "records/r12/poll-focused/evidence/header-breakpoint/brutalist-lifecycle.json",
+      "group": "precommit-focused",
+      "kind": "json",
+      "rawBytes": 38344,
+      "rawSHA256": "83769d60cacad1ace0f105eeff654789d04140c1944e805584a1ff7928d5bfc8",
+      "publicBytes": 38345,
+      "publicSHA256": "1a14404c6bc7cf0aaa8dcb56d5229e5eb05c70477f1005a4efb97bdffb71b334",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/types-candidate/receipt.json",
+      "member": "records/r12/types-candidate/receipt.json",
+      "group": "precommit-types",
+      "kind": "json",
+      "rawBytes": 636,
+      "rawSHA256": "aa8c3d5c458ca67ca621fe8aac8182ebd7c28becc5f74263e0a80591d64fc022",
+      "publicBytes": 636,
+      "publicSHA256": "aa8c3d5c458ca67ca621fe8aac8182ebd7c28becc5f74263e0a80591d64fc022",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/types-candidate/run.log",
+      "member": "records/r12/types-candidate/run.log",
+      "group": "precommit-types",
+      "kind": "text",
+      "rawBytes": 6039,
+      "rawSHA256": "99aec1b68bb4e2ca36a63a2a70d88f2419eee502989b487f36ec1ab4377f26b9",
+      "publicBytes": 5867,
+      "publicSHA256": "863a385ea11675dd83310331f3e9103a2ddc0bb775aea60437d580bb07df1160",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 4
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/precommit-evidence-report.json",
+      "member": "records/r12/precommit-evidence-report.json",
+      "group": "precommit-summary",
+      "kind": "json",
+      "rawBytes": 1408,
+      "rawSHA256": "9165a3aed2e3713b41e77c30bb2bba8214d1cda48332ffe0ae92e68b42f97fb9",
+      "publicBytes": 1280,
+      "publicSHA256": "ff7543087884b6ea53660a01445af518322fa5ed8e978e2105f9b000864c8422",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.publication"
+        },
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/candidate-change.json",
+      "member": "records/r12/candidate-change.json",
+      "group": "source8c",
+      "kind": "json",
+      "rawBytes": 541,
+      "rawSHA256": "5567ad71b405083b1a577597cd72e48635cd75c37395a2e84ba699345325222c",
+      "publicBytes": 478,
+      "publicSHA256": "f897ee258b02fcdb45a6ce05bdaddd25f15d6e5d380444a3d1af35e0395ca666",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R12>",
+          "count": 1
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/commit-receipt.json",
+      "member": "records/r12/commit-receipt.json",
+      "group": "source8c",
+      "kind": "json",
+      "rawBytes": 452,
+      "rawSHA256": "2ed22dc0c5d8e36ff33ac6b99c3dc0a86b94ade81e0045455026d135844c1d00",
+      "publicBytes": 452,
+      "publicSHA256": "2ed22dc0c5d8e36ff33ac6b99c3dc0a86b94ade81e0045455026d135844c1d00",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/push-receipt.json",
+      "member": "records/r12/push-receipt.json",
+      "group": "source8c",
+      "kind": "json",
+      "rawBytes": 444,
+      "rawSHA256": "8e92b3568e73c8c086970594eb3382236b247c516b9fe1fdc5ab035b51325eae",
+      "publicBytes": 444,
+      "publicSHA256": "8e92b3568e73c8c086970594eb3382236b247c516b9fe1fdc5ab035b51325eae",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/current-head/source-review/final-binding-8c14e0d5.json",
+      "member": "records/r12/current-head/source-review/final-binding-8c14e0d5.json",
+      "group": "source8c",
+      "kind": "json",
+      "rawBytes": 7968,
+      "rawSHA256": "ad395a86c0a4af52e771c5625c8f4c2859a8989bc703be6c639da409d6f77a32",
+      "publicBytes": 7878,
+      "publicSHA256": "ca143cdb2e764a8e9f4e8b8c887442fdb3d000b5136fb3445605276cf928bef3",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.mode"
+        },
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.modeSource"
+        },
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.assessment"
+        },
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/current-head/source-review/final-binding-8c14e0d5.md",
+      "member": "records/r12/current-head/source-review/final-binding-8c14e0d5.md",
+      "group": "source8c",
+      "kind": "text",
+      "rawBytes": 1723,
+      "rawSHA256": "2218491ea1ac602e32d5b7cfb2b6e7c9eef3daf780b134c7c3d8ffbfe7c3f325",
+      "publicBytes": 1723,
+      "publicSHA256": "2218491ea1ac602e32d5b7cfb2b6e7c9eef3daf780b134c7c3d8ffbfe7c3f325",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/current-head/node-combination/receipt.json",
+      "member": "records/r12/current-head/node-combination/receipt.json",
+      "group": "node-max2",
+      "kind": "json",
+      "rawBytes": 9641,
+      "rawSHA256": "2b8373f03da2091627f92c12755904863914dcdc949da418c54022444ede05d7",
+      "publicBytes": 9578,
+      "publicSHA256": "ca93d4767865cb8ab1af01ca1bd3e73d00dc715ca7e1af389420f3f537c2a0bc",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R12>",
+          "count": 1
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/current-head/node-combination/run.log",
+      "member": "records/r12/current-head/node-combination/run.log",
+      "group": "node-max2",
+      "kind": "text",
+      "rawBytes": 134,
+      "rawSHA256": "c8a8c652b06add472c501bca74f4397df7d3b2d07d50a8f78ab61bcca06ebbe0",
+      "publicBytes": 71,
+      "publicSHA256": "59930594734e0647ac4d4e7efe15201c7cbc5b6eb95cdd250c7fbcd79106d96e",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R12>",
+          "count": 1
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/current-head/node-combination/vitest.json",
+      "member": "records/r12/current-head/node-combination/vitest.json",
+      "group": "node-max2",
+      "kind": "json",
+      "rawBytes": 640183,
+      "rawSHA256": "027c5a95eb4641989a275d6545927cb965aa7ddda2529cc54a2dbd0b83267ac8",
+      "publicBytes": 854489,
+      "publicSHA256": "d56a39157e5f536d5b9cc27f76d2a8c0ebfd5fd1db13a8301250200d8ba5dc94",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 179
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/dialog-portal-control/receipt.json",
+      "member": "records/r12/dialog-portal-control/receipt.json",
+      "group": "isolated-dialog",
+      "kind": "json",
+      "rawBytes": 658,
+      "rawSHA256": "61fc84cc8dc190ec8762fb9b223b88f3f3c17727c9b92fa94d8e5d0d5cc62200",
+      "publicBytes": 595,
+      "publicSHA256": "4eee7592484c26a6077210baea16b7e170cd12fa862ab4e13b1dc0d8a7eab9b9",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R12>",
+          "count": 1
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/dialog-portal-control/run.log",
+      "member": "records/r12/dialog-portal-control/run.log",
+      "group": "isolated-dialog",
+      "kind": "text",
+      "rawBytes": 126,
+      "rawSHA256": "d31f830dfc32590d784600a16270b2a2cfaf905f27ced51101e5ae99cf2100da",
+      "publicBytes": 63,
+      "publicSHA256": "c40a9d3632254344707d706b7c216eadc3fc3e03e10a0428f44196ef52e3b923",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R12>",
+          "count": 1
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/dialog-portal-control/vitest.json",
+      "member": "records/r12/dialog-portal-control/vitest.json",
+      "group": "isolated-dialog",
+      "kind": "json",
+      "rawBytes": 1336,
+      "rawSHA256": "b53d31cfdbaf794d637702c855a747789cece7d194eb719a0e46415f308f8450",
+      "publicBytes": 1754,
+      "publicSHA256": "0dffaad58aaca1b6c4dd6b097bfee286c82b640efbaa03b890a7a42c3abaf41a",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 1
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/current-head/node-combination-serial-control/receipt.json",
+      "member": "records/r12/current-head/node-combination-serial-control/receipt.json",
+      "group": "node-max1",
+      "kind": "json",
+      "rawBytes": 9656,
+      "rawSHA256": "6dfab0759560af48a75bb6caa649cae713f868d73062971eb19d9bec927a9b0c",
+      "publicBytes": 9593,
+      "publicSHA256": "f86e6e7596cecdcc3b8b10b16f3761d4334d46d1adb5d927a7c3fe6114b0172d",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R12>",
+          "count": 1
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/current-head/node-combination-serial-control/run.log",
+      "member": "records/r12/current-head/node-combination-serial-control/run.log",
+      "group": "node-max1",
+      "kind": "text",
+      "rawBytes": 149,
+      "rawSHA256": "9a55e668de4f85e180c5bf309dea77205bcd5847cd424d63e1bab53bc9f803b6",
+      "publicBytes": 86,
+      "publicSHA256": "d35e5980089a093241337d2325f7a48bf6fc2438a0e9c87174d2d41f1e7ed4b6",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R12>",
+          "count": 1
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/current-head/node-combination-serial-control/vitest.json",
+      "member": "records/r12/current-head/node-combination-serial-control/vitest.json",
+      "group": "node-max1",
+      "kind": "json",
+      "rawBytes": 638231,
+      "rawSHA256": "5582915f148ef87b8484247c9ad16d9aab65a710b6db93f62d701888ea0c30f6",
+      "publicBytes": 852943,
+      "publicSHA256": "219061d2e374a77e68b3279695faf71c69d047150e2e87e3b3fe999ff77d4fcc",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 169
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/current-head/native-lifecycle/receipt.json",
+      "member": "records/r12/current-head/native-lifecycle/receipt.json",
+      "group": "native8c",
+      "kind": "json",
+      "rawBytes": 892,
+      "rawSHA256": "03ff8eafae70660a484a26f587f3acff35fc5c95ec91453ac7e0020b5a8dac79",
+      "publicBytes": 766,
+      "publicSHA256": "c907a78a9a91a9a6fddf0fc30ceb4a1d583f1122242486db2e856142fd7c1bc7",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R12>",
+          "count": 2
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/current-head/native-lifecycle/run.log",
+      "member": "records/r12/current-head/native-lifecycle/run.log",
+      "group": "native8c",
+      "kind": "text",
+      "rawBytes": 134,
+      "rawSHA256": "4a4f01c85ef78fbde00233b0e544476b46807b0159de74a25b5647ed9523533e",
+      "publicBytes": 71,
+      "publicSHA256": "57cb42bebe59b1f9647d1337b371f617f2d4bb31019a15602a56389ba1379f79",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R12>",
+          "count": 1
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/current-head/native-lifecycle/vitest.json",
+      "member": "records/r12/current-head/native-lifecycle/vitest.json",
+      "group": "native8c",
+      "kind": "json",
+      "rawBytes": 41491,
+      "rawSHA256": "f39842a04354a08e45a5df1b6faee74156321aaa966635e1557d880deea2a68d",
+      "publicBytes": 56703,
+      "publicSHA256": "2272cc754c8c000ac2bc2a657f34b5c889d419ea4caf98cae46f573e004de77f",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 2
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/current-head/native-lifecycle/evidence/header-breakpoint/brutalist-lifecycle.json",
+      "member": "records/r12/current-head/native-lifecycle/evidence/header-breakpoint/brutalist-lifecycle.json",
+      "group": "native8c",
+      "kind": "json",
+      "rawBytes": 38344,
+      "rawSHA256": "d12a3468b21ef703b759c393f3209de478d76e750df0be9aacd359bf833e89a9",
+      "publicBytes": 38345,
+      "publicSHA256": "d1f64a90be2a1c813146e6d2cb5b52bc9bbf5a2acf470658f47e8007a18682ba",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/current-head/native-lifecycle/evidence/header-breakpoint/shadcn-lifecycle.json",
+      "member": "records/r12/current-head/native-lifecycle/evidence/header-breakpoint/shadcn-lifecycle.json",
+      "group": "native8c",
+      "kind": "json",
+      "rawBytes": 36115,
+      "rawSHA256": "051f6d8737e56694f79771d6c3bab6906e7fdd22645c3d5fdde9caa61f613ba0",
+      "publicBytes": 36116,
+      "publicSHA256": "ba5acc421a58100d542da86ee952e1acdd0f22e7f5c2e5af47f7b48ee76df54c",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/cli-collector-control/receipt.json",
+      "member": "records/r12/cli-collector-control/receipt.json",
+      "group": "cli-current-probe",
+      "kind": "json",
+      "rawBytes": 690,
+      "rawSHA256": "a39cf10e413c553689903a7cc4ca55da63080f38d6c3e6ac4c8bc834cdef58ac",
+      "publicBytes": 564,
+      "publicSHA256": "02e86188254da01bc43531fc4cd66aae436c09f7698285c4e385a3f196859a89",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R12>",
+          "count": 2
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/cli-collector-control/run.log",
+      "member": "records/r12/cli-collector-control/run.log",
+      "group": "cli-current-probe",
+      "kind": "text",
+      "rawBytes": 126,
+      "rawSHA256": "3988af2c84530d1c858b73bebba84bd7dbef1a3a6257026ac69ff05e2aa720a6",
+      "publicBytes": 63,
+      "publicSHA256": "c356b3308164c6a8d6701b1aa77bcbd4daec33a44982d8e3ae0f14dbf50d7ec5",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R12>",
+          "count": 1
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/cli-collector-control/vitest.json",
+      "member": "records/r12/cli-collector-control/vitest.json",
+      "group": "cli-current-probe",
+      "kind": "json",
+      "rawBytes": 5112,
+      "rawSHA256": "4b04cc0d6f302def211a6278d39eac5f6d217bb64b41211937ae3b1edbca34b8",
+      "publicBytes": 4814,
+      "publicSHA256": "6d507da07e1437d01cfcb6f388add4b724a21c2b285f4c3cca96d2dba06cfb06",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<R12>",
+          "count": 3
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 18
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/cli-style-trace/private-probe/collector-current.test.ts",
+      "member": "records/r12/cli-style-trace/private-probe/collector-current.test.ts",
+      "group": "cli-current-probe",
+      "kind": "text",
+      "rawBytes": 2228,
+      "rawSHA256": "7c117f8f010bf3d4c1bdb87fd2f082295108a2ce6d0c2a7fcd946429e7d6d72f",
+      "publicBytes": 1973,
+      "publicSHA256": "0b9e6bf16a48532329ae87a5d90a36545f84cab58af8a536bc83b7998b06400c",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R12>",
+          "count": 2
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 3
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/cli-style-trace/private-probe/vitest-current.config.mts",
+      "member": "records/r12/cli-style-trace/private-probe/vitest-current.config.mts",
+      "group": "cli-current-probe",
+      "kind": "text",
+      "rawBytes": 544,
+      "rawSHA256": "fdfb823f60f98a8e2782e738d94ff3201bd66ab82755797cb3949cd1c7a614a6",
+      "publicBytes": 395,
+      "publicSHA256": "350942d347a1de7ee72d2c56084722032e9f1af99a32b1df15ce5bfd167606ab",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R12>",
+          "count": 1
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 2
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/cli-style-trace/private-probe/inputs-current.json",
+      "member": "records/r12/cli-style-trace/private-probe/inputs-current.json",
+      "group": "cli-current-probe",
+      "kind": "json",
+      "rawBytes": 3047,
+      "rawSHA256": "9a5370ae11cc640496cbcab8ab7f4c8658f516551af159f5092d57a6ff44ee5d",
+      "publicBytes": 2795,
+      "publicSHA256": "583d80d8d5f203f6130def5d0f0e4e027d5f06ca7dea64f06e29148d5c69f181",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R12>",
+          "count": 4
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/cli-style-trace/private-probe/current-driver-binding.json",
+      "member": "records/r12/cli-style-trace/private-probe/current-driver-binding.json",
+      "group": "cli-current-probe",
+      "kind": "json",
+      "rawBytes": 471,
+      "rawSHA256": "08b8f89a9a0714971d87f5c0f4349a509b266b49121b2aaa2d7c292850de315f",
+      "publicBytes": 471,
+      "publicSHA256": "08b8f89a9a0714971d87f5c0f4349a509b266b49121b2aaa2d7c292850de315f",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/cli-style-trace/private-probe/inputs/packages/prototypes/shadcn/src/form/field.proto.ts",
+      "member": "records/r12/cli-style-trace/private-probe/inputs/packages/prototypes/shadcn/src/form/field.proto.ts",
+      "group": "cli-current-probe",
+      "kind": "text",
+      "rawBytes": 851,
+      "rawSHA256": "9e153ffdd12251fc44bf84a83d5c0a49ac6c29c8ec08b9025aa62bc02fd35f5d",
+      "publicBytes": 851,
+      "publicSHA256": "9e153ffdd12251fc44bf84a83d5c0a49ac6c29c8ec08b9025aa62bc02fd35f5d",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/cli-style-trace/private-probe/inputs/packages/prototypes/shadcn/src/field/error.proto.ts",
+      "member": "records/r12/cli-style-trace/private-probe/inputs/packages/prototypes/shadcn/src/field/error.proto.ts",
+      "group": "cli-current-probe",
+      "kind": "text",
+      "rawBytes": 454,
+      "rawSHA256": "611422a918474b8e22a858e0b95079581b3337ebceee0dc046be0df6f3ff8a0f",
+      "publicBytes": 454,
+      "publicSHA256": "611422a918474b8e22a858e0b95079581b3337ebceee0dc046be0df6f3ff8a0f",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/cli-style-trace/private-probe/results-current/shadcn-form-invalid.json",
+      "member": "records/r12/cli-style-trace/private-probe/results-current/shadcn-form-invalid.json",
+      "group": "cli-current-probe",
+      "kind": "json",
+      "rawBytes": 788,
+      "rawSHA256": "f9241f8c75aa17b8e6fe760d62f3260a84905f9acbb0506c11368ba2586bf39a",
+      "publicBytes": 788,
+      "publicSHA256": "f9241f8c75aa17b8e6fe760d62f3260a84905f9acbb0506c11368ba2586bf39a",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/cli-style-trace/private-probe/results-current/shadcn-error-control.json",
+      "member": "records/r12/cli-style-trace/private-probe/results-current/shadcn-error-control.json",
+      "group": "cli-current-probe",
+      "kind": "json",
+      "rawBytes": 671,
+      "rawSHA256": "8de8ed7e341b40910bad5c405cfdeeec986a87fb127edf2bff82e2aacf8c3421",
+      "publicBytes": 671,
+      "publicSHA256": "8de8ed7e341b40910bad5c405cfdeeec986a87fb127edf2bff82e2aacf8c3421",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/cli-style-trace/private-probe/inputs/packages/prototypes/brutalist/src/form/field.proto.ts",
+      "member": "records/r12/cli-style-trace/private-probe/inputs/packages/prototypes/brutalist/src/form/field.proto.ts",
+      "group": "cli-current-probe",
+      "kind": "text",
+      "rawBytes": 858,
+      "rawSHA256": "c776888d068fedfa167d09102bb85f72588bf70ef25bbf8ae33f205601c73a07",
+      "publicBytes": 858,
+      "publicSHA256": "c776888d068fedfa167d09102bb85f72588bf70ef25bbf8ae33f205601c73a07",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/cli-style-trace/private-probe/inputs/packages/prototypes/brutalist/src/field/error.proto.ts",
+      "member": "records/r12/cli-style-trace/private-probe/inputs/packages/prototypes/brutalist/src/field/error.proto.ts",
+      "group": "cli-current-probe",
+      "kind": "text",
+      "rawBytes": 495,
+      "rawSHA256": "2331a191fc459c218c2db69da992cafe3318edd4e92c433d8137573dc2782f69",
+      "publicBytes": 495,
+      "publicSHA256": "2331a191fc459c218c2db69da992cafe3318edd4e92c433d8137573dc2782f69",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/cli-style-trace/private-probe/results-current/brutalist-form-invalid.json",
+      "member": "records/r12/cli-style-trace/private-probe/results-current/brutalist-form-invalid.json",
+      "group": "cli-current-probe",
+      "kind": "json",
+      "rawBytes": 799,
+      "rawSHA256": "2d85ed4f0f293964efc7b244aee958e184ac947860c695a29b26e9fe243cf334",
+      "publicBytes": 799,
+      "publicSHA256": "2d85ed4f0f293964efc7b244aee958e184ac947860c695a29b26e9fe243cf334",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/cli-style-trace/private-probe/results-current/brutalist-error-control.json",
+      "member": "records/r12/cli-style-trace/private-probe/results-current/brutalist-error-control.json",
+      "group": "cli-current-probe",
+      "kind": "json",
+      "rawBytes": 718,
+      "rawSHA256": "28bc8da64f783df9c18e2460874ff8f63ece72dcddd70be1d03e2c33cd489d37",
+      "publicBytes": 718,
+      "publicSHA256": "28bc8da64f783df9c18e2460874ff8f63ece72dcddd70be1d03e2c33cd489d37",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/cli-style-trace/source-binding.json",
+      "member": "records/r12/cli-style-trace/source-binding.json",
+      "group": "cli-owner-trace",
+      "kind": "json",
+      "rawBytes": 8872,
+      "rawSHA256": "0a83619a5970fb5fcb92f2eac221f407d29a005571f6a0d39aa7a50b9f0e518e",
+      "publicBytes": 8872,
+      "publicSHA256": "0a83619a5970fb5fcb92f2eac221f407d29a005571f6a0d39aa7a50b9f0e518e",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/cli-style-trace/report.json",
+      "member": "records/r12/cli-style-trace/report.json",
+      "group": "cli-owner-trace",
+      "kind": "json",
+      "rawBytes": 9146,
+      "rawSHA256": "4d7cd2c4d50abf61f72cc5ae3911130beee5565ffce49f0e63ea8eb3dad642eb",
+      "publicBytes": 8606,
+      "publicSHA256": "d9db84589464edd41536ab8cc9ec057cc01ee67e81e47f65288f8f4c28bb4e33",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.executionMode"
+        },
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.modeSource"
+        },
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.assessment"
+        },
+        {
+          "operation": "JSON-representation-normalization"
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<R12>",
+          "count": 4
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<R11>",
+          "count": 3
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/cli-style-trace/report.md",
+      "member": "records/r12/cli-style-trace/report.md",
+      "group": "cli-owner-trace",
+      "kind": "text",
+      "rawBytes": 3045,
+      "rawSHA256": "1edce22384b5234d93c02752c6d46ba6ea1a05402bde67c2bcfb046c3b0d497c",
+      "publicBytes": 3045,
+      "publicSHA256": "1edce22384b5234d93c02752c6d46ba6ea1a05402bde67c2bcfb046c3b0d497c",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/cli-style-trace/related-owner-read-summary.json",
+      "member": "records/r12/cli-style-trace/related-owner-read-summary.json",
+      "group": "cli-owner-trace",
+      "kind": "json",
+      "rawBytes": 23935,
+      "rawSHA256": "2742a8f64de8bc8bfdb522bddcc45f0f64ea5842b4bfad40e627c18f8c44195d",
+      "publicBytes": 23935,
+      "publicSHA256": "2742a8f64de8bc8bfdb522bddcc45f0f64ea5842b4bfad40e627c18f8c44195d",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/cli-style-trace/execution-review/review.json",
+      "member": "records/r12/cli-style-trace/execution-review/review.json",
+      "group": "cli-owner-trace",
+      "kind": "json",
+      "rawBytes": 10297,
+      "rawSHA256": "9427c58893d3da13af523be9a1f85a6f7825733db8eb607305b3ed2b71d74f6a",
+      "publicBytes": 9514,
+      "publicSHA256": "e7a07d85c8232c9ca059d3c24ef4c6785c50e13cdf1e46a52c80353e4f9f8062",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.mode"
+        },
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.modeSource"
+        },
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.assessment"
+        },
+        {
+          "operation": "JSON-representation-normalization"
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<R12>",
+          "count": 11
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/cli-style-trace/execution-review/owner-followup.md",
+      "member": "records/r12/cli-style-trace/execution-review/owner-followup.md",
+      "group": "cli-owner-trace",
+      "kind": "text",
+      "rawBytes": 1387,
+      "rawSHA256": "c6e5f0c97d4bd25286ed4410ef975c210f8762447bd56202b2dc0a44c681fb11",
+      "publicBytes": 1387,
+      "publicSHA256": "c6e5f0c97d4bd25286ed4410ef975c210f8762447bd56202b2dc0a44c681fb11",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-preview-plan/admit-one.mjs",
+      "member": "records/r12/official-preview-plan/admit-one.mjs",
+      "group": "official-preview8c",
+      "kind": "text",
+      "rawBytes": 8909,
+      "rawSHA256": "a0b2cf708fed45ba6592df263a298713428edad8447768b63369de6ee24bd947",
+      "publicBytes": 8734,
+      "publicSHA256": "75e6b03525715d66532247dca54bb7d0fcfd19b74050236e43e290c543cc8ad3",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 4
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<HOMEBREW>",
+          "count": 1
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-preview-plan/run-once.py",
+      "member": "records/r12/official-preview-plan/run-once.py",
+      "group": "official-preview8c",
+      "kind": "text",
+      "rawBytes": 8454,
+      "rawSHA256": "ccc8d5d2ac56bd3c0230241a623e0cac4edc74cfa7f830155fb61c74b6c50c1c",
+      "publicBytes": 8368,
+      "publicSHA256": "f0937eeaca70453971f4936c063a6b1624b49ccfaca72b6a43c9bd11186c281a",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<TOOLCHAIN>",
+          "count": 1
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 1
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-preview-plan/source-binding.json",
+      "member": "records/r12/official-preview-plan/source-binding.json",
+      "group": "official-preview8c",
+      "kind": "json",
+      "rawBytes": 1584,
+      "rawSHA256": "9ce7ccf2e4947a473216df77918802595ad467295b24f8b74d58bbe6ca19cb14",
+      "publicBytes": 1584,
+      "publicSHA256": "9ce7ccf2e4947a473216df77918802595ad467295b24f8b74d58bbe6ca19cb14",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-preview-plan/target-tuple.json",
+      "member": "records/r12/official-preview-plan/target-tuple.json",
+      "group": "official-preview8c",
+      "kind": "json",
+      "rawBytes": 394,
+      "rawSHA256": "1ff1ed89dcb7fa95a6ae009f96937b8cd38c69f978b93753b208afd19210df23",
+      "publicBytes": 394,
+      "publicSHA256": "1ff1ed89dcb7fa95a6ae009f96937b8cd38c69f978b93753b208afd19210df23",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-preview-plan/execution-8c14e0d56c44-r39252002967/admission-process-receipt.json",
+      "member": "records/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/admission-process-receipt.json",
+      "group": "official-preview8c",
+      "kind": "json",
+      "rawBytes": 357,
+      "rawSHA256": "b2e2810c9fda92048c456cfed58d3e4663ad67e10c1c80ccb8571ad7f2420759",
+      "publicBytes": 294,
+      "publicSHA256": "302537849fa5dc751fa178a650717fe65b17dcc069a3236e6a60dce4425d2662",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R12>",
+          "count": 1
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-preview-plan/execution-8c14e0d56c44-r39252002967/admission-receipt.json",
+      "member": "records/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/admission-receipt.json",
+      "group": "official-preview8c",
+      "kind": "json",
+      "rawBytes": 1219,
+      "rawSHA256": "05e99cf60c4567de50dccf8fd9079997fa216c305c4f05c91b58140d756f73be",
+      "publicBytes": 1156,
+      "publicSHA256": "ef461c29c70496dd67d82cedba3c0e8c3173be6effb45d28795eaf144039f5a9",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R12>",
+          "count": 1
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-preview-plan/execution-8c14e0d56c44-r39252002967/admission.log",
+      "member": "records/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/admission.log",
+      "group": "official-preview8c",
+      "kind": "text",
+      "rawBytes": 589,
+      "rawSHA256": "3e94afdfc4f799fb3351e1e8244312efde3d65ce7be284e87e32b9a13ef88341",
+      "publicBytes": 526,
+      "publicSHA256": "4a4ddc3cab128a93cab68f7649114b75d6bc56dd0c3f3e4486c18c963c18632b",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R12>",
+          "count": 1
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-preview-plan/execution-8c14e0d56c44-r39252002967/all-member-preservation.json",
+      "member": "records/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/all-member-preservation.json",
+      "group": "official-preview8c",
+      "kind": "json",
+      "rawBytes": 1106023,
+      "rawSHA256": "555708d0b982c6259dfb7ed72a6f117a43ac05fd34c28d4a87137f7a73aa1d13",
+      "publicBytes": 1106023,
+      "publicSHA256": "555708d0b982c6259dfb7ed72a6f117a43ac05fd34c28d4a87137f7a73aa1d13",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-preview-plan/execution-8c14e0d56c44-r39252002967/artifact-download-receipt.json",
+      "member": "records/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/artifact-download-receipt.json",
+      "group": "official-preview8c",
+      "kind": "json",
+      "rawBytes": 555,
+      "rawSHA256": "ca9d6703af628e51e447cc54485a059442044ee1f0e7483a27e0cc983ea7c569",
+      "publicBytes": 555,
+      "publicSHA256": "ca9d6703af628e51e447cc54485a059442044ee1f0e7483a27e0cc983ea7c569",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-preview-plan/execution-8c14e0d56c44-r39252002967/artifact-metadata.json",
+      "member": "records/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/artifact-metadata.json",
+      "group": "official-preview8c",
+      "kind": "json",
+      "rawBytes": 831,
+      "rawSHA256": "091ae7a5ed45a7950c8306bc9e5aa17f11d4afbeab036823916806b6656ef8bc",
+      "publicBytes": 831,
+      "publicSHA256": "091ae7a5ed45a7950c8306bc9e5aa17f11d4afbeab036823916806b6656ef8bc",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-preview-plan/execution-8c14e0d56c44-r39252002967/execution-source.json",
+      "member": "records/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/execution-source.json",
+      "group": "official-preview8c",
+      "kind": "json",
+      "rawBytes": 1927,
+      "rawSHA256": "a52b534ea6a86c535049c160a5786a62866f07201ef36935d7e773db558286cd",
+      "publicBytes": 1927,
+      "publicSHA256": "a52b534ea6a86c535049c160a5786a62866f07201ef36935d7e773db558286cd",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-preview-plan/execution-8c14e0d56c44-r39252002967/native-receipt.json",
+      "member": "records/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/native-receipt.json",
+      "group": "official-preview8c",
+      "kind": "json",
+      "rawBytes": 2221,
+      "rawSHA256": "7cabdeaf1e302f333c5088604e733fc697732ed23be7506e2982bf54fa6e816e",
+      "publicBytes": 2095,
+      "publicSHA256": "9e3d9cb827b2eac3d66e8e0e494ea15f45a687be8c6cc6577bbfbc0ea3d0ae43",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R12>",
+          "count": 2
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-preview-plan/execution-8c14e0d56c44-r39252002967/native.log",
+      "member": "records/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/native.log",
+      "group": "official-preview8c",
+      "kind": "text",
+      "rawBytes": 162,
+      "rawSHA256": "7590717b95ca93e7108b4ae66272058a1ee21fd8781eadd58638c6234ef4e0a4",
+      "publicBytes": 99,
+      "publicSHA256": "16c203abc738ff0714b77215b933e3e47e8ff3ffc63dfe431f85087a418d1342",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R12>",
+          "count": 1
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-preview-plan/execution-8c14e0d56c44-r39252002967/producer-job.json",
+      "member": "records/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/producer-job.json",
+      "group": "official-preview8c",
+      "kind": "json",
+      "rawBytes": 4482,
+      "rawSHA256": "9c647caba3486863d1b27303f7d3b7a3bcac2a2d1e389ac6aa1a8bf18407e4e7",
+      "publicBytes": 4482,
+      "publicSHA256": "9c647caba3486863d1b27303f7d3b7a3bcac2a2d1e389ac6aa1a8bf18407e4e7",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-preview-plan/execution-8c14e0d56c44-r39252002967/vitest.json",
+      "member": "records/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/vitest.json",
+      "group": "official-preview8c",
+      "kind": "json",
+      "rawBytes": 7556,
+      "rawSHA256": "08548cdc8340068a1b1b697e137ff0bcc7aca4dc07525759efd9e12348f9d5cf",
+      "publicBytes": 9976,
+      "publicSHA256": "ff184a357da5407d54c788f004ddd32a1ac54bb619c01dc7f0c15f5eb416dad6",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 2
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-preview-plan/execution-8c14e0d56c44-r39252002967/visual-review.json",
+      "member": "records/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/visual-review.json",
+      "group": "official-preview8c",
+      "kind": "json",
+      "rawBytes": 1979,
+      "rawSHA256": "637fb7ec1b298cabe3cec6b138df8f76a6e8e00ae15845f7834170f23bc6baaa",
+      "publicBytes": 1979,
+      "publicSHA256": "637fb7ec1b298cabe3cec6b138df8f76a6e8e00ae15845f7834170f23bc6baaa",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/header-breakpoint/brutalist-lifecycle.json",
+      "member": "records/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/header-breakpoint/brutalist-lifecycle.json",
+      "group": "official-preview8c",
+      "kind": "json",
+      "rawBytes": 37946,
+      "rawSHA256": "02e46779a1909220af9b5a0250e78ceab9cb481918d0490f93d9d2ad106ecef7",
+      "publicBytes": 37947,
+      "publicSHA256": "efff7fd60f9afd690c1173e37f8e0817ceb4ad5764a9d28b623c7709b468fdb3",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/brutalist-react-keyboard-focus.png",
+      "member": "records/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/brutalist-react-keyboard-focus.png",
+      "group": "official-preview8c",
+      "kind": "png",
+      "rawBytes": 44953,
+      "rawSHA256": "b3d3561ef9329206b32b8a411072defd432c3b5246e650e36aea6c8c7164fc60",
+      "publicBytes": 44953,
+      "publicSHA256": "b3d3561ef9329206b32b8a411072defd432c3b5246e650e36aea6c8c7164fc60",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Original PNG bytes; no edit or reencoding."
+    },
+    {
+      "source": "<R12>/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/brutalist-react-keyboard-focus.json",
+      "member": "records/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/brutalist-react-keyboard-focus.json",
+      "group": "official-preview8c",
+      "kind": "json",
+      "rawBytes": 1461,
+      "rawSHA256": "a3cbfb44d11453f179865339b200471e62ca99af7c16f80321a07357b3fbc6f4",
+      "publicBytes": 1462,
+      "publicSHA256": "7c950b530f39aa1114eb8d33c11dd0f03131337003a684e5b1283d5a9224ad9b",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/brutalist-vue-keyboard-focus.png",
+      "member": "records/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/brutalist-vue-keyboard-focus.png",
+      "group": "official-preview8c",
+      "kind": "png",
+      "rawBytes": 44907,
+      "rawSHA256": "243c253ad5aace90633ad05e8a1c1879b420aa0a94e4bc14c3969bd68dddb150",
+      "publicBytes": 44907,
+      "publicSHA256": "243c253ad5aace90633ad05e8a1c1879b420aa0a94e4bc14c3969bd68dddb150",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Original PNG bytes; no edit or reencoding."
+    },
+    {
+      "source": "<R12>/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/brutalist-vue-keyboard-focus.json",
+      "member": "records/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/brutalist-vue-keyboard-focus.json",
+      "group": "official-preview8c",
+      "kind": "json",
+      "rawBytes": 1457,
+      "rawSHA256": "df32dab7214fe71cf24a7813033188607fabc7368fd53922e713229fba63a9c9",
+      "publicBytes": 1458,
+      "publicSHA256": "6c7fc7c09055eeeefd0fe19b37d0e67f324bc1d8065ab171a17957815bcb5401",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/brutalist-vue2-keyboard-focus.png",
+      "member": "records/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/brutalist-vue2-keyboard-focus.png",
+      "group": "official-preview8c",
+      "kind": "png",
+      "rawBytes": 44982,
+      "rawSHA256": "efd87f82e747d550980867f0e076ac01f1ac75f7ef806c6c222deda63452e65d",
+      "publicBytes": 44982,
+      "publicSHA256": "efd87f82e747d550980867f0e076ac01f1ac75f7ef806c6c222deda63452e65d",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Original PNG bytes; no edit or reencoding."
+    },
+    {
+      "source": "<R12>/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/brutalist-vue2-keyboard-focus.json",
+      "member": "records/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/brutalist-vue2-keyboard-focus.json",
+      "group": "official-preview8c",
+      "kind": "json",
+      "rawBytes": 1459,
+      "rawSHA256": "67b08f4eba3d06fef07ffcbb0dcf297724bde98c7a4e6d3bb7fc649468619abb",
+      "publicBytes": 1460,
+      "publicSHA256": "711530eaf53186549aef7b029dd635c6ebfa62c9611bea0a9b248c827f15b92d",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/brutalist-wc-keyboard-focus.png",
+      "member": "records/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/brutalist-wc-keyboard-focus.png",
+      "group": "official-preview8c",
+      "kind": "png",
+      "rawBytes": 44865,
+      "rawSHA256": "420591181aface50692800a8eec573466d845ac5dbb3603e71aab936b976e822",
+      "publicBytes": 44865,
+      "publicSHA256": "420591181aface50692800a8eec573466d845ac5dbb3603e71aab936b976e822",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Original PNG bytes; no edit or reencoding."
+    },
+    {
+      "source": "<R12>/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/brutalist-wc-keyboard-focus.json",
+      "member": "records/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/brutalist-wc-keyboard-focus.json",
+      "group": "official-preview8c",
+      "kind": "json",
+      "rawBytes": 1455,
+      "rawSHA256": "b76ddd364560a873b33d39cf3f6c5758e91f1b107aa16ccaf70f1a2ebc80bb32",
+      "publicBytes": 1456,
+      "publicSHA256": "8e66b6133abf2643e01dc2834b5d26573c8f68816bbfaa77146c334801295fb3",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/shadcn-react-keyboard-focus.png",
+      "member": "records/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/shadcn-react-keyboard-focus.png",
+      "group": "official-preview8c",
+      "kind": "png",
+      "rawBytes": 35889,
+      "rawSHA256": "9647d327b5b2882b129b3434300e47c0fbd3d36a31370c1e853e6006e001002e",
+      "publicBytes": 35889,
+      "publicSHA256": "9647d327b5b2882b129b3434300e47c0fbd3d36a31370c1e853e6006e001002e",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Original PNG bytes; no edit or reencoding."
+    },
+    {
+      "source": "<R12>/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/shadcn-react-keyboard-focus.json",
+      "member": "records/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/shadcn-react-keyboard-focus.json",
+      "group": "official-preview8c",
+      "kind": "json",
+      "rawBytes": 1356,
+      "rawSHA256": "079ef787b7dc7e3646636b0627938e5572df639a64e87b9b30c2f6b0037dd2be",
+      "publicBytes": 1357,
+      "publicSHA256": "5477aeabaedb24b648b3d3e328091b162a79600c8f1216688135f508d4693d3a",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/shadcn-vue-keyboard-focus.png",
+      "member": "records/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/shadcn-vue-keyboard-focus.png",
+      "group": "official-preview8c",
+      "kind": "png",
+      "rawBytes": 35778,
+      "rawSHA256": "a41c60d95d79d419b97653c7e52f6b15bbce7475a2cd906e7688c7aaee34e231",
+      "publicBytes": 35778,
+      "publicSHA256": "a41c60d95d79d419b97653c7e52f6b15bbce7475a2cd906e7688c7aaee34e231",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Original PNG bytes; no edit or reencoding."
+    },
+    {
+      "source": "<R12>/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/shadcn-vue-keyboard-focus.json",
+      "member": "records/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/shadcn-vue-keyboard-focus.json",
+      "group": "official-preview8c",
+      "kind": "json",
+      "rawBytes": 1351,
+      "rawSHA256": "2243a0c171f6cf42d9415a68d7f381e42923ecb6c5db3207138cf45cab8912cd",
+      "publicBytes": 1352,
+      "publicSHA256": "39266b49c1d15844a6cca2ca903245786c6d638b8ff2c59f79cf4c450dd1cac4",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/shadcn-vue2-keyboard-focus.png",
+      "member": "records/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/shadcn-vue2-keyboard-focus.png",
+      "group": "official-preview8c",
+      "kind": "png",
+      "rawBytes": 33819,
+      "rawSHA256": "00c63bcd65530478a422ef53f29b3a7abd043fcd72af59353634b2374de0ec8c",
+      "publicBytes": 33819,
+      "publicSHA256": "00c63bcd65530478a422ef53f29b3a7abd043fcd72af59353634b2374de0ec8c",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Original PNG bytes; no edit or reencoding."
+    },
+    {
+      "source": "<R12>/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/shadcn-vue2-keyboard-focus.json",
+      "member": "records/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/shadcn-vue2-keyboard-focus.json",
+      "group": "official-preview8c",
+      "kind": "json",
+      "rawBytes": 1354,
+      "rawSHA256": "bce44b7e1e6df0010604dc7d555eee8a47b2c6ddd055718e4ec551a75d6ce3c9",
+      "publicBytes": 1355,
+      "publicSHA256": "2246318015e4346fb3e1292cd35686eeca613d7709ad9ceb68f118f5de7865b0",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/shadcn-wc-keyboard-focus.png",
+      "member": "records/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/shadcn-wc-keyboard-focus.png",
+      "group": "official-preview8c",
+      "kind": "png",
+      "rawBytes": 39073,
+      "rawSHA256": "0415f939565c9cbebd0d2b1c4557683a8c547b137305079f73a56145dd6a8a4c",
+      "publicBytes": 39073,
+      "publicSHA256": "0415f939565c9cbebd0d2b1c4557683a8c547b137305079f73a56145dd6a8a4c",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Original PNG bytes; no edit or reencoding."
+    },
+    {
+      "source": "<R12>/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/shadcn-wc-keyboard-focus.json",
+      "member": "records/r12/official-preview-plan/execution-8c14e0d56c44-r39252002967/evidence/contents-command/shadcn-wc-keyboard-focus.json",
+      "group": "official-preview8c",
+      "kind": "json",
+      "rawBytes": 1352,
+      "rawSHA256": "ee3c023176adbf957721184c5dddb6b1f82830788eab3f13386e8cb91c6d3c33",
+      "publicBytes": 1353,
+      "publicSHA256": "452fa5074b7cd0908d60f6e5450ad4a16afa4630233b6a47363801c82e2251d8",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R11>/current-head-67d8f62b/official-browser2-artifact/download-receipt.json",
+      "member": "records/r11/current-head-67d8f62b/official-browser2-artifact/download-receipt.json",
+      "group": "historical67-official-failure",
+      "kind": "json",
+      "rawBytes": 412,
+      "rawSHA256": "4c4a2fa039f8e893442453f8c54af4fbe49787e908a9b19bb479009f4f3b8305",
+      "publicBytes": 412,
+      "publicSHA256": "4c4a2fa039f8e893442453f8c54af4fbe49787e908a9b19bb479009f4f3b8305",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R11>/current-head-67d8f62b/official-browser2-artifact/diagnosis.json",
+      "member": "records/r11/current-head-67d8f62b/official-browser2-artifact/diagnosis.json",
+      "group": "historical67-official-failure",
+      "kind": "json",
+      "rawBytes": 2107,
+      "rawSHA256": "5259e2344c7d8252d69507bc6bd0c76699c3e49f0d1954f4d38845a9f692ef0a",
+      "publicBytes": 1978,
+      "publicSHA256": "091ba01fec69bd5d52b3a78e828e8ab5213ea478e127ae431c534417130dd888",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R11>/current-head-67d8f62b/official-browser2-artifact/selected/source-sha.txt",
+      "member": "records/r11/current-head-67d8f62b/official-browser2-artifact/selected/source-sha.txt",
+      "group": "historical67-official-failure",
+      "kind": "text",
+      "rawBytes": 41,
+      "rawSHA256": "5d61b7a715692a3d00a9dee05eae7f507e3b217058f2d00eda7b0a8b9371281d",
+      "publicBytes": 41,
+      "publicSHA256": "5d61b7a715692a3d00a9dee05eae7f507e3b217058f2d00eda7b0a8b9371281d",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R11>/current-head-67d8f62b/official-browser2-artifact/selected/header-breakpoint/brutalist-lifecycle.json",
+      "member": "records/r11/current-head-67d8f62b/official-browser2-artifact/selected/header-breakpoint/brutalist-lifecycle.json",
+      "group": "historical67-official-failure",
+      "kind": "json",
+      "rawBytes": 283,
+      "rawSHA256": "f3ca09afc0c18df37e489c5f4160caeed9b23ab4ae68dfa772cd4a8ced7bad17",
+      "publicBytes": 284,
+      "publicSHA256": "3bf20cd032263b54db9d2cded3753099319ab64f16ab5e1ba4ce931c86799622",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R11>/current-head-67d8f62b/official-browser2-artifact/selected/header-breakpoint/brutalist-failure.json",
+      "member": "records/r11/current-head-67d8f62b/official-browser2-artifact/selected/header-breakpoint/brutalist-failure.json",
+      "group": "historical67-official-failure",
+      "kind": "json",
+      "rawBytes": 7613,
+      "rawSHA256": "94c5cf905e6b7a4d05c81610c7e1368f01dc0f995686fea5e77dd92faf3d1914",
+      "publicBytes": 7614,
+      "publicSHA256": "35591138b8383547458679e65bd4b49e140ad53acfcd79e6e4f528d52a82828b",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R11>/current-head-67d8f62b/official-browser2-artifact/selected/header-breakpoint/brutalist-failure.png",
+      "member": "records/r11/current-head-67d8f62b/official-browser2-artifact/selected/header-breakpoint/brutalist-failure.png",
+      "group": "historical67-official-failure",
+      "kind": "png",
+      "rawBytes": 32894,
+      "rawSHA256": "f7d943a0b9dba151ec02c680217edc88c6584c7401c90e90542ac284cdc2a6a7",
+      "publicBytes": 32894,
+      "publicSHA256": "f7d943a0b9dba151ec02c680217edc88c6584c7401c90e90542ac284cdc2a6a7",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Original PNG bytes; no edit or reencoding."
+    },
+    {
+      "source": "<R12>/ci-logs/job-118058348699.json",
+      "member": "records/r12/ci-logs/job-118058348699.json",
+      "group": "official8c-partial-ci",
+      "kind": "json",
+      "rawBytes": 3213,
+      "rawSHA256": "3af3643a5dd137289ddd6b1881ce1d775212e964f4fdef2b5e6b925bb31d1a95",
+      "publicBytes": 3213,
+      "publicSHA256": "3af3643a5dd137289ddd6b1881ce1d775212e964f4fdef2b5e6b925bb31d1a95",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/ci-logs/job-118058348699.log",
+      "member": "records/r12/ci-logs/job-118058348699.log",
+      "group": "official8c-partial-ci",
+      "kind": "text",
+      "rawBytes": 70397,
+      "rawSHA256": "e77c9fc711ef9f2ce164a2b282cfa4412655776d4a183d61c3b2b592d2a0a524",
+      "publicBytes": 69515,
+      "publicSHA256": "86cb346d63bce01f32620d5ec0fce4317d14d27e41b9ed029c7685d1ccc4c5a6",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_WORKSPACE>",
+          "count": 10
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_HOME>",
+          "count": 2
+        },
+        {
+          "operation": "omit-credential-setup-log-lines",
+          "count": 7
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/ci-logs/job-118059224222.json",
+      "member": "records/r12/ci-logs/job-118059224222.json",
+      "group": "official8c-partial-ci",
+      "kind": "json",
+      "rawBytes": 3981,
+      "rawSHA256": "a987265027b026bd40155abef9ccb7124621e5f6f66c2518e6e693b9e3433d2a",
+      "publicBytes": 3981,
+      "publicSHA256": "a987265027b026bd40155abef9ccb7124621e5f6f66c2518e6e693b9e3433d2a",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/ci-logs/job-118059224222.log",
+      "member": "records/r12/ci-logs/job-118059224222.log",
+      "group": "official8c-partial-ci",
+      "kind": "text",
+      "rawBytes": 147520,
+      "rawSHA256": "eb208a3fef1260567ed79d1d0b97554b54278c45f4437b54fe792fbafa2201eb",
+      "publicBytes": 146719,
+      "publicSHA256": "45bdfb1310d693c5dfe05023b148d1b76c435fa63e3b6160d7269ed1381e045b",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_WORKSPACE>",
+          "count": 6
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_HOME>",
+          "count": 3
+        },
+        {
+          "operation": "omit-credential-setup-log-lines",
+          "count": 7
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-browser2-artifact/selected/header-breakpoint/brutalist-failure.json",
+      "member": "records/r12/official-browser2-artifact/selected/header-breakpoint/brutalist-failure.json",
+      "group": "official-poll-8c",
+      "kind": "json",
+      "rawBytes": 8793,
+      "rawSHA256": "6f2a72629a0185ac4088588f22fb580c786551cca19a4da634f398ab379cd5dc",
+      "publicBytes": 8794,
+      "publicSHA256": "7e602fa5ca96110f42546fc0d64c3cb57347cc6d02c6e721b54b74f83a5cf18d",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-browser2-artifact/selected/header-breakpoint/brutalist-failure.png",
+      "member": "records/r12/official-browser2-artifact/selected/header-breakpoint/brutalist-failure.png",
+      "group": "official-poll-8c",
+      "kind": "png",
+      "rawBytes": 32894,
+      "rawSHA256": "f7d943a0b9dba151ec02c680217edc88c6584c7401c90e90542ac284cdc2a6a7",
+      "publicBytes": 32894,
+      "publicSHA256": "f7d943a0b9dba151ec02c680217edc88c6584c7401c90e90542ac284cdc2a6a7",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Original PNG bytes; no edit or reencoding."
+    },
+    {
+      "source": "<R12>/official-browser2-artifact/selected/header-breakpoint/brutalist-lifecycle.json",
+      "member": "records/r12/official-browser2-artifact/selected/header-breakpoint/brutalist-lifecycle.json",
+      "group": "official-poll-8c",
+      "kind": "json",
+      "rawBytes": 1367,
+      "rawSHA256": "a2590a348d1a4cdf56cf33508ea9d009773585486490df67b505e395cf3b60a0",
+      "publicBytes": 1368,
+      "publicSHA256": "90c616055c2be72ebe090d1d97c179297e4ab885473e2a8a2031d7d7f528fb5d",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-browser2-artifact/selected/source-sha.txt",
+      "member": "records/r12/official-browser2-artifact/selected/source-sha.txt",
+      "group": "official-poll-8c",
+      "kind": "text",
+      "rawBytes": 41,
+      "rawSHA256": "45bdebdd563d9fb0b7fe8e0baf33aedf1fe133ec30b5029981726074dfb60dcd",
+      "publicBytes": 41,
+      "publicSHA256": "45bdebdd563d9fb0b7fe8e0baf33aedf1fe133ec30b5029981726074dfb60dcd",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-poll-timing-review/byte-and-timing-check.json",
+      "member": "records/r12/official-poll-timing-review/byte-and-timing-check.json",
+      "group": "official-poll-8c",
+      "kind": "json",
+      "rawBytes": 1461,
+      "rawSHA256": "ef2e6f2fd552d932ac8053c0e9ec68993acface2ddb93e71f3dab12fe0971170",
+      "publicBytes": 1461,
+      "publicSHA256": "ef2e6f2fd552d932ac8053c0e9ec68993acface2ddb93e71f3dab12fe0971170",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-poll-timing-review/timing-review.json",
+      "member": "records/r12/official-poll-timing-review/timing-review.json",
+      "group": "official-poll-8c",
+      "kind": "json",
+      "rawBytes": 13275,
+      "rawSHA256": "5cefa2dbfcd9324a89afe09b15598c3324dcd7781ee05eb14bb2e4f7f6c15599",
+      "publicBytes": 13176,
+      "publicSHA256": "05349e9df2d83f5c90b05de0511178b01848a294aaa67567069159e92ab07349",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.executionMode"
+        },
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.modeSource"
+        },
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.assessment"
+        },
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-poll-timing-review/timing-review.md",
+      "member": "records/r12/official-poll-timing-review/timing-review.md",
+      "group": "official-poll-8c",
+      "kind": "text",
+      "rawBytes": 2846,
+      "rawSHA256": "d05bef8e3a5c10bb6cedd5b080d35973fc00504f6928622d1fe3228745732a95",
+      "publicBytes": 2846,
+      "publicSHA256": "d05bef8e3a5c10bb6cedd5b080d35973fc00504f6928622d1fe3228745732a95",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/final-local-reconciliation/official-member-audit.json",
+      "member": "records/r12/final-local-reconciliation/official-member-audit.json",
+      "group": "final-local-audit",
+      "kind": "json",
+      "rawBytes": 988,
+      "rawSHA256": "2ceb7c3dccebdc348a837b072334c85bc889a279abe9d71f5ad5cc1e5cb6b4f3",
+      "publicBytes": 862,
+      "publicSHA256": "04a2d8a5a6dd1d9ca0cd6aebc05bc97752268c4e871976129f3e568f4bd60902",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R12>",
+          "count": 2
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/final-local-reconciliation/report.json",
+      "member": "records/r12/final-local-reconciliation/report.json",
+      "group": "final-local-audit",
+      "kind": "json",
+      "rawBytes": 48099,
+      "rawSHA256": "d6225f39e53446aa1ddadc22576f754747d1a71fc5c5e43029a1972a036170cc",
+      "publicBytes": 46938,
+      "publicSHA256": "2f085169fd6385636a593cf7f67448dad59080010d43dcbfcd61d1bc61687553",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.mode"
+        },
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.modeSource"
+        },
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.assessment"
+        },
+        {
+          "operation": "JSON-representation-normalization"
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<R12>",
+          "count": 17
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/final-local-reconciliation/report.md",
+      "member": "records/r12/final-local-reconciliation/report.md",
+      "group": "final-local-audit",
+      "kind": "text",
+      "rawBytes": 2222,
+      "rawSHA256": "13237135790578229f19163fe876a9dfce506e8226c5264f8ef3ec1913a5c698",
+      "publicBytes": 2222,
+      "publicSHA256": "13237135790578229f19163fe876a9dfce506e8226c5264f8ef3ec1913a5c698",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-browser2-artifact/download-receipt.json",
+      "member": "records/r12/official-browser2-artifact/download-receipt.json",
+      "group": "official-poll-8c",
+      "kind": "json",
+      "rawBytes": 448,
+      "rawSHA256": "a50079e9118df99f51cee8c2af6692d95b224e10a69ecd7f9a5b269d818ca20f",
+      "publicBytes": 448,
+      "publicSHA256": "a50079e9118df99f51cee8c2af6692d95b224e10a69ecd7f9a5b269d818ca20f",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-browser2-artifact/members.json",
+      "member": "records/r12/official-browser2-artifact/members.json",
+      "group": "official-poll-8c",
+      "kind": "json",
+      "rawBytes": 24100,
+      "rawSHA256": "5b28f1d06cf8d088e086dad87587298911692e1cbe6e28241d8b345fa0d80bf4",
+      "publicBytes": 24100,
+      "publicSHA256": "5b28f1d06cf8d088e086dad87587298911692e1cbe6e28241d8b345fa0d80bf4",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/official-browser2-artifact/selected-members.json",
+      "member": "records/r12/official-browser2-artifact/selected-members.json",
+      "group": "official-poll-8c",
+      "kind": "json",
+      "rawBytes": 637,
+      "rawSHA256": "d78bc465d6283d98bdd7dcc02bf32fc419f86c996b2ab72a929bdc4167665625",
+      "publicBytes": 637,
+      "publicSHA256": "d78bc465d6283d98bdd7dcc02bf32fc419f86c996b2ab72a929bdc4167665625",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/dialog-portal-triage/report.json",
+      "member": "records/r12/dialog-portal-triage/report.json",
+      "group": "dialog-controls",
+      "kind": "json",
+      "rawBytes": 45105,
+      "rawSHA256": "318e0abcb76f79497417fc91b9445835efd4b1d2c32cb772dc13c9a8cce444b2",
+      "publicBytes": 43534,
+      "publicSHA256": "98736a15c6629b1764882bd0f19c279ae1b6e0c413c34794950db20f3c591333",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.mode"
+        },
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.modeSource"
+        },
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.assessment"
+        },
+        {
+          "operation": "JSON-representation-normalization"
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<R12>",
+          "count": 13
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<R11>",
+          "count": 3
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 11
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/dialog-portal-triage/report.md",
+      "member": "records/r12/dialog-portal-triage/report.md",
+      "group": "dialog-controls",
+      "kind": "text",
+      "rawBytes": 1489,
+      "rawSHA256": "5f77bace7694d92a7cbbcee3c3147590839352a97dde56d76f26771d736d1558",
+      "publicBytes": 1489,
+      "publicSHA256": "5f77bace7694d92a7cbbcee3c3147590839352a97dde56d76f26771d736d1558",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/dialog-portal-triage/source-binding.json",
+      "member": "records/r12/dialog-portal-triage/source-binding.json",
+      "group": "dialog-controls",
+      "kind": "json",
+      "rawBytes": 4496,
+      "rawSHA256": "0b80f069c517e586c19668fb5b982d39cab201abeb0c5e8dcc7d9500adf38223",
+      "publicBytes": 4496,
+      "publicSHA256": "0b80f069c517e586c19668fb5b982d39cab201abeb0c5e8dcc7d9500adf38223",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/dialog-portal-triage/original.test.ts",
+      "member": "records/r12/dialog-portal-triage/original.test.ts",
+      "group": "dialog-controls",
+      "kind": "text",
+      "rawBytes": 2989,
+      "rawSHA256": "1ba48973efb1c7d2bd0e53b193330a58c9cc32923d0457fbcf8366725c11356c",
+      "publicBytes": 2989,
+      "publicSHA256": "1ba48973efb1c7d2bd0e53b193330a58c9cc32923d0457fbcf8366725c11356c",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/dialog-portal-triage/failure-only.candidate.test.ts",
+      "member": "records/r12/dialog-portal-triage/failure-only.candidate.test.ts",
+      "group": "dialog-controls",
+      "kind": "text",
+      "rawBytes": 5650,
+      "rawSHA256": "8f4fdcbd0657df219c6620c27fb52a47319116bb057f1981ec9676a6232f3f51",
+      "publicBytes": 5650,
+      "publicSHA256": "8f4fdcbd0657df219c6620c27fb52a47319116bb057f1981ec9676a6232f3f51",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/dialog-portal-triage/failure-only.patch",
+      "member": "records/r12/dialog-portal-triage/failure-only.patch",
+      "group": "dialog-controls",
+      "kind": "text",
+      "rawBytes": 3250,
+      "rawSHA256": "48ec922dc288cc9353561a2193cfe7a39468df2ac6bc7c559fe06f9fac559e67",
+      "publicBytes": 3250,
+      "publicSHA256": "48ec922dc288cc9353561a2193cfe7a39468df2ac6bc7c559fe06f9fac559e67",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/dialog-portal-triage/observed-execution-receipt.json",
+      "member": "records/r12/dialog-portal-triage/observed-execution-receipt.json",
+      "group": "dialog-controls",
+      "kind": "json",
+      "rawBytes": 690,
+      "rawSHA256": "a4651f9e7cdcc18129ca070529888d07cda0a05ccb82d73953ac7dc1db24f883",
+      "publicBytes": 690,
+      "publicSHA256": "a4651f9e7cdcc18129ca070529888d07cda0a05ccb82d73953ac7dc1db24f883",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/dialog-portal-triage/execution-reconciliation.json",
+      "member": "records/r12/dialog-portal-triage/execution-reconciliation.json",
+      "group": "dialog-controls",
+      "kind": "json",
+      "rawBytes": 13776,
+      "rawSHA256": "628fa7d2670dbaabe1524785c6dfd90700fa64cfd1fa24f5482ab6bf4aa0dec6",
+      "publicBytes": 12248,
+      "publicSHA256": "b0ece29f0855b6363041267f83f0c48c396c700f85a8a9b2ef81bb6ac549c008",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.mode"
+        },
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.modeSource"
+        },
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.assessment"
+        },
+        {
+          "operation": "JSON-representation-normalization"
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<R12>",
+          "count": 16
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 10
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/dialog-portal-triage/execution-reconciliation.md",
+      "member": "records/r12/dialog-portal-triage/execution-reconciliation.md",
+      "group": "dialog-controls",
+      "kind": "text",
+      "rawBytes": 1413,
+      "rawSHA256": "0987d99798a8c2645b26d86c768d5046dcdd702fdf17282d8a92a5f8cf8b2f10",
+      "publicBytes": 1413,
+      "publicSHA256": "0987d99798a8c2645b26d86c768d5046dcdd702fdf17282d8a92a5f8cf8b2f10",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/dialog-portal-observed/receipt.json",
+      "member": "records/r12/dialog-portal-observed/receipt.json",
+      "group": "dialog-controls",
+      "kind": "json",
+      "rawBytes": 9860,
+      "rawSHA256": "75bee99d479a92a5047a8d262420816cc7ff0ed4e887cace2960017f2ee39908",
+      "publicBytes": 9797,
+      "publicSHA256": "b6bbf6ca9aeb1b66b55561f966222ca5fb81446418a074e0c5d06900095046e0",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R12>",
+          "count": 1
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/dialog-portal-observed/run.log",
+      "member": "records/r12/dialog-portal-observed/run.log",
+      "group": "dialog-controls",
+      "kind": "text",
+      "rawBytes": 127,
+      "rawSHA256": "a45c20515c3cd2be3034d13d881f5227c73d3bfa89b1a7aacbd3920d854b0ef7",
+      "publicBytes": 64,
+      "publicSHA256": "6f3c86cb5a917053a3eac11745d8d7c60f6136e972bcb285d15b56660147a2da",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R12>",
+          "count": 1
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/dialog-portal-observed/vitest.json",
+      "member": "records/r12/dialog-portal-observed/vitest.json",
+      "group": "dialog-controls",
+      "kind": "json",
+      "rawBytes": 638198,
+      "rawSHA256": "57cbc2cbcad089636ee40bbf34fc9ba36bc998370305b02e03e6d611ed2d466b",
+      "publicBytes": 852910,
+      "publicSHA256": "128d9d3afbae81b4d98f86dcbe22e11cb33c96de83fdddc7f01d26fd9afa4aa5",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 169
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/current-head/owner-controls-receipt.json",
+      "member": "records/r12/current-head/owner-controls-receipt.json",
+      "group": "source-publication",
+      "kind": "json",
+      "rawBytes": 3133,
+      "rawSHA256": "315b3459c08fd7a3dfa8f644476c639c998a0f2fb27d8ca74683b486b56f804a",
+      "publicBytes": 3133,
+      "publicSHA256": "315b3459c08fd7a3dfa8f644476c639c998a0f2fb27d8ca74683b486b56f804a",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/ci-logs/job-118059224333.log",
+      "member": "records/r12/ci-logs/job-118059224333.log",
+      "group": "canonical-ci",
+      "kind": "text",
+      "rawBytes": 112499,
+      "rawSHA256": "db68e34c775a1afc3122b160f97bf86dbc9141824bc2ceade311345200ffb9f4",
+      "publicBytes": 111632,
+      "publicSHA256": "bf54e2ba1846eebb1fa45bef1175dea410adef65f5a0525a726f9d6a354b7858",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_WORKSPACE>",
+          "count": 9
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_HOME>",
+          "count": 4
+        },
+        {
+          "operation": "omit-credential-setup-log-lines",
+          "count": 7
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/ci-logs/job-118059224354.log",
+      "member": "records/r12/ci-logs/job-118059224354.log",
+      "group": "canonical-ci",
+      "kind": "text",
+      "rawBytes": 287821,
+      "rawSHA256": "79e17aec548c5d3716539386cff340a94508c8af87cb4cbcaef32fcb1570c7e4",
+      "publicBytes": 286955,
+      "publicSHA256": "b32cc0d1f6cb5ad0b080b575c56b54f8d30beb47f63a72eb97d4205d7a3a6da6",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_WORKSPACE>",
+          "count": 9
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_HOME>",
+          "count": 4
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<TMP>/",
+          "count": 1
+        },
+        {
+          "operation": "omit-credential-setup-log-lines",
+          "count": 7
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/ci-logs/job-118059224413.log",
+      "member": "records/r12/ci-logs/job-118059224413.log",
+      "group": "canonical-ci",
+      "kind": "text",
+      "rawBytes": 220999,
+      "rawSHA256": "30234e95a73ebfaf28361ca94fd7b0fb28f215f8e0fc67917fe060d6fdae523e",
+      "publicBytes": 220049,
+      "publicSHA256": "1abe2b6823d8fe1a862410c5a147f65e7137c701764316bb8c60d208fa1ad436",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_WORKSPACE>",
+          "count": 13
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_HOME>",
+          "count": 4
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<TMP>/",
+          "count": 1
+        },
+        {
+          "operation": "omit-credential-setup-log-lines",
+          "count": 7
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/ci-logs/job-118059224444.log",
+      "member": "records/r12/ci-logs/job-118059224444.log",
+      "group": "canonical-ci",
+      "kind": "text",
+      "rawBytes": 318404,
+      "rawSHA256": "27684b81661d3d602d60910f71cbceabf877555d9454af16f2238d5ec7e7a106",
+      "publicBytes": 300992,
+      "publicSHA256": "ab5b3b9e3552a6c38d5665760d95f1a724a62d2a4f93e113fb9f400174a44277",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_WORKSPACE>",
+          "count": 797
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_HOME>",
+          "count": 3
+        },
+        {
+          "operation": "omit-credential-setup-log-lines",
+          "count": 7
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/ci-logs/job-118059224446.log",
+      "member": "records/r12/ci-logs/job-118059224446.log",
+      "group": "canonical-ci",
+      "kind": "text",
+      "rawBytes": 121244,
+      "rawSHA256": "750731b6dc0dd01c8307d99109439144504fe4252f5b345b52572d10de14e4d2",
+      "publicBytes": 120380,
+      "publicSHA256": "18bc16e7c034c04225c3eeff14c7bc798fd74d09381e6fe97ac0aaafbfdc0038",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_WORKSPACE>",
+          "count": 9
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_HOME>",
+          "count": 3
+        },
+        {
+          "operation": "omit-credential-setup-log-lines",
+          "count": 7
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/ci-logs/job-118059224452.log",
+      "member": "records/r12/ci-logs/job-118059224452.log",
+      "group": "canonical-ci",
+      "kind": "text",
+      "rawBytes": 131072,
+      "rawSHA256": "b011c876953320ad7642f69153b0f765e3432cf12ddb773b1090d257456c4f84",
+      "publicBytes": 130208,
+      "publicSHA256": "67ab9fc905bb15cfbfcce2760efc3d44111dbf40a442f2a3fd0e0cfe0eda5f7f",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_WORKSPACE>",
+          "count": 9
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_HOME>",
+          "count": 3
+        },
+        {
+          "operation": "omit-credential-setup-log-lines",
+          "count": 7
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/ci-logs/job-118059224459.log",
+      "member": "records/r12/ci-logs/job-118059224459.log",
+      "group": "canonical-ci",
+      "kind": "text",
+      "rawBytes": 138129,
+      "rawSHA256": "37f5c48bcabf43bd87af42a09a387d768e11f48f62312b18b4f251c8313c2bef",
+      "publicBytes": 137257,
+      "publicSHA256": "2ccd674a5d0969fbc56e211dd42e657f942055836c66b627834ab7dbda81188e",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_WORKSPACE>",
+          "count": 9
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_HOME>",
+          "count": 6
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<TMP>/",
+          "count": 1
+        },
+        {
+          "operation": "omit-credential-setup-log-lines",
+          "count": 7
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/ci-logs/job-118059224571.log",
+      "member": "records/r12/ci-logs/job-118059224571.log",
+      "group": "canonical-ci",
+      "kind": "text",
+      "rawBytes": 111726,
+      "rawSHA256": "de75fee12989a84d60408ec39826eaf22a04d40a0bfc09c56d0dcf5c5cf7d64c",
+      "publicBytes": 110858,
+      "publicSHA256": "ca4279aefa8bc08cea5e320c3113619f55c3069a2b290c174733278d4ef50d3a",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_WORKSPACE>",
+          "count": 9
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_HOME>",
+          "count": 5
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<TMP>/",
+          "count": 2
+        },
+        {
+          "operation": "omit-credential-setup-log-lines",
+          "count": 7
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/ci-logs/browser2-artifact-metadata.json",
+      "member": "records/r12/ci-logs/browser2-artifact-metadata.json",
+      "group": "canonical-ci",
+      "kind": "json",
+      "rawBytes": 815,
+      "rawSHA256": "d19463ea15d71ee3bed96cf61ab70994117b01bb16fb24af502b2bc3dbaab7d5",
+      "publicBytes": 815,
+      "publicSHA256": "d19463ea15d71ee3bed96cf61ab70994117b01bb16fb24af502b2bc3dbaab7d5",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/ci-logs/artifacts-pages.json",
+      "member": "records/r12/ci-logs/artifacts-pages.json",
+      "group": "canonical-ci",
+      "kind": "json",
+      "rawBytes": 8080,
+      "rawSHA256": "9a0c0db83d62fd05aa3cd7b60a0d4193d9a32bfdc106946742d0170273c18c79",
+      "publicBytes": 10338,
+      "publicSHA256": "be3f0fa7754e35db686d661fe031c225cd2dad41a1b117fc533275fae60ad7cb",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/ci-logs/all-browser-reconciliation.json",
+      "member": "records/r12/ci-logs/all-browser-reconciliation.json",
+      "group": "canonical-ci",
+      "kind": "json",
+      "rawBytes": 3778,
+      "rawSHA256": "80905a06475bafbb92c340fe1f80e043c4657bcdf12c34acfaf357421f88235d",
+      "publicBytes": 3778,
+      "publicSHA256": "80905a06475bafbb92c340fe1f80e043c4657bcdf12c34acfaf357421f88235d",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/ci-logs/browser-totals-boundary.json",
+      "member": "records/r12/ci-logs/browser-totals-boundary.json",
+      "group": "canonical-ci",
+      "kind": "json",
+      "rawBytes": 563,
+      "rawSHA256": "7a0040b8ca4b59198e84730d3935fe2633b61dad37f0cdbda095c8e5d6335819",
+      "publicBytes": 563,
+      "publicSHA256": "7a0040b8ca4b59198e84730d3935fe2633b61dad37f0cdbda095c8e5d6335819",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/ci-logs/status-current.json",
+      "member": "records/r12/ci-logs/status-current.json",
+      "group": "canonical-ci",
+      "kind": "json",
+      "rawBytes": 496,
+      "rawSHA256": "69c99bd428f55207d983b1ea54bfe94e4d83d206528360892b486c9be4c7c541",
+      "publicBytes": 496,
+      "publicSHA256": "69c99bd428f55207d983b1ea54bfe94e4d83d206528360892b486c9be4c7c541",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/ci-logs/source-package-binding.json",
+      "member": "records/r12/ci-logs/source-package-binding.json",
+      "group": "canonical-ci",
+      "kind": "json",
+      "rawBytes": 3083,
+      "rawSHA256": "902806a7cd3a926f6edc31770be16c4253b9c3381d7db5d301f6e5952c33d6db",
+      "publicBytes": 3083,
+      "publicSHA256": "902806a7cd3a926f6edc31770be16c4253b9c3381d7db5d301f6e5952c33d6db",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/ci-logs/budget-comparison.json",
+      "member": "records/r12/ci-logs/budget-comparison.json",
+      "group": "canonical-ci",
+      "kind": "json",
+      "rawBytes": 402,
+      "rawSHA256": "2cb6dfc7d61250c3a0ac03c8732003af99de8878e238ccc4d3743423cdac5791",
+      "publicBytes": 402,
+      "publicSHA256": "2cb6dfc7d61250c3a0ac03c8732003af99de8878e238ccc4d3743423cdac5791",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/ci-logs/job-118059224444.log.receipt.json",
+      "member": "records/r12/ci-logs/job-118059224444.log.receipt.json",
+      "group": "canonical-ci",
+      "kind": "json",
+      "rawBytes": 231,
+      "rawSHA256": "8c8ffa5289b26c758c8a218a2f8eb37fc5516755dfa450cb3ddcc35273f43912",
+      "publicBytes": 231,
+      "publicSHA256": "8c8ffa5289b26c758c8a218a2f8eb37fc5516755dfa450cb3ddcc35273f43912",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R12>/ci-logs/package-count-correction.json",
+      "member": "records/r12/ci-logs/package-count-correction.json",
+      "group": "canonical-count-correction",
+      "kind": "json",
+      "rawBytes": 2565,
+      "rawSHA256": "b0d56a4d73d93ca75588f3112dde4f3ebf95cdaba65be3fd6f27e1ece808d455",
+      "publicBytes": 2565,
+      "publicSHA256": "b0d56a4d73d93ca75588f3112dde4f3ebf95cdaba65be3fd6f27e1ece808d455",
+      "transformed": false,
+      "operations": [],
+      "boundary": "Public derivative with declared transformations, not exact executed bytes or a standalone recipe."
+    }
+  ]
+}
