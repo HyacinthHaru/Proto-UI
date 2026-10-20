@@ -1,5 +1,6 @@
 // @vitest-environment node
 import { revealHeaderPreferences } from './site-header-browser';
+import { prepareUtilityFamilyReadObservation } from './family-query-observer';
 import { execFileSync } from 'node:child_process';
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -14,6 +15,9 @@ import type { Browser, ElementHandle, JSHandle, Page } from 'playwright-core';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { launchBrowser, RUNTIMES, startServer, stopServer } from './browser-harness';
 const LABELS = { wc: 'Web Components', react: 'React', vue: 'Vue', vue2: 'Vue 2' } as const;
+const familyQueryMode = process.env.PROTO_UI_FAMILY_QUERY_MODE ?? 'hybrid';
+if (!['hybrid', 'native-only', 'node-only'].includes(familyQueryMode))
+  throw new Error('Unknown family query observation mode');
 let browser: Browser;
 let baseUrl: string;
 beforeAll(async () => {
@@ -1092,6 +1096,134 @@ for (const family of ['shadcn', 'brutalist'] as const) {
       calls: familyCommitCalls,
       rejectionSnapshot: null as typeof familyCommitCalls | null,
     };
+    let utilityObservation: Awaited<ReturnType<typeof prepareUtilityFamilyReadObservation>> | null =
+      null;
+    // Keep every original Promise until post-verdict settlement; only displayed rows are capped.
+    const familyQueryRequests: Array<{
+      request: Promise<string | null>;
+      call: (typeof familyCommitCalls)[number];
+    }> = [];
+    const familyQueryObservation = {
+      mode: familyQueryMode,
+      enabled: {
+        node: true,
+        writerMO: familyQueryMode !== 'node-only',
+        utility: familyQueryMode === 'hybrid',
+      },
+      ledgerError: false,
+      verdict: null as null | { outcome: string; nodeMs: number | null; frozenAtMs: number },
+      pendingAtVerdict: [] as typeof familyCommitCalls,
+      pendingAtVerdictCount: 0,
+      droppedPendingRows: 0,
+      referenceCountAtVerdict: 0,
+      referenceCountAfterDrain: 0,
+      issuedAfterDrain: 0,
+      wait: {
+        startedMs: null as number | null,
+        finishedMs: null as number | null,
+        drainedReferences: 0,
+        displayedOutcomes: [] as Array<Record<string, unknown>>,
+        droppedOutcomeRows: 0,
+        completeAtDrainPoint: false,
+      },
+      utility: null as Record<string, any> | null,
+      cleanupDeferredUntilContextClose: false,
+      errors: [] as string[],
+    };
+    const noteQueryError = (error: unknown) => {
+      try {
+        familyQueryObservation.errors.push(String(error));
+      } catch {
+        familyQueryObservation.ledgerError = true;
+      }
+    };
+    let finishQueries: Promise<void> | null = null;
+    const finishFamilyQueryObservation = () =>
+      (finishQueries ??= (async () => {
+        if (family !== 'brutalist') return;
+        try {
+          familyQueryObservation.verdict = {
+            outcome: familyCommitTiming.outcome,
+            nodeMs: familyCommitTiming.finishedMs,
+            frozenAtMs: performance.now(),
+          };
+          familyQueryObservation.referenceCountAtVerdict = familyQueryRequests.length;
+          const pending = familyQueryRequests.filter(({ call }) => call.returnedMs === undefined);
+          familyQueryObservation.pendingAtVerdictCount = pending.length;
+          familyQueryObservation.pendingAtVerdict = pending
+            .slice(0, 64)
+            .map(({ call }) => ({ ...call }));
+          familyQueryObservation.droppedPendingRows = Math.max(0, pending.length - 64);
+          try {
+            console.info(
+              '[family-query-verdict]',
+              JSON.stringify({
+                source,
+                family,
+                mode: familyQueryMode,
+                verdict: familyQueryObservation.verdict,
+                referenceCount: familyQueryObservation.referenceCountAtVerdict,
+                pendingCount: pending.length,
+                pending: familyQueryObservation.pendingAtVerdict,
+                droppedPendingRows: familyQueryObservation.droppedPendingRows,
+              })
+            );
+          } catch (error) {
+            noteQueryError(error);
+          }
+          familyQueryObservation.wait.startedMs = performance.now();
+          let drained = 0;
+          while (drained < familyQueryRequests.length) {
+            const batch = familyQueryRequests.slice(drained);
+            const outcomes = await Promise.allSettled(batch.map(({ request }) => request));
+            const observedAtMs = performance.now();
+            outcomes.forEach((outcome, index) => {
+              try {
+                if (familyQueryObservation.wait.displayedOutcomes.length < 64)
+                  familyQueryObservation.wait.displayedOutcomes.push({
+                    call: batch[index]!.call.call,
+                    status: outcome.status,
+                    ...('value' in outcome
+                      ? { value: outcome.value }
+                      : { error: String(outcome.reason) }),
+                    batchObservedAtMs: observedAtMs,
+                  });
+                else familyQueryObservation.wait.droppedOutcomeRows++;
+              } catch (error) {
+                noteQueryError(error);
+              }
+            });
+            drained += batch.length;
+            familyQueryObservation.wait.drainedReferences = drained;
+          }
+          familyQueryObservation.referenceCountAfterDrain = familyQueryRequests.length;
+          familyQueryObservation.wait.completeAtDrainPoint = !familyQueryObservation.ledgerError;
+        } catch (error) {
+          noteQueryError(error);
+        } finally {
+          familyQueryObservation.wait.finishedMs = performance.now();
+        }
+        if (utilityObservation) {
+          if (familyQueryObservation.wait.completeAtDrainPoint) {
+            try {
+              familyQueryObservation.utility = await utilityObservation.collectAndRestore();
+            } catch (error) {
+              noteQueryError(error);
+            }
+          } else {
+            // Unknown/unretained requests cannot be made safe by restoring their hook early.
+            familyQueryObservation.cleanupDeferredUntilContextClose = true;
+          }
+        }
+        try {
+          console.info(
+            '[family-query-settled]',
+            JSON.stringify({ source, family, ...familyQueryObservation })
+          );
+        } catch (error) {
+          noteQueryError(error);
+        }
+      })());
     const observeFamilyMutation = () => {
       const target = document.querySelector<HTMLElement>('[data-homepage-runtime]')!;
       const nativeDataset = target.dataset;
@@ -1313,14 +1445,16 @@ for (const family of ['shadcn', 'brutalist'] as const) {
       stage = 'initial-ready';
       await ready(page, 'wc');
       if (family === 'brutalist') {
-        // Bracket a page-clock sample before input; keep the original click/poll interval intact.
-        const nodeStartedMs = performance.now();
-        try {
-          familyMutationHandle = await page.evaluateHandle(observeFamilyMutation);
-        } catch (error) {
-          familyMutationTiming.errors.push(String(error));
-        } finally {
-          familyMutationTiming.setup = { nodeStartedMs, nodeReturnedMs: performance.now() };
+        if (familyQueryMode !== 'node-only') {
+          // Bracket a page-clock sample before input; keep the original click/poll interval intact.
+          const nodeStartedMs = performance.now();
+          try {
+            familyMutationHandle = await page.evaluateHandle(observeFamilyMutation);
+          } catch (error) {
+            familyMutationTiming.errors.push(String(error));
+          } finally {
+            familyMutationTiming.setup = { nodeStartedMs, nodeReturnedMs: performance.now() };
+          }
         }
         stage = 'family-open';
         await revealHeaderPreferences(page);
@@ -1329,6 +1463,8 @@ for (const family of ['shadcn', 'brutalist'] as const) {
         );
         await control.click();
         const id = await control.getAttribute('aria-controls');
+        if (familyQueryMode === 'hybrid')
+          utilityObservation = await prepareUtilityFamilyReadObservation(page);
         stage = 'family-choice';
         await page
           .locator(`[id=${JSON.stringify(id)}]`)
@@ -1346,6 +1482,13 @@ for (const family of ['shadcn', 'brutalist'] as const) {
             if (familyCommitCalls.length < 64) familyCommitCalls.push(call);
             else familyCommitTiming.droppedCalls += 1;
             const request = page.locator('[data-homepage-runtime]').getAttribute('data-family');
+            try {
+              familyQueryRequests.push({ request, call });
+              if (familyQueryObservation.wait.finishedMs !== null)
+                familyQueryObservation.issuedAfterDrain++;
+            } catch {
+              familyQueryObservation.ledgerError = true;
+            }
             void request
               .then(
                 (value) => {
@@ -1365,6 +1508,7 @@ for (const family of ['shadcn', 'brutalist'] as const) {
           .toBe(family);
         familyCommitTiming.finishedMs = performance.now();
         familyCommitTiming.outcome = 'fulfilled';
+        await finishFamilyQueryObservation();
         await collectFamilyMutation();
         stage = 'family-ready';
         await ready(page, 'wc');
@@ -1555,6 +1699,7 @@ for (const family of ['shadcn', 'brutalist'] as const) {
         familyCommitTiming.outcome = 'rejected';
         familyCommitTiming.rejectionSnapshot = familyCommitCalls.map((call) => ({ ...call }));
       }
+      await finishFamilyQueryObservation();
       await collectFamilyMutation();
       const failureState = await page
         .evaluate(() => {
@@ -1605,6 +1750,7 @@ for (const family of ['shadcn', 'brutalist'] as const) {
       });
       throw error;
     } finally {
+      if (family === 'brutalist') await finishFamilyQueryObservation();
       await writeFile(
         path.join(evidenceDirectory, `${family}-lifecycle.json`),
         JSON.stringify(
@@ -1628,7 +1774,50 @@ for (const family of ['shadcn', 'brutalist'] as const) {
           JSON.stringify({ source, familyCommitTiming, familyMutationTiming })
         );
       }
-      await context.close();
+      try {
+        await context.close();
+      } finally {
+        if (utilityObservation && familyQueryObservation.cleanupDeferredUntilContextClose) {
+          try {
+            familyQueryObservation.utility = await utilityObservation.collectAndRestore();
+          } catch (error) {
+            noteQueryError(error);
+          }
+        }
+        if (family === 'brutalist') {
+          try {
+            const report = {
+              source,
+              family,
+              ...familyQueryObservation,
+              referenceCountAtReport: familyQueryRequests.length,
+              pendingObservedAtReport: familyQueryRequests.filter(
+                ({ call }) => call.returnedMs === undefined
+              ).length,
+              droppedNodeRows: familyCommitTiming.droppedCalls,
+              captureCoversAllRecordedQueries:
+                !familyQueryObservation.ledgerError &&
+                familyQueryObservation.issuedAfterDrain === 0 &&
+                familyQueryObservation.wait.completeAtDrainPoint &&
+                familyQueryObservation.wait.droppedOutcomeRows === 0 &&
+                familyQueryObservation.droppedPendingRows === 0 &&
+                familyCommitTiming.droppedCalls === 0,
+            };
+            console.info('[family-query-observation]', JSON.stringify(report));
+            await writeFile(
+              path.join(evidenceDirectory, `${family}-query-observation.json`),
+              JSON.stringify(report, null, 2)
+            );
+          } catch (error) {
+            noteQueryError(error);
+            try {
+              console.info('[family-query-capture-error]', String(error));
+            } catch {
+              /* Retain original outcome. */
+            }
+          }
+        }
+      }
     }
   }, 180_000);
 }
