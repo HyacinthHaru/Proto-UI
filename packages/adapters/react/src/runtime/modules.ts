@@ -150,12 +150,6 @@ import {
   subscribeFocusSurfaceReady,
 } from '../platform/instance-tree';
 
-const isHtmlElementNode = (value: unknown): value is HTMLElement =>
-  !!value &&
-  typeof (value as Node).nodeType === 'number' &&
-  (value as Node).nodeType === 1 &&
-  (value as Element).namespaceURI === 'http://www.w3.org/1999/xhtml';
-
 type ReactOwnerModulesArgs<Props extends PropsBaseType> = {
   instanceToken: LogicalInstanceToken;
   emit: (key: string, payload?: unknown, options?: Record<string, unknown>) => void;
@@ -359,23 +353,29 @@ export function createReactModules<Props extends PropsBaseType>(args: {
     const current = args.getCurrentElement();
     return current === el && current.isConnected ? current : null;
   };
-  // Keep the view's native brand check and its error realm across adoption.
+  // Keep the native HTMLElement interface check and its error realm across adoption.
   const view = el.ownerDocument.defaultView;
-  const contains =
-    view?.Node.prototype.contains ?? (typeof Node === 'undefined' ? null : Node.prototype.contains);
+  const htmlElementPrototype =
+    view?.HTMLElement.prototype ??
+    (typeof HTMLElement === 'undefined' ? null : HTMLElement.prototype);
+  const readHtmlTitle = htmlElementPrototype
+    ? Object.getOwnPropertyDescriptor(htmlElementPrototype, 'title')?.get
+    : undefined;
   const NativeTypeError = view?.TypeError ?? TypeError;
   const overlayTargetHost = {
     root: currentViewRoot,
     resolve(candidate: unknown): object | null {
       const root = currentViewRoot();
-      if (!root || !contains) return null;
+      if (!root || !readHtmlTitle) return null;
       try {
-        if (!contains.call(root, candidate as Node)) return null;
+        // Explicit content may be outside Root. A native getter verifies its
+        // interface without trusting shape fields or destination-realm instanceof.
+        readHtmlTitle.call(candidate);
       } catch (error) {
         if (error instanceof NativeTypeError) return null;
         throw error;
       }
-      return isHtmlElementNode(candidate) ? candidate : null;
+      return candidate as HTMLElement;
     },
   };
 
