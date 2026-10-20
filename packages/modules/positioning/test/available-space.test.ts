@@ -122,6 +122,26 @@ it('rejects invalid targets and nonfinite facts without projecting a fabricated 
   lease.dispose();
 });
 
+it('rejects non-HTML targets before reading their ownerDocument', () => {
+  let reads = 0;
+  const target = Object.defineProperty({}, 'ownerDocument', {
+    get() {
+      reads++;
+      throw new Error('unverified target Document was read');
+    },
+  });
+  const lease = createWebAvailableSpaceHost().attach({
+    target,
+    boundary: 'root-content',
+    viewEpoch: 1,
+  });
+  lease.requestUpdate();
+  expect(lease.getFrame?.()).toBeNull();
+  expect(reads).toBe(0);
+  expect(document.querySelector('[data-pui-available-space-probe]')).toBeNull();
+  lease.dispose();
+});
+
 it('supersedes same-target leases and preserves later external writes including priority', () => {
   const target = document.createElement('div');
   target.style.setProperty(key, '81px');

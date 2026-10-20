@@ -99,6 +99,7 @@ import {
   OVERLAY_GLOBAL_MOUNT_CAP,
   OVERLAY_LAYER_SCHEDULER_CAP,
   OVERLAY_MODAL_CAP,
+  OVERLAY_TARGET_HOST_CAP,
   createWebOverlayModal,
   type OverlayGlobalMount,
   type OverlayLayerScheduler,
@@ -348,6 +349,42 @@ export function createReactModules<Props extends PropsBaseType>(args: {
     };
   };
 
+  const currentViewRoot = () => {
+    const current = args.getCurrentElement();
+    return current === el && current.isConnected ? current : null;
+  };
+  // Keep the native HTMLElement interface check and its error realm across adoption.
+  const view = el.ownerDocument.defaultView;
+  const htmlElementPrototype =
+    view?.HTMLElement.prototype ??
+    (typeof HTMLElement === 'undefined' ? null : HTMLElement.prototype);
+  const readHtmlTitle = htmlElementPrototype
+    ? Object.getOwnPropertyDescriptor(htmlElementPrototype, 'title')?.get
+    : undefined;
+  const nodePrototype =
+    view?.Node.prototype ?? (typeof Node === 'undefined' ? null : Node.prototype);
+  const readOwnerDocument = nodePrototype
+    ? Object.getOwnPropertyDescriptor(nodePrototype, 'ownerDocument')?.get
+    : undefined;
+  const NativeTypeError = view?.TypeError ?? TypeError;
+  const overlayTargetHost = {
+    root: currentViewRoot,
+    resolve(candidate: unknown): object | null {
+      const root = currentViewRoot();
+      if (!root || !readHtmlTitle || !readOwnerDocument) return null;
+      try {
+        // Explicit content may be outside Root. A native getter verifies its
+        // interface without trusting shape fields or destination-realm instanceof.
+        readHtmlTitle.call(candidate);
+      } catch (error) {
+        if (error instanceof NativeTypeError) return null;
+        throw error;
+      }
+      if (readOwnerDocument.call(candidate) !== readOwnerDocument.call(root)) return null;
+      return candidate as HTMLElement;
+    },
+  };
+
   const physicalControl = () => args.getCurrentElement() as HTMLTextAreaElement | null;
   const physicalImage = () => args.getCurrentElement() as HTMLImageElement | null;
 
@@ -553,6 +590,7 @@ export function createReactModules<Props extends PropsBaseType>(args: {
     ])
     .use('overlay', () => [
       [HOST_ELEMENT_CAP, el],
+      [OVERLAY_TARGET_HOST_CAP, overlayTargetHost],
       [
         OVERLAY_GLOBAL_MOUNT_CAP,
         createReactOverlayGlobalMount(instanceToken, args.getPortalOrigin),
