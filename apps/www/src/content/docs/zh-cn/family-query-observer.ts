@@ -104,6 +104,29 @@ const collectExpression = (ownerToken: string) => `(() => {
   return controller.collectAndRestore(ownerToken);
 })()`;
 
+// Bound observation only. The caller retains every original query Promise.
+export async function settleFamilyQueryBatch<T>(
+  requests: readonly Promise<T>[],
+  budgetMs: number
+): Promise<{ complete: true; outcomes: PromiseSettledResult<T>[] } | { complete: false }> {
+  const settled = Promise.allSettled(requests).then((outcomes) => ({
+    complete: true as const,
+    outcomes,
+  }));
+  if (!Number.isFinite(budgetMs) || budgetMs <= 0) return { complete: false };
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try {
+    return await Promise.race([
+      settled,
+      new Promise<{ complete: false }>((resolve) => {
+        timer = setTimeout(() => resolve({ complete: false }), budgetMs);
+      }),
+    ]);
+  } finally {
+    if (timer !== undefined) clearTimeout(timer);
+  }
+}
+
 export async function prepareUtilityFamilyReadObservation(page: Page) {
   const contexts = new Map<number, Context>();
   const report: Record<string, any> = {
@@ -206,6 +229,15 @@ export async function prepareUtilityFamilyReadObservation(page: Page) {
 
   return {
     report,
+    async disposeIncompleteCapture(contextCloseSucceeded: boolean) {
+      // A pending query may still call the getter. Do not restore it before context retirement.
+      report.usable = false;
+      report.unavailable = 'query-drain-incomplete; getter capture was not collected';
+      report.incompleteCapture = { contextCloseSucceeded, restorationAttempted: false };
+      report.detachmentRequested = true;
+      await detach();
+      return report;
+    },
     async collectAndRestore() {
       if (closed) return report;
       try {

@@ -1,6 +1,9 @@
 // @vitest-environment node
 import { revealHeaderPreferences } from './site-header-browser';
-import { prepareUtilityFamilyReadObservation } from './family-query-observer';
+import {
+  prepareUtilityFamilyReadObservation,
+  settleFamilyQueryBatch,
+} from './family-query-observer';
 import { execFileSync } from 'node:child_process';
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -1122,6 +1125,11 @@ for (const family of ['shadcn', 'brutalist'] as const) {
         startedMs: null as number | null,
         finishedMs: null as number | null,
         drainedReferences: 0,
+        budgetMs: 1000,
+        budgetExpired: false,
+        pendingAtDrainEndCount: 0,
+        pendingAtDrainEnd: [] as typeof familyCommitCalls,
+        droppedPendingAtDrainEndRows: 0,
         displayedOutcomes: [] as Array<Record<string, unknown>>,
         droppedOutcomeRows: 0,
         completeAtDrainPoint: false,
@@ -1172,10 +1180,20 @@ for (const family of ['shadcn', 'brutalist'] as const) {
             noteQueryError(error);
           }
           familyQueryObservation.wait.startedMs = performance.now();
+          const drainDeadline =
+            familyQueryObservation.wait.startedMs + familyQueryObservation.wait.budgetMs;
           let drained = 0;
           while (drained < familyQueryRequests.length) {
             const batch = familyQueryRequests.slice(drained);
-            const outcomes = await Promise.allSettled(batch.map(({ request }) => request));
+            const settlement = await settleFamilyQueryBatch(
+              batch.map(({ request }) => request),
+              Math.max(0, drainDeadline - performance.now())
+            );
+            if (!settlement.complete) {
+              familyQueryObservation.wait.budgetExpired = true;
+              break;
+            }
+            const outcomes = settlement.outcomes;
             const observedAtMs = performance.now();
             outcomes.forEach((outcome, index) => {
               try {
@@ -1197,7 +1215,21 @@ for (const family of ['shadcn', 'brutalist'] as const) {
             familyQueryObservation.wait.drainedReferences = drained;
           }
           familyQueryObservation.referenceCountAfterDrain = familyQueryRequests.length;
-          familyQueryObservation.wait.completeAtDrainPoint = !familyQueryObservation.ledgerError;
+          const pendingAtDrainEnd = familyQueryRequests.filter(
+            ({ call }) => call.returnedMs === undefined
+          );
+          familyQueryObservation.wait.pendingAtDrainEndCount = pendingAtDrainEnd.length;
+          familyQueryObservation.wait.pendingAtDrainEnd = pendingAtDrainEnd
+            .slice(0, 64)
+            .map(({ call }) => ({ ...call }));
+          familyQueryObservation.wait.droppedPendingAtDrainEndRows = Math.max(
+            0,
+            pendingAtDrainEnd.length - 64
+          );
+          familyQueryObservation.wait.completeAtDrainPoint =
+            !familyQueryObservation.ledgerError &&
+            !familyQueryObservation.wait.budgetExpired &&
+            drained === familyQueryRequests.length;
         } catch (error) {
           noteQueryError(error);
         } finally {
@@ -1774,12 +1806,15 @@ for (const family of ['shadcn', 'brutalist'] as const) {
           JSON.stringify({ source, familyCommitTiming, familyMutationTiming })
         );
       }
+      let contextCloseSucceeded = false;
       try {
         await context.close();
+        contextCloseSucceeded = true;
       } finally {
         if (utilityObservation && familyQueryObservation.cleanupDeferredUntilContextClose) {
           try {
-            familyQueryObservation.utility = await utilityObservation.collectAndRestore();
+            familyQueryObservation.utility =
+              await utilityObservation.disposeIncompleteCapture(contextCloseSucceeded);
           } catch (error) {
             noteQueryError(error);
           }
