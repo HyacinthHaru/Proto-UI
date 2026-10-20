@@ -361,12 +361,17 @@ export function createReactModules<Props extends PropsBaseType>(args: {
   const readHtmlTitle = htmlElementPrototype
     ? Object.getOwnPropertyDescriptor(htmlElementPrototype, 'title')?.get
     : undefined;
+  const nodePrototype =
+    view?.Node.prototype ?? (typeof Node === 'undefined' ? null : Node.prototype);
+  const readOwnerDocument = nodePrototype
+    ? Object.getOwnPropertyDescriptor(nodePrototype, 'ownerDocument')?.get
+    : undefined;
   const NativeTypeError = view?.TypeError ?? TypeError;
   const overlayTargetHost = {
     root: currentViewRoot,
     resolve(candidate: unknown): object | null {
       const root = currentViewRoot();
-      if (!root || !readHtmlTitle) return null;
+      if (!root || !readHtmlTitle || !readOwnerDocument) return null;
       try {
         // Explicit content may be outside Root. A native getter verifies its
         // interface without trusting shape fields or destination-realm instanceof.
@@ -375,6 +380,7 @@ export function createReactModules<Props extends PropsBaseType>(args: {
         if (error instanceof NativeTypeError) return null;
         throw error;
       }
+      if (readOwnerDocument.call(candidate) !== readOwnerDocument.call(root)) return null;
       return candidate as HTMLElement;
     },
   };

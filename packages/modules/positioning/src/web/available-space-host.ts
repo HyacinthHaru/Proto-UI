@@ -153,14 +153,28 @@ export function createWebAvailableSpaceHost(
   options: { readRegion?: Reader } = {}
 ): AvailableSpaceHost {
   const read = options.readRegion ?? readWebRegion;
+  // Adoption keeps the originating prototype, not the current Document's realm.
+  const readHtmlTitle =
+    typeof HTMLElement === 'undefined'
+      ? undefined
+      : Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'title')?.get;
+  const NativeTypeError = TypeError;
   return {
     supportsLayout: true,
     attach(connection) {
       const target = connection.target as HTMLElement | null;
-      const ElementType = target?.ownerDocument?.defaultView?.HTMLElement;
+      let isHtmlElement = false;
+      if (readHtmlTitle) {
+        try {
+          readHtmlTitle.call(target);
+          isHtmlElement = true;
+        } catch (error) {
+          if (!(error instanceof NativeTypeError)) throw error;
+        }
+      }
       if (
-        !ElementType ||
-        !(target instanceof ElementType) ||
+        !isHtmlElement ||
+        !target?.ownerDocument?.defaultView?.HTMLElement ||
         connection.boundary !== 'root-content' ||
         !Number.isSafeInteger(connection.viewEpoch) ||
         connection.viewEpoch < 0
