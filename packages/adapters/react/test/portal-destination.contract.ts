@@ -192,6 +192,22 @@ export function portalDestinationContract(name: string, mount: Mount) {
           expect(f.actions().isOpen()).toBe(true);
           expect(f.counts).toEqual({ setup: 1, disposed: 0 });
           expect(f.changes).toEqual([]);
+
+          await f.run(() => f.actions().close());
+          await f.flush();
+          await f.run(() => f.actions().open());
+          await f.flush();
+          const reopened = foreign.querySelector<HTMLElement>('.portal-lifetime-target');
+          expect(reopened).not.toBeNull();
+          expect(reopened!.ownerDocument).toBe(foreign);
+          if (f.stablePortalContainer) expectStableReactPortalMount(reopened!, foreign.body);
+          else expect(reopened!.parentElement).toBe(foreign.body);
+          expect(document.querySelectorAll('.portal-lifetime-target')).toHaveLength(0);
+          expect(foreign.querySelectorAll('.portal-lifetime-target')).toHaveLength(1);
+          expect(f.logicalParent(reopened!)).toBe(f.owner());
+          expect(f.actions().isOpen()).toBe(true);
+          expect(f.counts).toEqual({ setup: 1, disposed: 0 });
+          expect(f.changes).toEqual([false, true]);
         }
         // WC explicitly retains its pre-existing adoption/detach lifecycle.
         // Its passing suspension assertion is not a same-parent continuity claim.

@@ -99,6 +99,7 @@ import {
   OVERLAY_GLOBAL_MOUNT_CAP,
   OVERLAY_LAYER_SCHEDULER_CAP,
   OVERLAY_MODAL_CAP,
+  OVERLAY_TARGET_HOST_CAP,
   createWebOverlayModal,
   type OverlayGlobalMount,
   type OverlayLayerScheduler,
@@ -148,6 +149,12 @@ import {
   setProtoParent,
   subscribeFocusSurfaceReady,
 } from '../platform/instance-tree';
+
+const isHtmlElementNode = (value: unknown): value is HTMLElement =>
+  !!value &&
+  typeof (value as Node).nodeType === 'number' &&
+  (value as Node).nodeType === 1 &&
+  (value as Element).namespaceURI === 'http://www.w3.org/1999/xhtml';
 
 type ReactOwnerModulesArgs<Props extends PropsBaseType> = {
   instanceToken: LogicalInstanceToken;
@@ -346,6 +353,19 @@ export function createReactModules<Props extends PropsBaseType>(args: {
       offReady();
       offSurface();
     };
+  };
+
+  const currentViewRoot = () => {
+    const current = args.getCurrentElement();
+    return current === el && current.isConnected ? current : null;
+  };
+  const overlayTargetHost = {
+    root: currentViewRoot,
+    resolve(candidate: unknown): object | null {
+      const root = currentViewRoot();
+      if (!root || !isHtmlElementNode(candidate)) return null;
+      return root.contains(candidate) ? candidate : null;
+    },
   };
 
   const physicalControl = () => args.getCurrentElement() as HTMLTextAreaElement | null;
@@ -553,6 +573,7 @@ export function createReactModules<Props extends PropsBaseType>(args: {
     ])
     .use('overlay', () => [
       [HOST_ELEMENT_CAP, el],
+      [OVERLAY_TARGET_HOST_CAP, overlayTargetHost],
       [
         OVERLAY_GLOBAL_MOUNT_CAP,
         createReactOverlayGlobalMount(instanceToken, args.getPortalOrigin),
