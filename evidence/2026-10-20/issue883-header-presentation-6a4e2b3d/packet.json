@@ -1,0 +1,2232 @@
+{
+  "schemaVersion": 1,
+  "assembledAt": "2026-10-20T06:36:52.921002+00:00",
+  "state": "Prepared private staging; builder performs no publication",
+  "intendedEvidencePath": "evidence/2026-10-20/issue883-header-presentation-6a4e2b3d",
+  "source": {
+    "head": "6a4e2b3db65878da7b5150cdad49eb9d8a1cc9d0",
+    "tree": "41adb1995907dde0fecd8a0bda72431aa952547f",
+    "parent": "98932e8132ae4f3e1dacb9bf5967ebac481953ab",
+    "deltaPaths": 10,
+    "frozenSourceKind": "Immutable git-show copies equal to precommit frozen inputs",
+    "executionBoundary": "Local checks ran on98932 plus candidate before6a4e commit; not relabelled postcommit or complete loaded closure."
+  },
+  "counts": {
+    "rawInputs": 458,
+    "rawBytes": 18480089,
+    "publicRecordBytes": 18666527,
+    "derivedRecords": 288,
+    "selectedPNGFiles": 17,
+    "uniqueSelectedPNGHashes": 17,
+    "outerPNGCopyFiles": 17,
+    "finalRunImages": 16,
+    "separateNegativeRunImages": 1
+  },
+  "canonical": {
+    "schemaVersion": 1,
+    "reviewedAt": "2026-10-20T06:27:05.493295+00:00",
+    "assessment": "partial/ABSTAIN",
+    "sourceHead": "6a4e2b3db65878da7b5150cdad49eb9d8a1cc9d0",
+    "sourceTree": "41adb1995907dde0fecd8a0bda72431aa952547f",
+    "status": "completed",
+    "runId": 39377429538,
+    "conclusion": "failure",
+    "checkoutSha": "6da7be999c6054700279c0c180891f589c5bea12",
+    "checkoutTree": "41adb1995907dde0fecd8a0bda72431aa952547f",
+    "checkoutParents": [
+      "042f1e5740e1a809b9ca238593f5bb01a1f8a8e3",
+      "6a4e2b3db65878da7b5150cdad49eb9d8a1cc9d0"
+    ],
+    "sourceBinding": "Actual log checkout markers plus retained exact Git API object; synthetic checkout tree equals source tree.",
+    "jobs": {
+      "total": 22,
+      "conclusions": {
+        "success": 13,
+        "failure": 9
+      },
+      "allTerminal": true
+    },
+    "browserShards": [
+      {
+        "shard": 1,
+        "jobId": 118478845885,
+        "status": "completed",
+        "conclusion": "failure",
+        "completeSummary": false,
+        "summary": null,
+        "observedExitCodes": [
+          {
+            "line": 1042,
+            "exitCode": 124
+          }
+        ],
+        "exit124": true,
+        "summaryEvidence": [],
+        "fileSummaryEvidence": [],
+        "executedFileResults": [
+          {
+            "line": 411,
+            "text": " ❯ packages/adapters/web-component/test/shadow-closeout.browser.test.ts (111 tests | 2 failed) 94742ms"
+          },
+          {
+            "line": 528,
+            "text": " ❯ apps/www/src/content/docs/zh-cn/demo-liquid-glass-portal.browser.test.ts (55 tests | 1 failed) 199821ms"
+          },
+          {
+            "line": 660,
+            "text": " ❯ apps/www/src/content/docs/zh-cn/home-demo-runtime.browser.test.ts (11 tests | 1 failed) 117299ms"
+          },
+          {
+            "line": 711,
+            "text": " ❯ apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts (30 tests | 14 failed) 170458ms"
+          },
+          {
+            "line": 759,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/demo-base-controls.browser.test.ts (5 tests) 29414ms"
+          },
+          {
+            "line": 765,
+            "text": " ✓ apps/workspace/test/lifecycle.browser.test.ts (7 tests) 40448ms"
+          },
+          {
+            "line": 776,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/runtime-layout-parity.browser.test.ts (6 tests) 57004ms"
+          }
+        ],
+        "visibleFailedCases": [
+          {
+            "line": 412,
+            "title": "Shadow closeout native boundaries > styles a Template descendant from the shadcn preset Shadow closure 5003ms",
+            "firstVisibleFailure": "Test timed out in 5000ms."
+          },
+          {
+            "line": 415,
+            "title": "Shadow closeout native boundaries > styles a Template descendant from the brutalist preset Shadow closure 5002ms",
+            "firstVisibleFailure": "Test timed out in 5000ms."
+          },
+          {
+            "line": 530,
+            "title": "Liquid portal container diagnostics (observation, not guard relaxation) > measures the actual docs-shell fixed point with a disposable containment handover 10815ms",
+            "firstVisibleFailure": "css-zoom: expected false to be true // Object.is equality"
+          },
+          {
+            "line": 663,
+            "title": "Homepage Runtime demobox browser smoke > reveals React only after complete dark-mode style projection 4199ms",
+            "firstVisibleFailure": "expected false to be true // Object.is equality"
+          },
+          {
+            "line": 712,
+            "title": "Search family Button commands > shadcn light 390px preserves activation, dismissal and focus 8331ms",
+            "firstVisibleFailure": "{\"startedAt\":1792476850575,\"deadline\":1792476851575,\"observedReadyAt\":null,\"completedAt\":1792476851918,\"currentDisabled\":null,\"owner\":null,\"generation\":null}: expected false to be true // Object.is equality"
+          },
+          {
+            "line": 714,
+            "title": "Search family Button commands > shadcn light 1440px preserves activation, dismissal and focus 8768ms",
+            "firstVisibleFailure": "{\"startedAt\":1792476858730,\"deadline\":1792476859730,\"observedReadyAt\":null,\"completedAt\":1792476860393,\"currentDisabled\":null,\"owner\":null,\"generation\":null}: expected false to be true // Object.is equality"
+          },
+          {
+            "line": 716,
+            "title": "Search family Button commands > shadcn dark 390px preserves activation, dismissal and focus 7969ms",
+            "firstVisibleFailure": "{\"startedAt\":1792476867427,\"deadline\":1792476868427,\"observedReadyAt\":null,\"completedAt\":1792476868764,\"currentDisabled\":null,\"owner\":null,\"generation\":null}: expected false to be true // Object.is equality"
+          },
+          {
+            "line": 718,
+            "title": "Search family Button commands > shadcn dark 1440px preserves activation, dismissal and focus 8914ms",
+            "firstVisibleFailure": "{\"startedAt\":1792476875452,\"deadline\":1792476876452,\"observedReadyAt\":null,\"completedAt\":1792476877147,\"currentDisabled\":null,\"owner\":null,\"generation\":null}: expected false to be true // Object.is equality"
+          },
+          {
+            "line": 721,
+            "title": "Search family Button commands > brutalist light 1440px preserves activation, dismissal and focus 6234ms",
+            "firstVisibleFailure": "{\"startedAt\":1792476887571,\"deadline\":1792476888571,\"observedReadyAt\":null,\"completedAt\":1792476888638,\"currentDisabled\":null,\"owner\":null,\"generation\":null}: expected false to be true // Object.is equality"
+          },
+          {
+            "line": 724,
+            "title": "Search family Button commands > brutalist dark 1440px preserves activation, dismissal and focus 6278ms",
+            "firstVisibleFailure": "{\"startedAt\":1792476897249,\"deadline\":1792476898249,\"observedReadyAt\":null,\"completedAt\":1792476898350,\"currentDisabled\":null,\"owner\":null,\"generation\":null}: expected false to be true // Object.is equality"
+          },
+          {
+            "line": 734,
+            "title": "Docs shadcn 320px shows complete runtime values beside real Search 3326ms",
+            "firstVisibleFailure": "Matcher did not succeed in 1000ms"
+          },
+          {
+            "line": 737,
+            "title": "Docs shadcn 390px shows complete runtime values beside real Search 3265ms",
+            "firstVisibleFailure": "Matcher did not succeed in 1000ms"
+          },
+          {
+            "line": 740,
+            "title": "Docs shadcn 1280px shows complete runtime values beside real Search 3468ms",
+            "firstVisibleFailure": "Matcher did not succeed in 1000ms"
+          },
+          {
+            "line": 742,
+            "title": "Docs brutalist 1280px shows complete runtime values beside real Search 2733ms",
+            "firstVisibleFailure": "Matcher did not succeed in 1000ms"
+          },
+          {
+            "line": 744,
+            "title": "Docs shadcn 1440px shows complete runtime values beside real Search 3655ms",
+            "firstVisibleFailure": "Matcher did not succeed in 1000ms"
+          },
+          {
+            "line": 746,
+            "title": "Docs brutalist 1440px shows complete runtime values beside real Search 2722ms",
+            "firstVisibleFailure": "Matcher did not succeed in 1000ms"
+          },
+          {
+            "line": 748,
+            "title": "Docs shadcn 2048px shows complete runtime values beside real Search 3486ms",
+            "firstVisibleFailure": "Matcher did not succeed in 1000ms"
+          },
+          {
+            "line": 750,
+            "title": "Docs brutalist 2048px shows complete runtime values beside real Search 2695ms",
+            "firstVisibleFailure": "Matcher did not succeed in 1000ms"
+          }
+        ],
+        "logBinding": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845885.log",
+          "sha256": "cc7dd8c4b52888ec0bd877461e1125c9854d086ec0080e30983b082ac0ad1037",
+          "bytes": 205218,
+          "kind": "raw-terminal-job-log"
+        },
+        "checkoutMarkers": [
+          {
+            "sha": "6da7be999c6054700279c0c180891f589c5bea12",
+            "line": 128
+          }
+        ],
+        "scopeLimit": "Only complete top-level test summaries contribute to the subtotal. Individual file results in a timed-out shard remain individual results."
+      },
+      {
+        "shard": 2,
+        "jobId": 118478845953,
+        "status": "completed",
+        "conclusion": "failure",
+        "completeSummary": false,
+        "summary": null,
+        "observedExitCodes": [
+          {
+            "line": 1449,
+            "exitCode": 124
+          }
+        ],
+        "exit124": true,
+        "summaryEvidence": [],
+        "fileSummaryEvidence": [],
+        "executedFileResults": [
+          {
+            "line": 449,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts (9 tests) 86469ms"
+          },
+          {
+            "line": 462,
+            "text": " ✓ apps/www/src/components/documentation-image-preview.browser.test.ts (24 tests) 87756ms"
+          },
+          {
+            "line": 496,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/site-typography.browser.test.ts (33 tests) 92601ms"
+          },
+          {
+            "line": 533,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/demo-shadcn-controls.browser.test.ts (6 tests) 28856ms"
+          },
+          {
+            "line": 897,
+            "text": " ❯ apps/www/src/content/docs/zh-cn/demo-matrix.browser.test.ts (4 tests | 4 failed) 530362ms"
+          },
+          {
+            "line": 907,
+            "text": " ✓ packages/prototypes/shadcn/test/drawer-presence.browser.test.ts (6 tests) 8142ms"
+          },
+          {
+            "line": 917,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/runtime-loading-mask.browser.test.ts (6 tests) 35609ms"
+          }
+        ],
+        "visibleFailedCases": [
+          {
+            "line": 898,
+            "title": "Website Demo Matrix browser smoke > mounts every demo in every official Web adapter 108013ms",
+            "firstVisibleFailure": "page.waitForFunction: Timeout 60000ms exceeded."
+          },
+          {
+            "line": 900,
+            "title": "Website Demo Matrix browser smoke > keeps the matrix readable at 320px 119834ms",
+            "firstVisibleFailure": "page.waitForFunction: Timeout 60000ms exceeded."
+          },
+          {
+            "line": 902,
+            "title": "Website Demo Matrix browser smoke > keeps the matrix readable at 390px 121860ms",
+            "firstVisibleFailure": "page.waitForFunction: Timeout 60000ms exceeded."
+          },
+          {
+            "line": 904,
+            "title": "Website Demo Matrix browser smoke > moves focus into the Base Dialog content in every runtime 180001ms",
+            "firstVisibleFailure": "Test timed out in 180000ms."
+          }
+        ],
+        "logBinding": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845953.log",
+          "sha256": "77f7737aefc5d9b1714de0baf09e019a0956ac5540159d73ac675eb3f4aa72fe",
+          "bytes": 328973,
+          "kind": "raw-terminal-job-log"
+        },
+        "checkoutMarkers": [
+          {
+            "sha": "6da7be999c6054700279c0c180891f589c5bea12",
+            "line": 128
+          }
+        ],
+        "scopeLimit": "Only complete top-level test summaries contribute to the subtotal. Individual file results in a timed-out shard remain individual results."
+      },
+      {
+        "shard": 3,
+        "jobId": 118478846007,
+        "status": "completed",
+        "conclusion": "failure",
+        "completeSummary": true,
+        "summary": {
+          "passed": 58,
+          "failed": 3,
+          "skipped": 0
+        },
+        "observedExitCodes": [
+          {
+            "line": 871,
+            "exitCode": 1
+          }
+        ],
+        "exit124": false,
+        "summaryEvidence": [
+          {
+            "line": 616,
+            "text": "      Tests  3 failed | 58 passed (61)",
+            "counts": {
+              "failed": 3,
+              "passed": 58
+            }
+          }
+        ],
+        "fileSummaryEvidence": [
+          {
+            "line": 615,
+            "text": " Test Files  2 failed | 8 passed (10)"
+          }
+        ],
+        "executedFileResults": [
+          {
+            "line": 439,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/demo-brutalist-remaining.browser.test.ts (6 tests) 59678ms"
+          },
+          {
+            "line": 449,
+            "text": " ❯ apps/www/src/content/docs/zh-cn/demo-new-projection-families.browser.test.ts (16 tests | 2 failed) 58240ms"
+          },
+          {
+            "line": 492,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/runtime-preview-surface.browser.test.ts (16 tests) 119543ms"
+          },
+          {
+            "line": 512,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/library-cards-first-frame.browser.test.ts (9 tests) 149960ms"
+          },
+          {
+            "line": 525,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/base-accordion-layout-parity.browser.test.ts (2 tests) 37352ms"
+          },
+          {
+            "line": 531,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/table-react19.browser.test.ts (1 test) 11228ms"
+          },
+          {
+            "line": 542,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/demo-base-input.browser.test.ts (8 tests) 74634ms"
+          },
+          {
+            "line": 554,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/demo-shadcn-dialog.browser.test.ts (1 test) 14530ms"
+          },
+          {
+            "line": 556,
+            "text": " ✓ apps/www/test/template-style.browser.test.ts (1 test) 2301ms"
+          },
+          {
+            "line": 561,
+            "text": " ❯ apps/www/src/content/docs/zh-cn/demo-shadow-split-s4-paint.browser.test.ts (1 test | 1 failed) 64015ms"
+          }
+        ],
+        "visibleFailedCases": [
+          {
+            "line": 450,
+            "title": "draft family real Web host evidence > renders each source projection without website CSS in light 1680ms",
+            "firstVisibleFailure": "expected '1' to be '0.5' // Object.is equality"
+          },
+          {
+            "line": 452,
+            "title": "draft family real Web host evidence > renders each source projection without website CSS in dark 1084ms",
+            "firstVisibleFailure": "expected '1' to be '0.5' // Object.is equality"
+          },
+          {
+            "line": 562,
+            "title": "S4: compositor never repaints a closed Dialog after settings changes 60105ms",
+            "firstVisibleFailure": "locator.click: Timeout 30000ms exceeded."
+          }
+        ],
+        "logBinding": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478846007.log",
+          "sha256": "8bec99e432ae85d65a2ddd417f053883b1f4d77f48d3bbf70dd5577a623818a2",
+          "bytes": 107287,
+          "kind": "raw-terminal-job-log"
+        },
+        "checkoutMarkers": [
+          {
+            "sha": "6da7be999c6054700279c0c180891f589c5bea12",
+            "line": 128
+          }
+        ],
+        "scopeLimit": "Only complete top-level test summaries contribute to the subtotal. Individual file results in a timed-out shard remain individual results."
+      },
+      {
+        "shard": 4,
+        "jobId": 118478845844,
+        "status": "completed",
+        "conclusion": "failure",
+        "completeSummary": true,
+        "summary": {
+          "passed": 122,
+          "failed": 2,
+          "skipped": 0
+        },
+        "observedExitCodes": [
+          {
+            "line": 873,
+            "exitCode": 1
+          }
+        ],
+        "exit124": false,
+        "summaryEvidence": [
+          {
+            "line": 613,
+            "text": "      Tests  2 failed | 122 passed (124)",
+            "counts": {
+              "failed": 2,
+              "passed": 122
+            }
+          }
+        ],
+        "fileSummaryEvidence": [
+          {
+            "line": 612,
+            "text": " Test Files  1 failed | 9 passed (10)"
+          }
+        ],
+        "executedFileResults": [
+          {
+            "line": 415,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/scroll-area-corner.browser.test.ts (2 tests) 32870ms"
+          },
+          {
+            "line": 421,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/demo-passive-atoms.browser.test.ts (80 tests) 303807ms"
+          },
+          {
+            "line": 505,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/code-surface-grammar.browser.test.ts (9 tests) 97887ms"
+          },
+          {
+            "line": 518,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/demo-brutalist-spinner.browser.test.ts (4 tests) 12343ms"
+          },
+          {
+            "line": 526,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/overlay-portal-direction.browser.test.ts (8 tests) 28448ms"
+          },
+          {
+            "line": 538,
+            "text": " ✓ apps/www/test/button-view-lifetime.browser.test.ts (8 tests) 16506ms"
+          },
+          {
+            "line": 565,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/demo-shadcn-input.browser.test.ts (4 tests) 17243ms"
+          },
+          {
+            "line": 573,
+            "text": " ✓ apps/www/test/tree-navigation.browser.test.ts (2 tests) 4184ms"
+          },
+          {
+            "line": 582,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/demo-base-table.browser.test.ts (5 tests) 20300ms"
+          },
+          {
+            "line": 591,
+            "text": " ❯ apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts (2 tests | 2 failed) 174441ms"
+          }
+        ],
+        "visibleFailedCases": [
+          {
+            "line": 592,
+            "title": "S4 complete public Dialog settings > zh-cn: native Light/split/mixed acceptance 83367ms",
+            "firstVisibleFailure": "page.waitForFunction: Timeout 60000ms exceeded."
+          },
+          {
+            "line": 594,
+            "title": "S4 complete public Dialog settings > en: native Light/split/mixed acceptance 90388ms",
+            "firstVisibleFailure": "page.waitForFunction: Timeout 60000ms exceeded."
+          }
+        ],
+        "logBinding": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845844.log",
+          "sha256": "61b4d06aeaa0c17e5e2b6c3ee9dff8231eef447c5c6dc6529674b35e0653bd91",
+          "bytes": 112752,
+          "kind": "raw-terminal-job-log"
+        },
+        "checkoutMarkers": [
+          {
+            "sha": "6da7be999c6054700279c0c180891f589c5bea12",
+            "line": 128
+          }
+        ],
+        "scopeLimit": "Only complete top-level test summaries contribute to the subtotal. Individual file results in a timed-out shard remain individual results."
+      },
+      {
+        "shard": 5,
+        "jobId": 118478845961,
+        "status": "completed",
+        "conclusion": "failure",
+        "completeSummary": true,
+        "summary": {
+          "passed": 88,
+          "failed": 2,
+          "skipped": 15
+        },
+        "observedExitCodes": [
+          {
+            "line": 1006,
+            "exitCode": 1
+          }
+        ],
+        "exit124": false,
+        "summaryEvidence": [
+          {
+            "line": 747,
+            "text": "      Tests  2 failed | 88 passed | 15 skipped (105)",
+            "counts": {
+              "failed": 2,
+              "passed": 88,
+              "skipped": 15
+            }
+          }
+        ],
+        "fileSummaryEvidence": [
+          {
+            "line": 746,
+            "text": " Test Files  1 failed | 8 passed | 1 skipped (10)"
+          }
+        ],
+        "executedFileResults": [
+          {
+            "line": 455,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/demo-prototype-style-closure.browser.test.ts (9 tests) 38428ms"
+          },
+          {
+            "line": 619,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts (36 tests) 185781ms"
+          },
+          {
+            "line": 659,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/code-surfaces.browser.test.ts (7 tests) 56509ms"
+          },
+          {
+            "line": 671,
+            "text": " ✓ apps/www/test/color-scheme.browser.test.ts (9 tests) 30696ms"
+          },
+          {
+            "line": 687,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts (8 tests) 42844ms"
+          },
+          {
+            "line": 699,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/overlay-scrollbar-geometry.browser.test.ts (16 tests) 82086ms"
+          },
+          {
+            "line": 719,
+            "text": " ✓ apps/www/test/virtual-list-resize.browser.test.ts (1 test) 817ms"
+          },
+          {
+            "line": 721,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/scroll-chrome-display.browser.test.ts (2 tests) 790ms"
+          },
+          {
+            "line": 725,
+            "text": " ❯ apps/www/src/content/docs/zh-cn/demo-shadow-split-s5.browser.test.ts (2 tests | 2 failed) 168403ms"
+          }
+        ],
+        "visibleFailedCases": [
+          {
+            "line": 726,
+            "title": "S5 native editor acceptance paths > zh-cn: Light/split/mixed native editing 82373ms",
+            "firstVisibleFailure": "page.waitForFunction: Timeout 60000ms exceeded."
+          },
+          {
+            "line": 728,
+            "title": "S5 native editor acceptance paths > en: Light/split/mixed native editing 85346ms",
+            "firstVisibleFailure": "page.waitForFunction: Timeout 60000ms exceeded."
+          }
+        ],
+        "logBinding": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845961.log",
+          "sha256": "840a2d5557491e3ebee33f921c49899862f063edcada3c2461c5a48cc96753fd",
+          "bytes": 138668,
+          "kind": "raw-terminal-job-log"
+        },
+        "checkoutMarkers": [
+          {
+            "sha": "6da7be999c6054700279c0c180891f589c5bea12",
+            "line": 128
+          }
+        ],
+        "scopeLimit": "Only complete top-level test summaries contribute to the subtotal. Individual file results in a timed-out shard remain individual results."
+      },
+      {
+        "shard": 6,
+        "jobId": 118478845857,
+        "status": "completed",
+        "conclusion": "success",
+        "completeSummary": true,
+        "summary": {
+          "passed": 169,
+          "failed": 0,
+          "skipped": 0
+        },
+        "observedExitCodes": [],
+        "exit124": false,
+        "summaryEvidence": [
+          {
+            "line": 767,
+            "text": "      Tests  169 passed (169)",
+            "counts": {
+              "passed": 169
+            }
+          }
+        ],
+        "fileSummaryEvidence": [
+          {
+            "line": 766,
+            "text": " Test Files  10 passed (10)"
+          }
+        ],
+        "executedFileResults": [
+          {
+            "line": 438,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/contrast-probe.browser.test.ts (46 tests) 13210ms"
+          },
+          {
+            "line": 450,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/prototype-projection-scope.browser.test.ts (5 tests) 34276ms"
+          },
+          {
+            "line": 459,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts (8 tests) 49191ms"
+          },
+          {
+            "line": 468,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/scroll-end-follow.browser.test.ts (6 tests) 5098ms"
+          },
+          {
+            "line": 478,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/demo-composed-style-isolation.browser.test.ts (2 tests) 18824ms"
+          },
+          {
+            "line": 484,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/demo-brutalist-button.browser.test.ts (8 tests) 24566ms"
+          },
+          {
+            "line": 508,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/demo-shadcn-scroll-area.browser.test.ts (1 test) 5613ms"
+          },
+          {
+            "line": 660,
+            "text": " ✓ packages/adapters/base/test/focus-intent-retries.browser.test.ts (90 tests) 65785ms"
+          },
+          {
+            "line": 757,
+            "text": " ✓ apps/www/test/evidence/brutalist-fonts.browser.test.ts (2 tests) 18530ms"
+          },
+          {
+            "line": 763,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/demo-ring-offset-default.browser.test.ts (1 test) 6666ms"
+          }
+        ],
+        "visibleFailedCases": [],
+        "logBinding": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845857.log",
+          "sha256": "bc7c2297f00e015ee0d718f7f84aa518707b122a2e4b729a4247e4be01f1b4cf",
+          "bytes": 103390,
+          "kind": "raw-terminal-job-log"
+        },
+        "checkoutMarkers": [
+          {
+            "sha": "6da7be999c6054700279c0c180891f589c5bea12",
+            "line": 128
+          }
+        ],
+        "scopeLimit": "Only complete top-level test summaries contribute to the subtotal. Individual file results in a timed-out shard remain individual results."
+      },
+      {
+        "shard": 7,
+        "jobId": 118478845881,
+        "status": "completed",
+        "conclusion": "failure",
+        "completeSummary": false,
+        "summary": null,
+        "observedExitCodes": [
+          {
+            "line": 790,
+            "exitCode": 124
+          }
+        ],
+        "exit124": true,
+        "summaryEvidence": [],
+        "fileSummaryEvidence": [],
+        "executedFileResults": [
+          {
+            "line": 414,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/site-copy-commands.browser.test.ts (14 tests) 138164ms"
+          },
+          {
+            "line": 432,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/quick-start-first-frame-fragment-control.browser.test.ts (4 tests) 5016ms"
+          },
+          {
+            "line": 440,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/demo-select-draft-projections.browser.test.ts (24 tests) 181920ms"
+          },
+          {
+            "line": 468,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/demo-shadcn-tooltip.browser.test.ts (2 tests) 9171ms"
+          },
+          {
+            "line": 474,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/demo-accordion-family.browser.test.ts (25 tests) 203109ms"
+          },
+          {
+            "line": 503,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/demo-field-family.browser.test.ts (25 tests) 295482ms"
+          },
+          {
+            "line": 532,
+            "text": " ❯ apps/www/src/content/docs/zh-cn/demo-brutalist-checkbox.browser.test.ts (1 test | 1 failed) 4006ms"
+          }
+        ],
+        "visibleFailedCases": [
+          {
+            "line": 533,
+            "title": "Brutalist Checkbox browser acceptance > renders state, contrast, focus, and one accessible control in every public runtime 3545ms",
+            "firstVisibleFailure": "wc/light/pressed-shadow: expected 'none' not to be 'none' // Object.is equality"
+          }
+        ],
+        "logBinding": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845881.log",
+          "sha256": "96bcdc7a00bac7c274ff45c5a0139a37e61ca8b61dff4fe1317503f36c91c2af",
+          "bytes": 99184,
+          "kind": "raw-terminal-job-log"
+        },
+        "checkoutMarkers": [
+          {
+            "sha": "6da7be999c6054700279c0c180891f589c5bea12",
+            "line": 128
+          }
+        ],
+        "scopeLimit": "Only complete top-level test summaries contribute to the subtotal. Individual file results in a timed-out shard remain individual results."
+      },
+      {
+        "shard": 8,
+        "jobId": 118478845875,
+        "status": "completed",
+        "conclusion": "failure",
+        "completeSummary": false,
+        "summary": null,
+        "observedExitCodes": [
+          {
+            "line": 1099,
+            "exitCode": 124
+          }
+        ],
+        "exit124": true,
+        "summaryEvidence": [],
+        "fileSummaryEvidence": [],
+        "executedFileResults": [
+          {
+            "line": 450,
+            "text": " ❯ apps/www/src/content/docs/zh-cn/site-native-links.browser.test.ts (10 tests | 1 failed) 138501ms"
+          },
+          {
+            "line": 504,
+            "text": " ❯ apps/www/src/content/docs/zh-cn/demo-brutalist-controls.browser.test.ts (10 tests | 2 failed) 104892ms"
+          },
+          {
+            "line": 520,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/quick-start-first-frame.browser.test.ts (20 tests) 125104ms"
+          },
+          {
+            "line": 544,
+            "text": " ✓ apps/www/src/content/docs/zh-cn/header-select-elevation.browser.test.ts (16 tests) 302668ms"
+          },
+          {
+            "line": 564,
+            "text": " ❯ apps/www/src/content/docs/zh-cn/demo-liquid-glass-material.browser.test.ts (3 tests | 2 failed) 53402ms"
+          }
+        ],
+        "visibleFailedCases": [
+          {
+            "line": 460,
+            "title": "native links with app-owned Proto visual surfaces > reveals the current article in only the sidebar scroll owner and yields to manual scrolling 12844ms",
+            "firstVisibleFailure": "Matcher did not succeed in 10000ms"
+          },
+          {
+            "line": 506,
+            "title": "Brutalist control documentation browser regressions > keeps the Tabs Root bounds stable across selection in all runtimes 33300ms",
+            "firstVisibleFailure": "page.waitForFunction: Timeout 30000ms exceeded."
+          },
+          {
+            "line": 508,
+            "title": "Brutalist control documentation browser regressions > keeps Dropdown placement fixed while Trigger hover and press transforms change 23527ms",
+            "firstVisibleFailure": "page.waitForFunction: Timeout 20000ms exceeded."
+          },
+          {
+            "line": 565,
+            "title": "V2 optical paint through four real Web Adapter runtimes > light: visible dynamic source, optical pixels, motion, input and revocation 22038ms",
+            "firstVisibleFailure": "page.waitForFunction: Timeout 20000ms exceeded."
+          },
+          {
+            "line": 567,
+            "title": "V2 optical paint through four real Web Adapter runtimes > dark: visible dynamic source, optical pixels, motion, input and revocation 21534ms",
+            "firstVisibleFailure": "page.waitForFunction: Timeout 20000ms exceeded."
+          }
+        ],
+        "logBinding": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845875.log",
+          "sha256": "15cf93b892621d0c0b6e1e09938ba8c6df929c1ae1df2320f4be0903a4b23e0d",
+          "bytes": 148274,
+          "kind": "raw-terminal-job-log"
+        },
+        "checkoutMarkers": [
+          {
+            "sha": "6da7be999c6054700279c0c180891f589c5bea12",
+            "line": 128
+          }
+        ],
+        "scopeLimit": "Only complete top-level test summaries contribute to the subtotal. Individual file results in a timed-out shard remain individual results."
+      }
+    ],
+    "completeShardSubtotal": {
+      "passed": 437,
+      "failed": 7,
+      "skipped": 15
+    },
+    "incompleteShards": [1, 2, 7, 8],
+    "allEightTestTotal": null,
+    "allEightTestTotalLimit": "No all-eight total is calculated from incomplete timeout shards.",
+    "jobBindings": [
+      {
+        "jobId": 118478608870,
+        "name": "test-plan",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-20T05:55:30Z",
+        "completedAt": "2026-10-20T05:55:40Z",
+        "htmlUrl": "https://github.com/Proto-UI/Proto-UI/actions/runs/39377429538/job/118478608870",
+        "log": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478608870.log",
+          "sha256": "3426331d2b94637ad1a34af6842797dd10f05f332193a5f3ba37a609fc6e24c6",
+          "bytes": 151460,
+          "kind": "raw-terminal-job-log"
+        },
+        "acquisitionReceipt": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478608870.json",
+          "sha256": "20d3d63812b7cbd92afc7f77aea93da1720ef40ca9cba4c35aba5e36d4bfbe80",
+          "bytes": 479,
+          "kind": "job-log-acquisition-receipt"
+        },
+        "checkoutMarkers": [
+          {
+            "sha": "6da7be999c6054700279c0c180891f589c5bea12",
+            "line": 126
+          }
+        ],
+        "checkoutMarkerLimit": null
+      },
+      {
+        "jobId": 118478609158,
+        "name": "rust-macos",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-20T05:54:57Z",
+        "completedAt": "2026-10-20T06:02:37Z",
+        "htmlUrl": "https://github.com/Proto-UI/Proto-UI/actions/runs/39377429538/job/118478609158",
+        "log": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478609158.log",
+          "sha256": "a2755b925ee8019b1ffa1decee3e2f3eade0c79d3bac035bfdca3c12b9f137d2",
+          "bytes": 127997,
+          "kind": "raw-terminal-job-log"
+        },
+        "acquisitionReceipt": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478609158.json",
+          "sha256": "e2e19b7c632416c00c711a748322d1878d9fb11444959a4da2bf0d37a6a4c2be",
+          "bytes": 480,
+          "kind": "job-log-acquisition-receipt"
+        },
+        "checkoutMarkers": [
+          {
+            "sha": "6da7be999c6054700279c0c180891f589c5bea12",
+            "line": 127
+          }
+        ],
+        "checkoutMarkerLimit": null
+      },
+      {
+        "jobId": 118478609170,
+        "name": "lockstep-check",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-20T05:57:55Z",
+        "completedAt": "2026-10-20T05:58:05Z",
+        "htmlUrl": "https://github.com/Proto-UI/Proto-UI/actions/runs/39377429538/job/118478609170",
+        "log": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478609170.log",
+          "sha256": "79f43b19f72a558da0caa7b142e7464d15c6b901ac7f7aa522e96f565adc1b12",
+          "bytes": 12525,
+          "kind": "raw-terminal-job-log"
+        },
+        "acquisitionReceipt": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478609170.json",
+          "sha256": "3ee8563d6e764c9debda6f957cb09cdeae3f869e8eb1e8a49ec84bd70110ca3a",
+          "bytes": 483,
+          "kind": "job-log-acquisition-receipt"
+        },
+        "checkoutMarkers": [
+          {
+            "sha": "6da7be999c6054700279c0c180891f589c5bea12",
+            "line": 123
+          }
+        ],
+        "checkoutMarkerLimit": null
+      },
+      {
+        "jobId": 118478609193,
+        "name": "rust-interop",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-20T05:54:58Z",
+        "completedAt": "2026-10-20T05:58:44Z",
+        "htmlUrl": "https://github.com/Proto-UI/Proto-UI/actions/runs/39377429538/job/118478609193",
+        "log": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478609193.log",
+          "sha256": "bfa42635e34094dac8a0e0909e68acdd69f3857a6b3894d0658fed0eb9815d2c",
+          "bytes": 65342,
+          "kind": "raw-terminal-job-log"
+        },
+        "acquisitionReceipt": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478609193.json",
+          "sha256": "51a2afdfe7ac4781377233aa4e3f0d5e2de6207662be8773b0d809a957242284",
+          "bytes": 481,
+          "kind": "job-log-acquisition-receipt"
+        },
+        "checkoutMarkers": [
+          {
+            "sha": "6da7be999c6054700279c0c180891f589c5bea12",
+            "line": 150
+          }
+        ],
+        "checkoutMarkerLimit": null
+      },
+      {
+        "jobId": 118478609197,
+        "name": "public_package_plan",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-20T05:58:03Z",
+        "completedAt": "2026-10-20T05:58:13Z",
+        "htmlUrl": "https://github.com/Proto-UI/Proto-UI/actions/runs/39377429538/job/118478609197",
+        "log": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478609197.log",
+          "sha256": "a39827e3dcf7ec3785839f83cf6a3b9c51022b5f92124b121d27c20b96753cd7",
+          "bytes": 58575,
+          "kind": "raw-terminal-job-log"
+        },
+        "acquisitionReceipt": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478609197.json",
+          "sha256": "f7b01270d3f30c383ccf48b70c836b01998f55dd46f69e739f70827c94eb2c97",
+          "bytes": 488,
+          "kind": "job-log-acquisition-receipt"
+        },
+        "checkoutMarkers": [
+          {
+            "sha": "6da7be999c6054700279c0c180891f589c5bea12",
+            "line": 441
+          }
+        ],
+        "checkoutMarkerLimit": null
+      },
+      {
+        "jobId": 118478609241,
+        "name": "rust",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-20T06:01:00Z",
+        "completedAt": "2026-10-20T06:01:25Z",
+        "htmlUrl": "https://github.com/Proto-UI/Proto-UI/actions/runs/39377429538/job/118478609241",
+        "log": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478609241.log",
+          "sha256": "1e757695e3d7b4f6b1eb0a0beb6bf3be45f648c3ce62ab5077b63d10357b4b74",
+          "bytes": 27524,
+          "kind": "raw-terminal-job-log"
+        },
+        "acquisitionReceipt": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478609241.json",
+          "sha256": "1b3f6ae5bb4fa66c30baebbabb5aa66c5b93aac11b549369d69368927473388e",
+          "bytes": 473,
+          "kind": "job-log-acquisition-receipt"
+        },
+        "checkoutMarkers": [
+          {
+            "sha": "6da7be999c6054700279c0c180891f589c5bea12",
+            "line": 124
+          }
+        ],
+        "checkoutMarkerLimit": null
+      },
+      {
+        "jobId": 118478609253,
+        "name": "type-check",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-20T06:00:03Z",
+        "completedAt": "2026-10-20T06:01:13Z",
+        "htmlUrl": "https://github.com/Proto-UI/Proto-UI/actions/runs/39377429538/job/118478609253",
+        "log": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478609253.log",
+          "sha256": "7a5201a2d8c2ce7274d4e64ece16efbfa53d708c6782a672cc80d626320677d1",
+          "bytes": 26605,
+          "kind": "raw-terminal-job-log"
+        },
+        "acquisitionReceipt": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478609253.json",
+          "sha256": "18d3ff7e992a898e481e5b55292a8e86fde5ce96c3d710e3fadeadc8e5c6e39e",
+          "bytes": 479,
+          "kind": "job-log-acquisition-receipt"
+        },
+        "checkoutMarkers": [
+          {
+            "sha": "6da7be999c6054700279c0c180891f589c5bea12",
+            "line": 123
+          }
+        ],
+        "checkoutMarkerLimit": null
+      },
+      {
+        "jobId": 118478609426,
+        "name": "release-scan",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-20T06:00:52Z",
+        "completedAt": "2026-10-20T06:01:06Z",
+        "htmlUrl": "https://github.com/Proto-UI/Proto-UI/actions/runs/39377429538/job/118478609426",
+        "log": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478609426.log",
+          "sha256": "35610b545f2dce255831f4897b1777a675f6667faf19b0044da9e1b27e83a0ed",
+          "bytes": 25106,
+          "kind": "raw-terminal-job-log"
+        },
+        "acquisitionReceipt": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478609426.json",
+          "sha256": "3fefa8d0b16fb9f3fba97d7b9736a587b5cdc2daf3e64627cdd39047e5d00392",
+          "bytes": 481,
+          "kind": "job-log-acquisition-receipt"
+        },
+        "checkoutMarkers": [
+          {
+            "sha": "6da7be999c6054700279c0c180891f589c5bea12",
+            "line": 123
+          }
+        ],
+        "checkoutMarkerLimit": null
+      },
+      {
+        "jobId": 118478845844,
+        "name": "test-browser (4/8, browser-4-of-8)",
+        "status": "completed",
+        "conclusion": "failure",
+        "startedAt": "2026-10-20T06:03:23Z",
+        "completedAt": "2026-10-20T06:16:23Z",
+        "htmlUrl": "https://github.com/Proto-UI/Proto-UI/actions/runs/39377429538/job/118478845844",
+        "log": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845844.log",
+          "sha256": "61b4d06aeaa0c17e5e2b6c3ee9dff8231eef447c5c6dc6529674b35e0653bd91",
+          "bytes": 112752,
+          "kind": "raw-terminal-job-log"
+        },
+        "acquisitionReceipt": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845844.json",
+          "sha256": "b5c494d61604d083ef279821a248220f880abe2199d1f477ab5f793588c558ab",
+          "bytes": 504,
+          "kind": "job-log-acquisition-receipt"
+        },
+        "checkoutMarkers": [
+          {
+            "sha": "6da7be999c6054700279c0c180891f589c5bea12",
+            "line": 128
+          }
+        ],
+        "checkoutMarkerLimit": null
+      },
+      {
+        "jobId": 118478845857,
+        "name": "test-browser (6/8, browser-6-of-8)",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-20T06:02:40Z",
+        "completedAt": "2026-10-20T06:07:34Z",
+        "htmlUrl": "https://github.com/Proto-UI/Proto-UI/actions/runs/39377429538/job/118478845857",
+        "log": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845857.log",
+          "sha256": "bc7c2297f00e015ee0d718f7f84aa518707b122a2e4b729a4247e4be01f1b4cf",
+          "bytes": 103390,
+          "kind": "raw-terminal-job-log"
+        },
+        "acquisitionReceipt": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845857.json",
+          "sha256": "4827c4ac38489c1dae163353a1e8cd5255fa05bff654dd48b19f494726452654",
+          "bytes": 504,
+          "kind": "job-log-acquisition-receipt"
+        },
+        "checkoutMarkers": [
+          {
+            "sha": "6da7be999c6054700279c0c180891f589c5bea12",
+            "line": 128
+          }
+        ],
+        "checkoutMarkerLimit": null
+      },
+      {
+        "jobId": 118478845875,
+        "name": "test-browser (8/8, browser-8-of-8)",
+        "status": "completed",
+        "conclusion": "failure",
+        "startedAt": "2026-10-20T06:02:41Z",
+        "completedAt": "2026-10-20T06:18:12Z",
+        "htmlUrl": "https://github.com/Proto-UI/Proto-UI/actions/runs/39377429538/job/118478845875",
+        "log": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845875.log",
+          "sha256": "15cf93b892621d0c0b6e1e09938ba8c6df929c1ae1df2320f4be0903a4b23e0d",
+          "bytes": 148274,
+          "kind": "raw-terminal-job-log"
+        },
+        "acquisitionReceipt": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845875.json",
+          "sha256": "55c78a69e7de9fb9876193bc21163e1f598285574498b831e0a6b0959d3a56e7",
+          "bytes": 504,
+          "kind": "job-log-acquisition-receipt"
+        },
+        "checkoutMarkers": [
+          {
+            "sha": "6da7be999c6054700279c0c180891f589c5bea12",
+            "line": 128
+          }
+        ],
+        "checkoutMarkerLimit": null
+      },
+      {
+        "jobId": 118478845881,
+        "name": "test-browser (7/8, browser-7-of-8)",
+        "status": "completed",
+        "conclusion": "failure",
+        "startedAt": "2026-10-20T06:01:24Z",
+        "completedAt": "2026-10-20T06:17:03Z",
+        "htmlUrl": "https://github.com/Proto-UI/Proto-UI/actions/runs/39377429538/job/118478845881",
+        "log": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845881.log",
+          "sha256": "96bcdc7a00bac7c274ff45c5a0139a37e61ca8b61dff4fe1317503f36c91c2af",
+          "bytes": 99184,
+          "kind": "raw-terminal-job-log"
+        },
+        "acquisitionReceipt": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845881.json",
+          "sha256": "7cb7fc444b56126315aa8d8b712c90f6ef09db67c8476c05134205376c88eac0",
+          "bytes": 503,
+          "kind": "job-log-acquisition-receipt"
+        },
+        "checkoutMarkers": [
+          {
+            "sha": "6da7be999c6054700279c0c180891f589c5bea12",
+            "line": 128
+          }
+        ],
+        "checkoutMarkerLimit": null
+      },
+      {
+        "jobId": 118478845885,
+        "name": "test-browser (1/8, browser-1-of-8)",
+        "status": "completed",
+        "conclusion": "failure",
+        "startedAt": "2026-10-20T06:05:35Z",
+        "completedAt": "2026-10-20T06:21:48Z",
+        "htmlUrl": "https://github.com/Proto-UI/Proto-UI/actions/runs/39377429538/job/118478845885",
+        "log": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845885.log",
+          "sha256": "cc7dd8c4b52888ec0bd877461e1125c9854d086ec0080e30983b082ac0ad1037",
+          "bytes": 205218,
+          "kind": "raw-terminal-job-log"
+        },
+        "acquisitionReceipt": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845885.json",
+          "sha256": "62f77333da240397089aedfb150f56c19a8acfbf2c459efd32a8e594ad3d317f",
+          "bytes": 504,
+          "kind": "job-log-acquisition-receipt"
+        },
+        "checkoutMarkers": [
+          {
+            "sha": "6da7be999c6054700279c0c180891f589c5bea12",
+            "line": 128
+          }
+        ],
+        "checkoutMarkerLimit": null
+      },
+      {
+        "jobId": 118478845926,
+        "name": "test-general",
+        "status": "completed",
+        "conclusion": "failure",
+        "startedAt": "2026-10-20T05:59:51Z",
+        "completedAt": "2026-10-20T06:00:36Z",
+        "htmlUrl": "https://github.com/Proto-UI/Proto-UI/actions/runs/39377429538/job/118478845926",
+        "log": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845926.log",
+          "sha256": "21332ce908f0b46b19088eef0d5b2978f46cd768bb9a3d5edb632a9e937ca54c",
+          "bytes": 146113,
+          "kind": "raw-terminal-job-log"
+        },
+        "acquisitionReceipt": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845926.json",
+          "sha256": "8f8a7ff0ca3ac715e0a3309d64aaa001dbb5b94c0fe461637211f28f2feeb7ee",
+          "bytes": 482,
+          "kind": "job-log-acquisition-receipt"
+        },
+        "checkoutMarkers": [
+          {
+            "sha": "6da7be999c6054700279c0c180891f589c5bea12",
+            "line": 450
+          }
+        ],
+        "checkoutMarkerLimit": null
+      },
+      {
+        "jobId": 118478845953,
+        "name": "test-browser (2/8, browser-2-of-8)",
+        "status": "completed",
+        "conclusion": "failure",
+        "startedAt": "2026-10-20T06:05:50Z",
+        "completedAt": "2026-10-20T06:21:19Z",
+        "htmlUrl": "https://github.com/Proto-UI/Proto-UI/actions/runs/39377429538/job/118478845953",
+        "log": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845953.log",
+          "sha256": "77f7737aefc5d9b1714de0baf09e019a0956ac5540159d73ac675eb3f4aa72fe",
+          "bytes": 328973,
+          "kind": "raw-terminal-job-log"
+        },
+        "acquisitionReceipt": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845953.json",
+          "sha256": "781bcef12ef0a528265999c0182e48c8862f0b0dfb66162d02c70a113bde7e5a",
+          "bytes": 504,
+          "kind": "job-log-acquisition-receipt"
+        },
+        "checkoutMarkers": [
+          {
+            "sha": "6da7be999c6054700279c0c180891f589c5bea12",
+            "line": 128
+          }
+        ],
+        "checkoutMarkerLimit": null
+      },
+      {
+        "jobId": 118478845961,
+        "name": "test-browser (5/8, browser-5-of-8)",
+        "status": "completed",
+        "conclusion": "failure",
+        "startedAt": "2026-10-20T06:06:29Z",
+        "completedAt": "2026-10-20T06:17:43Z",
+        "htmlUrl": "https://github.com/Proto-UI/Proto-UI/actions/runs/39377429538/job/118478845961",
+        "log": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845961.log",
+          "sha256": "840a2d5557491e3ebee33f921c49899862f063edcada3c2461c5a48cc96753fd",
+          "bytes": 138668,
+          "kind": "raw-terminal-job-log"
+        },
+        "acquisitionReceipt": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845961.json",
+          "sha256": "fcb621da2d832918e6f77c9baf602dc1d35b16cfee39f19841a2616d84231743",
+          "bytes": 504,
+          "kind": "job-log-acquisition-receipt"
+        },
+        "checkoutMarkers": [
+          {
+            "sha": "6da7be999c6054700279c0c180891f589c5bea12",
+            "line": 128
+          }
+        ],
+        "checkoutMarkerLimit": null
+      },
+      {
+        "jobId": 118478846007,
+        "name": "test-browser (3/8, browser-3-of-8)",
+        "status": "completed",
+        "conclusion": "failure",
+        "startedAt": "2026-10-20T06:06:35Z",
+        "completedAt": "2026-10-20T06:17:27Z",
+        "htmlUrl": "https://github.com/Proto-UI/Proto-UI/actions/runs/39377429538/job/118478846007",
+        "log": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478846007.log",
+          "sha256": "8bec99e432ae85d65a2ddd417f053883b1f4d77f48d3bbf70dd5577a623818a2",
+          "bytes": 107287,
+          "kind": "raw-terminal-job-log"
+        },
+        "acquisitionReceipt": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478846007.json",
+          "sha256": "7edf5f07bbb9c628ac53eb9eb985419dbb14471f6c4bb8814f51f6b1a71ea1c0",
+          "bytes": 504,
+          "kind": "job-log-acquisition-receipt"
+        },
+        "checkoutMarkers": [
+          {
+            "sha": "6da7be999c6054700279c0c180891f589c5bea12",
+            "line": 128
+          }
+        ],
+        "checkoutMarkerLimit": null
+      },
+      {
+        "jobId": 118479547390,
+        "name": "public_package_build",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-20T06:06:37Z",
+        "completedAt": "2026-10-20T06:08:07Z",
+        "htmlUrl": "https://github.com/Proto-UI/Proto-UI/actions/runs/39377429538/job/118479547390",
+        "log": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118479547390.log",
+          "sha256": "73dda5563abd56aa9c4b5ced3b6b12d9284090beadb122a4aca485987bd4db64",
+          "bytes": 70404,
+          "kind": "raw-terminal-job-log"
+        },
+        "acquisitionReceipt": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118479547390.json",
+          "sha256": "6d067ffeb62e353242532cd5876b7555308e9cb1b9677652b3bc63b620532d03",
+          "bytes": 1205,
+          "kind": "job-log-acquisition-receipt"
+        },
+        "checkoutMarkers": [
+          {
+            "sha": "6da7be999c6054700279c0c180891f589c5bea12",
+            "line": 442
+          }
+        ],
+        "checkoutMarkerLimit": null
+      },
+      {
+        "jobId": 118479547432,
+        "name": "release-stage",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-20T06:06:43Z",
+        "completedAt": "2026-10-20T06:09:08Z",
+        "htmlUrl": "https://github.com/Proto-UI/Proto-UI/actions/runs/39377429538/job/118479547432",
+        "log": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118479547432.log",
+          "sha256": "fc64402b491d8651c5ed6de5a4fde4cbb429a5c4a36b80c2f6630ef26b8953f8",
+          "bytes": 36395,
+          "kind": "raw-terminal-job-log"
+        },
+        "acquisitionReceipt": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118479547432.json",
+          "sha256": "8e0edd7bba3c00ca8b752c0f8c0c959698a2e0cd552fee295a49597fb9714901",
+          "bytes": 482,
+          "kind": "job-log-acquisition-receipt"
+        },
+        "checkoutMarkers": [
+          {
+            "sha": "6da7be999c6054700279c0c180891f589c5bea12",
+            "line": 123
+          }
+        ],
+        "checkoutMarkerLimit": null
+      },
+      {
+        "jobId": 118479547469,
+        "name": "cli-smoke",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-20T06:06:50Z",
+        "completedAt": "2026-10-20T06:09:36Z",
+        "htmlUrl": "https://github.com/Proto-UI/Proto-UI/actions/runs/39377429538/job/118479547469",
+        "log": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118479547469.log",
+          "sha256": "def861fe444114727ffbd3154825a3094cf40dc342c568e68dfc5c65e220c8e7",
+          "bytes": 49559,
+          "kind": "raw-terminal-job-log"
+        },
+        "acquisitionReceipt": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118479547469.json",
+          "sha256": "1b79b893f1ab2fa9e690d7841f004770f51963bdcafbe135850b368bc1861fe7",
+          "bytes": 478,
+          "kind": "job-log-acquisition-receipt"
+        },
+        "checkoutMarkers": [
+          {
+            "sha": "6da7be999c6054700279c0c180891f589c5bea12",
+            "line": 123
+          }
+        ],
+        "checkoutMarkerLimit": null
+      },
+      {
+        "jobId": 118479547496,
+        "name": "release-consumer-react",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-20T06:07:28Z",
+        "completedAt": "2026-10-20T06:10:09Z",
+        "htmlUrl": "https://github.com/Proto-UI/Proto-UI/actions/runs/39377429538/job/118479547496",
+        "log": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118479547496.log",
+          "sha256": "75e3c498dae841123bfc0b31c187718837527ee495314949f25691866ba34ff0",
+          "bytes": 48747,
+          "kind": "raw-terminal-job-log"
+        },
+        "acquisitionReceipt": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118479547496.json",
+          "sha256": "68d5dc32003e1f04f6cd720f29565d192166b387b1baf366face116787d24710",
+          "bytes": 491,
+          "kind": "job-log-acquisition-receipt"
+        },
+        "checkoutMarkers": [
+          {
+            "sha": "6da7be999c6054700279c0c180891f589c5bea12",
+            "line": 123
+          }
+        ],
+        "checkoutMarkerLimit": null
+      },
+      {
+        "jobId": 118486473978,
+        "name": "test",
+        "status": "completed",
+        "conclusion": "failure",
+        "startedAt": "2026-10-20T06:21:51Z",
+        "completedAt": "2026-10-20T06:22:05Z",
+        "htmlUrl": "https://github.com/Proto-UI/Proto-UI/actions/runs/39377429538/job/118486473978",
+        "log": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118486473978.log",
+          "sha256": "2743ae1d34a94207e31a214081df96bdef70e080610b2cf0e46d09e8667f0d42",
+          "bytes": 24378,
+          "kind": "raw-terminal-job-log"
+        },
+        "acquisitionReceipt": {
+          "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118486473978.json",
+          "sha256": "5cce63f1af955bc32bb4543294f1552020206f6d32810946f777bc63976e47b8",
+          "bytes": 473,
+          "kind": "job-log-acquisition-receipt"
+        },
+        "checkoutMarkers": [
+          {
+            "sha": "6da7be999c6054700279c0c180891f589c5bea12",
+            "line": 124
+          }
+        ],
+        "checkoutMarkerLimit": null
+      }
+    ],
+    "rawBindings": [
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/snapshots/20261020T062211Z/run.json",
+        "sha256": "c4901d0a7b2c900321bddb52172a9c6edcea5ce0533a575bfd4a70cb80aaa0cc",
+        "bytes": 14229,
+        "kind": "raw-run"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/snapshots/20261020T062211Z/jobs-pages.json",
+        "sha256": "b0654724b68cf16cc2b57309f000cb793fabc29ea1cadfc7c0831bff8ad6c7b8",
+        "bytes": 60154,
+        "kind": "raw-all-jobs-pages"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/snapshots/20261020T062211Z/collection.json",
+        "sha256": "cacf542ff46329ee8a087c6a8bd1226b82fbd4b5fa3bcd588d2fbef42571d190",
+        "bytes": 88872,
+        "kind": "collection-receipt"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d/checkout-commits/6da7be999c6054700279c0c180891f589c5bea12.json",
+        "sha256": "76dbb1d1033527b95869265d8b6df392c9447bd0296846c8fc7e2cbcb5c82237",
+        "bytes": 2614,
+        "kind": "raw-git-commit-object"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d/checkout-commits/6da7be999c6054700279c0c180891f589c5bea12.json.receipt.json",
+        "sha256": "048f60f510de9b00a34313df8746fea80affe9ccee821e351c78ee999e5f73d3",
+        "bytes": 515,
+        "kind": "git-object-read-receipt"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478608870.log",
+        "sha256": "3426331d2b94637ad1a34af6842797dd10f05f332193a5f3ba37a609fc6e24c6",
+        "bytes": 151460,
+        "kind": "raw-terminal-job-log"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478608870.json",
+        "sha256": "20d3d63812b7cbd92afc7f77aea93da1720ef40ca9cba4c35aba5e36d4bfbe80",
+        "bytes": 479,
+        "kind": "job-log-acquisition-receipt"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478609158.log",
+        "sha256": "a2755b925ee8019b1ffa1decee3e2f3eade0c79d3bac035bfdca3c12b9f137d2",
+        "bytes": 127997,
+        "kind": "raw-terminal-job-log"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478609158.json",
+        "sha256": "e2e19b7c632416c00c711a748322d1878d9fb11444959a4da2bf0d37a6a4c2be",
+        "bytes": 480,
+        "kind": "job-log-acquisition-receipt"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478609170.log",
+        "sha256": "79f43b19f72a558da0caa7b142e7464d15c6b901ac7f7aa522e96f565adc1b12",
+        "bytes": 12525,
+        "kind": "raw-terminal-job-log"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478609170.json",
+        "sha256": "3ee8563d6e764c9debda6f957cb09cdeae3f869e8eb1e8a49ec84bd70110ca3a",
+        "bytes": 483,
+        "kind": "job-log-acquisition-receipt"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478609193.log",
+        "sha256": "bfa42635e34094dac8a0e0909e68acdd69f3857a6b3894d0658fed0eb9815d2c",
+        "bytes": 65342,
+        "kind": "raw-terminal-job-log"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478609193.json",
+        "sha256": "51a2afdfe7ac4781377233aa4e3f0d5e2de6207662be8773b0d809a957242284",
+        "bytes": 481,
+        "kind": "job-log-acquisition-receipt"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478609197.log",
+        "sha256": "a39827e3dcf7ec3785839f83cf6a3b9c51022b5f92124b121d27c20b96753cd7",
+        "bytes": 58575,
+        "kind": "raw-terminal-job-log"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478609197.json",
+        "sha256": "f7b01270d3f30c383ccf48b70c836b01998f55dd46f69e739f70827c94eb2c97",
+        "bytes": 488,
+        "kind": "job-log-acquisition-receipt"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478609241.log",
+        "sha256": "1e757695e3d7b4f6b1eb0a0beb6bf3be45f648c3ce62ab5077b63d10357b4b74",
+        "bytes": 27524,
+        "kind": "raw-terminal-job-log"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478609241.json",
+        "sha256": "1b3f6ae5bb4fa66c30baebbabb5aa66c5b93aac11b549369d69368927473388e",
+        "bytes": 473,
+        "kind": "job-log-acquisition-receipt"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478609253.log",
+        "sha256": "7a5201a2d8c2ce7274d4e64ece16efbfa53d708c6782a672cc80d626320677d1",
+        "bytes": 26605,
+        "kind": "raw-terminal-job-log"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478609253.json",
+        "sha256": "18d3ff7e992a898e481e5b55292a8e86fde5ce96c3d710e3fadeadc8e5c6e39e",
+        "bytes": 479,
+        "kind": "job-log-acquisition-receipt"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478609426.log",
+        "sha256": "35610b545f2dce255831f4897b1777a675f6667faf19b0044da9e1b27e83a0ed",
+        "bytes": 25106,
+        "kind": "raw-terminal-job-log"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478609426.json",
+        "sha256": "3fefa8d0b16fb9f3fba97d7b9736a587b5cdc2daf3e64627cdd39047e5d00392",
+        "bytes": 481,
+        "kind": "job-log-acquisition-receipt"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845844.log",
+        "sha256": "61b4d06aeaa0c17e5e2b6c3ee9dff8231eef447c5c6dc6529674b35e0653bd91",
+        "bytes": 112752,
+        "kind": "raw-terminal-job-log"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845844.json",
+        "sha256": "b5c494d61604d083ef279821a248220f880abe2199d1f477ab5f793588c558ab",
+        "bytes": 504,
+        "kind": "job-log-acquisition-receipt"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845857.log",
+        "sha256": "bc7c2297f00e015ee0d718f7f84aa518707b122a2e4b729a4247e4be01f1b4cf",
+        "bytes": 103390,
+        "kind": "raw-terminal-job-log"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845857.json",
+        "sha256": "4827c4ac38489c1dae163353a1e8cd5255fa05bff654dd48b19f494726452654",
+        "bytes": 504,
+        "kind": "job-log-acquisition-receipt"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845875.log",
+        "sha256": "15cf93b892621d0c0b6e1e09938ba8c6df929c1ae1df2320f4be0903a4b23e0d",
+        "bytes": 148274,
+        "kind": "raw-terminal-job-log"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845875.json",
+        "sha256": "55c78a69e7de9fb9876193bc21163e1f598285574498b831e0a6b0959d3a56e7",
+        "bytes": 504,
+        "kind": "job-log-acquisition-receipt"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845881.log",
+        "sha256": "96bcdc7a00bac7c274ff45c5a0139a37e61ca8b61dff4fe1317503f36c91c2af",
+        "bytes": 99184,
+        "kind": "raw-terminal-job-log"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845881.json",
+        "sha256": "7cb7fc444b56126315aa8d8b712c90f6ef09db67c8476c05134205376c88eac0",
+        "bytes": 503,
+        "kind": "job-log-acquisition-receipt"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845885.log",
+        "sha256": "cc7dd8c4b52888ec0bd877461e1125c9854d086ec0080e30983b082ac0ad1037",
+        "bytes": 205218,
+        "kind": "raw-terminal-job-log"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845885.json",
+        "sha256": "62f77333da240397089aedfb150f56c19a8acfbf2c459efd32a8e594ad3d317f",
+        "bytes": 504,
+        "kind": "job-log-acquisition-receipt"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845926.log",
+        "sha256": "21332ce908f0b46b19088eef0d5b2978f46cd768bb9a3d5edb632a9e937ca54c",
+        "bytes": 146113,
+        "kind": "raw-terminal-job-log"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845926.json",
+        "sha256": "8f8a7ff0ca3ac715e0a3309d64aaa001dbb5b94c0fe461637211f28f2feeb7ee",
+        "bytes": 482,
+        "kind": "job-log-acquisition-receipt"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845953.log",
+        "sha256": "77f7737aefc5d9b1714de0baf09e019a0956ac5540159d73ac675eb3f4aa72fe",
+        "bytes": 328973,
+        "kind": "raw-terminal-job-log"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845953.json",
+        "sha256": "781bcef12ef0a528265999c0182e48c8862f0b0dfb66162d02c70a113bde7e5a",
+        "bytes": 504,
+        "kind": "job-log-acquisition-receipt"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845961.log",
+        "sha256": "840a2d5557491e3ebee33f921c49899862f063edcada3c2461c5a48cc96753fd",
+        "bytes": 138668,
+        "kind": "raw-terminal-job-log"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478845961.json",
+        "sha256": "fcb621da2d832918e6f77c9baf602dc1d35b16cfee39f19841a2616d84231743",
+        "bytes": 504,
+        "kind": "job-log-acquisition-receipt"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478846007.log",
+        "sha256": "8bec99e432ae85d65a2ddd417f053883b1f4d77f48d3bbf70dd5577a623818a2",
+        "bytes": 107287,
+        "kind": "raw-terminal-job-log"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118478846007.json",
+        "sha256": "7edf5f07bbb9c628ac53eb9eb985419dbb14471f6c4bb8814f51f6b1a71ea1c0",
+        "bytes": 504,
+        "kind": "job-log-acquisition-receipt"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118479547390.log",
+        "sha256": "73dda5563abd56aa9c4b5ced3b6b12d9284090beadb122a4aca485987bd4db64",
+        "bytes": 70404,
+        "kind": "raw-terminal-job-log"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118479547390.json",
+        "sha256": "6d067ffeb62e353242532cd5876b7555308e9cb1b9677652b3bc63b620532d03",
+        "bytes": 1205,
+        "kind": "job-log-acquisition-receipt"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118479547432.log",
+        "sha256": "fc64402b491d8651c5ed6de5a4fde4cbb429a5c4a36b80c2f6630ef26b8953f8",
+        "bytes": 36395,
+        "kind": "raw-terminal-job-log"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118479547432.json",
+        "sha256": "8e0edd7bba3c00ca8b752c0f8c0c959698a2e0cd552fee295a49597fb9714901",
+        "bytes": 482,
+        "kind": "job-log-acquisition-receipt"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118479547469.log",
+        "sha256": "def861fe444114727ffbd3154825a3094cf40dc342c568e68dfc5c65e220c8e7",
+        "bytes": 49559,
+        "kind": "raw-terminal-job-log"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118479547469.json",
+        "sha256": "1b79b893f1ab2fa9e690d7841f004770f51963bdcafbe135850b368bc1861fe7",
+        "bytes": 478,
+        "kind": "job-log-acquisition-receipt"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118479547496.log",
+        "sha256": "75e3c498dae841123bfc0b31c187718837527ee495314949f25691866ba34ff0",
+        "bytes": 48747,
+        "kind": "raw-terminal-job-log"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118479547496.json",
+        "sha256": "68d5dc32003e1f04f6cd720f29565d192166b387b1baf366face116787d24710",
+        "bytes": 491,
+        "kind": "job-log-acquisition-receipt"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118486473978.log",
+        "sha256": "2743ae1d34a94207e31a214081df96bdef70e080610b2cf0e46d09e8667f0d42",
+        "bytes": 24378,
+        "kind": "raw-terminal-job-log"
+      },
+      {
+        "path": "<R14>/live/canonical6a4e2b3d-root/job-logs/118486473978.json",
+        "sha256": "5cce63f1af955bc32bb4543294f1552020206f6d32810946f777bc63976e47b8",
+        "bytes": 473,
+        "kind": "job-log-acquisition-receipt"
+      }
+    ],
+    "primaryScopeResults": [
+      {
+        "shard": 1,
+        "jobId": 118478845885,
+        "line": 411,
+        "text": " ❯ packages/adapters/web-component/test/shadow-closeout.browser.test.ts (111 tests | 2 failed) 94742ms",
+        "wholeShardCompleteSummary": false
+      },
+      {
+        "shard": 1,
+        "jobId": 118478845885,
+        "line": 528,
+        "text": " ❯ apps/www/src/content/docs/zh-cn/demo-liquid-glass-portal.browser.test.ts (55 tests | 1 failed) 199821ms",
+        "wholeShardCompleteSummary": false
+      },
+      {
+        "shard": 1,
+        "jobId": 118478845885,
+        "line": 660,
+        "text": " ❯ apps/www/src/content/docs/zh-cn/home-demo-runtime.browser.test.ts (11 tests | 1 failed) 117299ms",
+        "wholeShardCompleteSummary": false
+      },
+      {
+        "shard": 2,
+        "jobId": 118478845953,
+        "line": 449,
+        "text": " ✓ apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts (9 tests) 86469ms",
+        "wholeShardCompleteSummary": false
+      },
+      {
+        "shard": 4,
+        "jobId": 118478845844,
+        "line": 415,
+        "text": " ✓ apps/www/src/content/docs/zh-cn/scroll-area-corner.browser.test.ts (2 tests) 32870ms",
+        "wholeShardCompleteSummary": true
+      },
+      {
+        "shard": 5,
+        "jobId": 118478845961,
+        "line": 619,
+        "text": " ✓ apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts (36 tests) 185781ms",
+        "wholeShardCompleteSummary": true
+      },
+      {
+        "shard": 5,
+        "jobId": 118478845961,
+        "line": 671,
+        "text": " ✓ apps/www/test/color-scheme.browser.test.ts (9 tests) 30696ms",
+        "wholeShardCompleteSummary": true
+      },
+      {
+        "shard": 5,
+        "jobId": 118478845961,
+        "line": 699,
+        "text": " ✓ apps/www/src/content/docs/zh-cn/overlay-scrollbar-geometry.browser.test.ts (16 tests) 82086ms",
+        "wholeShardCompleteSummary": true
+      },
+      {
+        "shard": 7,
+        "jobId": 118478845881,
+        "line": 468,
+        "text": " ✓ apps/www/src/content/docs/zh-cn/demo-shadcn-tooltip.browser.test.ts (2 tests) 9171ms",
+        "wholeShardCompleteSummary": false
+      },
+      {
+        "shard": 7,
+        "jobId": 118478845881,
+        "line": 503,
+        "text": " ✓ apps/www/src/content/docs/zh-cn/demo-field-family.browser.test.ts (25 tests) 295482ms",
+        "wholeShardCompleteSummary": false
+      },
+      {
+        "shard": 8,
+        "jobId": 118478845875,
+        "line": 544,
+        "text": " ✓ apps/www/src/content/docs/zh-cn/header-select-elevation.browser.test.ts (16 tests) 302668ms",
+        "wholeShardCompleteSummary": false
+      }
+    ],
+    "homepage": {
+      "jobId": 118478845953,
+      "fileResultLine": 449,
+      "tests": 9,
+      "passed": 9,
+      "failed": 0,
+      "familyQueryReview": {
+        "path": "<R14>/live/canonical6a4e2b3d-root/independent-review/family-query-review.json",
+        "sha256": "20822c1d912243ff25df81e552a3b1e4ec25603729eb9235c9dcda856662c874",
+        "bytes": 6597
+      },
+      "mobileStageCount": 12,
+      "mobileWidthOrder": [390, 430, 320],
+      "mobileRejectionObserved": false
+    },
+    "header": {
+      "jobId": 118478845875,
+      "fileResultLine": 544,
+      "caseResultLines": [545, 560],
+      "tests": 16,
+      "passed": 16,
+      "failed": 0,
+      "wholeShardExit124": true
+    },
+    "settings": {
+      "jobId": 118478845885,
+      "caseResultLine": 666,
+      "result": "passed",
+      "title": "completes the settings task and resets local state through both libraries and all runtimes",
+      "limit": "One explicit passing case in a later timed-out shard, not an entire shard pass."
+    },
+    "general": {
+      "jobId": 118478845926,
+      "driftCount": 78,
+      "stage": "check:public-docs",
+      "vitestReached": false,
+      "exitCode": 1,
+      "diagnosticFirstLine": 1231,
+      "exitLine": 1310
+    },
+    "types": {
+      "jobId": 118478609253,
+      "files": 936,
+      "errors": 0,
+      "warnings": 0,
+      "hints": 14
+    },
+    "package": {
+      "jobId": 118479547390,
+      "actualBuildCount": 45,
+      "publicPackageUniverse": 47,
+      "manifestCount": 47,
+      "policyTestsPassed": 9,
+      "policyTestsFailed": 0,
+      "budgetPass": 4,
+      "budgetAdvisory": 5,
+      "strictAllPass": false,
+      "measurements": [
+        {
+          "line": 616,
+          "status": "PASS",
+          "name": "lucide/icons/x",
+          "gzip": 1737,
+          "ceiling": 3000,
+          "overBudget": 0,
+          "minified": 4670,
+          "sha256": "2aa1af1ef3a197cc72f2c421083b37d7da42610907ad014c103570abab1aff50"
+        },
+        {
+          "line": 617,
+          "status": "PASS",
+          "name": "lucide root",
+          "gzip": 635749,
+          "ceiling": 700000,
+          "overBudget": 0,
+          "minified": 4083209,
+          "sha256": "d4cea01272140e6dfbbf37a4871f2011481789fca83be7e569a37d2eacb634ad"
+        },
+        {
+          "line": 618,
+          "status": "ADVISORY",
+          "name": "core root",
+          "gzip": 8940,
+          "ceiling": 7600,
+          "overBudget": 1340,
+          "minified": 28128,
+          "sha256": "0618d20711054f616b0bb51e266fe427d898173b169cf84f4223b3263c5faf4a"
+        },
+        {
+          "line": 619,
+          "status": "ADVISORY",
+          "name": "runtime root",
+          "gzip": 90651,
+          "ceiling": 78500,
+          "overBudget": 12151,
+          "minified": 350526,
+          "sha256": "323066fe3ecf5c85be483818fa7084d2c6eb57829503352d9f74eaa28f721a80"
+        },
+        {
+          "line": 620,
+          "status": "ADVISORY",
+          "name": "adapter-react root",
+          "gzip": 143063,
+          "ceiling": 106000,
+          "overBudget": 37063,
+          "minified": 505354,
+          "sha256": "4055bb88eb438d07b18c54dd5bc39d78d95dcd59577c068f6c645f72096ccac1"
+        },
+        {
+          "line": 621,
+          "status": "ADVISORY",
+          "name": "adapter-vue root",
+          "gzip": 142754,
+          "ceiling": 106000,
+          "overBudget": 36754,
+          "minified": 503632,
+          "sha256": "31aaceb86506ccdc0d54b3eb84189dd9d0775519f9eb698d55ee5b2e1f705290"
+        },
+        {
+          "line": 622,
+          "status": "ADVISORY",
+          "name": "adapter-web-component root",
+          "gzip": 169980,
+          "ceiling": 132000,
+          "overBudget": 37980,
+          "minified": 585721,
+          "sha256": "355e5e93c993c3e1ea3f03ed1d9e938b09b44eaf90163938c22243aff0921a7f"
+        },
+        {
+          "line": 623,
+          "status": "PASS",
+          "name": "prototypes-base/button",
+          "gzip": 3948,
+          "ceiling": 6000,
+          "overBudget": 0,
+          "minified": 13707,
+          "sha256": "2bf46e0160ec35e12005b5874ce9863f19853a0e4021d0ac80043229fb89d53d"
+        },
+        {
+          "line": 624,
+          "status": "PASS",
+          "name": "prototypes-shadcn/button",
+          "gzip": 4952,
+          "ceiling": 7000,
+          "overBudget": 0,
+          "minified": 18079,
+          "sha256": "5970dcc7a557419cd02a6a51fefd7f7e0f16f8d07deb00e8481c6bb3719a7463"
+        }
+      ],
+      "environment": {
+        "node": "v24.21.0",
+        "zlib": "1.3.2.1-motley-8002e91",
+        "esbuild": "0.25.12",
+        "platform": "linux",
+        "arch": "x64",
+        "line": 614
+      },
+      "detailReport": {
+        "path": "<R14>/live/canonical6a4e2b3d-root/independent-review/package-review-0613.json",
+        "sha256": "ef3785cea5e6ed06fe0eb7a71bc7cbda8f05883f87d95b1710d81bd06131a17d",
+        "bytes": 10748
+      }
+    },
+    "ownerControlBoundary": "The original 17 keyboard-owner source controls remain unchanged and passed in the separately bound local precommit Node run. General stopped before Vitest, so this is not claimed as canonical Node execution.",
+    "reviewFindings": [],
+    "residualLimits": [
+      "All 22 jobs have terminal status; this is not all tests passing.",
+      "Observed source-/paint-/readiness-related failures remain listed per shard without unsupported common-cause or inherited/flake attribution.",
+      "No current artifact ZIP, pixels, remote site, or accessibility audit was read or run for this canonical summary.",
+      "The review performed no tests, browser, builds, Actions mutation, or new API reads after root takeover.",
+      "Crossed collector handoff caused ten duplicate log GETs; all originals are retained. The package log was imported into root cache with its origin receipt, without a second package GET."
+    ]
+  },
+  "local": {
+    "node": {
+      "files": 132,
+      "passed": 1821,
+      "failed": 4,
+      "exit": 1
+    },
+    "native": {
+      "files": 3,
+      "passed": 136,
+      "failed": 0,
+      "exit": 0,
+      "split": {
+        "Shadow": 111,
+        "Homepage": 9,
+        "Header": 16
+      }
+    },
+    "headerSidecars": {
+      "cases": 16,
+      "measurements": 424,
+      "errors": [],
+      "dispositionBoundary": "Test-owned candidate-accepted, not formal admission"
+    },
+    "types": {
+      "files": 936,
+      "errors": 0,
+      "warnings": 0,
+      "hints": 14
+    },
+    "catalog": {
+      "exit": 1,
+      "diagnostics": 536,
+      "comparison": "Byte-identical retained prior log, not fresh main baseline"
+    },
+    "authoring": {
+      "exit": 0
+    },
+    "pendingControl": {
+      "passed": 0,
+      "failed": 1,
+      "filtered": 8,
+      "expectedNegative": true,
+      "observationDrainMs": 1001.613917,
+      "pendingAtEnd": 1,
+      "contextCloseSucceeded": true,
+      "browserExitCode": 0,
+      "explicitHookRestorationAttempted": false,
+      "boundary": "Private Node-held fulfillment chain after actual backendshadcn return; not real browser-getter hang."
+    }
+  },
+  "preservedFailuresAndControls": [
+    "Two full Header6/10 outcomes have different first divergences.",
+    "Owner-probe setup0case/16skip and later actual diagnostic arms are separate.",
+    "Original Vue2 Header negative is a Node/Happy DOM red, separate from Chromium positives; four WC controls already pass baseline.",
+    "raw0 experiment remains failed and withdrawn; two-normal-case incomplete preparing attempt remains distinct.",
+    "Pending-caller preflight0execution and actual negative remain separate.",
+    "Current Node4tokenfail/catalog536fail remain failures."
+  ],
+  "authority": {
+    "draft": ["P-SHADCN-SELECT-TRIGGER", "P-BASE-SELECT-CONTENT", "HC-PROPS-SOURCE-0001"],
+    "criterionNotEntity": "P-SHADCN-SELECT-TRIGGER-STATE-DRIVEN-STYLES",
+    "activeBoundedProfile": "A-REACT-18-19-0001",
+    "lifecycleChanged": false
+  },
+  "reviewBoundary": "Partial/ABSTAIN; no formal approval, global CI/optical/AT/family admission, issue closure or merge claim.",
+  "projection": {
+    "inventorySHA256": "55dc966545e23b4e68c28a3c91d2d1419db0a39d2470e9cce43d719793a3d7c5",
+    "policySHA256": "f7a449d6976990eed43d77327f9ff10967743a3c5951b0985c691ab56db4710b",
+    "preparedMapSHA256": "ce38811c42d2fa7f3e85f0b9b9860f145cd8836555af2256221175640405913b",
+    "canonicalSummarySHA256": "e2646702b41db3ece7fccded99f4cea699935adf491545a16edd9080b78848e8",
+    "frozenV1InventorySHA256": "f4ffe7a7ea66aa9bb5c4e8c097c8cb543785f408a7f2b44cfd91f483b6bc637e",
+    "transformSHA256": "06e7338e0d2722b5ead66fbb65d6e44964c64b889e4ab9f6851be9d5345194f4",
+    "builderSHA256": "94a7b804f4d292969336feb28303811970b17c3ccfaef12b4a8bc1c870279a31",
+    "inputConfigurationSHA256": "eb40c83c26d3546c272cedeb7a81c0a86ae556a4795e2faa7ecc5fcbac7827ef",
+    "formatterConfigSHA256": "e7835f5220f445791624fb5542481bef2f0dad438eea2990a5911175cf30f995",
+    "formatterSHA256": "ac5523cd57e7e9d8eac71caef7e022a8a8489bcdc19ca8a778b7e728ec103b93",
+    "originalRawUnmodified": true,
+    "publicTextAndSourceAreDerivedNotExecutedBytes": true,
+    "notStandaloneRecipe": true,
+    "privateOperationalMaterialExcluded": true
+  },
+  "mapping": {
+    "file": "raw-public-map.json",
+    "sha256": "e56f9bfe93e09d158bc6b320dc3e29a647ba2512e5f804a7b31abcb2cb5eff11",
+    "embeddedMember": "PUBLIC-MAPPING.json",
+    "embeddedBytesExact": true
+  },
+  "images": {
+    "file": "images.json",
+    "sha256": "e87c5277ae61b10bbe4a7230916871d5af4864cbc10a55e7fa2f77b077d5f3f7",
+    "allOriginalBytes": true,
+    "twoDistinctSourceEpochs": true
+  },
+  "supplementalScopes": {
+    "at": "2026-10-20T06:35:18.565713+00:00",
+    "sourceHead": "6a4e2b3db65878da7b5150cdad49eb9d8a1cc9d0",
+    "sourceTree": "41adb1995907dde0fecd8a0bda72431aa952547f",
+    "platformRead": {
+      "startedAt": "2026-10-20T06:24:03.749288+00:00",
+      "completedAt": "2026-10-20T06:24:22.022869+00:00",
+      "headStable": true,
+      "mainStart": "042f1e5740e1a809b9ca238593f5bb01a1f8a8e3",
+      "mainEnd": "042f1e5740e1a809b9ca238593f5bb01a1f8a8e3",
+      "workflows": {
+        "total": 37,
+        "conclusions": {
+          "success": 26,
+          "failure": 11
+        }
+      },
+      "checkRuns": {
+        "total": 105,
+        "conclusions": {
+          "failure": 36,
+          "success": 69
+        }
+      },
+      "comments": 35,
+      "reviews": 0,
+      "reviewThreads": 0,
+      "separateCommitStatuses": [
+        {
+          "url": "https://api.github.com/repos/Proto-UI/Proto-UI/statuses/6a4e2b3db65878da7b5150cdad49eb9d8a1cc9d0",
+          "avatar_url": "https://avatars.githubusercontent.com/in/8329?v=4",
+          "id": 56760602772,
+          "node_id": "SC_kwDOMhQZjc8AAAANNzIQlA",
+          "state": "failure",
+          "description": "Authorization required to deploy.",
+          "target_url": "https://vercel.com/git/authorize",
+          "context": "Vercel",
+          "created_at": "2026-10-20T05:54:48Z",
+          "updated_at": "2026-10-20T05:54:48Z",
+          "creator": {
+            "login": "vercel[bot]",
+            "id": 35613825,
+            "node_id": "MDM6Qm90MzU2MTM4MjU=",
+            "avatar_url": "https://avatars.githubusercontent.com/in/8329?v=4",
+            "gravatar_id": "",
+            "url": "https://api.github.com/users/vercel%5Bbot%5D",
+            "html_url": "https://github.com/apps/vercel",
+            "followers_url": "https://api.github.com/users/vercel%5Bbot%5D/followers",
+            "following_url": "https://api.github.com/users/vercel%5Bbot%5D/following{/other_user}",
+            "gists_url": "https://api.github.com/users/vercel%5Bbot%5D/gists{/gist_id}",
+            "starred_url": "https://api.github.com/users/vercel%5Bbot%5D/starred{/owner}{/repo}",
+            "subscriptions_url": "https://api.github.com/users/vercel%5Bbot%5D/subscriptions",
+            "organizations_url": "https://api.github.com/users/vercel%5Bbot%5D/orgs",
+            "repos_url": "https://api.github.com/users/vercel%5Bbot%5D/repos",
+            "events_url": "https://api.github.com/users/vercel%5Bbot%5D/events{/privacy}",
+            "received_events_url": "https://api.github.com/users/vercel%5Bbot%5D/received_events",
+            "type": "Bot",
+            "user_view_type": "public",
+            "site_admin": false
+          }
+        }
+      ],
+      "snapshotSHA256": "9b639113800e75f44e77df0d9d7bdd5e6bd6b2e29f189aee5e8b7fc7e3e3bdf2",
+      "scope": "Full metadata checkpoint, separate from main22 CI jobs. Vercel fork-authorization status is separate from test assertions."
+    },
+    "staleSnapshotLabel": {
+      "field": "previewBoundary",
+      "retainedValue": "Exact2189bae8 metadata/artifact inventory only; not artifact admission or new rendered proof.",
+      "clarification": "Inherited2189 label in this raw record is stale. Actual head/headEnd are6a4e. This packet claims no new preview ZIP admission, rendered preview or all-asset verification."
+    },
+    "auxiliaryBoundaries": [
+      {
+        "jobId": 118478609180,
+        "subject": "Accordion family",
+        "firstFailure": "apt repository403/unsigned metadata, exit100; browser tests did not start"
+      },
+      {
+        "jobId": 118478610723,
+        "subject": "Dialog available-space candidate",
+        "firstFailure": "dialog-run-integrity verifier control processTimedOut true!==false before matched browser invocation; not a Dialog geometry assertion"
+      },
+      {
+        "jobId": 118478611704,
+        "subject": "Homepage native-links",
+        "result": "9passed/1failed",
+        "firstFailure": "sidebar visible timeout at1818; distinct from repaired Header ring sampling"
+      },
+      {
+        "jobId": 118478611685,
+        "subject": "Homepage search-commands",
+        "result": "15passed/15failed",
+        "firstFailure": "seven initialReadiness/onTime predicates at566 plus eight role-combobox predicates at987; no common cause established"
+      }
+    ],
+    "auxiliaryPeerReview": {
+      "json": "live/c-aux6a/independent-review/report.json",
+      "sha256": "e15f617c4be1eb8ed1c4648bd2202b7ec705c8cbe59ddc9dee8f26171d8ea482"
+    },
+    "searchLocalControl": {
+      "start": "2026-10-20T06:27:59.158090+00:00",
+      "end": "2026-10-20T06:28:13.769656+00:00",
+      "head": "6a4e2b3db65878da7b5150cdad49eb9d8a1cc9d0",
+      "passed": 1,
+      "failed": 0,
+      "filtered": 29,
+      "worktreeClean": true,
+      "selectedSources": [
+        {
+          "path": "apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts",
+          "sha256": "e9704a6628e5688697be00c00090166a235bdd5d0c918e1a26a3fde5bacb9210",
+          "gitBlob": "49da9fd804e7983d58b9e6630b6a4ef1c3b0acdf",
+          "bytes": 53644
+        },
+        {
+          "path": "apps/www/src/content/docs/zh-cn/site-header-browser.ts",
+          "sha256": "98a2c04c6f98c4a03fb51362049e9f360ce436e9f3f2bfa306454a44e47294af",
+          "gitBlob": "4b5ac0174f09879ae530e04e1c48160202db175c",
+          "bytes": 1632
+        },
+        {
+          "path": "apps/www/src/content/docs/zh-cn/browser-harness.ts",
+          "sha256": "e3792a3e0003b79385c3aae90b08728c51d7564bf1abd16a32a47ff9f37fca9d",
+          "gitBlob": "628a358dbc57730ec82d7fd504327dfc83ae1b6c",
+          "bytes": 16536
+        }
+      ],
+      "limit": "Original Docs Shadcn320 case retained four runtimes and original inputs/expectations/deadlines. Local positive does not explain or close hosted15 failures."
+    },
+    "visualBoundary": "16 original1440x1000/390x1000 Header viewport frames plus1 separately sourced late negative image; not full-scroll, all560PNG review, all assets or AT.",
+    "canonicalBoundary": "Main CI, full platform metadata, auxiliary jobs and this local control are different scopes; no all-C acceptance or inherited/flake attribution.",
+    "disposition": "partial/ABSTAIN",
+    "formalApproval": false
+  },
+  "archive": {
+    "file": "records.zip",
+    "bytes": 2876336,
+    "sha256": "5ba6377108ef9a33b9b26baad177a14a4ca634debda9eade9c5a86ffd0f2d6ed",
+    "members": 459,
+    "allCRCAndMemberBytesVerified": true
+  }
+}
