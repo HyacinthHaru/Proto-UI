@@ -1,5 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { runInNewContext } from 'node:vm';
+import { build } from 'esbuild';
 import { describe, expect, it } from 'vitest';
 import { renderHostIndex } from '../src/services/codegen';
 import { listComponentChoices } from '../src/registry/components';
@@ -34,21 +36,44 @@ describe('Finf workspace-source facade boundaries', () => {
 });
 
 describe('explicit Virtual List Web materialization boundary', () => {
-  it('exports the opt-in Web subpath without pulling it into the portable root', () => {
-    const manifest = JSON.parse(fs.readFileSync('packages/prototypes/base/package.json', 'utf8'));
-    expect(manifest.exports['./virtual-list/web']).toEqual({
-      types: './dist/virtual-list/web/index.d.ts',
-      import: './dist/virtual-list/web/index.js',
-      default: './dist/virtual-list/web/index.js',
-    });
-    expect(
-      fs.readFileSync('packages/prototypes/base/src/virtual-list/web/index.ts', 'utf8')
-    ).toContain('attachWebVirtualList');
-    expect(
-      fs.readFileSync('packages/prototypes/base/src/virtual-list/index.ts', 'utf8')
-    ).not.toMatch(/(?:from|import)\s*['"]\.\/web/);
-    expect(fs.readFileSync('packages/prototypes/base/src/index.ts', 'utf8')).not.toContain(
-      'virtual-list/web'
+  it('keeps the portable workspace consumer separate from the opt-in Web implementation', async () => {
+    const bundle = (contents: string) =>
+      build({
+        stdin: { contents, resolveDir: process.cwd(), loader: 'ts' },
+        tsconfig: path.resolve('tsconfig.json'),
+        bundle: true,
+        write: false,
+        metafile: true,
+        platform: 'browser',
+        format: 'cjs',
+        treeShaking: false,
+        ignoreAnnotations: true,
+        logLevel: 'silent',
+      });
+    const portable = await bundle("export * from '@proto.ui/prototypes-base';");
+    const web = await bundle(
+      "export { attachWebVirtualList } from '@proto.ui/prototypes-base/virtual-list/web';"
     );
+    const implementation = path.resolve('packages/prototypes/base/src/virtual-list/web.ts');
+    const runtimeInputs = (result: typeof portable) =>
+      Object.keys(result.metafile.inputs).map((input) => path.resolve(input));
+    expect(runtimeInputs(portable)).not.toContain(implementation);
+    expect(runtimeInputs(web)).toContain(implementation);
+    for (const result of [portable, web]) {
+      for (const output of Object.values(result.metafile.outputs))
+        expect(output.imports).toEqual([]);
+    }
+    const execute = (result: typeof portable): Record<string, unknown> => {
+      const module = { exports: {} };
+      // No document, HTMLElement or other Web globals are supplied to either consumer.
+      runInNewContext(
+        result.outputFiles[0]!.text,
+        { module, exports: module.exports },
+        { timeout: 1000 }
+      );
+      return module.exports;
+    };
+    expect(execute(portable)).not.toHaveProperty('attachWebVirtualList');
+    expect(typeof execute(web).attachWebVirtualList).toBe('function');
   });
 });
