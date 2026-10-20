@@ -66,7 +66,16 @@ implementations:
     notes:
       - Registered 320px/200% React long-label glyph dimensions and non-shrink assertions. No new exact-source browser execution or screenshot in this repair. Four-host narrow coverage remains separate debt.
 exercises:
-  prototypes: *a1
+  prototypes:
+    - P-SHADCN-ACCORDION-TRIGGER
+    - P-SHADCN-ACCORDION-CONTENT
+    - P-BRUTALIST-ACCORDION-TRIGGER
+    - P-BRUTALIST-ACCORDION-ITEM
+    - P-BRUTALIST-ACCORDION-CONTENT
+    - P-BOOTSTRAP-2-3-2-ACCORDION-TRIGGER
+    - P-LIQUID-GLASS-ACCORDION-TRIGGER
+    - P-LIQUID-GLASS-ACCORDION-ITEM
+    - P-LIQUID-GLASS-ACCORDION-CONTENT
 sources:
   - path: https://ui.shadcn.com/r/styles/base-nova/accordion.json
     label: Static snapshot fetched 2026-10-10; deployed Git SHA not established; design reference only

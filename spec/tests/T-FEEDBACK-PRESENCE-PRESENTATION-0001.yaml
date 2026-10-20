@@ -41,7 +41,37 @@ cases:
     title: Document adoption retires stale physical presentation inputs and receipts
     covers: [HC-FEEDBACK-PRESENCE-PRESENTATION-0001-DOCUMENT]
     expectation: destination-document-policy-and-no-stale-frame-acknowledgement
+  - id: T-FEEDBACK-PRESENCE-PRESENTATION-0001-CASE-DRAWER-SOURCE
+    title: Authored Drawer parts preserve accepted state and independent presentation attempts
+    covers:
+      - P-SHADCN-DRAWER-MOTION-REFERENCE
+      - P-SHADCN-DRAWER-MOTION-OWNERS
+      - P-SHADCN-DRAWER-MOTION-COMPOSITION
+      - P-SHADCN-DRAWER-MOTION-SETTLEMENT
+    expectation: Side-specific slide and simultaneous fade retain both parts through close; refusal starts no leave, reversal rejects stale completion, and unavailable or reduced motion settles without a frame wait. The defaultOpen initial-suppression parity gap remains an explicit expected failure, not completed acceptance.
+  - id: T-FEEDBACK-PRESENCE-PRESENTATION-0001-CASE-DRAWER-NATIVE
+    title: Document and split Shadow measure actual Drawer presentation and public cold entry
+    covers: [P-SHADCN-DRAWER-MOTION-EVIDENCE]
+    expectation: Exact-source native traces must establish physical movement, fade, retained close and reversal. The intrinsic-height public cold entry must animate independently of its fixed-height diagnostic control; source or DOM-model results cannot substitute for these observations.
 implementations:
+  - id: drawer-authored-presentation
+    kind: module-test
+    status: planned
+    path: packages/prototypes/shadcn/test/drawer-presence-presentation.test.ts
+    required: true
+    consumesCases: [T-FEEDBACK-PRESENCE-PRESENTATION-0001-CASE-DRAWER-SOURCE]
+    exercises: [P-SHADCN-DRAWER-MOTION]
+    notes:
+      - Existing executable assertions are mapped here; this catalog repair does not establish a new execution result or resolve the expected-failure defaultOpen parity gap.
+  - id: drawer-physical-presentation
+    kind: workspace-check
+    status: planned
+    path: packages/prototypes/shadcn/test/drawer-presence.browser.test.ts
+    required: true
+    consumesCases: [T-FEEDBACK-PRESENCE-PRESENTATION-0001-CASE-DRAWER-NATIVE]
+    exercises: [P-SHADCN-DRAWER-MOTION]
+    notes:
+      - Native exact-source evidence remains required; neither the catalog relation nor successful diagnostic collection certifies physical presentation.
   - id: presence-semantic-style-preparation
     kind: module-test
     status: passing
@@ -109,6 +139,10 @@ verifies:
     - C-FEEDBACK-PRESENCE-PRESENTATION-0001
   hostCaps:
     - HC-FEEDBACK-PRESENCE-PRESENTATION-0001
+exercises:
+  prototypes:
+    - id: P-SHADCN-DRAWER-MOTION
+      since: 0.3.0-alpha.1
 revisions:
   - version: 0.2.0-rc.0
     change: introduced

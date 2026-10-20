@@ -41,6 +41,8 @@ dependsOn:
   hostCaps: [HC-FEEDBACK-PRESENCE-PRESENTATION-0001]
 relates:
   prototypes: [P-BASE-TRANSITION]
+verifies:
+  tests: [T-FEEDBACK-PRESENCE-PRESENTATION-0001]
 openQuestions:
   - id: P-SHADCN-DRAWER-MOTION-Q-INITIAL-ADMISSION
     question:

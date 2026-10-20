@@ -90,6 +90,7 @@ implementations:
     path: packages/prototypes/shadcn/test/drawer-presence.browser.test.ts
     required: true
     consumesCases: [T-SCROLL-0001-CASE-AVAILABILITY]
+    exercises: [P-BASE-DRAWER-SCROLL]
     notes:
       [Native execution is required; source and DOM-model tests do not certify split slot geometry.]
   - id: scroll-module-projection-negotiation
@@ -208,6 +209,9 @@ verifies:
       anchors:
         - A-WEB-COMPONENT-0001-SCROLL
 exercises:
+  prototypes:
+    - id: P-BASE-DRAWER-SCROLL
+      since: 0.3.0-alpha.1
   modules:
     - M-SCROLL-0001
   hostCaps:
