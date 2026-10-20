@@ -359,12 +359,23 @@ export function createReactModules<Props extends PropsBaseType>(args: {
     const current = args.getCurrentElement();
     return current === el && current.isConnected ? current : null;
   };
+  // Keep the view's native brand check and its error realm across adoption.
+  const view = el.ownerDocument.defaultView;
+  const contains =
+    view?.Node.prototype.contains ?? (typeof Node === 'undefined' ? null : Node.prototype.contains);
+  const NativeTypeError = view?.TypeError ?? TypeError;
   const overlayTargetHost = {
     root: currentViewRoot,
     resolve(candidate: unknown): object | null {
       const root = currentViewRoot();
-      if (!root || !isHtmlElementNode(candidate)) return null;
-      return root.contains(candidate) ? candidate : null;
+      if (!root || !contains) return null;
+      try {
+        if (!contains.call(root, candidate as Node)) return null;
+      } catch (error) {
+        if (error instanceof NativeTypeError) return null;
+        throw error;
+      }
+      return isHtmlElementNode(candidate) ? candidate : null;
     },
   };
 
