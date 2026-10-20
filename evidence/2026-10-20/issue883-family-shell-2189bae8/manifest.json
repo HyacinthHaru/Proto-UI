@@ -1,0 +1,65 @@
+{
+  "excludesItself": true,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 11588,
+      "sha256": "864460a8f04e1ea744a75c97c8f17543d900459943622a6b9b5c9925908cd07c"
+    },
+    {
+      "path": "images/brutalist-failure.png",
+      "bytes": 32894,
+      "sha256": "f7d943a0b9dba151ec02c680217edc88c6584c7401c90e90542ac284cdc2a6a7"
+    },
+    {
+      "path": "images/brutalist-react-runtime-narrow-focus-ring.png",
+      "bytes": 12831,
+      "sha256": "dc640c0542fbf4b5f2173135a8502d0cd2a98551a44e9c3f56e160f02080223e"
+    },
+    {
+      "path": "images/brutalist-vue-runtime-narrow-focus-ring.png",
+      "bytes": 12541,
+      "sha256": "6244f2a84487e82044cee1f9e31b15048ffc02b79812a5c00959955b4493426e"
+    },
+    {
+      "path": "images/brutalist-vue2-keyboard-focus.png",
+      "bytes": 46285,
+      "sha256": "495d699674d7bb138fc3ad5cd6020ee10cf9ccd88b3ed6715c8724e491f9c045"
+    },
+    {
+      "path": "images/brutalist-vue2-runtime-narrow-focus-ring.png",
+      "bytes": 12727,
+      "sha256": "49b992350673afff70f5aba0d4c95f8a571eb3f5398d1d2eb298dd22f9354850"
+    },
+    {
+      "path": "images/brutalist-wc-keyboard-focus.png",
+      "bytes": 46241,
+      "sha256": "df551cd03137b191735480edbf8c18a08a7fde0e4530f01721bcd39119202164"
+    },
+    {
+      "path": "images/brutalist-wc-runtime-narrow-focus-ring.png",
+      "bytes": 14016,
+      "sha256": "4d2275720779f6e00806ec9b4f59331893cc3cf56bfd3331efd651df867d8a61"
+    },
+    {
+      "path": "images/shadcn-wc-light-family-failure.png",
+      "bytes": 121947,
+      "sha256": "8889a5d5c28746c5abad486df34f8f0527e6e07324e77c004be2fa5c7f55a4c5"
+    },
+    {
+      "path": "packet.json",
+      "bytes": 7882,
+      "sha256": "507ab23ba7931c2c3d4f79ee967c629111e4bb9a366a7dba9c56e38f6e1ceb28"
+    },
+    {
+      "path": "raw-public-map.json",
+      "bytes": 499457,
+      "sha256": "444f2271114b4c311758e1c898ada79395764afef21e63954bc0290b01e0c352"
+    },
+    {
+      "path": "records.zip",
+      "bytes": 1492481,
+      "sha256": "4f4a000022db0d1664527297c2e0f5caa6766aa65b931a4069a2cb648fadbe58"
+    }
+  ]
+}
