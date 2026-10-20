@@ -750,15 +750,28 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
   it('uses the same mobile shell on documentation with independent global navigation and contents', async () => {
     const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
     const page = await context.newPage();
+    const source = {
+      sha: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
+      dirty: execFileSync('git', ['status', '--porcelain'], { encoding: 'utf8' }).trim() !== '',
+    };
+    let stage = 'navigate';
+    let activeWidth: number | null = null;
+    const stages: Array<{ stage: string; width: number; nodeMs: number }> = [];
     try {
       for (const width of [390, 430, 320]) {
+        activeWidth = width;
+        stage = 'navigate';
         await page.setViewportSize({ width, height: 844 });
         await page.goto(`${baseUrl}/zh-cn/ui-libraries/brutalist/components/tooltip/`, {
           waitUntil: 'networkidle',
         });
         const header = page.locator('[data-docs-site-header]');
         const menu = header.locator('[data-site-menu-button]');
+        stage = 'menu-ready';
+        stages.push({ stage, width, nodeMs: performance.now() });
         await expect.poll(() => header.getAttribute('data-site-menu-ready')).toBe('');
+        stage = 'mobile-interaction';
+        stages.push({ stage, width, nodeMs: performance.now() });
         // This loop reuses its native pointer across navigations. Measure the
         // resting row, not a legitimate +4px Brutalist hover under the old point.
         await page.mouse.move(0, 800);
@@ -864,12 +877,62 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
         // Reverse the order and exercise the complete keydown + keyup Escape.
         await menu.click();
         await contents.click();
+        stage = 'navigation-close-from-contents';
+        stages.push({ stage, width, nodeMs: performance.now() });
         await expect.poll(() => menu.getAttribute('aria-expanded')).toBe('false');
+        stage = 'contents-focus';
+        stages.push({ stage, width, nodeMs: performance.now() });
         expect(await contents.getAttribute('aria-expanded')).toBe('true');
         await page.keyboard.press('Escape');
         expect(await contents.evaluate((element) => document.activeElement === element)).toBe(true);
       }
+    } catch (error) {
+      const rejected = {
+        source,
+        stage,
+        width: activeWidth,
+        nodeMs: performance.now(),
+        message: String(error),
+        stack: error instanceof Error ? error.stack : null,
+        cause: error instanceof Error && error.cause !== undefined ? String(error.cause) : null,
+        stages: stages.map((entry) => ({ ...entry })),
+      };
+      // Freeze the original rejection before any post-failure browser request.
+      console.info('[mobile-shell-rejection]', JSON.stringify(rejected));
+      try {
+        const directory = path.join(
+          process.env.PROTO_UI_RUNTIME_EVIDENCE_DIR ??
+            path.join(process.env.RUNNER_TEMP ?? os.tmpdir(), 'homepage-evidence'),
+          'mobile-shell'
+        );
+        await mkdir(directory, { recursive: true });
+        await writeFile(path.join(directory, 'rejection.json'), JSON.stringify(rejected, null, 2));
+        const nodeStartedMs = performance.now();
+        const facts = await page.evaluate(() => {
+          const header = document.querySelector<HTMLElement>('[data-docs-site-header]');
+          const menu = header?.querySelector('[data-site-menu-button]');
+          const contents = header?.querySelector('[data-site-contents-command]');
+          return {
+            timeOrigin: performance.timeOrigin,
+            pageMs: performance.now(),
+            menuReady: header?.getAttribute('data-site-menu-ready'),
+            menuExpanded: menu?.getAttribute('aria-expanded'),
+            contents: contents?.outerHTML,
+            bodyExpanded: document.body.getAttribute('data-mobile-menu-expanded'),
+            activeElement: document.activeElement?.outerHTML,
+          };
+        });
+        await writeFile(
+          path.join(directory, 'post-rejection.json'),
+          JSON.stringify({ nodeStartedMs, nodeReturnedMs: performance.now(), facts }, null, 2)
+        );
+        await page.screenshot({ path: path.join(directory, 'failure.png'), fullPage: true });
+      } catch (captureError) {
+        console.info('[mobile-shell-capture-error]', String(captureError));
+      }
+      throw error;
     } finally {
+      console.info('[mobile-shell-stages]', JSON.stringify({ source, stages }));
       await context.close();
     }
   }, 90_000);
@@ -1031,6 +1094,63 @@ for (const family of ['shadcn', 'brutalist'] as const) {
     };
     const observeFamilyMutation = () => {
       const target = document.querySelector<HTMLElement>('[data-homepage-runtime]')!;
+      const nativeDataset = target.dataset;
+      const ownDataset = Object.getOwnPropertyDescriptor(target, 'dataset');
+      const writes: Array<{
+        startedMs: number | null;
+        finishedMs: number;
+        previous: string | null;
+        current: string | null;
+        returned?: boolean;
+        error?: string;
+      }> = [];
+      let droppedWrites = 0;
+      let writerObserverError = false;
+      const recordWrite = (
+        startedMs: number | null,
+        previous: string | null,
+        result: { returned: boolean } | { error: unknown }
+      ) => {
+        try {
+          const finishedMs = performance.now();
+          if (writes.length < 64)
+            writes.push({
+              startedMs,
+              finishedMs,
+              previous,
+              current: target.getAttribute('data-family'),
+              ...('error' in result ? { error: String(result.error) } : result),
+            });
+          else droppedWrites += 1;
+        } catch {
+          writerObserverError = true;
+        }
+      };
+      // This instance-only interposition changes dataset identity/access cost.
+      // It brackets the native attribute write, not the complete publication.
+      const dataset = new Proxy(nativeDataset, {
+        set(subject, key, value) {
+          if (key !== 'family') return Reflect.set(subject, key, value, subject);
+          let previous: string | null = null;
+          let startedMs: number | null = null;
+          try {
+            previous = target.getAttribute('data-family');
+            startedMs = performance.now();
+          } catch {
+            writerObserverError = true;
+          }
+          let returned: boolean;
+          try {
+            returned = Reflect.set(subject, key, value, subject);
+          } catch (error) {
+            recordWrite(startedMs, previous, { error });
+            throw error;
+          }
+          recordWrite(startedMs, previous, { returned });
+          return returned;
+        },
+      });
+      const datasetGetter = () => dataset;
       const deliveries: Array<{
         deliveredMs: number;
         oldValues: Array<string | null>;
@@ -1062,6 +1182,16 @@ for (const family of ['shadcn', 'brutalist'] as const) {
         attributeFilter: ['data-family'],
         attributeOldValue: true,
       });
+      try {
+        Object.defineProperty(target, 'dataset', {
+          configurable: true,
+          enumerable: ownDataset?.enumerable ?? false,
+          get: datasetGetter,
+        });
+      } catch (error) {
+        observer.disconnect();
+        throw error;
+      }
       return {
         target,
         observer,
@@ -1071,6 +1201,16 @@ for (const family of ['shadcn', 'brutalist'] as const) {
         initialValue: target.getAttribute('data-family'),
         timeOrigin: performance.timeOrigin,
         setupPageMs: performance.now(),
+        writes,
+        getDroppedWrites: () => droppedWrites,
+        getWriterObserverError: () => writerObserverError,
+        restoreDataset: () => {
+          if (Object.getOwnPropertyDescriptor(target, 'dataset')?.get !== datasetGetter)
+            return false;
+          if (ownDataset) Object.defineProperty(target, 'dataset', ownDataset);
+          else Reflect.deleteProperty(target, 'dataset');
+          return target.dataset === nativeDataset;
+        },
       };
     };
     let familyMutationHandle: JSHandle<ReturnType<typeof observeFamilyMutation>> | null = null;
@@ -1078,6 +1218,13 @@ for (const family of ['shadcn', 'brutalist'] as const) {
       clock: 'Browser performance.now() milliseconds; MutationObserver delivery, not mutation time',
       setup: null as { nodeStartedMs: number; nodeReturnedMs: number } | null,
       collect: null as { nodeStartedMs: number; nodeReturnedMs: number } | null,
+      calibration: [] as Array<{
+        nodeStartedMs: number;
+        nodeReturnedMs: number;
+        timeOrigin: number;
+        pageMs: number;
+        currentRootSame: boolean;
+      }>,
       facts: null as unknown,
       errors: [] as string[],
     };
@@ -1091,6 +1238,7 @@ for (const family of ['shadcn', 'brutalist'] as const) {
           const pending = state.observer.takeRecords();
           const pendingOldValues = pending.slice(0, 64).map((record) => record.oldValue);
           state.observer.disconnect();
+          const datasetRestored = state.restoreDataset();
           return {
             timeOrigin: state.timeOrigin,
             collectedTimeOrigin: performance.timeOrigin,
@@ -1105,12 +1253,35 @@ for (const family of ['shadcn', 'brutalist'] as const) {
             connected: state.target.isConnected,
             droppedRecords: state.getDroppedRecords(),
             observerError: state.getObserverError(),
+            writes: state.writes,
+            droppedWrites: state.getDroppedWrites(),
+            writerObserverError: state.getWriterObserverError(),
+            datasetRestored,
           };
         });
       } catch (error) {
         familyMutationTiming.errors.push(String(error));
       } finally {
         familyMutationTiming.collect = { nodeStartedMs, nodeReturnedMs: performance.now() };
+      }
+      try {
+        // Fixed post-poll samples; retain every interval rather than picking a fast one.
+        for (let index = 0; index < 3; index += 1) {
+          const nodeStartedMs = performance.now();
+          const sample = await handle.evaluate((state) => ({
+            timeOrigin: performance.timeOrigin,
+            pageMs: performance.now(),
+            currentRootSame: document.querySelector('[data-homepage-runtime]') === state.target,
+          }));
+          familyMutationTiming.calibration.push({
+            nodeStartedMs,
+            nodeReturnedMs: performance.now(),
+            ...sample,
+          });
+        }
+      } catch (error) {
+        familyMutationTiming.errors.push(String(error));
+      } finally {
         await handle.dispose().catch((error) => familyMutationTiming.errors.push(String(error)));
       }
     };
