@@ -1,0 +1,30 @@
+{
+  "excludesItself": true,
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 9054,
+      "sha256": "deaf160727c36b265aeeca0d5038420ab4eaeee97e7fbff5e40bf0fddb27f845"
+    },
+    {
+      "path": "packet.json",
+      "bytes": 8442,
+      "sha256": "c517911e013f39af8b5b97d8cfe5145420ba4b890af4a1fa0e66da7e94cf1ac0"
+    },
+    {
+      "path": "raw-public-map.json",
+      "bytes": 117819,
+      "sha256": "6a3722f050489cc306b5076e875eccee68e44b7b2a007bc2063f5c361395374a"
+    },
+    {
+      "path": "records.zip",
+      "bytes": 608011,
+      "sha256": "26f3a9cffbb3a21f29dec181e2994330032a59e1881dee13be76b10cf76e99ff"
+    },
+    {
+      "path": "source-walkthrough.md",
+      "bytes": 3607,
+      "sha256": "cbda09be0faf2c20170a3da7349c0e0c897b4d17dfbf69841b0cbd4e9b42991e"
+    }
+  ]
+}

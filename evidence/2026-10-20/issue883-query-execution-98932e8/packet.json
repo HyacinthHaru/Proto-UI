@@ -1,0 +1,237 @@
+{
+  "schemaVersion": 1,
+  "assembledAt": "2026-10-20T05:50:59.554340+00:00",
+  "state": "Prepared private staging; no publication performed by builder",
+  "intendedEvidencePath": "evidence/2026-10-20/issue883-query-execution-98932e8",
+  "source": {
+    "head": "98932e8132ae4f3e1dacb9bf5967ebac481953ab",
+    "tree": "086f2d336a5adbdc5849dfb77aca7ee194a513cd",
+    "parent": "2189bae8f3e39ed9708f79576f6bc6b0c6660192",
+    "deltaPaths": 2,
+    "sourceInputKind": "Immutable git-show98932 copies, not currentworktree files"
+  },
+  "counts": {
+    "rawInputs": 128,
+    "rawBytes": 3285220,
+    "publicRecordBytes": 3261310,
+    "derivedRecords": 70,
+    "PNGFiles": 0
+  },
+  "canonical": {
+    "at": "2026-10-20T05:32:01.571745+00:00",
+    "sourceHead": "98932e8132ae4f3e1dacb9bf5967ebac481953ab",
+    "tree": "086f2d336a5adbdc5849dfb77aca7ee194a513cd",
+    "run": 39371457764,
+    "conclusion": "failure",
+    "all22JobsTerminal": true,
+    "jobs": {
+      "success": 13,
+      "failure": 9
+    },
+    "all22DownloadedLogHashesAndCheckoutTreeBound": true,
+    "physicalCheckout": "665c0661c56f4e54a4dcbb489f6b180dc9550308",
+    "shards": [
+      {
+        "shard": 1,
+        "job": 118461123887,
+        "conclusion": "failure",
+        "completeSummary": true,
+        "tests": {
+          "passed": 211,
+          "failed": 29,
+          "skipped": 0,
+          "todo": 0
+        },
+        "deadline124": false
+      },
+      {
+        "shard": 2,
+        "job": 118461123949,
+        "conclusion": "failure",
+        "completeSummary": false,
+        "tests": null,
+        "deadline124": true
+      },
+      {
+        "shard": 3,
+        "job": 118461123940,
+        "conclusion": "failure",
+        "completeSummary": true,
+        "tests": {
+          "passed": 58,
+          "failed": 3,
+          "skipped": 0,
+          "todo": 0
+        },
+        "deadline124": false
+      },
+      {
+        "shard": 4,
+        "job": 118461123939,
+        "conclusion": "failure",
+        "completeSummary": true,
+        "tests": {
+          "passed": 122,
+          "failed": 2,
+          "skipped": 0,
+          "todo": 0
+        },
+        "deadline124": false
+      },
+      {
+        "shard": 5,
+        "job": 118461123975,
+        "conclusion": "failure",
+        "completeSummary": true,
+        "tests": {
+          "passed": 88,
+          "failed": 2,
+          "skipped": 15,
+          "todo": 0
+        },
+        "deadline124": false
+      },
+      {
+        "shard": 6,
+        "job": 118461123892,
+        "conclusion": "success",
+        "completeSummary": true,
+        "tests": {
+          "passed": 169,
+          "failed": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "deadline124": false
+      },
+      {
+        "shard": 7,
+        "job": 118461124013,
+        "conclusion": "failure",
+        "completeSummary": false,
+        "tests": null,
+        "deadline124": true
+      },
+      {
+        "shard": 8,
+        "job": 118461123984,
+        "conclusion": "failure",
+        "completeSummary": false,
+        "tests": null,
+        "deadline124": true
+      }
+    ],
+    "completeSubset": [1, 3, 4, 5, 6],
+    "completeSubsetTests": {
+      "passed": 648,
+      "failed": 36,
+      "skipped": 15,
+      "todo": 0
+    },
+    "all8TestTotal": null,
+    "general": {
+      "docsDrift": 78,
+      "ordinaryVitestStarted": false
+    },
+    "types": {
+      "files": 935,
+      "errors": 0,
+      "warnings": 0,
+      "hints": 14
+    },
+    "package": {
+      "actualBuildRecords": 44,
+      "publicPackages": 47,
+      "manifests": 47,
+      "budgetPolicyTests": 9,
+      "budgetPASS": 4,
+      "budgetADVISORY": 5
+    },
+    "homepage": {
+      "reportedFilePassed": 8,
+      "reportedFileFailed": 1,
+      "mobileStageRecords": 12,
+      "mobileFrozenRejectionMarkers": 0,
+      "mobilePredicateSourceLines": {
+        "menu-ready": {
+          "sourceLine": 776,
+          "callback": "header.getAttribute('data-site-menu-ready')",
+          "expected": "",
+          "sourceSHA256": "a2e2c176da464aba702748335a2b6adaa88caf50776e233361ae8798ecb1e074"
+        },
+        "navigation-close-from-contents": {
+          "sourceLine": 886,
+          "callback": "menu.getAttribute('aria-expanded')",
+          "expected": "false",
+          "sourceSHA256": "a2e2c176da464aba702748335a2b6adaa88caf50776e233361ae8798ecb1e074"
+        }
+      },
+      "boundary": "Original mobile case passed in this execution; not a repair or localization of older mobile negatives."
+    },
+    "timing": {
+      "writerMethod": "Five main-world writer/MO brackets, preserved separately",
+      "fiveIntersection": [116110.422785, 116111.31928900002],
+      "utilityMethod": "Seven same-head brackets in a separate report",
+      "sevenIntersection": [116110.422785, 116111.31928900002],
+      "originalRejectionMs": 1000.939018,
+      "pendingAtVerdict": 1,
+      "postVerdictWaitMs": 104.897409,
+      "thirdObservedGetterMs": [1104.8137949999825, 1105.7102990000058],
+      "lastNodeReturnMs": 1106.093828,
+      "meaning": "Late observed utility invocation in this instrumented hybrid run; no protocol request IDs, pure queue/transport causation, old2189 getter inference, or complete transaction claim."
+    },
+    "newFeedback": {
+      "id": 6283933166,
+      "url": "https://github.com/Proto-UI/Proto-UI/pull/921#issuecomment-6283933166",
+      "requestedFollowup": "Retain frozen failure and exercise cleanup for an indefinitely unsettled original Promise without relaxing original matcher/deadline. This static robustness gap is not closed by the finite drain."
+    },
+    "localHeaderBoundary": "Later private Header padding/paint/oracle and preparing-only Select candidates are different source epochs and are excluded from989CI success claims.",
+    "review": "Read-only source/arithmetic reconciliation,partialABSTAIN, no formal approval",
+    "evidence": {
+      "fiveReportSHA256": "d1ec821455cd873854cae76d8156262a56f7623ac00e0598b6e92eb9e27eba74",
+      "sevenReportSHA256": "63aea3be78ef1c11b825ff2125104605b4fbe03fb269c88e89076218b8b82e88",
+      "terminalSHA256": "d4f192baa4da17c816076681f88931363b4d063fab4b163c2dc81e92526d26d5"
+    }
+  },
+  "localEvidenceBoundaries": [
+    "2privateChromiumownership controls;2startupfailures0controls retained",
+    "3modes each originalBrutalist1pass8filtered, then-current Header candidates present",
+    "Isolated120native/20Node/types935 executions precede finalcommit",
+    "Formattedhelper firstexplicit hash after native120; no beforehash or loadedclosureclaim"
+  ],
+  "openAtThisHead": [
+    "Indefinitelyunsettled originalPromise can block diagnostic drainage before failurecapture/rethrow/contextclose",
+    "OriginalBrutalist1s failure and other officialfailures remain"
+  ],
+  "excludedLaterWork": "No later Header/Base preparing fix,boundeddrain source/unit/faultcontrol or final10file combination included",
+  "reviewBoundary": "Partial/ABSTAIN; no formal approval, allCI, fullvisual/HIG/AT/featureclosure or mergeacceptance",
+  "projection": {
+    "inventorySHA256": "5fa1855c29d62c46f692302ea7525e12b4e86cc636f23b5529060b40bfcb0ac4",
+    "policySHA256": "af4fe40638a8007970356e7906cdd70e5f6529517d283b30360e8badf5ff8d89",
+    "transformSHA256": "5934c45d487a654583e6b6a737aa51e1764709a453501e61749166bdfc0ae20a",
+    "builderSHA256": "c86268085da470cb39dfa23f0f41d8a9206b115ec40d12970d13c5a4fdbbc21c",
+    "privateCandidateMappingSHA256": "5a62317e1994b9127e5166bab4bbeb743fdcb15b269c2ca7e68a4fea6bfc8307",
+    "formatter": "Prettier3.8.1; configured source format before manifest",
+    "formatterConfigSHA256": "e7835f5220f445791624fb5542481bef2f0dad438eea2990a5911175cf30f995",
+    "originalRawUnmodified": true,
+    "publicTextAndCodeAreDerivedNotExecutedBytes": true,
+    "notStandaloneRecipe": true,
+    "privateModelTraceAuthorizationHandoffsExcluded": true,
+    "actualBrowserContextFactsRetained": true
+  },
+  "mapping": {
+    "file": "raw-public-map.json",
+    "sha256": "6a3722f050489cc306b5076e875eccee68e44b7b2a007bc2063f5c361395374a",
+    "embeddedMember": "PUBLIC-MAPPING.json",
+    "embeddedBytesExact": true
+  },
+  "PNGPolicy": "0selected; no new image review or screenshotmirror claim",
+  "archive": {
+    "file": "records.zip",
+    "bytes": 608011,
+    "sha256": "26f3a9cffbb3a21f29dec181e2994330032a59e1881dee13be76b10cf76e99ff",
+    "members": 129,
+    "crcAllMembersPassed": true,
+    "memberBytesAndSHAReplayed": true
+  }
+}

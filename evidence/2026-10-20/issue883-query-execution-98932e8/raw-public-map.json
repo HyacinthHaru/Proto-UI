@@ -1,0 +1,2550 @@
+{
+  "schemaVersion": 1,
+  "sourceHead": "98932e8132ae4f3e1dacb9bf5967ebac481953ab",
+  "state": "Prepared immutable evidence projection; publication is separate",
+  "counts": {
+    "rawInputs": 128,
+    "rawBytes": 3285220,
+    "publicRecordBytes": 3261310,
+    "derivedRecords": 70,
+    "PNGFiles": 0
+  },
+  "mapping": [
+    {
+      "source": "<R14>/query-publication-prep/final-git-binding.json",
+      "member": "records/query-publication-prep/final-git-binding.json",
+      "group": "final-source",
+      "sourceEpoch": "98932e8 signed/pushed source",
+      "purpose": "Bind the two final Git blobs",
+      "rawBytes": 1297,
+      "rawSHA256": "f4d46f4554d66e9e1abe6f40fb4630d9c3ca3ac7f5a218aff4b1b0896c0c84ee",
+      "publicBytes": 1297,
+      "publicSHA256": "f4d46f4554d66e9e1abe6f40fb4630d9c3ca3ac7f5a218aff4b1b0896c0c84ee",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/query-publication-prep/git-sources/apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+      "member": "records/query-publication-prep/git-sources/apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+      "group": "final-source",
+      "sourceEpoch": "98932e8 signed/pushed source",
+      "purpose": "Bind the two final Git blobs",
+      "rawBytes": 81494,
+      "rawSHA256": "a2e2c176da464aba702748335a2b6adaa88caf50776e233361ae8798ecb1e074",
+      "publicBytes": 81494,
+      "publicSHA256": "a2e2c176da464aba702748335a2b6adaa88caf50776e233361ae8798ecb1e074",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/query-publication-prep/git-sources/apps/www/src/content/docs/zh-cn/family-query-observer.ts",
+      "member": "records/query-publication-prep/git-sources/apps/www/src/content/docs/zh-cn/family-query-observer.ts",
+      "group": "final-source",
+      "sourceEpoch": "98932e8 signed/pushed source",
+      "purpose": "Bind the two final Git blobs",
+      "rawBytes": 10422,
+      "rawSHA256": "7eda1332c119d7da189ea33b4a396906cba6204f49bdd5fcbe74abb3a8544a3f",
+      "publicBytes": 10422,
+      "publicSHA256": "7eda1332c119d7da189ea33b4a396906cba6204f49bdd5fcbe74abb3a8544a3f",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/query-increment/candidate-change.json",
+      "member": "records/query-increment/candidate-change.json",
+      "group": "final-local",
+      "sourceEpoch": "Precommit isolated query candidate →98932e8 Git binding",
+      "purpose": "Final staged/commit/push facts and20 Node controls",
+      "rawBytes": 938,
+      "rawSHA256": "d8353a363fafa30a9f896d1552a7f51f8b0cab6f7fa616adbfbe3480f10d3d3b",
+      "publicBytes": 834,
+      "publicSHA256": "ba1fd8da98821d3a6fb4e6df629603b575adcfe71471760b52f1e34799fb66b2",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.mode"
+        },
+        {
+          "operation": "JSON-representation-normalization"
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<R14>",
+          "count": 1
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/query-increment/final-local-validation.json",
+      "member": "records/query-increment/final-local-validation.json",
+      "group": "final-local",
+      "sourceEpoch": "Precommit isolated query candidate →98932e8 Git binding",
+      "purpose": "Final staged/commit/push facts and20 Node controls",
+      "rawBytes": 1475,
+      "rawSHA256": "8c71af4285c9fba95c96d77ee8375ee28b315edfcc871e88ce71d6c5390592ba",
+      "publicBytes": 1475,
+      "publicSHA256": "8c71af4285c9fba95c96d77ee8375ee28b315edfcc871e88ce71d6c5390592ba",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/query-increment/staged.json",
+      "member": "records/query-increment/staged.json",
+      "group": "final-local",
+      "sourceEpoch": "Precommit isolated query candidate →98932e8 Git binding",
+      "purpose": "Final staged/commit/push facts and20 Node controls",
+      "rawBytes": 446,
+      "rawSHA256": "48baa678bdf33ef8dc336fc4333b892564767402bf3a228e76dc67c1d4f54a6f",
+      "publicBytes": 446,
+      "publicSHA256": "48baa678bdf33ef8dc336fc4333b892564767402bf3a228e76dc67c1d4f54a6f",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/query-increment/commit-receipt.json",
+      "member": "records/query-increment/commit-receipt.json",
+      "group": "final-local",
+      "sourceEpoch": "Precommit isolated query candidate →98932e8 Git binding",
+      "purpose": "Final staged/commit/push facts and20 Node controls",
+      "rawBytes": 480,
+      "rawSHA256": "26b8c66685bd6553518e04b1b9bc3f5f1da648723f0af64e0d2f7679f0f2b9b1",
+      "publicBytes": 382,
+      "publicSHA256": "b6f29309240298ab61e5eb6a72fe33a990c1be5781d8d19f07c1f5e6ad696e11",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.modelTraceReceipt"
+        },
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/query-increment/push-receipt.json",
+      "member": "records/query-increment/push-receipt.json",
+      "group": "final-local",
+      "sourceEpoch": "Precommit isolated query candidate →98932e8 Git binding",
+      "purpose": "Final staged/commit/push facts and20 Node controls",
+      "rawBytes": 316,
+      "rawSHA256": "2fed269183f12dffcc6d6b1b2de7cf24baa9830cc67adc045bd5c31f275bf064",
+      "publicBytes": 316,
+      "publicSHA256": "2fed269183f12dffcc6d6b1b2de7cf24baa9830cc67adc045bd5c31f275bf064",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/query-increment/node-controls.json",
+      "member": "records/query-increment/node-controls.json",
+      "group": "final-local",
+      "sourceEpoch": "Precommit isolated query candidate →98932e8 Git binding",
+      "purpose": "Final staged/commit/push facts and20 Node controls",
+      "rawBytes": 7269,
+      "rawSHA256": "f6c85180aaf7df748321081802e0e33d2a6cfe8b8001bb632145e6e0e76013ba",
+      "publicBytes": 9905,
+      "publicSHA256": "f616139d850b3c54a8e545a9830a6450d6d16241534c5eeeee088f74a238a3d0",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 2
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/query-increment/types-isolated/receipt.json",
+      "member": "records/query-increment/types-isolated/receipt.json",
+      "group": "isolated-types",
+      "sourceEpoch": "2189+only2query files; precommit",
+      "purpose": "935 files /0 errors /0 warnings /14 hints; original hint text retained",
+      "rawBytes": 1088,
+      "rawSHA256": "b99ff67e3e9574c8a85516fe603a812615163e1bd543e3b363a743976e6c5698",
+      "publicBytes": 1088,
+      "publicSHA256": "b99ff67e3e9574c8a85516fe603a812615163e1bd543e3b363a743976e6c5698",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/query-increment/types-isolated/run.log",
+      "member": "records/query-increment/types-isolated/run.log",
+      "group": "isolated-types",
+      "sourceEpoch": "2189+only2query files; precommit",
+      "purpose": "935 files /0 errors /0 warnings /14 hints; original hint text retained",
+      "rawBytes": 6039,
+      "rawSHA256": "539eca315bba4dc5f442c0c7d63bbef7a4a2e8a1c6b90402c682988317fdf1f8",
+      "publicBytes": 5867,
+      "publicSHA256": "c59002ed51fcae6cf6cce1939a9121f6a1cae1e73a77a5c92157c360d7177df6",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 4
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/query-increment-native120/receipt.json",
+      "member": "records/query-increment-native120/receipt.json",
+      "group": "isolated-native120",
+      "sourceEpoch": "2189+only2formattedquery files; precommit",
+      "purpose": "Original111+9 native cases,12 mobile stages, native writer/utility/Node rows, helper after-run explicit hash",
+      "rawBytes": 1620,
+      "rawSHA256": "8375590cb84eb9935d97a9db5f99e74adc8677f6e4ab12107a43e65890a6693b",
+      "publicBytes": 1494,
+      "publicSHA256": "446200e6670ae1d6ae2ca6826d70bb3e4d099ba623eba1b2d7e636e87ea89633",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R14>",
+          "count": 2
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/query-increment-native120/run.log",
+      "member": "records/query-increment-native120/run.log",
+      "group": "isolated-native120",
+      "sourceEpoch": "2189+only2formattedquery files; precommit",
+      "purpose": "Original111+9 native cases,12 mobile stages, native writer/utility/Node rows, helper after-run explicit hash",
+      "rawBytes": 22809,
+      "rawSHA256": "6521ecd3d36db8f15487994381115d8d9b5b93d493ccfb82d7d8812e83c82583",
+      "publicBytes": 22703,
+      "publicSHA256": "495b91a104c0853d1c572d605f5add57d12e12c574994daaec180263c8ea9123",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R14>",
+          "count": 1
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 1
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/query-increment-native120/vitest.json",
+      "member": "records/query-increment-native120/vitest.json",
+      "group": "isolated-native120",
+      "sourceEpoch": "2189+only2formattedquery files; precommit",
+      "purpose": "Original111+9 native cases,12 mobile stages, native writer/utility/Node rows, helper after-run explicit hash",
+      "rawBytes": 41492,
+      "rawSHA256": "332d960fcecd556af39fbb4e09ae7ce4d711d11fd01280bdcb90af4a904fe52c",
+      "publicBytes": 56704,
+      "publicSHA256": "bf3343819b23cfd965e9a1a9f6168de423c9fee023df0ff360682c3035b71eb2",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 2
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/query-increment-native120/helper-midrun-binding.json",
+      "member": "records/query-increment-native120/helper-midrun-binding.json",
+      "group": "isolated-native120",
+      "sourceEpoch": "2189+only2formattedquery files; precommit",
+      "purpose": "Original111+9 native cases,12 mobile stages, native writer/utility/Node rows, helper after-run explicit hash",
+      "rawBytes": 710,
+      "rawSHA256": "47aedd88d5ef6d888e9ab9e79261dbc1776d56536968e9a3b29112d92d943b2a",
+      "publicBytes": 710,
+      "publicSHA256": "47aedd88d5ef6d888e9ab9e79261dbc1776d56536968e9a3b29112d92d943b2a",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/query-increment-native120/evidence/header-breakpoint/brutalist-lifecycle.json",
+      "member": "records/query-increment-native120/evidence/header-breakpoint/brutalist-lifecycle.json",
+      "group": "isolated-native120",
+      "sourceEpoch": "2189+only2formattedquery files; precommit",
+      "purpose": "Original111+9 native cases,12 mobile stages, native writer/utility/Node rows, helper after-run explicit hash",
+      "rawBytes": 40279,
+      "rawSHA256": "2feaf167a907346cbdc131d81187b9ece07d5da71ed1dc1ebbdd212b33743e1a",
+      "publicBytes": 40280,
+      "publicSHA256": "89e2dbfc5287d914a1ef41ac7a13bd3fbdc7661b1572a7627177202e26d17f33",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/query-increment-native120/evidence/header-breakpoint/brutalist-query-observation.json",
+      "member": "records/query-increment-native120/evidence/header-breakpoint/brutalist-query-observation.json",
+      "group": "isolated-native120",
+      "sourceEpoch": "2189+only2formattedquery files; precommit",
+      "purpose": "Original111+9 native cases,12 mobile stages, native writer/utility/Node rows, helper after-run explicit hash",
+      "rawBytes": 4344,
+      "rawSHA256": "7350b514fad5d45a9404a7f9b6487d9e17efd84ee1f52f389ac5ca95b37faa65",
+      "publicBytes": 4345,
+      "publicSHA256": "d9327475ea0e9e6a451181d942ce45954c9e777db6123538a8a8e8659590ca7b",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/query-increment-source-review/report.json",
+      "member": "records/query-increment-source-review/report.json",
+      "group": "final-peer-binding",
+      "sourceEpoch": "Final formatted candidate peer review",
+      "purpose": "Source/171matcher/mobile/router17 preservation plus source-limited execution review",
+      "rawBytes": 8803,
+      "rawSHA256": "fd846d4a62e7d53782bcf9a059c751967e751f2afc56c9e18e4fda9ce2c268d8",
+      "publicBytes": 8563,
+      "publicSHA256": "6b0bb5ed98f1bc57bec8ded8ff05f8b0152d929ec5cdeaf51d1914d0db8ffd88",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.mode"
+        },
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.assessment"
+        },
+        {
+          "operation": "JSON-representation-normalization"
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<R14>",
+          "count": 2
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 1
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/query-increment-source-review/report.md",
+      "member": "records/query-increment-source-review/report.md",
+      "group": "final-peer-binding",
+      "sourceEpoch": "Final formatted candidate peer review",
+      "purpose": "Source/171matcher/mobile/router17 preservation plus source-limited execution review",
+      "rawBytes": 3025,
+      "rawSHA256": "f85aa4a0ed3be42e3765f578aeb11af7b3983ebdc7465bccf7fb4f6d8e56b4f0",
+      "publicBytes": 3025,
+      "publicSHA256": "f85aa4a0ed3be42e3765f578aeb11af7b3983ebdc7465bccf7fb4f6d8e56b4f0",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/query-increment-source-review/execution-addendum.json",
+      "member": "records/query-increment-source-review/execution-addendum.json",
+      "group": "final-peer-binding",
+      "sourceEpoch": "Final formatted candidate peer review",
+      "purpose": "Source/171matcher/mobile/router17 preservation plus source-limited execution review",
+      "rawBytes": 6230,
+      "rawSHA256": "dfe7583650a47783d1f9a4c7118638fe70b11b58cebf46d0e1b19d0f7af35932",
+      "publicBytes": 5766,
+      "publicSHA256": "d746095ed5923910164a292d315e2b1e983e7bc456e01fbda64f79fd483a431c",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R14>",
+          "count": 6
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 2
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/query-increment-source-review/execution-addendum.md",
+      "member": "records/query-increment-source-review/execution-addendum.md",
+      "group": "final-peer-binding",
+      "sourceEpoch": "Final formatted candidate peer review",
+      "purpose": "Source/171matcher/mobile/router17 preservation plus source-limited execution review",
+      "rawBytes": 1240,
+      "rawSHA256": "5cabbcfddf3d9eadc0fd8218c22fa54eb94ded97e136a75f9d954c2422e92f52",
+      "publicBytes": 1240,
+      "publicSHA256": "5cabbcfddf3d9eadc0fd8218c22fa54eb94ded97e136a75f9d954c2422e92f52",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/query-increment-source-review/audit.cjs",
+      "member": "records/query-increment-source-review/audit.cjs",
+      "group": "final-peer-binding",
+      "sourceEpoch": "Final formatted candidate peer review",
+      "purpose": "Source/171matcher/mobile/router17 preservation plus source-limited execution review",
+      "rawBytes": 11592,
+      "rawSHA256": "e48aed04f520cb7dce482d02948177d4627bf0c5d4d9f8bc8e9d39ffc8cf23b4",
+      "publicBytes": 11486,
+      "publicSHA256": "b33ba6d277f6847ca37b711061ab0399de1a0749a511ab641a8133cbe8c2ccf1",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R14>",
+          "count": 1
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 1
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/query-increment-source-review/installExpression.js",
+      "member": "records/query-increment-source-review/installExpression.js",
+      "group": "final-peer-binding",
+      "sourceEpoch": "Final formatted candidate peer review",
+      "purpose": "Source/171matcher/mobile/router17 preservation plus source-limited execution review",
+      "rawBytes": 3966,
+      "rawSHA256": "46d2bedf31f2630b16c7e9cc53e78c211fb6d74d4c11ca377d5992810c2fd336",
+      "publicBytes": 3966,
+      "publicSHA256": "46d2bedf31f2630b16c7e9cc53e78c211fb6d74d4c11ca377d5992810c2fd336",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/query-increment-source-review/collectExpression.js",
+      "member": "records/query-increment-source-review/collectExpression.js",
+      "group": "final-peer-binding",
+      "sourceEpoch": "Final formatted candidate peer review",
+      "purpose": "Source/171matcher/mobile/router17 preservation plus source-limited execution review",
+      "rawBytes": 500,
+      "rawSHA256": "f2a3007d4364cf88971faa9445778abbcabd5c86de3a04eb53cafa9257db687d",
+      "publicBytes": 500,
+      "publicSHA256": "f2a3007d4364cf88971faa9445778abbcabd5c86de3a04eb53cafa9257db687d",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-observer-independent-v1/review.json",
+      "member": "records/header-padding-fix/query-observer-independent-v1/review.json",
+      "group": "observer-v1-negative",
+      "sourceEpoch": "Unexecuted V1 draft",
+      "purpose": "Retain initial foreign-owner cleanup finding",
+      "rawBytes": 8200,
+      "rawSHA256": "d5cadd40c36be90357ce1235509a9ccbadbba06bea9427844e461dab195ab35c",
+      "publicBytes": 8129,
+      "publicSHA256": "147bee2d511f1d539e85d497bfeca0233624511ff4da05f7cc4f7b3250206077",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.mode"
+        },
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.assessment"
+        },
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-observer-independent-v1/review.md",
+      "member": "records/header-padding-fix/query-observer-independent-v1/review.md",
+      "group": "observer-v1-negative",
+      "sourceEpoch": "Unexecuted V1 draft",
+      "purpose": "Retain initial foreign-owner cleanup finding",
+      "rawBytes": 1862,
+      "rawSHA256": "bba24a62ab33cac6d117409aacc8534db61ba44b8430a7bc46fc2cf3cbf9e982",
+      "publicBytes": 1862,
+      "publicSHA256": "bba24a62ab33cac6d117409aacc8534db61ba44b8430a7bc46fc2cf3cbf9e982",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-observer-proposal/family-query-observer.ts",
+      "member": "records/header-padding-fix/query-observer-proposal/family-query-observer.ts",
+      "group": "observer-v1-negative",
+      "sourceEpoch": "Unexecuted V1 draft",
+      "purpose": "Raw V1 helper tied to reported ownership defect",
+      "rawBytes": 9088,
+      "rawSHA256": "3d6f57cba7939787a56f9c40897d908956885b0445f4e988df22b3f5c1e2f41b",
+      "publicBytes": 9088,
+      "publicSHA256": "3d6f57cba7939787a56f9c40897d908956885b0445f4e988df22b3f5c1e2f41b",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-observer-proposal-v2/homepage.original.ts",
+      "member": "records/header-padding-fix/query-observer-proposal-v2/homepage.original.ts",
+      "group": "observer-v2",
+      "sourceEpoch": "Precommit V2; Header candidates present during3modes",
+      "purpose": "Actual unformatted V2 inputs and declared preservation/cleanup boundaries",
+      "rawBytes": 73525,
+      "rawSHA256": "e97adac9e292cb11e5ff8a104b4a554c5d158283cba476c34d9ad79ab55dbff9",
+      "publicBytes": 73525,
+      "publicSHA256": "e97adac9e292cb11e5ff8a104b4a554c5d158283cba476c34d9ad79ab55dbff9",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-observer-proposal-v2/homepage.candidate.ts",
+      "member": "records/header-padding-fix/query-observer-proposal-v2/homepage.candidate.ts",
+      "group": "observer-v2",
+      "sourceEpoch": "Precommit V2; Header candidates present during3modes",
+      "purpose": "Actual unformatted V2 inputs and declared preservation/cleanup boundaries",
+      "rawBytes": 80893,
+      "rawSHA256": "b402c5a06035b37f1385db43cee134373317d31738f2c044d106a35c43cb0c50",
+      "publicBytes": 80893,
+      "publicSHA256": "b402c5a06035b37f1385db43cee134373317d31738f2c044d106a35c43cb0c50",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-observer-proposal-v2/family-query-observer.ts",
+      "member": "records/header-padding-fix/query-observer-proposal-v2/family-query-observer.ts",
+      "group": "observer-v2",
+      "sourceEpoch": "Precommit V2; Header candidates present during3modes",
+      "purpose": "Actual unformatted V2 inputs and declared preservation/cleanup boundaries",
+      "rawBytes": 10086,
+      "rawSHA256": "b5c6eca5f79cdc17e6b1c571e68956176d3e085c8157f598944112a2bc440f39",
+      "publicBytes": 10086,
+      "publicSHA256": "b5c6eca5f79cdc17e6b1c571e68956176d3e085c8157f598944112a2bc440f39",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-observer-proposal-v2/v1-to-v2-helper.patch",
+      "member": "records/header-padding-fix/query-observer-proposal-v2/v1-to-v2-helper.patch",
+      "group": "observer-v2",
+      "sourceEpoch": "Precommit V2; Header candidates present during3modes",
+      "purpose": "Actual unformatted V2 inputs and declared preservation/cleanup boundaries",
+      "rawBytes": 5428,
+      "rawSHA256": "f244cb15793130a7836ba68b34a50d9fd6eaa3eb03b5f8d13b02277380cedabe",
+      "publicBytes": 5428,
+      "publicSHA256": "f244cb15793130a7836ba68b34a50d9fd6eaa3eb03b5f8d13b02277380cedabe",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-observer-proposal-v2/prepared.json",
+      "member": "records/header-padding-fix/query-observer-proposal-v2/prepared.json",
+      "group": "observer-v2",
+      "sourceEpoch": "Precommit V2; Header candidates present during3modes",
+      "purpose": "Actual unformatted V2 inputs and declared preservation/cleanup boundaries",
+      "rawBytes": 5069,
+      "rawSHA256": "a5a48c2f447a95e8d4a4f039625ec92b4e8a3de2c24ed05cff0cda26d9d34033",
+      "publicBytes": 5006,
+      "publicSHA256": "5cb900c0b2964b1620f69895b4e032ae6135eb0104f06c463e1934aaa6a42f31",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R14>",
+          "count": 1
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-observer-proposal-v2/static-audit.json",
+      "member": "records/header-padding-fix/query-observer-proposal-v2/static-audit.json",
+      "group": "observer-v2",
+      "sourceEpoch": "Precommit V2; Header candidates present during3modes",
+      "purpose": "Actual unformatted V2 inputs and declared preservation/cleanup boundaries",
+      "rawBytes": 1728,
+      "rawSHA256": "1c2f06d5e8f0a395057d39ae459c0fef2c7e2dc80617cf1690a84e1771570212",
+      "publicBytes": 1728,
+      "publicSHA256": "1c2f06d5e8f0a395057d39ae459c0fef2c7e2dc80617cf1690a84e1771570212",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-observer-proposal-v2/ownership-control-plan.json",
+      "member": "records/header-padding-fix/query-observer-proposal-v2/ownership-control-plan.json",
+      "group": "observer-v2",
+      "sourceEpoch": "Precommit V2; Header candidates present during3modes",
+      "purpose": "Actual unformatted V2 inputs and declared preservation/cleanup boundaries",
+      "rawBytes": 1361,
+      "rawSHA256": "df8b7162b0af1bfdedcfe038ec148845f74f5144978dd68c4cba12055c76f64b",
+      "publicBytes": 1361,
+      "publicSHA256": "df8b7162b0af1bfdedcfe038ec148845f74f5144978dd68c4cba12055c76f64b",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-observer-independent-v2/review.json",
+      "member": "records/header-padding-fix/query-observer-independent-v2/review.json",
+      "group": "independent-peer-review",
+      "sourceEpoch": "V2 + actual local controls; partial/ABSTAIN",
+      "purpose": "Independent source and actual controls review, limits and clock arithmetic",
+      "rawBytes": 2795,
+      "rawSHA256": "5d153108f2f2cd3441b5b73e26a892079a6d3b821a024be40fae7e3a0c3d0432",
+      "publicBytes": 2724,
+      "publicSHA256": "d393d0c38dceea3d0f9ee986c8142eb746ed03eda9a4e740b092152922554860",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.mode"
+        },
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.assessment"
+        },
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-observer-independent-v2/review.md",
+      "member": "records/header-padding-fix/query-observer-independent-v2/review.md",
+      "group": "independent-peer-review",
+      "sourceEpoch": "V2 + actual local controls; partial/ABSTAIN",
+      "purpose": "Independent source and actual controls review, limits and clock arithmetic",
+      "rawBytes": 915,
+      "rawSHA256": "fc4a145791053427fc3b69e98a1c18dd6543ae8cab0aab739cf3c5f0dee57e1d",
+      "publicBytes": 915,
+      "publicSHA256": "fc4a145791053427fc3b69e98a1c18dd6543ae8cab0aab739cf3c5f0dee57e1d",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-observer-independent-v2/execution-review.json",
+      "member": "records/header-padding-fix/query-observer-independent-v2/execution-review.json",
+      "group": "independent-peer-review",
+      "sourceEpoch": "V2 + actual local controls; partial/ABSTAIN",
+      "purpose": "Independent source and actual controls review, limits and clock arithmetic",
+      "rawBytes": 17372,
+      "rawSHA256": "2d5cc9e9a9c6a43489283febca12674fc3ef821032be78be75b2d7ce2a61eeb9",
+      "publicBytes": 17301,
+      "publicSHA256": "1f56783bc50d6bee1425dc8e8bbfc18055df5cdf9dc1691de17207d6d1744eee",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.mode"
+        },
+        {
+          "operation": "omit-private-operational-field",
+          "path": "$.assessment"
+        },
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-observer-independent-v2/execution-review.md",
+      "member": "records/header-padding-fix/query-observer-independent-v2/execution-review.md",
+      "group": "independent-peer-review",
+      "sourceEpoch": "V2 + actual local controls; partial/ABSTAIN",
+      "purpose": "Independent source and actual controls review, limits and clock arithmetic",
+      "rawBytes": 1520,
+      "rawSHA256": "171caa6ed1ec3e55da8879c2060f7eb4f4cc70ae668bc3a6ff6b725296fe4964",
+      "publicBytes": 1520,
+      "publicSHA256": "171caa6ed1ec3e55da8879c2060f7eb4f4cc70ae668bc3a6ff6b725296fe4964",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-ownership-control/runner-esm-original.mts",
+      "member": "records/header-padding-fix/query-ownership-control/runner-esm-original.mts",
+      "group": "ownership-runner-history",
+      "sourceEpoch": "Private diagnostic helper controls, not original Homepage acceptance",
+      "purpose": "Preserve two non-executing entry failures and final actual private runner",
+      "rawBytes": 13486,
+      "rawSHA256": "943ec2a7eb590bc0299caddcdfe792183475403c552cb041122e528b018bdfe9",
+      "publicBytes": 13400,
+      "publicSHA256": "5dc90976061ee89ae1a45b744313a42ac6141c8430c18255019b0820ec50f1a6",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 2
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-ownership-control/runner-module-collision.mts",
+      "member": "records/header-padding-fix/query-ownership-control/runner-module-collision.mts",
+      "group": "ownership-runner-history",
+      "sourceEpoch": "Private diagnostic helper controls, not original Homepage acceptance",
+      "purpose": "Preserve two non-executing entry failures and final actual private runner",
+      "rawBytes": 13509,
+      "rawSHA256": "8e909f7b8c0f47a491e19983112f89104a7a830eb6a4f5c06f1803bc27e97939",
+      "publicBytes": 13423,
+      "publicSHA256": "fb786f72e7c85567681a5503c15628d65caedf67eb026b97a22298e002fffee6",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 2
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-ownership-control/runner.mts",
+      "member": "records/header-padding-fix/query-ownership-control/runner.mts",
+      "group": "ownership-runner-history",
+      "sourceEpoch": "Private diagnostic helper controls, not original Homepage acceptance",
+      "purpose": "Preserve two non-executing entry failures and final actual private runner",
+      "rawBytes": 13519,
+      "rawSHA256": "84ab10bb6c4eb80e6a537e1375005effb217a3c9df57dd4cf66335af20327ae6",
+      "publicBytes": 13433,
+      "publicSHA256": "8b7b7af287a82cf1ea22646f4a3ae5cb89ac33e141fbf0429b53342545d2911d",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 2
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-ownership-control/module-correction.json",
+      "member": "records/header-padding-fix/query-ownership-control/module-correction.json",
+      "group": "ownership-runner-history",
+      "sourceEpoch": "Private diagnostic helper controls, not original Homepage acceptance",
+      "purpose": "Preserve two non-executing entry failures and final actual private runner",
+      "rawBytes": 459,
+      "rawSHA256": "dc969c16314c64c8a003b2004f03975afe6a6e2947a0209763d8ed02fdc233f8",
+      "publicBytes": 459,
+      "publicSHA256": "dc969c16314c64c8a003b2004f03975afe6a6e2947a0209763d8ed02fdc233f8",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-ownership-control/module-correction-v2.json",
+      "member": "records/header-padding-fix/query-ownership-control/module-correction-v2.json",
+      "group": "ownership-runner-history",
+      "sourceEpoch": "Private diagnostic helper controls, not original Homepage acceptance",
+      "purpose": "Preserve two non-executing entry failures and final actual private runner",
+      "rawBytes": 372,
+      "rawSHA256": "d96626b91a55189b5e50ee2e87f0a27553833f4c8e3b42d719ac3b05fe9da047",
+      "publicBytes": 372,
+      "publicSHA256": "d96626b91a55189b5e50ee2e87f0a27553833f4c8e3b42d719ac3b05fe9da047",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-ownership-control/execution-receipt/receipt.json",
+      "member": "records/header-padding-fix/query-ownership-control/execution-receipt/receipt.json",
+      "group": "ownership-controls",
+      "sourceEpoch": "V2 helper private DOM; distinct entry attempts",
+      "purpose": "First two arms0controls; third actual browser control execution",
+      "rawBytes": 2932,
+      "rawSHA256": "88d09de294e62aac39c1301192376c99751de54c6f07f97754613fea25369664",
+      "publicBytes": 2806,
+      "publicSHA256": "53d47b6af6d8004853b51c4f15ea9025f963cadde9fbd7332c5458f618095621",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R14>",
+          "count": 2
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-ownership-control/execution-receipt/run.log",
+      "member": "records/header-padding-fix/query-ownership-control/execution-receipt/run.log",
+      "group": "ownership-controls",
+      "sourceEpoch": "V2 helper private DOM; distinct entry attempts",
+      "purpose": "First two arms0controls; third actual browser control execution",
+      "rawBytes": 706,
+      "rawSHA256": "4a34887baed0c41736f6853663dcef81b1154391e7108c30d3d002dc0125a94f",
+      "publicBytes": 643,
+      "publicSHA256": "d667877a67db2c05c17f63a17b9990d5fd5e943e168afd8f5be03a33de6f2014",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R14>",
+          "count": 1
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-ownership-control/execution-correct-module-receipt/receipt.json",
+      "member": "records/header-padding-fix/query-ownership-control/execution-correct-module-receipt/receipt.json",
+      "group": "ownership-controls",
+      "sourceEpoch": "V2 helper private DOM; distinct entry attempts",
+      "purpose": "First two arms0controls; third actual browser control execution",
+      "rawBytes": 2921,
+      "rawSHA256": "40f30c5db70562cd9cc958190fae8d50e991414f8816fbd146016f5385b5937e",
+      "publicBytes": 2795,
+      "publicSHA256": "211430a054b5f1633f5dc134f00b3fe225f7266c7b8d27a8d7e2cb8d935ba565",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R14>",
+          "count": 2
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-ownership-control/execution-correct-module-receipt/run.log",
+      "member": "records/header-padding-fix/query-ownership-control/execution-correct-module-receipt/run.log",
+      "group": "ownership-controls",
+      "sourceEpoch": "V2 helper private DOM; distinct entry attempts",
+      "purpose": "First two arms0controls; third actual browser control execution",
+      "rawBytes": 664,
+      "rawSHA256": "774063a996506bf0ddf11926cbd49b6b1f10e1edc7b1c46cd7c739441dff6513",
+      "publicBytes": 538,
+      "publicSHA256": "1ecaf2f366f7c457b7bca227b4839e70c2f18787f47b9b206b9f9d1ce736c6b6",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R14>",
+          "count": 2
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-ownership-control/execution-module-v2-receipt/receipt.json",
+      "member": "records/header-padding-fix/query-ownership-control/execution-module-v2-receipt/receipt.json",
+      "group": "ownership-controls",
+      "sourceEpoch": "V2 helper private DOM; distinct entry attempts",
+      "purpose": "First two arms0controls; third actual browser control execution",
+      "rawBytes": 2916,
+      "rawSHA256": "f4a816bddff826afd202664c95031a54901cd569da7dff200dabfbb4691b74ac",
+      "publicBytes": 2790,
+      "publicSHA256": "858326115be01b6b456db7ce7e025269587b0c7217755d6054c5fc6de5658426",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R14>",
+          "count": 2
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-ownership-control/execution-module-v2-receipt/run.log",
+      "member": "records/header-padding-fix/query-ownership-control/execution-module-v2-receipt/run.log",
+      "group": "ownership-controls",
+      "sourceEpoch": "V2 helper private DOM; distinct entry attempts",
+      "purpose": "First two arms0controls; third actual browser control execution",
+      "rawBytes": 6451,
+      "rawSHA256": "a156df0e55bba29799077db67f69a27fdc2f9f32b6cb82252dd080cc07063f27",
+      "publicBytes": 6326,
+      "publicSHA256": "ee7b35d516df50915166ec5cd2f93c0a26b38ff6ab6ff402145ef2f9e487a74b",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R14>",
+          "count": 1
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<CHROME_APP>",
+          "count": 1
+        },
+        {
+          "operation": "macOS-temporary-root-alias",
+          "count": 1
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-ownership-control/execution-module-v2/report.json",
+      "member": "records/header-padding-fix/query-ownership-control/execution-module-v2/report.json",
+      "group": "ownership-controls",
+      "sourceEpoch": "Actual2controls; not C acceptance",
+      "purpose": "Real Chromium busy-owner and lost-install-ACK controls, exact descriptor restoration",
+      "rawBytes": 16601,
+      "rawSHA256": "3efa32962fadffe6d054348a132858ad88e3a268d1f7d228dc9c52d4497a9218",
+      "publicBytes": 16264,
+      "publicSHA256": "ec60392c3ec4a0df730532ea7f49ef82a93fca5cdb2465f8aa7f4cdf0f03c0bf",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<R14>",
+          "count": 4
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 2
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-ownership-control/execution-module-v2/busy-owner.json",
+      "member": "records/header-padding-fix/query-ownership-control/execution-module-v2/busy-owner.json",
+      "group": "ownership-controls",
+      "sourceEpoch": "Actual2controls; not C acceptance",
+      "purpose": "Real Chromium busy-owner and lost-install-ACK controls, exact descriptor restoration",
+      "rawBytes": 7632,
+      "rawSHA256": "aabd4a4e0808fcc29c2a600d97c26ede02e3d75eb46b6f3ecc00e5f2666cd185",
+      "publicBytes": 7633,
+      "publicSHA256": "519ebbe3b535618d6498386a5c89f75dcde93e905a6e7c28b31bf363ef3a7069",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-ownership-control/execution-module-v2/lost-install-ack.json",
+      "member": "records/header-padding-fix/query-ownership-control/execution-module-v2/lost-install-ack.json",
+      "group": "ownership-controls",
+      "sourceEpoch": "Actual2controls; not C acceptance",
+      "purpose": "Real Chromium busy-owner and lost-install-ACK controls, exact descriptor restoration",
+      "rawBytes": 4870,
+      "rawSHA256": "5a87ba747e1f44f12c4b24891ca35593a8860651492e338fa1bf11b0ef470b47",
+      "publicBytes": 4871,
+      "publicSHA256": "3af40f67d27fa494ff8665c625de355b7c8e89d83e30a3cb8eddc36560a82d08",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-modes/hybrid/receipt.json",
+      "member": "records/header-padding-fix/query-modes/hybrid/receipt.json",
+      "group": "three-modes",
+      "sourceEpoch": "2189+query V2+5Header candidates; not isolated final-only production combination",
+      "purpose": "One originalBrutalist case/8filtered, actual hybrid observations",
+      "rawBytes": 3678,
+      "rawSHA256": "867166edfd691aa21a05252aea99fbd690402b65524c527081d0e7e2c9e6ff84",
+      "publicBytes": 3552,
+      "publicSHA256": "cd53d4f35da51956273ab1b767684d26644b47cf0a4f455711dea1b5fc2bef64",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R14>",
+          "count": 2
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-modes/hybrid/run.log",
+      "member": "records/header-padding-fix/query-modes/hybrid/run.log",
+      "group": "three-modes",
+      "sourceEpoch": "2189+query V2+5Header candidates; not isolated final-only production combination",
+      "purpose": "One originalBrutalist case/8filtered, actual hybrid observations",
+      "rawBytes": 15083,
+      "rawSHA256": "52e840afded6c7b04c1dfd18770e9b3fec6a14ebcc5bd9dec276eecc7afe258a",
+      "publicBytes": 14977,
+      "publicSHA256": "c4650a7ff1d710bdde8ebf815ce76c4bf2113b2c2bc75b30e5f5ff6f8b43ea6b",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R14>",
+          "count": 1
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 1
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-modes/hybrid/vitest.json",
+      "member": "records/header-padding-fix/query-modes/hybrid/vitest.json",
+      "group": "three-modes",
+      "sourceEpoch": "2189+query V2+5Header candidates; not isolated final-only production combination",
+      "purpose": "One originalBrutalist case/8filtered, actual hybrid observations",
+      "rawBytes": 3560,
+      "rawSHA256": "afbed6e1eb95cc067a297172cb70d243c5e6a7cb90dcc13daaee1e822c726028",
+      "publicBytes": 4668,
+      "publicSHA256": "d5c4e15f90550e2f219cc8fcdb092748bee7196fa3ec19211d07df44aaa6ff50",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 1
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-modes/hybrid/evidence/header-breakpoint/brutalist-lifecycle.json",
+      "member": "records/header-padding-fix/query-modes/hybrid/evidence/header-breakpoint/brutalist-lifecycle.json",
+      "group": "three-modes",
+      "sourceEpoch": "2189+query V2+5Header candidates; not isolated final-only production combination",
+      "purpose": "One originalBrutalist case/8filtered, actual hybrid observations",
+      "rawBytes": 40162,
+      "rawSHA256": "b1b22a68d8ccf61ec2612d21d7de43c6b89d68c218d2cfdd509303a3bf6666b8",
+      "publicBytes": 40163,
+      "publicSHA256": "b6e9f5b2c5e544c49d6d2890604dff0d5a847fb6662c0fec51fb5a900b639c77",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-modes/hybrid/evidence/header-breakpoint/brutalist-query-observation.json",
+      "member": "records/header-padding-fix/query-modes/hybrid/evidence/header-breakpoint/brutalist-query-observation.json",
+      "group": "three-modes",
+      "sourceEpoch": "2189+query V2+5Header candidates; not isolated final-only production combination",
+      "purpose": "One originalBrutalist case/8filtered, actual hybrid observations",
+      "rawBytes": 4055,
+      "rawSHA256": "a382aaa1441dce22e887a001848939019500996f34ed559618bd19da5f1b1d37",
+      "publicBytes": 4056,
+      "publicSHA256": "0e74e227bf8c8f92b17ef15a9afa9f45a0e86f6f617f65a246afaa55759c975f",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-modes/native-only/receipt.json",
+      "member": "records/header-padding-fix/query-modes/native-only/receipt.json",
+      "group": "three-modes",
+      "sourceEpoch": "2189+query V2+5Header candidates; not isolated final-only production combination",
+      "purpose": "One originalBrutalist case/8filtered, actual native-only observations",
+      "rawBytes": 3693,
+      "rawSHA256": "b35deacdeb55f71abd26ccc8bd87eb04ccfd8adc08ec6c3a0376f7b5579a3738",
+      "publicBytes": 3567,
+      "publicSHA256": "f505765a543ecdb79b6bb6e0b2c55cffaa72ab571dcabd7887ca796aae4ed83a",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R14>",
+          "count": 2
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-modes/native-only/run.log",
+      "member": "records/header-padding-fix/query-modes/native-only/run.log",
+      "group": "three-modes",
+      "sourceEpoch": "2189+query V2+5Header candidates; not isolated final-only production combination",
+      "purpose": "One originalBrutalist case/8filtered, actual native-only observations",
+      "rawBytes": 10845,
+      "rawSHA256": "1cfb29cd147afd9fef2b50109df362523f7d80da1f62140596515f419131ee33",
+      "publicBytes": 10739,
+      "publicSHA256": "9680ec9c7bfa55502c9c6e92c7fc0e5667d1ddafa501499801a65ada83e30d89",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R14>",
+          "count": 1
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 1
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-modes/native-only/vitest.json",
+      "member": "records/header-padding-fix/query-modes/native-only/vitest.json",
+      "group": "three-modes",
+      "sourceEpoch": "2189+query V2+5Header candidates; not isolated final-only production combination",
+      "purpose": "One originalBrutalist case/8filtered, actual native-only observations",
+      "rawBytes": 3560,
+      "rawSHA256": "a7d88eb238041cbe5a1070e264b610a5394622d031dd164163322027974e3371",
+      "publicBytes": 4668,
+      "publicSHA256": "8447f9a72020cc1e2135a545bc76a9ca9a4cc13a06274bd6a9cbef5faa8dc2e0",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 1
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-modes/native-only/evidence/header-breakpoint/brutalist-lifecycle.json",
+      "member": "records/header-padding-fix/query-modes/native-only/evidence/header-breakpoint/brutalist-lifecycle.json",
+      "group": "three-modes",
+      "sourceEpoch": "2189+query V2+5Header candidates; not isolated final-only production combination",
+      "purpose": "One originalBrutalist case/8filtered, actual native-only observations",
+      "rawBytes": 40172,
+      "rawSHA256": "2cd261fb51a44e8082733d6ecdbaba685cc8248488a649c69642af789e54389e",
+      "publicBytes": 40173,
+      "publicSHA256": "cb813bf7973b88705c7c10e27b3cfe10e62acc506af6418907b984b94d5ad8a9",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-modes/native-only/evidence/header-breakpoint/brutalist-query-observation.json",
+      "member": "records/header-padding-fix/query-modes/native-only/evidence/header-breakpoint/brutalist-query-observation.json",
+      "group": "three-modes",
+      "sourceEpoch": "2189+query V2+5Header candidates; not isolated final-only production combination",
+      "purpose": "One originalBrutalist case/8filtered, actual native-only observations",
+      "rawBytes": 1264,
+      "rawSHA256": "fa19d798aef0e28fb79c80147bef4fc68f02e2ec6a7ad31dff55b3a40771b76b",
+      "publicBytes": 1265,
+      "publicSHA256": "ee910accf90f35b7aedebe4df8715a041476f9229e272fe5ec2dcf833aa7d2f5",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-modes/node-only/receipt.json",
+      "member": "records/header-padding-fix/query-modes/node-only/receipt.json",
+      "group": "three-modes",
+      "sourceEpoch": "2189+query V2+5Header candidates; not isolated final-only production combination",
+      "purpose": "One originalBrutalist case/8filtered, actual node-only observations",
+      "rawBytes": 3687,
+      "rawSHA256": "c7a6c494b1366626eeace44b31cedbf75a7fcbce975af7e8e1e6a4799236d1b6",
+      "publicBytes": 3561,
+      "publicSHA256": "f207900d80b3eb6bb1e1ecadd87b036b1f68ff7f1ce696584b43629743be1d3f",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R14>",
+          "count": 2
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-modes/node-only/run.log",
+      "member": "records/header-padding-fix/query-modes/node-only/run.log",
+      "group": "three-modes",
+      "sourceEpoch": "2189+query V2+5Header candidates; not isolated final-only production combination",
+      "purpose": "One originalBrutalist case/8filtered, actual node-only observations",
+      "rawBytes": 9914,
+      "rawSHA256": "4373dcd587578c47c5cf0bc9af1d5eb822f5130b0e4e61bf2e11a232635b800a",
+      "publicBytes": 9808,
+      "publicSHA256": "9ce96f8c02119fdce35c2038d78c13eaa42ec0fc4794e1f40c5c8f2cb9ddc8fd",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R14>",
+          "count": 1
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 1
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-modes/node-only/vitest.json",
+      "member": "records/header-padding-fix/query-modes/node-only/vitest.json",
+      "group": "three-modes",
+      "sourceEpoch": "2189+query V2+5Header candidates; not isolated final-only production combination",
+      "purpose": "One originalBrutalist case/8filtered, actual node-only observations",
+      "rawBytes": 3560,
+      "rawSHA256": "e7a8ce451ac9429abca44f7a55a5a82cbf48161df8ca370b3b1437713b3e2c32",
+      "publicBytes": 4668,
+      "publicSHA256": "d0af9f0ef029bd2a7864645463c666570a032811469610d8dea546166ec42964",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<PRODUCT_ROOT>",
+          "count": 1
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-modes/node-only/evidence/header-breakpoint/brutalist-lifecycle.json",
+      "member": "records/header-padding-fix/query-modes/node-only/evidence/header-breakpoint/brutalist-lifecycle.json",
+      "group": "three-modes",
+      "sourceEpoch": "2189+query V2+5Header candidates; not isolated final-only production combination",
+      "purpose": "One originalBrutalist case/8filtered, actual node-only observations",
+      "rawBytes": 38441,
+      "rawSHA256": "dac5ae1b04f2533eded91bd4528fc2369d770c4f5dbcd5783f8cbbcc99fb2fca",
+      "publicBytes": 38442,
+      "publicSHA256": "ff68517e069f61d3e6c665a15e81e7d6ee45f6aca065c2a3b151282d2bd4ffd3",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-modes/node-only/evidence/header-breakpoint/brutalist-query-observation.json",
+      "member": "records/header-padding-fix/query-modes/node-only/evidence/header-breakpoint/brutalist-query-observation.json",
+      "group": "three-modes",
+      "sourceEpoch": "2189+query V2+5Header candidates; not isolated final-only production combination",
+      "purpose": "One originalBrutalist case/8filtered, actual node-only observations",
+      "rawBytes": 1256,
+      "rawSHA256": "96287b17668e0a8427fbbea71d74655f9702d77e04d1d3b4e7b31211eed5af88",
+      "publicBytes": 1257,
+      "publicSHA256": "8df45ad129adf938947ec7f02b4527e168c0ede1107d23f93f2aae8c045718a2",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-modes/controls-receipt.json",
+      "member": "records/header-padding-fix/query-modes/controls-receipt.json",
+      "group": "three-modes",
+      "sourceEpoch": "Hybrid→native-only→node-only; positive all0pending at verdict",
+      "purpose": "Same-source modes, actual order and conditional clock ranges",
+      "rawBytes": 1145,
+      "rawSHA256": "15599ad9565a4050feaca39cb37908855a63c186eadc0ba14684cf2f3fbee4b3",
+      "publicBytes": 1145,
+      "publicSHA256": "15599ad9565a4050feaca39cb37908855a63c186eadc0ba14684cf2f3fbee4b3",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/header-padding-fix/query-modes/phase-reconciliation.json",
+      "member": "records/header-padding-fix/query-modes/phase-reconciliation.json",
+      "group": "three-modes",
+      "sourceEpoch": "Hybrid→native-only→node-only; positive all0pending at verdict",
+      "purpose": "Same-source modes, actual order and conditional clock ranges",
+      "rawBytes": 4016,
+      "rawSHA256": "6f538ec332870ca58bc7cac2f6e25b12c1154b6010854810e99b2e886cdaa01e",
+      "publicBytes": 4016,
+      "publicSHA256": "6f538ec332870ca58bc7cac2f6e25b12c1154b6010854810e99b2e886cdaa01e",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118460033906.json",
+      "member": "records/live/canonical98932/118460033906.json",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: type-check",
+      "rawBytes": 412,
+      "rawSHA256": "e89977ff5907cee2d3f004095be3bda30828de833e3ee6b1045f03152630ffb6",
+      "publicBytes": 412,
+      "publicSHA256": "e89977ff5907cee2d3f004095be3bda30828de833e3ee6b1045f03152630ffb6",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118460033906.log",
+      "member": "records/live/canonical98932/118460033906.log",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: type-check",
+      "rawBytes": 26691,
+      "rawSHA256": "e4c31c055a68388bfb34f96be437f82d81bccceca6cba0296d55af8646a48407",
+      "publicBytes": 25872,
+      "publicSHA256": "c827effa83fe5657a781f2b755a43cca95864f285c15be37948de3cad15db181",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_WORKSPACE>",
+          "count": 7
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_HOME>",
+          "count": 2
+        },
+        {
+          "operation": "omit-credential-setup-log-lines",
+          "count": 7
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118460034067.json",
+      "member": "records/live/canonical98932/118460034067.json",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: public_package_plan",
+      "rawBytes": 421,
+      "rawSHA256": "06ae920c1cc70e0c344248734dd4838a5587ed438daf99e5f73362ff40f60f45",
+      "publicBytes": 421,
+      "publicSHA256": "06ae920c1cc70e0c344248734dd4838a5587ed438daf99e5f73362ff40f60f45",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118460034067.log",
+      "member": "records/live/canonical98932/118460034067.log",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: public_package_plan",
+      "rawBytes": 58501,
+      "rawSHA256": "03287256d14d0bd244b9eac0709b1d567d5d17874d0dd1df5a9ab84b48fc6999",
+      "publicBytes": 57707,
+      "publicSHA256": "6fd4e7f99e108ef0e5776e1c26524e38024482b86f7ecf1ae5d5268d70733f81",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_WORKSPACE>",
+          "count": 6
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_HOME>",
+          "count": 2
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<TMP>/",
+          "count": 4
+        },
+        {
+          "operation": "omit-credential-setup-log-lines",
+          "count": 7
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118460034091.json",
+      "member": "records/live/canonical98932/118460034091.json",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: rust-interop",
+      "rawBytes": 414,
+      "rawSHA256": "ee25a4172faba7945a0d34bf2b90c1c2fec1cc8265ba470164efec7ec1ec1071",
+      "publicBytes": 414,
+      "publicSHA256": "ee25a4172faba7945a0d34bf2b90c1c2fec1cc8265ba470164efec7ec1ec1071",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118460034091.log",
+      "member": "records/live/canonical98932/118460034091.log",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: rust-interop",
+      "rawBytes": 64148,
+      "rawSHA256": "2c0540b66fd81a548a506685f45a1ff62d01e44c3b327f37fce54b8e246ad23a",
+      "publicBytes": 63257,
+      "publicSHA256": "a71fd945c1dcc46bbdb881fdcf46cf88b33142f632933b5f5ecf41de0ce48dd4",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_HOME>",
+          "count": 27
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<HOMEBREW>",
+          "count": 27
+        },
+        {
+          "operation": "omit-credential-setup-log-lines",
+          "count": 7
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118460034114.json",
+      "member": "records/live/canonical98932/118460034114.json",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: test-plan",
+      "rawBytes": 412,
+      "rawSHA256": "45c1d0347009ebd2d7d6e2fa22c682cac3f51ceaaef7e91ab5561eed2f77f581",
+      "publicBytes": 412,
+      "publicSHA256": "45c1d0347009ebd2d7d6e2fa22c682cac3f51ceaaef7e91ab5561eed2f77f581",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118460034114.log",
+      "member": "records/live/canonical98932/118460034114.log",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: test-plan",
+      "rawBytes": 151361,
+      "rawSHA256": "99d62f01685f05fc2eb81679457882d3312b947864e5a0d151f96b3302800229",
+      "publicBytes": 150560,
+      "publicSHA256": "e0ea08d7f97166b10ad4ce8fdbe0ad366a255632dd59c599e9cf767990238b85",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_WORKSPACE>",
+          "count": 6
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_HOME>",
+          "count": 3
+        },
+        {
+          "operation": "omit-credential-setup-log-lines",
+          "count": 7
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118460034145.json",
+      "member": "records/live/canonical98932/118460034145.json",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: lockstep-check",
+      "rawBytes": 416,
+      "rawSHA256": "a939df02cf22478b091cf7837f048a5c61dc538ff026f2f3051d551735ecb13d",
+      "publicBytes": 416,
+      "publicSHA256": "a939df02cf22478b091cf7837f048a5c61dc538ff026f2f3051d551735ecb13d",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118460034145.log",
+      "member": "records/live/canonical98932/118460034145.log",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: lockstep-check",
+      "rawBytes": 12528,
+      "rawSHA256": "60228731cc8d9c839a69985be728c1a6add5f29c4f2fbcd68a80be238398fcf2",
+      "publicBytes": 11730,
+      "publicSHA256": "1d5b365e6afd89b5bc1038bef67daac616f4f3126aa0f99f4bc55ee36d314110",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_WORKSPACE>",
+          "count": 6
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_HOME>",
+          "count": 2
+        },
+        {
+          "operation": "omit-credential-setup-log-lines",
+          "count": 7
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118460034192.json",
+      "member": "records/live/canonical98932/118460034192.json",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: rust",
+      "rawBytes": 406,
+      "rawSHA256": "5096cf901ce27633912161901668d6ce05c1a01f01bfde2e9767056271e746fa",
+      "publicBytes": 406,
+      "publicSHA256": "5096cf901ce27633912161901668d6ce05c1a01f01bfde2e9767056271e746fa",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118460034192.log",
+      "member": "records/live/canonical98932/118460034192.log",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: rust",
+      "rawBytes": 27598,
+      "rawSHA256": "ead3e66b4f8597ff1efb68f4d3e848a95fd74cbc84e9c167cae9c1511875fc1a",
+      "publicBytes": 26692,
+      "publicSHA256": "48bff6fa011b6440cd8a72db2f6fc402f6be0e7885d8c6866fbec35720212c78",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_WORKSPACE>",
+          "count": 11
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_HOME>",
+          "count": 3
+        },
+        {
+          "operation": "omit-credential-setup-log-lines",
+          "count": 7
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118460034249.json",
+      "member": "records/live/canonical98932/118460034249.json",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: release-scan",
+      "rawBytes": 414,
+      "rawSHA256": "79afaa798352e8d1cfde12cb6187de401122f8b4b41ee668f7d55a8732b3afb8",
+      "publicBytes": 414,
+      "publicSHA256": "79afaa798352e8d1cfde12cb6187de401122f8b4b41ee668f7d55a8732b3afb8",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118460034249.log",
+      "member": "records/live/canonical98932/118460034249.log",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: release-scan",
+      "rawBytes": 25111,
+      "rawSHA256": "3bebbdb67158c6643a6439adc8cf8efa27c6d5edfdfc8a16aade0b6de1628165",
+      "publicBytes": 24313,
+      "publicSHA256": "37a6dc97e41b1eb9d0c7538a0ffbbcca5d93857ec2a490e76be636474e1ea3ad",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_WORKSPACE>",
+          "count": 6
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_HOME>",
+          "count": 2
+        },
+        {
+          "operation": "omit-credential-setup-log-lines",
+          "count": 7
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118460034293.json",
+      "member": "records/live/canonical98932/118460034293.json",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: rust-macos",
+      "rawBytes": 413,
+      "rawSHA256": "2e7b5ce524784f1f5c2606d882e178f9132ff131a657bc8129fba05fe0a37e14",
+      "publicBytes": 413,
+      "publicSHA256": "2e7b5ce524784f1f5c2606d882e178f9132ff131a657bc8129fba05fe0a37e14",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118460034293.log",
+      "member": "records/live/canonical98932/118460034293.log",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: rust-macos",
+      "rawBytes": 127146,
+      "rawSHA256": "4a7b9e0a747c939ae99df330dda88c9d34ab6dc6a0ca2ca4e7b72ffbe4d99402",
+      "publicBytes": 126263,
+      "publicSHA256": "72f573c3bd8c7dbf73ac44ae2f00d0fbf5ec3bdad4a30a0b648c248a80887895",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_HOME>",
+          "count": 25
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<HOMEBREW>",
+          "count": 27
+        },
+        {
+          "operation": "omit-credential-setup-log-lines",
+          "count": 7
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118461110893.json",
+      "member": "records/live/canonical98932/118461110893.json",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: cli-smoke",
+      "rawBytes": 411,
+      "rawSHA256": "548d001411d2dd1535fed29230a44b1ea7c2fa9e8c028df834378cd2e4401692",
+      "publicBytes": 411,
+      "publicSHA256": "548d001411d2dd1535fed29230a44b1ea7c2fa9e8c028df834378cd2e4401692",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118461110893.log",
+      "member": "records/live/canonical98932/118461110893.log",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: cli-smoke",
+      "rawBytes": 49561,
+      "rawSHA256": "c48bdc5d83da36b4dbab30bda22b1f60c19b2e2bfda9574985a1612e1abe10fe",
+      "publicBytes": 48794,
+      "publicSHA256": "a1f15a4125f41acb65b28c5ccb8dc2697de9e5508ad4416041094af3c90b6cfa",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_WORKSPACE>",
+          "count": 7
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_HOME>",
+          "count": 2
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<TMP>/",
+          "count": 52
+        },
+        {
+          "operation": "omit-credential-setup-log-lines",
+          "count": 7
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118461110934.json",
+      "member": "records/live/canonical98932/118461110934.json",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: release-stage",
+      "rawBytes": 415,
+      "rawSHA256": "491300c54faa85d966f59fada566e89be7b3e51c83dd47e53cc56a64cd3a70ec",
+      "publicBytes": 415,
+      "publicSHA256": "491300c54faa85d966f59fada566e89be7b3e51c83dd47e53cc56a64cd3a70ec",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118461110934.log",
+      "member": "records/live/canonical98932/118461110934.log",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: release-stage",
+      "rawBytes": 36394,
+      "rawSHA256": "62afcdafaa8650024543018fdf5ce819d851cb2edd20d417a136004b92a21091",
+      "publicBytes": 35623,
+      "publicSHA256": "3cde39fa7b19358f6e03bf2abdfa1b76f09144e7d463d3eac5226342ec02253b",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_WORKSPACE>",
+          "count": 7
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_HOME>",
+          "count": 2
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<TMP>/",
+          "count": 48
+        },
+        {
+          "operation": "omit-credential-setup-log-lines",
+          "count": 7
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118461110954.json",
+      "member": "records/live/canonical98932/118461110954.json",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: release-consumer-react",
+      "rawBytes": 424,
+      "rawSHA256": "175255f67ea739dcdef93cd8e3ca5ab503320f2db29328f6199fd9d6b8348813",
+      "publicBytes": 424,
+      "publicSHA256": "175255f67ea739dcdef93cd8e3ca5ab503320f2db29328f6199fd9d6b8348813",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118461110954.log",
+      "member": "records/live/canonical98932/118461110954.log",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: release-consumer-react",
+      "rawBytes": 48660,
+      "rawSHA256": "8b4bff50fa107959d61269cca3729106fd00c095f7b17a5f7816da321945c7a9",
+      "publicBytes": 47891,
+      "publicSHA256": "ef4eaae46d86f3b27e4d33c65fc8e484e7057e2bb277b5a46fb0ff046acc9594",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_WORKSPACE>",
+          "count": 7
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_HOME>",
+          "count": 2
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<TMP>/",
+          "count": 50
+        },
+        {
+          "operation": "omit-credential-setup-log-lines",
+          "count": 7
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118461110979.json",
+      "member": "records/live/canonical98932/118461110979.json",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: public_package_build",
+      "rawBytes": 422,
+      "rawSHA256": "992b7686862351f5102b534f04ffb9e1029bd3456d83b91da00d78fcc426886b",
+      "publicBytes": 422,
+      "publicSHA256": "992b7686862351f5102b534f04ffb9e1029bd3456d83b91da00d78fcc426886b",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118461110979.log",
+      "member": "records/live/canonical98932/118461110979.log",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: public_package_build",
+      "rawBytes": 70398,
+      "rawSHA256": "1d0e3da205fe2d07d0798e09f70f34de5f0e32234725bfcb829220ae3985e904",
+      "publicBytes": 69516,
+      "publicSHA256": "1e8865d0e6be57a9bffd35d276fdce8e7d001cfd4e882230542c1d79bdc41caf",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_WORKSPACE>",
+          "count": 10
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_HOME>",
+          "count": 2
+        },
+        {
+          "operation": "omit-credential-setup-log-lines",
+          "count": 7
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118461123887.json",
+      "member": "records/live/canonical98932/118461123887.json",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: test-browser (1/8, browser-1-of-8)",
+      "rawBytes": 437,
+      "rawSHA256": "0afdb20cc17a1f3c12590d2500e00f07b0b12b9ff54338d62c7e7a79c1fd937a",
+      "publicBytes": 437,
+      "publicSHA256": "0afdb20cc17a1f3c12590d2500e00f07b0b12b9ff54338d62c7e7a79c1fd937a",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118461123887.log",
+      "member": "records/live/canonical98932/118461123887.log",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: test-browser (1/8, browser-1-of-8)",
+      "rawBytes": 245021,
+      "rawSHA256": "24da89a6fdf73f386fcf2667b4c1bad31da8f1decf1010b92f763309fa1d3ae3",
+      "publicBytes": 244155,
+      "publicSHA256": "8a79c24bbb64a29afff8f989dfd4e3e6d58928446c9d63b82c646be64578afed",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_WORKSPACE>",
+          "count": 9
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_HOME>",
+          "count": 4
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<TMP>/",
+          "count": 1
+        },
+        {
+          "operation": "omit-credential-setup-log-lines",
+          "count": 7
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118461123892.json",
+      "member": "records/live/canonical98932/118461123892.json",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: test-browser (6/8, browser-6-of-8)",
+      "rawBytes": 437,
+      "rawSHA256": "d60e24da89903f2bc253ceabd6ea686ccde1246eba3f107ec49499d424515c61",
+      "publicBytes": 437,
+      "publicSHA256": "d60e24da89903f2bc253ceabd6ea686ccde1246eba3f107ec49499d424515c61",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118461123892.log",
+      "member": "records/live/canonical98932/118461123892.log",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: test-browser (6/8, browser-6-of-8)",
+      "rawBytes": 113220,
+      "rawSHA256": "3d64e21a863be900d4b0a1ce62f925687dc0cf80b6b479b166833ad8745a8c74",
+      "publicBytes": 112353,
+      "publicSHA256": "540cb9900a253e5eb8e8d043296c9dbd16533a5fe9f585a94b6d6844f209feb1",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_WORKSPACE>",
+          "count": 9
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_HOME>",
+          "count": 4
+        },
+        {
+          "operation": "omit-credential-setup-log-lines",
+          "count": 7
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118461123937.json",
+      "member": "records/live/canonical98932/118461123937.json",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: test-general",
+      "rawBytes": 415,
+      "rawSHA256": "cdf83d5b52a2195df1d9b8dcdd492ce285bd08b2d25d4f68fe618395219b12b1",
+      "publicBytes": 415,
+      "publicSHA256": "cdf83d5b52a2195df1d9b8dcdd492ce285bd08b2d25d4f68fe618395219b12b1",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118461123937.log",
+      "member": "records/live/canonical98932/118461123937.log",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: test-general",
+      "rawBytes": 147435,
+      "rawSHA256": "1b9c0f94baee6ac41817a6562e8bd4f32183d47b9cf794d0c2d303ee0aab02c2",
+      "publicBytes": 146634,
+      "publicSHA256": "51753c62ec843a7d1d772010eef3d93855a427169a33a66e3f4eee3834db7ab6",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_WORKSPACE>",
+          "count": 6
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_HOME>",
+          "count": 3
+        },
+        {
+          "operation": "omit-credential-setup-log-lines",
+          "count": 7
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118461123939.json",
+      "member": "records/live/canonical98932/118461123939.json",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: test-browser (4/8, browser-4-of-8)",
+      "rawBytes": 437,
+      "rawSHA256": "2cf645738ca00c658806cfd2b35a819ee8fe8e712b4a09904cc4177bedb9e309",
+      "publicBytes": 437,
+      "publicSHA256": "2cf645738ca00c658806cfd2b35a819ee8fe8e712b4a09904cc4177bedb9e309",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118461123939.log",
+      "member": "records/live/canonical98932/118461123939.log",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: test-browser (4/8, browser-4-of-8)",
+      "rawBytes": 111416,
+      "rawSHA256": "057c4ceb7f2c18469eec9c374454b90393640838f387b90da484e0acc0fb2b5c",
+      "publicBytes": 110548,
+      "publicSHA256": "699d6827264f381d307549e2d787c996d1cfe23fe70919f8c13429a4c2cb85a6",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_WORKSPACE>",
+          "count": 9
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_HOME>",
+          "count": 5
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<TMP>/",
+          "count": 2
+        },
+        {
+          "operation": "omit-credential-setup-log-lines",
+          "count": 7
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118461123940.json",
+      "member": "records/live/canonical98932/118461123940.json",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: test-browser (3/8, browser-3-of-8)",
+      "rawBytes": 437,
+      "rawSHA256": "13286ce7cadb38ab79843eafd793a9358a5ffd62cb41c5a8664c1d822bdba9ed",
+      "publicBytes": 437,
+      "publicSHA256": "13286ce7cadb38ab79843eafd793a9358a5ffd62cb41c5a8664c1d822bdba9ed",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118461123940.log",
+      "member": "records/live/canonical98932/118461123940.log",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: test-browser (3/8, browser-3-of-8)",
+      "rawBytes": 103284,
+      "rawSHA256": "bb5a8ebf9da6bd2045a0ce69c9f7282d05919656084fecd20d78fe5d1f4fdae3",
+      "publicBytes": 102418,
+      "publicSHA256": "90ba2d88fe9f42b5d8031316675d51c8c10655e0f2feacc8a1944dd68138c808",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_WORKSPACE>",
+          "count": 9
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_HOME>",
+          "count": 4
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<TMP>/",
+          "count": 1
+        },
+        {
+          "operation": "omit-credential-setup-log-lines",
+          "count": 7
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118461123949.json",
+      "member": "records/live/canonical98932/118461123949.json",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: test-browser (2/8, browser-2-of-8)",
+      "rawBytes": 437,
+      "rawSHA256": "1e9413613088ae851325e0b7789cc5ddee79c61058491fe5bb5b3f4fffd1911c",
+      "publicBytes": 437,
+      "publicSHA256": "1e9413613088ae851325e0b7789cc5ddee79c61058491fe5bb5b3f4fffd1911c",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118461123949.log",
+      "member": "records/live/canonical98932/118461123949.log",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: test-browser (2/8, browser-2-of-8)",
+      "rawBytes": 329060,
+      "rawSHA256": "3a7df684166683788121cf7e0291881b07854255b549d7337d83bf227ee59660",
+      "publicBytes": 311648,
+      "publicSHA256": "9e35a35ad3871b8419bf44a1dac7f4f275d43bdbeda6eebbf9ff0c26aed86230",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_WORKSPACE>",
+          "count": 797
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_HOME>",
+          "count": 3
+        },
+        {
+          "operation": "omit-credential-setup-log-lines",
+          "count": 7
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118461123975.json",
+      "member": "records/live/canonical98932/118461123975.json",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: test-browser (5/8, browser-5-of-8)",
+      "rawBytes": 437,
+      "rawSHA256": "efb5288059d58f074365495b1c53fb69ed761de31b7c124d823b6117ffec12f0",
+      "publicBytes": 437,
+      "publicSHA256": "efb5288059d58f074365495b1c53fb69ed761de31b7c124d823b6117ffec12f0",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118461123975.log",
+      "member": "records/live/canonical98932/118461123975.log",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: test-browser (5/8, browser-5-of-8)",
+      "rawBytes": 138416,
+      "rawSHA256": "0a4913c10c7965791e9f9dd1766810f7fb6352bf76658d9783556616d07698b3",
+      "publicBytes": 137544,
+      "publicSHA256": "9c21113d3a8897540bed8a463ad6421d64b05b58b797559d4eaaf2ede79a4e73",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_WORKSPACE>",
+          "count": 9
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_HOME>",
+          "count": 6
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<TMP>/",
+          "count": 1
+        },
+        {
+          "operation": "omit-credential-setup-log-lines",
+          "count": 7
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118461123984.json",
+      "member": "records/live/canonical98932/118461123984.json",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: test-browser (8/8, browser-8-of-8)",
+      "rawBytes": 437,
+      "rawSHA256": "df14d9544dde553624ac9a991cae8e781faa44ef15eada36b62f07edbd7ae8ea",
+      "publicBytes": 437,
+      "publicSHA256": "df14d9544dde553624ac9a991cae8e781faa44ef15eada36b62f07edbd7ae8ea",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118461123984.log",
+      "member": "records/live/canonical98932/118461123984.log",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: test-browser (8/8, browser-8-of-8)",
+      "rawBytes": 148615,
+      "rawSHA256": "155aa069f8c1d0fdc5ce5aa63b975e54313f63ace6d44dbf957f4317a90cb996",
+      "publicBytes": 147751,
+      "publicSHA256": "5a30f9e97f3e110fc87136d8326c3fd4fe7400f313f85b19d66e198864d93089",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_WORKSPACE>",
+          "count": 9
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_HOME>",
+          "count": 3
+        },
+        {
+          "operation": "omit-credential-setup-log-lines",
+          "count": 7
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118461124013.json",
+      "member": "records/live/canonical98932/118461124013.json",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: test-browser (7/8, browser-7-of-8)",
+      "rawBytes": 437,
+      "rawSHA256": "9769851343c18096edfc1a7d302a6186708a4aa0d24267ad34b332b00467537c",
+      "publicBytes": 437,
+      "publicSHA256": "9769851343c18096edfc1a7d302a6186708a4aa0d24267ad34b332b00467537c",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118461124013.log",
+      "member": "records/live/canonical98932/118461124013.log",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: test-browser (7/8, browser-7-of-8)",
+      "rawBytes": 102418,
+      "rawSHA256": "a6d0e8abd28c417930d02ac496738be10173767b192408096fd2f92d4935b172",
+      "publicBytes": 101554,
+      "publicSHA256": "f320c945e5d9a01ebefc32c870c4cbd16eacd70b67de1ccfa93b7fbc199b0a30",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_WORKSPACE>",
+          "count": 9
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_HOME>",
+          "count": 3
+        },
+        {
+          "operation": "omit-credential-setup-log-lines",
+          "count": 7
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118466827661.json",
+      "member": "records/live/canonical98932/118466827661.json",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: test",
+      "rawBytes": 406,
+      "rawSHA256": "2b38a208ce1b046caef52981c33c4eef18bd8adc9200f673d01c3c8e0c7676c1",
+      "publicBytes": 406,
+      "publicSHA256": "2b38a208ce1b046caef52981c33c4eef18bd8adc9200f673d01c3c8e0c7676c1",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/118466827661.log",
+      "member": "records/live/canonical98932/118466827661.log",
+      "group": "canonical22-logs",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Exact original terminal job log or its single-download receipt: test",
+      "rawBytes": 24379,
+      "rawSHA256": "bed24f2551bd11a3a1661bd347f36f5b163048f275cd11da62b557503fbfa694",
+      "publicBytes": 23506,
+      "publicSHA256": "bfa183453e5ba4711c86f22e00eebb259c265d2392e648cafbc697402cf71d17",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_WORKSPACE>",
+          "count": 8
+        },
+        {
+          "operation": "known-path-alias",
+          "to": "<CI_HOME>",
+          "count": 13
+        },
+        {
+          "operation": "omit-credential-setup-log-lines",
+          "count": 7
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/canonical-terminal.json",
+      "member": "records/live/canonical98932/canonical-terminal.json",
+      "group": "canonical-source-clock",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Immutable terminal, exactGitAPI or source-bound raw clock extraction/reconciliation",
+      "rawBytes": 102294,
+      "rawSHA256": "d4f192baa4da17c816076681f88931363b4d063fab4b163c2dc81e92526d26d5",
+      "publicBytes": 100431,
+      "publicSHA256": "b01b3bcc0052ad9f89134673cc0b511a840373f5b5716a0eaf545bb791afdc79",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "omit-already-public-attribution-receipt-line",
+          "path": "$.run.head_commit.message",
+          "count": 1
+        },
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/checkout-git-object.json",
+      "member": "records/live/canonical98932/checkout-git-object.json",
+      "group": "canonical-source-clock",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Immutable terminal, exactGitAPI or source-bound raw clock extraction/reconciliation",
+      "rawBytes": 2614,
+      "rawSHA256": "a6688c360cf68ce366618591e6a665e67163f6af1e516db4346197217baef3ae",
+      "publicBytes": 2817,
+      "publicSHA256": "48e8b4f3d212ad6b6795faadd5cb5510ac6efc5a6039e070e088e4a0439389f7",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "JSON-representation-normalization"
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/checkout-git-object-read.json",
+      "member": "records/live/canonical98932/checkout-git-object-read.json",
+      "group": "canonical-source-clock",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Immutable terminal, exactGitAPI or source-bound raw clock extraction/reconciliation",
+      "rawBytes": 309,
+      "rawSHA256": "3267b3090ff58f3fe5053eb7f39d45d04e27a2a977af5f1f559c3c18dc3a4dec",
+      "publicBytes": 309,
+      "publicSHA256": "3267b3090ff58f3fe5053eb7f39d45d04e27a2a977af5f1f559c3c18dc3a4dec",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/checkout-first-binding.json",
+      "member": "records/live/canonical98932/checkout-first-binding.json",
+      "group": "canonical-source-clock",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Immutable terminal, exactGitAPI or source-bound raw clock extraction/reconciliation",
+      "rawBytes": 668,
+      "rawSHA256": "3147cbda56b5223d459cae233cc6e85567a2303d18fae53d6e44eece05ff074e",
+      "publicBytes": 668,
+      "publicSHA256": "3147cbda56b5223d459cae233cc6e85567a2303d18fae53d6e44eece05ff074e",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/query-actual-extracted.json",
+      "member": "records/live/canonical98932/query-actual-extracted.json",
+      "group": "canonical-source-clock",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Immutable terminal, exactGitAPI or source-bound raw clock extraction/reconciliation",
+      "rawBytes": 8383,
+      "rawSHA256": "5daab397006197c3159a43e7ddf9acce8fbd2b82edb02b11bfb06ead0d4a19d3",
+      "publicBytes": 8383,
+      "publicSHA256": "5daab397006197c3159a43e7ddf9acce8fbd2b82edb02b11bfb06ead0d4a19d3",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/query-timing-root-reconciliation.json",
+      "member": "records/live/canonical98932/query-timing-root-reconciliation.json",
+      "group": "canonical-source-clock",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Immutable terminal, exactGitAPI or source-bound raw clock extraction/reconciliation",
+      "rawBytes": 2251,
+      "rawSHA256": "b1c3026a209402735f80f6a11efd6b05190a7e6df16fd90239aec7699c33af98",
+      "publicBytes": 2251,
+      "publicSHA256": "b1c3026a209402735f80f6a11efd6b05190a7e6df16fd90239aec7699c33af98",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/derived-reconciliation-v1/reconciliation.json",
+      "member": "records/live/canonical98932/derived-reconciliation-v1/reconciliation.json",
+      "group": "canonical-peer-reconciliation",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Read-only fullCI/main5clock or separateutility7 audit; original failure preserved",
+      "rawBytes": 179362,
+      "rawSHA256": "d1ec821455cd873854cae76d8156262a56f7623ac00e0598b6e92eb9e27eba74",
+      "publicBytes": 175015,
+      "publicSHA256": "4e512a7c654cacf3d4832d6e1f64cde98c87d21dc528b53752734588b79cb754",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R14>",
+          "count": 69
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/derived-reconciliation-v1/reconciliation.md",
+      "member": "records/live/canonical98932/derived-reconciliation-v1/reconciliation.md",
+      "group": "canonical-peer-reconciliation",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Read-only fullCI/main5clock or separateutility7 audit; original failure preserved",
+      "rawBytes": 1241,
+      "rawSHA256": "50da14508fc5d9daa080f7c1b13da03fd24ba8fabb8071065cefb6b662e68be2",
+      "publicBytes": 1241,
+      "publicSHA256": "50da14508fc5d9daa080f7c1b13da03fd24ba8fabb8071065cefb6b662e68be2",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/derived-utility-seven-v1/reconciliation.json",
+      "member": "records/live/canonical98932/derived-utility-seven-v1/reconciliation.json",
+      "group": "canonical-peer-reconciliation",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Read-only fullCI/main5clock or separateutility7 audit; original failure preserved",
+      "rawBytes": 15850,
+      "rawSHA256": "63aea3be78ef1c11b825ff2125104605b4fbe03fb269c88e89076218b8b82e88",
+      "publicBytes": 15535,
+      "publicSHA256": "6b458de1865b0c0a4a14dc7d44cb40d7fee2e0af89e5ae1d1ef86ed60cb2b465",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R14>",
+          "count": 5
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/live/canonical98932/derived-utility-seven-v1/reconciliation.md",
+      "member": "records/live/canonical98932/derived-utility-seven-v1/reconciliation.md",
+      "group": "canonical-peer-reconciliation",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "Read-only fullCI/main5clock or separateutility7 audit; original failure preserved",
+      "rawBytes": 705,
+      "rawSHA256": "7cfc2cb52687d358cef65c1f75a893f87effe73f526502b1120c172916f1f763",
+      "publicBytes": 705,
+      "publicSHA256": "7cfc2cb52687d358cef65c1f75a893f87effe73f526502b1120c172916f1f763",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/query-publication-prep/reconcile-98932.py",
+      "member": "records/query-publication-prep/reconcile-98932.py",
+      "group": "canonical-feedback-plan",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "One-shot analysis/source-bound published feedback or final canonical summary",
+      "rawBytes": 23806,
+      "rawSHA256": "01ae0082cf612ea68b88651d34b89ff12d2001e46b194a84c699f0ab9243f8e3",
+      "publicBytes": 23806,
+      "publicSHA256": "01ae0082cf612ea68b88651d34b89ff12d2001e46b194a84c699f0ab9243f8e3",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/query-publication-prep/reconcile-98932-utility.py",
+      "member": "records/query-publication-prep/reconcile-98932-utility.py",
+      "group": "canonical-feedback-plan",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "One-shot analysis/source-bound published feedback or final canonical summary",
+      "rawBytes": 9418,
+      "rawSHA256": "b260faeba4a9cfa4cb83e981b010598901a7e6cab891fbcc62ed1c8357eb7818",
+      "publicBytes": 9418,
+      "publicSHA256": "b260faeba4a9cfa4cb83e981b010598901a7e6cab891fbcc62ed1c8357eb7818",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/query-publication-prep/feedback-6283933166.json",
+      "member": "records/query-publication-prep/feedback-6283933166.json",
+      "group": "canonical-feedback-plan",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "One-shot analysis/source-bound published feedback or final canonical summary",
+      "rawBytes": 7897,
+      "rawSHA256": "22df8b4a3368fe784648e2a160fe5059b8d517af10206bafc0b3f8889a932a26",
+      "publicBytes": 7834,
+      "publicSHA256": "0ec5c294c20df4d31829bc2d3f5eccc5f92e6d434956969ce8bad61bcd139c5c",
+      "transformed": true,
+      "operations": [
+        {
+          "operation": "known-path-alias",
+          "to": "<R14>",
+          "count": 1
+        }
+      ],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/query-publication-prep/ci-summary-98932.json",
+      "member": "records/query-publication-prep/ci-summary-98932.json",
+      "group": "canonical-feedback-plan",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "One-shot analysis/source-bound published feedback or final canonical summary",
+      "rawBytes": 5224,
+      "rawSHA256": "bde169371150fdfb933df875c8630da964cdad56537e05acfac8066d06f36692",
+      "publicBytes": 5224,
+      "publicSHA256": "bde169371150fdfb933df875c8630da964cdad56537e05acfac8066d06f36692",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    },
+    {
+      "source": "<R14>/query-publication-prep/ci-summary-98932.md",
+      "member": "records/query-publication-prep/ci-summary-98932.md",
+      "group": "canonical-feedback-plan",
+      "sourceEpoch": "Exact98932 canonical39371457764 synthetic665c0661/tree086f; no laterHeader candidate results",
+      "purpose": "One-shot analysis/source-bound published feedback or final canonical summary",
+      "rawBytes": 1695,
+      "rawSHA256": "bafdfc53a4703eb2a09de453a5d02d502c4535ffd6e24228213462214f9c23ec",
+      "publicBytes": 1695,
+      "publicSHA256": "bafdfc53a4703eb2a09de453a5d02d502c4535ffd6e24228213462214f9c23ec",
+      "transformed": false,
+      "operations": [],
+      "projectionBoundary": "Sanitized derived evidence, not original executed bytes or a standalone recipe."
+    }
+  ]
+}
