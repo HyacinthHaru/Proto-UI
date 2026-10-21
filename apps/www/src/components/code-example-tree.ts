@@ -42,6 +42,12 @@ export function codeFileNodes(paths: readonly string[]): CodeFileNode[] {
   return ordered;
 }
 
+/** Pinned BlockViewer uses a distinct indentation multiplier for folders. */
+export function codeTreeIndent(depth: number, folder: boolean): string {
+  const index = depth + 1;
+  return `${index * (folder ? index === 1 ? 1 : 1.2 : index === 2 ? 1.2 : 1.3)}rem`;
+}
+
 type TreeProjection = { select(index: number): void; destroy(): void };
 
 /** Actual family Tree owns selection, expansion, roving focus and keyboard.
@@ -80,6 +86,7 @@ export function enhanceCodeExampleTree(options: {
   const props = () => ({ ...(family === 'shadcn' ? { appearance: 'embedded' } : {}), value: path(value), expandedKeys: expanded, a11yLabel: list.getAttribute('aria-label') ?? 'Files', surfaceStyle: { ...(family === 'brutalist' ? { display: 'block' } : {}), minWidth: '0', width: '100%' } });
   setElementProps(root, props());
   const items = new Map<string, HTMLElement>();
+  const groups = new Map<string, HTMLElement>();
   for (const node of nodes) {
     const item = doc.createElement(`pui-code-example-${family}-tree-item`);
     item.dataset.codeTreePath = node.key;
@@ -94,7 +101,7 @@ export function enhanceCodeExampleTree(options: {
       nodeKey: node.key, parentKey: node.parentKey, textValue: node.name,
       ...(family === 'shadcn' ? { appearance: 'embedded' } : {}),
       surfaceStyle: {
-        paddingInlineStart: `${family === 'shadcn' ? (node.depth + 1) * (node.fileIndex === undefined && node.depth === 0 ? 1 : node.depth === 1 ? 1.2 : 1.3) : 0.5 + node.depth * 0.75}rem`,
+        paddingInlineStart: family === 'shadcn' ? codeTreeIndent(node.depth, node.fileIndex === undefined) : `${0.5 + node.depth * 0.75}rem`,
         paddingInlineEnd: '0.5rem', overflowWrap: 'anywhere',
         ...(family === 'brutalist' ? { minHeight: '2.75rem', fontSize: '0.8125rem' } : {}),
       },
@@ -123,7 +130,22 @@ export function enhanceCodeExampleTree(options: {
       item.append(icon);
     }
     item.append(doc.createTextNode(family === 'shadcn' ? node.name : node.fileIndex === undefined ? `${node.name}/` : node.name));
-    root.append(item);
+    if (family === 'shadcn') {
+      // Non-semantic layout wrappers preserve the real Tree's canonical model.
+      // Root siblings keep the family 6px gap; nested siblings use 4px.
+      const branch = doc.createElement('div');
+      branch.dataset.codeTreeLayout = node.key;
+      branch.style.cssText = 'display:flex;flex-direction:column;min-width:0';
+      branch.append(item);
+      (groups.get(node.parentKey) ?? root).append(branch);
+      if (node.fileIndex === undefined) {
+        const children = doc.createElement('div');
+        children.dataset.codeTreeChildren = node.key;
+        children.style.cssText = 'display:flex;flex-direction:column;gap:0.25rem;min-width:0';
+        branch.append(children);
+        groups.set(node.key, children);
+      }
+    } else root.append(item);
     items.set(node.key, item);
   }
   const originalHidden = list.hidden;
@@ -137,6 +159,11 @@ export function enhanceCodeExampleTree(options: {
         setElementProps(root, props());
         for (const node of nodes) if (node.fileIndex === undefined) {
           const item = items.get(node.key)!;
+          const children = groups.get(node.key);
+          if (children) {
+            children.hidden = !expanded.includes(node.key);
+            children.style.display = children.hidden ? 'none' : 'flex';
+          }
           item.querySelectorAll<HTMLElement>('[data-code-tree-chevron]').forEach((glyph) => {
             glyph.hidden = (glyph.dataset.codeTreeChevron === 'down') !== expanded.includes(node.key);
           });

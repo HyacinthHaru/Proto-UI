@@ -56,7 +56,7 @@ export function createCopyCommandDemo(
   const codeExample = Boolean(root.closest('[data-code-example]'));
   const buttonProps = {
     variant: family === 'brutalist' ? 'surface' : codeExample ? 'ghost' : 'outline',
-    size: 'icon',
+    size: codeExample && family === 'shadcn' ? 'icon-compact' : 'icon',
   };
   const copyButton: DemoNode = {
     kind: 'proto',
@@ -78,7 +78,7 @@ export function createCopyCommandDemo(
             {
               kind: 'proto' as const,
               prototypeId: `lucide-${icon}-icon`,
-              props: { size: 18 },
+              props: { size: codeExample && family === 'shadcn' ? 16 : 18 },
               surfaceStyle: { pointerEvents: 'none' },
             },
           ],

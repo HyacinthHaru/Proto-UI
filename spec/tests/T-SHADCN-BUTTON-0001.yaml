@@ -5,6 +5,10 @@ status: draft
 since: 0.2.0-rc.0
 summary: Covers Shadcn Button's first-class reversible Base inheritance, current absence of Base-behavior reversals, direct entry, visual API, intentional asChild omission, and the centralized upstream compatibility boundary including pinned-baseline versus adopted-recipe evidence.
 cases:
+  - id: T-SHADCN-BUTTON-0001-CASE-ICON-COMPACT
+    title: explicit compact icon size stays fixed with wrapping and restores existing defaults
+    covers: [P-SHADCN-BUTTON-ICON-COMPACT, P-SHADCN-BUTTON-SIZE-PROP, P-SHADCN-BUTTON-WRAP-PROP]
+    expectation: compact-icon-size-7-inherits-button-state-without-changing-other-sizes
   - id: T-SHADCN-BUTTON-0001-CASE-IDENTITY-AND-INHERITANCE
     title: Shadcn Button is a direct unofficial projection that inherits Base Button
     covers:
@@ -55,6 +59,15 @@ cases:
       - P-SHADCN-BUTTON-AS-CHILD-OMISSION
     expectation: shadcn-button-does-not-overclaim-upstream-parity
 implementations:
+  - id: prototypes-shadcn-button-compact-size
+    kind: module-test
+    status: passing
+    path: packages/prototypes/shadcn/test/button-size-style-dom.test.ts
+    required: true
+    consumesCases: [T-SHADCN-BUTTON-0001-CASE-ICON-COMPACT]
+    exercises: [P-SHADCN-BUTTON, P-BASE-BUTTON]
+    notes:
+      - Real WC host and emitted CSS fixture; native browser geometry and focus remain separate acceptance evidence.
   - id: prototypes-shadcn-button-contract
     kind: module-test
     status: passing

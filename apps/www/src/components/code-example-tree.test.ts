@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { initCodeExamples } from './code-example-client';
-import { codeFileNodes, enhanceCodeExampleTree } from './code-example-tree';
+import { codeFileNodes, codeTreeIndent, enhanceCodeExampleTree } from './code-example-tree';
 
 const projections: ReturnType<typeof enhanceCodeExampleTree>[] = [];
 afterEach(() => {
@@ -119,4 +119,31 @@ it('composes host Tabs and file Tree without duplicating source or resetting eac
   expect(document.querySelectorAll('[data-code-example-tree]')).toHaveLength(2);
   document.dispatchEvent(new Event('astro:before-swap'));
   expect(document.querySelector('[data-code-example-tree]')).toBeNull();
+});
+
+
+it('groups nested layout without replacing Tree semantics and uses upstream folder indentation', async () => {
+  const { list, tabs, panels } = fixture();
+  tabs[0].dataset.codeFilePath = 'src/lib/deep/a.ts';
+  tabs[1].dataset.codeFilePath = 'src/lib/deep/b.ts';
+  projections.push(enhanceCodeExampleTree({ list, tabs, panels, onSelect() {} }));
+  await Promise.resolve();
+  const tree = document.querySelector<HTMLElement>('[data-code-example-tree]')!;
+  expect([...tree.querySelectorAll('[role="treeitem"]')].map((node) => node.getAttribute('data-code-tree-path')))
+    .toEqual(['src', 'src/lib', 'src/lib/deep', 'src/lib/deep/a.ts', 'src/lib/deep/b.ts']);
+  expect(tree.children.length).toBe(1);
+  const siblings = tree.querySelector<HTMLElement>('[data-code-tree-children="src/lib/deep"]')!;
+  expect(siblings.children.length).toBe(2);
+  expect(siblings.style.gap).toBe('0.25rem');
+  expect(siblings.hasAttribute('role')).toBe(false);
+  expect(codeTreeIndent(0, true)).toBe('1rem');
+  expect(parseFloat(codeTreeIndent(2, true))).toBeCloseTo(3.6);
+  expect(codeTreeIndent(1, false)).toBe('2.4rem');
+  expect(parseFloat(codeTreeIndent(2, false))).toBeCloseTo(3.9);
+  const folder = tree.querySelector<HTMLElement>('[data-code-tree-path="src/lib/deep"]')!;
+  expect(parseFloat(folder.style.paddingInlineStart)).toBeCloseTo(3.6);
+  tree.dispatchEvent(new CustomEvent('expandedChange', { detail: { expandedKeys: ['src', 'src/lib'] } }));
+  await Promise.resolve(); await Promise.resolve();
+  expect(siblings.hidden).toBe(true);
+  expect(siblings.style.display).toBe('none');
 });

@@ -232,13 +232,15 @@ async function expectCopyControls(page: Page, codeExample = false): Promise<void
         shadow: style.boxShadow,
       };
     });
-    // P-SHADCN-BUTTON-NEW-YORK-PAINT: fixed 02cad611 Button icon size-9
-    // is 2.25rem (36px at this 16px root). The site's 18px glyph is unchanged.
-    expect([facts.width, facts.height, ...facts.glyph]).toEqual(['36px', '36px', '18px', '18px']);
+    // Existing controls retain fixed 02cad611 icon size-9 and 18px glyphs.
+    // CodeExample explicitly opts into Proto icon-compact: the Blocks
+    // toolbar size-7 consumer geometry, not upstream icon-sm.
+    const inCodeExample = await control.evaluate((node) => Boolean(node.closest('[data-code-example]')));
+    expect([facts.width, facts.height, ...facts.glyph]).toEqual(inCodeExample ? ['28px', '28px', '16px', '16px'] : ['36px', '36px', '18px', '18px']);
     expect(facts.radius).toBe(facts.expectedRadius);
     expect(facts.opacity).toBe('1');
     expect(facts.tokens).toContain('rounded-md');
-    expect(facts.tokens).toContain('size-9');
+    expect(facts.tokens).toContain(inCodeExample ? 'size-7' : 'size-9');
     expect(Math.max(...facts.center)).toBeLessThanOrEqual(1);
     await page.keyboard.press('Tab');
     await control.focus();

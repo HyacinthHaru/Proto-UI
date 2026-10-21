@@ -40,6 +40,8 @@ const SIZE_TOKENS: Record<ShadcnButtonSize, string> = {
   sm: 'h-8 gap-1.5 px-3 whitespace-nowrap',
   lg: 'h-10 gap-2 px-6 whitespace-nowrap',
   icon: 'size-9 gap-2 whitespace-nowrap',
+  // Proto extension for the pinned Blocks size-7 consumer, not upstream icon-sm.
+  'icon-compact': 'size-7 gap-2 whitespace-nowrap',
 };
 
 const WRAP_SIZE_TOKENS = {
@@ -58,7 +60,7 @@ const button = definePrototype<ShadcnButtonProps, ShadcnButtonExposes>({
         empty: 'fallback',
         options: ['default', 'destructive', 'outline', 'secondary', 'ghost', 'link'],
       },
-      size: { type: 'enum', empty: 'fallback', options: ['default', 'sm', 'lg', 'icon'] },
+      size: { type: 'enum', empty: 'fallback', options: ['default', 'sm', 'lg', 'icon', 'icon-compact'] },
       disabled: { type: 'boolean', empty: 'fallback' },
       wrap: { type: 'boolean', empty: 'fallback' },
     });
@@ -96,7 +98,7 @@ const button = definePrototype<ShadcnButtonProps, ShadcnButtonExposes>({
     (Object.keys(SIZE_TOKENS) as ShadcnButtonSize[]).forEach((size) => {
       // Keep each rule callback in the statically modeled DSL shape. The
       // setup-time size branch must not hide rule dependencies in a ternary.
-      if (size === 'icon') {
+      if (size === 'icon' || size === 'icon-compact') {
         def.rule({
           when: (w) => w.prop('size').eq(size),
           intent: (i) => i.feedback.style.use(tw(SIZE_TOKENS[size])),

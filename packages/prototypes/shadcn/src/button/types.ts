@@ -8,12 +8,12 @@ export type ShadcnButtonVariant =
   | 'ghost'
   | 'link';
 
-export type ShadcnButtonSize = 'default' | 'sm' | 'lg' | 'icon';
+export type ShadcnButtonSize = 'default' | 'sm' | 'lg' | 'icon' | 'icon-compact';
 
 export interface ShadcnButtonProps extends ButtonProps {
   variant?: ShadcnButtonVariant;
   size?: ShadcnButtonSize;
-  /** Allow text labels to wrap within their available inline size; ignored for icon size. */
+  /** Allow text labels to wrap within their available inline size; ignored for icon and icon-compact sizes. */
   wrap?: boolean;
 }
 

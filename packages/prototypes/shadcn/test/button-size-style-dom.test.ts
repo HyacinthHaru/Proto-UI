@@ -49,3 +49,37 @@ describe('Independent shared Button migration regression review', () => {
     }
   });
 });
+
+
+it('keeps icon-compact fixed through wrap and size transitions without changing defaults', async () => {
+  // Preserve official emitted declarations; Happy DOM cannot apply @layer.
+  const style = document.createElement('style');
+  style.textContent = [...renderProtoStyleTokenCss(SHADCN_STYLE_TOKENS)
+    .matchAll(/:where\(\[data-pui-style~="size-(?:7|9)"\]\)\s*\{[^}]+\}/g)]
+    .map((match) => match[0]).join('\n');
+  expect(style.textContent).toContain('1.75rem');
+  owned.push(style); document.head.append(style);
+  const el = document.createElement(button.name);
+  el.textContent = 'Copy source'; owned.push(el); document.body.append(el); await flush();
+  for (const props of [
+    { size: 'icon-compact', wrap: false }, { size: 'icon-compact', wrap: true },
+    { size: 'icon', wrap: true }, { size: 'sm', wrap: true }, {},
+  ]) {
+    setElementProps(el, props); await flush();
+    const tokens = (el.getAttribute('data-pui-style') ?? '').split(/\s+/);
+    if (props.size === 'icon-compact') {
+      expect(tokens).toContain('size-7'); expect(tokens).not.toContain('size-9');
+      expect([getComputedStyle(el).width, getComputedStyle(el).height]).toEqual(['28px', '28px']);
+      expect(tokens).not.toContain('h-auto'); expect(tokens).not.toContain('min-h-8');
+    } else if (props.size === 'icon') {
+      expect(tokens).toContain('size-9'); expect(tokens).not.toContain('size-7');
+    } else if (props.size === 'sm') {
+      expect(tokens).toContain('h-auto'); expect(tokens).toContain('min-h-8');
+    } else {
+      expect(tokens).toContain('h-9'); expect(tokens).not.toContain('size-7');
+    }
+    expect(tokens.filter((token) => token.startsWith('gap-'))).toEqual([props.size === 'sm' ? 'gap-1.5' : 'gap-2']);
+    expect(el.getAttribute('role')).toBe('button');
+    expect(el.textContent).toBe('Copy source');
+  }
+});

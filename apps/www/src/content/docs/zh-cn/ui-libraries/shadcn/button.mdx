@@ -302,6 +302,8 @@ import { getCode } from '@/utils/conversionUtils';
 
 ### size 尺寸
 
+`icon-compact` 是 Proto UI 的紧凑图标扩展，使用 1.75rem 正方形，`wrap` 不改变其尺寸。它映射上游 Blocks 工具栏的 `size-7` 用法，不等同于上游 2rem 的 `icon-sm`；其余尺寸与默认值不变。
+
 <div data-adapter-panel="wc">
   <PrototypePreviewer
     demoId="demo-button-sizes"
@@ -406,7 +408,7 @@ import { getCode } from '@/utils/conversionUtils';
     },
     {
       name: 'size',
-      type: "'default' | 'sm' | 'lg' | 'icon'",
+      type: "'default' | 'sm' | 'lg' | 'icon' | 'icon-compact'",
       default: 'default',
     },
     {

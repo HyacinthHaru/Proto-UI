@@ -437,6 +437,11 @@ describe.sequential('CodeExample host coverage and upstream visual hierarchy', (
                 expect(await tree.locator('[data-code-tree-icon="folder"]').count()).toBeGreaterThan(0);
                 expect(await tree.locator('[data-code-tree-icon="file"]').count()).toBeGreaterThan(0);
                 const folder = tree.locator('[data-code-tree-kind="folder"]').first();
+                const firstChild = tree.locator('[data-code-tree-kind="file"]').first();
+                const folderBounds = await folder.boundingBox();
+                const childBounds = await firstChild.boundingBox();
+                if (await firstChild.getAttribute('aria-level') === '2')
+                  expect(childBounds!.y - folderBounds!.y).toBe(32);
                 const initialSource = await panel.locator('[data-code-file-panel]:visible pre').textContent();
                 await folder.click();
                 expect(await folder.getAttribute('aria-expanded')).toBe('false');
@@ -469,7 +474,18 @@ describe.sequential('CodeExample host coverage and upstream visual hierarchy', (
                   const copyBox = await copy.boundingBox();
                   expect(sourceBox).not.toBeNull();
                   expect(copyBox).not.toBeNull();
-                  expect(sourceBox!.x + sourceBox!.width).toBeLessThanOrEqual(copyBox!.x + 1);
+                  const fileHeader = shell.locator('[data-code-file-header]');
+                  if (await fileHeader.count()) {
+                    const headerBox = await fileHeader.boundingBox();
+                    expect(headerBox!.height).toBe(48);
+                    expect(copyBox!.y).toBeGreaterThanOrEqual(headerBox!.y);
+                    expect(copyBox!.y + copyBox!.height).toBeLessThanOrEqual(headerBox!.y + headerBox!.height);
+                    expect(sourceBox!.y).toBeGreaterThanOrEqual(headerBox!.y + headerBox!.height);
+                    expect(await source.evaluate((pre) => ({ font: getComputedStyle(pre).fontSize, line: getComputedStyle(pre).lineHeight })))
+                      .toEqual({ font: '14px', line: '21px' });
+                    const line = source.locator('.line').first();
+                    expect(await line.evaluate((line) => line.getBoundingClientRect().height)).toBe(23);
+                  } else expect(sourceBox!.x + sourceBox!.width).toBeLessThanOrEqual(copyBox!.x + 1);
                   expect(await source.evaluate((pre) => getComputedStyle(pre).maxHeight)).toBe('none');
                   const expectedTarget = await shell.evaluate((shell) => shell.closest('[data-code-example-command]')
                     ? (shell.closest('[data-code-example-command]')!.getAttribute('aria-label'))
