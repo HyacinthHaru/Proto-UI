@@ -242,12 +242,18 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
   const configProperty = (
     config: ts.ObjectLiteralExpression,
     name: string
-  ): ts.PropertyAssignment | ts.MethodDeclaration | null =>
+  ): ts.PropertyAssignment | ts.MethodDeclaration | ts.ShorthandPropertyAssignment | null =>
     (config.properties.find(
       (property) =>
-        (ts.isPropertyAssignment(property) || ts.isMethodDeclaration(property)) &&
+        (ts.isPropertyAssignment(property) ||
+          ts.isMethodDeclaration(property) ||
+          ts.isShorthandPropertyAssignment(property)) &&
         propertyName(property.name) === name
-    ) as ts.PropertyAssignment | ts.MethodDeclaration | undefined) ?? null;
+    ) as
+      | ts.PropertyAssignment
+      | ts.MethodDeclaration
+      | ts.ShorthandPropertyAssignment
+      | undefined) ?? null;
 
   const functionFor = (
     node: ts.Node | undefined,
@@ -257,6 +263,9 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
     const value = node ? unwrap(node) : null;
     if (!value) return null;
     if (isFunctionLike(value)) return { fn: value, module };
+    if (ts.isShorthandPropertyAssignment(value)) {
+      return functionFor(value.name, module, seen);
+    }
     const symbol = moduleContext.resolveReference(value, module);
     if (!symbol) return null;
     const seenKey = `${symbol.module.file}:${symbol.declaration.getStart(symbol.module.source)}`;
