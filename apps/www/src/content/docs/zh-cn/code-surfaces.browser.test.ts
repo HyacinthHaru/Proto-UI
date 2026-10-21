@@ -191,7 +191,7 @@ async function expectSurfaces(page: Page): Promise<SurfaceFacts> {
   return facts;
 }
 
-async function expectCopyControls(page: Page): Promise<void> {
+async function expectCopyControls(page: Page, codeExample = false): Promise<void> {
   const panel = page.locator('[data-code-shell]:visible').first();
   const toggle = panel.locator('[data-code-toggle]');
   if (await toggle.isVisible()) await toggle.click();
@@ -253,9 +253,22 @@ async function expectCopyControls(page: Page): Promise<void> {
     expect(focused.focused).toBe(true);
     expect(focused.shadow).not.toBe(facts.shadow);
   }
-  expect(await preview.evaluate((element) => getComputedStyle(element).backgroundColor)).toBe(
-    await ec.evaluate((element) => getComputedStyle(element).backgroundColor)
-  );
+  const ecBackground = await ec.evaluate((element) => getComputedStyle(element).backgroundColor);
+  const previewBackground = await preview.evaluate((element) => getComputedStyle(element).backgroundColor);
+  if (codeExample) {
+    // CodeExample intentionally follows upstream docs' ghost Copy. Ordinary
+    // Expressive Code and Previewer Copy retain the existing outline recipe.
+    expect(await preview.evaluate((element) => Boolean(element.closest('[data-code-example]')))).toBe(true);
+    expect(await preview.getAttribute('data-pui-style')).toContain('bg-transparent');
+    expect(previewBackground).toBe('rgba(0, 0, 0, 0)');
+    expect(await preview.evaluate((element) =>
+      element.closest('[data-site-copy]')?.querySelector('[data-demo-ref="copy-backplate"]') !== null
+    )).toBe(false);
+    expect(ecBackground).not.toBe('rgba(0, 0, 0, 0)');
+  } else {
+    expect(await preview.evaluate((element) => Boolean(element.closest('[data-code-example]')))).toBe(false);
+    expect(previewBackground).toBe(ecBackground);
+  }
 }
 
 // Compare actual EC output against the same source rendered by the Previewer's
@@ -824,13 +837,13 @@ describe.sequential('code-surface dogfood matrix (#630, #420, #568)', () => {
         }, theme);
         const facts = await expectSurfaces(page);
         expectedInstall.set(theme, facts.ec);
-        await expectCopyControls(page);
+        await expectCopyControls(page, true);
         await page.evaluate(() => {
           document.dispatchEvent(new Event('astro:page-load'));
           document.dispatchEvent(new Event('astro:page-load'));
         });
         expect(await surfaceFacts(page)).toEqual(facts);
-        await expectCopyControls(page);
+        await expectCopyControls(page, true);
         await retainEvidence(page, `390-${theme}-after-navigation`, { facts });
       }
       await page.goto(`${baseUrl}/zh-cn/ui-libraries/shadcn/button/`, {
