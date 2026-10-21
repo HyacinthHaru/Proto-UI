@@ -259,6 +259,8 @@ jobs:
             suite: code-surfaces
           - name: code-surface-grammar
             suite: code-surface-grammar
+          - name: docs-content-flow
+            suite: docs-content-flow
           - name: copy-commands
             suite: site-copy-commands
           - name: runtime-box
