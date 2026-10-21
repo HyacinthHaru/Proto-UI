@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { enhanceCodeExampleTabs } from './code-example-tabs';
+import { enhanceCodeExampleTabs, revealCodeExampleTab } from './code-example-tabs';
 
 const projections: ReturnType<typeof enhanceCodeExampleTabs>[] = [];
 afterEach(() => {
@@ -110,4 +110,49 @@ describe('CodeExample real legacy Tabs enhancement', () => {
     root.querySelector('[data-code-example-tabs-projection]')!.dispatchEvent(new CustomEvent('valueChange', { detail: { value: '1' } }));
     expect(changes).toEqual([1]);
   });
+});
+
+it('retains the host name and explicit availability in the real tab accessible text', () => {
+  const { root, list, tabs, panels } = fixture();
+  tabs[1].dataset.codeHostName = 'Vue 2';
+  tabs[1].dataset.codeHostAvailability = '开发中';
+  tabs[1].textContent = ' Vue 2 · 开发中 ';
+  projections.push(enhanceCodeExampleTabs({ list, tabs, panels, onSelect() {} }));
+  const trigger = root.querySelectorAll<HTMLElement>('[data-code-example-projected-tab]')[1];
+  expect(trigger.dataset.codeHostName).toBe('Vue 2');
+  expect(trigger.textContent).toBe('Vue 2 · 开发中');
+  expect(trigger.querySelector('[data-code-host-status]')?.textContent).toBe(' · 开发中');
+});
+
+it('reveals clipped tabs using only the strip horizontal scroll', () => {
+  const { list, tabs } = fixture();
+  list.getBoundingClientRect = () => ({ left: 20, right: 220, width: 200 }) as DOMRect;
+  tabs[1].getBoundingClientRect = () => ({ left: 240, right: 340, width: 100 }) as DOMRect;
+  list.scrollTop = 31;
+  revealCodeExampleTab(tabs[1], list);
+  expect(list.scrollLeft).toBe(120);
+  expect(list.scrollTop).toBe(31);
+  tabs[0].getBoundingClientRect = () => ({ left: -100, right: 0, width: 100 }) as DOMRect;
+  revealCodeExampleTab(tabs[0], list);
+  expect(list.scrollLeft).toBe(0);
+  expect(list.scrollTop).toBe(31);
+});
+
+it('keeps the overflow hint beside the real host list and restores its original position', () => {
+  const { root, list, tabs, panels } = fixture();
+  list.dataset.codeHostTabs = '';
+  const hint = document.createElement('p');
+  hint.dataset.codeHostOverflow = '';
+  hint.textContent = 'Scroll to see all hosts';
+  list.parentElement!.after(hint);
+  const originalNext = hint.nextSibling;
+  const projection = enhanceCodeExampleTabs({ list, tabs, panels, onSelect() {} });
+  projections.push(projection);
+  const projectedList = root.querySelector('[data-code-example-tablist="host"]')!;
+  expect(projectedList.nextSibling).toBe(hint);
+  expect(hint.hidden).toBe(true); // zero-width unit fixture has no measured overflow
+  projection.destroy();
+  expect(hint.parentElement).toBe(root);
+  expect(hint.nextSibling).toBe(originalNext);
+  expect(hint.hidden).toBe(false);
 });

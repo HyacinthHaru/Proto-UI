@@ -2,6 +2,15 @@ import { AdaptToWebComponent, setElementProps } from '@proto.ui/adapter-web-comp
 import * as shadcn from '@proto.ui/prototypes-shadcn/tabs';
 import * as brutalist from '@proto.ui/prototypes-brutalist/tabs';
 
+/** Reveal only along the tab strip; never scroll the document vertically. */
+export function revealCodeExampleTab(tab: HTMLElement, viewport: HTMLElement): void {
+  const bounds = viewport.getBoundingClientRect();
+  const target = tab.getBoundingClientRect();
+  if (!bounds.width || !target.width) return;
+  if (target.left < bounds.left) viewport.scrollLeft += target.left - bounds.left;
+  else if (target.right > bounds.right) viewport.scrollLeft += target.right - bounds.right;
+}
+
 type TabProjection = { select(index: number): void; destroy(): void };
 
 /** Progressive legacy chrome, like runtime-tabs.ts: real family Tabs rendered
@@ -65,7 +74,15 @@ export function enhanceCodeExampleTabs(options: {
     });
     // Astro preserves formatting whitespace around authored labels. Keep the
     // projected label exact without touching source-code whitespace.
-    trigger.textContent = tab.textContent?.trim() ?? '';
+    trigger.textContent = tab.dataset.codeHostName ?? tab.textContent?.trim() ?? '';
+    if (tab.dataset.codeHostName) trigger.dataset.codeHostName = tab.dataset.codeHostName;
+    if (tab.dataset.codeHostAvailability) {
+      const status = doc.createElement('span');
+      status.dataset.codeHostStatus = '';
+      status.textContent = ` · ${tab.dataset.codeHostAvailability}`;
+      trigger.append(status);
+      trigger.dataset.codeHostAvailability = tab.dataset.codeHostAvailability;
+    }
     trigger.dataset.codeExampleProjectedTab = String(index);
     projectedList.append(trigger);
     triggers.push(trigger);
@@ -80,13 +97,30 @@ export function enhanceCodeExampleTabs(options: {
   }
   const strip = list.parentElement?.hasAttribute('data-code-toolbar') ? list.parentElement : list;
   const previousHidden = strip.hidden;
+  const reveal = () => revealCodeExampleTab(triggers[value], projectedList);
+  const onFocus = (event: Event) => {
+    const index = triggers.findIndex((trigger) => trigger.contains(event.target as Node));
+    if (index >= 0) revealCodeExampleTab(triggers[index], projectedList);
+  };
+  const hint = list.hasAttribute('data-code-host-tabs')
+    ? list.closest('[data-code-example]')?.querySelector<HTMLElement>('[data-code-host-overflow]') : null;
+  const hintMarker = hint ? doc.createComment('code-example-host-hint') : null;
+  const updateOverflow = () => {
+    if (hint) hint.hidden = projectedList.scrollWidth <= projectedList.clientWidth + 1;
+    reveal();
+  };
+  const resize = typeof doc.defaultView?.ResizeObserver === 'function'
+    ? new doc.defaultView.ResizeObserver(updateOverflow) : null;
   let queued = false;
   const publishValue = () => {
     if (queued || destroyed) return;
     queued = true;
     queueMicrotask(() => {
       queued = false;
-      if (!destroyed) setElementProps(root, { ...rootProps(), surfaceStyle: { display: 'block', minWidth: '0', width: '100%' } });
+      if (!destroyed) {
+        setElementProps(root, { ...rootProps(), surfaceStyle: { display: 'block', minWidth: '0', width: '100%' } });
+        reveal();
+      }
     });
   };
   const change = (event: Event) => {
@@ -101,6 +135,10 @@ export function enhanceCodeExampleTabs(options: {
     if (destroyed) return;
     destroyed = true;
     root.removeEventListener('valueChange', change);
+    projectedList.removeEventListener('focusin', onFocus);
+    resize?.disconnect();
+    if (hint && hintMarker?.parentNode) hintMarker.replaceWith(hint);
+    if (hint) hint.hidden = false;
     for (const { panel, marker, role, labelledBy } of originals) {
       if (marker.parentNode) marker.replaceWith(panel);
       if (role !== null) panel.setAttribute('role', role);
@@ -132,7 +170,14 @@ export function enhanceCodeExampleTabs(options: {
     destroy();
     return { select() {}, destroy() {} };
   }
+    if (hint && hintMarker) {
+      hint.before(hintMarker);
+      projectedList.after(hint);
+    }
     strip.hidden = true;
+    projectedList.addEventListener('focusin', onFocus);
+    resize?.observe(projectedList);
+    updateOverflow();
   } catch (error) {
     destroy();
     throw error;

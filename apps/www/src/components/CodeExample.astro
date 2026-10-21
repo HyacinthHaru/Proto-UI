@@ -8,7 +8,7 @@ export type { CodeExampleFile, CodeExampleProps, CodeExamplesByHost } from './co
 
 interface Props extends CodeExampleProps {}
 
-const { files, commands = {}, pendingHosts = [], initialHost, label = 'Code example', class: className = '' } = Astro.props;
+const { files, commands = {}, pendingHosts = [], guidance = {}, labels = { install: 'Install', usage: 'Usage', copy: 'Copy', pending: 'WIP', overflow: 'Scroll to see all hosts →' }, initialHost, label = 'Code example', class: className = '' } = Astro.props;
 
 for (const host of Object.keys(files)) {
   if (!isRuntimeId(host)) throw new Error(`[CodeExample] Unsupported host "${host}".`);
@@ -69,17 +69,21 @@ const instanceId = `code-example-${Math.random().toString(36).slice(2)}`;
               role="tab"
               data-code-host-tab
               data-code-host={host}
+              data-code-host-name={hostLabel(host)}
+              data-code-host-availability={pending.has(host) ? labels.pending : undefined}
               aria-controls={`${instanceId}-host-panel-${hostIndex}`}
               aria-selected={selected}
               tabindex={selected ? 0 : -1}
             >
-              {hostLabel(host)}
+              {hostLabel(host)}{pending.has(host) && <span data-code-host-status> · {labels.pending}</span>}
             </button>
           );
         })
       }
     </div>
   </div>
+
+  <p class="code-example__overflow-hint" data-code-host-overflow>{labels.overflow}</p>
 
   {
     hosts.map((host, hostIndex) => {
@@ -101,11 +105,13 @@ const instanceId = `code-example-${Math.random().toString(36).slice(2)}`;
           {command && (
             <section data-code-example-command aria-label={command.label}>
               <div class="code-example__command-label" data-code-toolbar data-site-code-surface="toolbar">
-                {command.label}
+                {labels.install} · {command.label}
               </div>
-              <CodePanel code={command.code} lang="bash" framed={false} />
+              <CodePanel code={command.code} lang="bash" framed={false} collapsible={false} copyLabel={`${labels.copy} ${command.label}`} />
             </section>
           )}
+          {!pendingHost && <div class="code-example__usage-label">{labels.usage}</div>}
+          {!pendingHost && isRuntimeId(host) && guidance[host] && <p class="code-example__guidance" data-code-example-guidance>{guidance[host]}</p>}
           {pendingHost ? (
             <div class="code-example__wip" data-code-example-wip>
               <p><strong>WIP · {pendingHost.label}</strong></p>
@@ -145,6 +151,8 @@ const instanceId = `code-example-${Math.random().toString(36).slice(2)}`;
               hidden={fileIndex !== 0}
               fileIndex={fileIndex}
               framed={false}
+              collapsible={false}
+              copyLabel={`${labels.copy} ${file.name}`}
               code={file.code}
               lang={file.lang}
             />
@@ -187,6 +195,11 @@ const instanceId = `code-example-${Math.random().toString(36).slice(2)}`;
     font-size: 0.8125rem;
     color: var(--color-muted-foreground);
   }
+
+  .code-example__usage-label { padding: 1rem 1rem 0.25rem; font-size: 0.875rem; font-weight: 600; }
+  .code-example__guidance { margin: 0; padding: 0.5rem 1rem; font-size: 0.8125rem; color: var(--color-muted-foreground); }
+  .code-example__overflow-hint { margin: 0.25rem 0; font-size: 0.75rem; color: var(--color-muted-foreground); }
+  @media (min-width: 60rem) { .code-example:not([data-code-example-init]) .code-example__overflow-hint { display: none; } }
 
   .code-example__wip {
     padding: 1rem;

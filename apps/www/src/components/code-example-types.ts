@@ -17,6 +17,9 @@ export interface CodeExampleProps {
   commands?: Partial<Record<PublicRuntimeId, Readonly<{ label: string; code: string }>>>;
   /** Explicit non-runnable entries. No command/file is invented for these hosts. */
   pendingHosts?: readonly Readonly<{ id: CodeExampleHostId; label: string; message: string }>[];
+  /** Host-specific integration guidance, shown beside that host’s usage. */
+  guidance?: Partial<Record<PublicRuntimeId, string>>;
+  labels?: Readonly<{ install: string; usage: string; copy: string; pending: string; overflow: string }>;
   initialHost?: CodeExampleHostId;
   label?: string;
   class?: string;

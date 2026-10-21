@@ -8,7 +8,8 @@ import { initCodeExamples } from './code-example-client';
 
 // These tests retain the native fallback contract. The real Tabs projection has
 // a separate suite and browser evidence; do not conflate the two owners.
-vi.mock('./code-example-tabs', () => ({
+vi.mock('./code-example-tabs', async (importOriginal) => ({
+  ...await importOriginal<typeof import('./code-example-tabs')>(),
   enhanceCodeExampleTabs: () => ({ select() {}, destroy() {} }),
 }));
 

@@ -383,10 +383,20 @@ describe.sequential('CodeExample host coverage and upstream visual hierarchy', (
             await evidence(page, example, `code-example-${locale}-${width}-${theme}-before-assertions`, {
               stage: 'before-assertions', chromeRuntime: 'wc', acceptance: false,
             });
-            expect(await hosts.allTextContents()).toEqual(['Web Components', 'React', 'Vue', 'Vue 2', 'GPUI', 'Qt', 'Flutter']);
+            const hostNames = ['Web Components', 'React', 'Vue', 'Vue 2', 'GPUI', 'Qt', 'Flutter'];
+            const pendingLabel = locale === 'en' ? 'WIP' : '开发中';
+            expect(await hosts.evaluateAll((nodes) => nodes.map((node) => (node as HTMLElement).dataset.codeHostName))).toEqual(hostNames);
+            expect(await hosts.allTextContents()).toEqual(hostNames.map((name, index) => index < 3 ? name : `${name} · ${pendingLabel}`));
+            expect(await hosts.locator('[data-code-host-status]').count()).toBe(4);
+            if (width <= 390) {
+              const hint = example.locator('[data-code-host-overflow]');
+              expect(await hint.isVisible()).toBe(true);
+              expect(await hint.evaluate((node) => node.previousElementSibling?.getAttribute('data-code-example-tablist'))).toBe('host');
+            }
             const sourceNodes = await example.locator('pre').elementHandles();
             for (const host of ['Web Components', 'React', 'Vue', 'Vue 2', 'GPUI', 'Qt', 'Flutter']) {
-              await hosts.filter({ hasText: new RegExp(`^${host}$`) }).click();
+              // Match the complete accessible name, including availability.
+              await example.getByRole('tab', { name: hostNames.indexOf(host) < 3 ? host : `${host} · ${pendingLabel}`, exact: true }).click();
               const panel = example.locator('[data-code-host-panel]:visible');
               expect(await panel.count()).toBe(1);
               if (['Vue 2', 'GPUI', 'Qt', 'Flutter'].includes(host)) {
@@ -405,6 +415,28 @@ describe.sequential('CodeExample host coverage and upstream visual hierarchy', (
                   expect(await panel.locator('[data-code-file-panel]:visible pre').textContent()).toContain('type="module"');
                 }
                 expect(await panel.textContent()).not.toContain('document.body.innerHTML');
+                expect(await panel.locator('[data-code-toggle]').count()).toBe(0);
+                expect(await panel.locator('[data-code-example-guidance]').count()).toBe(host === 'Web Components' ? 1 : 0);
+                const shells = panel.locator('[data-code-shell]:visible');
+                for (const shell of await shells.all()) {
+                  expect(await shell.getAttribute('data-code-expanded')).toBe('true');
+                  const copy = shell.locator('[data-copy-view="ready"] [data-demo-ref="copy-button"]');
+                  await copy.waitFor();
+                  const source = shell.locator('pre');
+                  const sourceBox = await source.boundingBox();
+                  const copyBox = await copy.boundingBox();
+                  expect(sourceBox).not.toBeNull();
+                  expect(copyBox).not.toBeNull();
+                  expect(sourceBox!.x + sourceBox!.width).toBeLessThanOrEqual(copyBox!.x + 1);
+                  expect(await source.evaluate((pre) => getComputedStyle(pre).maxHeight)).toBe('none');
+                  const expectedTarget = await shell.evaluate((shell) => shell.closest('[data-code-example-command]')
+                    ? (shell.closest('[data-code-example-command]')!.getAttribute('aria-label'))
+                    : shell.querySelector('code') && shell.getAttribute('data-code-file-index'));
+                  const copyLabel = await shell.locator('[data-site-copy]').getAttribute('data-copy-label');
+                  expect(copyLabel?.startsWith(locale === 'en' ? 'Copy ' : '复制 ')).toBe(true);
+                  if (expectedTarget === 'Terminal' || expectedTarget === '终端') expect(copyLabel).toBe(`${locale === 'en' ? 'Copy' : '复制'} ${expectedTarget}`);
+                  else expect(copyLabel).toContain(host === 'React' ? 'src/App.tsx' : host === 'Vue' ? 'src/App.vue' : 'index.html');
+                }
               }
               expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
               await evidence(page, example, `code-example-${locale}-${width}-${theme}-${host.replaceAll(' ', '-')}`, {
@@ -415,6 +447,10 @@ describe.sequential('CodeExample host coverage and upstream visual hierarchy', (
             await page.keyboard.press('End');
             expect(await hosts.last().getAttribute('aria-selected')).toBe('true');
             expect(await hosts.last().evaluate((node) => node === document.activeElement)).toBe(true);
+            const lastBounds = await hosts.last().boundingBox();
+            const listBounds = await example.locator('[data-code-example-tablist="host"]').boundingBox();
+            expect(lastBounds!.x).toBeGreaterThanOrEqual(listBounds!.x - 1);
+            expect(lastBounds!.x + lastBounds!.width).toBeLessThanOrEqual(listBounds!.x + listBounds!.width + 1);
             for (const node of sourceNodes) expect(await node.evaluate((node) => node.isConnected)).toBe(true);
           } finally {
             await context.close();

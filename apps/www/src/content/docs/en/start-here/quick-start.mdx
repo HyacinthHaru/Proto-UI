@@ -165,14 +165,16 @@ Layer order is fixed when a named layer first appears. A generated `@layer theme
 
 ## Add and import a component
 
-Add the official Shadcn Button facade for the host your application uses. The example includes stable CLI commands and application entries for React, Vue, and Web Components. Vue 2, GPUI, Qt, and Flutter remain selectable with an explicit explanation of the missing quick-start capability; a WIP tab is not a claim of a stable installation path. Its initial host follows the site-wide Adapter preference when supported.
+Choose your application’s host. React, Vue, and Web Components have stable examples; WIP tabs explain the remaining integration work.
 
-Run the terminal command from your project root in your usual terminal (PowerShell, Command Prompt, or a Unix shell); it is not an `install.sh` file to create. The Web Components example assumes an existing TypeScript-capable bundler application, such as Vite. Add the element to your existing HTML and add the side-effect import to your existing module entry. That import registers the generated custom element. Keep existing page content, and do not add a second module script if the entry is already loaded. Adjust paths to your application; this is not a standalone `file://` example.
+Run the command from your project root, then add the example to the matching application files.
 
 <CodeExample
   files={buttonHostFiles}
   commands={buttonHostCommands}
   pendingHosts={pendingButtonHosts}
+  labels={{ install: 'Install component', usage: 'Use in your app', copy: 'Copy', pending: 'WIP', overflow: 'Scroll to see all hosts →' }}
+  guidance={{ wc: 'For an existing TypeScript bundler app (such as Vite), not a standalone file:// page. Add the element to your existing HTML and the registration import to your module entry. Keep existing content and do not load the entry twice; adjust paths as needed.' }}
   initialHost="react"
   label="Shadcn Button host examples and WIP availability"
 />

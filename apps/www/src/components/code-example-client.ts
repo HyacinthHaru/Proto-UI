@@ -1,4 +1,4 @@
-import { enhanceCodeExampleTabs } from './code-example-tabs';
+import { enhanceCodeExampleTabs, revealCodeExampleTab } from './code-example-tabs';
 import {
   PREFERRED_ADAPTER_EVENT,
   PREFERRED_ADAPTER_KEY,
@@ -41,6 +41,8 @@ function activateTab(
     tab.tabIndex = selected ? 0 : -1;
   }
   for (const panel of panels) panel.hidden = panel.id !== controls;
+  const strip = active.parentElement?.parentElement;
+  if (strip && !strip.hidden) revealCodeExampleTab(active, strip);
 }
 
 function installHorizontalActivation(
@@ -61,7 +63,7 @@ function installHorizontalActivation(
     if (nextIndex < 0 || nextIndex >= tabs.length) return;
     event.preventDefault();
     const next = tabs[nextIndex];
-    next.focus();
+    next.focus({ preventScroll: true });
     activate(next);
   });
 }

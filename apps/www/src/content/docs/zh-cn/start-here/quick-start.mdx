@@ -164,14 +164,16 @@ Named layer 的顺序会在首次出现时固定。生成的 `@layer theme, prot
 
 ## 添加并导入组件
 
-请按应用实际使用的 host 添加官方 Shadcn Button facade。下面提供 React、Vue 与 Web Components 的稳定版 CLI 命令和应用入口，同时保留 Vue 2、GPUI、Qt 与 Flutter 的可切换页签，明确说明各自尚缺的快速接入能力。WIP 不代表已有稳定版安装路径；支持当前站点 Adapter 偏好时，示例会以该 host 作为初始页签。
+选择应用使用的 host。React、Vue 和 Web Components 提供稳定版示例；开发中页签说明当前接入进度。
 
-在项目根目录使用你平时的终端（PowerShell、命令提示符或 Unix shell）执行命令；它不是需要创建的 `install.sh` 文件。Web Components 示例假定已有支持 TypeScript 的打包应用，例如 Vite。把元素添加到现有 HTML，把副作用导入添加到现有模块入口；该导入会注册生成的自定义元素。保留页面原有内容，如果入口已经加载，不要重复添加模块脚本。路径应按应用调整，这不是直接通过 `file://` 打开的独立示例。
+在项目根目录运行命令，再将示例加入对应的应用文件。
 
 <CodeExample
   files={buttonHostFiles}
   commands={buttonHostCommands}
   pendingHosts={pendingButtonHosts}
+  labels={{ install: '安装组件', usage: '在应用中使用', copy: '复制', pending: '开发中', overflow: '横向滑动查看全部 host →' }}
+  guidance={{ wc: '适用于已有 TypeScript 打包应用（如 Vite），不是独立 file:// 页面。将元素加入现有 HTML，将注册导入加入模块入口；保留原有内容，不要重复加载入口，并按需调整路径。' }}
   initialHost="react"
   label="Shadcn Button 各 host 接入示例与 WIP 状态"
 />

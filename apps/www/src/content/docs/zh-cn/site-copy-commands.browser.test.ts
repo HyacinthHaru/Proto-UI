@@ -479,10 +479,21 @@ describe.sequential('Copy commands: real consumer recipes across public runtimes
         }, runtime);
         const page = await context.newPage();
         const errors = await observeCopyPage(page);
-        const stage = { action: 'navigate', family, index: -1, theme: 'light' };
+        const stage = { action: 'navigate', family, index: -1, theme: 'light', contentHost: 'react' };
         let observedRoot: Locator | null = null;
         try {
           await page.goto(`${baseUrl}${ROUTE}`, { waitUntil: 'domcontentloaded' });
+          // Source host availability is independent of the Copy renderer.
+          // Keep Vue 2 runtime coverage while selecting runnable React content.
+          const example = page.locator('[data-code-example]').first();
+          await example.locator('[data-code-example-tablist="host"]').waitFor();
+          if (runtime === 'vue2') {
+            const pending = example.locator('[data-code-host-panel][data-code-host="vue2"]:visible');
+            await pending.waitFor();
+            expect(await pending.locator('[data-code-example-wip]').count()).toBe(1);
+            expect(await pending.locator('pre, [data-site-copy], [data-code-example-command]').count()).toBe(0);
+          }
+          await example.locator('[data-code-example-tablist="host"]').getByRole('tab', { name: 'React', exact: true }).click();
           await page.waitForSelector('[data-code-panel-init="1"]:visible');
           // Docs has no family picker. This explicit consumer-input fixture uses
           // the same family markers as applySiteLibraryFamily; screenshots label it.
@@ -528,6 +539,7 @@ describe.sequential('Copy commands: real consumer recipes across public runtimes
               // Record baseline before any assertion on the first interactive state.
               await evidence(page, root, `${runtime}-${family}-${index}-${theme}-baseline`, {
                 runtime,
+                contentHost: 'react',
                 family,
                 theme,
                 baseline,
@@ -561,6 +573,7 @@ describe.sequential('Copy commands: real consumer recipes across public runtimes
                   .toEqual([]);
                 await evidence(page, root, `${runtime}-${family}-${index}-${theme}-pressed`, {
                   runtime,
+                contentHost: 'react',
                   family,
                   theme,
                   baseline,
@@ -577,6 +590,7 @@ describe.sequential('Copy commands: real consumer recipes across public runtimes
               const unfocused = await unfocusedPaint(button);
               await evidence(page, root, `${runtime}-${family}-${index}-${theme}-unfocused`, {
                 runtime,
+                contentHost: 'react',
                 family,
                 theme,
                 unfocused,
@@ -598,6 +612,7 @@ describe.sequential('Copy commands: real consumer recipes across public runtimes
               const focused = await paint(button);
               await evidence(page, root, `${runtime}-${family}-${index}-${theme}-focus`, {
                 runtime,
+                contentHost: 'react',
                 family,
                 theme,
                 familyInput: 'explicit docs consumer fixture',

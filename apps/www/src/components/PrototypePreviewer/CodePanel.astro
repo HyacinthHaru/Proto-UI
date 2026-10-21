@@ -15,9 +15,12 @@ interface Props {
   hidden?: boolean;
   fileIndex?: number;
   framed?: boolean;
+  /** Required instructions stay readable, including before hydration. */
+  collapsible?: boolean;
+  copyLabel?: string;
 }
 
-const { code, lang = 'tsx', id, labelledBy, hidden, fileIndex, framed = true } = Astro.props;
+const { code, lang = 'tsx', id, labelledBy, hidden, fileIndex, framed = true, collapsible = true, copyLabel = 'Copy code' } = Astro.props;
 const highlighted = await highlightCode(code, lang);
 ---
 
@@ -31,15 +34,17 @@ const highlighted = await highlightCode(code, lang);
   data-code-file-panel={labelledBy ? '' : undefined}
   data-code-file-index={fileIndex}
   data-code-shell
+  data-code-collapsible={String(collapsible)}
+  data-code-expanded={collapsible ? undefined : 'true'}
   data-site-code-surface={framed ? 'frame' : undefined}
 >
-  <div class="group relative min-w-0 max-w-full min-h-12" data-code-inner>
-    <div class="site-code-copy-overlay" hidden data-copy data-site-copy data-copy-label="Copy code">
+  <div class="group relative min-w-0 max-w-full min-h-12" data-code-inner data-code-expanded={collapsible ? undefined : 'true'}>
+    <div class="site-code-copy-overlay" hidden={collapsible} data-copy data-site-copy data-copy-label={copyLabel}>
     </div>
 
     <div class="min-w-0 max-w-full" data-code-content set:html={highlighted} />
 
-    <Button
+    {collapsible && <Button
       data-site-button
       data-site-control-family={siteFamily}
       data-variant="outline"
@@ -50,7 +55,7 @@ const highlighted = await highlightCode(code, lang);
       aria-label="展开代码"
     >
       View code
-    </Button>
+    </Button>}
   </div>
 </figure>
 
@@ -65,3 +70,20 @@ const highlighted = await highlightCode(code, lang);
     initCodePanels(document);
   });
 </script>
+
+<style is:global>
+  /* Required source reserves a real column for Copy, outside the scroll viewport. */
+  [data-code-collapsible='false'] [data-code-inner] {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    column-gap: 0.5rem;
+  }
+  [data-code-collapsible='false'] [data-code-content] { grid-column: 1; grid-row: 1; }
+  [data-code-collapsible='false'] .site-code-copy-overlay {
+    position: static; grid-column: 2; grid-row: 1; margin: 0;
+  }
+  [data-code-collapsible='false'] .proto-previewer__code {
+    max-height: none; padding-inline-end: 0;
+  }
+</style>
