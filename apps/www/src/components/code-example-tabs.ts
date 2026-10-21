@@ -63,7 +63,9 @@ export function enhanceCodeExampleTabs(options: {
       value: String(index), appearance: 'underline',
       surfaceStyle: { minHeight: '2.75rem', fontSize: '0.8125rem', lineHeight: '1.25rem' },
     });
-    trigger.textContent = tab.textContent;
+    // Astro preserves formatting whitespace around authored labels. Keep the
+    // projected label exact without touching source-code whitespace.
+    trigger.textContent = tab.textContent?.trim() ?? '';
     trigger.dataset.codeExampleProjectedTab = String(index);
     projectedList.append(trigger);
     triggers.push(trigger);

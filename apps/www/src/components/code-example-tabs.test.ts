@@ -52,6 +52,18 @@ describe('CodeExample real legacy Tabs enhancement', () => {
     expect(panels.map((panel) => panel.getAttribute('aria-labelledby'))).toEqual(['a', 'b']);
   });
 
+  it('normalizes SSR label edges without changing source content', () => {
+    const { root, list, tabs, panels } = fixture();
+    tabs[0].textContent = '\n  React \n';
+    tabs[1].textContent = ' Web Components ';
+    const pre = panels[0].querySelector('pre')!;
+    pre.textContent = '\n  exact source with indentation  \n';
+    projections.push(enhanceCodeExampleTabs({ list, tabs, panels, onSelect() {} }));
+    expect([...root.querySelectorAll('[data-code-example-projected-tab]')].map((tab) => tab.textContent))
+      .toEqual(['React', 'Web Components']);
+    expect(pre.textContent).toBe('\n  exact source with indentation  \n');
+  });
+
   it.each(['list', 'content'])('restores source and fallback if the real %s fails role admission', (part) => {
     const { root, list, tabs, panels } = fixture();
     const source = panels.map((panel) => panel.querySelector('pre'));

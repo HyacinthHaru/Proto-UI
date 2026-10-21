@@ -378,6 +378,11 @@ describe.sequential('CodeExample host coverage and upstream visual hierarchy', (
             const example = page.locator('[data-code-example]').first();
             const hosts = example.locator('[data-code-example-tablist="host"] [role="tab"]');
             await hosts.last().waitFor();
+            // Preserve an actual source-bound diagnostic even when a later
+            // semantic assertion fails; this is not acceptance evidence.
+            await evidence(page, example, `code-example-${locale}-${width}-${theme}-before-assertions`, {
+              stage: 'before-assertions', chromeRuntime: 'wc', acceptance: false,
+            });
             expect(await hosts.allTextContents()).toEqual(['Web Components', 'React', 'Vue', 'Vue 2', 'GPUI', 'Qt', 'Flutter']);
             const sourceNodes = await example.locator('pre').elementHandles();
             for (const host of ['Web Components', 'React', 'Vue', 'Vue 2', 'GPUI', 'Qt', 'Flutter']) {
