@@ -13,6 +13,8 @@ import {
   type CodeSurfaceGenerationFacts,
 } from './code-surface-evidence';
 
+import { hasZeroTransparentTreeShadow } from './code-tree-shadow-evidence';
+
 const SOURCE_ROUTE = '/zh-cn/start-here/quick-start/';
 const INSTALL_ROUTE = '/zh-cn/ui-libraries/shadcn/button/';
 let browser: Browser;
@@ -426,8 +428,10 @@ describe.sequential('CodeExample host coverage and upstream visual hierarchy', (
                     font: item.fontSize, icon: icon.getBoundingClientRect().width,
                   };
                 });
-                expect(embedded).toEqual({
-                  display: 'flex', gap: '6px', border: '0px', shadow: 'none',
+                expect(hasZeroTransparentTreeShadow(embedded.shadow)).toBe(true);
+                const { shadow: _shadow, ...geometry } = embedded;
+                expect(geometry).toEqual({
+                  display: 'flex', gap: '6px', border: '0px',
                   background: 'rgba(0, 0, 0, 0)', rowHeight: 32, radius: '0px', font: '14px', icon: 16,
                 });
                 expect(await tree.locator('[data-code-tree-icon="folder"]').count()).toBeGreaterThan(0);
