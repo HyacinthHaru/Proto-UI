@@ -21,8 +21,8 @@ let browser: Browser;
 let baseUrl: string;
 let sourceBinding: CopySourceBinding;
 const directory = join(
-  process.env.RUNNER_TEMP || tmpdir(),
-  'homepage-evidence',
+  process.env.PROTO_UI_RUNTIME_EVIDENCE_DIR ||
+    join(process.env.RUNNER_TEMP || tmpdir(), 'homepage-evidence'),
   'code-surface-grammar'
 );
 beforeAll(async () => {
