@@ -150,7 +150,8 @@ const instanceId = `code-example-${Math.random().toString(36).slice(2)}`;
   }
 </section>
 
-<noscript set:html={'<style>[data-code-example] [data-code-host-panel][hidden], [data-code-example] [data-code-file-panel][hidden] { display:block!important; } [data-code-example] [data-code-host-panel] { margin-block:1.5rem; }</style>'} />
+<!-- Match Tailwind’s base layer: layered !important hidden beats an unlayered override. -->
+<noscript set:html={'<style>@layer base { [data-code-example] [data-code-host-panel][hidden], [data-code-example] [data-code-file-panel][hidden] { display:block!important; } } [data-code-example] [data-code-host-panel] { margin-block:1.5rem; }</style>'} />
 
 <script>
   import { initCodeExamples } from './code-example-client';
