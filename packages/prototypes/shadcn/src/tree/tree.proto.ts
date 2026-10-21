@@ -60,7 +60,7 @@ export const treeItem = definePrototype<ShadcnTreeItemProps, TreeItemExposes>({
       when: (w) => w.prop('appearance').eq('embedded'),
       intent: (i) => i.feedback.style.use(tw('w-full min-h-8 rounded-none px-2 py-1 text-sm')),
     });
-    const states = behavior.stateHandles as Record<string, State<boolean>> | undefined;
+    const states = behavior.stateHandles;
     if (states?.focusVisible)
       def.rule({
         when: (w) => w.state(states.focusVisible!).eq(true),
@@ -98,7 +98,7 @@ export const treeItem = definePrototype<ShadcnTreeItemProps, TreeItemExposes>({
     def.event.on('pointer.cancel', clearHover);
     def.lifecycle.onUnmounted(clearHover);
     def.props.watch(['appearance'], clearHover);
-    states?.disabled?.watch((_run, event) => {
+    states?.disabled.watch((_run, event) => {
       if (event.type === 'next' && event.next) clearHover();
     });
     if (states?.disabled && states?.selected)

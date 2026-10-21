@@ -57,7 +57,10 @@ it('collects embedded tokens through the existing public style compiler without 
   const { collectProtoStyleTokens } = await import('../../../cli/src/services/prototype-style-tokens');
   const { renderProtoStyleTokenCss, renderProtoShadowStyleTokenCss } = await import('../../../cli/src/services/proto-style-css');
   const path = await import('node:path');
-  const tokens = await collectProtoStyleTokens(path.resolve('packages/prototypes/shadcn/src/tree'));
+  const tokens = (await collectProtoStyleTokens(path.resolve('packages/prototypes/shadcn/src/tree'))).map((token) => {
+    if (typeof token !== 'string') throw new TypeError('Expected a collected style token string');
+    return token;
+  });
   expect(tokens).toContain('bg-muted-foreground/15');
   expect(tokens).toContain('forced-colors-focus-outline');
   for (const css of [renderProtoStyleTokenCss(tokens), renderProtoShadowStyleTokenCss(tokens)]) {
@@ -71,7 +74,10 @@ it('keeps selected weight and square row geometry in generated CSS, not token na
   const { renderProtoStyleTokenCss } = await import('../../../cli/src/services/proto-style-css');
   const { unwrapGeneratedTokenLayer } = await import('../../../../scripts/release/consumer-smoke-css.mjs');
   const path = await import('node:path');
-  const tokens = await collectProtoStyleTokens(path.resolve('packages/prototypes/shadcn/src/tree'));
+  const tokens = (await collectProtoStyleTokens(path.resolve('packages/prototypes/shadcn/src/tree'))).map((token) => {
+    if (typeof token !== 'string') throw new TypeError('Expected a collected style token string');
+    return token;
+  });
   const style = document.createElement('style');
   style.textContent = unwrapGeneratedTokenLayer(renderProtoStyleTokenCss(tokens));
   document.head.append(style);
