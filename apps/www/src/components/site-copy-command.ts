@@ -53,7 +53,11 @@ export function createCopyCommandDemo(
   isActive: () => boolean
 ): DemoSpec {
   const labels = copyLabels(root);
-  const buttonProps = { variant: family === 'brutalist' ? 'surface' : 'outline', size: 'icon' };
+  const codeExample = Boolean(root.closest('[data-code-example]'));
+  const buttonProps = {
+    variant: family === 'brutalist' ? 'surface' : codeExample ? 'ghost' : 'outline',
+    size: 'icon',
+  };
   const copyButton: DemoNode = {
     kind: 'proto',
     prototypeId: `${family}-button`,
@@ -89,7 +93,7 @@ export function createCopyCommandDemo(
       kind: 'box',
       className: 'site-copy-command',
       children: [
-        family === 'shadcn'
+        family === 'shadcn' && !codeExample
           ? {
               kind: 'proto',
               prototypeId: `${family}-surface-root`,
@@ -417,3 +421,4 @@ export function initCopyCommand(root: HTMLElement, readText: () => string): Site
   handles.set(root, handle);
   return handle;
 }
+

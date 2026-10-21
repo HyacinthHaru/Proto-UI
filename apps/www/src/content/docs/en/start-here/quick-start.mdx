@@ -10,11 +10,6 @@ import { Aside } from '@astrojs/starlight/components';
 export const buttonHostFiles = /** @type {const} */ ({
   react: [
     {
-      name: 'install.sh',
-      lang: 'bash',
-      code: 'npx @proto.ui/cli@latest add react shadcn-button',
-    },
-    {
       name: 'src/App.tsx',
       lang: 'tsx',
       code: `import { ShadcnButton } from '../proto-ui/components/react';
@@ -24,18 +19,59 @@ export function App() {
 }`,
     },
   ],
+  vue: [
+    { name: 'src/App.vue', lang: 'vue', code: `<script setup lang="ts">
+import { ShadcnButton } from '../proto-ui/components/vue';
+</script>
+
+<template>
+  <ShadcnButton variant="outline">Proto UI 0.2.0</ShadcnButton>
+</template>` },
+  ],
   wc: [
-    {
-      name: 'install.sh',
-      lang: 'bash',
-      code: 'npx @proto.ui/cli@latest add wc shadcn-button',
-    },
     {
       name: 'src/main.ts',
       lang: 'typescript',
-      code: `import '../proto-ui/components/wc';
+      code: `import './styles/proto-ui-style.css';
+import '../proto-ui/components/wc';`,
+    },
+    {
+      name: 'index.html',
+      lang: 'html',
+      code: `<proto-ui-shadcn-button variant="outline">Proto UI 0.2.0</proto-ui-shadcn-button>
+<script type="module" src="/src/main.ts"></script>`,
+    },
+  ],
+});
 
-document.body.innerHTML = '<proto-ui-shadcn-button variant="outline">Proto UI 0.2.0</proto-ui-shadcn-button>';`, }, ], });
+export const buttonHostCommands = /** @type {const} */ ({
+  react: { label: 'Terminal', code: 'npx @proto.ui/cli@latest add react shadcn-button' },
+  vue: { label: 'Terminal', code: 'npx @proto.ui/cli@latest add vue shadcn-button' },
+  wc: { label: 'Terminal', code: 'npx @proto.ui/cli@latest add wc shadcn-button' },
+});
+
+export const pendingButtonHosts = /** @type {const} */ ([
+  {
+    "id": "vue2",
+    "label": "Vue 2",
+    "message": "WIP for this stable quick-start guide. The official Vue 2 Adapter targets Vue >=2.6.0 <2.7 and is available from the 0.3 prerelease line. The stable 0.2.0 CLI does not support vue2, so this tab does not provide an @latest install command."
+  },
+  {
+    "id": "gpui",
+    "label": "GPUI",
+    "message": "WIP for public quick-start integration. The repository has an implemented private GPUI source-compilation profile, not a published official Adapter or a stable CLI add workflow."
+  },
+  {
+    "id": "qt",
+    "label": "Qt",
+    "message": "WIP. Qt is a declared compiler target, but its profile is unimplemented and currently rejects compilation. No stable CLI installation or import example is available."
+  },
+  {
+    "id": "flutter",
+    "label": "Flutter",
+    "message": "WIP. Flutter is a declared compiler target, but its profile is unimplemented and currently rejects compilation. No stable CLI installation or import example is available."
+  }
+]);
 
 <DocStageNotice
   title="Proto UI 0.2.0 is available from npm latest."
@@ -129,12 +165,16 @@ Layer order is fixed when a named layer first appears. A generated `@layer theme
 
 ## Add and import a component
 
-Add the official Shadcn Button facade for the host your application uses. The example keeps the CLI command and application entry together for React and Web Components; its initial host follows the site-wide Adapter preference when supported.
+Add the official Shadcn Button facade for the host your application uses. The example includes stable CLI commands and application entries for React, Vue, and Web Components. Vue 2, GPUI, Qt, and Flutter remain selectable with an explicit explanation of the missing quick-start capability; a WIP tab is not a claim of a stable installation path. Its initial host follows the site-wide Adapter preference when supported.
+
+Run the terminal command from your project root in your usual terminal (PowerShell, Command Prompt, or a Unix shell); it is not an `install.sh` file to create. The Web Components example assumes an existing TypeScript-capable bundler application, such as Vite. Add the element to your existing HTML and add the side-effect import to your existing module entry. That import registers the generated custom element. Keep existing page content, and do not add a second module script if the entry is already loaded. Adjust paths to your application; this is not a standalone `file://` example.
 
 <CodeExample
   files={buttonHostFiles}
+  commands={buttonHostCommands}
+  pendingHosts={pendingButtonHosts}
   initialHost="react"
-  label="Add and use Shadcn Button in React or Web Components"
+  label="Shadcn Button host examples and WIP availability"
 />
 
 The command installs the matching Adapter and `@proto.ui/prototypes-shadcn@0.2.0`, then generates the host entry under `proto-ui/components/`. Vue projects use `vue` in the same command. The relative imports are intentional: applications do not share one path-alias setup or directory depth. Generated facades preserve the Prototype's declared props, event listeners, and ref/expose surface.
@@ -184,3 +224,4 @@ Once you have integrated your first component, choose where to go next:
 | Try a Neo-Brutalist visual style | [Brutalist Library](/en/ui-libraries/brutalist/) |
 | Find and use icons | [Lucide Icons](/en/ui-libraries/lucide/) |
 | Explore Proto UI's ideas and design boundaries | [Whitepaper: Preface](/en/whitepaper/0-preface/) |
+

@@ -8,16 +8,23 @@ export type { CodeExampleFile, CodeExampleProps, CodeExamplesByHost } from './co
 
 interface Props extends CodeExampleProps {}
 
-const { files, initialHost, label = 'Code example', class: className = '' } = Astro.props;
+const { files, commands = {}, pendingHosts = [], initialHost, label = 'Code example', class: className = '' } = Astro.props;
 
 for (const host of Object.keys(files)) {
   if (!isRuntimeId(host)) throw new Error(`[CodeExample] Unsupported host "${host}".`);
 }
 
-const hosts = AdapterIds.filter((host) => files[host] !== undefined);
+const readyHosts = AdapterIds.filter((host) => files[host] !== undefined);
+const pending = new Map(pendingHosts.map((host) => [host.id, host]));
+if (pending.size !== pendingHosts.length || pendingHosts.some((host) =>
+  !host.id.trim() || !host.label.trim() || !host.message.trim() || isRuntimeId(host.id) && files[host.id] !== undefined
+)) throw new Error('[CodeExample] Pending hosts require unique IDs, labels and explanations.');
+const hosts = [...readyHosts, ...pending.keys()];
+const hostLabels: Record<string, string> = { wc: 'Web Components', react: 'React', vue: 'Vue', vue2: 'Vue 2' };
+const hostLabel = (host: (typeof hosts)[number]) => pending.get(host)?.label ?? hostLabels[host] ?? host;
 if (hosts.length === 0) throw new Error('[CodeExample] At least one supported host is required.');
 
-for (const host of hosts) {
+for (const host of readyHosts) {
   const hostFiles = files[host];
   if (!hostFiles?.length)
     throw new Error(`[CodeExample] Host "${host}" requires at least one file.`);
@@ -35,6 +42,11 @@ if (initialHost && !hosts.includes(initialHost)) {
   throw new Error(`[CodeExample] initialHost "${initialHost}" is not present in files.`);
 }
 
+for (const [host, command] of Object.entries(commands)) {
+  if (!isRuntimeId(host) || !files[host] || !command?.label.trim() || !command.code.trim())
+    throw new Error('[CodeExample] Commands require a ready host, label and command text.');
+}
+
 const activeHost = initialHost ?? hosts[0];
 const instanceId = `code-example-${Math.random().toString(36).slice(2)}`;
 ---
@@ -42,11 +54,10 @@ const instanceId = `code-example-${Math.random().toString(36).slice(2)}`;
 <section
   class:list={['code-example', className]}
   data-code-example
-  data-site-code-surface="frame"
   data-initial-host={activeHost}
   aria-label={label}
 >
-  <div class="code-example__strip" data-code-toolbar data-site-code-surface="toolbar">
+  <div class="code-example__strip" data-code-toolbar>
     <div class="code-example__tabs" role="tablist" aria-label="Host" data-code-host-tabs>
       {
         hosts.map((host, hostIndex) => {
@@ -62,7 +73,7 @@ const instanceId = `code-example-${Math.random().toString(36).slice(2)}`;
               aria-selected={selected}
               tabindex={selected ? 0 : -1}
             >
-              {host === 'wc' ? 'Web Components' : host === 'react' ? 'React' : 'Vue'}
+              {hostLabel(host)}
             </button>
           );
         })
@@ -72,7 +83,9 @@ const instanceId = `code-example-${Math.random().toString(36).slice(2)}`;
 
   {
     hosts.map((host, hostIndex) => {
-      const hostFiles = files[host] ?? [];
+      const hostFiles = isRuntimeId(host) ? files[host] ?? [] : [];
+      const pendingHost = pending.get(host);
+      const command = isRuntimeId(host) ? commands[host] : undefined;
       const hostSelected = host === activeHost;
       return (
         <section
@@ -80,11 +93,25 @@ const instanceId = `code-example-${Math.random().toString(36).slice(2)}`;
           class="code-example__host-panel"
           role="tabpanel"
           data-code-host-panel
+          data-site-code-surface="frame"
           data-code-host={host}
           aria-labelledby={`${instanceId}-host-tab-${hostIndex}`}
           hidden={!hostSelected}
         >
-          <div
+          {command && (
+            <section data-code-example-command aria-label={command.label}>
+              <div class="code-example__command-label" data-code-toolbar data-site-code-surface="toolbar">
+                {command.label}
+              </div>
+              <CodePanel code={command.code} lang="bash" framed={false} />
+            </section>
+          )}
+          {pendingHost ? (
+            <div class="code-example__wip" data-code-example-wip>
+              <p><strong>WIP · {pendingHost.label}</strong></p>
+              <p>{pendingHost.message}</p>
+            </div>
+          ) : <div
             class="code-example__strip code-example__strip--files"
             data-code-toolbar
             data-site-code-surface="toolbar"
@@ -110,7 +137,7 @@ const instanceId = `code-example-${Math.random().toString(36).slice(2)}`;
                 </button>
               ))}
             </div>
-          </div>
+          </div>}
           {hostFiles.map((file, fileIndex) => (
             <CodePanel
               id={`${instanceId}-${hostIndex}-file-panel-${fileIndex}`}
@@ -145,9 +172,24 @@ const instanceId = `code-example-${Math.random().toString(36).slice(2)}`;
     max-width: 100%;
   }
 
+  .code-example :global([hidden]),
   .code-example__host-panel[hidden],
   :global([data-code-example] [data-code-file-panel][hidden]) {
     display: none;
+  }
+
+  .code-example__host-panel {
+    margin-top: 0.5rem;
+  }
+
+  .code-example__command-label {
+    padding: 0.625rem 1rem;
+    font-size: 0.8125rem;
+    color: var(--color-muted-foreground);
+  }
+
+  .code-example__wip {
+    padding: 1rem;
   }
 
   .code-example__strip {
@@ -190,3 +232,4 @@ const instanceId = `code-example-${Math.random().toString(36).slice(2)}`;
     outline-offset: 1px;
   }
 </style>
+

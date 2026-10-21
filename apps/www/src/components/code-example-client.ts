@@ -1,3 +1,4 @@
+import { enhanceCodeExampleTabs } from './code-example-tabs';
 import {
   PREFERRED_ADAPTER_EVENT,
   PREFERRED_ADAPTER_KEY,
@@ -83,11 +84,14 @@ function initCodeExample(root: HTMLElement): void {
   const hostTabs = tabsIn(hostList);
   const hostPanels = childPanels(root, 'data-code-host-panel');
   let localOverride = false;
+  const projections = new Map<HTMLElement, ReturnType<typeof enhanceCodeExampleTabs>>();
+  const filePanelsByHost = new Map(hostPanels.map((panel) => [panel, childPanels(panel, 'data-code-file-panel')]));
 
   function selectFile(panel: HTMLElement, tab: HTMLElement): void {
     const fileList = panel.querySelector<HTMLElement>('[data-code-file-tabs]');
     if (!fileList) return;
-    const filePanels = childPanels(panel, 'data-code-file-panel');
+    const filePanels = filePanelsByHost.get(panel) ?? [];
+    projections.get(fileList)?.select(tabsIn(fileList).indexOf(tab));
     activateTab(tabsIn(fileList), tab, filePanels);
     const visiblePanel = filePanels.find((candidate) => !candidate.hidden);
     if (visiblePanel) refreshCodePanel(visiblePanel);
@@ -101,9 +105,12 @@ function initCodeExample(root: HTMLElement): void {
   function selectHost(tab: HTMLElement, isLocal: boolean): void {
     if (isLocal) localOverride = true;
     activateTab(hostTabs, tab, hostPanels);
+    projections.get(hostList!)?.select(hostTabs.indexOf(tab));
     const panel = hostPanels.find((candidate) => !candidate.hidden);
     const visibleFile = panel?.querySelector<HTMLElement>('[data-code-file-panel]:not([hidden])');
     if (visibleFile) refreshCodePanel(visibleFile);
+    const command = panel?.querySelector<HTMLElement>('[data-code-example-command] [data-code-shell]');
+    if (command) refreshCodePanel(command);
   }
 
   installHorizontalActivation(hostList, (tab) => selectHost(tab, true));
@@ -117,6 +124,26 @@ function initCodeExample(root: HTMLElement): void {
   const selected = hostTabs.find((tab) => tab.getAttribute('aria-selected') === 'true');
   const fallback = initial ?? selected ?? hostTabs[0];
   if (fallback) selectHost(fallback, false);
+
+  const enhance = (list: HTMLElement, tabs: HTMLElement[], panels: HTMLElement[], select: (tab: HTMLElement) => void) => {
+    try {
+      projections.set(list, enhanceCodeExampleTabs({
+        list, tabs, panels, onSelect: (index) => select(tabs[index]),
+      }));
+    } catch (error) {
+      console.error('[CodeExample] Real Tabs unavailable; retaining native controls.', error);
+    }
+  };
+  // Inner groups first: moving a host preserves its file/source owners.
+  for (const panel of hostPanels) {
+    const list = panel.querySelector<HTMLElement>('[data-code-file-tabs]');
+    if (list) enhance(list, tabsIn(list), filePanelsByHost.get(panel) ?? [], (tab) => selectFile(panel, tab));
+  }
+  enhance(hostList, hostTabs, hostPanels, (tab) => selectHost(tab, true));
+  document.addEventListener('astro:before-swap', () => {
+    for (const projection of [...projections.values()].reverse()) projection.destroy();
+    projections.clear();
+  }, { once: true });
 
   controllers.set(root, {
     syncGlobalHost(host) {
@@ -144,3 +171,4 @@ export function initCodeExamples(root: ParentNode = document): void {
   if (root instanceof HTMLElement && root.matches('[data-code-example]')) initCodeExample(root);
   root.querySelectorAll<HTMLElement>('[data-code-example]').forEach(initCodeExample);
 }
+

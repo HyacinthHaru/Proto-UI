@@ -9,9 +9,16 @@ export type CodeExampleFile = Readonly<{
 
 export type CodeExamplesByHost = Partial<Record<PublicRuntimeId, readonly CodeExampleFile[]>>;
 
+export type CodeExampleHostId = PublicRuntimeId | 'gpui' | 'qt' | 'flutter';
+
 export interface CodeExampleProps {
   files: CodeExamplesByHost;
-  initialHost?: PublicRuntimeId;
+  /** Commands run in a terminal, never filenames or generated shell scripts. */
+  commands?: Partial<Record<PublicRuntimeId, Readonly<{ label: string; code: string }>>>;
+  /** Explicit non-runnable entries. No command/file is invented for these hosts. */
+  pendingHosts?: readonly Readonly<{ id: CodeExampleHostId; label: string; message: string }>[];
+  initialHost?: CodeExampleHostId;
   label?: string;
   class?: string;
 }
+

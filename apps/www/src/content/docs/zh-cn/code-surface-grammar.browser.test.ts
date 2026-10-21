@@ -208,8 +208,11 @@ describe.sequential('website passive code-surface grammar (#785)', () => {
           const terminal = page.locator('.expressive-code .frame.is-terminal').first();
           const plain = page.locator('.expressive-code .frame:not(.is-terminal)').first();
           const example = page.locator('[data-code-example]').first();
+          // Content selection is independent from the surface/Copy renderer.
+          await example.locator('[data-code-example-tablist="host"] [role="tab"]').filter({ hasText: /^React$/ }).click();
           const sourceNodes = await example.locator('pre').elementHandles();
-          for (const root of [terminal, plain, example]) await ready(root, runtime, family);
+          const exampleFrame = example.locator('[data-code-host-panel]:visible').first();
+          for (const root of [terminal, plain, exampleFrame]) await ready(root, runtime, family);
           let previousBackground = '';
           for (const theme of ['light', 'dark']) {
             await page.evaluate((theme) => (document.documentElement.dataset.theme = theme), theme);
@@ -260,10 +263,10 @@ describe.sequential('website passive code-surface grammar (#785)', () => {
             expect(await example.locator('[data-code-shell][data-site-code-surface]').count()).toBe(
               0
             );
-            expect(await example.locator('[data-code-toolbar]:visible').count()).toBe(2);
+            expect(await example.locator('[data-code-example-tablist]:visible').count()).toBe(2);
             expect(
               await example
-                .locator('[data-code-host-tabs] [role="tab"]')
+                .locator('[data-code-example-tablist="host"] [role="tab"]')
                 .first()
                 .evaluate((tab) => tab.getBoundingClientRect().height)
             ).toBeGreaterThanOrEqual(44);
@@ -278,13 +281,16 @@ describe.sequential('website passive code-surface grammar (#785)', () => {
           }
           // Existing native tabs keep roving focus and source identity. This is
           // compatibility evidence, not a claim that they are already PUI Tabs.
-          const hosts = example.locator('[data-code-host-tabs] [role="tab"]');
+          const hosts = example.locator('[data-code-example-tablist="host"] [role="tab"]');
           await hosts.first().focus();
           await page.keyboard.press('End');
           expect(await hosts.last().getAttribute('aria-selected')).toBe('true');
           expect(await hosts.last().evaluate((tab) => document.activeElement === tab)).toBe(true);
+          // The last known host can be a truthful WIP entry, with no Copy or
+          // runnable file tabs. Return to a ready host for file navigation.
+          await hosts.filter({ hasText: 'React' }).click();
           const files = example.locator(
-            '[data-code-host-panel]:visible [data-code-file-tabs] [role="tab"]'
+            '[data-code-host-panel]:visible [data-code-example-tablist="file"] [role="tab"]'
           );
           await files.first().focus();
           await page.keyboard.press('End');
@@ -298,13 +304,13 @@ describe.sequential('website passive code-surface grammar (#785)', () => {
           // The real quick-start route restores Shadcn on astro:page-load.
           // Reinitialization can therefore also request a family transaction;
           // require its committed coordinates AND retirement, not just a count.
-          await settled(example, runtime, 'shadcn', 'route-reset', family);
-          expect((await appearance(example)).surfaceCount).toBe(1);
+          await settled(exampleFrame, runtime, 'shadcn', 'route-reset', family);
+          expect((await appearance(exampleFrame)).surfaceCount).toBe(1);
           for (const node of sourceNodes)
             expect(await node.evaluate((node) => node.isConnected)).toBe(true);
           await selectFixtureFamily(page, family);
-          await settled(example, runtime, family, 'fixture-restore', family);
-          expect((await appearance(example)).surfaceCount).toBe(1);
+          await settled(exampleFrame, runtime, family, 'fixture-restore', family);
+          expect((await appearance(exampleFrame)).surfaceCount).toBe(1);
           await page.setViewportSize({ width: 320, height: 1000 });
           expect(
             await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)
@@ -355,4 +361,61 @@ describe.sequential('website passive code-surface grammar (#785)', () => {
       await context.close();
     }
   }, 90_000);
+});
+
+
+// This is the CodeExample legacy WC chrome only, not a page-runtime migration.
+describe.sequential('CodeExample host coverage and upstream visual hierarchy', () => {
+  for (const locale of ['en', 'zh-cn']) {
+    for (const width of [320, 390, 1440]) {
+      for (const theme of ['light', 'dark']) {
+        it(`${locale}/${width}/${theme}: known hosts remain selectable and WIP never invents code`, async () => {
+          const context = await browser.newContext({ viewport: { width, height: 1000 } });
+          const page = await context.newPage();
+          try {
+            await page.goto(`${baseUrl}/${locale}/start-here/quick-start/`, { waitUntil: 'domcontentloaded' });
+            await page.evaluate((theme) => (document.documentElement.dataset.theme = theme), theme);
+            const example = page.locator('[data-code-example]').first();
+            const hosts = example.locator('[data-code-example-tablist="host"] [role="tab"]');
+            await hosts.last().waitFor();
+            expect(await hosts.allTextContents()).toEqual(['Web Components', 'React', 'Vue', 'Vue 2', 'GPUI', 'Qt', 'Flutter']);
+            const sourceNodes = await example.locator('pre').elementHandles();
+            for (const host of ['Web Components', 'React', 'Vue', 'Vue 2', 'GPUI', 'Qt', 'Flutter']) {
+              await hosts.filter({ hasText: new RegExp(`^${host}$`) }).click();
+              const panel = example.locator('[data-code-host-panel]:visible');
+              expect(await panel.count()).toBe(1);
+              if (['Vue 2', 'GPUI', 'Qt', 'Flutter'].includes(host)) {
+                expect(await panel.locator('[data-code-example-wip]').count()).toBe(1);
+                expect(await panel.locator('pre, [data-site-copy], [data-code-file-tabs]').count()).toBe(0);
+                expect(await panel.textContent()).toContain('WIP');
+              } else {
+                expect(await panel.locator('[data-code-example-tablist="file"]').count()).toBe(1);
+                expect(await panel.locator('[data-code-example-command] pre').textContent()).toContain('npx @proto.ui/cli@latest');
+                expect(await panel.locator('[data-code-example-command] [role="tab"], [data-code-example-command] [role="tabpanel"]').count()).toBe(0);
+                expect(await panel.locator('[data-code-example-tablist="file"]').textContent()).not.toContain('install.sh');
+                expect(await panel.locator('[data-code-file-panel]:visible pre').textContent()).toContain('proto-ui/components/');
+                await panel.locator('[data-code-example-tablist="file"] [role="tab"]').last().click();
+                if (host === 'Web Components') {
+                  expect(await panel.locator('[data-code-file-panel]:visible pre').textContent()).toContain('<proto-ui-shadcn-button');
+                  expect(await panel.locator('[data-code-file-panel]:visible pre').textContent()).toContain('type="module"');
+                }
+                expect(await panel.textContent()).not.toContain('document.body.innerHTML');
+              }
+              expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
+              await evidence(page, example, `code-example-${locale}-${width}-${theme}-${host.replaceAll(' ', '-')}`, {
+                chromeRuntime: 'wc', contentHost: host, stableVersion: '0.2.0',
+              });
+            }
+            await hosts.first().focus();
+            await page.keyboard.press('End');
+            expect(await hosts.last().getAttribute('aria-selected')).toBe('true');
+            expect(await hosts.last().evaluate((node) => node === document.activeElement)).toBe(true);
+            for (const node of sourceNodes) expect(await node.evaluate((node) => node.isConnected)).toBe(true);
+          } finally {
+            await context.close();
+          }
+        }, 120_000);
+      }
+    }
+  }
 });

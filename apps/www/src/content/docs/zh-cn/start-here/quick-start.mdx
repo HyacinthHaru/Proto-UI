@@ -10,11 +10,6 @@ import { Aside } from '@astrojs/starlight/components';
 export const buttonHostFiles = /** @type {const} */ ({
   react: [
     {
-      name: 'install.sh',
-      lang: 'bash',
-      code: 'npx @proto.ui/cli@latest add react shadcn-button',
-    },
-    {
       name: 'src/App.tsx',
       lang: 'tsx',
       code: `import { ShadcnButton } from '../proto-ui/components/react';
@@ -24,18 +19,59 @@ export function App() {
 }`,
     },
   ],
+  vue: [
+    { name: 'src/App.vue', lang: 'vue', code: `<script setup lang="ts">
+import { ShadcnButton } from '../proto-ui/components/vue';
+</script>
+
+<template>
+  <ShadcnButton variant="outline">Proto UI 0.2.0</ShadcnButton>
+</template>` },
+  ],
   wc: [
-    {
-      name: 'install.sh',
-      lang: 'bash',
-      code: 'npx @proto.ui/cli@latest add wc shadcn-button',
-    },
     {
       name: 'src/main.ts',
       lang: 'typescript',
-      code: `import '../proto-ui/components/wc';
+      code: `import './styles/proto-ui-style.css';
+import '../proto-ui/components/wc';`,
+    },
+    {
+      name: 'index.html',
+      lang: 'html',
+      code: `<proto-ui-shadcn-button variant="outline">Proto UI 0.2.0</proto-ui-shadcn-button>
+<script type="module" src="/src/main.ts"></script>`,
+    },
+  ],
+});
 
-document.body.innerHTML = '<proto-ui-shadcn-button variant="outline">Proto UI 0.2.0</proto-ui-shadcn-button>';`, }, ], });
+export const buttonHostCommands = /** @type {const} */ ({
+  react: { label: '终端', code: 'npx @proto.ui/cli@latest add react shadcn-button' },
+  vue: { label: '终端', code: 'npx @proto.ui/cli@latest add vue shadcn-button' },
+  wc: { label: '终端', code: 'npx @proto.ui/cli@latest add wc shadcn-button' },
+});
+
+export const pendingButtonHosts = /** @type {const} */ ([
+  {
+    "id": "vue2",
+    "label": "Vue 2",
+    "message": "本稳定版快速开始路径仍为 WIP。官方 Vue 2 Adapter 面向 Vue >=2.6.0 <2.7，自 0.3 预发布线提供；稳定 0.2.0 CLI 不支持 vue2，因此这里不展示不可用的 @latest 安装命令。"
+  },
+  {
+    "id": "gpui",
+    "label": "GPUI",
+    "message": "公开快速开始接入仍为 WIP。仓库已有实现中的私有 GPUI 源码编译 profile，但尚不是已发布的官方 Adapter，也没有稳定 CLI add 接入路径。"
+  },
+  {
+    "id": "qt",
+    "label": "Qt",
+    "message": "WIP。Qt 已列为编译目标，但当前 profile 尚未实现，编译会明确拒绝。暂不提供稳定版 CLI 安装或导入示例。"
+  },
+  {
+    "id": "flutter",
+    "label": "Flutter",
+    "message": "WIP。Flutter 已列为编译目标，但当前 profile 尚未实现，编译会明确拒绝。暂不提供稳定版 CLI 安装或导入示例。"
+  }
+]);
 
 <DocStageNotice
   title="Proto UI 0.2.0 已通过 npm latest 发布。"
@@ -128,12 +164,16 @@ Named layer 的顺序会在首次出现时固定。生成的 `@layer theme, prot
 
 ## 添加并导入组件
 
-请按应用实际使用的 host 添加官方 Shadcn Button facade。下面把 React 与 Web Components 各自的 CLI 命令和应用入口放在同一个示例中；支持当前站点 Adapter 偏好时，示例会以该 host 作为初始页签。
+请按应用实际使用的 host 添加官方 Shadcn Button facade。下面提供 React、Vue 与 Web Components 的稳定版 CLI 命令和应用入口，同时保留 Vue 2、GPUI、Qt 与 Flutter 的可切换页签，明确说明各自尚缺的快速接入能力。WIP 不代表已有稳定版安装路径；支持当前站点 Adapter 偏好时，示例会以该 host 作为初始页签。
+
+在项目根目录使用你平时的终端（PowerShell、命令提示符或 Unix shell）执行命令；它不是需要创建的 `install.sh` 文件。Web Components 示例假定已有支持 TypeScript 的打包应用，例如 Vite。把元素添加到现有 HTML，把副作用导入添加到现有模块入口；该导入会注册生成的自定义元素。保留页面原有内容，如果入口已经加载，不要重复添加模块脚本。路径应按应用调整，这不是直接通过 `file://` 打开的独立示例。
 
 <CodeExample
   files={buttonHostFiles}
+  commands={buttonHostCommands}
+  pendingHosts={pendingButtonHosts}
   initialHost="react"
-  label="在 React 或 Web Components 中添加并使用 Shadcn Button"
+  label="Shadcn Button 各 host 接入示例与 WIP 状态"
 />
 
 命令会安装匹配的 Adapter 与 `@proto.ui/prototypes-shadcn@0.2.0`，并在 `proto-ui/components/` 下生成 host 入口。Vue 项目在同一命令中使用 `vue`。这里有意使用相对路径：不同应用并不共享同一套路径别名与目录层级。生成的 facade 会保留 Prototype 声明的 props、事件 listener 与 ref/expose surface。
@@ -183,3 +223,4 @@ import { ShadcnButton, ShadcnDialogRoot, ShadcnToggle } from '../proto-ui/compon
 | 尝试 Neo-Brutalist 视觉风格        | [Brutalist 原型库](/zh-cn/ui-libraries/brutalist/) |
 | 查找并使用图标                     | [Lucide 图标库](/zh-cn/ui-libraries/lucide/)       |
 | 深入了解 Proto UI 的思路与设计边界 | [白皮书：序章](/zh-cn/whitepaper/0-preface/)       |
+

@@ -79,6 +79,21 @@ function fixture() {
 }
 
 describe('real WC Copy command composition', () => {
+  it('uses a real ghost Button without a backplate only inside CodeExample', async () => {
+    const { root } = fixture();
+    const example = document.createElement('section');
+    example.dataset.codeExample = '';
+    root.before(example);
+    example.append(root);
+    const handle = initCopyCommand(root, () => 'active file source');
+    mounted.push(handle);
+    await handle.ready;
+    expect(root.querySelector('[data-demo-ref="copy-backplate"]')).toBeNull();
+    const button = root.querySelector('[data-demo-ref="copy-button"]')!;
+    expect(button.getAttribute('data-pui-style')).toContain('bg-transparent');
+    expect(button.getAttribute('role')).toBe('button');
+  }, 15000);
+
   it('uses actual family Button/Lucide/LiveRegion, filters native duplication and keeps a stable name', async () => {
     const { root, writeText } = fixture();
     const handle = initCopyCommand(root, () => '<&\n');
@@ -532,3 +547,4 @@ describe('Install Copy route and fixture input ordering', () => {
     }
   }, 25000);
 });
+
