@@ -6,6 +6,10 @@ import path from 'node:path';
 import ts from 'typescript';
 
 import { canonicalizeLoweredVariants } from '../generated/lowered-variant-order.js';
+import {
+  createHookSourceSummaryContext,
+  type HookSourceValue,
+} from './hook-source-summary.js';
 
 export async function collectProtoStyleTokens(root) {
   return collectProtoStyleTokensFromFiles(await collectSourceFiles(root));
@@ -15,10 +19,12 @@ export async function collectProtoStyleTokens(root) {
 export async function collectProtoStyleTokensFromFiles(files) {
   const tokens = new Set();
   const moduleCache = new Map();
+  const sourceSummary = createHookSourceSummaryContext();
 
   for (const file of files) {
     const sourceFile = await parseSourceFile(file);
-    const scope = createScope();
+    sourceSummary.registerSource(sourceFile);
+    const scope = createScope(null, null, sourceSummary);
     await applyImportBindings(file, sourceFile, scope, moduleCache, []);
     walk(sourceFile, scope, tokens, collectExposures(sourceFile));
   }
@@ -35,9 +41,11 @@ export async function collectProtoShadowStyleTokenUsage(root) {
   const unclassifiedTokens = new Set();
   const occurrences = [];
   const moduleCache = new Map();
+  const sourceSummary = createHookSourceSummaryContext();
   for (const file of await collectSourceFiles(root)) {
     const sourceFile = await parseSourceFile(file);
-    const scope = createScope();
+    sourceSummary.registerSource(sourceFile);
+    const scope = createScope(null, null, sourceSummary);
     await applyImportBindings(file, sourceFile, scope, moduleCache, []);
     walk(sourceFile, scope, tokens, collectExposures(sourceFile), {
       occurrences,
@@ -81,10 +89,12 @@ export async function collectProtoRootStyleTokenOccurrences(root) {
   const files = await collectSourceFiles(root);
   const occurrences = [];
   const moduleCache = new Map();
+  const sourceSummary = createHookSourceSummaryContext();
 
   for (const file of files) {
     const sourceFile = await parseSourceFile(file);
-    const scope = createScope();
+    sourceSummary.registerSource(sourceFile);
+    const scope = createScope(null, null, sourceSummary);
     await applyImportBindings(file, sourceFile, scope, moduleCache, []);
     walk(sourceFile, scope, new Set(), collectExposures(sourceFile), {
       occurrences,
@@ -129,7 +139,7 @@ async function applyImportBindings(file, sourceFile, scope, moduleCache, stack) 
     for (const element of clause.namedBindings.elements) {
       const importedName = (element.propertyName ?? element.name).text;
       const value = bindings.get(importedName);
-      if (value) scope.bindings.set(element.name.text, value);
+      if (value) scope.bindings.set(element.name.text, { ...value, importedBinding: true });
     }
   }
 }
@@ -177,8 +187,8 @@ async function loadModuleBindings(file, moduleCache, stack) {
   for (const [name, value] of scope.bindings) bindings.set(name, value);
   return bindings;
 }
-function createScope(parent = null, node = null) {
-  return { parent, bindings: new Map(), node };
+function createScope(parent = null, node = null, sourceSummary = parent?.sourceSummary ?? null) {
+  return { parent, bindings: new Map(), node, sourceSummary };
 }
 
 function enclosingFunction(node) {
@@ -336,6 +346,14 @@ function walk(node, scope, tokens, exposures, rootInventory = null) {
   if (createsScope(node)) {
     const nextScope = createScope(scope, node);
 
+    if (ts.isFunctionLike(node)) {
+      for (const parameter of node.parameters) {
+        if (ts.isIdentifier(parameter.name)) nextScope.bindings.set(parameter.name.text, { opaque: true });
+      }
+    }
+    if (ts.isCatchClause(node) && node.variableDeclaration && ts.isIdentifier(node.variableDeclaration.name))
+      nextScope.bindings.set(node.variableDeclaration.name.text, { opaque: true });
+
     // Registered before the body is walked, the same order the loop runs in.
     for (const decl of loopInitializerDeclarations(node)) {
       registerDeclaration(decl, nextScope, exposures);
@@ -396,9 +414,13 @@ function walk(node, scope, tokens, exposures, rootInventory = null) {
       const resolved = resolveExpression(base, scope);
       // A base that may be either of two objects writes to both tables.
       const targets = resolved?.containers ?? (resolved ? [resolved] : []);
-      const written = bindingSemantics(resolveBinding(node.right, scope));
+      const rightBinding = resolveBinding(node.right, scope);
+      const written = bindingSemantics(rightBinding);
+      const writtenSource = sourceValueCandidates(rightBinding);
       for (const container of targets) {
-        if (written.length === 0) break;
+        const sourceWrite =
+          writtenSource.length === 1 && hasSourceHookProvenance(writtenSource[0]);
+        if (written.length === 0 && !sourceWrite) continue;
         // The scope that owns the container object, not the one that declares
         // the name written through: an alias declared inside a callback would
         // otherwise make the write look ordered against itself.
@@ -409,14 +431,47 @@ function walk(node, scope, tokens, exposures, rootInventory = null) {
           targets.length > 1 ||
           // A key this cannot read may name any member the container has.
           member === null;
-        if (!container.semanticMap) container.semanticMap = new Map();
-        const keys = member === null ? [...container.semanticMap.keys()] : [member];
-        for (const key of keys) {
-          const previous = memberSemantics(container.semanticMap.get(key));
-          const kept = uncertain
-            ? previous.filter((candidate) => !written.includes(candidate))
-            : [];
-          container.semanticMap.set(key, [...written, ...kept]);
+        if (written.length > 0 && !container.semanticMap) container.semanticMap = new Map();
+        const keys =
+          member === null
+            ? [
+                ...new Set([
+                  ...(container.semanticMap?.keys() ?? []),
+                  ...(container.sourceValue?.kind === 'object'
+                    ? container.sourceValue.members.keys()
+                    : []),
+                ]),
+              ]
+            : [member];
+        if (
+          container.sourceValue?.kind === 'object' &&
+          sourceWrite
+        ) {
+          const previousSource = {
+            kind: 'object',
+            members: new Map(container.sourceValue.members),
+          };
+          const sourceMembers = container.sourceValue.members as Map;
+          for (const key of keys) sourceMembers.set(key, writtenSource[0]);
+          if (uncertain) {
+            const sourceValues = sourceValueCandidates(container);
+            container.sourceValues = [...new Set([writtenSource[0], ...sourceValues, previousSource])];
+            for (let owner = scope; owner; owner = owner.parent) {
+              for (const held of owner.bindings.values()) {
+                if (held === container || held.sourceValue !== container.sourceValue) continue;
+                held.sourceValues = [...new Set([...(held.sourceValues ?? []), previousSource])];
+              }
+            }
+          }
+        }
+        if (written.length > 0) {
+          for (const key of keys) {
+            const previous = memberSemantics(container.semanticMap.get(key));
+            const kept = uncertain
+              ? previous.filter((candidate) => !written.includes(candidate))
+              : [];
+            container.semanticMap.set(key, [...written, ...kept]);
+          }
         }
       }
     }
@@ -449,7 +504,32 @@ function walk(node, scope, tokens, exposures, rootInventory = null) {
     if (uncertain && previous && (previous.semanticMap || previous.containers)) {
       const held = [...(next.containers ?? [next]), ...(previous.containers ?? [previous])];
       next = { ...next, containers: [...new Set(held)] };
+      if (next.semanticMap || previous.semanticMap) {
+        const semanticMap = new Map(next.semanticMap ?? []);
+        for (const [key, value] of previous.semanticMap ?? []) {
+          const existing = semanticMap.get(key);
+          const values = [
+            ...(existing ? (Array.isArray(existing) ? existing : [existing]) : []),
+            ...(Array.isArray(value) ? value : [value]),
+          ];
+          const unique = [...new Set(values.filter(Boolean))];
+          if (unique.length === 1) semanticMap.set(key, unique[0]);
+          else if (unique.length > 1) semanticMap.set(key, unique);
+        }
+        next = { ...next, semanticMap };
+      }
     }
+    const nextSourceValues = sourceValueCandidates(next);
+    const previousSourceValues = sourceValueCandidates(previous);
+    if (uncertain && nextSourceValues.length > 0 && previousSourceValues.length > 0) {
+      const sourceValues = [...new Set([...nextSourceValues, ...previousSourceValues])];
+      next = { ...next, sourceValue: sourceValues[0], sourceValues };
+    } else if (nextSourceValues.length > 1) {
+      next = { ...next, sourceValue: nextSourceValues[0], sourceValues: nextSourceValues };
+    }
+    // Once a name is reassigned, an earlier producer declaration no longer
+    // proves a later direct call through that name.
+    if (next.bindingNode) next = { ...next, bindingNode: node };
     owner.bindings.set(name, next);
     return;
   }
@@ -674,6 +754,7 @@ function createsScope(node) {
     ts.isBlock(node) ||
     ts.isModuleBlock(node) ||
     ts.isCaseBlock(node) ||
+    ts.isCatchClause(node) ||
     ts.isFunctionDeclaration(node) ||
     ts.isFunctionExpression(node) ||
     ts.isArrowFunction(node) ||
@@ -702,7 +783,8 @@ function registerDeclaration(decl, scope, exposures) {
 
   if (ts.isIdentifier(decl.name)) {
     const binding = resolveBinding(decl.initializer, scope);
-    scope.bindings.set(decl.name.text, applyExposure(decl.name.text, binding, scope, exposures));
+    const local = { ...binding, importedBinding: false, bindingNode: decl };
+    scope.bindings.set(decl.name.text, applyExposure(decl.name.text, local, scope, exposures));
     return;
   }
 
@@ -734,6 +816,153 @@ function registerDeclaration(decl, scope, exposures) {
       scope.bindings.set(element.name.text, asSemanticValue(semantic));
     }
   }
+}
+
+function sourceStateSemantic(state) {
+  // Keep the source-backed path on the same own-entry/normalization boundary
+  // as exposed local state.  In particular, `constructor` is a state name,
+  // not Object.prototype.constructor.
+  const attribute = exposedDataAttributeName(String(state.declaredName));
+  return attribute ? `data-[${attribute}]` : null;
+}
+
+function sourceValueSemantics(value) {
+  if (!value || value.kind === 'unknown') return null;
+  if (value.kind === 'state') {
+    const semantic = sourceStateSemantic(value.state);
+    return semantic ? new Map([['__state', semantic]]) : null;
+  }
+  if (value.kind === 'result') {
+    const map = new Map();
+    for (const [name, state] of value.stateHandles) {
+      const semantic = sourceStateSemantic(state);
+      if (semantic) map.set(name, semantic);
+    }
+    return map;
+  }
+  const map = new Map();
+  for (const [name, member] of value.members) {
+    const nested = sourceValueSemantics(member);
+    if (nested?.has('__state')) map.set(name, nested.get('__state'));
+  }
+  return map;
+}
+
+/** Whether a summary value carries an admitted authored hook identity. */
+function hasSourceHookProvenance(value) {
+  if (!value || value.kind === 'unknown') return false;
+  if (value.kind === 'state' || value.kind === 'result') return true;
+  for (const member of value.members.values()) {
+    if (hasSourceHookProvenance(member)) return true;
+  }
+  return false;
+}
+
+/** The source candidates a value may hold after a conditional/reassignment. */
+function sourceValueCandidates(value) {
+  if (!value) return [];
+  const values = value.sourceValues ?? (value.sourceValue ? [value.sourceValue] : []);
+  return [...new Set(values)];
+}
+
+function mergeSourceSemantics(values) {
+  const merged = new Map();
+  for (const value of values) {
+    const semantics = sourceValueSemantics(value);
+    if (!semantics) continue;
+    for (const [key, semantic] of semantics) {
+      const candidates = Array.isArray(semantic) ? semantic : [semantic];
+      const previous = merged.get(key);
+      const all = [
+        ...(previous ? (Array.isArray(previous) ? previous : [previous]) : []),
+        ...candidates,
+      ];
+      const unique = [...new Set(all.filter(Boolean))];
+      if (unique.length === 1) merged.set(key, unique[0]);
+      else if (unique.length > 1) merged.set(key, unique);
+    }
+  }
+  return merged;
+}
+
+function sourceSummaryValue(node, scope) {
+  const summary = scope.sourceSummary;
+  if (!summary) return null;
+  if (
+    !ts.isCallExpression(node) &&
+    !ts.isPropertyAccessExpression(node) &&
+    !ts.isElementAccessExpression(node)
+  )
+    return null;
+  const value = unwrapTransparent(node);
+  let localBinding = null;
+  if (ts.isCallExpression(value) && ts.isIdentifier(unwrapTransparent(value.expression))) {
+    const name = unwrapTransparent(value.expression).text;
+    localBinding = lookup(name, scope);
+    if (localBinding && !localBinding.importedBinding) {
+      const bindingNode = localBinding.bindingNode;
+      const sameBinding =
+        bindingNode && typeof summary.isSameSourceBinding === 'function'
+          ? summary.isSameSourceBinding(value, node.getSourceFile(), bindingNode)
+          : false;
+      if (!sameBinding) {
+        return {
+          resolved: { matched: true, value: { kind: 'unknown', reason: 'lexically shadowed' } },
+          semanticMap: null,
+        };
+      }
+    }
+  }
+  const environment = new Map();
+  for (let current = scope; current; current = current.parent) {
+    for (const [name, binding] of current.bindings) {
+      if (environment.has(name)) continue;
+      if (binding?.sourceValue) environment.set(name, binding.sourceValue);
+      else if (binding?.sourceState) environment.set(name, { kind: 'state', state: binding.sourceState });
+      else environment.set(name, { kind: 'unknown', reason: 'lexically shadowed' });
+    }
+  }
+  const candidateBindings = [];
+  for (let current = scope; current; current = current.parent) {
+    for (const [name, binding] of current.bindings) {
+      if (candidateBindings.some((entry) => entry.name === name)) continue;
+      const candidates = sourceValueCandidates(binding);
+      if (candidates.length > 1) candidateBindings.push({ name, candidates });
+    }
+  }
+  let environments = [environment];
+  for (const { name, candidates } of candidateBindings) {
+    environments = environments.flatMap((base) =>
+      candidates.map((candidate) => {
+        const next = new Map(base);
+        next.set(name, candidate);
+        return next;
+      })
+    );
+  }
+  const resolutions = environments.map((candidate) =>
+    summary.resolve(node, node.getSourceFile(), candidate)
+  );
+  const resolved = resolutions.find((candidate) => candidate.matched) ?? resolutions[0];
+  const values = resolutions.filter((candidate) => candidate.matched).map((candidate) => candidate.value);
+  const owner = memberOwner(node);
+  const ownerProven = owner
+    ? hasSourceHookProvenance(summary.resolve(owner, node.getSourceFile(), environment).value)
+    : false;
+  const sourcePath = values.some(hasSourceHookProvenance) || ownerProven;
+  if (!resolved.matched && localBinding && !localBinding.importedBinding)
+    return {
+      resolved: { matched: true, value: { kind: 'unknown', reason: 'local call' } },
+      semanticMap: null,
+    };
+  if (!resolved.matched || !sourcePath) return null;
+  const allProven = values.length > 0 && values.every(hasSourceHookProvenance);
+  const sourceValues = values.length > 0 ? values : [resolved.value];
+  return {
+    resolved,
+    resolvedValues: sourceValues,
+    semanticMap: allProven ? mergeSourceSemantics(sourceValues) : null,
+  };
 }
 
 function resolveExpression(node, scope) {
@@ -789,8 +1018,68 @@ function resolveExpression(node, scope) {
   }
 
   if (ts.isCallExpression(node)) {
+    const source = sourceSummaryValue(node, scope);
+    if (source) {
+      if (source.semanticMap?.size) {
+        return {
+          ...asSemanticMapValue(source.semanticMap),
+          sourceValue: source.resolved.value,
+          sourceValues: source.resolvedValues,
+        };
+      }
+      // A result may have no immediate state map while still carrying child
+      // entries or a projected public handle. Keep that identity for the next
+      // member hop instead of turning it into an ordinary empty value.
+      return {
+        ...emptyValue(),
+        sourceValue: source.resolved.value,
+        sourceValues: source.resolvedValues,
+      };
+    }
     const stateHandles = resolveKnownAsHookStateHandles(node);
     if (stateHandles) return asSemanticMapValue(stateHandles);
+  }
+
+  if (ts.isPropertyAccessExpression(node) || ts.isElementAccessExpression(node)) {
+    const source = sourceSummaryValue(node, scope);
+    if (source) {
+      // A local/container semantic map reflects member writes and branch
+      // joins. It is newer than an immutable source snapshot, so use it when
+      // available and never reintroduce a stale source candidate. A null
+      // source map means one possible source path is unknown, so even an old
+      // local semantic must not certify a convenient branch.
+      const currentSemantics = readMemberSemantics(node, scope);
+      if (currentSemantics.length > 0 && source.semanticMap !== null) {
+        return {
+          ...asSemanticValue(currentSemantics[0]),
+          alternatives: currentSemantics.slice(1),
+          sourceValue: source.resolved.value,
+          sourceValues: source.resolvedValues,
+        };
+      }
+      if (source.semanticMap?.size) {
+        if (source.semanticMap.size === 1 && source.semanticMap.has('__state')) {
+          const semantic = source.semanticMap.get('__state');
+          const candidates = Array.isArray(semantic) ? semantic : [semantic];
+          return {
+            ...asSemanticValue(candidates[0]),
+            alternatives: candidates.slice(1),
+            sourceValue: source.resolved.value,
+            sourceValues: source.resolvedValues,
+          };
+        }
+        return {
+          ...asSemanticMapValue(source.semanticMap),
+          sourceValue: source.resolved.value,
+          sourceValues: source.resolvedValues,
+        };
+      }
+      return {
+        ...emptyValue(),
+        sourceValue: source.resolved.value,
+        sourceValues: source.resolvedValues,
+      };
+    }
   }
 
   // `const controls = { ready: flag }` — a plain container of handles reads the
@@ -801,6 +1090,15 @@ function resolveExpression(node, scope) {
     if (ts.isIdentifier(node.expression)) {
       const hookHandle = lookup(node.expression.text, scope);
       if (hookHandle.semanticMap) return hookHandle;
+      // `const inherited = asFormSubmit()` binds a known hook result whose own
+      // bag is resolved from the callee, not from an authored producer. Reach
+      // the same table here so a variable-bound call lowers exactly like the
+      // direct `asFormSubmit().stateHandles` form.
+      const declaration = hookHandle.bindingNode;
+      if (declaration && ts.isVariableDeclaration(declaration) && declaration.initializer) {
+        const inherited = resolveKnownAsHookStateHandles(declaration.initializer);
+        if (inherited) return asSemanticMapValue(inherited);
+      }
     }
   }
 
@@ -908,6 +1206,29 @@ function resolveBinding(node, scope) {
       resolveBinding(inner.whenTrue, scope),
       resolveBinding(inner.whenFalse, scope),
     ];
+    const branchSourceValues = branches.map(sourceValueCandidates);
+    const allSourceBranches = branchSourceValues.every((values) => values.length > 0);
+    if (allSourceBranches) {
+      const sourceValues = [...new Set(branchSourceValues.flat())];
+      const semantics = mergeSourceSemantics(sourceValues);
+      const source = {
+        ...branches[0],
+        sourceValue: sourceValues[0],
+        sourceValues,
+        ...(semantics.size > 0 ? { semanticMap: semantics } : {}),
+      };
+      if (semantics.size > 0) {
+        const entries = [...semantics.values()].flatMap((value) =>
+          Array.isArray(value) ? value : [value]
+        );
+        return {
+          ...source,
+          semantic: entries[0],
+          alternatives: [...new Set(entries.slice(1))],
+        };
+      }
+      return source;
+    }
     const semantics = [...new Set(branches.flatMap(bindingSemantics))];
     if (semantics.length > 0) {
       return { ...branches[0], semantic: semantics[0], alternatives: semantics.slice(1) };
@@ -1706,8 +2027,6 @@ function resolveKnownAsHookStateHandles(node) {
   }
 
   if (hookName === 'asFieldTextControl') {
-    // The binding's declared fieldRequired identity wins over its additional
-    // public `required` expose key, just as __stateSemantic does at runtime.
     return new Map([
       ['value', 'data-[value]'],
       ['disabled', 'data-[disabled]'],
@@ -1715,12 +2034,6 @@ function resolveKnownAsHookStateHandles(node) {
       ['focused', 'data-[focused]'],
       ['focusVisible', 'data-[focus-visible]'],
       ['composing', 'data-[composing]'],
-      ['fieldDisabled', 'data-[field-disabled]'],
-      ['fieldReadOnly', 'data-[field-read-only]'],
-      ['fieldRequired', 'data-[field-required]'],
-      ['required', 'data-[field-required]'],
-      ['invalid', 'data-[invalid]'],
-      ['pending', 'data-[pending]'],
     ]);
   }
 

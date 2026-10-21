@@ -6,6 +6,7 @@ import { describe, expect, it } from 'vitest';
 
 import { createExposeStateWebNameMap } from '../../modules/expose-state-web/src/utils';
 import { scanRuleStateReads } from '../src/services/lowered-hook-coverage';
+import type { HookSourceState } from '../src/services/hook-source-summary';
 import {
   collectProtoStyleTokens,
   collectSourceFiles,
@@ -78,6 +79,88 @@ describe('lowered hook coverage', () => {
     expect(scanRuleStateReads(shapes.chained).usages).toEqual([
       { hook: 'asCheckboxRoot', state: 'checked' },
     ]);
+  });
+
+  it('follows imported generic helpers and literal child projections without flattening', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-provenance-'));
+    try {
+      await writeFile(
+        path.join(dir, 'producers.ts'),
+        [
+          "import { defineAsHook } from '@proto.ui/core';",
+          'function setupGeneric(def) {',
+          "  const genericFlag = def.state.bool('genericFlag', false);",
+          '  void genericFlag;',
+          '}',
+          'const helperAlias = setupGeneric;',
+          'const genericSetup = (def) => helperAlias(def);',
+          "export const asGeneric = defineAsHook({ name: 'as-generic', setup: genericSetup });",
+          'function setupChild(def) {',
+          "  const childRequired = def.state.bool('childRequired', false);",
+          '  void childRequired;',
+          '}',
+          "export const asChild = defineAsHook({ name: 'as-child', setup: setupChild, projectHandle(result) { return { state: result.stateHandles }; } });",
+          "export const asParent = defineAsHook({ name: 'as-parent', setup(def) { asChild(); } });",
+        ].join('\n')
+      );
+      const consumer = [
+        "import { asGeneric, asParent } from './producers';",
+        'const generic = asGeneric().stateHandles;',
+        'const genericAlias = generic.genericFlag;',
+        rule('w.state(genericAlias).eq(true)'),
+        'const parentAlias = asParent;',
+        'const parent = parentAlias();',
+        "const child = parent.getAsHookHandle('as-child');",
+        "def.rule({ when: (w) => w.state(child?.state.childRequired).eq(true), intent: (i) => i.feedback.style.use(tw('bg-child')) });",
+        'function shadow(asGeneric) {',
+        '  const shadowed = asGeneric().stateHandles;',
+        rule('w.state(shadowed.genericFlag).eq(true)'),
+        '}',
+      ].join('\n');
+      const scan = scanRuleStateReads(consumer, path.join(dir, 'consumer.proto.ts'));
+      expect(scan.usages).toEqual([
+        { hook: 'asGeneric', state: 'genericFlag' },
+        { hook: 'asParent', state: 'childRequired' },
+      ]);
+      expect(scan.unresolved).toEqual([
+        { expression: 'shadowed.genericFlag', reason: 'subject' },
+      ]);
+      await writeFile(path.join(dir, 'consumer.proto.ts'), consumer);
+      const tokens = await collectProtoStyleTokens(dir);
+      expect(tokens).toContain('data-[generic-flag]:bg-primary');
+      expect(tokens).toContain('data-[child-required]:bg-child');
+      expect(tokens).not.toContain('data-[generic-flag]:bg-child');
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('keeps FormField children separate and reads CheckboxGroup helper captures', async () => {
+    const source = [
+      "import { asFormField } from '@proto.ui/prototypes-base/form';",
+      "import { asCheckboxGroupItem } from '@proto.ui/prototypes-base/checkbox-group';",
+      "const fieldRoot = asFormField().getAsHookHandle('as-field-root');",
+      'const item = asCheckboxGroupItem().stateHandles;',
+      rule('w.state(fieldRoot?.stateHandles.required).eq(true)'),
+      rule('w.state(item.mixed).eq(true)'),
+      rule('w.state(item.required).eq(true)'),
+    ].join('\n');
+    const scan = scanRuleStateReads(
+      source,
+      path.join(REPO_ROOT, 'packages/cli/test/hook-provenance.proto.ts')
+    );
+
+    expect(scan.usages).toEqual([
+      { hook: 'asFormField', state: 'required' },
+      { hook: 'asCheckboxGroupItem', state: 'mixed' },
+    ]);
+    expect(scan.unresolved).toEqual([
+      { expression: 'item.required', reason: 'subject' },
+    ]);
+    expect(scan.usages[0].provenance?.declaredName).toBe('required');
+    expect(scan.usages[1].provenance?.declaredName).toBe('mixed');
+    expect(scan.usages[0].provenance?.owner.file).toContain('field/root.proto.ts');
+    expect(scan.usages[1].provenance?.owner.file).toContain('checkbox-group/item.proto.ts');
   });
 
   it('reports a lowerable read it cannot trace instead of dropping it', () => {
@@ -1631,12 +1714,12 @@ describe('lowered hook coverage', () => {
       },
       asFieldLabel: { disabled: 'disabled', required: 'required' },
       asFieldTextControl: {
+        value: 'value',
         disabled: 'disabled',
+        readOnly: 'read-only',
         focusVisible: 'focus-visible',
-        invalid: 'invalid',
-        pending: 'pending',
-        fieldRequired: 'field-required',
-        required: 'field-required',
+        focused: 'focused',
+        composing: 'composing',
       },
     };
     const dir = await mkdtemp(path.join(tmpdir(), 'lowered-disclosure-field-'));
@@ -1731,26 +1814,35 @@ describe('lowered hook coverage', () => {
     }
   });
 
-  it('keeps Field required aliases bound to the declared fieldRequired state', async () => {
+  it('rejects flattened Field aliases and follows the child projection instead', async () => {
     const dir = await mkdtemp(path.join(tmpdir(), 'lowered-field-required-'));
     try {
       await writeFile(
         path.join(dir, 'control.proto.ts'),
         [
-          'const { required } = asFieldTextControl().stateHandles;',
-          rule('w.state(required).eq(true)'),
+          "import { asFieldTextControl } from '@proto.ui/prototypes-base/field';",
+          "const child = asFieldTextControl().getAsHookHandle('as-field-control');",
+          "def.rule({ when: (w) => w.state(child?.state.fieldRequired).eq(true), intent: (i) => i.feedback.style.use(tw('bg-primary')) });",
+          "const flattened = asFieldTextControl().stateHandles;",
+          "def.rule({ when: (w) => w.state(flattened.required).eq(true), intent: (i) => i.feedback.style.use(tw('bg-invalid')) });",
         ].join('\n')
       );
       const tokens = await collectProtoStyleTokens(dir);
       expect(tokens).toContain('data-[field-required]:bg-primary');
       expect(tokens).not.toContain('data-[required]:bg-primary');
+      expect(tokens).not.toContain('data-[required]:bg-invalid');
     } finally {
       await rm(dir, { recursive: true, force: true });
     }
   });
 
   it('resolves every hook state a shipped rule condition reads', async () => {
-    const found: Array<{ file: string; hook: string; state: string }> = [];
+    const found: Array<{
+      file: string;
+      hook: string;
+      state: string;
+      provenance?: HookSourceState;
+    }> = [];
     const blind: string[] = [];
     const exposed: Array<{ file: string; state: string; exposedAs: string; attribute: string }> =
       [];
@@ -1761,8 +1853,9 @@ describe('lowered hook coverage', () => {
       const text = await readFile(absolute, 'utf8');
       if (!RULE_CALL.test(text)) continue;
       scanned += 1;
-      const scan = scanRuleStateReads(text, file);
-      for (const usage of scan.usages) found.push({ file, ...usage });
+      const scan = scanRuleStateReads(text, absolute);
+      for (const usage of scan.usages)
+        found.push({ file, hook: usage.hook, state: usage.state, provenance: usage.provenance });
       for (const miss of scan.unresolved) blind.push(`${file}: ${miss.reason} ${miss.expression}`);
       for (const local of scan.exposedLocals) exposed.push({ file, ...local });
     }
@@ -1781,36 +1874,49 @@ describe('lowered hook coverage', () => {
 
     expect(found.length).toBeGreaterThan(30);
     // The two-step shape must be reached in the shipped tree, not just fixtures.
-    expect(found).toContainEqual({
-      file: 'packages/prototypes/brutalist/src/textarea/root.proto.ts',
-      hook: 'asTextareaRoot',
-      state: 'focusVisible',
-    });
+    expect(found).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          file: 'packages/prototypes/brutalist/src/textarea/root.proto.ts',
+          hook: 'asTextareaRoot',
+          state: 'focusVisible',
+        }),
+      ])
+    );
 
-    // Fail closed: a shape the scanner cannot trace is a gate failure.
+    // Fail closed: a shape the scanner cannot trace is a gate failure. In
+    // particular, a privileged Focus fact remains visible as a failure until
+    // its producer supplies bounded declaration metadata.
     expect(blind, 'lowerable rule states the scanner could not trace').toEqual([]);
 
-    const missing = found.filter(({ hook, state }) => {
-      const states = loweredHookStates(hook);
-      return !states || !states.has(state);
-    });
+    const missing = found.filter(({ provenance }) => !provenance);
 
     expect(
       missing.map(({ file, hook, state }) => `${file}: ${hook}().${state}`),
-      'rule conditions whose hook state the extractor cannot lower'
+      'rule conditions whose imported producer state has no declaration provenance'
     ).toEqual([]);
 
     // A string comparison only lowers against a `data-[x]` variant. Every table
     // entry is one today; if that stops being true, the scanner's string form
     // would start counting rules the extractor drops.
-    const unshaped = found.filter(({ hook, state }) => {
-      const variant = loweredHookStates(hook)?.get(state) as string | undefined;
-      return !variant || !/^data-\[[a-zA-Z0-9-]+\]$/.test(variant);
+    const unshaped = found.filter(({ provenance }) => {
+      const declared = provenance?.declaredName ?? '';
+      return !/^[-a-zA-Z0-9]+$/.test(
+        declared
+          .trim()
+          .replace(/\s+/g, '-')
+          .replace(/\./g, '-')
+          .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
+          .replace(/[^a-zA-Z0-9-]/g, '-')
+          .replace(/-+/g, '-')
+          .replace(/^-+|-+$/g, '')
+          .toLowerCase()
+      );
     });
 
     expect(
       unshaped.map(({ hook, state }) => `${hook}().${state}`),
-      'hook states whose variant a string comparison could not lower'
+      'hook states whose declared source name cannot lower to a data selector'
     ).toEqual([]);
   }, 60_000);
 });
