@@ -530,11 +530,16 @@ describe.sequential('Copy commands: real consumer recipes across public runtimes
                 theme
               );
               const baseline = await unfocusedPaint(button);
-              // Fixed New York 02cad611 Button icon size-9; retain Brutalist h-10.
+              // EC retains fixed New York icon size-9. Only the explicit
+              // CodeExample consumer opts into Proto icon-compact (size-7),
+              // mapping the pinned Blocks toolbar rather than upstream icon-sm.
+              const inCodeExample = await root.evaluate((node) => Boolean(node.closest('[data-code-example]')));
+              expect(inCodeExample).toBe(index === 1);
+              const compact = family === 'shadcn' && inCodeExample;
               expect([baseline.width, baseline.height]).toEqual(
-                family === 'shadcn' ? [36, 36] : [40, 40]
+                family === 'brutalist' ? [40, 40] : compact ? [28, 28] : [36, 36]
               );
-              expect(baseline.glyph).toEqual([18, 18]);
+              expect(baseline.glyph).toEqual(compact ? [16, 16] : [18, 18]);
               expect(Math.max(...baseline.center)).toBeLessThanOrEqual(1);
               // Record baseline before any assertion on the first interactive state.
               await evidence(page, root, `${runtime}-${family}-${index}-${theme}-baseline`, {
