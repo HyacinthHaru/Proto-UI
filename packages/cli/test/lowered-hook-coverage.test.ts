@@ -1815,7 +1815,10 @@ describe('lowered hook coverage', () => {
   });
 
   it('rejects flattened Field aliases and follows the child projection instead', async () => {
-    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-field-required-'));
+    // Keep the fixture under the repository so package imports resolve through
+    // the workspace's real node_modules graph; a /tmp root has no package
+    // association and silently turns this into an unrelated unresolved case.
+    const dir = await mkdtemp(path.join(REPO_ROOT, 'node_modules/lowered-field-required-'));
     try {
       await writeFile(
         path.join(dir, 'control.proto.ts'),
@@ -1887,6 +1890,7 @@ describe('lowered hook coverage', () => {
     // Fail closed: a shape the scanner cannot trace is a gate failure. In
     // particular, a privileged Focus fact remains visible as a failure until
     // its producer supplies bounded declaration metadata.
+
     expect(blind, 'lowerable rule states the scanner could not trace').toEqual([]);
 
     const missing = found.filter(({ provenance }) => !provenance);

@@ -833,12 +833,11 @@ function sourceValueSemantics(value) {
     return semantic ? new Map([['__state', semantic]]) : null;
   }
   if (value.kind === 'result') {
-    const map = new Map();
-    for (const [name, state] of value.stateHandles) {
-      const semantic = sourceStateSemantic(state);
-      if (semantic) map.set(name, semantic);
-    }
-    return map;
+    // State handles are exposed under the runtime's `stateHandles` member. Do
+    // not flatten them onto the result itself: `hook.required` is not the same
+    // path as `hook.stateHandles.required`. The member resolver materializes
+    // the nested map when that path is actually read.
+    return null;
   }
   const map = new Map();
   for (const [name, member] of value.members) {
@@ -1019,10 +1018,18 @@ function resolveExpression(node, scope) {
 
   if (ts.isCallExpression(node)) {
     const source = sourceSummaryValue(node, scope);
+    const stateHandles = resolveKnownAsHookStateHandles(node);
     if (source) {
       if (source.semanticMap?.size) {
         return {
           ...asSemanticMapValue(source.semanticMap),
+          sourceValue: source.resolved.value,
+          sourceValues: source.resolvedValues,
+        };
+      }
+      if (stateHandles) {
+        return {
+          ...asSemanticMapValue(stateHandles),
           sourceValue: source.resolved.value,
           sourceValues: source.resolvedValues,
         };
@@ -1036,7 +1043,6 @@ function resolveExpression(node, scope) {
         sourceValues: source.resolvedValues,
       };
     }
-    const stateHandles = resolveKnownAsHookStateHandles(node);
     if (stateHandles) return asSemanticMapValue(stateHandles);
   }
 
@@ -1996,6 +2002,18 @@ function resolveKnownAsHookStateHandles(node) {
     ['focusVisible', 'data-[focus-visible]'],
     ['pressed', 'data-[pressed]'],
   ];
+
+  // `asFocusable` is a privileged host handle whose runtime state facade
+  // publishes these five observed facts with the same public names.
+  if (hookName === 'asFocusable') {
+    return new Map([
+      ['focused', 'data-[focused]'],
+      ['focusVisible', 'data-[focus-visible]'],
+      ['focusable', 'data-[focusable]'],
+      ['active', 'data-[active]'],
+      ['hasFocused', 'data-[has-focused]'],
+    ]);
+  }
 
   if (
     hookName === 'asFormSubmit' ||

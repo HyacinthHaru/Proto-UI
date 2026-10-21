@@ -1670,6 +1670,17 @@ export function scanRuleStateReads(
     }
     if (ts.isPropertyAccessExpression(argument) || ts.isElementAccessExpression(argument)) {
       if (ts.isPropertyAccessExpression(argument)) {
+        const ownerResolution = sourceResolve(argument.expression, scope);
+        if (ownerResolution.matched && sourceValueHasProvenance(ownerResolution.value)) {
+          const value = ownerResolution.value;
+          const present =
+            value.kind === 'result'
+              ? value.stateHandles.has(argument.name.text)
+              : value.kind === 'object'
+                ? value.members.has(argument.name.text)
+                : true;
+          if (!present) return null;
+        }
         const owner = bagHook(argument.expression, scope);
         if (owner) {
           return [{ hook: owner, state: argument.name.text }];

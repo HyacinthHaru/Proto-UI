@@ -108,7 +108,7 @@ function isFunctionLike(node: ts.Node): node is ts.FunctionLikeDeclaration {
  * read through an exposed state is a genuine named state handle at runtime.
  */
 function isExposeStateCall(owner: ts.Expression, defName: string): boolean {
-  if (!ts.isPropertyAccessExpression(owner) || owner.name.text !== 'state') return false;
+  if (!ts.isPropertyAccessExpression(owner) || owner.name.text !== 'expose') return false;
   const target = unwrap(owner.expression);
   if (!ts.isIdentifier(target) || target.text !== defName) return false;
   return true;
@@ -505,6 +505,8 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
       activeSetupFunctions.add(functionKey);
       const strings = new Map<string, string>();
       const localNames = new Set<string>();
+      const localStates = new Map<string, HookSourceState>();
+      const privilegedHandles = new Set<string>();
       for (const parameter of fn.parameters) {
         if (ts.isIdentifier(parameter.name)) localNames.add(parameter.name.text);
       }
@@ -516,6 +518,26 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
           const literal = literalString(node.initializer, module, strings);
           if (literal !== null) strings.set(node.name.text, literal);
           const initializer = unwrap(node.initializer);
+          if (
+            ts.isCallExpression(initializer) &&
+            ts.isIdentifier(initializer.expression) &&
+            initializer.expression.text === 'asFocusable'
+          ) {
+            privilegedHandles.add(node.name.text);
+          }
+          if (
+            ts.isPropertyAccessExpression(initializer) &&
+            ts.isIdentifier(unwrap(initializer.expression)) &&
+            privilegedHandles.has(unwrap(initializer.expression).text)
+          ) {
+            const declared = initializer.name.text;
+            localStates.set(node.name.text, {
+              owner: producer.ref,
+              declaration: sourceRef(initializer),
+              declaredName: declared,
+              variant: declared,
+            });
+          }
           if (ts.isIdentifier(initializer) && active.has(initializer.text)) active.add(node.name.text);
         }
         if (ts.isCallExpression(node)) {
@@ -529,22 +551,40 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
             ts.isIdentifier(unwrap(stateContainer)) &&
             active.has(unwrap(stateContainer).text) &&
             stateMethod &&
-            (memberName(stateOwner) === 'state' ||
-              // The runtime's `collectNamedStateHandles` reads the raw
-              // `def.state` captures and the `def.expose.state` views from
-              // the same frame, so an exposed state is a named state handle.
-              isExposeStateCall(stateOwner, unwrap(stateContainer).text))
+            memberName(stateOwner) === 'state'
           ) {
             if (ts.isPropertyAccessExpression(expression) || ts.isElementAccessExpression(expression)) {
               const declared = literalString(node.arguments[0], module, strings);
               if (declared !== null) {
-                stateHandles.set(declared, {
+                const state = {
                   owner: producer.ref,
                   declaration: sourceRef(node),
                   declaredName: declared,
                   variant: stateMethod,
-                });
+                };
+                stateHandles.set(declared, state);
+                const parent = node.parent;
+                if (
+                  parent &&
+                  ts.isVariableDeclaration(parent) &&
+                  ts.isIdentifier(parent.name)
+                )
+                  localStates.set(parent.name.text, state);
               }
+            }
+          }
+          if (
+            stateOwner &&
+            stateContainer &&
+            ts.isIdentifier(unwrap(stateContainer)) &&
+            active.has(unwrap(stateContainer).text) &&
+            isExposeStateCall(stateOwner, unwrap(stateContainer).text) &&
+            node.arguments.length > 1
+          ) {
+            const handle = unwrap(node.arguments[1]);
+            if (ts.isIdentifier(handle)) {
+              const state = localStates.get(handle.text);
+              if (state) stateHandles.set(state.declaredName, state);
             }
           }
           const calleeName = ts.isIdentifier(expression) ? expression.text : null;
