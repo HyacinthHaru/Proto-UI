@@ -37,6 +37,7 @@ export const SHADCN_STYLE_TOKENS: string[] = [
   'bg-input/50',
   'bg-input/80',
   'bg-muted',
+  'bg-muted-foreground/15',
   'bg-popover',
   'bg-primary',
   'bg-primary-foreground',

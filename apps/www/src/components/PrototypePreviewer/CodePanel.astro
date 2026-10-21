@@ -75,7 +75,7 @@ const highlighted = await highlightCode(code, lang);
 </script>
 
 <style is:global>
-  .code-panel__title { padding: 0.75rem; font-size: 0.8125rem; overflow-wrap: anywhere; }
+  .code-panel__title { display: flex; align-items: center; min-height: 3rem; padding: 0.5rem 1rem; border-bottom: 1px solid var(--color-border); font-size: 0.875rem; overflow-wrap: anywhere; }
   /* Required source reserves a real column for Copy, outside the scroll viewport. */
   [data-code-collapsible='false'] [data-code-inner] {
     display: grid;

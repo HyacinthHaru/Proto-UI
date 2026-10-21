@@ -414,6 +414,24 @@ describe.sequential('CodeExample host coverage and upstream visual hierarchy', (
                 expect(await panel.locator('[data-code-example-command] [data-code-example-tree]').count()).toBe(0);
                 expect(await panel.locator('[data-code-file-browser] [data-code-example-command]').count()).toBe(0);
                 const tree = panel.locator('[data-code-example-tree]');
+                const embedded = await tree.evaluate((node) => {
+                  const root = getComputedStyle(node);
+                  const row = node.querySelector<HTMLElement>('[data-code-tree-kind="folder"]')!;
+                  const item = getComputedStyle(row);
+                  const icon = row.querySelector<HTMLElement>('[data-code-tree-icon]')!;
+                  return {
+                    display: root.display, gap: root.rowGap, border: root.borderWidth,
+                    shadow: root.boxShadow, background: root.backgroundColor,
+                    rowHeight: row.getBoundingClientRect().height, radius: item.borderRadius,
+                    font: item.fontSize, icon: icon.getBoundingClientRect().width,
+                  };
+                });
+                expect(embedded).toEqual({
+                  display: 'flex', gap: '6px', border: '0px', shadow: 'none',
+                  background: 'rgba(0, 0, 0, 0)', rowHeight: 32, radius: '0px', font: '14px', icon: 16,
+                });
+                expect(await tree.locator('[data-code-tree-icon="folder"]').count()).toBeGreaterThan(0);
+                expect(await tree.locator('[data-code-tree-icon="file"]').count()).toBeGreaterThan(0);
                 const folder = tree.locator('[data-code-tree-kind="folder"]').first();
                 const initialSource = await panel.locator('[data-code-file-panel]:visible pre').textContent();
                 await folder.click();
@@ -500,5 +518,43 @@ it('keeps every authored source reachable without JavaScript and does not fake a
     await htmlLink.click();
     expect(await example.locator('[data-code-host="wc"] [data-code-file-panel]:visible').count()).toBe(2);
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
+  } finally { await context.close(); }
+}, 90_000);
+
+it('keeps embedded file navigation identifiable in forced colors and enlarged text', async () => {
+  const context = await browser.newContext({ viewport: { width: 390, height: 1000 }, forcedColors: 'active' });
+  const page = await context.newPage();
+  try {
+    await page.goto(`${baseUrl}/en/start-here/quick-start/`);
+    const example = page.locator('[data-code-example]');
+    await example.getByRole('tab', { name: 'React', exact: true }).click();
+    const tree = example.locator('[data-code-host-panel]:visible [data-code-example-tree]');
+    const folder = tree.locator('[data-code-tree-kind="folder"]');
+    const file = tree.locator('[data-code-tree-kind="file"]');
+    await folder.focus();
+    await page.keyboard.press('ArrowRight');
+    expect(await file.evaluate((node) => node === document.activeElement)).toBe(true);
+    expect(await file.getAttribute('aria-selected')).toBe('true');
+    expect(await file.evaluate((node) => getComputedStyle(node).fontWeight)).toBe('500');
+    const focus = await file.evaluate((node) => ({
+      visible: node.hasAttribute('data-focus-visible'),
+      width: parseFloat(getComputedStyle(node).outlineWidth),
+      style: getComputedStyle(node).outlineStyle,
+    }));
+    expect(focus.visible).toBe(true);
+    expect(focus.width).toBeGreaterThanOrEqual(2);
+    expect(focus.style).not.toBe('none');
+    await page.keyboard.press('ArrowLeft');
+    expect(await folder.evaluate((node) => node === document.activeElement)).toBe(true);
+    expect(await file.getAttribute('aria-selected')).toBe('true');
+    expect(await file.evaluate((node) => getComputedStyle(node).fontWeight)).toBe('500');
+    expect(await folder.evaluate((node) => getComputedStyle(node).fontWeight)).toBe('400');
+    await evidence(page, example, 'code-example-embedded-forced-colors', { forcedColors: true, contentHost: 'react' });
+    // Text scaling, not a claim of browser-zoom or assistive-technology acceptance.
+    await page.evaluate(() => { document.documentElement.style.fontSize = '200%'; });
+    expect(await file.evaluate((node) => parseFloat(getComputedStyle(node).fontSize))).toBe(28);
+    expect(await file.evaluate((node) => node.getBoundingClientRect().height)).toBeGreaterThanOrEqual(64);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
+    await evidence(page, example, 'code-example-embedded-forced-colors-text200', { forcedColors: true, textScalePercent: 200, browserZoomVerified: false });
   } finally { await context.close(); }
 }, 90_000);

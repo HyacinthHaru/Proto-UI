@@ -3,6 +3,8 @@ import * as shadcn from '@proto.ui/prototypes-shadcn/tree';
 import * as brutalist from '@proto.ui/prototypes-brutalist/tree';
 import { lucideChevronDownIcon } from '@proto.ui/prototypes-lucide/icons/chevron-down';
 import { lucideChevronRightIcon } from '@proto.ui/prototypes-lucide/icons/chevron-right';
+import { lucideFileIcon } from '@proto.ui/prototypes-lucide/icons/file';
+import { lucideFolderIcon } from '@proto.ui/prototypes-lucide/icons/folder';
 
 export interface CodeFileNode {
   key: string;
@@ -63,7 +65,7 @@ export function enhanceCodeExampleTree(options: {
     const tag = `pui-code-example-${family}-tree-${part}`;
     if (!customElements.get(tag)) customElements.define(tag, AdaptToWebComponent(proto, { register: false }));
   }
-  for (const [direction, proto] of Object.entries({ down: lucideChevronDownIcon, right: lucideChevronRightIcon })) {
+  for (const [direction, proto] of Object.entries({ down: lucideChevronDownIcon, right: lucideChevronRightIcon, file: lucideFileIcon, folder: lucideFolderIcon })) {
     const tag = `pui-code-example-chevron-${direction}`;
     if (!customElements.get(tag)) customElements.define(tag, AdaptToWebComponent(proto, { register: false }));
   }
@@ -75,7 +77,7 @@ export function enhanceCodeExampleTree(options: {
   let destroyed = false;
   let queued = false;
   const path = (index: number) => nodes.find((node) => node.fileIndex === index)!.key;
-  const props = () => ({ value: path(value), expandedKeys: expanded, a11yLabel: list.getAttribute('aria-label') ?? 'Files', surfaceStyle: { display: 'block', minWidth: '0', width: '100%' } });
+  const props = () => ({ ...(family === 'shadcn' ? { appearance: 'embedded' } : {}), value: path(value), expandedKeys: expanded, a11yLabel: list.getAttribute('aria-label') ?? 'Files', surfaceStyle: { ...(family === 'brutalist' ? { display: 'block' } : {}), minWidth: '0', width: '100%' } });
   setElementProps(root, props());
   const items = new Map<string, HTMLElement>();
   for (const node of nodes) {
@@ -90,7 +92,12 @@ export function enhanceCodeExampleTree(options: {
     // Indentation is consumer layout; the actual Tree owns all state paint.
     setElementProps(item, {
       nodeKey: node.key, parentKey: node.parentKey, textValue: node.name,
-      surfaceStyle: { paddingInlineStart: `${0.5 + node.depth * 0.75}rem`, paddingInlineEnd: '0.5rem', minHeight: '2.75rem', fontSize: '0.8125rem', overflowWrap: 'anywhere' },
+      ...(family === 'shadcn' ? { appearance: 'embedded' } : {}),
+      surfaceStyle: {
+        paddingInlineStart: `${family === 'shadcn' ? (node.depth + 1) * (node.fileIndex === undefined && node.depth === 0 ? 1 : node.depth === 1 ? 1.2 : 1.3) : 0.5 + node.depth * 0.75}rem`,
+        paddingInlineEnd: '0.5rem', overflowWrap: 'anywhere',
+        ...(family === 'brutalist' ? { minHeight: '2.75rem', fontSize: '0.8125rem' } : {}),
+      },
     });
     if (node.fileIndex === undefined) {
       for (const direction of ['down', 'right']) {
@@ -98,11 +105,24 @@ export function enhanceCodeExampleTree(options: {
         glyph.dataset.codeTreeChevron = direction;
         glyph.setAttribute('aria-hidden', 'true');
         glyph.hidden = direction === 'right';
-        setElementProps(glyph, { size: 14, surfaceStyle: { flex: 'none', pointerEvents: 'none' } });
+        setElementProps(glyph, { size: family === 'shadcn' ? 16 : 14, surfaceStyle: { flex: 'none', pointerEvents: 'none' } });
         item.append(glyph);
       }
     }
-    item.append(doc.createTextNode(node.fileIndex === undefined ? `${node.name}/` : node.name));
+    if (family === 'shadcn') {
+      if (node.fileIndex !== undefined) {
+        const spacer = doc.createElement('span');
+        spacer.setAttribute('aria-hidden', 'true');
+        spacer.style.cssText = 'width:1rem;flex:none';
+        item.append(spacer);
+      }
+      const icon = doc.createElement(`pui-code-example-chevron-${node.fileIndex === undefined ? 'folder' : 'file'}`);
+      icon.dataset.codeTreeIcon = node.fileIndex === undefined ? 'folder' : 'file';
+      icon.setAttribute('aria-hidden', 'true');
+      setElementProps(icon, { size: 16, surfaceStyle: { flex: 'none', pointerEvents: 'none' } });
+      item.append(icon);
+    }
+    item.append(doc.createTextNode(family === 'shadcn' ? node.name : node.fileIndex === undefined ? `${node.name}/` : node.name));
     root.append(item);
     items.set(node.key, item);
   }
