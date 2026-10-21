@@ -18,9 +18,11 @@ interface Props {
   /** Required instructions stay readable, including before hydration. */
   collapsible?: boolean;
   copyLabel?: string;
+  title?: string;
+  panelRole?: 'tabpanel' | 'region';
 }
 
-const { code, lang = 'tsx', id, labelledBy, hidden, fileIndex, framed = true, collapsible = true, copyLabel = 'Copy code' } = Astro.props;
+const { code, lang = 'tsx', id, labelledBy, hidden, fileIndex, framed = true, collapsible = true, copyLabel = 'Copy code', title, panelRole = 'tabpanel' } = Astro.props;
 const highlighted = await highlightCode(code, lang);
 ---
 
@@ -28,7 +30,7 @@ const highlighted = await highlightCode(code, lang);
 <figure
   id={id}
   class="relative min-w-0 max-w-full"
-  role={labelledBy ? 'tabpanel' : undefined}
+  role={labelledBy ? panelRole : undefined}
   aria-labelledby={labelledBy}
   hidden={hidden}
   data-code-file-panel={labelledBy ? '' : undefined}
@@ -38,6 +40,7 @@ const highlighted = await highlightCode(code, lang);
   data-code-expanded={collapsible ? undefined : 'true'}
   data-site-code-surface={framed ? 'frame' : undefined}
 >
+  {title && <figcaption class="code-panel__title" data-code-file-title>{title}</figcaption>}
   <div class="group relative min-w-0 max-w-full min-h-12" data-code-inner data-code-expanded={collapsible ? undefined : 'true'}>
     <div class="site-code-copy-overlay" hidden={collapsible} data-copy data-site-copy data-copy-label={copyLabel}>
     </div>
@@ -72,6 +75,7 @@ const highlighted = await highlightCode(code, lang);
 </script>
 
 <style is:global>
+  .code-panel__title { padding: 0.75rem; font-size: 0.8125rem; overflow-wrap: anywhere; }
   /* Required source reserves a real column for Copy, outside the scroll viewport. */
   [data-code-collapsible='false'] [data-code-inner] {
     display: grid;

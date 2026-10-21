@@ -58,29 +58,27 @@ const instanceId = `code-example-${Math.random().toString(36).slice(2)}`;
   aria-label={label}
 >
   <div class="code-example__strip" data-code-toolbar>
-    <div class="code-example__tabs" role="tablist" aria-label="Host" data-code-host-tabs>
+    <nav class="code-example__tabs" aria-label="Host" data-code-host-tabs>
       {
         hosts.map((host, hostIndex) => {
           const selected = host === activeHost;
           return (
-            <button
+            <a
               id={`${instanceId}-host-tab-${hostIndex}`}
-              type="button"
-              role="tab"
+              href={`#${instanceId}-host-panel-${hostIndex}`}
               data-code-host-tab
               data-code-host={host}
               data-code-host-name={hostLabel(host)}
               data-code-host-availability={pending.has(host) ? labels.pending : undefined}
               aria-controls={`${instanceId}-host-panel-${hostIndex}`}
-              aria-selected={selected}
-              tabindex={selected ? 0 : -1}
+              data-code-host-selected={selected ? 'true' : undefined}
             >
               {hostLabel(host)}{pending.has(host) && <span data-code-host-status> · {labels.pending}</span>}
-            </button>
+            </a>
           );
         })
       }
-    </div>
+    </nav>
   </div>
 
   <p class="code-example__overflow-hint" data-code-host-overflow>{labels.overflow}</p>
@@ -95,15 +93,14 @@ const instanceId = `code-example-${Math.random().toString(36).slice(2)}`;
         <section
           id={`${instanceId}-host-panel-${hostIndex}`}
           class="code-example__host-panel"
-          role="tabpanel"
+          role="region"
           data-code-host-panel
-          data-site-code-surface="frame"
           data-code-host={host}
           aria-labelledby={`${instanceId}-host-tab-${hostIndex}`}
           hidden={!hostSelected}
         >
           {command && (
-            <section data-code-example-command aria-label={command.label}>
+            <section data-code-example-command data-site-code-surface="frame" aria-label={command.label}>
               <div class="code-example__command-label" data-code-toolbar data-site-code-surface="toolbar">
                 {labels.install} · {command.label}
               </div>
@@ -113,55 +110,47 @@ const instanceId = `code-example-${Math.random().toString(36).slice(2)}`;
           {!pendingHost && <div class="code-example__usage-label">{labels.usage}</div>}
           {!pendingHost && isRuntimeId(host) && guidance[host] && <p class="code-example__guidance" data-code-example-guidance>{guidance[host]}</p>}
           {pendingHost ? (
-            <div class="code-example__wip" data-code-example-wip>
+            <div class="code-example__wip" data-code-example-wip data-site-code-surface="frame">
               <p><strong>WIP · {pendingHost.label}</strong></p>
               <p>{pendingHost.message}</p>
             </div>
-          ) : <div
-            class="code-example__strip code-example__strip--files"
-            data-code-toolbar
-            data-site-code-surface="toolbar"
-          >
-            <div
-              class="code-example__tabs"
-              role="tablist"
-              aria-label={`Files for ${host}`}
-              data-code-file-tabs
-            >
+          ) : <section class="code-example__browser" data-code-file-browser data-site-code-surface="frame" aria-label={labels.usage}>
+            <aside class="code-example__files" data-code-files>
+              <div class="code-example__files-label">{labels.files ?? 'Files'}</div>
+              <nav class="code-example__tabs code-example__file-fallback" aria-label={`Files for ${host}`} data-code-file-tabs>
+                {hostFiles.map((file, fileIndex) => (
+                  <a
+                    id={`${instanceId}-${hostIndex}-file-tab-${fileIndex}`}
+                    href={`#${instanceId}-${hostIndex}-file-panel-${fileIndex}`} data-code-file-tab
+                    data-code-file-index={fileIndex}
+                    data-code-file-path={file.name}
+                    aria-controls={`${instanceId}-${hostIndex}-file-panel-${fileIndex}`}
+                    data-code-file-selected={fileIndex === 0 ? 'true' : undefined}
+                  >{file.name}</a>
+                ))}
+              </nav>
+            </aside>
+            <div class="code-example__source" data-code-file-source>
               {hostFiles.map((file, fileIndex) => (
-                <button
-                  id={`${instanceId}-${hostIndex}-file-tab-${fileIndex}`}
-                  type="button"
-                  role="tab"
-                  data-code-file-tab
-                  data-code-file-index={fileIndex}
-                  aria-controls={`${instanceId}-${hostIndex}-file-panel-${fileIndex}`}
-                  aria-selected={fileIndex === 0}
-                  tabindex={fileIndex === 0 ? 0 : -1}
-                >
-                  {file.name}
-                </button>
+                <CodePanel
+                  id={`${instanceId}-${hostIndex}-file-panel-${fileIndex}`}
+                  labelledBy={`${instanceId}-${hostIndex}-file-tab-${fileIndex}`}
+                  hidden={fileIndex !== 0} fileIndex={fileIndex} panelRole="region" framed={false}
+                  collapsible={false} title={file.name}
+                  copyLabel={`${labels.copy} ${file.name}`}
+                  code={file.code} lang={file.lang}
+                />
               ))}
             </div>
-          </div>}
-          {hostFiles.map((file, fileIndex) => (
-            <CodePanel
-              id={`${instanceId}-${hostIndex}-file-panel-${fileIndex}`}
-              labelledBy={`${instanceId}-${hostIndex}-file-tab-${fileIndex}`}
-              hidden={fileIndex !== 0}
-              fileIndex={fileIndex}
-              framed={false}
-              collapsible={false}
-              copyLabel={`${labels.copy} ${file.name}`}
-              code={file.code}
-              lang={file.lang}
-            />
-          ))}
+          </section>}
+
         </section>
       );
     })
   }
 </section>
+
+<noscript set:html={'<style>[data-code-example] [data-code-host-panel][hidden], [data-code-example] [data-code-file-panel][hidden] { display:block!important; } [data-code-example] [data-code-host-panel] { margin-block:1.5rem; }</style>'} />
 
 <script>
   import { initCodeExamples } from './code-example-client';
@@ -196,6 +185,14 @@ const instanceId = `code-example-${Math.random().toString(36).slice(2)}`;
     color: var(--color-muted-foreground);
   }
 
+  .code-example__browser { display: grid; grid-template-columns: minmax(10rem, 13rem) minmax(0, 1fr); }
+  .code-example__files, .code-example__source { min-width: 0; }
+  .code-example__files { padding: 0.75rem; }
+  .code-example__files-label { padding: 0 0.25rem 0.5rem; font-size: 0.8125rem; font-weight: 600; }
+  .code-example__file-fallback { width: 100%; flex-direction: column; align-items: stretch; }
+  .code-example .code-example__file-fallback a { display: block; min-height: 2.75rem; padding: 0.5rem; text-align: start; white-space: normal; overflow-wrap: anywhere; }
+  @media (max-width: 48rem) { .code-example__browser { grid-template-columns: minmax(0, 1fr); } }
+
   .code-example__usage-label { padding: 1rem 1rem 0.25rem; font-size: 0.875rem; font-weight: 600; }
   .code-example__guidance { margin: 0; padding: 0.5rem 1rem; font-size: 0.8125rem; color: var(--color-muted-foreground); }
   .code-example__overflow-hint { margin: 0.25rem 0; font-size: 0.75rem; color: var(--color-muted-foreground); }
@@ -219,7 +216,7 @@ const instanceId = `code-example-${Math.random().toString(36).slice(2)}`;
     padding: 0;
   }
 
-  .code-example__tabs button {
+  .code-example__tabs :is(button, a) {
     flex: none;
     border: 0;
     border-radius: 0.375rem;
@@ -232,15 +229,16 @@ const instanceId = `code-example-${Math.random().toString(36).slice(2)}`;
     line-height: 1.25rem;
     white-space: nowrap;
     cursor: pointer;
+    text-decoration: none;
   }
 
-  .code-example__tabs button[aria-selected='true'] {
+  .code-example__tabs :is(button, a)[aria-selected='true'] {
     background: var(--color-background);
     color: var(--color-foreground);
     box-shadow: 0 1px 2px color-mix(in srgb, var(--color-foreground) 12%, transparent);
   }
 
-  .code-example__tabs button:focus-visible {
+  .code-example__tabs :is(button, a):focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 1px;
   }

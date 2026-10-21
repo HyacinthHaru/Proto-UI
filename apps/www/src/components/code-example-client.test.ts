@@ -13,6 +13,8 @@ vi.mock('./code-example-tabs', async (importOriginal) => ({
   enhanceCodeExampleTabs: () => ({ select() {}, destroy() {} }),
 }));
 
+vi.mock('./code-example-tree', () => ({ enhanceCodeExampleTree: () => ({ select() {}, destroy() {} }) }));
+
 function exampleMarkup(id: string, initialHost: 'wc' | 'react' = 'wc'): string {
   const hosts = ['wc', 'react'] as const;
   return `

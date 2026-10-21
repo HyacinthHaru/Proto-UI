@@ -211,7 +211,7 @@ describe.sequential('website passive code-surface grammar (#785)', () => {
           // Content selection is independent from the surface/Copy renderer.
           await example.locator('[data-code-example-tablist="host"] [role="tab"]').filter({ hasText: /^React$/ }).click();
           const sourceNodes = await example.locator('pre').elementHandles();
-          const exampleFrame = example.locator('[data-code-host-panel]:visible').first();
+          const exampleFrame = example.locator('[data-code-host-panel]:visible [data-code-file-browser]').first();
           for (const root of [terminal, plain, exampleFrame]) await ready(root, runtime, family);
           let previousBackground = '';
           for (const theme of ['light', 'dark']) {
@@ -263,7 +263,8 @@ describe.sequential('website passive code-surface grammar (#785)', () => {
             expect(await example.locator('[data-code-shell][data-site-code-surface]').count()).toBe(
               0
             );
-            expect(await example.locator('[data-code-example-tablist]:visible').count()).toBe(2);
+            expect(await example.locator('[data-code-example-tablist]:visible').count()).toBe(1);
+            expect(await example.locator('[data-code-example-tree][role="tree"]:visible').count()).toBe(1);
             expect(
               await example
                 .locator('[data-code-example-tablist="host"] [role="tab"]')
@@ -290,10 +291,12 @@ describe.sequential('website passive code-surface grammar (#785)', () => {
           // runnable file tabs. Return to a ready host for file navigation.
           await hosts.filter({ hasText: 'React' }).click();
           const files = example.locator(
-            '[data-code-host-panel]:visible [data-code-example-tablist="file"] [role="tab"]'
+            '[data-code-host-panel]:visible [data-code-example-tree] [role="treeitem"]'
           );
           await files.first().focus();
           await page.keyboard.press('End');
+          expect(await files.last().evaluate((node) => node === document.activeElement)).toBe(true);
+          await page.keyboard.press('Enter');
           expect(await files.last().getAttribute('aria-selected')).toBe('true');
           for (const node of sourceNodes)
             expect(await node.evaluate((node) => node.isConnected)).toBe(true);
@@ -404,12 +407,29 @@ describe.sequential('CodeExample host coverage and upstream visual hierarchy', (
                 expect(await panel.locator('pre, [data-site-copy], [data-code-file-tabs]').count()).toBe(0);
                 expect(await panel.textContent()).toContain('WIP');
               } else {
-                expect(await panel.locator('[data-code-example-tablist="file"]').count()).toBe(1);
+                expect(await panel.locator('[data-code-example-tree]').count()).toBe(1);
                 expect(await panel.locator('[data-code-example-command] pre').textContent()).toContain('npx @proto.ui/cli@latest');
                 expect(await panel.locator('[data-code-example-command] [role="tab"], [data-code-example-command] [role="tabpanel"]').count()).toBe(0);
-                expect(await panel.locator('[data-code-example-tablist="file"]').textContent()).not.toContain('install.sh');
+                expect(await panel.locator('[data-code-example-tree]').textContent()).not.toContain('install.sh');
+                expect(await panel.locator('[data-code-example-command] [data-code-example-tree]').count()).toBe(0);
+                expect(await panel.locator('[data-code-file-browser] [data-code-example-command]').count()).toBe(0);
+                const tree = panel.locator('[data-code-example-tree]');
+                const folder = tree.locator('[data-code-tree-kind="folder"]').first();
+                const initialSource = await panel.locator('[data-code-file-panel]:visible pre').textContent();
+                await folder.click();
+                expect(await folder.getAttribute('aria-expanded')).toBe('false');
+                expect(await panel.locator('[data-code-file-panel]:visible pre').textContent()).toBe(initialSource);
+                await folder.focus();
+                await page.keyboard.press('ArrowRight');
+                expect(await folder.getAttribute('aria-expanded')).toBe('true');
+                await page.keyboard.press('ArrowRight');
+                expect(await tree.locator('[data-code-tree-kind="file"]').first().evaluate((node) => node === document.activeElement)).toBe(true);
+                const treeBounds = await tree.boundingBox();
+                const sourceBounds = await panel.locator('[data-code-file-source]').boundingBox();
+                if (width >= 1440) expect(treeBounds!.x + treeBounds!.width).toBeLessThanOrEqual(sourceBounds!.x + 1);
+                else expect(treeBounds!.y + treeBounds!.height).toBeLessThanOrEqual(sourceBounds!.y + 1);
                 expect(await panel.locator('[data-code-file-panel]:visible pre').textContent()).toContain('proto-ui/components/');
-                await panel.locator('[data-code-example-tablist="file"] [role="tab"]').last().click();
+                await panel.locator('[data-code-example-tree] [data-code-tree-kind="file"]').last().click();
                 if (host === 'Web Components') {
                   expect(await panel.locator('[data-code-file-panel]:visible pre').textContent()).toContain('<proto-ui-shadcn-button');
                   expect(await panel.locator('[data-code-file-panel]:visible pre').textContent()).toContain('type="module"');
@@ -435,7 +455,12 @@ describe.sequential('CodeExample host coverage and upstream visual hierarchy', (
                   const copyLabel = await shell.locator('[data-site-copy]').getAttribute('data-copy-label');
                   expect(copyLabel?.startsWith(locale === 'en' ? 'Copy ' : '复制 ')).toBe(true);
                   if (expectedTarget === 'Terminal' || expectedTarget === '终端') expect(copyLabel).toBe(`${locale === 'en' ? 'Copy' : '复制'} ${expectedTarget}`);
-                  else expect(copyLabel).toContain(host === 'React' ? 'src/App.tsx' : host === 'Vue' ? 'src/App.vue' : 'index.html');
+                  else {
+                    const expectedPath = host === 'React' ? 'src/App.tsx' : host === 'Vue' ? 'src/App.vue' : 'index.html';
+                    expect(copyLabel).toContain(expectedPath);
+                    expect(await shell.locator('[data-code-file-title]').textContent()).toBe(expectedPath);
+                    expect(await tree.locator(`[data-code-tree-path="${expectedPath}"]`).getAttribute('aria-selected')).toBe('true');
+                  }
                 }
               }
               expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
@@ -460,3 +485,20 @@ describe.sequential('CodeExample host coverage and upstream visual hierarchy', (
     }
   }
 });
+
+
+it('keeps every authored source reachable without JavaScript and does not fake an interactive tree', async () => {
+  const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 1000 } });
+  const page = await context.newPage();
+  try {
+    await page.goto(`${baseUrl}/en/start-here/quick-start/`);
+    const example = page.locator('[data-code-example]');
+    expect(await example.locator('[role="tree"], [role="treeitem"]').count()).toBe(0);
+    expect(await example.locator('[data-code-host-panel]:visible').count()).toBe(7);
+    expect(await example.locator('[data-code-file-panel]:visible').count()).toBe(4);
+    const htmlLink = example.locator('[data-code-file-tabs] a').filter({ hasText: /^index.html$/ });
+    await htmlLink.click();
+    expect(await example.locator('[data-code-host="wc"] [data-code-file-panel]:visible').count()).toBe(2);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
+  } finally { await context.close(); }
+}, 90_000);

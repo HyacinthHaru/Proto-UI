@@ -19,7 +19,7 @@ export interface CodeExampleProps {
   pendingHosts?: readonly Readonly<{ id: CodeExampleHostId; label: string; message: string }>[];
   /** Host-specific integration guidance, shown beside that host’s usage. */
   guidance?: Partial<Record<PublicRuntimeId, string>>;
-  labels?: Readonly<{ install: string; usage: string; copy: string; pending: string; overflow: string }>;
+  labels?: Readonly<{ install: string; usage: string; copy: string; pending: string; overflow: string; files?: string }>;
   initialHost?: CodeExampleHostId;
   label?: string;
   class?: string;

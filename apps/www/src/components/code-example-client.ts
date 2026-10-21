@@ -1,4 +1,5 @@
 import { enhanceCodeExampleTabs, revealCodeExampleTab } from './code-example-tabs';
+import { enhanceCodeExampleTree } from './code-example-tree';
 import {
   PREFERRED_ADAPTER_EVENT,
   PREFERRED_ADAPTER_KEY,
@@ -50,13 +51,14 @@ function installHorizontalActivation(
   activate: (tab: HTMLElement) => void
 ): void {
   const tabs = tabsIn(list);
-  for (const tab of tabs) tab.addEventListener('click', () => activate(tab));
+  for (const tab of tabs) tab.addEventListener('click', (event) => { event.preventDefault(); activate(tab); });
   list.addEventListener('keydown', (event) => {
     if (!(event.target instanceof HTMLElement) || !tabs.includes(event.target)) return;
     const currentIndex = tabs.indexOf(event.target);
+    const vertical = list.getAttribute('aria-orientation') === 'vertical';
     let nextIndex: number | undefined;
-    if (event.key === 'ArrowLeft') nextIndex = currentIndex - 1;
-    else if (event.key === 'ArrowRight') nextIndex = currentIndex + 1;
+    if (event.key === (vertical ? 'ArrowUp' : 'ArrowLeft')) nextIndex = currentIndex - 1;
+    else if (event.key === (vertical ? 'ArrowDown' : 'ArrowRight')) nextIndex = currentIndex + 1;
     else if (event.key === 'Home') nextIndex = 0;
     else if (event.key === 'End') nextIndex = tabs.length - 1;
     else return;
@@ -83,11 +85,18 @@ function initCodeExample(root: HTMLElement): void {
 
   const hostList = root.querySelector<HTMLElement>('[data-code-host-tabs]');
   if (!hostList) return;
+  hostList.setAttribute('role', 'tablist');
+  for (const tab of hostList.querySelectorAll<HTMLElement>('[data-code-host-tab]')) {
+    tab.setAttribute('role', 'tab');
+    if (!tab.hasAttribute('aria-selected')) tab.setAttribute('aria-selected', String(tab.dataset.codeHost === root.dataset.initialHost));
+    tab.tabIndex = tab.getAttribute('aria-selected') === 'true' ? 0 : -1;
+  }
   const hostTabs = tabsIn(hostList);
   const hostPanels = childPanels(root, 'data-code-host-panel');
+  for (const panel of hostPanels) panel.setAttribute('role', 'tabpanel');
   let localOverride = false;
   const projections = new Map<HTMLElement, ReturnType<typeof enhanceCodeExampleTabs>>();
-  const filePanelsByHost = new Map(hostPanels.map((panel) => [panel, childPanels(panel, 'data-code-file-panel')]));
+  const filePanelsByHost = new Map(hostPanels.map((panel) => [panel, [...panel.querySelectorAll<HTMLElement>('[data-code-file-panel]')]]));
 
   function selectFile(panel: HTMLElement, tab: HTMLElement): void {
     const fileList = panel.querySelector<HTMLElement>('[data-code-file-tabs]');
@@ -101,7 +110,17 @@ function initCodeExample(root: HTMLElement): void {
 
   for (const panel of hostPanels) {
     const fileList = panel.querySelector<HTMLElement>('[data-code-file-tabs]');
-    if (fileList) installHorizontalActivation(fileList, (tab) => selectFile(panel, tab));
+    if (fileList) {
+      for (const source of filePanelsByHost.get(panel) ?? []) source.setAttribute('role', 'tabpanel');
+      fileList.setAttribute('role', 'tablist');
+      fileList.setAttribute('aria-orientation', 'vertical');
+      for (const [index, tab] of [...fileList.querySelectorAll<HTMLElement>('[data-code-file-tab]')].entries()) {
+        tab.setAttribute('role', 'tab');
+        if (!tab.hasAttribute('aria-selected')) tab.setAttribute('aria-selected', String(index === 0));
+        tab.tabIndex = tab.getAttribute('aria-selected') === 'true' ? 0 : -1;
+      }
+      installHorizontalActivation(fileList, (tab) => selectFile(panel, tab));
+    }
   }
 
   function selectHost(tab: HTMLElement, isLocal: boolean): void {
@@ -139,7 +158,14 @@ function initCodeExample(root: HTMLElement): void {
   // Inner groups first: moving a host preserves its file/source owners.
   for (const panel of hostPanels) {
     const list = panel.querySelector<HTMLElement>('[data-code-file-tabs]');
-    if (list) enhance(list, tabsIn(list), filePanelsByHost.get(panel) ?? [], (tab) => selectFile(panel, tab));
+    if (list) {
+      const tabs = tabsIn(list);
+      try {
+        projections.set(list, enhanceCodeExampleTree({ list, tabs, panels: filePanelsByHost.get(panel) ?? [], onSelect: (index) => selectFile(panel, tabs[index]) }));
+      } catch (error) {
+        console.error('[CodeExample] Real Tree unavailable; retaining native file controls.', error);
+      }
+    }
   }
   enhance(hostList, hostTabs, hostPanels, (tab) => selectHost(tab, true));
   document.addEventListener('astro:before-swap', () => {
