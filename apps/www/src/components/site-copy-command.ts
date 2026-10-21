@@ -234,6 +234,7 @@ export function initCopyCommand(root: HTMLElement, readText: () => string): Site
       async materialize(request) {
         const runtime = request.selection.runtimeId as RuntimeId;
         const family = request.selection.projectionFamilyId as SiteLibraryFamily;
+        const hasBackplate = family === 'shadcn' && !root.closest('[data-code-example]');
         let candidate: MaterializedProjectionCandidate | null = null;
         const demo = createCopyCommandDemo(
           root,
@@ -255,9 +256,9 @@ export function initCopyCommand(root: HTMLElement, readText: () => string): Site
             demo,
             recipe: {
               id: 'website-copy-command',
-              rootPrototypeId: family === 'shadcn' ? 'shadcn-surface-root' : `${family}-button`,
+              rootPrototypeId: hasBackplate ? 'shadcn-surface-root' : `${family}-button`,
               prototypeIds: [
-                ...(family === 'shadcn' ? ['shadcn-surface-root'] : []),
+                ...(hasBackplate ? ['shadcn-surface-root'] : []),
                 `${family}-button`,
                 ...Object.values(COPY_GLYPHS).map((icon) => `lucide-${icon}-icon`),
                 'base-live-region-root',
