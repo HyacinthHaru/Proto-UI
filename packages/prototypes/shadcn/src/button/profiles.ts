@@ -1,4 +1,4 @@
-import type { ShadcnButtonSize, ShadcnButtonStyleProfile } from './types';
+import type { ShadcnButtonSize, ShadcnActionStyleProfile } from './types';
 
 /** Shadcn ui 25af02b1: homepage cards use base-rhea; hero uses radix-luma.
  * These are named family recipes, not a claim that all Shadcn styles are equal.
@@ -16,7 +16,7 @@ export const SHADCN_ACTION_RADIUS = {
 // Flat keys are intentional: the published static token extractor resolves one
 // map lookup. Nested profile/size lookups would silently lose preset closure.
 export const SHADCN_ACTION_SIZES: Record<
-  `${ShadcnButtonStyleProfile}-${ShadcnButtonSize}`,
+  `${ShadcnActionStyleProfile}-${ShadcnButtonSize}`,
   string
 > = {
   'rhea-default': 'h-8 gap-1.5 px-3 whitespace-nowrap',

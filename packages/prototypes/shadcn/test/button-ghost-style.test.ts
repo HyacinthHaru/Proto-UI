@@ -22,6 +22,8 @@ it('carries real ghost Rules through the official preset and all existing physic
     path.resolve('packages/prototypes/shadcn/src/button')
   )) as string[];
   expect(sourceTokens).toContain('bg-muted/50');
+  expect(sourceTokens).toContain('bg-accent/50');
+  expect(sourceTokens).toContain('text-accent-foreground');
   expect(sourceTokens).toContain(darkHover);
   const closure = await collectFamilyStyleClosure(
     path.resolve('packages/prototypes/shadcn/src'),
@@ -37,6 +39,10 @@ it('carries real ghost Rules through the official preset and all existing physic
     expect(css).not.toContain('Unsupported Proto UI style tokens');
     expect(css).toContain(darkHover);
     expect(css).toContain(darkDeclaration);
+    expect(css).toContain(
+      'background-color: color-mix(in oklab, var(--pui-accent) 50%, transparent);'
+    );
+    expect(css).toContain('color: var(--pui-accent-foreground);');
     expect(css).toContain('color: var(--pui-foreground);');
     const withoutGhostDark = sourceTokens.filter((token) => !token.includes('bg-muted/50'));
     expect(renderProtoStyleTokenCss(withoutGhostDark)).not.toContain(darkDeclaration);

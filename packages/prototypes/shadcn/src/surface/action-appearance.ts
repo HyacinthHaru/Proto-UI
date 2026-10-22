@@ -1,9 +1,9 @@
 import type { ShadcnSurfaceRootProps } from './root.proto';
-import type { ShadcnButtonStyleProfile } from '../button/types';
+import type { ShadcnActionStyleProfile } from '../button/types';
 import type { ShadcnTextRootProps } from '../text/root.proto';
 
 export interface ShadcnActionAppearanceOptions {
-  styleProfile?: ShadcnButtonStyleProfile;
+  styleProfile?: ShadcnActionStyleProfile;
   emphasis?: 'primary' | 'secondary' | 'minimal';
   hovered?: boolean;
   pressed?: boolean;

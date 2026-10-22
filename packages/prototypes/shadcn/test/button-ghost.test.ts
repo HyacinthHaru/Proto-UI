@@ -10,12 +10,16 @@ import {
 } from '@proto.ui/module-as-trigger';
 import button from '../src/button';
 
-// T-SHADCN-BUTTON-0001-CASE-GHOST-NEW-YORK:
-// shadcn-ui/ui 02cad611, new-york-v4/ui/button.tsx:18-19.
+// Separate pinned profiles: Rhea/Luma 25af02b1 and explicit New York 02cad611.
+// Neither profile may accept the other profile's hover palette.
 // This exercises the real prototype and inherited Button states, not copied rules.
-async function fixture(initialScheme: 'light' | 'dark' = 'light', disabled = false) {
+async function fixture(
+  initialScheme: 'light' | 'dark' = 'light',
+  disabled = false,
+  styleProfile: 'new-york' | 'rhea' | 'luma' = 'rhea'
+) {
   let colorScheme = initialScheme;
-  let raw: Record<string, unknown> = { variant: 'ghost', disabled };
+  let raw: Record<string, unknown> = { variant: 'ghost', disabled, styleProfile };
   const root = new EventTarget();
   const global = new EventTarget();
   const clicks: string[] = [];
@@ -183,3 +187,41 @@ it('does not retain ghost hover paint across a real unmount and remount', async 
     await ctx.session.dispose();
   }
 });
+
+it.each(['light', 'dark'] as const)(
+  'explicit New York %s retains the fixed accent recipe and profile replacement',
+  async (scheme) => {
+    const ctx = await fixture(scheme, false, 'new-york');
+    try {
+      expectRest(ctx.tokens());
+      ctx.emit('pointer.enter');
+      expect(ctx.tokens()).toContain(scheme === 'dark' ? 'bg-accent/50' : 'bg-accent');
+      expect(ctx.tokens()).toContain('text-accent-foreground');
+      expect(ctx.tokens()).not.toContain('bg-muted');
+      expect(ctx.tokens()).not.toContain('bg-muted/50');
+      for (const styleProfile of ['rhea', 'luma', 'new-york'] as const) {
+        ctx.props({ styleProfile, variant: 'ghost' });
+        expect(ctx.tokens()).toContain(
+          styleProfile === 'new-york'
+            ? scheme === 'dark'
+              ? 'bg-accent/50'
+              : 'bg-accent'
+            : scheme === 'dark'
+              ? 'bg-muted/50'
+              : 'bg-muted'
+        );
+        expect(ctx.tokens()).not.toContain(
+          styleProfile === 'new-york' ? 'bg-muted/50' : 'bg-accent/50'
+        );
+      }
+      ctx.emit('pointer.leave');
+      expectRest(ctx.tokens());
+      ctx.props({ styleProfile: 'new-york', variant: 'ghost', disabled: true });
+      ctx.emit('pointer.enter');
+      expectRest(ctx.tokens());
+      expect(ctx.tokens()).toContain('pointer-events-none');
+    } finally {
+      await ctx.session.dispose();
+    }
+  }
+);

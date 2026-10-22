@@ -360,6 +360,7 @@ const staticUtilities: Record<string, string[]> = {
   'bg-transparent': ['background-color: transparent;'],
   'bg-black': ['background-color: #000;'],
   'bg-white': ['background-color: #fff;'],
+  'text-white': ['color: #fff;'],
   'bg-foreground': ['background-color: var(--pui-foreground);'],
   'bg-canvas': ['background-color: var(--pui-background);'],
   'bg-paper': ['background-color: var(--pui-background);'],

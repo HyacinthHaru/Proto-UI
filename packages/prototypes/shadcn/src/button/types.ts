@@ -8,12 +8,13 @@ export type ShadcnButtonVariant =
   | 'ghost'
   | 'link';
 
-export type ShadcnButtonStyleProfile = 'rhea' | 'luma';
+export type ShadcnActionStyleProfile = 'rhea' | 'luma';
+export type ShadcnButtonStyleProfile = ShadcnActionStyleProfile | 'new-york';
 
 export type ShadcnButtonSize = 'default' | 'sm' | 'lg' | 'icon' | 'icon-compact';
 
 export interface ShadcnButtonProps extends ButtonProps {
-  /** Rhea is the homepage card profile; Luma is the explicit hero profile. */
+  /** Rhea is the homepage card profile; Luma is the explicit hero profile; new-york retains the pinned legacy direct Button. */
   styleProfile?: ShadcnButtonStyleProfile;
   variant?: ShadcnButtonVariant;
   size?: ShadcnButtonSize;

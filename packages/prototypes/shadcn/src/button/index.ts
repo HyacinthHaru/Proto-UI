@@ -5,4 +5,4 @@ export type {
   ShadcnButtonSize,
   ShadcnButtonVariant,
 } from './button.proto';
-export type { ShadcnButtonStyleProfile } from './types';
+export type { ShadcnButtonStyleProfile, ShadcnActionStyleProfile } from './types';

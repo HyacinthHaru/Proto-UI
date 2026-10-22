@@ -7,6 +7,7 @@ import {
   renderPrefixedThemeCss,
   renderProtoShadowStyleArtifact,
   renderProtoShadowStyleTokenCss,
+  renderProtoShadowSplitStyleArtifact,
   renderProtoStyleEntryCss,
   renderProtoStyleTokenCss,
 } from '../src/services/proto-style-css';
@@ -870,5 +871,30 @@ it('lowers the complete physical Drawer handle cursor and local stacking vocabul
     expect(css).toContain('cursor: ew-resize;');
     expect(css).toContain('cursor: ns-resize;');
     expect(css).toContain('z-index: 10;');
+  }
+});
+
+it('delivers the standard fixed white foreground through each existing CSS target without admitting arbitrary colors', () => {
+  const renderers = [
+    renderProtoStyleTokenCss,
+    renderProtoShadowStyleTokenCss,
+    (tokens: string[]) => renderProtoShadowSplitStyleArtifact(tokens).cssText,
+  ];
+  for (const render of renderers) {
+    const css = render(['text-white']);
+    expect(css).toContain('color: #fff;');
+    expect(css).not.toContain('Unsupported Proto UI style tokens');
+    expect(css).not.toContain('var(--pui-destructive-foreground)');
+    for (const token of [
+      'text-snow',
+      'text-white/90',
+      'text-[#fff]',
+      'text-[white]',
+      'text-white;display:none',
+    ]) {
+      const rejected = render([token]);
+      expect(rejected, token).toContain('Unsupported Proto UI style tokens');
+      expect(rejected, token).not.toContain('color: #fff;');
+    }
   }
 });

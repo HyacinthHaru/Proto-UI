@@ -2,9 +2,9 @@ import { definePrototype, tw } from '@proto.ui/core';
 import { asTextRoot } from '@proto.ui/prototypes-base/text';
 import type { TextRootProps, TextRootExposes } from '@proto.ui/prototypes-base/text';
 
-import type { ShadcnButtonStyleProfile } from '../button/types';
+import type { ShadcnActionStyleProfile } from '../button/types';
 export interface ShadcnTextRootProps extends TextRootProps {
-  actionProfile?: 'none' | ShadcnButtonStyleProfile;
+  actionProfile?: 'none' | ShadcnActionStyleProfile;
 }
 
 // P-SHADCN-TEXT-PROJECTION: family theme variables own font and ink; all inputs are portable.

@@ -9,11 +9,11 @@ import {
   SHADCN_ACTION_FOCUS,
   SHADCN_SECONDARY_HOVER,
 } from '../button/profiles';
-import type { ShadcnButtonStyleProfile } from '../button/types';
+import type { ShadcnActionStyleProfile } from '../button/types';
 
 export interface ShadcnSurfaceRootProps extends SurfaceRootProps {
   /** Passive appearance only. The native owner retains all interaction semantics. */
-  actionProfile?: 'none' | ShadcnButtonStyleProfile;
+  actionProfile?: 'none' | ShadcnActionStyleProfile;
 }
 export const ShadcnSurfaceRoot = definePrototype<ShadcnSurfaceRootProps, SurfaceRootExposes>({
   name: 'shadcn-surface-root',
