@@ -203,8 +203,13 @@ function readPageFrame({
     const search = searchReady
       ? searchRoot.querySelector('[data-projection-generation-state="active"] [data-open-modal]')
       : searchRoot.querySelector('[data-search-startup-button]');
-    const code = document.querySelector<HTMLElement>('[data-site-code-surface="frame"]')!;
-    const toolbar = code.querySelector<HTMLElement>('[data-site-code-surface="toolbar"]')!;
+    const code = document.querySelector<HTMLElement>(
+      '#quick-start-cli-help[data-code-shell][data-code-presentation="docs"]'
+    );
+    if (!code || code !== document.querySelector('[data-site-code-surface="frame"]'))
+      throw new Error('Quick Start help must be the real first docs code frame');
+    const caption = code.querySelector<HTMLElement>(':scope > [data-code-file-header]');
+    if (!caption) throw new Error('Quick Start help must retain its native docs caption');
     const surface = (owner: HTMLElement) => {
       const live = ['ready', 'retained'].includes(owner.dataset.codeSurfaceView ?? '');
       const plane = live
@@ -215,6 +220,7 @@ function readPageFrame({
     const identityHost = window as typeof window & { __startupNativeNodes?: Element[] };
     const nativeNodes = [
       code,
+      caption,
       code.querySelector('pre')!,
       code.querySelector('code')!,
       headerRoot.querySelector('[data-site-header-desktop-navigation] a')!,
@@ -276,7 +282,7 @@ function readPageFrame({
       searchOverflow: search ? search.scrollWidth - search.clientWidth : null,
       searchGlyph: sample(search?.querySelector('svg') ?? null),
       code: surface(code),
-      codeToolbar: surface(toolbar),
+      codeCaption: sample(caption),
       codeText: sample(code.querySelector('pre')),
       searchReady,
       searchDisabled:
@@ -284,7 +290,9 @@ function readPageFrame({
         search?.hasAttribute('disabled') === true,
       // Copy and stored Runtime availability are separate command-state
       // transitions; the passive code frame must never wait for either.
-      copyReady: !!code.querySelector('[data-copy-command]'),
+      copyReady: !!code.querySelector(
+        '[data-site-copy][data-copy-view="ready"] [data-demo-ref="copy-button"]'
+      ),
     };
     return {
       chrome,
@@ -382,7 +390,8 @@ async function waitForCapturedFonts(page: Page) {
           ...Object.values(selectors),
           '[data-search-startup-button]',
           '[data-site-header-fallback-summary]',
-          '[data-site-code-surface="frame"] pre',
+          '#quick-start-cli-help[data-code-presentation="docs"] pre',
+          '#quick-start-cli-help > [data-code-file-header]',
         ].map((selector) => {
           const owner = document.querySelector<HTMLElement>(selector)!;
           const leaf = owner.querySelector<HTMLElement>('[data-typography-prototype]') ?? owner;
@@ -501,7 +510,7 @@ function compare(
     'searchLabel',
     'searchShortcut',
     'code',
-    'codeToolbar',
+    'codeCaption',
     'codeText',
   ] as const) {
     const initial = before.chrome[key];
@@ -534,8 +543,8 @@ function compare(
     if (key === 'searchGlyph')
       for (const property of ['stroke', 'strokeWidth', 'fill', 'shapes'] as const)
         expect(next[property], `${key}.${property}`).toEqual(initial[property]);
-    // Passive planes contain no text. Compare fonts only for actual labels/code.
-    if (['search', 'searchLabel', 'searchShortcut', 'codeText'].includes(key)) {
+    // Passive planes contain no text. Compare fonts for actual labels, native caption and code.
+    if (['search', 'searchLabel', 'searchShortcut', 'codeCaption', 'codeText'].includes(key)) {
       for (const property of ['fontFamily', 'fontSize', 'fontWeight', 'lineHeight'] as const)
         expect(next[property], `${key}.${property}`).toEqual(initial[property]);
       expect(initial.fontReady, `${key} initial actual font`).toBe(true);
@@ -640,18 +649,16 @@ describe('quick-start first-frame continuity', () => {
             await page.waitForFunction(
               (runtime) => {
                 const note = document.querySelector<HTMLElement>('.starlight-aside--note');
+                const code = document.querySelector<HTMLElement>(
+                  '#quick-start-cli-help[data-code-shell][data-code-presentation="docs"]'
+                );
                 return (
                   note?.dataset.noteSurfaceView === 'ready' &&
                   document.querySelector('site-search')?.getAttribute('data-search-view') ===
                     'ready' &&
-                  [
-                    ...document
-                      .querySelectorAll('[data-site-code-surface="frame"]')[0]!
-                      .querySelectorAll('[data-site-code-surface="toolbar"]'),
-                    document.querySelector('[data-site-code-surface="frame"]')!,
-                  ].every(
-                    (surface) => surface.getAttribute('data-code-surface-view') === 'ready'
-                  ) &&
+                  code === document.querySelector('[data-site-code-surface="frame"]') &&
+                  code?.getAttribute('data-code-surface-view') === 'ready' &&
+                  !!code.querySelector(':scope > [data-code-file-header]') &&
                   note.dataset.noteSurfaceRuntime === runtime &&
                   document
                     .querySelector('.doc-stage-notice__title')
@@ -917,12 +924,15 @@ describe('quick-start first-frame continuity', () => {
             }
             expect(acquired, 'trusted forward Tab reaches the actual Header owner').toBe(true);
           }
-          await page.locator('[data-site-code-surface="frame"] pre').first().waitFor();
+          await page.locator('#quick-start-cli-help[data-code-presentation="docs"] pre').first().waitFor();
           await page.evaluate(
             ({ focusOwner, phase }) => {
               const code = document.querySelector(
-                '[data-site-code-surface="frame"] pre'
+                '#quick-start-cli-help[data-code-presentation="docs"] pre'
               ) as HTMLElement;
+              if (!code || code.closest('[data-site-code-surface="frame"]') !==
+                document.querySelector('[data-site-code-surface="frame"]'))
+                throw new Error('Ownership selection must use the first Quick Start help code frame');
               const walker = document.createTreeWalker(code, NodeFilter.SHOW_TEXT);
               let text = walker.nextNode()!;
               while (text && !text.textContent?.trim()) text = walker.nextNode()!;
@@ -1008,7 +1018,7 @@ describe('quick-start first-frame continuity', () => {
                           ? document.activeElement?.hasAttribute('data-site-menu-button')
                           : document.activeElement === target,
                       codeSame:
-                        document.querySelector('[data-site-code-surface="frame"] pre') === code,
+                        document.querySelector('#quick-start-cli-help[data-code-presentation="docs"] pre') === code,
                       textRetained: text.isConnected && code.contains(text),
                       selectionSame:
                         selection.anchorNode === text &&
@@ -1162,7 +1172,7 @@ describe('quick-start first-frame continuity', () => {
             return {
               initialSelectionNonempty: saved.selected.trim().length > 0,
               codeSame:
-                document.querySelector('[data-site-code-surface="frame"] pre') === saved.code,
+                document.querySelector('#quick-start-cli-help[data-code-presentation="docs"] pre') === saved.code,
               textRetained: saved.text.isConnected && saved.code.contains(saved.text),
               selectionSame:
                 selection.anchorNode === saved.anchor &&
@@ -1317,7 +1327,7 @@ describe('quick-start first-frame continuity', () => {
           'search',
           'searchGlyph',
           'code',
-          'codeToolbar',
+          'codeCaption',
           'codeText',
         ] as const)
           expect(result.chrome[key]?.visible, `${key} no-JS visible`).toBe(true);
