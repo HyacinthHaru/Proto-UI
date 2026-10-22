@@ -13,6 +13,7 @@ import {
   type CodeSurfaceGenerationFacts,
 } from './code-surface-evidence';
 
+import { textFragmentsShareLine } from './code-text-line-evidence';
 import { hasZeroTransparentTreeShadow } from './code-tree-shadow-evidence';
 
 const SOURCE_ROUTE = '/zh-cn/start-here/quick-start/';
@@ -759,7 +760,7 @@ it('keeps the generated-file browser accessible in forced colors and enlarged te
         path: item?.getAttribute('data-code-tree-path'), text: label.textContent, title: label.getAttribute('title'),
         rects: [...range.getClientRects()].map(rect), labelBounds: rect(label.getBoundingClientRect()),
         itemBounds: item ? rect(item.getBoundingClientRect()) : null,
-        style: { whiteSpace: style.whiteSpace, overflow: style.overflow, textOverflow: style.textOverflow, fontSize: style.fontSize, lineHeight: style.lineHeight, writingMode: style.writingMode },
+        style: { whiteSpace: style.whiteSpace, overflow: style.overflow, textOverflow: style.textOverflow, fontSize: style.fontSize, lineHeight: style.lineHeight, writingMode: style.writingMode, minWidth: style.minWidth },
         measurementScroll: { x: scrollX, y: scrollY },
       };
     }));
@@ -769,8 +770,51 @@ it('keeps the generated-file browser accessible in forced colors and enlarged te
       selectedPath: 'proto-ui/config.json', forcedColors: true, textScalePercent: 200,
       browserZoomVerified: false, stage: 'before-single-line-assertion', enlargedLabels,
     });
-    const enlargedLabelLines = enlargedLabels.map((label) => label.rects.length);
-    expect(enlargedLabelLines).toEqual(Array(10).fill(1));
+    expect(enlargedLabels).toHaveLength(10);
+    expect(enlargedLabels.map((label) => textFragmentsShareLine(label.rects))).toEqual(Array(10).fill(true));
+    for (const label of enlargedLabels) {
+      expect(label.labelBounds.width).toBeGreaterThan(0);
+      if (label.style.minWidth === 'max-content') {
+        expect(label.labelBounds.width + 1).toBeGreaterThanOrEqual(Math.max(...label.rects.map((rect) => rect.width)));
+      } else {
+        expect(Number.isFinite(parseFloat(label.style.minWidth))).toBe(true);
+        expect(label.labelBounds.width + 1).toBeGreaterThanOrEqual(parseFloat(label.style.minWidth));
+      }
+    }
+    const treeScroll = generated.locator('[data-code-tree-scroll]');
+    const treePan = await treeScroll.evaluate((node) => { node.scrollLeft = node.scrollWidth; return { left: node.scrollLeft, maximum: node.scrollWidth - node.clientWidth }; });
+    expect(treePan.maximum).toBeGreaterThan(0);
+    expect(Math.abs(treePan.left - treePan.maximum)).toBeLessThanOrEqual(1);
+    const emptyDirectory = generated.locator('[data-code-tree-path="proto-ui/adapters"]');
+    await emptyDirectory.focus();
+    const focusedDirectory = await emptyDirectory.evaluate((node) => {
+      const label = node.querySelector('[data-code-tree-label]')!; const range = document.createRange(); range.selectNodeContents(label);
+      const text = range.getBoundingClientRect(); const port = node.closest('[data-code-tree-scroll]')!; const bounds = port.getBoundingClientRect();
+      return { text: label.textContent, textLeft: text.left, textRight: text.right, portLeft: bounds.left, portRight: bounds.left + port.clientWidth, description: document.getElementById(node.getAttribute('aria-describedby')!)?.textContent };
+    });
+    expect(focusedDirectory.text).toBe('adapters');
+    expect(focusedDirectory.description).toContain('empty');
+    expect(focusedDirectory.textLeft).toBeGreaterThanOrEqual(focusedDirectory.portLeft - 1);
+    expect(focusedDirectory.textRight).toBeLessThanOrEqual(focusedDirectory.portRight + 1);
+    await evidence(page, emptyDirectory, 'cli-init-forced-colors-text200-directories', { textScalePercent: 200, browserZoomVerified: false, focusedDirectory });
+    const path = generated.locator('[data-code-file-panel]:visible [data-code-title-scroll]');
+    await path.focus();
+    expect(await path.evaluate((node) => node === document.activeElement)).toBe(true);
+    const caption = await path.evaluate((node) => {
+      const header = node.closest('[data-code-file-header]')!;
+      const copy = header.querySelector('[data-copy]')!;
+      const rect = node.getBoundingClientRect(); const copyRect = copy.getBoundingClientRect(); const headerRect = header.getBoundingClientRect();
+      node.scrollLeft = node.scrollWidth;
+      return { text: node.textContent, whiteSpace: getComputedStyle(node).whiteSpace, left: node.scrollLeft, maximum: node.scrollWidth - node.clientWidth, pathRight: rect.right, copyLeft: copyRect.left, copyRight: copyRect.right, headerRight: headerRect.right, clientHeight: node.clientHeight, lineHeight: parseFloat(getComputedStyle(node).lineHeight) };
+    });
+    expect(caption.text).toBe('proto-ui/config.json');
+    expect(caption.whiteSpace).toBe('nowrap');
+    expect(caption.clientHeight).toBeLessThanOrEqual(caption.lineHeight + 1); // excludes the native scrollbar
+    expect(caption.maximum).toBeGreaterThan(0);
+    expect(Math.abs(caption.left - caption.maximum)).toBeLessThanOrEqual(1);
+    expect(caption.pathRight).toBeLessThanOrEqual(caption.copyLeft + 1);
+    expect(caption.copyRight).toBeLessThanOrEqual(caption.headerRight + 1);
+    await evidence(page, generated, 'cli-init-forced-colors-text200-scroll-end', { selectedPath: 'proto-ui/config.json', forcedColors: true, textScalePercent: 200, browserZoomVerified: false, treePan, caption });
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
     expect(await generated.locator('[data-code-file-panel]:visible code').getAttribute('data-raw-code')).toBe(cliInitOutput.entries.find((entry) => entry.path === 'proto-ui/config.json')?.content);
   } finally { await context.close(); }

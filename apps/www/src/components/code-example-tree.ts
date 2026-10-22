@@ -50,7 +50,10 @@ export function enhanceCodeExampleTree(options: {
   let destroyed = false;
   let queued = false;
   const path = (index: number) => nodes.find((node) => node.fileIndex === index)!.key;
-  const props = () => ({ ...(family === 'shadcn' ? { appearance: 'embedded' } : {}), value: path(value), expandedKeys: expanded, a11yLabel: list.getAttribute('aria-label') ?? 'Files', surfaceStyle: { ...(family === 'brutalist' ? { display: 'block' } : {}), minWidth: '0', width: '100%' } });
+  // Reserve indentation, fixed decorations and a readable filename prefix.
+  // The bounded consumer scrollport, not the page, absorbs enlarged text.
+  const maxIndent = Math.max(...nodes.map((node) => parseFloat(codeTreeIndent(node.depth, node.fileIndex === undefined))));
+  const props = () => ({ ...(family === 'shadcn' ? { appearance: 'embedded' } : {}), value: path(value), expandedKeys: expanded, a11yLabel: list.getAttribute('aria-label') ?? 'Files', surfaceStyle: { ...(family === 'brutalist' ? { display: 'block' } : {}), minWidth: family === 'shadcn' ? `calc(${maxIndent}rem + 4rem + 10ch)` : '0', width: '100%' } });
   setElementProps(root, props());
   const items = new Map<string, HTMLElement>();
   const groups = new Map<string, HTMLElement>();
@@ -106,12 +109,15 @@ export function enhanceCodeExampleTree(options: {
     // The full canonical path remains available on hover and in the source caption.
     label.title = node.key;
     item.title = node.key;
-    if (family === 'shadcn') label.style.cssText = 'min-width:0;flex:1 1 auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis';
+    if (family === 'shadcn') label.style.cssText = `min-width:${node.fileIndex === undefined ? 'max-content' : '10ch'};flex:1 ${node.fileIndex === undefined ? '0' : '1'} auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis`;
     item.append(label);
     if (node.fileIndex === undefined && !hasChildren) {
       const empty = doc.createElement('small');
       empty.textContent = ` (${list.dataset.emptyDirectoryLabel ?? 'empty'})`;
-      empty.style.cssText = 'flex:none;white-space:nowrap';
+      empty.style.cssText = family === 'shadcn' ? 'flex:0 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis' : 'flex:none;white-space:nowrap';
+      empty.id = `${tabs[0].id}-empty-${items.size}`;
+      empty.setAttribute('aria-hidden', 'true');
+      item.setAttribute('aria-describedby', empty.id);
       item.title = `${node.key} (${list.dataset.emptyDirectoryLabel ?? 'empty'})`;
       item.append(empty);
     }
@@ -177,9 +183,21 @@ export function enhanceCodeExampleTree(options: {
     expanded = [...new Set(next)] as string[];
     publish();
   };
+  const revealFocusedLabel = (event: FocusEvent) => {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+    const label = target.closest('[data-code-tree-path]')?.querySelector<HTMLElement>('[data-code-tree-label]');
+    const scrollport = root.closest<HTMLElement>('[data-code-tree-scroll]');
+    if (!label || !scrollport) return;
+    const text = label.getBoundingClientRect();
+    const port = scrollport.getBoundingClientRect();
+    if (text.left < port.left || text.width > scrollport.clientWidth) scrollport.scrollLeft += text.left - port.left;
+    else if (text.right > port.left + scrollport.clientWidth) scrollport.scrollLeft += text.right - port.left - scrollport.clientWidth;
+  };
   const destroy = () => {
     if (destroyed) return;
     destroyed = true;
+    root.removeEventListener('focusin', revealFocusedLabel);
     root.removeEventListener('valueChange', change);
     root.removeEventListener('expandedChange', expand);
     root.remove();
@@ -190,6 +208,7 @@ export function enhanceCodeExampleTree(options: {
     }
   };
   try {
+    root.addEventListener('focusin', revealFocusedLabel);
     root.addEventListener('valueChange', change);
     root.addEventListener('expandedChange', expand);
     list.after(root);

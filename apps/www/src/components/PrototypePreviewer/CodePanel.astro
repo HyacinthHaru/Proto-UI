@@ -21,6 +21,7 @@ interface Props {
   collapsible?: boolean;
   copyLabel?: string;
   title?: string;
+  scrollableTitle?: boolean;
   titleIcon?: 'terminal' | 'folder-tree' | CodeFileIcon;
   lineNumbers?: boolean;
   presentation?: 'docs';
@@ -38,6 +39,7 @@ const {
   collapsible = true,
   copyLabel = 'Copy code',
   title,
+  scrollableTitle = false,
   titleIcon,
   lineNumbers = true,
   presentation,
@@ -65,8 +67,8 @@ const highlighted = await highlightCode(code, lang);
   {
     title && (
       <figcaption class="code-panel__title" data-code-file-header>
-        <StaticLucideIcon name={titleIcon ?? codeFileIcon(title)} size="1rem" />
-        <span data-code-file-title>{title}</span>
+        <StaticLucideIcon name={titleIcon ?? codeFileIcon(title)} size={scrollableTitle ? "16px" : "1rem"} />
+        <span data-code-file-title data-code-title-scroll={scrollableTitle ? "" : undefined} tabindex={scrollableTitle ? 0 : undefined}>{title}</span>
         <div
           class="site-code-copy-header"
           hidden={collapsible}
@@ -162,6 +164,10 @@ const highlighted = await highlightCode(code, lang);
   .code-panel__title > [data-code-file-title] {
     min-width: 0;
   }
+  [data-code-title-scroll] {
+    flex: 1 1 auto; white-space: nowrap; overflow-x: auto; overflow-y: hidden;
+  }
+  [data-code-title-scroll]:focus-visible { outline: 2px solid var(--color-accent); outline-offset: -2px; }
   .site-code-copy-header {
     margin-inline-start: auto;
     flex: none;

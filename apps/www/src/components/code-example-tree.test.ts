@@ -182,5 +182,21 @@ it('keeps long Shadcn navigation labels single-line without truncating the DOM n
   expect(item.title).toBe(label.title);
   expect(label.style.whiteSpace).toBe('nowrap');
   expect(label.style.textOverflow).toBe('ellipsis');
-  expect(label.style.minWidth).toBe('0');
+  expect(label.style.minWidth).toBe('10ch');
+});
+
+
+it('reserves readable text and describes empty directories without sacrificing their names', async () => {
+  const { list, tabs, panels } = fixture();
+  projections.push(enhanceCodeExampleTree({ list, tabs, panels, onSelect() {}, directories: ['src/components'] }));
+  const tree = document.querySelector<HTMLElement>('[data-code-example-tree]')!;
+  expect(tree.style.minWidth).toContain('10ch');
+  const empty = tree.querySelector<HTMLElement>('[data-code-tree-path="src/components"]')!;
+  const label = empty.querySelector<HTMLElement>('[data-code-tree-label]')!;
+  expect(label.style.minWidth).toBe('max-content');
+  expect(label.style.flexShrink).toBe('0');
+  const description = document.getElementById(empty.getAttribute('aria-describedby')!)!;
+  expect(description.textContent).toContain('empty');
+  expect(description.style.flexShrink).toBe('1');
+  expect(empty.title).toContain('src/components');
 });

@@ -21,6 +21,7 @@ if (active < 0) throw new Error('[CodeFileBrowser] Initial file must exist.');
 <section class="code-file-browser" data-code-file-browser data-standalone-file-browser={standalone ? '' : undefined} data-site-code-surface="frame" aria-label={label}>
   <aside class="code-file-browser__files" data-code-files>
     <div class="code-file-browser__label">{filesLabel}</div>
+    <div class="code-file-browser__tree-scroll" data-code-tree-scroll tabindex="0" role="region" aria-label={filesLabel}>
     <nav class="code-file-browser__fallback" aria-label={filesLabel} data-code-file-tabs data-empty-directory-label={emptyLabel}>
       {nodes.map((node) => node.fileIndex === undefined ? (
         <span data-code-directory-path={node.key} style={`padding-inline-start:${0.5 + node.depth * 0.75}rem`}>
@@ -33,11 +34,12 @@ if (active < 0) throw new Error('[CodeFileBrowser] Initial file must exist.');
           style={`padding-inline-start:${0.5 + node.depth * 0.75}rem`}>{node.name}</a>
       ))}
     </nav>
+    </div>
   </aside>
   <div class="code-file-browser__source" data-code-file-source>
     {files.map((file, index) => <CodePanel id={`${id}-file-panel-${index}`} labelledBy={`${id}-file-tab-${index}`}
       hidden={index !== active} fileIndex={index} panelRole="region" framed={false} collapsible={false}
-      title={file.name} copyLabel={`${copyLabel} ${file.name}`} code={file.code} lang={file.lang} />)}
+      title={file.name} scrollableTitle copyLabel={`${copyLabel} ${file.name}`} code={file.code} lang={file.lang} />)}
   </div>
 </section>
 <noscript set:html={'<style>@layer base { [data-code-file-browser] [data-code-file-panel][hidden] { display:block!important; } }</style>'} />
@@ -51,6 +53,9 @@ if (active < 0) throw new Error('[CodeFileBrowser] Initial file must exist.');
   .code-file-browser__files, .code-file-browser__source { min-width: 0; }
   .code-file-browser__files { padding: 0; border-inline-end: 1px solid var(--color-border); }
   .code-file-browser__label { color: color-mix(in oklab, var(--color-foreground) 70%, transparent); display: flex; align-items: center; min-height: 3rem; padding: 0.5rem 1rem; border-bottom: 1px solid var(--color-border); font-size: 0.875rem; font-weight: 500; }
+  .code-file-browser__tree-scroll { min-width: 0; max-width: 100%; overflow-x: auto; }
+  .code-file-browser__tree-scroll:focus-visible { outline: 2px solid var(--color-accent); outline-offset: -2px; }
+  .code-file-browser :global([data-code-file-header]) { padding-inline: 16px; gap: 8px; }
   .code-file-browser__fallback { display: flex; flex-direction: column; width: 100%; }
   .code-file-browser__fallback :is(a, span) { display: block; min-height: 2.75rem; padding: 0.5rem; overflow-wrap: anywhere; font-size: 0.8125rem; }
   .code-file-browser__fallback a:focus-visible { outline: 2px solid var(--color-accent); outline-offset: -2px; }
