@@ -465,3 +465,32 @@ it('does not reuse an old generation ready timestamp for a late current command'
   expect(evidence.observedReadyAt).toBe(1500);
   expect(searchReadinessWasOnTime(evidence)).toBe(false);
 });
+
+it('distinguishes no active command from one missing its attribute at the same expired deadline', async () => {
+  let present = false;
+  const read = runInNewContext(`(${readSearchReadyWithinBudget.toString()})`, {
+    Date: { now: () => 1500 },
+    setTimeout: () => 1,
+    clearTimeout() {},
+    MutationObserver: class {
+      observe() {}
+      disconnect() {}
+    },
+    document: {
+      querySelectorAll: () => (present ? [{ getAttribute: () => null, closest: () => null }] : []),
+    },
+    window: {},
+  });
+  const absent = await read({ startedAt: 0 });
+  present = true;
+  const unlabelled = await read({ startedAt: 0 });
+  expect(absent.currentDisabled).toBe(null);
+  expect(unlabelled.currentDisabled).toBe(null);
+  expect(absent.samples[0].commandCount).toBe(0);
+  expect(unlabelled.samples[0].commandCount).toBe(1);
+  for (const evidence of [absent, unlabelled]) {
+    expect(evidence.browserEnteredAt).toBe(1500);
+    expect(evidence.deadline).toBe(1000);
+    expect(searchReadinessWasOnTime(evidence)).toBe(false);
+  }
+});

@@ -984,7 +984,38 @@ for (const width of [320, 390, 1280, 1440, 2048]) {
         const selector = page
           .locator('[data-docs-site-header] [data-adapter-select] [data-site-select-trigger]')
           .first();
-        await expect.poll(() => selector.getAttribute('role')).toBe('combobox');
+        const roleGetters: SearchGetterSample[] = [];
+        let roleCalls = 0;
+        let rolePassed = false;
+        try {
+          await expect
+            .poll(() => {
+              roleCalls++;
+              return traceSearchGetter(roleGetters, () => selector.getAttribute('role'));
+            })
+            .toBe('combobox');
+          rolePassed = true;
+        } finally {
+          try {
+            const frozen = roleGetters.map((sample) => ({ ...sample }));
+            console.log(
+              '[Docs role readiness]',
+              JSON.stringify({
+                source,
+                family,
+                width,
+                frozenAt: Date.now(),
+                passed: rolePassed,
+                calls: roleCalls,
+                dropped: Math.max(0, roleCalls - frozen.length),
+                pending: frozen.filter((sample) => sample.settledAt === undefined).length,
+                samples: frozen,
+              })
+            );
+          } catch {
+            // Diagnostics must not replace the original poll verdict.
+          }
+        }
         await revealHeaderPreferences(page);
         for (const runtime of ['wc', 'react', 'vue', 'vue2'] as const) {
           if (runtime !== 'wc') {

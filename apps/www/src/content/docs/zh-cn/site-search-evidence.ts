@@ -218,6 +218,17 @@ export type SearchReadinessEvidence = {
   currentDisabled: string | null;
   owner?: string | null;
   generation?: string | null;
+  browserEnteredAt?: number;
+  sampleCount?: number;
+  droppedSamples?: number;
+  samples?: Array<{
+    atEpochMs: number;
+    commandCount: number;
+    currentDisabled: string | null;
+    owner: string | null;
+    generation: string | null;
+    timerSample: boolean;
+  }>;
 };
 /** The post-navigation initial-ready window is 1000ms. The clock starts after
  * networkidle; browser observer timestamps preserve the deadline even when
@@ -246,6 +257,10 @@ export function readSearchReadyWithinBudget({
   return new Promise((resolve, reject) => {
     // Serialized into the page: keep the literal in sync with SEARCH_READINESS_BUDGET_MS.
     const deadline = startedAt + 1000;
+    const browserEnteredAt = Date.now();
+    const samples: NonNullable<SearchReadinessEvidence['samples']> = [];
+    let sampleCount = 0;
+    let droppedSamples = 0;
     let observer: MutationObserver | undefined;
     let timer: ReturnType<typeof setTimeout> | undefined;
     let done = false;
@@ -286,6 +301,17 @@ export function readSearchReadyWithinBudget({
         );
         const observedReadyAt =
           ready?.atEpochMs ?? (currentDisabled === 'false' ? Date.now() : null);
+        sampleCount++;
+        if (samples.length < 32)
+          samples.push({
+            atEpochMs: Date.now(),
+            commandCount: commands.length,
+            currentDisabled,
+            owner: owner ?? null,
+            generation: generation ?? null,
+            timerSample: expired,
+          });
+        else droppedSamples++;
         if (currentDisabled !== 'false' && !expired && Date.now() < deadline) return;
         done = true;
         observer?.disconnect();
@@ -298,6 +324,10 @@ export function readSearchReadyWithinBudget({
           currentDisabled,
           owner: owner ?? null,
           generation: generation ?? null,
+          browserEnteredAt,
+          sampleCount,
+          droppedSamples,
+          samples,
         });
       },
     };
