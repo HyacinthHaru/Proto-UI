@@ -749,14 +749,29 @@ it('keeps the generated-file browser accessible in forced colors and enlarged te
     await evidence(page, generated, 'cli-init-forced-colors', { selectedPath: 'proto-ui/config.json', forcedColors: true });
     await page.evaluate(() => { document.documentElement.style.fontSize = '200%'; });
     expect(await file.evaluate((node) => parseFloat(getComputedStyle(node).fontSize))).toBe(28);
-    const enlargedLabelLines = await generated.locator('[data-code-tree-label]').evaluateAll((labels) => labels.map((label) => {
+    const enlargedLabels = await generated.locator('[data-code-tree-label]').evaluateAll((labels) => labels.map((label) => {
+      const rect = (value: DOMRect) => ({ x: value.x, y: value.y, top: value.top, bottom: value.bottom, left: value.left, right: value.right, width: value.width, height: value.height });
       const range = document.createRange();
       range.selectNodeContents(label);
-      return range.getClientRects().length;
+      const item = label.closest('[data-code-tree-path]');
+      const style = getComputedStyle(label);
+      return {
+        path: item?.getAttribute('data-code-tree-path'), text: label.textContent, title: label.getAttribute('title'),
+        rects: [...range.getClientRects()].map(rect), labelBounds: rect(label.getBoundingClientRect()),
+        itemBounds: item ? rect(item.getBoundingClientRect()) : null,
+        style: { whiteSpace: style.whiteSpace, overflow: style.overflow, textOverflow: style.textOverflow, fontSize: style.fontSize, lineHeight: style.lineHeight, writingMode: style.writingMode },
+        measurementScroll: { x: scrollX, y: scrollY },
+      };
     }));
+    // Preserve the actual failing geometry and pixels before deciding whether
+    // multiple Range fragments are separate lines or same-line ellipsis paint.
+    await evidence(page, generated, 'cli-init-forced-colors-text200', {
+      selectedPath: 'proto-ui/config.json', forcedColors: true, textScalePercent: 200,
+      browserZoomVerified: false, stage: 'before-single-line-assertion', enlargedLabels,
+    });
+    const enlargedLabelLines = enlargedLabels.map((label) => label.rects.length);
     expect(enlargedLabelLines).toEqual(Array(10).fill(1));
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
     expect(await generated.locator('[data-code-file-panel]:visible code').getAttribute('data-raw-code')).toBe(cliInitOutput.entries.find((entry) => entry.path === 'proto-ui/config.json')?.content);
-    await evidence(page, generated, 'cli-init-forced-colors-text200', { selectedPath: 'proto-ui/config.json', forcedColors: true, textScalePercent: 200, browserZoomVerified: false });
   } finally { await context.close(); }
 }, 90_000);
