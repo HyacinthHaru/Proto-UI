@@ -58,8 +58,8 @@ let baseUrl = '';
  * child count reads a previous runtime's residue as this runtime's overlay.
  */
 async function readOverlayGeometry(page: Page): Promise<OverlayGeometry> {
-  return page.evaluate(() => {
-    const roots = Array.from(document.body.children).filter(
+  return page.evaluate((portalHost) => {
+    const roots = Array.from(document.querySelectorAll(portalHost)).filter(
       (element) => element.hasAttribute('data-pui-root') && element.hasAttribute('data-is-present')
     );
     const content = roots.find((element) => element.getAttribute('role') === 'dialog');
@@ -96,7 +96,7 @@ async function readOverlayGeometry(page: Page): Promise<OverlayGeometry> {
       presentRoots: roots.length,
       centreHitInsideContent: Boolean(hit && content.contains(hit)),
     };
-  });
+  }, BODY_PORTAL_HOST);
 }
 
 function expectNear(actual: number, expected: number, label: string): void {
