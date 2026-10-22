@@ -7,6 +7,7 @@ import { revealHeaderPreferences } from './site-header-browser';
 import type { Browser, Page, Request } from 'playwright-core';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { launchBrowser, startServer, stopServer } from './browser-harness';
+import { settleFamilyQueryBatch } from './family-query-observer';
 import {
   installSearchStartupTrace,
   readSearchReadyWithinBudget,
@@ -985,26 +986,48 @@ for (const width of [320, 390, 1280, 1440, 2048]) {
           .locator('[data-docs-site-header] [data-adapter-select] [data-site-select-trigger]')
           .first();
         const roleGetters: SearchGetterSample[] = [];
+        const roleRequests: Array<{ call: number; request: Promise<string | null> }> = [];
         let roleCalls = 0;
         let rolePassed = false;
+        let roleObserverError = false;
+        let roleVerdict: {
+          frozenAt: number;
+          calls: number;
+          references: number;
+          samples: SearchGetterSample[];
+        } | null = null;
         try {
           await expect
             .poll(() => {
-              roleCalls++;
-              return traceSearchGetter(roleGetters, () => selector.getAttribute('role'));
+              const call = ++roleCalls;
+              return traceSearchGetter(roleGetters, () => {
+                const request = selector.getAttribute('role');
+                try {
+                  roleRequests.push({ call, request });
+                } catch {
+                  roleObserverError = true;
+                }
+                return request;
+              });
             })
             .toBe('combobox');
           rolePassed = true;
         } finally {
           try {
             const frozen = roleGetters.map((sample) => ({ ...sample }));
+            roleVerdict = {
+              frozenAt: Date.now(),
+              calls: roleCalls,
+              references: roleRequests.length,
+              samples: frozen,
+            };
             console.log(
               '[Docs role readiness]',
               JSON.stringify({
                 source,
                 family,
                 width,
-                frozenAt: Date.now(),
+                frozenAt: roleVerdict.frozenAt,
                 passed: rolePassed,
                 calls: roleCalls,
                 dropped: Math.max(0, roleCalls - frozen.length),
@@ -1013,7 +1036,78 @@ for (const width of [320, 390, 1280, 1440, 2048]) {
               })
             );
           } catch {
+            roleObserverError = true;
             // Diagnostics must not replace the original poll verdict.
+          }
+          const verdict = roleVerdict;
+          if (!rolePassed && verdict) {
+            try {
+              const startedMs = performance.now();
+              const budgetMs = 1000;
+              const deadlineMs = startedMs + budgetMs;
+              let drainedReferences = 0;
+              let budgetExpired = false;
+              let droppedOutcomes = 0;
+              const outcomes: Array<Record<string, unknown>> = [];
+              while (drainedReferences < roleRequests.length) {
+                const batch = roleRequests.slice(drainedReferences);
+                const result = await settleFamilyQueryBatch(
+                  batch.map(({ request }) => request),
+                  Math.max(0, deadlineMs - performance.now())
+                );
+                if (!result.complete) {
+                  budgetExpired = true;
+                  break;
+                }
+                const batchObservedMs = performance.now();
+                result.outcomes.forEach((outcome, index) => {
+                  if (outcomes.length < 32)
+                    outcomes.push({
+                      call: batch[index]!.call,
+                      status: outcome.status,
+                      ...('value' in outcome
+                        ? { value: outcome.value }
+                        : { error: String(outcome.reason).slice(0, 400) }),
+                      batchObservedMs,
+                    });
+                  else droppedOutcomes++;
+                });
+                drainedReferences += batch.length;
+              }
+              const finishedMs = performance.now();
+              // This is a drain-point snapshot, not proof that Vitest cannot retry later.
+              console.log(
+                '[Docs role settlement]',
+                JSON.stringify({
+                  source,
+                  family,
+                  width,
+                  verdict,
+                  nodeTimeOrigin: performance.timeOrigin,
+                  startedMs,
+                  finishedMs,
+                  budgetMs,
+                  budgetExpired,
+                  drainedReferences,
+                  referencesAtDrainPoint: roleRequests.length,
+                  callsAtDrainPoint: roleCalls,
+                  issuedAfterVerdict: roleCalls - verdict.calls,
+                  pendingRecordedSamples: roleGetters.filter(
+                    (sample) => sample.settledAt === undefined
+                  ).length,
+                  droppedSamples: Math.max(0, roleCalls - roleGetters.length),
+                  outcomes,
+                  droppedOutcomes,
+                  observerError: roleObserverError,
+                  completeAtDrainPoint:
+                    !roleObserverError &&
+                    !budgetExpired &&
+                    drainedReferences === roleRequests.length,
+                })
+              );
+            } catch {
+              // Missing observation is evidence debt, not a replacement verdict.
+            }
           }
         }
         await revealHeaderPreferences(page);
