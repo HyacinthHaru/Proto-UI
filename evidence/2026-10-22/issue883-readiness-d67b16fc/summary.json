@@ -1,0 +1,887 @@
+{
+  "schemaVersion": 4,
+  "preparedAt": "2026-10-22T12:11:44.813074+00:00",
+  "sourceHead": "d67b16fcea924538ca9c58829955084ad208f488",
+  "sourceTree": "f1e37c12ee9546a31b65b1e4e929bf1059f793a9",
+  "state": "private staged progress evidence; canonical CI remains nonterminal",
+  "result": "partial",
+  "reviewDisposition": "ABSTAIN",
+  "runs": [
+    {
+      "name": "search-docs-focused2",
+      "purpose": "precommit ba083 + c801 observer; 2 native pass / 28 filtered; failure branch not naturally entered",
+      "head": "ba0830ce4c3341bad7e55d8f78e787831c29119f",
+      "start": "2026-10-22T10:54:00.916424+00:00",
+      "end": "2026-10-22T10:54:18.828008+00:00",
+      "exit": 0,
+      "sourceStable": true,
+      "dirty": "M apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts",
+      "receipt": "search-docs-focused2/receipt.json",
+      "counts": {
+        "files": 1,
+        "passed": 2,
+        "failed": 0,
+        "filteredOrPending": 28
+      }
+    },
+    {
+      "name": "types-docs-candidate",
+      "purpose": "precommit ba083 + c801 observer; types 937 / 0 errors / 0 warnings / 14 hints",
+      "head": "ba0830ce4c3341bad7e55d8f78e787831c29119f",
+      "start": "2026-10-22T10:55:55.874903+00:00",
+      "end": "2026-10-22T10:56:36.491022+00:00",
+      "exit": 0,
+      "sourceStable": true,
+      "dirty": "M apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts",
+      "receipt": "types-docs-candidate/receipt.json",
+      "counts": {
+        "typesFiles": 937,
+        "errors": 0,
+        "warnings": 0,
+        "hints": 14,
+        "source": "run.log summary; not Vitest counts"
+      }
+    },
+    {
+      "name": "final-node147",
+      "purpose": "clean f369 original aggregate; 2084 pass / 5 fail including WC retirement predicate",
+      "head": "f3690a3693f82be0cfb3f76330a00ac5c95e399b",
+      "start": "2026-10-22T11:00:00.502336+00:00",
+      "end": "2026-10-22T11:00:36.400103+00:00",
+      "exit": 1,
+      "sourceStable": true,
+      "dirty": "",
+      "receipt": "final-node147/receipt.json",
+      "counts": {
+        "files": 147,
+        "passed": 2084,
+        "failed": 5,
+        "filteredOrPending": 0
+      },
+      "keyboardOwnerControls": {
+        "total": 17,
+        "passed": 17
+      }
+    },
+    {
+      "name": "wc-retirement-held-red",
+      "purpose": "f369 + private visible/held-RAF injection; 1 fail / 9 filtered; not the natural aggregate schedule",
+      "head": "f3690a3693f82be0cfb3f76330a00ac5c95e399b",
+      "start": "2026-10-22T11:08:08.378415+00:00",
+      "end": "2026-10-22T11:08:10.131589+00:00",
+      "exit": 1,
+      "sourceStable": true,
+      "dirty": "M packages/adapters/web-component/test/portal-body-destination.test.ts",
+      "receipt": "wc-retirement-held-red/receipt.json",
+      "counts": {
+        "files": 1,
+        "passed": 0,
+        "failed": 1,
+        "filteredOrPending": 9
+      }
+    },
+    {
+      "name": "wc-retirement-fixed",
+      "purpose": "f369 + fixture candidate; original destination/conceal 2 files / 23 pass",
+      "head": "f3690a3693f82be0cfb3f76330a00ac5c95e399b",
+      "start": "2026-10-22T11:09:07.442479+00:00",
+      "end": "2026-10-22T11:09:09.304977+00:00",
+      "exit": 0,
+      "sourceStable": true,
+      "dirty": "M packages/adapters/web-component/test/portal-body-destination.test.ts",
+      "receipt": "wc-retirement-fixed/receipt.json",
+      "counts": {
+        "files": 2,
+        "passed": 23,
+        "failed": 0,
+        "filteredOrPending": 0
+      }
+    },
+    {
+      "name": "final-node147-f590",
+      "purpose": "clean postcommit f590; original 147 files / 2085 pass / 4 Checkbox failures retained",
+      "head": "f59007825e2b19468a21d210cbd802d9b47ba76f",
+      "start": "2026-10-22T11:13:21.996349+00:00",
+      "end": "2026-10-22T11:13:55.807154+00:00",
+      "exit": 1,
+      "sourceStable": true,
+      "dirty": "",
+      "receipt": "final-node147-f590/receipt.json",
+      "counts": {
+        "files": 147,
+        "passed": 2085,
+        "failed": 4,
+        "filteredOrPending": 0
+      },
+      "keyboardOwnerControls": {
+        "total": 17,
+        "passed": 17
+      }
+    },
+    {
+      "head": "f59007825e2b19468a21d210cbd802d9b47ba76f",
+      "start": "2026-10-22T11:15:26.388012+00:00",
+      "end": "2026-10-22T11:24:12.717807+00:00",
+      "exit": 0,
+      "sourceStable": true,
+      "name": "final-native177-f590",
+      "purpose": "clean f590 historical original native177; not d67 execution",
+      "dirty": "",
+      "receipt": "final-native177-f590/receipt.json",
+      "counts": {
+        "files": 6,
+        "passed": 177,
+        "failed": 0,
+        "filteredOrPending": 0
+      }
+    },
+    {
+      "head": "f59007825e2b19468a21d210cbd802d9b47ba76f",
+      "start": "2026-10-22T11:25:19.056699+00:00",
+      "end": "2026-10-22T11:26:25.613303+00:00",
+      "exit": 0,
+      "sourceStable": true,
+      "name": "final-portal16-f590",
+      "purpose": "clean f590 historical Portal16; not d67 execution",
+      "dirty": "",
+      "receipt": "final-portal16-f590/receipt.json",
+      "counts": {
+        "files": 2,
+        "passed": 16,
+        "failed": 0,
+        "filteredOrPending": 0
+      }
+    },
+    {
+      "head": "f59007825e2b19468a21d210cbd802d9b47ba76f",
+      "start": "2026-10-22T11:26:56.289699+00:00",
+      "end": "2026-10-22T11:27:37.594882+00:00",
+      "exit": 0,
+      "sourceStable": true,
+      "name": "types-final-f590",
+      "purpose": "clean f590 historical final types",
+      "dirty": "",
+      "receipt": "types-final-f590/receipt.json",
+      "counts": {
+        "typesFiles": 937,
+        "errors": 0,
+        "warnings": 0,
+        "hints": 14,
+        "source": "run.log summary; not Vitest counts"
+      }
+    },
+    {
+      "head": "d67b16fcea924538ca9c58829955084ad208f488",
+      "start": "2026-10-22T11:49:33.438530+00:00",
+      "end": "2026-10-22T11:50:10.574212+00:00",
+      "exit": 1,
+      "sourceStable": true,
+      "name": "final-node147-d67",
+      "purpose": "clean d67 original Node147; four token failures retained",
+      "dirty": "",
+      "receipt": "final-node147-d67/receipt.json",
+      "counts": {
+        "files": 147,
+        "passed": 2085,
+        "failed": 4,
+        "filteredOrPending": 0
+      },
+      "keyboardOwnerControls": {
+        "total": 17,
+        "passed": 17
+      }
+    },
+    {
+      "name": "final-native177-d67",
+      "purpose": "clean exactd67 sixoriginalnativefiles,177passed; not a replay of f590",
+      "head": "d67b16fcea924538ca9c58829955084ad208f488",
+      "start": "2026-10-22T11:50:24.575106+00:00",
+      "end": "2026-10-22T11:59:27.072576+00:00",
+      "exit": 0,
+      "sourceStable": true,
+      "dirty": "",
+      "receipt": "final-native177-d67/receipt.json",
+      "counts": {
+        "files": 6,
+        "passed": 177,
+        "failed": 0,
+        "filteredOrPending": 0
+      }
+    },
+    {
+      "name": "final-portal16-d67",
+      "purpose": "cleanexactd67originalPortal-direction8andDialogavailable8",
+      "head": "d67b16fcea924538ca9c58829955084ad208f488",
+      "start": "2026-10-22T12:00:00.173262+00:00",
+      "end": "2026-10-22T12:01:09.747296+00:00",
+      "exit": 0,
+      "sourceStable": true,
+      "dirty": "",
+      "receipt": "final-portal16-d67/receipt.json",
+      "counts": {
+        "files": 2,
+        "passed": 16,
+        "failed": 0,
+        "filteredOrPending": 0
+      }
+    }
+  ],
+  "docsOfflineControls": {
+    "arms": 5,
+    "groups": 4,
+    "actualCandidateSHA256": "c801d34f8e933bf379b5f24e370e3a9cfed9f59612a386160a64dc9ad20a6675",
+    "boundary": "Fake matcher/getter/console controls execute an extracted actual source block, not natural browser or Vitest acceptance."
+  },
+  "dialogNative": {
+    "caseCount": 1,
+    "runtimeLoop": ["wc", "react", "vue", "vue2"],
+    "result": "passed after reader correction",
+    "sourceBoundary": "precommit CF plus one test candidate; not four tests or f590 postcommit execution"
+  },
+  "pending": [
+    {
+      "id": "d67-canonical",
+      "requiredForFinalAssembly": true,
+      "requirement": "Root/trace must append exactd67 complete source-bound canonical summary and explicit rawinputs. Required schema:sourceHead,sourceTree,status=completed,runId,jobs.total,jobs.conclusions,jobs.paginationComplete; actual plan/shards and incomplete summaries retained.",
+      "blocksProgressPublication": false,
+      "kind": "canonical-ci",
+      "deferrableForProgressPublication": true
+    }
+  ],
+  "historicalReference": {
+    "commit": "d02207f1710257bca8f1924bedab8d2a5ee72884",
+    "folder": "evidence/2026-10-22/issue883-readiness-cf4848c4",
+    "scope": "Link/index original CF logs/CI and earlier evidence; do not copy its whole packet."
+  },
+  "limitations": [
+    "Original f369 aggregate red and controlled held-RAF negative retained.",
+    "Brutalist writer/getter clock evidence is original CF; it does not establish application scheduling cause or whole transaction readiness.",
+    "Docs observer does not change the original predicate, deadline or verdict; drain-point completeness is not quiescence.",
+    "No all-C, default-CI, full-page, optical or AT acceptance.",
+    "C33=32unchangedblobs+oneexplicitimportmigration, not33identicalblobs.",
+    "Full3837-resourcef590productionZIP is retained privately; no fullZIP/extractedsite in this packet.",
+    "Materialpackedgreen is a sourcegraph boundary result, not continuousoptical/nativeblur/inputacceptance.",
+    "Seven selected original PNGfiles across distinct source epochs; one f590320 and one d67320 have identicalbytes, so uniqueimagehash count is separate from selectedfile count.",
+    "Currentd67productionZIP andall3837resources retained privately; onlymetadata/index/admission selected.",
+    "Currentd67localNode1472085/4,native177177/0,Portal1616/0andexportsmokeended;currentcanonicalremainsexplicitnonterminalprogress."
+  ],
+  "sourceDelta": {
+    "baseCF": "cf4848c49ad8849d45f03f3270b2ba78beffc7a2",
+    "commits": [
+      "ba0830ce4c3341bad7e55d8f78e787831c29119f",
+      "f3690a3693f82be0cfb3f76330a00ac5c95e399b",
+      "f59007825e2b19468a21d210cbd802d9b47ba76f",
+      "d67b16fcea924538ca9c58829955084ad208f488"
+    ],
+    "netPathsFromCF": 6,
+    "C33ExactModeTypeBlob": 32,
+    "C33IntentionalDifference": {
+      "path": "apps/www/src/components/PrototypePreviewer/preview-material-scene.ts",
+      "change": "Only import moves to existingpublicweb-material subpath; reverseimport exactly recovers originalCfile"
+    },
+    "all33SameBlobClaim": false,
+    "materialCommitTestChanges": false
+  },
+  "historicalCanonicalF590Subset": {
+    "sourceHead": "f59007825e2b19468a21d210cbd802d9b47ba76f",
+    "review": "canonical-current/selected-terminal-review.json",
+    "startupCandidate": {
+      "job": 119791353474,
+      "passed": 27,
+      "failed": 0,
+      "productHead": "f59007825e2b19468a21d210cbd802d9b47ba76f"
+    },
+    "startupBaseline": {
+      "job": 119791354226,
+      "passed": 27,
+      "failed": 0,
+      "productHead": "48b80f8b8b0b94dbac04919e3516bc6a1ed2c37c",
+      "probeHead": "f59007825e2b19468a21d210cbd802d9b47ba76f"
+    },
+    "failedJobs": [119791353485, 119791354119, 119791355413],
+    "boundary": "Five-job subset only. Actual browser version unknown in Startup logs; TOC alone logged156.0.8078.47. No d67canonical conclusion."
+  },
+  "historicalFullPreviewF590": {
+    "sourceHead": "f59007825e2b19468a21d210cbd802d9b47ba76f",
+    "run": 39768954859,
+    "job": 119791354604,
+    "artifact": 12422060664,
+    "files": 3837,
+    "expandedBytes": 104067435,
+    "ActionsZIPBytes": 21140954,
+    "ActionsZIPSHA256": "15f502b0cfbcc36b34e33d21d20f054b1de30af2293aacae0d59ae6bd8edca5e",
+    "producerTestZIPBytes": 21207941,
+    "completeDefaultAdmissionTests": 1,
+    "fullZIPIncluded": false,
+    "boundary": "Actual complete same-ZIP extraction/local admission; producer original wholeartifact gate independently logged. Not an independent precompressiontree, actual publisher, remote deployment or d67output."
+  },
+  "materialFourthCommit": {
+    "head": "d67b16fcea924538ca9c58829955084ad208f488",
+    "tree": "f1e37c12ee9546a31b65b1e4e929bf1059f793a9",
+    "parent": "f59007825e2b19468a21d210cbd802d9b47ba76f",
+    "files": 3,
+    "insertions": 4,
+    "deletions": 1,
+    "baseline": "Cleanf59047actualbuilds/47 then strictpacked rejects2src inputs",
+    "candidate": "Precommit f590+same3sourcebytes boundtod67;47actualbuilds/47,publicSourceInputs=[],5files126pass,types937/0/0/14,47manifests",
+    "budget": {
+      "measurements": 9,
+      "withinStrictCeilings": 4,
+      "aboveStrictCeilings": 5,
+      "policy": "finf-development-advisory",
+      "exit": 0,
+      "strictAllPass": false
+    },
+    "notClaimed": [
+      "Nativewindowblur fixed",
+      "Stablematerialprofileadmission",
+      "Canonicald67green",
+      "Postcommitexecutionforprecommitcandidatechecks"
+    ]
+  },
+  "currentFullPreviewD67": {
+    "head": "d67b16fcea924538ca9c58829955084ad208f488",
+    "producerRun": 39773465363,
+    "producerJob": 119806472610,
+    "artifact": 12423157802,
+    "files": 3837,
+    "expandedBytes": 104067496,
+    "ActionsZIPBytes": 21143788,
+    "ActionsZIPSHA256": "c64349d44e34c6f3c0f320bb009efc7876811b63027d43e61df2cb8fa2168399",
+    "existingZIPHashIndependentlyRead": true,
+    "memberIndexCountAndExpandedSumVerified": true,
+    "producerTestZIPBytes": 21208084,
+    "localDefaultAdmission": {
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0
+    },
+    "boundary": "Current complete artifact admission against same-ZIP extraction; official producer independently ran originalwhole-artifact test. No newpublisher/hostedsite/nativeUI claim from this admission."
+  },
+  "currentStartupD67": {
+    "head": "d67b16fcea924538ca9c58829955084ad208f488",
+    "run": 39773465567,
+    "job": 119806472199,
+    "artifact": 12423223287,
+    "passed": 27,
+    "failed": 0,
+    "baseline": false,
+    "browser": "155.0.8059.39",
+    "records": 92,
+    "selectedRootViewedPNGs": 4,
+    "visualBoundary": "One2048label frame still loading;390viewportcontinuesbelow; noallrecords/AT/fullyreadyclaim."
+  },
+  "canonicalProgressSummary": {
+    "schemaVersion": 1,
+    "sourceHead": "d67b16fcea924538ca9c58829955084ad208f488",
+    "sourceTree": "f1e37c12ee9546a31b65b1e4e929bf1059f793a9",
+    "runId": 39773465481,
+    "status": "queued",
+    "conclusion": null,
+    "observedStart": "2026-10-22T12:00:41.967805+00:00",
+    "observedEnd": "2026-10-22T12:01:56.989965+00:00",
+    "atomicSnapshot": false,
+    "sourceSnapshot": {
+      "path": "live-d67/20261022T120041Z/snapshot.json",
+      "sha256": "e4d155866370680a217d9189e9a24c5d77f24172912393a4a2ca55a3af799fdd",
+      "bytes": 1430115
+    },
+    "sourceKind": "Read-only extraction from already-acquired fullpaged snapshot; no newAPIexecution",
+    "jobs": {
+      "total": 21,
+      "paginationComplete": true,
+      "pageCount": 1,
+      "statusCounts": {
+        "completed": 7,
+        "in_progress": 2,
+        "queued": 12
+      },
+      "terminalConclusions": {
+        "success": 7
+      },
+      "allTerminal": false
+    },
+    "allWorkflows": {
+      "count": 38,
+      "statusCounts": {
+        "queued": 12,
+        "in_progress": 7,
+        "completed": 19
+      },
+      "terminalConclusions": {
+        "failure": 4,
+        "success": 15
+      }
+    },
+    "headStable": true,
+    "mainStart": "b928a56c6909835771fc2131503b4a7139db738c",
+    "mainEnd": "b928a56c6909835771fc2131503b4a7139db738c",
+    "errors": [],
+    "publicationBoundary": "Progress only: currentrunqueued and jobs7success/2inprogress/12queued preserved; no fabricatedcompleted/allgreen/approval/merge; currentfullcanonical remainsrequiredforfinalacceptance."
+  },
+  "publicationMode": "progress-with-nonterminal-ci",
+  "localValidationComplete": {
+    "meaning": "Allselectedlocalrunsended, notallpassed",
+    "Node147": "2085pass4tokenfail",
+    "native177": "177pass",
+    "Portal16": "16pass",
+    "budget": "4within5strictoversunderadvisory",
+    "currentEmittedExportSmoke": "NamedESMexporttypefunction; separatefrom126tests"
+  },
+  "finalAdmission": false,
+  "canonicalProgress": {
+    "schemaVersion": 1,
+    "sourceHead": "d67b16fcea924538ca9c58829955084ad208f488",
+    "sourceTree": "f1e37c12ee9546a31b65b1e4e929bf1059f793a9",
+    "runId": 39773465481,
+    "status": "queued",
+    "conclusion": null,
+    "observedStart": "2026-10-22T12:08:18.312563+00:00",
+    "observedEnd": "2026-10-22T12:09:41.326151+00:00",
+    "atomicSnapshot": false,
+    "finalAdmission": false,
+    "snapshot": {
+      "relativeInput": "live-d67/20261022T120818Z/snapshot.json",
+      "sha256": "37110c4526f81048f7e1a8d529964fad9c49ad5c9020cf4f036d05e275f5df7a"
+    },
+    "jobs": {
+      "total": 21,
+      "paginationComplete": true,
+      "statusCounts": {
+        "completed": 10,
+        "queued": 9,
+        "in_progress": 2
+      },
+      "terminalConclusions": {
+        "success": 9,
+        "failure": 1
+      }
+    },
+    "actualJobs": [
+      {
+        "id": 119808297795,
+        "name": "type-check",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-22T11:53:41Z",
+        "completed_at": "2026-10-22T11:55:06Z"
+      },
+      {
+        "id": 119808298297,
+        "name": "test-plan",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-22T11:55:39Z",
+        "completed_at": "2026-10-22T11:55:48Z"
+      },
+      {
+        "id": 119808298380,
+        "name": "public_package_plan",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-22T11:56:35Z",
+        "completed_at": "2026-10-22T11:56:42Z"
+      },
+      {
+        "id": 119808298420,
+        "name": "rust-interop",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-22T11:55:30Z",
+        "completed_at": "2026-10-22T12:00:27Z"
+      },
+      {
+        "id": 119808298458,
+        "name": "rust-macos",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-22T11:55:03Z",
+        "completed_at": "2026-10-22T12:01:13Z"
+      },
+      {
+        "id": 119808298582,
+        "name": "rust",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-22T11:57:17Z",
+        "completed_at": "2026-10-22T11:58:04Z"
+      },
+      {
+        "id": 119808298588,
+        "name": "lockstep-check",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-22T11:56:08Z",
+        "completed_at": "2026-10-22T11:56:17Z"
+      },
+      {
+        "id": 119808298611,
+        "name": "release-scan",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-22T11:58:24Z",
+        "completed_at": "2026-10-22T11:58:38Z"
+      },
+      {
+        "id": 119809231333,
+        "name": "test-general",
+        "status": "queued",
+        "conclusion": null,
+        "started_at": "2026-10-22T11:55:49Z",
+        "completed_at": null
+      },
+      {
+        "id": 119809231455,
+        "name": "test-browser (5/8, browser-5-of-8)",
+        "status": "in_progress",
+        "conclusion": null,
+        "started_at": "2026-10-22T12:05:15Z",
+        "completed_at": null
+      },
+      {
+        "id": 119809231470,
+        "name": "test-browser (7/8, browser-7-of-8)",
+        "status": "completed",
+        "conclusion": "failure",
+        "started_at": "2026-10-22T12:04:23Z",
+        "completed_at": "2026-10-22T12:07:56Z"
+      },
+      {
+        "id": 119809231485,
+        "name": "test-browser (8/8, browser-8-of-8)",
+        "status": "in_progress",
+        "conclusion": null,
+        "started_at": "2026-10-22T12:06:29Z",
+        "completed_at": null
+      },
+      {
+        "id": 119809231502,
+        "name": "test-browser (6/8, browser-6-of-8)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-22T11:59:37Z",
+        "completed_at": "2026-10-22T12:04:31Z"
+      },
+      {
+        "id": 119809231507,
+        "name": "test-browser (2/8, browser-2-of-8)",
+        "status": "queued",
+        "conclusion": null,
+        "started_at": "2026-10-22T11:55:49Z",
+        "completed_at": null
+      },
+      {
+        "id": 119809231576,
+        "name": "test-browser (4/8, browser-4-of-8)",
+        "status": "queued",
+        "conclusion": null,
+        "started_at": "2026-10-22T11:55:49Z",
+        "completed_at": null
+      },
+      {
+        "id": 119809231673,
+        "name": "test-browser (1/8, browser-1-of-8)",
+        "status": "queued",
+        "conclusion": null,
+        "started_at": "2026-10-22T11:55:49Z",
+        "completed_at": null
+      },
+      {
+        "id": 119809231913,
+        "name": "test-browser (3/8, browser-3-of-8)",
+        "status": "queued",
+        "conclusion": null,
+        "started_at": "2026-10-22T11:55:49Z",
+        "completed_at": null
+      },
+      {
+        "id": 119809616394,
+        "name": "release-consumer-react",
+        "status": "queued",
+        "conclusion": null,
+        "started_at": "2026-10-22T11:56:42Z",
+        "completed_at": null
+      },
+      {
+        "id": 119809616401,
+        "name": "cli-smoke",
+        "status": "queued",
+        "conclusion": null,
+        "started_at": "2026-10-22T11:56:42Z",
+        "completed_at": null
+      },
+      {
+        "id": 119809616509,
+        "name": "public_package_build",
+        "status": "queued",
+        "conclusion": null,
+        "started_at": "2026-10-22T11:56:43Z",
+        "completed_at": null
+      },
+      {
+        "id": 119809616580,
+        "name": "release-stage",
+        "status": "queued",
+        "conclusion": null,
+        "started_at": "2026-10-22T11:56:43Z",
+        "completed_at": null
+      }
+    ],
+    "allWorkflows": {
+      "count": 38,
+      "statusCounts": {
+        "in_progress": 5,
+        "queued": 5,
+        "completed": 28
+      },
+      "terminalConclusions": {
+        "failure": 5,
+        "success": 23
+      }
+    },
+    "limits": [
+      "Observed complete pagination, non-atomic and nonterminal; created job count is not final plan/test count.",
+      "Metadata head is not a substitute for actual checkout log/tree binding.",
+      "No unexecuted test or historical green is counted as current acceptance."
+    ]
+  },
+  "currentBrowser7Prerequisite": {
+    "run": 39773465481,
+    "job": 119809231470,
+    "result": "failure before browser execution",
+    "firstFailure": "Install real CJK fallback for typography glyph evidence timed out after3minutes",
+    "browserExecution": "skipped; no Vitestsummary/testcounts",
+    "checkout": "3cbcc5c583152a0c7038a2f9f88fd5713a2a260c",
+    "checkoutTree": "f1e37c12ee9546a31b65b1e4e929bf1059f793a9",
+    "equalsD67Tree": true,
+    "productCause": "No new C behavior evidence from this precondition failure"
+  },
+  "packetAssembledAt": "2026-10-22T12:14:16.294004+00:00",
+  "canonical": {
+    "schemaVersion": 1,
+    "sourceHead": "d67b16fcea924538ca9c58829955084ad208f488",
+    "sourceTree": "f1e37c12ee9546a31b65b1e4e929bf1059f793a9",
+    "runId": 39773465481,
+    "status": "queued",
+    "conclusion": null,
+    "observedStart": "2026-10-22T12:08:18.312563+00:00",
+    "observedEnd": "2026-10-22T12:09:41.326151+00:00",
+    "atomicSnapshot": false,
+    "finalAdmission": false,
+    "snapshot": {
+      "relativeInput": "live-d67/20261022T120818Z/snapshot.json",
+      "sha256": "37110c4526f81048f7e1a8d529964fad9c49ad5c9020cf4f036d05e275f5df7a"
+    },
+    "jobs": {
+      "total": 21,
+      "paginationComplete": true,
+      "statusCounts": {
+        "completed": 10,
+        "queued": 9,
+        "in_progress": 2
+      },
+      "terminalConclusions": {
+        "success": 9,
+        "failure": 1
+      }
+    },
+    "actualJobs": [
+      {
+        "id": 119808297795,
+        "name": "type-check",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-22T11:53:41Z",
+        "completed_at": "2026-10-22T11:55:06Z"
+      },
+      {
+        "id": 119808298297,
+        "name": "test-plan",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-22T11:55:39Z",
+        "completed_at": "2026-10-22T11:55:48Z"
+      },
+      {
+        "id": 119808298380,
+        "name": "public_package_plan",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-22T11:56:35Z",
+        "completed_at": "2026-10-22T11:56:42Z"
+      },
+      {
+        "id": 119808298420,
+        "name": "rust-interop",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-22T11:55:30Z",
+        "completed_at": "2026-10-22T12:00:27Z"
+      },
+      {
+        "id": 119808298458,
+        "name": "rust-macos",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-22T11:55:03Z",
+        "completed_at": "2026-10-22T12:01:13Z"
+      },
+      {
+        "id": 119808298582,
+        "name": "rust",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-22T11:57:17Z",
+        "completed_at": "2026-10-22T11:58:04Z"
+      },
+      {
+        "id": 119808298588,
+        "name": "lockstep-check",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-22T11:56:08Z",
+        "completed_at": "2026-10-22T11:56:17Z"
+      },
+      {
+        "id": 119808298611,
+        "name": "release-scan",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-22T11:58:24Z",
+        "completed_at": "2026-10-22T11:58:38Z"
+      },
+      {
+        "id": 119809231333,
+        "name": "test-general",
+        "status": "queued",
+        "conclusion": null,
+        "started_at": "2026-10-22T11:55:49Z",
+        "completed_at": null
+      },
+      {
+        "id": 119809231455,
+        "name": "test-browser (5/8, browser-5-of-8)",
+        "status": "in_progress",
+        "conclusion": null,
+        "started_at": "2026-10-22T12:05:15Z",
+        "completed_at": null
+      },
+      {
+        "id": 119809231470,
+        "name": "test-browser (7/8, browser-7-of-8)",
+        "status": "completed",
+        "conclusion": "failure",
+        "started_at": "2026-10-22T12:04:23Z",
+        "completed_at": "2026-10-22T12:07:56Z"
+      },
+      {
+        "id": 119809231485,
+        "name": "test-browser (8/8, browser-8-of-8)",
+        "status": "in_progress",
+        "conclusion": null,
+        "started_at": "2026-10-22T12:06:29Z",
+        "completed_at": null
+      },
+      {
+        "id": 119809231502,
+        "name": "test-browser (6/8, browser-6-of-8)",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-22T11:59:37Z",
+        "completed_at": "2026-10-22T12:04:31Z"
+      },
+      {
+        "id": 119809231507,
+        "name": "test-browser (2/8, browser-2-of-8)",
+        "status": "queued",
+        "conclusion": null,
+        "started_at": "2026-10-22T11:55:49Z",
+        "completed_at": null
+      },
+      {
+        "id": 119809231576,
+        "name": "test-browser (4/8, browser-4-of-8)",
+        "status": "queued",
+        "conclusion": null,
+        "started_at": "2026-10-22T11:55:49Z",
+        "completed_at": null
+      },
+      {
+        "id": 119809231673,
+        "name": "test-browser (1/8, browser-1-of-8)",
+        "status": "queued",
+        "conclusion": null,
+        "started_at": "2026-10-22T11:55:49Z",
+        "completed_at": null
+      },
+      {
+        "id": 119809231913,
+        "name": "test-browser (3/8, browser-3-of-8)",
+        "status": "queued",
+        "conclusion": null,
+        "started_at": "2026-10-22T11:55:49Z",
+        "completed_at": null
+      },
+      {
+        "id": 119809616394,
+        "name": "release-consumer-react",
+        "status": "queued",
+        "conclusion": null,
+        "started_at": "2026-10-22T11:56:42Z",
+        "completed_at": null
+      },
+      {
+        "id": 119809616401,
+        "name": "cli-smoke",
+        "status": "queued",
+        "conclusion": null,
+        "started_at": "2026-10-22T11:56:42Z",
+        "completed_at": null
+      },
+      {
+        "id": 119809616509,
+        "name": "public_package_build",
+        "status": "queued",
+        "conclusion": null,
+        "started_at": "2026-10-22T11:56:43Z",
+        "completed_at": null
+      },
+      {
+        "id": 119809616580,
+        "name": "release-stage",
+        "status": "queued",
+        "conclusion": null,
+        "started_at": "2026-10-22T11:56:43Z",
+        "completed_at": null
+      }
+    ],
+    "allWorkflows": {
+      "count": 38,
+      "statusCounts": {
+        "in_progress": 5,
+        "queued": 5,
+        "completed": 28
+      },
+      "terminalConclusions": {
+        "failure": 5,
+        "success": 23
+      }
+    },
+    "limits": [
+      "Observed complete pagination, non-atomic and nonterminal; created job count is not final plan/test count.",
+      "Metadata head is not a substitute for actual checkout log/tree binding.",
+      "No unexecuted test or historical green is counted as current acceptance."
+    ]
+  },
+  "selectedRawInputs": 245,
+  "referenceOnlyInputs": 46,
+  "derivedInputs": 128,
+  "ZIPMembers": 246,
+  "selectedPNGFiles": 7,
+  "archive": {
+    "name": "evidence.zip",
+    "bytes": 2757170,
+    "sha256": "22adf23e2639142d76591459c2b04830531badd9da9e68fcf63b1e86dba2cc91"
+  },
+  "publicMapSHA256": "d071b0d4fbec0fbbe39bd6027ab87f977580331e00ecfea323d0c1ff13b4787b"
+}

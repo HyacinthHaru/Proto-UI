@@ -1,0 +1,50 @@
+{
+  "algorithm": "SHA-256",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "5de330a66feb32a80b961767018dc5716d16b7f7c59dad70cd68b48e9a39cb70",
+      "bytes": 6610
+    },
+    {
+      "path": "evidence.zip",
+      "sha256": "22adf23e2639142d76591459c2b04830531badd9da9e68fcf63b1e86dba2cc91",
+      "bytes": 2757170
+    },
+    {
+      "path": "images/button-2048-runtime-label.png",
+      "sha256": "56aa36b6394236e7d49cd199b747baf989b7d5489fd7b754410b5ba8e4d48302",
+      "bytes": 249778
+    },
+    {
+      "path": "images/button-320-runtime-label.png",
+      "sha256": "796d434aaf11e7edbdc64dd77f54d22679354185243878441e051bdd85c4fd8c",
+      "bytes": 68720
+    },
+    {
+      "path": "images/loaded-card-2048.png",
+      "sha256": "3013e311bfe1166e0253b694aef0e575b605d133c1fe525c94d2025ace017363",
+      "bytes": 199382
+    },
+    {
+      "path": "images/loaded-home-390.png",
+      "sha256": "f2304fb647fe33feacff2d5b8e75d53c4dd67acf6c9cd3bc138f8ef697eb7340",
+      "bytes": 36228
+    },
+    {
+      "path": "images/pair-failure.png",
+      "sha256": "553189ea5618938732c2df2249d4d47b88bedae83abe43268bf88989c051433d",
+      "bytes": 126525
+    },
+    {
+      "path": "public-map.json",
+      "sha256": "d071b0d4fbec0fbbe39bd6027ab87f977580331e00ecfea323d0c1ff13b4787b",
+      "bytes": 233400
+    },
+    {
+      "path": "summary.json",
+      "sha256": "57fbb717096814bc680cbceebb6ab8ce76efca3d30e5f2d9fd7fcfee44759e4a",
+      "bytes": 29541
+    }
+  ]
+}
