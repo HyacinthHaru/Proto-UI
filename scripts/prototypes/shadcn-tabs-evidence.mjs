@@ -6,7 +6,10 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { resolve, join, extname, sep } from 'node:path';
 import { build } from 'esbuild';
 import { collectProtoStyleTokensFromFiles } from '../../packages/cli/src/services/prototype-style-tokens.ts';
-import { renderProtoStyleTokenCss } from '../../packages/cli/src/services/proto-style-css.ts';
+import {
+  renderProtoStyleTokenCss,
+  renderPrefixedThemeCss,
+} from '../../packages/cli/src/services/proto-style-css.ts';
 const out = resolve(process.argv[2] ?? '/tmp/pui-shadcn-tabs-evidence');
 await mkdir(out, { recursive: true });
 const sourceFiles = [
@@ -29,7 +32,9 @@ await build({
   target: 'es2022',
   tsconfig: 'tsconfig.json',
 });
-const palette = `:root{--pui-background:#fff;--pui-foreground:#171717;--pui-muted:#f5f5f5;--pui-muted-foreground:#737373;--pui-input:#e5e5e5;--pui-ring:#a3a3a3;--pui-border:#e5e5e5}[data-theme=dark]{--pui-background:#0a0a0a;--pui-foreground:#fafafa;--pui-muted:#262626;--pui-muted-foreground:#a3a3a3;--pui-input:#525252;--pui-ring:#737373;--pui-border:#404040}`;
+const palette = renderPrefixedThemeCss(
+  `:root{--radius:0.5rem;--background:#fff;--foreground:#171717;--muted:#f5f5f5;--muted-foreground:#737373;--input:#e5e5e5;--ring:#a3a3a3;--border:#e5e5e5}[data-theme=dark]{--background:#0a0a0a;--foreground:#fafafa;--muted:#262626;--muted-foreground:#a3a3a3;--input:#525252;--ring:#737373;--border:#404040}`
+);
 await writeFile(
   join(out, 'index.html'),
   `<!doctype html><html lang="en" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><link rel="icon" href="data:,"><link rel="stylesheet" href="tokens.css"><title>Source-bound production Tabs</title><style>${palette}body{font:14px system-ui;margin:32px;color:var(--pui-foreground);background:var(--pui-background)}main{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}section{border:1px solid var(--pui-border);border-radius:12px;padding:20px}h1{font-size:24px}h2{font-size:18px}h3{font-size:12px;text-transform:uppercase;margin-top:32px;color:var(--pui-muted-foreground)}p{color:var(--pui-muted-foreground)}</style></head><body><h1>Production Tabs · shared style scope</h1><p>Text/default only · New York retained · Nova and Rhea · neutral consumer palette</p><main></main><p>Upstream line and SVG/icon surfaces remain unsupported. This is not full Tabs or all-style parity.</p><script type="module" src="app.js"></script></body></html>`
@@ -88,6 +93,8 @@ const receipt = {
     'Fixed-source semantic tokens under the same neutral consumer palette; independent CSS color resolution, not upstream runtime parity',
   bundleSha256: hash(await readFile(join(out, 'app.js'))),
   cssSha256: hash(css),
+  paletteSha256: hash(palette),
+  htmlSha256: hash(await readFile(join(out, 'index.html'))),
   scope:
     'text/default; Web Components; neutral consumer palette; not full upstream/browser-family parity',
 };
