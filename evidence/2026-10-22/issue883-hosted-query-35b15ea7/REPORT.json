@@ -1,0 +1,1902 @@
+{
+  "kind": "exact35-natural-docs-failure-decomposition",
+  "readAt": "2026-10-22T17:23:40.544449+00:00",
+  "sourceHead": "35b15ea78a72f4668b6a9b39c38dac668f5c18c0",
+  "executedCheckout": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+  "tree": "ad39b563d20f1f5790f21b191c3dc4f7e12f50bc",
+  "checkoutBinding": {
+    "readAt": "2026-10-22T17:15:53.517621+00:00",
+    "sha256": "a306ffae1337df403de9420b510b3b8aac724d7256abb8382aceea490837c136",
+    "commit": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+    "tree": "ad39b563d20f1f5790f21b191c3dc4f7e12f50bc",
+    "parents": [
+      "b928a56c6909835771fc2131503b4a7139db738c",
+      "35b15ea78a72f4668b6a9b39c38dac668f5c18c0"
+    ],
+    "treeEquals35": true
+  },
+  "job": {
+    "runId": 39818721613,
+    "jobId": 119964198293,
+    "name": "test-browser (1/8, browser-1-of-8)",
+    "start": "2026-10-22T17:01:07Z",
+    "end": "2026-10-22T17:16:51Z",
+    "status": "completed",
+    "conclusion": "failure",
+    "fontSetup": "completed success17:01:29–17:01:40",
+    "browserStep": "17:01:44–17:16:44",
+    "exitCode": 124,
+    "completeShardSummary": null,
+    "rawLogSHA256": "170e085a1e69e63b5ec8d717a09fefce9715a0bf7447830ce9a1d795e75c3443",
+    "individualCompletedFiles": [
+      {
+        "line": 414,
+        "file": "packages/adapters/web-component/test/shadow-closeout.browser.test.ts",
+        "tests": 111,
+        "failed": 0,
+        "passed": 111
+      },
+      {
+        "line": 625,
+        "file": "apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts",
+        "tests": 30,
+        "failed": 16,
+        "passed": 14
+      },
+      {
+        "line": 675,
+        "file": "apps/www/src/content/docs/zh-cn/demo-liquid-glass-portal.browser.test.ts",
+        "tests": 55,
+        "failed": 1,
+        "passed": 54
+      },
+      {
+        "line": 807,
+        "file": "apps/www/src/content/docs/zh-cn/home-demo-runtime.browser.test.ts",
+        "tests": 11,
+        "failed": 1,
+        "passed": 10
+      },
+      {
+        "line": 823,
+        "file": "apps/www/src/content/docs/zh-cn/demo-base-controls.browser.test.ts",
+        "tests": 5,
+        "failed": 0,
+        "passed": 5
+      },
+      {
+        "line": 829,
+        "file": "apps/workspace/test/lifecycle.browser.test.ts",
+        "tests": 7,
+        "failed": 0,
+        "passed": 7
+      },
+      {
+        "line": 840,
+        "file": "apps/www/src/content/docs/zh-cn/runtime-layout-parity.browser.test.ts",
+        "tests": 6,
+        "failed": 0,
+        "passed": 6
+      }
+    ]
+  },
+  "artifact": {
+    "artifactId": 12444711362,
+    "exactName": "runtime-ci-39818721613-browser-1-of-8-attempt-1",
+    "sha256": "b114138289cf04936a44a0b78dd1062e6c2b0af423f4ab51758c91d7d34e9c22",
+    "bytes": 7999181,
+    "members": 312,
+    "allMemberCRCAndSHA256Checked": true,
+    "fullZIPPreserved": true,
+    "selectedTextFiles": 21,
+    "wholeArchiveExtracted": false,
+    "pixelsViewed": false,
+    "pagination": {
+      "pages": 1,
+      "totalCounts": [8],
+      "rows": 8,
+      "uniqueIds": 8,
+      "completeAtRead": true
+    },
+    "receipt": {
+      "checkoutSha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+      "slot": "browser-1-of-8",
+      "payload": null
+    },
+    "boundary": "All312members enumerated and CRC/SHA checked from preserved fullZIP; only21textmembers extracted. Artifactreceipt payload:null does noterase actual independentlypresent textledgers."
+  },
+  "counts": {
+    "searchFileTotal": 30,
+    "searchFilePassed": 14,
+    "searchFileFailed": 16,
+    "initialReadinessFailed": 7,
+    "initialReadinessPassed": 1,
+    "docsRoleFailed": 9,
+    "docsRolePassed": 1,
+    "completeFailedDocsBrowserMappings": 6,
+    "failedDocsWithoutBrowserBatch": 3,
+    "otherSearchCasesPassed": 12
+  },
+  "docsCases": [
+    {
+      "family": "brutalist",
+      "width": 1280,
+      "rawRelativePath": "browser1-artifact/selected/search-commands/docs-call-timing-brutalist-1280.json",
+      "rawSHA256": "ce4fff27bbf2cc54ac146bd4b9510e17f933aa3439887c074a38ca6a1caf648b",
+      "source": {
+        "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+        "dirty": false
+      },
+      "callId": "call@1086",
+      "query": 1,
+      "attempts": 1,
+      "verdictPassed": false,
+      "verdictPendingCallIds": ["call@1086"],
+      "originalNodeQueryMs": 151262.774513,
+      "verdictNodeMs": 152263.583287,
+      "verdictAfterQueryMs": 1000.8087739999755,
+      "nodeToDriverReceiptMs": 0.5363639999995939,
+      "clientSendToDriverReceiptMs": 0.03166000000783242,
+      "selectorParseMs": 0.01057999997283332,
+      "selectorResolveAwaitMs": 1317.2340519999852,
+      "resolveExitAfterVerdictMs": 317.2536390000023,
+      "utilityDispatchAfterVerdictMs": 317.7662790000031,
+      "utilityDispatchAfterQueryMs": 1318.5750529999787,
+      "contextClosed": true,
+      "disposed": true,
+      "mappingCompleteAtSnapshot": true,
+      "diagnosticErrors": [],
+      "nodeDropped": 0,
+      "browserDropped": 0,
+      "evaluatorGuardPasses": 1,
+      "evaluatorGuardFailures": 0,
+      "transportComplete": false,
+      "snapshotPendingCapturedRequests": 0,
+      "stdout": {
+        "verdict": {
+          "line": 596,
+          "value": {
+            "source": {
+              "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+              "dirty": false
+            },
+            "family": "brutalist",
+            "width": 1280,
+            "frozenAt": 1792688748168,
+            "passed": false,
+            "calls": 1,
+            "dropped": 0,
+            "pending": 1,
+            "samples": [
+              {
+                "startedAt": 1792688747167
+              }
+            ]
+          }
+        },
+        "settlement": {
+          "line": 599,
+          "value": {
+            "source": {
+              "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+              "dirty": false
+            },
+            "family": "brutalist",
+            "width": 1280,
+            "verdict": {
+              "frozenAt": 1792688748168,
+              "calls": 1,
+              "references": 1,
+              "samples": [
+                {
+                  "startedAt": 1792688747167
+                }
+              ]
+            },
+            "nodeTimeOrigin": 1792688595904.929,
+            "startedMs": 152263.801476,
+            "finishedMs": 152597.851782,
+            "budgetMs": 1000,
+            "budgetExpired": false,
+            "drainedReferences": 1,
+            "referencesAtDrainPoint": 1,
+            "callsAtDrainPoint": 1,
+            "issuedAfterVerdict": 0,
+            "pendingRecordedSamples": 0,
+            "droppedSamples": 0,
+            "outcomes": [
+              {
+                "call": 1,
+                "status": "fulfilled",
+                "value": "combobox",
+                "batchObservedMs": 152597.840381
+              }
+            ],
+            "droppedOutcomes": 0,
+            "observerError": false,
+            "completeAtDrainPoint": true
+          }
+        }
+      },
+      "browserBatches": [
+        {
+          "ownerToken": "532fc94f-97b3-4b6e-a0a8-981ba12339e6",
+          "attempt": 1,
+          "callId": "call@1086",
+          "rows": [
+            {
+              "stage": "selector.enter",
+              "pageMs": 2762,
+              "timeOrigin": 1792688745735.4,
+              "dateNow": 1792688748497
+            },
+            {
+              "stage": "selector.exit",
+              "pageMs": 2765.7999999999884,
+              "timeOrigin": 1792688745735.4,
+              "dateNow": 1792688748501,
+              "found": true
+            },
+            {
+              "stage": "getter.enter",
+              "pageMs": 2766.2000000000116,
+              "timeOrigin": 1792688745735.4,
+              "dateNow": 1792688748501,
+              "getterNative": true
+            },
+            {
+              "stage": "getter.exit",
+              "pageMs": 2766.2000000000116,
+              "timeOrigin": 1792688745735.4,
+              "dateNow": 1792688748501,
+              "value": "combobox"
+            }
+          ],
+          "diagnosticErrors": 0,
+          "received": {
+            "nodeMs": 152597.207787,
+            "nodeTimeOrigin": 1792688595904.929,
+            "nodeDateNow": 1792688748502
+          }
+        }
+      ],
+      "mappingChecks": {
+        "oneScopedRequest": true,
+        "allBatchCallIdsMatch": true,
+        "allOwnerTokensMatch": true,
+        "attemptIdsValid": true,
+        "batchDiagnosticsEmpty": true,
+        "sourceMatchesSynthetic": true
+      },
+      "finalOutcome": "combobox",
+      "nodeReturnAfterVerdictMs": 334.19558900000993,
+      "evaluateRoundTripMs": 16.23940400002175,
+      "browserSelectorSpanMs": 3.7999999999883585,
+      "browserGetterSpanMs": 0.0,
+      "getterValue": "combobox",
+      "getterNativeSourceMarker": true,
+      "browserEvaluationNodeCausalEnvelope": {
+        "lowerNodeMs": 152581.349566,
+        "upperNodeMs": 152597.58897,
+        "lowerAfterVerdictMs": 317.7662790000031,
+        "upperAfterVerdictMs": 334.0056830000249,
+        "reason": "Samecall/attempt browsercallback causally occurs after originalSDKevaluate dispatch and before its successfulreturn. No Date.now synchronization assumption is needed for the entirely-after-verdict conclusion."
+      },
+      "executedSourceDerivedEvaluatorSHA256": "15d9709af6c958750a969e0072dc94c82bb11adf2fe80f679f42527f818b925a",
+      "actualExecutionContextId": 4,
+      "recordedVerdictBoundary": "Timestamp taken in original poll finally after verdict; not a direct Vitest internal timer callback timestamp."
+    },
+    {
+      "family": "brutalist",
+      "width": 1440,
+      "rawRelativePath": "browser1-artifact/selected/search-commands/docs-call-timing-brutalist-1440.json",
+      "rawSHA256": "7d3dc773379c79ffeaecbd4ffb4e49704b0cc8c8e458559dcb5f038ba652d76a",
+      "source": {
+        "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+        "dirty": false
+      },
+      "callId": "call@1267",
+      "query": 1,
+      "attempts": 1,
+      "verdictPassed": false,
+      "verdictPendingCallIds": ["call@1267"],
+      "originalNodeQueryMs": 158330.478242,
+      "verdictNodeMs": 159330.203391,
+      "verdictAfterQueryMs": 999.7251489999762,
+      "nodeToDriverReceiptMs": 0.526335000002291,
+      "clientSendToDriverReceiptMs": 0.026068000006489456,
+      "selectorParseMs": 0.012854000000515953,
+      "selectorResolveAwaitMs": 1316.8807910000032,
+      "resolveExitAfterVerdictMs": 317.98300100001507,
+      "utilityDispatchAfterVerdictMs": 318.56053200000315,
+      "utilityDispatchAfterQueryMs": 1318.2856809999794,
+      "contextClosed": true,
+      "disposed": true,
+      "mappingCompleteAtSnapshot": true,
+      "diagnosticErrors": [],
+      "nodeDropped": 0,
+      "browserDropped": 0,
+      "evaluatorGuardPasses": 1,
+      "evaluatorGuardFailures": 0,
+      "transportComplete": false,
+      "snapshotPendingCapturedRequests": 0,
+      "stdout": {
+        "verdict": {
+          "line": 608,
+          "value": {
+            "source": {
+              "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+              "dirty": false
+            },
+            "family": "brutalist",
+            "width": 1440,
+            "frozenAt": 1792688755235,
+            "passed": false,
+            "calls": 1,
+            "dropped": 0,
+            "pending": 1,
+            "samples": [
+              {
+                "startedAt": 1792688754235
+              }
+            ]
+          }
+        },
+        "settlement": {
+          "line": 611,
+          "value": {
+            "source": {
+              "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+              "dirty": false
+            },
+            "family": "brutalist",
+            "width": 1440,
+            "verdict": {
+              "frozenAt": 1792688755235,
+              "calls": 1,
+              "references": 1,
+              "samples": [
+                {
+                  "startedAt": 1792688754235
+                }
+              ]
+            },
+            "nodeTimeOrigin": 1792688595904.929,
+            "startedMs": 159330.345567,
+            "finishedMs": 159664.919838,
+            "budgetMs": 1000,
+            "budgetExpired": false,
+            "drainedReferences": 1,
+            "referencesAtDrainPoint": 1,
+            "callsAtDrainPoint": 1,
+            "issuedAfterVerdict": 0,
+            "pendingRecordedSamples": 0,
+            "droppedSamples": 0,
+            "outcomes": [
+              {
+                "call": 1,
+                "status": "fulfilled",
+                "value": "combobox",
+                "batchObservedMs": 159664.901013
+              }
+            ],
+            "droppedOutcomes": 0,
+            "observerError": false,
+            "completeAtDrainPoint": true
+          }
+        }
+      },
+      "browserBatches": [
+        {
+          "ownerToken": "dc665b55-6dc8-486b-96c1-d09dc84b1627",
+          "attempt": 1,
+          "callId": "call@1267",
+          "rows": [
+            {
+              "stage": "selector.enter",
+              "pageMs": 2813.4000000000233,
+              "timeOrigin": 1792688752751,
+              "dateNow": 1792688755564
+            },
+            {
+              "stage": "selector.exit",
+              "pageMs": 2817.2000000000116,
+              "timeOrigin": 1792688752751,
+              "dateNow": 1792688755568,
+              "found": true
+            },
+            {
+              "stage": "getter.enter",
+              "pageMs": 2817.600000000035,
+              "timeOrigin": 1792688752751,
+              "dateNow": 1792688755568,
+              "getterNative": true
+            },
+            {
+              "stage": "getter.exit",
+              "pageMs": 2817.600000000035,
+              "timeOrigin": 1792688752751,
+              "dateNow": 1792688755568,
+              "value": "combobox"
+            }
+          ],
+          "diagnosticErrors": 0,
+          "received": {
+            "nodeMs": 159664.254658,
+            "nodeTimeOrigin": 1792688595904.929,
+            "nodeDateNow": 1792688755569
+          }
+        }
+      ],
+      "mappingChecks": {
+        "oneScopedRequest": true,
+        "allBatchCallIdsMatch": true,
+        "allOwnerTokensMatch": true,
+        "attemptIdsValid": true,
+        "batchDiagnosticsEmpty": true,
+        "sourceMatchesSynthetic": true
+      },
+      "finalOutcome": "combobox",
+      "nodeReturnAfterVerdictMs": 334.6125630000024,
+      "evaluateRoundTripMs": 15.79973900000914,
+      "browserSelectorSpanMs": 3.7999999999883585,
+      "browserGetterSpanMs": 0.0,
+      "getterValue": "combobox",
+      "getterNativeSourceMarker": true,
+      "browserEvaluationNodeCausalEnvelope": {
+        "lowerNodeMs": 159648.763923,
+        "upperNodeMs": 159664.563662,
+        "lowerAfterVerdictMs": 318.56053200000315,
+        "upperAfterVerdictMs": 334.3602710000123,
+        "reason": "Samecall/attempt browsercallback causally occurs after originalSDKevaluate dispatch and before its successfulreturn. No Date.now synchronization assumption is needed for the entirely-after-verdict conclusion."
+      },
+      "executedSourceDerivedEvaluatorSHA256": "3330bc020c07ec7cdfbad22d9875c3d6f57a5a17af91270926010dc0d4691a1d",
+      "actualExecutionContextId": 4,
+      "recordedVerdictBoundary": "Timestamp taken in original poll finally after verdict; not a direct Vitest internal timer callback timestamp."
+    },
+    {
+      "family": "brutalist",
+      "width": 2048,
+      "rawRelativePath": "browser1-artifact/selected/search-commands/docs-call-timing-brutalist-2048.json",
+      "rawSHA256": "b5d2bdc62786a92e38d4c1b623b7a2968bc0af882f15a10f47be276e2d945d9d",
+      "source": {
+        "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+        "dirty": false
+      },
+      "callId": "call@1583",
+      "query": 1,
+      "attempts": 1,
+      "verdictPassed": false,
+      "verdictPendingCallIds": ["call@1583"],
+      "originalNodeQueryMs": 165375.641158,
+      "verdictNodeMs": 166375.902795,
+      "verdictAfterQueryMs": 1000.2616369999887,
+      "nodeToDriverReceiptMs": 0.5066069999884348,
+      "clientSendToDriverReceiptMs": 0.02580800000578165,
+      "selectorParseMs": 0.009247000009054318,
+      "selectorResolveAwaitMs": 1479.0818109999818,
+      "resolveExitAfterVerdictMs": 479.6395959999936,
+      "utilityDispatchAfterVerdictMs": 480.13759800000116,
+      "utilityDispatchAfterQueryMs": 1480.3992349999899,
+      "contextClosed": true,
+      "disposed": true,
+      "mappingCompleteAtSnapshot": true,
+      "diagnosticErrors": [],
+      "nodeDropped": 0,
+      "browserDropped": 0,
+      "evaluatorGuardPasses": 1,
+      "evaluatorGuardFailures": 0,
+      "transportComplete": false,
+      "snapshotPendingCapturedRequests": 0,
+      "stdout": {
+        "verdict": {
+          "line": 620,
+          "value": {
+            "source": {
+              "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+              "dirty": false
+            },
+            "family": "brutalist",
+            "width": 2048,
+            "frozenAt": 1792688762280,
+            "passed": false,
+            "calls": 1,
+            "dropped": 0,
+            "pending": 1,
+            "samples": [
+              {
+                "startedAt": 1792688761280
+              }
+            ]
+          }
+        },
+        "settlement": {
+          "line": 623,
+          "value": {
+            "source": {
+              "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+              "dirty": false
+            },
+            "family": "brutalist",
+            "width": 2048,
+            "verdict": {
+              "frozenAt": 1792688762280,
+              "calls": 1,
+              "references": 1,
+              "samples": [
+                {
+                  "startedAt": 1792688761280
+                }
+              ]
+            },
+            "nodeTimeOrigin": 1792688595904.929,
+            "startedMs": 166376.015535,
+            "finishedMs": 166876.468778,
+            "budgetMs": 1000,
+            "budgetExpired": false,
+            "drainedReferences": 1,
+            "referencesAtDrainPoint": 1,
+            "callsAtDrainPoint": 1,
+            "issuedAfterVerdict": 0,
+            "pendingRecordedSamples": 0,
+            "droppedSamples": 0,
+            "outcomes": [
+              {
+                "call": 1,
+                "status": "fulfilled",
+                "value": "combobox",
+                "batchObservedMs": 166876.460703
+              }
+            ],
+            "droppedOutcomes": 0,
+            "observerError": false,
+            "completeAtDrainPoint": true
+          }
+        }
+      },
+      "browserBatches": [
+        {
+          "ownerToken": "b84d3a6a-d3ae-4799-93c0-a38f5d08d7ee",
+          "attempt": 1,
+          "callId": "call@1583",
+          "rows": [
+            {
+              "stage": "selector.enter",
+              "pageMs": 2941.7999999999884,
+              "timeOrigin": 1792688759834.1,
+              "dateNow": 1792688762775
+            },
+            {
+              "stage": "selector.exit",
+              "pageMs": 2945.7999999999884,
+              "timeOrigin": 1792688759834.1,
+              "dateNow": 1792688762779,
+              "found": true
+            },
+            {
+              "stage": "getter.enter",
+              "pageMs": 2946.0999999999767,
+              "timeOrigin": 1792688759834.1,
+              "dateNow": 1792688762780,
+              "getterNative": true
+            },
+            {
+              "stage": "getter.exit",
+              "pageMs": 2946.0999999999767,
+              "timeOrigin": 1792688759834.1,
+              "dateNow": 1792688762780,
+              "value": "combobox"
+            }
+          ],
+          "diagnosticErrors": 0,
+          "received": {
+            "nodeMs": 166875.889464,
+            "nodeTimeOrigin": 1792688595904.929,
+            "nodeDateNow": 1792688762780
+          }
+        }
+      ],
+      "mappingChecks": {
+        "oneScopedRequest": true,
+        "allBatchCallIdsMatch": true,
+        "allOwnerTokensMatch": true,
+        "attemptIdsValid": true,
+        "batchDiagnosticsEmpty": true,
+        "sourceMatchesSynthetic": true
+      },
+      "finalOutcome": "combobox",
+      "nodeReturnAfterVerdictMs": 500.49671400000807,
+      "evaluateRoundTripMs": 20.24017299999832,
+      "browserSelectorSpanMs": 4.0,
+      "browserGetterSpanMs": 0.0,
+      "getterValue": "combobox",
+      "getterNativeSourceMarker": true,
+      "browserEvaluationNodeCausalEnvelope": {
+        "lowerNodeMs": 166856.040393,
+        "upperNodeMs": 166876.280566,
+        "lowerAfterVerdictMs": 480.13759800000116,
+        "upperAfterVerdictMs": 500.3777709999995,
+        "reason": "Samecall/attempt browsercallback causally occurs after originalSDKevaluate dispatch and before its successfulreturn. No Date.now synchronization assumption is needed for the entirely-after-verdict conclusion."
+      },
+      "executedSourceDerivedEvaluatorSHA256": "faca0215d28299bc48fcd5a124a3314cea17eede26ba5c4c0daeccc5dd27fcf6",
+      "actualExecutionContextId": 4,
+      "recordedVerdictBoundary": "Timestamp taken in original poll finally after verdict; not a direct Vitest internal timer callback timestamp."
+    },
+    {
+      "family": "brutalist",
+      "width": 320,
+      "rawRelativePath": "browser1-artifact/selected/search-commands/docs-call-timing-brutalist-320.json",
+      "rawSHA256": "94cdd83517f31c953d240174d736f403ca92ca2c311f9b226004fe06afb0fb94",
+      "source": {
+        "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+        "dirty": false
+      },
+      "callId": "call@985",
+      "query": 1,
+      "attempts": 1,
+      "verdictPassed": true,
+      "verdictPendingCallIds": [],
+      "originalNodeQueryMs": 135145.564321,
+      "verdictNodeMs": 136143.729914,
+      "verdictAfterQueryMs": 998.1655929999833,
+      "nodeToDriverReceiptMs": 0.5701069999777246,
+      "clientSendToDriverReceiptMs": 0.036758000002009794,
+      "selectorParseMs": 0.012072999990778044,
+      "selectorResolveAwaitMs": 934.343189999985,
+      "resolveExitAfterVerdictMs": -62.93464099999983,
+      "utilityDispatchAfterVerdictMs": -62.38816800000495,
+      "utilityDispatchAfterQueryMs": 935.7774249999784,
+      "contextClosed": true,
+      "disposed": true,
+      "mappingCompleteAtSnapshot": true,
+      "diagnosticErrors": [],
+      "nodeDropped": 0,
+      "browserDropped": 0,
+      "evaluatorGuardPasses": 1,
+      "evaluatorGuardFailures": 0,
+      "transportComplete": false,
+      "snapshotPendingCapturedRequests": 0,
+      "stdout": {
+        "verdict": {
+          "line": 575,
+          "value": {
+            "source": {
+              "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+              "dirty": false
+            },
+            "family": "brutalist",
+            "width": 320,
+            "frozenAt": 1792688732048,
+            "passed": true,
+            "calls": 1,
+            "dropped": 0,
+            "pending": 0,
+            "samples": [
+              {
+                "startedAt": 1792688731050,
+                "settledAt": 1792688732048,
+                "value": "combobox"
+              }
+            ]
+          }
+        }
+      },
+      "browserBatches": [
+        {
+          "ownerToken": "57fd18b6-37e6-48a8-b07e-ca75bc7e04e7",
+          "attempt": 1,
+          "callId": "call@985",
+          "rows": [
+            {
+              "stage": "selector.enter",
+              "pageMs": 2412.7999999999884,
+              "timeOrigin": 1792688729630,
+              "dateNow": 1792688732042
+            },
+            {
+              "stage": "selector.exit",
+              "pageMs": 2416.5,
+              "timeOrigin": 1792688729630,
+              "dateNow": 1792688732046,
+              "found": true
+            },
+            {
+              "stage": "getter.enter",
+              "pageMs": 2417.1999999999534,
+              "timeOrigin": 1792688729630,
+              "dateNow": 1792688732047,
+              "getterNative": true
+            },
+            {
+              "stage": "getter.exit",
+              "pageMs": 2417.1999999999534,
+              "timeOrigin": 1792688729630,
+              "dateNow": 1792688732047,
+              "value": "combobox"
+            }
+          ],
+          "diagnosticErrors": 0,
+          "received": {
+            "nodeMs": 136142.955837,
+            "nodeTimeOrigin": 1792688595904.929,
+            "nodeDateNow": 1792688732047
+          }
+        }
+      ],
+      "mappingChecks": {
+        "oneScopedRequest": true,
+        "allBatchCallIdsMatch": true,
+        "allOwnerTokensMatch": true,
+        "attemptIdsValid": true,
+        "batchDiagnosticsEmpty": true,
+        "sourceMatchesSynthetic": true
+      },
+      "finalOutcome": "combobox",
+      "nodeReturnAfterVerdictMs": -0.09240299998782575,
+      "evaluateRoundTripMs": 62.14452200001688,
+      "browserSelectorSpanMs": 3.7000000000116415,
+      "browserGetterSpanMs": 0.0,
+      "getterValue": "combobox",
+      "getterNativeSourceMarker": true,
+      "browserEvaluationNodeCausalEnvelope": {
+        "lowerNodeMs": 136081.341746,
+        "upperNodeMs": 136143.486268,
+        "lowerAfterVerdictMs": -62.38816800000495,
+        "upperAfterVerdictMs": -0.24364599998807535,
+        "reason": "Samecall/attempt browsercallback causally occurs after originalSDKevaluate dispatch and before its successfulreturn. No Date.now synchronization assumption is needed for the entirely-after-verdict conclusion."
+      },
+      "executedSourceDerivedEvaluatorSHA256": "7289b1301a1525093b2464af73c9bae8efe3b411d2ee2f2b54b771bce42268e4",
+      "actualExecutionContextId": 4,
+      "recordedVerdictBoundary": "Timestamp taken in original poll finally after verdict; not a direct Vitest internal timer callback timestamp."
+    },
+    {
+      "family": "brutalist",
+      "width": 390,
+      "rawRelativePath": "browser1-artifact/selected/search-commands/docs-call-timing-brutalist-390.json",
+      "rawSHA256": "815e6b1b43e0e0419e3099b625bf37346f1eb481f5af1416714e794e90a01433",
+      "source": {
+        "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+        "dirty": false
+      },
+      "callId": "call@1044",
+      "query": 1,
+      "attempts": 1,
+      "verdictPassed": false,
+      "verdictPendingCallIds": ["call@1044"],
+      "originalNodeQueryMs": 144433.752247,
+      "verdictNodeMs": 145433.549472,
+      "verdictAfterQueryMs": 999.7972250000166,
+      "nodeToDriverReceiptMs": 0.6992979999922682,
+      "clientSendToDriverReceiptMs": 0.03947399999015033,
+      "selectorParseMs": 0.020448000024771318,
+      "selectorResolveAwaitMs": 1049.3886300000013,
+      "resolveExitAfterVerdictMs": 50.708285000000615,
+      "utilityDispatchAfterVerdictMs": 51.094347999984166,
+      "utilityDispatchAfterQueryMs": 1050.8915730000008,
+      "contextClosed": true,
+      "disposed": true,
+      "mappingCompleteAtSnapshot": true,
+      "diagnosticErrors": [],
+      "nodeDropped": 0,
+      "browserDropped": 0,
+      "evaluatorGuardPasses": 1,
+      "evaluatorGuardFailures": 0,
+      "transportComplete": false,
+      "snapshotPendingCapturedRequests": 0,
+      "stdout": {
+        "verdict": {
+          "line": 584,
+          "value": {
+            "source": {
+              "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+              "dirty": false
+            },
+            "family": "brutalist",
+            "width": 390,
+            "frozenAt": 1792688741338,
+            "passed": false,
+            "calls": 1,
+            "dropped": 0,
+            "pending": 1,
+            "samples": [
+              {
+                "startedAt": 1792688740338
+              }
+            ]
+          }
+        },
+        "settlement": {
+          "line": 587,
+          "value": {
+            "source": {
+              "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+              "dirty": false
+            },
+            "family": "brutalist",
+            "width": 390,
+            "verdict": {
+              "frozenAt": 1792688741338,
+              "calls": 1,
+              "references": 1,
+              "samples": [
+                {
+                  "startedAt": 1792688740338
+                }
+              ]
+            },
+            "nodeTimeOrigin": 1792688595904.929,
+            "startedMs": 145433.676991,
+            "finishedMs": 145505.258355,
+            "budgetMs": 1000,
+            "budgetExpired": false,
+            "drainedReferences": 1,
+            "referencesAtDrainPoint": 1,
+            "callsAtDrainPoint": 1,
+            "issuedAfterVerdict": 0,
+            "pendingRecordedSamples": 0,
+            "droppedSamples": 0,
+            "outcomes": [
+              {
+                "call": 1,
+                "status": "fulfilled",
+                "value": "combobox",
+                "batchObservedMs": 145505.243737
+              }
+            ],
+            "droppedOutcomes": 0,
+            "observerError": false,
+            "completeAtDrainPoint": true
+          }
+        }
+      },
+      "browserBatches": [
+        {
+          "ownerToken": "1f2f7420-7a3f-4b44-8f9c-a7cafe411457",
+          "attempt": 1,
+          "callId": "call@1044",
+          "rows": [
+            {
+              "stage": "selector.enter",
+              "pageMs": 2454.7999999999884,
+              "timeOrigin": 1792688738947.9,
+              "dateNow": 1792688741402
+            },
+            {
+              "stage": "selector.exit",
+              "pageMs": 2459.600000000035,
+              "timeOrigin": 1792688738947.9,
+              "dateNow": 1792688741407,
+              "found": true
+            },
+            {
+              "stage": "getter.enter",
+              "pageMs": 2460.2000000000116,
+              "timeOrigin": 1792688738947.9,
+              "dateNow": 1792688741408,
+              "getterNative": true
+            },
+            {
+              "stage": "getter.exit",
+              "pageMs": 2460.2000000000116,
+              "timeOrigin": 1792688738947.9,
+              "dateNow": 1792688741408,
+              "value": "combobox"
+            }
+          ],
+          "diagnosticErrors": 0,
+          "received": {
+            "nodeMs": 145504.788565,
+            "nodeTimeOrigin": 1792688595904.929,
+            "nodeDateNow": 1792688741409
+          }
+        }
+      ],
+      "mappingChecks": {
+        "oneScopedRequest": true,
+        "allBatchCallIdsMatch": true,
+        "allOwnerTokensMatch": true,
+        "attemptIdsValid": true,
+        "batchDiagnosticsEmpty": true,
+        "sourceMatchesSynthetic": true
+      },
+      "finalOutcome": "combobox",
+      "nodeReturnAfterVerdictMs": 71.6014219999779,
+      "evaluateRoundTripMs": 20.312208999996074,
+      "browserSelectorSpanMs": 4.800000000046566,
+      "browserGetterSpanMs": 0.0,
+      "getterValue": "combobox",
+      "getterNativeSourceMarker": true,
+      "browserEvaluationNodeCausalEnvelope": {
+        "lowerNodeMs": 145484.64382,
+        "upperNodeMs": 145504.956029,
+        "lowerAfterVerdictMs": 51.094347999984166,
+        "upperAfterVerdictMs": 71.40655699998024,
+        "reason": "Samecall/attempt browsercallback causally occurs after originalSDKevaluate dispatch and before its successfulreturn. No Date.now synchronization assumption is needed for the entirely-after-verdict conclusion."
+      },
+      "executedSourceDerivedEvaluatorSHA256": "a2cd2286331fb707467ac5888e82834a431a7a291b5335959e65a5c9030acf8a",
+      "actualExecutionContextId": 4,
+      "recordedVerdictBoundary": "Timestamp taken in original poll finally after verdict; not a direct Vitest internal timer callback timestamp."
+    },
+    {
+      "family": "shadcn",
+      "width": 1280,
+      "rawRelativePath": "browser1-artifact/selected/search-commands/docs-call-timing-shadcn-1280.json",
+      "rawSHA256": "5bccaaba55478ae7fd3b761950a7bb33830e54bd96bb830c586c0d755ab4396c",
+      "source": {
+        "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+        "dirty": false
+      },
+      "callId": "call@1050",
+      "query": 1,
+      "attempts": 1,
+      "verdictPassed": false,
+      "verdictPendingCallIds": ["call@1050"],
+      "originalNodeQueryMs": 147607.291636,
+      "verdictNodeMs": 148607.570754,
+      "verdictAfterQueryMs": 1000.2791179999767,
+      "nodeToDriverReceiptMs": 0.597087999980431,
+      "clientSendToDriverReceiptMs": 0.037560999975539744,
+      "selectorParseMs": 0.01248400000622496,
+      "selectorResolveAwaitMs": 2060.346716,
+      "resolveExitAfterVerdictMs": 1061.0315130000236,
+      "utilityDispatchAfterVerdictMs": 1061.5344840000034,
+      "utilityDispatchAfterQueryMs": 2061.81360199998,
+      "contextClosed": true,
+      "disposed": true,
+      "mappingCompleteAtSnapshot": false,
+      "diagnosticErrors": [],
+      "nodeDropped": 0,
+      "browserDropped": 0,
+      "evaluatorGuardPasses": 1,
+      "evaluatorGuardFailures": 0,
+      "transportComplete": false,
+      "snapshotPendingCapturedRequests": 0,
+      "stdout": {
+        "verdict": {
+          "line": 590,
+          "value": {
+            "source": {
+              "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+              "dirty": false
+            },
+            "family": "shadcn",
+            "width": 1280,
+            "frozenAt": 1792688744512,
+            "passed": false,
+            "calls": 1,
+            "dropped": 0,
+            "pending": 1,
+            "samples": [
+              {
+                "startedAt": 1792688743512
+              }
+            ]
+          }
+        },
+        "settlement": {
+          "line": 593,
+          "value": {
+            "source": {
+              "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+              "dirty": false
+            },
+            "family": "shadcn",
+            "width": 1280,
+            "verdict": {
+              "frozenAt": 1792688744512,
+              "calls": 1,
+              "references": 1,
+              "samples": [
+                {
+                  "startedAt": 1792688743512
+                }
+              ]
+            },
+            "nodeTimeOrigin": 1792688595904.929,
+            "startedMs": 148607.768314,
+            "finishedMs": 149607.82484,
+            "budgetMs": 1000,
+            "budgetExpired": true,
+            "drainedReferences": 0,
+            "referencesAtDrainPoint": 1,
+            "callsAtDrainPoint": 1,
+            "issuedAfterVerdict": 0,
+            "pendingRecordedSamples": 1,
+            "droppedSamples": 0,
+            "outcomes": [],
+            "droppedOutcomes": 0,
+            "observerError": false,
+            "completeAtDrainPoint": false
+          }
+        }
+      },
+      "browserBatches": [],
+      "mappingChecks": {
+        "oneScopedRequest": true,
+        "allBatchCallIdsMatch": true,
+        "allOwnerTokensMatch": true,
+        "attemptIdsValid": true,
+        "batchDiagnosticsEmpty": true,
+        "sourceMatchesSynthetic": true
+      },
+      "finalOutcome": "TargetClosed after post-verdict observation budget",
+      "nodeRejectAfterVerdictMs": 1077.6648470000073,
+      "evaluateRejectAfterDispatchMs": 15.068705000012415,
+      "browserBoundary": "No browser batch captured; do not infer selector/getter execution or value. requests.settled=true/pending0 reflects cleanup rejection, not a successful DOM read.",
+      "executedSourceDerivedEvaluatorSHA256": "3648c9501e7fad837a47b6d212dfc5ea53a63c86432b5a6fc33816b49bf90cfe",
+      "actualExecutionContextId": 4,
+      "recordedVerdictBoundary": "Timestamp taken in original poll finally after verdict; not a direct Vitest internal timer callback timestamp."
+    },
+    {
+      "family": "shadcn",
+      "width": 1440,
+      "rawRelativePath": "browser1-artifact/selected/search-commands/docs-call-timing-shadcn-1440.json",
+      "rawSHA256": "982921153dce2545477cade59be14d934d96dcdc6f6d77c9b2177e162e56f0aa",
+      "source": {
+        "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+        "dirty": false
+      },
+      "callId": "call@1157",
+      "query": 1,
+      "attempts": 1,
+      "verdictPassed": false,
+      "verdictPendingCallIds": ["call@1157"],
+      "originalNodeQueryMs": 154605.368486,
+      "verdictNodeMs": 155605.773655,
+      "verdictAfterQueryMs": 1000.4051690000051,
+      "nodeToDriverReceiptMs": 0.8730110000178684,
+      "clientSendToDriverReceiptMs": 0.3792890000040643,
+      "selectorParseMs": 0.009457999985897914,
+      "selectorResolveAwaitMs": 2073.532294000004,
+      "resolveExitAfterVerdictMs": 1074.3046350000077,
+      "utilityDispatchAfterVerdictMs": 1074.770515000011,
+      "utilityDispatchAfterQueryMs": 2075.175684000016,
+      "contextClosed": true,
+      "disposed": true,
+      "mappingCompleteAtSnapshot": false,
+      "diagnosticErrors": [],
+      "nodeDropped": 0,
+      "browserDropped": 0,
+      "evaluatorGuardPasses": 1,
+      "evaluatorGuardFailures": 0,
+      "transportComplete": false,
+      "snapshotPendingCapturedRequests": 0,
+      "stdout": {
+        "verdict": {
+          "line": 602,
+          "value": {
+            "source": {
+              "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+              "dirty": false
+            },
+            "family": "shadcn",
+            "width": 1440,
+            "frozenAt": 1792688751510,
+            "passed": false,
+            "calls": 1,
+            "dropped": 0,
+            "pending": 1,
+            "samples": [
+              {
+                "startedAt": 1792688750510
+              }
+            ]
+          }
+        },
+        "settlement": {
+          "line": 605,
+          "value": {
+            "source": {
+              "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+              "dirty": false
+            },
+            "family": "shadcn",
+            "width": 1440,
+            "verdict": {
+              "frozenAt": 1792688751510,
+              "calls": 1,
+              "references": 1,
+              "samples": [
+                {
+                  "startedAt": 1792688750510
+                }
+              ]
+            },
+            "nodeTimeOrigin": 1792688595904.929,
+            "startedMs": 155605.963079,
+            "finishedMs": 156605.338819,
+            "budgetMs": 1000,
+            "budgetExpired": true,
+            "drainedReferences": 0,
+            "referencesAtDrainPoint": 1,
+            "callsAtDrainPoint": 1,
+            "issuedAfterVerdict": 0,
+            "pendingRecordedSamples": 1,
+            "droppedSamples": 0,
+            "outcomes": [],
+            "droppedOutcomes": 0,
+            "observerError": false,
+            "completeAtDrainPoint": false
+          }
+        }
+      },
+      "browserBatches": [],
+      "mappingChecks": {
+        "oneScopedRequest": true,
+        "allBatchCallIdsMatch": true,
+        "allOwnerTokensMatch": true,
+        "attemptIdsValid": true,
+        "batchDiagnosticsEmpty": true,
+        "sourceMatchesSynthetic": true
+      },
+      "finalOutcome": "TargetClosed after post-verdict observation budget",
+      "nodeRejectAfterVerdictMs": 1089.3143069999933,
+      "evaluateRejectAfterDispatchMs": 14.117746000003535,
+      "browserBoundary": "No browser batch captured; do not infer selector/getter execution or value. requests.settled=true/pending0 reflects cleanup rejection, not a successful DOM read.",
+      "executedSourceDerivedEvaluatorSHA256": "93d3203df7ea5fb7da98263c5bd9b1917ae786ce450dad8544ef38d129af4468",
+      "actualExecutionContextId": 4,
+      "recordedVerdictBoundary": "Timestamp taken in original poll finally after verdict; not a direct Vitest internal timer callback timestamp."
+    },
+    {
+      "family": "shadcn",
+      "width": 2048,
+      "rawRelativePath": "browser1-artifact/selected/search-commands/docs-call-timing-shadcn-2048.json",
+      "rawSHA256": "af9c24f46de945e979a0891ca1fd5167fc09596cc5994ba72ed7c09c89cc2a30",
+      "source": {
+        "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+        "dirty": false
+      },
+      "callId": "call@1403",
+      "query": 1,
+      "attempts": 1,
+      "verdictPassed": false,
+      "verdictPendingCallIds": ["call@1403"],
+      "originalNodeQueryMs": 161679.947527,
+      "verdictNodeMs": 162680.933535,
+      "verdictAfterQueryMs": 1000.986007999978,
+      "nodeToDriverReceiptMs": 0.47480799999902956,
+      "clientSendToDriverReceiptMs": 0.02662000001873821,
+      "selectorParseMs": 0.011832000018330291,
+      "selectorResolveAwaitMs": 2090.833432000014,
+      "resolveExitAfterVerdictMs": 1090.6334150000184,
+      "utilityDispatchAfterVerdictMs": 1091.1240530000068,
+      "utilityDispatchAfterQueryMs": 2092.110060999985,
+      "contextClosed": true,
+      "disposed": true,
+      "mappingCompleteAtSnapshot": false,
+      "diagnosticErrors": [],
+      "nodeDropped": 0,
+      "browserDropped": 0,
+      "evaluatorGuardPasses": 1,
+      "evaluatorGuardFailures": 0,
+      "transportComplete": false,
+      "snapshotPendingCapturedRequests": 0,
+      "stdout": {
+        "verdict": {
+          "line": 614,
+          "value": {
+            "source": {
+              "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+              "dirty": false
+            },
+            "family": "shadcn",
+            "width": 2048,
+            "frozenAt": 1792688758585,
+            "passed": false,
+            "calls": 1,
+            "dropped": 0,
+            "pending": 1,
+            "samples": [
+              {
+                "startedAt": 1792688757584
+              }
+            ]
+          }
+        },
+        "settlement": {
+          "line": 617,
+          "value": {
+            "source": {
+              "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+              "dirty": false
+            },
+            "family": "shadcn",
+            "width": 2048,
+            "verdict": {
+              "frozenAt": 1792688758585,
+              "calls": 1,
+              "references": 1,
+              "samples": [
+                {
+                  "startedAt": 1792688757584
+                }
+              ]
+            },
+            "nodeTimeOrigin": 1792688595904.929,
+            "startedMs": 162681.044553,
+            "finishedMs": 163680.521747,
+            "budgetMs": 1000,
+            "budgetExpired": true,
+            "drainedReferences": 0,
+            "referencesAtDrainPoint": 1,
+            "callsAtDrainPoint": 1,
+            "issuedAfterVerdict": 0,
+            "pendingRecordedSamples": 1,
+            "droppedSamples": 0,
+            "outcomes": [],
+            "droppedOutcomes": 0,
+            "observerError": false,
+            "completeAtDrainPoint": false
+          }
+        }
+      },
+      "browserBatches": [],
+      "mappingChecks": {
+        "oneScopedRequest": true,
+        "allBatchCallIdsMatch": true,
+        "allOwnerTokensMatch": true,
+        "attemptIdsValid": true,
+        "batchDiagnosticsEmpty": true,
+        "sourceMatchesSynthetic": true
+      },
+      "finalOutcome": "TargetClosed after post-verdict observation budget",
+      "nodeRejectAfterVerdictMs": 1103.2612870000012,
+      "evaluateRejectAfterDispatchMs": 11.797798999992665,
+      "browserBoundary": "No browser batch captured; do not infer selector/getter execution or value. requests.settled=true/pending0 reflects cleanup rejection, not a successful DOM read.",
+      "executedSourceDerivedEvaluatorSHA256": "c5323eb47e36a04b43d2d242877970fab682527e5cfc7e3b6b9959a8f4827ca7",
+      "actualExecutionContextId": 4,
+      "recordedVerdictBoundary": "Timestamp taken in original poll finally after verdict; not a direct Vitest internal timer callback timestamp."
+    },
+    {
+      "family": "shadcn",
+      "width": 320,
+      "rawRelativePath": "browser1-artifact/selected/search-commands/docs-call-timing-shadcn-320.json",
+      "rawSHA256": "fd9f45a275ff98a8ae1505f0b193c024b69b2cce35f95be78f1b6bb4345be96a",
+      "source": {
+        "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+        "dirty": false
+      },
+      "callId": "call@979",
+      "query": 1,
+      "attempts": 1,
+      "verdictPassed": false,
+      "verdictPendingCallIds": ["call@979"],
+      "originalNodeQueryMs": 131826.766452,
+      "verdictNodeMs": 132826.79776,
+      "verdictAfterQueryMs": 1000.031307999976,
+      "nodeToDriverReceiptMs": 7.710553999990225,
+      "clientSendToDriverReceiptMs": 0.21271799999522045,
+      "selectorParseMs": 0.023212999978568405,
+      "selectorResolveAwaitMs": 1692.044041999994,
+      "resolveExitAfterVerdictMs": 700.5583010000119,
+      "utilityDispatchAfterVerdictMs": 701.3041369999992,
+      "utilityDispatchAfterQueryMs": 1701.3354449999752,
+      "contextClosed": true,
+      "disposed": true,
+      "mappingCompleteAtSnapshot": true,
+      "diagnosticErrors": [],
+      "nodeDropped": 0,
+      "browserDropped": 0,
+      "evaluatorGuardPasses": 1,
+      "evaluatorGuardFailures": 0,
+      "transportComplete": false,
+      "snapshotPendingCapturedRequests": 0,
+      "stdout": {
+        "verdict": {
+          "line": 569,
+          "value": {
+            "source": {
+              "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+              "dirty": false
+            },
+            "family": "shadcn",
+            "width": 320,
+            "frozenAt": 1792688728731,
+            "passed": false,
+            "calls": 1,
+            "dropped": 0,
+            "pending": 1,
+            "samples": [
+              {
+                "startedAt": 1792688727731
+              }
+            ]
+          }
+        },
+        "settlement": {
+          "line": 572,
+          "value": {
+            "source": {
+              "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+              "dirty": false
+            },
+            "family": "shadcn",
+            "width": 320,
+            "verdict": {
+              "frozenAt": 1792688728731,
+              "calls": 1,
+              "references": 1,
+              "samples": [
+                {
+                  "startedAt": 1792688727731
+                }
+              ]
+            },
+            "nodeTimeOrigin": 1792688595904.929,
+            "startedMs": 132827.080479,
+            "finishedMs": 133582.978924,
+            "budgetMs": 1000,
+            "budgetExpired": false,
+            "drainedReferences": 1,
+            "referencesAtDrainPoint": 1,
+            "callsAtDrainPoint": 1,
+            "issuedAfterVerdict": 0,
+            "pendingRecordedSamples": 0,
+            "droppedSamples": 0,
+            "outcomes": [
+              {
+                "call": 1,
+                "status": "fulfilled",
+                "value": "combobox",
+                "batchObservedMs": 133582.91795
+              }
+            ],
+            "droppedOutcomes": 0,
+            "observerError": false,
+            "completeAtDrainPoint": true
+          }
+        }
+      },
+      "browserBatches": [
+        {
+          "ownerToken": "c663ed39-f6c3-40e4-80ea-38401665405d",
+          "attempt": 1,
+          "callId": "call@979",
+          "rows": [
+            {
+              "stage": "selector.enter",
+              "pageMs": 3620.4000000000233,
+              "timeOrigin": 1792688725860.1,
+              "dateNow": 1792688729480
+            },
+            {
+              "stage": "selector.exit",
+              "pageMs": 3625.5,
+              "timeOrigin": 1792688725860.1,
+              "dateNow": 1792688729485,
+              "found": true
+            },
+            {
+              "stage": "getter.enter",
+              "pageMs": 3626,
+              "timeOrigin": 1792688725860.1,
+              "dateNow": 1792688729486,
+              "getterNative": true
+            },
+            {
+              "stage": "getter.exit",
+              "pageMs": 3626,
+              "timeOrigin": 1792688725860.1,
+              "dateNow": 1792688729486,
+              "value": "combobox"
+            }
+          ],
+          "diagnosticErrors": 0,
+          "received": {
+            "nodeMs": 133582.012086,
+            "nodeTimeOrigin": 1792688595904.929,
+            "nodeDateNow": 1792688729486
+          }
+        }
+      ],
+      "mappingChecks": {
+        "oneScopedRequest": true,
+        "allBatchCallIdsMatch": true,
+        "allOwnerTokensMatch": true,
+        "attemptIdsValid": true,
+        "batchDiagnosticsEmpty": true,
+        "sourceMatchesSynthetic": true
+      },
+      "finalOutcome": "combobox",
+      "nodeReturnAfterVerdictMs": 756.0020990000048,
+      "evaluateRoundTripMs": 54.42943899999955,
+      "browserSelectorSpanMs": 5.099999999976717,
+      "browserGetterSpanMs": 0,
+      "getterValue": "combobox",
+      "getterNativeSourceMarker": true,
+      "browserEvaluationNodeCausalEnvelope": {
+        "lowerNodeMs": 133528.101897,
+        "upperNodeMs": 133582.531336,
+        "lowerAfterVerdictMs": 701.3041369999992,
+        "upperAfterVerdictMs": 755.7335759999987,
+        "reason": "Samecall/attempt browsercallback causally occurs after originalSDKevaluate dispatch and before its successfulreturn. No Date.now synchronization assumption is needed for the entirely-after-verdict conclusion."
+      },
+      "executedSourceDerivedEvaluatorSHA256": "82124944c6aa2f039f3402845618bd9baa4cc4f3b148373560f890bf2006449d",
+      "actualExecutionContextId": 4,
+      "recordedVerdictBoundary": "Timestamp taken in original poll finally after verdict; not a direct Vitest internal timer callback timestamp."
+    },
+    {
+      "family": "shadcn",
+      "width": 390,
+      "rawRelativePath": "browser1-artifact/selected/search-commands/docs-call-timing-shadcn-390.json",
+      "rawSHA256": "c612d0f2b467032d6b401d25e08b461362bb9f203a343d5b09ce89c93dca42f3",
+      "source": {
+        "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+        "dirty": false
+      },
+      "callId": "call@1038",
+      "query": 1,
+      "attempts": 1,
+      "verdictPassed": false,
+      "verdictPendingCallIds": ["call@1038"],
+      "originalNodeQueryMs": 141258.963627,
+      "verdictNodeMs": 142259.357774,
+      "verdictAfterQueryMs": 1000.3941470000136,
+      "nodeToDriverReceiptMs": 0.5224469999957364,
+      "clientSendToDriverReceiptMs": 0.06636399999842979,
+      "selectorParseMs": 0.011300999991362914,
+      "selectorResolveAwaitMs": 1574.2150290000136,
+      "resolveExitAfterVerdictMs": 574.709234000009,
+      "utilityDispatchAfterVerdictMs": 575.1767300000065,
+      "utilityDispatchAfterQueryMs": 1575.5708770000201,
+      "contextClosed": true,
+      "disposed": true,
+      "mappingCompleteAtSnapshot": true,
+      "diagnosticErrors": [],
+      "nodeDropped": 0,
+      "browserDropped": 0,
+      "evaluatorGuardPasses": 1,
+      "evaluatorGuardFailures": 0,
+      "transportComplete": false,
+      "snapshotPendingCapturedRequests": 0,
+      "stdout": {
+        "verdict": {
+          "line": 578,
+          "value": {
+            "source": {
+              "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+              "dirty": false
+            },
+            "family": "shadcn",
+            "width": 390,
+            "frozenAt": 1792688738164,
+            "passed": false,
+            "calls": 1,
+            "dropped": 0,
+            "pending": 1,
+            "samples": [
+              {
+                "startedAt": 1792688737163
+              }
+            ]
+          }
+        },
+        "settlement": {
+          "line": 581,
+          "value": {
+            "source": {
+              "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+              "dirty": false
+            },
+            "family": "shadcn",
+            "width": 390,
+            "verdict": {
+              "frozenAt": 1792688738164,
+              "calls": 1,
+              "references": 1,
+              "samples": [
+                {
+                  "startedAt": 1792688737163
+                }
+              ]
+            },
+            "nodeTimeOrigin": 1792688595904.929,
+            "startedMs": 142259.508696,
+            "finishedMs": 142890.759124,
+            "budgetMs": 1000,
+            "budgetExpired": false,
+            "drainedReferences": 1,
+            "referencesAtDrainPoint": 1,
+            "callsAtDrainPoint": 1,
+            "issuedAfterVerdict": 0,
+            "pendingRecordedSamples": 0,
+            "droppedSamples": 0,
+            "outcomes": [
+              {
+                "call": 1,
+                "status": "fulfilled",
+                "value": "combobox",
+                "batchObservedMs": 142890.745569
+              }
+            ],
+            "droppedOutcomes": 0,
+            "observerError": false,
+            "completeAtDrainPoint": true
+          }
+        }
+      },
+      "browserBatches": [
+        {
+          "ownerToken": "58e76963-cea7-4fd4-8019-ec455fdf658e",
+          "attempt": 1,
+          "callId": "call@1038",
+          "rows": [
+            {
+              "stage": "selector.enter",
+              "pageMs": 3441,
+              "timeOrigin": 1792688735345.7,
+              "dateNow": 1792688738786
+            },
+            {
+              "stage": "selector.exit",
+              "pageMs": 3447.899999999965,
+              "timeOrigin": 1792688735345.7,
+              "dateNow": 1792688738793,
+              "found": true
+            },
+            {
+              "stage": "getter.enter",
+              "pageMs": 3448.399999999965,
+              "timeOrigin": 1792688735345.7,
+              "dateNow": 1792688738794,
+              "getterNative": true
+            },
+            {
+              "stage": "getter.exit",
+              "pageMs": 3448.5,
+              "timeOrigin": 1792688735345.7,
+              "dateNow": 1792688738794,
+              "value": "combobox"
+            }
+          ],
+          "diagnosticErrors": 0,
+          "received": {
+            "nodeMs": 142890.157448,
+            "nodeTimeOrigin": 1792688595904.929,
+            "nodeDateNow": 1792688738795
+          }
+        }
+      ],
+      "mappingChecks": {
+        "oneScopedRequest": true,
+        "allBatchCallIdsMatch": true,
+        "allOwnerTokensMatch": true,
+        "attemptIdsValid": true,
+        "batchDiagnosticsEmpty": true,
+        "sourceMatchesSynthetic": true
+      },
+      "finalOutcome": "combobox",
+      "nodeReturnAfterVerdictMs": 631.2850620000099,
+      "evaluateRoundTripMs": 55.96909199998481,
+      "browserSelectorSpanMs": 6.899999999965075,
+      "browserGetterSpanMs": 0.1000000000349246,
+      "getterValue": "combobox",
+      "getterNativeSourceMarker": true,
+      "browserEvaluationNodeCausalEnvelope": {
+        "lowerNodeMs": 142834.534504,
+        "upperNodeMs": 142890.503596,
+        "lowerAfterVerdictMs": 575.1767300000065,
+        "upperAfterVerdictMs": 631.1458219999913,
+        "reason": "Samecall/attempt browsercallback causally occurs after originalSDKevaluate dispatch and before its successfulreturn. No Date.now synchronization assumption is needed for the entirely-after-verdict conclusion."
+      },
+      "executedSourceDerivedEvaluatorSHA256": "7b107f646a936efc4e1cd31475e8ba5bd82e8e7becd01ff574f429e0bdd8a4b9",
+      "actualExecutionContextId": 4,
+      "recordedVerdictBoundary": "Timestamp taken in original poll finally after verdict; not a direct Vitest internal timer callback timestamp."
+    }
+  ],
+  "readinessCases": [
+    {
+      "id": "brutalist-dark-1440",
+      "rawRelativePath": "browser1-artifact/selected/search-commands/brutalist-dark-1440-readiness.json",
+      "sha256": "ff0d3ed8c287984c905de1179f37137f6b5a14c8539f105c0d86faea5929672a",
+      "source": {
+        "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+        "dirty": false
+      },
+      "onTime": false,
+      "startedAt": 1792688656379,
+      "deadline": 1792688657379,
+      "browserEnteredAt": 1792688657844,
+      "recordedEntryMinusStartMs": 1465,
+      "recordedEntryMinusDeadlineMs": 465,
+      "sampleCount": 1,
+      "droppedSamples": 0,
+      "firstSample": {
+        "atEpochMs": 1792688657844,
+        "selectorStartedAt": 1792688657844,
+        "selectorResolvedAt": 1792688657844,
+        "getterStartedAt": null,
+        "getterSettledAt": null,
+        "commandCount": 0,
+        "currentDisabled": null,
+        "owner": null,
+        "generation": null,
+        "timerSample": false
+      },
+      "observedReadyAt": null,
+      "clockBoundary": "Cross-realm Date.now differences are recorded wall-clock comparisons, conditional on same-host clock alignment; no entry observation exists before browserEnteredAt."
+    },
+    {
+      "id": "brutalist-dark-390",
+      "rawRelativePath": "browser1-artifact/selected/search-commands/brutalist-dark-390-readiness.json",
+      "sha256": "6b9282dcd4c0b78adf999769fd1a7e55c1fe0b4759d3222b47a6a6395ab9b020",
+      "source": {
+        "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+        "dirty": false
+      },
+      "onTime": false,
+      "startedAt": 1792688650203,
+      "deadline": 1792688651203,
+      "browserEnteredAt": 1792688651255,
+      "recordedEntryMinusStartMs": 1052,
+      "recordedEntryMinusDeadlineMs": 52,
+      "sampleCount": 1,
+      "droppedSamples": 0,
+      "firstSample": {
+        "atEpochMs": 1792688651256,
+        "selectorStartedAt": 1792688651256,
+        "selectorResolvedAt": 1792688651256,
+        "getterStartedAt": null,
+        "getterSettledAt": null,
+        "commandCount": 0,
+        "currentDisabled": null,
+        "owner": null,
+        "generation": null,
+        "timerSample": false
+      },
+      "observedReadyAt": null,
+      "clockBoundary": "Cross-realm Date.now differences are recorded wall-clock comparisons, conditional on same-host clock alignment; no entry observation exists before browserEnteredAt."
+    },
+    {
+      "id": "brutalist-light-1440",
+      "rawRelativePath": "browser1-artifact/selected/search-commands/brutalist-light-1440-readiness.json",
+      "sha256": "92db5eabf59007e66fbccf99e83174f150762d85871097f49cc9bd3ef072c391",
+      "source": {
+        "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+        "dirty": false
+      },
+      "onTime": false,
+      "startedAt": 1792688643178,
+      "deadline": 1792688644178,
+      "browserEnteredAt": 1792688644587,
+      "recordedEntryMinusStartMs": 1409,
+      "recordedEntryMinusDeadlineMs": 409,
+      "sampleCount": 1,
+      "droppedSamples": 0,
+      "firstSample": {
+        "atEpochMs": 1792688644587,
+        "selectorStartedAt": 1792688644587,
+        "selectorResolvedAt": 1792688644587,
+        "getterStartedAt": null,
+        "getterSettledAt": null,
+        "commandCount": 0,
+        "currentDisabled": null,
+        "owner": null,
+        "generation": null,
+        "timerSample": false
+      },
+      "observedReadyAt": null,
+      "clockBoundary": "Cross-realm Date.now differences are recorded wall-clock comparisons, conditional on same-host clock alignment; no entry observation exists before browserEnteredAt."
+    },
+    {
+      "id": "brutalist-light-390",
+      "rawRelativePath": "browser1-artifact/selected/search-commands/brutalist-light-390-readiness.json",
+      "sha256": "0aaac087792e0d5aab99d6e8202f4182be606a545d06c5652422007a2efc24d1",
+      "source": {
+        "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+        "dirty": false
+      },
+      "onTime": true,
+      "startedAt": 1792688639503,
+      "deadline": 1792688640503,
+      "browserEnteredAt": 1792688640429,
+      "recordedEntryMinusStartMs": 926,
+      "recordedEntryMinusDeadlineMs": -74,
+      "sampleCount": 14,
+      "droppedSamples": 0,
+      "firstSample": {
+        "atEpochMs": 1792688640429,
+        "selectorStartedAt": 1792688640429,
+        "selectorResolvedAt": 1792688640429,
+        "getterStartedAt": null,
+        "getterSettledAt": null,
+        "commandCount": 0,
+        "currentDisabled": null,
+        "owner": null,
+        "generation": null,
+        "timerSample": false
+      },
+      "observedReadyAt": 1792688640490,
+      "clockBoundary": "Cross-realm Date.now differences are recorded wall-clock comparisons, conditional on same-host clock alignment; no entry observation exists before browserEnteredAt."
+    },
+    {
+      "id": "shadcn-dark-1440",
+      "rawRelativePath": "browser1-artifact/selected/search-commands/shadcn-dark-1440-readiness.json",
+      "sha256": "6c0fe730868fbb6c967876cc9443e206d5c9c4d26f33a98789c1036ff8107aa5",
+      "source": {
+        "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+        "dirty": false
+      },
+      "onTime": false,
+      "startedAt": 1792688629896,
+      "deadline": 1792688630896,
+      "browserEnteredAt": 1792688632147,
+      "recordedEntryMinusStartMs": 2251,
+      "recordedEntryMinusDeadlineMs": 1251,
+      "sampleCount": 1,
+      "droppedSamples": 0,
+      "firstSample": {
+        "atEpochMs": 1792688632147,
+        "selectorStartedAt": 1792688632147,
+        "selectorResolvedAt": 1792688632147,
+        "getterStartedAt": null,
+        "getterSettledAt": null,
+        "commandCount": 0,
+        "currentDisabled": null,
+        "owner": null,
+        "generation": null,
+        "timerSample": false
+      },
+      "observedReadyAt": null,
+      "clockBoundary": "Cross-realm Date.now differences are recorded wall-clock comparisons, conditional on same-host clock alignment; no entry observation exists before browserEnteredAt."
+    },
+    {
+      "id": "shadcn-dark-390",
+      "rawRelativePath": "browser1-artifact/selected/search-commands/shadcn-dark-390-readiness.json",
+      "sha256": "7a804244cb11f6baaf509b4d2738d6b7a87594046cef7fb6802bbca50ebd033b",
+      "source": {
+        "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+        "dirty": false
+      },
+      "onTime": false,
+      "startedAt": 1792688620462,
+      "deadline": 1792688621462,
+      "browserEnteredAt": 1792688622287,
+      "recordedEntryMinusStartMs": 1825,
+      "recordedEntryMinusDeadlineMs": 825,
+      "sampleCount": 1,
+      "droppedSamples": 0,
+      "firstSample": {
+        "atEpochMs": 1792688622288,
+        "selectorStartedAt": 1792688622287,
+        "selectorResolvedAt": 1792688622288,
+        "getterStartedAt": null,
+        "getterSettledAt": null,
+        "commandCount": 0,
+        "currentDisabled": null,
+        "owner": null,
+        "generation": null,
+        "timerSample": false
+      },
+      "observedReadyAt": null,
+      "clockBoundary": "Cross-realm Date.now differences are recorded wall-clock comparisons, conditional on same-host clock alignment; no entry observation exists before browserEnteredAt."
+    },
+    {
+      "id": "shadcn-light-1440",
+      "rawRelativePath": "browser1-artifact/selected/search-commands/shadcn-light-1440-readiness.json",
+      "sha256": "4690caf71a04242b6924e96a4fdc973bc42298062ab9e58df5bc17ecda9beea2",
+      "source": {
+        "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+        "dirty": false
+      },
+      "onTime": false,
+      "startedAt": 1792688610356,
+      "deadline": 1792688611356,
+      "browserEnteredAt": 1792688612402,
+      "recordedEntryMinusStartMs": 2046,
+      "recordedEntryMinusDeadlineMs": 1046,
+      "sampleCount": 1,
+      "droppedSamples": 0,
+      "firstSample": {
+        "atEpochMs": 1792688612402,
+        "selectorStartedAt": 1792688612402,
+        "selectorResolvedAt": 1792688612402,
+        "getterStartedAt": null,
+        "getterSettledAt": null,
+        "commandCount": 0,
+        "currentDisabled": null,
+        "owner": null,
+        "generation": null,
+        "timerSample": false
+      },
+      "observedReadyAt": null,
+      "clockBoundary": "Cross-realm Date.now differences are recorded wall-clock comparisons, conditional on same-host clock alignment; no entry observation exists before browserEnteredAt."
+    },
+    {
+      "id": "shadcn-light-390",
+      "rawRelativePath": "browser1-artifact/selected/search-commands/shadcn-light-390-readiness.json",
+      "sha256": "fde334a5dcb0af6cf831462577554f339c764cd4a3b19c21912e3d125abebcbc",
+      "source": {
+        "sha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+        "dirty": false
+      },
+      "onTime": false,
+      "startedAt": 1792688601047,
+      "deadline": 1792688602047,
+      "browserEnteredAt": 1792688602800,
+      "recordedEntryMinusStartMs": 1753,
+      "recordedEntryMinusDeadlineMs": 753,
+      "sampleCount": 1,
+      "droppedSamples": 0,
+      "firstSample": {
+        "atEpochMs": 1792688602800,
+        "selectorStartedAt": 1792688602800,
+        "selectorResolvedAt": 1792688602800,
+        "getterStartedAt": null,
+        "getterSettledAt": null,
+        "commandCount": 0,
+        "currentDisabled": null,
+        "owner": null,
+        "generation": null,
+        "timerSample": false
+      },
+      "observedReadyAt": null,
+      "clockBoundary": "Cross-realm Date.now differences are recorded wall-clock comparisons, conditional on same-host clock alignment; no entry observation exists before browserEnteredAt."
+    }
+  ],
+  "sdkSourceBindings": [
+    {
+      "path": "lib/inProcessFactory.js",
+      "sha256": "406a2ce0e50bf6c695a0fa018ac3dec505b60836710bbab797e11730c51917cc",
+      "currentPinnedLocalHash": "406a2ce0e50bf6c695a0fa018ac3dec505b60836710bbab797e11730c51917cc",
+      "equalsCurrentPinnedLocal": true
+    },
+    {
+      "path": "lib/client/connection.js",
+      "sha256": "e063a23c7fb0ed81e7a09baa0844851c660b3cba1c39176963f17b10a1bf1526",
+      "currentPinnedLocalHash": "e063a23c7fb0ed81e7a09baa0844851c660b3cba1c39176963f17b10a1bf1526",
+      "equalsCurrentPinnedLocal": true
+    },
+    {
+      "path": "lib/server/dispatchers/dispatcher.js",
+      "sha256": "628c39de7799325c589a6f62e642324cb61b8d6fdaeec6bc29b40b0f0a76dc58",
+      "currentPinnedLocalHash": "628c39de7799325c589a6f62e642324cb61b8d6fdaeec6bc29b40b0f0a76dc58",
+      "equalsCurrentPinnedLocal": true
+    },
+    {
+      "path": "lib/server/frames.js",
+      "sha256": "fa67e7a3755a79cf0e0ac96b6930987ec2bcc643f60735c6ec748066f7c3e16b",
+      "currentPinnedLocalHash": "fa67e7a3755a79cf0e0ac96b6930987ec2bcc643f60735c6ec748066f7c3e16b",
+      "equalsCurrentPinnedLocal": true
+    },
+    {
+      "path": "lib/server/frameSelectors.js",
+      "sha256": "e78a076ee10ebd6127e092229b70201603ded190322e4d76e6f0cdcbb2517723",
+      "currentPinnedLocalHash": "e78a076ee10ebd6127e092229b70201603ded190322e4d76e6f0cdcbb2517723",
+      "equalsCurrentPinnedLocal": true
+    },
+    {
+      "path": "lib/server/javascript.js",
+      "sha256": "134f2aae953ca802c3d8c4da2ddb0857129ae3044f8958cdb857993341aec257",
+      "currentPinnedLocalHash": "134f2aae953ca802c3d8c4da2ddb0857129ae3044f8958cdb857993341aec257",
+      "equalsCurrentPinnedLocal": true
+    }
+  ],
+  "allTenSDKBindingSetsEqual": true,
+  "sourceBoundary": {
+    "frameSelectors": "lib/server/frameSelectors.js:141–147 resolves frame, then awaits frame._context and context.injectedScript. Those awaits are not individually bracketed by this observation.",
+    "frameOriginalQuery": "lib/server/frames.js:1338–1361; originalevaluate retainscallId and one selector/getter callback peractualattempt.",
+    "caller": "apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts exact35; original1000ms matcher verdict retained and post-verdict observer1000ms distinct.",
+    "expectedOriginalEvaluatorSHA256": "18dda109b2907c92a65a9827fed3ba6075ba2aa0da2f29dfae4d9a04d16ab9cd"
+  },
+  "boundedFindings": [
+    "All9 originalDocsrole failures have1actualrequest/query1 pendingatverdict. Node driverreceive andselectorparse completed nearqueryentry; driver.selector.resolve.exit andoriginalutility.evaluate.dispatch occurafterverdict in everyfailedcase.",
+    "For6completefailedmappings, the browserselector/getter actually executesonlyafter the lateSDKevaluate dispatch, returnscombobox, andNode settlesafter the originalfailure. Thisafter-verdict relation follows same-request causalorder onNode clocks; no cross-clock subtraction isneeded.",
+    "The long recorded await interval lies inside resolveInjectedForSelector after fastparse. It includes unresolvedframe/world/injected-script preparation andNode scheduling; thiscapture doesnot splitthose components.",
+    "The3 Shadcn1280/1440/2048 drains expirewhilepending; eventualcleanup closescontext andtheoriginalrequest rejectsTargetClosed. No browser batch/value isavailable for them. Snapshotpending0 is notsuccessfulreadproof.",
+    "All7failed initialReadiness cases enteredthebrowserbodyafterthe recorded1sdeadline, foundcommandCount0 anddidnotcallgetAttribute. The newselector/getterfields arepresent; no pre-entryDOMtruth isestablished."
+  ],
+  "limits": [
+    "This is current35 hosted same-failure evidence, separate fromearliernormalcalibration andb2 setupblockedcase.",
+    "No engine/productioncause assigned. No warm-up query, newtimeout, input change orretrospectiveassertionrelaxation proposed.",
+    "Alltiming remainsobservational withALS/Promise/log/source-derivedevaluatorcost; no sameenvironment instrumentation-off Linux control inthiscapture.",
+    "selectorresolve interval isawaited, notproof of synchronousCPUblocking. SDKevaluateentry isnotCDPwire-send; console receipt isnotbrowserexecution.",
+    "Browsergetterspans0 or0.1ms are sampledresolution, notzeroCPUor measuredclockticklength.",
+    "transportComplete=false remainsforallcases; completeMapping isboundedrequest/attemptmapping, notglobalquiescence.",
+    "Onlyone shard analyzed; external124 meansnofullshard/allCI totals.",
+    "No new test/browser/sourceedit/Actionsmutation; thisread didnotviewPNG pixels.",
+    "Resolve spans include original awaited work, Node callback scheduling and observer tap/patch overhead; do not label the whole interval CPU work or one specific SDK subcall."
+  ],
+  "nextNarrowEvidence": "If a furtherprivateobserver isauthorized, preserveoriginalcalls/promises andseparatelybracket actualper-instance resolveFrameForSelector, frame._context, context.injectedScript awaitsunder theexistingcallId scope. Do notinsert anawaitbeforethe originalpoll orwarm theutilityworld to turncoldfailuregreen.",
+  "disposition": "partial/ABSTAIN; failuretiming/sourceevidence, notformalapproval"
+}

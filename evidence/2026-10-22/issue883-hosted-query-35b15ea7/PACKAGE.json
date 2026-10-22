@@ -1,0 +1,438 @@
+{
+  "kind": "exact35-package-read",
+  "readAt": "2026-10-22T17:16:41.093281+00:00",
+  "head": "35b15ea78a72f4668b6a9b39c38dac668f5c18c0",
+  "runId": 39818721613,
+  "jobId": 119964065655,
+  "url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39818721613/job/119964065655",
+  "status": "completed",
+  "conclusion": "success",
+  "startedAt": "2026-10-22T16:59:52Z",
+  "completedAt": "2026-10-22T17:01:20Z",
+  "rawLogSHA256": "8ee1be54ae92fdda2bf017e9d3d69c0d27cbbba18b0705f719000068e0094cea",
+  "rawLogBytes": 71179,
+  "checkoutLogLine": 446,
+  "checkoutBinding": {
+    "readAt": "2026-10-22T17:15:53.517621+00:00",
+    "sha256": "a306ffae1337df403de9420b510b3b8aac724d7256abb8382aceea490837c136",
+    "commit": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+    "tree": "ad39b563d20f1f5790f21b191c3dc4f7e12f50bc",
+    "parents": [
+      "b928a56c6909835771fc2131503b4a7139db738c",
+      "35b15ea78a72f4668b6a9b39c38dac668f5c18c0"
+    ],
+    "treeEquals35": true
+  },
+  "actualBuilds": 47,
+  "distinctBuilds": 47,
+  "buildRows": [
+    {
+      "line": 537,
+      "package": "@proto.ui/types",
+      "durationMs": 704,
+      "files": 12
+    },
+    {
+      "line": 538,
+      "package": "@proto.ui/core",
+      "durationMs": 1132,
+      "files": 94
+    },
+    {
+      "line": 539,
+      "package": "@proto.ui/module-base",
+      "durationMs": 762,
+      "files": 14
+    },
+    {
+      "line": 540,
+      "package": "@proto.ui/module-expose",
+      "durationMs": 717,
+      "files": 12
+    },
+    {
+      "line": 541,
+      "package": "@proto.ui/module-state",
+      "durationMs": 837,
+      "files": 12
+    },
+    {
+      "line": 542,
+      "package": "@proto.ui/module-expose-state",
+      "durationMs": 753,
+      "files": 10
+    },
+    {
+      "line": 543,
+      "package": "@proto.ui/module-feedback",
+      "durationMs": 1400,
+      "files": 38
+    },
+    {
+      "line": 544,
+      "package": "@proto.ui/module-anatomy",
+      "durationMs": 909,
+      "files": 14
+    },
+    {
+      "line": 545,
+      "package": "@proto.ui/module-positioning",
+      "durationMs": 1185,
+      "files": 32
+    },
+    {
+      "line": 546,
+      "package": "@proto.ui/module-collection",
+      "durationMs": 770,
+      "files": 6
+    },
+    {
+      "line": 547,
+      "package": "@proto.ui/module-a11y",
+      "durationMs": 1147,
+      "files": 12
+    },
+    {
+      "line": 548,
+      "package": "@proto.ui/module-table-structure",
+      "durationMs": 940,
+      "files": 10
+    },
+    {
+      "line": 549,
+      "package": "@proto.ui/hooks",
+      "durationMs": 900,
+      "files": 46
+    },
+    {
+      "line": 550,
+      "package": "@proto.ui/module-expose-event",
+      "durationMs": 705,
+      "files": 12
+    },
+    {
+      "line": 551,
+      "package": "@proto.ui/module-event",
+      "durationMs": 833,
+      "files": 14
+    },
+    {
+      "line": 552,
+      "package": "@proto.ui/module-as-trigger",
+      "durationMs": 724,
+      "files": 10
+    },
+    {
+      "line": 553,
+      "package": "@proto.ui/module-axis-input",
+      "durationMs": 774,
+      "files": 6
+    },
+    {
+      "line": 554,
+      "package": "@proto.ui/module-boundary",
+      "durationMs": 831,
+      "files": 12
+    },
+    {
+      "line": 555,
+      "package": "@proto.ui/module-context",
+      "durationMs": 820,
+      "files": 12
+    },
+    {
+      "line": 556,
+      "package": "@proto.ui/module-control-label",
+      "durationMs": 897,
+      "files": 12
+    },
+    {
+      "line": 557,
+      "package": "@proto.ui/module-expose-state-web",
+      "durationMs": 774,
+      "files": 12
+    },
+    {
+      "line": 558,
+      "package": "@proto.ui/module-focus",
+      "durationMs": 986,
+      "files": 12
+    },
+    {
+      "line": 559,
+      "package": "@proto.ui/module-hit-participation",
+      "durationMs": 859,
+      "files": 14
+    },
+    {
+      "line": 560,
+      "package": "@proto.ui/module-image-view",
+      "durationMs": 839,
+      "files": 12
+    },
+    {
+      "line": 561,
+      "package": "@proto.ui/module-native-link",
+      "durationMs": 833,
+      "files": 12
+    },
+    {
+      "line": 562,
+      "package": "@proto.ui/module-overlay",
+      "durationMs": 930,
+      "files": 18
+    },
+    {
+      "line": 563,
+      "package": "@proto.ui/module-presence",
+      "durationMs": 729,
+      "files": 10
+    },
+    {
+      "line": 564,
+      "package": "@proto.ui/module-props",
+      "durationMs": 883,
+      "files": 18
+    },
+    {
+      "line": 565,
+      "package": "@proto.ui/module-rule",
+      "durationMs": 845,
+      "files": 16
+    },
+    {
+      "line": 566,
+      "package": "@proto.ui/module-rule-expose-state-web",
+      "durationMs": 816,
+      "files": 10
+    },
+    {
+      "line": 567,
+      "package": "@proto.ui/module-rule-meta",
+      "durationMs": 786,
+      "files": 10
+    },
+    {
+      "line": 568,
+      "package": "@proto.ui/module-scroll",
+      "durationMs": 1076,
+      "files": 20
+    },
+    {
+      "line": 569,
+      "package": "@proto.ui/module-state-accessibility",
+      "durationMs": 689,
+      "files": 6
+    },
+    {
+      "line": 570,
+      "package": "@proto.ui/module-state-interaction",
+      "durationMs": 706,
+      "files": 6
+    },
+    {
+      "line": 571,
+      "package": "@proto.ui/module-test-sys",
+      "durationMs": 685,
+      "files": 8
+    },
+    {
+      "line": 572,
+      "package": "@proto.ui/module-text-control",
+      "durationMs": 805,
+      "files": 14
+    },
+    {
+      "line": 573,
+      "package": "@proto.ui/runtime",
+      "durationMs": 1250,
+      "files": 58
+    },
+    {
+      "line": 574,
+      "package": "@proto.ui/adapter-base",
+      "durationMs": 1686,
+      "files": 96
+    },
+    {
+      "line": 575,
+      "package": "@proto.ui/adapter-react",
+      "durationMs": 1307,
+      "files": 18
+    },
+    {
+      "line": 576,
+      "package": "@proto.ui/adapter-vue",
+      "durationMs": 1360,
+      "files": 18
+    },
+    {
+      "line": 577,
+      "package": "@proto.ui/adapter-vue2",
+      "durationMs": 1254,
+      "files": 18
+    },
+    {
+      "line": 578,
+      "package": "@proto.ui/adapter-web-component",
+      "durationMs": 1861,
+      "files": 68
+    },
+    {
+      "line": 579,
+      "package": "@proto.ui/cli",
+      "durationMs": 1410,
+      "files": 58
+    },
+    {
+      "line": 580,
+      "package": "@proto.ui/prototypes-base",
+      "durationMs": 6245,
+      "files": 698
+    },
+    {
+      "line": 581,
+      "package": "@proto.ui/prototypes-brutalist",
+      "durationMs": 4747,
+      "files": 518
+    },
+    {
+      "line": 582,
+      "package": "@proto.ui/prototypes-lucide",
+      "durationMs": 11390,
+      "files": 6812
+    },
+    {
+      "line": 583,
+      "package": "@proto.ui/prototypes-shadcn",
+      "durationMs": 4732,
+      "files": 542
+    }
+  ],
+  "completeLine": 584,
+  "complete": "47/47 public packages",
+  "manifestLine": 595,
+  "manifestCount": 47,
+  "policyTests": {
+    "passed": 9,
+    "failed": 0,
+    "line": 611
+  },
+  "toolchain": {
+    "node": "v24.22.1",
+    "zlib": "1.3.2.1-motley-285e94b",
+    "esbuild": "0.25.12",
+    "platform": "linux",
+    "arch": "x64",
+    "sourceLine": 621
+  },
+  "budgetPolicy": {
+    "mode": "finf-development-advisory",
+    "sourceLine": 622,
+    "scope": "Nine current whole-entry measurements only",
+    "recordedCompleted": 5,
+    "totalRecordedItems": 68,
+    "completionIsAcceptance": false
+  },
+  "budgetMeasurements": [
+    {
+      "line": 623,
+      "status": "PASS",
+      "entry": "lucide/icons/x",
+      "gzipBytes": 1737,
+      "strictBudget": 3000,
+      "strictExcess": 0,
+      "minifiedBytes": 4670,
+      "minifiedSHA256": "2aa1af1ef3a197cc72f2c421083b37d7da42610907ad014c103570abab1aff50"
+    },
+    {
+      "line": 624,
+      "status": "PASS",
+      "entry": "lucide root",
+      "gzipBytes": 635749,
+      "strictBudget": 700000,
+      "strictExcess": 0,
+      "minifiedBytes": 4083209,
+      "minifiedSHA256": "d4cea01272140e6dfbbf37a4871f2011481789fca83be7e569a37d2eacb634ad"
+    },
+    {
+      "line": 625,
+      "status": "ADVISORY",
+      "entry": "core root",
+      "gzipBytes": 8940,
+      "strictBudget": 7600,
+      "strictExcess": 1340,
+      "minifiedBytes": 28128,
+      "minifiedSHA256": "0618d20711054f616b0bb51e266fe427d898173b169cf84f4223b3263c5faf4a"
+    },
+    {
+      "line": 626,
+      "status": "ADVISORY",
+      "entry": "runtime root",
+      "gzipBytes": 90651,
+      "strictBudget": 78500,
+      "strictExcess": 12151,
+      "minifiedBytes": 350526,
+      "minifiedSHA256": "323066fe3ecf5c85be483818fa7084d2c6eb57829503352d9f74eaa28f721a80"
+    },
+    {
+      "line": 627,
+      "status": "ADVISORY",
+      "entry": "adapter-react root",
+      "gzipBytes": 143381,
+      "strictBudget": 106000,
+      "strictExcess": 37381,
+      "minifiedBytes": 506121,
+      "minifiedSHA256": "e3ebaf76b1976b34a79c657be222eea508f61e042a4b7baaf3942eb6d3a3569a"
+    },
+    {
+      "line": 628,
+      "status": "ADVISORY",
+      "entry": "adapter-vue root",
+      "gzipBytes": 142838,
+      "strictBudget": 106000,
+      "strictExcess": 36838,
+      "minifiedBytes": 503792,
+      "minifiedSHA256": "4f9c494f0ed394a08fb81366f19cce83f36dd38a02cfd39c569e4f2ffce1f65d"
+    },
+    {
+      "line": 629,
+      "status": "ADVISORY",
+      "entry": "adapter-web-component root",
+      "gzipBytes": 170063,
+      "strictBudget": 132000,
+      "strictExcess": 38063,
+      "minifiedBytes": 585881,
+      "minifiedSHA256": "82d39add6083c62901cdb3807c5ec1d1e67b19281bed0f8deca477301910834b"
+    },
+    {
+      "line": 630,
+      "status": "PASS",
+      "entry": "prototypes-base/button",
+      "gzipBytes": 3948,
+      "strictBudget": 6000,
+      "strictExcess": 0,
+      "minifiedBytes": 13707,
+      "minifiedSHA256": "2bf46e0160ec35e12005b5874ce9863f19853a0e4021d0ac80043229fb89d53d"
+    },
+    {
+      "line": 631,
+      "status": "PASS",
+      "entry": "prototypes-shadcn/button",
+      "gzipBytes": 4952,
+      "strictBudget": 7000,
+      "strictExcess": 0,
+      "minifiedBytes": 18079,
+      "minifiedSHA256": "5970dcc7a557419cd02a6a51fefd7f7e0f16f8d07deb00e8481c6bb3719a7463"
+    }
+  ],
+  "budgetPassCount": 4,
+  "budgetAdvisoryCount": 5,
+  "strictOverflowCount": 5,
+  "notClaimed": [
+    "No b2 measurement substituted for current35 rawlog.",
+    "Five advisory entries still fail strict ceilings; not nine strict passes.",
+    "Package success is not runtime or wholeCI acceptance."
+  ],
+  "disposition": "partial/ABSTAIN"
+}

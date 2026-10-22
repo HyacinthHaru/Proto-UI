@@ -1,0 +1,350 @@
+{
+  "schemaVersion": 1,
+  "createdAt": "2026-10-22T18:01:23.883688+00:00",
+  "head": "35b15ea78a72f4668b6a9b39c38dac668f5c18c0",
+  "executedCheckout": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+  "tree": "ad39b563d20f1f5790f21b191c3dc4f7e12f50bc",
+  "sourceArtifact": {
+    "artifactId": 12444711362,
+    "exactName": "runtime-ci-39818721613-browser-1-of-8-attempt-1",
+    "sha256": "b114138289cf04936a44a0b78dd1062e6c2b0af423f4ab51758c91d7d34e9c22",
+    "bytes": 7999181,
+    "members": 312,
+    "allMemberCRCAndSHA256Checked": true,
+    "fullZIPPreserved": true,
+    "selectedTextFiles": 21,
+    "wholeArchiveExtracted": false,
+    "pixelsViewed": false,
+    "pagination": {
+      "pages": 1,
+      "totalCounts": [8],
+      "rows": 8,
+      "uniqueIds": 8,
+      "completeAtRead": true
+    },
+    "receipt": {
+      "checkoutSha": "ab3020973fe0f7d760ac146ad668e9bf518a852d",
+      "slot": "browser-1-of-8",
+      "payload": null
+    },
+    "boundary": "All312members enumerated and CRC/SHA checked from preserved fullZIP; only21textmembers extracted. Artifactreceipt payload:null does noterase actual independentlypresent textledgers."
+  },
+  "archiveMembers": [
+    {
+      "rawRelativePath": "ci-35-priority/browser1-artifact/selected/browser.log",
+      "rawSHA256": "4295fe71bdabcbd61c63126e63a127e6d632802b994bbc6c67ffd81a92bc39b2",
+      "rawBytes": 189272,
+      "archivePath": "records/browser1-artifact/selected/browser.log",
+      "publicSHA256": "8120e7ff28fe7790134f1f80cad846bc9a60ddcf5b09ab465870b6f6a36b77f4",
+      "publicBytes": 189209,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/browser1-artifact/selected/receipt.json",
+      "rawSHA256": "07559c62f63e80ccbcf1a9c069220a96a0b4526342a8b10754687eb8c9d27315",
+      "rawBytes": 257,
+      "archivePath": "records/browser1-artifact/selected/receipt.json",
+      "publicSHA256": "07559c62f63e80ccbcf1a9c069220a96a0b4526342a8b10754687eb8c9d27315",
+      "publicBytes": 257,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/browser1-artifact/selected/search-commands/brutalist-dark-1440-readiness.json",
+      "rawSHA256": "ff0d3ed8c287984c905de1179f37137f6b5a14c8539f105c0d86faea5929672a",
+      "rawBytes": 820,
+      "archivePath": "records/browser1-artifact/selected/search-commands/brutalist-dark-1440-readiness.json",
+      "publicSHA256": "6f8b0778b8787cbf5a6ac08457ac101b8a15c3d60b9b5100eff7642af9523b00",
+      "publicBytes": 821,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/browser1-artifact/selected/search-commands/brutalist-dark-390-readiness.json",
+      "rawSHA256": "6b9282dcd4c0b78adf999769fd1a7e55c1fe0b4759d3222b47a6a6395ab9b020",
+      "rawBytes": 819,
+      "archivePath": "records/browser1-artifact/selected/search-commands/brutalist-dark-390-readiness.json",
+      "publicSHA256": "c94dc3e2015af43dce7f8837d80ab19fc79f19e4af64b3445d1690522aa44734",
+      "publicBytes": 820,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/browser1-artifact/selected/search-commands/brutalist-light-1440-readiness.json",
+      "rawSHA256": "92db5eabf59007e66fbccf99e83174f150762d85871097f49cc9bd3ef072c391",
+      "rawBytes": 821,
+      "archivePath": "records/browser1-artifact/selected/search-commands/brutalist-light-1440-readiness.json",
+      "publicSHA256": "52f8a4e60b346374eb81c3fff6aeb0b7fe472f3be097e9644c9d8d7cf754e841",
+      "publicBytes": 822,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/browser1-artifact/selected/search-commands/brutalist-light-390-readiness.json",
+      "rawSHA256": "0aaac087792e0d5aab99d6e8202f4182be606a545d06c5652422007a2efc24d1",
+      "rawBytes": 5421,
+      "archivePath": "records/browser1-artifact/selected/search-commands/brutalist-light-390-readiness.json",
+      "publicSHA256": "b134e3d5aa056e1e83189f78511904b9eedab44b278429f0327a59aa2585ddbd",
+      "publicBytes": 5422,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/browser1-artifact/selected/search-commands/docs-call-timing-brutalist-1280.json",
+      "rawSHA256": "ce4fff27bbf2cc54ac146bd4b9510e17f933aa3439887c074a38ca6a1caf648b",
+      "rawBytes": 7580,
+      "archivePath": "records/browser1-artifact/selected/search-commands/docs-call-timing-brutalist-1280.json",
+      "publicSHA256": "d39fa0e05910c4e2b1158a2ae19973bca57e2dcb6a1e50624e777e9d6d5b5514",
+      "publicBytes": 7581,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/browser1-artifact/selected/search-commands/docs-call-timing-brutalist-1440.json",
+      "rawSHA256": "7d3dc773379c79ffeaecbd4ffb4e49704b0cc8c8e458559dcb5f038ba652d76a",
+      "rawBytes": 7584,
+      "archivePath": "records/browser1-artifact/selected/search-commands/docs-call-timing-brutalist-1440.json",
+      "publicSHA256": "dd77b61c87d1c9436200a18b17dde421c128385ed452b7d7ae50efa4ea95d9eb",
+      "publicBytes": 7585,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/browser1-artifact/selected/search-commands/docs-call-timing-brutalist-2048.json",
+      "rawSHA256": "b5d2bdc62786a92e38d4c1b623b7a2968bc0af882f15a10f47be276e2d945d9d",
+      "rawBytes": 7594,
+      "archivePath": "records/browser1-artifact/selected/search-commands/docs-call-timing-brutalist-2048.json",
+      "publicSHA256": "f020360a946b7afd565a67de85e8f9e507b68f584339a71de1a53b2f70cfc53d",
+      "publicBytes": 7595,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/browser1-artifact/selected/search-commands/docs-call-timing-brutalist-320.json",
+      "rawSHA256": "94cdd83517f31c953d240174d736f403ca92ca2c311f9b226004fe06afb0fb94",
+      "rawBytes": 7527,
+      "archivePath": "records/browser1-artifact/selected/search-commands/docs-call-timing-brutalist-320.json",
+      "publicSHA256": "b38d1d6bd24a1f2091e45a8e8b871ce50cde2d869463c3485351e4292d2c3924",
+      "publicBytes": 7528,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/browser1-artifact/selected/search-commands/docs-call-timing-brutalist-390.json",
+      "rawSHA256": "815e6b1b43e0e0419e3099b625bf37346f1eb481f5af1416714e794e90a01433",
+      "rawBytes": 7591,
+      "archivePath": "records/browser1-artifact/selected/search-commands/docs-call-timing-brutalist-390.json",
+      "publicSHA256": "774b7a5e7fef3939021e259493901266e93c8029641c0e3f1fbca7edabe77674",
+      "publicBytes": 7592,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/browser1-artifact/selected/search-commands/docs-call-timing-shadcn-1280.json",
+      "rawSHA256": "5bccaaba55478ae7fd3b761950a7bb33830e54bd96bb830c586c0d755ab4396c",
+      "rawBytes": 9443,
+      "archivePath": "records/browser1-artifact/selected/search-commands/docs-call-timing-shadcn-1280.json",
+      "publicSHA256": "543a6b7b2c052ce3153d070333a459273adda26b6b292516cbb6d76b06643d5c",
+      "publicBytes": 9192,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/browser1-artifact/selected/search-commands/docs-call-timing-shadcn-1440.json",
+      "rawSHA256": "982921153dce2545477cade59be14d934d96dcdc6f6d77c9b2177e162e56f0aa",
+      "rawBytes": 9442,
+      "archivePath": "records/browser1-artifact/selected/search-commands/docs-call-timing-shadcn-1440.json",
+      "publicSHA256": "184dee16e90be764d5c64490acbd82a5aa6d001dfd1317786bebeb00a6ff621b",
+      "publicBytes": 9191,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/browser1-artifact/selected/search-commands/docs-call-timing-shadcn-2048.json",
+      "rawSHA256": "af9c24f46de945e979a0891ca1fd5167fc09596cc5994ba72ed7c09c89cc2a30",
+      "rawBytes": 9442,
+      "archivePath": "records/browser1-artifact/selected/search-commands/docs-call-timing-shadcn-2048.json",
+      "publicSHA256": "146494f3f0950466469c9364f69984ab6b8dd7243d7ec7b88790beca3aa24c38",
+      "publicBytes": 9191,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/browser1-artifact/selected/search-commands/docs-call-timing-shadcn-320.json",
+      "rawSHA256": "fd9f45a275ff98a8ae1505f0b193c024b69b2cce35f95be78f1b6bb4345be96a",
+      "rawBytes": 7532,
+      "archivePath": "records/browser1-artifact/selected/search-commands/docs-call-timing-shadcn-320.json",
+      "publicSHA256": "ddd302f22b6d883c040715063a31fba6cbbe1f97d955bf17584e8c60053f83e3",
+      "publicBytes": 7533,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/browser1-artifact/selected/search-commands/docs-call-timing-shadcn-390.json",
+      "rawSHA256": "c612d0f2b467032d6b401d25e08b461362bb9f203a343d5b09ce89c93dca42f3",
+      "rawBytes": 7562,
+      "archivePath": "records/browser1-artifact/selected/search-commands/docs-call-timing-shadcn-390.json",
+      "publicSHA256": "d1dcb9b053e8c6ba7b164716d5b3fe82bffcbb25406e4c6c6bafc797fec73342",
+      "publicBytes": 7563,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/browser1-artifact/selected/search-commands/shadcn-dark-1440-readiness.json",
+      "rawSHA256": "6c0fe730868fbb6c967876cc9443e206d5c9c4d26f33a98789c1036ff8107aa5",
+      "rawBytes": 817,
+      "archivePath": "records/browser1-artifact/selected/search-commands/shadcn-dark-1440-readiness.json",
+      "publicSHA256": "ff96096b590bc98e9dd07f819e2c509530cbed76438bdcd314c8b632bae9da02",
+      "publicBytes": 818,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/browser1-artifact/selected/search-commands/shadcn-dark-390-readiness.json",
+      "rawSHA256": "7a804244cb11f6baaf509b4d2738d6b7a87594046cef7fb6802bbca50ebd033b",
+      "rawBytes": 816,
+      "archivePath": "records/browser1-artifact/selected/search-commands/shadcn-dark-390-readiness.json",
+      "publicSHA256": "4a0bbc4b6742cf3f3b93c26513a6f17dcd838155976372052572d5aae949bae2",
+      "publicBytes": 817,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/browser1-artifact/selected/search-commands/shadcn-light-1440-readiness.json",
+      "rawSHA256": "4690caf71a04242b6924e96a4fdc973bc42298062ab9e58df5bc17ecda9beea2",
+      "rawBytes": 818,
+      "archivePath": "records/browser1-artifact/selected/search-commands/shadcn-light-1440-readiness.json",
+      "publicSHA256": "13f039f6706103cf640d54206a28d6c2daf5771e10e4a1b5d816f612c5a21f9b",
+      "publicBytes": 819,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/browser1-artifact/selected/search-commands/shadcn-light-390-readiness.json",
+      "rawSHA256": "fde334a5dcb0af6cf831462577554f339c764cd4a3b19c21912e3d125abebcbc",
+      "rawBytes": 817,
+      "archivePath": "records/browser1-artifact/selected/search-commands/shadcn-light-390-readiness.json",
+      "publicSHA256": "1f328addcf6ff1e78519ab84a180f230900a7ce4de8d38424937eea754c3a03e",
+      "publicBytes": 818,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/browser1-artifact/selected/source-sha.txt",
+      "rawSHA256": "a9ec9beded0ff2c6ad8c15f74ec257a2f2e67cb28e03a1603ca232dd05843397",
+      "rawBytes": 41,
+      "archivePath": "records/browser1-artifact/selected/source-sha.txt",
+      "publicSHA256": "a9ec9beded0ff2c6ad8c15f74ec257a2f2e67cb28e03a1603ca232dd05843397",
+      "publicBytes": 41,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/119964198293.log",
+      "rawSHA256": "170e085a1e69e63b5ec8d717a09fefce9715a0bf7447830ce9a1d795e75c3443",
+      "rawBytes": 238880,
+      "archivePath": "records/119964198293.log",
+      "publicSHA256": "551c54a9e518e315c1044aed8206788fe9fc3b5e775905d699a1521e349ad958",
+      "publicBytes": 238682,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/119964065655.log",
+      "rawSHA256": "8ee1be54ae92fdda2bf017e9d3d69c0d27cbbba18b0705f719000068e0094cea",
+      "rawBytes": 71179,
+      "archivePath": "records/119964065655.log",
+      "publicSHA256": "92ec3fa2a320e5c4dcb332e8335adbf0878eb6c745e96fb9a80758e07d8d762f",
+      "publicBytes": 70963,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/checkout-ab302097.json",
+      "rawSHA256": "a306ffae1337df403de9420b510b3b8aac724d7256abb8382aceea490837c136",
+      "rawBytes": 2614,
+      "archivePath": "records/checkout-ab302097.json",
+      "publicSHA256": "63b6d4c5eb7261cae820a907fca999a292d05ea0850222902c31d333bdba3a14",
+      "publicBytes": 2817,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/checkout-binding.json",
+      "rawSHA256": "fa03ac98870816db175d5ff0cd9f072f61834c1f10ce3da3ca8d8fe788ddb852",
+      "rawBytes": 380,
+      "archivePath": "records/checkout-binding.json",
+      "publicSHA256": "fa03ac98870816db175d5ff0cd9f072f61834c1f10ce3da3ca8d8fe788ddb852",
+      "publicBytes": 380,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/docs-same-failure-analysis.json",
+      "rawSHA256": "e38c1f6746efafe26366d5803d2f9aa8f84237f42a48e5528be00795804a0d5a",
+      "rawBytes": 69819,
+      "archivePath": "records/docs-same-failure-analysis.json",
+      "publicSHA256": "e38c1f6746efafe26366d5803d2f9aa8f84237f42a48e5528be00795804a0d5a",
+      "publicBytes": 69819,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/docs-same-failure-analysis.md",
+      "rawSHA256": "a675ec42916e734397e7b475df24ba87142650704e1921a44f66956b8db47e83",
+      "rawBytes": 4284,
+      "archivePath": "records/docs-same-failure-analysis.md",
+      "publicSHA256": "a675ec42916e734397e7b475df24ba87142650704e1921a44f66956b8db47e83",
+      "publicBytes": 4284,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/independent-timing-review.json",
+      "rawSHA256": "ffd8b6f03217b550bc2c3602c0cd844c60a097c0e5549b01ab5520c26d312d0e",
+      "rawBytes": 87793,
+      "archivePath": "records/independent-timing-review.json",
+      "publicSHA256": "76a3b02a70c7dd1e499a427bd45e4a21173f993511818beb588b5cda55c7417c",
+      "publicBytes": 86266,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/independent-timing-review.md",
+      "rawSHA256": "069f3576821c06d091036980c97c741ba40559055147e1cc429116d7e99b3463",
+      "rawBytes": 3138,
+      "archivePath": "records/independent-timing-review.md",
+      "publicSHA256": "069f3576821c06d091036980c97c741ba40559055147e1cc429116d7e99b3463",
+      "publicBytes": 3138,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/package-review.json",
+      "rawSHA256": "6f6b24312248287a1b570b8080904eeb7f0ec46d6ac1c2f60db59263afcf43c9",
+      "rawBytes": 10399,
+      "archivePath": "records/package-review.json",
+      "publicSHA256": "6f6b24312248287a1b570b8080904eeb7f0ec46d6ac1c2f60db59263afcf43c9",
+      "publicBytes": 10399,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/browser1-artifact/receipt.json",
+      "rawSHA256": "52a86fee0266b29c49cd9e25dc0c89c4a542e6b4392a6d83cc7d56ae2bcf992c",
+      "rawBytes": 5981,
+      "archivePath": "records/browser1-artifact/receipt.json",
+      "publicSHA256": "c1cc25b5a76734eebbdbe4dc508e188db7df12aa7015d944e45e41ea4e2e0afc",
+      "publicBytes": 5792,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/browser1-artifact/members.json",
+      "rawSHA256": "de09cd56296345e6d412b973e145a3ec6d6f5a083c0f2ec266ceb05a9f834187",
+      "rawBytes": 80482,
+      "archivePath": "records/browser1-artifact/members.json",
+      "publicSHA256": "de09cd56296345e6d412b973e145a3ec6d6f5a083c0f2ec266ceb05a9f834187",
+      "publicBytes": 80482,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/browser1-artifact/selected-members.json",
+      "rawSHA256": "aa78c3351b000b0077512e8da86c1683bcffce106b2d3990ca11fe0f616651f2",
+      "rawBytes": 5174,
+      "archivePath": "records/browser1-artifact/selected-members.json",
+      "publicSHA256": "aa78c3351b000b0077512e8da86c1683bcffce106b2d3990ca11fe0f616651f2",
+      "publicBytes": 5174,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/browser1-artifact/selected-metadata.json",
+      "rawSHA256": "65f7041460e16532ff712e9cfaea4d08ac0c200724b5d60661e429728124faf5",
+      "rawBytes": 814,
+      "archivePath": "records/browser1-artifact/selected-metadata.json",
+      "publicSHA256": "65f7041460e16532ff712e9cfaea4d08ac0c200724b5d60661e429728124faf5",
+      "publicBytes": 814,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    },
+    {
+      "rawRelativePath": "ci-35-priority/browser1-artifact/artifacts-page-1.json",
+      "rawSHA256": "93919f0f730b56191eaebeb5606abbdfbb6ad0f343fda3b6c7bb8fdcd95fa61a",
+      "rawBytes": 5875,
+      "archivePath": "records/browser1-artifact/artifacts-page-1.json",
+      "publicSHA256": "86b878a22ef0ba8f7f89d8767e718e321d313b6274dadc467cb4946064c61cf0",
+      "publicBytes": 7192,
+      "transformation": "sanitize-text-v1: machine/workspace path aliases and exact environment keys removed from JSON; derived representation, not executed source bytes."
+    }
+  ],
+  "selectionBoundary": "Complete original7999181BZIP retained and312membersCRC/SHA checked; selected21textmembers and source-bound reports/logs included here, not all312members. No PNG or new visual claim."
+}
