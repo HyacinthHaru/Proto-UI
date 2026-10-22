@@ -27,62 +27,74 @@
     {
       "path": "LICENSE.md",
       "gitBlob": "fad4d887a681dd49233e5ed01ee2c7a1513089a0",
-      "sha256": "1564074e13439397221ffd522e2e504d56561994a23d371aa5e3ad43e4f5423f"
+      "sha256": "1564074e13439397221ffd522e2e504d56561994a23d371aa5e3ad43e4f5423f",
+      "storagePath": "LICENSE.md"
     },
     {
       "path": "apps/v4/registry/styles.tsx",
       "gitBlob": "073055fb561d57302866a3473be540c55338254c",
-      "sha256": "78c2d54e8c52f0b2b7d59a9fc8872d6f871849a97c6ddaddd36146dacafe83db"
+      "sha256": "78c2d54e8c52f0b2b7d59a9fc8872d6f871849a97c6ddaddd36146dacafe83db",
+      "storagePath": "apps/v4/registry/styles.tsx.txt"
     },
     {
       "path": "apps/v4/registry/bases.ts",
       "gitBlob": "daef69f814f8ee9fbc244c0d12d8d1b594d40c78",
-      "sha256": "db9613a61c01c432daa6b95ed70d6fe9767f6fe810c9167c898de7a280c98597"
+      "sha256": "db9613a61c01c432daa6b95ed70d6fe9767f6fe810c9167c898de7a280c98597",
+      "storagePath": "apps/v4/registry/bases.ts.txt"
     },
     {
       "path": "apps/v4/registry/_legacy-styles.ts",
       "gitBlob": "c8ab7867090519d08681085c0e72edb534e4185a",
-      "sha256": "1200469dfa69929d1aad0c758c975b35c621821445b760f316cf23c6ce3c4726"
+      "sha256": "1200469dfa69929d1aad0c758c975b35c621821445b760f316cf23c6ce3c4726",
+      "storagePath": "apps/v4/registry/_legacy-styles.ts.txt"
     },
     {
       "path": "apps/v4/registry/styles/style-luma.css",
       "gitBlob": "891fbb6e2e4ceb7c7865d77821a6472884393b07",
-      "sha256": "35c0578be1623049da1f11729ae43a2a7884dcc17b948fc72dcdf4f1be3c0484"
+      "sha256": "35c0578be1623049da1f11729ae43a2a7884dcc17b948fc72dcdf4f1be3c0484",
+      "storagePath": "apps/v4/registry/styles/style-luma.css"
     },
     {
       "path": "apps/v4/registry/styles/style-lyra.css",
       "gitBlob": "05342f268c86cf19d343e683eb29ba55e39fd155",
-      "sha256": "be24110aafbd07d794ced58f15512c640ab3dfa5733beb850e83f968457a9b52"
+      "sha256": "be24110aafbd07d794ced58f15512c640ab3dfa5733beb850e83f968457a9b52",
+      "storagePath": "apps/v4/registry/styles/style-lyra.css"
     },
     {
       "path": "apps/v4/registry/styles/style-maia.css",
       "gitBlob": "ed13c6871a0bd6168f716b52f0a1aee15a903edc",
-      "sha256": "8d518bcb26fad2904e7048e7be4c708814168c5e4ee29f1228945f91efd694a1"
+      "sha256": "8d518bcb26fad2904e7048e7be4c708814168c5e4ee29f1228945f91efd694a1",
+      "storagePath": "apps/v4/registry/styles/style-maia.css"
     },
     {
       "path": "apps/v4/registry/styles/style-mira.css",
       "gitBlob": "1f6b9efe3700bcc6417c2fa5c09ac2411e2f0944",
-      "sha256": "cdde6d38ee43c94cb6785672455adeea7fe195cc57772dc52b41acb5a1789732"
+      "sha256": "cdde6d38ee43c94cb6785672455adeea7fe195cc57772dc52b41acb5a1789732",
+      "storagePath": "apps/v4/registry/styles/style-mira.css"
     },
     {
       "path": "apps/v4/registry/styles/style-nova.css",
       "gitBlob": "293204b2bf08ddfd86dbc49b75dc4749cd2135ed",
-      "sha256": "fd9803ec398290c306b377a46a769cad0c7ff024bf6a626993c113cacc20f16e"
+      "sha256": "fd9803ec398290c306b377a46a769cad0c7ff024bf6a626993c113cacc20f16e",
+      "storagePath": "apps/v4/registry/styles/style-nova.css"
     },
     {
       "path": "apps/v4/registry/styles/style-rhea.css",
       "gitBlob": "94bbca2a7f78845e7cfbcff68fb8f535e3848a98",
-      "sha256": "bac4eff75a0e21d9dd90ce40634937f54730471d8f7fa50ca67b317892cf908f"
+      "sha256": "bac4eff75a0e21d9dd90ce40634937f54730471d8f7fa50ca67b317892cf908f",
+      "storagePath": "apps/v4/registry/styles/style-rhea.css"
     },
     {
       "path": "apps/v4/registry/styles/style-sera.css",
       "gitBlob": "6fb2c12894e0267973fefe9a2c5f496a4a44e44f",
-      "sha256": "c26380d5023bb63d25c03c94cae223e0a4f133f6bae0a63f77b8e4ac17483ba0"
+      "sha256": "c26380d5023bb63d25c03c94cae223e0a4f133f6bae0a63f77b8e4ac17483ba0",
+      "storagePath": "apps/v4/registry/styles/style-sera.css"
     },
     {
       "path": "apps/v4/registry/styles/style-vega.css",
       "gitBlob": "9f03b3c6dc5a803db963a81743d47d5b5f8f9fe0",
-      "sha256": "10fa07bd61b429ae2c14c572ba9975f6e991d68a04f8fec7e354a062597e0d4e"
+      "sha256": "10fa07bd61b429ae2c14c572ba9975f6e991d68a04f8fec7e354a062597e0d4e",
+      "storagePath": "apps/v4/registry/styles/style-vega.css"
     }
   ],
   "componentInventory": [

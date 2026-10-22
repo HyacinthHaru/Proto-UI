@@ -119,6 +119,10 @@ export function normalizeRuleFixture(style, rule) {
   return normalizeFixture(rule.apply[0]);
 }
 
+export function sourceStoragePath(path) {
+  return /\.tsx?$/.test(path) ? `${path}.txt` : path;
+}
+
 export function verifySources(root, manifest) {
   if (manifest.revision !== REVISION) fail('revision mismatch');
   if (manifest.sourceTree !== '81a576ce4689c4a9f47314d29db1e104aabe2129') fail('source tree mismatch');
@@ -131,16 +135,17 @@ export function verifySources(root, manifest) {
   const expected = ['LICENSE.md', 'apps/v4/registry/styles.tsx', 'apps/v4/registry/bases.ts', 'apps/v4/registry/_legacy-styles.ts', ...STYLES.map(s => `apps/v4/registry/styles/style-${s}.css`)];
   if (manifest.sources.length !== expected.length || new Set(manifest.sources.map(s => s.path)).size !== expected.length || expected.some(p => !manifest.sources.some(s => s.path === p))) fail('source inventory mismatch');
   for (const entry of manifest.sources) {
-    const path = resolve(root, entry.path);
+    if (entry.storagePath !== sourceStoragePath(entry.path)) fail('source storage path mismatch');
+    const path = resolve(root, entry.storagePath);
     if (relative(root, path).startsWith('..')) fail('path escape');
     const bytes = readFileSync(path);
     if (digest(bytes) !== entry.sha256 || gitBlob(bytes) !== entry.gitBlob) fail(`source hash drift: ${entry.path}`);
   }
   for (const [path, expectedNames] of [['styles.tsx', STYLES], ['bases.ts', BASES]]) {
-    const text = readFileSync(resolve(root, 'apps/v4/registry', path), 'utf8');
+    const text = readFileSync(resolve(root, 'apps/v4/registry', sourceStoragePath(path)), 'utf8');
     const names = [...text.matchAll(/^    name: "([a-z-]+)",$/gm)].map(m => m[1]);
     if (JSON.stringify(names) !== JSON.stringify(expectedNames)) fail(`catalog drift: ${path}`);
   }
-  if (!readFileSync(resolve(root, 'apps/v4/registry/_legacy-styles.ts'), 'utf8').includes('name: "new-york-v4"')) fail('legacy source missing New York');
+  if (!readFileSync(resolve(root, 'apps/v4/registry/_legacy-styles.ts.txt'), 'utf8').includes('name: "new-york-v4"')) fail('legacy source missing New York');
   return STYLES.map(style => ({ style, rules: extractStyle(readFileSync(resolve(root, `apps/v4/registry/styles/style-${style}.css`), 'utf8'), style) }));
 }

@@ -101,3 +101,7 @@ license, source hashes, inventory digest, grammar and fixtures; do not use
 Validation is source-inspection evidence only. Repository-wide tests, UI
 screenshots, native/AT behavior, implementation parity and independent acceptance
 have not been established by this fixture.
+
+### Static source storage
+
+`path` remains the exact upstream Git path. `storagePath` is the checked-in text location beneath `upstream/`. TypeScript/TSX source is stored with a trailing `.txt` to prevent repository tools from compiling third-party snapshots; content bytes and both original hashes remain unchanged. The checker validates this deterministic mapping and rejects drift. No TypeScript project exclusion or upstream runtime dependency is added.

@@ -1,10 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, mkdtempSync, cpSync, writeFileSync, rmSync } from 'node:fs';
+import { readFileSync, readdirSync, mkdtempSync, cpSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { STYLES, extractStyle, splitUtilities, normalizeFixture, normalizeRuleFixture, verifySources } from './shadcn-style-source.mjs';
+import { sourceStoragePath, STYLES, extractStyle, splitUtilities, normalizeFixture, normalizeRuleFixture, verifySources } from './shadcn-style-source.mjs';
 
 const directory = fileURLToPath(new URL('../../internal/fixtures/shadcn-style-source/', import.meta.url));
 const manifest = JSON.parse(readFileSync(`${directory}/manifest.json`, 'utf8'));
@@ -56,4 +56,13 @@ test('fails on changed source bytes rather than reusing stale normalized output'
     writeFileSync(join(temp, manifest.sources[0].path), 'changed');
     assert.throws(() => verifySources(temp, manifest), /source hash drift/);
   } finally { rmSync(temp, { recursive: true, force: true }); }
+});
+
+test('upstream TypeScript is inert text, with explicit unchanged source identities', () => {
+  const root = `${directory}/upstream`;
+  assert.ok(readdirSync(root, { recursive: true }).every(path => !/\.tsx?$/.test(path)));
+  for (const source of manifest.sources) assert.equal(source.storagePath, sourceStoragePath(source.path));
+  const changed = structuredClone(manifest);
+  changed.sources[1].storagePath = changed.sources[1].path;
+  assert.throws(() => verifySources(root, changed), /source storage path mismatch/);
 });
