@@ -220,6 +220,23 @@ describe('Brutalist Dialog overlay geometry', () => {
 
         // A panel positioned once at mount would still satisfy everything above.
         await page.setViewportSize({ ...RESIZED_VIEWPORT });
+        // The viewport command can finish before the available-space resize notification.
+        await page.waitForFunction(
+          ({ portalHost, width, height }) => {
+            const content = Array.from(document.querySelectorAll(portalHost)).find(
+              (element) =>
+                element.hasAttribute('data-is-present') && element.getAttribute('role') === 'dialog'
+            );
+            if (!content) return false;
+            const style = getComputedStyle(content);
+            return (
+              parseFloat(style.getPropertyValue('--proto-ui-available-region-width')) === width &&
+              parseFloat(style.getPropertyValue('--proto-ui-available-region-height')) === height
+            );
+          },
+          { portalHost: BODY_PORTAL_HOST, ...RESIZED_VIEWPORT },
+          { timeout: 20_000 }
+        );
         const resized = await readOverlayGeometry(page);
         expect(resized.viewport.width, `${runtime}/resized-viewport`).toBe(RESIZED_VIEWPORT.width);
         expectCentred(resized, `${runtime}/resized`);
