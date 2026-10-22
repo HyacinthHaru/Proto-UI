@@ -56,6 +56,7 @@ async function facts(button: Locator) {
       height: bounds.height,
       width: bounds.width,
       fontSize: style.fontSize,
+      computedFontFamily: style.fontFamily,
       lineHeight: style.lineHeight,
       userSelect: style.userSelect,
       webkitUserSelect: style.getPropertyValue('-webkit-user-select'),
@@ -138,6 +139,27 @@ describe.sequential('Base Button selection and family-owned homepage geometry', 
           await page.mouse.move(0, 0);
           const normal = await facts(reset);
           record.normal = normal;
+          // Record the actual glyph provider, not just the CSS fallback stack.
+          try {
+            const fontSession = await context.newCDPSession(page);
+            try {
+              await fontSession.send('DOM.enable');
+              await fontSession.send('CSS.enable');
+              const { root } = await fontSession.send('DOM.getDocument');
+              const { nodeId } = await fontSession.send('DOM.querySelector', {
+                nodeId: root.nodeId,
+                selector:
+                  '[data-home-showcase] [data-projection-generation-state="active"] [data-demo-ref="editor-reset"]',
+              });
+              record.platformFonts = await fontSession.send('CSS.getPlatformFontsForNode', {
+                nodeId,
+              });
+            } finally {
+              await fontSession.detach();
+            }
+          } catch (error) {
+            record.platformFontObservationError = String(error);
+          }
           await capture('normal');
           expect(normal.userSelect).toBe('none');
           expect(normal.inlineHeight).toBe('');
@@ -174,6 +196,8 @@ describe.sequential('Base Button selection and family-owned homepage geometry', 
           expect((record.documentSelectAll as { ranges: number }).ranges).toBeGreaterThan(0);
           await page.evaluate(() => getSelection()?.removeAllRanges());
           const editor = page.getByRole('textbox', { name: '编辑示例文本', exact: true });
+          const sample = '用同一份原型，组合你的界面。';
+          expect(await editor.inputValue()).toBe(sample);
           await editor.fill('Selectable editing remains available');
           await editor.press('Control+a');
           expect(
@@ -182,13 +206,100 @@ describe.sequential('Base Button selection and family-owned homepage geometry', 
               return input.value.slice(input.selectionStart, input.selectionEnd);
             })
           ).toBe('Selectable editing remains available');
-          await reset.focus();
-          await page.keyboard.press('Space');
-          expect(await editor.inputValue()).not.toBe('Selectable editing remains available');
-          await editor.fill('Second edit');
-          await reset.focus();
-          await page.keyboard.press('Enter');
-          expect(await editor.inputValue()).not.toBe('Second edit');
+          const probe = await reset.evaluateHandle((original) => {
+            const selector =
+              '[data-home-showcase] [data-projection-generation-state="active"] [data-demo-ref="editor-reset"]';
+            const identities = new WeakMap<Node, number>();
+            let nextId = 0;
+            const id = (node: Node | null) => {
+              if (!node) return null;
+              if (!identities.has(node)) identities.set(node, ++nextId);
+              return identities.get(node)!;
+            };
+            const snapshot = () => {
+              const button = document.querySelector(selector);
+              const input = document.querySelector(
+                '[data-home-showcase] [data-projection-generation-state="active"] [data-demo-ref="editor-text"]'
+              );
+              return {
+                originalButtonId: id(original),
+                originalConnected: original.isConnected,
+                currentButtonId: id(button),
+                editorId: id(input),
+                focusedId: id(document.activeElement),
+                focusedWithinButton: Boolean(button?.contains(document.activeElement)),
+              };
+            };
+            const events: Array<Record<string, unknown>> = [];
+            const observe = (event: Event) => {
+              const keyboard = event instanceof KeyboardEvent ? event : null;
+              events.push({
+                type: event.type,
+                key: keyboard?.key ?? null,
+                code: keyboard?.code ?? null,
+                repeat: keyboard?.repeat ?? null,
+                trusted: event.isTrusted,
+                targetId: id(event.target instanceof Node ? event.target : null),
+                targetWithinButton: Boolean(
+                  event.target instanceof Node &&
+                  document.querySelector(selector)?.contains(event.target)
+                ),
+                ...snapshot(),
+              });
+            };
+            for (const type of ['keydown', 'keyup', 'click'])
+              document.addEventListener(type, observe, true);
+            return {
+              snapshot,
+              events,
+              clear: () => events.splice(0),
+              stop: () => {
+                for (const type of ['keydown', 'keyup', 'click'])
+                  document.removeEventListener(type, observe, true);
+              },
+            };
+          });
+          try {
+            for (const key of ['Space', 'Enter'] as const) {
+              if (key === 'Enter') await editor.fill('Second edit');
+              await reset.focus();
+              await probe.evaluate((probe) => probe.clear());
+              const before = await probe.evaluate((probe) => probe.snapshot());
+              const activation: Record<string, unknown> = { key, before, expectedValue: sample };
+              record[`keyboard${key}`] = activation;
+              try {
+                expect(before.focusedWithinButton).toBe(true);
+                // One native key sequence only. The void setProps API does not
+                // promise that a framework's visible DOM commit is synchronous.
+                await page.keyboard.press(key);
+                activation.immediateValue = await editor.inputValue();
+                activation.immediateIdentity = await probe.evaluate((probe) => probe.snapshot());
+                await expect
+                  .poll(() => editor.inputValue(), { timeout: 2_000, interval: 20 })
+                  .toBe(sample);
+                activation.settledValue = await editor.inputValue();
+                const events = await probe.evaluate((probe) => probe.events);
+                for (const type of ['keydown', 'keyup']) {
+                  const matching = events.filter(
+                    (event) => event.type === type && event.code === key
+                  );
+                  expect(matching).toHaveLength(1);
+                  expect(matching[0]!.targetWithinButton).toBe(true);
+                  expect(matching[0]!.trusted).toBe(true);
+                  expect(matching[0]!.repeat).toBe(false);
+                }
+              } finally {
+                activation.finalIdentity = await probe.evaluate((probe) => probe.snapshot());
+                activation.finalValue = await editor.inputValue();
+                // Native click observations are not equated with semantic callback counts.
+                activation.nativeEvents = await probe.evaluate((probe) => probe.events);
+                await capture(`keyboard-${key.toLowerCase()}`);
+              }
+            }
+          } finally {
+            await probe.evaluate((probe) => probe.stop());
+            await probe.dispose();
+          }
           // Font enlargement is not browser zoom. Do not rewrite any button dimensions.
           await page.setViewportSize({ width: 390, height: 1000 });
           await page.evaluate(() => {
