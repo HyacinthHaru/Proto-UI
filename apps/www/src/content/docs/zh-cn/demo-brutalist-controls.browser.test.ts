@@ -379,6 +379,32 @@ async function viewportRing(page: Page): Promise<ViewportRing> {
     );
     if (!viewport) throw new Error('The Brutalist Scroll Area demo must render its Viewport.');
 
+    const observed = viewport as HTMLElement & {
+      __testScrollEnd?: { pending: boolean; rightSeen: boolean };
+    };
+    if (!observed.__testScrollEnd) {
+      const activity = { pending: false, rightSeen: false };
+      observed.__testScrollEnd = activity;
+      viewport.addEventListener(
+        'keydown',
+        (event) => {
+          if (event.key === 'ArrowRight' && event.isTrusted && event.target === viewport) {
+            activity.rightSeen = true;
+            activity.pending = true;
+          }
+        },
+        { capture: true, passive: true }
+      );
+      viewport.addEventListener(
+        'scrollend',
+        (event) => {
+          if (event.target === viewport) activity.pending = false;
+        },
+        { passive: true }
+      );
+    }
+    observed.__testScrollEnd.rightSeen = false;
+
     const shadow = getComputedStyle(viewport).boxShadow;
     const parts: string[] = [];
     let depth = 0;
@@ -1471,7 +1497,29 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
           await page.keyboard.press('ArrowDown');
           await waitForScrollBeyond(page, 'scrollTop', focused.scrollTop);
           await page.keyboard.press('ArrowRight');
+          const scrollEndDeadline = performance.now() + 10_000;
           await waitForScrollBeyond(page, 'scrollLeft', focused.scrollLeft);
+          // Progress can precede scrollend. Finish this interaction before the
+          // blur/theme transition gives the next scheme its own native input.
+          const remaining = scrollEndDeadline - performance.now();
+          if (remaining <= 0) throw new Error('Scroll completion exceeded the progress budget.');
+          await page.waitForFunction(
+            () => {
+              const viewport = document.querySelector<HTMLElement>(
+                '[data-previewer-id] [data-demo-ref="scrollViewport"]'
+              ) as
+                | (HTMLElement & {
+                    __testScrollEnd?: { pending: boolean; rightSeen: boolean };
+                  })
+                | null;
+              return (
+                viewport?.__testScrollEnd?.rightSeen === true &&
+                viewport.__testScrollEnd.pending === false
+              );
+            },
+            undefined,
+            { timeout: remaining }
+          );
 
           const scrolled = await viewportRing(page);
           expect(scrolled.insetLayers, `${label}/ring-after-scroll`).toEqual(focused.insetLayers);
