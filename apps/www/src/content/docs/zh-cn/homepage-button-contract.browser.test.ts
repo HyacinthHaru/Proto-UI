@@ -216,33 +216,74 @@ describe.sequential('Base Button selection and family-owned homepage geometry', 
             expect(native.role).toBeNull();
             expect(painted.height).toBe(family === 'shadcn' ? 36 : 40);
             expect(painted.userSelect).toBe('none');
-            // A native anchor is not a Button: Space must not synthesize click/navigation.
-            const clicks = await anchor.evaluateHandle((node) => {
-              const state = { count: 0 };
-              const listener = () => state.count++;
-              node.addEventListener('click', listener);
-              return { state, stop: () => node.removeEventListener('click', listener) };
-            });
-            try {
-              const beforeUrl = page.url();
-              await anchor.focus();
-              await page.keyboard.press('Space');
-              expect(await clicks.evaluate((probe) => probe.state.count)).toBe(0);
-              expect(page.url()).toBe(beforeUrl);
-            } finally {
-              await clicks.evaluate((probe) => probe.stop());
-              await clicks.dispose();
-            }
             await anchor.scrollIntoViewIfNeeded();
             await page.evaluate(() => getSelection()?.removeAllRanges());
             const start = await textPoint(anchor),
               end = await textPoint(anchor, true);
-            await page.mouse.move(start.x, start.y);
-            await page.mouse.down();
-            await page.mouse.move(end.x, end.y, { steps: 12 });
-            await page.mouse.up();
-            action.dragSelection = await page.evaluate(() => getSelection()?.toString() ?? '');
-            expect(action.dragSelection).toBe('');
+            const hit = await anchor.evaluate(
+              (node, points) => {
+                const describe = (target: Element | null) => ({
+                  tag: target?.tagName ?? null,
+                  ref: target?.closest('[data-demo-ref]')?.getAttribute('data-demo-ref') ?? null,
+                  href: target?.closest('a')?.getAttribute('href') ?? null,
+                });
+                const startHit = document.elementFromPoint(points.start.x, points.start.y);
+                const endHit = document.elementFromPoint(points.end.x, points.end.y);
+                const rect = node.getBoundingClientRect();
+                return {
+                  points,
+                  scrollX,
+                  scrollY,
+                  bounds: { x: rect.x, y: rect.y, width: rect.width, height: rect.height },
+                  startInside: !!startHit && node.contains(startHit),
+                  endInside: !!endHit && node.contains(endHit),
+                  startHit: describe(startHit),
+                  endHit: describe(endHit),
+                };
+              },
+              { start, end }
+            );
+            action.dragHit = hit;
+            expect(hit.startInside).toBe(true);
+            expect(hit.endInside).toBe(true);
+            const pointerProbe = await anchor.evaluateHandle((node) => {
+              const events: Array<{
+                trusted: boolean;
+                inside: boolean;
+                x: number;
+                y: number;
+                tag: string | null;
+              }> = [];
+              const listener = (event: PointerEvent) =>
+                events.push({
+                  trusted: event.isTrusted,
+                  inside: event.target instanceof Node && node.contains(event.target),
+                  x: event.clientX,
+                  y: event.clientY,
+                  tag: event.target instanceof Element ? event.target.tagName : null,
+                });
+              document.addEventListener('pointerdown', listener, true);
+              return {
+                events,
+                stop: () => document.removeEventListener('pointerdown', listener, true),
+              };
+            });
+            try {
+              await page.mouse.move(start.x, start.y);
+              await page.mouse.down();
+              await page.mouse.move(end.x, end.y, { steps: 12 });
+              await page.mouse.up();
+              const pointerEvents = await pointerProbe.evaluate((probe) => probe.events);
+              action.dragPointerEvents = pointerEvents;
+              expect(pointerEvents).toHaveLength(1);
+              expect(pointerEvents[0]?.trusted).toBe(true);
+              expect(pointerEvents[0]?.inside).toBe(true);
+              action.dragSelection = await page.evaluate(() => getSelection()?.toString() ?? '');
+              expect(action.dragSelection).toBe('');
+            } finally {
+              await pointerProbe.evaluate((probe) => probe.stop());
+              await pointerProbe.dispose();
+            }
           }
           await capture('native-actions');
           // The authored in-page Demo destination keeps native Enter activation.
@@ -591,6 +632,29 @@ describe.sequential('Base Button selection and family-owned homepage geometry', 
             }
           }
           await observeMotion(32);
+          // Native Space may scroll. Test it after pointer evidence so normal browser
+          // scrolling cannot move a previously sampled drag origin to ordinary prose.
+          expect(await actions.count()).toBe(2);
+          for (let index = 0; index < 2; index++) {
+            const anchor = actions.nth(index);
+            // A native anchor is not a Button: Space must not synthesize click/navigation.
+            const clicks = await anchor.evaluateHandle((node) => {
+              const state = { count: 0 };
+              const listener = () => state.count++;
+              node.addEventListener('click', listener);
+              return { state, stop: () => node.removeEventListener('click', listener) };
+            });
+            try {
+              const beforeUrl = page.url();
+              await anchor.focus();
+              await page.keyboard.press('Space');
+              expect(await clicks.evaluate((probe) => probe.state.count)).toBe(0);
+              expect(page.url()).toBe(beforeUrl);
+            } finally {
+              await clicks.evaluate((probe) => probe.stop());
+              await clicks.dispose();
+            }
+          }
           expect(errors).toEqual([]);
         } finally {
           record.errors = errors;

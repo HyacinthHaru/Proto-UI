@@ -1,5 +1,10 @@
 import type { Locator, Page } from 'playwright-core';
 
+// CSS <number> includes exponent notation. Preserve tiny real samples rather
+// than rounding/dropping endpoint-adjacent frames from Chromium's serialization.
+const CSS_NUMBER = String.raw`[+-]?(?:\d*\.\d+|\d+)(?:[eE][+-]?\d+)?`;
+export const BUTTON_SHADOW_PATTERN = String.raw`^rgba?\((${CSS_NUMBER}(?:\s*,\s*${CSS_NUMBER}){2}(?:\s*,\s*${CSS_NUMBER})?)\)\s+(${CSS_NUMBER})px\s+(${CSS_NUMBER})px\s+(${CSS_NUMBER})px\s+(${CSS_NUMBER})px$`;
+
 export interface ButtonMotionFrame {
   time: number;
   connected: boolean;
@@ -25,7 +30,7 @@ export async function recordButtonMotion(
   subject: Locator,
   direction: 'enter' | 'release'
 ): Promise<{ frames: ButtonMotionFrame[]; error: string | null }> {
-  const probe = await subject.evaluateHandle((element) => {
+  const probe = await subject.evaluateHandle((element, shadowPattern) => {
     const result: { frames: ButtonMotionFrame[]; error: string | null } = {
       frames: [],
       error: null,
@@ -46,18 +51,21 @@ export async function recordButtonMotion(
           .split(/,(?![^()]*\))/)
           .at(-1)!
           .trim();
-        const shadow =
-          lastShadow === 'none'
-            ? null
-            : lastShadow.match(
-                /^rgba?\(([^)]+)\)\s+(-?[\d.]+)px\s+(-?[\d.]+)px\s+(-?[\d.]+)px\s+(-?[\d.]+)px$/
-              );
+        const shadow = lastShadow === 'none' ? null : lastShadow.match(new RegExp(shadowPattern));
         if (lastShadow !== 'none' && !shadow)
           throw new Error(`Unrecognized computed shadow: ${style.boxShadow}`);
         const color = shadow?.[1]
           .split(/[\s,/]+/)
           .filter(Boolean)
           .map(Number);
+        if (
+          shadow &&
+          color &&
+          (![...color, ...shadow.slice(2).map(Number)].every(Number.isFinite) ||
+            color.slice(0, 3).some((channel) => channel < 0 || channel > 255) ||
+            (color[3] !== undefined && (color[3] < 0 || color[3] > 1)))
+        )
+          throw new Error(`Non-finite or invalid computed shadow: ${style.boxShadow}`);
         const timeFor = (property: string) => {
           const animation = element
             .getAnimations()
@@ -95,7 +103,7 @@ export async function recordButtonMotion(
     };
     sample();
     return { result, done };
-  });
+  }, BUTTON_SHADOW_PATTERN);
   try {
     if (direction === 'enter') {
       const box = await subject.boundingBox();
@@ -134,6 +142,24 @@ export function buttonMotionIssues(
   reduced: boolean
 ): string[] {
   const issues: string[] = [];
+  if (
+    frames.some(
+      (frame) =>
+        ![
+          frame.time,
+          frame.x,
+          frame.y,
+          frame.shadowX,
+          frame.shadowY,
+          frame.shadowBlur,
+          frame.shadowSpread,
+          frame.shadowAlpha,
+          ...(frame.transformTime === null ? [] : [frame.transformTime]),
+          ...(frame.shadowTime === null ? [] : [frame.shadowTime]),
+        ].every(Number.isFinite)
+    )
+  )
+    return ['non-finite motion observation'];
   if (frames.length < 3) return ['insufficient real frames'];
   const near = (actual: number, expected: number, tolerance = 0.025) =>
     Math.abs(actual - expected) <= tolerance;

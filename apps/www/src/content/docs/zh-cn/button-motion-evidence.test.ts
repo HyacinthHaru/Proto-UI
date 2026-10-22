@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { buttonMotionIssues, type ButtonMotionFrame } from './button-motion-evidence';
+import {
+  BUTTON_SHADOW_PATTERN,
+  buttonMotionIssues,
+  type ButtonMotionFrame,
+} from './button-motion-evidence';
 
 function trace(
   distance: number,
@@ -106,3 +110,67 @@ describe('real motion evidence contract (synthetic negative controls, not browse
     }
   });
 });
+
+// Same anchored pattern is passed into the real browser sampler, not a second
+// permissive parser used only by the synthetic controls.
+it.each(['5.33397e-08', '1.7124e-07', '3.70407e-08', '.5', '-1.2E+2', '+0'])(
+  'preserves valid CSS numeric serialization %s',
+  (number) => {
+    const match = `rgba(0, 0, 0, 0) ${number}px ${number}px 0px 0px`.match(
+      new RegExp(BUTTON_SHADOW_PATTERN)
+    );
+    expect(match).not.toBeNull();
+    expect(Number(match![2])).toBe(Number(number));
+    expect(Number(match![3])).toBe(Number(number));
+  }
+);
+it.each([
+  'NaN',
+  'Infinity',
+  '-Infinity',
+  '1e',
+  '1e--2',
+  '1..2',
+  '--1',
+  '.',
+  '1.',
+  '0em',
+  'calc(1 + 2)',
+])('rejects invalid CSS numeric serialization %s', (number) => {
+  expect(
+    `rgba(0, 0, 0, 0) ${number}px 0px 0px 0px`.match(new RegExp(BUTTON_SHADOW_PATTERN))
+  ).toBeNull();
+});
+it.each([
+  'inset rgb(0, 0, 0) 0px 0px 0px 0px',
+  'rgb(NaN, 0, 0) 0px 0px 0px 0px',
+  'rgb(0, 0) 0px 0px 0px 0px',
+  'rgb(0, 0, 0) 0px 0px 0px',
+  'rgb(0, 0, 0) 0px 0px 0px 0px junk',
+])('rejects unknown shadow structure %s', (shadow) => {
+  expect(shadow.match(new RegExp(BUTTON_SHADOW_PATTERN))).toBeNull();
+});
+it.each([Number.NaN, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, Number('1e309')])(
+  'rejects non-finite sample %s rather than accepting an endpoint',
+  (value) => {
+    for (const property of [
+      'time',
+      'x',
+      'y',
+      'shadowX',
+      'shadowY',
+      'shadowBlur',
+      'shadowSpread',
+      'shadowAlpha',
+      'transformTime',
+      'shadowTime',
+    ] as const) {
+      const frames = trace(4, 'enter').map((frame, index) =>
+        index === 2 ? { ...frame, [property]: value } : frame
+      );
+      expect(buttonMotionIssues(frames, 'enter', 4, false)).toEqual([
+        'non-finite motion observation',
+      ]);
+    }
+  }
+);
