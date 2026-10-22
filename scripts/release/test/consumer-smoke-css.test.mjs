@@ -14,6 +14,7 @@ import {
   assertSwitchThumbState,
   loadConsumerStyles,
   unwrapGeneratedTokenLayer,
+  unwrapGeneratedThemeSelectionLayer,
 } from '../consumer-smoke-css.mjs';
 
 const root = fileURLToPath(new URL('../../../', import.meta.url));
@@ -110,7 +111,7 @@ test('loads actual complete CLI output, preserves original bytes/hash, and obser
   const result = loadConsumerStyles(window.document, { root: directory });
   assertStyledSwitch(element, 'generated CSS');
   assert.notEqual(window.getComputedStyle(element).position, 'relative');
-  assert.equal(result.styles[0].textContent, css['shadcn-theme.css']);
+  assert.equal(result.styles[0].textContent, unwrapGeneratedThemeSelectionLayer(css['shadcn-theme.css']));
   assert.equal(result.styles[1].textContent, body);
   const manifest = JSON.parse(readFileSync(join(result.evidenceDir, 'manifest.json'), 'utf8'));
   for (const file of manifest.files) {
@@ -121,7 +122,7 @@ test('loads actual complete CLI output, preserves original bytes/hash, and obser
   }
   assert.match(
     manifest.limitation,
-    /No cascade-layer, width\/layout, paint, or native hit-testing equivalence/
+    /No cascade-layer, selection-paint, width\/layout, paint, or native hit-testing equivalence/
   );
   // Rem declarations are checked above; rendered geometry and motion need a browser.
 });
@@ -590,5 +591,39 @@ for (const [property, value] of [
       () => assertStyledButton(element, 'stale padding'),
       /Button generated CSS mismatch: padding/
     );
+  });
+}
+
+const selectionBody = `::selection {
+      background-color: var(--pui-selection);
+      color: var(--pui-selection-foreground);
+    }`;
+const selectionLayer = `@layer theme {
+    ${selectionBody}
+  }`;
+
+test('recognizes only canonical generated theme selection and retains all other bytes', () => {
+  const theme = css['shadcn-theme.css'];
+  assert.ok(theme.includes(selectionLayer));
+  assert.equal(unwrapGeneratedThemeSelectionLayer(theme), theme.replace(selectionLayer, selectionBody));
+  const quoted = `/* ${selectionLayer} */\n[data-value="@layer"] { content: "@import"; }\n`;
+  assert.equal(unwrapGeneratedThemeSelectionLayer(quoted + theme), quoted + theme.replace(selectionLayer, selectionBody));
+  assert.equal(unwrapGeneratedThemeSelectionLayer(':root { --pui-selection: black; }'), ':root { --pui-selection: black; }');
+  assert.throws(() => unwrapGeneratedTokenLayer(`${prefix}\n${selectionLayer}\n}\n`), /consumer CSS smoke:/);
+});
+
+for (const [name, invalid] of Object.entries({
+  'unknown layer': selectionLayer.replace('@layer theme', '@layer arbitrary'),
+  'unknown selector': selectionLayer.replace('::selection', '*'),
+  'changed role': selectionLayer.replace('--pui-selection)', '--pui-primary)'),
+  'additional declaration': selectionLayer.replace('color: var(--pui-selection-foreground);', 'color: var(--pui-selection-foreground); display: none;'),
+  'important paint': selectionLayer.replace('--pui-selection);', '--pui-selection) !important;'),
+  'duplicated rule': selectionLayer + selectionLayer,
+  'nested rule': `@media (prefers-color-scheme: dark) { ${selectionLayer} }`,
+  'additional import': selectionLayer + "\n@import './unapproved.css';",
+  'unbalanced suffix': selectionLayer + '}',
+})) {
+  test(`theme selection fails closed on ${name}`, () => {
+    assert.throws(() => unwrapGeneratedThemeSelectionLayer(invalid), /consumer CSS smoke:/);
   });
 }
