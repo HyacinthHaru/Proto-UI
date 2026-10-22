@@ -22,19 +22,24 @@ function declareChoice(def: DefHandle<ShadcnStyleProps>) {
 /** Derives paint only. Does not own Base state or mutate host/editor instances. */
 export function setupShadcnStyleSelection(
   def: DefHandle<ShadcnStyleProps>,
-  compatibilityStyle: ShadcnStyleId
+  compatibilityStyle: ShadcnStyleId,
+  options: { supportedStyles?: readonly ShadcnStyleId[] } = {}
 ) {
   declareChoice(def);
   const selected = def.state.enum('shadcnStyleSelection', compatibilityStyle, {
     options: SHADCN_STYLE_IDS,
   });
   const sync = (run: RunHandle<ShadcnStyleProps>) => {
-    const explicit = normalizeShadcnStyle(run.props.get().styleProfile);
+    const explicit = normalizeShadcnStyle(run.props.getRaw().styleProfile);
     const inherited = run.context.tryRead(SHADCN_STYLE_SCOPE)?.style ?? null;
-    selected.set(explicit ?? inherited ?? compatibilityStyle, 'reason: shadcn style selection');
+    const next = explicit ?? inherited ?? compatibilityStyle;
+    if (options.supportedStyles && !options.supportedStyles.includes(next)) {
+      throw new Error(`[shadcn-style-scope] Unsupported style for this consumer: ${next}`);
+    }
+    selected.set(next, 'reason: shadcn style selection');
   };
   def.context.trySubscribe(SHADCN_STYLE_SCOPE, sync);
-  def.props.watch(['styleProfile'], sync);
+  def.props.watchRaw(['styleProfile'], sync);
   def.lifecycle.onCreated(sync);
   def.lifecycle.onMounted(sync);
   // Existing lifecycle callbacks re-read at actual update boundaries. They do not
@@ -49,7 +54,7 @@ export function setupShadcnStyleScope(def: DefHandle<ShadcnStyleProps>) {
   def.context.provide(SHADCN_STYLE_SCOPE, { style: null });
   const sync = (run: RunHandle<ShadcnStyleProps>) => {
     const next =
-      normalizeShadcnStyle(run.props.get().styleProfile) ??
+      normalizeShadcnStyle(run.props.getRaw().styleProfile) ??
       run.context.tryReadAncestor(SHADCN_STYLE_SCOPE)?.style ??
       null;
     // Avoid publishing equivalent JSON and creating redundant callback cascades.
@@ -60,7 +65,7 @@ export function setupShadcnStyleScope(def: DefHandle<ShadcnStyleProps>) {
   // Self read is required for equality above; ancestor read is required for inheritance.
   def.context.trySubscribe(SHADCN_STYLE_SCOPE);
   def.context.trySubscribeAncestor(SHADCN_STYLE_SCOPE, sync);
-  def.props.watch(['styleProfile'], sync);
+  def.props.watchRaw(['styleProfile'], sync);
   def.lifecycle.onCreated(sync);
   def.lifecycle.onMounted(sync);
   def.lifecycle.onUpdated(sync);
