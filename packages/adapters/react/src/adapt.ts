@@ -269,7 +269,13 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
           const previous = portalProjectionRef.current;
           portalProjectionRef.current = null;
           previous?.material.release();
-          if (!portalProjectionRef.current) mount.remove();
+          if (!portalProjectionRef.current && portalMountRef.current === mount) {
+            mount.remove();
+            // A later physical epoch must reacquire the connected author's
+            // Document instead of reopening through this retired container.
+            portalMountRef.current = null;
+            setPortalDocument(null);
+          }
           return;
         }
         const registryRevision = getWebPortalDestinationGeneration();

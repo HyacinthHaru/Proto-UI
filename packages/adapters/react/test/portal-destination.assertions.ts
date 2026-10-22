@@ -23,6 +23,6 @@ export function expectStableReactPortalMount(
   expect([...mount.childNodes]).toEqual([host]);
   // No styled box, paint, clip, transform, focus target or host input policy.
   expectInertReactPortalContainer(mount);
-  expect(document.querySelectorAll('[data-pui-portal-mount]')).toHaveLength(1);
+  expect(host.ownerDocument.querySelectorAll('[data-pui-portal-mount]')).toHaveLength(1);
   return mount;
 }
