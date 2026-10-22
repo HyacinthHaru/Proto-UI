@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { execFileSync } from 'node:child_process';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import type { Browser, Locator, Page } from 'playwright-core';
@@ -13,11 +13,16 @@ import {
   type CodeSurfaceGenerationFacts,
 } from './code-surface-evidence';
 
-import cliInitOutput from '../../../generated/cli-init.generated.json';
 import { hasZeroTransparentTreeShadow } from './code-tree-shadow-evidence';
 
 const SOURCE_ROUTE = '/zh-cn/start-here/quick-start/';
 const INSTALL_ROUTE = '/zh-cn/ui-libraries/shadcn/button/';
+interface CliInitFixture {
+  cli: { version: string; sourceTreeHash: string };
+  entries: Array<{ path: string; kind: 'file' | 'directory'; content?: string; sha256?: string }>;
+  directory: string;
+}
+let cliInitOutput: CliInitFixture;
 let browser: Browser;
 let baseUrl: string;
 let sourceBinding: CopySourceBinding;
@@ -37,6 +42,12 @@ beforeAll(async () => {
   await writeFile(join(directory, 'source-binding.json'), JSON.stringify(sourceBinding, null, 2));
   expect(copySourceBindingIssues(sourceBinding, Boolean(process.env.CI))).toEqual([]);
   baseUrl = await startServer(SOURCE_ROUTE);
+  // A clean checkout has no generated fixture during test collection. The
+  // normal docs server builds and runs the real CLI extractor before readiness.
+  // Read that exact output only after startup; never use a committed fallback.
+  cliInitOutput = JSON.parse(
+    await readFile(new URL('../../../generated/cli-init.generated.json', import.meta.url), 'utf8')
+  ) as CliInitFixture;
   browser = await launchBrowser();
 }, 300_000);
 afterAll(async () => {
@@ -609,6 +620,38 @@ for (const locale of ['en', 'zh-cn']) {
         cliInitOutput.directory
       );
       expect(await directory.textContent()).not.toContain('package.json');
+      const directoryScroll = await directory.locator('pre').evaluate((node) => {
+        node.scrollLeft = node.scrollWidth;
+        return { left: node.scrollLeft, maximum: node.scrollWidth - node.clientWidth };
+      });
+      expect(directoryScroll.maximum).toBeGreaterThan(0);
+      expect(Math.abs(directoryScroll.left - directoryScroll.maximum)).toBeLessThanOrEqual(1);
+      await evidence(page, directory, `cli-init-${locale}-390-scroll-end`, { directoryScroll });
+      await directory.locator('pre').evaluate((node) => {
+        node.scrollLeft = 0;
+      });
+      expect(
+        await directory
+          .locator('pre')
+          .evaluate((node) => ({
+            fontSize: getComputedStyle(node).fontSize,
+            lineHeight: getComputedStyle(node).lineHeight,
+          }))
+      ).toEqual({ fontSize: '14px', lineHeight: '24.5px' });
+      expect(
+        await directory
+          .locator('.line')
+          .first()
+          .evaluate((node) => ({
+            top: getComputedStyle(node).paddingTop,
+            bottom: getComputedStyle(node).paddingBottom,
+          }))
+      ).toEqual({ top: '0px', bottom: '0px' });
+      expect(
+        await directory
+          .locator('[data-code-file-header]')
+          .evaluate((node) => node.getBoundingClientRect().height)
+      ).toBe(42);
       const details = output.locator('[data-cli-generated-files] > details');
       const files = cliInitOutput.entries.filter((entry) => entry.kind === 'file');
       expect(await details.count()).toBe(files.length);

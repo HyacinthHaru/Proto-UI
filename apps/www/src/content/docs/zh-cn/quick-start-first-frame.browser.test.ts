@@ -1,4 +1,5 @@
 // @vitest-environment node
+import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { mkdir, writeFile } from 'node:fs/promises';
 import os from 'node:os';
@@ -731,6 +732,92 @@ describe('quick-start first-frame continuity', () => {
                 )
               );
               await captureViewport(page, path.join(directory, `${prefix}-cli-init.png`));
+              const initCommand = page.locator('[data-code-presentation="docs"]').first();
+              await initCommand.evaluate((node) => node.scrollIntoView({ block: 'center' }));
+              await writeFile(
+                path.join(directory, `${prefix}-cli-init-command.json`),
+                JSON.stringify(
+                  {
+                    ...source,
+                    url: page.url(),
+                    viewport: page.viewportSize(),
+                    colorScheme: condition.colorScheme,
+                    stage: 'additional-cli-init-command-diagnostic',
+                    fullCodeExampleAcceptance: false,
+                  },
+                  null,
+                  2
+                )
+              );
+              await captureViewport(page, path.join(directory, `${prefix}-cli-init-command.png`));
+              for (const [index, label] of [
+                [0, 'config'],
+                [1, 'style'],
+              ] as const) {
+                const detail = init.locator('[data-cli-generated-files] > details').nth(index);
+                await detail.locator('summary').click();
+                await detail
+                  .locator('[data-copy-view="ready"] [data-demo-ref="copy-button"]')
+                  .waitFor({ state: 'visible' });
+                await detail.evaluate((node) => node.scrollIntoView({ block: 'center' }));
+                const content = await detail.locator('code').getAttribute('data-raw-code');
+                await writeFile(
+                  path.join(directory, `${prefix}-cli-init-${label}.json`),
+                  JSON.stringify(
+                    {
+                      ...source,
+                      url: page.url(),
+                      viewport: page.viewportSize(),
+                      colorScheme: condition.colorScheme,
+                      file: await detail.locator('summary').textContent(),
+                      sourceSha256: createHash('sha256')
+                        .update(content ?? '')
+                        .digest('hex'),
+                      stage: 'additional-generated-file-diagnostic',
+                      fullCodeExampleAcceptance: false,
+                    },
+                    null,
+                    2
+                  )
+                );
+                await captureViewport(
+                  page,
+                  path.join(directory, `${prefix}-cli-init-${label}.png`)
+                );
+                await detail.locator('summary').click();
+              }
+              const directoryCode = init.locator('[data-code-presentation="docs"]').first();
+              await directoryCode.evaluate((node) => node.scrollIntoView({ block: 'center' }));
+              const scroll = await directoryCode.locator('pre').evaluate((node) => {
+                node.scrollLeft = node.scrollWidth;
+                return {
+                  left: node.scrollLeft,
+                  maximum: node.scrollWidth - node.clientWidth,
+                  clientWidth: node.clientWidth,
+                  scrollWidth: node.scrollWidth,
+                };
+              });
+              await writeFile(
+                path.join(directory, `${prefix}-cli-init-scroll-end.json`),
+                JSON.stringify(
+                  {
+                    ...source,
+                    url: page.url(),
+                    viewport: page.viewportSize(),
+                    colorScheme: condition.colorScheme,
+                    scroll,
+                    stage: 'additional-directory-scroll-diagnostic',
+                    fullCodeExampleAcceptance: false,
+                  },
+                  null,
+                  2
+                )
+              );
+              await captureViewport(
+                page,
+                path.join(directory, `${prefix}-cli-init-scroll-end.png`)
+              );
+              expect(Math.abs(scroll.left - scroll.maximum)).toBeLessThanOrEqual(1);
             }
           } catch (error) {
             await captureFailure(page, prefix, error);

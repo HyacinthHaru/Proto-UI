@@ -180,16 +180,16 @@ const highlighted = await highlightCode(code, lang);
   }
   [data-code-presentation='docs'] [data-code-file-header] {
     min-height: 2.625rem;
-    padding-block: 0.625rem;
+    padding-block: 0.375rem;
   }
   [data-code-presentation='docs'] [data-code-inner] {
     padding: 0.875rem 1rem;
   }
-  [data-code-presentation='docs'] .proto-previewer__code {
+  [data-code-presentation='docs'] [data-code-inner] .proto-previewer__code {
     font-size: 0.875rem;
     line-height: 1.53125rem;
   }
-  [data-code-presentation='docs'] .proto-previewer__code .line {
+  [data-code-presentation='docs'] [data-code-inner] .proto-previewer__code .line {
     padding-block: 0;
   }
 </style>
