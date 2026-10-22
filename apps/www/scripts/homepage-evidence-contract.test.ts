@@ -963,6 +963,7 @@ test('native and Copy browser scopes have independent bounded jobs and small evi
     { name: 'code-surface-grammar', suite: 'code-surface-grammar' },
     { name: 'docs-content-flow', suite: 'docs-content-flow' },
     { name: 'homepage-button-contract', suite: 'homepage-button-contract' },
+    { name: 'homepage-composition', suite: 'homepage-composition' },
     { name: 'copy-commands', suite: 'site-copy-commands' },
     { name: 'runtime-box', suite: 'runtime-preview-surface', contract: 'runtime-preview-evidence' },
     { name: 'search-commands', suite: 'site-search-commands' },

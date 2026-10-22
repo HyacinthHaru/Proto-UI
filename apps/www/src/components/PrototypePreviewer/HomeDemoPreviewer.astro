@@ -13,8 +13,18 @@ const copy =
         loading: 'Preparing',
         ready: 'Ready',
         error: 'Error',
+        noScript: 'These interactive examples need JavaScript.',
+        documentation: 'Read the component documentation',
       }
-    : { title: '交互组件', family: '页面风格', loading: '准备中', ready: '就绪', error: '错误' };
+    : {
+        title: '交互组件',
+        family: '页面风格',
+        loading: '准备中',
+        ready: '就绪',
+        error: '错误',
+        noScript: '这些交互示例需要 JavaScript。',
+        documentation: '阅读组件文档',
+      };
 const projectionOwner = `${id}-projection-${Math.random().toString(36).slice(2)}`;
 ---
 
@@ -32,6 +42,12 @@ const projectionOwner = `${id}-projection-${Math.random().toString(36).slice(2)}
   data-status-ready={copy.ready}
   data-status-error={copy.error}
 >
+  <noscript>
+    <p data-home-demo-nojs>
+      {copy.noScript}
+      <a href={`/${locale}/ui-libraries/shadcn/accordion/`}>{copy.documentation}</a>
+    </p>
+  </noscript>
   <div class="home-demo-previewer__host" data-home-demo-host aria-busy="true"></div>
   <output
     class="home-demo-previewer__status"
@@ -224,5 +240,12 @@ const projectionOwner = `${id}-projection-${Math.random().toString(36).slice(2)}
     .home-demo-previewer :global(.home-gallery) {
       grid-template-columns: minmax(0, 1fr);
     }
+  }
+  /* With scripting enabled, noscript contains text rather than these child elements.
+     Hide only the empty loading structure when the real static fallback is present. */
+  .home-demo-previewer:has([data-home-demo-nojs]) > .home-demo-previewer__host,
+  .home-demo-previewer:has([data-home-demo-nojs])[data-runner-state]
+    > .home-demo-previewer__status {
+    display: none;
   }
 </style>

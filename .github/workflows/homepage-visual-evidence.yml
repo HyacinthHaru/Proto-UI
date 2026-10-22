@@ -263,6 +263,9 @@ jobs:
             suite: docs-content-flow
           - name: homepage-button-contract
             suite: homepage-button-contract
+          # Dedicated owner: apps/www/src/content/docs/zh-cn/homepage-composition.browser.test.ts
+          - name: homepage-composition
+            suite: homepage-composition
           - name: copy-commands
             suite: site-copy-commands
           - name: runtime-box
