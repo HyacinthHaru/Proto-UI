@@ -76,6 +76,64 @@ async function facts(button: Locator) {
     };
   });
 }
+async function selectionPaint(element: Locator, backgroundRole: string, foregroundRole: string) {
+  return element.evaluate(
+    (element, roles) => {
+      const selection = getComputedStyle(element, '::selection');
+      const probe = document.createElement('span');
+      probe.style.backgroundColor = `var(--pui-${roles.backgroundRole})`;
+      probe.style.color = `var(--pui-${roles.foregroundRole})`;
+      probe.style.position = 'absolute';
+      probe.style.visibility = 'hidden';
+      element.parentElement!.append(probe);
+      try {
+        const expected = getComputedStyle(probe);
+        return {
+          background: selection.backgroundColor,
+          foreground: selection.color,
+          expectedBackground: expected.backgroundColor,
+          expectedForeground: expected.color,
+          userSelect: getComputedStyle(element).userSelect,
+          shadowRoot: element.getRootNode() instanceof ShadowRoot,
+          familyScope:
+            element
+              .closest('[data-site-control-family]')
+              ?.getAttribute('data-site-control-family') ?? null,
+          backgroundRoleValue: getComputedStyle(element)
+            .getPropertyValue(`--pui-${roles.backgroundRole}`)
+            .trim(),
+          foregroundRoleValue: getComputedStyle(element)
+            .getPropertyValue(`--pui-${roles.foregroundRole}`)
+            .trim(),
+        };
+      } finally {
+        probe.remove();
+      }
+    },
+    { backgroundRole, foregroundRole }
+  );
+}
+
+async function chooseTheme(page: Page, theme: 'light' | 'dark') {
+  if (
+    await page.evaluate(
+      (theme) => (document.documentElement.dataset.theme === 'dark') === (theme === 'dark'),
+      theme
+    )
+  )
+    return;
+  await revealHeaderPreferences(page);
+  await page
+    .locator(
+      '.site-header-theme [data-projection-generation-state="active"] [data-demo-ref="home-theme"]'
+    )
+    .click();
+  await page.waitForFunction(
+    (theme) => (document.documentElement.dataset.theme === 'dark') === (theme === 'dark'),
+    theme
+  );
+}
+
 async function textPoint(element: Locator, last = false) {
   return element.evaluate((element, last) => {
     const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
@@ -366,6 +424,60 @@ describe.sequential('Base Button selection and family-owned homepage geometry', 
             await probe.dispose();
           }
           // Font enlargement is not browser zoom. Do not rewrite any button dimensions.
+          const selectionModes: Array<Record<string, unknown>> = [];
+          record.themeSelection = selectionModes;
+          for (const theme of ['light', 'dark'] as const) {
+            await chooseTheme(page, theme);
+            await ready(page, runtime, family);
+            await heading.scrollIntoViewIfNeeded();
+            const point = await textPoint(heading);
+            await page.mouse.click(point.x, point.y, { clickCount: 3 });
+            const selectedProse = await page.evaluate(
+              () => getSelection()?.toString().trim() ?? ''
+            );
+            expect(selectedProse.length).toBeGreaterThan(0);
+            const prosePaint = await selectionPaint(heading, 'selection', 'selection-foreground');
+            const observation: Record<string, unknown> = { theme, prosePaint, selectedProse };
+            selectionModes.push(observation);
+            await capture(`selection-${theme}-prose`);
+            // The website h1 keeps the global Shadcn palette; the family switch
+            // changes only its explicit projection boundaries.
+            expect(prosePaint.familyScope).not.toBe('brutalist');
+            expect(prosePaint.backgroundRoleValue).not.toBe('');
+            expect(prosePaint.foregroundRoleValue).not.toBe('');
+            expect(prosePaint.background).toBe(prosePaint.expectedBackground);
+            expect(prosePaint.foreground).toBe(prosePaint.expectedForeground);
+            expect(prosePaint.userSelect).not.toBe('none');
+            await editor.scrollIntoViewIfNeeded();
+            await editor.press('Control+a');
+            observation.selectedEditor = await editor.evaluate((node) => {
+              const input = node as HTMLTextAreaElement;
+              return {
+                value: input.value,
+                selected: input.value.slice(input.selectionStart, input.selectionEnd),
+              };
+            });
+            const editorPaint = await selectionPaint(
+              editor,
+              family === 'brutalist' ? 'main' : 'selection',
+              family === 'brutalist' ? 'main-foreground' : 'selection-foreground'
+            );
+            observation.editorPaint = editorPaint;
+            await capture(`selection-${theme}-editor`);
+            expect((observation.selectedEditor as { selected: string }).selected).toBe(sample);
+            expect(editorPaint.backgroundRoleValue).not.toBe('');
+            expect(editorPaint.foregroundRoleValue).not.toBe('');
+            expect(editorPaint.background).toBe(editorPaint.expectedBackground);
+            expect(editorPaint.foreground).toBe(editorPaint.expectedForeground);
+            expect(editorPaint.userSelect).not.toBe('none');
+            // Website WC is light DOM, not evidence of separate Shadow installation.
+            expect(editorPaint.shadowRoot).toBe(false);
+          }
+          expect((selectionModes[0].prosePaint as { background: string }).background).not.toBe(
+            (selectionModes[1].prosePaint as { background: string }).background
+          );
+          await chooseTheme(page, 'light');
+          await ready(page, runtime, family);
           await page.setViewportSize({ width: 390, height: 1000 });
           await page.evaluate(() => {
             document.documentElement.style.fontSize = '200%';
