@@ -87,8 +87,12 @@ export function createPreviewMaterialScene(parent: HTMLElement) {
   function layout() {
     const scene = scope.getBoundingClientRect();
     const flow = mount.getBoundingClientRect();
-    const padding = parseFloat(win.getComputedStyle(scope).paddingBottom) || 0;
-    let bottom = flow.bottom + padding;
+    // Rectangles are viewport pixels; reserve and padding use local CSS pixels.
+    const css = win.getComputedStyle(scope);
+    const scale = scene.width / parseFloat(css.width);
+    if (!Number.isFinite(scale) || scale <= 0) return;
+    const padding = parseFloat(css.paddingBottom) || 0;
+    let bottom = (flow.bottom - scene.top) / scale + padding;
     for (const element of overlayMount.querySelectorAll<HTMLElement>('*')) {
       if (element.closest('[data-material-scene]') !== scope) continue;
       const css = win.getComputedStyle(element);
@@ -102,10 +106,10 @@ export function createPreviewMaterialScene(parent: HTMLElement) {
         continue;
       bottom = Math.max(
         bottom,
-        rect.bottom + contactPaintOutset(rect.width, rect.height) + padding
+        (rect.bottom - scene.top + contactPaintOutset(rect.width, rect.height)) / scale + padding
       );
     }
-    const height = Math.max(0, Math.ceil(bottom - scene.top));
+    const height = Math.max(0, Math.ceil(bottom));
     if (Number.isFinite(height) && scope.style.minHeight !== `${height}px`)
       scope.style.minHeight = `${height}px`;
   }
