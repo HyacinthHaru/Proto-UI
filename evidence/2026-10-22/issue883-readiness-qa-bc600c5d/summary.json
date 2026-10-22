@@ -1,0 +1,898 @@
+{
+  "schemaVersion": 1,
+  "preparedAt": "2026-10-22T13:09:22.146074+00:00",
+  "sourceHead": "bc600c5d211c28647ae5c91601e1a374088fc1c9",
+  "sourceTree": "5541cbe423f6c64ea09f64057077cec649049e5d",
+  "state": "private staged progress evidence; canonical CI remains nonterminal",
+  "result": "partial/202pass1fail",
+  "reviewDisposition": "ABSTAIN",
+  "sourceDelta": {
+    "at": "2026-10-22T13:36:09.333031+00:00",
+    "base": "b928a56c6909835771fc2131503b4a7139db738c",
+    "head": "bc600c5d211c28647ae5c91601e1a374088fc1c9",
+    "tree": "5541cbe423f6c64ea09f64057077cec649049e5d",
+    "netPaths": [
+      ".github/workflows/brutalist-contrast-evidence.yml",
+      "apps/www/scripts/capture-whitepaper-diagram-evidence.mjs",
+      "apps/www/src/components/Homepage/homepage-runtime-client.ts",
+      "apps/www/src/components/PrototypePreviewer/collapsible-projections.test.ts",
+      "apps/www/src/components/PrototypePreviewer/preview-material-scene.test.ts",
+      "apps/www/src/components/PrototypePreviewer/preview-material-scene.ts",
+      "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+      "apps/www/src/components/header-ghost-appearance.test.ts",
+      "apps/www/src/components/override/TwoColumnContent.astro",
+      "apps/www/src/components/site-contents-command.ts",
+      "apps/www/src/components/site-header-layout.test.ts",
+      "apps/www/src/components/site-sidebar-current-visibility.test.ts",
+      "apps/www/src/components/site-sidebar-current-visibility.ts",
+      "apps/www/src/content/docs/demo-liquid-glass-collapsible.demo.ts",
+      "apps/www/src/content/docs/zh-cn/demo-brutalist-controls.browser.test.ts",
+      "apps/www/src/content/docs/zh-cn/demo-brutalist-dialog.browser.test.ts",
+      "apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts",
+      "apps/www/src/content/docs/zh-cn/family-query-observer.test.ts",
+      "apps/www/src/content/docs/zh-cn/family-query-observer.ts",
+      "apps/www/src/content/docs/zh-cn/header-popup-evidence.ts",
+      "apps/www/src/content/docs/zh-cn/header-select-elevation.browser.test.ts",
+      "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+      "apps/www/src/content/docs/zh-cn/site-native-links.browser.test.ts",
+      "apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts",
+      "apps/www/src/content/docs/zh-cn/site-search-evidence.test.ts",
+      "apps/www/src/content/docs/zh-cn/site-search-evidence.ts",
+      "apps/www/src/content/docs/zh-cn/site-startup-theme.browser.test.ts",
+      "apps/www/src/styles/site-copy-command.css",
+      "apps/www/test/color-scheme.browser.test.ts",
+      "apps/www/test/fixtures/color-scheme/main.ts",
+      "packages/adapters/base/README.md",
+      "packages/adapters/base/src/events/web-event-router.ts",
+      "packages/adapters/base/src/material/index.ts",
+      "packages/adapters/base/test/contract/pointer-root-ownership.v0.contract.test.ts",
+      "packages/adapters/base/test/event-router-work.test.ts",
+      "packages/adapters/react/test/portal-destination.contract.ts",
+      "packages/adapters/vue/src/adapt.ts",
+      "packages/adapters/vue/test/focus-entry-retries.integration.test.ts",
+      "packages/adapters/vue/test/view-reveal-style.integration.test.ts",
+      "packages/adapters/vue2/test/select.test.ts",
+      "packages/adapters/web-component/test/dialog-portal-owner.test.ts",
+      "packages/adapters/web-component/test/portal-body-destination.test.ts",
+      "packages/adapters/web-component/test/shadow-closeout.browser.test.ts",
+      "packages/prototypes/base/src/select/content.proto.ts",
+      "packages/prototypes/shadcn/src/select/content.proto.ts",
+      "packages/prototypes/shadcn/test/select-alignment-owner.test.ts",
+      "scripts/docs/test/whitepaper-diagram-evidence-profiles.test.mjs",
+      "scripts/docs/test/whitepaper-diagram-evidence.test.mjs",
+      "scripts/test/brutalist-contrast-toolbar.test.mjs",
+      "scripts/test/happy-dom-mutation-keepalive.d.mts",
+      "spec/tests/T-RULE-COLOR-SCHEME-0001.yaml"
+    ],
+    "netPathCount": 51,
+    "d67ToFinalPaths": [
+      ".github/workflows/brutalist-contrast-evidence.yml",
+      "apps/www/src/content/docs/zh-cn/demo-brutalist-controls.browser.test.ts",
+      "apps/www/src/content/docs/zh-cn/demo-brutalist-dialog.browser.test.ts",
+      "scripts/test/brutalist-contrast-toolbar.test.mjs"
+    ],
+    "new4commits": [
+      {
+        "head": "1038d0fa52406b9dcb1d1cadf1d7df91946c18e2",
+        "parents": ["d67b16fcea924538ca9c58829955084ad208f488"],
+        "tree": "255280d7bcf7311b6cb785a5538b6a8556b2d1ff",
+        "signature": "G",
+        "author": "HyacinthHaru <hyacinth@haru.ac>",
+        "committer": "HyacinthHaru <hyacinth@haru.ac>",
+        "subject": "ci: register input in family evidence",
+        "DCO": true,
+        "noCoauthor": true,
+        "files": [
+          ".github/workflows/brutalist-contrast-evidence.yml",
+          "scripts/test/brutalist-contrast-toolbar.test.mjs"
+        ]
+      },
+      {
+        "head": "f388f34b80daa7aad0051c9168b64bbcec125b67",
+        "parents": ["1038d0fa52406b9dcb1d1cadf1d7df91946c18e2"],
+        "tree": "9d9a4ff1b994967d398896534e9dae33a519beae",
+        "signature": "G",
+        "author": "HyacinthHaru <hyacinth@haru.ac>",
+        "committer": "HyacinthHaru <hyacinth@haru.ac>",
+        "subject": "test: scope tabs selection to the demo",
+        "DCO": true,
+        "noCoauthor": true,
+        "files": ["apps/www/src/content/docs/zh-cn/demo-brutalist-controls.browser.test.ts"]
+      },
+      {
+        "head": "0f66e9d713411a85c1a46cf87ac8ae4158614e59",
+        "parents": ["f388f34b80daa7aad0051c9168b64bbcec125b67"],
+        "tree": "f9b4580e2df43845002baa321a2dd0594d3a52a7",
+        "signature": "G",
+        "author": "HyacinthHaru <hyacinth@haru.ac>",
+        "committer": "HyacinthHaru <hyacinth@haru.ac>",
+        "subject": "test: match the current dropdown demo",
+        "DCO": true,
+        "noCoauthor": true,
+        "files": ["apps/www/src/content/docs/zh-cn/demo-brutalist-controls.browser.test.ts"]
+      },
+      {
+        "head": "bc600c5d211c28647ae5c91601e1a374088fc1c9",
+        "parents": ["0f66e9d713411a85c1a46cf87ac8ae4158614e59"],
+        "tree": "5541cbe423f6c64ea09f64057077cec649049e5d",
+        "signature": "G",
+        "author": "HyacinthHaru <hyacinth@haru.ac>",
+        "committer": "HyacinthHaru <hyacinth@haru.ac>",
+        "subject": "test: await the dialog resize projection",
+        "DCO": true,
+        "noCoauthor": true,
+        "files": ["apps/www/src/content/docs/zh-cn/demo-brutalist-dialog.browser.test.ts"]
+      }
+    ],
+    "scope": "Normaladditive4furtherQA/fixturecommits; untouchedproduction/executionCfixes retained fromd67. Nativefinal203running, noacceptanceinferred."
+  },
+  "runs": [
+    {
+      "name": "qa-family-registration/original-calibration",
+      "head": "d67b16fcea924538ca9c58829955084ad208f488",
+      "start": "2026-10-22T12:28:04.515628+00:00",
+      "end": "2026-10-22T12:28:05.758974+00:00",
+      "exit": 1,
+      "statusBefore": "",
+      "sourceStable": true,
+      "counts": {
+        "tests": 187,
+        "passed": 186,
+        "failed": 1
+      },
+      "executionBoundary": "Precommit source epoch retained; not relabeled as f388."
+    },
+    {
+      "name": "qa-family-registration/candidate-calibration",
+      "head": "d67b16fcea924538ca9c58829955084ad208f488",
+      "start": "2026-10-22T12:29:25.706425+00:00",
+      "end": "2026-10-22T12:29:26.909513+00:00",
+      "exit": 1,
+      "statusBefore": "M .github/workflows/brutalist-contrast-evidence.yml",
+      "sourceStable": true,
+      "counts": {
+        "tests": 187,
+        "passed": 186,
+        "failed": 1
+      },
+      "executionBoundary": "Precommit source epoch retained; not relabeled as f388."
+    },
+    {
+      "name": "qa-family-registration/candidate-complete-calibration",
+      "head": "d67b16fcea924538ca9c58829955084ad208f488",
+      "start": "2026-10-22T12:37:20.486332+00:00",
+      "end": "2026-10-22T12:37:21.716411+00:00",
+      "exit": 0,
+      "statusBefore": "M .github/workflows/brutalist-contrast-evidence.yml\n M scripts/test/brutalist-contrast-toolbar.test.mjs",
+      "sourceStable": true,
+      "counts": {
+        "tests": 187,
+        "passed": 187,
+        "failed": 0
+      },
+      "executionBoundary": "Precommit source epoch retained; not relabeled as f388."
+    },
+    {
+      "name": "tabs-query-owner/original-observed",
+      "head": "d67b16fcea924538ca9c58829955084ad208f488",
+      "start": "2026-10-22T12:34:51.516343+00:00",
+      "end": "2026-10-22T12:35:34.880031+00:00",
+      "exit": 1,
+      "statusBefore": "M .github/workflows/brutalist-contrast-evidence.yml\n M apps/www/src/content/docs/zh-cn/demo-brutalist-controls.browser.test.ts",
+      "sourceStable": true,
+      "counts": {
+        "passed": 0,
+        "failed": 1,
+        "filtered": 9
+      },
+      "executionBoundary": "One original Vitest case with wc/react/vue loop; failure capture after original verdict, not historical CI DOM."
+    },
+    {
+      "name": "tabs-query-owner/focused-candidate",
+      "head": "1038d0fa52406b9dcb1d1cadf1d7df91946c18e2",
+      "start": "2026-10-22T12:40:17.301489+00:00",
+      "end": "2026-10-22T12:40:30.386627+00:00",
+      "exit": 0,
+      "statusBefore": "M apps/www/src/content/docs/zh-cn/demo-brutalist-controls.browser.test.ts",
+      "sourceStable": true,
+      "counts": {
+        "passed": 1,
+        "failed": 0,
+        "filtered": 9
+      },
+      "executionBoundary": "One original Vitest case with wc/react/vue loop; failure capture after original verdict, not historical CI DOM."
+    },
+    {
+      "name": "final-build47-f388",
+      "head": "f388f34b80daa7aad0051c9168b64bbcec125b67",
+      "start": "2026-10-22T12:46:38.261656+00:00",
+      "end": "2026-10-22T12:47:12.395013+00:00",
+      "exit": 0,
+      "statusBefore": "",
+      "sourceStable": true,
+      "counts": {
+        "actualPackageBuilds": 47,
+        "publicPackages": 47
+      }
+    },
+    {
+      "name": "final-manifest47-f388",
+      "head": "f388f34b80daa7aad0051c9168b64bbcec125b67",
+      "start": "2026-10-22T12:48:54.994775+00:00",
+      "end": "2026-10-22T12:48:55.391541+00:00",
+      "exit": 0,
+      "statusBefore": "",
+      "sourceStable": true,
+      "counts": {
+        "manifests": 47
+      }
+    },
+    {
+      "name": "final-types-f388",
+      "head": "f388f34b80daa7aad0051c9168b64bbcec125b67",
+      "start": "2026-10-22T12:47:50.552391+00:00",
+      "end": "2026-10-22T12:48:46.313261+00:00",
+      "exit": 0,
+      "statusBefore": "",
+      "sourceStable": true,
+      "counts": {
+        "astroFiles": 937,
+        "errors": 0,
+        "warnings": 0,
+        "hints": 14
+      }
+    },
+    {
+      "name": "final-qa187-f388",
+      "head": "f388f34b80daa7aad0051c9168b64bbcec125b67",
+      "start": "2026-10-22T12:48:55.773209+00:00",
+      "end": "2026-10-22T12:48:56.753418+00:00",
+      "exit": 0,
+      "statusBefore": "",
+      "sourceStable": true,
+      "counts": {
+        "tests": 187,
+        "passed": 187,
+        "failed": 0
+      }
+    },
+    {
+      "name": "final-node147-f388",
+      "head": "f388f34b80daa7aad0051c9168b64bbcec125b67",
+      "start": "2026-10-22T12:50:13.401550+00:00",
+      "end": "2026-10-22T12:51:09.812295+00:00",
+      "exit": 1,
+      "statusBefore": "",
+      "sourceStable": true,
+      "counts": {
+        "files": 147,
+        "passed": 2085,
+        "failed": 4,
+        "filtered": 0
+      }
+    },
+    {
+      "name": "final-native187-f388",
+      "head": "f388f34b80daa7aad0051c9168b64bbcec125b67",
+      "start": "2026-10-22T12:51:18.225979+00:00",
+      "end": "2026-10-22T13:02:52.226215+00:00",
+      "exit": 1,
+      "statusBefore": "",
+      "sourceStable": true,
+      "counts": {
+        "files": 7,
+        "passed": 184,
+        "failed": 3,
+        "filtered": 0
+      }
+    }
+  ],
+  "QARegistrationBoundary": "Restores existing22family exact-once registration; Input primary physical target still unsupported. No new Input implementation/Compiler/CLI/API responsibility or 78catalog fix.",
+  "TabsBoundary": "Current local negative targets RuntimeReact not DemoDetails; scoped candidate passed1originalcase/9filtered across3runtimes. Failurecatch is after originaltimeout and not historicalCI DOM.",
+  "historicalD67Canonical": {
+    "head": "d67b16fcea924538ca9c58829955084ad208f488",
+    "tree": "f1e37c12ee9546a31b65b1e4e929bf1059f793a9",
+    "mainRunId": 39773465481,
+    "status": "completed",
+    "conclusion": "failure",
+    "jobs": {
+      "total": 22,
+      "conclusions": {
+        "success": 13,
+        "failure": 9
+      },
+      "paginationComplete": true
+    },
+    "reviewedRuntimeTotals": "Not reported. Complete failed-shard5 is88pass/2fail/15skip; success-shard6 has not been log-reviewed here; shards1/8 lack summary and2/3/4/7 didnot run browser tests.",
+    "generalDrift": 78,
+    "docsObserver": "Original extract retained with numeric samples/verdict/settlement fields; no root-cause or readiness success inference from late observations.",
+    "V2": "Original source and packed basic flows pass; continuous failures remain in original log.",
+    "notCurrentF388": true
+  },
+  "initialCurrentCanonical": {
+    "sourceHead": "f388f34b80daa7aad0051c9168b64bbcec125b67",
+    "sourceTree": "9d9a4ff1b994967d398896534e9dae33a519beae",
+    "runId": 39781130610,
+    "status": "queued",
+    "conclusion": null,
+    "startedAt": "2026-10-22T12:48:29.164160+00:00",
+    "completedAt": "2026-10-22T12:49:36.438032+00:00",
+    "atomic": false,
+    "snapshotSHA256": "e42798c1e17018ed80756b0257a9409a3288d3f5912700e88f36afa8837edea5",
+    "jobs": {
+      "total": 8,
+      "paginationComplete": true,
+      "statusCounts": {
+        "in_progress": 2,
+        "queued": 6
+      },
+      "terminalConclusions": {}
+    },
+    "boundary": "Initial metadata only; do not use its queued state as a claim about later CI state."
+  },
+  "pending": [
+    {
+      "kind": "canonical-ci",
+      "requiredForFinalAssembly": true,
+      "deferrableForProgressPublication": true,
+      "requirement": "Current39788572923stillnonterminal; collectremainingrequiredjobsandactualruntimeverdicts. Progresspublicationdoesnotdeferacceptancegates."
+    }
+  ],
+  "historicalReference": {
+    "commit": "0f8d64503a1f6d75122d2ea3ee4456794ac2a824",
+    "folder": "evidence/2026-10-22/issue883-readiness-d67b16fc",
+    "url": "https://github.com/HyacinthHaru/Proto-UI/tree/0f8d64503a1f6d75122d2ea3ee4456794ac2a824/evidence/2026-10-22/issue883-readiness-d67b16fc",
+    "scope": "Previously published d67 packet is linked, not recopied. New post-publication d67 CI logs are selected separately."
+  },
+  "selectedVisuals": {
+    "selectedPNGFiles": 7,
+    "rootViewed": true,
+    "currentCleanPNGs": 2,
+    "wholeRunPNGFiles": 947,
+    "primaryEvidencePNGFiles": 774,
+    "allImagesReviewed": false
+  },
+  "limitations": [
+    "Node147 still has4CheckboxGroup token failures; fullnative187 ended184pass3fail, notallgreen.",
+    "Local validation and hosted CI remain separate; no all-C/optical/AT acceptance.",
+    "Technical diagnostic samples are retained; textual path sanitization does not create original executed/runnable source bytes.",
+    "Census bodies remain private hash references, not dependency/bundle closure proof."
+  ],
+  "currentValidation": {
+    "at": "2026-10-22T13:58:43.619354+00:00",
+    "head": "bc600c5d211c28647ae5c91601e1a374088fc1c9",
+    "tree": "5541cbe423f6c64ea09f64057077cec649049e5d",
+    "status": "partial/failedintegration",
+    "formalApproval": false,
+    "actualCleanCurrent": {
+      "native203": {
+        "passed": 202,
+        "failed": 1,
+        "files": 9,
+        "failedPredicate": "ScrollAreaArrowDown/scrollTop>focused10s at1472",
+        "allOtherCasesPassed": true
+      },
+      "keyboardOwner17": {
+        "passed": 17,
+        "failed": 0,
+        "files": 1
+      },
+      "types": {
+        "files": 937,
+        "errors": 0,
+        "warnings": 0,
+        "hints": 14
+      },
+      "preview": {
+        "files": 3837,
+        "expandedBytes": 104068285,
+        "producerDefault": 1,
+        "localFullActionsZIPDefault": 1,
+        "sameExtractionNotIndependentSource": true
+      }
+    },
+    "historicalNotRelabeled": {
+      "f388Node147": "2085passed4failed; all17ownercontrols passed there too",
+      "f388Build": "47/47actualbuild and47manifests",
+      "f388QA": "187/187",
+      "f388Native187": "184pass3fail andPortal16pass",
+      "d67": "Immutable0f8publicpacketunchanged"
+    },
+    "originalFailuresAndDiagnostics": [
+      "Current202/1retainsScrollnegative; oldf388officialScrollpassed butnotcurrentheadacceptance",
+      "PrivateScrollkeytrace60rows0drops7trustedpairs/defaultPreventedfalse/nocapturedpreventDefault/JSetterwrites excludesonlyobservedmechanisms; notallprogrammatic/nativecauses",
+      "BareDOMpositive2cycles retainsinflightmotionbeforesecondcycle, notseparatefreshkeycausalityproof",
+      "Twoeligibilityinstrumentedoriginalcasespass9filtered andnofailedcapture; notproductionfix/defaulteligibilityproof",
+      "DocsV1actualobserverinstallationReferenceErrorpreserved; V2actual2originalcasepass/captureisnormalcontrol,notcanonicalfailedqueryclock",
+      "OriginalSearch/Docsdeadlinefailuresremainfailed/underlyingcauseunproven; no timeout/matcher change"
+    ],
+    "scopePreserved": [
+      "Same4Csourcecommitsadditive; nohistoryrewrite",
+      "Originalcaseassertions/deadlines andkeyboardownercontrols",
+      "NoInputfamilyimplementation/unsupportedphysicaltargetguardretained",
+      "NoCLIownerACKorCompiler/IRtakeover",
+      "Allbrowserrunnersendedandprivateprobes/restoredbyteequal; ownedprojectpreferencesoriginalbytes/mode restored"
+    ],
+    "canonical": "Exacthead39788572923 freshfullsnapshotrunning; finalAdmissionfalse; notcurrentallgreen",
+    "visualEvidence": {
+      "rootViewedCurrentCleanPNGs": [
+        "final-native203-bc600/evidence/header-breakpoint/brutalist-wc-family-narrow-focus-ring.png",
+        "final-native203-bc600/evidence/search-commands/docs-brutalist-wc-2048-geometry.png"
+      ],
+      "rootViewedSubsetOfCurrent947": 2,
+      "narrowScope": "320x300focusedfamilyfieldringinviewport; non-targetWhitepaperpartlyscrollsout, noallcontrolsrestclaim",
+      "otherHistoricalNegativePNGs": "Explicitprivatefailed/controlsourceepoch kept separately"
+    },
+    "rawRefs": [
+      {
+        "path": "final-native203-bc600/reconciliation.json",
+        "sha256": "ee95452052c027891073adc10b815a27cb161cb8e9616f6bd57ea1584810cbb4"
+      },
+      {
+        "path": "final-owner17-bc600/receipt.json",
+        "sha256": "4bc2ad117582593089c16ec15fc7b5e31633b959578ef9ab4d3c18bc462211fe"
+      },
+      {
+        "path": "final-owner17-bc600/vitest.json",
+        "sha256": "e98b95e400300c222d33b4210877800e973e408b5ecd021d4cab7196b6365881"
+      },
+      {
+        "path": "final-types-bc600/receipt.json",
+        "sha256": "fab6b6b25f1099dba047ab7a6563b7266f33bcb1ff1d5a0d7506a3c5eab40f6a"
+      },
+      {
+        "path": "built-preview-bc600/producer-binding.json",
+        "sha256": "f923329a333ad1ecbdf1e4481fcb81f83146936fc7ff545b6668ac33c4b0764c"
+      },
+      {
+        "path": "followup-source-review/last-two-source-addendum.json",
+        "sha256": "2a3f30bb89cbcb4d33fa30f496832561d043cf47e28567a456381dfbfe798a64"
+      },
+      {
+        "path": "private-role-utility-v2/report.json",
+        "sha256": "8402f0335e2c4ed8f3bce19aa303be19072c3514927a1fe90da94fd077a5b742"
+      },
+      {
+        "path": "live-f388/selected-browser-review/report.json",
+        "sha256": "24dd7f92da4b1e0136a419ad0f0b05a8dd4fe93bf64c2c4349c1daf4c481789e"
+      }
+    ]
+  },
+  "preview": {
+    "at": "2026-10-22T13:54:40.221038+00:00",
+    "head": "bc600c5d211c28647ae5c91601e1a374088fc1c9",
+    "tree": "5541cbe423f6c64ea09f64057077cec649049e5d",
+    "producerJob": 119858179575,
+    "producerRun": 39788573061,
+    "actualDirectCheckout": "bc600c5d211c28647ae5c91601e1a374088fc1c9",
+    "producerTests": {
+      "passed": 1,
+      "failed": 0,
+      "completeFiles": 3837,
+      "expandedBytes": 104068285,
+      "producerTestZIPBytes": 21206727,
+      "scope": "Actualprecompressionproducerfullsiteandoriginaldefaultregression inhostedjob, separatefromActionscontainer"
+    },
+    "localAdmission": {
+      "start": "2026-10-22T13:50:14.479886+00:00",
+      "end": "2026-10-22T13:50:16.974836+00:00",
+      "argv": ["node", "--test", "scripts/preview/generated-artifact.test.mjs"],
+      "head": "bc600c5d211c28647ae5c91601e1a374088fc1c9",
+      "sourceHeadFromGit": "bc600c5d211c28647ae5c91601e1a374088fc1c9",
+      "exit": 0,
+      "actualTests": 1,
+      "skip": false,
+      "scope": "Originaldefaultcompleteartifactadmission withwholeZIP; sourceisfullsameZIPextraction, notindependentprecompressionproducer. Officialproducerjobseparatelyretained.",
+      "ZIPsha256": "dbb18ae1593a3643a99f175d8fa656896fb270f3b7369e5c4990307744b0bb29",
+      "files": 3837,
+      "expandedBytes": 104068285
+    },
+    "ActionsArtifact": {
+      "id": 12430322027,
+      "bytes": 21140058,
+      "sha256": "dbb18ae1593a3643a99f175d8fa656896fb270f3b7369e5c4990307744b0bb29",
+      "files": 3837,
+      "noPruning": true
+    },
+    "scope": "FullPagesAndResourcesretained; noSelectedSubset/NoFakebuild; sourceJSON/headercaseNativeevidence separatedevserverepochs/notthisartifactbrowserclaim"
+  },
+  "sourceReview": {
+    "at": "2026-10-22T13:45:21.943141+00:00",
+    "result": "partial",
+    "reviewDecision": "ABSTAIN",
+    "formalApproval": false,
+    "openSourceFindings": [],
+    "head": "bc600c5d211c28647ae5c91601e1a374088fc1c9",
+    "tree": "5541cbe423f6c64ea09f64057077cec649049e5d",
+    "commits": [
+      {
+        "head": "0f66e9d713411a85c1a46cf87ac8ae4158614e59",
+        "tree": "f9b4580e2df43845002baa321a2dd0594d3a52a7",
+        "parent": "f388f34b80daa7aad0051c9168b64bbcec125b67",
+        "signature": "G",
+        "identity": "HyacinthHaru <hyacinth@haru.ac>",
+        "DCO": true,
+        "noCoauthor": true,
+        "verifyOutput": "Good \"git\" signature for hyacinth@haru.ac with ED25519 key SHA256:RWDxJ0JCS9WIN0anD3VUGv9yBp1UtQmZM6HYa98uj7M"
+      },
+      {
+        "head": "bc600c5d211c28647ae5c91601e1a374088fc1c9",
+        "tree": "5541cbe423f6c64ea09f64057077cec649049e5d",
+        "parent": "0f66e9d713411a85c1a46cf87ac8ae4158614e59",
+        "signature": "G",
+        "identity": "HyacinthHaru <hyacinth@haru.ac>",
+        "DCO": true,
+        "noCoauthor": true,
+        "verifyOutput": "Good \"git\" signature for hyacinth@haru.ac with ED25519 key SHA256:RWDxJ0JCS9WIN0anD3VUGv9yBp1UtQmZM6HYa98uj7M"
+      }
+    ],
+    "sources": [
+      {
+        "path": "apps/www/src/content/docs/zh-cn/demo-brutalist-controls.browser.test.ts",
+        "commit": "0f66e9d713411a85c1a46cf87ac8ae4158614e59",
+        "sha256": "1982aabcd134582e1f63a79de6f7f6a91c02fbcd9e6be8ba9dca89aa0bfb3b4d",
+        "blob": "0335b5c4447df91640cf8ca44ed919a1a5a88cfe"
+      },
+      {
+        "path": "apps/www/src/content/docs/zh-cn/demo-brutalist-dialog.browser.test.ts",
+        "commit": "bc600c5d211c28647ae5c91601e1a374088fc1c9",
+        "sha256": "b339794117a820c5f61cda435f7b05915565409094912d66b5a7df4dc188e799",
+        "blob": "46807c84ff225165652e144ac5e33c1cbe517197"
+      }
+    ],
+    "sourcePreservation": {
+      "DropdownOnlyExpectedAuthorCount5to24": true,
+      "DropdownOtherFileBytesUnchanged": true,
+      "DialogOnlyAddedIndependentAvailableSizePrerequisite": true,
+      "DialogAllOriginalBytesRecoveredByRemoving17InsertedLines": true,
+      "DialogOriginalTolerance": 0.5,
+      "DialogOriginalCaseTimeoutMs": 300000,
+      "DialogNewPrerequisiteTimeoutMs": 20000,
+      "productionChanges": false,
+      "keyboardOwnerSourceUnchanged": true
+    },
+    "runs": [
+      {
+        "name": "dropdown-demo-readiness",
+        "head": "f388f34b80daa7aad0051c9168b64bbcec125b67",
+        "start": "2026-10-22T13:21:24.444352+00:00",
+        "end": "2026-10-22T13:21:39.288616+00:00",
+        "exit": 0,
+        "statusBefore": "M apps/www/src/content/docs/zh-cn/demo-brutalist-controls.browser.test.ts",
+        "sourceStable": true,
+        "passed": 1,
+        "filtered": 9,
+        "scope": "Originalcase, precommitparent+singlecandidate; notpostcommit execution."
+      },
+      {
+        "name": "dialog-resize-receipt",
+        "head": "0f66e9d713411a85c1a46cf87ac8ae4158614e59",
+        "start": "2026-10-22T13:30:26.063163+00:00",
+        "end": "2026-10-22T13:30:41.413460+00:00",
+        "exit": 0,
+        "statusBefore": "M apps/www/src/content/docs/zh-cn/demo-brutalist-dialog.browser.test.ts",
+        "sourceStable": true,
+        "passed": 1,
+        "filtered": 0,
+        "scope": "Originalcase, precommitparent+singlecandidate; notpostcommit execution."
+      }
+    ],
+    "DropdownBasis": {
+      "actualOriginalCapture": "readyWC/currentactive/onecurrentprojection, exact observed rootcount24 vs expected5",
+      "semanticBoundary": "Currentauthoredrecipe count isfixture data, not a guarantee allDropdownvariants contain24parts. Existingexactequality andscope/frameworkguards retainextra/missingrootnegative behavior.",
+      "fullCandidateScope": "One original case, wc/react/vue loop with originalhover/pressgeometry/deadlines."
+    },
+    "DialogBasis": {
+      "sourceContract": "Draft HC-AVAILABLE-SPACE-0001 requires live consistentregion/currentlease and observations; no setViewportSize completion or fixed one-frame latency promise.",
+      "sourceMechanism": "available-space-host synchronously projects four CSSvars when resize/RO notification reaches currentlease; no internalrAF barrier or publicDialog positionedreceipt.",
+      "actualClockControl": {
+        "runtime": "vue2",
+        "initialBrowserReadMs": 4880.299999952316,
+        "initialViewport": {
+          "width": 900,
+          "height": 640
+        },
+        "initialRegion": {
+          "width": "1280px",
+          "height": "900px",
+          "centerX": "640px",
+          "centerY": "450px",
+          "owner": "pp-t3eyhea90qa",
+          "generation": "4",
+          "id": "pui-dialog-5-content",
+          "tag": "DIV",
+          "connected": true
+        },
+        "eventsAfterRead": [
+          {
+            "phase": "window-resize",
+            "now": 4885.299999952316,
+            "date": 1792675738110,
+            "width": 900,
+            "height": 640,
+            "region": {
+              "width": "1280px",
+              "height": "900px",
+              "centerX": "640px",
+              "centerY": "450px",
+              "owner": "pp-t3eyhea90qa",
+              "generation": "4",
+              "id": "pui-dialog-5-content",
+              "tag": "DIV",
+              "connected": true
+            }
+          },
+          {
+            "phase": "window-resize-microtask",
+            "now": 4885.399999976158,
+            "date": 1792675738110,
+            "width": 900,
+            "height": 640,
+            "region": {
+              "width": "1280px",
+              "height": "900px",
+              "centerX": "640px",
+              "centerY": "450px",
+              "owner": "pp-t3eyhea90qa",
+              "generation": "4",
+              "id": "pui-dialog-5-content",
+              "tag": "DIV",
+              "connected": true
+            }
+          },
+          {
+            "phase": "visual-viewport-resize",
+            "now": 4885.599999904633,
+            "date": 1792675738110,
+            "width": 900,
+            "height": 640,
+            "region": {
+              "width": "900px",
+              "height": "640px",
+              "centerX": "450px",
+              "centerY": "320px",
+              "owner": "pp-t3eyhea90qa",
+              "generation": "4",
+              "id": "pui-dialog-5-content",
+              "tag": "DIV",
+              "connected": true
+            }
+          }
+        ],
+        "firstPostFailureReadMs": 4898.899999976158,
+        "sameOwnerIdGeneration": true,
+        "originalError": "AssertionError: vue2/resized/centre-x: expected 190 to be less than or equal to 0.5"
+      },
+      "inference": "This controlledlocalnegative demonstrates originalgeometryread beforecurrentavailable-space notification; later sameowner projection recovers. It doesnotidentify every historicalfailure schedule.",
+      "candidateBoundary": "Waits only for the presentDialog existing BODY_PORTAL_HOST receiver width/height to match controlled900x640. Doesnotpoll centering/.5 or callrequestUpdate; originalcenter/mask/geometry assertionsstill run and canfail independently.",
+      "limits": [
+        "Expectedavailableextent900x640 isboundto this unoccludeddesktop testprofile, not a universalviewport/safeareaAPI.",
+        "Nodeandbrowserperformance originsdiffer; browser-relative eventordering is used, not direct crossclocksubtraction.",
+        "Updatedvars byvisualviewportobservation do notprove that eventalone causedwrite; window listener mayhavealreadyprojected.",
+        "FailurePNG isafterframe recovery, not originalredpaint."
+      ]
+    },
+    "ScrollDirectFacts": {
+      "full187Failure": "OriginalArrowRight/scrollLeft>before10s at1472; separatefromlaterprivateArrowDownfailure.",
+      "privateFailure": {
+        "runtime": "react",
+        "scheme": "dark",
+        "axis": "scrollTop",
+        "from": 40,
+        "before": {
+          "focusVisible": true,
+          "layers": [
+            "rgb(23, 23, 23) 0px 0px 0px 0px",
+            "rgb(245, 245, 245) 0px 0px 0px 2px inset",
+            "rgba(0, 0, 0, 0) 0px 0px 0px 0px"
+          ],
+          "insetLayers": ["rgb(245, 245, 245) 0px 0px 0px 2px inset"],
+          "viewportRect": {
+            "x": 538,
+            "y": 527,
+            "width": 316,
+            "height": 188
+          },
+          "scrollOffset": {
+            "x": 0,
+            "y": 324
+          },
+          "scrollTop": 40,
+          "scrollLeft": 40,
+          "bounds": {
+            "x": 538,
+            "y": 851,
+            "width": 316,
+            "height": 188
+          }
+        },
+        "originalError": "TimeoutError: page.waitForFunction: Timeout 10000ms exceeded."
+      },
+      "capturedViewport": {
+        "tag": "DIV",
+        "id": "",
+        "ref": "scrollViewport",
+        "role": null,
+        "tabindex": "0",
+        "text": "Scrollable conversation content.A row wider than the viewport, so this surface scrolls both ways.Row 2Row 3Row 4Row 5Row 6Row 7Row 8Row 9Row 10Row 11Row 12Row 13Row 14Row 15",
+        "focused": true,
+        "focusVisible": true,
+        "nativeFocusVisible": true,
+        "connected": true,
+        "owner": "pp-gwnh6f44sq",
+        "generation": "2",
+        "prototype": "brutalist-scroll-area-viewport",
+        "active": true,
+        "scrollTop": 40,
+        "scrollLeft": 40,
+        "scrollWidth": 532,
+        "scrollHeight": 528,
+        "clientWidth": 316,
+        "clientHeight": 188,
+        "maxLeft": 216,
+        "maxTop": 340,
+        "rect": {
+          "x": 538,
+          "y": 527,
+          "width": 316,
+          "height": 188,
+          "top": 527,
+          "right": 854,
+          "bottom": 715,
+          "left": 538
+        },
+        "direction": "ltr"
+      },
+      "traceRows": 60,
+      "dropped": 0,
+      "errors": [],
+      "kindCounts": {
+        "keydown:capture": 7,
+        "keydown:microtask": 7,
+        "keydown:raf": 7,
+        "keyup:capture": 7,
+        "keyup:microtask": 7,
+        "scroll": 18,
+        "keyup:raf": 7
+      },
+      "trustedKeyDowns": 7,
+      "trustedKeyUps": 7,
+      "anyDefaultPreventedObserved": false,
+      "instrumentedPreventDefaultCalls": 0,
+      "instrumentedJSOffsetSetterWrites": 0,
+      "scope": "Instrumented event path/offset setters only; doesnotexclude everypossible programmatic API, browser default-action suppression, background focus orotherCSS/nativebehavior. No productcause established."
+    },
+    "plainDOMControl": {
+      "prepared": "plain-native-scroll-control/prepared.json",
+      "execution": "not-run by this reviewer; rootmayexecute serially",
+      "scope": "Nativebrowser discriminator withsame316x188/532x528 geometry, no productruntime. Positiveornegative isnot productacceptance."
+    },
+    "pending": "Exactbc600 full203browser combination remainsrunning atparenthandoff; no result inferred. Currentcanonical/push completion separately ownedbyroot.",
+    "inputs": [
+      {
+        "path": "dropdown-demo-readiness/focused-candidate/receipt.json",
+        "sha256": "46eea23920da51a4016905d6e2eb1da73ceda2d01d2b75405c543256af244862",
+        "bytes": 1904
+      },
+      {
+        "path": "dropdown-demo-readiness/focused-candidate/vitest.json",
+        "sha256": "583e5b2322afa7b08b99734fd6ce5700157a18c5efa9f8e77c9dcca620f37752",
+        "bytes": 4232
+      },
+      {
+        "path": "dropdown-demo-readiness/focused-candidate/run.log",
+        "sha256": "7318593bac8c469e42a02d3d1cd75ce6fda49bbb7eb46673624d2858916fe3e9",
+        "bytes": 7306
+      },
+      {
+        "path": "dropdown-demo-readiness/commit/receipt.json",
+        "sha256": "119fb78bd2cf7d0d49c46bfdc3eb69d04d114e861167575feaab0beccea7325f",
+        "bytes": 550
+      },
+      {
+        "path": "dialog-resize-receipt/focused-candidate/receipt.json",
+        "sha256": "5aaf3e2560902a1537cf93284bc90d7ae3c4d5092fed958687b017136601d975",
+        "bytes": 1832
+      },
+      {
+        "path": "dialog-resize-receipt/focused-candidate/vitest.json",
+        "sha256": "a28a4a990124af5fcbc3743ab309106df8902bd1dcc9e6ea15204f145cd87cd2",
+        "bytes": 1063
+      },
+      {
+        "path": "dialog-resize-receipt/focused-candidate/run.log",
+        "sha256": "712260b4a642e0ed5a270bb0526be012ddb7a96ca6e14cdd610d1d7441fa5059",
+        "bytes": 8337
+      },
+      {
+        "path": "dialog-resize-receipt/commit/receipt.json",
+        "sha256": "26ff0e9a71e9102eea3964bb76eb779fdee91a208a80bce0aedfdbdc9a33f9be",
+        "bytes": 548
+      },
+      {
+        "path": "dialog-region-clock-probe/binding.json",
+        "sha256": "1a60469ec5123661de8ab3997138c6ca67927850c7d10154ed63468c960ee43a",
+        "bytes": 554
+      },
+      {
+        "path": "dialog-region-clock-probe/restore-receipt.json",
+        "sha256": "c9e3f11e0fab2c9ec695da03d74d810d836860eef56b639789a3c84fd195e599",
+        "bytes": 502
+      },
+      {
+        "path": "dialog-region-clock-probe/observed/receipt.json",
+        "sha256": "eef65a0910be246262b014f7619b002329d9efc88e1ae3ffb612d082fa6065f1",
+        "bytes": 1821
+      },
+      {
+        "path": "dialog-region-clock-probe/observed/evidence/dialog-region-failure.json",
+        "sha256": "835470439948f64acd7fd8ebb649d5282e3f118973d0f98eff849e8372867351",
+        "bytes": 30987
+      },
+      {
+        "path": "controls-predicate-probe/observed/evidence/dropdown-ready-failure.json",
+        "sha256": "3861f3a6e142074284d2558e8462d93839e40bcbc8d01d53006844a91470eca6",
+        "bytes": 11767
+      },
+      {
+        "path": "controls-predicate-probe/observed/evidence/scroll-top-failure.json",
+        "sha256": "3ccb0efcc5d7b7478180772bcfdd62964eb2ecd63291e94d8bc099c96b866c52",
+        "bytes": 6477
+      },
+      {
+        "path": "scroll-dialog-timing-probe/observed/evidence/scroll-top-failure.json",
+        "sha256": "c450790dbec0b4e4cbb01b2af7fb9962d954a89b9bbe5765cbcfdd17d5b22b49",
+        "bytes": 39519
+      },
+      {
+        "path": "scroll-dialog-timing-probe/restore-receipt.json",
+        "sha256": "24d987936f1bcfeabc6d27aea71116f9144c65d731a14ddc7f7d30e9e1bea1c1",
+        "bytes": 271
+      }
+    ]
+  },
+  "retainedGaps": [
+    "Current203ScrollArrowDownTop10s originalfailure; no provenproductioncause/timeoutchange.",
+    "Search/Docsoriginaldeadlinefailuresretained,normalutilityV2notrootcause.",
+    "General78classifications,Node147fourCheckboxGroupfailures,Inputphysicaltargetunsupported,CLIownerhandoffunresolved.",
+    "Noformalapproval/wholeCacceptance/merge."
+  ],
+  "packetAssembledAt": "2026-10-22T14:08:21.201583+00:00",
+  "canonical": {
+    "sourceHead": "bc600c5d211c28647ae5c91601e1a374088fc1c9",
+    "sourceTree": "5541cbe423f6c64ea09f64057077cec649049e5d",
+    "runId": 39788572923,
+    "status": "in_progress",
+    "conclusion": null,
+    "jobs": {
+      "total": 21,
+      "statusCounts": {
+        "completed": 14,
+        "in_progress": 7
+      },
+      "terminalConclusions": {
+        "success": 13,
+        "failure": 1
+      },
+      "paginationComplete": true,
+      "materializedOnly": true
+    },
+    "observedFrom": "2026-10-22T13:56:43.191009+00:00",
+    "observedUntil": "2026-10-22T13:58:22.152209+00:00",
+    "snapshotSHA256": "b59282ebd62a41df2edbfe8110f1758b8999796ca6d0671c2776c9c1a1e21078",
+    "finalAdmission": false,
+    "boundary": "Non-atomicrealGHsnapshot ofall38workflows+jobs/artifacts. Jobsetcanmaterializeaggregate later; statusisfrozenatcutoff, notfuture/latestterminaladmission. All105checks retainedinsnapshot, notallgreen."
+  },
+  "finalAdmission": false,
+  "selectedRawInputs": 221,
+  "referenceOnlyInputs": 46,
+  "derivedInputs": 121,
+  "ZIPMembers": 222,
+  "selectedPNGFiles": 7,
+  "archive": {
+    "name": "evidence.zip",
+    "bytes": 2061974,
+    "sha256": "880f6c219e862f3ad90ae66ca56e9c2556b2d237884ed654f6dc8069d77a37bf"
+  },
+  "publicMapSHA256": "085293ae71e8aeec614138b656daf44a9a73b4dbaf47bb7e4af4cd57590483e7"
+}

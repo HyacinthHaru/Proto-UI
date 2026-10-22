@@ -1,0 +1,55 @@
+{
+  "algorithm": "SHA-256",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "b9eca0bc7bbb9decf0f1d68ab20bc03d0536d8e79fb353dd8d3bae885095c4ef",
+      "bytes": 8251
+    },
+    {
+      "path": "evidence.zip",
+      "sha256": "880f6c219e862f3ad90ae66ca56e9c2556b2d237884ed654f6dc8069d77a37bf",
+      "bytes": 2061974
+    },
+    {
+      "path": "images/brutalist-wc-family-narrow-focus-ring.png",
+      "sha256": "03055419f98597c1dae3dc5b3bb3f2d74422d78e6312cb2fc90268f6e80c89d3",
+      "bytes": 12449
+    },
+    {
+      "path": "images/dialog-region-failure.png",
+      "sha256": "6f403729bd653a413206388d53674f2b84ca2fc6fa7e5847809ae3cd8827ca49",
+      "bytes": 108713
+    },
+    {
+      "path": "images/docs-brutalist-wc-2048-geometry.png",
+      "sha256": "20824187f704c9ce77bc26032e2b2e59894c53f6adc5fea5c130bfda82f12b90",
+      "bytes": 134673
+    },
+    {
+      "path": "images/dropdown-ready-failure.png",
+      "sha256": "95d620763c7e03a6b354f7b3d17dbfe774242e267ef9c873c4243b2a5eb240c1",
+      "bytes": 158642
+    },
+    {
+      "path": "images/scroll-top-failure.png",
+      "sha256": "5fb10443fad6777e5e7e0c8dcc2b3db85d5e2bca40db9b602f661f103a4dcd8d",
+      "bytes": 176345
+    },
+    {
+      "path": "images/tabs-query-failure.png",
+      "sha256": "822650d39412ee8ed96fb6fde419ad7323836a8fcb5fd15b7ba4dc162a04135e",
+      "bytes": 112389
+    },
+    {
+      "path": "public-map.json",
+      "sha256": "085293ae71e8aeec614138b656daf44a9a73b4dbaf47bb7e4af4cd57590483e7",
+      "bytes": 212934
+    },
+    {
+      "path": "summary.json",
+      "sha256": "568f652eef7c1622674d88a6b6df43d60a46ff731106125f493a8c4a32c97fb0",
+      "bytes": 37366
+    }
+  ]
+}
