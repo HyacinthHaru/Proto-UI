@@ -243,7 +243,7 @@ async function nativePopup(
       (error: unknown) => ({ error })
     );
   try {
-    if (action === 'modifier') await link.click({ modifiers: ['Control'] });
+    if (action === 'modifier') await link.click({ modifiers: ['ControlOrMeta'] });
     else if (action === 'middle') await link.click({ button: 'middle' });
     else {
       await link.focus();
@@ -886,7 +886,7 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
           anchor.addEventListener('click', (event) => event.preventDefault(), { once: true })
         );
         const count = context.pages().length;
-        await control.click({ modifiers: ['Control'] });
+        await control.click({ modifiers: ['ControlOrMeta'] });
         const cancelled = await saveNativeTrace(controlPage, 'plain-native-negative-control');
         expect(cancelled.filter((event) => event.type === 'click').at(-1)).toMatchObject({
           trusted: true,
