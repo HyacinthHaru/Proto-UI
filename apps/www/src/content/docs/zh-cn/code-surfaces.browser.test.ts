@@ -223,7 +223,10 @@ async function expectCopyControls(page: Page, codeExample = false, ecPage: Page 
       const buttonRect = element.getBoundingClientRect();
       const iconRect = icon.getBoundingClientRect();
       const radius = document.createElement('div');
-      radius.style.borderRadius = style.getPropertyValue('--pui-radius-md');
+      const compact = Boolean(element.closest('[data-code-example]'));
+      radius.style.borderRadius = style.getPropertyValue(
+        compact ? '--pui-radius-md' : '--pui-radius-2xl'
+      );
       element.parentElement!.append(radius);
       const expectedRadius = getComputedStyle(radius).borderRadius;
       radius.remove();
@@ -242,15 +245,15 @@ async function expectCopyControls(page: Page, codeExample = false, ecPage: Page 
         shadow: style.boxShadow,
       };
     });
-    // Existing controls retain fixed 02cad611 icon size-9 and 18px glyphs.
+    // Ordinary controls use the public Rhea icon size-8 and 18px glyphs.
     // CodeExample explicitly opts into Proto icon-compact: the Blocks
     // toolbar size-7 consumer geometry, not upstream icon-sm.
     const inCodeExample = await control.evaluate((node) => Boolean(node.closest('[data-code-example]')));
-    expect([facts.width, facts.height, ...facts.glyph]).toEqual(inCodeExample ? ['28px', '28px', '16px', '16px'] : ['36px', '36px', '18px', '18px']);
+    expect([facts.width, facts.height, ...facts.glyph]).toEqual(inCodeExample ? ['28px', '28px', '16px', '16px'] : ['32px', '32px', '18px', '18px']);
     expect(facts.radius).toBe(facts.expectedRadius);
     expect(facts.opacity).toBe('1');
-    expect(facts.tokens).toContain('rounded-md');
-    expect(facts.tokens).toContain(inCodeExample ? 'size-7' : 'size-9');
+    expect(facts.tokens).toContain(inCodeExample ? 'rounded-md' : 'rounded-[var(--pui-radius-2xl)]');
+    expect(facts.tokens).toContain(inCodeExample ? 'size-7' : 'size-8');
     expect(Math.max(...facts.center)).toBeLessThanOrEqual(1);
     await page.keyboard.press('Tab');
     await control.focus();
@@ -265,7 +268,26 @@ async function expectCopyControls(page: Page, codeExample = false, ecPage: Page 
     expect(focused.focused).toBe(true);
     expect(focused.shadow).not.toBe(facts.shadow);
   }
-  const ecBackground = await ec.evaluate((element) => getComputedStyle(element).backgroundColor);
+  const ecPaint = await ec.evaluate((element) => {
+    const expected = document.createElement('div');
+    // Fixed Rhea outline is background-colored in light and transparent in dark.
+    expected.style.backgroundColor =
+      document.documentElement.dataset.theme === 'dark'
+        ? 'transparent'
+        : 'var(--pui-background)';
+    element.append(expected);
+    const facts = {
+      actual: getComputedStyle(element).backgroundColor,
+      expected: getComputedStyle(expected).backgroundColor,
+    };
+    expected.remove();
+    return facts;
+  });
+  await expect.poll(
+    () => ec.evaluate((element) => getComputedStyle(element).backgroundColor),
+    { timeout: 2_000 }
+  ).toBe(ecPaint.expected);
+  const ecBackground = ecPaint.expected;
   const previewBackground = await preview.evaluate((element) => getComputedStyle(element).backgroundColor);
   if (codeExample) {
     // CodeExample intentionally follows upstream docs' ghost Copy. Ordinary
@@ -276,7 +298,7 @@ async function expectCopyControls(page: Page, codeExample = false, ecPage: Page 
     expect(await preview.evaluate((element) =>
       element.closest('[data-site-copy]')?.querySelector('[data-demo-ref="copy-backplate"]') !== null
     )).toBe(false);
-    expect(ecBackground).not.toBe('rgba(0, 0, 0, 0)');
+    // Outline remains independently source-bound above; dark Rhea is also transparent.
   } else {
     expect(await preview.evaluate((element) => Boolean(element.closest('[data-code-example]')))).toBe(false);
     expect(previewBackground).toBe(ecBackground);

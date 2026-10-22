@@ -62,6 +62,11 @@ async function facts(button: Locator) {
       userSelect: style.userSelect,
       webkitUserSelect: style.getPropertyValue('-webkit-user-select'),
       boxSizing: style.boxSizing,
+      paddingLeft: style.paddingLeft,
+      paddingRight: style.paddingRight,
+      borderRadius: style.borderRadius,
+      background: style.backgroundColor,
+      color: style.color,
       paddingTop: style.paddingTop,
       paddingBottom: style.paddingBottom,
       borderTop: style.borderTopWidth,
@@ -216,6 +221,47 @@ describe.sequential('Base Button selection and family-owned homepage geometry', 
             expect(native.role).toBeNull();
             expect(painted.height).toBe(family === 'shadcn' ? 36 : 40);
             expect(painted.userSelect).toBe('none');
+            if (family === 'shadcn') {
+              expect(painted.borderRadius).toBe('26px');
+              expect(painted.paddingLeft).toBe('12px');
+              expect(painted.paddingRight).toBe('12px');
+              const text = await facts(
+                anchor.locator('[data-projection-prototype="shadcn-text-root"]')
+              );
+              action.text = text;
+              expect(text.fontSize).toBe('14px');
+              expect(text.lineHeight).toBe('20px');
+              const expectedPaint = await body.evaluate(
+                (node, emphasis) => {
+                  const probe = document.createElement('span');
+                  probe.style.backgroundColor = `var(--pui-${emphasis})`;
+                  probe.style.color = `var(--pui-${emphasis}-foreground)`;
+                  node.append(probe);
+                  const style = getComputedStyle(probe);
+                  const expected = { background: style.backgroundColor, color: style.color };
+                  probe.remove();
+                  return expected;
+                },
+                index === 0 ? 'primary' : 'secondary'
+              );
+              action.expectedPaint = expectedPaint;
+              await expect
+                .poll(async () => (await facts(body)).background, { timeout: 2000 })
+                .toBe(expectedPaint.background);
+              await expect
+                .poll(
+                  async () =>
+                    (await facts(anchor.locator('[data-projection-prototype="shadcn-text-root"]')))
+                      .color,
+                  { timeout: 2000 }
+                )
+                .toBe(expectedPaint.color);
+              action.settledPaint = await facts(body);
+              action.settledText = await facts(
+                anchor.locator('[data-projection-prototype="shadcn-text-root"]')
+              );
+              expect(await anchor.locator('svg').count()).toBe(0);
+            }
             await anchor.scrollIntoViewIfNeeded();
             await page.evaluate(() => getSelection()?.removeAllRanges());
             const start = await textPoint(anchor),
@@ -329,8 +375,15 @@ describe.sequential('Base Button selection and family-owned homepage geometry', 
           expect(normal.userSelect).toBe('none');
           expect(normal.inlineHeight).toBe('');
           expect(normal.inlineMinHeight).toBe('');
-          expect(normal.minHeight).toBe(family === 'shadcn' ? '36px' : '40px');
-          expect(normal.height).toBe(family === 'shadcn' ? 36 : 40);
+          expect(normal.minHeight).toBe(family === 'shadcn' ? '32px' : '40px');
+          expect(normal.height).toBe(family === 'shadcn' ? 32 : 40);
+          if (family === 'shadcn') {
+            expect(normal.borderRadius).toBe('18px');
+            expect(normal.paddingLeft).toBe('12px');
+            expect(normal.paddingRight).toBe('12px');
+            expect(normal.fontSize).toBe('14px');
+            expect(normal.lineHeight).toBe('20px');
+          }
           expect(normal.whiteSpace).toBe('normal');
           // Actual native drag initiated inside the command label, not a scripted Range.
           await page.evaluate(() => getSelection()?.removeAllRanges());
@@ -579,6 +632,7 @@ describe.sequential('Base Button selection and family-owned homepage geometry', 
           const enlarged = await facts(reset);
           record.enlarged = { ...enlarged, textScale: 200, browserZoomVerified: false };
           await capture('text200');
+          expect(enlarged.height).toBe(family === 'shadcn' ? 64 : 80);
           expect(enlarged.height).toBeGreaterThan(normal.height);
           expect(enlarged.height).toBeGreaterThanOrEqual(parseFloat(enlarged.lineHeight));
           expect(enlarged.scrollWidth).toBeLessThanOrEqual(enlarged.clientWidth + 1);

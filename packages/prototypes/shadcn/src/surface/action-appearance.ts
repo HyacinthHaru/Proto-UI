@@ -1,7 +1,9 @@
-import type { SurfaceRootProps } from '@proto.ui/prototypes-base/surface';
-import type { TextRootProps } from '@proto.ui/prototypes-base/text';
+import type { ShadcnSurfaceRootProps } from './root.proto';
+import type { ShadcnButtonStyleProfile } from '../button/types';
+import type { ShadcnTextRootProps } from '../text/root.proto';
 
 export interface ShadcnActionAppearanceOptions {
+  styleProfile?: ShadcnButtonStyleProfile;
   emphasis?: 'primary' | 'secondary' | 'minimal';
   hovered?: boolean;
   pressed?: boolean;
@@ -14,17 +16,19 @@ export interface ShadcnActionAppearanceOptions {
  * compiled dimensions rather than maintaining a website-specific height.
  */
 export function shadcnActionAppearance(options: ShadcnActionAppearanceOptions = {}): {
-  surface: SurfaceRootProps;
-  text: TextRootProps;
+  surface: ShadcnSurfaceRootProps;
+  text: ShadcnTextRootProps;
   layout: Readonly<Record<string, string>>;
 } {
+  const styleProfile = options.styleProfile ?? 'rhea';
   const emphasis = options.emphasis ?? 'primary';
   return {
     surface: {
+      actionProfile: styleProfile,
       variant:
-        emphasis === 'primary' ? 'solid' : emphasis === 'secondary' ? 'outline' : 'transparent',
-      radius: 'md',
-      border: emphasis === 'secondary' ? 'all' : 'none',
+        emphasis === 'primary' ? 'solid' : emphasis === 'secondary' ? 'secondary' : 'transparent',
+      radius: 'none',
+      border: 'none',
       elevation: 'none',
       hovered: options.hovered ?? false,
       pressed: options.pressed ?? false,
@@ -32,6 +36,7 @@ export function shadcnActionAppearance(options: ShadcnActionAppearanceOptions = 
       current: false,
     },
     text: {
+      actionProfile: styleProfile,
       size: 'sm',
       tone: 'inherit',
       weight: 'medium',
@@ -44,9 +49,9 @@ export function shadcnActionAppearance(options: ShadcnActionAppearanceOptions = 
       alignItems: 'center',
       justifyContent: 'center',
       boxSizing: 'border-box',
-      minHeight: '2.25rem',
-      padding: '0.25rem 1rem',
-      gap: '0.5rem',
+      minHeight: styleProfile === 'luma' ? '2.25rem' : '2rem',
+      padding: '0.25rem 0.75rem',
+      gap: '0.375rem',
       minWidth: '0',
       maxWidth: '100%',
       whiteSpace: 'normal',

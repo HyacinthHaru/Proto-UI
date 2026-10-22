@@ -146,10 +146,7 @@ async function unfocusedPaint(button: Locator) {
   return paint(button);
 }
 
-async function observeCopyPage(
-  page: Page,
-  errors: Array<{ kind: string; text: string }> = []
-) {
+async function observeCopyPage(page: Page, errors: Array<{ kind: string; text: string }> = []) {
   page.on('pageerror', (error) =>
     errors.push({ kind: 'pageerror', text: error.stack ?? error.message })
   );
@@ -484,7 +481,13 @@ describe.sequential('Copy commands: real consumer recipes across public runtimes
         const ecPage = await context.newPage();
         const errors = await observeCopyPage(page);
         await observeCopyPage(ecPage, errors);
-        const stage = { action: 'navigate', family, index: -1, theme: 'light', contentHost: 'react' };
+        const stage = {
+          action: 'navigate',
+          family,
+          index: -1,
+          theme: 'light',
+          contentHost: 'react',
+        };
         let observedRoot: Locator | null = null;
         let observedPage = page;
         try {
@@ -494,12 +497,19 @@ describe.sequential('Copy commands: real consumer recipes across public runtimes
           const example = page.locator('[data-code-example]').first();
           await example.locator('[data-code-example-tablist="host"]').waitFor();
           if (runtime === 'vue2') {
-            const pending = example.locator('[data-code-host-panel][data-code-host="vue2"]:visible');
+            const pending = example.locator(
+              '[data-code-host-panel][data-code-host="vue2"]:visible'
+            );
             await pending.waitFor();
             expect(await pending.locator('[data-code-example-wip]').count()).toBe(1);
-            expect(await pending.locator('pre, [data-site-copy], [data-code-example-command]').count()).toBe(0);
+            expect(
+              await pending.locator('pre, [data-site-copy], [data-code-example-command]').count()
+            ).toBe(0);
           }
-          await example.locator('[data-code-example-tablist="host"]').getByRole('tab', { name: 'React', exact: true }).click();
+          await example
+            .locator('[data-code-example-tablist="host"]')
+            .getByRole('tab', { name: 'React', exact: true })
+            .click();
           await page.waitForSelector('[data-code-panel-init="1"]:visible');
           // Docs has no family picker. This explicit consumer-input fixture uses
           // the same family markers as applySiteLibraryFamily; screenshots label it.
@@ -548,14 +558,16 @@ describe.sequential('Copy commands: real consumer recipes across public runtimes
                 theme
               );
               const baseline = await unfocusedPaint(button);
-              // EC retains fixed New York icon size-9. Only the explicit
+              // EC uses the direct Rhea icon size-8. Only the explicit
               // CodeExample consumer opts into Proto icon-compact (size-7),
               // mapping the pinned Blocks toolbar rather than upstream icon-sm.
-              const inCodeExample = await root.evaluate((node) => Boolean(node.closest('[data-code-example]')));
+              const inCodeExample = await root.evaluate((node) =>
+                Boolean(node.closest('[data-code-example]'))
+              );
               expect(inCodeExample).toBe(index === 1);
               const compact = family === 'shadcn' && inCodeExample;
               expect([baseline.width, baseline.height]).toEqual(
-                family === 'brutalist' ? [40, 40] : compact ? [28, 28] : [36, 36]
+                family === 'brutalist' ? [40, 40] : compact ? [28, 28] : [32, 32]
               );
               expect(baseline.glyph).toEqual(compact ? [16, 16] : [18, 18]);
               expect(Math.max(...baseline.center)).toBeLessThanOrEqual(1);
@@ -596,7 +608,7 @@ describe.sequential('Copy commands: real consumer recipes across public runtimes
                   .toEqual([]);
                 await evidence(page, root, `${runtime}-${family}-${index}-${theme}-pressed`, {
                   runtime,
-                contentHost: 'react',
+                  contentHost: 'react',
                   family,
                   theme,
                   baseline,

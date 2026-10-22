@@ -31,7 +31,7 @@ export function linkActionAppearance(
   const options = { ...facts, emphasis: emphasis === 'link' ? ('minimal' as const) : emphasis };
   return family === 'brutalist'
     ? brutalistActionAppearance(options)
-    : shadcnActionAppearance(options);
+    : shadcnActionAppearance({ ...options, styleProfile: 'luma' });
 }
 export function linkSurfaceProps(
   family: SiteLibraryFamily,

@@ -13,6 +13,37 @@ import {
 import { BRUTALIST_STYLE_TOKENS } from '../src/generated/brutalist-style-tokens';
 
 describe('proto style css renderer', () => {
+  it('projects only the named Rhea/Luma radii and secondary hover mix', () => {
+    for (const render of [renderProtoStyleTokenCss, renderProtoShadowStyleTokenCss]) {
+      const css = render([
+        'rounded-[var(--pui-radius-2xl)]',
+        'rounded-[var(--pui-radius-4xl)]',
+        'bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)]',
+      ]);
+      expect(css).toContain('border-radius: var(--pui-radius-2xl);');
+      expect(css).toContain('border-radius: var(--pui-radius-4xl);');
+      expect(css).toContain(
+        'background-color: color-mix(in oklch, var(--pui-secondary), var(--pui-foreground) 5%);'
+      );
+      expect(css).not.toContain('Unsupported Proto UI style tokens');
+      expect(render(['rounded-2xl'])).toContain('border-radius: 1rem;');
+      for (const token of [
+        'rounded-[var(--pui-radius-3xl)]',
+        'rounded-[var(--private-radius)]',
+        'rounded-[var(--pui-radius-2xl);color:red]',
+        'bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_6%)]',
+        'bg-[color-mix(in_srgb,var(--secondary),var(--foreground)_5%)]',
+        'bg-[color-mix(in_oklch,var(--primary),var(--foreground)_5%)]',
+        'bg-[var(--secondary)]',
+      ]) {
+        expect(render([token])).toContain('Unsupported Proto UI style tokens');
+      }
+    }
+    const theme = renderPrefixedThemeCss(':root { --radius: 0.625rem; }');
+    expect(theme).toContain('--pui-radius-2xl: calc(var(--pui-radius) + 8px);');
+    expect(theme).toContain('--pui-radius-4xl: calc(var(--pui-radius) + 16px);');
+  });
+
   it('renders the finite 3px corner token without admitting arbitrary radius CSS', () => {
     for (const render of [renderProtoStyleTokenCss, renderProtoShadowStyleTokenCss]) {
       for (const value of [3, 4, 6]) {

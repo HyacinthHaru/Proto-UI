@@ -133,9 +133,9 @@ export function loadConsumerStyles(
   return { styles, files, evidenceDir };
 }
 
-// Independent consumer oracle: P-SHADCN-BUTTON-NEW-YORK-PAINT and
-// shadcn-ui/ui 02cad61166c4c20edbc8a3f71bd720eed4c1f49b,
-// apps/v4/registry/new-york-v4/ui/button.tsx:7,11,23.
+// Independent direct Button Rhea consumer oracle: shadcn-ui/ui
+// 25af02b1b467fcd53b63e0c6d6d324c57c16ef18, apps/v4/registry/styles/style-rhea.css.
+// Compound command paint has a separate pin and is not changed by this oracle.
 // A removed non-paint marker (group/button) is not evidence of missing styles.
 export function assertDefaultButtonTokens(element, label) {
   if (!element) throw new Error(`${label}: Button host is missing`);
@@ -145,15 +145,18 @@ export function assertDefaultButtonTokens(element, label) {
     'shrink-0',
     'items-center',
     'justify-center',
-    'rounded-md',
+    'rounded-[var(--pui-radius-2xl)]',
     'text-sm',
     'font-medium',
     'bg-primary',
     'text-primary-foreground',
-    'h-9',
-    'gap-2',
-    'px-4',
-    'py-2',
+    'h-8',
+    'gap-1.5',
+    'px-3',
+    'leading-5',
+    'py-0',
+    'border',
+    'border-transparent',
     'whitespace-nowrap',
   ]) {
     if (!tokens.has(token))
@@ -177,13 +180,13 @@ export function assertStyledButton(element, label) {
     alignItems: 'center',
     justifyContent: 'center',
     boxSizing: 'border-box',
-    height: `${2.25 * rootFont}px`,
-    gap: `${0.5 * rootFont}px`,
+    height: `${2 * rootFont}px`,
+    gap: `${0.375 * rootFont}px`,
     // HappyDOM does not reliably expand padding-inline/block into physical
     // longhands. Check the installed logical declarations; browser tests retain
     // exact physical padding checks at the fixed root font.
-    paddingInline: `${rootFont}px`,
-    paddingBlock: `${0.5 * rootFont}px`,
+    paddingInline: `${0.75 * rootFont}px`,
+    paddingBlock: '0px',
   };
   for (const [property, value] of Object.entries(expected)) {
     // HappyDOM retains logical padding/gap in rem; compare exact unit equivalents.

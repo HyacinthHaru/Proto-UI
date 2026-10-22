@@ -5,6 +5,10 @@ status: draft
 since: 0.2.0-rc.0
 summary: Covers Shadcn Button's first-class reversible Base inheritance, current absence of Base-behavior reversals, direct entry, visual API, intentional asChild omission, and the centralized upstream compatibility boundary including pinned-baseline versus adopted-recipe evidence.
 cases:
+  - id: T-SHADCN-BUTTON-0001-CASE-RHEA-LUMA
+    title: named Rhea and Luma profiles preserve size, wrapping and compact boundaries
+    covers: [P-SHADCN-BUTTON-RHEA-LUMA-PROFILES]
+    expectation: named-rhea-and-luma-not-page-height-overrides
   - id: T-SHADCN-BUTTON-0001-CASE-ICON-COMPACT
     title: explicit compact icon size stays fixed with wrapping and restores existing defaults
     covers: [P-SHADCN-BUTTON-ICON-COMPACT, P-SHADCN-BUTTON-SIZE-PROP, P-SHADCN-BUTTON-WRAP-PROP]
@@ -26,7 +30,7 @@ cases:
       - P-SHADCN-BUTTON-WRAP-PROP
     expectation: shadcn-button-current-variant-size-and-removal-defaults
   - id: T-SHADCN-BUTTON-0001-CASE-CONSUMER-PAINT
-    title: current New York consumer oracles reject stale geometry and missing installed styles
+    title: current Rhea consumer oracles reject stale geometry and missing installed styles
     covers:
       - P-SHADCN-BUTTON-NEW-YORK-PAINT
     expectation: shadcn-button-consumer-checks-current-tokens-and-installed-css-without-obsolete-marker
@@ -59,6 +63,15 @@ cases:
       - P-SHADCN-BUTTON-AS-CHILD-OMISSION
     expectation: shadcn-button-does-not-overclaim-upstream-parity
 implementations:
+  - id: prototypes-shadcn-button-rhea-luma-profiles
+    kind: module-test
+    status: planned
+    path: packages/prototypes/shadcn/test/button.test.ts
+    required: true
+    consumesCases: [T-SHADCN-BUTTON-0001-CASE-RHEA-LUMA]
+    exercises: [P-SHADCN-BUTTON, P-BASE-BUTTON]
+    notes:
+      - Named profile/size/wrap projection and compact preservation; actual Web geometry remains separately required.
   - id: prototypes-shadcn-button-compact-size
     kind: module-test
     status: passing

@@ -31,7 +31,7 @@ for (const family of ['shadcn', 'brutalist'] as const) {
         expect(tokens).toContain('h-auto');
         expect(tokens).toContain('whitespace-normal');
         expect(tokens).not.toContain('whitespace-nowrap');
-        expect(tokens).toContain(family === 'brutalist' ? 'min-h-10' : 'min-h-9');
+        expect(tokens).toContain(family === 'brutalist' ? 'min-h-10' : 'min-h-8');
       }
       expect(Number(input('editor-text').rows)).toBe(4);
       expect(input('editor-text').getAttribute('aria-label')).toBe('Edit example text');
