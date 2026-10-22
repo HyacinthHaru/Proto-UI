@@ -747,7 +747,9 @@ describe.sequential('Brutalist control documentation browser regressions', () =>
         await page.waitForFunction(
           () =>
             document
-              .querySelector('[data-previewer-id] [role="tab"]:nth-of-type(2)')
+              .querySelector(
+                '[data-previewer-id] [data-projection-content] .pui-runtime-preview-surface[data-demo-ref="__website_runtime_preview_surface__"] [role="tab"]:nth-of-type(2)'
+              )
               ?.getAttribute('aria-selected') === 'true'
         );
 
