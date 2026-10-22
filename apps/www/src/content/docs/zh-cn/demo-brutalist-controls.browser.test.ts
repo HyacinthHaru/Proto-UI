@@ -670,45 +670,67 @@ async function buttonFills(
   page: Page,
   scope?: JSHandle<HTMLElement>
 ): Promise<Record<keyof typeof BUTTON_FILLS, ButtonFill>> {
-  return page.evaluate(
-    ({ fills, scopeRoot }) => {
-      const canvas = document.createElement('canvas');
-      canvas.width = 1;
-      canvas.height = 1;
-      const context = canvas.getContext('2d', { willReadFrequently: true });
-      if (!context) throw new Error('Canvas 2D context is required to resolve painted colours.');
+  const read = () =>
+    page.evaluate(
+      ({ fills, scopeRoot }) => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1;
+        canvas.height = 1;
+        const context = canvas.getContext('2d', { willReadFrequently: true });
+        if (!context) throw new Error('Canvas 2D context is required to resolve painted colours.');
 
-      const paint = (color: string): string => {
-        context.clearRect(0, 0, 1, 1);
-        context.fillStyle = '#000';
-        context.fillStyle = color;
-        context.fillRect(0, 0, 1, 1);
-        return Array.from(context.getImageData(0, 0, 1, 1).data).join(',');
-      };
-
-      const result: Record<string, unknown> = {};
-      for (const [ref, [backgroundVar, colorVar]] of Object.entries(fills)) {
-        const element = (scopeRoot ?? document).querySelector<HTMLElement>(
-          `${scopeRoot ? '' : '[data-previewer-id] '}[data-demo-ref="${ref}"]`
-        );
-        if (!element) throw new Error(`The Brutalist Button demo must render ${ref}.`);
-        const style = getComputedStyle(element);
-        result[ref] = {
-          background: paint(style.backgroundColor),
-          color: paint(style.color),
-          opacity: style.opacity,
-          variables: {
-            background: paint(style.getPropertyValue(backgroundVar).trim()),
-            color: paint(style.getPropertyValue(colorVar).trim()),
-          },
-          hovered: element.hasAttribute('data-hovered'),
-          pressed: element.hasAttribute('data-pressed'),
+        const paint = (color: string): string => {
+          context.clearRect(0, 0, 1, 1);
+          context.fillStyle = '#000';
+          context.fillStyle = color;
+          context.fillRect(0, 0, 1, 1);
+          return Array.from(context.getImageData(0, 0, 1, 1).data).join(',');
         };
-      }
-      return result as Record<string, ButtonFill>;
-    },
-    { fills: BUTTON_FILLS, scopeRoot: scope }
-  );
+
+        const result: Record<string, unknown> = {};
+        for (const [ref, [backgroundVar, colorVar]] of Object.entries(fills)) {
+          const element = (scopeRoot ?? document).querySelector<HTMLElement>(
+            `${scopeRoot ? '' : '[data-previewer-id] '}[data-demo-ref="${ref}"]`
+          );
+          if (!element) throw new Error(`The Brutalist Button demo must render ${ref}.`);
+          const style = getComputedStyle(element);
+          result[ref] = {
+            background: paint(style.backgroundColor),
+            color: paint(style.color),
+            opacity: style.opacity,
+            variables: {
+              background: paint(style.getPropertyValue(backgroundVar).trim()),
+              color: paint(style.getPropertyValue(colorVar).trim()),
+            },
+            hovered: element.hasAttribute('data-hovered'),
+            pressed: element.hasAttribute('data-pressed'),
+          };
+        }
+        return result as Record<string, ButtonFill>;
+      },
+      { fills: BUTTON_FILLS, scopeRoot: scope }
+    );
+
+  let result!: Awaited<ReturnType<typeof read>>;
+  await expect
+    .poll(
+      async () => {
+        result = await read();
+        return Object.entries(result).flatMap(([ref, fill]) =>
+          (['background', 'color'] as const)
+            .filter((property) => fill[property] !== fill.variables[property])
+            .map((property) => ({
+              ref,
+              property,
+              actual: fill[property],
+              expected: fill.variables[property],
+            }))
+        );
+      },
+      { timeout: 2000, interval: 20 }
+    )
+    .toEqual([]);
+  return result;
 }
 
 beforeAll(async () => {
