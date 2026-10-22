@@ -670,7 +670,17 @@ test('actual candidate task driver saves edits, restores a dirty draft, then sav
       locator: locate,
       async evaluateAll(callback: (nodes: Element[]) => unknown) {
         return callback(
-          ['controls', 'hover', 'preferences', 'editor', 'overlays', 'choices'].map((id) => {
+          [
+            'controls',
+            'hover',
+            'workspace-command',
+            'workspace-help',
+            'preferences',
+            'workspace-progress',
+            'editor',
+            'overlays',
+            'choices',
+          ].map((id) => {
             const el = previewWindow.document.createElement('div');
             el.setAttribute('data-gallery-demo', id);
             return el as unknown as Element;
@@ -951,6 +961,8 @@ test('native and Copy browser scopes have independent bounded jobs and small evi
     { name: 'native-links', suite: 'site-native-links' },
     { name: 'code-surfaces', suite: 'code-surfaces' },
     { name: 'code-surface-grammar', suite: 'code-surface-grammar' },
+    { name: 'docs-content-flow', suite: 'docs-content-flow' },
+    { name: 'homepage-button-contract', suite: 'homepage-button-contract' },
     { name: 'copy-commands', suite: 'site-copy-commands' },
     { name: 'runtime-box', suite: 'runtime-preview-surface', contract: 'runtime-preview-evidence' },
     { name: 'search-commands', suite: 'site-search-commands' },
