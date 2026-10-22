@@ -97,9 +97,7 @@ CLI 会按照自身精确版本安装所选 Adapter 与 Prototype package。使�
 
 可以直接通过 `npx` 调用 CLI，不需要全局安装：
 
-```bash
-npx @proto.ui/cli@latest --help
-```
+<StaticCodeBlock id="quick-start-cli-help" code={"npx @proto.ui/cli@latest --help"} title="终端" icon="terminal" lang="bash" copyLabel="复制 CLI 帮助命令" />
 
 显式写出 `@latest` 是为了让稳定 channel 策略一目了然。如果需要永久可复现的安装或 CI 流程，请改用 `@0.2.0`。
 
@@ -107,7 +105,7 @@ npx @proto.ui/cli@latest --help
 
 在应用根目录执行：
 
-<StaticCodeBlock code="npx @proto.ui/cli@latest init" title="终端" icon="terminal" lang="bash" copyLabel="复制初始化命令" />
+<StaticCodeBlock id="quick-start-init-command" code="npx @proto.ui/cli@latest init" title="终端" icon="terminal" lang="bash" copyLabel="复制初始化命令" />
 
 接受默认选项后，CLI 会创建本地 Proto UI workspace 与 Shadcn 样式预设：
 
@@ -126,23 +124,13 @@ npx @proto.ui/cli@latest --help
 
 从应用入口导入生成的样式表：
 
-```ts
-import './styles/proto-ui-style.css';
-```
+<StaticCodeBlock code={"import './styles/proto-ui-style.css';"} title="样式导入" icon="file-code" lang="typescript" copyLabel="复制 样式导入" />
 
 如果入口文件位于其他位置，请调整相对路径。应用未主动选择主题时，生成的 Shadcn theme 会跟随 `prefers-color-scheme`。在根元素设置 `data-theme="light"` / `data-theme="dark"`，或使用兼容的 `.light` / `.dark` class，可以覆盖系统偏好。
 
 如果应用没有使用 CSS named cascade layers，保留上面的单次 import 即可。如果应用使用了 named layers，请改为在一个 CSS 入口中、任何 reset、Proto UI 或 consumer layer 首次声明之前建立完整顺序：
 
-```css
-/* src/app.css */
-@layer theme, base, proto-ui, components, utilities;
-
-@import './reset.css' layer(base);
-@import './styles/proto-ui-style.css';
-@import './app-components.css' layer(components);
-@import './app-utilities.css' layer(utilities);
-```
+<StaticCodeBlock code={"/* src/app.css */\n@layer theme, base, proto-ui, components, utilities;\n\n@import './reset.css' layer(base);\n@import './styles/proto-ui-style.css';\n@import './app-components.css' layer(components);\n@import './app-utilities.css' layer(utilities);"} title="src/app.css" icon="file-code" lang="css" copyLabel="复制 src/app.css" />
 
 应用入口只需 import 一次 `app.css`，不要再分别导入这些 stylesheet。生成入口会把 theme 默认值放进 `theme` layer，因此更后的 named consumer layer 或 unlayered consumer CSS 声明的变量值仍然拥有优先权。完整关系是 `theme defaults < reset/base < proto-ui < explicit consumer layers`。使用 Tailwind 时，应保留它的 `theme < base < components < utilities` 顺序，并在最早的 layer order statement 中把 `proto-ui` 插入 base 之后、应用的 components 与 utilities layers 之前。
 
@@ -174,16 +162,11 @@ Named layer 的顺序会在首次出现时固定。生成的 `@layer theme, prot
 
 ## 按组件继续接入
 
-```bash
-npx @proto.ui/cli@latest add react shadcn-toggle
-npx @proto.ui/cli@latest add react shadcn-dialog
-```
+<StaticCodeBlock code={"npx @proto.ui/cli@latest add react shadcn-toggle\nnpx @proto.ui/cli@latest add react shadcn-dialog"} title="终端" icon="terminal" lang="bash" copyLabel="复制组件添加命令" />
 
 生成的 host 入口会持续累积导出，因此应用可以始终从同一路径导入：
 
-```tsx
-import { ShadcnButton, ShadcnDialogRoot, ShadcnToggle } from '../proto-ui/components/react';
-```
+<StaticCodeBlock code={"import { ShadcnButton, ShadcnDialogRoot, ShadcnToggle } from '../proto-ui/components/react';"} title="组件导入" icon="file-code" lang="tsx" copyLabel="复制 组件导入" />
 
 如果只想生成文件而不安装缺失 package，可添加 `--no-install`。CLI 会打印精确安装命令，但在补齐这些 dependency 前，生成入口无法完成构建。
 

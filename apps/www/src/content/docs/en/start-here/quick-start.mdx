@@ -98,9 +98,7 @@ The CLI installs the selected Adapter and Prototype packages at its own exact ve
 
 You can invoke the CLI with `npx`; a global installation is not required:
 
-```bash
-npx @proto.ui/cli@latest --help
-```
+<StaticCodeBlock id="quick-start-cli-help" code={"npx @proto.ui/cli@latest --help"} title="Terminal" icon="terminal" lang="bash" copyLabel="Copy CLI help command" />
 
 Using the explicit `@latest` tag makes the stable channel policy visible. For a permanently reproducible installation or CI workflow, replace it with `@0.2.0`.
 
@@ -108,7 +106,7 @@ Using the explicit `@latest` tag makes the stable channel policy visible. For a 
 
 From the application root, run:
 
-<StaticCodeBlock code="npx @proto.ui/cli@latest init" title="Terminal" icon="terminal" lang="bash" copyLabel="Copy initialization command" />
+<StaticCodeBlock id="quick-start-init-command" code="npx @proto.ui/cli@latest init" title="Terminal" icon="terminal" lang="bash" copyLabel="Copy initialization command" />
 
 Accepting the defaults creates the local Proto UI workspace and the Shadcn style preset:
 
@@ -127,23 +125,13 @@ For the 0.3 source candidate in PR #872, `--no-styles` disables generation. The 
 
 Import the generated stylesheet from the application entry:
 
-```ts
-import './styles/proto-ui-style.css';
-```
+<StaticCodeBlock code={"import './styles/proto-ui-style.css';"} title="Style import" icon="file-code" lang="typescript" copyLabel="Copy Style import" />
 
 Adjust the relative path if your entry file is elsewhere. When the application has not selected a theme, the generated Shadcn theme follows `prefers-color-scheme`. Set `data-theme="light"` / `data-theme="dark"` on the root element, or use the compatible `.light` / `.dark` classes, to override the system preference.
 
 If the application does not use named CSS cascade layers, keep the single import above. If it does, establish the complete order in one CSS entry before any reset, Proto UI, or consumer layer is first declared:
 
-```css
-/* src/app.css */
-@layer theme, base, proto-ui, components, utilities;
-
-@import './reset.css' layer(base);
-@import './styles/proto-ui-style.css';
-@import './app-components.css' layer(components);
-@import './app-utilities.css' layer(utilities);
-```
+<StaticCodeBlock code={"/* src/app.css */\n@layer theme, base, proto-ui, components, utilities;\n\n@import './reset.css' layer(base);\n@import './styles/proto-ui-style.css';\n@import './app-components.css' layer(components);\n@import './app-utilities.css' layer(utilities);"} title="src/app.css" icon="file-code" lang="css" copyLabel="Copy src/app.css" />
 
 Import `app.css` once from the application entry instead of importing those stylesheets separately. The generated entry places its theme defaults in the `theme` layer, so values declared by later named consumer layers—or by unlayered consumer CSS—remain authoritative. The complete relationship is `theme defaults < reset/base < proto-ui < explicit consumer layers`. For Tailwind, preserve its `theme < base < components < utilities` order while inserting `proto-ui` after `base` and before the application's component and utility layers in the earliest order statement.
 
@@ -175,16 +163,11 @@ Once this works, use the component documentation to connect business state and e
 
 ## Continue one component at a time
 
-```bash
-npx @proto.ui/cli@latest add react shadcn-toggle
-npx @proto.ui/cli@latest add react shadcn-dialog
-```
+<StaticCodeBlock code={"npx @proto.ui/cli@latest add react shadcn-toggle\nnpx @proto.ui/cli@latest add react shadcn-dialog"} title="Terminal" icon="terminal" lang="bash" copyLabel="Copy component add commands" />
 
 The generated host entry accumulates exports, so the application can keep importing from the same path:
 
-```tsx
-import { ShadcnButton, ShadcnDialogRoot, ShadcnToggle } from '../proto-ui/components/react';
-```
+<StaticCodeBlock code={"import { ShadcnButton, ShadcnDialogRoot, ShadcnToggle } from '../proto-ui/components/react';"} title="Component imports" icon="file-code" lang="tsx" copyLabel="Copy Component imports" />
 
 To generate without installing missing packages, add `--no-install`. The CLI will print exact install commands, but the generated entry will not build until those dependencies are present.
 

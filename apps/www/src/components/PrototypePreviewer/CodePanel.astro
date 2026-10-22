@@ -1,5 +1,5 @@
 ---
-import { codeFileIcon } from '../code-file-icon';
+import { codeFileIcon, type CodeFileIcon } from '../code-file-icon';
 import StaticLucideIcon from '../StaticLucideIcon.astro';
 import SiteCopyBootstrap from '../SiteCopyBootstrap.astro';
 import { resolveSiteLibraryFamily, siteControlTags } from '../site-library-family';
@@ -21,7 +21,8 @@ interface Props {
   collapsible?: boolean;
   copyLabel?: string;
   title?: string;
-  titleIcon?: 'terminal' | 'folder-tree';
+  titleIcon?: 'terminal' | 'folder-tree' | CodeFileIcon;
+  lineNumbers?: boolean;
   presentation?: 'docs';
   panelRole?: 'tabpanel' | 'region';
 }
@@ -38,6 +39,7 @@ const {
   copyLabel = 'Copy code',
   title,
   titleIcon,
+  lineNumbers = true,
   presentation,
   panelRole = 'tabpanel',
 } = Astro.props;
@@ -55,6 +57,7 @@ const highlighted = await highlightCode(code, lang);
   data-code-file-index={fileIndex}
   data-code-shell
   data-code-presentation={presentation}
+  data-code-line-numbers={String(lineNumbers)}
   data-code-collapsible={String(collapsible)}
   data-code-expanded={collapsible ? undefined : 'true'}
   data-site-code-surface={framed ? 'frame' : undefined}
@@ -191,5 +194,8 @@ const highlighted = await highlightCode(code, lang);
   }
   [data-code-presentation='docs'] [data-code-inner] .proto-previewer__code .line {
     padding-block: 0;
+  }
+  [data-code-line-numbers='false'] .proto-previewer__code .line::before {
+    display: none;
   }
 </style>

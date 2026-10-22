@@ -16,6 +16,7 @@ import {
 import { hasZeroTransparentTreeShadow } from './code-tree-shadow-evidence';
 
 const SOURCE_ROUTE = '/zh-cn/start-here/quick-start/';
+const EC_ROUTE = '/zh-cn/ui-libraries/base/collapsible/';
 const INSTALL_ROUTE = '/zh-cn/ui-libraries/shadcn/button/';
 interface CliInitFixture {
   cli: { version: string; sourceTreeHash: string };
@@ -216,27 +217,30 @@ describe.sequential('website passive code-surface grammar (#785)', () => {
           runtime
         );
         const page = await context.newPage();
+        const ecPage = await context.newPage();
         try {
+          await ecPage.goto(`${baseUrl}${EC_ROUTE}`, { waitUntil: 'domcontentloaded' });
+          await selectFixtureFamily(ecPage, family);
           await page.goto(`${baseUrl}${SOURCE_ROUTE}`, { waitUntil: 'domcontentloaded' });
           await selectFixtureFamily(page, family);
-          const terminal = page.locator('.expressive-code .frame.is-terminal').first();
-          const plain = page.locator('.expressive-code .frame:not(.is-terminal)').first();
+          const terminal = ecPage.locator('.expressive-code .frame.is-terminal').first();
+          const plain = ecPage.locator('.expressive-code .frame:not(.is-terminal)').first();
           const example = page.locator('[data-code-example]').first();
           // Content selection is independent from the surface/Copy renderer.
           await example.locator('[data-code-example-tablist="host"] [role="tab"]').filter({ hasText: /^React$/ }).click();
           const sourceNodes = await example.locator('pre').elementHandles();
           const exampleFrame = example.locator('[data-code-host-panel]:visible [data-code-file-browser]').first();
-          for (const root of [terminal, plain, exampleFrame]) await ready(root, runtime, family);
+          for (const root of [terminal, plain, exampleFrame]) { await root.page().bringToFront(); await ready(root, runtime, family); }
           let previousBackground = '';
           for (const theme of ['light', 'dark']) {
-            await page.evaluate((theme) => (document.documentElement.dataset.theme = theme), theme);
-            await page.waitForFunction(() =>
+            for (const surfacePage of [ecPage, page]) await surfacePage.evaluate((theme) => (document.documentElement.dataset.theme = theme), theme);
+            for (const surfacePage of [ecPage, page]) await surfacePage.waitForFunction(() =>
               [...document.querySelectorAll<HTMLElement>('[data-code-surface-view="ready"]')].every(
                 (root) => root.querySelector('.site-code-surface-paint')
               )
             );
             if (previousBackground) {
-              await page.waitForFunction(
+              await ecPage.waitForFunction(
                 ({ id, previous }) => {
                   const paint = document
                     .getElementById(id)
@@ -286,14 +290,15 @@ describe.sequential('website passive code-surface grammar (#785)', () => {
                 .evaluate((tab) => tab.getBoundingClientRect().height)
             ).toBeGreaterThanOrEqual(44);
             expect(
-              await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)
+              Math.max(...await Promise.all([ecPage, page].map((surfacePage) => surfacePage.evaluate(() => document.documentElement.scrollWidth - innerWidth))))
             ).toBeLessThanOrEqual(1);
-            await evidence(page, terminal, `${runtime}-${family}-${theme}-terminal`, {
+            await evidence(ecPage, terminal, `${runtime}-${family}-${theme}-terminal`, {
               familyInputFixture: true,
               facts,
               row,
             });
           }
+          await page.bringToFront();
           // Existing native tabs keep roving focus and source identity. This is
           // compatibility evidence, not a claim that they are already PUI Tabs.
           const hosts = example.locator('[data-code-example-tablist="host"] [role="tab"]');
@@ -328,9 +333,9 @@ describe.sequential('website passive code-surface grammar (#785)', () => {
           await selectFixtureFamily(page, family);
           await settled(exampleFrame, runtime, family, 'fixture-restore', family);
           expect((await appearance(exampleFrame)).surfaceCount).toBe(1);
-          await page.setViewportSize({ width: 320, height: 1000 });
+          for (const surfacePage of [ecPage, page]) await surfacePage.setViewportSize({ width: 320, height: 1000 });
           expect(
-            await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)
+            Math.max(...await Promise.all([ecPage, page].map((surfacePage) => surfacePage.evaluate(() => document.documentElement.scrollWidth - innerWidth))))
           ).toBeLessThanOrEqual(1);
           await evidence(page, example, `${runtime}-${family}-320-tabs`, {
             familyInputFixture: true,
@@ -612,6 +617,22 @@ for (const locale of ['en', 'zh-cn']) {
     const page = await context.newPage();
     try {
       await page.goto(`${baseUrl}/${locale}/start-here/quick-start/`);
+      expect(await page.locator('.expressive-code').count()).toBe(0);
+      for (const [id, command] of [
+        ['quick-start-cli-help', 'npx @proto.ui/cli@latest --help'],
+        ['quick-start-init-command', 'npx @proto.ui/cli@latest init'],
+      ]) {
+        const terminal = page.locator(`#${id}`);
+        expect(await terminal.getAttribute('data-code-presentation')).toBe('docs');
+        expect(await terminal.getAttribute('data-code-line-numbers')).toBe('false');
+        expect(await terminal.locator('code').getAttribute('data-raw-code')).toBe(command);
+        expect(await terminal.locator('.line').first().evaluate((node) => getComputedStyle(node, '::before').display)).toBe('none');
+        expect(await terminal.locator('pre').evaluate((node) => node.scrollWidth - node.clientWidth)).toBe(0);
+        const copy = terminal.locator('[data-copy-view="ready"] [data-demo-ref="copy-button"]');
+        await copy.click();
+        expect(await page.evaluate(() => (window as Window & { __initCopy?: string }).__initCopy)).toBe(command);
+        expect(await copy.evaluate((node) => [node.getBoundingClientRect().width, node.getBoundingClientRect().height])).toEqual([28, 28]);
+      }
       const output = page.locator('[data-cli-init-output]');
       expect(await output.getAttribute('data-cli-version')).toBe(cliInitOutput.cli.version);
       expect(await output.locator('[role="tree"], [role="treeitem"]').count()).toBe(0);
@@ -620,6 +641,8 @@ for (const locale of ['en', 'zh-cn']) {
         cliInitOutput.directory
       );
       expect(await directory.textContent()).not.toContain('package.json');
+      expect(await directory.getAttribute('data-code-line-numbers')).toBe('false');
+      expect(await directory.locator('.line').first().evaluate((node) => getComputedStyle(node, '::before').display)).toBe('none');
       const directoryScroll = await directory.locator('pre').evaluate((node) => {
         node.scrollLeft = node.scrollWidth;
         return { left: node.scrollLeft, maximum: node.scrollWidth - node.clientWidth };
@@ -660,6 +683,8 @@ for (const locale of ['en', 'zh-cn']) {
         expect(await detail.locator('summary').textContent()).toBe(file.path);
         await detail.locator('summary').click();
         expect(await detail.locator('code').getAttribute('data-raw-code')).toBe(file.content);
+        expect(await detail.locator('[data-code-shell]').getAttribute('data-code-line-numbers')).toBe('true');
+        expect(await detail.locator('.line').first().evaluate((node) => getComputedStyle(node, '::before').display)).toBe('inline-block');
         const copy = detail.locator('[data-copy-view="ready"] [data-demo-ref="copy-button"]');
         await copy.click();
         expect(

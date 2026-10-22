@@ -732,7 +732,7 @@ describe('quick-start first-frame continuity', () => {
                 )
               );
               await captureViewport(page, path.join(directory, `${prefix}-cli-init.png`));
-              const initCommand = page.locator('[data-code-presentation="docs"]').first();
+              const initCommand = page.locator('#quick-start-init-command');
               await initCommand.evaluate((node) => node.scrollIntoView({ block: 'center' }));
               await writeFile(
                 path.join(directory, `${prefix}-cli-init-command.json`),

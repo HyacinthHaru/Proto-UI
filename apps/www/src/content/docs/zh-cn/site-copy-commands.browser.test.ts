@@ -13,6 +13,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { launchBrowser, startServer, stopServer } from './browser-harness';
 
 const ROUTE = '/zh-cn/start-here/quick-start/';
+const EC_ROUTE = '/zh-cn/ui-libraries/base/collapsible/';
 let browser: Browser;
 let baseUrl: string;
 let sourceBinding: CopySourceBinding;
@@ -27,7 +28,7 @@ beforeAll(async () => {
   await mkdir(directory, { recursive: true });
   await writeFile(join(directory, 'source-binding.json'), JSON.stringify(sourceBinding, null, 2));
   expect(copySourceBindingIssues(sourceBinding, Boolean(process.env.CI))).toEqual([]);
-  baseUrl = await startServer(ROUTE);
+  baseUrl = await startServer([ROUTE, EC_ROUTE]);
   browser = await launchBrowser();
 }, 300_000);
 afterAll(async () => {
@@ -145,8 +146,10 @@ async function unfocusedPaint(button: Locator) {
   return paint(button);
 }
 
-async function observeCopyPage(page: Page) {
-  const errors: Array<{ kind: string; text: string }> = [];
+async function observeCopyPage(
+  page: Page,
+  errors: Array<{ kind: string; text: string }> = []
+) {
   page.on('pageerror', (error) =>
     errors.push({ kind: 'pageerror', text: error.stack ?? error.message })
   );
@@ -318,7 +321,7 @@ describe.sequential('Copy commands: real consumer recipes across public runtimes
     const page = await context.newPage();
     const errors = await observeCopyPage(page);
     try {
-      await page.goto(`${baseUrl}${ROUTE}`, { waitUntil: 'domcontentloaded' });
+      await page.goto(`${baseUrl}${EC_ROUTE}`, { waitUntil: 'domcontentloaded' });
       const root = page.locator('.expressive-code [data-site-copy]').first();
       await ready(root, 'wc', 'shadcn');
       const expected = await root.getAttribute('data-site-copy-text');
@@ -345,7 +348,7 @@ describe.sequential('Copy commands: real consumer recipes across public runtimes
     const page = await context.newPage();
     const errors = await observeCopyPage(page);
     try {
-      await page.goto(`${baseUrl}${ROUTE}`, { waitUntil: 'domcontentloaded' });
+      await page.goto(`${baseUrl}${EC_ROUTE}`, { waitUntil: 'domcontentloaded' });
       const source = page.locator('.expressive-code pre').first();
       expect((await source.textContent())?.trim()).toBeTruthy();
       const facts = await source.evaluate((element) => ({
@@ -478,9 +481,12 @@ describe.sequential('Copy commands: real consumer recipes across public runtimes
           });
         }, runtime);
         const page = await context.newPage();
+        const ecPage = await context.newPage();
         const errors = await observeCopyPage(page);
+        await observeCopyPage(ecPage, errors);
         const stage = { action: 'navigate', family, index: -1, theme: 'light', contentHost: 'react' };
         let observedRoot: Locator | null = null;
+        let observedPage = page;
         try {
           await page.goto(`${baseUrl}${ROUTE}`, { waitUntil: 'domcontentloaded' });
           // Source host availability is independent of the Copy renderer.
@@ -504,13 +510,25 @@ describe.sequential('Copy commands: real consumer recipes across public runtimes
           await panel.waitFor();
           const toggle = panel.locator('[data-code-toggle]');
           if (await toggle.isVisible()) await toggle.click();
+          // Quick Start now uses authored CodePanel blocks throughout. Retain
+          // real EC coverage on its own documentation page, without fake markup.
+          stage.action = 'navigate real EC consumer';
+          observedPage = ecPage;
+          await ecPage.goto(`${baseUrl}${EC_ROUTE}`, { waitUntil: 'domcontentloaded' });
+          stage.action = 'EC family input and ready';
+          await applyFamilyFixture(ecPage, family);
           const roots = [
-            page.locator('.expressive-code [data-site-copy]').first(),
+            ecPage.locator('.expressive-code [data-site-copy]').first(),
             panel.locator('[data-site-copy]'),
           ];
           for (const [index, root] of roots.entries()) {
+            // Clipboard fixtures, theme, pointer, keyboard, and evidence belong
+            // to the root's actual document, not necessarily Quick Start.
+            const page = root.page();
             stage.index = index;
             observedRoot = root;
+            observedPage = page;
+            await page.bringToFront();
             stage.action = 'ready';
             await ready(root, runtime, family);
             const button = root.locator('[data-demo-ref="copy-button"]');
@@ -684,13 +702,18 @@ describe.sequential('Copy commands: real consumer recipes across public runtimes
             );
             expect(await button.textContent()).toBe(name);
           }
-          expect(
-            await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)
-          ).toBeLessThanOrEqual(1);
-          expect(await page.locator('.expressive-code .copy button').count()).toBe(0);
+          for (const consumerPage of [ecPage, page]) {
+            stage.action = 'page overflow and legacy Copy';
+            observedRoot = null;
+            observedPage = consumerPage;
+            expect(
+              await consumerPage.evaluate(() => document.documentElement.scrollWidth - innerWidth)
+            ).toBeLessThanOrEqual(1);
+            expect(await consumerPage.locator('.expressive-code .copy button').count()).toBe(0);
+          }
         } catch (error) {
           await recordFailure(
-            page,
+            observedPage,
             observedRoot,
             `${runtime}-${family}-${stage.index}-${stage.theme}`,
             stage,

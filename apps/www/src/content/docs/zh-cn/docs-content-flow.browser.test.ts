@@ -50,16 +50,16 @@ type SelectFacts = {
 };
 
 type QuickStartFacts = {
-  paragraphToExpressiveCode: number;
-  expressiveCodeToParagraph: number;
+  paragraphToStandaloneCode: number;
+  standaloneCodeToParagraph: number;
   paragraphToCodeExample: number;
   codeExampleToParagraph: number;
   codeExampleStripToPanel: number;
   commandBeforeSource: boolean;
   independentCommandAndSource: boolean;
   hasFileTree: boolean;
-  expressivePreviousTag: string;
-  expressiveNextTag: string;
+  standalonePreviousTag: string;
+  standaloneNextTag: string;
   examplePreviousTag: string;
   exampleNextTag: string;
 };
@@ -164,7 +164,7 @@ async function readSelectFacts(page: Page): Promise<SelectFacts> {
 async function readQuickStartFacts(page: Page): Promise<QuickStartFacts> {
   await page.locator('[data-code-example]').waitFor({ state: 'visible' });
   await page.locator('[data-code-file-browser]:visible [data-code-example-tree][role="tree"]').waitFor();
-  await page.locator('.expressive-code').first().waitFor({ state: 'visible' });
+  await page.locator('[data-code-presentation="docs"]').first().waitFor({ state: 'visible' });
 
   return page.evaluate(() => {
     const renderedSibling = (
@@ -191,13 +191,13 @@ async function readQuickStartFacts(page: Page): Promise<QuickStartFacts> {
     };
 
     const flow = document.querySelector<HTMLElement>('[data-doc-flow]');
-    const expressiveCode = flow?.querySelector<HTMLElement>(':scope > .expressive-code');
+    const standaloneCode = flow?.querySelector<HTMLElement>(':scope > [data-code-presentation="docs"]');
     const codeExample = flow?.querySelector<HTMLElement>(':scope > [data-code-example]');
-    const expressivePrevious = expressiveCode
-      ? renderedSibling(expressiveCode, 'previousElementSibling')
+    const standalonePrevious = standaloneCode
+      ? renderedSibling(standaloneCode, 'previousElementSibling')
       : null;
-    const expressiveNext = expressiveCode
-      ? renderedSibling(expressiveCode, 'nextElementSibling')
+    const standaloneNext = standaloneCode
+      ? renderedSibling(standaloneCode, 'nextElementSibling')
       : null;
     const examplePrevious = codeExample
       ? renderedSibling(codeExample, 'previousElementSibling')
@@ -216,10 +216,10 @@ async function readQuickStartFacts(page: Page): Promise<QuickStartFacts> {
     if (
       !command || !source ||
       !flow ||
-      !expressiveCode ||
+      !standaloneCode ||
       !codeExample ||
-      !expressivePrevious ||
-      !expressiveNext ||
+      !standalonePrevious ||
+      !standaloneNext ||
       !examplePrevious ||
       !exampleNext ||
       !exampleStrip ||
@@ -232,19 +232,19 @@ async function readQuickStartFacts(page: Page): Promise<QuickStartFacts> {
       commandBeforeSource: command.getBoundingClientRect().bottom <= source.getBoundingClientRect().top,
       independentCommandAndSource: !command.contains(source) && !source.contains(command) && command.getAttribute('data-site-code-surface') === 'frame' && source.getAttribute('data-site-code-surface') === 'frame',
       hasFileTree: Boolean(source.querySelector('[data-code-example-tree][role="tree"]')),
-      paragraphToExpressiveCode:
-        expressiveCode.getBoundingClientRect().top -
-        expressivePrevious.getBoundingClientRect().bottom,
-      expressiveCodeToParagraph:
-        expressiveNext.getBoundingClientRect().top - expressiveCode.getBoundingClientRect().bottom,
+      paragraphToStandaloneCode:
+        standaloneCode.getBoundingClientRect().top -
+        standalonePrevious.getBoundingClientRect().bottom,
+      standaloneCodeToParagraph:
+        standaloneNext.getBoundingClientRect().top - standaloneCode.getBoundingClientRect().bottom,
       paragraphToCodeExample:
         codeExample.getBoundingClientRect().top - examplePrevious.getBoundingClientRect().bottom,
       codeExampleToParagraph:
         exampleNext.getBoundingClientRect().top - codeExample.getBoundingClientRect().bottom,
       codeExampleStripToPanel:
         examplePanel.getBoundingClientRect().top - exampleStrip.getBoundingClientRect().bottom,
-      expressivePreviousTag: expressivePrevious.tagName,
-      expressiveNextTag: expressiveNext.tagName,
+      standalonePreviousTag: standalonePrevious.tagName,
+      standaloneNextTag: standaloneNext.tagName,
       examplePreviousTag: examplePrevious.tagName,
       exampleNextTag: exampleNext.tagName,
     };
@@ -317,19 +317,19 @@ describe.sequential('documentation content-flow browser regression', () => {
           expect(quickStart.commandBeforeSource, `${label}/install before usage`).toBe(true);
           expect(quickStart.independentCommandAndSource, `${label}/separate install and source frames`).toBe(true);
           expect(quickStart.hasFileTree, `${label}/real file Tree`).toBe(true);
-          expect(quickStart.expressivePreviousTag, `${label}/code predecessor`).toBe('P');
-          expect(quickStart.expressiveNextTag, `${label}/code successor`).toBe('P');
+          expect(quickStart.standalonePreviousTag, `${label}/code predecessor`).toBe('P');
+          expect(quickStart.standaloneNextTag, `${label}/code successor`).toBe('P');
           expect(quickStart.examplePreviousTag, `${label}/example predecessor`).toBe('P');
           expect(quickStart.exampleNextTag, `${label}/example successor`).toBe('P');
           expectGap(
-            quickStart.paragraphToExpressiveCode,
+            quickStart.paragraphToStandaloneCode,
             ORDINARY_FLOW_GAP_PX,
-            `${label}/prose-expressive-code`
+            `${label}/prose-standalone-code`
           );
           expectGap(
-            quickStart.expressiveCodeToParagraph,
+            quickStart.standaloneCodeToParagraph,
             ORDINARY_FLOW_GAP_PX,
-            `${label}/expressive-code-prose`
+            `${label}/standalone-code-prose`
           );
           expectGap(
             quickStart.paragraphToCodeExample,
