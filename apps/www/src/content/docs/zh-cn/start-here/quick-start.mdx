@@ -3,6 +3,8 @@ title: '快速开始'
 description: '通过 npm latest 稳定版本初始化 Proto UI 0.2.0 并添加组件'
 ---
 
+import StaticCodeBlock from '@/components/StaticCodeBlock.astro';
+import CliInitOutput from '@/components/CliInitOutput.astro';
 import DocStageNotice from '@/components/DocStageNotice.astro';
 import CodeExample from '@/components/CodeExample.astro';
 import { Aside } from '@astrojs/starlight/components';
@@ -105,27 +107,11 @@ npx @proto.ui/cli@latest --help
 
 在应用根目录执行：
 
-```bash
-npx @proto.ui/cli@latest init
-```
+<StaticCodeBlock code="npx @proto.ui/cli@latest init" title="终端" icon="terminal" lang="bash" copyLabel="复制初始化命令" />
 
 接受默认选项后，CLI 会创建本地 Proto UI workspace 与 Shadcn 样式预设：
 
-```txt
-your-project/
-├── src/
-│   └── styles/
-│       ├── proto-ui-style.css
-│       ├── proto-ui-tokens.generated.css
-│       └── shadcn-theme.css
-├── proto-ui/
-│   ├── adapters/
-│   ├── prototypes/
-│   ├── components/
-│   └── config.json
-├── package.json
-└── ...
-```
+<CliInitOutput />
 
 - `proto-ui/config.json` 记录后续 CLI 命令读取的项目配置。
 - `proto-ui/components/` 保存应用需要导入的已生成 host 入口。

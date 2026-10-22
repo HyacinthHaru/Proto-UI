@@ -1,3 +1,8 @@
+import { lucideFileTextIcon } from '@proto.ui/prototypes-lucide/icons/file-text';
+import { lucideFileCogIcon } from '@proto.ui/prototypes-lucide/icons/file-cog';
+import { lucideFileBracesIcon } from '@proto.ui/prototypes-lucide/icons/file-braces';
+import { lucideFileCodeIcon } from '@proto.ui/prototypes-lucide/icons/file-code';
+import { codeFileIcon } from './code-file-icon';
 import { AdaptToWebComponent, setElementProps } from '@proto.ui/adapter-web-component';
 import * as shadcn from '@proto.ui/prototypes-shadcn/tree';
 import * as brutalist from '@proto.ui/prototypes-brutalist/tree';
@@ -71,7 +76,7 @@ export function enhanceCodeExampleTree(options: {
     const tag = `pui-code-example-${family}-tree-${part}`;
     if (!customElements.get(tag)) customElements.define(tag, AdaptToWebComponent(proto, { register: false }));
   }
-  for (const [direction, proto] of Object.entries({ down: lucideChevronDownIcon, right: lucideChevronRightIcon, file: lucideFileIcon, folder: lucideFolderIcon })) {
+  for (const [direction, proto] of Object.entries({ down: lucideChevronDownIcon, right: lucideChevronRightIcon, file: lucideFileIcon, 'file-code': lucideFileCodeIcon, 'file-braces': lucideFileBracesIcon, 'file-cog': lucideFileCogIcon, 'file-text': lucideFileTextIcon, folder: lucideFolderIcon })) {
     const tag = `pui-code-example-chevron-${direction}`;
     if (!customElements.get(tag)) customElements.define(tag, AdaptToWebComponent(proto, { register: false }));
   }
@@ -123,8 +128,9 @@ export function enhanceCodeExampleTree(options: {
         spacer.style.cssText = 'width:1rem;flex:none';
         item.append(spacer);
       }
-      const icon = doc.createElement(`pui-code-example-chevron-${node.fileIndex === undefined ? 'folder' : 'file'}`);
-      icon.dataset.codeTreeIcon = node.fileIndex === undefined ? 'folder' : 'file';
+      const iconKind = node.fileIndex === undefined ? 'folder' : codeFileIcon(node.key);
+      const icon = doc.createElement(`pui-code-example-chevron-${iconKind}`);
+      icon.dataset.codeTreeIcon = iconKind;
       icon.setAttribute('aria-hidden', 'true');
       setElementProps(icon, { size: 16, surfaceStyle: { flex: 'none', pointerEvents: 'none' } });
       item.append(icon);

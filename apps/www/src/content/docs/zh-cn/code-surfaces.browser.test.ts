@@ -192,7 +192,7 @@ async function expectSurfaces(page: Page): Promise<SurfaceFacts> {
 }
 
 async function expectCopyControls(page: Page, codeExample = false): Promise<void> {
-  const panel = page.locator('[data-code-shell]:visible').first();
+  const panel = page.locator(codeExample ? '[data-code-example] [data-code-shell]:visible' : '[data-code-shell]:visible').first();
   const toggle = panel.locator('[data-code-toggle]');
   if (await toggle.isVisible()) await toggle.click();
   const ec = page

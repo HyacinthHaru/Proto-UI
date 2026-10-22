@@ -3,6 +3,8 @@ title: 'Quick Start'
 description: 'Initialize Proto UI 0.2.0 and add a component from the stable npm latest release'
 ---
 
+import StaticCodeBlock from '@/components/StaticCodeBlock.astro';
+import CliInitOutput from '@/components/CliInitOutput.astro';
 import DocStageNotice from '@/components/DocStageNotice.astro';
 import CodeExample from '@/components/CodeExample.astro';
 import { Aside } from '@astrojs/starlight/components';
@@ -106,27 +108,11 @@ Using the explicit `@latest` tag makes the stable channel policy visible. For a 
 
 From the application root, run:
 
-```bash
-npx @proto.ui/cli@latest init
-```
+<StaticCodeBlock code="npx @proto.ui/cli@latest init" title="Terminal" icon="terminal" lang="bash" copyLabel="Copy initialization command" />
 
 Accepting the defaults creates the local Proto UI workspace and the Shadcn style preset:
 
-```txt
-your-project/
-├── src/
-│   └── styles/
-│       ├── proto-ui-style.css
-│       ├── proto-ui-tokens.generated.css
-│       └── shadcn-theme.css
-├── proto-ui/
-│   ├── adapters/
-│   ├── prototypes/
-│   ├── components/
-│   └── config.json
-├── package.json
-└── ...
-```
+<CliInitOutput />
 
 - `proto-ui/config.json` records the project configuration used by later CLI commands.
 - `proto-ui/components/` contains generated host entries that the application imports.

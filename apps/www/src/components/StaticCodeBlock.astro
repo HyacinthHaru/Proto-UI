@@ -1,0 +1,22 @@
+---
+import CodePanel, { type CodeLang } from './PrototypePreviewer/CodePanel.astro';
+interface Props {
+  code: string;
+  title: string;
+  lang?: CodeLang;
+  icon?: 'terminal' | 'folder-tree';
+  copyLabel: string;
+}
+const { code, title, lang = 'text', icon, copyLabel } = Astro.props;
+---
+
+<CodePanel
+  code={code}
+  lang={lang}
+  title={title}
+  titleIcon={icon}
+  copyLabel={copyLabel}
+  presentation="docs"
+  collapsible={false}
+  panelRole="region"
+/>

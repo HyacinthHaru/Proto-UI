@@ -1,4 +1,5 @@
 ---
+import { codeFileIcon } from '../code-file-icon';
 import StaticLucideIcon from '../StaticLucideIcon.astro';
 import SiteCopyBootstrap from '../SiteCopyBootstrap.astro';
 import { resolveSiteLibraryFamily, siteControlTags } from '../site-library-family';
@@ -20,10 +21,26 @@ interface Props {
   collapsible?: boolean;
   copyLabel?: string;
   title?: string;
+  titleIcon?: 'terminal' | 'folder-tree';
+  presentation?: 'docs';
   panelRole?: 'tabpanel' | 'region';
 }
 
-const { code, lang = 'tsx', id, labelledBy, hidden, fileIndex, framed = true, collapsible = true, copyLabel = 'Copy code', title, panelRole = 'tabpanel' } = Astro.props;
+const {
+  code,
+  lang = 'tsx',
+  id,
+  labelledBy,
+  hidden,
+  fileIndex,
+  framed = true,
+  collapsible = true,
+  copyLabel = 'Copy code',
+  title,
+  titleIcon,
+  presentation,
+  panelRole = 'tabpanel',
+} = Astro.props;
 const highlighted = await highlightCode(code, lang);
 ---
 
@@ -37,32 +54,61 @@ const highlighted = await highlightCode(code, lang);
   data-code-file-panel={labelledBy ? '' : undefined}
   data-code-file-index={fileIndex}
   data-code-shell
+  data-code-presentation={presentation}
   data-code-collapsible={String(collapsible)}
   data-code-expanded={collapsible ? undefined : 'true'}
   data-site-code-surface={framed ? 'frame' : undefined}
 >
-  {title && <figcaption class="code-panel__title" data-code-file-header>
-    <StaticLucideIcon name="file-code" size="1rem" />
-    <span data-code-file-title>{title}</span>
-    <div class="site-code-copy-header" hidden={collapsible} data-copy data-site-copy data-copy-label={copyLabel}></div>
-  </figcaption>}
-  <div class="group relative min-w-0 max-w-full min-h-12" data-code-inner data-code-expanded={collapsible ? undefined : 'true'}>
-    {!title && <div class="site-code-copy-overlay" hidden={collapsible} data-copy data-site-copy data-copy-label={copyLabel}></div>}
+  {
+    title && (
+      <figcaption class="code-panel__title" data-code-file-header>
+        <StaticLucideIcon name={titleIcon ?? codeFileIcon(title)} size="1rem" />
+        <span data-code-file-title>{title}</span>
+        <div
+          class="site-code-copy-header"
+          hidden={collapsible}
+          data-copy
+          data-site-copy
+          data-copy-label={copyLabel}
+        />
+      </figcaption>
+    )
+  }
+  <div
+    class="group relative min-w-0 max-w-full min-h-12"
+    data-code-inner
+    data-code-expanded={collapsible ? undefined : 'true'}
+  >
+    {
+      !title && (
+        <div
+          class="site-code-copy-overlay"
+          hidden={collapsible}
+          data-copy
+          data-site-copy
+          data-copy-label={copyLabel}
+        />
+      )
+    }
 
     <div class="min-w-0 max-w-full" data-code-content set:html={highlighted} />
 
-    {collapsible && <Button
-      data-site-button
-      data-site-control-family={siteFamily}
-      data-variant="outline"
-      data-size="sm"
-      class="absolute left-1/2 bottom-1/2 -translate-x-1/2 translate-y-1/2 z-10"
-      data-code-toggle
-      aria-expanded="false"
-      aria-label="展开代码"
-    >
-      View code
-    </Button>}
+    {
+      collapsible && (
+        <Button
+          data-site-button
+          data-site-control-family={siteFamily}
+          data-variant="outline"
+          data-size="sm"
+          class="absolute left-1/2 bottom-1/2 -translate-x-1/2 translate-y-1/2 z-10"
+          data-code-toggle
+          aria-expanded="false"
+          aria-label="展开代码"
+        >
+          View code
+        </Button>
+      )
+    }
   </div>
 </figure>
 
@@ -79,7 +125,16 @@ const highlighted = await highlightCode(code, lang);
 </script>
 
 <style is:global>
-  .code-panel__title { display: flex; align-items: center; min-height: 3rem; padding: 0.5rem 1rem; border-bottom: 1px solid var(--color-border); font-size: 0.875rem; gap: 0.5rem; overflow-wrap: anywhere; }
+  .code-panel__title {
+    display: flex;
+    align-items: center;
+    min-height: 3rem;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid var(--color-border);
+    font-size: 0.875rem;
+    gap: 0.5rem;
+    overflow-wrap: anywhere;
+  }
   /* Required source reserves a real column for Copy, outside the scroll viewport. */
   [data-code-collapsible='false']:not(:has([data-code-file-header])) [data-code-inner] {
     display: grid;
@@ -87,23 +142,54 @@ const highlighted = await highlightCode(code, lang);
     align-items: start;
     column-gap: 0.5rem;
   }
-  [data-code-collapsible='false'] [data-code-content] { grid-column: 1; grid-row: 1; }
+  [data-code-collapsible='false'] [data-code-content] {
+    grid-column: 1;
+    grid-row: 1;
+  }
   [data-code-collapsible='false'] .site-code-copy-overlay {
-    position: static; grid-column: 2; grid-row: 1; margin: 0;
+    position: static;
+    grid-column: 2;
+    grid-row: 1;
+    margin: 0;
   }
   [data-code-collapsible='false'] .proto-previewer__code {
-    max-height: none; padding-inline-end: 0;
+    max-height: none;
+    padding-inline-end: 0;
   }
-  .code-panel__title > [data-code-file-title] { min-width: 0; }
-  .site-code-copy-header { margin-inline-start: auto; flex: none; }
-  [data-code-file-header] + [data-code-inner] { padding-inline: 0; }
+  .code-panel__title > [data-code-file-title] {
+    min-width: 0;
+  }
+  .site-code-copy-header {
+    margin-inline-start: auto;
+    flex: none;
+  }
+  [data-code-file-header] + [data-code-inner] {
+    padding-inline: 0;
+  }
   [data-code-file-header] ~ [data-code-inner] .proto-previewer__code {
-    font-size: 0.875rem; line-height: 1.3125rem;
+    font-size: 0.875rem;
+    line-height: 1.3125rem;
   }
   [data-code-file-header] ~ [data-code-inner] .proto-previewer__code > code {
-    display: grid; min-width: max-content;
+    display: grid;
+    min-width: max-content;
   }
   [data-code-file-header] ~ [data-code-inner] .proto-previewer__code .line {
-    display: block; padding-block: 1px;
+    display: block;
+    padding-block: 1px;
+  }
+  [data-code-presentation='docs'] [data-code-file-header] {
+    min-height: 2.625rem;
+    padding-block: 0.625rem;
+  }
+  [data-code-presentation='docs'] [data-code-inner] {
+    padding: 0.875rem 1rem;
+  }
+  [data-code-presentation='docs'] .proto-previewer__code {
+    font-size: 0.875rem;
+    line-height: 1.53125rem;
+  }
+  [data-code-presentation='docs'] .proto-previewer__code .line {
+    padding-block: 0;
   }
 </style>

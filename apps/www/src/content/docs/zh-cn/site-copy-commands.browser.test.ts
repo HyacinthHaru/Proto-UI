@@ -500,7 +500,7 @@ describe.sequential('Copy commands: real consumer recipes across public runtimes
           stage.family = family;
           stage.action = 'family input and ready';
           await applyFamilyFixture(page, family);
-          const panel = page.locator('[data-code-shell]:visible').first();
+          const panel = example.locator('[data-code-shell]:visible').first();
           await panel.waitFor();
           const toggle = panel.locator('[data-code-toggle]');
           if (await toggle.isVisible()) await toggle.click();

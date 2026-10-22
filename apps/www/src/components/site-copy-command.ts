@@ -53,7 +53,7 @@ export function createCopyCommandDemo(
   isActive: () => boolean
 ): DemoSpec {
   const labels = copyLabels(root);
-  const codeExample = Boolean(root.closest('[data-code-example]'));
+  const codeExample = Boolean(root.closest('[data-code-example], [data-code-presentation="docs"]'));
   const buttonProps = {
     variant: family === 'brutalist' ? 'surface' : codeExample ? 'ghost' : 'outline',
     size: codeExample && family === 'shadcn' ? 'icon-compact' : 'icon',
@@ -234,7 +234,9 @@ export function initCopyCommand(root: HTMLElement, readText: () => string): Site
       async materialize(request) {
         const runtime = request.selection.runtimeId as RuntimeId;
         const family = request.selection.projectionFamilyId as SiteLibraryFamily;
-        const hasBackplate = family === 'shadcn' && !root.closest('[data-code-example]');
+        const hasBackplate =
+          family === 'shadcn' &&
+          !root.closest('[data-code-example], [data-code-presentation="docs"]');
         let candidate: MaterializedProjectionCandidate | null = null;
         const demo = createCopyCommandDemo(
           root,
@@ -422,4 +424,3 @@ export function initCopyCommand(root: HTMLElement, readText: () => string): Site
   handles.set(root, handle);
   return handle;
 }
-

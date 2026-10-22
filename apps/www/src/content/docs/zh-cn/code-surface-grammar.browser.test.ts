@@ -13,6 +13,7 @@ import {
   type CodeSurfaceGenerationFacts,
 } from './code-surface-evidence';
 
+import cliInitOutput from '../../../generated/cli-init.generated.json';
 import { hasZeroTransparentTreeShadow } from './code-tree-shadow-evidence';
 
 const SOURCE_ROUTE = '/zh-cn/start-here/quick-start/';
@@ -435,7 +436,7 @@ describe.sequential('CodeExample host coverage and upstream visual hierarchy', (
                   background: 'rgba(0, 0, 0, 0)', rowHeight: 32, radius: '0px', font: '14px', icon: 16,
                 });
                 expect(await tree.locator('[data-code-tree-icon="folder"]').count()).toBeGreaterThan(0);
-                expect(await tree.locator('[data-code-tree-icon="file"]').count()).toBeGreaterThan(0);
+                expect(await tree.locator('[data-code-tree-icon="file-code"]').count()).toBeGreaterThan(0);
                 const folder = tree.locator('[data-code-tree-kind="folder"]').first();
                 const firstChild = tree.locator('[data-code-tree-kind="file"]').first();
                 const folderBounds = await folder.boundingBox();
@@ -533,6 +534,11 @@ it('keeps every authored source reachable without JavaScript and does not fake a
     const example = page.locator('[data-code-example]');
     expect(await example.locator('[role="tree"], [role="treeitem"]').count()).toBe(0);
     expect(await example.locator('[data-code-host-panel]:visible').count()).toBe(7);
+    const generated = page.locator('[data-cli-generated-files] > details');
+    expect(await generated.count()).toBe(4);
+    await generated.first().locator('summary').click();
+    expect(await generated.first().locator('code').getAttribute('data-raw-code')).toBe(cliInitOutput.entries.find((entry) => entry.path === 'proto-ui/config.json')?.content);
+    expect(await generated.first().locator('code').isVisible()).toBe(true);
     expect(await example.locator('[data-code-file-panel]:visible').count()).toBe(4);
     const htmlLink = example.locator('[data-code-file-tabs] a').filter({ hasText: /^index.html$/ });
     await htmlLink.click();
@@ -578,3 +584,63 @@ it('keeps embedded file navigation identifiable in forced colors and enlarged te
     await evidence(page, example, 'code-example-embedded-forced-colors-text200', { forcedColors: true, textScalePercent: 200, browserZoomVerified: false });
   } finally { await context.close(); }
 }, 90_000);
+
+for (const locale of ['en', 'zh-cn']) {
+  it(`shows real build-generated init files with exact copy payloads and no fictional tree actions (${locale})`, async () => {
+    const context = await browser.newContext({ viewport: { width: 390, height: 1000 } });
+    await context.addInitScript(() => {
+      Object.defineProperty(navigator, 'clipboard', {
+        configurable: true,
+        value: {
+          writeText: async (text: string) => {
+            (window as Window & { __initCopy?: string }).__initCopy = text;
+          },
+        },
+      });
+    });
+    const page = await context.newPage();
+    try {
+      await page.goto(`${baseUrl}/${locale}/start-here/quick-start/`);
+      const output = page.locator('[data-cli-init-output]');
+      expect(await output.getAttribute('data-cli-version')).toBe(cliInitOutput.cli.version);
+      expect(await output.locator('[role="tree"], [role="treeitem"]').count()).toBe(0);
+      const directory = output.locator('[data-code-presentation="docs"]').first();
+      expect(await directory.locator('code').getAttribute('data-raw-code')).toBe(
+        cliInitOutput.directory
+      );
+      expect(await directory.textContent()).not.toContain('package.json');
+      const details = output.locator('[data-cli-generated-files] > details');
+      const files = cliInitOutput.entries.filter((entry) => entry.kind === 'file');
+      expect(await details.count()).toBe(files.length);
+      for (const [index, file] of files.entries()) {
+        const detail = details.nth(index);
+        expect(await detail.locator('summary').textContent()).toBe(file.path);
+        await detail.locator('summary').click();
+        expect(await detail.locator('code').getAttribute('data-raw-code')).toBe(file.content);
+        const copy = detail.locator('[data-copy-view="ready"] [data-demo-ref="copy-button"]');
+        await copy.click();
+        expect(
+          await page.evaluate(() => (window as Window & { __initCopy?: string }).__initCopy)
+        ).toBe(file.content);
+        expect(
+          await copy.evaluate((node) => ({
+            width: node.getBoundingClientRect().width,
+            height: node.getBoundingClientRect().height,
+          }))
+        ).toEqual({ width: 28, height: 28 });
+        expect(await detail.locator('[data-demo-ref="copy-backplate"]').count()).toBe(0);
+        await detail.locator('summary').click();
+      }
+      expect(
+        await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)
+      ).toBeLessThanOrEqual(1);
+      await evidence(page, output, `cli-init-${locale}-390`, {
+        cliVersion: cliInitOutput.cli.version,
+        sourceTreeHash: cliInitOutput.cli.sourceTreeHash,
+        files: files.map((file) => ({ path: file.path, sha256: file.sha256 })),
+      });
+    } finally {
+      await context.close();
+    }
+  }, 90_000);
+}

@@ -682,23 +682,55 @@ describe('quick-start first-frame continuity', () => {
               // or the full CodeExample browser acceptance matrix.
               const example = page.locator('[data-code-example]').first();
               await example.scrollIntoViewIfNeeded();
-              await example.locator('[data-code-example-tablist="host"] [role="tab"]').last().waitFor();
-              await example.locator(
-                '[data-code-host-panel]:visible [data-copy-view="ready"] [data-demo-ref="copy-button"]'
-              ).first().waitFor({ state: 'visible' });
+              await example
+                .locator('[data-code-example-tablist="host"] [role="tab"]')
+                .last()
+                .waitFor();
+              await example
+                .locator(
+                  '[data-code-host-panel]:visible [data-copy-view="ready"] [data-demo-ref="copy-button"]'
+                )
+                .first()
+                .waitFor({ state: 'visible' });
               const componentPrefix = `${prefix}-code-example`;
-              await writeFile(path.join(directory, `${componentPrefix}.json`), JSON.stringify({
-                ...source,
-                url: page.url(),
-                viewport: page.viewportSize(),
-                colorScheme: condition.colorScheme,
-                contentHost: 'react',
-                copyRuntime: runtime,
-                chromeRuntime: 'wc',
-                stage: 'additional-post-first-frame-component-diagnostic',
-                fullCodeExampleAcceptance: false,
-              }, null, 2));
+              await writeFile(
+                path.join(directory, `${componentPrefix}.json`),
+                JSON.stringify(
+                  {
+                    ...source,
+                    url: page.url(),
+                    viewport: page.viewportSize(),
+                    colorScheme: condition.colorScheme,
+                    contentHost: 'react',
+                    copyRuntime: runtime,
+                    chromeRuntime: 'wc',
+                    stage: 'additional-post-first-frame-component-diagnostic',
+                    fullCodeExampleAcceptance: false,
+                  },
+                  null,
+                  2
+                )
+              );
               await captureViewport(page, path.join(directory, `${componentPrefix}.png`));
+              const init = page.locator('[data-cli-init-output]');
+              await init.scrollIntoViewIfNeeded();
+              await writeFile(
+                path.join(directory, `${prefix}-cli-init.json`),
+                JSON.stringify(
+                  {
+                    ...source,
+                    url: page.url(),
+                    viewport: page.viewportSize(),
+                    colorScheme: condition.colorScheme,
+                    cliVersion: await init.getAttribute('data-cli-version'),
+                    stage: 'additional-cli-init-diagnostic',
+                    fullCodeExampleAcceptance: false,
+                  },
+                  null,
+                  2
+                )
+              );
+              await captureViewport(page, path.join(directory, `${prefix}-cli-init.png`));
             }
           } catch (error) {
             await captureFailure(page, prefix, error);

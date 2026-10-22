@@ -33,6 +33,8 @@ describe('CodeExample real file Tree', () => {
     projections.push(projection);
     await Promise.resolve();
     const tree = document.querySelector('[data-code-example-tree]')!;
+    expect(tree.querySelectorAll('[data-code-tree-icon="file-code"]')).toHaveLength(2);
+    expect(tree.querySelectorAll('[data-code-tree-icon="folder"]')).toHaveLength(1);
     expect(tree.getAttribute('role')).toBe('tree');
     expect([...tree.querySelectorAll('[role="treeitem"]')].map((item) => item.getAttribute('data-code-tree-path'))).toEqual(['src', 'src/main.ts', 'index.html']);
     expect(tree.querySelector('[data-code-tree-path="src"]')?.getAttribute('aria-expanded')).toBe('true');
