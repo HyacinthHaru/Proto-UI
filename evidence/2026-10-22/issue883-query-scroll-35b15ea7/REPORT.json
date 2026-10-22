@@ -1,0 +1,489 @@
+{
+  "createdAt": "2026-10-22T17:05:33.314826+00:00",
+  "mode": "human-assisted/current-user",
+  "head": "35b15ea78a72f4668b6a9b39c38dac668f5c18c0",
+  "tree": "ad39b563d20f1f5790f21b191c3dc4f7e12f50bc",
+  "main": "b928a56c6909835771fc2131503b4a7139db738c",
+  "commits": [
+    "a462bf9d85823f823582eac80aaf38203e716b07",
+    "b2c1fa84a1c165e756ad760a05cd9005218815bb",
+    "35b15ea78a72f4668b6a9b39c38dac668f5c18c0"
+  ],
+  "requestParaphrase": "Agent paraphrase: continue the authorized C-group work; bind Search readiness and Docs role browser getter/selector and Node timings to one original failure, diagnose local Scroll keyboard failure, preserve original assertions/deadlines and keyboard-owner controls, validate the exact candidate and report to maintainers.",
+  "sourceScope": "Five paths: four Search/Docs test-evidence paths and one Scroll browser fixture. No production Runtime/Adapter/prototype/spec/lifecycle/budget changes. Earlier C repairs and hover/prominent-tint registration remain intact.",
+  "finalLocal": {
+    "start": "2026-10-22T16:43:15.885460+00:00",
+    "end": "2026-10-22T16:53:37.977845+00:00",
+    "exit": 0,
+    "trackedFiles": 11376,
+    "sourceStable": true,
+    "cases": {
+      "numTotalTests": 203,
+      "numPassedTests": 203,
+      "numFailedTests": 0,
+      "numPendingTests": 0
+    },
+    "scope": "Nine complete original files, one worker, Node24.21.0/macOSarm64/Playwright1.58.2 Chromium145.0.7632.6. No case filters. Main-runner result is not whole-repository/default CI."
+  },
+  "historicalResults": [
+    "Private instrumented bc600 combination201/203, Scroll original10s red plus plain-native popup red; normal Docs controls30/30, no same-failure getter reproduction.",
+    "Native popup focused negative0pass1fail9filtered at original90s; cause unresolved. Later b2 localNative10 pass is not a retroactive fix.",
+    "First candidate types938files1error TS2353 sdkRoot, retained. Typed correction938/0errors/0warnings/14hints. Sampling correction focused1pass9filtered and same-source types938/0errors/0warnings/14hints before commit.",
+    "b2 clean203/203 retained as b2: subsequent review found it delayed geometry sampling until after completion; final35 restores the original measurement/expect timing before the fence.",
+    "Initial b2 publisher returned PublicationUnknown/exit1 after a real signed commit because hook formatting changed a TS union. Actual outcome reconciled, no repeated/amended commit; emitted JS and AST matched."
+  ],
+  "queryDiagnostic": {
+    "records": [
+      {
+        "run": "final-native203-b2c1fa84",
+        "path": "final-native203-b2c1fa84/evidence/search-commands/docs-call-timing-brutalist-1280.json",
+        "sha256": "6d23d5ada8ce8cc6b41d64ee2b52d89b76fdc5d3b23f48e8084b9ebdbc2456ab",
+        "source": {
+          "sha": "b2c1fa84a1c165e756ad760a05cd9005218815bb",
+          "dirty": false
+        },
+        "available": true,
+        "passed": true,
+        "nodeRows": 16,
+        "browserBatches": 1,
+        "errors": [],
+        "dropped": 0,
+        "transportComplete": false
+      },
+      {
+        "run": "final-native203-b2c1fa84",
+        "path": "final-native203-b2c1fa84/evidence/search-commands/docs-call-timing-brutalist-1440.json",
+        "sha256": "03738cd6990352b6f70c4904ac43e9282ca4d4d8142207e3404f411fdf598fa6",
+        "source": {
+          "sha": "b2c1fa84a1c165e756ad760a05cd9005218815bb",
+          "dirty": false
+        },
+        "available": true,
+        "passed": true,
+        "nodeRows": 16,
+        "browserBatches": 1,
+        "errors": [],
+        "dropped": 0,
+        "transportComplete": false
+      },
+      {
+        "run": "final-native203-b2c1fa84",
+        "path": "final-native203-b2c1fa84/evidence/search-commands/docs-call-timing-brutalist-2048.json",
+        "sha256": "1ed0e250cea508cccedfdbe56d1997ddc4a379e56258cf9740a609efe8ad8023",
+        "source": {
+          "sha": "b2c1fa84a1c165e756ad760a05cd9005218815bb",
+          "dirty": false
+        },
+        "available": true,
+        "passed": true,
+        "nodeRows": 16,
+        "browserBatches": 1,
+        "errors": [],
+        "dropped": 0,
+        "transportComplete": false
+      },
+      {
+        "run": "final-native203-b2c1fa84",
+        "path": "final-native203-b2c1fa84/evidence/search-commands/docs-call-timing-brutalist-320.json",
+        "sha256": "09a1f02dee1a15f294afe158c91cf3298af4fe20eac2e33fd95abd43ab1f432d",
+        "source": {
+          "sha": "b2c1fa84a1c165e756ad760a05cd9005218815bb",
+          "dirty": false
+        },
+        "available": true,
+        "passed": true,
+        "nodeRows": 16,
+        "browserBatches": 1,
+        "errors": [],
+        "dropped": 0,
+        "transportComplete": false
+      },
+      {
+        "run": "final-native203-b2c1fa84",
+        "path": "final-native203-b2c1fa84/evidence/search-commands/docs-call-timing-brutalist-390.json",
+        "sha256": "f6f86942a1ac19d67d0dd3809a457d2581d5314bd1a93a95fc6692843d7dbb9a",
+        "source": {
+          "sha": "b2c1fa84a1c165e756ad760a05cd9005218815bb",
+          "dirty": false
+        },
+        "available": true,
+        "passed": true,
+        "nodeRows": 16,
+        "browserBatches": 1,
+        "errors": [],
+        "dropped": 0,
+        "transportComplete": false
+      },
+      {
+        "run": "final-native203-b2c1fa84",
+        "path": "final-native203-b2c1fa84/evidence/search-commands/docs-call-timing-shadcn-1280.json",
+        "sha256": "e0dacd4fee473f812cee01a00111638baef222f88fb1ba53d95d5dd49c861f99",
+        "source": {
+          "sha": "b2c1fa84a1c165e756ad760a05cd9005218815bb",
+          "dirty": false
+        },
+        "available": true,
+        "passed": true,
+        "nodeRows": 16,
+        "browserBatches": 1,
+        "errors": [],
+        "dropped": 0,
+        "transportComplete": false
+      },
+      {
+        "run": "final-native203-b2c1fa84",
+        "path": "final-native203-b2c1fa84/evidence/search-commands/docs-call-timing-shadcn-1440.json",
+        "sha256": "290c333124d2439d678798203f92db576f8189ffc98b9a416e501846831e48e4",
+        "source": {
+          "sha": "b2c1fa84a1c165e756ad760a05cd9005218815bb",
+          "dirty": false
+        },
+        "available": true,
+        "passed": true,
+        "nodeRows": 16,
+        "browserBatches": 1,
+        "errors": [],
+        "dropped": 0,
+        "transportComplete": false
+      },
+      {
+        "run": "final-native203-b2c1fa84",
+        "path": "final-native203-b2c1fa84/evidence/search-commands/docs-call-timing-shadcn-2048.json",
+        "sha256": "acf4cd99be496a8ec67c67b495baf2d57f7314cd02696c7a1dcb582426c41985",
+        "source": {
+          "sha": "b2c1fa84a1c165e756ad760a05cd9005218815bb",
+          "dirty": false
+        },
+        "available": true,
+        "passed": true,
+        "nodeRows": 16,
+        "browserBatches": 1,
+        "errors": [],
+        "dropped": 0,
+        "transportComplete": false
+      },
+      {
+        "run": "final-native203-b2c1fa84",
+        "path": "final-native203-b2c1fa84/evidence/search-commands/docs-call-timing-shadcn-320.json",
+        "sha256": "d544dfd1bf97c272788406a31d039fa05affe33c1e005eedc9ebbde10c4d9b83",
+        "source": {
+          "sha": "b2c1fa84a1c165e756ad760a05cd9005218815bb",
+          "dirty": false
+        },
+        "available": true,
+        "passed": true,
+        "nodeRows": 16,
+        "browserBatches": 1,
+        "errors": [],
+        "dropped": 0,
+        "transportComplete": false
+      },
+      {
+        "run": "final-native203-b2c1fa84",
+        "path": "final-native203-b2c1fa84/evidence/search-commands/docs-call-timing-shadcn-390.json",
+        "sha256": "3f4a053ea02fc19575370f53547d692c3b876522e2b9c946c68aa6e69431ea18",
+        "source": {
+          "sha": "b2c1fa84a1c165e756ad760a05cd9005218815bb",
+          "dirty": false
+        },
+        "available": true,
+        "passed": true,
+        "nodeRows": 16,
+        "browserBatches": 1,
+        "errors": [],
+        "dropped": 0,
+        "transportComplete": false
+      },
+      {
+        "run": "final-native203-35b15ea7",
+        "path": "final-native203-35b15ea7/evidence/search-commands/docs-call-timing-brutalist-1280.json",
+        "sha256": "7e781f70a043fcb67f1accfe94ff606e7f25fc817a985ce3cf5d0b87eba85784",
+        "source": {
+          "sha": "35b15ea78a72f4668b6a9b39c38dac668f5c18c0",
+          "dirty": false
+        },
+        "available": true,
+        "passed": true,
+        "nodeRows": 16,
+        "browserBatches": 1,
+        "errors": [],
+        "dropped": 0,
+        "transportComplete": false
+      },
+      {
+        "run": "final-native203-35b15ea7",
+        "path": "final-native203-35b15ea7/evidence/search-commands/docs-call-timing-brutalist-1440.json",
+        "sha256": "4ea23c51f306823e1d84f745b08f0111194e0e9f8acf0359186d780d905c346e",
+        "source": {
+          "sha": "35b15ea78a72f4668b6a9b39c38dac668f5c18c0",
+          "dirty": false
+        },
+        "available": true,
+        "passed": true,
+        "nodeRows": 16,
+        "browserBatches": 1,
+        "errors": [],
+        "dropped": 0,
+        "transportComplete": false
+      },
+      {
+        "run": "final-native203-35b15ea7",
+        "path": "final-native203-35b15ea7/evidence/search-commands/docs-call-timing-brutalist-2048.json",
+        "sha256": "81f7db1c9ac8d860f74a20119731444f6e9cd5168d8c703c6d68b3a01e0fdbb0",
+        "source": {
+          "sha": "35b15ea78a72f4668b6a9b39c38dac668f5c18c0",
+          "dirty": false
+        },
+        "available": true,
+        "passed": true,
+        "nodeRows": 16,
+        "browserBatches": 1,
+        "errors": [],
+        "dropped": 0,
+        "transportComplete": false
+      },
+      {
+        "run": "final-native203-35b15ea7",
+        "path": "final-native203-35b15ea7/evidence/search-commands/docs-call-timing-brutalist-320.json",
+        "sha256": "82104a834167e14f1ed818abde37523619042ebddfea2b36567b43dbf1f6d215",
+        "source": {
+          "sha": "35b15ea78a72f4668b6a9b39c38dac668f5c18c0",
+          "dirty": false
+        },
+        "available": true,
+        "passed": true,
+        "nodeRows": 16,
+        "browserBatches": 1,
+        "errors": [],
+        "dropped": 0,
+        "transportComplete": false
+      },
+      {
+        "run": "final-native203-35b15ea7",
+        "path": "final-native203-35b15ea7/evidence/search-commands/docs-call-timing-brutalist-390.json",
+        "sha256": "4fd0742e88a5be800854dd156f7cce182638b61884f70124953b6374c0a4255b",
+        "source": {
+          "sha": "35b15ea78a72f4668b6a9b39c38dac668f5c18c0",
+          "dirty": false
+        },
+        "available": true,
+        "passed": true,
+        "nodeRows": 16,
+        "browserBatches": 1,
+        "errors": [],
+        "dropped": 0,
+        "transportComplete": false
+      },
+      {
+        "run": "final-native203-35b15ea7",
+        "path": "final-native203-35b15ea7/evidence/search-commands/docs-call-timing-shadcn-1280.json",
+        "sha256": "ca9815bc04cfdeba3cfd426fe0726e12524e2938622cb99fb21da018ff89a3b2",
+        "source": {
+          "sha": "35b15ea78a72f4668b6a9b39c38dac668f5c18c0",
+          "dirty": false
+        },
+        "available": true,
+        "passed": true,
+        "nodeRows": 16,
+        "browserBatches": 1,
+        "errors": [],
+        "dropped": 0,
+        "transportComplete": false
+      },
+      {
+        "run": "final-native203-35b15ea7",
+        "path": "final-native203-35b15ea7/evidence/search-commands/docs-call-timing-shadcn-1440.json",
+        "sha256": "5db432dc1bd4fafe680275ff7a6335aa6807614070a4d5fc86b213ba1954ae4e",
+        "source": {
+          "sha": "35b15ea78a72f4668b6a9b39c38dac668f5c18c0",
+          "dirty": false
+        },
+        "available": true,
+        "passed": true,
+        "nodeRows": 16,
+        "browserBatches": 1,
+        "errors": [],
+        "dropped": 0,
+        "transportComplete": false
+      },
+      {
+        "run": "final-native203-35b15ea7",
+        "path": "final-native203-35b15ea7/evidence/search-commands/docs-call-timing-shadcn-2048.json",
+        "sha256": "bd123a9951c1e567a68bcbcc1eb35adf6479005d0a1fee24b9efeb87b07607d8",
+        "source": {
+          "sha": "35b15ea78a72f4668b6a9b39c38dac668f5c18c0",
+          "dirty": false
+        },
+        "available": true,
+        "passed": true,
+        "nodeRows": 16,
+        "browserBatches": 1,
+        "errors": [],
+        "dropped": 0,
+        "transportComplete": false
+      },
+      {
+        "run": "final-native203-35b15ea7",
+        "path": "final-native203-35b15ea7/evidence/search-commands/docs-call-timing-shadcn-320.json",
+        "sha256": "a1bc10feed6e0ca61639a953f8a42fbb389cacb897ad236bdc1c391a8cee8ddd",
+        "source": {
+          "sha": "35b15ea78a72f4668b6a9b39c38dac668f5c18c0",
+          "dirty": false
+        },
+        "available": true,
+        "passed": true,
+        "nodeRows": 16,
+        "browserBatches": 1,
+        "errors": [],
+        "dropped": 0,
+        "transportComplete": false
+      },
+      {
+        "run": "final-native203-35b15ea7",
+        "path": "final-native203-35b15ea7/evidence/search-commands/docs-call-timing-shadcn-390.json",
+        "sha256": "6fad33668d9406b8a3c972bed2c81b511a7fca0430ab862bae89cba21c4c2343",
+        "source": {
+          "sha": "35b15ea78a72f4668b6a9b39c38dac668f5c18c0",
+          "dirty": false
+        },
+        "available": true,
+        "passed": true,
+        "nodeRows": 16,
+        "browserBatches": 1,
+        "errors": [],
+        "dropped": 0,
+        "transportComplete": false
+      }
+    ],
+    "sameFailureBrowserGetter": "Not established locally: all original Docs queries passed. b2 canonical Search/Docs shard was skipped after CJK-font install failed. Do not use passing controls as same-failure data. New instrumentation is retained for the next natural candidate run.",
+    "transport": "Actual Playwright1.58.2 in-process setImmediate client/driver; call id+query+attempt bind the existing getter. No added evaluate/query/CDP roundtrip. utility.evaluate.dispatch is SDK method entry, not CDP send.",
+    "costAndLimits": "ALS/reaction/clock/serialization/console costs present. Source guards/caps/errors explicit. Context-close cleanup does not prove transport quiescence; transportComplete remains false. Equal browser timestamps do not prove zero cost."
+  },
+  "scrollDiagnosis": {
+    "originalPredicate": "Vue dark waitForScrollBeyond scrollTop>40, original10000ms; trusted Down delivered to same physical viewport but no later scroll before failure capture.",
+    "adjacentOrdering": "The same physical viewport continued scroll/offset deliveries across the scheme boundary; dark Down arrived7.5ms before the first observed scrollend. No animation/key identity was captured. Mutation ledger capped/dropped data, so engine mechanism/transient mutation is not proved.",
+    "control": "One focused order control1pass9filtered. Waiting for completion is fixture isolation, not a production semantic repair.",
+    "finalCorrection": "Fresh Right flag reset only in original focused measurement. Original Right progress -> original scrolled geometry/ring measurement and two expects -> completion fence -> original blur/theme. Same original10s window remaining;125 preserved expect call sites/4 preserved keyboard.press call sites/two progress-call sites and case deadlines retained."
+  },
+  "canonicalB2": {
+    "snapshot": "ci-b2-complete-20261022T165335Z/reconciliation.json",
+    "snapshotSHA256": "a3fd06c261b44dbf7acdf2c40ee1b456f98d545fce07829eed72371d9d5b01be",
+    "allReferencedRunsTerminal": false,
+    "checkCount": 105,
+    "suiteCount": 39,
+    "runCount": 38,
+    "states": {
+      "completed:failure": 8,
+      "completed:success": 26,
+      "completed:cancelled": 1,
+      "in_progress:None": 2,
+      "queued:None": 1
+    },
+    "scope": "Direct check URLs recovered38runIDs because Actions date-filter list returned0. Complete jobs/artifacts pagination per referenced run; no missing materialized suites. Do not equate queued/running with pass.",
+    "knownFailures": "Browser1/5/7 CJK package installation timeout before browser execution; Browser8 real bounded run exit124 with LiquidMaterial wait failures, while NativeLinks10/Controls10/Header16/QuickStart20 completed. See raw logs for exact boundaries."
+  },
+  "preview": {
+    "at": "2026-10-22T16:37:43.857675+00:00",
+    "head": "b2c1fa84a1c165e756ad760a05cd9005218815bb",
+    "tree": "fc5148ebefb1b959b88afed360ddbd8c78beb71d",
+    "artifact": 12440532356,
+    "artifactBytes": 21145728,
+    "artifactSHA256": "1bb30214b1123eea3ef92dd8973a1f80076467e36e539be88c45ca72e3ec9188",
+    "fileCount": 3837,
+    "htmlCount": 669,
+    "expandedBytes": 104068212,
+    "allCRCChecked": true,
+    "allExtractedHashesEqual": true,
+    "bindingArtifact": {
+      "binding.txt": "PR=921\nHEAD=b2c1fa84a1c165e756ad760a05cd9005218815bb\n"
+    },
+    "originalRawZIPPreserved": true,
+    "pruned": false,
+    "admissionBoundary": "Producer original defaultcase1pass with ownprecompression dist/21211612Bzip; later localcomparison uses downloaded21145728BActionsZIP and its owncompleteextraction, notindependentprecompression source. No localbrowser run ofartifactclaimed."
+  },
+  "finalPreview35": {
+    "at": "2026-10-22T17:04:07.052391+00:00",
+    "head": "35b15ea78a72f4668b6a9b39c38dac668f5c18c0",
+    "producerRun": 39818721562,
+    "producerJob": 119963957514,
+    "downloads": [
+      {
+        "id": 12443686465,
+        "name": "intranet-preview-binding-921-35b15ea78a72f4668b6a9b39c38dac668f5c18c0-1",
+        "start": "2026-10-22T17:03:54.089553+00:00",
+        "end": "2026-10-22T17:03:56.209372+00:00",
+        "bytes": 191,
+        "sha256": "55016f1c81399d61c7cd851514569dbee738f89085eddbf05bf586dda3090c44",
+        "metadataDigestEqual": true,
+        "path": "artifact-12443686465.zip"
+      },
+      {
+        "id": 12442344372,
+        "name": "intranet-preview-921-35b15ea78a72f4668b6a9b39c38dac668f5c18c0-1",
+        "start": "2026-10-22T17:03:56.211239+00:00",
+        "end": "2026-10-22T17:04:02.594745+00:00",
+        "bytes": 21145734,
+        "sha256": "3c2ea2074a20ced97e9c16a06a15212bb28122b7f98e5634fccc760dd4091a64",
+        "metadataDigestEqual": true,
+        "path": "artifact-12442344372.zip"
+      }
+    ],
+    "binding": {
+      "binding.txt": "PR=921\nHEAD=35b15ea78a72f4668b6a9b39c38dac668f5c18c0\n"
+    },
+    "fullArtifact": 12442344372,
+    "fullArtifactSHA256": "3c2ea2074a20ced97e9c16a06a15212bb28122b7f98e5634fccc760dd4091a64",
+    "files": 3837,
+    "html": 669,
+    "expandedBytes": 104068255,
+    "allCRCChecked": true,
+    "completeExtractionByteEqual": true,
+    "pruned": false,
+    "renderedArtifactBrowserCheck": false
+  },
+  "finalPreview35Admission": {
+    "start": "2026-10-22T17:04:07.062729+00:00",
+    "end": "2026-10-22T17:04:09.462619+00:00",
+    "argv": ["node", "--test", "scripts/preview/generated-artifact.test.mjs"],
+    "head": "35b15ea78a72f4668b6a9b39c38dac668f5c18c0",
+    "exit": 0,
+    "artifact": 12442344372,
+    "sha256": "3c2ea2074a20ced97e9c16a06a15212bb28122b7f98e5634fccc760dd4091a64",
+    "boundary": "Downloaded complete ActionsZIP and its ownlocal extraction; not independent producer precompression data. Original producer admission logged separately. No rendered built-artifact browser run."
+  },
+  "finalPreview35Binding": {
+    "at": "2026-10-22T17:05:33.250381+00:00",
+    "head": "35b15ea78a72f4668b6a9b39c38dac668f5c18c0",
+    "tree": "ad39b563d20f1f5790f21b191c3dc4f7e12f50bc",
+    "producerActualCheckout": "35b15ea78a72f4668b6a9b39c38dac668f5c18c0",
+    "producerLogSHA256": "69f2fd28cf6215f674c1f54377da40cdea5ca505aafa6c6bb3e495abe8a20ff8",
+    "producerDefaultAdmission": {
+      "tests": 1,
+      "passed": 1,
+      "ownPrecompressionSource": true,
+      "producerZIPBytes": 21211784,
+      "sourceFiles": 3837,
+      "expandedBytes": 104068255
+    },
+    "downloadedActionsZIPBytes": 21145734,
+    "downloadedActionsZIPIsDifferentFromProducerZIP": true,
+    "localDefaultAdmission": "One actualpass usingcomplete downloadedZIP and its ownextraction; not independentproducerdata; no builtartifact render claim."
+  },
+  "previewAdmission": {
+    "start": "2026-10-22T16:44:40.456065+00:00",
+    "end": "2026-10-22T16:44:43.685250+00:00",
+    "argv": ["node", "--test", "scripts/preview/generated-artifact.test.mjs"],
+    "exit": 0,
+    "artifactHead": "b2c1fa84a1c165e756ad760a05cd9005218815bb",
+    "localSourceHead": "35b15ea78a72f4668b6a9b39c38dac668f5c18c0",
+    "artifactSHA256": "1bb30214b1123eea3ef92dd8973a1f80076467e36e539be88c45ca72e3ec9188",
+    "boundary": "Downloaded Actions ZIP and its own complete local extraction. Not independent producer precompression directory; original producer admission documented separately. No local rendered artifact browser claim."
+  },
+  "independentReview": "Local source/evidence audits remain unassessed human-assisted partial/ABSTAIN, not GitHub approval.",
+  "remaining": [
+    "A natural failed Search/Docs run with the new observer is still required for the requested same-failure decomposition. Do not manufacture a negative by reducing deadlines.",
+    "New-head canonical CI must be read to its actual final result after the legitimate final source push. No rerun/cancel or permission changes were performed.",
+    "Shared native-popup timing, LiquidMaterial bounded failure, unresolved CLI owner ACK and earlier explicit physical-input/token debts remain scoped in the historical reports.",
+    "No overall C acceptance, lifecycle promotion, merge, installed-consumer or full accessibility claim."
+  ]
+}

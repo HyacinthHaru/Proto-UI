@@ -1,0 +1,34 @@
+[
+  {
+    "sourceHead": "35b15ea78a72f4668b6a9b39c38dac668f5c18c0",
+    "rawRelativePath": "final-native203-35b15ea7/evidence/header-breakpoint/brutalist-wc-runtime-narrow-focus-ring.png",
+    "publicFile": "wc-runtime-320-focus.png",
+    "sha256": "a280967d26d84854f462e12c57a50b6786a06bf533ecd34bb4fc55692a892768",
+    "bytes": 12355,
+    "editedOrReencoded": false
+  },
+  {
+    "sourceHead": "35b15ea78a72f4668b6a9b39c38dac668f5c18c0",
+    "rawRelativePath": "final-native203-35b15ea7/evidence/header-breakpoint/brutalist-vue-family-narrow-focus-ring.png",
+    "publicFile": "vue-family-320-focus.png",
+    "sha256": "5da6c15a2a4c06ad19e521c2b8edd8f248c593fd05a051b2acb89290fe6f02f4",
+    "bytes": 10958,
+    "editedOrReencoded": false
+  },
+  {
+    "sourceHead": "35b15ea78a72f4668b6a9b39c38dac668f5c18c0",
+    "rawRelativePath": "final-native203-35b15ea7/evidence/search-commands/docs-shadcn-wc-320-geometry.png",
+    "publicFile": "docs-shadcn-wc-320.png",
+    "sha256": "073cfe9c9171c67c81fa2d64109dcbf77bbd6187120e67ff78d92ca4a070e5db",
+    "bytes": 34797,
+    "editedOrReencoded": false
+  },
+  {
+    "sourceHead": "35b15ea78a72f4668b6a9b39c38dac668f5c18c0",
+    "rawRelativePath": "final-native203-35b15ea7/evidence/search-commands/docs-brutalist-vue2-2048-geometry.png",
+    "publicFile": "docs-brutalist-vue2-2048.png",
+    "sha256": "87d8807c8f2bf078ae407d8ef2c6843b9dd9723a166ecbcaff792f0a996ee2a3",
+    "bytes": 133399,
+    "editedOrReencoded": false
+  }
+]
