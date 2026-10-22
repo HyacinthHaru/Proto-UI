@@ -108,6 +108,18 @@ const button = definePrototype<BrutalistButtonProps, BrutalistButtonExposes>({
 
     def.feedback.style.use(tw(BUTTON_BASE_TOKENS));
 
+    // P-BRUTALIST-BUTTON-MOTION: one CSS clock covers both transform and shadow.
+    // The bounded preference lease updates already-mounted controls. Unknown is
+    // deliberately static; no resident writer competes for these properties.
+    def.rule({
+      when: (w) => w.meta('preference.reducedMotion').eq('no-preference'),
+      intent: (i) => i.feedback.style.use(tw('transition-all')),
+    });
+    def.rule({
+      when: (w) => w.not(w.meta('preference.reducedMotion').eq('no-preference')),
+      intent: (i) => i.feedback.style.use(tw('transition-none')),
+    });
+
     // P-BRUTALIST-BUTTON-COLOR-PROP — solid + color pairs
     (Object.keys(SOLID_COLOR_TOKENS) as BrutalistButtonColor[]).forEach((color) => {
       def.rule({

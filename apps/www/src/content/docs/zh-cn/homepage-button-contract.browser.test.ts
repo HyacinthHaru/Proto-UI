@@ -4,6 +4,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import type { Browser, Locator, Page } from 'playwright-core';
+import { recordButtonMotion, buttonMotionIssues } from './button-motion-evidence';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { launchBrowser, startServer, stopServer, RUNTIMES } from './browser-harness';
 import { revealHeaderPreferences } from './site-header-browser';
@@ -478,6 +479,41 @@ describe.sequential('Base Button selection and family-owned homepage geometry', 
           );
           await chooseTheme(page, 'light');
           await ready(page, runtime, family);
+          const motionRecords: Array<Record<string, unknown>> = [];
+          record.motion = motionRecords;
+          const observeMotion = async (font: number) => {
+            if (family !== 'brutalist') return;
+            await reset.scrollIntoViewIfNeeded();
+            await page.mouse.move(0, 0);
+            const original = await reset.elementHandle();
+            if (!original) throw new Error('Missing mounted motion subject');
+            try {
+              for (const reduced of [false, true]) {
+                await page.emulateMedia({ reducedMotion: reduced ? 'reduce' : 'no-preference' });
+                await expect
+                  .poll(() => reset.evaluate((node) => getComputedStyle(node).transitionProperty))
+                  .toBe(reduced ? 'none' : 'all');
+                for (const direction of ['enter', 'release'] as const) {
+                  const { frames, error } = await recordButtonMotion(page, reset, direction);
+                  motionRecords.push({ font, reduced, direction, frames, error });
+                  // Preserve the actual trace and screenshot even if a curve assertion fails.
+                  await capture(`motion-${font}-${reduced ? 'reduce' : 'normal'}-${direction}`);
+                  expect(error).toBeNull();
+                  expect(buttonMotionIssues(frames, direction, font / 4, reduced)).toEqual([]);
+                  expect(frames.at(-1)!.pressed).toBe(direction === 'enter');
+                }
+              }
+              await page.emulateMedia({ reducedMotion: 'no-preference' });
+              await expect
+                .poll(() => reset.evaluate((node) => getComputedStyle(node).transitionProperty))
+                .toBe('all');
+              expect(await original.evaluate((node) => node.isConnected)).toBe(true);
+            } finally {
+              await page.mouse.up();
+              await original.dispose();
+            }
+          };
+          await observeMotion(16);
           await page.setViewportSize({ width: 390, height: 1000 });
           await page.evaluate(() => {
             document.documentElement.style.fontSize = '200%';
@@ -554,6 +590,7 @@ describe.sequential('Base Button selection and family-owned homepage geometry', 
               expect(trigger.scrollWidth).toBeLessThanOrEqual(trigger.clientWidth + 1);
             }
           }
+          await observeMotion(32);
           expect(errors).toEqual([]);
         } finally {
           record.errors = errors;
