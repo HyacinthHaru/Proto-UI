@@ -8,6 +8,10 @@ summary: >-
 
 
 cases:
+  - id: T-BRUTALIST-BUTTON-0001-CASE-WRAP
+    title: Opt-in wrapping preserves family minima and fixed default/icon sizes
+    covers: [P-BRUTALIST-BUTTON-WRAP]
+    expectation: brutalist-button-wrap-minimum-and-default-restoration
   - id: T-BRUTALIST-BUTTON-0001-CASE-1
     title: Direct entry and Base Button inheritance (runtime identity)
     covers:
@@ -70,6 +74,26 @@ cases:
       - P-BRUTALIST-BUTTON-PAIR-INVARIANT
     expectation: p-brutalist-button-live-theme-browser
 implementations:
+  - id: prototypes-brutalist-button-wrap
+    kind: module-test
+    status: passing
+    path: packages/prototypes/brutalist/test/button.test.ts
+    required: true
+    consumesCases: [T-BRUTALIST-BUTTON-0001-CASE-WRAP]
+    exercises: [P-BRUTALIST-BUTTON]
+    notes:
+      [Local isolated module results do not establish native drag or rendered geometry acceptance.]
+  - id: homepage-brutalist-button-contract-browser
+    kind: adapter-test
+    status: planned
+    path: apps/www/src/content/docs/zh-cn/homepage-button-contract.browser.test.ts
+    required: true
+    consumesCases: [T-BRUTALIST-BUTTON-0001-CASE-WRAP]
+    exercises: [P-BRUTALIST-BUTTON]
+    notes:
+      [
+        Four runtimes and both homepage families retain real input and geometry assertions; browser result is pending for this candidate.,
+      ]
   - id: prototypes-brutalist-button-contract
     kind: module-test
     status: passing
@@ -140,6 +164,9 @@ exercises:
     - P-BASE-BUTTON
     - P-BRUTALIST-BUTTON
 revisions:
+  - version: 0.3.0-alpha.1
+    change: revised
+    summary: Added bounded local selection or public wrapping regressions and an explicitly pending four-runtime homepage browser acceptance mapping; existing protocol and visual evidence remains preserved.
   - version: 0.3.0-alpha.0
     change: refined
     summary: Aligned the browser evidence with a Website-local projection theme surface while preserving host-mode transitions and direct CSS-variable canaries across all runtimes.

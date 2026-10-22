@@ -240,3 +240,28 @@ describe('prototypes/brutalist: button', () => {
     }
   });
 });
+
+it('wrap is an opt-in family extension that restores fixed defaults and never resizes icons', () => {
+  const rawPropsRef = { current: {} as Record<string, unknown> };
+  const { host } = createButtonHost(rawPropsRef);
+  const { controller } = executeWithHost(button, host);
+  for (const [size, minimum] of [
+    ['default', 'min-h-10'],
+    ['sm', 'min-h-9'],
+    ['lg', 'min-h-11'],
+  ] as const) {
+    controller.applyRawProps({ size, wrap: true });
+    const tokens = controller.getRuleStyleTokens();
+    expect(tokens).toContain('h-auto');
+    expect(tokens).toContain(minimum);
+    expect(tokens).toContain('whitespace-normal');
+    expect(tokens).not.toContain(minimum.replace('min-', ''));
+    expect(tokens).toContain('text-sm');
+  }
+  controller.applyRawProps({ size: 'icon', wrap: true });
+  expect(controller.getRuleStyleTokens()).toContain('size-10');
+  expect(controller.getRuleStyleTokens()).not.toContain('h-auto');
+  controller.applyRawProps({});
+  expect(controller.getRuleStyleTokens()).toContain('h-10');
+  expect(controller.getRuleStyleTokens()).not.toContain('h-auto');
+});
