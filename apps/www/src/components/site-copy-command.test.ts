@@ -79,12 +79,13 @@ function fixture() {
 }
 
 describe('real WC Copy command composition', () => {
-  it.each(['example', 'docs'] as const)(
+  it.each(['example', 'docs', 'file-browser'] as const)(
     'uses a real ghost Button without a backplate for the explicit %s presentation',
     async (presentation) => {
       const { root } = fixture();
       const example = document.createElement('section');
       if (presentation === 'example') example.dataset.codeExample = '';
+      else if (presentation === 'file-browser') example.dataset.codeFileBrowser = '';
       else example.dataset.codePresentation = 'docs';
       root.before(example);
       example.append(root);

@@ -1,6 +1,7 @@
 ---
 import output from '../generated/cli-init.generated.json';
 import StaticCodeBlock from './StaticCodeBlock.astro';
+import CodeFileBrowser from './CodeFileBrowser.astro';
 const zh = Astro.url.pathname.startsWith('/zh-cn/');
 const files = output.entries.filter((entry) => entry.kind === 'file');
 const sourceCommand = 'node apps/www/scripts/generate-cli-init-docs.mjs';
@@ -14,26 +15,12 @@ const sourceCommand = 'node apps/www/scripts/generate-cli-init-docs.mjs';
         : `The following paths and file contents are generated during this site build by running the repository CLI ${output.cli.version}, not a verified stable 0.2.0 output. Empty directories mean init has not added components yet.`
     }
   </p>
-  <StaticCodeBlock
-    code={output.directory}
-    title={zh ? '生成的项目结构' : 'Generated project structure'}
-    icon="folder-tree"
-    copyLabel={zh ? '复制生成的项目结构' : 'Copy generated project structure'}
-  />
   <div data-cli-generated-files>
-    {
-      files.map((file) => (
-        <details>
-          <summary>{file.path}</summary>
-          <StaticCodeBlock
-            code={file.content!}
-            title={file.path}
-            lang={file.path.endsWith('.json') ? 'json' : 'css'}
-            copyLabel={`${zh ? '复制' : 'Copy'} ${file.path}`}
-          />
-        </details>
-      ))
-    }
+    <CodeFileBrowser id="cli-init-generated" standalone
+      files={files.map((file) => ({ name: file.path, code: file.content!, lang: file.path.endsWith('.json') ? 'json' : 'css' }))}
+      directories={output.entries.filter((entry) => entry.kind === 'directory').map((entry) => entry.path)}
+      initialFile="proto-ui/config.json" label={zh ? 'CLI 生成的文件' : 'CLI generated files'}
+      filesLabel={zh ? '文件' : 'Files'} copyLabel={zh ? '复制' : 'Copy'} emptyLabel={zh ? '空目录' : 'empty'} />
   </div>
   <details data-cli-provenance>
     <summary>{zh ? '构建来源与复现' : 'Build provenance and reproduction'}</summary>

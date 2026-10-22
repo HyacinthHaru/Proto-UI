@@ -1,5 +1,6 @@
 ---
 import CodePanel from './PrototypePreviewer/CodePanel.astro';
+import CodeFileBrowser from './CodeFileBrowser.astro';
 import { AdapterIds } from './PrototypePreviewer/runtimes/ids';
 import { isRuntimeId } from './adapter-preference';
 import type { CodeExampleProps } from './code-example-types';
@@ -114,35 +115,7 @@ const instanceId = `code-example-${Math.random().toString(36).slice(2)}`;
               <p><strong>WIP · {pendingHost.label}</strong></p>
               <p>{pendingHost.message}</p>
             </div>
-          ) : <section class="code-example__browser" data-code-file-browser data-site-code-surface="frame" aria-label={labels.usage}>
-            <aside class="code-example__files" data-code-files>
-              <div class="code-example__files-label">{labels.files ?? 'Files'}</div>
-              <nav class="code-example__tabs code-example__file-fallback" aria-label={`Files for ${host}`} data-code-file-tabs>
-                {hostFiles.map((file, fileIndex) => (
-                  <a
-                    id={`${instanceId}-${hostIndex}-file-tab-${fileIndex}`}
-                    href={`#${instanceId}-${hostIndex}-file-panel-${fileIndex}`} data-code-file-tab
-                    data-code-file-index={fileIndex}
-                    data-code-file-path={file.name}
-                    aria-controls={`${instanceId}-${hostIndex}-file-panel-${fileIndex}`}
-                    data-code-file-selected={fileIndex === 0 ? 'true' : undefined}
-                  >{file.name}</a>
-                ))}
-              </nav>
-            </aside>
-            <div class="code-example__source" data-code-file-source>
-              {hostFiles.map((file, fileIndex) => (
-                <CodePanel
-                  id={`${instanceId}-${hostIndex}-file-panel-${fileIndex}`}
-                  labelledBy={`${instanceId}-${hostIndex}-file-tab-${fileIndex}`}
-                  hidden={fileIndex !== 0} fileIndex={fileIndex} panelRole="region" framed={false}
-                  collapsible={false} title={file.name}
-                  copyLabel={`${labels.copy} ${file.name}`}
-                  code={file.code} lang={file.lang}
-                />
-              ))}
-            </div>
-          </section>}
+          ) : <CodeFileBrowser id={`${instanceId}-${hostIndex}`} files={hostFiles} label={labels.usage} filesLabel={labels.files ?? 'Files'} copyLabel={labels.copy} />}
 
         </section>
       );
@@ -184,17 +157,6 @@ const instanceId = `code-example-${Math.random().toString(36).slice(2)}`;
     padding: 0.625rem 1rem;
     font-size: 0.8125rem;
     color: var(--color-muted-foreground);
-  }
-
-  .code-example__browser { display: grid; grid-template-columns: minmax(10rem, 13rem) minmax(0, 1fr); }
-  .code-example__files, .code-example__source { min-width: 0; }
-  .code-example__files { padding: 0; border-inline-end: 1px solid var(--color-border); }
-  .code-example__files-label { color: color-mix(in oklab, var(--color-foreground) 70%, transparent); display: flex; align-items: center; min-height: 3rem; padding: 0.5rem 1rem; border-bottom: 1px solid var(--color-border); font-size: 0.875rem; font-weight: 500; }
-  .code-example__file-fallback { width: 100%; flex-direction: column; align-items: stretch; }
-  .code-example .code-example__file-fallback a { display: block; min-height: 2.75rem; padding: 0.5rem; text-align: start; white-space: normal; overflow-wrap: anywhere; }
-  @media (max-width: 48rem) {
-    .code-example__browser { grid-template-columns: minmax(0, 1fr); }
-    .code-example__files { border-inline-end: 0; border-bottom: 1px solid var(--color-border); }
   }
 
   .code-example__usage-label { padding: 1rem 1rem 0.25rem; font-size: 0.875rem; font-weight: 600; }

@@ -163,7 +163,7 @@ async function readSelectFacts(page: Page): Promise<SelectFacts> {
 
 async function readQuickStartFacts(page: Page): Promise<QuickStartFacts> {
   await page.locator('[data-code-example]').waitFor({ state: 'visible' });
-  await page.locator('[data-code-file-browser]:visible [data-code-example-tree][role="tree"]').waitFor();
+  await page.locator('[data-code-example] [data-code-file-browser]:visible [data-code-example-tree][role="tree"]').waitFor();
   await page.locator('[data-code-presentation="docs"]').first().waitFor({ state: 'visible' });
 
   return page.evaluate(() => {

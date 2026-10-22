@@ -550,11 +550,20 @@ it('keeps every authored source reachable without JavaScript and does not fake a
     const example = page.locator('[data-code-example]');
     expect(await example.locator('[role="tree"], [role="treeitem"]').count()).toBe(0);
     expect(await example.locator('[data-code-host-panel]:visible').count()).toBe(7);
-    const generated = page.locator('[data-cli-generated-files] > details');
-    expect(await generated.count()).toBe(4);
-    await generated.first().locator('summary').click();
-    expect(await generated.first().locator('code').getAttribute('data-raw-code')).toBe(cliInitOutput.entries.find((entry) => entry.path === 'proto-ui/config.json')?.content);
-    expect(await generated.first().locator('code').isVisible()).toBe(true);
+    const generated = page.locator('[data-cli-generated-files]');
+    expect(await generated.locator('[role="tree"], [role="treeitem"]').count()).toBe(0);
+    expect(await generated.locator('[data-code-file-panel]:visible').count()).toBe(4);
+    const files = cliInitOutput.entries.filter((entry) => entry.kind === 'file');
+    for (const file of files) {
+      const link = generated.locator(`[data-code-file-path="${file.path}"]`);
+      const id = await link.getAttribute('aria-controls');
+      expect(await link.getAttribute('href')).toBe(`#${id}`);
+      const panel = generated.locator(`[id="${id}"]`);
+      expect(await panel.locator('code').getAttribute('data-raw-code')).toBe(file.content);
+      await link.click();
+      expect(await panel.isVisible()).toBe(true);
+    }
+    expect(await generated.locator('[data-code-directory-path]').count()).toBe(6);
     expect(await example.locator('[data-code-file-panel]:visible').count()).toBe(4);
     const htmlLink = example.locator('[data-code-file-tabs] a').filter({ hasText: /^index.html$/ });
     await htmlLink.click();
@@ -602,7 +611,7 @@ it('keeps embedded file navigation identifiable in forced colors and enlarged te
 }, 90_000);
 
 for (const locale of ['en', 'zh-cn']) {
-  it(`shows real build-generated init files with exact copy payloads and no fictional tree actions (${locale})`, async () => {
+  it(`browses real build-generated init files with exact copy payloads and genuine Tree ownership (${locale})`, async () => {
     const context = await browser.newContext({ viewport: { width: 390, height: 1000 } });
     await context.addInitScript(() => {
       Object.defineProperty(navigator, 'clipboard', {
@@ -635,70 +644,69 @@ for (const locale of ['en', 'zh-cn']) {
       }
       const output = page.locator('[data-cli-init-output]');
       expect(await output.getAttribute('data-cli-version')).toBe(cliInitOutput.cli.version);
-      expect(await output.locator('[role="tree"], [role="treeitem"]').count()).toBe(0);
-      const directory = output.locator('[data-code-presentation="docs"]').first();
-      expect(await directory.locator('code').getAttribute('data-raw-code')).toBe(
-        cliInitOutput.directory
-      );
-      expect(await directory.textContent()).not.toContain('package.json');
-      expect(await directory.getAttribute('data-code-line-numbers')).toBe('false');
-      expect(await directory.locator('.line').first().evaluate((node) => getComputedStyle(node, '::before').display)).toBe('none');
-      const directoryScroll = await directory.locator('pre').evaluate((node) => {
-        node.scrollLeft = node.scrollWidth;
-        return { left: node.scrollLeft, maximum: node.scrollWidth - node.clientWidth };
-      });
-      expect(directoryScroll.maximum).toBeGreaterThan(0);
-      expect(Math.abs(directoryScroll.left - directoryScroll.maximum)).toBeLessThanOrEqual(1);
-      await evidence(page, directory, `cli-init-${locale}-390-scroll-end`, { directoryScroll });
-      await directory.locator('pre').evaluate((node) => {
-        node.scrollLeft = 0;
-      });
-      expect(
-        await directory
-          .locator('pre')
-          .evaluate((node) => ({
-            fontSize: getComputedStyle(node).fontSize,
-            lineHeight: getComputedStyle(node).lineHeight,
-          }))
-      ).toEqual({ fontSize: '14px', lineHeight: '24.5px' });
-      expect(
-        await directory
-          .locator('.line')
-          .first()
-          .evaluate((node) => ({
-            top: getComputedStyle(node).paddingTop,
-            bottom: getComputedStyle(node).paddingBottom,
-          }))
-      ).toEqual({ top: '0px', bottom: '0px' });
-      expect(
-        await directory
-          .locator('[data-code-file-header]')
-          .evaluate((node) => node.getBoundingClientRect().height)
-      ).toBe(42);
-      const details = output.locator('[data-cli-generated-files] > details');
-      const files = cliInitOutput.entries.filter((entry) => entry.kind === 'file');
-      expect(await details.count()).toBe(files.length);
-      for (const [index, file] of files.entries()) {
-        const detail = details.nth(index);
-        expect(await detail.locator('summary').textContent()).toBe(file.path);
-        await detail.locator('summary').click();
-        expect(await detail.locator('code').getAttribute('data-raw-code')).toBe(file.content);
-        expect(await detail.locator('[data-code-shell]').getAttribute('data-code-line-numbers')).toBe('true');
-        expect(await detail.locator('.line').first().evaluate((node) => getComputedStyle(node, '::before').display)).toBe('inline-block');
-        const copy = detail.locator('[data-copy-view="ready"] [data-demo-ref="copy-button"]');
-        await copy.click();
-        expect(
-          await page.evaluate(() => (window as Window & { __initCopy?: string }).__initCopy)
-        ).toBe(file.content);
-        expect(
-          await copy.evaluate((node) => ({
-            width: node.getBoundingClientRect().width,
-            height: node.getBoundingClientRect().height,
-          }))
-        ).toEqual({ width: 28, height: 28 });
-        expect(await detail.locator('[data-demo-ref="copy-backplate"]').count()).toBe(0);
-        await detail.locator('summary').click();
+      const browserPanel = output.locator('[data-standalone-file-browser][data-file-browser-init="1"]');
+      await browserPanel.waitFor();
+      const tree = browserPanel.locator('[role="tree"]');
+      const nodes = tree.locator('[role="treeitem"]');
+      expect((await nodes.evaluateAll((items) => items.map((item) => item.getAttribute('data-code-tree-path')))).sort()).toEqual(cliInitOutput.entries.map((entry) => entry.path).sort());
+      expect(await tree.locator('[data-code-tree-kind="folder"]').count()).toBe(6);
+      expect(await tree.locator('[data-code-tree-kind="file"]').count()).toBe(4);
+      expect(await output.locator('[data-cli-generated-files] details').count()).toBe(0);
+      expect(await tree.locator('[aria-selected="true"]').getAttribute('data-code-tree-path')).toBe('proto-ui/config.json');
+      const sources = browserPanel.locator('[data-code-file-panel]');
+      expect(await sources.count()).toBe(4);
+      const initialSources = await sources.elementHandles();
+      const visible = () => browserPanel.locator('[data-code-file-panel]:visible');
+      expect(await visible().count()).toBe(1);
+      for (const path of ['proto-ui/adapters', 'proto-ui/components', 'proto-ui/prototypes']) {
+        const empty = tree.locator(`[data-code-tree-path="${path}"]`);
+        expect(await empty.getAttribute('data-code-tree-kind')).toBe('folder');
+        expect(await empty.getAttribute('aria-controls')).toBeNull();
+        expect(await empty.locator('[data-code-tree-chevron]').count()).toBe(0);
+        await empty.click(); await empty.press('Enter');
+        expect(await tree.locator('[aria-selected="true"]').getAttribute('data-code-tree-path')).toBe('proto-ui/config.json');
+        expect(await visible().locator('[data-code-file-title]').textContent()).toBe('proto-ui/config.json');
       }
+      const folder = tree.locator('[data-code-tree-path="proto-ui"]');
+      await folder.click();
+      expect(await folder.getAttribute('aria-expanded')).toBe('false');
+      expect(await tree.locator('[data-code-tree-path="proto-ui/config.json"]').isVisible()).toBe(false);
+      expect(await visible().locator('[data-code-file-title]').textContent()).toBe('proto-ui/config.json');
+      await folder.press('ArrowRight');
+      expect(await folder.getAttribute('aria-expanded')).toBe('true');
+      await folder.press('End');
+      expect(await tree.locator('[data-code-tree-path="src/styles/shadcn-theme.css"]').evaluate((node) => node === document.activeElement)).toBe(true);
+      await page.keyboard.press('Enter');
+      expect(await visible().locator('[data-code-file-title]').textContent()).toBe('src/styles/shadcn-theme.css');
+      const files = cliInitOutput.entries.filter((entry) => entry.kind === 'file');
+      for (const file of files) {
+        const item = tree.locator(`[data-code-tree-path="${file.path}"]`);
+        await item.click();
+        expect(await item.getAttribute('aria-selected')).toBe('true');
+        expect(await tree.locator('[aria-selected="true"]').count()).toBe(1);
+        const panel = visible();
+        expect(await panel.count()).toBe(1);
+        expect(await panel.locator('[data-code-file-title]').textContent()).toBe(file.path);
+        expect(await panel.getAttribute('aria-labelledby')).toBe(await item.getAttribute('id'));
+        expect(await panel.locator('code').getAttribute('data-raw-code')).toBe(file.content);
+        expect(await panel.getAttribute('data-code-line-numbers')).toBe('true');
+        expect(await panel.locator('.line').first().evaluate((node) => getComputedStyle(node, '::before').display)).toBe('inline-block');
+        const copy = panel.locator('[data-copy-view="ready"] [data-demo-ref="copy-button"]');
+        await copy.click();
+        expect(await page.evaluate(() => (window as Window & { __initCopy?: string }).__initCopy)).toBe(file.content);
+        expect(await copy.evaluate((node) => [node.getBoundingClientRect().width, node.getBoundingClientRect().height])).toEqual([28, 28]);
+        expect(await panel.locator('[data-demo-ref="copy-backplate"]').count()).toBe(0);
+        expect(await panel.locator('[data-code-file-header]').evaluate((node) => node.getBoundingClientRect().height)).toBeGreaterThanOrEqual(48);
+      }
+      for (const node of initialSources) expect(await node.evaluate((node) => node.isConnected)).toBe(true);
+      const activeSource = visible();
+      expect(await activeSource.locator('pre').evaluate((node) => ({ fontSize: getComputedStyle(node).fontSize, lineHeight: getComputedStyle(node).lineHeight }))).toEqual({ fontSize: '14px', lineHeight: '21px' });
+      const sourceScroll = await activeSource.locator('pre').evaluate((node) => { node.scrollLeft = node.scrollWidth; return { left: node.scrollLeft, maximum: node.scrollWidth - node.clientWidth }; });
+      expect(sourceScroll.maximum).toBeGreaterThan(0);
+      expect(Math.abs(sourceScroll.left - sourceScroll.maximum)).toBeLessThanOrEqual(1);
+      await evidence(page, browserPanel, `cli-init-${locale}-390-source-scroll-end`, { selectedPath: 'src/styles/shadcn-theme.css', sourceScroll });
+      const geometry = await browserPanel.evaluate((node) => { const files = node.querySelector('[data-code-files]')!.getBoundingClientRect(); const source = node.querySelector('[data-code-file-source]')!.getBoundingClientRect(); return { filesBottom: files.bottom, sourceTop: source.top }; });
+      expect(geometry.filesBottom).toBeLessThanOrEqual(geometry.sourceTop + 1);
       expect(
         await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)
       ).toBeLessThanOrEqual(1);
@@ -712,3 +720,28 @@ for (const locale of ['en', 'zh-cn']) {
     }
   }, 90_000);
 }
+
+it('keeps the generated-file browser accessible in forced colors and enlarged text', async () => {
+  const context = await browser.newContext({ viewport: { width: 390, height: 1000 }, forcedColors: 'active' });
+  const page = await context.newPage();
+  try {
+    await page.goto(`${baseUrl}/en/start-here/quick-start/`);
+    const generated = page.locator('[data-cli-generated-files] [data-file-browser-init="1"]');
+    await generated.waitFor();
+    const file = generated.locator('[data-code-tree-path="proto-ui/config.json"]');
+    const folder = generated.locator('[data-code-tree-path="proto-ui"]');
+    await file.focus();
+    expect(await file.evaluate((node) => node === document.activeElement)).toBe(true);
+    expect(await file.evaluate((node) => getComputedStyle(node).outlineStyle)).not.toBe('none');
+    await folder.focus();
+    expect(await file.getAttribute('aria-selected')).toBe('true');
+    expect(await file.evaluate((node) => getComputedStyle(node).fontWeight)).toBe('500');
+    expect(await folder.evaluate((node) => getComputedStyle(node).fontWeight)).toBe('400');
+    await evidence(page, generated, 'cli-init-forced-colors', { selectedPath: 'proto-ui/config.json', forcedColors: true });
+    await page.evaluate(() => { document.documentElement.style.fontSize = '200%'; });
+    expect(await file.evaluate((node) => parseFloat(getComputedStyle(node).fontSize))).toBe(28);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
+    expect(await generated.locator('[data-code-file-panel]:visible code').getAttribute('data-raw-code')).toBe(cliInitOutput.entries.find((entry) => entry.path === 'proto-ui/config.json')?.content);
+    await evidence(page, generated, 'cli-init-forced-colors-text200', { selectedPath: 'proto-ui/config.json', forcedColors: true, textScalePercent: 200, browserZoomVerified: false });
+  } finally { await context.close(); }
+}, 90_000);

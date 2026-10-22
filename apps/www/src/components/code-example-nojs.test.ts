@@ -15,5 +15,8 @@ it('places the no-JS hidden override in Tailwind base without changing scripted 
   expect(fallback).toContain('display:block!important; } } [data-code-example]');
   expect(fallback).toContain('margin-block:1.5rem; }</style>');
   expect(source).toContain('hidden={!hostSelected}');
-  expect(source).toContain('hidden={fileIndex !== 0}');
+  const browser = readFileSync('apps/www/src/components/CodeFileBrowser.astro', 'utf8');
+  expect(source).toContain('<CodeFileBrowser');
+  expect(browser).toContain('hidden={index !== active}');
+  expect(browser).toContain('@layer base { [data-code-file-browser] [data-code-file-panel][hidden] { display:block!important; } }');
 });

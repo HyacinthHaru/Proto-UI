@@ -11,47 +11,8 @@ import { lucideChevronRightIcon } from '@proto.ui/prototypes-lucide/icons/chevro
 import { lucideFileIcon } from '@proto.ui/prototypes-lucide/icons/file';
 import { lucideFolderIcon } from '@proto.ui/prototypes-lucide/icons/folder';
 
-export interface CodeFileNode {
-  key: string;
-  parentKey: string;
-  name: string;
-  depth: number;
-  fileIndex?: number;
-}
-
-/** Canonical authored paths, never generated installation commands. */
-export function codeFileNodes(paths: readonly string[]): CodeFileNode[] {
-  const nodes = new Map<string, CodeFileNode>();
-  paths.forEach((path, fileIndex) => {
-    const parts = path.split('/');
-    if (parts.some((part) => !part || part === '.' || part === '..'))
-      throw new Error('[CodeExample] File paths require non-empty relative segments.');
-    parts.forEach((name, depth) => {
-      const key = parts.slice(0, depth + 1).join('/');
-      const leaf = depth === parts.length - 1;
-      const old = nodes.get(key);
-      if (old && (leaf || old.fileIndex !== undefined))
-        throw new Error('[CodeExample] File paths must not collide with files or folders.');
-      if (!old) nodes.set(key, { key, parentKey: parts.slice(0, depth).join('/'), name, depth, ...(leaf ? { fileIndex } : {}) });
-    });
-  });
-  // Keep children contiguous even when authored paths interleave directories.
-  const ordered: CodeFileNode[] = [];
-  const visit = (parent: string) => {
-    for (const node of nodes.values()) if (node.parentKey === parent) {
-      ordered.push(node);
-      visit(node.key);
-    }
-  };
-  visit('');
-  return ordered;
-}
-
-/** Pinned BlockViewer uses a distinct indentation multiplier for folders. */
-export function codeTreeIndent(depth: number, folder: boolean): string {
-  const index = depth + 1;
-  return `${index * (folder ? index === 1 ? 1 : 1.2 : index === 2 ? 1.2 : 1.3)}rem`;
-}
+import { codeFileNodes, codeTreeIndent } from './code-file-tree-model';
+export { codeFileNodes, codeTreeIndent } from './code-file-tree-model';
 
 type TreeProjection = { select(index: number): void; destroy(): void };
 
@@ -62,13 +23,14 @@ export function enhanceCodeExampleTree(options: {
   tabs: HTMLElement[];
   panels: HTMLElement[];
   onSelect(index: number): void;
+  directories?: readonly string[];
 }): TreeProjection {
   const { list, tabs, panels, onSelect } = options;
   const doc = list.ownerDocument;
   if (list.contains(doc.activeElement) || panels.some((panel) => panel.contains(doc.activeElement)))
     return { select() {}, destroy() {} };
   if (tabs.length !== panels.length || !tabs.length) throw new Error('[CodeExample] File controls and source panels must match.');
-  const nodes = codeFileNodes(tabs.map((tab) => tab.dataset.codeFilePath ?? tab.textContent?.trim() ?? ''));
+  const nodes = codeFileNodes(tabs.map((tab) => tab.dataset.codeFilePath ?? tab.textContent?.trim() ?? ''), options.directories);
   const familyScope = list.closest<HTMLElement>('[data-projection-family], [data-site-library-family]');
   const family = (familyScope?.dataset.projectionFamily ?? familyScope?.dataset.siteLibraryFamily ?? doc.documentElement.dataset.siteLibraryFamily) === 'brutalist' ? 'brutalist' : 'shadcn';
   const definitions = family === 'brutalist' ? brutalist : shadcn;
@@ -111,7 +73,9 @@ export function enhanceCodeExampleTree(options: {
         ...(family === 'brutalist' ? { minHeight: '2.75rem', fontSize: '0.8125rem' } : {}),
       },
     });
-    if (node.fileIndex === undefined) {
+    const hasChildren = nodes.some((child) => child.parentKey === node.key);
+    if (node.fileIndex === undefined && !hasChildren) item.dataset.codeTreeEmpty = 'true';
+    if (node.fileIndex === undefined && hasChildren) {
       for (const direction of ['down', 'right']) {
         const glyph = doc.createElement(`pui-code-example-chevron-${direction}`);
         glyph.dataset.codeTreeChevron = direction;
@@ -122,7 +86,7 @@ export function enhanceCodeExampleTree(options: {
       }
     }
     if (family === 'shadcn') {
-      if (node.fileIndex !== undefined) {
+      if (node.fileIndex !== undefined || !hasChildren) {
         const spacer = doc.createElement('span');
         spacer.setAttribute('aria-hidden', 'true');
         spacer.style.cssText = 'width:1rem;flex:none';
@@ -136,6 +100,11 @@ export function enhanceCodeExampleTree(options: {
       item.append(icon);
     }
     item.append(doc.createTextNode(family === 'shadcn' ? node.name : node.fileIndex === undefined ? `${node.name}/` : node.name));
+    if (node.fileIndex === undefined && !hasChildren) {
+      const empty = doc.createElement('small');
+      empty.textContent = ` (${list.dataset.emptyDirectoryLabel ?? 'empty'})`;
+      item.append(empty);
+    }
     if (family === 'shadcn') {
       // Non-semantic layout wrappers preserve the real Tree's canonical model.
       // Root siblings keep the family 6px gap; nested siblings use 4px.
@@ -183,6 +152,7 @@ export function enhanceCodeExampleTree(options: {
     const node = nodes.find((node) => node.key === key);
     if (!node) return;
     if (node.fileIndex === undefined) {
+      if (!nodes.some((child) => child.parentKey === node.key)) { publish(); return; }
       expanded = expanded.includes(node.key) ? expanded.filter((key) => key !== node.key) : [...expanded, node.key];
     } else {
       value = node.fileIndex;

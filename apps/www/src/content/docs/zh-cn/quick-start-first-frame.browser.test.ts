@@ -721,6 +721,8 @@ describe('quick-start first-frame continuity', () => {
               );
               await captureViewport(page, path.join(directory, `${componentPrefix}.png`));
               const init = page.locator('[data-cli-init-output]');
+              const generatedBrowser = init.locator('[data-standalone-file-browser][data-file-browser-init="1"]');
+              await generatedBrowser.waitFor();
               await init.scrollIntoViewIfNeeded();
               await writeFile(
                 path.join(directory, `${prefix}-cli-init.json`),
@@ -757,12 +759,14 @@ describe('quick-start first-frame continuity', () => {
                 )
               );
               await captureViewport(page, path.join(directory, `${prefix}-cli-init-command.png`));
-              for (const [index, label] of [
-                [0, 'config'],
-                [1, 'style'],
+              for (const [filePath, label] of [
+                ['proto-ui/config.json', 'config'],
+                ['src/styles/proto-ui-style.css', 'style'],
               ] as const) {
-                const detail = init.locator('[data-cli-generated-files] > details').nth(index);
-                await detail.locator('summary').click();
+                const item = generatedBrowser.locator(`[data-code-tree-path="${filePath}"]`);
+                await item.click();
+                const detail = generatedBrowser.locator('[data-code-file-panel]:visible');
+                expect(await detail.locator('[data-code-file-title]').textContent()).toBe(filePath);
                 await detail
                   .locator('[data-copy-view="ready"] [data-demo-ref="copy-button"]')
                   .waitFor({ state: 'visible' });
@@ -776,7 +780,8 @@ describe('quick-start first-frame continuity', () => {
                       url: page.url(),
                       viewport: page.viewportSize(),
                       colorScheme: condition.colorScheme,
-                      file: await detail.locator('summary').textContent(),
+                      file: filePath,
+                      captureKind: 'file-browser-region',
                       sourceSha256: createHash('sha256')
                         .update(content ?? '')
                         .digest('hex'),
@@ -787,13 +792,9 @@ describe('quick-start first-frame continuity', () => {
                     2
                   )
                 );
-                await captureViewport(
-                  page,
-                  path.join(directory, `${prefix}-cli-init-${label}.png`)
-                );
-                await detail.locator('summary').click();
+                await generatedBrowser.screenshot({ path: path.join(directory, `${prefix}-cli-init-${label}.png`) });
               }
-              const directoryCode = init.locator('[data-code-presentation="docs"]').first();
+              const directoryCode = generatedBrowser.locator('[data-code-file-panel]:visible');
               await directoryCode.evaluate((node) => node.scrollIntoView({ block: 'center' }));
               const scroll = await directoryCode.locator('pre').evaluate((node) => {
                 node.scrollLeft = node.scrollWidth;
@@ -813,7 +814,8 @@ describe('quick-start first-frame continuity', () => {
                     viewport: page.viewportSize(),
                     colorScheme: condition.colorScheme,
                     scroll,
-                    stage: 'additional-directory-scroll-diagnostic',
+                    stage: 'additional-generated-source-scroll-diagnostic',
+                    file: await directoryCode.locator('[data-code-file-title]').textContent(),
                     fullCodeExampleAcceptance: false,
                   },
                   null,

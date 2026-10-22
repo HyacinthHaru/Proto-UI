@@ -149,3 +149,23 @@ it('groups nested layout without replacing Tree semantics and uses upstream fold
   expect(siblings.hidden).toBe(true);
   expect(siblings.style.display).toBe('none');
 });
+
+it('preserves explicit empty directories without inventing selectable files', async () => {
+  expect(codeFileNodes(['proto-ui/config.json'], ['proto-ui', 'proto-ui/adapters']).map((node) => [node.key, node.fileIndex]))
+    .toEqual([['proto-ui', undefined], ['proto-ui/adapters', undefined], ['proto-ui/config.json', 0]]);
+  expect(() => codeFileNodes(['proto-ui'], ['proto-ui/adapters'])).toThrow();
+  const { list, tabs, panels } = fixture();
+  const onSelect = vi.fn();
+  projections.push(enhanceCodeExampleTree({ list, tabs, panels, directories: ['src/empty'], onSelect }));
+  const tree = document.querySelector('[data-code-example-tree]')!;
+  const empty = tree.querySelector('[data-code-tree-path="src/empty"]')!;
+  expect(empty.getAttribute('data-code-tree-kind')).toBe('folder');
+  expect(empty.hasAttribute('aria-expanded')).toBe(false);
+  expect(empty.querySelector('[data-code-tree-chevron]')).toBeNull();
+  expect(empty.querySelector('[data-code-tree-icon="folder"]')).not.toBeNull();
+  tree.dispatchEvent(new CustomEvent('valueChange', { detail: { value: 'src/empty' } }));
+  await Promise.resolve();
+  expect(onSelect).not.toHaveBeenCalled();
+  expect(tree.querySelector('[data-code-tree-path="src/main.ts"]')?.getAttribute('aria-selected')).toBe('true');
+  expect(empty.getAttribute('aria-selected')).toBe('false');
+});
