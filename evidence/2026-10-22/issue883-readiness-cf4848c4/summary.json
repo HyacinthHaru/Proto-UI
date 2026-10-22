@@ -1,0 +1,4849 @@
+{
+  "sourceHead": "cf4848c49ad8849d45f03f3270b2ba78beffc7a2",
+  "sourceTree": "d9fa302caf830f22fbde5bf6edb1852a8e39948e",
+  "assembledAt": "2026-10-22T10:09:31.776530+00:00",
+  "status": "partial",
+  "reviewDisposition": "ABSTAIN",
+  "priorCheckpoint": "../issue883-main-integration-8bfea320/README.md",
+  "sourceBoundary": "Four test/test-helper files after8bfea; production source retained, but current independently produced artifact is not byte-identical to8bfea.",
+  "actualFinalLocal": [
+    {
+      "name": "final-cf-node147",
+      "head": "cf4848c49ad8849d45f03f3270b2ba78beffc7a2",
+      "indexTree": "d9fa302caf830f22fbde5bf6edb1852a8e39948e",
+      "start": "2026-10-22T08:58:59.582571+00:00",
+      "end": "2026-10-22T08:59:33.800323+00:00",
+      "exit": 1,
+      "statusBefore": "",
+      "statusAfter": "",
+      "sourceStable": true,
+      "counts": {
+        "numPassedTests": 2085,
+        "numFailedTests": 4,
+        "numPendingTests": 0
+      },
+      "fileResults": [
+        {
+          "path": "event-gate.test.ts",
+          "passed": 2,
+          "failed": 0
+        },
+        {
+          "path": "event-router-work.test.ts",
+          "passed": 17,
+          "failed": 0
+        },
+        {
+          "path": "keyboard-repeat-payload.test.ts",
+          "passed": 1,
+          "failed": 0
+        },
+        {
+          "path": "logical-parent-authority.test.ts",
+          "passed": 12,
+          "failed": 0
+        },
+        {
+          "path": "native-focus-event-router.test.ts",
+          "passed": 2,
+          "failed": 0
+        },
+        {
+          "path": "pointer-contact.test.ts",
+          "passed": 16,
+          "failed": 0
+        },
+        {
+          "path": "portal-destination-deferred.test.ts",
+          "passed": 20,
+          "failed": 0
+        },
+        {
+          "path": "portal-destination.test.ts",
+          "passed": 58,
+          "failed": 0
+        },
+        {
+          "path": "portal-direction.test.ts",
+          "passed": 15,
+          "failed": 0
+        },
+        {
+          "path": "portal-inline-size.test.ts",
+          "passed": 67,
+          "failed": 0
+        },
+        {
+          "path": "shadow-retarget-routing.test.ts",
+          "passed": 13,
+          "failed": 0
+        },
+        {
+          "path": "teardown.test.ts",
+          "passed": 1,
+          "failed": 0
+        },
+        {
+          "path": "collapsible-projections.test.ts",
+          "passed": 12,
+          "failed": 0
+        },
+        {
+          "path": "collapsible.test.ts",
+          "passed": 25,
+          "failed": 0
+        },
+        {
+          "path": "dialog.test.ts",
+          "passed": 7,
+          "failed": 0
+        },
+        {
+          "path": "event-routing.test.ts",
+          "passed": 1,
+          "failed": 0
+        },
+        {
+          "path": "event.test.ts",
+          "passed": 2,
+          "failed": 0
+        },
+        {
+          "path": "field.test.ts",
+          "passed": 35,
+          "failed": 0
+        },
+        {
+          "path": "overlay-portal-ownership.test.ts",
+          "passed": 2,
+          "failed": 0
+        },
+        {
+          "path": "portal-destination-lifetimes.integration.test.ts",
+          "passed": 17,
+          "failed": 0
+        },
+        {
+          "path": "portal-destination-material-reentry.integration.test.ts",
+          "passed": 3,
+          "failed": 0
+        },
+        {
+          "path": "portal-destination.integration.test.ts",
+          "passed": 1,
+          "failed": 0
+        },
+        {
+          "path": "portal-direction.integration.test.ts",
+          "passed": 1,
+          "failed": 0
+        },
+        {
+          "path": "portal-document-destination.integration.test.ts",
+          "passed": 6,
+          "failed": 0
+        },
+        {
+          "path": "select-keyboard.integration.test.ts",
+          "passed": 4,
+          "failed": 0
+        },
+        {
+          "path": "select-presence-remount.integration.test.ts",
+          "passed": 4,
+          "failed": 0
+        },
+        {
+          "path": "select.test.ts",
+          "passed": 2,
+          "failed": 0
+        },
+        {
+          "path": "collapsible.test.ts",
+          "passed": 25,
+          "failed": 0
+        },
+        {
+          "path": "event-routing.test.ts",
+          "passed": 2,
+          "failed": 0
+        },
+        {
+          "path": "event.test.ts",
+          "passed": 2,
+          "failed": 0
+        },
+        {
+          "path": "field.test.ts",
+          "passed": 35,
+          "failed": 0
+        },
+        {
+          "path": "portal-destination-lifetimes.integration.test.ts",
+          "passed": 17,
+          "failed": 0
+        },
+        {
+          "path": "portal-without-fragment.integration.test.ts",
+          "passed": 18,
+          "failed": 0
+        },
+        {
+          "path": "portal-without-updated.integration.test.ts",
+          "passed": 20,
+          "failed": 0
+        },
+        {
+          "path": "select.test.ts",
+          "passed": 3,
+          "failed": 0
+        },
+        {
+          "path": "collapsible.test.ts",
+          "passed": 25,
+          "failed": 0
+        },
+        {
+          "path": "event.test.ts",
+          "passed": 3,
+          "failed": 0
+        },
+        {
+          "path": "field.test.ts",
+          "passed": 35,
+          "failed": 0
+        },
+        {
+          "path": "portal-destination-lifetimes.integration.test.ts",
+          "passed": 17,
+          "failed": 0
+        },
+        {
+          "path": "select-structural.test.ts",
+          "passed": 2,
+          "failed": 0
+        },
+        {
+          "path": "select.test.ts",
+          "passed": 4,
+          "failed": 0
+        },
+        {
+          "path": "collapsible.test.ts",
+          "passed": 25,
+          "failed": 0
+        },
+        {
+          "path": "dialog-overlay.test.ts",
+          "passed": 8,
+          "failed": 0
+        },
+        {
+          "path": "dialog-portal-owner.test.ts",
+          "passed": 2,
+          "failed": 0
+        },
+        {
+          "path": "field.test.ts",
+          "passed": 35,
+          "failed": 0
+        },
+        {
+          "path": "focus-portal-parent-release.integration.test.ts",
+          "passed": 6,
+          "failed": 0
+        },
+        {
+          "path": "portal-adoption-review.test.ts",
+          "passed": 3,
+          "failed": 0
+        },
+        {
+          "path": "portal-body-destination.test.ts",
+          "passed": 10,
+          "failed": 0
+        },
+        {
+          "path": "portal-conceal.test.ts",
+          "passed": 13,
+          "failed": 0
+        },
+        {
+          "path": "portal-destination-lifetimes.integration.test.ts",
+          "passed": 17,
+          "failed": 0
+        },
+        {
+          "path": "portal-destination-reentry.test.ts",
+          "passed": 3,
+          "failed": 0
+        },
+        {
+          "path": "portal-mount-ownership.test.ts",
+          "passed": 6,
+          "failed": 0
+        },
+        {
+          "path": "router.spec.test.ts",
+          "passed": 7,
+          "failed": 0
+        },
+        {
+          "path": "catalog-boundary.test.ts",
+          "passed": 3,
+          "failed": 0
+        },
+        {
+          "path": "domain-scope-query.test.ts",
+          "passed": 1,
+          "failed": 0
+        },
+        {
+          "path": "impl-spec.test.ts",
+          "passed": 12,
+          "failed": 0
+        },
+        {
+          "path": "scoped-query.test.ts",
+          "passed": 4,
+          "failed": 0
+        },
+        {
+          "path": "terminal-domain-retirement.test.ts",
+          "passed": 8,
+          "failed": 0
+        },
+        {
+          "path": "host-callback-reentrancy.test.ts",
+          "passed": 32,
+          "failed": 0
+        },
+        {
+          "path": "host-neutral-target.test.ts",
+          "passed": 10,
+          "failed": 0
+        },
+        {
+          "path": "modal-lock.test.ts",
+          "passed": 8,
+          "failed": 0
+        },
+        {
+          "path": "resource-lifetime.test.ts",
+          "passed": 2,
+          "failed": 0
+        },
+        {
+          "path": "target-alignment-binding.test.ts",
+          "passed": 5,
+          "failed": 0
+        },
+        {
+          "path": "available-space.test.ts",
+          "passed": 13,
+          "failed": 0
+        },
+        {
+          "path": "anatomy.catalog-lifecycle.contract.test.ts",
+          "passed": 1,
+          "failed": 0
+        },
+        {
+          "path": "anatomy.order.v0.contract.test.ts",
+          "passed": 5,
+          "failed": 0
+        },
+        {
+          "path": "as-hook.v0.contract.test.ts",
+          "passed": 22,
+          "failed": 0
+        },
+        {
+          "path": "context-lifecycle.v1.contract.test.ts",
+          "passed": 1,
+          "failed": 0
+        },
+        {
+          "path": "delay.v0.contract.test.ts",
+          "passed": 14,
+          "failed": 0
+        },
+        {
+          "path": "expose-lifecycle.v1.contract.test.ts",
+          "passed": 1,
+          "failed": 0
+        },
+        {
+          "path": "hit-participation.catalog-lifecycle.contract.test.ts",
+          "passed": 1,
+          "failed": 0
+        },
+        {
+          "path": "lifecycle-with-host.v0.contract.test.ts",
+          "passed": 5,
+          "failed": 0
+        },
+        {
+          "path": "lifecycle.checkpoints.v0.contract.test.ts",
+          "passed": 4,
+          "failed": 0
+        },
+        {
+          "path": "lifecycle.domain.cp0.v0.contract.test.ts",
+          "passed": 1,
+          "failed": 0
+        },
+        {
+          "path": "lifecycle.module-resources.v1.contract.test.ts",
+          "passed": 22,
+          "failed": 0
+        },
+        {
+          "path": "lifecycle.registration.v0.contract.test.ts",
+          "passed": 1,
+          "failed": 0
+        },
+        {
+          "path": "lifecycle.same-checkpoint-order.contract.test.ts",
+          "passed": 1,
+          "failed": 0
+        },
+        {
+          "path": "lifecycle.session.transitions.v1.contract.test.ts",
+          "passed": 14,
+          "failed": 0
+        },
+        {
+          "path": "lifecycle.session.update-epoch.v1.contract.test.ts",
+          "passed": 13,
+          "failed": 0
+        },
+        {
+          "path": "lifecycle.session.v1.contract.test.ts",
+          "passed": 3,
+          "failed": 0
+        },
+        {
+          "path": "lifecycle.update-order.strict.v0.contract.test.ts",
+          "passed": 1,
+          "failed": 0
+        },
+        {
+          "path": "lifecycle.view-intent.v1.contract.test.ts",
+          "passed": 6,
+          "failed": 0
+        },
+        {
+          "path": "rule.color-scheme-lifecycle.contract.test.ts",
+          "passed": 11,
+          "failed": 0
+        },
+        {
+          "path": "rule.lifecycle-catalog.contract.test.ts",
+          "passed": 3,
+          "failed": 0
+        },
+        {
+          "path": "rule.preferences-lifecycle.contract.test.ts",
+          "passed": 11,
+          "failed": 0
+        },
+        {
+          "path": "rule.style-support-lifecycle.contract.test.ts",
+          "passed": 10,
+          "failed": 0
+        },
+        {
+          "path": "state-lifecycle.v1.contract.test.ts",
+          "passed": 1,
+          "failed": 0
+        },
+        {
+          "path": "calendar-caption-composition.test.ts",
+          "passed": 34,
+          "failed": 0
+        },
+        {
+          "path": "calendar.test.ts",
+          "passed": 19,
+          "failed": 0
+        },
+        {
+          "path": "field-current-value-admission-review.test.ts",
+          "passed": 11,
+          "failed": 0
+        },
+        {
+          "path": "field-nested-consumer.test.ts",
+          "passed": 5,
+          "failed": 0
+        },
+        {
+          "path": "field-public-boundaries.test.ts",
+          "passed": 2,
+          "failed": 0
+        },
+        {
+          "path": "field-review-regressions.test.ts",
+          "passed": 28,
+          "failed": 0
+        },
+        {
+          "path": "field-validation-interruptions.test.ts",
+          "passed": 24,
+          "failed": 0
+        },
+        {
+          "path": "field.test.ts",
+          "passed": 24,
+          "failed": 0
+        },
+        {
+          "path": "form-actions-material.test.ts",
+          "passed": 4,
+          "failed": 0
+        },
+        {
+          "path": "form-actions-quality.test.ts",
+          "passed": 9,
+          "failed": 4
+        },
+        {
+          "path": "form-composite-controls.test.ts",
+          "passed": 9,
+          "failed": 0
+        },
+        {
+          "path": "form-composite-family-projections.test.ts",
+          "passed": 4,
+          "failed": 0
+        },
+        {
+          "path": "form-family-projections.test.ts",
+          "passed": 12,
+          "failed": 0
+        },
+        {
+          "path": "form-field-invalid-feedback.test.ts",
+          "passed": 6,
+          "failed": 0
+        },
+        {
+          "path": "form-primitives.test.ts",
+          "passed": 5,
+          "failed": 0
+        },
+        {
+          "path": "form-toast-reentry.test.ts",
+          "passed": 13,
+          "failed": 0
+        },
+        {
+          "path": "form-upstream-paint.test.ts",
+          "passed": 6,
+          "failed": 0
+        },
+        {
+          "path": "notification-retirement-lifecycle.test.ts",
+          "passed": 103,
+          "failed": 0
+        },
+        {
+          "path": "popup-snap-validation-lifecycle.test.ts",
+          "passed": 41,
+          "failed": 0
+        },
+        {
+          "path": "search-retirement-probe.test.ts",
+          "passed": 34,
+          "failed": 0
+        },
+        {
+          "path": "select.test.ts",
+          "passed": 25,
+          "failed": 0
+        },
+        {
+          "path": "selection-activate.test.ts",
+          "passed": 25,
+          "failed": 0
+        },
+        {
+          "path": "selection-reset-lifecycle.test.ts",
+          "passed": 69,
+          "failed": 0
+        },
+        {
+          "path": "slider-root-lifecycle.test.ts",
+          "passed": 13,
+          "failed": 0
+        },
+        {
+          "path": "slider-values-publication.test.ts",
+          "passed": 54,
+          "failed": 0
+        },
+        {
+          "path": "toggle-group-orientation.test.ts",
+          "passed": 36,
+          "failed": 0
+        },
+        {
+          "path": "toolbar-separator-lifecycle.test.ts",
+          "passed": 1,
+          "failed": 0
+        },
+        {
+          "path": "select-alignment-owner.test.ts",
+          "passed": 42,
+          "failed": 0
+        },
+        {
+          "path": "select.test.ts",
+          "passed": 7,
+          "failed": 0
+        },
+        {
+          "path": "lifecycle-callback-order.test.ts",
+          "passed": 1,
+          "failed": 0
+        },
+        {
+          "path": "event-default-action.v0.contract.test.ts",
+          "passed": 2,
+          "failed": 0
+        },
+        {
+          "path": "event-target-requirements.v0.contract.test.ts",
+          "passed": 3,
+          "failed": 0
+        },
+        {
+          "path": "pointer-root-ownership.v0.contract.test.ts",
+          "passed": 10,
+          "failed": 0
+        },
+        {
+          "path": "event.router.dual-path.v0.contract.test.ts",
+          "passed": 1,
+          "failed": 0
+        },
+        {
+          "path": "event.router.mapping.v0.contract.test.ts",
+          "passed": 11,
+          "failed": 0
+        },
+        {
+          "path": "event.router.no-dedupe.v0.contract.test.ts",
+          "passed": 1,
+          "failed": 0
+        },
+        {
+          "path": "anatomy-order.v0.contract.test.ts",
+          "passed": 3,
+          "failed": 0
+        },
+        {
+          "path": "controls.test.ts",
+          "passed": 12,
+          "failed": 0
+        },
+        {
+          "path": "search.test.ts",
+          "passed": 25,
+          "failed": 0
+        },
+        {
+          "path": "header-ghost-appearance.test.ts",
+          "passed": 8,
+          "failed": 0
+        },
+        {
+          "path": "site-contents-command.test.ts",
+          "passed": 13,
+          "failed": 0
+        },
+        {
+          "path": "site-header-disclosure.test.ts",
+          "passed": 33,
+          "failed": 0
+        },
+        {
+          "path": "site-header-layout.test.ts",
+          "passed": 21,
+          "failed": 0
+        },
+        {
+          "path": "site-header-select-lifecycle.test.ts",
+          "passed": 9,
+          "failed": 0
+        },
+        {
+          "path": "site-sidebar-current-visibility.test.ts",
+          "passed": 13,
+          "failed": 0
+        },
+        {
+          "path": "homepage-runtime-client.test.ts",
+          "passed": 27,
+          "failed": 0
+        },
+        {
+          "path": "homepage-typography-state.test.ts",
+          "passed": 15,
+          "failed": 0
+        },
+        {
+          "path": "collapsible-projections.test.ts",
+          "passed": 5,
+          "failed": 0
+        },
+        {
+          "path": "preview-material-public-style.test.ts",
+          "passed": 1,
+          "failed": 0
+        },
+        {
+          "path": "preview-material-rebind.test.ts",
+          "passed": 16,
+          "failed": 0
+        },
+        {
+          "path": "preview-material-scene.test.ts",
+          "passed": 7,
+          "failed": 0
+        },
+        {
+          "path": "projection-composition.test.ts",
+          "passed": 40,
+          "failed": 0
+        },
+        {
+          "path": "browser-harness.test.ts",
+          "passed": 111,
+          "failed": 0
+        },
+        {
+          "path": "collapsible-focus-observation.test.ts",
+          "passed": 15,
+          "failed": 0
+        },
+        {
+          "path": "collapsible-focus-path-probe.test.ts",
+          "passed": 15,
+          "failed": 0
+        },
+        {
+          "path": "family-query-observer.test.ts",
+          "passed": 4,
+          "failed": 0
+        },
+        {
+          "path": "field-focus-observation.test.ts",
+          "passed": 24,
+          "failed": 0
+        },
+        {
+          "path": "site-header-breakpoint-evidence.test.ts",
+          "passed": 9,
+          "failed": 0
+        },
+        {
+          "path": "site-header-browser.test.ts",
+          "passed": 8,
+          "failed": 0
+        },
+        {
+          "path": "site-search-evidence.test.ts",
+          "passed": 18,
+          "failed": 0
+        }
+      ]
+    },
+    {
+      "name": "final-cf-native176",
+      "head": "cf4848c49ad8849d45f03f3270b2ba78beffc7a2",
+      "indexTree": "d9fa302caf830f22fbde5bf6edb1852a8e39948e",
+      "start": "2026-10-22T08:59:34.324213+00:00",
+      "end": "2026-10-22T09:08:34.140962+00:00",
+      "exit": 1,
+      "statusBefore": "",
+      "statusAfter": "",
+      "sourceStable": true,
+      "counts": {
+        "numPassedTests": 175,
+        "numFailedTests": 1,
+        "numPendingTests": 0
+      },
+      "fileResults": [
+        {
+          "path": "shadow-closeout.browser.test.ts",
+          "passed": 111,
+          "failed": 0
+        },
+        {
+          "path": "header-select-elevation.browser.test.ts",
+          "passed": 16,
+          "failed": 0
+        },
+        {
+          "path": "homepage-dogfood.browser.test.ts",
+          "passed": 9,
+          "failed": 0
+        },
+        {
+          "path": "site-native-links.browser.test.ts",
+          "passed": 9,
+          "failed": 1
+        },
+        {
+          "path": "site-search-commands.browser.test.ts",
+          "passed": 30,
+          "failed": 0
+        }
+      ]
+    },
+    {
+      "name": "final-cf-portal16",
+      "head": "cf4848c49ad8849d45f03f3270b2ba78beffc7a2",
+      "indexTree": "d9fa302caf830f22fbde5bf6edb1852a8e39948e",
+      "start": "2026-10-22T09:08:34.510241+00:00",
+      "end": "2026-10-22T09:09:39.676309+00:00",
+      "exit": 0,
+      "statusBefore": "",
+      "statusAfter": "",
+      "sourceStable": true,
+      "counts": {
+        "numPassedTests": 16,
+        "numFailedTests": 0,
+        "numPendingTests": 0
+      },
+      "fileResults": [
+        {
+          "path": "dialog-available-space.browser.test.ts",
+          "passed": 8,
+          "failed": 0
+        },
+        {
+          "path": "overlay-portal-direction.browser.test.ts",
+          "passed": 8,
+          "failed": 0
+        }
+      ]
+    },
+    {
+      "name": "final-cf-production27",
+      "head": "cf4848c49ad8849d45f03f3270b2ba78beffc7a2",
+      "indexTree": "d9fa302caf830f22fbde5bf6edb1852a8e39948e",
+      "start": "2026-10-22T09:44:40.934044+00:00",
+      "end": "2026-10-22T09:45:10.544555+00:00",
+      "exit": 0,
+      "statusBefore": "",
+      "statusAfter": "",
+      "sourceStable": true,
+      "counts": {
+        "numPassedTests": 27,
+        "numFailedTests": 0,
+        "numPendingTests": 0
+      },
+      "fileResults": [
+        {
+          "path": "site-startup-theme.browser.test.ts",
+          "passed": 27,
+          "failed": 0
+        }
+      ]
+    }
+  ],
+  "canonical": {
+    "schemaVersion": 1,
+    "kind": "source-bound-CF-cached-canonical-final-review",
+    "createdAt": "2026-10-22T10:02:13.441528+00:00",
+    "result": "partial",
+    "reviewDisposition": "ABSTAIN",
+    "sourceHead": "cf4848c49ad8849d45f03f3270b2ba78beffc7a2",
+    "sourceTree": "d9fa302caf830f22fbde5bf6edb1852a8e39948e",
+    "runId": 39751754024,
+    "status": "completed",
+    "conclusion": "failure",
+    "checkoutSha": "df44b3c640a489a060a57ef8fbb0870bf5d4cbbd",
+    "checkoutTree": "d9fa302caf830f22fbde5bf6edb1852a8e39948e",
+    "checkoutParents": [
+      "b928a56c6909835771fc2131503b4a7139db738c",
+      "cf4848c49ad8849d45f03f3270b2ba78beffc7a2"
+    ],
+    "terminalMetadataReadEnd": "2026-10-22T09:40:03.223177+00:00",
+    "jobs": {
+      "total": 22,
+      "conclusions": {
+        "success": 12,
+        "failure": 10
+      },
+      "paginationComplete": true,
+      "pages": 1,
+      "rawSource": {
+        "relativeInput": "live/current-cf/20261022T093836Z/runs/39751754024/jobs-pages.json",
+        "rawSHA256": "44d47a093888b8ea09cf3aaf5afdd53591603dad1e10a46630de5ab6a95645c0",
+        "rawBytes": 60154
+      }
+    },
+    "planSource": {
+      "relativeInput": "canonical-cf/independent-review/actual-test-plan.json",
+      "rawSHA256": "d4b21d8a24d28a54e6bb608dd2d40ea8a708a958f9a578ca98657ab2b4844f0c",
+      "rawBytes": 98200
+    },
+    "expectedBrowserShards": [1, 2, 3, 4, 5, 6, 7, 8],
+    "plannedBrowserFileCounts": [11, 11, 10, 10, 10, 10, 10, 10],
+    "plannedGeneralFiles": 1268,
+    "plannedDedicatedExclusions": 26,
+    "browserShards": [
+      {
+        "shard": 1,
+        "jobId": 119735927512,
+        "status": "completed",
+        "conclusion": "failure",
+        "completeSummary": true,
+        "summary": {
+          "passed": 227,
+          "failed": 13,
+          "skipped": 0
+        },
+        "summaryEvidence": [
+          {
+            "line": 970,
+            "text": "      Tests  13 failed | 227 passed (240)"
+          }
+        ],
+        "exitCodes": [1],
+        "incompleteReason": null,
+        "observedFileResults": [
+          {
+            "line": 402,
+            "text": "✓ packages/adapters/web-component/test/shadow-closeout.browser.test.ts (111 tests) 48893ms"
+          },
+          {
+            "line": 473,
+            "text": "❯ apps/www/src/content/docs/zh-cn/demo-liquid-glass-portal.browser.test.ts (55 tests | 1 failed) 139484ms"
+          },
+          {
+            "line": 569,
+            "text": "❯ apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts (30 tests | 2 failed) 128664ms"
+          },
+          {
+            "line": 677,
+            "text": "❯ apps/www/src/content/docs/zh-cn/home-demo-runtime.browser.test.ts (11 tests | 1 failed) 89775ms"
+          },
+          {
+            "line": 692,
+            "text": "✓ apps/www/src/content/docs/zh-cn/demo-base-controls.browser.test.ts (5 tests) 21751ms"
+          },
+          {
+            "line": 698,
+            "text": "✓ apps/workspace/test/lifecycle.browser.test.ts (7 tests) 23375ms"
+          },
+          {
+            "line": 709,
+            "text": "✓ apps/www/src/content/docs/zh-cn/runtime-layout-parity.browser.test.ts (6 tests) 39558ms"
+          },
+          {
+            "line": 719,
+            "text": "❯ apps/www/src/content/docs/zh-cn/demo-shadow-split-s2.browser.test.ts (4 tests | 4 failed) 317155ms"
+          },
+          {
+            "line": 754,
+            "text": "❯ apps/www/src/content/docs/zh-cn/demo-brutalist-dialog.browser.test.ts (1 test | 1 failed) 8826ms"
+          },
+          {
+            "line": 766,
+            "text": "❯ apps/www/src/content/docs/zh-cn/demo-shadcn-card.browser.test.ts (6 tests | 4 failed) 33127ms"
+          },
+          {
+            "line": 780,
+            "text": "✓ apps/www/test/preferences.browser.test.ts (4 tests) 6445ms"
+          }
+        ],
+        "visibleFailureLines": [
+          {
+            "line": 475,
+            "text": "× Liquid portal container diagnostics (observation, not guard relaxation) > measures the actual docs-shell fixed point with a disposable containment handover 7477ms"
+          },
+          {
+            "line": 573,
+            "text": "× Search family Button commands > shadcn dark 1440px preserves activation, dismissal and focus 5915ms"
+          },
+          {
+            "line": 595,
+            "text": "× Docs shadcn 2048px shows complete runtime values beside real Search 2548ms"
+          },
+          {
+            "line": 680,
+            "text": "× Homepage Runtime demobox browser smoke > reveals React only after complete dark-mode style projection 2838ms"
+          },
+          {
+            "line": 720,
+            "text": "× S2 public Shadow split settings paths > renders all variant/size/theme combinations and exact geometry (zh-cn) 89411ms"
+          },
+          {
+            "line": 726,
+            "text": "× S2 public Shadow split settings paths > renders all variant/size/theme combinations and exact geometry (en) 90001ms"
+          },
+          {
+            "line": 729,
+            "text": "× S2 public Shadow split settings paths > routes native pointer, Tab, Space and Enter once, preserves focus paint and suppresses disabled input 69135ms"
+          },
+          {
+            "line": 740,
+            "text": "× S2 public Shadow split settings paths > retains mixed context, controlled state and slot ownership across move/reconnect without duplicate notifications 66144ms"
+          },
+          {
+            "line": 755,
+            "text": "× Brutalist Dialog overlay geometry > covers the viewport and centres the hard-shadowed panel in all runtimes 6072ms"
+          },
+          {
+            "line": 767,
+            "text": "× Shadcn Card native wc > preserves distinct card paint, inherited content ink and native navigation 4849ms"
+          },
+          {
+            "line": 769,
+            "text": "× Shadcn Card native react > preserves distinct card paint, inherited content ink and native navigation 4960ms"
+          },
+          {
+            "line": 771,
+            "text": "× Shadcn Card native vue > preserves distinct card paint, inherited content ink and native navigation 4883ms"
+          },
+          {
+            "line": 773,
+            "text": "× Shadcn Card native vue2 > preserves distinct card paint, inherited content ink and native navigation 4866ms"
+          },
+          {
+            "line": 788,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/demo-brutalist-dialog.browser.test.ts > Brutalist Dialog overlay geometry > covers the viewport and centres the hard-shadowed panel in all runtimes"
+          },
+          {
+            "line": 804,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/demo-liquid-glass-portal.browser.test.ts > Liquid portal container diagnostics (observation, not guard relaxation) > measures the actual docs-shell fixed point with a disposable containment handover"
+          },
+          {
+            "line": 823,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/demo-shadcn-card.browser.test.ts > Shadcn Card native wc > preserves distinct card paint, inherited content ink and native navigation"
+          },
+          {
+            "line": 824,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/demo-shadcn-card.browser.test.ts > Shadcn Card native react > preserves distinct card paint, inherited content ink and native navigation"
+          },
+          {
+            "line": 825,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/demo-shadcn-card.browser.test.ts > Shadcn Card native vue > preserves distinct card paint, inherited content ink and native navigation"
+          },
+          {
+            "line": 826,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/demo-shadcn-card.browser.test.ts > Shadcn Card native vue2 > preserves distinct card paint, inherited content ink and native navigation"
+          },
+          {
+            "line": 849,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/demo-shadow-split-s2.browser.test.ts > S2 public Shadow split settings paths > renders all variant/size/theme combinations and exact geometry (zh-cn)"
+          },
+          {
+            "line": 867,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/demo-shadow-split-s2.browser.test.ts > S2 public Shadow split settings paths > renders all variant/size/theme combinations and exact geometry (en)"
+          },
+          {
+            "line": 872,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/demo-shadow-split-s2.browser.test.ts > S2 public Shadow split settings paths > routes native pointer, Tab, Space and Enter once, preserves focus paint and suppresses disabled input"
+          },
+          {
+            "line": 895,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/demo-shadow-split-s2.browser.test.ts > S2 public Shadow split settings paths > retains mixed context, controlled state and slot ownership across move/reconnect without duplicate notifications"
+          },
+          {
+            "line": 919,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/home-demo-runtime.browser.test.ts > Homepage Runtime demobox browser smoke > reveals React only after complete dark-mode style projection"
+          },
+          {
+            "line": 938,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts > Search family Button commands > shadcn dark 1440px preserves activation, dismissal and focus"
+          },
+          {
+            "line": 957,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts > Docs shadcn 2048px shows complete runtime values beside real Search"
+          },
+          {
+            "line": 1233,
+            "text": "##[error]Process completed with exit code 1."
+          }
+        ],
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735927512.log",
+          "rawSHA256": "bd26ac2f84921c3cb0f885d4c098a174d182f75896aab6d5dc0b73ea5d4f01f9",
+          "rawBytes": 185460
+        }
+      },
+      {
+        "shard": 2,
+        "jobId": 119735927660,
+        "status": "completed",
+        "conclusion": "failure",
+        "completeSummary": false,
+        "summary": null,
+        "summaryEvidence": [],
+        "exitCodes": [124],
+        "incompleteReason": "process-exit124",
+        "observedFileResults": [
+          {
+            "line": 459,
+            "text": "❯ apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts (9 tests | 1 failed) 107942ms"
+          },
+          {
+            "line": 473,
+            "text": "✓ apps/www/src/components/documentation-image-preview.browser.test.ts (24 tests) 112670ms"
+          },
+          {
+            "line": 507,
+            "text": "✓ apps/www/src/content/docs/zh-cn/site-typography.browser.test.ts (33 tests) 129140ms"
+          },
+          {
+            "line": 544,
+            "text": "✓ apps/www/src/content/docs/zh-cn/demo-shadcn-controls.browser.test.ts (6 tests) 42804ms"
+          }
+        ],
+        "visibleFailureLines": [
+          {
+            "line": 468,
+            "text": "× retains brutalist preference owners and portals through real breakpoint reconnects 4178ms"
+          },
+          {
+            "line": 1412,
+            "text": "##[error]Process completed with exit code 124."
+          }
+        ],
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735927660.log",
+          "rawSHA256": "d24c887e46cf0725628d1d5e5354da27ddc3071afba07565eb84178e36d6ebe6",
+          "rawBytes": 322353
+        }
+      },
+      {
+        "shard": 3,
+        "jobId": 119735927541,
+        "status": "completed",
+        "conclusion": "failure",
+        "completeSummary": false,
+        "summary": null,
+        "summaryEvidence": [],
+        "exitCodes": [],
+        "incompleteReason": "font-install-setup-timeout-before-Vitest",
+        "observedFileResults": [],
+        "visibleFailureLines": [
+          {
+            "line": 231,
+            "text": "##[error]The action 'Install real CJK fallback for typography glyph evidence' has timed out after 3 minutes."
+          }
+        ],
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735927541.log",
+          "rawSHA256": "868f348faa9c3c81001d6e06f38b1bbfe3610816346f9ed94ad177c1e405868e",
+          "rawBytes": 21146
+        }
+      },
+      {
+        "shard": 4,
+        "jobId": 119735927782,
+        "status": "completed",
+        "conclusion": "failure",
+        "completeSummary": true,
+        "summary": {
+          "passed": 122,
+          "failed": 2,
+          "skipped": 0
+        },
+        "summaryEvidence": [
+          {
+            "line": 601,
+            "text": "      Tests  2 failed | 122 passed (124)"
+          }
+        ],
+        "exitCodes": [1],
+        "incompleteReason": null,
+        "observedFileResults": [
+          {
+            "line": 405,
+            "text": "✓ apps/www/src/content/docs/zh-cn/scroll-area-corner.browser.test.ts (2 tests) 25348ms"
+          },
+          {
+            "line": 411,
+            "text": "✓ apps/www/src/content/docs/zh-cn/demo-passive-atoms.browser.test.ts (80 tests) 200335ms"
+          },
+          {
+            "line": 495,
+            "text": "✓ apps/www/src/content/docs/zh-cn/code-surface-grammar.browser.test.ts (9 tests) 58463ms"
+          },
+          {
+            "line": 508,
+            "text": "✓ apps/www/src/content/docs/zh-cn/demo-brutalist-spinner.browser.test.ts (4 tests) 7541ms"
+          },
+          {
+            "line": 514,
+            "text": "✓ apps/www/src/content/docs/zh-cn/overlay-portal-direction.browser.test.ts (8 tests) 18879ms"
+          },
+          {
+            "line": 526,
+            "text": "✓ apps/www/test/button-view-lifetime.browser.test.ts (8 tests) 12584ms"
+          },
+          {
+            "line": 553,
+            "text": "✓ apps/www/src/content/docs/zh-cn/demo-shadcn-input.browser.test.ts (4 tests) 11039ms"
+          },
+          {
+            "line": 561,
+            "text": "✓ apps/www/test/tree-navigation.browser.test.ts (2 tests) 2742ms"
+          },
+          {
+            "line": 570,
+            "text": "✓ apps/www/src/content/docs/zh-cn/demo-base-table.browser.test.ts (5 tests) 13071ms"
+          },
+          {
+            "line": 579,
+            "text": "❯ apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts (2 tests | 2 failed) 177853ms"
+          }
+        ],
+        "visibleFailureLines": [
+          {
+            "line": 580,
+            "text": "× S4 complete public Dialog settings > zh-cn: native Light/split/mixed acceptance 84680ms"
+          },
+          {
+            "line": 582,
+            "text": "× S4 complete public Dialog settings > en: native Light/split/mixed acceptance 92645ms"
+          },
+          {
+            "line": 587,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts > S4 complete public Dialog settings > zh-cn: native Light/split/mixed acceptance"
+          },
+          {
+            "line": 588,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts > S4 complete public Dialog settings > en: native Light/split/mixed acceptance"
+          },
+          {
+            "line": 862,
+            "text": "##[error]Process completed with exit code 1."
+          }
+        ],
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735927782.log",
+          "rawSHA256": "3dbbf71ac6d0d0f24022f0aa091bcc10888220926de637a723d4047b877929fd",
+          "rawBytes": 110442
+        }
+      },
+      {
+        "shard": 5,
+        "jobId": 119735927814,
+        "status": "completed",
+        "conclusion": "failure",
+        "completeSummary": true,
+        "summary": {
+          "passed": 88,
+          "failed": 2,
+          "skipped": 15
+        },
+        "summaryEvidence": [
+          {
+            "line": 745,
+            "text": "      Tests  2 failed | 88 passed | 15 skipped (105)"
+          }
+        ],
+        "exitCodes": [1],
+        "incompleteReason": null,
+        "observedFileResults": [
+          {
+            "line": 453,
+            "text": "✓ apps/www/src/content/docs/zh-cn/demo-prototype-style-closure.browser.test.ts (9 tests) 39614ms"
+          },
+          {
+            "line": 617,
+            "text": "✓ apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts (36 tests) 202375ms"
+          },
+          {
+            "line": 657,
+            "text": "✓ apps/www/src/content/docs/zh-cn/code-surfaces.browser.test.ts (7 tests) 57147ms"
+          },
+          {
+            "line": 665,
+            "text": "↓ apps/www/src/content/docs/zh-cn/demo-bootstrap-state-controls.browser.test.ts (15 tests | 15 skipped)"
+          },
+          {
+            "line": 669,
+            "text": "✓ apps/www/test/color-scheme.browser.test.ts (9 tests) 30581ms"
+          },
+          {
+            "line": 685,
+            "text": "✓ apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts (8 tests) 40454ms"
+          },
+          {
+            "line": 697,
+            "text": "✓ apps/www/src/content/docs/zh-cn/overlay-scrollbar-geometry.browser.test.ts (16 tests) 79756ms"
+          },
+          {
+            "line": 717,
+            "text": "✓ apps/www/test/virtual-list-resize.browser.test.ts (1 test) 883ms"
+          },
+          {
+            "line": 719,
+            "text": "✓ apps/www/src/content/docs/zh-cn/scroll-chrome-display.browser.test.ts (2 tests) 754ms"
+          },
+          {
+            "line": 723,
+            "text": "❯ apps/www/src/content/docs/zh-cn/demo-shadow-split-s5.browser.test.ts (2 tests | 2 failed) 169803ms"
+          }
+        ],
+        "visibleFailureLines": [
+          {
+            "line": 724,
+            "text": "× S5 native editor acceptance paths > zh-cn: Light/split/mixed native editing 81326ms"
+          },
+          {
+            "line": 726,
+            "text": "× S5 native editor acceptance paths > en: Light/split/mixed native editing 87697ms"
+          },
+          {
+            "line": 731,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/demo-shadow-split-s5.browser.test.ts > S5 native editor acceptance paths > zh-cn: Light/split/mixed native editing"
+          },
+          {
+            "line": 732,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/demo-shadow-split-s5.browser.test.ts > S5 native editor acceptance paths > en: Light/split/mixed native editing"
+          },
+          {
+            "line": 1004,
+            "text": "##[error]Process completed with exit code 1."
+          }
+        ],
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735927814.log",
+          "rawSHA256": "3c41db5ed33fb2056464b44c3de74bddeb10f080d9e4c8d385c9ddda4510a405",
+          "rawBytes": 138316
+        }
+      },
+      {
+        "shard": 6,
+        "jobId": 119735927619,
+        "status": "completed",
+        "conclusion": "failure",
+        "completeSummary": false,
+        "summary": null,
+        "summaryEvidence": [],
+        "exitCodes": [],
+        "incompleteReason": "font-install-setup-timeout-before-Vitest",
+        "observedFileResults": [],
+        "visibleFailureLines": [
+          {
+            "line": 230,
+            "text": "##[error]The action 'Install real CJK fallback for typography glyph evidence' has timed out after 3 minutes."
+          }
+        ],
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735927619.log",
+          "rawSHA256": "af6347714ad2eb817519185a6dfd58aaa1bbb14fef4f9e412b95ad2567f15327",
+          "rawBytes": 21057
+        }
+      },
+      {
+        "shard": 7,
+        "jobId": 119735927796,
+        "status": "completed",
+        "conclusion": "failure",
+        "completeSummary": false,
+        "summary": null,
+        "summaryEvidence": [],
+        "exitCodes": [124],
+        "incompleteReason": "process-exit124",
+        "observedFileResults": [
+          {
+            "line": 414,
+            "text": "✓ apps/www/src/content/docs/zh-cn/site-copy-commands.browser.test.ts (14 tests) 120010ms"
+          },
+          {
+            "line": 432,
+            "text": "✓ apps/www/src/content/docs/zh-cn/quick-start-first-frame-fragment-control.browser.test.ts (4 tests) 4983ms"
+          },
+          {
+            "line": 440,
+            "text": "✓ apps/www/src/content/docs/zh-cn/demo-select-draft-projections.browser.test.ts (24 tests) 183077ms"
+          },
+          {
+            "line": 468,
+            "text": "✓ apps/www/src/content/docs/zh-cn/demo-shadcn-tooltip.browser.test.ts (2 tests) 9006ms"
+          },
+          {
+            "line": 474,
+            "text": "✓ apps/www/src/content/docs/zh-cn/demo-accordion-family.browser.test.ts (25 tests) 209089ms"
+          },
+          {
+            "line": 503,
+            "text": "✓ apps/www/src/content/docs/zh-cn/demo-field-family.browser.test.ts (25 tests) 294687ms"
+          },
+          {
+            "line": 532,
+            "text": "❯ apps/www/src/content/docs/zh-cn/demo-brutalist-checkbox.browser.test.ts (1 test | 1 failed) 4056ms"
+          },
+          {
+            "line": 538,
+            "text": "✓ apps/www/src/content/docs/zh-cn/docs-content-flow.browser.test.ts (6 tests) 41542ms"
+          }
+        ],
+        "visibleFailureLines": [
+          {
+            "line": 533,
+            "text": "× Brutalist Checkbox browser acceptance > renders state, contrast, focus, and one accessible control in every public runtime 3584ms"
+          },
+          {
+            "line": 798,
+            "text": "##[error]Process completed with exit code 124."
+          }
+        ],
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735927796.log",
+          "rawSHA256": "40e4cb8c24ae3bf28796ce4e983fe41ee120d03c466472dac50466306bfda12a",
+          "rawBytes": 100450
+        }
+      },
+      {
+        "shard": 8,
+        "jobId": 119735927812,
+        "status": "completed",
+        "conclusion": "failure",
+        "completeSummary": false,
+        "summary": null,
+        "summaryEvidence": [],
+        "exitCodes": [124],
+        "incompleteReason": "process-exit124",
+        "observedFileResults": [
+          {
+            "line": 451,
+            "text": "✓ apps/www/src/content/docs/zh-cn/site-native-links.browser.test.ts (10 tests) 138037ms"
+          },
+          {
+            "line": 504,
+            "text": "❯ apps/www/src/content/docs/zh-cn/demo-brutalist-controls.browser.test.ts (10 tests | 2 failed) 108579ms"
+          },
+          {
+            "line": 520,
+            "text": "✓ apps/www/src/content/docs/zh-cn/quick-start-first-frame.browser.test.ts (20 tests) 129830ms"
+          },
+          {
+            "line": 544,
+            "text": "✓ apps/www/src/content/docs/zh-cn/header-select-elevation.browser.test.ts (16 tests) 312080ms"
+          },
+          {
+            "line": 564,
+            "text": "❯ apps/www/src/content/docs/zh-cn/demo-liquid-glass-material.browser.test.ts (3 tests | 2 failed) 54321ms"
+          }
+        ],
+        "visibleFailureLines": [
+          {
+            "line": 506,
+            "text": "× Brutalist control documentation browser regressions > keeps the Tabs Root bounds stable across selection in all runtimes 33385ms"
+          },
+          {
+            "line": 508,
+            "text": "× Brutalist control documentation browser regressions > keeps Dropdown placement fixed while Trigger hover and press transforms change 23523ms"
+          },
+          {
+            "line": 565,
+            "text": "× V2 optical paint through four real Web Adapter runtimes > light: visible dynamic source, optical pixels, motion, input and revocation 22190ms"
+          },
+          {
+            "line": 567,
+            "text": "× V2 optical paint through four real Web Adapter runtimes > dark: visible dynamic source, optical pixels, motion, input and revocation 21616ms"
+          },
+          {
+            "line": 1101,
+            "text": "##[error]Process completed with exit code 124."
+          }
+        ],
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735927812.log",
+          "rawSHA256": "c4f4e50e6d8b29cd5045d467ba04dceb979c0683a31cceff0779e7ef71762952",
+          "rawBytes": 148464
+        }
+      }
+    ],
+    "completeShardSubtotal": {
+      "passed": 437,
+      "failed": 17,
+      "skipped": 15
+    },
+    "completeShardNumbers": [1, 4, 5],
+    "deadlineIncompleteShards": [2, 7, 8],
+    "setupNoExecutionShards": [3, 6],
+    "allEightTestTotal": null,
+    "jobRows": [
+      {
+        "run": 39751753866,
+        "job": 119733776638,
+        "name": "browser-evidence",
+        "workflow": "Overlay portal direction native evidence",
+        "conclusion": "failure",
+        "logSHA256": "7e9f22bd57a5e2bb0e7190f42aaef4a288cbd14a742390be5fd7a060dd60ffde",
+        "bytes": 21821,
+        "summary": [],
+        "errors": [
+          {
+            "line": 240,
+            "text": "##[error]The action 'Install the matching public CJK font fallback' has timed out after 3 minutes."
+          }
+        ],
+        "checkout": ["cf4848c49ad8849d45f03f3270b2ba78beffc7a2"],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119733776638.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119733776638.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733776638.log",
+          "rawSHA256": "7e9f22bd57a5e2bb0e7190f42aaef4a288cbd14a742390be5fd7a060dd60ffde",
+          "rawBytes": 21821
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733776638.json",
+          "rawSHA256": "616140838fb2b867986068e91e7937db377807d99b2d161ac4979a7bab7cd93a",
+          "rawBytes": 519
+        },
+        "observedFileResults": [],
+        "visibleFailureLines": [
+          {
+            "line": 240,
+            "text": "##[error]The action 'Install the matching public CJK font fallback' has timed out after 3 minutes."
+          }
+        ],
+        "exitCodes": []
+      },
+      {
+        "run": 39751753970,
+        "job": 119733777266,
+        "name": "matched-browser (baseline)",
+        "workflow": "Dialog available-space matched evidence",
+        "conclusion": "success",
+        "logSHA256": "2790310965d1787422c96a0dbc6182a6cca39a1561f7ac181181def4332d9d6f",
+        "bytes": 79609,
+        "summary": [
+          {
+            "line": 777,
+            "text": "      Tests  8 failed (8)"
+          }
+        ],
+        "errors": [],
+        "checkout": [
+          "cf4848c49ad8849d45f03f3270b2ba78beffc7a2",
+          "15d864de54210c2eebc4f4b2fec6235324989989"
+        ],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119733777266.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119733777266.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733777266.log",
+          "rawSHA256": "2790310965d1787422c96a0dbc6182a6cca39a1561f7ac181181def4332d9d6f",
+          "rawBytes": 79609
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733777266.json",
+          "rawSHA256": "d9d4f4d7dcfee90f7668fff0f4ba21f8f282d3b39201db974e73957ce272bda0",
+          "rawBytes": 528
+        },
+        "observedFileResults": [
+          {
+            "line": 706,
+            "text": "❯ apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts (8 tests | 8 failed) 39324ms"
+          }
+        ],
+        "visibleFailureLines": [
+          {
+            "line": 707,
+            "text": "× shadcn/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close 5321ms"
+          },
+          {
+            "line": 709,
+            "text": "× shadcn/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close 3179ms"
+          },
+          {
+            "line": 711,
+            "text": "× shadcn/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close 2965ms"
+          },
+          {
+            "line": 713,
+            "text": "× shadcn/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close 1594ms"
+          },
+          {
+            "line": 715,
+            "text": "× brutalist/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close 2317ms"
+          },
+          {
+            "line": 717,
+            "text": "× brutalist/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close 2581ms"
+          },
+          {
+            "line": 719,
+            "text": "× brutalist/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close 2483ms"
+          },
+          {
+            "line": 721,
+            "text": "× brutalist/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close 2483ms"
+          },
+          {
+            "line": 726,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts > shadcn/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close"
+          },
+          {
+            "line": 727,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts > shadcn/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close"
+          },
+          {
+            "line": 728,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts > shadcn/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close"
+          },
+          {
+            "line": 741,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts > shadcn/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close"
+          },
+          {
+            "line": 753,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts > brutalist/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close"
+          },
+          {
+            "line": 754,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts > brutalist/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close"
+          },
+          {
+            "line": 755,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts > brutalist/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close"
+          },
+          {
+            "line": 756,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts > brutalist/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close"
+          }
+        ],
+        "exitCodes": []
+      },
+      {
+        "run": 39751753970,
+        "job": 119733777819,
+        "name": "matched-browser (candidate)",
+        "workflow": "Dialog available-space matched evidence",
+        "conclusion": "success",
+        "logSHA256": "8c0303479f73442c4acc99cdf1afdf709ebeb51761c134dd313fd6cad0440e16",
+        "bytes": 67576,
+        "summary": [
+          {
+            "line": 704,
+            "text": "      Tests  8 passed (8)"
+          }
+        ],
+        "errors": [],
+        "checkout": [
+          "cf4848c49ad8849d45f03f3270b2ba78beffc7a2",
+          "cf4848c49ad8849d45f03f3270b2ba78beffc7a2"
+        ],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119733777819.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119733777819.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733777819.log",
+          "rawSHA256": "8c0303479f73442c4acc99cdf1afdf709ebeb51761c134dd313fd6cad0440e16",
+          "rawBytes": 67576
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733777819.json",
+          "rawSHA256": "c2165665893d37a515dac51d62161f195b75bd8cd7cfa2011c076ee526dadbf7",
+          "rawBytes": 529
+        },
+        "observedFileResults": [
+          {
+            "line": 693,
+            "text": "✓ apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts (8 tests) 61285ms"
+          }
+        ],
+        "visibleFailureLines": [],
+        "exitCodes": []
+      },
+      {
+        "run": 39751753936,
+        "job": 119733777594,
+        "name": "Build docs preview",
+        "workflow": "Intranet preview build PR #921",
+        "conclusion": "success",
+        "logSHA256": "73cb8120acb09428777d17be8007c2e2ff8a7722ac9038cbc3e5d67e6b8fe6f4",
+        "bytes": 747632,
+        "summary": [],
+        "errors": [],
+        "checkout": ["cf4848c49ad8849d45f03f3270b2ba78beffc7a2"],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119733777594.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119733777594.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733777594.log",
+          "rawSHA256": "73cb8120acb09428777d17be8007c2e2ff8a7722ac9038cbc3e5d67e6b8fe6f4",
+          "rawBytes": 747632
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733777594.json",
+          "rawSHA256": "cb9b8e919ed8e02e530dcefa0eaa7ef5cd681455505bf2040b32fbe297b29407",
+          "rawBytes": 512
+        },
+        "observedFileResults": [],
+        "visibleFailureLines": [],
+        "exitCodes": []
+      },
+      {
+        "run": 39751753804,
+        "job": 119733776074,
+        "name": "capture (candidate)",
+        "workflow": "Website startup and theme evidence",
+        "conclusion": "success",
+        "logSHA256": "cb9f88f59d04eec2fd8f4679a445f7d7af1e15b9a111474b8c45773c822a7c5d",
+        "bytes": 762991,
+        "summary": [
+          {
+            "line": 3675,
+            "text": "      Tests  27 passed (27)"
+          }
+        ],
+        "errors": [],
+        "checkout": [
+          "cf4848c49ad8849d45f03f3270b2ba78beffc7a2",
+          "cf4848c49ad8849d45f03f3270b2ba78beffc7a2"
+        ],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119733776074.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119733776074.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733776074.log",
+          "rawSHA256": "cb9f88f59d04eec2fd8f4679a445f7d7af1e15b9a111474b8c45773c822a7c5d",
+          "rawBytes": 762991
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733776074.json",
+          "rawSHA256": "2d01c8044f672b2a447a91455b7d9bd40ffa8a442ed4356bbdc4e2e20af85540",
+          "rawBytes": 517
+        },
+        "observedFileResults": [
+          {
+            "line": 3645,
+            "text": "✓ apps/www/src/content/docs/zh-cn/site-startup-theme.browser.test.ts (27 tests) 75388ms"
+          }
+        ],
+        "visibleFailureLines": [],
+        "exitCodes": []
+      },
+      {
+        "run": 39751753804,
+        "job": 119733776203,
+        "name": "capture (baseline)",
+        "workflow": "Website startup and theme evidence",
+        "conclusion": "success",
+        "logSHA256": "42d4fe5c10915b5130500e4372fab2aaa6fc67057b0d2c1ad9caf97001be711b",
+        "bytes": 568837,
+        "summary": [
+          {
+            "line": 2840,
+            "text": "      Tests  27 passed (27)"
+          }
+        ],
+        "errors": [],
+        "checkout": [
+          "cf4848c49ad8849d45f03f3270b2ba78beffc7a2",
+          "48b80f8b8b0b94dbac04919e3516bc6a1ed2c37c"
+        ],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119733776203.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119733776203.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733776203.log",
+          "rawSHA256": "42d4fe5c10915b5130500e4372fab2aaa6fc67057b0d2c1ad9caf97001be711b",
+          "rawBytes": 568837
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733776203.json",
+          "rawSHA256": "69b5d07c592fd89225064dbc53b2340349814fa5a70b5a30a942743665065c46",
+          "rawBytes": 516
+        },
+        "observedFileResults": [
+          {
+            "line": 2811,
+            "text": "✓ apps/www/src/content/docs/zh-cn/site-startup-theme.browser.test.ts (27 tests) 80969ms"
+          }
+        ],
+        "visibleFailureLines": [],
+        "exitCodes": []
+      },
+      {
+        "run": 39751753930,
+        "job": 119733778084,
+        "name": "mobile-navigation-reading",
+        "workflow": "Homepage visual evidence",
+        "conclusion": "success",
+        "logSHA256": "b8e60e686125dea010538826c06b85058dd1fcfb22ec19e3c772816208573015",
+        "bytes": 91634,
+        "summary": [],
+        "errors": [],
+        "checkout": [
+          "cf4848c49ad8849d45f03f3270b2ba78beffc7a2",
+          "ec6e5710d0aaeee6d5844f9c996c1d7ca594aa31"
+        ],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119733778084.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119733778084.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733778084.log",
+          "rawSHA256": "b8e60e686125dea010538826c06b85058dd1fcfb22ec19e3c772816208573015",
+          "rawBytes": 91634
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733778084.json",
+          "rawSHA256": "64dad182bd0dd6547177427bf62f9337acaa02663902d8db610ce5426c9789ab",
+          "rawBytes": 512
+        },
+        "observedFileResults": [],
+        "visibleFailureLines": [],
+        "exitCodes": []
+      },
+      {
+        "run": 39751753930,
+        "job": 119733778189,
+        "name": "capture",
+        "workflow": "Homepage visual evidence",
+        "conclusion": "failure",
+        "logSHA256": "997395253a1035911ae00f73290f28e6efe3dba9977d175a308f3ba2c3b9198e",
+        "bytes": 1122452,
+        "summary": [
+          {
+            "line": 2517,
+            "text": "      Tests  3 failed | 29 passed (32)"
+          },
+          {
+            "line": 6598,
+            "text": "      Tests  2 failed (2)"
+          }
+        ],
+        "errors": [
+          {
+            "line": 1016,
+            "text": "##[error]Process completed with exit code 1."
+          },
+          {
+            "line": 1103,
+            "text": "##[error]Process completed with exit code 1."
+          },
+          {
+            "line": 1294,
+            "text": "##[error]Process completed with exit code 1."
+          },
+          {
+            "line": 2522,
+            "text": "##[error]AssertionError: wc/light/pressed-shadow: expected 'none' not to be 'none' // Object.is equality"
+          }
+        ],
+        "checkout": [
+          "cf4848c49ad8849d45f03f3270b2ba78beffc7a2",
+          "1fd4c08a067a8322295c78b2b708d2b4cbc01304"
+        ],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119733778189.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119733778189.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733778189.log",
+          "rawSHA256": "997395253a1035911ae00f73290f28e6efe3dba9977d175a308f3ba2c3b9198e",
+          "rawBytes": 1122452
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733778189.json",
+          "rawSHA256": "4a73585de43c197d9d38236bdfb7f07a7da912506817c15d0f24c23cae22be44",
+          "rawBytes": 496
+        },
+        "observedFileResults": [
+          {
+            "line": 1621,
+            "text": "❯ apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts (9 tests | 1 failed) 124927ms"
+          },
+          {
+            "line": 1878,
+            "text": "❯ apps/www/src/content/docs/zh-cn/home-demo-runtime.browser.test.ts (11 tests | 1 failed) 138006ms"
+          },
+          {
+            "line": 2095,
+            "text": "✓ apps/www/src/content/docs/zh-cn/demo-brutalist-remaining.browser.test.ts (6 tests) 71272ms"
+          },
+          {
+            "line": 2279,
+            "text": "✓ apps/www/src/content/docs/zh-cn/prototype-projection-scope.browser.test.ts (5 tests) 64622ms"
+          },
+          {
+            "line": 2462,
+            "text": "❯ apps/www/src/content/docs/zh-cn/demo-brutalist-checkbox.browser.test.ts (1 test | 1 failed) 23704ms"
+          },
+          {
+            "line": 6576,
+            "text": "❯ apps/www/src/content/docs/zh-cn/site-search-production.browser.test.ts (2 tests | 2 failed) 6219ms"
+          }
+        ],
+        "visibleFailureLines": [
+          {
+            "line": 1016,
+            "text": "##[error]Process completed with exit code 1."
+          },
+          {
+            "line": 1103,
+            "text": "##[error]Process completed with exit code 1."
+          },
+          {
+            "line": 1294,
+            "text": "##[error]Process completed with exit code 1."
+          },
+          {
+            "line": 1630,
+            "text": "× retains brutalist preference owners and portals through real breakpoint reconnects 4371ms"
+          },
+          {
+            "line": 1881,
+            "text": "× Homepage Runtime demobox browser smoke > reveals React only after complete dark-mode style projection 4033ms"
+          },
+          {
+            "line": 2463,
+            "text": "× Brutalist Checkbox browser acceptance > renders state, contrast, focus, and one accessible control in every public runtime 4818ms"
+          },
+          {
+            "line": 2468,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/demo-brutalist-checkbox.browser.test.ts > Brutalist Checkbox browser acceptance > renders state, contrast, focus, and one accessible control in every public runtime"
+          },
+          {
+            "line": 2480,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/home-demo-runtime.browser.test.ts > Homepage Runtime demobox browser smoke > reveals React only after complete dark-mode style projection"
+          },
+          {
+            "line": 2499,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts > retains brutalist preference owners and portals through real breakpoint reconnects"
+          },
+          {
+            "line": 2522,
+            "text": "##[error]AssertionError: wc/light/pressed-shadow: expected 'none' not to be 'none' // Object.is equality"
+          },
+          {
+            "line": 2527,
+            "text": "##[error]AssertionError: expected false to be true // Object.is equality"
+          },
+          {
+            "line": 2539,
+            "text": "##[error]Error: Matcher did not succeed in 1000ms"
+          },
+          {
+            "line": 2548,
+            "text": "##[error]Process completed with exit code 1."
+          },
+          {
+            "line": 6540,
+            "text": "× Required production Search recovery with generated Pagefind > shadcn recovers from HEAD503, searches Button and follows a real documentation result 3561ms"
+          },
+          {
+            "line": 6542,
+            "text": "× Required production Search recovery with generated Pagefind > brutalist recovers from HEAD503, searches Button and follows a real documentation result 2564ms"
+          },
+          {
+            "line": 6563,
+            "text": "##[error]Error: Matcher did not succeed in 1000ms"
+          },
+          {
+            "line": 6568,
+            "text": "##[error]Error: Matcher did not succeed in 1000ms"
+          },
+          {
+            "line": 6577,
+            "text": "× Required production Search recovery with generated Pagefind > shadcn recovers from HEAD503, searches Button and follows a real documentation result 3561ms"
+          },
+          {
+            "line": 6579,
+            "text": "× Required production Search recovery with generated Pagefind > brutalist recovers from HEAD503, searches Button and follows a real documentation result 2564ms"
+          },
+          {
+            "line": 6584,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/site-search-production.browser.test.ts > Required production Search recovery with generated Pagefind > shadcn recovers from HEAD503, searches Button and follows a real documentation result"
+          },
+          {
+            "line": 6585,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/site-search-production.browser.test.ts > Required production Search recovery with generated Pagefind > brutalist recovers from HEAD503, searches Button and follows a real documentation result"
+          },
+          {
+            "line": 6603,
+            "text": "##[error]Error: Matcher did not succeed in 1000ms"
+          },
+          {
+            "line": 6608,
+            "text": "##[error]Error: Matcher did not succeed in 1000ms"
+          },
+          {
+            "line": 6617,
+            "text": "##[error]Process completed with exit code 1."
+          }
+        ],
+        "exitCodes": [1, 1, 1, 1, 1]
+      },
+      {
+        "run": 39751753930,
+        "job": 119733778306,
+        "name": "isolated-controls (runtime-box, runtime-preview-surface, runtime-preview-evidence)",
+        "workflow": "Homepage visual evidence",
+        "conclusion": "success",
+        "logSHA256": "66941a3866ea3b8830aeb24967d461386c12a4939f633ab63ff214aece2e3a41",
+        "bytes": 49108,
+        "summary": [
+          {
+            "line": 461,
+            "text": "      Tests  33 passed (33)"
+          }
+        ],
+        "errors": [],
+        "checkout": ["cf4848c49ad8849d45f03f3270b2ba78beffc7a2"],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119733778306.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119733778306.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733778306.log",
+          "rawSHA256": "66941a3866ea3b8830aeb24967d461386c12a4939f633ab63ff214aece2e3a41",
+          "rawBytes": 49108
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733778306.json",
+          "rawSHA256": "b968d78f3ac64da423a18e888183b35e18ff1f0441b44e066fa1ab3ef92313fb",
+          "rawBytes": 569
+        },
+        "observedFileResults": [
+          {
+            "line": 441,
+            "text": "✓ apps/www/src/content/docs/zh-cn/runtime-preview-surface.browser.test.ts (16 tests) 104351ms"
+          },
+          {
+            "line": 458,
+            "text": "✓ apps/www/src/content/docs/zh-cn/runtime-preview-evidence.test.ts (17 tests) 4ms"
+          }
+        ],
+        "visibleFailureLines": [],
+        "exitCodes": []
+      },
+      {
+        "run": 39751753930,
+        "job": 119733778311,
+        "name": "visual-density",
+        "workflow": "Homepage visual evidence",
+        "conclusion": "failure",
+        "logSHA256": "b9977cb2306f1817b1adae907e669502b3d331fe005f451788458a4a82a1af9d",
+        "bytes": 105372,
+        "summary": [],
+        "errors": [
+          {
+            "line": 898,
+            "text": "##[error]Process completed with exit code 1."
+          }
+        ],
+        "checkout": [
+          "cf4848c49ad8849d45f03f3270b2ba78beffc7a2",
+          "ec6e5710d0aaeee6d5844f9c996c1d7ca594aa31",
+          "fbd90df092369e6d2aab73c66848f4236ba83a29"
+        ],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119733778311.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119733778311.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733778311.log",
+          "rawSHA256": "b9977cb2306f1817b1adae907e669502b3d331fe005f451788458a4a82a1af9d",
+          "rawBytes": 105372
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733778311.json",
+          "rawSHA256": "015bb1111110d02b3e3a961f1e8026038cb71103cb3431e67c67a4b0317c4b04",
+          "rawBytes": 502
+        },
+        "observedFileResults": [],
+        "visibleFailureLines": [
+          {
+            "line": 898,
+            "text": "##[error]Process completed with exit code 1."
+          }
+        ],
+        "exitCodes": [1]
+      },
+      {
+        "run": 39751753930,
+        "job": 119733778541,
+        "name": "isolated-controls (search-commands, site-search-commands)",
+        "workflow": "Homepage visual evidence",
+        "conclusion": "failure",
+        "logSHA256": "c69e7127989bdcbabf1120f473a2df6b45465e727ccdaccabf04a6b5b91aa038",
+        "bytes": 19067,
+        "summary": [],
+        "errors": [
+          {
+            "line": 220,
+            "text": "##[error]The action 'Install locked dependencies and the same official font package' has timed out after 5 minutes."
+          }
+        ],
+        "checkout": ["cf4848c49ad8849d45f03f3270b2ba78beffc7a2"],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119733778541.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119733778541.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733778541.log",
+          "rawSHA256": "c69e7127989bdcbabf1120f473a2df6b45465e727ccdaccabf04a6b5b91aa038",
+          "rawBytes": 19067
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733778541.json",
+          "rawSHA256": "4ec052fc4e9d7cdf3f70a127ac6d45a1e72f182397fd0f6918767161d4b512f6",
+          "rawBytes": 544
+        },
+        "observedFileResults": [],
+        "visibleFailureLines": [
+          {
+            "line": 220,
+            "text": "##[error]The action 'Install locked dependencies and the same official font package' has timed out after 5 minutes."
+          }
+        ],
+        "exitCodes": []
+      },
+      {
+        "run": 39751753930,
+        "job": 119733778552,
+        "name": "isolated-controls (code-surfaces, code-surfaces)",
+        "workflow": "Homepage visual evidence",
+        "conclusion": "success",
+        "logSHA256": "bcc78180ead6622175c6cfb6da23d27421abd321df6f67dc137e7b61c1eaad9d",
+        "bytes": 52318,
+        "summary": [
+          {
+            "line": 500,
+            "text": "      Tests  7 passed (7)"
+          }
+        ],
+        "errors": [],
+        "checkout": ["cf4848c49ad8849d45f03f3270b2ba78beffc7a2"],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119733778552.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119733778552.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733778552.log",
+          "rawSHA256": "bcc78180ead6622175c6cfb6da23d27421abd321df6f67dc137e7b61c1eaad9d",
+          "rawBytes": 52318
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733778552.json",
+          "rawSHA256": "b3cbbd2fbb0507533e450ec5a08a89263f4864f49b7963711a6976719e558b2a",
+          "rawBytes": 535
+        },
+        "observedFileResults": [
+          {
+            "line": 490,
+            "text": "✓ apps/www/src/content/docs/zh-cn/code-surfaces.browser.test.ts (7 tests) 83467ms"
+          }
+        ],
+        "visibleFailureLines": [],
+        "exitCodes": []
+      },
+      {
+        "run": 39751753930,
+        "job": 119733778574,
+        "name": "isolated-controls (code-surface-grammar, code-surface-grammar)",
+        "workflow": "Homepage visual evidence",
+        "conclusion": "success",
+        "logSHA256": "915c2761db57a83cfd628dfb64d8d142d21cacc068f90cb951b9dc7591d4ef0e",
+        "bytes": 51705,
+        "summary": [
+          {
+            "line": 492,
+            "text": "      Tests  9 passed (9)"
+          }
+        ],
+        "errors": [],
+        "checkout": ["cf4848c49ad8849d45f03f3270b2ba78beffc7a2"],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119733778574.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119733778574.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733778574.log",
+          "rawSHA256": "915c2761db57a83cfd628dfb64d8d142d21cacc068f90cb951b9dc7591d4ef0e",
+          "rawBytes": 51705
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733778574.json",
+          "rawSHA256": "a44ac5c2d58871740ee68736bd625e2ee6cdecbeadb550cabf80121d2d1e9551",
+          "rawBytes": 549
+        },
+        "observedFileResults": [
+          {
+            "line": 480,
+            "text": "✓ apps/www/src/content/docs/zh-cn/code-surface-grammar.browser.test.ts (9 tests) 127712ms"
+          }
+        ],
+        "visibleFailureLines": [],
+        "exitCodes": []
+      },
+      {
+        "run": 39751753930,
+        "job": 119733778757,
+        "name": "isolated-controls (copy-commands, site-copy-commands)",
+        "workflow": "Homepage visual evidence",
+        "conclusion": "success",
+        "logSHA256": "78d72f919f37ddb66d5bd1b96a3d8612eb0aca09ceeabeaa4f027907b13b7bbb",
+        "bytes": 45006,
+        "summary": [
+          {
+            "line": 436,
+            "text": "      Tests  14 passed (14)"
+          }
+        ],
+        "errors": [],
+        "checkout": ["cf4848c49ad8849d45f03f3270b2ba78beffc7a2"],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119733778757.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119733778757.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733778757.log",
+          "rawSHA256": "78d72f919f37ddb66d5bd1b96a3d8612eb0aca09ceeabeaa4f027907b13b7bbb",
+          "rawBytes": 45006
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733778757.json",
+          "rawSHA256": "06094aefeeb795660b9a065673f933f72b86f9fa92c73bb26d6c18a8d0b17e64",
+          "rawBytes": 540
+        },
+        "observedFileResults": [
+          {
+            "line": 419,
+            "text": "✓ apps/www/src/content/docs/zh-cn/site-copy-commands.browser.test.ts (14 tests) 113673ms"
+          }
+        ],
+        "visibleFailureLines": [],
+        "exitCodes": []
+      },
+      {
+        "run": 39751753930,
+        "job": 119733779249,
+        "name": "isolated-controls (native-links, site-native-links)",
+        "workflow": "Homepage visual evidence",
+        "conclusion": "success",
+        "logSHA256": "c476e75fb23897e318b3107738ff34eac3c550215de3ef6439067d915bd954bd",
+        "bytes": 51286,
+        "summary": [
+          {
+            "line": 493,
+            "text": "      Tests  10 passed (10)"
+          }
+        ],
+        "errors": [],
+        "checkout": ["cf4848c49ad8849d45f03f3270b2ba78beffc7a2"],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119733779249.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119733779249.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733779249.log",
+          "rawSHA256": "c476e75fb23897e318b3107738ff34eac3c550215de3ef6439067d915bd954bd",
+          "rawBytes": 51286
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733779249.json",
+          "rawSHA256": "80dd7e19157828d432774ba736356110bfc6baebb4bfcde2956dbeb82668f7b0",
+          "rawBytes": 538
+        },
+        "observedFileResults": [
+          {
+            "line": 480,
+            "text": "✓ apps/www/src/content/docs/zh-cn/site-native-links.browser.test.ts (10 tests) 131671ms"
+          }
+        ],
+        "visibleFailureLines": [],
+        "exitCodes": []
+      },
+      {
+        "run": 39751754024,
+        "job": 119733778046,
+        "name": "rust",
+        "workflow": "CI",
+        "conclusion": "success",
+        "logSHA256": "b77b46a0b84721e3ad3d1a6d8076f1c81f0d12af02419ecf4e6f4413766b9f6f",
+        "bytes": 27519,
+        "summary": [],
+        "errors": [],
+        "checkout": ["df44b3c640a489a060a57ef8fbb0870bf5d4cbbd"],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119733778046.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119733778046.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733778046.log",
+          "rawSHA256": "b77b46a0b84721e3ad3d1a6d8076f1c81f0d12af02419ecf4e6f4413766b9f6f",
+          "rawBytes": 27519
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733778046.json",
+          "rawSHA256": "2f73fc31fd50d3e65fd8dee2f9a0681f445e1910d5531e6cf6867a45b6dc6341",
+          "rawBytes": 469
+        },
+        "observedFileResults": [],
+        "visibleFailureLines": [],
+        "exitCodes": []
+      },
+      {
+        "run": 39751754024,
+        "job": 119733778359,
+        "name": "type-check",
+        "workflow": "CI",
+        "conclusion": "success",
+        "logSHA256": "58e11fc9789f89871d4d1249253835fcda218ee160303eb9500ad37e2656fe44",
+        "bytes": 26810,
+        "summary": [],
+        "errors": [],
+        "checkout": ["df44b3c640a489a060a57ef8fbb0870bf5d4cbbd"],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119733778359.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119733778359.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733778359.log",
+          "rawSHA256": "58e11fc9789f89871d4d1249253835fcda218ee160303eb9500ad37e2656fe44",
+          "rawBytes": 26810
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733778359.json",
+          "rawSHA256": "71362082f08d36bac7196e6f78740ff493945e419be4f23bc1332a477d21b404",
+          "rawBytes": 475
+        },
+        "observedFileResults": [],
+        "visibleFailureLines": [],
+        "exitCodes": []
+      },
+      {
+        "run": 39751754024,
+        "job": 119733778389,
+        "name": "rust-interop",
+        "workflow": "CI",
+        "conclusion": "success",
+        "logSHA256": "321af25af43ddb12dec1c0f2b0fe3d4b9dc0c5e84f3e1ce28359163dd7144a22",
+        "bytes": 65738,
+        "summary": [],
+        "errors": [],
+        "checkout": ["df44b3c640a489a060a57ef8fbb0870bf5d4cbbd"],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119733778389.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119733778389.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733778389.log",
+          "rawSHA256": "321af25af43ddb12dec1c0f2b0fe3d4b9dc0c5e84f3e1ce28359163dd7144a22",
+          "rawBytes": 65738
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733778389.json",
+          "rawSHA256": "46c1510d9d3672862ba905bedc35989357fd9ea744eb13b4a93cc03b2a14a4dc",
+          "rawBytes": 477
+        },
+        "observedFileResults": [],
+        "visibleFailureLines": [],
+        "exitCodes": []
+      },
+      {
+        "run": 39751754024,
+        "job": 119733778495,
+        "name": "public_package_plan",
+        "workflow": "CI",
+        "conclusion": "success",
+        "logSHA256": "ace85723aadeea34291346326f48a4ca5e76dfef886ed03853ceefa76832117a",
+        "bytes": 59111,
+        "summary": [],
+        "errors": [],
+        "checkout": ["df44b3c640a489a060a57ef8fbb0870bf5d4cbbd"],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119733778495.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119733778495.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733778495.log",
+          "rawSHA256": "ace85723aadeea34291346326f48a4ca5e76dfef886ed03853ceefa76832117a",
+          "rawBytes": 59111
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733778495.json",
+          "rawSHA256": "26fe02033bb9186e954f339e7d03d711739c6784076fea95d82b66e8fecc53a9",
+          "rawBytes": 484
+        },
+        "observedFileResults": [],
+        "visibleFailureLines": [],
+        "exitCodes": []
+      },
+      {
+        "run": 39751754024,
+        "job": 119733778533,
+        "name": "rust-macos",
+        "workflow": "CI",
+        "conclusion": "success",
+        "logSHA256": "fd7a97b707c928f651235e8b1ee9f6bfd312bd1dfc554289f3d0e73dbbc9772e",
+        "bytes": 129611,
+        "summary": [],
+        "errors": [],
+        "checkout": ["df44b3c640a489a060a57ef8fbb0870bf5d4cbbd"],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119733778533.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119733778533.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733778533.log",
+          "rawSHA256": "fd7a97b707c928f651235e8b1ee9f6bfd312bd1dfc554289f3d0e73dbbc9772e",
+          "rawBytes": 129611
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733778533.json",
+          "rawSHA256": "9257e1e8e9de35fed29b24dc285685969615d26c13bbf6f215a08b0da186e776",
+          "rawBytes": 476
+        },
+        "observedFileResults": [],
+        "visibleFailureLines": [],
+        "exitCodes": []
+      },
+      {
+        "run": 39751754024,
+        "job": 119733778536,
+        "name": "lockstep-check",
+        "workflow": "CI",
+        "conclusion": "success",
+        "logSHA256": "a337e6323763707ad98d32b564123a77815eca4e567366212b7fe4c4e5ef0f87",
+        "bytes": 12525,
+        "summary": [],
+        "errors": [],
+        "checkout": ["df44b3c640a489a060a57ef8fbb0870bf5d4cbbd"],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119733778536.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119733778536.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733778536.log",
+          "rawSHA256": "a337e6323763707ad98d32b564123a77815eca4e567366212b7fe4c4e5ef0f87",
+          "rawBytes": 12525
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733778536.json",
+          "rawSHA256": "a45abff8aedbc7806406459f95a6a093572a5555ea4d1ab19ea9703aaf21720d",
+          "rawBytes": 479
+        },
+        "observedFileResults": [],
+        "visibleFailureLines": [],
+        "exitCodes": []
+      },
+      {
+        "run": 39751754024,
+        "job": 119733778563,
+        "name": "test-plan",
+        "workflow": "CI",
+        "conclusion": "success",
+        "logSHA256": "950a08713345c5b6e522bd2cdbab34abb1c344d9bbbfd504c98c1dc59028bd75",
+        "bytes": 151466,
+        "summary": [],
+        "errors": [],
+        "checkout": ["df44b3c640a489a060a57ef8fbb0870bf5d4cbbd"],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119733778563.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119733778563.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733778563.log",
+          "rawSHA256": "950a08713345c5b6e522bd2cdbab34abb1c344d9bbbfd504c98c1dc59028bd75",
+          "rawBytes": 151466
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733778563.json",
+          "rawSHA256": "14a2e1798f9afa98f26721e5c97448e3f140e2904725b7141a3e6667bda77765",
+          "rawBytes": 475
+        },
+        "observedFileResults": [],
+        "visibleFailureLines": [],
+        "exitCodes": []
+      },
+      {
+        "run": 39751754024,
+        "job": 119733778835,
+        "name": "release-scan",
+        "workflow": "CI",
+        "conclusion": "success",
+        "logSHA256": "c4b5e849cf6ba10c3402b23f2e545ce75a87cc94081b7f411bf3bcb6b3bf009a",
+        "bytes": 25191,
+        "summary": [],
+        "errors": [],
+        "checkout": ["df44b3c640a489a060a57ef8fbb0870bf5d4cbbd"],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119733778835.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119733778835.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733778835.log",
+          "rawSHA256": "c4b5e849cf6ba10c3402b23f2e545ce75a87cc94081b7f411bf3bcb6b3bf009a",
+          "rawBytes": 25191
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119733778835.json",
+          "rawSHA256": "3203ff16a696e65949bce8635cea1aaef1aa555a189d33760523ff73ea2aa733",
+          "rawBytes": 477
+        },
+        "observedFileResults": [],
+        "visibleFailureLines": [],
+        "exitCodes": []
+      },
+      {
+        "run": 39751754024,
+        "job": 119735224222,
+        "name": "release-consumer-react",
+        "workflow": "CI",
+        "conclusion": "success",
+        "logSHA256": "b8bbdfc1d168d085bd6a18dcb373bc459db7c98aa0d2a7c4eab97e1070c1fb00",
+        "bytes": 48747,
+        "summary": [],
+        "errors": [],
+        "checkout": ["df44b3c640a489a060a57ef8fbb0870bf5d4cbbd"],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119735224222.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119735224222.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735224222.log",
+          "rawSHA256": "b8bbdfc1d168d085bd6a18dcb373bc459db7c98aa0d2a7c4eab97e1070c1fb00",
+          "rawBytes": 48747
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735224222.json",
+          "rawSHA256": "2e322a0aa0628d4afa77326f1d0d8566219dcdfd5829d8e4eab4e6403af1681c",
+          "rawBytes": 487
+        },
+        "observedFileResults": [],
+        "visibleFailureLines": [],
+        "exitCodes": []
+      },
+      {
+        "run": 39751754024,
+        "job": 119735224320,
+        "name": "release-stage",
+        "workflow": "CI",
+        "conclusion": "success",
+        "logSHA256": "80b7266c822844868bb7f9403776c5e285615e8702d9ed4f922130a7d09b03d4",
+        "bytes": 36308,
+        "summary": [],
+        "errors": [],
+        "checkout": ["df44b3c640a489a060a57ef8fbb0870bf5d4cbbd"],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119735224320.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119735224320.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735224320.log",
+          "rawSHA256": "80b7266c822844868bb7f9403776c5e285615e8702d9ed4f922130a7d09b03d4",
+          "rawBytes": 36308
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735224320.json",
+          "rawSHA256": "83f5c699fbb5bd48975f6dd6d456bac26ac6479aa48f2f48c11f7b620e357d51",
+          "rawBytes": 478
+        },
+        "observedFileResults": [],
+        "visibleFailureLines": [],
+        "exitCodes": []
+      },
+      {
+        "run": 39751754024,
+        "job": 119735224355,
+        "name": "cli-smoke",
+        "workflow": "CI",
+        "conclusion": "success",
+        "logSHA256": "f84d16d17b8eca036f31a6d17789a2126d80f9529d057bf7fc41cc7b847d46e2",
+        "bytes": 49647,
+        "summary": [],
+        "errors": [],
+        "checkout": ["df44b3c640a489a060a57ef8fbb0870bf5d4cbbd"],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119735224355.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119735224355.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735224355.log",
+          "rawSHA256": "f84d16d17b8eca036f31a6d17789a2126d80f9529d057bf7fc41cc7b847d46e2",
+          "rawBytes": 49647
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735224355.json",
+          "rawSHA256": "9e40724ad874a6fd05b093ba4c9583867b57b98c7ff4760e25af9809d7607409",
+          "rawBytes": 474
+        },
+        "observedFileResults": [],
+        "visibleFailureLines": [],
+        "exitCodes": []
+      },
+      {
+        "run": 39751754024,
+        "job": 119735224357,
+        "name": "public_package_build",
+        "workflow": "CI",
+        "conclusion": "success",
+        "logSHA256": "a40d035af2b6c95a39967bc805b6910a65e593e3c79ecb074941ee92c1954415",
+        "bytes": 70939,
+        "summary": [],
+        "errors": [],
+        "checkout": ["df44b3c640a489a060a57ef8fbb0870bf5d4cbbd"],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119735224357.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119735224357.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735224357.log",
+          "rawSHA256": "a40d035af2b6c95a39967bc805b6910a65e593e3c79ecb074941ee92c1954415",
+          "rawBytes": 70939
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735224357.json",
+          "rawSHA256": "2f6f7f6cd633933bfb9b7dac7010a24125fae75e7ff161fb33ca770e5c49ab97",
+          "rawBytes": 485
+        },
+        "observedFileResults": [],
+        "visibleFailureLines": [],
+        "exitCodes": []
+      },
+      {
+        "run": 39751754024,
+        "job": 119735927512,
+        "name": "test-browser (1/8, browser-1-of-8)",
+        "workflow": "CI",
+        "conclusion": "failure",
+        "logSHA256": "bd26ac2f84921c3cb0f885d4c098a174d182f75896aab6d5dc0b73ea5d4f01f9",
+        "bytes": 185460,
+        "summary": [
+          {
+            "line": 970,
+            "text": "      Tests  13 failed | 227 passed (240)"
+          }
+        ],
+        "errors": [
+          {
+            "line": 1233,
+            "text": "##[error]Process completed with exit code 1."
+          }
+        ],
+        "checkout": ["df44b3c640a489a060a57ef8fbb0870bf5d4cbbd"],
+        "SearchEvidenceLines": 2,
+        "DocsRoleLines": 10,
+        "logPath": "<R16>/canonical-cf/job-logs/119735927512.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119735927512.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735927512.log",
+          "rawSHA256": "bd26ac2f84921c3cb0f885d4c098a174d182f75896aab6d5dc0b73ea5d4f01f9",
+          "rawBytes": 185460
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735927512.json",
+          "rawSHA256": "b3dcc8fbd417ca9c2e5895c15b0036834658e028f34988002f952cf81bff7b2c",
+          "rawBytes": 500
+        },
+        "observedFileResults": [
+          {
+            "line": 402,
+            "text": "✓ packages/adapters/web-component/test/shadow-closeout.browser.test.ts (111 tests) 48893ms"
+          },
+          {
+            "line": 473,
+            "text": "❯ apps/www/src/content/docs/zh-cn/demo-liquid-glass-portal.browser.test.ts (55 tests | 1 failed) 139484ms"
+          },
+          {
+            "line": 569,
+            "text": "❯ apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts (30 tests | 2 failed) 128664ms"
+          },
+          {
+            "line": 677,
+            "text": "❯ apps/www/src/content/docs/zh-cn/home-demo-runtime.browser.test.ts (11 tests | 1 failed) 89775ms"
+          },
+          {
+            "line": 692,
+            "text": "✓ apps/www/src/content/docs/zh-cn/demo-base-controls.browser.test.ts (5 tests) 21751ms"
+          },
+          {
+            "line": 698,
+            "text": "✓ apps/workspace/test/lifecycle.browser.test.ts (7 tests) 23375ms"
+          },
+          {
+            "line": 709,
+            "text": "✓ apps/www/src/content/docs/zh-cn/runtime-layout-parity.browser.test.ts (6 tests) 39558ms"
+          },
+          {
+            "line": 719,
+            "text": "❯ apps/www/src/content/docs/zh-cn/demo-shadow-split-s2.browser.test.ts (4 tests | 4 failed) 317155ms"
+          },
+          {
+            "line": 754,
+            "text": "❯ apps/www/src/content/docs/zh-cn/demo-brutalist-dialog.browser.test.ts (1 test | 1 failed) 8826ms"
+          },
+          {
+            "line": 766,
+            "text": "❯ apps/www/src/content/docs/zh-cn/demo-shadcn-card.browser.test.ts (6 tests | 4 failed) 33127ms"
+          },
+          {
+            "line": 780,
+            "text": "✓ apps/www/test/preferences.browser.test.ts (4 tests) 6445ms"
+          }
+        ],
+        "visibleFailureLines": [
+          {
+            "line": 475,
+            "text": "× Liquid portal container diagnostics (observation, not guard relaxation) > measures the actual docs-shell fixed point with a disposable containment handover 7477ms"
+          },
+          {
+            "line": 573,
+            "text": "× Search family Button commands > shadcn dark 1440px preserves activation, dismissal and focus 5915ms"
+          },
+          {
+            "line": 595,
+            "text": "× Docs shadcn 2048px shows complete runtime values beside real Search 2548ms"
+          },
+          {
+            "line": 680,
+            "text": "× Homepage Runtime demobox browser smoke > reveals React only after complete dark-mode style projection 2838ms"
+          },
+          {
+            "line": 720,
+            "text": "× S2 public Shadow split settings paths > renders all variant/size/theme combinations and exact geometry (zh-cn) 89411ms"
+          },
+          {
+            "line": 726,
+            "text": "× S2 public Shadow split settings paths > renders all variant/size/theme combinations and exact geometry (en) 90001ms"
+          },
+          {
+            "line": 729,
+            "text": "× S2 public Shadow split settings paths > routes native pointer, Tab, Space and Enter once, preserves focus paint and suppresses disabled input 69135ms"
+          },
+          {
+            "line": 740,
+            "text": "× S2 public Shadow split settings paths > retains mixed context, controlled state and slot ownership across move/reconnect without duplicate notifications 66144ms"
+          },
+          {
+            "line": 755,
+            "text": "× Brutalist Dialog overlay geometry > covers the viewport and centres the hard-shadowed panel in all runtimes 6072ms"
+          },
+          {
+            "line": 767,
+            "text": "× Shadcn Card native wc > preserves distinct card paint, inherited content ink and native navigation 4849ms"
+          },
+          {
+            "line": 769,
+            "text": "× Shadcn Card native react > preserves distinct card paint, inherited content ink and native navigation 4960ms"
+          },
+          {
+            "line": 771,
+            "text": "× Shadcn Card native vue > preserves distinct card paint, inherited content ink and native navigation 4883ms"
+          },
+          {
+            "line": 773,
+            "text": "× Shadcn Card native vue2 > preserves distinct card paint, inherited content ink and native navigation 4866ms"
+          },
+          {
+            "line": 788,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/demo-brutalist-dialog.browser.test.ts > Brutalist Dialog overlay geometry > covers the viewport and centres the hard-shadowed panel in all runtimes"
+          },
+          {
+            "line": 804,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/demo-liquid-glass-portal.browser.test.ts > Liquid portal container diagnostics (observation, not guard relaxation) > measures the actual docs-shell fixed point with a disposable containment handover"
+          },
+          {
+            "line": 823,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/demo-shadcn-card.browser.test.ts > Shadcn Card native wc > preserves distinct card paint, inherited content ink and native navigation"
+          },
+          {
+            "line": 824,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/demo-shadcn-card.browser.test.ts > Shadcn Card native react > preserves distinct card paint, inherited content ink and native navigation"
+          },
+          {
+            "line": 825,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/demo-shadcn-card.browser.test.ts > Shadcn Card native vue > preserves distinct card paint, inherited content ink and native navigation"
+          },
+          {
+            "line": 826,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/demo-shadcn-card.browser.test.ts > Shadcn Card native vue2 > preserves distinct card paint, inherited content ink and native navigation"
+          },
+          {
+            "line": 849,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/demo-shadow-split-s2.browser.test.ts > S2 public Shadow split settings paths > renders all variant/size/theme combinations and exact geometry (zh-cn)"
+          },
+          {
+            "line": 867,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/demo-shadow-split-s2.browser.test.ts > S2 public Shadow split settings paths > renders all variant/size/theme combinations and exact geometry (en)"
+          },
+          {
+            "line": 872,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/demo-shadow-split-s2.browser.test.ts > S2 public Shadow split settings paths > routes native pointer, Tab, Space and Enter once, preserves focus paint and suppresses disabled input"
+          },
+          {
+            "line": 895,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/demo-shadow-split-s2.browser.test.ts > S2 public Shadow split settings paths > retains mixed context, controlled state and slot ownership across move/reconnect without duplicate notifications"
+          },
+          {
+            "line": 919,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/home-demo-runtime.browser.test.ts > Homepage Runtime demobox browser smoke > reveals React only after complete dark-mode style projection"
+          },
+          {
+            "line": 938,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts > Search family Button commands > shadcn dark 1440px preserves activation, dismissal and focus"
+          },
+          {
+            "line": 957,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts > Docs shadcn 2048px shows complete runtime values beside real Search"
+          },
+          {
+            "line": 1233,
+            "text": "##[error]Process completed with exit code 1."
+          }
+        ],
+        "exitCodes": [1]
+      },
+      {
+        "run": 39751754024,
+        "job": 119735927541,
+        "name": "test-browser (3/8, browser-3-of-8)",
+        "workflow": "CI",
+        "conclusion": "failure",
+        "logSHA256": "868f348faa9c3c81001d6e06f38b1bbfe3610816346f9ed94ad177c1e405868e",
+        "bytes": 21146,
+        "summary": [],
+        "errors": [
+          {
+            "line": 231,
+            "text": "##[error]The action 'Install real CJK fallback for typography glyph evidence' has timed out after 3 minutes."
+          }
+        ],
+        "checkout": ["df44b3c640a489a060a57ef8fbb0870bf5d4cbbd"],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119735927541.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119735927541.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735927541.log",
+          "rawSHA256": "868f348faa9c3c81001d6e06f38b1bbfe3610816346f9ed94ad177c1e405868e",
+          "rawBytes": 21146
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735927541.json",
+          "rawSHA256": "568b0a8d802c9be719cecb76b0df8be0db94876d967cc86823b552d7131ceb9d",
+          "rawBytes": 499
+        },
+        "observedFileResults": [],
+        "visibleFailureLines": [
+          {
+            "line": 231,
+            "text": "##[error]The action 'Install real CJK fallback for typography glyph evidence' has timed out after 3 minutes."
+          }
+        ],
+        "exitCodes": []
+      },
+      {
+        "run": 39751754024,
+        "job": 119735927619,
+        "name": "test-browser (6/8, browser-6-of-8)",
+        "workflow": "CI",
+        "conclusion": "failure",
+        "logSHA256": "af6347714ad2eb817519185a6dfd58aaa1bbb14fef4f9e412b95ad2567f15327",
+        "bytes": 21057,
+        "summary": [],
+        "errors": [
+          {
+            "line": 230,
+            "text": "##[error]The action 'Install real CJK fallback for typography glyph evidence' has timed out after 3 minutes."
+          }
+        ],
+        "checkout": ["df44b3c640a489a060a57ef8fbb0870bf5d4cbbd"],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119735927619.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119735927619.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735927619.log",
+          "rawSHA256": "af6347714ad2eb817519185a6dfd58aaa1bbb14fef4f9e412b95ad2567f15327",
+          "rawBytes": 21057
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735927619.json",
+          "rawSHA256": "2c90b948214bf6c9f370d70b98eb190eb793c171fa56f370cde11f613910bd35",
+          "rawBytes": 499
+        },
+        "observedFileResults": [],
+        "visibleFailureLines": [
+          {
+            "line": 230,
+            "text": "##[error]The action 'Install real CJK fallback for typography glyph evidence' has timed out after 3 minutes."
+          }
+        ],
+        "exitCodes": []
+      },
+      {
+        "run": 39751754024,
+        "job": 119735927660,
+        "name": "test-browser (2/8, browser-2-of-8)",
+        "workflow": "CI",
+        "conclusion": "failure",
+        "logSHA256": "d24c887e46cf0725628d1d5e5354da27ddc3071afba07565eb84178e36d6ebe6",
+        "bytes": 322353,
+        "summary": [],
+        "errors": [
+          {
+            "line": 1412,
+            "text": "##[error]Process completed with exit code 124."
+          }
+        ],
+        "checkout": ["df44b3c640a489a060a57ef8fbb0870bf5d4cbbd"],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119735927660.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119735927660.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735927660.log",
+          "rawSHA256": "d24c887e46cf0725628d1d5e5354da27ddc3071afba07565eb84178e36d6ebe6",
+          "rawBytes": 322353
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735927660.json",
+          "rawSHA256": "9a35a56f9147fdad8eccd97eca7c07ac3e5835ca1d1aa40f0cd93489a3d1e7bb",
+          "rawBytes": 500
+        },
+        "observedFileResults": [
+          {
+            "line": 459,
+            "text": "❯ apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts (9 tests | 1 failed) 107942ms"
+          },
+          {
+            "line": 473,
+            "text": "✓ apps/www/src/components/documentation-image-preview.browser.test.ts (24 tests) 112670ms"
+          },
+          {
+            "line": 507,
+            "text": "✓ apps/www/src/content/docs/zh-cn/site-typography.browser.test.ts (33 tests) 129140ms"
+          },
+          {
+            "line": 544,
+            "text": "✓ apps/www/src/content/docs/zh-cn/demo-shadcn-controls.browser.test.ts (6 tests) 42804ms"
+          }
+        ],
+        "visibleFailureLines": [
+          {
+            "line": 468,
+            "text": "× retains brutalist preference owners and portals through real breakpoint reconnects 4178ms"
+          },
+          {
+            "line": 1412,
+            "text": "##[error]Process completed with exit code 124."
+          }
+        ],
+        "exitCodes": [124]
+      },
+      {
+        "run": 39751754024,
+        "job": 119735927782,
+        "name": "test-browser (4/8, browser-4-of-8)",
+        "workflow": "CI",
+        "conclusion": "failure",
+        "logSHA256": "3dbbf71ac6d0d0f24022f0aa091bcc10888220926de637a723d4047b877929fd",
+        "bytes": 110442,
+        "summary": [
+          {
+            "line": 601,
+            "text": "      Tests  2 failed | 122 passed (124)"
+          }
+        ],
+        "errors": [
+          {
+            "line": 862,
+            "text": "##[error]Process completed with exit code 1."
+          }
+        ],
+        "checkout": ["df44b3c640a489a060a57ef8fbb0870bf5d4cbbd"],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119735927782.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119735927782.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735927782.log",
+          "rawSHA256": "3dbbf71ac6d0d0f24022f0aa091bcc10888220926de637a723d4047b877929fd",
+          "rawBytes": 110442
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735927782.json",
+          "rawSHA256": "939cba53054207b2c84a899439a35f9ce7d6f431134d639a875675f5aec7b6d6",
+          "rawBytes": 500
+        },
+        "observedFileResults": [
+          {
+            "line": 405,
+            "text": "✓ apps/www/src/content/docs/zh-cn/scroll-area-corner.browser.test.ts (2 tests) 25348ms"
+          },
+          {
+            "line": 411,
+            "text": "✓ apps/www/src/content/docs/zh-cn/demo-passive-atoms.browser.test.ts (80 tests) 200335ms"
+          },
+          {
+            "line": 495,
+            "text": "✓ apps/www/src/content/docs/zh-cn/code-surface-grammar.browser.test.ts (9 tests) 58463ms"
+          },
+          {
+            "line": 508,
+            "text": "✓ apps/www/src/content/docs/zh-cn/demo-brutalist-spinner.browser.test.ts (4 tests) 7541ms"
+          },
+          {
+            "line": 514,
+            "text": "✓ apps/www/src/content/docs/zh-cn/overlay-portal-direction.browser.test.ts (8 tests) 18879ms"
+          },
+          {
+            "line": 526,
+            "text": "✓ apps/www/test/button-view-lifetime.browser.test.ts (8 tests) 12584ms"
+          },
+          {
+            "line": 553,
+            "text": "✓ apps/www/src/content/docs/zh-cn/demo-shadcn-input.browser.test.ts (4 tests) 11039ms"
+          },
+          {
+            "line": 561,
+            "text": "✓ apps/www/test/tree-navigation.browser.test.ts (2 tests) 2742ms"
+          },
+          {
+            "line": 570,
+            "text": "✓ apps/www/src/content/docs/zh-cn/demo-base-table.browser.test.ts (5 tests) 13071ms"
+          },
+          {
+            "line": 579,
+            "text": "❯ apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts (2 tests | 2 failed) 177853ms"
+          }
+        ],
+        "visibleFailureLines": [
+          {
+            "line": 580,
+            "text": "× S4 complete public Dialog settings > zh-cn: native Light/split/mixed acceptance 84680ms"
+          },
+          {
+            "line": 582,
+            "text": "× S4 complete public Dialog settings > en: native Light/split/mixed acceptance 92645ms"
+          },
+          {
+            "line": 587,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts > S4 complete public Dialog settings > zh-cn: native Light/split/mixed acceptance"
+          },
+          {
+            "line": 588,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts > S4 complete public Dialog settings > en: native Light/split/mixed acceptance"
+          },
+          {
+            "line": 862,
+            "text": "##[error]Process completed with exit code 1."
+          }
+        ],
+        "exitCodes": [1]
+      },
+      {
+        "run": 39751754024,
+        "job": 119735927796,
+        "name": "test-browser (7/8, browser-7-of-8)",
+        "workflow": "CI",
+        "conclusion": "failure",
+        "logSHA256": "40e4cb8c24ae3bf28796ce4e983fe41ee120d03c466472dac50466306bfda12a",
+        "bytes": 100450,
+        "summary": [],
+        "errors": [
+          {
+            "line": 798,
+            "text": "##[error]Process completed with exit code 124."
+          }
+        ],
+        "checkout": ["df44b3c640a489a060a57ef8fbb0870bf5d4cbbd"],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119735927796.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119735927796.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735927796.log",
+          "rawSHA256": "40e4cb8c24ae3bf28796ce4e983fe41ee120d03c466472dac50466306bfda12a",
+          "rawBytes": 100450
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735927796.json",
+          "rawSHA256": "cb88fba3ed8d577c0dbcf74eec324c976fa9e40af5ba082fc660f531304e2655",
+          "rawBytes": 500
+        },
+        "observedFileResults": [
+          {
+            "line": 414,
+            "text": "✓ apps/www/src/content/docs/zh-cn/site-copy-commands.browser.test.ts (14 tests) 120010ms"
+          },
+          {
+            "line": 432,
+            "text": "✓ apps/www/src/content/docs/zh-cn/quick-start-first-frame-fragment-control.browser.test.ts (4 tests) 4983ms"
+          },
+          {
+            "line": 440,
+            "text": "✓ apps/www/src/content/docs/zh-cn/demo-select-draft-projections.browser.test.ts (24 tests) 183077ms"
+          },
+          {
+            "line": 468,
+            "text": "✓ apps/www/src/content/docs/zh-cn/demo-shadcn-tooltip.browser.test.ts (2 tests) 9006ms"
+          },
+          {
+            "line": 474,
+            "text": "✓ apps/www/src/content/docs/zh-cn/demo-accordion-family.browser.test.ts (25 tests) 209089ms"
+          },
+          {
+            "line": 503,
+            "text": "✓ apps/www/src/content/docs/zh-cn/demo-field-family.browser.test.ts (25 tests) 294687ms"
+          },
+          {
+            "line": 532,
+            "text": "❯ apps/www/src/content/docs/zh-cn/demo-brutalist-checkbox.browser.test.ts (1 test | 1 failed) 4056ms"
+          },
+          {
+            "line": 538,
+            "text": "✓ apps/www/src/content/docs/zh-cn/docs-content-flow.browser.test.ts (6 tests) 41542ms"
+          }
+        ],
+        "visibleFailureLines": [
+          {
+            "line": 533,
+            "text": "× Brutalist Checkbox browser acceptance > renders state, contrast, focus, and one accessible control in every public runtime 3584ms"
+          },
+          {
+            "line": 798,
+            "text": "##[error]Process completed with exit code 124."
+          }
+        ],
+        "exitCodes": [124]
+      },
+      {
+        "run": 39751754024,
+        "job": 119735927805,
+        "name": "test-general",
+        "workflow": "CI",
+        "conclusion": "failure",
+        "logSHA256": "f3a212f7cff075df3ad0f4a365000d3cb9c68b8bb39d5280de9e9cf3dc1f2537",
+        "bytes": 147227,
+        "summary": [],
+        "errors": [
+          {
+            "line": 1319,
+            "text": "##[error]Process completed with exit code 1."
+          }
+        ],
+        "checkout": ["df44b3c640a489a060a57ef8fbb0870bf5d4cbbd"],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119735927805.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119735927805.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735927805.log",
+          "rawSHA256": "f3a212f7cff075df3ad0f4a365000d3cb9c68b8bb39d5280de9e9cf3dc1f2537",
+          "rawBytes": 147227
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735927805.json",
+          "rawSHA256": "30cd937e7aa632de3940a11cd03deef27f0b23cd397408a3d2a122f66e82bb11",
+          "rawBytes": 478
+        },
+        "observedFileResults": [],
+        "visibleFailureLines": [
+          {
+            "line": 1319,
+            "text": "##[error]Process completed with exit code 1."
+          }
+        ],
+        "exitCodes": [1]
+      },
+      {
+        "run": 39751754024,
+        "job": 119735927812,
+        "name": "test-browser (8/8, browser-8-of-8)",
+        "workflow": "CI",
+        "conclusion": "failure",
+        "logSHA256": "c4f4e50e6d8b29cd5045d467ba04dceb979c0683a31cceff0779e7ef71762952",
+        "bytes": 148464,
+        "summary": [],
+        "errors": [
+          {
+            "line": 1101,
+            "text": "##[error]Process completed with exit code 124."
+          }
+        ],
+        "checkout": ["df44b3c640a489a060a57ef8fbb0870bf5d4cbbd"],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119735927812.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119735927812.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735927812.log",
+          "rawSHA256": "c4f4e50e6d8b29cd5045d467ba04dceb979c0683a31cceff0779e7ef71762952",
+          "rawBytes": 148464
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735927812.json",
+          "rawSHA256": "0a98fda8ddc0a64431e879602ce03d862eba9c14d60ac913bfbb546958f337a5",
+          "rawBytes": 500
+        },
+        "observedFileResults": [
+          {
+            "line": 451,
+            "text": "✓ apps/www/src/content/docs/zh-cn/site-native-links.browser.test.ts (10 tests) 138037ms"
+          },
+          {
+            "line": 504,
+            "text": "❯ apps/www/src/content/docs/zh-cn/demo-brutalist-controls.browser.test.ts (10 tests | 2 failed) 108579ms"
+          },
+          {
+            "line": 520,
+            "text": "✓ apps/www/src/content/docs/zh-cn/quick-start-first-frame.browser.test.ts (20 tests) 129830ms"
+          },
+          {
+            "line": 544,
+            "text": "✓ apps/www/src/content/docs/zh-cn/header-select-elevation.browser.test.ts (16 tests) 312080ms"
+          },
+          {
+            "line": 564,
+            "text": "❯ apps/www/src/content/docs/zh-cn/demo-liquid-glass-material.browser.test.ts (3 tests | 2 failed) 54321ms"
+          }
+        ],
+        "visibleFailureLines": [
+          {
+            "line": 506,
+            "text": "× Brutalist control documentation browser regressions > keeps the Tabs Root bounds stable across selection in all runtimes 33385ms"
+          },
+          {
+            "line": 508,
+            "text": "× Brutalist control documentation browser regressions > keeps Dropdown placement fixed while Trigger hover and press transforms change 23523ms"
+          },
+          {
+            "line": 565,
+            "text": "× V2 optical paint through four real Web Adapter runtimes > light: visible dynamic source, optical pixels, motion, input and revocation 22190ms"
+          },
+          {
+            "line": 567,
+            "text": "× V2 optical paint through four real Web Adapter runtimes > dark: visible dynamic source, optical pixels, motion, input and revocation 21616ms"
+          },
+          {
+            "line": 1101,
+            "text": "##[error]Process completed with exit code 124."
+          }
+        ],
+        "exitCodes": [124]
+      },
+      {
+        "run": 39751754024,
+        "job": 119735927814,
+        "name": "test-browser (5/8, browser-5-of-8)",
+        "workflow": "CI",
+        "conclusion": "failure",
+        "logSHA256": "3c41db5ed33fb2056464b44c3de74bddeb10f080d9e4c8d385c9ddda4510a405",
+        "bytes": 138316,
+        "summary": [
+          {
+            "line": 745,
+            "text": "      Tests  2 failed | 88 passed | 15 skipped (105)"
+          }
+        ],
+        "errors": [
+          {
+            "line": 1004,
+            "text": "##[error]Process completed with exit code 1."
+          }
+        ],
+        "checkout": ["df44b3c640a489a060a57ef8fbb0870bf5d4cbbd"],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119735927814.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119735927814.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735927814.log",
+          "rawSHA256": "3c41db5ed33fb2056464b44c3de74bddeb10f080d9e4c8d385c9ddda4510a405",
+          "rawBytes": 138316
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119735927814.json",
+          "rawSHA256": "28c323168d7de737d79283598088544b49606e6125627d6be0c4df1551fe608d",
+          "rawBytes": 500
+        },
+        "observedFileResults": [
+          {
+            "line": 453,
+            "text": "✓ apps/www/src/content/docs/zh-cn/demo-prototype-style-closure.browser.test.ts (9 tests) 39614ms"
+          },
+          {
+            "line": 617,
+            "text": "✓ apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts (36 tests) 202375ms"
+          },
+          {
+            "line": 657,
+            "text": "✓ apps/www/src/content/docs/zh-cn/code-surfaces.browser.test.ts (7 tests) 57147ms"
+          },
+          {
+            "line": 665,
+            "text": "↓ apps/www/src/content/docs/zh-cn/demo-bootstrap-state-controls.browser.test.ts (15 tests | 15 skipped)"
+          },
+          {
+            "line": 669,
+            "text": "✓ apps/www/test/color-scheme.browser.test.ts (9 tests) 30581ms"
+          },
+          {
+            "line": 685,
+            "text": "✓ apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts (8 tests) 40454ms"
+          },
+          {
+            "line": 697,
+            "text": "✓ apps/www/src/content/docs/zh-cn/overlay-scrollbar-geometry.browser.test.ts (16 tests) 79756ms"
+          },
+          {
+            "line": 717,
+            "text": "✓ apps/www/test/virtual-list-resize.browser.test.ts (1 test) 883ms"
+          },
+          {
+            "line": 719,
+            "text": "✓ apps/www/src/content/docs/zh-cn/scroll-chrome-display.browser.test.ts (2 tests) 754ms"
+          },
+          {
+            "line": 723,
+            "text": "❯ apps/www/src/content/docs/zh-cn/demo-shadow-split-s5.browser.test.ts (2 tests | 2 failed) 169803ms"
+          }
+        ],
+        "visibleFailureLines": [
+          {
+            "line": 724,
+            "text": "× S5 native editor acceptance paths > zh-cn: Light/split/mixed native editing 81326ms"
+          },
+          {
+            "line": 726,
+            "text": "× S5 native editor acceptance paths > en: Light/split/mixed native editing 87697ms"
+          },
+          {
+            "line": 731,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/demo-shadow-split-s5.browser.test.ts > S5 native editor acceptance paths > zh-cn: Light/split/mixed native editing"
+          },
+          {
+            "line": 732,
+            "text": "FAIL  apps/www/src/content/docs/zh-cn/demo-shadow-split-s5.browser.test.ts > S5 native editor acceptance paths > en: Light/split/mixed native editing"
+          },
+          {
+            "line": 1004,
+            "text": "##[error]Process completed with exit code 1."
+          }
+        ],
+        "exitCodes": [1]
+      },
+      {
+        "run": 39751754024,
+        "job": 119747217192,
+        "name": "test",
+        "workflow": "CI",
+        "conclusion": "failure",
+        "logSHA256": "5c38c92b153fa852bd354ba4b58c72d85962ac5ce381709b80f616ac3b8bf64c",
+        "bytes": 24381,
+        "summary": [],
+        "errors": [
+          {
+            "line": 251,
+            "text": "##[error]Process completed with exit code 1."
+          }
+        ],
+        "checkout": ["df44b3c640a489a060a57ef8fbb0870bf5d4cbbd"],
+        "SearchEvidenceLines": 0,
+        "DocsRoleLines": 0,
+        "logPath": "<R16>/canonical-cf/job-logs/119747217192.log",
+        "receipt": "<R16>/canonical-cf/job-logs/119747217192.json",
+        "logBinding": {
+          "relativeInput": "canonical-cf/job-logs/119747217192.log",
+          "rawSHA256": "5c38c92b153fa852bd354ba4b58c72d85962ac5ce381709b80f616ac3b8bf64c",
+          "rawBytes": 24381
+        },
+        "receiptBinding": {
+          "relativeInput": "canonical-cf/job-logs/119747217192.json",
+          "rawSHA256": "f7a2c779360140cff0baf99f91866f20d279babb594238c5616914c084f6f66e",
+          "rawBytes": 469
+        },
+        "observedFileResults": [],
+        "visibleFailureLines": [
+          {
+            "line": 251,
+            "text": "##[error]Process completed with exit code 1."
+          }
+        ],
+        "exitCodes": [1]
+      }
+    ],
+    "platformScope": {
+      "kind": "explicit-derived-platform-subset",
+      "createdAt": "2026-10-22T10:02:13.439173+00:00",
+      "sourceSnapshotPrivatePath": "<R16>/live/current-cf/20261022T093836Z/snapshot.json",
+      "sourceSnapshotSHA256": "15c7e2f58641cfa0d73acb4a76287e66a99c7cacd18808b58f8acc7861f23624",
+      "sourceReadStart": "2026-10-22T09:38:36.978533+00:00",
+      "sourceReadEnd": "2026-10-22T09:40:03.223177+00:00",
+      "sourceErrors": [],
+      "head": "cf4848c49ad8849d45f03f3270b2ba78beffc7a2",
+      "headEnd": "cf4848c49ad8849d45f03f3270b2ba78beffc7a2",
+      "mainStart": "b928a56c6909835771fc2131503b4a7139db738c",
+      "mainEnd": "b928a56c6909835771fc2131503b4a7139db738c",
+      "runs": [
+        {
+          "run": {
+            "id": 39751753804,
+            "name": "Website startup and theme evidence",
+            "head_sha": "cf4848c49ad8849d45f03f3270b2ba78beffc7a2",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-22T08:58:05Z",
+            "updated_at": "2026-10-22T09:19:12Z",
+            "run_attempt": 1,
+            "html_url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39751753804",
+            "path": ".github/workflows/site-startup-theme-evidence.yml"
+          },
+          "jobsTotal": 2,
+          "jobsConclusions": {
+            "success": 2
+          },
+          "paginationComplete": true,
+          "pages": 1,
+          "jobsSource": {
+            "relativeInput": "live/current-cf/20261022T093836Z/runs/39751753804/jobs-pages.json",
+            "rawSHA256": "6e026931ad8c02ce4256087437f77730f5ead1a2b415a1f20c365df53911c166",
+            "rawBytes": 6697
+          }
+        },
+        {
+          "run": {
+            "id": 39751753866,
+            "name": "Overlay portal direction native evidence",
+            "head_sha": "cf4848c49ad8849d45f03f3270b2ba78beffc7a2",
+            "status": "completed",
+            "conclusion": "failure",
+            "created_at": "2026-10-22T08:58:05Z",
+            "updated_at": "2026-10-22T09:04:44Z",
+            "run_attempt": 1,
+            "html_url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39751753866",
+            "path": ".github/workflows/overlay-portal-direction-evidence.yml"
+          },
+          "jobsTotal": 1,
+          "jobsConclusions": {
+            "failure": 1
+          },
+          "paginationComplete": true,
+          "pages": 1,
+          "jobsSource": {
+            "relativeInput": "live/current-cf/20261022T093836Z/runs/39751753866/jobs-pages.json",
+            "rawSHA256": "8dd62b7fee40db8c33516c459ac8b96d10f0e58e0eb3d51fa299b1af1b91abb9",
+            "rawBytes": 2919
+          }
+        },
+        {
+          "run": {
+            "id": 39751753930,
+            "name": "Homepage visual evidence",
+            "head_sha": "cf4848c49ad8849d45f03f3270b2ba78beffc7a2",
+            "status": "completed",
+            "conclusion": "failure",
+            "created_at": "2026-10-22T08:58:05Z",
+            "updated_at": "2026-10-22T09:27:57Z",
+            "run_attempt": 1,
+            "html_url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39751753930",
+            "path": ".github/workflows/homepage-visual-evidence.yml"
+          },
+          "jobsTotal": 9,
+          "jobsConclusions": {
+            "success": 6,
+            "failure": 3
+          },
+          "paginationComplete": true,
+          "pages": 1,
+          "jobsSource": {
+            "relativeInput": "live/current-cf/20261022T093836Z/runs/39751753930/jobs-pages.json",
+            "rawSHA256": "bc89dde908563a033489a2047b648d9750cd454e4174d8d47cd8423094d84c85",
+            "rawBytes": 29392
+          }
+        },
+        {
+          "run": {
+            "id": 39751753936,
+            "name": "Intranet preview build PR #921",
+            "head_sha": "cf4848c49ad8849d45f03f3270b2ba78beffc7a2",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-22T08:58:05Z",
+            "updated_at": "2026-10-22T09:05:35Z",
+            "run_attempt": 1,
+            "html_url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39751753936",
+            "path": ".github/workflows/intranet-preview-build.yml"
+          },
+          "jobsTotal": 1,
+          "jobsConclusions": {
+            "success": 1
+          },
+          "paginationComplete": true,
+          "pages": 1,
+          "jobsSource": {
+            "relativeInput": "live/current-cf/20261022T093836Z/runs/39751753936/jobs-pages.json",
+            "rawSHA256": "ebbcb1aa97fab6297d4c9090a6ca3e4cc82fe3147889af20a2b31339a9322a55",
+            "rawBytes": 3536
+          }
+        },
+        {
+          "run": {
+            "id": 39751753970,
+            "name": "Dialog available-space matched evidence",
+            "head_sha": "cf4848c49ad8849d45f03f3270b2ba78beffc7a2",
+            "status": "completed",
+            "conclusion": "success",
+            "created_at": "2026-10-22T08:58:05Z",
+            "updated_at": "2026-10-22T09:16:06Z",
+            "run_attempt": 1,
+            "html_url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39751753970",
+            "path": ".github/workflows/dialog-available-space-evidence.yml"
+          },
+          "jobsTotal": 2,
+          "jobsConclusions": {
+            "success": 2
+          },
+          "paginationComplete": true,
+          "pages": 1,
+          "jobsSource": {
+            "relativeInput": "live/current-cf/20261022T093836Z/runs/39751753970/jobs-pages.json",
+            "rawSHA256": "a09c316ebb283f217c22ae9807b2817d7532dfd3e962089c7d18510cd432d5f4",
+            "rawBytes": 6475
+          }
+        },
+        {
+          "run": {
+            "id": 39751754024,
+            "name": "CI",
+            "head_sha": "cf4848c49ad8849d45f03f3270b2ba78beffc7a2",
+            "status": "completed",
+            "conclusion": "failure",
+            "created_at": "2026-10-22T08:58:05Z",
+            "updated_at": "2026-10-22T09:31:10Z",
+            "run_attempt": 1,
+            "html_url": "https://github.com/Proto-UI/Proto-UI/actions/runs/39751754024",
+            "path": ".github/workflows/ci.yml"
+          },
+          "jobsTotal": 22,
+          "jobsConclusions": {
+            "success": 12,
+            "failure": 10
+          },
+          "paginationComplete": true,
+          "pages": 1,
+          "jobsSource": {
+            "relativeInput": "live/current-cf/20261022T093836Z/runs/39751754024/jobs-pages.json",
+            "rawSHA256": "44d47a093888b8ea09cf3aaf5afdd53591603dad1e10a46630de5ab6a95645c0",
+            "rawBytes": 60154
+          }
+        }
+      ],
+      "boundary": "This is a selected-field projection of root raw snapshot, not a separately executed API request. Whole snapshot/comments/attribution not selected for public raw list."
+    },
+    "package": {
+      "jobId": 119735224357,
+      "actualBuildCount": 45,
+      "publicPackageTotal": 47,
+      "manifestCount": 47,
+      "policyTests": {
+        "passed": 9,
+        "failed": 0
+      },
+      "measurements": [
+        {
+          "line": 620,
+          "status": "PASS",
+          "entry": "lucide/icons/x",
+          "gzipBytes": 1737,
+          "ceiling": 3000,
+          "overBudget": 0,
+          "minifiedBytes": 4670,
+          "sha256": "2aa1af1ef3a197cc72f2c421083b37d7da42610907ad014c103570abab1aff50"
+        },
+        {
+          "line": 621,
+          "status": "PASS",
+          "entry": "lucide root",
+          "gzipBytes": 635749,
+          "ceiling": 700000,
+          "overBudget": 0,
+          "minifiedBytes": 4083209,
+          "sha256": "d4cea01272140e6dfbbf37a4871f2011481789fca83be7e569a37d2eacb634ad"
+        },
+        {
+          "line": 622,
+          "status": "ADVISORY",
+          "entry": "core root",
+          "gzipBytes": 8940,
+          "ceiling": 7600,
+          "overBudget": 1340,
+          "minifiedBytes": 28128,
+          "sha256": "0618d20711054f616b0bb51e266fe427d898173b169cf84f4223b3263c5faf4a"
+        },
+        {
+          "line": 623,
+          "status": "ADVISORY",
+          "entry": "runtime root",
+          "gzipBytes": 90651,
+          "ceiling": 78500,
+          "overBudget": 12151,
+          "minifiedBytes": 350526,
+          "sha256": "323066fe3ecf5c85be483818fa7084d2c6eb57829503352d9f74eaa28f721a80"
+        },
+        {
+          "line": 624,
+          "status": "ADVISORY",
+          "entry": "adapter-react root",
+          "gzipBytes": 143381,
+          "ceiling": 106000,
+          "overBudget": 37381,
+          "minifiedBytes": 506121,
+          "sha256": "e3ebaf76b1976b34a79c657be222eea508f61e042a4b7baaf3942eb6d3a3569a"
+        },
+        {
+          "line": 625,
+          "status": "ADVISORY",
+          "entry": "adapter-vue root",
+          "gzipBytes": 142838,
+          "ceiling": 106000,
+          "overBudget": 36838,
+          "minifiedBytes": 503792,
+          "sha256": "4f9c494f0ed394a08fb81366f19cce83f36dd38a02cfd39c569e4f2ffce1f65d"
+        },
+        {
+          "line": 626,
+          "status": "ADVISORY",
+          "entry": "adapter-web-component root",
+          "gzipBytes": 170063,
+          "ceiling": 132000,
+          "overBudget": 38063,
+          "minifiedBytes": 585881,
+          "sha256": "82d39add6083c62901cdb3807c5ec1d1e67b19281bed0f8deca477301910834b"
+        },
+        {
+          "line": 627,
+          "status": "PASS",
+          "entry": "prototypes-base/button",
+          "gzipBytes": 3948,
+          "ceiling": 6000,
+          "overBudget": 0,
+          "minifiedBytes": 13707,
+          "sha256": "2bf46e0160ec35e12005b5874ce9863f19853a0e4021d0ac80043229fb89d53d"
+        },
+        {
+          "line": 628,
+          "status": "PASS",
+          "entry": "prototypes-shadcn/button",
+          "gzipBytes": 4952,
+          "ceiling": 7000,
+          "overBudget": 0,
+          "minifiedBytes": 18079,
+          "sha256": "5970dcc7a557419cd02a6a51fefd7f7e0f16f8d07deb00e8481c6bb3719a7463"
+        }
+      ],
+      "buildRecords": [
+        {
+          "line": 536,
+          "package": "@proto.ui/types",
+          "ms": 898,
+          "files": 12
+        },
+        {
+          "line": 537,
+          "package": "@proto.ui/core",
+          "ms": 1518,
+          "files": 94
+        },
+        {
+          "line": 538,
+          "package": "@proto.ui/module-base",
+          "ms": 938,
+          "files": 14
+        },
+        {
+          "line": 539,
+          "package": "@proto.ui/module-expose",
+          "ms": 931,
+          "files": 12
+        },
+        {
+          "line": 540,
+          "package": "@proto.ui/module-state",
+          "ms": 1046,
+          "files": 12
+        },
+        {
+          "line": 541,
+          "package": "@proto.ui/module-expose-state",
+          "ms": 982,
+          "files": 10
+        },
+        {
+          "line": 542,
+          "package": "@proto.ui/module-feedback",
+          "ms": 1645,
+          "files": 38
+        },
+        {
+          "line": 543,
+          "package": "@proto.ui/module-anatomy",
+          "ms": 1216,
+          "files": 14
+        },
+        {
+          "line": 544,
+          "package": "@proto.ui/module-positioning",
+          "ms": 1482,
+          "files": 32
+        },
+        {
+          "line": 545,
+          "package": "@proto.ui/module-collection",
+          "ms": 1042,
+          "files": 6
+        },
+        {
+          "line": 546,
+          "package": "@proto.ui/module-a11y",
+          "ms": 1438,
+          "files": 12
+        },
+        {
+          "line": 547,
+          "package": "@proto.ui/module-table-structure",
+          "ms": 1122,
+          "files": 10
+        },
+        {
+          "line": 548,
+          "package": "@proto.ui/hooks",
+          "ms": 1070,
+          "files": 46
+        },
+        {
+          "line": 549,
+          "package": "@proto.ui/module-expose-event",
+          "ms": 916,
+          "files": 12
+        },
+        {
+          "line": 550,
+          "package": "@proto.ui/module-event",
+          "ms": 1082,
+          "files": 14
+        },
+        {
+          "line": 551,
+          "package": "@proto.ui/module-as-trigger",
+          "ms": 947,
+          "files": 10
+        },
+        {
+          "line": 552,
+          "package": "@proto.ui/module-axis-input",
+          "ms": 1045,
+          "files": 6
+        },
+        {
+          "line": 553,
+          "package": "@proto.ui/module-boundary",
+          "ms": 1115,
+          "files": 12
+        },
+        {
+          "line": 554,
+          "package": "@proto.ui/module-context",
+          "ms": 1058,
+          "files": 12
+        },
+        {
+          "line": 555,
+          "package": "@proto.ui/module-control-label",
+          "ms": 1193,
+          "files": 12
+        },
+        {
+          "line": 556,
+          "package": "@proto.ui/module-expose-state-web",
+          "ms": 1013,
+          "files": 12
+        },
+        {
+          "line": 557,
+          "package": "@proto.ui/module-focus",
+          "ms": 1307,
+          "files": 12
+        },
+        {
+          "line": 558,
+          "package": "@proto.ui/module-hit-participation",
+          "ms": 1121,
+          "files": 14
+        },
+        {
+          "line": 559,
+          "package": "@proto.ui/module-image-view",
+          "ms": 1083,
+          "files": 12
+        },
+        {
+          "line": 560,
+          "package": "@proto.ui/module-native-link",
+          "ms": 1083,
+          "files": 12
+        },
+        {
+          "line": 561,
+          "package": "@proto.ui/module-overlay",
+          "ms": 1236,
+          "files": 18
+        },
+        {
+          "line": 562,
+          "package": "@proto.ui/module-presence",
+          "ms": 963,
+          "files": 10
+        },
+        {
+          "line": 563,
+          "package": "@proto.ui/module-props",
+          "ms": 1168,
+          "files": 18
+        },
+        {
+          "line": 564,
+          "package": "@proto.ui/module-rule",
+          "ms": 1123,
+          "files": 16
+        },
+        {
+          "line": 565,
+          "package": "@proto.ui/module-rule-expose-state-web",
+          "ms": 1054,
+          "files": 10
+        },
+        {
+          "line": 566,
+          "package": "@proto.ui/module-rule-meta",
+          "ms": 1040,
+          "files": 10
+        },
+        {
+          "line": 567,
+          "package": "@proto.ui/module-scroll",
+          "ms": 1405,
+          "files": 20
+        },
+        {
+          "line": 568,
+          "package": "@proto.ui/module-state-accessibility",
+          "ms": 889,
+          "files": 6
+        },
+        {
+          "line": 569,
+          "package": "@proto.ui/module-state-interaction",
+          "ms": 916,
+          "files": 6
+        },
+        {
+          "line": 570,
+          "package": "@proto.ui/module-test-sys",
+          "ms": 889,
+          "files": 8
+        },
+        {
+          "line": 571,
+          "package": "@proto.ui/module-text-control",
+          "ms": 1077,
+          "files": 14
+        },
+        {
+          "line": 572,
+          "package": "@proto.ui/runtime",
+          "ms": 1654,
+          "files": 58
+        },
+        {
+          "line": 573,
+          "package": "@proto.ui/adapter-base",
+          "ms": 2235,
+          "files": 96
+        },
+        {
+          "line": 574,
+          "package": "@proto.ui/adapter-react",
+          "ms": 1748,
+          "files": 18
+        },
+        {
+          "line": 575,
+          "package": "@proto.ui/adapter-vue",
+          "ms": 1794,
+          "files": 18
+        },
+        {
+          "line": 576,
+          "package": "@proto.ui/adapter-vue2",
+          "ms": 1682,
+          "files": 18
+        },
+        {
+          "line": 577,
+          "package": "@proto.ui/adapter-web-component",
+          "ms": 2461,
+          "files": 68
+        },
+        {
+          "line": 578,
+          "package": "@proto.ui/prototypes-base",
+          "ms": 8101,
+          "files": 698
+        },
+        {
+          "line": 579,
+          "package": "@proto.ui/prototypes-brutalist",
+          "ms": 6138,
+          "files": 518
+        },
+        {
+          "line": 580,
+          "package": "@proto.ui/prototypes-shadcn",
+          "ms": 6171,
+          "files": 542
+        }
+      ],
+      "toolchain": {
+        "node": "v24.22.0",
+        "zlib": "1.3.2.1-motley-285e94b",
+        "esbuild": "0.25.12",
+        "platform": "linux",
+        "arch": "x64"
+      },
+      "policy": {
+        "mode": "finf-development-advisory",
+        "scope": "Proto-UI/Proto-UI Finf #870/#872: current nine whole-entry measurements only",
+        "advisoryEntries": [
+          "packages/prototypes/lucide/src/icons/x.ts",
+          "packages/prototypes/lucide/src/index.ts",
+          "packages/core/src/index.ts",
+          "packages/runtime/src/index.ts",
+          "packages/adapters/react/src/index.ts",
+          "packages/adapters/vue/src/index.ts",
+          "packages/adapters/web-component/src/index.ts",
+          "packages/prototypes/base/src/button/index.ts",
+          "packages/prototypes/shadcn/src/button/index.ts"
+        ],
+        "expiresWhen": "All 68 full-delivery/closeout items are recorded complete, or the explicit Finf opt-in is removed",
+        "ledger": "internal/coverage-matrices/prototype-coverage-matrix.json",
+        "ledgerSha256": "14195b286bcb62a80e0703fcd2113d76519fa30b5231aa9a4d7151013e75e8c9",
+        "recordedCompleteItems": 5,
+        "totalItems": 68,
+        "completionIsAcceptance": false
+      },
+      "passCount": 4,
+      "advisoryCount": 5,
+      "allNineMeasurementsSameAs8b": true,
+      "toolchainSameAs8b": false,
+      "limits": [
+        "45 builds distinct from47manifests/62installprojects.",
+        "5advisories remain overbudget; no strict9green.",
+        "Node24.22/zlib285e are current, not8b24.21/8002."
+      ]
+    },
+    "types": {
+      "jobId": 119733778359,
+      "files": 937,
+      "errors": 0,
+      "warnings": 0,
+      "hints": 14
+    },
+    "general": {
+      "jobId": 119735927805,
+      "specAuthoringChangedInputs": 1,
+      "publicDocsCount": 78,
+      "issues": [
+        "- @proto.ui/prototypes-base ./alert-dialog: unclassified family/export; expected catalog entity P-BASE-ALERT-DIALOG. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-base ./drawer: unclassified family/export; expected catalog entity P-BASE-DRAWER. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-base ./popover: unclassified family/export; expected catalog entity P-BASE-POPOVER. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-base ./progress: unclassified family/export; expected catalog entity P-BASE-PROGRESS. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-base ./meter: unclassified family/export; expected catalog entity P-BASE-METER. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-base ./calendar: unclassified family/export; expected catalog entity P-BASE-CALENDAR. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-base ./toolbar: unclassified family/export; expected catalog entity P-BASE-TOOLBAR. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-base ./toast: unclassified family/export; expected catalog entity P-BASE-TOAST. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-base ./form: unclassified family/export; expected catalog entity P-BASE-FORM. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-base ./checkbox-group: unclassified family/export; expected catalog entity P-BASE-CHECKBOX-GROUP. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-base ./autocomplete: unclassified family/export; expected catalog entity P-BASE-AUTOCOMPLETE. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-base ./combobox: unclassified family/export; expected catalog entity P-BASE-COMBOBOX. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-base ./command: unclassified family/export; expected catalog entity P-BASE-COMMAND. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-base ./menubar: unclassified family/export; expected catalog entity P-BASE-MENUBAR. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-base ./navigation-menu: unclassified family/export; expected catalog entity P-BASE-NAVIGATION-MENU. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-base ./context-menu: unclassified family/export; expected catalog entity P-BASE-CONTEXT-MENU. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-base ./slider: unclassified family/export; expected catalog entity P-BASE-SLIDER. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-base ./number-field: unclassified family/export; expected catalog entity P-BASE-NUMBER-FIELD. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-base ./input-otp: unclassified family/export; expected catalog entity P-BASE-INPUT-OTP. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-base ./tree: unclassified family/export; expected catalog entity P-BASE-TREE. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-base ./message-scroller: unclassified family/export; expected catalog entity P-BASE-MESSAGE-SCROLLER. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-base ./resizable: unclassified family/export; expected catalog entity P-BASE-RESIZABLE. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-base ./carousel: unclassified family/export; expected catalog entity P-BASE-CAROUSEL. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-base ./virtual-list: unclassified family/export; expected catalog entity P-BASE-VIRTUAL-LIST. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-base ./date-picker: unclassified family/export; expected catalog entity P-BASE-DATE-PICKER. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-base ./data-table: unclassified family/export; expected catalog entity P-BASE-DATA-TABLE. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-shadcn ./alert-dialog: unclassified family/export; expected catalog entity P-SHADCN-ALERT-DIALOG. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-shadcn ./drawer: unclassified family/export; expected catalog entity P-SHADCN-DRAWER. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-shadcn ./popover: unclassified family/export; expected catalog entity P-SHADCN-POPOVER. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-shadcn ./progress: unclassified family/export; expected catalog entity P-SHADCN-PROGRESS. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-shadcn ./meter: unclassified family/export; expected catalog entity P-SHADCN-METER. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-shadcn ./calendar: unclassified family/export; expected catalog entity P-SHADCN-CALENDAR. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-shadcn ./toolbar: unclassified family/export; expected catalog entity P-SHADCN-TOOLBAR. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-shadcn ./toast: unclassified family/export; expected catalog entity P-SHADCN-TOAST. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-shadcn ./form: unclassified family/export; expected catalog entity P-SHADCN-FORM. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-shadcn ./checkbox-group: unclassified family/export; expected catalog entity P-SHADCN-CHECKBOX-GROUP. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-shadcn ./autocomplete: unclassified family/export; expected catalog entity P-SHADCN-AUTOCOMPLETE. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-shadcn ./combobox: unclassified family/export; expected catalog entity P-SHADCN-COMBOBOX. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-shadcn ./command: unclassified family/export; expected catalog entity P-SHADCN-COMMAND. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-shadcn ./menubar: unclassified family/export; expected catalog entity P-SHADCN-MENUBAR. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-shadcn ./navigation-menu: unclassified family/export; expected catalog entity P-SHADCN-NAVIGATION-MENU. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-shadcn ./context-menu: unclassified family/export; expected catalog entity P-SHADCN-CONTEXT-MENU. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-shadcn ./slider: unclassified family/export; expected catalog entity P-SHADCN-SLIDER. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-shadcn ./number-field: unclassified family/export; expected catalog entity P-SHADCN-NUMBER-FIELD. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-shadcn ./input-otp: unclassified family/export; expected catalog entity P-SHADCN-INPUT-OTP. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-shadcn ./tree: unclassified family/export; expected catalog entity P-SHADCN-TREE. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-shadcn ./message-scroller: unclassified family/export; expected catalog entity P-SHADCN-MESSAGE-SCROLLER. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-shadcn ./resizable: unclassified family/export; expected catalog entity P-SHADCN-RESIZABLE. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-shadcn ./carousel: unclassified family/export; expected catalog entity P-SHADCN-CAROUSEL. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-shadcn ./virtual-list: unclassified family/export; expected catalog entity P-SHADCN-VIRTUAL-LIST. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-shadcn ./date-picker: unclassified family/export; expected catalog entity P-SHADCN-DATE-PICKER. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-shadcn ./data-table: unclassified family/export; expected catalog entity P-SHADCN-DATA-TABLE. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-brutalist ./alert-dialog: unclassified family/export; expected catalog entity P-BRUTALIST-ALERT-DIALOG. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-brutalist ./drawer: unclassified family/export; expected catalog entity P-BRUTALIST-DRAWER. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-brutalist ./popover: unclassified family/export; expected catalog entity P-BRUTALIST-POPOVER. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-brutalist ./progress: unclassified family/export; expected catalog entity P-BRUTALIST-PROGRESS. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-brutalist ./meter: unclassified family/export; expected catalog entity P-BRUTALIST-METER. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-brutalist ./calendar: unclassified family/export; expected catalog entity P-BRUTALIST-CALENDAR. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-brutalist ./toolbar: unclassified family/export; expected catalog entity P-BRUTALIST-TOOLBAR. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-brutalist ./toast: unclassified family/export; expected catalog entity P-BRUTALIST-TOAST. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-brutalist ./form: unclassified family/export; expected catalog entity P-BRUTALIST-FORM. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-brutalist ./checkbox-group: unclassified family/export; expected catalog entity P-BRUTALIST-CHECKBOX-GROUP. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-brutalist ./autocomplete: unclassified family/export; expected catalog entity P-BRUTALIST-AUTOCOMPLETE. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-brutalist ./combobox: unclassified family/export; expected catalog entity P-BRUTALIST-COMBOBOX. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-brutalist ./command: unclassified family/export; expected catalog entity P-BRUTALIST-COMMAND. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-brutalist ./menubar: unclassified family/export; expected catalog entity P-BRUTALIST-MENUBAR. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-brutalist ./navigation-menu: unclassified family/export; expected catalog entity P-BRUTALIST-NAVIGATION-MENU. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-brutalist ./context-menu: unclassified family/export; expected catalog entity P-BRUTALIST-CONTEXT-MENU. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-brutalist ./slider: unclassified family/export; expected catalog entity P-BRUTALIST-SLIDER. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-brutalist ./number-field: unclassified family/export; expected catalog entity P-BRUTALIST-NUMBER-FIELD. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-brutalist ./input-otp: unclassified family/export; expected catalog entity P-BRUTALIST-INPUT-OTP. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-brutalist ./tree: unclassified family/export; expected catalog entity P-BRUTALIST-TREE. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-brutalist ./message-scroller: unclassified family/export; expected catalog entity P-BRUTALIST-MESSAGE-SCROLLER. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-brutalist ./resizable: unclassified family/export; expected catalog entity P-BRUTALIST-RESIZABLE. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-brutalist ./carousel: unclassified family/export; expected catalog entity P-BRUTALIST-CAROUSEL. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-brutalist ./virtual-list: unclassified family/export; expected catalog entity P-BRUTALIST-VIRTUAL-LIST. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-brutalist ./date-picker: unclassified family/export; expected catalog entity P-BRUTALIST-DATE-PICKER. Add the relation or an explicit reasoned exception.",
+        "- @proto.ui/prototypes-brutalist ./data-table: unclassified family/export; expected catalog entity P-BRUTALIST-DATA-TABLE. Add the relation or an explicit reasoned exception."
+      ],
+      "orderedEqual8b": true,
+      "stoppedBeforeVitest": true,
+      "tokenAndOwner17ExecutedByGeneral": false
+    },
+    "search": {
+      "dedicatedJob": 119733778541,
+      "dedicatedBoundary": "5minute setup dependency/font timeout; noSearchcases/noobserverfields",
+      "mainJob": 119735927512,
+      "mainActual": {
+        "passed": 28,
+        "failed": 2,
+        "total": 30
+      },
+      "initialFailure": "shadcn-dark1440:Browserentry+966ms;7actualsamples+966..+1006 allactivecount0/disablednull/ownernull/gennull/timerSamplefalse/dropped0; no proof of earlier966msabsence",
+      "DocsFailure": "Shadcn2048:oneoriginalquery pending at+1001ms freeze,no value/error/settledAt; not a returnedwrongrole",
+      "report": {
+        "relativeInput": "canonical-cf/independent-review/search-first-predicate-review.json",
+        "rawSHA256": "3d64efd75f277b2ddc097d227c277a4865fc7439572893cb3e64a8c76075a89a",
+        "rawBytes": 16711
+      },
+      "cause": "unknown; latecapturecannotfilldeadline; no directproductionpatch established"
+    },
+    "startup": {
+      "runId": 39751753804,
+      "candidateJob": 119733776074,
+      "candidate": {
+        "passed": 27,
+        "failed": 0,
+        "subject": "cf4848c49ad8849d45f03f3270b2ba78beffc7a2"
+      },
+      "baselineJob": 119733776203,
+      "baseline": {
+        "passed": 27,
+        "failed": 0,
+        "subject": "48b80f8b8b0b94dbac04919e3516bc6a1ed2c37c"
+      },
+      "limit": "Actual separate hostedsubjects/probe; localproduction27 is not merged into these counts."
+    },
+    "BrutalistFamilyClock": {
+      "schemaVersion": 1,
+      "createdAt": "2026-10-22T09:52:55.113796+00:00",
+      "source": {
+        "sha": "df44b3c640a489a060a57ef8fbb0870bf5d4cbbd",
+        "dirty": false,
+        "expectedSha": null,
+        "eventSha": "df44b3c640a489a060a57ef8fbb0870bf5d4cbbd"
+      },
+      "jobId": 119735927660,
+      "homepageFile": {
+        "passed": 8,
+        "failed": 1,
+        "wholeShardExit124": true,
+        "failedCase": "Brutalist initial family-commit original1000ms poll"
+      },
+      "pollElapsedMs": 1001.4159810000128,
+      "thirdQueryReturnRelativeMs": 1124.7954670000036,
+      "thirdReturnAfterRejectionMs": 123.37948599999072,
+      "rejectionSnapshot": [
+        {
+          "call": 1,
+          "startedMs": 107146.091659,
+          "returnedMs": 107152.633525,
+          "value": "shadcn"
+        },
+        {
+          "call": 2,
+          "startedMs": 107202.18723,
+          "returnedMs": 107444.982832,
+          "value": "shadcn"
+        },
+        {
+          "call": 3,
+          "startedMs": 107497.380192
+        }
+      ],
+      "drain": {
+        "startedMs": 108147.814417,
+        "finishedMs": 108270.992661,
+        "drainedReferences": 3,
+        "budgetMs": 1000,
+        "budgetExpired": false,
+        "pendingAtDrainEndCount": 0,
+        "pendingAtDrainEnd": [],
+        "droppedPendingAtDrainEndRows": 0,
+        "displayedOutcomes": [
+          {
+            "call": 1,
+            "status": "fulfilled",
+            "value": "shadcn",
+            "batchObservedAtMs": 108270.777783
+          },
+          {
+            "call": 2,
+            "status": "fulfilled",
+            "value": "shadcn",
+            "batchObservedAtMs": 108270.777783
+          },
+          {
+            "call": 3,
+            "status": "fulfilled",
+            "value": "brutalist",
+            "batchObservedAtMs": 108270.777783
+          }
+        ],
+        "droppedOutcomeRows": 0,
+        "completeAtDrainPoint": true
+      },
+      "drainElapsedMs": 123.17824399999517,
+      "writerMOBounds": [
+        [104478.06328000002, 104525.05985800002],
+        [104477.84080599998, 104525.51266099997],
+        [104499.51594699998, 104524.89396699998],
+        [104523.10756199999, 104524.663028],
+        [104523.66606399999, 104524.59102499999]
+      ],
+      "writerMOIntersection": [104523.66606399999, 104524.59102499999],
+      "utilityBounds": [
+        [104523.40910900001, 104524.508312],
+        [104448.73900099998, 104525.39830499998]
+      ],
+      "utilityIntersection": [104523.40910900001, 104524.508312],
+      "intersectionNonempty": true,
+      "conditionalWriterRelativeMs": [811.5692510000081, 812.5942119999818],
+      "conditionalMODeliveryRelativeMs": [932.2692510000197, 933.1942120000167],
+      "conditionalThirdUtilityReadRelativeMs": [1123.2122959999979, 1124.3114989999885],
+      "rawBrowserOrigins": [
+        1792660301302.6, 1792660301302.6, 1792660301302.6, 1792660301302.6, 1792660301302.6,
+        1792660301302.6, 1792660301302.6
+      ],
+      "observability": {
+        "utilityAvailable": true,
+        "utilityUsable": true,
+        "utilityFacts": {
+          "ownerMatched": true,
+          "wrapperStillOwned": true,
+          "restored": true,
+          "timeOrigin": 1792660301302.6,
+          "pageMs": 3822.4000000000233,
+          "totalReads": 3,
+          "droppedReads": 0,
+          "observerError": false,
+          "reads": [
+            {
+              "ordinal": 1,
+              "beforeMs": 2627.9000000000233,
+              "afterMs": 2627.9000000000233,
+              "value": "shadcn",
+              "outcome": "returned"
+            },
+            {
+              "ordinal": 2,
+              "beforeMs": 2919.9000000000233,
+              "afterMs": 2919.9000000000233,
+              "value": "shadcn",
+              "outcome": "returned"
+            },
+            {
+              "ordinal": 3,
+              "beforeMs": 3745.5999999999767,
+              "afterMs": 3745.5999999999767,
+              "value": "brutalist",
+              "outcome": "returned"
+            }
+          ],
+          "currentRootSame": true,
+          "rootConnected": true
+        },
+        "utilityDetached": true,
+        "writerRestored": true,
+        "writerError": false,
+        "writerDropped": 0,
+        "MOError": null,
+        "MODropped": 0,
+        "nodeError": false,
+        "ledgerError": false,
+        "reportErrors": []
+      },
+      "mobile": {
+        "line": 445,
+        "value": {
+          "source": {
+            "sha": "df44b3c640a489a060a57ef8fbb0870bf5d4cbbd",
+            "dirty": false
+          },
+          "stages": [
+            {
+              "stage": "menu-ready",
+              "width": 390,
+              "nodeMs": 74298.868214
+            },
+            {
+              "stage": "mobile-interaction",
+              "width": 390,
+              "nodeMs": 75153.12306
+            },
+            {
+              "stage": "navigation-close-from-contents",
+              "width": 390,
+              "nodeMs": 75973.734396
+            },
+            {
+              "stage": "contents-focus",
+              "width": 390,
+              "nodeMs": 75976.128622
+            },
+            {
+              "stage": "menu-ready",
+              "width": 430,
+              "nodeMs": 77152.498183
+            },
+            {
+              "stage": "mobile-interaction",
+              "width": 430,
+              "nodeMs": 77718.034284
+            },
+            {
+              "stage": "navigation-close-from-contents",
+              "width": 430,
+              "nodeMs": 78528.178081
+            },
+            {
+              "stage": "contents-focus",
+              "width": 430,
+              "nodeMs": 78530.918448
+            },
+            {
+              "stage": "menu-ready",
+              "width": 320,
+              "nodeMs": 79680.286043
+            },
+            {
+              "stage": "mobile-interaction",
+              "width": 320,
+              "nodeMs": 80317.587429
+            },
+            {
+              "stage": "navigation-close-from-contents",
+              "width": 320,
+              "nodeMs": 81123.797702
+            },
+            {
+              "stage": "contents-focus",
+              "width": 320,
+              "nodeMs": 81126.11201
+            }
+          ]
+        }
+      },
+      "limits": [
+        "All mappings conditional on stableequalclockrates and samples lying inRPCbrackets; quantization retained.",
+        "Setter bracket is attributewrite, MO timestamp isdelivery, neither wholefamilytransaction readiness.",
+        "Utility ordinal mapping has no protocolcallID; noextra matchingreads assumption.",
+        "Actual pending drain completion does not change originalfailure or prove universalcontextcleanup.",
+        "CurrentCF observations do not relabel8b or local145."
+      ],
+      "rawRecordBinding": {
+        "path": "<R16>/canonical-cf/independent-review/family-and-mobile-records.json",
+        "sha256": "91688e06929eff2d6579d0f6cdf2f6c594e78d589ff6eda7c0a3cfe13eeb9486"
+      }
+    },
+    "canonicalCVisibleFacts": {
+      "Shadow": {
+        "jobId": 119735927512,
+        "passed": 111
+      },
+      "Homepage": {
+        "jobId": 119735927660,
+        "passed": 8,
+        "failed": 1,
+        "wholeShard124": true
+      },
+      "NativeLinksMain": {
+        "jobId": 119735927812,
+        "passed": 10,
+        "wholeShard124": true
+      },
+      "HeaderMain": {
+        "jobId": 119735927812,
+        "passed": 16,
+        "wholeShard124": true
+      },
+      "NativeLinksDedicated": {
+        "jobId": 119733779249,
+        "passed": 10
+      },
+      "DialogCandidate": {
+        "jobId": 119733777819,
+        "passed": 8
+      },
+      "Collapsible": {
+        "jobId": 119735927814,
+        "passed": 36
+      }
+    },
+    "limits": [
+      "Allmain22 terminal doesnotmeanalltestscomplete or globalgreen. Root38workflowfullmetadata separate fromthis37selectedjoblogreview.",
+      "Allrawlogs acquired byroot. Reviewer usedcacheonly: noAPI/download/browser/test/Actionswrite/sourceedit. Old8b keptimmutable.",
+      "Main3/6setup fontfailures have noexecutedcasecounts;2/7/8exit124 cannotreceivefullsummary.",
+      "Observed current13failure shard1 includesSearch2,Reactrevealcasefirstfailuretokensh8/size8at515,Dialogmissingdirectbodypair,csszoom,CardcolorandS2readiness; noautomaticcauseassignment bytestname.",
+      "OriginalBrutalistfamily1sred remains; boundeddrain/lategetterdo notrepairverdict or provewholetransaction.",
+      "CurrentSearch7actualpoints are samplednearend, notcontinuousfullwindowtrace; Datesharehostassumption andobservercost remain.",
+      "DedicatedSearch fontsetupfailure doesnotshowwhetherobserverwouldrun.",
+      "Local1472085/4,176175/1,Portal16 andprivate1339positiveprobe remainseparatelyrootbound; noneiscanonicalcurrentpassorclosureofpriorfailure.",
+      "CurrentPackage24.22/285e differfrom8b; identical9measurementbytes do not implyidenticalenvironment.",
+      "NoartifactPNG/DOMwasdownloadedorviewedbythisreview; currentlatepublicpacketmustnotclaimvisualacceptance."
+    ],
+    "rawBindings": [
+      {
+        "relativeInput": "canonical-cf/job-logs/119733776638.log",
+        "rawSHA256": "7e9f22bd57a5e2bb0e7190f42aaef4a288cbd14a742390be5fd7a060dd60ffde",
+        "rawBytes": 21821
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733776638.json",
+        "rawSHA256": "616140838fb2b867986068e91e7937db377807d99b2d161ac4979a7bab7cd93a",
+        "rawBytes": 519
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733777266.log",
+        "rawSHA256": "2790310965d1787422c96a0dbc6182a6cca39a1561f7ac181181def4332d9d6f",
+        "rawBytes": 79609
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733777266.json",
+        "rawSHA256": "d9d4f4d7dcfee90f7668fff0f4ba21f8f282d3b39201db974e73957ce272bda0",
+        "rawBytes": 528
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733777819.log",
+        "rawSHA256": "8c0303479f73442c4acc99cdf1afdf709ebeb51761c134dd313fd6cad0440e16",
+        "rawBytes": 67576
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733777819.json",
+        "rawSHA256": "c2165665893d37a515dac51d62161f195b75bd8cd7cfa2011c076ee526dadbf7",
+        "rawBytes": 529
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733777594.log",
+        "rawSHA256": "73cb8120acb09428777d17be8007c2e2ff8a7722ac9038cbc3e5d67e6b8fe6f4",
+        "rawBytes": 747632
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733777594.json",
+        "rawSHA256": "cb9b8e919ed8e02e530dcefa0eaa7ef5cd681455505bf2040b32fbe297b29407",
+        "rawBytes": 512
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733776074.log",
+        "rawSHA256": "cb9f88f59d04eec2fd8f4679a445f7d7af1e15b9a111474b8c45773c822a7c5d",
+        "rawBytes": 762991
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733776074.json",
+        "rawSHA256": "2d01c8044f672b2a447a91455b7d9bd40ffa8a442ed4356bbdc4e2e20af85540",
+        "rawBytes": 517
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733776203.log",
+        "rawSHA256": "42d4fe5c10915b5130500e4372fab2aaa6fc67057b0d2c1ad9caf97001be711b",
+        "rawBytes": 568837
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733776203.json",
+        "rawSHA256": "69b5d07c592fd89225064dbc53b2340349814fa5a70b5a30a942743665065c46",
+        "rawBytes": 516
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733778084.log",
+        "rawSHA256": "b8e60e686125dea010538826c06b85058dd1fcfb22ec19e3c772816208573015",
+        "rawBytes": 91634
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733778084.json",
+        "rawSHA256": "64dad182bd0dd6547177427bf62f9337acaa02663902d8db610ce5426c9789ab",
+        "rawBytes": 512
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733778189.log",
+        "rawSHA256": "997395253a1035911ae00f73290f28e6efe3dba9977d175a308f3ba2c3b9198e",
+        "rawBytes": 1122452
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733778189.json",
+        "rawSHA256": "4a73585de43c197d9d38236bdfb7f07a7da912506817c15d0f24c23cae22be44",
+        "rawBytes": 496
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733778306.log",
+        "rawSHA256": "66941a3866ea3b8830aeb24967d461386c12a4939f633ab63ff214aece2e3a41",
+        "rawBytes": 49108
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733778306.json",
+        "rawSHA256": "b968d78f3ac64da423a18e888183b35e18ff1f0441b44e066fa1ab3ef92313fb",
+        "rawBytes": 569
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733778311.log",
+        "rawSHA256": "b9977cb2306f1817b1adae907e669502b3d331fe005f451788458a4a82a1af9d",
+        "rawBytes": 105372
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733778311.json",
+        "rawSHA256": "015bb1111110d02b3e3a961f1e8026038cb71103cb3431e67c67a4b0317c4b04",
+        "rawBytes": 502
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733778541.log",
+        "rawSHA256": "c69e7127989bdcbabf1120f473a2df6b45465e727ccdaccabf04a6b5b91aa038",
+        "rawBytes": 19067
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733778541.json",
+        "rawSHA256": "4ec052fc4e9d7cdf3f70a127ac6d45a1e72f182397fd0f6918767161d4b512f6",
+        "rawBytes": 544
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733778552.log",
+        "rawSHA256": "bcc78180ead6622175c6cfb6da23d27421abd321df6f67dc137e7b61c1eaad9d",
+        "rawBytes": 52318
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733778552.json",
+        "rawSHA256": "b3cbbd2fbb0507533e450ec5a08a89263f4864f49b7963711a6976719e558b2a",
+        "rawBytes": 535
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733778574.log",
+        "rawSHA256": "915c2761db57a83cfd628dfb64d8d142d21cacc068f90cb951b9dc7591d4ef0e",
+        "rawBytes": 51705
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733778574.json",
+        "rawSHA256": "a44ac5c2d58871740ee68736bd625e2ee6cdecbeadb550cabf80121d2d1e9551",
+        "rawBytes": 549
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733778757.log",
+        "rawSHA256": "78d72f919f37ddb66d5bd1b96a3d8612eb0aca09ceeabeaa4f027907b13b7bbb",
+        "rawBytes": 45006
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733778757.json",
+        "rawSHA256": "06094aefeeb795660b9a065673f933f72b86f9fa92c73bb26d6c18a8d0b17e64",
+        "rawBytes": 540
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733779249.log",
+        "rawSHA256": "c476e75fb23897e318b3107738ff34eac3c550215de3ef6439067d915bd954bd",
+        "rawBytes": 51286
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733779249.json",
+        "rawSHA256": "80dd7e19157828d432774ba736356110bfc6baebb4bfcde2956dbeb82668f7b0",
+        "rawBytes": 538
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733778046.log",
+        "rawSHA256": "b77b46a0b84721e3ad3d1a6d8076f1c81f0d12af02419ecf4e6f4413766b9f6f",
+        "rawBytes": 27519
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733778046.json",
+        "rawSHA256": "2f73fc31fd50d3e65fd8dee2f9a0681f445e1910d5531e6cf6867a45b6dc6341",
+        "rawBytes": 469
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733778359.log",
+        "rawSHA256": "58e11fc9789f89871d4d1249253835fcda218ee160303eb9500ad37e2656fe44",
+        "rawBytes": 26810
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733778359.json",
+        "rawSHA256": "71362082f08d36bac7196e6f78740ff493945e419be4f23bc1332a477d21b404",
+        "rawBytes": 475
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733778389.log",
+        "rawSHA256": "321af25af43ddb12dec1c0f2b0fe3d4b9dc0c5e84f3e1ce28359163dd7144a22",
+        "rawBytes": 65738
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733778389.json",
+        "rawSHA256": "46c1510d9d3672862ba905bedc35989357fd9ea744eb13b4a93cc03b2a14a4dc",
+        "rawBytes": 477
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733778495.log",
+        "rawSHA256": "ace85723aadeea34291346326f48a4ca5e76dfef886ed03853ceefa76832117a",
+        "rawBytes": 59111
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733778495.json",
+        "rawSHA256": "26fe02033bb9186e954f339e7d03d711739c6784076fea95d82b66e8fecc53a9",
+        "rawBytes": 484
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733778533.log",
+        "rawSHA256": "fd7a97b707c928f651235e8b1ee9f6bfd312bd1dfc554289f3d0e73dbbc9772e",
+        "rawBytes": 129611
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733778533.json",
+        "rawSHA256": "9257e1e8e9de35fed29b24dc285685969615d26c13bbf6f215a08b0da186e776",
+        "rawBytes": 476
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733778536.log",
+        "rawSHA256": "a337e6323763707ad98d32b564123a77815eca4e567366212b7fe4c4e5ef0f87",
+        "rawBytes": 12525
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733778536.json",
+        "rawSHA256": "a45abff8aedbc7806406459f95a6a093572a5555ea4d1ab19ea9703aaf21720d",
+        "rawBytes": 479
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733778563.log",
+        "rawSHA256": "950a08713345c5b6e522bd2cdbab34abb1c344d9bbbfd504c98c1dc59028bd75",
+        "rawBytes": 151466
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733778563.json",
+        "rawSHA256": "14a2e1798f9afa98f26721e5c97448e3f140e2904725b7141a3e6667bda77765",
+        "rawBytes": 475
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733778835.log",
+        "rawSHA256": "c4b5e849cf6ba10c3402b23f2e545ce75a87cc94081b7f411bf3bcb6b3bf009a",
+        "rawBytes": 25191
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119733778835.json",
+        "rawSHA256": "3203ff16a696e65949bce8635cea1aaef1aa555a189d33760523ff73ea2aa733",
+        "rawBytes": 477
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119735224222.log",
+        "rawSHA256": "b8bbdfc1d168d085bd6a18dcb373bc459db7c98aa0d2a7c4eab97e1070c1fb00",
+        "rawBytes": 48747
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119735224222.json",
+        "rawSHA256": "2e322a0aa0628d4afa77326f1d0d8566219dcdfd5829d8e4eab4e6403af1681c",
+        "rawBytes": 487
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119735224320.log",
+        "rawSHA256": "80b7266c822844868bb7f9403776c5e285615e8702d9ed4f922130a7d09b03d4",
+        "rawBytes": 36308
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119735224320.json",
+        "rawSHA256": "83f5c699fbb5bd48975f6dd6d456bac26ac6479aa48f2f48c11f7b620e357d51",
+        "rawBytes": 478
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119735224355.log",
+        "rawSHA256": "f84d16d17b8eca036f31a6d17789a2126d80f9529d057bf7fc41cc7b847d46e2",
+        "rawBytes": 49647
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119735224355.json",
+        "rawSHA256": "9e40724ad874a6fd05b093ba4c9583867b57b98c7ff4760e25af9809d7607409",
+        "rawBytes": 474
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119735224357.log",
+        "rawSHA256": "a40d035af2b6c95a39967bc805b6910a65e593e3c79ecb074941ee92c1954415",
+        "rawBytes": 70939
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119735224357.json",
+        "rawSHA256": "2f6f7f6cd633933bfb9b7dac7010a24125fae75e7ff161fb33ca770e5c49ab97",
+        "rawBytes": 485
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119735927512.log",
+        "rawSHA256": "bd26ac2f84921c3cb0f885d4c098a174d182f75896aab6d5dc0b73ea5d4f01f9",
+        "rawBytes": 185460
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119735927512.json",
+        "rawSHA256": "b3dcc8fbd417ca9c2e5895c15b0036834658e028f34988002f952cf81bff7b2c",
+        "rawBytes": 500
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119735927541.log",
+        "rawSHA256": "868f348faa9c3c81001d6e06f38b1bbfe3610816346f9ed94ad177c1e405868e",
+        "rawBytes": 21146
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119735927541.json",
+        "rawSHA256": "568b0a8d802c9be719cecb76b0df8be0db94876d967cc86823b552d7131ceb9d",
+        "rawBytes": 499
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119735927619.log",
+        "rawSHA256": "af6347714ad2eb817519185a6dfd58aaa1bbb14fef4f9e412b95ad2567f15327",
+        "rawBytes": 21057
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119735927619.json",
+        "rawSHA256": "2c90b948214bf6c9f370d70b98eb190eb793c171fa56f370cde11f613910bd35",
+        "rawBytes": 499
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119735927660.log",
+        "rawSHA256": "d24c887e46cf0725628d1d5e5354da27ddc3071afba07565eb84178e36d6ebe6",
+        "rawBytes": 322353
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119735927660.json",
+        "rawSHA256": "9a35a56f9147fdad8eccd97eca7c07ac3e5835ca1d1aa40f0cd93489a3d1e7bb",
+        "rawBytes": 500
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119735927782.log",
+        "rawSHA256": "3dbbf71ac6d0d0f24022f0aa091bcc10888220926de637a723d4047b877929fd",
+        "rawBytes": 110442
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119735927782.json",
+        "rawSHA256": "939cba53054207b2c84a899439a35f9ce7d6f431134d639a875675f5aec7b6d6",
+        "rawBytes": 500
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119735927796.log",
+        "rawSHA256": "40e4cb8c24ae3bf28796ce4e983fe41ee120d03c466472dac50466306bfda12a",
+        "rawBytes": 100450
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119735927796.json",
+        "rawSHA256": "cb88fba3ed8d577c0dbcf74eec324c976fa9e40af5ba082fc660f531304e2655",
+        "rawBytes": 500
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119735927805.log",
+        "rawSHA256": "f3a212f7cff075df3ad0f4a365000d3cb9c68b8bb39d5280de9e9cf3dc1f2537",
+        "rawBytes": 147227
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119735927805.json",
+        "rawSHA256": "30cd937e7aa632de3940a11cd03deef27f0b23cd397408a3d2a122f66e82bb11",
+        "rawBytes": 478
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119735927812.log",
+        "rawSHA256": "c4f4e50e6d8b29cd5045d467ba04dceb979c0683a31cceff0779e7ef71762952",
+        "rawBytes": 148464
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119735927812.json",
+        "rawSHA256": "0a98fda8ddc0a64431e879602ce03d862eba9c14d60ac913bfbb546958f337a5",
+        "rawBytes": 500
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119735927814.log",
+        "rawSHA256": "3c41db5ed33fb2056464b44c3de74bddeb10f080d9e4c8d385c9ddda4510a405",
+        "rawBytes": 138316
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119735927814.json",
+        "rawSHA256": "28c323168d7de737d79283598088544b49606e6125627d6be0c4df1551fe608d",
+        "rawBytes": 500
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119747217192.log",
+        "rawSHA256": "5c38c92b153fa852bd354ba4b58c72d85962ac5ce381709b80f616ac3b8bf64c",
+        "rawBytes": 24381
+      },
+      {
+        "relativeInput": "canonical-cf/job-logs/119747217192.json",
+        "rawSHA256": "f7a2c779360140cff0baf99f91866f20d279babb594238c5616914c084f6f66e",
+        "rawBytes": 469
+      },
+      {
+        "relativeInput": "live/current-cf/20261022T093836Z/runs/39751753804/jobs-pages.json",
+        "rawSHA256": "6e026931ad8c02ce4256087437f77730f5ead1a2b415a1f20c365df53911c166",
+        "rawBytes": 6697
+      },
+      {
+        "relativeInput": "live/current-cf/20261022T093836Z/runs/39751753866/jobs-pages.json",
+        "rawSHA256": "8dd62b7fee40db8c33516c459ac8b96d10f0e58e0eb3d51fa299b1af1b91abb9",
+        "rawBytes": 2919
+      },
+      {
+        "relativeInput": "live/current-cf/20261022T093836Z/runs/39751753930/jobs-pages.json",
+        "rawSHA256": "bc89dde908563a033489a2047b648d9750cd454e4174d8d47cd8423094d84c85",
+        "rawBytes": 29392
+      },
+      {
+        "relativeInput": "live/current-cf/20261022T093836Z/runs/39751753936/jobs-pages.json",
+        "rawSHA256": "ebbcb1aa97fab6297d4c9090a6ca3e4cc82fe3147889af20a2b31339a9322a55",
+        "rawBytes": 3536
+      },
+      {
+        "relativeInput": "live/current-cf/20261022T093836Z/runs/39751753970/jobs-pages.json",
+        "rawSHA256": "a09c316ebb283f217c22ae9807b2817d7532dfd3e962089c7d18510cd432d5f4",
+        "rawBytes": 6475
+      },
+      {
+        "relativeInput": "live/current-cf/20261022T093836Z/runs/39751754024/jobs-pages.json",
+        "rawSHA256": "44d47a093888b8ea09cf3aaf5afdd53591603dad1e10a46630de5ab6a95645c0",
+        "rawBytes": 60154
+      },
+      {
+        "relativeInput": "canonical-cf/checkout-git-object.json",
+        "rawSHA256": "259997df6de1752eade857b15137e73df6017a31f963c668adbbec5d8f9bf109",
+        "rawBytes": 2614
+      },
+      {
+        "relativeInput": "canonical-cf/scope.json",
+        "rawSHA256": "6f16601badc5a3206da84e3d7fd1a55616d674880c22968a9c7bebceec947068",
+        "rawBytes": 6619
+      },
+      {
+        "relativeInput": "canonical-cf/acquisition.json",
+        "rawSHA256": "3b6b1d4f27d0a19b70d1753c835e195aba23ef8bed1baa11fb5ecc85b7b15f95",
+        "rawBytes": 21367
+      },
+      {
+        "relativeInput": "canonical-cf/checkout-binding.json",
+        "rawSHA256": "2f79def4063b22cfdb6be99273e242f914c935bed237fb201b2a3bef423e3c95",
+        "rawBytes": 433
+      },
+      {
+        "relativeInput": "canonical-cf/independent-review/cached-job-inventory.json",
+        "rawSHA256": "0e5c734b490e82f03cdc48459ad1e668afe09ebd530cdf0fa54c93ad801c1327",
+        "rawBytes": 29111
+      },
+      {
+        "relativeInput": "canonical-cf/independent-review/actual-test-plan.json",
+        "rawSHA256": "d4b21d8a24d28a54e6bb608dd2d40ea8a708a958f9a578ca98657ab2b4844f0c",
+        "rawBytes": 98200
+      },
+      {
+        "relativeInput": "canonical-cf/independent-review/package-review.json",
+        "rawSHA256": "ac2e8389fb60143352503ea10dc9583ff13d2f90072ba85f90ec8862028407b0",
+        "rawBytes": 9331
+      },
+      {
+        "relativeInput": "canonical-cf/independent-review/general-review.json",
+        "rawSHA256": "49a2cb70dab931a03f04f5d2f3c6782e44ac2c6fd36212c06dd79e49377341d0",
+        "rawBytes": 13832
+      },
+      {
+        "relativeInput": "canonical-cf/independent-review/terminal-platform-subset.json",
+        "rawSHA256": "c31958283c802ee2d1b10740d7928962ffe85e3f9eb8b27c2cea0548b5073783",
+        "rawBytes": 6212
+      },
+      {
+        "relativeInput": "canonical-cf/independent-review/main1-search-actual-records.json",
+        "rawSHA256": "3679013f552ec24084983151abc1c97b61e6e01d044fe1463aad793bd5d5f968",
+        "rawBytes": 28376
+      },
+      {
+        "relativeInput": "canonical-cf/independent-review/search-first-predicate-review.json",
+        "rawSHA256": "3d64efd75f277b2ddc097d227c277a4865fc7439572893cb3e64a8c76075a89a",
+        "rawBytes": 16711
+      },
+      {
+        "relativeInput": "canonical-cf/independent-review/search-first-predicate-review.md",
+        "rawSHA256": "49276e6f8fc47e8dc92d1d1a063819439d9d7ba1a4a84060dba65f8858813aaf",
+        "rawBytes": 1956
+      },
+      {
+        "relativeInput": "canonical-cf/independent-review/family-and-mobile-records.json",
+        "rawSHA256": "91688e06929eff2d6579d0f6cdf2f6c594e78d589ff6eda7c0a3cfe13eeb9486",
+        "rawBytes": 18099
+      },
+      {
+        "relativeInput": "canonical-cf/independent-review/family-clock-review.json",
+        "rawSHA256": "ab943bf8b8c2b8805ad85fca8b0ed7c7b390885fc7ba83657a83a34379e8b2be",
+        "rawBytes": 6444
+      }
+    ]
+  },
+  "rawInputs": 248,
+  "uniquePayloadRecords": 229,
+  "ZIPMembers": 230,
+  "derivedRecords": 125,
+  "originalPNGFiles": 7,
+  "uniquePNGHashes": 7,
+  "archive": {
+    "name": "evidence.zip",
+    "sha256": "bfdf08863c4c699796ce5dddc211cadf8f615adba9ceeebbe3848b89363dec51",
+    "bytes": 5204323
+  },
+  "mapSHA256": "19cece43306790efc93fe1b1c97edc5be1bb7b21c40228c9ac67d279bbe012de",
+  "localEngineBoundary": "Local Chromium145 matched pinnedPlaywright1.58.2, not an equality claim with canonical system browser.",
+  "visualBoundary": "Five currentCF frames plus two precommit Startup frames, separate epochs. CF320 still showsDemoSkeleton; no fullpreview/AT claim."
+}

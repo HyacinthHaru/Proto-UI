@@ -1,0 +1,40 @@
+{
+  "algorithm": "SHA-256",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "3e025e90f908b0048ab977f984c383faf0b962f3753c377862dc1e3017b87eb0",
+      "bytes": 9567
+    },
+    {
+      "path": "evidence.zip",
+      "sha256": "4c486ae1c9ab8d578d8ed0985ece7599c264a8b999a4f79ea058486f03863e93",
+      "bytes": 2691658
+    },
+    {
+      "path": "images/sidebar-current-1440.png",
+      "sha256": "ad8b5da8a19b484c7f888e1e8cdcd810c9508684cb0ad67819075d4c02670127",
+      "bytes": 240897
+    },
+    {
+      "path": "images/sidebar-current-320.png",
+      "sha256": "f197bfd5a1b0009be2ff8af10c9deb8acbaa60b07fe173a63f670378dc73d5a1",
+      "bytes": 38215
+    },
+    {
+      "path": "images/sidebar-current-390.png",
+      "sha256": "65e9bb86f6ec773f9076fb85c3b4368517663a607b69271e32154a087a05256b",
+      "bytes": 39299
+    },
+    {
+      "path": "public-map.json",
+      "sha256": "8b6e00bebd32fca59c1cfeca4dc6a41827153dde37f161ec8431cc431595b8d5",
+      "bytes": 364441
+    },
+    {
+      "path": "summary.json",
+      "sha256": "fd95fe943ce1a305b72344e1650479beec87ef63ceb40ae269012c04d47795ff",
+      "bytes": 208754
+    }
+  ]
+}
