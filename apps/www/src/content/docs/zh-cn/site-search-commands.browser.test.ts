@@ -1057,7 +1057,7 @@ for (const width of [320, 390, 1280, 1440, 2048]) {
           if (!rolePassed && verdict) {
             try {
               const startedMs = performance.now();
-              const budgetMs = 1000;
+              const budgetMs = 2000;
               const deadlineMs = startedMs + budgetMs;
               let drainedReferences = 0;
               let budgetExpired = false;
@@ -1216,6 +1216,7 @@ for (const width of [320, 390, 1280, 1440, 2048]) {
       } finally {
         let contextClosed = false;
         try {
+          roleTiming.markContextCloseStart();
           await context.close();
           contextClosed = true;
         } finally {

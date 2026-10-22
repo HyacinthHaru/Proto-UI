@@ -457,6 +457,9 @@ export function installDocsCallTimingObserver(page, { sdkRoot, cap = 512 }) {
         pendingCallIds: [...requests.values()].filter((r) => !r.settled).map((r) => r.callId),
       };
     },
+    markContextCloseStart() {
+      record('node.context-close.before-call');
+    },
     disposeAfterContextClosed(contextClosed) {
       if (!contextClosed) {
         diagnosticError('cleanup-deferred', 'Original context close was not confirmed');
