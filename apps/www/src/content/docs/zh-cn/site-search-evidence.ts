@@ -223,6 +223,10 @@ export type SearchReadinessEvidence = {
   droppedSamples?: number;
   samples?: Array<{
     atEpochMs: number;
+    selectorStartedAt: number;
+    selectorResolvedAt: number;
+    getterStartedAt: number | null;
+    getterSettledAt: number | null;
     commandCount: number;
     currentDisabled: string | null;
     owner: string | null;
@@ -267,9 +271,11 @@ export function readSearchReadyWithinBudget({
     const probe = {
       sample(expired = false) {
         if (done) return;
+        const selectorStartedAt = Date.now();
         const commands = document.querySelectorAll(
           'site-search [data-projection-generation-state="active"] [data-open-modal]'
         );
+        const selectorResolvedAt = Date.now();
         if (commands.length > 1) {
           done = true;
           observer?.disconnect();
@@ -277,7 +283,9 @@ export function readSearchReadyWithinBudget({
           reject(new Error('Search open command must be unique'));
           return;
         }
+        const getterStartedAt = commands.length ? Date.now() : null;
         const currentDisabled = commands[0]?.getAttribute('aria-disabled') ?? null;
+        const getterSettledAt = commands.length ? Date.now() : null;
         const host = commands[0]?.closest<HTMLElement>('[data-projection-generation-host]');
         const owner = host?.dataset.projectionOwnerHost;
         const generation = host?.dataset.projectionGenerationHost;
@@ -305,6 +313,10 @@ export function readSearchReadyWithinBudget({
         if (samples.length < 32)
           samples.push({
             atEpochMs: Date.now(),
+            selectorStartedAt,
+            selectorResolvedAt,
+            getterStartedAt,
+            getterSettledAt,
             commandCount: commands.length,
             currentDisabled,
             owner: owner ?? null,

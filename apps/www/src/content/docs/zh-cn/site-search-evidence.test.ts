@@ -488,7 +488,13 @@ it('distinguishes no active command from one missing its attribute at the same e
   expect(unlabelled.currentDisabled).toBe(null);
   expect(absent.samples[0].commandCount).toBe(0);
   expect(unlabelled.samples[0].commandCount).toBe(1);
+  expect(absent.samples[0].getterStartedAt).toBeNull();
+  expect(absent.samples[0].getterSettledAt).toBeNull();
+  expect(unlabelled.samples[0].getterStartedAt).toBe(1500);
+  expect(unlabelled.samples[0].getterSettledAt).toBe(1500);
   for (const evidence of [absent, unlabelled]) {
+    expect(evidence.samples[0].selectorStartedAt).toBe(1500);
+    expect(evidence.samples[0].selectorResolvedAt).toBe(1500);
     expect(evidence.browserEnteredAt).toBe(1500);
     expect(evidence.deadline).toBe(1000);
     expect(searchReadinessWasOnTime(evidence)).toBe(false);

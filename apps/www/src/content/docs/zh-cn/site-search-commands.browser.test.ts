@@ -1,6 +1,7 @@
 // @vitest-environment node
 import { execFileSync } from 'node:child_process';
 import { mkdir, writeFile } from 'node:fs/promises';
+import { createRequire } from 'node:module';
 import os from 'node:os';
 import path from 'node:path';
 import { revealHeaderPreferences } from './site-header-browser';
@@ -8,6 +9,7 @@ import type { Browser, Page, Request } from 'playwright-core';
 import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { launchBrowser, startServer, stopServer } from './browser-harness';
 import { settleFamilyQueryBatch } from './family-query-observer';
+import { installDocsCallTimingObserver } from './docs-query-timing.mjs';
 import {
   installSearchStartupTrace,
   readSearchReadyWithinBudget,
@@ -975,6 +977,11 @@ for (const width of [320, 390, 1280, 1440, 2048]) {
     it(`Docs ${family} ${width}px shows complete runtime values beside real Search`, async () => {
       const context = await browser.newContext({ viewport: { width, height: 1000 } });
       const page = await context.newPage();
+      const roleTiming = installDocsCallTimingObserver(page, {
+        sdkRoot: path.dirname(
+          createRequire(import.meta.url).resolve('playwright-core/package.json')
+        ),
+      });
       const errors: string[] = [];
       page.on('pageerror', (error) => errors.push(error.message));
       try {
@@ -1001,7 +1008,9 @@ for (const width of [320, 390, 1280, 1440, 2048]) {
             .poll(() => {
               const call = ++roleCalls;
               return traceSearchGetter(roleGetters, () => {
-                const request = selector.getAttribute('role');
+                const request = roleTiming.runOriginalQuery(call, () =>
+                  selector.getAttribute('role')
+                );
                 try {
                   roleRequests.push({ call, request });
                 } catch {
@@ -1013,6 +1022,11 @@ for (const width of [320, 390, 1280, 1440, 2048]) {
             .toBe('combobox');
           rolePassed = true;
         } finally {
+          try {
+            roleTiming.freezeVerdict(rolePassed);
+          } catch {
+            roleObserverError = true;
+          }
           try {
             const frozen = roleGetters.map((sample) => ({ ...sample }));
             roleVerdict = {
@@ -1200,7 +1214,26 @@ for (const width of [320, 390, 1280, 1440, 2048]) {
         }
         expect(errors).toEqual([]);
       } finally {
-        await context.close();
+        let contextClosed = false;
+        try {
+          await context.close();
+          contextClosed = true;
+        } finally {
+          try {
+            roleTiming.disposeAfterContextClosed(contextClosed);
+            await mkdir(evidenceDirectory, { recursive: true });
+            await writeFile(
+              path.join(evidenceDirectory, `docs-call-timing-${family}-${width}.json`),
+              JSON.stringify(
+                { source, family, width, contextClosed, observation: roleTiming.snapshot() },
+                null,
+                2
+              )
+            );
+          } catch {
+            // Missing diagnostics must not replace the original verdict or cleanup.
+          }
+        }
       }
     }, 180_000);
   }
