@@ -46,7 +46,7 @@ const projectionOwner = `${id}-projection-${Math.random().toString(36).slice(2)}
 <style>
   /* App-owned layout only. Text and Interactive surfaces belong to the selected PUI library. */
   .home-demo-previewer {
-    width: min(100%, 78rem);
+    width: min(100%, 100rem);
     margin: 0 auto;
     padding: 0 0 3rem;
     scroll-margin-block: 8rem;
@@ -142,7 +142,7 @@ const projectionOwner = `${id}-projection-${Math.random().toString(36).slice(2)}
   }
   .home-demo-previewer :global(.home-gallery) {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
     gap: 1.5rem;
     align-items: start;
   }
@@ -213,11 +213,6 @@ const projectionOwner = `${id}-projection-${Math.random().toString(36).slice(2)}
   .home-demo-previewer :global(.home-settings__label) {
     min-width: 0;
     overflow-wrap: anywhere;
-  }
-  @media (max-width: 1199px) {
-    .home-demo-previewer :global(.home-gallery) {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
   }
   @media (max-width: 767px) {
     .home-demo-previewer :global(.home-gallery),
