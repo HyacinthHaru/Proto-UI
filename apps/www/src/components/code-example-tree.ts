@@ -99,10 +99,20 @@ export function enhanceCodeExampleTree(options: {
       setElementProps(icon, { size: 16, surfaceStyle: { flex: 'none', pointerEvents: 'none' } });
       item.append(icon);
     }
-    item.append(doc.createTextNode(family === 'shadcn' ? node.name : node.fileIndex === undefined ? `${node.name}/` : node.name));
+    const label = doc.createElement('span');
+    label.dataset.codeTreeLabel = '';
+    label.textContent = family === 'shadcn' ? node.name : node.fileIndex === undefined ? `${node.name}/` : node.name;
+    // File-navigation text may truncate visually, never in its accessible name.
+    // The full canonical path remains available on hover and in the source caption.
+    label.title = node.key;
+    item.title = node.key;
+    if (family === 'shadcn') label.style.cssText = 'min-width:0;flex:1 1 auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis';
+    item.append(label);
     if (node.fileIndex === undefined && !hasChildren) {
       const empty = doc.createElement('small');
       empty.textContent = ` (${list.dataset.emptyDirectoryLabel ?? 'empty'})`;
+      empty.style.cssText = 'flex:none;white-space:nowrap';
+      item.title = `${node.key} (${list.dataset.emptyDirectoryLabel ?? 'empty'})`;
       item.append(empty);
     }
     if (family === 'shadcn') {

@@ -169,3 +169,18 @@ it('preserves explicit empty directories without inventing selectable files', as
   expect(tree.querySelector('[data-code-tree-path="src/main.ts"]')?.getAttribute('aria-selected')).toBe('true');
   expect(empty.getAttribute('aria-selected')).toBe('false');
 });
+
+
+it('keeps long Shadcn navigation labels single-line without truncating the DOM name or full path', () => {
+  const { list, tabs, panels } = fixture();
+  tabs[0].dataset.codeFilePath = 'src/styles/proto-ui-tokens.generated.css';
+  projections.push(enhanceCodeExampleTree({ list, tabs, panels, onSelect() {} }));
+  const item = document.querySelector<HTMLElement>('[data-code-tree-path="src/styles/proto-ui-tokens.generated.css"]')!;
+  const label = item.querySelector<HTMLElement>('[data-code-tree-label]')!;
+  expect(label.textContent).toBe('proto-ui-tokens.generated.css');
+  expect(label.title).toBe('src/styles/proto-ui-tokens.generated.css');
+  expect(item.title).toBe(label.title);
+  expect(label.style.whiteSpace).toBe('nowrap');
+  expect(label.style.textOverflow).toBe('ellipsis');
+  expect(label.style.minWidth).toBe('0');
+});

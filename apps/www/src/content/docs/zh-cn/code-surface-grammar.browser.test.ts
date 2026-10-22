@@ -655,6 +655,15 @@ for (const locale of ['en', 'zh-cn']) {
       expect(await tree.locator('[aria-selected="true"]').getAttribute('data-code-tree-path')).toBe('proto-ui/config.json');
       const sources = browserPanel.locator('[data-code-file-panel]');
       expect(await sources.count()).toBe(4);
+      for (const path of ['proto-ui/components', 'proto-ui/prototypes', 'src/styles/proto-ui-tokens.generated.css']) {
+        const item = tree.locator(`[data-code-tree-path="${path}"]`);
+        const label = item.locator('[data-code-tree-label]');
+        expect(await label.textContent()).toBe(path.split('/').at(-1));
+        expect(await label.getAttribute('title')).toBe(path);
+        expect(await label.evaluate((node) => ({ whiteSpace: getComputedStyle(node).whiteSpace, overflow: getComputedStyle(node).overflow, ellipsis: getComputedStyle(node).textOverflow }))).toEqual({ whiteSpace: 'nowrap', overflow: 'hidden', ellipsis: 'ellipsis' });
+        expect(await item.evaluate((node) => node.getBoundingClientRect().height)).toBe(32);
+      }
+
       const initialSources = await sources.elementHandles();
       const visible = () => browserPanel.locator('[data-code-file-panel]:visible');
       expect(await visible().count()).toBe(1);
@@ -740,6 +749,12 @@ it('keeps the generated-file browser accessible in forced colors and enlarged te
     await evidence(page, generated, 'cli-init-forced-colors', { selectedPath: 'proto-ui/config.json', forcedColors: true });
     await page.evaluate(() => { document.documentElement.style.fontSize = '200%'; });
     expect(await file.evaluate((node) => parseFloat(getComputedStyle(node).fontSize))).toBe(28);
+    const enlargedLabelLines = await generated.locator('[data-code-tree-label]').evaluateAll((labels) => labels.map((label) => {
+      const range = document.createRange();
+      range.selectNodeContents(label);
+      return range.getClientRects().length;
+    }));
+    expect(enlargedLabelLines).toEqual(Array(10).fill(1));
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
     expect(await generated.locator('[data-code-file-panel]:visible code').getAttribute('data-raw-code')).toBe(cliInitOutput.entries.find((entry) => entry.path === 'proto-ui/config.json')?.content);
     await evidence(page, generated, 'cli-init-forced-colors-text200', { selectedPath: 'proto-ui/config.json', forcedColors: true, textScalePercent: 200, browserZoomVerified: false });

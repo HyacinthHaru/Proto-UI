@@ -359,7 +359,7 @@ async function beforeReleaseDeadline<T>(work: Promise<T>, label: string): Promis
     if (timer) clearTimeout(timer);
   }
 }
-async function captureViewport(page: Page, file: string) {
+async function captureViewport(page: Page, file: string, clip?: { x: number; y: number; width: number; height: number }) {
   // Playwright's screenshot convenience method also awaits document.fonts.ready.
   // Chromium's public captureScreenshot captures the real current surface
   // without waiting for the intentionally paused deferred-module document load.
@@ -370,6 +370,7 @@ async function captureViewport(page: Page, file: string) {
         format: 'png',
         fromSurface: true,
         captureBeyondViewport: false,
+        ...(clip ? { clip: { ...clip, scale: 1 } } : {}),
       }),
       'viewport capture'
     );
@@ -770,7 +771,20 @@ describe('quick-start first-frame continuity', () => {
                 await detail
                   .locator('[data-copy-view="ready"] [data-demo-ref="copy-button"]')
                   .waitFor({ state: 'visible' });
-                await detail.evaluate((node) => node.scrollIntoView({ block: 'center' }));
+                const capturePosition = await generatedBrowser.evaluate(async (node) => {
+                  const headerBottom = () => Math.max(0, ...[...document.querySelectorAll('header')].map((header) => {
+                    const rect = header.getBoundingClientRect();
+                    return rect.top <= 1 && rect.bottom > 0 ? rect.bottom : 0;
+                  }));
+                  window.scrollBy({ top: node.getBoundingClientRect().top - headerBottom() - 16, behavior: 'instant' });
+                  await new Promise(requestAnimationFrame);
+                  await new Promise(requestAnimationFrame);
+                  const rect = node.getBoundingClientRect();
+                  const clip = { x: Math.max(0, rect.left), y: Math.max(0, rect.top), width: Math.min(innerWidth, rect.right) - Math.max(0, rect.left), height: Math.min(innerHeight, rect.bottom) - Math.max(0, rect.top) };
+                  return { top: rect.top, headerBottom: headerBottom(), bounds: { x: rect.x, y: rect.y, width: rect.width, height: rect.height }, clip: { ...clip, x: clip.x + scrollX, y: clip.y + scrollY }, clipCoordinates: 'page', scroll: { x: scrollX, y: scrollY }, partial: clip.width < rect.width || clip.height < rect.height, viewportHeight: innerHeight };
+                });
+                expect(capturePosition.top).toBeGreaterThanOrEqual(capturePosition.headerBottom);
+
                 const content = await detail.locator('code').getAttribute('data-raw-code');
                 await writeFile(
                   path.join(directory, `${prefix}-cli-init-${label}.json`),
@@ -781,7 +795,8 @@ describe('quick-start first-frame continuity', () => {
                       viewport: page.viewportSize(),
                       colorScheme: condition.colorScheme,
                       file: filePath,
-                      captureKind: 'file-browser-region',
+                      captureKind: 'visible-file-browser-region',
+                      capturePosition,
                       sourceSha256: createHash('sha256')
                         .update(content ?? '')
                         .digest('hex'),
@@ -792,7 +807,27 @@ describe('quick-start first-frame continuity', () => {
                     2
                   )
                 );
-                await generatedBrowser.screenshot({ path: path.join(directory, `${prefix}-cli-init-${label}.png`) });
+                await writeFile(path.join(directory, `${prefix}-cli-init-${label}-viewport.json`), JSON.stringify({
+                  ...source, url: page.url(), viewport: page.viewportSize(), colorScheme: condition.colorScheme,
+                  file: filePath, sourceSha256: createHash('sha256').update(content ?? '').digest('hex'),
+                  captureKind: 'viewport', capturePosition, stage: 'additional-generated-file-viewport-diagnostic', fullCodeExampleAcceptance: false,
+                }, null, 2));
+                await captureViewport(page, path.join(directory, `${prefix}-cli-init-${label}-viewport.png`));
+                // Element screenshots can recenter an oversized element beneath the fixed header.
+                // Capture only the actual visible intersection, alongside the unmodified viewport.
+                await captureViewport(page, path.join(directory, `${prefix}-cli-init-${label}.png`), capturePosition.clip);
+                const capturePositionAfter = await generatedBrowser.evaluate((node) => ({
+                  top: node.getBoundingClientRect().top,
+                  headerBottom: Math.max(0, ...[...document.querySelectorAll('header')].map((header) => {
+                    const rect = header.getBoundingClientRect();
+                    return rect.top <= 1 && rect.bottom > 0 ? rect.bottom : 0;
+                  })),
+                }));
+                await writeFile(path.join(directory, `${prefix}-cli-init-${label}-position-after.json`), JSON.stringify({
+                  ...source, file: filePath, capturePositionAfter, stage: 'after-file-browser-region-capture',
+                }, null, 2));
+                expect(capturePositionAfter.top).toBeGreaterThanOrEqual(capturePositionAfter.headerBottom);
+
               }
               const directoryCode = generatedBrowser.locator('[data-code-file-panel]:visible');
               await directoryCode.evaluate((node) => node.scrollIntoView({ block: 'center' }));
