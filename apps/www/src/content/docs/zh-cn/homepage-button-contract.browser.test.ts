@@ -612,23 +612,55 @@ describe.sequential('Base Button selection and family-owned homepage geometry', 
           await page.evaluate(() => {
             document.documentElement.style.fontSize = '200%';
           });
-          const enlargedActions = [];
-          for (let index = 0; index < 2; index++) {
-            const anchor = actions.nth(index);
-            const body = anchor.locator(`[data-projection-prototype="${family}-surface-root"]`);
-            const geometry = await facts(body);
-            enlargedActions.push(geometry);
-            expect(geometry.minHeight).toBe(family === 'shadcn' ? '72px' : '80px');
-            expect(geometry.height).toBeGreaterThanOrEqual(family === 'shadcn' ? 72 : 80);
-            expect(geometry.scrollWidth).toBeLessThanOrEqual(geometry.clientWidth + 1);
-          }
+          const enlargedActions: Array<
+            Awaited<ReturnType<typeof facts>> & {
+              initial: Awaited<ReturnType<typeof facts>>;
+              animations: Array<{
+                property: string | null;
+                currentTime: Animation['currentTime'];
+                playState: Animation['playState'];
+                timing?: ReturnType<AnimationEffect['getComputedTiming']>;
+              }>;
+              settled: boolean;
+            }
+          > = [];
           record.nativeActionsEnlarged = {
             textScale: 200,
             browserZoomVerified: false,
             bodies: enlargedActions,
           };
+          for (let index = 0; index < 2; index++) {
+            const anchor = actions.nth(index);
+            const body = anchor.locator(`[data-projection-prototype="${family}-surface-root"]`);
+            const initial = await facts(body);
+            const animations = await body.evaluate((node) =>
+              node.getAnimations().map((animation) => ({
+                property: animation instanceof CSSTransition ? animation.transitionProperty : null,
+                currentTime: animation.currentTime,
+                playState: animation.playState,
+                timing: animation.effect?.getComputedTiming(),
+              }))
+            );
+            const observation = { ...initial, initial, animations, settled: false };
+            enlargedActions.push(observation);
+            await capture(`native-actions-text200-${index}-before-assert`);
+            // Public transition-all also interpolates layout after font enlargement.
+            // Keep the immediate observation, then require the exact source endpoint.
+            await expect
+              .poll(async () => (await facts(body)).minHeight, { timeout: 2_000 })
+              .toBe(family === 'shadcn' ? '72px' : '80px');
+            const geometry = await facts(body);
+            Object.assign(observation, geometry, { settled: true });
+            expect(geometry.minHeight).toBe(family === 'shadcn' ? '72px' : '80px');
+            expect(geometry.height).toBeGreaterThanOrEqual(family === 'shadcn' ? 72 : 80);
+            expect(geometry.scrollWidth).toBeLessThanOrEqual(geometry.clientWidth + 1);
+          }
           await reset.scrollIntoViewIfNeeded();
           await page.mouse.move(0, 0);
+          record.enlargedImmediate = await facts(reset);
+          await expect
+            .poll(async () => (await facts(reset)).height, { timeout: 2_000 })
+            .toBe(family === 'shadcn' ? 64 : 80);
           const enlarged = await facts(reset);
           record.enlarged = { ...enlarged, textScale: 200, browserZoomVerified: false };
           await capture('text200');

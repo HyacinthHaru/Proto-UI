@@ -67,7 +67,7 @@ async function paint(button: Locator) {
     const ringColor = style.getPropertyValue('--pui-ring').trim();
     const expectedSpread = family === 'brutalist' ? 4 : 3;
     const expectedColor =
-      family === 'brutalist' ? ringColor : `color-mix(in oklab, ${ringColor} 50%, transparent)`;
+      family === 'brutalist' ? ringColor : `color-mix(in oklab, ${ringColor} 30%, transparent)`;
     // Resolve the independent source recipe in the same browser color serializer.
     // Keep the probe outside the live Prototype subtree and never derive it from
     // --pui-ring-shadow or the control's actual box-shadow under test.
@@ -249,6 +249,17 @@ async function evidence(page: Page, root: Locator | null, name: string, facts: u
             state: button.dataset.copyState,
             tokens: button.getAttribute('data-pui-style'),
             focused: document.activeElement === button,
+            focusVisible: button.hasAttribute('data-focus-visible'),
+            nativeFocusVisible: button.matches(':focus-visible'),
+            shadow: getComputedStyle(button).boxShadow,
+            background: getComputedStyle(button).backgroundColor,
+            ringColor: getComputedStyle(button).getPropertyValue('--pui-ring'),
+            animations: button.getAnimations().map((animation) => ({
+              property: animation instanceof CSSTransition ? animation.transitionProperty : null,
+              currentTime: animation.currentTime,
+              playState: animation.playState,
+              timing: animation.effect?.getComputedTiming(),
+            })),
             rect: button.getBoundingClientRect().toJSON(),
           })),
         };
@@ -634,6 +645,20 @@ describe.sequential('Copy commands: real consumer recipes across public runtimes
               stage.action = 'focus';
               await page.keyboard.press('Tab');
               await button.focus();
+              await evidence(
+                page,
+                root,
+                `${runtime}-${family}-${index}-${theme}-focus-before-assert`,
+                {
+                  runtime,
+                  contentHost: 'react',
+                  family,
+                  theme,
+                  unfocused,
+                  focused: await paint(button),
+                  errors,
+                }
+              );
               await expect
                 .poll(async () =>
                   copyPaintIssues(
