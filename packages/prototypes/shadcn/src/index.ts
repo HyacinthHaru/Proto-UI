@@ -261,6 +261,7 @@ export type {
 export * from './text';
 
 export { default as ShadcnSurfaceRoot, surfaceRoot } from './surface';
+export { shadcnActionAppearance, type ShadcnActionAppearanceOptions } from './surface';
 
 export type { SurfaceRootProps, SurfaceRootExposes } from './surface';
 

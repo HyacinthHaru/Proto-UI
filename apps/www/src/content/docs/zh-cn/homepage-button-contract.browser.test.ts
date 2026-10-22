@@ -131,6 +131,71 @@ describe.sequential('Base Button selection and family-owned homepage geometry', 
               .click();
             await ready(page, runtime, family);
           }
+          const actions = page.locator(
+            '#homepage-hero-actions [data-projection-generation-state="active"] a[data-site-link-enhanced]'
+          );
+          expect(await actions.count()).toBe(2);
+          const actionRecords: Array<Record<string, unknown>> = [];
+          record.nativeActions = actionRecords;
+          for (let index = 0; index < 2; index++) {
+            const anchor = actions.nth(index);
+            await anchor.scrollIntoViewIfNeeded();
+            await page.mouse.move(0, 0);
+            const body = anchor.locator(`[data-projection-prototype="${family}-surface-root"]`);
+            const painted = await facts(body);
+            const native = await anchor.evaluate((node) => ({
+              tag: node.tagName,
+              href: node.getAttribute('href'),
+              role: node.getAttribute('role'),
+              target: node.getAttribute('target'),
+              rel: node.getAttribute('rel'),
+            }));
+            const action: Record<string, unknown> = { native, painted };
+            actionRecords.push(action);
+            expect(native.tag).toBe('A');
+            expect(native.href).toBeTruthy();
+            expect(native.role).toBeNull();
+            expect(painted.height).toBe(family === 'shadcn' ? 36 : 40);
+            expect(painted.userSelect).toBe('none');
+            // A native anchor is not a Button: Space must not synthesize click/navigation.
+            const clicks = await anchor.evaluateHandle((node) => {
+              const state = { count: 0 };
+              const listener = () => state.count++;
+              node.addEventListener('click', listener);
+              return { state, stop: () => node.removeEventListener('click', listener) };
+            });
+            try {
+              const beforeUrl = page.url();
+              await anchor.focus();
+              await page.keyboard.press('Space');
+              expect(await clicks.evaluate((probe) => probe.state.count)).toBe(0);
+              expect(page.url()).toBe(beforeUrl);
+            } finally {
+              await clicks.evaluate((probe) => probe.stop());
+              await clicks.dispose();
+            }
+            await anchor.scrollIntoViewIfNeeded();
+            await page.evaluate(() => getSelection()?.removeAllRanges());
+            const start = await textPoint(anchor),
+              end = await textPoint(anchor, true);
+            await page.mouse.move(start.x, start.y);
+            await page.mouse.down();
+            await page.mouse.move(end.x, end.y, { steps: 12 });
+            await page.mouse.up();
+            action.dragSelection = await page.evaluate(() => getSelection()?.toString() ?? '');
+            expect(action.dragSelection).toBe('');
+          }
+          await capture('native-actions');
+          // The authored in-page Demo destination keeps native Enter activation.
+          const demoAction = actions.filter({ hasText: 'Demo' });
+          expect(await demoAction.count()).toBe(1);
+          const demoHref = await demoAction.getAttribute('href');
+          expect(demoHref).toBe('#home-demo-previewer');
+          const expectedDemoUrl = new URL(demoHref!, page.url()).href;
+          await demoAction.focus();
+          await page.keyboard.press('Enter');
+          await expect.poll(() => page.url()).toBe(expectedDemoUrl);
+          record.nativeDemoEnterUrl = new URL(page.url()).pathname + new URL(page.url()).hash;
           const reset = page.locator(
             '[data-home-showcase] [data-projection-generation-state="active"] [data-demo-ref="editor-reset"]'
           );
@@ -305,6 +370,21 @@ describe.sequential('Base Button selection and family-owned homepage geometry', 
           await page.evaluate(() => {
             document.documentElement.style.fontSize = '200%';
           });
+          const enlargedActions = [];
+          for (let index = 0; index < 2; index++) {
+            const anchor = actions.nth(index);
+            const body = anchor.locator(`[data-projection-prototype="${family}-surface-root"]`);
+            const geometry = await facts(body);
+            enlargedActions.push(geometry);
+            expect(geometry.minHeight).toBe(family === 'shadcn' ? '72px' : '80px');
+            expect(geometry.height).toBeGreaterThanOrEqual(family === 'shadcn' ? 72 : 80);
+            expect(geometry.scrollWidth).toBeLessThanOrEqual(geometry.clientWidth + 1);
+          }
+          record.nativeActionsEnlarged = {
+            textScale: 200,
+            browserZoomVerified: false,
+            bodies: enlargedActions,
+          };
           await reset.scrollIntoViewIfNeeded();
           await page.mouse.move(0, 0);
           const enlarged = await facts(reset);
