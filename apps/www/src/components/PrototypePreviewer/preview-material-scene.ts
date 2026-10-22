@@ -3,9 +3,9 @@ import {
   createCanvasBackdropLease,
   createWebMaterialSink,
   createWebMaterialPreferences,
+  contactPaintOutset,
   type MaterialPaletteSnapshot,
 } from '@proto.ui/adapter-base/web-material';
-import { contactPaintOutset } from '../../../../../packages/adapters/base/src/material/contact-profile';
 import { THEME } from '../../../../../packages/prototypes/liquid-glass/src/theme';
 import { registerPreviewMaterialProvider } from './preview-material-provider';
 /** This canvas is the visible preview background and the ONLY sampled plane.
