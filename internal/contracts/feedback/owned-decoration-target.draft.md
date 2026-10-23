@@ -50,3 +50,17 @@ The first adapter implementation and its test harness would be a distinct finite
 ## Pending-bind versus unavailable target
 
 Setup may record contributions for a declared target before its first physical commit. That pending declaration is not an unknown target and must not write to the host. The first commit must validate the complete required binding set before projecting any of it. Missing, duplicated, foreign, or unsupported bindings fail closed. The narrow first capability does not promise a target's rematerialization after structural render, view replacement, reparent or portal movement; that lifetime boundary needs an explicit decision rather than silently borrowing A11y ref rematerialization guarantees.
+
+
+## Concrete candidate interface for review, 2026-10-23
+The following spellings are proposed for review, not stable or already implemented:
+- Setup: `const target = def.feedback.style.declareDecoration()` returns an opaque, frozen, instance-local target identity, never a DOM node or string key.
+- Template: `r.decoration(target)` declares one empty owned decorative leaf. The author cannot choose an arbitrary tag, props, events, content, tabindex, children or slot; the adapter chooses a neutral physical leaf. No PrototypeRef or custom-element escape.
+- Setup contribution: `def.feedback.style.to(target).use(tw(...))`; Rule contribution: `i.feedback.style.to(target).use(tw(...))`. This extends existing style contribution addressing; StyleHandle remains a value. Host use remains unchanged. Runtime patch/suppress targeting is excluded from this first slice.
+- The adapter must project permanent accessibility-tree exclusion (aria-hidden=true on Web) and guarantee the empty leaf cannot receive focus or events. Parent AccessibleHandle.tree.hidden and role=presentation are not substitutes. No arbitrary attribute forwarding.
+- Fixed initial-view lifetime only: complete binding-set validation before any caller node mutation, replay pending contributions after first bind, exactly one binding, style-only updates without render, and terminal cleanup. Structural rerender with live targets must reject before mutations; portal/reparent/keep-alive/rematerialization are explicitly unsupported pending later law.
+- Target identity must remain attached to existing style operations/plans through Rule evaluation and compiler lowering. The present evaluator flattens host tokens, so adding only an optional type field is insufficient. Unsupported compiler/adapter profiles must reject rather than erase the target or paint the host.
+
+Private model #941 (18 tests; full feedback suite 257 tests) supports merge/lifetime investigation only. It does not settle the activation contract or make Tabs line available. Compiler/IR coordination is requested through #902. A separate existing-v0 failed-commit atomicity repair will stage the entire blueprint before moving slotPool; it introduces no target API and does not constitute activation.
+
+The existing failed-commit slot staging repair is tracked independently by #943 / #945. It preserves caller nodes on a rejected existing-v0 blueprint; it does not activate targets or settle these candidate spellings. Compiler coordination request: https://github.com/Proto-UI/Proto-UI/issues/902#issuecomment-6354624623 . No reply is presumed to approve this proposal.
