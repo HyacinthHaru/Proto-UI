@@ -1,0 +1,19 @@
+{
+  "assembledAt": "2026-10-23T14:55:43.224838+00:00",
+  "head": "4d4a7ec071dd83756444cbebf5a4c8b3bea81bcf",
+  "tree": "8af15e292175a4366691acb3834e8cb4331c3a77",
+  "rawInputCount": 14,
+  "mappedInputCount": 13,
+  "hashReferenceCount": 1,
+  "pngCount": 0,
+  "uniquePngHashes": 0,
+  "observations": {
+    "snapshot": "Final14:46UTC main CI39965405460 completedFAILURE22jobs13success9failure",
+    "ordinaryVitestGeneral": "Not executed: original78public-docs drift guard failed",
+    "browser": "Only3/5/6 complete315pass5fail15skip;1/2/8exit124 no complete summary;4/7CJKsetup no browsercase executed",
+    "browser8": "NativeLinks10 including sidebar,Controls10,QuickStart20,Header16 actualpassed; Material2wait20s failures remain without exact final stack",
+    "package": "Previous same4d rawlogs47build47manifest9policytests4PASS5ADVISORY, not repeated/new run",
+    "scope": "Additive terminal reconciliation; prior14:27 snapshot stays historical. No wholeCIgreen/productfix/formalapproval."
+  },
+  "claim": "Selected evidence only; no formal approval, whole CI green, whole-site/all-adapter/AT acceptance."
+}

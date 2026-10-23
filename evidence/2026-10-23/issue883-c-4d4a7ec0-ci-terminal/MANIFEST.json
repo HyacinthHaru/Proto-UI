@@ -1,0 +1,35 @@
+{
+  "head": "4d4a7ec071dd83756444cbebf5a4c8b3bea81bcf",
+  "tree": "8af15e292175a4366691acb3834e8cb4331c3a77",
+  "outerFileCountIncludingManifest": 6,
+  "archiveMemberCount": 14,
+  "archiveCRCAndBytesVerified": true,
+  "innerPublicMapEqualsOuter": true,
+  "files": [
+    {
+      "path": "PUBLIC-MAPPING.json",
+      "bytes": 10978,
+      "sha256": "8f5a95bee46d8eeb49a1ea2b2fc044eda32ad49f1c1227df58c817cd538c2c63"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2494,
+      "sha256": "fb1c13f8b44045455e18436a53c5ce50c063e8dc4fb02d3de362ebb5faedf890"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 1825,
+      "sha256": "f391bbab46615a74a6c41ea74ac11752f4af3d6145881054c316344785ae9a56"
+    },
+    {
+      "path": "evidence.zip",
+      "bytes": 82742,
+      "sha256": "ebeb2480f6e2fe14af694d96cadef99958cfda897bd1b5b190d994d7dfdc087b"
+    },
+    {
+      "path": "machine-summary.json",
+      "bytes": 1115,
+      "sha256": "31365f7d1703d37f45f6eeef779d719db1c49ac93c2f38390df2ba6eacb8956f"
+    }
+  ]
+}

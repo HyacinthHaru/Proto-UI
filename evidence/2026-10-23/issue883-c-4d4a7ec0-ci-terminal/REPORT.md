@@ -1,0 +1,9 @@
+准确4d4a主CI39965405460已completed FAILURE；Root保存的final-live完整分页实际22jobs全部终态，13success/9failure，head4d/main81339未变。此次仅新增下载General120453943284、Browser8 120453943524和aggregate120471367541三份原log，各一次，没有其它API、重复package/log、artifact或测试。三份实际checkout均84812b3d…，cachedGit对象tree8af严格等4d，parents81339+4d。
+
+General真实再次停在78public-docs分类缺口，普通Vitest未执行；78条文本与此前70d原log逐条相同，但不据此豁免或扩大C归属。Aggregate原runtime-ci.mjs:204失败为Required job test-general did not succeed（failure!==success），是依赖汇总guard，不是又一轮产品测试。
+
+Browser8实际已运行Vitest，15min bounded runner收到SIGTERM、exit124，没有分片完整summary。之前完成NativeLinks10全部通过，包含原sidebar manual case（log460）；BrutalistControls10、QuickStart20、Header16也全部通过。此Linux阳性不改写本地4d全组合293/1。LiquidGlassMaterial3case中light/dark两例waitForFunction20000ms超时，publicButton路径一例通过；原log未到最终FailedTests堆栈，具体waitsite/runtime未知，不猜optical原因。随后S1启动但未完成。
+
+全八片矩阵：仅3/5/6有完整summary，小计315pass/5fail/15skip；1/2/8原runtime124无summary；4/7是CJK字体setup失败，browser未执行。没有whole8总数。旧已读Search/Docs和HomepageBrutalist1s失败等继续保留。Main shard7没有Accordion执行，独立dedicated官方25阳性另计。
+
+Package不重复下载，引用同4d原log47/47build、47manifest、policy9pass和4PASS+5ADVISORY（不是9strictpass）。主CI现在不再pending，但仍真实失败。partial/ABSTAIN，不作正式批准或产品根因/修复结论。

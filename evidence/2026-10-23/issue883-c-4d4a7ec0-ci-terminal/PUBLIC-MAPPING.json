@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 1,
+  "head": "4d4a7ec071dd83756444cbebf5a4c8b3bea81bcf",
+  "tree": "8af15e292175a4366691acb3834e8cb4331c3a77",
+  "inputs": [
+    {
+      "sourceKey": "R21/final-live/run.json",
+      "rawSHA256": "994ae041764d17c898a517cbc79cabb0ade0059a10a05d2fbdaa7793257dde96",
+      "rawBytes": 14209,
+      "purpose": "Current canonical termination and exact predicates; no inferred whole-shard counts",
+      "epoch": "Final4d4a mainCI39965405460 terminal snapshot/new original logs",
+      "archivePath": "records/final-live/run.json",
+      "publicSHA256": "cf805a70255a6a04f0e23b2f1f5e265000bf26323ca9f3ef979cf3e145cf8089",
+      "publicBytes": 14141,
+      "transformation": "sanitize-v1: declared machine aliases in JSON keys/values and text; exact environment keys and public Git attribution line omitted; derived source, not executed or runnable bytes"
+    },
+    {
+      "sourceKey": "R21/final-live/jobs.json",
+      "rawSHA256": "fe5bd262f98d03bc4224a240ad3168d937eb3f25f63c752752f574aab6c6926b",
+      "rawBytes": 60154,
+      "purpose": "Current canonical termination and exact predicates; no inferred whole-shard counts",
+      "epoch": "Final4d4a mainCI39965405460 terminal snapshot/new original logs",
+      "archivePath": "records/final-live/jobs.json",
+      "publicSHA256": "fd0ff3ed5b20e33b7650a2b307039e9ff4c940074be7be14380f30d2272a75d6",
+      "publicBytes": 91201,
+      "transformation": "sanitize-v1: declared machine aliases in JSON keys/values and text; exact environment keys and public Git attribution line omitted; derived source, not executed or runnable bytes"
+    },
+    {
+      "sourceKey": "R21/final-live/artifacts.json",
+      "rawSHA256": "144a87400117d775150a2b3d1926ba578a4b39e91d8ae67631a37bd809b741f1",
+      "rawBytes": 8071,
+      "purpose": "Current canonical termination and exact predicates; no inferred whole-shard counts",
+      "epoch": "Final4d4a mainCI39965405460 terminal snapshot/new original logs",
+      "archivePath": "records/final-live/artifacts.json",
+      "publicSHA256": "ca3c47b38ec44ac470fcc104a8203719d516ebc3f08aad3ff82ca3bc9089bec9",
+      "publicBytes": 10329,
+      "transformation": "sanitize-v1: declared machine aliases in JSON keys/values and text; exact environment keys and public Git attribution line omitted; derived source, not executed or runnable bytes"
+    },
+    {
+      "sourceKey": "R21/final-live/main.json",
+      "rawSHA256": "c65dd55fe4382daedd13f24f8a71730289fd0c1b085b39f035d1d619fde72ea5",
+      "rawBytes": 334,
+      "purpose": "Current canonical termination and exact predicates; no inferred whole-shard counts",
+      "epoch": "Final4d4a mainCI39965405460 terminal snapshot/new original logs",
+      "archivePath": "records/final-live/main.json",
+      "publicSHA256": "3823433b374aa3fde2bbc539349a2691f41b5d85e74955b9dccc7712d38eb789",
+      "publicBytes": 395,
+      "transformation": "sanitize-v1: declared machine aliases in JSON keys/values and text; exact environment keys and public Git attribution line omitted; derived source, not executed or runnable bytes"
+    },
+    {
+      "sourceKey": "R21/ci-4d4a/terminal-reconciliation/download-index.json",
+      "rawSHA256": "f588f9b92e87ce4ab89c13e86c9a01f7508e1bdf3d645f85796dd3145c3bf582",
+      "rawBytes": 14144,
+      "purpose": "Current canonical termination and exact predicates; no inferred whole-shard counts",
+      "epoch": "Final4d4a mainCI39965405460 terminal snapshot/new original logs",
+      "archivePath": "records/ci-4d4a/terminal-reconciliation/download-index.json",
+      "publicSHA256": "f588f9b92e87ce4ab89c13e86c9a01f7508e1bdf3d645f85796dd3145c3bf582",
+      "publicBytes": 14144,
+      "transformation": "sanitize-v1: declared machine aliases in JSON keys/values and text; exact environment keys and public Git attribution line omitted; derived source, not executed or runnable bytes"
+    },
+    {
+      "sourceKey": "R21/ci-4d4a/terminal-reconciliation/report.json",
+      "rawSHA256": "6a119e0f99addee1ea53878288598e06a2988e341900e5ec9bf5542dc462ae6e",
+      "rawBytes": 53694,
+      "purpose": "Current canonical termination and exact predicates; no inferred whole-shard counts",
+      "epoch": "Final4d4a mainCI39965405460 terminal snapshot/new original logs",
+      "archivePath": "records/ci-4d4a/terminal-reconciliation/report.json",
+      "publicSHA256": "5b8005b0dd6669acac80220b8f33a508e1732cf1f8d2102ca90b4d1f5eac8235",
+      "publicBytes": 52812,
+      "transformation": "sanitize-v1: declared machine aliases in JSON keys/values and text; exact environment keys and public Git attribution line omitted; derived source, not executed or runnable bytes"
+    },
+    {
+      "sourceKey": "R21/ci-4d4a/terminal-reconciliation/report.md",
+      "rawSHA256": "f391bbab46615a74a6c41ea74ac11752f4af3d6145881054c316344785ae9a56",
+      "rawBytes": 1825,
+      "purpose": "Current canonical termination and exact predicates; no inferred whole-shard counts",
+      "epoch": "Final4d4a mainCI39965405460 terminal snapshot/new original logs",
+      "archivePath": "records/ci-4d4a/terminal-reconciliation/report.md",
+      "publicSHA256": "f391bbab46615a74a6c41ea74ac11752f4af3d6145881054c316344785ae9a56",
+      "publicBytes": 1825,
+      "transformation": "sanitize-v1: declared machine aliases in JSON keys/values and text; exact environment keys and public Git attribution line omitted; derived source, not executed or runnable bytes"
+    },
+    {
+      "sourceKey": "R21/ci-4d4a/terminal-reconciliation/120453943284.log",
+      "rawSHA256": "0f675ca3b552c1f56b3c960783f65b9c73575c707f6f5533537b5e21d115f9e7",
+      "rawBytes": 153141,
+      "purpose": "Current canonical termination and exact predicates; no inferred whole-shard counts",
+      "epoch": "Final4d4a mainCI39965405460 terminal snapshot/new original logs",
+      "archivePath": "records/ci-4d4a/terminal-reconciliation/120453943284.log",
+      "publicSHA256": "4634c5064568033b8fa9f7117bf25243215a63448b7ce6cafb92fec0f8288ef9",
+      "publicBytes": 153006,
+      "transformation": "sanitize-v1: declared machine aliases in JSON keys/values and text; exact environment keys and public Git attribution line omitted; derived source, not executed or runnable bytes"
+    },
+    {
+      "sourceKey": "R21/ci-4d4a/terminal-reconciliation/120453943284.log.receipt.json",
+      "rawSHA256": "5e4cc6fad1484e7b92ce8df6bb34128a544ab70ffeb5b54ad9dc5d84bf542225",
+      "rawBytes": 4633,
+      "purpose": "Current canonical termination and exact predicates; no inferred whole-shard counts",
+      "epoch": "Final4d4a mainCI39965405460 terminal snapshot/new original logs",
+      "archivePath": "records/ci-4d4a/terminal-reconciliation/120453943284.log.receipt.json",
+      "publicSHA256": "5e4cc6fad1484e7b92ce8df6bb34128a544ab70ffeb5b54ad9dc5d84bf542225",
+      "publicBytes": 4633,
+      "transformation": "sanitize-v1: declared machine aliases in JSON keys/values and text; exact environment keys and public Git attribution line omitted; derived source, not executed or runnable bytes"
+    },
+    {
+      "sourceKey": "R21/ci-4d4a/terminal-reconciliation/120453943524.log",
+      "rawSHA256": "2a5902999637026c8baab82b1149ceb1adaed767e5216343a61f262f3a6b95ac",
+      "rawBytes": 120156,
+      "purpose": "Current canonical termination and exact predicates; no inferred whole-shard counts",
+      "epoch": "Final4d4a mainCI39965405460 terminal snapshot/new original logs",
+      "archivePath": "records/ci-4d4a/terminal-reconciliation/120453943524.log",
+      "publicSHA256": "76eb24f2c947829d02e663feb808758b13f0e7779429e1dc42d3fb3f6d4f8d70",
+      "publicBytes": 119958,
+      "transformation": "sanitize-v1: declared machine aliases in JSON keys/values and text; exact environment keys and public Git attribution line omitted; derived source, not executed or runnable bytes"
+    },
+    {
+      "sourceKey": "R21/ci-4d4a/terminal-reconciliation/120453943524.log.receipt.json",
+      "rawSHA256": "bd70283628f828e512da8d527228b760bdd9664892108e6fb29800d88b19ca80",
+      "rawBytes": 4493,
+      "purpose": "Current canonical termination and exact predicates; no inferred whole-shard counts",
+      "epoch": "Final4d4a mainCI39965405460 terminal snapshot/new original logs",
+      "archivePath": "records/ci-4d4a/terminal-reconciliation/120453943524.log.receipt.json",
+      "publicSHA256": "bd70283628f828e512da8d527228b760bdd9664892108e6fb29800d88b19ca80",
+      "publicBytes": 4493,
+      "transformation": "sanitize-v1: declared machine aliases in JSON keys/values and text; exact environment keys and public Git attribution line omitted; derived source, not executed or runnable bytes"
+    },
+    {
+      "sourceKey": "R21/ci-4d4a/terminal-reconciliation/120471367541.log",
+      "rawSHA256": "481a4c2c0f3eefb07ad063eedf58efea4a17de453fd6c0553de9ce5591533539",
+      "rawBytes": 24380,
+      "purpose": "Current canonical termination and exact predicates; no inferred whole-shard counts",
+      "epoch": "Final4d4a mainCI39965405460 terminal snapshot/new original logs",
+      "archivePath": "records/ci-4d4a/terminal-reconciliation/120471367541.log",
+      "publicSHA256": "61641f7b99f246162ee0e371a0e6977cfb539a61899c1b77c3e5c141b455b300",
+      "publicBytes": 24173,
+      "transformation": "sanitize-v1: declared machine aliases in JSON keys/values and text; exact environment keys and public Git attribution line omitted; derived source, not executed or runnable bytes"
+    },
+    {
+      "sourceKey": "R21/ci-4d4a/terminal-reconciliation/120471367541.log.receipt.json",
+      "rawSHA256": "5617226e529a207102584be03814ad705c03d0a3a6738cc72c08a1a2ad296f72",
+      "rawBytes": 3371,
+      "purpose": "Current canonical termination and exact predicates; no inferred whole-shard counts",
+      "epoch": "Final4d4a mainCI39965405460 terminal snapshot/new original logs",
+      "archivePath": "records/ci-4d4a/terminal-reconciliation/120471367541.log.receipt.json",
+      "publicSHA256": "5617226e529a207102584be03814ad705c03d0a3a6738cc72c08a1a2ad296f72",
+      "publicBytes": 3371,
+      "transformation": "sanitize-v1: declared machine aliases in JSON keys/values and text; exact environment keys and public Git attribution line omitted; derived source, not executed or runnable bytes"
+    }
+  ],
+  "privateHashReferences": [
+    {
+      "sourceKey": "R21/final-live/pr.json",
+      "rawSHA256": "07d46fefbae23c1d71791eb7018bcb7827d3b20968900ac83cd5f4167d70e558",
+      "rawBytes": 75597,
+      "purpose": "Current canonical termination and exact predicates; no inferred whole-shard counts",
+      "epoch": "Final4d4a mainCI39965405460 terminal snapshot/new original logs"
+    }
+  ],
+  "captures": [],
+  "redactionPolicy": "sanitize-v1: JSON keys and values/text aliases; exact environment keys and public attribution lines omitted; PNGs byte-preserved",
+  "scope": "Explicit selected raw records projected for review. No private ModelTrace/context/handoff, complete census, full site ZIP, app bundle, or unreviewed PNG included."
+}

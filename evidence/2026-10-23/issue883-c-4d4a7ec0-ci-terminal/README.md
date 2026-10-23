@@ -1,0 +1,12 @@
+# Primary CI terminal reconciliation — 4d4a7ec0
+
+This additive receipt completes the formerly pending primary CI status for exact source `4d4a7ec071dd83756444cbebf5a4c8b3bea81bcf`, tree `8af15e292175a4366691acb3834e8cb4331c3a77`, against main `81339ddce9b6fc9b488331e10a533884ace96593`.
+
+At the actual14:46UTC read, [CI39965405460](https://github.com/Proto-UI/Proto-UI/actions/runs/39965405460) completed **FAILURE:22jobs,13success,9failure**. Only three newly terminal original logs were downloaded once: General120453943284, Browser8 120453943524 and aggregate120471367541. Their checkout84812b3d363deb9cb8b06e8a7a74315bb92d5777 has the exact same tree as4d4a. The earlier [full observation/preview packet](https://github.com/HyacinthHaru/Proto-UI/tree/fa020975cac51bba37ef2b2ded54b4353664120e/evidence/2026-10-23/issue883-accordion-observation-4d4a7ec0) and its dated14:27 snapshot remain unchanged.
+
+- General stopped at78public-docs classification drifts before ordinary Vitest. The aggregate's required-General failure is a dependency guard, not another product-test result.
+- Browser8 exited124 under the original bounded runner, without a complete shard summary. NativeLinks10, including the manual sidebar case, BrutalistControls10, QuickStart20 and Header16 actually passed. Two LiquidGlassMaterial cases reported20-second waitForFunction timeouts; the log did not provide the final stack needed to identify the exact wait/runtime. This Linux sidebar positive does not overwrite the separate clean local293pass/1fail or private diagnostics.
+- Complete shards3/5/6 subtotal315pass/5fail/15skip. Shards1/2/8 have no complete summary; shards4/7 failed CJK setup and executed no browser cases. No eight-shard test total is inferred.
+- The same-source package job's prior published raw log already proves47actualbuilds,47manifests,ninepolicytests and4PASS/5ADVISORY measurements. No package run was repeated. Dedicated Accordion25/25 and official preview evidence remain separately bound successes.
+
+The ZIP contains13sanitized members plus its public mapping;14raw inputs include one hash-only PR snapshot. Every selected raw/public SHA and outer-file hash is retained. Derived logs and JSON are sanitized projections, not raw execution bytes; no images, private ModelTrace/context/samples, credentials or user requests are included. Reports remain partial/ABSTAIN: primary CI is no longer pending, but it is still failed and no product-root-cause fix or formal acceptance is asserted.
