@@ -1,3 +1,7 @@
+import {
+  getLogicalEventRouteSurfaceForTarget,
+  isFocusTargetOwnerReady,
+} from './platform/instance-tree';
 /** Private synchronous authority for one exact adapter-owned physical move. */
 type Window = {
   document: Document;
@@ -38,6 +42,67 @@ export function claimWebComponentOwnedRelocation(node: Node): (() => boolean) | 
     return !active.revoked;
   };
 }
+/** Preserve only a live caller's focus lost by this transport, never steal author focus. */
+export function captureWebComponentCallerFocus(roots: readonly Node[]) {
+  const doc = roots[0]?.ownerDocument;
+  let active = doc?.activeElement as HTMLElement | null | undefined;
+  while (active?.shadowRoot?.activeElement) active = active.shadowRoot.activeElement as HTMLElement;
+  const target = active;
+  const owned = !!target && roots.some((root) => pathToRoot(target).includes(root));
+  const owner = target ? getLogicalEventRouteSurfaceForTarget(target) : null;
+  let blocked = !owned || !!target?.isContentEditable;
+  let restoring = false;
+  const onFocus = (event: Event) => {
+    if (!restoring && !event.composedPath().includes(target!)) blocked = true;
+  };
+  const onBlur = (event: Event) => {
+    // A deliberate blur while still attached is not transport-induced loss.
+    if (!restoring && target?.isConnected && event.composedPath().includes(target)) blocked = true;
+  };
+  if (owned) {
+    doc!.addEventListener('focusin', onFocus, true);
+    doc!.addEventListener('focusout', onBlur, true);
+  }
+  return {
+    restore(isCurrent: (node: Node) => boolean) {
+      if (
+        blocked ||
+        !target ||
+        !doc ||
+        !target.isConnected ||
+        target.ownerDocument !== doc ||
+        !isCurrent(target) ||
+        getLogicalEventRouteSurfaceForTarget(target) !== owner ||
+        (owner !== null && !isFocusTargetOwnerReady(target)) ||
+        pathToRoot(target).some((node) => windows.get(node)?.revoked) ||
+        target.matches(':disabled') ||
+        pathToRoot(target).some(
+          (node) => node.nodeType === 1 && (node as Element).hasAttribute('inert')
+        )
+      )
+        return;
+      const current = doc.activeElement;
+      if (current && current !== doc.body && current !== doc.documentElement && current !== target)
+        return;
+      if (current === target) return;
+      restoring = true;
+      try {
+        target.focus({ preventScroll: true });
+        // Native text controls retain selection in the same node. Do not replay
+        // a saved range after focus() author handlers: they may change value,
+        // type or selection, or redirect focus deliberately.
+      } finally {
+        restoring = false;
+      }
+    },
+    dispose() {
+      if (owned) {
+        doc!.removeEventListener('focusin', onFocus, true);
+        doc!.removeEventListener('focusout', onBlur, true);
+      }
+    },
+  };
+}
 /** stagingRoot is replaced by destination; otherwise roots are direct destination children. */
 export function withWebComponentOwnedRelocation<T>(
   roots: readonly Node[],
@@ -48,6 +113,7 @@ export function withWebComponentOwnedRelocation<T>(
   const acquired: Array<[Node, Window]> = [];
   const seen = new Set<Node>();
   const destinationPath = pathToRoot(destination);
+  const focus = captureWebComponentCallerFocus(roots);
   const visit = (node: Node, expected: readonly Node[]) => {
     if (seen.has(node)) return;
     seen.add(node);
@@ -68,8 +134,11 @@ export function withWebComponentOwnedRelocation<T>(
         visit(root, [...path.slice(0, index), ...destinationPath]);
       } else visit(root, [root, ...destinationPath]);
     }
-    return move();
+    const result = move();
+    focus.restore(isWebComponentOwnedRelocating);
+    return result;
   } finally {
+    focus.dispose();
     for (const [node, entry] of acquired) {
       if (windows.get(node) !== entry) continue;
       if (entry.previous) windows.set(node, entry.previous);

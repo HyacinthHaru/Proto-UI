@@ -1,4 +1,8 @@
-import { withWebComponentOwnedRelocation } from './owned-relocation';
+import {
+  captureWebComponentCallerFocus,
+  isWebComponentOwnedRelocating,
+  withWebComponentOwnedRelocation,
+} from './owned-relocation';
 // packages/adapters/web-component/src/commit.ts
 
 import { applyTemplateStyle } from './style';
@@ -244,19 +248,24 @@ export function commitChildren(
   // Stage and validate the WHOLE blueprint before moving any caller-owned
   // slot content. A later invalid node must not detach children from the live
   // tree just because an earlier slot was encountered in the traversal.
-  if (cfg.mode === 'light' && ctx.slotEnd) {
-    const slotParent = ctx.slotEnd.parentNode!;
-    for (const node of cfg.slotPool) slotParent.insertBefore(node, ctx.slotEnd);
+  const focus = captureWebComponentCallerFocus(cfg.slotPool);
+  try {
+    if (cfg.mode === 'light' && ctx.slotEnd) {
+      const slotParent = ctx.slotEnd.parentNode!;
+      for (const node of cfg.slotPool) slotParent.insertBefore(node, ctx.slotEnd);
+    }
+    withWebComponentOwnedRelocation(
+      cfg.slotPool,
+      hostRoot,
+      () => {
+        (hostRoot as any).replaceChildren(...Array.from(container.childNodes));
+        focus.restore(isWebComponentOwnedRelocating);
+      },
+      container
+    );
+  } finally {
+    focus.dispose();
   }
-
-  withWebComponentOwnedRelocation(
-    cfg.slotPool,
-    hostRoot,
-    () => {
-      (hostRoot as any).replaceChildren(...Array.from(container.childNodes));
-    },
-    container
-  );
 
   return {
     hasSlot: ctx.slotUsed,
