@@ -1,0 +1,80 @@
+{
+  "head": "70d096851a1b22e50ac72e147efaa2b46f62f1c4",
+  "tree": "7d18f8fe42785c14df46db2a29ec8b595cb5ccee",
+  "outerFileCountIncludingManifest": 15,
+  "archiveMemberCount": 888,
+  "archiveCRCAndBytesVerified": true,
+  "innerPublicMapEqualsOuter": true,
+  "files": [
+    {
+      "path": "PUBLIC-MAPPING.json",
+      "bytes": 722081,
+      "sha256": "6246d4ffdeb92c4b5797821d0d867285c2453f4112c848ecdb4e758f0aa674ce"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4395,
+      "sha256": "a69af1c88b0f9e7bb05cf1f49b98985205add693f132b0cb688331c4fcf9e256"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 14197,
+      "sha256": "a1b6bb669e68abef42d7f3209bb4ca2ad665a6969f6454c497b109351ee2295d"
+    },
+    {
+      "path": "evidence.zip",
+      "bytes": 3582823,
+      "sha256": "63759c7c6904ffe44e41dbc796d3586ca9f2e6aeaf560eb995184e590fe2d495"
+    },
+    {
+      "path": "images/home-options-original-diagnostic.png",
+      "bytes": 88235,
+      "sha256": "5957cf481a8b72f2d428aa150985a1fdc41ae8291808715b18631d1f97d2e665"
+    },
+    {
+      "path": "images/official-preview-1440.png",
+      "bytes": 250809,
+      "sha256": "6a7659ce35631284f523d95bef61d2e738f6b50d7fbc611a253d8601f1ab2f74"
+    },
+    {
+      "path": "images/official-preview-320.png",
+      "bytes": 175136,
+      "sha256": "a4fb0591ce9eb7f7f568ddc1e9b1898082a92cb79b3a10bfbc1f698b1da94382"
+    },
+    {
+      "path": "images/preview-1440.png",
+      "bytes": 250809,
+      "sha256": "6a7659ce35631284f523d95bef61d2e738f6b50d7fbc611a253d8601f1ab2f74"
+    },
+    {
+      "path": "images/preview-320.png",
+      "bytes": 175136,
+      "sha256": "a4fb0591ce9eb7f7f568ddc1e9b1898082a92cb79b3a10bfbc1f698b1da94382"
+    },
+    {
+      "path": "images/profile-green-1440.png",
+      "bytes": 120697,
+      "sha256": "b41ca9b3b6fca325cdeb2e1a5e4c06ed5bb5c870521d042d13092d306ae416dc"
+    },
+    {
+      "path": "images/profile-green-320.png",
+      "bytes": 85263,
+      "sha256": "eb369cbee6a372c5a770b054bb99615d92716eb6d18754ff0ca7184082a3eeda"
+    },
+    {
+      "path": "images/router-current-retired-enter.png",
+      "bytes": 12161,
+      "sha256": "7aae1c1533b51c7c811e438d2327b3ce69c7da0282f51ebc73ad45f5c0ba3824"
+    },
+    {
+      "path": "images/router-reported-retired-enter.png",
+      "bytes": 12197,
+      "sha256": "df509d156e7ab91751cd12ebfe599e536434a9cce6bcc7fde577d16aa573de5e"
+    },
+    {
+      "path": "packet.json",
+      "bytes": 1487,
+      "sha256": "8bf20b236971678936fa4fd90d53908a79a5ac48aa9c6a5c64d1e580e711da27"
+    }
+  ]
+}
