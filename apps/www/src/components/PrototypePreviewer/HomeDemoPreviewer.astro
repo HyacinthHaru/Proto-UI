@@ -157,12 +157,10 @@ const projectionOwner = `${id}-projection-${Math.random().toString(36).slice(2)}
     overflow-wrap: anywhere;
   }
   .home-demo-previewer :global(.home-gallery) {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
-    gap: 1.5rem;
-    align-items: start;
+    --homepage-gallery-gap: 1.5rem;
+    columns: 18rem;
+    column-gap: var(--homepage-gallery-gap);
   }
-  .home-demo-previewer :global(.home-gallery__column),
   .home-demo-previewer :global(.home-gallery__card-body),
   .home-demo-previewer :global(.home-gallery__stack) {
     display: grid;
@@ -171,11 +169,15 @@ const projectionOwner = `${id}-projection-${Math.random().toString(36).slice(2)}
     gap: 1rem;
     min-width: 0;
   }
+  /* Keep the authored reading/tab order while allowing cards, not fixed
+     groups, to fill responsive columns. No component paint is owned here. */
   .home-demo-previewer :global(.home-gallery__column) {
-    gap: 1.5rem;
+    display: contents;
   }
   .home-demo-previewer :global(.home-gallery__item) {
     min-width: 0;
+    break-inside: avoid;
+    margin-block-end: var(--homepage-gallery-gap);
   }
   .home-demo-previewer :global(.home-gallery__card-heading) {
     display: grid;
@@ -231,14 +233,13 @@ const projectionOwner = `${id}-projection-${Math.random().toString(36).slice(2)}
     overflow-wrap: anywhere;
   }
   @media (max-width: 767px) {
-    .home-demo-previewer :global(.home-gallery),
-    .home-demo-previewer :global(.home-gallery__column) {
-      gap: 1.25rem;
+    .home-demo-previewer :global(.home-gallery) {
+      --homepage-gallery-gap: 1.25rem;
     }
   }
   @media (max-width: 639px) {
     .home-demo-previewer :global(.home-gallery) {
-      grid-template-columns: minmax(0, 1fr);
+      columns: 1;
     }
   }
   /* With scripting enabled, noscript contains text rather than these child elements.

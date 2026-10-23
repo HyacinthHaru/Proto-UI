@@ -22,6 +22,17 @@ const directory = join(
 const HOME = '[data-home-showcase="website-component-gallery"]';
 const ACTIVE = `${HOME} [data-projection-generation-state="active"]`;
 const RUNTIME_LABELS = { wc: 'Web Components', react: 'React', vue: 'Vue', vue2: 'Vue 2' };
+const GALLERY_IDS = [
+  'controls',
+  'hover',
+  'workspace-command',
+  'workspace-help',
+  'preferences',
+  'workspace-progress',
+  'editor',
+  'overlays',
+  'choices',
+] as const;
 const LAYOUTS = [
   { name: '1400', width: 1400, textScale: 100 },
   { name: '1180', width: 1180, textScale: 100 },
@@ -41,6 +52,144 @@ type CaptureSelection = Array<{
     scenes: Array<{ name: string | null; generation: string | null }>;
   }>;
 }>;
+type GalleryRect = {
+  left: number;
+  right: number;
+  top: number;
+  bottom: number;
+  width: number;
+  height: number;
+};
+type GalleryFlowFacts = {
+  containerCount: number;
+  viewportWidth: number;
+  rootFontSize: number;
+  columnGap: number;
+  container: GalleryRect | null;
+  cards: Array<{
+    id: string | null;
+    visible: boolean;
+    rect: GalleryRect;
+    fragments: GalleryRect[];
+  }>;
+};
+/** Pure geometry observer. One CSS pixel allows fractional layout rounding only. */
+export function galleryFlowEvidence(facts: GalleryFlowFacts) {
+  const issues: string[] = [];
+  const epsilon = 1;
+  const expectedGap = facts.rootFontSize * (facts.viewportWidth <= 767 ? 1.25 : 1.5);
+  if (facts.containerCount !== 1 || !facts.container)
+    issues.push('expected exactly one gallery container');
+  if (
+    JSON.stringify(facts.cards.map((card) => card.id)) !== JSON.stringify(GALLERY_IDS) ||
+    new Set(facts.cards.map((card) => card.id)).size !== GALLERY_IDS.length
+  )
+    issues.push('missing, duplicate or reordered gallery card');
+  if (!Number.isFinite(expectedGap) || expectedGap <= 0)
+    issues.push('invalid gallery spacing baseline');
+  if (!Number.isFinite(facts.columnGap) || Math.abs(facts.columnGap - expectedGap) > epsilon)
+    issues.push('gallery column gap differs from the responsive spacing contract');
+  const columns: Array<{
+    left: number;
+    right: number;
+    cards: GalleryFlowFacts['cards'];
+    adjacentGaps: Array<{ before: string | null; after: string | null; gap: number }>;
+  }> = [];
+  for (const card of facts.cards) {
+    const rect = card.rect;
+    if (
+      !card.visible ||
+      !Object.values(rect).every(Number.isFinite) ||
+      rect.width <= 0 ||
+      rect.height <= 0
+    )
+      issues.push(`${card.id}: absent painted gallery card`);
+    if (
+      card.fragments.length !== 1 ||
+      card.fragments.some(
+        (fragment) =>
+          !Object.values(fragment).every(Number.isFinite) ||
+          fragment.width <= 0 ||
+          fragment.height <= 0 ||
+          Object.keys(rect).some(
+            (key) =>
+              Math.abs(fragment[key as keyof GalleryRect] - rect[key as keyof GalleryRect]) >
+              epsilon
+          )
+      )
+    )
+      issues.push(`${card.id}: split or inconsistent gallery card fragment`);
+    if (rect.left < -epsilon || rect.right > facts.viewportWidth + epsilon)
+      issues.push(`${card.id}: gallery card outside viewport`);
+    let column = columns.find((entry) => Math.abs(entry.left - rect.left) <= epsilon);
+    if (!column) {
+      column = { left: rect.left, right: rect.right, cards: [], adjacentGaps: [] };
+      columns.push(column);
+    }
+    if (Math.abs(column.right - rect.right) > epsilon)
+      issues.push(`${card.id}: inconsistent gallery column width`);
+    column.cards.push(card);
+  }
+  columns.sort((a, b) => a.left - b.left);
+  for (const column of columns) {
+    column.cards.sort((a, b) => a.rect.top - b.rect.top);
+    if (facts.container && Math.abs(column.cards[0]!.rect.top - facts.container.top) > epsilon)
+      issues.push(`${column.cards[0]!.id}: gallery column starts with a hole`);
+    for (let index = 1; index < column.cards.length; index++) {
+      const previous = column.cards[index - 1]!,
+        current = column.cards[index]!;
+      const gap = current.rect.top - previous.rect.bottom;
+      column.adjacentGaps.push({ before: previous.id, after: current.id, gap });
+      if (Math.abs(gap - expectedGap) > epsilon)
+        issues.push(
+          `${previous.id}/${current.id}: gallery gap differs from the responsive spacing contract`
+        );
+    }
+  }
+  if (
+    JSON.stringify(columns.flatMap((column) => column.cards.map((card) => card.id))) !==
+    JSON.stringify(facts.cards.map((card) => card.id))
+  )
+    issues.push('painted gallery column order differs from DOM order');
+  for (let index = 0; index < facts.cards.length; index++)
+    for (let other = index + 1; other < facts.cards.length; other++) {
+      const a = facts.cards[index]!,
+        b = facts.cards[other]!;
+      if (
+        Math.min(a.rect.right, b.rect.right) - Math.max(a.rect.left, b.rect.left) > epsilon &&
+        Math.min(a.rect.bottom, b.rect.bottom) - Math.max(a.rect.top, b.rect.top) > epsilon
+      )
+        issues.push(`${a.id}/${b.id}: gallery cards overlap`);
+    }
+  if (facts.container) {
+    const expectedColumns =
+      facts.viewportWidth <= 639
+        ? 1
+        : Math.max(
+            1,
+            Math.floor(
+              (facts.container.width + expectedGap) / (18 * facts.rootFontSize + expectedGap)
+            )
+          );
+    if (columns.length !== expectedColumns)
+      issues.push('painted gallery column count differs from available 18rem tracks');
+    if (facts.container.width > 100 * facts.rootFontSize + epsilon)
+      issues.push('gallery exceeds the 100rem wide-screen limit');
+    for (let index = 1; index < columns.length; index++)
+      if (Math.abs(columns[index]!.left - columns[index - 1]!.right - expectedGap) > epsilon)
+        issues.push('painted gallery column gap differs from the responsive spacing contract');
+  }
+  return {
+    issues: [...new Set(issues)],
+    expectedGap,
+    columns: columns.map((column) => ({
+      left: column.left,
+      right: column.right,
+      ids: column.cards.map((card) => card.id),
+      adjacentGaps: column.adjacentGaps,
+    })),
+  };
+}
 /** Pure evidence observer, not application behavior; independently negative-tested below. */
 export function captureSelectionIssues(
   selection: CaptureSelection,
@@ -65,7 +214,7 @@ export function captureSelectionIssues(
     issues.push('stale scene generation');
   return issues;
 }
-it('capture selection rejects missing, duplicate and stale generations without mutating the page', () => {
+it('passive evidence rejects invalid generations and incomplete, split, reordered or gapped galleries', () => {
   const good: CaptureSelection = [
     {
       hostGeneration: '3',
@@ -102,6 +251,91 @@ it('capture selection rejects missing, duplicate and stale generations without m
   duplicateScene[0]!.scopes[0]!.scenes[2] = duplicateScene[0]!.scopes[0]!.scenes[0]!;
   expect(captureSelectionIssues(duplicateScene, 'wc', 'shadcn')).toContain(
     'missing or duplicate scene'
+  );
+  const rect = (left: number, top: number): GalleryRect => ({
+    left,
+    top,
+    right: left + 288,
+    bottom: top + 100,
+    width: 288,
+    height: 100,
+  });
+  const gallery: GalleryFlowFacts = {
+    containerCount: 1,
+    viewportWidth: 1180,
+    rootFontSize: 16,
+    columnGap: 24,
+    container: { left: 0, right: 912, top: 0, bottom: 372, width: 912, height: 372 },
+    cards: GALLERY_IDS.map((id, index) => {
+      const box = rect(Math.floor(index / 3) * 312, (index % 3) * 124);
+      return { id, visible: true, rect: box, fragments: [{ ...box }] };
+    }),
+  };
+  expect(galleryFlowEvidence(gallery).issues).toEqual([]);
+  const narrow = structuredClone(gallery);
+  narrow.viewportWidth = 320;
+  narrow.columnGap = 20;
+  narrow.container = { left: 0, right: 288, top: 0, bottom: 1080, width: 288, height: 1080 };
+  narrow.cards.forEach((card, index) => {
+    card.rect = rect(0, index * 120);
+    card.fragments = [{ ...card.rect }];
+  });
+  expect(galleryFlowEvidence(narrow).issues).toEqual([]);
+  const missingCard = structuredClone(gallery);
+  missingCard.cards.pop();
+  expect(galleryFlowEvidence(missingCard).issues).toContain(
+    'missing, duplicate or reordered gallery card'
+  );
+  const duplicateCard = structuredClone(gallery);
+  duplicateCard.cards[8]!.id = duplicateCard.cards[0]!.id;
+  expect(galleryFlowEvidence(duplicateCard).issues).toContain(
+    'missing, duplicate or reordered gallery card'
+  );
+  const splitCard = structuredClone(gallery);
+  splitCard.cards[0]!.fragments.push(rect(312, 0));
+  expect(galleryFlowEvidence(splitCard).issues).toContain(
+    'controls: split or inconsistent gallery card fragment'
+  );
+  const hiddenCard = structuredClone(gallery);
+  hiddenCard.cards[0]!.visible = false;
+  expect(galleryFlowEvidence(hiddenCard).issues).toContain('controls: absent painted gallery card');
+  const reordered = structuredClone(gallery);
+  [reordered.cards[0]!.rect, reordered.cards[1]!.rect] = [
+    reordered.cards[1]!.rect,
+    reordered.cards[0]!.rect,
+  ];
+  for (const card of reordered.cards) card.fragments = [{ ...card.rect }];
+  expect(galleryFlowEvidence(reordered).issues).toContain(
+    'painted gallery column order differs from DOM order'
+  );
+  const overlap = structuredClone(gallery);
+  overlap.cards[1]!.rect = rect(0, 90);
+  overlap.cards[1]!.fragments = [{ ...overlap.cards[1]!.rect }];
+  expect(galleryFlowEvidence(overlap).issues).toContain('controls/hover: gallery cards overlap');
+  const rowHole = structuredClone(gallery);
+  rowHole.cards[2]!.rect = rect(0, 700);
+  rowHole.cards[2]!.fragments = [{ ...rowHole.cards[2]!.rect }];
+  expect(galleryFlowEvidence(rowHole).issues).toContain(
+    'hover/workspace-command: gallery gap differs from the responsive spacing contract'
+  );
+  const wrongGap = structuredClone(gallery);
+  wrongGap.columnGap = 48;
+  expect(galleryFlowEvidence(wrongGap).issues).toContain(
+    'gallery column gap differs from the responsive spacing contract'
+  );
+  const noFragments = structuredClone(gallery);
+  noFragments.cards[0]!.fragments = [];
+  expect(galleryFlowEvidence(noFragments).issues).toContain(
+    'controls: split or inconsistent gallery card fragment'
+  );
+  const wrongColumns = structuredClone(narrow);
+  wrongColumns.cards[8]!.rect = rect(312, 0);
+  wrongColumns.cards[8]!.fragments = [{ ...wrongColumns.cards[8]!.rect }];
+  expect(galleryFlowEvidence(wrongColumns).issues).toContain(
+    'painted gallery column count differs from available 18rem tracks'
+  );
+  expect(galleryFlowEvidence(wrongColumns).issues).toContain(
+    'choices: gallery card outside viewport'
   );
 }, 1_000);
 
@@ -302,6 +536,31 @@ async function layoutFacts(page: Page) {
       }
       return node.getClientRects().length > 0;
     };
+    const rect = (box: DOMRect): GalleryRect => ({
+      left: box.left,
+      right: box.right,
+      top: box.top,
+      bottom: box.bottom,
+      width: box.width,
+      height: box.height,
+    });
+    const galleries = [...document.querySelectorAll<HTMLElement>(`${active} .home-gallery`)];
+    const gallery: GalleryFlowFacts = {
+      containerCount: galleries.length,
+      viewportWidth: innerWidth,
+      rootFontSize: parseFloat(getComputedStyle(document.documentElement).fontSize),
+      columnGap: galleries[0] ? parseFloat(getComputedStyle(galleries[0]).columnGap) : NaN,
+      container: galleries[0] ? rect(galleries[0].getBoundingClientRect()) : null,
+      cards: [...document.querySelectorAll<HTMLElement>(`${active} [data-gallery-demo]`)].map(
+        (card) => ({
+          id: card.getAttribute('data-gallery-demo'),
+          visible: visible(card),
+          rect: rect(card.getBoundingClientRect()),
+          // Count every physical fragment, not just the union bounding box.
+          fragments: [...card.getClientRects()].map(rect),
+        })
+      ),
+    };
     const selection = [...document.querySelectorAll<HTMLElement>(`${active}`)].map((host) => ({
       hostGeneration: host.getAttribute('data-projection-generation-host'),
       scopes: [...host.querySelectorAll<HTMLElement>('[data-projection-scope]')].map((scope) => ({
@@ -419,6 +678,7 @@ async function layoutFacts(page: Page) {
       documentWidth,
       bodyWidth,
       rootFontSize: getComputedStyle(document.documentElement).fontSize,
+      gallery,
       cards,
       selection,
       issues: [...new Set(issues)],
@@ -477,6 +737,7 @@ describe.sequential(
             (record.screenshots as unknown[]).push({
               file: filename,
               exactSHA: source.exactSHA,
+              testSha256,
               sha256: createHash('sha256').update(bytes).digest('hex'),
               stage: record.stage,
             });
@@ -630,6 +891,64 @@ describe.sequential(
             expect(new Set(relations.map((edge) => edge.panel)).size).toBe(3);
             record.accordion = relations;
             await save();
+            const closedHelp = async () => {
+              await settled(page!);
+              const state = {
+                accessibleRegions: await help.getByRole('region').count(),
+                ...(await help.evaluate(
+                  (root, selectedFamily) => ({
+                    triggers: [...root.querySelectorAll('[aria-expanded]')].map((trigger) => ({
+                      expanded: trigger.getAttribute('aria-expanded'),
+                      controls: trigger.getAttribute('aria-controls'),
+                    })),
+                    panels: [
+                      ...root.querySelectorAll<HTMLElement>(
+                        `[data-projection-prototype="${selectedFamily}-accordion-content"]`
+                      ),
+                    ].map((panel) => ({
+                      id: panel.id,
+                      role: panel.getAttribute('role'),
+                      labelledBy: panel.getAttribute('aria-labelledby'),
+                      hidden: panel.hidden,
+                      ariaHidden: panel.getAttribute('aria-hidden'),
+                      detached: panel.hasAttribute('data-pui-view-detached'),
+                      rects: [...panel.getClientRects()].map((rect) => ({
+                        left: rect.left,
+                        top: rect.top,
+                        width: rect.width,
+                        height: rect.height,
+                      })),
+                    })),
+                  }),
+                  family
+                )),
+              };
+              return state;
+            };
+            const assertClosedHelp = (state: Awaited<ReturnType<typeof closedHelp>>) => {
+              expect(state.accessibleRegions).toBe(0);
+              expect(state.triggers).toHaveLength(3);
+              for (const trigger of state.triggers) {
+                expect(trigger.expanded).toBe('false');
+                expect(trigger.controls).toBeNull();
+              }
+              // WC retains only detached, anonymous hosts. Other adapters must
+              // withdraw the closed content subtree rather than merely hiding it.
+              expect(state.panels).toHaveLength(runtime === 'wc' ? 3 : 0);
+              for (const panel of state.panels) {
+                expect(panel.id).toBe('');
+                expect(panel.labelledBy).toBeNull();
+                expect(panel.detached).toBe(true);
+                expect(panel.rects).toHaveLength(0);
+                if (panel.role === 'region') {
+                  expect(panel.hidden).toBe(true);
+                  expect(panel.ariaHidden).toBe('true');
+                }
+              }
+            };
+            record.accordionClosed = await closedHelp();
+            await save();
+            assertClosedHelp(record.accordionClosed as Awaited<ReturnType<typeof closedHelp>>);
             // Longest answer and all results remain visible during every layout sample.
             await help.getByRole('button', { name: questions[2], exact: true }).press('Enter');
             await input.fill('');
@@ -642,11 +961,13 @@ describe.sequential(
               }
               await ready(page, runtime, family);
               const facts = await layoutFacts(page);
+              const flow = galleryFlowEvidence(facts.gallery);
               (record.samples as unknown[]).push({
                 name: layout.name,
                 textScale: layout.textScale,
                 browserZoomVerified: false,
                 ...facts,
+                flow,
               });
               await save();
               await capture(layout.name);
@@ -668,8 +989,104 @@ describe.sequential(
                   expect(sample.after).toBeCloseTo(sample.before * 2, 3);
               }
               expect(captureSelectionIssues(facts.selection, runtime, family)).toEqual([]);
+              expect(flow.issues, JSON.stringify(flow.issues)).toEqual([]);
               expect(facts.issues, JSON.stringify(facts.issues)).toEqual([]);
               await plan(page, 40);
+              if (layout.name === '320') {
+                // Exercise real contraction at the narrow viewport BEFORE text
+                // resizing. Non-WC adapters may remount Text on reopening; the
+                // next 200% sample measures those actual, newly mounted nodes.
+                await stage('layout-320-accordion-close');
+                const trigger = help.getByRole('button', { name: questions[2], exact: true });
+                const panel = help.getByRole('region');
+                expect(await panel.count()).toBe(1);
+                const triggerId = await trigger.getAttribute('id');
+                const previousPanelId = await panel.getAttribute('id');
+                expect(triggerId).toBeTruthy();
+                expect(previousPanelId).toBeTruthy();
+                await attribute(trigger, 'aria-controls', previousPanelId);
+                await attribute(panel, 'aria-labelledby', triggerId);
+                const panelHeight = await panel.evaluate(
+                  (node) => node.getBoundingClientRect().height
+                );
+                await trigger.press('Enter');
+                await attribute(trigger, 'aria-expanded', 'false');
+                const closed = await closedHelp();
+                const closedFacts = await layoutFacts(page);
+                const closedFlow = galleryFlowEvidence(closedFacts.gallery);
+                record.accordionReflow = {
+                  textScale: 100,
+                  viewportWidth: 320,
+                  before: {
+                    triggerId,
+                    panelId: previousPanelId,
+                    panelHeight,
+                    gallery: facts.gallery,
+                    flow,
+                  },
+                  closed: {
+                    state: closed,
+                    gallery: closedFacts.gallery,
+                    flow: closedFlow,
+                    issues: closedFacts.issues,
+                  },
+                };
+                await save();
+                assertClosedHelp(closed);
+                expect(await page.locator(`[id=${JSON.stringify(previousPanelId)}]`).count()).toBe(
+                  0
+                );
+                await hasFocus(trigger);
+                expect(captureSelectionIssues(closedFacts.selection, runtime, family)).toEqual([]);
+                expect(closedFlow.issues, JSON.stringify(closedFlow.issues)).toEqual([]);
+                expect(closedFacts.issues, JSON.stringify(closedFacts.issues)).toEqual([]);
+                const beforeHelp = facts.gallery.cards.find(
+                  (card) => card.id === 'workspace-help'
+                )!;
+                const afterHelp = closedFacts.gallery.cards.find(
+                  (card) => card.id === 'workspace-help'
+                )!;
+                expect(panelHeight).toBeGreaterThan(1);
+                expect(beforeHelp.rect.height - afterHelp.rect.height).toBeGreaterThanOrEqual(
+                  panelHeight - 1
+                );
+                await stage('layout-320-accordion-reopen');
+                await trigger.press('Enter');
+                await attribute(trigger, 'aria-expanded', 'true');
+                await settled(page);
+                expect(await panel.count()).toBe(1);
+                const reopenedPanelId = await panel.getAttribute('id');
+                expect(reopenedPanelId).toBeTruthy();
+                await attribute(trigger, 'id', triggerId);
+                await attribute(trigger, 'aria-controls', reopenedPanelId);
+                await attribute(panel, 'aria-labelledby', triggerId);
+                for (const id of [triggerId, reopenedPanelId])
+                  expect(await page.locator(`[id=${JSON.stringify(id)}]`).count()).toBe(1);
+                expect(await panel.textContent()).toContain(bodies[2]);
+                await hasFocus(trigger);
+                const reopenedFacts = await layoutFacts(page);
+                const reopenedFlow = galleryFlowEvidence(reopenedFacts.gallery);
+                (record.accordionReflow as Record<string, unknown>).reopened = {
+                  triggerId,
+                  panelId: reopenedPanelId,
+                  gallery: reopenedFacts.gallery,
+                  flow: reopenedFlow,
+                  issues: reopenedFacts.issues,
+                };
+                await save();
+                expect(captureSelectionIssues(reopenedFacts.selection, runtime, family)).toEqual(
+                  []
+                );
+                expect(reopenedFlow.issues, JSON.stringify(reopenedFlow.issues)).toEqual([]);
+                expect(reopenedFacts.issues, JSON.stringify(reopenedFacts.issues)).toEqual([]);
+                const reopenedHelp = reopenedFacts.gallery.cards.find(
+                  (card) => card.id === 'workspace-help'
+                )!;
+                expect(
+                  Math.abs(reopenedHelp.rect.height - beforeHelp.rect.height)
+                ).toBeLessThanOrEqual(1);
+                await plan(page, 40);
+              }
             }
             expect(errors).toEqual([]);
             expect(blockedRequests).toEqual([]);
@@ -735,6 +1152,7 @@ it('without JavaScript both localized homepages retain a readable documentation 
       (record.screenshots as unknown[]).push({
         file: filename,
         exactSHA: source.exactSHA,
+        testSha256,
         sha256: createHash('sha256').update(bytes).digest('hex'),
       });
       await save();
