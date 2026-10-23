@@ -778,6 +778,39 @@ describe.sequential(
           let context: BrowserContext | undefined, page: Page | undefined;
           const capture = async (name: string) => {
             const filename = `${prefix}-${name}.png`;
+            // Preserve the actual interaction position, including failures. A full-page
+            // bitmap is not evidence of scrollY=0; record sticky-header framing.
+            const framing = () =>
+              page!.evaluate(() => {
+                const box = (selector: string) => {
+                  const node = document.querySelector<HTMLElement>(selector);
+                  if (!node) return null;
+                  const rect = node.getBoundingClientRect();
+                  const style = getComputedStyle(node);
+                  return {
+                    left: rect.left,
+                    top: rect.top,
+                    right: rect.right,
+                    bottom: rect.bottom,
+                    width: rect.width,
+                    height: rect.height,
+                    position: style.position,
+                    zIndex: style.zIndex,
+                  };
+                };
+                return {
+                  scrollX,
+                  scrollY,
+                  viewport: { width: innerWidth, height: innerHeight },
+                  documentHeight: document.documentElement.scrollHeight,
+                  header: box('header'),
+                  heroHeading: box('main h1'),
+                  search: box('.site-header-search'),
+                };
+              });
+            const beforeCapture = await framing();
+            record.captureFraming = { mode: 'preserve-interaction-position', beforeCapture };
+            await save();
             const bytes = await page!.screenshot({
               path: join(directory, filename),
               fullPage: true,
@@ -789,6 +822,11 @@ describe.sequential(
               testSha256,
               sha256: createHash('sha256').update(bytes).digest('hex'),
               stage: record.stage,
+              framing: {
+                mode: 'preserve-interaction-position',
+                beforeCapture,
+                afterCapture: await framing(),
+              },
             });
             await save();
           };
