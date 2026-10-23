@@ -1304,3 +1304,41 @@ test('homepage Command verifies the public outer shell and actual muted active p
   verify(source);
   for (const fragment of required) assert.throws(() => verify(source.replaceAll(fragment, '')));
 });
+
+test('homepage Select verifies the inherited Rhea surface, real portal and keyboard continuity', () => {
+  const source = readFileSync(
+    new URL('../src/content/docs/zh-cn/homepage-composition.browser.test.ts', import.meta.url),
+    'utf8'
+  );
+  const required = [
+    "await stage('select-rhea')",
+    "await trigger.press('ArrowDown')",
+    "await page.keyboard.press('End')",
+    "await page.keyboard.press('Home')",
+    "await page.keyboard.press('Enter')",
+    'await hasFocus(trigger)',
+    "radius: '18px', height: 32, fontSize: '14px', gap: '6px'",
+    "filter: 'blur(40px) saturate(1.5)'",
+    "leafAriaHidden: 'true'",
+    "padding: '4px', itemRadius: '14px', escaped: true",
+    'record.selectPaintSamples = selectPaintSamples',
+    'record.selectPaint = facts',
+    'editor.evaluate((current, original) => current === original, originalEditor)',
+    'backgroundMatches: background === expectedBackground',
+    'Boolean(themePopover)',
+    "expectedBackground !== 'rgba(0, 0, 0, 0)'",
+    'reference.remove()',
+    "await capture('select-rhea-open')",
+    "expect(background).not.toBe('rgba(0, 0, 0, 0)')",
+    'expect(await sameEditor()).toBe(true)',
+  ];
+  const verify = (candidate: string) => {
+    candidate = candidate.replace(/\s+/g, ' ');
+    for (const fragment of required) assert.ok(candidate.includes(fragment), fragment);
+    assert.match(candidate, /finally\s*\{\s*await save\(\);\s*\}/);
+    assert.equal(candidate.split('expect(await sameEditor()).toBe(true)').length - 1, 2);
+  };
+  const normalized = source.replace(/\s+/g, ' ');
+  verify(normalized);
+  for (const fragment of required) assert.throws(() => verify(normalized.replaceAll(fragment, '')));
+});
