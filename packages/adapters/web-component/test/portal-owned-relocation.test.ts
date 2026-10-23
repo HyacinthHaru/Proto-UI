@@ -128,3 +128,26 @@ it('no-op acquisition cannot commit after a begin notification changes destinati
     remove();
   }
 });
+it('same-document relocation authority does not survive reentrant foreign adoption', async () => {
+  const foreign = document.implementation.createHTMLDocument();
+  const origin = document.createElement('div');
+  document.body.append(origin);
+  const observations: boolean[] = [];
+  class Probe extends HTMLElement {
+    connectedCallback() {
+      if (!isWebComponentPortalRelocating(this)) return;
+      foreign.adoptNode(this);
+      observations.push(isWebComponentPortalRelocating(this));
+    }
+  }
+  const name = `portal-document-${++id}`;
+  customElements.define(name, Probe);
+  const host = document.createElement(name);
+  origin.append(host);
+  const mount = createWebComponentPortalMount();
+  mount.mount(host);
+  expect(observations).toEqual([false]);
+  await new Promise((r) => setTimeout(r, 0));
+  expect(isWebComponentPortalRelocating(host)).toBe(false);
+  mount.unmount(host);
+});

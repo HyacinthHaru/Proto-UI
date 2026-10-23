@@ -21,17 +21,18 @@ import {
  */
 // Only this module can enter an authenticated, synchronous projection move.
 // A DOM attribute cannot forge the window; nested moves restore their outer depth.
-const relocationDepth = new WeakMap<HTMLElement, number>();
+const relocationDepth = new WeakMap<HTMLElement, { depth: number; document: Document }>();
 export function isWebComponentPortalRelocating(el: HTMLElement): boolean {
-  return (relocationDepth.get(el) ?? 0) > 0;
+  const window = relocationDepth.get(el);
+  return !!window && window.depth > 0 && window.document === el.ownerDocument;
 }
 function relocate(el: HTMLElement, move: () => void): void {
-  const depth = relocationDepth.get(el) ?? 0;
-  relocationDepth.set(el, depth + 1);
+  const previous = relocationDepth.get(el);
+  relocationDepth.set(el, { depth: (previous?.depth ?? 0) + 1, document: el.ownerDocument });
   try {
     move();
   } finally {
-    if (depth) relocationDepth.set(el, depth);
+    if (previous) relocationDepth.set(el, previous);
     else relocationDepth.delete(el);
   }
 }

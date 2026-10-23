@@ -365,7 +365,7 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
         this._overlayModal.adoptDocument(newDocument);
         this._splitResources?.environment.adoptDocument(newDocument);
         this._hostDisplay?.sync();
-        if (!isWebComponentPortalRelocating(this)) this._controller?.update();
+        this._controller?.update();
         this[NOTIFY_FOCUS_TARGET_READY]();
       } finally {
         if (this._pendingPresentationDocument === newDocument) {
