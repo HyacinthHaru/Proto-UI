@@ -1,3 +1,4 @@
+import { withWebComponentOwnedRelocation } from './owned-relocation';
 // packages/adapters/web-component/src/commit.ts
 
 import { applyTemplateStyle } from './style';
@@ -248,7 +249,14 @@ export function commitChildren(
     for (const node of cfg.slotPool) slotParent.insertBefore(node, ctx.slotEnd);
   }
 
-  (hostRoot as any).replaceChildren(...Array.from(container.childNodes));
+  withWebComponentOwnedRelocation(
+    cfg.slotPool,
+    hostRoot,
+    () => {
+      (hostRoot as any).replaceChildren(...Array.from(container.childNodes));
+    },
+    container
+  );
 
   return {
     hasSlot: ctx.slotUsed,
