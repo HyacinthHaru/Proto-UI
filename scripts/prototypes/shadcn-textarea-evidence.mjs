@@ -93,7 +93,7 @@ const server = createServer(async (req, res) => {
 });
 await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
 const origin = `http://127.0.0.1:${server.address().port}`;
-let browser;
+let browser, page;
 const observations = [];
 try {
   browser = await launchBrowser();
@@ -101,7 +101,7 @@ try {
   await context.route('**/*', (route) =>
     new URL(route.request().url()).origin === origin ? route.continue() : route.abort()
   );
-  const page = await context.newPage();
+  page = await context.newPage();
   const errors = [];
   page.on('pageerror', (e) => errors.push(String(e)));
   await page.goto(origin, { waitUntil: 'networkidle' });
@@ -206,6 +206,12 @@ try {
     const after = await editor.evaluate((e) => e.getBoundingClientRect().height);
     assert(after > before, `${kind}: native intrinsic content growth`);
     await editor.focus();
+    await page.keyboard.press('Tab');
+    await page.keyboard.press('Shift+Tab');
+    assert(
+      await editor.evaluate((e) => document.activeElement === e && e.matches(':focus-visible')),
+      `${kind}: real keyboard focus-visible entry`
+    );
     await editor.evaluate((e) => {
       window.keptEditor = e;
       e.setSelectionRange(2, 6);
@@ -219,13 +225,19 @@ try {
       end: e.selectionEnd,
       focused: document.activeElement === e,
       nativeFocus: e.matches(':focus-visible'),
+      ring: getComputedStyle(e).getPropertyValue('--pui-ring-shadow').trim(),
       shadow: getComputedStyle(e).boxShadow,
     }));
     assert(stable.same && stable.focused);
     assert.equal(stable.start, 2);
     assert.equal(stable.end, 6);
     assert(stable.value.includes('Line 11'));
-    if (stable.nativeFocus) assert.notEqual(stable.shadow, 'none');
+    assert.equal(stable.nativeFocus, true);
+    assert.notEqual(stable.shadow, 'none');
+    assert(
+      stable.ring.includes('3px'),
+      `${kind}: visible focus ring is not merely the New York base shadow`
+    );
     observations.push({ kind, before, after, stable });
     await page.evaluate(() => window.textareaEvidence.set('rhea', false));
     await page.waitForTimeout(240);
@@ -236,9 +248,22 @@ try {
     JSON.stringify({ revision: receipt.revision, observations, errors }, null, 2)
   );
 } catch (error) {
+  let failureScreenshot;
+  if (page) {
+    try {
+      const bytes = await page.screenshot({ path: join(out, 'failure.png'), fullPage: true });
+      failureScreenshot = { path: 'failure.png', sha256: hash(bytes) };
+    } catch (captureError) {
+      failureScreenshot = { error: String(captureError) };
+    }
+  }
   await writeFile(
     join(out, 'failure.json'),
-    JSON.stringify({ revision: receipt.revision, error: String(error), observations }, null, 2)
+    JSON.stringify(
+      { revision: receipt.revision, error: String(error), failureScreenshot, observations },
+      null,
+      2
+    )
   );
   throw error;
 } finally {
