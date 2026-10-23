@@ -88,6 +88,7 @@ export function installDocsCallTimingObserver(page, { sdkRoot, cap = 512 }) {
   const restorers = [];
   const requests = new Map();
   const handles = new WeakSet();
+  const contexts = new WeakSet();
   const storage = new AsyncLocalStorage();
   const ownerToken = randomUUID();
   const marker = `PUI_DOCS_CALL_TIMING:${ownerToken}:`;
@@ -167,6 +168,64 @@ export function installDocsCallTimingObserver(page, { sdkRoot, cap = 512 }) {
     });
   };
   const target = (selector, name) => selector === expectedSelector && name === 'role';
+  const observeWait = (object, key, stage, facts, fulfilled) => {
+    replace(
+      object,
+      key,
+      (original) =>
+        function () {
+          const request = storage.getStore();
+          if (!request?.callId || !requests.has(request.callId))
+            return Reflect.apply(original, this, arguments);
+          try {
+            record(`${stage}.enter`, { callId: request.callId, ...facts?.(this, arguments) });
+          } catch {
+            diagnosticError(`${stage}.facts`, 'Diagnostic facts could not be recorded');
+          }
+          let promise;
+          try {
+            promise = Reflect.apply(original, this, arguments);
+          } catch (error) {
+            try {
+              record(`${stage}.throw`, { callId: request.callId, error: String(error) });
+            } catch {
+              diagnosticError(`${stage}.throw-observation`, 'Thrown value could not be recorded');
+            }
+            throw error;
+          }
+          return tap(
+            promise,
+            (value) => {
+              // This is the observed original Promise settlement, before any diagnostic
+              // patching. A caller continuation can still run later on the same clock.
+              record(`${stage}.fulfilled`, { callId: request.callId });
+              if (fulfilled) {
+                record(`${stage}.observer.enter`, { callId: request.callId });
+                fulfilled(value);
+                record(`${stage}.observer.exit`, { callId: request.callId });
+              }
+            },
+            (error) => record(`${stage}.reject`, { callId: request.callId, error: String(error) })
+          );
+        }
+    );
+  };
+  const patchContext = (context) => {
+    if (!context || contexts.has(context)) return;
+    contexts.add(context);
+    observeWait(
+      context,
+      'rawEvaluateHandle',
+      'driver.context.raw-evaluate-handle',
+      (_context, args) => ({
+        expressionCharacters: typeof args[0] === 'string' ? args[0].length : null,
+      })
+    );
+    observeWait(context, 'injectedScript', 'driver.context.injected-script', (context) => ({
+      world: context.world,
+      cachedAtEntry: !!context._injectedScriptPromise,
+    }));
+  };
   const patchHandle = (handle) => {
     if (!handle || handles.has(handle)) return;
     handles.add(handle);
@@ -234,6 +293,7 @@ export function installDocsCallTimingObserver(page, { sdkRoot, cap = 512 }) {
       'lib/server/frames.js',
       'lib/server/frameSelectors.js',
       'lib/server/javascript.js',
+      'lib/server/dom.js',
     ]) {
       const bytes = readFileSync(join(sdkRoot, path));
       sourceBindings.push({ path, sha256: sha(bytes) });
@@ -403,6 +463,14 @@ export function installDocsCallTimingObserver(page, { sdkRoot, cap = 512 }) {
           }
         }
     );
+    observeWait(frame.selectors, 'resolveFrameForSelector', 'driver.selector.frame');
+    observeWait(
+      frame,
+      '_context',
+      'driver.context',
+      (_frame, args) => ({ world: args[0] }),
+      patchContext
+    );
     replace(
       frame.selectors,
       'resolveInjectedForSelector',
@@ -415,7 +483,10 @@ export function installDocsCallTimingObserver(page, { sdkRoot, cap = 512 }) {
           return tap(
             Reflect.apply(original, this, arguments),
             (resolved) => {
+              record('driver.selector.resolve.fulfilled', { callId: request.callId });
+              record('driver.selector.patch-handle.enter', { callId: request.callId });
               patchHandle(resolved?.injected);
+              record('driver.selector.patch-handle.exit', { callId: request.callId });
               record('driver.selector.resolve.exit', {
                 callId: request.callId,
                 found: !!resolved,

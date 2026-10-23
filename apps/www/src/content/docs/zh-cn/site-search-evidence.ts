@@ -73,6 +73,18 @@ export function installSearchStartupTrace() {
   let eventCount = 0;
   let resourceCount = 0;
   let longTaskCount = 0;
+  const targetSelector =
+    'site-search [data-projection-generation-state="active"] [data-open-modal]';
+  const targetObservations: unknown[] = [];
+  const targetIds = new WeakMap<Element, number>();
+  let nextTargetId = 0;
+  let targetQueryCount = 0;
+  let targetObservationCount = 0;
+  let targetDropped = 0;
+  let targetErrors = 0;
+  let lastTargetState = '';
+  let firstTarget: unknown = null;
+  let firstFullyReady: unknown = null;
   const trace = {
     record(reason: string) {
       if (stopped) return;
@@ -115,6 +127,72 @@ export function installSearchStartupTrace() {
       if (events.length < 48)
         events.push({ atMs: performance.now(), atEpochMs: Date.now(), reason, state });
     },
+    recordTarget(reason: string) {
+      if (stopped) return;
+      targetQueryCount++;
+      try {
+        const selectorStartedAt = performance.now();
+        const commands = document.querySelectorAll<HTMLElement>(targetSelector);
+        const selectorResolvedAt = performance.now();
+        const target = commands[0];
+        const readStartedAt = target ? performance.now() : null;
+        const host = target?.closest<HTMLElement>('[data-projection-generation-host]');
+        const mount = target?.closest<HTMLElement>('[data-search-command-mount]');
+        const searchRoot = target?.closest<HTMLElement>('site-search') ?? root;
+        if (target && !targetIds.has(target)) targetIds.set(target, ++nextTargetId);
+        const facts = {
+          count: commands.length,
+          targetId: target ? targetIds.get(target)! : null,
+          connected: target?.isConnected ?? null,
+          role: target?.getAttribute('role') ?? null,
+          ariaDisabled: target?.getAttribute('aria-disabled') ?? null,
+          inert: target ? !!target.closest('[inert]') : null,
+          pending: target?.hasAttribute('data-pui-view-pending') ?? null,
+          owner: host?.dataset.projectionOwnerHost ?? null,
+          generation: host?.dataset.projectionGenerationHost ?? null,
+          currentOwner: mount?.dataset.projectionOwner ?? null,
+          currentGeneration: (searchRoot as HTMLElement | null)?.dataset.searchGeneration ?? null,
+          view: (searchRoot as HTMLElement | null)?.dataset.searchView ?? null,
+        };
+        const readSettledAt = target ? performance.now() : null;
+        const key = JSON.stringify(facts);
+        if (key === lastTargetState) return;
+        lastTargetState = key;
+        const observation = {
+          atMs: performance.now(),
+          atEpochMs: Date.now(),
+          reason,
+          selectorStartedAt,
+          selectorResolvedAt,
+          readStartedAt,
+          readSettledAt,
+          ...facts,
+        };
+        // These are first observations at the existing deliveries, not mutation
+        // times or a substitute for the original owner-bound readiness oracle.
+        if (!firstTarget && facts.count) firstTarget = observation;
+        if (
+          !firstFullyReady &&
+          facts.count === 1 &&
+          facts.connected &&
+          facts.role === 'button' &&
+          facts.ariaDisabled === 'false' &&
+          !facts.inert &&
+          !facts.pending &&
+          facts.owner !== null &&
+          facts.owner === facts.currentOwner &&
+          facts.generation !== null &&
+          facts.generation === facts.currentGeneration &&
+          facts.view === 'ready'
+        )
+          firstFullyReady = observation;
+        targetObservationCount++;
+        if (targetObservations.length < 32) targetObservations.push(observation);
+        else targetDropped++;
+      } catch {
+        targetErrors++;
+      }
+    },
     attach() {
       if (stopped || root) return;
       root = document.querySelector('site-search');
@@ -137,10 +215,12 @@ export function installSearchStartupTrace() {
         ],
       });
       trace.record('root-found');
+      trace.recordTarget('root-found');
     },
     stop() {
       if (stopped) return;
       trace.record('stop');
+      trace.recordTarget('stop');
       stopped = true;
       discovery.disconnect();
       observer.disconnect();
@@ -157,10 +237,23 @@ export function installSearchStartupTrace() {
         events: [...events],
         resources: [...resources],
         longTasks: [...longTasks],
+        targetArrival: {
+          selector: targetSelector,
+          queryCount: targetQueryCount,
+          observationCount: targetObservationCount,
+          dropped: targetDropped,
+          errors: targetErrors,
+          firstTarget,
+          firstFullyReady,
+          observations: [...targetObservations],
+        },
       };
     },
   };
-  const observer = new MutationObserver(() => trace.record('mutation'));
+  const observer = new MutationObserver(() => {
+    trace.record('mutation');
+    trace.recordTarget('mutation');
+  });
   const discovery = new MutationObserver(() => trace.attach());
   const timing =
     typeof PerformanceObserver === 'function'
@@ -197,7 +290,10 @@ export function installSearchStartupTrace() {
   if (entryTypes.length) timing?.observe({ entryTypes });
   discovery.observe(document, { subtree: true, childList: true });
   trace.attach();
-  void customElements.whenDefined('site-search').then(() => trace.record('defined'));
+  void customElements.whenDefined('site-search').then(() => {
+    trace.record('defined');
+    trace.recordTarget('defined');
+  });
   (window as any).__puiSearchStartup = trace;
 }
 
