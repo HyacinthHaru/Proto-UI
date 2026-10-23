@@ -98,6 +98,9 @@ await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
 const origin = `http://127.0.0.1:${server.address().port}`;
 let browser, page;
 const observations = [];
+const errors = [];
+const consoleErrors = [];
+const failedRequests = [];
 try {
   browser = await launchBrowser();
   const context = await browser.newContext({ viewport: { width: 1180, height: 850 } });
@@ -105,8 +108,11 @@ try {
     new URL(r.request().url()).origin === origin ? r.continue() : r.abort()
   );
   page = await context.newPage();
-  const errors = [];
   page.on('pageerror', (e) => errors.push(String(e)));
+  page.on('console', (m) => {
+    if (m.type() === 'error') consoleErrors.push(m.text());
+  });
+  page.on('requestfailed', (r) => failedRequests.push({ url: r.url(), failure: r.failure() }));
   await page.goto(origin, { waitUntil: 'networkidle' });
   await page.waitForFunction(
     () =>
@@ -303,8 +309,21 @@ try {
   );
 } catch (error) {
   let screenshot;
+  let readiness;
   if (page) {
     try {
+      readiness = await page.evaluate(() => ({
+        ready: document.documentElement.dataset.ready,
+        records: window.cardEvidence?.records.map((r) => ({
+          kind: r.kind,
+          editor: !!r.editor(),
+          html: r.host.innerHTML,
+        })),
+        sections: [...document.querySelectorAll('section')].map((s) => ({
+          runtime: s.dataset.runtime,
+          html: s.innerHTML,
+        })),
+      }));
       const b = await page.screenshot({ path: join(out, 'failure.png'), fullPage: true });
       screenshot = { path: 'failure.png', sha256: hash(b) };
     } catch (e) {
@@ -314,7 +333,16 @@ try {
   await writeFile(
     join(out, 'failure.json'),
     JSON.stringify(
-      { revision: receipt.revision, error: String(error), screenshot, observations },
+      {
+        revision: receipt.revision,
+        error: String(error),
+        screenshot,
+        observations,
+        errors,
+        consoleErrors,
+        failedRequests,
+        readiness,
+      },
       null,
       2
     )
