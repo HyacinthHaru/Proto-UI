@@ -1,0 +1,33 @@
+{
+  "assembledAt": "2026-10-23T14:37:40.748736+00:00",
+  "head": "4d4a7ec071dd83756444cbebf5a4c8b3bea81bcf",
+  "tree": "8af15e292175a4366691acb3834e8cb4331c3a77",
+  "rawInputCount": 449,
+  "mappedInputCount": 407,
+  "hashReferenceCount": 42,
+  "pngCount": 2,
+  "uniquePngHashes": 2,
+  "observations": {
+    "head": "4d4a7ec071dd83756444cbebf5a4c8b3bea81bcf",
+    "tree": "8af15e292175a4366691acb3834e8cb4331c3a77",
+    "clean70dOriginalAccordion": "25/25; no original failure reproduced locally",
+    "privateArm": "25/25; capped main2048 rows with671 dropped; six complete SDK calls. Not natural failure evidence.",
+    "durableArm": "25/25 on70d+9-path candidate;8of10 final file blobs matched; workflow/input-registration post-run changes separately retained;79mainrows0drops/errors,6samecallgetters.",
+    "controls": "Window-stop unit first8/1 then second8/1 due unappliedpatch then corrected9/0. Plugin7/0 and workflow32/0 separate source/control scope. Types943/0/0/14 precommit.",
+    "finalCombination": "Actual clean4d4a12files293pass1sidebar manual-wheel1s failure. Original294 result remains red; no subsequent positive diagnostic can rewrite it.",
+    "oldCanonical": "70d completedFAILURE22jobs13success9failure.5completebrowser shards549pass9fail15skip; other3exit124 unknown totals; Accordion25pass; General78docs preventedVitest.",
+    "noClaims": [
+      "Product root cause or fix established",
+      "WholeCI orC accepted",
+      "Natural Accordion failure reproduced",
+      "Formal approval",
+      "All visual/AT/runtime acceptance"
+    ],
+    "ownerControls": "Actual clean4d4a3files26pass including17router-owner; prior stale-pathsetup attempt never reached Vitest.",
+    "officialPreview": "Complete4d4a3837files669HTML104015898expanded bytes; own producer admission1pass, downloaded ZIP/self-extraction admission1pass and two freshcontext QA terminal. Readiness of one route is not overall C acceptance.",
+    "newCanonical": "14:27UTC actual21jobs13success6failure2running; General/browser8 pending. Package47build47manifest9policy;4PASS5ADVISORY.2CJKsetupfailedshards0browsercases. DedicatedAccordion25pass32workflowcontrols andpostguards; actualartifact79rows0drop/error,6samecallgetters.",
+    "sidebar": "Clean294293/1red; private1case1fail9filtered,22rows20facts+trustedwheel capture/bubble,no scroll,0diagnosticerror/drop; original1s unchanged. PostverdictA/B/A overscroll control allstill9021; nativeplain divsameCFT155500to400. No CSS/product cause asserted.",
+    "canonicalStillPendingAtSnapshot": true
+  },
+  "claim": "Selected evidence only; no formal approval, whole CI green, whole-site/all-adapter/AT acceptance."
+}
