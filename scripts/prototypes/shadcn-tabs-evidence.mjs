@@ -133,6 +133,8 @@ const origin = `http://127.0.0.1:${server.address().port}`;
 let browser;
 let page;
 const observations = [];
+const progress = [];
+let pendingExpectation = null;
 try {
   browser = await launchBrowser();
   const context = await browser.newContext({ viewport: { width: 1440, height: 820 } });
@@ -190,12 +192,16 @@ try {
       );
     });
     const interaction = [];
-    const settle = (i, trigger, property, expected) =>
-      page.waitForFunction(
+    const settle = async (i, trigger, property, expected) => {
+      pendingExpectation = { theme, i, trigger, property, expected };
+      await page.waitForFunction(
         ({ i, trigger, property, expected }) =>
           getComputedStyle(window.tabsEvidence.records[i].triggers[trigger])[property] === expected,
         { i, trigger, property, expected }
       );
+      progress.push(pendingExpectation);
+      pendingExpectation = null;
+    };
     for (let i = 0; i < matrix.length; i++) {
       const row = matrix[i],
         first = page.locator('shadcn-tabs-trigger').nth(i * 3),
@@ -323,7 +329,21 @@ try {
   await page?.screenshot({ path: join(out, 'failed-tabs.png'), fullPage: true }).catch(() => {});
   await writeFile(
     join(out, 'browser-failure.json'),
-    JSON.stringify({ revision: receipt.revision, error: String(error), observations }, null, 2) +
+    JSON.stringify({ revision: receipt.revision, error: String(error), observations, progress, pendingExpectation,
+      current: await page?.evaluate(() => ({
+        theme: document.documentElement.dataset.theme,
+        records: window.tabsEvidence?.records.map((r) => ({
+          style: r.style, orientation: r.orientation, value: r.root.getExposes().value.get(),
+          triggers: r.triggers.map((node) => {
+            const css = getComputedStyle(node);
+            return { text: node.textContent, attributes: Object.fromEntries([...node.attributes].map((a) => [a.name, a.value])),
+              focused: document.activeElement === node, focusVisible: node.matches(':focus-visible'),
+              selected: node.getExposes().selected.get(),
+              css: Object.fromEntries(['outlineWidth','outlineStyle','outlineColor','outlineOffset','borderTopColor','backgroundColor','color','boxShadow','borderRadius','opacity','pointerEvents'].map((p) => [p, css[p]])) };
+          }),
+        })),
+      })).catch(() => null),
+    }, null, 2) +
       '\n'
   );
   throw error;
