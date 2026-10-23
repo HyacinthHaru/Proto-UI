@@ -80,8 +80,12 @@ function decorateEvaluation(originalText, marker) {
   return { source: text, fn: Function(`return (${text});`)() };
 }
 
-/** @param {{ sdkRoot: string, cap?: number }} options */
-export function installDocsCallTimingObserver(page, { sdkRoot, cap = 512 }) {
+/** @param {{ sdkRoot: string, cap?: number, selector?: string, attribute?: string }} options */
+export function installDocsCallTimingObserver(
+  page,
+  { sdkRoot, cap = 512, selector = expectedSelector, attribute = 'role' }
+) {
+  const targetSelector = selector;
   const rows = [];
   const browserBatches = [];
   const errors = [];
@@ -167,7 +171,7 @@ export function installDocsCallTimingObserver(page, { sdkRoot, cap = 512 }) {
       else delete object[key];
     });
   };
-  const target = (selector, name) => selector === expectedSelector && name === 'role';
+  const target = (selector, name) => selector === targetSelector && name === attribute;
   const observeWait = (object, key, stage, facts, fulfilled) => {
     replace(
       object,
@@ -235,7 +239,7 @@ export function installDocsCallTimingObserver(page, { sdkRoot, cap = 512 }) {
       (original) =>
         function (fn, arg) {
           const request = requests.get(arg?.callId);
-          if (!request || typeof fn !== 'function' || arg?.taskData?.name !== 'role')
+          if (!request || typeof fn !== 'function' || arg?.taskData?.name !== attribute)
             return Reflect.apply(original, this, arguments);
           let decorated;
           try {
@@ -580,8 +584,8 @@ export function installDocsCallTimingObserver(page, { sdkRoot, cap = 512 }) {
         ownerToken,
         sourceBindings,
         expectedEvaluatorSha,
-        selector: expectedSelector,
-        attribute: 'role',
+        selector: targetSelector,
+        attribute,
         verdict,
         rows: [...rows],
         browserBatches: [...browserBatches],
