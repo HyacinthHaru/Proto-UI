@@ -1,5 +1,5 @@
 import { afterEach, expect, it } from 'vitest';
-import { getElementProps } from '@proto.ui/adapter-web-component';
+import { getElementProps, setElementProps } from '@proto.ui/adapter-web-component';
 import { renderDemo } from '../PrototypePreviewer/demo-renderer';
 import { loadPrototypes } from '../PrototypePreviewer/prototype-modules';
 import { createHomepageShowcase } from './homepage-showcase';
@@ -22,6 +22,20 @@ for (const family of ['shadcn', 'brutalist'] as const) {
       for (let i = 0; i < 16; i++) await Promise.resolve();
     };
     const verify = () => {
+      if (family === 'shadcn') {
+        for (const name of ['settings-note', 'editor-text']) {
+          const tokens = input(name).getAttribute('data-pui-style')?.split(/\s+/) ?? [];
+          expect(tokens).toContain('rounded-[var(--pui-radius-2xl)]');
+          expect(tokens).toContain('resize-none');
+          expect(tokens).toContain('bg-input/50');
+          expect(tokens).not.toContain('resize-y');
+          expect(tokens).not.toContain('shadow-xs');
+          expect(getElementProps(ref(name))).not.toHaveProperty('styleProfile');
+        }
+        const tabsList = host.querySelector<HTMLElement>('wc-shadcn-tabs-list')!;
+        expect(tabsList.getAttribute('data-pui-style')?.split(/\s+/)).toContain('rounded-2xl');
+        expect(getElementProps(tabsList)).not.toHaveProperty('styleProfile');
+      }
       for (const name of ['settings-save', 'settings-reset', 'editor-reset']) {
         // Family-owned wrapping replaces homepage numeric height overrides.
         expect(getElementProps(ref(name))).toMatchObject({ wrap: true });
@@ -132,17 +146,30 @@ for (const family of ['shadcn', 'brutalist'] as const) {
     verifyLabels();
     for (const tile of host.querySelectorAll('[data-gallery-demo]')) {
       const surface = tile.querySelector('[data-pui-root]')!;
-      const appearance =
-        family === 'brutalist' && tile.getAttribute('data-gallery-demo') === 'editor'
-          ? 'canvas'
-          : 'card';
-      expect(getElementProps(surface as HTMLElement)).toMatchObject({
-        variant: 'outline',
-        elevation: appearance === 'card' ? 'raised' : 'none',
-      });
-      expect(surface.getAttribute('data-pui-style')?.includes('shadow-')).toBe(
-        appearance === 'card'
-      );
+      if (family === 'shadcn') {
+        expect(surface.localName).toBe('wc-shadcn-card-root');
+        expect(getElementProps(surface as HTMLElement)).toEqual({ styleProfile: 'rhea' });
+        expect(tile.querySelectorAll('wc-shadcn-card-header')).toHaveLength(1);
+        expect(tile.querySelectorAll('wc-shadcn-card-content')).toHaveLength(1);
+        const tokens = surface.getAttribute('data-pui-style')?.split(/\s+/) ?? [];
+        expect(tokens).toContain('rounded-[min(var(--pui-radius-4xl),24px)]');
+        expect(tokens).toContain('py-5');
+        expect(tokens).toContain('shadow-sm');
+        for (const property of ['padding', 'borderRadius', 'background', 'boxShadow'] as const)
+          expect((surface as HTMLElement).style[property]).toBe('');
+      } else {
+        const appearance =
+          family === 'brutalist' && tile.getAttribute('data-gallery-demo') === 'editor'
+            ? 'canvas'
+            : 'card';
+        expect(getElementProps(surface as HTMLElement)).toMatchObject({
+          variant: 'outline',
+          elevation: appearance === 'card' ? 'raised' : 'none',
+        });
+        expect(surface.getAttribute('data-pui-style')?.includes('shadow-')).toBe(
+          appearance === 'card'
+        );
+      }
     }
     if (family === 'brutalist') {
       const tabsList = host.querySelector<HTMLElement>('[role="tablist"]')!;
@@ -174,6 +201,26 @@ for (const family of ['shadcn', 'brutalist'] as const) {
       );
       await settle();
       expect(node.value).toBe('A meaningful edit');
+      verify();
+    }
+    if (family === 'shadcn') {
+      const editor = input('editor-text');
+      const card = ref('editor-text').closest<HTMLElement>('wc-shadcn-card-root')!;
+      const tabsList = card.querySelector<HTMLElement>('wc-shadcn-tabs-list')!;
+      for (const styleProfile of ['new-york-v4', 'rhea'] as const) {
+        setElementProps(card, { styleProfile });
+        await settle();
+        expect(input('editor-text')).toBe(editor);
+        expect(editor.value).toBe('A meaningful edit');
+        const tokens = editor.getAttribute('data-pui-style')?.split(/\s+/) ?? [];
+        expect(tokens).toContain(styleProfile === 'rhea' ? 'resize-none' : 'resize-y');
+        expect(tokens).not.toContain(styleProfile === 'rhea' ? 'resize-y' : 'resize-none');
+        expect(tabsList.getAttribute('data-pui-style')?.split(/\s+/)).toContain(
+          styleProfile === 'rhea' ? 'rounded-2xl' : 'rounded-lg'
+        );
+        expect(getElementProps(ref('editor-text'))).not.toHaveProperty('styleProfile');
+        expect(getElementProps(tabsList)).not.toHaveProperty('styleProfile');
+      }
       verify();
     }
     ref('editor-reset').click();

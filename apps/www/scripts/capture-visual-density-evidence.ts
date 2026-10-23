@@ -205,7 +205,7 @@ try {
               };
             });
             const card = document.querySelector<HTMLElement>(
-              '[data-gallery-demo] [data-projection-prototype$="-surface-root"]'
+              '[data-gallery-demo] [data-projection-prototype="shadcn-card-root"], [data-gallery-demo] [data-projection-prototype="brutalist-surface-root"], [data-gallery-demo] [data-projection-prototype="shadcn-surface-root"]'
             )!;
             const primary = document.querySelector<HTMLElement>(
               '[data-demo-ref="gallery-primary"]'
@@ -215,6 +215,20 @@ try {
               title,
               caption,
               cardPadding: getComputedStyle(card).padding,
+              cardPrototype: card.dataset.projectionPrototype,
+              cardRadius: getComputedStyle(card).borderTopLeftRadius,
+              cardHeaderPadding: (() => {
+                const header = card.querySelector(
+                  '[data-projection-prototype="shadcn-card-header"]'
+                );
+                return header ? getComputedStyle(header).padding : null;
+              })(),
+              cardContentPadding: (() => {
+                const content = card.querySelector(
+                  '[data-projection-prototype="shadcn-card-content"]'
+                );
+                return content ? getComputedStyle(content).padding : null;
+              })(),
               gridGap: getComputedStyle(document.querySelector('.home-gallery')!).gap,
               gallerySpacing: {
                 columnGap: getComputedStyle(document.querySelector('.home-gallery')!).columnGap,
@@ -242,13 +256,23 @@ try {
           assert.ok(Math.abs(facts.primary.height - (v.family === 'brutalist' ? 40 : 32)) <= 1);
           if (kind === 'candidate') {
             assert.equal(facts.slogan.fontSize, v.width === 390 ? 24 : 36);
-            assert.equal(facts.cardPadding, '20px');
+            if (v.family === 'shadcn') {
+              assert.equal(facts.cardPrototype, 'shadcn-card-root');
+              assert.equal(facts.cardPadding, '20px 0px');
+              assert.equal(facts.cardHeaderPadding, '0px 20px');
+              assert.equal(facts.cardContentPadding, '0px 20px');
+              assert.equal(facts.cardRadius, '24px');
+              assert.equal(facts.title.fontWeight, '500');
+            } else {
+              assert.equal(facts.cardPrototype, 'brutalist-surface-root');
+              assert.equal(facts.cardPadding, '20px');
+            }
             assert.deepEqual(
               gallerySpacingIssues(facts.gallerySpacing, v.width === 390 ? 20 : 24),
               []
             );
             assert.equal(facts.title.fontSize, 16);
-            assert.equal(facts.caption.fontSize, 12);
+            assert.equal(facts.caption.fontSize, v.family === 'shadcn' ? 14 : 12);
           }
           if (v.width === 390)
             await page.locator('.site-header-menu [data-demo-ref="home-menu"]').click();

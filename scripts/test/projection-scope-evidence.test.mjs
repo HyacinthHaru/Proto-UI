@@ -322,14 +322,16 @@ for (const family of ['shadcn', 'brutalist']) {
           [...value.task.recipe.prototypeIds].sort(),
           [
             ...Object.keys(api.GALLERY_PART_COUNTS).map((suffix) => `${family}-${suffix}`),
-            `${family}-surface-root`,
+            ...(family === 'shadcn'
+              ? ['shadcn-card-root', 'shadcn-card-header', 'shadcn-card-content']
+              : ['brutalist-surface-root']),
             `${family}-text-root`,
             ...(family === 'shadcn'
               ? ['shadcn-select-item-text', 'shadcn-select-surface', 'shadcn-select-viewport']
               : []),
           ].sort()
         );
-        assert.equal(value.task.recipe.prototypeIds.length, family === 'shadcn' ? 59 : 56);
+        assert.equal(value.task.recipe.prototypeIds.length, family === 'shadcn' ? 61 : 56);
         await verify(value);
         assert.equal(Object.keys(SCENE_PART_COUNTS).length, 19);
         for (const [suffix, count] of Object.entries(SCENE_PART_COUNTS)) {

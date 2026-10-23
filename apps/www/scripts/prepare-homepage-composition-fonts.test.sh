@@ -69,7 +69,9 @@ for scenario in success bad-sha bad-version wrong-family missing-glyphs; do
   mkdir -p "$root/$scenario"
   export RUNNER_TEMP="$root/$scenario" MOCK_SCENARIO="$scenario" MOCK_ACTIONS="$root/$scenario/actions.txt"
   set +e
-  bash "$proposal" > "$root/$scenario/result.txt" 2>&1
+  # Drain the helper's tee process before inspecting diagnostics. pipefail
+  # preserves the helper exit status; this does not turn a rejection into success.
+  bash "$proposal" 2>&1 | cat > "$root/$scenario/result.txt"
   status=$?
   set -e
   case "$scenario" in

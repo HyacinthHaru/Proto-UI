@@ -499,7 +499,9 @@ async function assertTaskPartInventory(
           'shadcn-select-viewport',
         ]
       : []),
-    ...Array(9).fill(`${family}-surface-root`),
+    ...(family === 'shadcn'
+      ? ['root', 'header', 'content'].flatMap((part) => Array(9).fill(`shadcn-card-${part}`))
+      : Array(9).fill('brutalist-surface-root')),
     ...Array(expected.runtimeId === 'wc' ? 35 : 33).fill(`${family}-text-root`),
   ].sort();
   const actualIds = await parts.evaluateAll((elements) =>
@@ -509,7 +511,7 @@ async function assertTaskPartInventory(
     expectedIds
   );
   expect(new Set(actualIds).size, 'complete declared task recipe').toBe(
-    family === 'shadcn' ? 59 : 56
+    family === 'shadcn' ? 61 : 56
   );
   await assertSurfacesShareCoordinate(parts, expected, 'every actual task part coordinate');
   const owners = await parts.evaluateAll((elements) =>

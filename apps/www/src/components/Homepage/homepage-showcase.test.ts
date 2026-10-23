@@ -75,14 +75,19 @@ function mount(runtime: RuntimeId, locale = 'en') {
 afterEach(() => document.body.replaceChildren());
 
 for (const family of ['shadcn', 'brutalist'] as const) {
-  it(`${family} has a closed explicit recipe using real lane parts and the explicit passive preview surface`, () => {
+  it(`${family} has a closed explicit recipe using real lane parts and family-owned passive card surfaces`, () => {
     const content = createHomepageShowcase(family, 'wc', 'en', () => true);
     assertDemoSpec(content.demo);
     const ids = new Set<string>();
     collectPrototypeIds(content.demo.root, ids);
     expect([...ids].sort()).toEqual([...content.recipe.prototypeIds].sort());
     // The closed recipe now includes the actual family Label relation owner.
-    expect(ids.size).toBe(family === 'shadcn' ? 59 : 56);
+    expect(ids.size).toBe(family === 'shadcn' ? 61 : 56);
+    if (family === 'shadcn') {
+      for (const part of ['root', 'header', 'content'])
+        expect(ids.has(`shadcn-card-${part}`)).toBe(true);
+      expect(ids.has('shadcn-surface-root')).toBe(false);
+    }
     const sceneIds = [
       'command-root',
       'command-input',
@@ -119,7 +124,7 @@ for (const family of ['shadcn', 'brutalist'] as const) {
       [...ids].every((id) => id.startsWith(`${family}-`) || id === PREVIEW_SURFACE_ID(family))
     ).toBe(true);
     expect(ids.has(`${family}-hover-card-root`)).toBe(true);
-    expect(ids.has(`${family}-card-root`)).toBe(false);
+    expect(ids.has(`${family}-card-root`)).toBe(family === 'shadcn');
     const composition = createProjectionComposition({
       ownerId: 'settings',
       runtimeId: 'wc',
