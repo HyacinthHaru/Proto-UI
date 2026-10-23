@@ -193,3 +193,33 @@ it('ordinary author whole-host reparent still executes the normal owner update, 
   expect(host.querySelectorAll('[data-pui-owned-decoration]')).toHaveLength(1);
   // This is only the existing owner-update route, not a Context rescope guarantee.
 });
+
+it('internal template authority bridges are absent from author def and run', async () => {
+  let mounted = false;
+  const proto = definePrototype({
+    name: `owned-private-bridge-${++id}`,
+    setup(def) {
+      for (const key of [
+        'hasDecorationTargets',
+        'captureDecorationLease',
+        'validateDecorationTemplate',
+      ])
+        expect(key in def.feedback.style).toBe(false);
+      const target = def.feedback.style.declareDecoration();
+      def.lifecycle.onMounted((run) => {
+        mounted = true;
+        for (const key of [
+          'hasDecorationTargets',
+          'captureDecorationLease',
+          'validateDecorationTemplate',
+        ])
+          expect(key in run.feedback.style).toBe(false);
+      });
+      return (r) => r.decoration(target);
+    },
+  });
+  AdaptToWebComponent(proto);
+  document.body.append(document.createElement(proto.name));
+  await settle();
+  expect(mounted).toBe(true);
+});
