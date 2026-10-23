@@ -6,10 +6,7 @@ import path from 'node:path';
 import ts from 'typescript';
 
 import { canonicalizeLoweredVariants } from '../generated/lowered-variant-order.js';
-import {
-  createHookSourceSummaryContext,
-  type HookSourceValue,
-} from './hook-source-summary.js';
+import { createHookSourceSummaryContext, type HookSourceValue } from './hook-source-summary.js';
 
 export async function collectProtoStyleTokens(root) {
   return collectProtoStyleTokensFromFiles(await collectSourceFiles(root));
@@ -294,8 +291,24 @@ function conditionalLeafCount(node) {
 
 /** Every semantic a binding may stand for, the declared one first. */
 function bindingSemantics(binding) {
-  if (!binding) return [];
+  if (!binding || binding.unknownAlternative) return [];
   return [binding.semantic, ...(binding.alternatives ?? [])].filter(Boolean);
+}
+
+function bindingHasStatePath(binding) {
+  if (!binding || binding.unknownAlternative) return false;
+  if (bindingSemantics(binding).length > 0) return true;
+  if (
+    binding.kind === 'localState' ||
+    binding.kind === 'handle' ||
+    binding.kind === 'handleBag' ||
+    binding.kind === 'hookResult' ||
+    binding.kind === 'callable'
+  )
+    return true;
+  if (binding.semanticMap?.size || binding.containers?.length) return true;
+  const sourceValues = sourceValueCandidates(binding);
+  return sourceValues.length > 0 && sourceValues.some((value) => value.kind !== 'unknown');
 }
 
 /** A member entry holds one semantic, or several once a write may be skipped. */
@@ -310,10 +323,12 @@ function readMemberSemantics(node, scope) {
   const name = memberName(node);
   if (!owner || name === null) return [];
   const resolved = resolveExpression(owner, scope);
+  if (resolved.unknownAlternative) return [];
   // A name that may be either of two objects answers for both, and a container
   // that replaced another conditionally still answers for what it replaced.
   const values = resolved.containers ?? [resolved];
-  return [...new Set(values.flatMap((value) => memberSemantics(value.semanticMap?.get(name))))];
+  const r = [...new Set(values.flatMap((value) => memberSemantics(value.semanticMap?.get(name))))];
+  return r;
 }
 
 /**
@@ -325,7 +340,7 @@ function scopeOwningValue(value, scope) {
   let owning = null;
   for (let current = scope; current; current = current.parent) {
     for (const held of current.bindings.values()) {
-      if (held === value) {
+      if (held === value || (value.semanticMap != null && held.semanticMap === value.semanticMap)) {
         owning = current;
         break;
       }
@@ -342,21 +357,104 @@ function scopeDeclaring(name, scope) {
   return null;
 }
 
+function shadowBindingPattern(scope, name) {
+  if (ts.isIdentifier(name)) {
+    scope.bindings.set(name.text, { ...emptyValue(), opaque: true });
+    return;
+  }
+  for (const element of name.elements) {
+    if (ts.isBindingElement(element)) shadowBindingPattern(scope, element.name);
+  }
+}
+
 function walk(node, scope, tokens, exposures, rootInventory = null) {
+  if (ts.isIfStatement(node)) {
+    const outcome = sourceConditionOutcome(node.expression, scope);
+    walk(node.expression, scope, tokens, exposures, rootInventory);
+    if (outcome === false) {
+      if (node.elseStatement) walk(node.elseStatement, scope, tokens, exposures, rootInventory);
+      return;
+    }
+    if (outcome === true) {
+      walk(node.thenStatement, scope, tokens, exposures, rootInventory);
+      return;
+    }
+    walk(node.thenStatement, scope, tokens, exposures, rootInventory);
+    if (node.elseStatement) walk(node.elseStatement, scope, tokens, exposures, rootInventory);
+    return;
+  }
+
   if (createsScope(node)) {
     const nextScope = createScope(scope, node);
 
-    if (ts.isFunctionLike(node)) {
-      for (const parameter of node.parameters) {
-        if (ts.isIdentifier(parameter.name)) nextScope.bindings.set(parameter.name.text, { opaque: true });
+    if (ts.isForOfStatement(node)) {
+      const iterable = unwrapTransparent(node.expression);
+      if (ts.isArrayLiteralExpression(iterable)) {
+        const snapshots = new Map();
+        const snapshotScope = { ...nextScope, expressionSnapshots: snapshots };
+        const capture = (expression) => {
+          const value = unwrapTransparent(expression);
+          if (ts.isArrayLiteralExpression(value)) {
+            for (const element of value.elements) {
+              if (!ts.isOmittedExpression(element)) capture(element);
+            }
+          } else if (ts.isObjectLiteralExpression(value)) {
+            for (const property of value.properties) {
+              if (property.name && ts.isComputedPropertyName(property.name))
+                capture(property.name.expression);
+              if (ts.isPropertyAssignment(property)) capture(property.initializer);
+              else if (ts.isShorthandPropertyAssignment(property)) capture(property.name);
+              else if (ts.isSpreadAssignment(property)) capture(property.expression);
+            }
+          } else if (
+            ts.isBinaryExpression(value) &&
+            value.operatorToken.kind === ts.SyntaxKind.EqualsToken
+          ) {
+            walk(expression, nextScope, tokens, exposures, rootInventory);
+            snapshots.set(expression, resolveBinding(value.right, snapshotScope));
+            return;
+          } else {
+            const binding = resolveBinding(expression, snapshotScope);
+            walk(expression, nextScope, tokens, exposures, rootInventory);
+            snapshots.set(expression, binding);
+            return;
+          }
+          snapshots.set(expression, resolveBinding(expression, snapshotScope));
+        };
+        const rowScopes = iterable.elements
+          .filter((row) => !ts.isOmittedExpression(row))
+          .map((row) => {
+            capture(row);
+            const rowScope = createScope(nextScope, node);
+            for (const decl of loopInitializerDeclarations(node)) {
+              registerLoopDeclaration(decl, rowScope, exposures, [row], snapshotScope);
+            }
+            return rowScope;
+          });
+        for (const rowScope of rowScopes) {
+          walk(node.statement, rowScope, tokens, exposures, rootInventory);
+        }
+        return;
       }
     }
-    if (ts.isCatchClause(node) && node.variableDeclaration && ts.isIdentifier(node.variableDeclaration.name))
-      nextScope.bindings.set(node.variableDeclaration.name.text, { opaque: true });
+
+    if (ts.isFunctionLike(node)) {
+      for (const parameter of node.parameters) shadowBindingPattern(nextScope, parameter.name);
+    }
+    if (ts.isCatchClause(node) && node.variableDeclaration)
+      shadowBindingPattern(nextScope, node.variableDeclaration.name);
 
     // Registered before the body is walked, the same order the loop runs in.
     for (const decl of loopInitializerDeclarations(node)) {
       registerDeclaration(decl, nextScope, exposures);
+    }
+    if (ts.isForOfStatement(node)) {
+      const iterable = unwrapTransparent(node.expression);
+      if (ts.isArrayLiteralExpression(iterable)) {
+        for (const decl of loopInitializerDeclarations(node)) {
+          registerLoopDeclaration(decl, nextScope, exposures, iterable.elements);
+        }
+      }
     }
 
     if (hasStatements(node)) {
@@ -418,9 +516,8 @@ function walk(node, scope, tokens, exposures, rootInventory = null) {
       const written = bindingSemantics(rightBinding);
       const writtenSource = sourceValueCandidates(rightBinding);
       for (const container of targets) {
-        const sourceWrite =
-          writtenSource.length === 1 && hasSourceHookProvenance(writtenSource[0]);
-        if (written.length === 0 && !sourceWrite) continue;
+        const sourceWrite = writtenSource.length === 1 && hasSourceHookProvenance(writtenSource[0]);
+        const unknownWrite = written.length === 0 && !sourceWrite;
         // The scope that owns the container object, not the one that declares
         // the name written through: an alias declared inside a callback would
         // otherwise make the write look ordered against itself.
@@ -443,28 +540,65 @@ function walk(node, scope, tokens, exposures, rootInventory = null) {
                 ]),
               ]
             : [member];
+        // A semantic-only local state has no source declaration to place in
+        // the summary graph. Its local semantic map below is authoritative;
+        // leave the cached source member unchanged rather than inserting an
+        // undefined candidate into a HookSourceValue map.
         if (
           container.sourceValue?.kind === 'object' &&
-          sourceWrite
+          (unknownWrite || writtenSource.length > 0)
         ) {
-          const previousSource = {
-            kind: 'object',
-            members: new Map(container.sourceValue.members),
-          };
-          const sourceMembers = container.sourceValue.members as Map;
-          for (const key of keys) sourceMembers.set(key, writtenSource[0]);
-          if (uncertain) {
-            const sourceValues = sourceValueCandidates(container);
-            container.sourceValues = [...new Set([writtenSource[0], ...sourceValues, previousSource])];
-            for (let owner = scope; owner; owner = owner.parent) {
-              for (const held of owner.bindings.values()) {
-                if (held === container || held.sourceValue !== container.sourceValue) continue;
-                held.sourceValues = [...new Set([...(held.sourceValues ?? []), previousSource])];
+          // Summary values are cached for the whole source graph. Never mutate
+          // their member map in place: a write in one walked file must not
+          // change what a later file observes from the same producer.
+          const previousSource = container.sourceValue;
+          const previousCandidates = sourceValueCandidates(container);
+          const nextMembers = new Map(previousSource.members);
+          if (unknownWrite) {
+            const unknown = { kind: 'unknown', reason: 'possibly overwritten member' };
+            if (member === null) {
+              for (const key of nextMembers.keys()) nextMembers.set(key, unknown);
+            } else {
+              nextMembers.set(member, unknown);
+            }
+          } else {
+            for (const key of keys) nextMembers.set(key, writtenSource[0]);
+          }
+          const nextSource = { ...previousSource, members: nextMembers };
+          container.sourceValue = nextSource;
+          const nextCandidates = uncertain
+            ? [nextSource, ...previousCandidates, previousSource]
+            : [nextSource, ...previousCandidates.slice(1)];
+          if (nextCandidates.length > 1 || container.sourceValues)
+            container.sourceValues = [...new Set(nextCandidates)];
+
+          // Aliases hold the same object identity. Keep their local source
+          // pointer in sync without touching the cached summary object.
+          for (let owner = scope; owner; owner = owner.parent) {
+            for (const held of owner.bindings.values()) {
+              if (held === container || held.sourceValue !== previousSource) continue;
+              held.sourceValue = nextSource;
+              if (uncertain) {
+                held.sourceValues = [
+                  ...new Set([nextSource, ...(held.sourceValues ?? []), previousSource]),
+                ];
+              } else if (held.sourceValues) {
+                held.sourceValues = [
+                  nextSource,
+                  ...held.sourceValues.filter((candidate) => candidate !== previousSource),
+                ];
               }
             }
           }
+          propagateSourceReference(scope, previousSource, nextSource);
         }
-        if (written.length > 0) {
+        if (unknownWrite) {
+          // An unknown member write can replace the state handle with any
+          // runtime value. Do not retain a stale local proof for that member;
+          // a dynamic key invalidates every known member.
+          if (member === null) container.semanticMap?.clear();
+          else container.semanticMap?.delete(member);
+        } else if (written.length > 0) {
           for (const key of keys) {
             const previous = memberSemantics(container.semanticMap.get(key));
             const kept = uncertain
@@ -486,51 +620,7 @@ function walk(node, scope, tokens, exposures, rootInventory = null) {
     // A reassignment moves the handle for every read that follows it, so the
     // binding has to move with it rather than stay at its declaration.
     walk(node.right, scope, tokens, exposures, rootInventory);
-    const name = node.left.text;
-    const owner = scopeDeclaring(name, scope) ?? scope;
-    const previous = owner.bindings.get(name);
-    const binding = applyExposure(name, resolveBinding(node.right, scope), owner, exposures);
-    // A write the source may skip, or one that has not run yet, leaves the name
-    // on either handle, and the runtime lowers whichever it holds.
-    const kept = bindingSemantics(previous).filter((candidate) => candidate !== binding.semantic);
-    const uncertain =
-      isConditionallyReached(node) || isDeferredWrite(node, enclosingFunction(owner.node));
-    let next = binding;
-    if (uncertain && kept.length > 0) {
-      next = { ...next, alternatives: [...new Set([...(next.alternatives ?? []), ...kept])] };
-    }
-    // Replacing a container keeps its members too: on the branch the source may
-    // not take, the name still holds the object it held before.
-    if (uncertain && previous && (previous.semanticMap || previous.containers)) {
-      const held = [...(next.containers ?? [next]), ...(previous.containers ?? [previous])];
-      next = { ...next, containers: [...new Set(held)] };
-      if (next.semanticMap || previous.semanticMap) {
-        const semanticMap = new Map(next.semanticMap ?? []);
-        for (const [key, value] of previous.semanticMap ?? []) {
-          const existing = semanticMap.get(key);
-          const values = [
-            ...(existing ? (Array.isArray(existing) ? existing : [existing]) : []),
-            ...(Array.isArray(value) ? value : [value]),
-          ];
-          const unique = [...new Set(values.filter(Boolean))];
-          if (unique.length === 1) semanticMap.set(key, unique[0]);
-          else if (unique.length > 1) semanticMap.set(key, unique);
-        }
-        next = { ...next, semanticMap };
-      }
-    }
-    const nextSourceValues = sourceValueCandidates(next);
-    const previousSourceValues = sourceValueCandidates(previous);
-    if (uncertain && nextSourceValues.length > 0 && previousSourceValues.length > 0) {
-      const sourceValues = [...new Set([...nextSourceValues, ...previousSourceValues])];
-      next = { ...next, sourceValue: sourceValues[0], sourceValues };
-    } else if (nextSourceValues.length > 1) {
-      next = { ...next, sourceValue: nextSourceValues[0], sourceValues: nextSourceValues };
-    }
-    // Once a name is reassigned, an earlier producer declaration no longer
-    // proves a later direct call through that name.
-    if (next.bindingNode) next = { ...next, bindingNode: node };
-    owner.bindings.set(name, next);
+    assignIdentifierBinding(node, scope, exposures);
     return;
   }
 
@@ -779,11 +869,31 @@ function hasStatements(node) {
 }
 
 function registerDeclaration(decl, scope, exposures) {
-  if (!decl.initializer) return;
+  if (!decl.initializer) {
+    if (isVarList(decl.parent) && ts.isIdentifier(decl.name) && scope.bindings.has(decl.name.text))
+      return;
+    shadowBindingPattern(scope, decl.name);
+    return;
+  }
 
   if (ts.isIdentifier(decl.name)) {
     const binding = resolveBinding(decl.initializer, scope);
     const local = { ...binding, importedBinding: false, bindingNode: decl };
+    // `const alias = controls` names the one object the container binding holds.
+    // A member write through either name has to move the member the other reads,
+    // so the two bindings share one member map. The spread above copies an
+    // existing map by reference already; when the container has none yet, create
+    // one and hand it to both so a later `alias.ready = …` is visible as
+    // `controls.ready` (and vice versa) instead of landing on a private copy.
+    if (
+      ts.isIdentifier(unwrapTransparent(decl.initializer)) &&
+      binding.semanticMap == null &&
+      local.semanticMap == null
+    ) {
+      const shared = new Map();
+      binding.semanticMap = shared;
+      local.semanticMap = shared;
+    }
     scope.bindings.set(decl.name.text, applyExposure(decl.name.text, local, scope, exposures));
     return;
   }
@@ -818,11 +928,91 @@ function registerDeclaration(decl, scope, exposures) {
   }
 }
 
+function loopMemberExpression(value, key) {
+  const inner = unwrapTransparent(value);
+  if (ts.isArrayLiteralExpression(inner)) {
+    const index = Number(key);
+    return Number.isInteger(index) && index >= 0 ? (inner.elements[index] ?? null) : null;
+  }
+  if (!ts.isObjectLiteralExpression(inner)) return null;
+  for (const property of inner.properties) {
+    if (ts.isShorthandPropertyAssignment(property) && property.name.text === key)
+      return property.name;
+    if (
+      ts.isPropertyAssignment(property) &&
+      (ts.isIdentifier(property.name) || ts.isStringLiteralLike(property.name)) &&
+      property.name.text === key
+    )
+      return property.initializer;
+  }
+  return null;
+}
+
+function joinLoopBindings(expressions, scope) {
+  const bindings = expressions
+    .filter(Boolean)
+    .map((expression) => resolveBinding(expression, scope));
+  if (bindings.length === 0) return emptyValue();
+  const strings = [...new Set(bindings.flatMap((binding) => binding.strings))];
+  const semantics = [
+    ...new Set(
+      bindings
+        .flatMap((binding) => [binding.semantic, ...(binding.alternatives ?? [])])
+        .filter(Boolean)
+    ),
+  ];
+  const sourceValues = [...new Set(bindings.flatMap(sourceValueCandidates))];
+  return {
+    ...bindings[0],
+    strings,
+    single: strings.length === 1 ? strings[0] : null,
+    ...(semantics.length > 0 ? { semantic: semantics[0], alternatives: semantics.slice(1) } : {}),
+    ...(sourceValues.length > 0 ? { sourceValue: sourceValues[0], sourceValues } : {}),
+  };
+}
+
+function registerLoopDeclaration(decl, scope, exposures, elements, lookupScope = scope) {
+  const assign = (name, expressions) => {
+    if (!ts.isIdentifier(name)) return;
+    const binding = joinLoopBindings(expressions, lookupScope);
+    const local = { ...binding, importedBinding: false, bindingNode: decl };
+    scope.bindings.set(name.text, applyExposure(name.text, local, scope, exposures));
+  };
+  if (ts.isIdentifier(decl.name)) {
+    assign(decl.name, elements);
+    return;
+  }
+  if (ts.isArrayBindingPattern(decl.name)) {
+    decl.name.elements.forEach((element, index) => {
+      if (ts.isOmittedExpression(element) || !ts.isIdentifier(element.name)) return;
+      assign(
+        element.name,
+        elements.map((value) => loopMemberExpression(value, String(index))).filter(Boolean)
+      );
+    });
+    return;
+  }
+  if (ts.isObjectBindingPattern(decl.name)) {
+    for (const element of decl.name.elements) {
+      if (!ts.isBindingElement(element) || !ts.isIdentifier(element.name)) continue;
+      const property = element.propertyName ?? element.name;
+      const key =
+        ts.isIdentifier(property) || ts.isStringLiteralLike(property) ? property.text : null;
+      if (key !== null)
+        assign(
+          element.name,
+          elements.map((value) => loopMemberExpression(value, key)).filter(Boolean)
+        );
+    }
+  }
+}
+
 function sourceStateSemantic(state) {
-  // Keep the source-backed path on the same own-entry/normalization boundary
-  // as exposed local state.  In particular, `constructor` is a state name,
-  // not Object.prototype.constructor.
-  const attribute = exposedDataAttributeName(String(state.declaredName));
+  // Focus state handles keep a capture name (`__stateName`) distinct from the
+  // Web semantic (`__stateSemantic`). Prefer that source metadata; authored
+  // `def.state` declarations have no separate semantic and retain the name.
+  // In particular, `constructor` is a state name, not Object.prototype.constructor.
+  const attribute = exposedDataAttributeName(String(state.semantic ?? state.declaredName));
   return attribute ? `data-[${attribute}]` : null;
 }
 
@@ -832,6 +1022,7 @@ function sourceValueSemantics(value) {
     const semantic = sourceStateSemantic(value.state);
     return semantic ? new Map([['__state', semantic]]) : null;
   }
+  if (value.kind === 'callable') return null;
   if (value.kind === 'result') {
     // State handles are exposed under the runtime's `stateHandles` member. Do
     // not flatten them onto the result itself: `hook.required` is not the same
@@ -850,7 +1041,7 @@ function sourceValueSemantics(value) {
 /** Whether a summary value carries an admitted authored hook identity. */
 function hasSourceHookProvenance(value) {
   if (!value || value.kind === 'unknown') return false;
-  if (value.kind === 'state' || value.kind === 'result') return true;
+  if (value.kind === 'state' || value.kind === 'result' || value.kind === 'callable') return true;
   for (const member of value.members.values()) {
     if (hasSourceHookProvenance(member)) return true;
   }
@@ -862,6 +1053,66 @@ function sourceValueCandidates(value) {
   if (!value) return [];
   const values = value.sourceValues ?? (value.sourceValue ? [value.sourceValue] : []);
   return [...new Set(values)];
+}
+
+function replaceSourceReference(value, target, replacement, rewritten = new Map()) {
+  if (value === target) return { value: replacement, changed: true };
+  if (!value || value.kind === 'unknown') return { value, changed: false };
+  if (rewritten.has(value)) return rewritten.get(value);
+  const result = { value, changed: false };
+  rewritten.set(value, result);
+  if (value.kind === 'object') {
+    let changed = false;
+    const members = new Map();
+    for (const [key, member] of value.members) {
+      const next = replaceSourceReference(member, target, replacement, rewritten);
+      members.set(key, next.value);
+      changed ||= next.changed;
+    }
+    if (changed) {
+      result.value = { ...value, members };
+      result.changed = true;
+    }
+    return result;
+  }
+  if (value.kind === 'result') {
+    const handle = value.handle
+      ? replaceSourceReference(value.handle, target, replacement, rewritten)
+      : { value: undefined, changed: false };
+    const children = new Map();
+    let changed = handle.changed;
+    for (const [key, child] of value.children) {
+      const next = replaceSourceReference(child, target, replacement, rewritten);
+      children.set(key, next.value);
+      changed ||= next.changed;
+    }
+    if (changed) {
+      result.value = {
+        ...value,
+        ...(handle.value ? { handle: handle.value } : {}),
+        children,
+      };
+      result.changed = true;
+    }
+    return result;
+  }
+  return result;
+}
+
+function propagateSourceReference(scope, target, replacement) {
+  const rewritten = new Map();
+  for (let current = scope; current; current = current.parent) {
+    for (const binding of current.bindings.values()) {
+      const candidates = sourceValueCandidates(binding);
+      if (candidates.length === 0) continue;
+      const replaced = candidates.map(
+        (candidate) => replaceSourceReference(candidate, target, replacement, rewritten).value
+      );
+      if (!replaced.some((candidate, index) => candidate !== candidates[index])) continue;
+      binding.sourceValue = replaced[0];
+      if (binding.sourceValues) binding.sourceValues = replaced;
+    }
+  }
 }
 
 function mergeSourceSemantics(values) {
@@ -894,11 +1145,25 @@ function sourceSummaryValue(node, scope) {
   )
     return null;
   const value = unwrapTransparent(node);
+  const owner = memberOwner(value);
+  if (owner && ts.isIdentifier(unwrapTransparent(owner))) {
+    const ownerBinding = lookup(unwrapTransparent(owner).text, scope);
+    if (ownerBinding?.unknownAlternative) return null;
+  }
   let localBinding = null;
   if (ts.isCallExpression(value) && ts.isIdentifier(unwrapTransparent(value.expression))) {
     const name = unwrapTransparent(value.expression).text;
     localBinding = lookup(name, scope);
-    if (localBinding && !localBinding.importedBinding) {
+    if (localBinding?.unknownAlternative) return null;
+    // A detached callable alias (for example `const lookup = facts.getState!`)
+    // is resolved through the source environment, not as a producer binding.
+    // Keep the producer identity fence for every other local call so a
+    // same-named shadow cannot reach an enclosing authored producer.
+    if (
+      localBinding?.kind &&
+      !localBinding.importedBinding &&
+      localBinding.sourceValue?.kind !== 'callable'
+    ) {
       const bindingNode = localBinding.bindingNode;
       const sameBinding =
         bindingNode && typeof summary.isSameSourceBinding === 'function'
@@ -917,7 +1182,9 @@ function sourceSummaryValue(node, scope) {
     for (const [name, binding] of current.bindings) {
       if (environment.has(name)) continue;
       if (binding?.sourceValue) environment.set(name, binding.sourceValue);
-      else if (binding?.sourceState) environment.set(name, { kind: 'state', state: binding.sourceState });
+      else if (binding?.sourceState)
+        environment.set(name, { kind: 'state', state: binding.sourceState });
+      else if (binding?.importedBinding || binding?.kind === 'tokenImport') continue;
       else environment.set(name, { kind: 'unknown', reason: 'lexically shadowed' });
     }
   }
@@ -943,10 +1210,12 @@ function sourceSummaryValue(node, scope) {
     summary.resolve(node, node.getSourceFile(), candidate)
   );
   const resolved = resolutions.find((candidate) => candidate.matched) ?? resolutions[0];
-  const values = resolutions.filter((candidate) => candidate.matched).map((candidate) => candidate.value);
-  const owner = memberOwner(node);
-  const ownerProven = owner
-    ? hasSourceHookProvenance(summary.resolve(owner, node.getSourceFile(), environment).value)
+  const values = resolutions
+    .filter((candidate) => candidate.matched)
+    .map((candidate) => candidate.value);
+  const sourceOwner = memberOwner(node);
+  const ownerProven = sourceOwner
+    ? hasSourceHookProvenance(summary.resolve(sourceOwner, node.getSourceFile(), environment).value)
     : false;
   const sourcePath = values.some(hasSourceHookProvenance) || ownerProven;
   if (!resolved.matched && localBinding && !localBinding.importedBinding)
@@ -964,7 +1233,60 @@ function sourceSummaryValue(node, scope) {
   };
 }
 
+const objectPrototypeEscapeBySource = new WeakMap();
+
+function sourceHasObjectPrototypeEscape(source) {
+  const cached = objectPrototypeEscapeBySource.get(source);
+  if (cached !== undefined) return cached;
+  let escaped = false;
+  const visit = (node) => {
+    if (
+      ts.isPropertyAccessExpression(node) &&
+      node.name.text === 'prototype' &&
+      ts.isIdentifier(unwrapTransparent(node.expression)) &&
+      unwrapTransparent(node.expression).text === 'Object'
+    ) {
+      escaped = true;
+      return;
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(source);
+  objectPrototypeEscapeBySource.set(source, escaped);
+  return escaped;
+}
+
+function sourceMemberPresence(node, scope) {
+  const value = unwrapTransparent(node);
+  if (!ts.isPropertyAccessExpression(value) && !ts.isElementAccessExpression(value)) return null;
+  const key = memberName(value);
+  const owner = memberOwner(value);
+  if (
+    key === null ||
+    !owner ||
+    sourceHasObjectPrototypeEscape(value.getSourceFile()) ||
+    key in Object.prototype
+  )
+    return null;
+  const resolved = resolveExpression(owner, scope);
+  const sources = resolved.sourceValues ?? (resolved.sourceValue ? [resolved.sourceValue] : []);
+  if (sources.length === 0 || sources.some((source) => source.kind !== 'object')) return null;
+  if (sources.every((source) => !source.members.has(key) && source.closed === true)) return false;
+  return null;
+}
+
+function sourceConditionOutcome(node, scope) {
+  const value = unwrapTransparent(node);
+  if (ts.isPrefixUnaryExpression(value) && value.operator === ts.SyntaxKind.ExclamationToken) {
+    const presence = sourceMemberPresence(value.operand, scope);
+    return presence === null ? null : !presence;
+  }
+  return sourceMemberPresence(value, scope);
+}
+
 function resolveExpression(node, scope) {
+  const snapshot = scope.expressionSnapshots?.get(node);
+  if (snapshot) return snapshot;
   if (ts.isStringLiteralLike(node) || ts.isNoSubstitutionTemplateLiteral(node)) {
     return asStringValue([node.text]);
   }
@@ -991,6 +1313,10 @@ function resolveExpression(node, scope) {
         return;
       }
       const held = resolveBinding(element, scope);
+      if (held.unknownAlternative) {
+        readsAsTokens = false;
+        return;
+      }
       if (held.semantic) semantics.set(String(index), held.semantic);
       if (held.single) parts.push(held.single);
       else readsAsTokens = false;
@@ -1017,26 +1343,41 @@ function resolveExpression(node, scope) {
   }
 
   if (ts.isCallExpression(node)) {
+    if (ts.isIdentifier(node.expression) && node.expression.text === 'tw') {
+      const strings = node.arguments.flatMap(
+        (argument) => resolveExpression(argument, scope).strings
+      );
+      return asStringValue(strings);
+    }
     const source = sourceSummaryValue(node, scope);
-    const stateHandles = resolveKnownAsHookStateHandles(node);
+    const stateHandles = resolveTrustedKnownAsHookStateHandles(node, scope);
     if (source) {
       if (source.semanticMap?.size) {
+        // A source-backed `getState('name')` resolves to one state semantic,
+        // while a source-backed result/container resolves to a member map.
+        // Keep the former as a leaf so `w.state(facts.getState!('name'))`
+        // reaches the same path as a named state-handle member.
+        if (source.semanticMap.size === 1 && source.semanticMap.has('__state')) {
+          const semantic = source.semanticMap.get('__state');
+          const candidates = Array.isArray(semantic) ? semantic : [semantic];
+          return {
+            ...asSemanticValue(candidates[0]),
+            alternatives: candidates.slice(1),
+            sourceValue: source.resolved.value,
+            sourceValues: source.resolvedValues,
+          };
+        }
         return {
           ...asSemanticMapValue(source.semanticMap),
           sourceValue: source.resolved.value,
           sourceValues: source.resolvedValues,
         };
       }
-      if (stateHandles) {
-        return {
-          ...asSemanticMapValue(stateHandles),
-          sourceValue: source.resolved.value,
-          sourceValues: source.resolvedValues,
-        };
-      }
       // A result may have no immediate state map while still carrying child
       // entries or a projected public handle. Keep that identity for the next
-      // member hop instead of turning it into an ordinary empty value.
+      // member hop instead of turning it into an ordinary empty value. The
+      // source summary is authoritative here: known-hook tables are only a
+      // fallback when the source path is unavailable altogether.
       return {
         ...emptyValue(),
         sourceValue: source.resolved.value,
@@ -1091,7 +1432,7 @@ function resolveExpression(node, scope) {
   // `const controls = { ready: flag }` — a plain container of handles reads the
   // same way an `asHook` bag does, so `w.state(controls.ready)` has a variant.
   if (ts.isPropertyAccessExpression(node) && node.name.text === 'stateHandles') {
-    const stateHandles = resolveKnownAsHookStateHandles(node.expression);
+    const stateHandles = resolveTrustedKnownAsHookStateHandles(node.expression, scope);
     if (stateHandles) return asSemanticMapValue(stateHandles);
     if (ts.isIdentifier(node.expression)) {
       const hookHandle = lookup(node.expression.text, scope);
@@ -1102,7 +1443,7 @@ function resolveExpression(node, scope) {
       // direct `asFormSubmit().stateHandles` form.
       const declaration = hookHandle.bindingNode;
       if (declaration && ts.isVariableDeclaration(declaration) && declaration.initializer) {
-        const inherited = resolveKnownAsHookStateHandles(declaration.initializer);
+        const inherited = resolveTrustedKnownAsHookStateHandles(declaration.initializer, scope);
         if (inherited) return asSemanticMapValue(inherited);
       }
     }
@@ -1141,10 +1482,12 @@ function resolveExpression(node, scope) {
         const key = getPropertyName(prop.name);
         if (!key) continue;
         const held = resolveBinding(prop.initializer, scope);
+        if (held.unknownAlternative) continue;
         if (held.strings.length > 0) entries.set(key, held.strings);
         if (held.semantic) semantics.set(key, held.semantic);
       } else if (ts.isShorthandPropertyAssignment(prop)) {
         const held = lookup(prop.name.text, scope);
+        if (held.unknownAlternative) continue;
         if (held.strings.length > 0) entries.set(prop.name.text, held.strings);
         if (held.semantic) semantics.set(prop.name.text, held.semantic);
       }
@@ -1169,11 +1512,35 @@ function resolveExpression(node, scope) {
   }
 
   if (ts.isConditionalExpression(node)) {
-    const values = new Set([
-      ...resolveExpression(node.whenTrue, scope).strings,
-      ...resolveExpression(node.whenFalse, scope).strings,
-    ]);
-    return asStringValue(Array.from(values));
+    const branches = [
+      resolveExpression(node.whenTrue, scope),
+      resolveExpression(node.whenFalse, scope),
+    ];
+    const values = new Set([...branches[0].strings, ...branches[1].strings]);
+    const semanticMap = new Map();
+    for (const branch of branches) {
+      for (const [key, semantic] of branch.semanticMap ?? []) {
+        const candidates = Array.isArray(semantic) ? semantic : [semantic];
+        const previous = semanticMap.get(key);
+        const all = [
+          ...(previous ? (Array.isArray(previous) ? previous : [previous]) : []),
+          ...candidates,
+        ];
+        const unique = [...new Set(all.filter(Boolean))];
+        if (unique.length === 1) semanticMap.set(key, unique[0]);
+        else if (unique.length > 1) semanticMap.set(key, unique);
+      }
+    }
+    const sourceValues = [...new Set(branches.flatMap(sourceValueCandidates))];
+    const containers = [...new Set(branches.flatMap((branch) => branch.containers ?? []))];
+    const result = asStringValue(Array.from(values));
+    return {
+      ...result,
+      ...(semanticMap.size > 0 ? { semanticMap } : {}),
+      ...(sourceValues.length > 0 ? { sourceValue: sourceValues[0], sourceValues } : {}),
+      ...(containers.length > 0 ? { containers } : {}),
+      ...(branches.some((branch) => branch.unknownAlternative) ? { unknownAlternative: true } : {}),
+    };
   }
 
   return emptyValue();
@@ -1203,6 +1570,8 @@ function lookup(name, scope) {
 }
 
 function resolveBinding(node, scope) {
+  const snapshot = scope.expressionSnapshots?.get(node);
+  if (snapshot) return snapshot;
   const inner = unwrapTransparent(node);
   // The runtime keeps one branch, and whichever it keeps carries its own
   // declared name, so both candidates need a selector and neither may fall
@@ -1212,6 +1581,7 @@ function resolveBinding(node, scope) {
       resolveBinding(inner.whenTrue, scope),
       resolveBinding(inner.whenFalse, scope),
     ];
+    const hasUnknownBranch = branches.some((branch) => !bindingHasStatePath(branch));
     const branchSourceValues = branches.map(sourceValueCandidates);
     const allSourceBranches = branchSourceValues.every((values) => values.length > 0);
     if (allSourceBranches) {
@@ -1231,13 +1601,19 @@ function resolveBinding(node, scope) {
           ...source,
           semantic: entries[0],
           alternatives: [...new Set(entries.slice(1))],
+          ...(hasUnknownBranch ? { unknownAlternative: true } : {}),
         };
       }
-      return source;
+      return hasUnknownBranch ? { ...source, unknownAlternative: true } : source;
     }
     const semantics = [...new Set(branches.flatMap(bindingSemantics))];
     if (semantics.length > 0) {
-      return { ...branches[0], semantic: semantics[0], alternatives: semantics.slice(1) };
+      return {
+        ...branches[0],
+        semantic: semantics[0],
+        alternatives: semantics.slice(1),
+        ...(hasUnknownBranch ? { unknownAlternative: true } : {}),
+      };
     }
     // Neither branch is a handle, but the name may still be either object, so
     // it carries both and a member write through it reaches both tables.
@@ -1296,7 +1672,9 @@ function memberName(node) {
   if (ts.isPropertyAccessExpression(target)) return target.name.text;
   if (ts.isElementAccessExpression(target)) {
     const argument = target.argumentExpression;
-    return argument && ts.isStringLiteralLike(argument) ? argument.text : null;
+    return argument && (ts.isStringLiteralLike(argument) || ts.isNumericLiteral(argument))
+      ? argument.text
+      : null;
   }
   return null;
 }
@@ -2003,18 +2381,6 @@ function resolveKnownAsHookStateHandles(node) {
     ['pressed', 'data-[pressed]'],
   ];
 
-  // `asFocusable` is a privileged host handle whose runtime state facade
-  // publishes these five observed facts with the same public names.
-  if (hookName === 'asFocusable') {
-    return new Map([
-      ['focused', 'data-[focused]'],
-      ['focusVisible', 'data-[focus-visible]'],
-      ['focusable', 'data-[focusable]'],
-      ['active', 'data-[active]'],
-      ['hasFocused', 'data-[has-focused]'],
-    ]);
-  }
-
   if (
     hookName === 'asFormSubmit' ||
     hookName === 'asFormReset' ||
@@ -2225,6 +2591,17 @@ function resolveKnownAsHookStateHandles(node) {
   return null;
 }
 
+function resolveTrustedKnownAsHookStateHandles(node, scope) {
+  const table = resolveKnownAsHookStateHandles(node);
+  if (!table || !ts.isCallExpression(node) || !ts.isIdentifier(node.expression)) return table;
+  const binding = lookup(node.expression.text, scope);
+  // A known spelling is only a fallback for an unavailable imported binding.
+  // A local value with that spelling may be a lookalike or an unknown branch;
+  // source summaries and lexical scope must remain authoritative for it.
+  if (binding?.kind && !binding.importedBinding && binding.kind !== 'tokenImport') return null;
+  return table;
+}
+
 /**
  * Asks the same resolver the extractor uses, so a coverage gate cannot drift by
  * keeping its own copy of the hook list. Returns null when the hook has no
@@ -2319,7 +2696,7 @@ function analyzeWhenVariants(node, scope) {
             const expected = current.arguments[0];
             if (firstArg) {
               const variants = resolveStateHandleSemantics(firstArg, scope)
-                .map((semantic) => resolveStateEqVariant(semantic, expected))
+                .map((semantic) => resolveStateEqVariant(semantic, expected, scope))
                 .filter(Boolean);
               if (variants.length > 0) groups.push([...new Set(variants)]);
             }
@@ -2379,22 +2756,32 @@ function resolveStateHandleSemantics(node, scope) {
     const semantics = bindingSemantics(lookup(inner.text, scope));
     if (semantics.length > 0) return semantics;
   }
+  if (ts.isCallExpression(inner)) {
+    const resolved = resolveExpression(inner, scope);
+    const semantics = [resolved.semantic, ...(resolved.alternatives ?? [])].filter(Boolean);
+    if (semantics.length > 0) return semantics;
+  }
   const members = readMemberSemantics(inner, scope);
   if (members.length > 0) return members;
   const single = resolveStateHandleSemantic(node, scope);
   return single ? [single] : [];
 }
 
-function resolveStateEqVariant(semantic, expected) {
+function resolveStateEqVariant(semantic, expected, scope) {
   if (!semantic) return null;
   if (!expected) return null;
   if (expected.kind === ts.SyntaxKind.TrueKeyword) return semantic;
   const attribute = officialEntry(NATIVE_VARIANT_ATTRIBUTES, semantic) ?? semantic;
   if (expected.kind === ts.SyntaxKind.FalseKeyword) return negateDataVariant(attribute);
-  if (ts.isStringLiteralLike(expected)) {
+  const expectedText = ts.isStringLiteralLike(expected)
+    ? expected.text
+    : ts.isIdentifier(expected)
+      ? resolveExpression(expected, scope).single
+      : null;
+  if (expectedText !== null) {
     const match = attribute.match(/^data-\[([a-zA-Z0-9-]+)\]$/);
-    if (!match || !/^[a-zA-Z0-9_-]+$/.test(expected.text)) return null;
-    return `data-[${match[1]}=${expected.text}]`;
+    if (!match || !/^[a-zA-Z0-9_-]+$/.test(expectedText)) return null;
+    return `data-[${match[1]}=${expectedText}]`;
   }
   // `number.discrete` bindings lower by stringifying the literal, the same way
   // enum and string bindings do.
@@ -2433,6 +2820,55 @@ function isNegativeDataVariant(variant) {
   return /^not-\[data-[a-zA-Z0-9-]+\]$/.test(variant);
 }
 
+function assignIdentifierBinding(node, scope, exposures) {
+  const name = node.left.text;
+  const owner = scopeDeclaring(name, scope) ?? scope;
+  const previous = owner.bindings.get(name);
+  const binding = applyExposure(name, resolveBinding(node.right, scope), owner, exposures);
+  const kept = bindingSemantics(previous).filter((candidate) => candidate !== binding.semantic);
+  const uncertain =
+    isConditionallyReached(node) || isDeferredWrite(node, enclosingFunction(owner.node));
+  let next = binding;
+  if (uncertain && !bindingHasStatePath(previous)) {
+    next = { ...next, unknownAlternative: true };
+  }
+  if (uncertain && kept.length > 0) {
+    next = { ...next, alternatives: [...new Set([...(next.alternatives ?? []), ...kept])] };
+  }
+  if (uncertain && previous) {
+    const strings = [...new Set([...next.strings, ...previous.strings])];
+    next = { ...next, strings, single: strings.length === 1 ? strings[0] : null };
+  }
+  if (uncertain && previous && (previous.semanticMap || previous.containers)) {
+    const held = [...(next.containers ?? [next]), ...(previous.containers ?? [previous])];
+    next = { ...next, containers: [...new Set(held)] };
+    if (next.semanticMap || previous.semanticMap) {
+      const semanticMap = new Map(next.semanticMap ?? []);
+      for (const [key, value] of previous.semanticMap ?? []) {
+        const existing = semanticMap.get(key);
+        const values = [
+          ...(existing ? (Array.isArray(existing) ? existing : [existing]) : []),
+          ...(Array.isArray(value) ? value : [value]),
+        ];
+        const unique = [...new Set(values.filter(Boolean))];
+        if (unique.length === 1) semanticMap.set(key, unique[0]);
+        else if (unique.length > 1) semanticMap.set(key, unique);
+      }
+      next = { ...next, semanticMap };
+    }
+  }
+  const nextSourceValues = sourceValueCandidates(next);
+  const previousSourceValues = sourceValueCandidates(previous);
+  if (uncertain && nextSourceValues.length > 0 && previousSourceValues.length > 0) {
+    const sourceValues = [...new Set([...nextSourceValues, ...previousSourceValues])];
+    next = { ...next, sourceValue: sourceValues[0], sourceValues };
+  } else if (nextSourceValues.length > 1) {
+    next = { ...next, sourceValue: nextSourceValues[0], sourceValues: nextSourceValues };
+  }
+  if (next.bindingNode) next = { ...next, bindingNode: node };
+  owner.bindings.set(name, next);
+}
+
 function collectTwTokens(node, scope, exposures) {
   const found = new Set();
 
@@ -2442,11 +2878,18 @@ function collectTwTokens(node, scope, exposures) {
   function visit(current, currentScope) {
     if (createsScope(current)) {
       const nextScope = createScope(currentScope, current);
+      if (ts.isFunctionLike(current)) {
+        for (const parameter of current.parameters) shadowBindingPattern(nextScope, parameter.name);
+      }
+      if (ts.isCatchClause(current) && current.variableDeclaration) {
+        shadowBindingPattern(nextScope, current.variableDeclaration.name);
+      }
       if (hasStatements(current)) {
         for (const stmt of current.statements) {
           if (ts.isVariableStatement(stmt)) {
+            const owner = isVarList(stmt.declarationList) ? functionScope(nextScope) : nextScope;
             for (const decl of stmt.declarationList.declarations) {
-              registerDeclaration(decl, nextScope, exposures);
+              registerDeclaration(decl, owner, exposures);
               if (decl.initializer) visit(decl.initializer, nextScope);
             }
             continue;
@@ -2455,13 +2898,21 @@ function collectTwTokens(node, scope, exposures) {
         }
         return;
       }
+      ts.forEachChild(current, (child) => visit(child, nextScope));
+      return;
     }
 
     if (
-      ts.isCallExpression(current) &&
-      ts.isIdentifier(current.expression) &&
-      current.expression.text === 'tw'
+      ts.isBinaryExpression(current) &&
+      current.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
+      ts.isIdentifier(current.left)
     ) {
+      visit(current.right, currentScope);
+      assignIdentifierBinding(current, currentScope, exposures);
+      return;
+    }
+
+    if (ts.isCallExpression(current) && isFeedbackStyleUseCall(current)) {
       for (const arg of current.arguments) {
         const value = resolveExpression(arg, currentScope);
         for (const token of value.strings.flatMap(splitTokens)) found.add(token);

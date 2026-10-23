@@ -28,16 +28,7 @@ export type HookSourceModuleContext = {
 type ConfigRecord = { options: ts.CompilerOptions; file: string } | null;
 
 const CORE_SPECIFIER = '@proto.ui/core';
-const SCRIPT_EXTENSIONS = new Set([
-  '.ts',
-  '.tsx',
-  '.mts',
-  '.cts',
-  '.js',
-  '.jsx',
-  '.mjs',
-  '.cjs',
-]);
+const SCRIPT_EXTENSIONS = new Set(['.ts', '.tsx', '.mts', '.cts', '.js', '.jsx', '.mjs', '.cjs']);
 
 function unwrap(node: ts.Node): ts.Node {
   if (
@@ -62,7 +53,9 @@ function scriptKind(file: string): ts.ScriptKind {
 }
 
 function hasModifier(node: ts.Node, kind: ts.SyntaxKind): boolean {
-  return !!node.modifiers?.some((modifier) => modifier.kind === kind);
+  return (
+    ts.canHaveModifiers(node) && !!ts.getModifiers(node)?.some((modifier) => modifier.kind === kind)
+  );
 }
 
 function isConstantDeclaration(declaration: ts.VariableDeclaration): boolean {
@@ -76,26 +69,90 @@ function isConstantDeclaration(declaration: ts.VariableDeclaration): boolean {
  * — directly, through an alias, or dynamically — no longer proves the value the
  * initializer installed.
  */
-function hasConflictingWrite(declaration: ts.VariableDeclaration, name: string): boolean {
+function hasConflictingWrite(
+  declaration: ts.VariableDeclaration,
+  name: string,
+  holderObject: ts.Node | null = declaration.initializer ? unwrap(declaration.initializer) : null
+): boolean {
   const target = declaration.name;
   if (!ts.isIdentifier(target)) return true;
   const source = declaration.getSourceFile();
   let conflict = false;
+  const aliases = new Set<ts.Node>([declaration]);
+  const bindingOf = (expression: ts.Expression): ts.Node | null => {
+    const value = unwrap(expression);
+    return ts.isIdentifier(value) ? findLexicalBinding(value, value.text) : null;
+  };
+  const hasHolderThis = (node: ts.Node): boolean => {
+    for (let current: ts.Node | undefined = node.parent; current; current = current.parent) {
+      // Computed names run in the enclosing receiver, not in the member's
+      // method, field initializer, or class receiver scope.
+      if (ts.isComputedPropertyName(current)) {
+        current = current.parent;
+        if (ts.isClassDeclaration(current.parent) || ts.isClassExpression(current.parent))
+          current = current.parent;
+        continue;
+      }
+      if (
+        ts.isClassDeclaration(current) ||
+        ts.isClassExpression(current) ||
+        ts.isClassStaticBlockDeclaration(current) ||
+        ts.isPropertyDeclaration(current)
+      )
+        return false;
+      if (ts.isArrowFunction(current)) continue;
+      if (!ts.isFunctionLike(current)) continue;
+      let member: ts.Node = current;
+      while (
+        member.parent &&
+        (ts.isParenthesizedExpression(member.parent) ||
+          ts.isAsExpression(member.parent) ||
+          ts.isTypeAssertionExpression(member.parent) ||
+          ts.isNonNullExpression(member.parent))
+      )
+        member = member.parent;
+      if (member.parent && ts.isPropertyAssignment(member.parent)) member = member.parent;
+      return member.parent === holderObject;
+    }
+    return false;
+  };
+  // Retain every possible alias, including aliases later rebound. Forgetting
+  // an earlier reference could certify a write through the old object.
+  let addedAlias: boolean;
+  do {
+    addedAlias = false;
+    const collectAliases = (node: ts.Node): void => {
+      if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && node.initializer) {
+        const origin = bindingOf(node.initializer);
+        if (origin && aliases.has(origin) && !aliases.has(node)) {
+          aliases.add(node);
+          addedAlias = true;
+        }
+      } else if (
+        ts.isBinaryExpression(node) &&
+        node.operatorToken.kind === ts.SyntaxKind.EqualsToken
+      ) {
+        const origin = bindingOf(node.right);
+        const destination = bindingOf(node.left);
+        if (origin && destination && aliases.has(origin) && !aliases.has(destination)) {
+          aliases.add(destination);
+          addedAlias = true;
+        }
+      }
+      ts.forEachChild(node, collectAliases);
+    };
+    collectAliases(source);
+  } while (addedAlias);
   const root = (expression: ts.Expression): ts.Identifier | null => {
-    let current: ts.Expression = expression;
-    while (
-      ts.isPropertyAccessExpression(current) ||
-      ts.isElementAccessExpression(current) ||
-      ts.isParenthesizedExpression(current) ||
-      ts.isNonNullExpression(current)
-    ) {
-      if (ts.isPropertyAccessExpression(current)) current = current.expression;
-      else if (ts.isElementAccessExpression(current)) current = current.expression;
-      else current = current.expression;
+    let current = unwrap(expression);
+    while (ts.isPropertyAccessExpression(current) || ts.isElementAccessExpression(current)) {
+      current = unwrap(current.expression);
     }
     return ts.isIdentifier(current) ? current : null;
   };
-  const memberName = (access: ts.PropertyAccessExpression | ts.ElementAccessExpression): string | null =>
+  const memberName = (
+    access: ts.PropertyAccessExpression | ts.ElementAccessExpression
+  ): string | null =>
     ts.isPropertyAccessExpression(access)
       ? access.name.text
       : ts.isStringLiteralLike(access.argumentExpression)
@@ -103,25 +160,120 @@ function hasConflictingWrite(declaration: ts.VariableDeclaration, name: string):
         : null;
   const visit = (node: ts.Node): void => {
     if (conflict) return;
-    if (
-      node !== declaration &&
-      (ts.isPropertyAccessExpression(node) || ts.isElementAccessExpression(node)) &&
-      node.parent &&
-      ts.isBinaryExpression(node.parent) &&
-      node.parent.operatorToken.kind === ts.SyntaxKind.EqualsToken
-    ) {
-      const rootName = root(node.expression);
-      const written = memberName(node);
-      // A dynamic key can be any property, so it retires every candidate.
-      if (rootName?.text === target.text && (written === null || written === name)) conflict = true;
+    if (ts.isPropertyAccessExpression(node) || ts.isElementAccessExpression(node)) {
+      let targetNode: ts.Node = node;
+      while (
+        targetNode.parent &&
+        (ts.isParenthesizedExpression(targetNode.parent) ||
+          ts.isAsExpression(targetNode.parent) ||
+          ts.isTypeAssertionExpression(targetNode.parent) ||
+          ts.isNonNullExpression(targetNode.parent))
+      )
+        targetNode = targetNode.parent;
+      const contains = (ancestor: ts.Node, descendant: ts.Node): boolean => {
+        let current: ts.Node | undefined = descendant;
+        while (current) {
+          if (current === ancestor) return true;
+          current = current.parent;
+        }
+        return false;
+      };
+      const writeOperation = (access: ts.Node): ts.Node | null => {
+        let current: ts.Node = access;
+        while (current.parent) {
+          const parent = current.parent;
+          if (ts.isBinaryExpression(parent)) {
+            return parent.operatorToken.kind >= ts.SyntaxKind.FirstAssignment &&
+              parent.operatorToken.kind <= ts.SyntaxKind.LastAssignment &&
+              contains(parent.left, access)
+              ? parent
+              : null;
+          }
+          if (ts.isForInStatement(parent) || ts.isForOfStatement(parent)) {
+            return contains(parent.initializer, access) ? parent : null;
+          }
+          if (ts.isPrefixUnaryExpression(parent) || ts.isPostfixUnaryExpression(parent)) {
+            return parent.operand === current &&
+              (parent.operator === ts.SyntaxKind.PlusPlusToken ||
+                parent.operator === ts.SyntaxKind.MinusMinusToken)
+              ? parent
+              : null;
+          }
+          if (ts.isDeleteExpression(parent)) return parent.expression === current ? parent : null;
+          if (
+            ts.isParenthesizedExpression(parent) ||
+            ts.isAsExpression(parent) ||
+            ts.isTypeAssertionExpression(parent) ||
+            ts.isNonNullExpression(parent) ||
+            ts.isArrayLiteralExpression(parent) ||
+            ts.isObjectLiteralExpression(parent) ||
+            ts.isPropertyAssignment(parent) ||
+            ts.isShorthandPropertyAssignment(parent) ||
+            ts.isSpreadElement(parent) ||
+            ts.isSpreadAssignment(parent)
+          ) {
+            current = parent;
+            continue;
+          }
+          return null;
+        }
+        return null;
+      };
+      const operation = writeOperation(targetNode);
+      if (operation) {
+        const rootName = root(node.expression);
+        const written = memberName(node);
+        const rootValue = unwrap(node.expression);
+        const binding = rootName ? findLexicalBinding(rootName, rootName.text) : null;
+        // A dynamic key can be any property, so it retires every candidate.
+        if (
+          (rootValue.kind === ts.SyntaxKind.ThisKeyword &&
+            hasHolderThis(node) &&
+            (written === null || written === name)) ||
+          (binding && aliases.has(binding) && (written === null || written === name))
+        )
+          conflict = true;
+      }
+    }
+    if (ts.isCallExpression(node) || ts.isNewExpression(node)) {
+      // A holder passed to unknown code can be mutated without a visible write.
+      if (
+        node.arguments?.some((argument) => {
+          const binding = bindingOf(argument);
+          return (
+            (binding !== null && aliases.has(binding)) ||
+            (unwrap(argument).kind === ts.SyntaxKind.ThisKeyword && hasHolderThis(node))
+          );
+        })
+      )
+        conflict = true;
+      const expression = node.expression;
+      if (ts.isPropertyAccessExpression(expression) || ts.isElementAccessExpression(expression)) {
+        const receiver = expression.expression;
+        const receiverRoot = root(receiver);
+        const receiverBinding = receiverRoot
+          ? findLexicalBinding(receiverRoot, receiverRoot.text)
+          : null;
+        const member = memberName(expression);
+        if (
+          (unwrap(receiver).kind === ts.SyntaxKind.ThisKeyword &&
+            hasHolderThis(node) &&
+            member !== name) ||
+          (receiverBinding && aliases.has(receiverBinding) && (member === null || member !== name))
+        )
+          conflict = true;
+      }
     }
     ts.forEachChild(node, visit);
   };
   visit(source);
+  if (holderObject && holderObject.getSourceFile() !== source) visit(holderObject.getSourceFile());
   return conflict;
 }
 
-function textName(name: ts.PropertyName | ts.BindingName | ts.ModuleName | undefined): string | null {
+function textName(
+  name: ts.PropertyName | ts.BindingName | ts.ModuleName | undefined
+): string | null {
   if (!name) return null;
   return ts.isIdentifier(name) || ts.isStringLiteralLike(name) || ts.isNumericLiteral(name)
     ? name.text
@@ -150,17 +302,23 @@ function declarationKey(symbol: HookSourceSymbol): string {
 }
 
 function sameSymbol(left: HookSourceSymbol, right: HookSourceSymbol): boolean {
-  return declarationKey(left) === declarationKey(right);
+  if (declarationKey(left) === declarationKey(right)) return true;
+  const coreName = (symbol: HookSourceSymbol): string | null =>
+    coreImportedName(symbol.declaration) ??
+    coreExportedName(symbol.declaration) ??
+    (isCoreStarExport(symbol.declaration) ? '*' : null);
+  const leftCore = coreName(left);
+  return leftCore !== null && leftCore === coreName(right);
 }
 
-function addUnique(
-  values: HookSourceSymbol[],
-  value: HookSourceSymbol | null
-): void {
+function addUnique(values: HookSourceSymbol[], value: HookSourceSymbol | null): void {
   if (value && !values.some((candidate) => sameSymbol(candidate, value))) values.push(value);
 }
 
-function bindingNames(name: ts.BindingName, output = new Map<string, ts.Node>()): Map<string, ts.Node> {
+function bindingNames(
+  name: ts.BindingName,
+  output = new Map<string, ts.Node>()
+): Map<string, ts.Node> {
   if (ts.isIdentifier(name)) {
     output.set(name.text, name);
     return output;
@@ -175,10 +333,7 @@ function bindingNames(name: ts.BindingName, output = new Map<string, ts.Node>())
   return output;
 }
 
-function directVariableBindings(
-  statements: readonly ts.Statement[],
-  name: string
-): ts.Node | null {
+function directVariableBindings(statements: readonly ts.Statement[], name: string): ts.Node | null {
   for (const statement of statements) {
     if (ts.isVariableStatement(statement)) {
       if (hasModifier(statement, ts.SyntaxKind.DeclareKeyword)) continue;
@@ -194,10 +349,18 @@ function directVariableBindings(
     if (ts.isClassDeclaration(statement) && statement.name?.text === name) {
       if (!hasModifier(statement, ts.SyntaxKind.DeclareKeyword)) return statement;
     }
-    if (ts.isEnumDeclaration(statement) && statement.name.text === name &&
-      !hasModifier(statement, ts.SyntaxKind.DeclareKeyword)) return statement;
-    if (ts.isModuleDeclaration(statement) && statement.name.text === name &&
-      !hasModifier(statement, ts.SyntaxKind.DeclareKeyword)) return statement;
+    if (
+      ts.isEnumDeclaration(statement) &&
+      statement.name.text === name &&
+      !hasModifier(statement, ts.SyntaxKind.DeclareKeyword)
+    )
+      return statement;
+    if (
+      ts.isModuleDeclaration(statement) &&
+      statement.name.text === name &&
+      !hasModifier(statement, ts.SyntaxKind.DeclareKeyword)
+    )
+      return statement;
   }
   return null;
 }
@@ -205,7 +368,12 @@ function directVariableBindings(
 function importBinding(
   module: HookSourceModule,
   name: string
-): { statement: ts.ImportDeclaration; declaration: ts.Node; imported: string | null; kind: 'default' | 'named' | 'namespace' } | null {
+): {
+  statement: ts.ImportDeclaration;
+  declaration: ts.Node;
+  imported: string | null;
+  kind: 'default' | 'named' | 'namespace';
+} | null {
   let found: {
     statement: ts.ImportDeclaration;
     declaration: ts.Node;
@@ -247,13 +415,15 @@ function sourceImportDeclaration(node: ts.Node): ts.ImportDeclaration | null {
   const parent = node.parent;
   if (!parent) return null;
   if (ts.isImportSpecifier(node)) {
-    return ts.isNamedImports(parent) && ts.isImportClause(parent.parent)
+    return ts.isNamedImports(parent) &&
+      ts.isImportClause(parent.parent) &&
+      ts.isImportDeclaration(parent.parent.parent)
       ? parent.parent.parent
       : null;
   }
   if (ts.isNamespaceImport(node)) {
-    return ts.isImportClause(parent.parent) && ts.isImportDeclaration(parent.parent.parent)
-      ? parent.parent.parent
+    return ts.isImportClause(parent) && ts.isImportDeclaration(parent.parent)
+      ? parent.parent
       : null;
   }
   if (ts.isImportClause(node)) return ts.isImportDeclaration(parent) ? parent : null;
@@ -271,8 +441,12 @@ function sourceExportDeclaration(node: ts.Node): ts.ExportDeclaration | null {
 
 function coreImportedName(node: ts.Node): string | null {
   const declaration = sourceImportDeclaration(node);
-  if (!declaration || !ts.isStringLiteralLike(declaration.moduleSpecifier) ||
-    declaration.moduleSpecifier.text !== CORE_SPECIFIER) return null;
+  if (
+    !declaration ||
+    !ts.isStringLiteralLike(declaration.moduleSpecifier) ||
+    declaration.moduleSpecifier.text !== CORE_SPECIFIER
+  )
+    return null;
   const clause = declaration.importClause;
   if (!clause || clause.isTypeOnly) return null;
   if (ts.isImportSpecifier(node)) {
@@ -284,24 +458,31 @@ function coreImportedName(node: ts.Node): string | null {
 
 function isCoreNamespaceImport(node: ts.Node): boolean {
   const declaration = sourceImportDeclaration(node);
-  return !!declaration && ts.isStringLiteralLike(declaration.moduleSpecifier) &&
+  return (
+    !!declaration &&
+    ts.isStringLiteralLike(declaration.moduleSpecifier) &&
     declaration.moduleSpecifier.text === CORE_SPECIFIER &&
-    !!declaration.importClause && !declaration.importClause.isTypeOnly &&
-    ts.isNamespaceImport(node);
+    !!declaration.importClause &&
+    !declaration.importClause.isTypeOnly &&
+    ts.isNamespaceImport(node)
+  );
 }
 
 function namespaceImportDeclaration(node: ts.Node): ts.ImportDeclaration | null {
   const declaration = sourceImportDeclaration(node);
-  if (!declaration || !declaration.importClause || declaration.importClause.isTypeOnly)
-    return null;
+  if (!declaration || !declaration.importClause || declaration.importClause.isTypeOnly) return null;
   return ts.isNamespaceImport(node) ? declaration : null;
 }
 
 function coreExportedName(node: ts.Node): string | null {
   const declaration = sourceExportDeclaration(node);
-  if (!declaration || !declaration.moduleSpecifier ||
+  if (
+    !declaration ||
+    !declaration.moduleSpecifier ||
     !ts.isStringLiteralLike(declaration.moduleSpecifier) ||
-    declaration.moduleSpecifier.text !== CORE_SPECIFIER || declaration.isTypeOnly)
+    declaration.moduleSpecifier.text !== CORE_SPECIFIER ||
+    declaration.isTypeOnly
+  )
     return null;
   if (!ts.isExportSpecifier(node) || node.isTypeOnly) return null;
   return (node.propertyName ?? node.name).text;
@@ -309,30 +490,38 @@ function coreExportedName(node: ts.Node): string | null {
 
 function isCoreNamespaceExport(node: ts.Node): boolean {
   const declaration = sourceExportDeclaration(node);
-  if (!declaration || !declaration.moduleSpecifier ||
+  if (
+    !declaration ||
+    !declaration.moduleSpecifier ||
     !ts.isStringLiteralLike(declaration.moduleSpecifier) ||
-    declaration.moduleSpecifier.text !== CORE_SPECIFIER || declaration.isTypeOnly)
+    declaration.moduleSpecifier.text !== CORE_SPECIFIER ||
+    declaration.isTypeOnly
+  )
     return false;
   return !!declaration.exportClause && ts.isNamespaceExport(declaration.exportClause);
 }
 
 function namespaceExportDeclaration(node: ts.Node): ts.ExportDeclaration | null {
   const declaration = sourceExportDeclaration(node);
-  if (!declaration || declaration.isTypeOnly || !declaration.exportClause)
-    return null;
+  if (!declaration || declaration.isTypeOnly || !declaration.exportClause) return null;
   return ts.isNamespaceExport(declaration.exportClause) ? declaration : null;
 }
 
 function isCoreStarExport(node: ts.Node): boolean {
   const declaration = sourceExportDeclaration(node);
-  return !!declaration && !!declaration.moduleSpecifier &&
+  return (
+    !!declaration &&
+    !!declaration.moduleSpecifier &&
     ts.isStringLiteralLike(declaration.moduleSpecifier) &&
     declaration.moduleSpecifier.text === CORE_SPECIFIER &&
-    !declaration.isTypeOnly && !declaration.exportClause;
+    !declaration.isTypeOnly &&
+    !declaration.exportClause
+  );
 }
 
 function packageSpecifierParts(specifier: string): { name: string; subpath: string } | null {
-  if (specifier.startsWith('.') || specifier.startsWith('/') || specifier.startsWith('#')) return null;
+  if (specifier.startsWith('.') || specifier.startsWith('/') || specifier.startsWith('#'))
+    return null;
   const pieces = specifier.split('/');
   if (specifier.startsWith('@')) {
     if (pieces.length < 2) return null;
@@ -376,7 +565,11 @@ function packageRootFromDeclaration(file: string, packageName: string): string |
   return null;
 }
 
-function packageExportTarget(value: unknown, subpath: string, wildcard: string | null = null): string | null {
+function packageExportTarget(
+  value: unknown,
+  subpath: string,
+  wildcard: string | null = null
+): string | null {
   if (typeof value === 'string') return wildcard === null ? value : value.replaceAll('*', wildcard);
   if (Array.isArray(value)) {
     for (const item of value) {
@@ -427,7 +620,15 @@ function runtimeCandidates(candidate: string): string[] {
   for (const base of bases) {
     const extension = path.extname(base).toLowerCase();
     if (SCRIPT_EXTENSIONS.has(extension)) output.push(base);
-    else output.push(`${base}.js`, `${base}.mjs`, `${base}.cjs`, `${base}.ts`, `${base}.mts`, `${base}.cts`);
+    else
+      output.push(
+        `${base}.js`,
+        `${base}.mjs`,
+        `${base}.cjs`,
+        `${base}.ts`,
+        `${base}.mts`,
+        `${base}.cts`
+      );
     output.push(
       path.join(base, 'index.js'),
       path.join(base, 'index.mjs'),
@@ -475,14 +676,11 @@ function authoredSourceSibling(file: string): string | null {
   return null;
 }
 
-function runtimePackageEntry(
-  from: string,
-  specifier: string,
-  declaration: string
-): string | null {
+function runtimePackageEntry(from: string, specifier: string, declaration: string): string | null {
   const parts = packageSpecifierParts(specifier);
   if (!parts) return null;
-  const root = packageRootFromDeclaration(declaration, parts.name) ??
+  const root =
+    packageRootFromDeclaration(declaration, parts.name) ??
     nearestPackageRoot(path.dirname(from), parts.name);
   if (!root) return null;
   const manifest = packageJson(path.join(root, 'package.json'));
@@ -515,10 +713,7 @@ function findLexicalBinding(node: ts.Node, name: string): ts.Node | null {
   let current: ts.Node | undefined = node;
   while (current) {
     if (ts.isSourceFile(current)) {
-      const imported = importBinding(
-        { file: current.fileName, source: current },
-        name
-      );
+      const imported = importBinding({ file: current.fileName, source: current }, name);
       if (imported) return imported.declaration;
       return directVariableBindings(current.statements, name);
     }
@@ -537,13 +732,22 @@ function findLexicalBinding(node: ts.Node, name: string): ts.Node | null {
         const found = bindingNames(parameter.name).get(name);
         if (found) return found;
       }
-      if (textName(current.name) === name) return current.name ?? null;
+      if (
+        (ts.isFunctionDeclaration(current) || ts.isFunctionExpression(current)) &&
+        textName(current.name) === name
+      ) {
+        // A declaration's recursive name is the enclosing declaration binding;
+        // only a named function expression introduces a separate self binding.
+        return ts.isFunctionDeclaration(current) ? current : (current.name ?? null);
+      }
       let varBinding: ts.Node | null = null;
       const visitVar = (candidate: ts.Node): void => {
         if (varBinding || (candidate !== current && ts.isFunctionLike(candidate))) return;
-        if (ts.isVariableStatement(candidate) &&
+        if (
+          ts.isVariableStatement(candidate) &&
           (candidate.declarationList.flags & ts.NodeFlags.Let) === 0 &&
-          (candidate.declarationList.flags & ts.NodeFlags.Const) === 0) {
+          (candidate.declarationList.flags & ts.NodeFlags.Const) === 0
+        ) {
           for (const declaration of candidate.declarationList.declarations) {
             const found = bindingNames(declaration.name).get(name);
             if (found) {
@@ -558,16 +762,20 @@ function findLexicalBinding(node: ts.Node, name: string): ts.Node | null {
       if (varBinding) return varBinding;
     }
     if (ts.isCatchClause(current)) {
-      const found = current.variableDeclaration &&
-        bindingNames(current.variableDeclaration.name).get(name);
+      const found =
+        current.variableDeclaration && bindingNames(current.variableDeclaration.name).get(name);
       if (found) return found;
     }
-    if (ts.isForStatement(current) || ts.isForInStatement(current) || ts.isForOfStatement(current)) {
+    if (
+      ts.isForStatement(current) ||
+      ts.isForInStatement(current) ||
+      ts.isForOfStatement(current)
+    ) {
       const initializer = current.initializer;
       if (initializer && ts.isVariableDeclarationList(initializer)) {
         for (const declaration of initializer.declarations) {
           const found = bindingNames(declaration.name).get(name);
-          if (found) return found;
+          if (found) return ts.isIdentifier(declaration.name) ? declaration : found;
         }
       }
     }
@@ -578,6 +786,9 @@ function findLexicalBinding(node: ts.Node, name: string): ts.Node | null {
 
 function objectPropertyName(name: ts.PropertyName | undefined): string | null {
   if (!name) return null;
+  if (ts.isComputedPropertyName(name)) {
+    return ts.isStringLiteralLike(name.expression) ? name.expression.text : null;
+  }
   return ts.isIdentifier(name) || ts.isStringLiteralLike(name) || ts.isNumericLiteral(name)
     ? name.text
     : null;
@@ -595,7 +806,10 @@ function objectMember(object: ts.ObjectLiteralExpression, name: string): ts.Node
   let found: ts.Node | null = null;
   for (const property of object.properties) {
     const written =
-      (ts.isPropertyAssignment(property) || ts.isMethodDeclaration(property)) &&
+      (ts.isPropertyAssignment(property) ||
+        ts.isMethodDeclaration(property) ||
+        ts.isGetAccessorDeclaration(property) ||
+        ts.isSetAccessorDeclaration(property)) &&
       objectPropertyName(property.name) === name;
     if (written) {
       found = property;
@@ -605,11 +819,23 @@ function objectMember(object: ts.ObjectLiteralExpression, name: string): ts.Node
       found = property;
       continue;
     }
+    if (
+      (ts.isMethodDeclaration(property) ||
+        ts.isGetAccessorDeclaration(property) ||
+        ts.isSetAccessorDeclaration(property)) &&
+      property.name &&
+      ts.isComputedPropertyName(property.name) &&
+      objectPropertyName(property.name) === null
+    ) {
+      found = null;
+      continue;
+    }
     if (ts.isPropertyAssignment(property) && ts.isComputedPropertyName(property.name)) {
       // A computed key is only an overwrite when its key is statically this
       // name; any other dynamic key is unknown and therefore blocking.
       const literal = property.name.expression;
-      if (!ts.isStringLiteralLike(literal) || literal.text !== name) found = null;
+      if (!ts.isStringLiteralLike(literal)) found = null;
+      else if (literal.text === name) found = property;
     }
   }
   return found;
@@ -625,6 +851,7 @@ export function createHookSourceModuleContext(): HookSourceModuleContext {
   const moduleFailures = new Set<string>();
   const configCache = new Map<string, ConfigRecord>();
   const exportPositiveCache = new Map<string, HookSourceSymbol>();
+  const objectMemberCache = new Map<string, HookSourceSymbol | null>();
 
   const canonical = (file: string): string => {
     const absolute = path.resolve(file);
@@ -637,6 +864,7 @@ export function createHookSourceModuleContext(): HookSourceModuleContext {
 
   const clearSymbolCaches = (): void => {
     exportPositiveCache.clear();
+    objectMemberCache.clear();
   };
 
   const registerSource = (source: ts.SourceFile): void => {
@@ -769,13 +997,14 @@ export function createHookSourceModuleContext(): HookSourceModuleContext {
     if (specifier.startsWith('.')) {
       const base = path.resolve(path.dirname(containing), specifier);
       const lower = base.toLowerCase();
-      const roots = lower.endsWith('.js') || lower.endsWith('.jsx')
-        ? [base.slice(0, base.lastIndexOf('.')), base]
-        : lower.endsWith('.mjs')
+      const roots =
+        lower.endsWith('.js') || lower.endsWith('.jsx')
           ? [base.slice(0, base.lastIndexOf('.')), base]
-          : lower.endsWith('.cjs')
+          : lower.endsWith('.mjs')
             ? [base.slice(0, base.lastIndexOf('.')), base]
-            : [base];
+            : lower.endsWith('.cjs')
+              ? [base.slice(0, base.lastIndexOf('.')), base]
+              : [base];
       for (const root of roots) {
         const candidate = authoredSourceSibling(root) ?? existingRuntime(root);
         if (candidate) return canonical(candidate);
@@ -809,7 +1038,10 @@ export function createHookSourceModuleContext(): HookSourceModuleContext {
     let explicitClaimed = false;
 
     for (const statement of module.source.statements) {
-      if (ts.isVariableStatement(statement) && hasModifier(statement, ts.SyntaxKind.ExportKeyword)) {
+      if (
+        ts.isVariableStatement(statement) &&
+        hasModifier(statement, ts.SyntaxKind.ExportKeyword)
+      ) {
         if (hasModifier(statement, ts.SyntaxKind.DefaultKeyword)) continue;
         const names = new Map<string, ts.Node>();
         for (const declaration of statement.declarationList.declarations) {
@@ -833,20 +1065,30 @@ export function createHookSourceModuleContext(): HookSourceModuleContext {
       }
       if (ts.isFunctionDeclaration(statement) || ts.isClassDeclaration(statement)) {
         if (!statement.name || hasModifier(statement, ts.SyntaxKind.DeclareKeyword)) continue;
-        if (hasModifier(statement, ts.SyntaxKind.ExportKeyword) &&
-          !hasModifier(statement, ts.SyntaxKind.DefaultKeyword) && statement.name.text === name) {
+        if (
+          hasModifier(statement, ts.SyntaxKind.ExportKeyword) &&
+          !hasModifier(statement, ts.SyntaxKind.DefaultKeyword) &&
+          statement.name.text === name
+        ) {
           explicitClaimed = true;
           addUnique(explicit, { module, declaration: statement });
         }
-        if (hasModifier(statement, ts.SyntaxKind.ExportKeyword) &&
-          hasModifier(statement, ts.SyntaxKind.DefaultKeyword) && name === 'default') {
+        if (
+          hasModifier(statement, ts.SyntaxKind.ExportKeyword) &&
+          hasModifier(statement, ts.SyntaxKind.DefaultKeyword) &&
+          name === 'default'
+        ) {
           explicitClaimed = true;
           addUnique(explicit, { module, declaration: statement });
         }
         continue;
       }
-      if (ts.isEnumDeclaration(statement) && hasModifier(statement, ts.SyntaxKind.ExportKeyword) &&
-        !hasModifier(statement, ts.SyntaxKind.DeclareKeyword) && statement.name.text === name) {
+      if (
+        ts.isEnumDeclaration(statement) &&
+        hasModifier(statement, ts.SyntaxKind.ExportKeyword) &&
+        !hasModifier(statement, ts.SyntaxKind.DeclareKeyword) &&
+        statement.name.text === name
+      ) {
         explicitClaimed = true;
         addUnique(explicit, { module, declaration: statement });
         continue;
@@ -907,7 +1149,8 @@ export function createHookSourceModuleContext(): HookSourceModuleContext {
       for (const statement of module.source.statements) {
         if (!ts.isExportDeclaration(statement) || statement.isTypeOnly || statement.exportClause)
           continue;
-        if (!statement.moduleSpecifier || !ts.isStringLiteralLike(statement.moduleSpecifier)) continue;
+        if (!statement.moduleSpecifier || !ts.isStringLiteralLike(statement.moduleSpecifier))
+          continue;
         if (statement.moduleSpecifier.text === CORE_SPECIFIER && name === 'defineAsHook') {
           addUnique(stars, { module, declaration: statement });
           continue;
@@ -935,7 +1178,9 @@ export function createHookSourceModuleContext(): HookSourceModuleContext {
   ): HookSourceSymbol | null {
     const imported = importBinding(module, name);
     if (imported) {
-      const specifier = imported.statement.moduleSpecifier.text;
+      const moduleSpecifier = imported.statement.moduleSpecifier;
+      if (!ts.isStringLiteralLike(moduleSpecifier)) return null;
+      const specifier = moduleSpecifier.text;
       if (imported.kind === 'namespace') return { module, declaration: imported.declaration };
       const importedName = imported.imported ?? 'default';
       if (specifier === CORE_SPECIFIER) {
@@ -956,9 +1201,10 @@ export function createHookSourceModuleContext(): HookSourceModuleContext {
   const resolveExport = (module: HookSourceModule, name: string): HookSourceSymbol | null =>
     resolveExportInternal(module, name, new Set());
 
-  function namespaceDescriptor(symbol: HookSourceSymbol, seen = new Set<string>()):
-    | { module: HookSourceModule; specifier: string }
-    | null {
+  function namespaceDescriptor(
+    symbol: HookSourceSymbol,
+    seen = new Set<string>()
+  ): { module: HookSourceModule; specifier: string } | null {
     const key = declarationKey(symbol);
     if (seen.has(key)) return null;
     seen.add(key);
@@ -986,10 +1232,7 @@ export function createHookSourceModuleContext(): HookSourceModuleContext {
     return null;
   }
 
-  function namespaceMember(
-    symbol: HookSourceSymbol,
-    name: string
-  ): HookSourceSymbol | null {
+  function namespaceMember(symbol: HookSourceSymbol, name: string): HookSourceSymbol | null {
     const descriptor = namespaceDescriptor(symbol);
     if (!descriptor) return null;
     if (descriptor.specifier === CORE_SPECIFIER) {
@@ -999,28 +1242,408 @@ export function createHookSourceModuleContext(): HookSourceModuleContext {
     return target ? resolveExportInternal(target, name, new Set()) : null;
   }
 
-  function objectMemberForSymbol(
+  /** Whether anything in the owning source can replace this exact binding. */
+  const hasBindingWrite = (bindingNode: ts.Node, module: HookSourceModule): boolean => {
+    if (!ts.isIdentifier(bindingNode)) return true;
+    const target = resolveReference(bindingNode, module);
+    if (!target) return true;
+    const key = declarationKey(target);
+    let changed = false;
+    const visit = (node: ts.Node): void => {
+      if (changed || node === bindingNode) return;
+      if (ts.isBinaryExpression(node)) {
+        const operator = node.operatorToken.kind;
+        if (
+          operator >= ts.SyntaxKind.FirstAssignment &&
+          operator <= ts.SyntaxKind.LastAssignment &&
+          ts.isIdentifier(unwrap(node.left))
+        ) {
+          const written = resolveReference(unwrap(node.left), module);
+          if (written && declarationKey(written) === key) changed = true;
+        }
+      } else if (ts.isPrefixUnaryExpression(node) || ts.isPostfixUnaryExpression(node)) {
+        if (
+          (node.operator === ts.SyntaxKind.PlusPlusToken ||
+            node.operator === ts.SyntaxKind.MinusMinusToken) &&
+          ts.isIdentifier(unwrap(node.operand))
+        ) {
+          const written = resolveReference(unwrap(node.operand), module);
+          if (written && declarationKey(written) === key) changed = true;
+        }
+      }
+      ts.forEachChild(node, visit);
+    };
+    visit(module.source);
+    return changed;
+  };
+
+  const functionSymbol = (
     symbol: HookSourceSymbol,
-    name: string,
     seen = new Set<string>()
-  ): HookSourceSymbol | null {
+  ): HookSourceSymbol | null => {
     const key = declarationKey(symbol);
     if (seen.has(key)) return null;
     seen.add(key);
+    if (ts.isFunctionDeclaration(symbol.declaration)) {
+      const declaration = symbol.declaration;
+      if (
+        declaration.asteriskToken ||
+        declaration.modifiers?.some((modifier) => modifier.kind === ts.SyntaxKind.AsyncKeyword)
+      )
+        return null;
+      const name = declaration.name;
+      if (!name) return null;
+      const writesBinding = (node: ts.Node, varDeclaration = false): boolean => {
+        if (ts.isExpression(node)) node = unwrap(node);
+        if (ts.isIdentifier(node)) {
+          if (node.text !== name.text) return false;
+          if (varDeclaration) return true;
+          const binding = findLexicalBinding(node, node.text);
+          return binding === declaration || binding === name;
+        }
+        if (ts.isArrayBindingPattern(node) || ts.isObjectBindingPattern(node)) {
+          return node.elements.some(
+            (element) => ts.isBindingElement(element) && writesBinding(element.name, varDeclaration)
+          );
+        }
+        if (ts.isArrayLiteralExpression(node))
+          return node.elements.some((element) => writesBinding(element));
+        if (ts.isObjectLiteralExpression(node)) {
+          return node.properties.some((property) =>
+            ts.isPropertyAssignment(property)
+              ? writesBinding(property.initializer)
+              : ts.isShorthandPropertyAssignment(property)
+                ? writesBinding(property.name)
+                : ts.isSpreadAssignment(property) && writesBinding(property.expression)
+          );
+        }
+        if (ts.isSpreadElement(node)) return writesBinding(node.expression);
+        return (
+          ts.isBinaryExpression(node) &&
+          node.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
+          writesBinding(node.left)
+        );
+      };
+      const varScope = (node: ts.Node): ts.Node | undefined =>
+        ts.findAncestor(node, (scope) => ts.isFunctionLike(scope) || ts.isSourceFile(scope));
+      const declaringScope = varScope(declaration.parent);
+      let replaced = false;
+      const visit = (node: ts.Node): void => {
+        if (replaced) return;
+        if (
+          ts.isFunctionDeclaration(node) &&
+          node !== declaration &&
+          node.parent === declaration.parent &&
+          node.name?.text === name.text
+        ) {
+          replaced = true;
+        } else if (ts.isVariableDeclaration(node) && node.initializer) {
+          replaced = writesBinding(node.name);
+        } else if (
+          ts.isBinaryExpression(node) &&
+          node.operatorToken.kind >= ts.SyntaxKind.FirstAssignment &&
+          node.operatorToken.kind <= ts.SyntaxKind.LastAssignment
+        ) {
+          replaced = writesBinding(node.left);
+        } else if (ts.isForOfStatement(node) || ts.isForInStatement(node)) {
+          const initializer = node.initializer;
+          if (ts.isVariableDeclarationList(initializer)) {
+            replaced =
+              !(initializer.flags & (ts.NodeFlags.Let | ts.NodeFlags.Const)) &&
+              varScope(node) === declaringScope &&
+              initializer.declarations.some((binding) => writesBinding(binding.name, true));
+          } else replaced = writesBinding(initializer);
+        } else if (
+          (ts.isPrefixUnaryExpression(node) || ts.isPostfixUnaryExpression(node)) &&
+          (node.operator === ts.SyntaxKind.PlusPlusToken ||
+            node.operator === ts.SyntaxKind.MinusMinusToken)
+        ) {
+          replaced = writesBinding(node.operand);
+        }
+        if (!replaced) ts.forEachChild(node, visit);
+      };
+      visit(symbol.module.source);
+      return replaced ? null : symbol;
+    }
+    if (ts.isFunctionExpression(symbol.declaration)) {
+      if (symbol.declaration.name && hasBindingWrite(symbol.declaration.name, symbol.module))
+        return null;
+      if (
+        symbol.declaration.asteriskToken ||
+        symbol.declaration.modifiers?.some(
+          (modifier) => modifier.kind === ts.SyntaxKind.AsyncKeyword
+        )
+      )
+        return null;
+      return symbol;
+    }
+    if (
+      ts.isVariableDeclaration(symbol.declaration) &&
+      symbol.declaration.initializer &&
+      isConstantDeclaration(symbol.declaration)
+    ) {
+      const initializer = unwrap(symbol.declaration.initializer);
+      if (ts.isIdentifier(initializer)) {
+        const next = resolveReference(initializer, symbol.module);
+        return next ? functionSymbol(next, seen) : null;
+      }
+      if (ts.isFunctionExpression(initializer) || ts.isArrowFunction(initializer)) {
+        if (
+          hasModifier(initializer, ts.SyntaxKind.AsyncKeyword) ||
+          (ts.isFunctionExpression(initializer) && initializer.asteriskToken)
+        )
+          return null;
+        return { module: symbol.module, declaration: initializer };
+      }
+    }
+    return null;
+  };
+
+  const returnedObject = (
+    symbol: HookSourceSymbol
+  ): { object: ts.ObjectLiteralExpression; module: HookSourceModule } | null => {
+    const functionValue = functionSymbol(symbol);
+    if (!functionValue) return null;
+    const declaration = functionValue.declaration;
+    if (
+      !(
+        ts.isFunctionDeclaration(declaration) ||
+        ts.isFunctionExpression(declaration) ||
+        ts.isArrowFunction(declaration) ||
+        ts.isMethodDeclaration(declaration) ||
+        ts.isGetAccessorDeclaration(declaration) ||
+        ts.isSetAccessorDeclaration(declaration) ||
+        ts.isConstructorDeclaration(declaration)
+      ) ||
+      !declaration.body
+    )
+      return null;
+    if (!ts.isBlock(declaration.body)) {
+      const expression = unwrap(declaration.body);
+      return ts.isObjectLiteralExpression(expression)
+        ? { object: expression, module: functionValue.module }
+        : null;
+    }
+    const statements = declaration.body.statements;
+    const last = statements[statements.length - 1];
+    if (!last || !ts.isReturnStatement(last) || !last.expression) return null;
+    // A nested return is not proof that this invocation returns that object.
+    // Only straight-line setup followed by an unconditional return is admitted.
+    for (const statement of statements.slice(0, -1)) {
+      if (
+        !(
+          ts.isVariableStatement(statement) ||
+          ts.isExpressionStatement(statement) ||
+          ts.isFunctionDeclaration(statement) ||
+          ts.isEmptyStatement(statement)
+        )
+      )
+        return null;
+    }
+    const expression = unwrap(last.expression);
+    return ts.isObjectLiteralExpression(expression)
+      ? { object: expression, module: functionValue.module }
+      : null;
+  };
+
+  const returnedObjectMember = (
+    call: ts.CallExpression,
+    name: string,
+    module: HookSourceModule,
+    holder: ts.VariableDeclaration
+  ): HookSourceSymbol | null => {
+    const callee = resolveReference(call.expression, module);
+    const returned = callee ? returnedObject(callee) : null;
+    if (!returned) return null;
+    if (hasConflictingWrite(holder, name, returned.object)) return null;
+    const property = objectMember(returned.object, name);
+    if (!property) return null;
+    if (ts.isShorthandPropertyAssignment(property)) {
+      return resolveReference(property.name, returned.module);
+    }
+    if (ts.isPropertyAssignment(property)) {
+      const initializer = unwrap(property.initializer);
+      if (ts.isIdentifier(initializer)) return resolveReference(initializer, returned.module);
+    }
+    return { module: returned.module, declaration: property };
+  };
+
+  const sameSourceValue = (
+    candidate: HookSourceSymbol,
+    target: HookSourceSymbol,
+    seen = new Set<string>()
+  ): boolean => {
+    const key = declarationKey(candidate);
+    if (key === declarationKey(target)) return true;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    const declaration = candidate.declaration;
+    if (ts.isVariableDeclaration(declaration) && declaration.initializer) {
+      const initializer = unwrap(declaration.initializer);
+      if (ts.isIdentifier(initializer)) {
+        const next = resolveReference(initializer, candidate.module);
+        return !!next && sameSourceValue(next, target, seen);
+      }
+    }
+    return false;
+  };
+
+  const hasExternalMemberWrite = (
+    target: HookSourceSymbol,
+    name: string,
+    module: HookSourceModule
+  ): boolean => {
+    const contains = (ancestor: ts.Node, descendant: ts.Node): boolean => {
+      let current: ts.Node | undefined = descendant;
+      while (current) {
+        if (current === ancestor) return true;
+        current = current.parent;
+      }
+      return false;
+    };
+    const writeOperation = (access: ts.Node): ts.Node | null => {
+      let current: ts.Node = access;
+      while (current.parent) {
+        const parent = current.parent;
+        if (ts.isBinaryExpression(parent)) {
+          return parent.operatorToken.kind >= ts.SyntaxKind.FirstAssignment &&
+            parent.operatorToken.kind <= ts.SyntaxKind.LastAssignment &&
+            contains(parent.left, access)
+            ? parent
+            : null;
+        }
+        if (ts.isForInStatement(parent) || ts.isForOfStatement(parent)) {
+          return contains(parent.initializer, access) ? parent : null;
+        }
+        if (
+          (ts.isPrefixUnaryExpression(parent) || ts.isPostfixUnaryExpression(parent)) &&
+          parent.operand === current
+        ) {
+          return parent.operator === ts.SyntaxKind.PlusPlusToken ||
+            parent.operator === ts.SyntaxKind.MinusMinusToken
+            ? parent
+            : null;
+        }
+        if (ts.isDeleteExpression(parent)) return parent.expression === current ? parent : null;
+        if (
+          ts.isParenthesizedExpression(parent) ||
+          ts.isAsExpression(parent) ||
+          ts.isTypeAssertionExpression(parent) ||
+          ts.isNonNullExpression(parent) ||
+          ts.isArrayLiteralExpression(parent) ||
+          ts.isObjectLiteralExpression(parent) ||
+          ts.isPropertyAssignment(parent) ||
+          ts.isShorthandPropertyAssignment(parent) ||
+          ts.isSpreadElement(parent) ||
+          ts.isSpreadAssignment(parent)
+        ) {
+          current = parent;
+          continue;
+        }
+        return null;
+      }
+      return null;
+    };
+    let conflict = false;
+    const visit = (node: ts.Node): void => {
+      if (conflict) return;
+      if (ts.isPropertyAccessExpression(node) || ts.isElementAccessExpression(node)) {
+        if (writeOperation(node)) {
+          const root = unwrap(node.expression);
+          const rootSymbol = ts.isIdentifier(root) ? resolveReference(root, module) : null;
+          const member = ts.isPropertyAccessExpression(node)
+            ? node.name.text
+            : ts.isStringLiteralLike(node.argumentExpression)
+              ? node.argumentExpression.text
+              : null;
+          if (
+            rootSymbol &&
+            sameSourceValue(rootSymbol, target) &&
+            (member === null || member === name)
+          )
+            conflict = true;
+        }
+      }
+      if (ts.isCallExpression(node) || ts.isNewExpression(node)) {
+        for (const argument of node.arguments ?? []) {
+          const root = unwrap(argument);
+          const rootSymbol = ts.isIdentifier(root) ? resolveReference(root, module) : null;
+          if (rootSymbol && sameSourceValue(rootSymbol, target)) conflict = true;
+        }
+        const expression = node.expression;
+        if (ts.isPropertyAccessExpression(expression) || ts.isElementAccessExpression(expression)) {
+          const root = unwrap(expression.expression);
+          const rootSymbol = ts.isIdentifier(root) ? resolveReference(root, module) : null;
+          const member = ts.isPropertyAccessExpression(expression)
+            ? expression.name.text
+            : ts.isStringLiteralLike(expression.argumentExpression)
+              ? expression.argumentExpression.text
+              : null;
+          if (
+            rootSymbol &&
+            sameSourceValue(rootSymbol, target) &&
+            (member === null || member !== name)
+          )
+            conflict = true;
+        }
+      }
+      ts.forEachChild(node, visit);
+    };
+    visit(module.source);
+    return conflict;
+  };
+
+  function objectMemberForSymbol(
+    symbol: HookSourceSymbol,
+    name: string,
+    seen = new Set<string>(),
+    origin?: HookSourceModule
+  ): HookSourceSymbol | null {
+    const cacheKey = `${declarationKey(symbol)}\0${name}\0${origin?.file ?? ''}`;
+    const cached = objectMemberCache.get(cacheKey);
+    if (cached !== undefined) return cached;
+    const key = declarationKey(symbol);
+    if (seen.has(key)) {
+      objectMemberCache.set(cacheKey, null);
+      return null;
+    }
+    seen.add(key);
     const declaration = symbol.declaration;
     if (ts.isVariableDeclaration(declaration) && declaration.initializer) {
-      if (!isConstantDeclaration(declaration) || hasConflictingWrite(declaration, name)) return null;
+      if (!isConstantDeclaration(declaration) || hasConflictingWrite(declaration, name)) {
+        objectMemberCache.set(cacheKey, null);
+        return null;
+      }
+      if (
+        origin &&
+        origin.file !== symbol.module.file &&
+        hasExternalMemberWrite(symbol, name, origin)
+      ) {
+        objectMemberCache.set(cacheKey, null);
+        return null;
+      }
       const initializer = unwrap(declaration.initializer);
       if (ts.isObjectLiteralExpression(initializer)) {
         const property = objectMember(initializer, name);
-        return property ? { module: symbol.module, declaration: property } : null;
+        const result = property ? { module: symbol.module, declaration: property } : null;
+        objectMemberCache.set(cacheKey, result);
+        return result;
       }
       if (ts.isIdentifier(initializer)) {
         const next = resolveReference(initializer, symbol.module);
-        return next ? objectMemberForSymbol(next, name, seen) : null;
+        const result = next ? objectMemberForSymbol(next, name, seen, origin) : null;
+        objectMemberCache.set(cacheKey, result);
+        return result;
+      }
+      if (ts.isCallExpression(initializer)) {
+        const result = returnedObjectMember(initializer, name, symbol.module, declaration);
+        objectMemberCache.set(cacheKey, result);
+        return result;
       }
     }
-    return namespaceMember(symbol, name);
+    const result = namespaceMember(symbol, name);
+    objectMemberCache.set(cacheKey, result);
+    return result;
   }
 
   function resolveReference(node: ts.Node, module: HookSourceModule): HookSourceSymbol | null {
@@ -1043,7 +1666,7 @@ export function createHookSourceModuleContext(): HookSourceModuleContext {
       if (!name) return null;
       const owner = value.expression;
       const ownerSymbol = resolveReference(owner, module);
-      return ownerSymbol ? objectMemberForSymbol(ownerSymbol, name) : null;
+      return ownerSymbol ? objectMemberForSymbol(ownerSymbol, name, new Set(), module) : null;
     }
     return null;
   }
@@ -1079,7 +1702,8 @@ export function createHookSourceModuleContext(): HookSourceModuleContext {
     const key = declarationKey(symbol);
     if (seen.has(key)) return false;
     seen.add(key);
-    if (isCoreNamespaceImport(symbol.declaration) || isCoreNamespaceExport(symbol.declaration)) return true;
+    if (isCoreNamespaceImport(symbol.declaration) || isCoreNamespaceExport(symbol.declaration))
+      return true;
     if (
       ts.isVariableDeclaration(symbol.declaration) &&
       symbol.declaration.initializer &&
@@ -1103,11 +1727,7 @@ export function createHookSourceModuleContext(): HookSourceModuleContext {
     return false;
   }
 
-  function isDefineReference(
-    node: ts.Node,
-    module: HookSourceModule,
-    seen: Set<string>
-  ): boolean {
+  function isDefineReference(node: ts.Node, module: HookSourceModule, seen: Set<string>): boolean {
     const value = unwrap(node);
     if (ts.isPropertyAccessExpression(value) || ts.isElementAccessExpression(value)) {
       const name = ts.isPropertyAccessExpression(value)

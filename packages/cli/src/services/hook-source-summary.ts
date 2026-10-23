@@ -14,6 +14,8 @@ export type HookSourceState = {
   declaration: HookSourceRef;
   declaredName: string;
   variant: string | null;
+  /** Runtime State semantic, when a provider source proves it separately. */
+  semantic?: string;
 };
 
 export type HookSourceValue =
@@ -23,6 +25,7 @@ export type HookSourceValue =
       members: ReadonlyMap<string, HookSourceValue>;
       uncertainKeys?: boolean;
       arrayLength?: number;
+      closed?: boolean;
     }
   | {
       kind: 'result';
@@ -31,6 +34,12 @@ export type HookSourceValue =
       stateHandles: ReadonlyMap<string, HookSourceState>;
       children: ReadonlyMap<string, HookSourceValue>;
       handle?: HookSourceValue;
+      stateHandlesClosed?: boolean;
+    }
+  | {
+      kind: 'callable';
+      operation: 'getState';
+      result: Extract<HookSourceValue, { kind: 'result' }>;
     }
   | { kind: 'unknown'; reason: string };
 
@@ -44,11 +53,21 @@ export type HookSourceSummaryContext = {
   /** Register an already-read source, preserving caller-provided text exactly. */
   registerSource(source: ts.SourceFile): void;
   /** Resolve a source expression without executing it. */
-  resolve(node: ts.Node, source: ts.SourceFile, environment?: ReadonlyMap<string, HookSourceValue>): HookSourceResolution;
+  resolve(
+    node: ts.Node,
+    source: ts.SourceFile,
+    environment?: ReadonlyMap<string, HookSourceValue>
+  ): HookSourceResolution;
   /** Resolve an authored producer call and its captured result. */
   resolveCall(node: ts.CallExpression, source: ts.SourceFile): HookSourceResolution;
+  /** Recognize the authored producer independently of its capture/projection proof. */
+  isAuthoredProducerCall(node: ts.CallExpression, source: ts.SourceFile): boolean;
   /** Verify the actual lexical producer declaration, not a same-named shadow. */
-  isSameSourceBinding(node: ts.CallExpression, source: ts.SourceFile, bindingNode: ts.Node): boolean;
+  isSameSourceBinding(
+    node: ts.CallExpression,
+    source: ts.SourceFile,
+    bindingNode: ts.Node
+  ): boolean;
 };
 
 type Producer = {
@@ -58,6 +77,15 @@ type Producer = {
   call: ts.CallExpression;
   config: ts.ObjectLiteralExpression;
 };
+
+type ProviderStateProof = {
+  owner: HookSourceRef;
+  declaredName: string;
+  semantic: string;
+  declaration: HookSourceRef;
+};
+
+type SetupLiteral = string | boolean | number;
 
 const UNKNOWN = (reason: string): HookSourceValue => ({ kind: 'unknown', reason });
 
@@ -114,7 +142,9 @@ function isExposeStateCall(owner: ts.Expression, defName: string): boolean {
   return true;
 }
 
-function isStringValue(node: ts.Node): node is ts.StringLiteralLike | ts.NoSubstitutionTemplateLiteral {
+function isStringValue(
+  node: ts.Node
+): node is ts.StringLiteralLike | ts.NoSubstitutionTemplateLiteral {
   return ts.isStringLiteralLike(node) || ts.isNoSubstitutionTemplateLiteral(node);
 }
 
@@ -129,6 +159,8 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
   const producerCache = new Map<string, Producer | null>();
   const summaryCache = new Map<string, HookSourceValue>();
   const summaryStack = new Set<string>();
+  const providerStateCache = new Map<string, ReadonlyMap<string, ProviderStateProof> | null>();
+  const canonicalFocusableCache = new Map<string, SymbolRef | null>();
   const moduleForSource = (source: ts.SourceFile): Module => {
     const module = moduleContext.moduleForSource(source);
     const previous = registeredSources.get(module.file);
@@ -136,6 +168,8 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
       producerCache.clear();
       summaryCache.clear();
       summaryStack.clear();
+      providerStateCache.clear();
+      canonicalFocusableCache.clear();
     }
     registeredSources.set(module.file, source);
     return module;
@@ -148,6 +182,54 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
   const resolveSymbol = (module: Module, name: string): SymbolRef | null =>
     moduleContext.resolveLocal(module, name);
 
+  const symbolKey = (symbol: SymbolRef): string =>
+    `${symbol.module.file}:${symbol.declaration.getStart(symbol.module.source)}:${symbol.declaration.kind}`;
+
+  /** A source alias is usable only while its exact binding still holds its initializer. */
+  const hasBindingWrite = (bindingNode: ts.Node, module: Module): boolean => {
+    if (!ts.isIdentifier(bindingNode)) return true;
+    const target = moduleContext.resolveReference(bindingNode, module);
+    if (!target) return true;
+    let changed = false;
+    const visit = (node: ts.Node): void => {
+      if (changed || node === bindingNode) return;
+      if (ts.isBinaryExpression(node)) {
+        const operator = node.operatorToken.kind;
+        const assignment =
+          operator >= ts.SyntaxKind.FirstAssignment && operator <= ts.SyntaxKind.LastAssignment;
+        if (assignment && ts.isIdentifier(unwrap(node.left))) {
+          const written = moduleContext.resolveReference(unwrap(node.left), module);
+          if (written && symbolKey(written) === symbolKey(target)) changed = true;
+        }
+      }
+      if (ts.isPrefixUnaryExpression(node) || ts.isPostfixUnaryExpression(node)) {
+        if (
+          (node.operator === ts.SyntaxKind.PlusPlusToken ||
+            node.operator === ts.SyntaxKind.MinusMinusToken) &&
+          ts.isIdentifier(unwrap(node.operand))
+        ) {
+          const written = moduleContext.resolveReference(unwrap(node.operand), module);
+          if (written && symbolKey(written) === symbolKey(target)) changed = true;
+        }
+      }
+      ts.forEachChild(node, visit);
+    };
+    visit(module.source);
+    return changed;
+  };
+
+  const hasIdentifierWrite = (declaration: ts.VariableDeclaration, module: Module): boolean =>
+    !ts.isIdentifier(declaration.name) || hasBindingWrite(declaration.name, module);
+
+  const stableVariable = (declaration: ts.VariableDeclaration, module: Module): boolean => {
+    const list = declaration.parent;
+    return (
+      ts.isVariableDeclarationList(list) &&
+      (list.flags & ts.NodeFlags.Const) !== 0 &&
+      !hasIdentifierWrite(declaration, module)
+    );
+  };
+
   const isDefineAsHookCall = (call: ts.CallExpression, module: Module): boolean =>
     moduleContext.isDefineAsHookReference(unwrap(call.expression), module);
 
@@ -159,8 +241,17 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
     const nextStack = new Set(stack).add(key);
     let declaration = symbol.declaration;
     if (ts.isVariableDeclaration(declaration)) {
+      if (!stableVariable(declaration, symbol.module)) {
+        producerCache.set(key, null);
+        return null;
+      }
       const initializer = declaration.initializer ? unwrap(declaration.initializer) : null;
-      if (initializer && ts.isIdentifier(initializer)) {
+      if (
+        initializer &&
+        (ts.isIdentifier(initializer) ||
+          ts.isPropertyAccessExpression(initializer) ||
+          ts.isElementAccessExpression(initializer))
+      ) {
         const alias = moduleContext.resolveReference(initializer, symbol.module);
         if (alias) {
           const found = producerForSymbol(alias, nextStack);
@@ -187,6 +278,20 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
         }
       }
     }
+    if (ts.isCallExpression(declaration) && isDefineAsHookCall(declaration, symbol.module)) {
+      const config = declaration.arguments[0] ? unwrap(declaration.arguments[0]) : null;
+      if (config && ts.isObjectLiteralExpression(config)) {
+        const found = {
+          ref: sourceRef(declaration, symbol.module.file),
+          module: symbol.module,
+          declaration,
+          call: declaration,
+          config,
+        };
+        producerCache.set(key, found);
+        return found;
+      }
+    }
     // A declaration may be an exported alias whose symbol points at a source
     // declaration, but never interpret arbitrary functions as producers.
     producerCache.set(key, null);
@@ -207,12 +312,33 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
   ): boolean => {
     const module = moduleForSource(source);
     const symbol = moduleContext.resolveReference(unwrap(call.expression), module);
-    if (!symbol || !producerForSymbol(symbol)) return false;
+    const producer = symbol ? producerForSymbol(symbol) : null;
+    if (!symbol || !producer) return false;
     const held = moduleContext.moduleForSource(bindingNode.getSourceFile());
-    return (
+    if (
       held.file === symbol.module.file &&
       bindingNode.getStart(bindingNode.getSourceFile()) ===
         symbol.declaration.getStart(symbol.module.source)
+    )
+      return true;
+
+    // A local constant alias is a distinct lexical binding, but it still
+    // denotes the same authored producer when its initializer resolves to the
+    // producer declaration. Compare the resolved producer rather than the
+    // alias node's source position; a same-named shadow with no producer proof
+    // remains rejected.
+    const binding =
+      ts.isVariableDeclaration(bindingNode) && ts.isIdentifier(bindingNode.name)
+        ? moduleContext.resolveReference(bindingNode.name, held)
+        : ts.isIdentifier(bindingNode)
+          ? moduleContext.resolveReference(bindingNode, held)
+          : null;
+    const aliased = binding ? producerForSymbol(binding) : null;
+    return (
+      !!aliased &&
+      aliased.module.file === producer.module.file &&
+      aliased.declaration.getStart(aliased.module.source) ===
+        producer.declaration.getStart(producer.module.source)
     );
   };
 
@@ -242,18 +368,30 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
   const configProperty = (
     config: ts.ObjectLiteralExpression,
     name: string
-  ): ts.PropertyAssignment | ts.MethodDeclaration | ts.ShorthandPropertyAssignment | null =>
-    (config.properties.find(
-      (property) =>
+  ): ts.PropertyAssignment | ts.MethodDeclaration | ts.ShorthandPropertyAssignment | null => {
+    let found:
+      | ts.PropertyAssignment
+      | ts.MethodDeclaration
+      | ts.ShorthandPropertyAssignment
+      | null = null;
+    for (const property of config.properties) {
+      if (ts.isSpreadAssignment(property)) {
+        // An unknown spread can overwrite an earlier property. A later
+        // explicit property is safe because it is ordered after that spread.
+        found = null;
+        continue;
+      }
+      if (
         (ts.isPropertyAssignment(property) ||
           ts.isMethodDeclaration(property) ||
           ts.isShorthandPropertyAssignment(property)) &&
         propertyName(property.name) === name
-    ) as
-      | ts.PropertyAssignment
-      | ts.MethodDeclaration
-      | ts.ShorthandPropertyAssignment
-      | undefined) ?? null;
+      ) {
+        found = property;
+      }
+    }
+    return found;
+  };
 
   const functionFor = (
     node: ts.Node | undefined,
@@ -266,17 +404,559 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
     if (ts.isShorthandPropertyAssignment(value)) {
       return functionFor(value.name, module, seen);
     }
+    if (ts.isCallExpression(value)) {
+      const factory = functionFor(value.expression, module, seen);
+      return factory ? returnedFunction(factory.fn, factory.module) : null;
+    }
     const symbol = moduleContext.resolveReference(value, module);
     if (!symbol) return null;
     const seenKey = `${symbol.module.file}:${symbol.declaration.getStart(symbol.module.source)}`;
     if (seen.has(seenKey)) return null;
     const nextSeen = new Set(seen).add(seenKey);
-    if (isFunctionLike(symbol.declaration))
+    if (isFunctionLike(symbol.declaration)) {
+      if (symbol.declaration.name && hasBindingWrite(symbol.declaration.name, symbol.module))
+        return null;
+      if (
+        symbol.declaration.asteriskToken ||
+        symbol.declaration.modifiers?.some(
+          (modifier) => modifier.kind === ts.SyntaxKind.AsyncKeyword
+        )
+      )
+        return null;
       return { fn: symbol.declaration, module: symbol.module };
-    if (ts.isVariableDeclaration(symbol.declaration) && symbol.declaration.initializer) {
+    }
+    if (
+      ts.isVariableDeclaration(symbol.declaration) &&
+      symbol.declaration.initializer &&
+      stableVariable(symbol.declaration, symbol.module)
+    ) {
       return functionFor(symbol.declaration.initializer, symbol.module, nextSeen);
     }
     return null;
+  };
+
+  const returnedFunction = (
+    fn: ts.FunctionLikeDeclaration,
+    module: Module
+  ): { fn: ts.FunctionLikeDeclaration; module: Module } | null => {
+    if (
+      fn.asteriskToken ||
+      fn.modifiers?.some((modifier) => modifier.kind === ts.SyntaxKind.AsyncKeyword)
+    )
+      return null;
+    if (!fn.body) return null;
+    const expression = ts.isBlock(fn.body)
+      ? fn.body.statements.length === 1 && ts.isReturnStatement(fn.body.statements[0])
+        ? fn.body.statements[0].expression
+        : undefined
+      : fn.body;
+    const value = expression ? unwrap(expression) : null;
+    if (!value || !isFunctionLike(value)) return null;
+    if (
+      value.asteriskToken ||
+      value.modifiers?.some((modifier) => modifier.kind === ts.SyntaxKind.AsyncKeyword)
+    )
+      return null;
+    return { fn: value, module };
+  };
+
+  const propertyExpression = (property: ts.ObjectLiteralElementLike): ts.Node | undefined =>
+    ts.isPropertyAssignment(property)
+      ? property.initializer
+      : ts.isShorthandPropertyAssignment(property)
+        ? property.name
+        : ts.isMethodDeclaration(property)
+          ? property
+          : undefined;
+
+  const directReturnExpression = (
+    fn: ts.FunctionLikeDeclaration,
+    module: Module
+  ): { expression: ts.Expression; module: Module } | null => {
+    if (!fn.body) return null;
+    if (!ts.isBlock(fn.body)) {
+      const expression = unwrap(fn.body);
+      return { expression: expression as ts.Expression, module };
+    }
+    let found: { expression: ts.Expression; module: Module } | null = null;
+    let invalid = false;
+    const visit = (node: ts.Node): void => {
+      if (invalid || (node !== fn && isFunctionLike(node))) return;
+      if (ts.isReturnStatement(node)) {
+        const expression = node.expression ? unwrap(node.expression) : null;
+        if (!expression || found) {
+          invalid = true;
+          return;
+        }
+        found = { expression: expression as ts.Expression, module };
+        return;
+      }
+      ts.forEachChild(node, visit);
+    };
+    visit(fn.body);
+    return invalid ? null : found;
+  };
+
+  const directReturnCall = (
+    fn: ts.FunctionLikeDeclaration,
+    module: Module
+  ): { call: ts.CallExpression; module: Module } | null => {
+    const returned = directReturnExpression(fn, module);
+    if (!returned || !ts.isCallExpression(returned.expression)) return null;
+    return { call: returned.expression, module: returned.module };
+  };
+
+  const thisMember = (node: ts.Node): string | null => {
+    const value = unwrap(node);
+    if (!ts.isPropertyAccessExpression(value)) return null;
+    return value.expression.kind === ts.SyntaxKind.ThisKeyword ? value.name.text : null;
+  };
+
+  const assignmentValue = (
+    body: ts.Block,
+    owner: string,
+    member: string
+  ): { value: ts.Node; assignment: ts.BinaryExpression } | null => {
+    let found: { value: ts.Node; assignment: ts.BinaryExpression } | null = null;
+    const visit = (node: ts.Node): void => {
+      if (ts.isBinaryExpression(node) && node.operatorToken.kind === ts.SyntaxKind.EqualsToken) {
+        const left = unwrap(node.left);
+        if (
+          ts.isPropertyAccessExpression(left) &&
+          (owner === 'this'
+            ? unwrap(left.expression).kind === ts.SyntaxKind.ThisKeyword
+            : thisMember(left.expression) === owner) &&
+          left.name.text === member
+        ) {
+          found = { value: node.right, assignment: node };
+        }
+      }
+      ts.forEachChild(node, visit);
+    };
+    visit(body);
+    return found;
+  };
+
+  const stateNameAssignment = (body: ts.Block, owned: string): string | null => {
+    let found: string | null = null;
+    const visit = (node: ts.Node): void => {
+      if (ts.isBinaryExpression(node) && node.operatorToken.kind === ts.SyntaxKind.EqualsToken) {
+        const left = unwrap(node.left);
+        const owner = memberOwner(left);
+        if (owner && memberName(left) === '__stateName' && thisMember(owner) === owned) {
+          const value = unwrap(node.right);
+          if (isStringValue(value)) found = value.text;
+          else found = null;
+        }
+      }
+      ts.forEachChild(node, visit);
+    };
+    visit(body);
+    return found;
+  };
+
+  const focusProviderStates = (
+    symbol: SymbolRef,
+    seen = new Set<string>()
+  ): ReadonlyMap<string, ProviderStateProof> | null => {
+    const cacheKey = symbolKey(symbol);
+    const cached = providerStateCache.get(cacheKey);
+    if (cached !== undefined) return cached;
+    if (seen.has(cacheKey)) {
+      providerStateCache.set(cacheKey, null);
+      return null;
+    }
+    const nextSeen = new Set(seen).add(cacheKey);
+    if (
+      ts.isVariableDeclaration(symbol.declaration) &&
+      symbol.declaration.initializer &&
+      stableVariable(symbol.declaration, symbol.module)
+    ) {
+      const initializer = unwrap(symbol.declaration.initializer);
+      if (ts.isIdentifier(initializer)) {
+        const alias = moduleContext.resolveReference(initializer, symbol.module);
+        const result = alias ? focusProviderStates(alias, nextSeen) : null;
+        providerStateCache.set(cacheKey, result);
+        return result;
+      }
+    }
+
+    const fail = (): null => {
+      providerStateCache.set(cacheKey, null);
+      return null;
+    };
+    const declaration = symbol.declaration;
+    if (
+      !ts.isFunctionDeclaration(declaration) ||
+      declaration.name?.text !== 'asFocusable' ||
+      !declaration.body
+    )
+      return fail();
+
+    const forwarding = directReturnCall(declaration, symbol.module);
+    if (!forwarding) return fail();
+    const factory = moduleContext.resolveReference(forwarding.call.expression, forwarding.module);
+    if (
+      !factory ||
+      !ts.isVariableDeclaration(factory.declaration) ||
+      !factory.declaration.initializer ||
+      !stableVariable(factory.declaration, factory.module)
+    )
+      return fail();
+    const factoryCall = unwrap(factory.declaration.initializer);
+    if (!ts.isCallExpression(factoryCall)) return fail();
+    const factorySymbol = moduleContext.resolveReference(factoryCall.expression, factory.module);
+    if (
+      !factorySymbol ||
+      !ts.isFunctionDeclaration(factorySymbol.declaration) ||
+      factorySymbol.declaration.name?.text !== 'definePrivilegedAsHook'
+    )
+      return fail();
+    const config = factoryCall.arguments[0] ? unwrap(factoryCall.arguments[0]) : null;
+    if (!config || !ts.isObjectLiteralExpression(config)) return fail();
+    const configuredName = configProperty(config, 'name');
+    if (
+      !configuredName ||
+      !ts.isPropertyAssignment(configuredName) ||
+      literalString(configuredName.initializer, factory.module, new Map()) !== 'asFocusable'
+    )
+      return fail();
+    const setupProperty = configProperty(config, 'setup');
+    if (!setupProperty) return fail();
+    const setup = functionFor(propertyExpression(setupProperty), factory.module);
+    if (!setup) return fail();
+
+    let facadeName: string | null = null;
+    let facadeKey: string | null = null;
+    let forwardsGetFocusable = false;
+    const inspectSetup = (node: ts.Node): void => {
+      if (node !== setup.fn && isFunctionLike(node)) return;
+      if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && node.initializer) {
+        const initializer = unwrap(node.initializer);
+        if (ts.isPropertyAccessExpression(initializer)) {
+          const owner = unwrap(initializer.expression);
+          if (ts.isIdentifier(owner) && owner.text === 'facades') {
+            facadeName = node.name.text;
+            facadeKey = initializer.name.text;
+          }
+        }
+      }
+      if (ts.isReturnStatement(node) && node.expression) {
+        const expression = unwrap(node.expression);
+        if (
+          ts.isCallExpression(expression) &&
+          memberName(expression.expression) === 'getFocusable'
+        ) {
+          const owner = memberOwner(expression.expression);
+          const ownerValue = owner ? unwrap(owner) : null;
+          if (ownerValue && ts.isIdentifier(ownerValue) && ownerValue.text === facadeName)
+            forwardsGetFocusable = true;
+        }
+      }
+      ts.forEachChild(node, inspectSetup);
+    };
+    if (setup.fn.body) inspectSetup(setup.fn.body);
+    if (!facadeName || !facadeKey || !forwardsGetFocusable) return fail();
+
+    // The facade key is connected to the actually installed Runtime descriptor,
+    // not a package/name table. Read the registry's descriptor array and follow
+    // the concrete factory/build/facade path to the provider implementation.
+    const runtime = moduleContext.resolveModule(symbol.module.file, '@proto.ui/runtime');
+    if (!runtime) return fail();
+    const runtimeEntry = moduleContext.resolveExport(runtime, 'createRuntimeInstance');
+    const runtimeDeclaration =
+      runtimeEntry && ts.isFunctionDeclaration(runtimeEntry.declaration)
+        ? runtimeEntry.declaration
+        : null;
+    if (!runtimeEntry || !runtimeDeclaration || !runtimeDeclaration.body) return fail();
+    const findRegistry = (node: ts.Node): ts.ArrayLiteralExpression | undefined => {
+      if (node !== runtimeDeclaration && isFunctionLike(node)) return;
+      if (ts.isNewExpression(node)) {
+        const expression = unwrap(node.expression);
+        if (ts.isIdentifier(expression) && expression.text === 'RuntimeModuleOrchestrator') {
+          const array = node.arguments?.find((argument): argument is ts.ArrayLiteralExpression =>
+            ts.isArrayLiteralExpression(argument)
+          );
+          if (array) return array;
+        }
+      }
+      return ts.forEachChild(node, findRegistry);
+    };
+    const registry = findRegistry(runtimeDeclaration.body);
+    if (!registry) return fail();
+
+    let descriptorConfig: ts.ObjectLiteralExpression | null = null;
+    let createExpression: ts.Node | undefined;
+    for (const element of registry.elements) {
+      if (ts.isSpreadElement(element)) return fail();
+      const candidate = moduleContext.resolveReference(unwrap(element), runtimeEntry.module);
+      if (
+        !candidate ||
+        !ts.isVariableDeclaration(candidate.declaration) ||
+        !candidate.declaration.initializer ||
+        !stableVariable(candidate.declaration, candidate.module)
+      )
+        continue;
+      const initializer = unwrap(candidate.declaration.initializer);
+      if (!ts.isCallExpression(initializer)) continue;
+      const defineModule = moduleContext.resolveReference(initializer.expression, candidate.module);
+      if (
+        !defineModule ||
+        !ts.isFunctionDeclaration(defineModule.declaration) ||
+        defineModule.declaration.name?.text !== 'defineModule'
+      )
+        continue;
+      const candidateConfig = initializer.arguments[0] ? unwrap(initializer.arguments[0]) : null;
+      if (!candidateConfig || !ts.isObjectLiteralExpression(candidateConfig)) continue;
+      const nameProperty = configProperty(candidateConfig, 'name');
+      const name =
+        nameProperty && ts.isPropertyAssignment(nameProperty)
+          ? literalString(nameProperty.initializer, candidate.module, new Map())
+          : null;
+      if (name !== facadeKey) continue;
+      descriptorConfig = candidateConfig;
+      const createProperty = configProperty(candidateConfig, 'create');
+      createExpression = createProperty ? propertyExpression(createProperty) : undefined;
+      break;
+    }
+    if (!descriptorConfig || !createExpression) return fail();
+    const createFactory = functionFor(createExpression, runtimeEntry.module);
+    if (!createFactory) return fail();
+    const createReturn = directReturnCall(createFactory.fn, createFactory.module);
+    if (!createReturn) return fail();
+    const createModuleConfig = createReturn.call.arguments[0]
+      ? unwrap(createReturn.call.arguments[0])
+      : null;
+    if (!createModuleConfig || !ts.isObjectLiteralExpression(createModuleConfig)) return fail();
+    const buildProperty = configProperty(createModuleConfig, 'build');
+    const build = buildProperty
+      ? functionFor(propertyExpression(buildProperty), createFactory.module)
+      : null;
+    if (!build || !build.fn.body || !ts.isBlock(build.fn.body)) return fail();
+
+    let stateFacadeName: string | null = null;
+    const implementation: { symbol: SymbolRef | null } = { symbol: null };
+    let implementationName: string | null = null;
+    let stateFacadeArgumentIndex: number | null = null;
+    const inspectBuild = (node: ts.Node): void => {
+      if (node !== build.fn && isFunctionLike(node)) return;
+      if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && node.initializer) {
+        const initializer = unwrap(node.initializer);
+        if (
+          ts.isCallExpression(initializer) &&
+          memberName(initializer.expression) === 'requireFacade'
+        ) {
+          const key = literalString(initializer.arguments[0], build.module, new Map());
+          if (key === 'state') stateFacadeName = node.name.text;
+        }
+        if (ts.isNewExpression(initializer) && ts.isIdentifier(unwrap(initializer.expression))) {
+          const args = initializer.arguments;
+          if (args) {
+            const lastArgument = args.length > 0 ? args[args.length - 1] : undefined;
+            const last = lastArgument ? unwrap(lastArgument) : null;
+            if (stateFacadeName && last && ts.isIdentifier(last) && last.text === stateFacadeName) {
+              implementation.symbol = moduleContext.resolveReference(
+                initializer.expression,
+                build.module
+              );
+              implementationName = node.name.text;
+              stateFacadeArgumentIndex = args.length - 1;
+            }
+          }
+        }
+      }
+      ts.forEachChild(node, inspectBuild);
+    };
+    inspectBuild(build.fn.body);
+    const implementationSymbol = implementation.symbol;
+    if (
+      !stateFacadeName ||
+      !implementationSymbol ||
+      !implementationName ||
+      !ts.isClassDeclaration(implementationSymbol.declaration)
+    )
+      return fail();
+
+    const buildReturn = directReturnExpression(build.fn, build.module);
+    const buildOutput = buildReturn?.expression;
+    const facadeProperty =
+      buildOutput && ts.isObjectLiteralExpression(buildOutput)
+        ? configProperty(buildOutput, 'facade')
+        : null;
+    const facadeObject = facadeProperty ? propertyExpression(facadeProperty) : undefined;
+    if (!facadeObject || !ts.isObjectLiteralExpression(facadeObject)) return fail();
+    const getFocusableProperty = configProperty(facadeObject, 'getFocusable');
+    const getFocusable = getFocusableProperty
+      ? functionFor(propertyExpression(getFocusableProperty), createFactory.module)
+      : null;
+    if (!getFocusable) return fail();
+    const getFocusableReturn = directReturnCall(getFocusable.fn, getFocusable.module);
+    if (!getFocusableReturn) return fail();
+    const getFocusableOwner = memberOwner(getFocusableReturn.call.expression);
+    const getFocusableOwnerValue = getFocusableOwner ? unwrap(getFocusableOwner) : null;
+    if (
+      !getFocusableOwnerValue ||
+      !ts.isIdentifier(getFocusableOwnerValue) ||
+      getFocusableOwnerValue.text !== implementationName ||
+      memberName(getFocusableReturn.call.expression) !== 'getFocusable'
+    )
+      return fail();
+
+    const classDeclaration = implementationSymbol.declaration;
+    const constructor = classDeclaration.members.find(ts.isConstructorDeclaration);
+    const getFocusableMethod = classDeclaration.members.find(
+      (member): member is ts.MethodDeclaration =>
+        ts.isMethodDeclaration(member) && propertyName(member.name) === 'getFocusable'
+    );
+    if (!constructor || !constructor.body || !getFocusableMethod) return fail();
+    const methodReturn = directReturnExpression(getFocusableMethod, implementationSymbol.module);
+    if (!methodReturn) return fail();
+    const methodMember = memberName(methodReturn.expression);
+    const methodOwner = memberOwner(methodReturn.expression);
+    if (
+      methodMember !== 'focusableHandle' ||
+      !methodOwner ||
+      unwrap(methodOwner).kind !== ts.SyntaxKind.ThisKeyword
+    )
+      return fail();
+    const handleAssignment = assignmentValue(constructor.body, 'this', 'focusableHandle');
+    if (!handleAssignment || !ts.isObjectLiteralExpression(unwrap(handleAssignment.value)))
+      return fail();
+    const handleObject = unwrap(handleAssignment.value) as ts.ObjectLiteralExpression;
+
+    if (stateFacadeArgumentIndex === null) return fail();
+    const stateFacadeParam = constructor.parameters[stateFacadeArgumentIndex];
+    const statePortParam = constructor.parameters[stateFacadeArgumentIndex - 1];
+    if (
+      !stateFacadeParam ||
+      !ts.isIdentifier(stateFacadeParam.name) ||
+      !statePortParam ||
+      !ts.isIdentifier(statePortParam.name)
+    )
+      return fail();
+    const stateFacadeIdentifier = stateFacadeParam.name;
+    const statePortIdentifier = statePortParam.name;
+
+    const proofs = new Map<string, ProviderStateProof>();
+    let uncertainMember = false;
+    for (const property of handleObject.properties) {
+      if (ts.isSpreadAssignment(property)) {
+        uncertainMember = true;
+        continue;
+      }
+      if (!ts.isPropertyAssignment(property)) continue;
+      const name = propertyName(property.name);
+      const target = name ? thisMember(property.initializer) : null;
+      if (!name || !target) continue;
+      const observed = assignmentValue(constructor.body, 'this', target);
+      if (!observed) continue;
+      const observedCall = unwrap(observed.value);
+      if (
+        !ts.isCallExpression(observedCall) ||
+        memberName(observedCall.expression) !== 'createObservedHandle'
+      )
+        continue;
+      const observedOwner = memberOwner(observedCall.expression);
+      const observedOwnerValue = observedOwner ? unwrap(observedOwner) : null;
+      if (
+        !observedOwnerValue ||
+        !ts.isIdentifier(observedOwnerValue) ||
+        observedOwnerValue.text !== statePortIdentifier.text ||
+        observedCall.arguments.length !== 1
+      )
+        continue;
+      const owned = thisMember(observedCall.arguments[0]);
+      if (!owned) continue;
+      const ownedAssignment = assignmentValue(constructor.body, 'this', owned);
+      if (!ownedAssignment) continue;
+      const ownedCall = unwrap(ownedAssignment.value);
+      if (!ts.isCallExpression(ownedCall) || memberName(ownedCall.expression) !== 'bool') continue;
+      const ownedOwner = memberOwner(ownedCall.expression);
+      const ownedOwnerValue = ownedOwner ? unwrap(ownedOwner) : null;
+      if (
+        !ownedOwnerValue ||
+        !ts.isIdentifier(ownedOwnerValue) ||
+        ownedOwnerValue.text !== stateFacadeIdentifier.text
+      )
+        continue;
+      const semantic = literalString(
+        ownedCall.arguments[0],
+        implementationSymbol.module,
+        new Map()
+      );
+      const declaredName = stateNameAssignment(constructor.body, owned);
+      if (!semantic || !declaredName) continue;
+      proofs.set(name, {
+        owner: sourceRef(declaration, symbol.module.file),
+        declaredName,
+        semantic,
+        declaration: sourceRef(ownedCall),
+      });
+    }
+    if (uncertainMember && proofs.size === 0) return fail();
+    if (proofs.size === 0) return fail();
+    providerStateCache.set(cacheKey, proofs);
+    return proofs;
+  };
+
+  const canonicalFocusableStates = (
+    call: ts.CallExpression,
+    module: Module
+  ): ReadonlyMap<string, ProviderStateProof> | null => {
+    if (call.arguments.length !== 0) return null;
+    let symbol = moduleContext.resolveReference(unwrap(call.expression), module);
+    if (!symbol) return null;
+    const seen = new Set<string>();
+    while (
+      ts.isVariableDeclaration(symbol.declaration) &&
+      symbol.declaration.initializer &&
+      stableVariable(symbol.declaration, symbol.module) &&
+      ts.isIdentifier(unwrap(symbol.declaration.initializer))
+    ) {
+      const key = symbolKey(symbol);
+      if (seen.has(key)) return null;
+      seen.add(key);
+      const alias = moduleContext.resolveReference(
+        unwrap(symbol.declaration.initializer),
+        symbol.module
+      );
+      if (!alias) return null;
+      symbol = alias;
+    }
+    let canonical = canonicalFocusableCache.get(module.file);
+    if (canonical === undefined) {
+      const hooks = moduleContext.resolveModule(module.file, '@proto.ui/hooks');
+      canonical = hooks ? moduleContext.resolveExport(hooks, 'asFocusable') : null;
+      canonicalFocusableCache.set(module.file, canonical);
+    }
+    if (!canonical || symbolKey(canonical) !== symbolKey(symbol)) return null;
+    return focusProviderStates(symbol);
+  };
+
+  const canonicalAccessibleCall = (call: ts.CallExpression, module: Module): boolean => {
+    if (call.arguments.length !== 0) return false;
+    let symbol = moduleContext.resolveReference(unwrap(call.expression), module);
+    if (!symbol) return false;
+    const seen = new Set<string>();
+    while (
+      ts.isVariableDeclaration(symbol.declaration) &&
+      symbol.declaration.initializer &&
+      stableVariable(symbol.declaration, symbol.module) &&
+      ts.isIdentifier(unwrap(symbol.declaration.initializer))
+    ) {
+      const key = symbolKey(symbol);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      const alias = moduleContext.resolveReference(
+        unwrap(symbol.declaration.initializer),
+        symbol.module
+      );
+      if (!alias) return false;
+      symbol = alias;
+    }
+    const hooks = moduleContext.resolveModule(symbol.module.file, '@proto.ui/hooks');
+    const canonical = hooks ? moduleContext.resolveExport(hooks, 'asAccessible') : null;
+    return !!canonical && symbolKey(canonical) === symbolKey(symbol);
   };
 
   const literalString = (
@@ -288,16 +968,23 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
     if (!node) return null;
     const value = unwrap(node);
     if (isStringValue(value)) return value.text;
-    if (!ts.isIdentifier(value) || local.has(value.text)) return local.get(value.text) ?? null;
-    if (stack.has(value.text)) return null;
+    if (!ts.isIdentifier(value)) return null;
+    if (local.has(value.text)) return local.get(value.text) ?? null;
     const symbol = moduleContext.resolveReference(value, module);
-    if (!symbol || !ts.isVariableDeclaration(symbol.declaration) || !symbol.declaration.initializer)
+    if (
+      !symbol ||
+      !ts.isVariableDeclaration(symbol.declaration) ||
+      !symbol.declaration.initializer ||
+      !stableVariable(symbol.declaration, symbol.module)
+    )
       return null;
+    const key = symbolKey(symbol);
+    if (stack.has(key)) return null;
     return literalString(
       symbol.declaration.initializer,
       symbol.module,
       local,
-      new Set(stack).add(value.text)
+      new Set(stack).add(key)
     );
   };
 
@@ -312,7 +999,20 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
       if (name === 'stateHandles') {
         const members = new Map<string, HookSourceValue>();
         for (const [key, state] of value.stateHandles) members.set(key, { kind: 'state', state });
-        return { matched: true, value: { kind: 'object', members } };
+        return {
+          matched: true,
+          value: {
+            kind: 'object',
+            members,
+            ...(value.stateHandlesClosed ? { closed: true } : {}),
+          },
+        };
+      }
+      if (name === 'getState') {
+        return {
+          matched: true,
+          value: { kind: 'callable', operation: 'getState', result: value },
+        };
       }
       // Runtime stores an ordered entry array here, not the contract's type map.
       // Named lookup is modeled below; an unproved physical entry index is not.
@@ -331,7 +1031,9 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
       const right = second.state;
       return left.declaredName === right.declaredName &&
         left.variant === right.variant &&
-        left.owner.file === right.owner.file && left.owner.start === right.owner.start &&
+        left.semantic === right.semantic &&
+        left.owner.file === right.owner.file &&
+        left.owner.start === right.owner.start &&
         left.declaration.file === right.declaration.file &&
         left.declaration.start === right.declaration.start
         ? first
@@ -339,15 +1041,25 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
     }
     if (first.kind === 'object' && second.kind === 'object') {
       const members = new Map<string, HookSourceValue>();
-      for (const [key, value] of first.members) {
+      const keys = new Set([...first.members.keys(), ...second.members.keys()]);
+      for (const key of keys) {
+        const value = first.members.get(key);
         const other = second.members.get(key);
-        if (other) members.set(key, joinValues(value, other));
+        if (value && other) members.set(key, joinValues(value, other));
+        else members.set(key, UNKNOWN('missing reachable member'));
       }
       return {
-        kind: 'object', members,
+        kind: 'object',
+        members,
         uncertainKeys: first.uncertainKeys || second.uncertainKeys,
+        ...(first.closed && second.closed ? { closed: true } : {}),
         ...(first.arrayLength === second.arrayLength ? { arrayLength: first.arrayLength } : {}),
       };
+    }
+    if (first.kind === 'callable' && second.kind === 'callable') {
+      return first.operation === second.operation && first.result === second.result
+        ? first
+        : UNKNOWN('different callable owners');
     }
     return UNKNOWN('unproved reachable alternative');
   };
@@ -396,7 +1108,14 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
           members.set(key, held.value);
         }
       }
-      return { matched, value: { kind: 'object', members, uncertainKeys } };
+      return {
+        matched,
+        value: {
+          kind: 'object',
+          members,
+          uncertainKeys,
+        },
+      };
     }
     if (ts.isConditionalExpression(value)) {
       const condition = unwrap(value.condition);
@@ -406,25 +1125,58 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
         return evaluate(value.whenFalse, source, environment);
       const first = evaluate(value.whenTrue, source, environment);
       const second = evaluate(value.whenFalse, source, environment);
-      return { matched: first.matched || second.matched, value: joinValues(first.value, second.value) };
+      return {
+        matched: first.matched || second.matched,
+        value: joinValues(first.value, second.value),
+      };
     }
     if (ts.isCallExpression(value)) {
       const property = memberName(value.expression);
       const owner = memberOwner(value.expression);
+      const callee = evaluate(value.expression, source, environment);
+      if (callee.value.kind === 'callable' && callee.value.operation === 'getState') {
+        const key = literalString(value.arguments[0], moduleForSource(source), new Map());
+        if (key !== null && callee.value.result.stateHandles.has(key)) {
+          return {
+            matched: callee.matched,
+            value: { kind: 'state', state: callee.value.result.stateHandles.get(key)! },
+          };
+        }
+        return {
+          matched: callee.matched,
+          value: UNKNOWN(key === null ? 'dynamic state key' : `missing state ${key}`),
+        };
+      }
       if ((property === 'getAsHook' || property === 'getAsHookHandle') && owner) {
         const base = evaluate(owner, source, environment);
         const key = literalString(value.arguments[0], moduleForSource(source), new Map());
-        if (
-          base.value.kind === 'result' &&
-          key !== null &&
-          base.value.children.has(key)
-        ) {
+        if (base.value.kind === 'result' && key !== null && base.value.children.has(key)) {
           const entry = base.value.children.get(key)!;
           return property === 'getAsHook'
             ? { matched: base.matched, value: entry }
             : memberValue(entry, 'handle');
         }
-        return { matched: base.matched, value: UNKNOWN(key === null ? 'dynamic child key' : `missing child ${key}`) };
+        return {
+          matched: base.matched,
+          value: UNKNOWN(key === null ? 'dynamic child key' : `missing child ${key}`),
+        };
+      }
+      const providerStates = canonicalFocusableStates(value, moduleForSource(source));
+      if (providerStates) {
+        const members = new Map<string, HookSourceValue>();
+        for (const [name, proof] of providerStates) {
+          members.set(name, {
+            kind: 'state',
+            state: {
+              owner: proof.owner,
+              declaration: proof.declaration,
+              declaredName: proof.declaredName,
+              variant: proof.declaredName,
+              semantic: proof.semantic,
+            },
+          });
+        }
+        return { matched: true, value: { kind: 'object', members } };
       }
       const producer = producerForCall(value, source);
       if (producer) {
@@ -433,10 +1185,13 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
           ? { matched: true, value: captured.value.handle ?? captured.value }
           : captured;
       }
-      const imported = ts.isIdentifier(unwrap(value.expression))
-        ? importedHookBinding(moduleForSource(source), unwrap(value.expression).text)
+      if (callee.matched && callee.value.kind === 'unknown') return callee;
+      const calleeValue = unwrap(value.expression);
+      const imported = ts.isIdentifier(calleeValue)
+        ? importedHookBinding(moduleForSource(source), calleeValue.text)
         : null;
-      if (imported) return { matched: true, value: UNKNOWN(`unresolved imported hook ${imported.local}`) };
+      if (imported)
+        return { matched: true, value: UNKNOWN(`unresolved imported hook ${imported.local}`) };
       return { matched: false, value: UNKNOWN('unresolved call') };
     }
     if (ts.isPropertyAccessExpression(value) || ts.isElementAccessExpression(value)) {
@@ -456,10 +1211,18 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
           if (index !== null) index++;
           continue;
         }
-        const held = evaluate(ts.isSpreadElement(element) ? element.expression : element, source, environment);
+        const held = evaluate(
+          ts.isSpreadElement(element) ? element.expression : element,
+          source,
+          environment
+        );
         matched ||= held.matched;
         if (ts.isSpreadElement(element)) {
-          if (index === null || held.value.kind !== 'object' || held.value.arrayLength === undefined) {
+          if (
+            index === null ||
+            held.value.kind !== 'object' ||
+            held.value.arrayLength === undefined
+          ) {
             index = null;
             continue;
           }
@@ -472,7 +1235,11 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
       }
       return {
         matched,
-        value: { kind: 'object', members, ...(index === null ? { uncertainKeys: true } : { arrayLength: index }) },
+        value: {
+          kind: 'object',
+          members,
+          ...(index === null ? { uncertainKeys: true } : { arrayLength: index }),
+        },
       };
     }
     return { matched: false, value: UNKNOWN('unsupported expression') };
@@ -485,9 +1252,10 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
     if (summaryStack.has(key)) return { matched: true, value: UNKNOWN('producer cycle') };
     summaryStack.add(key);
     const nameProperty = configProperty(producer.config, 'name');
-    const name = nameProperty && ts.isPropertyAssignment(nameProperty)
-      ? literalString(nameProperty.initializer, producer.module, new Map())
-      : null;
+    const name =
+      nameProperty && ts.isPropertyAssignment(nameProperty)
+        ? literalString(nameProperty.initializer, producer.module, new Map())
+        : null;
     const setupProperty = configProperty(producer.config, 'setup');
     const setupExpression = setupProperty
       ? ts.isPropertyAssignment(setupProperty)
@@ -498,62 +1266,722 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
     const stateHandles = new Map<string, HookSourceState>();
     const children = new Map<string, HookSourceValue>();
     const activeSetupFunctions = new Set<string>();
+    let setupComplete = true;
+    const markSetupUncertain = (): void => {
+      setupComplete = false;
+    };
 
-    const collectSetup = (fn: ts.FunctionLikeDeclaration, module: Module, active: Set<string>): void => {
-      const functionKey = `${module.file}:${fn.getStart(module.source)}`;
+    const collectSetup = (
+      fn: ts.FunctionLikeDeclaration,
+      module: Module,
+      active: Set<string>,
+      incomingConstants: ReadonlyMap<string, SetupLiteral> = new Map()
+    ): void => {
+      const functionKey = `${module.file}:${fn.getStart(module.source)}:${[...active]
+        .sort()
+        .join(',')}`;
       if (activeSetupFunctions.has(functionKey)) return;
       activeSetupFunctions.add(functionKey);
       const strings = new Map<string, string>();
+      let constants = new Map<string, SetupLiteral>();
+      for (const parameter of fn.parameters) {
+        if (!ts.isIdentifier(parameter.name)) continue;
+        const known = incomingConstants.get(parameter.name.text);
+        if (known !== undefined && !hasBindingWrite(parameter.name, module))
+          constants.set(parameter.name.text, known);
+      }
       const localNames = new Set<string>();
       const localStates = new Map<string, HookSourceState>();
-      const privilegedHandles = new Set<string>();
+      const localStateBindings = new Map<string, HookSourceState>();
+      const privilegedHandles = new Map<string, ReadonlyMap<string, ProviderStateProof>>();
+      const invalidatedProviderMembers = new Map<
+        ReadonlyMap<string, ProviderStateProof>,
+        Set<string> | null
+      >();
+      const activeSubfacades = new Set<string>();
+      const privilegedAccessible = new Set<string>();
+      const stateFromProof = (proof: ProviderStateProof): HookSourceState => ({
+        owner: producer.ref,
+        declaration: proof.declaration,
+        declaredName: proof.declaredName,
+        variant: proof.declaredName,
+        semantic: proof.semantic,
+      });
+      const privilegedState = (expression: ts.Expression): HookSourceState | undefined => {
+        const value = unwrap(expression);
+        if (!ts.isPropertyAccessExpression(value) && !ts.isElementAccessExpression(value))
+          return undefined;
+        const owner = unwrap(value.expression);
+        if (!ts.isIdentifier(owner)) return undefined;
+        const binding = moduleContext.resolveReference(owner, module);
+        const states = binding && privilegedHandles.get(symbolKey(binding));
+        const member = memberName(value);
+        if (member === null || !states) return undefined;
+        const proof = states.get(member);
+        if (!proof) return undefined;
+        const invalidated = invalidatedProviderMembers.get(states);
+        if (invalidated === null || invalidated?.has(member)) return undefined;
+        return stateFromProof(proof);
+      };
+      const providerMemberIsValid = (
+        states: ReadonlyMap<string, ProviderStateProof>,
+        member: string | null
+      ): boolean => {
+        if (member === null) return false;
+        const invalidated = invalidatedProviderMembers.get(states);
+        return invalidated === undefined || (invalidated !== null && !invalidated.has(member));
+      };
+      const providerAccess = (
+        expression: ts.Node
+      ): { states: ReadonlyMap<string, ProviderStateProof>; member: string | null } | null => {
+        let value = unwrap(expression);
+        while (ts.isPropertyAccessExpression(value) || ts.isElementAccessExpression(value)) {
+          const owner = unwrap(value.expression);
+          if (ts.isIdentifier(owner)) {
+            const binding = moduleContext.resolveReference(owner, module);
+            const states = binding ? privilegedHandles.get(symbolKey(binding)) : undefined;
+            return states ? { states, member: memberName(value) } : null;
+          }
+          value = owner;
+        }
+        return null;
+      };
+      const invalidateProviderMember = (
+        states: ReadonlyMap<string, ProviderStateProof>,
+        member: string | null
+      ): void => {
+        const previous = invalidatedProviderMembers.get(states);
+        if (previous === null) return;
+        if (member === null) {
+          invalidatedProviderMembers.set(states, null);
+          return;
+        }
+        const invalidated = previous ?? new Set<string>();
+        invalidated.add(member);
+        invalidatedProviderMembers.set(states, invalidated);
+      };
+      const invalidateProviderAccess = (expression: ts.Node): void => {
+        const access = providerAccess(expression);
+        if (access) invalidateProviderMember(access.states, access.member);
+      };
+      const invalidateProviderWrite = (target: ts.Node): void => {
+        const access = providerAccess(target);
+        if (access) {
+          invalidateProviderMember(access.states, access.member);
+          return;
+        }
+        ts.forEachChild(target, invalidateProviderWrite);
+      };
+      const inspectEscapedProviderValue = (
+        argument: ts.Node,
+        valueModule: Module = module,
+        seen = new Set<string>()
+      ): 'found' | 'safe' | 'unknown' => {
+        const value = unwrap(ts.isSpreadElement(argument) ? argument.expression : argument);
+        if (ts.isIdentifier(value)) {
+          const binding = moduleContext.resolveReference(value, valueModule);
+          const states = binding ? privilegedHandles.get(symbolKey(binding)) : undefined;
+          if (states) {
+            invalidateProviderMember(states, null);
+            return 'found';
+          }
+          if (
+            !binding ||
+            !ts.isVariableDeclaration(binding.declaration) ||
+            !binding.declaration.initializer
+          )
+            return 'safe';
+          const key = symbolKey(binding);
+          if (seen.has(key)) return 'unknown';
+          if (!stableVariable(binding.declaration, binding.module)) return 'unknown';
+          return inspectEscapedProviderValue(
+            binding.declaration.initializer,
+            binding.module,
+            new Set(seen).add(key)
+          );
+        }
+        if (ts.isPropertyAccessExpression(value) || ts.isElementAccessExpression(value))
+          return 'safe';
+        if (ts.isObjectLiteralExpression(value)) {
+          let result: 'found' | 'safe' | 'unknown' = 'safe';
+          for (const property of value.properties) {
+            let current: 'found' | 'safe' | 'unknown' = 'safe';
+            if (ts.isSpreadAssignment(property)) {
+              current = inspectEscapedProviderValue(property.expression, valueModule, seen);
+            } else if (ts.isShorthandPropertyAssignment(property)) {
+              current = inspectEscapedProviderValue(property.name, valueModule, seen);
+            } else if (ts.isPropertyAssignment(property)) {
+              current = inspectEscapedProviderValue(property.initializer, valueModule, seen);
+            } else if (
+              ts.isMethodDeclaration(property) ||
+              ts.isGetAccessorDeclaration(property) ||
+              ts.isSetAccessorDeclaration(property)
+            ) {
+              current = 'safe';
+            }
+            if (current === 'found') result = 'found';
+            else if (current === 'unknown' && result !== 'found') result = 'unknown';
+          }
+          return result;
+        }
+        if (ts.isArrayLiteralExpression(value)) {
+          let result: 'found' | 'safe' | 'unknown' = 'safe';
+          for (const element of value.elements) {
+            if (ts.isOmittedExpression(element)) continue;
+            const current = inspectEscapedProviderValue(element, valueModule, seen);
+            if (current === 'found') result = 'found';
+            else if (current === 'unknown' && result !== 'found') result = 'unknown';
+          }
+          return result;
+        }
+        if (ts.isConditionalExpression(value)) {
+          const first = inspectEscapedProviderValue(value.whenTrue, valueModule, seen);
+          const second = inspectEscapedProviderValue(value.whenFalse, valueModule, seen);
+          if (first === 'found' || second === 'found') return 'found';
+          if (first === 'unknown' || second === 'unknown') return 'unknown';
+        }
+        return 'safe';
+      };
+      const invalidateEscapedProviderArgument = (argument: ts.Node): void => {
+        if (inspectEscapedProviderValue(argument) === 'unknown') markSetupUncertain();
+      };
+      const literalValue = (expression: ts.Node | undefined): SetupLiteral | null => {
+        if (!expression) return null;
+        const value = unwrap(expression);
+        if (isStringValue(value)) return value.text;
+        if (ts.isNumericLiteral(value)) return Number(value.text);
+        if (value.kind === ts.SyntaxKind.TrueKeyword) return true;
+        if (value.kind === ts.SyntaxKind.FalseKeyword) return false;
+        if (ts.isIdentifier(value)) {
+          const known = constants.get(value.text);
+          if (known !== undefined) return known;
+          return literalString(value, module, strings);
+        }
+        return null;
+      };
+      const conditionValue = (expression: ts.Node): boolean | null => {
+        const value = unwrap(expression);
+        if (!ts.isBinaryExpression(value)) return null;
+        const left = literalValue(value.left);
+        const right = literalValue(value.right);
+        if (left === null || right === null) return null;
+        switch (value.operatorToken.kind) {
+          case ts.SyntaxKind.EqualsEqualsToken:
+            if (typeof left !== typeof right) return null;
+            return left === right;
+          case ts.SyntaxKind.EqualsEqualsEqualsToken:
+            return left === right;
+          case ts.SyntaxKind.ExclamationEqualsToken:
+            if (typeof left !== typeof right) return null;
+            return left !== right;
+          case ts.SyntaxKind.ExclamationEqualsEqualsToken:
+            return left !== right;
+          default:
+            return null;
+        }
+      };
+      const providerStatesFor = (
+        expression: ts.Expression
+      ): ReadonlyMap<string, ProviderStateProof> | null => {
+        const value = unwrap(expression);
+        if (ts.isCallExpression(value)) return canonicalFocusableStates(value, module);
+        if (ts.isConditionalExpression(value)) {
+          const condition = conditionValue(value.condition);
+          if (condition === true) return providerStatesFor(value.whenTrue);
+          if (condition === false) return providerStatesFor(value.whenFalse);
+        }
+        return null;
+      };
+      const stateFromHandle = (expression: ts.Node): HookSourceState | undefined => {
+        const value = unwrap(expression);
+        if (ts.isIdentifier(value)) {
+          const binding = moduleContext.resolveReference(value, module);
+          return binding ? localStateBindings.get(symbolKey(binding)) : undefined;
+        }
+        return ts.isPropertyAccessExpression(value) || ts.isElementAccessExpression(value)
+          ? privilegedState(value)
+          : undefined;
+      };
+      const finiteExposureLoop = (node: ts.ForOfStatement): boolean => {
+        const initializer = node.initializer;
+        if (!ts.isVariableDeclarationList(initializer) || initializer.declarations.length !== 1)
+          return false;
+        const declaration = initializer.declarations[0];
+        if (!ts.isArrayBindingPattern(declaration.name) || declaration.name.elements.length !== 2)
+          return false;
+        const keyElement = declaration.name.elements[0];
+        const stateElement = declaration.name.elements[1];
+        if (
+          !ts.isBindingElement(keyElement) ||
+          !ts.isBindingElement(stateElement) ||
+          !ts.isIdentifier(keyElement.name) ||
+          !ts.isIdentifier(stateElement.name)
+        )
+          return false;
+        const keyName = keyElement.name;
+        const stateName = stateElement.name;
+        const expression = unwrap(node.expression);
+        if (
+          !ts.isCallExpression(expression) ||
+          !ts.isPropertyAccessExpression(expression.expression)
+        )
+          return false;
+        if (
+          expression.expression.name.text !== 'entries' ||
+          !ts.isIdentifier(unwrap(expression.expression.expression))
+        )
+          return false;
+        const object = expression.arguments[0] ? unwrap(expression.arguments[0]) : null;
+        if (!object || !ts.isObjectLiteralExpression(object)) return false;
+        const entries = new Map<string, HookSourceState>();
+        for (const property of object.properties) {
+          if (ts.isSpreadAssignment(property)) return false;
+          const key = propertyName(
+            ts.isPropertyAssignment(property) ||
+              ts.isMethodDeclaration(property) ||
+              ts.isGetAccessorDeclaration(property) ||
+              ts.isSetAccessorDeclaration(property)
+              ? property.name
+              : ts.isShorthandPropertyAssignment(property)
+                ? property.name
+                : undefined
+          );
+          if (key === null) return false;
+          const value = ts.isShorthandPropertyAssignment(property)
+            ? property.name
+            : ts.isPropertyAssignment(property)
+              ? property.initializer
+              : null;
+          const state = value && privilegedState(value);
+          const localValue = value ? unwrap(value) : null;
+          const local =
+            localValue && ts.isIdentifier(localValue)
+              ? localStates.get(localValue.text)
+              : undefined;
+          if (!state && !local) return false;
+          entries.set(key, state ?? local!);
+        }
+        let captured = false;
+        const visit = (current: ts.Node): void => {
+          if (current !== node.statement && isFunctionLike(current)) return;
+          if (ts.isCallExpression(current)) {
+            const callExpression = unwrap(current.expression);
+            const owner = memberOwner(callExpression);
+            const container = owner ? memberOwner(owner) : null;
+            const containerValue = container ? unwrap(container) : null;
+            const ownerValue =
+              owner && (ts.isPropertyAccessExpression(owner) || ts.isElementAccessExpression(owner))
+                ? owner
+                : null;
+            const binding =
+              containerValue && ts.isIdentifier(containerValue)
+                ? moduleContext.resolveReference(containerValue, module)
+                : null;
+            if (
+              ownerValue &&
+              containerValue &&
+              ts.isIdentifier(containerValue) &&
+              binding &&
+              activeBindings.has(symbolKey(binding)) &&
+              memberName(callExpression) === 'state' &&
+              isExposeStateCall(ownerValue, containerValue.text) &&
+              current.arguments.length > 1
+            ) {
+              const key = unwrap(current.arguments[0]);
+              const value = unwrap(current.arguments[1]);
+              if (
+                ts.isIdentifier(key) &&
+                key.text === keyName.text &&
+                ts.isIdentifier(value) &&
+                value.text === stateName.text
+              ) {
+                for (const state of entries.values()) stateHandles.set(state.declaredName, state);
+                captured = true;
+              }
+            }
+          }
+          ts.forEachChild(current, visit);
+        };
+        visit(node.statement);
+        return captured;
+      };
+      const finiteNonStateLoop = (node: ts.ForOfStatement): boolean => {
+        const expression = unwrap(node.expression);
+        if (!ts.isArrayLiteralExpression(expression)) return false;
+        if (!expression.elements.every((element) => ts.isStringLiteralLike(element))) return false;
+        let uncertain = false;
+        const visit = (current: ts.Node): void => {
+          if (uncertain || (current !== node.statement && isFunctionLike(current))) return;
+          if (ts.isCallExpression(current)) {
+            const call = unwrap(current.expression);
+            const owner = memberOwner(call);
+            const container = owner ? memberOwner(owner) : null;
+            const containerValue = container ? unwrap(container) : null;
+            const binding =
+              containerValue && ts.isIdentifier(containerValue)
+                ? moduleContext.resolveReference(containerValue, module)
+                : null;
+            const method = memberName(call);
+            if (binding && activeBindings.has(symbolKey(binding)) && method === 'state')
+              uncertain = true;
+            if (current.arguments.length > 0) {
+              for (const argument of current.arguments) {
+                const value = unwrap(argument);
+                const argumentBinding = ts.isIdentifier(value)
+                  ? moduleContext.resolveReference(value, module)
+                  : null;
+                if (argumentBinding && activeBindings.has(symbolKey(argumentBinding)))
+                  uncertain = true;
+              }
+            }
+          }
+          ts.forEachChild(current, visit);
+        };
+        visit(node.statement);
+        return !uncertain;
+      };
       for (const parameter of fn.parameters) {
         if (ts.isIdentifier(parameter.name)) localNames.add(parameter.name.text);
       }
-
+      const activeBindings = new Set<string>();
+      for (const parameter of fn.parameters) {
+        if (!ts.isIdentifier(parameter.name) || !active.has(parameter.name.text)) continue;
+        const binding = moduleContext.resolveReference(parameter.name, module);
+        if (binding && !hasBindingWrite(parameter.name, module))
+          activeBindings.add(symbolKey(binding));
+      }
+      const capturesActive = (candidate: ts.FunctionLikeDeclaration): boolean => {
+        let captured = false;
+        const visit = (current: ts.Node): void => {
+          if (captured || (current !== candidate && isFunctionLike(current))) return;
+          if (ts.isIdentifier(current)) {
+            const binding = moduleContext.resolveReference(current, module);
+            if (
+              binding &&
+              (activeBindings.has(symbolKey(binding)) || activeSubfacades.has(symbolKey(binding)))
+            ) {
+              captured = true;
+              return;
+            }
+          }
+          ts.forEachChild(current, visit);
+        };
+        if (candidate.body) visit(candidate.body);
+        return captured;
+      };
+      const providerValueEscapes = (expression: ts.Node): boolean => {
+        const value = unwrap(ts.isSpreadElement(expression) ? expression.expression : expression);
+        if (ts.isIdentifier(value)) {
+          const binding = moduleContext.resolveReference(value, module);
+          return !!binding && privilegedHandles.has(symbolKey(binding));
+        }
+        return !!providerAccess(value);
+      };
+      const providerWriteTarget = (target: ts.Node): boolean => {
+        if (providerAccess(target)) return true;
+        let found = false;
+        ts.forEachChild(target, (child) => {
+          if (!found && providerWriteTarget(child)) found = true;
+        });
+        return found;
+      };
+      const capturesProviderMutationOrEscape = (candidate: ts.FunctionLikeDeclaration): boolean => {
+        let captured = false;
+        const visit = (current: ts.Node): void => {
+          if (captured || (current !== candidate && isFunctionLike(current))) return;
+          if (
+            ts.isBinaryExpression(current) &&
+            current.operatorToken.kind >= ts.SyntaxKind.FirstAssignment &&
+            current.operatorToken.kind <= ts.SyntaxKind.LastAssignment
+          ) {
+            captured = providerWriteTarget(current.left);
+          } else if (
+            (ts.isPrefixUnaryExpression(current) || ts.isPostfixUnaryExpression(current)) &&
+            (current.operator === ts.SyntaxKind.PlusPlusToken ||
+              current.operator === ts.SyntaxKind.MinusMinusToken)
+          ) {
+            captured = providerWriteTarget(current.operand);
+          } else if (ts.isDeleteExpression(current)) {
+            captured = providerWriteTarget(current.expression);
+          } else if (
+            (ts.isCallExpression(current) || ts.isNewExpression(current)) &&
+            current.arguments?.some((argument) => providerValueEscapes(argument))
+          ) {
+            captured = true;
+          } else if (ts.isReturnStatement(current) && current.expression) {
+            captured = providerValueEscapes(current.expression);
+          }
+          if (captured) return;
+          ts.forEachChild(current, visit);
+        };
+        if (candidate.body) visit(candidate.body);
+        return captured;
+      };
+      const containsActiveBinding = (argument: ts.Node): boolean => {
+        const value = unwrap(ts.isSpreadElement(argument) ? argument.expression : argument);
+        let found = false;
+        const visit = (current: ts.Node): void => {
+          if (found) return;
+          if (ts.isIdentifier(current)) {
+            const binding = moduleContext.resolveReference(current, module);
+            if (binding && activeBindings.has(symbolKey(binding))) {
+              found = true;
+              return;
+            }
+          }
+          ts.forEachChild(current, visit);
+        };
+        visit(value);
+        return found;
+      };
       const walk = (node: ts.Node): void => {
-        if (node !== fn && isFunctionLike(node)) return;
+        if (node !== fn && isFunctionLike(node)) {
+          let parent = node.parent;
+          while (
+            parent &&
+            (ts.isParenthesizedExpression(parent) ||
+              ts.isAsExpression(parent) ||
+              ts.isTypeAssertionExpression(parent) ||
+              ts.isNonNullExpression(parent))
+          )
+            parent = parent.parent;
+          if (parent && ts.isCallExpression(parent) && unwrap(parent.expression) === node) {
+            const helperActive = new Set<string>();
+            const helperConstants = new Map<string, SetupLiteral>();
+            let unprovedActiveArgument = false;
+            for (let index = 0; index < parent.arguments.length; index++) {
+              const argument = parent.arguments[index];
+              const value = argument
+                ? unwrap(ts.isSpreadElement(argument) ? argument.expression : argument)
+                : null;
+              const argumentBinding =
+                value && ts.isIdentifier(value)
+                  ? moduleContext.resolveReference(value, module)
+                  : null;
+              if (argumentBinding && activeBindings.has(symbolKey(argumentBinding))) {
+                const parameter = node.parameters[index];
+                if (parameter && ts.isIdentifier(parameter.name) && !parameter.dotDotDotToken)
+                  helperActive.add(parameter.name.text);
+                else unprovedActiveArgument = true;
+              } else if (containsActiveBinding(argument)) {
+                unprovedActiveArgument = true;
+              }
+            }
+            for (let index = 0; index < node.parameters.length; index++) {
+              const parameter = node.parameters[index];
+              if (!ts.isIdentifier(parameter.name)) continue;
+              const argument = parent.arguments[index];
+              const known = argument ? literalValue(argument) : literalValue(parameter.initializer);
+              if (known !== null) helperConstants.set(parameter.name.text, known);
+            }
+            const deferred =
+              !!node.asteriskToken ||
+              !!node.modifiers?.some((modifier) => modifier.kind === ts.SyntaxKind.AsyncKeyword);
+            if (node.parameters.length === 0 && !deferred && !unprovedActiveArgument) {
+              if (node.body) walk(node.body);
+            } else if (!deferred && helperActive.size > 0 && !unprovedActiveArgument) {
+              collectSetup(node, module, helperActive, helperConstants);
+            } else if (
+              unprovedActiveArgument ||
+              capturesActive(node) ||
+              capturesProviderMutationOrEscape(node)
+            ) {
+              markSetupUncertain();
+            }
+          } else if (capturesActive(node) || capturesProviderMutationOrEscape(node)) {
+            markSetupUncertain();
+          }
+          return;
+        }
+        if (
+          ts.isBinaryExpression(node) &&
+          node.operatorToken.kind >= ts.SyntaxKind.FirstAssignment &&
+          node.operatorToken.kind <= ts.SyntaxKind.LastAssignment
+        ) {
+          invalidateProviderWrite(node.left);
+        } else if (
+          (ts.isPrefixUnaryExpression(node) || ts.isPostfixUnaryExpression(node)) &&
+          (node.operator === ts.SyntaxKind.PlusPlusToken ||
+            node.operator === ts.SyntaxKind.MinusMinusToken)
+        ) {
+          invalidateProviderAccess(node.operand);
+        } else if (ts.isDeleteExpression(node)) {
+          invalidateProviderAccess(node.expression);
+        } else if (
+          (ts.isForInStatement(node) || ts.isForOfStatement(node)) &&
+          ts.isExpression(node.initializer)
+        ) {
+          invalidateProviderAccess(node.initializer);
+        }
+        if (
+          ts.isVariableDeclaration(node) &&
+          ts.isObjectBindingPattern(node.name) &&
+          node.initializer
+        ) {
+          const initializer = unwrap(node.initializer);
+          let states: ReadonlyMap<string, ProviderStateProof> | null = null;
+          if (ts.isCallExpression(initializer)) {
+            states = canonicalFocusableStates(initializer, module);
+          } else if (ts.isIdentifier(initializer)) {
+            const sourceBinding = moduleContext.resolveReference(initializer, module);
+            states = sourceBinding
+              ? (privilegedHandles.get(symbolKey(sourceBinding)) ?? null)
+              : null;
+          }
+          const stablePattern = (() => {
+            const list = node.parent;
+            if (!ts.isVariableDeclarationList(list) || (list.flags & ts.NodeFlags.Const) === 0)
+              return false;
+            return node.name.elements.every(
+              (element) =>
+                !ts.isBindingElement(element) ||
+                !ts.isIdentifier(element.name) ||
+                !hasBindingWrite(element.name, module)
+            );
+          })();
+          if (states && stablePattern) {
+            for (const element of node.name.elements) {
+              if (!ts.isBindingElement(element) || element.dotDotDotToken) continue;
+              if (!ts.isIdentifier(element.name)) continue;
+              const property = element.propertyName ?? element.name;
+              const key =
+                ts.isIdentifier(property) || ts.isStringLiteralLike(property)
+                  ? property.text
+                  : null;
+              const proof = key === null ? undefined : states.get(key);
+              if (proof && providerMemberIsValid(states, key)) {
+                const state = stateFromProof(proof);
+                localStates.set(element.name.text, state);
+                const binding = moduleContext.resolveReference(element.name, module);
+                if (binding) localStateBindings.set(symbolKey(binding), state);
+              }
+            }
+          }
+        }
+        if (ts.isForOfStatement(node)) {
+          if (!finiteExposureLoop(node) && !finiteNonStateLoop(node)) markSetupUncertain();
+        } else if (
+          ts.isIfStatement(node) ||
+          ts.isConditionalExpression(node) ||
+          ts.isSwitchStatement(node) ||
+          ts.isForStatement(node) ||
+          ts.isForInStatement(node) ||
+          ts.isWhileStatement(node) ||
+          ts.isDoStatement(node) ||
+          ts.isTryStatement(node)
+        ) {
+          markSetupUncertain();
+        }
         if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && node.initializer) {
           localNames.add(node.name.text);
           const literal = literalString(node.initializer, module, strings);
-          if (literal !== null) strings.set(node.name.text, literal);
+          const known = literalValue(node.initializer);
+          if (literal !== null && stableVariable(node, module))
+            strings.set(node.name.text, literal);
+          if (known !== null && stableVariable(node, module))
+            constants = new Map(constants).set(node.name.text, known);
           const initializer = unwrap(node.initializer);
+          const binding = moduleContext.resolveReference(node.name, module);
           if (
-            ts.isCallExpression(initializer) &&
-            ts.isIdentifier(initializer.expression) &&
-            initializer.expression.text === 'asFocusable'
+            (ts.isPropertyAccessExpression(initializer) ||
+              ts.isElementAccessExpression(initializer)) &&
+            ts.isIdentifier(unwrap(initializer.expression))
           ) {
-            privilegedHandles.add(node.name.text);
+            const ownerBinding = moduleContext.resolveReference(
+              unwrap(initializer.expression),
+              module
+            );
+            if (ownerBinding && activeBindings.has(symbolKey(ownerBinding)) && binding)
+              activeSubfacades.add(symbolKey(binding));
+          }
+          if (ts.isCallExpression(initializer) || ts.isConditionalExpression(initializer)) {
+            const states = providerStatesFor(initializer);
+            if (states && binding && stableVariable(node, module))
+              privilegedHandles.set(symbolKey(binding), states);
+            if (
+              ts.isCallExpression(initializer) &&
+              canonicalAccessibleCall(initializer, module) &&
+              binding &&
+              stableVariable(node, module)
+            )
+              privilegedAccessible.add(symbolKey(binding));
+            if (
+              ts.isConditionalExpression(initializer) &&
+              conditionValue(initializer.condition) === null &&
+              (providerStatesFor(initializer.whenTrue) || providerStatesFor(initializer.whenFalse))
+            )
+              markSetupUncertain();
+          }
+          const observed = ts.isExpression(initializer) ? privilegedState(initializer) : undefined;
+          if (observed && stableVariable(node, module)) {
+            localStates.set(node.name.text, observed);
+            if (binding) localStateBindings.set(symbolKey(binding), observed);
           }
           if (
-            ts.isPropertyAccessExpression(initializer) &&
-            ts.isIdentifier(unwrap(initializer.expression)) &&
-            privilegedHandles.has(unwrap(initializer.expression).text)
+            ts.isIdentifier(initializer) &&
+            active.has(initializer.text) &&
+            stableVariable(node, module)
           ) {
-            const declared = initializer.name.text;
-            localStates.set(node.name.text, {
-              owner: producer.ref,
-              declaration: sourceRef(initializer),
-              declaredName: declared,
-              variant: declared,
-            });
+            const initializerBinding = moduleContext.resolveReference(initializer, module);
+            if (
+              initializerBinding &&
+              binding &&
+              activeBindings.has(symbolKey(initializerBinding))
+            ) {
+              active.add(node.name.text);
+              activeBindings.add(symbolKey(binding));
+            }
           }
-          if (ts.isIdentifier(initializer) && active.has(initializer.text)) active.add(node.name.text);
+          if (ts.isIdentifier(initializer) && stableVariable(node, module)) {
+            const state = stateFromHandle(initializer);
+            if (state && binding) {
+              localStates.set(node.name.text, state);
+              localStateBindings.set(symbolKey(binding), state);
+            }
+            const sourceBinding = moduleContext.resolveReference(initializer, module);
+            const targetBinding = moduleContext.resolveReference(node.name, module);
+            const states = sourceBinding && privilegedHandles.get(symbolKey(sourceBinding));
+            if (states && targetBinding) privilegedHandles.set(symbolKey(targetBinding), states);
+            if (
+              sourceBinding &&
+              targetBinding &&
+              privilegedAccessible.has(symbolKey(sourceBinding))
+            )
+              privilegedAccessible.add(symbolKey(targetBinding));
+          }
         }
         if (ts.isCallExpression(node)) {
           const expression = unwrap(node.expression);
           const stateOwner = memberOwner(expression);
           const stateContainer = stateOwner ? memberOwner(stateOwner) : null;
           const stateMethod = memberName(expression);
+          const stateOwnerExpression =
+            stateOwner && ts.isExpression(stateOwner) ? stateOwner : null;
+          const stateContainerExpression = stateContainer ? unwrap(stateContainer) : null;
+          const stateContainerBinding =
+            stateContainerExpression && ts.isIdentifier(stateContainerExpression)
+              ? moduleContext.resolveReference(stateContainerExpression, module)
+              : null;
+          const activeContainer =
+            !!stateContainerBinding && activeBindings.has(symbolKey(stateContainerBinding));
+          const subfacadeOwner = stateOwner ? unwrap(stateOwner) : null;
+          const subfacadeBinding =
+            subfacadeOwner && ts.isIdentifier(subfacadeOwner)
+              ? moduleContext.resolveReference(subfacadeOwner, module)
+              : null;
+          if (subfacadeBinding && activeSubfacades.has(symbolKey(subfacadeBinding)))
+            markSetupUncertain();
           if (
             stateOwner &&
             stateContainer &&
-            ts.isIdentifier(unwrap(stateContainer)) &&
-            active.has(unwrap(stateContainer).text) &&
+            activeContainer &&
             stateMethod &&
             memberName(stateOwner) === 'state'
           ) {
-            if (ts.isPropertyAccessExpression(expression) || ts.isElementAccessExpression(expression)) {
+            if (
+              ts.isPropertyAccessExpression(expression) ||
+              ts.isElementAccessExpression(expression)
+            ) {
               const declared = literalString(node.arguments[0], module, strings);
               if (declared !== null) {
                 const state = {
@@ -564,28 +1992,59 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
                 };
                 stateHandles.set(declared, state);
                 const parent = node.parent;
-                if (
-                  parent &&
-                  ts.isVariableDeclaration(parent) &&
-                  ts.isIdentifier(parent.name)
-                )
+                if (parent && ts.isVariableDeclaration(parent) && ts.isIdentifier(parent.name)) {
                   localStates.set(parent.name.text, state);
+                  const binding = moduleContext.resolveReference(parent.name, module);
+                  if (binding) localStateBindings.set(symbolKey(binding), state);
+                }
+              } else {
+                markSetupUncertain();
               }
             }
           }
           if (
             stateOwner &&
             stateContainer &&
-            ts.isIdentifier(unwrap(stateContainer)) &&
-            active.has(unwrap(stateContainer).text) &&
-            isExposeStateCall(stateOwner, unwrap(stateContainer).text) &&
+            activeContainer &&
+            stateMethod === 'state' &&
+            stateContainerExpression &&
+            ts.isIdentifier(stateContainerExpression) &&
+            stateOwnerExpression &&
+            isExposeStateCall(stateOwnerExpression, stateContainerExpression.text) &&
             node.arguments.length > 1
           ) {
             const handle = unwrap(node.arguments[1]);
-            if (ts.isIdentifier(handle)) {
-              const state = localStates.get(handle.text);
-              if (state) stateHandles.set(state.declaredName, state);
-            }
+            const state = stateFromHandle(handle);
+            if (state) stateHandles.set(state.declaredName, state);
+            else markSetupUncertain();
+          } else if (stateOwner && stateContainer && activeContainer && stateMethod === 'state') {
+            markSetupUncertain();
+          }
+          const exposedStateCall =
+            activeContainer &&
+            stateMethod === 'state' &&
+            stateContainerExpression &&
+            ts.isIdentifier(stateContainerExpression) &&
+            stateOwnerExpression &&
+            isExposeStateCall(stateOwnerExpression, stateContainerExpression.text);
+          if (stateMethod === 'state' && node.arguments.length > 1 && !exposedStateCall) {
+            const accessibleOwner = stateOwner ? unwrap(stateOwner) : null;
+            const accessibleBinding =
+              accessibleOwner && ts.isIdentifier(accessibleOwner)
+                ? moduleContext.resolveReference(accessibleOwner, module)
+                : null;
+            const directAccessible =
+              accessibleOwner && ts.isCallExpression(accessibleOwner)
+                ? canonicalAccessibleCall(accessibleOwner, module)
+                : false;
+            // A11y.state mutates the A11y IR, not Def capture. Keep a proven
+            // canonical A11y call closed, but never synthesize its argument as
+            // a parent state handle.
+            if (
+              !directAccessible &&
+              !(accessibleBinding && privilegedAccessible.has(symbolKey(accessibleBinding)))
+            )
+              markSetupUncertain();
           }
           const calleeName = ts.isIdentifier(expression) ? expression.text : null;
           const childProducer =
@@ -613,50 +2072,89 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
               if (childName) children.set(childName, child.value);
             }
           } else {
-            const callee = ts.isIdentifier(expression)
-              ? expression
-              : null;
-            if (callee && node.arguments.length > 0) {
-              const argument = unwrap(node.arguments[0]);
-              if (ts.isIdentifier(argument) && active.has(argument.text)) {
-                const helper = functionFor(callee, module);
-                if (helper) {
-                  if (
-                    helper.fn.asteriskToken ||
-                    helper.fn.modifiers?.some(
-                      (modifier) => modifier.kind === ts.SyntaxKind.AsyncKeyword
-                    )
-                  ) {
-                    ts.forEachChild(node, walk);
-                    return;
-                  }
-                  const helperActive = new Set<string>();
-                  const first = helper.fn.parameters[0];
-                  if (first && ts.isIdentifier(first.name)) helperActive.add(first.name.text);
-                  collectSetup(helper.fn, helper.module, helperActive);
+            const callee = ts.isIdentifier(expression) ? expression : null;
+            const activeArguments: number[] = [];
+            let unprovedActiveArgument = false;
+            for (let index = 0; index < node.arguments.length; index++) {
+              const argument = node.arguments[index];
+              const value = unwrap(ts.isSpreadElement(argument) ? argument.expression : argument);
+              const binding = ts.isIdentifier(value)
+                ? moduleContext.resolveReference(value, module)
+                : null;
+              if (binding && activeBindings.has(symbolKey(binding))) activeArguments.push(index);
+              else if (containsActiveBinding(argument)) unprovedActiveArgument = true;
+            }
+            if (activeArguments.length > 0 || unprovedActiveArgument) {
+              const helper = callee ? functionFor(callee, module) : null;
+              if (!helper) {
+                markSetupUncertain();
+              } else if (
+                helper.fn.asteriskToken ||
+                helper.fn.modifiers?.some(
+                  (modifier) => modifier.kind === ts.SyntaxKind.AsyncKeyword
+                )
+              ) {
+                markSetupUncertain();
+                ts.forEachChild(node, walk);
+                return;
+              } else {
+                const helperActive = new Set<string>();
+                for (const index of activeArguments) {
+                  const parameter = helper.fn.parameters[index];
+                  if (parameter && ts.isIdentifier(parameter.name) && !parameter.dotDotDotToken)
+                    helperActive.add(parameter.name.text);
+                  else unprovedActiveArgument = true;
                 }
+                const helperConstants = new Map<string, SetupLiteral>();
+                for (let index = 0; index < helper.fn.parameters.length; index++) {
+                  const parameter = helper.fn.parameters[index];
+                  if (!ts.isIdentifier(parameter.name)) continue;
+                  const argument = node.arguments[index];
+                  const known = argument
+                    ? literalValue(argument)
+                    : literalValue(parameter.initializer);
+                  if (known !== null && !hasBindingWrite(parameter.name, helper.module))
+                    helperConstants.set(parameter.name.text, known);
+                }
+                if (unprovedActiveArgument || helperActive.size === 0) markSetupUncertain();
+                else collectSetup(helper.fn, helper.module, helperActive, helperConstants);
               }
             }
           }
+          for (const argument of node.arguments) invalidateEscapedProviderArgument(argument);
         }
+        if (ts.isNewExpression(node)) {
+          for (const argument of node.arguments ?? []) invalidateEscapedProviderArgument(argument);
+        }
+        if (ts.isReturnStatement(node) && node.expression)
+          invalidateEscapedProviderArgument(node.expression);
         ts.forEachChild(node, walk);
       };
 
-      // The function parameter is the active setup definition. Calls to
-      // synchronous helpers receive a fresh active parameter above; callback
-      // bodies never enter this walk and therefore cannot leak later writes.
-      const first = fn.parameters[0];
-      if (first && ts.isIdentifier(first.name)) active.add(first.name.text);
+      // The root setup seeds its first parameter above. Synchronous helpers
+      // receive only parameters corresponding to active call arguments;
+      // callback bodies never enter this walk and therefore cannot leak later
+      // writes.
       if (fn.body) walk(fn.body);
     };
 
-    if (setup) collectSetup(setup.fn, setup.module, new Set());
+    if (setup) {
+      const setupActive = new Set<string>();
+      const first = setup.fn.parameters[0];
+      if (first && ts.isIdentifier(first.name) && !first.dotDotDotToken) {
+        setupActive.add(first.name.text);
+      } else if (first) {
+        markSetupUncertain();
+      }
+      collectSetup(setup.fn, setup.module, setupActive);
+    } else setupComplete = false;
     const result: HookSourceValue = {
       kind: 'result',
       producer: producer.ref,
       name: name ?? '<unknown-hook>',
       stateHandles,
       children,
+      ...(setupComplete ? { stateHandlesClosed: true } : {}),
     };
 
     const projectProperty = configProperty(producer.config, 'projectHandle');
@@ -667,18 +2165,61 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
       : undefined;
     const project = functionFor(projectExpression, producer.module);
     if (projectProperty) result.handle = UNKNOWN('unproved public projection');
-    if (project && !project.fn.asteriskToken && !project.fn.modifiers?.some(
-      (modifier) => modifier.kind === ts.SyntaxKind.AsyncKeyword
-    )) {
+    if (
+      project &&
+      !project.fn.asteriskToken &&
+      !project.fn.modifiers?.some((modifier) => modifier.kind === ts.SyntaxKind.AsyncKeyword)
+    ) {
       const parameter = project.fn.parameters[0];
       const environment = new Map<string, HookSourceValue>();
       for (const parameter of project.fn.parameters) {
         if (ts.isIdentifier(parameter.name))
           environment.set(parameter.name.text, UNKNOWN('unproved projector argument'));
       }
-      if (parameter && ts.isIdentifier(parameter.name)) environment.set(parameter.name.text, result);
+      if (parameter && ts.isIdentifier(parameter.name))
+        environment.set(parameter.name.text, result);
       const returns: HookSourceResolution[] = [];
       let unprovedCompletion = false;
+      const hasEffect = (node: ts.Node, scope: Map<string, HookSourceValue>): boolean => {
+        // A function-valued initializer creates a deferred callable; its body
+        // runs only when the callable is invoked, not while projecting the
+        // handle. An invocation remains a CallExpression root and is still
+        // classified below.
+        if (isFunctionLike(node)) return false;
+        let effect = false;
+        const visit = (current: ts.Node): void => {
+          if (effect || (current !== node && isFunctionLike(current))) return;
+          if (ts.isCallExpression(current)) {
+            // Projector reads of its own result accessors do not change what
+            // the projection returns, so they are not effects.
+            const name = memberName(current.expression);
+            const owner = memberOwner(current.expression);
+            const ownerValue = owner ? unwrap(owner) : null;
+            const pure =
+              (name === 'getState' || name === 'getAsHook' || name === 'getAsHookHandle') &&
+              ownerValue !== null &&
+              ts.isIdentifier(ownerValue) &&
+              scope.has(ownerValue.text);
+            if (!pure) effect = true;
+          } else if (
+            ts.isNewExpression(current) ||
+            ts.isAwaitExpression(current) ||
+            ts.isYieldExpression(current) ||
+            ts.isDeleteExpression(current) ||
+            (ts.isPrefixUnaryExpression(current) &&
+              (current.operator === ts.SyntaxKind.PlusPlusToken ||
+                current.operator === ts.SyntaxKind.MinusMinusToken)) ||
+            ts.isPostfixUnaryExpression(current) ||
+            (ts.isBinaryExpression(current) &&
+              current.operatorToken.kind >= ts.SyntaxKind.FirstAssignment &&
+              current.operatorToken.kind <= ts.SyntaxKind.LastAssignment)
+          )
+            effect = true;
+          ts.forEachChild(current, visit);
+        };
+        visit(node);
+        return effect;
+      };
       const collectReturns = (node: ts.Node, scope: Map<string, HookSourceValue>): boolean => {
         if (ts.isBlock(node)) {
           const block = new Map(scope);
@@ -688,13 +2229,16 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
           return true;
         }
         if (ts.isReturnStatement(node)) {
-          returns.push(node.expression
-            ? evaluate(node.expression, project.module.source, scope)
-            : { matched: false, value: UNKNOWN('void projection') });
+          returns.push(
+            node.expression
+              ? evaluate(node.expression, project.module.source, scope)
+              : { matched: false, value: UNKNOWN('void projection') }
+          );
           return false;
         }
         if (ts.isThrowStatement(node)) return false;
         if (ts.isIfStatement(node)) {
+          if (hasEffect(node.expression, scope)) unprovedCompletion = true;
           const condition = unwrap(node.expression);
           if (condition.kind === ts.SyntaxKind.TrueKeyword)
             return collectReturns(node.thenStatement, scope);
@@ -706,7 +2250,9 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
             : true;
           // Continuing branches may have changed a binding. Until that join is
           // represented, do not certify a later read using its old snapshot.
-          if (first || second) unprovedCompletion = true;
+          // A branch that throws/returns cannot continue with a changed
+          // binding; this is the ordinary projector guard shape.
+          if (first && second) unprovedCompletion = true;
           return first || second;
         }
         if (ts.isVariableStatement(node)) {
@@ -715,9 +2261,14 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
               unprovedCompletion = true;
               continue;
             }
-            scope.set(declaration.name.text, declaration.initializer
-              ? evaluate(declaration.initializer, project.module.source, scope).value
-              : UNKNOWN('uninitialized projector local'));
+            if (declaration.initializer && hasEffect(declaration.initializer, scope))
+              unprovedCompletion = true;
+            scope.set(
+              declaration.name.text,
+              declaration.initializer
+                ? evaluate(declaration.initializer, project.module.source, scope).value
+                : UNKNOWN('uninitialized projector local')
+            );
           }
           return true;
         }
@@ -734,7 +2285,8 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
       if (project.fn.body) {
         if (ts.isBlock(project.fn.body)) {
           const fallsThrough = collectReturns(project.fn.body, environment);
-          if (fallsThrough) returns.push({ matched: false, value: UNKNOWN('projection falls through') });
+          if (fallsThrough)
+            returns.push({ matched: false, value: UNKNOWN('projection falls through') });
         } else returns.push(evaluate(project.fn.body, project.module.source, environment));
       }
       if (!unprovedCompletion && returns.length > 0) {
@@ -756,7 +2308,7 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
     registerSource,
     resolve: evaluate,
     resolveCall,
+    isAuthoredProducerCall: (node, source) => producerForCall(node, source) !== null,
     isSameSourceBinding,
   };
 }
-

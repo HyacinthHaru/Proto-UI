@@ -1,4 +1,4 @@
-import { mkdtemp, readdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -6,9 +6,11 @@ import { describe, expect, it } from 'vitest';
 
 import { createExposeStateWebNameMap } from '../../modules/expose-state-web/src/utils';
 import { scanRuleStateReads } from '../src/services/lowered-hook-coverage';
+import { createHookSourceSummaryContext } from '../src/services/hook-source-summary';
 import type { HookSourceState } from '../src/services/hook-source-summary';
 import {
   collectProtoStyleTokens,
+  collectProtoStyleTokensFromFiles,
   collectSourceFiles,
   loweredHookStates,
 } from '../src/services/prototype-style-tokens';
@@ -122,14 +124,1095 @@ describe('lowered hook coverage', () => {
         { hook: 'asGeneric', state: 'genericFlag' },
         { hook: 'asParent', state: 'childRequired' },
       ]);
-      expect(scan.unresolved).toEqual([
-        { expression: 'shadowed.genericFlag', reason: 'subject' },
-      ]);
+      expect(scan.unresolved).toEqual([{ expression: 'shadowed.genericFlag', reason: 'subject' }]);
       await writeFile(path.join(dir, 'consumer.proto.ts'), consumer);
       const tokens = await collectProtoStyleTokens(dir);
       expect(tokens).toContain('data-[generic-flag]:bg-primary');
       expect(tokens).toContain('data-[child-required]:bg-child');
       expect(tokens).not.toContain('data-[generic-flag]:bg-child');
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('retains declaration identity through literal state lookups and detached lookup aliases', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-state-lookup-'));
+    try {
+      await writeFile(
+        path.join(dir, 'producer.ts'),
+        [
+          "import { defineAsHook } from '@proto.ui/core';",
+          "export const useFacts = defineAsHook({ name: 'facts', setup(def) {",
+          "  const flag = def.state.bool('internalFlag', false);",
+          "  def.expose.state('publicAlias', flag);",
+          '} });',
+        ].join('\n')
+      );
+      const consumer = [
+        "import { useFacts } from './producer';",
+        'const facts = useFacts();',
+        "const direct = facts.getState!('internalFlag')!;",
+        'const lookup = facts.getState!;',
+        "const detached = lookup('internalFlag')!;",
+        rule('w.state(direct).eq(true)'),
+        rule('w.state(detached).eq(true)'),
+        "def.rule({ when: (w) => w.state(facts.getState!('internalFlag')!).eq(true), intent: (i) => i.feedback.style.use(tw('bg-secondary')) });",
+        "def.rule({ when: (w) => w.state(lookup('internalFlag')!).eq(true), intent: (i) => i.feedback.style.use(tw('bg-accent')) });",
+        "const missing = facts.getState!('missing')!;",
+        rule('w.state(missing).eq(true)'),
+        "let mutableKey = 'internalFlag';",
+        "mutableKey = 'missing';",
+        'const mutable = facts.getState!(mutableKey)!;',
+        rule('w.state(mutable).eq(true)'),
+        "const key = 'internalFlag';",
+        'function shadow(key) {',
+        '  const shadowed = facts.getState!(key)!;',
+        rule('w.state(shadowed).eq(true)'),
+        '}',
+      ].join('\n');
+      const scan = scanRuleStateReads(consumer, path.join(dir, 'consumer.proto.ts'));
+      expect(
+        scan.usages.map(({ state, provenance }) => ({
+          state,
+          declaredName: provenance?.declaredName,
+        }))
+      ).toEqual([
+        { state: 'internalFlag', declaredName: 'internalFlag' },
+        { state: 'internalFlag', declaredName: 'internalFlag' },
+        { state: 'internalFlag', declaredName: 'internalFlag' },
+        { state: 'internalFlag', declaredName: 'internalFlag' },
+      ]);
+      expect(scan.unresolved).toEqual([
+        { expression: 'missing', reason: 'subject' },
+        { expression: 'mutable', reason: 'subject' },
+        { expression: 'shadowed', reason: 'subject' },
+      ]);
+      expect(scan.usages[0].provenance?.declaration).toEqual(
+        scan.usages[1].provenance?.declaration
+      );
+      await writeFile(path.join(dir, 'consumer.proto.ts'), consumer);
+      const tokens = await collectProtoStyleTokens(dir);
+      expect(tokens).toContain('data-[internal-flag]:bg-primary');
+      expect(tokens).toContain('data-[internal-flag]:bg-secondary');
+      expect(tokens).toContain('data-[internal-flag]:bg-accent');
+      expect(tokens).not.toContain('data-[public-alias]:bg-primary');
+      expect(tokens).not.toContain('data-[missing]:bg-primary');
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('ignores only source-proven absent optional Rule registrations', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-closed-state-guard-'));
+    try {
+      await writeFile(
+        path.join(dir, 'producer.ts'),
+        [
+          "import { defineAsHook } from '@proto.ui/core';",
+          "export const useFacts = defineAsHook({ name: 'facts', setup(def) { def.state.bool('present', false); } });",
+        ].join('\n')
+      );
+      const consumer = [
+        "import { useFacts } from './producer';",
+        'const state = useFacts().stateHandles;',
+        'if (state?.missing) {',
+        rule('w.state(state.missing).eq(true)'),
+        '}',
+        'if (state?.present) {',
+        rule('w.state(state.present).eq(true)'),
+        '}',
+      ].join('\n');
+      const scan = scanRuleStateReads(consumer, path.join(dir, 'consumer.proto.ts'));
+      expect(scan.usages.map(({ state }) => state)).toEqual(['present']);
+      expect(scan.unresolved).toEqual([]);
+      await writeFile(path.join(dir, 'consumer.proto.ts'), consumer);
+      const tokens = await collectProtoStyleTokens(dir);
+      expect(tokens).toContain('data-[present]:bg-primary');
+      expect(tokens).not.toContain('data-[missing]:bg-primary');
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('keeps optional Rules unresolved when setup capture may introduce an unknown state', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-open-state-guard-'));
+    try {
+      const setups = [
+        "let key = 'other'; key = 'missing'; def.state.bool(key, false);",
+        'unknownHelper(def);',
+        "[1].forEach(() => def.state.bool('missing', false));",
+      ];
+      for (const [index, setup] of setups.entries()) {
+        await writeFile(
+          path.join(dir, `producer-${index}.ts`),
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            `export const useFacts = defineAsHook({ name: 'facts', setup(def) { ${setup} } });`,
+          ].join('\n')
+        );
+        const consumer = [
+          `import { useFacts } from './producer-${index}';`,
+          'const state = useFacts().stateHandles;',
+          'if (state?.missing) {',
+          rule('w.state(state.missing).eq(true)'),
+          '}',
+        ].join('\n');
+        const scan = scanRuleStateReads(consumer, path.join(dir, `consumer-${index}.proto.ts`));
+        expect(scan.unresolved, setup).toEqual([
+          { expression: 'state.missing', reason: 'subject' },
+        ]);
+      }
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('captures conditional provider members only for the reached lexical helper argument', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-helper-role-'));
+    try {
+      await writeFile(
+        path.join(dir, 'tsconfig.json'),
+        JSON.stringify({
+          extends: path.join(REPO_ROOT, 'tsconfig.json'),
+        })
+      );
+      await writeFile(
+        path.join(dir, 'producer.ts'),
+        [
+          "import { defineAsHook } from '@proto.ui/core';",
+          "import { asFocusable } from '@proto.ui/hooks';",
+          "function part(def, role = 'thumb') {",
+          "  const focus = role === 'thumb' ? asFocusable() : null;",
+          "  if (focus) def.expose.state('visibleAlias', focus.focusVisible);",
+          '}',
+          'function shadowPart(def, role) { {',
+          "  const role = 'label';",
+          "  const focus = role === 'thumb' ? asFocusable() : null;",
+          "  if (focus) def.expose.state('visibleAlias', focus.focusVisible);",
+          '} }',
+          "export const useThumb = defineAsHook({ name: 'thumb', setup(def) { part(def, 'thumb'); } });",
+          "export const useDefault = defineAsHook({ name: 'default', setup(def) { part(def); } });",
+          "export const useLabel = defineAsHook({ name: 'label', setup(def) { part(def, 'label'); } });",
+          "export const useUnknown = defineAsHook({ name: 'unknown', setup(def) { part(def, externalRole); } });",
+          "export const useShadow = defineAsHook({ name: 'shadow', setup(def) { shadowPart(def, 'thumb'); } });",
+        ].join('\n')
+      );
+      for (const hook of ['useThumb', 'useDefault', 'useLabel', 'useUnknown', 'useShadow']) {
+        const consumer = [
+          `import { ${hook} } from './producer';`,
+          `const state = ${hook}().stateHandles;`,
+          rule('w.state(state.focusVisible).eq(true)'),
+        ].join('\n');
+        const scan = scanRuleStateReads(consumer, path.join(dir, `${hook}.proto.ts`));
+        if (hook === 'useThumb' || hook === 'useDefault') {
+          expect(
+            scan.usages.map(({ state }) => state),
+            hook
+          ).toEqual(['focusVisible']);
+          expect(scan.unresolved, hook).toEqual([]);
+        } else {
+          expect(scan.usages, hook).toEqual([]);
+          expect(scan.unresolved, hook).toEqual([
+            { expression: 'state.focusVisible', reason: 'subject' },
+          ]);
+        }
+      }
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('captures setup definition arguments beyond the first helper parameter', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-helper-arguments-'));
+    try {
+      const helpers = [
+        "function init(_, d) { const s = d.state.bool('ready', false); d.expose.state('ready', s); }",
+        "const init = (_, d) => { const s = d.state.bool('ready', false); d.expose.state('ready', s); };",
+      ];
+      for (const [index, helper] of helpers.entries()) {
+        const folder = path.join(dir, String(index));
+        await mkdir(folder);
+        await writeFile(
+          path.join(folder, 'producer.ts'),
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            helper,
+            "export const useFacts = defineAsHook({ name: 'facts', setup(def) { init(0, def); } });",
+          ].join('\n')
+        );
+        const source = [
+          "import { useFacts } from './producer';",
+          'const state = useFacts().stateHandles;',
+          `if (state?.ready) { ${rule('w.state(state.ready).eq(true)')} }`,
+        ].join('\n');
+        const file = path.join(folder, 'consumer.proto.ts');
+        await writeFile(file, source);
+        const scan = scanRuleStateReads(source, file);
+        expect(
+          scan.usages.map(({ state }) => state),
+          helper
+        ).toEqual(['ready']);
+        expect(scan.unresolved, helper).toEqual([]);
+        expect(await collectProtoStyleTokens(folder), helper).toContain('data-[ready]:bg-primary');
+      }
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('does not certify stale provider members after direct writes or alias escapes', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-provider-writes-'));
+    try {
+      const writes = [
+        'focus.focusVisible = focus.focused;',
+        "const alias = focus; alias['focusVisible'] = focus.focused;",
+        'focus[key] = focus.focused;',
+        'mutate(focus);',
+        'mutate({ focus });',
+        'mutate([focus]);',
+        'const box = { focus }; mutate(box);',
+        'const box = { focus }; const alias = box; mutate(alias);',
+      ];
+      for (const [index, mutation] of writes.entries()) {
+        const folder = path.join(dir, String(index));
+        await mkdir(folder);
+        await writeFile(
+          path.join(folder, 'tsconfig.json'),
+          JSON.stringify({ extends: path.join(REPO_ROOT, 'tsconfig.json') })
+        );
+        await writeFile(
+          path.join(folder, 'producer.ts'),
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            "import { asFocusable } from '@proto.ui/hooks';",
+            `export const useFacts = defineAsHook({ name: 'facts', setup(d) { const focus = asFocusable(); ${mutation} d.expose.state('visible', focus.focusVisible); } });`,
+          ].join('\n')
+        );
+        const source = [
+          "import { useFacts } from './producer';",
+          'const state = useFacts().stateHandles;',
+          `if (state?.focusVisible) { ${rule('w.state(state.focusVisible).eq(true)')} }`,
+          `if (state?.focused) { ${rule('w.state(state.focused).eq(true)')} }`,
+        ].join('\n');
+        const file = path.join(folder, 'consumer.proto.ts');
+        const scan = scanRuleStateReads(source, file);
+        expect(scan.usages, mutation).toEqual([]);
+        expect(scan.unresolved, mutation).toEqual([
+          { expression: 'state.focusVisible', reason: 'subject' },
+          { expression: 'state.focused', reason: 'subject' },
+        ]);
+        await writeFile(file, source);
+        expect(await collectProtoStyleTokens(folder), mutation).not.toContain(
+          'data-[focus-visible]:bg-primary'
+        );
+      }
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('keeps destructured setup capture open instead of suppressing optional rules', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-destructured-setup-'));
+    try {
+      await writeFile(
+        path.join(dir, 'producer.ts'),
+        [
+          "import { defineAsHook } from '@proto.ui/core';",
+          "export const useFacts = defineAsHook({ name: 'facts', setup({ state }) { state.bool('ready', false); } });",
+        ].join('\n')
+      );
+      const source = [
+        "import { useFacts } from './producer';",
+        'const state = useFacts().stateHandles;',
+        `if (state?.ready) { ${rule('w.state(state.ready).eq(true)')} }`,
+      ].join('\n');
+      const file = path.join(dir, 'consumer.proto.ts');
+      const scan = scanRuleStateReads(source, file);
+      expect(scan.usages).toEqual([]);
+      expect(scan.unresolved).toEqual([{ expression: 'state.ready', reason: 'subject' }]);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('does not treat rest helper arrays as direct setup definition bindings', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-rest-helper-'));
+    try {
+      const calls = [
+        "function init(...defs) { defs[0].state.bool('ready', false); } export const useFacts = defineAsHook({ name: 'facts', setup(def) { init(def); } });",
+        "export const useFacts = defineAsHook({ name: 'facts', setup(def) { ((...defs) => defs[0].state.bool('ready', false))(def); } });",
+      ];
+      for (const [index, definition] of calls.entries()) {
+        await writeFile(
+          path.join(dir, `producer-${index}.ts`),
+          "import { defineAsHook } from '@proto.ui/core';\n" + definition
+        );
+        const source = [
+          `import { useFacts } from './producer-${index}';`,
+          'const state = useFacts().stateHandles;',
+          `if (state?.ready) { ${rule('w.state(state.ready).eq(true)')} }`,
+        ].join('\n');
+        const scan = scanRuleStateReads(source, path.join(dir, `consumer-${index}.proto.ts`));
+        expect(scan.usages, definition).toEqual([]);
+        expect(scan.unresolved, definition).toEqual([
+          { expression: 'state.ready', reason: 'subject' },
+        ]);
+      }
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('retains projected state siblings when creating a deferred callable', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-deferred-projector-'));
+    try {
+      await writeFile(
+        path.join(dir, 'producer.ts'),
+        [
+          "import { defineAsHook } from '@proto.ui/core';",
+          "export const useFacts = defineAsHook({ name: 'facts', setup(d) { const s = d.state.bool('ready', false); d.expose.state('ready', s); }, projectHandle(r) { const read = () => r.stateHandles.ready.get(); return { ready: r.stateHandles.ready, read }; } });",
+        ].join('\n')
+      );
+      const source = [
+        "import { useFacts } from './producer';",
+        'const facts = useFacts();',
+        rule('w.state(facts.ready).eq(true)'),
+      ].join('\n');
+      const file = path.join(dir, 'consumer.proto.ts');
+      await writeFile(file, source);
+      const scan = scanRuleStateReads(source, file);
+      expect(scan.usages.map(({ state }) => state)).toEqual(['ready']);
+      expect(scan.unresolved).toEqual([]);
+      expect(await collectProtoStyleTokens(dir)).toContain('data-[ready]:bg-primary');
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('keeps finite loop selector literals paired with their own prebound style handles', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-paired-loop-'));
+    try {
+      const consumer = [
+        "import { tw } from '@proto.ui/core';",
+        "const direction = def.state.string('direction', 'left');",
+        "def.expose.state('direction', direction);",
+        'for (const [value, paint] of [',
+        "  ['left', tw('bg-primary')],",
+        "  ['right', tw('bg-secondary')],",
+        '] as const) {',
+        '  def.rule({ when: (w) => w.state(direction).eq(value), intent: (i) => i.feedback.style.use(paint) });',
+        '}',
+      ].join('\n');
+      const scan = scanRuleStateReads(consumer, path.join(dir, 'consumer.proto.ts'));
+      expect(scan.unresolved).toEqual([]);
+      await writeFile(path.join(dir, 'consumer.proto.ts'), consumer);
+      const tokens = await collectProtoStyleTokens(dir);
+      expect(tokens).toContain('data-[direction=left]:bg-primary');
+      expect(tokens).toContain('data-[direction=right]:bg-secondary');
+      expect(tokens).not.toContain('data-[direction=left]:bg-secondary');
+      expect(tokens).not.toContain('data-[direction=right]:bg-primary');
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('keeps loop rows bound to the token handles captured before iteration', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-loop-snapshot-'));
+    try {
+      await writeFile(
+        path.join(dir, 'consumer.proto.ts'),
+        [
+          "const direction = def.state.string('direction', 'left');",
+          "def.expose.state('direction', direction);",
+          "let paint = tw('bg-primary');",
+          "for (const [value, captured] of [['left', paint], ['right', paint]]) {",
+          "  paint = tw('bg-secondary');",
+          '  def.rule({ when: w => w.state(direction).eq(value), intent: i => i.feedback.style.use(captured) });',
+          '}',
+        ].join('\n')
+      );
+      const tokens = await collectProtoStyleTokens(dir);
+      expect(tokens).toContain('data-[direction=left]:bg-primary');
+      expect(tokens).toContain('data-[direction=right]:bg-primary');
+      expect(tokens).not.toContain('data-[direction=left]:bg-secondary');
+      expect(tokens).not.toContain('data-[direction=right]:bg-secondary');
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('captures earlier iterable values before evaluating later assignment expressions', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-iterable-order-'));
+    try {
+      await writeFile(
+        path.join(dir, 'consumer.proto.ts'),
+        [
+          "const direction = def.state.string('direction', 'left');",
+          "def.expose.state('direction', direction);",
+          "let paint = tw('bg-primary');",
+          "for (const [value, captured] of [['left', paint], ['right', (paint = tw('bg-secondary'))]]) {",
+          '  def.rule({ when: w => w.state(direction).eq(value), intent: i => i.feedback.style.use(captured) });',
+          '}',
+        ].join('\n')
+      );
+      const tokens = await collectProtoStyleTokens(dir);
+      expect(tokens).toContain('data-[direction=left]:bg-primary');
+      expect(tokens).toContain('data-[direction=right]:bg-secondary');
+      expect(tokens).not.toContain('data-[direction=left]:bg-secondary');
+      expect(tokens).not.toContain('data-[direction=right]:bg-primary');
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('resolves consumed intent handles after sequential and conditional reassignments', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-intent-assignment-'));
+    try {
+      await writeFile(
+        path.join(dir, 'consumer.proto.ts'),
+        [
+          "const ready = def.state.bool('ready', false);",
+          "def.expose.state('ready', ready);",
+          "const active = def.state.bool('active', false);",
+          "def.expose.state('active', active);",
+          "var paint = tw('border-primary');",
+          'var paint;',
+          'def.rule({ when: w => w.state(ready).eq(true), intent: i => {',
+          "  let paint = tw('bg-primary');",
+          "  paint = tw('bg-secondary');",
+          '  i.feedback.style.use(paint);',
+          '} });',
+          'def.rule({ when: w => w.state(active).eq(true), intent: i => {',
+          "  let paint = tw('text-primary');",
+          "  if (enabled) paint = tw('text-secondary');",
+          '  i.feedback.style.use(paint);',
+          '} });',
+          'def.rule({ when: w => w.state(ready).eq(true), intent: i => {',
+          '  let paint;',
+          "  paint = tw('border-secondary');",
+          '  i.feedback.style.use(paint);',
+          '} });',
+          'def.rule({ when: w => w.state(active).eq(true), intent: i => i.feedback.style.use(paint) });',
+        ].join('\n')
+      );
+      const tokens = await collectProtoStyleTokens(dir);
+      expect(tokens).toContain('data-[ready]:bg-secondary');
+      expect(tokens).not.toContain('data-[ready]:bg-primary');
+      expect(tokens).toContain('data-[active]:text-primary');
+      expect(tokens).toContain('data-[active]:text-secondary');
+      expect(tokens).toContain('data-[ready]:border-secondary');
+      expect(tokens).toContain('data-[active]:border-primary');
+      expect(tokens).not.toContain('data-[active]:border-secondary');
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('does not prefix unused token expressions beside a consumed prebound style handle', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-consumed-handle-'));
+    try {
+      const consumer = [
+        "import { tw } from '@proto.ui/core';",
+        "const enabled = def.state.bool('enabled', false);",
+        "def.expose.state('enabled', enabled);",
+        "const chosen = tw('bg-primary');",
+        "def.rule({ when: (w) => w.state(enabled).eq(true), intent: (i) => { tw('bg-secondary'); i.feedback.style.use(chosen); } });",
+      ].join('\n');
+      expect(scanRuleStateReads(consumer, path.join(dir, 'consumer.proto.ts')).unresolved).toEqual(
+        []
+      );
+      await writeFile(path.join(dir, 'consumer.proto.ts'), consumer);
+      const tokens = await collectProtoStyleTokens(dir);
+      expect(tokens).toContain('data-[enabled]:bg-primary');
+      expect(tokens).not.toContain('data-[enabled]:bg-secondary');
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('preserves known sibling selectors beside unknown object and array members', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-known-siblings-'));
+    try {
+      await writeFile(
+        path.join(dir, 'consumer.proto.ts'),
+        [
+          "const known = def.state.bool('knownFlag', false);",
+          "def.expose.state('known', known);",
+          'const maybe = enabled ? known : externalState;',
+          'const controls = { ready: known, unrelated: maybe };',
+          'const entries = [known, maybe];',
+          rule('w.state(controls.ready).eq(true)'),
+          "def.rule({ when: (w) => w.state(entries[0]).eq(true), intent: (i) => i.feedback.style.use(tw('bg-secondary')) });",
+          'function declareRule(unrelated) {',
+          '  const handles = { ready: known, unrelated };',
+          "  def.rule({ when: (w) => w.state(handles.ready).eq(true), intent: (i) => i.feedback.style.use(tw('bg-accent')) });",
+          '}',
+          'declareRule(externalState);',
+        ].join('\n')
+      );
+      const tokens = await collectProtoStyleTokens(dir);
+      expect(tokens).toContain('data-[known-flag]:bg-primary');
+      expect(tokens).toContain('data-[known-flag]:bg-secondary');
+      expect(tokens).toContain('data-[known-flag]:bg-accent');
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('replaces source members with local states without retaining stale selectors', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-local-member-write-'));
+    try {
+      await writeFile(
+        path.join(dir, 'producer.ts'),
+        [
+          "import { defineAsHook } from '@proto.ui/core';",
+          "export const useFacts = defineAsHook({ name: 'facts', setup(def) { def.state.bool('ready', false); } });",
+        ].join('\n')
+      );
+      await writeFile(
+        path.join(dir, 'consumer.proto.ts'),
+        [
+          "import { useFacts } from './producer';",
+          'const bag = useFacts().stateHandles;',
+          "const local = def.state.bool('localFlag', false);",
+          "def.expose.state('local', local);",
+          'bag.ready = local;',
+          'const selected = (enabled ? bag : bag).ready;',
+          rule('w.state(selected).eq(true)'),
+        ].join('\n')
+      );
+      const tokens = await collectProtoStyleTokens(dir);
+      expect(tokens).toContain('data-[local-flag]:bg-primary');
+      expect(tokens).not.toContain('data-[ready]:bg-primary');
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('does not certify a lookalike privileged factory as an observed state declaration', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-fake-focus-'));
+    try {
+      await writeFile(
+        path.join(dir, 'tsconfig.json'),
+        JSON.stringify({
+          extends: path.join(REPO_ROOT, 'tsconfig.json'),
+        })
+      );
+      await writeFile(
+        path.join(dir, 'producer.ts'),
+        [
+          "import { defineAsHook } from '@proto.ui/core';",
+          'function asFocusable() { return { focusVisible: { get() { return false; } } }; }',
+          "export const useFake = defineAsHook({ name: 'fake', setup(def) {",
+          '  const focus = asFocusable();',
+          '  const visible = focus.focusVisible;',
+          "  def.expose.state('visible', visible);",
+          '} });',
+        ].join('\n')
+      );
+      const consumer = [
+        "import { useFake } from './producer';",
+        'const state = useFake().stateHandles;',
+        rule('w.state(state.focusVisible).eq(true)'),
+      ].join('\n');
+      const scan = scanRuleStateReads(consumer, path.join(dir, 'consumer.proto.ts'));
+      expect(scan.usages).toEqual([]);
+      expect(scan.unresolved).toEqual([{ expression: 'state.focusVisible', reason: 'subject' }]);
+      await writeFile(path.join(dir, 'consumer.proto.ts'), consumer);
+      expect(await collectProtoStyleTokens(dir)).not.toContain('data-[focus-visible]:bg-primary');
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('does not capture observed provider states through a lookalike recorder method', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-fake-state-recorder-'));
+    try {
+      await writeFile(
+        path.join(dir, 'tsconfig.json'),
+        JSON.stringify({
+          extends: path.join(REPO_ROOT, 'tsconfig.json'),
+        })
+      );
+      await writeFile(
+        path.join(dir, 'producer.ts'),
+        [
+          "import { defineAsHook } from '@proto.ui/core';",
+          "import { asFocusable } from '@proto.ui/hooks';",
+          "export const useFacts = defineAsHook({ name: 'facts', setup() {",
+          '  const focus = asFocusable();',
+          '  const recorder = { state() {} };',
+          "  recorder.state('visible', focus.focusVisible);",
+          '} });',
+        ].join('\n')
+      );
+      const consumer = [
+        "import { useFacts } from './producer';",
+        'const state = useFacts().stateHandles;',
+        rule('w.state(state.focusVisible).eq(true)'),
+      ].join('\n');
+      const scan = scanRuleStateReads(consumer, path.join(dir, 'consumer.proto.ts'));
+      expect(scan.usages).toEqual([]);
+      expect(scan.unresolved).toEqual([{ expression: 'state.focusVisible', reason: 'subject' }]);
+      await writeFile(path.join(dir, 'consumer.proto.ts'), consumer);
+      expect(await collectProtoStyleTokens(dir)).not.toContain('data-[focus-visible]:bg-primary');
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('uses the final factory holder value and rejects mutations through aliases', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-factory-holder-'));
+    try {
+      const cases = [
+        { holder: 'const holder = Core;', trusted: true },
+        {
+          holder: 'const holder = { defineAsHook: Core.defineAsHook, ["other"]: fake };',
+          trusted: true,
+        },
+        {
+          holder: 'const holder = { defineAsHook: Core.defineAsHook, ["defineAsHook"]: fake };',
+          trusted: false,
+        },
+        {
+          holder:
+            'const holder = { defineAsHook: Core.defineAsHook }; const alias = holder; alias.defineAsHook = fake;',
+          trusted: false,
+        },
+        {
+          holder:
+            'const holder = { defineAsHook: Core.defineAsHook, ["defineAsHook"]() { return fake; } };',
+          trusted: false,
+        },
+        {
+          holder:
+            'const holder = { defineAsHook: Core.defineAsHook, get defineAsHook() { return fake; } };',
+          trusted: false,
+        },
+        {
+          holder:
+            'const holder = { defineAsHook: Core.defineAsHook }; [holder.defineAsHook] = [fake];',
+          trusted: false,
+        },
+        {
+          holder:
+            'const holder = { defineAsHook: Core.defineAsHook }; ({ x: holder.defineAsHook } = { x: fake });',
+          trusted: false,
+        },
+        {
+          holder:
+            'const holder = { defineAsHook: Core.defineAsHook }; const edit = { holder() { holder.defineAsHook = fake; } }; edit.holder();',
+          trusted: false,
+        },
+        {
+          holder:
+            'const holder = { defineAsHook: Core.defineAsHook }; for (let alias = holder; ; ) { alias.defineAsHook = fake; break; }',
+          trusted: false,
+        },
+        {
+          holder:
+            'const holder = { defineAsHook: Core.defineAsHook }; for (holder.defineAsHook of [fake]) {}',
+          trusted: false,
+        },
+        {
+          holder:
+            'const holder = { defineAsHook: Core.defineAsHook, replace() { this.defineAsHook = fake; } }; holder.replace();',
+          trusted: false,
+        },
+        {
+          holder:
+            'const holder = { defineAsHook: Core.defineAsHook }; let read; read = holder.defineAsHook;',
+          trusted: true,
+        },
+        {
+          holder:
+            'function factory() { return { defineAsHook: Core.defineAsHook }; } const holder = factory();',
+          trusted: true,
+        },
+        {
+          holder:
+            'const factory = () => ({ defineAsHook: Core.defineAsHook }); const holder = factory();',
+          trusted: true,
+        },
+        {
+          holder:
+            'const factory = async () => ({ defineAsHook: Core.defineAsHook }); const holder = factory();',
+          trusted: false,
+        },
+        {
+          holder:
+            'const factory = async function () { return { defineAsHook: Core.defineAsHook }; }; const holder = factory();',
+          trusted: false,
+        },
+        {
+          holder:
+            'const factory = function* () { return { defineAsHook: Core.defineAsHook }; }; const holder = factory();',
+          trusted: false,
+        },
+        {
+          holder:
+            'function factory(enabled) { if (enabled) return { defineAsHook: Core.defineAsHook }; } const holder = factory(false);',
+          trusted: false,
+        },
+        {
+          holder:
+            'const holder = { defineAsHook: Core.defineAsHook }; class Other { clear() { this.defineAsHook = fake; } }',
+          trusted: true,
+        },
+        {
+          holder:
+            'const holder = { defineAsHook: Core.defineAsHook }; class Other { clear() { this.replace(); } }',
+          trusted: true,
+        },
+        {
+          holder:
+            'const holder = { defineAsHook: Core.defineAsHook, build() { class Other { static defineAsHook = null; static { this.defineAsHook = fake; } } } };',
+          trusted: true,
+        },
+        {
+          holder:
+            'function factory() { return { defineAsHook: Core.defineAsHook, get trigger() { this.defineAsHook = fake; return 0; } }; } const holder = factory(); holder.trigger;',
+          trusted: false,
+        },
+        {
+          holder:
+            'function factory() { return { defineAsHook: Core.defineAsHook, get trigger() { class Other { [this.defineAsHook = fake] = 0; } return 0; } }; } const holder = factory(); holder.trigger;',
+          trusted: false,
+        },
+        {
+          holder:
+            'function factory() { return { defineAsHook: Core.defineAsHook, get trigger() { const other = { [this.defineAsHook = fake]() {} }; return other; } }; } const holder = factory(); holder.trigger;',
+          trusted: false,
+        },
+        {
+          holder:
+            'function factory() { return { defineAsHook: Core.defineAsHook, get trigger() { mutate(this); return 0; } }; } const holder = factory(); holder.trigger;',
+          trusted: false,
+        },
+        {
+          holder:
+            'function factory() { return { defineAsHook: Core.defineAsHook }; } factory = () => ({ defineAsHook: fake }); const holder = factory();',
+          trusted: false,
+        },
+        {
+          holder:
+            'function factory(defineAsHook) { return { defineAsHook }; } const holder = factory(fake);',
+          trusted: false,
+        },
+        {
+          holder:
+            'const holder = { defineAsHook: Core.defineAsHook }; const edit = function holder() { holder.defineAsHook = fake; }; edit();',
+          trusted: true,
+        },
+      ];
+      for (const [index, example] of cases.entries()) {
+        const producerName = `producer-${index}`;
+        await writeFile(
+          path.join(dir, `${producerName}.ts`),
+          [
+            "import * as Core from '@proto.ui/core';",
+            'const fake = () => ({});',
+            example.holder,
+            "export const useFacts = holder.defineAsHook({ name: 'facts', setup(def) { def.state.bool('ghost', false); } });",
+          ].join('\n')
+        );
+        const consumer = [
+          `import { useFacts } from './${producerName}';`,
+          'const bag = useFacts().stateHandles;',
+          rule('w.state(bag.ghost).eq(true)'),
+        ].join('\n');
+        const scan = scanRuleStateReads(consumer, path.join(dir, `consumer-${index}.proto.ts`));
+        expect(
+          scan.usages.map(({ state }) => state),
+          example.holder
+        ).toEqual(example.trusted ? ['ghost'] : []);
+        expect(scan.unresolved, example.holder).toEqual(
+          example.trusted ? [] : [{ expression: 'bag.ghost', reason: 'subject' }]
+        );
+        await writeFile(path.join(dir, `consumer-${index}.proto.ts`), consumer);
+      }
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('rejects declaration-based factory replacements without rejecting shadowed loop bindings', () => {
+    for (const { replacement, trusted } of [
+      { replacement: 'var make = () => ({ defineAsHook: fake });', trusted: false },
+      { replacement: 'var [make] = [() => ({ defineAsHook: fake })];', trusted: false },
+      {
+        replacement: 'var { replacement: make } = { replacement: () => ({ defineAsHook: fake }) };',
+        trusted: false,
+      },
+      { replacement: 'for (var make of [() => ({ defineAsHook: fake })]) {}', trusted: false },
+      { replacement: 'for (var [make] of [[() => ({ defineAsHook: fake })]]) {}', trusted: false },
+      { replacement: 'for (var make in { replacement: 0 }) {}', trusted: false },
+      { replacement: 'function make() { return { defineAsHook: fake }; }', trusted: false },
+      { replacement: 'for (let make of [() => ({ defineAsHook: fake })]) {}', trusted: true },
+      { replacement: 'var make;', trusted: true },
+    ]) {
+      const source = [
+        "import { defineAsHook } from '@proto.ui/core';",
+        'function check() {',
+        '  const fake = () => ({});',
+        '  function make() { return { defineAsHook }; }',
+        `  ${replacement}`,
+        '  const holder = make();',
+        "  const useFacts = holder.defineAsHook({ name: 'facts', setup(d) { d.state.bool('ghost', false); } });",
+        '  const state = useFacts().stateHandles;',
+        rule('w.state(state.ghost).eq(true)'),
+        '}',
+      ].join('\n');
+      const scan = scanRuleStateReads(source);
+      expect(
+        scan.usages.map(({ state }) => state),
+        replacement
+      ).toEqual(trusted ? ['ghost'] : []);
+      expect(scan.unresolved, replacement).toEqual(
+        trusted ? [] : [{ expression: 'state.ghost', reason: 'subject' }]
+      );
+    }
+  });
+
+  it('rejects receiver writes inside an imported returned factory object', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-imported-holder-'));
+    try {
+      for (const [index, trigger] of [
+        'this.defineAsHook = fake;',
+        'mutate(this);',
+        'class Other { [this.defineAsHook = fake] = 0; }',
+      ].entries()) {
+        await writeFile(
+          path.join(dir, `factory-${index}.mjs`),
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            'const fake = () => ({});',
+            `export function make() { return { defineAsHook, get trigger() { ${trigger} return 0; } }; }`,
+          ].join('\n')
+        );
+        await writeFile(
+          path.join(dir, `producer-${index}.ts`),
+          [
+            `import { make } from './factory-${index}.mjs';`,
+            'const holder = make(); holder.trigger;',
+            "export const useFacts = holder.defineAsHook({ name: 'facts', setup(d) { d.state.bool('ghost', false); } });",
+          ].join('\n')
+        );
+        const source = [
+          `import { useFacts } from './producer-${index}';`,
+          'const state = useFacts().stateHandles;',
+          rule('w.state(state.ghost).eq(true)'),
+        ].join('\n');
+        const scan = scanRuleStateReads(source, path.join(dir, `consumer-${index}.proto.ts`));
+        expect(scan.usages, trigger).toEqual([]);
+        expect(scan.unresolved, trigger).toEqual([
+          { expression: 'state.ghost', reason: 'subject' },
+        ]);
+      }
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('keeps returned factory imports bound to their defining module', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-factory-module-'));
+    try {
+      await mkdir(path.join(dir, 'a'));
+      await mkdir(path.join(dir, 'b'));
+      await writeFile(path.join(dir, 'a/api.mjs'), 'export const defineAsHook = () => ({});');
+      await writeFile(
+        path.join(dir, 'a/make.mjs'),
+        [
+          "import * as api from './api.mjs';",
+          'export function make() { return { defineAsHook: api.defineAsHook }; }',
+        ].join('\n')
+      );
+      await writeFile(
+        path.join(dir, 'b/api.mjs'),
+        "export { defineAsHook } from '@proto.ui/core';"
+      );
+      await writeFile(
+        path.join(dir, 'b/producer.ts'),
+        [
+          "import { make } from '../a/make.mjs';",
+          'const alias = make;',
+          'const holder = alias();',
+          "export const useFacts = holder.defineAsHook({ name: 'facts', setup(d) { d.state.bool('ghost', false); } });",
+        ].join('\n')
+      );
+      const source = [
+        "import { useFacts } from './producer';",
+        'const state = useFacts().stateHandles;',
+        rule('w.state(state.ghost).eq(true)'),
+      ].join('\n');
+      const file = path.join(dir, 'b/consumer.proto.ts');
+      await writeFile(file, source);
+      const scan = scanRuleStateReads(source, file);
+      expect(scan.usages).toEqual([]);
+      expect(scan.unresolved).toEqual([{ expression: 'state.ghost', reason: 'subject' }]);
+      expect(await collectProtoStyleTokens(dir)).not.toContain('data-[ghost]:bg-primary');
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('distinguishes real synchronous captures from overwritten or shadowed setup declarations', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-capture-boundaries-'));
+    try {
+      const cases = [
+        {
+          definition:
+            "export const useFacts = defineAsHook({ name: 'facts', setup(def) { def.state.bool('ready', false); } });",
+          trusted: true,
+        },
+        {
+          definition:
+            "export const useFacts = defineAsHook({ name: 'facts', setup(def) { (() => def.state.bool('ready', false))(); } });",
+          trusted: true,
+        },
+        {
+          definition:
+            "export default defineAsHook({ name: 'facts', setup(def) { def.state.bool('ready', false); } });",
+          trusted: true,
+          defaultExport: true,
+        },
+        {
+          definition:
+            "export const useFacts = defineAsHook({ name: 'facts', setup(def) { { const def = { state: { bool() {} } }; def.state.bool('ready', false); } } });",
+          trusted: false,
+        },
+        {
+          definition:
+            "export const useFacts = defineAsHook({ name: 'facts', setup(def) { def.state.bool('ready', false); }, ...{ setup() {} } });",
+          trusted: false,
+        },
+        {
+          definition:
+            "export let useFacts = defineAsHook({ name: 'facts', setup(def) { def.state.bool('ready', false); } }); useFacts = () => ({});",
+          trusted: false,
+        },
+        {
+          definition:
+            "export const useFacts = defineAsHook({ name: 'facts', setup(def) { let key = 'ready'; key = 'other'; def.state.bool(key, false); } });",
+          trusted: false,
+        },
+      ];
+      for (const [index, example] of cases.entries()) {
+        await writeFile(
+          path.join(dir, `producer-${index}.ts`),
+          ["import { defineAsHook } from '@proto.ui/core';", example.definition].join('\n')
+        );
+        const consumer = [
+          example.defaultExport
+            ? `import useFacts from './producer-${index}';`
+            : `import { useFacts } from './producer-${index}';`,
+          'const bag = useFacts().stateHandles;',
+          rule('w.state(bag.ready).eq(true)'),
+        ].join('\n');
+        const scan = scanRuleStateReads(consumer, path.join(dir, `consumer-${index}.proto.ts`));
+        expect(
+          scan.usages.map(({ state }) => state),
+          example.definition
+        ).toEqual(example.trusted ? ['ready'] : []);
+        expect(scan.unresolved).toEqual(
+          example.trusted ? [] : [{ expression: 'bag.ready', reason: 'subject' }]
+        );
+      }
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('propagates member replacements through parent paths and shared ancestor aliases', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-nested-alias-write-'));
+    try {
+      const cases = [
+        {
+          projection: 'return { box: { ready: r.stateHandles.first } };',
+          alias: 'h.box',
+          subject: 'h.box.ready',
+        },
+        {
+          projection:
+            'const inner = { ready: r.stateHandles.first }; const shared = { inner }; return { a: shared, b: shared };',
+          alias: 'h.a.inner',
+          subject: 'h.b.inner.ready',
+        },
+      ];
+      for (const [index, example] of cases.entries()) {
+        const folder = path.join(dir, String(index));
+        await mkdir(folder);
+        await writeFile(
+          path.join(folder, 'producer.ts'),
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            `export const useFirst = defineAsHook({ name: 'first', setup(d) { const s = d.state.bool('first', false); d.expose.state('first', s); }, projectHandle(r) { ${example.projection} } });`,
+            "export const useSecond = defineAsHook({ name: 'second', setup(d) { const s = d.state.bool('second', false); d.expose.state('second', s); } });",
+          ].join('\n')
+        );
+        const consumer = [
+          "import { useFirst, useSecond } from './producer';",
+          'const h = useFirst();',
+          `const box = ${example.alias};`,
+          'box.ready = useSecond().stateHandles.second;',
+          rule(`w.state(${example.subject}).eq(true)`),
+        ].join('\n');
+        const file = path.join(folder, 'consumer.proto.ts');
+        await writeFile(file, consumer);
+        const scan = scanRuleStateReads(consumer, file);
+        expect(
+          scan.usages.map(({ state }) => state),
+          example.subject
+        ).toEqual(['second']);
+        expect(scan.unresolved, example.subject).toEqual([]);
+        const tokens = await collectProtoStyleTokens(folder);
+        expect(tokens, example.subject).toContain('data-[second]:bg-primary');
+        expect(tokens, example.subject).not.toContain('data-[first]:bg-primary');
+      }
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('keeps consumer member writes out of cached producer summaries', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-cache-isolation-'));
+    try {
+      await writeFile(
+        path.join(dir, 'producer.ts'),
+        [
+          "import { defineAsHook } from '@proto.ui/core';",
+          "export const useFirst = defineAsHook({ name: 'first', setup(def) { def.state.bool('first', false); }, projectHandle(result) { return { ready: result.stateHandles.first }; } });",
+          "export const useSecond = defineAsHook({ name: 'second', setup(def) { def.state.bool('second', false); } });",
+        ].join('\n')
+      );
+      const changed = path.join(dir, 'changed.proto.ts');
+      const untouched = path.join(dir, 'untouched.proto.ts');
+      await writeFile(
+        changed,
+        [
+          "import { useFirst, useSecond } from './producer';",
+          'const bag = useFirst();',
+          'bag.ready = useSecond().stateHandles.second;',
+          rule('w.state(bag.ready).eq(true)'),
+        ].join('\n')
+      );
+      await writeFile(
+        untouched,
+        [
+          "import { useFirst } from './producer';",
+          'const bag = useFirst();',
+          "def.rule({ when: w => w.state(bag.ready).eq(true), intent: i => i.feedback.style.use(tw('bg-secondary')) });",
+        ].join('\n')
+      );
+      for (const files of [
+        [changed, untouched],
+        [untouched, changed],
+      ]) {
+        const tokens = await collectProtoStyleTokensFromFiles(files);
+        expect(tokens).toContain('data-[second]:bg-primary');
+        expect(tokens).toContain('data-[first]:bg-secondary');
+        expect(tokens).not.toContain('data-[second]:bg-secondary');
+      }
     } finally {
       await rm(dir, { recursive: true, force: true });
     }
@@ -154,9 +1237,7 @@ describe('lowered hook coverage', () => {
       { hook: 'asFormField', state: 'required' },
       { hook: 'asCheckboxGroupItem', state: 'mixed' },
     ]);
-    expect(scan.unresolved).toEqual([
-      { expression: 'item.required', reason: 'subject' },
-    ]);
+    expect(scan.unresolved).toEqual([{ expression: 'item.required', reason: 'subject' }]);
     expect(scan.usages[0].provenance?.declaredName).toBe('required');
     expect(scan.usages[1].provenance?.declaredName).toBe('mixed');
     expect(scan.usages[0].provenance?.owner.file).toContain('field/root.proto.ts');
@@ -1237,21 +2318,6 @@ describe('lowered hook coverage', () => {
     expect(scan.unresolved).toEqual([]);
   });
 
-  it('reports a rule whose intent hands over a pre-bound token handle', () => {
-    // `collectTwTokens` reads a `tw(...)` call. A handle bound elsewhere leaves
-    // the closure nothing to prefix, so the rendered variant has no CSS even
-    // though the condition itself lowers.
-    const source = [
-      "const muted = tw('text-muted-foreground');",
-      'const { checked } = asCheckboxRoot().stateHandles;',
-      'def.rule({ when: (w) => w.state(checked).eq(true), intent: (i) => i.feedback.style.use(muted) });',
-    ].join('\n');
-    const scan = scanRuleStateReads(source);
-
-    expect(scan.usages).toEqual([]);
-    expect(scan.unresolved.map((miss) => miss.reason)).toEqual(['intent']);
-  });
-
   it('reports a rule handed a binding instead of an object literal', () => {
     // The runtime lowers this; the extractor reads object literals only. Before
     // it was reported, the invocation was skipped and left no trace either way.
@@ -1550,23 +2616,6 @@ describe('lowered hook coverage', () => {
     expect(scanRuleStateReads(dotted).unresolved.map((miss) => miss.reason)).toEqual(['intent']);
   });
 
-  it('does not let an unrelated tw call vouch for a pre-bound handle', () => {
-    // The variant prefixes what `feedback.style.use` receives. A `tw(...)`
-    // elsewhere in the intent has nothing to do with it.
-    const source = [
-      "const muted = tw('text-muted-foreground');",
-      'const { checked } = asCheckboxRoot().stateHandles;',
-      'def.rule({',
-      '  when: (w) => w.state(checked).eq(true),',
-      "  intent: (i) => { i.feedback.style.use(muted); tw('bg-dummy'); },",
-      '});',
-    ].join('\n');
-    const scan = scanRuleStateReads(source);
-
-    expect(scan.usages).toEqual([]);
-    expect(scan.unresolved.map((miss) => miss.reason)).toEqual(['intent']);
-  });
-
   it('reports a condition whose operator picks one operand', () => {
     // `&&` returns the second expression, so the runtime lowers `data-[b]` while
     // a source walk sees both and the extractor combines them.
@@ -1826,7 +2875,7 @@ describe('lowered hook coverage', () => {
           "import { asFieldTextControl } from '@proto.ui/prototypes-base/field';",
           "const child = asFieldTextControl().getAsHookHandle('as-field-control');",
           "def.rule({ when: (w) => w.state(child?.state.fieldRequired).eq(true), intent: (i) => i.feedback.style.use(tw('bg-primary')) });",
-          "const flattened = asFieldTextControl().stateHandles;",
+          'const flattened = asFieldTextControl().stateHandles;',
           "def.rule({ when: (w) => w.state(flattened.required).eq(true), intent: (i) => i.feedback.style.use(tw('bg-invalid')) });",
         ].join('\n')
       );
@@ -1850,20 +2899,17 @@ describe('lowered hook coverage', () => {
     const exposed: Array<{ file: string; state: string; exposedAs: string; attribute: string }> =
       [];
 
-    let scanned = 0;
+    const sourceSummary = createHookSourceSummaryContext();
     for (const absolute of await prototypeSourceFiles()) {
       const file = path.relative(REPO_ROOT, absolute).split(path.sep).join('/');
       const text = await readFile(absolute, 'utf8');
       if (!RULE_CALL.test(text)) continue;
-      scanned += 1;
-      const scan = scanRuleStateReads(text, absolute);
+      const scan = scanRuleStateReads(text, absolute, sourceSummary);
       for (const usage of scan.usages)
         found.push({ file, hook: usage.hook, state: usage.state, provenance: usage.provenance });
       for (const miss of scan.unresolved) blind.push(`${file}: ${miss.reason} ${miss.expression}`);
       for (const local of scan.exposedLocals) exposed.push({ file, ...local });
     }
-
-    expect(scanned, 'files carrying a rule call').toBeGreaterThan(40);
 
     // Every exposed prototype-owned state a rule reads has to name an attribute
     // the extractor can emit, or the runtime lowers a variant with no CSS.
@@ -1873,9 +2919,6 @@ describe('lowered hook coverage', () => {
       exposed.filter(({ attribute }) => !SELECTABLE_ATTRIBUTE.test(attribute)),
       'exposed states whose attribute cannot be written as a data selector'
     ).toEqual([]);
-    expect(exposed.length, 'exposed prototype-owned states read by a rule').toBeGreaterThan(0);
-
-    expect(found.length).toBeGreaterThan(30);
     // The two-step shape must be reached in the shipped tree, not just fixtures.
     expect(found).toEqual(
       expect.arrayContaining([

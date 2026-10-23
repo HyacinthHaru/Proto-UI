@@ -16,6 +16,12 @@ CLI package used by applications and maintainers to scaffold Proto UI configurat
 npm install @proto.ui/cli@0.3.0-alpha.1
 ```
 
+## Authored hook state selectors
+
+Source token collection follows an authored `defineAsHook` binding through imports, synchronous helpers, captured results and `projectHandle` projections without executing prototype code. State selectors retain the original declaration name; an `expose.state` alias does not rename that identity. Nested child handles remain under their explicit result or projected paths rather than being flattened. Literal `getState` lookups and detached lookup aliases preserve the same provenance.
+
+This is a bounded static analysis, not a JavaScript interpreter. Unproved setup captures remain open, so the coverage scanner reports unresolved reads instead of discarding optional Rules as unreachable. Async/generator factories cannot prove a returned holder, and mutations or escapes invalidate provider-member proofs. Finite literal loops preserve captured token values and row pairing; consumed style handles follow sequential assignments while retaining conditional alternatives.
+
 ## Opt-in Shadow style companion
 
 The source CLI generates the companion consumed by the Web Component Adapter's explicit experimental `shadow: { mode: 'open', presentation: 'split', styleArtifact }` profile. Pass the imported value as `styleArtifact`; generating it alone does not select that profile. Existing boolean `shadow` options remain unchanged. See the [Adapter guide](../adapters/web-component/README.md) for admitted prototypes, recipes and customization limits. Installing an already-published CLI version does not imply that it includes this source change.
