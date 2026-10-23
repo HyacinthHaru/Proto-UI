@@ -95,6 +95,9 @@ await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
 const origin = `http://127.0.0.1:${server.address().port}`;
 let browser, page;
 const observations = [];
+const errors = [];
+const consoleErrors = [];
+const failedRequests = [];
 try {
   browser = await launchBrowser();
   const context = await browser.newContext({ viewport: { width: 767, height: 1000 } });
@@ -102,8 +105,13 @@ try {
     new URL(route.request().url()).origin === origin ? route.continue() : route.abort()
   );
   page = await context.newPage();
-  const errors = [];
   page.on('pageerror', (e) => errors.push(String(e)));
+  page.on('console', (message) => {
+    if (message.type() === 'error') consoleErrors.push(message.text());
+  });
+  page.on('requestfailed', (request) =>
+    failedRequests.push({ url: request.url(), failure: request.failure() })
+  );
   await page.goto(origin, { waitUntil: 'networkidle' });
   await page.waitForFunction(
     () =>
@@ -410,8 +418,21 @@ try {
   );
 } catch (error) {
   let failureScreenshot;
+  let readiness;
   if (page) {
     try {
+      readiness = await page.evaluate(() => ({
+        ready: document.documentElement.dataset.ready,
+        records: window.textareaEvidence?.records.map((r) => ({
+          kind: r.kind,
+          editor: !!r.editor(),
+          html: r.host.innerHTML,
+        })),
+        sections: [...document.querySelectorAll('section')].map((s) => ({
+          runtime: s.dataset.runtime,
+          html: s.innerHTML,
+        })),
+      }));
       const bytes = await page.screenshot({ path: join(out, 'failure.png'), fullPage: true });
       failureScreenshot = { path: 'failure.png', sha256: hash(bytes) };
     } catch (captureError) {
@@ -421,7 +442,16 @@ try {
   await writeFile(
     join(out, 'failure.json'),
     JSON.stringify(
-      { revision: receipt.revision, error: String(error), failureScreenshot, observations },
+      {
+        revision: receipt.revision,
+        error: String(error),
+        failureScreenshot,
+        observations,
+        errors,
+        consoleErrors,
+        failedRequests,
+        readiness,
+      },
       null,
       2
     )
