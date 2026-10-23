@@ -10,8 +10,10 @@ import { launchBrowser, startServer, stopServer, RUNTIMES } from './browser-harn
 import { revealHeaderPreferences } from './site-header-browser';
 import { copySourceBindingIssues, type CopySourceBinding } from './copy-command-evidence';
 
-// Eight fresh, credential-free contexts; five layout samples reuse each page.
-// 150s startup + 8 x 45s cases + 30s no-JS + 20s teardown < the 600s lane cap.
+// Eight fresh, credential-free homepage contexts; five layout samples reuse each page.
+// Four separate width-fixture contexts isolate intrinsic input sizing.
+// 150s startup + 8 x 45s scenes + 30s no-JS + 30s width + 20s teardown
+// + 1s pure contracts = 591s < the unchanged 600s lane cap.
 // Only real input changes application state. The sole style mutation is the
 // explicitly reported text-resize simulation, never a component geometry fix.
 const directory = join(
@@ -40,7 +42,11 @@ const LAYOUTS = [
   { name: '320', width: 320, textScale: 100 },
   { name: '320-text200', width: 320, textScale: 200 },
 ] as const;
-let browser: Browser, baseUrl: string, source: CopySourceBinding, testSha256: string;
+let browser: Browser,
+  baseUrl: string,
+  source: CopySourceBinding,
+  testSha256: string,
+  fixtureSha256: string;
 
 type CaptureSelection = Array<{
   hostGeneration: string | null;
@@ -350,9 +356,12 @@ beforeAll(async () => {
   testSha256 = createHash('sha256')
     .update(await readFile(new URL('./homepage-composition.browser.test.ts', import.meta.url)))
     .digest('hex');
+  fixtureSha256 = createHash('sha256')
+    .update(await readFile('apps/www/src/pages/en/test/command-width.astro'))
+    .digest('hex');
   await writeFile(
     join(directory, 'source.json'),
-    JSON.stringify({ ...source, testSha256 }, null, 2)
+    JSON.stringify({ ...source, testSha256, fixtureSha256 }, null, 2)
   );
   expect(copySourceBindingIssues(source, Boolean(process.env.CI))).toEqual([]);
   if (process.env.CI) expect(source.expectedSHA).toMatch(/^[a-f\d]{40}$/);
@@ -1210,4 +1219,181 @@ it('without JavaScript both localized homepages retain a readable documentation 
       }
     }
   }
+}, 30_000);
+
+it('CommandInput fits actual narrow parents across four runtimes without clipping or losing grow', async () => {
+  const records: Array<Record<string, unknown>> = [];
+  const failures: string[] = [];
+  const output = join(directory, 'command-width.json');
+  const save = () =>
+    writeFile(output, JSON.stringify({ ...source, testSha256, fixtureSha256, records }, null, 2));
+  for (const runtime of RUNTIMES) {
+    const blockedRequests: string[] = [];
+    const record: Record<string, unknown> = {
+      runtime,
+      outcome: 'running',
+      blockedRequests,
+      samples: [],
+      screenshots: [],
+    };
+    records.push(record);
+    await save();
+    const context = await browser.newContext({
+      viewport: { width: 1180, height: 900 },
+      serviceWorkers: 'block',
+      colorScheme: 'light',
+    });
+    context.setDefaultTimeout(2_000);
+    context.setDefaultNavigationTimeout(8_000);
+    const errors: string[] = [];
+    let page: Page | undefined;
+    try {
+      await restrictNetwork(context, blockedRequests);
+      page = await context.newPage();
+      page.on('pageerror', (error) => errors.push(String(error)));
+      await page.goto(`${baseUrl}/en/test/command-width/?runtime=${runtime}`, {
+        waitUntil: 'networkidle',
+      });
+      await page.waitForFunction(
+        () =>
+          document
+            .querySelector('[data-command-width-fixture]')
+            ?.getAttribute('data-mount-state') === 'ready'
+      );
+      expect(await page.locator('[data-command-width-error]').textContent()).toBe('');
+      for (const textPercent of [100, 200]) {
+        const sample: Record<string, unknown> = { textPercent, outcome: 'running' };
+        (record.samples as unknown[]).push(sample);
+        try {
+          await page.evaluate((percent) => {
+            document.documentElement.style.fontSize = `${percent}%`;
+          }, textPercent);
+          await page.evaluate(
+            () =>
+              new Promise<void>((resolve) =>
+                requestAnimationFrame(() => requestAnimationFrame(() => resolve()))
+              )
+          );
+          for (const family of ['shadcn', 'brutalist']) {
+            const editable = page.locator(`[data-width-case="${family}-144-value"] input`);
+            await editable.fill(
+              'Actual native editing with a long value abcdefghijklmnopqrstuvwxyz0123456789'
+            );
+            expect(await editable.inputValue()).toBe(
+              'Actual native editing with a long value abcdefghijklmnopqrstuvwxyz0123456789'
+            );
+            expect(
+              await page.locator(`[data-width-case="${family}-144-disabled"] input`).isDisabled()
+            ).toBe(true);
+          }
+          const facts = await page.evaluate(() =>
+            Array.from(document.querySelectorAll<HTMLElement>('[data-width-case]')).map((owner) => {
+              const input = owner.querySelector('input')!;
+              const root = owner.querySelector<HTMLElement>('[data-pui-root]')!;
+              const host = input.parentElement!;
+              const box = (element: Element) => {
+                const r = element.getBoundingClientRect();
+                return { left: r.left, right: r.right, width: r.width };
+              };
+              return {
+                id: owner.dataset.widthCase,
+                parentWidth: Number(owner.dataset.width),
+                variant: owner.dataset.variant,
+                parent: box(owner),
+                root: box(root),
+                host: box(host),
+                input: box(input),
+                font: getComputedStyle(input).fontSize,
+                grow: getComputedStyle(input).flexGrow,
+                rootOverflow: getComputedStyle(root).overflowX,
+                hostOverflow: getComputedStyle(host).overflowX,
+                value: input.value,
+                placeholder: input.placeholder,
+                disabled: input.disabled,
+              };
+            })
+          );
+          Object.assign(sample, {
+            facts,
+            documentWidth: await page.evaluate(() => document.documentElement.scrollWidth),
+          });
+          await save();
+          expect(facts.map((fact) => fact.id)).toEqual(
+            ['shadcn', 'brutalist'].flatMap((family) =>
+              [144, 224, 360].flatMap((width) =>
+                ['placeholder', 'value', 'disabled'].map(
+                  (variant) => `${family}-${width}-${variant}`
+                )
+              )
+            )
+          );
+          for (const fact of facts) {
+            expect(fact.parent.width).toBeCloseTo(fact.parentWidth, 3);
+            expect(fact.input.width).toBeGreaterThan(0);
+            expect(fact.input.width).toBeCloseTo(fact.parentWidth, 0);
+            expect(fact.input.left).toBeGreaterThanOrEqual(fact.parent.left - 1);
+            expect(fact.input.right).toBeLessThanOrEqual(fact.parent.right + 1);
+            expect(fact.host.right).toBeLessThanOrEqual(fact.parent.right + 1);
+            expect(fact.rootOverflow).toBe('visible');
+            expect(fact.hostOverflow).toBe('visible');
+            expect(fact.grow).toBe('1');
+            expect(fact.font).toBe(textPercent === 100 ? '16px' : '32px');
+            expect(fact.placeholder).toContain('abcdefghijklmnopqrstuvwxyz');
+            expect(fact.disabled).toBe(fact.variant === 'disabled');
+            if (fact.variant !== 'placeholder') expect(fact.value.length).toBeGreaterThan(60);
+          }
+          expect(sample.documentWidth).toBeLessThanOrEqual(1181);
+          sample.outcome = 'passed';
+        } catch (error) {
+          sample.outcome = 'failed';
+          sample.error = String(error);
+          failures.push(`${runtime}/${textPercent}: ${error}`);
+        } finally {
+          await save();
+          const filename = `${source.exactSHA}-command-width-${runtime}-${textPercent}-${sample.outcome}.png`;
+          const bytes = await page.screenshot({
+            path: join(directory, filename),
+            fullPage: true,
+            timeout: 2_000,
+          });
+          (record.screenshots as unknown[]).push({
+            file: filename,
+            exactSHA: source.exactSHA,
+            sha256: createHash('sha256').update(bytes).digest('hex'),
+          });
+          await save();
+        }
+      }
+      expect(errors).toEqual([]);
+      expect(blockedRequests).toEqual([]);
+      record.outcome = 'observed';
+    } catch (error) {
+      record.outcome = 'failed';
+      record.error = String(error);
+      failures.push(`${runtime}/setup: ${error}`);
+      await save();
+      if (page) {
+        try {
+          const filename = `${source.exactSHA}-command-width-${runtime}-early-failure.png`;
+          const bytes = await page.screenshot({
+            path: join(directory, filename),
+            fullPage: true,
+            timeout: 2_000,
+          });
+          (record.screenshots as unknown[]).push({
+            file: filename,
+            exactSHA: source.exactSHA,
+            sha256: createHash('sha256').update(bytes).digest('hex'),
+          });
+        } catch (captureError) {
+          record.captureError = String(captureError);
+        }
+      }
+    } finally {
+      record.pageErrors = errors;
+      await save();
+      await context.close();
+    }
+  }
+  expect(failures).toEqual([]);
 }, 30_000);
