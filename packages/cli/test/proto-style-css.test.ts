@@ -7,6 +7,7 @@ import {
   renderPrefixedThemeCss,
   renderProtoShadowStyleArtifact,
   renderProtoShadowStyleTokenCss,
+  renderProtoShadowSplitStyleArtifact,
   renderProtoStyleEntryCss,
   renderProtoStyleTokenCss,
 } from '../src/services/proto-style-css';
@@ -335,6 +336,31 @@ describe('proto style css renderer', () => {
     expect(css).toContain('display: flex;');
     expect(css).toContain('justify-content: space-between;');
     expect(css).not.toContain('Unsupported Proto UI style tokens');
+  });
+
+  it('renders only finite field sizing and resize vocabulary on light and shadow targets', () => {
+    for (const render of [renderProtoStyleTokenCss, renderProtoShadowStyleTokenCss, (tokens: string[]) => renderProtoShadowSplitStyleArtifact(tokens).cssText]) {
+      for (const [token, declaration] of [
+        ['resize-none', 'resize: none;'],
+        ['resize-y', 'resize: vertical;'],
+        ['field-sizing-content', 'field-sizing: content;'],
+        ['field-sizing-fixed', 'field-sizing: fixed;'],
+      ]) {
+        const css = render([token]);
+        expect(css).toContain(declaration);
+        expect(css).not.toContain('Unsupported Proto UI style tokens');
+      }
+      for (const token of [
+        'resize-auto',
+        'field-sizing-auto',
+        'field-sizing-[content]',
+        'field-sizing-content;display:none',
+      ]) {
+        const css = render([token]);
+        expect(css).toContain('Unsupported Proto UI style tokens');
+        expect(css).not.toMatch(/(?:^|\n)\s*(?:field-sizing|resize):/);
+      }
+    }
   });
 
   it('renders the vertical resize utility used by Brutalist Textarea', () => {

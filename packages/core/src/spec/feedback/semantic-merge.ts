@@ -67,6 +67,11 @@ export function getSemanticGroupKeyV0(token: string): string {
     return `${selectionPrefix}${getSemanticGroupKeyV0(token.slice(selectionPrefix.length))}`;
   }
 
+  if (token === 'resize-y' || token === 'resize-none') return 'field resize affordance';
+  if (token === 'field-sizing-content' || token === 'field-sizing-fixed') {
+    return 'field intrinsic sizing';
+  }
+
   const translateAxis = token.match(/^-?translate-([xy])-/);
   if (translateAxis) return `translate-${translateAxis[1]}-`;
 
