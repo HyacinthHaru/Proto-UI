@@ -107,6 +107,11 @@ export function createWebComponentHostSession<Props extends PropsBaseType>(args:
             | undefined;
           const lease = feedback?.captureDecorationLease?.();
           return (bindings) => {
+            const overlay = capsHub?.getPort?.('overlay') as
+              | import('@proto.ui/module-overlay').OverlayPort
+              | undefined;
+            if (bindings.length && overlay?.getConfig().portal)
+              throw new Error('[WC Adapter] owned-decoration portal unsupported');
             if (feedback?.bindDecorations) feedback.bindDecorations(bindings, lease!);
             else if (bindings.length)
               throw new Error('[WC Adapter] owned-decoration binding unavailable');
