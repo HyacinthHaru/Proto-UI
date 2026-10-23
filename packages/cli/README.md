@@ -18,7 +18,7 @@ npm install @proto.ui/cli@0.3.0-alpha.1
 
 ## Authored hook state selectors
 
-Source token collection follows an authored `defineAsHook` binding through imports, synchronous helpers, captured results and `projectHandle` projections without executing prototype code. State selectors retain the original declaration name; an `expose.state` alias does not rename that identity. Nested child handles remain under their explicit result or projected paths rather than being flattened. Literal `getState` lookups and detached lookup aliases preserve the same provenance.
+Source token collection follows an authored `defineAsHook` binding through imports, synchronous helpers, captured results and `projectHandle` projections without executing prototype code. State selectors retain the original declaration name; an `expose.state` alias does not rename that identity. Proven `fromInteraction` and `fromAccessibility` constructors keep the same native/data selector mapping as directly observed handles; an ordinary state name such as `hovered` is not promoted to a native interaction variant. Nested child handles remain under their explicit result or projected paths rather than being flattened. Literal `getState` lookups and detached lookup aliases preserve the same provenance.
 
 This is a bounded static analysis, not a JavaScript interpreter. Unproved setup captures remain open, so the coverage scanner reports unresolved reads instead of discarding optional Rules as unreachable. Async/generator factories cannot prove a returned holder, and mutations or escapes invalidate provider-member proofs. Finite literal loops preserve captured token values and row pairing; consumed style handles follow sequential assignments while retaining conditional alternatives.
 

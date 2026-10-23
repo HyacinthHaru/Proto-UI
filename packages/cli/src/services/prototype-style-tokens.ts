@@ -1012,7 +1012,16 @@ function sourceStateSemantic(state) {
   // Web semantic (`__stateSemantic`). Prefer that source metadata; authored
   // `def.state` declarations have no separate semantic and retain the name.
   // In particular, `constructor` is a state name, not Object.prototype.constructor.
-  const attribute = exposedDataAttributeName(String(state.semantic ?? state.declaredName));
+  const semantic = String(state.semantic ?? state.declaredName);
+  const native = officialEntry(OFFICIAL_NATIVE_VARIANTS, semantic);
+  if (native) return native;
+  if (state.semantic === undefined) {
+    if (state.variant === 'fromInteraction')
+      return officialEntry(INTERACTION_STATE_SEMANTICS, state.declaredName);
+    if (state.variant === 'fromAccessibility')
+      return officialEntry(ACCESSIBILITY_STATE_SEMANTICS, state.declaredName);
+  }
+  const attribute = exposedDataAttributeName(semantic);
   return attribute ? `data-[${attribute}]` : null;
 }
 
@@ -1735,6 +1744,22 @@ const OFFICIAL_NATIVE_VARIANTS = Object.freeze({
   '@interaction/pressed': 'active',
 });
 
+const INTERACTION_STATE_SEMANTICS = Object.freeze({
+  hovered: 'hover',
+  pressed: 'active',
+  disabled: 'data-[disabled]',
+  focused: 'data-[focused]',
+  focusVisible: 'data-[focus-visible]',
+});
+
+const ACCESSIBILITY_STATE_SEMANTICS = Object.freeze({
+  expanded: 'data-[expanded]',
+  invalid: 'data-[invalid]',
+  selected: 'data-[selected]',
+  checked: 'data-[checked]',
+  current: 'data-[current]',
+});
+
 /** Both tables inherit `Object.prototype`, so `constructor` is not an entry. */
 function officialEntry(table, key) {
   return Object.hasOwn(table, key) ? table[key] : null;
@@ -2345,27 +2370,9 @@ function resolveSemanticBinding(node) {
   const firstArg = node.arguments[0];
   if (!firstArg || !ts.isStringLiteralLike(firstArg)) return null;
   const name = firstArg.text;
-
-  if (kind === 'interaction') {
-    return (
-      {
-        hovered: 'hover',
-        pressed: 'active',
-        disabled: 'data-[disabled]',
-        focused: 'data-[focused]',
-        focusVisible: 'data-[focus-visible]',
-      }[name] ?? null
-    );
-  }
-
-  return (
-    {
-      expanded: 'data-[expanded]',
-      invalid: 'data-[invalid]',
-      selected: 'data-[selected]',
-      checked: 'data-[checked]',
-      current: 'data-[current]',
-    }[name] ?? null
+  return officialEntry(
+    kind === 'interaction' ? INTERACTION_STATE_SEMANTICS : ACCESSIBILITY_STATE_SEMANTICS,
+    name
   );
 }
 

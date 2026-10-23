@@ -2798,6 +2798,50 @@ describe('lowered hook coverage', () => {
     }
   });
 
+  it('preserves native constructors without promoting ordinary authored state names', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-native-state-'));
+    try {
+      const cases = [
+        ['fromInteraction', 'hovered', 'hover', 'data-[hovered]'],
+        ['fromInteraction', 'pressed', 'active', 'data-[pressed]'],
+        ['fromInteraction', 'disabled', 'data-[disabled]', 'disabled'],
+        ['fromInteraction', 'focused', 'data-[focused]', 'focus'],
+        ['fromInteraction', 'focusVisible', 'data-[focus-visible]', 'data-[focusVisible]'],
+        ['fromAccessibility', 'expanded', 'data-[expanded]', 'expanded'],
+        ['fromAccessibility', 'invalid', 'data-[invalid]', 'invalid'],
+        ['fromAccessibility', 'selected', 'data-[selected]', 'selected'],
+        ['fromAccessibility', 'checked', 'data-[checked]', 'checked'],
+        ['fromAccessibility', 'current', 'data-[current]', 'current'],
+        ['bool', 'hovered', 'data-[hovered]', 'hover'],
+        ['bool', 'pressed', 'data-[pressed]', 'active'],
+      ];
+      for (const [index, [method, name, expected, forbidden]] of cases.entries()) {
+        const folder = path.join(dir, String(index));
+        await mkdir(folder);
+        await writeFile(
+          path.join(folder, 'producer.ts'),
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            `export const useFacts = defineAsHook({ name: 'facts', setup(def) { def.state.${method}('${name}'${method === 'bool' ? ', false' : ''}); } });`,
+          ].join('\n')
+        );
+        await writeFile(
+          path.join(folder, 'consumer.proto.ts'),
+          [
+            "import { useFacts } from './producer';",
+            'const state = useFacts().stateHandles;',
+            rule(`w.state(state.${name}).eq(true)`),
+          ].join('\n')
+        );
+        const tokens = await collectProtoStyleTokens(folder);
+        expect(tokens, `${method}(${name})`).toContain(`${expected}:bg-primary`);
+        expect(tokens, `${method}(${name})`).not.toContain(`${forbidden}:bg-primary`);
+      }
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
   it.each(['asFormSubmit', 'asFormReset'])(
     'lowers only the five declared command states for %s',
     async (hook) => {
