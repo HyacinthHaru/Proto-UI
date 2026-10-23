@@ -1182,3 +1182,95 @@ test('font preparation mocks preserve integrity and glyph failure gates without 
     ['success', 'bad-sha', 'bad-version', 'wrong-family', 'missing-glyphs']
   );
 });
+
+test('200% text observer records the animated intermediate frame then requires the exact endpoint', async () => {
+  const browser = readFileSync(
+    new URL('../src/content/docs/zh-cn/homepage-composition.browser.test.ts', import.meta.url),
+    'utf8'
+  );
+  const start = browser.indexOf('async function resizeText200(');
+  const end = browser.indexOf('\nasync function settled(', start);
+  assert.ok(start >= 0 && end > start);
+  const code = transformSync(
+    `${browser.slice(start, end)}\nexports.resizeText200 = resizeText200;`,
+    { loader: 'ts', format: 'cjs', target: 'es2022' }
+  ).code;
+  for (const reachesEndpoint of [true, false]) {
+    let size = 16.45,
+      disposed = false,
+      reads = 0;
+    const node = {
+      tagName: 'BUTTON',
+      textContent: 'Primary',
+      isConnected: true,
+      closest: () => null,
+      getAnimations: () => [{ playState: 'running', currentTime: 25, effect: null }],
+    };
+    const samples = [{ node, before: 14 }];
+    const context = {
+      exports: {} as { resizeText200?: (page: unknown) => Promise<any[]> },
+      KeyframeEffect: class {},
+      getComputedStyle: () => ({
+        fontSize: String(size),
+        transitionProperty: 'all',
+        transitionDuration: '0.15s',
+      }),
+      expect: {
+        poll: (observe: () => Promise<boolean>, options: unknown) => ({
+          toBe: async (value: boolean) => {
+            assert.deepEqual(JSON.parse(JSON.stringify(options)), { timeout: 1500, interval: 25 });
+            assert.equal(await observe(), false);
+            if (reachesEndpoint) size = 28;
+            if ((await observe()) !== value)
+              throw new Error('bounded exact endpoint was not reached');
+          },
+        }),
+      },
+    };
+    runInNewContext(code, context);
+    const result = await context.exports.resizeText200!({
+      evaluateHandle: async () => ({
+        evaluate: async (fn: (samples: unknown) => unknown) => {
+          reads++;
+          return fn(samples);
+        },
+        dispose: async () => {
+          disposed = true;
+        },
+      }),
+    });
+    assert.equal(result[0].immediate.after, 16.45);
+    assert.equal(result[0].immediate.animations[0].playState, 'running');
+    assert.equal(result[0].after, reachesEndpoint ? 28 : 16.45);
+    assert.equal(result[0].settleFailure === null, reachesEndpoint);
+    assert.ok(disposed);
+    assert.ok(reads >= 4);
+  }
+});
+
+test('Accordion readiness remains count-one and width failures retain full physical layout evidence', () => {
+  const browser = readFileSync(
+    new URL('../src/content/docs/zh-cn/homepage-composition.browser.test.ts', import.meta.url),
+    'utf8'
+  );
+  const verify = (source: string) => {
+    assert.match(
+      source,
+      /await expect\.poll\(\(\) => panel\.count\(\), \{ timeout: 1500, interval: 25 \}\)\.toBe\(1\)/
+    );
+    assert.match(source, /step\.afterPress = await accordionSnapshot\(\)/);
+    assert.match(source, /step\.ready = await accordionSnapshot\(\)/);
+    assert.match(source, /await attribute\(panel, 'aria-labelledby', triggerId\)/);
+    assert.match(source, /expect\(fact\.input\.width\)\.toBeCloseTo\(fact\.parentWidth, 0\)/);
+    assert.match(source, /flexBasis: css\.flexBasis/);
+    assert.match(source, /record\.failureDOM = await page\.evaluate/);
+  };
+  verify(browser);
+  for (const fragment of [
+    'step.ready = await accordionSnapshot()',
+    "await attribute(panel, 'aria-labelledby', triggerId)",
+    'expect(fact.input.width).toBeCloseTo(fact.parentWidth, 0)',
+    'record.failureDOM = await page.evaluate',
+  ])
+    assert.throws(() => verify(browser.replaceAll(fragment, '')));
+});

@@ -438,7 +438,6 @@ async function resizeText200(page: Page) {
     return samples;
   });
   try {
-    await settled(page);
     const read = () =>
       probe.evaluate((samples) =>
         samples.map(({ node, before }) => ({
@@ -447,10 +446,50 @@ async function resizeText200(page: Page) {
           before,
           after: parseFloat(getComputedStyle(node).fontSize),
           scene: node.closest('[data-gallery-demo]')?.getAttribute('data-gallery-demo') ?? null,
+          connected: node.isConnected,
+          transitionProperty: getComputedStyle(node).transitionProperty,
+          transitionDuration: getComputedStyle(node).transitionDuration,
+          animations: node.getAnimations().map((animation) => ({
+            type: animation.constructor.name,
+            playState: animation.playState,
+            currentTime: typeof animation.currentTime === 'number' ? animation.currentTime : null,
+            timing: animation.effect?.getComputedTiming(),
+            fontSizeKeyframes:
+              animation.effect instanceof KeyframeEffect
+                ? animation.effect
+                    .getKeyframes()
+                    .map((frame) => ({ offset: frame.offset, fontSize: frame.fontSize ?? null }))
+                : [],
+          })),
         }))
       );
-    // Return evidence before assertions so a failed scale is retained too.
-    return await read();
+    // Observe the immediate transition rather than disabling motion or overwriting its CSS.
+    const immediate = await read();
+    let settleFailure: string | null = null;
+    try {
+      await expect
+        .poll(
+          () =>
+            probe.evaluate((samples) =>
+              samples.every(
+                ({ node, before }) =>
+                  node.isConnected &&
+                  Math.abs(parseFloat(getComputedStyle(node).fontSize) - before * 2) < 0.0005
+              )
+            ),
+          { timeout: 1500, interval: 25 }
+        )
+        .toBe(true);
+    } catch (error) {
+      // Preserve final measurements before the unchanged exact-size assertions fail outside.
+      settleFailure = String(error);
+    }
+    const final = await read();
+    return final.map((sample, index) => ({
+      ...sample,
+      immediate: immediate[index],
+      settleFailure,
+    }));
   } finally {
     await probe.dispose();
   }
@@ -871,12 +910,50 @@ describe.sequential(
             expect(await help.getByRole('heading', { level: 3 }).count()).toBe(3);
             await help.getByRole('button', { name: questions[0], exact: true }).press('Enter');
             await expect.poll(() => help.getByRole('region').count()).toBe(0);
+            const accordionSteps: Array<Record<string, unknown>> = [];
+            record.accordionSteps = accordionSteps;
+            const accordionSnapshot = () =>
+              help.evaluate((root) => ({
+                html: root.outerHTML,
+                activeElement: document.activeElement?.outerHTML ?? null,
+                nodes: Array.from(
+                  root.querySelectorAll<HTMLElement>('[role="region"],button,[role="button"]')
+                ).map((node) => {
+                  const rect = node.getBoundingClientRect();
+                  const css = getComputedStyle(node);
+                  return {
+                    id: node.id,
+                    role: node.getAttribute('role'),
+                    expanded: node.getAttribute('aria-expanded'),
+                    controls: node.getAttribute('aria-controls'),
+                    labelledby: node.getAttribute('aria-labelledby'),
+                    hidden: node.hidden,
+                    ariaHidden: node.getAttribute('aria-hidden'),
+                    detached: node.hasAttribute('data-pui-view-detached'),
+                    display: css.display,
+                    visibility: css.visibility,
+                    width: rect.width,
+                    height: rect.height,
+                  };
+                }),
+              }));
             const relations: Array<{ trigger: string; panel: string }> = [];
             for (let index = 0; index < 3; index++) {
               const trigger = help.getByRole('button', { name: questions[index], exact: true });
+              const step: Record<string, unknown> = {
+                question: questions[index],
+                before: await accordionSnapshot(),
+              };
+              accordionSteps.push(step);
+              await save();
               await trigger.press('Enter');
+              step.afterPress = await accordionSnapshot();
+              await save();
               await attribute(trigger, 'aria-expanded', 'true');
               const panel = help.getByRole('region');
+              await expect.poll(() => panel.count(), { timeout: 1500, interval: 25 }).toBe(1);
+              step.ready = await accordionSnapshot();
+              await save();
               expect(await panel.count()).toBe(1);
               const triggerId = await trigger.getAttribute('id'),
                 panelId = await panel.getAttribute('id');
@@ -1106,6 +1183,22 @@ describe.sequential(
             await save();
             if (page) {
               try {
+                record.failureDOM = await page.evaluate(() => ({
+                  help:
+                    document.querySelector(
+                      '[data-projection-generation-state="active"] [data-demo-ref="composition-help"]'
+                    )?.outerHTML ?? null,
+                  activeElement: document.activeElement?.outerHTML ?? null,
+                  generations: Array.from(
+                    document.querySelectorAll(
+                      '[data-home-showcase="website-component-gallery"] [data-projection-generation-state]'
+                    )
+                  ).map((node) => ({
+                    state: node.getAttribute('data-projection-generation-state'),
+                    generation: node.getAttribute('data-projection-generation'),
+                  })),
+                }));
+                await save();
                 await capture('failure');
               } catch (captureError) {
                 record.captureFailure = String(captureError);
@@ -1303,6 +1396,24 @@ it('CommandInput fits actual narrow parents across four runtimes without clippin
                 root: box(root),
                 host: box(host),
                 input: box(input),
+                layout: [root, host, input].map((node) => {
+                  const css = getComputedStyle(node);
+                  return {
+                    tag: node.tagName,
+                    html: node.outerHTML,
+                    display: css.display,
+                    width: css.width,
+                    minWidth: css.minWidth,
+                    maxWidth: css.maxWidth,
+                    flex: css.flex,
+                    flexBasis: css.flexBasis,
+                    boxSizing: css.boxSizing,
+                    paddingLeft: css.paddingLeft,
+                    paddingRight: css.paddingRight,
+                    borderLeftWidth: css.borderLeftWidth,
+                    borderRightWidth: css.borderRightWidth,
+                  };
+                }),
                 font: getComputedStyle(input).fontSize,
                 grow: getComputedStyle(input).flexGrow,
                 rootOverflow: getComputedStyle(root).overflowX,
