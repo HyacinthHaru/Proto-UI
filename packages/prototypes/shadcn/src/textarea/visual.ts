@@ -38,11 +38,25 @@ export function setupTextareaVisual(
     intent: (i) => i.feedback.style.use(tw('text-sm')),
   });
   def.rule({
-    when: (w) => w.all(w.state(style).eq('new-york-v4'), w.state(state.focusVisible).eq(true)),
+    when: (w) =>
+      invalid
+        ? w.all(
+            w.state(style).eq('new-york-v4'),
+            w.state(state.focusVisible).eq(true),
+            w.state(invalid).eq(false)
+          )
+        : w.all(w.state(style).eq('new-york-v4'), w.state(state.focusVisible).eq(true)),
     intent: (i) => i.feedback.style.use(tw('border-ring ring-ring/50 ring-3')),
   });
   def.rule({
-    when: (w) => w.all(w.state(style).eq('rhea'), w.state(state.focusVisible).eq(true)),
+    when: (w) =>
+      invalid
+        ? w.all(
+            w.state(style).eq('rhea'),
+            w.state(state.focusVisible).eq(true),
+            w.state(invalid).eq(false)
+          )
+        : w.all(w.state(style).eq('rhea'), w.state(state.focusVisible).eq(true)),
     intent: (i) => i.feedback.style.use(tw('border-ring ring-ring/30 ring-3')),
   });
   def.rule({
@@ -54,6 +68,15 @@ export function setupTextareaVisual(
     intent: (i) => i.feedback.style.use(tw('bg-input/30')),
   });
   if (invalid) {
+    def.rule({
+      when: (w) =>
+        w.all(
+          w.state(style).eq('new-york-v4'),
+          w.state(invalid).eq(true),
+          w.state(state.focusVisible).eq(true)
+        ),
+      intent: (i) => i.feedback.style.use(tw('ring-3')),
+    });
     def.rule({
       when: (w) =>
         w.all(

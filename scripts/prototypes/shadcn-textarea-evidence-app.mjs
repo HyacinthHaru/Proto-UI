@@ -35,7 +35,13 @@ for (const kind of ['wc', 'react', 'vue', 'vue2']) {
     field.append(label, description, control, error);
     scope.append(field);
     host.append(scope);
-    set = (style, invalid) => {
+    set = (style, invalid, mode = 'normal') => {
+      setElementProps(control, {
+        placeholder: 'Write a message',
+        rows: 3,
+        disabled: mode === 'disabled',
+        readOnly: mode === 'readonly',
+      });
       setElementProps(scope, { styleProfile: style });
       setElementProps(field, { invalid, errors: invalid ? ['Invalid message'] : [] });
     };
@@ -44,7 +50,7 @@ for (const kind of ['wc', 'react', 'vue', 'vue2']) {
       createReactAdapter(React)(p)
     );
     const root = createRoot(host);
-    set = (style, invalid) =>
+    set = (style, invalid, mode = 'normal') =>
       root.render(
         React.createElement(
           Scope,
@@ -54,7 +60,12 @@ for (const kind of ['wc', 'react', 'vue', 'vue2']) {
             { invalid, errors: invalid ? ['Invalid message'] : [] },
             React.createElement(Label, null, 'Message'),
             React.createElement(Description, null, 'Shared field and style scope'),
-            React.createElement(Control, { placeholder: 'Write a message', rows: 3 }),
+            React.createElement(Control, {
+              placeholder: 'Write a message',
+              rows: 3,
+              disabled: mode === 'disabled',
+              readOnly: mode === 'readonly',
+            }),
             React.createElement(ErrorView)
           )
         )
@@ -63,7 +74,7 @@ for (const kind of ['wc', 'react', 'vue', 'vue2']) {
     const [Scope, Field, Control, Label, Description, ErrorView] = protos.map((p) =>
       createVueAdapter(Vue)(p)
     );
-    const state = Vue.reactive({ style: 'rhea', invalid: false });
+    const state = Vue.reactive({ style: 'rhea', invalid: false, mode: 'normal' });
     Vue.createApp({
       render: () =>
         Vue.h(Scope, { styleProfile: state.style }, () =>
@@ -73,15 +84,21 @@ for (const kind of ['wc', 'react', 'vue', 'vue2']) {
             () => [
               Vue.h(Label, null, () => 'Message'),
               Vue.h(Description, null, () => 'Shared field and style scope'),
-              Vue.h(Control, { placeholder: 'Write a message', rows: 3 }),
+              Vue.h(Control, {
+                placeholder: 'Write a message',
+                rows: 3,
+                disabled: state.mode === 'disabled',
+                readOnly: state.mode === 'readonly',
+              }),
               Vue.h(ErrorView),
             ]
           )
         ),
     }).mount(host);
-    set = (style, invalid) => {
+    set = (style, invalid, mode = 'normal') => {
       state.style = style;
       state.invalid = invalid;
+      state.mode = mode;
     };
   } else {
     const runtime = {
@@ -93,7 +110,7 @@ for (const kind of ['wc', 'react', 'vue', 'vue2']) {
     const [Scope, Field, Control, Label, Description, ErrorView] = protos.map((p) =>
       createVue2Adapter(runtime)(p)
     );
-    const state = Vue2.observable({ style: 'rhea', invalid: false });
+    const state = Vue2.observable({ style: 'rhea', invalid: false, mode: 'normal' });
     const app = new Vue2({
       render(h) {
         return h(Scope, { attrs: { styleProfile: state.style } }, [
@@ -103,7 +120,14 @@ for (const kind of ['wc', 'react', 'vue', 'vue2']) {
             [
               h(Label, ['Message']),
               h(Description, ['Shared field and style scope']),
-              h(Control, { attrs: { placeholder: 'Write a message', rows: 3 } }),
+              h(Control, {
+                attrs: {
+                  placeholder: 'Write a message',
+                  rows: 3,
+                  disabled: state.mode === 'disabled',
+                  readOnly: state.mode === 'readonly',
+                },
+              }),
               h(ErrorView),
             ]
           ),
@@ -112,9 +136,10 @@ for (const kind of ['wc', 'react', 'vue', 'vue2']) {
     });
     app.$mount();
     host.append(app.$el);
-    set = (style, invalid) => {
+    set = (style, invalid, mode = 'normal') => {
       state.style = style;
       state.invalid = invalid;
+      state.mode = mode;
     };
   }
   set('rhea', false);
@@ -122,7 +147,8 @@ for (const kind of ['wc', 'react', 'vue', 'vue2']) {
 }
 window.textareaEvidence = {
   records,
-  set: (style, invalid = false) => records.forEach((r) => r.set(style, invalid)),
+  set: (style, invalid = false, mode = 'normal') =>
+    records.forEach((r) => r.set(style, invalid, mode)),
 };
 requestAnimationFrame(() =>
   requestAnimationFrame(() => (document.documentElement.dataset.ready = 'true'))

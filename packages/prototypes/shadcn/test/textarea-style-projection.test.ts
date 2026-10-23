@@ -72,13 +72,23 @@ describe('production shared Textarea paint', () => {
     expect(editor.value).toBe('value');
     expect(Number(editor.rows)).toBe(5);
   });
-  it.each(['light', 'dark'])(
-    'projects existing Field invalid and label relationships in %s',
-    async (theme) => {
+  it.each(
+    ['light', 'dark'].flatMap((theme) =>
+      ['rhea', 'new-york'].flatMap((style) =>
+        ['normal', 'readonly', 'disabled'].map((mode) => ({ theme, style, mode }))
+      )
+    )
+  )(
+    'keeps Field invalid/focus color priority in $theme / $style / $mode',
+    async ({ theme, style, mode }) => {
       document.documentElement.dataset.theme = theme;
-      const scope = el(styleScope.name, { styleProfile: 'rhea' }),
+      const scope = el(styleScope.name, { styleProfile: style }),
         field = el(fieldRoot.name, { invalid: false }),
-        control = el(fieldTextarea.name, { defaultValue: 'keep' }),
+        control = el(fieldTextarea.name, {
+          defaultValue: 'keep',
+          disabled: mode === 'disabled',
+          readOnly: mode === 'readonly',
+        }),
         label = el(fieldLabel.name),
         description = el(fieldDescription.name),
         error = el(fieldError.name);
@@ -90,29 +100,47 @@ describe('production shared Textarea paint', () => {
       await flush();
       const editor = control.querySelector('textarea') as HTMLTextAreaElement;
       const value = control.getExposes().value;
+      const matches = editor.matches.bind(editor);
+      vi.spyOn(editor, 'matches').mockImplementation(
+        (selector) => selector === ':focus-visible' || matches(selector)
+      );
+      expect(editor.disabled).toBe(mode === 'disabled');
+      expect(editor.readOnly).toBe(mode === 'readonly');
       expect(editor.getAttribute('aria-labelledby')).toBe(label.id);
       expect(editor.getAttribute('aria-describedby')).toContain(description.id);
-      expect(control.getExposes().invalid.get()).toBe(false);
-      editor.focus();
+      if (mode !== 'disabled') editor.focus();
       editor.setSelectionRange(1, 3);
+      await flush();
+      const focused = mode !== 'disabled';
+      expect(control.getExposes().focusVisible.get()).toBe(focused);
       setElementProps(field, { invalid: true, errors: ['Invalid message'] });
       await flush();
-      expect(control.getExposes().invalid.get()).toBe(true);
       expect(editor.getAttribute('aria-invalid')).toBe('true');
-      expect(tokens(control)).toContain(
-        theme === 'dark' ? 'border-destructive/50' : 'border-destructive'
+      expect(tokens(control).split(/\s+/)).not.toContain(
+        style === 'rhea' ? 'ring-ring/30' : 'ring-ring/50'
       );
       expect(tokens(control)).toContain(
         theme === 'dark' ? 'ring-destructive/40' : 'ring-destructive/20'
       );
-      expect(tokens(control)).toContain('ring-3');
+      expect(tokens(control)).toContain(
+        theme === 'dark' && style === 'rhea' ? 'border-destructive/50' : 'border-destructive'
+      );
+      expect(tokens(control).split(/\s+/).includes('ring-3')).toBe(style === 'rhea' || focused);
       expect(control.getExposes().value).toBe(value);
       expect(editor.value).toBe('keep');
       expect(editor.selectionStart).toBe(1);
       setElementProps(field, { invalid: false, errors: [] });
       await flush();
-      expect(tokens(control).split(/\s+/)).not.toContain('border-destructive/50');
-      expect(editor.hasAttribute('data-invalid')).toBe(false);
+      expect(tokens(control)).not.toContain('ring-destructive');
+      if (focused)
+        expect(tokens(control)).toContain(style === 'rhea' ? 'ring-ring/30' : 'ring-ring/50');
+      editor.blur();
+      await flush();
+      setElementProps(field, { invalid: true, errors: ['Invalid message'] });
+      await flush();
+      expect(control.getExposes().focusVisible.get()).toBe(false);
+      expect(tokens(control)).not.toContain('ring-ring/');
+      expect(tokens(control).split(/\s+/).includes('ring-3')).toBe(style === 'rhea');
       expect(editor.getAttribute('aria-describedby')).toContain(description.id);
     }
   );

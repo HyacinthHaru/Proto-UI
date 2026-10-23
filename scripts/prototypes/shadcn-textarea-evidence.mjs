@@ -169,10 +169,171 @@ try {
           fullPage: true,
         });
       }
+  // Resolve the actually applied ring variable through the browser's color parser,
+  // and verify that the painted box-shadow contains that exact computed color.
+  async function observeState(kind, expectedBorder, expectedRing, wanted) {
+    const attempt = { kind, wanted, expectedBorder, expectedRing };
+    observations.push({ paintAttempt: attempt });
+    const deadline = Date.now() + 240;
+    do {
+      const sampled = await page.locator(`section[data-runtime="${kind}"] textarea`).evaluate(
+        (e, expected) => {
+          const c = getComputedStyle(e),
+            actual = document.createElement('div'),
+            oracle = document.createElement('div');
+          actual.style.color = c.getPropertyValue('--pui-ring-color');
+          oracle.style.color = expected.ring || 'transparent';
+          oracle.style.borderColor = expected.border;
+          document.body.append(actual, oracle);
+          const result = {
+            kind: expected.kind,
+            focused: document.activeElement === e,
+            nativeFocus: e.matches(':focus-visible'),
+            invalid: e.getAttribute('aria-invalid'),
+            disabled: e.disabled,
+            readOnly: e.readOnly,
+            border: c.borderColor,
+            expectedBorder: getComputedStyle(oracle).borderColor,
+            ringColor: getComputedStyle(actual).color,
+            expectedRing: getComputedStyle(oracle).color,
+            ringWidth: c.getPropertyValue('--pui-ring-width').trim(),
+            shadow: c.boxShadow,
+            opacity: c.opacity,
+          };
+          actual.remove();
+          oracle.remove();
+          return result;
+        },
+        { kind, border: expectedBorder, ring: expectedRing }
+      );
+      attempt.observed = sampled;
+      if (
+        sampled.border === sampled.expectedBorder &&
+        (!expectedRing || sampled.ringColor === sampled.expectedRing) &&
+        sampled.focused === wanted.focused &&
+        (!wanted.focused || sampled.nativeFocus) &&
+        (sampled.invalid === 'true') === wanted.invalid &&
+        sampled.disabled === (wanted.mode === 'disabled') &&
+        sampled.readOnly === (wanted.mode === 'readonly') &&
+        (wanted.ringVisible
+          ? sampled.ringWidth === '3px' && sampled.shadow.includes(sampled.ringColor)
+          : sampled.ringWidth !== '3px') &&
+        (wanted.mode !== 'disabled' || sampled.opacity === '0.5')
+      )
+        return sampled;
+      if (Date.now() < deadline) await page.waitForTimeout(Math.min(16, deadline - Date.now()));
+    } while (Date.now() < deadline);
+    throw new Error(
+      `${kind}: complete paint/state endpoint not reached within 240ms; see recorded paintAttempt`
+    );
+  }
+  for (const theme of ['light', 'dark'])
+    for (const style of ['new-york', 'rhea'])
+      for (const mode of ['normal', 'readonly', 'disabled'])
+        for (const invalid of [false, true]) {
+          await page.evaluate(
+            ({ theme, style, mode, invalid }) => {
+              document.documentElement.dataset.theme = theme;
+              window.textareaEvidence.records.forEach((r) => r.editor().blur());
+              window.textareaEvidence.set(style, invalid, mode);
+            },
+            { theme, style, mode, invalid }
+          );
+          await page.waitForFunction(
+            ({ mode, invalid }) =>
+              window.textareaEvidence.records.every(
+                (r) =>
+                  r.editor().disabled === (mode === 'disabled') &&
+                  r.editor().readOnly === (mode === 'readonly') &&
+                  (r.editor().getAttribute('aria-invalid') === 'true') === invalid
+              ),
+            { mode, invalid },
+            { timeout: 240 }
+          );
+          for (const kind of ['wc', 'react', 'vue', 'vue2'])
+            for (const focused of mode === 'disabled' ? [false] : [false, true]) {
+              const editor = page.locator(`section[data-runtime="${kind}"] textarea`);
+              if (focused) {
+                await editor.focus();
+                await page.keyboard.press('Tab');
+                await page.keyboard.press('Shift+Tab');
+              } else await editor.evaluate((e) => e.blur());
+
+              const border = invalid
+                ? theme === 'dark' && style === 'rhea'
+                  ? 'color-mix(in oklab, var(--pui-destructive) 50%, transparent)'
+                  : 'var(--pui-destructive)'
+                : focused
+                  ? 'var(--pui-ring)'
+                  : style === 'rhea'
+                    ? 'transparent'
+                    : 'var(--pui-input)';
+              const ring = invalid
+                ? `color-mix(in oklab, var(--pui-destructive) ${theme === 'dark' ? 40 : 20}%, transparent)`
+                : focused
+                  ? `color-mix(in oklab, var(--pui-ring) ${style === 'rhea' ? 30 : 50}%, transparent)`
+                  : null;
+              const observed = await observeState(kind, border, ring, {
+                focused,
+                mode,
+                invalid,
+                ringVisible: focused || (invalid && style === 'rhea'),
+              });
+              assert.equal(observed.focused, focused);
+              if (focused) assert.equal(observed.nativeFocus, true);
+              assert.equal(observed.disabled, mode === 'disabled');
+              assert.equal(observed.readOnly, mode === 'readonly');
+              assert.equal(observed.border, observed.expectedBorder);
+              if (ring) assert.equal(observed.ringColor, observed.expectedRing);
+              if (focused || (invalid && style === 'rhea')) {
+                assert.equal(observed.ringWidth, '3px');
+                assert(
+                  observed.shadow.includes(observed.ringColor),
+                  `${kind}: actual painted ring color`
+                );
+              } else assert.notEqual(observed.ringWidth, '3px');
+              if (mode === 'disabled') assert.equal(observed.opacity, '0.5');
+              observations.push({ theme, style, mode, invalid, focused, observed });
+              if (theme === 'dark' && style === 'rhea' && mode === 'normal' && invalid && focused)
+                await page.screenshot({
+                  path: join(out, `dark-rhea-${kind}-focused-invalid.png`),
+                  fullPage: true,
+                });
+              if (invalid && focused) {
+                await page.evaluate(
+                  ({ style, mode }) => window.textareaEvidence.set(style, false, mode),
+                  { style, mode }
+                );
+
+                const cleared = await observeState(
+                  kind,
+                  'var(--pui-ring)',
+                  `color-mix(in oklab, var(--pui-ring) ${style === 'rhea' ? 30 : 50}%, transparent)`,
+                  { focused: true, mode, invalid: false, ringVisible: true }
+                );
+                assert.equal(cleared.ringColor, cleared.expectedRing);
+                assert.equal(cleared.border, cleared.expectedBorder);
+                assert.equal(cleared.focused, true);
+                assert.equal(cleared.nativeFocus, true);
+                assert.equal(cleared.ringWidth, '3px');
+                assert(
+                  cleared.shadow.includes(cleared.ringColor),
+                  `${kind}: restored painted focus ring`
+                );
+                observations.push({ cleared });
+                await page.evaluate(
+                  ({ style, mode }) => window.textareaEvidence.set(style, true, mode),
+                  { style, mode }
+                );
+              }
+            }
+        }
   await page.evaluate(() => {
+    window.textareaEvidence.records.forEach((r) => r.editor().blur());
     document.documentElement.dataset.theme = 'dark';
     window.textareaEvidence.set('rhea', true);
   });
+
   await page.waitForFunction(() =>
     window.textareaEvidence.records.every((r) => r.editor().getAttribute('aria-invalid') === 'true')
   );
