@@ -1761,6 +1761,14 @@ describe.sequential('native links with app-owned Proto visual surfaces', () => {
       });
       const page = await context.newPage();
       try {
+        // Keep the native content area aligned with the emulated viewport for wheel input.
+        const cdp = await context.newCDPSession(page);
+        try {
+          const { windowId } = await cdp.send('Browser.getWindowForTarget');
+          await cdp.send('Browser.setContentsSize', { windowId, width, height: 900 });
+        } finally {
+          await cdp.detach();
+        }
         await page.goto(`${baseUrl}/zh-cn/contribute/automation/`, { waitUntil: 'networkidle' });
         const sidebar = page.locator('.docs-sidebar');
         const current = sidebar.locator('.top-level a[aria-current="page"]');
