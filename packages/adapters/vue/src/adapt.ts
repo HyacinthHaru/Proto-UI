@@ -30,6 +30,7 @@ import {
   createDefaultWebColorSchemeSource,
   createDefaultWebPreferenceSource,
   createDefaultWebStyleSupportSource,
+  createDefaultWebViewportSource,
   createScopedExposesReader,
   createViewEpochOwner,
   createWebProtoEventRouter,
@@ -184,6 +185,7 @@ export function createVueAdapter(runtime: VueRuntime) {
     const styleSupportSource = opt.getMeta
       ? undefined
       : createDefaultWebStyleSupportSource(getMeta);
+    const viewportSource = opt.getMeta ? undefined : createDefaultWebViewportSource(getMeta);
     const exposeStateWebMode = opt.exposeStateWebMode;
     const scrollProjection = opt.scrollProjection;
     const autoUpdate = opt.autoUpdateOnPropsChange ?? true;
@@ -449,6 +451,7 @@ export function createVueAdapter(runtime: VueRuntime) {
             colorSchemeSource,
             preferenceSource,
             styleSupportSource,
+            viewportSource,
             setExposes: (record) => {
               exposesRef.value = record;
             },
@@ -676,6 +679,7 @@ export function createVueAdapter(runtime: VueRuntime) {
             colorSchemeSource,
             preferenceSource,
             styleSupportSource,
+            viewportSource,
             exposeStateWebMode,
             scrollProjection,
             setExposes: (record) => {

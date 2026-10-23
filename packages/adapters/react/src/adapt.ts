@@ -29,6 +29,7 @@ import {
   createDefaultWebColorSchemeSource,
   createDefaultWebPreferenceSource,
   createDefaultWebStyleSupportSource,
+  createDefaultWebViewportSource,
   createScopedExposesReader,
   createViewEpochOwner,
   createWebProtoEventRouter,
@@ -200,6 +201,7 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
     const styleSupportSource = opt.getMeta
       ? undefined
       : createDefaultWebStyleSupportSource(getMeta);
+    const viewportSource = opt.getMeta ? undefined : createDefaultWebViewportSource(getMeta);
     const exposeStateWebMode = opt.exposeStateWebMode;
     const scrollProjection = opt.scrollProjection;
     const autoUpdate = opt.autoUpdateOnPropsChange ?? true;
@@ -555,6 +557,7 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
             colorSchemeSource,
             preferenceSource,
             styleSupportSource,
+            viewportSource,
             setExposes: (record) => {
               exposesRef.current = record;
             },
@@ -745,6 +748,7 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
           colorSchemeSource,
           preferenceSource,
           styleSupportSource,
+          viewportSource,
           exposeStateWebMode,
           scrollProjection,
           setExposes: (record) => {
