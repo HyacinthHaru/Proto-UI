@@ -15,6 +15,12 @@ const tabsTrigger = definePrototype<ShadcnTabsTriggerProps, ShadcnTabsTriggerExp
       when: (w) => w.prop('appearance').eq('default'),
       intent: (i) => i.feedback.style.use(TAB_TRIGGER_COMMON),
     });
+    // The existing physical outline-none utility is a transparent shorthand.
+    // Withdraw it during visible focus so it cannot reset the focused 1px width.
+    def.rule({
+      when: (w) => w.all(w.prop('appearance').eq('default'), w.not(w.state(focusVisible).eq(true))),
+      intent: (i) => i.feedback.style.use(tw('outline-none')),
+    });
     for (const id of ['new-york-v4', 'nova', 'rhea'] as const) {
       def.rule({
         when: (w) => w.all(w.prop('appearance').eq('default'), w.state(style).eq(id)),

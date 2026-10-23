@@ -23,7 +23,7 @@ export function setupTabsVisual(def: DefHandle<ShadcnStyleProps>) {
 }
 
 export const TAB_TRIGGER_COMMON = tw(
-  'relative inline-flex h-[calc(100%_-_1px)] flex-1 items-center justify-center whitespace-nowrap text-foreground/60 transition-all outline-none select-none gap-1.5 border border-transparent text-sm font-medium'
+  'relative inline-flex h-[calc(100%_-_1px)] flex-1 items-center justify-center whitespace-nowrap text-foreground/60 transition-all select-none gap-1.5 border border-transparent text-sm font-medium'
 );
 export const TAB_TRIGGER_RECIPES = {
   'new-york-v4': tw('rounded-md px-2 py-1'),

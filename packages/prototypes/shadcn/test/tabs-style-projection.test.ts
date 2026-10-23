@@ -95,11 +95,15 @@ describe('production Tabs source projection', () => {
           b.dispatchEvent(new FocusEvent('focus', { bubbles: true }));
           await flush();
           expect(styleContains(b, 'ring-3')).toBe(true);
+          expect(styleContains(b, 'outline-1')).toBe(true);
+          expect(styleContains(b, 'outline-none')).toBe(false);
           expect(styleContains(b, 'border-ring')).toBe(style !== 'rhea');
           b.dispatchEvent(new FocusEvent('blur', { bubbles: true }));
           matches.mockRestore();
           await flush();
           expect(styleContains(b, 'ring-3')).toBe(false);
+          expect(styleContains(b, 'outline-1')).toBe(false);
+          expect(styleContains(b, 'outline-none')).toBe(true);
           setElementProps(b, { value: 'b', disabled: true });
           await flush();
           expect(styleContains(b, 'pointer-events-none')).toBe(true);
