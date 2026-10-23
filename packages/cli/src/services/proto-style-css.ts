@@ -810,7 +810,7 @@ function renderShadowSplitCss(tokens: string[]): string {
   for (const rule of rules) {
     // C-FEEDBACK-STYLE-0004: selection styles paint the browser's static
     // pseudo-element, not the Root box or its sizing/geometry contributions.
-    if (isStaticSelectionToken(rule.token)) continue;
+    if (isStaticSelectionToken(rule.token) || isStaticPlaceholderColorToken(rule.token)) continue;
     const selector = buildSplitHostSelector(rule.token);
     // Empty-declaration markers still need a compiled membership receipt.
     // This non-paint property does not introduce group/peer selector semantics.
@@ -854,6 +854,7 @@ function buildSplitHostSelector(token: string): string {
   for (const variant of variants) {
     if (variant === 'dark') dark = true;
     else if (variant === 'selection' && isStaticSelectionToken(token)) continue;
+    else if (variant === 'placeholder' && isStaticPlaceholderColorToken(token)) continue;
     else {
       if (
         !/^(hover|active|disabled|focus-visible|data-\[.+\]|not-\[data-[\w-]+\]|aria-[\w-]+)$/.test(
@@ -1284,6 +1285,11 @@ function renderTokenRule(token: string): CssRule | null {
   if (parts.slice(0, -1).includes('selection') && /^select-(auto|text|none)$/.test(utility)) {
     return null;
   }
+  if (
+    parts.slice(0, -1).includes('placeholder') &&
+    !isStaticPlaceholderColorToken(`placeholder:${utility}`)
+  )
+    return null;
   const css = renderUtility(utility);
   if (!css) return null;
   return { token, css };
@@ -1432,7 +1438,9 @@ function buildSelectors(
 ): string[] {
   if (target === 'shadow-split') {
     const selector = `${buildSplitHostSelector(token)} > [${SPLIT_SURFACE_ATTR}][${PUI_STYLE_ATTR}~="${escapeCssString(token)}"]`;
-    return isStaticSelectionToken(token) ? applyVariant(selector, 'selection') : [selector];
+    if (isStaticSelectionToken(token)) return applyVariant(selector, 'selection');
+    if (isStaticPlaceholderColorToken(token)) return applyVariant(selector, 'placeholder');
+    return [selector];
   }
   const parts = splitVariants(token);
   const variants = parts.slice(0, -1);
@@ -1476,6 +1484,10 @@ function buildSelectors(
 
 function hasDarkVariant(token: string): boolean {
   return splitVariants(token).slice(0, -1).includes('dark');
+}
+
+function isStaticPlaceholderColorToken(token: string): boolean {
+  return /^placeholder:text-(foreground|muted-foreground|primary|destructive)$/.test(token);
 }
 
 function isStaticSelectionToken(token: string): boolean {
