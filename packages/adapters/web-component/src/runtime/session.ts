@@ -67,6 +67,15 @@ export function createWebComponentHostSession<Props extends PropsBaseType>(args:
   const shadowCommitRoot =
     shadowViewTarget && !textControlTarget ? root.ownerDocument.createDocumentFragment() : null;
 
+  const bindDecorations = (
+    bindings: readonly import('@proto.ui/module-feedback').OwnedDecorationBinding[]
+  ) => {
+    const feedback = capsHub?.getPort?.('feedback') as
+      | import('@proto.ui/module-feedback').FeedbackPort
+      | undefined;
+    if (feedback?.bindDecorations) feedback.bindDecorations(bindings);
+    else if (bindings.length) throw new Error('[WC Adapter] owned-decoration binding unavailable');
+  };
   const commitWebComponentChildren = (children: TemplateChildren) => {
     const nativeTarget = textControlTarget ?? imageViewTarget;
     if (nativeTarget) {
@@ -101,6 +110,7 @@ export function createWebComponentHostSession<Props extends PropsBaseType>(args:
         mode: 'light',
         slotPool,
         owned,
+        bindDecorations,
       });
 
       // Preserve the established no-slot parking contract, but only after
@@ -157,10 +167,11 @@ export function createWebComponentHostSession<Props extends PropsBaseType>(args:
         ]);
       },
     },
-    { initialMount }
+    { initialMount: 'manual' }
   );
 
   capsHub = hostSession.caps;
+  if (initialMount !== 'manual') void hostSession.mount();
   return { ...hostSession, host };
 }
 
