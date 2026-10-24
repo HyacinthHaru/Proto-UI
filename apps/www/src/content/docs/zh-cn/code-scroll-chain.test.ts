@@ -1,6 +1,8 @@
 // @vitest-environment node
 import { readFileSync } from 'node:fs';
 import { expect, it } from 'vitest';
+import vm from 'node:vm';
+import ts from 'typescript';
 const css = readFileSync('apps/www/src/styles/code-surfaces.css', 'utf8');
 const browser = readFileSync(
   'apps/www/src/content/docs/zh-cn/code-scroll-chain.browser.test.ts',
@@ -77,4 +79,52 @@ it('keeps exact-head, read-only and bounded independent evidence preparation', (
     "'apps/www/src/styles/code-surfaces.css'"
   );
   expect(browser).toContain('trusted: event.isTrusted');
+});
+
+it('retains dispatch-time identity snapshots without replacing the original wheel oracle', () => {
+  const required = [
+    'const eventIds = new WeakMap<Event, number>()', 'eventId: eventIds.get(event)',
+    'eventTimeStamp: event.timeStamp', 'observedAt: performance.now()',
+    "trace(event, 'capture')", "trace(event, 'bubble')", 'event.composedPath()',
+    'selectedInPath:', 'selectedContainsTarget:', 'selectedConnected:', 'selectedScrollTop:',
+    'entry.inputReadings.push', 'document.elementFromPoint(args.point.x, args.point.y)',
+    'wheel.preScrollTop === 0', 'entry.eventTrace = await page.evaluate',
+  ];
+  const check = (source: string) => { for (const token of required) expect(source).toContain(token); };
+  check(browser);
+  for (const token of required) expect(() => check(browser.replaceAll(token, ''))).toThrow();
+});
+it('keeps retargeted and missing targets distinct from the selected PRE in the actual observer', () => {
+  const start = browser.indexOf('    const eventIds =');
+  const end = browser.indexOf("    addEventListener('wheel', event => trace", start);
+  expect(start).toBeGreaterThan(0); expect(end).toBeGreaterThan(start);
+  const source = ts.transpileModule(browser.slice(start, end) + '\n globalThis.recordWheel = trace;', {
+    compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.None },
+  }).outputText;
+  class ElementFixture {
+    tagName: string; isConnected = true; scrollTop = 0; children: ElementFixture[] = [];
+    constructor(tag: string) { this.tagName = tag; }
+    getAttribute() { return 'fixture'; }
+    getBoundingClientRect() { return { toJSON: () => ({ top: 12 }) }; }
+    contains(node: unknown) { return node === this || this.children.includes(node as ElementFixture); }
+  }
+  const selected = new ElementFixture('PRE'); const inner = new ElementFixture('SPAN');
+  selected.children.push(inner); const retarget = new ElementFixture('WC-TEXT-ROOT');
+  const window = { __selectedScrollPre: selected, __codeScrollEventTrace: [] as any[], __scrollInputSequence: 0 };
+  const state: any = { window, document: { elementFromPoint: () => inner }, Element: ElementFixture, Node: ElementFixture, scrollY: 777, performance: { now: () => 40 } };
+  vm.runInNewContext(source, state);
+  const nativePath = [inner, selected, window];
+  const event = { target: retarget, composedPath: () => nativePath, timeStamp: 30, isTrusted: false, clientX: 4, clientY: 5, deltaX: 0, deltaY: -220, defaultPrevented: false };
+  state.recordWheel(event, 'capture');
+  state.scrollY = 557; state.recordWheel(event, 'bubble');
+  const first = window.__codeScrollEventTrace[0]; const second = window.__codeScrollEventTrace[1];
+  expect(first.target.tag).toBe('WC-TEXT-ROOT'); expect(first.selectedContainsTarget).toBe(false);
+  expect(first.selectedInPath).toBe(true); expect(first.trusted).toBe(false);
+  expect(first.scrollY).toBe(777); expect(second.scrollY).toBe(557);
+  expect(first.eventId).toBe(second.eventId); expect(first.eventTimeStamp).toBe(second.eventTimeStamp);
+  nativePath.length = 0; expect(first.composedPath).toHaveLength(3);
+  state.recordWheel({ ...event, target: null, composedPath: () => [] }, 'capture');
+  const missing = window.__codeScrollEventTrace[2];
+  expect(missing.selectedContainsTarget).toBe(false); expect(missing.selectedInPath).toBe(false);
+  expect(missing.eventId).toBeGreaterThan(first.eventId);
 });

@@ -43,7 +43,11 @@ async function facts(page: Page, pre: Locator) {
     const p = e as HTMLElement,
       s = getComputedStyle(p),
       r = p.getBoundingClientRect();
+    const point = (window as any).__scrollPointerPoint;
+    const hit = point ? document.elementFromPoint(point.x, point.y) : null;
     return {
+      observedAt: performance.now(),
+      pointerHit: hit ? { tag: hit.tagName, className: hit.getAttribute('class'), belongsToSelectedPre: hit === p || p.contains(hit) } : null,
       scrollY,
       scrollX,
       scrollTop: p.scrollTop,
@@ -87,6 +91,7 @@ async function ready(page: Page): Promise<void> {
 
 async function observe(entry: any, label: string, page: Page, pre: Locator) {
   entry.wheels = await page.evaluate(() => (window as any).__codeScrollWheels ?? []);
+  entry.eventTrace = await page.evaluate(() => (window as any).__codeScrollEventTrace ?? []);
   const value = await facts(page, pre);
   entry.observations.push({ label, ...value });
   await save();
@@ -97,6 +102,36 @@ async function run(name: string, width: number, body: (page: Page, entry: any) =
   const page = await context.newPage();
   await page.addInitScript(() => {
     (window as any).__codeScrollWheels = [];
+    (window as any).__codeScrollEventTrace = [];
+    const eventIds = new WeakMap<Event, number>();
+    let eventOrdinal = 0;
+    const describe = (node: EventTarget | null) => node instanceof Element
+      ? { tag: node.tagName, className: node.getAttribute('class'), isSelectedPre: node === (window as any).__selectedScrollPre }
+      : { kind: node === window ? 'window' : node === document ? 'document' : 'other' };
+    const trace = (event: WheelEvent, phase: string) => {
+      if (!eventIds.has(event)) eventIds.set(event, ++eventOrdinal);
+      const selected = (window as any).__selectedScrollPre as HTMLElement | undefined;
+      const eventPath = event.composedPath();
+      const hit = document.elementFromPoint(event.clientX, event.clientY);
+      (window as any).__codeScrollEventTrace.push({
+        phase, eventId: eventIds.get(event), sequence: (window as any).__scrollInputSequence ?? null,
+        eventTimeStamp: event.timeStamp, observedAt: performance.now(), trusted: event.isTrusted,
+        clientX: event.clientX, clientY: event.clientY, deltaX: event.deltaX, deltaY: event.deltaY,
+        target: describe(event.target), composedPath: eventPath.map(describe), hit: describe(hit),
+        selectedInPath: !!selected && eventPath.includes(selected),
+        selectedContainsTarget: !!selected && event.target instanceof Node && selected.contains(event.target),
+        scrollY, selectedConnected: selected?.isConnected ?? false,
+        selectedScrollTop: selected?.scrollTop ?? null, selectedRect: selected?.getBoundingClientRect().toJSON() ?? null,
+        defaultPreventedAtObservation: event.defaultPrevented,
+      });
+    };
+    addEventListener('wheel', event => trace(event, 'capture'), { passive: true, capture: true });
+    addEventListener('wheel', event => trace(event, 'bubble'), { passive: true });
+    addEventListener('pointermove', event => {
+      (window as any).__codeScrollEventTrace.push({ phase: 'pointermove', eventTimeStamp: event.timeStamp,
+        observedAt: performance.now(), clientX: event.clientX, clientY: event.clientY,
+        target: describe(event.target), composedPath: event.composedPath().map(describe), scrollY });
+    }, { passive: true, capture: true });
     addEventListener(
       'wheel',
       (event) => {
@@ -227,11 +262,25 @@ it('chains reverse wheel from an independently located real short PRE to the doc
       return { tag: actual?.tagName, className: actual?.getAttribute('class'),
         belongsToSelectedPre: actual === element || (actual !== null && element.contains(actual)) };
     }, point);
+    await pre.evaluate((element, point) => {
+      (window as any).__selectedScrollPre = element;
+      (window as any).__scrollPointerPoint = point;
+    }, point);
     entry.productHit = { point, ...hit };
     await save();
     expect(hit.belongsToSelectedPre).toBe(true);
     await page.mouse.move(point.x, point.y);
+    entry.inputReadings = [];
     for (let i = 0; i < 14; i++) {
+      entry.inputReadings.push(await pre.evaluate((element, args) => {
+        (window as any).__scrollInputSequence = args.i;
+        const target = document.elementFromPoint(args.point.x, args.point.y);
+        return { sequence: args.i, observedAt: performance.now(), scrollY, selectedConnected: element.isConnected,
+          selectedRect: element.getBoundingClientRect().toJSON(), selectedScrollTop: element.scrollTop,
+          hitTag: target?.tagName, hitClassName: target?.getAttribute('class'),
+          belongsToSelectedPre: target === element || (!!target && element.contains(target)) };
+      }, { i, point }));
+      await save();
       await page.mouse.wheel(0, -220);
       await page.evaluate(() => new Promise(requestAnimationFrame));
       await observe(entry, `short-product-wheel-${i}`, page, pre);
