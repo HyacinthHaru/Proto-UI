@@ -1,0 +1,35 @@
+{
+  "head": "e14b904f3a9201de412b28f85db9b29b64c36bd0",
+  "tree": "8b36edbd79f11afb83ed04b839ee63d33e53f128",
+  "outerFileCountIncludingManifest": 6,
+  "archiveMemberCount": 553,
+  "archiveCRCAndBytesVerified": true,
+  "innerPublicMapEqualsOuter": true,
+  "files": [
+    {
+      "path": "PUBLIC-MAPPING.json",
+      "bytes": 466780,
+      "sha256": "20d9b235a5e128f384ed8db876aad00dc5931227a8e3d5777584da8c2dbb8959"
+    },
+    {
+      "path": "README.md",
+      "bytes": 13302,
+      "sha256": "81c2a735bdf5ea6942c7010ea19b57fa9c787f31e598cbbbc897f2df38407e04"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 13759,
+      "sha256": "5bd652fa050a541d453bec1365e78e68bb9cca5d1e4a1e2f7b6f5e7521b4d357"
+    },
+    {
+      "path": "evidence.zip",
+      "bytes": 2463297,
+      "sha256": "3d11bada326f0a193cfeea88c9249cefff360d49c9800c22f67949caf939c725"
+    },
+    {
+      "path": "machine-summary.json",
+      "bytes": 1926,
+      "sha256": "4a960717ae604425e00165b5cff14b606843f946fa3d4a459051892371498d81"
+    }
+  ]
+}

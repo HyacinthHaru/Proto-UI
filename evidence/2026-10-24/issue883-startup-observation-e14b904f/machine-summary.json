@@ -1,0 +1,23 @@
+{
+  "assembledAt": "2026-10-24T03:17:09.105130+00:00",
+  "head": "e14b904f3a9201de412b28f85db9b29b64c36bd0",
+  "tree": "8b36edbd79f11afb83ed04b839ee63d33e53f128",
+  "rawInputCount": 584,
+  "mappedInputCount": 552,
+  "hashReferenceCount": 32,
+  "pngCount": 0,
+  "uniquePngHashes": 0,
+  "observations": {
+    "local": "Earlier297=294/3; only unchangedC285 reused; finalaffected12=9/3; finalunit75; types943/0/0/14. Actual precommit bytes bound to signed Git.",
+    "canonicalCI": "Terminal22jobs13success9failure; complete5shards550/8/15;1/2/8exit124partial. Earlier02:40snapshot historical.",
+    "attribution": "No private measurement/context/sample material selected; canonical public receipt already in signed source commit and will be disclosed afresh at authorized write boundaries.",
+    "production": "Test-resource lifecycle repair and bounded diagnostics only; no Search/Docs/Brute/S4 product repair or assertion/deadline waiver.",
+    "review": "Peer participation disclosed, partial/ABSTAIN, not GitHub approval.",
+    "sameFailureSearch": "Actuale14 isolated29/1: browserentry-98ms, staging/inert open observed~ -63ms, active/ready~ +5ms; oldlateentry explanationnotused.",
+    "laterArtifact": "One newlydownloaded full8,803,904B/296member isolatedSearch artifact;13JSON selected;29/1 red retained,Docs10 positive/30CDPcommands source10pins matched; no imageview. Not oldfailure explanation or primaryshard total.",
+    "mainFailedDocs": "ExactmainSearch16/14,Docs2/8;8verdictsinsideinjectedRuntime.evaluate1101–1735ms;originalgettercommandactuallysentafterverdict. Rolebatchbeforequery; no purecompile/transport/browserreceipt orCrootcause."
+  },
+  "baseHead": "d92141c57ebab192f3741e7336c1ec0f24b61c5c",
+  "baseTree": "8dda1bb967cc066db4036e7e085cb7d5c93ebd75",
+  "claim": "Selected diagnostic and failure/control evidence only; no formal approval, production fix, whole CI green or all-page/AT acceptance."
+}
