@@ -131,6 +131,16 @@ describe.sequential('default-document colorScheme browser contract', () => {
           customNative: await customEditor.inputValue(),
           logical: await page.evaluate(() => (window as any).colorSchemeFixture.editorValues()),
         };
+        if (runtime === 'react') {
+          expect(observations.initialEditorValues).toEqual({
+            native: 'Theme follows the document',
+            customNative: 'Theme follows the document',
+            logical: {
+              textarea: 'Theme follows the document',
+              customTextarea: 'Theme follows the document',
+            },
+          });
+        }
         const draft = 'User draft survives theme changes';
         const customDraft = 'Custom reader sample';
         // Seed through actual editor input and blur before measuring settled color-only changes.
