@@ -128,3 +128,29 @@ it('keeps retargeted and missing targets distinct from the selected PRE in the a
   expect(missing.selectedContainsTarget).toBe(false); expect(missing.selectedInPath).toBe(false);
   expect(missing.eventId).toBeGreaterThan(first.eventId);
 });
+
+it('keeps the non-passive scheduling control separate from passive product acceptance', () => {
+  const start = browser.indexOf("it('chains reverse wheel");
+  const split = browser.indexOf("it('diagnoses wheel scheduling", start);
+  const end = browser.indexOf('for (const width of [1440, 320])', split);
+  expect(start).toBeGreaterThan(0); expect(split).toBeGreaterThan(start); expect(end).toBeGreaterThan(split);
+  const original = browser.slice(start, split), control = browser.slice(split, end);
+  expect(original).not.toContain('passive: false');
+  for (const body of [original, control]) for (const token of [
+    'i < 14', 'page.mouse.wheel(0, -220)', 'before.scrollY - 500',
+    'wheel.preScrollTop === 0', 'expect(hit.belongsToSelectedPre).toBe(true)',
+    'requestedDeltaX: 0, requestedDeltaY: -220', 'requestedClientX: args.point.x',
+    'requestedClientY: args.point.y', 'selectedIsObservedPre:', 'selectedPreIndex:',
+  ]) expect(body).toContain(token);
+  const required = [
+    "entry.kind = 'non-passive-scheduling-control'", 'entry.acceptance = false',
+    "element.addEventListener('wheel'", '{ passive: false }',
+    'row.selectedInPath && row.targetInsideSelected && row.scrollY === before.scrollY',
+    'row.preScrollTop === 0 && row.defaultPrevented === false',
+  ];
+  const check = (source: string) => { for (const token of required) expect(source).toContain(token); };
+  check(control);
+  for (const token of required) expect(() => check(control.replaceAll(token, ''))).toThrow();
+  expect(control).not.toMatch(/\.(?:preventDefault|stopPropagation|stopImmediatePropagation)\s*\(/);
+  expect(300 + 5 * 45 + 10).toBeLessThan(560);
+});

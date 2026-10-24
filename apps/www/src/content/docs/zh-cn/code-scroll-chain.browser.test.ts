@@ -90,6 +90,7 @@ async function ready(page: Page): Promise<void> {
 }
 
 async function observe(entry: any, label: string, page: Page, pre: Locator) {
+  entry.controlDispatch = await page.evaluate(() => (window as any).__nonPassiveControl ?? []);
   entry.wheels = await page.evaluate(() => (window as any).__codeScrollWheels ?? []);
   entry.eventTrace = await page.evaluate(() => (window as any).__codeScrollEventTrace ?? []);
   const value = await facts(page, pre);
@@ -122,7 +123,7 @@ async function run(name: string, width: number, body: (page: Page, entry: any) =
         selectedContainsTarget: !!selected && event.target instanceof Node && selected.contains(event.target),
         scrollY, selectedConnected: selected?.isConnected ?? false,
         selectedScrollTop: selected?.scrollTop ?? null, selectedRect: selected?.getBoundingClientRect().toJSON() ?? null,
-        defaultPreventedAtObservation: event.defaultPrevented,
+        defaultPreventedAtObservation: event.defaultPrevented, cancelable: event.cancelable,
       });
     };
     addEventListener('wheel', event => trace(event, 'capture'), { passive: true, capture: true });
@@ -275,7 +276,11 @@ it('chains reverse wheel from an independently located real short PRE to the doc
       entry.inputReadings.push(await pre.evaluate((element, args) => {
         (window as any).__scrollInputSequence = args.i;
         const target = document.elementFromPoint(args.point.x, args.point.y);
-        return { sequence: args.i, observedAt: performance.now(), scrollY, selectedConnected: element.isConnected,
+        return { sequence: args.i, observedAt: performance.now(), timeOrigin: performance.timeOrigin,
+          requestedDeltaX: 0, requestedDeltaY: -220, requestedClientX: args.point.x, requestedClientY: args.point.y,
+          selectedPreIndex: [...document.querySelectorAll('pre')].indexOf(element as HTMLPreElement),
+          selectedIsObservedPre: element === (window as any).__selectedScrollPre,
+          scrollY, selectedConnected: element.isConnected,
           selectedRect: element.getBoundingClientRect().toJSON(), selectedScrollTop: element.scrollTop,
           hitTag: target?.tagName, hitClassName: target?.getAttribute('class'),
           belongsToSelectedPre: target === element || (!!target && element.contains(target)) };
@@ -288,6 +293,97 @@ it('chains reverse wheel from an independently located real short PRE to the doc
     await expect.poll(() => page.evaluate(() => scrollY), { timeout: 2000 })
       .toBeLessThan(before.scrollY - 500);
     await observe(entry, 'short-after-wheel', page, pre);
+    expect(entry.wheels.some((wheel: any) => wheel.trusted && wheel.deltaY === -220 &&
+      wheel.preScrollTop === 0)).toBe(true);
+  });
+}, 45_000);
+// Paired diagnostic only. Keep the original passive case above unchanged.
+// Chrome: https://developer.chrome.com/blog/scrolling-intervention-2/
+// Mouse/Wheel moved from UI Events to Pointer Events:
+// https://w3c.github.io/pointerevents/#wheel-event-transaction
+// Fourteen Playwright wheel commands do not establish one physical gesture transaction.
+it('diagnoses wheel scheduling with a non-passive observer without cancelling native scrolling', async () => {
+  await run('short-code-non-passive-control', 1440, async (page, entry) => {
+    await page.goto(baseUrl + quick, { waitUntil: 'networkidle' });
+    await ready(page);
+    entry.kind = 'non-passive-scheduling-control';
+    entry.acceptance = false;
+    entry.scope = 'Diagnostic only: this listener changes dispatch scheduling, not a replacement for passive product acceptance';
+    const candidates = await page.locator('pre.proto-previewer__code').evaluateAll((elements) =>
+      elements.map((element, index) => {
+        const r = element.getBoundingClientRect();
+        return { index, visible: element.checkVisibility(), documentTop: r.top + scrollY,
+          scrollHeight: element.scrollHeight, clientHeight: element.clientHeight };
+      })
+    );
+    entry.shortCandidates = candidates;
+    await save();
+    const selected = candidates.find((item) => item.visible && item.clientHeight > 0 &&
+      item.scrollHeight === item.clientHeight && item.documentTop > 1000);
+    expect(selected, 'A real short code block below the first screen is required').toBeDefined();
+    const pre = page.locator('pre.proto-previewer__code').nth(selected!.index);
+    await pre.evaluate((element) => element.scrollIntoView({ block: 'center' }));
+    const before = await observe(entry, 'short-before-wheel', page, pre);
+    expect(before.scrollY).toBeGreaterThan(500);
+    expect(before.scrollHeight).toBe(before.clientHeight);
+    expect(before.overscrollX).toBe('contain');
+    expect(before.overscrollY).toBe('auto');
+    const point = { x: before.x + before.width / 2, y: before.y + before.height / 2 };
+    const hit = await pre.evaluate((element, point) => {
+      const actual = document.elementFromPoint(point.x, point.y);
+      return { tag: actual?.tagName, className: actual?.getAttribute('class'),
+        belongsToSelectedPre: actual === element || (actual !== null && element.contains(actual)) };
+    }, point);
+    await pre.evaluate((element, point) => {
+      (window as any).__selectedScrollPre = element;
+      (window as any).__scrollPointerPoint = point;
+    }, point);
+    // Test whether a non-passive listener changes default-scroll/dispatch ordering.
+    // It never cancels input; this paired case is not the passive product path.
+    await pre.evaluate(element => {
+      (window as any).__nonPassiveControl = [];
+      element.addEventListener('wheel', event => {
+        const wheel = event as WheelEvent;
+        (window as any).__nonPassiveControl.push({
+          timeStamp: wheel.timeStamp, observedAt: performance.now(), trusted: wheel.isTrusted,
+          deltaX: wheel.deltaX, deltaY: wheel.deltaY, clientX: wheel.clientX, clientY: wheel.clientY,
+          targetInsideSelected: wheel.target === element || wheel.target instanceof Node && element.contains(wheel.target),
+          selectedInPath: wheel.composedPath().includes(element), scrollY,
+          preScrollTop: element.scrollTop, defaultPrevented: wheel.defaultPrevented, cancelable: wheel.cancelable,
+        });
+      }, { passive: false });
+    });
+    entry.productHit = { point, ...hit };
+    await save();
+    expect(hit.belongsToSelectedPre).toBe(true);
+    await page.mouse.move(point.x, point.y);
+    entry.inputReadings = [];
+    for (let i = 0; i < 14; i++) {
+      entry.inputReadings.push(await pre.evaluate((element, args) => {
+        (window as any).__scrollInputSequence = args.i;
+        const target = document.elementFromPoint(args.point.x, args.point.y);
+        return { sequence: args.i, observedAt: performance.now(), timeOrigin: performance.timeOrigin,
+          requestedDeltaX: 0, requestedDeltaY: -220, requestedClientX: args.point.x, requestedClientY: args.point.y,
+          selectedPreIndex: [...document.querySelectorAll('pre')].indexOf(element as HTMLPreElement),
+          selectedIsObservedPre: element === (window as any).__selectedScrollPre,
+          scrollY, selectedConnected: element.isConnected,
+          selectedRect: element.getBoundingClientRect().toJSON(), selectedScrollTop: element.scrollTop,
+          hitTag: target?.tagName, hitClassName: target?.getAttribute('class'),
+          belongsToSelectedPre: target === element || (!!target && element.contains(target)) };
+      }, { i, point }));
+      await save();
+      await page.mouse.wheel(0, -220);
+      await page.evaluate(() => new Promise(requestAnimationFrame));
+      await observe(entry, `short-product-wheel-${i}`, page, pre);
+    }
+    await expect.poll(() => page.evaluate(() => scrollY), { timeout: 2000 })
+      .toBeLessThan(before.scrollY - 500);
+    await observe(entry, 'short-after-wheel', page, pre);
+    entry.controlDispatch = await page.evaluate(() => (window as any).__nonPassiveControl);
+    await save();
+    expect(entry.controlDispatch.some((row: any) => row.trusted && row.deltaY === -220 &&
+      row.selectedInPath && row.targetInsideSelected && row.scrollY === before.scrollY &&
+      row.preScrollTop === 0 && row.defaultPrevented === false)).toBe(true);
     expect(entry.wheels.some((wheel: any) => wheel.trusted && wheel.deltaY === -220 &&
       wheel.preScrollTop === 0)).toBe(true);
   });
