@@ -14,7 +14,17 @@ const hash = 'b'.repeat(64);
 
 test('Switch remains the bounded default; unknown and path-like selections fail', () => {
   assert.equal(selectDiagramProfile().figure, 'switch-activation');
-  for (const invalid of ['', null, [], {}, 'all', '__proto__', 'constructor', '../evolution-feedback', 'https://example.com/a.svg']) {
+  for (const invalid of [
+    '',
+    null,
+    [],
+    {},
+    'all',
+    '__proto__',
+    'constructor',
+    '../evolution-feedback',
+    'https://example.com/a.svg',
+  ]) {
     assert.throws(() => selectDiagramProfile(invalid), /DIAGRAM_EVIDENCE_FIGURE/);
   }
 });
@@ -31,8 +41,17 @@ for (const [figure, chapter, height, fonts] of [
       const { asset, route } = diagramLocale(profile, locale);
       assert.equal(asset, `/diagrams/whitepaper-${figure}.${locale}.svg`);
       assert.equal(route, `/${locale}/whitepaper/${chapter}/`);
-      const svg = await readFile(new URL(`../../../apps/www/public${asset}`, import.meta.url), 'utf8');
-      const article = await readFile(new URL(`../../../apps/www/src/content/docs/${locale}/whitepaper/${chapter}.md`, import.meta.url), 'utf8');
+      const svg = await readFile(
+        new URL(`../../../apps/www/public${asset}`, import.meta.url),
+        'utf8'
+      );
+      const article = await readFile(
+        new URL(
+          `../../../apps/www/src/content/docs/${locale}/whitepaper/${chapter}.md`,
+          import.meta.url
+        ),
+        'utf8'
+      );
       assert.ok(svg.includes(`width="960" height="${height}" viewBox="0 0 960 ${height}"`));
       assert.ok(article.includes(`src="${asset}"`));
       assert.ok(article.includes(`width="960" height="${height}"`));
@@ -50,7 +69,14 @@ test('evidence identities distinguish figure, locale, theme, width, revision and
     for (const locale of ['en', 'zh-cn']) {
       for (const theme of ['light', 'dark']) {
         for (const width of [390, 1440]) {
-          const id = diagramEvidenceId(selectDiagramProfile(figure), locale, theme, width, revision, hash);
+          const id = diagramEvidenceId(
+            selectDiagramProfile(figure),
+            locale,
+            theme,
+            width,
+            revision,
+            hash
+          );
           assert.ok(id.includes(revision) && id.includes(hash));
           ids.add(id);
         }
@@ -61,19 +87,31 @@ test('evidence identities distinguish figure, locale, theme, width, revision and
   const profile = selectDiagramProfile();
   const original = diagramEvidenceId(profile, 'en', 'light', 390, revision, hash);
   assert.notEqual(original, diagramEvidenceId(profile, 'en', 'light', 390, 'c'.repeat(40), hash));
-  assert.notEqual(original, diagramEvidenceId(profile, 'en', 'light', 390, revision, 'd'.repeat(64)));
+  assert.notEqual(
+    original,
+    diagramEvidenceId(profile, 'en', 'light', 390, revision, 'd'.repeat(64))
+  );
   assert.throws(() => diagramEvidenceId(profile, 'en', 'light', 800, revision, hash));
   assert.throws(() => diagramEvidenceId(profile, 'en', 'dark', 390, 'HEAD', hash));
   assert.throws(() => diagramEvidenceId(profile, 'en', 'system', 390, revision, hash));
 });
 
 test('runner rejects an unknown selection before dependency, asset or browser initialization', () => {
-  const result = spawnSync(process.execPath, [fileURLToPath(new URL(
-    '../../../apps/www/scripts/capture-whitepaper-diagram-evidence.mjs', import.meta.url
-  ))], {
-    encoding: 'utf8',
-    env: { DIAGRAM_EVIDENCE_FIGURE: '../not-allowed' },
-  });
+  const result = spawnSync(
+    process.execPath,
+    [
+      fileURLToPath(
+        new URL(
+          '../../../apps/www/scripts/capture-whitepaper-diagram-evidence.mjs',
+          import.meta.url
+        )
+      ),
+    ],
+    {
+      encoding: 'utf8',
+      env: { DIAGRAM_EVIDENCE_FIGURE: '../not-allowed' },
+    }
+  );
   assert.equal(result.status, 1);
   assert.match(result.stderr, /DIAGRAM_EVIDENCE_FIGURE must be/);
   assert.doesNotMatch(result.stderr, /ERR_MODULE_NOT_FOUND|An absolute evidence directory|ENOENT/);

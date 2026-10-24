@@ -18,7 +18,10 @@ const { chromium } = await import('playwright-core');
 const root = fileURLToPath(new URL('../../../', import.meta.url));
 const dist = path.join(root, 'apps/www/dist');
 const evidenceRoot = process.env.DIAGRAM_EVIDENCE_DIR;
-assert.ok(evidenceRoot && path.isAbsolute(evidenceRoot), 'An absolute evidence directory is required');
+assert.ok(
+  evidenceRoot && path.isAbsolute(evidenceRoot),
+  'An absolute evidence directory is required'
+);
 const out = path.join(evidenceRoot, profile.figure);
 const revision = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim();
 assert.equal(
@@ -128,7 +131,11 @@ try {
             )
           );
       } else {
-        assert.equal(fontEvidence.faces.length, 0, 'System-font diagram must not load embedded faces');
+        assert.equal(
+          fontEvidence.faces.length,
+          0,
+          'System-font diagram must not load embedded faces'
+        );
         assert.ok(fontEvidence.families.length > 0, 'Inspect actual system-font text');
         assert.ok(fontEvidence.families.every((family) => family.includes('sans-serif')));
       }
@@ -142,7 +149,13 @@ try {
         );
       }
       report.fonts.push({
-        figure: profile.figure, revision, asset, locale, theme, svgSha256, ...fontEvidence,
+        figure: profile.figure,
+        revision,
+        asset,
+        locale,
+        theme,
+        svgSha256,
+        ...fontEvidence,
       });
       await probe.close();
 
@@ -222,9 +235,9 @@ try {
             const content = document.querySelector('[data-docs-image-content]');
             return (
               content?.getAttribute('data-transition-state') === 'entered' &&
-              content.getAnimations().every(
-                (animation) => !animation.pending && animation.playState !== 'running'
-              )
+              content
+                .getAnimations()
+                .every((animation) => !animation.pending && animation.playState !== 'running')
             );
           });
           entry.preview = await preview.evaluate((node) => {
@@ -235,7 +248,10 @@ try {
               naturalWidth: node.naturalWidth,
               naturalHeight: node.naturalHeight,
               scheme: getComputedStyle(node).colorScheme,
-              x: rect.x, y: rect.y, width: rect.width, height: rect.height,
+              x: rect.x,
+              y: rect.y,
+              width: rect.width,
+              height: rect.height,
             };
           });
           assert.equal(entry.preview.src, origin + asset);
@@ -244,8 +260,10 @@ try {
           assert.equal(entry.preview.alt, entry.image.alt);
           assert.equal(entry.preview.scheme, theme);
           assert.ok(
-            entry.preview.width > 0 && entry.preview.height > 0 &&
-              entry.preview.x >= -1 && entry.preview.y >= -1 &&
+            entry.preview.width > 0 &&
+              entry.preview.height > 0 &&
+              entry.preview.x >= -1 &&
+              entry.preview.y >= -1 &&
               entry.preview.x + entry.preview.width <= viewport.width + 1 &&
               entry.preview.y + entry.preview.height <= viewport.height + 1,
             'The themed full-size preview must contain the complete diagram'
