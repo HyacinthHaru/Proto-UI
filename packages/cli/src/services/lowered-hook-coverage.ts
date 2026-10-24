@@ -1336,6 +1336,42 @@ export function scanRuleStateReads(
     return [binding.hook, ...(binding.sourceAlternativeHooks ?? [])];
   };
 
+  const containsSourceReference = (
+    value: HookSourceValue,
+    target: HookSourceValue,
+    seen = new Set<HookSourceValue>()
+  ): boolean => {
+    if (value === target) return true;
+    if (seen.has(value)) return false;
+    seen.add(value);
+    if (value.kind === 'object') {
+      for (const member of value.members.values()) {
+        if (containsSourceReference(member, target, seen)) return true;
+      }
+    } else if (value.kind === 'result') {
+      if (value.handle && containsSourceReference(value.handle, target, seen)) return true;
+      for (const child of value.children.values()) {
+        if (containsSourceReference(child, target, seen)) return true;
+      }
+    } else if (value.kind === 'callable') {
+      return containsSourceReference(value.result, target, seen);
+    }
+    return false;
+  };
+
+  const sourceOwnerScope = (scope: Scope, target: HookSourceValue): Scope | null => {
+    let owning: Scope | null = null;
+    for (let owner: Scope | null = scope; owner; owner = owner.parent) {
+      for (const binding of owner.bindings.values()) {
+        if (sourceBindingValues(binding).some((value) => containsSourceReference(value, target))) {
+          owning = owner;
+          break;
+        }
+      }
+    }
+    return owning;
+  };
+
   const sourceBinding = (
     binding: Binding | undefined
   ): binding is Extract<Binding, { kind: 'handle' | 'handleBag' | 'hookResult' | 'callable' }> =>
@@ -2980,7 +3016,7 @@ export function scanRuleStateReads(
         operator === ts.SyntaxKind.QuestionQuestionEqualsToken;
       // Evaluate LHS receiver/key effects before reading its old value or
       // proving logical assignment short-circuit behavior.
-      if (!plainAssignment) visit(node.left, current);
+      visit(node.left, current);
       const base = unwrap(ownerOf(node.left) ?? node.left);
       const member = memberNameOf(node.left);
       const previousState = logicalAssignment ? readState(node.left, current) : null;
@@ -3017,21 +3053,59 @@ export function scanRuleStateReads(
         return {
           target,
           receiver,
-          aliases:
-            !plainAssignment && receiver?.kind === 'token' ? tokenAliases(target, current) : [],
+          aliases: receiver?.kind === 'token' ? tokenAliases(target, current) : [],
         };
       });
+      // A nested receiver is an object inside a binding's source graph, not a
+      // new binding named after the member expression. Capture it before RHS
+      // writes can rebind the root or replace that nested object.
+      const sourceReceiverValues = (expression: ts.Node): HookSourceValue[] => {
+        const value = unwrap(expression);
+        if (ts.isConditionalExpression(value)) {
+          return [
+            ...sourceReceiverValues(value.whenTrue),
+            ...sourceReceiverValues(value.whenFalse),
+          ];
+        }
+        return sourceResolveCandidates(value, current)
+          .filter((candidate) => candidate.matched && candidate.value.kind === 'object')
+          .map((candidate) => candidate.value);
+      };
+      const sourceReceivers = [...new Set(sourceReceiverValues(base))].map((value) => ({
+        value,
+        owning: sourceOwnerScope(current, value),
+      }));
       const definitelyRunsRight =
         operator === ts.SyntaxKind.AmpersandAmpersandEqualsToken && knownStateHandle;
-      if (!plainAssignment) {
-        if (definitelyRunsRight) definitelyReachedLogicalAssignments.add(node);
-        try {
-          visit(node.right, current);
-        } finally {
-          if (definitelyRunsRight) definitelyReachedLogicalAssignments.delete(node);
-        }
+      if (definitelyRunsRight) definitelyReachedLogicalAssignments.add(node);
+      try {
+        visit(node.right, current);
+      } finally {
+        if (definitelyRunsRight) definitelyReachedLogicalAssignments.delete(node);
       }
       if (writesRight) rememberSourceStateHooks(node.right, current);
+      for (const { value: receiver, owning } of sourceReceivers) {
+        const uncertain =
+          isConditionallyReached(node, definitelyReachedLogicalAssignments) ||
+          isDeferredWrite(node, enclosingFunction(owning?.node ?? null)) ||
+          sourceReceivers.length > 1 ||
+          (logicalAssignment && !knownStateHandle) ||
+          member === null;
+        const right = writesRight ? sourceResolve(node.right, current) : null;
+        const replacement: HookSourceValue = right?.matched
+          ? right.value
+          : { kind: 'unknown', reason: 'unresolved member write' };
+        const versions = latestSourceGraphs(receiver);
+        if (!versions.includes(receiver)) versions.push(receiver);
+        for (const value of versions) {
+          if (value.kind !== 'object') continue;
+          const previous = { ...value, members: new Map(value.members) } as HookSourceValue;
+          const members = new Map(value.members);
+          const keys = member === null ? [...members.keys()] : [member];
+          for (const key of keys) members.set(key, replacement);
+          publishSourceGraph(current, value, { ...value, members }, previous, uncertain);
+        }
+      }
       if (receivers.length > 0) {
         // An alias of the container is the same object, so the write lands on
         // the binding that actually holds the literal — on each of them when
@@ -3047,27 +3121,7 @@ export function scanRuleStateReads(
             (logicalAssignment && !knownStateHandle) ||
             member === null;
           if (receiver.kind === 'handleBag' && receiver.sourceValue?.kind === 'object') {
-            const right = writesRight ? sourceResolve(node.right, current) : null;
-            const replacement: HookSourceValue = right?.matched
-              ? right.value
-              : { kind: 'unknown', reason: 'unresolved member write' };
-            for (const candidate of new Set(sourceBindingValues(receiver))) {
-              const versions = latestSourceGraphs(candidate);
-              // A cached producer can reacquire the original graph while
-              // earlier aliases hold replacement versions of that receiver.
-              if (!versions.includes(candidate)) versions.push(candidate);
-              for (const value of versions) {
-                if (value.kind !== 'object') continue;
-                const previous = { ...value, members: new Map(value.members) } as HookSourceValue;
-                const members = new Map(value.members);
-                const keys = member === null ? [...members.keys()] : [member];
-                for (const key of keys) members.set(key, replacement);
-                const nextValue = { ...value, members } as HookSourceValue;
-                // Publish through aliases of the evaluated receiver, even if
-                // its binding name was rebound while the RHS ran.
-                publishSourceGraph(current, value, nextValue, previous, uncertain);
-              }
-            }
+            // Already published through the captured source receivers above.
             continue;
           }
           const currentContainer = target.scope.bindings.get(target.name);
@@ -3135,7 +3189,7 @@ export function scanRuleStateReads(
           declare(target.scope, target.name, { ...container, members });
         }
       }
-      if (!plainAssignment) return;
+      return;
     }
 
     // A reassignment moves the handle for every read that follows it.

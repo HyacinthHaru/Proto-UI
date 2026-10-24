@@ -565,15 +565,46 @@ function packageRootFromDeclaration(file: string, packageName: string): string |
   return null;
 }
 
+function nodeModuleCondition(from: string): 'import' | 'require' {
+  const extension = path.extname(from).toLowerCase();
+  if (extension === '.mjs' || extension === '.mts') return 'import';
+  if (extension === '.cjs' || extension === '.cts') return 'require';
+  let current = path.dirname(from);
+  while (true) {
+    const manifest = packageJson(path.join(current, 'package.json'));
+    if (manifest) return manifest.type === 'module' ? 'import' : 'require';
+    const parent = path.dirname(current);
+    if (parent === current) break;
+    current = parent;
+  }
+  return 'require';
+}
+
+function packageExportConditions(from: string, options: ts.CompilerOptions): ReadonlySet<string> {
+  const conditions = new Set(options.customConditions ?? []);
+  conditions.add('default');
+  const usesNodeConditions =
+    options.moduleResolution === ts.ModuleResolutionKind.Node16 ||
+    options.moduleResolution === ts.ModuleResolutionKind.NodeNext;
+  if (usesNodeConditions) {
+    conditions.add('node');
+    conditions.add(nodeModuleCondition(from));
+  } else {
+    conditions.add(options.module === ts.ModuleKind.CommonJS ? 'require' : 'import');
+  }
+  return conditions;
+}
+
 function packageExportTarget(
   value: unknown,
   subpath: string,
+  conditions: ReadonlySet<string>,
   wildcard: string | null = null
 ): string | null {
   if (typeof value === 'string') return wildcard === null ? value : value.replaceAll('*', wildcard);
   if (Array.isArray(value)) {
     for (const item of value) {
-      const target = packageExportTarget(item, subpath, wildcard);
+      const target = packageExportTarget(item, subpath, conditions, wildcard);
       if (target) return target;
     }
     return null;
@@ -583,7 +614,7 @@ function packageExportTarget(
   const subpathKeys = Object.keys(record).filter((key) => key === '.' || key.startsWith('./'));
   if (subpathKeys.length) {
     const exact = record[subpath];
-    if (exact !== undefined) return packageExportTarget(exact, subpath, wildcard);
+    if (exact !== undefined) return packageExportTarget(exact, subpath, conditions, wildcard);
     const patterns = subpathKeys
       .filter((key) => key.includes('*'))
       .sort((left, right) => left.length - right.length)
@@ -594,16 +625,17 @@ function packageExportTarget(
       const suffix = pattern.slice(star + 1);
       if (!subpath.startsWith(prefix) || !subpath.endsWith(suffix)) continue;
       const middle = subpath.slice(prefix.length, subpath.length - suffix.length);
-      const target = packageExportTarget(record[pattern], subpath, middle);
+      const target = packageExportTarget(record[pattern], subpath, conditions, middle);
       if (target) return target;
     }
     return null;
   }
-  // Never select a declaration-only `types` condition when an executable
-  // condition is available. The package is imported for runtime values.
-  for (const condition of ['import', 'node', 'default', 'require', 'browser']) {
-    if (!(condition in record)) continue;
-    const target = packageExportTarget(record[condition], subpath, wildcard);
+  // Conditional-export precedence is the manifest's key order, restricted to
+  // conditions active for this importer. Declarations are never runtime entries.
+  for (const condition of Object.keys(record)) {
+    if (condition === 'types' || condition.startsWith('types@') || !conditions.has(condition))
+      continue;
+    const target = packageExportTarget(record[condition], subpath, conditions, wildcard);
     if (target) return target;
   }
   return null;
@@ -676,7 +708,12 @@ function authoredSourceSibling(file: string): string | null {
   return null;
 }
 
-function runtimePackageEntry(from: string, specifier: string, declaration: string): string | null {
+function runtimePackageEntry(
+  from: string,
+  specifier: string,
+  declaration: string,
+  options: ts.CompilerOptions
+): string | null {
   const parts = packageSpecifierParts(specifier);
   if (!parts) return null;
   const root =
@@ -687,7 +724,11 @@ function runtimePackageEntry(from: string, specifier: string, declaration: strin
   if (!manifest) return null;
   const subpath = parts.subpath ? `./${parts.subpath}` : '.';
   if (manifest.exports !== undefined) {
-    const target = packageExportTarget(manifest.exports, subpath);
+    const target = packageExportTarget(
+      manifest.exports,
+      subpath,
+      packageExportConditions(from, options)
+    );
     if (target && !target.startsWith('#')) {
       const resolved = existingRuntime(path.resolve(root, target));
       if (resolved) return resolved;
@@ -970,7 +1011,7 @@ export function createHookSourceModuleContext(): HookSourceModuleContext {
         return resolvedFile;
       }
       if (isDeclarationFile(resolvedFile)) {
-        const packageRuntime = runtimePackageEntry(containing, specifier, resolvedFile);
+        const packageRuntime = runtimePackageEntry(containing, specifier, resolvedFile, options);
         if (packageRuntime) return canonical(packageRuntime);
         if (!resolvedFile.split(path.sep).includes('node_modules')) {
           const sibling = existingRuntime(resolvedFile);
@@ -986,7 +1027,12 @@ export function createHookSourceModuleContext(): HookSourceModuleContext {
       const parts = packageSpecifierParts(specifier);
       const root = parts && nearestPackageRoot(path.dirname(containing), parts.name);
       if (root) {
-        const runtime = runtimePackageEntry(containing, specifier, path.join(root, 'index.d.ts'));
+        const runtime = runtimePackageEntry(
+          containing,
+          specifier,
+          path.join(root, 'index.d.ts'),
+          options
+        );
         if (runtime) return canonical(runtime);
       }
     }

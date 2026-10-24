@@ -1,3 +1,4 @@
+import { execFileSync } from 'node:child_process';
 import { mkdir, mkdtemp, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
@@ -84,6 +85,268 @@ describe('lowered hook coverage', () => {
 
     const scanWithFreshSummary = (source: string, file: string) =>
       scanRuleStateReads(source, file, createHookSourceSummaryContext());
+
+    it('updates source-backed nested receivers and their existing aliases', async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-nested-receiver-'));
+      try {
+        const producerFile = path.join(dir, 'producer.ts');
+        await writeFile(
+          producerFile,
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            "export const asA = defineAsHook({ name: 'a', setup(d) { d.state.bool('alpha', false); }, projectHandle(r) { return { nested: { ready: r.stateHandles.alpha, stable: r.stateHandles.alpha } }; } });",
+            "export const asB = defineAsHook({ name: 'b', setup(d) { d.state.bool('beta', false); } });",
+            "export const asC = defineAsHook({ name: 'c', setup(d) { d.state.bool('gamma', false); }, projectHandle(r) { return { ready: r.stateHandles.gamma }; } });",
+          ].join('\n')
+        );
+        const consumerFile = path.join(dir, 'consumer.proto.ts');
+        const cases = [
+          { write: 'bag.nested.ready = asB().stateHandles.beta;', states: ['beta', 'beta'] },
+          { write: 'bag.nested["ready"] = asB().stateHandles.beta;', states: ['beta', 'beta'] },
+          {
+            write: 'function later() { bag.nested.ready = asB().stateHandles.beta; }',
+            states: ['beta', 'alpha', 'beta', 'alpha'],
+          },
+          {
+            write:
+              'function later() { const inner = bag.nested; inner.ready = asB().stateHandles.beta; }',
+            states: ['beta', 'alpha', 'beta', 'alpha'],
+          },
+          {
+            write: 'bag.nested.ready = asB(bag.nested = asC()).stateHandles.beta;',
+            states: ['gamma', 'beta'],
+          },
+          {
+            write: 'bag.nested[unknownKey] = asB().stateHandles.beta;',
+            states: ['beta', 'alpha', 'beta', 'alpha'],
+          },
+          { write: 'bag.nested[unknownKey] = unknownHandle;', states: null },
+          {
+            write: '(enabled ? bag.nested : asC()).ready = asB().stateHandles.beta;',
+            states: ['beta', 'alpha', 'beta', 'alpha'],
+          },
+        ];
+        for (const { write, states } of cases) {
+          const consumer = [
+            "import { asA, asB, asC } from './producer';",
+            'const bag = asA();',
+            'const alias = bag.nested;',
+            write,
+            rule('w.state(bag.nested.ready).eq(true)'),
+            "def.rule({ when: w => w.state(alias.ready).eq(true), intent: i => i.feedback.style.use(tw('underline')) });",
+          ].join('\n');
+          const scan = scanWithFreshSummary(consumer, consumerFile);
+          if (states) {
+            expect(
+              scan.usages.map(({ state, provenance }) => ({
+                state,
+                declaredName: provenance?.declaredName,
+                owner: provenance?.owner.file,
+                declaration: provenance?.declaration.file,
+              }))
+            ).toEqual(
+              states.map((state) => ({
+                state,
+                declaredName: state,
+                owner: producerFile,
+                declaration: producerFile,
+              }))
+            );
+            expect(scan.unresolved).toEqual([]);
+          } else {
+            expect(scan.unresolved).toEqual([
+              { expression: 'bag.nested.ready', reason: 'subject' },
+              { expression: 'alias.ready', reason: 'subject' },
+            ]);
+          }
+          await writeFile(consumerFile, consumer);
+          const tokens = await collectProtoStyleTokens(dir);
+          for (const [index, utility] of ['bg-primary', 'underline'].entries()) {
+            const expected = states?.slice(
+              (index * states.length) / 2,
+              ((index + 1) * states.length) / 2
+            );
+            for (const state of ['alpha', 'beta', 'gamma']) {
+              if (expected?.includes(state)) expect(tokens).toContain(`data-[${state}]:${utility}`);
+              else expect(tokens).not.toContain(`data-[${state}]:${utility}`);
+            }
+          }
+        }
+        const localConsumer = [
+          "import { asA, asB } from './producer';",
+          'const bag = asA(); const alias = bag.nested;',
+          "const local = def.state.bool('localFlag', false); def.expose.state('local', local);",
+          'alias.ready = local; bag.nested.stable = asB().stateHandles.beta;',
+          rule('w.state(bag.nested.ready).eq(true)'),
+          "def.rule({ when: w => w.state(alias.ready).eq(true), intent: i => i.feedback.style.use(tw('underline')) });",
+        ].join('\n');
+        await writeFile(consumerFile, localConsumer);
+        const localTokens = await collectProtoStyleTokens(dir);
+        for (const utility of ['bg-primary', 'underline']) {
+          expect(localTokens).toContain(`data-[local-flag]:${utility}`);
+          expect(localTokens).not.toContain(`data-[alpha]:${utility}`);
+          expect(localTokens).not.toContain(`data-[beta]:${utility}`);
+        }
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
+
+    it('withholds projector proof across effects in either return form', async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-return-effect-'));
+      try {
+        await writeFile(
+          path.join(dir, 'producer.ts'),
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            "function setup(d) { d.state.bool('alpha', false); d.state.bool('beta', false); }",
+            "export const asBlock = defineAsHook({ name: 'block', setup, projectHandle(r) { let ready = r.stateHandles.alpha; return { ignored: (ready = r.stateHandles.beta), ready }; } });",
+            "export const asExpression = defineAsHook({ name: 'expression', setup, projectHandle: r => ({ ignored: (r.stateHandles.alpha = r.stateHandles.beta), ready: r.stateHandles.alpha }) });",
+            "export const asPure = defineAsHook({ name: 'pure', setup, projectHandle: r => ({ ready: r.getState('alpha'), later: () => unknownEffect() }) });",
+            "export const asDetached = defineAsHook({ name: 'detached', setup, projectHandle(r) { const get = r.getState; return { ready: get('alpha') }; } });",
+            "export const asTrue = defineAsHook({ name: 'true', setup, projectHandle: r => true ? { ready: r.getState('alpha') } : { ignored: Date.now() } });",
+            "export const asFalse = defineAsHook({ name: 'false', setup, projectHandle: r => false ? { ignored: Date.now() } : { ready: r.getState('alpha') } });",
+          ].join('\n')
+        );
+        const consumer = [
+          "import { asBlock, asExpression, asPure, asDetached, asTrue, asFalse } from './producer';",
+          'const block = asBlock();',
+          'const expression = asExpression();',
+          'const pure = asPure();',
+          rule('w.state(block.ready).eq(true)'),
+          rule('w.state(expression.ready).eq(true)'),
+          "def.rule({ when: w => w.state(pure.ready).eq(true), intent: i => i.feedback.style.use(tw('italic')) });",
+          "def.rule({ when: w => w.state(asDetached().ready).eq(true), intent: i => i.feedback.style.use(tw('italic')) });",
+          "def.rule({ when: w => w.state(asTrue().ready).eq(true), intent: i => i.feedback.style.use(tw('italic')) });",
+          "def.rule({ when: w => w.state(asFalse().ready).eq(true), intent: i => i.feedback.style.use(tw('italic')) });",
+        ].join('\n');
+        const consumerFile = path.join(dir, 'consumer.proto.ts');
+        const scan = scanWithFreshSummary(consumer, consumerFile);
+        expect(scan.usages.map(({ hook, state }) => ({ hook, state }))).toEqual([
+          { hook: 'asPure', state: 'alpha' },
+          { hook: 'asDetached', state: 'alpha' },
+          { hook: 'asTrue', state: 'alpha' },
+          { hook: 'asFalse', state: 'alpha' },
+        ]);
+        expect(scan.unresolved).toEqual([
+          { expression: 'block.ready', reason: 'subject' },
+          { expression: 'expression.ready', reason: 'subject' },
+        ]);
+        await writeFile(consumerFile, consumer);
+        const tokens = await collectProtoStyleTokens(dir);
+        expect(tokens).toContain('data-[alpha]:italic');
+        expect(tokens).not.toContain('data-[alpha]:bg-primary');
+        expect(tokens).not.toContain('data-[beta]:bg-primary');
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
+
+    it('follows ordered applicable package conditions for NodeNext consumers', async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-export-conditions-'));
+      try {
+        await writeFile(path.join(dir, 'package.json'), JSON.stringify({ type: 'module' }));
+        await writeFile(
+          path.join(dir, 'tsconfig.json'),
+          JSON.stringify({ compilerOptions: { module: 'NodeNext', moduleResolution: 'NodeNext' } })
+        );
+        const packageDir = path.join(dir, 'node_modules', 'ordered-hook');
+        await mkdir(packageDir, { recursive: true });
+        await writeFile(
+          path.join(packageDir, 'index.d.ts'),
+          'export declare const asPackage: any;'
+        );
+        for (const branch of ['node', 'import', 'browser', 'require', 'default']) {
+          await writeFile(
+            path.join(packageDir, `${branch}.js`),
+            `import { defineAsHook } from '@proto.ui/core';\nexport const asPackage = defineAsHook({ name: '${branch}', setup(d) { d.state.bool('${branch}Ready', false); } });`
+          );
+        }
+        const cases: {
+          conditions: Record<string, string>;
+          branch: string;
+          commonJS?: boolean;
+          customConditions?: string[];
+        }[] = [
+          { conditions: { node: './node.js', import: './import.js' }, branch: 'node' },
+          { conditions: { import: './import.js', node: './node.js' }, branch: 'import' },
+          {
+            conditions: {
+              browser: './browser.js',
+              require: './require.js',
+              default: './default.js',
+              node: './node.js',
+              import: './import.js',
+            },
+            branch: 'default',
+          },
+          {
+            conditions: { import: './import.js', require: './require.js', node: './node.js' },
+            branch: 'require',
+            commonJS: true,
+          },
+          {
+            conditions: { browser: './browser.js', node: './node.js', import: './import.js' },
+            branch: 'browser',
+            customConditions: ['browser'],
+          },
+        ];
+        for (const { conditions, branch, commonJS = false, customConditions = [] } of cases) {
+          await writeFile(
+            path.join(dir, 'tsconfig.json'),
+            JSON.stringify({
+              compilerOptions: {
+                module: 'NodeNext',
+                moduleResolution: 'NodeNext',
+                customConditions,
+              },
+            })
+          );
+          await writeFile(
+            path.join(packageDir, 'package.json'),
+            JSON.stringify({
+              name: 'ordered-hook',
+              type: 'module',
+              exports: { '.': { types: './index.d.ts', ...conditions } },
+            })
+          );
+          // Resolve the URL only. Never execute the authored hook or projector.
+          const nativeResolution = execFileSync(
+            process.execPath,
+            commonJS
+              ? ['--input-type=commonjs', '--eval', "console.log(require.resolve('ordered-hook'))"]
+              : [
+                  ...customConditions.map((condition) => `--conditions=${condition}`),
+                  '--input-type=module',
+                  '--eval',
+                  "console.log(import.meta.resolve('ordered-hook'))",
+                ],
+            { cwd: dir, encoding: 'utf8' }
+          ).trim();
+          const nativeFile = commonJS ? nativeResolution : fileURLToPath(nativeResolution);
+          expect(nativeFile).toBe(path.join(packageDir, `${branch}.js`));
+          const consumer = [
+            "import { asPackage } from 'ordered-hook';",
+            'const result = asPackage();',
+            rule(`w.state(result.stateHandles.${branch}Ready).eq(true)`),
+          ].join('\n');
+          const consumerFile = path.join(dir, `consumer.proto.${commonJS ? 'cts' : 'mts'}`);
+          const scan = scanWithFreshSummary(consumer, consumerFile);
+          expectSourceUsages(scan, nativeFile, [{ hook: 'asPackage', state: `${branch}Ready` }]);
+          expect(scan.unresolved).toEqual([]);
+          await rm(path.join(dir, 'consumer.proto.mts'), { force: true });
+          await rm(path.join(dir, 'consumer.proto.cts'), { force: true });
+          await writeFile(consumerFile, consumer);
+          const tokens = await collectProtoStyleTokens(dir);
+          expect(tokens).toContain(`data-[${branch.toLowerCase()}-ready]:bg-primary`);
+          for (const other of ['node', 'import', 'browser', 'require', 'default']) {
+            if (other !== branch) expect(tokens).not.toContain(`data-[${other}-ready]:bg-primary`);
+          }
+        }
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
 
     it('preserves shadowed lexical string constants in hook setup', async () => {
       const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-shadowed-string-'));

@@ -2512,15 +2512,32 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
         let effect = false;
         const visit = (current: ts.Node): void => {
           if (effect || (current !== node && isFunctionLike(current))) return;
+          if (ts.isConditionalExpression(current)) {
+            visit(current.condition);
+            const condition = unwrap(current.condition);
+            if (condition.kind !== ts.SyntaxKind.FalseKeyword) visit(current.whenTrue);
+            if (condition.kind !== ts.SyntaxKind.TrueKeyword) visit(current.whenFalse);
+            return;
+          }
           if (ts.isCallExpression(current)) {
             // Projector reads of its own result accessors do not change what
             // the projection returns, so they are not effects.
             const name = memberName(current.expression);
             const owner = memberOwner(current.expression);
-            const pure =
-              (name === 'getState' || name === 'getAsHook' || name === 'getAsHookHandle') &&
+            let pure =
+              (name === 'getState' ||
+                name === 'getMethod' ||
+                name === 'getAsHook' ||
+                name === 'getAsHookHandle') &&
               owner !== null &&
               evaluate(owner, project.module.source, scope).value.kind === 'result';
+            if (!pure) {
+              // Detached accessors retain their captured result identity.
+              // A similarly named ordinary function is not a callable proof.
+              pure =
+                evaluate(current.expression, project.module.source, scope).value.kind ===
+                'callable';
+            }
             if (!pure) effect = true;
           } else if (
             ts.isNewExpression(current) ||
@@ -2541,6 +2558,20 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
         visit(node);
         return effect;
       };
+      const recordReturn = (
+        expression: ts.Expression | undefined,
+        scope: Map<string, HookSourceValue>
+      ): void => {
+        if (expression && hasEffect(expression, scope)) {
+          unprovedCompletion = true;
+          return;
+        }
+        returns.push(
+          expression
+            ? evaluate(expression, project.module.source, scope)
+            : { matched: false, value: UNKNOWN('void projection') }
+        );
+      };
       unprovedCompletion = project.fn.parameters.some(
         (parameter, index) =>
           hasEffect(parameter.name, environment) ||
@@ -2557,11 +2588,7 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
           return true;
         }
         if (ts.isReturnStatement(node)) {
-          returns.push(
-            node.expression
-              ? evaluate(node.expression, project.module.source, scope)
-              : { matched: false, value: UNKNOWN('void projection') }
-          );
+          recordReturn(node.expression, scope);
           return false;
         }
         if (ts.isThrowStatement(node)) return false;
@@ -2615,7 +2642,7 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
           const fallsThrough = collectReturns(project.fn.body, environment);
           if (fallsThrough)
             returns.push({ matched: false, value: UNKNOWN('projection falls through') });
-        } else returns.push(evaluate(project.fn.body, project.module.source, environment));
+        } else recordReturn(project.fn.body, environment);
       }
       if (!unprovedCompletion && returns.length > 0) {
         let returned = returns[0].value;

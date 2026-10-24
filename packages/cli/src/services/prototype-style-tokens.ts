@@ -345,9 +345,16 @@ function readMemberSemantics(node, scope) {
  */
 function scopeOwningValue(value, scope) {
   let owning = null;
+  const sources = sourceValueCandidates(value);
   for (let current = scope; current; current = current.parent) {
     for (const held of current.bindings.values()) {
-      if (held === value || (value.semanticMap != null && held.semanticMap === value.semanticMap)) {
+      if (
+        held === value ||
+        (value.semanticMap != null && held.semanticMap === value.semanticMap) ||
+        sources.some((target) =>
+          sourceValueCandidates(held).some((source) => containsSourceReference(source, target))
+        )
+      ) {
         owning = current;
         break;
       }
@@ -521,8 +528,7 @@ function walk(node, scope, tokens, exposures, rootInventory = null) {
     if (!plainAssignment) walk(node.left, scope, tokens, exposures, rootInventory);
     const base = unwrapTransparent(memberOwner(node.left) ?? node.left);
     const member = memberName(node.left);
-    const resolvedBefore =
-      !plainAssignment && ts.isIdentifier(base) ? resolveExpression(base, scope) : null;
+    const resolvedBefore = resolveExpression(base, scope);
     let knownStateHandle = false;
     if (logicalAssignment && member !== null && !resolvedBefore?.unknownAlternative) {
       const targets = resolvedBefore?.containers ?? (resolvedBefore ? [resolvedBefore] : []);
@@ -554,11 +560,11 @@ function walk(node, scope, tokens, exposures, rootInventory = null) {
     } finally {
       if (definitelyRunsRight) scope.definitelyReachedLogicalAssignments.delete(node);
     }
-    if (ts.isIdentifier(base)) {
+    if (resolvedBefore) {
       // `const alias = controls` names the same object, and both bindings hold
       // the one resolved value, so the member moves on that value rather than
       // on a copy rebound to whichever name the write happened to use.
-      const resolved = plainAssignment ? resolveExpression(base, scope) : resolvedBefore;
+      const resolved = resolvedBefore;
       // A base that may be either of two objects writes to both tables.
       const targets = resolved?.containers ?? (resolved ? [resolved] : []);
       const writesRight =
@@ -573,7 +579,9 @@ function walk(node, scope, tokens, exposures, rootInventory = null) {
         // The scope that owns the container object, not the one that declares
         // the name written through: an alias declared inside a callback would
         // otherwise make the write look ordered against itself.
-        const declaring = scopeOwningValue(container, scope) ?? scopeDeclaring(base.text, scope);
+        const declaring =
+          scopeOwningValue(container, scope) ??
+          (ts.isIdentifier(base) ? scopeDeclaring(base.text, scope) : null);
         const uncertain =
           isConditionallyReached(node, scope.definitelyReachedLogicalAssignments) ||
           isDeferredWrite(node, enclosingFunction(declaring?.node ?? null)) ||
@@ -641,9 +649,23 @@ function walk(node, scope, tokens, exposures, rootInventory = null) {
                   ...held.sourceValues.filter((candidate) => candidate !== previousSource),
                 ];
               }
+              // Only this member changed. Other entries may carry newer
+              // local-state semantics absent from the immutable source graph.
+              if (held.semanticMap && held.semanticMap !== container.semanticMap) {
+                if (unknownWrite) {
+                  if (member === null) held.semanticMap.clear();
+                  else held.semanticMap.delete(member);
+                } else if (written.length > 0) {
+                  const semantics = mergeSourceSemantics(sourceValueCandidates(held));
+                  for (const key of keys) {
+                    const next = semantics.get(key);
+                    if (next !== undefined) held.semanticMap.set(key, next);
+                  }
+                }
+              }
             }
           }
-          propagateSourceReference(scope, previousSource, nextSource);
+          propagateSourceReference(scope, previousSource, nextSource, uncertain);
         }
         if (unknownWrite) {
           // An unknown member write can replace the state handle with any
@@ -1124,6 +1146,25 @@ function sourceValueCandidates(value) {
   return [...new Set(values)];
 }
 
+function containsSourceReference(value, target, seen = new Set()) {
+  if (value === target) return true;
+  if (seen.has(value)) return false;
+  seen.add(value);
+  if (value.kind === 'object') {
+    for (const member of value.members.values()) {
+      if (containsSourceReference(member, target, seen)) return true;
+    }
+  } else if (value.kind === 'result') {
+    if (value.handle && containsSourceReference(value.handle, target, seen)) return true;
+    for (const child of value.children.values()) {
+      if (containsSourceReference(child, target, seen)) return true;
+    }
+  } else if (value.kind === 'callable') {
+    return containsSourceReference(value.result, target, seen);
+  }
+  return false;
+}
+
 function replaceSourceReference(value, target, replacement, rewritten = new Map()) {
   if (value === target) return { value: replacement, changed: true };
   if (!value || value.kind === 'unknown') return { value, changed: false };
@@ -1168,7 +1209,7 @@ function replaceSourceReference(value, target, replacement, rewritten = new Map(
   return result;
 }
 
-function propagateSourceReference(scope, target, replacement) {
+function propagateSourceReference(scope, target, replacement, uncertain = false) {
   const rewritten = new Map();
   for (let current = scope; current; current = current.parent) {
     for (const binding of current.bindings.values()) {
@@ -1178,8 +1219,9 @@ function propagateSourceReference(scope, target, replacement) {
         (candidate) => replaceSourceReference(candidate, target, replacement, rewritten).value
       );
       if (!replaced.some((candidate, index) => candidate !== candidates[index])) continue;
-      binding.sourceValue = replaced[0];
-      if (binding.sourceValues) binding.sourceValues = replaced;
+      const next = uncertain ? [...new Set([...replaced, ...candidates])] : replaced;
+      binding.sourceValue = next[0];
+      if (next.length > 1 || binding.sourceValues) binding.sourceValues = next;
     }
   }
 }
@@ -1459,6 +1501,20 @@ function resolveExpression(node, scope) {
   if (ts.isPropertyAccessExpression(node) || ts.isElementAccessExpression(node)) {
     const source = sourceSummaryValue(node, scope);
     if (source) {
+      if (source.resolved.value.kind === 'object') {
+        const candidates = source.resolvedValues ?? [source.resolved.value];
+        for (let current = scope; current; current = current.parent) {
+          for (const held of current.bindings.values()) {
+            if (held.unknownAlternative || held.sourceValue !== source.resolved.value) continue;
+            const heldCandidates = sourceValueCandidates(held);
+            if (
+              heldCandidates.length === candidates.length &&
+              candidates.every((candidate) => heldCandidates.includes(candidate))
+            )
+              return held;
+          }
+        }
+      }
       // A local/container semantic map reflects member writes and branch
       // joins. It is newer than an immutable source snapshot, so use it when
       // available and never reintroduce a stale source candidate. A null
@@ -1601,7 +1657,7 @@ function resolveExpression(node, scope) {
       }
     }
     const sourceValues = [...new Set(branches.flatMap(sourceValueCandidates))];
-    const containers = [...new Set(branches.flatMap((branch) => branch.containers ?? []))];
+    const containers = [...new Set(branches.flatMap((branch) => branch.containers ?? [branch]))];
     const result = asStringValue(Array.from(values));
     return {
       ...result,
@@ -1660,6 +1716,7 @@ function resolveBinding(node, scope) {
         ...branches[0],
         sourceValue: sourceValues[0],
         sourceValues,
+        containers: [...new Set(branches.flatMap((branch) => branch.containers ?? [branch]))],
         ...(semantics.size > 0 ? { semanticMap: semantics } : {}),
       };
       if (semantics.size > 0) {
