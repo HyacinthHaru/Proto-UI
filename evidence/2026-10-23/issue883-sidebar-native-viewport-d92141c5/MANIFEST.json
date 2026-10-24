@@ -1,0 +1,85 @@
+{
+  "head": "d92141c57ebab192f3741e7336c1ec0f24b61c5c",
+  "tree": "8dda1bb967cc066db4036e7e085cb7d5c93ebd75",
+  "outerFileCountIncludingManifest": 16,
+  "archiveMemberCount": 912,
+  "archiveCRCAndBytesVerified": true,
+  "innerPublicMapEqualsOuter": true,
+  "files": [
+    {
+      "path": "PUBLIC-MAPPING.json",
+      "bytes": 1363477,
+      "sha256": "01870954b4796fe566cbdb257f7d5ad83eef41be116efe52022c7ef960a21681"
+    },
+    {
+      "path": "README.md",
+      "bytes": 13937,
+      "sha256": "322218a86b2e0ef0005625b1f3497b0f5cacca788cde86c4c28082288003d2b4"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 2939,
+      "sha256": "7eb2a701bf56f9b352c0cb44b124ec5fe5b757e12675e014c97ea1854377f4fa"
+    },
+    {
+      "path": "captures/execution-sidebar-post-highpoint-control-1440.png",
+      "bytes": 236514,
+      "sha256": "68bb43093ade13b1d99491cd48dd92318b337d14601f3e27661c33b579b340ed"
+    },
+    {
+      "path": "captures/execution-sidebar-post-original-failure-1440.png",
+      "bytes": 240898,
+      "sha256": "3a5e3643f722a36fd2577030e3b69adf2a5cdbe1596c7f8063b98a96c4d355e6"
+    },
+    {
+      "path": "captures/focused-sidebar-current-1440-reload.png",
+      "bytes": 240898,
+      "sha256": "3a5e3643f722a36fd2577030e3b69adf2a5cdbe1596c7f8063b98a96c4d355e6"
+    },
+    {
+      "path": "captures/focused-sidebar-current-1440-wheel.png",
+      "bytes": 236513,
+      "sha256": "0528b56eb7206700bae2c5548dfea1ad748408464e27d94f29971ef9ed69c4ed"
+    },
+    {
+      "path": "captures/focused-sidebar-current-320-reload.png",
+      "bytes": 38211,
+      "sha256": "7c0e4b6348c79a791a97eb06bb84f7ef0fb867305d001958463b987fc55b13ff"
+    },
+    {
+      "path": "captures/focused-sidebar-current-320-wheel.png",
+      "bytes": 42588,
+      "sha256": "c1a4fe506da382792adfe450546e5f458a765b3627d5246123935d629b3dff53"
+    },
+    {
+      "path": "captures/focused-sidebar-current-390-reload.png",
+      "bytes": 39294,
+      "sha256": "bd94ba000638a064967652ff16b3963de949f0da47b19eac81b87a2dccebe4d3"
+    },
+    {
+      "path": "captures/focused-sidebar-current-390-wheel.png",
+      "bytes": 43809,
+      "sha256": "acb5d8fc66a182062fe528e6f668d44d2c7f5e6c5e484798237c78328e96c886"
+    },
+    {
+      "path": "captures/preview-d921-1440x1100.png",
+      "bytes": 251115,
+      "sha256": "f5826f2b93e412d16780c9ead8eaf4f40e40e353a063e91c882727cd2aae6d7e"
+    },
+    {
+      "path": "captures/preview-d921-320x1000.png",
+      "bytes": 175145,
+      "sha256": "198be155e8fd67e56213d6ef3868ad40f0efea926229db373a7f312ce7aa5011"
+    },
+    {
+      "path": "evidence.zip",
+      "bytes": 4901129,
+      "sha256": "3d1e204c71d8503534f2093a402a71fa78087a3063027136f1bbf0786786b7f2"
+    },
+    {
+      "path": "machine-summary.json",
+      "bytes": 2204,
+      "sha256": "e1f6681157de58ae5e59b2251b4adf1a7b2c633f961cb668b816938c60f0ad46"
+    }
+  ]
+}
