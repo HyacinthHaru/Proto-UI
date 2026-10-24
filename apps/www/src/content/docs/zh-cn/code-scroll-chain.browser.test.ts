@@ -117,7 +117,7 @@ async function run(name: string, width: number, body: (page: Page, entry: any) =
       (window as any).__codeScrollEventTrace.push({
         phase, eventId: eventIds.get(event), sequence: (window as any).__scrollInputSequence ?? null,
         eventTimeStamp: event.timeStamp, observedAt: performance.now(), trusted: event.isTrusted,
-        clientX: event.clientX, clientY: event.clientY, deltaX: event.deltaX, deltaY: event.deltaY,
+        clientX: event.clientX, clientY: event.clientY, deltaX: event.deltaX, deltaY: event.deltaY, deltaMode: event.deltaMode,
         target: describe(event.target), composedPath: eventPath.map(describe), hit: describe(hit),
         selectedInPath: !!selected && eventPath.includes(selected),
         selectedContainsTarget: !!selected && event.target instanceof Node && selected.contains(event.target),
@@ -234,6 +234,140 @@ it('records the historical fixed-point replay separately from product acceptance
     await observe(entry, 'after-original-wheel', page, target);
   });
 }, 45_000);
+function captureStageWheelEvents(trace: any[], start: number, end: number): any[] {
+  return trace.filter(row => row.phase === 'capture' &&
+    row.eventTimeStamp >= start && row.eventTimeStamp <= end);
+}
+/** Same physical PRE, same passive input, one bounded test-only negative control.
+ * scrollIntoView is setup only; all measured movement comes from mouse.wheel. */
+async function verifyPassiveCausality(page: Page, pre: Locator, entry: any) {
+  const original = await pre.evaluate(element => ({
+    value: (element as HTMLElement).style.getPropertyValue('overscroll-behavior-y'),
+    priority: (element as HTMLElement).style.getPropertyPriority('overscroll-behavior-y'),
+    hadStyle: element.hasAttribute('style'),
+    samePre: element === (window as any).__selectedScrollPre,
+  }));
+  expect(original.samePre).toBe(true);
+  const restore = () => pre.evaluate((element, saved) => {
+    const style = (element as HTMLElement).style;
+    if (saved.value) style.setProperty('overscroll-behavior-y', saved.value, saved.priority);
+    else style.removeProperty('overscroll-behavior-y');
+    if (!saved.hadStyle && style.length === 0) element.removeAttribute('style');
+  }, original);
+  entry.causality = { original, stages: [], acceptance: false };
+  let primary: unknown;
+  try {
+    for (const [stageIndex, stageName] of ['contain-negative', 'product-auto'].entries()) {
+      if (stageName === 'contain-negative') await pre.evaluate(element =>
+        (element as HTMLElement).style.setProperty('overscroll-behavior-y', 'contain', 'important'));
+      else await restore();
+      // Re-establish the identical initial geometry before measuring either stage.
+      await pre.evaluate(element => element.scrollIntoView({ block: 'center' }));
+      await page.evaluate(() => new Promise(requestAnimationFrame));
+      const initial = await facts(page, pre);
+      expect(initial.scrollY).toBeGreaterThan(500);
+      expect(initial.scrollHeight).toBe(initial.clientHeight);
+      expect(initial.scrollTop).toBe(0);
+      expect(initial.overscrollX).toBe('contain');
+      expect(initial.overscrollY).toBe(stageName === 'contain-negative' ? 'contain' : 'auto');
+      if (stageIndex === 1) {
+        const negative = entry.causality.stages[0].initial;
+        for (const key of ['scrollY', 'x', 'y', 'width', 'height', 'clientHeight', 'scrollHeight'] as const)
+          expect(initial[key]).toBe(negative[key]);
+      }
+      const point = { x: initial.x + initial.width / 2, y: initial.y + initial.height / 2 };
+      await page.mouse.move(point.x, point.y);
+      const stage: any = { name: stageName, initial, inputs: [], readings: [] };
+      entry.causality.stages.push(stage);
+      for (let i = 0; i < 14; i++) {
+        const input = await pre.evaluate((element, args) => {
+          const sequence = (args.stageIndex + 1) * 100 + args.i;
+          (window as any).__scrollInputSequence = sequence;
+          (window as any).__scrollPointerPoint = args.point;
+          const hit = document.elementFromPoint(args.point.x, args.point.y);
+          return { sequence, observedAt: performance.now(), timeOrigin: performance.timeOrigin,
+            requestedDeltaX: 0, requestedDeltaY: -220,
+            requestedClientX: args.point.x, requestedClientY: args.point.y,
+            samePre: element === (window as any).__selectedScrollPre, connected: element.isConnected,
+            rect: element.getBoundingClientRect().toJSON(), scrollY, preScrollTop: element.scrollTop,
+            computedY: getComputedStyle(element).overscrollBehaviorY,
+            hitInsidePre: hit === element || (!!hit && element.contains(hit)) };
+        }, { point, stageIndex, i });
+        stage.inputs.push(input);
+        await save();
+        expect(input.samePre && input.connected).toBe(true);
+        expect(input.preScrollTop).toBe(0);
+        expect(input.computedY).toBe(stageName === 'contain-negative' ? 'contain' : 'auto');
+        if (i === 0 || stageName === 'contain-negative') expect(input.hitInsidePre).toBe(true);
+        await page.mouse.wheel(0, -220);
+        await page.evaluate(() => new Promise(requestAnimationFrame));
+        const measured = await observe(entry, `${stageName}-wheel-${i}`, page, pre);
+        stage.readings.push(measured);
+        if (stageName === 'contain-negative') expect(measured.scrollY).toBe(initial.scrollY);
+      }
+      await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
+      stage.preDeliveryFinal = await observe(entry, `${stageName}-pre-delivery-final`, page, pre);
+      stage.inputEndAt = await page.evaluate(() => performance.now());
+      const firstInput = stage.inputs[0];
+      // Wheel events may coalesce. Correlate the whole bounded input stage,
+      // not a guessed one-event-per-command count or the mutable sequence tag.
+      await expect.poll(async () => {
+        const trace = await page.evaluate(() => (window as any).__codeScrollEventTrace);
+        stage.events = captureStageWheelEvents(trace, firstInput.observedAt, stage.inputEndAt);
+        await save();
+        return stage.events.reduce((sum: number, event: any) => sum + event.deltaY, 0);
+      }, { timeout: 2000 }).toBe(-220 * 14);
+      stage.deliveryEndAt = await page.evaluate(() => performance.now());
+      await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
+      const final = await observe(entry, `${stageName}-post-delivery-final`, page, pre);
+      stage.final = final;
+      expect(stage.inputs).toHaveLength(14);
+      expect(stage.events.length).toBeGreaterThan(0);
+      for (const event of stage.events) {
+        expect(event.trusted).toBe(true);
+        expect(event.deltaMode).toBe(0);
+        expect(event.deltaX).toBe(0);
+        expect(event.deltaY).toBeLessThan(0);
+        expect(event.clientX).toBe(Math.floor(firstInput.requestedClientX));
+        expect(event.clientY).toBe(Math.floor(firstInput.requestedClientY));
+        expect(event.eventTimeStamp).toBeGreaterThanOrEqual(firstInput.observedAt);
+        expect(event.eventTimeStamp).toBeLessThanOrEqual(stage.inputEndAt);
+        expect(event.observedAt).toBeGreaterThanOrEqual(event.eventTimeStamp);
+        expect(event.observedAt).toBeLessThanOrEqual(stage.deliveryEndAt);
+        expect(event.defaultPreventedAtObservation).toBe(false);
+        if (stageName === 'contain-negative') {
+          expect(event.selectedInPath && event.selectedContainsTarget).toBe(true);
+          expect(event.scrollY).toBe(initial.scrollY);
+        }
+      }
+      await save();
+      if (stageName === 'contain-negative') expect(final.scrollY).toBe(initial.scrollY);
+      else expect(final.scrollY).toBeLessThan(initial.scrollY - 500);
+      stage.passed = true;
+    }
+  } catch (error) {
+    primary = error;
+    entry.causality.failure = String(error);
+  } finally {
+    try {
+      await restore();
+      entry.causality.restored = await pre.evaluate(element => ({
+        value: (element as HTMLElement).style.getPropertyValue('overscroll-behavior-y'),
+        priority: (element as HTMLElement).style.getPropertyPriority('overscroll-behavior-y'),
+        hadStyle: element.hasAttribute('style'),
+        samePre: element === (window as any).__selectedScrollPre,
+      }));
+      expect(entry.causality.restored).toEqual(original);
+    } catch (error) {
+      entry.causality.restoreFailure = String(error);
+      primary ??= error;
+    }
+    try { await save(); } catch (error) { primary ??= error; }
+  }
+  if (primary) throw primary;
+  entry.causality.acceptance = true;
+  await save();
+}
 it('chains reverse wheel from an independently located real short PRE to the document', async () => {
   await run('short-code-product-chain', 1440, async (page, entry) => {
     await page.goto(baseUrl + quick, { waitUntil: 'networkidle' });
@@ -293,8 +427,24 @@ it('chains reverse wheel from an independently located real short PRE to the doc
     await expect.poll(() => page.evaluate(() => scrollY), { timeout: 2000 })
       .toBeLessThan(before.scrollY - 500);
     await observe(entry, 'short-after-wheel', page, pre);
-    expect(entry.wheels.some((wheel: any) => wheel.trusted && wheel.deltaY === -220 &&
-      wheel.preScrollTop === 0)).toBe(true);
+    entry.lateTargetDiagnostic = { kind: 'observer-diagnostic', acceptance: false,
+      expected: true, actual: entry.wheels.some((wheel: any) => wheel.trusted &&
+        wheel.deltaY === -220 && wheel.preScrollTop === 0), wheels: entry.wheels,
+      trace: entry.eventTrace, inputs: entry.inputReadings };
+    try {
+      // Preserve the original observation assertion and its actual mismatch.
+      expect(entry.wheels.some((wheel: any) => wheel.trusted && wheel.deltaY === -220 &&
+        wheel.preScrollTop === 0)).toBe(true);
+    } catch (error) {
+      entry.lateTargetDiagnostic.failure = String(error);
+    }
+    await save();
+    const diagnosticImage = await page.screenshot({ fullPage: true });
+    await writeFile(join(out, 'short-passive-observer-diagnostic.png'), diagnosticImage);
+    entry.lateTargetDiagnostic.screenshot = { file: 'short-passive-observer-diagnostic.png',
+      sha256: createHash('sha256').update(diagnosticImage).digest('hex') };
+    await save();
+    await verifyPassiveCausality(page, pre, entry);
   });
 }, 45_000);
 // Paired diagnostic only. Keep the original passive case above unchanged.

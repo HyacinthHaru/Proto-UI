@@ -154,3 +154,74 @@ it('keeps the non-passive scheduling control separate from passive product accep
   expect(control).not.toMatch(/\.(?:preventDefault|stopPropagation|stopImmediatePropagation)\s*\(/);
   expect(300 + 5 * 45 + 10).toBeLessThan(560);
 });
+
+it('replaces no product behavior while retaining the late-target mismatch as an explicit diagnostic', () => {
+  const required = [
+    "entry.lateTargetDiagnostic = { kind: 'observer-diagnostic', acceptance: false",
+    'expected: true, actual:', 'entry.lateTargetDiagnostic.failure = String(error)',
+    'wheel.preScrollTop === 0)).toBe(true)', 'short-passive-observer-diagnostic.png',
+    'await verifyPassiveCausality(page, pre, entry)',
+  ];
+  const check = (source: string) => { for (const token of required) expect(source).toContain(token); };
+  check(browser);
+  for (const token of required) expect(() => check(browser.replaceAll(token, ''))).toThrow();
+});
+it('requires contain negative control, restored product auto, exact input identity and independent zero-vs-positive movement', () => {
+  const start = browser.indexOf('async function verifyPassiveCausality(');
+  const end = browser.indexOf("it('chains reverse wheel", start);
+  const helper = browser.slice(start, end);
+  const required = [
+    "['contain-negative', 'product-auto']", "style.setProperty('overscroll-behavior-y', 'contain', 'important')",
+    'else await restore()', 'expect(original.samePre).toBe(true)',
+    'expect(input.samePre && input.connected).toBe(true)',
+    "if (i === 0 || stageName === 'contain-negative') expect(input.hitInsidePre).toBe(true)",
+    "expect(input.computedY).toBe(stageName === 'contain-negative' ? 'contain' : 'auto')",
+    'initial.scrollHeight).toBe(initial.clientHeight)', 'expect(input.preScrollTop).toBe(0)',
+    "if (stageName === 'contain-negative') expect(measured.scrollY).toBe(initial.scrollY)",
+    "if (stageName === 'contain-negative') expect(final.scrollY).toBe(initial.scrollY)",
+    '.toBeLessThan(initial.scrollY - 500)', 'expect(stage.inputs).toHaveLength(14)',
+    'stage.preDeliveryFinal = await observe', 'stage.deliveryEndAt = await page.evaluate', '\${stageName}-post-delivery-final',
+    'stage.final = final', 'else expect(final.scrollY).toBeLessThan(initial.scrollY - 500)',
+    'expect(stage.events.length).toBeGreaterThan(0)', 'expect(event.trusted).toBe(true)',
+    'expect(event.deltaX).toBe(0)', 'expect(event.deltaY).toBeLessThan(0)', 'expect(event.deltaMode).toBe(0)',
+    'expect(event.clientX).toBe(Math.floor(firstInput.requestedClientX))',
+    'expect(event.clientY).toBe(Math.floor(firstInput.requestedClientY))',
+    'expect(event.eventTimeStamp).toBeGreaterThanOrEqual(firstInput.observedAt)',
+    'expect(event.eventTimeStamp).toBeLessThanOrEqual(stage.inputEndAt)',
+    'expect(event.observedAt).toBeLessThanOrEqual(stage.deliveryEndAt)',
+    'sum + event.deltaY, 0)', '.toBe(-220 * 14)',
+    'expect(event.defaultPreventedAtObservation).toBe(false)',
+    'expect(event.selectedInPath && event.selectedContainsTarget).toBe(true)',
+    'expect(event.scrollY).toBe(initial.scrollY)',
+    'expect(initial[key]).toBe(negative[key])',
+    'expect(entry.causality.restored).toEqual(original)', 'if (primary) throw primary',
+  ];
+  const check = (source: string) => { for (const token of required) expect(source).toContain(token); };
+  check(helper);
+  for (const token of required) expect(() => check(helper.replaceAll(token, ''))).toThrow();
+  expect(helper.indexOf('entry.causality.acceptance = true')).toBeGreaterThan(helper.indexOf('if (primary) throw primary'));
+  const measuredLoop = helper.slice(helper.indexOf('for (let i = 0; i < 14; i++)'), helper.indexOf('stage.passed = true'));
+  expect(measuredLoop).not.toMatch(/scrollIntoView|scrollTo\(|scrollBy\(|scrollTop\s*=|dispatchEvent|preventDefault|stopPropagation/);
+  expect(browser.match(/}, 45_000\);/g)).toHaveLength(4); // three explicit cases and one two-width loop
+});
+
+it('correlates actual stage capture logic without assuming one DOM event per wheel command', () => {
+  const source = ts.createSourceFile('probe.ts', browser, ts.ScriptTarget.Latest, true);
+  const declaration = source.statements.find(node => ts.isFunctionDeclaration(node) && node.name?.text === 'captureStageWheelEvents');
+  expect(declaration).toBeDefined();
+  const js = ts.transpileModule(declaration!.getText(source), { compilerOptions: { target: ts.ScriptTarget.ES2022 } }).outputText;
+  const context = vm.createContext({});
+  vm.runInContext(js + ';globalThis.collect = captureStageWheelEvents;', context);
+  const collect = context.collect as (trace: any[], start: number, end: number) => any[];
+  for (const [count, deltaY] of [[14, -220], [7, -440]]) {
+    const trace = Array.from({ length: count }, (_, i) => ({ phase: 'capture', eventTimeStamp: 110 + i, deltaY }));
+    trace.push({ phase: 'bubble', eventTimeStamp: 110, deltaY: -220 });
+    trace.push({ phase: 'capture', eventTimeStamp: 99, deltaY: -220 });
+    trace.push({ phase: 'capture', eventTimeStamp: 201, deltaY: -220 });
+    const rows = collect(trace, 100, 200);
+    expect(rows).toHaveLength(count);
+    expect(rows.reduce((sum, row) => sum + row.deltaY, 0)).toBe(-3080);
+    expect(collect(trace.slice(1), 100, 200).reduce((sum, row) => sum + row.deltaY, 0)).not.toBe(-3080);
+  }
+  expect(collect([{ phase: 'bubble', eventTimeStamp: 150, deltaY: -3080 }], 100, 200)).toHaveLength(0);
+});
