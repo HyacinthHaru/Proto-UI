@@ -6,7 +6,6 @@ import path from 'node:path';
 import { chromium, type Browser, type BrowserContext, type Page } from 'playwright-core';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { chromeExecutable, startServer, stopServer } from './browser-harness';
-import { revealHeaderPreferences } from './site-header-browser';
 const FAMILIES = ['shadcn', 'brutalist'] as const;
 const CONTROLS = ['header', 'sidebar'] as const;
 const OUTPUT = process.env.PROTO_UI_LANGUAGE_EVIDENCE_DIR ?? '/tmp/language-navigation';
@@ -91,6 +90,132 @@ async function installWriteProbe(context: BrowserContext) {
     });
   });
 }
+// Observe native dispatch without changing propagation, selection or disclosure.
+async function installEventProbe(context: BrowserContext) {
+  await context.addInitScript(() => {
+    const key = '__localeNativeEvents';
+    const write = Storage.prototype.setItem;
+    const ids = new WeakMap<Event, number>();
+    let sequence = 0;
+    const describe = (target: EventTarget | null) =>
+      target instanceof Element
+        ? {
+            tag: target.localName,
+            id: target.id,
+            role: target.getAttribute('role'),
+            value: target.getAttribute('data-value'),
+          }
+        : { tag: target === window ? 'window' : target === document ? 'document' : 'other' };
+    const observe = (event: Event, phase: string) => {
+      let id = ids.get(event);
+      if (id === undefined) {
+        id = ++sequence;
+        ids.set(event, id);
+      }
+      const eventPath = event.composedPath();
+      const roots = [...document.querySelectorAll<HTMLElement>('[data-language-select-root]')].map(
+        (root) => {
+          const trigger = root.querySelector<HTMLElement>('[role="combobox"]');
+          const popupId = trigger?.getAttribute('aria-controls');
+          const popup = popupId ? document.getElementById(popupId) : null;
+          return {
+            owner: root.closest('header')
+              ? 'header'
+              : root.closest('.sidebar-pane')
+                ? 'sidebar'
+                : 'unknown',
+            value: (
+              root as HTMLElement & { getExposes?: () => { value?: { get?: () => unknown } } }
+            )
+              .getExposes?.()
+              .value?.get?.(),
+            expanded: trigger?.getAttribute('aria-expanded'),
+            popupId,
+            triggerRect: trigger?.getBoundingClientRect().toJSON(),
+            popupRect: popup?.getBoundingClientRect().toJSON(),
+            targetInPopup:
+              !!popup &&
+              eventPath.some(
+                (node) => node === popup || (node instanceof Node && popup.contains(node))
+              ),
+            selected: popup
+              ? [...popup.querySelectorAll('[role="option"][aria-selected="true"]')].map((node) =>
+                  node.getAttribute('data-value')
+                )
+              : [],
+          };
+        }
+      );
+      const entries = JSON.parse(sessionStorage.getItem(key) ?? '[]');
+      entries.push({
+        id,
+        phase,
+        type: event.type,
+        timeStamp: event.timeStamp,
+        timeOrigin: performance.timeOrigin,
+        now: performance.now(),
+        trusted: event.isTrusted,
+        target: describe(event.target),
+        path: eventPath.map(describe),
+        pathname: location.pathname,
+        sidebarExpanded: document.body.hasAttribute('data-mobile-menu-expanded'),
+        headerExpanded: document
+          .querySelector('[data-site-header]')
+          ?.getAttribute('data-site-menu-open'),
+        active: describe(document.activeElement),
+        roots,
+      });
+      write.call(sessionStorage, key, JSON.stringify(entries));
+    };
+    for (const type of ['pointerdown', 'pointerup', 'click', 'keydown', 'focusin', 'valueChange']) {
+      window.addEventListener(type, (event) => observe(event, 'capture'), {
+        capture: true,
+        passive: true,
+      });
+      window.addEventListener(type, (event) => observe(event, 'bubble'), { passive: true });
+    }
+  });
+}
+async function waitForLocaleReady(
+  page: Page,
+  locale: string,
+  report: Record<string, unknown>,
+  stage: string
+) {
+  // Match the existing site startup's bounded readiness budget, not network-idle.
+  await expect
+    .poll(
+      async () => {
+        const state = await page.evaluate(() => ({
+          menuReady: !!document.querySelector(
+            '[data-docs-site-header][data-site-menu-ready], [data-site-header][data-site-menu-ready]'
+          ),
+          roots: [...document.querySelectorAll<HTMLElement>('[data-language-select-root]')].map(
+            (root) => ({
+              initialized: root.dataset.languageSelectInitialized,
+              locale: root.dataset.currentLocale,
+              triggerCount: root.querySelectorAll('[role="combobox"]').length,
+              value: (
+                root as HTMLElement & { getExposes?: () => { value?: { get?: () => string } } }
+              )
+                .getExposes?.()
+                .value?.get?.(),
+            })
+          ),
+        }));
+        (report.samples as unknown[]).push({ stage, state, time: Date.now() });
+        return state;
+      },
+      { timeout: 45_000, interval: 100 }
+    )
+    .toEqual({
+      menuReady: true,
+      roots: [
+        { initialized: 'true', locale, triggerCount: 1, value: locale },
+        { initialized: 'true', locale, triggerCount: 1, value: locale },
+      ],
+    });
+}
 async function readWrites(
   page: Page
 ): Promise<Array<{ kind: string; value: string; pathname: string }>> {
@@ -135,8 +260,16 @@ async function chooseLocale(
   input: 'pointer' | 'keyboard',
   expectedPath: string
 ) {
-  if (control === 'header') await revealHeaderPreferences(page);
-  else {
+  if (control === 'header') {
+    const languageTrigger = page.locator('header [data-language-select-root] [role="combobox"]');
+    if (!(await languageTrigger.isVisible())) {
+      const menu = page.locator('[data-docs-site-header] [data-site-menu-button]');
+      await expect.poll(() => menu.count()).toBe(1);
+      if ((await menu.getAttribute('aria-expanded')) !== 'true') await menu.click();
+      await expect.poll(() => menu.getAttribute('aria-expanded')).toBe('true');
+      await languageTrigger.waitFor({ state: 'visible' });
+    }
+  } else {
     const pane = page.locator('#starlight__sidebar');
     if (!(await pane.isVisible())) {
       const toggle = page.locator('[aria-controls="starlight__sidebar"]:visible');
@@ -205,6 +338,7 @@ describe.sequential('Production language selector navigation', () => {
           return route.abort('blockedbyclient');
         });
         await installWriteProbe(context);
+        await installEventProbe(context);
         const page = await context.newPage();
         const navigations: string[] = [];
         page.on('request', (request) => {
@@ -228,12 +362,19 @@ describe.sequential('Production language selector navigation', () => {
         try {
           const suffix = family === 'shadcn' ? 'shadcn/button/' : 'brutalist/components/button/';
           await page.goto(`${base.origin}/en/ui-libraries/${suffix}`, { waitUntil: 'networkidle' });
-          await expect.poll(() => page.locator('[data-language-select-root]').count()).toBe(2);
+          await waitForLocaleReady(page, 'en', report, 'initial-ready');
+          expect(await page.locator('[data-language-select-root]').count()).toBe(2);
           for (const [locale, input] of [
             ['zh-cn', 'pointer'],
             ['en', 'keyboard'],
           ] as const) {
             await repeatPageLoad(page);
+            await waitForLocaleReady(
+              page,
+              locale === 'zh-cn' ? 'en' : 'zh-cn',
+              report,
+              'repeated-page-load-ready'
+            );
             const before = await readWrites(page);
             const navigationCount = navigations.length;
             (report.samples as unknown[]).push({
@@ -243,6 +384,7 @@ describe.sequential('Production language selector navigation', () => {
             });
             const expectedPath = `/${locale}/ui-libraries/${suffix}`;
             await chooseLocale(page, control, locale, input, expectedPath);
+            await waitForLocaleReady(page, locale, report, 'navigated-ready');
             await expect
               .poll(() =>
                 page
@@ -277,19 +419,17 @@ describe.sequential('Production language selector navigation', () => {
             ).toEqual([locale, locale]);
             await expect
               .poll(() =>
-                page
-                  .locator('[data-language-select-root]')
-                  .evaluateAll((nodes) =>
-                    nodes.map((node) =>
-                      (
-                        node as HTMLElement & {
-                          getExposes?: () => { value?: { get?: () => string } };
-                        }
-                      )
-                        .getExposes?.()
-                        .value?.get?.()
+                page.locator('[data-language-select-root]').evaluateAll((nodes) =>
+                  nodes.map((node) =>
+                    (
+                      node as HTMLElement & {
+                        getExposes?: () => { value?: { get?: () => string } };
+                      }
                     )
+                      .getExposes?.()
+                      .value?.get?.()
                   )
+                )
               )
               .toEqual([locale, locale]);
             (report.samples as unknown[]).push({
@@ -306,6 +446,13 @@ describe.sequential('Production language selector navigation', () => {
         } finally {
           try {
             report.final = await inspect(page);
+          } catch (error) {
+            evidenceErrors.push(String(error));
+          }
+          try {
+            report.events = await page.evaluate(() =>
+              JSON.parse(sessionStorage.getItem('__localeNativeEvents') ?? '[]')
+            );
           } catch (error) {
             evidenceErrors.push(String(error));
           }

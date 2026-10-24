@@ -146,7 +146,7 @@ function assertNativeSource(source) {
     "base.hostname !== '127.0.0.1' || base.protocol !== 'http:'",
     "if (process.env.PROTO_UI_EXPECTED_HEAD !== revision) throw new Error('Exact source revision mismatch')",
     "if (dirty) throw new Error('Dirty source tree is not exact-head evidence')",
-    "page.locator('[data-language-select-root]').count()).toBe(2)",
+    "await page.locator('[data-language-select-root]').count()).toBe(2)",
     'page.locator(\'[data-language-select-root][data-language-select-initialized="true"]\').count()).toBe(2)',
     "[['zh-cn', 'pointer'], ['en', 'keyboard']]",
     "writes.filter(row => row.kind === 'storage').map(row => row.value)).toEqual([locale])",
@@ -220,6 +220,47 @@ function assertNativeSource(source) {
   ])
     includes(choose, required);
 
+  for (const required of [
+    'await languageTrigger.isVisible()',
+    'await menu.click()',
+    "menu.getAttribute('aria-expanded')).toBe('true')",
+    "await languageTrigger.waitFor({ state: 'visible' })",
+  ])
+    includes(choose, required);
+  const ready = functionSource(source, 'waitForLocaleReady');
+  for (const required of [
+    'timeout: 45_000, interval: 100',
+    'root.dataset.languageSelectInitialized',
+    'root.dataset.currentLocale',
+    'root.querySelectorAll(\'[role="combobox"]\').length',
+    '.getExposes?.().value?.get?.()',
+    "{ initialized: 'true', locale, triggerCount: 1, value: locale }",
+    '(report.samples as unknown[]).push({ stage, state, time: Date.now() })',
+  ])
+    includes(ready, required);
+  const observer = functionSource(source, 'installEventProbe');
+  for (const required of [
+    'const ids = new WeakMap<Event, number>()',
+    'event.composedPath()',
+    'timeStamp: event.timeStamp',
+    'timeOrigin: performance.timeOrigin',
+    'now: performance.now()',
+    "observe(event, 'capture')",
+    "observe(event, 'bubble')",
+    'popup.contains(node)',
+    "document.body.hasAttribute('data-mobile-menu-expanded')",
+    'write.call(sessionStorage, key, JSON.stringify(entries))',
+  ])
+    includes(observer, required);
+  assert.doesNotMatch(
+    observer,
+    /preventDefault|stopPropagation|stopImmediatePropagation|dispatchEvent/
+  );
+  includes(source, 'await installEventProbe(context)');
+  includes(
+    source,
+    "report.events = await page.evaluate(() => JSON.parse(sessionStorage.getItem('__localeNativeEvents') ?? '[]'))"
+  );
   const save = functionSource(source, 'saveEvidence');
   for (const required of [
     'JSON.stringify(report, null, 2)',
@@ -481,9 +522,18 @@ for (const [name, before, after] of [
   ['repeated lifecycle removed', 'await repeatPageLoad(page)', 'void page'],
   [
     'second root no longer required',
-    "page.locator('[data-language-select-root]').count()).toBe(2)",
-    "page.locator('[data-language-select-root]').count()).toBe(1)",
+    "await page.locator('[data-language-select-root]').count()).toBe(2)",
+    "await page.locator('[data-language-select-root]').count()).toBe(1)",
   ],
+  ['target visibility bypassed', 'await languageTrigger.isVisible()', 'true'],
+  ['menu opening removed', 'await menu.click()', 'void menu'],
+  ['capture phase missing', "observe(event, 'capture')", 'void event'],
+  ['bubble phase missing', "observe(event, 'bubble')", 'void event'],
+  ['dispatch path missing', 'event.composedPath()', '[]'],
+  ['popup ownership missing', 'popup.contains(node)', 'false'],
+  ['document identity missing', 'timeOrigin: performance.timeOrigin', 'timeOrigin: 0'],
+  ['event timing missing', 'timeStamp: event.timeStamp', 'timeStamp: 0'],
+  ['hydration readiness omitted', 'root.dataset.languageSelectInitialized', 'undefined'],
   ['missing failure screenshot', 'await page.screenshot({ fullPage: true })', 'new Uint8Array()'],
   ['failure hidden', 'if (primaryFailure) throw primaryFailure', 'void primaryFailure'],
 ])
