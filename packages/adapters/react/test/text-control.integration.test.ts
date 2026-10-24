@@ -126,7 +126,7 @@ async function mountReactTextControl<Props extends PropsBaseType, Exposes>(
   document.body.append(host);
   const root = createRoot(host);
   const Component = createReactAdapter(React)(proto);
-  const render = (props: Props) =>
+  const render = (props: React.ComponentProps<typeof Component>) =>
     settleReact(() => root.render(React.createElement(Component, props)));
   const unmount = async () => {
     await settleReact(() => root.unmount());
