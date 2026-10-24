@@ -985,6 +985,7 @@ for (const width of [320, 390, 1280, 1440, 2048]) {
       const errors: string[] = [];
       page.on('pageerror', (error) => errors.push(error.message));
       try {
+        await page.addInitScript(roleTiming.targetObserver, roleTiming.initOptions);
         const response = await page.goto(`${baseUrl}${searchRoute(family)}`, {
           waitUntil: 'networkidle',
         });

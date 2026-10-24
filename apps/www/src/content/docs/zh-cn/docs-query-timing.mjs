@@ -11,6 +11,137 @@ const css = '[data-docs-site-header] [data-adapter-select] [data-site-select-tri
 const expectedSelector = `${css} >> nth=0`;
 const sha = (value) => createHash('sha256').update(value).digest('hex');
 
+/** Self-contained init observation; deliveries are not synchronous DOM creation or paint times.
+ * @param {{ selector: string, marker: string, ownerToken: string, cap?: number }} options */
+export function installDocsTargetArrival({ selector, marker, ownerToken, cap = 32 }) {
+  const observations = [];
+  const identities = new WeakMap();
+  let nextIdentity = 0;
+  let firstTarget = null;
+  let firstRole = null;
+  let lastState = '';
+  let queries = 0;
+  let changed = 0;
+  let dropped = 0;
+  let errors = 0;
+  let stopped = false;
+  let terminalPublished = false;
+  let observer;
+  const publish = (reason, rows, terminal = false) => {
+    try {
+      globalThis.console.debug(
+        marker +
+          JSON.stringify({
+            kind: 'target-arrival',
+            ownerToken,
+            selector,
+            reason,
+            terminal,
+            observations: rows,
+            firstTarget,
+            firstRole,
+            queries,
+            changed,
+            dropped,
+            errors,
+          })
+      );
+    } catch {
+      errors++;
+    }
+  };
+  const finish = (reason) => {
+    if (terminalPublished) return;
+    terminalPublished = true;
+    stopped = true;
+    try {
+      observer?.disconnect();
+    } catch {
+      errors++;
+    }
+    publish(reason, observations, true);
+  };
+  const sample = (reason) => {
+    if (stopped) return;
+    queries++;
+    try {
+      const selectorStartedAt = globalThis.performance.now();
+      const targets = globalThis.document.querySelectorAll(selector);
+      const selectorResolvedAt = globalThis.performance.now();
+      const target = targets[0];
+      const readStartedAt = target ? globalThis.performance.now() : null;
+      if (target && !identities.has(target)) identities.set(target, ++nextIdentity);
+      const host = target?.closest('[data-projection-generation-host]');
+      const scope = target?.closest('[data-projection-owner]');
+      const facts = {
+        count: targets.length,
+        target: target ? identities.get(target) : null,
+        connected: target?.isConnected ?? null,
+        role: target?.getAttribute('role') ?? null,
+        disabled: target?.getAttribute('aria-disabled') ?? null,
+        inert: target ? !!target.closest('[inert]') : null,
+        pending: target?.hasAttribute('data-pui-view-pending') ?? null,
+        owner: host?.getAttribute('data-projection-owner-host') ?? null,
+        generation: host?.getAttribute('data-projection-generation-host') ?? null,
+        scopeOwner: scope?.getAttribute('data-projection-owner') ?? null,
+        scopeGeneration: scope?.getAttribute('data-projection-generation') ?? null,
+      };
+      const readSettledAt = target ? globalThis.performance.now() : null;
+      const key = JSON.stringify(facts);
+      if (key === lastState) return;
+      lastState = key;
+      const observation = {
+        pageMs: globalThis.performance.now(),
+        timeOrigin: globalThis.performance.timeOrigin,
+        dateNow: Date.now(),
+        reason,
+        selectorStartedAt,
+        selectorResolvedAt,
+        readStartedAt,
+        readSettledAt,
+        ...facts,
+      };
+      const firstTargetNow = !firstTarget && !!target;
+      if (firstTargetNow) firstTarget = observation;
+      if (!firstRole && facts.role === 'combobox') firstRole = observation;
+      changed++;
+      const retained = observations.length < cap;
+      if (retained) observations.push(observation);
+      else dropped++;
+      // The two first observations survive a full journal; one terminal batch
+      // preserves a late role without treating it as the original poll verdict.
+      if (firstRole) finish('first-role');
+      else if (retained || firstTargetNow) publish(reason, retained ? [observation] : []);
+    } catch {
+      errors++;
+    }
+  };
+  try {
+    observer = new globalThis.MutationObserver(() => sample('mutation-delivery'));
+    observer.observe(globalThis.document, {
+      subtree: true,
+      childList: true,
+      attributes: true,
+      attributeFilter: [
+        'role',
+        'aria-disabled',
+        'inert',
+        'data-pui-view-pending',
+        'data-projection-generation-state',
+        'data-projection-generation-host',
+        'data-projection-owner-host',
+        'data-projection-owner',
+        'data-projection-generation',
+      ],
+    });
+    globalThis.addEventListener('pagehide', () => finish('pagehide'), { once: true });
+    sample('installed');
+  } catch {
+    errors++;
+    finish('unavailable');
+  }
+}
+
 // Constructed from the original SDK function text at runtime, so Vite cannot
 // rewrite a browser global into a captured Node import. The original evaluator's
 // selector expression, callbackText, return object, and error are retained.
@@ -88,6 +219,10 @@ export function installDocsCallTimingObserver(
   const targetSelector = selector;
   const rows = [];
   const browserBatches = [];
+  const arrivalBatches = [];
+  const cdpRequests = new Map();
+  const cdpSessions = new WeakSet();
+  const cdpConnections = new WeakSet();
   const errors = [];
   const restorers = [];
   const requests = new Map();
@@ -98,6 +233,8 @@ export function installDocsCallTimingObserver(
   const marker = `PUI_DOCS_CALL_TIMING:${ownerToken}:`;
   let dropped = 0;
   let browserDropped = 0;
+  let arrivalDropped = 0;
+  let cdpDropped = 0;
   let available = false;
   let disposed = false;
   let verdict = null;
@@ -172,6 +309,111 @@ export function installDocsCallTimingObserver(
     });
   };
   const target = (selector, name) => selector === targetSelector && name === attribute;
+  const patchCDP = (session) => {
+    if (!session || cdpSessions.has(session)) return;
+    cdpSessions.add(session);
+    const cdpConnection = session._connection;
+    const transport = cdpConnection?._transport;
+    if (!transport || typeof session._sessionId !== 'string')
+      throw new Error('Missing pinned Chromium session transport');
+    replace(
+      session,
+      'send',
+      (original) =>
+        function (method) {
+          const request = storage.getStore();
+          if (
+            !request?.callId ||
+            !requests.has(request.callId) ||
+            !['Runtime.evaluate', 'Runtime.callFunctionOn'].includes(method)
+          )
+            return Reflect.apply(original, this, arguments);
+          const facts = {
+            callId: request.callId,
+            attempt: request.attempt ?? null,
+            method,
+            sessionId: this._sessionId,
+          };
+          record('cdp.session.send.enter', facts);
+          let promise;
+          try {
+            promise = Reflect.apply(original, this, arguments);
+          } catch (error) {
+            record('cdp.session.send.throw', facts);
+            throw error;
+          }
+          return tap(
+            promise,
+            () => record('cdp.session.send.fulfilled', facts),
+            () => record('cdp.session.send.reject', facts)
+          );
+        }
+    );
+    replace(
+      session,
+      '_onMessage',
+      (original) =>
+        function (message) {
+          try {
+            const observed = cdpRequests.get(`${this._sessionId}:${message.id}`);
+            if (observed) {
+              observed.responseObserved = true;
+              record('cdp.response.received', { ...observed, hasError: !!message.error });
+            }
+          } catch (error) {
+            diagnosticError('cdp.response-observation', error);
+          }
+          return Reflect.apply(original, this, arguments);
+        }
+    );
+    if (cdpConnections.has(cdpConnection)) return;
+    cdpConnections.add(cdpConnection);
+    replace(
+      transport,
+      'send',
+      (original) =>
+        function (message) {
+          let observed;
+          try {
+            const request = storage.getStore();
+            const actualSession = cdpConnection._sessions.get(message.sessionId || '');
+            if (
+              request?.callId &&
+              requests.has(request.callId) &&
+              cdpSessions.has(actualSession) &&
+              ['Runtime.evaluate', 'Runtime.callFunctionOn'].includes(message.method)
+            ) {
+              observed = {
+                callId: request.callId,
+                query: request.query,
+                attempt: request.attempt ?? null,
+                id: message.id,
+                sessionId: message.sessionId || '',
+                method: message.method,
+                contextId: message.params?.contextId ?? null,
+                responseObserved: false,
+              };
+              if (cdpRequests.size < 128)
+                cdpRequests.set(`${observed.sessionId}:${observed.id}`, observed);
+              else cdpDropped++;
+              record('cdp.transport.send.before', { ...observed });
+            }
+          } catch (error) {
+            diagnosticError('cdp.send-observation', error);
+          }
+          let result;
+          try {
+            result = Reflect.apply(original, this, arguments);
+          } catch (error) {
+            if (observed) record('cdp.transport.send.throw', { ...observed });
+            throw error;
+          }
+          // This is the Node transport method returning, not browser receipt.
+          if (observed) record('cdp.transport.send.return', { ...observed });
+          return result;
+        }
+    );
+  };
   const observeWait = (object, key, stage, facts, fulfilled) => {
     replace(
       object,
@@ -217,6 +459,16 @@ export function installDocsCallTimingObserver(
   const patchContext = (context) => {
     if (!context || contexts.has(context)) return;
     contexts.add(context);
+    patchCDP(context.delegate?._client);
+    observeWait(context, 'utilityScript', 'driver.context.utility-script', (context) => ({
+      cachedAtEntry: !!context._utilityScriptPromise,
+    }));
+    observeWait(context.delegate, 'rawEvaluateHandle', 'driver.delegate.raw-evaluate-handle');
+    observeWait(
+      context.delegate,
+      'evaluateWithArguments',
+      'driver.delegate.evaluate-with-arguments'
+    );
     observeWait(
       context,
       'rawEvaluateHandle',
@@ -263,10 +515,12 @@ export function installDocsCallTimingObserver(
             contextId: this._context?.delegate?._contextId ?? null,
             evaluatorSha256: sha(decorated.source),
           });
-          const promise = Reflect.apply(original, this, [
-            decorated.fn,
-            { ...arg, __puiTiming: { ownerToken, attempt } },
-          ]);
+          const promise = storage.run({ ...request, attempt }, () =>
+            Reflect.apply(original, this, [
+              decorated.fn,
+              { ...arg, __puiTiming: { ownerToken, attempt } },
+            ])
+          );
           return tap(
             promise,
             (result) =>
@@ -298,6 +552,9 @@ export function installDocsCallTimingObserver(
       'lib/server/frameSelectors.js',
       'lib/server/javascript.js',
       'lib/server/dom.js',
+      'lib/server/chromium/crExecutionContext.js',
+      'lib/server/chromium/crConnection.js',
+      'lib/server/pipeTransport.js',
     ]) {
       const bytes = readFileSync(join(sdkRoot, path));
       sourceBindings.push({ path, sha256: sha(bytes) });
@@ -327,7 +584,14 @@ export function installDocsCallTimingObserver(
         const text = message.text();
         if (!text.startsWith(marker)) return;
         const data = JSON.parse(text.slice(marker.length));
-        if (data.ownerToken !== ownerToken || !requests.has(data.callId)) return;
+        if (data.ownerToken !== ownerToken) return;
+        if (data.kind === 'target-arrival') {
+          if (data.selector !== css) return;
+          if (arrivalBatches.length < 34) arrivalBatches.push({ ...data, received: clock() });
+          else arrivalDropped++;
+          return;
+        }
+        if (!requests.has(data.callId)) return;
         if (browserBatches.length < 64) browserBatches.push({ ...data, received: clock() });
         else ++browserDropped;
       } catch (error) {
@@ -521,6 +785,8 @@ export function installDocsCallTimingObserver(
   }
   return {
     available,
+    targetObserver: installDocsTargetArrival,
+    initOptions: { selector: css, ownerToken, marker },
     runOriginalQuery(call, read) {
       record('node.original-query', { query: call });
       return storage.run({ query: call, original: true }, read);
@@ -589,6 +855,10 @@ export function installDocsCallTimingObserver(
         verdict,
         rows: [...rows],
         browserBatches: [...browserBatches],
+        arrivalBatches: [...arrivalBatches],
+        arrivalDropped,
+        cdpRequests: [...cdpRequests.values()].map((request) => ({ ...request })),
+        cdpDropped,
         requests: captured,
         errors: [...errors],
         dropped,
@@ -605,6 +875,12 @@ export function installDocsCallTimingObserver(
         promiseStrategy:
           'tap returns the original Promise; identity is a source property, with extra observation reactions',
         extraQueryOrRPC: false,
+        extraQueryOrRPCScope:
+          'Original SDK request only; the optional target init observer is separate.',
+        targetArrivalSetup:
+          'Caller may install the separate init observer before navigation; one setup RPC and native DOM observations, not an original query or readiness verdict.',
+        cdpBoundary:
+          'Actual session/id at the Node transport send and response callback; send return is not browser receipt or an engine execution timestamp.',
         prototypeHook: false,
         transportComplete: false,
         clockTickLengthMeasured: false,

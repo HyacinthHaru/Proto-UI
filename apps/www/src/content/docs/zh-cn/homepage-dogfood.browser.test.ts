@@ -5,6 +5,8 @@ import {
   settleFamilyQueryBatch,
 } from './family-query-observer';
 import { execFileSync } from 'node:child_process';
+import { createRequire } from 'node:module';
+import { installDocsCallTimingObserver } from './docs-query-timing.mjs';
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
@@ -1150,6 +1152,7 @@ for (const family of ['shadcn', 'brutalist'] as const) {
       (finishQueries ??= (async () => {
         if (family !== 'brutalist') return;
         try {
+          familySDK?.freezeVerdict(familyCommitTiming.outcome === 'fulfilled');
           familyQueryObservation.verdict = {
             outcome: familyCommitTiming.outcome,
             nodeMs: familyCommitTiming.finishedMs,
@@ -1453,6 +1456,16 @@ for (const family of ['shadcn', 'brutalist'] as const) {
       if (message.type() === 'error') consoleErrors.push(message.text());
     });
     page.on('pageerror', (error) => errors.push(error.message));
+    const familySDK =
+      family === 'brutalist'
+        ? installDocsCallTimingObserver(page, {
+            sdkRoot: path.dirname(
+              createRequire(import.meta.url).resolve('playwright-core/package.json')
+            ),
+            selector: '[data-homepage-runtime]',
+            attribute: 'data-family',
+          })
+        : null;
     let stage = 'navigate';
     const save = async (name: string, facts: unknown) => {
       const id = `${family}-${name}`;
@@ -1513,7 +1526,9 @@ for (const family of ['shadcn', 'brutalist'] as const) {
             };
             if (familyCommitCalls.length < 64) familyCommitCalls.push(call);
             else familyCommitTiming.droppedCalls += 1;
-            const request = page.locator('[data-homepage-runtime]').getAttribute('data-family');
+            const request: Promise<string | null> = familySDK!.runOriginalQuery(call.call, () =>
+              page.locator('[data-homepage-runtime]').getAttribute('data-family')
+            );
             try {
               familyQueryRequests.push({ request, call });
               if (familyQueryObservation.wait.finishedMs !== null)
@@ -1811,6 +1826,21 @@ for (const family of ['shadcn', 'brutalist'] as const) {
         await context.close();
         contextCloseSucceeded = true;
       } finally {
+        try {
+          familySDK?.disposeAfterContextClosed(contextCloseSucceeded);
+          if (familySDK)
+            await settleFamilyQueryBatch(
+              [
+                writeFile(
+                  path.join(evidenceDirectory, `${family}-sdk-timing.json`),
+                  JSON.stringify({ source, family, observation: familySDK.snapshot() }, null, 2)
+                ),
+              ],
+              2000
+            );
+        } catch (error) {
+          noteQueryError(error);
+        }
         if (utilityObservation && familyQueryObservation.cleanupDeferredUntilContextClose) {
           try {
             familyQueryObservation.utility =
