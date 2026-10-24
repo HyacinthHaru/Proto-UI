@@ -225,3 +225,28 @@ it('correlates actual stage capture logic without assuming one DOM event per whe
   }
   expect(collect([{ phase: 'bubble', eventTimeStamp: 150, deltaY: -3080 }], 100, 200)).toHaveLength(0);
 });
+
+
+it('isolates every causal policy boundary with observed quiet, preserving final restoration on timeout', () => {
+  const required = ['receipt.browserVersion = browser.version()', 'requiredQuietMs: 750',
+    "await waitForWheelQuiet(page, entry, 'before-' + stageName)",
+    "await waitForWheelQuiet(page, entry, 'before-final-restore')",
+    'lastCaptureObservedAt: last?.observedAt', 'lastNativeTimeStamp: last?.eventTimeStamp',
+    'captureCount: captures.length', 'record.samples.push(sample)',
+    'expect(stable[key]).toBe(initial[key])'];
+  const check = (input: string) => { for (const token of required) expect(input).toContain(token); };
+  check(browser);
+  for (const token of required) expect(() => check(browser.replaceAll(token, ''))).toThrow();
+  const source = ts.createSourceFile('probe.ts', browser, ts.ScriptTarget.Latest, true);
+  const declaration = source.statements.find(node => ts.isFunctionDeclaration(node) && node.name?.text === 'wheelQuietElapsed');
+  expect(declaration).toBeDefined();
+  const js = ts.transpileModule(declaration!.getText(source), { compilerOptions: { target: ts.ScriptTarget.ES2022 } }).outputText;
+  const context = vm.createContext({});
+  vm.runInContext(js + ';globalThis.elapsed = wheelQuietElapsed;', context);
+  const elapsed = context.elapsed as (sample: any, start: number) => number;
+  expect(elapsed({ observedAt: 850, lastCaptureObservedAt: 50, lastNativeTimeStamp: 40 }, 100)).toBe(750);
+  expect(elapsed({ observedAt: 850, lastCaptureObservedAt: 840, lastNativeTimeStamp: 830 }, 100)).toBe(10);
+  for (let t = 100; t <= 2000; t += 50)
+    expect(elapsed({ observedAt: t + 20, lastCaptureObservedAt: t, lastNativeTimeStamp: t - 2 }, 100)).toBeLessThan(750);
+  expect(elapsed({ observedAt: 850, lastCaptureObservedAt: null, lastNativeTimeStamp: null }, 100)).toBe(750);
+});

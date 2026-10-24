@@ -29,6 +29,7 @@ beforeAll(async () => {
   if (receipt.expectedRevision) expect(receipt.revision).toBe(receipt.expectedRevision);
   baseUrl = await startServer(quick);
   browser = await launchBrowser();
+  receipt.browserVersion = browser.version();
 }, 300_000);
 afterAll(async () => {
   await browser?.close();
@@ -238,6 +239,33 @@ function captureStageWheelEvents(trace: any[], start: number, end: number): any[
   return trace.filter(row => row.phase === 'capture' &&
     row.eventTimeStamp >= start && row.eventTimeStamp <= end);
 }
+// Fixed Chromium source 129cef87f0307ff0fd3ac8a772f70de0e7a0c5d3:
+// content/browser/renderer_host/input/mouse_wheel_phase_handler.h:500ms.
+// 750ms is an explicit isolation margin, not proof of internal PhaseEnded.
+function wheelQuietElapsed(sample: any, startedAt: number): number {
+  return sample.observedAt - Math.max(startedAt,
+    sample.lastCaptureObservedAt ?? startedAt, sample.lastNativeTimeStamp ?? startedAt);
+}
+async function waitForWheelQuiet(page: Page, entry: any, boundary: string) {
+  const startedAt = await page.evaluate(() => performance.now());
+  const record: any = { boundary, startedAt, requiredQuietMs: 750, samples: [], completed: false };
+  (entry.causality.quietBoundaries ??= []).push(record);
+  await expect.poll(async () => {
+    const sample = await page.evaluate(() => {
+      const captures = ((window as any).__codeScrollEventTrace ?? [])
+        .filter((event: any) => event.phase === 'capture');
+      const last = captures.at(-1);
+      return { observedAt: performance.now(), timeOrigin: performance.timeOrigin,
+        captureCount: captures.length, lastCaptureObservedAt: last?.observedAt ?? null,
+        lastNativeTimeStamp: last?.eventTimeStamp ?? null };
+    });
+    record.samples.push(sample);
+    await save();
+    return wheelQuietElapsed(sample, startedAt);
+  }, { timeout: 2500, interval: 50 }).toBeGreaterThanOrEqual(750);
+  record.completed = true;
+  await save();
+}
 /** Same physical PRE, same passive input, one bounded test-only negative control.
  * scrollIntoView is setup only; all measured movement comes from mouse.wheel. */
 async function verifyPassiveCausality(page: Page, pre: Locator, entry: any) {
@@ -258,6 +286,7 @@ async function verifyPassiveCausality(page: Page, pre: Locator, entry: any) {
   let primary: unknown;
   try {
     for (const [stageIndex, stageName] of ['contain-negative', 'product-auto'].entries()) {
+      await waitForWheelQuiet(page, entry, 'before-' + stageName);
       if (stageName === 'contain-negative') await pre.evaluate(element =>
         (element as HTMLElement).style.setProperty('overscroll-behavior-y', 'contain', 'important'));
       else await restore();
@@ -265,6 +294,10 @@ async function verifyPassiveCausality(page: Page, pre: Locator, entry: any) {
       await pre.evaluate(element => element.scrollIntoView({ block: 'center' }));
       await page.evaluate(() => new Promise(requestAnimationFrame));
       const initial = await facts(page, pre);
+      await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
+      const stable = await facts(page, pre);
+      for (const key of ['scrollY', 'x', 'y', 'width', 'height', 'clientHeight', 'scrollHeight', 'overscrollY'] as const)
+        expect(stable[key]).toBe(initial[key]);
       expect(initial.scrollY).toBeGreaterThan(500);
       expect(initial.scrollHeight).toBe(initial.clientHeight);
       expect(initial.scrollTop).toBe(0);
@@ -349,6 +382,8 @@ async function verifyPassiveCausality(page: Page, pre: Locator, entry: any) {
     primary = error;
     entry.causality.failure = String(error);
   } finally {
+    try { await waitForWheelQuiet(page, entry, 'before-final-restore'); }
+    catch (error) { entry.causality.quietFailure = String(error); primary ??= error; }
     try {
       await restore();
       entry.causality.restored = await pre.evaluate(element => ({
