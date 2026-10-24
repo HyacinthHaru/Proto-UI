@@ -992,32 +992,26 @@ export function scanRuleStateReads(
     chain: ts.Node[];
   }> = [];
 
-  const memberNamed = (node: ts.Node, name: string): boolean => {
+  /** A statically-known property key; dynamic indexes must invalidate all candidates. */
+  const memberNameOf = (node: ts.Node): string | null => {
     const target = unwrap(node);
-    if (ts.isPropertyAccessExpression(target)) return target.name.text === name;
+    if (ts.isPropertyAccessExpression(target)) return target.name.text;
     if (ts.isElementAccessExpression(target)) {
       const argument = target.argumentExpression;
-      return Boolean(argument) && ts.isStringLiteralLike(argument) && argument.text === name;
+      return argument && (ts.isStringLiteralLike(argument) || ts.isNumericLiteral(argument))
+        ? argument.text
+        : null;
     }
-    return false;
+    return null;
   };
+
+  const memberNamed = (node: ts.Node, name: string): boolean => memberNameOf(node) === name;
 
   const ownerOf = (node: ts.Node): ts.Node | null => {
     const target = unwrap(node);
     return ts.isPropertyAccessExpression(target) || ts.isElementAccessExpression(target)
       ? target.expression
       : null;
-  };
-
-  /** The member a `x.name` or `x['name']` write names, if it is static. */
-  const memberNameOf = (node: ts.Node): string | null => {
-    const target = unwrap(node);
-    if (ts.isPropertyAccessExpression(target)) return target.name.text;
-    if (ts.isElementAccessExpression(target)) {
-      const argument = target.argumentExpression;
-      return argument && ts.isStringLiteralLike(argument) ? argument.text : null;
-    }
-    return null;
   };
 
   const collectExposedKeys = (node: ts.Node, chain: ts.Node[]): void => {
@@ -3058,7 +3052,11 @@ export function scanRuleStateReads(
               ? right.value
               : { kind: 'unknown', reason: 'unresolved member write' };
             for (const candidate of new Set(sourceBindingValues(receiver))) {
-              for (const value of latestSourceGraphs(candidate)) {
+              const versions = latestSourceGraphs(candidate);
+              // A cached producer can reacquire the original graph while
+              // earlier aliases hold replacement versions of that receiver.
+              if (!versions.includes(candidate)) versions.push(candidate);
+              for (const value of versions) {
                 if (value.kind !== 'object') continue;
                 const previous = { ...value, members: new Map(value.members) } as HookSourceValue;
                 const members = new Map(value.members);

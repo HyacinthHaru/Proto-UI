@@ -30,7 +30,7 @@ export type HookSourceValue =
   | {
       kind: 'result';
       producer: HookSourceRef;
-      name: string;
+      name: string | null;
       stateHandles: ReadonlyMap<string, HookSourceState>;
       children: ReadonlyMap<string, HookSourceValue>;
       handle?: HookSourceValue;
@@ -93,7 +93,8 @@ function unwrap(node: ts.Node): ts.Node {
   return ts.isParenthesizedExpression(node) ||
     ts.isAsExpression(node) ||
     ts.isTypeAssertionExpression(node) ||
-    ts.isNonNullExpression(node)
+    ts.isNonNullExpression(node) ||
+    ts.isSatisfiesExpression(node)
     ? unwrap(node.expression)
     : node;
 }
@@ -110,7 +111,9 @@ function memberName(node: ts.Node): string | null {
   if (ts.isPropertyAccessExpression(value)) return value.name.text;
   if (ts.isElementAccessExpression(value)) {
     const argument = value.argumentExpression;
-    return argument && ts.isStringLiteralLike(argument) ? argument.text : null;
+    return argument && (ts.isStringLiteralLike(argument) || ts.isNumericLiteral(argument))
+      ? argument.text
+      : null;
   }
   return null;
 }
@@ -185,11 +188,64 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
   const symbolKey = (symbol: SymbolRef): string =>
     `${symbol.module.file}:${symbol.declaration.getStart(symbol.module.source)}:${symbol.declaration.kind}`;
 
+  // Binding writes are source facts, not properties of a helper invocation.
+  const bindingWriteFacts = new WeakMap<
+    ts.Node,
+    { source: ts.SourceFile; target: ts.Node; written: boolean }
+  >();
+
   /** A source alias is usable only while its exact binding still holds its initializer. */
   const hasBindingWrite = (bindingNode: ts.Node, module: Module): boolean => {
     if (!ts.isIdentifier(bindingNode)) return true;
     const target = moduleContext.resolveReference(bindingNode, module);
     if (!target) return true;
+    const cached = bindingWriteFacts.get(bindingNode);
+    if (cached?.source === module.source && cached.target === target.declaration)
+      return cached.written;
+    const targetKey = symbolKey(target);
+    const parameter = ts.isParameter(target.declaration)
+      ? target.declaration
+      : ts.isIdentifier(target.declaration) && ts.isParameter(target.declaration.parent)
+        ? target.declaration.parent
+        : null;
+    const writesBinding = (node: ts.Node, varRedeclaration = false): boolean => {
+      const value = unwrap(node);
+      if (ts.isIdentifier(value)) {
+        if (value.text !== bindingNode.text) return false;
+        if (varRedeclaration) return true;
+        const written = moduleContext.resolveReference(value, module);
+        return written !== null && symbolKey(written) === targetKey;
+      }
+      if (ts.isVariableDeclarationList(value)) {
+        const redeclaresParameter =
+          parameter !== null &&
+          (value.flags & ts.NodeFlags.BlockScoped) === 0 &&
+          ts.findAncestor(value, ts.isFunctionLike) === parameter.parent;
+        return value.declarations.some((declaration) =>
+          writesBinding(declaration.name, redeclaresParameter)
+        );
+      }
+      if (ts.isBindingElement(value)) return writesBinding(value.name, varRedeclaration);
+      if (ts.isArrayBindingPattern(value) || ts.isObjectBindingPattern(value))
+        return value.elements.some((element) => writesBinding(element, varRedeclaration));
+      if (ts.isArrayLiteralExpression(value))
+        return value.elements.some((element) => writesBinding(element, varRedeclaration));
+      if (ts.isObjectLiteralExpression(value))
+        return value.properties.some((property) =>
+          ts.isPropertyAssignment(property)
+            ? writesBinding(property.initializer, varRedeclaration)
+            : ts.isShorthandPropertyAssignment(property)
+              ? writesBinding(property.name, varRedeclaration)
+              : ts.isSpreadAssignment(property) &&
+                writesBinding(property.expression, varRedeclaration)
+        );
+      if (ts.isSpreadElement(value)) return writesBinding(value.expression, varRedeclaration);
+      return (
+        ts.isBinaryExpression(value) &&
+        value.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
+        writesBinding(value.left, varRedeclaration)
+      );
+    };
     let changed = false;
     const visit = (node: ts.Node): void => {
       if (changed || node === bindingNode) return;
@@ -197,24 +253,35 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
         const operator = node.operatorToken.kind;
         const assignment =
           operator >= ts.SyntaxKind.FirstAssignment && operator <= ts.SyntaxKind.LastAssignment;
-        if (assignment && ts.isIdentifier(unwrap(node.left))) {
-          const written = moduleContext.resolveReference(unwrap(node.left), module);
-          if (written && symbolKey(written) === symbolKey(target)) changed = true;
-        }
+        if (assignment) changed = writesBinding(node.left);
       }
+      if (ts.isForOfStatement(node) || ts.isForInStatement(node)) {
+        changed = writesBinding(node.initializer);
+      }
+      if (
+        parameter &&
+        ts.isVariableDeclaration(node) &&
+        node.initializer &&
+        ts.isVariableDeclarationList(node.parent) &&
+        (node.parent.flags & ts.NodeFlags.BlockScoped) === 0 &&
+        ts.findAncestor(node, ts.isFunctionLike) === parameter.parent
+      )
+        changed = writesBinding(node.name, true);
       if (ts.isPrefixUnaryExpression(node) || ts.isPostfixUnaryExpression(node)) {
         if (
-          (node.operator === ts.SyntaxKind.PlusPlusToken ||
-            node.operator === ts.SyntaxKind.MinusMinusToken) &&
-          ts.isIdentifier(unwrap(node.operand))
-        ) {
-          const written = moduleContext.resolveReference(unwrap(node.operand), module);
-          if (written && symbolKey(written) === symbolKey(target)) changed = true;
-        }
+          node.operator === ts.SyntaxKind.PlusPlusToken ||
+          node.operator === ts.SyntaxKind.MinusMinusToken
+        )
+          changed = writesBinding(node.operand);
       }
       ts.forEachChild(node, visit);
     };
     visit(module.source);
+    bindingWriteFacts.set(bindingNode, {
+      source: module.source,
+      target: target.declaration,
+      written: changed,
+    });
     return changed;
   };
 
@@ -365,30 +432,36 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
     return null;
   };
 
+  /** null proves absence; undefined preserves a possible overwrite or unproved value. */
   const configProperty = (
     config: ts.ObjectLiteralExpression,
     name: string
-  ): ts.PropertyAssignment | ts.MethodDeclaration | ts.ShorthandPropertyAssignment | null => {
+  ):
+    | ts.PropertyAssignment
+    | ts.MethodDeclaration
+    | ts.ShorthandPropertyAssignment
+    | null
+    | undefined => {
     let found:
       | ts.PropertyAssignment
       | ts.MethodDeclaration
       | ts.ShorthandPropertyAssignment
-      | null = null;
+      | null
+      | undefined = null;
     for (const property of config.properties) {
-      if (ts.isSpreadAssignment(property)) {
-        // An unknown spread can overwrite an earlier property. A later
-        // explicit property is safe because it is ordered after that spread.
-        found = null;
+      if (ts.isSpreadAssignment(property) || ts.isComputedPropertyName(property.name)) {
+        // A spread or computed key can overwrite an earlier property. A later
+        // explicit property is safe because it is ordered after that overwrite.
+        found = undefined;
         continue;
       }
-      if (
-        (ts.isPropertyAssignment(property) ||
-          ts.isMethodDeclaration(property) ||
-          ts.isShorthandPropertyAssignment(property)) &&
-        propertyName(property.name) === name
-      ) {
-        found = property;
-      }
+      if (propertyName(property.name) !== name) continue;
+      found =
+        ts.isPropertyAssignment(property) ||
+        ts.isMethodDeclaration(property) ||
+        ts.isShorthandPropertyAssignment(property)
+          ? property
+          : undefined;
     }
     return found;
   };
@@ -972,16 +1045,16 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
     const value = unwrap(node);
     if (isStringValue(value)) return value.text;
     if (!ts.isIdentifier(value)) return null;
-    if (local.has(value.text)) return local.get(value.text) ?? null;
     const symbol = moduleContext.resolveReference(value, module);
+    if (!symbol) return null;
+    const key = symbolKey(symbol);
+    if (local.has(key)) return local.get(key) ?? null;
     if (
-      !symbol ||
       !ts.isVariableDeclaration(symbol.declaration) ||
       !symbol.declaration.initializer ||
       !stableVariable(symbol.declaration, symbol.module)
     )
       return null;
-    const key = symbolKey(symbol);
     if (stack.has(key)) return null;
     return literalString(
       symbol.declaration.initializer,
@@ -1255,16 +1328,11 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
     if (summaryStack.has(key)) return { matched: true, value: UNKNOWN('producer cycle') };
     summaryStack.add(key);
     const nameProperty = configProperty(producer.config, 'name');
-    const name =
-      nameProperty && ts.isPropertyAssignment(nameProperty)
-        ? literalString(nameProperty.initializer, producer.module, new Map())
-        : null;
+    const name = nameProperty
+      ? literalString(propertyExpression(nameProperty), producer.module, new Map())
+      : null;
     const setupProperty = configProperty(producer.config, 'setup');
-    const setupExpression = setupProperty
-      ? ts.isPropertyAssignment(setupProperty)
-        ? setupProperty.initializer
-        : setupProperty
-      : undefined;
+    const setupExpression = setupProperty ? propertyExpression(setupProperty) : undefined;
     const setup = functionFor(setupExpression, producer.module);
     const stateHandles = new Map<string, HookSourceState>();
     const ambiguousStateHandles = new Set<string>();
@@ -1299,15 +1367,21 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
       const functionKey = `${module.file}:${fn.getStart(module.source)}:${[...active]
         .sort()
         .join(',')}`;
-      if (activeSetupFunctions.has(functionKey)) return;
+      if (activeSetupFunctions.has(functionKey)) {
+        markSetupUncertain();
+        return;
+      }
       activeSetupFunctions.add(functionKey);
       const strings = new Map<string, string>();
       let constants = new Map<string, SetupLiteral>();
       for (const parameter of fn.parameters) {
         if (!ts.isIdentifier(parameter.name)) continue;
-        const known = incomingConstants.get(parameter.name.text);
+        const binding = moduleContext.resolveReference(parameter.name, module);
+        if (!binding) continue;
+        const key = symbolKey(binding);
+        const known = incomingConstants.get(key);
         if (known !== undefined && !hasBindingWrite(parameter.name, module))
-          constants.set(parameter.name.text, known);
+          constants.set(key, known);
       }
       const localNames = new Set<string>();
       const localStates = new Map<string, HookSourceState>();
@@ -1473,7 +1547,8 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
         if (value.kind === ts.SyntaxKind.TrueKeyword) return true;
         if (value.kind === ts.SyntaxKind.FalseKeyword) return false;
         if (ts.isIdentifier(value)) {
-          const known = constants.get(value.text);
+          const binding = moduleContext.resolveReference(value, module);
+          const known = binding ? constants.get(symbolKey(binding)) : undefined;
           if (known !== undefined) return known;
           return literalString(value, module, strings);
         }
@@ -1907,7 +1982,8 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
               if (!ts.isIdentifier(parameter.name)) continue;
               const argument = parent.arguments[index];
               const known = argument ? literalValue(argument) : literalValue(parameter.initializer);
-              if (known !== null) helperConstants.set(parameter.name.text, known);
+              const binding = moduleContext.resolveReference(parameter.name, module);
+              if (known !== null && binding) helperConstants.set(symbolKey(binding), known);
             }
             const deferred =
               !!node.asteriskToken ||
@@ -2056,14 +2132,14 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
         }
         if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && node.initializer) {
           localNames.add(node.name.text);
+          const binding = moduleContext.resolveReference(node.name, module);
           const literal = literalString(node.initializer, module, strings);
           const known = literalValue(node.initializer);
-          if (literal !== null && stableVariable(node, module))
-            strings.set(node.name.text, literal);
-          if (known !== null && stableVariable(node, module))
-            constants = new Map(constants).set(node.name.text, known);
+          if (literal !== null && binding && stableVariable(node, module))
+            strings.set(symbolKey(binding), literal);
+          if (known !== null && binding && stableVariable(node, module))
+            constants = new Map(constants).set(symbolKey(binding), known);
           const initializer = unwrap(node.initializer);
-          const binding = moduleContext.resolveReference(node.name, module);
           if (
             (ts.isPropertyAccessExpression(initializer) ||
               ts.isElementAccessExpression(initializer)) &&
@@ -2175,7 +2251,8 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
               ts.isPropertyAccessExpression(expression) ||
               ts.isElementAccessExpression(expression)
             ) {
-              const declared = literalString(node.arguments[0], module, strings);
+              const declaredValue = literalValue(node.arguments[0]);
+              const declared = typeof declaredValue === 'string' ? declaredValue : null;
               if (declared !== null) {
                 const state = {
                   owner: producer.ref,
@@ -2245,23 +2322,23 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
           if (childProducer) {
             const child = summarize(childProducer);
             if (child.value.kind === 'result') {
-              children.set(child.value.name, {
-                kind: 'object',
-                members: new Map<string, HookSourceValue>([
-                  ['result', child.value],
-                  ['handle', child.value.handle ?? child.value],
-                ]),
-              });
+              if (child.value.name !== null)
+                children.set(child.value.name, {
+                  kind: 'object',
+                  members: new Map<string, HookSourceValue>([
+                    ['result', child.value],
+                    ['handle', child.value.handle ?? child.value],
+                  ]),
+                });
             } else if (child.value.kind !== 'unknown') {
-              const childName = childProducer.config.properties
-                .map((property) =>
-                  (ts.isPropertyAssignment(property) || ts.isMethodDeclaration(property)) &&
-                  propertyName(property.name) === 'name' &&
-                  ts.isPropertyAssignment(property)
-                    ? literalString(property.initializer, childProducer.module, new Map())
-                    : null
-                )
-                .find((candidate): candidate is string => candidate !== null);
+              const childNameProperty = configProperty(childProducer.config, 'name');
+              const childName = childNameProperty
+                ? literalString(
+                    propertyExpression(childNameProperty),
+                    childProducer.module,
+                    new Map()
+                  )
+                : null;
               if (childName) children.set(childName, child.value);
             }
           } else {
@@ -2306,8 +2383,9 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
                   const known = argument
                     ? literalValue(argument)
                     : literalValue(parameter.initializer);
-                  if (known !== null && !hasBindingWrite(parameter.name, helper.module))
-                    helperConstants.set(parameter.name.text, known);
+                  const binding = moduleContext.resolveReference(parameter.name, helper.module);
+                  if (known !== null && binding && !hasBindingWrite(parameter.name, helper.module))
+                    helperConstants.set(symbolKey(binding), known);
                 }
                 if (unprovedActiveArgument || helperActive.size === 0) markSetupUncertain();
                 else {
@@ -2332,7 +2410,11 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
       // receive only parameters corresponding to active call arguments;
       // callback bodies never enter this walk and therefore cannot leak later
       // writes.
-      if (fn.body) walk(fn.body);
+      try {
+        if (fn.body) walk(fn.body);
+      } finally {
+        activeSetupFunctions.delete(functionKey);
+      }
     };
 
     if (setup) {
@@ -2348,33 +2430,77 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
     const result: HookSourceValue = {
       kind: 'result',
       producer: producer.ref,
-      name: name ?? '<unknown-hook>',
+      name,
       stateHandles,
       children,
       ...(setupComplete && ambiguousStateHandles.size === 0 ? { stateHandlesClosed: true } : {}),
     };
 
     const projectProperty = configProperty(producer.config, 'projectHandle');
-    const projectExpression = projectProperty
-      ? ts.isPropertyAssignment(projectProperty)
-        ? projectProperty.initializer
-        : projectProperty
-      : undefined;
+    const projectExpression = projectProperty ? propertyExpression(projectProperty) : undefined;
     const project = functionFor(projectExpression, producer.module);
-    if (projectProperty) result.handle = UNKNOWN('unproved public projection');
+    if (projectProperty !== null) result.handle = UNKNOWN('unproved public projection');
     if (
       project &&
       !project.fn.asteriskToken &&
       !project.fn.modifiers?.some((modifier) => modifier.kind === ts.SyntaxKind.AsyncKeyword)
     ) {
-      const parameter = project.fn.parameters[0];
       const environment = new Map<string, HookSourceValue>();
-      for (const parameter of project.fn.parameters) {
-        if (ts.isIdentifier(parameter.name))
-          environment.set(parameter.name.text, UNKNOWN('unproved projector argument'));
+      const bindPattern = (
+        name: ts.BindingName,
+        value: HookSourceValue,
+        scope: Map<string, HookSourceValue>
+      ): void => {
+        if (ts.isIdentifier(name)) {
+          scope.set(name.text, value);
+          return;
+        }
+        if (ts.isObjectBindingPattern(name)) {
+          for (const element of name.elements) {
+            const key = element.propertyName
+              ? ts.isComputedPropertyName(element.propertyName)
+                ? literalString(element.propertyName.expression, project.module, new Map())
+                : propertyName(element.propertyName)
+              : ts.isIdentifier(element.name)
+                ? element.name.text
+                : null;
+            const selected =
+              element.dotDotDotToken || element.initializer
+                ? UNKNOWN('unproved projector parameter default or rest')
+                : key === null
+                  ? UNKNOWN('unresolved projector parameter key')
+                  : memberValue(value, key).value;
+            bindPattern(element.name, selected, scope);
+          }
+          return;
+        }
+        if (ts.isArrayBindingPattern(name)) {
+          let index = 0;
+          for (const element of name.elements) {
+            if (ts.isOmittedExpression(element)) {
+              index++;
+              continue;
+            }
+            const current = index++;
+            const selected =
+              element.dotDotDotToken ||
+              element.initializer ||
+              value.kind !== 'object' ||
+              value.arrayLength === undefined
+                ? UNKNOWN('unproved projector array binding')
+                : memberValue(value, String(current)).value;
+            bindPattern(element.name, selected, scope);
+          }
+        }
+      };
+      for (let index = 0; index < project.fn.parameters.length; index++) {
+        const parameter = project.fn.parameters[index];
+        const value =
+          index === 0 && !parameter.dotDotDotToken
+            ? result
+            : UNKNOWN('unproved projector argument');
+        bindPattern(parameter.name, value, environment);
       }
-      if (parameter && ts.isIdentifier(parameter.name))
-        environment.set(parameter.name.text, result);
       const returns: HookSourceResolution[] = [];
       let unprovedCompletion = false;
       const hasEffect = (node: ts.Node, scope: Map<string, HookSourceValue>): boolean => {
@@ -2391,12 +2517,10 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
             // the projection returns, so they are not effects.
             const name = memberName(current.expression);
             const owner = memberOwner(current.expression);
-            const ownerValue = owner ? unwrap(owner) : null;
             const pure =
               (name === 'getState' || name === 'getAsHook' || name === 'getAsHookHandle') &&
-              ownerValue !== null &&
-              ts.isIdentifier(ownerValue) &&
-              scope.has(ownerValue.text);
+              owner !== null &&
+              evaluate(owner, project.module.source, scope).value.kind === 'result';
             if (!pure) effect = true;
           } else if (
             ts.isNewExpression(current) ||
@@ -2417,6 +2541,13 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
         visit(node);
         return effect;
       };
+      unprovedCompletion = project.fn.parameters.some(
+        (parameter, index) =>
+          hasEffect(parameter.name, environment) ||
+          (index > 0 &&
+            parameter.initializer !== undefined &&
+            hasEffect(parameter.initializer, environment))
+      );
       const collectReturns = (node: ts.Node, scope: Map<string, HookSourceValue>): boolean => {
         if (ts.isBlock(node)) {
           const block = new Map(scope);

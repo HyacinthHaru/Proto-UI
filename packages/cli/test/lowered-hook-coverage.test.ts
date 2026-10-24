@@ -61,6 +61,452 @@ const rule = (condition: string) =>
 const SELECTABLE_ATTRIBUTE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 describe('lowered hook coverage', () => {
+  describe('PR925 source provenance regressions', () => {
+    const expectSourceUsages = (
+      scan: ReturnType<typeof scanRuleStateReads>,
+      producerFile: string,
+      expected: ReadonlyArray<{ hook: string; state: string }>
+    ): void => {
+      expect(
+        scan.usages.map(({ hook, state, provenance }) => ({
+          hook,
+          state,
+          declaredName: provenance?.declaredName,
+        }))
+      ).toEqual(expected.map(({ hook, state }) => ({ hook, state, declaredName: state })));
+      expect(
+        scan.usages.map(({ provenance }) => ({
+          owner: provenance?.owner.file,
+          declaration: provenance?.declaration.file,
+        }))
+      ).toEqual(expected.map(() => ({ owner: producerFile, declaration: producerFile })));
+    };
+
+    const scanWithFreshSummary = (source: string, file: string) =>
+      scanRuleStateReads(source, file, createHookSourceSummaryContext());
+
+    it('preserves shadowed lexical string constants in hook setup', async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-shadowed-string-'));
+      try {
+        const producerFile = path.join(dir, 'producer.ts');
+        await writeFile(
+          producerFile,
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            "export const asFacts = defineAsHook({ name: 'facts', setup(def) {",
+            "  const key = 'ready';",
+            '  {',
+            "    const key = 'other';",
+            '    def.state.bool(key, false);',
+            '  }',
+            '  def.state.bool(key, false);',
+            '} });',
+          ].join('\n')
+        );
+        const consumer = [
+          "import { asFacts } from './producer';",
+          'const facts = asFacts().stateHandles;',
+          rule('w.state(facts.ready).eq(true)'),
+          rule('w.state(facts.other).eq(true)'),
+        ].join('\n');
+        const consumerFile = path.join(dir, 'consumer.proto.ts');
+        const scan = scanWithFreshSummary(consumer, consumerFile);
+
+        expectSourceUsages(scan, producerFile, [
+          { hook: 'asFacts', state: 'ready' },
+          { hook: 'asFacts', state: 'other' },
+        ]);
+        expect(scan.unresolved).toEqual([]);
+        await writeFile(consumerFile, consumer);
+        const tokens = await collectProtoStyleTokens(dir);
+        expect(tokens).toContain('data-[ready]:bg-primary');
+        expect(tokens).toContain('data-[other]:bg-primary');
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
+
+    it('resolves a shorthand-named child hook through its parent handle', async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-shorthand-child-'));
+      try {
+        const producerFile = path.join(dir, 'producer.ts');
+        await writeFile(
+          producerFile,
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            "const name = 'facts';",
+            "function setup(def) { def.state.bool('ready', false); }",
+            'export const asFacts = defineAsHook({ name, setup });',
+            "export const asParent = defineAsHook({ name: 'parent', setup(def) { asFacts(); } });",
+          ].join('\n')
+        );
+        const consumer = [
+          "import { asParent } from './producer';",
+          'const parent = asParent();',
+          rule("w.state(parent.getAsHookHandle('facts').stateHandles.ready).eq(true)"),
+        ].join('\n');
+        const consumerFile = path.join(dir, 'consumer.proto.ts');
+        const scan = scanWithFreshSummary(consumer, consumerFile);
+
+        expectSourceUsages(scan, producerFile, [{ hook: 'asParent', state: 'ready' }]);
+        expect(scan.unresolved).toEqual([]);
+        await writeFile(consumerFile, consumer);
+        expect(await collectProtoStyleTokens(dir)).toContain('data-[ready]:bg-primary');
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
+
+    it('unwraps satisfies when recognizing an imported hook producer', async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-satisfies-'));
+      try {
+        const producerFile = path.join(dir, 'producer.ts');
+        await writeFile(
+          producerFile,
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            "export const asFacts = defineAsHook({ name: 'facts', setup(def) { def.state.bool('ready', false); } } satisfies unknown);",
+          ].join('\n')
+        );
+        const consumer = [
+          "import { asFacts } from './producer';",
+          'const facts = asFacts().stateHandles;',
+          rule('w.state(facts.ready).eq(true)'),
+        ].join('\n');
+        const consumerFile = path.join(dir, 'consumer.proto.ts');
+        const scan = scanWithFreshSummary(consumer, consumerFile);
+
+        expectSourceUsages(scan, producerFile, [{ hook: 'asFacts', state: 'ready' }]);
+        expect(scan.unresolved).toEqual([]);
+        await writeFile(consumerFile, consumer);
+        expect(await collectProtoStyleTokens(dir)).toContain('data-[ready]:bg-primary');
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
+
+    it('binds recursively destructured projector parameters', async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-projector-pattern-'));
+      try {
+        const producerFile = path.join(dir, 'producer.ts');
+        await writeFile(
+          producerFile,
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            "export const asFacts = defineAsHook({ name: 'facts', setup(def) { def.state.bool('ready', false); }, projectHandle({ stateHandles: { ready } }) { return { ready }; } });",
+          ].join('\n')
+        );
+        const consumer = [
+          "import { asFacts } from './producer';",
+          'const facts = asFacts();',
+          rule('w.state(facts.ready).eq(true)'),
+        ].join('\n');
+        const consumerFile = path.join(dir, 'consumer.proto.ts');
+        const scan = scanWithFreshSummary(consumer, consumerFile);
+
+        expectSourceUsages(scan, producerFile, [{ hook: 'asFacts', state: 'ready' }]);
+        expect(scan.unresolved).toEqual([]);
+        await writeFile(consumerFile, consumer);
+        expect(await collectProtoStyleTokens(dir)).toContain('data-[ready]:bg-primary');
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
+
+    it('reads numeric and string tuple keys while retaining index invalidation', async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-numeric-tuple-'));
+      try {
+        const producerFile = path.join(dir, 'producer.ts');
+        await writeFile(
+          producerFile,
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            "export const asFacts = defineAsHook({ name: 'facts', setup(def) { def.state.bool('ready', false); def.state.bool('other', false); }, projectHandle(result) { return [result.stateHandles.ready, result.stateHandles.other]; } });",
+          ].join('\n')
+        );
+        const consumer = [
+          "import { asFacts } from './producer';",
+          'const stable = asFacts();',
+          rule('w.state(stable[0]).eq(true)'),
+          "def.rule({ when: (w) => w.state(stable['1']).eq(true), intent: (i) => i.feedback.style.use(tw('bg-secondary')) });",
+          'const overwritten = asFacts();',
+          'overwritten[0] = null;',
+          "def.rule({ when: (w) => w.state(overwritten[0]).eq(true), intent: (i) => i.feedback.style.use(tw('bg-overwritten')) });",
+          "def.rule({ when: (w) => w.state(overwritten['1']).eq(true), intent: (i) => i.feedback.style.use(tw('bg-surviving')) });",
+          'const dynamic = asFacts();',
+          'const index: number = getIndex();',
+          'dynamic[index] = null;',
+          "def.rule({ when: (w) => w.state(dynamic[index]).eq(true), intent: (i) => i.feedback.style.use(tw('bg-dynamic-index')) });",
+          "def.rule({ when: (w) => w.state(dynamic[0]).eq(true), intent: (i) => i.feedback.style.use(tw('bg-dynamic-write')) });",
+        ].join('\n');
+        const consumerFile = path.join(dir, 'consumer.proto.ts');
+        const scan = scanWithFreshSummary(consumer, consumerFile);
+
+        expectSourceUsages(scan, producerFile, [
+          { hook: 'asFacts', state: 'ready' },
+          { hook: 'asFacts', state: 'other' },
+          { hook: 'asFacts', state: 'other' },
+        ]);
+        expect(scan.unresolved).toEqual([
+          { expression: 'overwritten[0]', reason: 'subject' },
+          { expression: 'dynamic[index]', reason: 'subject' },
+          { expression: 'dynamic[0]', reason: 'subject' },
+        ]);
+        await writeFile(consumerFile, consumer);
+        const tokens = await collectProtoStyleTokens(dir);
+        expect(tokens).toContain('data-[ready]:bg-primary');
+        expect(tokens).toContain('data-[other]:bg-secondary');
+        expect(tokens).toContain('data-[other]:bg-surviving');
+        expect(tokens).not.toContain('data-[ready]:bg-overwritten');
+        expect(tokens).not.toContain('data-[ready]:bg-dynamic-index');
+        expect(tokens).not.toContain('data-[ready]:bg-dynamic-write');
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
+
+    it('captures distinct forwarded literals from successive helper calls', async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-helper-literals-'));
+      try {
+        const producerFile = path.join(dir, 'producer.ts');
+        await writeFile(
+          producerFile,
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            'function add(d, key) { d.state.bool(key, false); }',
+            "export const asFacts = defineAsHook({ name: 'facts', setup(d) { add(d, 'ready'); add(d, 'other'); } });",
+          ].join('\n')
+        );
+        const consumer = [
+          "import { asFacts } from './producer';",
+          'const bag = asFacts().stateHandles;',
+          rule('w.state(bag.ready).eq(true)'),
+          `if (bag.other) { ${rule('w.state(bag.other).eq(true)')} }`,
+        ].join('\n');
+        const consumerFile = path.join(dir, 'consumer.proto.ts');
+        const scan = scanWithFreshSummary(consumer, consumerFile);
+        expectSourceUsages(scan, producerFile, [
+          { hook: 'asFacts', state: 'ready' },
+          { hook: 'asFacts', state: 'other' },
+        ]);
+        expect(scan.unresolved).toEqual([]);
+        await writeFile(consumerFile, consumer);
+        const tokens = await collectProtoStyleTokens(dir);
+        expect(tokens).toContain('data-[ready]:bg-primary');
+        expect(tokens).toContain('data-[other]:bg-primary');
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
+
+    it('invalidates forwarded literals written by loop binding targets', async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-loop-literal-write-'));
+      try {
+        await writeFile(
+          path.join(dir, 'producer.ts'),
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            "function add(d, key) { for (key of ['other']) {} d.state.bool(key, false); }",
+            "export const asFacts = defineAsHook({ name: 'facts', setup(d) { add(d, 'ready'); } });",
+          ].join('\n')
+        );
+        const consumer = [
+          "import { asFacts } from './producer';",
+          'const bag = asFacts().stateHandles;',
+          rule('w.state(bag.ready).eq(true)'),
+          `if (bag.other) { ${rule('w.state(bag.other).eq(true)')} }`,
+        ].join('\n');
+        const consumerFile = path.join(dir, 'consumer.proto.ts');
+        const scan = scanWithFreshSummary(consumer, consumerFile);
+        expect(scan.usages).toEqual([]);
+        expect(scan.unresolved).toEqual([
+          { expression: 'bag.ready', reason: 'subject' },
+          { expression: 'bag.other', reason: 'subject' },
+        ]);
+        await writeFile(consumerFile, consumer);
+        const tokens = await collectProtoStyleTokens(dir);
+        expect(tokens).not.toContain('data-[ready]:bg-primary');
+        expect(tokens).not.toContain('data-[other]:bg-primary');
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
+
+    it('keeps possibly overwritten hook names out of child lookup indexes', async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-computed-name-'));
+      try {
+        await writeFile(
+          path.join(dir, 'producer.ts'),
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            "const name = 'facts'; const slot: string = 'name';",
+            "function setup(d) { d.state.bool('ready', false); }",
+            "const asChild = defineAsHook({ name, [slot]: 'renamed', setup });",
+            "export const asParent = defineAsHook({ name: 'parent', setup(d) { asChild(); } });",
+          ].join('\n')
+        );
+        const consumer = [
+          "import { asParent } from './producer';",
+          'const parent = asParent();',
+          rule("w.state(parent.getAsHookHandle('facts').stateHandles.ready).eq(true)"),
+          rule("w.state(parent.getAsHookHandle('renamed').stateHandles.ready).eq(true)"),
+          rule("w.state(parent.getAsHookHandle('<unknown-hook>').stateHandles.ready).eq(true)"),
+        ].join('\n');
+        const consumerFile = path.join(dir, 'consumer.proto.ts');
+        const scan = scanWithFreshSummary(consumer, consumerFile);
+        expect(scan.usages).toEqual([]);
+        expect(scan.unresolved).toEqual([
+          { expression: "parent.getAsHookHandle('facts').stateHandles.ready", reason: 'subject' },
+          { expression: "parent.getAsHookHandle('renamed').stateHandles.ready", reason: 'subject' },
+          {
+            expression: "parent.getAsHookHandle('<unknown-hook>').stateHandles.ready",
+            reason: 'subject',
+          },
+        ]);
+        await writeFile(consumerFile, consumer);
+        expect(await collectProtoStyleTokens(dir)).not.toContain('data-[ready]:bg-primary');
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
+
+    it('withholds projector proof across effectful parameter initialization', async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-projector-default-effect-'));
+      try {
+        await writeFile(
+          path.join(dir, 'producer.ts'),
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            "export const asFacts = defineAsHook({ name: 'facts', setup(d) { d.state.bool('ready', false); d.state.bool('other', false); }, projectHandle({ stateHandles: { ready, other } }: any, ignored = (ready = other)) { return { ready }; } });",
+            "export const asLookalike = defineAsHook({ name: 'lookalike', setup(d) { d.state.bool('ready', false); d.state.bool('other', false); }, projectHandle({ stateHandles: { ready, other } }: any, helper = { getState: () => (ready = other) }, ignored = helper.getState()) { return { ready }; } });",
+          ].join('\n')
+        );
+        const consumer = [
+          "import { asFacts, asLookalike } from './producer';",
+          'const facts = asFacts();',
+          rule('w.state(facts.ready).eq(true)'),
+          'const lookalike = asLookalike();',
+          rule('w.state(lookalike.ready).eq(true)'),
+        ].join('\n');
+        const consumerFile = path.join(dir, 'consumer.proto.ts');
+        const scan = scanWithFreshSummary(consumer, consumerFile);
+        expect(scan.usages).toEqual([]);
+        expect(scan.unresolved).toEqual([
+          { expression: 'facts.ready', reason: 'subject' },
+          { expression: 'lookalike.ready', reason: 'subject' },
+        ]);
+        await writeFile(consumerFile, consumer);
+        const tokens = await collectProtoStyleTokens(dir);
+        expect(tokens).not.toContain('data-[ready]:bg-primary');
+        expect(tokens).not.toContain('data-[other]:bg-primary');
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
+
+    it('does not infer iterable projector parameters from numeric record keys', async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-projector-record-iterator-'));
+      try {
+        await writeFile(
+          path.join(dir, 'producer.ts'),
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            "export const asFacts = defineAsHook({ name: 'facts', setup(d) { d.state.bool('0', false); }, projectHandle({ stateHandles: [first] }: any) { return { first }; } });",
+          ].join('\n')
+        );
+        const consumer = [
+          "import { asFacts } from './producer';",
+          'const facts = asFacts();',
+          rule('w.state(facts.first).eq(true)'),
+        ].join('\n');
+        const consumerFile = path.join(dir, 'consumer.proto.ts');
+        const scan = scanWithFreshSummary(consumer, consumerFile);
+        expect(scan.usages).toEqual([]);
+        expect(scan.unresolved).toEqual([{ expression: 'facts.first', reason: 'subject' }]);
+        await writeFile(consumerFile, consumer);
+        expect(await collectProtoStyleTokens(dir)).not.toContain('data-[0]:bg-primary');
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
+
+    it('invalidates var-redeclared parameters while preserving lexical loop shadows', async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-var-parameter-'));
+      try {
+        const producerFile = path.join(dir, 'producer.ts');
+        await writeFile(
+          producerFile,
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            "function addVar(d: any, key: string) { for (var key of ['other']) {} d.state.bool(key, false); }",
+            "function addShadow(d: any, key: string) { for (const key of ['other']) {} d.state.bool(key, false); }",
+            "export const asVar = defineAsHook({ name: 'var', setup(d) { addVar(d, 'ready'); } });",
+            "export const asShadow = defineAsHook({ name: 'shadow', setup(d) { addShadow(d, 'ready'); } });",
+          ].join('\n')
+        );
+        const consumer = [
+          "import { asVar, asShadow } from './producer';",
+          'const uncertain = asVar().stateHandles;',
+          "def.rule({ when: w => w.state(uncertain.ready).eq(true), intent: i => i.feedback.style.use(tw('bg-unproved')) });",
+          `if (uncertain.other) { ${rule('w.state(uncertain.other).eq(true)')} }`,
+          'const stable = asShadow().stateHandles;',
+          rule('w.state(stable.ready).eq(true)'),
+        ].join('\n');
+        const consumerFile = path.join(dir, 'consumer.proto.ts');
+        const scan = scanWithFreshSummary(consumer, consumerFile);
+        expectSourceUsages(scan, producerFile, [{ hook: 'asShadow', state: 'ready' }]);
+        expect(scan.unresolved).toEqual([
+          { expression: 'uncertain.ready', reason: 'subject' },
+          { expression: 'uncertain.other', reason: 'subject' },
+        ]);
+        await writeFile(consumerFile, consumer);
+        const tokens = await collectProtoStyleTokens(dir);
+        expect(tokens).toContain('data-[ready]:bg-primary');
+        expect(tokens).not.toContain('data-[ready]:bg-unproved');
+        expect(tokens).not.toContain('data-[other]:bg-primary');
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
+
+    it('distinguishes uncertain projector presence from proven raw capture', async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-projector-certainty-'));
+      try {
+        const producerFile = path.join(dir, 'producer.ts');
+        await writeFile(
+          producerFile,
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            "const slot: string = 'projectHandle';",
+            'const p = (r: any) => ({ stateHandles: { ready: r.stateHandles.other } });',
+            "function setup(d: any) { d.state.bool('ready', false); d.state.bool('other', false); }",
+            "export const asOpaque = defineAsHook({ projectHandle: p, [slot]: p, name: 'opaque', setup });",
+            "export const asRestored = defineAsHook({ [slot]: p, name: 'restored', setup, projectHandle: p });",
+          ].join('\n')
+        );
+        const consumer = [
+          "import { asOpaque, asRestored } from './producer';",
+          'const opaque = asOpaque();',
+          rule('w.state(opaque.stateHandles.ready).eq(true)'),
+          'const restored = asRestored();',
+          rule('w.state(restored.stateHandles.ready).eq(true)'),
+        ].join('\n');
+        const consumerFile = path.join(dir, 'consumer.proto.ts');
+        const scan = scanWithFreshSummary(consumer, consumerFile);
+        expectSourceUsages(scan, producerFile, [{ hook: 'asRestored', state: 'other' }]);
+        expect(scan.unresolved).toEqual([
+          { expression: 'opaque.stateHandles.ready', reason: 'subject' },
+        ]);
+        await writeFile(consumerFile, consumer);
+        const tokens = await collectProtoStyleTokens(dir);
+        expect(tokens).toContain('data-[other]:bg-primary');
+        expect(tokens).not.toContain('data-[ready]:bg-primary');
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
+  });
+
   it('follows every binding shape a prototype uses to reach a state handle', () => {
     const shapes = {
       destructured: `const { checked } = asCheckboxRoot().stateHandles;\n${rule('w.state(checked).eq(true)')}`,
