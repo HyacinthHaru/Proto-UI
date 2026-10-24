@@ -363,3 +363,19 @@ export type {
   ShadcnSelectSeparatorExposes,
   ShadcnSelectSeparatorAsHookContract,
 } from './select/types';
+
+// Draft shared family selection; production mappings are tracked separately.
+export {
+  styleScope,
+  styleScope as shadcnStyleScope,
+  setupShadcnStyleScope,
+  setupShadcnStyleSelection,
+  SHADCN_STYLE_SCOPE,
+  SHADCN_STYLE_IDS,
+} from './style-scope';
+export type {
+  ShadcnStyleId,
+  ShadcnStyleChoice,
+  ShadcnStyleProps,
+  ShadcnStyleContext,
+} from './style-scope';
