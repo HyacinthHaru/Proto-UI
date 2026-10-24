@@ -268,7 +268,12 @@ async function waitForWheelQuiet(page: Page, entry: any, boundary: string) {
 }
 /** Same physical PRE, same passive input, one bounded test-only negative control.
  * scrollIntoView is setup only; all measured movement comes from mouse.wheel. */
-async function verifyPassiveCausality(page: Page, pre: Locator, entry: any) {
+async function verifyPassiveCausality(
+  page: Page,
+  pre: Locator,
+  entry: any,
+  diagnosticHook?: (page: Page, pre: Locator, entry: any) => Promise<void>
+) {
   const original = await pre.evaluate(element => ({
     value: (element as HTMLElement).style.getPropertyValue('overscroll-behavior-y'),
     priority: (element as HTMLElement).style.getPropertyPriority('overscroll-behavior-y'),
@@ -308,6 +313,7 @@ async function verifyPassiveCausality(page: Page, pre: Locator, entry: any) {
         for (const key of ['scrollY', 'x', 'y', 'width', 'height', 'clientHeight', 'scrollHeight'] as const)
           expect(initial[key]).toBe(negative[key]);
       }
+      if (stageName === 'product-auto' && diagnosticHook) await diagnosticHook(page, pre, entry);
       const point = { x: initial.x + initial.width / 2, y: initial.y + initial.height / 2 };
       await page.mouse.move(point.x, point.y);
       const stage: any = { name: stageName, initial, inputs: [], readings: [] };
@@ -400,7 +406,8 @@ async function verifyPassiveCausality(page: Page, pre: Locator, entry: any) {
     try { await save(); } catch (error) { primary ??= error; }
   }
   if (primary) throw primary;
-  entry.causality.acceptance = true;
+  entry.causality.acceptance = diagnosticHook === undefined;
+  if (diagnosticHook) entry.outcome = 'diagnostic-observed';
   await save();
 }
 it('chains reverse wheel from an independently located real short PRE to the document', async () => {
@@ -640,3 +647,68 @@ for (const width of [1440, 320])
       expect(after.scrollY).toBe(horizontal.scrollY);
     });
   }, 45_000);
+
+// Opt-in diagnostic only; the original product case supplies no hook.
+async function pointerReentryDiagnostic(page: Page, pre: Locator, entry: any) {
+  entry.pointerReentry = { before: await facts(page, pre) };
+  await page.mouse.move(0, 0);
+  entry.pointerReentry.outside = await pre.evaluate((element) => {
+    const hit = document.elementFromPoint(0, 0);
+    const ancestors = [];
+    for (let node: Element | null = element; node; node = node.parentElement) {
+      const style = getComputedStyle(node);
+      ancestors.push({
+        tag: node.tagName,
+        className: node.getAttribute('class'),
+        overflowX: style.overflowX,
+        overflowY: style.overflowY,
+        overscrollX: style.overscrollBehaviorX,
+        overscrollY: style.overscrollBehaviorY,
+      });
+    }
+    return {
+      observedAt: performance.now(),
+      outsideSelected: hit !== element && (!hit || !element.contains(hit)),
+      selectedConnected: element.isConnected,
+      samePre: element === (window as any).__selectedScrollPre,
+      scrollingElement: document.scrollingElement?.tagName,
+      ancestors,
+    };
+  });
+  await save();
+  expect(entry.pointerReentry.outside.outsideSelected).toBe(true);
+  expect(entry.pointerReentry.outside.samePre).toBe(true);
+}
+// This separate diagnostic cannot replace the original strict causal acceptance case.
+it('diagnoses same-PRE policy restoration after pointer exit and re-entry', async () => {
+  await run('short-code-pointer-reentry-diagnostic', 1440, async (page, entry) => {
+    entry.kind = 'pointer-reentry-diagnostic';
+    entry.acceptance = false;
+    entry.outcome = 'diagnostic-incomplete';
+    await save();
+    await page.goto(baseUrl + quick, { waitUntil: 'networkidle' });
+    await ready(page);
+    const candidates = await page.locator('pre.proto-previewer__code').evaluateAll((elements) =>
+      elements.map((element, index) => ({
+        index,
+        visible: element.checkVisibility(),
+        documentTop: element.getBoundingClientRect().top + scrollY,
+        scrollHeight: element.scrollHeight,
+        clientHeight: element.clientHeight,
+      }))
+    );
+    const selected = candidates.find(
+      (item) =>
+        item.visible &&
+        item.clientHeight > 0 &&
+        item.scrollHeight === item.clientHeight &&
+        item.documentTop > 1000
+    );
+    expect(selected).toBeDefined();
+    const pre = page.locator('pre.proto-previewer__code').nth(selected!.index);
+    await pre.evaluate((element) => {
+      (window as any).__selectedScrollPre = element;
+    });
+    await verifyPassiveCausality(page, pre, entry, pointerReentryDiagnostic);
+  });
+}, 24_000);

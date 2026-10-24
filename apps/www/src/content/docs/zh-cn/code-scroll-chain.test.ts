@@ -199,7 +199,7 @@ it('requires contain negative control, restored product auto, exact input identi
   const check = (source: string) => { for (const token of required) expect(source).toContain(token); };
   check(helper);
   for (const token of required) expect(() => check(helper.replaceAll(token, ''))).toThrow();
-  expect(helper.indexOf('entry.causality.acceptance = true')).toBeGreaterThan(helper.indexOf('if (primary) throw primary'));
+  expect(helper.indexOf('entry.causality.acceptance = diagnosticHook === undefined')).toBeGreaterThan(helper.indexOf('if (primary) throw primary'));
   const measuredLoop = helper.slice(helper.indexOf('for (let i = 0; i < 14; i++)'), helper.indexOf('stage.passed = true'));
   expect(measuredLoop).not.toMatch(/scrollIntoView|scrollTo\(|scrollBy\(|scrollTop\s*=|dispatchEvent|preventDefault|stopPropagation/);
   expect(browser.match(/}, 45_000\);/g)).toHaveLength(4); // three explicit cases and one two-width loop
@@ -249,4 +249,48 @@ it('isolates every causal policy boundary with observed quiet, preserving final 
   for (let t = 100; t <= 2000; t += 50)
     expect(elapsed({ observedAt: t + 20, lastCaptureObservedAt: t, lastNativeTimeStamp: t - 2 }, 100)).toBeLessThan(750);
   expect(elapsed({ observedAt: 850, lastCaptureObservedAt: null, lastNativeTimeStamp: null }, 100)).toBe(750);
+});
+
+
+it('bounds opt-in pointer diagnosis without changing the original causal call or acceptance gates', () => {
+  const source = ts.createSourceFile('probe.ts', browser, ts.ScriptTarget.Latest, true);
+  const calls: ts.CallExpression[] = [];
+  const visit = (node: ts.Node) => {
+    if (ts.isCallExpression(node) && node.expression.getText(source) === 'verifyPassiveCausality')
+      calls.push(node);
+    ts.forEachChild(node, visit);
+  };
+  visit(source);
+  expect(calls).toHaveLength(2);
+  expect(calls[0].arguments.map((arg) => arg.getText(source))).toEqual(['page', 'pre', 'entry']);
+  expect(calls[1].arguments.map((arg) => arg.getText(source))).toEqual([
+    'page',
+    'pre',
+    'entry',
+    'pointerReentryDiagnostic',
+  ]);
+  const required = [
+    'entry.acceptance = false',
+    'entry.causality.acceptance = diagnosticHook === undefined',
+    "entry.outcome = 'diagnostic-incomplete'",
+    "if (diagnosticHook) entry.outcome = 'diagnostic-observed'",
+    "if (stageName === 'product-auto' && diagnosticHook) await diagnosticHook(page, pre, entry)",
+    'page.mouse.move(0, 0)',
+    'outsideSelected: hit !== element',
+    'expect(entry.pointerReentry.outside.outsideSelected).toBe(true)',
+    'expect(entry.pointerReentry.outside.samePre).toBe(true)',
+    'scrollingElement: document.scrollingElement?.tagName',
+    'const style = getComputedStyle(node)',
+    '}, 24_000);',
+  ];
+  const check = (input: string) => {
+    for (const token of required) expect(input).toContain(token);
+  };
+  check(browser);
+  for (const token of required) expect(() => check(browser.replaceAll(token, ''))).toThrow();
+  const diagnostic = browser.slice(browser.indexOf('async function pointerReentryDiagnostic('));
+  expect(diagnostic).not.toMatch(
+    /entry(?:\.causality)?\.acceptance = true|preventDefault\(|stopPropagation\(/
+  );
+  expect(300 + 5 * 45 + 24 + 10).toBeLessThanOrEqual(560);
 });
