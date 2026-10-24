@@ -391,6 +391,54 @@ describe('event route traversal work', () => {
     expect(listeners.map((fn) => fn.mock.calls.length)).toEqual([1, 1]);
   });
 
+  it('re-resolves the keyboard owner when the same Event is redispatched after Portal rebinding', () => {
+    const tree = createInstanceTreeMarkers('@proto.ui/adapter-web-component/__proto_instance');
+    const proto = { name: 'keyboard-route-owner', setup: () => undefined };
+    const first = document.createElement('div');
+    const second = document.createElement('div');
+    const portal = document.createElement('div');
+    const shadow = portal.attachShadow({ mode: 'open' });
+    const source = document.createElement('span');
+    shadow.append(source);
+    document.body.append(first, second, portal);
+    cleanup.push(() => {
+      tree.setProtoParent(portal, null);
+      first.remove();
+      second.remove();
+      portal.remove();
+    });
+    const keyListeners = [vi.fn(), vi.fn()];
+    const pressListeners = [vi.fn(), vi.fn()];
+    [first, second].forEach((root, index) => {
+      const token = tree.markProtoInstance(root, proto);
+      tree.mergeLogicalTriggerGroup(token, token);
+      const router = createWebProtoEventRouter({
+        rootEl: root,
+        instanceToken: token,
+        resolveSemanticEventRoute: tree.resolveLogicalTriggerEventRouteForTarget,
+        isSemanticEventRouteCandidate: tree.isLogicalEventRouteCandidate,
+        isEnabled: () => true,
+      });
+      router.rootTarget.addEventListener('key.down', keyListeners[index]);
+      router.rootTarget.addEventListener('press.commit', pressListeners[index]);
+      cleanup.push(() => router.dispose());
+    });
+    const event = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, composed: true });
+    tree.setProtoParent(portal, first);
+    source.dispatchEvent(event);
+    expect({
+      keys: keyListeners.map((listener) => listener.mock.calls.length),
+      presses: pressListeners.map((listener) => listener.mock.calls.length),
+    }).toEqual({ keys: [1, 0], presses: [1, 0] });
+
+    tree.setProtoParent(portal, second);
+    source.dispatchEvent(event);
+    expect({
+      keys: keyListeners.map((listener) => listener.mock.calls.length),
+      presses: pressListeners.map((listener) => listener.mock.calls.length),
+    }).toEqual({ keys: [1, 1], presses: [1, 1] });
+  });
+
   it('retains slot-path candidates, rejects superseded trigger surfaces, and observes rebind', () => {
     const tree = createInstanceTreeMarkers('@proto.ui/adapter-web-component/__proto_instance');
     const proto = { name: 'route-slot', setup: () => undefined };

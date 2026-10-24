@@ -175,7 +175,7 @@ export function createWebProtoEventRouter(opt: {
     if (hasPressCommitBeenEmittedForRoot(native)) return;
     const keyboard = native as Event & { [KEYBOARD_PRESS_OWNER]?: object };
     if (native.type === 'keydown' && keyboard[KEYBOARD_PRESS_OWNER]) return;
-    // A consumed key keeps its owner when that callback retires its view and moves focus.
+    // A consumed key keeps its owner for this dispatch if the callback retires its view and moves focus.
     if (
       native.type === 'keydown' &&
       rootProxy.__hasProtoListeners('press.commit') &&
@@ -561,6 +561,18 @@ export function createWebProtoEventRouter(opt: {
       emit(protoRootBus, 'pointer.cancel', e);
     })
   );
+
+  // The owner marker is shared through the native Event while routers process one dispatch.
+  // Clear a prior dispatch's marker before either a root-local or global route can observe it.
+  const clearKeyboardPressOwner = (native: Event) => {
+    delete (native as Event & { [KEYBOARD_PRESS_OWNER]?: object })[KEYBOARD_PRESS_OWNER];
+  };
+  rootEl.addEventListener('keydown', clearKeyboardPressOwner, true);
+  unsubs.push(() => rootEl.removeEventListener('keydown', clearKeyboardPressOwner, true));
+  if (globalEl !== rootEl) {
+    globalEl.addEventListener('keydown', clearKeyboardPressOwner, true);
+    unsubs.push(() => globalEl.removeEventListener('keydown', clearKeyboardPressOwner, true));
+  }
 
   // key -> key.* (global)
   unsubs.push(
