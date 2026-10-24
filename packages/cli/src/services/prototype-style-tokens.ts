@@ -185,7 +185,14 @@ async function loadModuleBindings(file, moduleCache, stack) {
   return bindings;
 }
 function createScope(parent = null, node = null, sourceSummary = parent?.sourceSummary ?? null) {
-  return { parent, bindings: new Map(), node, sourceSummary };
+  return {
+    parent,
+    bindings: new Map(),
+    node,
+    sourceSummary,
+    definitelyReachedLogicalAssignments:
+      parent?.definitelyReachedLogicalAssignments ?? new WeakSet(),
+  };
 }
 
 function enclosingFunction(node) {
@@ -497,35 +504,81 @@ function walk(node, scope, tokens, exposures, rootInventory = null) {
 
   if (
     ts.isBinaryExpression(node) &&
-    node.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
+    node.operatorToken.kind >= ts.SyntaxKind.FirstAssignment &&
+    node.operatorToken.kind <= ts.SyntaxKind.LastAssignment &&
     (ts.isPropertyAccessExpression(node.left) || ts.isElementAccessExpression(node.left))
   ) {
     // Writing through the container moves the member for every read that
     // follows, so the rule side has to see it the way the exposure does.
-    walk(node.right, scope, tokens, exposures, rootInventory);
+    const operator = node.operatorToken.kind;
+    const plainAssignment = operator === ts.SyntaxKind.EqualsToken;
+    const logicalAssignment =
+      operator === ts.SyntaxKind.AmpersandAmpersandEqualsToken ||
+      operator === ts.SyntaxKind.BarBarEqualsToken ||
+      operator === ts.SyntaxKind.QuestionQuestionEqualsToken;
+    // Assignment evaluates its receiver/key before its RHS. Preserve those
+    // effects for intercepted non-plain writes without widening plain `=`.
+    if (!plainAssignment) walk(node.left, scope, tokens, exposures, rootInventory);
     const base = unwrapTransparent(memberOwner(node.left) ?? node.left);
     const member = memberName(node.left);
+    const resolvedBefore =
+      !plainAssignment && ts.isIdentifier(base) ? resolveExpression(base, scope) : null;
+    let knownStateHandle = false;
+    if (logicalAssignment && member !== null && !resolvedBefore?.unknownAlternative) {
+      const targets = resolvedBefore?.containers ?? (resolvedBefore ? [resolvedBefore] : []);
+      // State handles are objects, hence truthy and non-nullish. Every possible
+      // receiver must prove that exact member before a logical RHS is skipped.
+      knownStateHandle =
+        targets.length > 0 &&
+        targets.every((container) => {
+          if (container.unknownAlternative) return false;
+          const sourceValues = sourceValueCandidates(container);
+          return sourceValues.length > 0
+            ? sourceValues.every(
+                (source) => source.kind === 'object' && source.members.get(member)?.kind === 'state'
+              )
+            : memberSemantics(container.semanticMap?.get(member)).length > 0;
+        });
+    }
+    if (
+      knownStateHandle &&
+      (operator === ts.SyntaxKind.BarBarEqualsToken ||
+        operator === ts.SyntaxKind.QuestionQuestionEqualsToken)
+    )
+      return;
+    const definitelyRunsRight =
+      operator === ts.SyntaxKind.AmpersandAmpersandEqualsToken && knownStateHandle;
+    if (definitelyRunsRight) scope.definitelyReachedLogicalAssignments.add(node);
+    try {
+      walk(node.right, scope, tokens, exposures, rootInventory);
+    } finally {
+      if (definitelyRunsRight) scope.definitelyReachedLogicalAssignments.delete(node);
+    }
     if (ts.isIdentifier(base)) {
       // `const alias = controls` names the same object, and both bindings hold
       // the one resolved value, so the member moves on that value rather than
       // on a copy rebound to whichever name the write happened to use.
-      const resolved = resolveExpression(base, scope);
+      const resolved = plainAssignment ? resolveExpression(base, scope) : resolvedBefore;
       // A base that may be either of two objects writes to both tables.
       const targets = resolved?.containers ?? (resolved ? [resolved] : []);
-      const rightBinding = resolveBinding(node.right, scope);
+      const writesRight =
+        plainAssignment ||
+        (operator === ts.SyntaxKind.AmpersandAmpersandEqualsToken && knownStateHandle);
+      const rightBinding = writesRight ? resolveBinding(node.right, scope) : null;
       const written = bindingSemantics(rightBinding);
       const writtenSource = sourceValueCandidates(rightBinding);
       for (const container of targets) {
         const sourceWrite = writtenSource.length === 1 && hasSourceHookProvenance(writtenSource[0]);
-        const unknownWrite = written.length === 0 && !sourceWrite;
+        const unknownWrite = !writesRight || (written.length === 0 && !sourceWrite);
         // The scope that owns the container object, not the one that declares
         // the name written through: an alias declared inside a callback would
         // otherwise make the write look ordered against itself.
         const declaring = scopeOwningValue(container, scope) ?? scopeDeclaring(base.text, scope);
         const uncertain =
-          isConditionallyReached(node) ||
+          isConditionallyReached(node, scope.definitelyReachedLogicalAssignments) ||
           isDeferredWrite(node, enclosingFunction(declaring?.node ?? null)) ||
           targets.length > 1 ||
+          (logicalAssignment && !knownStateHandle) ||
           // A key this cannot read may name any member the container has.
           member === null;
         if (written.length > 0 && !container.semanticMap) container.semanticMap = new Map();
@@ -904,8 +957,12 @@ function registerDeclaration(decl, scope, exposures) {
 
     decl.name.elements.forEach((element, index) => {
       if (ts.isOmittedExpression(element) || !ts.isIdentifier(element.name)) return;
-      const semantic = value.semanticMap.get(String(index));
-      if (semantic) scope.bindings.set(element.name.text, asSemanticValue(semantic));
+      const semantics = memberSemantics(value.semanticMap.get(String(index)));
+      if (semantics.length > 0)
+        scope.bindings.set(element.name.text, {
+          ...asSemanticValue(semantics[0]),
+          alternatives: semantics.slice(1),
+        });
     });
     return;
   }
@@ -921,9 +978,12 @@ function registerDeclaration(decl, scope, exposures) {
         : element.name.text;
       if (!propertyName) continue;
 
-      const semantic = value.semanticMap.get(propertyName);
-      if (!semantic) continue;
-      scope.bindings.set(element.name.text, asSemanticValue(semantic));
+      const semantics = memberSemantics(value.semanticMap.get(propertyName));
+      if (semantics.length > 0)
+        scope.bindings.set(element.name.text, {
+          ...asSemanticValue(semantics[0]),
+          alternatives: semantics.slice(1),
+        });
     }
   }
 }
@@ -1628,10 +1688,10 @@ function resolveBinding(node, scope) {
     // it carries both and a member write through it reaches both tables.
     // Flattened, because a branch may itself be a conditional: the candidates
     // are the leaves the runtime can land on, not the composites above them.
-    const containers = branches.flatMap(
-      (branch) => branch.containers ?? (branch.semanticMap ? [branch] : [])
-    );
-    if (containers.length > 0) return { ...branches[0], containers };
+    // Empty branches still participate: a missing member cannot prove that a
+    // logical assignment skips its RHS.
+    const containers = branches.flatMap((branch) => branch.containers ?? [branch]);
+    if (containers.some((branch) => branch.semanticMap)) return { ...branches[0], containers };
   }
 
   const semantic = resolveSemanticBinding(node);
@@ -1795,7 +1855,7 @@ function exposedDataAttributeName(key) {
  * statically executes exactly as written; anything else has to keep whatever
  * the name held before it, because the runtime may take the other path.
  */
-function isConditionallyReached(node) {
+function isConditionallyReached(node, definitelyReachedLogicalAssignments) {
   for (let child = node, parent = node.parent; parent; child = parent, parent = parent.parent) {
     if (ts.isFunctionLike(parent)) return false;
     if (ts.isIfStatement(parent)) {
@@ -1836,8 +1896,16 @@ function isConditionallyReached(node) {
       const shortCircuits =
         operator === ts.SyntaxKind.AmpersandAmpersandToken ||
         operator === ts.SyntaxKind.BarBarToken ||
-        operator === ts.SyntaxKind.QuestionQuestionToken;
-      if (shortCircuits && child === parent.right) return true;
+        operator === ts.SyntaxKind.QuestionQuestionToken ||
+        operator === ts.SyntaxKind.AmpersandAmpersandEqualsToken ||
+        operator === ts.SyntaxKind.BarBarEqualsToken ||
+        operator === ts.SyntaxKind.QuestionQuestionEqualsToken;
+      if (
+        shortCircuits &&
+        child === parent.right &&
+        !definitelyReachedLogicalAssignments?.has(parent)
+      )
+        return true;
     }
   }
   return false;
@@ -2834,7 +2902,8 @@ function assignIdentifierBinding(node, scope, exposures) {
   const binding = applyExposure(name, resolveBinding(node.right, scope), owner, exposures);
   const kept = bindingSemantics(previous).filter((candidate) => candidate !== binding.semantic);
   const uncertain =
-    isConditionallyReached(node) || isDeferredWrite(node, enclosingFunction(owner.node));
+    isConditionallyReached(node, scope.definitelyReachedLogicalAssignments) ||
+    isDeferredWrite(node, enclosingFunction(owner.node));
   let next = binding;
   if (uncertain && !bindingHasStatePath(previous)) {
     next = { ...next, unknownAlternative: true };

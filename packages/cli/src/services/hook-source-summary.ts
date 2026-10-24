@@ -400,7 +400,7 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
   ): { fn: ts.FunctionLikeDeclaration; module: Module } | null => {
     const value = node ? unwrap(node) : null;
     if (!value) return null;
-    if (isFunctionLike(value)) return { fn: value, module };
+    if (isFunctionLike(value)) return value.body ? { fn: value, module } : null;
     if (ts.isShorthandPropertyAssignment(value)) {
       return functionFor(value.name, module, seen);
     }
@@ -414,7 +414,10 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
     if (seen.has(seenKey)) return null;
     const nextSeen = new Set(seen).add(seenKey);
     if (isFunctionLike(symbol.declaration)) {
-      if (symbol.declaration.name && hasBindingWrite(symbol.declaration.name, symbol.module))
+      if (
+        !symbol.declaration.body ||
+        (symbol.declaration.name && hasBindingWrite(symbol.declaration.name, symbol.module))
+      )
         return null;
       if (
         symbol.declaration.asteriskToken ||
@@ -1264,6 +1267,22 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
       : undefined;
     const setup = functionFor(setupExpression, producer.module);
     const stateHandles = new Map<string, HookSourceState>();
+    const ambiguousStateHandles = new Set<string>();
+    let stateFacadeProofInvalidated = false;
+    const recordStateHandle = (state: HookSourceState): void => {
+      const name = state.declaredName;
+      if (ambiguousStateHandles.has(name)) return;
+      const previous = stateHandles.get(name);
+      if (
+        previous &&
+        (previous.variant !== state.variant || previous.semantic !== state.semantic)
+      ) {
+        stateHandles.delete(name);
+        ambiguousStateHandles.add(name);
+      } else if (!previous) {
+        stateHandles.set(name, state);
+      }
+    };
     const children = new Map<string, HookSourceValue>();
     const activeSetupFunctions = new Set<string>();
     let setupComplete = true;
@@ -1299,6 +1318,7 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
         Set<string> | null
       >();
       const activeSubfacades = new Set<string>();
+      const activeStateFacades = new Set<string>();
       const privilegedAccessible = new Set<string>();
       const stateFromProof = (proof: ProviderStateProof): HookSourceState => ({
         owner: producer.ref,
@@ -1595,7 +1615,7 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
                 ts.isIdentifier(value) &&
                 value.text === stateName.text
               ) {
-                for (const state of entries.values()) stateHandles.set(state.declaredName, state);
+                for (const state of entries.values()) recordStateHandle(state);
                 captured = true;
               }
             }
@@ -1644,22 +1664,136 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
         if (ts.isIdentifier(parameter.name)) localNames.add(parameter.name.text);
       }
       const activeBindings = new Set<string>();
+      const provedDefinitionArguments = new WeakSet<ts.Node>();
       for (const parameter of fn.parameters) {
         if (!ts.isIdentifier(parameter.name) || !active.has(parameter.name.text)) continue;
         const binding = moduleContext.resolveReference(parameter.name, module);
         if (binding && !hasBindingWrite(parameter.name, module))
           activeBindings.add(symbolKey(binding));
       }
+      const isValueIdentifier = (node: ts.Node): node is ts.Identifier => {
+        if (!ts.isIdentifier(node)) return false;
+        const parent = node.parent;
+        if (!parent) return true;
+        if (ts.isPropertyAccessExpression(parent) && parent.name === node) return false;
+        if (ts.isBindingElement(parent) && parent.propertyName === node) return false;
+        if (
+          (ts.isVariableDeclaration(parent) ||
+            ts.isParameter(parent) ||
+            ts.isBindingElement(parent) ||
+            ts.isPropertyAssignment(parent) ||
+            ts.isPropertyDeclaration(parent) ||
+            ts.isMethodDeclaration(parent) ||
+            ts.isFunctionDeclaration(parent) ||
+            ts.isClassDeclaration(parent) ||
+            ts.isGetAccessorDeclaration(parent) ||
+            ts.isSetAccessorDeclaration(parent)) &&
+          parent.name === node
+        )
+          return false;
+        if (
+          (ts.isLabeledStatement(parent) ||
+            ts.isBreakStatement(parent) ||
+            ts.isContinueStatement(parent)) &&
+          parent.label === node
+        )
+          return false;
+        // A shorthand property is a value read, unlike an ordinary static key.
+        return true;
+      };
+      const isActiveStateFacadeExpression = (expression: ts.Node): boolean => {
+        const value = unwrap(expression);
+        if (ts.isIdentifier(value)) {
+          if (activeStateFacades.size === 0) return false;
+          if (!isValueIdentifier(value)) return false;
+          const binding = moduleContext.resolveReference(value, module);
+          return !!binding && activeStateFacades.has(symbolKey(binding));
+        }
+        if (
+          (!ts.isPropertyAccessExpression(value) && !ts.isElementAccessExpression(value)) ||
+          memberName(value) !== 'state'
+        )
+          return false;
+        const owner = unwrap(value.expression);
+        if (!ts.isIdentifier(owner)) return false;
+        const binding = moduleContext.resolveReference(owner, module);
+        return !!binding && activeBindings.has(symbolKey(binding));
+      };
+      const isFacadeAliasInitializer = (node: ts.Node): boolean => {
+        let parent = node.parent;
+        while (
+          parent &&
+          (ts.isParenthesizedExpression(parent) ||
+            ts.isAsExpression(parent) ||
+            ts.isTypeAssertionExpression(parent) ||
+            ts.isNonNullExpression(parent))
+        )
+          parent = parent.parent;
+        return !!(
+          parent &&
+          ts.isVariableDeclaration(parent) &&
+          parent.initializer &&
+          unwrap(parent.initializer) === unwrap(node) &&
+          ts.isIdentifier(parent.name) &&
+          stableVariable(parent, module)
+        );
+      };
+      const isFacadeMemberOwner = (node: ts.Node): boolean => {
+        let parent = node.parent;
+        while (
+          parent &&
+          (ts.isParenthesizedExpression(parent) ||
+            ts.isAsExpression(parent) ||
+            ts.isTypeAssertionExpression(parent) ||
+            ts.isNonNullExpression(parent))
+        )
+          parent = parent.parent;
+        return !!(
+          parent &&
+          (ts.isPropertyAccessExpression(parent) || ts.isElementAccessExpression(parent)) &&
+          unwrap(parent.expression) === unwrap(node)
+        );
+      };
+      const isStateFacadeMemberWrite = (target: ts.Node): boolean => {
+        let value = unwrap(target);
+        while (ts.isPropertyAccessExpression(value) || ts.isElementAccessExpression(value)) {
+          const owner = memberOwner(value);
+          if (owner && isActiveStateFacadeExpression(owner)) return true;
+          if (memberName(value) === 'state' && owner && ts.isIdentifier(unwrap(owner))) {
+            const binding = moduleContext.resolveReference(unwrap(owner), module);
+            if (binding && activeBindings.has(symbolKey(binding))) return true;
+          }
+          if (!owner) break;
+          value = unwrap(owner);
+        }
+        return false;
+      };
+      const invalidateStateFacadeWrite = (target: ts.Node): void => {
+        if (isStateFacadeMemberWrite(target)) {
+          stateFacadeProofInvalidated = true;
+          markSetupUncertain();
+          return;
+        }
+        ts.forEachChild(target, (child) => invalidateStateFacadeWrite(child));
+      };
       const capturesActive = (candidate: ts.FunctionLikeDeclaration): boolean => {
         let captured = false;
         const visit = (current: ts.Node): void => {
-          if (captured || (current !== candidate && isFunctionLike(current))) return;
-          if (ts.isIdentifier(current)) {
+          if (
+            captured ||
+            ts.isTypeNode(current) ||
+            (current !== candidate && isFunctionLike(current))
+          )
+            return;
+          if (isValueIdentifier(current)) {
             const binding = moduleContext.resolveReference(current, module);
             if (
               binding &&
-              (activeBindings.has(symbolKey(binding)) || activeSubfacades.has(symbolKey(binding)))
+              (activeBindings.has(symbolKey(binding)) ||
+                activeSubfacades.has(symbolKey(binding)) ||
+                activeStateFacades.has(symbolKey(binding)))
             ) {
+              stateFacadeProofInvalidated = true;
               captured = true;
               return;
             }
@@ -1721,8 +1855,8 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
         const value = unwrap(ts.isSpreadElement(argument) ? argument.expression : argument);
         let found = false;
         const visit = (current: ts.Node): void => {
-          if (found) return;
-          if (ts.isIdentifier(current)) {
+          if (found || ts.isTypeNode(current)) return;
+          if (isValueIdentifier(current) && active.has(current.text)) {
             const binding = moduleContext.resolveReference(current, module);
             if (binding && activeBindings.has(symbolKey(binding))) {
               found = true;
@@ -1735,6 +1869,7 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
         return found;
       };
       const walk = (node: ts.Node): void => {
+        if (ts.isTypeNode(node)) return;
         if (node !== fn && isFunctionLike(node)) {
           let parent = node.parent;
           while (
@@ -1780,6 +1915,8 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
             if (node.parameters.length === 0 && !deferred && !unprovedActiveArgument) {
               if (node.body) walk(node.body);
             } else if (!deferred && helperActive.size > 0 && !unprovedActiveArgument) {
+              for (const argument of parent.arguments)
+                provedDefinitionArguments.add(unwrap(argument));
               collectSetup(node, module, helperActive, helperConstants);
             } else if (
               unprovedActiveArgument ||
@@ -1794,24 +1931,69 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
           return;
         }
         if (
+          isValueIdentifier(node) &&
+          active.has(node.text) &&
+          !isFacadeMemberOwner(node) &&
+          !provedDefinitionArguments.has(node) &&
+          !isFacadeAliasInitializer(node)
+        ) {
+          const binding = moduleContext.resolveReference(node, module);
+          if (binding && activeBindings.has(symbolKey(binding))) {
+            // An opaque owner escape can replace State constructors through
+            // the Def even when no State-facade alias itself escapes.
+            stateFacadeProofInvalidated = true;
+            markSetupUncertain();
+          }
+        }
+        if (isActiveStateFacadeExpression(node)) {
+          if (!isFacadeAliasInitializer(node) && !isFacadeMemberOwner(node)) {
+            stateFacadeProofInvalidated = true;
+            markSetupUncertain();
+          }
+        }
+        if (ts.isPropertyAccessExpression(node) || ts.isElementAccessExpression(node)) {
+          const owner = memberOwner(node);
+          if (owner && isActiveStateFacadeExpression(owner)) {
+            let parent = node.parent;
+            while (
+              parent &&
+              (ts.isParenthesizedExpression(parent) ||
+                ts.isAsExpression(parent) ||
+                ts.isTypeAssertionExpression(parent) ||
+                ts.isNonNullExpression(parent))
+            )
+              parent = parent.parent;
+            const calledAsFacadeMethod =
+              parent &&
+              ts.isCallExpression(parent) &&
+              unwrap(parent.expression) === node &&
+              memberName(node) !== null;
+            if (!calledAsFacadeMethod) markSetupUncertain();
+          }
+        }
+        if (
           ts.isBinaryExpression(node) &&
           node.operatorToken.kind >= ts.SyntaxKind.FirstAssignment &&
           node.operatorToken.kind <= ts.SyntaxKind.LastAssignment
         ) {
           invalidateProviderWrite(node.left);
+          invalidateStateFacadeWrite(node.left);
         } else if (
           (ts.isPrefixUnaryExpression(node) || ts.isPostfixUnaryExpression(node)) &&
           (node.operator === ts.SyntaxKind.PlusPlusToken ||
             node.operator === ts.SyntaxKind.MinusMinusToken)
         ) {
           invalidateProviderAccess(node.operand);
+          invalidateStateFacadeWrite(node.operand);
         } else if (ts.isDeleteExpression(node)) {
           invalidateProviderAccess(node.expression);
+          invalidateStateFacadeWrite(node.expression);
         } else if (
           (ts.isForInStatement(node) || ts.isForOfStatement(node)) &&
           ts.isExpression(node.initializer)
         ) {
           invalidateProviderAccess(node.initializer);
+          invalidateStateFacadeWrite(node.initializer);
         }
         if (
           ts.isVariableDeclaration(node) &&
@@ -1891,8 +2073,11 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
               unwrap(initializer.expression),
               module
             );
-            if (ownerBinding && activeBindings.has(symbolKey(ownerBinding)) && binding)
+            if (ownerBinding && activeBindings.has(symbolKey(ownerBinding)) && binding) {
               activeSubfacades.add(symbolKey(binding));
+              if (memberName(initializer) === 'state' && stableVariable(node, module))
+                activeStateFacades.add(symbolKey(binding));
+            }
           }
           if (ts.isCallExpression(initializer) || ts.isConditionalExpression(initializer)) {
             const states = providerStatesFor(initializer);
@@ -1940,6 +2125,8 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
             }
             const sourceBinding = moduleContext.resolveReference(initializer, module);
             const targetBinding = moduleContext.resolveReference(node.name, module);
+            if (sourceBinding && targetBinding && activeStateFacades.has(symbolKey(sourceBinding)))
+              activeStateFacades.add(symbolKey(targetBinding));
             const states = sourceBinding && privilegedHandles.get(symbolKey(sourceBinding));
             if (states && targetBinding) privilegedHandles.set(symbolKey(targetBinding), states);
             if (
@@ -1969,14 +2156,20 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
             subfacadeOwner && ts.isIdentifier(subfacadeOwner)
               ? moduleContext.resolveReference(subfacadeOwner, module)
               : null;
-          if (subfacadeBinding && activeSubfacades.has(symbolKey(subfacadeBinding)))
+          const activeStateFacade =
+            !!subfacadeBinding && activeStateFacades.has(symbolKey(subfacadeBinding));
+          if (
+            subfacadeBinding &&
+            activeSubfacades.has(symbolKey(subfacadeBinding)) &&
+            !activeStateFacade
+          )
             markSetupUncertain();
           if (
             stateOwner &&
-            stateContainer &&
-            activeContainer &&
             stateMethod &&
-            memberName(stateOwner) === 'state'
+            !stateFacadeProofInvalidated &&
+            (activeStateFacade ||
+              (stateContainer && activeContainer && memberName(stateOwner) === 'state'))
           ) {
             if (
               ts.isPropertyAccessExpression(expression) ||
@@ -1990,7 +2183,7 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
                   declaredName: declared,
                   variant: stateMethod,
                 };
-                stateHandles.set(declared, state);
+                recordStateHandle(state);
                 const parent = node.parent;
                 if (parent && ts.isVariableDeclaration(parent) && ts.isIdentifier(parent.name)) {
                   localStates.set(parent.name.text, state);
@@ -2015,7 +2208,7 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
           ) {
             const handle = unwrap(node.arguments[1]);
             const state = stateFromHandle(handle);
-            if (state) stateHandles.set(state.declaredName, state);
+            if (state) recordStateHandle(state);
             else markSetupUncertain();
           } else if (stateOwner && stateContainer && activeContainer && stateMethod === 'state') {
             markSetupUncertain();
@@ -2117,7 +2310,11 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
                     helperConstants.set(parameter.name.text, known);
                 }
                 if (unprovedActiveArgument || helperActive.size === 0) markSetupUncertain();
-                else collectSetup(helper.fn, helper.module, helperActive, helperConstants);
+                else {
+                  for (const argument of node.arguments)
+                    provedDefinitionArguments.add(unwrap(argument));
+                  collectSetup(helper.fn, helper.module, helperActive, helperConstants);
+                }
               }
             }
           }
@@ -2154,7 +2351,7 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
       name: name ?? '<unknown-hook>',
       stateHandles,
       children,
-      ...(setupComplete ? { stateHandlesClosed: true } : {}),
+      ...(setupComplete && ambiguousStateHandles.size === 0 ? { stateHandlesClosed: true } : {}),
     };
 
     const projectProperty = configProperty(producer.config, 'projectHandle');
