@@ -363,6 +363,7 @@ const staticUtilities: Record<string, string[]> = {
   'bg-transparent': ['background-color: transparent;'],
   'bg-black': ['background-color: #000;'],
   'bg-white': ['background-color: #fff;'],
+  'text-white': ['color: #fff;'],
   'bg-foreground': ['background-color: var(--pui-foreground);'],
   'bg-canvas': ['background-color: var(--pui-background);'],
   'bg-paper': ['background-color: var(--pui-background);'],
@@ -1244,6 +1245,8 @@ export function renderPrefixedThemeCss(input: string): string {
     /(--pui-radius:\s*[^;]+;)/,
     [
       '$1',
+      '    --pui-radius-2xl: calc(var(--pui-radius) + 8px);',
+      '    --pui-radius-4xl: calc(var(--pui-radius) + 16px);',
       '    --pui-radius-xl: calc(var(--pui-radius) + 4px);',
       '    --pui-radius-lg: var(--pui-radius);',
       '    --pui-radius-md: max(calc(var(--pui-radius) - 2px), 0px);',
@@ -1360,6 +1363,12 @@ function renderSpacingUtility(utility: string): string[] | null {
 }
 
 function renderColorUtility(utility: string): string[] | null {
+  // One pinned Rhea/Luma secondary hover expression, not arbitrary CSS admission.
+  if (utility === 'bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)]') {
+    return [
+      'background-color: color-mix(in oklch, var(--pui-secondary), var(--pui-foreground) 5%);',
+    ];
+  }
   if (utility === 'ring-black') return ['--pui-ring-color: #000000;', ...ringShadow()];
   if (utility === 'bg-black/50') return ['background-color: rgb(0 0 0 / 0.5);'];
   if (utility === 'bg-black/80') return ['background-color: rgb(0 0 0 / 0.8);'];
@@ -1379,6 +1388,10 @@ function renderColorUtility(utility: string): string[] | null {
 }
 
 function renderRoundedUtility(utility: string): string[] | null {
+  if (utility === 'rounded-[var(--pui-radius-2xl)]')
+    return ['border-radius: var(--pui-radius-2xl);'];
+  if (utility === 'rounded-[var(--pui-radius-4xl)]')
+    return ['border-radius: var(--pui-radius-4xl);'];
   if (utility === 'rounded-base') return ['border-radius: var(--pui-radius);'];
   if (utility === 'rounded-none') return ['border-radius: 0;'];
   if (utility === 'rounded-full') return ['border-radius: 9999px;'];
