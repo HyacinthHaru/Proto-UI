@@ -1,3 +1,4 @@
+import { isPlaceholderColorTokenV0 } from './placeholder';
 /**
  * Core-owned Root role vocabulary. Internal effects resolve it before lowering;
  * author StyleHandle syntax and Template style remain token-only.
@@ -203,6 +204,7 @@ function resolution(
  * semantic decision supplies enough evidence to classify them.
  */
 export function classifyTwTokenApplicationRoleV0(token: string): TwTokenApplicationRoleResolution {
+  if (isPlaceholderColorTokenV0(token)) return resolution(token, 'surface', 'canonical');
   // I1 exact admission precedes negative normalization; no visibility family widening.
   if (token === 'hidden') return resolution(token, 'root-participation', 'canonical');
   if (token === 'relative') return resolution(token, 'root-geometry', 'canonical');

@@ -1,3 +1,4 @@
+import { isPlaceholderColorTokenV0 } from './placeholder';
 // packages/core/src/spec/feedback/semantic-merge.ts
 
 const PREFIXES_V0 = [
@@ -58,6 +59,7 @@ const TEXT_SIZE_TOKENS = new Set([
 const TEXT_ALIGN_TOKENS = new Set(['left', 'right', 'center', 'justify', 'start', 'end']);
 
 export function getSemanticGroupKeyV0(token: string): string {
+  if (isPlaceholderColorTokenV0(token)) return 'placeholder:text-color';
   // Keep allowlisted selector targets isolated from the element's ordinary
   // style groups, while still resolving conflicts within the target by the
   // underlying utility (for example selection:bg-* is last-wins separately
