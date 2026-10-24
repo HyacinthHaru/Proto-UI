@@ -1446,3 +1446,59 @@ test('Hero native evidence measures actual Text paint, real resize and unchanged
   verify(source);
   for (const fragment of required) assert.throws(() => verify(source.replaceAll(fragment, '')));
 });
+
+
+test('density candidate uses the independent exact family heading oracle without relaxing other checks', () => {
+  const source = readFileSync(
+    new URL('capture-visual-density-evidence.ts', import.meta.url),
+    'utf8'
+  );
+  const ast = ts.createSourceFile(
+    'density.ts',
+    source,
+    ts.ScriptTarget.ES2022,
+    true,
+    ts.ScriptKind.TS
+  );
+  const declaration = ast.statements.find(
+    (node) =>
+      ts.isFunctionDeclaration(node) && node.name?.text === 'expectedCandidateSloganFontSize'
+  );
+  assert.ok(declaration);
+  const code = ts.transpileModule(declaration.getText(ast).replace('export ', ''), {
+    compilerOptions: { target: ts.ScriptTarget.ES2022 },
+  }).outputText;
+  const expected = runInNewContext(`${code}\nexpectedCandidateSloganFontSize`);
+  const cases = [
+    ['shadcn', 390, 30],
+    ['shadcn', 960, 30],
+    ['shadcn', 1279, 30],
+    ['shadcn', 1280, 48],
+    ['shadcn', 1440, 48],
+    ['brutalist', 390, 24],
+    ['brutalist', 1440, 36],
+  ] as const;
+  const check = (oracle: typeof expected) => {
+    for (const [family, width, size] of cases) assert.equal(oracle(family, width), size);
+  };
+  check(expected);
+  // Old shared sizing, wrong xl boundary, and accidentally changing Brutalist all fail.
+  for (const mutant of [
+    (_family: string, width: number) => (width === 390 ? 24 : 36),
+    (family: string, width: number) =>
+      family === 'shadcn' ? (width > 1280 ? 48 : 30) : expected(family, width),
+    (_family: string, width: number) => (width >= 1280 ? 48 : 30),
+  ])
+    assert.throws(() => check(mutant));
+  const call =
+    'assert.equal(facts.slogan.fontSize, expectedCandidateSloganFontSize(v.family, v.width))';
+  const checkCall = (text: string) => assert.ok(text.includes(call));
+  checkCall(source);
+  assert.throws(() => checkCall(source.replace(call, '')));
+  assert.ok(source.includes('assert.ok(facts.overflow <= 1)'));
+  assert.ok(source.includes('assert.equal(facts.title.fontSize, 16)'));
+  assert.ok(
+    source.includes("assert.equal(facts.caption.fontSize, v.family === 'shadcn' ? 14 : 12)")
+  );
+});
+
