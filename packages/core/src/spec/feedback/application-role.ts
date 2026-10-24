@@ -210,6 +210,9 @@ export function classifyTwTokenApplicationRoleV0(token: string): TwTokenApplicat
   // not automatically admit negative, arbitrary, axis or other family variants.
   if (ROOT_GEOMETRY_TOKENS.has(token)) return resolution(token, 'root-geometry', 'canonical');
   if (token === 'pointer-events-none') return resolution(token, 'hit-testing', 'canonical');
+  if (token === 'field-sizing-content' || token === 'field-sizing-fixed') {
+    return resolution(token, 'surface', 'canonical');
+  }
   const comparable = withoutNegativePrefix(token);
 
   if (UNRESOLVED_EXACT_TOKENS.has(comparable) || startsWithAny(comparable, UNRESOLVED_PREFIXES)) {
