@@ -120,7 +120,9 @@ import {
   RULE_META_COLOR_SCHEME_SOURCE_CAP,
   RULE_META_PREFERENCE_SOURCE_CAP,
   RULE_META_STYLE_SUPPORT_SOURCE_CAP,
+  RULE_META_VIEWPORT_SOURCE_CAP,
   type StyleSupportInvalidationSource,
+  type ViewportInvalidationSource,
   type PreferenceInvalidationSource,
   type ColorSchemeInvalidationSource,
 } from '@proto.ui/module-rule-meta';
@@ -158,6 +160,7 @@ type ReactOwnerModulesArgs<Props extends PropsBaseType> = {
   colorSchemeSource?: ColorSchemeInvalidationSource;
   preferenceSource?: PreferenceInvalidationSource;
   styleSupportSource?: StyleSupportInvalidationSource;
+  viewportSource?: ViewportInvalidationSource;
   setExposes: (record: Record<string, unknown>) => void;
   runInCallbackScope: (fn: () => void) => void;
   overlayLayerScheduler?: OverlayLayerScheduler;
@@ -210,6 +213,7 @@ export function createReactOwnerModules<Props extends PropsBaseType>(
     colorSchemeSource,
     preferenceSource,
     styleSupportSource,
+    viewportSource,
     setExposes,
   } = args;
 
@@ -262,6 +266,7 @@ export function createReactOwnerModules<Props extends PropsBaseType>(
         ? [[RULE_META_COLOR_SCHEME_SOURCE_CAP, colorSchemeSource] as const]
         : []),
       ...(preferenceSource ? [[RULE_META_PREFERENCE_SOURCE_CAP, preferenceSource] as const] : []),
+      ...(viewportSource ? [[RULE_META_VIEWPORT_SOURCE_CAP, viewportSource] as const] : []),
       ...(styleSupportSource
         ? [[RULE_META_STYLE_SUPPORT_SOURCE_CAP, styleSupportSource] as const]
         : []),
@@ -300,6 +305,7 @@ export function createReactModules<Props extends PropsBaseType>(args: {
   colorSchemeSource?: ColorSchemeInvalidationSource;
   preferenceSource?: PreferenceInvalidationSource;
   styleSupportSource?: StyleSupportInvalidationSource;
+  viewportSource?: ViewportInvalidationSource;
   exposeStateWebMode?: ExposeStateWebMode;
   scrollProjection?: ScrollProjectionPreference;
   setExposes: (record: Record<string, unknown>) => void;
@@ -327,6 +333,7 @@ export function createReactModules<Props extends PropsBaseType>(args: {
     colorSchemeSource,
     preferenceSource,
     styleSupportSource,
+    viewportSource,
     exposeStateWebMode,
     scrollProjection,
     setExposes,
@@ -554,6 +561,7 @@ export function createReactModules<Props extends PropsBaseType>(args: {
         ? [[RULE_META_COLOR_SCHEME_SOURCE_CAP, colorSchemeSource] as const]
         : []),
       ...(preferenceSource ? [[RULE_META_PREFERENCE_SOURCE_CAP, preferenceSource] as const] : []),
+      ...(viewportSource ? [[RULE_META_VIEWPORT_SOURCE_CAP, viewportSource] as const] : []),
       ...(styleSupportSource
         ? [[RULE_META_STYLE_SUPPORT_SOURCE_CAP, styleSupportSource] as const]
         : []),
