@@ -15,7 +15,6 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     env:
-      PROTO_UI_LANGUAGE_EVIDENCE_DIR: ${{ runner.temp }}/language-navigation
       PROTO_UI_EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
     steps:
       - uses: actions/checkout@v4
@@ -26,6 +25,8 @@ jobs:
         with:
           node-version: 24
       - name: Prepare locked dependencies
+        env:
+          PROTO_UI_LANGUAGE_EVIDENCE_DIR: ${{ runner.temp }}/language-navigation
         timeout-minutes: 5
         run: |
           set -euo pipefail
@@ -35,6 +36,8 @@ jobs:
           CHROME=$(command -v google-chrome || command -v chromium || command -v chromium-browser)
           echo "CHROME_PATH=$CHROME" >> "$GITHUB_ENV"
       - name: Build the actual production website
+        env:
+          PROTO_UI_LANGUAGE_EVIDENCE_DIR: ${{ runner.temp }}/language-navigation
         timeout-minutes: 5
         run: |
           set -euo pipefail
@@ -42,6 +45,7 @@ jobs:
       - name: Execute production locale journeys
         timeout-minutes: 10
         env:
+          PROTO_UI_LANGUAGE_EVIDENCE_DIR: ${{ runner.temp }}/language-navigation
           PROTO_UI_BROWSER_BASE_URL: http://127.0.0.1:4358
         run: |
           set -euo pipefail

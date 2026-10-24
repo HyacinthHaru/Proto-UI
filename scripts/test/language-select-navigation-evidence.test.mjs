@@ -318,6 +318,19 @@ function assertWorkflow(candidate) {
   assert.equal(job['runs-on'], 'ubuntu-24.04');
   assert.equal(job['timeout-minutes'], 20);
   assert.equal(job.env.PROTO_UI_EXPECTED_HEAD, expectedHead);
+  assert.doesNotMatch(
+    JSON.stringify(job.env),
+    /\$\{\{[^}]*\brunner\s*\./,
+    'runner context is unavailable in job.env'
+  );
+  for (const step of job.steps.filter((step) =>
+    step.run?.includes('$PROTO_UI_LANGUAGE_EVIDENCE_DIR')
+  )) {
+    assert.equal(
+      step.env?.PROTO_UI_LANGUAGE_EVIDENCE_DIR,
+      '${{ runner.temp }}/language-navigation'
+    );
+  }
   if (job.permissions) assert.deepEqual(job.permissions, { contents: 'read' });
   const checkout = job.steps.find((step) => step.uses?.startsWith('actions/checkout@'));
   assert.equal(checkout.with.ref, expectedHead);
@@ -491,6 +504,19 @@ for (const [name, mutate] of [
     'job budget expansion',
     (job) => {
       job['timeout-minutes'] = 21;
+    },
+  ],
+  [
+    'runner context in job env',
+    (job) => {
+      job.env.PROTO_UI_LANGUAGE_EVIDENCE_DIR = '${{ runner.temp }}/language-navigation';
+    },
+  ],
+  [
+    'missing step artifact binding',
+    (job) => {
+      delete job.steps.find((step) => step.run?.includes('docs:build')).env
+        .PROTO_UI_LANGUAGE_EVIDENCE_DIR;
     },
   ],
   [
