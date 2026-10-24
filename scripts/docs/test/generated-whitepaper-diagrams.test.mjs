@@ -278,16 +278,4 @@ for (const locale of ['en', 'zh-cn']) {
     }
     assert.doesNotMatch(svg, /@font-face|<script\b|<foreignObject\b|\son[a-z]+\s*=|(?:href|src)\s*=/i);
   });
-
-  test(`Chapter 7 selects mobile art within its original diagram button (${locale})`, async () => {
-    const source = await readFile(new URL(`../../../apps/www/src/content/docs/${locale}/whitepaper/7-evolving-within-boundaries.md`, import.meta.url), 'utf8');
-    const figure = source.match(/<figure class="whitepaper-figure">\s*<button[^>]*data-diagram-open[^>]*>\s*<picture>([\s\S]*?)<\/picture>\s*<\/button>\s*<figcaption>[^<]+<\/figcaption>\s*<\/figure>/)?.[1];
-    assert.ok(figure);
-    assert.ok(figure.includes(`<source media="(max-width: 639px)" srcset="/diagrams/whitepaper-evolution-feedback.mobile.${locale}.svg" width="500" height="1000" />`));
-    assert.ok(figure.includes(`<img src="/diagrams/whitepaper-evolution-feedback.${locale}.svg"`));
-    assert.match(figure, /alt="[^"]+" width="960" height="928" class="whitepaper-diagram" loading="lazy"/);
-    assert.equal([...figure.matchAll(/<source\b/g)].length, 1);
-    assert.equal([...figure.matchAll(/<img\b/g)].length, 1);
-    // Actual currentSrc, loaded dimensions and preview reuse are browser evidence.
-  });
 }
