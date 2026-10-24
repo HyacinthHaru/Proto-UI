@@ -199,7 +199,7 @@ it('requires contain negative control, restored product auto, exact input identi
   const check = (source: string) => { for (const token of required) expect(source).toContain(token); };
   check(helper);
   for (const token of required) expect(() => check(helper.replaceAll(token, ''))).toThrow();
-  expect(helper.indexOf('entry.causality.acceptance = diagnosticHook === undefined')).toBeGreaterThan(helper.indexOf('if (primary) throw primary'));
+  expect(helper.indexOf('entry.causality.acceptance = freshPolicy === undefined')).toBeGreaterThan(helper.indexOf('if (primary) throw primary'));
   const measuredLoop = helper.slice(helper.indexOf('for (let i = 0; i < 14; i++)'), helper.indexOf('stage.passed = true'));
   expect(measuredLoop).not.toMatch(/scrollIntoView|scrollTo\(|scrollBy\(|scrollTop\s*=|dispatchEvent|preventDefault|stopPropagation/);
   expect(browser.match(/}, 45_000\);/g)).toHaveLength(4); // three explicit cases and one two-width loop
@@ -252,7 +252,7 @@ it('isolates every causal policy boundary with observed quiet, preserving final 
 });
 
 
-it('bounds opt-in pointer diagnosis without changing the original causal call or acceptance gates', () => {
+it('bounds the fresh static pair separately while preserving the original causal call', () => {
   const source = ts.createSourceFile('probe.ts', browser, ts.ScriptTarget.Latest, true);
   const calls: ts.CallExpression[] = [];
   const visit = (node: ts.Node) => {
@@ -263,34 +263,52 @@ it('bounds opt-in pointer diagnosis without changing the original causal call or
   visit(source);
   expect(calls).toHaveLength(2);
   expect(calls[0].arguments.map((arg) => arg.getText(source))).toEqual(['page', 'pre', 'entry']);
-  expect(calls[1].arguments.map((arg) => arg.getText(source))).toEqual([
+  expect(calls[1].arguments).toHaveLength(4);
+  expect(calls[1].arguments.slice(0, 3).map((arg) => arg.getText(source))).toEqual([
     'page',
     'pre',
     'entry',
-    'pointerReentryDiagnostic',
+  ]);
+  expect(ts.isObjectLiteralExpression(calls[1].arguments[3])).toBe(true);
+  const option = calls[1].arguments[3] as ts.ObjectLiteralExpression;
+  expect(option.properties.map((property) => property.getText(source))).toEqual([
+    'name: policy',
+    'expectedInitial: pair.initial',
   ]);
   const required = [
+    "(freshPolicy ? [freshPolicy.name] : ['contain-negative', 'product-auto']).entries()",
+    'entry.causality.acceptance = freshPolicy === undefined',
+    "for (const policy of ['contain-negative', 'product-auto'] as const)",
+    "await run('short-code-fresh-' + policy, 1440",
+    'productAcceptance: false',
+    'fullIssueAcceptance: false',
     'entry.acceptance = false',
-    'entry.causality.acceptance = diagnosticHook === undefined',
+    'expect(priorWheels).toHaveLength(0)',
+    "textSha256: createHash('sha256').update((await pre.textContent()) ?? '').digest('hex')",
+    'documentTop: selected!.documentTop',
+    'expect(entry.pairInitial).toEqual(freshPolicy.expectedInitial)',
+    'expect(entry.causality.stages).toHaveLength(1)',
+    'entry.asyncTargetObservation = { acceptance: false',
     "entry.outcome = 'diagnostic-incomplete'",
-    "if (diagnosticHook) entry.outcome = 'diagnostic-observed'",
-    "if (stageName === 'product-auto' && diagnosticHook) await diagnosticHook(page, pre, entry)",
-    'page.mouse.move(0, 0)',
-    'outsideSelected: hit !== element',
-    'expect(entry.pointerReentry.outside.outsideSelected).toBe(true)',
-    'expect(entry.pointerReentry.outside.samePre).toBe(true)',
-    'scrollingElement: document.scrollingElement?.tagName',
-    'const style = getComputedStyle(node)',
+    "entry.outcome = 'diagnostic-observed'",
+    'pair.productAcceptance = true',
     '}, 24_000);',
   ];
+  const compact = (input: string) => input.replace(/\s+/g, '');
   const check = (input: string) => {
-    for (const token of required) expect(input).toContain(token);
+    for (const token of required) expect(compact(input)).toContain(compact(token));
   };
   check(browser);
-  for (const token of required) expect(() => check(browser.replaceAll(token, ''))).toThrow();
-  const diagnostic = browser.slice(browser.indexOf('async function pointerReentryDiagnostic('));
-  expect(diagnostic).not.toMatch(
-    /entry(?:\.causality)?\.acceptance = true|preventDefault\(|stopPropagation\(/
+  for (const token of required)
+    expect(() => check(compact(browser).replaceAll(compact(token), ''))).toThrow();
+  const pair = browser.slice(browser.indexOf("it('compares fresh static auto"));
+  expect(pair).not.toMatch(
+    /fullIssueAcceptance = true|entry(?:\.causality)?\.acceptance = true|preventDefault\(|stopPropagation\(/
   );
-  expect(300 + 5 * 45 + 24 + 10).toBeLessThanOrEqual(560);
+  expect(pair.indexOf('pair.productAcceptance = true')).toBeGreaterThan(
+    pair.indexOf("expect(entry.meetsProductDisplacement).toBe(policy === 'product-auto')")
+  );
+  expect(browser).toContain('const context = await browser.newContext(');
+  expect(browser).toContain('await context.close()');
+  expect(300 + 5 * 45 + 24 + 10).toBeLessThanOrEqual(560); // nominal budget, not execution guarantee
 });

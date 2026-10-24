@@ -266,13 +266,14 @@ async function waitForWheelQuiet(page: Page, entry: any, boundary: string) {
   record.completed = true;
   await save();
 }
-/** Same physical PRE, same passive input, one bounded test-only negative control.
+/** Default: same physical PRE crossover, with all original acceptance gates.
+ * The opt-in freshPolicy runs only one stage in its own fresh context.
  * scrollIntoView is setup only; all measured movement comes from mouse.wheel. */
 async function verifyPassiveCausality(
   page: Page,
   pre: Locator,
   entry: any,
-  diagnosticHook?: (page: Page, pre: Locator, entry: any) => Promise<void>
+  freshPolicy?: { name: 'contain-negative' | 'product-auto'; expectedInitial?: any }
 ) {
   const original = await pre.evaluate(element => ({
     value: (element as HTMLElement).style.getPropertyValue('overscroll-behavior-y'),
@@ -290,7 +291,7 @@ async function verifyPassiveCausality(
   entry.causality = { original, stages: [], acceptance: false };
   let primary: unknown;
   try {
-    for (const [stageIndex, stageName] of ['contain-negative', 'product-auto'].entries()) {
+    for (const [stageIndex, stageName] of (freshPolicy ? [freshPolicy.name] : ['contain-negative', 'product-auto']).entries()) {
       await waitForWheelQuiet(page, entry, 'before-' + stageName);
       if (stageName === 'contain-negative') await pre.evaluate(element =>
         (element as HTMLElement).style.setProperty('overscroll-behavior-y', 'contain', 'important'));
@@ -313,7 +314,14 @@ async function verifyPassiveCausality(
         for (const key of ['scrollY', 'x', 'y', 'width', 'height', 'clientHeight', 'scrollHeight'] as const)
           expect(initial[key]).toBe(negative[key]);
       }
-      if (stageName === 'product-auto' && diagnosticHook) await diagnosticHook(page, pre, entry);
+      if (freshPolicy) {
+        entry.pairInitial = { ...entry.pairIdentity,
+          ...Object.fromEntries((['scrollY', 'x', 'y', 'width', 'height', 'clientHeight',
+            'scrollHeight', 'scrollTop', 'scrollLeft', 'clientWidth', 'scrollWidth',
+            'overscrollX', 'overflowX', 'overflowY'] as const).map(key => [key, initial[key]])) };
+        if (freshPolicy.expectedInitial) expect(entry.pairInitial).toEqual(freshPolicy.expectedInitial);
+        await save();
+      }
       const point = { x: initial.x + initial.width / 2, y: initial.y + initial.height / 2 };
       await page.mouse.move(point.x, point.y);
       const stage: any = { name: stageName, initial, inputs: [], readings: [] };
@@ -406,8 +414,7 @@ async function verifyPassiveCausality(
     try { await save(); } catch (error) { primary ??= error; }
   }
   if (primary) throw primary;
-  entry.causality.acceptance = diagnosticHook === undefined;
-  if (diagnosticHook) entry.outcome = 'diagnostic-observed';
+  entry.causality.acceptance = freshPolicy === undefined;
   await save();
 }
 it('chains reverse wheel from an independently located real short PRE to the document', async () => {
@@ -648,67 +655,102 @@ for (const width of [1440, 320])
     });
   }, 45_000);
 
-// Opt-in diagnostic only; the original product case supplies no hook.
-async function pointerReentryDiagnostic(page: Page, pre: Locator, entry: any) {
-  entry.pointerReentry = { before: await facts(page, pre) };
-  await page.mouse.move(0, 0);
-  entry.pointerReentry.outside = await pre.evaluate((element) => {
-    const hit = document.elementFromPoint(0, 0);
-    const ancestors = [];
-    for (let node: Element | null = element; node; node = node.parentElement) {
-      const style = getComputedStyle(node);
-      ancestors.push({
-        tag: node.tagName,
-        className: node.getAttribute('class'),
-        overflowX: style.overflowX,
-        overflowY: style.overflowY,
-        overscrollX: style.overscrollBehaviorX,
-        overscrollY: style.overscrollBehaviorY,
-      });
-    }
-    return {
-      observedAt: performance.now(),
-      outsideSelected: hit !== element && (!hit || !element.contains(hit)),
-      selectedConnected: element.isConnected,
-      samePre: element === (window as any).__selectedScrollPre,
-      scrollingElement: document.scrollingElement?.tagName,
-      ancestors,
-    };
-  });
+// Opt-in diagnostic only; the original product case supplies no freshPolicy option.
+// Static CSS counterfactual, not the historical parent build or full issue acceptance.
+// The original crossover acceptance above remains unchanged and may still fail.
+it('compares fresh static auto and original contain policy without prior wheel input', async () => {
+  const pair: any = {
+    kind: 'fresh-static-policy-pair',
+    acceptance: false,
+    productAcceptance: false,
+    fullIssueAcceptance: false,
+    coordinateDebt: 'Historical (700,550) replay remains independently required',
+    negativeControl:
+      'Candidate page with original vertical contain policy, not historical parent build',
+    cases: [],
+  };
+  receipt.freshPolicyPair = pair;
   await save();
-  expect(entry.pointerReentry.outside.outsideSelected).toBe(true);
-  expect(entry.pointerReentry.outside.samePre).toBe(true);
-}
-// This separate diagnostic cannot replace the original strict causal acceptance case.
-it('diagnoses same-PRE policy restoration after pointer exit and re-entry', async () => {
-  await run('short-code-pointer-reentry-diagnostic', 1440, async (page, entry) => {
-    entry.kind = 'pointer-reentry-diagnostic';
-    entry.acceptance = false;
-    entry.outcome = 'diagnostic-incomplete';
-    await save();
-    await page.goto(baseUrl + quick, { waitUntil: 'networkidle' });
-    await ready(page);
-    const candidates = await page.locator('pre.proto-previewer__code').evaluateAll((elements) =>
-      elements.map((element, index) => ({
-        index,
-        visible: element.checkVisibility(),
-        documentTop: element.getBoundingClientRect().top + scrollY,
-        scrollHeight: element.scrollHeight,
-        clientHeight: element.clientHeight,
-      }))
-    );
-    const selected = candidates.find(
-      (item) =>
-        item.visible &&
-        item.clientHeight > 0 &&
-        item.scrollHeight === item.clientHeight &&
-        item.documentTop > 1000
-    );
-    expect(selected).toBeDefined();
-    const pre = page.locator('pre.proto-previewer__code').nth(selected!.index);
-    await pre.evaluate((element) => {
-      (window as any).__selectedScrollPre = element;
+  for (const policy of ['contain-negative', 'product-auto'] as const) {
+    await run('short-code-fresh-' + policy, 1440, async (page, entry) => {
+      entry.kind = 'fresh-static-policy-diagnostic';
+      entry.acceptance = false;
+      entry.outcome = 'diagnostic-incomplete';
+      pair.cases.push(entry.name);
+      await page.goto(baseUrl + quick, { waitUntil: 'networkidle' });
+      await ready(page);
+      await page.evaluate(() => document.fonts.ready.then(() => undefined));
+      const candidates = await page.locator('pre.proto-previewer__code').evaluateAll((elements) =>
+        elements.map((element, index) => ({
+          index,
+          visible: element.checkVisibility(),
+          documentTop: element.getBoundingClientRect().top + scrollY,
+          scrollHeight: element.scrollHeight,
+          clientHeight: element.clientHeight,
+        }))
+      );
+      const selected = candidates.find(
+        (item) =>
+          item.visible &&
+          item.clientHeight > 0 &&
+          item.scrollHeight === item.clientHeight &&
+          item.documentTop > 1000
+      );
+      expect(selected).toBeDefined();
+      const pre = page.locator('pre.proto-previewer__code').nth(selected!.index);
+      entry.pairIdentity = {
+        index: selected!.index,
+        documentTop: selected!.documentTop,
+        textSha256: createHash('sha256')
+          .update((await pre.textContent()) ?? '')
+          .digest('hex'),
+        environment: await pre.evaluate((element) => {
+          const style = getComputedStyle(element);
+          const owner = element.closest('[data-previewer-id]') as
+            | (HTMLElement & { __previewer__?: { getCurrentRuntime(): string | null } })
+            | null;
+          return {
+            route: location.pathname,
+            width: innerWidth,
+            height: innerHeight,
+            runtime: owner?.__previewer__?.getCurrentRuntime() ?? null,
+            fontFamily: style.fontFamily,
+            fontSize: style.fontSize,
+            lineHeight: style.lineHeight,
+            fontsStatus: document.fonts.status,
+          };
+        }),
+      };
+      await pre.evaluate((element) => {
+        (window as any).__selectedScrollPre = element;
+      });
+      const priorWheels = await page.evaluate(() =>
+        ((window as any).__codeScrollEventTrace ?? []).filter(
+          (event: any) => event.phase === 'capture'
+        )
+      );
+      entry.priorWheelCount = priorWheels.length;
+      expect(priorWheels).toHaveLength(0);
+      await save();
+      // Only this opt-in path runs one policy in the new context. No crossover.
+      await verifyPassiveCausality(page, pre, entry, {
+        name: policy,
+        expectedInitial: pair.initial,
+      });
+      const stage = entry.causality.stages[0];
+      expect(entry.causality.stages).toHaveLength(1);
+      if (policy === 'contain-negative') pair.initial = entry.pairInitial;
+      entry.meetsProductDisplacement = stage.final.scrollY < stage.initial.scrollY - 500;
+      expect(entry.meetsProductDisplacement).toBe(policy === 'product-auto');
+      entry.asyncTargetObservation = {
+        acceptance: false,
+        outsideSelected: stage.events.filter((event: any) => !event.selectedInPath).length,
+        explanation: 'Post-scroll event targets are not proof of the initial PRE input target',
+      };
+      entry.outcome = 'diagnostic-observed';
+      await save();
     });
-    await verifyPassiveCausality(page, pre, entry, pointerReentryDiagnostic);
-  });
+  }
+  pair.productAcceptance = true;
+  await save();
 }, 24_000);

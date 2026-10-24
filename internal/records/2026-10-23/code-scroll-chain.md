@@ -9,3 +9,22 @@ The new independent browser suite repeats1440×900, scroll2860, hit point700/550
 The existing code-surfaces suite remains unchanged and must still prove native text selection, Copy and expansion. The original TOC capture is retained unchanged; its workflow gains only the relevant CSS path trigger so the product change runs the same test. The new browser suite is explicitly registered and gets its own bounded workflow, without expanding old lane permissions or time budgets. Uses the already validated exact font preparation; no missing-font fallback.
 
 Local source contracts and targeted TypeScript passed before native execution. Those results are not a claim of native scrolling or visual acceptance. Exact new-head CI screenshots and original TOC results remain required. No homepage full-parity or assistive-technology claim.
+
+
+## 2026-10-24: bounded static-policy comparison, not acceptance closure
+
+The official 4fbbf6d0900f4b4d86c50e1c314e2c357bbd68ff run40141762792/job121014792111 preserved15 passing and2 failing tests: the original contain-to-auto causal acceptance and a separate pointer exit/re-entry experiment both kept documentY777 after restoring auto. Eleven source contracts passed. Artifact12579715649 (SHA256 e83a053cd7a842fc95dd925312df262d1b0fd31114c203eea5bac4fa08c15214) retains the complete original failure, actual input/event geometry, and screenshots. The re-entry experiment completed within its24-second timeout and was not product acceptance. No Chromium defect is established.
+
+The added comparison replaces only that answered non-acceptance pointer experiment, within the same24-second budget. The original45-second causal acceptance case, its strict displacement assertion, quiet boundaries and restoration remain active and may still fail. This comparison does not remove or relabel that blocking result to obtain a green lane.
+
+The product change is a static CSS policy change, not an API promise to switch a scroller's policy during an existing input history. The comparison uses two fresh browser contexts from the same candidate, route, browser, viewport, fonts and runtime; both have zero prior wheel captures. The product-auto context retains authored CSS. The negative context applies only the original vertical containment policy before its first measured wheel; it is a matched CSS counterfactual, not an exact historical-parent build. Each context is disposed after its evidence is saved.
+
+Before the positive context's first input, the pair requires equal logical PRE index, source-text digest, document position, font/runtime facts, scroller geometry and initial document/element scroll positions. This matches logical source identity, not physical DOM identity across separate contexts. Each context independently retains its own selected PRE. Both use14 trusted passive wheel inputs of−220, timestamp-bounded actual total−3080, and the same initial pointer hit. The negative requires zero document displacement throughout and actual captured PRE target paths; the positive requires document movement strictly greater than500px. Asynchronous positive event targets outside the PRE remain explicitly recorded and are not represented as proof that the dispatched DOM event targeted the PRE.
+
+The pair always reports acceptance=false and fullIssueAcceptance=false. Its separate productAcceptance can become true only after both controls and the cross-context comparison succeed. A24-second timeout is incomplete evidence; no retry budget or workflow limit is enlarged. The559-second nominal startup/test/teardown sum is not a guarantee including overhead; the existing560-second process limit remains.
+
+The historical (700,550) replay currently hits a DIV and is not reproduced. Its original issue990 requirement, unchanged TOC evidence, and separate selection/Copy/expansion regressions remain outstanding. Neither this diagnostic nor a scoped positive result makes issue990 complete or PR991 merge-ready.
+
+Agent: dot
+ModelTrace: not measured — owner-authorized dot exemption (2026-10-06)
+
