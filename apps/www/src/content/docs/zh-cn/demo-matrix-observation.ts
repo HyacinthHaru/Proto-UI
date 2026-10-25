@@ -141,7 +141,13 @@ export function collectMatrixReadinessDiagnostics(runtimeCount: number) {
 export function observeS4Startup(): boolean {
   const previews = [...document.querySelectorAll('[data-previewer-id]')];
   const failure: {
-    first?: { previewer: Element; index: number; inited: string | null; children: number | null };
+    first?: {
+      previewer: Element;
+      host: Element | null;
+      index: number;
+      inited: string | null;
+      children: number | null;
+    };
   } = {};
   const ready =
     previews.length > 0 &&
@@ -149,10 +155,10 @@ export function observeS4Startup(): boolean {
       const inited = previewer.getAttribute('data-inited');
       // Preserve the original short circuit: an uninitialized previewer does
       // not query its host merely to produce diagnostics.
-      const children =
-        inited === '1' ? (previewer.querySelector('.host')?.childElementCount ?? 0) : null;
+      const host = inited === '1' ? previewer.querySelector('.host') : null;
+      const children = inited === '1' ? (host?.childElementCount ?? 0) : null;
       const result = inited === '1' && children !== null && children > 0;
-      if (!result) failure.first = { previewer, index, inited, children };
+      if (!result) failure.first = { previewer, host, index, inited, children };
       return result;
     });
   try {
@@ -170,8 +176,27 @@ export function observeS4Startup(): boolean {
             hostChildren: failure.first.children,
           }
         : null,
+      firstMissingOwner: failure.first
+        ? {
+            demoId: failure.first.previewer.getAttribute('data-demo-id'),
+            prototypeId: failure.first.previewer.getAttribute('data-prototype-id'),
+            declaredRuntime: failure.first.previewer.getAttribute('data-initial-runtime'),
+            projectionMode: failure.first.previewer.getAttribute('data-projection-mode'),
+            projectionState: failure.first.previewer.getAttribute('data-projection-state'),
+            mounting: failure.first.previewer.getAttribute('data-mounting'),
+            hostTag: failure.first.host?.tagName ?? null,
+            hostOwner:
+              failure.first.host
+                ?.closest('[data-previewer-id]')
+                ?.getAttribute('data-previewer-id') ?? null,
+            startupPending:
+              failure.first.host?.hasAttribute('data-previewer-startup-pending') ?? null,
+            hostOwnInert: failure.first.host?.hasAttribute('inert') ?? null,
+            hostText: failure.first.host?.textContent?.slice(0, 512) ?? null,
+          }
+        : null,
     };
-    const key = JSON.stringify([row.count, row.ready, row.firstMissing]);
+    const key = JSON.stringify([row.count, row.ready, row.firstMissing, row.firstMissingOwner]);
     const target = window as any;
     const journal = (target.__puiS4Startup ??= {
       samples: 0,

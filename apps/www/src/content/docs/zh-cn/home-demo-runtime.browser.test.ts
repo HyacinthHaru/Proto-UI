@@ -517,7 +517,8 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
         if (sample.ref === 'settings-save' || sample.ref === 'settings-reset') {
           const tokens = sample.style.split(/\s+/);
           expect(tokens).toContain('transition-all');
-          expect(tokens.some((token) => ['h-9', 'size-9'].includes(token))).toBe(true);
+          expect(tokens).toContain('min-h-8');
+          expect(tokens).toContain('h-auto');
         }
       }
 
