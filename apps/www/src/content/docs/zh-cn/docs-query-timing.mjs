@@ -223,6 +223,10 @@ export function installDocsCallTimingObserver(
   const cdpRequests = new Map();
   const cdpSessions = new WeakSet();
   const cdpConnections = new WeakSet();
+  const pipeObservers = new WeakMap();
+  const pipeStates = [];
+  const expressionSources = new Map();
+  const expressionDigests = new Map();
   const errors = [];
   const restorers = [];
   const requests = new Map();
@@ -309,6 +313,216 @@ export function installDocsCallTimingObserver(
     });
   };
   const target = (selector, name) => selector === targetSelector && name === attribute;
+  const patchPipeTransport = (transport) => {
+    if (pipeObservers.has(transport)) return pipeObservers.get(transport);
+    const state = {
+      available: false,
+      reason: null,
+      closed: false,
+      outgoing: null,
+      ingress: null,
+      frame: null,
+      reads: 0,
+      frames: 0,
+      writes: 0,
+      responses: 0,
+      response: /** @type {((observed: any) => void) | null} */ (null),
+      drains: 0,
+      errors: 0,
+      dropped: 0,
+      backpressure: new Set(),
+    };
+    pipeObservers.set(transport, state);
+    pipeStates.push(state);
+    const writer = transport?._pipeWrite;
+    const capture = (read) => {
+      try {
+        return read();
+      } catch {
+        state.errors++;
+        return null;
+      }
+    };
+    state.response = (observed) => {
+      if (!state.available || state.closed) return;
+      capture(() => {
+        const frame = state.frame;
+        if (!frame?.ingress || !frame.queued || !frame.entered) {
+          state.errors++;
+          return;
+        }
+        state.responses++;
+        const facts = {
+          callId: observed.callId,
+          query: observed.query,
+          attempt: observed.attempt,
+          id: observed.id,
+          sessionId: observed.sessionId,
+          readOrdinal: frame.readOrdinal,
+          frameOrdinal: frame.ordinal,
+          recordedOnMatchingResponse: true,
+        };
+        record('cdp.pipe.read-dispatch.enter', { ...facts, ...frame.ingress });
+        record('cdp.pipe.frame.queued', { ...facts, ...frame.queued });
+        record('cdp.pipe.frame.callback.enter', { ...facts, ...frame.entered });
+      });
+    };
+    const start = restorers.length;
+    try {
+      if (
+        !writer ||
+        typeof writer.write !== 'function' ||
+        typeof writer.on !== 'function' ||
+        typeof writer.off !== 'function' ||
+        typeof transport._dispatch !== 'function' ||
+        typeof transport._waitForNextTask !== 'function'
+      )
+        throw new Error('Pinned pipe methods unavailable');
+      replace(
+        writer,
+        'write',
+        (original) =>
+          function () {
+            const observed = state.outgoing;
+            if (!state.available || state.closed || !observed)
+              return Reflect.apply(original, this, arguments);
+            const ordinal = ++observed.pipeWriteOrdinal;
+            state.writes++;
+            let result;
+            try {
+              result = Reflect.apply(original, this, arguments);
+            } catch (error) {
+              capture(() =>
+                record('cdp.pipe.write.throw', {
+                  id: observed.id,
+                  sessionId: observed.sessionId,
+                  callId: observed.callId,
+                  ordinal,
+                })
+              );
+              throw error;
+            }
+            capture(() => {
+              if (result === false) {
+                const key = `${observed.sessionId}:${observed.id}`;
+                if (state.backpressure.has(key) || state.backpressure.size < 128)
+                  state.backpressure.add(key);
+                else state.dropped++;
+              }
+              record('cdp.pipe.write.return', {
+                id: observed.id,
+                sessionId: observed.sessionId,
+                callId: observed.callId,
+                ordinal,
+                returned: result,
+                writableLength: writer.writableLength ?? null,
+                writableNeedDrain: writer.writableNeedDrain ?? null,
+              });
+            });
+            return result;
+          }
+      );
+      replace(
+        transport,
+        '_dispatch',
+        (original) =>
+          function () {
+            const previous = state.ingress;
+            state.ingress = state.closed
+              ? null
+              : capture(() => ({ ordinal: ++state.reads, ...clock() }));
+            try {
+              return Reflect.apply(original, this, arguments);
+            } finally {
+              state.ingress = previous;
+            }
+          }
+      );
+      replace(
+        transport,
+        '_waitForNextTask',
+        (original) =>
+          function (callback) {
+            if (
+              !state.available ||
+              state.closed ||
+              !state.ingress ||
+              typeof callback !== 'function'
+            )
+              return Reflect.apply(original, this, arguments);
+            const frame = capture(() => ({
+              ordinal: ++state.frames,
+              readOrdinal: state.ingress.ordinal,
+              ingress: state.ingress,
+              queued: clock(),
+              entered: null,
+            }));
+            if (!frame) return Reflect.apply(original, this, arguments);
+            const args = [...arguments];
+            args[0] = function () {
+              if (state.closed) return Reflect.apply(callback, this, arguments);
+              const previous = state.frame;
+              state.frame = frame;
+              frame.entered = capture(clock);
+              try {
+                return Reflect.apply(callback, this, arguments);
+              } finally {
+                state.frame = previous;
+              }
+            };
+            return Reflect.apply(original, this, args);
+          }
+      );
+      const onDrain = () => {
+        if (state.closed || !state.backpressure.size) return;
+        capture(() => {
+          state.drains++;
+          record('cdp.pipe.drain', {
+            scope: 'whole writable stream; not a per-message acknowledgement',
+            pendingMessageKeys: [...state.backpressure],
+            writableLength: writer.writableLength ?? null,
+            writableNeedDrain: writer.writableNeedDrain ?? null,
+          });
+        });
+        state.backpressure.clear();
+      };
+      writer.on('drain', onDrain);
+      restorers.push(() => {
+        state.closed = true;
+        writer.off('drain', onDrain);
+      });
+      state.available = true;
+    } catch {
+      state.reason = 'Pinned pipe observation could not be installed';
+      state.errors++;
+      state.closed = true;
+      for (const restore of restorers.splice(start).reverse()) {
+        try {
+          restore();
+        } catch {
+          state.errors++;
+        }
+      }
+    }
+    return state;
+  };
+  const collectExpressionBindings = () => {
+    if (!verdict) return [];
+    for (const [key, entry] of expressionSources) {
+      try {
+        expressionDigests.set(key, {
+          ...entry.identity,
+          characters: entry.value.length,
+          sha256: sha(entry.value),
+          hashedAfterVerdict: true,
+        });
+      } catch {
+        diagnosticError('expression-digest', 'Expression digest could not be recorded');
+      }
+    }
+    expressionSources.clear();
+    return [...expressionDigests.values()];
+  };
   const patchCDP = (session) => {
     if (!session || cdpSessions.has(session)) return;
     cdpSessions.add(session);
@@ -316,6 +530,7 @@ export function installDocsCallTimingObserver(
     const transport = cdpConnection?._transport;
     if (!transport || typeof session._sessionId !== 'string')
       throw new Error('Missing pinned Chromium session transport');
+    const pipe = patchPipeTransport(transport);
     replace(
       session,
       'send',
@@ -357,6 +572,7 @@ export function installDocsCallTimingObserver(
           try {
             const observed = cdpRequests.get(`${this._sessionId}:${message.id}`);
             if (observed) {
+              pipe?.response(observed);
               observed.responseObserved = true;
               record('cdp.response.received', { ...observed, hasError: !!message.error });
             }
@@ -396,17 +612,38 @@ export function installDocsCallTimingObserver(
               if (cdpRequests.size < 128)
                 cdpRequests.set(`${observed.sessionId}:${observed.id}`, observed);
               else cdpDropped++;
+              const key = `${observed.sessionId}:${observed.id}`;
+              const expression = Object.getOwnPropertyDescriptor(
+                message.params ?? {},
+                'expression'
+              )?.value;
+              if (cdpRequests.has(key) && typeof expression === 'string')
+                expressionSources.set(key, {
+                  identity: {
+                    callId: observed.callId,
+                    query: observed.query,
+                    attempt: observed.attempt,
+                    id: observed.id,
+                    sessionId: observed.sessionId,
+                    contextId: observed.contextId,
+                  },
+                  value: expression,
+                });
               record('cdp.transport.send.before', { ...observed });
             }
           } catch (error) {
             diagnosticError('cdp.send-observation', error);
           }
+          const previous = pipe?.outgoing;
+          if (pipe) pipe.outgoing = observed ? { ...observed, pipeWriteOrdinal: 0 } : null;
           let result;
           try {
             result = Reflect.apply(original, this, arguments);
           } catch (error) {
             if (observed) record('cdp.transport.send.throw', { ...observed });
             throw error;
+          } finally {
+            if (pipe) pipe.outgoing = previous;
           }
           // This is the Node transport method returning, not browser receipt.
           if (observed) record('cdp.transport.send.return', { ...observed });
@@ -697,7 +934,7 @@ export function installDocsCallTimingObserver(
           if (!target(selector, name)) return Reflect.apply(original, this, arguments);
           const request = requests.get(progress.metadata.id);
           if (!request) return Reflect.apply(original, this, arguments);
-          record('driver.getAttribute.enter', { callId: request.callId });
+          record('driver.getAttribute.enter', { callId: request.callId, frameId: frame._id });
           const args = arguments;
           return storage.run(request, () =>
             tap(
@@ -859,6 +1096,24 @@ export function installDocsCallTimingObserver(
         arrivalDropped,
         cdpRequests: [...cdpRequests.values()].map((request) => ({ ...request })),
         cdpDropped,
+        pipeObservations: pipeStates.map((state) => ({
+          available: state.available,
+          reason: state.reason,
+          closed: state.closed,
+          reads: state.reads,
+          frames: state.frames,
+          writes: state.writes,
+          responses: state.responses,
+          drains: state.drains,
+          errors: state.errors,
+          dropped: state.dropped,
+          pendingBackpressureMessages: state.backpressure.size,
+        })),
+        expressionBindings: collectExpressionBindings(),
+        expressionDigestBoundary:
+          'Original immutable expression references; hashed only in a post-verdict snapshot.',
+        pipeBoundary:
+          'Node write/backpressure and NUL-frame dispatch only; no write callback, extra parse/RPC, browser receipt or engine timestamp.',
         requests: captured,
         errors: [...errors],
         dropped,

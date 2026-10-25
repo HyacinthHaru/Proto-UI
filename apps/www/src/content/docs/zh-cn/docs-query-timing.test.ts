@@ -1,5 +1,6 @@
 // @vitest-environment node
 import { readFileSync } from 'node:fs';
+import { EventEmitter } from 'node:events';
 import { runInNewContext } from 'node:vm';
 import { describe, expect, it } from 'vitest';
 
@@ -142,6 +143,8 @@ function observeCDP({
     cdpRequests,
     cdpSessions: new WeakSet(),
     cdpConnections: new WeakSet(),
+    patchPipeTransport: () => null,
+    expressionSources: new Map(),
     requests: new Map([['call@1', {}]]),
     storage: { getStore: () => (tracked ? { callId: 'call@1', query: 1, attempt: 1 } : undefined) },
     clock: () => {
@@ -308,4 +311,275 @@ describe('Docs target arrival journal', () => {
     expect(observed.batches[0]).toMatchObject({ terminal: true, reason: 'unavailable', errors: 1 });
     expect(observed.selectors).toEqual([]);
   });
+});
+
+function observePipe({
+  thrown,
+  brokenClock = false,
+  missingScheduler = false,
+}: {
+  thrown?: unknown;
+  brokenClock?: boolean;
+  missingScheduler?: boolean;
+} = {}) {
+  const sdk = readFileSync(
+    'node_modules/.pnpm/playwright-core@1.58.2/node_modules/playwright-core/lib/server/pipeTransport.js',
+    'utf8'
+  );
+  const start = sdk.indexOf('class PipeTransport {');
+  const end = sdk.indexOf('// Annotate', start);
+  if (start < 0 || end < 0) throw new Error('Missing pinned PipeTransport');
+  const queued: Array<() => unknown> = [];
+  const writes: Array<{ receiver: unknown; args: unknown[] }> = [];
+  const replies: unknown[] = [];
+  const rows: any[] = [];
+  const errors: string[] = [];
+  const restorers: Array<() => void> = [];
+  let ticks = 0;
+  let parseCalls = 0;
+  let writeResult = false;
+  const writer = new EventEmitter() as any;
+  writer.writableLength = 17;
+  writer.writableNeedDrain = true;
+  writer.write = function (...args: unknown[]) {
+    writes.push({ receiver: this, args });
+    if (thrown !== undefined) throw thrown;
+    return writeResult;
+  };
+  const reader = new EventEmitter();
+  const Transport = runInNewContext(`(${sdk.slice(start, end)})`, {
+    Buffer,
+    JSON: {
+      stringify: JSON.stringify,
+      parse(value: string) {
+        parseCalls++;
+        return JSON.parse(value);
+      },
+    },
+    import_utils: {
+      makeWaitForNextTask: () => (callback: () => unknown) => {
+        queued.push(callback);
+        return 'original-scheduler-return';
+      },
+    },
+    import_debugLogger: { debugLogger: { log() {} } },
+  });
+  const transport = new Transport(writer, reader);
+  if (missingScheduler) transport._waitForNextTask = undefined;
+  const originals = {
+    write: writer.write,
+    dispatch: transport._dispatch,
+    schedule: transport._waitForNextTask,
+  };
+  const promise = Promise.resolve('original');
+  const connection = { _transport: transport, _sessions: new Map() };
+  const session = {
+    _connection: connection,
+    _sessionId: 'pipe-session',
+    send(method: string, params: unknown) {
+      transport.send({ id: 37, sessionId: this._sessionId, method, params });
+      return promise;
+    },
+    _onMessage(message: unknown) {
+      replies.push(message);
+      return 'original-response';
+    },
+  };
+  connection._sessions.set(session._sessionId, session);
+  transport.onmessage = (message: any) =>
+    connection._sessions.get(message.sessionId)?._onMessage(message);
+  const context: any = {
+    Buffer,
+    cap: 512,
+    dropped: 0,
+    cdpDropped: 0,
+    rows,
+    restorers,
+    cdpRequests: new Map(),
+    cdpSessions: new WeakSet(),
+    cdpConnections: new WeakSet(),
+    pipeObservers: new WeakMap(),
+    pipeStates: [],
+    expressionSources: new Map(),
+    requests: new Map([['call@1', {}]]),
+    storage: { getStore: () => ({ callId: 'call@1', query: 1, attempt: 1 }) },
+    clock: () => {
+      if (brokenClock) throw new Error('clock');
+      return { nodeMs: ++ticks };
+    },
+    diagnosticError: (stage: string) => errors.push(stage),
+  };
+  context.record = runInNewContext(`(${helper('record', 'diagnosticError')})`, context);
+  context.tap = runInNewContext(`(${helper('tap', 'replace')})`, context);
+  context.replace = runInNewContext(`(${helper('replace', 'target')})`, context);
+  context.patchPipeTransport = runInNewContext(
+    `(${helper('patchPipeTransport', 'collectExpressionBindings')})`,
+    context
+  );
+  const install = runInNewContext(`(${helper('patchCDP', 'observeWait')})`, context);
+  install(session);
+  return {
+    writer,
+    reader,
+    transport,
+    session,
+    promise,
+    originals,
+    queued,
+    writes,
+    rows,
+    errors,
+    replies,
+    state: context.pipeStates[0],
+    get parseCalls() {
+      return parseCalls;
+    },
+    setWriteResult(value: boolean) {
+      writeResult = value;
+    },
+    dispose() {
+      for (const restore of restorers.reverse()) restore();
+    },
+  };
+}
+
+describe('Docs pinned pipe observation boundary', () => {
+  it('keeps both original writes, arguments and Promise without waiting for backpressure', async () => {
+    const observed = observePipe();
+    const params = { expression: 'unchanged expression' };
+    expect(observed.session.send('Runtime.evaluate', params)).toBe(observed.promise);
+    expect(observed.writes).toHaveLength(2);
+    expect(observed.writes.every((entry) => entry.receiver === observed.writer)).toBe(true);
+    expect(observed.writes.map((entry) => entry.args)).toEqual([
+      [JSON.stringify({ id: 37, sessionId: 'pipe-session', method: 'Runtime.evaluate', params })],
+      ['\0'],
+    ]);
+    expect(
+      observed.rows
+        .filter((row) => row.stage === 'cdp.pipe.write.return')
+        .map((row) => row.returned)
+    ).toEqual([false, false]);
+    expect(observed.queued).toEqual([]);
+    observed.writer.emit('drain');
+    const drain = observed.rows.find((row) => row.stage === 'cdp.pipe.drain');
+    expect(drain.scope).toBe('whole writable stream; not a per-message acknowledgement');
+    expect(drain.pendingMessageKeys).toEqual(['pipe-session:37']);
+    expect(await observed.promise).toBe('original');
+  });
+
+  it('uses the original framing, parsing and callback queue and records only matching replies', () => {
+    const observed = observePipe();
+    observed.session.send('Runtime.evaluate', {});
+    const response = JSON.stringify({ id: 37, sessionId: 'pipe-session', result: {} });
+    const other = JSON.stringify({ id: 99, sessionId: 'pipe-session', result: {} });
+    observed.reader.emit('data', Buffer.from(response.slice(0, 7)));
+    expect(observed.queued).toHaveLength(0);
+    observed.reader.emit('data', Buffer.from(response.slice(7) + '\0' + other + '\0'));
+    expect(observed.queued).toHaveLength(2);
+    expect(observed.parseCalls).toBe(0);
+    expect(observed.rows.some((row) => row.stage === 'cdp.pipe.frame.queued')).toBe(false);
+    observed.queued.shift()!();
+    observed.queued.shift()!();
+    expect(observed.parseCalls).toBe(2);
+    expect(observed.replies).toEqual([JSON.parse(response), JSON.parse(other)]);
+    const frame = observed.rows.filter(
+      (row) => row.stage.startsWith('cdp.pipe.') && row.frameOrdinal
+    );
+    expect(frame.map((row) => row.stage)).toEqual([
+      'cdp.pipe.read-dispatch.enter',
+      'cdp.pipe.frame.queued',
+      'cdp.pipe.frame.callback.enter',
+    ]);
+    expect(
+      frame.every((row) => row.id === 37 && row.readOrdinal === 2 && row.frameOrdinal === 1)
+    ).toBe(true);
+    expect(frame[0].nodeMs).toBeLessThan(frame[1].nodeMs);
+    expect(frame[1].nodeMs).toBeLessThan(frame[2].nodeMs);
+    expect(observed.state.responses).toBe(1);
+  });
+
+  it('preserves original synchronous throw even when observer clocks fail', () => {
+    const observed = observePipe({ thrown: 0, brokenClock: true });
+    let thrown: unknown = 'missing';
+    try {
+      observed.session.send('Runtime.evaluate', {});
+    } catch (error) {
+      thrown = error;
+    }
+    expect(thrown).toBe(0);
+    expect(observed.writes).toHaveLength(1);
+    expect(observed.queued).toEqual([]);
+  });
+
+  it('restores owned methods and lets an already queued original callback finish after disposal', () => {
+    const observed = observePipe();
+    observed.session.send('Runtime.evaluate', {});
+    observed.reader.emit('data', Buffer.from('{"id":37,"sessionId":"pipe-session","result":{}}\0'));
+    const callback = observed.queued.shift()!;
+    observed.dispose();
+    expect(observed.writer.write).toBe(observed.originals.write);
+    expect(observed.transport._dispatch).toBe(observed.originals.dispatch);
+    expect(observed.transport._waitForNextTask).toBe(observed.originals.schedule);
+    expect(observed.writer.listenerCount('drain')).toBe(0);
+    callback();
+    expect(observed.parseCalls).toBe(1);
+    expect(observed.replies).toHaveLength(1);
+    expect(observed.state.responses).toBe(0);
+  });
+
+  it('does not overwrite another writer owner or remove its drain listener', () => {
+    const observed = observePipe();
+    const foreignWrite = () => true;
+    const foreignDrain = () => {};
+    observed.writer.write = foreignWrite;
+    observed.writer.on('drain', foreignDrain);
+    observed.dispose();
+    expect(observed.writer.write).toBe(foreignWrite);
+    expect(observed.writer.listeners('drain')).toEqual([foreignDrain]);
+    expect(observed.errors).toContain('restore-ownership');
+  });
+
+  it('reports unavailable pipe shape without preventing the original command', async () => {
+    const observed = observePipe({ missingScheduler: true });
+    expect(observed.state.available).toBe(false);
+    expect(observed.state.reason).toBe('Pinned pipe observation could not be installed');
+    expect(observed.session.send('Runtime.evaluate', {})).toBe(observed.promise);
+    expect(await observed.promise).toBe('original');
+    expect(observed.writes).toHaveLength(2);
+    expect(observed.writer.write).toBe(observed.originals.write);
+  });
+});
+
+it('hashes retained expression references only after the original verdict', () => {
+  let hashes = 0;
+  const context: any = {
+    verdict: null,
+    expressionSources: new Map([
+      ['s:1', { identity: { sessionId: 's', id: 1 }, value: 'exact expression' }],
+    ]),
+    expressionDigests: new Map(),
+    sha: (value: string) => {
+      hashes++;
+      return `digest:${value}`;
+    },
+    diagnosticError() {},
+  };
+  const collect = runInNewContext(`(${helper('collectExpressionBindings', 'patchCDP')})`, context);
+  expect(collect()).toEqual([]);
+  expect(hashes).toBe(0);
+  expect(context.expressionSources.size).toBe(1);
+  context.verdict = { passed: false };
+  expect(collect()).toEqual([
+    {
+      sessionId: 's',
+      id: 1,
+      characters: 16,
+      sha256: 'digest:exact expression',
+      hashedAfterVerdict: true,
+    },
+  ]);
+  expect(hashes).toBe(1);
+  expect(context.expressionSources.size).toBe(0);
+  collect();
+  expect(hashes).toBe(1);
 });
