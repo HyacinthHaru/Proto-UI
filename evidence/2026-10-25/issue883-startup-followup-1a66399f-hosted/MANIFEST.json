@@ -1,0 +1,40 @@
+{
+  "head": "1a66399f9bb593717e4b9b70ac4bc0ec36fc510f",
+  "tree": "6e56e93b71b51f18957aa7053088ec95e358b624",
+  "outerFileCountIncludingManifest": 7,
+  "archiveMemberCount": 76,
+  "archiveCRCAndBytesVerified": true,
+  "innerPublicMapEqualsOuter": true,
+  "files": [
+    {
+      "path": "PUBLIC-MAPPING.json",
+      "bytes": 73152,
+      "sha256": "0656c40f7f3c69aa797515ef965b8f478269e9dad73af97ea64349c318da4265"
+    },
+    {
+      "path": "README.md",
+      "bytes": 6161,
+      "sha256": "6e7c7635900dc4150d9394f98830f003a1011a2a99b158798d2b871f778a00e9"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 1545,
+      "sha256": "9233eeb36b6797b2b8ce9b67a953e250ff3f6090a3788ef08abd0f60794211f5"
+    },
+    {
+      "path": "captures/hosted-brutalist-postfailure.png",
+      "bytes": 33438,
+      "sha256": "0fb73b0c0324715b846f8fae364bed413bb5a80b6dde95e2fcd02dd523ae077d"
+    },
+    {
+      "path": "evidence.zip",
+      "bytes": 413223,
+      "sha256": "888d5d3923718058fadedb046634d5ddd04076d2b13a397f1f087e08a88a8f5c"
+    },
+    {
+      "path": "machine-summary.json",
+      "bytes": 1629,
+      "sha256": "f75563d5c651659f50973cc3da5378ea418f30f0204e97a58ead3af0503624e5"
+    }
+  ]
+}

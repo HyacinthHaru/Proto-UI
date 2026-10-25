@@ -1,0 +1,1157 @@
+{
+  "assembledAt": "2026-10-25T08:56:09.651202+00:00",
+  "head": "1a66399f9bb593717e4b9b70ac4bc0ec36fc510f",
+  "tree": "6e56e93b71b51f18957aa7053088ec95e358b624",
+  "rawInputCount": 815,
+  "mappedInputCount": 731,
+  "hashReferenceCount": 84,
+  "pngCount": 28,
+  "uniquePngHashes": 24,
+  "observations": {
+    "historicalThroughC5": {
+      "source": {
+        "head": "c5ed7028d9961672344628acc81445833a820529",
+        "tree": "9286d9ed27ebaf377803d2620296e37b219273c5",
+        "acceptedBase": "357068f0f371dd40826b81da43bd4ef5df73bee7",
+        "acceptedBaseTree": "f6c7d48a8f92955e77832478ae4c388b3dd2b254",
+        "parent": "06a752a861b0ceaaa549f1a019d7b15c5ea4178b",
+        "netPaths": 12,
+        "scope": "originalown7includingdatedrecord+reviewedautomaticinventoryformat+2Ctestfixes+previewnumericlimit/README2; no productionstartup/S4repair"
+      },
+      "localHistorical": {
+        "baseline43": {
+          "pass": 38,
+          "fail": 5,
+          "epoch": "718 clean"
+        },
+        "candidate43": {
+          "pass": 40,
+          "fail": 3,
+          "epoch": "718 plus six candidate paths before later refinements"
+        },
+        "unitCandidate": {
+          "pass": 84,
+          "fail": 0,
+          "epoch": "718 early candidate"
+        },
+        "unitFinal": {
+          "pass": 84,
+          "fail": 0,
+          "epoch": "718 staged seven paths"
+        },
+        "typesChronology": [
+          {
+            "epoch": "718 pre-nullable property",
+            "files": 967,
+            "errors": 0,
+            "warnings": 0,
+            "hints": 15,
+            "exit": 0
+          },
+          {
+            "epoch": "718 staged candidate",
+            "files": 967,
+            "errors": 0,
+            "warnings": 0,
+            "hints": 14,
+            "exit": 0
+          },
+          {
+            "epoch": "4d staged candidate, precommit",
+            "files": 967,
+            "errors": 0,
+            "warnings": 0,
+            "hints": 14,
+            "exit": 0
+          }
+        ]
+      },
+      "main718CI": {
+        "run": 40147277848,
+        "head": "7181a93a5ec5cad43936a72e31d5477d5488733a",
+        "packageBuild": 47,
+        "manifestCount": 47,
+        "policy": "4 PASS / 5 Finf ADVISORY, not nine strict passes",
+        "GeneralDriftCount": 78,
+        "wholeShardExit124": [1, 2, 4, 8],
+        "SearchFile": {
+          "pass": 13,
+          "fail": 17,
+          "readinessFail": 8,
+          "DocsFail": 9
+        },
+        "allEightTestTotal": "unknown; no subtotal promoted to all-eight total"
+      },
+      "paintControl": {
+        "epoch": "clean a9 external control",
+        "screencastOrder": ["on", "off", "off", "on"],
+        "screenshotBudgetsMs": [20000, 20000, 20000, 14573.324542],
+        "returnedPngCount": 0,
+        "result": "All four screenshot controls timed out; fourth arm censored by remaining work budget. No evidence screencast alone is the cause; no product/S4 acceptance or equal-budget claim."
+      },
+      "CPUProfile": {
+        "epoch": "a9 temporary one-caller private observer",
+        "profileReceived": false,
+        "profile": null,
+        "result": "Original zh-cn timeout retained; en filtered; Profiler.stop rejected after context close; no CPU hotspot or per-Previewer attribution."
+      },
+      "images": {
+        "selectedFiles": 22,
+        "historical718": 11,
+        "actualA9": 5,
+        "actualC5": 6,
+        "RootActualView": true,
+        "allImagesReviewedBeyondSelection": false,
+        "originalPngBytesPreserved": true,
+        "a9MobileImageIsPostRejection": true
+      },
+      "currentFinalResults": "Exactcleanfinalc5 full14terminal294pass3S4fail0skip; newcompleteproducer3853files107504022B/defaultadmission1pass; sixactualc5Rootviewedcaptures; canonicalCIpartialasdated, no test/packagepass inferred.",
+      "a9FullCombination": {
+        "head": "a9cafe3aeede4450243c405ac734307d697fbb07",
+        "start": "2026-10-25T05:51:35.071122+00:00",
+        "end": "2026-10-25T06:14:42.763070+00:00",
+        "files": 14,
+        "tests": 297,
+        "passed": 291,
+        "failed": 6,
+        "skipped": 0,
+        "exit": 1,
+        "sourceStable": true,
+        "negativeGroups": [
+          "Three original C oracle/resting-row predicates",
+          "Two S4 locale timeouts plus one paint150s timeout"
+        ],
+        "Search30Passed": true,
+        "Docs10PassedWithinSearch30": true,
+        "noEarlierHostedFailureClosed": true,
+        "paintSameRunBlockedOperation": "unknown; prior AB screenshot/control timing is not substituted"
+      },
+      "oracleDiagnostic": {
+        "head": "a9cafe3aeede4450243c405ac734307d697fbb07",
+        "privateOverlayFiles": 2,
+        "passed": 0,
+        "failed": 3,
+        "filtered": 17,
+        "originalAssertionsInputsDeadlinesPreserved": true,
+        "restored": true,
+        "observationCosts": "Per-control style/animation observations after BCR may flush/update style and alter sample spacing; not an atomic snapshot. data-hover null is not data-hovered proof."
+      },
+      "c08Contrast": {
+        "sameParent": "c08e535c632cb703f096cde16ec20786f9914ead",
+        "baseline": {
+          "passed": 0,
+          "failed": 3,
+          "filtered": 17,
+          "clean": true
+        },
+        "candidate": {
+          "passed": 3,
+          "failed": 0,
+          "filtered": 17,
+          "dirtyFiles": 2
+        },
+        "chronology": "Candidate06:24:54-06:25:32 followed by baseline06:27:06-06:27:34; do not reverse timestamps or call it a chronological red-then-green run.",
+        "source": "Entire tracked census differs only in the two tests; declared extraInputs equal. Not complete environment closure.",
+        "committedBytesEqual06a": true
+      },
+      "currentPrecommitValidation": {
+        "headDuringRuns": "c08e535c632cb703f096cde16ec20786f9914ead",
+        "dirtyCandidateFiles": 2,
+        "unit": {
+          "files": 8,
+          "passed": 86,
+          "failed": 0,
+          "skipped": 0
+        },
+        "types": {
+          "astroFiles": 968,
+          "errors": 0,
+          "warnings": 0,
+          "hints": 14
+        },
+        "notPostcommit06aCommands": true
+      },
+      "mergePublicationUnknown": {
+        "preparedTree": "2fc2ccbc7c3b0da46018c05d238c112f9b9cf451",
+        "actualC08Tree": "4d407e73ffe43845d3dd9c20ff5d388349ea47d8",
+        "initialExpectedTreeNotCommitted": true,
+        "onlyPreparedDelta": "internal/compiler/website-demo-migrations.json",
+        "fullJSONParsedDeepEqual": true,
+        "allNonWhitespaceLexicalBytesEqual": true,
+        "noCommitRetry": true
+      },
+      "legacyAccordionOutput": {
+        "actualRun": "a9",
+        "newFiles": 175,
+        "usedLegacyR23Directory": true,
+        "copiedToR24WithoutByteChanges": true,
+        "onlyReconciliationReceiptSelected": true,
+        "oldLocalDirectoryNotClaimedImmutable": true,
+        "oldPublishedGitCapsuleUnchanged": true
+      },
+      "actualDocsTracedControl": {
+        "head": "06a752a861b0ceaaa549f1a019d7b15c5ea4178b",
+        "tree": "b7abb50ab9ac82966c594504e442a1dfef525e22",
+        "privateCallerFiles": 1,
+        "passed": 1,
+        "failed": 0,
+        "filtered": 29,
+        "notFullSearch30": true,
+        "originalPollMs": 1000,
+        "originalCaseMs": 180000,
+        "sourceStable": true,
+        "extraInputsStable": true,
+        "callerCASRestored": true,
+        "originalQueryToReturnNodeMs": 318.4964170000003,
+        "originalQueryToFrozenVerdictNodeMs": 318.55304199999955,
+        "diagnosticObservationAfterVerdictNodeMs": 0.4099580000001879,
+        "largeRuntimeEvaluateSendToResponseNodeMs": 295.9232920000013,
+        "expressionSHA256": "730c2ff13134a1ef5afdb2584d768787110b548e2653bd4ee9e0c7d543c7bb1a",
+        "sourceContextScriptIsolateProcessIdentityObserved": true,
+        "explicitlyBoundCompileSpans": 0,
+        "explicitlyBoundEvaluateSpans": 0,
+        "sameRendererEmptyArgsCompileEvaluateEvents": 40888,
+        "traceBytes": 26660958,
+        "traceEventCount": 138200,
+        "EOFAndDataLossFalseDoNotProveFull1sCoverage": true,
+        "capturedThirdPartyScriptBytes": 305324,
+        "completeTraceAndScriptPrivateHashRefsOnly": true,
+        "diagnosticCleanupErrors": 1,
+        "pageSessionDetached": false,
+        "originalContextAndBrowserCloseSucceeded": true,
+        "errorBoundary": "Explicit page-session detach after original context close rejected TargetClosed; retain it. No zero-error or independent OS-process audit claim.",
+        "oldHostedFailureCauseClosed": false
+      },
+      "previewCapacityCandidate": {
+        "productionBuildHead": "06a752a861b0ceaaa549f1a019d7b15c5ea4178b",
+        "productionBuildTree": "b7abb50ab9ac82966c594504e442a1dfef525e22",
+        "files": 3853,
+        "buildPages": 651,
+        "expandedBytes": 107503910,
+        "zipBytes": 21525712,
+        "zipSHA256": "1bf167ff6252ecc3cadd576f9bbf214c91cd1b7982ac36d50b167e17bfb7afbb",
+        "originalDefaultExpandedBytes": 104857600,
+        "originalDefaultAdmissionPassed": 0,
+        "originalDefaultAdmissionFailed": 1,
+        "candidateDefaultExpandedBytes": 134217728,
+        "candidateSource": "Historical06a+3savedcandidatefilesduring62tests; nowmappedunchangedc5bytes; notapostcommitexecution",
+        "suite": {
+          "tests": 62,
+          "passed": 62,
+          "failed": 0,
+          "skipped": 0
+        },
+        "sameZIPSameOriginalGeneratedArtifactAssertions": true,
+        "fullExtractionAndSanitizerCoveredByUnchangedSuite": true,
+        "noAssetsDropped": true,
+        "notCapacityHeadProductionRebuild": true,
+        "notRenderedQA": true,
+        "noDeploymentOrPermissionClaim": true
+      },
+      "c5": "Sourcec5/tree9286/net12pathssignedpushed; allownedlocalnativejobs terminal/ignoredpreferencesCASrestored; full14negative294/3retained",
+      "buildDifferences": "c5producer107504022B/21526002ZIP differs06a107503910B/21525712ZIP;2474pathkeys; no crossbuildbyteidentity/unprovenhashcauseclaim",
+      "exactC5Full": {
+        "files": 14,
+        "tests": 297,
+        "pass": 294,
+        "fail": 3,
+        "skip": 0,
+        "sourceStable": true,
+        "extraStable": true,
+        "remaining": "Original150sS4two locale+paint; alloriginalnon-S4Ccasespassed"
+      },
+      "canonicalCI": {
+        "at": "2026-10-25T07:28:18.085929+00:00",
+        "head": "c5ed7028d9961672344628acc81445833a820529",
+        "pending": true,
+        "checks": {
+          "queued": 50,
+          "success": 5,
+          "in_progress": 2
+        },
+        "paginationComplete": true,
+        "noTestPackagePassInferred": true
+      },
+      "paintCurrentDebug": {
+        "actualSource": "cleanc5+DEBUGenvonly",
+        "result": "original150snegative1fail",
+        "API": "firsttriggerclickcompleted;getattrreadscompleted;page.screenshotstarted07:18:59.944/fontsloaded07:19:12.274 butfailed07:20:57.569 aftercontext-close",
+        "detach": "secondarycdpSession.detachfailed; rawmessageabsent, donotfabricateTargetClosedreason",
+        "notReplaces": "cleanfull14S4timeout"
+      },
+      "publicationStatus": "Preparedactualterminaldata; externalpublication/anonymousverificationnotyetperformed. currentCI explicitlypartialasdated; no waitingresultinferred.",
+      "remainingDebt": "ThreeS4failures/engineinternalattribution/currentcanonicaltest-packagepending/deployedpreviewnotestablished; notcompleteacceptance",
+      "historicalPreparationV3Fields": {
+        "status": "Historicalpreparationvaluesnotcurrent; originalv3planandfirstprivateassemblypreserved",
+        "values": {
+          "source": {
+            "head": "06a752a861b0ceaaa549f1a019d7b15c5ea4178b",
+            "tree": "b7abb50ab9ac82966c594504e442a1dfef525e22",
+            "acceptedBase": "357068f0f371dd40826b81da43bd4ef5df73bee7",
+            "acceptedBaseTree": "f6c7d48a8f92955e77832478ae4c388b3dd2b254",
+            "parent": "c08e535c632cb703f096cde16ec20786f9914ead",
+            "netPaths": 10,
+            "scope": "Only two tests added by06a; prior own7 and reviewed inventory formatting remain; no production semantic change by06a."
+          },
+          "images": {
+            "selectedFiles": 16,
+            "historical718": 11,
+            "actualA9": 5,
+            "current06a": 0,
+            "RootActualView": true,
+            "preparerViewedOrReencoded": false,
+            "originalBytesOnly": true,
+            "mobileFailureFrameIsAfterRejection": true
+          },
+          "currentFinalResults": "06a traced positive control and clean06a full production build are terminal; original100MiB admission red and separate128MiB candidate62green retained. Exact capacity-head/full14/currentCI/finalimages pendingRoot append.",
+          "c5": "Sourceheadc5/tree9286/net12pathssignedandpushed; full14nativecurrentlyrunningnotpassed; completeproducer/c5actualdefaultadmissionpasssourcefactsretained",
+          "baseHead": "357068f0f371dd40826b81da43bd4ef5df73bee7",
+          "baseTree": "f6c7d48a8f92955e77832478ae4c388b3dd2b254"
+        }
+      },
+      "historicalCanonicalSnapshot0713": {
+        "at": "2026-10-25T07:13:53.264364+00:00",
+        "pending": true,
+        "workflowCount": 14,
+        "checks": {
+          "queued": 55,
+          "success": 2
+        },
+        "noTestPackagePassInferred": true
+      }
+    },
+    "source": {
+      "kind": "exactsource-p2-dedup-combination-binding",
+      "at": "2026-10-25T08:08:57.682982+00:00",
+      "head": "1a66399f9bb593717e4b9b70ac4bc0ec36fc510f",
+      "tree": "6e56e93b71b51f18957aa7053088ec95e358b624",
+      "parent": "1a66399f9bb593717e4b9b70ac4bc0ec36fc510f^",
+      "acceptedMain": "357068f0f371dd40826b81da43bd4ef5df73bee7",
+      "netPaths": [
+        "apps/www/src/components/override/LanguageSelect.astro",
+        "apps/www/src/components/override/LanguageSelect.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-matrix-observation.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-matrix-observation.ts",
+        "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/docs-query-timing.mjs",
+        "apps/www/src/content/docs/zh-cn/docs-query-timing.test.ts",
+        "apps/www/src/content/docs/zh-cn/home-demo-runtime.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/site-native-links.browser.test.ts",
+        "apps/www/test/language-select-lifecycle.test.ts",
+        "internal/compiler/website-demo-migrations.json",
+        "internal/records/2026-10-25-docs-startup-delivery.md"
+      ],
+      "netPathCount": 13,
+      "newCommitPaths": [
+        {
+          "path": "apps/www/src/components/override/LanguageSelect.astro",
+          "head": "1a66399f9bb593717e4b9b70ac4bc0ec36fc510f",
+          "blob": "5c631a5f446d9d7de69497c0a95adef33795eb0f",
+          "sha256": "a671e9a5b9ca77ce82302a00cd8cc04dd42c476505b9cdf59a1db9ba1131c2ca",
+          "bytes": 7312,
+          "worktreeBytesEqual": true
+        },
+        {
+          "path": "apps/www/src/components/override/LanguageSelect.test.ts",
+          "head": "1a66399f9bb593717e4b9b70ac4bc0ec36fc510f",
+          "blob": "1d55ad2cbb6cdb24dbc8f889ab41f00c2584e989",
+          "sha256": "d88ab7fd1cb3d74acb150c9b7cd3418487988a25455cd0795437ac1e3f4e7644",
+          "bytes": 3202,
+          "worktreeBytesEqual": true
+        },
+        {
+          "path": "apps/www/test/language-select-lifecycle.test.ts",
+          "head": "1a66399f9bb593717e4b9b70ac4bc0ec36fc510f",
+          "blob": "763e2a8ae8712717e3f3f29f5c05af146d7cb29f",
+          "sha256": "db26b23c790b6a73aa4300c250ffdca8d0ba7e81c40885471e807e9ba3aa435d",
+          "bytes": 12791,
+          "worktreeBytesEqual": true
+        },
+        {
+          "path": "internal/records/2026-10-25-docs-startup-delivery.md",
+          "head": "1a66399f9bb593717e4b9b70ac4bc0ec36fc510f",
+          "blob": "f6a692e62c9510785bd8da94b769ce215ffa4425",
+          "sha256": "f3772254c3866eea952e81f389474645665c9af0c805bfed116dd5d339ba8ed1",
+          "bytes": 10487,
+          "worktreeBytesEqual": true
+        },
+        {
+          "path": "scripts/preview/README.md",
+          "head": "1a66399f9bb593717e4b9b70ac4bc0ec36fc510f",
+          "blob": "9f32e7ebe4e928537b53d32f5d8c6bddd23c044e",
+          "sha256": "2263340751602592beec67104396af557315a782a0eef1e427f063eaf41e32d5",
+          "bytes": 8099,
+          "worktreeBytesEqual": true
+        },
+        {
+          "path": "scripts/preview/sanitize-tree.mjs",
+          "head": "1a66399f9bb593717e4b9b70ac4bc0ec36fc510f",
+          "blob": "d36f570b1570995072fe516a723066b83e998964",
+          "sha256": "66e21751cbb68fa13dd4c6359b132e27d5feb01e53345acc514aaeb0fa106191",
+          "bytes": 3857,
+          "worktreeBytesEqual": true
+        }
+      ],
+      "previewFilesEqualAcceptedMain": {
+        "scripts/preview/sanitize-tree.mjs": true,
+        "scripts/preview/README.md": true
+      },
+      "publishedSource": "4ecb49e09e9ebda35a76d5d768ec25b764572a01",
+      "sourceOwnerPR1005NotClaimed": true,
+      "scope": "Exact3publishedsource/testblobs; additivehistorypreserves128attempt; allC1smatchers/deadlines/keyboardowner/Portal/freshkeyunchangedfromc5",
+      "partial": true
+    },
+    "current1aValidation": {
+      "kind": "exact1a-fullvalidation-plus-composition-boundaries",
+      "disposition": "partial",
+      "formalApproval": false,
+      "sourceHead": "1a66399f9bb593717e4b9b70ac4bc0ec36fc510f",
+      "tree": "6e56e93b71b51f18957aa7053088ec95e358b624",
+      "full14": {
+        "kind": "actual-clean1a-full14-reconciliation",
+        "source": {
+          "head": "1a66399f9bb593717e4b9b70ac4bc0ec36fc510f",
+          "tree": "6e56e93b71b51f18957aa7053088ec95e358b624"
+        },
+        "start": "2026-10-25T08:06:51.207108+00:00",
+        "end": "2026-10-25T08:30:05.463125+00:00",
+        "exit": 1,
+        "files": 14,
+        "tests": 297,
+        "passed": 294,
+        "failed": 3,
+        "skipped": 0,
+        "sourceStable": true,
+        "extraInputsStable": true,
+        "trackedFiles": 11496,
+        "failures": [
+          {
+            "file": "<WORKTREE>/apps/www/src/content/docs/zh-cn/demo-shadow-split-s4-paint.browser.test.ts",
+            "case": "S4: compositor never repaints a closed Dialog after settings changes",
+            "messages": [
+              "Error: Test timed out in 150000ms.\nIf this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\".\n    at Timeout.<anonymous> (file://<WORKTREE>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:44:18)\n    at listOnTimeout (node:internal/timers:685:17)\n    at processTimers (node:internal/timers:618:7)"
+            ]
+          },
+          {
+            "file": "<WORKTREE>/apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts",
+            "case": "S4 complete public Dialog settings zh-cn: native Light/split/mixed acceptance",
+            "messages": [
+              "Error: Test timed out in 150000ms.\nIf this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\".\n    at Timeout.<anonymous> (file://<WORKTREE>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:44:18)\n    at listOnTimeout (node:internal/timers:685:17)\n    at processTimers (node:internal/timers:618:7)"
+            ]
+          },
+          {
+            "file": "<WORKTREE>/apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts",
+            "case": "S4 complete public Dialog settings en: native Light/split/mixed acceptance",
+            "messages": [
+              "Error: Test timed out in 150000ms.\nIf this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\".\n    at Timeout.<anonymous> (file://<WORKTREE>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:44:18)\n    at listOnTimeout (node:internal/timers:685:17)\n    at processTimers (node:internal/timers:618:7)"
+            ]
+          }
+        ],
+        "originalDeadlinesMatchersOwnerControlsPreserved": true
+      },
+      "precommit": {
+        "kind": "precommit-vs-accuratehead-validation-boundaries",
+        "preparedAt": "2026-10-25T08:12:37.991928+00:00",
+        "precommitCandidate": {
+          "headDuringRun": "c5ed7028d9961672344628acc81445833a820529",
+          "savedPaths": 6,
+          "units": {
+            "actualFiles": 10,
+            "pass": 101,
+            "fail": 0,
+            "skipped": 0
+          },
+          "types": {
+            "astroFiles": 969,
+            "errors": 0,
+            "warnings": 0,
+            "hints": 14
+          },
+          "previewSuite": {
+            "pass": 62,
+            "fail": 0,
+            "skipped": 0
+          },
+          "newLifecycleFile": "Wasuntrackedbytrackedcensus;preparedSHAandcurrentcommittedblobsverifiedequal; do not claim census alone covered it"
+        },
+        "accurateCommittedHead": {
+          "head": "1a66399f9bb593717e4b9b70ac4bc0ec36fc510f",
+          "tree": "6e56e93b71b51f18957aa7053088ec95e358b624",
+          "fullProducer": {
+            "start": "2026-10-25T08:06:42.700033+00:00",
+            "end": "2026-10-25T08:06:44.823793+00:00",
+            "head": "1a66399f9bb593717e4b9b70ac4bc0ec36fc510f",
+            "tree": "6e56e93b71b51f18957aa7053088ec95e358b624",
+            "exit": 0,
+            "argv": ["node", "--test", "scripts/preview/generated-artifact.test.mjs"],
+            "completeFiles": 3853,
+            "htmlFiles": 669,
+            "expandedBytes": 104051788,
+            "zipBytes": 20433724,
+            "zipSHA256": "25b2dace92b53db40cb76759668db4c1c2ddc686402a98cd5d777c51d192b049",
+            "defaultMaxExpandedBytes": 104857600,
+            "headroomBytes": 805812,
+            "scope": "Cleanaccurateheadfullunfilteredproducer/defaultadmission; everyadmittedsanitizedfilebyteassertionoriginal; notdeployedservice"
+          },
+          "allNativeTests": "runningnotpassed"
+        },
+        "old128Attempt": "Historicalc5retained; not final100MiBenvelope result"
+      },
+      "remaining": [
+        "OriginalS4twoLocales/paintnegative",
+        "UniquelyboundRuntime.evaluateinteriorwaitingnotmeasured",
+        "CanonicalCI/deployedReady/independentmaintaineracceptanceseparate"
+      ],
+      "supplementalDiagnostic": {
+        "kind": "actual-private-three-cached-ReactPromise-control",
+        "at": "2026-10-25T08:43:05.602924+00:00",
+        "parentHead": "1a66399f9bb593717e4b9b70ac4bc0ec36fc510f",
+        "privateOverlaySHA256": "809a3d887a8602f12a88507ce555aa5e6ee3e39d6c73ed3169e0c426dac14ed7",
+        "callerUnchanged": true,
+        "start": "2026-10-25T08:38:57.511287+00:00",
+        "end": "2026-10-25T08:41:38.039508+00:00",
+        "exit": 1,
+        "passed": 0,
+        "failed": 1,
+        "filteredSkipped": 1,
+        "original150sRetained": true,
+        "sourceStable": true,
+        "extraInputsStable": true,
+        "rawLogSHA256": "1cd5f684c36a9fd79a9b48d6f388d66c31437fa26bc50193e109c507ac4d928a",
+        "observedRows": 24,
+        "observedPhases": {
+          "call.begin": 12,
+          "call.return": 12
+        },
+        "detailedCallsObserved": [1, 2, 3, 4],
+        "loaderPromiseIDs": {
+          "importReact": [1],
+          "reactDomModule": [2],
+          "reactDomClientModule": [3]
+        },
+        "firstObservedReturnPageMs": 38122.10000002384,
+        "lastObservedReturnPageMs": 38122.40000009537,
+        "settlementReactionsObserved": 0,
+        "lastPrintedCounts": {
+          "seen": 24,
+          "dropped": 0,
+          "errors": 0,
+          "omittedCallPairs": 0,
+          "untrackedReturns": 0
+        },
+        "lastPrintedCountsAreNotFinalGlobalStatistics": true,
+        "scope": [
+          "Same3cached/adoptingPromisesreusedacross4detailedloadReactcalls; all12realcallsreturnoriginalPromises",
+          "No settlement reaction observed in retained stream; cannot identify one module as failed or continuously pending",
+          "No host/owner/generation map; callIDsnotmissingAccordionownership",
+          "Not direct innerdynamicimport/fetch/evaluation times; addedconsole/reactioncostmeansnotcleanheadacceptance",
+          "OldHTTPcompletion/sourceprobeobservationsarenotrelabeledasthisrun",
+          "Originalzh-cn150scasefailed; enfiltered; nofallback/retry/assertion/deadlinechange"
+        ],
+        "rows": [
+          {
+            "nodeReceipt": {
+              "locale": "zh-cn",
+              "phase": "startup-wait",
+              "receivedNodeMs": 46642.441916,
+              "dateNow": 1792917584677
+            },
+            "browser": {
+              "stage": "react-import-promise",
+              "phase": "call.begin",
+              "moduleURL": "http://127.0.0.1:54564/src/components/PrototypePreviewer/runtimes/react-runtime.ts",
+              "timeOrigin": 1792917546555.2,
+              "pageMs": 38122,
+              "dateNow": 1792917584677,
+              "seen": 1,
+              "dropped": 0,
+              "errors": 0,
+              "omittedCallPairs": 0,
+              "untrackedReturns": 0,
+              "call": 1,
+              "loader": "importReact"
+            }
+          },
+          {
+            "nodeReceipt": {
+              "locale": "zh-cn",
+              "phase": "startup-wait",
+              "receivedNodeMs": 46642.500166,
+              "dateNow": 1792917584677
+            },
+            "browser": {
+              "stage": "react-import-promise",
+              "phase": "call.return",
+              "moduleURL": "http://127.0.0.1:54564/src/components/PrototypePreviewer/runtimes/react-runtime.ts",
+              "timeOrigin": 1792917546555.2,
+              "pageMs": 38122.10000002384,
+              "dateNow": 1792917584677,
+              "seen": 2,
+              "dropped": 0,
+              "errors": 0,
+              "omittedCallPairs": 0,
+              "untrackedReturns": 0,
+              "call": 1,
+              "loader": "importReact",
+              "promiseId": 1,
+              "reused": false
+            }
+          },
+          {
+            "nodeReceipt": {
+              "locale": "zh-cn",
+              "phase": "startup-wait",
+              "receivedNodeMs": 46642.52275,
+              "dateNow": 1792917584677
+            },
+            "browser": {
+              "stage": "react-import-promise",
+              "phase": "call.begin",
+              "moduleURL": "http://127.0.0.1:54564/src/components/PrototypePreviewer/runtimes/react-runtime.ts",
+              "timeOrigin": 1792917546555.2,
+              "pageMs": 38122.200000047684,
+              "dateNow": 1792917584677,
+              "seen": 3,
+              "dropped": 0,
+              "errors": 0,
+              "omittedCallPairs": 0,
+              "untrackedReturns": 0,
+              "call": 1,
+              "loader": "reactDomModule"
+            }
+          },
+          {
+            "nodeReceipt": {
+              "locale": "zh-cn",
+              "phase": "startup-wait",
+              "receivedNodeMs": 46642.577458,
+              "dateNow": 1792917584677
+            },
+            "browser": {
+              "stage": "react-import-promise",
+              "phase": "call.return",
+              "moduleURL": "http://127.0.0.1:54564/src/components/PrototypePreviewer/runtimes/react-runtime.ts",
+              "timeOrigin": 1792917546555.2,
+              "pageMs": 38122.200000047684,
+              "dateNow": 1792917584677,
+              "seen": 4,
+              "dropped": 0,
+              "errors": 0,
+              "omittedCallPairs": 0,
+              "untrackedReturns": 0,
+              "call": 1,
+              "loader": "reactDomModule",
+              "promiseId": 2,
+              "reused": false
+            }
+          },
+          {
+            "nodeReceipt": {
+              "locale": "zh-cn",
+              "phase": "startup-wait",
+              "receivedNodeMs": 46642.592375,
+              "dateNow": 1792917584677
+            },
+            "browser": {
+              "stage": "react-import-promise",
+              "phase": "call.begin",
+              "moduleURL": "http://127.0.0.1:54564/src/components/PrototypePreviewer/runtimes/react-runtime.ts",
+              "timeOrigin": 1792917546555.2,
+              "pageMs": 38122.200000047684,
+              "dateNow": 1792917584677,
+              "seen": 5,
+              "dropped": 0,
+              "errors": 0,
+              "omittedCallPairs": 0,
+              "untrackedReturns": 0,
+              "call": 1,
+              "loader": "reactDomClientModule"
+            }
+          },
+          {
+            "nodeReceipt": {
+              "locale": "zh-cn",
+              "phase": "startup-wait",
+              "receivedNodeMs": 46642.676416,
+              "dateNow": 1792917584677
+            },
+            "browser": {
+              "stage": "react-import-promise",
+              "phase": "call.return",
+              "moduleURL": "http://127.0.0.1:54564/src/components/PrototypePreviewer/runtimes/react-runtime.ts",
+              "timeOrigin": 1792917546555.2,
+              "pageMs": 38122.200000047684,
+              "dateNow": 1792917584677,
+              "seen": 6,
+              "dropped": 0,
+              "errors": 0,
+              "omittedCallPairs": 0,
+              "untrackedReturns": 0,
+              "call": 1,
+              "loader": "reactDomClientModule",
+              "promiseId": 3,
+              "reused": false
+            }
+          },
+          {
+            "nodeReceipt": {
+              "locale": "zh-cn",
+              "phase": "startup-wait",
+              "receivedNodeMs": 46642.68875,
+              "dateNow": 1792917584677
+            },
+            "browser": {
+              "stage": "react-import-promise",
+              "phase": "call.begin",
+              "moduleURL": "http://127.0.0.1:54564/src/components/PrototypePreviewer/runtimes/react-runtime.ts",
+              "timeOrigin": 1792917546555.2,
+              "pageMs": 38122.200000047684,
+              "dateNow": 1792917584677,
+              "seen": 7,
+              "dropped": 0,
+              "errors": 0,
+              "omittedCallPairs": 0,
+              "untrackedReturns": 0,
+              "call": 2,
+              "loader": "importReact"
+            }
+          },
+          {
+            "nodeReceipt": {
+              "locale": "zh-cn",
+              "phase": "startup-wait",
+              "receivedNodeMs": 46642.721208,
+              "dateNow": 1792917584677
+            },
+            "browser": {
+              "stage": "react-import-promise",
+              "phase": "call.return",
+              "moduleURL": "http://127.0.0.1:54564/src/components/PrototypePreviewer/runtimes/react-runtime.ts",
+              "timeOrigin": 1792917546555.2,
+              "pageMs": 38122.200000047684,
+              "dateNow": 1792917584677,
+              "seen": 8,
+              "dropped": 0,
+              "errors": 0,
+              "omittedCallPairs": 0,
+              "untrackedReturns": 0,
+              "call": 2,
+              "loader": "importReact",
+              "promiseId": 1,
+              "reused": true
+            }
+          },
+          {
+            "nodeReceipt": {
+              "locale": "zh-cn",
+              "phase": "startup-wait",
+              "receivedNodeMs": 46642.733166,
+              "dateNow": 1792917584677
+            },
+            "browser": {
+              "stage": "react-import-promise",
+              "phase": "call.begin",
+              "moduleURL": "http://127.0.0.1:54564/src/components/PrototypePreviewer/runtimes/react-runtime.ts",
+              "timeOrigin": 1792917546555.2,
+              "pageMs": 38122.200000047684,
+              "dateNow": 1792917584677,
+              "seen": 9,
+              "dropped": 0,
+              "errors": 0,
+              "omittedCallPairs": 0,
+              "untrackedReturns": 0,
+              "call": 2,
+              "loader": "reactDomModule"
+            }
+          },
+          {
+            "nodeReceipt": {
+              "locale": "zh-cn",
+              "phase": "startup-wait",
+              "receivedNodeMs": 46642.745208,
+              "dateNow": 1792917584677
+            },
+            "browser": {
+              "stage": "react-import-promise",
+              "phase": "call.return",
+              "moduleURL": "http://127.0.0.1:54564/src/components/PrototypePreviewer/runtimes/react-runtime.ts",
+              "timeOrigin": 1792917546555.2,
+              "pageMs": 38122.300000071526,
+              "dateNow": 1792917584677,
+              "seen": 10,
+              "dropped": 0,
+              "errors": 0,
+              "omittedCallPairs": 0,
+              "untrackedReturns": 0,
+              "call": 2,
+              "loader": "reactDomModule",
+              "promiseId": 2,
+              "reused": true
+            }
+          },
+          {
+            "nodeReceipt": {
+              "locale": "zh-cn",
+              "phase": "startup-wait",
+              "receivedNodeMs": 46642.902041,
+              "dateNow": 1792917584678
+            },
+            "browser": {
+              "stage": "react-import-promise",
+              "phase": "call.begin",
+              "moduleURL": "http://127.0.0.1:54564/src/components/PrototypePreviewer/runtimes/react-runtime.ts",
+              "timeOrigin": 1792917546555.2,
+              "pageMs": 38122.300000071526,
+              "dateNow": 1792917584677,
+              "seen": 11,
+              "dropped": 0,
+              "errors": 0,
+              "omittedCallPairs": 0,
+              "untrackedReturns": 0,
+              "call": 2,
+              "loader": "reactDomClientModule"
+            }
+          },
+          {
+            "nodeReceipt": {
+              "locale": "zh-cn",
+              "phase": "startup-wait",
+              "receivedNodeMs": 46643.010791,
+              "dateNow": 1792917584678
+            },
+            "browser": {
+              "stage": "react-import-promise",
+              "phase": "call.return",
+              "moduleURL": "http://127.0.0.1:54564/src/components/PrototypePreviewer/runtimes/react-runtime.ts",
+              "timeOrigin": 1792917546555.2,
+              "pageMs": 38122.300000071526,
+              "dateNow": 1792917584677,
+              "seen": 12,
+              "dropped": 0,
+              "errors": 0,
+              "omittedCallPairs": 0,
+              "untrackedReturns": 0,
+              "call": 2,
+              "loader": "reactDomClientModule",
+              "promiseId": 3,
+              "reused": true
+            }
+          },
+          {
+            "nodeReceipt": {
+              "locale": "zh-cn",
+              "phase": "startup-wait",
+              "receivedNodeMs": 46643.038958,
+              "dateNow": 1792917584678
+            },
+            "browser": {
+              "stage": "react-import-promise",
+              "phase": "call.begin",
+              "moduleURL": "http://127.0.0.1:54564/src/components/PrototypePreviewer/runtimes/react-runtime.ts",
+              "timeOrigin": 1792917546555.2,
+              "pageMs": 38122.300000071526,
+              "dateNow": 1792917584677,
+              "seen": 13,
+              "dropped": 0,
+              "errors": 0,
+              "omittedCallPairs": 0,
+              "untrackedReturns": 0,
+              "call": 3,
+              "loader": "importReact"
+            }
+          },
+          {
+            "nodeReceipt": {
+              "locale": "zh-cn",
+              "phase": "startup-wait",
+              "receivedNodeMs": 46643.056583,
+              "dateNow": 1792917584678
+            },
+            "browser": {
+              "stage": "react-import-promise",
+              "phase": "call.return",
+              "moduleURL": "http://127.0.0.1:54564/src/components/PrototypePreviewer/runtimes/react-runtime.ts",
+              "timeOrigin": 1792917546555.2,
+              "pageMs": 38122.300000071526,
+              "dateNow": 1792917584677,
+              "seen": 14,
+              "dropped": 0,
+              "errors": 0,
+              "omittedCallPairs": 0,
+              "untrackedReturns": 0,
+              "call": 3,
+              "loader": "importReact",
+              "promiseId": 1,
+              "reused": true
+            }
+          },
+          {
+            "nodeReceipt": {
+              "locale": "zh-cn",
+              "phase": "startup-wait",
+              "receivedNodeMs": 46643.071416,
+              "dateNow": 1792917584678
+            },
+            "browser": {
+              "stage": "react-import-promise",
+              "phase": "call.begin",
+              "moduleURL": "http://127.0.0.1:54564/src/components/PrototypePreviewer/runtimes/react-runtime.ts",
+              "timeOrigin": 1792917546555.2,
+              "pageMs": 38122.300000071526,
+              "dateNow": 1792917584677,
+              "seen": 15,
+              "dropped": 0,
+              "errors": 0,
+              "omittedCallPairs": 0,
+              "untrackedReturns": 0,
+              "call": 3,
+              "loader": "reactDomModule"
+            }
+          },
+          {
+            "nodeReceipt": {
+              "locale": "zh-cn",
+              "phase": "startup-wait",
+              "receivedNodeMs": 46643.084333,
+              "dateNow": 1792917584678
+            },
+            "browser": {
+              "stage": "react-import-promise",
+              "phase": "call.return",
+              "moduleURL": "http://127.0.0.1:54564/src/components/PrototypePreviewer/runtimes/react-runtime.ts",
+              "timeOrigin": 1792917546555.2,
+              "pageMs": 38122.300000071526,
+              "dateNow": 1792917584677,
+              "seen": 16,
+              "dropped": 0,
+              "errors": 0,
+              "omittedCallPairs": 0,
+              "untrackedReturns": 0,
+              "call": 3,
+              "loader": "reactDomModule",
+              "promiseId": 2,
+              "reused": true
+            }
+          },
+          {
+            "nodeReceipt": {
+              "locale": "zh-cn",
+              "phase": "startup-wait",
+              "receivedNodeMs": 46643.257583,
+              "dateNow": 1792917584678
+            },
+            "browser": {
+              "stage": "react-import-promise",
+              "phase": "call.begin",
+              "moduleURL": "http://127.0.0.1:54564/src/components/PrototypePreviewer/runtimes/react-runtime.ts",
+              "timeOrigin": 1792917546555.2,
+              "pageMs": 38122.40000009537,
+              "dateNow": 1792917584677,
+              "seen": 17,
+              "dropped": 0,
+              "errors": 0,
+              "omittedCallPairs": 0,
+              "untrackedReturns": 0,
+              "call": 3,
+              "loader": "reactDomClientModule"
+            }
+          },
+          {
+            "nodeReceipt": {
+              "locale": "zh-cn",
+              "phase": "startup-wait",
+              "receivedNodeMs": 46643.285833,
+              "dateNow": 1792917584678
+            },
+            "browser": {
+              "stage": "react-import-promise",
+              "phase": "call.return",
+              "moduleURL": "http://127.0.0.1:54564/src/components/PrototypePreviewer/runtimes/react-runtime.ts",
+              "timeOrigin": 1792917546555.2,
+              "pageMs": 38122.40000009537,
+              "dateNow": 1792917584677,
+              "seen": 18,
+              "dropped": 0,
+              "errors": 0,
+              "omittedCallPairs": 0,
+              "untrackedReturns": 0,
+              "call": 3,
+              "loader": "reactDomClientModule",
+              "promiseId": 3,
+              "reused": true
+            }
+          },
+          {
+            "nodeReceipt": {
+              "locale": "zh-cn",
+              "phase": "startup-wait",
+              "receivedNodeMs": 46643.299916,
+              "dateNow": 1792917584678
+            },
+            "browser": {
+              "stage": "react-import-promise",
+              "phase": "call.begin",
+              "moduleURL": "http://127.0.0.1:54564/src/components/PrototypePreviewer/runtimes/react-runtime.ts",
+              "timeOrigin": 1792917546555.2,
+              "pageMs": 38122.40000009537,
+              "dateNow": 1792917584677,
+              "seen": 19,
+              "dropped": 0,
+              "errors": 0,
+              "omittedCallPairs": 0,
+              "untrackedReturns": 0,
+              "call": 4,
+              "loader": "importReact"
+            }
+          },
+          {
+            "nodeReceipt": {
+              "locale": "zh-cn",
+              "phase": "startup-wait",
+              "receivedNodeMs": 46643.320875,
+              "dateNow": 1792917584678
+            },
+            "browser": {
+              "stage": "react-import-promise",
+              "phase": "call.return",
+              "moduleURL": "http://127.0.0.1:54564/src/components/PrototypePreviewer/runtimes/react-runtime.ts",
+              "timeOrigin": 1792917546555.2,
+              "pageMs": 38122.40000009537,
+              "dateNow": 1792917584677,
+              "seen": 20,
+              "dropped": 0,
+              "errors": 0,
+              "omittedCallPairs": 0,
+              "untrackedReturns": 0,
+              "call": 4,
+              "loader": "importReact",
+              "promiseId": 1,
+              "reused": true
+            }
+          },
+          {
+            "nodeReceipt": {
+              "locale": "zh-cn",
+              "phase": "startup-wait",
+              "receivedNodeMs": 46643.332375,
+              "dateNow": 1792917584678
+            },
+            "browser": {
+              "stage": "react-import-promise",
+              "phase": "call.begin",
+              "moduleURL": "http://127.0.0.1:54564/src/components/PrototypePreviewer/runtimes/react-runtime.ts",
+              "timeOrigin": 1792917546555.2,
+              "pageMs": 38122.40000009537,
+              "dateNow": 1792917584677,
+              "seen": 21,
+              "dropped": 0,
+              "errors": 0,
+              "omittedCallPairs": 0,
+              "untrackedReturns": 0,
+              "call": 4,
+              "loader": "reactDomModule"
+            }
+          },
+          {
+            "nodeReceipt": {
+              "locale": "zh-cn",
+              "phase": "startup-wait",
+              "receivedNodeMs": 46643.344333,
+              "dateNow": 1792917584678
+            },
+            "browser": {
+              "stage": "react-import-promise",
+              "phase": "call.return",
+              "moduleURL": "http://127.0.0.1:54564/src/components/PrototypePreviewer/runtimes/react-runtime.ts",
+              "timeOrigin": 1792917546555.2,
+              "pageMs": 38122.40000009537,
+              "dateNow": 1792917584677,
+              "seen": 22,
+              "dropped": 0,
+              "errors": 0,
+              "omittedCallPairs": 0,
+              "untrackedReturns": 0,
+              "call": 4,
+              "loader": "reactDomModule",
+              "promiseId": 2,
+              "reused": true
+            }
+          },
+          {
+            "nodeReceipt": {
+              "locale": "zh-cn",
+              "phase": "startup-wait",
+              "receivedNodeMs": 46643.359708,
+              "dateNow": 1792917584678
+            },
+            "browser": {
+              "stage": "react-import-promise",
+              "phase": "call.begin",
+              "moduleURL": "http://127.0.0.1:54564/src/components/PrototypePreviewer/runtimes/react-runtime.ts",
+              "timeOrigin": 1792917546555.2,
+              "pageMs": 38122.40000009537,
+              "dateNow": 1792917584677,
+              "seen": 23,
+              "dropped": 0,
+              "errors": 0,
+              "omittedCallPairs": 0,
+              "untrackedReturns": 0,
+              "call": 4,
+              "loader": "reactDomClientModule"
+            }
+          },
+          {
+            "nodeReceipt": {
+              "locale": "zh-cn",
+              "phase": "startup-wait",
+              "receivedNodeMs": 46643.381875,
+              "dateNow": 1792917584678
+            },
+            "browser": {
+              "stage": "react-import-promise",
+              "phase": "call.return",
+              "moduleURL": "http://127.0.0.1:54564/src/components/PrototypePreviewer/runtimes/react-runtime.ts",
+              "timeOrigin": 1792917546555.2,
+              "pageMs": 38122.40000009537,
+              "dateNow": 1792917584677,
+              "seen": 24,
+              "dropped": 0,
+              "errors": 0,
+              "omittedCallPairs": 0,
+              "untrackedReturns": 0,
+              "call": 4,
+              "loader": "reactDomClientModule",
+              "promiseId": 3,
+              "reused": true
+            }
+          }
+        ],
+        "restoration": {
+          "at": "2026-10-25T08:41:38.102880+00:00",
+          "sourceCAS": true,
+          "preferenceCAS": true,
+          "sourceRestoredSHA256": "f5932d1a2384bd004fee4315af14b25a41666b20e7f3fe07b564f76645546f14",
+          "preferenceRestoredSHA256": "272ac576b6188b6b342acf52d553d624ec2d9eb1ba0cb757fbf54b2fa4f28345",
+          "worktreeStatus": ""
+        },
+        "postTimeoutCollectionBoundary": "Settledcollectionactualoutcome rejected/TargetClosed; bothjournalsnull; collectionComplete isnot success"
+      },
+      "accurateSourceCurrentlyRestored": true,
+      "independentFinalReview": {
+        "reference": "language-dedup-combination/independent-final-review/report.json",
+        "sha256": "0f1c3dfc11b89024950284cdd49104887bc0c6905cacb1e89b25d343d037d2c9",
+        "status": "partial/ABSTAIN",
+        "openFindings": 0,
+        "formalApproval": false
+      }
+    },
+    "remainingDebt": [
+      "OriginalS4/startup/paintissuesandboundcompile/evaluatespansremainasreportedbyactualresults",
+      "CurrentcanonicalCIanddeployedpreviewReadyareseparate; noformalapproval/allpageATclaim"
+    ]
+  },
+  "baseHead": "357068f0f371dd40826b81da43bd4ef5df73bee7",
+  "baseTree": "f6c7d48a8f92955e77832478ae4c388b3dd2b254",
+  "claim": "Selected failure/control evidence and explicitly scoped C consumer/preview-delivery repairs; no formal approval, production startup/S4 fix, all-CI green or all-page/AT acceptance."
+}

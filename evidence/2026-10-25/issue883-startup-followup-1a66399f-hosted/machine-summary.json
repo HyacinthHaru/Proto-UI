@@ -1,0 +1,34 @@
+{
+  "assembledAt": "2026-10-25T09:13:16.424407+00:00",
+  "head": "1a66399f9bb593717e4b9b70ac4bc0ec36fc510f",
+  "tree": "6e56e93b71b51f18957aa7053088ec95e358b624",
+  "rawInputCount": 77,
+  "mappedInputCount": 75,
+  "hashReferenceCount": 2,
+  "pngCount": 1,
+  "uniquePngHashes": 1,
+  "observations": {
+    "sourceBinding": {
+      "at": "2026-10-25T09:06:20.942666+00:00",
+      "kind": "actual-local-Git-object-CI-checkout-binding",
+      "CIcheckout": "b670e5872a6e13c3fda248939aee1c4614e4a930",
+      "tree": "6e56e93b71b51f18957aa7053088ec95e358b624",
+      "parents": [
+        "357068f0f371dd40826b81da43bd4ef5df73bee7",
+        "1a66399f9bb593717e4b9b70ac4bc0ec36fc510f"
+      ],
+      "productHead": "1a66399f9bb593717e4b9b70ac4bc0ec36fc510f",
+      "productTreeEqual": true,
+      "GitObjectActuallyFetched": true,
+      "noWorktreeCheckoutOrMutation": true,
+      "scope": "Git treeidentityonly, notequaltoolchain/environment/timing/result"
+    },
+    "CIwindow": "08:53:33.577–08:54:04.615UTC; non-atomic/nonterminal",
+    "semanticDisposition": "partial/ABSTAIN; original1s/30s/60s/900s failures preserved",
+    "media": "ExactlyoneRootviewedpostfailurePNG, noCPUorunviewedimagebodies; originalZIPshashreferenceonly",
+    "coreCapsule": "Earlier34filev5with08:35snapshotunchanged; thisisadditivesibling supplement, nothistoricalbackfill"
+  },
+  "baseHead": "357068f0f371dd40826b81da43bd4ef5df73bee7",
+  "baseTree": "f6c7d48a8f92955e77832478ae4c388b3dd2b254",
+  "claim": "Exact-head hosted failure evidence and conditional timing analysis; no source repair, formal approval, all-CI green or all-page/AT acceptance."
+}

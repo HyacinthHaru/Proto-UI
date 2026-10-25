@@ -1,0 +1,175 @@
+{
+  "head": "1a66399f9bb593717e4b9b70ac4bc0ec36fc510f",
+  "tree": "6e56e93b71b51f18957aa7053088ec95e358b624",
+  "outerFileCountIncludingManifest": 34,
+  "archiveMemberCount": 732,
+  "archiveCRCAndBytesVerified": true,
+  "innerPublicMapEqualsOuter": true,
+  "files": [
+    {
+      "path": "PUBLIC-MAPPING.json",
+      "bytes": 665659,
+      "sha256": "4de5ea96671aa5012b66f9b8256ffa76dd9deaf1c5dd7f97a6ff03e2e652c57e"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4790,
+      "sha256": "142590e787b06bd3d3609fb4f14ad9e09ef761a3c3fc6ca6251b6e309a01c356"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 10932,
+      "sha256": "4d4e0540b77fb4327b9016637355837ccad68c49029fa7615c415052d36f23f9"
+    },
+    {
+      "path": "captures/01-homepage-shadcn-wc-native-hit-targets.png",
+      "bytes": 126272,
+      "sha256": "4d27b9de2b30013cc0178a01375bd0314c8bbaa158d93d0d0bd0ebd3049ee736"
+    },
+    {
+      "path": "captures/02-homepage-shadcn-react-native-hit-targets.png",
+      "bytes": 125218,
+      "sha256": "09d8596b3dcf54706c4c5442fd1ad88c600bd6823f3d04ae0f5adf4e6d564a64"
+    },
+    {
+      "path": "captures/03-homepage-shadcn-vue-native-hit-targets.png",
+      "bytes": 125053,
+      "sha256": "5e3515a18dc2b56bde1bbed29a992ea63131378c1bc9311f066fc567a7da2c3c"
+    },
+    {
+      "path": "captures/04-homepage-shadcn-vue2-native-hit-targets.png",
+      "bytes": 125060,
+      "sha256": "5aa88cf40fb06c224ace7cb1f9958569a31e461ca769d44997f607d613f7d793"
+    },
+    {
+      "path": "captures/05-homepage-brutalist-wc-native-hit-targets.png",
+      "bytes": 134720,
+      "sha256": "563727e489e213567abe775fabfb8ac910c8ff41a97bf89955d02d747f18309f"
+    },
+    {
+      "path": "captures/06-homepage-brutalist-react-native-hit-targets.png",
+      "bytes": 133295,
+      "sha256": "2a78b19d53744ef3db3bcdb6bac5aa9e3bc537b9d93421ab6d065a1842534901"
+    },
+    {
+      "path": "captures/07-homepage-brutalist-vue-native-hit-targets.png",
+      "bytes": 133006,
+      "sha256": "c8b5b51dea3339aa0476b15107c9c39c06354b1e864c63a33f6284b86d64f07f"
+    },
+    {
+      "path": "captures/08-homepage-brutalist-vue2-native-hit-targets.png",
+      "bytes": 133263,
+      "sha256": "877a429259b4e4d092f5677bd032a122e419d984d9df8f8892a518c2d603d57f"
+    },
+    {
+      "path": "captures/09-hero-cta-no-js.png",
+      "bytes": 16529,
+      "sha256": "3f6e4ee77793f27987ddc7b01c58530126a689a9329925223a55dd01f77ccc08"
+    },
+    {
+      "path": "captures/10-hero-nojs-390.png",
+      "bytes": 29506,
+      "sha256": "37f614b3de035587139de2173d5e641aa8e86b6d61a7e871104cdff3b95705d9"
+    },
+    {
+      "path": "captures/11-hero-nojs-1440.png",
+      "bytes": 41497,
+      "sha256": "1931c8b433695a6ebe31f140f733ab5982c941157ee8eeae57049ed88491127f"
+    },
+    {
+      "path": "captures/12-a9-homepage-shadcn-wc-native-hit-targets.png",
+      "bytes": 126171,
+      "sha256": "c056898fd28d288cecb9e274961246e94d32925758deaaa2c46ff56fb8b96fbb"
+    },
+    {
+      "path": "captures/13-a9-homepage-brutalist-react-native-hit-targets.png",
+      "bytes": 133299,
+      "sha256": "8d3fd0e40170818859cf6ca038a0c8ea79b47e2f36c169be5ab60f24a5b14f60"
+    },
+    {
+      "path": "captures/14-a9-homepage-shadcn-vue-native-hit-targets.png",
+      "bytes": 125053,
+      "sha256": "5e3515a18dc2b56bde1bbed29a992ea63131378c1bc9311f066fc567a7da2c3c"
+    },
+    {
+      "path": "captures/15-a9-homepage-brutalist-vue2-native-hit-targets.png",
+      "bytes": 133216,
+      "sha256": "70951993c3463f7dfca34b4ea357f3106b3800b3176cb1f297561e1a25f4f3fd"
+    },
+    {
+      "path": "captures/16-a9-failure.png",
+      "bytes": 109054,
+      "sha256": "a4175c7158a9dad1d7bf7dce9122077a0a2f714a7d84af7e5a72e7a52056ba56"
+    },
+    {
+      "path": "captures/1a/brutalist-react-keyboard-focus.png",
+      "bytes": 44978,
+      "sha256": "1d02e2608c2b17a2a4f7134beb7d690ba06d63187add83cef214a981eb82099e"
+    },
+    {
+      "path": "captures/1a/homepage-brutalist-react-native-hit-targets.png",
+      "bytes": 133298,
+      "sha256": "44a41f77589da8996f69fdcddce0e189808c98d5e72c8fa91746eebf86a1ed15"
+    },
+    {
+      "path": "captures/1a/homepage-brutalist-vue2-native-hit-targets.png",
+      "bytes": 133260,
+      "sha256": "cd423cee43bf27c2c71d75d96f49050f4de61689d26eec61e10c8526f10648dc"
+    },
+    {
+      "path": "captures/1a/homepage-shadcn-vue-native-hit-targets.png",
+      "bytes": 125053,
+      "sha256": "5e3515a18dc2b56bde1bbed29a992ea63131378c1bc9311f066fc567a7da2c3c"
+    },
+    {
+      "path": "captures/1a/homepage-shadcn-wc-native-hit-targets.png",
+      "bytes": 126181,
+      "sha256": "3fe8fb97add3b4235b78dedf0bc0bb5fbbe70309456b2b88a3273837d99f9acf"
+    },
+    {
+      "path": "captures/1a/shadcn-wc-keyboard-focus.png",
+      "bytes": 41092,
+      "sha256": "c32cd27b90e65dc35de5621434729f7927300d52734c578c3bd59662a06b881a"
+    },
+    {
+      "path": "captures/c5/brutalist-react-keyboard-focus.png",
+      "bytes": 44982,
+      "sha256": "1ca5ef42410534d52fa86c24e0665802c0be1ab39e78dd81854937f331d8343f"
+    },
+    {
+      "path": "captures/c5/homepage-brutalist-react-native-hit-targets.png",
+      "bytes": 133298,
+      "sha256": "9ed21ec16ede472fe69382506c3717d2bf3acba26c1e2b37a69422fea3446f79"
+    },
+    {
+      "path": "captures/c5/homepage-brutalist-vue2-native-hit-targets.png",
+      "bytes": 133263,
+      "sha256": "877a429259b4e4d092f5677bd032a122e419d984d9df8f8892a518c2d603d57f"
+    },
+    {
+      "path": "captures/c5/homepage-shadcn-vue-native-hit-targets.png",
+      "bytes": 125053,
+      "sha256": "5e3515a18dc2b56bde1bbed29a992ea63131378c1bc9311f066fc567a7da2c3c"
+    },
+    {
+      "path": "captures/c5/homepage-shadcn-wc-native-hit-targets.png",
+      "bytes": 126190,
+      "sha256": "44223f7476bb767ef2bd1c2eaad7e68bdc08b32d2ac36d3af6372102e84edbfc"
+    },
+    {
+      "path": "captures/c5/shadcn-wc-keyboard-focus.png",
+      "bytes": 41114,
+      "sha256": "45a2d9a35ce6f83bcbc7e021bea6e08fadea50d760d6f762a32526893696cf0c"
+    },
+    {
+      "path": "evidence.zip",
+      "bytes": 5554928,
+      "sha256": "1bbc86824f9a2397ec7fd153a50f73e1bd9ef78ed1a65e51bf909ca05558115d"
+    },
+    {
+      "path": "machine-summary.json",
+      "bytes": 46313,
+      "sha256": "fddd1851cc904751d74b1c577569ebd476ca113ae94eb48838937d9f66668638"
+    }
+  ]
+}
