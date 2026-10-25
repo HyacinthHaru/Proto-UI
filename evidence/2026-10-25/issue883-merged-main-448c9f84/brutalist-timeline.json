@@ -1,0 +1,602 @@
+[
+  {
+    "query": 1,
+    "originalOuterCall": {
+      "call": 1,
+      "startedMs": "135536.738229",
+      "returnedMs": "135548.739697",
+      "value": "shadcn"
+    },
+    "outerCallDurationMs": "12.001468",
+    "callId": "call@2042",
+    "cdp": {
+      "callId": "call@2042",
+      "query": 1,
+      "attempt": 1,
+      "id": 7837,
+      "sessionId": "A7BFC01B86F426A44BD9AE924507162D",
+      "method": "Runtime.callFunctionOn",
+      "contextId": null,
+      "responseObserved": true
+    },
+    "driverFrameId": "338C918E90753EA4224DBB58DA36EF40",
+    "utilityContextId": 4,
+    "injectedAndUtilityCachedAtEntry": true,
+    "browserBatch": {
+      "ownerToken": "2844953b-6cab-4945-b4e6-dc5acbf13211",
+      "attempt": 1,
+      "callId": "call@2042",
+      "rows": [
+        {
+          "stage": "selector.enter",
+          "pageMs": 2730,
+          "timeOrigin": "1792936342812.6",
+          "dateNow": 1792936345542
+        },
+        {
+          "stage": "selector.exit",
+          "pageMs": "2730.4000000000233",
+          "timeOrigin": "1792936342812.6",
+          "dateNow": 1792936345542,
+          "found": true
+        },
+        {
+          "stage": "getter.enter",
+          "pageMs": "2730.5",
+          "timeOrigin": "1792936342812.6",
+          "dateNow": 1792936345543,
+          "getterNative": false
+        },
+        {
+          "stage": "getter.exit",
+          "pageMs": "2730.5",
+          "timeOrigin": "1792936342812.6",
+          "dateNow": 1792936345543,
+          "value": "shadcn"
+        }
+      ],
+      "diagnosticErrors": 0,
+      "received": {
+        "nodeMs": "135548.064674",
+        "nodeTimeOrigin": "1792936209995.676",
+        "nodeDateNow": 1792936345543
+      }
+    },
+    "browserGetterSampleSpanMs": "0.0",
+    "sdkNodeQuery": {
+      "stage": "node.original-query",
+      "nodeMs": "135536.832275",
+      "nodeTimeOrigin": "1792936209995.676",
+      "nodeDateNow": 1792936345532,
+      "query": 1
+    },
+    "sdkNodeReturn": {
+      "stage": "node.frame.getAttribute.return",
+      "nodeMs": "135548.717636",
+      "nodeTimeOrigin": "1792936209995.676",
+      "nodeDateNow": 1792936345544,
+      "query": 1,
+      "value": "shadcn"
+    },
+    "pipe": {
+      "sendBefore": {
+        "stage": "cdp.transport.send.before",
+        "nodeMs": "135541.457003",
+        "nodeTimeOrigin": "1792936209995.676",
+        "nodeDateNow": 1792936345537,
+        "callId": "call@2042",
+        "query": 1,
+        "attempt": 1,
+        "id": 7837,
+        "sessionId": "A7BFC01B86F426A44BD9AE924507162D",
+        "method": "Runtime.callFunctionOn",
+        "contextId": null,
+        "responseObserved": false
+      },
+      "sendReturn": {
+        "stage": "cdp.transport.send.return",
+        "nodeMs": "135541.875607",
+        "nodeTimeOrigin": "1792936209995.676",
+        "nodeDateNow": 1792936345537,
+        "callId": "call@2042",
+        "query": 1,
+        "attempt": 1,
+        "id": 7837,
+        "sessionId": "A7BFC01B86F426A44BD9AE924507162D",
+        "method": "Runtime.callFunctionOn",
+        "contextId": null,
+        "responseObserved": false
+      },
+      "writeReturns": [
+        {
+          "stage": "cdp.pipe.write.return",
+          "nodeMs": "135541.813801",
+          "nodeTimeOrigin": "1792936209995.676",
+          "nodeDateNow": 1792936345537,
+          "id": 7837,
+          "sessionId": "A7BFC01B86F426A44BD9AE924507162D",
+          "callId": "call@2042",
+          "ordinal": 1,
+          "returned": true,
+          "writableLength": 0,
+          "writableNeedDrain": false
+        },
+        {
+          "stage": "cdp.pipe.write.return",
+          "nodeMs": "135541.866861",
+          "nodeTimeOrigin": "1792936209995.676",
+          "nodeDateNow": 1792936345537,
+          "id": 7837,
+          "sessionId": "A7BFC01B86F426A44BD9AE924507162D",
+          "callId": "call@2042",
+          "ordinal": 2,
+          "returned": true,
+          "writableLength": 0,
+          "writableNeedDrain": false
+        }
+      ],
+      "matchedCompletionChunk": {
+        "stage": "cdp.pipe.read-dispatch.enter",
+        "nodeMs": "135548.306336",
+        "nodeTimeOrigin": "1792936209995.676",
+        "nodeDateNow": 1792936345543,
+        "callId": "call@2042",
+        "query": 1,
+        "attempt": 1,
+        "id": 7837,
+        "sessionId": "A7BFC01B86F426A44BD9AE924507162D",
+        "readOrdinal": 12,
+        "frameOrdinal": 44,
+        "recordedOnMatchingResponse": true,
+        "ordinal": 12
+      },
+      "frameSchedulerCall": {
+        "stage": "cdp.pipe.frame.queued",
+        "nodeMs": "135548.320643",
+        "nodeTimeOrigin": "1792936209995.676",
+        "nodeDateNow": 1792936345543,
+        "callId": "call@2042",
+        "query": 1,
+        "attempt": 1,
+        "id": 7837,
+        "sessionId": "A7BFC01B86F426A44BD9AE924507162D",
+        "readOrdinal": 12,
+        "frameOrdinal": 44,
+        "recordedOnMatchingResponse": true
+      },
+      "frameCallback": {
+        "stage": "cdp.pipe.frame.callback.enter",
+        "nodeMs": "135548.334078",
+        "nodeTimeOrigin": "1792936209995.676",
+        "nodeDateNow": 1792936345544,
+        "callId": "call@2042",
+        "query": 1,
+        "attempt": 1,
+        "id": 7837,
+        "sessionId": "A7BFC01B86F426A44BD9AE924507162D",
+        "readOrdinal": 12,
+        "frameOrdinal": 44,
+        "recordedOnMatchingResponse": true
+      },
+      "response": {
+        "stage": "cdp.response.received",
+        "nodeMs": "135548.507393",
+        "nodeTimeOrigin": "1792936209995.676",
+        "nodeDateNow": 1792936345544,
+        "callId": "call@2042",
+        "query": 1,
+        "attempt": 1,
+        "id": 7837,
+        "sessionId": "A7BFC01B86F426A44BD9AE924507162D",
+        "method": "Runtime.callFunctionOn",
+        "contextId": null,
+        "responseObserved": true,
+        "hasError": false
+      },
+      "sendToResponseMs": "7.050390",
+      "sendToReturnMs": "0.418604",
+      "lastWriteToMatchedCompletionChunkMs": "6.439475",
+      "schedulerToCallbackMs": "0.013435"
+    }
+  },
+  {
+    "query": 2,
+    "originalOuterCall": {
+      "call": 2,
+      "startedMs": "135599.501881",
+      "returnedMs": "135858.9541",
+      "value": "shadcn"
+    },
+    "outerCallDurationMs": "259.452219",
+    "callId": "call@2043",
+    "cdp": {
+      "callId": "call@2043",
+      "query": 2,
+      "attempt": 1,
+      "id": 7838,
+      "sessionId": "A7BFC01B86F426A44BD9AE924507162D",
+      "method": "Runtime.callFunctionOn",
+      "contextId": null,
+      "responseObserved": true
+    },
+    "driverFrameId": "338C918E90753EA4224DBB58DA36EF40",
+    "utilityContextId": 4,
+    "injectedAndUtilityCachedAtEntry": true,
+    "browserBatch": {
+      "ownerToken": "2844953b-6cab-4945-b4e6-dc5acbf13211",
+      "attempt": 1,
+      "callId": "call@2043",
+      "rows": [
+        {
+          "stage": "selector.enter",
+          "pageMs": "3040.2999999999884",
+          "timeOrigin": "1792936342812.6",
+          "dateNow": 1792936345852
+        },
+        {
+          "stage": "selector.exit",
+          "pageMs": "3040.7999999999884",
+          "timeOrigin": "1792936342812.6",
+          "dateNow": 1792936345853,
+          "found": true
+        },
+        {
+          "stage": "getter.enter",
+          "pageMs": "3040.9000000000233",
+          "timeOrigin": "1792936342812.6",
+          "dateNow": 1792936345853,
+          "getterNative": false
+        },
+        {
+          "stage": "getter.exit",
+          "pageMs": "3040.9000000000233",
+          "timeOrigin": "1792936342812.6",
+          "dateNow": 1792936345853,
+          "value": "shadcn"
+        }
+      ],
+      "diagnosticErrors": 0,
+      "received": {
+        "nodeMs": "135858.582314",
+        "nodeTimeOrigin": "1792936209995.676",
+        "nodeDateNow": 1792936345854
+      }
+    },
+    "browserGetterSampleSpanMs": "0E-13",
+    "sdkNodeQuery": {
+      "stage": "node.original-query",
+      "nodeMs": "135599.513393",
+      "nodeTimeOrigin": "1792936209995.676",
+      "nodeDateNow": 1792936345595,
+      "query": 2
+    },
+    "sdkNodeReturn": {
+      "stage": "node.frame.getAttribute.return",
+      "nodeMs": "135858.94895",
+      "nodeTimeOrigin": "1792936209995.676",
+      "nodeDateNow": 1792936345854,
+      "query": 2,
+      "value": "shadcn"
+    },
+    "pipe": {
+      "sendBefore": {
+        "stage": "cdp.transport.send.before",
+        "nodeMs": "135600.91684",
+        "nodeTimeOrigin": "1792936209995.676",
+        "nodeDateNow": 1792936345596,
+        "callId": "call@2043",
+        "query": 2,
+        "attempt": 1,
+        "id": 7838,
+        "sessionId": "A7BFC01B86F426A44BD9AE924507162D",
+        "method": "Runtime.callFunctionOn",
+        "contextId": null,
+        "responseObserved": false
+      },
+      "sendReturn": {
+        "stage": "cdp.transport.send.return",
+        "nodeMs": "135601.069376",
+        "nodeTimeOrigin": "1792936209995.676",
+        "nodeDateNow": 1792936345596,
+        "callId": "call@2043",
+        "query": 2,
+        "attempt": 1,
+        "id": 7838,
+        "sessionId": "A7BFC01B86F426A44BD9AE924507162D",
+        "method": "Runtime.callFunctionOn",
+        "contextId": null,
+        "responseObserved": false
+      },
+      "writeReturns": [
+        {
+          "stage": "cdp.pipe.write.return",
+          "nodeMs": "135601.020003",
+          "nodeTimeOrigin": "1792936209995.676",
+          "nodeDateNow": 1792936345596,
+          "id": 7838,
+          "sessionId": "A7BFC01B86F426A44BD9AE924507162D",
+          "callId": "call@2043",
+          "ordinal": 1,
+          "returned": true,
+          "writableLength": 0,
+          "writableNeedDrain": false
+        },
+        {
+          "stage": "cdp.pipe.write.return",
+          "nodeMs": "135601.063585",
+          "nodeTimeOrigin": "1792936209995.676",
+          "nodeDateNow": 1792936345596,
+          "id": 7838,
+          "sessionId": "A7BFC01B86F426A44BD9AE924507162D",
+          "callId": "call@2043",
+          "ordinal": 2,
+          "returned": true,
+          "writableLength": 0,
+          "writableNeedDrain": false
+        }
+      ],
+      "matchedCompletionChunk": {
+        "stage": "cdp.pipe.read-dispatch.enter",
+        "nodeMs": "135858.610988",
+        "nodeTimeOrigin": "1792936209995.676",
+        "nodeDateNow": 1792936345854,
+        "callId": "call@2043",
+        "query": 2,
+        "attempt": 1,
+        "id": 7838,
+        "sessionId": "A7BFC01B86F426A44BD9AE924507162D",
+        "readOrdinal": 18,
+        "frameOrdinal": 54,
+        "recordedOnMatchingResponse": true,
+        "ordinal": 18
+      },
+      "frameSchedulerCall": {
+        "stage": "cdp.pipe.frame.queued",
+        "nodeMs": "135858.641935",
+        "nodeTimeOrigin": "1792936209995.676",
+        "nodeDateNow": 1792936345854,
+        "callId": "call@2043",
+        "query": 2,
+        "attempt": 1,
+        "id": 7838,
+        "sessionId": "A7BFC01B86F426A44BD9AE924507162D",
+        "readOrdinal": 18,
+        "frameOrdinal": 54,
+        "recordedOnMatchingResponse": true
+      },
+      "frameCallback": {
+        "stage": "cdp.pipe.frame.callback.enter",
+        "nodeMs": "135858.780986",
+        "nodeTimeOrigin": "1792936209995.676",
+        "nodeDateNow": 1792936345854,
+        "callId": "call@2043",
+        "query": 2,
+        "attempt": 1,
+        "id": 7838,
+        "sessionId": "A7BFC01B86F426A44BD9AE924507162D",
+        "readOrdinal": 18,
+        "frameOrdinal": 54,
+        "recordedOnMatchingResponse": true
+      },
+      "response": {
+        "stage": "cdp.response.received",
+        "nodeMs": "135858.818566",
+        "nodeTimeOrigin": "1792936209995.676",
+        "nodeDateNow": 1792936345854,
+        "callId": "call@2043",
+        "query": 2,
+        "attempt": 1,
+        "id": 7838,
+        "sessionId": "A7BFC01B86F426A44BD9AE924507162D",
+        "method": "Runtime.callFunctionOn",
+        "contextId": null,
+        "responseObserved": true,
+        "hasError": false
+      },
+      "sendToResponseMs": "257.901726",
+      "sendToReturnMs": "0.152536",
+      "lastWriteToMatchedCompletionChunkMs": "257.547403",
+      "schedulerToCallbackMs": "0.139051"
+    }
+  },
+  {
+    "query": 3,
+    "originalOuterCall": {
+      "call": 3,
+      "startedMs": "135909.444376",
+      "returnedMs": "136694.379637",
+      "value": "brutalist"
+    },
+    "outerCallDurationMs": "784.935261",
+    "callId": "call@2044",
+    "cdp": {
+      "callId": "call@2044",
+      "query": 3,
+      "attempt": 1,
+      "id": 7839,
+      "sessionId": "A7BFC01B86F426A44BD9AE924507162D",
+      "method": "Runtime.callFunctionOn",
+      "contextId": null,
+      "responseObserved": true
+    },
+    "driverFrameId": "338C918E90753EA4224DBB58DA36EF40",
+    "utilityContextId": 4,
+    "injectedAndUtilityCachedAtEntry": true,
+    "browserBatch": {
+      "ownerToken": "2844953b-6cab-4945-b4e6-dc5acbf13211",
+      "attempt": 1,
+      "callId": "call@2044",
+      "rows": [
+        {
+          "stage": "selector.enter",
+          "pageMs": "3875.4000000000233",
+          "timeOrigin": "1792936342812.6",
+          "dateNow": 1792936346687
+        },
+        {
+          "stage": "selector.exit",
+          "pageMs": "3875.7999999999884",
+          "timeOrigin": "1792936342812.6",
+          "dateNow": 1792936346688,
+          "found": true
+        },
+        {
+          "stage": "getter.enter",
+          "pageMs": "3875.9000000000233",
+          "timeOrigin": "1792936342812.6",
+          "dateNow": 1792936346688,
+          "getterNative": false
+        },
+        {
+          "stage": "getter.exit",
+          "pageMs": "3875.9000000000233",
+          "timeOrigin": "1792936342812.6",
+          "dateNow": 1792936346688,
+          "value": "brutalist"
+        }
+      ],
+      "diagnosticErrors": 0,
+      "received": {
+        "nodeMs": "136693.732778",
+        "nodeTimeOrigin": "1792936209995.676",
+        "nodeDateNow": 1792936346689
+      }
+    },
+    "browserGetterSampleSpanMs": "0E-13",
+    "sdkNodeQuery": {
+      "stage": "node.original-query",
+      "nodeMs": "135909.466408",
+      "nodeTimeOrigin": "1792936209995.676",
+      "nodeDateNow": 1792936345905,
+      "query": 3
+    },
+    "sdkNodeReturn": {
+      "stage": "node.frame.getAttribute.return",
+      "nodeMs": "136694.372994",
+      "nodeTimeOrigin": "1792936209995.676",
+      "nodeDateNow": 1792936346690,
+      "query": 3,
+      "value": "brutalist"
+    },
+    "pipe": {
+      "sendBefore": {
+        "stage": "cdp.transport.send.before",
+        "nodeMs": "135910.860027",
+        "nodeTimeOrigin": "1792936209995.676",
+        "nodeDateNow": 1792936345906,
+        "callId": "call@2044",
+        "query": 3,
+        "attempt": 1,
+        "id": 7839,
+        "sessionId": "A7BFC01B86F426A44BD9AE924507162D",
+        "method": "Runtime.callFunctionOn",
+        "contextId": null,
+        "responseObserved": false
+      },
+      "sendReturn": {
+        "stage": "cdp.transport.send.return",
+        "nodeMs": "135910.993998",
+        "nodeTimeOrigin": "1792936209995.676",
+        "nodeDateNow": 1792936345906,
+        "callId": "call@2044",
+        "query": 3,
+        "attempt": 1,
+        "id": 7839,
+        "sessionId": "A7BFC01B86F426A44BD9AE924507162D",
+        "method": "Runtime.callFunctionOn",
+        "contextId": null,
+        "responseObserved": false
+      },
+      "writeReturns": [
+        {
+          "stage": "cdp.pipe.write.return",
+          "nodeMs": "135910.969933",
+          "nodeTimeOrigin": "1792936209995.676",
+          "nodeDateNow": 1792936345906,
+          "id": 7839,
+          "sessionId": "A7BFC01B86F426A44BD9AE924507162D",
+          "callId": "call@2044",
+          "ordinal": 1,
+          "returned": true,
+          "writableLength": 0,
+          "writableNeedDrain": false
+        },
+        {
+          "stage": "cdp.pipe.write.return",
+          "nodeMs": "135910.99011",
+          "nodeTimeOrigin": "1792936209995.676",
+          "nodeDateNow": 1792936345906,
+          "id": 7839,
+          "sessionId": "A7BFC01B86F426A44BD9AE924507162D",
+          "callId": "call@2044",
+          "ordinal": 2,
+          "returned": true,
+          "writableLength": 0,
+          "writableNeedDrain": false
+        }
+      ],
+      "matchedCompletionChunk": {
+        "stage": "cdp.pipe.read-dispatch.enter",
+        "nodeMs": "136694.11401",
+        "nodeTimeOrigin": "1792936209995.676",
+        "nodeDateNow": 1792936346689,
+        "callId": "call@2044",
+        "query": 3,
+        "attempt": 1,
+        "id": 7839,
+        "sessionId": "A7BFC01B86F426A44BD9AE924507162D",
+        "readOrdinal": 20,
+        "frameOrdinal": 57,
+        "recordedOnMatchingResponse": true,
+        "ordinal": 20
+      },
+      "frameSchedulerCall": {
+        "stage": "cdp.pipe.frame.queued",
+        "nodeMs": "136694.13017",
+        "nodeTimeOrigin": "1792936209995.676",
+        "nodeDateNow": 1792936346689,
+        "callId": "call@2044",
+        "query": 3,
+        "attempt": 1,
+        "id": 7839,
+        "sessionId": "A7BFC01B86F426A44BD9AE924507162D",
+        "readOrdinal": 20,
+        "frameOrdinal": 57,
+        "recordedOnMatchingResponse": true
+      },
+      "frameCallback": {
+        "stage": "cdp.pipe.frame.callback.enter",
+        "nodeMs": "136694.15178",
+        "nodeTimeOrigin": "1792936209995.676",
+        "nodeDateNow": 1792936346689,
+        "callId": "call@2044",
+        "query": 3,
+        "attempt": 1,
+        "id": 7839,
+        "sessionId": "A7BFC01B86F426A44BD9AE924507162D",
+        "readOrdinal": 20,
+        "frameOrdinal": 57,
+        "recordedOnMatchingResponse": true
+      },
+      "response": {
+        "stage": "cdp.response.received",
+        "nodeMs": "136694.214187",
+        "nodeTimeOrigin": "1792936209995.676",
+        "nodeDateNow": 1792936346689,
+        "callId": "call@2044",
+        "query": 3,
+        "attempt": 1,
+        "id": 7839,
+        "sessionId": "A7BFC01B86F426A44BD9AE924507162D",
+        "method": "Runtime.callFunctionOn",
+        "contextId": null,
+        "responseObserved": true,
+        "hasError": false
+      },
+      "sendToResponseMs": "783.354160",
+      "sendToReturnMs": "0.133971",
+      "lastWriteToMatchedCompletionChunkMs": "783.12390",
+      "schedulerToCallbackMs": "0.02161"
+    }
+  }
+]

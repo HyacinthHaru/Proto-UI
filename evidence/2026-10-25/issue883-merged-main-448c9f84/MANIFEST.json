@@ -1,0 +1,78 @@
+{
+  "kind": "post-merge-additive-evidence",
+  "head": "448c9f84be75cb083c79536528336eaca1946c4d",
+  "run": 40199184326,
+  "files": [
+    {
+      "path": "PUBLIC-MAPPING.json",
+      "bytes": 7224,
+      "sha256": "75d871b8d613fadb4e7f4b9e4e6960d05510ed7d4c959b69d9488dc6ad94c51e"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4711,
+      "sha256": "6f428401c623c90e4eea26689641a40d6810649ab62ce359bd979fb600ea13ec"
+    },
+    {
+      "path": "brutalist-clock.json",
+      "bytes": 3829,
+      "sha256": "46b71dfc60f4bee72320d9643cfe5f584cf57af8c1b13ed6a4f99078eeae57e3"
+    },
+    {
+      "path": "brutalist-paint.json",
+      "bytes": 16816,
+      "sha256": "9372d2752c31d88e1abde982e33ff813836510199c905d58b8ea2904381d0dcc"
+    },
+    {
+      "path": "brutalist-timeline.json",
+      "bytes": 18174,
+      "sha256": "428a38718afcfd85e6b54f5da384f8bfd4b8f0ff3167031a6e4b5ff3c57f718b"
+    },
+    {
+      "path": "ci-summary.json",
+      "bytes": 16854,
+      "sha256": "df2c1ffd98e253615b5a4a45572bdb8b8628b787437466dc7a4dc9432954b09d"
+    },
+    {
+      "path": "main-ci.json",
+      "bytes": 16968,
+      "sha256": "4bb4941ea55479b2ed14b1933b691360e37384373be86129c2db323da89eef44"
+    },
+    {
+      "path": "merge-audit.json",
+      "bytes": 2283,
+      "sha256": "661ca28a8fc617c220e65df51e882d709c47d1e9e749dae3faa29d9407c1f8d2"
+    },
+    {
+      "path": "package.json",
+      "bytes": 6099,
+      "sha256": "6f6fb1fa37f6c346a98af8cdf05a17e6aa6e03255d088f112d5c4b9fc04b8f02"
+    },
+    {
+      "path": "paint-sequence-correction.json",
+      "bytes": 839,
+      "sha256": "c9b7f5fd12abe6734306d457fe18e453d89761d09ef5c122c041e6e6e11f62a3"
+    },
+    {
+      "path": "s4-startup.json",
+      "bytes": 4089,
+      "sha256": "dcf60b2b36308cd1217a650b53d29d8dbd17ccce113a8bfab6def0842ba1d08b"
+    },
+    {
+      "path": "safe-sync.json",
+      "bytes": 1089,
+      "sha256": "72b3e92b2c1f2ff4dd24ff49fe6456e60b04705547b3f744fc8334806f1b82ef"
+    },
+    {
+      "path": "search-dispatch.json",
+      "bytes": 3904,
+      "sha256": "d81421df296bbd200c6cdd71af8e2d5b1a782f5c1110ff8c8b33500c17bae7d0"
+    },
+    {
+      "path": "search-events.json",
+      "bytes": 9398,
+      "sha256": "0b6d6c43c7b1e77874335b231bff0e513e1da94102a4f57e778d0ab4e661b048"
+    }
+  ],
+  "manifestExcludesItself": true
+}

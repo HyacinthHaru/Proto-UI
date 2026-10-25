@@ -1,0 +1,119 @@
+{
+  "at": "2026-10-25T14:06:00.375502+00:00",
+  "disposition": "partial/ABSTAIN",
+  "kind": "Natural merged-main CI original failed query; separate execution from b6 PR",
+  "head": "448c9f84be75cb083c79536528336eaca1946c4d",
+  "tree": "6326cbb9a3e3a558113bc69be6a6c3f381555194",
+  "run": 40199184326,
+  "job": 121186541782,
+  "artifact": 12601837829,
+  "sourceReport": {
+    "bytes": 51648,
+    "sha256": "c0fe85b124a91190cefdf9a2c4ace9982100673900891665a2f480057264cbc2"
+  },
+  "trace": {
+    "bytes": 26598616,
+    "sha256": "daeb32a9e4016cc9c3723cdaa37cde6f31a93c998a2ccb6b7aac55ec3ada3e1c",
+    "events": 139592,
+    "EOF": true,
+    "dataLoss": false
+  },
+  "identity": {
+    "callId": "call@1118",
+    "query": 1,
+    "CDP": 5019,
+    "sessionId": "0BCF8D77D42DC2A768E7569C0A679167",
+    "contextId": 4,
+    "expression": {
+      "callId": "call@1118",
+      "query": 1,
+      "attempt": null,
+      "id": 5019,
+      "sessionId": "0BCF8D77D42DC2A768E7569C0A679167",
+      "contextId": 4,
+      "characters": 305324,
+      "sha256": "730c2ff13134a1ef5afdb2584d768787110b548e2653bd4ee9e0c7d543c7bb1a",
+      "hashedAfterVerdict": true
+    },
+    "browserPID": 7036,
+    "rendererPID": 8289,
+    "rendererTID": 8289,
+    "frame": "C39E84D3F3E66473A4DD0014CF925D6F",
+    "sixUniqueStages": true
+  },
+  "originalVerdict": {
+    "passed": false,
+    "nodeMs": 135883.493265,
+    "nodeTimeOrigin": 1792936146511.576,
+    "nodeDateNow": 1792936282395,
+    "pendingCallIds": ["call@1118"]
+  },
+  "lateReturn": {
+    "stage": "node.frame.getAttribute.return",
+    "nodeMs": 137088.277362,
+    "nodeTimeOrigin": 1792936146511.576,
+    "nodeDateNow": 1792936283599,
+    "query": 1,
+    "value": "combobox"
+  },
+  "calculation": {
+    "clockDomain": "LINUX_CLOCK_MONOTONIC",
+    "browserForwardStartToRendererEntryMs": 2135.485,
+    "browserForwardEndToRendererEntryMs": 2135.147,
+    "rendererCommandMs": 9.387,
+    "EvaluateScriptMs": 7.783,
+    "largestCompileCodeMs": 5.641,
+    "nestedParseProgramMs": 5.299,
+    "nodeCDPSendToResponseMs": 2149.2789420000045,
+    "originalQueryReturnAfterFailedVerdictMs": 1204.784096999996,
+    "firstRoleReceiptBeforeOriginalQueryMs": 216.32652099998086,
+    "conditionalFixedOffsetEqualRate": {
+      "browserParsedHandleAfterNodeSendMs": ["3.221094", "4.182598"],
+      "rendererEntryAfterFailedVerdictMs": ["1139.582445", "1140.543949"],
+      "markerNodeBracketMs": [135884.05571, 135885.017214],
+      "exportQuantizationAdditionalMs": 0.001,
+      "boundary": "Single post-verdict marker, not raw pipe receipt/clock drift calibration."
+    },
+    "overlappingLongWork": {
+      "RunTask": {
+        "index": 98919,
+        "durationMs": 2027.572,
+        "args": {}
+      },
+      "module": {
+        "index": 98920,
+        "durationMs": 1982.484,
+        "args": {},
+        "FunctionCallDescendants": 0
+      },
+      "moduleSourceOwner": null
+    }
+  },
+  "quality": {
+    "SDKdrops": {
+      "dropped": 0,
+      "browserDropped": 0,
+      "cdpDropped": 0,
+      "arrivalDropped": 0
+    },
+    "SDKerrors": [],
+    "SDKMappingComplete": true,
+    "SDKPending": 0,
+    "auxRetained": 128,
+    "auxDropped": 88,
+    "auxErrors": [],
+    "cleanup": {
+      "originalContextClosed": true,
+      "streamClosed": true,
+      "sessionDetached": true,
+      "unresolvedTraceOwnership": false
+    }
+  },
+  "limits": [
+    "No pure compile or exclusive queue/IPC cause assigned. Renderer is not entered until after original verdict; 7.783ms engine scope does not explain 2.135s preceding boundary.",
+    "Longest overlapping module has no source binding; local private CPU control does not retroactively identify it.",
+    "First-role observer terminates at first role; no continuous target lifetime claim.",
+    "Compilation/parse overlap engine and must not be added.",
+    "All numbers belong to this merged-main run, not the older b6 2062.575ms/8.029ms run."
+  ]
+}

@@ -1,0 +1,527 @@
+{
+  "schemaVersion": 1,
+  "kind": "natural-post-merge-main-ci-terminal",
+  "reportedAt": "2026-10-25T14:13:40.189514+00:00",
+  "runId": 40199184326,
+  "event": "push",
+  "attempt": 1,
+  "head": "448c9f84be75cb083c79536528336eaca1946c4d",
+  "tree": "6326cbb9a3e3a558113bc69be6a6c3f381555194",
+  "sourceTreeEqualsB6": true,
+  "executionEpochBoundary": "This natural push execution is on merge commit448c; previous b6 pull_request executions remain separate. Equal tree is not a claim of equal timing/environment/result.",
+  "terminalObservation": "2026-10-25T14:08:26.981721+00:00",
+  "runStatus": "completed",
+  "runConclusion": "failure",
+  "runCreatedAt": "2026-10-25T13:46:54Z",
+  "runUpdatedAt": "2026-10-25T14:07:49Z",
+  "paginationComplete": true,
+  "materializedJobs": 22,
+  "jobStates": {
+    "success": 12,
+    "failure": 10
+  },
+  "skippedJobs": 0,
+  "allJobsTerminal": true,
+  "jobs": [
+    {
+      "id": 121186494865,
+      "name": "rust",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-25T13:46:57Z",
+      "completedAt": "2026-10-25T13:47:28Z"
+    },
+    {
+      "id": 121186495021,
+      "name": "lockstep-check",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-25T13:46:58Z",
+      "completedAt": "2026-10-25T13:47:05Z"
+    },
+    {
+      "id": 121186495039,
+      "name": "public_package_plan",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-25T13:46:58Z",
+      "completedAt": "2026-10-25T13:47:05Z"
+    },
+    {
+      "id": 121186495087,
+      "name": "rust-macos",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-25T13:46:58Z",
+      "completedAt": "2026-10-25T13:51:32Z"
+    },
+    {
+      "id": 121186495104,
+      "name": "rust-interop",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-25T13:46:58Z",
+      "completedAt": "2026-10-25T13:51:00Z"
+    },
+    {
+      "id": 121186495145,
+      "name": "release-scan",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-25T13:46:58Z",
+      "completedAt": "2026-10-25T13:47:16Z"
+    },
+    {
+      "id": 121186495248,
+      "name": "type-check",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-25T13:46:58Z",
+      "completedAt": "2026-10-25T13:48:41Z"
+    },
+    {
+      "id": 121186495540,
+      "name": "test-plan",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-25T13:46:57Z",
+      "completedAt": "2026-10-25T13:47:07Z"
+    },
+    {
+      "id": 121186534549,
+      "name": "release-consumer-react",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-25T13:47:08Z",
+      "completedAt": "2026-10-25T13:49:10Z"
+    },
+    {
+      "id": 121186534595,
+      "name": "release-stage",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-25T13:47:09Z",
+      "completedAt": "2026-10-25T13:49:29Z"
+    },
+    {
+      "id": 121186534596,
+      "name": "cli-smoke",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-25T13:47:10Z",
+      "completedAt": "2026-10-25T13:49:16Z"
+    },
+    {
+      "id": 121186534603,
+      "name": "public_package_build",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-25T13:47:08Z",
+      "completedAt": "2026-10-25T13:48:57Z"
+    },
+    {
+      "id": 121186541769,
+      "name": "test-general",
+      "status": "completed",
+      "conclusion": "failure",
+      "startedAt": "2026-10-25T13:49:00Z",
+      "completedAt": "2026-10-25T13:49:54Z"
+    },
+    {
+      "id": 121186541772,
+      "name": "test-browser (4/8, browser-4-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "startedAt": "2026-10-25T13:47:26Z",
+      "completedAt": "2026-10-25T14:03:00Z"
+    },
+    {
+      "id": 121186541782,
+      "name": "test-browser (2/8, browser-2-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "startedAt": "2026-10-25T13:47:18Z",
+      "completedAt": "2026-10-25T14:02:54Z"
+    },
+    {
+      "id": 121186541836,
+      "name": "test-browser (5/8, browser-5-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "startedAt": "2026-10-25T13:47:42Z",
+      "completedAt": "2026-10-25T13:58:59Z"
+    },
+    {
+      "id": 121186541849,
+      "name": "test-browser (1/8, browser-1-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "startedAt": "2026-10-25T13:47:33Z",
+      "completedAt": "2026-10-25T14:03:02Z"
+    },
+    {
+      "id": 121186541856,
+      "name": "test-browser (7/8, browser-7-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "startedAt": "2026-10-25T13:47:30Z",
+      "completedAt": "2026-10-25T13:58:09Z"
+    },
+    {
+      "id": 121186541870,
+      "name": "test-browser (6/8, browser-6-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "startedAt": "2026-10-25T13:47:55Z",
+      "completedAt": "2026-10-25T13:53:23Z"
+    },
+    {
+      "id": 121186541877,
+      "name": "test-browser (3/8, browser-3-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "startedAt": "2026-10-25T13:49:13Z",
+      "completedAt": "2026-10-25T13:59:44Z"
+    },
+    {
+      "id": 121186541977,
+      "name": "test-browser (8/8, browser-8-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "startedAt": "2026-10-25T13:49:18Z",
+      "completedAt": "2026-10-25T14:04:46Z"
+    },
+    {
+      "id": 121190618646,
+      "name": "test",
+      "status": "completed",
+      "conclusion": "failure",
+      "startedAt": "2026-10-25T14:07:35Z",
+      "completedAt": "2026-10-25T14:07:49Z"
+    }
+  ],
+  "artifactMetadataCount": 11,
+  "actualPlan": {
+    "generalFiles": 1309,
+    "browserShards": 8,
+    "productionExcluded": 26,
+    "source": "actual-test-plan.json"
+  },
+  "package": {
+    "build": {
+      "passed": 47,
+      "selected": 47
+    },
+    "manifests": 47,
+    "policyTests": {
+      "passed": 9,
+      "failed": 0
+    },
+    "measurementCounts": {
+      "PASS": 4,
+      "ADVISORY": 5,
+      "strictOverBudget": 5
+    },
+    "source": "package-report.json",
+    "oldB6PackageState": "skipped"
+  },
+  "general": {
+    "publicDocsDriftIssues": 78,
+    "ordinaryGeneralVitestExecuted": false,
+    "separateMediaTests": {
+      "passed": 15,
+      "failed": 0
+    },
+    "source": "general-report.json"
+  },
+  "search": {
+    "jobId": 121186541782,
+    "fileTotal": 30,
+    "passed": 15,
+    "failed": 15,
+    "readinessFailures": 7,
+    "DocsOriginal1000msFailures": 8,
+    "shardExitCode": 124,
+    "completeShardSummary": null,
+    "source": "search-log-index.json",
+    "actualNewQueryRecorder": {
+      "reportPath": "artifacts/12601837829/selected/search-commands/query-dispatch-shadcn-1440/report.json",
+      "reportSHA256": "c0fe85b124a91190cefdf9a2c4ace9982100673900891665a2f480057264cbc2",
+      "tracePath": "artifacts/12601837829/selected/search-commands/query-dispatch-shadcn-1440/trace.json",
+      "traceBytes": 26598616,
+      "traceSHA256": "daeb32a9e4016cc9c3723cdaa37cde6f31a93c998a2ccb6b7aac55ec3ada3e1c",
+      "traceDeclaredComplete": true,
+      "traceDeclaredDataLossOccurred": false,
+      "originalVerdict": {
+        "passed": false,
+        "nodeMs": 135883.493265,
+        "nodeTimeOrigin": 1792936146511.576,
+        "nodeDateNow": 1792936282395,
+        "pendingCallIds": ["call@1118"]
+      },
+      "auxiliaryDroppedRows": 88,
+      "auxiliaryDroppedErrors": 0,
+      "errorsCount": 0,
+      "cleanup": {
+        "originalContextClosed": true,
+        "streamClosed": true,
+        "sessionDetached": true,
+        "unresolvedTraceOwnership": false
+      },
+      "stageAnalysisOwner": "Root independently analyzing this exact new report/trace; no earlier b6 Runtime or clock values reused here."
+    }
+  },
+  "browser3": {
+    "jobId": 121186541877,
+    "files": 11,
+    "tests": 96,
+    "passed": 92,
+    "failed": 4,
+    "completeSummary": true,
+    "Homepage": {
+      "passed": 8,
+      "failed": 1,
+      "firstFailure": "original1000ms family matcher: shadcn != brutalist",
+      "source": "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts:1566",
+      "rawLogLines": [669, 679]
+    },
+    "paint": {
+      "observedFailingAction": "part('trigger').click() on [data-s4-profile=light][data-s4-part=trigger]",
+      "timeoutMs": 30000,
+      "source": "scripts/analysis/shadow-s4-paint-browser.mjs:90",
+      "observedCallLog": [
+        "resolved to light trigger",
+        "visible, enabled and stable",
+        "scrolling into view",
+        "done scrolling"
+      ],
+      "rawLogLines": [647, 665],
+      "limit": "The failure stack does not identify the settings-loop iteration. It establishes this light trigger actionability timeout, not whether an earlier iteration clicked or captured successfully."
+    },
+    "otherFailures": {
+      "count": 2,
+      "source": "apps/www/src/content/docs/zh-cn/demo-new-projection-families.browser.test.ts:124",
+      "predicate": "opacity '1' != '0.5' in light/dark"
+    },
+    "independentPeerAnalysis": "separate Root-assigned review; do not infer attribution from test names"
+  },
+  "S4startup": {
+    "jobId": 121186541772,
+    "planned": true,
+    "actualResult": "unknown",
+    "firstMissing": null,
+    "shardExitCode": 124,
+    "completeShardSummary": null,
+    "precedingCompletedFileSubtotalOnly": 51,
+    "source": "s4-startup-report.json"
+  },
+  "aggregate": {
+    "jobId": 121190618646,
+    "predicate": "Required job test-general did not succeed",
+    "rawLogLine": 215,
+    "exitCode": 1
+  },
+  "downloadedArtifacts": [
+    {
+      "artifactId": 12601837829,
+      "name": "runtime-ci-40199184326-browser-2-of-8-attempt-1",
+      "archiveBytes": 21257870,
+      "archiveSHA256": "8dc214dee9919685cc6d3b7a59de52fd8b81924c7e3bbad7cd2c54b209d33905",
+      "centralDirectoryMembers": 385,
+      "selectedCRCValidatedMembers": 145,
+      "metadataPath": "artifacts/12601837829/metadata.json",
+      "downloadReceiptPath": "artifacts/12601837829/download-receipt.json",
+      "inventoryPath": "artifacts/12601837829/inventory.json",
+      "selectedIndexPath": "artifacts/12601837829/selected-inputs.json",
+      "allMemberContentsDecompressed": false,
+      "pixelsReviewed": false
+    },
+    {
+      "artifactId": 12602006758,
+      "name": "runtime-ci-40199184326-browser-3-of-8-attempt-1",
+      "archiveBytes": 67026618,
+      "archiveSHA256": "668053c78d5c6e1b0306bd8ee9e78345dae71036fe90eb08a1b0248c574b5756",
+      "centralDirectoryMembers": 326,
+      "selectedCRCValidatedMembers": 26,
+      "metadataPath": "artifacts/12602006758/metadata.json",
+      "downloadReceiptPath": "artifacts/12602006758/download-receipt.json",
+      "inventoryPath": "artifacts/12602006758/inventory.json",
+      "selectedIndexPath": "artifacts/12602006758/selected-inputs.json",
+      "allMemberContentsDecompressed": false,
+      "pixelsReviewed": false
+    },
+    {
+      "artifactId": 12600919056,
+      "name": "runtime-ci-40199184326-browser-4-of-8-attempt-1",
+      "archiveBytes": 14757370,
+      "archiveSHA256": "8b203ed427aef3876bba55062558bdaed33ac982d40abffc0a8029b7070833db",
+      "centralDirectoryMembers": 283,
+      "selectedCRCValidatedMembers": 1,
+      "metadataPath": "artifacts/12600919056/metadata.json",
+      "downloadReceiptPath": "artifacts/12600919056/download-receipt.json",
+      "inventoryPath": "artifacts/12600919056/inventory.json",
+      "selectedIndexPath": "artifacts/12600919056/selected-inputs.json",
+      "allMemberContentsDecompressed": false,
+      "pixelsReviewed": false
+    }
+  ],
+  "rawLogs": [
+    {
+      "jobId": 121186495540,
+      "name": "test-plan",
+      "jobConclusion": "success",
+      "path": "terminal-logs/121186495540.log",
+      "bytes": 154431,
+      "sha256": "bec821e228f10f69bceedb5d9999a1dd84a2dcfa7da8acc9f11b79b1411e08ad",
+      "downloadReceipt": "terminal-logs/121186495540.log.receipt.json",
+      "checkoutEvidence": [
+        {
+          "commandLine": 109,
+          "shaLine": 110,
+          "sha": "448c9f84be75cb083c79536528336eaca1946c4d"
+        }
+      ],
+      "loggedNonzeroExits": []
+    },
+    {
+      "jobId": 121186534603,
+      "name": "public_package_build",
+      "jobConclusion": "success",
+      "path": "terminal-logs/121186534603.log",
+      "bytes": 72796,
+      "sha256": "3182af52304921784f09bd07e74ca05467a9f29eb9cd683ead86bbf17a5ee906",
+      "downloadReceipt": "terminal-logs/121186534603.log.receipt.json",
+      "checkoutEvidence": [
+        {
+          "commandLine": 477,
+          "shaLine": 478,
+          "sha": "448c9f84be75cb083c79536528336eaca1946c4d"
+        }
+      ],
+      "loggedNonzeroExits": []
+    },
+    {
+      "jobId": 121186541769,
+      "name": "test-general",
+      "jobConclusion": "failure",
+      "path": "terminal-logs/121186541769.log",
+      "bytes": 149397,
+      "sha256": "773e6e5d648a24edcb5ff29664809b49870852bc6d1fdaa6586caa7d7a8fd9d2",
+      "downloadReceipt": "terminal-logs/121186541769.log.receipt.json",
+      "checkoutEvidence": [
+        {
+          "commandLine": 485,
+          "shaLine": 486,
+          "sha": "448c9f84be75cb083c79536528336eaca1946c4d"
+        }
+      ],
+      "loggedNonzeroExits": [
+        {
+          "line": 1357,
+          "code": 1
+        }
+      ]
+    },
+    {
+      "jobId": 121186541772,
+      "name": "test-browser (4/8, browser-4-of-8)",
+      "jobConclusion": "failure",
+      "path": "terminal-logs/121186541772.log",
+      "bytes": 88230,
+      "sha256": "5c348a02d957105a8105c4103cf36b90525a278cc4c33d606e51409555ddc3e5",
+      "downloadReceipt": "terminal-logs/121186541772.log.receipt.json",
+      "checkoutEvidence": [
+        {
+          "commandLine": 111,
+          "shaLine": 112,
+          "sha": "448c9f84be75cb083c79536528336eaca1946c4d"
+        }
+      ],
+      "loggedNonzeroExits": [
+        {
+          "line": 732,
+          "code": 124
+        }
+      ]
+    },
+    {
+      "jobId": 121186541782,
+      "name": "test-browser (2/8, browser-2-of-8)",
+      "jobConclusion": "failure",
+      "path": "terminal-logs/121186541782.log",
+      "bytes": 438478,
+      "sha256": "7e676d2b9d22fbe5bc41d5a4439f991f8d4a72be1d2c0e316eb81360aac4dd6a",
+      "downloadReceipt": "terminal-logs/121186541782.log.receipt.json",
+      "checkoutEvidence": [
+        {
+          "commandLine": 111,
+          "shaLine": 112,
+          "sha": "448c9f84be75cb083c79536528336eaca1946c4d"
+        }
+      ],
+      "loggedNonzeroExits": [
+        {
+          "line": 1345,
+          "code": 124
+        }
+      ]
+    },
+    {
+      "jobId": 121186541877,
+      "name": "test-browser (3/8, browser-3-of-8)",
+      "jobConclusion": "failure",
+      "path": "terminal-logs/121186541877.log",
+      "bytes": 128079,
+      "sha256": "255d604c62c6753c2d22f9d4aa1341e4250b04b031f2a402a2ba0a23028cb022",
+      "downloadReceipt": "terminal-logs/121186541877.log.receipt.json",
+      "checkoutEvidence": [
+        {
+          "commandLine": 111,
+          "shaLine": 112,
+          "sha": "448c9f84be75cb083c79536528336eaca1946c4d"
+        }
+      ],
+      "loggedNonzeroExits": [
+        {
+          "line": 953,
+          "code": 1
+        }
+      ]
+    },
+    {
+      "jobId": 121190618646,
+      "name": "test",
+      "jobConclusion": "failure",
+      "path": "terminal-logs/121190618646.log",
+      "bytes": 23313,
+      "sha256": "1d40000a17c2ed0adb7860b174b0677caf4fbcb26ebf8ee66b2df77f50caaaed",
+      "downloadReceipt": "terminal-logs/121190618646.log.receipt.json",
+      "checkoutEvidence": [
+        {
+          "commandLine": 107,
+          "shaLine": 108,
+          "sha": "448c9f84be75cb083c79536528336eaca1946c4d"
+        }
+      ],
+      "loggedNonzeroExits": [
+        {
+          "line": 235,
+          "code": 1
+        }
+      ]
+    }
+  ],
+  "otherBrowserLogsNotFetched": [
+    121186541836, 121186541849, 121186541856, 121186541870, 121186541977
+  ],
+  "wholeBrowserTotal": null,
+  "limits": [
+    "Full jobs metadata is complete; test counts are asserted only from the selected original logs. No all-eight-shard total is manufactured.",
+    "S4 planned membership does not prove its startup case executed before the900s shard termination.",
+    "Raw trace and complete ZIPs remain private hash references; no PNG was viewed or included.",
+    "Complete central-directory inventories and selected-member CRC/SHA checks do not claim unselected member decompression.",
+    "No rerun, dispatch, cancellation, external mutation, source edit, new test or browser execution occurred.",
+    "Merged status and same source tree do not imply CI green, independent approval or C source causality."
+  ],
+  "disposition": "partial/ABSTAIN"
+}

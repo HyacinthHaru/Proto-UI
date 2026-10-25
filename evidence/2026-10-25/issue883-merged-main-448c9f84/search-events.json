@@ -1,0 +1,418 @@
+{
+  "rawTraceSHA256": "daeb32a9e4016cc9c3723cdaa37cde6f31a93c998a2ccb6b7aac55ec3ada3e1c",
+  "events": [
+    {
+      "rawIndex0Based": 14298,
+      "event": {
+        "args": {
+          "data": {
+            "frame": "C39E84D3F3E66473A4DD0014CF925D6F",
+            "isMainFrame": true,
+            "isOutermostMainFrame": true,
+            "name": "",
+            "page": "C39E84D3F3E66473A4DD0014CF925D6F",
+            "url": "http://127.0.0.1:44643/zh-cn/ui-libraries/shadcn/button/"
+          }
+        },
+        "cat": "devtools.timeline",
+        "dur": 37,
+        "name": "CommitLoad",
+        "ph": "X",
+        "pid": 8289,
+        "tdur": 37,
+        "tid": 8289,
+        "ts": 322197760,
+        "tts": 41924
+      }
+    },
+    {
+      "rawIndex0Based": 98919,
+      "event": {
+        "args": {},
+        "cat": "disabled-by-default-devtools.timeline",
+        "dur": 2027572,
+        "name": "RunTask",
+        "ph": "X",
+        "pid": 8289,
+        "tdur": 2021201,
+        "tid": 8289,
+        "ts": 323256256,
+        "tts": 882939
+      }
+    },
+    {
+      "rawIndex0Based": 98920,
+      "event": {
+        "args": {},
+        "cat": "v8,devtools.timeline",
+        "dur": 1982484,
+        "name": "v8.evaluateModule",
+        "ph": "X",
+        "pid": 8289,
+        "tdur": 1982629,
+        "tid": 8289,
+        "ts": 323256267,
+        "tts": 882949
+      }
+    },
+    {
+      "rawIndex0Based": 100529,
+      "event": {
+        "args": {
+          "call_id": 5019,
+          "method": "Runtime.evaluate"
+        },
+        "cat": "devtools",
+        "dur": 511,
+        "name": "DevToolsSession::HandleCommand in Browser",
+        "ph": "X",
+        "pid": 7036,
+        "tdur": 507,
+        "tid": 7036,
+        "ts": 323389184,
+        "tts": 15885755
+      }
+    },
+    {
+      "rawIndex0Based": 100530,
+      "event": {
+        "args": {
+          "call_id": 5019,
+          "method": "Runtime.evaluate"
+        },
+        "cat": "devtools",
+        "dur": 338,
+        "name": "DevToolsSession::DispatchToAgent",
+        "ph": "X",
+        "pid": 7036,
+        "tdur": 337,
+        "tid": 7036,
+        "ts": 323389354,
+        "tts": 15885923
+      }
+    },
+    {
+      "rawIndex0Based": 121854,
+      "event": {
+        "args": {},
+        "cat": "disabled-by-default-devtools.timeline",
+        "dur": 12529,
+        "name": "RunTask",
+        "ph": "X",
+        "pid": 8289,
+        "tdur": 11838,
+        "tid": 8289,
+        "ts": 325292634,
+        "tts": 2912897
+      }
+    },
+    {
+      "rawIndex0Based": 121855,
+      "event": {
+        "args": {},
+        "cat": "v8,devtools.timeline",
+        "dur": 12457,
+        "name": "v8.evaluateModule",
+        "ph": "X",
+        "pid": 8289,
+        "tdur": 11767,
+        "tid": 8289,
+        "ts": 325292645,
+        "tts": 2912908
+      }
+    },
+    {
+      "rawIndex0Based": 123276,
+      "event": {
+        "args": {},
+        "cat": "disabled-by-default-devtools.timeline",
+        "dur": 27430,
+        "name": "RunTask",
+        "ph": "X",
+        "pid": 8289,
+        "tdur": 26901,
+        "tid": 8289,
+        "ts": 325317650,
+        "tts": 2936894
+      }
+    },
+    {
+      "rawIndex0Based": 123277,
+      "event": {
+        "args": {},
+        "cat": "v8,devtools.timeline",
+        "dur": 20573,
+        "name": "v8.evaluateModule",
+        "ph": "X",
+        "pid": 8289,
+        "tdur": 20286,
+        "tid": 8289,
+        "ts": 325317658,
+        "tts": 2936901
+      }
+    },
+    {
+      "rawIndex0Based": 124020,
+      "event": {
+        "args": {},
+        "cat": "disabled-by-default-devtools.timeline",
+        "dur": 61152,
+        "name": "RunTask",
+        "ph": "X",
+        "pid": 8289,
+        "tdur": 61083,
+        "tid": 8289,
+        "ts": 325345087,
+        "tts": 2963801
+      }
+    },
+    {
+      "rawIndex0Based": 124061,
+      "event": {
+        "args": {
+          "data": {
+            "columnNumber": 24,
+            "frame": "C39E84D3F3E66473A4DD0014CF925D6F",
+            "functionName": "refreshTheme",
+            "isolate": "2096505234443076391",
+            "lineNumber": 102,
+            "sampleTraceId": 6649178900083886,
+            "scriptId": "84",
+            "url": "http://127.0.0.1:44643/src/components/site-native-controls.ts"
+          }
+        },
+        "cat": "devtools.timeline",
+        "dur": 60483,
+        "name": "FunctionCall",
+        "ph": "X",
+        "pid": 8289,
+        "tdur": 60451,
+        "tid": 8289,
+        "ts": 325345584,
+        "tts": 2964269
+      }
+    },
+    {
+      "rawIndex0Based": 124067,
+      "event": {
+        "args": {
+          "beginData": {
+            "dirtyObjects": 12,
+            "frame": "C39E84D3F3E66473A4DD0014CF925D6F",
+            "partialLayout": false,
+            "totalObjects": 3435
+          },
+          "endData": {
+            "layoutRoots": [
+              {
+                "depth": 1,
+                "nodeId": 3,
+                "nodeName": "#document",
+                "quads": [[0, 0, 1440, 0, 1440, 1000, 0, 1000]]
+              }
+            ]
+          }
+        },
+        "cat": "devtools.timeline",
+        "dur": 59197,
+        "name": "Layout",
+        "ph": "X",
+        "pid": 8289,
+        "tdur": 59173,
+        "tid": 8289,
+        "ts": 325346710,
+        "tts": 2965389
+      }
+    },
+    {
+      "rawIndex0Based": 124902,
+      "event": {
+        "args": {},
+        "cat": "disabled-by-default-devtools.timeline",
+        "dur": 50260,
+        "name": "RunTask",
+        "ph": "X",
+        "pid": 8289,
+        "tdur": 49639,
+        "tid": 8289,
+        "ts": 325430656,
+        "tts": 3048686
+      }
+    },
+    {
+      "rawIndex0Based": 124905,
+      "event": {
+        "args": {},
+        "cat": "v8,devtools.timeline",
+        "dur": 48736,
+        "name": "v8.evaluateModule",
+        "ph": "X",
+        "pid": 8289,
+        "tdur": 48224,
+        "tid": 8289,
+        "ts": 325430665,
+        "tts": 3048694
+      }
+    },
+    {
+      "rawIndex0Based": 125971,
+      "event": {
+        "args": {},
+        "cat": "disabled-by-default-devtools.timeline",
+        "dur": 13742,
+        "name": "RunTask",
+        "ph": "X",
+        "pid": 8289,
+        "tdur": 13431,
+        "tid": 8289,
+        "ts": 325480968,
+        "tts": 3098375
+      }
+    },
+    {
+      "rawIndex0Based": 128226,
+      "event": {
+        "args": {
+          "call_id": 5019
+        },
+        "cat": "devtools",
+        "dur": 9387,
+        "name": "DevToolsSession::DispatchProtocolCommand",
+        "ph": "X",
+        "pid": 8289,
+        "tdur": 8833,
+        "tid": 8289,
+        "ts": 325524839,
+        "tts": 3150686
+      }
+    },
+    {
+      "rawIndex0Based": 128227,
+      "event": {
+        "args": {
+          "call_id": 5019
+        },
+        "cat": "devtools",
+        "dur": 9381,
+        "name": "DevToolsSession::DispatchProtocolCommandImpl",
+        "ph": "X",
+        "pid": 8289,
+        "tdur": 8829,
+        "tid": 8289,
+        "ts": 325524844,
+        "tts": 3150690
+      }
+    },
+    {
+      "rawIndex0Based": 128228,
+      "event": {
+        "args": {
+          "method_name": "Runtime.evaluate"
+        },
+        "cat": "devtools",
+        "dur": 9378,
+        "name": "api_call",
+        "ph": "X",
+        "pid": 8289,
+        "tdur": 8827,
+        "tid": 8289,
+        "ts": 325524846,
+        "tts": 3150692
+      }
+    },
+    {
+      "rawIndex0Based": 128292,
+      "event": {
+        "args": {},
+        "cat": "disabled-by-default-devtools.timeline",
+        "dur": 7783,
+        "name": "EvaluateScript",
+        "ph": "X",
+        "pid": 8289,
+        "tdur": 7233,
+        "tid": 8289,
+        "ts": 325526417,
+        "tts": 3152263
+      }
+    },
+    {
+      "rawIndex0Based": 128293,
+      "event": {
+        "args": {},
+        "cat": "disabled-by-default-v8.compile",
+        "dur": 5641,
+        "name": "V8.CompileCode",
+        "ph": "X",
+        "pid": 8289,
+        "tdur": 5211,
+        "tid": 8289,
+        "ts": 325526913,
+        "tts": 3152758
+      }
+    },
+    {
+      "rawIndex0Based": 128294,
+      "event": {
+        "args": {},
+        "cat": "disabled-by-default-v8.compile",
+        "dur": 5299,
+        "name": "V8.ParseProgram",
+        "ph": "X",
+        "pid": 8289,
+        "tdur": 4874,
+        "tid": 8289,
+        "ts": 325526917,
+        "tts": 3152762
+      }
+    },
+    {
+      "rawIndex0Based": 128888,
+      "event": {
+        "args": {
+          "call_id": 5019
+        },
+        "cat": "devtools",
+        "dur": 30,
+        "name": "DevToolsSession::SendProtocolResponse",
+        "ph": "X",
+        "pid": 8289,
+        "tdur": 30,
+        "tid": 8289,
+        "ts": 325534167,
+        "tts": 3159464
+      }
+    },
+    {
+      "rawIndex0Based": 128896,
+      "event": {
+        "args": {
+          "call_id": 5019
+        },
+        "cat": "devtools",
+        "dur": 55,
+        "name": "DevToolsSession::DispatchProtocolResponse",
+        "ph": "X",
+        "pid": 7036,
+        "tdur": 55,
+        "tid": 7036,
+        "ts": 325534306,
+        "tts": 15968537
+      }
+    },
+    {
+      "rawIndex0Based": 138721,
+      "event": {
+        "args": {
+          "sync_id": "proto-ui-docs-original-verdict"
+        },
+        "cat": "__metadata",
+        "name": "clock_sync",
+        "ph": "c",
+        "pid": 7036,
+        "tid": 7036,
+        "ts": 324385819,
+        "tts": 15917751
+      }
+    }
+  ]
+}

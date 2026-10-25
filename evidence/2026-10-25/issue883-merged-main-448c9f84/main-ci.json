@@ -1,0 +1,552 @@
+{
+  "state": "terminal",
+  "observedAt": "2026-10-25T14:08:26.981721+00:00",
+  "runId": 40199184326,
+  "runAttempt": 1,
+  "head": "448c9f84be75cb083c79536528336eaca1946c4d",
+  "runStatus": "completed",
+  "runConclusion": "failure",
+  "snapshot": "snapshots/09-20261025T140821Z",
+  "paginationComplete": true,
+  "materializedJobs": 22,
+  "jobStates": {
+    "success": 12,
+    "failure": 10
+  },
+  "jobs": [
+    {
+      "id": 121186494865,
+      "name": "rust",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-25T13:46:57Z",
+      "completed_at": "2026-10-25T13:47:28Z",
+      "activeOrFailedSteps": []
+    },
+    {
+      "id": 121186495021,
+      "name": "lockstep-check",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-25T13:46:58Z",
+      "completed_at": "2026-10-25T13:47:05Z",
+      "activeOrFailedSteps": []
+    },
+    {
+      "id": 121186495039,
+      "name": "public_package_plan",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-25T13:46:58Z",
+      "completed_at": "2026-10-25T13:47:05Z",
+      "activeOrFailedSteps": []
+    },
+    {
+      "id": 121186495087,
+      "name": "rust-macos",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-25T13:46:58Z",
+      "completed_at": "2026-10-25T13:51:32Z",
+      "activeOrFailedSteps": []
+    },
+    {
+      "id": 121186495104,
+      "name": "rust-interop",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-25T13:46:58Z",
+      "completed_at": "2026-10-25T13:51:00Z",
+      "activeOrFailedSteps": []
+    },
+    {
+      "id": 121186495145,
+      "name": "release-scan",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-25T13:46:58Z",
+      "completed_at": "2026-10-25T13:47:16Z",
+      "activeOrFailedSteps": []
+    },
+    {
+      "id": 121186495248,
+      "name": "type-check",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-25T13:46:58Z",
+      "completed_at": "2026-10-25T13:48:41Z",
+      "activeOrFailedSteps": []
+    },
+    {
+      "id": 121186495540,
+      "name": "test-plan",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-25T13:46:57Z",
+      "completed_at": "2026-10-25T13:47:07Z",
+      "activeOrFailedSteps": []
+    },
+    {
+      "id": 121186534549,
+      "name": "release-consumer-react",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-25T13:47:08Z",
+      "completed_at": "2026-10-25T13:49:10Z",
+      "activeOrFailedSteps": []
+    },
+    {
+      "id": 121186534595,
+      "name": "release-stage",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-25T13:47:09Z",
+      "completed_at": "2026-10-25T13:49:29Z",
+      "activeOrFailedSteps": []
+    },
+    {
+      "id": 121186534596,
+      "name": "cli-smoke",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-25T13:47:10Z",
+      "completed_at": "2026-10-25T13:49:16Z",
+      "activeOrFailedSteps": []
+    },
+    {
+      "id": 121186534603,
+      "name": "public_package_build",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-25T13:47:08Z",
+      "completed_at": "2026-10-25T13:48:57Z",
+      "activeOrFailedSteps": []
+    },
+    {
+      "id": 121186541769,
+      "name": "test-general",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-25T13:49:00Z",
+      "completed_at": "2026-10-25T13:49:54Z",
+      "activeOrFailedSteps": [
+        {
+          "name": "Public documentation gate and repository tests",
+          "status": "completed",
+          "conclusion": "failure"
+        }
+      ]
+    },
+    {
+      "id": 121186541772,
+      "name": "test-browser (4/8, browser-4-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-25T13:47:26Z",
+      "completed_at": "2026-10-25T14:03:00Z",
+      "activeOrFailedSteps": [
+        {
+          "name": "Run the bounded shard with its own documentation server",
+          "status": "completed",
+          "conclusion": "failure"
+        }
+      ]
+    },
+    {
+      "id": 121186541782,
+      "name": "test-browser (2/8, browser-2-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-25T13:47:18Z",
+      "completed_at": "2026-10-25T14:02:54Z",
+      "activeOrFailedSteps": [
+        {
+          "name": "Run the bounded shard with its own documentation server",
+          "status": "completed",
+          "conclusion": "failure"
+        }
+      ]
+    },
+    {
+      "id": 121186541836,
+      "name": "test-browser (5/8, browser-5-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-25T13:47:42Z",
+      "completed_at": "2026-10-25T13:58:59Z",
+      "activeOrFailedSteps": [
+        {
+          "name": "Run the bounded shard with its own documentation server",
+          "status": "completed",
+          "conclusion": "failure"
+        }
+      ]
+    },
+    {
+      "id": 121186541849,
+      "name": "test-browser (1/8, browser-1-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-25T13:47:33Z",
+      "completed_at": "2026-10-25T14:03:02Z",
+      "activeOrFailedSteps": [
+        {
+          "name": "Run the bounded shard with its own documentation server",
+          "status": "completed",
+          "conclusion": "failure"
+        }
+      ]
+    },
+    {
+      "id": 121186541856,
+      "name": "test-browser (7/8, browser-7-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-25T13:47:30Z",
+      "completed_at": "2026-10-25T13:58:09Z",
+      "activeOrFailedSteps": [
+        {
+          "name": "Run the bounded shard with its own documentation server",
+          "status": "completed",
+          "conclusion": "failure"
+        }
+      ]
+    },
+    {
+      "id": 121186541870,
+      "name": "test-browser (6/8, browser-6-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-25T13:47:55Z",
+      "completed_at": "2026-10-25T13:53:23Z",
+      "activeOrFailedSteps": [
+        {
+          "name": "Run the bounded shard with its own documentation server",
+          "status": "completed",
+          "conclusion": "failure"
+        }
+      ]
+    },
+    {
+      "id": 121186541877,
+      "name": "test-browser (3/8, browser-3-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-25T13:49:13Z",
+      "completed_at": "2026-10-25T13:59:44Z",
+      "activeOrFailedSteps": [
+        {
+          "name": "Run the bounded shard with its own documentation server",
+          "status": "completed",
+          "conclusion": "failure"
+        }
+      ]
+    },
+    {
+      "id": 121186541977,
+      "name": "test-browser (8/8, browser-8-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-25T13:49:18Z",
+      "completed_at": "2026-10-25T14:04:46Z",
+      "activeOrFailedSteps": [
+        {
+          "name": "Run the bounded shard with its own documentation server",
+          "status": "completed",
+          "conclusion": "failure"
+        }
+      ]
+    },
+    {
+      "id": 121190618646,
+      "name": "test",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-25T14:07:35Z",
+      "completed_at": "2026-10-25T14:07:49Z",
+      "activeOrFailedSteps": [
+        {
+          "name": "Require all jobs and exact checkout-bound suite receipts",
+          "status": "completed",
+          "conclusion": "failure"
+        }
+      ]
+    }
+  ],
+  "focusedJobs": [
+    {
+      "id": 121186541772,
+      "name": "test-browser (4/8, browser-4-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-25T13:47:26Z",
+      "completed_at": "2026-10-25T14:03:00Z",
+      "activeOrFailedSteps": [
+        {
+          "name": "Run the bounded shard with its own documentation server",
+          "status": "completed",
+          "conclusion": "failure"
+        }
+      ]
+    },
+    {
+      "id": 121186541782,
+      "name": "test-browser (2/8, browser-2-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-25T13:47:18Z",
+      "completed_at": "2026-10-25T14:02:54Z",
+      "activeOrFailedSteps": [
+        {
+          "name": "Run the bounded shard with its own documentation server",
+          "status": "completed",
+          "conclusion": "failure"
+        }
+      ]
+    },
+    {
+      "id": 121186541877,
+      "name": "test-browser (3/8, browser-3-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-25T13:49:13Z",
+      "completed_at": "2026-10-25T13:59:44Z",
+      "activeOrFailedSteps": [
+        {
+          "name": "Run the bounded shard with its own documentation server",
+          "status": "completed",
+          "conclusion": "failure"
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 12602006758,
+      "name": "runtime-ci-40199184326-browser-3-of-8-attempt-1",
+      "size_in_bytes": 67026618,
+      "digest": "sha256:668053c78d5c6e1b0306bd8ee9e78345dae71036fe90eb08a1b0248c574b5756",
+      "expired": false,
+      "created_at": "2026-10-25T13:59:41Z",
+      "workflow_run": {
+        "id": 40199184326,
+        "repository_id": 840178061,
+        "head_repository_id": 840178061,
+        "head_branch": "main",
+        "head_sha": "448c9f84be75cb083c79536528336eaca1946c4d"
+      }
+    },
+    {
+      "id": 12601946952,
+      "name": "runtime-ci-40199184326-browser-5-of-8-attempt-1",
+      "size_in_bytes": 2257330,
+      "digest": "sha256:2f683cdfa66b4a78e74e66fb5556d988481df682d26de45154cf4ee4b2f7e1a2",
+      "expired": false,
+      "created_at": "2026-10-25T13:58:57Z",
+      "workflow_run": {
+        "id": 40199184326,
+        "repository_id": 840178061,
+        "head_repository_id": 840178061,
+        "head_branch": "main",
+        "head_sha": "448c9f84be75cb083c79536528336eaca1946c4d"
+      }
+    },
+    {
+      "id": 12601902657,
+      "name": "runtime-ci-40199184326-browser-1-of-8-attempt-1",
+      "size_in_bytes": 2126679,
+      "digest": "sha256:e3a6a686003c29c7f17f6b45be46faa41107027d767282e4ab0c6c77ce8ec1b1",
+      "expired": false,
+      "created_at": "2026-10-25T14:03:00Z",
+      "workflow_run": {
+        "id": 40199184326,
+        "repository_id": 840178061,
+        "head_repository_id": 840178061,
+        "head_branch": "main",
+        "head_sha": "448c9f84be75cb083c79536528336eaca1946c4d"
+      }
+    },
+    {
+      "id": 12601845541,
+      "name": "gpui-native-evidence-448c9f84be75cb083c79536528336eaca1946c4d",
+      "size_in_bytes": 12234,
+      "digest": "sha256:86fe7e5345eb2ef4263482e6b3b54e96f4e08a31382f743bdc20507fed4fcc89",
+      "expired": false,
+      "created_at": "2026-10-25T13:51:28Z",
+      "workflow_run": {
+        "id": 40199184326,
+        "repository_id": 840178061,
+        "head_repository_id": 840178061,
+        "head_branch": "main",
+        "head_sha": "448c9f84be75cb083c79536528336eaca1946c4d"
+      }
+    },
+    {
+      "id": 12601837829,
+      "name": "runtime-ci-40199184326-browser-2-of-8-attempt-1",
+      "size_in_bytes": 21257870,
+      "digest": "sha256:8dc214dee9919685cc6d3b7a59de52fd8b81924c7e3bbad7cd2c54b209d33905",
+      "expired": false,
+      "created_at": "2026-10-25T14:02:52Z",
+      "workflow_run": {
+        "id": 40199184326,
+        "repository_id": 840178061,
+        "head_repository_id": 840178061,
+        "head_branch": "main",
+        "head_sha": "448c9f84be75cb083c79536528336eaca1946c4d"
+      }
+    },
+    {
+      "id": 12601580900,
+      "name": "runtime-ci-40199184326-plan-attempt-1",
+      "size_in_bytes": 22359,
+      "digest": "sha256:f9003273b98b5097dcb1faebbd7c205bb3ed04eda0713a913dfe69230eea23d5",
+      "expired": false,
+      "created_at": "2026-10-25T13:47:05Z",
+      "workflow_run": {
+        "id": 40199184326,
+        "repository_id": 840178061,
+        "head_repository_id": 840178061,
+        "head_branch": "main",
+        "head_sha": "448c9f84be75cb083c79536528336eaca1946c4d"
+      }
+    },
+    {
+      "id": 12601321584,
+      "name": "runtime-ci-40199184326-general-attempt-1",
+      "size_in_bytes": 1725,
+      "digest": "sha256:1590a42d0a1bd25a82670518c547cd8b9ec29b5f2db836753fff6a1325014873",
+      "expired": false,
+      "created_at": "2026-10-25T13:49:51Z",
+      "workflow_run": {
+        "id": 40199184326,
+        "repository_id": 840178061,
+        "head_repository_id": 840178061,
+        "head_branch": "main",
+        "head_sha": "448c9f84be75cb083c79536528336eaca1946c4d"
+      }
+    },
+    {
+      "id": 12601186251,
+      "name": "runtime-ci-40199184326-browser-6-of-8-attempt-1",
+      "size_in_bytes": 19611563,
+      "digest": "sha256:40c8a17a4a6de6de5180c34f37e0de848138baf083e009bf5953bf61f860d796",
+      "expired": false,
+      "created_at": "2026-10-25T13:53:21Z",
+      "workflow_run": {
+        "id": 40199184326,
+        "repository_id": 840178061,
+        "head_repository_id": 840178061,
+        "head_branch": "main",
+        "head_sha": "448c9f84be75cb083c79536528336eaca1946c4d"
+      }
+    },
+    {
+      "id": 12600919056,
+      "name": "runtime-ci-40199184326-browser-4-of-8-attempt-1",
+      "size_in_bytes": 14757370,
+      "digest": "sha256:8b203ed427aef3876bba55062558bdaed33ac982d40abffc0a8029b7070833db",
+      "expired": false,
+      "created_at": "2026-10-25T14:02:57Z",
+      "workflow_run": {
+        "id": 40199184326,
+        "repository_id": 840178061,
+        "head_repository_id": 840178061,
+        "head_branch": "main",
+        "head_sha": "448c9f84be75cb083c79536528336eaca1946c4d"
+      }
+    },
+    {
+      "id": 12600879365,
+      "name": "runtime-ci-40199184326-browser-8-of-8-attempt-1",
+      "size_in_bytes": 43040716,
+      "digest": "sha256:02d8d02ca87ff2f65a6c93a06551abb1d8e89877d116274ed63474523850fc66",
+      "expired": false,
+      "created_at": "2026-10-25T14:04:44Z",
+      "workflow_run": {
+        "id": 40199184326,
+        "repository_id": 840178061,
+        "head_repository_id": 840178061,
+        "head_branch": "main",
+        "head_sha": "448c9f84be75cb083c79536528336eaca1946c4d"
+      }
+    },
+    {
+      "id": 12600868588,
+      "name": "runtime-ci-40199184326-browser-7-of-8-attempt-1",
+      "size_in_bytes": 15170569,
+      "digest": "sha256:4d0de5af2aaebba8b10b31e360cd23b9fa9e7b3ac57a732e38f1d935700d36c6",
+      "expired": false,
+      "created_at": "2026-10-25T13:58:06Z",
+      "workflow_run": {
+        "id": 40199184326,
+        "repository_id": 840178061,
+        "head_repository_id": 840178061,
+        "head_branch": "main",
+        "head_sha": "448c9f84be75cb083c79536528336eaca1946c4d"
+      }
+    }
+  ],
+  "focusedArtifacts": [
+    {
+      "id": 12602006758,
+      "name": "runtime-ci-40199184326-browser-3-of-8-attempt-1",
+      "size_in_bytes": 67026618,
+      "digest": "sha256:668053c78d5c6e1b0306bd8ee9e78345dae71036fe90eb08a1b0248c574b5756",
+      "expired": false,
+      "created_at": "2026-10-25T13:59:41Z",
+      "workflow_run": {
+        "id": 40199184326,
+        "repository_id": 840178061,
+        "head_repository_id": 840178061,
+        "head_branch": "main",
+        "head_sha": "448c9f84be75cb083c79536528336eaca1946c4d"
+      }
+    },
+    {
+      "id": 12601837829,
+      "name": "runtime-ci-40199184326-browser-2-of-8-attempt-1",
+      "size_in_bytes": 21257870,
+      "digest": "sha256:8dc214dee9919685cc6d3b7a59de52fd8b81924c7e3bbad7cd2c54b209d33905",
+      "expired": false,
+      "created_at": "2026-10-25T14:02:52Z",
+      "workflow_run": {
+        "id": 40199184326,
+        "repository_id": 840178061,
+        "head_repository_id": 840178061,
+        "head_branch": "main",
+        "head_sha": "448c9f84be75cb083c79536528336eaca1946c4d"
+      }
+    },
+    {
+      "id": 12600919056,
+      "name": "runtime-ci-40199184326-browser-4-of-8-attempt-1",
+      "size_in_bytes": 14757370,
+      "digest": "sha256:8b203ed427aef3876bba55062558bdaed33ac982d40abffc0a8029b7070833db",
+      "expired": false,
+      "created_at": "2026-10-25T14:02:57Z",
+      "workflow_run": {
+        "id": 40199184326,
+        "repository_id": 840178061,
+        "head_repository_id": 840178061,
+        "head_branch": "main",
+        "head_sha": "448c9f84be75cb083c79536528336eaca1946c4d"
+      }
+    }
+  ],
+  "newTerminalLogs": [
+    {
+      "jobId": 121190618646,
+      "name": "test",
+      "exit": 0,
+      "bytes": 23313,
+      "sha256": "1d40000a17c2ed0adb7860b174b0677caf4fbcb26ebf8ee66b2df77f50caaaed"
+    }
+  ],
+  "attemptedTerminalLogIds": [
+    121186495540, 121186534603, 121186541769, 121186541772, 121186541782, 121186541877, 121190618646
+  ],
+  "errors": [],
+  "completed": true,
+  "elapsedSeconds": 485.554
+}

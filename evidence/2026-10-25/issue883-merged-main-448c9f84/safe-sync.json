@@ -1,0 +1,25 @@
+{
+  "at": "2026-10-25T13:57:24.474738+00:00",
+  "scope": "Only owned contribution worktree; no primary checkout, evidence worktree, remote branch or published-history mutation",
+  "before": "b6f9172d51bb8065bf18965916bbcbc5b38a0d3d",
+  "merge": "448c9f84be75cb083c79536528336eaca1946c4d",
+  "parents": [
+    "357068f0f371dd40826b81da43bd4ef5df73bee7",
+    "b6f9172d51bb8065bf18965916bbcbc5b38a0d3d"
+  ],
+  "tree": "6326cbb9a3e3a558113bc69be6a6c3f381555194",
+  "completeTreeEntriesEqual": true,
+  "allPathsModesTypesBlobIdsEqual": true,
+  "diffRawEmpty": true,
+  "preClean": true,
+  "operation": ["git", "merge", "--ff-only", "refs/codex/issue883-merged-main-448c9f84"],
+  "exit": 0,
+  "stdout": "Updating b6f9172d5..448c9f84b\nFast-forward\n",
+  "stderr": "",
+  "after": "448c9f84be75cb083c79536528336eaca1946c4d",
+  "postClean": true,
+  "newAgentAuthoredCommit": false,
+  "pushPerformed": false,
+  "validationReexecuted": false,
+  "validationBinding": "Existing b6 executions remain b6 runs; exact tree match binds source contents only, not merge-SHA execution or all-green acceptance"
+}

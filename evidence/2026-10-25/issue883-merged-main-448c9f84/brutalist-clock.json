@@ -1,0 +1,88 @@
+{
+  "formula": "offset_i in [nodeStarted-pageSample,nodeReturned-pageSample]; useintersectionofallthreepostverdictsamples. Mapbrowser[start,end]to[start+lower,end+upper] onlyconditionally.",
+  "samples": [
+    {
+      "nodeStartedMs": "136778.350794",
+      "nodeReturnedMs": "136827.042209",
+      "timeOrigin": "1792936342812.6",
+      "pageMs": "4009.5",
+      "currentRootSame": true
+    },
+    {
+      "nodeStartedMs": "136827.051256",
+      "nodeReturnedMs": "136830.91518",
+      "timeOrigin": "1792936342812.6",
+      "pageMs": "4013.4000000000233",
+      "currentRootSame": true
+    },
+    {
+      "nodeStartedMs": "136830.917684",
+      "nodeReturnedMs": "136858.077533",
+      "timeOrigin": "1792936342812.6",
+      "pageMs": "4040.5999999999767",
+      "currentRootSame": true
+    }
+  ],
+  "offsetIntersectionMs": ["132813.6512559999767", "132817.4775330000233"],
+  "intersectionWidthMs": "3.8262770000466",
+  "originalPollStartMs": "135536.487811",
+  "nominalStartPlus1000Ms": "136536.487811",
+  "originalObservedRejectionMs": "136537.358545",
+  "observedRejectionMinusNominalMs": "0.870734",
+  "familyLedgerFrozenAtMs": "136537.849654",
+  "SDKVerdictObservedAtMs": "136537.783831",
+  "SDKVerdictObservationAfterOriginalRejectionMs": "0.425286",
+  "intervals": [
+    {
+      "label": "dataset writer observer bracket",
+      "browserStartMs": "3552.7000000000116",
+      "browserEndMs": "3552.7999999999884",
+      "conditionalNodeLowerMs": "136366.3512559999883",
+      "conditionalNodeUpperMs": "136370.2775330000117",
+      "relativeToOriginalRejectionMs": ["-171.0072890000117", "-167.0810119999883"],
+      "relativeToNominalStartPlus1000Ms": ["-170.1365550000117", "-166.2102779999883"]
+    },
+    {
+      "label": "MutationObserver delivery",
+      "browserStartMs": "3679.7000000000116",
+      "browserEndMs": "3679.7000000000116",
+      "conditionalNodeLowerMs": "136493.3512559999883",
+      "conditionalNodeUpperMs": "136497.1775330000349",
+      "relativeToOriginalRejectionMs": ["-44.0072890000117", "-40.1810119999651"],
+      "relativeToNominalStartPlus1000Ms": ["-43.1365550000117", "-39.3102779999651"]
+    },
+    {
+      "label": "utility original getAttribute read1",
+      "browserStartMs": "2730.5",
+      "browserEndMs": "2730.5",
+      "conditionalNodeLowerMs": "135544.1512559999767",
+      "conditionalNodeUpperMs": "135547.9775330000233",
+      "relativeToOriginalRejectionMs": ["-993.2072890000233", "-989.3810119999767"],
+      "relativeToNominalStartPlus1000Ms": ["-992.3365550000233", "-988.5102779999767"]
+    },
+    {
+      "label": "utility original getAttribute read2",
+      "browserStartMs": "3040.9000000000233",
+      "browserEndMs": "3040.9000000000233",
+      "conditionalNodeLowerMs": "135854.5512560000000",
+      "conditionalNodeUpperMs": "135858.3775330000466",
+      "relativeToOriginalRejectionMs": ["-682.8072890000000", "-678.9810119999534"],
+      "relativeToNominalStartPlus1000Ms": ["-681.9365550000000", "-678.1102779999534"]
+    },
+    {
+      "label": "utility original getAttribute read3",
+      "browserStartMs": "3875.9000000000233",
+      "browserEndMs": "3875.9000000000233",
+      "conditionalNodeLowerMs": "136689.5512560000000",
+      "conditionalNodeUpperMs": "136693.3775330000466",
+      "relativeToOriginalRejectionMs": ["152.1927110000000", "156.0189880000466"],
+      "relativeToNominalStartPlus1000Ms": ["153.0634450000000", "156.8897220000466"]
+    }
+  ],
+  "assumptions": [
+    "Browser clock samples occur inside enclosingNodeRTT brackets.",
+    "Fixedoffset/equalrate approximationbackwardfrompostverdictcalibration; not fullclockdriftcertification.",
+    "Stabletimeorigins/rootbooleansand0dropsdonotprovetruehardwareclockprecision.",
+    "MOtimestampisdelivery; setterbracketisnativeattributeobservation, notentiretransactionorpaint."
+  ]
+}

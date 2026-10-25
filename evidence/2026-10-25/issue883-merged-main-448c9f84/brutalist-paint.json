@@ -1,0 +1,457 @@
+{
+  "reviewedAt": "2026-10-25T14:14:25.338877+00:00",
+  "mode": "human-assisted/current-user",
+  "disposition": "partial/ABSTAIN",
+  "formalApproval": false,
+  "openReviewFindings": 0,
+  "source": {
+    "head": "448c9f84be75cb083c79536528336eaca1946c4d",
+    "tree": "6326cbb9a3e3a558113bc69be6a6c3f381555194",
+    "runId": 40199184326,
+    "jobId": 121186541877,
+    "kind": "newmainnaturalpushCI,notb6localorold1aCI",
+    "dirty": false,
+    "treeIdentityAudit": {
+      "path": "[PRIVATE_STATE_ROOT]/post-merge-audit/independent.json",
+      "bytes": 2283,
+      "sha256": "661ca28a8fc617c220e65df51e882d709c47d1e9e749dae3faa29d9407c1f8d2"
+    }
+  },
+  "artifact": {
+    "start": "2026-10-25T14:01:18.334186+00:00",
+    "end": "2026-10-25T14:02:17.365609+00:00",
+    "artifactId": 12602006758,
+    "name": "runtime-ci-40199184326-browser-3-of-8-attempt-1",
+    "runId": 40199184326,
+    "head": "448c9f84be75cb083c79536528336eaca1946c4d",
+    "exit": 0,
+    "bytes": 67026618,
+    "sha256": "668053c78d5c6e1b0306bd8ee9e78345dae71036fe90eb08a1b0248c574b5756",
+    "metadataDigest": "sha256:668053c78d5c6e1b0306bd8ee9e78345dae71036fe90eb08a1b0248c574b5756",
+    "metadataBytes": 67026618,
+    "attempt": 1,
+    "readOnly": true,
+    "apiMutation": false,
+    "archiveSHAIndependentlyRecomputed": true,
+    "all326MembersCRCReplayedByThisReview": false,
+    "selectedFourJSONCRCAndBytesVerified": true,
+    "otherMembers": "Centraldirectoryinventoryonly; unselectedbodyCRCnotclaimed.",
+    "mediaViewedOrExtractedByThisReview": false
+  },
+  "counts": {
+    "shard3Files": 11,
+    "shard3Tests": 96,
+    "passed": 92,
+    "failed": 4,
+    "HomepageFilePassed": 8,
+    "HomepageFileFailed": 1,
+    "notAllEightShardsTotal": true
+  },
+  "originalFailure": {
+    "poll": {
+      "clock": "Node performance.now() milliseconds",
+      "timeOrigin": "1792936209995.676",
+      "startedMs": "135536.487811",
+      "finishedMs": "136537.358545",
+      "outcome": "rejected",
+      "totalCalls": 3,
+      "droppedCalls": 0,
+      "observerError": false,
+      "calls": [
+        {
+          "call": 1,
+          "startedMs": "135536.738229",
+          "returnedMs": "135548.739697",
+          "value": "shadcn"
+        },
+        {
+          "call": 2,
+          "startedMs": "135599.501881",
+          "returnedMs": "135858.9541",
+          "value": "shadcn"
+        },
+        {
+          "call": 3,
+          "startedMs": "135909.444376",
+          "returnedMs": "136694.379637",
+          "value": "brutalist"
+        }
+      ],
+      "rejectionSnapshot": [
+        {
+          "call": 1,
+          "startedMs": "135536.738229",
+          "returnedMs": "135548.739697",
+          "value": "shadcn"
+        },
+        {
+          "call": 2,
+          "startedMs": "135599.501881",
+          "returnedMs": "135858.9541",
+          "value": "shadcn"
+        },
+        {
+          "call": 3,
+          "startedMs": "135909.444376"
+        }
+      ]
+    },
+    "observedRejectElapsedMs": "1000.870734",
+    "firstTwoValues": ["shadcn", "shadcn"],
+    "thirdOriginalPromiseValue": "brutalist",
+    "thirdOriginalPromiseReturnAfterRejectionMs": "157.021092",
+    "SDKThirdReturnAfterOriginalRejectionMs": "157.014449",
+    "familyLedgerFrozenAfterOriginalRejectionMs": "0.491109",
+    "SDKVerdictAfterOriginalRejectionMs": "0.425286"
+  },
+  "mapping": {
+    "selector": "[data-homepage-runtime]",
+    "attribute": "data-family",
+    "frameId": "338C918E90753EA4224DBB58DA36EF40",
+    "utilityContext": {
+      "id": 4,
+      "origin": "http://127.0.0.1:35235",
+      "name": "__playwright_utility_world_page@997cf952ac609ed664fee3bc5d763b4f",
+      "uniqueId": "-3384693957605569502.-2587831632739308671",
+      "auxData": {
+        "isDefault": false,
+        "type": "isolated",
+        "frameId": "338C918E90753EA4224DBB58DA36EF40"
+      }
+    },
+    "CDPSessionId": "A7BFC01B86F426A44BD9AE924507162D",
+    "calls": 3,
+    "browserBatches": 3,
+    "attempts": [1, 1, 1],
+    "actualRuntimeEvaluateRequests": 0,
+    "actualRuntimeCallFunctionOnRequests": 3,
+    "allInjectedAndUtilityCachesPresent": true,
+    "SDKPins": [
+      {
+        "path": "lib/inProcessFactory.js",
+        "sha256": "406a2ce0e50bf6c695a0fa018ac3dec505b60836710bbab797e11730c51917cc"
+      },
+      {
+        "path": "lib/client/connection.js",
+        "sha256": "e063a23c7fb0ed81e7a09baa0844851c660b3cba1c39176963f17b10a1bf1526"
+      },
+      {
+        "path": "lib/server/dispatchers/dispatcher.js",
+        "sha256": "628c39de7799325c589a6f62e642324cb61b8d6fdaeec6bc29b40b0f0a76dc58"
+      },
+      {
+        "path": "lib/server/frames.js",
+        "sha256": "fa67e7a3755a79cf0e0ac96b6930987ec2bcc643f60735c6ec748066f7c3e16b"
+      },
+      {
+        "path": "lib/server/frameSelectors.js",
+        "sha256": "e78a076ee10ebd6127e092229b70201603ded190322e4d76e6f0cdcbb2517723"
+      },
+      {
+        "path": "lib/server/javascript.js",
+        "sha256": "134f2aae953ca802c3d8c4da2ddb0857129ae3044f8958cdb857993341aec257"
+      },
+      {
+        "path": "lib/server/dom.js",
+        "sha256": "33f502d6319a4e2539a4020c4983045f30d3d1cbed5d7610a32d9f89cbf8823d"
+      },
+      {
+        "path": "lib/server/chromium/crExecutionContext.js",
+        "sha256": "4b4da27c16c2ec7094dcc3cc78313eb9ac8f15a9ed3b7589118a883d6d339b7f"
+      },
+      {
+        "path": "lib/server/chromium/crConnection.js",
+        "sha256": "0d41a058ad1f5c897329a9c821c52b952e0e709ab38c3e6e355224b167922f13"
+      },
+      {
+        "path": "lib/server/pipeTransport.js",
+        "sha256": "9ab01b72ead31eb7a07a439bc983d6e1738dd876dac7ec7a4e205d23563293c4"
+      }
+    ],
+    "mappingComplete": true,
+    "guardsPass": 3,
+    "guardsFail": 0
+  },
+  "conditionalClockConclusion": {
+    "offsetIntersectionMs": ["132813.6512559999767", "132817.4775330000233"],
+    "datasetWriteRelativeToObservedRejectionMs": ["-171.0072890000117", "-167.0810119999883"],
+    "MODeliveryRelativeToObservedRejectionMs": ["-44.0072890000117", "-40.1810119999651"],
+    "thirdBrowserReadRelativeToObservedRejectionMs": ["152.1927110000000", "156.0189880000466"],
+    "notPhysicalPaintOrFullTransaction": true
+  },
+  "thirdCommand": {
+    "callId": "call@2044",
+    "attempt": 1,
+    "cdpID": 7839,
+    "method": "Runtime.callFunctionOn",
+    "sendToResponseMs": "783.354160",
+    "sendMethodDurationMs": "0.133971",
+    "matchedFrameSchedulerToCallbackMs": "0.02161",
+    "browserGetterSampleSpanMs": "0E-13",
+    "getterNative": false,
+    "wrapperBoundary": "ExistingutilitygetAttributeobserver wraps nativegetter; zero sampledspan meanssametick,notzero-nativecost."
+  },
+  "capsAndClose": {
+    "writerFacts": {
+      "droppedWrites": 0,
+      "droppedRecords": 0,
+      "pendingDroppedRecords": 0,
+      "writerObserverError": false,
+      "observerError": null,
+      "datasetRestored": true,
+      "currentRootSame": true
+    },
+    "utility": {
+      "ownerMatched": true,
+      "wrapperStillOwned": true,
+      "restored": true,
+      "totalReads": 3,
+      "droppedReads": 0,
+      "observerError": false,
+      "currentRootSame": true,
+      "rootConnected": true
+    },
+    "utilityDetached": true,
+    "familyDrain": {
+      "startedMs": "136538.030944",
+      "finishedMs": "136694.71245",
+      "drainedReferences": 3,
+      "budgetMs": 1000,
+      "budgetExpired": false,
+      "pendingAtDrainEndCount": 0,
+      "pendingAtDrainEnd": [],
+      "droppedPendingAtDrainEndRows": 0,
+      "displayedOutcomes": [
+        {
+          "call": 1,
+          "status": "fulfilled",
+          "value": "shadcn",
+          "batchObservedAtMs": "136694.552581"
+        },
+        {
+          "call": 2,
+          "status": "fulfilled",
+          "value": "shadcn",
+          "batchObservedAtMs": "136694.552581"
+        },
+        {
+          "call": 3,
+          "status": "fulfilled",
+          "value": "brutalist",
+          "batchObservedAtMs": "136694.552581"
+        }
+      ],
+      "droppedOutcomeRows": 0,
+      "completeAtDrainPoint": true
+    },
+    "SDK": {
+      "errors": [],
+      "dropped": 0,
+      "browserDropped": 0,
+      "cdpDropped": 0,
+      "arrivalDropped": 0,
+      "disposed": true,
+      "pendingCapturedRequests": 0,
+      "transportComplete": false,
+      "clockTickLengthMeasured": false
+    },
+    "pipe": [
+      {
+        "available": true,
+        "reason": null,
+        "closed": true,
+        "reads": 37,
+        "frames": 74,
+        "writes": 6,
+        "responses": 3,
+        "drains": 0,
+        "errors": 0,
+        "dropped": 0,
+        "pendingBackpressureMessages": 0
+      }
+    ],
+    "SDKCleanupMarker": {
+      "stage": "node.cleanup-after-context-close",
+      "nodeMs": "136983.441882",
+      "nodeTimeOrigin": "1792936209995.676",
+      "nodeDateNow": 1792936346979
+    },
+    "noCloseStartMarker": "Thereisnocontext-close.before-callmarkerinthefamilySDKrecord. SourcecallsdisposeAfterContextClosed onlyafteroriginalcontext.closefulfilled; do notinventaclose-starttime/duration orOS-processproof."
+  },
+  "paint": {
+    "log": {
+      "path": "[PRIVATE_STATE_ROOT]/post-merge-ci/terminal-logs/121186541877.log",
+      "bytes": 128079,
+      "sha256": "255d604c62c6753c2d22f9d4aa1341e4250b04b031f2a402a2ba0a23028cb022"
+    },
+    "excerpt": [
+      {
+        "line": 647,
+        "text": "2026-10-25T13:59:37.5717839Z  FAIL  apps/www/src/content/docs/zh-cn/demo-shadow-split-s4-paint.browser.test.ts > S4: compositor never repaints a closed Dialog after settings changes"
+      },
+      {
+        "line": 648,
+        "text": "2026-10-25T13:59:37.5719841Z TimeoutError: locator.click: Timeout 30000ms exceeded."
+      },
+      {
+        "line": 649,
+        "text": "2026-10-25T13:59:37.5720692Z Call log:"
+      },
+      {
+        "line": 650,
+        "text": "2026-10-25T13:59:37.5721796Z   - waiting for locator('[data-s4-profile=light][data-s4-part=trigger]')"
+      },
+      {
+        "line": 651,
+        "text": "2026-10-25T13:59:37.5725309Z     - locator resolved to <pui-s4-light-trigger-0 tabindex=\"0\" role=\"button\" data-pui-root=\"\" class=\"pui-host-root\" aria-disabled=\"false\" aria-expanded=\"false\" data-s4-part=\"trigger\" aria-haspopup=\"dialog\" data-s4-profile=\"light\" data-pui-a11y-actions=\"activate\" aria-controls=\"pui-dialog-2-content\">打开 light 设置</pui-s4-light-trigger-0>"
+      },
+      {
+        "line": 652,
+        "text": "2026-10-25T13:59:37.5728410Z   - attempting click action"
+      },
+      {
+        "line": 653,
+        "text": "2026-10-25T13:59:37.5729286Z     - waiting for element to be visible, enabled and stable"
+      },
+      {
+        "line": 654,
+        "text": "2026-10-25T13:59:37.5730193Z     - element is visible, enabled and stable"
+      },
+      {
+        "line": 655,
+        "text": "2026-10-25T13:59:37.5731189Z     - scrolling into view if needed"
+      },
+      {
+        "line": 656,
+        "text": "2026-10-25T13:59:37.5731915Z     - done scrolling"
+      },
+      {
+        "line": 657,
+        "text": "2026-10-25T13:59:37.5732576Z "
+      },
+      {
+        "line": 658,
+        "text": "2026-10-25T13:59:37.5733957Z  ❯ Module.runS4PaintJourney scripts/analysis/shadow-s4-paint-browser.mjs:90:31"
+      },
+      {
+        "line": 659,
+        "text": "2026-10-25T13:59:37.5764027Z      88|       const control = (key) => part('content').locator(`[data-s3-compo…"
+      },
+      {
+        "line": 660,
+        "text": "2026-10-25T13:59:37.5770197Z      89|       for (const setting of settings) {"
+      },
+      {
+        "line": 661,
+        "text": "2026-10-25T13:59:37.5772037Z      90|         await part('trigger').click();"
+      },
+      {
+        "line": 662,
+        "text": "2026-10-25T13:59:37.5773419Z        |                               ^"
+      },
+      {
+        "line": 663,
+        "text": "2026-10-25T13:59:37.5774930Z      91|         await page.waitForTimeout(350);"
+      },
+      {
+        "line": 664,
+        "text": "2026-10-25T13:59:37.5777021Z      92|         for (const key of ['switch', 'checkbox']) {"
+      },
+      {
+        "line": 665,
+        "text": "2026-10-25T13:59:37.5783514Z  ❯ apps/www/src/content/docs/zh-cn/demo-shadow-split-s4-paint.browser.test.ts:45:20"
+      }
+    ],
+    "predicate": "Original light-profile trigger click at the settings-loop entry (shadow-s4-paint-browser.mjs:90:31) timed out after 30000ms; the last recorded SDK stage was done scrolling.",
+    "noInputReceipt": true,
+    "limits": "The same line 90 runs at every settings-loop entry. The selected log has no setting/round ledger; absence of emitted paint results does not prove the first iteration failed. No matching Input.dispatchMouseEvent response or native input ledger is present. Do not import the older local 150s screenshot explanation.",
+    "sequenceBoundary": {
+      "settingIteration": "not recorded",
+      "firstIterationProven": false,
+      "failedIterationSubsequentStepsReached": false,
+      "earlierIterationsScreenshotsAndCloses": "unknown from these selected records",
+      "finalClosedPaintAggregationReached": false
+    }
+  },
+  "remainingGaps": [
+    "NoBrowserparsed-command/rendererdispatch/engine trace inthese fourfamilyJSONs. Node send/response andbrowsergetter samplescannotlocateunmeasuredwait cause.",
+    "Fixedclockoffsetassumptionsareexplicit; nomixingrawNode/browsermonotonicnumbers.",
+    "DatasetwritebeforedeadlineconditionalisnotfullUIcommit/paintproof. Original1sassertionstaysred.",
+    "Sameb6treeandpriorlocalBrutalistpassdonotreplace thisnewmainfailure.",
+    "LaterfailureState/screenshotComplete metadata doesnotbackdateframe; noPNGwasviewedhere."
+  ],
+  "bindings": [
+    {
+      "path": "[PRIVATE_STATE_ROOT]/post-merge-ci/artifacts/12602006758/selected/header-breakpoint/brutalist-failure.json",
+      "bytes": 10994,
+      "sha256": "4bfd621e5b70e34660bc64c693a94c262b15448444433ee2de9f6be989910d28",
+      "artifactMember": "header-breakpoint/brutalist-failure.json",
+      "selectedCRCValidated": true,
+      "CRC32": 1754823798
+    },
+    {
+      "path": "[PRIVATE_STATE_ROOT]/post-merge-ci/artifacts/12602006758/selected/header-breakpoint/brutalist-lifecycle.json",
+      "bytes": 3320,
+      "sha256": "189106a152c3c2df8b3ca4f5abf080fb39f34109bb592818861e194ed4b86552",
+      "artifactMember": "header-breakpoint/brutalist-lifecycle.json",
+      "selectedCRCValidated": true,
+      "CRC32": 951474235
+    },
+    {
+      "path": "[PRIVATE_STATE_ROOT]/post-merge-ci/artifacts/12602006758/selected/header-breakpoint/brutalist-query-observation.json",
+      "bytes": 4642,
+      "sha256": "5a0c50d72cb43d79b0907817445dadc91fa50a49bca04d89760b7c84bb9cfc1c",
+      "artifactMember": "header-breakpoint/brutalist-query-observation.json",
+      "selectedCRCValidated": true,
+      "CRC32": 3071551287
+    },
+    {
+      "path": "[PRIVATE_STATE_ROOT]/post-merge-ci/artifacts/12602006758/selected/header-breakpoint/brutalist-sdk-timing.json",
+      "bytes": 42580,
+      "sha256": "38382818c7e4271f19662a63d6787652e907f3be90284168f2697e302d833ce0",
+      "artifactMember": "header-breakpoint/brutalist-sdk-timing.json",
+      "selectedCRCValidated": true,
+      "CRC32": 720318024
+    },
+    {
+      "path": "[PRIVATE_STATE_ROOT]/post-merge-ci/terminal-logs/121186541877.log",
+      "bytes": 128079,
+      "sha256": "255d604c62c6753c2d22f9d4aa1341e4250b04b031f2a402a2ba0a23028cb022"
+    },
+    {
+      "path": "[PRIVATE_STATE_ROOT]/post-merge-ci/artifacts/12602006758/selected-inputs.json",
+      "bytes": 10458,
+      "sha256": "b4a67f1dd254972ce272051e79e92319420cc38d2464f21851a73fcabd5ba9f7"
+    },
+    {
+      "path": "[PRIVATE_STATE_ROOT]/post-merge-ci/artifacts/12602006758/download-receipt.json",
+      "bytes": 561,
+      "sha256": "93c7107dbcef971d0dbe8340f706aef1dbaa3eae6bcbd4877fbec055acef21c6"
+    },
+    {
+      "path": "[PRIVATE_STATE_ROOT]/post-merge-ci/brutalist-paint-review/clock-calculation.json",
+      "bytes": 4081,
+      "sha256": "3c7ee8b4e1b592ace1d55bfb5c9d0e06b183512931ba36efd78dbc81173c189e"
+    },
+    {
+      "path": "[PRIVATE_STATE_ROOT]/post-merge-ci/brutalist-paint-review/same-call-timeline.json",
+      "bytes": 18174,
+      "sha256": "428a38718afcfd85e6b54f5da384f8bfd4b8f0ff3167031a6e4b5ff3c57f718b"
+    }
+  ],
+  "actions": {
+    "newTests": 0,
+    "browser": 0,
+    "networkDownloads": 0,
+    "APIWrites": 0,
+    "WEdits": 0,
+    "EEdits": 0
+  },
+  "correction": {
+    "supersedes": "[PRIVATE_STATE_ROOT]/post-merge-ci/brutalist-paint-review/report.json",
+    "supersededSHA256": "06dd0525baa58327da4436426510f78ec416d7f4aa71b14e23bc71edb83f7333",
+    "finding": "P3: the original report inferred first iteration / no earlier screenshot or close from a shared settings-loop callsite.",
+    "scope": "Only paint sequence wording corrected; Brutalist raw bindings and all timing calculations unchanged.",
+    "openFindings": 0
+  }
+}

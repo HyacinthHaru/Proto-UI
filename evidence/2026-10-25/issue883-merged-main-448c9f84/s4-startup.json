@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "kind": "post-merge-S4-execution-availability",
+  "reviewedAt": "2026-10-25T14:05:57.047237+00:00",
+  "runId": 40199184326,
+  "jobId": 121186541772,
+  "sourceHead": "448c9f84be75cb083c79536528336eaca1946c4d",
+  "sourceTree": "6326cbb9a3e3a558113bc69be6a6c3f381555194",
+  "artifactId": 12600919056,
+  "artifactArchive": {
+    "start": "2026-10-25T14:04:00.698046+00:00",
+    "end": "2026-10-25T14:04:11.111271+00:00",
+    "artifactId": 12600919056,
+    "name": "runtime-ci-40199184326-browser-4-of-8-attempt-1",
+    "runId": 40199184326,
+    "head": "448c9f84be75cb083c79536528336eaca1946c4d",
+    "exit": 0,
+    "bytes": 14757370,
+    "sha256": "8b203ed427aef3876bba55062558bdaed33ac982d40abffc0a8029b7070833db",
+    "metadataDigest": "sha256:8b203ed427aef3876bba55062558bdaed33ac982d40abffc0a8029b7070833db",
+    "metadataBytes": 14757370,
+    "attempt": 1,
+    "readOnly": true,
+    "apiMutation": false
+  },
+  "completeCentralDirectoryMembers": 283,
+  "knownS4ArtifactNames": [],
+  "markerSearch": {
+    "[S4 node": {
+      "jobLog": 0,
+      "browserLog": 0
+    },
+    "[S4 init observation]": {
+      "jobLog": 0,
+      "browserLog": 0
+    },
+    "[s4-startup": {
+      "jobLog": 0,
+      "browserLog": 0
+    },
+    "firstMissing": {
+      "jobLog": 0,
+      "browserLog": 0
+    },
+    "first-missing": {
+      "jobLog": 0,
+      "browserLog": 0
+    },
+    "S4:": {
+      "jobLog": 0,
+      "browserLog": 0
+    }
+  },
+  "plannedSelection": {
+    "checkoutSha": "448c9f84be75cb083c79536528336eaca1946c4d",
+    "phase": "browser",
+    "shard": "4/8",
+    "suites": [
+      "apps/www/src/content/docs/zh-cn/code-surface-grammar.browser.test.ts",
+      "apps/www/src/content/docs/zh-cn/demo-base-table.browser.test.ts",
+      "apps/www/src/content/docs/zh-cn/demo-brutalist-spinner.browser.test.ts",
+      "apps/www/src/content/docs/zh-cn/demo-passive-atoms.browser.test.ts",
+      "apps/www/src/content/docs/zh-cn/demo-shadcn-input.browser.test.ts",
+      "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts",
+      "apps/www/src/content/docs/zh-cn/library-cards-first-frame.browser.test.ts",
+      "apps/www/src/content/docs/zh-cn/runtime-preview-surface.browser.test.ts",
+      "apps/www/src/content/docs/zh-cn/table-react19.browser.test.ts",
+      "apps/www/test/template-style.browser.test.ts"
+    ]
+  },
+  "producerReceipt": {
+    "schemaVersion": 1,
+    "runId": "40199184326",
+    "attempt": 1,
+    "eventSha": "448c9f84be75cb083c79536528336eaca1946c4d",
+    "checkoutSha": "448c9f84be75cb083c79536528336eaca1946c4d",
+    "slot": "browser-4-of-8",
+    "outcome": "failure",
+    "payload": null
+  },
+  "originalLog": {
+    "path": "terminal-logs/121186541772.log",
+    "bytes": 88230,
+    "sha256": "5c348a02d957105a8105c4103cf36b90525a278cc4c33d606e51409555ddc3e5"
+  },
+  "completedFiles": [
+    {
+      "line": 396,
+      "file": "apps/www/src/content/docs/zh-cn/code-surface-grammar.browser.test.ts",
+      "passed": 26,
+      "durationMs": 551075
+    },
+    {
+      "line": 447,
+      "file": "apps/www/src/content/docs/zh-cn/runtime-preview-surface.browser.test.ts",
+      "passed": 16,
+      "durationMs": 142472
+    },
+    {
+      "line": 467,
+      "file": "apps/www/src/content/docs/zh-cn/library-cards-first-frame.browser.test.ts",
+      "passed": 9,
+      "durationMs": 168950
+    }
+  ],
+  "completedFileSubtotalOnly": 51,
+  "cliExit": 124,
+  "completeVitestSummary": null,
+  "S4Result": "unknown",
+  "S4FirstMissing": null,
+  "evidenceLimits": [
+    "S4 was in the planned shard selection; no S4 phase, first-missing, or case result was found in the actual job/browser logs or named artifact inventory.",
+    "The bounded shard was terminated after preceding completed files. This does not prove a new S4 predicate failure or a pass.",
+    "283 ZIP members were inventoried; selected text/JSON CRC and SHA were verified. Unselected image bytes were not viewed or separately decompressed.",
+    "51 passed tests are the subtotal of three completed files, not a complete shard total."
+  ],
+  "disposition": "partial/ABSTAIN"
+}

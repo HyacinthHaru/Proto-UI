@@ -1,0 +1,22 @@
+{
+  "at": "2026-10-25T14:14:25.338877+00:00",
+  "disposition": "partial/ABSTAIN",
+  "formalApproval": false,
+  "finding": "P3 paint settings-loop iteration overclaim",
+  "status": "closed in report-v2 only; original report preserved",
+  "original": {
+    "path": "[PRIVATE_STATE_ROOT]/post-merge-ci/brutalist-paint-review/report.json",
+    "sha256": "06dd0525baa58327da4436426510f78ec416d7f4aa71b14e23bc71edb83f7333"
+  },
+  "corrected": {
+    "path": "[PRIVATE_STATE_ROOT]/post-merge-ci/brutalist-paint-review/report-v2.json",
+    "sha256": "2da9c6c01ff38db16bb2d4bafb3169f5f18a3ab499453c8b7edb2582fd1dc0d3"
+  },
+  "basis": {
+    "source": "scripts/analysis/shadow-s4-paint-browser.mjs:86-125",
+    "sameClickCallsiteEverySetting": true,
+    "logLines": [647, 665],
+    "explicitIterationLedger": false
+  },
+  "rawInputsUnchanged": true
+}

@@ -1,0 +1,56 @@
+{
+  "reviewedAt": "2026-10-25T13:58:25.061075+00:00",
+  "mode": "human-assisted/current-user",
+  "disposition": "partial/ABSTAIN",
+  "formalApproval": false,
+  "openFindings": 0,
+  "findings": [],
+  "scope": "Read-only local fetchedGitobject audit only; no checkout/FF/push/test/API or externalwrite.",
+  "mergeRef": "refs/codex/issue883-merged-main-448c9f84",
+  "mergeCommit": "448c9f84be75cb083c79536528336eaca1946c4d",
+  "parents": [
+    "357068f0f371dd40826b81da43bd4ef5df73bee7",
+    "b6f9172d51bb8065bf18965916bbcbc5b38a0d3d"
+  ],
+  "expectedParentsMatchInOrder": true,
+  "mergeTree": "6326cbb9a3e3a558113bc69be6a6c3f381555194",
+  "b6Commit": "b6f9172d51bb8065bf18965916bbcbc5b38a0d3d",
+  "b6Tree": "6326cbb9a3e3a558113bc69be6a6c3f381555194",
+  "fullTreeObjectsEqual": true,
+  "recursiveTreeListing": {
+    "includesTreeEntries": true,
+    "bytes": 1330127,
+    "sha256": "7443abeaa283fbd15ff38709e9b8bcbf1a4515f680a0ded24ee7157e3e9b034a",
+    "entryCount": 12443,
+    "typeCounts": {
+      "blob": 11499,
+      "tree": 944
+    },
+    "allPathsModesTypesObjectIDsByteEqual": true
+  },
+  "gitDiffTreeEmpty": true,
+  "gitCommitterTimestamp": "2026-10-25T06:46:50-07:00",
+  "workingHEADAtRead": "448c9f84be75cb083c79536528336eaca1946c4d",
+  "platformMetadataBoundary": {
+    "mergeActor": "cyjin-yl",
+    "mergedAt": "2026-10-25T13:46:51Z",
+    "submittedReviewCount": 0,
+    "provenance": "Reported byRoot from actualplatformread; this localobject-only audit didnot independentlyrequeryGitHub."
+  },
+  "interpretation": [
+    "The merge preserves the exactcompleteb6tree includingallrecursivepaths,modes,typesandobjects.",
+    "No same-tree test rerun is claimed orneededbythisobjectaudit.",
+    "Mergingdoesnotproveoldlocalorhostedfailuresdisappeared; thepreviousaccurateb6local292pass/5fail andseparateCInegativesremaintheiractualrecords.",
+    "A maintainermergeisnot a submittedreviewAPPROVE; noGitHubreviewhasbeencreatedbythisagent.",
+    "Rootplannedcontributionbranchfast-forwardisnotperformedorclaimedhere. Primary/Eworktreesandremote refsareuntouchedbythisaudit."
+  ],
+  "actions": {
+    "gitObjectReadsOnly": true,
+    "worktreeEdits": 0,
+    "gitMutations": 0,
+    "networkOrAPI": 0,
+    "testsOrBrowser": 0,
+    "modeltraceSampling": 0,
+    "externalWrites": 0
+  }
+}
