@@ -17,10 +17,10 @@
   },
   "sourceProvenance": {
     "revision": {
-      "head": "7181a93a5ec5cad43936a72e31d5477d5488733a",
-      "exactForAllInputs": false
+      "head": "09f98199449b5eb233372aeaf77fffb8d02b78bb",
+      "exactForAllInputs": true
     },
-    "worktreeBinding": "dirty-or-untracked-inputs-bound-by-sha256",
+    "worktreeBinding": "exact-head-bytes",
     "generator": {
       "path": "scripts/compiler/website-demo-inventory.mjs",
       "sha256": "b1ca24bcf1068870a37a37814acf09c0e06e9f5a9994d4719a4d1f18032d381b"
@@ -39,8 +39,8 @@
   },
   "inputBinding": {
     "revision": {
-      "head": "7181a93a5ec5cad43936a72e31d5477d5488733a",
-      "exactForAllInputs": false
+      "head": "09f98199449b5eb233372aeaf77fffb8d02b78bb",
+      "exactForAllInputs": true
     },
     "sourceTrees": [
       "apps/www/src/components",
@@ -63,23 +63,23 @@
     ],
     "hiddenFilesIncluded": true,
     "gitBindingError": null,
-    "sha256": "9c8cd655b2ff7a7a0fa0c39f473c1a69e2a5f27074d16b718037b47ff690505e",
+    "sha256": "232f6ec18a4725679029135d556b4c01d928c0b9bb67578346d66e4385f773da",
     "files": [
       {
         "path": "apps/www/astro.config.mjs",
         "kind": "file",
-        "mode": "0644",
+        "mode": "0600",
         "sha256": "3ea4eb29ed96232868b2ce5964a0c8caef6045f9e0ab340f618ba93c61527608",
         "head": {
           "mode": "100644",
-          "blob": "8518036951a2410150c1eaaa36d9a602723f291b"
+          "blob": "a6c5937e88ee4eee723e52dab872b856048100e0"
         },
         "index": {
           "mode": "100644",
-          "blob": "8518036951a2410150c1eaaa36d9a602723f291b",
+          "blob": "a6c5937e88ee4eee723e52dab872b856048100e0",
           "stage": "0"
         },
-        "state": "dirty-or-staged"
+        "state": "exact-head-bytes"
       },
       {
         "path": "apps/www/package.json",
@@ -7764,18 +7764,18 @@
       {
         "path": "apps/www/src/content/docs/en/build/compiler-guide.md",
         "kind": "file",
-        "mode": "0644",
+        "mode": "0600",
         "sha256": "66a3a630c2be49c902d89c7e69e1db24d41a22783fcce7726c017fb0635d3df4",
         "head": {
           "mode": "100644",
-          "blob": "5a03903f9db3582388e7b8d28e8d53e182a01669"
+          "blob": "9e998eb746e5515b1c0f7024a5bb461cebe2c7bd"
         },
         "index": {
           "mode": "100644",
-          "blob": "5a03903f9db3582388e7b8d28e8d53e182a01669",
+          "blob": "9e998eb746e5515b1c0f7024a5bb461cebe2c7bd",
           "stage": "0"
         },
-        "state": "dirty-or-staged"
+        "state": "exact-head-bytes"
       },
       {
         "path": "apps/www/src/content/docs/en/build/contracts-and-tests.md",
@@ -13284,18 +13284,18 @@
       {
         "path": "apps/www/src/content/docs/zh-cn/build/compiler-guide.md",
         "kind": "file",
-        "mode": "0644",
+        "mode": "0600",
         "sha256": "8ec230fc506163746b34c0ceba03b32d1e785bc017670b08d1de32da5ae47538",
         "head": {
           "mode": "100644",
-          "blob": "b9a0c311b3ffe8ac1bd946295cadbecce2463730"
+          "blob": "beae226dd32d10851cc3b8e5fe2109e0873290f6"
         },
         "index": {
           "mode": "100644",
-          "blob": "b9a0c311b3ffe8ac1bd946295cadbecce2463730",
+          "blob": "beae226dd32d10851cc3b8e5fe2109e0873290f6",
           "stage": "0"
         },
-        "state": "dirty-or-staged"
+        "state": "exact-head-bytes"
       },
       {
         "path": "apps/www/src/content/docs/zh-cn/build/contracts-and-tests.md",
@@ -23764,11 +23764,18 @@
       {
         "path": "apps/www/src/utils/proto-ui-source.mjs",
         "kind": "file",
-        "mode": "0644",
+        "mode": "0600",
         "sha256": "b9b4d823e36d846b3e56809ecf73e89ccc1d3ea392c4b2f23e61336c6de2a833",
-        "head": null,
-        "index": null,
-        "state": "untracked"
+        "head": {
+          "mode": "100644",
+          "blob": "dda602c20ffb5a4d8d3e17f1d4f625776ce70d53"
+        },
+        "index": {
+          "mode": "100644",
+          "blob": "dda602c20ffb5a4d8d3e17f1d4f625776ce70d53",
+          "stage": "0"
+        },
+        "state": "exact-head-bytes"
       },
       {
         "path": "apps/www/src/utils/rehype-enhanced-image.test.ts",
@@ -26157,15 +26164,15 @@
       {
         "path": "packages/cli/src/legacy/type.ts",
         "kind": "file",
-        "mode": "0644",
-        "sha256": "b93fb9392aa6ab26d630be56d41c611c8f35da6acfffecb55773f30acea987ae",
+        "mode": "0600",
+        "sha256": "62016c4af3f5a8b20bceb8aa2539be6247db56815e97d55c1ae09ff96a24a349",
         "head": {
           "mode": "100644",
-          "blob": "f9570a983baf25eea6709d46e3859a5f1df893b0"
+          "blob": "05d2b24518fdc580856ef34687df695d50452b36"
         },
         "index": {
           "mode": "100644",
-          "blob": "f9570a983baf25eea6709d46e3859a5f1df893b0",
+          "blob": "05d2b24518fdc580856ef34687df695d50452b36",
           "stage": "0"
         },
         "state": "exact-head-bytes"
@@ -26333,15 +26340,15 @@
       {
         "path": "packages/cli/src/services/proto-style-css.ts",
         "kind": "file",
-        "mode": "0644",
-        "sha256": "fa9a817277ed6ed45c1ff7f6691b05a30c53865dc2b1e915414b89e6e5e8d06e",
+        "mode": "0600",
+        "sha256": "ddd324967e0120b8f1b332859f6425db8729fa6af29285f71f7e7f16ecfa0708",
         "head": {
           "mode": "100644",
-          "blob": "20927cb288911f42e5b0640122f46566dffaf08a"
+          "blob": "7b1a634697b5aa9fc1fdda8546c7bda41ddb5ea7"
         },
         "index": {
           "mode": "100644",
-          "blob": "20927cb288911f42e5b0640122f46566dffaf08a",
+          "blob": "7b1a634697b5aa9fc1fdda8546c7bda41ddb5ea7",
           "stage": "0"
         },
         "state": "exact-head-bytes"
@@ -27965,15 +27972,15 @@
       {
         "path": "packages/compiler/test/browser-button-ssr.test.ts",
         "kind": "file",
-        "mode": "0644",
-        "sha256": "79bb03e417cb3c6c8c8aef0b0e5585ffd3d64c4376c24ace0d302fadfaa2aa81",
+        "mode": "0600",
+        "sha256": "5c7d46ba5322bca66b4b26ab94c4c7f4902fc469957c5bd3c30e91e43dee41a2",
         "head": {
           "mode": "100644",
-          "blob": "7a595d71ad2f2062439f4fbc30ced185d67b3b75"
+          "blob": "1e94c883d6013fce5319e31d6dc2f973a20f7ebb"
         },
         "index": {
           "mode": "100644",
-          "blob": "7a595d71ad2f2062439f4fbc30ced185d67b3b75",
+          "blob": "1e94c883d6013fce5319e31d6dc2f973a20f7ebb",
           "stage": "0"
         },
         "state": "exact-head-bytes"
@@ -28077,15 +28084,15 @@
       {
         "path": "packages/compiler/test/button-ssr-browser-server.ts",
         "kind": "file",
-        "mode": "0644",
-        "sha256": "13f53ff4285245cd63f402914b625bbfd5368f1c4b08fea02a9b3c2c78e78d78",
+        "mode": "0600",
+        "sha256": "342393970a0fbf5fc2fbdf292e65a449006d1bb3c97128b62cf95bff4c11a7c5",
         "head": {
           "mode": "100644",
-          "blob": "16f0e7d1252d5347002cb85b859dc8fbc2eef891"
+          "blob": "e4a7866aa40d0caf4843b967535b414c571a83f0"
         },
         "index": {
           "mode": "100644",
-          "blob": "16f0e7d1252d5347002cb85b859dc8fbc2eef891",
+          "blob": "e4a7866aa40d0caf4843b967535b414c571a83f0",
           "stage": "0"
         },
         "state": "exact-head-bytes"
@@ -28125,15 +28132,15 @@
       {
         "path": "packages/compiler/test/button-ssr-fixture.ts",
         "kind": "file",
-        "mode": "0644",
-        "sha256": "2c3c59616ed6f2ddfa73d94e139f8c1de63159c76aecae568feeb4075cff7422",
+        "mode": "0600",
+        "sha256": "d8c14b74c699ddc0f03b67154a83a5216aa316247c017eb8d8ebf83f295512f3",
         "head": {
           "mode": "100644",
-          "blob": "e5e13ac2b40a7e6143753441f4f415e08ad5d953"
+          "blob": "a8105c67da4b58590c5c66be8a5c48169cafeded"
         },
         "index": {
           "mode": "100644",
-          "blob": "e5e13ac2b40a7e6143753441f4f415e08ad5d953",
+          "blob": "a8105c67da4b58590c5c66be8a5c48169cafeded",
           "stage": "0"
         },
         "state": "exact-head-bytes"
@@ -28141,15 +28148,15 @@
       {
         "path": "packages/compiler/test/button-ssr-server.test.ts",
         "kind": "file",
-        "mode": "0644",
-        "sha256": "7e3990a7a1df1684c208916237bf8e82c91423c141c635e5a21de2dee2ec891c",
+        "mode": "0600",
+        "sha256": "1cadefee5707f3b2939c9234ff2193d1e29ee44b4921b813315afdee52fa0ace",
         "head": {
           "mode": "100644",
-          "blob": "145d3a8dffaa34dfb829a8802323c9fd097cd2e9"
+          "blob": "a355a35d393bce6810be2a2b895522366c54cfab"
         },
         "index": {
           "mode": "100644",
-          "blob": "145d3a8dffaa34dfb829a8802323c9fd097cd2e9",
+          "blob": "a355a35d393bce6810be2a2b895522366c54cfab",
           "stage": "0"
         },
         "state": "exact-head-bytes"
@@ -28173,15 +28180,15 @@
       {
         "path": "packages/compiler/test/button-ssr.test.ts",
         "kind": "file",
-        "mode": "0644",
-        "sha256": "52045df186cbec0105c7f91ab419c39173ed19d6c1c04be5f3ddbf3a3a8e97fc",
+        "mode": "0600",
+        "sha256": "bc44063113dea18dcabf374845d1c90a61a47f08e911d835aa0995430270b268",
         "head": {
           "mode": "100644",
-          "blob": "23152c2540d93140f1fbc7acc8afacdd14c05002"
+          "blob": "19a9ebf10a56b5ec1608063161bace609ee832c0"
         },
         "index": {
           "mode": "100644",
-          "blob": "23152c2540d93140f1fbc7acc8afacdd14c05002",
+          "blob": "19a9ebf10a56b5ec1608063161bace609ee832c0",
           "stage": "0"
         },
         "state": "exact-head-bytes"
@@ -28317,15 +28324,15 @@
       {
         "path": "packages/compiler/test/fixtures/button-ssr/README.md",
         "kind": "file",
-        "mode": "0644",
-        "sha256": "82243538272eb99c552d00d666952ea502a5d6fd2ec8735438abe5674e9d04ea",
+        "mode": "0600",
+        "sha256": "b6acabf72942c75ba0f7c5f9cd09f291b12fcfdebf1756f74818eb5edfba81f1",
         "head": {
           "mode": "100644",
-          "blob": "3cdbe70ed16f781e8abc4948e67e149a87989eec"
+          "blob": "53d36aed232a6bdbe4a389cf9ebcb2a2f90cc9c5"
         },
         "index": {
           "mode": "100644",
-          "blob": "3cdbe70ed16f781e8abc4948e67e149a87989eec",
+          "blob": "53d36aed232a6bdbe4a389cf9ebcb2a2f90cc9c5",
           "stage": "0"
         },
         "state": "exact-head-bytes"
@@ -110893,20 +110900,34 @@
       {
         "path": "scripts/compiler/website-demo-inventory.mjs",
         "kind": "file",
-        "mode": "0644",
+        "mode": "0600",
         "sha256": "b1ca24bcf1068870a37a37814acf09c0e06e9f5a9994d4719a4d1f18032d381b",
-        "head": null,
-        "index": null,
-        "state": "untracked"
+        "head": {
+          "mode": "100644",
+          "blob": "5e541fa32a5b7e567f931b9b0a102ea726cff991"
+        },
+        "index": {
+          "mode": "100644",
+          "blob": "5e541fa32a5b7e567f931b9b0a102ea726cff991",
+          "stage": "0"
+        },
+        "state": "exact-head-bytes"
       },
       {
         "path": "scripts/compiler/website-demo-migrations-829.json",
         "kind": "file",
-        "mode": "0644",
+        "mode": "0600",
         "sha256": "79a3dcfab2e747a737fd75718d43ac052dd74b54af7a91c648904d7f7a44dd40",
-        "head": null,
-        "index": null,
-        "state": "untracked"
+        "head": {
+          "mode": "100644",
+          "blob": "e1c459b1045829dfdf70de7fc113eae714a36906"
+        },
+        "index": {
+          "mode": "100644",
+          "blob": "e1c459b1045829dfdf70de7fc113eae714a36906",
+          "stage": "0"
+        },
+        "state": "exact-head-bytes"
       },
       {
         "path": "scripts/docs/check-public-docs.mjs",
