@@ -624,3 +624,34 @@ Gallery 使用公开 parts；确认按钮仅更新 status，HoverCard delays 是
 #### 9.4 对迁移目标的修正
 
 应统一的是“公开原型定义 + 可复用的必要语义组合 + 相同验收”，不是强行把两个页面变成同一实例或共享同一业务状态。优先把Checkbox+Label、Field+Textarea/Select等组合做成同一可消费路径，去掉分叉的plain label、属性重写和组件内样式补丁；页面继续只提供业务数据、文案、回调和外层布局。原生导航/第三方搜索保留其真实宿主职责，能抽取的基本交互再依定义迁入原型。
+
+
+## 续记：#1001 的 inherited input shard 漏项（2026-10-25 UTC）
+
+这一维护片的实现 parent 为 [bdeef58c](https://github.com/Proto-UI/Proto-UI/commit/bdeef58c20b7479fd2a0a3975dda0e5c8a543d2f)，继续 stack 在 #955，不更改 #955 的分支，也不合入整个 main。上文 7181 的全仓审计快照与第一片 Base-only workspace 映射结论保持原有边界。
+
+### 观察、归因与上游来源
+
+- [exact-head CI job](https://github.com/Proto-UI/Proto-UI/actions/runs/40165695418/job/121086167557) 在 capture 之前执行的计划测试报告 187 项中 186 通过、1 失败。失败是 `apps/www/scripts/contrast-audit-plan.test.mjs:94` 的 manifest 全族唯一覆盖断言，workflow passive-and-editors shard 漏了 `input`。原生浏览器 capture 尚未开始，也没有生成截图 artifact；这不是浏览器验收失败的证据，更不是通过证据。
+- workflow blob `c33d662219a97bd77252dfe4caefe6d27a7999a7`、manifest blob `839cf5b13ed70891921a17139b4a1160df26074e` 与计划测试 blob `6e460464b4d9c39b350148f06d77578d0a2caedb` 均继承 #955，未由第一片新增。但 baseline 归因不豁免 PR 验收，仍需携带精确修复。
+- 修复来源是 HyacinthHaru 于 2026-10-22 提交的 [1038d0fa](https://github.com/Proto-UI/Proto-UI/commit/1038d0fa52406b9dcb1d1cadf1d7df91946c18e2)，经 [#921](https://github.com/Proto-UI/Proto-UI/pull/921) 合并。原提交实际包含两处配对的一行变更：workflow 的 shard 加上 `,input`，以及 `scripts/test/brutalist-contrast-toolbar.test.mjs` 的精确 shard 期待同步加入 `,input`。本片仅携带这两处原始 hunk，并累计本记录；原作者归属不变，整合提交只认证整合者自己的贡献。
+- 维护时核对 #974 已包含同一恢复，而非另一个新根因；开放 #1002 无这些路径的 overlap。不会修改其他 owner 的分支。workflow permissions、45 分钟预算、max-parallel=2、fail-fast=false、exact-head checkout、artifact 与 capture 设置均不变。
+
+### 有界真实测试与反例
+
+在既有 Node 24、无网络 guard、只读文件白名单环境中，运行仓库原有测试，而非重新实现断言。为避免启动子进程，使用 Node 原生 `--test-isolation=none`，不新增权限或依赖。命令的仓库相对形式为：
+
+```sh
+node --test --test-isolation=none \
+  --test-name-pattern='normal PR evidence shards cover every current manifest family exactly once|toolbar setup preserves all current manifest families, bounded jobs and exact-head evidence' \
+  apps/www/scripts/contrast-audit-plan.test.mjs \
+  scripts/test/brutalist-contrast-toolbar.test.mjs
+```
+
+| 被测状态 | 真实结果 | 意义 |
+|---|---|---|
+| 原 bdeef 两文件 | 1 通过、1 失败，exit 1 | 原计划断言准确发现 input 缺席 |
+| 只携带 workflow 一行 | 1 通过、1 失败，exit 1 | 唯一覆盖恢复，但 toolbar 旧的精确期待失败，证明两处必须成对 |
+| 两处同源 hunk | 2 通过、0 失败，exit 0 | 选定的两个现有契约测试通过；无删除、跳过或放松其断言 |
+
+这只是明确筛选的两项契约，不是完整 187 项重跑，也不等于完整 CI、浏览器、packed 或 registry-install 验收。原有 FieldTextarea 的 8-case codegen 证据与 Vitest/Rollup 预收集受限记录仍按上一片保留，没有重标为本片新运行。后续必须读取新 exact-head CI 的真实状态，capture 尚未启动时不能补写假截图。
