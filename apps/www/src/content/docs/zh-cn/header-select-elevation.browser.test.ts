@@ -217,6 +217,12 @@ describe.sequential('Header public family presentation and labelled compact fiel
                 await link.focus();
                 await page.keyboard.press('Tab');
                 await page.keyboard.press('Shift+Tab');
+                await expect
+                  .poll(async () => {
+                    const paint = await headerLinkPaint(link);
+                    return paint.focused && paint.tokens?.split(/\s+/).includes('ring-2');
+                  })
+                  .toBe(true);
                 const focused = await headerLinkPaint(link);
                 expect(focused.focused).toBe(true);
                 expect(focused.tokens).toContain('ring-2');
@@ -326,13 +332,11 @@ describe.sequential('Header public family presentation and labelled compact fiel
                   ).toBeGreaterThanOrEqual(4.5);
                 }
 
-                // Content retains its own family presentation; ghost affects Trigger only.
-                const popupShadow = await popup.evaluate(
-                  (element) => getComputedStyle(element).boxShadow
-                );
+                // Popup paint retains its family presentation; ghost affects Trigger only.
+                const popupShadow = popupPaint.shadow;
                 if (family === 'brutalist') expect(popupShadow).toBe('none');
                 else {
-                  expect(await popup.getAttribute('data-pui-style')).toContain('shadow-md');
+                  expect(popupPaint.tokens).toContain('shadow-md');
                   expect(popupShadow).not.toBe('none');
                 }
                 await capture(`${width}-${control}-popup`);
