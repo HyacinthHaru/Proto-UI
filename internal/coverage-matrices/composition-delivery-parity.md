@@ -660,3 +660,71 @@ Gallery 使用公开 parts；确认按钮仅更新 status，HoverCard delays 是
 ### S1 静态复审补充
 
 复审明确了冻结边界：仅冻结 helper 新建容器和 Label 默认值，import 的共享原型与 Indicator preset 保持原有 identity/可变性，不作深冻结或修改。rebind 测试新增旧 association 的独立 Label 负控：它不能再请求原 control，当前新 association 的 Label 仍应只请求一次；这样不会把忽略两次更新的实现误判为 rebind 成功。用例仍未取得 Vitest 或 native 通过结果。公共页的示意已标明 adapter-neutral，不冒称完整可运行 host 示例。
+
+## 并行诊断文本合流
+
+以下 #1001 续记逐字保留自公开 commit `ee40d097383321316237210f799c6c73e3e07768` 的本文档（blob `c842d2f807ced15b792164f902ac757eb26fb95c`）。仅合流累计诊断文本，不引入 #1001 的代码或把它设为 Checkbox 语义依赖。
+
+## 续记：#1001 的 inherited input shard 漏项（2026-10-25 UTC）
+
+这一维护片的实现 parent 为 [bdeef58c](https://github.com/Proto-UI/Proto-UI/commit/bdeef58c20b7479fd2a0a3975dda0e5c8a543d2f)，继续 stack 在 #955，不更改 #955 的分支，也不合入整个 main。上文 7181 的全仓审计快照与第一片 Base-only workspace 映射结论保持原有边界。
+
+### 观察、归因与上游来源
+
+- [exact-head CI job](https://github.com/Proto-UI/Proto-UI/actions/runs/40165695418/job/121086167557) 在 capture 之前执行的计划测试报告 187 项中 186 通过、1 失败。失败是 `apps/www/scripts/contrast-audit-plan.test.mjs:94` 的 manifest 全族唯一覆盖断言，workflow passive-and-editors shard 漏了 `input`。原生浏览器 capture 尚未开始，也没有生成截图 artifact；这不是浏览器验收失败的证据，更不是通过证据。
+- workflow blob `c33d662219a97bd77252dfe4caefe6d27a7999a7`、manifest blob `839cf5b13ed70891921a17139b4a1160df26074e` 与计划测试 blob `6e460464b4d9c39b350148f06d77578d0a2caedb` 均继承 #955，未由第一片新增。但 baseline 归因不豁免 PR 验收，仍需携带精确修复。
+- 修复来源是 HyacinthHaru 于 2026-10-22 提交的 [1038d0fa](https://github.com/Proto-UI/Proto-UI/commit/1038d0fa52406b9dcb1d1cadf1d7df91946c18e2)，经 [#921](https://github.com/Proto-UI/Proto-UI/pull/921) 合并。原提交实际包含两处配对的一行变更：workflow 的 shard 加上 `,input`，以及 `scripts/test/brutalist-contrast-toolbar.test.mjs` 的精确 shard 期待同步加入 `,input`。本片仅携带这两处原始 hunk，并累计本记录；原作者归属不变，整合提交只认证整合者自己的贡献。
+- 维护时核对 #974 已包含同一恢复，而非另一个新根因；开放 #1002 无这些路径的 overlap。不会修改其他 owner 的分支。workflow permissions、45 分钟预算、max-parallel=2、fail-fast=false、exact-head checkout、artifact 与 capture 设置均不变。
+
+### 有界真实测试与反例
+
+在既有 Node 24、无网络 guard、只读文件白名单环境中，运行仓库原有测试，而非重新实现断言。为避免启动子进程，使用 Node 原生 `--test-isolation=none`，不新增权限或依赖。命令的仓库相对形式为：
+
+```sh
+node --test --test-isolation=none \
+  --test-name-pattern='normal PR evidence shards cover every current manifest family exactly once|toolbar setup preserves all current manifest families, bounded jobs and exact-head evidence' \
+  apps/www/scripts/contrast-audit-plan.test.mjs \
+  scripts/test/brutalist-contrast-toolbar.test.mjs
+```
+
+| 被测状态 | 真实结果 | 意义 |
+|---|---|---|
+| 原 bdeef 两文件 | 1 通过、1 失败，exit 1 | 原计划断言准确发现 input 缺席 |
+| 只携带 workflow 一行 | 1 通过、1 失败，exit 1 | 唯一覆盖恢复，但 toolbar 旧的精确期待失败，证明两处必须成对 |
+| 两处同源 hunk | 2 通过、0 失败，exit 0 | 选定的两个现有契约测试通过；无删除、跳过或放松其断言 |
+
+这只是明确筛选的两项契约，不是完整 187 项重跑，也不等于完整 CI、浏览器、packed 或 registry-install 验收。原有 FieldTextarea 的 8-case codegen 证据与 Vitest/Rollup 预收集受限记录仍按上一片保留，没有重标为本片新运行。后续必须读取新 exact-head CI 的真实状态，capture 尚未启动时不能补写假截图。
+
+## 2026-10-25 S2：Shadcn WC packed delivery 检查（#1000，候选准备）
+
+真实前置为 #998 的 Draft PR #1003，head `653dbe47c51a34eff2f0b21edb4a8d3c0297c5af`，tree `74c57c81ea67aa8625c91bb75c710f2798de4926`，branch `dot/998-checkbox-label-composition`。四个既有路径已从该 exact ref 重取并逐字节核对，第五新 fixture 以完整 tree 验证不存在。S1 仍是 draft 且 CI/native 未完成；stack 不表示父验收通过。本节随 S2 五路径候选准备，尚未发布 S2。
+
+### 发现与最小修复
+
+静态核验没有发现新的 package manifest 闭包缺口：S1 通过现有 `/checkbox` export 暴露 construction，Label 在同一个 Shadcn package 内，core/hooks/base 依赖已经声明。没有据猜测修改版本、manifest 或 CLI registry。真实缺口是 packed harness 未执行 Checkbox+Label 组合、公共页只有 adapter-neutral 示意。候选扩展现有 canonical smoke，并补完整有限 WC 使用例。三个 default-part preset、raw atoms、sourceOnly/private/release 门保持不变。
+
+### 可复现流程与实际 CI 路由
+
+1. 从精确 S1 parent 创建候选，正常执行 `pnpm release:smoke:cli`。它调用 `scripts/release/publish.mjs --pack`（不是 --publish），沿用已有发行 staging、tarballs、声明依赖闭包。
+2. 在独立临时消费者安装本轮 tarballs，检查版本、lockfile 本地 resolved、实际安装目录；运行已安装 CLI init，并分别 add WC shadcn-checkbox 与 shadcn-label。没有 source alias 或私有仓库路径注入。
+3. 新进程直接导入 public checkbox helper，确认 Control/Indicator/Label identity。未知 package subpath 必须拒绝。临时移走消费者 Label dist，新的 Node 进程必须 ERR_MODULE_NOT_FOUND；finally 恢复后再证明导入成功，防止 module cache 掩盖缺失。
+4. 已安装 CLI 对 sourceOnly shadcn-field、未知 component 仍须拒绝且不改 config。保留已有 Switch/Dialog/Checkbox 默认部件断言。
+5. 消费 public declaration、生成 WC facade 与真实 CLI CSS；新 fixture 执行可见 rich Label、一次 activation、隔离、disabled/mixed/controlled、naming-only、默认/显式/关闭 Indicator、raw Root 与 detach。事件是 HappyDOM 合成输入，不是 native/AT 接受。
+6. `.github/workflows/ci.yml` 的 `cli-smoke` 已执行 release:smoke:cli；其 PR 条件为 affected_count 非零。修改 scripts/release 下的实际 harness 会被 public-package plan 视为相关全图改动，因而接入已有 CI，不新增权限或 workflow。沿用现有固定第三方版本。
+
+### 当前证据，不能上提
+
+| 层级 | 当前状态 |
+| --- | --- |
+| 静态 package/export/CLI/CI 路由 | 已核对真实 S1 #1003 exact head；S2 仍是本地候选 |
+| 新 fixture 语法 | 两份 .mjs 的 node --check 在既有 guard 下通过；不是运行/类型/独立审查通过 |
+| canonical harness 实际启动 | exit 1，首次 spawn `publish.mjs --pack` 被 Node `ERR_ACCESS_DENIED` / `ChildProcess` 阻断；pack/build/install 均未开始，保留失败与临时目录，不绕过 |
+| packed declaration 与 WC 合成行为 | 尚未执行，不用生成字符串替代通过结果 |
+| native pointer/keyboard/AT/布局截图 | 尚欠，不能以本 fixture 或旧截图代替 |
+| 正式 npm registry 发布 | 未做、不在范围内 |
+
+#925 authored-hook provenance 和 #817/#999 website loader/inventory 仍归其既有 owner。若 canonical harness 暴露这些已知失败，记录真实失败并协调，不删断言或接管修复。此片不闭合 #865/#933 的全消费者目标，也不把独立 #1001 当语义依赖。
+
+成功运行会在 CI 日志输出实际 checkout commit（可能是 PR merge commit，不能误称开发 head）、tarball integrity/shasum、独立 lockfile、generated facade 与 fixture SHA256；prepared 与 passed 两阶段分开。失败时继续保留 canonical harness 的临时产物，不在本地或文档伪造这些摘要。
+
+本地 canonical 命令为 `node scripts/release/consumer-smoke-cli.mjs`，Node v24.19.0。限制包含无 child/native addon/worker 与 network guard，仅允许临时测试目录写入。失败发生于 harness 首次调用既有 pack 子进程，早于任何安装或新宿主 fixture 执行；没有以手工打包、放宽 guard 或改测试 runner 替换这个结果。

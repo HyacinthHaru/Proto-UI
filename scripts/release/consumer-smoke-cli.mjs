@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import {
   cpSync,
   existsSync,
@@ -6,6 +7,7 @@ import {
   readFileSync,
   readdirSync,
   rmSync,
+  renameSync,
   writeFileSync,
 } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -120,6 +122,8 @@ try {
     ['wc', 'base-image'],
     ['wc', 'shadcn-switch'],
     ['wc', 'shadcn-dialog'],
+    ['wc', 'shadcn-checkbox'],
+    ['wc', 'shadcn-label'],
   ]) {
     run(process.execPath, [cli, 'add', host, component, '--no-install', '--no-interactive'], {
       cwd: consumerDir,
@@ -127,6 +131,7 @@ try {
   }
 
   verifyGeneratedConsumer(consumerDir);
+  verifyCheckboxCompositionClosure(consumerDir, cli);
   cpSync(join(CONSUMER_FIXTURE_DIR, 'adapter-types.tsx'), join(consumerDir, 'adapter-types.tsx'));
   cpSync(
     join(CONSUMER_FIXTURE_DIR, 'adapter-types.tsconfig.json'),
@@ -145,11 +150,17 @@ try {
     join(ROOT_DIR, 'scripts', 'release', 'consumer-smoke-css.mjs'),
     join(consumerDir, 'consumer-smoke-css.mjs')
   );
-  for (const renderer of ['react.mjs', 'vue.mjs', 'wc.mjs']) {
+  logCheckboxDeliveryEvidence(packManifest, consumerPackageNames, 'prepared-not-yet-executed');
+  for (const renderer of ['react.mjs', 'vue.mjs', 'wc.mjs', 'wc-checkbox-label.mjs']) {
     cpSync(join(RENDER_FIXTURE_DIR, renderer), join(consumerDir, renderer));
     run(process.execPath, ['--import', 'tsx', `./${renderer}`], { cwd: consumerDir });
   }
 
+  logCheckboxDeliveryEvidence(
+    packManifest,
+    consumerPackageNames,
+    'packed-types-and-synthetic-wc-passed'
+  );
   runNoStylesConsumer({ consumerDir, cli, fixtureDir: join(ROOT_DIR, 'scripts', 'release'), run });
 
   runVue2Consumer({
@@ -416,4 +427,111 @@ function toFileSpec(path) {
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
+}
+
+// Exercise actual installed package resolution in fresh processes. No source
+// aliases or custom loader can satisfy these checks, and failed imports cannot
+// be hidden by the module cache of the positive host fixture.
+function verifyCheckboxCompositionClosure(root, cli) {
+  const probe = (source, expectedError = null) => {
+    const result = spawnSync(process.execPath, ['--input-type=module', '--eval', source], {
+      cwd: root,
+      encoding: 'utf8',
+      env: process.env,
+    });
+    if (result.error) throw result.error;
+    if (expectedError) {
+      assert(result.status !== 0, `negative import unexpectedly succeeded: ${source}`);
+      assert(
+        result.stderr.includes(expectedError),
+        `unexpected negative-import failure: ${result.stderr}`
+      );
+    } else {
+      assert(result.status === 0, `installed composition import failed: ${result.stderr}`);
+    }
+  };
+  const positive = `
+    import { strict as assert } from 'node:assert';
+    import { createShadcnCheckboxLabelComposition, checkboxRoot, checkboxIndicator } from '@proto.ui/prototypes-shadcn/checkbox';
+    import { labelRoot } from '@proto.ui/prototypes-shadcn/label';
+    const pair = createShadcnCheckboxLabelComposition();
+    assert.equal(pair.recipe.parts.control, checkboxRoot);
+    assert.equal(pair.recipe.parts.indicator, checkboxIndicator);
+    assert.equal(pair.recipe.parts.label, labelRoot);
+    assert.equal(pair.control.instanceAssociations, pair.label.instanceAssociations);
+  `;
+  probe(positive);
+  probe(
+    "await import('@proto.ui/prototypes-shadcn/not-a-public-export')",
+    'ERR_PACKAGE_PATH_NOT_EXPORTED'
+  );
+  const labelDir = join(root, 'node_modules', '@proto.ui', 'prototypes-shadcn', 'dist', 'label');
+  const absentDir = `${labelDir}.negative-control`;
+  assert(!existsSync(absentDir), 'negative-control backup already exists');
+  renameSync(labelDir, absentDir);
+  try {
+    probe(positive, 'ERR_MODULE_NOT_FOUND');
+  } finally {
+    renameSync(absentDir, labelDir);
+  }
+  probe(positive);
+
+  // These commands must reject before installing or changing the consumer.
+  for (const [component, diagnostic] of [
+    ['shadcn-field', 'workspace-source-only'],
+    ['not-a-component', 'unsupported component'],
+  ]) {
+    const before = readFileSync(join(root, 'proto-ui', 'config.json'), 'utf8');
+    const result = spawnSync(
+      process.execPath,
+      [cli, 'add', 'wc', component, '--no-install', '--no-interactive'],
+      {
+        cwd: root,
+        encoding: 'utf8',
+        env: process.env,
+      }
+    );
+    if (result.error) throw result.error;
+    assert(
+      result.status !== 0 && `${result.stdout}${result.stderr}`.includes(diagnostic),
+      `installed admission did not reject ${component}: ${result.stdout}${result.stderr}`
+    );
+    assert(
+      readFileSync(join(root, 'proto-ui', 'config.json'), 'utf8') === before,
+      `rejected ${component} changed the consumer config`
+    );
+  }
+  console.log(
+    'packed Checkbox composition: exports, required Label payload and negative admission verified'
+  );
+}
+
+// Logs survive successful temporary-consumer cleanup. The tested commit may be
+// GitHub's PR merge commit, so record that actual checkout rather than calling it
+// the development head. Each run retains the real tarball integrities and lock.
+function logCheckboxDeliveryEvidence(packManifest, names, phase) {
+  const revision = spawnSync('git', ['rev-parse', 'HEAD'], {
+    cwd: ROOT_DIR,
+    encoding: 'utf8',
+    env: process.env,
+  });
+  if (revision.error) throw revision.error;
+  assert(revision.status === 0, 'cannot bind packed evidence to actual checkout');
+  const digest = (path) => createHash('sha256').update(readFileSync(path)).digest('hex');
+  console.log(
+    JSON.stringify({
+      kind: 'checkbox-label-packed-wc-delivery',
+      phase,
+      testedCommit: revision.stdout.trim(),
+      releaseVersion: packManifest.releaseVersion,
+      packages: packManifest.packages
+        .filter((entry) => names.includes(entry.name))
+        .map(({ name, version, integrity, shasum }) => ({ name, version, integrity, shasum })),
+      lockSha256: digest(join(consumerDir, 'package-lock.json')),
+      generatedFacadeSha256: digest(join(consumerDir, 'proto-ui', 'components', 'wc', 'index.ts')),
+      fixtureSha256: digest(join(RENDER_FIXTURE_DIR, 'wc-checkbox-label.mjs')),
+      nativeAcceptance: 'not-run',
+      registryPublication: 'not-performed',
+    })
+  );
 }
