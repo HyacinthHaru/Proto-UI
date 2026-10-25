@@ -1,5 +1,8 @@
 // @vitest-environment node
 
+import { execFileSync } from 'node:child_process';
+import { tmpdir } from 'node:os';
+import { copySourceBindingIssues } from './copy-command-evidence';
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import type { Browser, Page } from 'playwright-core';
@@ -538,6 +541,19 @@ describe.sequential('shadcn control documentation browser regressions', () => {
   }, 180_000);
 
   it('gives each Checkbox one focusable control and keeps the glyph unnamed', async () => {
+    const source = {
+      exactSHA: execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
+      dirty: Boolean(execFileSync('git', ['status', '--porcelain'], { encoding: 'utf8' }).trim()),
+      expectedSHA: process.env.CANDIDATE_SHA ?? process.env.PROTO_UI_EXPECTED_REVISION ?? null,
+      eventSHA: process.env.GITHUB_SHA ?? null,
+    };
+    expect(copySourceBindingIssues(source, Boolean(process.env.CI))).toEqual([]);
+    const commit = source.exactSHA;
+    const evidence = path.join(
+      process.env.PROTO_UI_RUNTIME_EVIDENCE_DIR || tmpdir(),
+      'shadcn-checkbox-composition'
+    );
+    await mkdir(evidence, { recursive: true });
     const { context, page, previewer } = await openRoute(browser, baseUrl, CHECKBOX_ROUTE, {
       width: 1440,
       height: 900,
@@ -573,7 +589,47 @@ describe.sequential('shadcn control documentation browser regressions', () => {
           expect(snapshot.match(/^\s*- /gm) ?? [], `${runtime}/aria-${index}`).toHaveLength(1);
           expect(snapshot, `${runtime}/aria-role-${index}`).toContain('checkbox');
         }
+        const controls = previewer.locator('[role="checkbox"]');
+        const first = controls.nth(0);
+        const labelId = await first.getAttribute('aria-labelledby');
+        expect(labelId?.trim().split(/\s+/)).toHaveLength(1);
+        const label = page.locator(`[id="${labelId}"]`);
+        expect(await label.textContent()).toBe('Unchecked');
+        expect(await label.evaluate((el) => (el as HTMLElement).tabIndex)).toBe(-1);
+        expect(await label.evaluate((el) => getComputedStyle(el).userSelect)).toBe('none');
+        await label.click();
+        await expect.poll(() => first.getAttribute('aria-checked')).toBe('true');
+        expect(await controls.nth(1).getAttribute('aria-checked')).toBe('true');
+        await label.click();
+        await expect.poll(() => first.getAttribute('aria-checked')).toBe('false');
+        const mixed = controls.nth(2);
+        const mixedLabel = await mixed.getAttribute('aria-labelledby');
+        await page.locator(`[id="${mixedLabel}"]`).click();
+        await expect.poll(() => mixed.getAttribute('aria-checked')).toBe('true');
+        const disabled = controls.nth(3);
+        expect(await disabled.getAttribute('aria-checked')).toBe('true');
+        expect(await disabled.getAttribute('aria-disabled')).toBe('true');
+        await page.locator(`[id="${await disabled.getAttribute('aria-labelledby')}"]`).click();
+        expect(await disabled.getAttribute('aria-checked')).toBe('true');
+        expect(await disabled.getAttribute('aria-disabled')).toBe('true');
+        await first.focus();
+        await page.keyboard.press('Space');
+        await expect.poll(() => first.getAttribute('aria-checked')).toBe('true');
+        expect(
+          await first.evaluate(
+            (el) => el === (el.getRootNode() as Document | ShadowRoot).activeElement
+          )
+        ).toBe(true);
+        await previewer.screenshot({ path: path.join(evidence, `${commit}-${runtime}.png`) });
       }
+      await writeFile(
+        path.join(evidence, `${commit}.json`),
+        JSON.stringify(
+          { commit, route: CHECKBOX_ROUTE, runtimes: RUNTIMES, browser: browser.version() },
+          null,
+          2
+        )
+      );
     } finally {
       await context.close();
     }

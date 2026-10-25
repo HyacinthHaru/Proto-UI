@@ -1,124 +1,27 @@
+import { shadcnCheckboxDemoChildren } from '../../../components/PrototypePreviewer/shadcn-checkbox-composition';
+import type { DemoSpec } from '../../../components/PrototypePreviewer/demo-types';
+
+const examples = [
+  { label: 'Unchecked', props: { defaultChecked: false } },
+  { label: 'Checked', props: { defaultChecked: true } },
+  { label: 'Mixed', props: { defaultIndeterminate: true } },
+  { label: 'Disabled', props: { disabled: true, defaultChecked: true } },
+  { label: 'Tab here for the focus ring', props: { defaultChecked: false } },
+];
+
 export default {
   type: 'demo',
   root: {
     kind: 'box',
     className: 'flex flex-col gap-3',
-    children: [
-      {
-        kind: 'box',
-        className: 'flex items-center gap-2',
-        children: [
-          {
-            kind: 'proto',
-            prototypeId: 'shadcn-checkbox-root',
-            props: { defaultChecked: false },
-            children: [
-              {
-                kind: 'proto',
-                prototypeId: 'shadcn-checkbox-indicator',
-              },
-              { kind: 'box', className: 'sr-only', children: ['Unchecked'] },
-            ],
-          },
-          {
-            kind: 'box',
-            className: 'text-sm',
-            children: ['Unchecked'],
-          },
-        ],
-      },
-      {
-        kind: 'box',
-        className: 'flex items-center gap-2',
-        children: [
-          {
-            kind: 'proto',
-            prototypeId: 'shadcn-checkbox-root',
-            props: { defaultChecked: true },
-            children: [
-              {
-                kind: 'proto',
-                prototypeId: 'shadcn-checkbox-indicator',
-              },
-              { kind: 'box', className: 'sr-only', children: ['Checked'] },
-            ],
-          },
-          {
-            kind: 'box',
-            className: 'text-sm',
-            children: ['Checked'],
-          },
-        ],
-      },
-      {
-        kind: 'box',
-        className: 'flex items-center gap-2',
-        children: [
-          {
-            kind: 'proto',
-            prototypeId: 'shadcn-checkbox-root',
-            props: { defaultIndeterminate: true },
-            children: [
-              {
-                kind: 'proto',
-                prototypeId: 'shadcn-checkbox-indicator',
-              },
-              { kind: 'box', className: 'sr-only', children: ['Mixed'] },
-            ],
-          },
-          {
-            kind: 'box',
-            className: 'text-sm',
-            children: ['Mixed'],
-          },
-        ],
-      },
-      {
-        kind: 'box',
-        className: 'flex items-center gap-2',
-        children: [
-          {
-            kind: 'proto',
-            prototypeId: 'shadcn-checkbox-root',
-            props: { disabled: true, defaultChecked: true },
-            children: [
-              {
-                kind: 'proto',
-                prototypeId: 'shadcn-checkbox-indicator',
-              },
-              { kind: 'box', className: 'sr-only', children: ['Disabled'] },
-            ],
-          },
-          {
-            kind: 'box',
-            className: 'text-sm',
-            children: ['Disabled'],
-          },
-        ],
-      },
-      {
-        kind: 'box',
-        className: 'flex items-center gap-2',
-        children: [
-          {
-            kind: 'proto',
-            prototypeId: 'shadcn-checkbox-root',
-            props: { defaultChecked: false },
-            children: [
-              {
-                kind: 'proto',
-                prototypeId: 'shadcn-checkbox-indicator',
-              },
-              { kind: 'box', className: 'sr-only', children: ['Focus ring'] },
-            ],
-          },
-          {
-            kind: 'box',
-            className: 'text-sm',
-            children: ['Tab here for the focus ring'],
-          },
-        ],
-      },
-    ],
+    children: examples.map(({ label, props }, index) => ({
+      kind: 'box',
+      className: 'flex items-center gap-2',
+      children: shadcnCheckboxDemoChildren({
+        associationKey: `shadcn-checkbox-${index}`,
+        label: [label],
+        controlProps: props,
+      }),
+    })),
   },
-};
+} satisfies DemoSpec;
