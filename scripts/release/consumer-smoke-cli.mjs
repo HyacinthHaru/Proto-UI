@@ -11,7 +11,8 @@ import {
   writeFileSync,
 } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join, relative } from 'node:path';
+import { dirname, join, relative } from 'node:path';
+import { createRequire } from 'node:module';
 import { spawnSync } from 'node:child_process';
 
 import { getAllPackages, ROOT_DIR, selectPackages } from './lib.mjs';
@@ -151,15 +152,36 @@ try {
     join(consumerDir, 'consumer-smoke-css.mjs')
   );
   logCheckboxDeliveryEvidence(packManifest, consumerPackageNames, 'prepared-not-yet-executed');
-  for (const renderer of ['react.mjs', 'vue.mjs', 'wc.mjs', 'wc-checkbox-label.mjs']) {
-    cpSync(join(RENDER_FIXTURE_DIR, renderer), join(consumerDir, renderer));
-    run(process.execPath, ['--import', 'tsx', `./${renderer}`], { cwd: consumerDir });
+  // Independent outcomes: a native setup/product failure must not hide the
+  // existing synthetic explicit-Indicator failure (nor may native success erase it).
+  const hostFailures = [];
+  try {
+    run(process.execPath, [
+      join(RENDER_FIXTURE_DIR, 'wc-checkbox-label-native.mjs'),
+      consumerDir,
+      ROOT_DIR,
+    ], { cwd: consumerDir, timeout: 120000 });
+    console.log('packed WC native bounded cases: passed');
+  } catch (error) {
+    console.error('packed WC native bounded cases: failed', error);
+    hostFailures.push(error);
   }
+  try {
+    for (const renderer of ['react.mjs', 'vue.mjs', 'wc.mjs', 'wc-checkbox-label.mjs']) {
+      cpSync(join(RENDER_FIXTURE_DIR, renderer), join(consumerDir, renderer));
+      run(process.execPath, ['--import', 'tsx', `./${renderer}`], { cwd: consumerDir });
+    }
+    console.log('packed WC synthetic cases: passed');
+  } catch (error) {
+    console.error('packed WC synthetic cases: failed', error);
+    hostFailures.push(error);
+  }
+  if (hostFailures.length) throw new AggregateError(hostFailures, 'packed WC host checks failed');
 
   logCheckboxDeliveryEvidence(
     packManifest,
     consumerPackageNames,
-    'packed-types-and-synthetic-wc-passed'
+    'packed-types-synthetic-wc-and-bounded-native-passed'
   );
   runNoStylesConsumer({ consumerDir, cli, fixtureDir: join(ROOT_DIR, 'scripts', 'release'), run });
 
@@ -411,6 +433,7 @@ function run(command, commandArgs, options = {}) {
     cwd: options.cwd ?? ROOT_DIR,
     encoding: 'utf8',
     stdio: options.quiet ? 'ignore' : 'inherit',
+    timeout: options.timeout,
     shell: process.platform === 'win32',
     env: process.env,
   });
@@ -518,20 +541,61 @@ function logCheckboxDeliveryEvidence(packManifest, names, phase) {
   if (revision.error) throw revision.error;
   assert(revision.status === 0, 'cannot bind packed evidence to actual checkout');
   const digest = (path) => createHash('sha256').update(readFileSync(path)).digest('hex');
-  console.log(
-    JSON.stringify({
-      kind: 'checkbox-label-packed-wc-delivery',
-      phase,
-      testedCommit: revision.stdout.trim(),
-      releaseVersion: packManifest.releaseVersion,
-      packages: packManifest.packages
-        .filter((entry) => names.includes(entry.name))
-        .map(({ name, version, integrity, shasum }) => ({ name, version, integrity, shasum })),
-      lockSha256: digest(join(consumerDir, 'package-lock.json')),
-      generatedFacadeSha256: digest(join(consumerDir, 'proto-ui', 'components', 'wc', 'index.ts')),
-      fixtureSha256: digest(join(RENDER_FIXTURE_DIR, 'wc-checkbox-label.mjs')),
-      nativeAcceptance: 'not-run',
-      registryPublication: 'not-performed',
-    })
-  );
+  const evidence = {
+    kind: 'checkbox-label-packed-wc-delivery',
+    phase,
+    testedCommit: revision.stdout.trim(),
+    releaseVersion: packManifest.releaseVersion,
+    packages: packManifest.packages
+      .filter((entry) => names.includes(entry.name))
+      .map(({ name, version, integrity, shasum }) => ({ name, version, integrity, shasum })),
+    syntheticHost: readInstalledSyntheticHostEvidence(),
+    lockSha256: digest(join(consumerDir, 'package-lock.json')),
+    generatedFacadeSha256: digest(join(consumerDir, 'proto-ui', 'components', 'wc', 'index.ts')),
+    fixtureSha256: digest(join(RENDER_FIXTURE_DIR, 'wc-checkbox-label.mjs')),
+    nativeAcceptance: phase === 'packed-types-synthetic-wc-and-bounded-native-passed'
+      ? 'bounded-default-and-preassembled-explicit-only' : 'not-run',
+    registryPublication: 'not-performed',
+  };
+  console.log(JSON.stringify(evidence));
+  writeFileSync(join(consumerDir, 'checkbox-delivery-evidence.json'), JSON.stringify(evidence));
+}
+
+function readInstalledSyntheticHostEvidence() {
+  const consumerRequire = createRequire(join(consumerDir, 'package.json'));
+  const registratorEntry = consumerRequire.resolve('@happy-dom/global-registrator');
+  const registratorRequire = createRequire(registratorEntry);
+  const happyDomEntry = registratorRequire.resolve('happy-dom');
+  const lock = JSON.parse(readFileSync(join(consumerDir, 'package-lock.json'), 'utf8'));
+  const describe = (name, entry) => {
+    let directory = dirname(entry);
+    while (directory !== consumerDir && relative(consumerDir, directory).startsWith('node_modules')) {
+      const manifestPath = join(directory, 'package.json');
+      if (existsSync(manifestPath)) {
+        const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
+        if (manifest.name === name) {
+          const packagePath = relative(consumerDir, directory).replaceAll('\\', '/');
+          const lockEntry = lock.packages?.[packagePath];
+          assert(lockEntry?.version === manifest.version, `${name} runtime/lock version mismatch`);
+          return {
+            name,
+            version: manifest.version,
+            packagePath,
+            entryPath: relative(consumerDir, entry).replaceAll('\\', '/'),
+            manifestSha256: createHash('sha256').update(readFileSync(manifestPath)).digest('hex'),
+            entrySha256: createHash('sha256').update(readFileSync(entry)).digest('hex'),
+            lockIntegrity: lockEntry.integrity ?? null,
+          };
+        }
+      }
+      directory = dirname(directory);
+    }
+    throw new Error(`cannot locate installed ${name} metadata inside consumer node_modules`);
+  };
+  return {
+    registrator: describe('@happy-dom/global-registrator', registratorEntry),
+    implementation: describe('happy-dom', happyDomEntry),
+    resolution: 'happy-dom resolved from the installed registrator entry, not repository root',
+    nativeAcceptance: 'not-run',
+  };
 }
