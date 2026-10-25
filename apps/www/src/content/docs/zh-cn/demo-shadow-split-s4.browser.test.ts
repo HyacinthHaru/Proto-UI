@@ -66,9 +66,23 @@ describe.sequential('S4 complete public Dialog settings', () => {
           /* Diagnostic output cannot replace the original result. */
         }
       };
-      const browserObservation = (message: { text(): string }) => {
+      const consoleErrors: Array<{ phase: string; nodeMs: number; text: string }> = [];
+      let consoleErrorsDropped = 0;
+      const browserObservation = (message: { text(): string; type(): string }) => {
         try {
           const text = message.text();
+          if (message.type() === 'error') {
+            if (consoleErrors.length < 32) {
+              const row = {
+                phase,
+                nodeMs: globalThis.performance.now(),
+                text: text.slice(0, 4000),
+              };
+              consoleErrors.push(row);
+              console.info('[S4 console error]', JSON.stringify({ locale, ...row }));
+            } else consoleErrorsDropped++;
+            return;
+          }
           if (!text.startsWith('[S4 startup change]') && !text.startsWith('[S4 init observation]'))
             return;
           console.info(
@@ -169,6 +183,8 @@ describe.sequential('S4 complete public Dialog settings', () => {
               locale,
               startupPassed,
               errors: [...errors],
+              consoleErrors: [...consoleErrors],
+              consoleErrorsDropped,
               capturedAt: new Date().toISOString(),
               collectionComplete: result.complete,
               collectionOutcome,

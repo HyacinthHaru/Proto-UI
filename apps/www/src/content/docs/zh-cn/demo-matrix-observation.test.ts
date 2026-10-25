@@ -338,3 +338,40 @@ describe('S4 init observation retention', () => {
     expect(control.disconnected()).toBeGreaterThan(0);
   });
 });
+
+describe('S4 missing-host ownership observation', () => {
+  it('retains the failure while identifying the declared owner and adjacent pending state', () => {
+    delete (window as any).__puiS4Startup;
+    const { root, host } = cell('loading');
+    root.dataset.demoId = 'demo-base-accordion';
+    root.dataset.initialRuntime = 'wc';
+    host.replaceChildren();
+    host.setAttribute('data-previewer-startup-pending', '');
+    host.setAttribute('inert', '');
+    expect(observeS4Startup()).toBe(false);
+    const journal = (window as any).__puiS4Startup;
+    expect(journal.last.firstMissing).toEqual({
+      previewerId: 'fixture',
+      index: 0,
+      inited: '1',
+      hostChildren: 0,
+    });
+    expect(journal.last.firstMissingOwner).toEqual({
+      demoId: 'demo-base-accordion',
+      prototypeId: null,
+      declaredRuntime: 'wc',
+      projectionMode: 'fixed-family',
+      projectionState: 'loading',
+      mounting: null,
+      hostTag: 'DIV',
+      hostOwner: 'fixture',
+      startupPending: true,
+      hostOwnInert: true,
+      hostText: '',
+    });
+    root.dataset.projectionState = 'error';
+    expect(observeS4Startup()).toBe(false);
+    expect(journal.changes).toHaveLength(2);
+    expect(journal.last.firstMissingOwner.projectionState).toBe('error');
+  });
+});

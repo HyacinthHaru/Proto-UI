@@ -1,0 +1,42 @@
+# Docs startup delivery and S4 observations
+
+Date: 2026-10-25. Scope: the #883 C-group follow-up after #921 merged. The baseline is main `7181a93a5ec5cad43936a72e31d5477d5488733a`. This record adds observations to the previous day's record; it does not amend an acceptance criterion or promote a draft entity.
+
+## Accepted Hero oracle
+
+#926 merged the source-bound Rhea/Luma profiles and the secondary, icon-free internal Demo action. The [maintainer's follow-up](https://github.com/Proto-UI/Proto-UI/pull/921#issuecomment-6390983097) requests migration of the two remaining Hero assertions. The test now scopes the exact internal anchor under `#homepage-hero-actions`, retains the count, text and href, rejects both icon metadata and SVGs, and checks the exact family secondary token. The no-JavaScript branch checks the authored secondary variant. The sidebar case is unchanged.
+
+On unchanged main, the original 43-case local combination reported 38 passes and five failures: Search 30/30, NativeLinks 8/10, and three S4 case timeouts. With the test/observation candidate, the same combination reported 40 passes and the same three S4 timeouts. Both Hero cases passed, including the original four-runtime/two-family journey and no-JavaScript checks. This is an oracle migration, not a production startup repair.
+
+## Current main CI remains a counterexample
+
+Main CI [40147277848](https://github.com/Proto-UI/Proto-UI/actions/runs/40147277848) has a successful 47-package build and 47-manifest check, but its runtime jobs are not green. The package policy reports four PASS and five Finf ADVISORY entries, not nine strict budget passes. The general job stops at 78 public-docs catalog drift findings. Three browser shards exit 124; complete shard summaries cannot be inferred for those jobs.
+
+Its Search suite reports 13 passes and 17 failures. The eight initial Search readiness failures and their same-case startup journals distinguish two observations:
+
+- Seven readiness evaluations first enter after the original one-second deadline; one enters 38ms before it.
+- The exact active command is first observed ready 11–1214ms after that deadline in all eight cases. At the original browser entry, the exact active-command count is zero. These are observer delivery times under the original test's clock convention, not a continuous absence proof or physical paint timestamps.
+
+Nine of the ten Docs role cases fail. Their exact combobox observation batches reach Node 202–336ms before the original query. Eight failures still await the first injected-script `Runtime.evaluate` at the verdict. The ninth first evaluate returns in about 947ms, but the subsequent getter command returns about 5ms after the deadline. That case must not be grouped with the eight still-pending first evaluations.
+
+## Additional SDK observation
+
+The pinned Playwright 1.58.2 diagnostic retains actual session/CDP IDs and now observes the original pipe writes and the original NUL-frame dispatch/scheduler callbacks. It adds no write callback, extra parse, early context resolution or warmup. It preserves original arguments, return values, Promises and throws; stream drain is passive observation, not per-message acknowledgement. Retained expression strings are hashed after the verdict.
+
+In the ten passing local Docs cases, the first 305324-character expression has the same SHA256. Transport entry to the last write return spans 0.372–1.183ms; the observed stream drain follows in 0.223–0.753ms. Last write return to the chunk that completes the matching response spans 5.507–216.964ms. The original frame scheduler-call observation to callback entry spans 0.012–0.070ms. These local passing intervals cannot be assigned to the nine CI failures, whose older observer lacks the new pipe boundaries.
+
+The remaining write-to-response interval includes pipes, browser scheduling/evaluation, return delivery and Node scheduling. Completing a NUL frame is not necessarily the first response byte; the scheduler-call observation is not an internal queue-insertion timestamp. Rows retained after the matching response need their recorded timestamps rather than array order. Zero dropped/error rows in these cases does not establish universal transport coverage.
+
+A separate single-expression Chrome 155 capability control binds exact source bytes, context, script, isolate and renderer process through actual Debugger/rundown fields. Its compile trace scopes have empty argument payloads, so they cannot be uniquely bound to that expression. This does not measure the Docs expression's compilation time or identify browser receipt of its command.
+
+## S4 first-missing owner and separate failures
+
+The original S4 Boolean, short circuit, input sequence and deadlines remain. Additional fields reuse the host already queried by the predicate and identify its previewer, Demo, declared runtime, pending/inert state and text. Console errors use a separate bounded channel; a frozen array snapshot prevents later messages from changing an earlier evidence object. Neither channel changes the original page-error assertion.
+
+Two private source-observation runs retain the original 150-second locale failures. In both locales, the first miss progresses from the WC `demo-base-accordion` previewer to its React peer. The WC host has a child even while its surface-ready Promise remains pending; the original predicate is not a full committed-projection oracle. The React peer finishes `loadDemo` and `loadPrototypes`, enters `renderDemo`, completes its Adapter-module load, and then has no `loadReact` return recorded before the deadline. Vue and Vue2 progress farther, including long nextTick/rAF waits. All 108 classified runtime-request observations per locale have zero recorded drops/errors; their matching requests have HTTP 200/completion events. Completion of a shared module transfer is not evaluation or import-Promise fulfillment, and Node event receipt is not pure transfer time.
+
+Each locale also records six Shadcn Button and eighteen Tabs Trigger preflight errors. Their physical hosts belong to S2/S3/S5 examples, have no Previewer ancestor, and are distinct from the missing Accordion host. They record applied border widths `[[0],[0],[0],[0]]` changing to `[[1],[1],[1],[1]]` with `transition-all`. The existing draft shadow-split/H1 boundary and `T-WEB-COMPONENT-SHADOW-S2-0001` reject unsupported animated border width. These facts do not justify removing that guard or identify it as the cause of the React wait.
+
+In the private paint trace, the first light trigger click and subsequent Switch/Checkbox reads succeed. The original open-marker assertion then starts `page.screenshot`; it has not returned when the 150-second case closes the context. The case has not reached the first close or closed-paint assertions. This run is a screenshot wait, not evidence that the click was never delivered.
+
+Private producer instrumentation is restored after observation. Its runs are not clean-head acceptance. The original failed runs, local passing controls, canonical CI, visual review, exact-head combination and independent acceptance remain separate evidence. Original one-second assertions, case/hook deadlines and keyboard-owner controls are retained; the production startup and S4 findings remain open.
