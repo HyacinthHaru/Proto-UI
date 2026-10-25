@@ -379,3 +379,6 @@ export type {
   ShadcnStyleProps,
   ShadcnStyleContext,
 } from './style-scope';
+
+export { fieldTextarea, shadcnFieldTextarea } from './field';
+export type { ShadcnFieldTextareaProps, ShadcnFieldTextareaExposes } from './field';
