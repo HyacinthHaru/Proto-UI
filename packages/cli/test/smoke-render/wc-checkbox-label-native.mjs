@@ -115,6 +115,24 @@ const resources = new Map([
   ['/', { type: 'text/html', body: Buffer.from('<!doctype html><html><head><meta charset="utf-8"><link rel="icon" href="data:,"><link rel="stylesheet" href="/src/styles/proto-ui-style.css"></head><body><script type="module" src="/checkbox-native-bundle.js"></script></body></html>') }],
   ['/checkbox-native-bundle.js', { type: 'text/javascript', body: Buffer.from(bundled.outputFiles[0].contents) }],
 ]);
+// Existing adapter infrastructure creates two empty style elements and then
+// fills these fixed rules. Permit only their exact bytes, not arbitrary inline
+// styles, and independently check the actual installed adapter's DOM output.
+const infrastructureStyles = {
+  'proto-ui-view-visibility': '\n:where([data-pui-view-pending]) { visibility: hidden !important; }\n:where([data-pui-view-pending], [data-pui-view-revealing]) { transition: none !important; animation: none !important; }\n:where([data-pui-view-detached]) { display: none !important; }\n',
+  'proto-ui-wc-host-display': '\n:where(.pui-host-root) { display: block; }\n',
+};
+const infrastructureHashes = [
+  'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=',
+  'sha256-B/uN6mebmNl6Y8KAmaGkix/y4Eiyvq/jCIEHnporMZQ=',
+  'sha256-+IRPBUpbuxn0ME6GWUx2UPIkh/vCUT0KS1CXnXBjQAY=',
+];
+assert.deepEqual(
+  ['', ...Object.values(infrastructureStyles)].map((text) => `sha256-${createHash('sha256').update(text).digest('base64')}`),
+  infrastructureHashes,
+  'review fixed adapter stylesheet content/hash changes explicitly'
+);
+const contentSecurityPolicy = `default-src 'none'; script-src 'self'; style-src 'self'; style-src-elem 'self' ${infrastructureHashes.map((hash) => `'${hash}'`).join(' ')}; style-src-attr 'none'; img-src data:; connect-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'`;
 for (const name of ['proto-ui-style.css', 'shadcn-theme.css', 'proto-ui-tokens.generated.css']) {
   const path = realpathSync(join(consumer, 'src', 'styles', name));
   assert(inside(consumer, path));
@@ -132,6 +150,8 @@ console.log(JSON.stringify({
   fixtureSha256: digestFile(fileURLToPath(import.meta.url)),
   repoLockSha256: digest(lock),
   tooling,
+  infrastructureStyleHashes: infrastructureHashes,
+  contentSecurityPolicy,
   browser: { command: chrome, executable: chromeBinary, launcherSha256: digestFile(realpathSync(chrome)), executableSha256: digestFile(chromeBinary), commandVersion: chromeVersion.stdout.trim() },
   runnerImage: { os: process.env.ImageOS ?? null, version: process.env.ImageVersion ?? null },
   inputs,
@@ -148,7 +168,7 @@ try {
     }
     response.writeHead(200, {
       'Content-Type': resource.type,
-      'Content-Security-Policy': "default-src 'none'; script-src 'self'; style-src 'self'; img-src data:; connect-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'",
+      'Content-Security-Policy': contentSecurityPolicy,
       'Cache-Control': 'no-store',
     });
     response.end(resource.body);
@@ -188,6 +208,11 @@ try {
   const response = await page.goto(origin, { waitUntil: 'load' });
   assert.equal(response.status(), 200);
   await page.waitForFunction(() => window.packedCheckboxSmoke?.pairs.length === 2);
+  const installedStyles = await page.evaluate(() => [...document.querySelectorAll('style')]
+    .map((style) => [style.id, style.textContent]));
+  assert.equal(installedStyles.length, 2, 'only the two fixed adapter infrastructure styles');
+  assert.deepEqual(Object.fromEntries(installedStyles), infrastructureStyles,
+    'installed adapter styles must match the exact CSP-admitted text');
   const initial = await page.evaluate(() => ({
     order: window.packedCheckboxSmoke.order,
     pairs: window.packedCheckboxSmoke.pairs.map(({ control, label }) => ({
@@ -242,6 +267,7 @@ try {
     inputs,
     resources: [...resources].map(([path, { body }]) => ({ path, sha256: digest(body) })),
     platformOrder: initial.order,
+    infrastructureStyleHashes: infrastructureHashes,
     outcome: 'bounded-default-preassembled-explicit-label-pointer-keyboard-removal-without-observed-pageerror-passed',
     syntheticAcceptance: 'separate-unmodified-fixture-still-required',
     registryPublication: 'not-performed',
