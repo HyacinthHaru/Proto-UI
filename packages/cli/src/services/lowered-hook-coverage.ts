@@ -3192,6 +3192,89 @@ export function scanRuleStateReads(
       return;
     }
 
+    if (
+      ts.isBinaryExpression(node) &&
+      node.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
+      (ts.isObjectLiteralExpression(unwrap(node.left)) ||
+        ts.isArrayLiteralExpression(unwrap(node.left)))
+    ) {
+      visit(node.right, current);
+      const invalidatePattern = (target: ts.Node): void => {
+        const value = unwrap(target);
+        if (ts.isObjectLiteralExpression(value)) {
+          for (const property of value.properties) {
+            if (ts.isPropertyAssignment(property)) invalidatePattern(property.initializer);
+            else if (ts.isShorthandPropertyAssignment(property)) invalidatePattern(property.name);
+            else if (ts.isSpreadAssignment(property)) invalidatePattern(property.expression);
+          }
+        } else if (ts.isArrayLiteralExpression(value)) {
+          for (const element of value.elements) invalidatePattern(element);
+        } else if (ts.isSpreadElement(value)) invalidatePattern(value.expression);
+        else if (
+          ts.isBinaryExpression(value) &&
+          value.operatorToken.kind === ts.SyntaxKind.EqualsToken
+        )
+          invalidatePattern(value.left);
+        else if (ts.isIdentifier(value)) {
+          const owner = scopeBinding(current, value.text) ?? current;
+          declare(owner, value.text, { kind: 'opaque', sourceAuthority: true });
+        } else if (ts.isPropertyAccessExpression(value) || ts.isElementAccessExpression(value)) {
+          visit(value, current);
+          const key = memberNameOf(value);
+          const owner = ownerOf(value);
+          if (!owner) return;
+          for (const candidate of sourceResolveCandidates(owner, current)) {
+            if (candidate.value.kind !== 'object') continue;
+            const members = new Map(candidate.value.members);
+            for (const member of key === null ? [...members.keys()] : [key])
+              members.set(member, { kind: 'unknown', reason: 'destructured member write' });
+            publishSourceGraph(
+              current,
+              candidate.value,
+              { ...candidate.value, members },
+              candidate.value,
+              false
+            );
+          }
+        }
+      };
+      invalidatePattern(node.left);
+      return;
+    }
+
+    if (
+      ts.isBinaryExpression(node) &&
+      ts.isIdentifier(node.left) &&
+      (node.operatorToken.kind === ts.SyntaxKind.AmpersandAmpersandEqualsToken ||
+        node.operatorToken.kind === ts.SyntaxKind.BarBarEqualsToken ||
+        node.operatorToken.kind === ts.SyntaxKind.QuestionQuestionEqualsToken)
+    ) {
+      const states = readState(node.left, current);
+      const knownHandle =
+        states !== null &&
+        states.length > 0 &&
+        states.every(
+          (state) =>
+            state === 'local' ||
+            'exposedLocal' in state ||
+            state.provenance !== undefined ||
+            loweredHookStates(state.hook)?.has(state.state) === true
+        );
+      if (knownHandle && node.operatorToken.kind !== ts.SyntaxKind.AmpersandAmpersandEqualsToken)
+        return;
+      const owner = scopeBinding(current, node.left.text) ?? current;
+      if (knownHandle) definitelyReachedLogicalAssignments.add(node);
+      try {
+        visit(node.right, current);
+        if (knownHandle)
+          declareConditionally(owner, node.left.text, node.left, current, node.right);
+        else declare(owner, node.left.text, { kind: 'opaque', sourceAuthority: true });
+      } finally {
+        if (knownHandle) definitelyReachedLogicalAssignments.delete(node);
+      }
+      return;
+    }
+
     // A reassignment moves the handle for every read that follows it.
     if (
       ts.isBinaryExpression(node) &&

@@ -86,6 +86,169 @@ describe('lowered hook coverage', () => {
     const scanWithFreshSummary = (source: string, file: string) =>
       scanRuleStateReads(source, file, createHookSourceSummaryContext());
 
+    it('tracks identifier logical writes without executing skipped right sides', async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-identifier-logical-'));
+      try {
+        await writeFile(
+          path.join(dir, 'producer.ts'),
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            "export const asA = defineAsHook({name:'a', setup(d){d.state.bool('alpha',false)}, projectHandle:r=>({ready:r.stateHandles.alpha})});",
+            "export const asB = defineAsHook({name:'b', setup(d){d.state.bool('beta',false)}, projectHandle:r=>({ready:r.stateHandles.beta})});",
+          ].join('\n')
+        );
+        for (const operator of ['&&=', '||=', '??=']) {
+          const file = path.join(dir, 'consumer.proto.ts');
+          const source = [
+            "import{asA,asB}from'./producer';",
+            'let ready=asA().ready;',
+            `ready ${operator} asB().ready;`,
+            rule('w.state(ready).eq(true)'),
+          ].join('\n');
+          const expected = operator === '&&=' ? 'beta' : 'alpha';
+          const scan = scanWithFreshSummary(source, file);
+          expect(scan.usages.map((usage) => usage.state)).toEqual([expected]);
+          expect(scan.unresolved).toEqual([]);
+          await writeFile(file, source);
+          const tokens = await collectProtoStyleTokensFromFiles([file]);
+          expect(tokens).toContain(`data-[${expected}]:bg-primary`);
+          expect(tokens).not.toContain(
+            `data-[${expected === 'alpha' ? 'beta' : 'alpha'}]:bg-primary`
+          );
+        }
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
+
+    it('withholds stale member proofs after recursive destructuring assignment targets', async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-destructured-write-'));
+      try {
+        await writeFile(
+          path.join(dir, 'producer.ts'),
+          [
+            "import{defineAsHook}from'@proto.ui/core';",
+            "export const asA=defineAsHook({name:'a',setup(d){d.state.bool('alpha',false)},projectHandle:r=>({ready:r.stateHandles.alpha})});",
+            "export const asB=defineAsHook({name:'b',setup(d){d.state.bool('beta',false)},projectHandle:r=>({ready:r.stateHandles.beta})});",
+          ].join('\n')
+        );
+        for (const write of [
+          '({ready:bag.ready}=asB());',
+          '[bag.ready]=[asB().ready];',
+          '({nested:{ready:bag.ready}}={nested:asB()});',
+        ]) {
+          const file = path.join(dir, 'consumer.proto.ts');
+          const source = [
+            "import{asA,asB}from'./producer';",
+            'const bag=asA();const alias=bag;',
+            write,
+            rule('w.state(bag.ready).eq(true)'),
+            rule('w.state(alias.ready).eq(true)'),
+          ].join('\n');
+          const scan = scanWithFreshSummary(source, file);
+          expect(scan.usages).toEqual([]);
+          expect(scan.unresolved.map((read) => read.expression)).toEqual([
+            'bag.ready',
+            'alias.ready',
+          ]);
+          await writeFile(file, source);
+          const tokens = await collectProtoStyleTokensFromFiles([file]);
+          expect(tokens).not.toContain('data-[alpha]:bg-primary');
+          expect(tokens).not.toContain('data-[beta]:bg-primary');
+        }
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
+
+    it('captures child producers through immutable local aliases without accepting mutable or shadowed bindings', async () => {
+      const cases = [
+        {
+          name: 'immutable-local',
+          setup: 'const localChild = asChild; localChild();',
+          accepted: true,
+        },
+        {
+          name: 'immutable-chain',
+          setup: 'const first = asChild; const localChild = first; localChild();',
+          accepted: true,
+        },
+        {
+          name: 'unrelated-block-shadow',
+          setup:
+            'const localChild = asChild; { const localChild = () => {}; localChild(); } localChild();',
+          accepted: true,
+        },
+        {
+          name: 'wrong-producer',
+          setup: 'const localChild = asOther; localChild();',
+          accepted: false,
+        },
+        {
+          name: 'mutable-local',
+          setup: 'let localChild = asChild; localChild();',
+          accepted: false,
+        },
+        {
+          name: 'reassigned-local',
+          setup: 'let localChild = asChild; localChild = asOther; localChild();',
+          accepted: false,
+        },
+        {
+          name: 'mutable-source-alias',
+          setup: 'let source = asChild; const localChild = source; localChild();',
+          accepted: false,
+        },
+        {
+          name: 'shadowed-child',
+          setup: 'const asChild = () => {}; const localChild = asChild; localChild();',
+          accepted: false,
+        },
+        {
+          name: 'shadowed-local',
+          setup: 'const localChild = asChild; { const localChild = () => {}; localChild(); }',
+          accepted: false,
+        },
+      ];
+      for (const fixture of cases) {
+        const dir = await mkdtemp(path.join(tmpdir(), `lowered-hook-child-alias-${fixture.name}-`));
+        try {
+          const producerFile = path.join(dir, 'producer.ts');
+          await writeFile(
+            producerFile,
+            [
+              "import { defineAsHook } from '@proto.ui/core';",
+              "export const asChild = defineAsHook({ name: 'child', setup(def) { def.state.bool('ready', false); } });",
+              "export const asOther = defineAsHook({ name: 'other', setup(def) { def.state.bool('wrong', false); } });",
+              `export const asParent = defineAsHook({ name: 'parent', setup(def) { ${fixture.setup} } });`,
+            ].join('\n')
+          );
+          const expression = "parent.getAsHookHandle('child').stateHandles.ready";
+          const consumer = [
+            "import { asParent } from './producer';",
+            'const parent = asParent();',
+            rule(`w.state(${expression}).eq(true)`),
+          ].join('\n');
+          const consumerFile = path.join(dir, 'consumer.proto.ts');
+          const scan = scanWithFreshSummary(consumer, consumerFile);
+          if (fixture.accepted) {
+            expectSourceUsages(scan, producerFile, [{ hook: 'asParent', state: 'ready' }]);
+            expect(scan.unresolved).toEqual([]);
+          } else {
+            expect(scan.usages).toEqual([]);
+            expect(scan.unresolved).toEqual([{ expression, reason: 'subject' }]);
+          }
+          await writeFile(consumerFile, consumer);
+          const tokens = await collectProtoStyleTokens(dir);
+          if (fixture.accepted) expect(tokens).toContain('data-[ready]:bg-primary');
+          else expect(tokens).not.toContain('data-[ready]:bg-primary');
+          expect(tokens).not.toContain('data-[wrong]:bg-primary');
+        } finally {
+          await rm(dir, { recursive: true, force: true });
+        }
+      }
+    });
+
     it('updates source-backed nested receivers and their existing aliases', async () => {
       const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-nested-receiver-'));
       try {
@@ -523,6 +686,103 @@ describe('lowered hook coverage', () => {
         expect(tokens).not.toContain('data-[ready]:bg-overwritten');
         expect(tokens).not.toContain('data-[ready]:bg-dynamic-index');
         expect(tokens).not.toContain('data-[ready]:bg-dynamic-write');
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
+
+    it('certifies the first same-name producer registration and withholds a later different one', async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-same-name-first-call-'));
+      try {
+        const producerFile = path.join(dir, 'producers.ts');
+        await writeFile(
+          producerFile,
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            "export const asA = defineAsHook({ name: 'shared', setup(d) { d.state.bool('alpha', false); }, projectHandle(r) { return { ready: r.stateHandles.alpha }; } });",
+            "export const asB = defineAsHook({ name: 'shared', setup(d) { d.state.bool('beta', false); }, projectHandle(r) { return { ready: r.stateHandles.beta }; } });",
+          ].join('\n')
+        );
+        // A later call to a different producer with the same name inside the same
+        // setup chain may observe the earlier registration, so the later result
+        // is withheld rather than certified as its own producer.
+        const withheld = [
+          "import { asA, asB } from './producers';",
+          'function setup(def) {',
+          '  asA();',
+          '  const bag = asB();',
+          rule('w.state(bag.ready).eq(true)'),
+          '}',
+          'setup(def);',
+        ].join('\n');
+        const withheldFile = path.join(dir, 'consumer.proto.ts');
+        const withheldScan = scanWithFreshSummary(withheld, withheldFile);
+        expect(withheldScan.usages).toEqual([]);
+        expect(withheldScan.unresolved.map((item) => item.expression)).toEqual(['bag.ready']);
+
+        // A repeated call to the same producer keeps that producer's provenance.
+        const repeated = [
+          "import { asA } from './producers';",
+          'function setup(def) {',
+          '  asA();',
+          '  const bag = asA();',
+          rule('w.state(bag.ready).eq(true)'),
+          '}',
+          'setup(def);',
+        ].join('\n');
+        const repeatedFile = path.join(dir, 'consumer.proto.ts');
+        const repeatedScan = scanWithFreshSummary(repeated, repeatedFile);
+        expectSourceUsages(repeatedScan, producerFile, [{ hook: 'asA', state: 'alpha' }]);
+        expect(repeatedScan.unresolved).toEqual([]);
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
+
+    it('summarizes same-name producers independently across setup boundaries and sources', async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-same-name-boundaries-'));
+      try {
+        const producerFile = path.join(dir, 'producers.ts');
+        const producerSource = [
+          "import { defineAsHook } from '@proto.ui/core';",
+          "export const asA = defineAsHook({ name: 'shared', setup(d) { d.state.bool('alpha', false); }, projectHandle(r) { return { ready: r.stateHandles.alpha }; } });",
+          "export const asB = defineAsHook({ name: 'shared', setup(d) { d.state.bool('beta', false); }, projectHandle(r) { return { ready: r.stateHandles.beta }; } });",
+          'export const asParentA = defineAsHook({ name: "parent-a", setup() { asA(); } });',
+          "export const asParentB = defineAsHook({ name: 'parent-b', setup(def) { const bag = asB(); " +
+            rule('w.state(bag.ready).eq(true)') +
+            ' } });',
+        ].join('\n');
+        await writeFile(producerFile, producerSource);
+        // Each parent owns its own setup boundary, so the earlier asA call does not
+        // contaminate the later parent's summary of asB.
+        const scan = scanRuleStateReads(
+          producerSource,
+          producerFile,
+          createHookSourceSummaryContext()
+        );
+        expectSourceUsages(scan, producerFile, [{ hook: 'asB', state: 'beta' }]);
+        expect(scan.unresolved).toEqual([]);
+
+        // Sharing one summary context across two sources keeps the producer registry
+        // per source, so the second source still resolves its own producer.
+        const context = createHookSourceSummaryContext();
+        const firstFile = path.join(dir, 'first.proto.ts');
+        const secondFile = path.join(dir, 'second.proto.ts');
+        const firstSource = "import { asA } from './producers';\nfunction setup() { asA(); }";
+        await writeFile(firstFile, firstSource);
+        scanRuleStateReads(firstSource, firstFile, context);
+        const secondSource = [
+          "import { asB } from './producers';",
+          'function setup(def) {',
+          '  const bag = asB();',
+          rule('w.state(bag.ready).eq(true)'),
+          '}',
+          'setup(def);',
+        ].join('\n');
+        await writeFile(secondFile, secondSource);
+        const secondScan = scanRuleStateReads(secondSource, secondFile, context);
+        expectSourceUsages(secondScan, producerFile, [{ hook: 'asB', state: 'beta' }]);
+        expect(secondScan.unresolved).toEqual([]);
       } finally {
         await rm(dir, { recursive: true, force: true });
       }

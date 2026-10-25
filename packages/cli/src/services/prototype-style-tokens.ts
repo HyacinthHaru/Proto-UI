@@ -690,6 +690,97 @@ function walk(node, scope, tokens, exposures, rootInventory = null) {
   if (
     ts.isBinaryExpression(node) &&
     node.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
+    (ts.isObjectLiteralExpression(unwrapTransparent(node.left)) ||
+      ts.isArrayLiteralExpression(unwrapTransparent(node.left)))
+  ) {
+    walk(node.right, scope, tokens, exposures, rootInventory);
+    const invalidatePattern = (target) => {
+      const value = unwrapTransparent(target);
+      if (ts.isObjectLiteralExpression(value)) {
+        for (const property of value.properties) {
+          if (ts.isPropertyAssignment(property)) invalidatePattern(property.initializer);
+          else if (ts.isShorthandPropertyAssignment(property)) invalidatePattern(property.name);
+          else if (ts.isSpreadAssignment(property)) invalidatePattern(property.expression);
+        }
+      } else if (ts.isArrayLiteralExpression(value)) {
+        for (const element of value.elements) invalidatePattern(element);
+      } else if (ts.isSpreadElement(value)) invalidatePattern(value.expression);
+      else if (
+        ts.isBinaryExpression(value) &&
+        value.operatorToken.kind === ts.SyntaxKind.EqualsToken
+      )
+        invalidatePattern(value.left);
+      else if (ts.isIdentifier(value)) {
+        (scopeDeclaring(value.text, scope) ?? scope).bindings.set(value.text, {
+          ...emptyValue(),
+          unknownAlternative: true,
+          opaque: true,
+        });
+      } else if (ts.isPropertyAccessExpression(value) || ts.isElementAccessExpression(value)) {
+        walk(value, scope, tokens, exposures, rootInventory);
+        const key = memberName(value);
+        const owner = memberOwner(value);
+        if (!owner) return;
+        const resolved = resolveExpression(owner, scope);
+        for (const held of resolved.containers ?? [resolved]) {
+          const previous = held.sourceValue;
+          if (previous?.kind === 'object') {
+            for (let ownerScope = scope; ownerScope; ownerScope = ownerScope.parent) {
+              for (const alias of ownerScope.bindings.values()) {
+                if (alias.sourceValue !== previous) continue;
+                if (key === null) alias.semanticMap?.clear();
+                else alias.semanticMap?.delete(key);
+              }
+            }
+            const members = new Map(previous.members);
+            for (const member of key === null ? [...members.keys()] : [key])
+              members.set(member, { kind: 'unknown', reason: 'destructured member write' });
+            propagateSourceReference(scope, previous, { ...previous, members });
+          }
+          if (key === null) held.semanticMap?.clear();
+          else held.semanticMap?.delete(key);
+        }
+      }
+    };
+    invalidatePattern(node.left);
+    return;
+  }
+
+  if (
+    ts.isBinaryExpression(node) &&
+    ts.isIdentifier(node.left) &&
+    (node.operatorToken.kind === ts.SyntaxKind.AmpersandAmpersandEqualsToken ||
+      node.operatorToken.kind === ts.SyntaxKind.BarBarEqualsToken ||
+      node.operatorToken.kind === ts.SyntaxKind.QuestionQuestionEqualsToken)
+  ) {
+    const held = resolveBinding(node.left, scope);
+    const sources = sourceValueCandidates(held);
+    const knownHandle =
+      !held.unknownAlternative &&
+      (sources.length > 0
+        ? sources.every((value) => value.kind === 'state')
+        : bindingSemantics(held).length > 0);
+    if (knownHandle && node.operatorToken.kind !== ts.SyntaxKind.AmpersandAmpersandEqualsToken)
+      return;
+    if (knownHandle) scope.definitelyReachedLogicalAssignments.add(node);
+    try {
+      walk(node.right, scope, tokens, exposures, rootInventory);
+      if (knownHandle) assignIdentifierBinding(node, scope, exposures);
+      else
+        (scopeDeclaring(node.left.text, scope) ?? scope).bindings.set(node.left.text, {
+          ...emptyValue(),
+          unknownAlternative: true,
+          opaque: true,
+        });
+    } finally {
+      if (knownHandle) scope.definitelyReachedLogicalAssignments.delete(node);
+    }
+    return;
+  }
+
+  if (
+    ts.isBinaryExpression(node) &&
+    node.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
     ts.isIdentifier(node.left)
   ) {
     // A reassignment moves the handle for every read that follows it, so the
@@ -1300,9 +1391,22 @@ function sourceSummaryValue(node, scope) {
     }
   }
   const candidateBindings = [];
+  const referenced = new Set();
+  const collectReferenced = (current) => {
+    if (ts.isIdentifier(current)) {
+      const parent = current.parent;
+      if (!(ts.isPropertyAccessExpression(parent) && parent.name === current))
+        referenced.add(current.text);
+    }
+    ts.forEachChild(current, collectReferenced);
+  };
+  collectReferenced(node);
+  const seen = new Set();
   for (let current = scope; current; current = current.parent) {
     for (const [name, binding] of current.bindings) {
-      if (candidateBindings.some((entry) => entry.name === name)) continue;
+      if (seen.has(name)) continue;
+      seen.add(name);
+      if (!referenced.has(name)) continue;
       const candidates = sourceValueCandidates(binding);
       if (candidates.length > 1) candidateBindings.push({ name, candidates });
     }

@@ -1140,6 +1140,85 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
     return UNKNOWN('unproved reachable alternative');
   };
 
+  const producerIdentity = (producer: Producer): string =>
+    `${producer.module.file}:${producer.declaration.getStart(producer.module.source)}`;
+  const producerName = (producer: Producer): string | null => {
+    const property = configProperty(producer.config, 'name');
+    return property
+      ? literalString(propertyExpression(property), producer.module, new Map())
+      : null;
+  };
+  const sameProducer = (left: Producer, right: Producer): boolean =>
+    producerIdentity(left) === producerIdentity(right);
+
+  /**
+   * Each runtime setup chain caches the first `once` hook by configured name.
+   * Resolve calls against only their lexical function/source unit: a separate
+   * setup body or source file gets an independent runtime cache. If a distinct
+   * same-name producer may have run first, its exact execution order is not
+   * proved here, so the later call must not inherit its own producer summary.
+   */
+  const hasPriorSameNameProducer = (
+    call: ts.CallExpression,
+    producer: Producer,
+    source: ts.SourceFile
+  ): boolean => {
+    const name = producerName(producer);
+    if (name === null) return false;
+
+    let boundary: ts.Node = source;
+    for (
+      let current: ts.Node | undefined = call.parent;
+      current && !ts.isSourceFile(current);
+      current = current.parent
+    ) {
+      if (isFunctionLike(current)) {
+        boundary = current;
+        break;
+      }
+    }
+
+    const statements = ts.isSourceFile(boundary)
+      ? boundary.statements
+      : isFunctionLike(boundary) && boundary.body && ts.isBlock(boundary.body)
+        ? boundary.body.statements
+        : null;
+    const targetStatement = statements?.find(
+      (statement) =>
+        statement.getStart(source) <= call.getStart(source) && statement.getEnd() >= call.getEnd()
+    );
+    const scanRoot = ts.isSourceFile(boundary)
+      ? boundary
+      : isFunctionLike(boundary) && boundary.body
+        ? boundary.body
+        : boundary;
+    let conflict = false;
+    const visit = (node: ts.Node): void => {
+      if (conflict || (node !== call && isFunctionLike(node))) return;
+      if (node !== call && ts.isCallExpression(node)) {
+        const earlier = producerForCall(node, source);
+        if (earlier) {
+          const earlierName = producerName(earlier);
+          if ((earlierName === name || earlierName === null) && !sameProducer(earlier, producer)) {
+            conflict = true;
+            return;
+          }
+        }
+      }
+      ts.forEachChild(node, visit);
+    };
+
+    if (statements && targetStatement) {
+      for (const statement of statements) {
+        visit(statement);
+        if (statement === targetStatement || conflict) break;
+      }
+    } else {
+      visit(scanRoot);
+    }
+    return conflict;
+  };
+
   const evaluate = (
     node: ts.Node,
     source: ts.SourceFile,
@@ -1256,6 +1335,11 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
       }
       const producer = producerForCall(value, source);
       if (producer) {
+        if (hasPriorSameNameProducer(value, producer, source))
+          return {
+            matched: true,
+            value: UNKNOWN('same-name producer may have registered first'),
+          };
         const captured = summarize(producer);
         return captured.value.kind === 'result'
           ? { matched: true, value: captured.value.handle ?? captured.value }
@@ -1352,10 +1436,36 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
       }
     };
     const children = new Map<string, HookSourceValue>();
+    const childProducersByName = new Map<string, string>();
+    const ambiguousChildNames = new Set<string>();
+    let childNamesUncertain = false;
     const activeSetupFunctions = new Set<string>();
     let setupComplete = true;
     const markSetupUncertain = (): void => {
       setupComplete = false;
+    };
+    const registerChild = (
+      childName: string | null,
+      childProducer: Producer,
+      childValue: HookSourceValue
+    ): void => {
+      if (childName === null) {
+        childNamesUncertain = true;
+        children.clear();
+        markSetupUncertain();
+        return;
+      }
+      if (childNamesUncertain || ambiguousChildNames.has(childName)) return;
+      const identity = producerIdentity(childProducer);
+      const previous = childProducersByName.get(childName);
+      if (previous === undefined) {
+        childProducersByName.set(childName, identity);
+        children.set(childName, childValue);
+      } else if (previous !== identity) {
+        children.delete(childName);
+        ambiguousChildNames.add(childName);
+        markSetupUncertain();
+      }
     };
 
     const collectSetup = (
@@ -1383,7 +1493,6 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
         if (known !== undefined && !hasBindingWrite(parameter.name, module))
           constants.set(key, known);
       }
-      const localNames = new Set<string>();
       const localStates = new Map<string, HookSourceState>();
       const localStateBindings = new Map<string, HookSourceState>();
       const privilegedHandles = new Map<string, ReadonlyMap<string, ProviderStateProof>>();
@@ -1735,9 +1844,6 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
         visit(node.statement);
         return !uncertain;
       };
-      for (const parameter of fn.parameters) {
-        if (ts.isIdentifier(parameter.name)) localNames.add(parameter.name.text);
-      }
       const activeBindings = new Set<string>();
       const provedDefinitionArguments = new WeakSet<ts.Node>();
       for (const parameter of fn.parameters) {
@@ -2131,7 +2237,6 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
           markSetupUncertain();
         }
         if (ts.isVariableDeclaration(node) && ts.isIdentifier(node.name) && node.initializer) {
-          localNames.add(node.name.text);
           const binding = moduleContext.resolveReference(node.name, module);
           const literal = literalString(node.initializer, module, strings);
           const known = literalValue(node.initializer);
@@ -2316,31 +2421,22 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
             )
               markSetupUncertain();
           }
-          const calleeName = ts.isIdentifier(expression) ? expression.text : null;
-          const childProducer =
-            calleeName && localNames.has(calleeName) ? null : producerForCall(node, module.source);
+          const childProducer = producerForCall(node, module.source);
           if (childProducer) {
             const child = summarize(childProducer);
-            if (child.value.kind === 'result') {
-              if (child.value.name !== null)
-                children.set(child.value.name, {
-                  kind: 'object',
-                  members: new Map<string, HookSourceValue>([
-                    ['result', child.value],
-                    ['handle', child.value.handle ?? child.value],
-                  ]),
-                });
-            } else if (child.value.kind !== 'unknown') {
-              const childNameProperty = configProperty(childProducer.config, 'name');
-              const childName = childNameProperty
-                ? literalString(
-                    propertyExpression(childNameProperty),
-                    childProducer.module,
-                    new Map()
-                  )
-                : null;
-              if (childName) children.set(childName, child.value);
-            }
+            const childName =
+              child.value.kind === 'result' ? child.value.name : producerName(childProducer);
+            const childValue: HookSourceValue =
+              child.value.kind === 'result'
+                ? {
+                    kind: 'object',
+                    members: new Map<string, HookSourceValue>([
+                      ['result', child.value],
+                      ['handle', child.value.handle ?? child.value],
+                    ]),
+                  }
+                : child.value;
+            registerChild(childName, childProducer, childValue);
           } else {
             const callee = ts.isIdentifier(expression) ? expression : null;
             const activeArguments: number[] = [];
