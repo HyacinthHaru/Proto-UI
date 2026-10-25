@@ -4,7 +4,7 @@ import path from 'node:path';
 export const PREVIEW_LIMITS = Object.freeze({
   maxFiles: 20_000,
   maxFileBytes: 25 * 1024 * 1024,
-  maxExpandedBytes: 100 * 1024 * 1024,
+  maxExpandedBytes: 128 * 1024 * 1024,
   maxCompressedBytes: 50 * 1024 * 1024,
 });
 
