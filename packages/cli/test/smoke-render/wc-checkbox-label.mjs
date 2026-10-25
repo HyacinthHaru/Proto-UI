@@ -10,6 +10,17 @@ const { createShadcnCheckboxLabelComposition } =
   await import('@proto.ui/prototypes-shadcn/checkbox');
 const { setElementAssociations, setElementProps } = await import('@proto.ui/adapter-web-component');
 
+let stage = 'imports-complete';
+// Observe fatal async failures without installing an exception/rejection handler
+// that would suppress Node's default nonzero exit.
+Error.stackTraceLimit = 40;
+process.on('uncaughtExceptionMonitor', (error, origin) => {
+  console.error(`packed WC Checkbox+Label fatal ${origin} at ${stage}`, error);
+});
+function checkpoint(next) {
+  stage = next;
+  console.log(`packed WC Checkbox+Label stage: ${stage}`);
+}
 const settle = () => new Promise((resolve) => setTimeout(resolve, 50));
 function press(element) {
   element.dispatchEvent(
@@ -23,6 +34,7 @@ function press(element) {
   );
 }
 function mount({ props = {}, indicator = 'default', raw = false } = {}) {
+  checkpoint(`mount:start:${raw ? 'raw' : indicator}:${JSON.stringify(props)}`);
   const pair = createShadcnCheckboxLabelComposition();
   const control = raw ? new facade.ShadcnCheckboxRootElement() : new facade.ShadcnCheckboxElement();
   const label = new facade.ShadcnLabelRootElement();
@@ -36,6 +48,7 @@ function mount({ props = {}, indicator = 'default', raw = false } = {}) {
   const container = document.createElement('div');
   container.append(control, label);
   document.body.append(container);
+  checkpoint(`mount:connected:${raw ? 'raw' : indicator}:${JSON.stringify(props)}`);
   return { pair, control, label, container };
 }
 function indicators(control) {
@@ -48,7 +61,9 @@ function hasTokens(element, tokens) {
   for (const token of tokens) assert(actual.has(token), `missing delivered style token ${token}`);
 }
 
+let primaryError;
 try {
+  checkpoint('default-pairs');
   const first = mount(),
     neighbor = mount();
   const strong = document.createElement('strong');
@@ -85,16 +100,19 @@ try {
     '0',
     'delivered generated control CSS applies'
   );
+  checkpoint('rich-label-activation');
   press(strong);
   await settle();
   assert.equal(changes, 1);
   assert.equal(first.control.getAttribute('aria-checked'), 'true');
   assert.equal(neighbor.control.getAttribute('aria-checked'), 'false');
   assert.equal(document.activeElement, first.control);
+  checkpoint('direct-control-activation');
   press(first.control);
   await settle();
   assert.equal(changes, 2);
   assert.equal(first.control.getAttribute('aria-checked'), 'false');
+  checkpoint('interactive-descendant');
   const action = document.createElement('button');
   action.textContent = 'Separate action';
   first.label.append(action);
@@ -102,6 +120,7 @@ try {
   await settle();
   assert.equal(changes, 2, 'interactive descendant must not also activate control');
 
+  checkpoint('explicit-and-state-cases');
   const explicit = mount({ indicator: 'explicit' });
   const omitted = mount({ indicator: 'none' });
   const raw = mount({ raw: true });
@@ -117,6 +136,7 @@ try {
   assert.equal(indicators(omitted.control).length, 0, 'default Indicator omission stays supported');
   assert.equal(indicators(raw.control).length, 0, 'raw Root stays raw');
   assert.equal(mixed.control.getAttribute('aria-checked'), 'mixed');
+  checkpoint('disabled-controlled-mixed');
   press(disabled.label);
   press(controlled.label);
   press(mixed.label);
@@ -130,12 +150,14 @@ try {
     'controlled rejection remains owned by Checkbox'
   );
   assert.equal(mixed.control.getAttribute('aria-checked'), 'true');
+  checkpoint('naming-only');
   setElementProps(controlled.label, { naming: true, activation: false });
   await settle();
   press(controlled.label);
   await settle();
   assert.equal(controlledRequests, 1, 'raw naming-only Label must not activate');
   assert.equal(controlled.control.getAttribute('aria-labelledby'), controlled.label.id);
+  checkpoint('label-detach');
   first.label.remove();
   await settle();
   press(first.label);
@@ -144,8 +166,21 @@ try {
   console.log(
     'packed WC Checkbox+Label ok: actual public helper + generated facade + CSS; synthetic host only'
   );
+} catch (error) {
+  primaryError = error;
+  console.error(`packed WC Checkbox+Label primary failure at ${stage}`, error);
+  throw error;
 } finally {
-  document.body.replaceChildren();
-  await settle();
-  GlobalRegistrator.unregister();
+  checkpoint('cleanup');
+  try {
+    document.body.replaceChildren();
+    await settle();
+    GlobalRegistrator.unregister();
+  } catch (cleanupError) {
+    console.error('packed WC Checkbox+Label cleanup failure', cleanupError);
+    if (primaryError) {
+      throw new AggregateError([primaryError, cleanupError], 'WC fixture and cleanup both failed');
+    }
+    throw cleanupError;
+  }
 }
