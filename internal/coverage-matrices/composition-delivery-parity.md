@@ -767,3 +767,32 @@ node --test --test-isolation=none \
 - 四条错误已由确切源码和 SHA-256 独立归因，不是猜测 style attribute：`packages/adapters/base/src/host/view-visibility.ts`（blob `e964327e`）和 `packages/adapters/web-component/src/host-display.ts`（blob `fe9168ee`）各先追加空 `<style>`，再写固定 infrastructure rules。Chrome 两次空文本哈希 `sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=`，visibility 规则 `sha256-B/uN6mebmNl6Y8KAmaGkix/y4Eiyvq/jCIEHnporMZQ=`，host display 规则 `sha256-+IRPBUpbuxn0ME6GWUx2UPIkh/vCUT0KS1CXnXBjQAY=`，均与上述源码固定文本静态重算逐字相等。
 - 最小纠正只限 native test CSP 和本累计文档：保留 `style-src 'self'` fallback，仅 `style-src-elem 'self'` 精确允许上述三个内容哈希，显式 `style-src-attr 'none'`；不加 `unsafe-inline`、不关闭 CSP、不修改生产样式实现、不注入 nonce 或伪造样式。测试同时断言实际 DOM 只有这两个 infrastructure `<style>`、id 和完整 textContent 均与审阅的规则相等。规则内容漂移必须重新审查，不能靠宽泛 allowlist 消音。
 - 所有既有 pageerror / console error / network assertions、正常 sandbox、loopback 精确资源限制、无账号和依赖约束、原 native 产品断言、原 synthetic 红项均保留。新版仍待真实 CI；候选语法通过不等于消除 CSP 错误或获得 native 验收。未新增截图上传或 workflow。
+
+### #1000 同 tarball 安装后 native 有限组合通过，synthetic 红项仍保留（2026-10-25）
+
+- 精确 source `5da8d1aa83f9cac354113c9f73364b92ab876145`，树 `c69273a7d8e45cc970bcd0d93af0e7582a33744f`；[run40184776477 / cli-smoke121144002321](https://github.com/Proto-UI/Proto-UI/actions/runs/40184776477/job/121144002321) 实际 checkout 为 merge `284ed23aef7e58997829fc3a7f043fcca7d4cf21`，其树与 source 完全相同。独立复取官方日志与工作日志逐字一致，日志 SHA-256 `18916adaf467a5208c918426ac1ac3195a8bbd57686333e64962d7baabcafbeb`。
+- 10:38:00 UTC native fixture 在全部有限断言和成功清理之后发出完整 `checkbox-label-packed-native-evidence`，随后正常退出并记录 `packed WC native bounded cases: passed`。真实 Chrome `155.0.8059.39`、正常 sandbox、二进制 SHA-256 `9bfb381296dffe75f3419d07b6cc64525105ed117d1453a4ef3b291cb97d2b58`，runner `ubuntu24 / 20261023.334.3`。
+- 证据绑定同一 tarball consumer lock `607e007e50544aaddccd175abea77c0605edb1624f4e29b9cb46bb29289ffdd9`、生成 facade `989e5b9abbdc9c2d43c692224f34f06de73ee4dc990e2ae020f792ef6b729fcc`、fixture `ab51046d754716f62dcb4cee4dd240a8ec0cb5cb8fd85f73498823cfe2b4fbe8`、bundle `ae06ca979c69d6fe2f475ad3c41e04af551bb38905d59ab5136554d7ac1b6bd6`，以及 443 个仅来自安装 consumer 的业务输入和三份原始生成 CSS 的哈希。没有 source alias、第二次 pack、生产替代实现或默认 Checkbox 偷带 Label 的声明。
+- 真正通过的有限范围：浏览器 CE 父先连接；default 与 detached-preassembled explicit Indicator 都恰好一个部件；公开 helper 的独立 Label 命名关联；真实 Label pointer 与聚焦后的 Space 键各激活一次；两对隔离；DOM 移除后未观察到 pageerror。固定三 hash CSP 和实际两个 infrastructure style 的 id / 完整文本断言通过，原 console/page/network 检查没有被削弱或忽略。
+- 10:38:10 UTC 同次原 synthetic fixture 仍在 `mount:start:explicit:{}` 因 base-checkbox provider missing 失败。整体 canonical job 仍为 **failure**；native 的成功没有改变、跳过或豁免原红。后续未执行的 synthetic 场景不能补记通过。完整生命周期清理、所有宿主 / AT / 全视觉等价、父 PR 验收、整个 CI、merge-ready、npm 发布与生产部署均未建立。
+- 下一步应由测试宿主兼容策略解决：保留原 HappyDOM 失败、同版本 CE canary、全部 native 回归覆盖和精确安装证据；只读调查官方 host 修复版本或明确宿主覆盖边界。不为模拟器不符合浏览器的连接顺序改生产 adapter，不先挂父后插子来掩盖合法预装组合，不在未经批准情况下运行新第三方版本，也不自动把红项改绿。
+
+### #1000 原 synthetic 契约逐项补齐 native 覆盖候选（2026-10-25）
+
+此片仍是同一安装 consumer 的测试覆盖维护，不是生产实现修复，也不是将 synthetic 红项改绿。基线为 `5da8d1aa83f9cac354113c9f73364b92ab876145`；只准备 native fixture 与本累计文档，canonical harness 和原 `wc-checkbox-label.mjs` 字节不变。新增 case 尚未执行，上一节有限 native 成功不能提前授予本片。
+
+| 原 synthetic 断言组 | native 对应动作 / 断言 | 证据边界 |
+| --- | --- | --- |
+| 两个 default pair 的 association 独立、Label 在外部、无重复隐藏命名 | 保留原 default/explicit，新增第二 default neighbor；比较真实 association identity、Label id / aria-labelledby / aria-label、control 内无 Label | 同真实安装 public helper；不使用替代 context |
+| rich Label decoration + strong 任意内容、样式 token / CSS | 构造 aria-hidden decoration 与 strong；DOM 命名检索和 token/原始 CSS 断言 | DOM 名称检索不是 AT 语音输出证明 |
+| rich Label 激活一次、neighbor 不变、焦点转给 control | Playwright 真实 Label pointer；检查变化次数、焦点、neighbor checked false | 复用之前已通过的有限 native pointer / Space，并新增两个 default 之间的隔离 |
+| control 直接激活、interactive descendant 不重复激活 | 真正 click control 和 Label 内 button；正向确认 button 自己的 click callback 恰好一次，同时 Checkbox 计数不增加 | 不用程序事件替换这些真实在页面内的动作 |
+| explicit 不重复、omitted 零部件、raw Root 不补默认 | 保留 detached-preassembled explicit 顺序；新增 omission attribute 与 raw Root，分别查部件数量 | 不先挂父再补子，不改变 facade / generator |
+| disabled/defaultChecked、controlled false、mixed | 用真实 props 创建并检查初值；实际 Label pointer 后分别检查零请求、一次请求但仍 false、mixed 转 true | 受控状态接受权仍在 consumer，不修改原型语义 |
+| naming-only 仍命名但 activation false | public setElementProps 更新 Label 后实际 pointer；检查请求次数不增加与命名关联仍在 | 保持原 naming / activation 两个维度 |
+| detached Label 不再激活原 control | 保留 detached reference，浏览器内执行原 pointerdown / pointerup / click 程序事件序列，检查原 control 计数不变 | 节点已脱离，不能称真实用户 pointer；只称运行在 native DOM 的程序事件生命周期回归，不称订阅/资源全部释放 |
+| cleanup 不掩盖先前错误 | 继续收集 page/console/network errors，保留 finally failures；最后移除所有容器 | 仅有限观察窗口无错误，不泛称完整 lifecycle acceptance |
+
+所有新增和旧 native case 的运行失败必须保留，正常 sandbox / 三个固定 stylesheet hash / 完整实际 style 文本断言 / 精确 loopback 资源 / 无账号 / 无下载限制不变。没有 mock、skip、xfail、测试宿主补丁或 gate 改分类；原 synthetic 红仍使 canonical job 非零。
+
+只读上游调查找到历史 [HappyDOM #230](https://github.com/capricorn86/happy-dom/issues/230) 及 [maintainer 的 2021 v2.11.1 回复](https://github.com/capricorn86/happy-dom/issues/230#issuecomment-800693960)，但不能把旧关闭状态当当前预装 CE 已修复。最新官方 v21.0.4 的相关 Node / ReactionStack 关键 blob 仍与实际20.14.6相同，未建立可验证的升级修复；没有安装/运行新版本或联系上游。后续测试宿主 gate 策略仍需明确 owner 决定，补齐 native 覆盖本身不授权取消原失败。

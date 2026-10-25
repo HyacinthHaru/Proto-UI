@@ -66,28 +66,36 @@ parent.append(document.createElement('pui-native-order-child'));
 document.body.append(parent);
 parent.remove();
 const pairs = [];
-for (const kind of ['default', 'explicit']) {
+function mount(kind, { props = {}, indicator = kind === 'explicit' ? 'explicit' : 'default', raw = false } = {}) {
+  console.info('[packed-native] mount:' + kind);
   const pair = createShadcnCheckboxLabelComposition();
-  const control = new facade.ShadcnCheckboxElement();
+  const control = raw ? new facade.ShadcnCheckboxRootElement() : new facade.ShadcnCheckboxElement();
   const label = new facade.ShadcnLabelRootElement();
-  if (kind === 'explicit') control.append(new facade.ShadcnCheckboxIndicatorElement());
+  if (indicator === 'explicit') control.append(new facade.ShadcnCheckboxIndicatorElement());
+  if (indicator === 'none') control.setAttribute('data-pui-no-default-indicator', '');
   const strong = document.createElement('strong');
   strong.textContent = 'Receive ' + kind + ' updates';
-  label.append(strong);
-  setElementProps(control, {});
+  const decoration = document.createElement('span');
+  decoration.textContent = '✓';
+  decoration.setAttribute('aria-hidden', 'true');
+  label.append(decoration, strong);
+  setElementProps(control, props);
   setElementProps(label, pair.label.props);
   setElementAssociations(control, pair.control.instanceAssociations);
   setElementAssociations(label, pair.label.instanceAssociations);
   const container = document.createElement('div');
   container.dataset.case = kind;
   container.append(control, label);
-  const record = { control, label, container, changes: 0 };
+  const record = { pair, control, label, container, changes: 0 };
   control.addEventListener('checkedChange', () => record.changes++);
   // Keep the explicit child preassembled before the entire detached subtree connects.
   document.body.append(container);
   pairs.push(record);
+  return record;
 }
-window.packedCheckboxSmoke = { order, pairs };
+mount('default');
+mount('explicit');
+window.packedCheckboxSmoke = { order, pairs, mount, setLabelProps: setElementProps };
 `;
 writeFileSync(join(consumer, 'checkbox-native-entry.mjs'), entry);
 const bundled = await esbuild.build({
@@ -203,6 +211,7 @@ try {
   const page = await context.newPage();
   page.on('pageerror', (error) => failures.push(error));
   page.on('console', (message) => {
+    if (message.type() === 'info' && message.text().startsWith('[packed-native]')) console.log(message.text());
     if (message.type() === 'error') failures.push(new Error(`browser console: ${message.text()}`));
   });
   const response = await page.goto(origin, { waitUntil: 'load' });
@@ -219,6 +228,10 @@ try {
       indicators: [...control.children].filter((child) => child.localName === 'proto-ui-shadcn-checkbox-indicator').length,
       labelledby: control.getAttribute('aria-labelledby'),
       labelId: label.id,
+      ariaLabel: control.getAttribute('aria-label'),
+      nestedLabels: control.querySelectorAll('proto-ui-shadcn-label').length,
+      controlTokens: (control.getAttribute('data-pui-style') ?? '').split(/\s+/),
+      labelTokens: (label.getAttribute('data-pui-style') ?? '').split(/\s+/),
       state: control.getAttribute('aria-checked'),
       labelDisplay: getComputedStyle(label).display,
       controlShrink: getComputedStyle(control).flexShrink,
@@ -230,10 +243,16 @@ try {
     assert(pair.labelId);
     assert.equal(pair.labelledby, pair.labelId);
     assert.equal(pair.state, 'false');
+    assert.equal(pair.ariaLabel, null, 'no duplicate hidden naming');
+    assert.equal(pair.nestedLabels, 0, 'Label stays independent');
+    for (const token of ['size-4', 'shrink-0', 'border']) assert(pair.controlTokens.includes(token));
+    for (const token of ['flex', 'text-sm', 'font-medium', 'leading-none']) assert(pair.labelTokens.includes(token));
     assert.equal(pair.labelDisplay, 'flex', 'original generated Label CSS must apply');
     assert.equal(pair.controlShrink, '0', 'original generated Checkbox CSS must apply');
   }
   assert.notEqual(initial.pairs[0].labelId, initial.pairs[1].labelId);
+  assert.equal(await page.getByRole('checkbox', { name: 'Receive default updates', exact: true }).count(), 1);
+  assert.equal(await page.evaluate(() => window.packedCheckboxSmoke.pairs[0].pair.control.instanceAssociations.controlLabel !== window.packedCheckboxSmoke.pairs[1].pair.control.instanceAssociations.controlLabel), true);
   for (const [index, kind] of ['default', 'explicit'].entries()) {
     await page.locator(`[data-case="${kind}"] strong`).click();
     await page.waitForFunction((index) => window.packedCheckboxSmoke.pairs[index].control.getAttribute('aria-checked') === 'true', index);
@@ -246,6 +265,105 @@ try {
     states = await page.evaluate(() => window.packedCheckboxSmoke.pairs.map(({ changes }) => changes));
     assert.equal(states[index], 2, 'focused control keyboard must activate once');
   }
+  console.log('[packed-native] direct-pointer-and-interactive-descendant');
+  const neighborIdentity = await page.evaluate(() => {
+    const smoke = window.packedCheckboxSmoke;
+    const neighbor = smoke.mount('neighbor');
+    return smoke.pairs[0].pair.control.instanceAssociations.controlLabel !== neighbor.pair.control.instanceAssociations.controlLabel;
+  });
+  assert.equal(neighborIdentity, true, 'two default pairs have independent association identities');
+  const defaultControl = page.locator('[data-case="default"] > :first-child');
+  await page.locator('[data-case="default"] strong').click();
+  await page.waitForFunction(() => window.packedCheckboxSmoke.pairs[0].control.getAttribute('aria-checked') === 'true');
+  assert.equal(await page.evaluate(() => window.packedCheckboxSmoke.pairs[0].changes), 3);
+  assert.equal(await page.locator('[data-case="neighbor"] > :first-child').getAttribute('aria-checked'), 'false');
+  await defaultControl.click();
+  await page.waitForFunction(() => window.packedCheckboxSmoke.pairs[0].control.getAttribute('aria-checked') === 'false');
+  assert.equal(await page.evaluate(() => window.packedCheckboxSmoke.pairs[0].changes), 4);
+  await page.evaluate(() => {
+    const action = document.createElement('button');
+    action.textContent = 'Separate action';
+    const smoke = window.packedCheckboxSmoke;
+    smoke.actionClicks = 0;
+    action.addEventListener('click', () => smoke.actionClicks++);
+    smoke.pairs[0].label.append(action);
+  });
+  await page.getByRole('button', { name: 'Separate action', exact: true }).click();
+  await page.waitForTimeout(50);
+  assert.equal(await page.evaluate(() => window.packedCheckboxSmoke.actionClicks), 1,
+    'interactive descendant must receive its own actual click exactly once');
+  assert.equal(await page.evaluate(() => window.packedCheckboxSmoke.pairs[0].changes), 4,
+    'interactive Label descendant must not also activate control');
+
+  console.log('[packed-native] omitted-raw-disabled-controlled-mixed');
+  await page.evaluate(() => {
+    const { mount } = window.packedCheckboxSmoke;
+    mount('omitted', { indicator: 'none' });
+    mount('raw', { raw: true });
+    mount('disabled', { props: { disabled: true, defaultChecked: true } });
+    mount('controlled', { props: { checked: false } });
+    mount('mixed', { props: { defaultIndeterminate: true } });
+  });
+  await page.waitForTimeout(50);
+  const variants = await page.evaluate(() => Object.fromEntries(
+    window.packedCheckboxSmoke.pairs.map(({ control, container }) => [container.dataset.case, {
+      indicators: [...control.children].filter((child) => child.localName === 'proto-ui-shadcn-checkbox-indicator').length,
+      checked: control.getAttribute('aria-checked'),
+    }])
+  ));
+  assert.equal(variants.explicit.indicators, 1, 'explicit Indicator still never duplicates');
+  assert.equal(variants.omitted.indicators, 0, 'default Indicator omission stays supported');
+  assert.equal(variants.raw.indicators, 0, 'raw Root stays raw');
+  assert.equal(variants.disabled.checked, 'true');
+  assert.equal(variants.controlled.checked, 'false');
+  assert.equal(variants.mixed.checked, 'mixed');
+  for (const kind of ['disabled', 'controlled', 'mixed']) {
+    await page.locator(`[data-case="${kind}"] strong`).click();
+  }
+  await page.waitForTimeout(50);
+  const afterRequests = await page.evaluate(() => Object.fromEntries(
+    window.packedCheckboxSmoke.pairs.map(({ control, container, changes }) => [container.dataset.case, {
+      changes, checked: control.getAttribute('aria-checked'),
+    }])
+  ));
+  assert.equal(afterRequests.disabled.changes, 0);
+  assert.equal(afterRequests.disabled.checked, 'true');
+  assert.equal(afterRequests.controlled.changes, 1);
+  assert.equal(afterRequests.controlled.checked, 'false', 'controlled acceptance stays consumer-owned');
+  assert.equal(afterRequests.mixed.checked, 'true');
+
+  console.log('[packed-native] naming-only');
+  await page.evaluate(() => {
+    const smoke = window.packedCheckboxSmoke;
+    const controlled = smoke.pairs.find(({ container }) => container.dataset.case === 'controlled');
+    smoke.setLabelProps(controlled.label, { naming: true, activation: false });
+  });
+  await page.waitForTimeout(50);
+  await page.locator('[data-case="controlled"] strong').click();
+  await page.waitForTimeout(50);
+  const namingOnly = await page.evaluate(() => {
+    const { control, label, changes } = window.packedCheckboxSmoke.pairs.find(({ container }) => container.dataset.case === 'controlled');
+    return { changes, labelledby: control.getAttribute('aria-labelledby'), labelId: label.id };
+  });
+  assert.equal(namingOnly.changes, 1, 'naming-only Label must not activate');
+  assert.equal(namingOnly.labelledby, namingOnly.labelId);
+
+  console.log('[packed-native] detached-label-programmatic-regression');
+  await page.evaluate(() => window.packedCheckboxSmoke.pairs[0].label.remove());
+  await page.waitForTimeout(50);
+  // Detached nodes cannot receive real user pointers. Preserve the original
+  // programmatic lifecycle regression in a native browser; do not call it a
+  // native-pointer or full subscription/resource-release assertion.
+  await page.evaluate(() => {
+    const label = window.packedCheckboxSmoke.pairs[0].label;
+    label.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, composed: true, pointerId: 1, button: 0 }));
+    label.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, composed: true, pointerId: 1, button: 0 }));
+    label.dispatchEvent(new MouseEvent('click', { bubbles: true, composed: true, button: 0, detail: 1 }));
+  });
+  await page.waitForTimeout(50);
+  assert.equal(await page.evaluate(() => window.packedCheckboxSmoke.pairs[0].changes), 4,
+    'detached Label must not activate its former control');
+  console.log('[packed-native] cleanup');
   await page.evaluate(() => {
     for (const { container } of window.packedCheckboxSmoke.pairs) container.remove();
   });
@@ -268,7 +386,11 @@ try {
     resources: [...resources].map(([path, { body }]) => ({ path, sha256: digest(body) })),
     platformOrder: initial.order,
     infrastructureStyleHashes: infrastructureHashes,
-    outcome: 'bounded-default-preassembled-explicit-label-pointer-keyboard-removal-without-observed-pageerror-passed',
+    outcome: 'bounded-wc-composition-contract-cases-passed',
+    coveredCases: ['default', 'preassembled-explicit', 'rich-label-naming', 'label-pointer',
+      'direct-pointer', 'focused-space', 'interactive-descendant-exclusion', 'pair-isolation',
+      'omitted-indicator', 'raw-root', 'disabled', 'controlled-rejection', 'mixed',
+      'naming-only', 'detached-label-programmatic-regression', 'removal-without-observed-pageerror'],
     syntheticAcceptance: 'separate-unmodified-fixture-still-required',
     registryPublication: 'not-performed',
   };
