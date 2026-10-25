@@ -729,9 +729,7 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           expect(facts.height).toBeGreaterThanOrEqual(44);
           expect(facts.ownsCenter).toBe(true);
           expect(facts.focusVisible).toBe(true);
-          expect(facts.tokens).toContain(
-            family === 'shadcn' ? 'border-transparent' : 'rounded-base'
-          );
+          expect(facts.tokens).toContain(family === 'shadcn' ? 'border-ring' : 'rounded-base');
           const id = `${family}-${runtime}-keyboard-focus`;
           const record = {
             source,
@@ -784,6 +782,19 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
         // This loop reuses its native pointer across navigations. Measure the
         // resting row, not a legitimate +4px Brutalist hover under the old point.
         await page.mouse.move(0, 800);
+        await expect
+          .poll(
+            () =>
+              header.evaluate((element) =>
+                [
+                  ...element.querySelectorAll(
+                    '.site-header-search [data-open-modal], [data-theme-toggle], [data-site-menu-button]'
+                  ),
+                ].every((control) => getComputedStyle(control).transform === 'none')
+              ),
+            { timeout: 1000 }
+          )
+          .toBe(true);
         const geometry = await header.evaluate((element) => {
           const bounds = element.getBoundingClientRect();
           const controls = [
