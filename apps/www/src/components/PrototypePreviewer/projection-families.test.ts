@@ -133,7 +133,12 @@ const EXPECTED_LANE_ONLY_FAMILIES = {
     checkbox: {
       baseFamilyId: 'P-BASE-CHECKBOX',
       recipeId: 'demo-shadcn-checkbox',
-      recipePrototypeIds: ['shadcn-checkbox-root', 'shadcn-checkbox-indicator'],
+      recipePrototypeIds: [
+        'shadcn-checkbox-root',
+        'shadcn-checkbox-indicator',
+        'shadcn-label-root',
+      ],
+      auxiliaryPrototypes: [{ basePrototypeId: 'P-BASE-LABEL', prototypeId: 'shadcn-label-root' }],
       parts: {
         root: {
           basePrototypeId: 'P-BASE-CHECKBOX',

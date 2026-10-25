@@ -1,3 +1,8 @@
+import { assertProjectionRecipeClosure } from './projection-composition';
+import {
+  PROJECTION_FAMILY_MANIFESTS,
+  validateProjectionFamilyManifest,
+} from './projection-families';
 import { describe, expect, it } from 'vitest';
 import { shadcnCheckboxLabelComposition as recipe } from '@proto.ui/prototypes-shadcn/checkbox';
 import { shadcnCheckboxDemoChildren } from './shadcn-checkbox-composition';
@@ -15,6 +20,36 @@ function protos(children: DemoChild[]): Extract<DemoNode, { kind: 'proto' }>[] {
 }
 
 describe('shared Shadcn Checkbox website composition projection', () => {
+  it('registers the real demo closure with Label as auxiliary, without changing Checkbox anatomy', () => {
+    const family = PROJECTION_FAMILY_MANIFESTS.shadcn;
+    const manifest = family.families.checkbox;
+    expect(() => validateProjectionFamilyManifest(family)).not.toThrow();
+    expect(Object.keys(manifest.parts)).toEqual(['root', 'indicator']);
+    expect(manifest.auxiliaryPrototypes).toEqual([
+      { basePrototypeId: 'P-BASE-LABEL', prototypeId: recipe.parts.label.name },
+    ]);
+    expect([...new Set(protos([demo.root]).map((part) => part.prototypeId))].sort()).toEqual(
+      [...manifest.recipePrototypeIds].sort()
+    );
+    expect(() =>
+      assertProjectionRecipeClosure(demo.root, manifest.recipePrototypeIds, manifest.recipeId)
+    ).not.toThrow();
+    expect(() =>
+      assertProjectionRecipeClosure(
+        demo.root,
+        manifest.recipePrototypeIds.filter((id) => id !== recipe.parts.label.name),
+        manifest.recipeId
+      )
+    ).toThrow('undeclared Prototype(s): shadcn-label-root');
+    expect(() =>
+      assertProjectionRecipeClosure(
+        demo.root,
+        [...manifest.recipePrototypeIds, 'shadcn-input-root'],
+        manifest.recipeId
+      )
+    ).toThrow('missing required Prototype(s): shadcn-input-root');
+  });
+
   it('projects the public parts, topology and Label defaults without opaque data or a second name', () => {
     const rich: DemoChild[] = ['Accept ', { kind: 'box', tag: 'span', children: ['updates'] }];
     const nodes = shadcnCheckboxDemoChildren({
