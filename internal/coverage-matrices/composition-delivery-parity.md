@@ -729,6 +729,14 @@ node --test --test-isolation=none \
 
 本地 canonical 命令为 `node scripts/release/consumer-smoke-cli.mjs`，Node v24.19.0。限制包含无 child/native addon/worker 与 network guard，仅允许临时测试目录写入。失败发生于 harness 首次调用既有 pack 子进程，早于任何安装或新宿主 fixture 执行；没有以手工打包、放宽 guard 或改测试 runner 替换这个结果。
 
+### S2 首次真实 packed CI：安装已执行，WC fixture 失败（2026-10-25 UTC）
+
+- PR #1004 source head `55ec23c4a035f150a69afc53c42b4db39b6a47cb`，实际 checkout 为 GitHub PR merge `a4097ef5cf25abda30ed1771f69d9201e8862038`。证据：[run 40168159073 / cli-smoke 121104930541](https://github.com/Proto-UI/Proto-UI/actions/runs/40168159073/job/121104930541)。07:39:25 开始，07:41:26 failure；此前旧 run 的取消不计通过。
+- canonical harness 真实构建/打包并安装了 44 个 release tarballs，installed CLI 生成 facade，走到 `prepared-not-yet-executed` receipt；既有 React/Vue/WC smoke 成功。新 Checkbox+Label fixture 执行时报 `CONTEXT_PROVIDER_MISSING: base-checkbox`，栈落在 Checkbox Indicator setup。不能将 prepared receipt、package build 或原三 host smoke 当成此组合已通过。
+- 该 receipt 的 consumer lock SHA-256 为 `607e007e50544aaddccd175abea77c0605edb1624f4e29b9cb46bb29289ffdd9`，generated facade 为 `989e5b9abbdc9c2d43c692224f34f06de73ee4dc990e2ae020f792ef6b729fcc`，fixture 为 `cefab5b6a35511229bc18269e3a7a2c7f60c9f12b306b82721089b5fd8e66bd2`；Shadcn tarball shasum 为 `87a77d042c3d5a21b767b4a76601cc86f626c6bd`。完整 package integrity 列表在该 job 的 receipt 日志中。
+- 现有栈未指出 fixture 的具体场景，尚不能区分默认/显式 Indicator 连接与 cleanup 中的异常，也不能仅凭约 0.6 秒的时间差断定原因。添加阶段/逐 mount 日志，保留可捕获的 primary 与 cleanup 双错误；独立 microtask rejection 不能通过 timer await 捕获，另用不改变 Node 默认失败退出的 uncaughtExceptionMonitor 记录末阶段及更完整堆栈；不改变连接顺序，不删除 default/explicit/omission/raw 覆盖，不降低断言，不改生成器或 adapter 语义。
+- 后续需用同一 canonical tarball/installed CLI 路径读取精确失败阶段，再按实际路径 owner 修复并重验。此诊断不是修复完成。原生 pointer/keyboard、AT、视觉及完整安装闭包仍未验收；本地 ChildProcess guard 保持原样，不以 source alias 代替安装。
+
 ## 2026-10-25 S3: one public Shadcn composition projected into homepage and docs
 
 ### Diagnosis and bounded decision
