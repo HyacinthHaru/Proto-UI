@@ -87,6 +87,62 @@ type ProviderStateProof = {
 
 type SetupLiteral = string | boolean | number;
 
+/**
+ * The lexical environment of a projector body. A `var` declaration belongs to
+ * the function, so it survives every nested block, while `let` and `const`
+ * belong to the block that declares them and shadow an outer name only inside
+ * that block.
+ */
+type ProjectorScope = {
+  /** The bindings visible at this point, by name. */
+  visible: Map<string, HookSourceValue>;
+  /**
+   * The block scopes open at this point, outermost first. Each one records the
+   * names it shadows, mapped to the binding each name had before it. A name
+   * that was not bound before the block is recorded as `undefined`.
+   */
+  readonly blocks: Map<string, HookSourceValue | undefined>[];
+};
+
+/**
+ * A branch of a conditional starts from the bindings visible before it, so a
+ * name it declares cannot reach the other branch.
+ */
+const forkProjectorScope = (scope: ProjectorScope): ProjectorScope => ({
+  visible: new Map(scope.visible),
+  blocks: scope.blocks.map((frame) => new Map(frame)),
+});
+
+/**
+ * The bindings a surviving branch leaves behind replace the ones before it. A
+ * `var` update in the branch is the function-scoped binding the code after the
+ * branch reads.
+ */
+const adoptProjectorScope = (scope: ProjectorScope, branch: ProjectorScope): void => {
+  scope.visible.clear();
+  for (const [name, value] of branch.visible) scope.visible.set(name, value);
+};
+
+function shadowProjectorName(scope: ProjectorScope, name: string, value: HookSourceValue): void {
+  const frame = scope.blocks[scope.blocks.length - 1];
+  if (frame && !frame.has(name)) frame.set(name, scope.visible.get(name));
+  scope.visible.set(name, value);
+}
+
+function predeclareProjectorBinding(
+  scope: ProjectorScope,
+  name: ts.BindingName,
+  value: HookSourceValue
+): void {
+  if (ts.isIdentifier(name)) {
+    shadowProjectorName(scope, name.text, value);
+    return;
+  }
+  for (const element of name.elements) {
+    if (!ts.isOmittedExpression(element)) predeclareProjectorBinding(scope, element.name, value);
+  }
+}
+
 const UNKNOWN = (reason: string): HookSourceValue => ({ kind: 'unknown', reason });
 
 function unwrap(node: ts.Node): ts.Node {
@@ -2689,56 +2745,105 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
             parameter.initializer !== undefined &&
             hasEffect(parameter.initializer, environment))
       );
-      const collectReturns = (node: ts.Node, scope: Map<string, HookSourceValue>): boolean => {
+      const collectReturns = (node: ts.Node, scope: ProjectorScope): boolean => {
         if (ts.isBlock(node)) {
-          const block = new Map(scope);
-          for (const statement of node.statements) {
-            if (!collectReturns(statement, block)) return false;
+          // A block scopes the `let`, `const` and function declarations it
+          // contains; a `var` belongs to the enclosing function and outlives
+          // the block that declares it.
+          scope.blocks.push(new Map());
+          try {
+            // Lexical and function bindings shadow their outer names from
+            // block entry, before any statement initializer is evaluated.
+            for (const statement of node.statements) {
+              if (
+                ts.isVariableStatement(statement) &&
+                (statement.declarationList.flags & ts.NodeFlags.BlockScoped) !== 0
+              )
+                for (const declaration of statement.declarationList.declarations)
+                  predeclareProjectorBinding(
+                    scope,
+                    declaration.name,
+                    UNKNOWN('projector lexical before declaration')
+                  );
+              else if (ts.isFunctionDeclaration(statement) && statement.name)
+                shadowProjectorName(
+                  scope,
+                  statement.name.text,
+                  UNKNOWN('projector local function')
+                );
+            }
+            for (const statement of node.statements) {
+              if (!collectReturns(statement, scope)) return false;
+            }
+          } finally {
+            const frame = scope.blocks.pop();
+            if (frame)
+              for (const [name, shadowed] of frame) {
+                if (shadowed === undefined) scope.visible.delete(name);
+                else scope.visible.set(name, shadowed);
+              }
           }
           return true;
         }
         if (ts.isReturnStatement(node)) {
-          recordReturn(node.expression, scope);
+          recordReturn(node.expression, scope.visible);
           return false;
         }
         if (ts.isThrowStatement(node)) return false;
         if (ts.isIfStatement(node)) {
-          if (hasEffect(node.expression, scope)) unprovedCompletion = true;
+          if (hasEffect(node.expression, scope.visible)) unprovedCompletion = true;
           const condition = unwrap(node.expression);
           if (condition.kind === ts.SyntaxKind.TrueKeyword)
             return collectReturns(node.thenStatement, scope);
           if (condition.kind === ts.SyntaxKind.FalseKeyword)
             return node.elseStatement ? collectReturns(node.elseStatement, scope) : true;
-          const first = collectReturns(node.thenStatement, new Map(scope));
-          const second = node.elseStatement
-            ? collectReturns(node.elseStatement, new Map(scope))
-            : true;
+          const thenScope = forkProjectorScope(scope);
+          const first = collectReturns(node.thenStatement, thenScope);
+          let elseScope: ProjectorScope | null = null;
+          let second = true;
+          if (node.elseStatement) {
+            elseScope = forkProjectorScope(scope);
+            second = collectReturns(node.elseStatement, elseScope);
+          }
           // Continuing branches may have changed a binding. Until that join is
           // represented, do not certify a later read using its old snapshot.
           // A branch that throws/returns cannot continue with a changed
           // binding; this is the ordinary projector guard shape.
           if (first && second) unprovedCompletion = true;
+          // Exactly one branch continues, so the surviving path is the only one
+          // that reaches the code after the branch. Its function-scoped
+          // bindings are what that code reads.
+          else if (first) adoptProjectorScope(scope, thenScope);
+          else if (second && elseScope) adoptProjectorScope(scope, elseScope);
           return first || second;
         }
         if (ts.isVariableStatement(node)) {
+          // `var` binds the enclosing function however deeply the declaration
+          // is nested; every other declaration belongs to the block that holds
+          // it and shadows an outer name only until that block ends.
+          const blockScoped = (node.declarationList.flags & ts.NodeFlags.BlockScoped) !== 0;
           for (const declaration of node.declarationList.declarations) {
             if (!ts.isIdentifier(declaration.name)) {
               unprovedCompletion = true;
               continue;
             }
-            if (declaration.initializer && hasEffect(declaration.initializer, scope))
+            if (declaration.initializer && hasEffect(declaration.initializer, scope.visible))
               unprovedCompletion = true;
-            scope.set(
-              declaration.name.text,
-              declaration.initializer
-                ? evaluate(declaration.initializer, project.module.source, scope).value
-                : UNKNOWN('uninitialized projector local')
-            );
+            // An initializer-free `var` redeclaration does not clear the
+            // function binding it already has.
+            const value = declaration.initializer
+              ? evaluate(declaration.initializer, project.module.source, scope.visible).value
+              : (scope.visible.get(declaration.name.text) ??
+                UNKNOWN('uninitialized projector local'));
+            if (blockScoped) shadowProjectorName(scope, declaration.name.text, value);
+            else scope.visible.set(declaration.name.text, value);
           }
           return true;
         }
         if (ts.isFunctionDeclaration(node)) {
-          if (node.name) scope.set(node.name.text, UNKNOWN('projector local function'));
+          const frame = scope.blocks[scope.blocks.length - 1];
+          if (node.name && !frame?.has(node.name.text))
+            shadowProjectorName(scope, node.name.text, UNKNOWN('projector local function'));
           return true;
         }
         if (ts.isEmptyStatement(node)) return true;
@@ -2749,7 +2854,25 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
       };
       if (project.fn.body) {
         if (ts.isBlock(project.fn.body)) {
-          const fallsThrough = collectReturns(project.fn.body, environment);
+          const parameterNames = new Set(environment.keys());
+          const hoistVars = (node: ts.Node): void => {
+            if (isFunctionLike(node) || ts.isClassLike(node)) return;
+            if (
+              ts.isVariableStatement(node) &&
+              (node.declarationList.flags & ts.NodeFlags.BlockScoped) === 0
+            )
+              for (const declaration of node.declarationList.declarations) {
+                if (ts.isIdentifier(declaration.name) && !parameterNames.has(declaration.name.text))
+                  environment.set(
+                    declaration.name.text,
+                    UNKNOWN('projector var before initialization')
+                  );
+              }
+            ts.forEachChild(node, hoistVars);
+          };
+          hoistVars(project.fn.body);
+          const scope: ProjectorScope = { visible: new Map(environment), blocks: [] };
+          const fallsThrough = collectReturns(project.fn.body, scope);
           if (fallsThrough)
             returns.push({ matched: false, value: UNKNOWN('projection falls through') });
         } else recordReturn(project.fn.body, environment);

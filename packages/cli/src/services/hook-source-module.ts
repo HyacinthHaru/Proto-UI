@@ -614,19 +614,24 @@ function packageExportTarget(
   const subpathKeys = Object.keys(record).filter((key) => key === '.' || key.startsWith('./'));
   if (subpathKeys.length) {
     const exact = record[subpath];
-    if (exact !== undefined) return packageExportTarget(exact, subpath, conditions, wildcard);
-    const patterns = subpathKeys
-      .filter((key) => key.includes('*'))
-      .sort((left, right) => left.length - right.length)
-      .reverse();
+    if (exact !== undefined && !subpath.includes('*') && !subpath.endsWith('/'))
+      return packageExportTarget(exact, subpath, conditions, wildcard);
+    const patterns = subpathKeys.filter((key) => key.includes('*')).sort(compareExportPatterns);
     for (const pattern of patterns) {
       const star = pattern.indexOf('*');
       const prefix = pattern.slice(0, star);
       const suffix = pattern.slice(star + 1);
-      if (!subpath.startsWith(prefix) || !subpath.endsWith(suffix)) continue;
+      if (
+        pattern.lastIndexOf('*') !== star ||
+        subpath.length < pattern.length ||
+        !subpath.startsWith(prefix) ||
+        !subpath.endsWith(suffix)
+      )
+        continue;
       const middle = subpath.slice(prefix.length, subpath.length - suffix.length);
-      const target = packageExportTarget(record[pattern], subpath, conditions, middle);
-      if (target) return target;
+      // Selection is final even when this target denies the subpath or has no
+      // active condition; a less specific pattern cannot reopen the export.
+      return packageExportTarget(record[pattern], subpath, conditions, middle);
     }
     return null;
   }
@@ -639,6 +644,20 @@ function packageExportTarget(
     if (target) return target;
   }
   return null;
+}
+
+/**
+ * Node's export-pattern precedence: the prefix before `*` decides first, and
+ * the total key length only breaks a tie between equally specific prefixes.
+ * Ranking by total length alone lets a longer but less specific key such as
+ * `./*longsuffix` win over `./features/*`, which resolves a different
+ * implementation than `import.meta.resolve` selects.
+ */
+function compareExportPatterns(left: string, right: string): number {
+  const leftBase = left.indexOf('*') + 1;
+  const rightBase = right.indexOf('*') + 1;
+  if (leftBase !== rightBase) return rightBase - leftBase;
+  return right.length - left.length;
 }
 
 function runtimeCandidates(candidate: string): string[] {
