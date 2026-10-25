@@ -42,3 +42,9 @@ The diagnostic workflow is: bind head/base and failed job; distinguish build suc
 The existing private SSR repair, renderer token map, publicSSR false/PUI4001 boundary, all other source paths and original ancestry remain untouched. Four missing lifecycleRationale entries remain a separately coordinated preflight blocker. No descendant ref is rewritten, #984 is excluded, and #998/#1000/#1005 remain open. Native DCO, independent review, other failed checks and integration remain separate gates; this Draft carry is not production publication or merge acceptance.
 
 Co-author by OpenAI Dots
+
+## Shared-parent lifecycle metadata follow-up
+
+On the exact carried parent `eb6d11ef944fff9eabe0424804687f38f8240e2a`, the counterpart added localized `lifecycleRationale.en` to `C-FIELD-TEXTAREA-0001`, `T-FIELD-TEXTAREA-0001`, `C-PLACEHOLDER-COLOR-0001` and `T-PLACEHOLDER-COLOR-0001`. Each rationale retains the existing draft boundary and names the evidence absent from its current synthetic or finite Web coverage. Status, version boundaries, executable mappings, criteria and revision history are unchanged; this is not lifecycle promotion or new conformance evidence.
+
+The real `check:spec-authoring -- --base 90b4de66945aefb2a34310e635a4dbee3e13ea30` command passed, checking all 30 changed catalog inputs against the actual PR base. This resolves the four reported missing-rationale preflight errors locally, not the separate full-build/archive, native browser, DCO or integration gates. Publication and descendant synchronization require their own exact-head receipts.
