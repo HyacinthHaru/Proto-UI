@@ -79,3 +79,129 @@ it('compares ring paint using the same CSS property and rejects wrong color or g
   expect(containsExpectedRingShadow(actual, '')).toBe(false);
   expect(containsExpectedRingShadow('none', 'none')).toBe(false);
 });
+
+it('retains bounded paint samples without treating near-equal paint as acceptance', async () => {
+  const { appendTextareaPaintSample, containsExpectedRingShadow } =
+    // @ts-expect-error Native capture helpers intentionally use JavaScript.
+    await import('../../../../scripts/prototypes/shadcn-textarea-shadow-oracle.mjs');
+  const attempt: any = {};
+  for (let i = 0; i < 40; i++) appendTextareaPaintSample(attempt, { browserTimeMs: i });
+  expect(attempt.sampleCount).toBe(40);
+  expect(attempt.omittedSamples).toBe(8);
+  expect(attempt.samples).toHaveLength(32);
+  expect(attempt.samples.slice(0, 31).map((s: any) => s.browserTimeMs))
+    .toEqual(Array.from({ length: 31 }, (_, i) => i));
+  expect(attempt.samples[31].browserTimeMs).toBe(39);
+  const expected = 'oklab(0.555523 0.0000253916 0.0000110865 / 0.3) 0px 0px 0px 3px';
+  expect(containsExpectedRingShadow(expected.replace('253916', '253917'), expected)).toBe(false);
+});
+
+it('records only relevant bounded transition metadata without changing animation state', async () => {
+  const { installTextareaPaintDiagnostics } =
+    // @ts-expect-error Native capture helpers intentionally use JavaScript.
+    await import('../../../../scripts/prototypes/shadcn-textarea-shadow-oracle.mjs');
+  const editor = document.createElement('textarea') as any;
+  const finish = vi.fn(), cancel = vi.fn(), pause = vi.fn(), play = vi.fn();
+  const animation = {
+    transitionProperty: 'box-shadow', playState: 'running', pending: false,
+    currentTime: 199, startTime: 10, playbackRate: 1,
+    effect: { getComputedTiming: () => ({
+      localTime: 199, progress: 0.999, currentIteration: 0, delay: 0,
+      duration: 200, activeDuration: 200, endTime: 200, fill: 'backwards',
+    }) },
+    finish, cancel, pause, play,
+  };
+  editor.getAnimations = () => [
+    { ...animation, transitionProperty: 'opacity' },
+    ...Array.from({ length: 10 }, () => animation),
+  ];
+  const dispatch = (propertyName: string, type = 'transitionrun', pseudoElement = '') => {
+    editor.dispatchEvent(Object.assign(new Event(type), {
+      propertyName, pseudoElement, elapsedTime: 0.2,
+    }));
+  };
+  installTextareaPaintDiagnostics(editor);
+  try {
+    dispatch('opacity');
+    dispatch('box-shadow', 'transitionend', '::before');
+    for (let i = 0; i < 70; i++) dispatch('box-shadow');
+    dispatch('border-top-color', 'transitioncancel');
+    const snapshot = editor.__puiPaintDiagnostics.snapshot();
+    expect(Number.isFinite(snapshot.browserTimeMs)).toBe(true);
+    expect(snapshot.animations).toHaveLength(8);
+    expect(snapshot.relevantAnimationCount).toBe(10);
+    expect(snapshot.omittedAnimations).toBe(2);
+    expect(snapshot.animations[0]).toMatchObject({
+      property: 'box-shadow', playState: 'running', currentTimeMs: 199,
+      timing: { progress: 0.999, endTime: 200 },
+    });
+    expect(snapshot.eventCount).toBe(71);
+    expect(snapshot.events).toHaveLength(64);
+    expect(snapshot.omittedEvents).toBe(7);
+    expect(snapshot.events[0].sequence).toBe(8);
+    expect(snapshot.events.at(-1)).toMatchObject({
+      property: 'border-top-color', type: 'transitioncancel', sequence: 71,
+    });
+    expect([finish, cancel, pause, play].every((fn) => fn.mock.calls.length === 0)).toBe(true);
+    editor.getAnimations = undefined;
+    expect(editor.__puiPaintDiagnostics.snapshot()).toMatchObject({
+      animationApiAvailable: false, animationReadError: null, animations: [],
+    });
+    editor.getAnimations = () => { throw new Error('diagnostic unavailable'); };
+    expect(editor.__puiPaintDiagnostics.snapshot().animationReadError)
+      .toContain('diagnostic unavailable');
+  } finally {
+    editor.__puiPaintDiagnostics.dispose();
+  }
+  expect(editor.__puiPaintDiagnostics).toBeUndefined();
+});
+
+it.each(['missing', 'snapshot-throws', 'lookup-throws'])(
+  'preserves original paint and strict mismatch when diagnostics are %s',
+  async (failure) => {
+    const { sampleTextareaPaint, containsExpectedRingShadow } =
+      // @ts-expect-error Native capture helpers intentionally use JavaScript.
+      await import('../../../../scripts/prototypes/shadcn-textarea-shadow-oracle.mjs');
+    const editor = document.createElement('textarea') as any;
+    editor.matches = () => false;
+    const expectedShadow = 'oklab(0.555523 0.0000253916 0.0000110865 / 0.3) 0px 0px 0px 3px';
+    const actualShadow = expectedShadow.replace('253916', '253917');
+    const expectedStyle = {
+      color: 'rgb(115, 115, 115)', borderColor: 'rgb(115, 115, 115)',
+      boxShadow: expectedShadow,
+    };
+    const actualStyle = {
+      ...expectedStyle, boxShadow: actualShadow, opacity: '1',
+      getPropertyValue: (name: string) => name === '--pui-ring-width' ? '3px' : '#737373',
+    };
+    if (failure === 'snapshot-throws') {
+      editor.__puiPaintDiagnostics = { snapshot() { throw new Error('snapshot failed'); } };
+    } else if (failure === 'lookup-throws') {
+      Object.defineProperty(editor, '__puiPaintDiagnostics', {
+        get() { throw new Error('lookup failed'); },
+      });
+    }
+    const originalGetComputedStyle = globalThis.getComputedStyle;
+    const originalChildCount = document.body.childNodes.length;
+    vi.stubGlobal('getComputedStyle', (element: Element) =>
+      element === editor ? actualStyle : expectedStyle);
+    try {
+      const sampled = sampleTextareaPaint(editor, { kind: 'react', ring: '#737373', border: '#737373' });
+      expect(sampled).toMatchObject({
+        kind: 'react', shadow: actualShadow, expectedRingShadow: expectedShadow,
+        ringColor: expectedStyle.color, expectedRing: expectedStyle.color,
+        border: expectedStyle.borderColor, expectedBorder: expectedStyle.borderColor,
+        ringWidth: '3px', opacity: '1',
+      });
+      expect(containsExpectedRingShadow(sampled.shadow, sampled.expectedRingShadow)).toBe(false);
+      expect(sampled.diagnostic.status).toBe(failure === 'missing' ? 'missing' : 'read-failed');
+      expect(sampled.diagnostic.error).toBe(failure === 'missing' ? null :
+        failure === 'lookup-throws' ? 'Error: lookup failed' : 'Error: snapshot failed');
+      expect(sampled.diagnostic).not.toHaveProperty('events');
+      expect(sampled.diagnostic).not.toHaveProperty('animations');
+      expect(document.body.childNodes.length).toBe(originalChildCount);
+    } finally {
+      vi.stubGlobal('getComputedStyle', originalGetComputedStyle);
+    }
+  }
+);

@@ -1,5 +1,10 @@
 import assert from 'node:assert/strict';
-import { containsExpectedRingShadow } from './shadcn-textarea-shadow-oracle.mjs';
+import {
+  containsExpectedRingShadow,
+  installTextareaPaintDiagnostics,
+  appendTextareaPaintSample,
+  sampleTextareaPaint,
+} from './shadcn-textarea-shadow-oracle.mjs';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { createServer } from 'node:http';
@@ -62,6 +67,21 @@ const receipt = {
     sourceFiles.map(async (path) => ({ path, sha256: hash(await readFile(path)) }))
   ),
   tokens,
+  probeFiles: await Promise.all(
+    ['scripts/prototypes/shadcn-textarea-evidence.mjs',
+      'scripts/prototypes/shadcn-textarea-shadow-oracle.mjs'].map(async (path) => ({
+      path, sha256: hash(await readFile(path)),
+    }))
+  ),
+  diagnosticLimits: {
+    samplesPerAttempt: 32,
+    sampleRetention: 'first 31 plus latest; omitted middle samples counted',
+    eventsPerEditor: 64,
+    eventRetention: 'latest; cumulative count discloses omissions',
+    animationsPerSample: 8,
+    scope: 'box-shadow and border-color CSS transitions only; not arbitrary CSS animations',
+    caveat: 'Reads consume time without resetting the nominal 240ms polling window or adding retries; an already-started sample may return and pass after the deadline. Samples are not atomic frames. Missing/failed diagnostics do not imply completion.',
+  },
 };
 if (!process.argv.includes('--build-only'))
   assert.equal(
@@ -119,6 +139,11 @@ try {
       document.documentElement.dataset.ready === 'true' &&
       window.textareaEvidence.records.every((r) => r.editor())
   );
+  receipt.browserVersion = browser.version();
+  await writeFile(join(out, 'source.json'), JSON.stringify(receipt, null, 2));
+  for (const kind of ['wc', 'react', 'vue', 'vue2']) {
+    await page.locator(`section[data-runtime="${kind}"] textarea`).evaluate(installTextareaPaintDiagnostics);
+  }
   for (const theme of ['light', 'dark'])
     for (const style of ['new-york', 'rhea'])
       for (const width of [767, 768]) {
@@ -235,38 +260,14 @@ try {
     const deadline = Date.now() + 240;
     do {
       const sampled = await page.locator(`section[data-runtime="${kind}"] textarea`).evaluate(
-        (e, expected) => {
-          const c = getComputedStyle(e),
-            actual = document.createElement('div'),
-            oracle = document.createElement('div');
-          actual.style.color = c.getPropertyValue('--pui-ring-color');
-          oracle.style.color = expected.ring || 'transparent';
-          oracle.style.borderColor = expected.border;
-          oracle.style.boxShadow = `0 0 0 3px ${expected.ring || 'transparent'}`;
-          document.body.append(actual, oracle);
-          const result = {
-            kind: expected.kind,
-            focused: document.activeElement === e,
-            nativeFocus: e.matches(':focus-visible'),
-            invalid: e.getAttribute('aria-invalid'),
-            disabled: e.disabled,
-            readOnly: e.readOnly,
-            border: c.borderColor,
-            expectedBorder: getComputedStyle(oracle).borderColor,
-            ringColor: getComputedStyle(actual).color,
-            expectedRing: getComputedStyle(oracle).color,
-            expectedRingShadow: getComputedStyle(oracle).boxShadow,
-            ringWidth: c.getPropertyValue('--pui-ring-width').trim(),
-            shadow: c.boxShadow,
-            opacity: c.opacity,
-          };
-          actual.remove();
-          oracle.remove();
-          return result;
-        },
+        sampleTextareaPaint,
         { kind, border: expectedBorder, ring: expectedRing }
       );
       attempt.observed = sampled;
+      appendTextareaPaintSample(attempt, {
+        hostElapsedMs: Date.now() - (deadline - 240),
+        ...sampled,
+      });
       if (
         sampled.border === sampled.expectedBorder &&
         (!expectedRing || sampled.ringColor === sampled.expectedRing) &&
