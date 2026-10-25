@@ -688,6 +688,38 @@ describe('lowered hook coverage', () => {
       }
     );
 
+    it('does not exempt legacy hook argument writes through a Core star re-export', async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-legacy-factory-'));
+      try {
+        await writeFile(path.join(dir, 'factory.ts'), "export * from '@proto.ui/core';");
+        await writeFile(
+          path.join(dir, 'producer.ts'),
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            "import { defineHook } from './factory';",
+            "export const asA = defineAsHook({ name: 'a', setup(d) { d.state.bool('alpha', false); }, projectHandle(r) { return { ready: r.stateHandles.alpha }; } });",
+            "export const legacy = defineHook({ name: 'legacy', setup(d, options) { options.ready = null; } });",
+          ].join('\n')
+        );
+        const file = path.join(dir, 'consumer.proto.ts');
+        const source = [
+          "import { asA, legacy } from './producer';",
+          'const bag = asA();',
+          'legacy(bag);',
+          rule('w.state(bag.ready).eq(true)'),
+        ].join('\n');
+        const scan = scanWithFreshSummary(source, file);
+        expect(scan.usages).toEqual([]);
+        expect(scan.unresolved.map((read) => read.expression)).toEqual(['bag.ready']);
+        await writeFile(file, source);
+        expect(await collectProtoStyleTokensFromFiles([file])).not.toContain(
+          'data-[alpha]:bg-primary'
+        );
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
+
     it('withholds stale member proofs after recursive destructuring assignment targets', async () => {
       const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-destructured-write-'));
       try {

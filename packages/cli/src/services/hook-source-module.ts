@@ -937,6 +937,7 @@ export function createHookSourceModuleContext(): HookSourceModuleContext {
   const configCache = new Map<string, ConfigRecord>();
   const exportPositiveCache = new Map<string, HookSourceSymbol>();
   const objectMemberCache = new Map<string, HookSourceSymbol | null>();
+  const coreStarFactoryNames = new WeakMap<HookSourceSymbol, string>();
 
   const canonical = (file: string): string => {
     const absolute = path.resolve(file);
@@ -1251,7 +1252,9 @@ export function createHookSourceModuleContext(): HookSourceModuleContext {
         if (!statement.moduleSpecifier || !ts.isStringLiteralLike(statement.moduleSpecifier))
           continue;
         if (statement.moduleSpecifier.text === CORE_SPECIFIER && isCoreFactoryName(name)) {
-          addUnique(stars, { module, declaration: statement });
+          const symbol = { module, declaration: statement };
+          coreStarFactoryNames.set(symbol, name);
+          addUnique(stars, symbol);
           continue;
         }
         const target = resolveModule(module.file, statement.moduleSpecifier.text);
@@ -1781,7 +1784,7 @@ export function createHookSourceModuleContext(): HookSourceModuleContext {
     const declaration = symbol.declaration;
     if (coreImportedName(declaration) === name) return true;
     if (coreExportedName(declaration) === name) return true;
-    if (isCoreStarExport(declaration)) return true;
+    if (isCoreStarExport(declaration)) return coreStarFactoryNames.get(symbol) === name;
     if (ts.isVariableDeclaration(declaration) && declaration.initializer) {
       // An initializer only proves the declaration's value while that binding
       // still holds it. A `let`/`var` name, or a `const` whose object escapes
