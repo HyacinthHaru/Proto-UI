@@ -324,6 +324,41 @@ test('retains homepage Surface candidates even when absent from the projection m
   }
 });
 
+test('does not classify unused projection-manifest identities as homepage usage', async () => {
+  await fixture(async (root, put) => {
+    await put(
+      'apps/www/src/components/site-library-family.ts',
+      `export type SiteLibraryFamily = 'fixture';`
+    );
+    await put(
+      'apps/www/src/components/PrototypePreviewer/projection-families.ts',
+      `export const PROJECTION_FAMILY_MANIFESTS = Object.freeze({
+        fixture: { families: {
+          card: { parts: { root: { prototypeId: 'fixture-used-card-root' } } },
+          unused: { parts: { root: { prototypeId: 'fixture-manifest-only-root' } } }
+        } }
+      });`
+    );
+    await put(
+      'apps/www/src/components/Homepage/homepage-gallery-parts.ts',
+      `part('card', 'root');`
+    );
+    for (const name of [
+      'homepage-demo-participant',
+      'homepage-runtime-client',
+      'homepage-showcase',
+    ])
+      await put(`apps/www/src/components/Homepage/${name}.ts`, 'export {};');
+    await put('apps/www/src/components/surface-recipes.ts', 'export {};');
+
+    const candidates = await discoverHomepagePrototypeCandidates({
+      root,
+      registeredPrototypeIds: new Set(),
+    });
+    assert.deepEqual(candidates.prototypeIds, ['fixture-used-card-root']);
+  });
+});
+
 async function gitSourceFixture(run) {
   await fixture(async (root, put) => {
     const git = (args) => execFileSync('git', args, { cwd: root, stdio: 'ignore' });
