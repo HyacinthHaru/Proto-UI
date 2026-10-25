@@ -1261,6 +1261,14 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
             continue;
           }
           members.set(key, held.value);
+        } else if (
+          ts.isGetAccessorDeclaration(property) ||
+          ts.isSetAccessorDeclaration(property) ||
+          ts.isMethodDeclaration(property)
+        ) {
+          // Accessor and method members are not evaluated by this interpreter.
+          // Do not silently omit them and certify an incomplete member set.
+          invalidateMembers();
         }
       }
       return {
@@ -2662,11 +2670,17 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
           unprovedCompletion = true;
           return;
         }
-        returns.push(
-          expression
-            ? evaluate(expression, project.module.source, scope)
-            : { matched: false, value: UNKNOWN('void projection') }
-        );
+        const held = expression
+          ? evaluate(expression, project.module.source, scope)
+          : { matched: false, value: UNKNOWN('void projection') };
+        // A member set whose keys could not be observed is not a proven public
+        // member set. Certifying it would claim a complete set of members that
+        // were never seen, so the projection stays unsupported.
+        if (held.value.kind === 'object' && held.value.uncertainKeys) {
+          unprovedCompletion = true;
+          return;
+        }
+        returns.push(held);
       };
       unprovedCompletion = project.fn.parameters.some(
         (parameter, index) =>

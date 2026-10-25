@@ -131,7 +131,20 @@ async function applyImportBindings(file, sourceFile, scope, moduleCache, stack) 
     const resolved = await resolveModuleFile(path.dirname(file), specifier.text);
     if (!resolved || stack.includes(resolved)) continue;
     const clause = stmt.importClause;
-    if (!clause?.namedBindings || !ts.isNamedImports(clause.namedBindings)) continue;
+    if (!clause) continue;
+    // A default import binds the module's default export, so the local name
+    // stands for whatever that export holds. Bind it as an import: the
+    // built-in hook table is a spelling fallback, and a default import that
+    // is not a proven authored producer must never reach it.
+    if (clause.name) {
+      scope.bindings.set(clause.name.text, {
+        ...emptyValue(),
+        importedBinding: true,
+        defaultImport: true,
+        importSpecifier: specifier.text,
+      });
+    }
+    if (!clause.namedBindings || !ts.isNamedImports(clause.namedBindings)) continue;
     const bindings = await loadModuleBindings(resolved, moduleCache, stack);
     for (const element of clause.namedBindings.elements) {
       const importedName = (element.propertyName ?? element.name).text;
@@ -2830,7 +2843,14 @@ function resolveKnownAsHookStateHandles(node) {
 function resolveTrustedKnownAsHookStateHandles(node, scope) {
   const table = resolveKnownAsHookStateHandles(node);
   if (!table || !ts.isCallExpression(node) || !ts.isIdentifier(node.expression)) return table;
+  // An authored producer owns its public handle even when its projection is
+  // unsupported. Missing source proof cannot be replaced by a spelling table.
+  if (scope.sourceSummary?.isAuthoredProducerCall(node, node.getSourceFile())) return null;
   const binding = lookup(node.expression.text, scope);
+  // A default import names the module's default export, not a built-in hook.
+  // Only a proven authored producer may stand behind such a name, and the
+  // source summary resolves that one; the spelling proves nothing.
+  if (binding?.defaultImport) return null;
   // A known spelling is only a fallback for an unavailable imported binding.
   // A local value with that spelling may be a lookalike or an unknown branch;
   // source summaries and lexical scope must remain authoritative for it.

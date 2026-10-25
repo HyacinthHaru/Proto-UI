@@ -158,6 +158,17 @@ type Binding =
       from?: string;
       bindingNode?: ts.Node;
     }
+  /**
+   * A default import. The imported value is the module's default export, so
+   * the local name stands for whatever that export holds and its spelling
+   * proves no built-in hook.
+   */
+  | {
+      kind: 'defaultImport';
+      specifier: string;
+      from?: string;
+      bindingNode?: ts.Node;
+    }
   /** A parameter: it shadows an outer name and its origin is not recoverable. */
   | { kind: 'opaque'; sourceAuthority?: boolean; bindingNode?: ts.Node };
 
@@ -485,7 +496,7 @@ export function scanRuleStateReads(
         // admitted source identity before `resolve` can follow the import.
         // Nearest authored locals still enter as unknown and therefore retain
         // lexical-shadow protection.
-        if (binding.kind === 'tokenImport') continue;
+        if (binding.kind === 'tokenImport' || binding.kind === 'defaultImport') continue;
         if (binding.kind === 'handle' && binding.sourceState) {
           environment.set(name, { kind: 'state', state: binding.sourceState });
         } else if ('sourceValue' in binding && binding.sourceValue) {
@@ -548,7 +559,12 @@ export function scanRuleStateReads(
         // A local callable alias (for example `const lookup = facts.getState!`)
         // is resolved through the source environment. It is not a producer call,
         // so the producer-binding identity fence must not reject it as a shadow.
-        if (binding && binding.kind !== 'tokenImport' && binding.kind !== 'callable') {
+        if (
+          binding &&
+          binding.kind !== 'tokenImport' &&
+          binding.kind !== 'defaultImport' &&
+          binding.kind !== 'callable'
+        ) {
           const bindingNode = binding.bindingNode;
           const sourceIdentity = scope.sourceSummary as HookSourceSummaryContext & {
             isSameSourceBinding?: (
@@ -1287,6 +1303,9 @@ export function scanRuleStateReads(
     if (!ts.isCallExpression(call) || !ts.isIdentifier(call.expression)) return null;
     const name = call.expression.text;
     const binding = scope ? lookup(scope, name) : null;
+    // A bound name that is not a named import cannot be answered for by the
+    // built-in hook table. A default import in particular names the module's
+    // default export, which need not be a hook at all.
     if (binding && binding.kind !== 'tokenImport') return null;
     if (loweredHookStates(name)) return name;
     // A local alias of an imported hook is the same producer, so report the
@@ -1971,7 +1990,12 @@ export function scanRuleStateReads(
         declare(scope, name.text, { kind: 'hookResult', hook: aliased.imported });
         return;
       }
-      if (aliased && aliased.kind !== 'token' && aliased.kind !== 'tokenImport') {
+      if (
+        aliased &&
+        aliased.kind !== 'token' &&
+        aliased.kind !== 'tokenImport' &&
+        aliased.kind !== 'defaultImport'
+      ) {
         const exposedAs = exposureFor(name.text, scope);
         declare(
           scope,
@@ -2007,7 +2031,19 @@ export function scanRuleStateReads(
     for (const statement of source.statements) {
       if (!ts.isImportDeclaration(statement)) continue;
       if (!ts.isStringLiteralLike(statement.moduleSpecifier)) continue;
-      const bindings = statement.importClause?.namedBindings;
+      const clause = statement.importClause;
+      if (!clause) continue;
+      // A default import binds the module's default export. The name is bound,
+      // so the built-in hook table must not answer for it by spelling: only a
+      // proven authored producer may, and the source summary resolves that.
+      if (clause.name) {
+        declare(scope, clause.name.text, {
+          kind: 'defaultImport',
+          specifier: statement.moduleSpecifier.text,
+          from: fileName,
+        });
+      }
+      const bindings = clause.namedBindings;
       if (!bindings || !ts.isNamedImports(bindings)) continue;
       for (const element of bindings.elements) {
         declare(scope, element.name.text, {
@@ -2489,7 +2525,15 @@ export function scanRuleStateReads(
     moduleScopes.set(module, scope);
     for (const statement of module.statements) {
       if (ts.isImportDeclaration(statement) && ts.isStringLiteralLike(statement.moduleSpecifier)) {
-        const named = statement.importClause?.namedBindings;
+        const clause = statement.importClause;
+        if (clause?.name) {
+          scope.bindings.set(clause.name.text, {
+            kind: 'defaultImport',
+            specifier: statement.moduleSpecifier.text,
+            from: module.fileName,
+          });
+        }
+        const named = clause?.namedBindings;
         if (named && ts.isNamedImports(named)) {
           for (const element of named.elements) {
             scope.bindings.set(element.name.text, {

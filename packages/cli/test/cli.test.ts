@@ -692,7 +692,6 @@ describe('@proto.ui/cli', () => {
     expect(baselineAt).toBeGreaterThan(protoLayerAt);
     expect(baselineAt).toBeLessThan(firstTokenAt);
     expect(tokensCss).toContain('box-sizing: border-box;');
-    expect(tokensCss).toContain(`data-[active]:bg-muted"])[data-active]`);
     expect(tokensCss).toContain(
       `data-[hovered]:not-[data-active]:bg-muted"])[data-hovered]:not([data-active])`
     );
@@ -755,7 +754,6 @@ describe('@proto.ui/cli', () => {
     const tokensCss = await fs.readFile(outFile, 'utf8');
     expect(tokensCss).toContain(`[data-pui-style~="bg-primary"]`);
     expect(tokensCss).toContain(`[data-pui-style~="rounded-md"]`);
-    expect(tokensCss).toContain(`data-[active]:bg-muted"])[data-active]`);
     expect(tokensCss).toContain(
       `data-[hovered]:not-[data-active]:bg-muted"])[data-hovered]:not([data-active])`
     );

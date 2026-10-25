@@ -36,6 +36,8 @@ Source-backed member writes follow the actual receiver object, including nested 
 
 Projector returns are admitted as proof only when the return expression is effect-free: reads of the projection's own `getState`, `getMethod`, `getAsHook` and `getAsHookHandle` accessors count as reads, but calls the analysis cannot classify as these accessors, or writes visible in a reachable branch, keep the projection unresolved.
 
+Default-imported names are resolved through their source module rather than the built-in hook-name table. A matching local spelling cannot certify an unrelated default export; a source-proven default producer still retains its declared state selectors. Rejected authored projections cannot regain state proof from a built-in hook's spelling. Returned object literals containing getters, setters or method declarations do not prove a complete public projection, including through local aliases and spreads. Ordinary properties containing deferred functions do not by themselves invalidate an otherwise proven projection.
+
 ## Opt-in Shadow style companion
 
 The source CLI generates the companion consumed by the Web Component Adapter's explicit experimental `shadow: { mode: 'open', presentation: 'split', styleArtifact }` profile. Pass the imported value as `styleArtifact`; generating it alone does not select that profile. Existing boolean `shadow` options remain unchanged. See the [Adapter guide](../adapters/web-component/README.md) for admitted prototypes, recipes and customization limits. Installing an already-published CLI version does not imply that it includes this source change.
