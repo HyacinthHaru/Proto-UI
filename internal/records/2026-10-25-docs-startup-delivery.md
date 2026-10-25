@@ -10,7 +10,7 @@ On unchanged main, the original 43-case local combination reported 38 passes and
 
 ## Current main CI remains a counterexample
 
-Main CI [40147277848](https://github.com/Proto-UI/Proto-UI/actions/runs/40147277848) has a successful 47-package build and 47-manifest check, but its runtime jobs are not green. The package policy reports four PASS and five Finf ADVISORY entries, not nine strict budget passes. The general job stops at 78 public-docs catalog drift findings. Three browser shards exit 124; complete shard summaries cannot be inferred for those jobs.
+Main CI [40147277848](https://github.com/Proto-UI/Proto-UI/actions/runs/40147277848) has a successful 47-package build and 47-manifest check, but its runtime jobs are not green. The package policy reports four PASS and five Finf ADVISORY entries, not nine strict budget passes. The general job stops at 78 public-docs catalog drift findings. Four browser shards (1, 2, 4 and 8) exit 124; complete shard summaries cannot be inferred for those jobs.
 
 Its Search suite reports 13 passes and 17 failures. The eight initial Search readiness failures and their same-case startup journals distinguish two observations:
 
