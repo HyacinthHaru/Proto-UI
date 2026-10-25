@@ -29,6 +29,7 @@ import {
   createDefaultWebColorSchemeSource,
   createDefaultWebPreferenceSource,
   createDefaultWebStyleSupportSource,
+  createDefaultWebViewportSource,
   createScopedExposesReader,
   createViewEpochOwner,
   createWebProtoEventRouter,
@@ -200,6 +201,7 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
     const styleSupportSource = opt.getMeta
       ? undefined
       : createDefaultWebStyleSupportSource(getMeta);
+    const viewportSource = opt.getMeta ? undefined : createDefaultWebViewportSource(getMeta);
     const exposeStateWebMode = opt.exposeStateWebMode;
     const scrollProjection = opt.scrollProjection;
     const autoUpdate = opt.autoUpdateOnPropsChange ?? true;
@@ -245,6 +247,12 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
 
     const Component = runtime.forwardRef((props: ReactAdapterProps<Props>, ref: any) => {
       const rootRef = runtime.useRef<HTMLElement | null>(null);
+      // React's native textarea reconciliation writes an absent defaultValue
+      // back as an empty string. Mirror the Text Control host patch so React
+      // keeps its DOM wrapper state aligned with the host-owned editor.
+      const [textControlDefaultValue, setTextControlDefaultValue] = runtime.useState<
+        string | undefined
+      >(undefined);
       const portalOriginRef = runtime.useRef<HTMLElement | null>(null);
       // React owns the children, while this Adapter owns one stable portal
       // mount. Relocating the mount keeps createPortal's container identity and
@@ -269,7 +277,13 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
           const previous = portalProjectionRef.current;
           portalProjectionRef.current = null;
           previous?.material.release();
-          if (!portalProjectionRef.current) mount.remove();
+          if (!portalProjectionRef.current && portalMountRef.current === mount) {
+            mount.remove();
+            // A later physical epoch must reacquire the connected author's
+            // Document instead of reopening through this retired container.
+            portalMountRef.current = null;
+            setPortalDocument(null);
+          }
           return;
         }
         const registryRevision = getWebPortalDestinationGeneration();
@@ -549,6 +563,7 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
             colorSchemeSource,
             preferenceSource,
             styleSupportSource,
+            viewportSource,
             setExposes: (record) => {
               exposesRef.current = record;
             },
@@ -739,8 +754,10 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
           colorSchemeSource,
           preferenceSource,
           styleSupportSource,
+          viewportSource,
           exposeStateWebMode,
           scrollProjection,
+          setTextControlDefaultValue,
           setExposes: (record) => {
             exposesRef.current = record;
           },
@@ -1029,6 +1046,7 @@ export function createReactAdapter(runtimeInput: ReactRuntimeInput) {
               rootTag,
               {
                 ref: rootRef as { current: HTMLElement | null },
+                ...(textControlRootTag ? { defaultValue: textControlDefaultValue } : {}),
                 className: mergeHostClassName([
                   props.surfaceClassName,
                   props.hostClassName,

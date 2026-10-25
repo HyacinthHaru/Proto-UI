@@ -17,7 +17,7 @@ import {
   CONTROL_LABEL_RUN_IN_CALLBACK_CAP,
   createWebControlLabelHost,
 } from '@proto.ui/module-control-label';
-import type { FocusEntryConfig } from '@proto.ui/core';
+import type { FocusEntryConfig, TextControlPatch } from '@proto.ui/core';
 import {
   isWebFocusTargetActive,
   orderFocusTargetsByDocument,
@@ -99,6 +99,7 @@ import {
   OVERLAY_GLOBAL_MOUNT_CAP,
   OVERLAY_LAYER_SCHEDULER_CAP,
   OVERLAY_MODAL_CAP,
+  OVERLAY_TARGET_HOST_CAP,
   createWebOverlayModal,
   type OverlayGlobalMount,
   type OverlayLayerScheduler,
@@ -119,7 +120,9 @@ import {
   RULE_META_COLOR_SCHEME_SOURCE_CAP,
   RULE_META_PREFERENCE_SOURCE_CAP,
   RULE_META_STYLE_SUPPORT_SOURCE_CAP,
+  RULE_META_VIEWPORT_SOURCE_CAP,
   type StyleSupportInvalidationSource,
+  type ViewportInvalidationSource,
   type PreferenceInvalidationSource,
   type ColorSchemeInvalidationSource,
 } from '@proto.ui/module-rule-meta';
@@ -157,6 +160,7 @@ type ReactOwnerModulesArgs<Props extends PropsBaseType> = {
   colorSchemeSource?: ColorSchemeInvalidationSource;
   preferenceSource?: PreferenceInvalidationSource;
   styleSupportSource?: StyleSupportInvalidationSource;
+  viewportSource?: ViewportInvalidationSource;
   setExposes: (record: Record<string, unknown>) => void;
   runInCallbackScope: (fn: () => void) => void;
   overlayLayerScheduler?: OverlayLayerScheduler;
@@ -209,6 +213,7 @@ export function createReactOwnerModules<Props extends PropsBaseType>(
     colorSchemeSource,
     preferenceSource,
     styleSupportSource,
+    viewportSource,
     setExposes,
   } = args;
 
@@ -261,6 +266,7 @@ export function createReactOwnerModules<Props extends PropsBaseType>(
         ? [[RULE_META_COLOR_SCHEME_SOURCE_CAP, colorSchemeSource] as const]
         : []),
       ...(preferenceSource ? [[RULE_META_PREFERENCE_SOURCE_CAP, preferenceSource] as const] : []),
+      ...(viewportSource ? [[RULE_META_VIEWPORT_SOURCE_CAP, viewportSource] as const] : []),
       ...(styleSupportSource
         ? [[RULE_META_STYLE_SUPPORT_SOURCE_CAP, styleSupportSource] as const]
         : []),
@@ -299,9 +305,11 @@ export function createReactModules<Props extends PropsBaseType>(args: {
   colorSchemeSource?: ColorSchemeInvalidationSource;
   preferenceSource?: PreferenceInvalidationSource;
   styleSupportSource?: StyleSupportInvalidationSource;
+  viewportSource?: ViewportInvalidationSource;
   exposeStateWebMode?: ExposeStateWebMode;
   scrollProjection?: ScrollProjectionPreference;
   setExposes: (record: Record<string, unknown>) => void;
+  setTextControlDefaultValue: (value: string) => void;
   runInCallbackScope: (fn: () => void) => void;
   isViewReady: () => boolean;
   isEntryAcquisitionReady: (target: HTMLElement) => boolean;
@@ -326,6 +334,7 @@ export function createReactModules<Props extends PropsBaseType>(args: {
     colorSchemeSource,
     preferenceSource,
     styleSupportSource,
+    viewportSource,
     exposeStateWebMode,
     scrollProjection,
     setExposes,
@@ -348,7 +357,44 @@ export function createReactModules<Props extends PropsBaseType>(args: {
     };
   };
 
-  const physicalControl = () => args.getCurrentElement() as HTMLTextAreaElement | null;
+  const currentViewRoot = () => {
+    const current = args.getCurrentElement();
+    return current === el && current.isConnected ? current : null;
+  };
+  // Keep the native HTMLElement interface check and its error realm across adoption.
+  const view = el.ownerDocument.defaultView;
+  const htmlElementPrototype =
+    view?.HTMLElement.prototype ??
+    (typeof HTMLElement === 'undefined' ? null : HTMLElement.prototype);
+  const readHtmlTitle = htmlElementPrototype
+    ? Object.getOwnPropertyDescriptor(htmlElementPrototype, 'title')?.get
+    : undefined;
+  const nodePrototype =
+    view?.Node.prototype ?? (typeof Node === 'undefined' ? null : Node.prototype);
+  const readOwnerDocument = nodePrototype
+    ? Object.getOwnPropertyDescriptor(nodePrototype, 'ownerDocument')?.get
+    : undefined;
+  const NativeTypeError = view?.TypeError ?? TypeError;
+  const overlayTargetHost = {
+    root: currentViewRoot,
+    resolve(candidate: unknown): object | null {
+      const root = currentViewRoot();
+      if (!root || !readHtmlTitle || !readOwnerDocument) return null;
+      try {
+        // Explicit content may be outside Root. A native getter verifies its
+        // interface without trusting shape fields or destination-realm instanceof.
+        readHtmlTitle.call(candidate);
+      } catch (error) {
+        if (error instanceof NativeTypeError) return null;
+        throw error;
+      }
+      if (readOwnerDocument.call(candidate) !== readOwnerDocument.call(root)) return null;
+      return candidate as HTMLElement;
+    },
+  };
+
+  const physicalControl = () =>
+    args.getCurrentElement() as HTMLInputElement | HTMLTextAreaElement | null;
   const physicalImage = () => args.getCurrentElement() as HTMLImageElement | null;
 
   return createCapsWiring()
@@ -360,7 +406,10 @@ export function createReactModules<Props extends PropsBaseType>(args: {
       [CONTROL_LABEL_RUN_IN_CALLBACK_CAP, args.runInCallbackScope],
     ])
     .use('text-control', [
-      [TEXT_CONTROL_HOST_CAP, createWebTextControlHost(physicalControl)],
+      [
+        TEXT_CONTROL_HOST_CAP,
+        createReactTextControlHost(physicalControl, args.setTextControlDefaultValue),
+      ],
       [TEXT_CONTROL_RUN_IN_CALLBACK_CAP, args.runInCallbackScope],
     ])
     .use('native-link', [
@@ -517,6 +566,7 @@ export function createReactModules<Props extends PropsBaseType>(args: {
         ? [[RULE_META_COLOR_SCHEME_SOURCE_CAP, colorSchemeSource] as const]
         : []),
       ...(preferenceSource ? [[RULE_META_PREFERENCE_SOURCE_CAP, preferenceSource] as const] : []),
+      ...(viewportSource ? [[RULE_META_VIEWPORT_SOURCE_CAP, viewportSource] as const] : []),
       ...(styleSupportSource
         ? [[RULE_META_STYLE_SUPPORT_SOURCE_CAP, styleSupportSource] as const]
         : []),
@@ -553,6 +603,7 @@ export function createReactModules<Props extends PropsBaseType>(args: {
     ])
     .use('overlay', () => [
       [HOST_ELEMENT_CAP, el],
+      [OVERLAY_TARGET_HOST_CAP, overlayTargetHost],
       [
         OVERLAY_GLOBAL_MOUNT_CAP,
         createReactOverlayGlobalMount(instanceToken, args.getPortalOrigin),
@@ -563,6 +614,31 @@ export function createReactModules<Props extends PropsBaseType>(args: {
         : []),
     ])
     .build();
+}
+
+function createReactTextControlHost(
+  getTarget: Parameters<typeof createWebTextControlHost>[0],
+  setDefaultValue: (value: string) => void
+) {
+  const host = createWebTextControlHost(getTarget);
+  const projectDefaultValue = (patch: TextControlPatch) => {
+    if (typeof patch.defaultValue === 'string') setDefaultValue(patch.defaultValue);
+  };
+
+  return {
+    attach(connection: Parameters<typeof host.attach>[0]) {
+      const lease = host.attach(connection);
+      projectDefaultValue(connection.patch);
+      return {
+        update(patch: TextControlPatch) {
+          lease.update(patch);
+          projectDefaultValue(patch);
+        },
+        snapshot: () => lease.snapshot(),
+        dispose: () => lease.dispose(),
+      };
+    },
+  };
 }
 
 function isNativelyFocusable(el: HTMLElement): boolean {
