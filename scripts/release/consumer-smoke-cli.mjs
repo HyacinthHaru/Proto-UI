@@ -152,15 +152,36 @@ try {
     join(consumerDir, 'consumer-smoke-css.mjs')
   );
   logCheckboxDeliveryEvidence(packManifest, consumerPackageNames, 'prepared-not-yet-executed');
-  for (const renderer of ['react.mjs', 'vue.mjs', 'wc.mjs', 'wc-checkbox-label.mjs']) {
-    cpSync(join(RENDER_FIXTURE_DIR, renderer), join(consumerDir, renderer));
-    run(process.execPath, ['--import', 'tsx', `./${renderer}`], { cwd: consumerDir });
+  // Independent outcomes: a native setup/product failure must not hide the
+  // existing synthetic explicit-Indicator failure (nor may native success erase it).
+  const hostFailures = [];
+  try {
+    run(process.execPath, [
+      join(RENDER_FIXTURE_DIR, 'wc-checkbox-label-native.mjs'),
+      consumerDir,
+      ROOT_DIR,
+    ], { cwd: consumerDir, timeout: 120000 });
+    console.log('packed WC native bounded cases: passed');
+  } catch (error) {
+    console.error('packed WC native bounded cases: failed', error);
+    hostFailures.push(error);
   }
+  try {
+    for (const renderer of ['react.mjs', 'vue.mjs', 'wc.mjs', 'wc-checkbox-label.mjs']) {
+      cpSync(join(RENDER_FIXTURE_DIR, renderer), join(consumerDir, renderer));
+      run(process.execPath, ['--import', 'tsx', `./${renderer}`], { cwd: consumerDir });
+    }
+    console.log('packed WC synthetic cases: passed');
+  } catch (error) {
+    console.error('packed WC synthetic cases: failed', error);
+    hostFailures.push(error);
+  }
+  if (hostFailures.length) throw new AggregateError(hostFailures, 'packed WC host checks failed');
 
   logCheckboxDeliveryEvidence(
     packManifest,
     consumerPackageNames,
-    'packed-types-and-synthetic-wc-passed'
+    'packed-types-synthetic-wc-and-bounded-native-passed'
   );
   runNoStylesConsumer({ consumerDir, cli, fixtureDir: join(ROOT_DIR, 'scripts', 'release'), run });
 
@@ -412,6 +433,7 @@ function run(command, commandArgs, options = {}) {
     cwd: options.cwd ?? ROOT_DIR,
     encoding: 'utf8',
     stdio: options.quiet ? 'ignore' : 'inherit',
+    timeout: options.timeout,
     shell: process.platform === 'win32',
     env: process.env,
   });
@@ -519,23 +541,24 @@ function logCheckboxDeliveryEvidence(packManifest, names, phase) {
   if (revision.error) throw revision.error;
   assert(revision.status === 0, 'cannot bind packed evidence to actual checkout');
   const digest = (path) => createHash('sha256').update(readFileSync(path)).digest('hex');
-  console.log(
-    JSON.stringify({
-      kind: 'checkbox-label-packed-wc-delivery',
-      phase,
-      testedCommit: revision.stdout.trim(),
-      releaseVersion: packManifest.releaseVersion,
-      packages: packManifest.packages
-        .filter((entry) => names.includes(entry.name))
-        .map(({ name, version, integrity, shasum }) => ({ name, version, integrity, shasum })),
-      syntheticHost: readInstalledSyntheticHostEvidence(),
-      lockSha256: digest(join(consumerDir, 'package-lock.json')),
-      generatedFacadeSha256: digest(join(consumerDir, 'proto-ui', 'components', 'wc', 'index.ts')),
-      fixtureSha256: digest(join(RENDER_FIXTURE_DIR, 'wc-checkbox-label.mjs')),
-      nativeAcceptance: 'not-run',
-      registryPublication: 'not-performed',
-    })
-  );
+  const evidence = {
+    kind: 'checkbox-label-packed-wc-delivery',
+    phase,
+    testedCommit: revision.stdout.trim(),
+    releaseVersion: packManifest.releaseVersion,
+    packages: packManifest.packages
+      .filter((entry) => names.includes(entry.name))
+      .map(({ name, version, integrity, shasum }) => ({ name, version, integrity, shasum })),
+    syntheticHost: readInstalledSyntheticHostEvidence(),
+    lockSha256: digest(join(consumerDir, 'package-lock.json')),
+    generatedFacadeSha256: digest(join(consumerDir, 'proto-ui', 'components', 'wc', 'index.ts')),
+    fixtureSha256: digest(join(RENDER_FIXTURE_DIR, 'wc-checkbox-label.mjs')),
+    nativeAcceptance: phase === 'packed-types-synthetic-wc-and-bounded-native-passed'
+      ? 'bounded-default-and-preassembled-explicit-only' : 'not-run',
+    registryPublication: 'not-performed',
+  };
+  console.log(JSON.stringify(evidence));
+  writeFileSync(join(consumerDir, 'checkbox-delivery-evidence.json'), JSON.stringify(evidence));
 }
 
 function readInstalledSyntheticHostEvidence() {
