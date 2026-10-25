@@ -35,7 +35,7 @@ A failed, queued or superseding build cannot leave its predecessor advertised as
 
 Synchronization is polling, not an atomic GitHub authorization transaction. GitHub can change after the last API read. The two-minute deployment timer and five-minute serving lease bound convergence; they do not promise instantaneous revocation. The scan itself must finish within four minutes, and every Ready entry retains the original scan timestamp rather than a later lease extension.
 
-The retained artifact envelope is 50 MiB compressed, 128 MiB expanded, 25 MiB per file and 20,000 files. ZIP materialization additionally limits each path to 64 components/1,024 UTF-8 bytes, aggregate path names to 8 MiB and inferred parent directories to 20,000. Links, special files, traversal, ambiguous paths, and root `_worker.js`, `_routes.json`, `_headers`, `_redirects` or `.assetsignore` controls are rejected. Empty regular assets remain valid.
+The retained artifact envelope is 50 MiB compressed, 100 MiB expanded, 25 MiB per file and 20,000 files. ZIP materialization additionally limits each path to 64 components/1,024 UTF-8 bytes, aggregate path names to 8 MiB and inferred parent directories to 20,000. Links, special files, traversal, ambiguous paths, and root `_worker.js`, `_routes.json`, `_headers`, `_redirects` or `.assetsignore` controls are rejected. Empty regular assets remain valid.
 
 ## Runtime configuration
 
