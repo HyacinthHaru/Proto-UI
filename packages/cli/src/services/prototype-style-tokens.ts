@@ -6,7 +6,15 @@ import path from 'node:path';
 import ts from 'typescript';
 
 import { canonicalizeLoweredVariants } from '../generated/lowered-variant-order.js';
-import { createHookSourceSummaryContext, type HookSourceValue } from './hook-source-summary.js';
+import {
+  createHookSourceSummaryContext,
+  createSourceGraphVersionTracker,
+  hookSourceCallMutation,
+  mutateSourceGraph,
+  sourceMembersOneProducer,
+  sourceMembersProven,
+  type HookSourceValue,
+} from './hook-source-summary.js';
 
 export async function collectProtoStyleTokens(root) {
   return collectProtoStyleTokensFromFiles(await collectSourceFiles(root));
@@ -203,6 +211,10 @@ function createScope(parent = null, node = null, sourceSummary = parent?.sourceS
     bindings: new Map(),
     node,
     sourceSummary,
+    // The versions of the containers this scope's owner holds. A scope chain
+    // shares one tracker, so a helper inside an owner shares its owner's
+    // containers, while a separate owner starts with its own.
+    versions: parent?.versions ?? createSourceGraphVersionTracker(),
     definitelyReachedLogicalAssignments:
       parent?.definitelyReachedLogicalAssignments ?? new WeakSet(),
   };
@@ -413,6 +425,11 @@ function walk(node, scope, tokens, exposures, rootInventory = null) {
 
   if (createsScope(node)) {
     const nextScope = createScope(scope, node);
+    // An authored setup is its own owner: it holds its own containers of the
+    // producers it reads, so it does not share the versions of the owner
+    // around it. A helper inside it inherits them.
+    if (scope.sourceSummary?.isAuthoredSetup?.(node, node.getSourceFile()))
+      nextScope.versions = createSourceGraphVersionTracker();
 
     if (ts.isForOfStatement(node)) {
       const iterable = unwrapTransparent(node.expression);
@@ -846,6 +863,34 @@ function walk(node, scope, tokens, exposures, rootInventory = null) {
       collectRuleVariantTokens(node, scope, rootInventory.nonTemplateTokens, exposures);
   }
 
+  // The callee and the arguments are evaluated in order, and the call
+  // receives the objects its arguments denoted while they were evaluated.
+  if (ts.isCallExpression(node)) {
+    walk(node.expression, scope, tokens, exposures, rootInventory);
+    const mutation = hookSourceCallMutation(node);
+    const captured = [];
+    for (const argument of node.arguments) {
+      const inner = unwrapTransparent(argument);
+      // An assignment expression stands for the value it assigned.
+      const assigned =
+        ts.isBinaryExpression(inner) && inner.operatorToken.kind === ts.SyntaxKind.EqualsToken
+          ? inner.right
+          : inner;
+      const values = containerArgumentValues(assigned, scope);
+      captured.push({
+        argument,
+        values,
+        source:
+          mutation.kind === 'copy' && mutation.sources.includes(captured.length)
+            ? copySourceValue(assigned, scope)
+            : undefined,
+      });
+      walk(argument, scope, tokens, exposures, rootInventory);
+    }
+    applyCallSourceMutation(node, scope, captured);
+    return;
+  }
+
   ts.forEachChild(node, (child) => walk(child, scope, tokens, exposures, rootInventory));
 }
 
@@ -1027,6 +1072,7 @@ function createsScope(node) {
     ts.isFunctionDeclaration(node) ||
     ts.isFunctionExpression(node) ||
     ts.isArrowFunction(node) ||
+    ts.isMethodDeclaration(node) ||
     // A loop initializer binds in the loop's own scope, so a name it shadows
     // must not answer for the body.
     isLoopStatement(node)
@@ -1314,6 +1360,7 @@ function replaceSourceReference(value, target, replacement, rewritten = new Map(
 }
 
 function propagateSourceReference(scope, target, replacement, uncertain = false) {
+  scope.versions.record(target, replacement);
   const rewritten = new Map();
   for (let current = scope; current; current = current.parent) {
     for (const binding of current.bindings.values()) {
@@ -1348,6 +1395,178 @@ function mergeSourceSemantics(values) {
     }
   }
   return merged;
+}
+
+/**
+ * The selector map of a binding is per binding, so the members a call
+ * replaced move there as well as in the source graph.
+ */
+function applyCallSemantics(scope, previous, next, copied, proven, uncertain) {
+  const keys = proven
+    ? [
+        ...new Set(
+          copied.flatMap((source) => (source.kind === 'object' ? [...source.members.keys()] : []))
+        ),
+      ]
+    : [...previous.members.keys()];
+  const semantics = mergeSourceSemantics([next]);
+  for (let owner = scope; owner; owner = owner.parent) {
+    for (const held of owner.bindings.values()) {
+      if (held.sourceValue !== next) continue;
+      if (!held.semanticMap) continue;
+      for (const key of keys) {
+        if (!proven) {
+          held.semanticMap.delete(key);
+          continue;
+        }
+        const written = memberSemantics(semantics.get(key));
+        if (written.length === 0) {
+          held.semanticMap.delete(key);
+          continue;
+        }
+        const before = memberSemantics(held.semanticMap.get(key));
+        const kept = uncertain ? before.filter((entry) => !written.includes(entry)) : [];
+        held.semanticMap.set(key, [...written, ...kept]);
+      }
+    }
+  }
+}
+
+/**
+ * The scope that holds a source graph, so a write inside a callback is not
+ * ordered against a read outside it. The outermost scope that holds the graph
+ * is the one that decides, the same way the container owner does: an alias
+ * inside a callback does not make the write ordered against an outer read.
+ */
+function scopeOwningGraph(graph, scope) {
+  let owning = null;
+  for (let current = scope; current; current = current.parent) {
+    for (const held of current.bindings.values()) {
+      if (sourceValueCandidates(held).includes(graph)) owning = current;
+    }
+  }
+  return owning;
+}
+
+/**
+ * The source-backed containers an argument may denote.
+ *
+ * A name answers from its binding, and a member of a name that holds no
+ * proven source value cannot be one either. Resolving the expression instead
+ * would expand the scope into one environment per candidate, for every call
+ * argument.
+ */
+function containerArgumentValues(argument, scope) {
+  const inner = unwrapTransparent(argument);
+  if (ts.isIdentifier(inner)) {
+    return sourceValueCandidates(lookup(inner.text, scope)).filter(
+      (value) => value.kind === 'object'
+    );
+  }
+  const owner = memberOwner(inner);
+  if (owner && ts.isIdentifier(unwrapTransparent(owner))) {
+    const candidates = sourceValueCandidates(lookup(unwrapTransparent(owner).text, scope));
+    if (candidates.length === 0) return [];
+    // A member of a proven object graph is read from that graph, so the scope
+    // does not have to be expanded into one environment per candidate.
+    const key = memberName(inner);
+    if (key !== null && candidates.every((value) => value.kind === 'object')) {
+      const members = candidates.map((value) =>
+        value.kind === 'object' ? value.members.get(key) : undefined
+      );
+      return [...new Set(members.filter((member) => member !== undefined))];
+    }
+  }
+  return sourceValueCandidates(resolveExpression(inner, scope)).filter(
+    (value) => value.kind === 'object'
+  );
+}
+
+/**
+ * The source graph a copy reads from, when the expression denotes exactly
+ * one proven graph. A source with an unproved alternative copies a different
+ * member set on the other branch, so nothing about the copy is proven.
+ */
+function copySourceValue(argument, scope) {
+  const inner = unwrapTransparent(argument);
+  // A name answers from its binding, which holds the graph the name denotes.
+  if (ts.isIdentifier(inner)) {
+    const values = sourceValueCandidates(lookup(inner.text, scope));
+    if (values.length !== 1) return undefined;
+    const value = values[0];
+    if (value.kind !== 'object') return undefined;
+    return sourceMembersProven(value) ? value : undefined;
+  }
+  const source = sourceSummaryValue(inner, scope);
+  if (!source) return undefined;
+  const values = source.resolvedValues ?? [source.resolved.value];
+  if (values.length !== 1) return undefined;
+  const value = values[0];
+  if (value.kind !== 'object') return undefined;
+  return sourceMembersProven(value) ? value : undefined;
+}
+
+/**
+ * A call may write to the containers it receives, so the cached provenance of
+ * a source-backed container is only sound while no member it holds has been
+ * replaced.
+ *
+ * A known mutating call is tracked when every member it copies is proven. Any
+ * other call keeps no proof of the members the containers it received hold,
+ * because it may have replaced any of them.
+ */
+function applyCallSourceMutation(node, scope, captured) {
+  if (captured.length === 0) return;
+  // An authored asHook producer never receives the arguments of its call:
+  // the runtime evaluates them for their effects and then invokes the
+  // producer's setup with the definition handle alone
+  // (packages/core/src/prototype.ts, `proto.setup(def)` for the asHook kind),
+  // and the summary only recognizes `defineAsHook` declarations as producers.
+  // The producer therefore cannot write to a container it was passed, so the
+  // call does not withdraw it here.
+  if (scope.sourceSummary?.isAuthoredProducerCall?.(node, node.getSourceFile())) return;
+  const mutation = hookSourceCallMutation(node);
+  const copied = [];
+  let proven = false;
+  if (mutation.kind === 'copy') {
+    const sources = mutation.sources.map((index) => captured[index]).filter(Boolean);
+    // A copy with no source changes nothing, so the container keeps its proof.
+    if (sources.length === 0) return;
+    proven = true;
+    for (const argument of sources) {
+      // The source is read when the call runs, so it advances to the version
+      // it holds then and not to the snapshot taken while it was evaluated.
+      const value = argument.source ? scope.versions.latest(argument.source) : undefined;
+      // Members that come from more than one producer name no single
+      // producer, so the copy is not proven.
+      if (!value || !sourceMembersProven(value) || !sourceMembersOneProducer(value)) {
+        proven = false;
+        break;
+      }
+      copied.push(value);
+    }
+  }
+  const targets = mutation.kind === 'copy' ? [captured[mutation.target]].filter(Boolean) : captured;
+  for (const entry of targets) {
+    for (const previous of entry.values) {
+      if (!previous || previous.kind !== 'object') continue;
+      // A member write replaced the graph the container holds without
+      // replacing the container, so the mutation lands on the version this
+      // identity holds now - not on another candidate's version.
+      const current = scope.versions.latest(previous);
+      if (!current || current.kind !== 'object') continue;
+      const next = proven ? mutateSourceGraph(current, copied) : mutateSourceGraph(current, null);
+      const owning = scopeOwningGraph(current, scope);
+      const uncertain =
+        // Only one of several targets is written, so the others keep the
+        // members they held.
+        entry.values.length > 1 ||
+        isConditionallyReached(node, scope.definitelyReachedLogicalAssignments) ||
+        isDeferredWrite(node, enclosingFunction(owning?.node ?? null));
+      propagateSourceReference(scope, current, next, uncertain);
+      applyCallSemantics(scope, current, next, copied, proven, uncertain);
+    }
+  }
 }
 
 function sourceSummaryValue(node, scope) {
@@ -1437,10 +1656,19 @@ function sourceSummaryValue(node, scope) {
   const resolutions = environments.map((candidate) =>
     summary.resolve(node, node.getSourceFile(), candidate)
   );
-  const resolved = resolutions.find((candidate) => candidate.matched) ?? resolutions[0];
+  // A producer hands the same container to every call, so a copy that wrote
+  // to it is visible to a later resolution of that producer: the resolution
+  // advances to the version the container holds now.
+  const matched = resolutions.find((candidate) => candidate.matched) ?? resolutions[0];
+  const resolved = {
+    matched: matched.matched,
+    value: matched.value.kind === 'object' ? scope.versions.latest(matched.value) : matched.value,
+  };
   const values = resolutions
     .filter((candidate) => candidate.matched)
-    .map((candidate) => candidate.value);
+    .map((candidate) =>
+      candidate.value.kind === 'object' ? scope.versions.latest(candidate.value) : candidate.value
+    );
   const sourceOwner = memberOwner(node);
   const ownerProven = sourceOwner
     ? hasSourceHookProvenance(summary.resolve(sourceOwner, node.getSourceFile(), environment).value)

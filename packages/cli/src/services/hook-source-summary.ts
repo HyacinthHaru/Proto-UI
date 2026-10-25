@@ -62,6 +62,15 @@ export type HookSourceSummaryContext = {
   resolveCall(node: ts.CallExpression, source: ts.SourceFile): HookSourceResolution;
   /** Recognize the authored producer independently of its capture/projection proof. */
   isAuthoredProducerCall(node: ts.CallExpression, source: ts.SourceFile): boolean;
+  /**
+   * Prove that a function is an authored setup: the `setup` member of a
+   * configuration object literal that a canonical Core factory receives.
+   *
+   * The factory is admitted through the module context, so a factory imported
+   * under another name still counts and a local name that merely spells it
+   * does not.
+   */
+  isAuthoredSetup(node: ts.Node, source: ts.SourceFile): boolean;
   /** Verify the actual lexical producer declaration, not a same-named shadow. */
   isSameSourceBinding(
     node: ts.CallExpression,
@@ -153,6 +162,221 @@ function unwrap(node: ts.Node): ts.Node {
     ts.isSatisfiesExpression(node)
     ? unwrap(node.expression)
     : node;
+}
+
+/**
+ * How a call may change the source-backed containers it is handed.
+ *
+ * `copy` — `Object.assign(target, ...sources)` copies the sources' own
+ *   enumerable members onto the target, so the members it writes are known.
+ * `unknown` — every other call may write to the containers it receives.
+ */
+export type HookSourceCallMutation =
+  | { kind: 'copy'; target: number; sources: number[] }
+  | { kind: 'unknown' };
+
+const globalObjectShadow = new WeakMap<ts.SourceFile, boolean>();
+
+/**
+ * Whether the source file binds `Object` itself, which would make
+ * `Object.assign` an ordinary local call rather than the builtin.
+ *
+ * Every binding in the file counts, not only the top-level ones: a parameter
+ * or a block-scoped `const Object` shadows the builtin for the calls inside
+ * that scope, and the file-wide reading fails closed rather than trusting a
+ * name heuristic that only looks at one scope.
+ */
+function shadowsGlobalObject(source: ts.SourceFile): boolean {
+  const cached = globalObjectShadow.get(source);
+  if (cached !== undefined) return cached;
+  let shadowed = false;
+  const bindsObject = (name: ts.BindingName): boolean => {
+    if (ts.isIdentifier(name)) return name.text === 'Object';
+    if (ts.isObjectBindingPattern(name))
+      return name.elements.some((element) => bindsObject(element.name));
+    return name.elements.some(
+      (element) => !ts.isOmittedExpression(element) && bindsObject(element.name)
+    );
+  };
+  const visit = (node: ts.Node): void => {
+    if (shadowed) return;
+    if (ts.isVariableDeclaration(node) && bindsObject(node.name)) {
+      shadowed = true;
+      return;
+    }
+    if (ts.isParameter(node) && bindsObject(node.name)) {
+      shadowed = true;
+      return;
+    }
+    if (ts.isFunctionDeclaration(node) && node.name?.text === 'Object') {
+      shadowed = true;
+      return;
+    }
+    if (ts.isClassDeclaration(node) && node.name?.text === 'Object') {
+      shadowed = true;
+      return;
+    }
+    if (ts.isEnumDeclaration(node) && node.name.text === 'Object') {
+      shadowed = true;
+      return;
+    }
+    if (ts.isModuleDeclaration(node) && node.name.text === 'Object') {
+      shadowed = true;
+      return;
+    }
+    if (ts.isImportClause(node) && node.name?.text === 'Object') {
+      shadowed = true;
+      return;
+    }
+    if (ts.isImportSpecifier(node) && node.name.text === 'Object') {
+      shadowed = true;
+      return;
+    }
+    if (ts.isNamespaceImport(node) && node.name.text === 'Object') {
+      shadowed = true;
+      return;
+    }
+    if (
+      ts.isCatchClause(node) &&
+      node.variableDeclaration &&
+      bindsObject(node.variableDeclaration.name)
+    ) {
+      shadowed = true;
+      return;
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(source);
+  globalObjectShadow.set(source, shadowed);
+  return shadowed;
+}
+
+/**
+ * The mutation a call may perform on the containers it receives.
+ *
+ * Only `Object.assign` is a known mutator: it copies the sources' own
+ * enumerable members onto the target, so the members it writes are known.
+ * Every other call may write anything it is handed, so a container it
+ * receives keeps no proof of the members it holds.
+ */
+export function hookSourceCallMutation(node: ts.CallExpression): HookSourceCallMutation {
+  const callee = unwrap(node.expression);
+  if (ts.isPropertyAccessExpression(callee) && callee.name.text === 'assign') {
+    const owner = unwrap(callee.expression);
+    if (
+      ts.isIdentifier(owner) &&
+      owner.text === 'Object' &&
+      !shadowsGlobalObject(node.getSourceFile())
+    ) {
+      return {
+        kind: 'copy',
+        target: 0,
+        sources: node.arguments.slice(1).map((_, index) => index + 1),
+      };
+    }
+  }
+  return { kind: 'unknown' };
+}
+
+/**
+ * The graph a container holds after a call wrote to it.
+ *
+ * `copied` — the graphs whose members a known mutating call copied onto the
+   container. The container keeps the members the copies do not name.
+ * `null` — the write could not be proven, so every member the call could have
+   replaced becomes unproven.
+ */
+export function mutateSourceGraph(
+  target: HookSourceValue,
+  copied: ReadonlyArray<HookSourceValue> | null
+): HookSourceValue {
+  if (target.kind !== 'object') return target;
+  const members = new Map<string, HookSourceValue>();
+  if (copied === null) {
+    for (const key of target.members.keys()) {
+      members.set(key, UNKNOWN('member possibly replaced by a call'));
+    }
+    return { kind: 'object', members };
+  }
+  for (const [key, member] of target.members) members.set(key, member);
+  for (const source of copied) {
+    if (source.kind !== 'object') continue;
+    for (const [key, member] of source.members) members.set(key, member);
+  }
+  return { kind: 'object', members };
+}
+
+/**
+ * The newer versions of the containers one owner holds.
+ *
+ * The tracker is mutable and belongs to the scan that owns those containers.
+ * Two owners that read the same producer declaration each run their own setup
+ * and therefore hold their own containers, so a replacement one owner made is
+ * not visible to the other. The immutable definitions stay in the summary
+ * context; only the versions move.
+ */
+export type SourceGraphVersionTracker = {
+  /** Records that a container's graph was replaced by a newer version. */
+  record: (before: HookSourceValue, after: HookSourceValue) => void;
+  /** The newest version of a captured container graph. */
+  latest: (value: HookSourceValue) => HookSourceValue;
+};
+
+export function createSourceGraphVersionTracker(): SourceGraphVersionTracker {
+  const versions = new WeakMap<HookSourceValue, HookSourceValue>();
+  return {
+    record: (before, after) => {
+      if (before === after) return;
+      versions.set(before, after);
+    },
+    latest: (value) => {
+      let current = value;
+      const seen = new Set<HookSourceValue>();
+      while (!seen.has(current)) {
+        seen.add(current);
+        const next = versions.get(current);
+        if (!next) break;
+        current = next;
+      }
+      return current;
+    },
+  };
+}
+
+/**
+ * Whether every member a graph holds is proven, so copying them is proven.
+ *
+ * A graph whose member set is uncertain, or which holds an unproven member,
+ * stands for an alternative that did not carry that member. Copying it copies
+ * nothing there, so the copy is only proven when no alternative differs.
+ */
+export function sourceMembersProven(value: HookSourceValue): boolean {
+  if (value.kind !== 'object') return false;
+  if (value.uncertainKeys) return false;
+  for (const member of value.members.values()) {
+    if (member.kind === 'unknown') return false;
+  }
+  return true;
+}
+
+/**
+ * Whether a copy source's states all belong to one producer.
+ *
+ * The owner of a state is the producer that declared it, so a source that
+ * gathers states from several producers copies a different member set on each
+ * branch. The copied members cannot be attributed to one producer then, and
+ * the copy is not proven.
+ */
+export function sourceMembersOneProducer(value: HookSourceValue): boolean {
+  if (value.kind !== 'object') return false;
+  let owner: string | null = null;
+  for (const member of value.members.values()) {
+    if (member.kind !== 'state') continue;
+    const key = `${member.state.owner.file}\u0000${member.state.owner.start}`;
+    if (owner === null) owner = key;
+    else if (owner !== key) return false;
+  }
+  return true;
 }
 
 function propertyName(name: ts.PropertyName | ts.BindingName | undefined): string | null {
@@ -426,6 +650,35 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
     const module = moduleForSource(source);
     const symbol = moduleContext.resolveReference(callee, module);
     return symbol ? producerForSymbol(symbol) : null;
+  };
+
+  const authoredSetups = new WeakMap<ts.SourceFile, Set<ts.Node>>();
+  const isAuthoredSetup = (node: ts.Node, source: ts.SourceFile): boolean => {
+    if (!isFunctionLike(node)) return false;
+    let setups = authoredSetups.get(source);
+    if (!setups) {
+      setups = new Set();
+      const module = moduleForSource(source);
+      const visit = (candidate: ts.Node): void => {
+        if (ts.isCallExpression(candidate) && candidate.arguments[0]) {
+          const config = unwrap(candidate.arguments[0]);
+          if (
+            ts.isObjectLiteralExpression(config) &&
+            (moduleContext.isDefineAsHookReference(candidate.expression, module) ||
+              moduleContext.isDefinePrototypeReference(candidate.expression, module) ||
+              moduleContext.isDefineHookReference(candidate.expression, module))
+          ) {
+            const property = configProperty(config, 'setup');
+            const setup = property ? functionFor(propertyExpression(property), module) : null;
+            if (setup) setups!.add(setup.fn);
+          }
+        }
+        ts.forEachChild(candidate, visit);
+      };
+      visit(source);
+      authoredSetups.set(source, setups);
+    }
+    return setups.has(node);
   };
 
   const isSameSourceBinding = (
@@ -2897,6 +3150,7 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
     resolve: evaluate,
     resolveCall,
     isAuthoredProducerCall: (node, source) => producerForCall(node, source) !== null,
+    isAuthoredSetup,
     isSameSourceBinding,
   };
 }

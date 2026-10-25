@@ -23,12 +23,20 @@ export type HookSourceModuleContext = {
   resolveReference(node: ts.Node, module: HookSourceModule): HookSourceSymbol | null;
   /** Prove that an expression denotes the canonical Core defineAsHook value. */
   isDefineAsHookReference(node: ts.Node, module: HookSourceModule): boolean;
+  /** Prove that an expression denotes the canonical Core definePrototype value. */
+  isDefinePrototypeReference(node: ts.Node, module: HookSourceModule): boolean;
+  /** Prove that an expression denotes the canonical Core defineHook value. */
+  isDefineHookReference(node: ts.Node, module: HookSourceModule): boolean;
 };
 
 type ConfigRecord = { options: ts.CompilerOptions; file: string } | null;
 
 const CORE_SPECIFIER = '@proto.ui/core';
 const SCRIPT_EXTENSIONS = new Set(['.ts', '.tsx', '.mts', '.cts', '.js', '.jsx', '.mjs', '.cjs']);
+
+function isCoreFactoryName(name: string): boolean {
+  return name === 'defineAsHook' || name === 'definePrototype' || name === 'defineHook';
+}
 
 function unwrap(node: ts.Node): ts.Node {
   if (
@@ -580,6 +588,23 @@ function nodeModuleCondition(from: string): 'import' | 'require' {
   return 'require';
 }
 
+/**
+ * The resolution mode an importer resolves under. Node16/NodeNext resolution
+ * selects a package's `import` or `require` export from the importer's own
+ * format, so the mode follows the importer instead of the CommonJS default
+ * TypeScript applies when no mode is given.
+ */
+function importerResolutionMode(from: string, options: ts.CompilerOptions): ts.ResolutionMode {
+  const moduleResolution = options.moduleResolution;
+  const usesNodeResolution =
+    moduleResolution === ts.ModuleResolutionKind.Node16 ||
+    moduleResolution === ts.ModuleResolutionKind.NodeNext ||
+    (moduleResolution === undefined &&
+      (options.module === ts.ModuleKind.Node16 || options.module === ts.ModuleKind.NodeNext));
+  if (!usesNodeResolution) return undefined;
+  return nodeModuleCondition(from) === 'import' ? ts.ModuleKind.ESNext : ts.ModuleKind.CommonJS;
+}
+
 function packageExportConditions(from: string, options: ts.CompilerOptions): ReadonlySet<string> {
   const conditions = new Set(options.customConditions ?? []);
   conditions.add('default');
@@ -978,7 +1003,8 @@ export function createHookSourceModuleContext(): HookSourceModuleContext {
         useCaseSensitiveFileNames: ts.sys.useCaseSensitiveFileNames,
         fileExists: ts.sys.fileExists,
         readFile: ts.sys.readFile,
-        readDirectory: ts.sys.readDirectory,
+        // Resolution consumes compiler options, never the project's file list.
+        readDirectory: () => [],
       };
       const parsed = ts.parseJsonConfigFileContent(
         read.config,
@@ -1015,7 +1041,15 @@ export function createHookSourceModuleContext(): HookSourceModuleContext {
     const options = config?.options ?? defaultOptions();
     let resolved: ts.ResolvedModuleFull | undefined;
     try {
-      resolved = ts.resolveModuleName(specifier, containing, options, ts.sys).resolvedModule;
+      resolved = ts.resolveModuleName(
+        specifier,
+        containing,
+        options,
+        ts.sys,
+        undefined,
+        undefined,
+        importerResolutionMode(containing, options)
+      ).resolvedModule;
     } catch {
       resolved = undefined;
     }
@@ -1188,7 +1222,7 @@ export function createHookSourceModuleContext(): HookSourceModuleContext {
         if (statement.moduleSpecifier && ts.isStringLiteralLike(statement.moduleSpecifier)) {
           const specifier = statement.moduleSpecifier.text;
           if (specifier === CORE_SPECIFIER) {
-            if (localName === 'defineAsHook') addUnique(explicit, { module, declaration: element });
+            if (isCoreFactoryName(localName)) addUnique(explicit, { module, declaration: element });
             continue;
           }
           const target = resolveModule(module.file, specifier);
@@ -1216,7 +1250,7 @@ export function createHookSourceModuleContext(): HookSourceModuleContext {
           continue;
         if (!statement.moduleSpecifier || !ts.isStringLiteralLike(statement.moduleSpecifier))
           continue;
-        if (statement.moduleSpecifier.text === CORE_SPECIFIER && name === 'defineAsHook') {
+        if (statement.moduleSpecifier.text === CORE_SPECIFIER && isCoreFactoryName(name)) {
           addUnique(stars, { module, declaration: statement });
           continue;
         }
@@ -1301,7 +1335,7 @@ export function createHookSourceModuleContext(): HookSourceModuleContext {
     const descriptor = namespaceDescriptor(symbol);
     if (!descriptor) return null;
     if (descriptor.specifier === CORE_SPECIFIER) {
-      return name === 'defineAsHook' ? symbol : null;
+      return isCoreFactoryName(name) ? symbol : null;
     }
     const target = resolveModule(descriptor.module.file, descriptor.specifier);
     return target ? resolveExportInternal(target, name, new Set()) : null;
@@ -1723,42 +1757,46 @@ export function createHookSourceModuleContext(): HookSourceModuleContext {
       return resolveLocal(module, value.text);
     }
     if (ts.isPropertyAccessExpression(value) || ts.isElementAccessExpression(value)) {
-      const name = ts.isPropertyAccessExpression(value)
+      const memberName = ts.isPropertyAccessExpression(value)
         ? value.name.text
         : value.argumentExpression && ts.isStringLiteralLike(value.argumentExpression)
           ? value.argumentExpression.text
           : null;
-      if (!name) return null;
+      if (!memberName) return null;
       const owner = value.expression;
       const ownerSymbol = resolveReference(owner, module);
-      return ownerSymbol ? objectMemberForSymbol(ownerSymbol, name, new Set(), module) : null;
+      return ownerSymbol ? objectMemberForSymbol(ownerSymbol, memberName, new Set(), module) : null;
     }
     return null;
   }
 
-  function isDefineSymbol(symbol: HookSourceSymbol, seen = new Set<string>()): boolean {
+  function isDefineSymbol(
+    symbol: HookSourceSymbol,
+    seen = new Set<string>(),
+    name = 'defineAsHook'
+  ): boolean {
     const key = declarationKey(symbol);
     if (seen.has(key)) return false;
     seen.add(key);
     const declaration = symbol.declaration;
-    if (coreImportedName(declaration) === 'defineAsHook') return true;
-    if (coreExportedName(declaration) === 'defineAsHook') return true;
+    if (coreImportedName(declaration) === name) return true;
+    if (coreExportedName(declaration) === name) return true;
     if (isCoreStarExport(declaration)) return true;
     if (ts.isVariableDeclaration(declaration) && declaration.initializer) {
       // An initializer only proves the declaration's value while that binding
       // still holds it. A `let`/`var` name, or a `const` whose object escapes
       // through a member write, has no such guarantee here.
       if (!isConstantDeclaration(declaration)) return false;
-      return isDefineReference(declaration.initializer, symbol.module, seen);
+      return isDefineReference(declaration.initializer, symbol.module, seen, name);
     }
     // A destructuring initializer is the conditional default, so using it as
     // the element's value would certify a factory the author never proved.
     if (ts.isBindingElement(declaration)) return false;
     if (ts.isPropertyAssignment(declaration)) {
-      return isDefineReference(declaration.initializer, symbol.module, seen);
+      return isDefineReference(declaration.initializer, symbol.module, seen, name);
     }
     if (ts.isShorthandPropertyAssignment(declaration)) {
-      return isDefineReference(declaration.name, symbol.module, seen);
+      return isDefineReference(declaration.name, symbol.module, seen, name);
     }
     return false;
   }
@@ -1792,28 +1830,39 @@ export function createHookSourceModuleContext(): HookSourceModuleContext {
     return false;
   }
 
-  function isDefineReference(node: ts.Node, module: HookSourceModule, seen: Set<string>): boolean {
+  function isDefineReference(
+    node: ts.Node,
+    module: HookSourceModule,
+    seen: Set<string>,
+    name = 'defineAsHook'
+  ): boolean {
     const value = unwrap(node);
     if (ts.isPropertyAccessExpression(value) || ts.isElementAccessExpression(value)) {
-      const name = ts.isPropertyAccessExpression(value)
+      const memberName = ts.isPropertyAccessExpression(value)
         ? value.name.text
         : value.argumentExpression && ts.isStringLiteralLike(value.argumentExpression)
           ? value.argumentExpression.text
           : null;
-      if (name !== 'defineAsHook') return false;
+      if (memberName !== name) return false;
       const owner = resolveReference(value.expression, module);
       if (!owner) return false;
       if (isDefineNamespace(owner, seen)) return true;
       const member = resolveReference(value, module);
-      return !!member && isDefineSymbol(member, seen);
+      return !!member && isDefineSymbol(member, seen, name);
     }
     if (!ts.isIdentifier(value)) return false;
     const symbol = resolveReference(value, module);
-    return !!symbol && isDefineSymbol(symbol, seen);
+    return !!symbol && isDefineSymbol(symbol, seen, name);
   }
 
   const isDefineAsHookReference = (node: ts.Node, module: HookSourceModule): boolean =>
-    isDefineReference(node, module, new Set());
+    isDefineReference(node, module, new Set(), 'defineAsHook');
+
+  const isDefinePrototypeReference = (node: ts.Node, module: HookSourceModule): boolean =>
+    isDefineReference(node, module, new Set(), 'definePrototype');
+
+  const isDefineHookReference = (node: ts.Node, module: HookSourceModule): boolean =>
+    isDefineReference(node, module, new Set(), 'defineHook');
 
   return {
     registerSource,
@@ -1823,5 +1872,7 @@ export function createHookSourceModuleContext(): HookSourceModuleContext {
     resolveExport,
     resolveReference,
     isDefineAsHookReference,
+    isDefinePrototypeReference,
+    isDefineHookReference,
   };
 }

@@ -121,6 +121,573 @@ describe('lowered hook coverage', () => {
       }
     });
 
+    it('tracks a mutating call on a source-backed container and keeps independent handles', async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-call-mutation-'));
+      try {
+        const producerFile = path.join(dir, 'producer.ts');
+        await writeFile(
+          producerFile,
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            "export const asA = defineAsHook({ name: 'a', setup(d) { d.state.bool('alpha', false); }, projectHandle(r) { return { ready: r.stateHandles.alpha }; } });",
+            "export const asB = defineAsHook({ name: 'b', setup(d) { d.state.bool('beta', false); }, projectHandle(r) { return { ready: r.stateHandles.beta }; } });",
+            "export const asC = defineAsHook({ name: 'c', setup(d) { d.state.bool('gamma', false); }, projectHandle(r) { return { ready: r.stateHandles.gamma }; } });",
+          ].join('\n')
+        );
+        const consumerFile = path.join(dir, 'consumer.proto.ts');
+        const consumer = [
+          "import { asA, asB, asC } from './producer';",
+          'const bag = asA();',
+          'const alias = bag;',
+          'const independent = asC();',
+          'Object.assign(bag, asB());',
+          rule('w.state(bag.ready).eq(true)'),
+          "def.rule({ when: w => w.state(alias.ready).eq(true), intent: i => i.feedback.style.use(tw('underline')) });",
+          "def.rule({ when: w => w.state(independent.ready).eq(true), intent: i => i.feedback.style.use(tw('ring-2')) });",
+        ].join('\n');
+        const scan = scanWithFreshSummary(consumer, consumerFile);
+        expect(scan.usages.map(({ hook, state }) => ({ hook, state }))).toEqual([
+          { hook: 'asB', state: 'beta' },
+          { hook: 'asB', state: 'beta' },
+          { hook: 'asC', state: 'gamma' },
+        ]);
+        expect(scan.unresolved).toEqual([]);
+        await writeFile(consumerFile, consumer);
+        const tokens = await collectProtoStyleTokens(dir);
+        expect(tokens).toContain('data-[beta]:bg-primary');
+        expect(tokens).not.toContain('data-[alpha]:bg-primary');
+        expect(tokens).toContain('data-[beta]:underline');
+        expect(tokens).toContain('data-[gamma]:ring-2');
+        expect(tokens).not.toContain('data-[gamma]:underline');
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
+
+    it('withholds a container proof after an unknown call receives it', async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-call-escape-'));
+      try {
+        await writeFile(
+          path.join(dir, 'producer.ts'),
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            "export const asA = defineAsHook({ name: 'a', setup(d) { d.state.bool('alpha', false); }, projectHandle(r) { return { ready: r.stateHandles.alpha }; } });",
+          ].join('\n')
+        );
+        const consumerFile = path.join(dir, 'consumer.proto.ts');
+        const consumer = [
+          "import { asA } from './producer';",
+          'const bag = asA();',
+          'const alias = bag;',
+          'mutate(bag);',
+          rule('w.state(bag.ready).eq(true)'),
+          "def.rule({ when: w => w.state(alias.ready).eq(true), intent: i => i.feedback.style.use(tw('underline')) });",
+        ].join('\n');
+        const scan = scanWithFreshSummary(consumer, consumerFile);
+        expect(scan.usages).toEqual([]);
+        expect(scan.unresolved.map((read) => read.expression)).toEqual([
+          'bag.ready',
+          'alias.ready',
+        ]);
+        await writeFile(consumerFile, consumer);
+        const tokens = await collectProtoStyleTokens(dir);
+        expect(tokens).not.toContain('data-[alpha]:bg-primary');
+        expect(tokens).not.toContain('data-[alpha]:underline');
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
+
+    it('reads a call argument as the object it was when the argument was evaluated', async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-call-argument-identity-'));
+      try {
+        await writeFile(
+          path.join(dir, 'producer.ts'),
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            "export const asA = defineAsHook({ name: 'a', setup(d) { d.state.bool('alpha', false); }, projectHandle(r) { return { ready: r.stateHandles.alpha }; } });",
+            "export const asB = defineAsHook({ name: 'b', setup(d) { d.state.bool('beta', false); }, projectHandle(r) { return { ready: r.stateHandles.beta }; } });",
+          ].join('\n')
+        );
+        const consumerFile = path.join(dir, 'consumer.proto.ts');
+        // The call receives the object the first argument denoted while that
+        // argument was evaluated, so the later argument that rebinds the name
+        // does not move the mutation onto the container the name holds later.
+        const consumer = [
+          "import { asA, asB } from './producer';",
+          'let bag = asA();',
+          'const alias = bag;',
+          'mutate(bag, (bag = asB()));',
+          rule('w.state(alias.ready).eq(true)'),
+          "def.rule({ when: w => w.state(bag.ready).eq(true), intent: i => i.feedback.style.use(tw('underline')) });",
+        ].join('\n');
+        const scan = scanWithFreshSummary(consumer, consumerFile);
+        expect(scan.usages).toEqual([]);
+        expect(scan.unresolved.map((read) => read.expression)).toEqual([
+          'alias.ready',
+          'bag.ready',
+        ]);
+        await writeFile(consumerFile, consumer);
+        const tokens = await collectProtoStyleTokens(dir);
+        expect(tokens).not.toContain('data-[alpha]:bg-primary');
+        expect(tokens).not.toContain('data-[alpha]:underline');
+        expect(tokens).not.toContain('data-[beta]:underline');
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
+
+    it('withholds a copy whose source has an unproved alternative', async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-call-copy-alternative-'));
+      try {
+        await writeFile(
+          path.join(dir, 'producer.ts'),
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            "export const asA = defineAsHook({ name: 'a', setup(d) { d.state.bool('alpha', false); }, projectHandle(r) { return { ready: r.stateHandles.alpha }; } });",
+            "export const asB = defineAsHook({ name: 'b', setup(d) { d.state.bool('beta', false); }, projectHandle(r) { return { ready: r.stateHandles.beta }; } });",
+          ].join('\n')
+        );
+        const consumerFile = path.join(dir, 'consumer.proto.ts');
+        // The empty branch copies nothing, so the copy is only proven when
+        // every alternative copies the same members.
+        const consumer = [
+          "import { asA, asB } from './producer';",
+          'const bag = asA();',
+          'const alias = bag;',
+          'Object.assign(bag, flag ? asB() : {});',
+          rule('w.state(alias.ready).eq(true)'),
+        ].join('\n');
+        const scan = scanWithFreshSummary(consumer, consumerFile);
+        expect(scan.usages).toEqual([]);
+        expect(scan.unresolved.map((read) => read.expression)).toEqual(['alias.ready']);
+        await writeFile(consumerFile, consumer);
+        const tokens = await collectProtoStyleTokens(dir);
+        expect(tokens).not.toContain('data-[alpha]:bg-primary');
+        expect(tokens).not.toContain('data-[beta]:bg-primary');
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
+
+    it('keeps the original graph of a copy target the call may not have reached', async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-call-ambiguous-target-'));
+      try {
+        await writeFile(
+          path.join(dir, 'producer.ts'),
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            "export const asA = defineAsHook({ name: 'a', setup(d) { d.state.bool('alpha', false); }, projectHandle(r) { return { ready: r.stateHandles.alpha }; } });",
+            "export const asB = defineAsHook({ name: 'b', setup(d) { d.state.bool('beta', false); }, projectHandle(r) { return { ready: r.stateHandles.beta }; } });",
+            "export const asC = defineAsHook({ name: 'c', setup(d) { d.state.bool('gamma', false); }, projectHandle(r) { return { ready: r.stateHandles.gamma }; } });",
+          ].join('\n')
+        );
+        const consumerFile = path.join(dir, 'consumer.proto.ts');
+        // Only one of the two targets is written, so the other keeps the
+        // members it held.
+        const consumer = [
+          "import { asA, asB, asC } from './producer';",
+          'const a = asA();',
+          'const b = asB();',
+          'Object.assign(flag ? a : b, asC());',
+          rule('w.state(a.ready).eq(true)'),
+          "def.rule({ when: w => w.state(b.ready).eq(true), intent: i => i.feedback.style.use(tw('underline')) });",
+        ].join('\n');
+        const scan = scanWithFreshSummary(consumer, consumerFile);
+        expect(scan.usages.map(({ hook, state }) => ({ hook, state }))).toEqual([
+          { hook: 'asC', state: 'gamma' },
+          { hook: 'asA', state: 'alpha' },
+          { hook: 'asC', state: 'gamma' },
+          { hook: 'asB', state: 'beta' },
+        ]);
+        expect(scan.unresolved).toEqual([]);
+        await writeFile(consumerFile, consumer);
+        const tokens = await collectProtoStyleTokens(dir);
+        expect(tokens).toContain('data-[gamma]:bg-primary');
+        expect(tokens).toContain('data-[alpha]:bg-primary');
+        expect(tokens).toContain('data-[gamma]:underline');
+        expect(tokens).toContain('data-[beta]:underline');
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
+
+    it('keeps the producer a copied state came from through a chained copy', async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-call-chained-copy-'));
+      try {
+        await writeFile(
+          path.join(dir, 'producer.ts'),
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            "export const asA = defineAsHook({ name: 'a', setup(d) { d.state.bool('alpha', false); }, projectHandle(r) { return { ready: r.stateHandles.alpha }; } });",
+            "export const asB = defineAsHook({ name: 'b', setup(d) { d.state.bool('beta', false); }, projectHandle(r) { return { ready: r.stateHandles.beta }; } });",
+            "export const asC = defineAsHook({ name: 'c', setup(d) { d.state.bool('gamma', false); }, projectHandle(r) { return { ready: r.stateHandles.gamma }; } });",
+          ].join('\n')
+        );
+        const consumerFile = path.join(dir, 'consumer.proto.ts');
+        // The second copy moves B's state again, so the producer of that state
+        // stays B rather than becoming the producer of the container it was
+        // copied through.
+        const consumer = [
+          "import { asA, asB, asC } from './producer';",
+          'const a = asA();',
+          'const b = asB();',
+          'const c = asC();',
+          'Object.assign(a, b);',
+          'Object.assign(c, a);',
+          rule('w.state(b.ready).eq(true)'),
+          "def.rule({ when: w => w.state(c.ready).eq(true), intent: i => i.feedback.style.use(tw('underline')) });",
+        ].join('\n');
+        const scan = scanWithFreshSummary(consumer, consumerFile);
+        expect(scan.usages.map(({ hook, state }) => ({ hook, state }))).toEqual([
+          { hook: 'asB', state: 'beta' },
+          { hook: 'asB', state: 'beta' },
+        ]);
+        expect(scan.unresolved).toEqual([]);
+        await writeFile(consumerFile, consumer);
+        const tokens = await collectProtoStyleTokens(dir);
+        expect(tokens).toContain('data-[beta]:bg-primary');
+        expect(tokens).not.toContain('data-[alpha]:bg-primary');
+        expect(tokens).toContain('data-[beta]:underline');
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
+
+    it('copies into the container an argument still denotes after an argument wrote to it', async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-call-stale-target-'));
+      try {
+        await writeFile(
+          path.join(dir, 'producer.ts'),
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            "export const asA = defineAsHook({ name: 'a', setup(d) { d.state.bool('alpha', false); }, projectHandle(r) { return { ready: r.stateHandles.alpha }; } });",
+            "export const asB = defineAsHook({ name: 'b', setup(d) { d.state.bool('beta', false); }, projectHandle(r) { return { ready: r.stateHandles.beta }; } });",
+          ].join('\n')
+        );
+        const consumerFile = path.join(dir, 'consumer.proto.ts');
+        // The member write replaces the container's graph before the call runs,
+        // so the copy lands on the container the argument still denotes.
+        const consumer = [
+          "import { asA, asB } from './producer';",
+          'const bag = asA();',
+          'Object.assign(bag, (bag.extra = asB()));',
+          rule('w.state(bag.ready).eq(true)'),
+        ].join('\n');
+        const scan = scanWithFreshSummary(consumer, consumerFile);
+        expect(scan.usages.map(({ hook, state }) => ({ hook, state }))).toEqual([
+          { hook: 'asB', state: 'beta' },
+        ]);
+        expect(scan.unresolved).toEqual([]);
+        await writeFile(consumerFile, consumer);
+        const tokens = await collectProtoStyleTokens(dir);
+        expect(tokens).toContain('data-[beta]:bg-primary');
+        expect(tokens).not.toContain('data-[alpha]:bg-primary');
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
+
+    it('keeps the outer proof when only a deferred copy could have reached it', async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-call-deferred-copy-'));
+      try {
+        await writeFile(
+          path.join(dir, 'producer.ts'),
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            "export const asA = defineAsHook({ name: 'a', setup(d) { d.state.bool('alpha', false); }, projectHandle(r) { return { ready: r.stateHandles.alpha }; } });",
+            "export const asB = defineAsHook({ name: 'b', setup(d) { d.state.bool('beta', false); }, projectHandle(r) { return { ready: r.stateHandles.beta }; } });",
+          ].join('\n')
+        );
+        const consumerFile = path.join(dir, 'consumer.proto.ts');
+        // The copy sits in a function that never runs, so the outer container
+        // keeps the members it held and the copy stays a candidate.
+        const consumer = [
+          "import { asA, asB } from './producer';",
+          'const bag = asA();',
+          'function updateLater() { const alias = bag; Object.assign(alias, asB()); }',
+          rule('w.state(bag.ready).eq(true)'),
+        ].join('\n');
+        const scan = scanWithFreshSummary(consumer, consumerFile);
+        expect(scan.usages.map(({ hook, state }) => ({ hook, state }))).toEqual([
+          { hook: 'asB', state: 'beta' },
+          { hook: 'asA', state: 'alpha' },
+        ]);
+        expect(scan.unresolved).toEqual([]);
+        await writeFile(consumerFile, consumer);
+        const tokens = await collectProtoStyleTokens(dir);
+        expect(tokens).toContain('data-[beta]:bg-primary');
+        expect(tokens).toContain('data-[alpha]:bg-primary');
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
+
+    it('withholds a copy whose members come from more than one producer', async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-call-mixed-copy-'));
+      try {
+        await writeFile(
+          path.join(dir, 'producer.ts'),
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            "export const asA = defineAsHook({ name: 'a', setup(d) { d.state.bool('alpha', false); }, projectHandle(r) { return { ready: r.stateHandles.alpha }; } });",
+            "export const asB = defineAsHook({ name: 'b', setup(d) { d.state.bool('beta', false); }, projectHandle(r) { return { ready: r.stateHandles.beta }; } });",
+            "export const asC = defineAsHook({ name: 'c', setup(d) { d.state.bool('gamma', false); }, projectHandle(r) { return { ready: r.stateHandles.gamma }; } });",
+          ].join('\n')
+        );
+        const consumerFile = path.join(dir, 'consumer.proto.ts');
+        // The copied members belong to two producers, so no single label names
+        // them and the copy is not proven.
+        const consumer = [
+          "import { asA, asB, asC } from './producer';",
+          'const a = asA();',
+          'const b = asB();',
+          'const c = asC();',
+          'const mixed = { first: b.ready, second: c.ready };',
+          'Object.assign(a, { first: b.ready, second: c.ready });',
+          'Object.assign(a, mixed);',
+          rule('w.state(b.ready).eq(true)'),
+          "def.rule({ when: w => w.state(c.ready).eq(true), intent: i => i.feedback.style.use(tw('underline')) });",
+          "def.rule({ when: w => w.state(a.first).eq(true), intent: i => i.feedback.style.use(tw('ring-2')) });",
+        ].join('\n');
+        const scan = scanWithFreshSummary(consumer, consumerFile);
+        expect(scan.usages.map(({ hook, state }) => ({ hook, state }))).toEqual([
+          { hook: 'asB', state: 'beta' },
+          { hook: 'asC', state: 'gamma' },
+        ]);
+        expect(scan.unresolved.map((read) => read.expression)).toEqual(['a.first']);
+        await writeFile(consumerFile, consumer);
+        const tokens = await collectProtoStyleTokens(dir);
+        expect(tokens).toContain('data-[beta]:bg-primary');
+        expect(tokens).toContain('data-[gamma]:underline');
+        expect(tokens).not.toContain('data-[beta]:underline');
+        expect(tokens).not.toContain('data-[ring-2]');
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
+
+    it('gives every candidate target of a copy its own latest container', async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-call-target-identity-'));
+      try {
+        await writeFile(
+          path.join(dir, 'producer.ts'),
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            "export const asA = defineAsHook({ name: 'a', setup(d) { d.state.bool('alpha', false); }, projectHandle(r) { return { ready: r.stateHandles.alpha }; } });",
+            "export const asB = defineAsHook({ name: 'b', setup(d) { d.state.bool('beta', false); }, projectHandle(r) { return { ready: r.stateHandles.beta }; } });",
+            "export const asC = defineAsHook({ name: 'c', setup(d) { d.state.bool('gamma', false); }, projectHandle(r) { return { ready: r.stateHandles.gamma }; } });",
+          ].join('\n')
+        );
+        const consumerFile = path.join(dir, 'consumer.proto.ts');
+        // The copy reaches one of the two containers, so each keeps the
+        // members it held as an alternative.
+        const consumer = [
+          "import { asA, asB, asC } from './producer';",
+          'const a = asA();',
+          'const b = asB();',
+          'const chosen = flag ? a : b;',
+          'Object.assign(chosen, asC());',
+          rule('w.state(a.ready).eq(true)'),
+          "def.rule({ when: w => w.state(b.ready).eq(true), intent: i => i.feedback.style.use(tw('underline')) });",
+        ].join('\n');
+        const scan = scanWithFreshSummary(consumer, consumerFile);
+        expect(scan.usages.map(({ hook, state }) => ({ hook, state }))).toEqual([
+          { hook: 'asC', state: 'gamma' },
+          { hook: 'asA', state: 'alpha' },
+          { hook: 'asC', state: 'gamma' },
+          { hook: 'asB', state: 'beta' },
+        ]);
+        expect(scan.unresolved).toEqual([]);
+        await writeFile(consumerFile, consumer);
+        const tokens = await collectProtoStyleTokens(dir);
+        expect(tokens).toContain('data-[gamma]:bg-primary');
+        expect(tokens).toContain('data-[alpha]:bg-primary');
+        expect(tokens).toContain('data-[gamma]:underline');
+        expect(tokens).toContain('data-[beta]:underline');
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
+
+    it('reads a copy source as it is when the call runs, not as it was captured', async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-call-source-identity-'));
+      try {
+        await writeFile(
+          path.join(dir, 'producer.ts'),
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            "export const asA = defineAsHook({ name: 'a', setup(d) { d.state.bool('alpha', false); }, projectHandle(r) { return { ready: r.stateHandles.alpha }; } });",
+            "export const asB = defineAsHook({ name: 'b', setup(d) { d.state.bool('beta', false); }, projectHandle(r) { return { ready: r.stateHandles.beta }; } });",
+            "export const asC = defineAsHook({ name: 'c', setup(d) { d.state.bool('gamma', false); }, projectHandle(r) { return { extra: r.stateHandles.gamma }; } });",
+          ].join('\n')
+        );
+        const consumerFile = path.join(dir, 'consumer.proto.ts');
+        // The third argument writes C's container into the source before the
+        // call runs, so the copy reads that object and not the old state, and
+        // C contributes only its own member.
+        const consumer = [
+          "import { asA, asB, asC } from './producer';",
+          'const a = asA();',
+          'const b = asB();',
+          'Object.assign(a, b, (b.ready = asC()));',
+          rule('w.state(a.ready).eq(true)'),
+        ].join('\n');
+        const scan = scanWithFreshSummary(consumer, consumerFile);
+        expect(scan.usages).toEqual([]);
+        expect(scan.unresolved.map((read) => read.expression)).toEqual(['a.ready']);
+        await writeFile(consumerFile, consumer);
+        const tokens = await collectProtoStyleTokens(dir);
+        expect(tokens).not.toContain('data-[beta]:bg-primary');
+        expect(tokens).not.toContain('data-[alpha]:bg-primary');
+        expect(tokens).not.toContain('data-[gamma]:bg-primary');
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
+
+    it('reads a later handle of the same producer as the container the copy wrote to', async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-shared-handle-'));
+      try {
+        await writeFile(
+          path.join(dir, 'producer.ts'),
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            "export const asA = defineAsHook({ name: 'a', setup(d) { d.state.bool('alpha', false); }, projectHandle(r) { return { ready: r.stateHandles.alpha }; } });",
+            "export const asB = defineAsHook({ name: 'b', setup(d) { d.state.bool('beta', false); }, projectHandle(r) { return { ready: r.stateHandles.beta }; } });",
+          ].join('\n')
+        );
+        const consumerFile = path.join(dir, 'consumer.proto.ts');
+        // A producer hands the same container to every call, so the second
+        // handle is the container the copy wrote to, and the call that may
+        // write to it withdraws it.
+        const consumer = [
+          "import { asA, asB } from './producer';",
+          'const bag = asA();',
+          'Object.assign(bag, asB());',
+          'const escaped = asA();',
+          'mutate(escaped);',
+          rule('w.state(escaped.ready).eq(true)'),
+        ].join('\n');
+        const scan = scanWithFreshSummary(consumer, consumerFile);
+        expect(scan.usages).toEqual([]);
+        expect(scan.unresolved.map((read) => read.expression)).toEqual(['escaped.ready']);
+        await writeFile(consumerFile, consumer);
+        const tokens = await collectProtoStyleTokens(dir);
+        expect(tokens).not.toContain('data-[alpha]:bg-primary');
+        expect(tokens).not.toContain('data-[beta]:bg-primary');
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
+
+    it("keeps one owner's copy out of another owner that reads the same producer", async () => {
+      const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-owner-isolation-'));
+      try {
+        await writeFile(
+          path.join(dir, 'producer.ts'),
+          [
+            "import { defineAsHook } from '@proto.ui/core';",
+            "export const asA = defineAsHook({ name: 'a', setup(d) { d.state.bool('alpha', false); }, projectHandle(r) { return { ready: r.stateHandles.alpha }; } });",
+            "export const asB = defineAsHook({ name: 'b', setup(d) { d.state.bool('beta', false); }, projectHandle(r) { return { ready: r.stateHandles.beta }; } });",
+          ].join('\n')
+        );
+        const ownerA = path.join(dir, 'owner-a.proto.ts');
+        const ownerB = path.join(dir, 'owner-b.proto.ts');
+        await writeFile(
+          ownerA,
+          [
+            "import { asA, asB } from './producer';",
+            'const bag = asA();',
+            'Object.assign(bag, asB());',
+            "def.rule({ when: w => w.state(bag.ready).eq(true), intent: i => i.feedback.style.use(tw('bg-primary')) });",
+          ].join('\n')
+        );
+        await writeFile(
+          ownerB,
+          [
+            "import { asA } from './producer';",
+            'const own = asA();',
+            "def.rule({ when: w => w.state(own.ready).eq(true), intent: i => i.feedback.style.use(tw('underline')) });",
+          ].join('\n')
+        );
+        // Each owner runs its own setup, so the copy owner A made is not what
+        // owner B reads from the same producer declaration.
+        const tokens = await collectProtoStyleTokensFromFiles([ownerA, ownerB]);
+        expect(tokens).toContain('data-[beta]:bg-primary');
+        expect(tokens).toContain('data-[alpha]:underline');
+        expect(tokens).not.toContain('data-[beta]:underline');
+      } finally {
+        await rm(dir, { recursive: true, force: true });
+      }
+    });
+
+    it.each([
+      ['direct', "import { definePrototype } from '@proto.ui/core';", 'definePrototype'],
+      ['aliased', "import { definePrototype as define } from '@proto.ui/core';", 'define'],
+      ['namespace', "import * as core from '@proto.ui/core';", 'core.definePrototype'],
+      ['referenced', "import { definePrototype } from '@proto.ui/core';", 'definePrototype', true],
+      ['re-exported', "import { make } from './factory';", 'make'],
+      ['star re-exported', "import { definePrototype } from './factory';", 'definePrototype'],
+      [
+        'namespace re-exported',
+        "import * as factory from './factory';",
+        'factory.core.definePrototype',
+      ],
+    ])(
+      "keeps one setup owner's copy out of another setup owner through a %s factory",
+      async (_kind, factoryImport, factory, referenced = false) => {
+        const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-owner-same-file-'));
+        try {
+          await writeFile(
+            path.join(dir, 'factory.ts'),
+            [
+              "export { definePrototype as make } from '@proto.ui/core';",
+              "export * from '@proto.ui/core';",
+              "export * as core from '@proto.ui/core';",
+            ].join('\n')
+          );
+          await writeFile(
+            path.join(dir, 'producer.ts'),
+            [
+              "import { defineAsHook } from '@proto.ui/core';",
+              "export const asA = defineAsHook({ name: 'a', setup(d) { d.state.bool('alpha', false); }, projectHandle(r) { return { ready: r.stateHandles.alpha }; } });",
+              "export const asB = defineAsHook({ name: 'b', setup(d) { d.state.bool('beta', false); }, projectHandle(r) { return { ready: r.stateHandles.beta }; } });",
+            ].join('\n')
+          );
+          const consumerFile = path.join(dir, 'consumer.proto.ts');
+          // Two authored setups in one file are two owners: each runs its own
+          // setup and therefore holds its own handle of the same producer.
+          const consumer = [
+            factoryImport,
+            "import { asA, asB } from './producer';",
+            referenced ? 'function setupA(def) {' : `${factory}({ name: 'owner-a', setup(def) {`,
+            '  const bag = asA();',
+            '  Object.assign(bag, asB());',
+            "  def.rule({ when: w => w.state(bag.ready).eq(true), intent: i => i.feedback.style.use(tw('bg-primary')) });",
+            referenced ? '}' : '} });',
+            referenced ? 'function setupB(def) {' : `${factory}({ name: 'owner-b', setup(def) {`,
+            '  const own = asA();',
+            "  def.rule({ when: w => w.state(own.ready).eq(true), intent: i => i.feedback.style.use(tw('underline')) });",
+            referenced ? '}' : '} });',
+            ...(referenced
+              ? [
+                  `${factory}({ name: 'owner-a', setup: setupA });`,
+                  `${factory}({ name: 'owner-b', setup: setupB });`,
+                ]
+              : []),
+          ].join('\n');
+          await writeFile(consumerFile, consumer);
+          const tokens = await collectProtoStyleTokensFromFiles([consumerFile]);
+          expect(tokens).toContain('data-[beta]:bg-primary');
+          expect(tokens).toContain('data-[alpha]:underline');
+          expect(tokens).not.toContain('data-[beta]:underline');
+        } finally {
+          await rm(dir, { recursive: true, force: true });
+        }
+      }
+    );
+
     it('withholds stale member proofs after recursive destructuring assignment targets', async () => {
       const dir = await mkdtemp(path.join(tmpdir(), 'lowered-hook-destructured-write-'));
       try {

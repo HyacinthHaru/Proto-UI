@@ -4,9 +4,15 @@ import ts from 'typescript';
 
 import {
   createHookSourceSummaryContext,
+  createSourceGraphVersionTracker,
+  hookSourceCallMutation,
+  mutateSourceGraph,
+  sourceMembersOneProducer,
+  sourceMembersProven,
   type HookSourceState,
   type HookSourceSummaryContext,
   type HookSourceValue,
+  type SourceGraphVersionTracker,
 } from './hook-source-summary.js';
 import { loweredHookStates } from './prototype-style-tokens.js';
 
@@ -178,6 +184,12 @@ type Scope = {
   /** The node that created this scope, used to resolve exposures lexically. */
   node: ts.Node | null;
   sourceSummary: HookSourceSummaryContext;
+  /**
+   * The versions of the containers this scope's owner holds. A scope chain
+   * shares one tracker, so a helper inside an owner shares its owner's
+   * containers, while an authored setup - its own owner - starts a new one.
+   */
+  versions: SourceGraphVersionTracker;
 };
 
 function lookup(scope: Scope | null, name: string): Binding | null {
@@ -435,6 +447,7 @@ export function scanRuleStateReads(
   const source = ts.createSourceFile(fileName, sourceText, ts.ScriptTarget.Latest, true);
   const sourceSummary = suppliedSummary ?? createHookSourceSummaryContext();
   sourceSummary.registerSource(source);
+
   const usages: HookStateUsage[] = [];
   const unresolved: UnresolvedStateRead[] = [];
   const exposedLocals: ExposedLocalUsage[] = [];
@@ -586,7 +599,14 @@ export function scanRuleStateReads(
         }
       }
     }
-    return scope.sourceSummary.resolve(node, source, sourceEnvironment(scope));
+    const resolved = scope.sourceSummary.resolve(node, source, sourceEnvironment(scope));
+    // A producer hands the same container to every call, so a copy that wrote
+    // to it is visible to a later resolution of that producer: the resolution
+    // advances to the version the container holds now.
+    if (resolved.value.kind === 'object') {
+      return { matched: resolved.matched, value: scope.versions.latest(resolved.value) };
+    }
+    return resolved;
   };
 
   const sourceResolveCandidates = (node: ts.Node, scope: Scope) => {
@@ -637,6 +657,103 @@ export function scanRuleStateReads(
     return environments.map((environment) =>
       scope.sourceSummary.resolve(node, source, environment)
     );
+  };
+
+  /**
+   * The source-backed containers an expression may denote. A container is an
+   * object graph the source summary proved, so it carries the members a
+   * handle bag holds.
+   */
+  const sourceContainerValues = (expression: ts.Node, scope: Scope): HookSourceValue[] => {
+    const value = unwrap(expression);
+    if (ts.isConditionalExpression(value)) {
+      return [
+        ...sourceContainerValues(value.whenTrue, scope),
+        ...sourceContainerValues(value.whenFalse, scope),
+      ];
+    }
+    if (ts.isObjectLiteralExpression(value) || ts.isArrayLiteralExpression(value)) {
+      // A literal holds its containers inside; the literal itself denotes no
+      // container. Resolving it would expand the scope for every property,
+      // so the nested values are read instead.
+      const values: HookSourceValue[] = [];
+      const visit = (node: ts.Node): void => {
+        if (ts.isPropertyAssignment(node)) {
+          visit(node.initializer);
+          return;
+        }
+        if (ts.isShorthandPropertyAssignment(node)) {
+          visit(node.name);
+          return;
+        }
+        if (ts.isSpreadAssignment(node)) {
+          visit(node.expression);
+          return;
+        }
+        if (ts.isArrayLiteralExpression(node)) {
+          for (const element of node.elements) {
+            if (!ts.isOmittedExpression(element)) visit(element);
+          }
+          return;
+        }
+        if (
+          ts.isIdentifier(node) ||
+          ts.isPropertyAccessExpression(node) ||
+          ts.isElementAccessExpression(node)
+        ) {
+          values.push(...sourceContainerValues(node, scope));
+          return;
+        }
+        ts.forEachChild(node, visit);
+      };
+      visit(value);
+      return [...new Set(values)];
+    }
+    if (ts.isIdentifier(value)) {
+      // A name answers from its binding: the source-backed graph it holds, or
+      // nothing. Resolving the expression instead would expand the scope into
+      // one environment per candidate, for every call argument.
+      const binding = lookup(scope, value.text) ?? undefined;
+      return sourceBindingValues(binding).filter((candidate) => candidate.kind === 'object');
+    }
+    const owner = ownerOf(value);
+    const ownerName = owner ? unwrap(owner) : null;
+    if (ownerName && ts.isIdentifier(ownerName)) {
+      const binding = lookup(scope, ownerName.text) ?? undefined;
+      const candidates = sourceBindingValues(binding);
+      // A name that holds no proven source value cannot have a source-backed
+      // member either.
+      if (candidates.length === 0) return [];
+      // A member of a proven object graph is read from that graph, so the
+      // scope does not have to be expanded into one environment per candidate.
+      const key = memberNameOf(value);
+      if (key !== null && candidates.every((candidate) => candidate.kind === 'object')) {
+        const members = candidates.map((candidate) =>
+          candidate.kind === 'object' ? candidate.members.get(key) : undefined
+        );
+        return [...new Set(members.filter((member) => member !== undefined))];
+      }
+    }
+    return [
+      ...new Set(
+        sourceResolveCandidates(value, scope)
+          .filter((candidate) => candidate.matched && candidate.value.kind === 'object')
+          .map((candidate) => candidate.value)
+      ),
+    ];
+  };
+
+  /**
+   * The source graph a copy reads from, when the expression denotes exactly
+   * one proven graph. A source with an unproved alternative denotes no single
+   * graph, so nothing about the copy is proven.
+   */
+  const sourceCopyValue = (expression: ts.Node, scope: Scope): HookSourceValue | undefined => {
+    const resolved = sourceResolveCandidates(expression, scope);
+    const matched = resolved.filter((candidate) => candidate.matched);
+    if (matched.length !== 1 || matched.length !== resolved.length) return undefined;
+    const value = matched[0].value;
+    return value.kind === 'object' ? value : undefined;
   };
 
   const sourceHookLabel = (node: ts.Node, scope?: Scope): string | null => {
@@ -699,6 +816,42 @@ export function scanRuleStateReads(
     };
     visit(node);
     return label;
+  };
+
+  /**
+   * A call argument as it was while that argument was evaluated. The call
+   * receives those objects, so a later argument that rebinds a name does not
+   * move the mutation onto the container the name holds afterwards.
+   */
+  type CapturedArgument = {
+    argument: ts.Expression;
+    /** The containers the argument may denote. */
+    values: HookSourceValue[];
+    /** The single source graph the argument denotes, for a known copy. */
+    source?: HookSourceValue;
+    /** The producer the argument's value came from, for a known copy. */
+    label?: string | null;
+  };
+
+  const captureArgument = (
+    argument: ts.Expression,
+    scope: Scope,
+    copySource: boolean
+  ): CapturedArgument => {
+    const inner = unwrap(argument);
+    // An assignment expression stands for the value it assigned.
+    const assigned =
+      ts.isBinaryExpression(inner) && inner.operatorToken.kind === ts.SyntaxKind.EqualsToken
+        ? inner.right
+        : inner;
+    const values = sourceContainerValues(assigned, scope);
+    if (!copySource) return { argument, values };
+    return {
+      argument,
+      values,
+      source: sourceCopyValue(assigned, scope),
+      label: sourceHookLabel(assigned, scope),
+    };
   };
 
   const sourceUsage = (
@@ -1439,6 +1592,14 @@ export function scanRuleStateReads(
     sourceGraphReplacements.set(before, replacements);
   };
 
+  /**
+   * The newest version of a captured graph. A member write replaces the graph
+   * a container holds without replacing the container, so a mutation that was
+   * captured before that write lands on the version the container holds now.
+   */
+  const latestSourceVersion = (scope: Scope, value: HookSourceValue): HookSourceValue =>
+    scope.versions.latest(value);
+
   const replaceSourceGraph = (
     value: HookSourceValue,
     target: HookSourceValue,
@@ -1550,6 +1711,7 @@ export function scanRuleStateReads(
       }
     }
     recordSourceGraphReplacement(target, replacement, uncertain);
+    scope.versions.record(target, replacement);
     for (const [before, after] of memo) {
       if (before !== after) recordSourceGraphReplacement(before, after, uncertain);
     }
@@ -1840,6 +2002,7 @@ export function scanRuleStateReads(
           bindings: new Map(),
           node: lookupScope.node,
           sourceSummary: lookupScope.sourceSummary,
+          versions: lookupScope.versions,
         };
         declareValue(name, branch, probe, lookupScope);
         return probe.bindings.get(name.text);
@@ -2520,6 +2683,7 @@ export function scanRuleStateReads(
       bindings: new Map(),
       node: null,
       sourceSummary,
+      versions: createSourceGraphVersionTracker(),
     };
     // Insert before filling so a cycle of relative modules terminates.
     moduleScopes.set(module, scope);
@@ -2975,6 +3139,104 @@ export function scanRuleStateReads(
     }
   };
 
+  /**
+   * A call may write to the containers it receives, so the cached provenance
+   * of a source-backed container is only sound while no member it holds has
+   * been replaced.
+   *
+   * A known mutating call is tracked when every member it copies is proven.
+   * Any other call keeps no proof of the members the containers it received
+   * hold, because it may have replaced any of them.
+   *
+   * `captured` holds the containers each argument denoted while that argument
+   * was evaluated. The call receives those objects, so a later argument that
+   * rebinds a name does not move the mutation onto the container the name
+   * holds afterwards.
+   */
+  const applyCallMutation = (
+    node: ts.CallExpression,
+    scope: Scope,
+    captured: CapturedArgument[]
+  ): void => {
+    if (captured.length === 0) return;
+    // An authored asHook producer never receives the arguments of its call:
+    // the runtime evaluates them for their effects and then invokes the
+    // producer's setup with the definition handle alone
+    // (packages/core/src/prototype.ts, `proto.setup(def)` for the asHook
+    // kind), and the summary only recognizes `defineAsHook` declarations as
+    // producers. The producer therefore cannot write to a container it was
+    // passed, so the call does not withdraw it here.
+    if (scope.sourceSummary.isAuthoredProducerCall(node, source)) return;
+    const mutation = hookSourceCallMutation(node);
+    const publish = (value: HookSourceValue, next: HookSourceValue, ambiguous = false): void => {
+      const owning = sourceOwnerScope(scope, value);
+      const uncertain =
+        ambiguous ||
+        isConditionallyReached(node, definitelyReachedLogicalAssignments) ||
+        isDeferredWrite(node, enclosingFunction(owning?.node ?? null));
+      publishSourceGraph(scope, value, next, value, uncertain);
+    };
+    if (mutation.kind === 'copy') {
+      const target = captured[mutation.target];
+      if (!target) return;
+      const targets = target.values.map((value) => latestSourceVersion(scope, value));
+      if (targets.length === 0) return;
+      const sources = mutation.sources.map((index) => captured[index]).filter(Boolean);
+      // A copy with no source changes nothing, so the container keeps its proof.
+      if (sources.length === 0) return;
+      const copied: HookSourceValue[] = [];
+      const labels: string[] = [];
+      let proven = true;
+      for (const argument of sources) {
+        // The source is read when the call runs, so it advances to the version
+        // it holds then and not to the snapshot taken while it was evaluated.
+        const value = argument.source ? scope.versions.latest(argument.source) : undefined;
+        const label = argument.label;
+        // A source with an unproved alternative copies a different member set
+        // on the other branch, and members that come from more than one
+        // producer name no single producer, so the copy is not proven.
+        if (!value || !label || !sourceMembersProven(value) || !sourceMembersOneProducer(value)) {
+          proven = false;
+          break;
+        }
+        copied.push(value);
+        labels.push(label);
+      }
+      for (const value of targets) {
+        publish(
+          value,
+          proven ? mutateSourceGraph(value, copied) : mutateSourceGraph(value, null),
+          // Only one of several targets is written, so the others keep the
+          // members they held.
+          targets.length > 1
+        );
+      }
+      if (!proven) return;
+      // The copied states keep the producer that owns them, so a read after
+      // the call names the producer the copy came from rather than the one
+      // that produced the container it was written to. A state that already
+      // carries its producer keeps it: a later copy through another container
+      // does not change who owns the state.
+      copied.forEach((source, index) => {
+        if (source.kind !== 'object') return;
+        for (const member of source.members.values()) {
+          if (member.kind === 'state' && !sourceStateHooks.has(member.state)) {
+            sourceStateHooks.set(member.state, labels[index]);
+          }
+        }
+      });
+      return;
+    }
+    // An unknown call may replace any member of every container it receives.
+    for (const entry of captured) {
+      for (const value of entry.values.map((held) => latestSourceVersion(scope, held))) {
+        // The call received one of several containers, so the others keep the
+        // members they held.
+        publish(value, mutateSourceGraph(value, null), entry.values.length > 1);
+      }
+    }
+  };
+
   const visit = (node: ts.Node, scope: Scope): void => {
     const current = introducesScope(node)
       ? {
@@ -2982,6 +3244,12 @@ export function scanRuleStateReads(
           bindings: new Map<string, Binding>(),
           node,
           sourceSummary: scope.sourceSummary,
+          // An authored setup is its own owner: it holds its own containers of
+          // the producers it reads, so it does not share the versions of the
+          // owner around it.
+          versions: scope.sourceSummary.isAuthoredSetup(node, source)
+            ? createSourceGraphVersionTracker()
+            : scope.versions,
         }
       : scope;
 
@@ -2996,6 +3264,7 @@ export function scanRuleStateReads(
             bindings: new Map(),
             node: null,
             sourceSummary: current.sourceSummary,
+            versions: current.versions,
           };
           declareLoopTokenBindings(node, rowScope, row);
           visit(node.statement, rowScope);
@@ -3374,6 +3643,26 @@ export function scanRuleStateReads(
       else unresolved.push({ expression: node.getText(source), reason: 'spec' });
     }
 
+    if (ts.isCallExpression(node)) {
+      // The callee and the arguments are evaluated in order, and the call
+      // receives the objects its arguments denoted while they were evaluated.
+      visit(node.expression, current);
+      const mutation = hookSourceCallMutation(node);
+      const captured: CapturedArgument[] = [];
+      for (const argument of node.arguments) {
+        captured.push(
+          captureArgument(
+            argument,
+            current,
+            mutation.kind === 'copy' && mutation.sources.includes(captured.length)
+          )
+        );
+        visit(argument, current);
+      }
+      applyCallMutation(node, current, captured);
+      return;
+    }
+
     ts.forEachChild(node, (child) => visit(child, current));
   };
 
@@ -3382,6 +3671,7 @@ export function scanRuleStateReads(
     bindings: new Map(),
     node: source,
     sourceSummary,
+    versions: createSourceGraphVersionTracker(),
   };
   declareImports(rootScope);
   visit(source, rootScope);
