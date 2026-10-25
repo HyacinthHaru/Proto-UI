@@ -189,9 +189,9 @@
 
 ### 6.3 首片记录：Base FieldTextarea workspace facade
 
-状态：**修复候选已完成有界逻辑验证，未发布PR，尚无最终commit head。**
+状态：**已发布 Draft [PR #1001](https://github.com/Proto-UI/Proto-UI/pull/1001)，首个映射提交为 `bdeef58c20b7479fd2a0a3975dda0e5c8a543d2f`；input shard 续片为 `ee40d097383321316237210f799c6c73e3e07768`。本节保留首片的有界验证，不代表后续 head 的完整验收。**
 
-实际候选验证：guarded Node 24 对照固定 #955 parent 重新核验 registry/codegen 闭包并重跑，改前四宿主×TS/JS 8/8 缺少 facade，改后 8/8 输出正确；两改动 TypeScript 文件 targeted/transitive diagnostics 均为 0。Vitest 启动被 Rollup `ERR_DLOPEN_DISABLED` 阻断，未收集测试，不扩大 native addon 权限。以上不是 Vitest 通过、生成 facade 运行时通过、packed consumer 或 registry 安装通过。纯逻辑变化不需要虚构 UI 截图。最终 commit 与 CI/独立审查由该 PR 补齐。
+实际候选验证：guarded Node 24 对照固定 #955 parent 重新核验 registry/codegen 闭包并重跑，改前四宿主×TS/JS 8/8 缺少 facade，改后 8/8 输出正确；两改动 TypeScript 文件 targeted/transitive diagnostics 均为 0。Vitest 启动被 Rollup `ERR_DLOPEN_DISABLED` 阻断，未收集测试，不扩大 native addon 权限。以上不是 Vitest 通过、生成 facade 运行时通过、packed consumer 或 registry 安装通过。纯逻辑变化不需要虚构 UI 截图。已发布 commit 的 CI 与独立审查按该 PR 的精确 head 分别记录，未完成项不因发布而关闭。
 
 main Base `field/index.ts:11–16` 已导出 FieldTextarea，但 CLI Base Field registry item 只生成原六part，现有测试也只看六part。这是公开导出与明确workspace生成入口的漏项，不是新Textarea实现，不需要等待Label+Checkbox新组合。
 
@@ -199,7 +199,7 @@ main Base `field/index.ts:11–16` 已导出 FieldTextarea，但 CLI Base Field 
 
 #### 首片可复核命令与候选绑定
 
-本节记录尚未发布的本地候选，不给它虚构 commit SHA。审计快照仍为 `7181a93a5ec5cad43936a72e31d5477d5488733a`；本片实现与重新执行的验证基线为 #955 head `b01cd33661850db5d8cba37122d732384c472083`。原 main-parent 证据保留为历史，不用来冒充这次重跑。发布后由 PR 的精确 commit 评论绑定最终 SHA、CI 与剩余证据；任何后续源改动都需要重核。
+本节原始证据采集于发布前；该候选随后以 `bdeef58c20b7479fd2a0a3975dda0e5c8a543d2f` 发布到 #1001。审计快照仍为 `7181a93a5ec5cad43936a72e31d5477d5488733a`；本片实现与重新执行的验证基线为 #955 head `b01cd33661850db5d8cba37122d732384c472083`。原 main-parent 证据保留为历史，不用来冒充这次重跑。[首片开发评论](https://github.com/Proto-UI/Proto-UI/pull/1001#issuecomment-6393927428) 已绑定真实 SHA、CI 与剩余证据；任何后续源改动都需要重核。
 
 该 #955 parent 与审计 main 不同：Shadcn Field 已导出 `fieldTextarea` / `shadcnFieldTextarea`（blob `e023230ba16b9ce6598d20d266725bdcc05bf592`）。本片完整保留这项在途能力，但不修其 registry，不宣称所有 Field facade 闭包已齐全。
 
@@ -230,7 +230,7 @@ main Base `field/index.ts:11–16` 已导出 FieldTextarea，但 CLI Base Field 
 | vitest stdout SHA-256 | `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` |
 | vitest stderr SHA-256 | `603961a823b31441cc4eb17839180532937c3d17e0bdbaea24c213757d619447` |
 
-以上摘要保持红、绿及启动失败三类证据各自独立；最终准确 head 的 CI 和独立审查仍待补。
+以上摘要保持红、绿及启动失败三类证据各自独立；#1001 已有精确 head CI 与 source-review 记录，但仍有未解决失败，不能称最终验收通过。
 
 ## 7. 可实施 Stacked Issues / PR 依赖图
 
@@ -583,7 +583,7 @@ Gallery 使用公开 parts；确认按钮仅更新 status，HoverCard delays 是
 
 ### 8. 交接状态
 
-本文件记录已确认的源代码结构与建议，不含新的实现或合并承诺。六类迁移尚须各自实现、精确head测试和审查。用户报告的“首页可点标签、demo不可点”有明确静态关联差异支撑，但本次没有制造浏览器复现、截图或通过结果。后续验收应保留真实输入证据和当前部署版本，避免把不同head的首页/demo混为一谈。
+本文件的审计部分记录已确认的源代码结构与建议；首片与续记另行记录已发布的有限实现，不承诺后续迁移或合并。六类迁移尚须各自实现、精确head测试和审查。用户报告的“首页可点标签、demo不可点”有明确静态关联差异支撑，但本次没有制造浏览器复现、截图或通过结果。后续验收应保留真实输入证据和当前部署版本，避免把不同head的首页/demo混为一谈。
 
 ### 9. 补充：到底是不是同一套原型？
 
@@ -655,3 +655,14 @@ node --test --test-isolation=none \
 | 两处同源 hunk | 2 通过、0 失败，exit 0 | 选定的两个现有契约测试通过；无删除、跳过或放松其断言 |
 
 这只是明确筛选的两项契约，不是完整 187 项重跑，也不等于完整 CI、浏览器、packed 或 registry-install 验收。原有 FieldTextarea 的 8-case codegen 证据与 Vitest/Rollup 预收集受限记录仍按上一片保留，没有重标为本片新运行。后续必须读取新 exact-head CI 的真实状态，capture 尚未启动时不能补写假截图。
+
+
+## 续记：治理正文快照与文档时效修复（2026-10-25 UTC）
+
+- 本片 parent 为已发布的 `ee40d097383321316237210f799c6c73e3e07768`；不改 #955 分支，不夹带 #997 的 13 文件 SSR 整合。[对接 source-review](https://github.com/Proto-UI/Proto-UI/pull/1001#issuecomment-6394215927) 要求携带现有 canonical snapshot、修正本报告发布状态并增加 README 导航；[范围确认](https://github.com/Proto-UI/Proto-UI/pull/1001#issuecomment-6394272326) 保留真实验收边界。该 source-review 不是 GitHub 正式 approval、native 或 install 验收。
+- [治理失败 job](https://github.com/Proto-UI/Proto-UI/actions/runs/40166542032/job/121088649067) 检出 synthetic merge `f7833b33fd44bc6f03a9d099fa99ab22141f0dd3`（ee40 into #955 b01cd），在 `sync-github-governance-snapshot.mjs:290` 判定 retained/live drift。它由 `internal/coverage-matrices/**` 路径触发，不是新 PR 自动加入快照：快照只含已绑定的 27 Issues 与 PR580。
+- 对所有 28 个对象逐条读取后，除 canonical checker 明确忽略的 `updatedAt` 外，仅 #377、#420、#559 的 `bodySha256` 改变。各 live 正文增加了 2026-10-22 Finf #890 当前决策前言；“原目标、讨论依据与验证记录（历史保留）”之后的正文逐项 SHA256 精确等于旧快照。历史未删，state、labels、assignees、milestone、owners 与 PR580 facts 未改变。
+- 复用已存在、经对接确认的 `internal/coverage-matrices/github-governance-snapshot.json` blob `d210410244516f84f260b0a26fe6cc87786fe778`：读取时 current main 为 `357068f0f371dd40826b81da43bd4ef5df73bee7`，#974 的 `da764928ba727f9ebec7d52dad74637ecd070fd5` 也携带完全相同文件。本片不手工改 hash、不执行独立 `--write`、不改两消费者 matrix。来源差异只有这三个 body hashes 和六个 observation timestamps（#377/#388/#420/#513/#559/#745）。
+- 有界实际验证使用仓库原 `collectDependencyOwners`、`normalizeLiveIssue`、`normalizeLivePullRequest`、`reconcileGovernanceSnapshot`、`hasGovernanceDrift`，输入 exact-parent 两 matrix 与本次 authenticated API 读取的 28 个对象，在既有 Node 24 guard/只读白名单下执行。旧 snapshot `hasGovernanceDrift=true`；同源携带版本 `hasGovernanceDrift=false`；27 Issues/1 PR 全部保留，断言进程 exit 0。没有运行网络 CLI main，也不冒称 hosted `--check` 已通过。
+- 可复现流程：固定 head，读取上述两 matrix 和 retained snapshot；读取它们绑定的 Issues/PR，按 canonical normalize/reconcile 比较；保留变更字段与旧正文 hash 证据；只在 owner 协调后携带现有 canonical source；再运行最终 head 的 `node scripts/coverage-matrices/sync-github-governance-snapshot.mjs --check` 与正常 CI。不要因日志提示就自动 `--write` 或推断 owner。
+- 仅追加 README 的报告链接并校正此前“尚未发布”的时态，已发布的 bdeef/ee40 证据不冒充本片新测试。ee40 的 popup-boundaries 与 binary-and-buttons 两个目标 CI jobs 已真实通过完整 187/187 计划测试（含 exactly-once 与 toolbar），随后 native capture 在 rest 阶段因 authored materialized anatomy/current conditional subtree 缺失失败，不能称整 shard 通过；其余 shards 与最终新 head 仍需验收。日志与 raw artifacts 见 [popup job](https://github.com/Proto-UI/Proto-UI/actions/runs/40166542220/job/121088651821)、[popup artifact](https://github.com/Proto-UI/Proto-UI/actions/runs/40166542220/artifacts/12590005407)、[binary job](https://github.com/Proto-UI/Proto-UI/actions/runs/40166542220/job/121088651814)、[binary artifact](https://github.com/Proto-UI/Proto-UI/actions/runs/40166542220/artifacts/12589680225)。这里只读取 official CI 日志，未下载或视觉检查这些 artifacts。其他真实失败（private SSR PUI3301、material public-source/blur、原生视觉/几何和 preview artifact 预算）保持各自 owner 与原日志，不因治理修复获豁免。#1000 仅承担 Checkbox composition/install 闭包，不自动扩大为 Shadcn Field registry owner。
