@@ -736,3 +736,12 @@ node --test --test-isolation=none \
 - 该 receipt 的 consumer lock SHA-256 为 `607e007e50544aaddccd175abea77c0605edb1624f4e29b9cb46bb29289ffdd9`，generated facade 为 `989e5b9abbdc9c2d43c692224f34f06de73ee4dc990e2ae020f792ef6b729fcc`，fixture 为 `cefab5b6a35511229bc18269e3a7a2c7f60c9f12b306b82721089b5fd8e66bd2`；Shadcn tarball shasum 为 `87a77d042c3d5a21b767b4a76601cc86f626c6bd`。完整 package integrity 列表在该 job 的 receipt 日志中。
 - 现有栈未指出 fixture 的具体场景，尚不能区分默认/显式 Indicator 连接与 cleanup 中的异常，也不能仅凭约 0.6 秒的时间差断定原因。添加阶段/逐 mount 日志，保留可捕获的 primary 与 cleanup 双错误；独立 microtask rejection 不能通过 timer await 捕获，另用不改变 Node 默认失败退出的 uncaughtExceptionMonitor 记录末阶段及更完整堆栈；不改变连接顺序，不删除 default/explicit/omission/raw 覆盖，不降低断言，不改生成器或 adapter 语义。
 - 后续需用同一 canonical tarball/installed CLI 路径读取精确失败阶段，再按实际路径 owner 修复并重验。此诊断不是修复完成。原生 pointer/keyboard、AT、视觉及完整安装闭包仍未验收；本地 ChildProcess guard 保持原样，不以 source alias 代替安装。
+
+### S2 第二次 packed CI：首错锁定预装显式 Indicator（2026-10-25 UTC）
+
+- 诊断 head `3733164b8cc7df5594b796ab1e23f16208006b13`，实际测试 merge `dcd4c9c5bea9ba82a42353d411059474b012e052`：[run 40175207411 / job 121118158947](https://github.com/Proto-UI/Proto-UI/actions/runs/40175207411/job/121118158947)。完整打包/安装再次执行，09:07:39 的首个 primary failure 是 `mount:start:explicit:{}`，栈指向 fixture `document.body.append(container)` 与显式用例调用。
+- 此前两个默认 pair、名称/CSS/默认 Indicator、富 Label 激活、直接控制激活、交互后代排除已跨过对应断言。后续 omission/raw/disabled/controlled/mixed/naming-only/detach 尚未到达，不计通过。cleanup 后 fatal unhandledRejection 复述相同错误，不是首次失败来源。
+- [HappyDOM v20.14.6 Node 实现](https://github.com/capricorn86/happy-dom/blob/v20.14.6/packages/happy-dom/src/nodes/node/Node.ts#L1011-L1025) 先递归子节点，再调用自身 connectedToDocument，与 job 中 Node.ts:1014/1024 的栈吻合。v20.11.0 也有这一顺序。相对地，[DOM insert 算法](https://dom.spec.whatwg.org/#concept-node-insert) 按 shadow-including tree order 排 custom-element connected callbacks，父先于子。这支持测试宿主连接顺序差异的诊断，但不能单凭源码行号推断本次消费者确切安装版本，更不能替代同包原生宿主实测。
+- 原 harness 固定的是 registrator 20.11.0；消费者 npm lock 当次仅输出哈希，未作为 CI artifact 上传。仓库 pnpm 的 HappyDOM 15.11.7 不是该消费者运行版本。现补按已安装 registrator 的真实模块解析定位 HappyDOM，核对对应 lock version，并只输出消费者相对 package/entry 路径、manifest/entry SHA-256 和 lock integrity，不输出环境、凭据或绝对私有路径。不给版本升级或新依赖。
+- 增加无 Proto 业务依赖的预装父子自定义元素 canary，只记录实际回调顺序与规范顺序。它不补 provider、不修订宿主实现、不增加等待、不把预装子项改成后追加、不跳过或删去原显式 Indicator 断言；原红用例及默认失败退出保留。此增量仍只是诊断，尚无执行结果。
+- 同一 tarball/generated facade 的原生预装显式 Indicator 对照另列待审范围，需默认对照、显式不重复、Label 激活/卸载及无 pageerror。裸 CE 原生顺序测试只能验证平台，不能充当产品安装闭包；本次未新增 browser workflow、未安装浏览器、未扩大执行权限或修改生产 adapter。

@@ -11,7 +11,8 @@ import {
   writeFileSync,
 } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join, relative } from 'node:path';
+import { dirname, join, relative } from 'node:path';
+import { createRequire } from 'node:module';
 import { spawnSync } from 'node:child_process';
 
 import { getAllPackages, ROOT_DIR, selectPackages } from './lib.mjs';
@@ -527,6 +528,7 @@ function logCheckboxDeliveryEvidence(packManifest, names, phase) {
       packages: packManifest.packages
         .filter((entry) => names.includes(entry.name))
         .map(({ name, version, integrity, shasum }) => ({ name, version, integrity, shasum })),
+      syntheticHost: readInstalledSyntheticHostEvidence(),
       lockSha256: digest(join(consumerDir, 'package-lock.json')),
       generatedFacadeSha256: digest(join(consumerDir, 'proto-ui', 'components', 'wc', 'index.ts')),
       fixtureSha256: digest(join(RENDER_FIXTURE_DIR, 'wc-checkbox-label.mjs')),
@@ -534,4 +536,43 @@ function logCheckboxDeliveryEvidence(packManifest, names, phase) {
       registryPublication: 'not-performed',
     })
   );
+}
+
+function readInstalledSyntheticHostEvidence() {
+  const consumerRequire = createRequire(join(consumerDir, 'package.json'));
+  const registratorEntry = consumerRequire.resolve('@happy-dom/global-registrator');
+  const registratorRequire = createRequire(registratorEntry);
+  const happyDomEntry = registratorRequire.resolve('happy-dom');
+  const lock = JSON.parse(readFileSync(join(consumerDir, 'package-lock.json'), 'utf8'));
+  const describe = (name, entry) => {
+    let directory = dirname(entry);
+    while (directory !== consumerDir && relative(consumerDir, directory).startsWith('node_modules')) {
+      const manifestPath = join(directory, 'package.json');
+      if (existsSync(manifestPath)) {
+        const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
+        if (manifest.name === name) {
+          const packagePath = relative(consumerDir, directory).replaceAll('\\', '/');
+          const lockEntry = lock.packages?.[packagePath];
+          assert(lockEntry?.version === manifest.version, `${name} runtime/lock version mismatch`);
+          return {
+            name,
+            version: manifest.version,
+            packagePath,
+            entryPath: relative(consumerDir, entry).replaceAll('\\', '/'),
+            manifestSha256: createHash('sha256').update(readFileSync(manifestPath)).digest('hex'),
+            entrySha256: createHash('sha256').update(readFileSync(entry)).digest('hex'),
+            lockIntegrity: lockEntry.integrity ?? null,
+          };
+        }
+      }
+      directory = dirname(directory);
+    }
+    throw new Error(`cannot locate installed ${name} metadata inside consumer node_modules`);
+  };
+  return {
+    registrator: describe('@happy-dom/global-registrator', registratorEntry),
+    implementation: describe('happy-dom', happyDomEntry),
+    resolution: 'happy-dom resolved from the installed registrator entry, not repository root',
+    nativeAcceptance: 'not-run',
+  };
 }

@@ -21,6 +21,39 @@ function checkpoint(next) {
   stage = next;
   console.log(`packed WC Checkbox+Label stage: ${stage}`);
 }
+// Independent platform canary: no Proto definitions, adapter, context or timers.
+// Record the actual host order; do not repair it or replace the explicit case.
+function observePreassembledCustomElementOrder() {
+  const order = [];
+  class OrderingParent extends HTMLElement {
+    connectedCallback() {
+      order.push('parent');
+    }
+  }
+  class OrderingChild extends HTMLElement {
+    connectedCallback() {
+      order.push('child');
+    }
+  }
+  customElements.define('pui-smoke-ordering-parent', OrderingParent);
+  customElements.define('pui-smoke-ordering-child', OrderingChild);
+  const wrapper = document.createElement('div');
+  const parent = new OrderingParent();
+  parent.append(new OrderingChild());
+  wrapper.append(parent);
+  document.body.append(wrapper);
+  console.log(
+    JSON.stringify({
+      kind: 'preassembled-custom-element-order',
+      host: 'installed-happy-dom',
+      observed: order,
+      specificationOrder: ['parent', 'child'],
+      nativeAcceptance: 'not-run',
+    })
+  );
+  wrapper.remove();
+}
+
 const settle = () => new Promise((resolve) => setTimeout(resolve, 50));
 function press(element) {
   element.dispatchEvent(
@@ -63,6 +96,8 @@ function hasTokens(element, tokens) {
 
 let primaryError;
 try {
+  checkpoint('platform-order-canary');
+  observePreassembledCustomElementOrder();
   checkpoint('default-pairs');
   const first = mount(),
     neighbor = mount();
