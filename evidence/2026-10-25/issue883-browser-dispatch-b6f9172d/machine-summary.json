@@ -1,0 +1,179 @@
+{
+  "assembledAt": "2026-10-25T13:14:27.221403+00:00",
+  "head": "b6f9172d51bb8065bf18965916bbcbc5b38a0d3d",
+  "tree": "6326cbb9a3e3a558113bc69be6a6c3f381555194",
+  "rawInputCount": 348,
+  "mappedInputCount": 323,
+  "hashReferenceCount": 25,
+  "pngCount": 0,
+  "uniquePngHashes": 0,
+  "observations": {
+    "schemaVersion": 1,
+    "result": "partial",
+    "revision": "b6f9172d51bb8065bf18965916bbcbc5b38a0d3d",
+    "tree": "6326cbb9a3e3a558113bc69be6a6c3f381555194",
+    "acceptedMain": "357068f0f371dd40826b81da43bd4ef5df73bee7",
+    "updatedAt": "2026-10-25T13:06:16.856762+00:00",
+    "productDelta": "Six test/diagnostic/record paths only; originalassertions/deadlines/keyboardowner/selectioncontrols retained; no productionperformancefix claimed",
+    "focusedPrecommit": {
+      "unitFiles": 2,
+      "testsPassed": 23,
+      "recorderTests": 7,
+      "existingObserverTests": 16,
+      "typesAstroFiles": 971,
+      "errors": 0,
+      "warnings": 0,
+      "hints": 14,
+      "singleOriginalDocsPassed": 1,
+      "filtered": 29,
+      "phase": "Savedcandidate-v3 code bytes, datedrecordlaterwhitespaceonly; notpostcommitexecution"
+    },
+    "exactHeadLocalCombination": {
+      "start": "2026-10-25T12:00:35.166307+00:00",
+      "end": "2026-10-25T12:24:19.122671+00:00",
+      "exit": 1,
+      "files": 14,
+      "filePassed": 10,
+      "fileFailed": 4,
+      "tests": 297,
+      "passed": 292,
+      "failed": 5,
+      "skipped": 0,
+      "sourceStable": true,
+      "extraInputsStable": true,
+      "ownedPreferenceCAS": true,
+      "worktreeCleanAfter": true,
+      "failures": [
+        "S4startupzh-cn150s",
+        "S4startupen150s",
+        "S4paint150s",
+        "Contents WIDTH43.99998474121094>=44 fails at728",
+        "Nativepopup exactdestinationdomcontentloaded30s after trustedmodifierclick"
+      ],
+      "firstInterpretationCorrection": "EarlierRootlabelheightwaswrong; actualstackpointswidth. Rawunmodified; noGitHubwrongclaimposted"
+    },
+    "canonicalCI": {
+      "run": 40191179866,
+      "attempt": 1,
+      "checkout": "38b4e6ec4e417bb8f089a64e8f87c79cf0f232d2",
+      "treeEqualsProduct": true,
+      "jobs": 22,
+      "success": 8,
+      "failure": 10,
+      "skipped": 4,
+      "general": "78public-docsguardfailbeforeordinaryVitest; media15passseparate",
+      "packageBuild": "skipped/notrun",
+      "wholeShardsExit124": [1, 2, 4, 7, 8],
+      "onlyCompleteShardsSubtotal": {
+        "shards": [3, 5, 6],
+        "passed": 254,
+        "failed": 18,
+        "skipped": 15
+      },
+      "SearchFile": {
+        "passed": 12,
+        "failed": 18,
+        "total": 30
+      },
+      "Homepage": {
+        "passed": 9,
+        "total": 9,
+        "BrutalistOriginal1s": "passedthisrun, notclosureofpriorredcause"
+      },
+      "paint": "firstlighttrigger original30sclickfailed; notscreenshotphase",
+      "S4startup": "inplan shard4 but noS4payload/log/phase/caseverdictbefore900scutoff; canonicalresultUNKNOWN"
+    },
+    "sameNaturalCIFailure": {
+      "originalVerdict": false,
+      "request": "call@979",
+      "CDPid": 4272,
+      "expressionCharacters": 305324,
+      "expressionSHA256": "730c2ff13134a1ef5afdb2584d768787110b548e2653bd4ee9e0c7d543c7bb1a",
+      "browserForwardToRendererMs": 2062.575,
+      "rendererScopeMs": 9.593,
+      "EvaluateScriptMs": 8.029,
+      "largestContainedCompileMs": 5.799,
+      "nestedParseMs": 5.443,
+      "queryReturnAfterVerdictMs": 1138.696031,
+      "BrowserParsedHandlerAfterNodeSendConditionalMs": [3.878758, 5.49313],
+      "rendererEntryAfterVerdictConditionalMs": [1067.062544, 1068.676916],
+      "priorAnonymousModuleMs": 1814.182,
+      "moduleSourceOwner": "unbound, emptyargs, doNOTretroassignfromlocalprofile",
+      "traceEOF": true,
+      "traceDataLoss": false,
+      "SDKDropsErrors": 0,
+      "auxRetained": 128,
+      "auxDropped": 88,
+      "cleanup": "context/stream/session closed/noownershipdebt",
+      "clockBoundary": "Onepostverdictreceiver marker; equalrate/fixedoffsetconditional mapping, notrawpipe receipt/driftcalibration; nestedtimesnotadditive"
+    },
+    "privateCPUControl": {
+      "originalPassed": 1,
+      "filtered": 29,
+      "source": "b6+privatecallerimport/privatehelperCPUcategory only, restoredCAS",
+      "traceBytes": 27293712,
+      "traceSHA256": "69a89f6ebe31aa95b7ee9ce675229ba355f352cd2f1e70c01863e7c4d3cc6540",
+      "samples": 17093,
+      "nodes": 4377,
+      "chunks": 435,
+      "moduleMs": 572.915,
+      "samplesInModuleWindow": 4412,
+      "withNativeContentLeaseLeafSamples": 2108,
+      "sourceStack": "withNativeContentLease→initSiteNativeControls→SocialIcons initialize",
+      "signedNegativeTimeDeltas": 221,
+      "endTimeChunksObserved": 0,
+      "auxDropped": 94,
+      "notClaimed": "CompleteCPUprofile/purecost/CIanonymousmoduleidentity/zerooverhead; ViteURL notcapturedtranspiledbytes",
+      "sourceMechanism": "100us/noSampleLimit; output32MiBnotinternalallocationlimit"
+    },
+    "sourceInvestigation": {
+      "DOMSelection": "ExactChrome155anchor/focus→PrimaryRangeOrNull→rangeCount→UpdateStyleAndLayout; rangeCount/type/getComposedRanges are NOT establishedcheapabsencechecks",
+      "ownerControls": "Existingtests requirefreshSelectioncreatedsynchronouslybyprecedingowner includingthrow; doNOTcacheemptySelection/bypassfreshness",
+      "productionRepair": "No bounded source repair justified by these observations; no speculativecache/scheduling/Compiler takeover"
+    },
+    "fullPlatformSnapshot": {
+      "readStart": "2026-10-25T13:01:01.784683+00:00",
+      "readEnd": "2026-10-25T13:01:29.304857+00:00",
+      "workflows": 20,
+      "workflowStates": {
+        "success": 14,
+        "failure": 6
+      },
+      "checks": 87,
+      "checkStates": {
+        "success": 53,
+        "failure": 30,
+        "skipped": 4
+      },
+      "PR": "OPEN/Ready/MERGEABLE/BLOCKED/REVIEW_REQUIRED",
+      "reviews": 0,
+      "reviewThreads": 0,
+      "newMaintainerFeedback": "none atlastread",
+      "externalStatuses": [
+        {
+          "context": "Vercel",
+          "state": "failure",
+          "description": "Authorization required to deploy.",
+          "boundary": "Separateexternaldeploymentauthorizationstatus, notincludedin87check-runcount; nochangetopermissions/secrets"
+        }
+      ]
+    },
+    "independentDisposition": "Localonly partial/ABSTAIN; noGitHubapprovalorCIacceptance",
+    "visualEvidence": {
+      "kind": "Internalprotocol/cpuobservations; noUIbehaviorchangewasimplemented",
+      "newVisualClaims": false,
+      "newPNGPublished": 0,
+      "debt": "Widthfailurepreassertcomputedstyle/transform/frame absent; paintInput/trusted receipts absent; no mockvisualsubstitute"
+    },
+    "nextActions": [
+      "Preserve/sourcebindandpublishthisnewnaturalCItracewithallnegatives",
+      "Ifsamepaintfirstclickstillneedsdeeperdata, usepreparedpassiveInput/DOMmap preservingoriginalRPCs",
+      "CaptureContents originalfrozenfacts before widthassert withoutchanging44",
+      "ObtainsourceidentityinactualfailedCIbeforeattributinganonymousmodule; no smallsafeSelectionfreshnessbypass assumed",
+      "MaintaincanonicalpackagebuildskipandGeneralguard ownership separately"
+    ]
+  },
+  "baseHead": "357068f0f371dd40826b81da43bd4ef5df73bee7",
+  "baseTree": "f6c7d48a8f92955e77832478ae4c388b3dd2b254",
+  "claim": "Exact-b6 test-side recorder, natural hosted failure, negative local combination and separate private CPU control; no production performance repair, formal approval or all-CI/AT acceptance."
+}
