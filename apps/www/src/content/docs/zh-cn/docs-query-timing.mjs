@@ -934,7 +934,7 @@ export function installDocsCallTimingObserver(
           if (!target(selector, name)) return Reflect.apply(original, this, arguments);
           const request = requests.get(progress.metadata.id);
           if (!request) return Reflect.apply(original, this, arguments);
-          record('driver.getAttribute.enter', { callId: request.callId });
+          record('driver.getAttribute.enter', { callId: request.callId, frameId: frame._id });
           const args = arguments;
           return storage.run(request, () =>
             tap(

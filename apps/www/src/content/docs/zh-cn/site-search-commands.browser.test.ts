@@ -10,6 +10,7 @@ import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { launchBrowser, startServer, stopServer } from './browser-harness';
 import { settleFamilyQueryBatch } from './family-query-observer';
 import { installDocsCallTimingObserver } from './docs-query-timing.mjs';
+import { createQueryDispatchTrace } from './query-dispatch-trace.mjs';
 import {
   installSearchStartupTrace,
   readSearchReadyWithinBudget,
@@ -982,9 +983,17 @@ for (const width of [320, 390, 1280, 1440, 2048]) {
           createRequire(import.meta.url).resolve('playwright-core/package.json')
         ),
       });
+      const dispatchTrace =
+        family === 'shadcn' && width === 1440 && process.env.PROTO_UI_RUNTIME_EVIDENCE_DIR
+          ? createQueryDispatchTrace(
+              page,
+              path.join(evidenceDirectory, 'query-dispatch-shadcn-1440')
+            )
+          : null;
       const errors: string[] = [];
       page.on('pageerror', (error) => errors.push(error.message));
       try {
+        await dispatchTrace?.prepare();
         await page.addInitScript(roleTiming.targetObserver, roleTiming.initOptions);
         const response = await page.goto(`${baseUrl}${searchRoute(family)}`, {
           waitUntil: 'networkidle',
@@ -1055,6 +1064,11 @@ for (const width of [320, 390, 1280, 1440, 2048]) {
             // Diagnostics must not replace the original poll verdict.
           }
           const verdict = roleVerdict;
+          try {
+            dispatchTrace?.markVerdict(roleTiming.snapshot());
+          } catch {
+            // Diagnostics must not replace the original poll verdict.
+          }
           if (!rolePassed && verdict) {
             try {
               const startedMs = performance.now();
@@ -1217,6 +1231,11 @@ for (const width of [320, 390, 1280, 1440, 2048]) {
       } finally {
         let contextClosed = false;
         try {
+          try {
+            dispatchTrace?.beforeContextClose();
+          } catch {
+            // Trace teardown cannot prevent the original context close.
+          }
           roleTiming.markContextCloseStart();
           await context.close();
           contextClosed = true;
@@ -1234,6 +1253,11 @@ for (const width of [320, 390, 1280, 1440, 2048]) {
             );
           } catch {
             // Missing diagnostics must not replace the original verdict or cleanup.
+          }
+          try {
+            await dispatchTrace?.finish(contextClosed, roleTiming.snapshot());
+          } catch {
+            // Diagnostic capture cannot replace the original error or cleanup.
           }
         }
       }
