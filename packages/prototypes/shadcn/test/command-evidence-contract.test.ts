@@ -14,7 +14,7 @@ it('binds both New York shell measurements to the fixed 10px fixture radius, not
     "assert.equal(r.theme.rootFontSize, '16px')",
     "assert.equal(r.theme.rootRadiusToken, '0.625rem')",
     "assert.equal(r.theme.mdRadiusToken, 'max(calc(0.625rem - 2px), 0px)')",
-    'rootFontSize: getComputedStyle(document.documentElement).fontSize',
+    "rootFontSize: getComputedStyle(document.documentElement).fontSize",
     "rootRadiusToken: ss.getPropertyValue('--pui-radius').trim()",
     "mdRadiusToken: ss.getPropertyValue('--pui-radius-md').trim()",
   ];
