@@ -19,7 +19,7 @@ pub type OwnerWeak = Weak<RefCell<Owner>>;
 pub type Callback = Rc<dyn Fn(Vec<Value>) -> Value>;
 #[derive(Clone)]
 pub enum Value {
-    Undefined, Number(f64), Json(Json), Record(Rc<BTreeMap<String, Value>>), Array(Rc<Vec<Value>>),
+    Undefined, Opaque(Rc<()>), Number(f64), Json(Json), Record(Rc<BTreeMap<String, Value>>), Array(Rc<Vec<Value>>),
     Function(Callback), Owner(OwnerWeak), State(Rc<State>),
     Style(Vec<(String, String)>), Resource(Rc<Cell<bool>>), Template(Rc<Node>),
     Input(Rc<Input>), Native(gpui::AnyView),
@@ -59,7 +59,7 @@ impl Value {
     pub fn owner(&self) -> OwnerWeak { match self { Self::Owner(owner)|Self::Handle(owner,_)|Self::HostTarget(owner)|Self::Part(owner,_)|Self::ObjectRef(owner)=>owner.clone(), _=>panic!("expected owner capability") } }
     pub fn items(&self) -> Vec<Self> { match self {Self::Array(v)=>(**v).clone(),Self::Json(Json::Array(v))=>v.iter().cloned().map(Self::json).collect(),_=>panic!("expected array")} }
 }
-pub fn strict_equal(a:&Value,b:&Value)->bool {match (a,b){(Value::Undefined,Value::Undefined)=>true,(Value::Number(a),Value::Number(b))=>a==b,(Value::Json(a),Value::Json(b))=>match(a,b){(Json::Array(_)|Json::Object(_),_)=>false,(Json::Number(a),Json::Number(b))=>a.as_f64()==b.as_f64(),_=>a==b},(Value::Record(a),Value::Record(b))=>Rc::ptr_eq(a,b),(Value::Array(a),Value::Array(b))=>Rc::ptr_eq(a,b),(Value::State(a),Value::State(b))=>Rc::ptr_eq(a,b),(Value::Function(a),Value::Function(b))=>Rc::ptr_eq(a,b),(Value::StaticCapability(a),Value::StaticCapability(b))=>a.id==b.id,(Value::Handle(a,ak),Value::Handle(b,bk))=>ak==bk&&Weak::ptr_eq(a,b),(Value::Observed(a,ak),Value::Observed(b,bk))=>ak==bk&&Weak::ptr_eq(a,b),(Value::ObjectRef(a),Value::ObjectRef(b))|(Value::HostTarget(a),Value::HostTarget(b))=>Weak::ptr_eq(a,b),(Value::Part(a,ar),Value::Part(b,br))=>ar==br&&Weak::ptr_eq(a,b),_=>false}}
+pub fn strict_equal(a:&Value,b:&Value)->bool {match (a,b){(Value::Undefined,Value::Undefined)=>true,(Value::Opaque(a),Value::Opaque(b))=>Rc::ptr_eq(a,b),(Value::Number(a),Value::Number(b))=>a==b,(Value::Json(a),Value::Json(b))=>match(a,b){(Json::Array(_)|Json::Object(_),_)=>false,(Json::Number(a),Json::Number(b))=>a.as_f64()==b.as_f64(),_=>a==b},(Value::Record(a),Value::Record(b))=>Rc::ptr_eq(a,b),(Value::Array(a),Value::Array(b))=>Rc::ptr_eq(a,b),(Value::State(a),Value::State(b))=>Rc::ptr_eq(a,b),(Value::Function(a),Value::Function(b))=>Rc::ptr_eq(a,b),(Value::StaticCapability(a),Value::StaticCapability(b))=>a.id==b.id,(Value::Handle(a,ak),Value::Handle(b,bk))=>ak==bk&&Weak::ptr_eq(a,b),(Value::Observed(a,ak),Value::Observed(b,bk))=>ak==bk&&Weak::ptr_eq(a,b),(Value::ObjectRef(a),Value::ObjectRef(b))|(Value::HostTarget(a),Value::HostTarget(b))=>Weak::ptr_eq(a,b),(Value::Part(a,ar),Value::Part(b,br))=>ar==br&&Weak::ptr_eq(a,b),_=>false}}
 fn same_value(a:&Value,b:&Value)->bool{
     if matches!(a,Value::Number(_)|Value::Json(Json::Number(_)))&&matches!(b,Value::Number(_)|Value::Json(Json::Number(_))){
         let a=a.num();let b=b.num();a.to_bits()==b.to_bits()||(a.is_nan()&&b.is_nan())
@@ -88,7 +88,19 @@ pub struct Input {pub fields:Map<String,Json>,pub prevented:Cell<bool>,pub passi
 #[derive(Default)]
 struct NativePress{key:Option<String>,global_key:Option<String>,pointer:bool,global_pointer:bool,cancelled:bool,global_keyboard_click:bool,global_pointer_cancelled:bool}
 thread_local! {static OWNERS:RefCell<Vec<OwnerWeak>>=RefCell::new(Vec::new());static CONTEXT_QUEUE:RefCell<VecDeque<(OwnerWeak,Value,Value,Value)>>=RefCell::new(VecDeque::new());static CONTEXT_DISPATCHING:Cell<bool>=Cell::new(false);}
+pub fn authored_hook(owner:&OwnerWeak,name:&str,install:impl FnOnce())->Value {
+    let owner=setup(owner);
+    { let mut state=owner.borrow_mut();
+      if let Some(result)=state.authored_results.get(name) { return result.clone().unwrap_or_else(||Value::Opaque(Rc::new(()))); }
+      state.authored_results.insert(name.into(),None);
+    }
+    install();
+    let result=Value::Opaque(Rc::new(()));
+    owner.borrow_mut().authored_results.insert(name.into(),Some(result.clone()));
+    result
+}
 pub struct Owner {
+    authored_results:BTreeMap<String,Option<Value>>,
     pub phase:&'static str,pub disposed:bool,pub present:bool,pub mounted:bool,pub epoch:u64,
     pub dirty:bool,pub native_drive:Option<Drive>,pub window_id:Option<gpui::WindowId>,pub update_requested:bool,pub projection_revision:u64,pub committed_revision:u64,
     pub projection:Value,pub renderer:Value,pub raw:Json,pub raw_value:Value,pub props_value:Value,pub props:Json,pub schemas:BTreeMap<String,Value>,pub defaults:BTreeMap<String,Value>,
@@ -105,7 +117,7 @@ pub struct Owner {
 impl Owner {
     pub fn new(raw:Json,parent:OwnerWeak,context_accepts:fn(&str,&Json)->bool,props_accepts:fn(&Json)->bool,prop_valid:fn(&str,&Json)->bool,style_vocabulary:&'static crate::gpui_native_style::StyleVocabulary)->OwnerRef {
         assert!(raw.is_object(),"raw props must be a record");
-        let owner=Rc::new(RefCell::new(Self{phase:"setup",disposed:false,present:true,mounted:false,epoch:0,dirty:true,native_drive:None,window_id:None,update_requested:false,projection_revision:0,committed_revision:0,projection:Value::Undefined,renderer:Value::Undefined,raw_value:Value::json(raw.clone()),props_value:Value::Undefined,raw,props:Json::Object(Map::new()),schemas:BTreeMap::new(),defaults:BTreeMap::new(),states:BTreeMap::new(),exposes:BTreeMap::new(),declared_events:BTreeSet::new(),emitted:Vec::new(),lifecycle:BTreeMap::new(),watchers:Vec::new(),listeners:Vec::new(),contributions:Vec::new(),patch:Vec::new(),suppressed:BTreeSet::new(),parent,providers:BTreeMap::new(),subscriptions:Vec::new(),context_accepts,props_accepts,prop_valid,previous_valid:BTreeMap::new(),default_layers:Vec::new(),focusable:false,focus_disabled:false,focus_requested:false,focus_entry:true,focused:false,suppress_click:false,accessible:false,accessible_role:Value::Undefined,accessible_states:BTreeMap::new(),accessible_actions:BTreeSet::new(),name_content:false,slot:Vec::new(),bounds:None,native_hitbox:None,native_translation:gpui::Point::default(),theme:"shadcn".into(),dark:false,style_vocabulary,modules:Modules::default(),press:NativePress::default(),press_global:false,window_input_observed:None}));
+        let owner=Rc::new(RefCell::new(Self{authored_results:BTreeMap::new(),phase:"setup",disposed:false,present:true,mounted:false,epoch:0,dirty:true,native_drive:None,window_id:None,update_requested:false,projection_revision:0,committed_revision:0,projection:Value::Undefined,renderer:Value::Undefined,raw_value:Value::json(raw.clone()),props_value:Value::Undefined,raw,props:Json::Object(Map::new()),schemas:BTreeMap::new(),defaults:BTreeMap::new(),states:BTreeMap::new(),exposes:BTreeMap::new(),declared_events:BTreeSet::new(),emitted:Vec::new(),lifecycle:BTreeMap::new(),watchers:Vec::new(),listeners:Vec::new(),contributions:Vec::new(),patch:Vec::new(),suppressed:BTreeSet::new(),parent,providers:BTreeMap::new(),subscriptions:Vec::new(),context_accepts,props_accepts,prop_valid,previous_valid:BTreeMap::new(),default_layers:Vec::new(),focusable:false,focus_disabled:false,focus_requested:false,focus_entry:true,focused:false,suppress_click:false,accessible:false,accessible_role:Value::Undefined,accessible_states:BTreeMap::new(),accessible_actions:BTreeSet::new(),name_content:false,slot:Vec::new(),bounds:None,native_hitbox:None,native_translation:gpui::Point::default(),theme:"shadcn".into(),dark:false,style_vocabulary,modules:Modules::default(),press:NativePress::default(),press_global:false,window_input_observed:None}));
         OWNERS.with(|all|all.borrow_mut().push(Rc::downgrade(&owner)));owner
     }
     pub fn finish(owner:&OwnerRef,renderer:Value){owner.borrow_mut().renderer=renderer;owner.borrow_mut().phase="idle";resolve_props(owner);accessible_alive(owner);

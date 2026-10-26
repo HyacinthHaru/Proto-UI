@@ -383,7 +383,9 @@ export function emitGpuiSource(input: PrototypeIR, options: { componentName?: st
     const checks = exposure.parameters.map((parameter, parameterIndex) => `arguments.get(${parameterIndex}).map_or(${Boolean(parameter.optional)}, |value| ${parameter.optional ? 'matches!(value, Value::Undefined) || ' : ''}{let value = value.data(); ${accepts('value', parameter.type as DataType)}})`).join(' && ') || 'true';
     methodChecks.push(`        ${string(exposure.name)} => assert!(arguments.len() <= ${exposure.parameters.length} && ${checks}, "invalid exposed method arguments"),`);
   }
-  const hooks = ir.hooks.filter((hook) => admitted.value.authoredHooks.includes(hook.id)).map((hook) => `fn ${hookNames.get(hook.id)}(definition: Value) -> Value {\n    let owner = definition.owner();\n    ${functionValue(hook.setup, new Set(), 1)}.call(vec![definition])\n}`).join('\n');
+  // Registry keys preserve UTF-16 name equality, including lone surrogates, without Rust escapes.
+  const authoredHookKey = (name: string): string => JSON.stringify('u16:' + name.split('').map((unit) => unit.charCodeAt(0).toString(16).padStart(4, '0')).join(''));
+  const hooks = ir.hooks.filter((hook) => admitted.value.authoredHooks.includes(hook.id)).map((hook) => `fn ${hookNames.get(hook.id)}(definition: Value) -> Value {\n    let owner = definition.owner();\n    authored_hook(&owner, ${authoredHookKey(hook.name)}, || { ${functionValue(hook.setup, new Set(), 1)}.call(vec![definition]); })\n}`).join('\n');
   const moduleSetups = ir.moduleDeclarations.map((declaration) => declaration.id === '@proto.ui/text-control/declaration'
     ? `        text_declaration(&owner, ${declaration.config.lineMode === 'multiline'});`
     : `        image_declaration(&owner, ${staticValue(declaration.config)});`).join('\n');

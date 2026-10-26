@@ -180,7 +180,7 @@ export function emitFlutterSource(input: PrototypeIR, options: { componentName?:
       }
       case 'function': return fn(value.function,depth);
       case 'helper-call': return `${id(value.name)}(${value.arguments.map((arg,index) => helperBindings.get(value.name)?.parameters[index]?.optional && !type(arg.type).startsWith('NativeOptional<') ? `NativeOptional.value(${expr(arg,depth)})` : expr(arg,depth)).join(', ')})`;
-      case 'authored-hook': return `_owner.withFrame(() => ${hooks.get(value.hookId)}(${ir.hooks.find((hook) => hook.id === value.hookId)!.setup.parameters.length ? '_owner' : ''}))`;
+      case 'authored-hook': return `_owner.authoredHook(${quote(ir.hooks.find((hook) => hook.id === value.hookId)!.name)}, () => _owner.withFrame(() => ${hooks.get(value.hookId)}(${ir.hooks.find((hook) => hook.id === value.hookId)!.setup.parameters.length ? '_owner' : ''})))`;
       case 'operation': {
         const op = value.operation;
         const operationContract = OPERATION_RULES[op];

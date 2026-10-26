@@ -218,9 +218,12 @@ export function emitReactSource(
   ).join('\n');
   const propSchemas = ir.props.map((value) => `    ${JSON.stringify(value.name)}: ${JSON.stringify(value.type)},`).join('\n');
   const hookDefinitions = ir.hooks.filter((hook) => admitted.value.authoredHooks.includes(hook.id)).map((hook) => `  const ${hooks.get(hook.id)} = () => {
-    if (${p}HookNames.has(${JSON.stringify(hook.name)})) return;
-    ${p}HookNames.add(${JSON.stringify(hook.name)});
+    if (${p}HookResults.has(${JSON.stringify(hook.name)})) return ${p}HookResults.get(${JSON.stringify(hook.name)}) ?? Object.freeze(Object.create(null));
+    ${p}HookResults.set(${JSON.stringify(hook.name)}, undefined);
     (${fn(hook.setup, 2)})(${p}Def);
+    const result = Object.freeze(Object.create(null));
+    ${p}HookResults.set(${JSON.stringify(hook.name)}, result);
+    return result;
   };`).join('\n');
 
   const code = `// Editable generated React DOM source. Profile: ${profile}.
@@ -417,7 +420,8 @@ ${ssr ? '  let serverPrepared = false;\n' : ''}  let propsWindow: { raw: Readonl
   const defaults: Readonly<Record<string, unknown>>[] = [];
   const previousValid: Record<string, unknown> = Object.create(null);
   const stateNames = new Set<string>();
-  const ${p}HookNames = new Set<string>();
+  // Reserve before setup; only successful setup publishes a reusable opaque result.
+  const ${p}HookResults = new Map<string, object | undefined>();
   const stateSubscribers = new Set<Set<(event: ${p}StateEvent<unknown>) => void>>();
   const pendingStateEvents: (() => void)[] = [];
   const authorStateWatchCleanups: (() => void)[] = [];
