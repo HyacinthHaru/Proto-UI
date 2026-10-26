@@ -39,6 +39,8 @@ function normalizedBundleModuleId(id) {
 function websiteManualChunk(id) {
   const normalizedId = normalizedBundleModuleId(id);
   const modulePath = normalizedId?.split('?', 1)[0];
+  // Share the concept bootstrap instead of inlining it on every documentation page.
+  if (modulePath === 'apps/www/src/scripts/proto-concept.ts') return 'site-concepts';
   // Only the lazy React/Vue/Vue2 adapters use this reserved-input helper.
   // Do not pull it into every WC site shell through the broad Base grouping.
   if (modulePath === 'packages/adapters/base/src/host/instance-associations.ts') return;

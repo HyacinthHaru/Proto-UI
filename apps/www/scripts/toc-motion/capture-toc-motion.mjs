@@ -321,11 +321,18 @@ function installObserver() {
     const style = getComputedStyle(node);
     const bounds = node.getBoundingClientRect();
     return {
-      tag: node.tagName, id: node.id, className: node.getAttribute('class'),
-      rect: rect(bounds), scrollTop: node.scrollTop, scrollLeft: node.scrollLeft,
-      scrollHeight: node.scrollHeight, clientHeight: node.clientHeight,
-      scrollWidth: node.scrollWidth, clientWidth: node.clientWidth,
-      overflowX: style.overflowX, overflowY: style.overflowY,
+      tag: node.tagName,
+      id: node.id,
+      className: node.getAttribute('class'),
+      rect: rect(bounds),
+      scrollTop: node.scrollTop,
+      scrollLeft: node.scrollLeft,
+      scrollHeight: node.scrollHeight,
+      clientHeight: node.clientHeight,
+      scrollWidth: node.scrollWidth,
+      clientWidth: node.clientWidth,
+      overflowX: style.overflowX,
+      overflowY: style.overflowY,
       overscrollBehaviorY: style.overscrollBehaviorY,
     };
   };
@@ -334,7 +341,11 @@ function installObserver() {
     const ancestors = [];
     for (let node = hit; node; node = node.parentElement) ancestors.push(wheelNode(node));
     return {
-      point: { x, y }, hit: wheelNode(hit), ancestors, scrollX, scrollY,
+      point: { x, y },
+      hit: wheelNode(hit),
+      ancestors,
+      scrollX,
+      scrollY,
       viewport: { width: innerWidth, height: innerHeight },
       documentScroller: wheelNode(document.scrollingElement),
     };
@@ -347,10 +358,15 @@ function installObserver() {
         type: 'wheel',
         stage: state.stage,
         trusted: event.isTrusted,
-        deltaX: event.deltaX, deltaY: event.deltaY, deltaMode: event.deltaMode,
+        deltaX: event.deltaX,
+        deltaY: event.deltaY,
+        deltaMode: event.deltaMode,
         defaultPrevented: event.defaultPrevented,
         target: wheelNode(event.target),
-        composedPath: event.composedPath().filter((node) => node instanceof Element).map(wheelNode),
+        composedPath: event
+          .composedPath()
+          .filter((node) => node instanceof Element)
+          .map(wheelNode),
         hitEvidence: state.readWheelHit(event.clientX, event.clientY),
         scrollY,
       }),

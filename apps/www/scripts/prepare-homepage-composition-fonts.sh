@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# Homepage-composition-only exact official Ubuntu font preparation.
+# Exact official Ubuntu font preparation for browser evidence.
 # Official package checksum:
 # https://packages.ubuntu.com/noble/all/fonts-noto-cjk/download
-# Invoke inside the existing 5-minute font/dependency preparation step.
+# Invoke inside the caller's existing font/dependency preparation deadline.
 # This helper does not install JS dependencies or grant a fresh overall budget.
 # Restore/cache ONLY FONT_CACHE_DIR/fonts-noto-cjk_20230817+repack1-3_all.deb.
 set -euo pipefail
@@ -19,7 +19,7 @@ readonly DEB="$CACHE_DIR/$FILENAME"
 
 mkdir -p "$EVIDENCE_DIR"
 exec > >(tee -a "$EVIDENCE_DIR/font-preparation.log") 2>&1
-echo 'Font helper runs inside the unchanged 300s font/dependency preparation step.'
+echo 'The caller-owned preparation deadline remains in force; no new budget is granted.'
 [[ ! -L "$CACHE_DIR" ]] || { echo 'Refusing symlink cache directory'; exit 1; }
 mkdir -p "$CACHE_DIR"
 partial=''

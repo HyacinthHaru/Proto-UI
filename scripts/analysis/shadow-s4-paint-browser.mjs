@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { randomUUID } from 'node:crypto';
 import { createRequire } from 'node:module';
 import { mkdir, mkdtemp, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -47,11 +48,14 @@ export async function runS4PaintJourney(
       });
     void cdp.send('Page.screencastFrameAck', { sessionId: event.sessionId }).catch(() => {});
   };
-  await page.evaluate(() => {
-    window.__s4Paint = { events: [] };
+  const ownerToken = randomUUID();
+  await page.evaluate((ownerToken) => {
+    const state = { events: [], ownerToken };
+    window.__s4Paint = state;
+    window[`__s4Paint_${ownerToken}`] = state;
     for (const content of document.querySelectorAll('[data-s4-part=content]')) {
       const marker = document.createElement('span');
-      marker.dataset.s4PaintMarker = '';
+      marker.dataset.s4PaintMarker = ownerToken;
       marker.setAttribute('aria-hidden', 'true');
       marker.style.cssText =
         'position:absolute;left:26px;top:26px;width:16px;height:16px;background:rgb(255,0,255);pointer-events:none';
@@ -60,7 +64,7 @@ export async function runS4PaintJourney(
     const observer = new MutationObserver((records) => {
       for (const r of records) {
         if (!r.target.matches?.('[data-s4-part=content]')) continue;
-        __s4Paint.events.push({
+        state.events.push({
           time: Date.now(),
           profile: r.target.dataset.s4Profile,
           detached: r.target.hasAttribute('data-pui-view-detached'),
@@ -73,8 +77,8 @@ export async function runS4PaintJourney(
       attributes: true,
       attributeFilter: ['data-pui-view-detached'],
     });
-    __s4Paint.observer = observer;
-  });
+    state.observer = observer;
+  }, ownerToken);
   cdp.on('Page.screencastFrame', onFrame);
   await cdp.send('Page.startScreencast', {
     format: 'png',
@@ -82,6 +86,7 @@ export async function runS4PaintJourney(
     maxHeight: 900,
     everyNthFrame: 1,
   });
+  let hasPrimaryError = false;
   try {
     for (const profile of profiles) {
       const part = (key) => page.locator(`[data-s4-profile=${profile}][data-s4-part=${key}]`);
@@ -163,14 +168,50 @@ export async function runS4PaintJourney(
     }
     assert.deepEqual(failures, [], `opaque paint returned after fade; evidence: ${outputDir}`);
     return { paths: results.length, frames: frames.length };
+  } catch (error) {
+    hasPrimaryError = true;
+    throw error;
   } finally {
     cdp.off('Page.screencastFrame', onFrame);
-    await cdp.detach();
-    await page.evaluate(() => {
-      window.__s4Paint?.observer.disconnect();
-      document.querySelectorAll('[data-s4-paint-marker]').forEach((el) => el.remove());
-      delete window.__s4Paint;
-    });
+    // Neither cleanup may hold the original failure until the case deadline.
+    // A bounded wait does not cancel either command; late DOM work owns only
+    // this invocation's observer and markers, even if the page is reused.
+    const cleanup = Promise.allSettled([
+      Promise.resolve().then(() => cdp.detach()),
+      Promise.resolve().then(() =>
+        page.evaluate((ownerToken) => {
+          const key = `__s4Paint_${ownerToken}`;
+          const state = window[key];
+          if (state?.ownerToken !== ownerToken) return;
+          state.observer.disconnect();
+          document
+            .querySelectorAll(`[data-s4-paint-marker="${ownerToken}"]`)
+            .forEach((el) => el.remove());
+          delete window[key];
+          if (window.__s4Paint === state) delete window.__s4Paint;
+        }, ownerToken)
+      ),
+    ]);
+    let timer;
+    try {
+      const results = await Promise.race([
+        cleanup,
+        new Promise((_, reject) => {
+          timer = setTimeout(() => reject(new Error('S4 paint cleanup exceeded 2000ms')), 2000);
+        }),
+      ]);
+      const failed = results.find((result) => result.status === 'rejected');
+      if (failed) throw failed.reason;
+    } catch (error) {
+      if (!hasPrimaryError) throw error;
+      try {
+        console.warn('[S4 paint cleanup]', String(error));
+      } catch {
+        /* A diagnostic failure cannot replace the original rejection. */
+      }
+    } finally {
+      clearTimeout(timer);
+    }
   }
 }
 

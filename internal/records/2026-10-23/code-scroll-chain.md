@@ -1,6 +1,6 @@
 # Native code-source vertical scroll chaining
 
-Source diagnosis: exact968 dcb81f1c775d6918258cd8aeea1642a3d82ac401 native TOC run39910045090 was cancelled, but its preserved partial capture contains an independently observable failed reverse gesture. Fourteen trusted wheel events totaling deltaY−3080 targeted PRE.proto-previewer__code; scrollHeight and clientHeight were both24, overflow was auto on both axes and vertical overscroll was contain. All115 document-scroll samples stayed2860. This is not a completed passing workflow, and cancellation cause is not inferred.
+Source diagnosis: exact968 dcb81f1c775d6918258cd8aeea1642a3d82ac401 native TOC run39910045090 was cancelled, but its preserved partial capture contains an independently observable failed reverse gesture. Fourteen trusted wheel events totaling deltaY−3080 targeted PRE.proto-previewer\_\_code; scrollHeight and clientHeight were both24, overflow was auto on both axes and vertical overscroll was contain. All115 document-scroll samples stayed2860. This is not a completed passing workflow, and cancellation cause is not inferred.
 
 The product CSS applied unconditional two-axis containment to every native source pre, even when there was no vertical range. This bounded change keeps overflow:auto, selection, code sizing, expansion and horizontal containment, but allows vertical chaining to the page. It does not alter any Base/Adapter behavior or TOC motion threshold, coordinates or input. No special-case TOC listener is introduced.
 
@@ -9,7 +9,6 @@ The new independent browser suite repeats1440×900, scroll2860, hit point700/550
 The existing code-surfaces suite remains unchanged and must still prove native text selection, Copy and expansion. The original TOC capture is retained unchanged; its workflow gains only the relevant CSS path trigger so the product change runs the same test. The new browser suite is explicitly registered and gets its own bounded workflow, without expanding old lane permissions or time budgets. Uses the already validated exact font preparation; no missing-font fallback.
 
 Local source contracts and targeted TypeScript passed before native execution. Those results are not a claim of native scrolling or visual acceptance. Exact new-head CI screenshots and original TOC results remain required. No homepage full-parity or assistive-technology claim.
-
 
 ## 2026-10-24: bounded static-policy comparison, not acceptance closure
 
@@ -25,6 +24,4 @@ The pair always reports acceptance=false and fullIssueAcceptance=false. Its sepa
 
 The historical (700,550) replay currently hits a DIV and is not reproduced. Its original issue990 requirement, unchanged TOC evidence, and separate selection/Copy/expansion regressions remain outstanding. Neither this diagnostic nor a scoped positive result makes issue990 complete or PR991 merge-ready.
 
-Agent: dot
-ModelTrace: not measured — owner-authorized dot exemption (2026-10-06)
-
+Agent: dot ModelTrace: not measured — owner-authorized dot exemption (2026-10-06)
