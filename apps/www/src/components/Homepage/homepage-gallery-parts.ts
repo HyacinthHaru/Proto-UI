@@ -1,3 +1,4 @@
+import { shadcnCheckboxDemoChildren } from '../PrototypePreviewer/shadcn-checkbox-composition';
 import { createHomepageCompositionParts } from './homepage-composition-parts';
 import { homepageTextProps, setHomepageText } from './homepage-text';
 import type { DemoChild, DemoNode, DemoSetupContext } from '../PrototypePreviewer/demo-types';
@@ -101,22 +102,35 @@ export function createHomepageGalleryParts(
   const toggle = (label: string, ref: string) =>
     p(part('toggle'), [label], { defaultActive: false }, ref);
   const checkbox = (label: string, ref: string, checked = false) =>
-    box('home-gallery__choice', [
-      p(
-        `${family}-checkbox-root`,
-        [p(`${family}-checkbox-indicator`)],
-        { defaultChecked: checked },
-        ref,
-        `choice:${ref}`
-      ),
-      p(
-        `${family}-label-root`,
-        [label],
-        { naming: true, activation: true },
-        undefined,
-        `choice:${ref}`
-      ),
-    ]);
+    box(
+      'home-gallery__choice',
+      family === 'shadcn'
+        ? shadcnCheckboxDemoChildren(
+            {
+              associationKey: `choice:${ref}`,
+              label: [label],
+              controlProps: { defaultChecked: checked },
+              controlRef: ref,
+            },
+            p
+          )
+        : [
+            p(
+              `${family}-checkbox-root`,
+              [p(`${family}-checkbox-indicator`)],
+              { defaultChecked: checked },
+              ref,
+              `choice:${ref}`
+            ),
+            p(
+              `${family}-label-root`,
+              [label],
+              { naming: true, activation: true },
+              undefined,
+              `choice:${ref}`
+            ),
+          ]
+    );
   const status = (value: string, ref: string) =>
     box('home-gallery__status', [value], ref, { role: 'status', 'aria-live': 'polite' });
   const sample = zh

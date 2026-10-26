@@ -133,7 +133,12 @@ const EXPECTED_LANE_ONLY_FAMILIES = {
     checkbox: {
       baseFamilyId: 'P-BASE-CHECKBOX',
       recipeId: 'demo-shadcn-checkbox',
-      recipePrototypeIds: ['shadcn-checkbox-root', 'shadcn-checkbox-indicator'],
+      recipePrototypeIds: [
+        'shadcn-checkbox-root',
+        'shadcn-checkbox-indicator',
+        'shadcn-label-root',
+      ],
+      auxiliaryPrototypes: [{ basePrototypeId: 'P-BASE-LABEL', prototypeId: 'shadcn-label-root' }],
       parts: {
         root: {
           basePrototypeId: 'P-BASE-CHECKBOX',
@@ -782,6 +787,9 @@ describe('Website projection-family manifests', () => {
   it('classifies every recipe Prototype with explicit part or auxiliary lineage', () => {
     const expectedAuxiliaries = {
       'shadcn/card': [{ basePrototypeId: 'P-BASE-TEXT', prototypeId: 'shadcn-text-root' }],
+      'shadcn/checkbox': [
+        { basePrototypeId: 'P-BASE-LABEL', prototypeId: 'shadcn-label-root' },
+      ],
       'bootstrap-2-3-2/select': [
         { basePrototypeId: 'P-BASE-BUTTON', prototypeId: 'bootstrap-2-3-2-button' },
       ],

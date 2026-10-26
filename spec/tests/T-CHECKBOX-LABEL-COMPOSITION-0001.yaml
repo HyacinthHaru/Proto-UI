@@ -1,0 +1,43 @@
+id: T-CHECKBOX-LABEL-COMPOSITION-0001
+type: test
+title: Recommended Checkbox Label construction evidence
+status: draft
+since: 0.3.0-alpha.1
+lifecycleRationale:
+  en: Candidate construction and synthetic host tests are recorded without a passing execution claim; native input and installed closure remain separate admission debt.
+summary: Public identity, instance isolation and existing host behavior are checked without equating source construction to native acceptance.
+cases:
+  - id: T-CHECKBOX-LABEL-COMPOSITION-0001-CASE-CONSTRUCTION
+    title: Existing parts and isolated immutable instance inputs
+    covers: [C-CHECKBOX-LABEL-COMPOSITION-0001-SOURCE, C-CHECKBOX-LABEL-COMPOSITION-0001-INSTANCE]
+    expectation: Same real atoms and preset, independent fresh references, immutable defaults and explicit serialization rejection.
+  - id: T-CHECKBOX-LABEL-COMPOSITION-0001-CASE-HOST
+    title: Existing synthetic host association retains state and input ownership
+    covers:
+      [
+        C-CHECKBOX-LABEL-COMPOSITION-0001-OWNERSHIP,
+        C-CHECKBOX-LABEL-COMPOSITION-0001-CONTENT,
+        C-CHECKBOX-LABEL-COMPOSITION-0001-EVIDENCE,
+      ]
+    expectation: Rich visible label, direct input, disabled and mixed control, controlled rejection, raw naming-only content, nested action exclusion, rebind and detached input isolation; not native or assistive-technology acceptance.
+implementations:
+  - id: checkbox-label-construction-and-host
+    kind: adapter-test
+    status: planned
+    path: packages/prototypes/shadcn/test/checkbox-label-composition.test.ts
+    required: true
+    consumesCases:
+      [
+        T-CHECKBOX-LABEL-COMPOSITION-0001-CASE-CONSTRUCTION,
+        T-CHECKBOX-LABEL-COMPOSITION-0001-CASE-HOST,
+      ]
+    notes:
+      - Candidate test source exists; local runner result and inherited failures are recorded in the same repair PR diagnosis. Planned means no passing evidence is asserted.
+      - Detach coverage is not terminal runtime disposal, native input, computed accessibility-tree name or packed/install proof.
+verifies:
+  contracts: [C-CHECKBOX-LABEL-COMPOSITION-0001]
+revisions:
+  - version: 0.3.0-alpha.1
+    change: introduced
+    summary: Recorded bounded constructor and host-unit cases without promoting draft construction or claiming real-browser acceptance.
+tags: [checkbox, label, composition, evidence]
