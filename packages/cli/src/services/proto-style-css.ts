@@ -316,9 +316,11 @@ const staticUtilities: Record<string, string[]> = {
   'leading-6': ['line-height: 1.5rem;'],
   'leading-relaxed': ['line-height: 1.625;'],
   'leading-none': ['line-height: 1;'],
+  'leading-[1.1]': ['line-height: 1.1;'],
   'leading-tight': ['line-height: 1.25;'],
   'leading-snug': ['line-height: 1.375;'],
   'leading-normal': ['line-height: 1.5;'],
+  'tracking-tighter': ['letter-spacing: -0.05em;'],
   'tracking-tight': ['letter-spacing: -0.025em;'],
   'tracking-normal': ['letter-spacing: 0;'],
   'tracking-widest': ['letter-spacing: 0.1em;'],
@@ -1232,9 +1234,12 @@ export function renderProtoStyleEntryCss({
   ].join('\n');
 }
 
-export function renderPrefixedThemeCss(input: string): string {
+export function renderPrefixedThemeCss(
+  input: string,
+  options: { variableDeclarations?: string } = {}
+): string {
   const variableNames = new Set<string>();
-  input.replace(/--([a-z0-9-]+)\s*:/g, (_match, name: string) => {
+  (options.variableDeclarations ?? input).replace(/--([a-z0-9-]+)\s*:/g, (_match, name: string) => {
     variableNames.add(name);
     return '';
   });
