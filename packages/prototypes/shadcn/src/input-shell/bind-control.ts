@@ -86,11 +86,23 @@ export function bindInputShellControl(
     targets.delete(target.instance);
     const off = ownerCleanup;
     ownerCleanup = undefined;
+    let failed = false;
+    let error: unknown;
     try {
       retire();
-    } finally {
-      off?.();
+    } catch (cause) {
+      failed = true;
+      error = cause;
     }
+    try {
+      off?.();
+    } catch (cause) {
+      if (!failed) {
+        failed = true;
+        error = cause;
+      }
+    }
+    if (failed) throw error;
   };
   const abort = (error: unknown): never => {
     try {
