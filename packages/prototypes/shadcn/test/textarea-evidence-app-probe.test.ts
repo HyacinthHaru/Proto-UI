@@ -287,7 +287,8 @@ it('post-verdict phase reads create no probes and preserve paint when the tracer
 
 it('keeps the actual native sampler invocation at exactly callback plus expected argument', async () => {
   const { readFile } = await import('node:fs/promises');
-  const source = await readFile(new URL('../../../../scripts/prototypes/shadcn-textarea-evidence.mjs', import.meta.url), 'utf8');
+  const { resolve } = await import('node:path');
+  const source = await readFile(resolve('scripts/prototypes/shadcn-textarea-evidence.mjs'), 'utf8');
   const invocation = source.match(/const sampled = await (page\.locator\([\s\S]*?\n      \));/);
   expect(invocation).not.toBeNull();
   // This inspects the executed collector call site, not a mock helper call.
