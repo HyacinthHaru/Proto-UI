@@ -1,6 +1,8 @@
+// @vitest-environment node
 import { describe, it, expect } from 'vitest';
 import { snapshotLibraryPart } from './library-card-snapshot';
 import { librarySurfaceProps, libraryHeadingProps } from './library-card-prototypes';
+import { CONTEXT_CENTER } from '../../../../packages/modules/context/src/center';
 describe('library entry real Prototype first-frame projection', () => {
   it('keeps Base truly unstyled and renders the governed Brutalist Card', async () => {
     expect(await snapshotLibraryPart('base-surface', librarySurfaceProps)).toEqual([]);
@@ -84,4 +86,25 @@ it('dogfoods Card-specific SSR tokens and retains inherited title/body ink', asy
   expect(await removed('shadcn-card', {})).toEqual([]);
   // Neutral Surface remains distinct from the Card contract.
   expect(await snapshotLibraryPart('shadcn-surface', librarySurfaceProps)).not.toContain('bg-card');
+});
+
+it('isolates concurrent Card context roots and the following default snapshot', async () => {
+  const before = CONTEXT_CENTER.dumpProviders();
+  const [newYork, rhea] = await Promise.all([
+    snapshotLibraryPart('shadcn-card', { styleProfile: 'new-york-v4' }),
+    snapshotLibraryPart('shadcn-card', { styleProfile: 'rhea', size: 'sm' }),
+  ]);
+  expect(rhea).not.toEqual(newYork);
+  expect(await snapshotLibraryPart('shadcn-card', {})).toEqual(newYork);
+  expect(CONTEXT_CENTER.dumpProviders()).toEqual(before);
+});
+
+it('disposes a rejected Card snapshot before a later valid root', async () => {
+  const before = CONTEXT_CENTER.dumpProviders();
+  await expect(
+    snapshotLibraryPart('shadcn-card', { styleProfile: 'new-york-v4', size: 'sm' })
+  ).rejects.toThrow('New York supports only default size');
+  expect(CONTEXT_CENTER.dumpProviders()).toEqual(before);
+  expect(await snapshotLibraryPart('shadcn-card', {})).toContain('bg-card');
+  expect(CONTEXT_CENTER.dumpProviders()).toEqual(before);
 });
