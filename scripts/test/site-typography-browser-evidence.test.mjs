@@ -208,7 +208,17 @@ describe('native typography browser ownership and bounded registration', () => {
     assert.doesNotMatch(uploads[0].with.path, /trace\.zip/);
     assert.match(uploads[1].with.path, /\*-trace\.zip/);
     assert.ok(job.steps.some((step) => step.run?.includes('fonts-noto-cjk')));
-    assert.ok(ci.jobs['test-browser'].steps.some((step) => step.run?.includes('fonts-noto-cjk')));
+    const fonts = ci.jobs['test-browser'].steps.find(
+      (step) => step.run === 'bash apps/www/scripts/prepare-homepage-composition-fonts.sh'
+    );
+    assert.ok(fonts);
+    assert.equal(fonts['timeout-minutes'], 3);
+    assert.equal(fonts.if, undefined);
+    assert.equal(fonts['continue-on-error'], undefined);
+    assert.match(
+      readFileSync('apps/www/scripts/prepare-homepage-composition-fonts.sh', 'utf8'),
+      /readonly PACKAGE='fonts-noto-cjk'/
+    );
     assert.ok(
       ci.jobs['test-browser'].steps.some((step) =>
         step.run?.includes(

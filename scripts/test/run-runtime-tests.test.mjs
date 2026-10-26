@@ -1381,16 +1381,27 @@ describe('bounded CI runtime shards (no browser or server)', () => {
       (step) => step.name === 'Install real CJK fallback for typography glyph evidence'
     );
     assert.equal(fontSteps.length, 1);
-    // Exact commands exclude a fake fallback, conditional skip or swallowed apt failure.
+    // The shared helper verifies the exact package, selected face and glyphs;
+    // a cache never bypasses those checks or grants more browser execution time.
     assert.deepEqual(fontSteps[0], {
       name: 'Install real CJK fallback for typography glyph evidence',
       'timeout-minutes': 3,
-      run: [
-        'sudo apt-get update -qq',
-        'sudo apt-get install -y --no-install-recommends fonts-noto-cjk',
-        '',
-      ].join('\n'),
+      env: { FONT_EVIDENCE_DIR: '${{ runner.temp }}/runtime-ci/font-preparation' },
+      run: 'bash apps/www/scripts/prepare-homepage-composition-fonts.sh',
     });
+    const cache = browser.steps.find(
+      (step) => step.name === 'Restore the exact browser font package only'
+    );
+    assert.deepEqual(cache, {
+      name: 'Restore the exact browser font package only',
+      'timeout-minutes': 1,
+      uses: 'actions/cache@v4',
+      with: {
+        path: '${{ runner.temp }}/homepage-font-cache/fonts-noto-cjk_20230817+repack1-3_all.deb',
+        key: 'ubuntu24-fonts-noto-cjk-7d64b985f6fe128c99eae5610d5c047338e572bdcfb2bb09736be01b824a7f6c',
+      },
+    });
+    assert.ok(browser.steps.indexOf(cache) < browser.steps.indexOf(fontSteps[0]));
     const run = browser.steps.find(
       (step) => step.name === 'Run the bounded shard with its own documentation server'
     );
