@@ -205,3 +205,174 @@ it.each(['missing', 'snapshot-throws', 'lookup-throws'])(
     }
   }
 );
+
+it.each(['none', 'first-phase', 'readiness', 'screenshot', 'both-phases'])(
+  'retains the primary failure and both phase attempts when optional failure is %s',
+  async (failure) => {
+    const { collectTextareaFailureEvidence } =
+      // @ts-expect-error Native capture helpers intentionally use JavaScript.
+      await import('../../../../scripts/prototypes/shadcn-textarea-shadow-oracle.mjs');
+    const observations = Object.freeze([{ paintAttempt: Object.freeze({ observed: 'original mismatch' }) }]);
+    const primary = Object.freeze({ error: 'original endpoint failure', observations });
+    const calls: string[] = [];
+    let phaseCount = 0;
+    const result = await collectTextareaFailureEvidence(primary, {
+      readPhase: async () => {
+        calls.push(`phase${++phaseCount}`);
+        if (failure === 'both-phases' || (failure === 'first-phase' && phaseCount === 1))
+          throw new Error('optional phase failed');
+        // Even later agreement/completion must not replace the original verdict.
+        return { status: 'recorded', paint: { shadow: 'later matching value' }, diagnostic: { events: ['transitionend'] } };
+      },
+      readReadiness: async () => {
+        calls.push('readiness');
+        if (failure === 'readiness') throw new Error('optional readiness failed');
+        return { ready: true };
+      },
+      screenshot: async () => {
+        calls.push('screenshot');
+        if (failure === 'screenshot') throw new Error('optional screenshot failed');
+        return { path: 'failure.png', sha256: 'fixture' };
+      },
+    }, { status: 'persisted' });
+    expect(calls).toEqual(['phase1', 'readiness', 'screenshot', 'phase2']);
+    expect(result.error).toBe(primary.error);
+    expect(result.observations).toBe(observations);
+    expect(result.postFailureDiagnostics).toHaveLength(2);
+    expect(result.postFailureDiagnostics.map((entry: any) => entry.phase))
+      .toEqual(['catch-entry-before-screenshot', 'after-screenshot-attempt']);
+    for (const phase of result.postFailureDiagnostics) {
+      expect(phase.acceptance).toBe('not evaluated; original failure retained');
+      expect(phase.hostFinishedAtMs).toBeGreaterThanOrEqual(phase.hostStartedAtMs);
+    }
+    if (failure === 'both-phases') {
+      expect(result.postFailureDiagnostics.every((entry: any) => entry.status === 'read-failed')).toBe(true);
+      expect(result.failureScreenshot.path).toBe('failure.png');
+    }
+    if (failure === 'screenshot') expect(result.failureScreenshot.error).toContain('optional screenshot failed');
+    if (failure === 'readiness') expect(result.readiness.error).toContain('optional readiness failed');
+  }
+);
+
+it('post-verdict phase reads create no probes and preserve paint when the tracer fails', async () => {
+  const { readTextareaPostFailurePhase } =
+    // @ts-expect-error Native capture helpers intentionally use JavaScript.
+    await import('../../../../scripts/prototypes/shadcn-textarea-shadow-oracle.mjs');
+  const editor = document.createElement('textarea') as any;
+  editor.matches = () => false;
+  editor.__puiPaintDiagnostics = { snapshot() { throw new Error('tracer unavailable'); } };
+  const previousFixture = (window as any).textareaEvidence;
+  const previousComputedStyle = globalThis.getComputedStyle;
+  const originalChildren = [...document.body.childNodes];
+  const createElement = vi.spyOn(document, 'createElement');
+  (window as any).textareaEvidence = { records: [{ kind: 'react', editor: () => editor }] };
+  vi.stubGlobal('getComputedStyle', () => ({
+    borderColor: 'rgb(1, 2, 3)', boxShadow: 'original painted shadow', opacity: '1',
+    getPropertyValue: () => '3px',
+  }));
+  try {
+    const result = readTextareaPostFailurePhase('react');
+    expect(result.paint.shadow).toBe('original painted shadow');
+    expect(result.diagnostic).toEqual({ status: 'read-failed', error: 'Error: tracer unavailable' });
+    expect([...document.body.childNodes]).toEqual(originalChildren);
+    expect(readTextareaPostFailurePhase('missing').status).toBe('missing');
+    expect(createElement).not.toHaveBeenCalled();
+    expect(result.browserFinishedMs).toBeGreaterThanOrEqual(result.browserStartedMs);
+  } finally {
+    createElement.mockRestore();
+    (window as any).textareaEvidence = previousFixture;
+    vi.stubGlobal('getComputedStyle', previousComputedStyle);
+  }
+});
+
+it('keeps the actual native sampler invocation at exactly callback plus expected argument', async () => {
+  const { readFile } = await import('node:fs/promises');
+  const source = await readFile(new URL('../../../../scripts/prototypes/shadcn-textarea-evidence.mjs', import.meta.url), 'utf8');
+  const invocation = source.match(/const sampled = await (page\.locator\([\s\S]*?\n      \));/);
+  expect(invocation).not.toBeNull();
+  // This inspects the executed collector call site, not a mock helper call.
+  // Any added positional argument (including another function) fails this guard.
+  expect(invocation![1].replace(/\s+/g, ' ')).toBe(
+    'page.locator(`section[data-runtime="${kind}"] textarea`).evaluate( sampleTextareaPaint, { kind, border: expectedBorder, ring: expectedRing } )'
+  );
+  expect(source).toContain('runFailure = { failed: true, error };');
+  expect(source).toMatch(/finally \{\s+await cleanupTextareaEvidence\(runFailure,/);
+  expect(source).toContain('}, primaryPersistence);');
+});
+
+it.each(['write', 'rename'])(
+  'skips new phase reads on primary %s failure but retains original readiness/screenshot attempts',
+  async (stage) => {
+    const { persistTextareaFailure, collectTextareaFailureEvidence } =
+      // @ts-expect-error Native capture helpers intentionally use JavaScript.
+      await import('../../../../scripts/prototypes/shadcn-textarea-shadow-oracle.mjs');
+    const primary = Object.freeze({ error: 'primary failure', observations: Object.freeze(['original']) });
+    const calls: string[] = [];
+    const persistence = await persistTextareaFailure(primary, {
+      writePending: async (contents: string) => {
+        calls.push('write');
+        expect(JSON.parse(contents)).toEqual(primary);
+        if (stage === 'write') throw new Error('write failed');
+      },
+      renamePending: async () => { calls.push('rename'); throw new Error('rename failed'); },
+    });
+    expect(persistence.status).toBe(`${stage}-failed`);
+    expect(calls).toEqual(stage === 'write' ? ['write'] : ['write', 'rename']);
+    const readPhase = vi.fn();
+    const result = await collectTextareaFailureEvidence(primary, {
+      readPhase,
+      readReadiness: async () => { calls.push('readiness'); return { ready: true }; },
+      screenshot: async () => { calls.push('screenshot'); return { path: 'failure.png' }; },
+    }, persistence);
+    expect(readPhase).not.toHaveBeenCalled();
+    expect(calls.slice(-2)).toEqual(['readiness', 'screenshot']);
+    expect(result.error).toBe(primary.error);
+    expect(result.observations).toBe(primary.observations);
+    expect(result.primaryPersistence).toBe(persistence);
+    expect(result.postFailureDiagnostics.map((phase: any) => phase.status)).toEqual(['skipped', 'skipped']);
+    expect(result.failureScreenshot.path).toBe('failure.png');
+  }
+);
+
+it.each([new Error('primary object'), 'primary string', null, undefined])(
+  'preserves primary thrown value through failing cleanup: %s', async (error) => {
+    const { cleanupTextareaEvidence } =
+      // @ts-expect-error Native capture helpers intentionally use JavaScript.
+      await import('../../../../scripts/prototypes/shadcn-textarea-shadow-oracle.mjs');
+    const calls: string[] = [];
+    const recorded: any[] = [];
+    let rejected = false, caught: unknown;
+    try {
+      await cleanupTextareaEvidence({ failed: true, error }, {
+        closeBrowser: async () => { calls.push('browser'); throw new Error('browser cleanup'); },
+        closeServer: async () => { calls.push('server'); throw new Error('server cleanup'); },
+        recordErrors: async (errors: any[]) => { calls.push('record'); recorded.push(...errors); },
+      });
+    } catch (value) { rejected = true; caught = value; }
+    expect(rejected).toBe(true);
+    expect(caught).toBe(error);
+    expect(calls).toEqual(['browser', 'server', 'record']);
+    expect(recorded.map((entry) => entry.stage)).toEqual(['browser-close', 'server-close']);
+  }
+);
+
+it('does not turn cleanup failure into success, including when its error record fails', async () => {
+  const { cleanupTextareaEvidence } =
+    // @ts-expect-error Native capture helpers intentionally use JavaScript.
+    await import('../../../../scripts/prototypes/shadcn-textarea-shadow-oracle.mjs');
+  const cleanupError = new Error('browser cleanup');
+  const log = vi.spyOn(console, 'error').mockImplementation(() => {});
+  try {
+    await expect(cleanupTextareaEvidence({ failed: false }, {
+      closeBrowser: async () => { throw cleanupError; },
+      closeServer: async () => {},
+      recordErrors: async () => { throw new Error('record failure'); },
+    })).rejects.toBe(cleanupError);
+    expect(log).toHaveBeenCalled();
+    await expect(cleanupTextareaEvidence({ failed: true, error: 'original' }, {
+      closeBrowser: async () => { throw cleanupError; },
+      closeServer: async () => {},
+      recordErrors: async () => { throw new Error('record failure'); },
+    })).rejects.toBe('original');
+  } finally { log.mockRestore(); }
+});

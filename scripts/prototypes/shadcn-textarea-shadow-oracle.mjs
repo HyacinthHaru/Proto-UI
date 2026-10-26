@@ -175,3 +175,115 @@ export function sampleTextareaPaint(e, expected) {
   oracle.remove();
   return result;
 }
+
+// Self-contained, read-only browser callback. Unlike sampleTextareaPaint, this
+// creates no probe nodes and reads no new expected values after the verdict.
+export function readTextareaPostFailurePhase(kind) {
+  const browserStartedMs = performance.now();
+  const record = window.textareaEvidence?.records.find((entry) => entry.kind === kind);
+  const editor = record?.editor();
+  if (!editor) return {
+    status: 'missing', reason: 'failed-attempt editor unavailable',
+    browserStartedMs, browserFinishedMs: performance.now(),
+  };
+  const c = getComputedStyle(editor);
+  const paint = {
+    kind, connected: editor.isConnected,
+    focused: document.activeElement === editor,
+    nativeFocus: editor.matches(':focus-visible'),
+    invalid: editor.getAttribute('aria-invalid'),
+    disabled: editor.disabled, readOnly: editor.readOnly,
+    border: c.borderColor, shadow: c.boxShadow, opacity: c.opacity,
+    ringWidth: c.getPropertyValue('--pui-ring-width').trim(),
+    ringColorVariable: c.getPropertyValue('--pui-ring-color'),
+    tokens: editor.getAttribute('data-pui-style'),
+  };
+  let diagnostic = { status: 'missing', error: null };
+  try {
+    const tracer = editor.__puiPaintDiagnostics;
+    if (tracer && typeof tracer.snapshot === 'function') {
+      diagnostic = { ...tracer.snapshot(), status: 'recorded', error: null };
+    }
+  } catch (error) {
+    diagnostic = { status: 'read-failed', error: String(error) };
+  }
+  return {
+    status: 'recorded', browserStartedMs, browserFinishedMs: performance.now(),
+    identity: 'reacquired fixture editor; identity with failed sample is not established',
+    paint, diagnostic,
+  };
+}
+
+// Post-verdict collection only. No retries/waits, comparison or acceptance return.
+// Each optional operation is isolated so it cannot suppress the next operation.
+export async function collectTextareaFailureEvidence(primary, operations, primaryPersistence) {
+  const postFailureDiagnostics = [];
+  const phase = async (name) => {
+    const hostStartedAtMs = Date.now();
+    let result;
+    if (primaryPersistence?.status !== 'persisted') {
+      result = { status: 'skipped', reason: 'primary receipt not persisted' };
+    } else {
+      try {
+        result = { status: 'recorded', value: await operations.readPhase() };
+      } catch (error) {
+        result = { status: 'read-failed', error: String(error) };
+      }
+    }
+    postFailureDiagnostics.push({
+      phase: name, hostStartedAtMs, hostFinishedAtMs: Date.now(), ...result,
+      acceptance: 'not evaluated; original failure retained',
+    });
+  };
+  await phase('catch-entry-before-screenshot');
+  let readiness;
+  try {
+    readiness = await operations.readReadiness();
+  } catch (error) {
+    readiness = { error: String(error) };
+  }
+  let failureScreenshot;
+  try {
+    failureScreenshot = await operations.screenshot();
+  } catch (error) {
+    failureScreenshot = { error: String(error) };
+  }
+  await phase('after-screenshot-attempt');
+  return { ...primary, primaryPersistence, readiness, failureScreenshot, postFailureDiagnostics };
+}
+
+export async function persistTextareaFailure(value, operations) {
+  try {
+    await operations.writePending(JSON.stringify(value, null, 2));
+  } catch (error) {
+    return { status: 'write-failed', error: String(error) };
+  }
+  try {
+    await operations.renamePending();
+  } catch (error) {
+    return { status: 'rename-failed', error: String(error) };
+  }
+  return { status: 'persisted' };
+}
+
+// Always attempt both existing cleanup operations. Preserve any primary thrown
+// value, including undefined/null; a successful run must still fail on cleanup.
+export async function cleanupTextareaEvidence(primary, operations) {
+  const failures = [];
+  for (const [stage, operation] of [
+    ['browser-close', operations.closeBrowser], ['server-close', operations.closeServer],
+  ]) {
+    try { await operation(); }
+    catch (error) { failures.push({ stage, error }); }
+  }
+  if (failures.length) {
+    try {
+      await operations.recordErrors(failures.map(({ stage, error }) => ({ stage, error: String(error) })));
+    } catch (error) {
+      failures.push({ stage: 'cleanup-error-record', error });
+      console.error('Could not record Textarea cleanup errors:', error);
+    }
+  }
+  if (primary.failed) throw primary.error;
+  if (failures.length) throw failures[0].error;
+}

@@ -85,3 +85,98 @@ and independent review. Continue diagnostics and the actual repair in the same
 follow-up PR under #954; do not claim this increment closes the Issue or finishes
 native acceptance. Production, renderer, Compiler/IR, #887 and other owner paths
 are unchanged. No new Issue or separate quantity-only diagnostic PR is needed.
+
+## Exact-head native result and post-verdict continuation, 2026-10-26 UTC
+
+The first diagnostic increment was published on the same #954 follow-up PR #1010
+at `4f4d98ab968801983cdbfbe61b03dcf0e2f461a9` (tree
+`b6a67bac89399f3f89a23dd1f1b1dfa79c84424b`). Its
+[native job](https://github.com/Proto-UI/Proto-UI/actions/runs/40245950237/job/121327422116)
+passed 34 focused tests across four files, then failed native paint acceptance.
+Artifact `12618538242` SHA256 is
+`08915dcf1713e841847cb1b12548620a668768cfd8c273cc85e24bb3980246f8`.
+Source/app/index/CSS bindings were inspected; browser version is `155.0.8059.39`.
+These results belong to that exact published head, not the continuation below.
+
+This failure is React **light**/Rhea readonly invalid-clear, distinct from the
+original dark failure. All 11 polling samples are retained without omissions.
+At the last sample, host elapsed is 230ms and browser snapshot time is 13582.5ms;
+the box-shadow transition remains running at 199.992ms of 200ms with progress
+0.9999999991666418. Its startTime remains 13372.428. Event216's transitionend at
+13306.1 belongs to the previous transition; events217/218 are the current
+run/start at 13372.8. No current completion or restart is observed.
+
+The host first-to-last delta is 222ms and browser delta is 221.8ms, not proof of
+an exact shared clock. The final retry sleeps up to the remaining nominal window
+and checks the deadline before sampling again. It can miss a completion in that
+unsampled tail, but this trace does not prove one happened. The possible next
+frame inferred from the roughly 16.666ms animation steps is an extrapolation,
+not measured completion. Settled precision drift is also unestablished.
+
+### Smallest additional observation, preserving the failure
+
+The catch handler first attempts an atomic primary `failure.json` write before
+optional page work. Supplemental writes use a same-directory pending file and
+rename so a failed write does not truncate an already persisted primary receipt.
+A write failure is reported, not represented as successful persistence.
+If primary writing or renaming fails, both new phase reads are explicitly skipped.
+The pre-existing readiness and screenshot attempts still run independently, and
+a later receipt write may retain their result plus the failed-primary/skip status;
+that does not retrospectively authorize the skipped reads.
+
+Two direct `page.evaluate` reads then capture the failed-attempt fixture editor:
+one before existing readiness/screenshot work and one immediately after the
+existing screenshot attempt. There is no locator auto-wait, sleep, retry,
+animation mutation, new oracle node or new expected color. Each optional read,
+readiness capture and screenshot attempt has an independent error boundary.
+Missing editor/tracer and failed reads remain explicit. Primary observations and
+error remain unchanged; later data is stored separately in
+`postFailureDiagnostics` and never reconsidered as acceptance. The original
+error is rethrown even if optional capture or supplemental persistence fails.
+Both browser and server cleanup are attempted independently. Secondary cleanup
+errors are recorded in `cleanup-errors.json`; recording failures are logged. A
+failing run rethrows its original value (including null/undefined) after cleanup;
+on an otherwise successful run a cleanup error remains a failure, not success.
+
+Each phase records host wall-clock start/end and browser monotonic read boundaries;
+these clocks are not precisely aligned. The reacquired editor is not claimed to
+have proven identity with the failed sample. Existing bounded tracer history can
+retain a subsequently delivered transitionend, but missing/failed history cannot
+prove completion. No extra wait is added to obtain it.
+
+Screenshot options remain `path` and `fullPage` only. Playwright's documented
+default `animations: "allow"` does not fast-forward transitions; `"disabled"`
+would, and is not used. Its existing default caret hiding is unchanged. A later
+phase can reflect elapsed screenshot processing and is not proof of completion
+inside the original nominal polling window. See the
+[official screenshot options](https://playwright.dev/docs/api/class-page#page-screenshot).
+
+Focused negative controls cover first/both phase failures, readiness failure,
+screenshot failure, later matching paint, missing editors and throwing tracers.
+They require the original verdict/attempt reference, both phase attempts and
+absence of probe-node creation. These new cases are authored but unexecuted on
+the source-preparation seat; only standalone JavaScript syntax/static inspection
+is permitted here. Fresh exact-head CI, screenshot evidence and independent
+review remain required on the same PR. The observed light failure and original
+dark failure remain open; neither sampling-tail nor settled-precision root cause
+is asserted, and no timeout, tolerance or production behavior is changed.
+
+### Unpublished candidate rejection and correction
+
+Independent review rejected the first local post-verdict delta, SHA256
+`fa77ed4568e40c133722dd6f2a451dcba03d04d28005cee963057d1ac3166d52`.
+It accidentally inserted two helper identifiers as extra arguments at the native
+sampler's `locator.evaluate` call, continued new phase reads after failed primary
+persistence, and retained cleanup that could overwrite the primary exception.
+That candidate was not published or executed; its local copy and diff are retained
+for review history. Its syntax-only success did not establish correct wiring.
+
+The corrected call is exactly the original `sampleTextareaPaint` callback plus
+the `{ kind, border: expectedBorder, ring: expectedRing }` argument. A focused test
+reads the actual collector source to guard that complete invocation, primary-error
+capture, persistence-status wiring and cleanup handoff. Persistence controls cover
+both write and rename failure branches, explicitly skipped new reads and preserved
+old screenshot attempts. Cleanup controls cover original Error/string/null/undefined
+identity, both close attempts, secondary-record failure and failure after an
+otherwise successful run. No assertion, polling sequence or acceptance interval
+has been weakened. These additional tests remain unexecuted locally.

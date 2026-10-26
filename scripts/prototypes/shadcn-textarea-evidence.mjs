@@ -4,11 +4,15 @@ import {
   installTextareaPaintDiagnostics,
   appendTextareaPaintSample,
   sampleTextareaPaint,
+  readTextareaPostFailurePhase,
+  collectTextareaFailureEvidence,
+  persistTextareaFailure,
+  cleanupTextareaEvidence,
 } from './shadcn-textarea-shadow-oracle.mjs';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { createServer } from 'node:http';
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile, rename } from 'node:fs/promises';
 import { resolve, join, extname, sep } from 'node:path';
 import { build } from 'esbuild';
 import { collectProtoStyleTokensFromFiles } from '../../packages/cli/src/services/prototype-style-tokens.ts';
@@ -115,6 +119,7 @@ const server = createServer(async (req, res) => {
 await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
 const origin = `http://127.0.0.1:${server.address().port}`;
 let browser, page;
+let runFailure = { failed: false };
 const observations = [];
 const errors = [];
 const consoleErrors = [];
@@ -476,49 +481,64 @@ try {
     JSON.stringify({ revision: receipt.revision, observations, errors }, null, 2)
   );
 } catch (error) {
-  let failureScreenshot;
-  let readiness;
-  if (page) {
-    try {
-      readiness = await page.evaluate(() => ({
-        ready: document.documentElement.dataset.ready,
-        documentFocused: document.hasFocus(),
-        activeElement: document.activeElement?.outerHTML,
-        records: window.textareaEvidence?.records.map((r) => ({
-          kind: r.kind,
-          editor: !!r.editor(),
-          html: r.host.innerHTML,
+  runFailure = { failed: true, error };
+  const primary = {
+    revision: receipt.revision,
+    error: String(error),
+    observations,
+    errors,
+    consoleErrors,
+    failedRequests,
+  };
+  const persist = (value) => persistTextareaFailure(value, {
+    writePending: (contents) => writeFile(join(out, 'failure.json.pending'), contents),
+    renamePending: () => rename(join(out, 'failure.json.pending'), join(out, 'failure.json')),
+  });
+  // New phase reads require a saved primary receipt. Existing readiness and
+  // screenshot attempts remain available even when persistence fails.
+  const primaryPersistence = await persist(primary);
+  if (primaryPersistence.status !== 'persisted')
+    console.error('Could not persist primary Textarea failure:', primaryPersistence);
+  try {
+    if (page) {
+      const failedAttempt = observations.at(-1)?.paintAttempt;
+      const failure = await collectTextareaFailureEvidence(primary, {
+        // Direct evaluate: a missing editor is recorded, never auto-waited/retried.
+        readPhase: () => page.evaluate(readTextareaPostFailurePhase, failedAttempt?.kind ?? null),
+        readReadiness: () => page.evaluate(() => ({
+          ready: document.documentElement.dataset.ready,
+          documentFocused: document.hasFocus(),
+          activeElement: document.activeElement?.outerHTML,
+          records: window.textareaEvidence?.records.map((r) => ({
+            kind: r.kind,
+            editor: !!r.editor(),
+            html: r.host.innerHTML,
+          })),
+          sections: [...document.querySelectorAll('section')].map((s) => ({
+            runtime: s.dataset.runtime,
+            html: s.innerHTML,
+          })),
         })),
-        sections: [...document.querySelectorAll('section')].map((s) => ({
-          runtime: s.dataset.runtime,
-          html: s.innerHTML,
-        })),
-      }));
-      const bytes = await page.screenshot({ path: join(out, 'failure.png'), fullPage: true });
-      failureScreenshot = { path: 'failure.png', sha256: hash(bytes) };
-    } catch (captureError) {
-      failureScreenshot = { error: String(captureError) };
+        screenshot: async () => {
+          const bytes = await page.screenshot({ path: join(out, 'failure.png'), fullPage: true });
+          return { path: 'failure.png', sha256: hash(bytes) };
+        },
+      }, primaryPersistence);
+      const supplementalPersistence = await persist(failure);
+      if (supplementalPersistence.status !== 'persisted')
+        console.error('Could not persist supplemental Textarea failure:', supplementalPersistence);
     }
+  } catch (captureError) {
+    // Even a failed diagnostic write must not replace the original thrown error.
+    console.error('Could not persist supplemental Textarea failure evidence:', captureError);
   }
-  await writeFile(
-    join(out, 'failure.json'),
-    JSON.stringify(
-      {
-        revision: receipt.revision,
-        error: String(error),
-        failureScreenshot,
-        observations,
-        errors,
-        consoleErrors,
-        failedRequests,
-        readiness,
-      },
-      null,
-      2
-    )
-  );
-  throw error;
 } finally {
-  await browser?.close();
-  await new Promise((resolve) => server.close(resolve));
+  await cleanupTextareaEvidence(runFailure, {
+    closeBrowser: () => browser?.close(),
+    closeServer: () => new Promise((resolve, reject) => server.close((error) => error ? reject(error) : resolve())),
+    recordErrors: (cleanupErrors) => writeFile(
+      join(out, 'cleanup-errors.json'),
+      JSON.stringify({ revision: receipt.revision, primaryFailed: runFailure.failed, cleanupErrors }, null, 2)
+    ),
+  });
 }
