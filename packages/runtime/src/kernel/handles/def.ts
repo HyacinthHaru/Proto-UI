@@ -204,6 +204,7 @@ export const createDefHandle = <P extends PropsBaseType, E = Record<string, unkn
             use: (...handles) => {
               ensureSetup('def.feedback.style.to.use');
               const off = feedback.style.to(target).use(...handles);
+              recordCaptured(def, 'feedback', off);
               return () => {
                 ensureSetup('def.feedback.style.to.use:dispose');
                 off();
