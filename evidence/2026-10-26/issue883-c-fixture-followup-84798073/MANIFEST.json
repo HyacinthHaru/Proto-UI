@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 1,
+  "preparedAt": "2026-10-26T23:33:22.506199+00:00",
+  "sourceHead": "847980734c297cb593eb7090737266c7663c45a0",
+  "sourceTree": "0dca6df1b823d7c1aeb4c6407470a64a0886f97b",
+  "excludes": ["MANIFEST.json"],
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 6340,
+      "sha256": "140defab36970e9192d90df97f0670a43585c6e48f0189799de3f7543fd3750c"
+    },
+    {
+      "path": "evidence.tar.gz",
+      "bytes": 1136812,
+      "sha256": "e8215b7840db95824af8ac98c1a61d38488e76ddb0bc868217b4513a10d1b2f8"
+    },
+    {
+      "path": "frame-01-ghost-light-runtime.png",
+      "bytes": 153402,
+      "sha256": "e5c6ea5c8811de5ee5e66c8e1c11bad519b97fb7526be636daa32508aed39cf6"
+    },
+    {
+      "path": "frame-02-shadcn-header.png",
+      "bytes": 378893,
+      "sha256": "966557e5c7498413eea5d0970f58bcd2d5331dbf491743c36530c13232a28ea0"
+    },
+    {
+      "path": "frame-03-shadcn-sidebar.png",
+      "bytes": 210408,
+      "sha256": "e9b9bcc43f7510f478e35e87b2fb0dfa0f90355566957f10fc1b3f4ddc39e094"
+    },
+    {
+      "path": "frame-04-brutalist-header.png",
+      "bytes": 121605,
+      "sha256": "973d9eab9fabdaa7d5f4d0314962f97803b01a3e16e068b2ecb95d8d9799f750"
+    },
+    {
+      "path": "frame-05-brutalist-sidebar.png",
+      "bytes": 48894,
+      "sha256": "f900d10e2d27ab2df7294ceefb1343e831cdae6351b35f392dd68312cbf708fb"
+    },
+    {
+      "path": "frame-06-shadcn-header.png",
+      "bytes": 124894,
+      "sha256": "a32918de773c6d76f15b3129a0d3aa62d3e7d65578f56d99da14946fe5675fb2"
+    },
+    {
+      "path": "frame-07-shadcn-sidebar.png",
+      "bytes": 60411,
+      "sha256": "890b2cedf635cc35e7414b2f66b7d4205bb0275ba5baede17996b13e2deb4211"
+    },
+    {
+      "path": "frame-08-brutalist-header.png",
+      "bytes": 121710,
+      "sha256": "a6e5b23329054f00f4888fdd10ad7e99fdd94db349b2e44ca9d824d3277eaca9"
+    },
+    {
+      "path": "frame-09-brutalist-sidebar.png",
+      "bytes": 49272,
+      "sha256": "c86ee6caddd8a172605b5daaa9e8ee5c9a9b9d8d78bc0eb02df7974d92008e12"
+    },
+    {
+      "path": "frame-10-shadcn-header.png",
+      "bytes": 124932,
+      "sha256": "fce4568c1279fbb722ef635351ad287759561be995fe8a96ecdfdb1ae28eb657"
+    },
+    {
+      "path": "frame-11-shadcn-sidebar.png",
+      "bytes": 60411,
+      "sha256": "e67bdd7dc4acf03d4e4a56f1b44469166e4a269b10f216fe2d2139d87acc5675"
+    },
+    {
+      "path": "frame-12-brutalist-desktop-light-cancelled-retained.png",
+      "bytes": 125097,
+      "sha256": "5a70ed6288dcb97c56bfbc00409414fd0c1494af690e9de1f20945bd2872a239"
+    },
+    {
+      "path": "frame-13-brutalist-desktop-light-loading.png",
+      "bytes": 123416,
+      "sha256": "39c90be22093c9bbba03aaa9adb795061ea0e307ca2ab7dc7ecda72660f7068f"
+    },
+    {
+      "path": "frame-14-brutalist-failed-target.png",
+      "bytes": 122712,
+      "sha256": "28125543330999db04befe0376ec9ef2ee14d4eee0b5fdacaae4841a474373f1"
+    },
+    {
+      "path": "frame-15-brutalist-narrow-dark-text200-cancelled-retained.png",
+      "bytes": 27496,
+      "sha256": "617662d7012d447a91e35c674d166945f30166844f948222985b1604904c42b0"
+    },
+    {
+      "path": "frame-16-brutalist-narrow-dark-text200-loading.png",
+      "bytes": 26954,
+      "sha256": "5996a7e433045941a2383dbc30d1afa9edd08c0d0ce0e156d7f2895339a7f5e5"
+    },
+    {
+      "path": "frame-17-brutalist-retried-target-ready.png",
+      "bytes": 123828,
+      "sha256": "df97e1f1f802a63fae64ceff7449f8f4cae0c696ebc6cd331b179ec1d7d3c199"
+    },
+    {
+      "path": "frame-18-shadcn-desktop-light-cancelled-retained.png",
+      "bytes": 134468,
+      "sha256": "7dae4bbe1532a1b4db192361fb2687b226936a7457ff164ced3f539e1a31fcb9"
+    },
+    {
+      "path": "frame-19-shadcn-desktop-light-loading.png",
+      "bytes": 131734,
+      "sha256": "b905b99b7522720c693e3a8c526658e24bbfd342f49c21e30288aa09a69556c6"
+    },
+    {
+      "path": "frame-20-shadcn-failed-target.png",
+      "bytes": 130954,
+      "sha256": "30ad9a8a9e85056fab6f7254b594d7143b0b5164623d5ba1d75e9bced95aa567"
+    },
+    {
+      "path": "frame-21-shadcn-narrow-dark-text200-cancelled-retained.png",
+      "bytes": 28892,
+      "sha256": "d45df9c3020d7e5b3248fd815a0e0dd9c0d84f80864aa62fb8f9c0fbd1f8ec29"
+    },
+    {
+      "path": "frame-22-shadcn-narrow-dark-text200-loading.png",
+      "bytes": 27758,
+      "sha256": "f4268f4badf1eb40b38e838f76bf64df5f884b24f35c44b1a50b1744145a579d"
+    },
+    {
+      "path": "frame-23-shadcn-retried-target-ready.png",
+      "bytes": 133569,
+      "sha256": "75bce845052aafba5eafdb3821c95b9e0b5127c74abae52373896b5448db7a3c"
+    },
+    {
+      "path": "report.json",
+      "bytes": 14271,
+      "sha256": "338138d557b8b08f382e261126d6a794f3ec2270a2351e88685e589936df7878"
+    },
+    {
+      "path": "source-mapping.json",
+      "bytes": 72366,
+      "sha256": "848178df8ab2e492d790cc78315df02af23cb2e0372442c9bee19f551be2eef2"
+    },
+    {
+      "path": "whole-preview-84798073.zip",
+      "bytes": 19517507,
+      "sha256": "44a90862da4e583cd44dde0d1dcc59b4993d93ee02f157c945351625a1a26974"
+    }
+  ],
+  "result": "partial; no all-C/CI/independent-maintainer/service admission claim"
+}
