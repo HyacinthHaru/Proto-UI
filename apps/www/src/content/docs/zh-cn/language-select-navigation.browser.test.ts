@@ -303,12 +303,6 @@ async function chooseLocale(
   await expect.poll(() => option.count()).toBe(1);
   if (input === 'pointer') await option.click();
   else {
-    const options = popup.getByRole('option');
-    const values = await options.evaluateAll((nodes) =>
-      nodes.map((node) => node.getAttribute('data-value'))
-    );
-    const index = values.indexOf(locale);
-    expect(index).toBeGreaterThanOrEqual(0);
     await expect
       .poll(
         () =>
@@ -320,6 +314,12 @@ async function chooseLocale(
         { timeout: 1000 }
       )
       .toBe(true);
+    const options = popup.getByRole('option');
+    const values = await options.evaluateAll((nodes) =>
+      nodes.map((node) => node.getAttribute('data-value'))
+    );
+    const index = values.indexOf(locale);
+    expect(index, JSON.stringify({ locale, values })).toBeGreaterThanOrEqual(0);
     await page.keyboard.press('Home');
     for (let i = 0; i < index; i++) await page.keyboard.press('ArrowDown');
     await page.keyboard.press('Enter');
