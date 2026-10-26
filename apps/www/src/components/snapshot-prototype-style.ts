@@ -1,4 +1,8 @@
 import { createRuntimeSession } from '../../../../packages/runtime/src';
+import {
+  CONTEXT_INSTANCE_TOKEN_CAP,
+  CONTEXT_PARENT_CAP,
+} from '../../../../packages/modules/context/src';
 import { EFFECTS_CAP } from '../../../../packages/modules/feedback/src';
 import { renderProtoStyleTokenCss } from '../../../../packages/cli/src/services/proto-style-css';
 import {
@@ -10,10 +14,6 @@ import {
   EVENT_ROOT_TARGET_CAP,
   EVENT_GLOBAL_TARGET_CAP,
 } from '../../../../packages/modules/event/src';
-import {
-  CONTEXT_INSTANCE_TOKEN_CAP,
-  CONTEXT_PARENT_CAP,
-} from '../../../../packages/modules/context/src';
 import type { Prototype, StyleHandle } from '@proto.ui/core';
 
 /** Bind a reviewed, finite recipe collection. Callers select a key, never an
@@ -39,8 +39,10 @@ export function createStyleSnapshotter<const R extends Record<string, Prototype<
 
 /** Internal build-time projection for the reviewed passive Surface/Text/Card and
  * Button recipes only. This runs setup/mount lifecycle; it is not a pure
- * arbitrary-Prototype evaluator. Callers must not pass browser-resource-owning recipes.
- * Command-style mode provides detached event identity, never real host input.
+ * arbitrary-Prototype evaluator. Callers must not pass resource-owning recipes.
+ * Every invocation supplies isolated root Context identity. This does not model
+ * parent/child SSR inheritance. Command-style mode provides detached event
+ * identity, never real host input.
  * Build-time, style-only projection of the actual Prototype. It installs no
  * browser interaction source, never claims a functioning SSR command, and
  * disposes the Runtime even when rendering fails. */
@@ -59,7 +61,8 @@ async function snapshotPrototypeStyle(
     schedule: (task) => task(),
     commit: (_children, signal) => signal?.done(),
     onRuntimeReady(wiring) {
-      // Each independent snapshot is a detached Context root, not browser ancestry.
+      // Each finite snapshot is an isolated context root, never a DOM ancestor.
+      // Providers may resolve their own value; unrelated snapshots cannot inherit it.
       wiring.attach('context', [
         [CONTEXT_INSTANCE_TOKEN_CAP, identity],
         [CONTEXT_PARENT_CAP, () => null],
