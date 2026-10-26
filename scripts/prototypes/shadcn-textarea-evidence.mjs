@@ -8,6 +8,8 @@ import {
   collectTextareaFailureEvidence,
   persistTextareaFailure,
   cleanupTextareaEvidence,
+  observeTextareaPaintOnGrid,
+  matchesTextareaPaint,
 } from './shadcn-textarea-shadow-oracle.mjs';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
@@ -265,37 +267,28 @@ try {
     const deadline = Date.now() + 240;
     attempt.hostStartedAtMs = deadline - 240;
     attempt.hostDeadlineAtMs = deadline;
-    do {
-      const hostDispatchAtMs = Date.now();
-      const sampled = await page.locator(`section[data-runtime="${kind}"] textarea`).evaluate(
-        sampleTextareaPaint,
-        { kind, border: expectedBorder, ring: expectedRing }
-      );
-      const hostReturnedAtMs = Date.now();
-      attempt.observed = sampled;
-      appendTextareaPaintSample(attempt, {
-        hostDispatchAtMs,
-        hostReturnedAtMs,
-        hostElapsedMs: Date.now() - (deadline - 240),
-        ...sampled,
-      });
-      if (
-        sampled.border === sampled.expectedBorder &&
-        (!expectedRing || sampled.ringColor === sampled.expectedRing) &&
-        sampled.focused === wanted.focused &&
-        (!wanted.focused || sampled.nativeFocus) &&
-        (sampled.invalid === 'true') === wanted.invalid &&
-        sampled.disabled === (wanted.mode === 'disabled') &&
-        sampled.readOnly === (wanted.mode === 'readonly') &&
-        (wanted.ringVisible
-          ? sampled.ringWidth === '3px' &&
-            containsExpectedRingShadow(sampled.shadow, sampled.expectedRingShadow)
-          : sampled.ringWidth !== '3px') &&
-        (wanted.mode !== 'disabled' || sampled.opacity === '0.5')
-      )
+    const matched = await observeTextareaPaintOnGrid({
+      start: deadline - 240, deadline,
+      now: Date.now,
+      wait: (ms) => page.waitForTimeout(ms),
+      read: async () => {
+        const sampled = await page.locator(`section[data-runtime="${kind}"] textarea`).evaluate(
+          sampleTextareaPaint,
+          { kind, border: expectedBorder, ring: expectedRing }
+        );
         return sampled;
-      if (Date.now() < deadline) await page.waitForTimeout(Math.min(16, deadline - Date.now()));
-    } while (Date.now() < deadline);
+      },
+      record: (sampled, timing) => {
+        attempt.observed = sampled;
+        appendTextareaPaintSample(attempt, {
+          ...timing,
+          hostElapsedMs: Date.now() - (deadline - 240),
+          ...sampled,
+        });
+      },
+      matches: (sampled) => matchesTextareaPaint(sampled, expectedRing, wanted),
+    });
+    if (matched) return matched;
     throw new Error(
       `${kind}: complete paint/state endpoint not reached within 240ms; see recorded paintAttempt`
     );

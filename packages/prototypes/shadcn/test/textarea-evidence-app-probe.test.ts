@@ -293,7 +293,7 @@ it('keeps the actual native sampler invocation at exactly callback plus expected
   const { readFile } = await import('node:fs/promises');
   const { resolve } = await import('node:path');
   const source = await readFile(resolve('scripts/prototypes/shadcn-textarea-evidence.mjs'), 'utf8');
-  const invocation = source.match(/const sampled = await (page\.locator\([\s\S]*?\n      \));/);
+  const invocation = source.match(/const sampled = await (page\.locator\([\s\S]*?\n        \));/);
   expect(invocation).not.toBeNull();
   // This inspects the executed collector call site, not a mock helper call.
   // Any added positional argument (including another function) fails this guard.
@@ -305,10 +305,14 @@ it('keeps the actual native sampler invocation at exactly callback plus expected
   expect(source).toContain('}, primaryPersistence);');
   expect(source).toContain('attempt.hostStartedAtMs = deadline - 240;');
   expect(source).toContain('attempt.hostDeadlineAtMs = deadline;');
-  expect(source).toMatch(/const hostDispatchAtMs = Date\.now\(\);\s+const sampled = await/);
-  expect(source).toMatch(/const hostReturnedAtMs = Date\.now\(\);\s+attempt\.observed = sampled;/);
-  expect(source).toContain('if (Date.now() < deadline) await page.waitForTimeout(Math.min(16, deadline - Date.now()));');
-  expect(source).toContain('} while (Date.now() < deadline);');
+  expect(source).toContain('const deadline = Date.now() + 240;');
+  expect(source).toContain('const matched = await observeTextareaPaintOnGrid({');
+  expect(source).toContain('start: deadline - 240, deadline,');
+  expect(source).toContain('wait: (ms) => page.waitForTimeout(ms),');
+  expect(source).toContain('matches: (sampled) => matchesTextareaPaint(sampled, expectedRing, wanted),');
+  expect(source).toContain('record: (sampled, timing) => {');
+  expect(source).toContain('attempt.observed = sampled;');
+  expect(source).toContain('if (matched) return matched;');
 });
 
 it.each(['write', 'rename'])(
@@ -431,4 +435,121 @@ it('binds tracer identity to its installation and requested editor without chang
     editor.__puiPaintDiagnostics?.dispose();
     vi.stubGlobal('crypto', originalCrypto);
   }
+});
+
+// Exercise the production scheduler and exact predicate, not a parallel model.
+async function runGridFixture(options: {
+  cost?: number; returns?: number[]; wakes?: number[]; matchAt?: number;
+  paint?: Record<string, unknown>; readError?: unknown; initial?: number;
+} = {}) {
+  const { observeTextareaPaintOnGrid, matchesTextareaPaint } =
+    // @ts-expect-error Native capture helpers intentionally use JavaScript.
+    await import('../../../../scripts/prototypes/shadcn-textarea-shadow-oracle.mjs');
+  let clock = options.initial ?? 0;
+  const dispatches: number[] = [], waits: number[] = [], retained: any[] = [];
+  const operations: string[] = [];
+  const wakes = [...(options.wakes ?? [])];
+  const wanted = { focused: true, invalid: false, mode: 'normal', ringVisible: true };
+  const exact = {
+    border: 'border', expectedBorder: 'border', ringColor: 'ring', expectedRing: 'ring',
+    shadow: 'rgb(1, 2, 3) 0px 0px 0px 3px', expectedRingShadow: 'rgb(1, 2, 3) 0px 0px 0px 3px',
+    ringWidth: '3px', focused: true, nativeFocus: true, invalid: 'false',
+    disabled: false, readOnly: false, opacity: '1',
+  };
+  const result = await observeTextareaPaintOnGrid({
+    start: 0, deadline: 240, now: () => clock,
+    wait: async (ms: number) => { operations.push('wait'); waits.push(ms); clock = wakes.shift() ?? clock + ms; },
+    read: async () => {
+      operations.push('read');
+      dispatches.push(clock);
+      clock = options.returns?.[dispatches.length - 1] ?? clock + (options.cost ?? 0);
+      if ('readError' in options) throw options.readError;
+      return { ...exact, shadow: clock >= (options.matchAt ?? Infinity) ? exact.shadow : 'wrong', ...options.paint };
+    },
+    record: (sample: unknown, timing: unknown) => { operations.push('record'); retained.push({ sample, timing }); },
+    matches: (sample: unknown) => matchesTextareaPaint(sample, 'ring', wanted),
+  });
+  return { result, dispatches, waits, retained, operations };
+}
+
+it.each([
+  ['immediate match', { cost: 1, matchAt: 1 }, [0], true],
+  ['finite zero-cost grid', {}, Array.from({ length: 15 }, (_, k) => 16 * k), false],
+  ['round-trip drift removed', { cost: 10, matchAt: 42 }, [0, 16, 32], true],
+  ['skip missed slots', { returns: [50], matchAt: 64 }, [0, 64], true],
+  ['exact next-slot boundary', { returns: [16], matchAt: 17, cost: 1 }, [0, 16], true],
+  ['early wake', { wakes: [14, 16], matchAt: 16 }, [0, 16], true],
+  ['repeated early wakes', { wakes: [12, 14, 15, 16], matchAt: 16 }, [0, 16], true],
+  ['scheduled late wake', { wakes: [35], returns: [0, 40], matchAt: 48 }, [0, 35, 48], true],
+  ['late final wake still eligible', { returns: [220, 239], wakes: [230], matchAt: 239 }, [0, 230], true],
+  ['wake at deadline', { wakes: [240] }, [0], false],
+  ['wake after deadline', { wakes: [250] }, [0], false],
+  ['exact paint returned at deadline', { returns: [220, 240], matchAt: 240 }, [0, 224], false],
+  ['exact paint returned late', { returns: [220, 241], matchAt: 241 }, [0, 224], false],
+  ['wrong paint returned at deadline', { returns: [220, 240] }, [0, 224], false],
+  ['wrong paint returned late', { returns: [220, 241] }, [0, 224], false],
+  ['early dispatch late return', { returns: [250], matchAt: 250 }, [0], false],
+  ['tail remains unobserved', { returns: [220, 225], matchAt: 230 }, [0, 224], false],
+  ['completion after deadline', { matchAt: 241 }, Array.from({ length: 15 }, (_, k) => 16 * k), false],
+  ['initial dispatch already expired', { initial: 240, matchAt: 0 }, [], false],
+] as const)('absolute observation grid: %s', async (_name, options, expectedDispatches, accepted) => {
+  const result = await runGridFixture(options as Parameters<typeof runGridFixture>[0]);
+  expect(result.dispatches).toEqual(expectedDispatches);
+  expect(Boolean(result.result)).toBe(accepted);
+  expect(result.dispatches.length).toBeLessThanOrEqual(15);
+  const ordinals = result.retained.map((entry) => entry.timing.slotOrdinal);
+  expect(ordinals.every((ordinal, index) => index === 0 || ordinal > ordinals[index - 1])).toBe(true);
+  expect(result.retained.every((entry) => entry.timing.hostDispatchAtMs >= entry.timing.scheduledAtMs)).toBe(true);
+  if (result.retained.at(-1)?.timing.hostReturnedAtMs >= 240) {
+    expect(result.result).toBeNull();
+    expect(result.operations.at(-1)).toBe('record');
+    expect(result.retained.at(-1).timing.hostReturnedAtMs).toBeGreaterThanOrEqual(240);
+  }
+  if (_name === 'repeated early wakes') expect(result.waits).toEqual([16, 4, 2, 1]);
+  if (_name === 'tail remains unobserved') expect(result.waits).toEqual([4]);
+});
+
+it.each([
+  { shadow: 'rgb(4, 5, 6) 0px 0px 0px 3px' },
+  { shadow: 'rgba(1, 2, 3, 0.3) 0px 0px 0px 3px' },
+  { shadow: 'rgb(1, 2, 3) 0px 0px 0px 2px' },
+  { shadow: 'rgb(1, 2, 3) 0px 0px 0px 3px inset' },
+  { border: 'wrong' }, { ringColor: 'wrong' }, { ringWidth: '2px' },
+  { focused: false }, { nativeFocus: false }, { invalid: 'true' },
+  { disabled: true }, { readOnly: true },
+])('never schedules strict wrong paint/state into acceptance: %j', async (paint) => {
+  const result = await runGridFixture({ matchAt: 0, paint });
+  expect(result.result).toBeNull();
+  expect(result.dispatches).toHaveLength(15);
+});
+
+it('retains disabled opacity and hidden-ring predicates in the real acceptance helper', async () => {
+  const { matchesTextareaPaint } =
+    // @ts-expect-error Native capture helpers intentionally use JavaScript.
+    await import('../../../../scripts/prototypes/shadcn-textarea-shadow-oracle.mjs');
+  const sample = {
+    border: 'border', expectedBorder: 'border', focused: false, nativeFocus: false,
+    invalid: 'false', disabled: true, readOnly: false, ringWidth: '0px', opacity: '0.5',
+  };
+  const wanted = { focused: false, invalid: false, mode: 'disabled', ringVisible: false };
+  expect(matchesTextareaPaint(sample, '', wanted)).toBe(true);
+  expect(matchesTextareaPaint({ ...sample, opacity: '1' }, '', wanted)).toBe(false);
+  expect(matchesTextareaPaint({ ...sample, ringWidth: '3px' }, '', wanted)).toBe(false);
+});
+
+it.each([1, 250])('propagates evaluation rejection at %sms without retry', async (returnedAt) => {
+  const { observeTextareaPaintOnGrid } =
+    // @ts-expect-error Native capture helpers intentionally use JavaScript.
+    await import('../../../../scripts/prototypes/shadcn-textarea-shadow-oracle.mjs');
+  const error = new Error('original evaluation failed');
+  let clock = 0;
+  const read = vi.fn(async () => { clock = returnedAt; throw error; });
+  const wait = vi.fn(), record = vi.fn(), matches = vi.fn();
+  await expect(observeTextareaPaintOnGrid({
+    start: 0, deadline: 240, now: () => clock, read, wait, record, matches,
+  })).rejects.toBe(error);
+  expect(read).toHaveBeenCalledTimes(1);
+  expect(wait).not.toHaveBeenCalled();
+  expect(record).not.toHaveBeenCalled();
+  expect(matches).not.toHaveBeenCalled();
 });

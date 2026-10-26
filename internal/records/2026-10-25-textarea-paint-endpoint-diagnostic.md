@@ -223,3 +223,65 @@ Use the existing exact-head native workflow once after review, then classify the
 clock/identity question as established or unresolved from that single receipt.
 Do not repeatedly instrument or rerun to obtain green. Any acceptance-contract
 change is a separate semantic decision, not part of this diagnostic increment.
+
+### Separate observer scheduling decision and implementation, 2026-10-26 UTC
+
+The final diagnostic head `47708705f94fae9b8f52ab46012520317d1fd980` passed49
+focused tests (22 probe tests) but retained native failure in WC/dark/Rhea/normal
+keyboard-return focus, distinct from the earlier React readonly failures.
+Run40250797889/job121342036600 artifact12620641167 SHA256 is
+`1031a9e88b6d756a352999e0ab3468a582884d16ddd3e7b97e36c1657b4f1d3e`;
+failure JSON SHA256 is
+`4fc41b4b9dcd756fb309934bc0f068fc268b18a4ba54d4623f348117c053f08b`.
+All10 original samples and both post-verdict reads retained the same installation
+ID and true bound-editor checks. Independent constant-offset interval review
+conditionally places current transition-event delivery at222.2–226.1ms after
+attempt start. This is not exact paint timing or an original completed-endpoint
+observation; the native failure stays failed. The bounded diagnostic phase ended
+there, without another diagnostic rerun or post-hoc acceptance.
+
+The existing owner then explicitly selected a separately reviewed observer
+contract, rather than treating diagnostics as authority to change acceptance.
+The design packet SHA256 was
+`f23a5bac3f8ad408e350502ca8e7b5747114cfba8455ed9a7253b1b83e6349e3`;
+its deterministic boundary-table SHA256 was
+`465ed702bc35639b3b6f7c0cbf0205d3f3e05294006597f92b44ed9a14ee55f7`.
+This is a bounded engineering policy choice by dot for cyjin-yl under #954, with
+independent design review, not external approval or normative component timing.
+P-SHADCN-TEXTAREA's200ms transition and paint/state obligations do not prescribe
+a240ms polling policy. The relative240/16 observer was introduced in our
+`3a915ca38ea4f2a957fa73bdea18d5a47541419f` harness work. Its accumulated read-plus-
+sleep delay is a source-proven coverage limitation, independent of any one trace.
+
+Implementation preserves the host start location and D=S+240ms, but replaces
+relative sleeps with absolute16ms opportunities S+16k, k=0..14 (0..224ms).
+After each eligible mismatch it chooses the earliest unused nominal slot at or
+after current host time, skipping missed unscheduled slots and strictly advancing
+ordinals. There is no catch-up batch. Early timer wakes rewait the remaining time;
+one already-scheduled late wake may dispatch once only before D. At most15 reads
+are dispatched, one in flight. Every returned observation is retained, but any
+return at/after D immediately fails, including exact paint. The existing exact
+independent paint/state predicate is extracted unchanged and shared by the actual
+collector and deterministic scheduler controls. Editor lookup/state flow is not
+replaced; existing continuity evidence remains diagnostic.
+
+**Semantic changes are explicit:** absolute scheduling may increase sample density
+relative to an old execution; polling is not claimed unchanged. The return cutoff
+closes the old matching-late-return acceptance hole. No budget increase, empirical
+transport margin, tolerance, production change, unconditional final read or
+post-verdict pass is introduced. The224ms slot derives from the existing16ms
+policy, not an assumed browser frame. Complete-window/last16ms observation is not
+guaranteed; correctness reached after the last eligible read may still fail.
+Stable/nondecreasing host-clock behavior remains an assumption. Transport and
+cleanup need not complete by D, but late returned paint cannot pass.
+
+The existing collected suite now exercises the real scheduler/predicate path
+against immediate/zero-cost/drift/skipped-slot/early-wake/late-wake and deadline
+boundaries, strict paint/state negatives, evaluation rejection and unobserved
+late correctness. Existing post-verdict failure controls remain. Source wiring
+guards are adapted to the real scheduler call, not deleted. These tests are
+prepared, not locally executed; syntax checks and independent static review are
+not runtime proof. Obtain separate exact-patch review, then one exact-head native
+repair receipt using the existing workflow. Preserve all historical failures and
+report actual new results; neither the decision nor implementation closes #954
+or establishes latest-main/full-native acceptance.

@@ -297,3 +297,46 @@ export async function cleanupTextareaEvidence(primary, operations) {
   if (primary.failed) throw primary.error;
   if (failures.length) throw failures[0].error;
 }
+
+// Exact existing independent paint/state predicate, shared with scheduler controls.
+export function matchesTextareaPaint(sampled, expectedRing, wanted) {
+  return (
+        sampled.border === sampled.expectedBorder &&
+        (!expectedRing || sampled.ringColor === sampled.expectedRing) &&
+        sampled.focused === wanted.focused &&
+        (!wanted.focused || sampled.nativeFocus) &&
+        (sampled.invalid === 'true') === wanted.invalid &&
+        sampled.disabled === (wanted.mode === 'disabled') &&
+        sampled.readOnly === (wanted.mode === 'readonly') &&
+        (wanted.ringVisible
+          ? sampled.ringWidth === '3px' &&
+            containsExpectedRingShadow(sampled.shadow, sampled.expectedRingShadow)
+          : sampled.ringWidth !== '3px') &&
+        (wanted.mode !== 'disabled' || sampled.opacity === '0.5')
+  );
+}
+
+// Harness policy: finite absolute 16ms opportunities inside the original 240ms
+// host budget. This is not a browser-frame or complete-window coverage guarantee.
+export async function observeTextareaPaintOnGrid({ start, deadline, now, wait, read, record, matches }) {
+  let ordinal = 0;
+  while (ordinal < 15) {
+    const scheduledAtMs = start + ordinal * 16;
+    let current = now();
+    while (current < scheduledAtMs && current < deadline) {
+      await wait(scheduledAtMs - current);
+      current = now(); // Early wake: rewait without consuming an opportunity.
+    }
+    if (current >= deadline) return null;
+    const hostDispatchAtMs = current;
+    const sampled = await read();
+    const hostReturnedAtMs = now();
+    record(sampled, { hostDispatchAtMs, hostReturnedAtMs, slotOrdinal: ordinal, scheduledAtMs });
+    // Late exact paint is retained as evidence, never retroactive acceptance.
+    if (hostReturnedAtMs >= deadline) return null;
+    if (matches(sampled)) return sampled;
+    // Skip unscheduled missed slots; never repeat an ordinal or catch up.
+    ordinal = Math.max(ordinal + 1, Math.ceil((now() - start) / 16));
+  }
+  return null;
+}
