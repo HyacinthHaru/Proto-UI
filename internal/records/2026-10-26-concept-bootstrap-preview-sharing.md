@@ -1,0 +1,9 @@
+# Concept bootstrap sharing in the preview producer — 2026-10-26
+
+The complete `dd786a2a6c4f1f8e86ac69b62577ab9eede49d36` canonical preview builds 652 pages, then fails the unchanged 100 MiB expanded-artifact admission. Its complete ZIP is not uploaded after that failure. A separate local build reproduces the rejection with 3,861 files and 105,391,071 expanded bytes; this local measurement is not the canonical runner's exact size.
+
+The website already groups shared modules through `websiteManualChunk`. Assigning the existing `proto-concept.ts` bootstrap to a shared chunk prevents Astro from repeating its 4,080-byte processed program in 635 pages. The actual chunk contains that program and its existing `data/concepts.ts` dependency. The program is byte-identical to the former inline body apart from its final newline; the same 635 pages reference the new import wrapper. Its custom-element registration and connected/disconnected lifecycle source remain unchanged.
+
+The saved candidate's complete local producer contains 3,863 files and 102,852,454 expanded bytes, passing the original extraction, sanitization and every-file byte comparison without changing limits. All 670 HTML paths, their ordinary text/entity streams, and all 5,477 source-module graph records remain. Content-hashed assets and Pagefind fragments regenerate; unchanged filenames are not assumed. This audit alone does not establish layout, accessibility, script scheduling or canonical after-build acceptance.
+
+The preceding exact `dd786a2a` native run remains 293 passed and four failed out of 297 cases: the original S4 locale/paint deadlines and a Contents Button height sample of 43.99998474121094 against the original minimum of 44. None of those assertions or deadlines is relaxed. The packaging candidate needs its own accurate-head canonical producer and real preview consumer evidence.
