@@ -630,7 +630,12 @@ describe.sequential('Homepage Runtime demobox browser smoke', () => {
             return {
               border: style.borderWidth,
               shadow: style.boxShadow,
-              columns: getComputedStyle(fields).gridTemplateColumns.split(' ').length,
+              columns: new Set(
+                [...fields.querySelectorAll<HTMLElement>('.home-gallery__item[data-gallery-demo]')]
+                  .flatMap((card) => [...card.getClientRects()])
+                  .filter((box) => box.width > 0 && box.height > 0)
+                  .map((box) => box.left)
+              ).size,
               triggerHeight: trigger.getBoundingClientRect().height,
               triggerConnected: trigger.isConnected,
               triggerGeneration: trigger.closest<HTMLElement>('[data-projection-generation-state]')
