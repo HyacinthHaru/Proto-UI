@@ -430,6 +430,8 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
     runtime: {
       label: root.dataset.runtimeLabel || 'Page runtime',
       wrapValue: true,
+      minHeight: 'var(--site-select-control-height)',
+      paddingBlock: 'var(--site-select-control-padding-block)',
       triggerAppearance: 'ghost',
       brutalistTriggerAppearance: 'elevated',
       compactTriggerAppearance: 'default',
@@ -439,6 +441,8 @@ export function initHomepageRuntime(root: HTMLElement): HomepageHandle | undefin
     family: {
       label: root.dataset.familyLabel || demo?.root.dataset.familyLabel || 'Page library',
       wrapValue: true,
+      minHeight: 'var(--site-select-control-height)',
+      paddingBlock: 'var(--site-select-control-padding-block)',
       triggerAppearance: 'ghost',
       brutalistTriggerAppearance: 'elevated',
       compactTriggerAppearance: 'default',
