@@ -589,19 +589,28 @@ function nodeModuleCondition(from: string): 'import' | 'require' {
 }
 
 /**
+ * Whether the project resolves modules the way Node does. Node16/NodeNext
+ * resolution binds a project to Node's own entry rules, so the runtime entry
+ * of a package is the one Node reads.
+ */
+function usesNodeResolution(options: ts.CompilerOptions): boolean {
+  const moduleResolution = options.moduleResolution;
+  return (
+    moduleResolution === ts.ModuleResolutionKind.Node16 ||
+    moduleResolution === ts.ModuleResolutionKind.NodeNext ||
+    (moduleResolution === undefined &&
+      (options.module === ts.ModuleKind.Node16 || options.module === ts.ModuleKind.NodeNext))
+  );
+}
+
+/**
  * The resolution mode an importer resolves under. Node16/NodeNext resolution
  * selects a package's `import` or `require` export from the importer's own
  * format, so the mode follows the importer instead of the CommonJS default
  * TypeScript applies when no mode is given.
  */
 function importerResolutionMode(from: string, options: ts.CompilerOptions): ts.ResolutionMode {
-  const moduleResolution = options.moduleResolution;
-  const usesNodeResolution =
-    moduleResolution === ts.ModuleResolutionKind.Node16 ||
-    moduleResolution === ts.ModuleResolutionKind.NodeNext ||
-    (moduleResolution === undefined &&
-      (options.module === ts.ModuleKind.Node16 || options.module === ts.ModuleKind.NodeNext));
-  if (!usesNodeResolution) return undefined;
+  if (!usesNodeResolution(options)) return undefined;
   return nodeModuleCondition(from) === 'import' ? ts.ModuleKind.ESNext : ts.ModuleKind.CommonJS;
 }
 
@@ -782,7 +791,13 @@ function runtimePackageEntry(
     const resolved = existingRuntime(path.resolve(root, parts.subpath));
     if (resolved) return resolved;
   } else {
-    for (const field of ['module', 'main', 'browser']) {
+    // Node reads the `main` entry of a package that ships no `exports` map.
+    // The `module` and `browser` fields are bundler conventions Node never
+    // consults, so preferring them would select an implementation Node never
+    // loads. A bundler-mode project loads the `module` entry instead, so the
+    // order follows the resolution the project declares.
+    const fields = usesNodeResolution(options) ? ['main'] : ['module', 'main', 'browser'];
+    for (const field of fields) {
       const value = manifest[field];
       if (typeof value !== 'string') continue;
       const resolved = existingRuntime(path.resolve(root, value));

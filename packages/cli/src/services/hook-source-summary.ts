@@ -317,28 +317,162 @@ export function mutateSourceGraph(
  */
 export type SourceGraphVersionTracker = {
   /** Records that a container's graph was replaced by a newer version. */
-  record: (before: HookSourceValue, after: HookSourceValue) => void;
+  record: (before: HookSourceValue, after: HookSourceValue, uncertain: boolean) => void;
   /** The newest version of a captured container graph. */
   latest: (value: HookSourceValue) => HookSourceValue;
+  /**
+   * Every version the container may hold now.
+   *
+   * A write that may not have run leaves the graph it replaced in place, so
+   * that graph stays one of the versions the container holds, and so does
+   * every graph an earlier skipped write left behind. The newest version
+   * alone would drop them, and a proof read from the newest version alone
+   * would certify a container the runtime may not have written to.
+   */
+  versions: (value: HookSourceValue) => HookSourceValue[];
+  /**
+   * Whether two graphs belong to the same container.
+   *
+   * The container a graph belongs to does not change when the graph is
+   * replaced: a retired representation still answers for the container it
+   * belonged to. So the question is answered by the container, not by whether
+   * a graph is among the ones the container holds now.
+   */
+  sameContainer: (left: HookSourceValue, right: HookSourceValue) => boolean;
+};
+
+/**
+ * The lineage of one container.
+ *
+ * Every graph the container's lineage passed through maps to the same cell,
+ * so a later write cannot disconnect the graphs an earlier one replaced: the
+ * cell answers for the container no matter which of its graphs a caller
+ * captured.
+ */
+type SourceGraphCell = {
+  /** Every graph the container may hold now. */
+  current: Set<HookSourceValue>;
+  /** Every graph that maps to this cell, so a merge can re-point them. */
+  members: Set<HookSourceValue>;
 };
 
 export function createSourceGraphVersionTracker(): SourceGraphVersionTracker {
-  const versions = new WeakMap<HookSourceValue, HookSourceValue>();
+  const cells = new WeakMap<HookSourceValue, SourceGraphCell>();
+  const cellFor = (value: HookSourceValue): SourceGraphCell => {
+    const existing = cells.get(value);
+    if (existing) return existing;
+    const cell: SourceGraphCell = { current: new Set([value]), members: new Set([value]) };
+    cells.set(value, cell);
+    return cell;
+  };
+  const merge = (target: SourceGraphCell, other: SourceGraphCell): void => {
+    for (const version of other.current) target.current.add(version);
+    for (const member of other.members) {
+      target.members.add(member);
+      cells.set(member, target);
+    }
+  };
+  /**
+   * Whether two source graphs are the same graph.
+   *
+   * The members are compared by identity and the comparison does not descend
+   * into them, so a nested container keeps its own identity: two separately
+   * allocated children with the same shape are two containers, and a write to
+   * one of them does not reach the other. An unknown member holds no object, so
+   * two unknown members with the same reason are the same member for every
+   * proof read from the graph. A callable is an immutable capture, so its
+   * identity is its own and it compares like any other member.
+   *
+   * The array length is part of the comparison: a spread array computes the
+   * offsets of the members that follow it, and a positional array is read by
+   * its position, so two graphs that differ only in their length are not the
+   * same graph for either.
+   */
+  const sameGraph = (left: HookSourceValue, right: HookSourceValue): boolean => {
+    if (left === right) return true;
+    if (left.kind !== right.kind) return false;
+    if (left.kind === 'object' && right.kind === 'object') {
+      if (left.members.size !== right.members.size) return false;
+      if (left.uncertainKeys !== right.uncertainKeys) return false;
+      if (left.closed !== right.closed) return false;
+      if (left.arrayLength !== right.arrayLength) return false;
+      for (const [key, member] of left.members) {
+        const other = right.members.get(key);
+        if (other === undefined) return false;
+        if (member === other) continue;
+        if (
+          member.kind === 'unknown' &&
+          other.kind === 'unknown' &&
+          member.reason === other.reason
+        ) {
+          continue;
+        }
+        return false;
+      }
+      return true;
+    }
+    return false;
+  };
+  /**
+   * The graph the container holds now that is the same graph as `value`.
+   *
+   * Only the graphs of this container are compared, so a graph of another
+   * container is never taken for one of them. A write that rebuilt a graph
+   * the container may already hold did not give the container a new graph to
+   * hold, and without this the graphs the container may hold grow with every
+   * write that rebuilt one of them, so every proof read from the container
+   * pays for the copies.
+   */
+  const canonicalVersion = (cell: SourceGraphCell, value: HookSourceValue): HookSourceValue => {
+    for (const version of cell.current) {
+      if (version !== value && sameGraph(version, value)) return version;
+    }
+    return value;
+  };
   return {
-    record: (before, after) => {
+    record: (before, after, uncertain) => {
       if (before === after) return;
-      versions.set(before, after);
+      const cell = cellFor(before);
+      const canonical = canonicalVersion(cell, after);
+      // The new graph joins the cell the replaced graph belongs to, so the
+      // whole lineage keeps answering for the same container.
+      const other = cells.get(after);
+      if (other && other !== cell) merge(cell, other);
+      cells.set(after, cell);
+      cell.members.add(after);
+      // A write to a graph the container may not hold cannot add a version to
+      // it: the container holds the graph the write was written to, and this
+      // graph is not one of them. The lineage is still recorded, so a caller
+      // that captured this graph reaches the same cell.
+      if (!cell.current.has(before)) return;
+      if (!uncertain) {
+        // The write replaced the graph it wrote to, and left every other
+        // version the container may hold alone.
+        cell.current.delete(before);
+      }
+      // A write that may not have run left the graph it replaced in place,
+      // so the container may still hold it. The graph the container holds
+      // now is the newest one, so a graph that was already among them moves
+      // to the end of the order.
+      cell.current.delete(canonical);
+      cell.current.add(canonical);
     },
     latest: (value) => {
-      let current = value;
-      const seen = new Set<HookSourceValue>();
-      while (!seen.has(current)) {
-        seen.add(current);
-        const next = versions.get(current);
-        if (!next) break;
-        current = next;
-      }
-      return current;
+      const cell = cellFor(value);
+      let newest = value;
+      // The set keeps the order the versions were recorded in, so the last
+      // one is the newest.
+      for (const version of cell.current) newest = version;
+      return newest;
+    },
+    versions: (value) => {
+      return [...cellFor(value).current];
+    },
+    sameContainer: (left, right) => {
+      if (left === right) return true;
+      const leftCell = cells.get(left);
+      const rightCell = cells.get(right);
+      return leftCell !== undefined && leftCell === rightCell;
     },
   };
 }
@@ -1466,6 +1600,20 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
    * setup body or source file gets an independent runtime cache. If a distinct
    * same-name producer may have run first, its exact execution order is not
    * proved here, so the later call must not inherit its own producer summary.
+   *
+   * Only a call that can run before the target counts as such a registration.
+   * The runtime evaluates a statement in source order, so a later declarator,
+   * a later argument or a later operand cannot have registered before the
+   * target call. A call's own callee and arguments are evaluated before that
+   * call runs, so a producer call nested in them is an earlier registration,
+   * while a call that holds the target in its callee or arguments runs after
+   * the target and is not one.
+   *
+   * That source order only holds for a declaration whose initializer is the
+   * target call. A switch clause, a destructuring default, an assignment or
+   * any other control flow does not establish the runtime order of the calls
+   * it holds, so the whole statement is scanned there and any same-name
+   * registration in it is refused.
    */
   const hasPriorSameNameProducer = (
     call: ts.CallExpression,
@@ -1502,17 +1650,57 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
         ? boundary.body
         : boundary;
     let conflict = false;
+    let reachedTarget = false;
+    const isPriorRegistration = (node: ts.CallExpression): boolean => {
+      const earlier = producerForCall(node, source);
+      if (!earlier) return false;
+      const earlierName = producerName(earlier);
+      return (earlierName === name || earlierName === null) && !sameProducer(earlier, producer);
+    };
+
+    /**
+     * Whether the scan may stop at the target.
+     *
+     * The source order of a statement is the runtime order of its
+     * declarations only when the target is the direct initializer of an
+     * identifier-named declaration. Then a later declarator, a later
+     * argument or a later operand cannot have registered before the target,
+     * so the scan stops there and the rest of the statement is not read as
+     * an earlier registration.
+     *
+     * Every other shape of statement does not establish that order, so the
+     * whole statement is scanned and any same-name registration in it is
+     * refused.
+     */
+    const cutoffAllowed =
+      targetStatement !== undefined &&
+      ts.isVariableStatement(targetStatement) &&
+      targetStatement.declarationList.declarations.some(
+        (declaration) =>
+          ts.isIdentifier(declaration.name) &&
+          declaration.initializer !== undefined &&
+          unwrap(declaration.initializer) === call
+      );
+
     const visit = (node: ts.Node): void => {
-      if (conflict || (node !== call && isFunctionLike(node))) return;
-      if (node !== call && ts.isCallExpression(node)) {
-        const earlier = producerForCall(node, source);
-        if (earlier) {
-          const earlierName = producerName(earlier);
-          if ((earlierName === name || earlierName === null) && !sameProducer(earlier, producer)) {
-            conflict = true;
-            return;
-          }
+      if (conflict) return;
+      if (cutoffAllowed && reachedTarget) return;
+      if (node !== call && isFunctionLike(node)) return;
+      if (ts.isCallExpression(node)) {
+        const reachedBefore = reachedTarget;
+        // A call's callee and arguments are evaluated before the call itself
+        // runs, so a producer call among them registered earlier.
+        visit(node.expression);
+        for (const argument of node.arguments) visit(argument);
+        if (node === call) {
+          reachedTarget = true;
+          return;
         }
+        // Only the bounded initializer scan can prove this enclosing call
+        // runs later. Repeated control flow keeps whole-statement collisions.
+        if (cutoffAllowed && reachedTarget && !reachedBefore) return;
+        if (isPriorRegistration(node)) conflict = true;
+        return;
       }
       ts.forEachChild(node, visit);
     };

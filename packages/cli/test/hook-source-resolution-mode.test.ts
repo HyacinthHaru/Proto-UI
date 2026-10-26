@@ -48,13 +48,20 @@ type PackageShape = {
   customConditions?: string[];
   /** The extra files the installed package ships. */
   files?: Record<string, string>;
+  /**
+   * The legacy entry fields the installed package ships instead of an
+   * `exports` map. Node reads `main`; a bundler reads `module`.
+   */
+  legacy?: { types?: string; module?: string; main?: string };
+  /** The module resolution the consumer's tsconfig configures. */
+  resolution?: 'NodeNext' | 'Bundler';
 };
 
 /**
  * A real installed package under `node_modules`, so the import resolves the
  * way an installed package does rather than through an authored relative
- * path. The package is JavaScript-only, so the resolution itself has to pick
- * the implementation instead of a declaration entry.
+ * path. The package ships no TypeScript source, so the resolution itself has
+ * to pick the implementation instead of reading an authored file.
  */
 async function createInstalledPackage(
   shape: PackageShape = {}
@@ -64,12 +71,13 @@ async function createInstalledPackage(
     path.join(dir, 'package.json'),
     JSON.stringify({ type: shape.scope ?? 'module' })
   );
+  const resolution = shape.resolution ?? 'NodeNext';
   await writeFile(
     path.join(dir, 'tsconfig.json'),
     JSON.stringify({
       compilerOptions: {
-        module: 'NodeNext',
-        moduleResolution: 'NodeNext',
+        module: resolution === 'Bundler' ? 'ESNext' : 'NodeNext',
+        moduleResolution: resolution,
         ...(shape.customConditions ? { customConditions: shape.customConditions } : {}),
       },
     })
@@ -80,12 +88,20 @@ async function createInstalledPackage(
     path.join(root, 'package.json'),
     JSON.stringify({
       name: PACKAGE,
-      exports: shape.exports ?? { '.': { import: './import.js', require: './require.js' } },
+      ...(shape.legacy
+        ? shape.legacy
+        : {
+            exports: shape.exports ?? { '.': { import: './import.js', require: './require.js' } },
+          }),
     })
   );
   const files: Record<string, string> = {
-    'import.js': producer('alpha', 'alphaReady'),
-    'require.js': producer('beta', 'betaReady'),
+    ...(shape.legacy
+      ? {}
+      : {
+          'import.js': producer('alpha', 'alphaReady'),
+          'require.js': producer('beta', 'betaReady'),
+        }),
     ...(shape.files ?? {}),
   };
   for (const [file, text] of Object.entries(files)) {
@@ -294,6 +310,81 @@ describe('hook source resolution mode', () => {
         { hook: 'asMode', state: 'alphaReady' },
       ]);
       expect(scan.usages.map(({ provenance }) => provenance?.owner.file)).toEqual([native]);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('reads the main entry Node loads for a package without an exports map', async () => {
+    const { dir, root } = await createInstalledPackage({
+      legacy: { types: './types.d.ts', module: './module.mjs', main: './main.js' },
+      files: {
+        'types.d.ts': 'export declare const asMode: unknown;\n',
+        'main.js': producer('main', 'mainReady'),
+        'module.mjs': producer('module', 'moduleReady'),
+      },
+    });
+    try {
+      // A package without an `exports` map is entered through its `main`
+      // field. The `module` field is a bundler convention Node never reads,
+      // so the implementation Node loads is the one the extractor has to read.
+      const native = nativeEsmResolution(dir, PACKAGE);
+      expect(native).toBe(path.join(root, 'main.js'));
+
+      const consumerFile = path.join(dir, 'consumer.proto.mts');
+      const source = consumer('mainReady');
+      await writeFile(consumerFile, source);
+
+      const resolved = createHookSourceModuleContext().resolveModule(consumerFile, PACKAGE);
+      expect(resolved?.file).toBe(native);
+
+      const scan = scanRuleStateReads(source, consumerFile, createHookSourceSummaryContext());
+      expect(scan.unresolved).toEqual([]);
+      expect(scan.usages.map(({ hook, state }) => ({ hook, state }))).toEqual([
+        { hook: 'asMode', state: 'mainReady' },
+      ]);
+      expect(scan.usages.map(({ provenance }) => provenance?.owner.file)).toEqual([native]);
+
+      const tokens = await collectProtoStyleTokensFromFiles([consumerFile]);
+      expect(tokens).toContain('data-[main-ready]:bg-primary');
+      expect(tokens).not.toContain('data-[module-ready]:bg-primary');
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('reads the module entry a bundler loads for a package without an exports map', async () => {
+    const { dir, root } = await createInstalledPackage({
+      resolution: 'Bundler',
+      legacy: { types: './types.d.ts', module: './module.mjs', main: './main.js' },
+      files: {
+        'types.d.ts': 'export declare const asMode: unknown;\n',
+        'main.js': producer('main', 'mainReady'),
+        'module.mjs': producer('module', 'moduleReady'),
+      },
+    });
+    try {
+      // A bundler loads the `module` entry of a package without an `exports`
+      // map, so the bundler entry stays ahead of `main` there.
+      const bundlerEntry = path.join(root, 'module.mjs');
+
+      const consumerFile = path.join(dir, 'consumer.proto.ts');
+      const source = consumer('moduleReady');
+      await writeFile(consumerFile, source);
+
+      const resolved = createHookSourceModuleContext().resolveModule(consumerFile, PACKAGE);
+      expect(resolved?.file).toBe(bundlerEntry);
+
+      const scan = scanRuleStateReads(source, consumerFile, createHookSourceSummaryContext());
+      expect(scan.unresolved).toEqual([]);
+      expect(scan.usages.map(({ hook, state }) => ({ hook, state }))).toEqual([
+        { hook: 'asMode', state: 'moduleReady' },
+      ]);
+      expect(scan.usages.map(({ provenance }) => provenance?.owner.file)).toEqual([bundlerEntry]);
+
+      const tokens = await collectProtoStyleTokensFromFiles([consumerFile]);
+      expect(tokens).toContain('data-[module-ready]:bg-primary');
+      expect(tokens).not.toContain('data-[main-ready]:bg-primary');
     } finally {
       await rm(dir, { recursive: true, force: true });
     }

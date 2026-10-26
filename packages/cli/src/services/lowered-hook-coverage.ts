@@ -561,7 +561,69 @@ export function scanRuleStateReads(
     return parent.matched && sourcePathHasProvenance(owner, scope, parent, seen);
   };
 
-  const sourceResolve = (node: ts.Node, scope: Scope) => {
+  /**
+   * The producer call whose member the node reads, and the member it names.
+   *
+   * A producer hands the same container to every call, so the member a call
+   * reads is the member the container holds now.
+   */
+  function producerMemberRead(node: ts.Node): { owner: ts.CallExpression; key: string } | null {
+    const value = unwrap(node);
+    if (!ts.isPropertyAccessExpression(value) && !ts.isElementAccessExpression(value)) {
+      return null;
+    }
+    const owner = unwrap(value.expression);
+    if (!ts.isCallExpression(owner)) return null;
+    const key = memberNameOf(value);
+    if (key === null) return null;
+    return { owner, key };
+  }
+
+  /**
+   * The values a producer call's member holds, one per graph the container
+   * may hold now.
+   *
+   * The container may hold several graphs: a write that may not have run left
+   * the graph it replaced in place. The member is proven only when every
+   * graph proves it, so a graph whose member is unknown makes the member
+   * unknown - the newest graph alone is not the answer.
+   */
+  const producerMemberValues = (node: ts.Node, scope: Scope): HookSourceValue[] | null => {
+    const read = producerMemberRead(node);
+    if (!read) return null;
+    const container = sourceResolve(read.owner, scope);
+    if (!container.matched || container.value.kind !== 'object') return null;
+    const versions = scope.versions.versions(container.value);
+    const graphs = versions.length > 0 ? versions : [container.value];
+    // The values are the member's values, one per graph the container may
+    // hold, and not the graphs themselves: the member is what the read is
+    // about, and the other members of a graph say nothing about it.
+    const seen = new Set<HookSourceValue>();
+    const values: HookSourceValue[] = [];
+    for (const graph of graphs) {
+      // A graph that is not an object holds no members, so it contributes no
+      // member: the member is unknown, and the unknown alternative is kept.
+      const member = graph.kind === 'object' ? graph.members.get(read.key) : undefined;
+      if (!member) {
+        // A member no graph carries is an alternative of its own, so it is not
+        // deduped away.
+        const missing: HookSourceValue = { kind: 'unknown', reason: 'unknown member' };
+        values.push(missing);
+        continue;
+      }
+      // The same member in two graphs is one member: the graphs differ in
+      // other members, not in this one.
+      if (seen.has(member)) continue;
+      seen.add(member);
+      values.push(member);
+    }
+    return values;
+  };
+
+  const sourceResolve = (
+    node: ts.Node,
+    scope: Scope
+  ): { matched: boolean; value: HookSourceValue } => {
     const value = unwrap(node);
     if (ts.isCallExpression(value)) {
       const callee = unwrap(value.expression);
@@ -599,6 +661,21 @@ export function scanRuleStateReads(
         }
       }
     }
+    // A member of a producer call reads the container the producer handed
+    // out, and the container holds its current graph: the member a write
+    // replaced is the member the call reads. The declared projection is not
+    // what the container holds now.
+    const members = producerMemberValues(value, scope);
+    if (members) {
+      // A scalar consumer captures one value, not a live member expression.
+      // Only a single proven identity can be captured as a definite value;
+      // an unresolved alternative must remain unresolved after later writes.
+      if (members.length === 1) return { matched: true, value: members[0] };
+      return {
+        matched: true,
+        value: { kind: 'unknown', reason: 'ambiguous captured member' },
+      };
+    }
     const resolved = scope.sourceSummary.resolve(node, source, sourceEnvironment(scope));
     // A producer hands the same container to every call, so a copy that wrote
     // to it is visible to a later resolution of that producer: the resolution
@@ -614,6 +691,11 @@ export function scanRuleStateReads(
     if (primary.value.kind === 'unknown' && primary.value.reason === 'lexically shadowed') {
       return [primary];
     }
+    // A producer call's member is read from every graph the container may
+    // hold now, so the conditional alternative is carried too: the member is
+    // proven only when every graph proves it.
+    const members = producerMemberValues(node, scope);
+    if (members) return members.map((value) => ({ matched: true, value }));
     const base = sourceEnvironment(scope);
     const referenced = new Set<string>();
     const collectReferenced = (current: ts.Node): void => {
@@ -654,9 +736,34 @@ export function scanRuleStateReads(
         );
       }
     }
-    return environments.map((environment) =>
+    const resolved = environments.map((environment) =>
       scope.sourceSummary.resolve(node, source, environment)
     );
+    // A container may hold several graphs: a write that may not have run left
+    // the graph it replaced in place, and a producer hands the same container
+    // to every call. Fan out over the versions the container may hold, before
+    // a newest-version normalization drops one of them.
+    const candidates: { matched: boolean; value: HookSourceValue }[] = [];
+    const byValue = new Map<HookSourceValue, { matched: boolean; value: HookSourceValue }>();
+    for (const candidate of resolved) {
+      if (candidate.value.kind !== 'object') {
+        candidates.push(candidate);
+        continue;
+      }
+      for (const version of scope.versions.versions(candidate.value)) {
+        // The same container is reached through several names, so the version
+        // is counted once.
+        const existing = byValue.get(version);
+        if (existing) {
+          if (candidate.matched) existing.matched = true;
+          continue;
+        }
+        const entry = { matched: candidate.matched, value: version };
+        byValue.set(version, entry);
+        candidates.push(entry);
+      }
+    }
+    return candidates;
   };
 
   /**
@@ -741,6 +848,20 @@ export function scanRuleStateReads(
           .map((candidate) => candidate.value)
       ),
     ];
+  };
+
+  /**
+   * The source-backed containers a call's receiver denotes.
+   *
+   * A method call may write to the object it is called on, so the receiver is
+   * a container the call may mutate even when the call takes no argument at
+   * all. A call whose callee is a bare name has no receiver: nothing is
+   * handed to it but its arguments.
+   */
+  const receiverContainerValues = (node: ts.CallExpression, scope: Scope): HookSourceValue[] => {
+    const callee = unwrap(node.expression);
+    if (!ts.isPropertyAccessExpression(callee) && !ts.isElementAccessExpression(callee)) return [];
+    return sourceContainerValues(callee.expression, scope);
   };
 
   /**
@@ -1553,6 +1674,14 @@ export function scanRuleStateReads(
     binding?.kind === 'callable';
 
   /**
+   * The newest version of a captured graph. A member write replaces the graph
+   * a container holds without replacing the container, so a mutation that was
+   * captured before that write lands on the version the container holds now.
+   */
+  const latestSourceVersion = (scope: Scope, value: HookSourceValue): HookSourceValue =>
+    scope.versions.latest(value);
+
+  /**
    * Copy-on-write a source summary without mutating the cached producer graph.
    *
    * Source values are immutable summaries, but aliases can share any object
@@ -1562,44 +1691,6 @@ export function scanRuleStateReads(
    * Memoizing the rewritten node preserves the DAG sharing while making every
    * containing path observe the replacement.
    */
-  const sourceGraphReplacements = new Map<HookSourceValue, Set<HookSourceValue>>();
-  const latestSourceGraphs = (value: HookSourceValue): HookSourceValue[] => {
-    const visit = (current: HookSourceValue, seen: Set<HookSourceValue>): HookSourceValue[] => {
-      if (seen.has(current)) return [current];
-      const replacements = sourceGraphReplacements.get(current);
-      if (!replacements || replacements.size === 0) return [current];
-      const nextSeen = new Set(seen);
-      nextSeen.add(current);
-      return [
-        ...new Set(
-          [...replacements].flatMap((next) =>
-            next === current ? [current] : visit(next, nextSeen)
-          )
-        ),
-      ];
-    };
-    return visit(value, new Set());
-  };
-
-  const recordSourceGraphReplacement = (
-    before: HookSourceValue,
-    after: HookSourceValue,
-    uncertain: boolean
-  ): void => {
-    const replacements = sourceGraphReplacements.get(before) ?? new Set<HookSourceValue>();
-    replacements.add(after);
-    if (uncertain) replacements.add(before);
-    sourceGraphReplacements.set(before, replacements);
-  };
-
-  /**
-   * The newest version of a captured graph. A member write replaces the graph
-   * a container holds without replacing the container, so a mutation that was
-   * captured before that write lands on the version the container holds now.
-   */
-  const latestSourceVersion = (scope: Scope, value: HookSourceValue): HookSourceValue =>
-    scope.versions.latest(value);
-
   const replaceSourceGraph = (
     value: HookSourceValue,
     target: HookSourceValue,
@@ -1657,17 +1748,14 @@ export function scanRuleStateReads(
       return clone;
     }
 
-    // A callable owns a result graph. Keep its identity and operation while
-    // replacing any object reachable through that result.
-    const clone: Extract<HookSourceValue, { kind: 'callable' }> = { ...value };
-    memo.set(value, clone);
-    const result = replaceSourceGraph(value.result, target, replacement, memo);
-    if (result === value.result) {
-      memo.set(value, value);
-      return value;
-    }
-    clone.result = result as Extract<HookSourceValue, { kind: 'result' }>;
-    return clone;
+    // The admitted callable is an immutable capture, not a containment edge
+    // into the container it reads: the runtime freezes the projected
+    // state-handle map and closes the accessor over that map, and the summary
+    // reads only the state handles it captured. A write to the container
+    // therefore does not change the callable, and the callable keeps its
+    // identity when the container is written.
+    memo.set(value, value);
+    return value;
   };
 
   /** Publish an object replacement to all source-backed bindings in scope. */
@@ -1675,45 +1763,67 @@ export function scanRuleStateReads(
     scope: Scope,
     target: HookSourceValue,
     replacement: HookSourceValue,
-    previous: HookSourceValue,
     uncertain: boolean
   ): void => {
     // One memo spans all bindings and candidates, so shared ancestors remain
     // shared instead of being cloned independently for each visible alias.
     const memo = new Map<HookSourceValue, HookSourceValue>();
+    // Pass 1: the lineage. The memo holds the graphs the write rewrote, and
+    // the tracker learns them before the names are written, because the
+    // second pass reads the graphs the container may hold from the tracker.
+    const rewritten: {
+      owner: Scope;
+      name: string;
+      binding: Binding;
+      sourceValue: HookSourceValue;
+    }[] = [];
     for (let owner: Scope | null = scope; owner; owner = owner.parent) {
       for (const [name, binding] of owner.bindings) {
         if (!sourceBinding(binding) || !('sourceValue' in binding) || !binding.sourceValue)
           continue;
-        const candidates = [binding.sourceValue, ...(binding.sourceAlternatives ?? [])];
+        // The name holds the graph it holds now and the graphs it may hold
+        // instead. The same graph is not held twice.
+        const candidates = [
+          ...new Set([binding.sourceValue, ...(binding.sourceAlternatives ?? [])]),
+        ];
         const replaced = candidates.map((candidate) =>
           replaceSourceGraph(candidate, target, replacement, memo)
         );
         const changed = replaced.some((candidate, index) => candidate !== candidates[index]);
         if (!changed) continue;
-
-        const alternatives = replaced.slice(1);
-        // If this write may not run, keep every graph it changed as a
-        // candidate too. For the directly replaced object use the already
-        // snapshotted clone, matching the existing direct-alias behavior.
-        if (uncertain) {
-          candidates.forEach((candidate, index) => {
-            if (replaced[index] === candidate) return;
-            const prior = candidate === target ? previous : candidate;
-            if (!alternatives.includes(prior)) alternatives.push(prior);
-          });
-        }
-        declare(owner, name, {
-          ...binding,
-          sourceValue: replaced[0],
-          ...(alternatives.length > 0 ? { sourceAlternatives: alternatives } : {}),
-        } as Binding);
+        // The graph the name holds now is captured here, where the guard above
+        // has already established that the name holds one.
+        rewritten.push({ owner, name, binding, sourceValue: binding.sourceValue });
       }
     }
-    recordSourceGraphReplacement(target, replacement, uncertain);
-    scope.versions.record(target, replacement);
     for (const [before, after] of memo) {
-      if (before !== after) recordSourceGraphReplacement(before, after, uncertain);
+      if (before === after) continue;
+      // A write to a nested object rewrites the ancestors that hold it, so the
+      // graph a container holds is a newer version of the graph it replaced.
+      // Recording the ancestors keeps a later resolution of one of them - a
+      // producer call that hands the same container out again - from reaching
+      // the graph that was written to.
+      scope.versions.record(before, after, uncertain);
+    }
+    scope.versions.record(target, replacement, uncertain);
+    // Pass 2: the names. A name holds the graph the write produced and the
+    // graphs it may hold instead. The list is the container's graphs, not the
+    // history of the graphs the container passed through: keeping the history
+    // would let the environment fan-out grow with every write, even though
+    // the tracker holds one graph per distinct content.
+    for (const { owner, name, binding, sourceValue } of rewritten) {
+      const held = new Set<HookSourceValue>();
+      for (const candidate of sourceBindingValues(binding)) {
+        for (const version of scope.versions.versions(candidate)) held.add(version);
+      }
+      if (held.size === 0) continue;
+      const latest = scope.versions.latest(sourceValue);
+      const next = [latest, ...[...held].filter((version) => version !== latest)];
+      declare(owner, name, {
+        ...binding,
+        sourceValue: next[0],
+        sourceAlternatives: next.slice(1),
+      } as Binding);
     }
   };
 
@@ -3140,6 +3250,65 @@ export function scanRuleStateReads(
   };
 
   /**
+   * Whether a call's callee denotes a proven read-only accessor.
+   *
+   * A proven accessor reads the result it is called on and never writes to
+   * it, so the call does not withdraw the proof the receiver's members
+   * carry. The proof is the callee itself, not the value the call returns: a
+   * state read with a dynamic key returns a value the summary cannot name,
+   * while the accessor still reads. A method whose name merely looks
+   * read-only proves nothing about what it does to its receiver, so nothing
+   * is exempt by its spelling, and a callable that is not an admitted
+   * accessor proves nothing either.
+   *
+   * The member is read from the graph the receiver holds now, not from the
+   * projection the producer declared. A member write replaces the member in
+   * the graph the container holds, and a producer hands the same container to
+   * every call, so a later call reaches the member the container holds then.
+   * Reading the declared projection instead would certify a receiver whose
+   * member a write may already have replaced.
+   *
+   * Every graph the receiver may denote must carry such an accessor. The
+   * receiver may be one of several values - a name that holds one object on
+   * one branch and another on the other - and the runtime picks the branch it
+   * takes, so a callee that may be a mutator on one of them writes to the
+   * receiver on that branch. Reading only the primary resolution would
+   * certify a receiver the runtime may have written to.
+   *
+   * The receiver is captured before the arguments are evaluated, so the proof
+   * is the one the receiver carried when the call was reached: a later
+   * argument that rebinds a name cannot change what the callee denoted.
+   *
+   * Every version the receiver may hold is read, not only the newest one. A
+   * write that may not have run leaves the graph it replaced in place, so
+   * the container may still hold a member the newest version replaced.
+   */
+  const provenAccessorCallee = (
+    node: ts.CallExpression,
+    scope: Scope,
+    receiver: HookSourceValue[]
+  ): boolean => {
+    const callee = unwrap(node.expression);
+    if (!ts.isPropertyAccessExpression(callee) && !ts.isElementAccessExpression(callee))
+      return false;
+    const key = memberNameOf(callee);
+    if (key === null || receiver.length === 0) return false;
+    // Every version the receiver may hold is required, and the versions of
+    // several candidates are the same container, so they are counted once.
+    const versions = new Set<HookSourceValue>();
+    for (const held of receiver) {
+      for (const version of scope.versions.versions(held)) versions.add(version);
+    }
+    if (versions.size === 0) return false;
+    return [...versions].every((current) => {
+      if (current.kind !== 'object') return false;
+      const member = current.members.get(key);
+      if (!member || member.kind !== 'callable') return false;
+      return member.operation === 'getState';
+    });
+  };
+
+  /**
    * A call may write to the containers it receives, so the cached provenance
    * of a source-backed container is only sound while no member it holds has
    * been replaced.
@@ -3152,13 +3321,23 @@ export function scanRuleStateReads(
    * was evaluated. The call receives those objects, so a later argument that
    * rebinds a name does not move the mutation onto the container the name
    * holds afterwards.
+   *
+   * `receiver` holds the containers the receiver denoted while it was
+   * evaluated. A method call may write to the object it is called on, so the
+   * receiver is a container the call may mutate even when it takes no
+   * argument.
+   *
+   * `readsOnly` says the callee is a proven read-only accessor, so the call
+   * does not write to the receiver it is called on.
    */
   const applyCallMutation = (
     node: ts.CallExpression,
     scope: Scope,
-    captured: CapturedArgument[]
+    captured: CapturedArgument[],
+    receiver: HookSourceValue[],
+    readsOnly: boolean
   ): void => {
-    if (captured.length === 0) return;
+    if (captured.length === 0 && receiver.length === 0) return;
     // An authored asHook producer never receives the arguments of its call:
     // the runtime evaluates them for their effects and then invokes the
     // producer's setup with the definition handle alone
@@ -3174,8 +3353,46 @@ export function scanRuleStateReads(
         ambiguous ||
         isConditionallyReached(node, definitelyReachedLogicalAssignments) ||
         isDeferredWrite(node, enclosingFunction(owning?.node ?? null));
-      publishSourceGraph(scope, value, next, value, uncertain);
+      publishSourceGraph(scope, value, next, uncertain);
     };
+    // The receiver is evaluated before the arguments, so the container it
+    // denoted is the one the call wrote to before it looked at an argument.
+    // Every version a container the call received may hold is read before
+    // any of them is written: a write can leave the container holding a new
+    // graph, and the versions the call wrote to are the ones the call found.
+    // Reading them per container as the call goes would let the write to one
+    // container add versions to the container the next lookup reads, and the
+    // call would write to graphs the call never received.
+    const capturedBatch = captured.map((entry) => {
+      const live = new Set<HookSourceValue>();
+      for (const candidate of entry.values) {
+        for (const version of scope.versions.versions(candidate)) live.add(version);
+      }
+      const first = entry.values[0];
+      const oneContainer =
+        first !== undefined &&
+        entry.values.every((candidate) => scope.versions.sameContainer(candidate, first));
+      return { live, oneContainer };
+    });
+    if (receiver.length > 0 && !readsOnly) {
+      // Every version the receiver may hold is withdrawn, because a write that
+      // may not have run leaves the graph it replaced in place. The versions
+      // of one container are that container, so the call wrote to all of them;
+      // the candidates of different containers are written one at a time, so
+      // the others keep the members they held.
+      const live = new Set<HookSourceValue>();
+      for (const candidate of receiver) {
+        for (const version of scope.versions.versions(candidate)) live.add(version);
+      }
+      const first = receiver[0];
+      const oneContainer =
+        first !== undefined &&
+        receiver.every((candidate) => scope.versions.sameContainer(candidate, first));
+      for (const value of live) {
+        if (value.kind !== 'object') continue;
+        publish(value, mutateSourceGraph(value, null), !oneContainer);
+      }
+    }
     if (mutation.kind === 'copy') {
       const target = captured[mutation.target];
       if (!target) return;
@@ -3228,11 +3445,16 @@ export function scanRuleStateReads(
       return;
     }
     // An unknown call may replace any member of every container it receives.
-    for (const entry of captured) {
-      for (const value of entry.values.map((held) => latestSourceVersion(scope, held))) {
+    for (const { live, oneContainer } of capturedBatch) {
+      // Every version a received container may hold is withdrawn, because a
+      // write that may not have run leaves the graph it replaced in place. The
+      // versions of one container are that container, so the call wrote to all
+      // of them; the candidates of different containers are written one at a
+      // time, so the others keep the members they held.
+      for (const value of live) {
         // The call received one of several containers, so the others keep the
         // members they held.
-        publish(value, mutateSourceGraph(value, null), entry.values.length > 1);
+        publish(value, mutateSourceGraph(value, null), !oneContainer);
       }
     }
   };
@@ -3319,7 +3541,10 @@ export function scanRuleStateReads(
       ts.isBinaryExpression(node) &&
       node.operatorToken.kind >= ts.SyntaxKind.FirstAssignment &&
       node.operatorToken.kind <= ts.SyntaxKind.LastAssignment &&
-      (ts.isPropertyAccessExpression(node.left) || ts.isElementAccessExpression(node.left))
+      // A cast or a pair of parentheses names the same member, so the write
+      // reaches the same container.
+      (ts.isPropertyAccessExpression(unwrap(node.left)) ||
+        ts.isElementAccessExpression(unwrap(node.left)))
     ) {
       const operator = node.operatorToken.kind;
       const plainAssignment = operator === ts.SyntaxKind.EqualsToken;
@@ -3384,10 +3609,7 @@ export function scanRuleStateReads(
           .filter((candidate) => candidate.matched && candidate.value.kind === 'object')
           .map((candidate) => candidate.value);
       };
-      const sourceReceivers = [...new Set(sourceReceiverValues(base))].map((value) => ({
-        value,
-        owning: sourceOwnerScope(current, value),
-      }));
+      const sourceReceivers = [...new Set(sourceReceiverValues(base))];
       const definitelyRunsRight =
         operator === ts.SyntaxKind.AmpersandAmpersandEqualsToken && knownStateHandle;
       if (definitelyRunsRight) definitelyReachedLogicalAssignments.add(node);
@@ -3397,27 +3619,58 @@ export function scanRuleStateReads(
         if (definitelyRunsRight) definitelyReachedLogicalAssignments.delete(node);
       }
       if (writesRight) rememberSourceStateHooks(node.right, current);
-      for (const { value: receiver, owning } of sourceReceivers) {
+      // The write lands on the container, and the versions of one container
+      // are that container, so the write reaches every version the container
+      // may hold now. The set of versions is taken before any of them is
+      // written: a version written twice would be published twice, and the
+      // second publication would add another graph the container may hold -
+      // the same write would then grow the container it was applied to.
+      const held = new Set<HookSourceValue>();
+      const owners = new Map<HookSourceValue, Scope | null>();
+      for (const receiver of sourceReceivers) {
+        const owning = sourceOwnerScope(current, receiver);
+        for (const version of current.versions.versions(receiver)) {
+          if (held.has(version)) continue;
+          held.add(version);
+          owners.set(version, owning);
+        }
+      }
+      // The candidates of one container are that container, so the write
+      // reaches all of them together. Only candidates of different
+      // containers are written one at a time, so the others keep the members
+      // they held.
+      const first = sourceReceivers[0];
+      const oneContainer =
+        first !== undefined &&
+        sourceReceivers.every((receiver) => current.versions.sameContainer(receiver, first));
+      const right = writesRight ? sourceResolve(node.right, current) : null;
+      const replacement: HookSourceValue = right?.matched
+        ? right.value
+        : { kind: 'unknown', reason: 'unresolved member write' };
+      for (const value of held) {
+        if (value.kind !== 'object') continue;
+        const owning = owners.get(value) ?? null;
         const uncertain =
           isConditionallyReached(node, definitelyReachedLogicalAssignments) ||
           isDeferredWrite(node, enclosingFunction(owning?.node ?? null)) ||
-          sourceReceivers.length > 1 ||
+          // Only one of several containers is written, so the others keep the
+          // members they held.
+          !oneContainer ||
           (logicalAssignment && !knownStateHandle) ||
           member === null;
-        const right = writesRight ? sourceResolve(node.right, current) : null;
-        const replacement: HookSourceValue = right?.matched
-          ? right.value
-          : { kind: 'unknown', reason: 'unresolved member write' };
-        const versions = latestSourceGraphs(receiver);
-        if (!versions.includes(receiver)) versions.push(receiver);
-        for (const value of versions) {
-          if (value.kind !== 'object') continue;
-          const previous = { ...value, members: new Map(value.members) } as HookSourceValue;
-          const members = new Map(value.members);
-          const keys = member === null ? [...members.keys()] : [member];
-          for (const key of keys) members.set(key, replacement);
-          publishSourceGraph(current, value, { ...value, members }, previous, uncertain);
-        }
+        const members = new Map(value.members);
+        const keys = member === null ? [...members.keys()] : [member];
+        // A write that leaves the member as it is does not give the container
+        // a new graph: the container holds the graph it held. Two writes to
+        // the same member with the same value therefore leave one graph
+        // between them, and the graphs the container may hold stay as many as
+        // the distinct graphs it may hold.
+        if (keys.every((key) => members.get(key) === replacement)) continue;
+        for (const key of keys) members.set(key, replacement);
+        // The graph the write replaced is kept as it is, so a write that may
+        // not have run leaves the container holding a version the tracker
+        // knows. A copy of it would be a graph nothing else can reach.
+        publishSourceGraph(current, value, { ...value, members }, uncertain);
       }
       if (receivers.length > 0) {
         // An alias of the container is the same object, so the write lands on
@@ -3541,13 +3794,7 @@ export function scanRuleStateReads(
             const members = new Map(candidate.value.members);
             for (const member of key === null ? [...members.keys()] : [key])
               members.set(member, { kind: 'unknown', reason: 'destructured member write' });
-            publishSourceGraph(
-              current,
-              candidate.value,
-              { ...candidate.value, members },
-              candidate.value,
-              false
-            );
+            publishSourceGraph(current, candidate.value, { ...candidate.value, members }, false);
           }
         }
       };
@@ -3648,6 +3895,17 @@ export function scanRuleStateReads(
       // receives the objects its arguments denoted while they were evaluated.
       visit(node.expression, current);
       const mutation = hookSourceCallMutation(node);
+      // The receiver is evaluated before the arguments, so the container it
+      // denotes is captured before they are visited: a later argument that
+      // rebinds the name does not move the mutation onto the container the
+      // name holds afterwards.
+      const receiver = receiverContainerValues(node, current);
+      // The callee is evaluated before the arguments as well, so the proof
+      // that it reads the receiver it is called on is captured before they
+      // are visited: a later argument that rebinds a name cannot change what
+      // the callee denoted. The proof reads the member from the graph the
+      // receiver holds now, so a member a write replaced is not exempt.
+      const readsOnly = provenAccessorCallee(node, current, receiver);
       const captured: CapturedArgument[] = [];
       for (const argument of node.arguments) {
         captured.push(
@@ -3659,7 +3917,7 @@ export function scanRuleStateReads(
         );
         visit(argument, current);
       }
-      applyCallMutation(node, current, captured);
+      applyCallMutation(node, current, captured, receiver, readsOnly);
       return;
     }
 
