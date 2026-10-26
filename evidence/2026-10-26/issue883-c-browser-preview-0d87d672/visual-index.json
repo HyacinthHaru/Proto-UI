@@ -1,0 +1,197 @@
+{
+  "at": "2026-10-26T19:08:52.218176+00:00",
+  "images": [
+    {
+      "file": "images/14d2-gallery-wide.png",
+      "source": "preview-14d2/qa/gallery-wide.png",
+      "headEpoch": "14d2fbf8",
+      "purpose": "HistoricalactualsameCSPpreview",
+      "bytes": 304297,
+      "sha256": "6917df318b491646bc836dbff61a07437cd9df5e543cdb067b1a0715b9f5849f",
+      "rootIndividuallyViewed": true,
+      "editedOrReencoded": false,
+      "effectiveLayoutDescription": "LibraryGalleryat1440:twophysicalcolumns, notHomepagefourcolumns"
+    },
+    {
+      "file": "images/14d2-gallery-narrow.png",
+      "source": "preview-14d2/qa/gallery-narrow.png",
+      "headEpoch": "14d2fbf8",
+      "purpose": "HistoricalactualsameCSPpreview",
+      "bytes": 209369,
+      "sha256": "c139cd58afbdf46e4a7d220eda81af8957ab1e986df8d82c00774f38fb1f6e81",
+      "rootIndividuallyViewed": true,
+      "editedOrReencoded": false,
+      "effectiveLayoutDescription": "LibraryGalleryat390:onecolumn"
+    },
+    {
+      "file": "images/14d2-docs-narrow.png",
+      "source": "preview-14d2/qa/docs-narrow.png",
+      "headEpoch": "14d2fbf8",
+      "purpose": "HistoricalactualsameCSPpreview",
+      "bytes": 226069,
+      "sha256": "c524199957a75ced6af44b57a1c51fd0ba2c65d9ac6a276233c249e5fa8572e8",
+      "rootIndividuallyViewed": true,
+      "editedOrReencoded": false,
+      "effectiveLayoutDescription": "No gallerycolumncountclaimedforthisDocs/conceptcapture"
+    },
+    {
+      "file": "images/14d2-homepage-wide.png",
+      "source": "preview-14d2/qa-homepage-corrected/homepage-wide.png",
+      "headEpoch": "14d2fbf8",
+      "purpose": "HistoricalcorrectedprivateQAselector, notnewcurrenthead",
+      "bytes": 183905,
+      "sha256": "75dda4aa0691ec2ee911bd8b36eee0b71187c24b470ddd3cd7f71c23061b503b",
+      "rootIndividuallyViewed": true,
+      "editedOrReencoded": false,
+      "effectiveLayoutDescription": "Homepageat1440:fourphysicalcolumns"
+    },
+    {
+      "file": "images/14d2-homepage-390.png",
+      "source": "preview-14d2/qa-homepage-corrected/homepage-390.png",
+      "headEpoch": "14d2fbf8",
+      "purpose": "HistoricalcorrectedprivateQAselector, notnewcurrenthead",
+      "bytes": 163626,
+      "sha256": "ed8db6e109acafc51aeaee9069f1a649c150bab9bd168fc676fa9ca1d4902b00",
+      "rootIndividuallyViewed": true,
+      "editedOrReencoded": false,
+      "effectiveLayoutDescription": "Homepageat390/320:onephysicalcolumn"
+    },
+    {
+      "file": "images/14d2-homepage-320.png",
+      "source": "preview-14d2/qa-homepage-corrected/homepage-320.png",
+      "headEpoch": "14d2fbf8",
+      "purpose": "HistoricalcorrectedprivateQAselector, notnewcurrenthead",
+      "bytes": 158508,
+      "sha256": "ee704152e35d2de1a698371c92e052a97e8b3f4bf731ddcd677c61f6e0167342",
+      "rootIndividuallyViewed": true,
+      "editedOrReencoded": false,
+      "effectiveLayoutDescription": "Homepageat390/320:onephysicalcolumn"
+    },
+    {
+      "file": "images/0d87-gallery-wide.png",
+      "source": "preview-0d87/qa/gallery-wide.png",
+      "headEpoch": "0d87d672",
+      "purpose": "Currentactualcanonicalcompleteartifact/sameCSP6previewchecks",
+      "bytes": 304297,
+      "sha256": "6917df318b491646bc836dbff61a07437cd9df5e543cdb067b1a0715b9f5849f",
+      "rootIndividuallyViewed": true,
+      "editedOrReencoded": false,
+      "effectiveLayoutDescription": "LibraryGalleryat1440:twophysicalcolumns, notHomepagefourcolumns"
+    },
+    {
+      "file": "images/0d87-gallery-narrow.png",
+      "source": "preview-0d87/qa/gallery-narrow.png",
+      "headEpoch": "0d87d672",
+      "purpose": "Currentactualcanonicalcompleteartifact/sameCSP6previewchecks",
+      "bytes": 209369,
+      "sha256": "c139cd58afbdf46e4a7d220eda81af8957ab1e986df8d82c00774f38fb1f6e81",
+      "rootIndividuallyViewed": true,
+      "editedOrReencoded": false,
+      "effectiveLayoutDescription": "LibraryGalleryat390:onecolumn"
+    },
+    {
+      "file": "images/0d87-docs-narrow.png",
+      "source": "preview-0d87/qa/docs-narrow.png",
+      "headEpoch": "0d87d672",
+      "purpose": "Currentactualcanonicalcompleteartifact/sameCSP6previewchecks",
+      "bytes": 226069,
+      "sha256": "c524199957a75ced6af44b57a1c51fd0ba2c65d9ac6a276233c249e5fa8572e8",
+      "rootIndividuallyViewed": true,
+      "editedOrReencoded": false,
+      "effectiveLayoutDescription": "No gallerycolumncountclaimedforthisDocs/conceptcapture"
+    },
+    {
+      "file": "images/0d87-homepage-wide.png",
+      "source": "preview-0d87/qa/homepage-wide.png",
+      "headEpoch": "0d87d672",
+      "purpose": "Currentactualcanonicalcompleteartifact/sameCSP6previewchecks",
+      "bytes": 184858,
+      "sha256": "d5b6b63d48647cd54232c5554efc9c35051eabbd72f57e614b97a1b9a9e52b98",
+      "rootIndividuallyViewed": true,
+      "editedOrReencoded": false,
+      "effectiveLayoutDescription": "Homepageat1440:fourphysicalcolumns"
+    },
+    {
+      "file": "images/0d87-homepage-390.png",
+      "source": "preview-0d87/qa/homepage-390.png",
+      "headEpoch": "0d87d672",
+      "purpose": "Currentactualcanonicalcompleteartifact/sameCSP6previewchecks",
+      "bytes": 164054,
+      "sha256": "3002cf9df8495465be9228feff4dc5d3050c9159955d41f1104570fbbca44ef5",
+      "rootIndividuallyViewed": true,
+      "editedOrReencoded": false,
+      "effectiveLayoutDescription": "Homepageat390/320:onephysicalcolumn"
+    },
+    {
+      "file": "images/0d87-homepage-320.png",
+      "source": "preview-0d87/qa/homepage-320.png",
+      "headEpoch": "0d87d672",
+      "purpose": "Currentactualcanonicalcompleteartifact/sameCSP6previewchecks",
+      "bytes": 158831,
+      "sha256": "bc1594feeba92e25acc55b77dfb2b5bf2cef87e97a9d4907a7796108a86662fe",
+      "rootIndividuallyViewed": true,
+      "editedOrReencoded": false,
+      "effectiveLayoutDescription": "Homepageat390/320:onephysicalcolumn"
+    },
+    {
+      "file": "images/local-0d87-concept-light-1440.png",
+      "source": "preview-growth-diagnosis/real-local-qa/concept-light-1440.png",
+      "headEpoch": "0d87d672",
+      "purpose": "InitialAstrostaticQA;1pass/1viewportfail/dark2unrun, realtransitionframe",
+      "bytes": 219988,
+      "sha256": "a5790bc4c210260188cd3b0a803a0273506d7befafed70afb28d0918afac879d",
+      "rootIndividuallyViewed": true,
+      "editedOrReencoded": false,
+      "effectiveLayoutDescription": "No gallerycolumncountclaimedforthisDocs/conceptcapture"
+    },
+    {
+      "file": "images/local-0d87-concept-light-390.png",
+      "source": "preview-growth-diagnosis/real-local-qa/concept-light-390.png",
+      "headEpoch": "0d87d672",
+      "purpose": "InitialAstrostaticQA;1pass/1viewportfail/dark2unrun, realtransitionframe",
+      "bytes": 88113,
+      "sha256": "1d5fd4d1f5444a0fe8618260b85a031100232ac9cc92062faea16b461b916742",
+      "rootIndividuallyViewed": true,
+      "editedOrReencoded": false,
+      "effectiveLayoutDescription": "No gallerycolumncountclaimedforthisDocs/conceptcapture"
+    },
+    {
+      "file": "images/local-control-0d87-after-failed-predicate-stable-popup.png",
+      "source": "preview-growth-diagnosis/real-local-qa-control/after-failed-predicate-stable-popup.png",
+      "headEpoch": "0d87d672",
+      "purpose": "Separatepost-failedpredicateanimation-endcontrol, notoriginalsample",
+      "bytes": 89959,
+      "sha256": "4a971f9c871aa3ea3b2ddeaceb5a8ebf2a67d0411d7e11e5bc265c28cea737b4",
+      "rootIndividuallyViewed": true,
+      "editedOrReencoded": false,
+      "effectiveLayoutDescription": "No gallerycolumncountclaimedforthisDocs/conceptcapture"
+    },
+    {
+      "file": "images/old14-control-after-failed-predicate-stable-popup.png",
+      "source": "preview-growth-diagnosis/old14-concept-geometry-control/after-failed-predicate-stable-popup.png",
+      "headEpoch": "14d2fbf8",
+      "purpose": "Newcurrent-timeexecutiononunchangedoldfulladmittedbytes; negativecontrol",
+      "bytes": 89911,
+      "sha256": "cc122fea59cb694b9a1dd8dd818eb30b6ff65120ec36f4a0933aefa9a88e8fd5",
+      "rootIndividuallyViewed": true,
+      "editedOrReencoded": false,
+      "effectiveLayoutDescription": "No gallerycolumncountclaimedforthisDocs/conceptcapture"
+    },
+    {
+      "file": "images/canonical-0d87-after-failed-predicate-stable-popup.png",
+      "source": "preview-0d87/qa-concept-negative/after-failed-predicate-stable-popup.png",
+      "headEpoch": "0d87d672",
+      "purpose": "ActualcanonicalsameCSP/assetSHA and17trustedevents, viewport390/scroll477failretained",
+      "bytes": 89911,
+      "sha256": "cc122fea59cb694b9a1dd8dd818eb30b6ff65120ec36f4a0933aefa9a88e8fd5",
+      "rootIndividuallyViewed": true,
+      "editedOrReencoded": false,
+      "effectiveLayoutDescription": "No gallerycolumncountclaimedforthisDocs/conceptcapture"
+    }
+  ],
+  "imageCount": 17,
+  "scope": "Onlythese17individuallyviewedoriginalPNGs, notallunviewednativecaptures. Current6actualcanonicalpreviewsarelight/oneChrome/Darwin; separateconceptnegativesretained, noallbrowser/theme/accessibility/shareddeploymentclaim.",
+  "uniquePNGHashes": 13,
+  "countBoundary": "17source/epochfiles,13distinctbytehashes,not17newcurrentpasses",
+  "claimCorrectionRef": "publication-claim-corrections.json"
+}

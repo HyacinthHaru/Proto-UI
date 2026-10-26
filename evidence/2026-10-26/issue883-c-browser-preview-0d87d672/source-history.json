@@ -1,0 +1,175 @@
+{
+  "at": "2026-10-26T19:08:52.206845+00:00",
+  "commits": [
+    {
+      "commit": "a495ded014c2a845d87d4ee46e1025df9e9297b8",
+      "tree": "f54b60734a9edd6c4254064be6ede869d2626804",
+      "parents": ["3220cb0aabb8d7e5709fa28a55c6b5f0172ae190"],
+      "author": {
+        "name": "HyacinthHaru",
+        "email": "hyacinth@haru.ac"
+      },
+      "committer": {
+        "name": "HyacinthHaru",
+        "email": "hyacinth@haru.ac"
+      },
+      "title": "fix(ci): reuse verified CJK preparation",
+      "SSHSignatureVerified": true,
+      "DCO": true,
+      "coauthor": false,
+      "url": "https://github.com/Proto-UI/Proto-UI/commit/a495ded014c2a845d87d4ee46e1025df9e9297b8"
+    },
+    {
+      "commit": "fd2619710adae8e5235fabbe6a60a211fa376ed1",
+      "tree": "7cea66e34a2c0e76a600893cf716908e9b9c8e17",
+      "parents": ["a495ded014c2a845d87d4ee46e1025df9e9297b8"],
+      "author": {
+        "name": "HyacinthHaru",
+        "email": "hyacinth@haru.ac"
+      },
+      "committer": {
+        "name": "HyacinthHaru",
+        "email": "hyacinth@haru.ac"
+      },
+      "title": "fix(test): preserve S4 paint failures during cleanup",
+      "SSHSignatureVerified": true,
+      "DCO": true,
+      "coauthor": false,
+      "url": "https://github.com/Proto-UI/Proto-UI/commit/fd2619710adae8e5235fabbe6a60a211fa376ed1"
+    },
+    {
+      "commit": "a0141cda2af4c02719dc427cb4971f9a029bc99c",
+      "tree": "3e0bd7354fc6c53db4cf49360465f049be621209",
+      "parents": ["fd2619710adae8e5235fabbe6a60a211fa376ed1"],
+      "author": {
+        "name": "HyacinthHaru",
+        "email": "hyacinth@haru.ac"
+      },
+      "committer": {
+        "name": "HyacinthHaru",
+        "email": "hyacinth@haru.ac"
+      },
+      "title": "fix(www): provide Context to style snapshots",
+      "SSHSignatureVerified": true,
+      "DCO": true,
+      "coauthor": false,
+      "url": "https://github.com/Proto-UI/Proto-UI/commit/a0141cda2af4c02719dc427cb4971f9a029bc99c"
+    },
+    {
+      "commit": "8f9d188b085cd655b1f1267c341d0e3d288ee3cf",
+      "tree": "c02cf71cbcd981ab58d376c014ae3e5590d3a732",
+      "parents": [
+        "a0141cda2af4c02719dc427cb4971f9a029bc99c",
+        "8cb7edf6557972fb588ab6e23e0a630ea5fd5d22"
+      ],
+      "author": {
+        "name": "HyacinthHaru",
+        "email": "hyacinth@haru.ac"
+      },
+      "committer": {
+        "name": "HyacinthHaru",
+        "email": "hyacinth@haru.ac"
+      },
+      "title": "Merge current main into C browser follow-up",
+      "SSHSignatureVerified": true,
+      "DCO": true,
+      "coauthor": false,
+      "url": "https://github.com/Proto-UI/Proto-UI/commit/8f9d188b085cd655b1f1267c341d0e3d288ee3cf"
+    },
+    {
+      "commit": "14d2fbf85dd782646b95b78a34d53c74147e3a24",
+      "tree": "f5080204da4b3b0d664fc0af4f581a5a33dedee4",
+      "parents": ["8f9d188b085cd655b1f1267c341d0e3d288ee3cf"],
+      "author": {
+        "name": "HyacinthHaru",
+        "email": "hyacinth@haru.ac"
+      },
+      "committer": {
+        "name": "HyacinthHaru",
+        "email": "hyacinth@haru.ac"
+      },
+      "title": "chore: restore accepted main bytes",
+      "SSHSignatureVerified": true,
+      "DCO": true,
+      "coauthor": false,
+      "url": "https://github.com/Proto-UI/Proto-UI/commit/14d2fbf85dd782646b95b78a34d53c74147e3a24"
+    },
+    {
+      "commit": "b2e8ea488c59e1a5742e0f04f63a77342af0836e",
+      "tree": "08540e7009712e637f3bcc00344d6c5b16c8e3ca",
+      "parents": ["14d2fbf85dd782646b95b78a34d53c74147e3a24"],
+      "author": {
+        "name": "HyacinthHaru",
+        "email": "hyacinth@haru.ac"
+      },
+      "committer": {
+        "name": "HyacinthHaru",
+        "email": "hyacinth@haru.ac"
+      },
+      "title": "fix(test): measure physical homepage columns",
+      "SSHSignatureVerified": true,
+      "DCO": true,
+      "coauthor": false,
+      "url": "https://github.com/Proto-UI/Proto-UI/commit/b2e8ea488c59e1a5742e0f04f63a77342af0836e"
+    },
+    {
+      "commit": "dd786a2a6c4f1f8e86ac69b62577ab9eede49d36",
+      "tree": "97c5738e56e62d69846a0443bac3ba7047b2e85d",
+      "parents": [
+        "b2e8ea488c59e1a5742e0f04f63a77342af0836e",
+        "b575c78bae2e2511fb898a7c3bffaab26c7ea67c"
+      ],
+      "author": {
+        "name": "HyacinthHaru",
+        "email": "hyacinth@haru.ac"
+      },
+      "committer": {
+        "name": "HyacinthHaru",
+        "email": "hyacinth@haru.ac"
+      },
+      "title": "Merge current main into C browser follow-up",
+      "SSHSignatureVerified": true,
+      "DCO": true,
+      "coauthor": false,
+      "url": "https://github.com/Proto-UI/Proto-UI/commit/dd786a2a6c4f1f8e86ac69b62577ab9eede49d36"
+    },
+    {
+      "commit": "749d27a239f32148f5f79108bfb96d4dda5247e3",
+      "tree": "f6c960869279b13891738dda25e87057d2d46458",
+      "parents": ["dd786a2a6c4f1f8e86ac69b62577ab9eede49d36"],
+      "author": {
+        "name": "HyacinthHaru",
+        "email": "hyacinth@haru.ac"
+      },
+      "committer": {
+        "name": "HyacinthHaru",
+        "email": "hyacinth@haru.ac"
+      },
+      "title": "fix(www): share concept bootstrap in preview builds",
+      "SSHSignatureVerified": true,
+      "DCO": true,
+      "coauthor": false,
+      "url": "https://github.com/Proto-UI/Proto-UI/commit/749d27a239f32148f5f79108bfb96d4dda5247e3"
+    },
+    {
+      "commit": "0d87d672a8f7bcfeb34ef507cdbcb9143a1e2a32",
+      "tree": "b36aff64dcdb8c684c9301799235e5077c15ff9d",
+      "parents": ["749d27a239f32148f5f79108bfb96d4dda5247e3"],
+      "author": {
+        "name": "HyacinthHaru",
+        "email": "hyacinth@haru.ac"
+      },
+      "committer": {
+        "name": "HyacinthHaru",
+        "email": "hyacinth@haru.ac"
+      },
+      "title": "docs: correct Contents failure dimension",
+      "SSHSignatureVerified": true,
+      "DCO": true,
+      "coauthor": false,
+      "url": "https://github.com/Proto-UI/Proto-UI/commit/0d87d672a8f7bcfeb34ef507cdbcb9143a1e2a32"
+    }
+  ],
+  "nonRewriting": true,
+  "scope": "These9newCbranchtransactions only. Acceptedupstreamhistory andoldbatchesarenotrewritten/countedasnewwork. Exactmodeltracepublicreceiptsareinoriginalcommitmessages; privatecontext/challenge/samplesnotcopied."
+}

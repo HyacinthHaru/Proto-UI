@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "at": "2026-10-26T19:48:11.876065+00:00",
+  "prepublicationOnly": true,
+  "previousPrivateSubjectManifestSHA256": "4cdedea21d3119e3d3815cabc029f5dc5086388132b01ee0b9d48870f7f7b975",
+  "rawArchiveUnchangedSHA256": "f3a00dff32a2a925515df2bd7ec37cbc6d34e231391ba706c22d9b35099760d5",
+  "originalPrivateSourcesAndArchivedRawRetained": true,
+  "corrections": [
+    {
+      "id": "P3-HTTP-OBSERVATION-SCOPE",
+      "addresses": [
+        "README.md,currentCanonicalPreviewQA",
+        "summary.json,currentCanonicalPreviewQA.badResources",
+        "selected-evidence.tar.gz::preview-0d87/visual-review-receipt.json,images[*].observed"
+      ],
+      "effectiveClaim": "The six QA views observed zero HTTP response events with status >= 400 and zero page errors. No requestfailed listener was installed, so the browser network/CSP request-failure count is unknown and must not be assumed to be zero.",
+      "rawInterpretation": "Originalfailedresource wordingisoverbroad andsupersededbythisqualifier; no raweventisadded/removed/reinterpretedasmeasured."
+    },
+    {
+      "id": "P3-CONCEPT-INPUT-INSTANCE-SCOPE",
+      "addresses": [
+        "README.md,canonicalconceptnegative",
+        "summary.json,currentCanonicalConceptNegative"
+      ],
+      "effectiveClaim": "Four Chinese instances are present and observed. The script operates indices 0 and 1 and records 17 trusted DOM click/key events. This does not show input coverage for all four instances, 17 physical pointer clicks, or all locales."
+    },
+    {
+      "id": "P3-GALLERY-COLUMN-SCOPE",
+      "addresses": [
+        "selected-evidence.tar.gz::preview-14d2/visual-review-receipt.json,images[*].observed",
+        "visual-index.json,images[*].effectiveLayoutDescription"
+      ],
+      "effectiveClaim": "The actual Gallery1440 image has two columns; Homepage1440 has four physical columns. Narrow Gallery and Homepage views have one column. The original generic wideGalleryfourcolumnplacement wording is superseded; original pixels and receipts remain unchanged."
+    }
+  ],
+  "notChanged": [
+    "Productcode/head/sourceoracles/deadlines",
+    "RawQA/trace/logvalues",
+    "Archive/memberSHA",
+    "OriginalPNGs"
+  ],
+  "independentStatus": "The initial private v1 report had three P3 wording findings. This corrected version is the subject of a bounded incremental closure, not formal approval.",
+  "initialReviewDerivative": {
+    "file": "reviews/initial-privacy-review.json",
+    "rawSHA256": "5bf5ebbeef8b7c5cda46c8f555f11641291ff4e0f2251cf811fa6abe89368547",
+    "derivation": "Machinepathsredacted; no newacceptance/writetoW/E/GitHub; prepublicationv1reportkeptprivateunaltered"
+  }
+}

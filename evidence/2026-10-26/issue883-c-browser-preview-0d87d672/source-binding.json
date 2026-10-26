@@ -1,0 +1,106 @@
+{
+  "at": "2026-10-26T18:27:06.183513+00:00",
+  "head": "0d87d672a8f7bcfeb34ef507cdbcb9143a1e2a32",
+  "tree": "b36aff64dcdb8c684c9301799235e5077c15ff9d",
+  "acceptedBase": "b575c78bae2e2511fb898a7c3bffaab26c7ea67c",
+  "pathCount": 15,
+  "paths": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "blob": "ed56f50352f4c7e53a44ec2127b784b864a03314",
+      "bytes": 33318,
+      "sha256": "38d0acbe01937c0cfc5998b7161a225ba44a12fa56cd662b5676aebfe736eb1d"
+    },
+    {
+      "path": "apps/www/astro.config.mjs",
+      "blob": "ebed4d88acaa9e659cc2f87f8a1c627bd235c7eb",
+      "bytes": 82346,
+      "sha256": "e89e82dbbda79cce6c892ca167948dc953aaa225349ddc8b92368b7b1927bccd"
+    },
+    {
+      "path": "apps/www/scripts/prepare-homepage-composition-fonts.sh",
+      "blob": "ff6758ecf0392c7770877508d58af2eeef9f719a",
+      "bytes": 7109,
+      "sha256": "105ba726bdb77425ece17da47c3d5780b3733a0ec228e8e0ab4001da0fc871eb"
+    },
+    {
+      "path": "apps/www/src/components/library-card-snapshot.test.ts",
+      "blob": "f51cc9e4b949a3093f9c2304b8e42537a578fb61",
+      "bytes": 5778,
+      "sha256": "81f4dbf2cc9deec7a30ec3539c532bf194dc0b3812ca07257ec80a062750a906"
+    },
+    {
+      "path": "apps/www/src/components/snapshot-prototype-style.ts",
+      "blob": "eb8c308ca2586f760fd4c2f34d469f05635778ea",
+      "bytes": 5433,
+      "sha256": "c4d9a99d0e63f231eb0fb68971f4cf27ed3df82139c55e1858d3e3f6b77b76d8"
+    },
+    {
+      "path": "apps/www/src/content/docs/zh-cn/home-demo-runtime.browser.test.ts",
+      "blob": "4b1b9196409c6e822580ec7ae0ccfb7b4f2b43e3",
+      "bytes": 54518,
+      "sha256": "8bf701067011defa3968f924768f558f5256b819fa87f34a013da1fa89530714"
+    },
+    {
+      "path": "internal/records/2026-10-26-c-browser-preparation-and-paint-cleanup.md",
+      "blob": "9174c04da90f0229dfe72ea5090d4d1a42726b63",
+      "bytes": 3844,
+      "sha256": "5a07f4ec770948d94a511d1a1b51bf39eb9526f6eaeabea1d9ae46ac72db7ad7"
+    },
+    {
+      "path": "internal/records/2026-10-26-concept-bootstrap-preview-sharing.md",
+      "blob": "65c1e2e68014e14987f2c56f6198f6c54fbd0bcf",
+      "bytes": 1877,
+      "sha256": "b1b0a7a192046d3183251508098e7c4af4068649824b9f825b7404c1eec2798b"
+    },
+    {
+      "path": "internal/records/2026-10-26-home-gallery-column-regression.md",
+      "blob": "f1fc2cd08b1de40577c3580fb967a14f6f0ffa24",
+      "bytes": 1176,
+      "sha256": "17a99c4ff0428419bf92c444e0de840e799b5c76867b91e8e88216ec88198939"
+    },
+    {
+      "path": "internal/records/2026-10-26-style-snapshot-context-host.md",
+      "blob": "8c03c4208171bc65b44e1d67f08de7e256f1104f",
+      "bytes": 1755,
+      "sha256": "0775d61a3996ffe3e47d270c591e39cc58ffd834bcdaf247c379e72c9846a3cb"
+    },
+    {
+      "path": "package.json",
+      "blob": "732113cb0d7fd8c93083f49c351479d288892a27",
+      "bytes": 10889,
+      "sha256": "7f6ee3ce09a1ac1802bf33c496c3f33156f9fc90c922857bcd76585d9fc0a042"
+    },
+    {
+      "path": "scripts/analysis/shadow-s4-paint-browser.mjs",
+      "blob": "d9df22a3a508fddd86b5dcda0dc9db4bfd22b4d6",
+      "bytes": 9067,
+      "sha256": "a6708bf8e0b6e41d3239d6d61538ef4accbc9951e32accea0cfee808ed3c5240"
+    },
+    {
+      "path": "scripts/analysis/shadow-s4-paint-cleanup.test.mjs",
+      "blob": "f5e1c4bde35c010ea9488b2d0d9e19142cc93ad7",
+      "bytes": 4545,
+      "sha256": "4c5f816c7b285b29daed0499147dec6580b57b34e5c657eae4b316982f64f345"
+    },
+    {
+      "path": "scripts/test/run-runtime-tests.test.mjs",
+      "blob": "7de2936df8c3866a9e3f9f75762655f22a3d94bf",
+      "bytes": 67978,
+      "sha256": "018244e5cb76dbeb73d181ba8a20fb2a7614a4b306dd7f90f2c02e7062fa8dfd"
+    },
+    {
+      "path": "scripts/test/site-typography-browser-evidence.test.mjs",
+      "blob": "6f01c302cf4d592867b8f28884b60db8f01c0259",
+      "bytes": 9694,
+      "sha256": "4b02b7237e0fe993c78f3acdd695bff44bdb3a1e36cef3be1d348c6e4f9c5653"
+    }
+  ],
+  "mode": "human-assisted/current-user",
+  "scope": "CurrentcommittedCfollowup, no specstatuspromotion/noCompilerIRorcatalogtakeover",
+  "numericArchiveCapsUnchanged": true,
+  "originalAssertionsDeadlinesKeyboardOwnerControlsRetained": true,
+  "sourceCheck": "Committedobjects only, not acomplete dependency/executionclosure",
+  "nativeFinalResult": "Actual0d87original14file297case local294pass3S4/paintfail0skip; source/9extra stable",
+  "canonicalFinalResult": "Actual0d87officialpreview40372287682 completedSUCCESS/defaultwholeartifact1pass,3863files102851261B; mainCIincomplete"
+}

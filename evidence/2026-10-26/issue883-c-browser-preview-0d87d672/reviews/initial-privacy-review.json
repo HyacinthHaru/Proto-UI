@@ -1,0 +1,268 @@
+{
+  "reviewedAt": "2026-10-26T19:45:18.596606+00:00",
+  "mode": "human-assisted/current-user",
+  "assessment": "unassessed/advisory",
+  "disposition": "partial/ABSTAIN",
+  "formalGitHubApproval": false,
+  "status": "Initial frozen-package review completed with3 claims-precision findings; no externalpublication approval",
+  "openFindings": 3,
+  "findings": [
+    {
+      "id": "PUBLIC-QA-HTTP-SCOPE-001",
+      "priority": "P3",
+      "status": "open",
+      "confidence": "high",
+      "locations": [
+        {
+          "file": "README.md",
+          "line": 31,
+          "text": "zero page errors or failed resources"
+        },
+        {
+          "file": "summary.json",
+          "pointer": "/currentCanonicalPreviewQA/badResources"
+        },
+        {
+          "archive": "selected-evidence.tar.gz",
+          "member": "preview-0d87/visual-review-receipt.json",
+          "pointer": "/images/*/observed",
+          "text": "No pagehorizontaloverflow/pageerror/failedresource"
+        }
+      ],
+      "basis": "The actual qa-canonical-0d87.mjs registers pageerror and response handlers; badResponses is populated only for response.status()>=400. It has no requestfailed listener. Allsix pages recorded empty badResponses and pageErrors, which does not observe everynetwork/CSPrequestfailure.",
+      "correction": "Narrow README and machine summary to zero observed HTTP4xx/5xx response events plus zero pageerrors. Add an outerinterpretation correction for the archived visualreceipt; preserve originalraw and derivativebytes, do not manufacture missingrequestfailed observations.",
+      "doesNotInvalidate": "Complete3863-file extraction/sanitization/hash equality is a separate producer integrity result and remainsvalid."
+    },
+    {
+      "id": "PUBLIC-CONCEPT-INPUT-SCOPE-002",
+      "priority": "P3",
+      "status": "open",
+      "confidence": "high",
+      "locations": [
+        {
+          "file": "README.md",
+          "line": 33,
+          "text": "17 trusted DOM click/key events are recorded across the existing four Chinese controls"
+        }
+      ],
+      "basis": "Both qa-built-concepts.mjs and qa-canonical-concept-negative.mjs select concepts.nth(0) and nth(1) for input. Fourinstances are present andinspected, but only the firsttwo are operated. The frozen canonicalfacts contain17 trusted events; eventrecords have BUTTON targets rather than per-instanceidentity for allfour.",
+      "correction": "Say17 trusted events were recorded while the script exercised the firsttwo instances on a page containingfour existingChineseconcept instances. Do not change the raw17events or the four-instance observation.",
+      "doesNotInvalidate": "The original390/477 predicate staysfalse and the current/local/old14 epochs remain separate."
+    },
+    {
+      "id": "PUBLIC-VISUAL-COLUMN-SCOPE-003",
+      "priority": "P3",
+      "status": "open",
+      "confidence": "high",
+      "locations": [
+        {
+          "archive": "selected-evidence.tar.gz",
+          "member": "preview-14d2/visual-review-receipt.json",
+          "pointer": "/images/*/observed",
+          "text": "wideGalleryfourcolumnplacement/Homepagefourphysicalcolumns"
+        }
+      ],
+      "basis": "The Gallery1440 image is a two-column UI Libraries layout. This reviewer actually viewed images/0d87-gallery-wide.png, which is byte-identical to the historical14d2 Gallery image (SHA6917df318b491646bc836dbff61a07437cd9df5e543cdb067b1a0715b9f5849f). Fourphysicalcolumns is the separatelymeasured Homepage1440 layout, not Gallery1440.",
+      "correction": "Add an explicit outervisual-index/README correction distinguishing Gallery1440 twocolumns from Homepage1440 fourcolumns. Keep historicalraw receiptandallPNGbytes unchanged.",
+      "doesNotInvalidate": "Image provenance/byte equality and Homepagecolumnmeasurement remainvalid."
+    }
+  ],
+  "frozenPackage": {
+    "path": "<STATE>/public-package",
+    "manifestSHA256": "4cdedea21d3119e3d3815cabc029f5dc5086388132b01ee0b9d48870f7f7b975",
+    "archiveSHA256": "f3a00dff32a2a925515df2bd7ec37cbc6d34e231391ba706c22d9b35099760d5",
+    "archiveBytes": 381104,
+    "outerFilesIncludingManifest": 26,
+    "selectedTextMembers": 115,
+    "selectedTextBytes": 3386220,
+    "JSONMemberMappings": 94,
+    "otherTextMemberMappings": 21,
+    "originalPNGFiles": 17,
+    "uniquePNGSHA256": 13,
+    "unchangedAtReviewEnd": true
+  },
+  "byteAndProjectionChecks": {
+    "actualRecursiveDirectorySetEqualsManifestPlusManifestItself": true,
+    "all25ManifestMembersSHAAndSizeEqual": true,
+    "safeTarRegularMembersOnlyNoDuplicateAbsoluteTraversalLinks": true,
+    "archiveMemberSetEqualsMemberManifestAndRawPublicMap": true,
+    "all115PublicMemberSHAAndSizeEqual": true,
+    "all115PrivateSourceSHAAndSizeEqual": true,
+    "all115DeclaredPathRedactionANSIProjectionMatches": true,
+    "all94JSONParsedValuesEqualAfterDeclaredRedactionAndFormatting": true,
+    "all21OtherTextMembersByteEqualAfterDeclaredRedaction": true,
+    "derivedFlagsAgreeWithRawPublicByteDifference": true,
+    "all17PNGSourceBytesAndHashesEqualNoReencoding": true,
+    "sourceFileAndEpochLabelsKeptSeparate": true,
+    "archiveContainsNoFullSiteZIPOrFullRawTrace": true
+  },
+  "privacyReview": {
+    "restrictedPatternFindings": 0,
+    "patternsChecked": [
+      "Userhome paths",
+      "macOS privatevar/folders paths",
+      "privatekeyheaders",
+      "GitHub/AWS credentialformats",
+      "Bearer secrets",
+      "credentialvalue assignments",
+      "ModelTrace rawcontext/challenge/sample/bank data keys or selectedsources"
+    ],
+    "actualPatternHits": [],
+    "rawPrivateModelDataKeyHits": [],
+    "genericTemporaryDiagnosticPathsRetained": [
+      {
+        "file": "tar:ci-dd786/shard3-original.log",
+        "value": "/tmp/proto-base-input-UZaYKL"
+      },
+      {
+        "file": "tar:ci-dd786/shard3-original.log",
+        "value": "/tmp/proto-radio-group-entry-Z8uktL"
+      },
+      {
+        "file": "tar:cjk-validation/helper-mocks.log",
+        "value": "/tmp/font-prep-mocks.zHKJfY"
+      }
+    ],
+    "temporaryPathBoundary": "Three generic /tmp test/mock output names remain; they contain no username or credential and are diagnostic paths, not privateModelTrace inputs. This is not a claim that allgenericabsoluteplatformpaths are removed.",
+    "visualBoundary": "All17PNGbytes bound. Reviewer spot-viewed3 originals; Root17 individually-viewed flags and supporting receipts were read. This is not independentall17pixel/accessibility acceptance.",
+    "noPrivacyRebuildOrSourceMutation": true
+  },
+  "sourceAndHistoryChecks": {
+    "productHead": "0d87d672a8f7bcfeb34ef507cdbcb9143a1e2a32",
+    "productTree": "b36aff64dcdb8c684c9301799235e5077c15ff9d",
+    "acceptedBase": "b575c78bae2e2511fb898a7c3bffaab26c7ea67c",
+    "all15ChangedPathsGitBlobSHA256SizeMatch": true,
+    "all9HistoryTreesParentsTitlesAuthorCommitterFieldsMatchLocalGit": true,
+    "all9SSHSignaturesVerifiedLocally": true,
+    "all9DCOAndNoCoauthorVerified": true,
+    "noRemoteReadbackOrPermissionInference": true
+  },
+  "claimsReviewed": {
+    "native": "Rawterminal summary and selectedreceipt retain accurate0d8714files297=294pass3fail0skip, three150s S4/paintfailures. A separate privatewidth1pass/8filtered doesnotreproduceor explainoldwidth. NoallCpassclaim.",
+    "producer": "Officialbuildlog independently supports652pages andoriginaldefaulttest1pass/0skip with3863files/102851261expanded/19428083innerZIP. Download/admissionreceipts distinguish19310346B ActionsZIP SHA149239731d7f62769538f0e00316427207eea5c3666309c826145ddc465918ef. No containerbyteidentityclaim. WholewebsiteZIP/readmission wasnotrerun inthispacket audit.",
+    "QA": "Sixcurrentpage200, measuredhorizontalfit, empty pageerror/HTTPbadresponse arrays andPNGbindings corroborated. The scope of those HTTParrays requiresF001. No first1s/alltheme/browser/AX/shareddeploymentacceptance.",
+    "negativeConcept": "Canonicalfrozenfacts retain390viewport/477scrollwidth and17trusted events; assetsrecord200/4081B andsameSHA. Old14/currenttime controls also retain477before/after; no localDOMintervention orsolecause attribution. Inputcoverage needsF002.",
+    "initialAndInterrupted": "InitiallocalAstroQA sourceProducer explicitlyidentifies earlierprecommitcompleteproducer withsamecommittedprograminputs, notcanonicalafterZIP. Its1completedpage/error, unrun darkarms andpostexitclosure are retained.749staticconsumerSIGINT and explicitVite/src import limitation are not claimedfullCpass orpackagingregression.",
+    "Search": "The includedDD23pass/7fail/exit124 andsamecall6419 timings remainconsistentwith this reviewer's priorboundaudit. Older14d214/16 andotherhistoricalepochs remainseparate; latecombobox doesnotturnoriginalfalsegreen.",
+    "platform": "Cached18:44read remains explicitlyhistorical/nonatomic. Checks-pages independently counts88=66queued+3inprogress+14success+5failure; runs-pages has34. Mainrun40372287449 isqueued inthat snapshot. Thisaudit didnotre-poll platform or independentlyreplayeveryjobinall34workflows.",
+    "P3History": "Oldwidth-label1open appendix andexact0d87closure arebothpreserved; archivedhistoricalfindings do not silentlybecomecurrentapproval.",
+    "derivativeSource": "PublicTS/diagnostictext declaredredactedderivative, notrawexecutedbytecopy or guaranteed runnable. Rawsourcehashes retained."
+  },
+  "pixelSpotChecks": [
+    {
+      "file": "images/0d87-gallery-wide.png",
+      "observed": "UI Libraries widecapture shows twocolumns; sharedhash also binds old14image."
+    },
+    {
+      "file": "images/local-0d87-concept-light-390.png",
+      "observed": "Translucent/in-transition conceptcard; not stablevisualqualityapproval."
+    },
+    {
+      "file": "images/canonical-0d87-after-failed-predicate-stable-popup.png",
+      "observed": "Separatelytimed moreopaque popup frame; doesnotreplace originalfailedpredicate orprove documentwidthfits."
+    }
+  ],
+  "reviewerRelationship": "Reviewer authored several selected derivedreports andparts of SDKinstrumentation. Those ownreports were checked for exportbyte/privacysourcebinding here, not self-approved as independentproductacceptance. This is a bounded package audit.",
+  "limits": [
+    "No newtests, nativebrowser, build, artifactadmission ornetworkrequest executed.",
+    "No exhaustivebusiness-semantics rereview of all115selectedrecords, allcurrentCcode, allmedia pixels, everyworkflowjob ornetworkfailure class.",
+    "The sourcebinding at-field denotes itscode snapshot; executionresults are assessed from theirseparate actualreceipt timestamps, not backdated to thatfield.",
+    "Source/CI/preview failures andunrunscopes remain evidence debt; thispackage doesnotgrantGitHubAPPROVE, merge, release orsharedservice deployment.",
+    "This is a preparedpackage audit, not a signedEcommit/push oranonymousremote byte-readback receipt."
+  ],
+  "auditArtifacts": [
+    {
+      "path": "<STATE>/public-package-independent-byte-audit.json",
+      "bytes": 89337,
+      "sha256": "0841555332bcde5bedc3440906592bf5a9e049d928f3cd7ae82c3ffe64e49c96"
+    },
+    {
+      "path": "<STATE>/public-package-independent-source-audit.json",
+      "bytes": 1451,
+      "sha256": "655d586a699d6c612c221b93486e9fc13cf7cea9c2ec0b511b16dae85c181faf"
+    }
+  ],
+  "bindingReferences": [
+    {
+      "path": "<STATE>/public-package/manifest.json",
+      "bytes": 4625,
+      "sha256": "4cdedea21d3119e3d3815cabc029f5dc5086388132b01ee0b9d48870f7f7b975"
+    },
+    {
+      "path": "<STATE>/public-package/raw-public-map.json",
+      "bytes": 82547,
+      "sha256": "224caa95cb172d9c9f0f5460201c1d7f4b068e6f38c72f2456b4459ab1363ed9"
+    },
+    {
+      "path": "<STATE>/public-package/member-manifest.json",
+      "bytes": 21141,
+      "sha256": "a8853ed32967244c78589ae56024cdf1ce028c7ef238ab20a9cf5e85ceeb36a1"
+    },
+    {
+      "path": "<STATE>/public-package/README.md",
+      "bytes": 11692,
+      "sha256": "c7a654f84467cba4f1bb870f7a573e44cbd3c51afd00d85c74765328b612dc1d"
+    },
+    {
+      "path": "<STATE>/public-package/summary.json",
+      "bytes": 4303,
+      "sha256": "b64c3a09a22270ce01c3f25fe0f21cdb79f70306962552d4f7bdcb036f4838ad"
+    },
+    {
+      "path": "<STATE>/public-package/source-binding.json",
+      "bytes": 4461,
+      "sha256": "c0fa4dfc838539b7c6fdfc9617df29dc8f57507a7677507950f2a67038259d5f"
+    },
+    {
+      "path": "<STATE>/public-package/source-history.json",
+      "bytes": 6111,
+      "sha256": "b98398627daabb2435e0fcdbea52df4b28d0b74d7e93ce9f0afc312e5d33ee1e"
+    },
+    {
+      "path": "<STATE>/public-package/visual-index.json",
+      "bytes": 7500,
+      "sha256": "9ca406577ac294ca556154ae750ab6343b82611ccb403c130a30caafd4eb8de7"
+    },
+    {
+      "path": "<STATE>/qa-canonical-0d87.mjs",
+      "bytes": 5794,
+      "sha256": "cd3b884f9576794634dc1fad2454b141d360871bfb7eb9a21bf7be233a59c788"
+    },
+    {
+      "path": "<STATE>/qa-canonical-concept-negative.mjs",
+      "bytes": 9928,
+      "sha256": "34699986083629d0b491c7acff92f0fe4e91aa7f1a885aee7d6a87389f21f552"
+    },
+    {
+      "path": "<STATE>/preview-0d87/visual-review-receipt.json",
+      "bytes": 5301,
+      "sha256": "24b295ac5145e34e0df91f9e74a045e44f1fd221182230ffefe9768652c36d4b"
+    },
+    {
+      "path": "<STATE>/preview-14d2/visual-review-receipt.json",
+      "bytes": 4265,
+      "sha256": "bd0acada7d50a2fa24a8170a1ebd92314acebbb9e75512c568a6ff99fe187724"
+    },
+    {
+      "path": "<STATE>/live-final-pre-evidence/ci1012/checks-pages.json",
+      "bytes": 269839,
+      "sha256": "c963e091eb913226e60936c799606146402257839164a6241689e28db9aa2e87"
+    },
+    {
+      "path": "<STATE>/live-final-pre-evidence/ci1012/runs-pages.json",
+      "bytes": 497722,
+      "sha256": "8853f5927825edf2591c07549025dac14793b78f7e5b0af7a98ab051dab8ffca"
+    }
+  ],
+  "actions": {
+    "tests": 0,
+    "browser": 0,
+    "build": 0,
+    "network": 0,
+    "WEdits": 0,
+    "EEdits": 0,
+    "GitHubWrites": 0,
+    "packageEdits": 0,
+    "privateReportOnly": true
+  }
+}
