@@ -11,7 +11,6 @@ import { createRequire } from 'node:module';
 import { fileURLToPath, URL as NodeURL } from 'node:url';
 import { emitVue2Source } from '../src/vue2-source';
 import * as Vue from 'vue';
-import * as floatingUi from '@floating-ui/dom';
 import { emitVueSource } from '../src/vue-source';
 import { emitWebComponentSource } from '../src/web-component-source';
 import { defineAsHook } from '../../core/src/prototype';
@@ -20,6 +19,9 @@ import { attachAsHookRuntime } from '../../runtime/src/kernel/as-hook';
 import { emitQtSource } from '../src/qt-source';
 import { emitFlutterSource } from '../src/flutter-source';
 import { emitGpuiSource } from '../src/gpui-source';
+const floatingUi = createRequire(
+  fileURLToPath(new NodeURL('../../modules/positioning/package.json', import.meta.url))
+)('@floating-ui/dom');
 (globalThis as any).IS_REACT_ACT_ENVIRONMENT = true;
 const source = `import {definePrototype,defineAsHook} from '@proto.ui/core';
 const asA=defineAsHook({name:'a',setup(){}});
