@@ -263,13 +263,19 @@ try {
     const attempt = { kind, wanted, expectedBorder, expectedRing };
     observations.push({ paintAttempt: attempt });
     const deadline = Date.now() + 240;
+    attempt.hostStartedAtMs = deadline - 240;
+    attempt.hostDeadlineAtMs = deadline;
     do {
+      const hostDispatchAtMs = Date.now();
       const sampled = await page.locator(`section[data-runtime="${kind}"] textarea`).evaluate(
         sampleTextareaPaint,
         { kind, border: expectedBorder, ring: expectedRing }
       );
+      const hostReturnedAtMs = Date.now();
       attempt.observed = sampled;
       appendTextareaPaintSample(attempt, {
+        hostDispatchAtMs,
+        hostReturnedAtMs,
         hostElapsedMs: Date.now() - (deadline - 240),
         ...sampled,
       });

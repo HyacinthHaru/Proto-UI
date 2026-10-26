@@ -31,6 +31,12 @@ export function containsExpectedRingShadow(actualShadow, expectedRingShadow) {
 // Diagnostic reads only; never finish, cancel, pause or otherwise change animations.
 export function installTextareaPaintDiagnostics(editor) {
   const now = () => editor.ownerDocument.defaultView.performance.now();
+  let installationId = null, identityError = null;
+  try {
+    installationId = editor.ownerDocument.defaultView.crypto.randomUUID();
+  } catch (error) {
+    identityError = String(error);
+  }
   const relevant = (property) =>
     property === 'box-shadow' || /^border(?:-(?:top|right|bottom|left))?-color$/.test(property);
   const eventLimit = 64;
@@ -51,7 +57,7 @@ export function installTextareaPaintDiagnostics(editor) {
   const types = ['transitionrun', 'transitionstart', 'transitionend', 'transitioncancel'];
   types.forEach((type) => editor.addEventListener(type, listener));
   editor.__puiPaintDiagnostics = {
-    snapshot() {
+    snapshot(requestedEditor) {
       const browserTimeMs = now();
       const animations = [];
       let relevantAnimationCount = 0;
@@ -92,6 +98,9 @@ export function installTextareaPaintDiagnostics(editor) {
       }
       return {
         browserTimeMs,
+        installationId,
+        identityError,
+        requestedEditorMatches: requestedEditor === editor,
         animationApiAvailable,
         animationReadError,
         animations,
@@ -154,7 +163,7 @@ export function sampleTextareaPaint(e, expected) {
     const tracer = e.__puiPaintDiagnostics;
     if (tracer && typeof tracer.snapshot === 'function') {
       result.diagnostic = {
-        ...tracer.snapshot(),
+        ...tracer.snapshot(e),
         browserSampleStartedMs,
         status: 'recorded',
         error: null,
@@ -173,6 +182,7 @@ export function sampleTextareaPaint(e, expected) {
   }
   actual.remove();
   oracle.remove();
+  result.diagnostic.browserSampleFinishedMs = performance.now();
   return result;
 }
 
@@ -202,14 +212,14 @@ export function readTextareaPostFailurePhase(kind) {
   try {
     const tracer = editor.__puiPaintDiagnostics;
     if (tracer && typeof tracer.snapshot === 'function') {
-      diagnostic = { ...tracer.snapshot(), status: 'recorded', error: null };
+      diagnostic = { ...tracer.snapshot(editor), status: 'recorded', error: null };
     }
   } catch (error) {
     diagnostic = { status: 'read-failed', error: String(error) };
   }
   return {
     status: 'recorded', browserStartedMs, browserFinishedMs: performance.now(),
-    identity: 'reacquired fixture editor; identity with failed sample is not established',
+    identity: 'compare installationId and requestedEditorMatches with original sample; missing, changed or false means unknown',
     paint, diagnostic,
   };
 }

@@ -180,3 +180,46 @@ old screenshot attempts. Cleanup controls cover original Error/string/null/undef
 identity, both close attempts, secondary-record failure and failure after an
 otherwise successful run. No assertion, polling sequence or acceptance interval
 has been weakened. These additional tests remain unexecuted locally.
+
+### One bounded clock/identity receipt, 2026-10-26 UTC
+
+The post-verdict increment `92d2930` collected 47 passing tests and one introduced
+source-path test failure (`ERR_INVALID_URL_SCHEME`), skipping native capture.
+The minimal path correction `198adbbc3dc794f461195aca77dd90360c4929d8` then passed
+48 tests across four files (21 probe tests), but retained the native strict failure.
+Run40250006349/job121339634259 artifact12619633224 has digest
+`f5c529e2f6077c78189da8023501475baec68a61181a16fa664421b3e7a58258`.
+All 592 diagnostic reads succeeded and the primary receipt was persisted.
+React light/Rhea readonly invalid-clear's last original sample was host231ms /
+browser12919.9ms, still running at199.992/200ms. Current transitionend225 was
+recorded at12921.5ms; separate catch12963.4ms and after-screenshot12987.2ms reads
+matched the expected shadow with no relevant animations. No restart was observed.
+This supports near-end interpolation followed by completion in this light run,
+not persistent post-completion disagreement in those later reads. The old dark
+failure remains unresolved, and the original verdict was not reconsidered.
+
+The next diagnostic-only increment records host wall-clock dispatch/return bounds
+around each existing sample, along with the unchanged attempt start/deadline;
+adds callback-finish browser time; and adds a guarded random installation ID plus
+a closure-bound requested-editor equality check to the existing tracer snapshot.
+Both original and post-verdict callbacks pass the actual requested editor.
+Missing/unavailable ID, changed installation ID, failed reads or false equality
+leave identity continuity unknown; equality alone is insufficient. No tracer is
+reinstalled to repair missing evidence. Random ID generation failure does not
+prevent paint or transition collection.
+
+Paired host/browser brackets can bound clock offset only under stable wall-clock
+and monotonic-clock-rate assumptions. They are not exact synchronization; clock
+jumps/drift, interval overlap with the deadline or unavailable identity leave the
+classification unresolved. Event-listener time is event delivery, not the exact
+paint/completion instant. Post-verdict reads cannot grant acceptance.
+
+There are no new evaluations, polls, listeners, probes, sleeps or UI changes.
+Predicates, state order, deadline construction, original elapsed-time measurement,
+retry cadence and late-return acceptance behavior are unchanged. Diagnostic reads
+consume time and can perturb scheduling. Source checks/independent static review
+are not runtime evidence; no local project execution is authorized or claimed.
+Use the existing exact-head native workflow once after review, then classify the
+clock/identity question as established or unresolved from that single receipt.
+Do not repeatedly instrument or rerun to obtain green. Any acceptance-contract
+change is a separate semantic decision, not part of this diagnostic increment.

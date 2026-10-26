@@ -194,6 +194,8 @@ it.each(['missing', 'snapshot-throws', 'lookup-throws'])(
         ringWidth: '3px', opacity: '1',
       });
       expect(containsExpectedRingShadow(sampled.shadow, sampled.expectedRingShadow)).toBe(false);
+      expect(sampled.diagnostic.browserSampleFinishedMs)
+        .toBeGreaterThanOrEqual(sampled.diagnostic.browserSampleStartedMs);
       expect(sampled.diagnostic.status).toBe(failure === 'missing' ? 'missing' : 'read-failed');
       expect(sampled.diagnostic.error).toBe(failure === 'missing' ? null :
         failure === 'lookup-throws' ? 'Error: lookup failed' : 'Error: snapshot failed');
@@ -260,7 +262,8 @@ it('post-verdict phase reads create no probes and preserve paint when the tracer
     await import('../../../../scripts/prototypes/shadcn-textarea-shadow-oracle.mjs');
   const editor = document.createElement('textarea') as any;
   editor.matches = () => false;
-  editor.__puiPaintDiagnostics = { snapshot() { throw new Error('tracer unavailable'); } };
+  const snapshot = vi.fn(() => { throw new Error('tracer unavailable'); });
+  editor.__puiPaintDiagnostics = { snapshot };
   const previousFixture = (window as any).textareaEvidence;
   const previousComputedStyle = globalThis.getComputedStyle;
   const originalChildren = [...document.body.childNodes];
@@ -273,6 +276,7 @@ it('post-verdict phase reads create no probes and preserve paint when the tracer
   try {
     const result = readTextareaPostFailurePhase('react');
     expect(result.paint.shadow).toBe('original painted shadow');
+    expect(snapshot).toHaveBeenCalledWith(editor);
     expect(result.diagnostic).toEqual({ status: 'read-failed', error: 'Error: tracer unavailable' });
     expect([...document.body.childNodes]).toEqual(originalChildren);
     expect(readTextareaPostFailurePhase('missing').status).toBe('missing');
@@ -299,6 +303,12 @@ it('keeps the actual native sampler invocation at exactly callback plus expected
   expect(source).toContain('runFailure = { failed: true, error };');
   expect(source).toMatch(/finally \{\s+await cleanupTextareaEvidence\(runFailure,/);
   expect(source).toContain('}, primaryPersistence);');
+  expect(source).toContain('attempt.hostStartedAtMs = deadline - 240;');
+  expect(source).toContain('attempt.hostDeadlineAtMs = deadline;');
+  expect(source).toMatch(/const hostDispatchAtMs = Date\.now\(\);\s+const sampled = await/);
+  expect(source).toMatch(/const hostReturnedAtMs = Date\.now\(\);\s+attempt\.observed = sampled;/);
+  expect(source).toContain('if (Date.now() < deadline) await page.waitForTimeout(Math.min(16, deadline - Date.now()));');
+  expect(source).toContain('} while (Date.now() < deadline);');
 });
 
 it.each(['write', 'rename'])(
@@ -376,4 +386,49 @@ it('does not turn cleanup failure into success, including when its error record 
       recordErrors: async () => { throw new Error('record failure'); },
     })).rejects.toBe('original');
   } finally { log.mockRestore(); }
+});
+
+it('binds tracer identity to its installation and requested editor without changing paint', async () => {
+  const { installTextareaPaintDiagnostics, sampleTextareaPaint } =
+    // @ts-expect-error Native capture helpers intentionally use JavaScript.
+    await import('../../../../scripts/prototypes/shadcn-textarea-shadow-oracle.mjs');
+  const editor = document.createElement('textarea') as any;
+  editor.matches = () => false; // Match the existing focused sampler fixture.
+  const replacement = document.createElement('textarea');
+  const originalCrypto = window.crypto;
+  const uuid = vi.fn()
+    .mockReturnValueOnce('00000000-0000-4000-8000-000000000001')
+    .mockReturnValueOnce('00000000-0000-4000-8000-000000000002');
+  vi.stubGlobal('crypto', { randomUUID: uuid });
+  try {
+    installTextareaPaintDiagnostics(editor);
+    const first = editor.__puiPaintDiagnostics.snapshot(editor);
+    expect(first).toMatchObject({
+      installationId: '00000000-0000-4000-8000-000000000001',
+      requestedEditorMatches: true, identityError: null,
+    });
+    const sampled = sampleTextareaPaint(editor, { kind: 'react', border: '#000', ring: '#000' });
+    expect(sampled.diagnostic).toMatchObject({
+      installationId: first.installationId, requestedEditorMatches: true, status: 'recorded',
+    });
+    expect(sampled.diagnostic.browserSampleFinishedMs)
+      .toBeGreaterThanOrEqual(sampled.diagnostic.browserSampleStartedMs);
+    // A copied tracer cannot claim that the replacement is its bound editor.
+    expect(editor.__puiPaintDiagnostics.snapshot(replacement).requestedEditorMatches).toBe(false);
+    editor.__puiPaintDiagnostics.dispose();
+    installTextareaPaintDiagnostics(editor);
+    const second = editor.__puiPaintDiagnostics.snapshot(editor);
+    expect(second.requestedEditorMatches).toBe(true);
+    expect(second.installationId).not.toBe(first.installationId);
+    editor.__puiPaintDiagnostics.dispose();
+    uuid.mockImplementation(() => { throw new Error('identity unavailable'); });
+    installTextareaPaintDiagnostics(editor);
+    expect(editor.__puiPaintDiagnostics.snapshot(editor)).toMatchObject({
+      installationId: null, requestedEditorMatches: true,
+      identityError: 'Error: identity unavailable',
+    }); // Bound reference alone cannot establish continuity without an ID.
+  } finally {
+    editor.__puiPaintDiagnostics?.dispose();
+    vi.stubGlobal('crypto', originalCrypto);
+  }
 });
