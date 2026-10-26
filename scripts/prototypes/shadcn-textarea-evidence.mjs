@@ -1,9 +1,20 @@
 import assert from 'node:assert/strict';
-import { containsExpectedRingShadow } from './shadcn-textarea-shadow-oracle.mjs';
+import {
+  containsExpectedRingShadow,
+  installTextareaPaintDiagnostics,
+  appendTextareaPaintSample,
+  sampleTextareaPaint,
+  readTextareaPostFailurePhase,
+  collectTextareaFailureEvidence,
+  persistTextareaFailure,
+  cleanupTextareaEvidence,
+  observeTextareaPaintOnGrid,
+  matchesTextareaPaint,
+} from './shadcn-textarea-shadow-oracle.mjs';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { createServer } from 'node:http';
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile, rename } from 'node:fs/promises';
 import { resolve, join, extname, sep } from 'node:path';
 import { build } from 'esbuild';
 import { collectProtoStyleTokensFromFiles } from '../../packages/cli/src/services/prototype-style-tokens.ts';
@@ -62,6 +73,21 @@ const receipt = {
     sourceFiles.map(async (path) => ({ path, sha256: hash(await readFile(path)) }))
   ),
   tokens,
+  probeFiles: await Promise.all(
+    ['scripts/prototypes/shadcn-textarea-evidence.mjs',
+      'scripts/prototypes/shadcn-textarea-shadow-oracle.mjs'].map(async (path) => ({
+      path, sha256: hash(await readFile(path)),
+    }))
+  ),
+  diagnosticLimits: {
+    samplesPerAttempt: 32,
+    sampleRetention: 'first 31 plus latest; omitted middle samples counted',
+    eventsPerEditor: 64,
+    eventRetention: 'latest; cumulative count discloses omissions',
+    animationsPerSample: 8,
+    scope: 'box-shadow and border-color CSS transitions only; not arbitrary CSS animations',
+    caveat: 'Reads consume time without resetting the nominal 240ms polling window or adding retries; an already-started sample may return and pass after the deadline. Samples are not atomic frames. Missing/failed diagnostics do not imply completion.',
+  },
 };
 if (!process.argv.includes('--build-only'))
   assert.equal(
@@ -95,6 +121,7 @@ const server = createServer(async (req, res) => {
 await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
 const origin = `http://127.0.0.1:${server.address().port}`;
 let browser, page;
+let runFailure = { failed: false };
 const observations = [];
 const errors = [];
 const consoleErrors = [];
@@ -119,6 +146,11 @@ try {
       document.documentElement.dataset.ready === 'true' &&
       window.textareaEvidence.records.every((r) => r.editor())
   );
+  receipt.browserVersion = browser.version();
+  await writeFile(join(out, 'source.json'), JSON.stringify(receipt, null, 2));
+  for (const kind of ['wc', 'react', 'vue', 'vue2']) {
+    await page.locator(`section[data-runtime="${kind}"] textarea`).evaluate(installTextareaPaintDiagnostics);
+  }
   for (const theme of ['light', 'dark'])
     for (const style of ['new-york', 'rhea'])
       for (const width of [767, 768]) {
@@ -233,57 +265,30 @@ try {
     const attempt = { kind, wanted, expectedBorder, expectedRing };
     observations.push({ paintAttempt: attempt });
     const deadline = Date.now() + 240;
-    do {
-      const sampled = await page.locator(`section[data-runtime="${kind}"] textarea`).evaluate(
-        (e, expected) => {
-          const c = getComputedStyle(e),
-            actual = document.createElement('div'),
-            oracle = document.createElement('div');
-          actual.style.color = c.getPropertyValue('--pui-ring-color');
-          oracle.style.color = expected.ring || 'transparent';
-          oracle.style.borderColor = expected.border;
-          oracle.style.boxShadow = `0 0 0 3px ${expected.ring || 'transparent'}`;
-          document.body.append(actual, oracle);
-          const result = {
-            kind: expected.kind,
-            focused: document.activeElement === e,
-            nativeFocus: e.matches(':focus-visible'),
-            invalid: e.getAttribute('aria-invalid'),
-            disabled: e.disabled,
-            readOnly: e.readOnly,
-            border: c.borderColor,
-            expectedBorder: getComputedStyle(oracle).borderColor,
-            ringColor: getComputedStyle(actual).color,
-            expectedRing: getComputedStyle(oracle).color,
-            expectedRingShadow: getComputedStyle(oracle).boxShadow,
-            ringWidth: c.getPropertyValue('--pui-ring-width').trim(),
-            shadow: c.boxShadow,
-            opacity: c.opacity,
-          };
-          actual.remove();
-          oracle.remove();
-          return result;
-        },
-        { kind, border: expectedBorder, ring: expectedRing }
-      );
-      attempt.observed = sampled;
-      if (
-        sampled.border === sampled.expectedBorder &&
-        (!expectedRing || sampled.ringColor === sampled.expectedRing) &&
-        sampled.focused === wanted.focused &&
-        (!wanted.focused || sampled.nativeFocus) &&
-        (sampled.invalid === 'true') === wanted.invalid &&
-        sampled.disabled === (wanted.mode === 'disabled') &&
-        sampled.readOnly === (wanted.mode === 'readonly') &&
-        (wanted.ringVisible
-          ? sampled.ringWidth === '3px' &&
-            containsExpectedRingShadow(sampled.shadow, sampled.expectedRingShadow)
-          : sampled.ringWidth !== '3px') &&
-        (wanted.mode !== 'disabled' || sampled.opacity === '0.5')
-      )
+    attempt.hostStartedAtMs = deadline - 240;
+    attempt.hostDeadlineAtMs = deadline;
+    const matched = await observeTextareaPaintOnGrid({
+      start: deadline - 240, deadline,
+      now: Date.now,
+      wait: (ms) => page.waitForTimeout(ms),
+      read: async () => {
+        const sampled = await page.locator(`section[data-runtime="${kind}"] textarea`).evaluate(
+          sampleTextareaPaint,
+          { kind, border: expectedBorder, ring: expectedRing }
+        );
         return sampled;
-      if (Date.now() < deadline) await page.waitForTimeout(Math.min(16, deadline - Date.now()));
-    } while (Date.now() < deadline);
+      },
+      record: (sampled, timing) => {
+        attempt.observed = sampled;
+        appendTextareaPaintSample(attempt, {
+          ...timing,
+          hostElapsedMs: Date.now() - (deadline - 240),
+          ...sampled,
+        });
+      },
+      matches: (sampled) => matchesTextareaPaint(sampled, expectedRing, wanted),
+    });
+    if (matched) return matched;
     throw new Error(
       `${kind}: complete paint/state endpoint not reached within 240ms; see recorded paintAttempt`
     );
@@ -475,49 +480,64 @@ try {
     JSON.stringify({ revision: receipt.revision, observations, errors }, null, 2)
   );
 } catch (error) {
-  let failureScreenshot;
-  let readiness;
-  if (page) {
-    try {
-      readiness = await page.evaluate(() => ({
-        ready: document.documentElement.dataset.ready,
-        documentFocused: document.hasFocus(),
-        activeElement: document.activeElement?.outerHTML,
-        records: window.textareaEvidence?.records.map((r) => ({
-          kind: r.kind,
-          editor: !!r.editor(),
-          html: r.host.innerHTML,
+  runFailure = { failed: true, error };
+  const primary = {
+    revision: receipt.revision,
+    error: String(error),
+    observations,
+    errors,
+    consoleErrors,
+    failedRequests,
+  };
+  const persist = (value) => persistTextareaFailure(value, {
+    writePending: (contents) => writeFile(join(out, 'failure.json.pending'), contents),
+    renamePending: () => rename(join(out, 'failure.json.pending'), join(out, 'failure.json')),
+  });
+  // New phase reads require a saved primary receipt. Existing readiness and
+  // screenshot attempts remain available even when persistence fails.
+  const primaryPersistence = await persist(primary);
+  if (primaryPersistence.status !== 'persisted')
+    console.error('Could not persist primary Textarea failure:', primaryPersistence);
+  try {
+    if (page) {
+      const failedAttempt = observations.at(-1)?.paintAttempt;
+      const failure = await collectTextareaFailureEvidence(primary, {
+        // Direct evaluate: a missing editor is recorded, never auto-waited/retried.
+        readPhase: () => page.evaluate(readTextareaPostFailurePhase, failedAttempt?.kind ?? null),
+        readReadiness: () => page.evaluate(() => ({
+          ready: document.documentElement.dataset.ready,
+          documentFocused: document.hasFocus(),
+          activeElement: document.activeElement?.outerHTML,
+          records: window.textareaEvidence?.records.map((r) => ({
+            kind: r.kind,
+            editor: !!r.editor(),
+            html: r.host.innerHTML,
+          })),
+          sections: [...document.querySelectorAll('section')].map((s) => ({
+            runtime: s.dataset.runtime,
+            html: s.innerHTML,
+          })),
         })),
-        sections: [...document.querySelectorAll('section')].map((s) => ({
-          runtime: s.dataset.runtime,
-          html: s.innerHTML,
-        })),
-      }));
-      const bytes = await page.screenshot({ path: join(out, 'failure.png'), fullPage: true });
-      failureScreenshot = { path: 'failure.png', sha256: hash(bytes) };
-    } catch (captureError) {
-      failureScreenshot = { error: String(captureError) };
+        screenshot: async () => {
+          const bytes = await page.screenshot({ path: join(out, 'failure.png'), fullPage: true });
+          return { path: 'failure.png', sha256: hash(bytes) };
+        },
+      }, primaryPersistence);
+      const supplementalPersistence = await persist(failure);
+      if (supplementalPersistence.status !== 'persisted')
+        console.error('Could not persist supplemental Textarea failure:', supplementalPersistence);
     }
+  } catch (captureError) {
+    // Even a failed diagnostic write must not replace the original thrown error.
+    console.error('Could not persist supplemental Textarea failure evidence:', captureError);
   }
-  await writeFile(
-    join(out, 'failure.json'),
-    JSON.stringify(
-      {
-        revision: receipt.revision,
-        error: String(error),
-        failureScreenshot,
-        observations,
-        errors,
-        consoleErrors,
-        failedRequests,
-        readiness,
-      },
-      null,
-      2
-    )
-  );
-  throw error;
 } finally {
-  await browser?.close();
-  await new Promise((resolve) => server.close(resolve));
+  await cleanupTextareaEvidence(runFailure, {
+    closeBrowser: () => browser?.close(),
+    closeServer: () => new Promise((resolve, reject) => server.close((error) => error ? reject(error) : resolve())),
+    recordErrors: (cleanupErrors) => writeFile(
+      join(out, 'cleanup-errors.json'),
+      JSON.stringify({ revision: receipt.revision, primaryFailed: runFailure.failed, cleanupErrors }, null, 2)
+    ),
+  });
 }

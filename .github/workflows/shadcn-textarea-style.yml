@@ -8,6 +8,7 @@ on:
       - 'packages/prototypes/shadcn/src/field/textarea.proto.ts'
       - 'packages/adapters/**/src/**'
       - 'scripts/prototypes/shadcn-textarea-evidence*'
+      - 'scripts/prototypes/shadcn-textarea-shadow-oracle.mjs'
       - '.github/workflows/shadcn-textarea-style.yml'
   workflow_dispatch:
 permissions:
