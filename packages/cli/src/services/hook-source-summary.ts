@@ -47,6 +47,8 @@ export type HookSourceResolution = {
   /** True when the expression was an imported/local authored producer or its member. */
   matched: boolean;
   value: HookSourceValue;
+  /** Winning producer binding when a named cache replaces the syntactic caller. */
+  hook?: string;
 };
 
 export type HookSourceSummaryContext = {
@@ -1478,6 +1480,13 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
     return !!canonical && symbolKey(canonical) === symbolKey(symbol);
   };
 
+  // These existing source-identity proofs admit Core-owned privileged hook
+  // boundaries, not ordinary authored helpers. Their factory wrapper closes
+  // over privileged runtime context which an empty helper environment cannot
+  // reconstruct. This does not grant native provenance to their return values.
+  const canonicalPrivilegedCall = (call: ts.CallExpression, module: Module): boolean =>
+    canonicalAccessibleCall(call, module) || canonicalFocusableStates(call, module) !== null;
+
   const literalString = (
     node: ts.Node | undefined,
     module: Module,
@@ -1594,12 +1603,664 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
   const sameProducer = (left: Producer, right: Producer): boolean =>
     producerIdentity(left) === producerIdentity(right);
 
+  type RegistrationEntry = {
+    producer: Producer;
+    certain: boolean;
+    owners: Set<string>;
+    opaqueBefore: boolean;
+    initializing: boolean;
+    /** The name was installed inside another producer's setup or helper. */
+    nested: boolean;
+    result?: HookSourceValue;
+    methods?: Map<string, { fn: ts.FunctionLikeDeclaration; module: Module; certain: boolean }[]>;
+  };
+
+  const unknownRegistrationLiteral = Symbol('unproved registration literal');
+  type UnprovedRegistrationLiteral = typeof unknownRegistrationLiteral;
+  type RegistrationLiteral = SetupLiteral | null | undefined | UnprovedRegistrationLiteral;
+  const registrationLiteral = (
+    node: ts.Node
+  ): SetupLiteral | null | UnprovedRegistrationLiteral => {
+    const value = unwrap(node);
+    if (isStringValue(value)) return value.text;
+    if (ts.isNumericLiteral(value)) return Number(value.text);
+    if (value.kind === ts.SyntaxKind.TrueKeyword) return true;
+    if (value.kind === ts.SyntaxKind.FalseKeyword) return false;
+    if (value.kind === ts.SyntaxKind.NullKeyword) return null;
+    return unknownRegistrationLiteral;
+  };
+  const registrationRightReachability = (
+    operator: ts.SyntaxKind,
+    value: RegistrationLiteral
+  ): boolean | null => {
+    if (value === unknownRegistrationLiteral) return null;
+    if (
+      operator === ts.SyntaxKind.QuestionQuestionToken ||
+      operator === ts.SyntaxKind.QuestionQuestionEqualsToken
+    )
+      return value === null || value === undefined;
+    if (
+      operator === ts.SyntaxKind.AmpersandAmpersandToken ||
+      operator === ts.SyntaxKind.AmpersandAmpersandEqualsToken
+    )
+      return Boolean(value);
+    return !value;
+  };
+
+  /** Registration effects are replayed separately from own-state capture. */
+  const createRegistrationReplay = (
+    capture: (producer: Producer, children: ReadonlyMap<string, HookSourceValue>) => HookSourceValue
+  ) => {
+    const entries = new Map<string, RegistrationEntry>();
+    const activeHelpers = new Set<ts.Node>();
+    // A raw result is a Core container, not proof that its authored methods
+    // (or arbitrary extension members) are native capabilities.
+    type CapabilityOrigin = 'native' | 'native-result' | 'authored' | 'unknown';
+    const capabilityEnvironments = new WeakMap<Environment, Map<ts.Node, CapabilityOrigin>>();
+    const methodFrames: Map<
+      string,
+      {
+        fn: ts.FunctionLikeDeclaration;
+        module: Module;
+        certain: boolean;
+      }[]
+    >[] = [];
+    const resultBindings = new Map<ts.Node, RegistrationEntry>();
+    const callableBindings = new Map<
+      ts.Node,
+      {
+        fn: ts.FunctionLikeDeclaration;
+        module: Module;
+        certain: boolean;
+      }[]
+    >();
+    let opaque = false;
+    const unknownLiteral: UnprovedRegistrationLiteral = unknownRegistrationLiteral;
+    type Literal = RegistrationLiteral;
+    type Environment = Map<ts.Node, Literal>;
+    const capabilities = (env: Environment): Map<ts.Node, CapabilityOrigin> => {
+      let facts = capabilityEnvironments.get(env);
+      if (!facts) {
+        facts = new Map();
+        capabilityEnvironments.set(env, facts);
+      }
+      return facts;
+    };
+    const forkEnvironment = (env: Environment): Environment => {
+      const fork = new Map(env);
+      capabilityEnvironments.set(fork, new Map(capabilities(env)));
+      return fork;
+    };
+    const joinCapabilities = (env: Environment, branches: readonly Environment[]): void => {
+      if (branches.length === 0) return;
+      const joined = capabilities(env);
+      const keys = new Set(joined.keys());
+      for (const branch of branches) for (const key of capabilities(branch).keys()) keys.add(key);
+      for (const key of keys) {
+        const first = capabilities(branches[0]).get(key) ?? 'unknown';
+        joined.set(
+          key,
+          branches.every((branch) => (capabilities(branch).get(key) ?? 'unknown') === first)
+            ? first
+            : 'unknown'
+        );
+      }
+    };
+    const binding = (node: ts.Node, module: Module): ts.Node | undefined =>
+      moduleContext.resolveReference(unwrap(node), module)?.declaration;
+    const nativeValue = (node: ts.Node, module: Module, env: Environment): boolean => {
+      const value = unwrap(node);
+      if (ts.isIdentifier(value)) {
+        const key = binding(value, module);
+        const origin = key ? capabilities(env).get(key) : undefined;
+        return origin === 'native' || origin === 'native-result';
+      }
+      if (ts.isPropertyAccessExpression(value) || ts.isElementAccessExpression(value)) {
+        if (capabilityOrigin(value.expression, module, env) === 'native-result') {
+          const name = memberName(value);
+          return name === 'stateHandles' || name === 'state' || name === 'getState';
+        }
+        return nativeValue(value.expression, module, env);
+      }
+      if (ts.isObjectLiteralExpression(value))
+        return value.properties.every(
+          (property) =>
+            ts.isPropertyAssignment(property) && nativeValue(property.initializer, module, env)
+        );
+      if (ts.isCallExpression(value)) {
+        const producer = producerForCall(value, module.source);
+        if (producer) {
+          const name = producerName(producer);
+          const entry = name === null ? undefined : entries.get(name);
+          return entry?.result?.kind === 'result' && !entry.result.handle;
+        }
+        // Receiver ownership does not prove ownership of an arbitrary return
+        // value: getMethod/getAsHookHandle may return authored capabilities.
+        const owner = memberOwner(value.expression);
+        if (!owner) return false;
+        if (memberName(value.expression) === 'getState') return nativeValue(owner, module, env);
+        const container = memberOwner(owner);
+        return (
+          memberName(owner) === 'state' && container !== null && nativeValue(container, module, env)
+        );
+      }
+      return false;
+    };
+    const capabilityOrigin = (
+      node: ts.Node,
+      module: Module,
+      env: Environment
+    ): CapabilityOrigin => {
+      const value = unwrap(node);
+      if (ts.isIdentifier(value)) {
+        const key = binding(value, module);
+        return key ? (capabilities(env).get(key) ?? 'unknown') : 'unknown';
+      }
+      if (
+        ts.isCallExpression(value) &&
+        producerForCall(value, module.source) &&
+        nativeValue(value, module, env)
+      )
+        return 'native-result';
+      if (nativeValue(value, module, env)) return 'native';
+      if (ts.isPropertyAccessExpression(value) || ts.isElementAccessExpression(value))
+        return capabilityOrigin(value.expression, module, env) === 'authored'
+          ? 'authored'
+          : 'unknown';
+      return ts.isObjectLiteralExpression(value) ||
+        isFunctionLike(value) ||
+        registrationLiteral(value) !== unknownLiteral
+        ? 'authored'
+        : 'unknown';
+    };
+    const nativeObjectEnumeration = (
+      node: ts.CallExpression,
+      module: Module,
+      env: Environment
+    ): boolean => {
+      const callee = unwrap(node.expression);
+      return (
+        ts.isPropertyAccessExpression(callee) &&
+        ts.isIdentifier(callee.expression) &&
+        callee.expression.text === 'Object' &&
+        !binding(callee.expression, module) &&
+        (callee.name.text === 'keys' ||
+          callee.name.text === 'values' ||
+          callee.name.text === 'entries') &&
+        node.arguments.length === 1 &&
+        nativeValue(node.arguments[0], module, env)
+      );
+    };
+    const literal = (node: ts.Node | undefined, module: Module, env: Environment): Literal => {
+      if (!node) return undefined;
+      const value = unwrap(node);
+      const constant = registrationLiteral(value);
+      if (constant !== unknownLiteral) return constant;
+      if (ts.isIdentifier(value) && value.text === 'undefined' && !binding(value, module))
+        return undefined;
+      const key = ts.isIdentifier(value) ? binding(value, module) : undefined;
+      return key && env.has(key) ? env.get(key)! : unknownLiteral;
+    };
+    const runFunction = (
+      fn: ts.FunctionLikeDeclaration,
+      module: Module,
+      env: Environment,
+      certain: boolean,
+      children: Map<string, HookSourceValue>,
+      nested: boolean
+    ): void => {
+      if (fn.asteriskToken) return;
+      if (activeHelpers.has(fn)) {
+        opaque = true;
+        return;
+      }
+      activeHelpers.add(fn);
+      try {
+        if (fn.body) walk(fn.body, module, env, certain, children, nested);
+      } finally {
+        activeHelpers.delete(fn);
+      }
+    };
+    const invoke = (
+      producer: Producer,
+      certain: boolean,
+      nested: boolean
+    ): RegistrationEntry | null => {
+      const name = producerName(producer);
+      if (name === null) {
+        opaque = true;
+        return null;
+      }
+      const installed = entries.get(name);
+      // The runtime keeps the first registration of a configured name.
+      if (installed?.certain || installed?.initializing) return installed;
+      if (installed) installed.owners.add(producerIdentity(producer));
+      const entry: RegistrationEntry = {
+        producer,
+        certain: certain && !opaque && !installed,
+        initializing: true,
+        nested,
+        owners: new Set([producerIdentity(producer)]),
+        opaqueBefore: opaque,
+      };
+      if (!installed) entries.set(name, entry);
+      const property = configProperty(producer.config, 'setup');
+      const setup = property ? functionFor(propertyExpression(property), producer.module) : null;
+      const children = new Map<string, HookSourceValue>();
+      entry.methods = new Map();
+      methodFrames.push(entry.methods);
+      try {
+        if (setup) {
+          const parameter = setup.fn.parameters[0];
+          const key =
+            parameter && ts.isIdentifier(parameter.name)
+              ? binding(parameter.name, setup.module)
+              : undefined;
+          const setupEnv: Environment = new Map();
+          if (key) capabilities(setupEnv).set(key, 'native');
+          runFunction(setup.fn, setup.module, setupEnv, certain && !installed, children, true);
+        } else entry.certain = false;
+      } finally {
+        methodFrames.pop();
+      }
+      const projectProperty = configProperty(producer.config, 'projectHandle');
+      const project = projectProperty
+        ? functionFor(propertyExpression(projectProperty), producer.module)
+        : null;
+      if (project) {
+        const parameter = project.fn.parameters[0];
+        const key =
+          parameter && ts.isIdentifier(parameter.name)
+            ? binding(parameter.name, project.module)
+            : undefined;
+        const projectEnv: Environment = new Map();
+        if (key) capabilities(projectEnv).set(key, 'native-result');
+        runFunction(project.fn, project.module, projectEnv, certain && !installed, new Map(), true);
+      }
+      entry.result = capture(producer, children);
+      entry.initializing = false;
+      return installed ?? entry;
+    };
+    const walk = (
+      node: ts.Node,
+      module: Module,
+      env: Environment,
+      certain: boolean,
+      children: Map<string, HookSourceValue>,
+      nested: boolean
+    ): boolean | null => {
+      if (ts.isTypeNode(node) || isFunctionLike(node)) return true;
+      if (ts.isExpressionStatement(node))
+        return walk(node.expression, module, env, certain, children, nested);
+      if (ts.isAwaitExpression(node) || ts.isYieldExpression(node)) {
+        if (node.expression) walk(node.expression, module, env, certain, children, nested);
+        opaque = true;
+        return false;
+      }
+      if (
+        (ts.isPrefixUnaryExpression(node) || ts.isPostfixUnaryExpression(node)) &&
+        (node.operator === ts.SyntaxKind.PlusPlusToken ||
+          node.operator === ts.SyntaxKind.MinusMinusToken)
+      ) {
+        walk(node.operand, module, env, certain, children, nested);
+        const previous = literal(node.operand, module, env);
+        const key = binding(node.operand, module);
+        if (key) {
+          callableBindings.delete(key);
+          env.set(
+            key,
+            certain && typeof previous === 'number'
+              ? previous + (node.operator === ts.SyntaxKind.PlusPlusToken ? 1 : -1)
+              : unknownLiteral
+          );
+          capabilities(env).set(key, 'unknown');
+        }
+        return true;
+      }
+      if (ts.isBlock(node)) {
+        let continuationCertain = certain;
+        let conditionalCompletion = false;
+        for (const statement of node.statements) {
+          const completion = walk(statement, module, env, continuationCertain, children, nested);
+          if (completion === false) return false;
+          if (completion === null) {
+            continuationCertain = false;
+            conditionalCompletion = true;
+          }
+        }
+        return conditionalCompletion ? null : true;
+      }
+      if (ts.isReturnStatement(node) || ts.isThrowStatement(node)) {
+        if (node.expression) walk(node.expression, module, env, certain, children, nested);
+        return false;
+      }
+      if (ts.isVariableDeclaration(node)) {
+        if (node.initializer) walk(node.initializer, module, env, certain, children, nested);
+        if (ts.isIdentifier(node.name)) {
+          const key = binding(node.name, module);
+          if (key) {
+            const reused = env.has(key) || capabilities(env).has(key);
+            const previous = capabilities(env).get(key) ?? 'unknown';
+            // Fresh cells have their initializer's ownership even when reaching
+            // the declaration is uncertain. A possible write to an existing
+            // function-scoped var must also preserve its skipped alternative.
+            if (node.initializer || !reused) {
+              callableBindings.delete(key);
+              const next = node.initializer
+                ? capabilityOrigin(node.initializer, module, env)
+                : 'authored';
+              const value = literal(node.initializer, module, env);
+              env.set(key, certain || !reused ? value : unknownLiteral);
+              capabilities(env).set(
+                key,
+                !reused || certain || previous === next ? next : 'unknown'
+              );
+            }
+            const initializer = node.initializer ? unwrap(node.initializer) : null;
+            if (initializer && ts.isCallExpression(initializer)) {
+              const producer = producerForCall(initializer, module.source);
+              const name = producer ? producerName(producer) : null;
+              const entry = name === null ? undefined : entries.get(name);
+              if (entry) resultBindings.set(key, entry);
+            }
+            if (
+              initializer &&
+              ts.isCallExpression(initializer) &&
+              memberName(initializer.expression) === 'getMethod'
+            ) {
+              const method = literal(initializer.arguments[0], module, env);
+              const owner = memberOwner(initializer.expression);
+              const ownerBinding = owner ? binding(owner, module) : undefined;
+              const result = ownerBinding ? resultBindings.get(ownerBinding) : undefined;
+              const callable =
+                typeof method === 'string' ? result?.methods?.get(method) : undefined;
+              if (callable && (!reused || certain)) callableBindings.set(key, callable);
+            }
+          }
+        }
+        return true;
+      }
+      if (ts.isBinaryExpression(node)) {
+        const operator = node.operatorToken.kind;
+        const and =
+          operator === ts.SyntaxKind.AmpersandAmpersandToken ||
+          operator === ts.SyntaxKind.AmpersandAmpersandEqualsToken;
+        const or =
+          operator === ts.SyntaxKind.BarBarToken || operator === ts.SyntaxKind.BarBarEqualsToken;
+        const nullish =
+          operator === ts.SyntaxKind.QuestionQuestionToken ||
+          operator === ts.SyntaxKind.QuestionQuestionEqualsToken;
+        walk(node.left, module, env, certain, children, nested);
+        const left = literal(node.left, module, env);
+        const runs = and || or || nullish ? registrationRightReachability(operator, left) : true;
+        if (runs !== false)
+          walk(node.right, module, env, certain && runs === true, children, nested);
+        if (operator >= ts.SyntaxKind.FirstAssignment && operator <= ts.SyntaxKind.LastAssignment) {
+          const key = binding(node.left, module);
+          if (key && runs !== false) {
+            // The saved callable describes the old value, not this write's
+            // replacement. A possible write also invalidates exact dispatch.
+            callableBindings.delete(key);
+            const right = literal(node.right, module, env);
+            let assigned: Literal = right;
+            if (!(and || or || nullish) && operator !== ts.SyntaxKind.EqualsToken) {
+              assigned = unknownLiteral;
+              if (typeof left === 'number' && typeof right === 'number') {
+                switch (operator) {
+                  case ts.SyntaxKind.MinusEqualsToken:
+                    assigned = left - right;
+                    break;
+                  case ts.SyntaxKind.PlusEqualsToken:
+                    assigned = left + right;
+                    break;
+                  case ts.SyntaxKind.AsteriskEqualsToken:
+                    assigned = left * right;
+                    break;
+                  case ts.SyntaxKind.SlashEqualsToken:
+                    assigned = left / right;
+                    break;
+                  case ts.SyntaxKind.PercentEqualsToken:
+                    assigned = left % right;
+                    break;
+                }
+              }
+            }
+            env.set(key, certain && runs === true ? assigned : unknownLiteral);
+            const previous = capabilities(env).get(key) ?? 'unknown';
+            const next =
+              operator === ts.SyntaxKind.EqualsToken || and || or || nullish
+                ? capabilityOrigin(node.right, module, env)
+                : 'unknown';
+            capabilities(env).set(
+              key,
+              certain && runs === true ? next : previous === next ? previous : 'unknown'
+            );
+          }
+        }
+        return true;
+      }
+      if (ts.isIfStatement(node)) {
+        walk(node.expression, module, env, certain, children, nested);
+        const condition = literal(node.expression, module, env);
+        if (condition !== unknownLiteral)
+          return condition
+            ? walk(node.thenStatement, module, env, certain, children, nested)
+            : node.elseStatement
+              ? walk(node.elseStatement, module, env, certain, children, nested)
+              : true;
+        const thenEnv = forkEnvironment(env);
+        const elseEnv = forkEnvironment(env);
+        const first = walk(node.thenStatement, module, thenEnv, false, children, nested);
+        const second = node.elseStatement
+          ? walk(node.elseStatement, module, elseEnv, false, children, nested)
+          : true;
+        joinCapabilities(env, [
+          ...(first !== false ? [thenEnv] : []),
+          ...(second !== false ? [elseEnv] : []),
+        ]);
+        for (const key of env.keys()) env.set(key, unknownLiteral);
+        return first === false && second === false
+          ? false
+          : first !== true || second !== true
+            ? null
+            : true;
+      }
+      if (ts.isConditionalExpression(node)) {
+        walk(node.condition, module, env, certain, children, nested);
+        const condition = literal(node.condition, module, env);
+        if (condition !== unknownLiteral)
+          walk(condition ? node.whenTrue : node.whenFalse, module, env, certain, children, nested);
+        else {
+          const thenEnv = forkEnvironment(env);
+          const elseEnv = forkEnvironment(env);
+          const first = walk(node.whenTrue, module, thenEnv, false, children, nested);
+          const second = walk(node.whenFalse, module, elseEnv, false, children, nested);
+          joinCapabilities(env, [
+            ...(first !== false ? [thenEnv] : []),
+            ...(second !== false ? [elseEnv] : []),
+          ]);
+          for (const key of env.keys()) env.set(key, unknownLiteral);
+        }
+        return true;
+      }
+      if (ts.isForOfStatement(node)) {
+        walk(node.expression, module, env, certain, children, nested);
+        const loopEnv = forkEnvironment(env);
+        const expression = unwrap(node.expression);
+        if (
+          ts.isCallExpression(expression) &&
+          nativeObjectEnumeration(expression, module, env) &&
+          ts.isVariableDeclarationList(node.initializer)
+        ) {
+          for (const declaration of node.initializer.declarations) {
+            if (!ts.isIdentifier(declaration.name)) continue;
+            const key = binding(declaration.name, module);
+            if (key) capabilities(loopEnv).set(key, 'native');
+          }
+        }
+        walk(node.statement, module, loopEnv, false, children, nested);
+        joinCapabilities(env, [forkEnvironment(env), loopEnv]);
+        for (const key of env.keys()) env.set(key, unknownLiteral);
+        return true;
+      }
+      if (ts.isCallExpression(node)) {
+        walk(node.expression, module, env, certain, children, nested);
+        const argumentValues: Literal[] = [];
+        const argumentOrigins: CapabilityOrigin[] = [];
+        for (const argument of node.arguments) {
+          walk(argument, module, env, certain, children, nested);
+          argumentValues.push(literal(argument, module, env));
+          argumentOrigins.push(capabilityOrigin(argument, module, env));
+        }
+        if (memberName(node.expression) === 'method') {
+          const owner = memberOwner(node.expression);
+          const method = literal(node.arguments[0], module, env);
+          const callable = node.arguments[1] ? functionFor(node.arguments[1], module) : null;
+          if (owner && nativeValue(owner, module, env) && typeof method === 'string' && callable) {
+            const frame = methodFrames[methodFrames.length - 1];
+            if (frame) {
+              const alternative = { ...callable, certain };
+              if (certain) frame.set(method, [alternative]);
+              else frame.set(method, [...(frame.get(method) ?? []), alternative]);
+            }
+          }
+        }
+        const producer = producerForCall(node, module.source);
+        if (producer) {
+          const entry = invoke(producer, certain, nested);
+          const name = producerName(producer);
+          if (entry && name !== null) {
+            const result = entry.initializing
+              ? UNKNOWN('initializing registration')
+              : !entry.certain
+                ? UNKNOWN('possible registration winner')
+                : entry.result!;
+            children.set(name, {
+              kind: 'object',
+              members: new Map([
+                ['result', result],
+                ['handle', result.kind === 'result' ? (result.handle ?? result) : result],
+              ]),
+            });
+          }
+          return true;
+        }
+        if (canonicalPrivilegedCall(node, module)) return true;
+        const calleeBinding = binding(node.expression, module);
+        const resolvedHelper = functionFor(node.expression, module);
+        const helpers =
+          (calleeBinding ? callableBindings.get(calleeBinding) : undefined) ??
+          (resolvedHelper ? [{ ...resolvedHelper, certain: true }] : []);
+        if (helpers.length > 0) {
+          for (const helper of helpers) {
+            if (helper.fn.asteriskToken) continue;
+            const helperCertain = certain && helper.certain && helpers.length === 1;
+            const helperEnv = forkEnvironment(env);
+            helper.fn.parameters.forEach((parameter, index) => {
+              if (!ts.isIdentifier(parameter.name)) return;
+              const key = binding(parameter.name, helper.module);
+              if (key) {
+                let value = index < argumentValues.length ? argumentValues[index] : undefined;
+                let origin = argumentOrigins[index] ?? 'authored';
+                if (value === undefined && parameter.initializer) {
+                  walk(
+                    parameter.initializer,
+                    helper.module,
+                    helperEnv,
+                    helperCertain,
+                    children,
+                    nested
+                  );
+                  value = literal(parameter.initializer, helper.module, helperEnv);
+                  origin = capabilityOrigin(parameter.initializer, helper.module, helperEnv);
+                } else if (value === unknownLiteral && parameter.initializer) {
+                  // Unknown is not proof of a supplied non-undefined value.
+                  walk(parameter.initializer, helper.module, helperEnv, false, children, nested);
+                  const fallback = capabilityOrigin(
+                    parameter.initializer,
+                    helper.module,
+                    helperEnv
+                  );
+                  if (fallback !== origin) origin = 'unknown';
+                }
+                helperEnv.set(key, value);
+                capabilities(helperEnv).set(key, origin);
+              }
+            });
+            runFunction(helper.fn, helper.module, helperEnv, helperCertain, children, nested);
+            for (const key of env.keys())
+              if (helperEnv.has(key)) {
+                env.set(key, helperEnv.get(key)!);
+                const previous = capabilities(env).get(key) ?? 'unknown';
+                const next = capabilities(helperEnv).get(key) ?? 'unknown';
+                capabilities(env).set(
+                  key,
+                  helperCertain ? next : previous === next ? previous : 'unknown'
+                );
+              }
+          }
+        } else {
+          let owner = unwrap(node.expression);
+          while (ts.isPropertyAccessExpression(owner) || ts.isElementAccessExpression(owner))
+            owner = unwrap(owner.expression);
+          const key = ts.isIdentifier(owner) ? binding(owner, module) : undefined;
+          // Calls through an admitted native setup/result parameter are owned
+          // by Core. Other opaque calls may install names through active context.
+          const origin = key ? capabilities(env).get(key) : undefined;
+          const method =
+            memberName(node.expression) === 'getMethod'
+              ? literal(node.arguments[0], module, env)
+              : undefined;
+          const receiver = memberOwner(node.expression);
+          const receiverBinding = receiver ? binding(receiver, module) : undefined;
+          // A registered getMethod lookup only retrieves the authored callable.
+          // Its later invocation is replayed through callableBindings; unlike
+          // raw methods-map reads, this lookup has an exact source-backed target.
+          const knownMethodLookup =
+            origin === 'native-result' &&
+            receiverBinding !== undefined &&
+            typeof method === 'string' &&
+            resultBindings.get(receiverBinding)?.methods?.has(method) === true;
+          const admitted =
+            origin === 'native' ||
+            knownMethodLookup ||
+            (origin === 'native-result' &&
+              memberOwner(node.expression) !== null &&
+              nativeValue(node.expression, module, env));
+          if (!admitted && !nativeObjectEnumeration(node, module, env)) opaque = true;
+        }
+        return true;
+      }
+      const control =
+        ts.isIterationStatement(node, false) ||
+        ts.isSwitchStatement(node) ||
+        ts.isTryStatement(node);
+      ts.forEachChild(node, (child) => {
+        walk(child, module, env, certain && !control, children, nested);
+      });
+      return true;
+    };
+    return {
+      entries,
+      invoke,
+      replayHelper: (node: ts.CallExpression, source: ts.SourceFile, certain: boolean) => {
+        const module = moduleForSource(source);
+        if (canonicalPrivilegedCall(node, module)) return;
+        if (functionFor(node.expression, module))
+          walk(node, module, new Map(), certain, new Map(), false);
+      },
+    };
+  };
+
   /**
    * Each runtime setup chain caches the first `once` hook by configured name.
    * Resolve calls against only their lexical function/source unit: a separate
    * setup body or source file gets an independent runtime cache. If a distinct
    * same-name producer may have run first, its exact execution order is not
    * proved here, so the later call must not inherit its own producer summary.
+   * Ordered setup effects share one name cache across the owner prefix and
+   * source-known helpers. A definite nested winner supplies its contextual
+   * cached handle; an unproved registration withholds the later producer's proof.
    *
    * Only a call that can run before the target counts as such a registration.
    * The runtime evaluates a statement in source order, so a later declarator,
@@ -1615,13 +2276,23 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
    * it holds, so the whole statement is scanned there and any same-name
    * registration in it is refused.
    */
-  const hasPriorSameNameProducer = (
+  const ownerRegistrationResults = new WeakMap<
+    ts.Node,
+    Map<
+      string,
+      {
+        children: ReadonlyMap<string, HookSourceValue>;
+        result: HookSourceValue;
+      }[]
+    >
+  >();
+  const replayPriorSameNameRegistration = (
     call: ts.CallExpression,
     producer: Producer,
     source: ts.SourceFile
-  ): boolean => {
+  ): { value: HookSourceValue; hook?: string } | null => {
     const name = producerName(producer);
-    if (name === null) return false;
+    if (name === null) return null;
 
     let boundary: ts.Node = source;
     for (
@@ -1649,13 +2320,121 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
       : isFunctionLike(boundary) && boundary.body
         ? boundary.body
         : boundary;
-    let conflict = false;
+    let conflict: { value: HookSourceValue; hook?: string } | null = null;
     let reachedTarget = false;
-    const isPriorRegistration = (node: ts.CallExpression): boolean => {
+    // Rule predicates close over the owner's handles; invoking one does not
+    // create a new once-registration instance. Keep lexical collision scanning
+    // separate from the runtime owner used for canonical object identity.
+    let identityOwner = boundary;
+    if (isFunctionLike(boundary)) {
+      let holder: ts.Node = boundary;
+      while (holder.parent && !ts.isSourceFile(holder.parent) && !isFunctionLike(holder.parent)) {
+        holder = holder.parent;
+        if (ts.isCallExpression(holder) && memberName(holder.expression) === 'rule') {
+          identityOwner = source;
+          for (let outer: ts.Node | undefined = holder.parent; outer; outer = outer.parent) {
+            if (isFunctionLike(outer)) {
+              identityOwner = outer;
+              break;
+            }
+          }
+          break;
+        }
+      }
+    }
+    const ownerResults =
+      ownerRegistrationResults.get(identityOwner) ??
+      new Map<
+        string,
+        {
+          children: ReadonlyMap<string, HookSourceValue>;
+          result: HookSourceValue;
+        }[]
+      >();
+    ownerRegistrationResults.set(identityOwner, ownerResults);
+    const replay = createRegistrationReplay((installedProducer, children) => {
+      const identity = producerIdentity(installedProducer);
+      const candidates = ownerResults.get(identity) ?? [];
+      const sameChildren = (previous: ReadonlyMap<string, HookSourceValue>): boolean => {
+        if (previous.size !== children.size) return false;
+        for (const [name, child] of children) {
+          const other = previous.get(name);
+          if (child === other) continue;
+          if (
+            child.kind !== 'object' ||
+            other?.kind !== 'object' ||
+            child.members.get('result') !== other.members.get('result') ||
+            child.members.get('handle') !== other.members.get('handle')
+          )
+            return false;
+        }
+        return true;
+      };
+      const existing = candidates.find((candidate) => sameChildren(candidate.children));
+      if (existing) return existing.result;
+      const result = summarize(installedProducer, children).value;
+      candidates.push({ children: new Map(children), result });
+      ownerResults.set(identity, candidates);
+      return result;
+    });
+    const priorRegistration = (
+      node: ts.CallExpression,
+      executesBefore: boolean,
+      pathCertain: boolean
+    ): { value: HookSourceValue; hook?: string } | null => {
       const earlier = producerForCall(node, source);
-      if (!earlier) return false;
+      if (!earlier) {
+        if (executesBefore) replay.replayHelper(node, source, pathCertain);
+        return null;
+      }
       const earlierName = producerName(earlier);
-      return (earlierName === name || earlierName === null) && !sameProducer(earlier, producer);
+      if ((earlierName === name || earlierName === null) && !sameProducer(earlier, producer))
+        return { value: UNKNOWN('same-name producer may have registered first') };
+      // Only an effect that ran before the target can supply a definite
+      // winner. Later calls in the same statement are possible effects, not
+      // proof of absence; their installs stay uncertain.
+      if (!executesBefore) {
+        replay.invoke(earlier, false, false);
+        const possible = replay.entries.get(name);
+        if (possible && !sameProducer(possible.producer, producer))
+          return { value: UNKNOWN('same-name nested producer registration is unproved') };
+        return null;
+      }
+      const earlierStatement = statements?.find(
+        (statement) =>
+          statement.getStart(source) <= node.getStart(source) && statement.getEnd() >= node.getEnd()
+      );
+      const definitelyExecuted =
+        earlierStatement !== undefined &&
+        ((ts.isExpressionStatement(earlierStatement) &&
+          unwrap(earlierStatement.expression) === node) ||
+          (ts.isVariableStatement(earlierStatement) &&
+            earlierStatement.declarationList.declarations.some(
+              (declaration) =>
+                declaration.initializer !== undefined && unwrap(declaration.initializer) === node
+            )));
+      replay.invoke(earlier, pathCertain && definitelyExecuted && !reachedTarget, false);
+      const installed = replay.entries.get(name);
+      if (!installed) return null;
+      if (
+        installed.initializing ||
+        !installed.result ||
+        (!installed.certain &&
+          (installed.opaqueBefore ||
+            installed.owners.size !== 1 ||
+            !sameProducer(installed.producer, producer)))
+      )
+        return { value: UNKNOWN('same-name nested producer registration is unproved') };
+      const result = installed.result;
+      const declaration = installed.producer.declaration;
+      const hook =
+        ts.isVariableDeclaration(declaration) && ts.isIdentifier(declaration.name)
+          ? declaration.name.text
+          : undefined;
+      return {
+        value: result.kind === 'result' ? (result.handle ?? result) : result,
+        ...(hook ? { hook } : {}),
+      };
     };
 
     /**
@@ -1682,16 +2461,54 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
           unwrap(declaration.initializer) === call
       );
 
-    const visit = (node: ts.Node): void => {
+    const visit = (node: ts.Node, pathCertain = true): void => {
       if (conflict) return;
       if (cutoffAllowed && reachedTarget) return;
       if (node !== call && isFunctionLike(node)) return;
+      if (
+        ts.isBinaryExpression(node) &&
+        (node.operatorToken.kind === ts.SyntaxKind.AmpersandAmpersandToken ||
+          node.operatorToken.kind === ts.SyntaxKind.BarBarToken ||
+          node.operatorToken.kind === ts.SyntaxKind.QuestionQuestionToken ||
+          node.operatorToken.kind === ts.SyntaxKind.AmpersandAmpersandEqualsToken ||
+          node.operatorToken.kind === ts.SyntaxKind.BarBarEqualsToken ||
+          node.operatorToken.kind === ts.SyntaxKind.QuestionQuestionEqualsToken)
+      ) {
+        visit(node.left, pathCertain);
+        const runs = registrationRightReachability(
+          node.operatorToken.kind,
+          registrationLiteral(node.left)
+        );
+        if (runs !== false) visit(node.right, pathCertain && runs === true);
+        return;
+      }
+      if (ts.isConditionalExpression(node)) {
+        visit(node.condition, pathCertain);
+        const condition = registrationLiteral(node.condition);
+        if (condition === unknownRegistrationLiteral) {
+          visit(node.whenTrue, false);
+          visit(node.whenFalse, false);
+        } else visit(condition ? node.whenTrue : node.whenFalse, pathCertain);
+        return;
+      }
+      if (ts.isIfStatement(node)) {
+        visit(node.expression, pathCertain);
+        const condition = unwrap(node.expression);
+        if (condition.kind === ts.SyntaxKind.TrueKeyword) visit(node.thenStatement, pathCertain);
+        else if (condition.kind === ts.SyntaxKind.FalseKeyword) {
+          if (node.elseStatement) visit(node.elseStatement, pathCertain);
+        } else {
+          visit(node.thenStatement, false);
+          if (node.elseStatement) visit(node.elseStatement, false);
+        }
+        return;
+      }
       if (ts.isCallExpression(node)) {
         const reachedBefore = reachedTarget;
         // A call's callee and arguments are evaluated before the call itself
         // runs, so a producer call among them registered earlier.
-        visit(node.expression);
-        for (const argument of node.arguments) visit(argument);
+        visit(node.expression, pathCertain);
+        for (const argument of node.arguments) visit(argument, pathCertain);
         if (node === call) {
           reachedTarget = true;
           return;
@@ -1699,10 +2516,19 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
         // Only the bounded initializer scan can prove this enclosing call
         // runs later. Repeated control flow keeps whole-statement collisions.
         if (cutoffAllowed && reachedTarget && !reachedBefore) return;
-        if (isPriorRegistration(node)) conflict = true;
+        // A call registers after its own callee and arguments were evaluated.
+        // It therefore runs before the target only when the target was not
+        // reached while visiting this call's own subtree.
+        const prior = priorRegistration(node, !reachedTarget, pathCertain);
+        if (prior) conflict = prior;
         return;
       }
-      ts.forEachChild(node, visit);
+      const conditional =
+        ts.isIterationStatement(node, false) ||
+        ts.isSwitchStatement(node) ||
+        ts.isTryStatement(node) ||
+        ts.isConditionalExpression(node);
+      ts.forEachChild(node, (child) => visit(child, pathCertain && !conditional));
     };
 
     if (statements && targetStatement) {
@@ -1713,7 +2539,42 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
     } else {
       visit(scanRoot);
     }
-    return conflict;
+    if (conflict) return conflict;
+    // Initial calls and replayed calls enter the same owner-context capture
+    // interner. No declaration-only/leaf fallback can split their graphs.
+    const installed = replay.invoke(producer, true, false);
+    if (
+      !installed ||
+      installed.initializing ||
+      !installed.result ||
+      (!installed.certain &&
+        (installed.opaqueBefore ||
+          installed.owners.size !== 1 ||
+          !sameProducer(installed.producer, producer)))
+    )
+      return { value: UNKNOWN('unproved registration result') };
+    const result = installed.result;
+    return { value: result.kind === 'result' ? (result.handle ?? result) : result };
+  };
+
+  const activeRegistrationQueries = new Set<string>();
+  const priorSameNameRegistration = (
+    call: ts.CallExpression,
+    producer: Producer,
+    source: ts.SourceFile
+  ): { value: HookSourceValue; hook?: string } | null => {
+    // A producer's projection can evaluate another producer call while this
+    // query is being answered. Re-entering the same query is unproved rather
+    // than evidence that the name is free.
+    const queryKey = producerIdentity(producer);
+    if (activeRegistrationQueries.has(queryKey))
+      return { value: UNKNOWN('producer registration cycle') };
+    activeRegistrationQueries.add(queryKey);
+    try {
+      return replayPriorSameNameRegistration(call, producer, source);
+    } finally {
+      activeRegistrationQueries.delete(queryKey);
+    }
   };
 
   const evaluate = (
@@ -1840,10 +2701,11 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
       }
       const producer = producerForCall(value, source);
       if (producer) {
-        if (hasPriorSameNameProducer(value, producer, source))
+        const prior = priorSameNameRegistration(value, producer, source);
+        if (prior)
           return {
             matched: true,
-            value: UNKNOWN('same-name producer may have registered first'),
+            ...prior,
           };
         const captured = summarize(producer);
         return captured.value.kind === 'result'
@@ -1910,9 +2772,12 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
     return { matched: false, value: UNKNOWN('unsupported expression') };
   };
 
-  const summarize = (producer: Producer): HookSourceResolution => {
+  const summarize = (
+    producer: Producer,
+    replayedChildren?: ReadonlyMap<string, HookSourceValue>
+  ): HookSourceResolution => {
     const key = `${producer.module.file}:${producer.declaration.getStart(producer.module.source)}`;
-    const cached = summaryCache.get(key);
+    const cached = replayedChildren === undefined ? summaryCache.get(key) : undefined;
     if (cached) return { matched: true, value: cached };
     if (summaryStack.has(key)) return { matched: true, value: UNKNOWN('producer cycle') };
     summaryStack.add(key);
@@ -3027,7 +3892,13 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
         markSetupUncertain();
       }
       collectSetup(setup.fn, setup.module, setupActive);
-    } else setupComplete = false;
+    } else {
+      setupComplete = false;
+    }
+    if (replayedChildren !== undefined) {
+      children.clear();
+      for (const [name, child] of replayedChildren) children.set(name, child);
+    }
     const result: HookSourceValue = {
       kind: 'result',
       producer: producer.ref,
@@ -3325,7 +4196,7 @@ export function createHookSourceSummaryContext(): HookSourceSummaryContext {
         result.handle = returned;
       }
     }
-    summaryCache.set(key, result);
+    if (replayedChildren === undefined) summaryCache.set(key, result);
     summaryStack.delete(key);
     return { matched: true, value: result };
   };

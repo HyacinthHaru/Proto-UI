@@ -907,6 +907,13 @@ export function scanRuleStateReads(
           ? scope.sourceSummary.resolve(value, source, sourceEnvironment(scope))
           : null;
         if (resolved?.matched && resolved.value.kind !== 'unknown') {
+          // A same-name once call can return a child installed by an earlier
+          // producer. Its cached value belongs to that winning producer, not
+          // to the syntactic caller whose setup was skipped.
+          if (resolved.hook) {
+            label = resolved.hook;
+            return;
+          }
           // Report the declared producer binding, so a local alias of an
           // exported hook keeps the identity callers already key on.
           const binding = scope ? lookup(scope, name) : null;
@@ -1695,9 +1702,11 @@ export function scanRuleStateReads(
     value: HookSourceValue,
     target: HookSourceValue,
     replacement: HookSourceValue,
-    memo: Map<HookSourceValue, HookSourceValue>
+    memo: Map<HookSourceValue, HookSourceValue>,
+    replacements?: ReadonlyMap<HookSourceValue, HookSourceValue>
   ): HookSourceValue => {
-    if (value === target) return replacement;
+    const direct = replacements?.get(value) ?? (value === target ? replacement : undefined);
+    if (direct !== undefined) return direct;
     const cached = memo.get(value);
     if (cached) return cached;
 
@@ -1715,7 +1724,7 @@ export function scanRuleStateReads(
       memo.set(value, clone);
       let changed = false;
       for (const [key, member] of value.members) {
-        const next = replaceSourceGraph(member, target, replacement, memo);
+        const next = replaceSourceGraph(member, target, replacement, memo, replacements);
         members.set(key, next);
         changed ||= next !== member;
       }
@@ -1732,12 +1741,12 @@ export function scanRuleStateReads(
       memo.set(value, clone);
       let changed = false;
       if (value.handle) {
-        const handle = replaceSourceGraph(value.handle, target, replacement, memo);
+        const handle = replaceSourceGraph(value.handle, target, replacement, memo, replacements);
         clone.handle = handle;
         changed ||= handle !== value.handle;
       }
       for (const [key, child] of value.children) {
-        const next = replaceSourceGraph(child, target, replacement, memo);
+        const next = replaceSourceGraph(child, target, replacement, memo, replacements);
         children.set(key, next);
         changed ||= next !== child;
       }
@@ -1758,12 +1767,13 @@ export function scanRuleStateReads(
     return value;
   };
 
-  /** Publish an object replacement to all source-backed bindings in scope. */
+  /** Publish one atomic object-replacement batch to all source-backed bindings. */
   const publishSourceGraph = (
     scope: Scope,
     target: HookSourceValue,
     replacement: HookSourceValue,
-    uncertain: boolean
+    uncertain: boolean,
+    replacements?: ReadonlyMap<HookSourceValue, HookSourceValue>
   ): void => {
     // One memo spans all bindings and candidates, so shared ancestors remain
     // shared instead of being cloned independently for each visible alias.
@@ -1787,7 +1797,7 @@ export function scanRuleStateReads(
           ...new Set([binding.sourceValue, ...(binding.sourceAlternatives ?? [])]),
         ];
         const replaced = candidates.map((candidate) =>
-          replaceSourceGraph(candidate, target, replacement, memo)
+          replaceSourceGraph(candidate, target, replacement, memo, replacements)
         );
         const changed = replaced.some((candidate, index) => candidate !== candidates[index]);
         if (!changed) continue;
@@ -1805,7 +1815,11 @@ export function scanRuleStateReads(
       // the graph that was written to.
       scope.versions.record(before, after, uncertain);
     }
-    scope.versions.record(target, replacement, uncertain);
+    if (replacements) {
+      for (const [before, after] of replacements) scope.versions.record(before, after, uncertain);
+    } else {
+      scope.versions.record(target, replacement, uncertain);
+    }
     // Pass 2: the names. A name holds the graph the write produced and the
     // graphs it may hold instead. The list is the container's graphs, not the
     // history of the graphs the container passed through: keeping the history
@@ -3315,7 +3329,8 @@ export function scanRuleStateReads(
    *
    * A known mutating call is tracked when every member it copies is proven.
    * Any other call keeps no proof of the members the containers it received
-   * hold, because it may have replaced any of them.
+   * hold, or of mutable containers reachable through them, because it may have
+   * replaced any of them.
    *
    * `captured` holds the containers each argument denoted while that argument
    * was evaluated. The call receives those objects, so a later argument that
@@ -3347,14 +3362,86 @@ export function scanRuleStateReads(
     // passed, so the call does not withdraw it here.
     if (scope.sourceSummary.isAuthoredProducerCall(node, source)) return;
     const mutation = hookSourceCallMutation(node);
-    const publish = (value: HookSourceValue, next: HookSourceValue, ambiguous = false): void => {
+    const callWriteUncertain = (value: HookSourceValue, ambiguous: boolean): boolean => {
       const owning = sourceOwnerScope(scope, value);
-      const uncertain =
+      return (
         ambiguous ||
         isConditionallyReached(node, definitelyReachedLogicalAssignments) ||
-        isDeferredWrite(node, enclosingFunction(owning?.node ?? null));
-      publishSourceGraph(scope, value, next, uncertain);
+        isDeferredWrite(node, enclosingFunction(owning?.node ?? null))
+      );
     };
+    const publish = (value: HookSourceValue, next: HookSourceValue, ambiguous = false): void => {
+      publishSourceGraph(scope, value, next, callWriteUncertain(value, ambiguous));
+    };
+    /**
+     * An unknown call can reach a nested object through the container it was
+     * handed. Walk object identities, not structural equality, so shared
+     * children are written once and distinct twins stay distinct. State
+     * handles are leaves, and a callable's result is an immutable capture,
+     * not an edge into objects the call received. Publish reachable objects as
+     * one batch so conditional writes retain no intermediate parent graphs.
+     */
+    const invalidateUnknownCallGraphs = (
+      requests: ReadonlyArray<{ value: HookSourceValue; uncertain: boolean }>
+    ): void => {
+      const collect = (
+        uncertain: boolean,
+        seen: Set<HookSourceValue>,
+        skip?: ReadonlySet<HookSourceValue>
+      ): Map<HookSourceValue, HookSourceValue> => {
+        const replacements = new Map<HookSourceValue, HookSourceValue>();
+        const visit = (current: HookSourceValue): void => {
+          if (current.kind !== 'object' && current.kind !== 'result') return;
+          if (seen.has(current) || skip?.has(current)) return;
+          seen.add(current);
+          const versions = scope.versions.versions(current);
+          for (const version of versions) seen.add(version);
+          if (current.kind === 'result') {
+            for (const version of versions) {
+              if (version.kind !== 'result' || skip?.has(version)) continue;
+              if (version.handle) visit(version.handle);
+              for (const child of version.children.values()) visit(child);
+            }
+            return;
+          }
+          // A retired reference still needs its own replacement, but its old
+          // members are detached. Only live versions describe reachable edges.
+          if (!replacements.has(current)) {
+            replacements.set(current, mutateSourceGraph(current, null));
+          }
+          for (const version of versions) {
+            if (version.kind !== 'object' || skip?.has(version)) continue;
+            if (!replacements.has(version)) {
+              replacements.set(version, mutateSourceGraph(version, null));
+            }
+            for (const member of version.members.values()) visit(member);
+          }
+        };
+        for (const request of requests) {
+          if (request.uncertain === uncertain) visit(request.value);
+        }
+        return replacements;
+      };
+      // A container reached through a definite request is definitely written,
+      // even when a conditional candidate can also reach it. Collect both maps
+      // before publishing either so every replacement uses the pre-call graph.
+      const definiteSeen = new Set<HookSourceValue>();
+      const definite = collect(false, definiteSeen);
+      const conditional = collect(true, new Set<HookSourceValue>(), definiteSeen);
+      const publishBatch = (
+        replacements: Map<HookSourceValue, HookSourceValue>,
+        uncertain: boolean
+      ): void => {
+        const first = replacements.entries().next();
+        if (first.done) return;
+        publishSourceGraph(scope, first.value[0], first.value[1], uncertain, replacements);
+      };
+      // Definite writes must advance every graph retained by a possible write,
+      // while the unknown alternative from that possible write remains.
+      publishBatch(conditional, true);
+      publishBatch(definite, false);
+    };
+    const unknownCallValues: { value: HookSourceValue; uncertain: boolean }[] = [];
     // The receiver is evaluated before the arguments, so the container it
     // denoted is the one the call wrote to before it looked at an argument.
     // Every version a container the call received may hold is read before
@@ -3390,7 +3477,14 @@ export function scanRuleStateReads(
         receiver.every((candidate) => scope.versions.sameContainer(candidate, first));
       for (const value of live) {
         if (value.kind !== 'object') continue;
-        publish(value, mutateSourceGraph(value, null), !oneContainer);
+        if (mutation.kind === 'unknown') {
+          unknownCallValues.push({
+            value,
+            uncertain: callWriteUncertain(value, !oneContainer),
+          });
+        } else {
+          publish(value, mutateSourceGraph(value, null), !oneContainer);
+        }
       }
     }
     if (mutation.kind === 'copy') {
@@ -3454,9 +3548,14 @@ export function scanRuleStateReads(
       for (const value of live) {
         // The call received one of several containers, so the others keep the
         // members they held.
-        publish(value, mutateSourceGraph(value, null), !oneContainer);
+        if (value.kind !== 'object') continue;
+        unknownCallValues.push({
+          value,
+          uncertain: callWriteUncertain(value, !oneContainer),
+        });
       }
     }
+    invalidateUnknownCallGraphs(unknownCallValues);
   };
 
   const visit = (node: ts.Node, scope: Scope): void => {

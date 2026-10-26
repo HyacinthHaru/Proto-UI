@@ -1,11 +1,67 @@
 import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import { createHookSourceSummaryContext } from '../src/services/hook-source-summary';
+import type {
+  HookSourceValue,
+  SourceGraphVersionTracker,
+} from '../src/services/hook-source-summary';
 import { scanRuleStateReads } from '../src/services/lowered-hook-coverage';
 import { collectProtoStyleTokens } from '../src/services/prototype-style-tokens';
+
+const graphBudget = vi.hoisted(() => ({
+  enabled: false,
+  trackers: [] as { tracker: SourceGraphVersionTracker; values: Set<HookSourceValue> }[],
+}));
+
+vi.mock('../src/services/hook-source-summary', async (importOriginal) => {
+  const actual = (await importOriginal()) as Record<string, unknown> & {
+    createSourceGraphVersionTracker: () => SourceGraphVersionTracker;
+  };
+  return {
+    ...actual,
+    createSourceGraphVersionTracker: () => {
+      const tracker = actual.createSourceGraphVersionTracker();
+      if (!graphBudget.enabled) return tracker;
+      const values = new Set<HookSourceValue>();
+      graphBudget.trackers.push({ tracker, values });
+      return {
+        record(before: HookSourceValue, after: HookSourceValue, uncertain: boolean) {
+          values.add(before);
+          values.add(after);
+          tracker.record(before, after, uncertain);
+        },
+        latest(value: HookSourceValue) {
+          return tracker.latest(value);
+        },
+        versions(value: HookSourceValue) {
+          return tracker.versions(value);
+        },
+        sameContainer(left: HookSourceValue, right: HookSourceValue) {
+          return tracker.sameContainer(left, right);
+        },
+      };
+    },
+  };
+});
+
+/** Distinct post-run container lineages and their current-version counts. */
+function containerVersionCounts(entries: typeof graphBudget.trackers): number[] {
+  const counts: number[] = [];
+  for (const { tracker, values } of entries) {
+    const representatives: HookSourceValue[] = [];
+    for (const value of values) {
+      if (representatives.some((other) => tracker.sameContainer(other, value))) continue;
+      representatives.push(value);
+    }
+    for (const representative of representatives) {
+      counts.push(tracker.versions(representative).length);
+    }
+  }
+  return counts;
+}
 
 /** A real intent: the variant is a prefix on tokens, so a stub yields nothing. */
 const rule = (condition: string) =>
@@ -25,6 +81,13 @@ const rule = (condition: string) =>
  * accessor, so a callee that may be either projection still only reads.
  * `asNested` projects a nested object beside the accessor, so a write into
  * the nested object rewrites the object that holds it.
+ * `asEscapable` adds a beta member to that nested projection, so a call can
+ * reach the nested object through its outer container; the outer state and
+ * accessor also provide immutable-capture controls.
+ * `asWideEscape` carries three distinct nested children for a bounded
+ * conditional-write graph-count check.
+ * `asRetiredEscape` provides a replaceable grandchild for live-version
+ * reachability checks.
  * `asTwins` projects two nested objects with the same shape, so they are two
  * containers: a write into one of them does not reach the other.
  * `asAmbiguous` projects a member the analysis cannot name beside the proven
@@ -40,6 +103,9 @@ const PRODUCER = [
   "export const asMutator = defineAsHook({ name: 'mutator', setup(def) { def.state.bool('alpha', false); def.state.bool('beta', false); }, projectHandle(result) { return { ready: result.stateHandles.alpha, lookup: function () { this.ready = result.stateHandles.beta; } }; } });",
   "export const asProjectedBeta = defineAsHook({ name: 'projectedBeta', setup(def) { def.state.bool('alpha', false); def.state.bool('beta', false); }, projectHandle(result) { return { ready: result.stateHandles.beta, lookup: result.getState! }; } });",
   "export const asNested = defineAsHook({ name: 'nested', setup(def) { def.state.bool('alpha', false); def.state.bool('beta', false); }, projectHandle(result) { return { ready: result.stateHandles.alpha, nested: { ready: result.stateHandles.alpha }, lookup: result.getState! }; } });",
+  "export const asEscapable = defineAsHook({ name: 'escapable', setup(def) { def.state.bool('alpha', false); def.state.bool('beta', false); }, projectHandle(result) { return { ready: result.stateHandles.alpha, nested: { ready: result.stateHandles.alpha }, beta: result.stateHandles.beta, lookup: result.getState! }; } });",
+  "export const asWideEscape = defineAsHook({ name: 'wideEscape', setup(def) { def.state.bool('alpha', false); def.state.bool('beta', false); }, projectHandle(result) { return { ready: result.stateHandles.alpha, first: { ready: result.stateHandles.alpha }, second: { ready: result.stateHandles.alpha }, third: { ready: result.stateHandles.alpha }, beta: result.stateHandles.beta, lookup: result.getState! }; } });",
+  "export const asRetiredEscape = defineAsHook({ name: 'retiredEscape', setup(def) { def.state.bool('alpha', false); def.state.bool('beta', false); }, projectHandle(result) { return { nested: { nested: { nested: { ready: result.stateHandles.alpha }, ready: result.stateHandles.alpha }, ready: result.stateHandles.alpha }, beta: result.stateHandles.beta }; } });",
   "export const asTwins = defineAsHook({ name: 'twins', setup(def) { def.state.bool('alpha', false); }, projectHandle(result) { return { left: { ready: result.stateHandles.alpha }, right: { ready: result.stateHandles.alpha } }; } });",
   "export const asAmbiguous = defineAsHook({ name: 'ambiguous', setup(def) { def.state.bool('alpha', false); def.state.bool('beta', false); }, projectHandle(result) { return { ready: chooseAlpha ? result.stateHandles.alpha : result.stateHandles.beta, lookup: result.getState! }; } });",
 ].join('\n');
@@ -48,13 +114,14 @@ const PRODUCER = [
  * Scan the consumer and extract the tokens from the same files production
  * reads: the coverage scan reads the source, the extractor reads the files.
  */
-async function analyze(consumer: string) {
+async function analyze(consumer: string, afterScan?: () => void) {
   const dir = await mkdtemp(path.join(tmpdir(), 'hook-source-receiver-mutation-'));
   try {
     await writeFile(path.join(dir, 'producer.ts'), PRODUCER);
     const consumerFile = path.join(dir, 'consumer.proto.ts');
     await writeFile(consumerFile, consumer);
     const scan = scanRuleStateReads(consumer, consumerFile, createHookSourceSummaryContext());
+    afterScan?.();
     const tokens = await collectProtoStyleTokens(dir);
     return { scan, tokens };
   } finally {
@@ -178,6 +245,130 @@ describe('hook source receiver mutation', () => {
     expect(scan.usages).toEqual([]);
     expect(scan.unresolved).toEqual([{ expression: 'facts.ready', reason: 'subject' }]);
     expect(tokens).not.toContain('data-[alpha]:bg-primary');
+  });
+
+  it('withholds a nested alias member an unknown call may have replaced through its parent', async () => {
+    // An external mutate may set `bag.nested.ready = bag.beta`. It reaches the
+    // child through the outer argument, so replacing only the outer member
+    // proofs would leave this alias with a stale alpha proof.
+    const consumer = [
+      "import { asEscapable } from './producer';",
+      'const bag = asEscapable();',
+      'const nested = bag.nested;',
+      'mutate(bag);',
+      rule('w.state(nested.ready).eq(true)'),
+    ].join('\n');
+    const { scan, tokens } = await analyze(consumer);
+    expect(scan.usages).toEqual([]);
+    expect(scan.unresolved).toEqual([{ expression: 'nested.ready', reason: 'subject' }]);
+    expect(tokens).not.toContain('data-[alpha]:bg-primary');
+  });
+
+  it('keeps a nested alias an unproven Object.assign cannot reach', async () => {
+    // Object.assign replaces only the outer object's members. Even when the
+    // source is unproven, it cannot write into the previously captured child.
+    const consumer = [
+      "import { asEscapable } from './producer';",
+      'const bag = asEscapable();',
+      'const nested = bag.nested;',
+      'Object.assign(bag, chooseSource);',
+      rule('w.state(nested.ready).eq(true)'),
+    ].join('\n');
+    const { scan, tokens } = await analyze(consumer);
+    expect(scan.usages.map(({ hook, state }) => ({ hook, state }))).toEqual([
+      { hook: 'asEscapable', state: 'alpha' },
+    ]);
+    expect(scan.unresolved).toEqual([]);
+    expect(tokens).toContain('data-[alpha]:bg-primary');
+  });
+
+  it('keeps a detached alias outside the live graph an unknown call receives', async () => {
+    // The unbound producer result still references the retired parent graph.
+    // The call must follow the parent's live replacement, not withdraw the
+    // detached child that the retired member used to reference.
+    const consumer = [
+      "import { asRetiredEscape, asTwins } from './producer';",
+      'const parent = asRetiredEscape().nested.nested;',
+      'const detached = parent.nested;',
+      'parent.nested = asTwins().left;',
+      'const bag = asRetiredEscape();',
+      'mutate(bag);',
+      rule('w.state(detached.ready).eq(true)'),
+    ].join('\n');
+    const { scan, tokens } = await analyze(consumer);
+    expect(scan.usages.map(({ hook, state }) => ({ hook, state }))).toEqual([
+      { hook: 'asRetiredEscape', state: 'alpha' },
+    ]);
+    expect(scan.unresolved).toEqual([]);
+    expect(tokens).toContain('data-[alpha]:bg-primary');
+  });
+
+  it('keeps a state captured before an unknown call replaced its outer member', async () => {
+    // The declaration captured the State handle itself. A later write to the
+    // outer projection cannot retroactively change that immutable capture.
+    const consumer = [
+      "import { asEscapable } from './producer';",
+      'const bag = asEscapable();',
+      'const captured = bag.ready;',
+      'mutate(bag);',
+      rule('w.state(captured).eq(true)'),
+    ].join('\n');
+    const { scan, tokens } = await analyze(consumer);
+    expect(scan.usages.map(({ hook, state }) => ({ hook, state }))).toEqual([
+      { hook: 'asEscapable', state: 'alpha' },
+    ]);
+    expect(scan.unresolved).toEqual([]);
+    expect(tokens).toContain('data-[alpha]:bg-primary');
+  });
+
+  it('keeps an accessor captured before an unknown call replaced its outer member', async () => {
+    // The projected getState accessor closes over its own frozen handle map.
+    // Losing the outer bag's lookup member does not revoke that capture.
+    const consumer = [
+      "import { asEscapable } from './producer';",
+      'const bag = asEscapable();',
+      'const lookup = bag.lookup;',
+      'mutate(bag);',
+      rule("w.state(lookup('alpha')!).eq(true)"),
+    ].join('\n');
+    const { scan, tokens } = await analyze(consumer);
+    expect(scan.usages.map(({ hook, state }) => ({ hook, state }))).toEqual([
+      { hook: 'asEscapable', state: 'alpha' },
+    ]);
+    expect(scan.unresolved).toEqual([]);
+    expect(tokens).toContain('data-[alpha]:bg-primary');
+  });
+
+  it('keeps one pre-call and one post-call graph per container after a conditional nested escape', async () => {
+    const consumer = [
+      "import { asWideEscape } from './producer';",
+      'const bag = asWideEscape();',
+      'const nested = bag.second;',
+      'if (choose) mutate(bag);',
+      rule('w.state(nested.ready).eq(true)'),
+    ].join('\n');
+    const observations: number[][] = [];
+    let observedTrackers = 0;
+    const observe = () => {
+      observations.push(containerVersionCounts(graphBudget.trackers.slice(observedTrackers)));
+      observedTrackers = graphBudget.trackers.length;
+    };
+    graphBudget.trackers.length = 0;
+    graphBudget.enabled = true;
+    try {
+      const { scan, tokens } = await analyze(consumer, observe);
+      observe();
+      expect(scan.usages).toEqual([]);
+      expect(scan.unresolved).toEqual([{ expression: 'nested.ready', reason: 'subject' }]);
+      expect(tokens).not.toContain('data-[alpha]:bg-primary');
+      expect(observations).toEqual([
+        [2, 2, 2, 2],
+        [2, 2, 2, 2],
+      ]);
+    } finally {
+      graphBudget.enabled = false;
+      graphBudget.trackers.length = 0;
+    }
   });
 
   it('reads the accessor the call had before an argument rebound the name', async () => {

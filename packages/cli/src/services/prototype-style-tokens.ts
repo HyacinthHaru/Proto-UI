@@ -1392,8 +1392,9 @@ function containsSourceReference(value, target, seen = new Set()) {
   return false;
 }
 
-function replaceSourceReference(value, target, replacement, rewritten = new Map()) {
-  if (value === target) return { value: replacement, changed: true };
+function replaceSourceReference(value, target, replacement, rewritten = new Map(), replacements) {
+  const direct = replacements?.get(value) ?? (value === target ? replacement : undefined);
+  if (direct !== undefined) return { value: direct, changed: true };
   if (!value || value.kind === 'unknown') return { value, changed: false };
   if (rewritten.has(value)) return rewritten.get(value);
   const result = { value, changed: false };
@@ -1402,7 +1403,7 @@ function replaceSourceReference(value, target, replacement, rewritten = new Map(
     let changed = false;
     const members = new Map();
     for (const [key, member] of value.members) {
-      const next = replaceSourceReference(member, target, replacement, rewritten);
+      const next = replaceSourceReference(member, target, replacement, rewritten, replacements);
       members.set(key, next.value);
       changed ||= next.changed;
     }
@@ -1414,12 +1415,12 @@ function replaceSourceReference(value, target, replacement, rewritten = new Map(
   }
   if (value.kind === 'result') {
     const handle = value.handle
-      ? replaceSourceReference(value.handle, target, replacement, rewritten)
+      ? replaceSourceReference(value.handle, target, replacement, rewritten, replacements)
       : { value: undefined, changed: false };
     const children = new Map();
     let changed = handle.changed;
     for (const [key, child] of value.children) {
-      const next = replaceSourceReference(child, target, replacement, rewritten);
+      const next = replaceSourceReference(child, target, replacement, rewritten, replacements);
       children.set(key, next.value);
       changed ||= next.changed;
     }
@@ -1436,15 +1437,20 @@ function replaceSourceReference(value, target, replacement, rewritten = new Map(
   return result;
 }
 
-function propagateSourceReference(scope, target, replacement, uncertain = false) {
-  scope.versions.record(target, replacement, uncertain);
+function propagateSourceReference(scope, target, replacement, uncertain = false, replacements) {
+  if (replacements) {
+    for (const [before, after] of replacements) scope.versions.record(before, after, uncertain);
+  } else {
+    scope.versions.record(target, replacement, uncertain);
+  }
   const rewritten = new Map();
   for (let current = scope; current; current = current.parent) {
     for (const binding of current.bindings.values()) {
       const candidates = sourceValueCandidates(binding);
       if (candidates.length === 0) continue;
       const replaced = candidates.map(
-        (candidate) => replaceSourceReference(candidate, target, replacement, rewritten).value
+        (candidate) =>
+          replaceSourceReference(candidate, target, replacement, rewritten, replacements).value
       );
       if (!replaced.some((candidate, index) => candidate !== candidates[index])) continue;
       const next = uncertain ? [...new Set([...replaced, ...candidates])] : replaced;
@@ -1664,6 +1670,62 @@ function provenAccessorCallee(node, scope, receiver) {
 }
 
 /**
+ * Withdraw reachable mutable containers without following immutable State or
+ * callable captures. Identity-based visitation preserves distinct twins and
+ * handles shared children without writing them twice within this graph. Each
+ * reachability class is one batch, with no intermediate conditional parents.
+ */
+function invalidateUnknownCallGraphs(scope, requests) {
+  const collect = (uncertain, seen, skip) => {
+    const replacements = new Map();
+    const visit = (current) => {
+      if (!current || (current.kind !== 'object' && current.kind !== 'result')) return;
+      if (seen.has(current) || skip?.has(current)) return;
+      seen.add(current);
+      const versions = scope.versions.versions(current);
+      for (const version of versions) seen.add(version);
+      if (current.kind === 'result') {
+        for (const version of versions) {
+          if (version.kind !== 'result' || skip?.has(version)) continue;
+          if (version.handle) visit(version.handle);
+          for (const child of version.children.values()) visit(child);
+        }
+        return;
+      }
+      // Keep a retired reference in the batch without following its detached
+      // members; only live versions describe what the call can reach.
+      if (!replacements.has(current)) replacements.set(current, mutateSourceGraph(current, null));
+      for (const version of versions) {
+        if (version.kind !== 'object' || skip?.has(version)) continue;
+        if (!replacements.has(version)) replacements.set(version, mutateSourceGraph(version, null));
+        for (const member of version.members.values()) visit(member);
+      }
+    };
+    for (const request of requests) {
+      if (request.uncertain === uncertain) visit(request.value);
+    }
+    return replacements;
+  };
+  // Definite reachability wins when another candidate can also reach the same
+  // container. Both maps still read only pre-call graphs.
+  const definiteSeen = new Set();
+  const definite = collect(false, definiteSeen);
+  const conditional = collect(true, new Set(), definiteSeen);
+  const publishBatch = (replacements, uncertain) => {
+    const first = replacements.entries().next();
+    if (first.done) return;
+    propagateSourceReference(scope, first.value[0], first.value[1], uncertain, replacements);
+    for (const [previous, next] of replacements) {
+      applyCallSemantics(scope, previous, next, [], false, uncertain);
+    }
+  };
+  // Definite writes advance the graphs a possible write retained, without
+  // discarding the unknown alternative from that possible write.
+  publishBatch(conditional, true);
+  publishBatch(definite, false);
+}
+
+/**
  * Withdraw the proof the members of a call's receiver carry.
  *
  * A method call may replace any member of the object it is called on, so the
@@ -1671,7 +1733,15 @@ function provenAccessorCallee(node, scope, receiver) {
  * the receiver denoted when it was evaluated, and the write lands on the
  * version that container holds now.
  */
-function invalidateReceiverSource(node, scope, receiver, readsOnly, live) {
+function invalidateReceiverSource(
+  node,
+  scope,
+  receiver,
+  readsOnly,
+  live,
+  mutation,
+  unknownCallValues
+) {
   if (receiver.length === 0) return;
   // A call the summary proves reads its receiver does not write to it. The
   // proof is the callee: a hook accessor such as `getState`, `getAsHook` or
@@ -1696,7 +1766,6 @@ function invalidateReceiverSource(node, scope, receiver, readsOnly, live) {
     receiver.every((candidate) => candidate && scope.versions.sameContainer(candidate, first));
   for (const current of live) {
     if (!current || current.kind !== 'object') continue;
-    const next = mutateSourceGraph(current, null);
     const owning = scopeOwningGraph(current, scope);
     const uncertain =
       // Only one of several containers is written, so the others keep the
@@ -1704,6 +1773,11 @@ function invalidateReceiverSource(node, scope, receiver, readsOnly, live) {
       !oneContainer ||
       isConditionallyReached(node, scope.definitelyReachedLogicalAssignments) ||
       isDeferredWrite(node, enclosingFunction(owning?.node ?? null));
+    if (mutation.kind === 'unknown') {
+      unknownCallValues.push({ value: current, uncertain });
+      continue;
+    }
+    const next = mutateSourceGraph(current, null);
     propagateSourceReference(scope, current, next, uncertain);
     applyCallSemantics(scope, current, next, [], false, uncertain);
   }
@@ -1716,7 +1790,8 @@ function invalidateReceiverSource(node, scope, receiver, readsOnly, live) {
  *
  * A known mutating call is tracked when every member it copies is proven. Any
  * other call keeps no proof of the members the containers it received hold,
- * because it may have replaced any of them.
+ * or of mutable containers reachable through them, because it may have
+ * replaced any of them.
  */
 function applyCallSourceMutation(node, scope, captured, receiver, readsOnly) {
   if (captured.length === 0 && receiver.length === 0) return;
@@ -1728,6 +1803,8 @@ function applyCallSourceMutation(node, scope, captured, receiver, readsOnly) {
   // The producer therefore cannot write to a container it was passed, so the
   // call does not withdraw it here.
   if (scope.sourceSummary?.isAuthoredProducerCall?.(node, node.getSourceFile())) return;
+  const mutation = hookSourceCallMutation(node);
+  const unknownCallValues = [];
   // The receiver is evaluated before the arguments, so the container it
   // denoted is the one the call wrote to before it looked at an argument.
   // Every version a container the call received may hold is read before any
@@ -1761,8 +1838,15 @@ function applyCallSourceMutation(node, scope, captured, receiver, readsOnly) {
       );
     return { live, oneContainer };
   });
-  invalidateReceiverSource(node, scope, receiver, readsOnly, receiverLive);
-  const mutation = hookSourceCallMutation(node);
+  invalidateReceiverSource(
+    node,
+    scope,
+    receiver,
+    readsOnly,
+    receiverLive,
+    mutation,
+    unknownCallValues
+  );
   const copied = [];
   let proven = false;
   if (mutation.kind === 'copy') {
@@ -1799,7 +1883,6 @@ function applyCallSourceMutation(node, scope, captured, receiver, readsOnly) {
     const oneContainer = targetLive[index]?.oneContainer ?? false;
     for (const current of targetLive[index]?.live ?? []) {
       if (!current || current.kind !== 'object') continue;
-      const next = proven ? mutateSourceGraph(current, copied) : mutateSourceGraph(current, null);
       const owning = scopeOwningGraph(current, scope);
       const uncertain =
         // Only one of several targets is written, so the others keep the
@@ -1807,10 +1890,18 @@ function applyCallSourceMutation(node, scope, captured, receiver, readsOnly) {
         !oneContainer ||
         isConditionallyReached(node, scope.definitelyReachedLogicalAssignments) ||
         isDeferredWrite(node, enclosingFunction(owning?.node ?? null));
+      if (mutation.kind === 'unknown') {
+        unknownCallValues.push({ value: current, uncertain });
+        continue;
+      }
+      // Object.assign only replaces outer members, even when its sources are
+      // unproven; it cannot mutate a previously captured nested container.
+      const next = proven ? mutateSourceGraph(current, copied) : mutateSourceGraph(current, null);
       propagateSourceReference(scope, current, next, uncertain);
       applyCallSemantics(scope, current, next, copied, proven, uncertain);
     }
   }
+  if (mutation.kind === 'unknown') invalidateUnknownCallGraphs(scope, unknownCallValues);
 }
 
 function sourceSummaryValue(node, scope) {

@@ -30,7 +30,71 @@ const PRODUCERS = [
 const rule = (condition: string) =>
   `def.rule({ when: (w) => ${condition}, intent: (i) => i.feedback.style.use(tw('bg-primary')) });`;
 
+const scanExtra = async (producerSource: string, consumerLines: string[]) => {
+  const dir = await mkdtemp(path.join(tmpdir(), 'hook-collision-extra-'));
+  try {
+    const producerFile = path.join(dir, 'producers.ts');
+    await writeFile(producerFile, producerSource);
+    const consumerFile = path.join(dir, 'consumer.proto.ts');
+    const source = consumerLines.join('\n');
+    await writeFile(consumerFile, source);
+    return {
+      producerFile,
+      scan: scanRuleStateReads(source, consumerFile, createHookSourceSummaryContext()),
+    };
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+};
+
 describe('hook source collision order', () => {
+  it('retires an exposed callable proof when its binding is reassigned', async () => {
+    const { scan } = await scanExtra(
+      [
+        PRODUCERS,
+        "const asInstaller = defineAsHook({ name: 'installer', setup(d) { d.expose.method('prime', () => asA()); } });",
+        "export const asParent = defineAsHook({ name: 'parent', setup() { const result = asInstaller(); let prime = result.getMethod!('prime') as () => void; prime = () => { asB(); }; prime(); } });",
+      ].join('\n'),
+      [
+        "import { asParent, asB } from './producers';",
+        'function setup(def) {',
+        '  asParent();',
+        '  const bag = asB();',
+        `  ${rule('w.state(bag.ready).eq(true)')}`,
+        '}',
+        'setup(def);',
+      ]
+    );
+    expect([
+      { usages: [{ hook: 'asB', state: 'beta' }], unresolved: [] },
+      { usages: [], unresolved: ['bag.ready'] },
+    ]).toContainEqual({
+      usages: scan.usages.map(({ hook, state }) => ({ hook, state })),
+      unresolved: scan.unresolved.map(({ expression }) => expression),
+    });
+  });
+
+  it('withholds registration proof for detached authored raw-result methods', async () => {
+    const { scan } = await scanExtra(
+      [
+        PRODUCERS,
+        "const asInstaller = defineAsHook({ name: 'installer', setup(d) { d.expose.method('prime', () => asB()); } });",
+        "export const asParent = defineAsHook({ name: 'parent', setup() { const result = asInstaller(); const prime = result.methods!.prime as () => void; prime(); asA(); } });",
+      ].join('\n'),
+      [
+        "import { asParent, asB } from './producers';",
+        'function setup(def) {',
+        '  asParent();',
+        '  const bag = asB();',
+        `  ${rule('w.state(bag.ready).eq(true)')}`,
+        '}',
+        'setup(def);',
+      ]
+    );
+    expect(scan.usages).toEqual([]);
+    expect(scan.unresolved.map(({ expression }) => expression)).toEqual(['bag.ready']);
+  });
+
   it('withholds a nested producer when an enclosing producer registered in an earlier iteration', async () => {
     const dir = await mkdtemp(path.join(tmpdir(), 'hook-collision-repeated-enclosing-'));
     try {
@@ -162,6 +226,657 @@ describe('hook source collision order', () => {
       expect(scan.unresolved.map(({ expression }) => expression)).toEqual(['bag.ready']);
     } finally {
       await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('resolves a later same-name call through an earlier parent child registration', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'hook-collision-parent-child-'));
+    try {
+      const producerFile = path.join(dir, 'producers.ts');
+      await writeFile(
+        producerFile,
+        [
+          PRODUCERS,
+          'export const asParent = defineAsHook({',
+          "  name: 'parent',",
+          '  setup() { asA(); },',
+          '});',
+        ].join('\n')
+      );
+      const consumerFile = path.join(dir, 'consumer.proto.ts');
+      const consumer = [
+        "import { asParent, asB } from './producers';",
+        'function setup(def) {',
+        '  asParent();',
+        '  const bag = asB();',
+        `  ${rule('w.state(bag.ready).eq(true)')}`,
+        '}',
+        'setup(def);',
+      ].join('\n');
+      await writeFile(consumerFile, consumer);
+      const scan = scanRuleStateReads(consumer, consumerFile, createHookSourceSummaryContext());
+
+      // `asParent()` runs its setup before `asB()`, so its nested `asA()` is
+      // the first registration of `shared`. The later `asB()` call reuses
+      // asA's cached projected handle rather than projecting `beta`.
+      expect(scan.usages.map(({ hook, state }) => ({ hook, state }))).toEqual([
+        { hook: 'asA', state: 'alpha' },
+      ]);
+      expect(scan.usages.map(({ provenance }) => provenance?.owner.file)).toEqual([producerFile]);
+      expect(scan.unresolved).toEqual([]);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('keeps later proof when an earlier parent registers only a different-name child', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'hook-collision-parent-different-child-'));
+    try {
+      const producerFile = path.join(dir, 'producers.ts');
+      await writeFile(
+        producerFile,
+        [
+          PRODUCERS,
+          'export const asOther = defineAsHook({',
+          "  name: 'other',",
+          "  setup(d) { d.state.bool('other', false); },",
+          '  projectHandle(r) { return { ready: r.stateHandles.other }; },',
+          '});',
+          'export const asParent = defineAsHook({',
+          "  name: 'parent',",
+          '  setup() { asOther(); },',
+          '});',
+        ].join('\n')
+      );
+      const consumerFile = path.join(dir, 'consumer.proto.ts');
+      const consumer = [
+        "import { asParent, asB } from './producers';",
+        'function setup(def) {',
+        '  asParent();',
+        '  const bag = asB();',
+        `  ${rule('w.state(bag.ready).eq(true)')}`,
+        '}',
+        'setup(def);',
+      ].join('\n');
+      await writeFile(consumerFile, consumer);
+      const scan = scanRuleStateReads(consumer, consumerFile, createHookSourceSummaryContext());
+
+      // The nested registration is named `other`, not `shared`, so it does
+      // not skip `asB()` or replace its own `beta` projection.
+      expect(scan.usages.map(({ hook, state }) => ({ hook, state }))).toEqual([
+        { hook: 'asB', state: 'beta' },
+      ]);
+      expect(scan.usages.map(({ provenance }) => provenance?.owner.file)).toEqual([producerFile]);
+      expect(scan.unresolved).toEqual([]);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('terminates mutual parent registration queries', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'hook-collision-mutual-parents-'));
+    try {
+      const producerFile = path.join(dir, 'producers.ts');
+      await writeFile(
+        producerFile,
+        [
+          "import { defineAsHook } from '@proto.ui/core';",
+          'export const asLeft = defineAsHook({',
+          "  name: 'left',",
+          '  setup() { asRight(); },',
+          '});',
+          'export const asRight = defineAsHook({',
+          "  name: 'right',",
+          '  setup() { asLeft(); },',
+          '});',
+        ].join('\n')
+      );
+      const consumerFile = path.join(dir, 'consumer.proto.ts');
+      const consumer = [
+        "import { asLeft, asRight } from './producers';",
+        'function setup(def) {',
+        '  const { ready: left } = asLeft(), { ready: right } = asRight();',
+        '}',
+        'setup(def);',
+      ].join('\n');
+      await writeFile(consumerFile, consumer);
+      const scan = scanRuleStateReads(consumer, consumerFile, createHookSourceSummaryContext());
+
+      expect(scan.usages).toEqual([]);
+      expect(scan.unresolved).toEqual([]);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('does not register a child on a short-circuited setup path', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'hook-collision-short-circuit-child-'));
+    try {
+      const producerFile = path.join(dir, 'producers.ts');
+      await writeFile(
+        producerFile,
+        [
+          PRODUCERS,
+          'export const asParent = defineAsHook({',
+          "  name: 'parent',",
+          '  setup() { false && asA(); },',
+          '});',
+        ].join('\n')
+      );
+      const consumerFile = path.join(dir, 'consumer.proto.ts');
+      const consumer = [
+        "import { asParent, asB } from './producers';",
+        'function setup(def) {',
+        '  asParent();',
+        '  const bag = asB();',
+        `  ${rule('w.state(bag.ready).eq(true)')}`,
+        '}',
+        'setup(def);',
+      ].join('\n');
+      await writeFile(consumerFile, consumer);
+      const scan = scanRuleStateReads(consumer, consumerFile, createHookSourceSummaryContext());
+
+      expect(scan.usages.map(({ hook, state }) => ({ hook, state }))).toEqual([
+        { hook: 'asB', state: 'beta' },
+      ]);
+      expect(scan.usages.map(({ provenance }) => provenance?.owner.file)).toEqual([producerFile]);
+      expect(scan.unresolved).toEqual([]);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('does not descend into a child setup skipped by its ancestor name', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'hook-collision-skipped-descendant-'));
+    try {
+      const producerFile = path.join(dir, 'producers.ts');
+      await writeFile(
+        producerFile,
+        [
+          PRODUCERS,
+          'export const asSkipped = defineAsHook({',
+          "  name: 'parent',",
+          '  setup() { asA(); },',
+          '});',
+          'export const asParent = defineAsHook({',
+          "  name: 'parent',",
+          '  setup() { asSkipped(); },',
+          '});',
+        ].join('\n')
+      );
+      const consumerFile = path.join(dir, 'consumer.proto.ts');
+      const consumer = [
+        "import { asParent, asB } from './producers';",
+        'function setup(def) {',
+        '  asParent();',
+        '  const bag = asB();',
+        `  ${rule('w.state(bag.ready).eq(true)')}`,
+        '}',
+        'setup(def);',
+      ].join('\n');
+      await writeFile(consumerFile, consumer);
+      const scan = scanRuleStateReads(consumer, consumerFile, createHookSourceSummaryContext());
+
+      expect(scan.usages.map(({ hook, state }) => ({ hook, state }))).toEqual([
+        { hook: 'asB', state: 'beta' },
+      ]);
+      expect(scan.usages.map(({ provenance }) => provenance?.owner.file)).toEqual([producerFile]);
+      expect(scan.unresolved).toEqual([]);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('attributes a cached parent child projection to the winning producer', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'hook-collision-winning-attribution-'));
+    try {
+      const producerFile = path.join(dir, 'producers.ts');
+      await writeFile(
+        producerFile,
+        [
+          PRODUCERS,
+          'export const asParent = defineAsHook({',
+          "  name: 'parent',",
+          '  setup() { asA(); },',
+          '});',
+        ].join('\n')
+      );
+      const consumerFile = path.join(dir, 'consumer.proto.ts');
+      const consumer = [
+        "import { asParent, asB } from './producers';",
+        'function setup(def) {',
+        '  asParent();',
+        '  const { ready } = asB();',
+        `  ${rule('w.state(ready).eq(true)')}`,
+        '}',
+        'setup(def);',
+      ].join('\n');
+      await writeFile(consumerFile, consumer);
+      const scan = scanRuleStateReads(consumer, consumerFile, createHookSourceSummaryContext());
+
+      expect(scan.usages.map(({ hook, state }) => ({ hook, state }))).toEqual([
+        { hook: 'asA', state: 'alpha' },
+      ]);
+      expect(scan.usages.map(({ provenance }) => provenance?.owner.file)).toEqual([producerFile]);
+      expect(scan.unresolved).toEqual([]);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('terminates prior-registration queries between distinct acyclic producers', async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'hook-collision-acyclic-queries-'));
+    try {
+      await writeFile(
+        path.join(dir, 'producers.ts'),
+        [
+          "import { defineAsHook } from '@proto.ui/core';",
+          'const asRightLeaf = defineAsHook({',
+          "  name: 'right',",
+          "  setup(d) { d.state.bool('rightLeaf', false); },",
+          '  projectHandle(r) { return { ready: r.stateHandles.rightLeaf }; },',
+          '});',
+          'const asLeftLeaf = defineAsHook({',
+          "  name: 'left',",
+          "  setup(d) { d.state.bool('leftLeaf', false); },",
+          '  projectHandle(r) { return { ready: r.stateHandles.leftLeaf }; },',
+          '});',
+          "export const asLeft = defineAsHook({ name: 'left', setup() { asRightLeaf(); } });",
+          "export const asRight = defineAsHook({ name: 'right', setup() { asLeftLeaf(); } });",
+        ].join('\n')
+      );
+      const consumerFile = path.join(dir, 'consumer.proto.ts');
+      const consumer = [
+        "import { asLeft, asRight } from './producers';",
+        'function setup(def) {',
+        '  const { ready: left } = asLeft(), { ready: right } = asRight();',
+        '}',
+        'setup(def);',
+      ].join('\n');
+      await writeFile(consumerFile, consumer);
+      const scan = scanRuleStateReads(consumer, consumerFile, createHookSourceSummaryContext());
+      expect(scan.usages).toEqual([]);
+      expect(scan.unresolved).toEqual([]);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it.each([
+    {
+      label: 'a gate registered before the parent',
+      declarations: [
+        "export const asBlocker = defineAsHook({ name: 'gate', setup() {} });",
+        "const asGate = defineAsHook({ name: 'gate', setup() { asA(); } });",
+        "export const asParent = defineAsHook({ name: 'parent', setup() { asGate(); } });",
+      ],
+      before: 'asBlocker();',
+    },
+    {
+      label: 'a falsy logical-and assignment',
+      declarations: [
+        "export const asParent = defineAsHook({ name: 'parent', setup() { let slot: unknown = false; slot &&= asA(); } });",
+      ],
+      before: '',
+    },
+    {
+      label: 'a truthy logical-or assignment',
+      declarations: [
+        "export const asParent = defineAsHook({ name: 'parent', setup() { let slot: unknown = true; slot ||= asA(); } });",
+      ],
+      before: '',
+    },
+    {
+      label: 'a non-nullish logical-nullish assignment',
+      declarations: [
+        "export const asParent = defineAsHook({ name: 'parent', setup() { let slot: unknown = false; slot ??= asA(); } });",
+      ],
+      before: '',
+    },
+    {
+      label: 'a synchronous helper without a Def argument',
+      declarations: [
+        'function prime() { asB(); }',
+        "export const asParent = defineAsHook({ name: 'parent', setup() { prime(); asA(); } });",
+      ],
+      before: '',
+    },
+    {
+      label: 'an outer helper primes the gate',
+      declarations: [
+        "export const asBlocker = defineAsHook({ name: 'gate', setup() {} });",
+        "const asGate = defineAsHook({ name: 'gate', setup() { asA(); } });",
+        "export const asParent = defineAsHook({ name: 'parent', setup() { asGate(); } });",
+      ],
+      before: 'function prime() { asBlocker(); }\n  prime();',
+    },
+    {
+      label: 'a compound assignment changes reachability',
+      declarations: [
+        "export const asParent = defineAsHook({ name: 'parent', setup() { let slot = 1; slot -= 1; slot && asA(); } });",
+      ],
+      before: '',
+    },
+    {
+      label: 'later argument assignments cannot rewrite captured values',
+      declarations: [
+        'function prime(first, ignored) { if (first) asA(); else asB(); }',
+        "export const asParent = defineAsHook({ name: 'parent', setup() { let enabled = false; prime(enabled, enabled = true); asA(); } });",
+      ],
+      before: '',
+    },
+    {
+      label: 'an exposed authored callback runs',
+      declarations: [
+        "export const asInstaller = defineAsHook({ name: 'installer', setup(d) { d.expose.method('prime', () => asB()); } });",
+        "export const asParent = defineAsHook({ name: 'parent', setup() { const result = asInstaller(); const prime = result.getMethod!('prime') as () => void; prime(); asA(); } });",
+      ],
+      before: '',
+    },
+    {
+      label: 'a deferred generator body',
+      declarations: [
+        "export const asParent = defineAsHook({ name: 'parent', setup() { const make = function* () { asA(); }; make(); } });",
+      ],
+      before: '',
+    },
+  ])('preserves beta after $label', async ({ declarations, before }) => {
+    const dir = await mkdtemp(path.join(tmpdir(), 'hook-collision-ordered-effects-'));
+    try {
+      const producerFile = path.join(dir, 'producers.ts');
+      await writeFile(producerFile, [PRODUCERS, ...declarations].join('\n'));
+      const consumerFile = path.join(dir, 'consumer.proto.ts');
+      const consumer = [
+        `import { asParent, asB${before ? ', asBlocker' : ''} } from './producers';`,
+        'function setup(def) {',
+        `  ${before}`,
+        '  asParent();',
+        '  const bag = asB();',
+        `  ${rule('w.state(bag.ready).eq(true)')}`,
+        '}',
+        'setup(def);',
+      ].join('\n');
+      await writeFile(consumerFile, consumer);
+      const scan = scanRuleStateReads(consumer, consumerFile, createHookSourceSummaryContext());
+      expect(scan.usages.map(({ hook, state }) => ({ hook, state }))).toEqual([
+        { hook: 'asB', state: 'beta' },
+      ]);
+      expect(scan.usages.map(({ provenance }) => provenance?.owner.file)).toEqual([producerFile]);
+      expect(scan.unresolved).toEqual([]);
+    } finally {
+      await rm(dir, { recursive: true, force: true });
+    }
+  });
+
+  it('preserves canonical cached handle identity across repeated skipped calls', async () => {
+    const producerSource = [
+      "import { defineAsHook } from '@proto.ui/core';",
+      'export const asA = defineAsHook({',
+      "  name: 'shared',",
+      "  setup(d) { d.state.bool('alpha', false); },",
+      '  projectHandle(r) { return { nested: { ready: r.stateHandles.alpha } }; },',
+      '});',
+      'export const asB = defineAsHook({',
+      "  name: 'shared',",
+      "  setup(d) { d.state.bool('beta', false); },",
+      '  projectHandle(r) { return { nested: { ready: r.stateHandles.beta } }; },',
+      '});',
+      "export const asParent = defineAsHook({ name: 'parent', setup() { asA(); } });",
+    ].join('\n');
+    const { scan } = await scanExtra(producerSource, [
+      "import { asParent, asB } from './producers';",
+      'function setup(def) {',
+      '  asParent();',
+      '  const first = asB(), second = asB();',
+      '  mutate(first);',
+      `  ${rule('w.state(second.nested.ready).eq(true)')}`,
+      '}',
+      'setup(def);',
+    ]);
+
+    // Runtime returns the same cached handle for both skipped calls, so the
+    // mutation must also withdraw the second reference's proof.
+    expect(scan.usages).toEqual([]);
+    expect(scan.unresolved.map(({ expression }) => expression)).toEqual(['second.nested.ready']);
+  });
+
+  it('withholds proof when a possible empty gate could precede an installing gate', async () => {
+    const { scan } = await scanExtra(
+      [
+        PRODUCERS,
+        "export const asEmptyGate = defineAsHook({ name: 'gate', setup() {} });",
+        "export const asInstallingGate = defineAsHook({ name: 'gate', setup() { asB(); } });",
+        "export const asParent = defineAsHook({ name: 'parent', setup() { if (choose) asEmptyGate(); else asInstallingGate(); asA(); } });",
+      ].join('\n'),
+      [
+        "import { asParent, asB } from './producers';",
+        'function setup(def) {',
+        '  asParent();',
+        '  const bag = asB();',
+        `  ${rule('w.state(bag.ready).eq(true)')}`,
+        '}',
+        'setup(def);',
+      ]
+    );
+
+    // `choose === false` installs beta before `asA()` is skipped, so an alpha
+    // proof is not valid for every execution path.
+    expect(scan.usages).toEqual([]);
+    expect(scan.unresolved.map(({ expression }) => expression)).toEqual(['bag.ready']);
+  });
+
+  it('preserves beta after reached helper parameter defaults', async () => {
+    for (const invocation of ['prime()', 'prime(undefined)']) {
+      const { scan, producerFile } = await scanExtra(
+        [
+          PRODUCERS,
+          'function prime(unused = asB()) {}',
+          `export const asParent = defineAsHook({ name: 'parent', setup() { ${invocation}; asA(); } });`,
+        ].join('\n'),
+        [
+          "import { asParent, asB } from './producers';",
+          'function setup(def) {',
+          '  asParent();',
+          '  const bag = asB();',
+          `  ${rule('w.state(bag.ready).eq(true)')}`,
+          '}',
+          'setup(def);',
+        ]
+      );
+
+      expect(scan.usages.map(({ hook, state }) => ({ hook, state }))).toEqual([
+        { hook: 'asB', state: 'beta' },
+      ]);
+      expect(scan.usages.map(({ provenance }) => provenance?.owner.file)).toEqual([producerFile]);
+      expect(scan.unresolved).toEqual([]);
+    }
+  });
+
+  it('withdraws one canonical handle shared by winning and skipped callers', async () => {
+    const { scan } = await scanExtra(
+      [
+        "import { defineAsHook } from '@proto.ui/core';",
+        "export const asA = defineAsHook({ name: 'shared', setup(d) { d.state.bool('alpha', false); }, projectHandle(r) { return { nested: { ready: r.stateHandles.alpha } }; } });",
+        "export const asB = defineAsHook({ name: 'shared', setup(d) { d.state.bool('beta', false); }, projectHandle(r) { return { nested: { ready: r.stateHandles.beta } }; } });",
+        "export const asParent = defineAsHook({ name: 'parent', setup() { asA(); } });",
+        "export const asIndependent = defineAsHook({ name: 'independent', setup(d) { d.state.bool('stable', false); }, projectHandle(r) { return { ready: r.stateHandles.stable }; } });",
+      ].join('\n'),
+      [
+        "import { asParent, asA, asB, asIndependent } from './producers';",
+        'function setup(def) {',
+        '  const independent = asIndependent();',
+        '  asParent();',
+        '  const first = asA();',
+        '  const second = asB();',
+        '  mutate(first);',
+        `  ${rule('w.state(second.nested.ready).eq(true)')}`,
+        `  ${rule('w.state(independent.ready).eq(true)')}`,
+        '}',
+        'setup(def);',
+      ]
+    );
+    expect(scan.usages.map(({ hook, state }) => ({ hook, state }))).toEqual([
+      { hook: 'asIndependent', state: 'stable' },
+    ]);
+    expect(scan.unresolved.map(({ expression }) => expression)).toEqual(['second.nested.ready']);
+  });
+
+  it.each([
+    {
+      label: 'outer helper reachability',
+      variants: [
+        { before: 'if (false) prime();', outcome: 'alpha' },
+        { before: 'if (choose) prime();', outcome: 'unknown' },
+      ],
+      declarations: [
+        "export const asBlocker = defineAsHook({ name: 'gate', setup() {} });",
+        "const asGate = defineAsHook({ name: 'gate', setup() { asA(); } });",
+        'export function prime() { asBlocker(); }',
+        "export const asParent = defineAsHook({ name: 'parent', setup() { asGate(); } });",
+      ],
+    },
+    {
+      label: 'possibly undefined helper arguments',
+      variants: [{ before: '', outcome: 'unknown' }],
+      declarations: [
+        'function prime(value = asB()) {}',
+        "export const asParent = defineAsHook({ name: 'parent', setup() { prime(input); asA(); } });",
+      ],
+    },
+    {
+      label: 'async helper synchronous effects',
+      variants: [{ before: '', outcome: 'beta-or-unknown' }],
+      declarations: [
+        "export const asParent = defineAsHook({ name: 'parent', setup() { const prime = async () => { asB(); }; prime(); asA(); } });",
+      ],
+    },
+    {
+      label: 'uncertain exposed method alternatives',
+      variants: [{ before: '', outcome: 'unknown' }],
+      declarations: [
+        "const asInstaller = defineAsHook({ name: 'installer', setup(d) { if (choose) d.expose.method('prime', () => asA()); else d.expose.method('prime', () => asB()); } });",
+        "export const asParent = defineAsHook({ name: 'parent', setup() { const result = asInstaller(); const prime = result.getMethod!('prime') as () => void; prime(); } });",
+      ],
+    },
+    {
+      label: 'conditional var capability-origin joins',
+      variants: [{ before: '', outcome: 'unknown' }],
+      declarations: [
+        'const foreignFacade = { state: { bool() { asB(); } } };',
+        "export const asParent = defineAsHook({ name: 'parent', setup(d) { var facade = foreignFacade; if (choose) var facade = d; facade.state.bool('ignored', false); asA(); } });",
+      ],
+    },
+    {
+      label: 'increment and decrement reachability facts',
+      variants: [{ before: '', outcome: 'beta-or-unknown' }],
+      declarations: [
+        "export const asParent = defineAsHook({ name: 'parent', setup() { let slot = 0; slot++; slot || asA(); let other = 2; --other; other || asA(); } });",
+      ],
+    },
+  ])('preserves registration evidence across $label', async ({ declarations, variants }) => {
+    for (const { before, outcome } of variants) {
+      const { scan } = await scanExtra(
+        [
+          PRODUCERS,
+          ...declarations,
+          "export const asIndependent = defineAsHook({ name: 'independent', setup(d) { d.state.bool('stable', false); }, projectHandle(r) { return { ready: r.stateHandles.stable }; } });",
+        ].join('\n'),
+        [
+          `import { asParent, asB, asIndependent${before ? ', prime' : ''} } from './producers';`,
+          'function setup(def) {',
+          '  const independent = asIndependent();',
+          `  ${before}`,
+          '  asParent();',
+          '  const bag = asB();',
+          `  ${rule('w.state(bag.ready).eq(true)')}`,
+          `  ${rule('w.state(independent.ready).eq(true)')}`,
+          '}',
+          'setup(def);',
+        ]
+      );
+      const observed = {
+        usages: scan.usages.map(({ hook, state }) => ({ hook, state })),
+        unresolved: scan.unresolved.map(({ expression }) => expression),
+      };
+      const stable = { hook: 'asIndependent', state: 'stable' };
+      if (outcome === 'alpha') {
+        expect(observed).toEqual({
+          usages: [{ hook: 'asA', state: 'alpha' }, stable],
+          unresolved: [],
+        });
+      } else if (outcome === 'unknown') {
+        expect(observed).toEqual({ usages: [stable], unresolved: ['bag.ready'] });
+      } else {
+        // A supported synchronous/update prefix proves beta. An unsupported
+        // effect must instead withhold it, never invent an alpha winner.
+        expect([
+          { usages: [{ hook: 'asB', state: 'beta' }, stable], unresolved: [] },
+          { usages: [stable], unresolved: ['bag.ready'] },
+        ]).toContainEqual(observed);
+      }
+    }
+  });
+
+  it('shares the initial non-leaf handle with repeated calls during withdrawal', async () => {
+    const { scan } = await scanExtra(
+      [
+        "import { defineAsHook } from '@proto.ui/core';",
+        "const asChild = defineAsHook({ name: 'child', setup() {} });",
+        "export const asA = defineAsHook({ name: 'shared', setup(d) { asChild(); d.state.bool('alpha', false); }, projectHandle(r) { return { nested: { ready: r.stateHandles.alpha } }; } });",
+        "export const asIndependent = defineAsHook({ name: 'independent', setup(d) { d.state.bool('stable', false); }, projectHandle(r) { return { ready: r.stateHandles.stable }; } });",
+      ].join('\n'),
+      [
+        "import { asA, asIndependent } from './producers';",
+        'function setup(def) {',
+        '  const independent = asIndependent();',
+        '  const first = asA();',
+        '  const second = asA();',
+        '  mutate(first);',
+        `  ${rule('w.state(second.nested.ready).eq(true)')}`,
+        `  ${rule('w.state(independent.ready).eq(true)')}`,
+        '}',
+        'setup(def);',
+      ]
+    );
+    expect(scan.usages.map(({ hook, state }) => ({ hook, state }))).toEqual([
+      { hook: 'asIndependent', state: 'stable' },
+    ]);
+    expect(scan.unresolved.map(({ expression }) => expression)).toEqual(['second.nested.ready']);
+  });
+
+  it('respects outer logical and conditional helper reachability', async () => {
+    for (const before of [
+      'false && prime();',
+      'true || prime();',
+      'false ?? prime();',
+      'false ? prime() : undefined;',
+      'true ? undefined : prime();',
+    ]) {
+      const { scan } = await scanExtra(
+        [
+          PRODUCERS,
+          'export function prime() { asA(); }',
+          "export const asParent = defineAsHook({ name: 'parent', setup() {} });",
+          "export const asIndependent = defineAsHook({ name: 'independent', setup(d) { d.state.bool('stable', false); }, projectHandle(r) { return { ready: r.stateHandles.stable }; } });",
+        ].join('\n'),
+        [
+          "import { asParent, asB, prime, asIndependent } from './producers';",
+          'function setup(def) {',
+          '  const independent = asIndependent();',
+          `  ${before}`,
+          '  asParent();',
+          '  const bag = asB();',
+          `  ${rule('w.state(bag.ready).eq(true)')}`,
+          `  ${rule('w.state(independent.ready).eq(true)')}`,
+          '}',
+          'setup(def);',
+        ]
+      );
+      expect(scan.usages.map(({ hook, state }) => ({ hook, state }))).toEqual([
+        { hook: 'asB', state: 'beta' },
+        { hook: 'asIndependent', state: 'stable' },
+      ]);
+      expect(scan.unresolved).toEqual([]);
     }
   });
 
