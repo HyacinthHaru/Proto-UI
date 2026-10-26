@@ -1267,6 +1267,24 @@ const configSource = ts.createSourceFile(
   true,
   ts.ScriptKind.JS
 );
+const normalizeFunction = configSource.statements.find(
+  (node) => ts.isFunctionDeclaration(node) && node.name?.text === 'normalizedBundleModuleId'
+);
+assert.ok(normalizeFunction);
+const normalizeBundleId = vm.runInNewContext(`(${normalizeFunction.getText(configSource)})`, {
+  path,
+  repositoryRoot,
+});
+test('bundle graph keeps virtual dependency IDs portable and distinct', () => {
+  const dependency = 'node_modules/.pnpm/react@18.3.1/node_modules/react/index.js';
+  const absolute = path.join(repositoryRoot, dependency);
+  const query = '?commonjs-module';
+  assert.equal(normalizeBundleId(`\0${absolute}${query}`), `virtual:${dependency}${query}`);
+  assert.equal(normalizeBundleId(`${absolute}${query}`), `${dependency}${query}`);
+  assert.equal(normalizeBundleId('\0commonjsHelpers.js'), 'virtual:commonjsHelpers.js');
+  assert.equal(normalizeBundleId(null), null);
+});
+
 const chunkFunction = configSource.statements.find(
   (node) => ts.isFunctionDeclaration(node) && node.name?.text === 'websiteManualChunk'
 );
