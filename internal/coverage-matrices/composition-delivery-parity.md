@@ -50,6 +50,7 @@
 - Proto-UI 明确不支持 upstream `asChild`；不能把普通 children/Proto slot、Radix Slot 的替换宿主能力、推荐 composition 当成同一个概念。
 
 固定来源：
+
 - [官方 Checkbox 定义](https://github.com/shadcn-ui/ui/blob/f31ed81983653919dd4fe77aee4b4859f610f1dc/apps/v4/registry/new-york-v4/ui/checkbox.tsx)，blob `f5a7e433f3795b82a00c5c06a1fc6decf116a84a`。
 - [同版本官方组合示例](https://github.com/shadcn-ui/ui/blob/f31ed81983653919dd4fe77aee4b4859f610f1dc/apps/v4/registry/new-york-v4/examples/checkbox-demo.tsx)，blob `4cdae4210dc738b05778f17e4b72e2063e6ffcf3`。
 - [Proto-UI Checkbox 定义](https://github.com/Proto-UI/Proto-UI/blob/7181a93a5ec5cad43936a72e31d5477d5488733a/spec/prototypes/P-SHADCN-CHECKBOX.yaml)。
@@ -80,7 +81,7 @@
 ## 3. 推荐 composition 必须公开什么
 
 | 契约面 | 推荐做法 | 禁止或明确不保证 |
-|---|---|---|
+| --- | --- | --- |
 | 原型身份 | 引用已有 family Root/Indicator/Label；所有入口同一来源 | 同名另写一份状态机；网站专用 Checkbox |
 | 每实例关联 | 公开 opaque association、作用域隔离、dispose/rebind | 全局固定字符串造成跨实例绑定 |
 | 名称与激活 | 短名称 Label 命名+激活；naming-only 是显式选项 | 把 ariaLabel 文本副本当真实 Label |
@@ -101,7 +102,7 @@
 以下文档路径以 `apps/www/src/content/` 为前缀，除另注均与 main blob 对齐。
 
 | ID | 级别/分类 | 位置与证据 | 根因及正确切片 |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | C01 | 事实，交付缺口 | Shadcn `src/component-presets.ts` 仅 Checkbox/Switch/Dialog 三个 replaceable-default-part；Checkbox preset只Root+Indicator | 现有 convenience facade不是Label+Control推荐组合；S0/S1 |
 | C02 | 事实，行为组合漂移 | `docs/zh-cn/demo-shadcn-checkbox.demo.ts:13–27`；Brutalist/Bootstrap对应文件；首页 gallery 使用独立Label关联 | 同原子、不同必要组合，修公开组合消费，不造新activation；S3 |
 | C03 | 事实，作者示例偏差 | `docs/demo-base-checkbox.demo.ts` checkboxRow 把文字放Root内并加select-none | 可作为低层示例但不能充当推荐Label+Control一致性；保留raw并明确标记 |
@@ -124,7 +125,7 @@
 这是全仓公开组合审计的覆盖表，不是所有类别均已发现缺陷。跨族不存在某个原子时，不能为了凑齐矩阵虚构API。
 
 | 组合类别 | 已检查或待续核的公共责任 | 当前处理 |
-|---|---|---|
+| --- | --- | --- |
 | Checkbox/Switch/RadioGroup | 值与activation原子；独立Label；Indicator/Thumb；Group别混Form | Checkbox/普通Switch命名消费优先；Radio单选组不复制Checkbox状态 |
 | Input/Textarea/Field/Fieldset/Form | 单编辑器、Label/Description/Error、optional字段绑定、group与提交 | 普通控件先Label；复杂字段复用既有#906链；不自动承诺所有form/native submission |
 | CheckboxGroup | 多选值组合与子控制所有权 | sourceOnly/child-handle失败保留；不能把一组checkbox label等同完整group |
@@ -148,7 +149,7 @@
 ### 5.1 各族 main 源码规模与差异
 
 | 包 | main原型文件数 | 不应隐含的保证 |
-|---|---:|---|
+| --- | --: | --- |
 | Base | 176 | 协议/原子存在不等于全部CLI可安装 |
 | Shadcn | 192 | 不同组件固定上游可能不同；不能统称最新Base UI |
 | Brutalist | 183 | 不是Shadcn换皮；独立外观规则和缺失入口须单列 |
@@ -189,9 +190,9 @@
 
 ### 6.3 首片记录：Base FieldTextarea workspace facade
 
-状态：**修复候选已完成有界逻辑验证，未发布PR，尚无最终commit head。**
+状态：**已发布 Draft [PR #1001](https://github.com/Proto-UI/Proto-UI/pull/1001)，首个映射提交为 `bdeef58c20b7479fd2a0a3975dda0e5c8a543d2f`；input shard 续片为 `ee40d097383321316237210f799c6c73e3e07768`。本节保留首片的有界验证，不代表后续 head 的完整验收。**
 
-实际候选验证：guarded Node 24 对照固定 #955 parent 重新核验 registry/codegen 闭包并重跑，改前四宿主×TS/JS 8/8 缺少 facade，改后 8/8 输出正确；两改动 TypeScript 文件 targeted/transitive diagnostics 均为 0。Vitest 启动被 Rollup `ERR_DLOPEN_DISABLED` 阻断，未收集测试，不扩大 native addon 权限。以上不是 Vitest 通过、生成 facade 运行时通过、packed consumer 或 registry 安装通过。纯逻辑变化不需要虚构 UI 截图。最终 commit 与 CI/独立审查由该 PR 补齐。
+实际候选验证：guarded Node 24 对照固定 #955 parent 重新核验 registry/codegen 闭包并重跑，改前四宿主×TS/JS 8/8 缺少 facade，改后 8/8 输出正确；两改动 TypeScript 文件 targeted/transitive diagnostics 均为 0。Vitest 启动被 Rollup `ERR_DLOPEN_DISABLED` 阻断，未收集测试，不扩大 native addon 权限。以上不是 Vitest 通过、生成 facade 运行时通过、packed consumer 或 registry 安装通过。纯逻辑变化不需要虚构 UI 截图。已发布 commit 的 CI 与独立审查按该 PR 的精确 head 分别记录，未完成项不因发布而关闭。
 
 main Base `field/index.ts:11–16` 已导出 FieldTextarea，但 CLI Base Field registry item 只生成原六part，现有测试也只看六part。这是公开导出与明确workspace生成入口的漏项，不是新Textarea实现，不需要等待Label+Checkbox新组合。
 
@@ -199,7 +200,7 @@ main Base `field/index.ts:11–16` 已导出 FieldTextarea，但 CLI Base Field 
 
 #### 首片可复核命令与候选绑定
 
-本节记录尚未发布的本地候选，不给它虚构 commit SHA。审计快照仍为 `7181a93a5ec5cad43936a72e31d5477d5488733a`；本片实现与重新执行的验证基线为 #955 head `b01cd33661850db5d8cba37122d732384c472083`。原 main-parent 证据保留为历史，不用来冒充这次重跑。发布后由 PR 的精确 commit 评论绑定最终 SHA、CI 与剩余证据；任何后续源改动都需要重核。
+本节原始证据采集于发布前；该候选随后以 `bdeef58c20b7479fd2a0a3975dda0e5c8a543d2f` 发布到 #1001。审计快照仍为 `7181a93a5ec5cad43936a72e31d5477d5488733a`；本片实现与重新执行的验证基线为 #955 head `b01cd33661850db5d8cba37122d732384c472083`。原 main-parent 证据保留为历史，不用来冒充这次重跑。[首片开发评论](https://github.com/Proto-UI/Proto-UI/pull/1001#issuecomment-6393927428) 已绑定真实 SHA、CI 与剩余证据；任何后续源改动都需要重核。
 
 该 #955 parent 与审计 main 不同：Shadcn Field 已导出 `fieldTextarea` / `shadcnFieldTextarea`（blob `e023230ba16b9ce6598d20d266725bdcc05bf592`）。本片完整保留这项在途能力，但不修其 registry，不宣称所有 Field facade 闭包已齐全。
 
@@ -216,7 +217,7 @@ main Base `field/index.ts:11–16` 已导出 FieldTextarea，但 CLI Base Field 
 候选与输出内容绑定：
 
 | 材料 | SHA / SHA-256 |
-|---|---|
+| --- | --- |
 | `packages/cli/src/registry/components.ts` 基线 blob | `8bd17346e072495a047f41f95aa299a531bc4384` |
 | 同文件候选 blob | `5049a9f6b1d79c9d57bcc9fe3e6a57ca6c823c65` |
 | `packages/cli/test/field-prototype.test.ts` 基线 blob | `a1591e26b31569a8f9cd58a8caceadc145ff60e3` |
@@ -230,7 +231,7 @@ main Base `field/index.ts:11–16` 已导出 FieldTextarea，但 CLI Base Field 
 | vitest stdout SHA-256 | `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` |
 | vitest stderr SHA-256 | `603961a823b31441cc4eb17839180532937c3d17e0bdbaea24c213757d619447` |
 
-以上摘要保持红、绿及启动失败三类证据各自独立；最终准确 head 的 CI 和独立审查仍待补。
+以上摘要保持红、绿及启动失败三类证据各自独立；#1001 已有精确 head CI 与 source-review 记录，但仍有未解决失败，不能称最终验收通过。
 
 ## 7. 可实施 Stacked Issues / PR 依赖图
 
@@ -253,7 +254,7 @@ S0 定义推荐composition、上游和支持矩阵（设计步骤，随真实修
 不是每个箭头都要求新建Issue。复用既有来源，只有现有Issue无法承载独立验收的具体交付时才创建有界子项；每PR base必须真实包含依赖，不能只在正文写depends-on。
 
 | 切片 | 范围 | 排除 | 验收 | 来源/负责人边界 |
-|---|---|---|---|---|
+| --- | --- | --- | --- | --- |
 | F0 | Base FieldTextarea workspace facade补齐+四host断言+本文 | installed放行、其他族/SelectTrigger | 生成包含正确适配器与公开import；sourceOnly/default拒绝仍成立 | #942/#906；现有cyjin-yl贡献，写前复核精确hunkclaim |
 | S0/S1 | 一个公开Label+Checkbox推荐构造、内容/关系/销毁契约 | 任意React slot兼容、第二状态机、每族一套机制 | 多实例不串、动态label、单次激活、disabled/controlled/mixed、raw可用 | #865/#870/#503；新精确五文件consumer claim不自动扩大为公共APIowner |
 | S2 | 对S1真正依赖的exports/registry/assets闭包与clean packed consumer | npm发布、private族放行、Compiler全target承诺 | 无monorepo alias/私有import；默认替换省略与负向准入；独立锁文件 | #503/#505；涉及#925CLI hunks必须协调，不接管其任务 |
@@ -277,7 +278,7 @@ S0 定义推荐composition、上游和支持矩阵（设计步骤，随真实修
 ## 8. 验收矩阵与发布门
 
 | 层 | 必测 | 不能作为替代证据 |
-|---|---|---|
+| --- | --- | --- |
 | 源/定义 | fixed pin、admitted anatomy、public exports、metadata与registry一致 | 目录同名、旧catalog口头说明 |
 | 生成 | WC/React/Vue/Vue2；TS/JS；raw/default/replacement/omission；明确支持门 | 网站webpack/alias能解析 |
 | 逻辑 | checked/mixed/controlled拒绝、disabled/readOnly、关系生命周期、多实例 | 只测happy-path截图 |
@@ -289,7 +290,6 @@ S0 定义推荐composition、上游和支持矩阵（设计步骤，随真实修
 
 没有浏览器或安装证据的格子明确写未测。交互源码已存在不等于四runtime全通过；生成代码存在不等于npm已可安装；同一固定源码的上游静态阅读不授予执行第三方或升级版本的权限。
 
-
 ## 9. 安装交付完整入口矩阵（静态）
 
 ### B. Registry facade 覆盖缺口（不是语义不存在）
@@ -297,26 +297,32 @@ S0 定义推荐composition、上游和支持矩阵（设计步骤，随真实修
 完整枚举两个registry，应用components.ts覆盖FINF spread；共227条entry，公开63，workspace-only164。计数是CLI入口，不是独立prototype数量、不表示发布已验证。逐项数据来自这两个精确版本 registry。
 
 #### base: 52入口；公开21；workspace 31
+
 - 公开：label, surface, text, button, toggle, transition, textarea, image, table, accordion, collapsible, switch, tabs, radio-group, dropdown, select, hover-card, separator, live-region, async-region, dialog
 - workspace：alert-dialog, drawer, popover, toggle-group, toolbar, toast, autocomplete, combobox, command, menubar, navigation-menu, context-menu, progress, meter, fieldset, form, checkbox-group, slider-values, slider, number-field, input-otp, calendar, tree, message-scroller, resizable, carousel, virtual-list, date-picker, data-table, dropdown-composition, field
 
 #### shadcn: 51入口；公开21；workspace 30
+
 - 公开：label, card, surface, text, input, button, toggle, separator, textarea, checkbox, switch, tabs, hover-card, dropdown, select, radio-group, scroll-area, tooltip, dialog, accordion, collapsible
 - workspace：alert-dialog, drawer, popover, toggle-group, toolbar, toast, autocomplete, combobox, command, menubar, navigation-menu, context-menu, progress, meter, fieldset, form, checkbox-group, slider, number-field, input-otp, calendar, tree, message-scroller, resizable, carousel, virtual-list, date-picker, data-table, dropdown-composition, field
 
 #### brutalist: 51入口；公开21；workspace 30
+
 - 公开：label, surface, text, button, badge, toggle, separator, skeleton, spinner, input, textarea, card, switch, tabs, hover-card, dropdown, select, dialog, scroll-area, accordion, collapsible
 - workspace：alert-dialog, drawer, popover, toggle-group, toolbar, toast, autocomplete, combobox, command, menubar, navigation-menu, context-menu, progress, meter, fieldset, form, checkbox-group, slider, number-field, input-otp, calendar, tree, message-scroller, resizable, carousel, virtual-list, date-picker, data-table, dropdown-composition, field
 
 #### bootstrap-2-3-2: 36入口；公开0；workspace 36
+
 - 公开：无
 - workspace：alert-dialog, drawer, popover, toggle-group, toolbar, toast, autocomplete, combobox, command, menubar, navigation-menu, context-menu, progress, meter, fieldset, form, checkbox-group, slider, number-field, input-otp, calendar, tree, message-scroller, resizable, carousel, virtual-list, date-picker, data-table, dropdown, field, label, text, accordion, tabs, select, collapsible
 
 #### liquid-glass: 37入口；公开0；workspace 37
+
 - 公开：无
 - workspace：alert-dialog, drawer, popover, toggle-group, toolbar, toast, autocomplete, combobox, command, menubar, navigation-menu, context-menu, progress, meter, fieldset, form, checkbox-group, slider, number-field, input-otp, calendar, tree, message-scroller, resizable, carousel, virtual-list, date-picker, data-table, dropdown, toggle, field, label, text, accordion, tabs, select, collapsible
 
 对照各族 exact-main package.json exports，以下组件subpath有导出但没有任何对应CLI entry：
+
 - Base：checkbox、tooltip、scroll-area、input。
 - Brutalist：checkbox、tooltip。
 - Bootstrap 2.3.2：button、checkbox、switch、toggle、input、textarea、separator、surface。
@@ -341,7 +347,6 @@ S0 定义推荐composition、上游和支持矩阵（设计步骤，随真实修
 
 `apps/www/src/components/PrototypePreviewer/demo-types.ts:35-40,263-279` 的 associations.controlLabel 是按demo渲染作用域的序列化关系意图；demo-renderer.ts通过WC setElementAssociations与框架instanceAssociations适配。这个原语应被推荐组合复用，而不是在页面手写.click()/aria状态。CLI codegen当前没有此关系recipe输入；不能把DemoSpec字段原样当作消费者组件prop。
 
-
 ## 10. 其他家族固定上游与逐问题追溯
 
 ### 范围、结论与证据等级
@@ -359,7 +364,7 @@ Proto 基线：`7181a93a5ec5cad43936a72e31d5477d5488733a`。只读静态比对�
 ### 固定来源矩阵
 
 | 家族/组件 | 已采用基线与范围 | 本次官方证据 | 不能作出的推论 |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | Shadcn Switch | New York `02cad61166c4c20edbc8a3f71bd720eed4c1f49b` | `apps/v4/registry/new-york-v4/ui/switch.tsx`，blob `c45932af…`；同 revision `examples/switch-demo.tsx` | Nova 历史扩展命中区不是当前默认；current docs invalid 示例不代表 NY wrapper 有 invalid paint |
 | Shadcn Toggle | New York `02cad611…` | 同目录 `toggle.tsx`，blob `0291f01c…` | Base active/pressed 不等于已具备所有 variant/icon/native forwarding |
 | Shadcn Input | 2026-10-10 base-nova registry 内容快照 | main P-SHADCN-INPUT：registry SHA256 `bbad1bba130ac9750a61844eeb8f043e8a710846e07689fa85398b80a46c2741`，TSX `dab990dfefa0ba78854ab6602ad074270dba9d7d1262184d9bfbb62bd990903b` | 本次未重取得可匹配的旧快照正文；不得用今天同 URL 内容代替旧快照，不推断 Git revision |
@@ -372,6 +377,7 @@ Proto 基线：`7181a93a5ec5cad43936a72e31d5477d5488733a`。只读静态比对�
 | Liquid Glass | Proto 独立设计语言投射；部分 P 引用 Apple HIG/materials/WWDC25 | main P-LIQUID-GLASS-TOGGLE 明确非 Apple component/shader parity；官方 HIG URL 可定位，但正文抓取未成功 | 不制造 Apple 私有组件源码/pin；不能用 CSS blur 或两张图声称光学/原生一致 |
 
 官方固定链接示例：
+
 - [Shadcn Switch 默认示例](https://github.com/shadcn-ui/ui/blob/02cad61166c4c20edbc8a3f71bd720eed4c1f49b/apps/v4/registry/new-york-v4/examples/switch-demo.tsx)
 - [Neo Switch](https://github.com/ekmas/neobrutalism-components/blob/3306a802724874a85f93079702b2795370a279d4/src/components/ui/switch.tsx)
 - [Shadcn Dialog](https://github.com/shadcn-ui/ui/blob/f31ed81983653919dd4fe77aee4b4859f610f1dc/apps/v4/registry/new-york-v4/ui/dialog.tsx)
@@ -382,7 +388,7 @@ Proto 基线：`7181a93a5ec5cad43936a72e31d5477d5488733a`。只读静态比对�
 严重度：S1 = 可访问操作/状态所有权受影响的优先修复；S2 = 组合、公开能力或定义漂移；S3 = 来源/证据补齐。置信度与严重度分开。以下不重复创建已有 owner 项。
 
 | ID | 判定与证据 | 修复层/依赖 | 可复现、可关闭标准 |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | U-SW-01 | S1 消费者缺口：主页可见 Switch 文本与隐藏命名分离。固定官方示例 L6–8 是 sibling Switch+Label；wrapper L24–30 只自动 Thumb。与 Checkbox 同类，但不是“上游自带文字” | 现有 ControlLabel + family Label + demo/主页/CLI推荐 recipe；Base Switch 保留 checked owner；依赖现有 #865 | 可见 Label 点击恰好一次请求；disabled不切换/不抢焦点；受控拒绝/延迟保持owner值；替换文案后名称来自可见源；附同commit四Web真实操作证据 |
 | U-SW-02 | S2 定义迁移：P-BRUTALIST-SWITCH 的 DEMO-NAMING 要求 caption inside Root；main demo L3–4 absolute left-full，L22–28 caption在Root。不是尚未关联标签的同一种实现 | 先修订该draft与相关T；推荐独立组合，保留raw Root能力，不假定任意nested交互可作为label内容 | 新推荐组合无绝对定位挪动标签；安装后示例/demo/主页一致；名称、点击、禁用均验证；不得只删旧断言 |
 | U-SW-03 | S2 明确上游能力差异：Neo Switch wrapper size=default/sm，默认h-6 w-12、sm h-5 w-9；main BrutalistSwitchRootProps只扩展draggable?:false，无size | Family视觉size owner与Thumb逻辑关系，复用合法通用能力；不是Base选择语义 | 显式sm及default可逆切换，Thumb归属隔离，checked不变，root字体缩放保持rem；drag显式unsupported不得计为已实现 |
@@ -488,71 +494,93 @@ Proto 基线：`7181a93a5ec5cad43936a72e31d5477d5488733a`。只读静态比对�
 ### 4. 基础设施与职责边界：七类
 
 #### 07. 受控 props 更新调度重复
+
 `homepage-showcase.ts:300–356` 与 `homepage-gallery-parts.ts` setup 分别实现 props 合并、WC/React microtask、Vue/Vue2 直接写入和 generation gate。先审查 demo renderer/Adapter 的 setProps replacement 与 callback/reentrancy 契约，再提取共享绑定/调度。不是将通知偏好业务迁入原型。验收包括 Textarea IME/caret、Select value/close、callback 保留、旧实例不能回放 queued writes。
 
 #### 08. 跨 runtime outward event 绑定重复
+
 Theme/menu/showcase/gallery/search 都区分 WC CustomEvent 与 framework callback。这是合法的 Adapter-facing 消费，不等于 synthetic input。可归一为类型化共享 helper；验收一次动作一个信号、清理正确，禁止按组件名分发。
 
 #### 09. Header disclosure 中的通用弹层能力
+
 `site-header-disclosure.ts` 包含 open、aria-expanded/controls、Escape/outside、focus return、portal 子项识别和定位。应拆分：可复用开放/关闭/焦点关系考虑既有 Collapsible/Popover/overlay 原型，几何归 host；断点搬移、导航、history、跨面板策略归应用。须与 #921 文件负责人协调。验收嵌套 Select 先消费 Escape、第二次关闭父层、portal 不误判 outside，非模态导航不被强加 focus trap。
 
 #### 10. 原生链接的交互状态采集
+
 `site-native-link-facts.ts:16–109` 采集 hover/pressed/focus-visible/current，投影到 public Surface/Text，不拦截 click、不模拟导航。`site-link-recipes.ts` 与导出的 family action appearance 已复用部分视觉能力。可研究公开 NativeLink/action composition，但必须保留中键、修饰键、context menu、download、Space 原生行为及已定义 disabled 语义；不能用 Button click 冒充链接。
 
 #### 11. Text 替换时保存真实选区
+
 `site-typography.ts:111–188,308,412` 移动文本源节点时保存/重映射 Selection。此属 host/renderer 生命周期，不应成为 portable Text 的 selection state。可提取共有移动能力，但不能全局清除选区。验收正反选区、runtime/theme 替换、不抢焦点、嵌套链接与原文保留；准备期间 passive text 不锁定。
 
 #### 12. Header/Search 跨 generation 焦点恢复
+
 `site-header-surface.ts` 保留原生子树焦点，`site-search-commands.ts` 保存焦点 epoch。可复用 generation-aware restore；返回哪个业务 command 仍由应用决定。不能仅因存在 focus() 就认定为 Button hack。
 
 #### 13. 父层关闭 Select 与替换前关闭
+
 `site-select-dismissal.ts` 注册 owner→public requestOpen；projection composition 在 runtime 替换前关闭。父层/history 关闭意图归应用，Select 状态转移归 Select。若正常选择必须额外 consumer close 才完成，则应以精确按键证据修 Base/router，不能把补丁永久写入页面。已接受的 generic router 修复不是 Select-name Compiler hack。
 
 ### 5. 已原型化或合理应用组合：十五类
 
 #### 14. 内容选择策略
+
 BaseButton、actionable BaseLabel、family Checkbox/Toggle/Tabs 已在语义 subject 声明 select-none；passive Text/content 保留可选。验收生成 CSS 与真实拖选/copy；旧 demo className 策略仍需清理。不允许全页禁选，也不要求所有文字都能点击。
 
 #### 15. Button wrap 与 family profile
+
 Shadcn Button 已公开 rhea/luma/new-york profile 和 wrap。首页 wrap:true 是合理 opt-in。保持家族差异，验证独立 demo 同样可消费。
 
 #### 16. Card anatomy
+
 main 首页仍是 Surface + authored headings/body；#984 已采用 Shadcn Card Root/Header/Content rhea，这是分支中实际的原型消费迁移，不应冒称已进入 main。Brutalist 是否有适用 Card 定义须先核对；业务布局不必原子化。
 
 #### 17. Hero Typography 与文档角色
+
 public Text props + site recipes 承担字体；heading role 留在文档 wrapper。哪个文本是 Hero、断点选择属于页面布局。保留200%text resize、行框、字体及选区验证，不新造 BaseHero 业务原型。
 
 #### 18. Header Select appearance/density
+
 ghost/elevated 是 family 选项，宽度/minHeight/padding 是显式消费者输入。不能把 Header 44px 要求推广为所有 Select 默认，或删掉通用不注入高度的测试。若需要公共 responsive size profile，先定义再替换当前输入。
 
 #### 19. Gallery 外层布局
+
 `HomeDemoPreviewer.astro:106–243` 的 grid/columns、gap、reading order、外层换行属应用布局；未发现其中接管组件视觉状态。保留移动端/zoom overflow 与 Tab 顺序测试。
 
 #### 20. 通知偏好保存/重置
+
 draft/saved、dirty、字符计数、save/reset、反馈是应用业务。Select/Switch/Textarea/Button 输出事件；输入接受和IME时序归 primitive/infrastructure，保存含义不下沉。
 
 #### 21. 文本编辑示例
+
 Bold/Italic 使用 Toggle activeChange、Text weight/emphasis；Textarea valueChange、Tabs 和 Reset 组合合理。示例文本和重置值属于消费者；第07项调度重复单独处理。
 
 #### 22. 选择数量、应用选择与副本计数
+
 Checkbox checkedChange、Menu select 由公开原型产生；页面计数与 Apply 的说明属业务。未发现首页标签点击直接写 checked 的代码。
 
 #### 23. Dialog、DropdownMenu、HoverCard
+
 Gallery 使用公开 parts；确认按钮仅更新 status，HoverCard delays 是公开 props。未发现首页另建 Escape 或 hover timer。需共享 keyboard/focus/dismiss 验收，但不能把尚未复现的问题称为缺陷。
 
 #### 24. Command、Slider、Accordion
+
 #984 新 `homepage-composition-parts.ts` 使用 public prototypes，页面只把 command 结果映射为 progress、验证 outward finite range、reset40和状态文字。main 尚无该文件。过滤、键盘、拖动、范围、展开不应由页面重写，计划映射也不应塞入原型。
 
 #### 25. Loading/retry/cancel 与整体 runtime 切换
+
 投影/materializer 编排负责多根节点原子替换。可评价既有 AsyncRegion/loading 复用，但它不是 Checkbox 功能。必须保留 inert、rollback、focus、accepted edits 和旧 generation 隔离。
 
 #### 26. Locale、路由、Starlight、Pagefind
+
 偏好持久化、路由目标、主题 provider、搜索索引属于应用。Search Button 的 shortcut annotation 是业务上下文；物理快捷键桥接依宿主职责，不搬入组件专用 Compiler 分支。
 
 #### 27. 图标与静态 glyph
+
 `home-action-icons.ts`、`site-link-icons.ts` 提供内容；Search 已使用 public Lucide 图标。不因图标在首页出现就新增有状态原型。
 
 #### 28. 旧 homepage-live-preview
+
 此模块展示本页任务数据和视图排列，不是 Calendar 或项目管理原型。当前 `homepage-demo-participant` 调用 `homepage-showcase` 而非它。清理前核对引用，不围绕未使用的旧示例制造迁移任务。
 
 ### 6. 建议实现顺序与共同验收
@@ -570,7 +598,7 @@ Gallery 使用公开 parts；确认按钮仅更新 status，HoverCard delays 是
 以下“负责人”仅指已确认的分支/文件协作范围，不代表未经核验的原型全局claim。变更前重新读取最新head和公开claim。
 
 | 项目 | 可独立实施范围 | 不应修改/需要先协调 | 已确认负责人或待核验项 |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | Switch可见Label | 首页和独立demo采用已有Label+controlLabel，测试disabled/controlled | 不新增Switch状态机，不改Compiler | #984 为 dot 自有分支；原型层是否另有有效claim尚未确认，不能推断无人负责 |
 | Textarea可见Label | 使用已有focus-only关联；必要时消费FieldTextarea；补命名/焦点/IME测试 | 不重新实现text editing/caret/IME，不把readOnly当disabled | #984 为 dot 自有分支；关联 [#906](https://github.com/Proto-UI/Proto-UI/issues/906) Field组合范围，实际文件claim需重核 |
 | Select字段命名 | 使用FieldLabel/FieldSelectTrigger并移除有替代证据的属性观察器 | 普通Select不能直接扩大ControlLabel目标集；共享projection/runtime修改先协调 | #984为dot；[#921](https://github.com/Proto-UI/Proto-UI/pull/921) 的HyacinthHaru保留共享runtime/native-links/startup-theme范围；Field/Select原型claim需重核 |
@@ -583,7 +611,7 @@ Gallery 使用公开 parts；确认按钮仅更新 status，HoverCard delays 是
 
 ### 8. 交接状态
 
-本文件记录已确认的源代码结构与建议，不含新的实现或合并承诺。六类迁移尚须各自实现、精确head测试和审查。用户报告的“首页可点标签、demo不可点”有明确静态关联差异支撑，但本次没有制造浏览器复现、截图或通过结果。后续验收应保留真实输入证据和当前部署版本，避免把不同head的首页/demo混为一谈。
+本文件的审计部分记录已确认的源代码结构与建议；首片与续记另行记录已发布的有限实现，不承诺后续迁移或合并。六类迁移尚须各自实现、精确head测试和审查。用户报告的“首页可点标签、demo不可点”有明确静态关联差异支撑，但本次没有制造浏览器复现、截图或通过结果。后续验收应保留真实输入证据和当前部署版本，避免把不同head的首页/demo混为一谈。
 
 ### 9. 补充：到底是不是同一套原型？
 
@@ -602,7 +630,7 @@ Gallery 使用公开 parts；确认按钮仅更新 status，HoverCard delays 是
 #### 9.2 不是只核对 prototypeId 的几个具体证据
 
 | 控件 | 注册链与真实实现 | 首页/demo差异 |
-|---|---|---|
+| --- | --- | --- |
 | Shadcn Checkbox | `prototype-modules.ts:1152–1158` → `@proto.ui/prototypes-shadcn/checkbox` 的 `shadcnCheckboxRoot` / Indicator → `packages/prototypes/shadcn/src/checkbox/index.ts` 重新导出 `root.proto.ts` → `asCheckboxRoot()` | 同一Checkbox定义；首页另组合独立Label及controlLabel关联，旧demo只拼普通文本box与sr-only副本 |
 | Shadcn Switch | `prototype-modules.ts:881–887` → `packages/prototypes/shadcn/src/switch/root.proto.ts` / thumb.proto.ts 的default export | 同一Switch定义；Label结构、controlled/defaultChecked和页面反馈不同 |
 | Shadcn Select | `prototype-modules.ts:1029–1083` →同一family root/trigger/value/content/item源文件与公开surface/viewport/itemText导出 | 同一公开parts；Header/首页/独立demo选择不同anatomy组合、style输入和命名方式；不能据此说已经复用了同一字段组合 |
@@ -624,46 +652,6 @@ Gallery 使用公开 parts；确认按钮仅更新 status，HoverCard delays 是
 #### 9.4 对迁移目标的修正
 
 应统一的是“公开原型定义 + 可复用的必要语义组合 + 相同验收”，不是强行把两个页面变成同一实例或共享同一业务状态。优先把Checkbox+Label、Field+Textarea/Select等组合做成同一可消费路径，去掉分叉的plain label、属性重写和组件内样式补丁；页面继续只提供业务数据、文案、回调和外层布局。原生导航/第三方搜索保留其真实宿主职责，能抽取的基本交互再依定义迁入原型。
-
-## 2026-10-25 S1：公开 Checkbox + Label construction（#998）
-
-本节与 S1 实现同批提交，不是独立文档完成声明。实际 integration parent 为 #984 的 `a1ee35046ff35e9f57b6490d997e0dbd0b0241d2`，tree `837ed8dba3b376d005886bb37d6f3d1ba31832f8`。Hero 排版不是 Checkbox 语义前置。BaseFieldTextarea 与 #1001 独立，不建立 Checkbox 硬依赖。
-
-### 诊断与决策
-
-首页与 demo 使用相同 raw Checkbox 定义，但独立 Label 组合不同。首页已有 controlLabel；三族 demo 的可见 sibling box 未关联，并有隐藏命名副本。此事实来自固定 main `7181a93a5ec5cad43936a72e31d5477d5488733a` 的源码审计及用户报告，不冒称 native 复现。最初准备的五文件 demo patch 已暂停，不能代替公开组合交付。
-
-现有 Shadcn preset 仅 Root→Indicator，不能被描述成 Label slot 开关。Template v0 不承载 prototype-level composition；因此本片不造 wrapper prototype，而在 `/checkbox` 公开 recommendation 与每实例 construction。recommendation 是 part identity、拓扑与短名称默认选项的唯一源码权威；constructor 只创建既有 public opaque ref 并交给 Root/Label adapter input。原型状态、事件、焦点和生命周期所有权不变。rich content 继续使用宿主合法 children/slots，不承诺任意交互后代，也没有 `asChild` 或 readOnly 新 API。
-
-### 可复现审查路线
-
-1. 检查 `packages/prototypes/shadcn/src/checkbox/preset.ts` 与 `component-presets.types.ts`：现有三 preset 的类别、默认部件和替换政策不变。
-2. 检查新增 `checkbox/composition.ts`：公开 part 引用等于既有真实定义；唯一 structure 为 sibling Root/Label 与 Root 内 Indicator；无 DOM、callback、checked cache、全局 pair 或资源监听。
-3. 通过 `packages/prototypes/shadcn/test/checkbox-label-composition.test.ts` 验证 constructor identity、两实例隔离、冻结默认值与禁止序列化。宿主用例独立覆盖 rich label、一次 activation、direct press、disabled/mixed/controlled、raw naming-only、嵌套动作与 rebind/detach，不把合成事件当 native 验收。
-4. 正常仓库环境执行 `pnpm exec vitest run packages/prototypes/shadcn/test/checkbox-label-composition.test.ts`；并执行 `pnpm check:types` 与 `pnpm check:spec-authoring -- --base a1ee35046ff35e9f57b6490d997e0dbd0b0241d2`，核对新 draft contract/test 的图关系与增量作者约束。
-5. 后续 native 与 installed tests 必须使用精确开发 head，包含真实键盘/焦点与 accessible-name 计算。浏览器截图与输出绑定同一 head。S2 #1000 验证 packed/install 闭包，S3 在 #865/#933 消费公开定义；不据源码导出宣称安装一致。
-
-### 本轮真实验证与失败
-
-- 四个修改的 TypeScript 目标：0 个诊断；继承验证闭包中仍有 101 个 transitive diagnostics。不是全仓类型通过。
-- 实际源码 constructor 独立运行：identity、topology、per-instance isolation、frozen defaults、serialization rejection 通过。它使用已有受限验证闭包中的显式源路径解析，不是 packed consumer 验收，也没有执行宿主原型 setup。
-- 三个候选 spec YAML 的 schema 解析通过；这不等于完整图、authoring、CI 或稳定 admission 通过。
-- 真实 Vitest 启动在收集用例前被 Rollup `ERR_DLOPEN_DISABLED` 阻断，构造器/宿主 Vitest 用例均不得标为通过。未启用 native addon、降低权限限制或替换 runner 伪装结果。
-- constructor 初次尝试受继承依赖 symlink 指向隔离范围外旧产物影响，read guard 明确拒绝；未读取或复制被拒目录，改为当前已允许闭包内源文件解析。schema 初次尝试因顶层 zod resolution 缺失失败，后使用已安装且允许读取的固定 zod 4.3.6；无新增安装。原失败保留。
-- 新宿主用例覆盖 detach，不是 terminal disposal；真实 native、AT 名称计算、terminal disposal、完整 graph/authoring 与 packed/install 尚欠。缺 checks 不算通过。
-- 本片没有 UI 布局变更或 native 截图。S3 使用真实 Label 时须审查 family font/line-height/margins，不得宣称与旧 box 像素一致。
-
-### 文档来源与合流
-
-本文前序全部记录保留自公开 #1001 commit `bdeef58c20b7479fd2a0a3975dda0e5c8a543d2f` 的同路径，blob `f94e2d8c8db3233c6c9920299634656d91358c03`，SHA256 `2dd0342004b499351ebf2046b505c0b76020eaa1da7e56202d0f567940dde68d`。S1 parent tree 尚无此路径；仅复用公开诊断文本，不宣称继承 #1001 源码，也不把 FieldTextarea 当 Checkbox 前置。后续合流如出现 add/add 冲突，应内容级合并保留双方诊断，不整文件覆盖或删除历史。
-
-### S1 静态复审补充
-
-复审明确了冻结边界：仅冻结 helper 新建容器和 Label 默认值，import 的共享原型与 Indicator preset 保持原有 identity/可变性，不作深冻结或修改。rebind 测试新增旧 association 的独立 Label 负控：它不能再请求原 control，当前新 association 的 Label 仍应只请求一次；这样不会把忽略两次更新的实现误判为 rebind 成功。用例仍未取得 Vitest 或 native 通过结果。公共页的示意已标明 adapter-neutral，不冒称完整可运行 host 示例。
-
-## 并行诊断文本合流
-
-以下 #1001 续记逐字保留自公开 commit `ee40d097383321316237210f799c6c73e3e07768` 的本文档（blob `c842d2f807ced15b792164f902ac757eb26fb95c`）。仅合流累计诊断文本，不引入 #1001 的代码或把它设为 Checkbox 语义依赖。
 
 ## 续记：#1001 的 inherited input shard 漏项（2026-10-25 UTC）
 
@@ -688,152 +676,19 @@ node --test --test-isolation=none \
 ```
 
 | 被测状态 | 真实结果 | 意义 |
-|---|---|---|
+| --- | --- | --- |
 | 原 bdeef 两文件 | 1 通过、1 失败，exit 1 | 原计划断言准确发现 input 缺席 |
 | 只携带 workflow 一行 | 1 通过、1 失败，exit 1 | 唯一覆盖恢复，但 toolbar 旧的精确期待失败，证明两处必须成对 |
 | 两处同源 hunk | 2 通过、0 失败，exit 0 | 选定的两个现有契约测试通过；无删除、跳过或放松其断言 |
 
 这只是明确筛选的两项契约，不是完整 187 项重跑，也不等于完整 CI、浏览器、packed 或 registry-install 验收。原有 FieldTextarea 的 8-case codegen 证据与 Vitest/Rollup 预收集受限记录仍按上一片保留，没有重标为本片新运行。后续必须读取新 exact-head CI 的真实状态，capture 尚未启动时不能补写假截图。
 
-## 2026-10-25 S2：Shadcn WC packed delivery 检查（#1000，候选准备）
+## 续记：治理正文快照与文档时效修复（2026-10-25 UTC）
 
-真实前置为 #998 的 Draft PR #1003，head `653dbe47c51a34eff2f0b21edb4a8d3c0297c5af`，tree `74c57c81ea67aa8625c91bb75c710f2798de4926`，branch `dot/998-checkbox-label-composition`。四个既有路径已从该 exact ref 重取并逐字节核对，第五新 fixture 以完整 tree 验证不存在。S1 仍是 draft 且 CI/native 未完成；stack 不表示父验收通过。本节随 S2 五路径候选准备，尚未发布 S2。
-
-### 发现与最小修复
-
-静态核验没有发现新的 package manifest 闭包缺口：S1 通过现有 `/checkbox` export 暴露 construction，Label 在同一个 Shadcn package 内，core/hooks/base 依赖已经声明。没有据猜测修改版本、manifest 或 CLI registry。真实缺口是 packed harness 未执行 Checkbox+Label 组合、公共页只有 adapter-neutral 示意。候选扩展现有 canonical smoke，并补完整有限 WC 使用例。三个 default-part preset、raw atoms、sourceOnly/private/release 门保持不变。
-
-### 可复现流程与实际 CI 路由
-
-1. 从精确 S1 parent 创建候选，正常执行 `pnpm release:smoke:cli`。它调用 `scripts/release/publish.mjs --pack`（不是 --publish），沿用已有发行 staging、tarballs、声明依赖闭包。
-2. 在独立临时消费者安装本轮 tarballs，检查版本、lockfile 本地 resolved、实际安装目录；运行已安装 CLI init，并分别 add WC shadcn-checkbox 与 shadcn-label。没有 source alias 或私有仓库路径注入。
-3. 新进程直接导入 public checkbox helper，确认 Control/Indicator/Label identity。未知 package subpath 必须拒绝。临时移走消费者 Label dist，新的 Node 进程必须 ERR_MODULE_NOT_FOUND；finally 恢复后再证明导入成功，防止 module cache 掩盖缺失。
-4. 已安装 CLI 对 sourceOnly shadcn-field、未知 component 仍须拒绝且不改 config。保留已有 Switch/Dialog/Checkbox 默认部件断言。
-5. 消费 public declaration、生成 WC facade 与真实 CLI CSS；新 fixture 执行可见 rich Label、一次 activation、隔离、disabled/mixed/controlled、naming-only、默认/显式/关闭 Indicator、raw Root 与 detach。事件是 HappyDOM 合成输入，不是 native/AT 接受。
-6. `.github/workflows/ci.yml` 的 `cli-smoke` 已执行 release:smoke:cli；其 PR 条件为 affected_count 非零。修改 scripts/release 下的实际 harness 会被 public-package plan 视为相关全图改动，因而接入已有 CI，不新增权限或 workflow。沿用现有固定第三方版本。
-
-### 当前证据，不能上提
-
-| 层级 | 当前状态 |
-| --- | --- |
-| 静态 package/export/CLI/CI 路由 | 已核对真实 S1 #1003 exact head；S2 仍是本地候选 |
-| 新 fixture 语法 | 两份 .mjs 的 node --check 在既有 guard 下通过；不是运行/类型/独立审查通过 |
-| canonical harness 实际启动 | exit 1，首次 spawn `publish.mjs --pack` 被 Node `ERR_ACCESS_DENIED` / `ChildProcess` 阻断；pack/build/install 均未开始，保留失败与临时目录，不绕过 |
-| packed declaration 与 WC 合成行为 | 尚未执行，不用生成字符串替代通过结果 |
-| native pointer/keyboard/AT/布局截图 | 尚欠，不能以本 fixture 或旧截图代替 |
-| 正式 npm registry 发布 | 未做、不在范围内 |
-
-#925 authored-hook provenance 和 #817/#999 website loader/inventory 仍归其既有 owner。若 canonical harness 暴露这些已知失败，记录真实失败并协调，不删断言或接管修复。此片不闭合 #865/#933 的全消费者目标，也不把独立 #1001 当语义依赖。
-
-成功运行会在 CI 日志输出实际 checkout commit（可能是 PR merge commit，不能误称开发 head）、tarball integrity/shasum、独立 lockfile、generated facade 与 fixture SHA256；prepared 与 passed 两阶段分开。失败时继续保留 canonical harness 的临时产物，不在本地或文档伪造这些摘要。
-
-本地 canonical 命令为 `node scripts/release/consumer-smoke-cli.mjs`，Node v24.19.0。限制包含无 child/native addon/worker 与 network guard，仅允许临时测试目录写入。失败发生于 harness 首次调用既有 pack 子进程，早于任何安装或新宿主 fixture 执行；没有以手工打包、放宽 guard 或改测试 runner 替换这个结果。
-
-### S2 首次真实 packed CI：安装已执行，WC fixture 失败（2026-10-25 UTC）
-
-- PR #1004 source head `55ec23c4a035f150a69afc53c42b4db39b6a47cb`，实际 checkout 为 GitHub PR merge `a4097ef5cf25abda30ed1771f69d9201e8862038`。证据：[run 40168159073 / cli-smoke 121104930541](https://github.com/Proto-UI/Proto-UI/actions/runs/40168159073/job/121104930541)。07:39:25 开始，07:41:26 failure；此前旧 run 的取消不计通过。
-- canonical harness 真实构建/打包并安装了 44 个 release tarballs，installed CLI 生成 facade，走到 `prepared-not-yet-executed` receipt；既有 React/Vue/WC smoke 成功。新 Checkbox+Label fixture 执行时报 `CONTEXT_PROVIDER_MISSING: base-checkbox`，栈落在 Checkbox Indicator setup。不能将 prepared receipt、package build 或原三 host smoke 当成此组合已通过。
-- 该 receipt 的 consumer lock SHA-256 为 `607e007e50544aaddccd175abea77c0605edb1624f4e29b9cb46bb29289ffdd9`，generated facade 为 `989e5b9abbdc9c2d43c692224f34f06de73ee4dc990e2ae020f792ef6b729fcc`，fixture 为 `cefab5b6a35511229bc18269e3a7a2c7f60c9f12b306b82721089b5fd8e66bd2`；Shadcn tarball shasum 为 `87a77d042c3d5a21b767b4a76601cc86f626c6bd`。完整 package integrity 列表在该 job 的 receipt 日志中。
-- 现有栈未指出 fixture 的具体场景，尚不能区分默认/显式 Indicator 连接与 cleanup 中的异常，也不能仅凭约 0.6 秒的时间差断定原因。添加阶段/逐 mount 日志，保留可捕获的 primary 与 cleanup 双错误；独立 microtask rejection 不能通过 timer await 捕获，另用不改变 Node 默认失败退出的 uncaughtExceptionMonitor 记录末阶段及更完整堆栈；不改变连接顺序，不删除 default/explicit/omission/raw 覆盖，不降低断言，不改生成器或 adapter 语义。
-- 后续需用同一 canonical tarball/installed CLI 路径读取精确失败阶段，再按实际路径 owner 修复并重验。此诊断不是修复完成。原生 pointer/keyboard、AT、视觉及完整安装闭包仍未验收；本地 ChildProcess guard 保持原样，不以 source alias 代替安装。
-
-### S2 第二次 packed CI：首错锁定预装显式 Indicator（2026-10-25 UTC）
-
-- 诊断 head `3733164b8cc7df5594b796ab1e23f16208006b13`，实际测试 merge `dcd4c9c5bea9ba82a42353d411059474b012e052`：[run 40175207411 / job 121118158947](https://github.com/Proto-UI/Proto-UI/actions/runs/40175207411/job/121118158947)。完整打包/安装再次执行，09:07:39 的首个 primary failure 是 `mount:start:explicit:{}`，栈指向 fixture `document.body.append(container)` 与显式用例调用。
-- 此前两个默认 pair、名称/CSS/默认 Indicator、富 Label 激活、直接控制激活、交互后代排除已跨过对应断言。后续 omission/raw/disabled/controlled/mixed/naming-only/detach 尚未到达，不计通过。cleanup 后 fatal unhandledRejection 复述相同错误，不是首次失败来源。
-- [HappyDOM v20.14.6 Node 实现](https://github.com/capricorn86/happy-dom/blob/v20.14.6/packages/happy-dom/src/nodes/node/Node.ts#L1011-L1025) 先递归子节点，再调用自身 connectedToDocument，与 job 中 Node.ts:1014/1024 的栈吻合。v20.11.0 也有这一顺序。相对地，[DOM insert 算法](https://dom.spec.whatwg.org/#concept-node-insert) 按 shadow-including tree order 排 custom-element connected callbacks，父先于子。这支持测试宿主连接顺序差异的诊断，但不能单凭源码行号推断本次消费者确切安装版本，更不能替代同包原生宿主实测。
-- 原 harness 固定的是 registrator 20.11.0；消费者 npm lock 当次仅输出哈希，未作为 CI artifact 上传。仓库 pnpm 的 HappyDOM 15.11.7 不是该消费者运行版本。现补按已安装 registrator 的真实模块解析定位 HappyDOM，核对对应 lock version，并只输出消费者相对 package/entry 路径、manifest/entry SHA-256 和 lock integrity，不输出环境、凭据或绝对私有路径。不给版本升级或新依赖。
-- 增加无 Proto 业务依赖的预装父子自定义元素 canary，只记录实际回调顺序与规范顺序。它不补 provider、不修订宿主实现、不增加等待、不把预装子项改成后追加、不跳过或删去原显式 Indicator 断言；原红用例及默认失败退出保留。此增量仍只是诊断，尚无执行结果。
-- 同一 tarball/generated facade 的原生预装显式 Indicator 对照另列待审范围，需默认对照、显式不重复、Label 激活/卸载及无 pageerror。裸 CE 原生顺序测试只能验证平台，不能充当产品安装闭包；本次未新增 browser workflow、未安装浏览器、未扩大执行权限或修改生产 adapter。
-
-### #1000 同一安装 consumer 的真实 Chromium 对照准备（2026-10-25）
-
-- 实际前置：#1004 `5c1da6a3050ca9075fa5c78730023df86a9fb0f6`，完整树 `4aae03f5b7b7ad94ef836f1b3f4515bc82e4625e`。本节追加保留此前全部记录；共享 #1001 文档内容合流不变成代码祖先。#1003 / #1006 的验收仍独立，不以本节代替。
-- 已取得而非假设的结果：[run 40180100044 / cli-smoke 121129831902](https://github.com/Proto-UI/Proto-UI/actions/runs/40180100044/job/121129831902) 实际测试 merge `2ce124e449f8c5d3f94b74422e19390a5f4fdee5`。44 个 tarball 已生成并安装；已有 React / Vue / WC smoke、公开 helper / Label payload / sourceOnly 负控均已执行到相应成功记录。新 fixture 的 default、rich Label、direct control、interactive exclusion 已跨过断言，首个 primary failure 明确在 `mount:start:explicit:{}` 的预装子树 `body.append`。后续 omission / raw / disabled / controlled / mixed / naming-only / detach 未到达，不能记为通过。
-- 同一个消费安装环境实际输出 `@happy-dom/global-registrator@20.11.0` 解析到 `happy-dom@20.14.6`；consumer lock SHA-256 为 `607e007e50544aaddccd175abea77c0605edb1624f4e29b9cb46bb29289ffdd9`。HappyDOM 完整性为 `sha512-5DDsf4QmEIlRL6NkCv/fxSjYHHkZceL/IaYQdJc2h3G7DRTEai++VTjbfL0LB9geW2VrA3+vrjF3Efx+OTtX0Q==`。零 Proto 的预装 CE canary 实测顺序为 `child,parent`，与标准父先连接顺序不同。此证据支持模拟宿主顺序限制，不单独证明生产 adapter 缺陷，也不是 native 通过。
-- 最小新增证据路径只改 canonical `consumer-smoke-cli.mjs`、新增 `wc-checkbox-label-native.mjs` 和本累计文档。#1000 原 claim 已原地补入有限路径，原到期时间不延长；没有改 workflow、package manifest、锁、生成器、adapter 或 preset，也不接管 #925 / #817 / #999。
-- native runner 直接消费刚完成 pack/install/CLI generation/typecheck 的同一临时目录。用现有锁定 esbuild `0.25.12` 打包其生成 facade、安装后的 public helper / adapter，metafile 所有业务输入的 realpath 必须留在该 consumer 内，无 source alias、网络 external 或第二次 pack；证据记录 checkout、tarball integrity、consumer lock、facade、fixture、bundle / 输入 / 原始 CSS 哈希。
-- 仅复用工作区已安装的 `playwright-core@1.58.2` 与 runner 既有标准 Chrome/Chromium 二进制；缺失明确失败，不下载、不安装、不扩权限。记录实际浏览器版本和二进制哈希、runner image。浏览器不由 pnpm 锁定，不能把上一 runner 的版本当下一次实测。既有 CI browser job 也使用预装 Chrome，并非该 job 下载 Chromium。
-- 临时浏览器无账号、storage state、持久 profile 或权限授予；测试 HTTP 仅绑定 `127.0.0.1` 随机端口，资源是精确 allowlist，拒绝额外资源 / 外网请求 / WebSocket，关闭 service worker，采用限制 CSP；页面异常和 console error 均失败。显式 `chromiumSandbox: true`，禁止 `--no-sandbox` 及安全降级；正常 sandbox 在 runner 不可用时保留真实 blocked，不回退。既有其他 CI 使用无 sandbox 的事实不授权本测试削弱隔离。原始 CLI CSS 直接交浏览器，不使用 HappyDOM 的 CSS 层归一化。
-- 对照只覆盖 default 与 detached-preassembled explicit Indicator 两个真实公开组合，检查连接、恰好一个 Indicator、命名关系、真实 Label pointer 激活一次、聚焦后的原生 Space 键激活、配对隔离和卸载无页面错误。裸 CE 顺序 canary 仅为平台辅助证据，不替代产品组合。
-- native 结果与原 synthetic fixture 独立记录。native setup / product 失败后仍执行原 synthetic 流程；任何一个失败均非零，二者失败聚合保留。原 explicit case 的预装顺序、等待、断言完全不改，没有通过改为挂父后加子、mock、skip 或豁免来消红。native 即使通过，也不能抹掉既有 HappyDOM 红项。
-- 当前状态是候选准备，尚未执行 native、尚无 native 通过证据。仅可报告实际完成的语法检查；本地 ChildProcess / native 权限限制继续有效，不绕过。此前 formatter 因既有 symlink 目标不在限定读取范围而被拒绝，未扩大读取或重试。公开 CI 必须在候选复核及发布后绑定实际 checkout 才能填写结果；完整宿主 / AT / 全视觉一致性、父 PR 验收与 npm 发布均不在本次通过声明中。
-
-### #1000 native 首次实测：固定 adapter stylesheet 与测试 CSP（2026-10-25）
-
-- 精确 source `a11b7daf83ba8b00848331b53b793f30ffd0b919` / 测试 merge `4b6d6915652f83de62b3d9c083a3c31b84a4fbfc` 的 [run40182759570 / cli-smoke121137148605](https://github.com/Proto-UI/Proto-UI/actions/runs/40182759570/job/121137148605) 实际执行完成并失败，不是 native 绿。真实浏览器是 Google Chrome `155.0.8059.39`，二进制 SHA-256 `9bfb381296dffe75f3419d07b6cc64525105ed117d1453a4ef3b291cb97d2b58`；runner `ubuntu24 / 20261023.334.3`，不同于先前计划所引用的旧 image。正常 sandbox 已成功启动，没有使用降级或安装回退。
-- 同一安装 consumer lock SHA-256 仍为 `607e007e50544aaddccd175abea77c0605edb1624f4e29b9cb46bb29289ffdd9`；generated facade SHA-256 `989e5b9abbdc9c2d43c692224f34f06de73ee4dc990e2ae020f792ef6b729fcc`；native bundle SHA-256 `ae06ca979c69d6fe2f475ad3c41e04af551bb38905d59ab5136554d7ac1b6bd6`，443 个业务输入的路径与哈希已在日志中记录，均来自本次消费安装目录。原始生成 CSS 三文件也分别绑定哈希。
-- native 已跨过实际父先 CE canary、default 与预装 explicit Indicator、各一次真实 Label pointer 和 Space 激活、配对隔离以及移除后 DOM 不存在断言；但在最后错误收集处因四条 CSP console error 非零。不能把“经过断言”改称完整 native pass。synthetic 仍独立在原 explicit 子树连接时报 `ContextProviderMissing`，两个失败均被保留，canonical job 非零。
-- 四条错误已由确切源码和 SHA-256 独立归因，不是猜测 style attribute：`packages/adapters/base/src/host/view-visibility.ts`（blob `e964327e`）和 `packages/adapters/web-component/src/host-display.ts`（blob `fe9168ee`）各先追加空 `<style>`，再写固定 infrastructure rules。Chrome 两次空文本哈希 `sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=`，visibility 规则 `sha256-B/uN6mebmNl6Y8KAmaGkix/y4Eiyvq/jCIEHnporMZQ=`，host display 规则 `sha256-+IRPBUpbuxn0ME6GWUx2UPIkh/vCUT0KS1CXnXBjQAY=`，均与上述源码固定文本静态重算逐字相等。
-- 最小纠正只限 native test CSP 和本累计文档：保留 `style-src 'self'` fallback，仅 `style-src-elem 'self'` 精确允许上述三个内容哈希，显式 `style-src-attr 'none'`；不加 `unsafe-inline`、不关闭 CSP、不修改生产样式实现、不注入 nonce 或伪造样式。测试同时断言实际 DOM 只有这两个 infrastructure `<style>`、id 和完整 textContent 均与审阅的规则相等。规则内容漂移必须重新审查，不能靠宽泛 allowlist 消音。
-- 所有既有 pageerror / console error / network assertions、正常 sandbox、loopback 精确资源限制、无账号和依赖约束、原 native 产品断言、原 synthetic 红项均保留。新版仍待真实 CI；候选语法通过不等于消除 CSP 错误或获得 native 验收。未新增截图上传或 workflow。
-
-### #1000 同 tarball 安装后 native 有限组合通过，synthetic 红项仍保留（2026-10-25）
-
-- 精确 source `5da8d1aa83f9cac354113c9f73364b92ab876145`，树 `c69273a7d8e45cc970bcd0d93af0e7582a33744f`；[run40184776477 / cli-smoke121144002321](https://github.com/Proto-UI/Proto-UI/actions/runs/40184776477/job/121144002321) 实际 checkout 为 merge `284ed23aef7e58997829fc3a7f043fcca7d4cf21`，其树与 source 完全相同。独立复取官方日志与工作日志逐字一致，日志 SHA-256 `18916adaf467a5208c918426ac1ac3195a8bbd57686333e64962d7baabcafbeb`。
-- 10:38:00 UTC native fixture 在全部有限断言和成功清理之后发出完整 `checkbox-label-packed-native-evidence`，随后正常退出并记录 `packed WC native bounded cases: passed`。真实 Chrome `155.0.8059.39`、正常 sandbox、二进制 SHA-256 `9bfb381296dffe75f3419d07b6cc64525105ed117d1453a4ef3b291cb97d2b58`，runner `ubuntu24 / 20261023.334.3`。
-- 证据绑定同一 tarball consumer lock `607e007e50544aaddccd175abea77c0605edb1624f4e29b9cb46bb29289ffdd9`、生成 facade `989e5b9abbdc9c2d43c692224f34f06de73ee4dc990e2ae020f792ef6b729fcc`、fixture `ab51046d754716f62dcb4cee4dd240a8ec0cb5cb8fd85f73498823cfe2b4fbe8`、bundle `ae06ca979c69d6fe2f475ad3c41e04af551bb38905d59ab5136554d7ac1b6bd6`，以及 443 个仅来自安装 consumer 的业务输入和三份原始生成 CSS 的哈希。没有 source alias、第二次 pack、生产替代实现或默认 Checkbox 偷带 Label 的声明。
-- 真正通过的有限范围：浏览器 CE 父先连接；default 与 detached-preassembled explicit Indicator 都恰好一个部件；公开 helper 的独立 Label 命名关联；真实 Label pointer 与聚焦后的 Space 键各激活一次；两对隔离；DOM 移除后未观察到 pageerror。固定三 hash CSP 和实际两个 infrastructure style 的 id / 完整文本断言通过，原 console/page/network 检查没有被削弱或忽略。
-- 10:38:10 UTC 同次原 synthetic fixture 仍在 `mount:start:explicit:{}` 因 base-checkbox provider missing 失败。整体 canonical job 仍为 **failure**；native 的成功没有改变、跳过或豁免原红。后续未执行的 synthetic 场景不能补记通过。完整生命周期清理、所有宿主 / AT / 全视觉等价、父 PR 验收、整个 CI、merge-ready、npm 发布与生产部署均未建立。
-- 下一步应由测试宿主兼容策略解决：保留原 HappyDOM 失败、同版本 CE canary、全部 native 回归覆盖和精确安装证据；只读调查官方 host 修复版本或明确宿主覆盖边界。不为模拟器不符合浏览器的连接顺序改生产 adapter，不先挂父后插子来掩盖合法预装组合，不在未经批准情况下运行新第三方版本，也不自动把红项改绿。
-
-### #1000 原 synthetic 契约逐项补齐 native 覆盖候选（2026-10-25）
-
-此片仍是同一安装 consumer 的测试覆盖维护，不是生产实现修复，也不是将 synthetic 红项改绿。基线为 `5da8d1aa83f9cac354113c9f73364b92ab876145`；只准备 native fixture 与本累计文档，canonical harness 和原 `wc-checkbox-label.mjs` 字节不变。新增 case 尚未执行，上一节有限 native 成功不能提前授予本片。
-
-| 原 synthetic 断言组 | native 对应动作 / 断言 | 证据边界 |
-| --- | --- | --- |
-| 两个 default pair 的 association 独立、Label 在外部、无重复隐藏命名 | 保留原 default/explicit，新增第二 default neighbor；比较真实 association identity、Label id / aria-labelledby / aria-label、control 内无 Label | 同真实安装 public helper；不使用替代 context |
-| rich Label decoration + strong 任意内容、样式 token / CSS | 构造 aria-hidden decoration 与 strong；DOM 命名检索和 token/原始 CSS 断言 | DOM 名称检索不是 AT 语音输出证明 |
-| rich Label 激活一次、neighbor 不变、焦点转给 control | Playwright 真实 Label pointer；检查变化次数、焦点、neighbor checked false | 复用之前已通过的有限 native pointer / Space，并新增两个 default 之间的隔离 |
-| control 直接激活、interactive descendant 不重复激活 | 真正 click control 和 Label 内 button；正向确认 button 自己的 click callback 恰好一次，同时 Checkbox 计数不增加 | 不用程序事件替换这些真实在页面内的动作 |
-| explicit 不重复、omitted 零部件、raw Root 不补默认 | 保留 detached-preassembled explicit 顺序；新增 omission attribute 与 raw Root，分别查部件数量 | 不先挂父再补子，不改变 facade / generator |
-| disabled/defaultChecked、controlled false、mixed | 用真实 props 创建并检查初值；实际 Label pointer 后分别检查零请求、一次请求但仍 false、mixed 转 true | 受控状态接受权仍在 consumer，不修改原型语义 |
-| naming-only 仍命名但 activation false | public setElementProps 更新 Label 后实际 pointer；检查请求次数不增加与命名关联仍在 | 保持原 naming / activation 两个维度 |
-| detached Label 不再激活原 control | 保留 detached reference，浏览器内执行原 pointerdown / pointerup / click 程序事件序列，检查原 control 计数不变 | 节点已脱离，不能称真实用户 pointer；只称运行在 native DOM 的程序事件生命周期回归，不称订阅/资源全部释放 |
-| cleanup 不掩盖先前错误 | 继续收集 page/console/network errors，保留 finally failures；最后移除所有容器 | 仅有限观察窗口无错误，不泛称完整 lifecycle acceptance |
-
-所有新增和旧 native case 的运行失败必须保留，正常 sandbox / 三个固定 stylesheet hash / 完整实际 style 文本断言 / 精确 loopback 资源 / 无账号 / 无下载限制不变。没有 mock、skip、xfail、测试宿主补丁或 gate 改分类；原 synthetic 红仍使 canonical job 非零。
-
-只读上游调查找到历史 [HappyDOM #230](https://github.com/capricorn86/happy-dom/issues/230) 及 [maintainer 的 2021 v2.11.1 回复](https://github.com/capricorn86/happy-dom/issues/230#issuecomment-800693960)，但不能把旧关闭状态当当前预装 CE 已修复。最新官方 v21.0.4 的相关 Node / ReactionStack 关键 blob 仍与实际20.14.6相同，未建立可验证的升级修复；没有安装/运行新版本或联系上游。后续测试宿主 gate 策略仍需明确 owner 决定，补齐 native 覆盖本身不授权取消原失败。
-
-## 2026-10-25 S3: one public Shadcn composition projected into homepage and docs
-
-### Diagnosis and bounded decision
-
-The homepage already paired Checkbox and Label using the public controlLabel association. The documentation example instead rendered a visible unassociated box and duplicated its text inside the Checkbox as a hidden name. These were different consumer compositions of the same family atoms, not separate Checkbox implementations. S1 defines the public host-side recommendation; S2 prepares its packed delivery acceptance. This slice projects that recommendation into both website consumers rather than adding label click forwarding.
-
-Initial integration source: #1004 commit `53489f8db18fc641a9bc446b4196ce295e728ca0`, directly descending from S1 #1003. This document starts from the complete S2 cumulative document; all prior diagnostics remain intact. Final preparation parent is #1004 `55ec23c4a035f150a69afc53c42b4db39b6a47cb`, tree `be26d1aa7fca1151674d7bc91a3c7637947fd2ab`, with actual two-parent ancestry through S1 `3ad7a5091ffb825ee95602e1285393b981368a94` and the maintained #984. All six source baselines were rechecked; the four inherited maintenance paths are preserved. Hero and the unrelated FieldTextarea facade remain non-semantic dependencies.
-
-The single website helper reads the public recipe's actual prototype names, sibling order, Indicator parent, supported default-part placement, association participants and Label defaults. It emits only serializable DemoSpec association keys. The existing render-local association scope owns opaque refs; adapters and the Checkbox still own activation, lifecycle and checked state. The homepage passes its existing node factory so prototype loading, authored props, business callbacks and layouts remain intact. The documentation retains all five original state examples and row layout while replacing the hidden duplicate name with a real associated visible Label.
-
-Only Shadcn is migrated. Other family branches retain their existing behavior and are not claimed to have an equivalent public recommendation or complete parity. Raw atoms remain available. No Core, Template, Compiler, runtime-client, loader, package version or dependency change is made. Label now uses its existing Shadcn `font-medium` and `leading-none` styling instead of the demo's plain `text-sm` box; no pixel-identical claim is made.
-
-### Verification and failure preservation
-
-A direct source-data probe passed for the real shared helper, real homepage and docs construction, public part identity/topology, rich noninteractive name children, JSON-only output and independent per-render association references. Its first measured closure contained 90 TypeScript sources: every unchanged source matched the exact integration-parent blob, with only candidate consumer sources differing. It does not execute prototype setup or physical host input and is not independent browser acceptance.
-
-The first focused TypeScript attempt found a widened literal in the new test fixture; the fixture was given the actual DemoSpec type without relaxing an assertion. That failure is retained. Real Vitest unit and existing native browser suite attempts both failed before collection because the current guarded runtime rejects Rollup native addon loading (`ERR_DLOPEN_DISABLED`). No permission relaxation, alternate fake runner, removed test or lowered assertion was used. Final type/format/source results are bound by the PR's candidate evidence, not inferred from this preparation run.
-
-The existing registered `demo-shadcn-controls.browser.test.ts` is extended, preserving its existing assertions and CI route. Prepared native checks cover visible Label activation, repeated click, adjacent control isolation, disabled/mixed states, label selection/tab policy and Space/focus for all four runtimes. Evidence output checks the actual checkout SHA and dirty state before capturing. Native execution and new screenshots are still unverified locally; the assertions are not represented as passed. The homepage same-consumer topology is covered by the focused source/unit comparison; its physical interaction remains covered by existing homepage suites and still requires actual candidate execution. Terminal disposal and installed closure remain their separate outstanding acceptance work, not completed by source projection.
-
-
-## S3 follow-up: missing Checkbox Label recipe dependency (2026-10-25)
-
-
-Source PR #1006 head e5c097ebbc63c7dcca57f4db99a505e2d90d7564. CI tested merge 0e1fdb4d7a6edfeb94008e6de6e15124a01cd4bf. Run 40168481772, browser 2/8 job121100965409, artifact12592300261.
-
-## Concrete regression
-S3 changed the Checkbox DemoSpec to include shadcn-label-root but did not register that auxiliary prototype in the Shadcn Checkbox projection manifest. projection-families.ts:499 still lists only Checkbox Root and Indicator. projection-composition.ts:364–391,723 performs strict closure validation before rendering runtime controls. It deterministically rejects the new demo with: uses undeclared Prototype(s): shadcn-label-root.
-
-The source probe executes the actual AST-extracted repository validator, actual imported current DemoSpec and current manifest. The original parent55ec Demo passes; the e5c Demo fails; adding the exact Label to the required set passes. This is not a native browser result. All four inspected pipeline source files fetched at CI tested merge exactly match the parent55ec blobs and local probe sources. The test originally covered serialized topology but missed the actual projection closure boundary.
-
-## Actual CI evidence and missing evidence
-The six-case Shadcn suite completed 4 pass / 2 fail. Both Checkbox tests fail in selectRuntime -> choosePreviewRuntime waiting for selected runtime tab/legacy combobox. openRoute already found a visible previewer. Both Checkbox routes returned HTTP200. Label interaction assertions were not reached. Whole shard later terminated124, but both case failures occurred earlier. No Checkbox-specific failure JSON, console record or screenshot exists in the complete artifact: suite did not capture pageerror/console or failed-context snapshots; success evidence occurs after the ready gate. Other matrix errors must not be attributed to this Checkbox route. Source diagnosis establishes a real self-owned regression consistent with the CI failure, not an observed browser console exception or proof it is the only remaining blocker.
-
-## Proposed bounded repair
-Add shadcn-label-root to only Shadcn Checkbox recipePrototypeIds and declare auxiliaryPrototypes with P-BASE-LABEL, preserving Checkbox anatomy parts Root/Indicator. Update exact manifest expectation; extend existing S3 unit suite to invoke actual closure/manifest validation and retain a missing-Label negative control; append this diagnosis to cumulative repair documentation. Do not relax validator, selector, timeout, assertion, adapter state, or manually mark ready. Native rerun and exact-head screenshots remain required. At diagnosis time, no repair source or remote write had been made.
-
-The repair adds the exact Label dependency and P-BASE-LABEL auxiliary lineage, preserves Root/Indicator anatomy, updates the manifest expectation and exercises the actual closure validator with missing-Label and extra-required-prototype negative controls. The first S3 source test checked shared topology but missed this projection boundary; that omission is owned by this repair. Native selectors, assertions and timeouts are unchanged. No browser success or screenshot is inferred from the source probe.
-
-Repair validation: actual imported source validator, canonical manifest and DemoSpec pass, with both negative controls retained. Three changed TypeScript files have zero focused diagnostics; 40 transitive diagnostics remain. Real Vitest invocation still fails before collection with Rollup ERR_DLOPEN_DISABLED. No native rerun or new screenshot has yet been obtained.
+- 本片 parent 为已发布的 `ee40d097383321316237210f799c6c73e3e07768`；不改 #955 分支，不夹带 #997 的 13 文件 SSR 整合。[对接 source-review](https://github.com/Proto-UI/Proto-UI/pull/1001#issuecomment-6394215927) 要求携带现有 canonical snapshot、修正本报告发布状态并增加 README 导航；[范围确认](https://github.com/Proto-UI/Proto-UI/pull/1001#issuecomment-6394272326) 保留真实验收边界。该 source-review 不是 GitHub 正式 approval、native 或 install 验收。
+- [治理失败 job](https://github.com/Proto-UI/Proto-UI/actions/runs/40166542032/job/121088649067) 检出 synthetic merge `f7833b33fd44bc6f03a9d099fa99ab22141f0dd3`（ee40 into #955 b01cd），在 `sync-github-governance-snapshot.mjs:290` 判定 retained/live drift。它由 `internal/coverage-matrices/**` 路径触发，不是新 PR 自动加入快照：快照只含已绑定的 27 Issues 与 PR580。
+- 对所有 28 个对象逐条读取后，除 canonical checker 明确忽略的 `updatedAt` 外，仅 #377、#420、#559 的 `bodySha256` 改变。各 live 正文增加了 2026-10-22 Finf #890 当前决策前言；“原目标、讨论依据与验证记录（历史保留）”之后的正文逐项 SHA256 精确等于旧快照。历史未删，state、labels、assignees、milestone、owners 与 PR580 facts 未改变。
+- 复用已存在、经对接确认的 `internal/coverage-matrices/github-governance-snapshot.json` blob `d210410244516f84f260b0a26fe6cc87786fe778`：读取时 current main 为 `357068f0f371dd40826b81da43bd4ef5df73bee7`，#974 的 `da764928ba727f9ebec7d52dad74637ecd070fd5` 也携带完全相同文件。本片不手工改 hash、不执行独立 `--write`、不改两消费者 matrix。来源差异只有这三个 body hashes 和六个 observation timestamps（#377/#388/#420/#513/#559/#745）。
+- 有界实际验证使用仓库原 `collectDependencyOwners`、`normalizeLiveIssue`、`normalizeLivePullRequest`、`reconcileGovernanceSnapshot`、`hasGovernanceDrift`，输入 exact-parent 两 matrix 与本次 authenticated API 读取的 28 个对象，在既有 Node 24 guard/只读白名单下执行。旧 snapshot `hasGovernanceDrift=true`；同源携带版本 `hasGovernanceDrift=false`；27 Issues/1 PR 全部保留，断言进程 exit 0。没有运行网络 CLI main，也不冒称 hosted `--check` 已通过。
+- 可复现流程：固定 head，读取上述两 matrix 和 retained snapshot；读取它们绑定的 Issues/PR，按 canonical normalize/reconcile 比较；保留变更字段与旧正文 hash 证据；只在 owner 协调后携带现有 canonical source；再运行最终 head 的 `node scripts/coverage-matrices/sync-github-governance-snapshot.mjs --check` 与正常 CI。不要因日志提示就自动 `--write` 或推断 owner。
+- 仅追加 README 的报告链接并校正此前“尚未发布”的时态，已发布的 bdeef/ee40 证据不冒充本片新测试。ee40 的 popup-boundaries 与 binary-and-buttons 两个目标 CI jobs 已真实通过完整 187/187 计划测试（含 exactly-once 与 toolbar），随后 native capture 在 rest 阶段因 authored materialized anatomy/current conditional subtree 缺失失败，不能称整 shard 通过；其余 shards 与最终新 head 仍需验收。日志与 raw artifacts 见 [popup job](https://github.com/Proto-UI/Proto-UI/actions/runs/40166542220/job/121088651821)、[popup artifact](https://github.com/Proto-UI/Proto-UI/actions/runs/40166542220/artifacts/12590005407)、[binary job](https://github.com/Proto-UI/Proto-UI/actions/runs/40166542220/job/121088651814)、[binary artifact](https://github.com/Proto-UI/Proto-UI/actions/runs/40166542220/artifacts/12589680225)。这里只读取 official CI 日志，未下载或视觉检查这些 artifacts。其他真实失败（private SSR PUI3301、material public-source/blur、原生视觉/几何和 preview artifact 预算）保持各自 owner 与原日志，不因治理修复获豁免。#1000 仅承担 Checkbox composition/install 闭包，不自动扩大为 Shadcn Field registry owner。
