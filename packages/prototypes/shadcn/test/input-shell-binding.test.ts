@@ -216,6 +216,64 @@ describe('single-control input shell composition lifecycle', () => {
     b.sync();
     expect(t.writes).toHaveLength(1);
   });
+  describe.each(['dispose', 'replace'] as const)('%s cleanup failure', (operation) => {
+    it.each([
+      ['undefined', undefined],
+      ['null', null],
+      ['false', false],
+      ['zero', 0],
+      ['empty string', ''],
+      ['Error', new Error('first cleanup')],
+    ])('retains the first %s throw while retiring every resource', (_label, primary) => {
+      const o = owner(),
+        c = control(),
+        next = control(),
+        t = target();
+      const focusSubscribe = c.focusVisible.subscribe;
+      const disabledSubscribe = c.disabled.subscribe;
+      c.focusVisible.subscribe = (listener) => {
+        const off = focusSubscribe(listener);
+        return () => {
+          off();
+          throw primary;
+        };
+      };
+      c.disabled.subscribe = (listener) => {
+        const off = disabledSubscribe(listener);
+        return () => {
+          off();
+          throw new Error('secondary cleanup');
+        };
+      };
+      const binding = bindInputShellControl(o, t, c);
+      let didThrow = false;
+      let observed: unknown;
+      try {
+        if (operation === 'dispose') binding.dispose();
+        else binding.replace(next);
+      } catch (cause) {
+        didThrow = true;
+        observed = cause;
+      }
+      expect(didThrow).toBe(true);
+      expect(observed).toBe(primary);
+      expect([c.focusVisible.count(), c.disabled.count(), o.count()]).toEqual([0, 0, 0]);
+      expect([next.focusVisible.count(), next.disabled.count()]).toEqual([0, 0]);
+      c.focusVisible.set(true);
+      next.disabled.set(true);
+      binding.sync();
+      binding.dispose();
+      expect(t.writes).toEqual([{ focusVisible: false, disabled: false }]);
+
+      c.focusVisible.subscribe = focusSubscribe;
+      c.disabled.subscribe = disabledSubscribe;
+      const nextOwner = owner();
+      const reacquired = bindInputShellControl(nextOwner, t, c);
+      expect(t.writes.at(-1)).toEqual({ focusVisible: true, disabled: false });
+      expect([c.focusVisible.count(), c.disabled.count(), nextOwner.count()]).toEqual([1, 1, 1]);
+      reacquired.dispose();
+    });
+  });
 });
 
 it('never publishes an old snapshot when a fact getter replaces its source', () => {

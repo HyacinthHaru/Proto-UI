@@ -66,15 +66,19 @@ export function bindInputShellControl(
     controls.delete(source);
     const old = subscriptions;
     subscriptions = [];
+    let failed = false;
     let error: unknown;
     for (const off of old) {
       try {
         off();
       } catch (cause) {
-        error ??= cause;
+        if (!failed) {
+          failed = true;
+          error = cause;
+        }
       }
     }
-    if (error) throw error;
+    if (failed) throw error;
   };
   const dispose = () => {
     if (disposed) return;
