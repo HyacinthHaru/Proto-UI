@@ -417,10 +417,17 @@ export function emitWebComponentSource(
       })
       .join('');
   }
-  const hookCode = ir.hooks
+  const hookCode = `    const ${prefix}HookResults = new Map<string, object | undefined>();\n` + ir.hooks
     .filter((hook) => reachedHooks.has(hook.id))
     .map(
-      (hook) => `    const ${hooks.get(hook.id)} = () => (${fn(hook.setup, 2)})(${prefix}Def);\n`
+      (hook) => `    const ${hooks.get(hook.id)} = () => {
+      if (${prefix}HookResults.has(${JSON.stringify(hook.name)})) return ${prefix}HookResults.get(${JSON.stringify(hook.name)}) ?? Object.freeze(Object.create(null));
+      ${prefix}HookResults.set(${JSON.stringify(hook.name)}, undefined);
+      (${fn(hook.setup, 2)})(${prefix}Def);
+      const result = Object.freeze(Object.create(null));
+      ${prefix}HookResults.set(${JSON.stringify(hook.name)}, result);
+      return result;
+    };\n`
     )
     .join('');
   const props = ir.props

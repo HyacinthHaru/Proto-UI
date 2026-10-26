@@ -552,6 +552,16 @@ class _PropWatch<P> {
   bool active = true;
 }
 class NativeOwner<P> implements NativeOwnerBase {
+  final Map<String, Object?> _authoredResults = {};
+  Object authoredHook(String name, void Function() install) {
+    ensureSetup();
+    if (_authoredResults.containsKey(name)) return _authoredResults[name] ?? Object();
+    _authoredResults[name] = null;
+    install();
+    final result = Object();
+    _authoredResults[name] = result;
+    return result;
+  }
   NativeOwner(this.invalidate, NativeContextScope? parent, {required this.makeProps, required this.checks}) {
     context = NativeContextScope(this, parent); style = NativeStyle(this); focus = NativeFocus(this); accessible = NativeAccessible(this);
     anatomy = NativeAnatomy(this); hostTarget = NativeHostTarget(rootKey, acceptsRead: () => ready); _liveOwners.add(this);

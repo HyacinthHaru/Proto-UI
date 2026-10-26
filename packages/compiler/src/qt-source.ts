@@ -227,7 +227,15 @@ ${publicApi}
             contextCheck: ${emitQtContextValidation(ir, keys, `${qualifier}Context.acceptsContextValue`)}
         })
         const ${p}Def = ${p}Owner.def
-${ir.hooks.map((hook) => `        const ${hooks.get(hook.id)} = function() { return (${fn(hook.setup, 2)})(${p}Def); };`).join('\n')}
+        const ${p}HookResults = new Map();
+${ir.hooks.map((hook) => `        const ${hooks.get(hook.id)} = function() {
+            if (${p}HookResults.has(${JSON.stringify(hook.name)})) return ${p}HookResults.get(${JSON.stringify(hook.name)}) || Object.freeze(Object.create(null));
+            ${p}HookResults.set(${JSON.stringify(hook.name)}, undefined);
+            (${fn(hook.setup, 2)})(${p}Def);
+            const result = Object.freeze(Object.create(null));
+            ${p}HookResults.set(${JSON.stringify(hook.name)}, result);
+            return result;
+        };`).join('\n')}
         try {
             ${p}Owner.setRender((${fn(ir.setup, 3)})(${p}Def))
             ${p}Owner.hydrate(rawProps)

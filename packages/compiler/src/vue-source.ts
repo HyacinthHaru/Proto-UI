@@ -184,7 +184,7 @@ export function emitVueSource(
       case 'record': return `{ ${node.entries.map((entry) => `[${JSON.stringify(entry.key)}]: ${expression(entry.value, depth)}`).join(', ')} }`;
       case 'function': return fn(node.function, depth);
       case 'helper-call': return `${node.name}(${node.arguments.map((arg) => expression(arg, depth)).join(', ')})`;
-      case 'authored-hook': return `${hookNames.get(node.hookId)}(${usesStyle ? n('DefValue') : 'undefined'})`;
+      case 'authored-hook': return `${hookNames.get(node.hookId)}()`;
       case 'static-capability': return staticNames.get(node.declarationId)!;
       case 'operation': {
         const args = node.arguments.map((arg) => expression(arg, depth));
@@ -353,7 +353,14 @@ ${ir.contextKeys.map((key) => `      [${contextNames.get(key.id)}, (value: unkno
       ${n('ActiveFrame')}(frame); return optional ? ${n('Scope')}.tryRead(key) : ${n('Scope')}.read(key);
     }
 ` : '';
-  const hookCode = ir.hooks.filter((hook) => hooks.has(hook.id)).map((hook) => `    const ${hookNames.get(hook.id)} = ${fn(hook.setup, 2)};`).join('\n');
+  const hookCode = `    const ${n('HookResults')} = new Map<string, object | undefined>();\n` + ir.hooks.filter((hook) => hooks.has(hook.id)).map((hook) => `    const ${hookNames.get(hook.id)} = () => {
+      if (${n('HookResults')}.has(${JSON.stringify(hook.name)})) return ${n('HookResults')}.get(${JSON.stringify(hook.name)}) ?? Object.freeze(Object.create(null));
+      ${n('HookResults')}.set(${JSON.stringify(hook.name)}, undefined);
+      (${fn(hook.setup, 2)})(${usesStyle ? n('DefValue') : 'undefined'});
+      const result = Object.freeze(Object.create(null));
+      ${n('HookResults')}.set(${JSON.stringify(hook.name)}, result);
+      return result;
+    };`).join('\n');
   const code = `// Editable Vue 3 source. Profile: ${profile}; no Proto Runtime or Adapter dependency.
 // Inline native costs: owner/update queue, constrained state subscriptions, prop resolution/watchers,
 // public boundary guards, view commit lifecycle and native element/slot composition.

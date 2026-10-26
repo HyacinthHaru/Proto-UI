@@ -194,7 +194,14 @@ export function emitVue2Source(
     return `  ${JSON.stringify(entry.name)}: ${type};`;
   }).join('\n').replace(/\*\//g, '*\\/');
   const propTypes = Object.fromEntries(ir.props.map((prop) => [prop.name, prop.type]));
-  const hooks = ir.hooks.map((hook) => `  const ${aliases.get(hook.id)} = () => (${fn(hook.setup, 1)})(${prefix}Owner.def);`).join('\n');
+  const hooks = `  const ${prefix}HookResults = new Map();\n` + ir.hooks.map((hook) => `  const ${aliases.get(hook.id)} = () => {
+    if (${prefix}HookResults.has(${JSON.stringify(hook.name)})) return ${prefix}HookResults.get(${JSON.stringify(hook.name)}) ?? Object.freeze(Object.create(null));
+    ${prefix}HookResults.set(${JSON.stringify(hook.name)}, undefined);
+    (${fn(hook.setup, 1)})(${prefix}Owner.def);
+    const result = Object.freeze(Object.create(null));
+    ${prefix}HookResults.set(${JSON.stringify(hook.name)}, result);
+    return result;
+  };`).join('\n');
   const styleImport = usesStyle ? `import { createNativeStyle as ${prefix}CreateNativeStyle, templateStyleTokens as ${prefix}TemplateStyleTokens } from './.proto-ui/style/native-v1';\n` : '';
   const interactionImport = usesInteraction ? `import { createNativeInteraction as ${prefix}CreateNativeInteraction } from './.proto-ui/interaction/native-v1';
 /** @template Run @typedef {import('./.proto-ui/interaction/native-v1').NativeInteraction<Run>} ${prefix}NativeInteraction */
