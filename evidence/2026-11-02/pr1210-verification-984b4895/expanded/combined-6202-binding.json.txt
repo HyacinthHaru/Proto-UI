@@ -1,0 +1,22 @@
+{
+  "head": "6202aabd11b7964614a4cad4e7aa0afbeb4c3409",
+  "tree": "3e13d7f0f650e1d5fad66c9ce3f0b9382008142c",
+  "cleanAfter": true,
+  "command": "corepack pnpm@10.32.1 exec vitest run <seven files in runner JSON> --maxWorkers=2 --minWorkers=1 --reporter=default --reporter=json --outputFile=combined-6202.json",
+  "passed": 239,
+  "failed": 0,
+  "files": 7,
+  "limits": "Node24.21.0/macOSarm64; four actual owned child processes, mocked port/readiness/app launch and parent deadline clock; no app/browser started by these tests; not fresh hosted CI/native11case acceptance",
+  "outputs": [
+    {
+      "path": "combined-6202.log.txt",
+      "raw_sha256": "58e20af1abc5ce5af7c36a116fedb7dcb214939c792cec97d564a6c08bc077b2",
+      "public_sha256": "b66db459bc779a9abef9838686c09e8cc1ad2d129d7f3c93fddff41401e480bc"
+    },
+    {
+      "path": "combined-6202.json.txt",
+      "raw_sha256": "616364964793322f228acf713af6622d7970ba1b223c0996ca3b605ef0368b3e",
+      "public_sha256": "6ca9eae92f133f1809e66e534ed5865a287fbbc9347e4170b87192b36274b899"
+    }
+  ]
+}
