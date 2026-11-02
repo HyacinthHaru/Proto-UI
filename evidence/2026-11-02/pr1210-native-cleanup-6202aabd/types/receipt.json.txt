@@ -1,0 +1,18 @@
+{
+  "kind": "tool-observed-exit-and-source-binding",
+  "head": "6202aabd11b7964614a4cad4e7aa0afbeb4c3409",
+  "tree": "3e13d7f0f650e1d5fad66c9ce3f0b9382008142c",
+  "command": "corepack pnpm@10.32.1 check:types",
+  "observedUnifiedExecSession": 90983,
+  "exitCode": 0,
+  "astroSummary": {
+    "files": 1086,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 24
+  },
+  "cleanAfter": true,
+  "rawSHA256": "f9b3a068908029bc04084278d669546170d9953fe9423900d4aacca81465ab7d",
+  "publicSHA256": "5d48a18f01ae00251fe0c40cde20ec581f99b5a0d96e8fa7f0a18f765894086c",
+  "limits": "Local Node24.21.0/macOSarm64; original preparation/build steps as in raw log; not a44-package full build or hosted CI"
+}

@@ -1,0 +1,143 @@
+
+> proto-ui@ check:types $SOURCE_ROOT
+> corepack pnpm@10.32.1 --filter apps-www generate:proto-ui-style && corepack pnpm@10.32.1 -s check:types:workspace && corepack pnpm@10.32.1 -s check:types:docs
+
+
+> apps-www@0.0.1 generate:proto-ui-style $SOURCE_ROOT/apps/www
+> node ./scripts/generate-cli-init-docs.mjs && node ../../packages/cli/bin/proto-ui.js theme shadcn --out ./src/styles/shadcn-theme.css && node ./scripts/generate-website-prototype-tokens.mjs && node ../../packages/cli/bin/proto-ui.js style --out ./src/styles/proto-ui-style.css --theme-import ./shadcn-theme.css --tokens-import ./proto-ui-tokens.generated.css
+
+[docs] extracted real @proto.ui/cli@0.3.0-alpha.1 init: 4 files
+[proto-ui] theme(shadcn): wrote src/styles/shadcn-theme.css
+[website-prototypes] generated one style sheet and its Shadow companion from 1415 package + website tokens
+[proto-ui] style: wrote src/styles/proto-ui-style.css
+[docs] extracted real @proto.ui/cli@0.3.0-alpha.1 init: 4 files
+[proto-ui] theme(shadcn): wrote src/styles/shadcn-theme.css
+[website-prototypes] generated one style sheet and its Shadow companion from 1415 package + website tokens
+[proto-ui] style: wrote src/styles/proto-ui-style.css
+21:55:32 [vite] Re-optimizing dependencies because vite config has changed
+21:55:32 [content] Syncing content
+21:55:32 [content] Synced content
+21:55:32 [types] Generated 301ms
+21:55:32 [check] Getting diagnostics for Astro files in $SOURCE_ROOT/apps/www...
+scripts/audit-brutalist-contrast.mts:871:23 - warning ts(6385): 'clip' is deprecated.
+
+871             if (style.clip !== 'auto' || style.clipPath !== 'none' || style.maskImage !== 'none')
+                          ~~~~
+
+scripts/capture-whitepaper-diagram-evidence.mjs:661:17 - warning ts(2568): Property 'error' may not exist on type '{ theme: string; svgSha256: any; sourceSha256: any; expectedDimensions: { width: any; height: any; }; errors: any[]; screenshots: never[]; outcome: string; initialViewport?: any; id: string; figure: any; revision: string; ... 6 more ...; scenario: "standard" | ... 4 more ... | "landscape-390"; }'. Did you mean 'errors'?
+
+661           entry.error = String(error);
+                    ~~~~~
+
+scripts/contrast-probe.browser.ts:550:15 - warning ts(6385): 'clip' is deprecated.
+
+550     if (style.clip !== 'auto') limits.push('unsupported-legacy-clip');
+                  ~~~~
+
+scripts/reading-reference-collector.mjs:457:32 - warning ts(6385): 'platform' is deprecated.
+
+457       platform: navigatorInfo?.platform ?? null,
+                                   ~~~~~~~~
+
+src/components/library-liquid-scene.test.ts:129:9 - warning ts(6133): 'f' is declared but its value is never read.
+
+129   const f = fixture(),
+            ~
+
+src/components/site-command-icons.dependencies.test.ts:49:72 - warning ts(6385): 'isTypeOnly' is deprecated.
+
+49       if (ts.isImportDeclaration(statement) && statement.importClause?.isTypeOnly) continue;
+                                                                          ~~~~~~~~~~
+
+src/components/site-header-startup-handoff.test.ts:19:13 - warning ts(6133): 'root' is declared but its value is never read.
+
+19     const { root, summary, cell, button } = fixture();
+               ~~~~
+
+src/components/site-search-composition.test.ts:610:42 - warning ts(80007): 'await' has no effect on the type of this expression.
+
+610       if (typeof cleanup === 'function') await cleanup();
+                                             ~~~~~~~~~~~~~~~
+src/components/site-search-composition.test.ts:487:42 - warning ts(80007): 'await' has no effect on the type of this expression.
+
+487       if (typeof cleanup === 'function') await cleanup();
+                                             ~~~~~~~~~~~~~~~
+src/components/site-search-composition.test.ts:359:11 - warning ts(80006): This may be converted to an async function.
+
+359           setChildren(ref, children) {
+              ~~~~~~~~~~~
+
+src/components/site-sidebar-disclosure-bootstrap.js:51:44 - warning ts(6133): 'id' is declared but its value is never read.
+
+51   const known = new Set(identities.filter((id, index) => managed[index]));
+                                              ~~
+
+src/components/site-startup-paint.ts:6:1 - warning ts(6133): 'SiteLibraryFamily' is declared but its value is never read.
+
+6 import type { SiteLibraryFamily } from './site-library-family';
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/components/PrototypePreviewer/demo-renderer.ts:337:10 - warning ts(6133): 'collectDemoRefs' is declared but its value is never read.
+
+337 function collectDemoRefs(host: HTMLElement): Record<string, HTMLElement> {
+             ~~~~~~~~~~~~~~~
+
+src/components/PrototypePreviewer/preview-material-rebind.test.ts:118:9 - warning ts(6133): 'events' is declared but its value is never read.
+
+118   const events: string[] = [];
+            ~~~~~~
+src/components/PrototypePreviewer/preview-material-rebind.test.ts:3:36 - warning ts(6196): 'VisualFeedbackSink' is declared but never used.
+
+3 import type { VisualFeedbackFrame, VisualFeedbackSink } from '@proto.ui/module-feedback';
+                                     ~~~~~~~~~~~~~~~~~~
+
+src/components/PrototypePreviewer/projection-composition.dynamic-children.test.ts:316:45 - warning ts(6133): 'refs' is declared but its value is never read.
+
+316     const subscribePublicInstances = vi.fn((refs, listener) => {
+                                                ~~~~
+
+src/content/docs/zh-cn/code-scroll-chain.browser.test.ts:42:22 - warning ts(6133): 'page' is declared but its value is never read.
+
+42 async function facts(page: Page, pre: Locator) {
+                        ~~~~
+
+src/content/docs/zh-cn/code-surfaces.browser.test.ts:401:28 - warning ts(6387): The signature '(x: number, y: number): Range | null' of 'document.caretRangeFromPoint' is deprecated.
+
+401     const range = document.caretRangeFromPoint?.(point.x, point.y);
+                               ~~~~~~~~~~~~~~~~~~~
+
+src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts:54:3 - warning ts(6133): 'family' is declared but its value is never read.
+
+54   family: string,
+     ~~~~~~
+
+src/content/docs/zh-cn/demo-liquid-glass-prominent-tint.browser.test.ts:26:8 - warning ts(6133): 'TintPair' is declared but its value is never read.
+
+26   type TintPair,
+          ~~~~~~~~
+
+src/content/docs/zh-cn/finf-representative-features.browser.test.ts:335:3 - warning ts(6133): 'page' is declared but its value is never read.
+
+335   page: Page,
+      ~~~~
+
+src/content/docs/zh-cn/library-card-font-trace.ts:61:28 - warning ts(6385): 'fontStretch' is deprecated.
+
+61           fontStretch: css.fontStretch,
+                              ~~~~~~~~~~~
+
+src/content/docs/zh-cn/site-native-links.browser.test.ts:2011:15 - warning ts(6133): 'family' is declared but its value is never read.
+
+2011   for (const [family, route] of [
+                   ~~~~~~
+
+src/content/docs/zh-cn/site-typography.browser.test.ts:917:22 - warning ts(6133): 'context' is declared but its value is never read.
+
+917         async (page, context, record) => {
+                         ~~~~~~~
+
+Result (1086 files): 
+- 0 errors
+- 0 warnings
+- 24 hints
+
