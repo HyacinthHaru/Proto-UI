@@ -1,0 +1,248 @@
+[
+  {
+    "path": "controlled/brutalist-synchronous-failure.png",
+    "raw_sha256": "56b39c9e1e166c39d08f8cd9a87a953d21d57f3d924f3a6987cfb6438992a3e7",
+    "public_sha256": "56b39c9e1e166c39d08f8cd9a87a953d21d57f3d924f3a6987cfb6438992a3e7",
+    "unchanged": true
+  },
+  {
+    "path": "controlled/summary.json",
+    "raw_sha256": "61297a4acb4f59a7c26800f7b0ca2d74e9fbfdce4e4581d06b0ccaaa71051478",
+    "public_sha256": "61297a4acb4f59a7c26800f7b0ca2d74e9fbfdce4e4581d06b0ccaaa71051478",
+    "unchanged": true
+  },
+  {
+    "path": "controlled/shadcn-synchronous.json",
+    "raw_sha256": "a43c1daa6aeacfed95dfbe93e4854f1ba40717183f57e2ee56d61b7d03b19a9e",
+    "public_sha256": "a43c1daa6aeacfed95dfbe93e4854f1ba40717183f57e2ee56d61b7d03b19a9e",
+    "unchanged": true
+  },
+  {
+    "path": "controlled/shadcn-synchronous-failure.png",
+    "raw_sha256": "8352b111dc29bbde0386056e09aa4b2c3a74d388edd3cb997d543ca2f3e0d0da",
+    "public_sha256": "8352b111dc29bbde0386056e09aa4b2c3a74d388edd3cb997d543ca2f3e0d0da",
+    "unchanged": true
+  },
+  {
+    "path": "controlled/shadcn-asynchronous.json",
+    "raw_sha256": "fd896e2e3d4d95656e2900b9be4fdbd9820df6eb5671ba6ba230950770cba363",
+    "public_sha256": "fd896e2e3d4d95656e2900b9be4fdbd9820df6eb5671ba6ba230950770cba363",
+    "unchanged": true
+  },
+  {
+    "path": "controlled/brutalist-synchronous.json",
+    "raw_sha256": "91075b55dcf45e1fec53055bf3ab668cfd5f1cdba0595a0369f41b9b63f295a8",
+    "public_sha256": "91075b55dcf45e1fec53055bf3ab668cfd5f1cdba0595a0369f41b9b63f295a8",
+    "unchanged": true
+  },
+  {
+    "path": "controlled/brutalist-refused.png",
+    "raw_sha256": "bc285839074625685b4b4d036cf21b79ae2ad10996960018107892d3c09efa28",
+    "public_sha256": "bc285839074625685b4b4d036cf21b79ae2ad10996960018107892d3c09efa28",
+    "unchanged": true
+  },
+  {
+    "path": "controlled/brutalist-asynchronous-failure.png",
+    "raw_sha256": "01d216db9aba04cefa0c8106f00bf3a8977443a765c6934a4c04556a7f6f2e54",
+    "public_sha256": "01d216db9aba04cefa0c8106f00bf3a8977443a765c6934a4c04556a7f6f2e54",
+    "unchanged": true
+  },
+  {
+    "path": "controlled/shadcn-asynchronous-failure.png",
+    "raw_sha256": "8352b111dc29bbde0386056e09aa4b2c3a74d388edd3cb997d543ca2f3e0d0da",
+    "public_sha256": "8352b111dc29bbde0386056e09aa4b2c3a74d388edd3cb997d543ca2f3e0d0da",
+    "unchanged": true
+  },
+  {
+    "path": "controlled/shadcn-refused.json",
+    "raw_sha256": "4d5cb078155e22adde5121ef444c6d0abb25c5d97873c8bbd99ef28c7ca90fd9",
+    "public_sha256": "4d5cb078155e22adde5121ef444c6d0abb25c5d97873c8bbd99ef28c7ca90fd9",
+    "unchanged": true
+  },
+  {
+    "path": "controlled/brutalist-asynchronous.json",
+    "raw_sha256": "7c7ccfe952712878543b237e6a94a74bb257df32f204e5027bc2349fdbb6e33e",
+    "public_sha256": "7c7ccfe952712878543b237e6a94a74bb257df32f204e5027bc2349fdbb6e33e",
+    "unchanged": true
+  },
+  {
+    "path": "controlled/brutalist-refused.json",
+    "raw_sha256": "b812afd4aa687e3180a126cd8f24f879959fa07620f8611ed2745c75fcf05592",
+    "public_sha256": "b812afd4aa687e3180a126cd8f24f879959fa07620f8611ed2745c75fcf05592",
+    "unchanged": true
+  },
+  {
+    "path": "controlled/shadcn-refused.png",
+    "raw_sha256": "3c7f150b394964f0e08ebf58e271ff3cc25824c276c7f815a30f5be5594306bb",
+    "public_sha256": "3c7f150b394964f0e08ebf58e271ff3cc25824c276c7f815a30f5be5594306bb",
+    "unchanged": true
+  },
+  {
+    "path": "controlled-v2/summary.json",
+    "raw_sha256": "7b1e4925097d9387d4a14a58eb622ff91d80dfc7bae180b7760cb82e9c036b5e",
+    "public_sha256": "7b1e4925097d9387d4a14a58eb622ff91d80dfc7bae180b7760cb82e9c036b5e",
+    "unchanged": true
+  },
+  {
+    "path": "controlled-v2/shadcn-synchronous.json",
+    "raw_sha256": "c9b180b64b4438e970e8b72eaf707e08496ae7f053c0794a217ae5f5194cd21a",
+    "public_sha256": "c9b180b64b4438e970e8b72eaf707e08496ae7f053c0794a217ae5f5194cd21a",
+    "unchanged": true
+  },
+  {
+    "path": "controlled-v2/shadcn-asynchronous.json",
+    "raw_sha256": "0e0c74acceaad6e1e9a146133422b7a699f2556a3558259659daae5ef7c5f2c3",
+    "public_sha256": "0e0c74acceaad6e1e9a146133422b7a699f2556a3558259659daae5ef7c5f2c3",
+    "unchanged": true
+  },
+  {
+    "path": "controlled-v2/brutalist-synchronous.json",
+    "raw_sha256": "8a6eefdf4c6e32910a31a33f80e6c6e982f026c187bbd09f1dda0236ed710612",
+    "public_sha256": "8a6eefdf4c6e32910a31a33f80e6c6e982f026c187bbd09f1dda0236ed710612",
+    "unchanged": true
+  },
+  {
+    "path": "controlled-v2/brutalist-refused.png",
+    "raw_sha256": "bc285839074625685b4b4d036cf21b79ae2ad10996960018107892d3c09efa28",
+    "public_sha256": "bc285839074625685b4b4d036cf21b79ae2ad10996960018107892d3c09efa28",
+    "unchanged": true
+  },
+  {
+    "path": "controlled-v2/shadcn-synchronous.png",
+    "raw_sha256": "aaab00d0a8a56076a859cb0cff9d83bb7b6be8fcfc040923a42501c496501be6",
+    "public_sha256": "aaab00d0a8a56076a859cb0cff9d83bb7b6be8fcfc040923a42501c496501be6",
+    "unchanged": true
+  },
+  {
+    "path": "controlled-v2/brutalist-asynchronous.png",
+    "raw_sha256": "a604cbc0999807aac94fde94d7dd11e144b5935ab251823a4c2055cc18c2558c",
+    "public_sha256": "a604cbc0999807aac94fde94d7dd11e144b5935ab251823a4c2055cc18c2558c",
+    "unchanged": true
+  },
+  {
+    "path": "controlled-v2/shadcn-refused.json",
+    "raw_sha256": "b0a6dd3ec4f7ca80d0d77523322983fdf3f360c090cd4ea8e540dbe18c064134",
+    "public_sha256": "b0a6dd3ec4f7ca80d0d77523322983fdf3f360c090cd4ea8e540dbe18c064134",
+    "unchanged": true
+  },
+  {
+    "path": "controlled-v2/brutalist-asynchronous.json",
+    "raw_sha256": "c0a9803997105490716ed41a17ad48de5ede990d0dc2682b09d4a45e5744cec4",
+    "public_sha256": "c0a9803997105490716ed41a17ad48de5ede990d0dc2682b09d4a45e5744cec4",
+    "unchanged": true
+  },
+  {
+    "path": "controlled-v2/shadcn-asynchronous.png",
+    "raw_sha256": "dc121a25923d79f8fffbbd6793bf3f4bfcb53263c66e4194ba9bb02219439daa",
+    "public_sha256": "dc121a25923d79f8fffbbd6793bf3f4bfcb53263c66e4194ba9bb02219439daa",
+    "unchanged": true
+  },
+  {
+    "path": "controlled-v2/brutalist-refused.json",
+    "raw_sha256": "be28da9215208360c2da23e1617fd3c5a4a4d2213e4b1d279c77cdafddef9edb",
+    "public_sha256": "be28da9215208360c2da23e1617fd3c5a4a4d2213e4b1d279c77cdafddef9edb",
+    "unchanged": true
+  },
+  {
+    "path": "controlled-v2/shadcn-refused.png",
+    "raw_sha256": "c3882aa9eff5808f847fb0d491ddcb74b14409b1b9dee4fc4fa01221cf5be8e4",
+    "public_sha256": "c3882aa9eff5808f847fb0d491ddcb74b14409b1b9dee4fc4fa01221cf5be8e4",
+    "unchanged": true
+  },
+  {
+    "path": "controlled-v2/brutalist-synchronous.png",
+    "raw_sha256": "760a3b92e163548d4c85f65c2953fd83b323f57db2ad48c29888a9c074506d63",
+    "public_sha256": "760a3b92e163548d4c85f65c2953fd83b323f57db2ad48c29888a9c074506d63",
+    "unchanged": true
+  },
+  {
+    "path": "reparent/desktop.png",
+    "raw_sha256": "c771fc0b3ee70b67e9deb01eddc7b81711b62e2a5486a07e495768badffd2005",
+    "public_sha256": "c771fc0b3ee70b67e9deb01eddc7b81711b62e2a5486a07e495768badffd2005",
+    "unchanged": true
+  },
+  {
+    "path": "reparent/result.json",
+    "raw_sha256": "0911328ba4b4966124e9a631c97fa585e0ca6125974bd7dfa847c6a65ba0a58a",
+    "public_sha256": "0911328ba4b4966124e9a631c97fa585e0ca6125974bd7dfa847c6a65ba0a58a",
+    "unchanged": true
+  },
+  {
+    "path": "reparent/failure.png",
+    "raw_sha256": "a984ce94deda93bac169a6d46992906d86fe809cdf37fe44e4e4d4fe4d3d7da6",
+    "public_sha256": "a984ce94deda93bac169a6d46992906d86fe809cdf37fe44e4e4d4fe4d3d7da6",
+    "unchanged": true
+  },
+  {
+    "path": "reparent-v2/desktop.png",
+    "raw_sha256": "c771fc0b3ee70b67e9deb01eddc7b81711b62e2a5486a07e495768badffd2005",
+    "public_sha256": "c771fc0b3ee70b67e9deb01eddc7b81711b62e2a5486a07e495768badffd2005",
+    "unchanged": true
+  },
+  {
+    "path": "reparent-v2/result.json",
+    "raw_sha256": "9869147a445c4e1955b5108b96d6f3d71a9337c42eb3b3b44db170f4e6962801",
+    "public_sha256": "9869147a445c4e1955b5108b96d6f3d71a9337c42eb3b3b44db170f4e6962801",
+    "unchanged": true
+  },
+  {
+    "path": "reparent-v2/compact.png",
+    "raw_sha256": "b99359acfb82c0ff9584b6d165b972d776556bc3c6b606a6c278f2f47c29a209",
+    "public_sha256": "b99359acfb82c0ff9584b6d165b972d776556bc3c6b606a6c278f2f47c29a209",
+    "unchanged": true
+  },
+  {
+    "path": "reparent-v2/desktop-return.png",
+    "raw_sha256": "6b240fe0031f87e0c79dafdfd206e52add373771dff79ac858269526307ac452",
+    "public_sha256": "6b240fe0031f87e0c79dafdfd206e52add373771dff79ac858269526307ac452",
+    "unchanged": true
+  },
+  {
+    "path": "native-controlled-v1.cjs",
+    "raw_sha256": "57fa94746946e543fd30abea7b79f1c666a62ea35020529ddc7671ea0df95efd",
+    "public_sha256": "aa004bc6b6ee3ac3c2a52587b5ae05f0c15aa7d52409375cf111a93ee6346948",
+    "unchanged": false
+  },
+  {
+    "path": "native-controlled.cjs",
+    "raw_sha256": "f687863011b715a308f8fa12ab2b1260b4192325ddac9cce21d57ab78651ccf2",
+    "public_sha256": "facad4b3710a1f6303ec8f90288d8d72ccb7dce55e59cd9f5aa1a11e9091b91e",
+    "unchanged": false
+  },
+  {
+    "path": "native-reparent-v1.cjs",
+    "raw_sha256": "8b953ce87d12450f50bf61ed878dbcc89a6be61f35921a33a531d6e31907f4eb",
+    "public_sha256": "012420bd34db2f65ee71eb514d23861ac4275f55effe8bb227e5b0d99dcc05ac",
+    "unchanged": false
+  },
+  {
+    "path": "native-reparent.cjs",
+    "raw_sha256": "9c6144ebae15662cc04ad4f52072537e1e57f3ea8933f177b2a5587721cb8cdc",
+    "public_sha256": "30dbb39509b29d3dcb95daae359ddcc728f2fadd4a343796cfa5bcc0e2bd1372",
+    "unchanged": false
+  },
+  {
+    "path": "controlled.log",
+    "raw_sha256": "91d2c82fc4ef32571343feffca894ec92c369e5bc876eb118888e1b70a094b2d",
+    "public_sha256": "91d2c82fc4ef32571343feffca894ec92c369e5bc876eb118888e1b70a094b2d",
+    "unchanged": true
+  },
+  {
+    "path": "controlled-v2.log",
+    "raw_sha256": "098c41cdfc4b88aaf16dc0890cb433a8d51e1a46f3a8afce2a1a6a2ba351aa31",
+    "public_sha256": "098c41cdfc4b88aaf16dc0890cb433a8d51e1a46f3a8afce2a1a6a2ba351aa31",
+    "unchanged": true
+  },
+  {
+    "path": "reparent.log",
+    "raw_sha256": "5ab246725d1f0c985136932b0c09e6581527fcd8fba01b7202008ca8179117f6",
+    "public_sha256": "5ab246725d1f0c985136932b0c09e6581527fcd8fba01b7202008ca8179117f6",
+    "unchanged": true
+  },
+  {
+    "path": "reparent-v2.log",
+    "raw_sha256": "0e3253fb332e7fa28ff645e28fa00c4c171ad022791b47872ac5c3359e09fb33",
+    "public_sha256": "0e3253fb332e7fa28ff645e28fa00c4c171ad022791b47872ac5c3359e09fb33",
+    "unchanged": true
+  }
+]
