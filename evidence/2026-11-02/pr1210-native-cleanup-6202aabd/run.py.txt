@@ -1,0 +1,24 @@
+import subprocess,os,time,json,signal,hashlib
+from pathlib import Path
+out=Path('$EVIDENCE_ROOT');cwd=Path.cwd();head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip();assert head=='6202aabd11b7964614a4cad4e7aa0afbeb4c3409';assert not subprocess.check_output(['git','status','--porcelain'],text=True).strip();source=cwd/'apps/www/scripts/capture-mobile-interaction-evidence.ts';env=os.environ.copy();env['PATH']='$NODE_BIN:/opt/homebrew/bin:'+env['PATH'];env['CHROME_PATH']='$CHROME_PATH';env.pop('PROTO_UI_BROWSER_BASE_URL',None)
+argv=['node','--import','tsx',str(source),'--revision-kind','candidate','--expected-revision',head,'--out',str(out/'observed')];receipt={'head':head,'argv':argv,'scriptSHA256':hashlib.sha256(source.read_bytes()).hexdigest(),'budgetSeconds':360,'startUTC':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime())};(out/'launch.json').write_text(json.dumps(receipt,indent=2)+'\n');start=time.monotonic();timed=False;groups=[]
+with (out/'run.log').open('w') as log:
+ p=subprocess.Popen(argv,stdout=log,stderr=subprocess.STDOUT,env=env,start_new_session=True)
+ try:p.wait(timeout=360)
+ except subprocess.TimeoutExpired:
+  timed=True;rows=[list(map(int,l.split())) for l in subprocess.check_output(['ps','-axo','pid=,ppid='],text=True).splitlines()];owned={p.pid}
+  while True:
+   extra={pid for pid,ppid in rows if ppid in owned};n=owned|extra
+   if n==owned:break
+   owned=n
+  groups=list({os.getpgid(pid) for pid in owned if Path('/proc').exists() or pid in {a[0] for a in rows}}-{os.getpgrp()})
+  for g in groups:
+   try:os.killpg(g,signal.SIGTERM)
+   except ProcessLookupError:pass
+  try:p.wait(timeout=10)
+  except subprocess.TimeoutExpired:
+   for g in groups:
+    try:os.killpg(g,signal.SIGKILL)
+    except ProcessLookupError:pass
+   p.wait()
+receipt.update({'exitCode':p.returncode,'timedOut':timed,'elapsedSeconds':time.monotonic()-start,'cleanupOwnedGroups':groups,'endUTC':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),'sourceUnchanged':receipt['scriptSHA256']==hashlib.sha256(source.read_bytes()).hexdigest(),'statusAfter':subprocess.check_output(['git','status','--porcelain'],text=True).strip()});(out/'receipt.json').write_text(json.dumps(receipt,indent=2)+'\n');print(json.dumps(receipt));raise SystemExit(124 if timed else p.returncode)

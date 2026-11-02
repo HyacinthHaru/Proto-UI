@@ -1,0 +1,92 @@
+[mobile-evidence-lifecycle] {"stage":"server-start-requested","at":"2026-11-02T13:47:35.950Z","activeResources":["CloseReq"]}
+[server-readiness] 2026-11-02T13:47:35.957Z http://127.0.0.1:56124/zh-cn/ attempt=1 requestMs=4 totalMs=4 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:36.209Z http://127.0.0.1:56124/zh-cn/ attempt=2 requestMs=1 totalMs=256 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:36.460Z http://127.0.0.1:56124/zh-cn/ attempt=3 requestMs=1 totalMs=507 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:36.712Z http://127.0.0.1:56124/zh-cn/ attempt=4 requestMs=1 totalMs=759 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:36.963Z http://127.0.0.1:56124/zh-cn/ attempt=5 requestMs=1 totalMs=1010 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:37.214Z http://127.0.0.1:56124/zh-cn/ attempt=6 requestMs=0 totalMs=1261 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:37.466Z http://127.0.0.1:56124/zh-cn/ attempt=7 requestMs=1 totalMs=1513 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:37.717Z http://127.0.0.1:56124/zh-cn/ attempt=8 requestMs=0 totalMs=1764 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:37.969Z http://127.0.0.1:56124/zh-cn/ attempt=9 requestMs=1 totalMs=2016 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:38.220Z http://127.0.0.1:56124/zh-cn/ attempt=10 requestMs=0 totalMs=2267 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:38.470Z http://127.0.0.1:56124/zh-cn/ attempt=11 requestMs=0 totalMs=2517 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:38.722Z http://127.0.0.1:56124/zh-cn/ attempt=12 requestMs=0 totalMs=2769 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:38.973Z http://127.0.0.1:56124/zh-cn/ attempt=13 requestMs=0 totalMs=3020 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:39.225Z http://127.0.0.1:56124/zh-cn/ attempt=14 requestMs=1 totalMs=3272 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:39.476Z http://127.0.0.1:56124/zh-cn/ attempt=15 requestMs=1 totalMs=3523 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:39.727Z http://127.0.0.1:56124/zh-cn/ attempt=16 requestMs=0 totalMs=3774 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:39.978Z http://127.0.0.1:56124/zh-cn/ attempt=17 requestMs=1 totalMs=4025 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:40.229Z http://127.0.0.1:56124/zh-cn/ attempt=18 requestMs=0 totalMs=4276 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:40.480Z http://127.0.0.1:56124/zh-cn/ attempt=19 requestMs=0 totalMs=4527 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:40.732Z http://127.0.0.1:56124/zh-cn/ attempt=20 requestMs=1 totalMs=4779 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:40.983Z http://127.0.0.1:56124/zh-cn/ attempt=21 requestMs=1 totalMs=5030 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:41.234Z http://127.0.0.1:56124/zh-cn/ attempt=22 requestMs=0 totalMs=5281 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:41.485Z http://127.0.0.1:56124/zh-cn/ attempt=23 requestMs=0 totalMs=5532 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:41.737Z http://127.0.0.1:56124/zh-cn/ attempt=24 requestMs=1 totalMs=5784 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:41.988Z http://127.0.0.1:56124/zh-cn/ attempt=25 requestMs=1 totalMs=6035 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:42.239Z http://127.0.0.1:56124/zh-cn/ attempt=26 requestMs=0 totalMs=6286 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:42.490Z http://127.0.0.1:56124/zh-cn/ attempt=27 requestMs=0 totalMs=6537 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:42.742Z http://127.0.0.1:56124/zh-cn/ attempt=28 requestMs=1 totalMs=6789 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:42.992Z http://127.0.0.1:56124/zh-cn/ attempt=29 requestMs=0 totalMs=7039 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:43.244Z http://127.0.0.1:56124/zh-cn/ attempt=30 requestMs=1 totalMs=7291 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:43.495Z http://127.0.0.1:56124/zh-cn/ attempt=31 requestMs=1 totalMs=7542 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:43.746Z http://127.0.0.1:56124/zh-cn/ attempt=32 requestMs=0 totalMs=7793 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:43.996Z http://127.0.0.1:56124/zh-cn/ attempt=33 requestMs=0 totalMs=8043 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:44.248Z http://127.0.0.1:56124/zh-cn/ attempt=34 requestMs=1 totalMs=8295 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:44.499Z http://127.0.0.1:56124/zh-cn/ attempt=35 requestMs=1 totalMs=8546 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:44.750Z http://127.0.0.1:56124/zh-cn/ attempt=36 requestMs=0 totalMs=8797 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:45.001Z http://127.0.0.1:56124/zh-cn/ attempt=37 requestMs=0 totalMs=9048 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:45.252Z http://127.0.0.1:56124/zh-cn/ attempt=38 requestMs=0 totalMs=9299 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:45.503Z http://127.0.0.1:56124/zh-cn/ attempt=39 requestMs=0 totalMs=9550 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:45.755Z http://127.0.0.1:56124/zh-cn/ attempt=40 requestMs=1 totalMs=9802 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:46.006Z http://127.0.0.1:56124/zh-cn/ attempt=41 requestMs=1 totalMs=10053 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:46.257Z http://127.0.0.1:56124/zh-cn/ attempt=42 requestMs=0 totalMs=10304 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:46.508Z http://127.0.0.1:56124/zh-cn/ attempt=43 requestMs=0 totalMs=10555 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:46.760Z http://127.0.0.1:56124/zh-cn/ attempt=44 requestMs=1 totalMs=10807 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:47.011Z http://127.0.0.1:56124/zh-cn/ attempt=45 requestMs=1 totalMs=11058 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:47.262Z http://127.0.0.1:56124/zh-cn/ attempt=46 requestMs=0 totalMs=11309 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:47.513Z http://127.0.0.1:56124/zh-cn/ attempt=47 requestMs=0 totalMs=11560 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:47.765Z http://127.0.0.1:56124/zh-cn/ attempt=48 requestMs=1 totalMs=11812 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:48.015Z http://127.0.0.1:56124/zh-cn/ attempt=49 requestMs=0 totalMs=12062 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:48.266Z http://127.0.0.1:56124/zh-cn/ attempt=50 requestMs=0 totalMs=12313 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:48.517Z http://127.0.0.1:56124/zh-cn/ attempt=51 requestMs=1 totalMs=12564 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:48.768Z http://127.0.0.1:56124/zh-cn/ attempt=52 requestMs=0 totalMs=12815 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:49.019Z http://127.0.0.1:56124/zh-cn/ attempt=53 requestMs=0 totalMs=13066 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:49.270Z http://127.0.0.1:56124/zh-cn/ attempt=54 requestMs=1 totalMs=13317 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:49.521Z http://127.0.0.1:56124/zh-cn/ attempt=55 requestMs=1 totalMs=13568 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:49.773Z http://127.0.0.1:56124/zh-cn/ attempt=56 requestMs=1 totalMs=13820 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:50.024Z http://127.0.0.1:56124/zh-cn/ attempt=57 requestMs=1 totalMs=14071 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:50.274Z http://127.0.0.1:56124/zh-cn/ attempt=58 requestMs=0 totalMs=14321 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:50.525Z http://127.0.0.1:56124/zh-cn/ attempt=59 requestMs=0 totalMs=14572 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:50.777Z http://127.0.0.1:56124/zh-cn/ attempt=60 requestMs=1 totalMs=14824 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:51.028Z http://127.0.0.1:56124/zh-cn/ attempt=61 requestMs=1 totalMs=15075 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:51.279Z http://127.0.0.1:56124/zh-cn/ attempt=62 requestMs=1 totalMs=15326 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:51.529Z http://127.0.0.1:56124/zh-cn/ attempt=63 requestMs=0 totalMs=15576 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:51.780Z http://127.0.0.1:56124/zh-cn/ attempt=64 requestMs=1 totalMs=15827 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:52.031Z http://127.0.0.1:56124/zh-cn/ attempt=65 requestMs=1 totalMs=16078 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:52.282Z http://127.0.0.1:56124/zh-cn/ attempt=66 requestMs=0 totalMs=16329 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:52.533Z http://127.0.0.1:56124/zh-cn/ attempt=67 requestMs=0 totalMs=16580 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:52.785Z http://127.0.0.1:56124/zh-cn/ attempt=68 requestMs=1 totalMs=16832 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:53.035Z http://127.0.0.1:56124/zh-cn/ attempt=69 requestMs=0 totalMs=17082 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:53.286Z http://127.0.0.1:56124/zh-cn/ attempt=70 requestMs=0 totalMs=17333 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:53.537Z http://127.0.0.1:56124/zh-cn/ attempt=71 requestMs=1 totalMs=17584 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:53.789Z http://127.0.0.1:56124/zh-cn/ attempt=72 requestMs=1 totalMs=17836 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:54.040Z http://127.0.0.1:56124/zh-cn/ attempt=73 requestMs=0 totalMs=18087 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:54.292Z http://127.0.0.1:56124/zh-cn/ attempt=74 requestMs=1 totalMs=18339 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:54.543Z http://127.0.0.1:56124/zh-cn/ attempt=75 requestMs=1 totalMs=18590 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:54.794Z http://127.0.0.1:56124/zh-cn/ attempt=76 requestMs=0 totalMs=18841 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:55.046Z http://127.0.0.1:56124/zh-cn/ attempt=77 requestMs=0 totalMs=19093 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:55.298Z http://127.0.0.1:56124/zh-cn/ attempt=78 requestMs=1 totalMs=19345 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:55.549Z http://127.0.0.1:56124/zh-cn/ attempt=79 requestMs=1 totalMs=19596 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:55.800Z http://127.0.0.1:56124/zh-cn/ attempt=80 requestMs=0 totalMs=19847 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:56124
+[server-readiness] 2026-11-02T13:47:58.236Z http://127.0.0.1:56124/zh-cn/ attempt=81 requestMs=2186 totalMs=22283 HTTP 200 OK
+[server-readiness] 2026-11-02T13:47:58.550Z http://127.0.0.1:56124/en/ui-libraries/base/transition/ attempt=1 requestMs=314 totalMs=314 HTTP 200 OK
+[mobile-evidence-lifecycle] {"stage":"server-ready","at":"2026-11-02T13:47:58.550Z","activeResources":["PipeWrap","PipeWrap","ProcessWrap","TCPSocketWrap"]}
+[mobile-evidence-lifecycle] {"stage":"browser-ready","at":"2026-11-02T13:47:59.632Z","activeResources":["PipeWrap","PipeWrap","ProcessWrap","PipeWrap","PipeWrap","PipeWrap","PipeWrap","ProcessWrap"]}
+[mobile-evidence-lifecycle] {"stage":"cases-loop-finished","at":"2026-11-02T13:49:51.636Z","activeResources":["CloseReq","PipeWrap","PipeWrap","ProcessWrap","PipeWrap","PipeWrap","PipeWrap","PipeWrap","ProcessWrap"]}
+[mobile-evidence-lifecycle] {"stage":"browser-close-started","at":"2026-11-02T13:49:51.638Z","activeResources":["CloseReq","PipeWrap","PipeWrap","ProcessWrap","PipeWrap","PipeWrap","PipeWrap","PipeWrap","ProcessWrap"]}
+[mobile-evidence-lifecycle] {"stage":"browser-close-finished","at":"2026-11-02T13:49:51.694Z","activeResources":["PipeWrap","PipeWrap","ProcessWrap"]}
+[mobile-evidence-lifecycle] {"stage":"server-stop-started","at":"2026-11-02T13:49:51.695Z","activeResources":["CloseReq","PipeWrap","PipeWrap","ProcessWrap"]}
+[mobile-evidence-lifecycle] {"stage":"server-stop-finished","at":"2026-11-02T13:49:51.709Z","activeResources":["PipeWrap","PipeWrap","ProcessWrap"]}
+[mobile-evidence-lifecycle] {"stage":"assertions-complete","at":"2026-11-02T13:49:51.710Z","activeResources":["CloseReq","PipeWrap","PipeWrap"]}
+[mobile-evidence-lifecycle] {"stage":"process-before-exit","at":"2026-11-02T13:49:51.726Z","activeResources":[]}

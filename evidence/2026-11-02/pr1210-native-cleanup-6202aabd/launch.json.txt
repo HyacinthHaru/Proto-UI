@@ -1,0 +1,18 @@
+{
+  "head": "6202aabd11b7964614a4cad4e7aa0afbeb4c3409",
+  "argv": [
+    "node",
+    "--import",
+    "tsx",
+    "$SOURCE_ROOT/apps/www/scripts/capture-mobile-interaction-evidence.ts",
+    "--revision-kind",
+    "candidate",
+    "--expected-revision",
+    "6202aabd11b7964614a4cad4e7aa0afbeb4c3409",
+    "--out",
+    "$EVIDENCE_ROOT/observed"
+  ],
+  "scriptSHA256": "d0fba7cd9a6171c92ca85c354d4d98f2460a28b319ee3af57ff1ebbdbc257542",
+  "budgetSeconds": 360,
+  "startUTC": "2026-11-02T13:47:35Z"
+}

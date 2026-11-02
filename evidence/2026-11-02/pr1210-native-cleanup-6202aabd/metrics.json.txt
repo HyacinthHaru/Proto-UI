@@ -1,0 +1,2940 @@
+{
+  "quickPreview": false,
+  "revisionKind": "candidate",
+  "revision": "6202aabd11b7964614a4cad4e7aa0afbeb4c3409",
+  "scriptRevision": "6202aabd11b7964614a4cad4e7aa0afbeb4c3409",
+  "scriptSha256": "d0fba7cd9a6171c92ca85c354d4d98f2460a28b319ee3af57ff1ebbdbc257542",
+  "startedAt": "2026-11-02T13:47:35.948Z",
+  "procedure": "Clean exact checkout and actual public family atoms. Pointer/keyboard/wheel journeys include explicitly labelled click-only programmatic Menu activation and authored same-document history fixtures traversed through real browser Back. The labelled stress cases change host text size to 200%.",
+  "limits": "390/430 CSS-pixel mobile simulations, not a physical OnePlus 13T or complete assistive-technology/engine coverage. 320px/200% is stress-only.",
+  "cases": [
+    {
+      "id": "zh-cn-390-light",
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "locale": "zh-cn",
+      "screenshots": [
+        "zh-cn-390-light-navigation-open.png",
+        "zh-cn-390-light-react-click-only-close.png",
+        "zh-cn-390-light-react-history-close.png",
+        "zh-cn-390-light-vue-click-only-close.png",
+        "zh-cn-390-light-vue-history-close.png",
+        "zh-cn-390-light-vue2-click-only-close.png",
+        "zh-cn-390-light-vue2-history-close.png",
+        "zh-cn-390-light-wc-click-only-close.png",
+        "zh-cn-390-light-wc-history-close.png",
+        "zh-cn-390-light-code-expanded.png",
+        "zh-cn-390-light-copy-hover.png",
+        "zh-cn-390-light-copy-keyboard-focus.png",
+        "zh-cn-390-light-code-scrolled.png",
+        "zh-cn-390-light-code-short-natural.png"
+      ],
+      "pageErrors": [],
+      "menu": {
+        "left": 8,
+        "right": 382,
+        "top": 61,
+        "bottom": 531,
+        "width": 374,
+        "height": 470,
+        "headerBottom": 56,
+        "surface": "shadcn-surface-root",
+        "bodyHeight": 444,
+        "bodyOverflow": "auto",
+        "closeHeight": 44,
+        "extraCloseCount": 0,
+        "trailingSpace": 17,
+        "documentOverflow": 0
+      },
+      "navigationJourneys": "Escape, Enter/Space, single Header close, nested Select Escape, WC/React/Vue/Vue2 replacement, theme round trip, native navigation and browser Back",
+      "code": {
+        "height": 549,
+        "fullHeight": 720,
+        "width": 334,
+        "fullWidth": 1039,
+        "overflowX": "auto",
+        "documentOverflow": 0
+      },
+      "copyBackplate": {
+        "prototype": "shadcn-surface-root",
+        "alpha": 255,
+        "role": null,
+        "tabindex": null
+      },
+      "copy": "Exact raw source copied after native source scrolling",
+      "shortSourceFraming": {
+        "header": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 56,
+          "top": 0,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "scrollY": 4436,
+        "ancestors": [
+          {
+            "tag": "div",
+            "class": "site-page-frame bg-background text-foreground group/body overscroll-none font-sans antialiased [--footer-height:calc(var(--spacing)*14)] xl:[--footer-height:calc(var(--spacing)*24)] astro-ceehzq5e",
+            "position": "static",
+            "transform": "none",
+            "rect": {
+              "x": 0,
+              "y": -4436,
+              "width": 390,
+              "height": 7628.78125,
+              "top": -4436,
+              "right": 390,
+              "bottom": 3192.78125,
+              "left": 0
+            }
+          },
+          {
+            "tag": "header",
+            "class": "bg-background sticky top-0 z-50 w-full astro-ceehzq5e",
+            "position": "sticky",
+            "transform": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 56,
+              "top": 0,
+              "right": 390,
+              "bottom": 56,
+              "left": 0
+            }
+          },
+          {
+            "tag": "div",
+            "class": "bg-background container-wrapper flex flex-1 flex-col docs-shell astro-ceehzq5e",
+            "position": "static",
+            "transform": "none",
+            "rect": {
+              "x": 0,
+              "y": -4352,
+              "width": 390,
+              "height": 7544.78125,
+              "top": -4352,
+              "right": 390,
+              "bottom": 3192.78125,
+              "left": 0
+            }
+          }
+        ]
+      },
+      "shortCode": {
+        "height": 24,
+        "fullHeight": 24,
+        "lineHeight": 24,
+        "text": "npx @proto.ui/cli@latest add wc shadcn-button",
+        "documentOverflow": 0,
+        "copy": "Exact one-line command copied"
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "zh-cn-390-dark",
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "locale": "zh-cn",
+      "screenshots": [
+        "zh-cn-390-dark-navigation-open.png",
+        "zh-cn-390-dark-code-expanded.png",
+        "zh-cn-390-dark-copy-hover.png",
+        "zh-cn-390-dark-copy-keyboard-focus.png",
+        "zh-cn-390-dark-code-scrolled.png",
+        "zh-cn-390-dark-code-short-natural.png"
+      ],
+      "pageErrors": [],
+      "menu": {
+        "left": 8,
+        "right": 382,
+        "top": 61,
+        "bottom": 531,
+        "width": 374,
+        "height": 470,
+        "headerBottom": 56,
+        "surface": "shadcn-surface-root",
+        "bodyHeight": 444,
+        "bodyOverflow": "auto",
+        "closeHeight": 44,
+        "extraCloseCount": 0,
+        "trailingSpace": 17,
+        "documentOverflow": 0
+      },
+      "navigationJourneys": "Escape, Enter/Space, single Header close, nested Select Escape, WC/React/Vue/Vue2 replacement, theme round trip, native navigation and browser Back",
+      "code": {
+        "height": 549,
+        "fullHeight": 720,
+        "width": 334,
+        "fullWidth": 1039,
+        "overflowX": "auto",
+        "documentOverflow": 0
+      },
+      "copyBackplate": {
+        "prototype": "shadcn-surface-root",
+        "alpha": 255,
+        "role": null,
+        "tabindex": null
+      },
+      "copy": "Exact raw source copied after native source scrolling",
+      "shortSourceFraming": {
+        "header": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 56,
+          "top": 0,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "scrollY": 4436,
+        "ancestors": [
+          {
+            "tag": "div",
+            "class": "site-page-frame bg-background text-foreground group/body overscroll-none font-sans antialiased [--footer-height:calc(var(--spacing)*14)] xl:[--footer-height:calc(var(--spacing)*24)] astro-ceehzq5e",
+            "position": "static",
+            "transform": "none",
+            "rect": {
+              "x": 0,
+              "y": -4436,
+              "width": 390,
+              "height": 7628.78125,
+              "top": -4436,
+              "right": 390,
+              "bottom": 3192.78125,
+              "left": 0
+            }
+          },
+          {
+            "tag": "header",
+            "class": "bg-background sticky top-0 z-50 w-full astro-ceehzq5e",
+            "position": "sticky",
+            "transform": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 56,
+              "top": 0,
+              "right": 390,
+              "bottom": 56,
+              "left": 0
+            }
+          },
+          {
+            "tag": "div",
+            "class": "bg-background container-wrapper flex flex-1 flex-col docs-shell astro-ceehzq5e",
+            "position": "static",
+            "transform": "none",
+            "rect": {
+              "x": 0,
+              "y": -4352,
+              "width": 390,
+              "height": 7544.78125,
+              "top": -4352,
+              "right": 390,
+              "bottom": 3192.78125,
+              "left": 0
+            }
+          }
+        ]
+      },
+      "shortCode": {
+        "height": 24,
+        "fullHeight": 24,
+        "lineHeight": 24,
+        "text": "npx @proto.ui/cli@latest add wc shadcn-button",
+        "documentOverflow": 0,
+        "copy": "Exact one-line command copied"
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "en-390-light",
+      "width": 390,
+      "height": 844,
+      "theme": "light",
+      "locale": "en",
+      "screenshots": [
+        "en-390-light-navigation-open.png",
+        "en-390-light-code-expanded.png",
+        "en-390-light-copy-hover.png",
+        "en-390-light-copy-keyboard-focus.png",
+        "en-390-light-code-scrolled.png",
+        "en-390-light-code-short-natural.png"
+      ],
+      "pageErrors": [],
+      "menu": {
+        "left": 8,
+        "right": 382,
+        "top": 61,
+        "bottom": 531,
+        "width": 374,
+        "height": 470,
+        "headerBottom": 56,
+        "surface": "shadcn-surface-root",
+        "bodyHeight": 444,
+        "bodyOverflow": "auto",
+        "closeHeight": 44,
+        "extraCloseCount": 0,
+        "trailingSpace": 17,
+        "documentOverflow": 0
+      },
+      "navigationJourneys": "Escape, Enter/Space, single Header close, nested Select Escape, WC/React/Vue/Vue2 replacement, theme round trip, native navigation and browser Back",
+      "code": {
+        "height": 549,
+        "fullHeight": 720,
+        "width": 334,
+        "fullWidth": 1039,
+        "overflowX": "auto",
+        "documentOverflow": 0
+      },
+      "copyBackplate": {
+        "prototype": "shadcn-surface-root",
+        "alpha": 255,
+        "role": null,
+        "tabindex": null
+      },
+      "copy": "Exact raw source copied after native source scrolling",
+      "shortSourceFraming": {
+        "header": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 56,
+          "top": 0,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "scrollY": 5086,
+        "ancestors": [
+          {
+            "tag": "div",
+            "class": "site-page-frame bg-background text-foreground group/body overscroll-none font-sans antialiased [--footer-height:calc(var(--spacing)*14)] xl:[--footer-height:calc(var(--spacing)*24)] astro-ceehzq5e",
+            "position": "static",
+            "transform": "none",
+            "rect": {
+              "x": 0,
+              "y": -5086,
+              "width": 390,
+              "height": 8675.890625,
+              "top": -5086,
+              "right": 390,
+              "bottom": 3589.890625,
+              "left": 0
+            }
+          },
+          {
+            "tag": "header",
+            "class": "bg-background sticky top-0 z-50 w-full astro-ceehzq5e",
+            "position": "sticky",
+            "transform": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 56,
+              "top": 0,
+              "right": 390,
+              "bottom": 56,
+              "left": 0
+            }
+          },
+          {
+            "tag": "div",
+            "class": "bg-background container-wrapper flex flex-1 flex-col docs-shell astro-ceehzq5e",
+            "position": "static",
+            "transform": "none",
+            "rect": {
+              "x": 0,
+              "y": -5002,
+              "width": 390,
+              "height": 8591.890625,
+              "top": -5002,
+              "right": 390,
+              "bottom": 3589.890625,
+              "left": 0
+            }
+          }
+        ]
+      },
+      "shortCode": {
+        "height": 24,
+        "fullHeight": 24,
+        "lineHeight": 24,
+        "text": "npx @proto.ui/cli@latest add wc shadcn-button",
+        "documentOverflow": 0,
+        "copy": "Exact one-line command copied"
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "en-390-dark",
+      "width": 390,
+      "height": 844,
+      "theme": "dark",
+      "locale": "en",
+      "screenshots": [
+        "en-390-dark-navigation-open.png",
+        "en-390-dark-code-expanded.png",
+        "en-390-dark-copy-hover.png",
+        "en-390-dark-copy-keyboard-focus.png",
+        "en-390-dark-code-scrolled.png",
+        "en-390-dark-code-short-natural.png"
+      ],
+      "pageErrors": [],
+      "menu": {
+        "left": 8,
+        "right": 382,
+        "top": 61,
+        "bottom": 531,
+        "width": 374,
+        "height": 470,
+        "headerBottom": 56,
+        "surface": "shadcn-surface-root",
+        "bodyHeight": 444,
+        "bodyOverflow": "auto",
+        "closeHeight": 44,
+        "extraCloseCount": 0,
+        "trailingSpace": 17,
+        "documentOverflow": 0
+      },
+      "navigationJourneys": "Escape, Enter/Space, single Header close, nested Select Escape, WC/React/Vue/Vue2 replacement, theme round trip, native navigation and browser Back",
+      "code": {
+        "height": 549,
+        "fullHeight": 720,
+        "width": 334,
+        "fullWidth": 1039,
+        "overflowX": "auto",
+        "documentOverflow": 0
+      },
+      "copyBackplate": {
+        "prototype": "shadcn-surface-root",
+        "alpha": 255,
+        "role": null,
+        "tabindex": null
+      },
+      "copy": "Exact raw source copied after native source scrolling",
+      "shortSourceFraming": {
+        "header": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 56,
+          "top": 0,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "scrollY": 5086,
+        "ancestors": [
+          {
+            "tag": "div",
+            "class": "site-page-frame bg-background text-foreground group/body overscroll-none font-sans antialiased [--footer-height:calc(var(--spacing)*14)] xl:[--footer-height:calc(var(--spacing)*24)] astro-ceehzq5e",
+            "position": "static",
+            "transform": "none",
+            "rect": {
+              "x": 0,
+              "y": -5086,
+              "width": 390,
+              "height": 8675.890625,
+              "top": -5086,
+              "right": 390,
+              "bottom": 3589.890625,
+              "left": 0
+            }
+          },
+          {
+            "tag": "header",
+            "class": "bg-background sticky top-0 z-50 w-full astro-ceehzq5e",
+            "position": "sticky",
+            "transform": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 56,
+              "top": 0,
+              "right": 390,
+              "bottom": 56,
+              "left": 0
+            }
+          },
+          {
+            "tag": "div",
+            "class": "bg-background container-wrapper flex flex-1 flex-col docs-shell astro-ceehzq5e",
+            "position": "static",
+            "transform": "none",
+            "rect": {
+              "x": 0,
+              "y": -5002,
+              "width": 390,
+              "height": 8591.890625,
+              "top": -5002,
+              "right": 390,
+              "bottom": 3589.890625,
+              "left": 0
+            }
+          }
+        ]
+      },
+      "shortCode": {
+        "height": 24,
+        "fullHeight": 24,
+        "lineHeight": 24,
+        "text": "npx @proto.ui/cli@latest add wc shadcn-button",
+        "documentOverflow": 0,
+        "copy": "Exact one-line command copied"
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "zh-cn-430-light",
+      "width": 430,
+      "height": 844,
+      "theme": "light",
+      "locale": "zh-cn",
+      "screenshots": [
+        "zh-cn-430-light-navigation-open.png",
+        "zh-cn-430-light-code-expanded.png",
+        "zh-cn-430-light-copy-hover.png",
+        "zh-cn-430-light-copy-keyboard-focus.png",
+        "zh-cn-430-light-code-scrolled.png",
+        "zh-cn-430-light-code-short-natural.png"
+      ],
+      "pageErrors": [],
+      "menu": {
+        "left": 8,
+        "right": 422,
+        "top": 61,
+        "bottom": 531,
+        "width": 414,
+        "height": 470,
+        "headerBottom": 56,
+        "surface": "shadcn-surface-root",
+        "bodyHeight": 444,
+        "bodyOverflow": "auto",
+        "closeHeight": 44,
+        "extraCloseCount": 0,
+        "trailingSpace": 17,
+        "documentOverflow": 0
+      },
+      "navigationJourneys": "Escape, Enter/Space, single Header close, nested Select Escape, WC/React/Vue/Vue2 replacement, theme round trip, native navigation and browser Back",
+      "code": {
+        "height": 549,
+        "fullHeight": 720,
+        "width": 374,
+        "fullWidth": 1039,
+        "overflowX": "auto",
+        "documentOverflow": 0
+      },
+      "copyBackplate": {
+        "prototype": "shadcn-surface-root",
+        "alpha": 255,
+        "role": null,
+        "tabindex": null
+      },
+      "copy": "Exact raw source copied after native source scrolling",
+      "shortSourceFraming": {
+        "header": {
+          "x": 0,
+          "y": 0,
+          "width": 430,
+          "height": 56,
+          "top": 0,
+          "right": 430,
+          "bottom": 56,
+          "left": 0
+        },
+        "scrollY": 4332,
+        "ancestors": [
+          {
+            "tag": "div",
+            "class": "site-page-frame bg-background text-foreground group/body overscroll-none font-sans antialiased [--footer-height:calc(var(--spacing)*14)] xl:[--footer-height:calc(var(--spacing)*24)] astro-ceehzq5e",
+            "position": "static",
+            "transform": "none",
+            "rect": {
+              "x": 0,
+              "y": -4332,
+              "width": 430,
+              "height": 7371.65625,
+              "top": -4332,
+              "right": 430,
+              "bottom": 3039.65625,
+              "left": 0
+            }
+          },
+          {
+            "tag": "header",
+            "class": "bg-background sticky top-0 z-50 w-full astro-ceehzq5e",
+            "position": "sticky",
+            "transform": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 430,
+              "height": 56,
+              "top": 0,
+              "right": 430,
+              "bottom": 56,
+              "left": 0
+            }
+          },
+          {
+            "tag": "div",
+            "class": "bg-background container-wrapper flex flex-1 flex-col docs-shell astro-ceehzq5e",
+            "position": "static",
+            "transform": "none",
+            "rect": {
+              "x": 0,
+              "y": -4248,
+              "width": 430,
+              "height": 7287.65625,
+              "top": -4248,
+              "right": 430,
+              "bottom": 3039.65625,
+              "left": 0
+            }
+          }
+        ]
+      },
+      "shortCode": {
+        "height": 24,
+        "fullHeight": 24,
+        "lineHeight": 24,
+        "text": "npx @proto.ui/cli@latest add wc shadcn-button",
+        "documentOverflow": 0,
+        "copy": "Exact one-line command copied"
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "zh-cn-430-dark",
+      "width": 430,
+      "height": 844,
+      "theme": "dark",
+      "locale": "zh-cn",
+      "screenshots": [
+        "zh-cn-430-dark-navigation-open.png",
+        "zh-cn-430-dark-code-expanded.png",
+        "zh-cn-430-dark-copy-hover.png",
+        "zh-cn-430-dark-copy-keyboard-focus.png",
+        "zh-cn-430-dark-code-scrolled.png",
+        "zh-cn-430-dark-code-short-natural.png"
+      ],
+      "pageErrors": [],
+      "menu": {
+        "left": 8,
+        "right": 422,
+        "top": 61,
+        "bottom": 531,
+        "width": 414,
+        "height": 470,
+        "headerBottom": 56,
+        "surface": "shadcn-surface-root",
+        "bodyHeight": 444,
+        "bodyOverflow": "auto",
+        "closeHeight": 44,
+        "extraCloseCount": 0,
+        "trailingSpace": 17,
+        "documentOverflow": 0
+      },
+      "navigationJourneys": "Escape, Enter/Space, single Header close, nested Select Escape, WC/React/Vue/Vue2 replacement, theme round trip, native navigation and browser Back",
+      "code": {
+        "height": 549,
+        "fullHeight": 720,
+        "width": 374,
+        "fullWidth": 1039,
+        "overflowX": "auto",
+        "documentOverflow": 0
+      },
+      "copyBackplate": {
+        "prototype": "shadcn-surface-root",
+        "alpha": 255,
+        "role": null,
+        "tabindex": null
+      },
+      "copy": "Exact raw source copied after native source scrolling",
+      "shortSourceFraming": {
+        "header": {
+          "x": 0,
+          "y": 0,
+          "width": 430,
+          "height": 56,
+          "top": 0,
+          "right": 430,
+          "bottom": 56,
+          "left": 0
+        },
+        "scrollY": 4332,
+        "ancestors": [
+          {
+            "tag": "div",
+            "class": "site-page-frame bg-background text-foreground group/body overscroll-none font-sans antialiased [--footer-height:calc(var(--spacing)*14)] xl:[--footer-height:calc(var(--spacing)*24)] astro-ceehzq5e",
+            "position": "static",
+            "transform": "none",
+            "rect": {
+              "x": 0,
+              "y": -4332,
+              "width": 430,
+              "height": 7371.65625,
+              "top": -4332,
+              "right": 430,
+              "bottom": 3039.65625,
+              "left": 0
+            }
+          },
+          {
+            "tag": "header",
+            "class": "bg-background sticky top-0 z-50 w-full astro-ceehzq5e",
+            "position": "sticky",
+            "transform": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 430,
+              "height": 56,
+              "top": 0,
+              "right": 430,
+              "bottom": 56,
+              "left": 0
+            }
+          },
+          {
+            "tag": "div",
+            "class": "bg-background container-wrapper flex flex-1 flex-col docs-shell astro-ceehzq5e",
+            "position": "static",
+            "transform": "none",
+            "rect": {
+              "x": 0,
+              "y": -4248,
+              "width": 430,
+              "height": 7287.65625,
+              "top": -4248,
+              "right": 430,
+              "bottom": 3039.65625,
+              "left": 0
+            }
+          }
+        ]
+      },
+      "shortCode": {
+        "height": 24,
+        "fullHeight": 24,
+        "lineHeight": 24,
+        "text": "npx @proto.ui/cli@latest add wc shadcn-button",
+        "documentOverflow": 0,
+        "copy": "Exact one-line command copied"
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "en-430-light",
+      "width": 430,
+      "height": 844,
+      "theme": "light",
+      "locale": "en",
+      "screenshots": [
+        "en-430-light-navigation-open.png",
+        "en-430-light-code-expanded.png",
+        "en-430-light-copy-hover.png",
+        "en-430-light-copy-keyboard-focus.png",
+        "en-430-light-code-scrolled.png",
+        "en-430-light-code-short-natural.png"
+      ],
+      "pageErrors": [],
+      "menu": {
+        "left": 8,
+        "right": 422,
+        "top": 61,
+        "bottom": 531,
+        "width": 414,
+        "height": 470,
+        "headerBottom": 56,
+        "surface": "shadcn-surface-root",
+        "bodyHeight": 444,
+        "bodyOverflow": "auto",
+        "closeHeight": 44,
+        "extraCloseCount": 0,
+        "trailingSpace": 17,
+        "documentOverflow": 0
+      },
+      "navigationJourneys": "Escape, Enter/Space, single Header close, nested Select Escape, WC/React/Vue/Vue2 replacement, theme round trip, native navigation and browser Back",
+      "code": {
+        "height": 549,
+        "fullHeight": 720,
+        "width": 374,
+        "fullWidth": 1039,
+        "overflowX": "auto",
+        "documentOverflow": 0
+      },
+      "copyBackplate": {
+        "prototype": "shadcn-surface-root",
+        "alpha": 255,
+        "role": null,
+        "tabindex": null
+      },
+      "copy": "Exact raw source copied after native source scrolling",
+      "shortSourceFraming": {
+        "header": {
+          "x": 0,
+          "y": 0,
+          "width": 430,
+          "height": 56,
+          "top": 0,
+          "right": 430,
+          "bottom": 56,
+          "left": 0
+        },
+        "scrollY": 4826,
+        "ancestors": [
+          {
+            "tag": "div",
+            "class": "site-page-frame bg-background text-foreground group/body overscroll-none font-sans antialiased [--footer-height:calc(var(--spacing)*14)] xl:[--footer-height:calc(var(--spacing)*24)] astro-ceehzq5e",
+            "position": "static",
+            "transform": "none",
+            "rect": {
+              "x": 0,
+              "y": -4826,
+              "width": 430,
+              "height": 8267.890625,
+              "top": -4826,
+              "right": 430,
+              "bottom": 3441.890625,
+              "left": 0
+            }
+          },
+          {
+            "tag": "header",
+            "class": "bg-background sticky top-0 z-50 w-full astro-ceehzq5e",
+            "position": "sticky",
+            "transform": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 430,
+              "height": 56,
+              "top": 0,
+              "right": 430,
+              "bottom": 56,
+              "left": 0
+            }
+          },
+          {
+            "tag": "div",
+            "class": "bg-background container-wrapper flex flex-1 flex-col docs-shell astro-ceehzq5e",
+            "position": "static",
+            "transform": "none",
+            "rect": {
+              "x": 0,
+              "y": -4742,
+              "width": 430,
+              "height": 8183.890625,
+              "top": -4742,
+              "right": 430,
+              "bottom": 3441.890625,
+              "left": 0
+            }
+          }
+        ]
+      },
+      "shortCode": {
+        "height": 24,
+        "fullHeight": 24,
+        "lineHeight": 24,
+        "text": "npx @proto.ui/cli@latest add wc shadcn-button",
+        "documentOverflow": 0,
+        "copy": "Exact one-line command copied"
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "en-430-dark",
+      "width": 430,
+      "height": 844,
+      "theme": "dark",
+      "locale": "en",
+      "screenshots": [
+        "en-430-dark-navigation-open.png",
+        "en-430-dark-code-expanded.png",
+        "en-430-dark-copy-hover.png",
+        "en-430-dark-copy-keyboard-focus.png",
+        "en-430-dark-code-scrolled.png",
+        "en-430-dark-code-short-natural.png"
+      ],
+      "pageErrors": [],
+      "menu": {
+        "left": 8,
+        "right": 422,
+        "top": 61,
+        "bottom": 531,
+        "width": 414,
+        "height": 470,
+        "headerBottom": 56,
+        "surface": "shadcn-surface-root",
+        "bodyHeight": 444,
+        "bodyOverflow": "auto",
+        "closeHeight": 44,
+        "extraCloseCount": 0,
+        "trailingSpace": 17,
+        "documentOverflow": 0
+      },
+      "navigationJourneys": "Escape, Enter/Space, single Header close, nested Select Escape, WC/React/Vue/Vue2 replacement, theme round trip, native navigation and browser Back",
+      "code": {
+        "height": 549,
+        "fullHeight": 720,
+        "width": 374,
+        "fullWidth": 1039,
+        "overflowX": "auto",
+        "documentOverflow": 0
+      },
+      "copyBackplate": {
+        "prototype": "shadcn-surface-root",
+        "alpha": 255,
+        "role": null,
+        "tabindex": null
+      },
+      "copy": "Exact raw source copied after native source scrolling",
+      "shortSourceFraming": {
+        "header": {
+          "x": 0,
+          "y": 0,
+          "width": 430,
+          "height": 56,
+          "top": 0,
+          "right": 430,
+          "bottom": 56,
+          "left": 0
+        },
+        "scrollY": 4826,
+        "ancestors": [
+          {
+            "tag": "div",
+            "class": "site-page-frame bg-background text-foreground group/body overscroll-none font-sans antialiased [--footer-height:calc(var(--spacing)*14)] xl:[--footer-height:calc(var(--spacing)*24)] astro-ceehzq5e",
+            "position": "static",
+            "transform": "none",
+            "rect": {
+              "x": 0,
+              "y": -4826,
+              "width": 430,
+              "height": 8267.890625,
+              "top": -4826,
+              "right": 430,
+              "bottom": 3441.890625,
+              "left": 0
+            }
+          },
+          {
+            "tag": "header",
+            "class": "bg-background sticky top-0 z-50 w-full astro-ceehzq5e",
+            "position": "sticky",
+            "transform": "none",
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 430,
+              "height": 56,
+              "top": 0,
+              "right": 430,
+              "bottom": 56,
+              "left": 0
+            }
+          },
+          {
+            "tag": "div",
+            "class": "bg-background container-wrapper flex flex-1 flex-col docs-shell astro-ceehzq5e",
+            "position": "static",
+            "transform": "none",
+            "rect": {
+              "x": 0,
+              "y": -4742,
+              "width": 430,
+              "height": 8183.890625,
+              "top": -4742,
+              "right": 430,
+              "bottom": 3441.890625,
+              "left": 0
+            }
+          }
+        ]
+      },
+      "shortCode": {
+        "height": 24,
+        "fullHeight": 24,
+        "lineHeight": 24,
+        "text": "npx @proto.ui/cli@latest add wc shadcn-button",
+        "documentOverflow": 0,
+        "copy": "Exact one-line command copied"
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "en-500x761-docs-header-escape",
+      "route": "/en/start-here/what-you-saw/",
+      "width": 500,
+      "height": 761,
+      "deviceScaleFactor": 1,
+      "theme": "light",
+      "locale": "en",
+      "browserVersion": "155.0.8059.39",
+      "sourceRevision": "6202aabd11b7964614a4cad4e7aa0afbeb4c3409",
+      "candidateOnly": true,
+      "procedure": "Native Menu click and keyboard Enter/Space/Escape on the actual Docs route; read-only DOM/ARIA observations only. No focus(), dispatchEvent(), state/aria writes or runtime handles. The retained CSS-closed Search shape must arise naturally.",
+      "limits": "Desktop-browser 500x761 CSS viewport simulation, not physical-device or complete assistive-technology coverage. ARIA snapshots are Playwright accessible-tree projections. The older mobile baseline is not the d850 parent and does not provide a new Docs red control.",
+      "screenshots": [
+        "en-500x761-docs-header-escape-initial-before-escape.png",
+        "en-500x761-docs-header-escape-initial-after-escape.png",
+        "en-500x761-docs-header-escape-Enter-before-escape.png",
+        "en-500x761-docs-header-escape-Enter-after-escape.png",
+        "en-500x761-docs-header-escape-Space-before-escape.png",
+        "en-500x761-docs-header-escape-Space-after-escape.png",
+        "en-500x761-docs-header-escape-nested-select-open.png",
+        "en-500x761-docs-header-escape-nested-select-first-escape.png",
+        "en-500x761-docs-header-escape-nested-select-second-escape.png",
+        "en-500x761-docs-header-escape-contents-dialog-open.png",
+        "en-500x761-docs-header-escape-contents-dialog-escape.png"
+      ],
+      "observations": [
+        {
+          "stage": "initial-before-escape",
+          "at": "2026-11-02T13:49:36.907Z",
+          "url": "http://127.0.0.1:56124/en/start-here/what-you-saw/",
+          "expanded": "true",
+          "panelVisible": true,
+          "docsFocused": true,
+          "menuFocused": false,
+          "activeElement": {
+            "tag": "a",
+            "id": "",
+            "role": null,
+            "label": null
+          },
+          "retainedSearch": [
+            {
+              "triggerId": "",
+              "triggerRole": "combobox",
+              "searchComposition": true,
+              "popupId": "pui-command-1-content",
+              "popupRole": "listbox",
+              "connected": true,
+              "triggerHiddenOrInert": false,
+              "popupHiddenOrInert": false,
+              "triggerDisplayNone": [
+                "wc-shadcn-command-dialog-content#"
+              ],
+              "popupDisplayNone": [
+                "wc-shadcn-command-dialog-content#"
+              ]
+            },
+            {
+              "triggerId": "",
+              "triggerRole": "button",
+              "searchComposition": false,
+              "popupId": "site-header-panel",
+              "popupRole": null,
+              "connected": true,
+              "triggerHiddenOrInert": false,
+              "popupHiddenOrInert": false,
+              "triggerDisplayNone": [],
+              "popupDisplayNone": []
+            }
+          ],
+          "headerAria": "- link \"Proto UI\":\n  - /url: /en\n- group:\n  - navigation \"Primary navigation\":\n    - text: Explore\n    - link \"Docs\":\n      - /url: /en/start-here/what-you-saw/\n    - link \"Libraries\":\n      - /url: /en/ui-libraries/\n    - link \"Whitepaper\":\n      - /url: /en/whitepaper/0-preface/\n  - text: Preview runtime 选择适配器\n  - combobox \"选择适配器\": Web Components\n  - text: Preferences and community Language 选择语言 / Select Language\n  - combobox \"选择语言 / Select Language\": English\n  - text: Community\n  - link \"GitHub\":\n    - /url: https://github.com/Proto-UI/Proto-UI\n  - link \"Discord\":\n    - /url: https://discord.gg/MrWQd7h34R\n  - link \"X\":\n    - /url: https://x.com/Proto_UI\n  - link \"Bluesky\":\n    - /url: https://bsky.app/profile/proto-ui.com\n- button \"Page contents\"\n- button \"Search\"\n- button \"Switch to dark theme\":\n  - img\n  - text: Switch to dark theme\n- button \"Navigation and settings\" [expanded]"
+        },
+        {
+          "stage": "initial-after-escape",
+          "at": "2026-11-02T13:49:36.958Z",
+          "url": "http://127.0.0.1:56124/en/start-here/what-you-saw/",
+          "expanded": "false",
+          "panelVisible": false,
+          "docsFocused": false,
+          "menuFocused": true,
+          "activeElement": {
+            "tag": "wc-shadcn-button",
+            "id": "",
+            "role": "button",
+            "label": null
+          },
+          "retainedSearch": [
+            {
+              "triggerId": "",
+              "triggerRole": "combobox",
+              "searchComposition": true,
+              "popupId": "pui-command-1-content",
+              "popupRole": "listbox",
+              "connected": true,
+              "triggerHiddenOrInert": false,
+              "popupHiddenOrInert": false,
+              "triggerDisplayNone": [
+                "wc-shadcn-command-dialog-content#"
+              ],
+              "popupDisplayNone": [
+                "wc-shadcn-command-dialog-content#"
+              ]
+            }
+          ],
+          "headerAria": "- link \"Proto UI\":\n  - /url: /en\n- button \"Page contents\"\n- button \"Search\"\n- button \"Switch to dark theme\":\n  - img\n  - text: Switch to dark theme\n- button \"Navigation and settings\""
+        },
+        {
+          "stage": "Enter-before-escape",
+          "at": "2026-11-02T13:49:37.023Z",
+          "url": "http://127.0.0.1:56124/en/start-here/what-you-saw/",
+          "expanded": "true",
+          "panelVisible": true,
+          "docsFocused": true,
+          "menuFocused": false,
+          "activeElement": {
+            "tag": "a",
+            "id": "",
+            "role": null,
+            "label": null
+          },
+          "retainedSearch": [
+            {
+              "triggerId": "",
+              "triggerRole": "combobox",
+              "searchComposition": true,
+              "popupId": "pui-command-1-content",
+              "popupRole": "listbox",
+              "connected": true,
+              "triggerHiddenOrInert": false,
+              "popupHiddenOrInert": false,
+              "triggerDisplayNone": [
+                "wc-shadcn-command-dialog-content#"
+              ],
+              "popupDisplayNone": [
+                "wc-shadcn-command-dialog-content#"
+              ]
+            },
+            {
+              "triggerId": "",
+              "triggerRole": "button",
+              "searchComposition": false,
+              "popupId": "site-header-panel",
+              "popupRole": null,
+              "connected": true,
+              "triggerHiddenOrInert": false,
+              "popupHiddenOrInert": false,
+              "triggerDisplayNone": [],
+              "popupDisplayNone": []
+            }
+          ],
+          "headerAria": "- link \"Proto UI\":\n  - /url: /en\n- group:\n  - navigation \"Primary navigation\":\n    - text: Explore\n    - link \"Docs\":\n      - /url: /en/start-here/what-you-saw/\n    - link \"Libraries\":\n      - /url: /en/ui-libraries/\n    - link \"Whitepaper\":\n      - /url: /en/whitepaper/0-preface/\n  - text: Preview runtime 选择适配器\n  - combobox \"选择适配器\": Web Components\n  - text: Preferences and community Language 选择语言 / Select Language\n  - combobox \"选择语言 / Select Language\": English\n  - text: Community\n  - link \"GitHub\":\n    - /url: https://github.com/Proto-UI/Proto-UI\n  - link \"Discord\":\n    - /url: https://discord.gg/MrWQd7h34R\n  - link \"X\":\n    - /url: https://x.com/Proto_UI\n  - link \"Bluesky\":\n    - /url: https://bsky.app/profile/proto-ui.com\n- button \"Page contents\"\n- button \"Search\"\n- button \"Switch to dark theme\":\n  - img\n  - text: Switch to dark theme\n- button \"Navigation and settings\" [expanded]"
+        },
+        {
+          "stage": "Enter-after-escape",
+          "at": "2026-11-02T13:49:37.074Z",
+          "url": "http://127.0.0.1:56124/en/start-here/what-you-saw/",
+          "expanded": "false",
+          "panelVisible": false,
+          "docsFocused": false,
+          "menuFocused": true,
+          "activeElement": {
+            "tag": "wc-shadcn-button",
+            "id": "",
+            "role": "button",
+            "label": null
+          },
+          "retainedSearch": [
+            {
+              "triggerId": "",
+              "triggerRole": "combobox",
+              "searchComposition": true,
+              "popupId": "pui-command-1-content",
+              "popupRole": "listbox",
+              "connected": true,
+              "triggerHiddenOrInert": false,
+              "popupHiddenOrInert": false,
+              "triggerDisplayNone": [
+                "wc-shadcn-command-dialog-content#"
+              ],
+              "popupDisplayNone": [
+                "wc-shadcn-command-dialog-content#"
+              ]
+            }
+          ],
+          "headerAria": "- link \"Proto UI\":\n  - /url: /en\n- button \"Page contents\"\n- button \"Search\"\n- button \"Switch to dark theme\":\n  - img\n  - text: Switch to dark theme\n- button \"Navigation and settings\""
+        },
+        {
+          "stage": "Space-before-escape",
+          "at": "2026-11-02T13:49:37.139Z",
+          "url": "http://127.0.0.1:56124/en/start-here/what-you-saw/",
+          "expanded": "true",
+          "panelVisible": true,
+          "docsFocused": true,
+          "menuFocused": false,
+          "activeElement": {
+            "tag": "a",
+            "id": "",
+            "role": null,
+            "label": null
+          },
+          "retainedSearch": [
+            {
+              "triggerId": "",
+              "triggerRole": "combobox",
+              "searchComposition": true,
+              "popupId": "pui-command-1-content",
+              "popupRole": "listbox",
+              "connected": true,
+              "triggerHiddenOrInert": false,
+              "popupHiddenOrInert": false,
+              "triggerDisplayNone": [
+                "wc-shadcn-command-dialog-content#"
+              ],
+              "popupDisplayNone": [
+                "wc-shadcn-command-dialog-content#"
+              ]
+            },
+            {
+              "triggerId": "",
+              "triggerRole": "button",
+              "searchComposition": false,
+              "popupId": "site-header-panel",
+              "popupRole": null,
+              "connected": true,
+              "triggerHiddenOrInert": false,
+              "popupHiddenOrInert": false,
+              "triggerDisplayNone": [],
+              "popupDisplayNone": []
+            }
+          ],
+          "headerAria": "- link \"Proto UI\":\n  - /url: /en\n- group:\n  - navigation \"Primary navigation\":\n    - text: Explore\n    - link \"Docs\":\n      - /url: /en/start-here/what-you-saw/\n    - link \"Libraries\":\n      - /url: /en/ui-libraries/\n    - link \"Whitepaper\":\n      - /url: /en/whitepaper/0-preface/\n  - text: Preview runtime 选择适配器\n  - combobox \"选择适配器\": Web Components\n  - text: Preferences and community Language 选择语言 / Select Language\n  - combobox \"选择语言 / Select Language\": English\n  - text: Community\n  - link \"GitHub\":\n    - /url: https://github.com/Proto-UI/Proto-UI\n  - link \"Discord\":\n    - /url: https://discord.gg/MrWQd7h34R\n  - link \"X\":\n    - /url: https://x.com/Proto_UI\n  - link \"Bluesky\":\n    - /url: https://bsky.app/profile/proto-ui.com\n- button \"Page contents\"\n- button \"Search\"\n- button \"Switch to dark theme\":\n  - img\n  - text: Switch to dark theme\n- button \"Navigation and settings\" [expanded]"
+        },
+        {
+          "stage": "Space-after-escape",
+          "at": "2026-11-02T13:49:37.191Z",
+          "url": "http://127.0.0.1:56124/en/start-here/what-you-saw/",
+          "expanded": "false",
+          "panelVisible": false,
+          "docsFocused": false,
+          "menuFocused": true,
+          "activeElement": {
+            "tag": "wc-shadcn-button",
+            "id": "",
+            "role": "button",
+            "label": null
+          },
+          "retainedSearch": [
+            {
+              "triggerId": "",
+              "triggerRole": "combobox",
+              "searchComposition": true,
+              "popupId": "pui-command-1-content",
+              "popupRole": "listbox",
+              "connected": true,
+              "triggerHiddenOrInert": false,
+              "popupHiddenOrInert": false,
+              "triggerDisplayNone": [
+                "wc-shadcn-command-dialog-content#"
+              ],
+              "popupDisplayNone": [
+                "wc-shadcn-command-dialog-content#"
+              ]
+            }
+          ],
+          "headerAria": "- link \"Proto UI\":\n  - /url: /en\n- button \"Page contents\"\n- button \"Search\"\n- button \"Switch to dark theme\":\n  - img\n  - text: Switch to dark theme\n- button \"Navigation and settings\""
+        },
+        {
+          "stage": "nested-select-open",
+          "at": "2026-11-02T13:49:37.306Z",
+          "url": "http://127.0.0.1:56124/en/start-here/what-you-saw/",
+          "expanded": "true",
+          "panelVisible": true,
+          "docsFocused": false,
+          "menuFocused": false,
+          "activeElement": {
+            "tag": "wc-shadcn-select-item",
+            "id": "",
+            "role": "option",
+            "label": null
+          },
+          "retainedSearch": [
+            {
+              "triggerId": "",
+              "triggerRole": "combobox",
+              "searchComposition": false,
+              "popupId": "pui-select-1-content",
+              "popupRole": "listbox",
+              "connected": true,
+              "triggerHiddenOrInert": false,
+              "popupHiddenOrInert": false,
+              "triggerDisplayNone": [],
+              "popupDisplayNone": []
+            },
+            {
+              "triggerId": "",
+              "triggerRole": "combobox",
+              "searchComposition": true,
+              "popupId": "pui-command-1-content",
+              "popupRole": "listbox",
+              "connected": true,
+              "triggerHiddenOrInert": false,
+              "popupHiddenOrInert": false,
+              "triggerDisplayNone": [
+                "wc-shadcn-command-dialog-content#"
+              ],
+              "popupDisplayNone": [
+                "wc-shadcn-command-dialog-content#"
+              ]
+            },
+            {
+              "triggerId": "",
+              "triggerRole": "button",
+              "searchComposition": false,
+              "popupId": "site-header-panel",
+              "popupRole": null,
+              "connected": true,
+              "triggerHiddenOrInert": false,
+              "popupHiddenOrInert": false,
+              "triggerDisplayNone": [],
+              "popupDisplayNone": []
+            }
+          ],
+          "headerAria": "- link \"Proto UI\":\n  - /url: /en\n- group:\n  - navigation \"Primary navigation\":\n    - text: Explore\n    - link \"Docs\":\n      - /url: /en/start-here/what-you-saw/\n    - link \"Libraries\":\n      - /url: /en/ui-libraries/\n    - link \"Whitepaper\":\n      - /url: /en/whitepaper/0-preface/\n  - text: Preview runtime 选择适配器\n  - combobox \"选择适配器\" [expanded]: Web Components\n  - text: Preferences and community Language 选择语言 / Select Language\n  - combobox \"选择语言 / Select Language\": English\n  - text: Community\n  - link \"GitHub\":\n    - /url: https://github.com/Proto-UI/Proto-UI\n  - link \"Discord\":\n    - /url: https://discord.gg/MrWQd7h34R\n  - link \"X\":\n    - /url: https://x.com/Proto_UI\n  - link \"Bluesky\":\n    - /url: https://bsky.app/profile/proto-ui.com\n- button \"Page contents\"\n- button \"Search\"\n- button \"Switch to dark theme\":\n  - img\n  - text: Switch to dark theme\n- button \"Navigation and settings\" [expanded]"
+        },
+        {
+          "stage": "nested-select-first-escape",
+          "at": "2026-11-02T13:49:37.361Z",
+          "url": "http://127.0.0.1:56124/en/start-here/what-you-saw/",
+          "expanded": "true",
+          "panelVisible": true,
+          "docsFocused": false,
+          "menuFocused": false,
+          "activeElement": {
+            "tag": "wc-shadcn-select-trigger",
+            "id": "",
+            "role": "combobox",
+            "label": null
+          },
+          "retainedSearch": [
+            {
+              "triggerId": "",
+              "triggerRole": "combobox",
+              "searchComposition": true,
+              "popupId": "pui-command-1-content",
+              "popupRole": "listbox",
+              "connected": true,
+              "triggerHiddenOrInert": false,
+              "popupHiddenOrInert": false,
+              "triggerDisplayNone": [
+                "wc-shadcn-command-dialog-content#"
+              ],
+              "popupDisplayNone": [
+                "wc-shadcn-command-dialog-content#"
+              ]
+            },
+            {
+              "triggerId": "",
+              "triggerRole": "button",
+              "searchComposition": false,
+              "popupId": "site-header-panel",
+              "popupRole": null,
+              "connected": true,
+              "triggerHiddenOrInert": false,
+              "popupHiddenOrInert": false,
+              "triggerDisplayNone": [],
+              "popupDisplayNone": []
+            }
+          ],
+          "headerAria": "- link \"Proto UI\":\n  - /url: /en\n- group:\n  - navigation \"Primary navigation\":\n    - text: Explore\n    - link \"Docs\":\n      - /url: /en/start-here/what-you-saw/\n    - link \"Libraries\":\n      - /url: /en/ui-libraries/\n    - link \"Whitepaper\":\n      - /url: /en/whitepaper/0-preface/\n  - text: Preview runtime 选择适配器\n  - combobox \"选择适配器\": Web Components\n  - text: Preferences and community Language 选择语言 / Select Language\n  - combobox \"选择语言 / Select Language\": English\n  - text: Community\n  - link \"GitHub\":\n    - /url: https://github.com/Proto-UI/Proto-UI\n  - link \"Discord\":\n    - /url: https://discord.gg/MrWQd7h34R\n  - link \"X\":\n    - /url: https://x.com/Proto_UI\n  - link \"Bluesky\":\n    - /url: https://bsky.app/profile/proto-ui.com\n- button \"Page contents\"\n- button \"Search\"\n- button \"Switch to dark theme\":\n  - img\n  - text: Switch to dark theme\n- button \"Navigation and settings\" [expanded]"
+        },
+        {
+          "stage": "nested-select-second-escape",
+          "at": "2026-11-02T13:49:37.406Z",
+          "url": "http://127.0.0.1:56124/en/start-here/what-you-saw/",
+          "expanded": "false",
+          "panelVisible": false,
+          "docsFocused": false,
+          "menuFocused": true,
+          "activeElement": {
+            "tag": "wc-shadcn-button",
+            "id": "",
+            "role": "button",
+            "label": null
+          },
+          "retainedSearch": [
+            {
+              "triggerId": "",
+              "triggerRole": "combobox",
+              "searchComposition": true,
+              "popupId": "pui-command-1-content",
+              "popupRole": "listbox",
+              "connected": true,
+              "triggerHiddenOrInert": false,
+              "popupHiddenOrInert": false,
+              "triggerDisplayNone": [
+                "wc-shadcn-command-dialog-content#"
+              ],
+              "popupDisplayNone": [
+                "wc-shadcn-command-dialog-content#"
+              ]
+            }
+          ],
+          "headerAria": "- link \"Proto UI\":\n  - /url: /en\n- button \"Page contents\"\n- button \"Search\"\n- button \"Switch to dark theme\":\n  - img\n  - text: Switch to dark theme\n- button \"Navigation and settings\""
+        },
+        {
+          "stage": "contents-dialog-open",
+          "at": "2026-11-02T13:49:37.629Z",
+          "url": "http://127.0.0.1:56124/en/start-here/what-you-saw/",
+          "expanded": "false",
+          "panelVisible": false,
+          "docsFocused": false,
+          "menuFocused": false,
+          "activeElement": {
+            "tag": "wc-shadcn-dialog-close",
+            "id": "",
+            "role": "button",
+            "label": null
+          },
+          "retainedSearch": [
+            {
+              "triggerId": "",
+              "triggerRole": null,
+              "searchComposition": false,
+              "popupId": "starlight__sidebar",
+              "popupRole": null,
+              "connected": true,
+              "triggerHiddenOrInert": true,
+              "popupHiddenOrInert": false,
+              "triggerDisplayNone": [
+                "button#"
+              ],
+              "popupDisplayNone": []
+            },
+            {
+              "triggerId": "",
+              "triggerRole": "button",
+              "searchComposition": false,
+              "popupId": "starlight__sidebar",
+              "popupRole": null,
+              "connected": true,
+              "triggerHiddenOrInert": false,
+              "popupHiddenOrInert": false,
+              "triggerDisplayNone": [],
+              "popupDisplayNone": []
+            },
+            {
+              "triggerId": "",
+              "triggerRole": "combobox",
+              "searchComposition": true,
+              "popupId": "pui-command-1-content",
+              "popupRole": "listbox",
+              "connected": true,
+              "triggerHiddenOrInert": false,
+              "popupHiddenOrInert": false,
+              "triggerDisplayNone": [
+                "wc-shadcn-command-dialog-content#"
+              ],
+              "popupDisplayNone": [
+                "wc-shadcn-command-dialog-content#"
+              ]
+            }
+          ],
+          "headerAria": "- link \"Proto UI\":\n  - /url: /en\n- button \"Page contents\" [expanded]\n- button \"Search\"\n- button \"Switch to dark theme\":\n  - img\n  - text: Switch to dark theme\n- button \"Navigation and settings\""
+        },
+        {
+          "stage": "contents-dialog-escape",
+          "at": "2026-11-02T13:49:38.015Z",
+          "url": "http://127.0.0.1:56124/en/start-here/what-you-saw/",
+          "expanded": "false",
+          "panelVisible": false,
+          "docsFocused": false,
+          "menuFocused": false,
+          "activeElement": {
+            "tag": "wc-shadcn-button",
+            "id": "",
+            "role": "button",
+            "label": null
+          },
+          "retainedSearch": [
+            {
+              "triggerId": "",
+              "triggerRole": "combobox",
+              "searchComposition": true,
+              "popupId": "pui-command-1-content",
+              "popupRole": "listbox",
+              "connected": true,
+              "triggerHiddenOrInert": false,
+              "popupHiddenOrInert": false,
+              "triggerDisplayNone": [
+                "wc-shadcn-command-dialog-content#"
+              ],
+              "popupDisplayNone": [
+                "wc-shadcn-command-dialog-content#"
+              ]
+            }
+          ],
+          "headerAria": "- link \"Proto UI\":\n  - /url: /en\n- button \"Page contents\"\n- button \"Search\"\n- button \"Switch to dark theme\":\n  - img\n  - text: Switch to dark theme\n- button \"Navigation and settings\""
+        }
+      ],
+      "pageErrors": [],
+      "initialRetainedSearch": [
+        {
+          "triggerId": "",
+          "triggerRole": "combobox",
+          "searchComposition": true,
+          "popupId": "pui-command-1-content",
+          "popupRole": "listbox",
+          "connected": true,
+          "triggerHiddenOrInert": false,
+          "popupHiddenOrInert": false,
+          "triggerDisplayNone": [
+            "wc-shadcn-command-dialog-content#"
+          ],
+          "popupDisplayNone": [
+            "wc-shadcn-command-dialog-content#"
+          ]
+        },
+        {
+          "triggerId": "",
+          "triggerRole": "button",
+          "searchComposition": false,
+          "popupId": "site-header-panel",
+          "popupRole": null,
+          "connected": true,
+          "triggerHiddenOrInert": false,
+          "popupHiddenOrInert": false,
+          "triggerDisplayNone": [],
+          "popupDisplayNone": []
+        }
+      ],
+      "nestedSelectOpenAria": "- listbox",
+      "contentsOpenAria": "- dialog \"Main\":\n  - text: Main\n  - navigation \"Main\":\n    - list:\n      - listitem:\n        - group:\n          - text: Start Here\n          - list:\n            - listitem:\n              - link \"Meet Proto UI\":\n                - /url: /en/start-here/what-you-saw/\n            - listitem:\n              - link \"Why Proto UI\":\n                - /url: /en/start-here/why-proto-ui/\n            - listitem:\n              - link \"How It Works\":\n                - /url: /en/start-here/how-it-works/\n            - listitem:\n              - link \"Quick Start\":\n                - /url: /en/start-here/quick-start/\n      - listitem:\n        - group:\n          - text: Whitepaper\n          - list:\n            - listitem:\n              - link \"Preface\":\n                - /url: /en/whitepaper/0-preface/\n            - listitem:\n              - group:\n                - text: Part I · Prototype\n                - list:\n                  - listitem:\n                    - link \"Components Before Code\":\n                      - /url: /en/whitepaper/1-components-before-code/\n                  - listitem:\n                    - link \"Starting from Interaction Relations\":\n                      - /url: /en/whitepaper/2-interaction-relations/\n                  - listitem:\n                    - link \"Component Boundaries\":\n                      - /url: /en/whitepaper/3-component-boundary/\n                  - listitem:\n                    - link \"Semantics Beyond Channels\":\n                      - /url: /en/whitepaper/4-semantics-beyond-channels/\n            - listitem:\n              - group:\n                - text: Part II · Translation\n                - list:\n                  - listitem:\n                    - link \"Translation Layer\":\n                      - /url: /en/whitepaper/5-translation-layer/\n                  - listitem:\n                    - link \"The Boundaries of Consistency\":\n                      - /url: /en/whitepaper/6-consistency-boundary/\n            - listitem:\n              - group:\n                - text: Part III · Evolution\n                - list:\n                  - listitem:\n                    - link \"Evolving Within Boundaries\":\n                      - /url: /en/whitepaper/7-evolving-within-boundaries/\n            - listitem:\n              - link \"Conclusion\":\n                - /url: /en/whitepaper/8-conclusion/\n      - listitem:\n        - group: UI Libraries\n      - listitem:\n        - group:\n          - text: Build\n          - list:\n            - listitem:\n              - link \"Overview WIP\":\n                - /url: /en/build/\n            - listitem:\n              - group:\n                - text: Prototypes\n                - list:\n                  - listitem:\n                    - link \"Overview\":\n                      - /url: /en/build/prototypes/\n                  - listitem:\n                    - link \"Maintaining an Existing Prototype\":\n                      - /url: /en/build/prototypes/maintaining-an-existing-prototype/\n                  - listitem:\n                    - link \"Projecting Base into a Design Language\":\n                      - /url: /en/build/prototypes/projecting-base-into-a-design-language/\n                  - listitem:\n                    - link \"Implementing an Approved Base Slice\":\n                      - /url: /en/build/prototypes/implementing-an-approved-base-slice/\n                  - listitem:\n                    - link \"When Not To Write A New Prototype\":\n                      - /url: /en/build/prototypes/when-not-to-write-a-new-prototype/\n                  - listitem:\n                    - link \"Writing A Custom Primitive Prototype\":\n                      - /url: /en/build/prototypes/writing-a-custom-primitive-prototype/\n                  - listitem:\n                    - link \"Writing A Compound Prototype\":\n                      - /url: /en/build/prototypes/writing-a-compound-prototype/\n                  - listitem:\n                    - link \"Building A Styled Library On Top Of Base\":\n                      - /url: /en/build/prototypes/building-a-styled-library-on-top-of-base/\n                  - listitem:\n                    - link \"Checklist\":\n                      - /url: /en/build/prototypes/checklist/\n                  - listitem:\n                    - link \"Reference Patterns\":\n                      - /url: /en/build/prototypes/reference-patterns/\n            - listitem:\n              - link \"Runtime Architecture\":\n                - /url: /en/build/runtime-architecture/\n            - listitem:\n              - link \"Adapter Guide WIP\":\n                - /url: /en/build/adapter-guide/\n            - listitem:\n              - link \"Compiler Guide\":\n                - /url: /en/build/compiler-guide/\n            - listitem:\n              - link \"Host Caps\":\n                - /url: /en/build/host-caps/\n            - listitem:\n              - link \"Module & Extension Architecture\":\n                - /url: /en/build/module-extension-architecture/\n            - listitem:\n              - link \"Contracts & Tests\":\n                - /url: /en/build/contracts-and-tests/\n      - listitem:\n        - group:\n          - text: Contribute\n          - list:\n            - listitem:\n              - link \"Overview\":\n                - /url: /en/contribute/\n            - listitem:\n              - link \"Collaboration model\":\n                - /url: /en/contribute/collaboration/\n            - listitem:\n              - link \"Deliver a change\":\n                - /url: /en/contribute/deliver/\n            - listitem:\n              - link \"Contributor Agents\":\n                - /url: /en/contribute/agents/\n            - listitem:\n              - link \"Agent Skill Catalog\":\n                - /url: /en/contribute/skills/\n            - listitem:\n              - link \"Agent Automation\":\n                - /url: /en/contribute/automation/\n      - listitem:\n        - group:\n          - text: Specifications\n          - list:\n            - listitem:\n              - link \"Introduction\":\n                - /url: /en/specifications/introduction/\n            - listitem:\n              - link \"Core\":\n                - /url: /en/specifications/core/\n            - listitem:\n              - link \"Lifecycle\":\n                - /url: /en/specifications/lifecycle/\n            - listitem:\n              - link \"Template\":\n                - /url: /en/specifications/template/\n            - listitem:\n              - link \"Props\":\n                - /url: /en/specifications/props/\n            - listitem:\n              - link \"Event WIP\":\n                - /url: /en/specifications/event/\n            - listitem:\n              - link \"Expose WIP\":\n                - /url: /en/specifications/expose/\n            - listitem:\n              - link \"State WIP\":\n                - /url: /en/specifications/state/\n            - listitem:\n              - link \"Context WIP\":\n                - /url: /en/specifications/context/\n            - listitem:\n              - link \"Anatomy WIP\":\n                - /url: /en/specifications/anatomy/\n            - listitem:\n              - link \"Feedback\":\n                - /url: /en/specifications/feedback/\n            - listitem:\n              - link \"asHook WIP\":\n                - /url: /en/specifications/as-hook/\n            - listitem:\n              - link \"Rule WIP\":\n                - /url: /en/specifications/rule/\n      - listitem:\n        - group:\n          - text: Reference\n          - list:\n            - listitem:\n              - link \"Overview WIP\":\n                - /url: /en/reference/\n            - listitem:\n              - link \"Prototype API\":\n                - /url: /en/reference/prototype-api/\n            - listitem:\n              - link \"Compatibility\":\n                - /url: /en/reference/compatibility/\n      - listitem:\n        - group:\n          - text: Project\n          - list:\n            - listitem:\n              - link \"About\":\n                - /url: /en/project/about/\n            - listitem:\n              - link \"Status\":\n                - /url: /en/project/status/\n            - listitem:\n              - link \"Roadmap\":\n                - /url: /en/project/roadmap/\n            - listitem:\n              - link \"Links\":\n                - /url: /en/project/links/\n  - button \"Close navigation\"",
+      "outcome": "passed"
+    },
+    {
+      "id": "zh-cn-320-text200-stress",
+      "stressOnly": true,
+      "width": 320,
+      "textPercent": 200,
+      "screenshots": [
+        "zh-cn-320-text200-stress-scrolled.png",
+        "zh-cn-320-text200-stress-code-long.png",
+        "zh-cn-320-text200-stress-code-short.png"
+      ],
+      "code-long": {
+        "height": 319,
+        "fullHeight": 1440,
+        "width": 232,
+        "fullWidth": 1895,
+        "lineHeight": 48,
+        "raw": "<wc-base-transition open appear class=\"transition-wrapper\">\n  <div class=\"w-64 h-40 rounded-xl flex flex-col items-center justify-center text-background shadow-xl transition-box\">\n    <span class=\"text-lg font-semibold\">Animated Box</span>\n  </div>\n</wc-base-transition>\n\n<style>\n/* 宿主通过 data-transition-state 属性驱动样式 */\n.transition-wrapper[data-transition-state=\"closed\"] .transition-box {\n  opacity: 0;\n  transform: scale(0.95) translateY(-10px);\n}\n\n.transition-wrapper[data-transition-state=\"entering\"] .transition-box {\n  opacity: 0.7;\n  transform: scale(0.98) translateY(-2px);\n  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);\n}\n\n.transition-wrapper[data-transition-state=\"entered\"] .transition-box {\n  opacity: 1;\n  transform: scale(1) translateY(0);\n}\n\n.transition-wrapper[data-transition-state=\"leaving\"] .transition-box {\n  opacity: 0.5;\n  transform: scale(0.98) translateY(2px);\n  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);\n}\n</style>",
+        "documentOverflow": 0,
+        "copy": "Exact source copied after enlarged keyboard scroll"
+      },
+      "code-long-layout": {
+        "header": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 193,
+          "top": 0,
+          "right": 320,
+          "bottom": 193,
+          "left": 0
+        },
+        "scrollY": 1702,
+        "overflow": [
+          {
+            "tag": "pui-runtime-shadcn-tabs-trigger",
+            "class": "",
+            "rect": {
+              "x": 342.1875,
+              "y": -1035,
+              "width": 89.703125,
+              "height": 66,
+              "top": -1035,
+              "right": 431.890625,
+              "bottom": -969,
+              "left": 342.1875
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 431.890625,
+              "y": -1003,
+              "width": 0,
+              "height": 0,
+              "top": -1003,
+              "right": 431.890625,
+              "bottom": -1003,
+              "left": 431.890625
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "pui-runtime-shadcn-tabs-trigger",
+            "class": "",
+            "rect": {
+              "x": 479.890625,
+              "y": -1035,
+              "width": 62.953125,
+              "height": 66,
+              "top": -1035,
+              "right": 542.84375,
+              "bottom": -969,
+              "left": 479.890625
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 542.84375,
+              "y": -1003,
+              "width": 0,
+              "height": 0,
+              "top": -1003,
+              "right": 542.84375,
+              "bottom": -1003,
+              "left": 542.84375
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "code",
+            "class": "",
+            "rect": {
+              "x": 60,
+              "y": 318,
+              "width": 1862.78125,
+              "height": 1422,
+              "top": 318,
+              "right": 1922.78125,
+              "bottom": 1740,
+              "left": 60
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "line",
+            "rect": {
+              "x": 60,
+              "y": 318,
+              "width": 923.59375,
+              "height": 30,
+              "top": 318,
+              "right": 983.59375,
+              "bottom": 348,
+              "left": 60
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 75.65625,
+              "y": 318,
+              "width": 281.765625,
+              "height": 30,
+              "top": 318,
+              "right": 357.421875,
+              "bottom": 348,
+              "left": 75.65625
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 357.421875,
+              "y": 318,
+              "width": 78.28125,
+              "height": 30,
+              "top": 318,
+              "right": 435.703125,
+              "bottom": 348,
+              "left": 357.421875
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 435.703125,
+              "y": 318,
+              "width": 109.578125,
+              "height": 30,
+              "top": 318,
+              "right": 545.28125,
+              "bottom": 348,
+              "left": 435.703125
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 545.28125,
+              "y": 318,
+              "width": 93.921875,
+              "height": 30,
+              "top": 318,
+              "right": 639.203125,
+              "bottom": 348,
+              "left": 545.28125
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 639.203125,
+              "y": 318,
+              "width": 15.65625,
+              "height": 30,
+              "top": 318,
+              "right": 654.859375,
+              "bottom": 348,
+              "left": 639.203125
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 654.859375,
+              "y": 318,
+              "width": 313.078125,
+              "height": 30,
+              "top": 318,
+              "right": 967.9375,
+              "bottom": 348,
+              "left": 654.859375
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 967.9375,
+              "y": 318,
+              "width": 15.65625,
+              "height": 30,
+              "top": 318,
+              "right": 983.59375,
+              "bottom": 348,
+              "left": 967.9375
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "line",
+            "rect": {
+              "x": 60,
+              "y": 366,
+              "width": 1862.78125,
+              "height": 30,
+              "top": 366,
+              "right": 1922.78125,
+              "bottom": 396,
+              "left": 60
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 263.515625,
+              "y": 366,
+              "width": 1643.609375,
+              "height": 30,
+              "top": 366,
+              "right": 1907.125,
+              "bottom": 396,
+              "left": 263.515625
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 1907.125,
+              "y": 366,
+              "width": 15.65625,
+              "height": 30,
+              "top": 366,
+              "right": 1922.78125,
+              "bottom": 396,
+              "left": 1907.125
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "line",
+            "rect": {
+              "x": 60,
+              "y": 414,
+              "width": 923.609375,
+              "height": 30,
+              "top": 414,
+              "right": 983.609375,
+              "bottom": 444,
+              "left": 60
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 310.484375,
+              "y": 414,
+              "width": 360.03125,
+              "height": 30,
+              "top": 414,
+              "right": 670.515625,
+              "bottom": 444,
+              "left": 310.484375
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 670.515625,
+              "y": 414,
+              "width": 234.8125,
+              "height": 30,
+              "top": 414,
+              "right": 905.328125,
+              "bottom": 444,
+              "left": 670.515625
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 905.328125,
+              "y": 414,
+              "width": 62.625,
+              "height": 30,
+              "top": 414,
+              "right": 967.953125,
+              "bottom": 444,
+              "left": 905.328125
+            },
+            "overflowX": "visible"
+          }
+        ]
+      },
+      "code-short": {
+        "height": 49,
+        "fullHeight": 49,
+        "width": 192,
+        "fullWidth": 539,
+        "lineHeight": 49,
+        "raw": "npx @proto.ui/cli@latest --help",
+        "documentOverflow": 0,
+        "copy": "Exact source copied after enlarged keyboard scroll"
+      },
+      "code-short-layout": {
+        "header": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 193,
+          "top": 0,
+          "right": 320,
+          "bottom": 193,
+          "left": 0
+        },
+        "scrollY": 3967,
+        "overflow": [
+          {
+            "tag": "code",
+            "class": "",
+            "rect": {
+              "x": 80,
+              "y": 450.1875,
+              "width": 522.609375,
+              "height": 49,
+              "top": 450.1875,
+              "right": 602.609375,
+              "bottom": 499.1875,
+              "left": 80
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "line",
+            "rect": {
+              "x": 80,
+              "y": 450.1875,
+              "width": 522.609375,
+              "height": 49,
+              "top": 450.1875,
+              "right": 602.609375,
+              "bottom": 499.1875,
+              "left": 80
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 130.578125,
+              "y": 458.1875,
+              "width": 354.015625,
+              "height": 33,
+              "top": 458.1875,
+              "right": 484.59375,
+              "bottom": 491.1875,
+              "left": 130.578125
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 484.59375,
+              "y": 458.1875,
+              "width": 118.015625,
+              "height": 33,
+              "top": 458.1875,
+              "right": 602.609375,
+              "bottom": 491.1875,
+              "left": 484.59375
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "code",
+            "class": "",
+            "rect": {
+              "x": 80,
+              "y": 1403.1875,
+              "width": 488.890625,
+              "height": 49,
+              "top": 1403.1875,
+              "right": 568.890625,
+              "bottom": 1452.1875,
+              "left": 80
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "line",
+            "rect": {
+              "x": 80,
+              "y": 1403.1875,
+              "width": 488.890625,
+              "height": 49,
+              "top": 1403.1875,
+              "right": 568.890625,
+              "bottom": 1452.1875,
+              "left": 80
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 130.578125,
+              "y": 1411.1875,
+              "width": 354.015625,
+              "height": 33,
+              "top": 1411.1875,
+              "right": 484.59375,
+              "bottom": 1444.1875,
+              "left": 130.578125
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 484.59375,
+              "y": 1411.1875,
+              "width": 84.296875,
+              "height": 33,
+              "top": 1411.1875,
+              "right": 568.890625,
+              "bottom": 1444.1875,
+              "left": 484.59375
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "pui-code-example-shadcn-tree-root",
+            "class": "",
+            "rect": {
+              "x": 32,
+              "y": 2452.1875,
+              "width": 353.578125,
+              "height": 692,
+              "top": 2452.1875,
+              "right": 385.578125,
+              "bottom": 3144.1875,
+              "left": 32
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "div",
+            "class": "",
+            "rect": {
+              "x": 32,
+              "y": 2452.1875,
+              "width": 353.578125,
+              "height": 344,
+              "top": 2452.1875,
+              "right": 385.578125,
+              "bottom": 2796.1875,
+              "left": 32
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "pui-code-example-shadcn-tree-item",
+            "class": "",
+            "rect": {
+              "x": 32,
+              "y": 2452.1875,
+              "width": 353.578125,
+              "height": 64,
+              "top": 2452.1875,
+              "right": 385.578125,
+              "bottom": 2516.1875,
+              "left": 32
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 128,
+              "y": 2464.1875,
+              "width": 241.578125,
+              "height": 40,
+              "top": 2464.1875,
+              "right": 369.578125,
+              "bottom": 2504.1875,
+              "left": 128
+            },
+            "overflowX": "hidden"
+          },
+          {
+            "tag": "div",
+            "class": "",
+            "rect": {
+              "x": 32,
+              "y": 2516.1875,
+              "width": 353.578125,
+              "height": 280,
+              "top": 2516.1875,
+              "right": 385.578125,
+              "bottom": 2796.1875,
+              "left": 32
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "div",
+            "class": "",
+            "rect": {
+              "x": 32,
+              "y": 2516.1875,
+              "width": 353.578125,
+              "height": 64,
+              "top": 2516.1875,
+              "right": 385.578125,
+              "bottom": 2580.1875,
+              "left": 32
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "pui-code-example-shadcn-tree-item",
+            "class": "",
+            "rect": {
+              "x": 32,
+              "y": 2516.1875,
+              "width": 353.578125,
+              "height": 64,
+              "top": 2516.1875,
+              "right": 385.578125,
+              "bottom": 2580.1875,
+              "left": 32
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "small",
+            "class": "",
+            "rect": {
+              "x": 310.890625,
+              "y": 2528.1875,
+              "width": 58.6875,
+              "height": 40,
+              "top": 2528.1875,
+              "right": 369.578125,
+              "bottom": 2568.1875,
+              "left": 310.890625
+            },
+            "overflowX": "hidden"
+          },
+          {
+            "tag": "div",
+            "class": "",
+            "rect": {
+              "x": 32,
+              "y": 2580.1875,
+              "width": 353.578125,
+              "height": 0,
+              "top": 2580.1875,
+              "right": 385.578125,
+              "bottom": 2580.1875,
+              "left": 32
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "div",
+            "class": "",
+            "rect": {
+              "x": 32,
+              "y": 2588.1875,
+              "width": 353.578125,
+              "height": 64,
+              "top": 2588.1875,
+              "right": 385.578125,
+              "bottom": 2652.1875,
+              "left": 32
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "pui-code-example-shadcn-tree-item",
+            "class": "",
+            "rect": {
+              "x": 32,
+              "y": 2588.1875,
+              "width": 353.578125,
+              "height": 64,
+              "top": 2588.1875,
+              "right": 385.578125,
+              "bottom": 2652.1875,
+              "left": 32
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 188.796875,
+              "y": 2600.1875,
+              "width": 150.765625,
+              "height": 40,
+              "top": 2600.1875,
+              "right": 339.5625,
+              "bottom": 2640.1875,
+              "left": 188.796875
+            },
+            "overflowX": "hidden"
+          }
+        ]
+      },
+      "outcome": "passed"
+    },
+    {
+      "id": "en-320-text200-stress",
+      "stressOnly": true,
+      "width": 320,
+      "textPercent": 200,
+      "screenshots": [
+        "en-320-text200-stress-scrolled.png",
+        "en-320-text200-stress-code-long.png",
+        "en-320-text200-stress-code-short.png"
+      ],
+      "code-long": {
+        "height": 319,
+        "fullHeight": 1440,
+        "width": 232,
+        "fullWidth": 1895,
+        "lineHeight": 48,
+        "raw": "<wc-base-transition open appear class=\"transition-wrapper\">\n  <div class=\"w-64 h-40 rounded-xl flex flex-col items-center justify-center text-background shadow-xl transition-box\">\n    <span class=\"text-lg font-semibold\">Animated Box</span>\n  </div>\n</wc-base-transition>\n\n<style>\n/* 宿主通过 data-transition-state 属性驱动样式 */\n.transition-wrapper[data-transition-state=\"closed\"] .transition-box {\n  opacity: 0;\n  transform: scale(0.95) translateY(-10px);\n}\n\n.transition-wrapper[data-transition-state=\"entering\"] .transition-box {\n  opacity: 0.7;\n  transform: scale(0.98) translateY(-2px);\n  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);\n}\n\n.transition-wrapper[data-transition-state=\"entered\"] .transition-box {\n  opacity: 1;\n  transform: scale(1) translateY(0);\n}\n\n.transition-wrapper[data-transition-state=\"leaving\"] .transition-box {\n  opacity: 0.5;\n  transform: scale(0.98) translateY(2px);\n  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);\n}\n</style>",
+        "documentOverflow": 0,
+        "copy": "Exact source copied after enlarged keyboard scroll"
+      },
+      "code-long-layout": {
+        "header": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 193,
+          "top": 0,
+          "right": 320,
+          "bottom": 193,
+          "left": 0
+        },
+        "scrollY": 1757,
+        "overflow": [
+          {
+            "tag": "pui-runtime-shadcn-tabs-trigger",
+            "class": "",
+            "rect": {
+              "x": 342.1875,
+              "y": -1035,
+              "width": 89.703125,
+              "height": 66,
+              "top": -1035,
+              "right": 431.890625,
+              "bottom": -969,
+              "left": 342.1875
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 431.890625,
+              "y": -1003,
+              "width": 0,
+              "height": 0,
+              "top": -1003,
+              "right": 431.890625,
+              "bottom": -1003,
+              "left": 431.890625
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "pui-runtime-shadcn-tabs-trigger",
+            "class": "",
+            "rect": {
+              "x": 479.890625,
+              "y": -1035,
+              "width": 62.953125,
+              "height": 66,
+              "top": -1035,
+              "right": 542.84375,
+              "bottom": -969,
+              "left": 479.890625
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 542.84375,
+              "y": -1003,
+              "width": 0,
+              "height": 0,
+              "top": -1003,
+              "right": 542.84375,
+              "bottom": -1003,
+              "left": 542.84375
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "code",
+            "class": "",
+            "rect": {
+              "x": 60,
+              "y": 318,
+              "width": 1862.78125,
+              "height": 1422,
+              "top": 318,
+              "right": 1922.78125,
+              "bottom": 1740,
+              "left": 60
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "line",
+            "rect": {
+              "x": 60,
+              "y": 318,
+              "width": 923.59375,
+              "height": 30,
+              "top": 318,
+              "right": 983.59375,
+              "bottom": 348,
+              "left": 60
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 75.65625,
+              "y": 318,
+              "width": 281.765625,
+              "height": 30,
+              "top": 318,
+              "right": 357.421875,
+              "bottom": 348,
+              "left": 75.65625
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 357.421875,
+              "y": 318,
+              "width": 78.28125,
+              "height": 30,
+              "top": 318,
+              "right": 435.703125,
+              "bottom": 348,
+              "left": 357.421875
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 435.703125,
+              "y": 318,
+              "width": 109.578125,
+              "height": 30,
+              "top": 318,
+              "right": 545.28125,
+              "bottom": 348,
+              "left": 435.703125
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 545.28125,
+              "y": 318,
+              "width": 93.921875,
+              "height": 30,
+              "top": 318,
+              "right": 639.203125,
+              "bottom": 348,
+              "left": 545.28125
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 639.203125,
+              "y": 318,
+              "width": 15.65625,
+              "height": 30,
+              "top": 318,
+              "right": 654.859375,
+              "bottom": 348,
+              "left": 639.203125
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 654.859375,
+              "y": 318,
+              "width": 313.078125,
+              "height": 30,
+              "top": 318,
+              "right": 967.9375,
+              "bottom": 348,
+              "left": 654.859375
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 967.9375,
+              "y": 318,
+              "width": 15.65625,
+              "height": 30,
+              "top": 318,
+              "right": 983.59375,
+              "bottom": 348,
+              "left": 967.9375
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "line",
+            "rect": {
+              "x": 60,
+              "y": 366,
+              "width": 1862.78125,
+              "height": 30,
+              "top": 366,
+              "right": 1922.78125,
+              "bottom": 396,
+              "left": 60
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 263.515625,
+              "y": 366,
+              "width": 1643.609375,
+              "height": 30,
+              "top": 366,
+              "right": 1907.125,
+              "bottom": 396,
+              "left": 263.515625
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 1907.125,
+              "y": 366,
+              "width": 15.65625,
+              "height": 30,
+              "top": 366,
+              "right": 1922.78125,
+              "bottom": 396,
+              "left": 1907.125
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "line",
+            "rect": {
+              "x": 60,
+              "y": 414,
+              "width": 923.609375,
+              "height": 30,
+              "top": 414,
+              "right": 983.609375,
+              "bottom": 444,
+              "left": 60
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 310.484375,
+              "y": 414,
+              "width": 360.03125,
+              "height": 30,
+              "top": 414,
+              "right": 670.515625,
+              "bottom": 444,
+              "left": 310.484375
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 670.515625,
+              "y": 414,
+              "width": 234.8125,
+              "height": 30,
+              "top": 414,
+              "right": 905.328125,
+              "bottom": 444,
+              "left": 670.515625
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 905.328125,
+              "y": 414,
+              "width": 62.625,
+              "height": 30,
+              "top": 414,
+              "right": 967.953125,
+              "bottom": 444,
+              "left": 905.328125
+            },
+            "overflowX": "visible"
+          }
+        ]
+      },
+      "code-short": {
+        "height": 49,
+        "fullHeight": 49,
+        "width": 192,
+        "fullWidth": 539,
+        "lineHeight": 49,
+        "raw": "npx @proto.ui/cli@latest --help",
+        "documentOverflow": 0,
+        "copy": "Exact source copied after enlarged keyboard scroll"
+      },
+      "code-short-layout": {
+        "header": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 193,
+          "top": 0,
+          "right": 320,
+          "bottom": 193,
+          "left": 0
+        },
+        "scrollY": 5478,
+        "overflow": [
+          {
+            "tag": "code",
+            "class": "",
+            "rect": {
+              "x": 80,
+              "y": 466.1875,
+              "width": 522.609375,
+              "height": 49,
+              "top": 466.1875,
+              "right": 602.609375,
+              "bottom": 515.1875,
+              "left": 80
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "line",
+            "rect": {
+              "x": 80,
+              "y": 466.1875,
+              "width": 522.609375,
+              "height": 49,
+              "top": 466.1875,
+              "right": 602.609375,
+              "bottom": 515.1875,
+              "left": 80
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 130.578125,
+              "y": 474.1875,
+              "width": 354.015625,
+              "height": 33,
+              "top": 474.1875,
+              "right": 484.59375,
+              "bottom": 507.1875,
+              "left": 130.578125
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 484.59375,
+              "y": 474.1875,
+              "width": 118.015625,
+              "height": 33,
+              "top": 474.1875,
+              "right": 602.609375,
+              "bottom": 507.1875,
+              "left": 484.59375
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "code",
+            "class": "",
+            "rect": {
+              "x": 80,
+              "y": 1719.1875,
+              "width": 488.890625,
+              "height": 49,
+              "top": 1719.1875,
+              "right": 568.890625,
+              "bottom": 1768.1875,
+              "left": 80
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "line",
+            "rect": {
+              "x": 80,
+              "y": 1719.1875,
+              "width": 488.890625,
+              "height": 49,
+              "top": 1719.1875,
+              "right": 568.890625,
+              "bottom": 1768.1875,
+              "left": 80
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 130.578125,
+              "y": 1727.1875,
+              "width": 354.015625,
+              "height": 33,
+              "top": 1727.1875,
+              "right": 484.59375,
+              "bottom": 1760.1875,
+              "left": 130.578125
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 484.59375,
+              "y": 1727.1875,
+              "width": 84.296875,
+              "height": 33,
+              "top": 1727.1875,
+              "right": 568.890625,
+              "bottom": 1760.1875,
+              "left": 484.59375
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "pui-code-example-shadcn-tree-root",
+            "class": "",
+            "rect": {
+              "x": 32,
+              "y": 3028.1875,
+              "width": 353.578125,
+              "height": 692,
+              "top": 3028.1875,
+              "right": 385.578125,
+              "bottom": 3720.1875,
+              "left": 32
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "div",
+            "class": "",
+            "rect": {
+              "x": 32,
+              "y": 3028.1875,
+              "width": 353.578125,
+              "height": 344,
+              "top": 3028.1875,
+              "right": 385.578125,
+              "bottom": 3372.1875,
+              "left": 32
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "pui-code-example-shadcn-tree-item",
+            "class": "",
+            "rect": {
+              "x": 32,
+              "y": 3028.1875,
+              "width": 353.578125,
+              "height": 64,
+              "top": 3028.1875,
+              "right": 385.578125,
+              "bottom": 3092.1875,
+              "left": 32
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 128,
+              "y": 3040.1875,
+              "width": 241.578125,
+              "height": 40,
+              "top": 3040.1875,
+              "right": 369.578125,
+              "bottom": 3080.1875,
+              "left": 128
+            },
+            "overflowX": "hidden"
+          },
+          {
+            "tag": "div",
+            "class": "",
+            "rect": {
+              "x": 32,
+              "y": 3092.1875,
+              "width": 353.578125,
+              "height": 280,
+              "top": 3092.1875,
+              "right": 385.578125,
+              "bottom": 3372.1875,
+              "left": 32
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "div",
+            "class": "",
+            "rect": {
+              "x": 32,
+              "y": 3092.1875,
+              "width": 353.578125,
+              "height": 64,
+              "top": 3092.1875,
+              "right": 385.578125,
+              "bottom": 3156.1875,
+              "left": 32
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "pui-code-example-shadcn-tree-item",
+            "class": "",
+            "rect": {
+              "x": 32,
+              "y": 3092.1875,
+              "width": 353.578125,
+              "height": 64,
+              "top": 3092.1875,
+              "right": 385.578125,
+              "bottom": 3156.1875,
+              "left": 32
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "small",
+            "class": "",
+            "rect": {
+              "x": 310.890625,
+              "y": 3104.1875,
+              "width": 58.6875,
+              "height": 40,
+              "top": 3104.1875,
+              "right": 369.578125,
+              "bottom": 3144.1875,
+              "left": 310.890625
+            },
+            "overflowX": "hidden"
+          },
+          {
+            "tag": "div",
+            "class": "",
+            "rect": {
+              "x": 32,
+              "y": 3156.1875,
+              "width": 353.578125,
+              "height": 0,
+              "top": 3156.1875,
+              "right": 385.578125,
+              "bottom": 3156.1875,
+              "left": 32
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "div",
+            "class": "",
+            "rect": {
+              "x": 32,
+              "y": 3164.1875,
+              "width": 353.578125,
+              "height": 64,
+              "top": 3164.1875,
+              "right": 385.578125,
+              "bottom": 3228.1875,
+              "left": 32
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "pui-code-example-shadcn-tree-item",
+            "class": "",
+            "rect": {
+              "x": 32,
+              "y": 3164.1875,
+              "width": 353.578125,
+              "height": 64,
+              "top": 3164.1875,
+              "right": 385.578125,
+              "bottom": 3228.1875,
+              "left": 32
+            },
+            "overflowX": "visible"
+          },
+          {
+            "tag": "span",
+            "class": "",
+            "rect": {
+              "x": 188.796875,
+              "y": 3176.1875,
+              "width": 150.765625,
+              "height": 40,
+              "top": 3176.1875,
+              "right": 339.5625,
+              "bottom": 3216.1875,
+              "left": 188.796875
+            },
+            "overflowX": "hidden"
+          }
+        ]
+      },
+      "outcome": "passed"
+    }
+  ],
+  "failures": [],
+  "lifecycle": [
+    {
+      "stage": "server-start-requested",
+      "at": "2026-11-02T13:47:35.950Z",
+      "activeResources": [
+        "CloseReq"
+      ]
+    },
+    {
+      "stage": "server-ready",
+      "at": "2026-11-02T13:47:58.550Z",
+      "activeResources": [
+        "PipeWrap",
+        "PipeWrap",
+        "ProcessWrap",
+        "TCPSocketWrap"
+      ]
+    },
+    {
+      "stage": "browser-ready",
+      "at": "2026-11-02T13:47:59.632Z",
+      "activeResources": [
+        "PipeWrap",
+        "PipeWrap",
+        "ProcessWrap",
+        "PipeWrap",
+        "PipeWrap",
+        "PipeWrap",
+        "PipeWrap",
+        "ProcessWrap"
+      ]
+    },
+    {
+      "stage": "cases-loop-finished",
+      "at": "2026-11-02T13:49:51.636Z",
+      "activeResources": [
+        "CloseReq",
+        "PipeWrap",
+        "PipeWrap",
+        "ProcessWrap",
+        "PipeWrap",
+        "PipeWrap",
+        "PipeWrap",
+        "PipeWrap",
+        "ProcessWrap"
+      ]
+    },
+    {
+      "stage": "browser-close-started",
+      "at": "2026-11-02T13:49:51.638Z",
+      "activeResources": [
+        "CloseReq",
+        "PipeWrap",
+        "PipeWrap",
+        "ProcessWrap",
+        "PipeWrap",
+        "PipeWrap",
+        "PipeWrap",
+        "PipeWrap",
+        "ProcessWrap"
+      ]
+    },
+    {
+      "stage": "browser-close-finished",
+      "at": "2026-11-02T13:49:51.694Z",
+      "activeResources": [
+        "PipeWrap",
+        "PipeWrap",
+        "ProcessWrap"
+      ]
+    },
+    {
+      "stage": "server-stop-started",
+      "at": "2026-11-02T13:49:51.695Z",
+      "activeResources": [
+        "CloseReq",
+        "PipeWrap",
+        "PipeWrap",
+        "ProcessWrap"
+      ]
+    },
+    {
+      "stage": "server-stop-finished",
+      "at": "2026-11-02T13:49:51.709Z",
+      "activeResources": [
+        "PipeWrap",
+        "PipeWrap",
+        "ProcessWrap"
+      ]
+    },
+    {
+      "stage": "assertions-complete",
+      "at": "2026-11-02T13:49:51.710Z",
+      "activeResources": [
+        "CloseReq",
+        "PipeWrap",
+        "PipeWrap"
+      ]
+    }
+  ]
+}
