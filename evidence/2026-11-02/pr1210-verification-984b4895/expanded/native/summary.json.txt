@@ -1,0 +1,160 @@
+[
+  {
+    "family": "shadcn",
+    "steps": [
+      {
+        "stage": "before",
+        "facts": {
+          "open": true,
+          "value": "wc",
+          "focusedValue": "react",
+          "active": [
+            {
+              "value": "wc",
+              "active": false,
+              "selected": true
+            },
+            {
+              "value": "react",
+              "active": true,
+              "selected": false
+            },
+            {
+              "value": "vue",
+              "active": false,
+              "selected": false
+            },
+            {
+              "value": "vue2",
+              "active": false,
+              "selected": false
+            }
+          ],
+          "focusHTML": "<wc-shadcn-select-item data-value=\"react\" data-text-value=\"React\" class=\"astro-glxqhcdx\" data-pui-root=\"\" data-collection-index=\"1\" data-collection-total=\"4\" style=\"--pui-collection-index: 1; --pui-collection-total: 4;\" role=\"option\" aria-disabled=\"false\" aria-selected=\"false\" data-pui-a11y-actions="
+        },
+        "aria": "- listbox:\n  - option \"Web Components\" [selected]\n  - option \"React\"\n  - option \"Vue\"\n  - option \"Vue 2\""
+      },
+      {
+        "stage": "after",
+        "facts": {
+          "open": true,
+          "value": "wc",
+          "focusedValue": "react",
+          "active": [
+            {
+              "value": "wc",
+              "active": false,
+              "selected": true
+            },
+            {
+              "value": "react",
+              "active": true,
+              "selected": false
+            },
+            {
+              "value": "vue",
+              "active": false,
+              "selected": false
+            },
+            {
+              "value": "vue2",
+              "active": false,
+              "selected": false
+            }
+          ],
+          "focusHTML": "<wc-shadcn-select-item data-value=\"react\" data-text-value=\"React\" class=\"astro-glxqhcdx\" data-pui-root=\"\" data-collection-index=\"1\" data-collection-total=\"4\" style=\"--pui-collection-index: 1; --pui-collection-total: 4;\" role=\"option\" aria-disabled=\"false\" aria-selected=\"false\" data-pui-a11y-actions="
+        },
+        "aria": "- listbox:\n  - option \"Web Components\" [selected]\n  - option \"React\"\n  - option \"Vue\"\n  - option \"Vue 2\""
+      }
+    ],
+    "errors": [],
+    "returnValue": true,
+    "events": [
+      {
+        "open": true,
+        "reason": "native-consumer-repeat-validation",
+        "focusReason": "keyboard"
+      }
+    ],
+    "status": "passed"
+  },
+  {
+    "family": "brutalist",
+    "steps": [
+      {
+        "stage": "before",
+        "facts": {
+          "open": true,
+          "value": "wc",
+          "focusedValue": "react",
+          "active": [
+            {
+              "value": "wc",
+              "active": false,
+              "selected": true
+            },
+            {
+              "value": "react",
+              "active": true,
+              "selected": false
+            },
+            {
+              "value": "vue",
+              "active": false,
+              "selected": false
+            },
+            {
+              "value": "vue2",
+              "active": false,
+              "selected": false
+            }
+          ],
+          "focusHTML": "<wc-brutalist-select-item data-value=\"react\" data-text-value=\"React\" class=\"astro-glxqhcdx\" data-pui-root=\"\" data-collection-index=\"1\" data-collection-total=\"4\" style=\"--pui-collection-index: 1; --pui-collection-total: 4;\" role=\"option\" aria-disabled=\"false\" aria-selected=\"false\" data-pui-a11y-actio"
+        },
+        "aria": "- listbox:\n  - option \"Web Components\" [selected]:\n    - text: Web Components\n    - img\n  - option \"React\"\n  - option \"Vue\"\n  - option \"Vue 2\""
+      },
+      {
+        "stage": "after",
+        "facts": {
+          "open": true,
+          "value": "wc",
+          "focusedValue": "react",
+          "active": [
+            {
+              "value": "wc",
+              "active": false,
+              "selected": true
+            },
+            {
+              "value": "react",
+              "active": true,
+              "selected": false
+            },
+            {
+              "value": "vue",
+              "active": false,
+              "selected": false
+            },
+            {
+              "value": "vue2",
+              "active": false,
+              "selected": false
+            }
+          ],
+          "focusHTML": "<wc-brutalist-select-item data-value=\"react\" data-text-value=\"React\" class=\"astro-glxqhcdx\" data-pui-root=\"\" data-collection-index=\"1\" data-collection-total=\"4\" style=\"--pui-collection-index: 1; --pui-collection-total: 4;\" role=\"option\" aria-disabled=\"false\" aria-selected=\"false\" data-pui-a11y-actio"
+        },
+        "aria": "- listbox:\n  - option \"Web Components\" [selected]:\n    - text: Web Components\n    - img\n  - option \"React\"\n  - option \"Vue\"\n  - option \"Vue 2\""
+      }
+    ],
+    "errors": [],
+    "returnValue": true,
+    "events": [
+      {
+        "open": true,
+        "reason": "native-consumer-repeat-validation",
+        "focusReason": "keyboard"
+      }
+    ],
+    "status": "passed"
+  }
+]

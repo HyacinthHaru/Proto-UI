@@ -1,0 +1,44 @@
+[
+  {
+    family: 'shadcn',
+    steps: [ [Object], [Object] ],
+    errors: [],
+    returnValue: true,
+    events: [ [Object] ],
+    status: 'failed',
+    failure: 'AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n' +
+      '+ actual - expected\n' +
+      '\n' +
+      '  {\n' +
+      '    active: [\n' +
+      '      {\n' +
+      '+       active: true,\n' +
+      '-       active: false,\n' +
+      '        selected: true,\n' +
+      "        value: 'wc'\n" +
+      '      },\n' +
+      '      {\n' +
+      '        active: true,\n'
+  },
+  {
+    family: 'brutalist',
+    steps: [ [Object], [Object] ],
+    errors: [],
+    returnValue: true,
+    events: [ [Object] ],
+    status: 'failed',
+    failure: 'AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n' +
+      '+ actual - expected\n' +
+      '\n' +
+      '  {\n' +
+      '    active: [\n' +
+      '      {\n' +
+      '+       active: true,\n' +
+      '-       active: false,\n' +
+      '        selected: true,\n' +
+      "        value: 'wc'\n" +
+      '      },\n' +
+      '      {\n' +
+      '        active: true,\n'
+  }
+]

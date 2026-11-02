@@ -1,0 +1,218 @@
+[
+  {
+    "archive_path": "baseline.log",
+    "expanded_path": "expanded/baseline.log.txt",
+    "sha256": "e8c50c13967f54c9eb2667a8d5facc323184c2ca2da8d553cfd00233568d1e50",
+    "bytes": 186509
+  },
+  {
+    "archive_path": "baseline.json",
+    "expanded_path": "expanded/baseline.json.txt",
+    "sha256": "8e2d4e4d272f75ad16b3a4078d936f8b436a5f56a3ea9064b4b6cf7e38c7d7ed",
+    "bytes": 42060
+  },
+  {
+    "archive_path": "fixture-control.log",
+    "expanded_path": "expanded/fixture-control.log.txt",
+    "sha256": "5ef9a039f2dc64e1ab62f698fb480b2409d4d0c72c1b34b8c5d537f2a229076d",
+    "bytes": 166674
+  },
+  {
+    "archive_path": "repaired.log",
+    "expanded_path": "expanded/repaired.log.txt",
+    "sha256": "59f4ef2708417dce81a6934cafb81ea73f43dcacede08f76bedc42b1e6529450",
+    "bytes": 178063
+  },
+  {
+    "archive_path": "repaired.json",
+    "expanded_path": "expanded/repaired.json.txt",
+    "sha256": "d46c0bef50fe44e7c0273ef0e03b7c94eb2dd87f138cedb94bece43f698c29d3",
+    "bytes": 40698
+  },
+  {
+    "archive_path": "consumer.log",
+    "expanded_path": "expanded/consumer.log.txt",
+    "sha256": "f042b05f8e570ad46755791284c92f5b07e7e916453b9ff53f76d9ae55cf5312",
+    "bytes": 170186
+  },
+  {
+    "archive_path": "build.log",
+    "expanded_path": "expanded/build.log.txt",
+    "sha256": "130e3d6bc1253014b67e1d92ceb2cd4710b285f9dd4558b0e2486f06eda26ece",
+    "bytes": 430892
+  },
+  {
+    "archive_path": "build-control.log",
+    "expanded_path": "expanded/build-control.log.txt",
+    "sha256": "d58265506cd3aca2a10f453a4d64c55adfc0c7804f9883c39ca4682b92fd7732",
+    "bytes": 430851
+  },
+  {
+    "archive_path": "native-repeat-executed.cjs",
+    "expanded_path": "expanded/native-repeat-executed.cjs.txt",
+    "sha256": "60b98686c5f0d9507c864bd8edee37956ce5108c85acb67652dd3185517c35b4",
+    "bytes": 3729
+  },
+  {
+    "archive_path": "native-repeat.cjs",
+    "expanded_path": "expanded/native-repeat.cjs.txt",
+    "sha256": "f9de59b7efce905b7eb859db1077398f00129579952b775f657630592a4169c8",
+    "bytes": 3748
+  },
+  {
+    "archive_path": "native.log",
+    "expanded_path": "expanded/native.log.txt",
+    "sha256": "8880fffd6d5c97b4752a2e15b5676917af7046a46a5a950afc5b553e93bfa81f",
+    "bytes": 310
+  },
+  {
+    "archive_path": "native-control.log",
+    "expanded_path": "expanded/native-control.log.txt",
+    "sha256": "2090f2e14eb1a7feaf180388be9da7a08ed8d37740ba000daef64cb6264c3a95",
+    "bytes": 1134
+  },
+  {
+    "archive_path": "native-restored.log",
+    "expanded_path": "expanded/native-restored.log.txt",
+    "sha256": "8880fffd6d5c97b4752a2e15b5676917af7046a46a5a950afc5b553e93bfa81f",
+    "bytes": 310
+  },
+  {
+    "archive_path": "root-candidate.ts",
+    "expanded_path": "expanded/root-candidate.ts.txt",
+    "sha256": "973ac2b743d8c107b5a2052dbfe585653e2e690973d096392dbeb635d6702076",
+    "bytes": 14396
+  },
+  {
+    "archive_path": "root-control.ts",
+    "expanded_path": "expanded/root-control.ts.txt",
+    "sha256": "48e5024839e1eea9b13f1b06d6632dc9ad68594ac324b3844af2f02ad819ffc4",
+    "bytes": 14355
+  },
+  {
+    "archive_path": "native/summary.json",
+    "expanded_path": "expanded/native/summary.json.txt",
+    "sha256": "fceae9a94030f41931520fc422e2c50e366279665da26d909107db19d28f0407",
+    "bytes": 5267
+  },
+  {
+    "archive_path": "native/shadcn.json",
+    "expanded_path": "expanded/native/shadcn.json.txt",
+    "sha256": "8b48b01b2d6ffac94736d5820d9beaf3c8aa6b5cf3ec1670ed51d241952112ef",
+    "bytes": 2431
+  },
+  {
+    "archive_path": "native/brutalist-before.png",
+    "expanded_path": "expanded/native/brutalist-before.png",
+    "sha256": "b240af9abc8c07c30ed6d30f43a46df986778450f85fa127e261ca52b1391755",
+    "bytes": 128730
+  },
+  {
+    "archive_path": "native/brutalist.json",
+    "expanded_path": "expanded/native/brutalist.json.txt",
+    "sha256": "41e02abfdb14483e87d12fece29228dac365884b130b5ab2b3996a0f23a9a918",
+    "bytes": 2514
+  },
+  {
+    "archive_path": "native/shadcn-after.png",
+    "expanded_path": "expanded/native/shadcn-after.png",
+    "sha256": "ac25623d02b24d219cc0882f8afeebfe0eae085d4163c4f4bb932d7df31d7da4",
+    "bytes": 115506
+  },
+  {
+    "archive_path": "native/shadcn-before.png",
+    "expanded_path": "expanded/native/shadcn-before.png",
+    "sha256": "614b37d85d7de95c652c925bb1e136a37977c70387187d917fc3b7a78d6781b2",
+    "bytes": 115497
+  },
+  {
+    "archive_path": "native/brutalist-after.png",
+    "expanded_path": "expanded/native/brutalist-after.png",
+    "sha256": "ecd76c0e07b50ec73694ef2c6acae6972553973b36556864134838668cf82afa",
+    "bytes": 126987
+  },
+  {
+    "archive_path": "native-control/summary.json",
+    "expanded_path": "expanded/native-control/summary.json.txt",
+    "sha256": "c13d2e27e38d60365aee9636e8eaf277183b699f76629ff539e003921aa7b2dc",
+    "bytes": 5829
+  },
+  {
+    "archive_path": "native-control/shadcn.json",
+    "expanded_path": "expanded/native-control/shadcn.json.txt",
+    "sha256": "457b520bdefe6aab116d6e8915ae667264200e2acda0fbc4749e0a5ffc573a78",
+    "bytes": 2710
+  },
+  {
+    "archive_path": "native-control/brutalist-before.png",
+    "expanded_path": "expanded/native-control/brutalist-before.png",
+    "sha256": "38cd19229a500bf7c9d08b72be1014f2dc32db5167eeb3d3f6f0c131b5e58b21",
+    "bytes": 128732
+  },
+  {
+    "archive_path": "native-control/brutalist.json",
+    "expanded_path": "expanded/native-control/brutalist.json.txt",
+    "sha256": "2f46dd25a62f20313639d3efdbc45bbbdf6c771d4dc360b7c6a89c80085a67fc",
+    "bytes": 2793
+  },
+  {
+    "archive_path": "native-control/shadcn-failure.png",
+    "expanded_path": "expanded/native-control/shadcn-failure.png",
+    "sha256": "112809fa0eab0a98bec242fd963eb124b10720e89e47f44abe6afce1a9ff47bb",
+    "bytes": 115673
+  },
+  {
+    "archive_path": "native-control/shadcn-before.png",
+    "expanded_path": "expanded/native-control/shadcn-before.png",
+    "sha256": "614b37d85d7de95c652c925bb1e136a37977c70387187d917fc3b7a78d6781b2",
+    "bytes": 115497
+  },
+  {
+    "archive_path": "native-control/brutalist-failure.png",
+    "expanded_path": "expanded/native-control/brutalist-failure.png",
+    "sha256": "898cd4e5ecd002f6e771cd9edf9892b08100a545fcea531430a1e9f9020eb183",
+    "bytes": 127243
+  },
+  {
+    "archive_path": "native-restored/summary.json",
+    "expanded_path": "expanded/native-restored/summary.json.txt",
+    "sha256": "fceae9a94030f41931520fc422e2c50e366279665da26d909107db19d28f0407",
+    "bytes": 5267
+  },
+  {
+    "archive_path": "native-restored/shadcn.json",
+    "expanded_path": "expanded/native-restored/shadcn.json.txt",
+    "sha256": "8b48b01b2d6ffac94736d5820d9beaf3c8aa6b5cf3ec1670ed51d241952112ef",
+    "bytes": 2431
+  },
+  {
+    "archive_path": "native-restored/brutalist-before.png",
+    "expanded_path": "expanded/native-restored/brutalist-before.png",
+    "sha256": "38cd19229a500bf7c9d08b72be1014f2dc32db5167eeb3d3f6f0c131b5e58b21",
+    "bytes": 128732
+  },
+  {
+    "archive_path": "native-restored/brutalist.json",
+    "expanded_path": "expanded/native-restored/brutalist.json.txt",
+    "sha256": "41e02abfdb14483e87d12fece29228dac365884b130b5ab2b3996a0f23a9a918",
+    "bytes": 2514
+  },
+  {
+    "archive_path": "native-restored/shadcn-after.png",
+    "expanded_path": "expanded/native-restored/shadcn-after.png",
+    "sha256": "9a0adca44cde8304e278ac11a686ce45abb39955b443566b2562c3179de3cb85",
+    "bytes": 115562
+  },
+  {
+    "archive_path": "native-restored/shadcn-before.png",
+    "expanded_path": "expanded/native-restored/shadcn-before.png",
+    "sha256": "197b5d87705020738de11dcbffce2188b8f238d7fefa17805da53961a075de29",
+    "bytes": 115495
+  },
+  {
+    "archive_path": "native-restored/brutalist-after.png",
+    "expanded_path": "expanded/native-restored/brutalist-after.png",
+    "sha256": "114865b5d78bc87929f3d981829b6a5e793ea427de33753e8bd35d612d0ece7e",
+    "bytes": 127013
+  }
+]

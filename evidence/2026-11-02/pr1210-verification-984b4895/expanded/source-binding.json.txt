@@ -1,0 +1,14 @@
+{
+  "kind": "static-source-binding-prepared-on-recheck-not-new-execution",
+  "productHead": "984b4895480908dea99ff34b9ccaca177ddcab63",
+  "productTree": "22a9af5c6f99ab1d7bfb9fce51cf106e6d67ab6a",
+  "testFollowup": "b27742508687629ce36ba98ea34e70472b54762f",
+  "followupParent": "984b4895480908dea99ff34b9ccaca177ddcab63",
+  "onlyChangedTrackedPath": [
+    "apps/www/src/components/site-header-select-lifecycle.test.ts"
+  ],
+  "candidateRootSourceSHA256": "973ac2b743d8c107b5a2052dbfe585653e2e690973d096392dbeb635d6702076",
+  "soleRootControlSHA256": "48e5024839e1eea9b13f1b06d6632dc9ad68594ac324b3844af2f02ad819ffc4",
+  "commands": "See commands.md; machine paths are placeholders, original raw/public source hashes remain in parent source-map.json",
+  "nativeScope": "historical complete984 product build plus unbundled test-only fixture delta; sole-Root control built separately; not6202 combined-tree execution"
+}

@@ -1,0 +1,80 @@
+{
+  "family": "shadcn",
+  "steps": [
+    {
+      "stage": "before",
+      "facts": {
+        "open": true,
+        "value": "wc",
+        "focusedValue": "react",
+        "active": [
+          {
+            "value": "wc",
+            "active": false,
+            "selected": true
+          },
+          {
+            "value": "react",
+            "active": true,
+            "selected": false
+          },
+          {
+            "value": "vue",
+            "active": false,
+            "selected": false
+          },
+          {
+            "value": "vue2",
+            "active": false,
+            "selected": false
+          }
+        ],
+        "focusHTML": "<wc-shadcn-select-item data-value=\"react\" data-text-value=\"React\" class=\"astro-glxqhcdx\" data-pui-root=\"\" data-collection-index=\"1\" data-collection-total=\"4\" style=\"--pui-collection-index: 1; --pui-collection-total: 4;\" role=\"option\" aria-disabled=\"false\" aria-selected=\"false\" data-pui-a11y-actions="
+      },
+      "aria": "- listbox:\n  - option \"Web Components\" [selected]\n  - option \"React\"\n  - option \"Vue\"\n  - option \"Vue 2\""
+    },
+    {
+      "stage": "after",
+      "facts": {
+        "open": true,
+        "value": "wc",
+        "focusedValue": "react",
+        "active": [
+          {
+            "value": "wc",
+            "active": true,
+            "selected": true
+          },
+          {
+            "value": "react",
+            "active": true,
+            "selected": false
+          },
+          {
+            "value": "vue",
+            "active": false,
+            "selected": false
+          },
+          {
+            "value": "vue2",
+            "active": false,
+            "selected": false
+          }
+        ],
+        "focusHTML": "<wc-shadcn-select-item data-value=\"react\" data-text-value=\"React\" class=\"astro-glxqhcdx\" data-pui-root=\"\" data-collection-index=\"1\" data-collection-total=\"4\" style=\"--pui-collection-index: 1; --pui-collection-total: 4;\" role=\"option\" aria-disabled=\"false\" aria-selected=\"false\" data-pui-a11y-actions="
+      },
+      "aria": "- listbox:\n  - option \"Web Components\" [selected]\n  - option \"React\"\n  - option \"Vue\"\n  - option \"Vue 2\""
+    }
+  ],
+  "errors": [],
+  "returnValue": true,
+  "events": [
+    {
+      "open": true,
+      "reason": "native-consumer-repeat-validation",
+      "focusReason": "keyboard"
+    }
+  ],
+  "status": "failed",
+  "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    active: [\n      {\n+       active: true,\n-       active: false,\n        selected: true,\n        value: 'wc'\n      },\n      {\n        active: true,\n"
+}
