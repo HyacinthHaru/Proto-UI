@@ -1,0 +1,1311 @@
+[
+  {
+    "id": "shadcn-wc-390-immediate",
+    "originalMatchIndex": 0,
+    "originalSelected": [
+      {
+        "tag": "WC-SHADCN-COMMAND-CONTENT",
+        "owner": "site-search-1-docs-1-dialog",
+        "prototype": "shadcn-command-content",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    ],
+    "contentOwner": "pp-2iez1r1djtm",
+    "contentId": "pui-dialog-4-content",
+    "matchingOwnerMasks": [
+      {
+        "tag": "WC-SHADCN-DIALOG-MASK",
+        "attributes": {
+          "data-pui-root": "",
+          "data-demo-owner": "demo-11",
+          "data-projection-owner": "pp-2iez1r1djtm",
+          "data-projection-family": "shadcn",
+          "data-projection-runtime": "wc",
+          "data-projection-generation": "1",
+          "data-projection-prototype": "shadcn-dialog-mask",
+          "data-transition-state": "entering",
+          "data-is-present": "",
+          "data-pui-style": "fixed inset-0 bg-black/50 backdrop-blur-xs animate-in fade-in-0"
+        },
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "parents": [
+          ["BODY", null],
+          ["HTML", null]
+        ]
+      }
+    ],
+    "triggerCount": 1
+  },
+  {
+    "id": "shadcn-wc-390-resize-immediate",
+    "originalMatchIndex": 0,
+    "originalSelected": [
+      {
+        "tag": "WC-SHADCN-COMMAND-CONTENT",
+        "owner": "site-search-1-docs-1-dialog",
+        "prototype": "shadcn-command-content",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    ],
+    "contentOwner": "pp-2iez1r1djtm",
+    "contentId": "pui-dialog-4-content",
+    "matchingOwnerMasks": [
+      {
+        "tag": "WC-SHADCN-DIALOG-MASK",
+        "attributes": {
+          "data-pui-root": "",
+          "data-demo-owner": "demo-11",
+          "data-projection-owner": "pp-2iez1r1djtm",
+          "data-projection-family": "shadcn",
+          "data-projection-runtime": "wc",
+          "data-projection-generation": "1",
+          "data-projection-prototype": "shadcn-dialog-mask",
+          "data-transition-state": "entered",
+          "data-is-present": "",
+          "data-pui-style": "fixed inset-0 bg-black/50 backdrop-blur-xs animate-in fade-in-0"
+        },
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "parents": [
+          ["BODY", null],
+          ["HTML", null]
+        ]
+      }
+    ],
+    "triggerCount": 1
+  },
+  {
+    "id": "shadcn-wc-390-settled",
+    "originalMatchIndex": 0,
+    "originalSelected": [
+      {
+        "tag": "WC-SHADCN-COMMAND-CONTENT",
+        "owner": "site-search-1-docs-1-dialog",
+        "prototype": "shadcn-command-content",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    ],
+    "contentOwner": "pp-2iez1r1djtm",
+    "contentId": "pui-dialog-4-content",
+    "matchingOwnerMasks": [
+      {
+        "tag": "WC-SHADCN-DIALOG-MASK",
+        "attributes": {
+          "data-pui-root": "",
+          "data-demo-owner": "demo-11",
+          "data-projection-owner": "pp-2iez1r1djtm",
+          "data-projection-family": "shadcn",
+          "data-projection-runtime": "wc",
+          "data-projection-generation": "1",
+          "data-projection-prototype": "shadcn-dialog-mask",
+          "data-transition-state": "entered",
+          "data-is-present": "",
+          "data-pui-style": "fixed inset-0 bg-black/50 backdrop-blur-xs animate-in fade-in-0"
+        },
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "parents": [
+          ["BODY", null],
+          ["HTML", null]
+        ]
+      }
+    ],
+    "triggerCount": 1
+  },
+  {
+    "id": "shadcn-react-390-immediate",
+    "originalMatchIndex": 0,
+    "originalSelected": [
+      {
+        "tag": "DIV",
+        "owner": "site-search-1-docs-1-dialog",
+        "prototype": "shadcn-command-content",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    ],
+    "contentOwner": "pp-e6ozow8hpuo",
+    "contentId": "pui-dialog-7-content",
+    "matchingOwnerMasks": [
+      {
+        "tag": "DIV",
+        "attributes": {
+          "data-pui-root": "",
+          "data-pui-style": "fixed inset-0 bg-black/50 backdrop-blur-xs animate-in fade-in-0",
+          "data-transition-state": "entering",
+          "data-projection-owner": "pp-e6ozow8hpuo",
+          "data-projection-family": "shadcn",
+          "data-projection-runtime": "react",
+          "data-projection-generation": "2",
+          "data-projection-prototype": "shadcn-dialog-mask",
+          "data-is-present": ""
+        },
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "parents": [
+          ["DIV", ""],
+          ["BODY", null],
+          ["HTML", null]
+        ]
+      }
+    ],
+    "triggerCount": 1
+  },
+  {
+    "id": "shadcn-react-390-resize-immediate",
+    "originalMatchIndex": 0,
+    "originalSelected": [
+      {
+        "tag": "DIV",
+        "owner": "site-search-1-docs-1-dialog",
+        "prototype": "shadcn-command-content",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    ],
+    "contentOwner": "pp-e6ozow8hpuo",
+    "contentId": "pui-dialog-7-content",
+    "matchingOwnerMasks": [
+      {
+        "tag": "DIV",
+        "attributes": {
+          "data-pui-root": "",
+          "data-pui-style": "fixed inset-0 bg-black/50 backdrop-blur-xs animate-in fade-in-0",
+          "data-transition-state": "entered",
+          "data-projection-owner": "pp-e6ozow8hpuo",
+          "data-projection-family": "shadcn",
+          "data-projection-runtime": "react",
+          "data-projection-generation": "2",
+          "data-projection-prototype": "shadcn-dialog-mask",
+          "data-is-present": ""
+        },
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "parents": [
+          ["DIV", ""],
+          ["BODY", null],
+          ["HTML", null]
+        ]
+      }
+    ],
+    "triggerCount": 1
+  },
+  {
+    "id": "shadcn-react-390-settled",
+    "originalMatchIndex": 0,
+    "originalSelected": [
+      {
+        "tag": "DIV",
+        "owner": "site-search-1-docs-1-dialog",
+        "prototype": "shadcn-command-content",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    ],
+    "contentOwner": "pp-e6ozow8hpuo",
+    "contentId": "pui-dialog-7-content",
+    "matchingOwnerMasks": [
+      {
+        "tag": "DIV",
+        "attributes": {
+          "data-pui-root": "",
+          "data-pui-style": "fixed inset-0 bg-black/50 backdrop-blur-xs animate-in fade-in-0",
+          "data-transition-state": "entered",
+          "data-projection-owner": "pp-e6ozow8hpuo",
+          "data-projection-family": "shadcn",
+          "data-projection-runtime": "react",
+          "data-projection-generation": "2",
+          "data-projection-prototype": "shadcn-dialog-mask",
+          "data-is-present": ""
+        },
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "parents": [
+          ["DIV", ""],
+          ["BODY", null],
+          ["HTML", null]
+        ]
+      }
+    ],
+    "triggerCount": 1
+  },
+  {
+    "id": "shadcn-vue-390-immediate",
+    "originalMatchIndex": 0,
+    "originalSelected": [
+      {
+        "tag": "DIV",
+        "owner": "site-search-1-docs-1-dialog",
+        "prototype": "shadcn-command-content",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    ],
+    "contentOwner": "pp-r6d9097kmsl",
+    "contentId": "pui-dialog-7-content",
+    "matchingOwnerMasks": [
+      {
+        "tag": "DIV",
+        "attributes": {
+          "data-pui-root": "",
+          "data-projection-owner": "pp-r6d9097kmsl",
+          "data-projection-family": "shadcn",
+          "data-projection-runtime": "vue",
+          "data-projection-generation": "2",
+          "data-projection-prototype": "shadcn-dialog-mask",
+          "data-pui-style": "fixed inset-0 bg-black/50 backdrop-blur-xs animate-in fade-in-0",
+          "data-transition-state": "entering",
+          "data-is-present": ""
+        },
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "parents": [
+          ["BODY", null],
+          ["HTML", null]
+        ]
+      }
+    ],
+    "triggerCount": 1
+  },
+  {
+    "id": "shadcn-vue-390-resize-immediate",
+    "originalMatchIndex": 0,
+    "originalSelected": [
+      {
+        "tag": "DIV",
+        "owner": "site-search-1-docs-1-dialog",
+        "prototype": "shadcn-command-content",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    ],
+    "contentOwner": "pp-r6d9097kmsl",
+    "contentId": "pui-dialog-7-content",
+    "matchingOwnerMasks": [
+      {
+        "tag": "DIV",
+        "attributes": {
+          "data-pui-root": "",
+          "data-projection-owner": "pp-r6d9097kmsl",
+          "data-projection-family": "shadcn",
+          "data-projection-runtime": "vue",
+          "data-projection-generation": "2",
+          "data-projection-prototype": "shadcn-dialog-mask",
+          "data-pui-style": "fixed inset-0 bg-black/50 backdrop-blur-xs animate-in fade-in-0",
+          "data-transition-state": "entered",
+          "data-is-present": ""
+        },
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "parents": [
+          ["BODY", null],
+          ["HTML", null]
+        ]
+      }
+    ],
+    "triggerCount": 1
+  },
+  {
+    "id": "shadcn-vue-390-settled",
+    "originalMatchIndex": 0,
+    "originalSelected": [
+      {
+        "tag": "DIV",
+        "owner": "site-search-1-docs-1-dialog",
+        "prototype": "shadcn-command-content",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    ],
+    "contentOwner": "pp-r6d9097kmsl",
+    "contentId": "pui-dialog-7-content",
+    "matchingOwnerMasks": [
+      {
+        "tag": "DIV",
+        "attributes": {
+          "data-pui-root": "",
+          "data-projection-owner": "pp-r6d9097kmsl",
+          "data-projection-family": "shadcn",
+          "data-projection-runtime": "vue",
+          "data-projection-generation": "2",
+          "data-projection-prototype": "shadcn-dialog-mask",
+          "data-pui-style": "fixed inset-0 bg-black/50 backdrop-blur-xs animate-in fade-in-0",
+          "data-transition-state": "entered",
+          "data-is-present": ""
+        },
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "parents": [
+          ["BODY", null],
+          ["HTML", null]
+        ]
+      }
+    ],
+    "triggerCount": 1
+  },
+  {
+    "id": "shadcn-vue2-390-immediate",
+    "originalMatchIndex": 0,
+    "originalSelected": [
+      {
+        "tag": "DIV",
+        "owner": "site-search-1-docs-1-dialog",
+        "prototype": "shadcn-command-content",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    ],
+    "contentOwner": "pp-9okpduur6e7",
+    "contentId": "pui-dialog-7-content",
+    "matchingOwnerMasks": [
+      {
+        "tag": "DIV",
+        "attributes": {
+          "data-pui-root": "",
+          "data-projection-owner": "pp-9okpduur6e7",
+          "data-projection-family": "shadcn",
+          "data-projection-runtime": "vue2",
+          "data-projection-generation": "2",
+          "data-projection-prototype": "shadcn-dialog-mask",
+          "data-pui-style": "fixed inset-0 bg-black/50 backdrop-blur-xs animate-in fade-in-0",
+          "data-transition-state": "entering",
+          "data-is-present": ""
+        },
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "parents": [
+          ["BODY", null],
+          ["HTML", null]
+        ]
+      }
+    ],
+    "triggerCount": 1
+  },
+  {
+    "id": "shadcn-vue2-390-resize-immediate",
+    "originalMatchIndex": 0,
+    "originalSelected": [
+      {
+        "tag": "DIV",
+        "owner": "site-search-1-docs-1-dialog",
+        "prototype": "shadcn-command-content",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    ],
+    "contentOwner": "pp-9okpduur6e7",
+    "contentId": "pui-dialog-7-content",
+    "matchingOwnerMasks": [
+      {
+        "tag": "DIV",
+        "attributes": {
+          "data-pui-root": "",
+          "data-projection-owner": "pp-9okpduur6e7",
+          "data-projection-family": "shadcn",
+          "data-projection-runtime": "vue2",
+          "data-projection-generation": "2",
+          "data-projection-prototype": "shadcn-dialog-mask",
+          "data-pui-style": "fixed inset-0 bg-black/50 backdrop-blur-xs animate-in fade-in-0",
+          "data-transition-state": "entered",
+          "data-is-present": ""
+        },
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "parents": [
+          ["BODY", null],
+          ["HTML", null]
+        ]
+      }
+    ],
+    "triggerCount": 1
+  },
+  {
+    "id": "shadcn-vue2-390-settled",
+    "originalMatchIndex": 0,
+    "originalSelected": [
+      {
+        "tag": "DIV",
+        "owner": "site-search-1-docs-1-dialog",
+        "prototype": "shadcn-command-content",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    ],
+    "contentOwner": "pp-9okpduur6e7",
+    "contentId": "pui-dialog-7-content",
+    "matchingOwnerMasks": [
+      {
+        "tag": "DIV",
+        "attributes": {
+          "data-pui-root": "",
+          "data-projection-owner": "pp-9okpduur6e7",
+          "data-projection-family": "shadcn",
+          "data-projection-runtime": "vue2",
+          "data-projection-generation": "2",
+          "data-projection-prototype": "shadcn-dialog-mask",
+          "data-pui-style": "fixed inset-0 bg-black/50 backdrop-blur-xs animate-in fade-in-0",
+          "data-transition-state": "entered",
+          "data-is-present": ""
+        },
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "parents": [
+          ["BODY", null],
+          ["HTML", null]
+        ]
+      }
+    ],
+    "triggerCount": 1
+  },
+  {
+    "id": "brutalist-wc-390-immediate",
+    "originalMatchIndex": 0,
+    "originalSelected": [
+      {
+        "tag": "WC-BRUTALIST-COMMAND-CONTENT",
+        "owner": "site-search-1-docs-1-dialog",
+        "prototype": "brutalist-command-content",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    ],
+    "contentOwner": "pp-djlzceq3s4v",
+    "contentId": "pui-dialog-4-content",
+    "matchingOwnerMasks": [
+      {
+        "tag": "WC-BRUTALIST-DIALOG-MASK",
+        "attributes": {
+          "data-pui-root": "",
+          "data-demo-owner": "demo-7",
+          "data-projection-owner": "pp-djlzceq3s4v",
+          "data-projection-family": "brutalist",
+          "data-projection-runtime": "wc",
+          "data-projection-generation": "1",
+          "data-projection-prototype": "brutalist-dialog-mask",
+          "data-transition-state": "entering",
+          "data-is-present": "",
+          "data-pui-style": "fixed inset-0 bg-overlay animate-in fade-in-0"
+        },
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "parents": [
+          ["BODY", null],
+          ["HTML", null]
+        ]
+      }
+    ],
+    "triggerCount": 1
+  },
+  {
+    "id": "brutalist-wc-390-resize-immediate",
+    "originalMatchIndex": 0,
+    "originalSelected": [
+      {
+        "tag": "WC-BRUTALIST-COMMAND-CONTENT",
+        "owner": "site-search-1-docs-1-dialog",
+        "prototype": "brutalist-command-content",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    ],
+    "contentOwner": "pp-djlzceq3s4v",
+    "contentId": "pui-dialog-4-content",
+    "matchingOwnerMasks": [
+      {
+        "tag": "WC-BRUTALIST-DIALOG-MASK",
+        "attributes": {
+          "data-pui-root": "",
+          "data-demo-owner": "demo-7",
+          "data-projection-owner": "pp-djlzceq3s4v",
+          "data-projection-family": "brutalist",
+          "data-projection-runtime": "wc",
+          "data-projection-generation": "1",
+          "data-projection-prototype": "brutalist-dialog-mask",
+          "data-transition-state": "entered",
+          "data-is-present": "",
+          "data-pui-style": "fixed inset-0 bg-overlay animate-in fade-in-0"
+        },
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "parents": [
+          ["BODY", null],
+          ["HTML", null]
+        ]
+      }
+    ],
+    "triggerCount": 1
+  },
+  {
+    "id": "brutalist-wc-390-settled",
+    "originalMatchIndex": 0,
+    "originalSelected": [
+      {
+        "tag": "WC-BRUTALIST-COMMAND-CONTENT",
+        "owner": "site-search-1-docs-1-dialog",
+        "prototype": "brutalist-command-content",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    ],
+    "contentOwner": "pp-djlzceq3s4v",
+    "contentId": "pui-dialog-4-content",
+    "matchingOwnerMasks": [
+      {
+        "tag": "WC-BRUTALIST-DIALOG-MASK",
+        "attributes": {
+          "data-pui-root": "",
+          "data-demo-owner": "demo-7",
+          "data-projection-owner": "pp-djlzceq3s4v",
+          "data-projection-family": "brutalist",
+          "data-projection-runtime": "wc",
+          "data-projection-generation": "1",
+          "data-projection-prototype": "brutalist-dialog-mask",
+          "data-transition-state": "entered",
+          "data-is-present": "",
+          "data-pui-style": "fixed inset-0 bg-overlay animate-in fade-in-0"
+        },
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "parents": [
+          ["BODY", null],
+          ["HTML", null]
+        ]
+      }
+    ],
+    "triggerCount": 1
+  },
+  {
+    "id": "brutalist-react-390-immediate",
+    "originalMatchIndex": 0,
+    "originalSelected": [
+      {
+        "tag": "DIV",
+        "owner": "site-search-1-docs-1-dialog",
+        "prototype": "brutalist-command-content",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    ],
+    "contentOwner": "pp-3d06736dnn9",
+    "contentId": "pui-dialog-7-content",
+    "matchingOwnerMasks": [
+      {
+        "tag": "DIV",
+        "attributes": {
+          "data-pui-root": "",
+          "data-pui-style": "fixed inset-0 bg-overlay animate-in fade-in-0",
+          "data-transition-state": "entering",
+          "data-pui-view-revealing": "",
+          "data-projection-owner": "pp-3d06736dnn9",
+          "data-projection-family": "brutalist",
+          "data-projection-runtime": "react",
+          "data-projection-generation": "2",
+          "data-projection-prototype": "brutalist-dialog-mask",
+          "data-is-present": ""
+        },
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "parents": [
+          ["DIV", ""],
+          ["BODY", null],
+          ["HTML", null]
+        ]
+      }
+    ],
+    "triggerCount": 1
+  },
+  {
+    "id": "brutalist-react-390-resize-immediate",
+    "originalMatchIndex": 0,
+    "originalSelected": [
+      {
+        "tag": "DIV",
+        "owner": "site-search-1-docs-1-dialog",
+        "prototype": "brutalist-command-content",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    ],
+    "contentOwner": "pp-3d06736dnn9",
+    "contentId": "pui-dialog-7-content",
+    "matchingOwnerMasks": [
+      {
+        "tag": "DIV",
+        "attributes": {
+          "data-pui-root": "",
+          "data-pui-style": "fixed inset-0 bg-overlay animate-in fade-in-0",
+          "data-transition-state": "entered",
+          "data-projection-owner": "pp-3d06736dnn9",
+          "data-projection-family": "brutalist",
+          "data-projection-runtime": "react",
+          "data-projection-generation": "2",
+          "data-projection-prototype": "brutalist-dialog-mask",
+          "data-is-present": ""
+        },
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "parents": [
+          ["DIV", ""],
+          ["BODY", null],
+          ["HTML", null]
+        ]
+      }
+    ],
+    "triggerCount": 1
+  },
+  {
+    "id": "brutalist-react-390-settled",
+    "originalMatchIndex": 0,
+    "originalSelected": [
+      {
+        "tag": "DIV",
+        "owner": "site-search-1-docs-1-dialog",
+        "prototype": "brutalist-command-content",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    ],
+    "contentOwner": "pp-3d06736dnn9",
+    "contentId": "pui-dialog-7-content",
+    "matchingOwnerMasks": [
+      {
+        "tag": "DIV",
+        "attributes": {
+          "data-pui-root": "",
+          "data-pui-style": "fixed inset-0 bg-overlay animate-in fade-in-0",
+          "data-transition-state": "entered",
+          "data-projection-owner": "pp-3d06736dnn9",
+          "data-projection-family": "brutalist",
+          "data-projection-runtime": "react",
+          "data-projection-generation": "2",
+          "data-projection-prototype": "brutalist-dialog-mask",
+          "data-is-present": ""
+        },
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "parents": [
+          ["DIV", ""],
+          ["BODY", null],
+          ["HTML", null]
+        ]
+      }
+    ],
+    "triggerCount": 1
+  },
+  {
+    "id": "brutalist-vue-390-immediate",
+    "originalMatchIndex": 0,
+    "originalSelected": [
+      {
+        "tag": "DIV",
+        "owner": "site-search-1-docs-1-dialog",
+        "prototype": "brutalist-command-content",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    ],
+    "contentOwner": "pp-xwv5jgkukz",
+    "contentId": "pui-dialog-7-content",
+    "matchingOwnerMasks": [
+      {
+        "tag": "DIV",
+        "attributes": {
+          "data-pui-root": "",
+          "data-projection-owner": "pp-xwv5jgkukz",
+          "data-projection-family": "brutalist",
+          "data-projection-runtime": "vue",
+          "data-projection-generation": "2",
+          "data-projection-prototype": "brutalist-dialog-mask",
+          "data-pui-style": "fixed inset-0 bg-overlay animate-in fade-in-0",
+          "data-transition-state": "entering",
+          "data-is-present": ""
+        },
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "parents": [
+          ["BODY", null],
+          ["HTML", null]
+        ]
+      }
+    ],
+    "triggerCount": 1
+  },
+  {
+    "id": "brutalist-vue-390-resize-immediate",
+    "originalMatchIndex": 0,
+    "originalSelected": [
+      {
+        "tag": "DIV",
+        "owner": "site-search-1-docs-1-dialog",
+        "prototype": "brutalist-command-content",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    ],
+    "contentOwner": "pp-xwv5jgkukz",
+    "contentId": "pui-dialog-7-content",
+    "matchingOwnerMasks": [
+      {
+        "tag": "DIV",
+        "attributes": {
+          "data-pui-root": "",
+          "data-projection-owner": "pp-xwv5jgkukz",
+          "data-projection-family": "brutalist",
+          "data-projection-runtime": "vue",
+          "data-projection-generation": "2",
+          "data-projection-prototype": "brutalist-dialog-mask",
+          "data-pui-style": "fixed inset-0 bg-overlay animate-in fade-in-0",
+          "data-transition-state": "entered",
+          "data-is-present": ""
+        },
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "parents": [
+          ["BODY", null],
+          ["HTML", null]
+        ]
+      }
+    ],
+    "triggerCount": 1
+  },
+  {
+    "id": "brutalist-vue-390-settled",
+    "originalMatchIndex": 0,
+    "originalSelected": [
+      {
+        "tag": "DIV",
+        "owner": "site-search-1-docs-1-dialog",
+        "prototype": "brutalist-command-content",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    ],
+    "contentOwner": "pp-xwv5jgkukz",
+    "contentId": "pui-dialog-7-content",
+    "matchingOwnerMasks": [
+      {
+        "tag": "DIV",
+        "attributes": {
+          "data-pui-root": "",
+          "data-projection-owner": "pp-xwv5jgkukz",
+          "data-projection-family": "brutalist",
+          "data-projection-runtime": "vue",
+          "data-projection-generation": "2",
+          "data-projection-prototype": "brutalist-dialog-mask",
+          "data-pui-style": "fixed inset-0 bg-overlay animate-in fade-in-0",
+          "data-transition-state": "entered",
+          "data-is-present": ""
+        },
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "parents": [
+          ["BODY", null],
+          ["HTML", null]
+        ]
+      }
+    ],
+    "triggerCount": 1
+  },
+  {
+    "id": "brutalist-vue2-390-immediate",
+    "originalMatchIndex": 0,
+    "originalSelected": [
+      {
+        "tag": "DIV",
+        "owner": "site-search-1-docs-1-dialog",
+        "prototype": "brutalist-command-content",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    ],
+    "contentOwner": "pp-mu8opv1bxor",
+    "contentId": "pui-dialog-7-content",
+    "matchingOwnerMasks": [
+      {
+        "tag": "DIV",
+        "attributes": {
+          "data-pui-root": "",
+          "data-projection-owner": "pp-mu8opv1bxor",
+          "data-projection-family": "brutalist",
+          "data-projection-runtime": "vue2",
+          "data-projection-generation": "2",
+          "data-projection-prototype": "brutalist-dialog-mask",
+          "data-pui-style": "fixed inset-0 bg-overlay animate-in fade-in-0",
+          "data-transition-state": "entering",
+          "data-is-present": ""
+        },
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "parents": [
+          ["BODY", null],
+          ["HTML", null]
+        ]
+      }
+    ],
+    "triggerCount": 1
+  },
+  {
+    "id": "brutalist-vue2-390-resize-immediate",
+    "originalMatchIndex": 0,
+    "originalSelected": [
+      {
+        "tag": "DIV",
+        "owner": "site-search-1-docs-1-dialog",
+        "prototype": "brutalist-command-content",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    ],
+    "contentOwner": "pp-mu8opv1bxor",
+    "contentId": "pui-dialog-7-content",
+    "matchingOwnerMasks": [
+      {
+        "tag": "DIV",
+        "attributes": {
+          "data-pui-root": "",
+          "data-projection-owner": "pp-mu8opv1bxor",
+          "data-projection-family": "brutalist",
+          "data-projection-runtime": "vue2",
+          "data-projection-generation": "2",
+          "data-projection-prototype": "brutalist-dialog-mask",
+          "data-pui-style": "fixed inset-0 bg-overlay animate-in fade-in-0",
+          "data-transition-state": "entered",
+          "data-is-present": ""
+        },
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "parents": [
+          ["BODY", null],
+          ["HTML", null]
+        ]
+      }
+    ],
+    "triggerCount": 1
+  },
+  {
+    "id": "brutalist-vue2-390-settled",
+    "originalMatchIndex": 0,
+    "originalSelected": [
+      {
+        "tag": "DIV",
+        "owner": "site-search-1-docs-1-dialog",
+        "prototype": "brutalist-command-content",
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    ],
+    "contentOwner": "pp-mu8opv1bxor",
+    "contentId": "pui-dialog-7-content",
+    "matchingOwnerMasks": [
+      {
+        "tag": "DIV",
+        "attributes": {
+          "data-pui-root": "",
+          "data-projection-owner": "pp-mu8opv1bxor",
+          "data-projection-family": "brutalist",
+          "data-projection-runtime": "vue2",
+          "data-projection-generation": "2",
+          "data-projection-prototype": "brutalist-dialog-mask",
+          "data-pui-style": "fixed inset-0 bg-overlay animate-in fade-in-0",
+          "data-transition-state": "entered",
+          "data-is-present": ""
+        },
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "parents": [
+          ["BODY", null],
+          ["HTML", null]
+        ]
+      }
+    ],
+    "triggerCount": 1
+  }
+]
