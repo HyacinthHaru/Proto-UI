@@ -1,0 +1,17 @@
+# Dialog hosted calibration preparation
+
+Reviewed official pair `41557408834` for probe/candidate `f1db798644e4641a99856b172d4f7ac2baf0e91d`, fixed baseline `15d864de54210c2eebc4f4b2fec6235324989989`. This is a private human-assisted/current-user evidence review, partial/ABSTAIN.
+
+Both complete downloaded ZIPs match the requested original SHA-256 and sizes. All 130 candidate members and 40 baseline members passed CRC reading. Each side records the same three source hashes `50f13884… / 0f150fc2… / 4bbc332f…`, matching the actual f1 Git objects. Original JSON/report hashes, reporter source, process-exit, finishedCalls, no cancellation/timeout, and completed cleanup all agree.
+
+Candidate reports 8 passed, 0 failed/pending. Its 196 observations comprise 120 geometry, 24 Title-clearance and 52 action records. Shadcn contributes 100 rows, Brutalist 96. All 120 geometry identities resolve. The 120 referenced PNG paths, SHA-256, PNG signatures and dimensions match the actual archive members. The original full-window Mask checks were satisfied in the 32 settled viewport samples.
+
+Baseline reports 0 passed, 8 failed/pending0. Its 33 rows comprise 21 geometry, 4 Title and 8 failures. The exact original failures remain three zero-inset assertions, four Title boxes overlapping by504, and one unavailable Shadcn/Vue2 entry. Every independently compared historical data clause matches, including Title/Close rectangles, glyph-line rectangle and zero glyph overlap. Seven native journeys stop at the first390px check; the unavailable runtime has no native journey. All29 referenced PNGs match.
+
+The unchanged f1 verifier was loaded from Git bytes and called on the raw baseline data without rebinding source hashes. Its current-source check and runner-integrity check accept, then its historical verifier rejects with `Uncalibrated probe closure`. The official archive's expected-failure-classification.json is empty, so no successful classification is asserted from that file. No official job-level classifier log was consumed by this reviewer.
+
+Historical calibration389 uses probe `181f88d9…`, harness `e3792a3e…`, unchanged readiness `4bbc332f…`, and Chrome155.0.8059.39. This new pair uses Chrome156.0.8078.47. Recorded font package/fallback inventories match. These are source/environment differences requiring an explicit bounded calibration decision; full image/pixel parity was not reviewed here.
+
+Current cached main `91f2fdb5e36cfac675d22d1e07e1c4e6b051147d` retains the older181f probe and now has harness `d5afee7e…` after1273. The evidence here binds only f1's 50f/0f150/4bbc closure. A new main composition needs its own source binding and evidence.
+
+No definite integrity or narrow-data mismatch was found. The reports and per-member inventories prepare a calibration proposal; classifier/source edits, native reruns, GitHub approval and external publication were not performed.

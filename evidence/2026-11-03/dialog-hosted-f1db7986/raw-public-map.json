@@ -1,0 +1,38 @@
+[
+  {
+    "path": "candidate.zip",
+    "rawSha256": "b7a7a3ef71f481b6bf812c091340d80d644dc6cf3a029d594d021e8cfb604ad8",
+    "publicSha256": "b7a7a3ef71f481b6bf812c091340d80d644dc6cf3a029d594d021e8cfb604ad8",
+    "unchanged": true
+  },
+  {
+    "path": "baseline.zip",
+    "rawSha256": "082e2efac63228b2e11aaab23196b5daa44e95668974c7f1a3249f4adb9b5873",
+    "publicSha256": "082e2efac63228b2e11aaab23196b5daa44e95668974c7f1a3249f4adb9b5873",
+    "unchanged": true
+  },
+  {
+    "path": "candidate-job.log.txt",
+    "rawSha256": "d30e6b1d0d0d70353e4d03526ee35cf09d3b52487656cf1a301d4c1087fe7006",
+    "publicSha256": "d30e6b1d0d0d70353e4d03526ee35cf09d3b52487656cf1a301d4c1087fe7006",
+    "unchanged": true
+  },
+  {
+    "path": "baseline-job.log.txt",
+    "rawSha256": "f16c2cfdc2c51e89fc6448070322f3cf2229ef8c536d86c1aa15e20c0fe0865f",
+    "publicSha256": "f16c2cfdc2c51e89fc6448070322f3cf2229ef8c536d86c1aa15e20c0fe0865f",
+    "unchanged": true
+  },
+  {
+    "path": "independent-review.txt",
+    "rawSha256": "59cae3160b60c77dfa180fcdface5561a1ff9526ed9111915bcc839ff82354a5",
+    "publicSha256": "59cae3160b60c77dfa180fcdface5561a1ff9526ed9111915bcc839ff82354a5",
+    "unchanged": true
+  },
+  {
+    "path": "independent-review-notes.txt",
+    "rawSha256": "ec91b9ec80b32f9ef7409ac9beb603399c998c8111aacddca8538eaf67c7db54",
+    "publicSha256": "ec91b9ec80b32f9ef7409ac9beb603399c998c8111aacddca8538eaf67c7db54",
+    "unchanged": true
+  }
+]

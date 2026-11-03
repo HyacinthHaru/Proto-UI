@@ -1,0 +1,1250 @@
+﻿2026-11-03T05:42:13.6493191Z Current runner version: '2.338.2'
+2026-11-03T05:42:13.6520874Z ##[group]Runner Image Provisioner
+2026-11-03T05:42:13.6521852Z Hosted Compute Agent
+2026-11-03T05:42:13.6522474Z Version: 20261021.618
+2026-11-03T05:42:13.6523229Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-11-03T05:42:13.6524066Z Build Date: 2026-10-21T00:45:21Z
+2026-11-03T05:42:13.6524837Z Worker ID: {05d58adc-6f97-4f00-bd93-6fd04399c886}
+2026-11-03T05:42:13.6525662Z Region: westus2
+2026-11-03T05:42:13.6526510Z Cloud: Azure
+2026-11-03T05:42:13.6527151Z ##[endgroup]
+2026-11-03T05:42:13.6528711Z ##[group]Operating System
+2026-11-03T05:42:13.6529390Z Ubuntu
+2026-11-03T05:42:13.6530071Z 24.04.5
+2026-11-03T05:42:13.6530612Z LTS
+2026-11-03T05:42:13.6531175Z ##[endgroup]
+2026-11-03T05:42:13.6531771Z ##[group]Runner Image
+2026-11-03T05:42:13.6532431Z Image: ubuntu-24.04
+2026-11-03T05:42:13.6533132Z Version: 20261025.353.1
+2026-11-03T05:42:13.6534420Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261025.353/images/ubuntu/Ubuntu2404-Readme.md
+2026-11-03T05:42:13.6536316Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261025.353
+2026-11-03T05:42:13.6537325Z ##[endgroup]
+2026-11-03T05:42:13.6538555Z ##[group]GITHUB_TOKEN Permissions
+2026-11-03T05:42:13.6540565Z Contents: read
+2026-11-03T05:42:13.6541325Z Metadata: read
+2026-11-03T05:42:13.6541935Z ##[endgroup]
+2026-11-03T05:42:13.6544190Z Secret source: None
+2026-11-03T05:42:13.6545247Z Cache mode: write
+2026-11-03T05:42:13.6546012Z Prepare workflow directory
+2026-11-03T05:42:13.7107678Z Prepare all required actions
+2026-11-03T05:42:13.7159116Z Getting action download info
+2026-11-03T05:42:14.0794227Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-11-03T05:42:14.1749214Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2026-11-03T05:42:14.2733251Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-11-03T05:42:14.4761749Z Complete job name: matched-browser (candidate)
+2026-11-03T05:42:14.5615891Z ##[group]Run actions/checkout@v4
+2026-11-03T05:42:14.5617044Z with:
+2026-11-03T05:42:14.5617547Z   ref: f1db798644e4641a99856b172d4f7ac2baf0e91d
+2026-11-03T05:42:14.5618156Z   path: candidate
+2026-11-03T05:42:14.5618630Z   persist-credentials: false
+2026-11-03T05:42:14.5619169Z   repository: Proto-UI/Proto-UI
+2026-11-03T05:42:14.5623153Z   token: ***
+2026-11-03T05:42:14.5623607Z   ssh-strict: true
+2026-11-03T05:42:14.5624057Z   ssh-user: git
+2026-11-03T05:42:14.5624501Z   clean: true
+2026-11-03T05:42:14.5624958Z   sparse-checkout-cone-mode: true
+2026-11-03T05:42:14.5625487Z   fetch-depth: 1
+2026-11-03T05:42:14.5625923Z   fetch-tags: false
+2026-11-03T05:42:14.5626546Z   show-progress: true
+2026-11-03T05:42:14.5626997Z   lfs: false
+2026-11-03T05:42:14.5627412Z   submodules: false
+2026-11-03T05:42:14.5627863Z   set-safe-directory: true
+2026-11-03T05:42:14.5628382Z   allow-unsafe-pr-checkout: false
+2026-11-03T05:42:14.5629175Z env:
+2026-11-03T05:42:14.5629741Z   CANDIDATE_SHA: f1db798644e4641a99856b172d4f7ac2baf0e91d
+2026-11-03T05:42:14.5630470Z   BASELINE_SHA: 15d864de54210c2eebc4f4b2fec6235324989989
+2026-11-03T05:42:14.5631080Z ##[endgroup]
+2026-11-03T05:42:14.8779615Z Syncing repository: Proto-UI/Proto-UI
+2026-11-03T05:42:14.8781769Z ##[group]Getting Git version info
+2026-11-03T05:42:14.8782608Z Working directory is '/home/runner/work/Proto-UI/Proto-UI/candidate'
+2026-11-03T05:42:14.8783718Z [command]/usr/bin/git version
+2026-11-03T05:42:14.8894321Z git version 2.56.0
+2026-11-03T05:42:14.8927639Z ##[endgroup]
+2026-11-03T05:42:14.8936499Z Temporarily overriding HOME='/home/runner/work/_temp/888e5f15-3974-4111-996d-abb8c9fc459d' before making global git config changes
+2026-11-03T05:42:14.8943221Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-03T05:42:14.8947856Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Proto-UI/Proto-UI/candidate
+2026-11-03T05:42:14.9010891Z ##[group]Initializing the repository
+2026-11-03T05:42:14.9016633Z [command]/usr/bin/git init /home/runner/work/Proto-UI/Proto-UI/candidate
+2026-11-03T05:42:14.9153291Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-03T05:42:14.9154915Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-03T05:42:14.9156822Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-03T05:42:14.9158457Z hint: call:
+2026-11-03T05:42:14.9159425Z hint:
+2026-11-03T05:42:14.9160375Z hint: 	git config --global init.defaultBranch <name>
+2026-11-03T05:42:14.9161365Z hint:
+2026-11-03T05:42:14.9162280Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-03T05:42:14.9163904Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-03T05:42:14.9165209Z hint:
+2026-11-03T05:42:14.9165854Z hint: 	git branch -m <name>
+2026-11-03T05:42:14.9279680Z hint:
+2026-11-03T05:42:14.9281455Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-03T05:42:14.9283512Z Initialized empty Git repository in /home/runner/work/Proto-UI/Proto-UI/candidate/.git/
+2026-11-03T05:42:14.9293185Z [command]/usr/bin/git remote add origin https://github.com/Proto-UI/Proto-UI
+2026-11-03T05:42:14.9295915Z ##[endgroup]
+2026-11-03T05:42:14.9297427Z ##[group]Disabling automatic garbage collection
+2026-11-03T05:42:14.9298610Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-03T05:42:14.9301148Z ##[endgroup]
+2026-11-03T05:42:14.9302314Z ##[group]Setting up auth
+2026-11-03T05:42:14.9303509Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-03T05:42:14.9336352Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-03T05:42:14.9866297Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-03T05:42:14.9915125Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-03T05:42:15.0168556Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T05:42:15.0217999Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-03T05:42:15.0485293Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-03T05:42:15.0547920Z ##[endgroup]
+2026-11-03T05:42:15.0548892Z ##[group]Fetching the repository
+2026-11-03T05:42:15.0567921Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin f1db798644e4641a99856b172d4f7ac2baf0e91d
+2026-11-03T05:42:17.5603459Z From https://github.com/Proto-UI/Proto-UI
+2026-11-03T05:42:17.5605559Z  * branch            f1db798644e4641a99856b172d4f7ac2baf0e91d -> FETCH_HEAD
+2026-11-03T05:42:17.5644321Z ##[endgroup]
+2026-11-03T05:42:17.5645738Z ##[group]Determining the checkout info
+2026-11-03T05:42:17.5648084Z ##[endgroup]
+2026-11-03T05:42:17.5649051Z [command]/usr/bin/git sparse-checkout disable
+2026-11-03T05:42:17.5721809Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-03T05:42:17.5765577Z ##[group]Checking out the ref
+2026-11-03T05:42:17.5769365Z [command]/usr/bin/git checkout --progress --force f1db798644e4641a99856b172d4f7ac2baf0e91d
+2026-11-03T05:42:18.3494041Z Note: switching to 'f1db798644e4641a99856b172d4f7ac2baf0e91d'.
+2026-11-03T05:42:18.3495347Z 
+2026-11-03T05:42:18.3496011Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-11-03T05:42:18.3497737Z changes and commit them, and you can discard any commits you make in this
+2026-11-03T05:42:18.3500689Z state without impacting any branches by switching back to a branch.
+2026-11-03T05:42:18.3501531Z 
+2026-11-03T05:42:18.3501903Z If you want to create a new branch to retain commits you create, you may
+2026-11-03T05:42:18.3502639Z do so (now or later) by using -c with the switch command. Example:
+2026-11-03T05:42:18.3503038Z 
+2026-11-03T05:42:18.3503233Z   git switch -c <new-branch-name>
+2026-11-03T05:42:18.3503535Z 
+2026-11-03T05:42:18.3503721Z Or undo this operation with:
+2026-11-03T05:42:18.3503991Z 
+2026-11-03T05:42:18.3504147Z   git switch -
+2026-11-03T05:42:18.3504389Z 
+2026-11-03T05:42:18.3504734Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-11-03T05:42:18.3505239Z 
+2026-11-03T05:42:18.3505602Z HEAD is now at f1db798 test(dialog): bind Mask measurements to the controlled Dialog
+2026-11-03T05:42:18.3526528Z ##[endgroup]
+2026-11-03T05:42:18.3583990Z [command]/usr/bin/git log -1 --format=%H
+2026-11-03T05:42:18.3619485Z f1db798644e4641a99856b172d4f7ac2baf0e91d
+2026-11-03T05:42:18.3629238Z ##[group]Removing auth
+2026-11-03T05:42:18.3633093Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-03T05:42:18.3674816Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-03T05:42:18.3944465Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-03T05:42:18.3984662Z http.https://github.com/.extraheader
+2026-11-03T05:42:18.3992716Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-11-03T05:42:18.4035961Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-03T05:42:18.4304963Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T05:42:18.4352495Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-03T05:42:18.4612247Z ##[endgroup]
+2026-11-03T05:42:18.4914941Z ##[group]Run actions/checkout@v4
+2026-11-03T05:42:18.4915345Z with:
+2026-11-03T05:42:18.4915659Z   ref: f1db798644e4641a99856b172d4f7ac2baf0e91d
+2026-11-03T05:42:18.4916262Z   path: subject
+2026-11-03T05:42:18.4916583Z   persist-credentials: false
+2026-11-03T05:42:18.4916938Z   repository: Proto-UI/Proto-UI
+2026-11-03T05:42:18.4920023Z   token: ***
+2026-11-03T05:42:18.4920312Z   ssh-strict: true
+2026-11-03T05:42:18.4920604Z   ssh-user: git
+2026-11-03T05:42:18.4920880Z   clean: true
+2026-11-03T05:42:18.4921186Z   sparse-checkout-cone-mode: true
+2026-11-03T05:42:18.4921543Z   fetch-depth: 1
+2026-11-03T05:42:18.4921832Z   fetch-tags: false
+2026-11-03T05:42:18.4922137Z   show-progress: true
+2026-11-03T05:42:18.4922433Z   lfs: false
+2026-11-03T05:42:18.4922710Z   submodules: false
+2026-11-03T05:42:18.4923042Z   set-safe-directory: true
+2026-11-03T05:42:18.4923388Z   allow-unsafe-pr-checkout: false
+2026-11-03T05:42:18.4923732Z env:
+2026-11-03T05:42:18.4924104Z   CANDIDATE_SHA: f1db798644e4641a99856b172d4f7ac2baf0e91d
+2026-11-03T05:42:18.4924576Z   BASELINE_SHA: 15d864de54210c2eebc4f4b2fec6235324989989
+2026-11-03T05:42:18.4924978Z ##[endgroup]
+2026-11-03T05:42:18.5854815Z Syncing repository: Proto-UI/Proto-UI
+2026-11-03T05:42:18.5856553Z ##[group]Getting Git version info
+2026-11-03T05:42:18.5857697Z Working directory is '/home/runner/work/Proto-UI/Proto-UI/subject'
+2026-11-03T05:42:18.5895641Z [command]/usr/bin/git version
+2026-11-03T05:42:18.5976572Z git version 2.56.0
+2026-11-03T05:42:18.5999080Z ##[endgroup]
+2026-11-03T05:42:18.6016668Z Temporarily overriding HOME='/home/runner/work/_temp/9e7643d4-f479-471d-b027-02cfc3d079ff' before making global git config changes
+2026-11-03T05:42:18.6019054Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-03T05:42:18.6023424Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Proto-UI/Proto-UI/subject
+2026-11-03T05:42:18.6066889Z ##[group]Initializing the repository
+2026-11-03T05:42:18.6072487Z [command]/usr/bin/git init /home/runner/work/Proto-UI/Proto-UI/subject
+2026-11-03T05:42:18.6120408Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-11-03T05:42:18.6121869Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-11-03T05:42:18.6123518Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-11-03T05:42:18.6124749Z hint: call:
+2026-11-03T05:42:18.6125480Z hint:
+2026-11-03T05:42:18.6126602Z hint: 	git config --global init.defaultBranch <name>
+2026-11-03T05:42:18.6127876Z hint:
+2026-11-03T05:42:18.6129829Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-11-03T05:42:18.6131263Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-11-03T05:42:18.6132401Z hint:
+2026-11-03T05:42:18.6133437Z hint: 	git branch -m <name>
+2026-11-03T05:42:18.6134410Z hint:
+2026-11-03T05:42:18.6135485Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-11-03T05:42:18.6137419Z Initialized empty Git repository in /home/runner/work/Proto-UI/Proto-UI/subject/.git/
+2026-11-03T05:42:18.6140292Z [command]/usr/bin/git remote add origin https://github.com/Proto-UI/Proto-UI
+2026-11-03T05:42:18.6176400Z ##[endgroup]
+2026-11-03T05:42:18.6177486Z ##[group]Disabling automatic garbage collection
+2026-11-03T05:42:18.6181482Z [command]/usr/bin/git config --local gc.auto 0
+2026-11-03T05:42:18.6220416Z ##[endgroup]
+2026-11-03T05:42:18.6221474Z ##[group]Setting up auth
+2026-11-03T05:42:18.6228865Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-03T05:42:18.6269279Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-03T05:42:18.6587799Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-03T05:42:18.6655997Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-03T05:42:18.6956604Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T05:42:18.7005134Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-03T05:42:18.7259501Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-11-03T05:42:18.7313413Z ##[endgroup]
+2026-11-03T05:42:18.7314365Z ##[group]Fetching the repository
+2026-11-03T05:42:18.7324770Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin f1db798644e4641a99856b172d4f7ac2baf0e91d
+2026-11-03T05:42:21.1940155Z From https://github.com/Proto-UI/Proto-UI
+2026-11-03T05:42:21.1944375Z  * branch            f1db798644e4641a99856b172d4f7ac2baf0e91d -> FETCH_HEAD
+2026-11-03T05:42:21.1957001Z ##[endgroup]
+2026-11-03T05:42:21.1957457Z ##[group]Determining the checkout info
+2026-11-03T05:42:21.1958271Z ##[endgroup]
+2026-11-03T05:42:21.1958782Z [command]/usr/bin/git sparse-checkout disable
+2026-11-03T05:42:21.2023379Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-11-03T05:42:21.2063329Z ##[group]Checking out the ref
+2026-11-03T05:42:21.2069252Z [command]/usr/bin/git checkout --progress --force f1db798644e4641a99856b172d4f7ac2baf0e91d
+2026-11-03T05:42:21.9688066Z Note: switching to 'f1db798644e4641a99856b172d4f7ac2baf0e91d'.
+2026-11-03T05:42:21.9688903Z 
+2026-11-03T05:42:21.9689469Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-11-03T05:42:21.9690328Z changes and commit them, and you can discard any commits you make in this
+2026-11-03T05:42:21.9691363Z state without impacting any branches by switching back to a branch.
+2026-11-03T05:42:21.9691768Z 
+2026-11-03T05:42:21.9692003Z If you want to create a new branch to retain commits you create, you may
+2026-11-03T05:42:21.9692500Z do so (now or later) by using -c with the switch command. Example:
+2026-11-03T05:42:21.9692771Z 
+2026-11-03T05:42:21.9692891Z   git switch -c <new-branch-name>
+2026-11-03T05:42:21.9693080Z 
+2026-11-03T05:42:21.9693192Z Or undo this operation with:
+2026-11-03T05:42:21.9693377Z 
+2026-11-03T05:42:21.9693474Z   git switch -
+2026-11-03T05:42:21.9693660Z 
+2026-11-03T05:42:21.9693882Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-11-03T05:42:21.9694216Z 
+2026-11-03T05:42:21.9694448Z HEAD is now at f1db798 test(dialog): bind Mask measurements to the controlled Dialog
+2026-11-03T05:42:21.9709288Z ##[endgroup]
+2026-11-03T05:42:21.9761487Z [command]/usr/bin/git log -1 --format=%H
+2026-11-03T05:42:21.9797329Z f1db798644e4641a99856b172d4f7ac2baf0e91d
+2026-11-03T05:42:21.9807559Z ##[group]Removing auth
+2026-11-03T05:42:21.9811552Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-03T05:42:21.9854318Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-03T05:42:22.0125791Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-03T05:42:22.0161488Z http.https://github.com/.extraheader
+2026-11-03T05:42:22.0170160Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-11-03T05:42:22.0214972Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-03T05:42:22.0485989Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T05:42:22.0531912Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-03T05:42:22.0796816Z ##[endgroup]
+2026-11-03T05:42:22.1000055Z ##[group]Run actions/setup-node@v4
+2026-11-03T05:42:22.1000369Z with:
+2026-11-03T05:42:22.1000569Z   node-version: 24
+2026-11-03T05:42:22.1000784Z   always-auth: false
+2026-11-03T05:42:22.1001011Z   check-latest: false
+2026-11-03T05:42:22.1003745Z   token: ***
+2026-11-03T05:42:22.1003942Z env:
+2026-11-03T05:42:22.1004192Z   CANDIDATE_SHA: f1db798644e4641a99856b172d4f7ac2baf0e91d
+2026-11-03T05:42:22.1004567Z   BASELINE_SHA: 15d864de54210c2eebc4f4b2fec6235324989989
+2026-11-03T05:42:22.1004871Z ##[endgroup]
+2026-11-03T05:42:22.2591195Z (node:2822) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-03T05:42:22.2592144Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-03T05:42:22.2597158Z Found in cache @ /opt/hostedtoolcache/node/24.22.1/x64
+2026-11-03T05:42:22.2598049Z ##[group]Environment details
+2026-11-03T05:42:22.7108756Z node: v24.22.1
+2026-11-03T05:42:22.7109233Z npm: 11.19.1
+2026-11-03T05:42:22.7109683Z yarn: 1.22.22
+2026-11-03T05:42:22.7110604Z ##[endgroup]
+2026-11-03T05:42:22.7279425Z ##[group]Run set -euo pipefail
+2026-11-03T05:42:22.7279807Z [36;1mset -euo pipefail[0m
+2026-11-03T05:42:22.7280071Z [36;1mcorepack enable[0m
+2026-11-03T05:42:22.7280452Z [36;1mcorepack pnpm@10.32.1 install --frozen-lockfile --ignore-scripts[0m
+2026-11-03T05:42:22.7280861Z [36;1msudo apt-get update -qq[0m
+2026-11-03T05:42:22.7281240Z [36;1msudo apt-get install -y --no-install-recommends fonts-noto-cjk[0m
+2026-11-03T05:42:22.7281671Z [36;1mmkdir -p "$RUNNER_TEMP/dialog-space"[0m
+2026-11-03T05:42:22.7282263Z [36;1mdpkg-query -W -f='${Package} ${Version}\n' fonts-noto-cjk fontconfig > "$RUNNER_TEMP/dialog-space/font-environment.txt"[0m
+2026-11-03T05:42:22.7283213Z [36;1mfc-match -f '%{family}\n%{file}\n' sans-serif >> "$RUNNER_TEMP/dialog-space/font-environment.txt"[0m
+2026-11-03T05:42:22.7283755Z [36;1mCHROME=$(command -v google-chrome || command -v chromium)[0m
+2026-11-03T05:42:22.7284268Z [36;1m"$CHROME" --version > "$RUNNER_TEMP/dialog-space/browser-environment.txt"[0m
+2026-11-03T05:42:22.7284706Z [36;1mecho "CHROME_PATH=$CHROME" >> "$GITHUB_ENV"[0m
+2026-11-03T05:42:22.7285154Z [36;1mcorepack pnpm@10.32.1 --filter apps-www exec astro preferences disable devToolbar[0m
+2026-11-03T05:42:22.7317059Z shell: /usr/bin/bash -e {0}
+2026-11-03T05:42:22.7317316Z env:
+2026-11-03T05:42:22.7317570Z   CANDIDATE_SHA: f1db798644e4641a99856b172d4f7ac2baf0e91d
+2026-11-03T05:42:22.7317953Z   BASELINE_SHA: 15d864de54210c2eebc4f4b2fec6235324989989
+2026-11-03T05:42:22.7318266Z ##[endgroup]
+2026-11-03T05:42:24.2389784Z Scope: all 62 workspace projects
+2026-11-03T05:42:24.3403013Z Lockfile is up to date, resolution step is skipped
+2026-11-03T05:42:24.3882728Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-11-03T05:42:24.4477452Z Packages: +557
+2026-11-03T05:42:24.4489708Z ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2026-11-03T05:42:25.3937865Z Progress: resolved 557, reused 0, downloaded 155, added 146
+2026-11-03T05:42:26.3938236Z Progress: resolved 557, reused 0, downloaded 408, added 358
+2026-11-03T05:42:27.3946359Z Progress: resolved 557, reused 0, downloaded 491, added 401
+2026-11-03T05:42:28.3287930Z Progress: resolved 557, reused 0, downloaded 557, added 557, done
+2026-11-03T05:42:28.8662111Z 
+2026-11-03T05:42:28.8663082Z devDependencies:
+2026-11-03T05:42:28.8663612Z + @astrojs/compiler 2.13.1
+2026-11-03T05:42:28.8664128Z + @mdx-js/mdx 3.1.1
+2026-11-03T05:42:28.8664763Z + @proto.ui/spec-schema 0.1.0 <- packages/spec/schema
+2026-11-03T05:42:28.8665519Z + @proto.ui/types 0.3.0-alpha.1 <- packages/types
+2026-11-03T05:42:28.8666321Z + @types/node 25.6.2
+2026-11-03T05:42:28.8666816Z + @vue/compiler-dom 3.5.31
+2026-11-03T05:42:28.8667161Z + ajv 8.18.0
+2026-11-03T05:42:28.8667421Z + esbuild 0.25.12
+2026-11-03T05:42:28.8667834Z + happy-dom 15.11.7
+2026-11-03T05:42:28.8668361Z + hast-util-from-html 2.0.3
+2026-11-03T05:42:28.8668827Z + hast-util-to-html 9.0.5
+2026-11-03T05:42:28.8669106Z + husky 9.1.7
+2026-11-03T05:42:28.8669389Z + import-meta-resolve 4.2.0
+2026-11-03T05:42:28.8669689Z + lint-staged 16.4.0
+2026-11-03T05:42:28.8670020Z + mdast-util-from-markdown 2.0.3
+2026-11-03T05:42:28.8670358Z + mdast-util-gfm 3.1.0
+2026-11-03T05:42:28.8670667Z + mdast-util-to-hast 13.2.1
+2026-11-03T05:42:28.8671010Z + micromark-extension-gfm 3.0.0
+2026-11-03T05:42:28.8671304Z + npm 11.14.1
+2026-11-03T05:42:28.8671537Z + parse5 7.3.0
+2026-11-03T05:42:28.8671754Z + prettier 3.8.1
+2026-11-03T05:42:28.8672024Z + prettier-plugin-astro 0.14.1
+2026-11-03T05:42:28.8672319Z + tsx 4.21.0
+2026-11-03T05:42:28.8672545Z + typescript 5.9.3
+2026-11-03T05:42:28.8672758Z + vitest 2.1.9
+2026-11-03T05:42:28.8672967Z + yaml 2.8.3
+2026-11-03T05:42:28.8673083Z 
+2026-11-03T05:42:28.8848989Z Done in 5s using pnpm v10.32.1
+2026-11-03T05:42:34.2020625Z Reading package lists...
+2026-11-03T05:42:34.4569788Z Building dependency tree...
+2026-11-03T05:42:34.4577383Z Reading state information...
+2026-11-03T05:42:34.6630136Z Suggested packages:
+2026-11-03T05:42:34.6630473Z   fonts-noto-cjk-extra
+2026-11-03T05:42:34.6849983Z The following NEW packages will be installed:
+2026-11-03T05:42:34.6859041Z   fonts-noto-cjk
+2026-11-03T05:42:34.7093058Z 0 upgraded, 1 newly installed, 0 to remove and 6 not upgraded.
+2026-11-03T05:42:34.7093885Z Need to get 61.2 MB of archives.
+2026-11-03T05:42:34.7094647Z After this operation, 93.2 MB of additional disk space will be used.
+2026-11-03T05:42:34.7095629Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-11-03T05:42:34.8775368Z Get:2 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 fonts-noto-cjk all 1:20230817+repack1-3 [61.2 MB]
+2026-11-03T05:42:37.1421822Z Fetched 61.2 MB in 2s (28.3 MB/s)
+2026-11-03T05:42:37.1715260Z Selecting previously unselected package fonts-noto-cjk.
+2026-11-03T05:42:37.2022797Z (Reading database ... 
+2026-11-03T05:42:37.2023180Z (Reading database ... 5%
+2026-11-03T05:42:37.2023501Z (Reading database ... 10%
+2026-11-03T05:42:37.2023801Z (Reading database ... 15%
+2026-11-03T05:42:37.2024090Z (Reading database ... 20%
+2026-11-03T05:42:37.2024442Z (Reading database ... 25%
+2026-11-03T05:42:37.2024991Z (Reading database ... 30%
+2026-11-03T05:42:37.2025383Z (Reading database ... 35%
+2026-11-03T05:42:37.2025786Z (Reading database ... 40%
+2026-11-03T05:42:37.2026563Z (Reading database ... 45%
+2026-11-03T05:42:37.2027146Z (Reading database ... 50%
+2026-11-03T05:42:37.2083356Z (Reading database ... 55%
+2026-11-03T05:42:37.3538306Z (Reading database ... 60%
+2026-11-03T05:42:37.5598930Z (Reading database ... 65%
+2026-11-03T05:42:37.7510305Z (Reading database ... 70%
+2026-11-03T05:42:37.9669086Z (Reading database ... 75%
+2026-11-03T05:42:38.1571301Z (Reading database ... 80%
+2026-11-03T05:42:38.4008341Z (Reading database ... 85%
+2026-11-03T05:42:38.5958096Z (Reading database ... 90%
+2026-11-03T05:42:38.9429942Z (Reading database ... 95%
+2026-11-03T05:42:38.9430942Z (Reading database ... 100%
+2026-11-03T05:42:38.9432230Z (Reading database ... 215504 files and directories currently installed.)
+2026-11-03T05:42:38.9478626Z Preparing to unpack .../fonts-noto-cjk_1%3a20230817+repack1-3_all.deb ...
+2026-11-03T05:42:38.9595492Z Unpacking fonts-noto-cjk (1:20230817+repack1-3) ...
+2026-11-03T05:42:39.8331450Z Setting up fonts-noto-cjk (1:20230817+repack1-3) ...
+2026-11-03T05:42:39.8399773Z Processing triggers for fontconfig (2.15.0-1.1ubuntu2) ...
+2026-11-03T05:42:40.6201538Z 
+2026-11-03T05:42:40.6202547Z Running kernel seems to be up-to-date.
+2026-11-03T05:42:40.6202901Z 
+2026-11-03T05:42:40.6203099Z No services need to be restarted.
+2026-11-03T05:42:40.6203336Z 
+2026-11-03T05:42:40.6203528Z No containers need to be restarted.
+2026-11-03T05:42:40.6203753Z 
+2026-11-03T05:42:40.6204011Z No user sessions are running outdated binaries.
+2026-11-03T05:42:40.6204275Z 
+2026-11-03T05:42:40.6204641Z No VM guests are running outdated hypervisor (qemu) binaries on this host.
+2026-11-03T05:42:45.3270208Z [33m◯[39m devToolbar is now [43m[30m disabled [39m[49m
+2026-11-03T05:42:45.3270549Z 
+2026-11-03T05:42:45.3698999Z ##[group]Run corepack pnpm@10.32.1 install --frozen-lockfile --ignore-scripts
+2026-11-03T05:42:45.3699585Z [36;1mcorepack pnpm@10.32.1 install --frozen-lockfile --ignore-scripts[0m
+2026-11-03T05:42:45.3721530Z shell: /usr/bin/bash -e {0}
+2026-11-03T05:42:45.3721786Z env:
+2026-11-03T05:42:45.3722036Z   CANDIDATE_SHA: f1db798644e4641a99856b172d4f7ac2baf0e91d
+2026-11-03T05:42:45.3722424Z   BASELINE_SHA: 15d864de54210c2eebc4f4b2fec6235324989989
+2026-11-03T05:42:45.3722755Z   CHROME_PATH: /usr/bin/google-chrome
+2026-11-03T05:42:45.3723012Z ##[endgroup]
+2026-11-03T05:42:45.7781485Z Scope: all 62 workspace projects
+2026-11-03T05:42:45.8587013Z Lockfile is up to date, resolution step is skipped
+2026-11-03T05:42:45.9068824Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-11-03T05:42:46.0047988Z Packages: +557
+2026-11-03T05:42:46.0048987Z ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2026-11-03T05:42:46.8925877Z Progress: resolved 557, reused 557, downloaded 0, added 557, done
+2026-11-03T05:42:47.3474420Z 
+2026-11-03T05:42:47.3474946Z devDependencies:
+2026-11-03T05:42:47.3475446Z + @astrojs/compiler 2.13.1
+2026-11-03T05:42:47.3475810Z + @mdx-js/mdx 3.1.1
+2026-11-03T05:42:47.3476596Z + @proto.ui/spec-schema 0.1.0 <- packages/spec/schema
+2026-11-03T05:42:47.3477367Z + @proto.ui/types 0.3.0-alpha.1 <- packages/types
+2026-11-03T05:42:47.3477833Z + @types/node 25.6.2
+2026-11-03T05:42:47.3478117Z + @vue/compiler-dom 3.5.31
+2026-11-03T05:42:47.3478384Z + ajv 8.18.0
+2026-11-03T05:42:47.3478623Z + esbuild 0.25.12
+2026-11-03T05:42:47.3478880Z + happy-dom 15.11.7
+2026-11-03T05:42:47.3479161Z + hast-util-from-html 2.0.3
+2026-11-03T05:42:47.3479814Z + hast-util-to-html 9.0.5
+2026-11-03T05:42:47.3480080Z + husky 9.1.7
+2026-11-03T05:42:47.3480338Z + import-meta-resolve 4.2.0
+2026-11-03T05:42:47.3480627Z + lint-staged 16.4.0
+2026-11-03T05:42:47.3480948Z + mdast-util-from-markdown 2.0.3
+2026-11-03T05:42:47.3481456Z + mdast-util-gfm 3.1.0
+2026-11-03T05:42:47.3481984Z + mdast-util-to-hast 13.2.1
+2026-11-03T05:42:47.3482383Z + micromark-extension-gfm 3.0.0
+2026-11-03T05:42:47.3482685Z + npm 11.14.1
+2026-11-03T05:42:47.3482914Z + parse5 7.3.0
+2026-11-03T05:42:47.3483148Z + prettier 3.8.1
+2026-11-03T05:42:47.3483459Z + prettier-plugin-astro 0.14.1
+2026-11-03T05:42:47.3483743Z + tsx 4.21.0
+2026-11-03T05:42:47.3483981Z + typescript 5.9.3
+2026-11-03T05:42:47.3484219Z + vitest 2.1.9
+2026-11-03T05:42:47.3484440Z + yaml 2.8.3
+2026-11-03T05:42:47.3484571Z 
+2026-11-03T05:42:47.3639048Z Done in 1.9s using pnpm v10.32.1
+2026-11-03T05:42:47.4037892Z ##[group]Run set -euo pipefail
+2026-11-03T05:42:47.4038246Z [36;1mset -euo pipefail[0m
+2026-11-03T05:42:47.4038508Z [36;1mfor PROBE in \[0m
+2026-11-03T05:42:47.4038891Z [36;1m  apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts \[0m
+2026-11-03T05:42:47.4039387Z [36;1m  apps/www/src/content/docs/zh-cn/browser-harness.ts \[0m
+2026-11-03T05:42:47.4039753Z [36;1m  scripts/test/server-readiness.mjs; do[0m
+2026-11-03T05:42:47.4040075Z [36;1m  cp "candidate/$PROBE" "subject/$PROBE"[0m
+2026-11-03T05:42:47.4040496Z [36;1m  sha256sum "subject/$PROBE" >> "$RUNNER_TEMP/dialog-space/probe-sha256.txt"[0m
+2026-11-03T05:42:47.4041035Z [36;1mdone[0m
+2026-11-03T05:42:47.4041375Z [36;1mgit -C subject rev-parse HEAD > "$RUNNER_TEMP/dialog-space/subject-sha.txt"[0m
+2026-11-03T05:42:47.4041912Z [36;1mgit -C candidate rev-parse HEAD > "$RUNNER_TEMP/dialog-space/probe-sha.txt"[0m
+2026-11-03T05:42:47.4042893Z [36;1mnode --test candidate/scripts/test/check-dialog-baseline-evidence.test.mjs candidate/scripts/test/dialog-run-integrity.test.mjs candidate/scripts/test/evidence-input-paths.test.mjs[0m
+2026-11-03T05:42:47.4064387Z shell: /usr/bin/bash -e {0}
+2026-11-03T05:42:47.4064637Z env:
+2026-11-03T05:42:47.4064894Z   CANDIDATE_SHA: f1db798644e4641a99856b172d4f7ac2baf0e91d
+2026-11-03T05:42:47.4065268Z   BASELINE_SHA: 15d864de54210c2eebc4f4b2fec6235324989989
+2026-11-03T05:42:47.4065593Z   CHROME_PATH: /usr/bin/google-chrome
+2026-11-03T05:42:47.4065847Z ##[endgroup]
+2026-11-03T05:42:47.6519358Z ✔ the current complete closure matches the actual candidate-owned probe source (6.85048ms)
+2026-11-03T05:42:47.6532617Z ✔ keeps the historical calibration unchanged rather than rebinding its old observations (0.221583ms)
+2026-11-03T05:42:47.6560456Z ✔ rejects the current uncalibrated closure even with otherwise valid historical fixtures (4.607325ms)
+2026-11-03T05:42:47.6616536Z ✔ rejects current source binding with missing member (1.25777ms)
+2026-11-03T05:42:47.6619111Z ✔ rejects current source binding with additional member (0.519868ms)
+2026-11-03T05:42:47.6621269Z ✔ rejects current source binding with changed member subject/apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts (0.480815ms)
+2026-11-03T05:42:47.6623806Z ✔ rejects current source binding with changed member subject/apps/www/src/content/docs/zh-cn/browser-harness.ts (0.419361ms)
+2026-11-03T05:42:47.6625877Z ✔ rejects current source binding with changed member subject/scripts/test/server-readiness.mjs (1.106871ms)
+2026-11-03T05:42:47.6628016Z ✔ the workflow binds classification to its independently selected candidate SHA (0.408159ms)
+2026-11-03T05:42:47.6630253Z ✔ classifies only three inset assertions, four earlier Title box failures and one not-exercised entry (2.966251ms)
+2026-11-03T05:42:47.6647214Z ✔ rejects unexpected timeout (1.112631ms)
+2026-11-03T05:42:47.6648337Z ✔ rejects generic assertion (0.844061ms)
+2026-11-03T05:42:47.6649423Z ✔ rejects setup failure (0.797133ms)
+2026-11-03T05:42:47.6650633Z ✔ rejects error containing the expected substring (2.710294ms)
+2026-11-03T05:42:47.6651859Z ✔ rejects additional failure message (0.656481ms)
+2026-11-03T05:42:47.6653539Z ✔ rejects failure observation disagrees (0.861103ms)
+2026-11-03T05:42:47.6654592Z ✔ rejects missing screenshot (0.761647ms)
+2026-11-03T05:42:47.6655603Z ✔ rejects mislabeled screenshot (0.487227ms)
+2026-11-03T05:42:47.6656884Z ✔ rejects invalid screenshot hash (0.455347ms)
+2026-11-03T05:42:47.6707050Z ✔ rejects wrong source (0.388603ms)
+2026-11-03T05:42:47.6717874Z ✔ rejects wrong row source (0.683892ms)
+2026-11-03T05:42:47.6741629Z ✔ rejects wrong source receipt (0.426374ms)
+2026-11-03T05:42:47.6781827Z ✔ rejects candidate subject (0.363837ms)
+2026-11-03T05:42:47.6798507Z ✔ rejects wrong observed probe (0.430061ms)
+2026-11-03T05:42:47.6822125Z ✔ rejects wrong probe receipt (0.377463ms)
+2026-11-03T05:42:47.6887740Z ✔ rejects wrong expected probe (0.807673ms)
+2026-11-03T05:42:47.6893928Z ✔ rejects invalid expected probe (0.430552ms)
+2026-11-03T05:42:47.6907610Z ✔ rejects missing closure (0.406677ms)
+2026-11-03T05:42:47.6908324Z ✔ rejects additional closure member (0.569039ms)
+2026-11-03T05:42:47.6908968Z ✔ rejects wrong font (0.578517ms)
+2026-11-03T05:42:47.6909500Z ✔ rejects wrong runtime route (1.274401ms)
+2026-11-03T05:42:47.6910032Z ✔ rejects wrong failure route (2.003819ms)
+2026-11-03T05:42:47.6910565Z ✔ rejects unknown platform font (0.66592ms)
+2026-11-03T05:42:47.6911091Z ✔ rejects fonts not loaded (1.53118ms)
+2026-11-03T05:42:47.6911612Z ✔ rejects different device scale (0.482558ms)
+2026-11-03T05:42:47.6912153Z ✔ rejects different color scheme (0.497406ms)
+2026-11-03T05:42:47.6937231Z ✔ rejects unsettled transition (0.463122ms)
+2026-11-03T05:42:47.6940962Z ✔ rejects different viewport (0.5213ms)
+2026-11-03T05:42:47.6942441Z ✔ rejects different visible region (0.536168ms)
+2026-11-03T05:42:47.6943633Z ✔ rejects different settled geometry (0.445359ms)
+2026-11-03T05:42:47.6944848Z ✔ rejects different actual assertion sample (0.873786ms)
+2026-11-03T05:42:47.6946037Z ✔ rejects unexpected pass (0.274301ms)
+2026-11-03T05:42:47.6947527Z ✔ rejects passed result (0.447011ms)
+2026-11-03T05:42:47.6948564Z ✔ rejects pending test (0.278237ms)
+2026-11-03T05:42:47.6949534Z ✔ rejects todo test (0.281244ms)
+2026-11-03T05:42:47.6950504Z ✔ rejects successful suite (0.288306ms)
+2026-11-03T05:42:47.6951537Z ✔ rejects extra failed suite (0.255576ms)
+2026-11-03T05:42:47.6952538Z ✔ rejects changed case title (0.475325ms)
+2026-11-03T05:42:47.6953670Z ✔ rejects duplicate runtime identity (0.417448ms)
+2026-11-03T05:42:47.6954865Z ✔ rejects missing observation (0.513215ms)
+2026-11-03T05:42:47.6955903Z ✔ rejects duplicate observation (0.476677ms)
+2026-11-03T05:42:47.6957102Z ✔ rejects unexpected later observation (1.429691ms)
+2026-11-03T05:42:47.6961673Z ✔ rejects missing Title (1.233646ms)
+2026-11-03T05:42:47.6962555Z ✔ rejects hidden Title (0.798416ms)
+2026-11-03T05:42:47.6963426Z ✔ rejects hidden CloseIcon (0.877112ms)
+2026-11-03T05:42:47.6964546Z ✔ rejects different Title text (1.330777ms)
+2026-11-03T05:42:47.6967537Z ✔ rejects unmeasured overlap (0.570732ms)
+2026-11-03T05:42:47.6968878Z ✔ rejects zero Title overlap (0.53166ms)
+2026-11-03T05:42:47.6970053Z ✔ rejects different Title overlap (0.561485ms)
+2026-11-03T05:42:47.6971350Z ✔ rejects fabricated overlap with disjoint boxes (0.669185ms)
+2026-11-03T05:42:47.6972652Z ✔ rejects inconsistent rectangle edges (0.553129ms)
+2026-11-03T05:42:47.6973846Z ✔ rejects different Title geometry (0.67162ms)
+2026-11-03T05:42:47.6975003Z ✔ rejects missing actual text ranges (0.697328ms)
+2026-11-03T05:42:47.6976437Z ✔ rejects painted text overlap (2.285403ms)
+2026-11-03T05:42:47.6977587Z ✔ rejects different text range geometry (0.726341ms)
+2026-11-03T05:42:47.6978789Z ✔ rejects offered Vue2 entry (3.877156ms)
+2026-11-03T05:42:47.6980030Z ✔ rejects generic Vue2 timeout (0.525037ms)
+2026-11-03T05:42:47.6981272Z ✔ rejects unknown Brutalist runtime offering (1.95531ms)
+2026-11-03T05:42:47.6982689Z ✔ rejects obsolete seven-inset classification (1.021401ms)
+2026-11-03T05:42:47.6984927Z ✔ rejects changed probe closure member subject/apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts (0.385698ms)
+2026-11-03T05:42:47.6988201Z ✔ rejects changed probe closure member subject/apps/www/src/content/docs/zh-cn/browser-harness.ts (0.323412ms)
+2026-11-03T05:42:47.6990425Z ✔ rejects changed probe closure member subject/scripts/test/server-readiness.mjs (0.504529ms)
+2026-11-03T05:42:47.6992580Z ✔ does not turn a successful, cancelled or setup-failed process into the expected failure (0.697559ms)
+2026-11-03T05:42:47.6994532Z ✔ rejects an additional timeout hidden after the expected error line (0.55886ms)
+2026-11-03T05:42:47.6996630Z ✔ rejects incomplete execution: afterAll timeout in suite message (0.333892ms)
+2026-11-03T05:42:47.6998314Z ✔ rejects incomplete execution: wrong suite path (0.240036ms)
+2026-11-03T05:42:47.6999884Z ✔ rejects incomplete execution: passed suite status (0.25258ms)
+2026-11-03T05:42:47.7001804Z ✔ rejects incomplete execution: missing suite message (0.248402ms)
+2026-11-03T05:42:47.7003488Z ✔ rejects incomplete execution: different total suite count (0.300139ms)
+2026-11-03T05:42:47.7004921Z ✔ rejects incomplete execution: different failed suite count (0.245747ms)
+2026-11-03T05:42:47.7006613Z ✔ rejects incomplete execution: passed suite count (0.243553ms)
+2026-11-03T05:42:47.7008110Z ✔ rejects incomplete execution: pending suite count (0.27988ms)
+2026-11-03T05:42:47.7009404Z ✔ rejects incomplete execution: missing runner receipt (0.232903ms)
+2026-11-03T05:42:47.7017101Z ✔ rejects incomplete execution: different runner version (0.261567ms)
+2026-11-03T05:42:47.7018706Z ✔ rejects incomplete execution: different reporter source (0.280573ms)
+2026-11-03T05:42:47.7020128Z ✔ rejects incomplete execution: receipt from another report (0.276124ms)
+2026-11-03T05:42:47.7021613Z ✔ rejects incomplete execution: reporting before process exit (0.259172ms)
+2026-11-03T05:42:47.7023031Z ✔ rejects incomplete execution: mismatched runner exit (0.473352ms)
+2026-11-03T05:42:47.7024347Z ✔ rejects incomplete execution: missing onFinished (0.238174ms)
+2026-11-03T05:42:47.7025611Z ✔ rejects incomplete execution: multiple runs (0.905426ms)
+2026-11-03T05:42:47.7027137Z ✔ rejects incomplete execution: cleanup not started (0.26311ms)
+2026-11-03T05:42:47.7028668Z ✔ rejects incomplete execution: cleanup not finished (0.287004ms)
+2026-11-03T05:42:47.7030110Z ✔ rejects incomplete execution: process cleanup timeout (0.250827ms)
+2026-11-03T05:42:47.7031512Z ✔ rejects incomplete execution: cancelled runner (0.253832ms)
+2026-11-03T05:42:47.7032787Z ✔ rejects incomplete execution: unhandled error (0.391529ms)
+2026-11-03T05:42:47.7034029Z ✔ rejects incomplete execution: cleanup error (0.278839ms)
+2026-11-03T05:42:47.7035334Z ✔ rejects incomplete execution: suite error omitted by JSON (0.352336ms)
+2026-11-03T05:42:47.7036560Z ✔ rejects incomplete execution: missing runner file (0.373926ms)
+2026-11-03T05:42:47.7037773Z ✔ rejects incomplete execution: different runner file (0.327169ms)
+2026-11-03T05:42:55.4606802Z ✔ actual Vitest reporting: control (649.533891ms)
+2026-11-03T05:42:55.4609931Z ✔ actual Vitest reporting: afterall (629.008177ms)
+2026-11-03T05:42:55.4622897Z ✔ actual Vitest reporting: hook-timeout (631.818753ms)
+2026-11-03T05:42:55.4624152Z ✔ actual Vitest reporting: unhandled (628.919347ms)
+2026-11-03T05:42:55.4624949Z ✔ actual Vitest reporting: rejection (626.875304ms)
+2026-11-03T05:42:55.4628234Z ✔ actual Vitest reporting: global-teardown (584.001135ms)
+2026-11-03T05:42:55.4634345Z ✔ actual Vitest reporting: resource-cleanup (589.534896ms)
+2026-11-03T05:42:55.4637594Z ✔ actual Vitest reporting: process-timeout (679.58896ms)
+2026-11-03T05:42:55.4639466Z ✔ actual Vitest reporting: reporter-error (594.154807ms)
+2026-11-03T05:42:55.4643596Z ✔ actual Vitest reporting: late-exit-throw (574.818138ms)
+2026-11-03T05:42:55.4645680Z ✔ actual Vitest reporting: late-exit-log (575.013886ms)
+2026-11-03T05:42:55.4649241Z ✔ actual Vitest reporting: late-exit-print (584.597009ms)
+2026-11-03T05:42:55.4651731Z ✔ actual Vitest reporting: late-exit-print-task (581.937043ms)
+2026-11-03T05:42:55.4747523Z ✔ accordion-family-evidence schedules fresh evidence when only packages/prototypes/bootstrap-2-3-2/src/theme.ts changes (13.941157ms)
+2026-11-03T05:42:55.4750312Z ✔ accordion-family-evidence schedules fresh evidence when only packages/prototypes/liquid-glass/src/theme.ts changes (0.584608ms)
+2026-11-03T05:42:55.4752514Z ✔ accordion-family-evidence schedules fresh evidence when only packages/prototypes/brutalist/src/theme.ts changes (0.514788ms)
+2026-11-03T05:42:55.4754995Z ✔ accordion-family-evidence schedules fresh evidence when only apps/www/src/content/docs/zh-cn/accordion-activation-observation.ts changes (0.802594ms)
+2026-11-03T05:42:55.4757900Z ✔ accordion-family-evidence schedules fresh evidence when only apps/www/src/content/docs/zh-cn/accordion-activation-observation.test.ts changes (1.146815ms)
+2026-11-03T05:42:55.4760664Z ✔ accordion-family-evidence schedules fresh evidence when only apps/www/src/content/docs/zh-cn/docs-query-timing.mjs changes (0.733846ms)
+2026-11-03T05:42:55.4763105Z ✔ accordion-family-evidence schedules fresh evidence when only apps/www/src/content/docs/zh-cn/docs-query-timing.test.ts changes (1.485144ms)
+2026-11-03T05:42:55.4765469Z ✔ accordion-family-evidence schedules fresh evidence when only apps/www/scripts/accordion-activation-probe.mjs changes (0.570341ms)
+2026-11-03T05:42:55.4768058Z ✔ accordion-family-evidence schedules fresh evidence when only apps/www/scripts/accordion-activation-probe.d.mts changes (0.481476ms)
+2026-11-03T05:42:55.4770393Z ✔ accordion-family-evidence schedules fresh evidence when only apps/www/scripts/accordion-activation-probe.test.mjs changes (0.6179ms)
+2026-11-03T05:42:55.4772485Z ✔ accordion-family-evidence schedules fresh evidence when only apps/www/astro.config.mjs changes (1.046789ms)
+2026-11-03T05:42:55.4773944Z ✔ accordion-family-evidence retains bounded triggers and read-only permissions (5.243769ms)
+2026-11-03T05:42:55.4775965Z ✔ dialog-available-space-evidence schedules fresh evidence when only apps/www/src/content/docs/zh-cn/demo-shadcn-dialog.demo.ts changes (4.877728ms)
+2026-11-03T05:42:55.4778639Z ✔ dialog-available-space-evidence schedules fresh evidence when only apps/www/src/content/docs/zh-cn/demo-brutalist-dialog.demo.ts changes (0.332749ms)
+2026-11-03T05:42:55.4781070Z ✔ dialog-available-space-evidence schedules fresh evidence when only apps/www/src/content/docs/en/ui-libraries/shadcn/dialog.mdx changes (0.586862ms)
+2026-11-03T05:42:55.4783671Z ✔ dialog-available-space-evidence schedules fresh evidence when only apps/www/src/content/docs/en/ui-libraries/brutalist/components/dialog.mdx changes (0.924982ms)
+2026-11-03T05:42:55.4786745Z ✔ dialog-available-space-evidence schedules fresh evidence when only apps/www/src/content/docs/zh-cn/ui-libraries/shadcn/dialog.mdx changes (0.357936ms)
+2026-11-03T05:42:55.4789529Z ✔ dialog-available-space-evidence schedules fresh evidence when only apps/www/src/content/docs/zh-cn/ui-libraries/brutalist/components/dialog.mdx changes (0.330255ms)
+2026-11-03T05:42:55.4791622Z ✔ dialog-available-space-evidence retains bounded triggers and read-only permissions (0.383975ms)
+2026-11-03T05:42:55.4793366Z ✔ Dialog candidate-owned package probes install their own locked dependency closure first (9.455107ms)
+2026-11-03T05:42:55.4794325Z ℹ tests 132
+2026-11-03T05:42:55.4794725Z ℹ suites 0
+2026-11-03T05:42:55.4795113Z ℹ pass 132
+2026-11-03T05:42:55.4795493Z ℹ fail 0
+2026-11-03T05:42:55.4795874Z ℹ cancelled 0
+2026-11-03T05:42:55.4796568Z ℹ skipped 0
+2026-11-03T05:42:55.4797034Z ℹ todo 0
+2026-11-03T05:42:55.4797524Z ℹ duration_ms 8016.320403
+2026-11-03T05:42:55.4894067Z ##[group]Run set -uo pipefail
+2026-11-03T05:42:55.4894398Z [36;1mset -uo pipefail[0m
+2026-11-03T05:42:55.4894625Z [36;1mset +e[0m
+2026-11-03T05:42:55.4894930Z [36;1mcorepack pnpm@10.32.1 exec vitest run --no-file-parallelism \[0m
+2026-11-03T05:42:55.4895448Z [36;1m  apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts \[0m
+2026-11-03T05:42:55.4896004Z [36;1m  --reporter=../candidate/scripts/test/dialog-run-integrity-reporter.mjs \[0m
+2026-11-03T05:42:55.4897131Z [36;1m  --reporter=default --reporter=json --outputFile="$RUNNER_TEMP/dialog-space/vitest.json" \[0m
+2026-11-03T05:42:55.4897647Z [36;1m  2>&1 | tee "$RUNNER_TEMP/dialog-space/browser.log"[0m
+2026-11-03T05:42:55.4897974Z [36;1mstatus=${PIPESTATUS[0]}[0m
+2026-11-03T05:42:55.4898223Z [36;1mset -e[0m
+2026-11-03T05:42:55.4898535Z [36;1mecho "$status" > "$RUNNER_TEMP/dialog-space/product-exit-code.txt"[0m
+2026-11-03T05:42:55.4899001Z [36;1mif [[ "$PROTO_UI_DIALOG_SUBJECT" == baseline ]]; then[0m
+2026-11-03T05:42:55.4899451Z [36;1m  node ../candidate/scripts/test/check-dialog-baseline-evidence.mjs \[0m
+2026-11-03T05:42:55.4899887Z [36;1m    "$RUNNER_TEMP/dialog-space/vitest.json" \[0m
+2026-11-03T05:42:55.4900414Z [36;1m    "$RUNNER_TEMP/dialog-space/dialog-available-space/observations.json" "$status" "$CANDIDATE_SHA" \[0m
+2026-11-03T05:42:55.4901037Z [36;1m    | tee "$RUNNER_TEMP/dialog-space/expected-failure-classification.json"[0m
+2026-11-03T05:42:55.4901424Z [36;1melse[0m
+2026-11-03T05:42:55.4901630Z [36;1m  exit "$status"[0m
+2026-11-03T05:42:55.4901852Z [36;1mfi[0m
+2026-11-03T05:42:55.4922320Z shell: /usr/bin/bash -e {0}
+2026-11-03T05:42:55.4922578Z env:
+2026-11-03T05:42:55.4922832Z   CANDIDATE_SHA: f1db798644e4641a99856b172d4f7ac2baf0e91d
+2026-11-03T05:42:55.4923210Z   BASELINE_SHA: 15d864de54210c2eebc4f4b2fec6235324989989
+2026-11-03T05:42:55.4923544Z   CHROME_PATH: /usr/bin/google-chrome
+2026-11-03T05:42:55.4923997Z   PROTO_UI_DIALOG_INTEGRITY_PATH: /home/runner/work/_temp/dialog-space/runner-integrity.json
+2026-11-03T05:42:55.4924563Z   PROTO_UI_DIALOG_JSON_PATH: /home/runner/work/_temp/dialog-space/vitest.json
+2026-11-03T05:42:55.4925035Z   PROTO_UI_DIALOG_PROBE_SHA: f1db798644e4641a99856b172d4f7ac2baf0e91d
+2026-11-03T05:42:55.4925415Z   PROTO_UI_DIALOG_SUBJECT: candidate
+2026-11-03T05:42:55.4925766Z   PROTO_UI_RUNTIME_EVIDENCE_DIR: /home/runner/work/_temp/dialog-space
+2026-11-03T05:42:55.4926414Z ##[endgroup]
+2026-11-03T05:42:56.0961782Z ▲ [WARNING] Unrecognized target environment "ES2024" [tsconfig.json]
+2026-11-03T05:42:56.0962607Z 
+2026-11-03T05:42:56.0962932Z     tsconfig.json:61:14:
+2026-11-03T05:42:56.0963710Z       61 │     "target": "ES2024",
+2026-11-03T05:42:56.0964628Z          ╵               ~~~~~~~~
+2026-11-03T05:42:56.0965058Z 
+2026-11-03T05:42:56.0972088Z ▲ [WARNING] Unrecognized target environment "ES2024" [tsconfig.json]
+2026-11-03T05:42:56.0972906Z 
+2026-11-03T05:42:56.0973307Z     tsconfig.json:61:14:
+2026-11-03T05:42:56.0974433Z       61 │     "target": "ES2024",
+2026-11-03T05:42:56.0975267Z          ╵               ~~~~~~~~
+2026-11-03T05:42:56.0975648Z 
+2026-11-03T05:42:56.1657749Z 
+2026-11-03T05:42:56.1660223Z [1m[7m[36m RUN [39m[27m[22m [36mv2.1.9 [39m[90m/home/runner/work/Proto-UI/Proto-UI/subject[39m
+2026-11-03T05:42:56.1661163Z 
+2026-11-03T05:42:56.4790243Z [2m5:42:56 AM[22m [33m[1m[vite][22m[39m [33mwarning: [33mUnrecognized target environment "ES2024"[33m
+2026-11-03T05:42:56.4791389Z 1  |  // @vitest-environment node
+2026-11-03T05:42:56.4792068Z 2  |  import { execFileSync } from 'node:child_process';
+2026-11-03T05:42:56.4792790Z    |                                               ^
+2026-11-03T05:42:56.4793667Z 3  |  import { createHash } from 'node:crypto';
+2026-11-03T05:42:56.4810350Z 4  |  import { mkdir, writeFile } from 'node:fs/promises';
+2026-11-03T05:42:56.4811139Z [39m
+2026-11-03T05:42:56.4811613Z   Plugin: [35mvite:esbuild[39m
+2026-11-03T05:42:56.4813469Z   File: [36m/home/runner/work/Proto-UI/Proto-UI/subject/apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts[39m
+2026-11-03T05:42:56.5374502Z [2m5:42:56 AM[22m [33m[1m[vite][22m[39m [33mwarning: [33mUnrecognized target environment "ES2024"[33m
+2026-11-03T05:42:56.5375323Z 1  |  import { waitForServerReadiness } from '../../../../../../scripts/test/server-readiness.mjs';
+2026-11-03T05:42:56.5375885Z    |                                                                           ^
+2026-11-03T05:42:56.5376988Z 2  |  // Shared server/browser plumbing for documentation browser regressions.
+2026-11-03T05:42:56.5378148Z 3  |  // Extracted so a third suite does not need a third inline copy; the two existing
+2026-11-03T05:42:56.5378635Z [39m
+2026-11-03T05:42:56.5378910Z   Plugin: [35mvite:esbuild[39m
+2026-11-03T05:42:56.5379564Z   File: [36m/home/runner/work/Proto-UI/Proto-UI/subject/apps/www/src/content/docs/zh-cn/browser-harness.ts[39m
+2026-11-03T05:42:56.9353814Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:42:56.9355392Z [22m[39m[server-readiness] 2026-11-03T05:42:56.932Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=1 requestMs=23 totalMs=24 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:42:56.9356448Z 
+2026-11-03T05:42:57.1864897Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:42:57.1866884Z [22m[39m[server-readiness] 2026-11-03T05:42:57.184Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=2 requestMs=1 totalMs=276 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:42:57.1867689Z 
+2026-11-03T05:42:57.4388130Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:42:57.4390016Z [22m[39m[server-readiness] 2026-11-03T05:42:57.436Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=3 requestMs=1 totalMs=528 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:42:57.4390953Z 
+2026-11-03T05:42:57.6909443Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:42:57.6911954Z [22m[39m[server-readiness] 2026-11-03T05:42:57.689Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=4 requestMs=2 totalMs=781 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:42:57.6912740Z 
+2026-11-03T05:42:57.9422800Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:42:57.9424668Z [22m[39m[server-readiness] 2026-11-03T05:42:57.940Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=5 requestMs=2 totalMs=1032 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:42:57.9425835Z 
+2026-11-03T05:42:58.1932726Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:42:58.1935527Z [22m[39m[server-readiness] 2026-11-03T05:42:58.191Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=6 requestMs=1 totalMs=1283 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:42:58.1936972Z 
+2026-11-03T05:42:58.4438934Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:42:58.4441927Z [22m[39m[server-readiness] 2026-11-03T05:42:58.442Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=7 requestMs=1 totalMs=1534 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:42:58.4443671Z 
+2026-11-03T05:42:58.6968094Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:42:58.6975006Z [22m[39m[server-readiness] 2026-11-03T05:42:58.693Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=8 requestMs=1 totalMs=1785 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:42:58.6976816Z 
+2026-11-03T05:42:58.9463566Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:42:58.9466703Z [22m[39m[server-readiness] 2026-11-03T05:42:58.945Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=9 requestMs=2 totalMs=2037 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:42:58.9468179Z 
+2026-11-03T05:42:59.1987745Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:42:59.1991033Z [22m[39m[server-readiness] 2026-11-03T05:42:59.196Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=10 requestMs=1 totalMs=2288 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:42:59.1993167Z 
+2026-11-03T05:42:59.4516518Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:42:59.4518114Z [22m[39m[server-readiness] 2026-11-03T05:42:59.449Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=11 requestMs=2 totalMs=2541 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:42:59.4518883Z 
+2026-11-03T05:42:59.7027237Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:42:59.7029968Z [22m[39m[server-readiness] 2026-11-03T05:42:59.700Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=12 requestMs=1 totalMs=2792 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:42:59.7031419Z 
+2026-11-03T05:42:59.9553256Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:42:59.9555770Z [22m[39m[server-readiness] 2026-11-03T05:42:59.952Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=13 requestMs=1 totalMs=3044 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:42:59.9557076Z 
+2026-11-03T05:43:00.2069726Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:00.2072452Z [22m[39m[server-readiness] 2026-11-03T05:43:00.205Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=14 requestMs=1 totalMs=3297 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:00.2073863Z 
+2026-11-03T05:43:00.4574168Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:00.4575867Z [22m[39m[server-readiness] 2026-11-03T05:43:00.455Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=15 requestMs=1 totalMs=3547 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:00.4577032Z 
+2026-11-03T05:43:00.7091087Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:00.7093802Z [22m[39m[server-readiness] 2026-11-03T05:43:00.707Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=16 requestMs=1 totalMs=3799 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:00.7095207Z 
+2026-11-03T05:43:00.9595710Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:00.9598782Z [22m[39m[server-readiness] 2026-11-03T05:43:00.957Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=17 requestMs=1 totalMs=4049 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:00.9600185Z 
+2026-11-03T05:43:01.2110116Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:01.2112650Z [22m[39m[server-readiness] 2026-11-03T05:43:01.209Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=18 requestMs=1 totalMs=4301 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:01.2113551Z 
+2026-11-03T05:43:01.4620928Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:01.4624448Z [22m[39m[server-readiness] 2026-11-03T05:43:01.460Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=19 requestMs=1 totalMs=4552 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:01.4625805Z 
+2026-11-03T05:43:01.7130918Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:01.7135644Z [22m[39m[server-readiness] 2026-11-03T05:43:01.710Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=20 requestMs=0 totalMs=4802 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:01.7137749Z 
+2026-11-03T05:43:01.9646550Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:01.9649272Z [22m[39m[server-readiness] 2026-11-03T05:43:01.962Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=21 requestMs=1 totalMs=5054 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:01.9650685Z 
+2026-11-03T05:43:02.2166399Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:02.2169099Z [22m[39m[server-readiness] 2026-11-03T05:43:02.214Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=22 requestMs=1 totalMs=5306 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:02.2170493Z 
+2026-11-03T05:43:02.4685576Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:02.4688584Z [22m[39m[server-readiness] 2026-11-03T05:43:02.466Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=23 requestMs=1 totalMs=5558 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:02.4689973Z 
+2026-11-03T05:43:02.7205899Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:02.7208875Z [22m[39m[server-readiness] 2026-11-03T05:43:02.718Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=24 requestMs=1 totalMs=5810 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:02.7210276Z 
+2026-11-03T05:43:02.9725937Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:02.9728898Z [22m[39m[server-readiness] 2026-11-03T05:43:02.970Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=25 requestMs=1 totalMs=6062 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:02.9730327Z 
+2026-11-03T05:43:03.2244731Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:03.2247688Z [22m[39m[server-readiness] 2026-11-03T05:43:03.222Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=26 requestMs=1 totalMs=6314 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:03.2249101Z 
+2026-11-03T05:43:03.4764460Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:03.4767387Z [22m[39m[server-readiness] 2026-11-03T05:43:03.474Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=27 requestMs=1 totalMs=6566 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:03.4768795Z 
+2026-11-03T05:43:03.7282819Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:03.7286792Z [22m[39m[server-readiness] 2026-11-03T05:43:03.726Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=28 requestMs=1 totalMs=6818 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:03.7288250Z 
+2026-11-03T05:43:03.9790685Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:03.9793717Z [22m[39m[server-readiness] 2026-11-03T05:43:03.977Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=29 requestMs=1 totalMs=7069 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:03.9795121Z 
+2026-11-03T05:43:04.2300279Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:04.2302929Z [22m[39m[server-readiness] 2026-11-03T05:43:04.228Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=30 requestMs=1 totalMs=7320 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:04.2304298Z 
+2026-11-03T05:43:04.4807830Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:04.4810406Z [22m[39m[server-readiness] 2026-11-03T05:43:04.479Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=31 requestMs=1 totalMs=7571 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:04.4811310Z 
+2026-11-03T05:43:04.7325290Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:04.7328330Z [22m[39m[server-readiness] 2026-11-03T05:43:04.730Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=32 requestMs=1 totalMs=7822 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:04.7329311Z 
+2026-11-03T05:43:04.9842571Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:04.9845322Z [22m[39m[server-readiness] 2026-11-03T05:43:04.982Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=33 requestMs=1 totalMs=8074 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:04.9847040Z 
+2026-11-03T05:43:05.2359382Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:05.2362126Z [22m[39m[server-readiness] 2026-11-03T05:43:05.234Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=34 requestMs=2 totalMs=8326 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:05.2363594Z 
+2026-11-03T05:43:05.4867200Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:05.4869965Z [22m[39m[server-readiness] 2026-11-03T05:43:05.484Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=35 requestMs=1 totalMs=8576 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:05.4871453Z 
+2026-11-03T05:43:05.7397696Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:05.7400672Z [22m[39m[server-readiness] 2026-11-03T05:43:05.737Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=36 requestMs=2 totalMs=8829 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:05.7402250Z 
+2026-11-03T05:43:05.9904817Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:05.9906925Z [22m[39m[server-readiness] 2026-11-03T05:43:05.988Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=37 requestMs=1 totalMs=9080 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:05.9907880Z 
+2026-11-03T05:43:06.2422109Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:06.2423785Z [22m[39m[server-readiness] 2026-11-03T05:43:06.240Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=38 requestMs=1 totalMs=9332 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:06.2424687Z 
+2026-11-03T05:43:06.4929591Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:06.4931411Z [22m[39m[server-readiness] 2026-11-03T05:43:06.491Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=39 requestMs=1 totalMs=9583 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:06.4932355Z 
+2026-11-03T05:43:06.7449048Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:06.7451430Z [22m[39m[server-readiness] 2026-11-03T05:43:06.743Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=40 requestMs=2 totalMs=9835 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:06.7452219Z 
+2026-11-03T05:43:06.9957488Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:06.9959204Z [22m[39m[server-readiness] 2026-11-03T05:43:06.993Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=41 requestMs=1 totalMs=10085 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:06.9960459Z 
+2026-11-03T05:43:07.2474437Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:07.2477012Z [22m[39m[server-readiness] 2026-11-03T05:43:07.245Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=42 requestMs=1 totalMs=10337 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:07.2478166Z 
+2026-11-03T05:43:07.4999435Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:07.5001951Z [22m[39m[server-readiness] 2026-11-03T05:43:07.498Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=43 requestMs=2 totalMs=10590 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:07.5002831Z 
+2026-11-03T05:43:07.7517127Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:07.7519738Z [22m[39m[server-readiness] 2026-11-03T05:43:07.749Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=44 requestMs=1 totalMs=10841 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:07.7520700Z 
+2026-11-03T05:43:08.0036272Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:08.0038029Z [22m[39m[server-readiness] 2026-11-03T05:43:08.001Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=45 requestMs=1 totalMs=11093 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:08.0038918Z 
+2026-11-03T05:43:08.2556670Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:08.2559212Z [22m[39m[server-readiness] 2026-11-03T05:43:08.253Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=46 requestMs=1 totalMs=11345 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:08.2560050Z 
+2026-11-03T05:43:08.5076982Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:08.5079785Z [22m[39m[server-readiness] 2026-11-03T05:43:08.505Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=47 requestMs=1 totalMs=11597 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:08.5081228Z 
+2026-11-03T05:43:08.7582810Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:08.7585581Z [22m[39m[server-readiness] 2026-11-03T05:43:08.757Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=48 requestMs=1 totalMs=11849 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:08.7587275Z 
+2026-11-03T05:43:09.0107797Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:09.0110564Z [22m[39m[server-readiness] 2026-11-03T05:43:09.008Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=49 requestMs=1 totalMs=12100 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:09.0111974Z 
+2026-11-03T05:43:09.2623324Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:09.2626752Z [22m[39m[server-readiness] 2026-11-03T05:43:09.260Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=50 requestMs=1 totalMs=12352 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:09.2628220Z 
+2026-11-03T05:43:09.5131840Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:09.5134698Z [22m[39m[server-readiness] 2026-11-03T05:43:09.511Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=51 requestMs=1 totalMs=12603 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:09.5136911Z 
+2026-11-03T05:43:09.7638999Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:09.7641727Z [22m[39m[server-readiness] 2026-11-03T05:43:09.762Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=52 requestMs=1 totalMs=12854 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:09.7643175Z 
+2026-11-03T05:43:10.0145890Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:10.0148901Z [22m[39m[server-readiness] 2026-11-03T05:43:10.012Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=53 requestMs=1 totalMs=13104 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:10.0150320Z 
+2026-11-03T05:43:10.2661502Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:10.2663052Z [22m[39m[server-readiness] 2026-11-03T05:43:10.264Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=54 requestMs=1 totalMs=13356 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:10.2663828Z 
+2026-11-03T05:43:10.5169775Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:10.5172301Z [22m[39m[server-readiness] 2026-11-03T05:43:10.515Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=55 requestMs=1 totalMs=13607 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:10.5173100Z 
+2026-11-03T05:43:10.7691729Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:10.7694192Z [22m[39m[server-readiness] 2026-11-03T05:43:10.767Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=56 requestMs=2 totalMs=13859 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:10.7695246Z 
+2026-11-03T05:43:11.0201194Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:11.0202883Z [22m[39m[server-readiness] 2026-11-03T05:43:11.018Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=57 requestMs=1 totalMs=14110 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:11.0203785Z 
+2026-11-03T05:43:11.2707029Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:11.2708611Z [22m[39m[server-readiness] 2026-11-03T05:43:11.268Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=58 requestMs=0 totalMs=14360 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:11.2709444Z 
+2026-11-03T05:43:11.5214118Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:11.5215827Z [22m[39m[server-readiness] 2026-11-03T05:43:11.519Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=59 requestMs=1 totalMs=14611 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:11.5217054Z 
+2026-11-03T05:43:11.7728339Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:11.7730310Z [22m[39m[server-readiness] 2026-11-03T05:43:11.771Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=60 requestMs=1 totalMs=14863 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:11.7731216Z 
+2026-11-03T05:43:12.0236799Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:12.0238542Z [22m[39m[server-readiness] 2026-11-03T05:43:12.021Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=61 requestMs=1 totalMs=15113 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:12.0239429Z 
+2026-11-03T05:43:12.2755910Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:12.2757928Z [22m[39m[server-readiness] 2026-11-03T05:43:12.273Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=62 requestMs=1 totalMs=15365 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:12.2758813Z 
+2026-11-03T05:43:12.5276812Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:12.5278531Z [22m[39m[server-readiness] 2026-11-03T05:43:12.525Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=63 requestMs=1 totalMs=15617 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:12.5279419Z 
+2026-11-03T05:43:12.7796349Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:12.7798908Z [22m[39m[server-readiness] 2026-11-03T05:43:12.777Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=64 requestMs=1 totalMs=15869 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:12.7800336Z 
+2026-11-03T05:43:13.0316363Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:13.0318071Z [22m[39m[server-readiness] 2026-11-03T05:43:13.029Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=65 requestMs=1 totalMs=16121 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:13.0318843Z 
+2026-11-03T05:43:13.2841024Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:13.2843743Z [22m[39m[server-readiness] 2026-11-03T05:43:13.281Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=66 requestMs=1 totalMs=16373 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:13.2845059Z 
+2026-11-03T05:43:13.5342603Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:13.5344360Z [22m[39m[server-readiness] 2026-11-03T05:43:13.533Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=67 requestMs=1 totalMs=16625 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:13.5345247Z 
+2026-11-03T05:43:13.7870969Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:13.7873527Z [22m[39m[server-readiness] 2026-11-03T05:43:13.785Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=68 requestMs=1 totalMs=16877 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:13.7874327Z 
+2026-11-03T05:43:14.0381929Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:14.0383758Z [22m[39m[server-readiness] 2026-11-03T05:43:14.036Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=69 requestMs=2 totalMs=17128 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:14.0385047Z 
+2026-11-03T05:43:14.2889354Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:14.2890964Z [22m[39m[server-readiness] 2026-11-03T05:43:14.287Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=70 requestMs=1 totalMs=17379 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:14.2891788Z 
+2026-11-03T05:43:14.5398351Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:14.5400003Z [22m[39m[server-readiness] 2026-11-03T05:43:14.537Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=71 requestMs=0 totalMs=17629 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:14.5400845Z 
+2026-11-03T05:43:14.7916554Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:14.7918476Z [22m[39m[server-readiness] 2026-11-03T05:43:14.789Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=72 requestMs=1 totalMs=17881 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:14.7919233Z 
+2026-11-03T05:43:15.0431456Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:15.0433074Z [22m[39m[server-readiness] 2026-11-03T05:43:15.041Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=73 requestMs=1 totalMs=18133 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:15.0433947Z 
+2026-11-03T05:43:15.2936989Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:15.2938723Z [22m[39m[server-readiness] 2026-11-03T05:43:15.291Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=74 requestMs=0 totalMs=18383 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:15.2939629Z 
+2026-11-03T05:43:15.5446961Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:15.5449566Z [22m[39m[server-readiness] 2026-11-03T05:43:15.543Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=75 requestMs=1 totalMs=18635 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:15.5450409Z 
+2026-11-03T05:43:15.7975728Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:15.7979118Z [22m[39m[server-readiness] 2026-11-03T05:43:15.795Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=76 requestMs=1 totalMs=18887 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:15.7980646Z 
+2026-11-03T05:43:16.0495350Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:16.0497163Z [22m[39m[server-readiness] 2026-11-03T05:43:16.047Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=77 requestMs=1 totalMs=19139 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:16.0497961Z 
+2026-11-03T05:43:16.3018626Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:16.3037039Z [22m[39m[server-readiness] 2026-11-03T05:43:16.299Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=78 requestMs=1 totalMs=19391 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:16.3040078Z 
+2026-11-03T05:43:16.5519760Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:16.5522058Z [22m[39m[server-readiness] 2026-11-03T05:43:16.550Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=79 requestMs=1 totalMs=19642 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:16.5523019Z 
+2026-11-03T05:43:16.8034838Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:16.8037873Z [22m[39m[server-readiness] 2026-11-03T05:43:16.801Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=80 requestMs=1 totalMs=19893 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:16.8039288Z 
+2026-11-03T05:43:17.0552026Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:17.0553826Z [22m[39m[server-readiness] 2026-11-03T05:43:17.053Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=81 requestMs=1 totalMs=20145 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:17.0554623Z 
+2026-11-03T05:43:17.3053730Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:17.3055702Z [22m[39m[server-readiness] 2026-11-03T05:43:17.303Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=82 requestMs=0 totalMs=20395 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:17.3057170Z 
+2026-11-03T05:43:17.5578209Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:17.5581329Z [22m[39m[server-readiness] 2026-11-03T05:43:17.555Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=83 requestMs=1 totalMs=20647 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:17.5582996Z 
+2026-11-03T05:43:17.8085363Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:17.8087240Z [22m[39m[server-readiness] 2026-11-03T05:43:17.806Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=84 requestMs=1 totalMs=20898 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:17.8088002Z 
+2026-11-03T05:43:18.0604772Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:18.0607510Z [22m[39m[server-readiness] 2026-11-03T05:43:18.058Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=85 requestMs=1 totalMs=21150 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:18.0608299Z 
+2026-11-03T05:43:18.3124453Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:18.3127291Z [22m[39m[server-readiness] 2026-11-03T05:43:18.310Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=86 requestMs=1 totalMs=21402 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:18.3128244Z 
+2026-11-03T05:43:18.5658702Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:18.5661707Z [22m[39m[server-readiness] 2026-11-03T05:43:18.562Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=87 requestMs=1 totalMs=21654 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:18.5663660Z 
+2026-11-03T05:43:18.8167523Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:18.8170080Z [22m[39m[server-readiness] 2026-11-03T05:43:18.814Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=88 requestMs=1 totalMs=21906 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:18.8171595Z 
+2026-11-03T05:43:19.0686940Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:19.0689830Z [22m[39m[server-readiness] 2026-11-03T05:43:19.066Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=89 requestMs=2 totalMs=22158 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:19.0691375Z 
+2026-11-03T05:43:19.3201761Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:19.3204391Z [22m[39m[server-readiness] 2026-11-03T05:43:19.318Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=90 requestMs=1 totalMs=22410 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:19.3205803Z 
+2026-11-03T05:43:19.5708592Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:19.5713570Z [22m[39m[server-readiness] 2026-11-03T05:43:19.569Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=91 requestMs=1 totalMs=22661 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:19.5715008Z 
+2026-11-03T05:43:19.8221705Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:19.8224424Z [22m[39m[server-readiness] 2026-11-03T05:43:19.820Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=92 requestMs=1 totalMs=22912 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:19.8226435Z 
+2026-11-03T05:43:20.0727323Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:20.0730027Z [22m[39m[server-readiness] 2026-11-03T05:43:20.070Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=93 requestMs=0 totalMs=23162 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:20.0731412Z 
+2026-11-03T05:43:20.3241578Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:20.3244192Z [22m[39m[server-readiness] 2026-11-03T05:43:20.322Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=94 requestMs=1 totalMs=23414 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:20.3245534Z 
+2026-11-03T05:43:20.5742576Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:20.5744077Z [22m[39m[server-readiness] 2026-11-03T05:43:20.572Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=95 requestMs=0 totalMs=23664 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:20.5744889Z 
+2026-11-03T05:43:20.8258407Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:20.8261130Z [22m[39m[server-readiness] 2026-11-03T05:43:20.824Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=96 requestMs=1 totalMs=23916 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:20.8262527Z 
+2026-11-03T05:43:21.0752199Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:21.0754916Z [22m[39m[server-readiness] 2026-11-03T05:43:21.074Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=97 requestMs=1 totalMs=24166 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:21.0756562Z 
+2026-11-03T05:43:21.3268330Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:21.3271180Z [22m[39m[server-readiness] 2026-11-03T05:43:21.324Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=98 requestMs=0 totalMs=24416 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:21.3272555Z 
+2026-11-03T05:43:21.5762835Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:21.5765562Z [22m[39m[server-readiness] 2026-11-03T05:43:21.575Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=99 requestMs=1 totalMs=24667 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:21.5767229Z 
+2026-11-03T05:43:21.8288743Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:21.8291446Z [22m[39m[server-readiness] 2026-11-03T05:43:21.827Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=100 requestMs=1 totalMs=24919 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:21.8292874Z 
+2026-11-03T05:43:22.0795688Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:22.0798243Z [22m[39m[server-readiness] 2026-11-03T05:43:22.077Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=101 requestMs=1 totalMs=25169 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:22.0799205Z 
+2026-11-03T05:43:22.3307838Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:22.3309366Z [22m[39m[server-readiness] 2026-11-03T05:43:22.329Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=102 requestMs=1 totalMs=25421 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:22.3310143Z 
+2026-11-03T05:43:22.5815187Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:22.5817400Z [22m[39m[server-readiness] 2026-11-03T05:43:22.579Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=103 requestMs=1 totalMs=25671 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:22.5818221Z 
+2026-11-03T05:43:22.8330599Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:22.8332237Z [22m[39m[server-readiness] 2026-11-03T05:43:22.831Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=104 requestMs=1 totalMs=25923 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:22.8333068Z 
+2026-11-03T05:43:23.0845125Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:23.0847194Z [22m[39m[server-readiness] 2026-11-03T05:43:23.082Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=105 requestMs=1 totalMs=26174 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:23.0848000Z 
+2026-11-03T05:43:23.3360040Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:23.3361650Z [22m[39m[server-readiness] 2026-11-03T05:43:23.334Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=106 requestMs=1 totalMs=26426 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:23.3362490Z 
+2026-11-03T05:43:23.5867142Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:23.5869671Z [22m[39m[server-readiness] 2026-11-03T05:43:23.584Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=107 requestMs=1 totalMs=26676 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:23.5870485Z 
+2026-11-03T05:43:23.8381812Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:23.8384356Z [22m[39m[server-readiness] 2026-11-03T05:43:23.836Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=108 requestMs=1 totalMs=26928 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:23.8385196Z 
+2026-11-03T05:43:24.0882521Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:24.0885311Z [22m[39m[server-readiness] 2026-11-03T05:43:24.087Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=109 requestMs=1 totalMs=27179 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:24.0886565Z 
+2026-11-03T05:43:24.3408384Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:24.3411353Z [22m[39m[server-readiness] 2026-11-03T05:43:24.338Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=110 requestMs=0 totalMs=27430 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:24.3412758Z 
+2026-11-03T05:43:24.5913975Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:24.5915667Z [22m[39m[server-readiness] 2026-11-03T05:43:24.589Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=111 requestMs=1 totalMs=27681 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:24.5916950Z 
+2026-11-03T05:43:24.8430037Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:24.8433093Z [22m[39m[server-readiness] 2026-11-03T05:43:24.841Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=112 requestMs=1 totalMs=27933 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:24.8434521Z 
+2026-11-03T05:43:25.0988109Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:25.0991033Z [22m[39m[server-readiness] 2026-11-03T05:43:25.091Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=113 requestMs=1 totalMs=28183 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:25.1016505Z 
+2026-11-03T05:43:25.3447161Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:25.3450122Z [22m[39m[server-readiness] 2026-11-03T05:43:25.342Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=114 requestMs=0 totalMs=28434 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:25.3451577Z 
+2026-11-03T05:43:25.5962663Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:25.5965593Z [22m[39m[server-readiness] 2026-11-03T05:43:25.594Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=115 requestMs=1 totalMs=28686 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:25.5967302Z 
+2026-11-03T05:43:25.8483014Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:25.8484558Z [22m[39m[server-readiness] 2026-11-03T05:43:25.846Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=116 requestMs=1 totalMs=28938 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:25.8485326Z 
+2026-11-03T05:43:26.0992164Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:26.0993907Z [22m[39m[server-readiness] 2026-11-03T05:43:26.097Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=117 requestMs=1 totalMs=29189 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:26.0995080Z 
+2026-11-03T05:43:26.3496838Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:26.3498980Z [22m[39m[server-readiness] 2026-11-03T05:43:26.347Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=118 requestMs=0 totalMs=29439 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:26.3500038Z 
+2026-11-03T05:43:26.6031896Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:26.6055382Z [22m[39m[server-readiness] 2026-11-03T05:43:26.600Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=119 requestMs=2 totalMs=29692 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:26.6057556Z 
+2026-11-03T05:43:26.8540723Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:26.8543447Z [22m[39m[server-readiness] 2026-11-03T05:43:26.852Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=120 requestMs=1 totalMs=29944 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:26.8544846Z 
+2026-11-03T05:43:27.1047090Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:27.1049853Z [22m[39m[server-readiness] 2026-11-03T05:43:27.102Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=121 requestMs=1 totalMs=30194 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:27.1051479Z 
+2026-11-03T05:43:27.3563441Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:27.3566846Z [22m[39m[server-readiness] 2026-11-03T05:43:27.354Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=122 requestMs=1 totalMs=30446 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:27.3568288Z 
+2026-11-03T05:43:27.6073715Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:27.6076647Z [22m[39m[server-readiness] 2026-11-03T05:43:27.606Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=123 requestMs=1 totalMs=30698 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:27.6077960Z 
+2026-11-03T05:43:27.8600378Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:27.8601883Z [22m[39m[server-readiness] 2026-11-03T05:43:27.858Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=124 requestMs=1 totalMs=30950 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:27.8602644Z 
+2026-11-03T05:43:28.1110112Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:28.1112601Z [22m[39m[server-readiness] 2026-11-03T05:43:28.109Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=125 requestMs=1 totalMs=31201 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:28.1113397Z 
+2026-11-03T05:43:28.3625802Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:28.3628106Z [22m[39m[server-readiness] 2026-11-03T05:43:28.360Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=126 requestMs=1 totalMs=31452 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:28.3629179Z 
+2026-11-03T05:43:28.6144590Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:28.6147484Z [22m[39m[server-readiness] 2026-11-03T05:43:28.612Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=127 requestMs=1 totalMs=31704 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:28.6148472Z 
+2026-11-03T05:43:28.8667888Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:28.8670617Z [22m[39m[server-readiness] 2026-11-03T05:43:28.864Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=128 requestMs=1 totalMs=31956 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:28.8672006Z 
+2026-11-03T05:43:29.1188413Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:29.1189934Z [22m[39m[server-readiness] 2026-11-03T05:43:29.117Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=129 requestMs=2 totalMs=32209 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:29.1190716Z 
+2026-11-03T05:43:29.3701362Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:29.3702936Z [22m[39m[server-readiness] 2026-11-03T05:43:29.368Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=130 requestMs=1 totalMs=32460 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:29.3703720Z 
+2026-11-03T05:43:29.6210471Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:29.6212184Z [22m[39m[server-readiness] 2026-11-03T05:43:29.619Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=131 requestMs=1 totalMs=32711 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:29.6212996Z 
+2026-11-03T05:43:29.8711681Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:29.8713527Z [22m[39m[server-readiness] 2026-11-03T05:43:29.870Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=132 requestMs=1 totalMs=32962 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:29.8714312Z 
+2026-11-03T05:43:30.1227950Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:30.1229934Z [22m[39m[server-readiness] 2026-11-03T05:43:30.121Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=133 requestMs=1 totalMs=33213 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:30.1230967Z 
+2026-11-03T05:43:30.3743309Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:30.3745051Z [22m[39m[server-readiness] 2026-11-03T05:43:30.372Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=134 requestMs=1 totalMs=33464 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:30.3745822Z 
+2026-11-03T05:43:30.6254806Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:30.6257095Z [22m[39m[server-readiness] 2026-11-03T05:43:30.624Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=135 requestMs=1 totalMs=33716 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:30.6258308Z 
+2026-11-03T05:43:30.8775251Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:30.8778285Z [22m[39m[server-readiness] 2026-11-03T05:43:30.875Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=136 requestMs=1 totalMs=33967 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:30.8779750Z 
+2026-11-03T05:43:31.1296482Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:31.1298249Z [22m[39m[server-readiness] 2026-11-03T05:43:31.127Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=137 requestMs=1 totalMs=34219 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:31.1299141Z 
+2026-11-03T05:43:31.3809712Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:31.3811609Z [22m[39m[server-readiness] 2026-11-03T05:43:31.379Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=138 requestMs=1 totalMs=34471 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:31.3812415Z 
+2026-11-03T05:43:31.6314749Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:31.6317843Z [22m[39m[server-readiness] 2026-11-03T05:43:31.629Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=139 requestMs=1 totalMs=34721 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:31.6318841Z 
+2026-11-03T05:43:31.8830356Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:31.8831888Z [22m[39m[server-readiness] 2026-11-03T05:43:31.881Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=140 requestMs=1 totalMs=34973 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:31.8832654Z 
+2026-11-03T05:43:32.1322969Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:32.1325707Z [22m[39m[server-readiness] 2026-11-03T05:43:32.131Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=141 requestMs=1 totalMs=35223 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:32.1327377Z 
+2026-11-03T05:43:32.3838607Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:32.3841666Z [22m[39m[server-readiness] 2026-11-03T05:43:32.382Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=142 requestMs=1 totalMs=35474 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:32.3843350Z 
+2026-11-03T05:43:32.6347268Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:32.6349715Z [22m[39m[server-readiness] 2026-11-03T05:43:32.632Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=143 requestMs=0 totalMs=35724 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:32.6351050Z 
+2026-11-03T05:43:32.8860699Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:32.8862208Z [22m[39m[server-readiness] 2026-11-03T05:43:32.884Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=144 requestMs=1 totalMs=35976 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:32.8863321Z 
+2026-11-03T05:43:33.1367527Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:33.1370235Z [22m[39m[server-readiness] 2026-11-03T05:43:33.134Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=145 requestMs=0 totalMs=36226 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:33.1371624Z 
+2026-11-03T05:43:33.3871743Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:33.3873554Z [22m[39m[server-readiness] 2026-11-03T05:43:33.386Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=146 requestMs=1 totalMs=36478 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:33.3874702Z 
+2026-11-03T05:43:33.6387945Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:33.6389772Z [22m[39m[server-readiness] 2026-11-03T05:43:33.637Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=147 requestMs=1 totalMs=36729 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:33.6390729Z 
+2026-11-03T05:43:33.8891901Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:33.8893627Z [22m[39m[server-readiness] 2026-11-03T05:43:33.888Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=148 requestMs=1 totalMs=36980 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:33.8894517Z 
+2026-11-03T05:43:34.1414510Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:34.1417506Z [22m[39m[server-readiness] 2026-11-03T05:43:34.139Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=149 requestMs=1 totalMs=37231 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:34.1418951Z 
+2026-11-03T05:43:34.3928415Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:34.3929976Z [22m[39m[server-readiness] 2026-11-03T05:43:34.391Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=150 requestMs=1 totalMs=37483 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:34.3930770Z 
+2026-11-03T05:43:34.6434089Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:34.6436879Z [22m[39m[server-readiness] 2026-11-03T05:43:34.641Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=151 requestMs=1 totalMs=37733 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:34.6437798Z 
+2026-11-03T05:43:34.8948303Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:34.8949834Z [22m[39m[server-readiness] 2026-11-03T05:43:34.893Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=152 requestMs=1 totalMs=37985 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:34.8950596Z 
+2026-11-03T05:43:35.1451617Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:35.1453492Z [22m[39m[server-readiness] 2026-11-03T05:43:35.143Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=153 requestMs=1 totalMs=38235 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:35.1454340Z 
+2026-11-03T05:43:35.3956434Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:35.3958172Z [22m[39m[server-readiness] 2026-11-03T05:43:35.393Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=154 requestMs=0 totalMs=38485 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:35.3959289Z 
+2026-11-03T05:43:35.6481760Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:35.6483605Z [22m[39m[server-readiness] 2026-11-03T05:43:35.645Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=155 requestMs=1 totalMs=38737 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:35.6484557Z 
+2026-11-03T05:43:35.8987977Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:35.8989676Z [22m[39m[server-readiness] 2026-11-03T05:43:35.897Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=156 requestMs=1 totalMs=38989 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:35.8990852Z 
+2026-11-03T05:43:36.1497377Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:36.1500131Z [22m[39m[server-readiness] 2026-11-03T05:43:36.147Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=157 requestMs=1 totalMs=39239 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:36.1501509Z 
+2026-11-03T05:43:36.4011592Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:36.4013127Z [22m[39m[server-readiness] 2026-11-03T05:43:36.399Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=158 requestMs=1 totalMs=39491 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:36.4013892Z 
+2026-11-03T05:43:36.6526635Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:36.6529414Z [22m[39m[server-readiness] 2026-11-03T05:43:36.650Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=159 requestMs=1 totalMs=39742 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:36.6530901Z 
+2026-11-03T05:43:36.9040651Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:36.9043248Z [22m[39m[server-readiness] 2026-11-03T05:43:36.902Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=160 requestMs=1 totalMs=39994 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:36.9044617Z 
+2026-11-03T05:43:37.1549500Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:37.1551007Z [22m[39m[server-readiness] 2026-11-03T05:43:37.153Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=161 requestMs=1 totalMs=40245 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:37.1551781Z 
+2026-11-03T05:43:37.4069785Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:37.4071302Z [22m[39m[server-readiness] 2026-11-03T05:43:37.404Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=162 requestMs=1 totalMs=40496 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:37.4072123Z 
+2026-11-03T05:43:37.6574538Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:37.6576785Z [22m[39m[server-readiness] 2026-11-03T05:43:37.655Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=163 requestMs=1 totalMs=40747 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:37.6577709Z 
+2026-11-03T05:43:37.9252761Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:37.9306455Z [22m[39m[server-readiness] 2026-11-03T05:43:37.909Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=164 requestMs=0 totalMs=41001 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:37.9322906Z 
+2026-11-03T05:43:38.1633319Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:38.1636717Z [22m[39m[server-readiness] 2026-11-03T05:43:38.161Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=165 requestMs=2 totalMs=41253 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:38.1638139Z 
+2026-11-03T05:43:38.4140394Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:38.4143331Z [22m[39m[server-readiness] 2026-11-03T05:43:38.412Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=166 requestMs=1 totalMs=41504 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:38.4144965Z 
+2026-11-03T05:43:38.6647022Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:38.6648883Z [22m[39m[server-readiness] 2026-11-03T05:43:38.662Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=167 requestMs=1 totalMs=41754 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:38.6649861Z 
+2026-11-03T05:43:38.9171077Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:38.9173797Z [22m[39m[server-readiness] 2026-11-03T05:43:38.914Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=168 requestMs=1 totalMs=42006 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:38.9175372Z 
+2026-11-03T05:43:39.1691540Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:39.1694215Z [22m[39m[server-readiness] 2026-11-03T05:43:39.167Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=169 requestMs=2 totalMs=42259 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:39.1695557Z 
+2026-11-03T05:43:39.4195267Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:39.4197113Z [22m[39m[server-readiness] 2026-11-03T05:43:39.417Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=170 requestMs=0 totalMs=42509 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:39.4197903Z 
+2026-11-03T05:43:39.6709361Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:39.6711983Z [22m[39m[server-readiness] 2026-11-03T05:43:39.669Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=171 requestMs=1 totalMs=42761 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:39.6713343Z 
+2026-11-03T05:43:39.9225350Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:39.9228149Z [22m[39m[server-readiness] 2026-11-03T05:43:39.920Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=172 requestMs=1 totalMs=43012 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:39.9229535Z 
+2026-11-03T05:43:40.1741734Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:40.1744432Z [22m[39m[server-readiness] 2026-11-03T05:43:40.172Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=173 requestMs=1 totalMs=43264 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:40.1745828Z 
+2026-11-03T05:43:40.4249359Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:40.4252778Z [22m[39m[server-readiness] 2026-11-03T05:43:40.422Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=174 requestMs=0 totalMs=43514 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:40.4254746Z 
+2026-11-03T05:43:40.6772576Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:40.6776283Z [22m[39m[server-readiness] 2026-11-03T05:43:40.674Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=175 requestMs=1 totalMs=43766 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:40.6777727Z 
+2026-11-03T05:43:40.9282313Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:40.9285259Z [22m[39m[server-readiness] 2026-11-03T05:43:40.926Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=176 requestMs=1 totalMs=44018 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:40.9287090Z 
+2026-11-03T05:43:41.1788623Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:41.1791420Z [22m[39m[server-readiness] 2026-11-03T05:43:41.177Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=177 requestMs=1 totalMs=44269 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:41.1792923Z 
+2026-11-03T05:43:41.4300899Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:41.4302901Z [22m[39m[server-readiness] 2026-11-03T05:43:41.428Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=178 requestMs=1 totalMs=44520 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:41.4303810Z 
+2026-11-03T05:43:41.6813831Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:41.6816643Z [22m[39m[server-readiness] 2026-11-03T05:43:41.679Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=179 requestMs=1 totalMs=44771 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:41.6817993Z 
+2026-11-03T05:43:41.9330066Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:41.9332678Z [22m[39m[server-readiness] 2026-11-03T05:43:41.931Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=180 requestMs=1 totalMs=45023 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:41.9333588Z 
+2026-11-03T05:43:42.1836635Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:42.1839636Z [22m[39m[server-readiness] 2026-11-03T05:43:42.181Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=181 requestMs=1 totalMs=45273 TypeError: fetch failed; cause=Error: connect ECONNREFUSED 127.0.0.1:34507
+2026-11-03T05:43:42.1841108Z 
+2026-11-03T05:43:48.7923626Z [90mstdout[2m | apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts
+2026-11-03T05:43:48.7926269Z [22m[39m[server-readiness] 2026-11-03T05:43:48.790Z http://127.0.0.1:34507/en/ui-libraries/shadcn/dialog/ attempt=182 requestMs=6359 totalMs=51882 HTTP 200 OK
+2026-11-03T05:43:48.7927430Z 
+2026-11-03T05:45:05.8109100Z  [32m✓[39m apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts [2m([22m[2m8 tests[22m[2m)[22m[33m 128913[2mms[22m[39m
+2026-11-03T05:45:05.8112041Z    [33m[2m✓[22m[39m shadcn/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close [33m12851[2mms[22m[39m
+2026-11-03T05:45:05.8115919Z    [33m[2m✓[22m[39m shadcn/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close [33m10841[2mms[22m[39m
+2026-11-03T05:45:05.8119391Z    [33m[2m✓[22m[39m shadcn/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close [33m9743[2mms[22m[39m
+2026-11-03T05:45:05.8122273Z    [33m[2m✓[22m[39m shadcn/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close [33m9565[2mms[22m[39m
+2026-11-03T05:45:05.8124189Z    [33m[2m✓[22m[39m brutalist/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close [33m7590[2mms[22m[39m
+2026-11-03T05:45:05.8128234Z    [33m[2m✓[22m[39m brutalist/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close [33m7763[2mms[22m[39m
+2026-11-03T05:45:05.8130574Z    [33m[2m✓[22m[39m brutalist/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close [33m7616[2mms[22m[39m
+2026-11-03T05:45:05.8132782Z    [33m[2m✓[22m[39m brutalist/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close [33m7477[2mms[22m[39m
+2026-11-03T05:45:05.8565018Z 
+2026-11-03T05:45:05.8574941Z [2m Test Files [22m [1m[32m1 passed[39m[22m[90m (1)[39m
+2026-11-03T05:45:05.8582864Z [2m      Tests [22m [1m[32m8 passed[39m[22m[90m (8)[39m
+2026-11-03T05:45:05.8583805Z [2m   Start at [22m 05:42:56
+2026-11-03T05:45:05.8585260Z [2m   Duration [22m 129.69s[2m (transform 113ms, setup 0ms, collect 439ms, tests 128.91s, environment 0ms, prepare 57ms)[22m
+2026-11-03T05:45:05.8586570Z 
+2026-11-03T05:45:05.8595652Z JSON report written to /home/runner/work/_temp/dialog-space/vitest.json
+2026-11-03T05:45:05.9005908Z ##[group]Run actions/upload-artifact@v4
+2026-11-03T05:45:05.9006714Z with:
+2026-11-03T05:45:05.9007104Z   name: dialog-space-candidate-f1db798644e4641a99856b172d4f7ac2baf0e91d-41557408834-1
+2026-11-03T05:45:05.9007589Z   path: /home/runner/work/_temp/dialog-space
+2026-11-03T05:45:05.9007877Z   retention-days: 30
+2026-11-03T05:45:05.9008101Z   if-no-files-found: error
+2026-11-03T05:45:05.9008342Z   compression-level: 6
+2026-11-03T05:45:05.9008556Z   overwrite: false
+2026-11-03T05:45:05.9008787Z   include-hidden-files: false
+2026-11-03T05:45:05.9009024Z env:
+2026-11-03T05:45:05.9009256Z   CANDIDATE_SHA: f1db798644e4641a99856b172d4f7ac2baf0e91d
+2026-11-03T05:45:05.9009633Z   BASELINE_SHA: 15d864de54210c2eebc4f4b2fec6235324989989
+2026-11-03T05:45:05.9009966Z   CHROME_PATH: /usr/bin/google-chrome
+2026-11-03T05:45:05.9010246Z ##[endgroup]
+2026-11-03T05:45:06.0814993Z (node:4885) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-03T05:45:06.0816795Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-03T05:45:06.1061904Z With the provided path, there will be 130 files uploaded
+2026-11-03T05:45:06.1068281Z Artifact name is valid!
+2026-11-03T05:45:06.1071514Z Root directory input is valid!
+2026-11-03T05:45:06.5101056Z Beginning upload of artifact content to blob storage
+2026-11-03T05:45:06.8870173Z (node:4885) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-11-03T05:45:07.8076957Z Uploaded bytes 7974336
+2026-11-03T05:45:07.8821159Z Finished uploading artifact content to blob storage!
+2026-11-03T05:45:07.8822203Z SHA256 digest of uploaded artifact zip is b7a7a3ef71f481b6bf812c091340d80d644dc6cf3a029d594d021e8cfb604ad8
+2026-11-03T05:45:07.8823542Z Finalizing artifact upload
+2026-11-03T05:45:08.3069698Z Artifact dialog-space-candidate-f1db798644e4641a99856b172d4f7ac2baf0e91d-41557408834-1.zip successfully finalized. Artifact ID 13207683604
+2026-11-03T05:45:08.3071428Z Artifact dialog-space-candidate-f1db798644e4641a99856b172d4f7ac2baf0e91d-41557408834-1 has been successfully uploaded! Final size is 7974336 bytes. Artifact ID is 13207683604
+2026-11-03T05:45:08.3075896Z Artifact download URL: https://github.com/Proto-UI/Proto-UI/actions/runs/41557408834/artifacts/13207683604
+2026-11-03T05:45:08.3306961Z Post job cleanup.
+2026-11-03T05:45:08.4584805Z (node:4899) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-11-03T05:45:08.4585787Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-11-03T05:45:08.4738212Z Post job cleanup.
+2026-11-03T05:45:08.5809726Z [command]/usr/bin/git version
+2026-11-03T05:45:08.5863004Z git version 2.56.0
+2026-11-03T05:45:08.5911795Z Temporarily overriding HOME='/home/runner/work/_temp/ecc0309a-4d01-4eaa-9560-bb28699d1d97' before making global git config changes
+2026-11-03T05:45:08.5915705Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-03T05:45:08.5919806Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Proto-UI/Proto-UI/subject
+2026-11-03T05:45:08.5972210Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-03T05:45:08.6019159Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-03T05:45:08.6356369Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-03T05:45:08.6404469Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-03T05:45:08.6714788Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T05:45:08.6766697Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-03T05:45:08.7331849Z Post job cleanup.
+2026-11-03T05:45:08.8298842Z [command]/usr/bin/git version
+2026-11-03T05:45:08.8351101Z git version 2.56.0
+2026-11-03T05:45:08.8398253Z Temporarily overriding HOME='/home/runner/work/_temp/1f329d5b-7d98-43c6-9b66-84d59c653049' before making global git config changes
+2026-11-03T05:45:08.8399359Z Adding repository directory to the temporary git global config as a safe directory
+2026-11-03T05:45:08.8407540Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/Proto-UI/Proto-UI/candidate
+2026-11-03T05:45:08.8454006Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-11-03T05:45:08.8518886Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-11-03T05:45:08.8834660Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-11-03T05:45:08.8916858Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-11-03T05:45:08.9251694Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-11-03T05:45:08.9303414Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-11-03T05:45:08.9754853Z Cleaning up orphan processes
+2026-11-03T05:45:09.0275680Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

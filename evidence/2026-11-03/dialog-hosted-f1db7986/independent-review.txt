@@ -1,0 +1,450 @@
+{
+  "startedAt": "2026-11-03T09:10:44.324379+00:00",
+  "at": "2026-11-03T09:10:44.521319+00:00",
+  "mode": "human-assisted/current-user",
+  "disposition": "partial/ABSTAIN",
+  "purpose": "Independent evidence verification and preparation for a bounded calibration decision for the specific f1db three-file closure. No maintenance approval, classifier/source edit, native execution or GitHub mutation.",
+  "runId": 41557408834,
+  "candidateHead": "f1db798644e4641a99856b172d4f7ac2baf0e91d",
+  "candidateTree": "8897e8119f2ddcd2f559bb9c84268dce1a757be2",
+  "baselineSubject": "15d864de54210c2eebc4f4b2fec6235324989989",
+  "artifacts": {
+    "candidate": {
+      "artifactId": 13207683604,
+      "archiveBytes": 7974336,
+      "archiveSHA256": "b7a7a3ef71f481b6bf812c091340d80d644dc6cf3a029d594d021e8cfb604ad8",
+      "members": 130,
+      "allMemberCRCVerified": true,
+      "subjectSha": "f1db798644e4641a99856b172d4f7ac2baf0e91d",
+      "probeSha": "f1db798644e4641a99856b172d4f7ac2baf0e91d",
+      "probeHashes": {
+        "subject/apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e",
+        "subject/apps/www/src/content/docs/zh-cn/browser-harness.ts": "0f150fc216d71dbd02abe14da46d38713c318a10668f7c8737cc16f7d6c52a23",
+        "subject/scripts/test/server-readiness.mjs": "4bbc332f34ebf8a9c24f0ccc01d53438dd7146e86118a932eacc63d819105fda"
+      },
+      "productExit": 0,
+      "reportSHA256": "bb3ec8e81f83b67520b839b917a5a7ee4a496fc862d44ad3b4a966571efe5a9f",
+      "reporterSHA256": "d26d77c9a57a8997394a21b70dee15cf7408c25e3d7bd7e22f48e5b1e6e4c6fa",
+      "runnerIntegritySHA256": "278fd1e810b6a460ab22a44291e673d934dbb06487f6138e874074ebc363ccbd",
+      "runnerIntegrity": {
+        "schemaVersion": 1,
+        "vitestVersion": "2.1.9",
+        "reporterSha256": "d26d77c9a57a8997394a21b70dee15cf7408c25e3d7bd7e22f48e5b1e6e4c6fa",
+        "phase": "process-exit",
+        "finishedCalls": 1,
+        "closeStarted": true,
+        "closeFinished": true,
+        "processTimedOut": false,
+        "runnerErrors": [],
+        "unhandledErrors": [],
+        "files": [
+          {
+            "path": "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+            "state": "pass",
+            "suiteErrors": []
+          }
+        ],
+        "exitCode": 0,
+        "cancelled": false,
+        "reportSha256": "bb3ec8e81f83b67520b839b917a5a7ee4a496fc862d44ad3b4a966571efe5a9f"
+      },
+      "counts": {
+        "numTotalTests": 8,
+        "numPassedTests": 8,
+        "numFailedTests": 0,
+        "numPendingTests": 0,
+        "numTodoTests": 0,
+        "success": true
+      },
+      "observationSHA256": "0578646b09c302df0edaf131d5eec248fa0d73f1eb935c64c96a67a258550d32",
+      "observationDistribution": {
+        "total": 196,
+        "geometry": 120,
+        "titleClearance": 24,
+        "actions": 52,
+        "failures": 0,
+        "byFamily": {
+          "shadcn": 100,
+          "brutalist": 96
+        }
+      },
+      "geometryResolved": 120,
+      "PNG": {
+        "referenced": 120,
+        "uniqueImageSHA256": 69,
+        "allPathHashSignatureAndDimensionsVerified": true,
+        "pixelInspection": false
+      },
+      "browserEnvironment": "Google Chrome 156.0.8078.47",
+      "fontEnvironment": "fontconfig 2.15.0-1.1ubuntu2\nfonts-noto-cjk 1:20230817+repack1-3\nDejaVu Sans\n/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+      "geometryPhasesByJourney": {
+        "shadcn-wc": [
+          "390-immediate",
+          "390-resize-immediate",
+          "390-settled",
+          "430-resize-immediate",
+          "430-settled",
+          "320-resize-immediate",
+          "320-settled",
+          "1024-resize-immediate",
+          "1024-settled",
+          "long-font200",
+          "long-action-reachable",
+          "320-long-font200",
+          "320-long-action-reachable",
+          "scale2",
+          "restored",
+          "reopened"
+        ],
+        "shadcn-react": [
+          "390-immediate",
+          "390-resize-immediate",
+          "390-settled",
+          "430-resize-immediate",
+          "430-settled",
+          "320-resize-immediate",
+          "320-settled",
+          "1024-resize-immediate",
+          "1024-settled",
+          "long-font200",
+          "long-action-reachable",
+          "320-long-font200",
+          "320-long-action-reachable",
+          "scale2",
+          "restored",
+          "reopened"
+        ],
+        "shadcn-vue": [
+          "390-immediate",
+          "390-resize-immediate",
+          "390-settled",
+          "430-resize-immediate",
+          "430-settled",
+          "320-resize-immediate",
+          "320-settled",
+          "1024-resize-immediate",
+          "1024-settled",
+          "long-font200",
+          "long-action-reachable",
+          "320-long-font200",
+          "320-long-action-reachable",
+          "scale2",
+          "restored",
+          "reopened"
+        ],
+        "shadcn-vue2": [
+          "390-immediate",
+          "390-resize-immediate",
+          "390-settled",
+          "430-resize-immediate",
+          "430-settled",
+          "320-resize-immediate",
+          "320-settled",
+          "1024-resize-immediate",
+          "1024-settled",
+          "long-font200",
+          "long-action-reachable",
+          "320-long-font200",
+          "320-long-action-reachable",
+          "scale2",
+          "restored",
+          "reopened"
+        ],
+        "brutalist-wc": [
+          "390-immediate",
+          "390-resize-immediate",
+          "390-settled",
+          "430-resize-immediate",
+          "430-settled",
+          "320-resize-immediate",
+          "320-settled",
+          "1024-resize-immediate",
+          "1024-settled",
+          "long-font200",
+          "long-action-reachable",
+          "scale2",
+          "restored",
+          "reopened"
+        ],
+        "brutalist-react": [
+          "390-immediate",
+          "390-resize-immediate",
+          "390-settled",
+          "430-resize-immediate",
+          "430-settled",
+          "320-resize-immediate",
+          "320-settled",
+          "1024-resize-immediate",
+          "1024-settled",
+          "long-font200",
+          "long-action-reachable",
+          "scale2",
+          "restored",
+          "reopened"
+        ],
+        "brutalist-vue": [
+          "390-immediate",
+          "390-resize-immediate",
+          "390-settled",
+          "430-resize-immediate",
+          "430-settled",
+          "320-resize-immediate",
+          "320-settled",
+          "1024-resize-immediate",
+          "1024-settled",
+          "long-font200",
+          "long-action-reachable",
+          "scale2",
+          "restored",
+          "reopened"
+        ],
+        "brutalist-vue2": [
+          "390-immediate",
+          "390-resize-immediate",
+          "390-settled",
+          "430-resize-immediate",
+          "430-settled",
+          "320-resize-immediate",
+          "320-settled",
+          "1024-resize-immediate",
+          "1024-settled",
+          "long-font200",
+          "long-action-reachable",
+          "scale2",
+          "restored",
+          "reopened"
+        ]
+      }
+    },
+    "baseline": {
+      "artifactId": 13207925147,
+      "archiveBytes": 2282301,
+      "archiveSHA256": "082e2efac63228b2e11aaab23196b5daa44e95668974c7f1a3249f4adb9b5873",
+      "members": 40,
+      "allMemberCRCVerified": true,
+      "subjectSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "probeSha": "f1db798644e4641a99856b172d4f7ac2baf0e91d",
+      "probeHashes": {
+        "subject/apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e",
+        "subject/apps/www/src/content/docs/zh-cn/browser-harness.ts": "0f150fc216d71dbd02abe14da46d38713c318a10668f7c8737cc16f7d6c52a23",
+        "subject/scripts/test/server-readiness.mjs": "4bbc332f34ebf8a9c24f0ccc01d53438dd7146e86118a932eacc63d819105fda"
+      },
+      "productExit": 1,
+      "reportSHA256": "3a842f013c3a81ebbab9460c08f8b154c055bb515df39bb4eeb992e1fdc2a50b",
+      "reporterSHA256": "d26d77c9a57a8997394a21b70dee15cf7408c25e3d7bd7e22f48e5b1e6e4c6fa",
+      "runnerIntegritySHA256": "d74986f0f6c99c4c7302aace781027de9269d04c4c90d8de19820a9b8df90f21",
+      "runnerIntegrity": {
+        "schemaVersion": 1,
+        "vitestVersion": "2.1.9",
+        "reporterSha256": "d26d77c9a57a8997394a21b70dee15cf7408c25e3d7bd7e22f48e5b1e6e4c6fa",
+        "phase": "process-exit",
+        "finishedCalls": 1,
+        "closeStarted": true,
+        "closeFinished": true,
+        "processTimedOut": false,
+        "runnerErrors": [],
+        "unhandledErrors": [],
+        "files": [
+          {
+            "path": "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+            "state": "fail",
+            "suiteErrors": []
+          }
+        ],
+        "exitCode": 1,
+        "cancelled": false,
+        "reportSha256": "3a842f013c3a81ebbab9460c08f8b154c055bb515df39bb4eeb992e1fdc2a50b"
+      },
+      "counts": {
+        "numTotalTests": 8,
+        "numPassedTests": 0,
+        "numFailedTests": 8,
+        "numPendingTests": 0,
+        "numTodoTests": 0,
+        "success": false
+      },
+      "observationSHA256": "a195baf9cfc2320100737a46718e2bde0045d75e9d0d253e008e527d480a5cb7",
+      "observationDistribution": {
+        "total": 33,
+        "geometry": 21,
+        "titleClearance": 4,
+        "actions": 0,
+        "failures": 8,
+        "byFamily": {
+          "shadcn": 13,
+          "brutalist": 20
+        }
+      },
+      "geometryResolved": 21,
+      "PNG": {
+        "referenced": 29,
+        "uniqueImageSHA256": 15,
+        "allPathHashSignatureAndDimensionsVerified": true,
+        "pixelInspection": false
+      },
+      "browserEnvironment": "Google Chrome 156.0.8078.47",
+      "fontEnvironment": "fontconfig 2.15.0-1.1ubuntu2\nfonts-noto-cjk 1:20230817+repack1-3\nDejaVu Sans\n/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+      "geometryPhasesByJourney": {
+        "shadcn-wc": [
+          "390-immediate",
+          "390-resize-immediate",
+          "390-settled"
+        ],
+        "shadcn-react": [
+          "390-immediate",
+          "390-resize-immediate",
+          "390-settled"
+        ],
+        "shadcn-vue": [
+          "390-immediate",
+          "390-resize-immediate",
+          "390-settled"
+        ],
+        "shadcn-vue2": [],
+        "brutalist-wc": [
+          "390-immediate",
+          "390-resize-immediate",
+          "390-settled"
+        ],
+        "brutalist-react": [
+          "390-immediate",
+          "390-resize-immediate",
+          "390-settled"
+        ],
+        "brutalist-vue": [
+          "390-immediate",
+          "390-resize-immediate",
+          "390-settled"
+        ],
+        "brutalist-vue2": [
+          "390-immediate",
+          "390-resize-immediate",
+          "390-settled"
+        ]
+      }
+    }
+  },
+  "allChecks": {
+    "total": 446,
+    "passed": 446,
+    "details": "data-checks.json"
+  },
+  "openFindings": 0,
+  "findings": [],
+  "baselineHistoricalDataComparison": {
+    "method": "Independent comparison of the actual source/identity/errors/observation set/geometry/PNG clauses of the unchanged verifier. The source-binding guard remains active; no hash substitution or relaxed verifier was used.",
+    "strictDataClausesAllMatch": true,
+    "classCounts": {
+      "zero-inset": 3,
+      "not-exercised-runtime": 1,
+      "Title-overlap": 4
+    },
+    "nativeGeometryFailures": 7,
+    "notExercisedRuntimeEntries": 1,
+    "completedBaselineNativeJourneys": 0,
+    "cases": [
+      {
+        "identity": "shadcn/wc",
+        "kind": "zero-inset",
+        "error": "AssertionError: expected 0 to be greater than or equal to 15",
+        "completedNativeJourney": false,
+        "insetAssertionReached": true
+      },
+      {
+        "identity": "shadcn/react",
+        "kind": "zero-inset",
+        "error": "AssertionError: expected 0 to be greater than or equal to 15",
+        "completedNativeJourney": false,
+        "insetAssertionReached": true
+      },
+      {
+        "identity": "shadcn/vue",
+        "kind": "zero-inset",
+        "error": "AssertionError: expected 0 to be greater than or equal to 15",
+        "completedNativeJourney": false,
+        "insetAssertionReached": true
+      },
+      {
+        "identity": "shadcn/vue2",
+        "kind": "not-exercised-runtime",
+        "error": "Error: RuntimeNotOffered:shadcn/vue2:[\"wc\",\"react\",\"vue\"]",
+        "completedNativeJourney": false,
+        "insetAssertionReached": false
+      },
+      {
+        "identity": "brutalist/wc",
+        "kind": "Title-overlap",
+        "error": "AssertionError: CloseIcon must not cover the Title box: expected 504 to be +0 // Object.is equality",
+        "completedNativeJourney": false,
+        "insetAssertionReached": false
+      },
+      {
+        "identity": "brutalist/react",
+        "kind": "Title-overlap",
+        "error": "AssertionError: CloseIcon must not cover the Title box: expected 504 to be +0 // Object.is equality",
+        "completedNativeJourney": false,
+        "insetAssertionReached": false
+      },
+      {
+        "identity": "brutalist/vue",
+        "kind": "Title-overlap",
+        "error": "AssertionError: CloseIcon must not cover the Title box: expected 504 to be +0 // Object.is equality",
+        "completedNativeJourney": false,
+        "insetAssertionReached": false
+      },
+      {
+        "identity": "brutalist/vue2",
+        "kind": "Title-overlap",
+        "error": "AssertionError: CloseIcon must not cover the Title box: expected 504 to be +0 // Object.is equality",
+        "completedNativeJourney": false,
+        "insetAssertionReached": false
+      }
+    ],
+    "verifierReplay": {
+      "node": "v24.21.0",
+      "checkerSHA256": "59395534b03f3e51a1fa93a6759131140fdda73a992ef1dce434b4fc899acb07",
+      "currentSourceBindingAccepted": true,
+      "runnerIntegrityAccepted": true,
+      "strictHistoricalVerifierRejected": true,
+      "rejectionFirstLine": "Uncalibrated probe closure",
+      "sourceOrBindingSubstitution": false
+    },
+    "emptyClassificationFileBytes": 0,
+    "actualWorkflowClassifierLogReviewed": false
+  },
+  "calibrationClosure": {
+    "historicalAcceptedProbeCommit": "d28b17bc04074213c96045fbcb9e7c29c7b1f0ae",
+    "historicalAcceptedRawRun": 38995355607,
+    "threeSourceHashTables": {
+      "d28b17bc04074213c96045fbcb9e7c29c7b1f0ae": {
+        "subject/apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts": "181f88d9a711103f00437fd1866a30e5a383612c14aad8b0a63c46a043b5df88",
+        "subject/apps/www/src/content/docs/zh-cn/browser-harness.ts": "e3792a3e0003b79385c3aae90b08728c51d7564bf1abd16a32a47ff9f37fca9d",
+        "subject/scripts/test/server-readiness.mjs": "4bbc332f34ebf8a9c24f0ccc01d53438dd7146e86118a932eacc63d819105fda"
+      },
+      "f1db798644e4641a99856b172d4f7ac2baf0e91d": {
+        "subject/apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e",
+        "subject/apps/www/src/content/docs/zh-cn/browser-harness.ts": "0f150fc216d71dbd02abe14da46d38713c318a10668f7c8737cc16f7d6c52a23",
+        "subject/scripts/test/server-readiness.mjs": "4bbc332f34ebf8a9c24f0ccc01d53438dd7146e86118a932eacc63d819105fda"
+      },
+      "91f2fdb5e36cfac675d22d1e07e1c4e6b051147d": {
+        "subject/apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts": "181f88d9a711103f00437fd1866a30e5a383612c14aad8b0a63c46a043b5df88",
+        "subject/apps/www/src/content/docs/zh-cn/browser-harness.ts": "d5afee7ea8067f46fc492fd1049665d4b224f0ea75bc31b5f04f980dcee7362f",
+        "subject/scripts/test/server-readiness.mjs": "4bbc332f34ebf8a9c24f0ccc01d53438dd7146e86118a932eacc63d819105fda"
+      }
+    },
+    "historicalBrowser": "Google Chrome 155.0.8059.39",
+    "currentBrowser": "Google Chrome 156.0.8078.47",
+    "fontInventorySameAsHistorical": true,
+    "historicalProbeToCurrent": "181f to50f changes Mask ownership selection and adds fail-closed identity evidence; historical e379 to0f150 clears stopServer timeout in finally. server-readiness4bbc is unchanged.",
+    "currentMain": "91f2fdb5e36cfac675d22d1e07e1c4e6b051147d",
+    "mainTree": "83b203bfdb6a0559c746162279752d07ba54d4af",
+    "mainApplicability": "Main retains the older181f test and has d5afee7e harness after PR1273. The exact source closure measured here therefore does not bind a later main integration.",
+    "recommendedEvidenceDisposition": "The observed f1 baseline retains all compared strict failure/data clauses and complete integrity. These artifacts can support an explicit calibration proposal for exactly 50f/0f150/4bbc. Current classifier still rejects that closure, and any calibrated source-table change requires its own governed review."
+  },
+  "limits": [
+    "Full ZIP member CRC and SHA were checked; images were verified by path, SHA, PNG signature and IHDR dimensions, not viewed for pixels in this pass.",
+    "The empty expected-failure-classification.json carries no successful classification. The actual local raw-data replay used the unmodified f1 checker and rejects Uncalibrated probe closure. No error text is inferred from the empty file.",
+    "The new pair uses Chrome156.0.8078.47 whereas historical389 uses155.0.8059.39. Identical font inventory and strict sampled geometry do not imply full pixel parity or physical keyboard/notch behavior.",
+    "New fields, exact source revision and source-hash differences remain explicit; observed 8/8 candidate success is limited to the original named journeys and this official runtime."
+  ]
+}
