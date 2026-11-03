@@ -1,0 +1,50 @@
+[
+  {
+    id: 'shadcn-wc',
+    status: 'passed',
+    phase: undefined,
+    failure: undefined
+  },
+  {
+    id: 'shadcn-react',
+    status: 'passed',
+    phase: undefined,
+    failure: undefined
+  },
+  {
+    id: 'shadcn-vue',
+    status: 'passed',
+    phase: undefined,
+    failure: undefined
+  },
+  {
+    id: 'shadcn-vue2',
+    status: 'passed',
+    phase: undefined,
+    failure: undefined
+  },
+  {
+    id: 'brutalist-wc',
+    status: 'passed',
+    phase: undefined,
+    failure: undefined
+  },
+  {
+    id: 'brutalist-react',
+    status: 'passed',
+    phase: undefined,
+    failure: undefined
+  },
+  {
+    id: 'brutalist-vue',
+    status: 'passed',
+    phase: undefined,
+    failure: undefined
+  },
+  {
+    id: 'brutalist-vue2',
+    status: 'passed',
+    phase: undefined,
+    failure: undefined
+  }
+]

@@ -1,0 +1,72 @@
+{
+  "source": {
+    "sha": "d0279071fd80bd62bd6256fb40e77c3e69f25513",
+    "dirty": true,
+    "expectedSha": null,
+    "files": {
+      "components/SiteContentsCommand.astro": "da3634a9516a41a004018d67dda423c8edb2008a1eb43f6ce1934f985c452989",
+      "components/site-contents-command.ts": "cd558589c0000aa7f48d0a49a29129ac53ec159c28091ea0af4d388150f37c9a",
+      "components/site-contents-panel.ts": "e8e26a939111f7f791f16ad00aaf7df5f86cdf94206cb8d5bf8be996292fb96b",
+      "components/site-header-surface.ts": "bf30bef1bd9edda369fb6f9bea8cbba0d1e2abdf452c64dc31dc9a1d4e458c09",
+      "components/site-header-disclosure.ts": "4af55bb5d760b22b9657edf7fb6e32a6651a2864aaac59b66aaa86a8305bf51d",
+      "components/override/Sidebar.astro": "bdd177350d79cdb6114d1d77254d3188fbc99ad46dae8dfadc915bd541940d6c",
+      "components/override/PageFrame.astro": "db09b8ed5541455e1c07001802f7c6a256cf2025d1b99962cfae0376d293aa3a",
+      "styles/site-contents-command.css": "634ef35af2f4297eb25f0c03aa1bc974ef068dd33b737a468fda1ff39469fe58"
+    }
+  },
+  "family": "shadcn",
+  "runtime": "wc",
+  "transitionStartedAt": 1793617374321,
+  "clickedAt": 1793617374371,
+  "originalCheckAt": 1793617374374,
+  "originalDeadlineMs": 1000,
+  "originalError": null,
+  "first": {
+    "observedAt": 1793617374374.6,
+    "preference": null,
+    "contents": {
+      "siteContentsCommand": "",
+      "contentsLabel": "页面目录",
+      "contentsRuntime": "wc",
+      "contentsFamily": "shadcn",
+      "contentsGeneration": "1"
+    },
+    "panel": {
+      "siteHeaderPanel": "",
+      "headerSurfaceRuntime": "wc",
+      "headerSurfaceFamily": "shadcn",
+      "headerSurfaceGeneration": "1"
+    },
+    "generations": [
+      {
+        "projectionGenerationHost": "1",
+        "projectionOwnerHost": "site-header-surface-1",
+        "projectionGenerationState": "active",
+        "inert": false
+      },
+      {
+        "projectionGenerationHost": "1",
+        "projectionOwnerHost": "site-contents-1-docs-1",
+        "projectionGenerationState": "active",
+        "inert": false
+      },
+      {
+        "projectionGenerationHost": "1",
+        "projectionOwnerHost": "site-search-1-docs-1-open",
+        "projectionGenerationState": "active",
+        "inert": false
+      },
+      {
+        "projectionGenerationHost": "1",
+        "projectionOwnerHost": "site-search-1-docs-1-dialog",
+        "projectionGenerationState": "active",
+        "inert": false
+      }
+    ],
+    "longTasks": [],
+    "changes": [],
+    "resources": []
+  },
+  "late": null,
+  "pageErrors": []
+}

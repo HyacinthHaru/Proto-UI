@@ -1,0 +1,3682 @@
+[
+  {
+    "id": "shadcn-wc",
+    "source": {
+      "head": "d0279071fd80bd62bd6256fb40e77c3e69f25513",
+      "tree": "73e3640521cc5ad06b1116e3d623036fe25634c4",
+      "dirty": ""
+    },
+    "browser": "155.0.8059.39",
+    "steps": [
+      {
+        "name": "closed-narrow",
+        "facts": {
+          "t": 967.6000000238419,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 37.5,
+            "top": 80,
+            "right": 374,
+            "bottom": 117.5,
+            "left": 16
+          },
+          "nav": {
+            "x": 16,
+            "y": 56,
+            "width": 358,
+            "height": 0,
+            "top": 56,
+            "right": 374,
+            "bottom": 56,
+            "left": 16
+          },
+          "navCount": 1,
+          "panelRuntime": "wc",
+          "panelFamily": "shadcn",
+          "active": "<body class=\"astro-hbhkqqv6\" data-site-contents-dialog=\"\"> <a href=\"#_top\" class=\"astro-gfbpj5qw\">跳转到内容</a>  <link rel=\"stylesheet\" href=\"/styles/site-library-theme.css\"> <documentation-image-preview><docs-preview-shadcn-dialog-root data-docs-preview-family=\"shadcn\" data-docs-preview-prototype=\"shadcn-dialog-root\" data-docs-image-dialog=\"\" data-pui-root=\"\" class=\"\" data-pui-style=\"relative inline-",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-wc-closed-narrow.png"
+      },
+      {
+        "name": "open-1",
+        "facts": {
+          "t": 1350.7000000178814,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 37.5,
+            "top": 80,
+            "right": 374,
+            "bottom": 117.5,
+            "left": 16
+          },
+          "nav": {
+            "x": 40,
+            "y": 154.8046875,
+            "width": 310,
+            "height": 506.390625,
+            "top": 154.8046875,
+            "right": 350,
+            "bottom": 661.1953125,
+            "left": 40
+          },
+          "navCount": 1,
+          "panelRuntime": "wc",
+          "panelFamily": "shadcn",
+          "active": "<wc-shadcn-dialog-close class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-host-root\" data-pui-root=\"\" data-demo-owner=\"demo-3\" da",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-wc-open-1.png"
+      },
+      {
+        "name": "scrolled",
+        "facts": {
+          "t": 1533.7000000178814,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 37.5,
+            "top": 80,
+            "right": 374,
+            "bottom": 117.5,
+            "left": 16
+          },
+          "nav": {
+            "x": 40,
+            "y": 154.8046875,
+            "width": 310,
+            "height": 506.390625,
+            "top": 154.8046875,
+            "right": 350,
+            "bottom": 661.1953125,
+            "left": 40
+          },
+          "navCount": 1,
+          "panelRuntime": "wc",
+          "panelFamily": "shadcn",
+          "active": "<wc-shadcn-dialog-close class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-host-root\" data-pui-root=\"\" data-demo-owner=\"demo-3\" da",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-wc-scrolled.png"
+      },
+      {
+        "name": "closed-1",
+        "facts": {
+          "t": 1634.300000011921,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 37.5,
+            "top": 80,
+            "right": 374,
+            "bottom": 117.5,
+            "left": 16
+          },
+          "nav": {
+            "x": 44.4576416015625,
+            "y": 162.48895263671875,
+            "width": 301.084716796875,
+            "height": 491.827392578125,
+            "top": 162.48895263671875,
+            "right": 345.5423583984375,
+            "bottom": 654.3163452148438,
+            "left": 44.4576416015625
+          },
+          "navCount": 1,
+          "panelRuntime": "wc",
+          "panelFamily": "shadcn",
+          "active": "<wc-shadcn-button data-demo-ref=\"contents-command\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_62_75_74_74_6f_6e\" style=\"width: 2.75rem; height: 2.75rem; min-height: var(--site-cont",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-wc-closed-1.png"
+      },
+      {
+        "name": "open-2",
+        "facts": {
+          "t": 1900.4000000059605,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 37.5,
+            "top": 80,
+            "right": 374,
+            "bottom": 117.5,
+            "left": 16
+          },
+          "nav": {
+            "x": 40,
+            "y": 154.8046875,
+            "width": 310,
+            "height": 506.390625,
+            "top": 154.8046875,
+            "right": 350,
+            "bottom": 661.1953125,
+            "left": 40
+          },
+          "navCount": 1,
+          "panelRuntime": "wc",
+          "panelFamily": "shadcn",
+          "active": "<wc-shadcn-dialog-close class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-host-root\" data-pui-root=\"\" data-demo-owner=\"demo-3\" da",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-wc-open-2.png"
+      },
+      {
+        "name": "closed-2",
+        "facts": {
+          "t": 2001.1000000238419,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 37.5,
+            "top": 80,
+            "right": 374,
+            "bottom": 117.5,
+            "left": 16
+          },
+          "nav": {
+            "x": 44.46427536010742,
+            "y": 162.50038146972656,
+            "width": 301.07147216796875,
+            "height": 491.80572509765625,
+            "top": 162.50038146972656,
+            "right": 345.5357475280762,
+            "bottom": 654.3061065673828,
+            "left": 44.46427536010742
+          },
+          "navCount": 1,
+          "panelRuntime": "wc",
+          "panelFamily": "shadcn",
+          "active": "<wc-shadcn-button data-demo-ref=\"contents-command\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_62_75_74_74_6f_6e\" style=\"width: 2.75rem; height: 2.75rem; min-height: var(--site-cont",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-wc-closed-2.png"
+      },
+      {
+        "name": "wide-return",
+        "facts": {
+          "t": 2601.5,
+          "viewport": {
+            "width": 1440,
+            "height": 960,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 72,
+            "width": 1440,
+            "height": 0,
+            "top": 72,
+            "right": 1440,
+            "bottom": 72,
+            "left": 0
+          },
+          "heading": {
+            "x": 360,
+            "y": 104,
+            "width": 672,
+            "height": 37.5,
+            "top": 104,
+            "right": 1032,
+            "bottom": 141.5,
+            "left": 360
+          },
+          "nav": {
+            "x": 28.796875,
+            "y": 73,
+            "width": 240,
+            "height": 887,
+            "top": 73,
+            "right": 268.796875,
+            "bottom": 960,
+            "left": 28.796875
+          },
+          "navCount": 1,
+          "panelRuntime": "wc",
+          "panelFamily": "shadcn",
+          "active": "<body class=\"astro-hbhkqqv6\" data-site-contents-dialog=\"\" style=\"\"> <a href=\"#_top\" class=\"astro-gfbpj5qw\">跳转到内容</a>  <link rel=\"stylesheet\" href=\"/styles/site-library-theme.css\"> <documentation-image-preview><docs-preview-shadcn-dialog-root data-docs-preview-family=\"shadcn\" data-docs-preview-prototype=\"shadcn-dialog-root\" data-docs-image-dialog=\"\" data-pui-root=\"\" class=\"\" data-pui-style=\"relativ",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-wc-wide-return.png"
+      },
+      {
+        "name": "reopen-after-breakpoint",
+        "facts": {
+          "t": 3017.800000011921,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 37.5,
+            "top": 80,
+            "right": 374,
+            "bottom": 117.5,
+            "left": 16
+          },
+          "nav": {
+            "x": 40,
+            "y": 154.8046875,
+            "width": 310,
+            "height": 506.390625,
+            "top": 154.8046875,
+            "right": 350,
+            "bottom": 661.1953125,
+            "left": 40
+          },
+          "navCount": 1,
+          "panelRuntime": "wc",
+          "panelFamily": "shadcn",
+          "active": "<wc-shadcn-dialog-close class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-host-root\" data-pui-root=\"\" data-demo-owner=\"demo-3\" da",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-wc-reopen-after-breakpoint.png"
+      },
+      {
+        "name": "final-closed",
+        "facts": {
+          "t": 3117.300000011921,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 37.5,
+            "top": 80,
+            "right": 374,
+            "bottom": 117.5,
+            "left": 16
+          },
+          "nav": {
+            "x": 44.46123504638672,
+            "y": 162.49513244628906,
+            "width": 301.0775451660156,
+            "height": 491.815673828125,
+            "top": 162.49513244628906,
+            "right": 345.53878021240234,
+            "bottom": 654.3108062744141,
+            "left": 44.46123504638672
+          },
+          "navCount": 1,
+          "panelRuntime": "wc",
+          "panelFamily": "shadcn",
+          "active": "<wc-shadcn-button data-demo-ref=\"contents-command\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_62_75_74_74_6f_6e\" style=\"width: 2.75rem; height: 2.75rem; min-height: var(--site-cont",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-wc-final-closed.png"
+      }
+    ],
+    "errors": [],
+    "network": [],
+    "scrollCandidates": [
+      {
+        "tag": "DIV",
+        "cls": "mobile-sidebar-pane sidebar-pane astro-ceehzq5e",
+        "h": 506,
+        "sh": 5738
+      }
+    ],
+    "scroll": {
+      "before": 626,
+      "after": 1026,
+      "bodyBefore": 0,
+      "bodyAfter": 0
+    },
+    "status": "passed"
+  },
+  {
+    "id": "shadcn-react",
+    "source": {
+      "head": "d0279071fd80bd62bd6256fb40e77c3e69f25513",
+      "tree": "73e3640521cc5ad06b1116e3d623036fe25634c4",
+      "dirty": ""
+    },
+    "browser": "155.0.8059.39",
+    "steps": [
+      {
+        "name": "closed-narrow",
+        "facts": {
+          "t": 990.0999999940395,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 37.5,
+            "top": 80,
+            "right": 374,
+            "bottom": 117.5,
+            "left": 16
+          },
+          "nav": {
+            "x": 16,
+            "y": 56,
+            "width": 358,
+            "height": 0,
+            "top": 56,
+            "right": 374,
+            "bottom": 56,
+            "left": 16
+          },
+          "navCount": 1,
+          "panelRuntime": "react",
+          "panelFamily": "shadcn",
+          "active": "<body class=\"astro-hbhkqqv6\" data-site-contents-dialog=\"\"> <a href=\"#_top\" class=\"astro-gfbpj5qw\">跳转到内容</a>  <link rel=\"stylesheet\" href=\"/styles/site-library-theme.css\"> <documentation-image-preview><docs-preview-shadcn-dialog-root data-docs-preview-family=\"shadcn\" data-docs-preview-prototype=\"shadcn-dialog-root\" data-docs-image-dialog=\"\" data-pui-root=\"\" class=\"\" data-pui-style=\"relative inline-",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-react-closed-narrow.png"
+      },
+      {
+        "name": "open-1",
+        "facts": {
+          "t": 1348.9000000059605,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 37.5,
+            "top": 80,
+            "right": 374,
+            "bottom": 117.5,
+            "left": 16
+          },
+          "nav": {
+            "x": 40,
+            "y": 154.8046875,
+            "width": 310,
+            "height": 506.390625,
+            "top": 154.8046875,
+            "right": 350,
+            "bottom": 661.1953125,
+            "left": 40
+          },
+          "navCount": 1,
+          "panelRuntime": "react",
+          "panelFamily": "shadcn",
+          "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-72_65_61_63_74 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-owner-demo-21\" data-pui-root=\"\" style=\"min-height: 2.75rem; displ",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-react-open-1.png"
+      },
+      {
+        "name": "scrolled",
+        "facts": {
+          "t": 1498.4000000059605,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 37.5,
+            "top": 80,
+            "right": 374,
+            "bottom": 117.5,
+            "left": 16
+          },
+          "nav": {
+            "x": 40,
+            "y": 154.8046875,
+            "width": 310,
+            "height": 506.390625,
+            "top": 154.8046875,
+            "right": 350,
+            "bottom": 661.1953125,
+            "left": 40
+          },
+          "navCount": 1,
+          "panelRuntime": "react",
+          "panelFamily": "shadcn",
+          "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-72_65_61_63_74 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-owner-demo-21\" data-pui-root=\"\" style=\"min-height: 2.75rem; displ",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-react-scrolled.png"
+      },
+      {
+        "name": "closed-1",
+        "facts": {
+          "t": 1615.2000000178814,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 37.5,
+            "top": 80,
+            "right": 374,
+            "bottom": 117.5,
+            "left": 16
+          },
+          "nav": {
+            "x": 44.453887939453125,
+            "y": 162.48251342773438,
+            "width": 301.09222412109375,
+            "height": 491.8395690917969,
+            "top": 162.48251342773438,
+            "right": 345.5461120605469,
+            "bottom": 654.3220825195312,
+            "left": 44.453887939453125
+          },
+          "navCount": 1,
+          "panelRuntime": "react",
+          "panelFamily": "shadcn",
+          "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-72_65_61_63_74 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_62_75_74_74_6f_6e pui-owner-demo-20\" data-pui-root=\"\" data-demo-ref=\"contents-command\" style=\"width: 2.75rem; height: 2.75r",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-react-closed-1.png"
+      },
+      {
+        "name": "open-2",
+        "facts": {
+          "t": 1865.300000011921,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 37.5,
+            "top": 80,
+            "right": 374,
+            "bottom": 117.5,
+            "left": 16
+          },
+          "nav": {
+            "x": 40,
+            "y": 154.8046875,
+            "width": 310,
+            "height": 506.390625,
+            "top": 154.8046875,
+            "right": 350,
+            "bottom": 661.1953125,
+            "left": 40
+          },
+          "navCount": 1,
+          "panelRuntime": "react",
+          "panelFamily": "shadcn",
+          "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-72_65_61_63_74 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-owner-demo-21\" data-pui-root=\"\" style=\"min-height: 2.75rem; displ",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-react-open-2.png"
+      },
+      {
+        "name": "closed-2",
+        "facts": {
+          "t": 1981,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 37.5,
+            "top": 80,
+            "right": 374,
+            "bottom": 117.5,
+            "left": 16
+          },
+          "nav": {
+            "x": 46.217247009277344,
+            "y": 165.52223205566406,
+            "width": 297.5655212402344,
+            "height": 486.07867431640625,
+            "top": 165.52223205566406,
+            "right": 343.7827682495117,
+            "bottom": 651.6009063720703,
+            "left": 46.217247009277344
+          },
+          "navCount": 1,
+          "panelRuntime": "react",
+          "panelFamily": "shadcn",
+          "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-72_65_61_63_74 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_62_75_74_74_6f_6e pui-owner-demo-20\" data-pui-root=\"\" data-demo-ref=\"contents-command\" style=\"width: 2.75rem; height: 2.75r",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-react-closed-2.png"
+      },
+      {
+        "name": "wide-return",
+        "facts": {
+          "t": 2532.9000000059605,
+          "viewport": {
+            "width": 1440,
+            "height": 960,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 72,
+            "width": 1440,
+            "height": 0,
+            "top": 72,
+            "right": 1440,
+            "bottom": 72,
+            "left": 0
+          },
+          "heading": {
+            "x": 360,
+            "y": 104,
+            "width": 672,
+            "height": 37.5,
+            "top": 104,
+            "right": 1032,
+            "bottom": 141.5,
+            "left": 360
+          },
+          "nav": {
+            "x": 28.796875,
+            "y": 73,
+            "width": 240,
+            "height": 887,
+            "top": 73,
+            "right": 268.796875,
+            "bottom": 960,
+            "left": 28.796875
+          },
+          "navCount": 1,
+          "panelRuntime": "react",
+          "panelFamily": "shadcn",
+          "active": "<body class=\"astro-hbhkqqv6\" data-site-contents-dialog=\"\" style=\"\"> <a href=\"#_top\" class=\"astro-gfbpj5qw\">跳转到内容</a>  <link rel=\"stylesheet\" href=\"/styles/site-library-theme.css\"> <documentation-image-preview><docs-preview-shadcn-dialog-root data-docs-preview-family=\"shadcn\" data-docs-preview-prototype=\"shadcn-dialog-root\" data-docs-image-dialog=\"\" data-pui-root=\"\" class=\"\" data-pui-style=\"relativ",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-react-wide-return.png"
+      },
+      {
+        "name": "reopen-after-breakpoint",
+        "facts": {
+          "t": 2932.300000011921,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 37.5,
+            "top": 80,
+            "right": 374,
+            "bottom": 117.5,
+            "left": 16
+          },
+          "nav": {
+            "x": 40,
+            "y": 154.8046875,
+            "width": 310,
+            "height": 506.390625,
+            "top": 154.8046875,
+            "right": 350,
+            "bottom": 661.1953125,
+            "left": 40
+          },
+          "navCount": 1,
+          "panelRuntime": "react",
+          "panelFamily": "shadcn",
+          "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-72_65_61_63_74 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-owner-demo-21\" data-pui-root=\"\" style=\"min-height: 2.75rem; displ",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-react-reopen-after-breakpoint.png"
+      },
+      {
+        "name": "final-closed",
+        "facts": {
+          "t": 3048.0999999940395,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 37.5,
+            "top": 80,
+            "right": 374,
+            "bottom": 117.5,
+            "left": 16
+          },
+          "nav": {
+            "x": 44.457218170166016,
+            "y": 162.48822021484375,
+            "width": 301.0855712890625,
+            "height": 491.8287353515625,
+            "top": 162.48822021484375,
+            "right": 345.5427894592285,
+            "bottom": 654.3169555664062,
+            "left": 44.457218170166016
+          },
+          "navCount": 1,
+          "panelRuntime": "react",
+          "panelFamily": "shadcn",
+          "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-72_65_61_63_74 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_62_75_74_74_6f_6e pui-owner-demo-20\" data-pui-root=\"\" data-demo-ref=\"contents-command\" style=\"width: 2.75rem; height: 2.75r",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-react-final-closed.png"
+      }
+    ],
+    "errors": [],
+    "network": [],
+    "scrollCandidates": [
+      {
+        "tag": "DIV",
+        "cls": "mobile-sidebar-pane sidebar-pane astro-ceehzq5e",
+        "h": 506,
+        "sh": 5738
+      }
+    ],
+    "scroll": {
+      "before": 626,
+      "after": 1026,
+      "bodyBefore": 0,
+      "bodyAfter": 0
+    },
+    "status": "passed"
+  },
+  {
+    "id": "shadcn-vue",
+    "source": {
+      "head": "d0279071fd80bd62bd6256fb40e77c3e69f25513",
+      "tree": "73e3640521cc5ad06b1116e3d623036fe25634c4",
+      "dirty": ""
+    },
+    "browser": "155.0.8059.39",
+    "steps": [
+      {
+        "name": "closed-narrow",
+        "facts": {
+          "t": 1028.9000000059605,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 37.5,
+            "top": 80,
+            "right": 374,
+            "bottom": 117.5,
+            "left": 16
+          },
+          "nav": {
+            "x": 16,
+            "y": 56,
+            "width": 358,
+            "height": 0,
+            "top": 56,
+            "right": 374,
+            "bottom": 56,
+            "left": 16
+          },
+          "navCount": 1,
+          "panelRuntime": "vue",
+          "panelFamily": "shadcn",
+          "active": "<body class=\"astro-hbhkqqv6\" data-site-contents-dialog=\"\"> <a href=\"#_top\" class=\"astro-gfbpj5qw\">跳转到内容</a>  <link rel=\"stylesheet\" href=\"/styles/site-library-theme.css\"> <documentation-image-preview><docs-preview-shadcn-dialog-root data-docs-preview-family=\"shadcn\" data-docs-preview-prototype=\"shadcn-dialog-root\" data-docs-image-dialog=\"\" data-pui-root=\"\" class=\"\" data-pui-style=\"relative inline-",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-vue-closed-narrow.png"
+      },
+      {
+        "name": "open-1",
+        "facts": {
+          "t": 1613.7000000178814,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 37.5,
+            "top": 80,
+            "right": 374,
+            "bottom": 117.5,
+            "left": 16
+          },
+          "nav": {
+            "x": 40,
+            "y": 154.8046875,
+            "width": 310,
+            "height": 506.390625,
+            "top": 154.8046875,
+            "right": 350,
+            "bottom": 661.1953125,
+            "left": 40
+          },
+          "navCount": 1,
+          "panelRuntime": "vue",
+          "panelFamily": "shadcn",
+          "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-76_75_65 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-owner-demo-21\" data-pui-root=\"\" style=\"min-height: 2.75rem; display: in",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-vue-open-1.png"
+      },
+      {
+        "name": "scrolled",
+        "facts": {
+          "t": 1779.0999999940395,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 37.5,
+            "top": 80,
+            "right": 374,
+            "bottom": 117.5,
+            "left": 16
+          },
+          "nav": {
+            "x": 40,
+            "y": 154.8046875,
+            "width": 310,
+            "height": 506.390625,
+            "top": 154.8046875,
+            "right": 350,
+            "bottom": 661.1953125,
+            "left": 40
+          },
+          "navCount": 1,
+          "panelRuntime": "vue",
+          "panelFamily": "shadcn",
+          "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-76_75_65 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-owner-demo-21\" data-pui-root=\"\" style=\"min-height: 2.75rem; display: in",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-vue-scrolled.png"
+      },
+      {
+        "name": "closed-1",
+        "facts": {
+          "t": 1896.300000011921,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 37.5,
+            "top": 80,
+            "right": 374,
+            "bottom": 117.5,
+            "left": 16
+          },
+          "nav": {
+            "x": 46.218475341796875,
+            "y": 165.52435302734375,
+            "width": 297.56304931640625,
+            "height": 486.07464599609375,
+            "top": 165.52435302734375,
+            "right": 343.7815246582031,
+            "bottom": 651.5989990234375,
+            "left": 46.218475341796875
+          },
+          "navCount": 1,
+          "panelRuntime": "vue",
+          "panelFamily": "shadcn",
+          "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-76_75_65 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_62_75_74_74_6f_6e pui-owner-demo-20\" data-pui-root=\"\" data-demo-ref=\"contents-command\" data-pui-style=\"select-none data-[disabled",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-vue-closed-1.png"
+      },
+      {
+        "name": "open-2",
+        "facts": {
+          "t": 2113.7000000178814,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 37.5,
+            "top": 80,
+            "right": 374,
+            "bottom": 117.5,
+            "left": 16
+          },
+          "nav": {
+            "x": 40,
+            "y": 154.8046875,
+            "width": 310,
+            "height": 506.390625,
+            "top": 154.8046875,
+            "right": 350,
+            "bottom": 661.1953125,
+            "left": 40
+          },
+          "navCount": 1,
+          "panelRuntime": "vue",
+          "panelFamily": "shadcn",
+          "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-76_75_65 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-owner-demo-21\" data-pui-root=\"\" style=\"min-height: 2.75rem; display: in",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-vue-open-2.png"
+      },
+      {
+        "name": "closed-2",
+        "facts": {
+          "t": 2229.9000000059605,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 37.5,
+            "top": 80,
+            "right": 374,
+            "bottom": 117.5,
+            "left": 16
+          },
+          "nav": {
+            "x": 46.22461700439453,
+            "y": 165.53494262695312,
+            "width": 297.55078125,
+            "height": 486.0545349121094,
+            "top": 165.53494262695312,
+            "right": 343.77539825439453,
+            "bottom": 651.5894775390625,
+            "left": 46.22461700439453
+          },
+          "navCount": 1,
+          "panelRuntime": "vue",
+          "panelFamily": "shadcn",
+          "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-76_75_65 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_62_75_74_74_6f_6e pui-owner-demo-20\" data-pui-root=\"\" data-demo-ref=\"contents-command\" data-pui-style=\"select-none data-[disabled",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-vue-closed-2.png"
+      },
+      {
+        "name": "wide-return",
+        "facts": {
+          "t": 2781.300000011921,
+          "viewport": {
+            "width": 1440,
+            "height": 960,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 72,
+            "width": 1440,
+            "height": 0,
+            "top": 72,
+            "right": 1440,
+            "bottom": 72,
+            "left": 0
+          },
+          "heading": {
+            "x": 360,
+            "y": 104,
+            "width": 672,
+            "height": 37.5,
+            "top": 104,
+            "right": 1032,
+            "bottom": 141.5,
+            "left": 360
+          },
+          "nav": {
+            "x": 28.796875,
+            "y": 73,
+            "width": 240,
+            "height": 887,
+            "top": 73,
+            "right": 268.796875,
+            "bottom": 960,
+            "left": 28.796875
+          },
+          "navCount": 1,
+          "panelRuntime": "vue",
+          "panelFamily": "shadcn",
+          "active": "<body class=\"astro-hbhkqqv6\" data-site-contents-dialog=\"\" style=\"\"> <a href=\"#_top\" class=\"astro-gfbpj5qw\">跳转到内容</a>  <link rel=\"stylesheet\" href=\"/styles/site-library-theme.css\"> <documentation-image-preview><docs-preview-shadcn-dialog-root data-docs-preview-family=\"shadcn\" data-docs-preview-prototype=\"shadcn-dialog-root\" data-docs-image-dialog=\"\" data-pui-root=\"\" class=\"\" data-pui-style=\"relativ",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-vue-wide-return.png"
+      },
+      {
+        "name": "reopen-after-breakpoint",
+        "facts": {
+          "t": 3263.5999999940395,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 37.5,
+            "top": 80,
+            "right": 374,
+            "bottom": 117.5,
+            "left": 16
+          },
+          "nav": {
+            "x": 40,
+            "y": 154.8046875,
+            "width": 310,
+            "height": 506.390625,
+            "top": 154.8046875,
+            "right": 350,
+            "bottom": 661.1953125,
+            "left": 40
+          },
+          "navCount": 1,
+          "panelRuntime": "vue",
+          "panelFamily": "shadcn",
+          "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-76_75_65 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-owner-demo-21\" data-pui-root=\"\" style=\"min-height: 2.75rem; display: in",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-vue-reopen-after-breakpoint.png"
+      },
+      {
+        "name": "final-closed",
+        "facts": {
+          "t": 3379.9000000059605,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 37.5,
+            "top": 80,
+            "right": 374,
+            "bottom": 117.5,
+            "left": 16
+          },
+          "nav": {
+            "x": 44.46633529663086,
+            "y": 162.5039520263672,
+            "width": 301.06732177734375,
+            "height": 491.79888916015625,
+            "top": 162.5039520263672,
+            "right": 345.5336570739746,
+            "bottom": 654.3028411865234,
+            "left": 44.46633529663086
+          },
+          "navCount": 1,
+          "panelRuntime": "vue",
+          "panelFamily": "shadcn",
+          "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-76_75_65 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_62_75_74_74_6f_6e pui-owner-demo-20\" data-pui-root=\"\" data-demo-ref=\"contents-command\" data-pui-style=\"select-none data-[disabled",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-vue-final-closed.png"
+      }
+    ],
+    "errors": [],
+    "network": [],
+    "scrollCandidates": [
+      {
+        "tag": "DIV",
+        "cls": "mobile-sidebar-pane sidebar-pane astro-ceehzq5e",
+        "h": 506,
+        "sh": 5738
+      }
+    ],
+    "scroll": {
+      "before": 626,
+      "after": 1026,
+      "bodyBefore": 0,
+      "bodyAfter": 0
+    },
+    "status": "passed"
+  },
+  {
+    "id": "shadcn-vue2",
+    "source": {
+      "head": "d0279071fd80bd62bd6256fb40e77c3e69f25513",
+      "tree": "73e3640521cc5ad06b1116e3d623036fe25634c4",
+      "dirty": ""
+    },
+    "browser": "155.0.8059.39",
+    "steps": [
+      {
+        "name": "closed-narrow",
+        "facts": {
+          "t": 958.7999999821186,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 37.5,
+            "top": 80,
+            "right": 374,
+            "bottom": 117.5,
+            "left": 16
+          },
+          "nav": {
+            "x": 16,
+            "y": 56,
+            "width": 358,
+            "height": 0,
+            "top": 56,
+            "right": 374,
+            "bottom": 56,
+            "left": 16
+          },
+          "navCount": 1,
+          "panelRuntime": "vue2",
+          "panelFamily": "shadcn",
+          "active": "<body class=\"astro-hbhkqqv6\" data-site-contents-dialog=\"\"> <a href=\"#_top\" class=\"astro-gfbpj5qw\">跳转到内容</a>  <link rel=\"stylesheet\" href=\"/styles/site-library-theme.css\"> <documentation-image-preview><docs-preview-shadcn-dialog-root data-docs-preview-family=\"shadcn\" data-docs-preview-prototype=\"shadcn-dialog-root\" data-docs-image-dialog=\"\" data-pui-root=\"\" class=\"\" data-pui-style=\"relative inline-",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-vue2-closed-narrow.png"
+      },
+      {
+        "name": "open-1",
+        "facts": {
+          "t": 1576.2999999821186,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 37.5,
+            "top": 80,
+            "right": 374,
+            "bottom": 117.5,
+            "left": 16
+          },
+          "nav": {
+            "x": 40,
+            "y": 154.8046875,
+            "width": 310,
+            "height": 506.390625,
+            "top": 154.8046875,
+            "right": 350,
+            "bottom": 661.1953125,
+            "left": 40
+          },
+          "navCount": 1,
+          "panelRuntime": "vue2",
+          "panelFamily": "shadcn",
+          "active": "<div data-pui-root=\"\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-76_75_65_32 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-owner-demo-21\" style=\"min-height: 2.75rem; display:",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-vue2-open-1.png"
+      },
+      {
+        "name": "scrolled",
+        "facts": {
+          "t": 1725.2999999821186,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 37.5,
+            "top": 80,
+            "right": 374,
+            "bottom": 117.5,
+            "left": 16
+          },
+          "nav": {
+            "x": 40,
+            "y": 154.8046875,
+            "width": 310,
+            "height": 506.390625,
+            "top": 154.8046875,
+            "right": 350,
+            "bottom": 661.1953125,
+            "left": 40
+          },
+          "navCount": 1,
+          "panelRuntime": "vue2",
+          "panelFamily": "shadcn",
+          "active": "<div data-pui-root=\"\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-76_75_65_32 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-owner-demo-21\" style=\"min-height: 2.75rem; display:",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-vue2-scrolled.png"
+      },
+      {
+        "name": "closed-1",
+        "facts": {
+          "t": 1842.4000000059605,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 37.5,
+            "top": 80,
+            "right": 374,
+            "bottom": 117.5,
+            "left": 16
+          },
+          "nav": {
+            "x": 46.2142333984375,
+            "y": 165.5170440673828,
+            "width": 297.571533203125,
+            "height": 486.08856201171875,
+            "top": 165.5170440673828,
+            "right": 343.7857666015625,
+            "bottom": 651.6056060791016,
+            "left": 46.2142333984375
+          },
+          "navCount": 1,
+          "panelRuntime": "vue2",
+          "panelFamily": "shadcn",
+          "active": "<div data-pui-root=\"\" data-demo-ref=\"contents-command\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-76_75_65_32 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_62_75_74_74_6f_6e pui-owner-demo-20\" data-pui-style=\"select-none data-[disab",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-vue2-closed-1.png"
+      },
+      {
+        "name": "open-2",
+        "facts": {
+          "t": 2076.2999999821186,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 37.5,
+            "top": 80,
+            "right": 374,
+            "bottom": 117.5,
+            "left": 16
+          },
+          "nav": {
+            "x": 40,
+            "y": 154.8046875,
+            "width": 310,
+            "height": 506.390625,
+            "top": 154.8046875,
+            "right": 350,
+            "bottom": 661.1953125,
+            "left": 40
+          },
+          "navCount": 1,
+          "panelRuntime": "vue2",
+          "panelFamily": "shadcn",
+          "active": "<div data-pui-root=\"\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-76_75_65_32 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-owner-demo-21\" style=\"min-height: 2.75rem; display:",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-vue2-open-2.png"
+      },
+      {
+        "name": "closed-2",
+        "facts": {
+          "t": 2192.2999999821186,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 37.5,
+            "top": 80,
+            "right": 374,
+            "bottom": 117.5,
+            "left": 16
+          },
+          "nav": {
+            "x": 46.21531677246094,
+            "y": 165.51889038085938,
+            "width": 297.5693359375,
+            "height": 486.0849914550781,
+            "top": 165.51889038085938,
+            "right": 343.78465270996094,
+            "bottom": 651.6038818359375,
+            "left": 46.21531677246094
+          },
+          "navCount": 1,
+          "panelRuntime": "vue2",
+          "panelFamily": "shadcn",
+          "active": "<div data-pui-root=\"\" data-demo-ref=\"contents-command\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-76_75_65_32 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_62_75_74_74_6f_6e pui-owner-demo-20\" data-pui-style=\"select-none data-[disab",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-vue2-closed-2.png"
+      },
+      {
+        "name": "wide-return",
+        "facts": {
+          "t": 2760.199999988079,
+          "viewport": {
+            "width": 1440,
+            "height": 960,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 72,
+            "width": 1440,
+            "height": 0,
+            "top": 72,
+            "right": 1440,
+            "bottom": 72,
+            "left": 0
+          },
+          "heading": {
+            "x": 360,
+            "y": 104,
+            "width": 672,
+            "height": 37.5,
+            "top": 104,
+            "right": 1032,
+            "bottom": 141.5,
+            "left": 360
+          },
+          "nav": {
+            "x": 28.796875,
+            "y": 73,
+            "width": 240,
+            "height": 887,
+            "top": 73,
+            "right": 268.796875,
+            "bottom": 960,
+            "left": 28.796875
+          },
+          "navCount": 1,
+          "panelRuntime": "vue2",
+          "panelFamily": "shadcn",
+          "active": "<body class=\"astro-hbhkqqv6\" data-site-contents-dialog=\"\" style=\"\"> <a href=\"#_top\" class=\"astro-gfbpj5qw\">跳转到内容</a>  <link rel=\"stylesheet\" href=\"/styles/site-library-theme.css\"> <documentation-image-preview><docs-preview-shadcn-dialog-root data-docs-preview-family=\"shadcn\" data-docs-preview-prototype=\"shadcn-dialog-root\" data-docs-image-dialog=\"\" data-pui-root=\"\" class=\"\" data-pui-style=\"relativ",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-vue2-wide-return.png"
+      },
+      {
+        "name": "reopen-after-breakpoint",
+        "facts": {
+          "t": 3176.5,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 37.5,
+            "top": 80,
+            "right": 374,
+            "bottom": 117.5,
+            "left": 16
+          },
+          "nav": {
+            "x": 40,
+            "y": 154.8046875,
+            "width": 310,
+            "height": 506.390625,
+            "top": 154.8046875,
+            "right": 350,
+            "bottom": 661.1953125,
+            "left": 40
+          },
+          "navCount": 1,
+          "panelRuntime": "vue2",
+          "panelFamily": "shadcn",
+          "active": "<div data-pui-root=\"\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-76_75_65_32 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-owner-demo-21\" style=\"min-height: 2.75rem; display:",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-vue2-reopen-after-breakpoint.png"
+      },
+      {
+        "name": "final-closed",
+        "facts": {
+          "t": 3292.5,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 37.5,
+            "top": 80,
+            "right": 374,
+            "bottom": 117.5,
+            "left": 16
+          },
+          "nav": {
+            "x": 46.21869659423828,
+            "y": 165.52474975585938,
+            "width": 297.5626220703125,
+            "height": 486.0738830566406,
+            "top": 165.52474975585938,
+            "right": 343.7813186645508,
+            "bottom": 651.5986328125,
+            "left": 46.21869659423828
+          },
+          "navCount": 1,
+          "panelRuntime": "vue2",
+          "panelFamily": "shadcn",
+          "active": "<div data-pui-root=\"\" data-demo-ref=\"contents-command\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-76_75_65_32 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_62_75_74_74_6f_6e pui-owner-demo-20\" data-pui-style=\"select-none data-[disab",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "shadcn-vue2-final-closed.png"
+      }
+    ],
+    "errors": [],
+    "network": [],
+    "scrollCandidates": [
+      {
+        "tag": "DIV",
+        "cls": "mobile-sidebar-pane sidebar-pane astro-ceehzq5e",
+        "h": 506,
+        "sh": 5738
+      }
+    ],
+    "scroll": {
+      "before": 626,
+      "after": 1026,
+      "bodyBefore": 0,
+      "bodyAfter": 0
+    },
+    "status": "passed"
+  },
+  {
+    "id": "brutalist-wc",
+    "source": {
+      "head": "d0279071fd80bd62bd6256fb40e77c3e69f25513",
+      "tree": "73e3640521cc5ad06b1116e3d623036fe25634c4",
+      "dirty": ""
+    },
+    "browser": "155.0.8059.39",
+    "steps": [
+      {
+        "name": "closed-narrow",
+        "facts": {
+          "t": 575.8999999761581,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 40,
+            "top": 80,
+            "right": 374,
+            "bottom": 120,
+            "left": 16
+          },
+          "nav": {
+            "x": 16,
+            "y": 56,
+            "width": 358,
+            "height": 0,
+            "top": 56,
+            "right": 374,
+            "bottom": 56,
+            "left": 16
+          },
+          "navCount": 1,
+          "panelRuntime": "wc",
+          "panelFamily": "brutalist",
+          "active": "<body class=\"astro-hbhkqqv6\" data-site-contents-dialog=\"\"> <a href=\"#_top\" class=\"astro-gfbpj5qw\">跳转到内容</a>  <link rel=\"stylesheet\" href=\"/styles/site-library-theme.css\"> <documentation-image-preview><docs-preview-brutalist-dialog-root data-docs-preview-family=\"brutalist\" data-docs-preview-prototype=\"brutalist-dialog-root\" data-docs-image-dialog=\"\" data-pui-root=\"\" class=\"\" data-pui-style=\"relativ",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-wc-closed-narrow.png"
+      },
+      {
+        "name": "open-1",
+        "facts": {
+          "t": 1044,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 40,
+            "top": 80,
+            "right": 374,
+            "bottom": 120,
+            "left": 16
+          },
+          "nav": {
+            "x": 42,
+            "y": 155.8046875,
+            "width": 306,
+            "height": 506.390625,
+            "top": 155.8046875,
+            "right": 348,
+            "bottom": 662.1953125,
+            "left": 42
+          },
+          "navCount": 1,
+          "panelRuntime": "wc",
+          "panelFamily": "brutalist",
+          "active": "<wc-brutalist-dialog-close class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-host-root\" data-pui-root=\"\" data-d",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-wc-open-1.png"
+      },
+      {
+        "name": "scrolled",
+        "facts": {
+          "t": 1208.3999999761581,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 40,
+            "top": 80,
+            "right": 374,
+            "bottom": 120,
+            "left": 16
+          },
+          "nav": {
+            "x": 42,
+            "y": 155.8046875,
+            "width": 306,
+            "height": 506.390625,
+            "top": 155.8046875,
+            "right": 348,
+            "bottom": 662.1953125,
+            "left": 42
+          },
+          "navCount": 1,
+          "panelRuntime": "wc",
+          "panelFamily": "brutalist",
+          "active": "<wc-brutalist-dialog-close class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-host-root\" data-pui-root=\"\" data-d",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-wc-scrolled.png"
+      },
+      {
+        "name": "closed-1",
+        "facts": {
+          "t": 1308.7999999821186,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 40,
+            "top": 80,
+            "right": 374,
+            "bottom": 120,
+            "left": 16
+          },
+          "nav": {
+            "x": 43.68754577636719,
+            "y": 158.74075317382812,
+            "width": 302.6248779296875,
+            "height": 500.8052673339844,
+            "top": 158.74075317382812,
+            "right": 346.3124237060547,
+            "bottom": 659.5460205078125,
+            "left": 43.68754577636719
+          },
+          "navCount": 1,
+          "panelRuntime": "wc",
+          "panelFamily": "brutalist",
+          "active": "<wc-brutalist-button data-demo-ref=\"contents-command\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_62_75_74_74_6f_6e\" style=\"width: 2.75rem; height: 2.75rem; min-he",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-wc-closed-1.png"
+      },
+      {
+        "name": "open-2",
+        "facts": {
+          "t": 1894.199999988079,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 40,
+            "top": 80,
+            "right": 374,
+            "bottom": 120,
+            "left": 16
+          },
+          "nav": {
+            "x": 42,
+            "y": 155.8046875,
+            "width": 306,
+            "height": 506.390625,
+            "top": 155.8046875,
+            "right": 348,
+            "bottom": 662.1953125,
+            "left": 42
+          },
+          "navCount": 1,
+          "panelRuntime": "wc",
+          "panelFamily": "brutalist",
+          "active": "<wc-brutalist-dialog-close class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-host-root\" data-pui-root=\"\" data-d",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-wc-open-2.png"
+      },
+      {
+        "name": "closed-2",
+        "facts": {
+          "t": 2008.7999999821186,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 40,
+            "top": 80,
+            "right": 374,
+            "bottom": 120,
+            "left": 16
+          },
+          "nav": {
+            "x": 43.68158721923828,
+            "y": 158.73036193847656,
+            "width": 302.6368408203125,
+            "height": 500.8250732421875,
+            "top": 158.73036193847656,
+            "right": 346.3184280395508,
+            "bottom": 659.5554351806641,
+            "left": 43.68158721923828
+          },
+          "navCount": 1,
+          "panelRuntime": "wc",
+          "panelFamily": "brutalist",
+          "active": "<wc-brutalist-button data-demo-ref=\"contents-command\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_62_75_74_74_6f_6e\" style=\"width: 2.75rem; height: 2.75rem; min-he",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-wc-closed-2.png"
+      },
+      {
+        "name": "wide-return",
+        "facts": {
+          "t": 2576.399999976158,
+          "viewport": {
+            "width": 1440,
+            "height": 960,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 72,
+            "width": 1440,
+            "height": 0,
+            "top": 72,
+            "right": 1440,
+            "bottom": 72,
+            "left": 0
+          },
+          "heading": {
+            "x": 360,
+            "y": 104,
+            "width": 672,
+            "height": 44,
+            "top": 104,
+            "right": 1032,
+            "bottom": 148,
+            "left": 360
+          },
+          "nav": {
+            "x": 28.796875,
+            "y": 72,
+            "width": 240,
+            "height": 887,
+            "top": 72,
+            "right": 268.796875,
+            "bottom": 959,
+            "left": 28.796875
+          },
+          "navCount": 1,
+          "panelRuntime": "wc",
+          "panelFamily": "brutalist",
+          "active": "<body class=\"astro-hbhkqqv6\" data-site-contents-dialog=\"\" style=\"\"> <a href=\"#_top\" class=\"astro-gfbpj5qw\">跳转到内容</a>  <link rel=\"stylesheet\" href=\"/styles/site-library-theme.css\"> <documentation-image-preview><docs-preview-brutalist-dialog-root data-docs-preview-family=\"brutalist\" data-docs-preview-prototype=\"brutalist-dialog-root\" data-docs-image-dialog=\"\" data-pui-root=\"\" class=\"\" data-pui-style",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-wc-wide-return.png"
+      },
+      {
+        "name": "reopen-after-breakpoint",
+        "facts": {
+          "t": 3309.7999999821186,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 40,
+            "top": 80,
+            "right": 374,
+            "bottom": 120,
+            "left": 16
+          },
+          "nav": {
+            "x": 42,
+            "y": 155.8046875,
+            "width": 306,
+            "height": 506.390625,
+            "top": 155.8046875,
+            "right": 348,
+            "bottom": 662.1953125,
+            "left": 42
+          },
+          "navCount": 1,
+          "panelRuntime": "wc",
+          "panelFamily": "brutalist",
+          "active": "<wc-brutalist-dialog-close class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-host-root\" data-pui-root=\"\" data-d",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-wc-reopen-after-breakpoint.png"
+      },
+      {
+        "name": "final-closed",
+        "facts": {
+          "t": 3408.7999999821186,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 40,
+            "top": 80,
+            "right": 374,
+            "bottom": 120,
+            "left": 16
+          },
+          "nav": {
+            "x": 43.68622970581055,
+            "y": 158.7384490966797,
+            "width": 302.6275634765625,
+            "height": 500.80963134765625,
+            "top": 158.7384490966797,
+            "right": 346.31379318237305,
+            "bottom": 659.5480804443359,
+            "left": 43.68622970581055
+          },
+          "navCount": 1,
+          "panelRuntime": "wc",
+          "panelFamily": "brutalist",
+          "active": "<wc-brutalist-button data-demo-ref=\"contents-command\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_62_75_74_74_6f_6e\" style=\"width: 2.75rem; height: 2.75rem; min-he",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-wc-final-closed.png"
+      }
+    ],
+    "errors": [],
+    "network": [],
+    "scrollCandidates": [
+      {
+        "tag": "DIV",
+        "cls": "mobile-sidebar-pane sidebar-pane astro-ceehzq5e",
+        "h": 506,
+        "sh": 5830
+      }
+    ],
+    "scroll": {
+      "before": 2466,
+      "after": 2866,
+      "bodyBefore": 0,
+      "bodyAfter": 0
+    },
+    "status": "passed"
+  },
+  {
+    "id": "brutalist-react",
+    "source": {
+      "head": "d0279071fd80bd62bd6256fb40e77c3e69f25513",
+      "tree": "73e3640521cc5ad06b1116e3d623036fe25634c4",
+      "dirty": ""
+    },
+    "browser": "155.0.8059.39",
+    "steps": [
+      {
+        "name": "closed-narrow",
+        "facts": {
+          "t": 559.4000000059605,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 40,
+            "top": 80,
+            "right": 374,
+            "bottom": 120,
+            "left": 16
+          },
+          "nav": {
+            "x": 16,
+            "y": 56,
+            "width": 358,
+            "height": 0,
+            "top": 56,
+            "right": 374,
+            "bottom": 56,
+            "left": 16
+          },
+          "navCount": 1,
+          "panelRuntime": "react",
+          "panelFamily": "brutalist",
+          "active": "<body class=\"astro-hbhkqqv6\" data-site-contents-dialog=\"\"> <a href=\"#_top\" class=\"astro-gfbpj5qw\">跳转到内容</a>  <link rel=\"stylesheet\" href=\"/styles/site-library-theme.css\"> <documentation-image-preview><docs-preview-brutalist-dialog-root data-docs-preview-family=\"brutalist\" data-docs-preview-prototype=\"brutalist-dialog-root\" data-docs-image-dialog=\"\" data-pui-root=\"\" class=\"\" data-pui-style=\"relativ",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-react-closed-narrow.png"
+      },
+      {
+        "name": "open-1",
+        "facts": {
+          "t": 1009.9000000059605,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 40,
+            "top": 80,
+            "right": 374,
+            "bottom": 120,
+            "left": 16
+          },
+          "nav": {
+            "x": 42,
+            "y": 155.8046875,
+            "width": 306,
+            "height": 506.390625,
+            "top": 155.8046875,
+            "right": 348,
+            "bottom": 662.1953125,
+            "left": 42
+          },
+          "navCount": 1,
+          "panelRuntime": "react",
+          "panelFamily": "brutalist",
+          "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-72_65_61_63_74 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-owner-demo-5\" data-pui-root=\"\" style=\"min-heigh",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-react-open-1.png"
+      },
+      {
+        "name": "scrolled",
+        "facts": {
+          "t": 1174.4000000059605,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 40,
+            "top": 80,
+            "right": 374,
+            "bottom": 120,
+            "left": 16
+          },
+          "nav": {
+            "x": 42,
+            "y": 155.8046875,
+            "width": 306,
+            "height": 506.390625,
+            "top": 155.8046875,
+            "right": 348,
+            "bottom": 662.1953125,
+            "left": 42
+          },
+          "navCount": 1,
+          "panelRuntime": "react",
+          "panelFamily": "brutalist",
+          "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-72_65_61_63_74 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-owner-demo-5\" data-pui-root=\"\" style=\"min-heigh",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-react-scrolled.png"
+      },
+      {
+        "name": "closed-1",
+        "facts": {
+          "t": 1274.5,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 40,
+            "top": 80,
+            "right": 374,
+            "bottom": 120,
+            "left": 16
+          },
+          "nav": {
+            "x": 43.6866340637207,
+            "y": 158.73915100097656,
+            "width": 302.626708984375,
+            "height": 500.80828857421875,
+            "top": 158.73915100097656,
+            "right": 346.3133430480957,
+            "bottom": 659.5474395751953,
+            "left": 43.6866340637207
+          },
+          "navCount": 1,
+          "panelRuntime": "react",
+          "panelFamily": "brutalist",
+          "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-72_65_61_63_74 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_62_75_74_74_6f_6e pui-owner-demo-4\" data-pui-root=\"\" data-demo-ref=\"contents-command\" style=\"width: 2.75r",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-react-closed-1.png"
+      },
+      {
+        "name": "open-2",
+        "facts": {
+          "t": 1644.1000000238419,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 40,
+            "top": 80,
+            "right": 374,
+            "bottom": 120,
+            "left": 16
+          },
+          "nav": {
+            "x": 42,
+            "y": 155.8046875,
+            "width": 306,
+            "height": 506.390625,
+            "top": 155.8046875,
+            "right": 348,
+            "bottom": 662.1953125,
+            "left": 42
+          },
+          "navCount": 1,
+          "panelRuntime": "react",
+          "panelFamily": "brutalist",
+          "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-72_65_61_63_74 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-owner-demo-5\" data-pui-root=\"\" style=\"min-heigh",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-react-open-2.png"
+      },
+      {
+        "name": "closed-2",
+        "facts": {
+          "t": 1758,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 40,
+            "top": 80,
+            "right": 374,
+            "bottom": 120,
+            "left": 16
+          },
+          "nav": {
+            "x": 43.68547058105469,
+            "y": 158.73712158203125,
+            "width": 302.6290283203125,
+            "height": 500.81219482421875,
+            "top": 158.73712158203125,
+            "right": 346.3144989013672,
+            "bottom": 659.54931640625,
+            "left": 43.68547058105469
+          },
+          "navCount": 1,
+          "panelRuntime": "react",
+          "panelFamily": "brutalist",
+          "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-72_65_61_63_74 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_62_75_74_74_6f_6e pui-owner-demo-4\" data-pui-root=\"\" data-demo-ref=\"contents-command\" style=\"width: 2.75r",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-react-closed-2.png"
+      },
+      {
+        "name": "wide-return",
+        "facts": {
+          "t": 2308,
+          "viewport": {
+            "width": 1440,
+            "height": 960,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 72,
+            "width": 1440,
+            "height": 0,
+            "top": 72,
+            "right": 1440,
+            "bottom": 72,
+            "left": 0
+          },
+          "heading": {
+            "x": 360,
+            "y": 104,
+            "width": 672,
+            "height": 44,
+            "top": 104,
+            "right": 1032,
+            "bottom": 148,
+            "left": 360
+          },
+          "nav": {
+            "x": 28.796875,
+            "y": 72,
+            "width": 240,
+            "height": 887,
+            "top": 72,
+            "right": 268.796875,
+            "bottom": 959,
+            "left": 28.796875
+          },
+          "navCount": 1,
+          "panelRuntime": "react",
+          "panelFamily": "brutalist",
+          "active": "<body class=\"astro-hbhkqqv6\" data-site-contents-dialog=\"\" style=\"\"> <a href=\"#_top\" class=\"astro-gfbpj5qw\">跳转到内容</a>  <link rel=\"stylesheet\" href=\"/styles/site-library-theme.css\"> <documentation-image-preview><docs-preview-brutalist-dialog-root data-docs-preview-family=\"brutalist\" data-docs-preview-prototype=\"brutalist-dialog-root\" data-docs-image-dialog=\"\" data-pui-root=\"\" class=\"\" data-pui-style",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-react-wide-return.png"
+      },
+      {
+        "name": "reopen-after-breakpoint",
+        "facts": {
+          "t": 3009.4000000059605,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 40,
+            "top": 80,
+            "right": 374,
+            "bottom": 120,
+            "left": 16
+          },
+          "nav": {
+            "x": 42,
+            "y": 155.8046875,
+            "width": 306,
+            "height": 506.390625,
+            "top": 155.8046875,
+            "right": 348,
+            "bottom": 662.1953125,
+            "left": 42
+          },
+          "navCount": 1,
+          "panelRuntime": "react",
+          "panelFamily": "brutalist",
+          "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-72_65_61_63_74 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-owner-demo-5\" data-pui-root=\"\" style=\"min-heigh",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-react-reopen-after-breakpoint.png"
+      },
+      {
+        "name": "final-closed",
+        "facts": {
+          "t": 3124.100000023842,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 40,
+            "top": 80,
+            "right": 374,
+            "bottom": 120,
+            "left": 16
+          },
+          "nav": {
+            "x": 43.692779541015625,
+            "y": 158.7498321533203,
+            "width": 302.61444091796875,
+            "height": 500.78802490234375,
+            "top": 158.7498321533203,
+            "right": 346.3072204589844,
+            "bottom": 659.5378570556641,
+            "left": 43.692779541015625
+          },
+          "navCount": 1,
+          "panelRuntime": "react",
+          "panelFamily": "brutalist",
+          "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-72_65_61_63_74 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_62_75_74_74_6f_6e pui-owner-demo-4\" data-pui-root=\"\" data-demo-ref=\"contents-command\" style=\"width: 2.75r",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-react-final-closed.png"
+      }
+    ],
+    "errors": [],
+    "network": [],
+    "scrollCandidates": [
+      {
+        "tag": "DIV",
+        "cls": "mobile-sidebar-pane sidebar-pane astro-ceehzq5e",
+        "h": 506,
+        "sh": 5830
+      }
+    ],
+    "scroll": {
+      "before": 2466,
+      "after": 2866,
+      "bodyBefore": 0,
+      "bodyAfter": 0
+    },
+    "status": "passed"
+  },
+  {
+    "id": "brutalist-vue",
+    "source": {
+      "head": "d0279071fd80bd62bd6256fb40e77c3e69f25513",
+      "tree": "73e3640521cc5ad06b1116e3d623036fe25634c4",
+      "dirty": ""
+    },
+    "browser": "155.0.8059.39",
+    "steps": [
+      {
+        "name": "closed-narrow",
+        "facts": {
+          "t": 553.7000000178814,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 40,
+            "top": 80,
+            "right": 374,
+            "bottom": 120,
+            "left": 16
+          },
+          "nav": {
+            "x": 16,
+            "y": 56,
+            "width": 358,
+            "height": 0,
+            "top": 56,
+            "right": 374,
+            "bottom": 56,
+            "left": 16
+          },
+          "navCount": 1,
+          "panelRuntime": "vue",
+          "panelFamily": "brutalist",
+          "active": "<body class=\"astro-hbhkqqv6\" data-site-contents-dialog=\"\"> <a href=\"#_top\" class=\"astro-gfbpj5qw\">跳转到内容</a>  <link rel=\"stylesheet\" href=\"/styles/site-library-theme.css\"> <documentation-image-preview><docs-preview-brutalist-dialog-root data-docs-preview-family=\"brutalist\" data-docs-preview-prototype=\"brutalist-dialog-root\" data-docs-image-dialog=\"\" data-pui-root=\"\" class=\"\" data-pui-style=\"relativ",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-vue-closed-narrow.png"
+      },
+      {
+        "name": "open-1",
+        "facts": {
+          "t": 1222.2000000178814,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 40,
+            "top": 80,
+            "right": 374,
+            "bottom": 120,
+            "left": 16
+          },
+          "nav": {
+            "x": 42,
+            "y": 155.8046875,
+            "width": 306,
+            "height": 506.390625,
+            "top": 155.8046875,
+            "right": 348,
+            "bottom": 662.1953125,
+            "left": 42
+          },
+          "navCount": 1,
+          "panelRuntime": "vue",
+          "panelFamily": "brutalist",
+          "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-76_75_65 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-owner-demo-5\" data-pui-root=\"\" style=\"min-height: 2.7",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-vue-open-1.png"
+      },
+      {
+        "name": "scrolled",
+        "facts": {
+          "t": 1386.9000000059605,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 40,
+            "top": 80,
+            "right": 374,
+            "bottom": 120,
+            "left": 16
+          },
+          "nav": {
+            "x": 42,
+            "y": 155.8046875,
+            "width": 306,
+            "height": 506.390625,
+            "top": 155.8046875,
+            "right": 348,
+            "bottom": 662.1953125,
+            "left": 42
+          },
+          "navCount": 1,
+          "panelRuntime": "vue",
+          "panelFamily": "brutalist",
+          "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-76_75_65 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-owner-demo-5\" data-pui-root=\"\" style=\"min-height: 2.7",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-vue-scrolled.png"
+      },
+      {
+        "name": "closed-1",
+        "facts": {
+          "t": 1503.7000000178814,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 40,
+            "top": 80,
+            "right": 374,
+            "bottom": 120,
+            "left": 16
+          },
+          "nav": {
+            "x": 45.125450134277344,
+            "y": 161.2424774169922,
+            "width": 299.7491149902344,
+            "height": 496.04620361328125,
+            "top": 161.2424774169922,
+            "right": 344.8745651245117,
+            "bottom": 657.2886810302734,
+            "left": 45.125450134277344
+          },
+          "navCount": 1,
+          "panelRuntime": "vue",
+          "panelFamily": "brutalist",
+          "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-76_75_65 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_62_75_74_74_6f_6e pui-owner-demo-4\" data-pui-root=\"\" data-demo-ref=\"contents-command\" data-pui-style=\"select-no",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-vue-closed-1.png"
+      },
+      {
+        "name": "open-2",
+        "facts": {
+          "t": 1821.9000000059605,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 40,
+            "top": 80,
+            "right": 374,
+            "bottom": 120,
+            "left": 16
+          },
+          "nav": {
+            "x": 42,
+            "y": 155.8046875,
+            "width": 306,
+            "height": 506.390625,
+            "top": 155.8046875,
+            "right": 348,
+            "bottom": 662.1953125,
+            "left": 42
+          },
+          "navCount": 1,
+          "panelRuntime": "vue",
+          "panelFamily": "brutalist",
+          "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-76_75_65 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-owner-demo-5\" data-pui-root=\"\" style=\"min-height: 2.7",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-vue-open-2.png"
+      },
+      {
+        "name": "closed-2",
+        "facts": {
+          "t": 1937.300000011921,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 40,
+            "top": 80,
+            "right": 374,
+            "bottom": 120,
+            "left": 16
+          },
+          "nav": {
+            "x": 43.68722152709961,
+            "y": 158.74017333984375,
+            "width": 302.62554931640625,
+            "height": 500.80633544921875,
+            "top": 158.74017333984375,
+            "right": 346.31277084350586,
+            "bottom": 659.5465087890625,
+            "left": 43.68722152709961
+          },
+          "navCount": 1,
+          "panelRuntime": "vue",
+          "panelFamily": "brutalist",
+          "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-76_75_65 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_62_75_74_74_6f_6e pui-owner-demo-4\" data-pui-root=\"\" data-demo-ref=\"contents-command\" data-pui-style=\"select-no",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-vue-closed-2.png"
+      },
+      {
+        "name": "wide-return",
+        "facts": {
+          "t": 2487,
+          "viewport": {
+            "width": 1440,
+            "height": 960,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 72,
+            "width": 1440,
+            "height": 0,
+            "top": 72,
+            "right": 1440,
+            "bottom": 72,
+            "left": 0
+          },
+          "heading": {
+            "x": 360,
+            "y": 104,
+            "width": 672,
+            "height": 44,
+            "top": 104,
+            "right": 1032,
+            "bottom": 148,
+            "left": 360
+          },
+          "nav": {
+            "x": 28.796875,
+            "y": 72,
+            "width": 240,
+            "height": 887,
+            "top": 72,
+            "right": 268.796875,
+            "bottom": 959,
+            "left": 28.796875
+          },
+          "navCount": 1,
+          "panelRuntime": "vue",
+          "panelFamily": "brutalist",
+          "active": "<body class=\"astro-hbhkqqv6\" data-site-contents-dialog=\"\" style=\"\"> <a href=\"#_top\" class=\"astro-gfbpj5qw\">跳转到内容</a>  <link rel=\"stylesheet\" href=\"/styles/site-library-theme.css\"> <documentation-image-preview><docs-preview-brutalist-dialog-root data-docs-preview-family=\"brutalist\" data-docs-preview-prototype=\"brutalist-dialog-root\" data-docs-image-dialog=\"\" data-pui-root=\"\" class=\"\" data-pui-style",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-vue-wide-return.png"
+      },
+      {
+        "name": "reopen-after-breakpoint",
+        "facts": {
+          "t": 3238.9000000059605,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 40,
+            "top": 80,
+            "right": 374,
+            "bottom": 120,
+            "left": 16
+          },
+          "nav": {
+            "x": 42,
+            "y": 155.8046875,
+            "width": 306,
+            "height": 506.390625,
+            "top": 155.8046875,
+            "right": 348,
+            "bottom": 662.1953125,
+            "left": 42
+          },
+          "navCount": 1,
+          "panelRuntime": "vue",
+          "panelFamily": "brutalist",
+          "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-76_75_65 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-owner-demo-5\" data-pui-root=\"\" style=\"min-height: 2.7",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-vue-reopen-after-breakpoint.png"
+      },
+      {
+        "name": "final-closed",
+        "facts": {
+          "t": 3353.600000023842,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 40,
+            "top": 80,
+            "right": 374,
+            "bottom": 120,
+            "left": 16
+          },
+          "nav": {
+            "x": 43.68638610839844,
+            "y": 158.7387237548828,
+            "width": 302.627197265625,
+            "height": 500.80914306640625,
+            "top": 158.7387237548828,
+            "right": 346.31358337402344,
+            "bottom": 659.5478668212891,
+            "left": 43.68638610839844
+          },
+          "navCount": 1,
+          "panelRuntime": "vue",
+          "panelFamily": "brutalist",
+          "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-76_75_65 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_62_75_74_74_6f_6e pui-owner-demo-4\" data-pui-root=\"\" data-demo-ref=\"contents-command\" data-pui-style=\"select-no",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-vue-final-closed.png"
+      }
+    ],
+    "errors": [],
+    "network": [],
+    "scrollCandidates": [
+      {
+        "tag": "DIV",
+        "cls": "mobile-sidebar-pane sidebar-pane astro-ceehzq5e",
+        "h": 506,
+        "sh": 5830
+      }
+    ],
+    "scroll": {
+      "before": 2466,
+      "after": 2866,
+      "bodyBefore": 0,
+      "bodyAfter": 0
+    },
+    "status": "passed"
+  },
+  {
+    "id": "brutalist-vue2",
+    "source": {
+      "head": "d0279071fd80bd62bd6256fb40e77c3e69f25513",
+      "tree": "73e3640521cc5ad06b1116e3d623036fe25634c4",
+      "dirty": ""
+    },
+    "browser": "155.0.8059.39",
+    "steps": [
+      {
+        "name": "closed-narrow",
+        "facts": {
+          "t": 577.2000000178814,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 40,
+            "top": 80,
+            "right": 374,
+            "bottom": 120,
+            "left": 16
+          },
+          "nav": {
+            "x": 16,
+            "y": 56,
+            "width": 358,
+            "height": 0,
+            "top": 56,
+            "right": 374,
+            "bottom": 56,
+            "left": 16
+          },
+          "navCount": 1,
+          "panelRuntime": "vue2",
+          "panelFamily": "brutalist",
+          "active": "<body class=\"astro-hbhkqqv6\" data-site-contents-dialog=\"\"> <a href=\"#_top\" class=\"astro-gfbpj5qw\">跳转到内容</a>  <link rel=\"stylesheet\" href=\"/styles/site-library-theme.css\"> <documentation-image-preview><docs-preview-brutalist-dialog-root data-docs-preview-family=\"brutalist\" data-docs-preview-prototype=\"brutalist-dialog-root\" data-docs-image-dialog=\"\" data-pui-root=\"\" class=\"\" data-pui-style=\"relativ",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-vue2-closed-narrow.png"
+      },
+      {
+        "name": "open-1",
+        "facts": {
+          "t": 1227.0999999940395,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 40,
+            "top": 80,
+            "right": 374,
+            "bottom": 120,
+            "left": 16
+          },
+          "nav": {
+            "x": 42,
+            "y": 155.8046875,
+            "width": 306,
+            "height": 506.390625,
+            "top": 155.8046875,
+            "right": 348,
+            "bottom": 662.1953125,
+            "left": 42
+          },
+          "navCount": 1,
+          "panelRuntime": "vue2",
+          "panelFamily": "brutalist",
+          "active": "<div data-pui-root=\"\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-76_75_65_32 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-owner-demo-5\" style=\"min-height: ",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-vue2-open-1.png"
+      },
+      {
+        "name": "scrolled",
+        "facts": {
+          "t": 1393.5,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 40,
+            "top": 80,
+            "right": 374,
+            "bottom": 120,
+            "left": 16
+          },
+          "nav": {
+            "x": 42,
+            "y": 155.8046875,
+            "width": 306,
+            "height": 506.390625,
+            "top": 155.8046875,
+            "right": 348,
+            "bottom": 662.1953125,
+            "left": 42
+          },
+          "navCount": 1,
+          "panelRuntime": "vue2",
+          "panelFamily": "brutalist",
+          "active": "<div data-pui-root=\"\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-76_75_65_32 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-owner-demo-5\" style=\"min-height: ",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-vue2-scrolled.png"
+      },
+      {
+        "name": "closed-1",
+        "facts": {
+          "t": 1510.4000000059605,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 40,
+            "top": 80,
+            "right": 374,
+            "bottom": 120,
+            "left": 16
+          },
+          "nav": {
+            "x": 45.12375259399414,
+            "y": 161.239501953125,
+            "width": 299.7524719238281,
+            "height": 496.0517578125,
+            "top": 161.239501953125,
+            "right": 344.87622451782227,
+            "bottom": 657.291259765625,
+            "left": 45.12375259399414
+          },
+          "navCount": 1,
+          "panelRuntime": "vue2",
+          "panelFamily": "brutalist",
+          "active": "<div data-pui-root=\"\" data-demo-ref=\"contents-command\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-76_75_65_32 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_62_75_74_74_6f_6e pui-owner-demo-4\" data-pui-style=\"select",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-vue2-closed-1.png"
+      },
+      {
+        "name": "open-2",
+        "facts": {
+          "t": 1862.5,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 40,
+            "top": 80,
+            "right": 374,
+            "bottom": 120,
+            "left": 16
+          },
+          "nav": {
+            "x": 42,
+            "y": 155.8046875,
+            "width": 306,
+            "height": 506.390625,
+            "top": 155.8046875,
+            "right": 348,
+            "bottom": 662.1953125,
+            "left": 42
+          },
+          "navCount": 1,
+          "panelRuntime": "vue2",
+          "panelFamily": "brutalist",
+          "active": "<div data-pui-root=\"\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-76_75_65_32 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-owner-demo-5\" style=\"min-height: ",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-vue2-open-2.png"
+      },
+      {
+        "name": "closed-2",
+        "facts": {
+          "t": 1977,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 40,
+            "top": 80,
+            "right": 374,
+            "bottom": 120,
+            "left": 16
+          },
+          "nav": {
+            "x": 43.691200256347656,
+            "y": 158.74710083007812,
+            "width": 302.6176452636719,
+            "height": 500.7931823730469,
+            "top": 158.74710083007812,
+            "right": 346.30884552001953,
+            "bottom": 659.540283203125,
+            "left": 43.691200256347656
+          },
+          "navCount": 1,
+          "panelRuntime": "vue2",
+          "panelFamily": "brutalist",
+          "active": "<div data-pui-root=\"\" data-demo-ref=\"contents-command\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-76_75_65_32 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_62_75_74_74_6f_6e pui-owner-demo-4\" data-pui-style=\"select",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-vue2-closed-2.png"
+      },
+      {
+        "name": "wide-return",
+        "facts": {
+          "t": 2526.4000000059605,
+          "viewport": {
+            "width": 1440,
+            "height": 960,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 72,
+            "width": 1440,
+            "height": 0,
+            "top": 72,
+            "right": 1440,
+            "bottom": 72,
+            "left": 0
+          },
+          "heading": {
+            "x": 360,
+            "y": 104,
+            "width": 672,
+            "height": 44,
+            "top": 104,
+            "right": 1032,
+            "bottom": 148,
+            "left": 360
+          },
+          "nav": {
+            "x": 28.796875,
+            "y": 72,
+            "width": 240,
+            "height": 887,
+            "top": 72,
+            "right": 268.796875,
+            "bottom": 959,
+            "left": 28.796875
+          },
+          "navCount": 1,
+          "panelRuntime": "vue2",
+          "panelFamily": "brutalist",
+          "active": "<body class=\"astro-hbhkqqv6\" data-site-contents-dialog=\"\" style=\"\"> <a href=\"#_top\" class=\"astro-gfbpj5qw\">跳转到内容</a>  <link rel=\"stylesheet\" href=\"/styles/site-library-theme.css\"> <documentation-image-preview><docs-preview-brutalist-dialog-root data-docs-preview-family=\"brutalist\" data-docs-preview-prototype=\"brutalist-dialog-root\" data-docs-image-dialog=\"\" data-pui-root=\"\" class=\"\" data-pui-style",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-vue2-wide-return.png"
+      },
+      {
+        "name": "reopen-after-breakpoint",
+        "facts": {
+          "t": 3245.800000011921,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 40,
+            "top": 80,
+            "right": 374,
+            "bottom": 120,
+            "left": 16
+          },
+          "nav": {
+            "x": 42,
+            "y": 155.8046875,
+            "width": 306,
+            "height": 506.390625,
+            "top": 155.8046875,
+            "right": 348,
+            "bottom": 662.1953125,
+            "left": 42
+          },
+          "navCount": 1,
+          "panelRuntime": "vue2",
+          "panelFamily": "brutalist",
+          "active": "<div data-pui-root=\"\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-76_75_65_32 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-owner-demo-5\" style=\"min-height: ",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-vue2-reopen-after-breakpoint.png"
+      },
+      {
+        "name": "final-closed",
+        "facts": {
+          "t": 3360.5999999940395,
+          "viewport": {
+            "width": 390,
+            "height": 844,
+            "dpr": 1
+          },
+          "mount": {
+            "x": 0,
+            "y": 56,
+            "width": 390,
+            "height": 0,
+            "top": 56,
+            "right": 390,
+            "bottom": 56,
+            "left": 0
+          },
+          "heading": {
+            "x": 16,
+            "y": 80,
+            "width": 358,
+            "height": 40,
+            "top": 80,
+            "right": 374,
+            "bottom": 120,
+            "left": 16
+          },
+          "nav": {
+            "x": 43.684730529785156,
+            "y": 158.73583984375,
+            "width": 302.6305236816406,
+            "height": 500.8145751953125,
+            "top": 158.73583984375,
+            "right": 346.3152542114258,
+            "bottom": 659.5504150390625,
+            "left": 43.684730529785156
+          },
+          "navCount": 1,
+          "panelRuntime": "vue2",
+          "panelFamily": "brutalist",
+          "active": "<div data-pui-root=\"\" data-demo-ref=\"contents-command\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-76_75_65_32 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_62_75_74_74_6f_6e pui-owner-demo-4\" data-pui-style=\"select",
+          "documentScroll": 0,
+          "overflow": 0
+        },
+        "image": "brutalist-vue2-final-closed.png"
+      }
+    ],
+    "errors": [],
+    "network": [],
+    "scrollCandidates": [
+      {
+        "tag": "DIV",
+        "cls": "mobile-sidebar-pane sidebar-pane astro-ceehzq5e",
+        "h": 506,
+        "sh": 5830
+      }
+    ],
+    "scroll": {
+      "before": 2466,
+      "after": 2866,
+      "bodyBefore": 0,
+      "bodyAfter": 0
+    },
+    "status": "passed"
+  }
+]

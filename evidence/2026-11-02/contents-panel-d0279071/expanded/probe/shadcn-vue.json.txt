@@ -1,0 +1,460 @@
+{
+  "id": "shadcn-vue",
+  "source": {
+    "head": "d0279071fd80bd62bd6256fb40e77c3e69f25513",
+    "tree": "73e3640521cc5ad06b1116e3d623036fe25634c4",
+    "dirty": ""
+  },
+  "browser": "155.0.8059.39",
+  "steps": [
+    {
+      "name": "closed-narrow",
+      "facts": {
+        "t": 999.8000000119209,
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 56,
+          "width": 390,
+          "height": 0,
+          "top": 56,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "heading": {
+          "x": 16,
+          "y": 80,
+          "width": 358,
+          "height": 37.5,
+          "top": 80,
+          "right": 374,
+          "bottom": 117.5,
+          "left": 16
+        },
+        "nav": {
+          "x": 16,
+          "y": 56,
+          "width": 358,
+          "height": 0,
+          "top": 56,
+          "right": 374,
+          "bottom": 56,
+          "left": 16
+        },
+        "navCount": 1,
+        "panelRuntime": "vue",
+        "panelFamily": "shadcn",
+        "active": "<body class=\"astro-hbhkqqv6\" data-site-contents-dialog=\"\"> <a href=\"#_top\" class=\"astro-gfbpj5qw\">跳转到内容</a>  <link rel=\"stylesheet\" href=\"/styles/site-library-theme.css\"> <documentation-image-preview><docs-preview-shadcn-dialog-root data-docs-preview-family=\"shadcn\" data-docs-preview-prototype=\"shadcn-dialog-root\" data-docs-image-dialog=\"\" data-pui-root=\"\" class=\"\" data-pui-style=\"relative inline-",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "shadcn-vue-closed-narrow.png"
+    },
+    {
+      "name": "open-1",
+      "facts": {
+        "t": 1499.5999999940395,
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 56,
+          "width": 390,
+          "height": 0,
+          "top": 56,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "heading": {
+          "x": 16,
+          "y": 80,
+          "width": 358,
+          "height": 37.5,
+          "top": 80,
+          "right": 374,
+          "bottom": 117.5,
+          "left": 16
+        },
+        "nav": {
+          "x": 46.02946472167969,
+          "y": 165.19851684570312,
+          "width": 297.9410400390625,
+          "height": 486.6921691894531,
+          "top": 165.19851684570312,
+          "right": 343.9705047607422,
+          "bottom": 651.8906860351562,
+          "left": 46.02946472167969
+        },
+        "navCount": 1,
+        "panelRuntime": "vue",
+        "panelFamily": "shadcn",
+        "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-76_75_65 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-owner-demo-21\" data-pui-root=\"\" style=\"min-height: 2.75rem; display: in",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "shadcn-vue-open-1.png"
+    },
+    {
+      "name": "scrolled",
+      "facts": {
+        "t": 1649.7000000178814,
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 56,
+          "width": 390,
+          "height": 0,
+          "top": 56,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "heading": {
+          "x": 16,
+          "y": 80,
+          "width": 358,
+          "height": 37.5,
+          "top": 80,
+          "right": 374,
+          "bottom": 117.5,
+          "left": 16
+        },
+        "nav": {
+          "x": 40,
+          "y": 154.8046875,
+          "width": 310,
+          "height": 506.390625,
+          "top": 154.8046875,
+          "right": 350,
+          "bottom": 661.1953125,
+          "left": 40
+        },
+        "navCount": 1,
+        "panelRuntime": "vue",
+        "panelFamily": "shadcn",
+        "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-76_75_65 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-owner-demo-21\" data-pui-root=\"\" style=\"min-height: 2.75rem; display: in",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "shadcn-vue-scrolled.png"
+    },
+    {
+      "name": "closed-1",
+      "facts": {
+        "t": 1749.9000000059605,
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 56,
+          "width": 390,
+          "height": 0,
+          "top": 56,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "heading": {
+          "x": 16,
+          "y": 80,
+          "width": 358,
+          "height": 37.5,
+          "top": 80,
+          "right": 374,
+          "bottom": 117.5,
+          "left": 16
+        },
+        "nav": {
+          "x": 44.472694396972656,
+          "y": 162.51487731933594,
+          "width": 301.0546569824219,
+          "height": 491.7781982421875,
+          "top": 162.51487731933594,
+          "right": 345.52735137939453,
+          "bottom": 654.2930755615234,
+          "left": 44.472694396972656
+        },
+        "navCount": 1,
+        "panelRuntime": "vue",
+        "panelFamily": "shadcn",
+        "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-76_75_65 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_62_75_74_74_6f_6e pui-owner-demo-20\" data-pui-root=\"\" data-demo-ref=\"contents-command\" data-pui-style=\"select-none data-[disabled",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "shadcn-vue-closed-1.png"
+    },
+    {
+      "name": "open-2",
+      "facts": {
+        "t": 1933.4000000059605,
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 56,
+          "width": 390,
+          "height": 0,
+          "top": 56,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "heading": {
+          "x": 16,
+          "y": 80,
+          "width": 358,
+          "height": 37.5,
+          "top": 80,
+          "right": 374,
+          "bottom": 117.5,
+          "left": 16
+        },
+        "nav": {
+          "x": 43.28089904785156,
+          "y": 160.46043395996094,
+          "width": 303.43817138671875,
+          "height": 495.67181396484375,
+          "top": 160.46043395996094,
+          "right": 346.7190704345703,
+          "bottom": 656.1322479248047,
+          "left": 43.28089904785156
+        },
+        "navCount": 1,
+        "panelRuntime": "vue",
+        "panelFamily": "shadcn",
+        "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-76_75_65 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-owner-demo-21\" data-pui-root=\"\" style=\"min-height: 2.75rem; display: in",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "shadcn-vue-open-2.png"
+    },
+    {
+      "name": "closed-2",
+      "facts": {
+        "t": 2034.2000000178814,
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 56,
+          "width": 390,
+          "height": 0,
+          "top": 56,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "heading": {
+          "x": 16,
+          "y": 80,
+          "width": 358,
+          "height": 37.5,
+          "top": 80,
+          "right": 374,
+          "bottom": 117.5,
+          "left": 16
+        },
+        "nav": {
+          "x": 44.455833435058594,
+          "y": 162.48582458496094,
+          "width": 301.0883483886719,
+          "height": 491.833251953125,
+          "top": 162.48582458496094,
+          "right": 345.54418182373047,
+          "bottom": 654.3190765380859,
+          "left": 44.455833435058594
+        },
+        "navCount": 1,
+        "panelRuntime": "vue",
+        "panelFamily": "shadcn",
+        "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-76_75_65 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_62_75_74_74_6f_6e pui-owner-demo-20\" data-pui-root=\"\" data-demo-ref=\"contents-command\" data-pui-style=\"select-none data-[disabled",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "shadcn-vue-closed-2.png"
+    },
+    {
+      "name": "wide-return",
+      "facts": {
+        "t": 2601.4000000059605,
+        "viewport": {
+          "width": 1440,
+          "height": 960,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 72,
+          "width": 1440,
+          "height": 0,
+          "top": 72,
+          "right": 1440,
+          "bottom": 72,
+          "left": 0
+        },
+        "heading": {
+          "x": 360,
+          "y": 104,
+          "width": 672,
+          "height": 37.5,
+          "top": 104,
+          "right": 1032,
+          "bottom": 141.5,
+          "left": 360
+        },
+        "nav": {
+          "x": 28.796875,
+          "y": 73,
+          "width": 240,
+          "height": 887,
+          "top": 73,
+          "right": 268.796875,
+          "bottom": 960,
+          "left": 28.796875
+        },
+        "navCount": 1,
+        "panelRuntime": "vue",
+        "panelFamily": "shadcn",
+        "active": "<body class=\"astro-hbhkqqv6\" data-site-contents-dialog=\"\" style=\"\"> <a href=\"#_top\" class=\"astro-gfbpj5qw\">跳转到内容</a>  <link rel=\"stylesheet\" href=\"/styles/site-library-theme.css\"> <documentation-image-preview><docs-preview-shadcn-dialog-root data-docs-preview-family=\"shadcn\" data-docs-preview-prototype=\"shadcn-dialog-root\" data-docs-image-dialog=\"\" data-pui-root=\"\" class=\"\" data-pui-style=\"relativ",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "shadcn-vue-wide-return.png"
+    },
+    {
+      "name": "reopen-after-breakpoint",
+      "facts": {
+        "t": 2967,
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 56,
+          "width": 390,
+          "height": 0,
+          "top": 56,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "heading": {
+          "x": 16,
+          "y": 80,
+          "width": 358,
+          "height": 37.5,
+          "top": 80,
+          "right": 374,
+          "bottom": 117.5,
+          "left": 16
+        },
+        "nav": {
+          "x": 47.749996185302734,
+          "y": 168.1644744873047,
+          "width": 294.5,
+          "height": 481.07110595703125,
+          "top": 168.1644744873047,
+          "right": 342.24999618530273,
+          "bottom": 649.2355804443359,
+          "left": 47.749996185302734
+        },
+        "navCount": 1,
+        "panelRuntime": "vue",
+        "panelFamily": "shadcn",
+        "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-76_75_65 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-owner-demo-21\" data-pui-root=\"\" style=\"min-height: 2.75rem; display: in",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "shadcn-vue-reopen-after-breakpoint.png"
+    },
+    {
+      "name": "final-closed",
+      "facts": {
+        "t": 3067,
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 56,
+          "width": 390,
+          "height": 0,
+          "top": 56,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "heading": {
+          "x": 16,
+          "y": 80,
+          "width": 358,
+          "height": 37.5,
+          "top": 80,
+          "right": 374,
+          "bottom": 117.5,
+          "left": 16
+        },
+        "nav": {
+          "x": 44.456939697265625,
+          "y": 162.4877471923828,
+          "width": 301.0860900878906,
+          "height": 491.82965087890625,
+          "top": 162.4877471923828,
+          "right": 345.54302978515625,
+          "bottom": 654.3173980712891,
+          "left": 44.456939697265625
+        },
+        "navCount": 1,
+        "panelRuntime": "vue",
+        "panelFamily": "shadcn",
+        "active": "<div class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-76_75_65 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_62_75_74_74_6f_6e pui-owner-demo-20\" data-pui-root=\"\" data-demo-ref=\"contents-command\" data-pui-style=\"select-none data-[disabled",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "shadcn-vue-final-closed.png"
+    }
+  ],
+  "errors": [],
+  "network": [],
+  "scrollCandidates": [
+    {
+      "tag": "DIV",
+      "cls": "mobile-sidebar-pane sidebar-pane astro-ceehzq5e",
+      "h": 506,
+      "sh": 5738
+    }
+  ],
+  "scroll": {
+    "before": 626,
+    "after": 1026,
+    "bodyBefore": 0,
+    "bodyAfter": 0
+  },
+  "status": "passed"
+}

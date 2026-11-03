@@ -1,0 +1,92 @@
+▲ [WARNING] Unrecognized target environment "ES2024" [tsconfig.json]
+
+    tsconfig.json:61:14:
+      61 │     "target": "ES2024",
+         ╵               ~~~~~~~~
+
+▲ [WARNING] Unrecognized target environment "ES2024" [tsconfig.json]
+
+    tsconfig.json:61:14:
+      61 │     "target": "ES2024",
+         ╵               ~~~~~~~~
+
+
+ RUN  v2.1.9 $SOURCE_ROOT
+
+7:02:51 PM [vite] warning: Unrecognized target environment "ES2024"
+1  |  // @vitest-environment node
+2  |  import { revealHeaderPreferences } from './site-header-browser';
+   |                                               ^
+3  |  import {
+4  |    prepareUtilityFamilyReadObservation,
+
+  Plugin: vite:esbuild
+  File: $SOURCE_ROOT/apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts
+7:02:51 PM [vite] warning: Unrecognized target environment "ES2024"
+1  |  import type { Page } from 'playwright-core';
+2  |  
+3  |  /** Native viewport resize can precede the application matchMedia callback.
+   |                             ^
+4  |   * Sample the committed owner location, not transient visibility in the old row. */
+5  |  export function hasCommittedHeaderPreferencesDock(): boolean {
+
+  Plugin: vite:esbuild
+  File: $SOURCE_ROOT/apps/www/src/content/docs/zh-cn/site-header-browser.ts
+7:02:51 PM [vite] warning: Unrecognized target environment "ES2024"
+1  |  import { randomUUID } from 'node:crypto';
+2  |  import type { CDPSession, Page } from 'playwright-core';
+   |                                 ^
+3  |  
+4  |  // Test-only observation of the existing Playwright 1.58.2 utility context.
+
+  Plugin: vite:esbuild
+  File: $SOURCE_ROOT/apps/www/src/content/docs/zh-cn/family-query-observer.ts
+7:02:51 PM [vite] warning: Unrecognized target environment "ES2024"
+1  |  /** Read-only browser probes. Keep these functions self-contained: Playwright
+   |                                                                           ^
+2  |   * serializes them into the page. Unit fixtures are only oracle-negative tests. */
+3  |  export type HeaderPreferenceControl = 'runtime' | 'family';
+
+  Plugin: vite:esbuild
+  File: $SOURCE_ROOT/apps/www/src/content/docs/zh-cn/site-header-breakpoint-evidence.ts
+7:02:51 PM [vite] warning: Unrecognized target environment "ES2024"
+1  |  import { waitForServerReadiness } from '../../../../../../scripts/test/server-readiness.mjs';
+   |                                                                           ^
+2  |  // Shared server/browser plumbing for documentation browser regressions.
+3  |  // Extracted so a third suite does not need a third inline copy; the two existing
+
+  Plugin: vite:esbuild
+  File: $SOURCE_ROOT/apps/www/src/content/docs/zh-cn/browser-harness.ts
+stdout | apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts
+[server-readiness] 2026-11-02T11:02:52.093Z http://127.0.0.1:51479/zh-cn/ attempt=1 requestMs=11 totalMs=11 HTTP 200 OK
+
+ ❯ apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts (9 tests | 1 failed | 8 skipped) 3376ms
+   × Homepage end-to-end dogfood boundary > uses real family Contents Buttons through all four Docs runtimes with keyboard and exact-source visual evidence 2523ms
+     → expected +0 to be 1 // Object.is equality
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts > Homepage end-to-end dogfood boundary > uses real family Contents Buttons through all four Docs runtimes with keyboard and exact-source visual evidence
+AssertionError: expected +0 to be 1 // Object.is equality
+
+- Expected
++ Received
+
+- 1
++ 0
+
+ ❯ apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts:954:86
+    952|               true
+    953|             );
+    954|             try { expect(await page.locator('.docs-shell nav.docs-side…
+       |                                                                                      ^
+    955|  const trace = await page.evaluate(() => new Promise(resolve => {
+    956|   const samples: unknown[] = []; const start = performance.now();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 8 skipped (9)
+   Start at  19:02:51
+   Duration  3.74s (transform 93ms, setup 0ms, collect 233ms, tests 3.38s, environment 0ms, prepare 32ms)
+

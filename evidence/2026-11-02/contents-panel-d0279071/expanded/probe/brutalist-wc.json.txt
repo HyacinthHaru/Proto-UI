@@ -1,0 +1,460 @@
+{
+  "id": "brutalist-wc",
+  "source": {
+    "head": "d0279071fd80bd62bd6256fb40e77c3e69f25513",
+    "tree": "73e3640521cc5ad06b1116e3d623036fe25634c4",
+    "dirty": ""
+  },
+  "browser": "155.0.8059.39",
+  "steps": [
+    {
+      "name": "closed-narrow",
+      "facts": {
+        "t": 566.6000000238419,
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 56,
+          "width": 390,
+          "height": 0,
+          "top": 56,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "heading": {
+          "x": 16,
+          "y": 80,
+          "width": 358,
+          "height": 40,
+          "top": 80,
+          "right": 374,
+          "bottom": 120,
+          "left": 16
+        },
+        "nav": {
+          "x": 16,
+          "y": 56,
+          "width": 358,
+          "height": 0,
+          "top": 56,
+          "right": 374,
+          "bottom": 56,
+          "left": 16
+        },
+        "navCount": 1,
+        "panelRuntime": "wc",
+        "panelFamily": "brutalist",
+        "active": "<body class=\"astro-hbhkqqv6\" data-site-contents-dialog=\"\"> <a href=\"#_top\" class=\"astro-gfbpj5qw\">跳转到内容</a>  <link rel=\"stylesheet\" href=\"/styles/site-library-theme.css\"> <documentation-image-preview><docs-preview-brutalist-dialog-root data-docs-preview-family=\"brutalist\" data-docs-preview-prototype=\"brutalist-dialog-root\" data-docs-image-dialog=\"\" data-pui-root=\"\" class=\"\" data-pui-style=\"relativ",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "brutalist-wc-closed-narrow.png"
+    },
+    {
+      "name": "open-1",
+      "facts": {
+        "t": 849.8000000119209,
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 56,
+          "width": 390,
+          "height": 0,
+          "top": 56,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "heading": {
+          "x": 16,
+          "y": 80,
+          "width": 358,
+          "height": 40,
+          "top": 80,
+          "right": 374,
+          "bottom": 120,
+          "left": 16
+        },
+        "nav": {
+          "x": 46.526153564453125,
+          "y": 163.67947387695312,
+          "width": 296.9476623535156,
+          "height": 491.4102478027344,
+          "top": 163.67947387695312,
+          "right": 343.47381591796875,
+          "bottom": 655.0897216796875,
+          "left": 46.526153564453125
+        },
+        "navCount": 1,
+        "panelRuntime": "wc",
+        "panelFamily": "brutalist",
+        "active": "<wc-brutalist-dialog-close class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-host-root\" data-pui-root=\"\" data-d",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "brutalist-wc-open-1.png"
+    },
+    {
+      "name": "scrolled",
+      "facts": {
+        "t": 999.7000000178814,
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 56,
+          "width": 390,
+          "height": 0,
+          "top": 56,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "heading": {
+          "x": 16,
+          "y": 80,
+          "width": 358,
+          "height": 40,
+          "top": 80,
+          "right": 374,
+          "bottom": 120,
+          "left": 16
+        },
+        "nav": {
+          "x": 42,
+          "y": 155.8046875,
+          "width": 306,
+          "height": 506.390625,
+          "top": 155.8046875,
+          "right": 348,
+          "bottom": 662.1953125,
+          "left": 42
+        },
+        "navCount": 1,
+        "panelRuntime": "wc",
+        "panelFamily": "brutalist",
+        "active": "<wc-brutalist-dialog-close class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-host-root\" data-pui-root=\"\" data-d",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "brutalist-wc-scrolled.png"
+    },
+    {
+      "name": "closed-1",
+      "facts": {
+        "t": 1099.4000000059605,
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 56,
+          "width": 390,
+          "height": 0,
+          "top": 56,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "heading": {
+          "x": 16,
+          "y": 80,
+          "width": 358,
+          "height": 40,
+          "top": 80,
+          "right": 374,
+          "bottom": 120,
+          "left": 16
+        },
+        "nav": {
+          "x": 43.68779754638672,
+          "y": 158.7411651611328,
+          "width": 302.6243896484375,
+          "height": 500.80450439453125,
+          "top": 158.7411651611328,
+          "right": 346.3121871948242,
+          "bottom": 659.5456695556641,
+          "left": 43.68779754638672
+        },
+        "navCount": 1,
+        "panelRuntime": "wc",
+        "panelFamily": "brutalist",
+        "active": "<wc-brutalist-button data-demo-ref=\"contents-command\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_62_75_74_74_6f_6e\" style=\"width: 2.75rem; height: 2.75rem; min-he",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "brutalist-wc-closed-1.png"
+    },
+    {
+      "name": "open-2",
+      "facts": {
+        "t": 1499.5,
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 56,
+          "width": 390,
+          "height": 0,
+          "top": 56,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "heading": {
+          "x": 16,
+          "y": 80,
+          "width": 358,
+          "height": 40,
+          "top": 80,
+          "right": 374,
+          "bottom": 120,
+          "left": 16
+        },
+        "nav": {
+          "x": 46.523963928222656,
+          "y": 163.67562866210938,
+          "width": 296.9520568847656,
+          "height": 491.4175109863281,
+          "top": 163.67562866210938,
+          "right": 343.4760208129883,
+          "bottom": 655.0931396484375,
+          "left": 46.523963928222656
+        },
+        "navCount": 1,
+        "panelRuntime": "wc",
+        "panelFamily": "brutalist",
+        "active": "<wc-brutalist-dialog-close class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-host-root\" data-pui-root=\"\" data-d",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "brutalist-wc-open-2.png"
+    },
+    {
+      "name": "closed-2",
+      "facts": {
+        "t": 1599.4000000059605,
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 56,
+          "width": 390,
+          "height": 0,
+          "top": 56,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "heading": {
+          "x": 16,
+          "y": 80,
+          "width": 358,
+          "height": 40,
+          "top": 80,
+          "right": 374,
+          "bottom": 120,
+          "left": 16
+        },
+        "nav": {
+          "x": 43.689453125,
+          "y": 158.74404907226562,
+          "width": 302.62109375,
+          "height": 500.7989196777344,
+          "top": 158.74404907226562,
+          "right": 346.310546875,
+          "bottom": 659.54296875,
+          "left": 43.689453125
+        },
+        "navCount": 1,
+        "panelRuntime": "wc",
+        "panelFamily": "brutalist",
+        "active": "<wc-brutalist-button data-demo-ref=\"contents-command\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_62_75_74_74_6f_6e\" style=\"width: 2.75rem; height: 2.75rem; min-he",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "brutalist-wc-closed-2.png"
+    },
+    {
+      "name": "wide-return",
+      "facts": {
+        "t": 2167.300000011921,
+        "viewport": {
+          "width": 1440,
+          "height": 960,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 72,
+          "width": 1440,
+          "height": 0,
+          "top": 72,
+          "right": 1440,
+          "bottom": 72,
+          "left": 0
+        },
+        "heading": {
+          "x": 360,
+          "y": 104,
+          "width": 672,
+          "height": 44,
+          "top": 104,
+          "right": 1032,
+          "bottom": 148,
+          "left": 360
+        },
+        "nav": {
+          "x": 28.796875,
+          "y": 72,
+          "width": 240,
+          "height": 887,
+          "top": 72,
+          "right": 268.796875,
+          "bottom": 959,
+          "left": 28.796875
+        },
+        "navCount": 1,
+        "panelRuntime": "wc",
+        "panelFamily": "brutalist",
+        "active": "<body class=\"astro-hbhkqqv6\" data-site-contents-dialog=\"\" style=\"\"> <a href=\"#_top\" class=\"astro-gfbpj5qw\">跳转到内容</a>  <link rel=\"stylesheet\" href=\"/styles/site-library-theme.css\"> <documentation-image-preview><docs-preview-brutalist-dialog-root data-docs-preview-family=\"brutalist\" data-docs-preview-prototype=\"brutalist-dialog-root\" data-docs-image-dialog=\"\" data-pui-root=\"\" class=\"\" data-pui-style",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "brutalist-wc-wide-return.png"
+    },
+    {
+      "name": "reopen-after-breakpoint",
+      "facts": {
+        "t": 2716.100000023842,
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 56,
+          "width": 390,
+          "height": 0,
+          "top": 56,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "heading": {
+          "x": 16,
+          "y": 80,
+          "width": 358,
+          "height": 40,
+          "top": 80,
+          "right": 374,
+          "bottom": 120,
+          "left": 16
+        },
+        "nav": {
+          "x": 47.962371826171875,
+          "y": 166.1782684326172,
+          "width": 294.07525634765625,
+          "height": 486.65667724609375,
+          "top": 166.1782684326172,
+          "right": 342.0376281738281,
+          "bottom": 652.8349456787109,
+          "left": 47.962371826171875
+        },
+        "navCount": 1,
+        "panelRuntime": "wc",
+        "panelFamily": "brutalist",
+        "active": "<wc-brutalist-dialog-close class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-host-root\" data-pui-root=\"\" data-d",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "brutalist-wc-reopen-after-breakpoint.png"
+    },
+    {
+      "name": "final-closed",
+      "facts": {
+        "t": 2816.5,
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 56,
+          "width": 390,
+          "height": 0,
+          "top": 56,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "heading": {
+          "x": 16,
+          "y": 80,
+          "width": 358,
+          "height": 40,
+          "top": 80,
+          "right": 374,
+          "bottom": 120,
+          "left": 16
+        },
+        "nav": {
+          "x": 43.687950134277344,
+          "y": 158.74147033691406,
+          "width": 302.62408447265625,
+          "height": 500.803955078125,
+          "top": 158.74147033691406,
+          "right": 346.3120346069336,
+          "bottom": 659.5454254150391,
+          "left": 43.687950134277344
+        },
+        "navCount": 1,
+        "panelRuntime": "wc",
+        "panelFamily": "brutalist",
+        "active": "<wc-brutalist-button data-demo-ref=\"contents-command\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_62_75_74_74_6f_6e\" style=\"width: 2.75rem; height: 2.75rem; min-he",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "brutalist-wc-final-closed.png"
+    }
+  ],
+  "errors": [],
+  "network": [],
+  "scrollCandidates": [
+    {
+      "tag": "DIV",
+      "cls": "mobile-sidebar-pane sidebar-pane astro-ceehzq5e",
+      "h": 506,
+      "sh": 5830
+    }
+  ],
+  "scroll": {
+    "before": 2463,
+    "after": 2466,
+    "bodyBefore": 0,
+    "bodyAfter": 0
+  },
+  "status": "passed"
+}

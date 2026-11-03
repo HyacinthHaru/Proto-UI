@@ -1,0 +1,460 @@
+{
+  "id": "shadcn-vue2",
+  "source": {
+    "head": "d0279071fd80bd62bd6256fb40e77c3e69f25513",
+    "tree": "73e3640521cc5ad06b1116e3d623036fe25634c4",
+    "dirty": ""
+  },
+  "browser": "155.0.8059.39",
+  "steps": [
+    {
+      "name": "closed-narrow",
+      "facts": {
+        "t": 996,
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 56,
+          "width": 390,
+          "height": 0,
+          "top": 56,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "heading": {
+          "x": 16,
+          "y": 80,
+          "width": 358,
+          "height": 37.5,
+          "top": 80,
+          "right": 374,
+          "bottom": 117.5,
+          "left": 16
+        },
+        "nav": {
+          "x": 16,
+          "y": 56,
+          "width": 358,
+          "height": 0,
+          "top": 56,
+          "right": 374,
+          "bottom": 56,
+          "left": 16
+        },
+        "navCount": 1,
+        "panelRuntime": "vue2",
+        "panelFamily": "shadcn",
+        "active": "<body class=\"astro-hbhkqqv6\" data-site-contents-dialog=\"\"> <a href=\"#_top\" class=\"astro-gfbpj5qw\">跳转到内容</a>  <link rel=\"stylesheet\" href=\"/styles/site-library-theme.css\"> <documentation-image-preview><docs-preview-shadcn-dialog-root data-docs-preview-family=\"shadcn\" data-docs-preview-prototype=\"shadcn-dialog-root\" data-docs-image-dialog=\"\" data-pui-root=\"\" class=\"\" data-pui-style=\"relative inline-",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "shadcn-vue2-closed-narrow.png"
+    },
+    {
+      "name": "open-1",
+      "facts": {
+        "t": 1513,
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 56,
+          "width": 390,
+          "height": 0,
+          "top": 56,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "heading": {
+          "x": 16,
+          "y": 80,
+          "width": 358,
+          "height": 37.5,
+          "top": 80,
+          "right": 374,
+          "bottom": 117.5,
+          "left": 16
+        },
+        "nav": {
+          "x": 43.27910232543945,
+          "y": 160.4573516845703,
+          "width": 303.4417724609375,
+          "height": 495.67767333984375,
+          "top": 160.4573516845703,
+          "right": 346.72087478637695,
+          "bottom": 656.1350250244141,
+          "left": 43.27910232543945
+        },
+        "navCount": 1,
+        "panelRuntime": "vue2",
+        "panelFamily": "shadcn",
+        "active": "<div data-pui-root=\"\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-76_75_65_32 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-owner-demo-21\" style=\"min-height: 2.75rem; display:",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "shadcn-vue2-open-1.png"
+    },
+    {
+      "name": "scrolled",
+      "facts": {
+        "t": 1662.7000000178814,
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 56,
+          "width": 390,
+          "height": 0,
+          "top": 56,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "heading": {
+          "x": 16,
+          "y": 80,
+          "width": 358,
+          "height": 37.5,
+          "top": 80,
+          "right": 374,
+          "bottom": 117.5,
+          "left": 16
+        },
+        "nav": {
+          "x": 40,
+          "y": 154.8046875,
+          "width": 310,
+          "height": 506.390625,
+          "top": 154.8046875,
+          "right": 350,
+          "bottom": 661.1953125,
+          "left": 40
+        },
+        "navCount": 1,
+        "panelRuntime": "vue2",
+        "panelFamily": "shadcn",
+        "active": "<div data-pui-root=\"\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-76_75_65_32 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-owner-demo-21\" style=\"min-height: 2.75rem; display:",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "shadcn-vue2-scrolled.png"
+    },
+    {
+      "name": "closed-1",
+      "facts": {
+        "t": 1762.9000000059605,
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 56,
+          "width": 390,
+          "height": 0,
+          "top": 56,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "heading": {
+          "x": 16,
+          "y": 80,
+          "width": 358,
+          "height": 37.5,
+          "top": 80,
+          "right": 374,
+          "bottom": 117.5,
+          "left": 16
+        },
+        "nav": {
+          "x": 44.458457946777344,
+          "y": 162.49038696289062,
+          "width": 301.08306884765625,
+          "height": 491.8246154785156,
+          "top": 162.49038696289062,
+          "right": 345.5415267944336,
+          "bottom": 654.3150024414062,
+          "left": 44.458457946777344
+        },
+        "navCount": 1,
+        "panelRuntime": "vue2",
+        "panelFamily": "shadcn",
+        "active": "<div data-pui-root=\"\" data-demo-ref=\"contents-command\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-76_75_65_32 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_62_75_74_74_6f_6e pui-owner-demo-20\" data-pui-style=\"select-none data-[disab",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "shadcn-vue2-closed-1.png"
+    },
+    {
+      "name": "open-2",
+      "facts": {
+        "t": 1963.2000000178814,
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 56,
+          "width": 390,
+          "height": 0,
+          "top": 56,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "heading": {
+          "x": 16,
+          "y": 80,
+          "width": 358,
+          "height": 37.5,
+          "top": 80,
+          "right": 374,
+          "bottom": 117.5,
+          "left": 16
+        },
+        "nav": {
+          "x": 41.53330612182617,
+          "y": 157.44786071777344,
+          "width": 306.93341064453125,
+          "height": 501.3812255859375,
+          "top": 157.44786071777344,
+          "right": 348.4667167663574,
+          "bottom": 658.8290863037109,
+          "left": 41.53330612182617
+        },
+        "navCount": 1,
+        "panelRuntime": "vue2",
+        "panelFamily": "shadcn",
+        "active": "<div data-pui-root=\"\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-76_75_65_32 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-owner-demo-21\" style=\"min-height: 2.75rem; display:",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "shadcn-vue2-open-2.png"
+    },
+    {
+      "name": "closed-2",
+      "facts": {
+        "t": 2062.7000000178814,
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 56,
+          "width": 390,
+          "height": 0,
+          "top": 56,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "heading": {
+          "x": 16,
+          "y": 80,
+          "width": 358,
+          "height": 37.5,
+          "top": 80,
+          "right": 374,
+          "bottom": 117.5,
+          "left": 16
+        },
+        "nav": {
+          "x": 44.46012878417969,
+          "y": 162.4932403564453,
+          "width": 301.07977294921875,
+          "height": 491.81927490234375,
+          "top": 162.4932403564453,
+          "right": 345.53990173339844,
+          "bottom": 654.3125152587891,
+          "left": 44.46012878417969
+        },
+        "navCount": 1,
+        "panelRuntime": "vue2",
+        "panelFamily": "shadcn",
+        "active": "<div data-pui-root=\"\" data-demo-ref=\"contents-command\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-76_75_65_32 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_62_75_74_74_6f_6e pui-owner-demo-20\" data-pui-style=\"select-none data-[disab",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "shadcn-vue2-closed-2.png"
+    },
+    {
+      "name": "wide-return",
+      "facts": {
+        "t": 2631,
+        "viewport": {
+          "width": 1440,
+          "height": 960,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 72,
+          "width": 1440,
+          "height": 0,
+          "top": 72,
+          "right": 1440,
+          "bottom": 72,
+          "left": 0
+        },
+        "heading": {
+          "x": 360,
+          "y": 104,
+          "width": 672,
+          "height": 37.5,
+          "top": 104,
+          "right": 1032,
+          "bottom": 141.5,
+          "left": 360
+        },
+        "nav": {
+          "x": 28.796875,
+          "y": 73,
+          "width": 240,
+          "height": 887,
+          "top": 73,
+          "right": 268.796875,
+          "bottom": 960,
+          "left": 28.796875
+        },
+        "navCount": 1,
+        "panelRuntime": "vue2",
+        "panelFamily": "shadcn",
+        "active": "<body class=\"astro-hbhkqqv6\" data-site-contents-dialog=\"\" style=\"\"> <a href=\"#_top\" class=\"astro-gfbpj5qw\">跳转到内容</a>  <link rel=\"stylesheet\" href=\"/styles/site-library-theme.css\"> <documentation-image-preview><docs-preview-shadcn-dialog-root data-docs-preview-family=\"shadcn\" data-docs-preview-prototype=\"shadcn-dialog-root\" data-docs-image-dialog=\"\" data-pui-root=\"\" class=\"\" data-pui-style=\"relativ",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "shadcn-vue2-wide-return.png"
+    },
+    {
+      "name": "reopen-after-breakpoint",
+      "facts": {
+        "t": 2963.800000011921,
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 56,
+          "width": 390,
+          "height": 0,
+          "top": 56,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "heading": {
+          "x": 16,
+          "y": 80,
+          "width": 358,
+          "height": 37.5,
+          "top": 80,
+          "right": 374,
+          "bottom": 117.5,
+          "left": 16
+        },
+        "nav": {
+          "x": 46.03703308105469,
+          "y": 165.21157836914062,
+          "width": 297.92596435546875,
+          "height": 486.6673889160156,
+          "top": 165.21157836914062,
+          "right": 343.96299743652344,
+          "bottom": 651.8789672851562,
+          "left": 46.03703308105469
+        },
+        "navCount": 1,
+        "panelRuntime": "vue2",
+        "panelFamily": "shadcn",
+        "active": "<div data-pui-root=\"\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-76_75_65_32 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-owner-demo-21\" style=\"min-height: 2.75rem; display:",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "shadcn-vue2-reopen-after-breakpoint.png"
+    },
+    {
+      "name": "final-closed",
+      "facts": {
+        "t": 3062.800000011921,
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 56,
+          "width": 390,
+          "height": 0,
+          "top": 56,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "heading": {
+          "x": 16,
+          "y": 80,
+          "width": 358,
+          "height": 37.5,
+          "top": 80,
+          "right": 374,
+          "bottom": 117.5,
+          "left": 16
+        },
+        "nav": {
+          "x": 44.46564865112305,
+          "y": 162.50274658203125,
+          "width": 301.0687255859375,
+          "height": 491.80120849609375,
+          "top": 162.50274658203125,
+          "right": 345.53437423706055,
+          "bottom": 654.303955078125,
+          "left": 44.46564865112305
+        },
+        "navCount": 1,
+        "panelRuntime": "vue2",
+        "panelFamily": "shadcn",
+        "active": "<div data-pui-root=\"\" data-demo-ref=\"contents-command\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-76_75_65_32 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_62_75_74_74_6f_6e pui-owner-demo-20\" data-pui-style=\"select-none data-[disab",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "shadcn-vue2-final-closed.png"
+    }
+  ],
+  "errors": [],
+  "network": [],
+  "scrollCandidates": [
+    {
+      "tag": "DIV",
+      "cls": "mobile-sidebar-pane sidebar-pane astro-ceehzq5e",
+      "h": 506,
+      "sh": 5738
+    }
+  ],
+  "scroll": {
+    "before": 626,
+    "after": 1026,
+    "bodyBefore": 0,
+    "bodyAfter": 0
+  },
+  "status": "passed"
+}

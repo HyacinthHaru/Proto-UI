@@ -1,0 +1,460 @@
+{
+  "id": "shadcn-wc",
+  "source": {
+    "head": "d0279071fd80bd62bd6256fb40e77c3e69f25513",
+    "tree": "73e3640521cc5ad06b1116e3d623036fe25634c4",
+    "dirty": ""
+  },
+  "browser": "155.0.8059.39",
+  "steps": [
+    {
+      "name": "closed-narrow",
+      "facts": {
+        "t": 933.2999999821186,
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 56,
+          "width": 390,
+          "height": 0,
+          "top": 56,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "heading": {
+          "x": 16,
+          "y": 80,
+          "width": 358,
+          "height": 37.5,
+          "top": 80,
+          "right": 374,
+          "bottom": 117.5,
+          "left": 16
+        },
+        "nav": {
+          "x": 16,
+          "y": 56,
+          "width": 358,
+          "height": 0,
+          "top": 56,
+          "right": 374,
+          "bottom": 56,
+          "left": 16
+        },
+        "navCount": 1,
+        "panelRuntime": "wc",
+        "panelFamily": "shadcn",
+        "active": "<body class=\"astro-hbhkqqv6\" data-site-contents-dialog=\"\"> <a href=\"#_top\" class=\"astro-gfbpj5qw\">跳转到内容</a>  <link rel=\"stylesheet\" href=\"/styles/site-library-theme.css\"> <documentation-image-preview><docs-preview-shadcn-dialog-root data-docs-preview-family=\"shadcn\" data-docs-preview-prototype=\"shadcn-dialog-root\" data-docs-image-dialog=\"\" data-pui-root=\"\" class=\"\" data-pui-style=\"relative inline-",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "shadcn-wc-closed-narrow.png"
+    },
+    {
+      "name": "open-1",
+      "facts": {
+        "t": 1199.9000000059605,
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 56,
+          "width": 390,
+          "height": 0,
+          "top": 56,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "heading": {
+          "x": 16,
+          "y": 80,
+          "width": 358,
+          "height": 37.5,
+          "top": 80,
+          "right": 374,
+          "bottom": 117.5,
+          "left": 16
+        },
+        "nav": {
+          "x": 43.291812896728516,
+          "y": 160.479248046875,
+          "width": 303.4163818359375,
+          "height": 495.63616943359375,
+          "top": 160.479248046875,
+          "right": 346.708194732666,
+          "bottom": 656.1154174804688,
+          "left": 43.291812896728516
+        },
+        "navCount": 1,
+        "panelRuntime": "wc",
+        "panelFamily": "shadcn",
+        "active": "<wc-shadcn-dialog-close class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-host-root\" data-pui-root=\"\" data-demo-owner=\"demo-3\" da",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "shadcn-wc-open-1.png"
+    },
+    {
+      "name": "scrolled",
+      "facts": {
+        "t": 1383.199999988079,
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 56,
+          "width": 390,
+          "height": 0,
+          "top": 56,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "heading": {
+          "x": 16,
+          "y": 80,
+          "width": 358,
+          "height": 37.5,
+          "top": 80,
+          "right": 374,
+          "bottom": 117.5,
+          "left": 16
+        },
+        "nav": {
+          "x": 40,
+          "y": 154.8046875,
+          "width": 310,
+          "height": 506.390625,
+          "top": 154.8046875,
+          "right": 350,
+          "bottom": 661.1953125,
+          "left": 40
+        },
+        "navCount": 1,
+        "panelRuntime": "wc",
+        "panelFamily": "shadcn",
+        "active": "<wc-shadcn-dialog-close class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-host-root\" data-pui-root=\"\" data-demo-owner=\"demo-3\" da",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "shadcn-wc-scrolled.png"
+    },
+    {
+      "name": "closed-1",
+      "facts": {
+        "t": 1483.5,
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 56,
+          "width": 390,
+          "height": 0,
+          "top": 56,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "heading": {
+          "x": 16,
+          "y": 80,
+          "width": 358,
+          "height": 37.5,
+          "top": 80,
+          "right": 374,
+          "bottom": 117.5,
+          "left": 16
+        },
+        "nav": {
+          "x": 44.45514678955078,
+          "y": 162.48464965820312,
+          "width": 301.0897216796875,
+          "height": 491.8355407714844,
+          "top": 162.48464965820312,
+          "right": 345.5448684692383,
+          "bottom": 654.3201904296875,
+          "left": 44.45514678955078
+        },
+        "navCount": 1,
+        "panelRuntime": "wc",
+        "panelFamily": "shadcn",
+        "active": "<wc-shadcn-button data-demo-ref=\"contents-command\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_62_75_74_74_6f_6e\" style=\"width: 2.75rem; height: 2.75rem; min-height: var(--site-cont",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "shadcn-wc-closed-1.png"
+    },
+    {
+      "name": "open-2",
+      "facts": {
+        "t": 1683.699999988079,
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 56,
+          "width": 390,
+          "height": 0,
+          "top": 56,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "heading": {
+          "x": 16,
+          "y": 80,
+          "width": 358,
+          "height": 37.5,
+          "top": 80,
+          "right": 374,
+          "bottom": 117.5,
+          "left": 16
+        },
+        "nav": {
+          "x": 41.53515625,
+          "y": 157.45103454589844,
+          "width": 306.9296875,
+          "height": 501.37518310546875,
+          "top": 157.45103454589844,
+          "right": 348.46484375,
+          "bottom": 658.8262176513672,
+          "left": 41.53515625
+        },
+        "navCount": 1,
+        "panelRuntime": "wc",
+        "panelFamily": "shadcn",
+        "active": "<wc-shadcn-dialog-close class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-host-root\" data-pui-root=\"\" data-demo-owner=\"demo-3\" da",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "shadcn-wc-open-2.png"
+    },
+    {
+      "name": "closed-2",
+      "facts": {
+        "t": 1783.5,
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 56,
+          "width": 390,
+          "height": 0,
+          "top": 56,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "heading": {
+          "x": 16,
+          "y": 80,
+          "width": 358,
+          "height": 37.5,
+          "top": 80,
+          "right": 374,
+          "bottom": 117.5,
+          "left": 16
+        },
+        "nav": {
+          "x": 44.456809997558594,
+          "y": 162.4875030517578,
+          "width": 301.0863952636719,
+          "height": 491.83013916015625,
+          "top": 162.4875030517578,
+          "right": 345.54320526123047,
+          "bottom": 654.3176422119141,
+          "left": 44.456809997558594
+        },
+        "navCount": 1,
+        "panelRuntime": "wc",
+        "panelFamily": "shadcn",
+        "active": "<wc-shadcn-button data-demo-ref=\"contents-command\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_62_75_74_74_6f_6e\" style=\"width: 2.75rem; height: 2.75rem; min-height: var(--site-cont",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "shadcn-wc-closed-2.png"
+    },
+    {
+      "name": "wide-return",
+      "facts": {
+        "t": 2350.7999999821186,
+        "viewport": {
+          "width": 1440,
+          "height": 960,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 72,
+          "width": 1440,
+          "height": 0,
+          "top": 72,
+          "right": 1440,
+          "bottom": 72,
+          "left": 0
+        },
+        "heading": {
+          "x": 360,
+          "y": 104,
+          "width": 672,
+          "height": 37.5,
+          "top": 104,
+          "right": 1032,
+          "bottom": 141.5,
+          "left": 360
+        },
+        "nav": {
+          "x": 28.796875,
+          "y": 73,
+          "width": 240,
+          "height": 887,
+          "top": 73,
+          "right": 268.796875,
+          "bottom": 960,
+          "left": 28.796875
+        },
+        "navCount": 1,
+        "panelRuntime": "wc",
+        "panelFamily": "shadcn",
+        "active": "<body class=\"astro-hbhkqqv6\" data-site-contents-dialog=\"\" style=\"\"> <a href=\"#_top\" class=\"astro-gfbpj5qw\">跳转到内容</a>  <link rel=\"stylesheet\" href=\"/styles/site-library-theme.css\"> <documentation-image-preview><docs-preview-shadcn-dialog-root data-docs-preview-family=\"shadcn\" data-docs-preview-prototype=\"shadcn-dialog-root\" data-docs-image-dialog=\"\" data-pui-root=\"\" class=\"\" data-pui-style=\"relativ",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "shadcn-wc-wide-return.png"
+    },
+    {
+      "name": "reopen-after-breakpoint",
+      "facts": {
+        "t": 2684.9000000059605,
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 56,
+          "width": 390,
+          "height": 0,
+          "top": 56,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "heading": {
+          "x": 16,
+          "y": 80,
+          "width": 358,
+          "height": 37.5,
+          "top": 80,
+          "right": 374,
+          "bottom": 117.5,
+          "left": 16
+        },
+        "nav": {
+          "x": 43.2882194519043,
+          "y": 160.4730682373047,
+          "width": 303.423583984375,
+          "height": 495.64788818359375,
+          "top": 160.4730682373047,
+          "right": 346.7118034362793,
+          "bottom": 656.1209564208984,
+          "left": 43.2882194519043
+        },
+        "navCount": 1,
+        "panelRuntime": "wc",
+        "panelFamily": "shadcn",
+        "active": "<wc-shadcn-dialog-close class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_70_61_6e_65_6c_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_64_69_61_6c_6f_67_2d_63_6c_6f_73_65 pui-host-root\" data-pui-root=\"\" data-demo-owner=\"demo-3\" da",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "shadcn-wc-reopen-after-breakpoint.png"
+    },
+    {
+      "name": "final-closed",
+      "facts": {
+        "t": 2783.2999999821186,
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "dpr": 1
+        },
+        "mount": {
+          "x": 0,
+          "y": 56,
+          "width": 390,
+          "height": 0,
+          "top": 56,
+          "right": 390,
+          "bottom": 56,
+          "left": 0
+        },
+        "heading": {
+          "x": 16,
+          "y": 80,
+          "width": 358,
+          "height": 37.5,
+          "top": 80,
+          "right": 374,
+          "bottom": 117.5,
+          "left": 16
+        },
+        "nav": {
+          "x": 44.46233367919922,
+          "y": 162.49705505371094,
+          "width": 301.0753173828125,
+          "height": 491.81201171875,
+          "top": 162.49705505371094,
+          "right": 345.5376510620117,
+          "bottom": 654.3090667724609,
+          "left": 44.46233367919922
+        },
+        "navCount": 1,
+        "panelRuntime": "wc",
+        "panelFamily": "shadcn",
+        "active": "<wc-shadcn-button data-demo-ref=\"contents-command\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_63_6f_6e_74_65_6e_74_73_2d_31_2d_64_6f_63_73_2d_31 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_62_75_74_74_6f_6e\" style=\"width: 2.75rem; height: 2.75rem; min-height: var(--site-cont",
+        "documentScroll": 0,
+        "overflow": 0
+      },
+      "image": "shadcn-wc-final-closed.png"
+    }
+  ],
+  "errors": [],
+  "network": [],
+  "scrollCandidates": [
+    {
+      "tag": "DIV",
+      "cls": "mobile-sidebar-pane sidebar-pane astro-ceehzq5e",
+      "h": 506,
+      "sh": 5738
+    }
+  ],
+  "scroll": {
+    "before": 626,
+    "after": 1026,
+    "bodyBefore": 0,
+    "bodyAfter": 0
+  },
+  "status": "passed"
+}
