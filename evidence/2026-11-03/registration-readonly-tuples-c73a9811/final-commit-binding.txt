@@ -1,0 +1,15 @@
+{
+  "head": "c73a98117e1c92aa16b2743023b035f00dfc73b8",
+  "tree": "7f26137ca26672ad85b74c648c42d7064f937dd1",
+  "parent": "7969265c2104464acac2ac761b46906e7570f320",
+  "files": {
+    "apps/www/src/components/PrototypePreviewer/surface-registration.test.ts": "05c696c1a6981734a07ebcae421cd250f99927ef6ff01051d13e21d4a6e67187",
+    "apps/www/src/components/PrototypePreviewer/tabs-registration.test.ts": "6a62bd1261d65c62d741e1c593b70ecb1d200a2998cd5bc07e8906530d5f983a",
+    "apps/www/src/components/PrototypePreviewer/text-registration.test.ts": "949b4930f9560400d5203805513fc48d6492a07d5561f162f072c2eb42e45fea",
+    "apps/www/src/components/PrototypePreviewer/textarea-registration.test.ts": "0873fad68ee5d14be1107b400eaa78ab07aea1d4d983260d9d289cd5bacf8e5f",
+    "apps/www/src/components/PrototypePreviewer/toggle-registration.test.ts": "d2b34b29d2d8c23479529cb60265d2d8947bccb437b34763f143b30125b7756b"
+  },
+  "precommitSourceBytesIdentical": true,
+  "canonicalCI": "pending",
+  "independentReview": "local partial/ABSTAIN, not GitHub approval"
+}

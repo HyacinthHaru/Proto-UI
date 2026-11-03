@@ -1,0 +1,38 @@
+[
+  {
+    "path": "red-types.log.txt",
+    "rawSha256": "70b169ac2eb2c8130c1c3b3d09604f14e73aea9267fa835e7fa2bb596c3860c2",
+    "publicSha256": "957a7ef7dec1e3de3dc91aa910d487dfc0e3a78e3a2091dc00c3b8d679a8cb64",
+    "transformed": true
+  },
+  {
+    "path": "green-types.log.txt",
+    "rawSha256": "e47fa58d353fbdd1f8a1a4502a69bd1fe8c885d83aad21327359a974e3e56bd2",
+    "publicSha256": "126c57da90f85bed52e8be286ab0d48546635bb9350be17f4aedab225ebcd72e",
+    "transformed": true
+  },
+  {
+    "path": "focused-tests.log.txt",
+    "rawSha256": "9af28f3c0913c21926b53d0b2a70552ce274c23ceb49d4cd3036ad9806ed7b3c",
+    "publicSha256": "661ac60424375a3f2b1637d6b0ec7a31bd1ecb2d4b44b1cbeabca312be43cc6d",
+    "transformed": true
+  },
+  {
+    "path": "focused-vitest.json.txt",
+    "rawSha256": "c0c301802d29f61b421f7ea1150506057149dead691531420266a6ce63ef3f32",
+    "publicSha256": "0f736e3728782630a806cecfca1a57f71c5591ee7dced3cfce4d2db89433e9e4",
+    "transformed": true
+  },
+  {
+    "path": "source-change-and-emission.txt",
+    "rawSha256": "a6f00e5d145259ee60126c01be71837718866b5d57aee0dfe0683bc3d8eb9b3d",
+    "publicSha256": "a6f00e5d145259ee60126c01be71837718866b5d57aee0dfe0683bc3d8eb9b3d",
+    "transformed": false
+  },
+  {
+    "path": "validation-report.txt",
+    "rawSha256": "4c0030b975d472667eb50a690d9e6f030e65194c0bc58d14ff0784c0e7b6b9b8",
+    "publicSha256": "4c0030b975d472667eb50a690d9e6f030e65194c0bc58d14ff0784c0e7b6b9b8",
+    "transformed": false
+  }
+]

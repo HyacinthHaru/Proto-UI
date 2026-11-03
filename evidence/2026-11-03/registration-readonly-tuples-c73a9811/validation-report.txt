@@ -1,0 +1,21 @@
+{
+  "observedAt": "2026-11-03T03:06:48.838201+00:00",
+  "sourceBranch": "codex/registration-readonly-tuples",
+  "base": "7969265c2104464acac2ac761b46906e7570f320",
+  "command": "corepack pnpm@10.32.1 check:types",
+  "exitCode": 0,
+  "AstroFiles": 1138,
+  "errors": 0,
+  "warnings": 0,
+  "hints": 24,
+  "focused": {
+    "files": 5,
+    "passed": 86,
+    "failed": 0,
+    "pending": 0
+  },
+  "identicalJavaScriptEmission": 5,
+  "typesLogSha256": "e47fa58d353fbdd1f8a1a4502a69bd1fe8c885d83aad21327359a974e3e56bd2",
+  "testJsonSha256": "c0c301802d29f61b421f7ea1150506057149dead691531420266a6ce63ef3f32",
+  "scope": "precommit candidate source, not canonical CI"
+}

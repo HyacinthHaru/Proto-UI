@@ -1,0 +1,142 @@
+
+> proto-ui@ check:types <CANDIDATE_SOURCE_ROOT>
+> corepack pnpm@10.32.1 --filter apps-www generate:proto-ui-style && corepack pnpm@10.32.1 -s check:types:workspace && corepack pnpm@10.32.1 -s check:types:docs
+
+
+> apps-www@0.0.1 generate:proto-ui-style <CANDIDATE_SOURCE_ROOT>/apps/www
+> node ./scripts/generate-cli-init-docs.mjs && node ../../packages/cli/bin/proto-ui.js theme shadcn --out ./src/styles/shadcn-theme.css && node ./scripts/generate-website-prototype-tokens.mjs && node ../../packages/cli/bin/proto-ui.js style --out ./src/styles/proto-ui-style.css --theme-import ./shadcn-theme.css --tokens-import ./proto-ui-tokens.generated.css
+
+[docs] extracted real @proto.ui/cli@0.3.0-alpha.1 init: 4 files
+[proto-ui] theme(shadcn): wrote src/styles/shadcn-theme.css
+[website-prototypes] generated one style sheet and its Shadow companion from 1415 package + website tokens
+[proto-ui] style: wrote src/styles/proto-ui-style.css
+[docs] extracted real @proto.ui/cli@0.3.0-alpha.1 init: 4 files
+[proto-ui] theme(shadcn): wrote src/styles/shadcn-theme.css
+[website-prototypes] generated one style sheet and its Shadow companion from 1415 package + website tokens
+[proto-ui] style: wrote src/styles/proto-ui-style.css
+10:03:50 [content] Syncing content
+10:03:50 [content] Synced content
+10:03:50 [types] Generated 263ms
+10:03:50 [check] Getting diagnostics for Astro files in <CANDIDATE_SOURCE_ROOT>/apps/www...
+[96mscripts/audit-brutalist-contrast.mts[0m:[93m871[0m:[93m23[0m - [93mwarning[0m[90m ts(6385): [0m'clip' is deprecated.
+
+[7m871[0m             if (style.clip !== 'auto' || style.clipPath !== 'none' || style.maskImage !== 'none')
+[7m   [0m [93m                      ~~~~[0m
+
+[96mscripts/capture-whitepaper-diagram-evidence.mjs[0m:[93m661[0m:[93m17[0m - [93mwarning[0m[90m ts(2568): [0mProperty 'error' may not exist on type '{ theme: string; svgSha256: any; sourceSha256: any; expectedDimensions: { width: any; height: any; }; errors: any[]; screenshots: never[]; outcome: string; initialViewport?: any; id: string; figure: any; revision: string; ... 6 more ...; scenario: "standard" | ... 4 more ... | "landscape-390"; }'. Did you mean 'errors'?
+
+[7m661[0m           entry.error = String(error);
+[7m   [0m [93m                ~~~~~[0m
+
+[96mscripts/contrast-probe.browser.ts[0m:[93m550[0m:[93m15[0m - [93mwarning[0m[90m ts(6385): [0m'clip' is deprecated.
+
+[7m550[0m     if (style.clip !== 'auto') limits.push('unsupported-legacy-clip');
+[7m   [0m [93m              ~~~~[0m
+
+[96mscripts/reading-reference-collector.mjs[0m:[93m457[0m:[93m32[0m - [93mwarning[0m[90m ts(6385): [0m'platform' is deprecated.
+
+[7m457[0m       platform: navigatorInfo?.platform ?? null,
+[7m   [0m [93m                               ~~~~~~~~[0m
+
+[96msrc/components/library-liquid-scene.test.ts[0m:[93m129[0m:[93m9[0m - [93mwarning[0m[90m ts(6133): [0m'f' is declared but its value is never read.
+
+[7m129[0m   const f = fixture(),
+[7m   [0m [93m        ~[0m
+
+[96msrc/components/site-command-icons.dependencies.test.ts[0m:[93m49[0m:[93m72[0m - [93mwarning[0m[90m ts(6385): [0m'isTypeOnly' is deprecated.
+
+[7m49[0m       if (ts.isImportDeclaration(statement) && statement.importClause?.isTypeOnly) continue;
+[7m  [0m [93m                                                                       ~~~~~~~~~~[0m
+
+[96msrc/components/site-header-startup-handoff.test.ts[0m:[93m19[0m:[93m13[0m - [93mwarning[0m[90m ts(6133): [0m'root' is declared but its value is never read.
+
+[7m19[0m     const { root, summary, cell, button } = fixture();
+[7m  [0m [93m            ~~~~[0m
+
+[96msrc/components/site-search-composition.test.ts[0m:[93m610[0m:[93m42[0m - [93mwarning[0m[90m ts(80007): [0m'await' has no effect on the type of this expression.
+
+[7m610[0m       if (typeof cleanup === 'function') await cleanup();
+[7m   [0m [93m                                         ~~~~~~~~~~~~~~~[0m
+[96msrc/components/site-search-composition.test.ts[0m:[93m487[0m:[93m42[0m - [93mwarning[0m[90m ts(80007): [0m'await' has no effect on the type of this expression.
+
+[7m487[0m       if (typeof cleanup === 'function') await cleanup();
+[7m   [0m [93m                                         ~~~~~~~~~~~~~~~[0m
+[96msrc/components/site-search-composition.test.ts[0m:[93m359[0m:[93m11[0m - [93mwarning[0m[90m ts(80006): [0mThis may be converted to an async function.
+
+[7m359[0m           setChildren(ref, children) {
+[7m   [0m [93m          ~~~~~~~~~~~[0m
+
+[96msrc/components/site-sidebar-disclosure-bootstrap.js[0m:[93m51[0m:[93m44[0m - [93mwarning[0m[90m ts(6133): [0m'id' is declared but its value is never read.
+
+[7m51[0m   const known = new Set(identities.filter((id, index) => managed[index]));
+[7m  [0m [93m                                           ~~[0m
+
+[96msrc/components/site-startup-paint.ts[0m:[93m6[0m:[93m1[0m - [93mwarning[0m[90m ts(6133): [0m'SiteLibraryFamily' is declared but its value is never read.
+
+[7m6[0m import type { SiteLibraryFamily } from './site-library-family';
+[7m [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/components/PrototypePreviewer/demo-renderer.ts[0m:[93m337[0m:[93m10[0m - [93mwarning[0m[90m ts(6133): [0m'collectDemoRefs' is declared but its value is never read.
+
+[7m337[0m function collectDemoRefs(host: HTMLElement): Record<string, HTMLElement> {
+[7m   [0m [93m         ~~~~~~~~~~~~~~~[0m
+
+[96msrc/components/PrototypePreviewer/preview-material-rebind.test.ts[0m:[93m118[0m:[93m9[0m - [93mwarning[0m[90m ts(6133): [0m'events' is declared but its value is never read.
+
+[7m118[0m   const events: string[] = [];
+[7m   [0m [93m        ~~~~~~[0m
+[96msrc/components/PrototypePreviewer/preview-material-rebind.test.ts[0m:[93m3[0m:[93m36[0m - [93mwarning[0m[90m ts(6196): [0m'VisualFeedbackSink' is declared but never used.
+
+[7m3[0m import type { VisualFeedbackFrame, VisualFeedbackSink } from '@proto.ui/module-feedback';
+[7m [0m [93m                                   ~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/components/PrototypePreviewer/projection-composition.dynamic-children.test.ts[0m:[93m316[0m:[93m45[0m - [93mwarning[0m[90m ts(6133): [0m'refs' is declared but its value is never read.
+
+[7m316[0m     const subscribePublicInstances = vi.fn((refs, listener) => {
+[7m   [0m [93m                                            ~~~~[0m
+
+[96msrc/content/docs/zh-cn/code-scroll-chain.browser.test.ts[0m:[93m42[0m:[93m22[0m - [93mwarning[0m[90m ts(6133): [0m'page' is declared but its value is never read.
+
+[7m42[0m async function facts(page: Page, pre: Locator) {
+[7m  [0m [93m                     ~~~~[0m
+
+[96msrc/content/docs/zh-cn/code-surfaces.browser.test.ts[0m:[93m401[0m:[93m28[0m - [93mwarning[0m[90m ts(6387): [0mThe signature '(x: number, y: number): Range | null' of 'document.caretRangeFromPoint' is deprecated.
+
+[7m401[0m     const range = document.caretRangeFromPoint?.(point.x, point.y);
+[7m   [0m [93m                           ~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts[0m:[93m54[0m:[93m3[0m - [93mwarning[0m[90m ts(6133): [0m'family' is declared but its value is never read.
+
+[7m54[0m   family: string,
+[7m  [0m [93m  ~~~~~~[0m
+
+[96msrc/content/docs/zh-cn/demo-liquid-glass-prominent-tint.browser.test.ts[0m:[93m26[0m:[93m8[0m - [93mwarning[0m[90m ts(6133): [0m'TintPair' is declared but its value is never read.
+
+[7m26[0m   type TintPair,
+[7m  [0m [93m       ~~~~~~~~[0m
+
+[96msrc/content/docs/zh-cn/finf-representative-features.browser.test.ts[0m:[93m335[0m:[93m3[0m - [93mwarning[0m[90m ts(6133): [0m'page' is declared but its value is never read.
+
+[7m335[0m   page: Page,
+[7m   [0m [93m  ~~~~[0m
+
+[96msrc/content/docs/zh-cn/library-card-font-trace.ts[0m:[93m61[0m:[93m28[0m - [93mwarning[0m[90m ts(6385): [0m'fontStretch' is deprecated.
+
+[7m61[0m           fontStretch: css.fontStretch,
+[7m  [0m [93m                           ~~~~~~~~~~~[0m
+
+[96msrc/content/docs/zh-cn/site-native-links.browser.test.ts[0m:[93m2011[0m:[93m15[0m - [93mwarning[0m[90m ts(6133): [0m'family' is declared but its value is never read.
+
+[7m2011[0m   for (const [family, route] of [
+[7m    [0m [93m              ~~~~~~[0m
+
+[96msrc/content/docs/zh-cn/site-typography.browser.test.ts[0m:[93m917[0m:[93m22[0m - [93mwarning[0m[90m ts(6133): [0m'context' is declared but its value is never read.
+
+[7m917[0m         async (page, context, record) => {
+[7m   [0m [93m                     ~~~~~~~[0m
+
+Result (1138 files): 
+- 0 errors
+- 0 warnings
+- 24 hints
+

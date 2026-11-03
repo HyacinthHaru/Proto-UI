@@ -1,0 +1,42 @@
+{
+  "base": "7969265c2104464acac2ac761b46906e7570f320",
+  "scope": "Five type-only test-expression corrections; all source assertions/data/timeouts unchanged",
+  "files": [
+    {
+      "path": "apps/www/src/components/PrototypePreviewer/surface-registration.test.ts",
+      "beforeSha256": "ed994eb9273ecc7efa6a9e235e54602a2c3824f0d5169025bafb6470a611016c",
+      "afterSha256": "05c696c1a6981734a07ebcae421cd250f99927ef6ff01051d13e21d4a6e67187",
+      "emittedJsSha256": "dfe1ef8def50671ee9d778b9b192456abcd3afc9b74f79c7059f935ca065d643",
+      "identicalRuntimeEmission": true
+    },
+    {
+      "path": "apps/www/src/components/PrototypePreviewer/tabs-registration.test.ts",
+      "beforeSha256": "3cb4c65a0a4ac8663c941a9ae4f2aee4159721ee90070250304b5009155d5cad",
+      "afterSha256": "6a62bd1261d65c62d741e1c593b70ecb1d200a2998cd5bc07e8906530d5f983a",
+      "emittedJsSha256": "944cd54d80df6af8c35398a1b371e0966f48dceb188a3788b46023f0d279503d",
+      "identicalRuntimeEmission": true
+    },
+    {
+      "path": "apps/www/src/components/PrototypePreviewer/text-registration.test.ts",
+      "beforeSha256": "000c3d7c8a0ab2c79f8cdd68e79b7ac45c6a1154667a3a3233f7666b6e1cfdb4",
+      "afterSha256": "949b4930f9560400d5203805513fc48d6492a07d5561f162f072c2eb42e45fea",
+      "emittedJsSha256": "55a4c4e2f7cc5c8804f38bdfe2101a4cb8fdf264b3508496bd8d65943a82865c",
+      "identicalRuntimeEmission": true
+    },
+    {
+      "path": "apps/www/src/components/PrototypePreviewer/textarea-registration.test.ts",
+      "beforeSha256": "ee5d0c083938edac689e94915f7892993f3b3d01a70dfea3f83b2984eaaf6501",
+      "afterSha256": "0873fad68ee5d14be1107b400eaa78ab07aea1d4d983260d9d289cd5bacf8e5f",
+      "emittedJsSha256": "d88fb7eddb2d224295e14d2310ff4553f5ddc15cc7c5e46531745fe434bebdd9",
+      "identicalRuntimeEmission": true
+    },
+    {
+      "path": "apps/www/src/components/PrototypePreviewer/toggle-registration.test.ts",
+      "beforeSha256": "4fcf0cca5f7ff44a190d3c5e9d473cd4fe2f77cf1b645c1003cec2a6499c9118",
+      "afterSha256": "d2b34b29d2d8c23479529cb60265d2d8947bccb437b34763f143b30125b7756b",
+      "emittedJsSha256": "309c473db9c7dc2cdac78daabfb495844ffc3c55c632c4e23a992480844fa780",
+      "identicalRuntimeEmission": true
+    }
+  ],
+  "esbuild": "0.25.12"
+}
