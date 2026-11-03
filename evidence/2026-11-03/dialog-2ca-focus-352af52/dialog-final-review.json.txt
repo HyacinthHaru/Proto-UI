@@ -1,0 +1,349 @@
+{
+  "reviewedAt": "2026-11-03T13:32:55.083049+00:00",
+  "mode": "human-assisted/current-user",
+  "assessment": "unassessed/advisory",
+  "disposition": "partial/ABSTAIN",
+  "scope": "Bounded local final 2ca source and paired terminal binding; no formal independent calibration acceptance or GitHub approval.",
+  "head": "2ca069c1aa80d7d798d246d0d1bd3e96e700e7b0",
+  "tree": "5e47265c4fe837fb77b821bfb9ac3e6c051ef37a",
+  "parents": [
+    "f1db798644e4641a99856b172d4f7ac2baf0e91d",
+    "8c496094fba393e0c571f2b290dac4befd3db007",
+    "86cd25da396aa3e4d058e4468ad7e79ee0f1144f"
+  ],
+  "netPathsRelativeToParent8c": [
+    "M\tapps/www/src/components/PrototypePreviewer/surface-registration.test.ts",
+    "M\tapps/www/src/components/PrototypePreviewer/tabs-registration.test.ts",
+    "M\tapps/www/src/components/PrototypePreviewer/text-registration.test.ts",
+    "M\tapps/www/src/components/PrototypePreviewer/textarea-registration.test.ts",
+    "M\tapps/www/src/components/PrototypePreviewer/toggle-registration.test.ts",
+    "M\tapps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+    "A\tinternal/records/2026-11-03-dialog-mask-identity.md",
+    "M\tscripts/test/check-dialog-baseline-evidence.mjs"
+  ],
+  "closure": [
+    {
+      "path": "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+      "sha256": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e",
+      "expectedSha256": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e",
+      "candidateGitEqualExpected": true,
+      "baselineCopiedFileNow": {
+        "path": "<USER_ROOT>/.codex/worktrees/dialog-pair-baseline-nov03/Proto-UI/apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+        "bytes": 29204,
+        "sha256": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e"
+      },
+      "baselineCopiedFileEqualExpected": true,
+      "executedProbeCopies": [
+        {
+          "path": "<STATE_ROOT>/dialog-candidate/executed-probe.ts",
+          "bytes": 29204,
+          "sha256": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e"
+        },
+        {
+          "path": "<STATE_ROOT>/dialog-baseline/executed-probe.ts",
+          "bytes": 29204,
+          "sha256": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e"
+        }
+      ],
+      "bothExecutedProbeCopiesEqualExpected": true
+    },
+    {
+      "path": "apps/www/src/content/docs/zh-cn/browser-harness.ts",
+      "sha256": "3b425734cfb00602354bdc2b086e70a0434863f7cc3040415631be1627e0c9b6",
+      "expectedSha256": "3b425734cfb00602354bdc2b086e70a0434863f7cc3040415631be1627e0c9b6",
+      "candidateGitEqualExpected": true,
+      "baselineCopiedFileNow": {
+        "path": "<USER_ROOT>/.codex/worktrees/dialog-pair-baseline-nov03/Proto-UI/apps/www/src/content/docs/zh-cn/browser-harness.ts",
+        "bytes": 30379,
+        "sha256": "3b425734cfb00602354bdc2b086e70a0434863f7cc3040415631be1627e0c9b6"
+      },
+      "baselineCopiedFileEqualExpected": true
+    },
+    {
+      "path": "scripts/test/server-readiness.mjs",
+      "sha256": "4bbc332f34ebf8a9c24f0ccc01d53438dd7146e86118a932eacc63d819105fda",
+      "expectedSha256": "4bbc332f34ebf8a9c24f0ccc01d53438dd7146e86118a932eacc63d819105fda",
+      "candidateGitEqualExpected": true,
+      "baselineCopiedFileNow": {
+        "path": "<USER_ROOT>/.codex/worktrees/dialog-pair-baseline-nov03/Proto-UI/scripts/test/server-readiness.mjs",
+        "bytes": 4717,
+        "sha256": "4bbc332f34ebf8a9c24f0ccc01d53438dd7146e86118a932eacc63d819105fda"
+      },
+      "baselineCopiedFileEqualExpected": true
+    }
+  ],
+  "checker": {
+    "path": "scripts/test/check-dialog-baseline-evidence.mjs",
+    "sha256": "d8bd261c9d042381a861a463dec0b8b40b8d2a90520e4702d2b122d28986b0fd",
+    "comparison": "f1db798644e4641a99856b172d4f7ac2baf0e91d",
+    "change": "CURRENT browser-harness hash 0f150fc2 -> 3b425734 only; historical PROBE and strict verifier/CLI tail preserved byte for byte"
+  },
+  "pairBinding": {
+    "path": "<STATE_ROOT>/dialog-pair-binding.json",
+    "bytes": 859,
+    "sha256": "55b78456727e11a6ba3c3a1f19fc0462c764149b5dca8fdcf074ae9bf10637ed"
+  },
+  "rootReconciliation": {
+    "path": "<STATE_ROOT>/dialog-local-final-reconciliation.json",
+    "bytes": 479,
+    "sha256": "6ce35e66ea475dedce465ed8fd603aefe2cf345823a8af7b4c412140768b4b63"
+  },
+  "subjects": [
+    {
+      "subject": "candidate",
+      "head": "2ca069c1aa80d7d798d246d0d1bd3e96e700e7b0",
+      "probeHead": "2ca069c1aa80d7d798d246d0d1bd3e96e700e7b0",
+      "receipt": {
+        "path": "<STATE_ROOT>/dialog-candidate/receipt.json",
+        "bytes": 779,
+        "sha256": "af03324a724df55227398de149816578c0a287332fa5b08866472e310f6fb156"
+      },
+      "vitest": {
+        "path": "<STATE_ROOT>/dialog-candidate/vitest.json",
+        "bytes": 3539,
+        "sha256": "2525f40d347cde99d505914e070d559f6d4fc0984f5bc49e63415174ac73019d"
+      },
+      "runner": {
+        "path": "<STATE_ROOT>/dialog-candidate/runner-integrity.json",
+        "bytes": 603,
+        "sha256": "6d335a42cb33f038a7281eb254afe0859a0470a6852a8ea81f4b9bec571091ac"
+      },
+      "observations": {
+        "path": "<STATE_ROOT>/dialog-candidate/dialog-available-space/observations.json",
+        "bytes": 1071817,
+        "sha256": "b362ae802e2692ffcc697b184bdde012a4f9198ae288ea12164ce97cec9ca495"
+      },
+      "startedAt": "2026-11-03T13:02:51.588896+00:00",
+      "finishedAt": "2026-11-03T13:03:58.996218+00:00",
+      "exitCode": 0,
+      "counts": {
+        "total": 8,
+        "passed": 8,
+        "failed": 0,
+        "pending": 0
+      },
+      "runnerFields": {
+        "schemaVersion": 1,
+        "vitestVersion": "2.1.9",
+        "reporterSha256": "d26d77c9a57a8997394a21b70dee15cf7408c25e3d7bd7e22f48e5b1e6e4c6fa",
+        "phase": "process-exit",
+        "finishedCalls": 1,
+        "closeStarted": true,
+        "closeFinished": true,
+        "processTimedOut": false,
+        "runnerErrors": [],
+        "unhandledErrors": [],
+        "files": [
+          {
+            "path": "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+            "state": "pass",
+            "suiteErrors": []
+          }
+        ],
+        "exitCode": 0,
+        "cancelled": false,
+        "reportSha256": "2525f40d347cde99d505914e070d559f6d4fc0984f5bc49e63415174ac73019d"
+      },
+      "rowDistribution": {
+        "geometry": 120,
+        "action": 52,
+        "titleClearance": 24
+      },
+      "geometryIdentityResolved": 120,
+      "imageReferenceCount": 120,
+      "browser": "155.0.8059.39",
+      "conditions": "Real public Dialog. Viewport resizing and CDP page scale emulate available-space changes; not physical keyboard/notch evidence. Long text and 200% root font are explicit stress fixtures.",
+      "failures": [],
+      "checks": {
+        "reportHashMatchesRunner": true,
+        "runnerExitMatchesReceipt": true,
+        "runnerCleanTerminal": true,
+        "caseCountsExact": true,
+        "observationSourceBinding": true,
+        "probeHashBinding": true,
+        "rowCountExact": true,
+        "noCaseFilter": true
+      }
+    },
+    {
+      "subject": "baseline",
+      "head": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "probeHead": "2ca069c1aa80d7d798d246d0d1bd3e96e700e7b0",
+      "receipt": {
+        "path": "<STATE_ROOT>/dialog-baseline/receipt.json",
+        "bytes": 828,
+        "sha256": "dca09d177c877421484b03ba7d06c1934edc47163cd27b84ac92fe1ed6634034"
+      },
+      "vitest": {
+        "path": "<STATE_ROOT>/dialog-baseline/vitest.json",
+        "bytes": 19663,
+        "sha256": "d83311c94b563e78c571ed3a47a738ecf2f26b093b6862389faaaa23e67da1c8"
+      },
+      "runner": {
+        "path": "<STATE_ROOT>/dialog-baseline/runner-integrity.json",
+        "bytes": 603,
+        "sha256": "53ac6b884a09fe5c8c2ef6517b66eb3bdc82348cde40b874870d3c494605bd5b"
+      },
+      "observations": {
+        "path": "<STATE_ROOT>/dialog-baseline/dialog-available-space/observations.json",
+        "bytes": 193327,
+        "sha256": "21ae724a312224330efa26d581f30b13f65aa5c65bd77a7219a404d72e4a5f50"
+      },
+      "startedAt": "2026-11-03T13:06:36.837126+00:00",
+      "finishedAt": "2026-11-03T13:07:05.553799+00:00",
+      "exitCode": 1,
+      "counts": {
+        "total": 8,
+        "passed": 0,
+        "failed": 8,
+        "pending": 0
+      },
+      "runnerFields": {
+        "schemaVersion": 1,
+        "vitestVersion": "2.1.9",
+        "reporterSha256": "d26d77c9a57a8997394a21b70dee15cf7408c25e3d7bd7e22f48e5b1e6e4c6fa",
+        "phase": "process-exit",
+        "finishedCalls": 1,
+        "closeStarted": true,
+        "closeFinished": true,
+        "processTimedOut": false,
+        "runnerErrors": [],
+        "unhandledErrors": [],
+        "files": [
+          {
+            "path": "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+            "state": "fail",
+            "suiteErrors": []
+          }
+        ],
+        "exitCode": 1,
+        "cancelled": false,
+        "reportSha256": "d83311c94b563e78c571ed3a47a738ecf2f26b093b6862389faaaa23e67da1c8"
+      },
+      "rowDistribution": {
+        "geometry": 21,
+        "failure": 8,
+        "titleClearance": 4
+      },
+      "geometryIdentityResolved": 21,
+      "imageReferenceCount": 29,
+      "browser": "155.0.8059.39",
+      "conditions": "Real public Dialog. Viewport resizing and CDP page scale emulate available-space changes; not physical keyboard/notch evidence. Long text and 200% root font are explicit stress fixtures.",
+      "failures": [
+        {
+          "case": "shadcn/wc",
+          "firstFailureLine": "AssertionError: expected 0 to be greater than or equal to 15"
+        },
+        {
+          "case": "shadcn/react",
+          "firstFailureLine": "AssertionError: expected 0 to be greater than or equal to 15"
+        },
+        {
+          "case": "shadcn/vue",
+          "firstFailureLine": "AssertionError: expected 0 to be greater than or equal to 15"
+        },
+        {
+          "case": "shadcn/vue2",
+          "firstFailureLine": "Error: RuntimeNotOffered:shadcn/vue2:[\"wc\",\"react\",\"vue\"]"
+        },
+        {
+          "case": "brutalist/wc",
+          "firstFailureLine": "AssertionError: CloseIcon must not cover the Title box: expected 504 to be +0 // Object.is equality"
+        },
+        {
+          "case": "brutalist/react",
+          "firstFailureLine": "AssertionError: CloseIcon must not cover the Title box: expected 504 to be +0 // Object.is equality"
+        },
+        {
+          "case": "brutalist/vue",
+          "firstFailureLine": "AssertionError: CloseIcon must not cover the Title box: expected 504 to be +0 // Object.is equality"
+        },
+        {
+          "case": "brutalist/vue2",
+          "firstFailureLine": "AssertionError: CloseIcon must not cover the Title box: expected 504 to be +0 // Object.is equality"
+        }
+      ],
+      "checks": {
+        "reportHashMatchesRunner": true,
+        "runnerExitMatchesReceipt": true,
+        "runnerCleanTerminal": true,
+        "caseCountsExact": true,
+        "observationSourceBinding": true,
+        "probeHashBinding": true,
+        "rowCountExact": true,
+        "noCaseFilter": true
+      }
+    }
+  ],
+  "existingOtherValidation": {
+    "parentFocused": {
+      "path": "<STATE_ROOT>/dialog-parent-focused.json",
+      "bytes": 60968,
+      "sha256": "e2fc1a62ea38ce000d43381e155a5e43050a34795dedf7eaaa12eff970a61b75",
+      "counts": {
+        "numTotalTests": 172,
+        "numPassedTests": 169,
+        "numFailedTests": 0,
+        "numPendingTests": 3
+      },
+      "log": {
+        "path": "<STATE_ROOT>/dialog-parent-focused.log",
+        "bytes": 237628,
+        "sha256": "19c322ead706516d650b3d0f865ed835e99a1c80f69f09c2f6ea62b303af87b6"
+      }
+    },
+    "node": {
+      "log": {
+        "path": "<STATE_ROOT>/dialog-node.log",
+        "bytes": 9646,
+        "sha256": "5ad6cd92608b6fb7141b4702f961520b4e3ab9176884653e4408292b3ba427ee"
+      },
+      "observedSummary": "132 tests; 132 pass; 0 fail; 0 skipped"
+    },
+    "types": {
+      "log": {
+        "path": "<STATE_ROOT>/dialog-types.log",
+        "bytes": 8884,
+        "sha256": "4e5efd4928ba14a6f5b58246f379dd9b3b49ab6f417b4dd9f79236036710f475"
+      },
+      "observedSummary": "Result (1141 files): 0 errors; 0 warnings; 24 hints"
+    },
+    "boundary": "Existing report/log summaries read only. No new tests, type command, classifier CLI or browser was run by this reviewer."
+  },
+  "checks": {
+    "closureThreeHashes": true,
+    "checkerOnlyCurrentHarnessHashChanged": true,
+    "historicalProbePrefixByteIdentical": true,
+    "strictVerifierAndCliTailByteIdentical": true,
+    "currentMapContainsAllThreeHashes": true,
+    "actualTreeExpected": true,
+    "threeParentsExact": true,
+    "candidate.reportHashMatchesRunner": true,
+    "candidate.runnerExitMatchesReceipt": true,
+    "candidate.runnerCleanTerminal": true,
+    "candidate.caseCountsExact": true,
+    "candidate.observationSourceBinding": true,
+    "candidate.probeHashBinding": true,
+    "candidate.rowCountExact": true,
+    "candidate.noCaseFilter": true,
+    "baseline.reportHashMatchesRunner": true,
+    "baseline.runnerExitMatchesReceipt": true,
+    "baseline.runnerCleanTerminal": true,
+    "baseline.caseCountsExact": true,
+    "baseline.observationSourceBinding": true,
+    "baseline.probeHashBinding": true,
+    "baseline.rowCountExact": true,
+    "baseline.noCaseFilter": true,
+    "baselineOriginalFailureFamilies": true
+  },
+  "openFindings": 0,
+  "findings": [],
+  "limitations": [
+    "This checks recorded local candidate/baseline executions. It does not reclassify the closure as historically calibrated or accept it on behalf of maintainers.",
+    "No GitHub/network read in this review; publication status is outside this local binding audit.",
+    "No full tracked-source census reconstruction, fresh run, PNG pixel review, or per-PNG byte replay in this bounded addendum. Image counts are observation references. Root reports four candidate PNGs viewed; reviewer did not independently repeat visual inspection.",
+    "Baseline failure shape is preserved as 3 inset/4 Title box overlap/1 unavailable runtime; Title box overlap is not a claim of glyph occlusion.",
+    "Source closure hashes are independently compared to exact 2ca Git bytes, current baseline copied files and archived executed probe copies. This is not a claim that all dependency/environment inputs are identical.",
+    "The updated CURRENT binding allows this pair to be represented; historical PROBE closure remains e379/181f and differs. No classifier CLI acceptance was manufactured."
+  ]
+}

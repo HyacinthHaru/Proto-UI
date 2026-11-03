@@ -1,0 +1,43 @@
+{
+  "at": "2026-11-03T13:32:29.375Z",
+  "kind": "New local read-only import of unchanged current verifier on actual new raw pair; not hosted CLI transcript",
+  "head": "2ca069c1aa80d7d798d246d0d1bd3e96e700e7b0",
+  "currentClosureVerified": true,
+  "actualRunnerVerified": true,
+  "historicalClassificationRejected": true,
+  "rejection": "AssertionError [ERR_ASSERTION]: Uncalibrated probe closure\n+ actual - expected\n\n  {\n+   'subject/apps/www/src/content/docs/zh-cn/browser-harness.ts': '3b425734cfb00602354bdc2b086e70a0434863f7cc3040415631be1627e0c9b6',\n+   'subject/apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts': '50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e',\n-   'subject/apps/www/src/content/docs/zh-cn/browser-harness.ts': 'e3792a3e0003b79385c3aae90b08728c51d7564bf1abd16a32a47ff9f37fca9d',\n-   'subject/apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts': '181f88d9a711103f00437fd1866a30e5a383612c14aad8b0a63c46a043b5df88',\n    'subject/scripts/test/server-readiness.mjs': '4bbc332f34ebf8a9c24f0ccc01d53438dd7146e86118a932eacc63d819105fda'\n  }\n\n    at verifyExpectedBaseline (file://<DIALOG_SOURCE_ROOT>/scripts/test/check-dialog-baseline-evidence.mjs:109:10)\n    at file://<STATE_ROOT>/verify-new-pair.mjs:17:6\n    at ModuleJob.run (node:internal/modules/esm/module_job:561:25)\n    at async node:internal/modules/esm/loader:647:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)",
+  "binding": {
+    "subjectSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+    "probeSha": "2ca069c1aa80d7d798d246d0d1bd3e96e700e7b0",
+    "expectedProbeSha": "2ca069c1aa80d7d798d246d0d1bd3e96e700e7b0",
+    "probeHashes": {
+      "subject/apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e",
+      "subject/apps/www/src/content/docs/zh-cn/browser-harness.ts": "3b425734cfb00602354bdc2b086e70a0434863f7cc3040415631be1627e0c9b6",
+      "subject/scripts/test/server-readiness.mjs": "4bbc332f34ebf8a9c24f0ccc01d53438dd7146e86118a932eacc63d819105fda"
+    },
+    "reportSha256": "d83311c94b563e78c571ed3a47a738ecf2f26b093b6862389faaaa23e67da1c8",
+    "expectedReporterSha256": "d26d77c9a57a8997394a21b70dee15cf7408c25e3d7bd7e22f48e5b1e6e4c6fa",
+    "runnerIntegrity": {
+      "schemaVersion": 1,
+      "vitestVersion": "2.1.9",
+      "reporterSha256": "d26d77c9a57a8997394a21b70dee15cf7408c25e3d7bd7e22f48e5b1e6e4c6fa",
+      "phase": "process-exit",
+      "finishedCalls": 1,
+      "closeStarted": true,
+      "closeFinished": true,
+      "processTimedOut": false,
+      "runnerErrors": [],
+      "unhandledErrors": [],
+      "files": [
+        {
+          "path": "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+          "state": "fail",
+          "suiteErrors": []
+        }
+      ],
+      "exitCode": 1,
+      "cancelled": false,
+      "reportSha256": "d83311c94b563e78c571ed3a47a738ecf2f26b093b6862389faaaa23e67da1c8"
+    }
+  }
+}

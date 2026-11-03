@@ -1,0 +1,6325 @@
+{
+  "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+  "probeSha": "2ca069c1aa80d7d798d246d0d1bd3e96e700e7b0",
+  "subject": "baseline",
+  "renderer": "Astro dev server",
+  "browser": "155.0.8059.39",
+  "conditions": "Real public Dialog. Viewport resizing and CDP page scale emulate available-space changes; not physical keyboard/notch evidence. Long text and 200% root font are explicit stress fixtures.",
+  "observations": [
+    {
+      "id": "shadcn-wc-390-immediate",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "route": "/en/ui-libraries/shadcn/dialog/",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "data": {
+        "rect": {
+          "x": 9.75,
+          "y": 372.1000061035156,
+          "width": 370.5,
+          "height": 155.80001831054688,
+          "top": 372.1000061035156,
+          "right": 380.25,
+          "bottom": 527.9000244140625,
+          "left": 9.75
+        },
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "x": 0,
+          "y": 0,
+          "visibleWidth": 390,
+          "visibleHeight": 900,
+          "scale": 1
+        },
+        "mask": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "font": 16,
+        "rendering": {
+          "dpr": 1,
+          "fonts": "loaded",
+          "scheme": "light",
+          "rootClientWidth": 390,
+          "rootClientLeft": 0
+        },
+        "paint": {
+          "fontFamily": "ui-sans-serif, system-ui, -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", \"Noto Sans CJK SC\", \"Noto Sans SC\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "lineHeight": "28px",
+          "transitionProperty": "all",
+          "transitionDuration": "0.2s"
+        },
+        "animations": [
+          {
+            "playState": "running",
+            "pending": true,
+            "property": null
+          }
+        ],
+        "overflowY": "visible",
+        "scrollWidth": 388,
+        "clientWidth": 388,
+        "scrollHeight": 162,
+        "clientHeight": 162,
+        "scrollTop": 0,
+        "focusInside": true,
+        "active": "<wc-shadcn-button class=\"pui-projection-prototype pui-projection-owner-70_70_2d_63_78_67_73_62_30_75_70_76_64 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_62_75_74_74_6f_6e\" data-pui-root=\"\" role=\"butt",
+        "transition": "entering",
+        "available": {
+          "width": "",
+          "height": ""
+        },
+        "maskIdentity": {
+          "status": "resolved",
+          "coordinates": {
+            "owner": "pp-cxgsb0upvd",
+            "family": "shadcn",
+            "runtime": "wc",
+            "generation": "1"
+          },
+          "rootCount": 1,
+          "contentCount": 1,
+          "triggerCount": 1,
+          "maskCount": 1,
+          "originalFirstMatch": {
+            "tag": "WC-SHADCN-DIALOG-MASK",
+            "attributes": {
+              "data-pui-root": "",
+              "data-projection-owner": "pp-cxgsb0upvd",
+              "data-projection-family": "shadcn",
+              "data-projection-runtime": "wc",
+              "data-projection-generation": "1",
+              "data-projection-prototype": "shadcn-dialog-mask",
+              "data-transition-state": "entering",
+              "data-is-present": ""
+            },
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 900,
+              "top": 0,
+              "right": 390,
+              "bottom": 900,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "originalRect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 900,
+            "top": 0,
+            "right": 390,
+            "bottom": 900,
+            "left": 0
+          },
+          "content": {
+            "tag": "WC-SHADCN-DIALOG-CONTENT",
+            "attributes": {
+              "data-pui-root": "",
+              "data-projection-owner": "pp-cxgsb0upvd",
+              "data-projection-family": "shadcn",
+              "data-projection-runtime": "wc",
+              "data-projection-generation": "1",
+              "data-projection-prototype": "shadcn-dialog-content",
+              "data-transition-state": "entering",
+              "data-is-present": "",
+              "id": "pui-dialog-2-content",
+              "role": "dialog"
+            },
+            "rect": {
+              "x": 9.75,
+              "y": 372.1000061035156,
+              "width": 370.5,
+              "height": 155.80001831054688,
+              "top": 372.1000061035156,
+              "right": 380.25,
+              "bottom": 527.9000244140625,
+              "left": 9.75
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "masks": [
+            {
+              "tag": "WC-SHADCN-DIALOG-MASK",
+              "attributes": {
+                "data-pui-root": "",
+                "data-projection-owner": "pp-cxgsb0upvd",
+                "data-projection-family": "shadcn",
+                "data-projection-runtime": "wc",
+                "data-projection-generation": "1",
+                "data-projection-prototype": "shadcn-dialog-mask",
+                "data-transition-state": "entering",
+                "data-is-present": ""
+              },
+              "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 390,
+                "height": 900,
+                "top": 0,
+                "right": 390,
+                "bottom": 900,
+                "left": 0
+              },
+              "parent": {
+                "tag": "BODY",
+                "attributes": {}
+              }
+            }
+          ],
+          "triggers": [
+            {
+              "tag": "WC-SHADCN-BUTTON",
+              "attributes": {
+                "data-pui-root": "",
+                "role": "button",
+                "data-projection-owner": "pp-cxgsb0upvd",
+                "data-projection-family": "shadcn",
+                "data-projection-runtime": "wc",
+                "data-projection-generation": "1",
+                "data-projection-prototype": "shadcn-button",
+                "aria-haspopup": "dialog",
+                "aria-controls": "pui-dialog-2-content"
+              },
+              "rect": {
+                "x": 143.53125,
+                "y": 433.5,
+                "width": 102.9375,
+                "height": 32,
+                "top": 433.5,
+                "right": 246.46875,
+                "bottom": 465.5,
+                "left": 143.53125
+              },
+              "parent": {
+                "tag": "WC-SHADCN-DIALOG-TRIGGER",
+                "attributes": {
+                  "data-pui-root": "",
+                  "data-projection-owner": "pp-cxgsb0upvd",
+                  "data-projection-family": "shadcn",
+                  "data-projection-runtime": "wc",
+                  "data-projection-generation": "1",
+                  "data-projection-prototype": "shadcn-dialog-trigger"
+                }
+              }
+            }
+          ],
+          "scope": {
+            "data-projection-scope": "pp-cxgsb0upvd",
+            "data-projection-family": "shadcn",
+            "data-projection-runtime": "wc",
+            "data-projection-generation": "1",
+            "data-projection-state": "ready",
+            "data-demo-ref": "__pui_projection__scope"
+          },
+          "generationHost": {
+            "data-projection-generation-host": "1",
+            "data-projection-owner-host": "pp-cxgsb0upvd",
+            "data-projection-generation-state": "active"
+          }
+        }
+      },
+      "image": {
+        "file": "shadcn-wc-390-immediate.png",
+        "sha256": "43e1f017b84b7e0dad31ef4c6a84da893962ad3ad112a9c674ea3884a6f3ad4d"
+      }
+    },
+    {
+      "id": "shadcn-wc-390-resize-immediate",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "route": "/en/ui-libraries/shadcn/dialog/",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "data": {
+        "rect": {
+          "x": 0,
+          "y": 368,
+          "width": 390,
+          "height": 164,
+          "top": 368,
+          "right": 390,
+          "bottom": 532,
+          "left": 0
+        },
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "x": 0,
+          "y": 0,
+          "visibleWidth": 390,
+          "visibleHeight": 900,
+          "scale": 1
+        },
+        "mask": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "font": 16,
+        "rendering": {
+          "dpr": 1,
+          "fonts": "loaded",
+          "scheme": "light",
+          "rootClientWidth": 390,
+          "rootClientLeft": 0
+        },
+        "paint": {
+          "fontFamily": "ui-sans-serif, system-ui, -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", \"Noto Sans CJK SC\", \"Noto Sans SC\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "lineHeight": "28px",
+          "transitionProperty": "all",
+          "transitionDuration": "0.2s"
+        },
+        "animations": [
+          {
+            "playState": "finished",
+            "pending": false,
+            "property": null
+          }
+        ],
+        "overflowY": "visible",
+        "scrollWidth": 388,
+        "clientWidth": 388,
+        "scrollHeight": 162,
+        "clientHeight": 162,
+        "scrollTop": 0,
+        "focusInside": true,
+        "active": "<wc-shadcn-button class=\"pui-projection-prototype pui-projection-owner-70_70_2d_63_78_67_73_62_30_75_70_76_64 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_62_75_74_74_6f_6e\" data-pui-root=\"\" role=\"butt",
+        "transition": "entered",
+        "available": {
+          "width": "",
+          "height": ""
+        },
+        "maskIdentity": {
+          "status": "resolved",
+          "coordinates": {
+            "owner": "pp-cxgsb0upvd",
+            "family": "shadcn",
+            "runtime": "wc",
+            "generation": "1"
+          },
+          "rootCount": 1,
+          "contentCount": 1,
+          "triggerCount": 1,
+          "maskCount": 1,
+          "originalFirstMatch": {
+            "tag": "WC-SHADCN-DIALOG-MASK",
+            "attributes": {
+              "data-pui-root": "",
+              "data-projection-owner": "pp-cxgsb0upvd",
+              "data-projection-family": "shadcn",
+              "data-projection-runtime": "wc",
+              "data-projection-generation": "1",
+              "data-projection-prototype": "shadcn-dialog-mask",
+              "data-transition-state": "entered",
+              "data-is-present": ""
+            },
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 900,
+              "top": 0,
+              "right": 390,
+              "bottom": 900,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "originalRect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 900,
+            "top": 0,
+            "right": 390,
+            "bottom": 900,
+            "left": 0
+          },
+          "content": {
+            "tag": "WC-SHADCN-DIALOG-CONTENT",
+            "attributes": {
+              "data-pui-root": "",
+              "data-projection-owner": "pp-cxgsb0upvd",
+              "data-projection-family": "shadcn",
+              "data-projection-runtime": "wc",
+              "data-projection-generation": "1",
+              "data-projection-prototype": "shadcn-dialog-content",
+              "data-transition-state": "entered",
+              "data-is-present": "",
+              "id": "pui-dialog-2-content",
+              "role": "dialog"
+            },
+            "rect": {
+              "x": 0,
+              "y": 368,
+              "width": 390,
+              "height": 164,
+              "top": 368,
+              "right": 390,
+              "bottom": 532,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "masks": [
+            {
+              "tag": "WC-SHADCN-DIALOG-MASK",
+              "attributes": {
+                "data-pui-root": "",
+                "data-projection-owner": "pp-cxgsb0upvd",
+                "data-projection-family": "shadcn",
+                "data-projection-runtime": "wc",
+                "data-projection-generation": "1",
+                "data-projection-prototype": "shadcn-dialog-mask",
+                "data-transition-state": "entered",
+                "data-is-present": ""
+              },
+              "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 390,
+                "height": 900,
+                "top": 0,
+                "right": 390,
+                "bottom": 900,
+                "left": 0
+              },
+              "parent": {
+                "tag": "BODY",
+                "attributes": {}
+              }
+            }
+          ],
+          "triggers": [
+            {
+              "tag": "WC-SHADCN-BUTTON",
+              "attributes": {
+                "data-pui-root": "",
+                "role": "button",
+                "data-projection-owner": "pp-cxgsb0upvd",
+                "data-projection-family": "shadcn",
+                "data-projection-runtime": "wc",
+                "data-projection-generation": "1",
+                "data-projection-prototype": "shadcn-button",
+                "aria-haspopup": "dialog",
+                "aria-controls": "pui-dialog-2-content"
+              },
+              "rect": {
+                "x": 143.53125,
+                "y": 433.5,
+                "width": 102.9375,
+                "height": 32,
+                "top": 433.5,
+                "right": 246.46875,
+                "bottom": 465.5,
+                "left": 143.53125
+              },
+              "parent": {
+                "tag": "WC-SHADCN-DIALOG-TRIGGER",
+                "attributes": {
+                  "data-pui-root": "",
+                  "data-projection-owner": "pp-cxgsb0upvd",
+                  "data-projection-family": "shadcn",
+                  "data-projection-runtime": "wc",
+                  "data-projection-generation": "1",
+                  "data-projection-prototype": "shadcn-dialog-trigger"
+                }
+              }
+            }
+          ],
+          "scope": {
+            "data-projection-scope": "pp-cxgsb0upvd",
+            "data-projection-family": "shadcn",
+            "data-projection-runtime": "wc",
+            "data-projection-generation": "1",
+            "data-projection-state": "ready",
+            "data-demo-ref": "__pui_projection__scope"
+          },
+          "generationHost": {
+            "data-projection-generation-host": "1",
+            "data-projection-owner-host": "pp-cxgsb0upvd",
+            "data-projection-generation-state": "active"
+          }
+        }
+      },
+      "image": {
+        "file": "shadcn-wc-390-resize-immediate.png",
+        "sha256": "7c70f2f624724a23df31f886bc0b9c9beddadc548260a02605a2be5a10c8c401"
+      }
+    },
+    {
+      "id": "shadcn-wc-390-settled",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "route": "/en/ui-libraries/shadcn/dialog/",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "data": {
+        "rect": {
+          "x": 0,
+          "y": 368,
+          "width": 390,
+          "height": 164,
+          "top": 368,
+          "right": 390,
+          "bottom": 532,
+          "left": 0
+        },
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "x": 0,
+          "y": 0,
+          "visibleWidth": 390,
+          "visibleHeight": 900,
+          "scale": 1
+        },
+        "mask": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "font": 16,
+        "rendering": {
+          "dpr": 1,
+          "fonts": "loaded",
+          "scheme": "light",
+          "rootClientWidth": 390,
+          "rootClientLeft": 0
+        },
+        "paint": {
+          "fontFamily": "ui-sans-serif, system-ui, -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", \"Noto Sans CJK SC\", \"Noto Sans SC\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "lineHeight": "28px",
+          "transitionProperty": "all",
+          "transitionDuration": "0.2s"
+        },
+        "animations": [
+          {
+            "playState": "finished",
+            "pending": false,
+            "property": null
+          }
+        ],
+        "overflowY": "visible",
+        "scrollWidth": 388,
+        "clientWidth": 388,
+        "scrollHeight": 162,
+        "clientHeight": 162,
+        "scrollTop": 0,
+        "focusInside": true,
+        "active": "<wc-shadcn-button class=\"pui-projection-prototype pui-projection-owner-70_70_2d_63_78_67_73_62_30_75_70_76_64 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_62_75_74_74_6f_6e\" data-pui-root=\"\" role=\"butt",
+        "transition": "entered",
+        "available": {
+          "width": "",
+          "height": ""
+        },
+        "maskIdentity": {
+          "status": "resolved",
+          "coordinates": {
+            "owner": "pp-cxgsb0upvd",
+            "family": "shadcn",
+            "runtime": "wc",
+            "generation": "1"
+          },
+          "rootCount": 1,
+          "contentCount": 1,
+          "triggerCount": 1,
+          "maskCount": 1,
+          "originalFirstMatch": {
+            "tag": "WC-SHADCN-DIALOG-MASK",
+            "attributes": {
+              "data-pui-root": "",
+              "data-projection-owner": "pp-cxgsb0upvd",
+              "data-projection-family": "shadcn",
+              "data-projection-runtime": "wc",
+              "data-projection-generation": "1",
+              "data-projection-prototype": "shadcn-dialog-mask",
+              "data-transition-state": "entered",
+              "data-is-present": ""
+            },
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 900,
+              "top": 0,
+              "right": 390,
+              "bottom": 900,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "originalRect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 900,
+            "top": 0,
+            "right": 390,
+            "bottom": 900,
+            "left": 0
+          },
+          "content": {
+            "tag": "WC-SHADCN-DIALOG-CONTENT",
+            "attributes": {
+              "data-pui-root": "",
+              "data-projection-owner": "pp-cxgsb0upvd",
+              "data-projection-family": "shadcn",
+              "data-projection-runtime": "wc",
+              "data-projection-generation": "1",
+              "data-projection-prototype": "shadcn-dialog-content",
+              "data-transition-state": "entered",
+              "data-is-present": "",
+              "id": "pui-dialog-2-content",
+              "role": "dialog"
+            },
+            "rect": {
+              "x": 0,
+              "y": 368,
+              "width": 390,
+              "height": 164,
+              "top": 368,
+              "right": 390,
+              "bottom": 532,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "masks": [
+            {
+              "tag": "WC-SHADCN-DIALOG-MASK",
+              "attributes": {
+                "data-pui-root": "",
+                "data-projection-owner": "pp-cxgsb0upvd",
+                "data-projection-family": "shadcn",
+                "data-projection-runtime": "wc",
+                "data-projection-generation": "1",
+                "data-projection-prototype": "shadcn-dialog-mask",
+                "data-transition-state": "entered",
+                "data-is-present": ""
+              },
+              "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 390,
+                "height": 900,
+                "top": 0,
+                "right": 390,
+                "bottom": 900,
+                "left": 0
+              },
+              "parent": {
+                "tag": "BODY",
+                "attributes": {}
+              }
+            }
+          ],
+          "triggers": [
+            {
+              "tag": "WC-SHADCN-BUTTON",
+              "attributes": {
+                "data-pui-root": "",
+                "role": "button",
+                "data-projection-owner": "pp-cxgsb0upvd",
+                "data-projection-family": "shadcn",
+                "data-projection-runtime": "wc",
+                "data-projection-generation": "1",
+                "data-projection-prototype": "shadcn-button",
+                "aria-haspopup": "dialog",
+                "aria-controls": "pui-dialog-2-content"
+              },
+              "rect": {
+                "x": 143.53125,
+                "y": 433.5,
+                "width": 102.9375,
+                "height": 32,
+                "top": 433.5,
+                "right": 246.46875,
+                "bottom": 465.5,
+                "left": 143.53125
+              },
+              "parent": {
+                "tag": "WC-SHADCN-DIALOG-TRIGGER",
+                "attributes": {
+                  "data-pui-root": "",
+                  "data-projection-owner": "pp-cxgsb0upvd",
+                  "data-projection-family": "shadcn",
+                  "data-projection-runtime": "wc",
+                  "data-projection-generation": "1",
+                  "data-projection-prototype": "shadcn-dialog-trigger"
+                }
+              }
+            }
+          ],
+          "scope": {
+            "data-projection-scope": "pp-cxgsb0upvd",
+            "data-projection-family": "shadcn",
+            "data-projection-runtime": "wc",
+            "data-projection-generation": "1",
+            "data-projection-state": "ready",
+            "data-demo-ref": "__pui_projection__scope"
+          },
+          "generationHost": {
+            "data-projection-generation-host": "1",
+            "data-projection-owner-host": "pp-cxgsb0upvd",
+            "data-projection-generation-state": "active"
+          }
+        }
+      },
+      "platformFonts": {
+        "status": "measured",
+        "fonts": [
+          {
+            "familyName": ".SF NS",
+            "postScriptName": ".SFNS-Regular_wdth_opsz120000_GRAD_wght2580000",
+            "isCustomFont": false,
+            "glyphCount": 12
+          }
+        ]
+      },
+      "image": {
+        "file": "shadcn-wc-390-settled.png",
+        "sha256": "7c70f2f624724a23df31f886bc0b9c9beddadc548260a02605a2be5a10c8c401"
+      }
+    },
+    {
+      "id": "shadcn-wc-failure",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "error": "AssertionError: expected 0 to be greater than or equal to 15",
+      "setup": {
+        "url": "/en/ui-libraries/shadcn/dialog/",
+        "offeredRuntimes": "[\"wc\",\"react\",\"vue\"]",
+        "controls": [
+          {
+            "id": "",
+            "text": " Web Components ",
+            "controls": "pui-select-2-content",
+            "expanded": "false"
+          },
+          {
+            "id": "",
+            "text": " English ",
+            "controls": "pui-select-1-content",
+            "expanded": "false"
+          },
+          {
+            "id": "",
+            "text": " English ",
+            "controls": "pui-select-3-content",
+            "expanded": "false"
+          },
+          {
+            "id": "",
+            "text": "Web Components",
+            "controls": "pui-select-4-content",
+            "expanded": "false"
+          }
+        ],
+        "options": [
+          {
+            "text": "Web Components",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "React",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "Vue",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "Vue 2",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "English",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "简体中文",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "English",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "简体中文",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "Web Components",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "React",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "Vue",
+            "id": "",
+            "visible": false
+          }
+        ],
+        "runtimeScopes": [
+          {
+            "state": "ready",
+            "runtime": "wc",
+            "generation": "1"
+          },
+          {
+            "state": "ready",
+            "runtime": "wc",
+            "generation": "1"
+          },
+          {
+            "state": "ready",
+            "runtime": "wc",
+            "generation": "1"
+          },
+          {
+            "state": "ready",
+            "runtime": "wc",
+            "generation": "1"
+          },
+          {
+            "state": "ready",
+            "runtime": "wc",
+            "generation": "1"
+          },
+          {
+            "state": "ready",
+            "runtime": "wc",
+            "generation": "1"
+          },
+          {
+            "state": "ready",
+            "runtime": "wc",
+            "generation": "1"
+          },
+          {
+            "state": "ready",
+            "runtime": "wc",
+            "generation": "1"
+          },
+          {
+            "state": "ready",
+            "runtime": "wc",
+            "generation": "1"
+          },
+          {
+            "state": "ready",
+            "runtime": "wc",
+            "generation": "1"
+          }
+        ]
+      },
+      "image": {
+        "file": "shadcn-wc-failure.png",
+        "sha256": "7c70f2f624724a23df31f886bc0b9c9beddadc548260a02605a2be5a10c8c401"
+      }
+    },
+    {
+      "id": "shadcn-react-390-immediate",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "route": "/en/ui-libraries/shadcn/dialog/",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "data": {
+        "rect": {
+          "x": 0,
+          "y": 368,
+          "width": 390,
+          "height": 164,
+          "top": 368,
+          "right": 390,
+          "bottom": 532,
+          "left": 0
+        },
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "x": 0,
+          "y": 0,
+          "visibleWidth": 390,
+          "visibleHeight": 900,
+          "scale": 1
+        },
+        "mask": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "font": 16,
+        "rendering": {
+          "dpr": 1,
+          "fonts": "loaded",
+          "scheme": "light",
+          "rootClientWidth": 390,
+          "rootClientLeft": 0
+        },
+        "paint": {
+          "fontFamily": "ui-sans-serif, system-ui, -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", \"Noto Sans CJK SC\", \"Noto Sans SC\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "lineHeight": "28px",
+          "transitionProperty": "none",
+          "transitionDuration": "0s"
+        },
+        "animations": [],
+        "overflowY": "visible",
+        "scrollWidth": 388,
+        "clientWidth": 388,
+        "scrollHeight": 162,
+        "clientHeight": 162,
+        "scrollTop": 0,
+        "focusInside": false,
+        "active": "<div class=\"pui-projection-prototype pui-projection-owner-70_70_2d_77_6a_34_75_70_6c_31_61_33_6c_6c pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-72_65_61_63_74 pui-projection-generation-32 pui-projection-prototype-73_68_61_64_63_6e_2d_62_75_74_74_6f_6e\" data-pui-root=\"\" style=\"--pu",
+        "transition": "entering",
+        "available": {
+          "width": "",
+          "height": ""
+        },
+        "maskIdentity": {
+          "status": "resolved",
+          "coordinates": {
+            "owner": "pp-wj4upl1a3ll",
+            "family": "shadcn",
+            "runtime": "react",
+            "generation": "2"
+          },
+          "rootCount": 1,
+          "contentCount": 1,
+          "triggerCount": 1,
+          "maskCount": 1,
+          "originalFirstMatch": {
+            "tag": "DIV",
+            "attributes": {
+              "data-pui-root": "",
+              "data-transition-state": "entering",
+              "data-projection-owner": "pp-wj4upl1a3ll",
+              "data-projection-family": "shadcn",
+              "data-projection-runtime": "react",
+              "data-projection-generation": "2",
+              "data-projection-prototype": "shadcn-dialog-mask",
+              "data-is-present": ""
+            },
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 900,
+              "top": 0,
+              "right": 390,
+              "bottom": 900,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "originalRect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 900,
+            "top": 0,
+            "right": 390,
+            "bottom": 900,
+            "left": 0
+          },
+          "content": {
+            "tag": "DIV",
+            "attributes": {
+              "data-pui-root": "",
+              "data-transition-state": "entering",
+              "data-projection-owner": "pp-wj4upl1a3ll",
+              "data-projection-family": "shadcn",
+              "data-projection-runtime": "react",
+              "data-projection-generation": "2",
+              "data-projection-prototype": "shadcn-dialog-content",
+              "data-is-present": "",
+              "id": "pui-dialog-3-content",
+              "role": "dialog"
+            },
+            "rect": {
+              "x": 0,
+              "y": 368,
+              "width": 390,
+              "height": 164,
+              "top": 368,
+              "right": 390,
+              "bottom": 532,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "masks": [
+            {
+              "tag": "DIV",
+              "attributes": {
+                "data-pui-root": "",
+                "data-transition-state": "entering",
+                "data-projection-owner": "pp-wj4upl1a3ll",
+                "data-projection-family": "shadcn",
+                "data-projection-runtime": "react",
+                "data-projection-generation": "2",
+                "data-projection-prototype": "shadcn-dialog-mask",
+                "data-is-present": ""
+              },
+              "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 390,
+                "height": 900,
+                "top": 0,
+                "right": 390,
+                "bottom": 900,
+                "left": 0
+              },
+              "parent": {
+                "tag": "BODY",
+                "attributes": {}
+              }
+            }
+          ],
+          "triggers": [
+            {
+              "tag": "DIV",
+              "attributes": {
+                "data-pui-root": "",
+                "role": "button",
+                "data-projection-owner": "pp-wj4upl1a3ll",
+                "data-projection-family": "shadcn",
+                "data-projection-runtime": "react",
+                "data-projection-generation": "2",
+                "data-projection-prototype": "shadcn-button",
+                "aria-haspopup": "dialog",
+                "aria-controls": "pui-dialog-3-content"
+              },
+              "rect": {
+                "x": 143.53125,
+                "y": 805.453125,
+                "width": 102.9375,
+                "height": 32,
+                "top": 805.453125,
+                "right": 246.46875,
+                "bottom": 837.453125,
+                "left": 143.53125
+              },
+              "parent": {
+                "tag": "DIV",
+                "attributes": {
+                  "data-pui-root": "",
+                  "data-projection-owner": "pp-wj4upl1a3ll",
+                  "data-projection-family": "shadcn",
+                  "data-projection-runtime": "react",
+                  "data-projection-generation": "2",
+                  "data-projection-prototype": "shadcn-dialog-trigger"
+                }
+              }
+            }
+          ],
+          "scope": {
+            "data-projection-scope": "pp-wj4upl1a3ll",
+            "data-projection-family": "shadcn",
+            "data-projection-runtime": "react",
+            "data-projection-generation": "2",
+            "data-projection-state": "ready",
+            "data-demo-ref": "__pui_projection__scope"
+          },
+          "generationHost": {
+            "data-projection-generation-host": "2",
+            "data-projection-owner-host": "pp-wj4upl1a3ll",
+            "data-projection-generation-state": "active"
+          }
+        }
+      },
+      "image": {
+        "file": "shadcn-react-390-immediate.png",
+        "sha256": "3e99fff2afc37982d2bd1764300ffdab5df62a3d5570ac9e836e1ca4651b639e"
+      }
+    },
+    {
+      "id": "shadcn-react-390-resize-immediate",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "route": "/en/ui-libraries/shadcn/dialog/",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "data": {
+        "rect": {
+          "x": 0,
+          "y": 368,
+          "width": 390,
+          "height": 164,
+          "top": 368,
+          "right": 390,
+          "bottom": 532,
+          "left": 0
+        },
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "x": 0,
+          "y": 0,
+          "visibleWidth": 390,
+          "visibleHeight": 900,
+          "scale": 1
+        },
+        "mask": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "font": 16,
+        "rendering": {
+          "dpr": 1,
+          "fonts": "loaded",
+          "scheme": "light",
+          "rootClientWidth": 390,
+          "rootClientLeft": 0
+        },
+        "paint": {
+          "fontFamily": "ui-sans-serif, system-ui, -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", \"Noto Sans CJK SC\", \"Noto Sans SC\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "lineHeight": "28px",
+          "transitionProperty": "all",
+          "transitionDuration": "0.2s"
+        },
+        "animations": [
+          {
+            "playState": "finished",
+            "pending": false,
+            "property": null
+          }
+        ],
+        "overflowY": "visible",
+        "scrollWidth": 388,
+        "clientWidth": 388,
+        "scrollHeight": 162,
+        "clientHeight": 162,
+        "scrollTop": 0,
+        "focusInside": false,
+        "active": "<div class=\"pui-projection-prototype pui-projection-owner-70_70_2d_77_6a_34_75_70_6c_31_61_33_6c_6c pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-72_65_61_63_74 pui-projection-generation-32 pui-projection-prototype-73_68_61_64_63_6e_2d_62_75_74_74_6f_6e\" data-pui-root=\"\" style=\"--pu",
+        "transition": "entered",
+        "available": {
+          "width": "",
+          "height": ""
+        },
+        "maskIdentity": {
+          "status": "resolved",
+          "coordinates": {
+            "owner": "pp-wj4upl1a3ll",
+            "family": "shadcn",
+            "runtime": "react",
+            "generation": "2"
+          },
+          "rootCount": 1,
+          "contentCount": 1,
+          "triggerCount": 1,
+          "maskCount": 1,
+          "originalFirstMatch": {
+            "tag": "DIV",
+            "attributes": {
+              "data-pui-root": "",
+              "data-transition-state": "entered",
+              "data-projection-owner": "pp-wj4upl1a3ll",
+              "data-projection-family": "shadcn",
+              "data-projection-runtime": "react",
+              "data-projection-generation": "2",
+              "data-projection-prototype": "shadcn-dialog-mask",
+              "data-is-present": ""
+            },
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 900,
+              "top": 0,
+              "right": 390,
+              "bottom": 900,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "originalRect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 900,
+            "top": 0,
+            "right": 390,
+            "bottom": 900,
+            "left": 0
+          },
+          "content": {
+            "tag": "DIV",
+            "attributes": {
+              "data-pui-root": "",
+              "data-transition-state": "entered",
+              "data-projection-owner": "pp-wj4upl1a3ll",
+              "data-projection-family": "shadcn",
+              "data-projection-runtime": "react",
+              "data-projection-generation": "2",
+              "data-projection-prototype": "shadcn-dialog-content",
+              "data-is-present": "",
+              "id": "pui-dialog-3-content",
+              "role": "dialog"
+            },
+            "rect": {
+              "x": 0,
+              "y": 368,
+              "width": 390,
+              "height": 164,
+              "top": 368,
+              "right": 390,
+              "bottom": 532,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "masks": [
+            {
+              "tag": "DIV",
+              "attributes": {
+                "data-pui-root": "",
+                "data-transition-state": "entered",
+                "data-projection-owner": "pp-wj4upl1a3ll",
+                "data-projection-family": "shadcn",
+                "data-projection-runtime": "react",
+                "data-projection-generation": "2",
+                "data-projection-prototype": "shadcn-dialog-mask",
+                "data-is-present": ""
+              },
+              "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 390,
+                "height": 900,
+                "top": 0,
+                "right": 390,
+                "bottom": 900,
+                "left": 0
+              },
+              "parent": {
+                "tag": "BODY",
+                "attributes": {}
+              }
+            }
+          ],
+          "triggers": [
+            {
+              "tag": "DIV",
+              "attributes": {
+                "data-pui-root": "",
+                "role": "button",
+                "data-projection-owner": "pp-wj4upl1a3ll",
+                "data-projection-family": "shadcn",
+                "data-projection-runtime": "react",
+                "data-projection-generation": "2",
+                "data-projection-prototype": "shadcn-button",
+                "aria-haspopup": "dialog",
+                "aria-controls": "pui-dialog-3-content"
+              },
+              "rect": {
+                "x": 143.53125,
+                "y": 805.453125,
+                "width": 102.9375,
+                "height": 32,
+                "top": 805.453125,
+                "right": 246.46875,
+                "bottom": 837.453125,
+                "left": 143.53125
+              },
+              "parent": {
+                "tag": "DIV",
+                "attributes": {
+                  "data-pui-root": "",
+                  "data-projection-owner": "pp-wj4upl1a3ll",
+                  "data-projection-family": "shadcn",
+                  "data-projection-runtime": "react",
+                  "data-projection-generation": "2",
+                  "data-projection-prototype": "shadcn-dialog-trigger"
+                }
+              }
+            }
+          ],
+          "scope": {
+            "data-projection-scope": "pp-wj4upl1a3ll",
+            "data-projection-family": "shadcn",
+            "data-projection-runtime": "react",
+            "data-projection-generation": "2",
+            "data-projection-state": "ready",
+            "data-demo-ref": "__pui_projection__scope"
+          },
+          "generationHost": {
+            "data-projection-generation-host": "2",
+            "data-projection-owner-host": "pp-wj4upl1a3ll",
+            "data-projection-generation-state": "active"
+          }
+        }
+      },
+      "image": {
+        "file": "shadcn-react-390-resize-immediate.png",
+        "sha256": "a94c9fc7f49b3e28adc5e32482b35fb518e3f6489a4aa468833e0735ca2628ca"
+      }
+    },
+    {
+      "id": "shadcn-react-390-settled",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "route": "/en/ui-libraries/shadcn/dialog/",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "data": {
+        "rect": {
+          "x": 0,
+          "y": 368,
+          "width": 390,
+          "height": 164,
+          "top": 368,
+          "right": 390,
+          "bottom": 532,
+          "left": 0
+        },
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "x": 0,
+          "y": 0,
+          "visibleWidth": 390,
+          "visibleHeight": 900,
+          "scale": 1
+        },
+        "mask": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "font": 16,
+        "rendering": {
+          "dpr": 1,
+          "fonts": "loaded",
+          "scheme": "light",
+          "rootClientWidth": 390,
+          "rootClientLeft": 0
+        },
+        "paint": {
+          "fontFamily": "ui-sans-serif, system-ui, -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", \"Noto Sans CJK SC\", \"Noto Sans SC\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "lineHeight": "28px",
+          "transitionProperty": "all",
+          "transitionDuration": "0.2s"
+        },
+        "animations": [
+          {
+            "playState": "finished",
+            "pending": false,
+            "property": null
+          }
+        ],
+        "overflowY": "visible",
+        "scrollWidth": 388,
+        "clientWidth": 388,
+        "scrollHeight": 162,
+        "clientHeight": 162,
+        "scrollTop": 0,
+        "focusInside": false,
+        "active": "<div class=\"pui-projection-prototype pui-projection-owner-70_70_2d_77_6a_34_75_70_6c_31_61_33_6c_6c pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-72_65_61_63_74 pui-projection-generation-32 pui-projection-prototype-73_68_61_64_63_6e_2d_62_75_74_74_6f_6e\" data-pui-root=\"\" style=\"--pu",
+        "transition": "entered",
+        "available": {
+          "width": "",
+          "height": ""
+        },
+        "maskIdentity": {
+          "status": "resolved",
+          "coordinates": {
+            "owner": "pp-wj4upl1a3ll",
+            "family": "shadcn",
+            "runtime": "react",
+            "generation": "2"
+          },
+          "rootCount": 1,
+          "contentCount": 1,
+          "triggerCount": 1,
+          "maskCount": 1,
+          "originalFirstMatch": {
+            "tag": "DIV",
+            "attributes": {
+              "data-pui-root": "",
+              "data-transition-state": "entered",
+              "data-projection-owner": "pp-wj4upl1a3ll",
+              "data-projection-family": "shadcn",
+              "data-projection-runtime": "react",
+              "data-projection-generation": "2",
+              "data-projection-prototype": "shadcn-dialog-mask",
+              "data-is-present": ""
+            },
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 900,
+              "top": 0,
+              "right": 390,
+              "bottom": 900,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "originalRect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 900,
+            "top": 0,
+            "right": 390,
+            "bottom": 900,
+            "left": 0
+          },
+          "content": {
+            "tag": "DIV",
+            "attributes": {
+              "data-pui-root": "",
+              "data-transition-state": "entered",
+              "data-projection-owner": "pp-wj4upl1a3ll",
+              "data-projection-family": "shadcn",
+              "data-projection-runtime": "react",
+              "data-projection-generation": "2",
+              "data-projection-prototype": "shadcn-dialog-content",
+              "data-is-present": "",
+              "id": "pui-dialog-3-content",
+              "role": "dialog"
+            },
+            "rect": {
+              "x": 0,
+              "y": 368,
+              "width": 390,
+              "height": 164,
+              "top": 368,
+              "right": 390,
+              "bottom": 532,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "masks": [
+            {
+              "tag": "DIV",
+              "attributes": {
+                "data-pui-root": "",
+                "data-transition-state": "entered",
+                "data-projection-owner": "pp-wj4upl1a3ll",
+                "data-projection-family": "shadcn",
+                "data-projection-runtime": "react",
+                "data-projection-generation": "2",
+                "data-projection-prototype": "shadcn-dialog-mask",
+                "data-is-present": ""
+              },
+              "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 390,
+                "height": 900,
+                "top": 0,
+                "right": 390,
+                "bottom": 900,
+                "left": 0
+              },
+              "parent": {
+                "tag": "BODY",
+                "attributes": {}
+              }
+            }
+          ],
+          "triggers": [
+            {
+              "tag": "DIV",
+              "attributes": {
+                "data-pui-root": "",
+                "role": "button",
+                "data-projection-owner": "pp-wj4upl1a3ll",
+                "data-projection-family": "shadcn",
+                "data-projection-runtime": "react",
+                "data-projection-generation": "2",
+                "data-projection-prototype": "shadcn-button",
+                "aria-haspopup": "dialog",
+                "aria-controls": "pui-dialog-3-content"
+              },
+              "rect": {
+                "x": 143.53125,
+                "y": 805.453125,
+                "width": 102.9375,
+                "height": 32,
+                "top": 805.453125,
+                "right": 246.46875,
+                "bottom": 837.453125,
+                "left": 143.53125
+              },
+              "parent": {
+                "tag": "DIV",
+                "attributes": {
+                  "data-pui-root": "",
+                  "data-projection-owner": "pp-wj4upl1a3ll",
+                  "data-projection-family": "shadcn",
+                  "data-projection-runtime": "react",
+                  "data-projection-generation": "2",
+                  "data-projection-prototype": "shadcn-dialog-trigger"
+                }
+              }
+            }
+          ],
+          "scope": {
+            "data-projection-scope": "pp-wj4upl1a3ll",
+            "data-projection-family": "shadcn",
+            "data-projection-runtime": "react",
+            "data-projection-generation": "2",
+            "data-projection-state": "ready",
+            "data-demo-ref": "__pui_projection__scope"
+          },
+          "generationHost": {
+            "data-projection-generation-host": "2",
+            "data-projection-owner-host": "pp-wj4upl1a3ll",
+            "data-projection-generation-state": "active"
+          }
+        }
+      },
+      "platformFonts": {
+        "status": "measured",
+        "fonts": [
+          {
+            "familyName": ".SF NS",
+            "postScriptName": ".SFNS-Regular_wdth_opsz120000_GRAD_wght2580000",
+            "isCustomFont": false,
+            "glyphCount": 12
+          }
+        ]
+      },
+      "image": {
+        "file": "shadcn-react-390-settled.png",
+        "sha256": "a94c9fc7f49b3e28adc5e32482b35fb518e3f6489a4aa468833e0735ca2628ca"
+      }
+    },
+    {
+      "id": "shadcn-react-failure",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "error": "AssertionError: expected 0 to be greater than or equal to 15",
+      "setup": {
+        "url": "/en/ui-libraries/shadcn/dialog/",
+        "offeredRuntimes": "[\"wc\",\"react\",\"vue\"]",
+        "controls": [
+          {
+            "id": "",
+            "text": " React ",
+            "controls": "pui-select-2-content",
+            "expanded": "false"
+          },
+          {
+            "id": "",
+            "text": " English ",
+            "controls": "pui-select-1-content",
+            "expanded": "false"
+          },
+          {
+            "id": "",
+            "text": " English ",
+            "controls": "pui-select-3-content",
+            "expanded": "false"
+          },
+          {
+            "id": "",
+            "text": "React",
+            "controls": "pui-select-5-content",
+            "expanded": "false"
+          }
+        ],
+        "options": [
+          {
+            "text": "Web Components",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "React",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "Vue",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "Vue 2",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "English",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "简体中文",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "English",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "简体中文",
+            "id": "",
+            "visible": false
+          }
+        ],
+        "runtimeScopes": [
+          {
+            "state": "ready",
+            "runtime": "react",
+            "generation": "2"
+          },
+          {
+            "state": "ready",
+            "runtime": "react",
+            "generation": "2"
+          },
+          {
+            "state": "ready",
+            "runtime": "react",
+            "generation": "2"
+          },
+          {
+            "state": "ready",
+            "runtime": "react",
+            "generation": "2"
+          },
+          {
+            "state": "ready",
+            "runtime": "react",
+            "generation": "2"
+          },
+          {
+            "state": "ready",
+            "runtime": "react",
+            "generation": "2"
+          },
+          {
+            "state": "ready",
+            "runtime": "react",
+            "generation": "3"
+          },
+          {
+            "state": "ready",
+            "runtime": "react",
+            "generation": "2"
+          },
+          {
+            "state": "ready",
+            "runtime": "react",
+            "generation": "2"
+          },
+          {
+            "state": "ready",
+            "runtime": "react",
+            "generation": "2"
+          }
+        ]
+      },
+      "image": {
+        "file": "shadcn-react-failure.png",
+        "sha256": "a94c9fc7f49b3e28adc5e32482b35fb518e3f6489a4aa468833e0735ca2628ca"
+      }
+    },
+    {
+      "id": "shadcn-vue-390-immediate",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "route": "/en/ui-libraries/shadcn/dialog/",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "data": {
+        "rect": {
+          "x": 9.75,
+          "y": 372.1000061035156,
+          "width": 370.5,
+          "height": 155.80001831054688,
+          "top": 372.1000061035156,
+          "right": 380.25,
+          "bottom": 527.9000244140625,
+          "left": 9.75
+        },
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "x": 0,
+          "y": 0,
+          "visibleWidth": 390,
+          "visibleHeight": 900,
+          "scale": 1
+        },
+        "mask": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "font": 16,
+        "rendering": {
+          "dpr": 1,
+          "fonts": "loaded",
+          "scheme": "light",
+          "rootClientWidth": 390,
+          "rootClientLeft": 0
+        },
+        "paint": {
+          "fontFamily": "ui-sans-serif, system-ui, -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", \"Noto Sans CJK SC\", \"Noto Sans SC\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "lineHeight": "28px",
+          "transitionProperty": "all",
+          "transitionDuration": "0.2s"
+        },
+        "animations": [
+          {
+            "playState": "running",
+            "pending": true,
+            "property": null
+          }
+        ],
+        "overflowY": "visible",
+        "scrollWidth": 388,
+        "clientWidth": 388,
+        "scrollHeight": 162,
+        "clientHeight": 162,
+        "scrollTop": 0,
+        "focusInside": true,
+        "active": "<div class=\"pui-projection-prototype pui-projection-owner-70_70_2d_75_71_36_70_65_78_30_6c_62_38_6b pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-76_75_65 pui-projection-generation-32 pui-projection-prototype-73_68_61_64_63_6e_2d_62_75_74_74_6f_6e\" data-pui-root=\"\" style=\"--pui-radi",
+        "transition": "entering",
+        "available": {
+          "width": "",
+          "height": ""
+        },
+        "maskIdentity": {
+          "status": "resolved",
+          "coordinates": {
+            "owner": "pp-uq6pex0lb8k",
+            "family": "shadcn",
+            "runtime": "vue",
+            "generation": "2"
+          },
+          "rootCount": 1,
+          "contentCount": 1,
+          "triggerCount": 1,
+          "maskCount": 1,
+          "originalFirstMatch": {
+            "tag": "DIV",
+            "attributes": {
+              "data-pui-root": "",
+              "data-projection-owner": "pp-uq6pex0lb8k",
+              "data-projection-family": "shadcn",
+              "data-projection-runtime": "vue",
+              "data-projection-generation": "2",
+              "data-projection-prototype": "shadcn-dialog-mask",
+              "data-transition-state": "entering",
+              "data-is-present": ""
+            },
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 900,
+              "top": 0,
+              "right": 390,
+              "bottom": 900,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "originalRect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 900,
+            "top": 0,
+            "right": 390,
+            "bottom": 900,
+            "left": 0
+          },
+          "content": {
+            "tag": "DIV",
+            "attributes": {
+              "data-pui-root": "",
+              "data-projection-owner": "pp-uq6pex0lb8k",
+              "data-projection-family": "shadcn",
+              "data-projection-runtime": "vue",
+              "data-projection-generation": "2",
+              "data-projection-prototype": "shadcn-dialog-content",
+              "data-transition-state": "entering",
+              "data-is-present": "",
+              "id": "pui-dialog-3-content",
+              "role": "dialog"
+            },
+            "rect": {
+              "x": 9.75,
+              "y": 372.1000061035156,
+              "width": 370.5,
+              "height": 155.80001831054688,
+              "top": 372.1000061035156,
+              "right": 380.25,
+              "bottom": 527.9000244140625,
+              "left": 9.75
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "masks": [
+            {
+              "tag": "DIV",
+              "attributes": {
+                "data-pui-root": "",
+                "data-projection-owner": "pp-uq6pex0lb8k",
+                "data-projection-family": "shadcn",
+                "data-projection-runtime": "vue",
+                "data-projection-generation": "2",
+                "data-projection-prototype": "shadcn-dialog-mask",
+                "data-transition-state": "entering",
+                "data-is-present": ""
+              },
+              "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 390,
+                "height": 900,
+                "top": 0,
+                "right": 390,
+                "bottom": 900,
+                "left": 0
+              },
+              "parent": {
+                "tag": "BODY",
+                "attributes": {}
+              }
+            }
+          ],
+          "triggers": [
+            {
+              "tag": "DIV",
+              "attributes": {
+                "data-pui-root": "",
+                "role": "button",
+                "data-projection-owner": "pp-uq6pex0lb8k",
+                "data-projection-family": "shadcn",
+                "data-projection-runtime": "vue",
+                "data-projection-generation": "2",
+                "data-projection-prototype": "shadcn-button",
+                "aria-haspopup": "dialog",
+                "aria-controls": "pui-dialog-3-content"
+              },
+              "rect": {
+                "x": 143.53125,
+                "y": 805.453125,
+                "width": 102.9375,
+                "height": 32,
+                "top": 805.453125,
+                "right": 246.46875,
+                "bottom": 837.453125,
+                "left": 143.53125
+              },
+              "parent": {
+                "tag": "DIV",
+                "attributes": {
+                  "data-pui-root": "",
+                  "data-projection-owner": "pp-uq6pex0lb8k",
+                  "data-projection-family": "shadcn",
+                  "data-projection-runtime": "vue",
+                  "data-projection-generation": "2",
+                  "data-projection-prototype": "shadcn-dialog-trigger"
+                }
+              }
+            }
+          ],
+          "scope": {
+            "data-projection-scope": "pp-uq6pex0lb8k",
+            "data-projection-family": "shadcn",
+            "data-projection-runtime": "vue",
+            "data-projection-generation": "2",
+            "data-projection-state": "ready",
+            "data-demo-ref": "__pui_projection__scope"
+          },
+          "generationHost": {
+            "data-projection-generation-host": "2",
+            "data-projection-owner-host": "pp-uq6pex0lb8k",
+            "data-projection-generation-state": "active"
+          }
+        }
+      },
+      "image": {
+        "file": "shadcn-vue-390-immediate.png",
+        "sha256": "a3d9ce65e59ba2c9df04122e4dbab08112440a896f7a18f48fd3e5f59833d957"
+      }
+    },
+    {
+      "id": "shadcn-vue-390-resize-immediate",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "route": "/en/ui-libraries/shadcn/dialog/",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "data": {
+        "rect": {
+          "x": 0,
+          "y": 368,
+          "width": 390,
+          "height": 164,
+          "top": 368,
+          "right": 390,
+          "bottom": 532,
+          "left": 0
+        },
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "x": 0,
+          "y": 0,
+          "visibleWidth": 390,
+          "visibleHeight": 900,
+          "scale": 1
+        },
+        "mask": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "font": 16,
+        "rendering": {
+          "dpr": 1,
+          "fonts": "loaded",
+          "scheme": "light",
+          "rootClientWidth": 390,
+          "rootClientLeft": 0
+        },
+        "paint": {
+          "fontFamily": "ui-sans-serif, system-ui, -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", \"Noto Sans CJK SC\", \"Noto Sans SC\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "lineHeight": "28px",
+          "transitionProperty": "all",
+          "transitionDuration": "0.2s"
+        },
+        "animations": [
+          {
+            "playState": "finished",
+            "pending": false,
+            "property": null
+          }
+        ],
+        "overflowY": "visible",
+        "scrollWidth": 388,
+        "clientWidth": 388,
+        "scrollHeight": 162,
+        "clientHeight": 162,
+        "scrollTop": 0,
+        "focusInside": true,
+        "active": "<div class=\"pui-projection-prototype pui-projection-owner-70_70_2d_75_71_36_70_65_78_30_6c_62_38_6b pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-76_75_65 pui-projection-generation-32 pui-projection-prototype-73_68_61_64_63_6e_2d_62_75_74_74_6f_6e\" data-pui-root=\"\" style=\"--pui-radi",
+        "transition": "entered",
+        "available": {
+          "width": "",
+          "height": ""
+        },
+        "maskIdentity": {
+          "status": "resolved",
+          "coordinates": {
+            "owner": "pp-uq6pex0lb8k",
+            "family": "shadcn",
+            "runtime": "vue",
+            "generation": "2"
+          },
+          "rootCount": 1,
+          "contentCount": 1,
+          "triggerCount": 1,
+          "maskCount": 1,
+          "originalFirstMatch": {
+            "tag": "DIV",
+            "attributes": {
+              "data-pui-root": "",
+              "data-projection-owner": "pp-uq6pex0lb8k",
+              "data-projection-family": "shadcn",
+              "data-projection-runtime": "vue",
+              "data-projection-generation": "2",
+              "data-projection-prototype": "shadcn-dialog-mask",
+              "data-transition-state": "entered",
+              "data-is-present": ""
+            },
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 900,
+              "top": 0,
+              "right": 390,
+              "bottom": 900,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "originalRect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 900,
+            "top": 0,
+            "right": 390,
+            "bottom": 900,
+            "left": 0
+          },
+          "content": {
+            "tag": "DIV",
+            "attributes": {
+              "data-pui-root": "",
+              "data-projection-owner": "pp-uq6pex0lb8k",
+              "data-projection-family": "shadcn",
+              "data-projection-runtime": "vue",
+              "data-projection-generation": "2",
+              "data-projection-prototype": "shadcn-dialog-content",
+              "data-transition-state": "entered",
+              "data-is-present": "",
+              "id": "pui-dialog-3-content",
+              "role": "dialog"
+            },
+            "rect": {
+              "x": 0,
+              "y": 368,
+              "width": 390,
+              "height": 164,
+              "top": 368,
+              "right": 390,
+              "bottom": 532,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "masks": [
+            {
+              "tag": "DIV",
+              "attributes": {
+                "data-pui-root": "",
+                "data-projection-owner": "pp-uq6pex0lb8k",
+                "data-projection-family": "shadcn",
+                "data-projection-runtime": "vue",
+                "data-projection-generation": "2",
+                "data-projection-prototype": "shadcn-dialog-mask",
+                "data-transition-state": "entered",
+                "data-is-present": ""
+              },
+              "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 390,
+                "height": 900,
+                "top": 0,
+                "right": 390,
+                "bottom": 900,
+                "left": 0
+              },
+              "parent": {
+                "tag": "BODY",
+                "attributes": {}
+              }
+            }
+          ],
+          "triggers": [
+            {
+              "tag": "DIV",
+              "attributes": {
+                "data-pui-root": "",
+                "role": "button",
+                "data-projection-owner": "pp-uq6pex0lb8k",
+                "data-projection-family": "shadcn",
+                "data-projection-runtime": "vue",
+                "data-projection-generation": "2",
+                "data-projection-prototype": "shadcn-button",
+                "aria-haspopup": "dialog",
+                "aria-controls": "pui-dialog-3-content"
+              },
+              "rect": {
+                "x": 143.53125,
+                "y": 805.453125,
+                "width": 102.9375,
+                "height": 32,
+                "top": 805.453125,
+                "right": 246.46875,
+                "bottom": 837.453125,
+                "left": 143.53125
+              },
+              "parent": {
+                "tag": "DIV",
+                "attributes": {
+                  "data-pui-root": "",
+                  "data-projection-owner": "pp-uq6pex0lb8k",
+                  "data-projection-family": "shadcn",
+                  "data-projection-runtime": "vue",
+                  "data-projection-generation": "2",
+                  "data-projection-prototype": "shadcn-dialog-trigger"
+                }
+              }
+            }
+          ],
+          "scope": {
+            "data-projection-scope": "pp-uq6pex0lb8k",
+            "data-projection-family": "shadcn",
+            "data-projection-runtime": "vue",
+            "data-projection-generation": "2",
+            "data-projection-state": "ready",
+            "data-demo-ref": "__pui_projection__scope"
+          },
+          "generationHost": {
+            "data-projection-generation-host": "2",
+            "data-projection-owner-host": "pp-uq6pex0lb8k",
+            "data-projection-generation-state": "active"
+          }
+        }
+      },
+      "image": {
+        "file": "shadcn-vue-390-resize-immediate.png",
+        "sha256": "feaae2e301c2fbdccbe2974aedb70495429e2eee09ba4f8b79e2c270e99591af"
+      }
+    },
+    {
+      "id": "shadcn-vue-390-settled",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "route": "/en/ui-libraries/shadcn/dialog/",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "data": {
+        "rect": {
+          "x": 0,
+          "y": 368,
+          "width": 390,
+          "height": 164,
+          "top": 368,
+          "right": 390,
+          "bottom": 532,
+          "left": 0
+        },
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "x": 0,
+          "y": 0,
+          "visibleWidth": 390,
+          "visibleHeight": 900,
+          "scale": 1
+        },
+        "mask": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "font": 16,
+        "rendering": {
+          "dpr": 1,
+          "fonts": "loaded",
+          "scheme": "light",
+          "rootClientWidth": 390,
+          "rootClientLeft": 0
+        },
+        "paint": {
+          "fontFamily": "ui-sans-serif, system-ui, -apple-system, \"system-ui\", \"Segoe UI\", \"PingFang SC\", \"Hiragino Sans GB\", \"Microsoft YaHei\", \"Noto Sans CJK SC\", \"Noto Sans SC\", sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\"",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "lineHeight": "28px",
+          "transitionProperty": "all",
+          "transitionDuration": "0.2s"
+        },
+        "animations": [
+          {
+            "playState": "finished",
+            "pending": false,
+            "property": null
+          }
+        ],
+        "overflowY": "visible",
+        "scrollWidth": 388,
+        "clientWidth": 388,
+        "scrollHeight": 162,
+        "clientHeight": 162,
+        "scrollTop": 0,
+        "focusInside": true,
+        "active": "<div class=\"pui-projection-prototype pui-projection-owner-70_70_2d_75_71_36_70_65_78_30_6c_62_38_6b pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-76_75_65 pui-projection-generation-32 pui-projection-prototype-73_68_61_64_63_6e_2d_62_75_74_74_6f_6e\" data-pui-root=\"\" style=\"--pui-radi",
+        "transition": "entered",
+        "available": {
+          "width": "",
+          "height": ""
+        },
+        "maskIdentity": {
+          "status": "resolved",
+          "coordinates": {
+            "owner": "pp-uq6pex0lb8k",
+            "family": "shadcn",
+            "runtime": "vue",
+            "generation": "2"
+          },
+          "rootCount": 1,
+          "contentCount": 1,
+          "triggerCount": 1,
+          "maskCount": 1,
+          "originalFirstMatch": {
+            "tag": "DIV",
+            "attributes": {
+              "data-pui-root": "",
+              "data-projection-owner": "pp-uq6pex0lb8k",
+              "data-projection-family": "shadcn",
+              "data-projection-runtime": "vue",
+              "data-projection-generation": "2",
+              "data-projection-prototype": "shadcn-dialog-mask",
+              "data-transition-state": "entered",
+              "data-is-present": ""
+            },
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 900,
+              "top": 0,
+              "right": 390,
+              "bottom": 900,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "originalRect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 900,
+            "top": 0,
+            "right": 390,
+            "bottom": 900,
+            "left": 0
+          },
+          "content": {
+            "tag": "DIV",
+            "attributes": {
+              "data-pui-root": "",
+              "data-projection-owner": "pp-uq6pex0lb8k",
+              "data-projection-family": "shadcn",
+              "data-projection-runtime": "vue",
+              "data-projection-generation": "2",
+              "data-projection-prototype": "shadcn-dialog-content",
+              "data-transition-state": "entered",
+              "data-is-present": "",
+              "id": "pui-dialog-3-content",
+              "role": "dialog"
+            },
+            "rect": {
+              "x": 0,
+              "y": 368,
+              "width": 390,
+              "height": 164,
+              "top": 368,
+              "right": 390,
+              "bottom": 532,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "masks": [
+            {
+              "tag": "DIV",
+              "attributes": {
+                "data-pui-root": "",
+                "data-projection-owner": "pp-uq6pex0lb8k",
+                "data-projection-family": "shadcn",
+                "data-projection-runtime": "vue",
+                "data-projection-generation": "2",
+                "data-projection-prototype": "shadcn-dialog-mask",
+                "data-transition-state": "entered",
+                "data-is-present": ""
+              },
+              "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 390,
+                "height": 900,
+                "top": 0,
+                "right": 390,
+                "bottom": 900,
+                "left": 0
+              },
+              "parent": {
+                "tag": "BODY",
+                "attributes": {}
+              }
+            }
+          ],
+          "triggers": [
+            {
+              "tag": "DIV",
+              "attributes": {
+                "data-pui-root": "",
+                "role": "button",
+                "data-projection-owner": "pp-uq6pex0lb8k",
+                "data-projection-family": "shadcn",
+                "data-projection-runtime": "vue",
+                "data-projection-generation": "2",
+                "data-projection-prototype": "shadcn-button",
+                "aria-haspopup": "dialog",
+                "aria-controls": "pui-dialog-3-content"
+              },
+              "rect": {
+                "x": 143.53125,
+                "y": 805.453125,
+                "width": 102.9375,
+                "height": 32,
+                "top": 805.453125,
+                "right": 246.46875,
+                "bottom": 837.453125,
+                "left": 143.53125
+              },
+              "parent": {
+                "tag": "DIV",
+                "attributes": {
+                  "data-pui-root": "",
+                  "data-projection-owner": "pp-uq6pex0lb8k",
+                  "data-projection-family": "shadcn",
+                  "data-projection-runtime": "vue",
+                  "data-projection-generation": "2",
+                  "data-projection-prototype": "shadcn-dialog-trigger"
+                }
+              }
+            }
+          ],
+          "scope": {
+            "data-projection-scope": "pp-uq6pex0lb8k",
+            "data-projection-family": "shadcn",
+            "data-projection-runtime": "vue",
+            "data-projection-generation": "2",
+            "data-projection-state": "ready",
+            "data-demo-ref": "__pui_projection__scope"
+          },
+          "generationHost": {
+            "data-projection-generation-host": "2",
+            "data-projection-owner-host": "pp-uq6pex0lb8k",
+            "data-projection-generation-state": "active"
+          }
+        }
+      },
+      "platformFonts": {
+        "status": "measured",
+        "fonts": [
+          {
+            "familyName": ".SF NS",
+            "postScriptName": ".SFNS-Regular_wdth_opsz120000_GRAD_wght2580000",
+            "isCustomFont": false,
+            "glyphCount": 12
+          }
+        ]
+      },
+      "image": {
+        "file": "shadcn-vue-390-settled.png",
+        "sha256": "feaae2e301c2fbdccbe2974aedb70495429e2eee09ba4f8b79e2c270e99591af"
+      }
+    },
+    {
+      "id": "shadcn-vue-failure",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "error": "AssertionError: expected 0 to be greater than or equal to 15",
+      "setup": {
+        "url": "/en/ui-libraries/shadcn/dialog/",
+        "offeredRuntimes": "[\"wc\",\"react\",\"vue\"]",
+        "controls": [
+          {
+            "id": "",
+            "text": " Vue ",
+            "controls": "pui-select-2-content",
+            "expanded": "false"
+          },
+          {
+            "id": "",
+            "text": " English ",
+            "controls": "pui-select-1-content",
+            "expanded": "false"
+          },
+          {
+            "id": "",
+            "text": " English ",
+            "controls": "pui-select-3-content",
+            "expanded": "false"
+          },
+          {
+            "id": "",
+            "text": "Vue",
+            "controls": "pui-select-5-content",
+            "expanded": "false"
+          }
+        ],
+        "options": [
+          {
+            "text": "Web Components",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "React",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "Vue",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "Vue 2",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "English",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "简体中文",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "English",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "简体中文",
+            "id": "",
+            "visible": false
+          }
+        ],
+        "runtimeScopes": [
+          {
+            "state": "ready",
+            "runtime": "vue",
+            "generation": "2"
+          },
+          {
+            "state": "ready",
+            "runtime": "vue",
+            "generation": "2"
+          },
+          {
+            "state": "ready",
+            "runtime": "vue",
+            "generation": "2"
+          },
+          {
+            "state": "ready",
+            "runtime": "vue",
+            "generation": "2"
+          },
+          {
+            "state": "ready",
+            "runtime": "vue",
+            "generation": "2"
+          },
+          {
+            "state": "ready",
+            "runtime": "vue",
+            "generation": "2"
+          },
+          {
+            "state": "ready",
+            "runtime": "vue",
+            "generation": "3"
+          },
+          {
+            "state": "ready",
+            "runtime": "vue",
+            "generation": "2"
+          },
+          {
+            "state": "ready",
+            "runtime": "vue",
+            "generation": "2"
+          },
+          {
+            "state": "ready",
+            "runtime": "vue",
+            "generation": "2"
+          }
+        ]
+      },
+      "image": {
+        "file": "shadcn-vue-failure.png",
+        "sha256": "feaae2e301c2fbdccbe2974aedb70495429e2eee09ba4f8b79e2c270e99591af"
+      }
+    },
+    {
+      "id": "shadcn-vue2-failure",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "error": "Error: RuntimeNotOffered:shadcn/vue2:[\"wc\",\"react\",\"vue\"]",
+      "setup": {
+        "url": "/en/ui-libraries/shadcn/dialog/",
+        "offeredRuntimes": "[\"wc\",\"react\",\"vue\"]",
+        "controls": [
+          {
+            "id": "",
+            "text": " Web Components ",
+            "controls": "pui-select-2-content",
+            "expanded": "false"
+          },
+          {
+            "id": "",
+            "text": " English ",
+            "controls": "pui-select-1-content",
+            "expanded": "false"
+          },
+          {
+            "id": "",
+            "text": " English ",
+            "controls": "pui-select-3-content",
+            "expanded": "false"
+          },
+          {
+            "id": "",
+            "text": "Web Components",
+            "controls": "pui-select-4-content",
+            "expanded": "false"
+          }
+        ],
+        "options": [
+          {
+            "text": "Web Components",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "React",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "Vue",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "Vue 2",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "English",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "简体中文",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "English",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "简体中文",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "Web Components",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "React",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "Vue",
+            "id": "",
+            "visible": false
+          }
+        ],
+        "runtimeScopes": [
+          {
+            "state": "ready",
+            "runtime": "wc",
+            "generation": "1"
+          },
+          {
+            "state": "ready",
+            "runtime": "wc",
+            "generation": "1"
+          },
+          {
+            "state": "ready",
+            "runtime": "wc",
+            "generation": "1"
+          },
+          {
+            "state": "ready",
+            "runtime": "wc",
+            "generation": "1"
+          },
+          {
+            "state": "ready",
+            "runtime": "wc",
+            "generation": "1"
+          },
+          {
+            "state": "ready",
+            "runtime": "wc",
+            "generation": "1"
+          },
+          {
+            "state": "ready",
+            "runtime": "wc",
+            "generation": "1"
+          },
+          {
+            "state": "ready",
+            "runtime": "wc",
+            "generation": "1"
+          },
+          {
+            "state": "ready",
+            "runtime": "wc",
+            "generation": "1"
+          },
+          {
+            "state": "ready",
+            "runtime": "wc",
+            "generation": "1"
+          }
+        ]
+      },
+      "image": {
+        "file": "shadcn-vue2-failure.png",
+        "sha256": "5bbc639f2b0e6a60d72abd05a464210463fde69f8e8c5da17a07453d1480889a"
+      }
+    },
+    {
+      "id": "brutalist-wc-390-immediate",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "route": "/en/ui-libraries/brutalist/components/dialog/",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "data": {
+        "rect": {
+          "x": 9.75,
+          "y": 357.8500061035156,
+          "width": 370.5,
+          "height": 184.30001831054688,
+          "top": 357.8500061035156,
+          "right": 380.25,
+          "bottom": 542.1500244140625,
+          "left": 9.75
+        },
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "x": 0,
+          "y": 0,
+          "visibleWidth": 390,
+          "visibleHeight": 900,
+          "scale": 1
+        },
+        "mask": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "font": 16,
+        "rendering": {
+          "dpr": 1,
+          "fonts": "loaded",
+          "scheme": "light",
+          "rootClientWidth": 390,
+          "rootClientLeft": 0
+        },
+        "paint": {
+          "fontFamily": "\"DM Sans\", ui-sans-serif, system-ui, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "500",
+          "lineHeight": "28px",
+          "transitionProperty": "all",
+          "transitionDuration": "0.2s"
+        },
+        "animations": [
+          {
+            "playState": "running",
+            "pending": true,
+            "property": null
+          }
+        ],
+        "overflowY": "visible",
+        "scrollWidth": 386,
+        "clientWidth": 386,
+        "scrollHeight": 190,
+        "clientHeight": 190,
+        "scrollTop": 0,
+        "focusInside": true,
+        "active": "<wc-brutalist-button class=\"pui-projection-prototype pui-projection-owner-70_70_2d_71_76_6f_64_72_36_71_6d_6d_38 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_62_75_74_74_6f_6e\" data-p",
+        "transition": "entering",
+        "available": {
+          "width": "",
+          "height": ""
+        },
+        "maskIdentity": {
+          "status": "resolved",
+          "coordinates": {
+            "owner": "pp-qvodr6qmm8",
+            "family": "brutalist",
+            "runtime": "wc",
+            "generation": "1"
+          },
+          "rootCount": 1,
+          "contentCount": 1,
+          "triggerCount": 1,
+          "maskCount": 1,
+          "originalFirstMatch": {
+            "tag": "WC-BRUTALIST-DIALOG-MASK",
+            "attributes": {
+              "data-pui-root": "",
+              "data-projection-owner": "pp-qvodr6qmm8",
+              "data-projection-family": "brutalist",
+              "data-projection-runtime": "wc",
+              "data-projection-generation": "1",
+              "data-projection-prototype": "brutalist-dialog-mask",
+              "data-transition-state": "entering",
+              "data-is-present": ""
+            },
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 900,
+              "top": 0,
+              "right": 390,
+              "bottom": 900,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "originalRect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 900,
+            "top": 0,
+            "right": 390,
+            "bottom": 900,
+            "left": 0
+          },
+          "content": {
+            "tag": "WC-BRUTALIST-DIALOG-CONTENT",
+            "attributes": {
+              "data-pui-root": "",
+              "data-projection-owner": "pp-qvodr6qmm8",
+              "data-projection-family": "brutalist",
+              "data-projection-runtime": "wc",
+              "data-projection-generation": "1",
+              "data-projection-prototype": "brutalist-dialog-content",
+              "data-transition-state": "entering",
+              "data-is-present": "",
+              "id": "pui-dialog-2-content",
+              "role": "dialog"
+            },
+            "rect": {
+              "x": 9.75,
+              "y": 357.8500061035156,
+              "width": 370.5,
+              "height": 184.30001831054688,
+              "top": 357.8500061035156,
+              "right": 380.25,
+              "bottom": 542.1500244140625,
+              "left": 9.75
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "masks": [
+            {
+              "tag": "WC-BRUTALIST-DIALOG-MASK",
+              "attributes": {
+                "data-pui-root": "",
+                "data-projection-owner": "pp-qvodr6qmm8",
+                "data-projection-family": "brutalist",
+                "data-projection-runtime": "wc",
+                "data-projection-generation": "1",
+                "data-projection-prototype": "brutalist-dialog-mask",
+                "data-transition-state": "entering",
+                "data-is-present": ""
+              },
+              "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 390,
+                "height": 900,
+                "top": 0,
+                "right": 390,
+                "bottom": 900,
+                "left": 0
+              },
+              "parent": {
+                "tag": "BODY",
+                "attributes": {}
+              }
+            }
+          ],
+          "triggers": [
+            {
+              "tag": "WC-BRUTALIST-DIALOG-TRIGGER",
+              "attributes": {
+                "data-pui-root": "",
+                "data-projection-owner": "pp-qvodr6qmm8",
+                "data-projection-family": "brutalist",
+                "data-projection-runtime": "wc",
+                "data-projection-generation": "1",
+                "data-projection-prototype": "brutalist-dialog-trigger",
+                "role": "button",
+                "aria-haspopup": "dialog",
+                "aria-controls": "pui-dialog-2-content"
+              },
+              "rect": {
+                "x": 137.375,
+                "y": 429.9375,
+                "width": 115.234375,
+                "height": 40,
+                "top": 429.9375,
+                "right": 252.609375,
+                "bottom": 469.9375,
+                "left": 137.375
+              },
+              "parent": {
+                "tag": "WC-BRUTALIST-DIALOG-ROOT",
+                "attributes": {
+                  "data-pui-root": "",
+                  "data-projection-owner": "pp-qvodr6qmm8",
+                  "data-projection-family": "brutalist",
+                  "data-projection-runtime": "wc",
+                  "data-projection-generation": "1",
+                  "data-projection-prototype": "brutalist-dialog-root"
+                }
+              }
+            }
+          ],
+          "scope": {
+            "data-projection-scope": "pp-qvodr6qmm8",
+            "data-projection-family": "brutalist",
+            "data-projection-runtime": "wc",
+            "data-projection-generation": "1",
+            "data-projection-state": "ready",
+            "data-demo-ref": "__pui_projection__scope"
+          },
+          "generationHost": {
+            "data-projection-generation-host": "1",
+            "data-projection-owner-host": "pp-qvodr6qmm8",
+            "data-projection-generation-state": "active"
+          }
+        }
+      },
+      "image": {
+        "file": "brutalist-wc-390-immediate.png",
+        "sha256": "3e69a1281c6956200501dce6e84291272be8c077e3894f34ccaf0650f2f1f5f0"
+      }
+    },
+    {
+      "id": "brutalist-wc-390-resize-immediate",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "route": "/en/ui-libraries/brutalist/components/dialog/",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "data": {
+        "rect": {
+          "x": 0,
+          "y": 353,
+          "width": 390,
+          "height": 194,
+          "top": 353,
+          "right": 390,
+          "bottom": 547,
+          "left": 0
+        },
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "x": 0,
+          "y": 0,
+          "visibleWidth": 390,
+          "visibleHeight": 900,
+          "scale": 1
+        },
+        "mask": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "font": 16,
+        "rendering": {
+          "dpr": 1,
+          "fonts": "loaded",
+          "scheme": "light",
+          "rootClientWidth": 390,
+          "rootClientLeft": 0
+        },
+        "paint": {
+          "fontFamily": "\"DM Sans\", ui-sans-serif, system-ui, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "500",
+          "lineHeight": "28px",
+          "transitionProperty": "all",
+          "transitionDuration": "0.2s"
+        },
+        "animations": [
+          {
+            "playState": "finished",
+            "pending": false,
+            "property": null
+          }
+        ],
+        "overflowY": "visible",
+        "scrollWidth": 386,
+        "clientWidth": 386,
+        "scrollHeight": 190,
+        "clientHeight": 190,
+        "scrollTop": 0,
+        "focusInside": true,
+        "active": "<wc-brutalist-button class=\"pui-projection-prototype pui-projection-owner-70_70_2d_71_76_6f_64_72_36_71_6d_6d_38 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_62_75_74_74_6f_6e\" data-p",
+        "transition": "entered",
+        "available": {
+          "width": "",
+          "height": ""
+        },
+        "maskIdentity": {
+          "status": "resolved",
+          "coordinates": {
+            "owner": "pp-qvodr6qmm8",
+            "family": "brutalist",
+            "runtime": "wc",
+            "generation": "1"
+          },
+          "rootCount": 1,
+          "contentCount": 1,
+          "triggerCount": 1,
+          "maskCount": 1,
+          "originalFirstMatch": {
+            "tag": "WC-BRUTALIST-DIALOG-MASK",
+            "attributes": {
+              "data-pui-root": "",
+              "data-projection-owner": "pp-qvodr6qmm8",
+              "data-projection-family": "brutalist",
+              "data-projection-runtime": "wc",
+              "data-projection-generation": "1",
+              "data-projection-prototype": "brutalist-dialog-mask",
+              "data-transition-state": "entered",
+              "data-is-present": ""
+            },
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 900,
+              "top": 0,
+              "right": 390,
+              "bottom": 900,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "originalRect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 900,
+            "top": 0,
+            "right": 390,
+            "bottom": 900,
+            "left": 0
+          },
+          "content": {
+            "tag": "WC-BRUTALIST-DIALOG-CONTENT",
+            "attributes": {
+              "data-pui-root": "",
+              "data-projection-owner": "pp-qvodr6qmm8",
+              "data-projection-family": "brutalist",
+              "data-projection-runtime": "wc",
+              "data-projection-generation": "1",
+              "data-projection-prototype": "brutalist-dialog-content",
+              "data-transition-state": "entered",
+              "data-is-present": "",
+              "id": "pui-dialog-2-content",
+              "role": "dialog"
+            },
+            "rect": {
+              "x": 0,
+              "y": 353,
+              "width": 390,
+              "height": 194,
+              "top": 353,
+              "right": 390,
+              "bottom": 547,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "masks": [
+            {
+              "tag": "WC-BRUTALIST-DIALOG-MASK",
+              "attributes": {
+                "data-pui-root": "",
+                "data-projection-owner": "pp-qvodr6qmm8",
+                "data-projection-family": "brutalist",
+                "data-projection-runtime": "wc",
+                "data-projection-generation": "1",
+                "data-projection-prototype": "brutalist-dialog-mask",
+                "data-transition-state": "entered",
+                "data-is-present": ""
+              },
+              "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 390,
+                "height": 900,
+                "top": 0,
+                "right": 390,
+                "bottom": 900,
+                "left": 0
+              },
+              "parent": {
+                "tag": "BODY",
+                "attributes": {}
+              }
+            }
+          ],
+          "triggers": [
+            {
+              "tag": "WC-BRUTALIST-DIALOG-TRIGGER",
+              "attributes": {
+                "data-pui-root": "",
+                "data-projection-owner": "pp-qvodr6qmm8",
+                "data-projection-family": "brutalist",
+                "data-projection-runtime": "wc",
+                "data-projection-generation": "1",
+                "data-projection-prototype": "brutalist-dialog-trigger",
+                "role": "button",
+                "aria-haspopup": "dialog",
+                "aria-controls": "pui-dialog-2-content"
+              },
+              "rect": {
+                "x": 137.375,
+                "y": 429.9375,
+                "width": 115.234375,
+                "height": 40,
+                "top": 429.9375,
+                "right": 252.609375,
+                "bottom": 469.9375,
+                "left": 137.375
+              },
+              "parent": {
+                "tag": "WC-BRUTALIST-DIALOG-ROOT",
+                "attributes": {
+                  "data-pui-root": "",
+                  "data-projection-owner": "pp-qvodr6qmm8",
+                  "data-projection-family": "brutalist",
+                  "data-projection-runtime": "wc",
+                  "data-projection-generation": "1",
+                  "data-projection-prototype": "brutalist-dialog-root"
+                }
+              }
+            }
+          ],
+          "scope": {
+            "data-projection-scope": "pp-qvodr6qmm8",
+            "data-projection-family": "brutalist",
+            "data-projection-runtime": "wc",
+            "data-projection-generation": "1",
+            "data-projection-state": "ready",
+            "data-demo-ref": "__pui_projection__scope"
+          },
+          "generationHost": {
+            "data-projection-generation-host": "1",
+            "data-projection-owner-host": "pp-qvodr6qmm8",
+            "data-projection-generation-state": "active"
+          }
+        }
+      },
+      "image": {
+        "file": "brutalist-wc-390-resize-immediate.png",
+        "sha256": "8bb4566db6fd6b55f7a85dcee6b16852ca6e8a8bd03194bbbf4da46c77381b72"
+      }
+    },
+    {
+      "id": "brutalist-wc-390-settled",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "route": "/en/ui-libraries/brutalist/components/dialog/",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "data": {
+        "rect": {
+          "x": 0,
+          "y": 353,
+          "width": 390,
+          "height": 194,
+          "top": 353,
+          "right": 390,
+          "bottom": 547,
+          "left": 0
+        },
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "x": 0,
+          "y": 0,
+          "visibleWidth": 390,
+          "visibleHeight": 900,
+          "scale": 1
+        },
+        "mask": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "font": 16,
+        "rendering": {
+          "dpr": 1,
+          "fonts": "loaded",
+          "scheme": "light",
+          "rootClientWidth": 390,
+          "rootClientLeft": 0
+        },
+        "paint": {
+          "fontFamily": "\"DM Sans\", ui-sans-serif, system-ui, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "500",
+          "lineHeight": "28px",
+          "transitionProperty": "all",
+          "transitionDuration": "0.2s"
+        },
+        "animations": [
+          {
+            "playState": "finished",
+            "pending": false,
+            "property": null
+          }
+        ],
+        "overflowY": "visible",
+        "scrollWidth": 386,
+        "clientWidth": 386,
+        "scrollHeight": 190,
+        "clientHeight": 190,
+        "scrollTop": 0,
+        "focusInside": true,
+        "active": "<wc-brutalist-button class=\"pui-projection-prototype pui-projection-owner-70_70_2d_71_76_6f_64_72_36_71_6d_6d_38 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_62_75_74_74_6f_6e\" data-p",
+        "transition": "entered",
+        "available": {
+          "width": "",
+          "height": ""
+        },
+        "maskIdentity": {
+          "status": "resolved",
+          "coordinates": {
+            "owner": "pp-qvodr6qmm8",
+            "family": "brutalist",
+            "runtime": "wc",
+            "generation": "1"
+          },
+          "rootCount": 1,
+          "contentCount": 1,
+          "triggerCount": 1,
+          "maskCount": 1,
+          "originalFirstMatch": {
+            "tag": "WC-BRUTALIST-DIALOG-MASK",
+            "attributes": {
+              "data-pui-root": "",
+              "data-projection-owner": "pp-qvodr6qmm8",
+              "data-projection-family": "brutalist",
+              "data-projection-runtime": "wc",
+              "data-projection-generation": "1",
+              "data-projection-prototype": "brutalist-dialog-mask",
+              "data-transition-state": "entered",
+              "data-is-present": ""
+            },
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 900,
+              "top": 0,
+              "right": 390,
+              "bottom": 900,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "originalRect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 900,
+            "top": 0,
+            "right": 390,
+            "bottom": 900,
+            "left": 0
+          },
+          "content": {
+            "tag": "WC-BRUTALIST-DIALOG-CONTENT",
+            "attributes": {
+              "data-pui-root": "",
+              "data-projection-owner": "pp-qvodr6qmm8",
+              "data-projection-family": "brutalist",
+              "data-projection-runtime": "wc",
+              "data-projection-generation": "1",
+              "data-projection-prototype": "brutalist-dialog-content",
+              "data-transition-state": "entered",
+              "data-is-present": "",
+              "id": "pui-dialog-2-content",
+              "role": "dialog"
+            },
+            "rect": {
+              "x": 0,
+              "y": 353,
+              "width": 390,
+              "height": 194,
+              "top": 353,
+              "right": 390,
+              "bottom": 547,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "masks": [
+            {
+              "tag": "WC-BRUTALIST-DIALOG-MASK",
+              "attributes": {
+                "data-pui-root": "",
+                "data-projection-owner": "pp-qvodr6qmm8",
+                "data-projection-family": "brutalist",
+                "data-projection-runtime": "wc",
+                "data-projection-generation": "1",
+                "data-projection-prototype": "brutalist-dialog-mask",
+                "data-transition-state": "entered",
+                "data-is-present": ""
+              },
+              "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 390,
+                "height": 900,
+                "top": 0,
+                "right": 390,
+                "bottom": 900,
+                "left": 0
+              },
+              "parent": {
+                "tag": "BODY",
+                "attributes": {}
+              }
+            }
+          ],
+          "triggers": [
+            {
+              "tag": "WC-BRUTALIST-DIALOG-TRIGGER",
+              "attributes": {
+                "data-pui-root": "",
+                "data-projection-owner": "pp-qvodr6qmm8",
+                "data-projection-family": "brutalist",
+                "data-projection-runtime": "wc",
+                "data-projection-generation": "1",
+                "data-projection-prototype": "brutalist-dialog-trigger",
+                "role": "button",
+                "aria-haspopup": "dialog",
+                "aria-controls": "pui-dialog-2-content"
+              },
+              "rect": {
+                "x": 137.375,
+                "y": 429.9375,
+                "width": 115.234375,
+                "height": 40,
+                "top": 429.9375,
+                "right": 252.609375,
+                "bottom": 469.9375,
+                "left": 137.375
+              },
+              "parent": {
+                "tag": "WC-BRUTALIST-DIALOG-ROOT",
+                "attributes": {
+                  "data-pui-root": "",
+                  "data-projection-owner": "pp-qvodr6qmm8",
+                  "data-projection-family": "brutalist",
+                  "data-projection-runtime": "wc",
+                  "data-projection-generation": "1",
+                  "data-projection-prototype": "brutalist-dialog-root"
+                }
+              }
+            }
+          ],
+          "scope": {
+            "data-projection-scope": "pp-qvodr6qmm8",
+            "data-projection-family": "brutalist",
+            "data-projection-runtime": "wc",
+            "data-projection-generation": "1",
+            "data-projection-state": "ready",
+            "data-demo-ref": "__pui_projection__scope"
+          },
+          "generationHost": {
+            "data-projection-generation-host": "1",
+            "data-projection-owner-host": "pp-qvodr6qmm8",
+            "data-projection-generation-state": "active"
+          }
+        }
+      },
+      "platformFonts": {
+        "status": "measured",
+        "fonts": [
+          {
+            "familyName": "DM Sans 9pt",
+            "postScriptName": "DMSans-9ptRegular_opsz120000_wght2BC0000",
+            "isCustomFont": true,
+            "glyphCount": 19
+          }
+        ]
+      },
+      "image": {
+        "file": "brutalist-wc-390-settled.png",
+        "sha256": "8bb4566db6fd6b55f7a85dcee6b16852ca6e8a8bd03194bbbf4da46c77381b72"
+      }
+    },
+    {
+      "id": "brutalist-wc-390-settled-title-clearance",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "fact": {
+        "missing": false,
+        "text": "Neo-Brutalist modal",
+        "title": {
+          "x": 26,
+          "y": 379,
+          "width": 338,
+          "height": 18,
+          "top": 379,
+          "right": 364,
+          "bottom": 397,
+          "left": 26
+        },
+        "close": {
+          "x": 336,
+          "y": 371,
+          "width": 36,
+          "height": 36,
+          "top": 371,
+          "right": 372,
+          "bottom": 407,
+          "left": 336
+        },
+        "titleOverlapArea": 504,
+        "lines": [
+          {
+            "rect": {
+              "x": 26,
+              "y": 376,
+              "width": 170.8125,
+              "height": 24,
+              "top": 376,
+              "right": 196.8125,
+              "bottom": 400,
+              "left": 26
+            },
+            "overlapArea": 0
+          }
+        ],
+        "titleVisible": true,
+        "closeVisible": true,
+        "titleOverflow": [
+          "visible",
+          "visible"
+        ],
+        "closePosition": "absolute",
+        "closeShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(0, 0, 0) 4px 4px 0px 0px",
+        "scrollTop": 0
+      }
+    },
+    {
+      "id": "brutalist-wc-failure",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "error": "AssertionError: CloseIcon must not cover the Title box: expected 504 to be +0 // Object.is equality",
+      "setup": {
+        "url": "/en/ui-libraries/brutalist/components/dialog/",
+        "offeredRuntimes": "[\"wc\",\"react\",\"vue\",\"vue2\"]",
+        "controls": [
+          {
+            "id": "",
+            "text": " Web Components ",
+            "controls": "pui-select-2-content",
+            "expanded": "false"
+          },
+          {
+            "id": "",
+            "text": " English ",
+            "controls": "pui-select-1-content",
+            "expanded": "false"
+          },
+          {
+            "id": "",
+            "text": " English ",
+            "controls": "pui-select-3-content",
+            "expanded": "false"
+          },
+          {
+            "id": "",
+            "text": "Web Components",
+            "controls": "pui-select-4-content",
+            "expanded": "false"
+          }
+        ],
+        "options": [
+          {
+            "text": "Web Components",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "React",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "Vue",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "Vue 2",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "English",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "简体中文",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "English",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "简体中文",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "Web Components",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "React",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "Vue",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "Vue 2",
+            "id": "",
+            "visible": false
+          }
+        ],
+        "runtimeScopes": [
+          {
+            "state": "ready",
+            "runtime": "wc",
+            "generation": "1"
+          },
+          {
+            "state": "ready",
+            "runtime": "wc",
+            "generation": "1"
+          },
+          {
+            "state": "ready",
+            "runtime": "wc",
+            "generation": "1"
+          },
+          {
+            "state": "ready",
+            "runtime": "wc",
+            "generation": "1"
+          },
+          {
+            "state": "ready",
+            "runtime": "wc",
+            "generation": "1"
+          },
+          {
+            "state": "ready",
+            "runtime": "wc",
+            "generation": "1"
+          }
+        ]
+      },
+      "image": {
+        "file": "brutalist-wc-failure.png",
+        "sha256": "8bb4566db6fd6b55f7a85dcee6b16852ca6e8a8bd03194bbbf4da46c77381b72"
+      }
+    },
+    {
+      "id": "brutalist-react-390-immediate",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "route": "/en/ui-libraries/brutalist/components/dialog/",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "data": {
+        "rect": {
+          "x": 9.75,
+          "y": 357.8500061035156,
+          "width": 370.5,
+          "height": 184.30001831054688,
+          "top": 357.8500061035156,
+          "right": 380.25,
+          "bottom": 542.1500244140625,
+          "left": 9.75
+        },
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "x": 0,
+          "y": 0,
+          "visibleWidth": 390,
+          "visibleHeight": 900,
+          "scale": 1
+        },
+        "mask": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "font": 16,
+        "rendering": {
+          "dpr": 1,
+          "fonts": "loaded",
+          "scheme": "light",
+          "rootClientWidth": 390,
+          "rootClientLeft": 0
+        },
+        "paint": {
+          "fontFamily": "\"DM Sans\", ui-sans-serif, system-ui, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "500",
+          "lineHeight": "28px",
+          "transitionProperty": "all",
+          "transitionDuration": "0.2s"
+        },
+        "animations": [
+          {
+            "playState": "running",
+            "pending": true,
+            "property": null
+          }
+        ],
+        "overflowY": "visible",
+        "scrollWidth": 386,
+        "clientWidth": 386,
+        "scrollHeight": 190,
+        "clientHeight": 190,
+        "scrollTop": 0,
+        "focusInside": false,
+        "active": "<div class=\"pui-projection-prototype pui-projection-owner-70_70_2d_67_68_65_32_70_62_68_77_76_72_67 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-72_65_61_63_74 pui-projection-generation-32 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_64_69_61_6c_6f_67_2d_74_72_69",
+        "transition": "entering",
+        "available": {
+          "width": "",
+          "height": ""
+        },
+        "maskIdentity": {
+          "status": "resolved",
+          "coordinates": {
+            "owner": "pp-ghe2pbhwvrg",
+            "family": "brutalist",
+            "runtime": "react",
+            "generation": "2"
+          },
+          "rootCount": 1,
+          "contentCount": 1,
+          "triggerCount": 1,
+          "maskCount": 1,
+          "originalFirstMatch": {
+            "tag": "DIV",
+            "attributes": {
+              "data-pui-root": "",
+              "data-transition-state": "entering",
+              "data-projection-owner": "pp-ghe2pbhwvrg",
+              "data-projection-family": "brutalist",
+              "data-projection-runtime": "react",
+              "data-projection-generation": "2",
+              "data-projection-prototype": "brutalist-dialog-mask",
+              "data-is-present": ""
+            },
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 900,
+              "top": 0,
+              "right": 390,
+              "bottom": 900,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "originalRect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 900,
+            "top": 0,
+            "right": 390,
+            "bottom": 900,
+            "left": 0
+          },
+          "content": {
+            "tag": "DIV",
+            "attributes": {
+              "data-pui-root": "",
+              "data-transition-state": "entering",
+              "data-projection-owner": "pp-ghe2pbhwvrg",
+              "data-projection-family": "brutalist",
+              "data-projection-runtime": "react",
+              "data-projection-generation": "2",
+              "data-projection-prototype": "brutalist-dialog-content",
+              "data-is-present": "",
+              "id": "pui-dialog-3-content",
+              "role": "dialog"
+            },
+            "rect": {
+              "x": 9.75,
+              "y": 357.8500061035156,
+              "width": 370.5,
+              "height": 184.30001831054688,
+              "top": 357.8500061035156,
+              "right": 380.25,
+              "bottom": 542.1500244140625,
+              "left": 9.75
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "masks": [
+            {
+              "tag": "DIV",
+              "attributes": {
+                "data-pui-root": "",
+                "data-transition-state": "entering",
+                "data-projection-owner": "pp-ghe2pbhwvrg",
+                "data-projection-family": "brutalist",
+                "data-projection-runtime": "react",
+                "data-projection-generation": "2",
+                "data-projection-prototype": "brutalist-dialog-mask",
+                "data-is-present": ""
+              },
+              "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 390,
+                "height": 900,
+                "top": 0,
+                "right": 390,
+                "bottom": 900,
+                "left": 0
+              },
+              "parent": {
+                "tag": "BODY",
+                "attributes": {}
+              }
+            }
+          ],
+          "triggers": [
+            {
+              "tag": "DIV",
+              "attributes": {
+                "data-pui-root": "",
+                "data-projection-owner": "pp-ghe2pbhwvrg",
+                "data-projection-family": "brutalist",
+                "data-projection-runtime": "react",
+                "data-projection-generation": "2",
+                "data-projection-prototype": "brutalist-dialog-trigger",
+                "role": "button",
+                "aria-haspopup": "dialog",
+                "aria-controls": "pui-dialog-3-content"
+              },
+              "rect": {
+                "x": 137.375,
+                "y": 542.328125,
+                "width": 115.234375,
+                "height": 40,
+                "top": 542.328125,
+                "right": 252.609375,
+                "bottom": 582.328125,
+                "left": 137.375
+              },
+              "parent": {
+                "tag": "DIV",
+                "attributes": {
+                  "data-pui-root": "",
+                  "data-projection-owner": "pp-ghe2pbhwvrg",
+                  "data-projection-family": "brutalist",
+                  "data-projection-runtime": "react",
+                  "data-projection-generation": "2",
+                  "data-projection-prototype": "brutalist-dialog-root"
+                }
+              }
+            }
+          ],
+          "scope": {
+            "data-projection-scope": "pp-ghe2pbhwvrg",
+            "data-projection-family": "brutalist",
+            "data-projection-runtime": "react",
+            "data-projection-generation": "2",
+            "data-projection-state": "ready",
+            "data-demo-ref": "__pui_projection__scope"
+          },
+          "generationHost": {
+            "data-projection-generation-host": "2",
+            "data-projection-owner-host": "pp-ghe2pbhwvrg",
+            "data-projection-generation-state": "active"
+          }
+        }
+      },
+      "image": {
+        "file": "brutalist-react-390-immediate.png",
+        "sha256": "b09141a1070f3dc7d8a9b8a559093f100893d48e4a954107891afb8bffc66421"
+      }
+    },
+    {
+      "id": "brutalist-react-390-resize-immediate",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "route": "/en/ui-libraries/brutalist/components/dialog/",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "data": {
+        "rect": {
+          "x": 0,
+          "y": 353,
+          "width": 390,
+          "height": 194,
+          "top": 353,
+          "right": 390,
+          "bottom": 547,
+          "left": 0
+        },
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "x": 0,
+          "y": 0,
+          "visibleWidth": 390,
+          "visibleHeight": 900,
+          "scale": 1
+        },
+        "mask": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "font": 16,
+        "rendering": {
+          "dpr": 1,
+          "fonts": "loaded",
+          "scheme": "light",
+          "rootClientWidth": 390,
+          "rootClientLeft": 0
+        },
+        "paint": {
+          "fontFamily": "\"DM Sans\", ui-sans-serif, system-ui, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "500",
+          "lineHeight": "28px",
+          "transitionProperty": "all",
+          "transitionDuration": "0.2s"
+        },
+        "animations": [
+          {
+            "playState": "finished",
+            "pending": false,
+            "property": null
+          }
+        ],
+        "overflowY": "visible",
+        "scrollWidth": 386,
+        "clientWidth": 386,
+        "scrollHeight": 190,
+        "clientHeight": 190,
+        "scrollTop": 0,
+        "focusInside": false,
+        "active": "<div class=\"pui-projection-prototype pui-projection-owner-70_70_2d_67_68_65_32_70_62_68_77_76_72_67 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-72_65_61_63_74 pui-projection-generation-32 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_64_69_61_6c_6f_67_2d_74_72_69",
+        "transition": "entered",
+        "available": {
+          "width": "",
+          "height": ""
+        },
+        "maskIdentity": {
+          "status": "resolved",
+          "coordinates": {
+            "owner": "pp-ghe2pbhwvrg",
+            "family": "brutalist",
+            "runtime": "react",
+            "generation": "2"
+          },
+          "rootCount": 1,
+          "contentCount": 1,
+          "triggerCount": 1,
+          "maskCount": 1,
+          "originalFirstMatch": {
+            "tag": "DIV",
+            "attributes": {
+              "data-pui-root": "",
+              "data-transition-state": "entered",
+              "data-projection-owner": "pp-ghe2pbhwvrg",
+              "data-projection-family": "brutalist",
+              "data-projection-runtime": "react",
+              "data-projection-generation": "2",
+              "data-projection-prototype": "brutalist-dialog-mask",
+              "data-is-present": ""
+            },
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 900,
+              "top": 0,
+              "right": 390,
+              "bottom": 900,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "originalRect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 900,
+            "top": 0,
+            "right": 390,
+            "bottom": 900,
+            "left": 0
+          },
+          "content": {
+            "tag": "DIV",
+            "attributes": {
+              "data-pui-root": "",
+              "data-transition-state": "entered",
+              "data-projection-owner": "pp-ghe2pbhwvrg",
+              "data-projection-family": "brutalist",
+              "data-projection-runtime": "react",
+              "data-projection-generation": "2",
+              "data-projection-prototype": "brutalist-dialog-content",
+              "data-is-present": "",
+              "id": "pui-dialog-3-content",
+              "role": "dialog"
+            },
+            "rect": {
+              "x": 0,
+              "y": 353,
+              "width": 390,
+              "height": 194,
+              "top": 353,
+              "right": 390,
+              "bottom": 547,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "masks": [
+            {
+              "tag": "DIV",
+              "attributes": {
+                "data-pui-root": "",
+                "data-transition-state": "entered",
+                "data-projection-owner": "pp-ghe2pbhwvrg",
+                "data-projection-family": "brutalist",
+                "data-projection-runtime": "react",
+                "data-projection-generation": "2",
+                "data-projection-prototype": "brutalist-dialog-mask",
+                "data-is-present": ""
+              },
+              "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 390,
+                "height": 900,
+                "top": 0,
+                "right": 390,
+                "bottom": 900,
+                "left": 0
+              },
+              "parent": {
+                "tag": "BODY",
+                "attributes": {}
+              }
+            }
+          ],
+          "triggers": [
+            {
+              "tag": "DIV",
+              "attributes": {
+                "data-pui-root": "",
+                "data-projection-owner": "pp-ghe2pbhwvrg",
+                "data-projection-family": "brutalist",
+                "data-projection-runtime": "react",
+                "data-projection-generation": "2",
+                "data-projection-prototype": "brutalist-dialog-trigger",
+                "role": "button",
+                "aria-haspopup": "dialog",
+                "aria-controls": "pui-dialog-3-content"
+              },
+              "rect": {
+                "x": 137.375,
+                "y": 542.328125,
+                "width": 115.234375,
+                "height": 40,
+                "top": 542.328125,
+                "right": 252.609375,
+                "bottom": 582.328125,
+                "left": 137.375
+              },
+              "parent": {
+                "tag": "DIV",
+                "attributes": {
+                  "data-pui-root": "",
+                  "data-projection-owner": "pp-ghe2pbhwvrg",
+                  "data-projection-family": "brutalist",
+                  "data-projection-runtime": "react",
+                  "data-projection-generation": "2",
+                  "data-projection-prototype": "brutalist-dialog-root"
+                }
+              }
+            }
+          ],
+          "scope": {
+            "data-projection-scope": "pp-ghe2pbhwvrg",
+            "data-projection-family": "brutalist",
+            "data-projection-runtime": "react",
+            "data-projection-generation": "2",
+            "data-projection-state": "ready",
+            "data-demo-ref": "__pui_projection__scope"
+          },
+          "generationHost": {
+            "data-projection-generation-host": "2",
+            "data-projection-owner-host": "pp-ghe2pbhwvrg",
+            "data-projection-generation-state": "active"
+          }
+        }
+      },
+      "image": {
+        "file": "brutalist-react-390-resize-immediate.png",
+        "sha256": "9288e27269034bf384ad5a435165bb8db95ed58d5ae783f077455aaf0185fd8f"
+      }
+    },
+    {
+      "id": "brutalist-react-390-settled",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "route": "/en/ui-libraries/brutalist/components/dialog/",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "data": {
+        "rect": {
+          "x": 0,
+          "y": 353,
+          "width": 390,
+          "height": 194,
+          "top": 353,
+          "right": 390,
+          "bottom": 547,
+          "left": 0
+        },
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "x": 0,
+          "y": 0,
+          "visibleWidth": 390,
+          "visibleHeight": 900,
+          "scale": 1
+        },
+        "mask": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "font": 16,
+        "rendering": {
+          "dpr": 1,
+          "fonts": "loaded",
+          "scheme": "light",
+          "rootClientWidth": 390,
+          "rootClientLeft": 0
+        },
+        "paint": {
+          "fontFamily": "\"DM Sans\", ui-sans-serif, system-ui, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "500",
+          "lineHeight": "28px",
+          "transitionProperty": "all",
+          "transitionDuration": "0.2s"
+        },
+        "animations": [
+          {
+            "playState": "finished",
+            "pending": false,
+            "property": null
+          }
+        ],
+        "overflowY": "visible",
+        "scrollWidth": 386,
+        "clientWidth": 386,
+        "scrollHeight": 190,
+        "clientHeight": 190,
+        "scrollTop": 0,
+        "focusInside": false,
+        "active": "<div class=\"pui-projection-prototype pui-projection-owner-70_70_2d_67_68_65_32_70_62_68_77_76_72_67 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-72_65_61_63_74 pui-projection-generation-32 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_64_69_61_6c_6f_67_2d_74_72_69",
+        "transition": "entered",
+        "available": {
+          "width": "",
+          "height": ""
+        },
+        "maskIdentity": {
+          "status": "resolved",
+          "coordinates": {
+            "owner": "pp-ghe2pbhwvrg",
+            "family": "brutalist",
+            "runtime": "react",
+            "generation": "2"
+          },
+          "rootCount": 1,
+          "contentCount": 1,
+          "triggerCount": 1,
+          "maskCount": 1,
+          "originalFirstMatch": {
+            "tag": "DIV",
+            "attributes": {
+              "data-pui-root": "",
+              "data-transition-state": "entered",
+              "data-projection-owner": "pp-ghe2pbhwvrg",
+              "data-projection-family": "brutalist",
+              "data-projection-runtime": "react",
+              "data-projection-generation": "2",
+              "data-projection-prototype": "brutalist-dialog-mask",
+              "data-is-present": ""
+            },
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 900,
+              "top": 0,
+              "right": 390,
+              "bottom": 900,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "originalRect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 900,
+            "top": 0,
+            "right": 390,
+            "bottom": 900,
+            "left": 0
+          },
+          "content": {
+            "tag": "DIV",
+            "attributes": {
+              "data-pui-root": "",
+              "data-transition-state": "entered",
+              "data-projection-owner": "pp-ghe2pbhwvrg",
+              "data-projection-family": "brutalist",
+              "data-projection-runtime": "react",
+              "data-projection-generation": "2",
+              "data-projection-prototype": "brutalist-dialog-content",
+              "data-is-present": "",
+              "id": "pui-dialog-3-content",
+              "role": "dialog"
+            },
+            "rect": {
+              "x": 0,
+              "y": 353,
+              "width": 390,
+              "height": 194,
+              "top": 353,
+              "right": 390,
+              "bottom": 547,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "masks": [
+            {
+              "tag": "DIV",
+              "attributes": {
+                "data-pui-root": "",
+                "data-transition-state": "entered",
+                "data-projection-owner": "pp-ghe2pbhwvrg",
+                "data-projection-family": "brutalist",
+                "data-projection-runtime": "react",
+                "data-projection-generation": "2",
+                "data-projection-prototype": "brutalist-dialog-mask",
+                "data-is-present": ""
+              },
+              "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 390,
+                "height": 900,
+                "top": 0,
+                "right": 390,
+                "bottom": 900,
+                "left": 0
+              },
+              "parent": {
+                "tag": "BODY",
+                "attributes": {}
+              }
+            }
+          ],
+          "triggers": [
+            {
+              "tag": "DIV",
+              "attributes": {
+                "data-pui-root": "",
+                "data-projection-owner": "pp-ghe2pbhwvrg",
+                "data-projection-family": "brutalist",
+                "data-projection-runtime": "react",
+                "data-projection-generation": "2",
+                "data-projection-prototype": "brutalist-dialog-trigger",
+                "role": "button",
+                "aria-haspopup": "dialog",
+                "aria-controls": "pui-dialog-3-content"
+              },
+              "rect": {
+                "x": 137.375,
+                "y": 542.328125,
+                "width": 115.234375,
+                "height": 40,
+                "top": 542.328125,
+                "right": 252.609375,
+                "bottom": 582.328125,
+                "left": 137.375
+              },
+              "parent": {
+                "tag": "DIV",
+                "attributes": {
+                  "data-pui-root": "",
+                  "data-projection-owner": "pp-ghe2pbhwvrg",
+                  "data-projection-family": "brutalist",
+                  "data-projection-runtime": "react",
+                  "data-projection-generation": "2",
+                  "data-projection-prototype": "brutalist-dialog-root"
+                }
+              }
+            }
+          ],
+          "scope": {
+            "data-projection-scope": "pp-ghe2pbhwvrg",
+            "data-projection-family": "brutalist",
+            "data-projection-runtime": "react",
+            "data-projection-generation": "2",
+            "data-projection-state": "ready",
+            "data-demo-ref": "__pui_projection__scope"
+          },
+          "generationHost": {
+            "data-projection-generation-host": "2",
+            "data-projection-owner-host": "pp-ghe2pbhwvrg",
+            "data-projection-generation-state": "active"
+          }
+        }
+      },
+      "platformFonts": {
+        "status": "measured",
+        "fonts": [
+          {
+            "familyName": "DM Sans 9pt",
+            "postScriptName": "DMSans-9ptRegular_opsz120000_wght2BC0000",
+            "isCustomFont": true,
+            "glyphCount": 19
+          }
+        ]
+      },
+      "image": {
+        "file": "brutalist-react-390-settled.png",
+        "sha256": "9288e27269034bf384ad5a435165bb8db95ed58d5ae783f077455aaf0185fd8f"
+      }
+    },
+    {
+      "id": "brutalist-react-390-settled-title-clearance",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "fact": {
+        "missing": false,
+        "text": "Neo-Brutalist modal",
+        "title": {
+          "x": 26,
+          "y": 379,
+          "width": 338,
+          "height": 18,
+          "top": 379,
+          "right": 364,
+          "bottom": 397,
+          "left": 26
+        },
+        "close": {
+          "x": 336,
+          "y": 371,
+          "width": 36,
+          "height": 36,
+          "top": 371,
+          "right": 372,
+          "bottom": 407,
+          "left": 336
+        },
+        "titleOverlapArea": 504,
+        "lines": [
+          {
+            "rect": {
+              "x": 26,
+              "y": 376,
+              "width": 170.8125,
+              "height": 24,
+              "top": 376,
+              "right": 196.8125,
+              "bottom": 400,
+              "left": 26
+            },
+            "overlapArea": 0
+          }
+        ],
+        "titleVisible": true,
+        "closeVisible": true,
+        "titleOverflow": [
+          "visible",
+          "visible"
+        ],
+        "closePosition": "absolute",
+        "closeShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(0, 0, 0) 4px 4px 0px 0px",
+        "scrollTop": 0
+      }
+    },
+    {
+      "id": "brutalist-react-failure",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "error": "AssertionError: CloseIcon must not cover the Title box: expected 504 to be +0 // Object.is equality",
+      "setup": {
+        "url": "/en/ui-libraries/brutalist/components/dialog/",
+        "offeredRuntimes": "[\"wc\",\"react\",\"vue\",\"vue2\"]",
+        "controls": [
+          {
+            "id": "",
+            "text": " React ",
+            "controls": "pui-select-2-content",
+            "expanded": "false"
+          },
+          {
+            "id": "",
+            "text": " English ",
+            "controls": "pui-select-1-content",
+            "expanded": "false"
+          },
+          {
+            "id": "",
+            "text": " English ",
+            "controls": "pui-select-3-content",
+            "expanded": "false"
+          },
+          {
+            "id": "",
+            "text": "React",
+            "controls": "pui-select-5-content",
+            "expanded": "false"
+          }
+        ],
+        "options": [
+          {
+            "text": "Web Components",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "React",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "Vue",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "Vue 2",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "English",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "简体中文",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "English",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "简体中文",
+            "id": "",
+            "visible": false
+          }
+        ],
+        "runtimeScopes": [
+          {
+            "state": "ready",
+            "runtime": "react",
+            "generation": "2"
+          },
+          {
+            "state": "ready",
+            "runtime": "react",
+            "generation": "2"
+          },
+          {
+            "state": "ready",
+            "runtime": "react",
+            "generation": "2"
+          },
+          {
+            "state": "ready",
+            "runtime": "react",
+            "generation": "2"
+          },
+          {
+            "state": "ready",
+            "runtime": "react",
+            "generation": "2"
+          },
+          {
+            "state": "ready",
+            "runtime": "react",
+            "generation": "2"
+          }
+        ]
+      },
+      "image": {
+        "file": "brutalist-react-failure.png",
+        "sha256": "9288e27269034bf384ad5a435165bb8db95ed58d5ae783f077455aaf0185fd8f"
+      }
+    },
+    {
+      "id": "brutalist-vue-390-immediate",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "route": "/en/ui-libraries/brutalist/components/dialog/",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "data": {
+        "rect": {
+          "x": 9.75,
+          "y": 357.8500061035156,
+          "width": 370.5,
+          "height": 184.30001831054688,
+          "top": 357.8500061035156,
+          "right": 380.25,
+          "bottom": 542.1500244140625,
+          "left": 9.75
+        },
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "x": 0,
+          "y": 0,
+          "visibleWidth": 390,
+          "visibleHeight": 900,
+          "scale": 1
+        },
+        "mask": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "font": 16,
+        "rendering": {
+          "dpr": 1,
+          "fonts": "loaded",
+          "scheme": "light",
+          "rootClientWidth": 390,
+          "rootClientLeft": 0
+        },
+        "paint": {
+          "fontFamily": "\"DM Sans\", ui-sans-serif, system-ui, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "500",
+          "lineHeight": "28px",
+          "transitionProperty": "all",
+          "transitionDuration": "0.2s"
+        },
+        "animations": [
+          {
+            "playState": "running",
+            "pending": true,
+            "property": null
+          }
+        ],
+        "overflowY": "visible",
+        "scrollWidth": 386,
+        "clientWidth": 386,
+        "scrollHeight": 190,
+        "clientHeight": 190,
+        "scrollTop": 0,
+        "focusInside": true,
+        "active": "<div class=\"pui-projection-prototype pui-projection-owner-70_70_2d_30_71_37_6c_34_33_77_67_74_35_75_64 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-76_75_65 pui-projection-generation-32 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_62_75_74_74_6f_6e\" data-pui-root",
+        "transition": "entering",
+        "available": {
+          "width": "",
+          "height": ""
+        },
+        "maskIdentity": {
+          "status": "resolved",
+          "coordinates": {
+            "owner": "pp-0q7l43wgt5ud",
+            "family": "brutalist",
+            "runtime": "vue",
+            "generation": "2"
+          },
+          "rootCount": 1,
+          "contentCount": 1,
+          "triggerCount": 1,
+          "maskCount": 1,
+          "originalFirstMatch": {
+            "tag": "DIV",
+            "attributes": {
+              "data-pui-root": "",
+              "data-projection-owner": "pp-0q7l43wgt5ud",
+              "data-projection-family": "brutalist",
+              "data-projection-runtime": "vue",
+              "data-projection-generation": "2",
+              "data-projection-prototype": "brutalist-dialog-mask",
+              "data-transition-state": "entering",
+              "data-is-present": ""
+            },
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 900,
+              "top": 0,
+              "right": 390,
+              "bottom": 900,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "originalRect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 900,
+            "top": 0,
+            "right": 390,
+            "bottom": 900,
+            "left": 0
+          },
+          "content": {
+            "tag": "DIV",
+            "attributes": {
+              "data-pui-root": "",
+              "data-projection-owner": "pp-0q7l43wgt5ud",
+              "data-projection-family": "brutalist",
+              "data-projection-runtime": "vue",
+              "data-projection-generation": "2",
+              "data-projection-prototype": "brutalist-dialog-content",
+              "data-transition-state": "entering",
+              "data-is-present": "",
+              "id": "pui-dialog-3-content",
+              "role": "dialog"
+            },
+            "rect": {
+              "x": 9.75,
+              "y": 357.8500061035156,
+              "width": 370.5,
+              "height": 184.30001831054688,
+              "top": 357.8500061035156,
+              "right": 380.25,
+              "bottom": 542.1500244140625,
+              "left": 9.75
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "masks": [
+            {
+              "tag": "DIV",
+              "attributes": {
+                "data-pui-root": "",
+                "data-projection-owner": "pp-0q7l43wgt5ud",
+                "data-projection-family": "brutalist",
+                "data-projection-runtime": "vue",
+                "data-projection-generation": "2",
+                "data-projection-prototype": "brutalist-dialog-mask",
+                "data-transition-state": "entering",
+                "data-is-present": ""
+              },
+              "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 390,
+                "height": 900,
+                "top": 0,
+                "right": 390,
+                "bottom": 900,
+                "left": 0
+              },
+              "parent": {
+                "tag": "BODY",
+                "attributes": {}
+              }
+            }
+          ],
+          "triggers": [
+            {
+              "tag": "DIV",
+              "attributes": {
+                "data-pui-root": "",
+                "data-projection-owner": "pp-0q7l43wgt5ud",
+                "data-projection-family": "brutalist",
+                "data-projection-runtime": "vue",
+                "data-projection-generation": "2",
+                "data-projection-prototype": "brutalist-dialog-trigger",
+                "role": "button",
+                "aria-haspopup": "dialog",
+                "aria-controls": "pui-dialog-3-content"
+              },
+              "rect": {
+                "x": 137.375,
+                "y": 542.328125,
+                "width": 115.234375,
+                "height": 40,
+                "top": 542.328125,
+                "right": 252.609375,
+                "bottom": 582.328125,
+                "left": 137.375
+              },
+              "parent": {
+                "tag": "DIV",
+                "attributes": {
+                  "data-pui-root": "",
+                  "data-projection-owner": "pp-0q7l43wgt5ud",
+                  "data-projection-family": "brutalist",
+                  "data-projection-runtime": "vue",
+                  "data-projection-generation": "2",
+                  "data-projection-prototype": "brutalist-dialog-root"
+                }
+              }
+            }
+          ],
+          "scope": {
+            "data-projection-scope": "pp-0q7l43wgt5ud",
+            "data-projection-family": "brutalist",
+            "data-projection-runtime": "vue",
+            "data-projection-generation": "2",
+            "data-projection-state": "ready",
+            "data-demo-ref": "__pui_projection__scope"
+          },
+          "generationHost": {
+            "data-projection-generation-host": "2",
+            "data-projection-owner-host": "pp-0q7l43wgt5ud",
+            "data-projection-generation-state": "active"
+          }
+        }
+      },
+      "image": {
+        "file": "brutalist-vue-390-immediate.png",
+        "sha256": "36a4b983779a695f72f5dfd054ce277ba26dfa57a3c66c7453a3c8d35cebf656"
+      }
+    },
+    {
+      "id": "brutalist-vue-390-resize-immediate",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "route": "/en/ui-libraries/brutalist/components/dialog/",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "data": {
+        "rect": {
+          "x": 0,
+          "y": 353,
+          "width": 390,
+          "height": 194,
+          "top": 353,
+          "right": 390,
+          "bottom": 547,
+          "left": 0
+        },
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "x": 0,
+          "y": 0,
+          "visibleWidth": 390,
+          "visibleHeight": 900,
+          "scale": 1
+        },
+        "mask": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "font": 16,
+        "rendering": {
+          "dpr": 1,
+          "fonts": "loaded",
+          "scheme": "light",
+          "rootClientWidth": 390,
+          "rootClientLeft": 0
+        },
+        "paint": {
+          "fontFamily": "\"DM Sans\", ui-sans-serif, system-ui, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "500",
+          "lineHeight": "28px",
+          "transitionProperty": "all",
+          "transitionDuration": "0.2s"
+        },
+        "animations": [
+          {
+            "playState": "finished",
+            "pending": false,
+            "property": null
+          }
+        ],
+        "overflowY": "visible",
+        "scrollWidth": 386,
+        "clientWidth": 386,
+        "scrollHeight": 190,
+        "clientHeight": 190,
+        "scrollTop": 0,
+        "focusInside": true,
+        "active": "<div class=\"pui-projection-prototype pui-projection-owner-70_70_2d_30_71_37_6c_34_33_77_67_74_35_75_64 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-76_75_65 pui-projection-generation-32 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_62_75_74_74_6f_6e\" data-pui-root",
+        "transition": "entered",
+        "available": {
+          "width": "",
+          "height": ""
+        },
+        "maskIdentity": {
+          "status": "resolved",
+          "coordinates": {
+            "owner": "pp-0q7l43wgt5ud",
+            "family": "brutalist",
+            "runtime": "vue",
+            "generation": "2"
+          },
+          "rootCount": 1,
+          "contentCount": 1,
+          "triggerCount": 1,
+          "maskCount": 1,
+          "originalFirstMatch": {
+            "tag": "DIV",
+            "attributes": {
+              "data-pui-root": "",
+              "data-projection-owner": "pp-0q7l43wgt5ud",
+              "data-projection-family": "brutalist",
+              "data-projection-runtime": "vue",
+              "data-projection-generation": "2",
+              "data-projection-prototype": "brutalist-dialog-mask",
+              "data-transition-state": "entered",
+              "data-is-present": ""
+            },
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 900,
+              "top": 0,
+              "right": 390,
+              "bottom": 900,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "originalRect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 900,
+            "top": 0,
+            "right": 390,
+            "bottom": 900,
+            "left": 0
+          },
+          "content": {
+            "tag": "DIV",
+            "attributes": {
+              "data-pui-root": "",
+              "data-projection-owner": "pp-0q7l43wgt5ud",
+              "data-projection-family": "brutalist",
+              "data-projection-runtime": "vue",
+              "data-projection-generation": "2",
+              "data-projection-prototype": "brutalist-dialog-content",
+              "data-transition-state": "entered",
+              "data-is-present": "",
+              "id": "pui-dialog-3-content",
+              "role": "dialog"
+            },
+            "rect": {
+              "x": 0,
+              "y": 353,
+              "width": 390,
+              "height": 194,
+              "top": 353,
+              "right": 390,
+              "bottom": 547,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "masks": [
+            {
+              "tag": "DIV",
+              "attributes": {
+                "data-pui-root": "",
+                "data-projection-owner": "pp-0q7l43wgt5ud",
+                "data-projection-family": "brutalist",
+                "data-projection-runtime": "vue",
+                "data-projection-generation": "2",
+                "data-projection-prototype": "brutalist-dialog-mask",
+                "data-transition-state": "entered",
+                "data-is-present": ""
+              },
+              "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 390,
+                "height": 900,
+                "top": 0,
+                "right": 390,
+                "bottom": 900,
+                "left": 0
+              },
+              "parent": {
+                "tag": "BODY",
+                "attributes": {}
+              }
+            }
+          ],
+          "triggers": [
+            {
+              "tag": "DIV",
+              "attributes": {
+                "data-pui-root": "",
+                "data-projection-owner": "pp-0q7l43wgt5ud",
+                "data-projection-family": "brutalist",
+                "data-projection-runtime": "vue",
+                "data-projection-generation": "2",
+                "data-projection-prototype": "brutalist-dialog-trigger",
+                "role": "button",
+                "aria-haspopup": "dialog",
+                "aria-controls": "pui-dialog-3-content"
+              },
+              "rect": {
+                "x": 137.375,
+                "y": 542.328125,
+                "width": 115.234375,
+                "height": 40,
+                "top": 542.328125,
+                "right": 252.609375,
+                "bottom": 582.328125,
+                "left": 137.375
+              },
+              "parent": {
+                "tag": "DIV",
+                "attributes": {
+                  "data-pui-root": "",
+                  "data-projection-owner": "pp-0q7l43wgt5ud",
+                  "data-projection-family": "brutalist",
+                  "data-projection-runtime": "vue",
+                  "data-projection-generation": "2",
+                  "data-projection-prototype": "brutalist-dialog-root"
+                }
+              }
+            }
+          ],
+          "scope": {
+            "data-projection-scope": "pp-0q7l43wgt5ud",
+            "data-projection-family": "brutalist",
+            "data-projection-runtime": "vue",
+            "data-projection-generation": "2",
+            "data-projection-state": "ready",
+            "data-demo-ref": "__pui_projection__scope"
+          },
+          "generationHost": {
+            "data-projection-generation-host": "2",
+            "data-projection-owner-host": "pp-0q7l43wgt5ud",
+            "data-projection-generation-state": "active"
+          }
+        }
+      },
+      "image": {
+        "file": "brutalist-vue-390-resize-immediate.png",
+        "sha256": "9288e27269034bf384ad5a435165bb8db95ed58d5ae783f077455aaf0185fd8f"
+      }
+    },
+    {
+      "id": "brutalist-vue-390-settled",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "route": "/en/ui-libraries/brutalist/components/dialog/",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "data": {
+        "rect": {
+          "x": 0,
+          "y": 353,
+          "width": 390,
+          "height": 194,
+          "top": 353,
+          "right": 390,
+          "bottom": 547,
+          "left": 0
+        },
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "x": 0,
+          "y": 0,
+          "visibleWidth": 390,
+          "visibleHeight": 900,
+          "scale": 1
+        },
+        "mask": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "font": 16,
+        "rendering": {
+          "dpr": 1,
+          "fonts": "loaded",
+          "scheme": "light",
+          "rootClientWidth": 390,
+          "rootClientLeft": 0
+        },
+        "paint": {
+          "fontFamily": "\"DM Sans\", ui-sans-serif, system-ui, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "500",
+          "lineHeight": "28px",
+          "transitionProperty": "all",
+          "transitionDuration": "0.2s"
+        },
+        "animations": [
+          {
+            "playState": "finished",
+            "pending": false,
+            "property": null
+          }
+        ],
+        "overflowY": "visible",
+        "scrollWidth": 386,
+        "clientWidth": 386,
+        "scrollHeight": 190,
+        "clientHeight": 190,
+        "scrollTop": 0,
+        "focusInside": true,
+        "active": "<div class=\"pui-projection-prototype pui-projection-owner-70_70_2d_30_71_37_6c_34_33_77_67_74_35_75_64 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-76_75_65 pui-projection-generation-32 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_62_75_74_74_6f_6e\" data-pui-root",
+        "transition": "entered",
+        "available": {
+          "width": "",
+          "height": ""
+        },
+        "maskIdentity": {
+          "status": "resolved",
+          "coordinates": {
+            "owner": "pp-0q7l43wgt5ud",
+            "family": "brutalist",
+            "runtime": "vue",
+            "generation": "2"
+          },
+          "rootCount": 1,
+          "contentCount": 1,
+          "triggerCount": 1,
+          "maskCount": 1,
+          "originalFirstMatch": {
+            "tag": "DIV",
+            "attributes": {
+              "data-pui-root": "",
+              "data-projection-owner": "pp-0q7l43wgt5ud",
+              "data-projection-family": "brutalist",
+              "data-projection-runtime": "vue",
+              "data-projection-generation": "2",
+              "data-projection-prototype": "brutalist-dialog-mask",
+              "data-transition-state": "entered",
+              "data-is-present": ""
+            },
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 900,
+              "top": 0,
+              "right": 390,
+              "bottom": 900,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "originalRect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 900,
+            "top": 0,
+            "right": 390,
+            "bottom": 900,
+            "left": 0
+          },
+          "content": {
+            "tag": "DIV",
+            "attributes": {
+              "data-pui-root": "",
+              "data-projection-owner": "pp-0q7l43wgt5ud",
+              "data-projection-family": "brutalist",
+              "data-projection-runtime": "vue",
+              "data-projection-generation": "2",
+              "data-projection-prototype": "brutalist-dialog-content",
+              "data-transition-state": "entered",
+              "data-is-present": "",
+              "id": "pui-dialog-3-content",
+              "role": "dialog"
+            },
+            "rect": {
+              "x": 0,
+              "y": 353,
+              "width": 390,
+              "height": 194,
+              "top": 353,
+              "right": 390,
+              "bottom": 547,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "masks": [
+            {
+              "tag": "DIV",
+              "attributes": {
+                "data-pui-root": "",
+                "data-projection-owner": "pp-0q7l43wgt5ud",
+                "data-projection-family": "brutalist",
+                "data-projection-runtime": "vue",
+                "data-projection-generation": "2",
+                "data-projection-prototype": "brutalist-dialog-mask",
+                "data-transition-state": "entered",
+                "data-is-present": ""
+              },
+              "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 390,
+                "height": 900,
+                "top": 0,
+                "right": 390,
+                "bottom": 900,
+                "left": 0
+              },
+              "parent": {
+                "tag": "BODY",
+                "attributes": {}
+              }
+            }
+          ],
+          "triggers": [
+            {
+              "tag": "DIV",
+              "attributes": {
+                "data-pui-root": "",
+                "data-projection-owner": "pp-0q7l43wgt5ud",
+                "data-projection-family": "brutalist",
+                "data-projection-runtime": "vue",
+                "data-projection-generation": "2",
+                "data-projection-prototype": "brutalist-dialog-trigger",
+                "role": "button",
+                "aria-haspopup": "dialog",
+                "aria-controls": "pui-dialog-3-content"
+              },
+              "rect": {
+                "x": 137.375,
+                "y": 542.328125,
+                "width": 115.234375,
+                "height": 40,
+                "top": 542.328125,
+                "right": 252.609375,
+                "bottom": 582.328125,
+                "left": 137.375
+              },
+              "parent": {
+                "tag": "DIV",
+                "attributes": {
+                  "data-pui-root": "",
+                  "data-projection-owner": "pp-0q7l43wgt5ud",
+                  "data-projection-family": "brutalist",
+                  "data-projection-runtime": "vue",
+                  "data-projection-generation": "2",
+                  "data-projection-prototype": "brutalist-dialog-root"
+                }
+              }
+            }
+          ],
+          "scope": {
+            "data-projection-scope": "pp-0q7l43wgt5ud",
+            "data-projection-family": "brutalist",
+            "data-projection-runtime": "vue",
+            "data-projection-generation": "2",
+            "data-projection-state": "ready",
+            "data-demo-ref": "__pui_projection__scope"
+          },
+          "generationHost": {
+            "data-projection-generation-host": "2",
+            "data-projection-owner-host": "pp-0q7l43wgt5ud",
+            "data-projection-generation-state": "active"
+          }
+        }
+      },
+      "platformFonts": {
+        "status": "measured",
+        "fonts": [
+          {
+            "familyName": "DM Sans 9pt",
+            "postScriptName": "DMSans-9ptRegular_opsz120000_wght2BC0000",
+            "isCustomFont": true,
+            "glyphCount": 19
+          }
+        ]
+      },
+      "image": {
+        "file": "brutalist-vue-390-settled.png",
+        "sha256": "9288e27269034bf384ad5a435165bb8db95ed58d5ae783f077455aaf0185fd8f"
+      }
+    },
+    {
+      "id": "brutalist-vue-390-settled-title-clearance",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "fact": {
+        "missing": false,
+        "text": "Neo-Brutalist modal",
+        "title": {
+          "x": 26,
+          "y": 379,
+          "width": 338,
+          "height": 18,
+          "top": 379,
+          "right": 364,
+          "bottom": 397,
+          "left": 26
+        },
+        "close": {
+          "x": 336,
+          "y": 371,
+          "width": 36,
+          "height": 36,
+          "top": 371,
+          "right": 372,
+          "bottom": 407,
+          "left": 336
+        },
+        "titleOverlapArea": 504,
+        "lines": [
+          {
+            "rect": {
+              "x": 26,
+              "y": 376,
+              "width": 170.8125,
+              "height": 24,
+              "top": 376,
+              "right": 196.8125,
+              "bottom": 400,
+              "left": 26
+            },
+            "overlapArea": 0
+          }
+        ],
+        "titleVisible": true,
+        "closeVisible": true,
+        "titleOverflow": [
+          "visible",
+          "visible"
+        ],
+        "closePosition": "absolute",
+        "closeShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(0, 0, 0) 4px 4px 0px 0px",
+        "scrollTop": 0
+      }
+    },
+    {
+      "id": "brutalist-vue-failure",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "error": "AssertionError: CloseIcon must not cover the Title box: expected 504 to be +0 // Object.is equality",
+      "setup": {
+        "url": "/en/ui-libraries/brutalist/components/dialog/",
+        "offeredRuntimes": "[\"wc\",\"react\",\"vue\",\"vue2\"]",
+        "controls": [
+          {
+            "id": "",
+            "text": " Vue ",
+            "controls": "pui-select-2-content",
+            "expanded": "false"
+          },
+          {
+            "id": "",
+            "text": " English ",
+            "controls": "pui-select-1-content",
+            "expanded": "false"
+          },
+          {
+            "id": "",
+            "text": " English ",
+            "controls": "pui-select-3-content",
+            "expanded": "false"
+          },
+          {
+            "id": "",
+            "text": "Vue",
+            "controls": "pui-select-5-content",
+            "expanded": "false"
+          }
+        ],
+        "options": [
+          {
+            "text": "Web Components",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "React",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "Vue",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "Vue 2",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "English",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "简体中文",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "English",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "简体中文",
+            "id": "",
+            "visible": false
+          }
+        ],
+        "runtimeScopes": [
+          {
+            "state": "ready",
+            "runtime": "vue",
+            "generation": "2"
+          },
+          {
+            "state": "ready",
+            "runtime": "vue",
+            "generation": "2"
+          },
+          {
+            "state": "ready",
+            "runtime": "vue",
+            "generation": "2"
+          },
+          {
+            "state": "ready",
+            "runtime": "vue",
+            "generation": "2"
+          },
+          {
+            "state": "ready",
+            "runtime": "vue",
+            "generation": "2"
+          },
+          {
+            "state": "ready",
+            "runtime": "vue",
+            "generation": "2"
+          }
+        ]
+      },
+      "image": {
+        "file": "brutalist-vue-failure.png",
+        "sha256": "9288e27269034bf384ad5a435165bb8db95ed58d5ae783f077455aaf0185fd8f"
+      }
+    },
+    {
+      "id": "brutalist-vue2-390-immediate",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "route": "/en/ui-libraries/brutalist/components/dialog/",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "data": {
+        "rect": {
+          "x": 9.75,
+          "y": 357.8500061035156,
+          "width": 370.5,
+          "height": 184.30001831054688,
+          "top": 357.8500061035156,
+          "right": 380.25,
+          "bottom": 542.1500244140625,
+          "left": 9.75
+        },
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "x": 0,
+          "y": 0,
+          "visibleWidth": 390,
+          "visibleHeight": 900,
+          "scale": 1
+        },
+        "mask": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "font": 16,
+        "rendering": {
+          "dpr": 1,
+          "fonts": "loaded",
+          "scheme": "light",
+          "rootClientWidth": 390,
+          "rootClientLeft": 0
+        },
+        "paint": {
+          "fontFamily": "\"DM Sans\", ui-sans-serif, system-ui, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "500",
+          "lineHeight": "28px",
+          "transitionProperty": "all",
+          "transitionDuration": "0.2s"
+        },
+        "animations": [
+          {
+            "playState": "running",
+            "pending": true,
+            "property": null
+          }
+        ],
+        "overflowY": "visible",
+        "scrollWidth": 386,
+        "clientWidth": 386,
+        "scrollHeight": 190,
+        "clientHeight": 190,
+        "scrollTop": 0,
+        "focusInside": true,
+        "active": "<div data-pui-root=\"\" class=\"pui-projection-prototype pui-projection-owner-70_70_2d_38_39_66_39_31_31_6b_36_37_70_38 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-76_75_65_32 pui-projection-generation-32 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_62_75_74_74_6f_",
+        "transition": "entering",
+        "available": {
+          "width": "",
+          "height": ""
+        },
+        "maskIdentity": {
+          "status": "resolved",
+          "coordinates": {
+            "owner": "pp-89f911k67p8",
+            "family": "brutalist",
+            "runtime": "vue2",
+            "generation": "2"
+          },
+          "rootCount": 1,
+          "contentCount": 1,
+          "triggerCount": 1,
+          "maskCount": 1,
+          "originalFirstMatch": {
+            "tag": "DIV",
+            "attributes": {
+              "data-pui-root": "",
+              "data-projection-owner": "pp-89f911k67p8",
+              "data-projection-family": "brutalist",
+              "data-projection-runtime": "vue2",
+              "data-projection-generation": "2",
+              "data-projection-prototype": "brutalist-dialog-mask",
+              "data-transition-state": "entering",
+              "data-is-present": ""
+            },
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 900,
+              "top": 0,
+              "right": 390,
+              "bottom": 900,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "originalRect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 900,
+            "top": 0,
+            "right": 390,
+            "bottom": 900,
+            "left": 0
+          },
+          "content": {
+            "tag": "DIV",
+            "attributes": {
+              "data-pui-root": "",
+              "data-projection-owner": "pp-89f911k67p8",
+              "data-projection-family": "brutalist",
+              "data-projection-runtime": "vue2",
+              "data-projection-generation": "2",
+              "data-projection-prototype": "brutalist-dialog-content",
+              "data-transition-state": "entering",
+              "data-is-present": "",
+              "id": "pui-dialog-3-content",
+              "role": "dialog"
+            },
+            "rect": {
+              "x": 9.75,
+              "y": 357.8500061035156,
+              "width": 370.5,
+              "height": 184.30001831054688,
+              "top": 357.8500061035156,
+              "right": 380.25,
+              "bottom": 542.1500244140625,
+              "left": 9.75
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "masks": [
+            {
+              "tag": "DIV",
+              "attributes": {
+                "data-pui-root": "",
+                "data-projection-owner": "pp-89f911k67p8",
+                "data-projection-family": "brutalist",
+                "data-projection-runtime": "vue2",
+                "data-projection-generation": "2",
+                "data-projection-prototype": "brutalist-dialog-mask",
+                "data-transition-state": "entering",
+                "data-is-present": ""
+              },
+              "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 390,
+                "height": 900,
+                "top": 0,
+                "right": 390,
+                "bottom": 900,
+                "left": 0
+              },
+              "parent": {
+                "tag": "BODY",
+                "attributes": {}
+              }
+            }
+          ],
+          "triggers": [
+            {
+              "tag": "DIV",
+              "attributes": {
+                "data-pui-root": "",
+                "data-projection-owner": "pp-89f911k67p8",
+                "data-projection-family": "brutalist",
+                "data-projection-runtime": "vue2",
+                "data-projection-generation": "2",
+                "data-projection-prototype": "brutalist-dialog-trigger",
+                "role": "button",
+                "aria-haspopup": "dialog",
+                "aria-controls": "pui-dialog-3-content"
+              },
+              "rect": {
+                "x": 137.375,
+                "y": 542.328125,
+                "width": 115.234375,
+                "height": 40,
+                "top": 542.328125,
+                "right": 252.609375,
+                "bottom": 582.328125,
+                "left": 137.375
+              },
+              "parent": {
+                "tag": "DIV",
+                "attributes": {
+                  "data-pui-root": "",
+                  "data-projection-owner": "pp-89f911k67p8",
+                  "data-projection-family": "brutalist",
+                  "data-projection-runtime": "vue2",
+                  "data-projection-generation": "2",
+                  "data-projection-prototype": "brutalist-dialog-root"
+                }
+              }
+            }
+          ],
+          "scope": {
+            "data-projection-scope": "pp-89f911k67p8",
+            "data-projection-family": "brutalist",
+            "data-projection-runtime": "vue2",
+            "data-projection-generation": "2",
+            "data-projection-state": "ready",
+            "data-demo-ref": "__pui_projection__scope"
+          },
+          "generationHost": {
+            "data-projection-generation-host": "2",
+            "data-projection-owner-host": "pp-89f911k67p8",
+            "data-projection-generation-state": "active"
+          }
+        }
+      },
+      "image": {
+        "file": "brutalist-vue2-390-immediate.png",
+        "sha256": "5b44a10a282d1b67aaad8cb9b886c0740239d1f01270f4bef5f93eb982d42523"
+      }
+    },
+    {
+      "id": "brutalist-vue2-390-resize-immediate",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "route": "/en/ui-libraries/brutalist/components/dialog/",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "data": {
+        "rect": {
+          "x": 0,
+          "y": 353,
+          "width": 390,
+          "height": 194,
+          "top": 353,
+          "right": 390,
+          "bottom": 547,
+          "left": 0
+        },
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "x": 0,
+          "y": 0,
+          "visibleWidth": 390,
+          "visibleHeight": 900,
+          "scale": 1
+        },
+        "mask": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "font": 16,
+        "rendering": {
+          "dpr": 1,
+          "fonts": "loaded",
+          "scheme": "light",
+          "rootClientWidth": 390,
+          "rootClientLeft": 0
+        },
+        "paint": {
+          "fontFamily": "\"DM Sans\", ui-sans-serif, system-ui, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "500",
+          "lineHeight": "28px",
+          "transitionProperty": "all",
+          "transitionDuration": "0.2s"
+        },
+        "animations": [
+          {
+            "playState": "finished",
+            "pending": false,
+            "property": null
+          }
+        ],
+        "overflowY": "visible",
+        "scrollWidth": 386,
+        "clientWidth": 386,
+        "scrollHeight": 190,
+        "clientHeight": 190,
+        "scrollTop": 0,
+        "focusInside": true,
+        "active": "<div data-pui-root=\"\" class=\"pui-projection-prototype pui-projection-owner-70_70_2d_38_39_66_39_31_31_6b_36_37_70_38 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-76_75_65_32 pui-projection-generation-32 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_62_75_74_74_6f_",
+        "transition": "entered",
+        "available": {
+          "width": "",
+          "height": ""
+        },
+        "maskIdentity": {
+          "status": "resolved",
+          "coordinates": {
+            "owner": "pp-89f911k67p8",
+            "family": "brutalist",
+            "runtime": "vue2",
+            "generation": "2"
+          },
+          "rootCount": 1,
+          "contentCount": 1,
+          "triggerCount": 1,
+          "maskCount": 1,
+          "originalFirstMatch": {
+            "tag": "DIV",
+            "attributes": {
+              "data-pui-root": "",
+              "data-projection-owner": "pp-89f911k67p8",
+              "data-projection-family": "brutalist",
+              "data-projection-runtime": "vue2",
+              "data-projection-generation": "2",
+              "data-projection-prototype": "brutalist-dialog-mask",
+              "data-transition-state": "entered",
+              "data-is-present": ""
+            },
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 900,
+              "top": 0,
+              "right": 390,
+              "bottom": 900,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "originalRect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 900,
+            "top": 0,
+            "right": 390,
+            "bottom": 900,
+            "left": 0
+          },
+          "content": {
+            "tag": "DIV",
+            "attributes": {
+              "data-pui-root": "",
+              "data-projection-owner": "pp-89f911k67p8",
+              "data-projection-family": "brutalist",
+              "data-projection-runtime": "vue2",
+              "data-projection-generation": "2",
+              "data-projection-prototype": "brutalist-dialog-content",
+              "data-transition-state": "entered",
+              "data-is-present": "",
+              "id": "pui-dialog-3-content",
+              "role": "dialog"
+            },
+            "rect": {
+              "x": 0,
+              "y": 353,
+              "width": 390,
+              "height": 194,
+              "top": 353,
+              "right": 390,
+              "bottom": 547,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "masks": [
+            {
+              "tag": "DIV",
+              "attributes": {
+                "data-pui-root": "",
+                "data-projection-owner": "pp-89f911k67p8",
+                "data-projection-family": "brutalist",
+                "data-projection-runtime": "vue2",
+                "data-projection-generation": "2",
+                "data-projection-prototype": "brutalist-dialog-mask",
+                "data-transition-state": "entered",
+                "data-is-present": ""
+              },
+              "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 390,
+                "height": 900,
+                "top": 0,
+                "right": 390,
+                "bottom": 900,
+                "left": 0
+              },
+              "parent": {
+                "tag": "BODY",
+                "attributes": {}
+              }
+            }
+          ],
+          "triggers": [
+            {
+              "tag": "DIV",
+              "attributes": {
+                "data-pui-root": "",
+                "data-projection-owner": "pp-89f911k67p8",
+                "data-projection-family": "brutalist",
+                "data-projection-runtime": "vue2",
+                "data-projection-generation": "2",
+                "data-projection-prototype": "brutalist-dialog-trigger",
+                "role": "button",
+                "aria-haspopup": "dialog",
+                "aria-controls": "pui-dialog-3-content"
+              },
+              "rect": {
+                "x": 137.375,
+                "y": 542.328125,
+                "width": 115.234375,
+                "height": 40,
+                "top": 542.328125,
+                "right": 252.609375,
+                "bottom": 582.328125,
+                "left": 137.375
+              },
+              "parent": {
+                "tag": "DIV",
+                "attributes": {
+                  "data-pui-root": "",
+                  "data-projection-owner": "pp-89f911k67p8",
+                  "data-projection-family": "brutalist",
+                  "data-projection-runtime": "vue2",
+                  "data-projection-generation": "2",
+                  "data-projection-prototype": "brutalist-dialog-root"
+                }
+              }
+            }
+          ],
+          "scope": {
+            "data-projection-scope": "pp-89f911k67p8",
+            "data-projection-family": "brutalist",
+            "data-projection-runtime": "vue2",
+            "data-projection-generation": "2",
+            "data-projection-state": "ready",
+            "data-demo-ref": "__pui_projection__scope"
+          },
+          "generationHost": {
+            "data-projection-generation-host": "2",
+            "data-projection-owner-host": "pp-89f911k67p8",
+            "data-projection-generation-state": "active"
+          }
+        }
+      },
+      "image": {
+        "file": "brutalist-vue2-390-resize-immediate.png",
+        "sha256": "9288e27269034bf384ad5a435165bb8db95ed58d5ae783f077455aaf0185fd8f"
+      }
+    },
+    {
+      "id": "brutalist-vue2-390-settled",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "route": "/en/ui-libraries/brutalist/components/dialog/",
+      "viewport": {
+        "width": 390,
+        "height": 900
+      },
+      "data": {
+        "rect": {
+          "x": 0,
+          "y": 353,
+          "width": 390,
+          "height": 194,
+          "top": 353,
+          "right": 390,
+          "bottom": 547,
+          "left": 0
+        },
+        "viewport": {
+          "width": 390,
+          "height": 900,
+          "x": 0,
+          "y": 0,
+          "visibleWidth": 390,
+          "visibleHeight": 900,
+          "scale": 1
+        },
+        "mask": {
+          "x": 0,
+          "y": 0,
+          "width": 390,
+          "height": 900,
+          "top": 0,
+          "right": 390,
+          "bottom": 900,
+          "left": 0
+        },
+        "font": 16,
+        "rendering": {
+          "dpr": 1,
+          "fonts": "loaded",
+          "scheme": "light",
+          "rootClientWidth": 390,
+          "rootClientLeft": 0
+        },
+        "paint": {
+          "fontFamily": "\"DM Sans\", ui-sans-serif, system-ui, sans-serif",
+          "fontSize": "16px",
+          "fontWeight": "500",
+          "lineHeight": "28px",
+          "transitionProperty": "all",
+          "transitionDuration": "0.2s"
+        },
+        "animations": [
+          {
+            "playState": "finished",
+            "pending": false,
+            "property": null
+          }
+        ],
+        "overflowY": "visible",
+        "scrollWidth": 386,
+        "clientWidth": 386,
+        "scrollHeight": 190,
+        "clientHeight": 190,
+        "scrollTop": 0,
+        "focusInside": true,
+        "active": "<div data-pui-root=\"\" class=\"pui-projection-prototype pui-projection-owner-70_70_2d_38_39_66_39_31_31_6b_36_37_70_38 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-76_75_65_32 pui-projection-generation-32 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_62_75_74_74_6f_",
+        "transition": "entered",
+        "available": {
+          "width": "",
+          "height": ""
+        },
+        "maskIdentity": {
+          "status": "resolved",
+          "coordinates": {
+            "owner": "pp-89f911k67p8",
+            "family": "brutalist",
+            "runtime": "vue2",
+            "generation": "2"
+          },
+          "rootCount": 1,
+          "contentCount": 1,
+          "triggerCount": 1,
+          "maskCount": 1,
+          "originalFirstMatch": {
+            "tag": "DIV",
+            "attributes": {
+              "data-pui-root": "",
+              "data-projection-owner": "pp-89f911k67p8",
+              "data-projection-family": "brutalist",
+              "data-projection-runtime": "vue2",
+              "data-projection-generation": "2",
+              "data-projection-prototype": "brutalist-dialog-mask",
+              "data-transition-state": "entered",
+              "data-is-present": ""
+            },
+            "rect": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 900,
+              "top": 0,
+              "right": 390,
+              "bottom": 900,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "originalRect": {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 900,
+            "top": 0,
+            "right": 390,
+            "bottom": 900,
+            "left": 0
+          },
+          "content": {
+            "tag": "DIV",
+            "attributes": {
+              "data-pui-root": "",
+              "data-projection-owner": "pp-89f911k67p8",
+              "data-projection-family": "brutalist",
+              "data-projection-runtime": "vue2",
+              "data-projection-generation": "2",
+              "data-projection-prototype": "brutalist-dialog-content",
+              "data-transition-state": "entered",
+              "data-is-present": "",
+              "id": "pui-dialog-3-content",
+              "role": "dialog"
+            },
+            "rect": {
+              "x": 0,
+              "y": 353,
+              "width": 390,
+              "height": 194,
+              "top": 353,
+              "right": 390,
+              "bottom": 547,
+              "left": 0
+            },
+            "parent": {
+              "tag": "BODY",
+              "attributes": {}
+            }
+          },
+          "masks": [
+            {
+              "tag": "DIV",
+              "attributes": {
+                "data-pui-root": "",
+                "data-projection-owner": "pp-89f911k67p8",
+                "data-projection-family": "brutalist",
+                "data-projection-runtime": "vue2",
+                "data-projection-generation": "2",
+                "data-projection-prototype": "brutalist-dialog-mask",
+                "data-transition-state": "entered",
+                "data-is-present": ""
+              },
+              "rect": {
+                "x": 0,
+                "y": 0,
+                "width": 390,
+                "height": 900,
+                "top": 0,
+                "right": 390,
+                "bottom": 900,
+                "left": 0
+              },
+              "parent": {
+                "tag": "BODY",
+                "attributes": {}
+              }
+            }
+          ],
+          "triggers": [
+            {
+              "tag": "DIV",
+              "attributes": {
+                "data-pui-root": "",
+                "data-projection-owner": "pp-89f911k67p8",
+                "data-projection-family": "brutalist",
+                "data-projection-runtime": "vue2",
+                "data-projection-generation": "2",
+                "data-projection-prototype": "brutalist-dialog-trigger",
+                "role": "button",
+                "aria-haspopup": "dialog",
+                "aria-controls": "pui-dialog-3-content"
+              },
+              "rect": {
+                "x": 137.375,
+                "y": 542.328125,
+                "width": 115.234375,
+                "height": 40,
+                "top": 542.328125,
+                "right": 252.609375,
+                "bottom": 582.328125,
+                "left": 137.375
+              },
+              "parent": {
+                "tag": "DIV",
+                "attributes": {
+                  "data-pui-root": "",
+                  "data-projection-owner": "pp-89f911k67p8",
+                  "data-projection-family": "brutalist",
+                  "data-projection-runtime": "vue2",
+                  "data-projection-generation": "2",
+                  "data-projection-prototype": "brutalist-dialog-root"
+                }
+              }
+            }
+          ],
+          "scope": {
+            "data-projection-scope": "pp-89f911k67p8",
+            "data-projection-family": "brutalist",
+            "data-projection-runtime": "vue2",
+            "data-projection-generation": "2",
+            "data-projection-state": "ready",
+            "data-demo-ref": "__pui_projection__scope"
+          },
+          "generationHost": {
+            "data-projection-generation-host": "2",
+            "data-projection-owner-host": "pp-89f911k67p8",
+            "data-projection-generation-state": "active"
+          }
+        }
+      },
+      "platformFonts": {
+        "status": "measured",
+        "fonts": [
+          {
+            "familyName": "DM Sans 9pt",
+            "postScriptName": "DMSans-9ptRegular_opsz120000_wght2BC0000",
+            "isCustomFont": true,
+            "glyphCount": 19
+          }
+        ]
+      },
+      "image": {
+        "file": "brutalist-vue2-390-settled.png",
+        "sha256": "9288e27269034bf384ad5a435165bb8db95ed58d5ae783f077455aaf0185fd8f"
+      }
+    },
+    {
+      "id": "brutalist-vue2-390-settled-title-clearance",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "fact": {
+        "missing": false,
+        "text": "Neo-Brutalist modal",
+        "title": {
+          "x": 26,
+          "y": 379,
+          "width": 338,
+          "height": 18,
+          "top": 379,
+          "right": 364,
+          "bottom": 397,
+          "left": 26
+        },
+        "close": {
+          "x": 336,
+          "y": 371,
+          "width": 36,
+          "height": 36,
+          "top": 371,
+          "right": 372,
+          "bottom": 407,
+          "left": 336
+        },
+        "titleOverlapArea": 504,
+        "lines": [
+          {
+            "rect": {
+              "x": 26,
+              "y": 376,
+              "width": 170.8125,
+              "height": 24,
+              "top": 376,
+              "right": 196.8125,
+              "bottom": 400,
+              "left": 26
+            },
+            "overlapArea": 0
+          }
+        ],
+        "titleVisible": true,
+        "closeVisible": true,
+        "titleOverflow": [
+          "visible",
+          "visible"
+        ],
+        "closePosition": "absolute",
+        "closeShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(0, 0, 0) 4px 4px 0px 0px",
+        "scrollTop": 0
+      }
+    },
+    {
+      "id": "brutalist-vue2-failure",
+      "sourceSha": "15d864de54210c2eebc4f4b2fec6235324989989",
+      "error": "AssertionError: CloseIcon must not cover the Title box: expected 504 to be +0 // Object.is equality",
+      "setup": {
+        "url": "/en/ui-libraries/brutalist/components/dialog/",
+        "offeredRuntimes": "[\"wc\",\"react\",\"vue\",\"vue2\"]",
+        "controls": [
+          {
+            "id": "",
+            "text": " Vue 2 ",
+            "controls": "pui-select-2-content",
+            "expanded": "false"
+          },
+          {
+            "id": "",
+            "text": " English ",
+            "controls": "pui-select-1-content",
+            "expanded": "false"
+          },
+          {
+            "id": "",
+            "text": " English ",
+            "controls": "pui-select-3-content",
+            "expanded": "false"
+          },
+          {
+            "id": "",
+            "text": "Vue 2",
+            "controls": "pui-select-5-content",
+            "expanded": "false"
+          }
+        ],
+        "options": [
+          {
+            "text": "Web Components",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "React",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "Vue",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "Vue 2",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "English",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "简体中文",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "English",
+            "id": "",
+            "visible": false
+          },
+          {
+            "text": "简体中文",
+            "id": "",
+            "visible": false
+          }
+        ],
+        "runtimeScopes": [
+          {
+            "state": "ready",
+            "runtime": "vue2",
+            "generation": "2"
+          },
+          {
+            "state": "ready",
+            "runtime": "vue2",
+            "generation": "2"
+          },
+          {
+            "state": "ready",
+            "runtime": "vue2",
+            "generation": "2"
+          },
+          {
+            "state": "ready",
+            "runtime": "vue2",
+            "generation": "2"
+          },
+          {
+            "state": "ready",
+            "runtime": "vue2",
+            "generation": "2"
+          },
+          {
+            "state": "ready",
+            "runtime": "vue2",
+            "generation": "2"
+          }
+        ]
+      },
+      "image": {
+        "file": "brutalist-vue2-failure.png",
+        "sha256": "9288e27269034bf384ad5a435165bb8db95ed58d5ae783f077455aaf0185fd8f"
+      }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+# Contents close-phase plan
+
+Read-only source and existing-data analysis on exactffac2fe3. No additional browser experiment is scheduled. The retained ffac original case is1fail/8filtered at its single immediate sidebar-count check. The oldd027 failure-only trace already shows expanded=false/focus-returned while the tree remains in the Dialog, then the first sampled return at248.6ms after post-verdict sampling began. Its source files listed in plan.json are byte-identical toffac, but that timing remains at the old execution.
+
+The application gates ordinary handback on requestedOpen=false plus public open=false and isPresent=false. It avoids moving the tree inside the public close stack, then restores before completing its close barrier. Whole candidate disposal awaits that barrier before framework disposal. An ordinary Escape close and a whole renderer-instance teardown are different paths. The existing unit deliberately holds public leave to exercise this ordering with controlled facts.
+
+This is sufficient to present the semantic decision. The owner still needs to determine whether immediate handback after logical-close/focus is required, or whether handback at the public presence barrier is valid. Neither a source comment nor additional successful supplemental journeys settles that decision. Keep the original immediate assertion and its failures.
+
+If the owner needs one missing native phase trace, the plan reuses existing evaluate callbacks at source lines668 and810, gates observation to the firstShadcn/WC/click cycle, and records trustedEscape/focus, literal projected phase/presence attributes and physical tree/Content/portal parent identities. No new count or geometry getter precedes the original verdict. A 500ms adjacent trace occurs only in the failure catch and the same original error is rethrown. Mutation delivery, projected DOM state and public callback timing remain separate, with caps/errors/cleanup recorded. The run would be a private instrumented-source observation with nonzero overhead.
+
+Disposition: human-assisted/current-user, partial/ABSTAIN. A standalone re-run merely to reproduce count0 or eventual handback is not needed for the present decision packet.

@@ -1,0 +1,1130 @@
+{
+  "schema": "bounded-clock-and-native-review/v1",
+  "generatedAt": "2026-11-03T13:25:35.803964+00:00",
+  "disposition": "partial/ABSTAIN",
+  "formalApproval": false,
+  "binding": {
+    "head": "352af52c42780af46c39d7732fba3f2d8c9e91a8",
+    "tree": "893e8f8e864a46e4caef989495241a723aeec895",
+    "parent": "78637f03ac92292c5f0b9742b4b20197bc4efdfe",
+    "parentTree": "df50bc03333652867ab3b4302ef192b1ef6a10f3",
+    "path": "experiments/material-v2/continuous-browser.test.mjs",
+    "sha256": "3bad8782fc81f3e577c1fc0c770996de31a8d840ee71a870fda502c2474fa9ba",
+    "parentSha256": "d1ccba76af04b484d39b4194bec50b993295826e1a4b3ada18b0605f94fb26d1",
+    "gitBlob": "53f70b94a0f2af9b2b363b89f9ca107dff8f5976",
+    "changedPaths": [
+      "experiments/material-v2/continuous-browser.test.mjs"
+    ],
+    "numstat": "9\t4\texperiments/material-v2/continuous-browser.test.mjs",
+    "exactFourGlobalClockReplacementsPlusObjectFormatting": true,
+    "prefix23542Equal": true,
+    "suffix19209Equal": true,
+    "nativeInputsAssertionsWaitsAndCleanupOtherwiseByteExact": true,
+    "currentWorkingBytesEqualReviewedCommit": true,
+    "currentWorkingStatus": "",
+    "lexicalCollision": {
+      "originalActionLine": 650,
+      "metricsConstLineOriginal": 1105,
+      "metricsConstLineCurrent": 1110,
+      "firstClockLineCurrent": 652,
+      "otherClockLinesCurrent": [
+        659,
+        774,
+        786
+      ]
+    }
+  },
+  "clockReview": {
+    "openConcreteFindings": [],
+    "confirmedFixtureCause": "The later const performance is in the enclosing try lexical scope. Bare performance.now in the new action wrapper and cleanup records resolves to that uninitialized lexical binding, failing before invoking the requested down operation. Explicit globalThis.performance bypasses this binding. Actual post-fix numeric operation records confirm the clock is now reached.",
+    "newlyDiscoveredByNativeRun": true,
+    "previousStaticReviewBoundary": "The earlier narrow three-edit review did not detect this inherited enclosing-scope TDZ. Its original report remains historical and is not rewritten into a full native acceptance.",
+    "semanticScope": "Four clock receiver qualifications plus formatter expansion only; no changes to commands, callbacks, original waits, predicates, timeout, thresholds, activation owner or material/product sources."
+  },
+  "epochs": [
+    {
+      "directory": "<STATE_ROOT>/focus-real",
+      "head": "78637f03ac92292c5f0b9742b4b20197bc4efdfe",
+      "tree": "df50bc03333652867ab3b4302ef192b1ef6a10f3",
+      "startedAt": "2026-11-03T12:57:26.319370+00:00",
+      "finishedAt": "2026-11-03T12:58:05.583342+00:00",
+      "node": "v24.21.0",
+      "allStepsPassed": false,
+      "steps": [
+        {
+          "name": "source-build",
+          "startedAt": "2026-11-03T12:57:26.389847+00:00",
+          "finishedAt": "2026-11-03T12:57:28.727284+00:00",
+          "exitCode": 0,
+          "sourceHeadAfter": "78637f03ac92292c5f0b9742b4b20197bc4efdfe",
+          "trackedStatusAfter": ""
+        },
+        {
+          "name": "source-ordinary",
+          "startedAt": "2026-11-03T12:57:28.758881+00:00",
+          "finishedAt": "2026-11-03T12:57:33.262225+00:00",
+          "exitCode": 0,
+          "sourceHeadAfter": "78637f03ac92292c5f0b9742b4b20197bc4efdfe",
+          "trackedStatusAfter": ""
+        },
+        {
+          "name": "source-continuous",
+          "startedAt": "2026-11-03T12:57:33.294262+00:00",
+          "finishedAt": "2026-11-03T12:57:46.489549+00:00",
+          "exitCode": 1,
+          "sourceHeadAfter": "78637f03ac92292c5f0b9742b4b20197bc4efdfe",
+          "trackedStatusAfter": ""
+        },
+        {
+          "name": "packed-build",
+          "startedAt": "2026-11-03T12:57:46.525342+00:00",
+          "finishedAt": "2026-11-03T12:57:48.664578+00:00",
+          "exitCode": 0,
+          "sourceHeadAfter": "78637f03ac92292c5f0b9742b4b20197bc4efdfe",
+          "trackedStatusAfter": ""
+        },
+        {
+          "name": "packed-ordinary",
+          "startedAt": "2026-11-03T12:57:48.695443+00:00",
+          "finishedAt": "2026-11-03T12:57:52.274008+00:00",
+          "exitCode": 0,
+          "sourceHeadAfter": "78637f03ac92292c5f0b9742b4b20197bc4efdfe",
+          "trackedStatusAfter": ""
+        },
+        {
+          "name": "packed-continuous",
+          "startedAt": "2026-11-03T12:57:52.307306+00:00",
+          "finishedAt": "2026-11-03T12:58:05.547382+00:00",
+          "exitCode": 1,
+          "sourceHeadAfter": "78637f03ac92292c5f0b9742b4b20197bc4efdfe",
+          "trackedStatusAfter": ""
+        }
+      ],
+      "continuous": [
+        {
+          "arm": "source",
+          "browser": "155.0.8059.39",
+          "execution": "failed",
+          "failure": "AggregateError: focus scenario or restoration failed\n    at file://<FOCUS_SOURCE_ROOT>/experiments/material-v2/continuous-browser.test.mjs:792:17",
+          "pageErrorsCount": 0,
+          "completedResultRows": 9,
+          "focusRows": [
+            {
+              "resultIndex": 7,
+              "runtime": "wc",
+              "flow": "focus second page",
+              "disableFocusEmulation": false,
+              "operations": [],
+              "cleanupErrors": [
+                {
+                  "name": "main.mouse.up-cleanup",
+                  "error": "ReferenceError: Cannot access 'performance' before initialization\n    at action (file://<FOCUS_SOURCE_ROOT>/experiments/material-v2/continuous-browser.test.mjs:650:46)\n    at cleanup (file://<FOCUS_SOURCE_ROOT>/experiments/material-v2/continuous-browser.test.mjs:753:19)\n    at file://<FOCUS_SOURCE_ROOT>/experiments/material-v2/continuous-browser.test.mjs:759:17"
+                },
+                {
+                  "name": "main.bringToFront-cleanup",
+                  "error": "ReferenceError: Cannot access 'performance' before initialization\n    at action (file://<FOCUS_SOURCE_ROOT>/experiments/material-v2/continuous-browser.test.mjs:650:46)\n    at cleanup (file://<FOCUS_SOURCE_ROOT>/experiments/material-v2/continuous-browser.test.mjs:753:19)\n    at file://<FOCUS_SOURCE_ROOT>/experiments/material-v2/continuous-browser.test.mjs:788:37"
+                }
+              ],
+              "native": [],
+              "nativeBlur": null,
+              "trustedWindowBlurBeforeUp": null,
+              "error": "ReferenceError: Cannot access 'performance' before initialization\n    at action (file://<FOCUS_SOURCE_ROOT>/experiments/material-v2/continuous-browser.test.mjs:650:46)\n    at file://<FOCUS_SOURCE_ROOT>/experiments/material-v2/continuous-browser.test.mjs:673:15",
+              "timingScope": "Node operation times and browser event times are separate clocks",
+              "stimulusScope": "Includes new-page creation and protocol round trips, not only bringToFront",
+              "mainClosed": false,
+              "otherClosed": null
+            }
+          ]
+        },
+        {
+          "arm": "packed",
+          "browser": "155.0.8059.39",
+          "execution": "failed",
+          "failure": "AggregateError: focus scenario or restoration failed\n    at file://<FOCUS_SOURCE_ROOT>/experiments/material-v2/continuous-browser.test.mjs:792:17",
+          "pageErrorsCount": 0,
+          "completedResultRows": 9,
+          "focusRows": [
+            {
+              "resultIndex": 7,
+              "runtime": "wc",
+              "flow": "focus second page",
+              "disableFocusEmulation": false,
+              "operations": [],
+              "cleanupErrors": [
+                {
+                  "name": "main.mouse.up-cleanup",
+                  "error": "ReferenceError: Cannot access 'performance' before initialization\n    at action (file://<FOCUS_SOURCE_ROOT>/experiments/material-v2/continuous-browser.test.mjs:650:46)\n    at cleanup (file://<FOCUS_SOURCE_ROOT>/experiments/material-v2/continuous-browser.test.mjs:753:19)\n    at file://<FOCUS_SOURCE_ROOT>/experiments/material-v2/continuous-browser.test.mjs:759:17"
+                },
+                {
+                  "name": "main.bringToFront-cleanup",
+                  "error": "ReferenceError: Cannot access 'performance' before initialization\n    at action (file://<FOCUS_SOURCE_ROOT>/experiments/material-v2/continuous-browser.test.mjs:650:46)\n    at cleanup (file://<FOCUS_SOURCE_ROOT>/experiments/material-v2/continuous-browser.test.mjs:753:19)\n    at file://<FOCUS_SOURCE_ROOT>/experiments/material-v2/continuous-browser.test.mjs:788:37"
+                }
+              ],
+              "native": [],
+              "nativeBlur": null,
+              "trustedWindowBlurBeforeUp": null,
+              "error": "ReferenceError: Cannot access 'performance' before initialization\n    at action (file://<FOCUS_SOURCE_ROOT>/experiments/material-v2/continuous-browser.test.mjs:650:46)\n    at file://<FOCUS_SOURCE_ROOT>/experiments/material-v2/continuous-browser.test.mjs:673:15",
+              "timingScope": "Node operation times and browser event times are separate clocks",
+              "stimulusScope": "Includes new-page creation and protocol round trips, not only bringToFront",
+              "mainClosed": false,
+              "otherClosed": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "directory": "<STATE_ROOT>/focus-real-clock",
+      "head": "352af52c42780af46c39d7732fba3f2d8c9e91a8",
+      "tree": "893e8f8e864a46e4caef989495241a723aeec895",
+      "startedAt": "2026-11-03T13:12:53.827833+00:00",
+      "finishedAt": "2026-11-03T13:13:35.269768+00:00",
+      "node": "v24.21.0",
+      "allStepsPassed": false,
+      "steps": [
+        {
+          "name": "source-build",
+          "startedAt": "2026-11-03T13:12:53.879041+00:00",
+          "finishedAt": "2026-11-03T13:12:56.059339+00:00",
+          "exitCode": 0,
+          "sourceHeadAfter": "352af52c42780af46c39d7732fba3f2d8c9e91a8",
+          "trackedStatusAfter": ""
+        },
+        {
+          "name": "source-ordinary",
+          "startedAt": "2026-11-03T13:12:56.090217+00:00",
+          "finishedAt": "2026-11-03T13:13:00.099770+00:00",
+          "exitCode": 0,
+          "sourceHeadAfter": "352af52c42780af46c39d7732fba3f2d8c9e91a8",
+          "trackedStatusAfter": ""
+        },
+        {
+          "name": "source-continuous",
+          "startedAt": "2026-11-03T13:13:00.131802+00:00",
+          "finishedAt": "2026-11-03T13:13:14.706142+00:00",
+          "exitCode": 1,
+          "sourceHeadAfter": "352af52c42780af46c39d7732fba3f2d8c9e91a8",
+          "trackedStatusAfter": ""
+        },
+        {
+          "name": "packed-build",
+          "startedAt": "2026-11-03T13:13:14.741754+00:00",
+          "finishedAt": "2026-11-03T13:13:16.871255+00:00",
+          "exitCode": 0,
+          "sourceHeadAfter": "352af52c42780af46c39d7732fba3f2d8c9e91a8",
+          "trackedStatusAfter": ""
+        },
+        {
+          "name": "packed-ordinary",
+          "startedAt": "2026-11-03T13:13:16.902026+00:00",
+          "finishedAt": "2026-11-03T13:13:20.474174+00:00",
+          "exitCode": 0,
+          "sourceHeadAfter": "352af52c42780af46c39d7732fba3f2d8c9e91a8",
+          "trackedStatusAfter": ""
+        },
+        {
+          "name": "packed-continuous",
+          "startedAt": "2026-11-03T13:13:20.503470+00:00",
+          "finishedAt": "2026-11-03T13:13:35.229314+00:00",
+          "exitCode": 1,
+          "sourceHeadAfter": "352af52c42780af46c39d7732fba3f2d8c9e91a8",
+          "trackedStatusAfter": ""
+        }
+      ],
+      "continuous": [
+        {
+          "arm": "source",
+          "browser": "155.0.8059.39",
+          "execution": "failed",
+          "failure": "AggregateError: focus scenario or restoration failed\n    at file://<FOCUS_SOURCE_ROOT>/experiments/material-v2/continuous-browser.test.mjs:797:17",
+          "pageErrorsCount": 0,
+          "completedResultRows": 9,
+          "focusRows": [
+            {
+              "resultIndex": 7,
+              "runtime": "wc",
+              "flow": "focus second page",
+              "disableFocusEmulation": false,
+              "operations": [
+                {
+                  "name": "main.mouse.down",
+                  "startedAt": 12954.829583,
+                  "completedAt": 12962.017958,
+                  "error": null
+                },
+                {
+                  "name": "other.newPage",
+                  "startedAt": 13003.521833,
+                  "completedAt": 13028.607666,
+                  "error": null
+                },
+                {
+                  "name": "other.bringToFront",
+                  "startedAt": 13032.7825,
+                  "completedAt": 13034.1235,
+                  "error": null
+                },
+                {
+                  "name": "main.mouse.up",
+                  "startedAt": 13135.738958,
+                  "completedAt": 13272.926791,
+                  "error": null
+                },
+                {
+                  "name": "other.close",
+                  "startedAt": 13272.959375,
+                  "completedAt": 13291.185833,
+                  "error": null
+                },
+                {
+                  "name": "main.bringToFront-cleanup",
+                  "startedAt": 13862.634958,
+                  "completedAt": 13863.769583,
+                  "error": null
+                }
+              ],
+              "cleanupErrors": [],
+              "native": [
+                {
+                  "type": "pointermove",
+                  "trust": true,
+                  "custom": false,
+                  "detail": 0,
+                  "windowTarget": false,
+                  "pointerId": 1,
+                  "pointerType": "mouse",
+                  "runtime": "wc",
+                  "control": "regular",
+                  "x": 150.8046875,
+                  "y": 247.3125,
+                  "time": 12169.300000011921
+                },
+                {
+                  "type": "pointerdown",
+                  "trust": true,
+                  "custom": false,
+                  "detail": 0,
+                  "windowTarget": false,
+                  "pointerId": 1,
+                  "pointerType": "mouse",
+                  "runtime": "wc",
+                  "control": "regular",
+                  "x": 150.8046875,
+                  "y": 247.3125,
+                  "time": 12171.300000011921
+                },
+                {
+                  "type": "pointerup",
+                  "trust": true,
+                  "custom": false,
+                  "detail": 0,
+                  "windowTarget": false,
+                  "pointerId": 1,
+                  "pointerType": "mouse",
+                  "runtime": "wc",
+                  "control": "regular",
+                  "x": 150.8046875,
+                  "y": 247.3125,
+                  "time": 12459.899999976158
+                },
+                {
+                  "type": "click",
+                  "trust": true,
+                  "custom": false,
+                  "detail": 1,
+                  "windowTarget": false,
+                  "pointerId": 1,
+                  "pointerType": "mouse",
+                  "runtime": "wc",
+                  "control": "regular",
+                  "x": 150,
+                  "y": 247,
+                  "time": 12485.800000011921
+                },
+                {
+                  "type": "click",
+                  "trust": false,
+                  "custom": true,
+                  "windowTarget": false,
+                  "runtime": "wc",
+                  "control": "regular",
+                  "time": 12486.099999964237
+                }
+              ],
+              "nativeBlur": false,
+              "trustedWindowBlurBeforeUp": false,
+              "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n'release' !== 'rest'\n\n    at file://<FOCUS_SOURCE_ROOT>/experiments/material-v2/continuous-browser.test.mjs:746:18",
+              "timingScope": "Node operation times and browser event times are separate clocks",
+              "stimulusScope": "Includes new-page creation and protocol round trips, not only bringToFront",
+              "mainClosed": false,
+              "otherClosed": true
+            }
+          ]
+        },
+        {
+          "arm": "packed",
+          "browser": "155.0.8059.39",
+          "execution": "failed",
+          "failure": "AggregateError: focus scenario or restoration failed\n    at file://<FOCUS_SOURCE_ROOT>/experiments/material-v2/continuous-browser.test.mjs:797:17",
+          "pageErrorsCount": 0,
+          "completedResultRows": 10,
+          "focusRows": [
+            {
+              "resultIndex": 7,
+              "runtime": "wc",
+              "flow": "focus second page",
+              "disableFocusEmulation": false,
+              "operations": [
+                {
+                  "name": "main.mouse.down",
+                  "startedAt": 12601.831791,
+                  "completedAt": 12607.929166,
+                  "error": null
+                },
+                {
+                  "name": "other.newPage",
+                  "startedAt": 12649.251291,
+                  "completedAt": 12679.025625,
+                  "error": null
+                },
+                {
+                  "name": "other.bringToFront",
+                  "startedAt": 12683.509958,
+                  "completedAt": 12684.596166,
+                  "error": null
+                },
+                {
+                  "name": "main.mouse.up",
+                  "startedAt": 12785.834875,
+                  "completedAt": 12883.675208,
+                  "error": null
+                },
+                {
+                  "name": "other.close",
+                  "startedAt": 12883.695125,
+                  "completedAt": 12895.762625,
+                  "error": null
+                },
+                {
+                  "name": "main.bringToFront-cleanup",
+                  "startedAt": 13331.96175,
+                  "completedAt": 13333.147708,
+                  "error": null
+                }
+              ],
+              "cleanupErrors": [],
+              "native": [
+                {
+                  "type": "pointermove",
+                  "trust": true,
+                  "custom": false,
+                  "detail": 0,
+                  "windowTarget": false,
+                  "pointerId": 1,
+                  "pointerType": "mouse",
+                  "runtime": "wc",
+                  "control": "regular",
+                  "x": 150.8046875,
+                  "y": 247.3125,
+                  "time": 11916.5
+                },
+                {
+                  "type": "pointerdown",
+                  "trust": true,
+                  "custom": false,
+                  "detail": 0,
+                  "windowTarget": false,
+                  "pointerId": 1,
+                  "pointerType": "mouse",
+                  "runtime": "wc",
+                  "control": "regular",
+                  "x": 150.8046875,
+                  "y": 247.3125,
+                  "time": 11918.400000035763
+                },
+                {
+                  "type": "pointerup",
+                  "trust": true,
+                  "custom": false,
+                  "detail": 0,
+                  "windowTarget": false,
+                  "pointerId": 1,
+                  "pointerType": "mouse",
+                  "runtime": "wc",
+                  "control": "regular",
+                  "x": 150.8046875,
+                  "y": 247.3125,
+                  "time": 12168.600000023842
+                },
+                {
+                  "type": "click",
+                  "trust": true,
+                  "custom": false,
+                  "detail": 1,
+                  "windowTarget": false,
+                  "pointerId": 1,
+                  "pointerType": "mouse",
+                  "runtime": "wc",
+                  "control": "regular",
+                  "x": 150,
+                  "y": 247,
+                  "time": 12197.300000011921
+                },
+                {
+                  "type": "click",
+                  "trust": false,
+                  "custom": true,
+                  "windowTarget": false,
+                  "runtime": "wc",
+                  "control": "regular",
+                  "time": 12197.5
+                }
+              ],
+              "nativeBlur": false,
+              "trustedWindowBlurBeforeUp": false,
+              "error": null,
+              "timingScope": "Node operation times and browser event times are separate clocks",
+              "stimulusScope": "Includes new-page creation and protocol round trips, not only bringToFront",
+              "activationCountBefore": 4,
+              "activationCountAfter": 5,
+              "mainClosed": false,
+              "otherClosed": true
+            },
+            {
+              "resultIndex": 8,
+              "runtime": "wc",
+              "flow": "focus second page",
+              "disableFocusEmulation": true,
+              "operations": [
+                {
+                  "name": "main.focusEmulation(false)",
+                  "startedAt": 13333.161166,
+                  "completedAt": 13333.411333,
+                  "error": null
+                },
+                {
+                  "name": "main.mouse.down",
+                  "startedAt": 13343.19175,
+                  "completedAt": 13352.241,
+                  "error": null
+                },
+                {
+                  "name": "other.newPage",
+                  "startedAt": 13393.621416,
+                  "completedAt": 13416.836208,
+                  "error": null
+                },
+                {
+                  "name": "other.focusEmulation(false)",
+                  "startedAt": 13420.624541,
+                  "completedAt": 13420.876458,
+                  "error": null
+                },
+                {
+                  "name": "other.bringToFront",
+                  "startedAt": 13420.878875,
+                  "completedAt": 13424.852583,
+                  "error": null
+                },
+                {
+                  "name": "main.mouse.up",
+                  "startedAt": 13525.553833,
+                  "completedAt": 13528.092041,
+                  "error": null
+                },
+                {
+                  "name": "other.close",
+                  "startedAt": 13528.112416,
+                  "completedAt": 13533.793916,
+                  "error": null
+                },
+                {
+                  "name": "main.focusEmulation(true)-restore",
+                  "startedAt": 13939.510916,
+                  "completedAt": 13939.946541,
+                  "error": null
+                },
+                {
+                  "name": "other.restore-skipped-closed",
+                  "at": 13939.957958
+                },
+                {
+                  "name": "other.detach-skipped-target-closed",
+                  "at": 13939.9635
+                },
+                {
+                  "name": "main.bringToFront-cleanup",
+                  "startedAt": 13939.967666,
+                  "completedAt": 13942.258708,
+                  "error": null
+                }
+              ],
+              "cleanupErrors": [],
+              "native": [
+                {
+                  "type": "pointermove",
+                  "trust": true,
+                  "custom": false,
+                  "detail": 0,
+                  "windowTarget": false,
+                  "pointerId": 1,
+                  "pointerType": "mouse",
+                  "runtime": "wc",
+                  "control": "regular",
+                  "x": 150.8046875,
+                  "y": 247.3125,
+                  "time": 12657.800000011921
+                },
+                {
+                  "type": "pointerdown",
+                  "trust": true,
+                  "custom": false,
+                  "detail": 0,
+                  "windowTarget": false,
+                  "pointerId": 1,
+                  "pointerType": "mouse",
+                  "runtime": "wc",
+                  "control": "regular",
+                  "x": 150.8046875,
+                  "y": 247.3125,
+                  "time": 12658.300000011921
+                },
+                {
+                  "type": "blur",
+                  "trust": true,
+                  "custom": false,
+                  "detail": 0,
+                  "windowTarget": false,
+                  "runtime": "wc",
+                  "control": "regular",
+                  "time": 12720.199999988079
+                },
+                {
+                  "type": "blur",
+                  "trust": true,
+                  "custom": false,
+                  "windowTarget": true,
+                  "time": 12720.300000011921
+                },
+                {
+                  "type": "pointerup",
+                  "trust": true,
+                  "custom": false,
+                  "detail": 0,
+                  "windowTarget": false,
+                  "pointerId": 1,
+                  "pointerType": "mouse",
+                  "runtime": "wc",
+                  "control": "regular",
+                  "x": 150.8046875,
+                  "y": 247.3125,
+                  "time": 12841.699999988079
+                },
+                {
+                  "type": "click",
+                  "trust": true,
+                  "custom": false,
+                  "detail": 1,
+                  "windowTarget": false,
+                  "pointerId": 1,
+                  "pointerType": "mouse",
+                  "runtime": "wc",
+                  "control": "regular",
+                  "x": 150,
+                  "y": 247,
+                  "time": 12842
+                },
+                {
+                  "type": "click",
+                  "trust": false,
+                  "custom": true,
+                  "windowTarget": false,
+                  "runtime": "wc",
+                  "control": "regular",
+                  "time": 12842.100000023842
+                }
+              ],
+              "nativeBlur": true,
+              "trustedWindowBlurBeforeUp": true,
+              "error": "AssertionError [ERR_ASSERTION]: blur must not activate\n\n6 !== 5\n\n    at file://<FOCUS_SOURCE_ROOT>/experiments/material-v2/continuous-browser.test.mjs:735:18",
+              "timingScope": "Node operation times and browser event times are separate clocks",
+              "stimulusScope": "Includes new-page creation and protocol round trips, not only bringToFront",
+              "mainClosed": false,
+              "otherClosed": true
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "observations": [
+    {
+      "arm": "source",
+      "sourceFile": {
+        "path": "<STATE_ROOT>/focus-real-clock/source-continuous/failure-state.json",
+        "bytes": 6201176,
+        "sha256": "9f5cafe215af4b8393b1f28fa23d4c6e93c8b45c6f6f25f63c3bb453e2d91853"
+      },
+      "contacts": [
+        {
+          "rawContactIndex": 104,
+          "runtime": "wc",
+          "active": true,
+          "session": 7,
+          "x": 0.5,
+          "y": 0.5,
+          "deltaX": 0,
+          "deltaY": 0,
+          "reason": "down",
+          "t": 12171.399999976158
+        },
+        {
+          "rawContactIndex": 105,
+          "runtime": "wc",
+          "active": false,
+          "session": 7,
+          "x": 0.5,
+          "y": 0.5,
+          "deltaX": 0,
+          "deltaY": 0,
+          "reason": "up",
+          "t": 12460.199999988079
+        }
+      ],
+      "frameStateChanges": [
+        {
+          "rawFrameIndex": 578,
+          "rAFTimestamp": 11659.1,
+          "sampledAt": 11701.5,
+          "data": {
+            "materialContact": "rest",
+            "materialContactSession": "4",
+            "materialPhase": "rest",
+            "materialQuality": "self-optical",
+            "materialReason": "rendered"
+          }
+        },
+        {
+          "rawFrameIndex": 579,
+          "rAFTimestamp": 11692.4,
+          "sampledAt": 11704.399999976158,
+          "data": {
+            "materialContact": "held",
+            "materialContactSession": "5",
+            "materialPhase": "pressed",
+            "materialQuality": "self-optical",
+            "materialReason": "rendered"
+          }
+        },
+        {
+          "rawFrameIndex": 584,
+          "rAFTimestamp": 11775.8,
+          "sampledAt": 11785.399999976158,
+          "data": {
+            "materialContact": "rest",
+            "materialContactSession": "5",
+            "materialPhase": "rest",
+            "materialQuality": "self-optical",
+            "materialReason": "rendered"
+          }
+        },
+        {
+          "rawFrameIndex": 591,
+          "rAFTimestamp": 11909,
+          "sampledAt": 11910.300000011921,
+          "data": {
+            "materialContact": "held",
+            "materialContactSession": "6",
+            "materialPhase": "pressed",
+            "materialQuality": "self-optical",
+            "materialReason": "rendered"
+          }
+        },
+        {
+          "rawFrameIndex": 597,
+          "rAFTimestamp": 12025.7,
+          "sampledAt": 12041.199999988079,
+          "data": {
+            "materialContact": "rest",
+            "materialContactSession": "6",
+            "materialPhase": "rest",
+            "materialQuality": "self-optical",
+            "materialReason": "rendered"
+          }
+        },
+        {
+          "rawFrameIndex": 606,
+          "rAFTimestamp": 12192.3,
+          "sampledAt": 12226.899999976158,
+          "data": {
+            "materialContact": "held",
+            "materialContactSession": "7",
+            "materialPhase": "pressed",
+            "materialQuality": "self-optical",
+            "materialReason": "rendered"
+          }
+        },
+        {
+          "rawFrameIndex": 615,
+          "rAFTimestamp": 12542.3,
+          "sampledAt": 12550.099999964237,
+          "data": {
+            "materialContact": "release",
+            "materialContactSession": "7",
+            "materialPhase": "rest",
+            "materialQuality": "self-optical",
+            "materialReason": "rendered"
+          }
+        },
+        {
+          "rawFrameIndex": 619,
+          "rAFTimestamp": 13075.7,
+          "sampledAt": 13077.699999988079,
+          "data": {
+            "materialContact": "rest",
+            "materialContactSession": "7",
+            "materialPhase": "rest",
+            "materialQuality": "self-optical",
+            "materialReason": "rendered"
+          }
+        }
+      ],
+      "postFailureFirstControl": {
+        "materialContact": "rest",
+        "materialContactSession": "7",
+        "materialPhase": "rest",
+        "materialQuality": "self-optical",
+        "materialReason": "rendered"
+      },
+      "meaning": "Existing post-verdict failure snapshot and its historical rAF reads; sampledAt is the DOM-read sample, rAF timestamp is not. No exact original getter timestamp or cross-clock alignment is inferred."
+    },
+    {
+      "arm": "packed",
+      "sourceFile": {
+        "path": "<STATE_ROOT>/focus-real-clock/packed-continuous/failure-state.json",
+        "bytes": 6500346,
+        "sha256": "a9758e99f8af45cd7f8a0ba2e39515222a89dcfdc768b87ef93154f5ceaf6712"
+      },
+      "contacts": [
+        {
+          "rawContactIndex": 104,
+          "runtime": "wc",
+          "active": true,
+          "session": 7,
+          "x": 0.5,
+          "y": 0.5,
+          "deltaX": 0,
+          "deltaY": 0,
+          "reason": "down",
+          "t": 11918.400000035763
+        },
+        {
+          "rawContactIndex": 105,
+          "runtime": "wc",
+          "active": false,
+          "session": 7,
+          "x": 0.5,
+          "y": 0.5,
+          "deltaX": 0,
+          "deltaY": 0,
+          "reason": "up",
+          "t": 12168.699999988079
+        },
+        {
+          "rawContactIndex": 106,
+          "runtime": "wc",
+          "active": true,
+          "session": 8,
+          "x": 0.5,
+          "y": 0.5,
+          "deltaX": 0,
+          "deltaY": 0,
+          "reason": "down",
+          "t": 12658.300000011921
+        },
+        {
+          "rawContactIndex": 107,
+          "runtime": "wc",
+          "active": false,
+          "session": 8,
+          "x": 0.5,
+          "y": 0.5,
+          "deltaX": 0,
+          "deltaY": 0,
+          "reason": "blur",
+          "t": 12725.100000023842
+        }
+      ],
+      "frameStateChanges": [
+        {
+          "rawFrameIndex": 581,
+          "rAFTimestamp": 11673.3,
+          "sampledAt": 11708.199999988079,
+          "data": {
+            "materialContact": "held",
+            "materialContactSession": "6",
+            "materialPhase": "pressed",
+            "materialQuality": "self-optical",
+            "materialReason": "rendered"
+          }
+        },
+        {
+          "rawFrameIndex": 586,
+          "rAFTimestamp": 11773.3,
+          "sampledAt": 11788.100000023842,
+          "data": {
+            "materialContact": "rest",
+            "materialContactSession": "6",
+            "materialPhase": "rest",
+            "materialQuality": "self-optical",
+            "materialReason": "rendered"
+          }
+        },
+        {
+          "rawFrameIndex": 594,
+          "rAFTimestamp": 11923.3,
+          "sampledAt": 11924.5,
+          "data": {
+            "materialContact": "held",
+            "materialContactSession": "7",
+            "materialPhase": "pressed",
+            "materialQuality": "self-optical",
+            "materialReason": "rendered"
+          }
+        },
+        {
+          "rawFrameIndex": 604,
+          "rAFTimestamp": 12206.6,
+          "sampledAt": 12256.199999988079,
+          "data": {
+            "materialContact": "release",
+            "materialContactSession": "7",
+            "materialPhase": "rest",
+            "materialQuality": "self-optical",
+            "materialReason": "rendered"
+          }
+        },
+        {
+          "rawFrameIndex": 615,
+          "rAFTimestamp": 12439.9,
+          "sampledAt": 12441.100000023842,
+          "data": {
+            "materialContact": "rest",
+            "materialContactSession": "7",
+            "materialPhase": "rest",
+            "materialQuality": "self-optical",
+            "materialReason": "rendered"
+          }
+        },
+        {
+          "rawFrameIndex": 627,
+          "rAFTimestamp": 12673.2,
+          "sampledAt": 12674.5,
+          "data": {
+            "materialContact": "held",
+            "materialContactSession": "8",
+            "materialPhase": "pressed",
+            "materialQuality": "self-optical",
+            "materialReason": "rendered"
+          }
+        },
+        {
+          "rawFrameIndex": 630,
+          "rAFTimestamp": 12727.5,
+          "sampledAt": 12763,
+          "data": {
+            "materialContact": "rest",
+            "materialContactSession": "8",
+            "materialPhase": "rest",
+            "materialQuality": "self-optical",
+            "materialReason": "rendered"
+          }
+        }
+      ],
+      "postFailureFirstControl": {
+        "materialContact": "rest",
+        "materialContactSession": "8",
+        "materialPhase": "rest",
+        "materialQuality": "self-optical",
+        "materialReason": "rendered"
+      },
+      "meaning": "Existing post-verdict failure snapshot and its historical rAF reads; sampledAt is the DOM-read sample, rAF timestamp is not. No exact original getter timestamp or cross-clock alignment is inferred."
+    }
+  ],
+  "authorityAndSource": [
+    {
+      "path": "spec/contracts/C-FEEDBACK-MATERIAL-0001.yaml",
+      "head": "352af52c42780af46c39d7732fba3f2d8c9e91a8",
+      "sha256": "a234caedb2f87cd00ea17641b806cf955392831bf89747329f35db9a7092e601",
+      "lines": [
+        4,
+        42,
+        46
+      ]
+    },
+    {
+      "path": "spec/contracts/C-EVENT-TYPE-0002.yaml",
+      "head": "352af52c42780af46c39d7732fba3f2d8c9e91a8",
+      "sha256": "633740dfe7997480dca0a1a3e93e1f2b5a777cda93829bd62235ca5c93f6df82",
+      "lines": [
+        4,
+        29,
+        33
+      ]
+    },
+    {
+      "path": "spec/prototypes/P-BASE-BUTTON.yaml",
+      "head": "352af52c42780af46c39d7732fba3f2d8c9e91a8",
+      "sha256": "52f00d60c230df5c42dcbbe876ca0c253c27ec1f47fe7ba2ab8563ed9415dac1",
+      "lines": [
+        4,
+        136,
+        146
+      ]
+    },
+    {
+      "path": "packages/adapters/base/src/events/web-event-router.ts",
+      "head": "352af52c42780af46c39d7732fba3f2d8c9e91a8",
+      "sha256": "198cdf8dca9073acbe10693c15e5a26bc6b23f9dc1629ded3ca956b2b742fbc5",
+      "lines": [
+        512,
+        628
+      ]
+    },
+    {
+      "path": "packages/adapters/base/src/events/pointer-contact.ts",
+      "head": "352af52c42780af46c39d7732fba3f2d8c9e91a8",
+      "sha256": "8979916b5ca021cf4770168292681c99b0816e46b2cd47caa4bd361543bc0f09",
+      "lines": [
+        1,
+        27,
+        40
+      ]
+    },
+    {
+      "path": "packages/prototypes/base/src/button/button.proto.ts",
+      "head": "352af52c42780af46c39d7732fba3f2d8c9e91a8",
+      "sha256": "eabb382e77b7fd9f55ab6e3c4bcab6f2c1505e029094aa1f295e292a51e23f79",
+      "lines": [
+        119,
+        133
+      ]
+    },
+    {
+      "path": "internal/records/2026-10-08-capture-activation-evidence.md",
+      "head": "352af52c42780af46c39d7732fba3f2d8c9e91a8",
+      "sha256": "62dc88752c974d86f3a8f43ceaf34a5c257acbaa49ed1a4671c4636f384875bf",
+      "lines": [
+        11,
+        15
+      ]
+    },
+    {
+      "path": "<FOCUS_SOURCE_ROOT>/node_modules/.pnpm/playwright-core@1.58.2/node_modules/playwright-core/lib/server/chromium/crInput.js",
+      "bytes": 6600,
+      "sha256": "3dcad19b8f52f3f1f9787c5fff350607e242cd0d0c6911223c9d44bed9a75432",
+      "lines": [
+        96,
+        134,
+        139
+      ],
+      "meaning": "Page-bound RawMouseImpl sends Input.dispatchMouseEvent mouseReleased to its CDP client. This shows command targeting, not proof of physical OS active-window delivery."
+    }
+  ],
+  "interpretation": {
+    "sourceDefault": "No trusted window blur was observed in the captured arm; matching down/up, native click and outward CustomEvent occurred. The original default rest assertion read release. Session7 already ended by up; later saved frame/sample and post-failure state became rest. This is a real failed sample, not permanent-stuck proof or a demonstrated missing cancellation.",
+    "packedDefault": "The default arm completed its checks and recorded count4→5, no native blur, matching down/up and native/outward click. This is one WC arm, not all four-runtime acceptance.",
+    "packedDisabled": "Both false CDP operations fulfilled; down, window-target trusted blur, matching up and native/outward clicks were captured. The original no-activation assertion failed6!==5. The same session8 contact had already ended active=false/reason=blur and its later frame/state was rest. Missing-up and missing-blur descriptions are contradicted by raw JSON.",
+    "cancelVsActivation": "The material CONTACT criterion is draft and explicitly visual-only. Existing router separately ends contact/emits press.cancel on blur and accepts a later admitted native click into press.commit; Button emits its outward click on that commit. Raw events/count establish the failed oracle, but do not by themselves show whether the accepted click violates the intended activation-cycle rule or whether the page-directed release while the auxiliary is frontmost is the wrong native-input prerequisite.",
+    "cleanup": "Post-fix focus rows have zero cleanupErrors. Packed positive main restore true fulfilled; auxiliary target was already closed and restoration/detach were recorded skipped. Original TDZ cleanup attempts failed at the same clock before invoking their actions. Scenario mainClosed=false is measured before outer context cleanup and is not evidence of a leaked browser.",
+    "stillUnexecuted": "Both continuous executions exit1 while processing WC; no assertion that React/Vue/Vue2 focus arms or subsequent continuous flows passed."
+  },
+  "nextBoundedSteps": [
+    {
+      "owner": "Existing continuous harness owner together with input/router contract owner",
+      "proposal": "Keep the original no-activation/rest predicates and40/100/400 timing intact. First reconcile the intended canceled activation cycle with C-EVENT-TYPE-0002 and the page-targeted injected release. Do not add a material-level click veto or relax the oracle merely to pass."
+    },
+    {
+      "owner": "Existing continuous harness owner, if one further observation is authorized",
+      "proposal": "Observe the same failing flow only: record main/auxiliary focus/visibility and original routed native click/press.cancel/press.commit ownership at existing event ingress, without re-invoking the handlers or adding pre-input waits. Tie pointerId/control/runtime and exact event order to the already retained contact session and consumer callback. No new native run was prepared or executed by this reviewer."
+    },
+    {
+      "owner": "Source material contact/animation owner after definition review",
+      "proposal": "For the source default release sample, use existing sampledAt phase transitions and a clock around the original getter to distinguish its sampling point from later rest. Keep the existing original400ms and assertion; no extra wait or timeout increase is recommended."
+    }
+  ],
+  "inputBindings": [
+    {
+      "path": "<STATE_ROOT>/focus-real/receipt.json",
+      "bytes": 3942,
+      "sha256": "94ec25f02d16d3709e2c5c41a6e81cef7dc972ab5a2dc94fa642096380475fe9"
+    },
+    {
+      "path": "<STATE_ROOT>/focus-real/source-continuous/result.json",
+      "bytes": 65837,
+      "sha256": "0a9f227cda8d31e9b9f1a7af06f5389d4b3c0ebc8cc0cbdd02ea399a666f6f63"
+    },
+    {
+      "path": "<STATE_ROOT>/focus-real/source-continuous.log",
+      "bytes": 642,
+      "sha256": "3687dc4702178216834109b0e3870422a0f330921c8792dcc93a17de3d740267"
+    },
+    {
+      "path": "<STATE_ROOT>/focus-real/packed-continuous/result.json",
+      "bytes": 43181,
+      "sha256": "a800733d61873eaccf281d707b26d82e4bc0f6908d81a1a302a14e45c341fcbb"
+    },
+    {
+      "path": "<STATE_ROOT>/focus-real/packed-continuous.log",
+      "bytes": 642,
+      "sha256": "3687dc4702178216834109b0e3870422a0f330921c8792dcc93a17de3d740267"
+    },
+    {
+      "path": "<STATE_ROOT>/focus-real-clock/receipt.json",
+      "bytes": 4002,
+      "sha256": "8076dadf746e4a027b01fabc41a75a77799c2639476501167744d48b2d112744"
+    },
+    {
+      "path": "<STATE_ROOT>/focus-real-clock/source-continuous/result.json",
+      "bytes": 67167,
+      "sha256": "7bce49080f7023c2e42ba98f81b142cf96eeeaadc2b1a6d389d53fc2224b23d9"
+    },
+    {
+      "path": "<STATE_ROOT>/focus-real-clock/source-continuous.log",
+      "bytes": 642,
+      "sha256": "5493484cf585bdacce245259488d86333e97b6899294942ecebd5f61a1783b2c"
+    },
+    {
+      "path": "<STATE_ROOT>/focus-real-clock/source-continuous/failure-state.json",
+      "bytes": 6201176,
+      "sha256": "9f5cafe215af4b8393b1f28fa23d4c6e93c8b45c6f6f25f63c3bb453e2d91853"
+    },
+    {
+      "path": "<STATE_ROOT>/focus-real-clock/packed-continuous/result.json",
+      "bytes": 48843,
+      "sha256": "09d4e48590e7638aebfff50228b922ed7b594aa214a74b93c3ff11f6aaa018ab"
+    },
+    {
+      "path": "<STATE_ROOT>/focus-real-clock/packed-continuous.log",
+      "bytes": 642,
+      "sha256": "5493484cf585bdacce245259488d86333e97b6899294942ecebd5f61a1783b2c"
+    },
+    {
+      "path": "<STATE_ROOT>/focus-real-clock/packed-continuous/failure-state.json",
+      "bytes": 6500346,
+      "sha256": "a9758e99f8af45cd7f8a0ba2e39515222a89dcfdc768b87ef93154f5ceaf6712"
+    }
+  ],
+  "reviewActions": {
+    "newNativeOrTests": false,
+    "sourceOrGitWrites": false,
+    "networkOrGithubWrites": false,
+    "privateReportsOnly": true
+  },
+  "limits": [
+    "Node operation timestamps and browser event/contact timestamps are distinct clock domains; no subtraction across them is used.",
+    "The failure-state snapshot is taken after the original verdict; its final rest cannot replace the original release getter.",
+    "No screenshot was newly reviewed here. No all-runtime/source/packed/CI acceptance is claimed.",
+    "The raw source and packed products retain the explicitly declared private Liquid prototype boundary; these builds are not a new package publication or optical acceptance."
+  ]
+}

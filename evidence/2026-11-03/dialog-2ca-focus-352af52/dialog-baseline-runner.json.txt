@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "vitestVersion": "2.1.9",
+  "reporterSha256": "d26d77c9a57a8997394a21b70dee15cf7408c25e3d7bd7e22f48e5b1e6e4c6fa",
+  "phase": "process-exit",
+  "finishedCalls": 1,
+  "closeStarted": true,
+  "closeFinished": true,
+  "processTimedOut": false,
+  "runnerErrors": [],
+  "unhandledErrors": [],
+  "files": [
+    {
+      "path": "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+      "state": "fail",
+      "suiteErrors": []
+    }
+  ],
+  "exitCode": 1,
+  "cancelled": false,
+  "reportSha256": "d83311c94b563e78c571ed3a47a738ecf2f26b093b6862389faaaa23e67da1c8"
+}

@@ -1,0 +1,4310 @@
+[
+  {
+    "path": "dialog-candidate/browser.log",
+    "rawSha256": "dcc0ca301953d67134e492d8c6f7005f920952ed4a0933892555a80c900b560d",
+    "publicSha256": "a507c3925c34409031111f963ed28fa699469a6f7c0826a87d809c79e92805a0",
+    "derived": true,
+    "bytes": 5831
+  },
+  {
+    "path": "dialog-candidate/runner-integrity.json",
+    "rawSha256": "6d335a42cb33f038a7281eb254afe0859a0470a6852a8ea81f4b9bec571091ac",
+    "publicSha256": "6d335a42cb33f038a7281eb254afe0859a0470a6852a8ea81f4b9bec571091ac",
+    "derived": false,
+    "bytes": 603
+  },
+  {
+    "path": "dialog-candidate/vitest.json",
+    "rawSha256": "2525f40d347cde99d505914e070d559f6d4fc0984f5bc49e63415174ac73019d",
+    "publicSha256": "9cc3a6f685115b72be3df771f3f7e28db335f427c743f1a33a7b0992560e7e98",
+    "derived": true,
+    "bytes": 3508
+  },
+  {
+    "path": "dialog-candidate/executed-probe.ts",
+    "rawSha256": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e",
+    "publicSha256": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e",
+    "derived": false,
+    "bytes": 29204
+  },
+  {
+    "path": "dialog-candidate/receipt.json",
+    "rawSha256": "af03324a724df55227398de149816578c0a287332fa5b08866472e310f6fb156",
+    "publicSha256": "7dc4c97a8b6a210e2e6527cf96f8167de5d50219d3832245535502ffa9b7e4cd",
+    "derived": true,
+    "bytes": 736
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-vue-320-resize-immediate.png",
+    "rawSha256": "65d478dca89fbe87828447675cbdfd2cb3aa667dcce90bd30e3564792318d904",
+    "publicSha256": "65d478dca89fbe87828447675cbdfd2cb3aa667dcce90bd30e3564792318d904",
+    "derived": false,
+    "bytes": 44979
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-wc-390-immediate.png",
+    "rawSha256": "e9544ae0f08d5ed443c04ebec76ad30445a50ff55fae9f8aeeb63534d4d67bbe",
+    "publicSha256": "e9544ae0f08d5ed443c04ebec76ad30445a50ff55fae9f8aeeb63534d4d67bbe",
+    "derived": false,
+    "bytes": 87820
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-vue-430-settled.png",
+    "rawSha256": "b589003ad004bfa4a8091254005e9c806c37953e241128db650e5e7ec265d9a3",
+    "publicSha256": "b589003ad004bfa4a8091254005e9c806c37953e241128db650e5e7ec265d9a3",
+    "derived": false,
+    "bytes": 64594
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-wc-restored.png",
+    "rawSha256": "9f32374f44726fc4325f164cc1a49ee88bf55c688aff3caa4cf2c7e1e1db9901",
+    "publicSha256": "9f32374f44726fc4325f164cc1a49ee88bf55c688aff3caa4cf2c7e1e1db9901",
+    "derived": false,
+    "bytes": 59707
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-react-320-settled.png",
+    "rawSha256": "4b4e5b3db37e7333deef9fb6f5cccc587938224d638de11a91c93c9ef3a4c905",
+    "publicSha256": "4b4e5b3db37e7333deef9fb6f5cccc587938224d638de11a91c93c9ef3a4c905",
+    "derived": false,
+    "bytes": 52531
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-vue2-320-resize-immediate.png",
+    "rawSha256": "d6361701169837dd78820dd8ca356f15192d65c369a5e245b0ca60b522c7aa3b",
+    "publicSha256": "d6361701169837dd78820dd8ca356f15192d65c369a5e245b0ca60b522c7aa3b",
+    "derived": false,
+    "bytes": 44851
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-react-320-resize-immediate.png",
+    "rawSha256": "93a49cfbb2264fd6dd6a8ebf37ce9fbafb258e79e512008d083e549fbdb91a83",
+    "publicSha256": "93a49cfbb2264fd6dd6a8ebf37ce9fbafb258e79e512008d083e549fbdb91a83",
+    "derived": false,
+    "bytes": 45033
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-vue2-reopened.png",
+    "rawSha256": "db20c4de557a1bedb6631abdb2230ec8cbc2f9949aa65b04d3aadb0a32a42003",
+    "publicSha256": "db20c4de557a1bedb6631abdb2230ec8cbc2f9949aa65b04d3aadb0a32a42003",
+    "derived": false,
+    "bytes": 59580
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-react-long-font200.png",
+    "rawSha256": "2ac5ffdfeef4db59260ef3e599fc7607f495cc1c13894b9322431ea6a8c0ecd3",
+    "publicSha256": "2ac5ffdfeef4db59260ef3e599fc7607f495cc1c13894b9322431ea6a8c0ecd3",
+    "derived": false,
+    "bytes": 23213
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-react-restored.png",
+    "rawSha256": "8ac04605248db0d61e4f351622afe78a9a4beea0b360ce5d83136494baef7644",
+    "publicSha256": "8ac04605248db0d61e4f351622afe78a9a4beea0b360ce5d83136494baef7644",
+    "derived": false,
+    "bytes": 54983
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-vue-390-immediate.png",
+    "rawSha256": "92041b5dbb19da2a014ca2593466a51df0321055208cf3b8dbd9487893d3d484",
+    "publicSha256": "92041b5dbb19da2a014ca2593466a51df0321055208cf3b8dbd9487893d3d484",
+    "derived": false,
+    "bytes": 100528
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-wc-390-settled.png",
+    "rawSha256": "b3b5dfdb952f0c6bd44732ebfd8d4344cf2eb71c5f88a9b4edba33ec32eb0a56",
+    "publicSha256": "b3b5dfdb952f0c6bd44732ebfd8d4344cf2eb71c5f88a9b4edba33ec32eb0a56",
+    "derived": false,
+    "bytes": 60145
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-vue-long-font200.png",
+    "rawSha256": "2ac5ffdfeef4db59260ef3e599fc7607f495cc1c13894b9322431ea6a8c0ecd3",
+    "publicSha256": "2ac5ffdfeef4db59260ef3e599fc7607f495cc1c13894b9322431ea6a8c0ecd3",
+    "derived": false,
+    "bytes": 23213
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-vue-320-settled.png",
+    "rawSha256": "65d478dca89fbe87828447675cbdfd2cb3aa667dcce90bd30e3564792318d904",
+    "publicSha256": "65d478dca89fbe87828447675cbdfd2cb3aa667dcce90bd30e3564792318d904",
+    "derived": false,
+    "bytes": 44979
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-vue2-320-resize-immediate.png",
+    "rawSha256": "f76e824ebdcd595c076ba6673e70812da5245c7368b4f79fa36df485dd23489d",
+    "publicSha256": "f76e824ebdcd595c076ba6673e70812da5245c7368b4f79fa36df485dd23489d",
+    "derived": false,
+    "bytes": 52203
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-wc-430-resize-immediate.png",
+    "rawSha256": "d0e903908ac47996157744ef043e0491a19a6a026e3e036e4859413a381f04c5",
+    "publicSha256": "d0e903908ac47996157744ef043e0491a19a6a026e3e036e4859413a381f04c5",
+    "derived": false,
+    "bytes": 56847
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-react-430-settled.png",
+    "rawSha256": "f9098c895f80f0915511dca7faddd26bf3918dfd76d741185c1a76943ed39fb3",
+    "publicSha256": "f9098c895f80f0915511dca7faddd26bf3918dfd76d741185c1a76943ed39fb3",
+    "derived": false,
+    "bytes": 52185
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-vue2-scale2.png",
+    "rawSha256": "e6f393dbe7b3f1fc72180243b6d438e522a7c595fa9a0fef9dffa9cb9c0c8c11",
+    "publicSha256": "e6f393dbe7b3f1fc72180243b6d438e522a7c595fa9a0fef9dffa9cb9c0c8c11",
+    "derived": false,
+    "bytes": 42883
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-vue-reopened.png",
+    "rawSha256": "638c8beff73a43a00906123492ae04262417b9d56051446670aa342f3f7c1b31",
+    "publicSha256": "638c8beff73a43a00906123492ae04262417b9d56051446670aa342f3f7c1b31",
+    "derived": false,
+    "bytes": 57075
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-react-1024-settled.png",
+    "rawSha256": "d91cb205d1dc2a32ebff2e839d77b3692bc23e98ea68e551bdd7e6292e3b8303",
+    "publicSha256": "d91cb205d1dc2a32ebff2e839d77b3692bc23e98ea68e551bdd7e6292e3b8303",
+    "derived": false,
+    "bytes": 82317
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-react-390-settled.png",
+    "rawSha256": "b3b5dfdb952f0c6bd44732ebfd8d4344cf2eb71c5f88a9b4edba33ec32eb0a56",
+    "publicSha256": "b3b5dfdb952f0c6bd44732ebfd8d4344cf2eb71c5f88a9b4edba33ec32eb0a56",
+    "derived": false,
+    "bytes": 60145
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-vue-1024-resize-immediate.png",
+    "rawSha256": "f80f209b73e37429e6ae699d430db53d02e668e4ca7cfdca75db19c85c04b9d9",
+    "publicSha256": "f80f209b73e37429e6ae699d430db53d02e668e4ca7cfdca75db19c85c04b9d9",
+    "derived": false,
+    "bytes": 83437
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-wc-reopened.png",
+    "rawSha256": "36ef1bb1aa15fdad57776549d75067b1f1b754174342e62438e7393f92053a8d",
+    "publicSha256": "36ef1bb1aa15fdad57776549d75067b1f1b754174342e62438e7393f92053a8d",
+    "derived": false,
+    "bytes": 56733
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-vue2-390-settled.png",
+    "rawSha256": "b3b5dfdb952f0c6bd44732ebfd8d4344cf2eb71c5f88a9b4edba33ec32eb0a56",
+    "publicSha256": "b3b5dfdb952f0c6bd44732ebfd8d4344cf2eb71c5f88a9b4edba33ec32eb0a56",
+    "derived": false,
+    "bytes": 60145
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-vue-restored.png",
+    "rawSha256": "b7e3483869059baee16d51781ff1643f83bc2673b97435fa14dc3b1defa09570",
+    "publicSha256": "b7e3483869059baee16d51781ff1643f83bc2673b97435fa14dc3b1defa09570",
+    "derived": false,
+    "bytes": 56423
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-wc-390-resize-immediate.png",
+    "rawSha256": "c2b60c8d6562bc4afbd1b15fc020689fe421f373acdf8a6034f2007cb68caaa7",
+    "publicSha256": "c2b60c8d6562bc4afbd1b15fc020689fe421f373acdf8a6034f2007cb68caaa7",
+    "derived": false,
+    "bytes": 54383
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-vue-1024-settled.png",
+    "rawSha256": "f80f209b73e37429e6ae699d430db53d02e668e4ca7cfdca75db19c85c04b9d9",
+    "publicSha256": "f80f209b73e37429e6ae699d430db53d02e668e4ca7cfdca75db19c85c04b9d9",
+    "derived": false,
+    "bytes": 83437
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-vue-1024-resize-immediate.png",
+    "rawSha256": "7215c0c31cfde3c6df751a0c680dcd10fb11adf71ac4811dd8bb680409fb37ca",
+    "publicSha256": "7215c0c31cfde3c6df751a0c680dcd10fb11adf71ac4811dd8bb680409fb37ca",
+    "derived": false,
+    "bytes": 104457
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-vue2-1024-resize-immediate.png",
+    "rawSha256": "22b1b930b2234be094c332437dd6dad2153feb5b28fe83cc37000e65615b6aa0",
+    "publicSha256": "22b1b930b2234be094c332437dd6dad2153feb5b28fe83cc37000e65615b6aa0",
+    "derived": false,
+    "bytes": 104677
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-vue-scale2.png",
+    "rawSha256": "8f227c7f215fc055880cbd4865894b812b3211f9968200d53b693980fbeb62d2",
+    "publicSha256": "8f227c7f215fc055880cbd4865894b812b3211f9968200d53b693980fbeb62d2",
+    "derived": false,
+    "bytes": 53789
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-vue-320-resize-immediate.png",
+    "rawSha256": "109c6015ef2e817f8ac0e389d2c731b6ef78c06ed9aa476d47a73a4206240d20",
+    "publicSha256": "109c6015ef2e817f8ac0e389d2c731b6ef78c06ed9aa476d47a73a4206240d20",
+    "derived": false,
+    "bytes": 52488
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-vue2-320-long-action-reachable.png",
+    "rawSha256": "15ba3a07e5347eb819fd4be996e6ac8c15afb6ebdab703488f2dd593a99cdb87",
+    "publicSha256": "15ba3a07e5347eb819fd4be996e6ac8c15afb6ebdab703488f2dd593a99cdb87",
+    "derived": false,
+    "bytes": 21431
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-wc-restored.png",
+    "rawSha256": "1d5d6a510f2dd22f7b6104168c51177b8e9650ca68793d0e8a7c7ba93ec6604b",
+    "publicSha256": "1d5d6a510f2dd22f7b6104168c51177b8e9650ca68793d0e8a7c7ba93ec6604b",
+    "derived": false,
+    "bytes": 57277
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-vue2-1024-resize-immediate.png",
+    "rawSha256": "3e6d9f42f437422f8a6e16292c1798cdc9f40224ae26faa024c6e662c4b83e3c",
+    "publicSha256": "3e6d9f42f437422f8a6e16292c1798cdc9f40224ae26faa024c6e662c4b83e3c",
+    "derived": false,
+    "bytes": 90430
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-wc-320-settled.png",
+    "rawSha256": "d968f82da057bc1608c155822ccd50c9a946eb72608c0ff55974dd4cb9dea832",
+    "publicSha256": "d968f82da057bc1608c155822ccd50c9a946eb72608c0ff55974dd4cb9dea832",
+    "derived": false,
+    "bytes": 45003
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-vue-390-settled.png",
+    "rawSha256": "b3b5dfdb952f0c6bd44732ebfd8d4344cf2eb71c5f88a9b4edba33ec32eb0a56",
+    "publicSha256": "b3b5dfdb952f0c6bd44732ebfd8d4344cf2eb71c5f88a9b4edba33ec32eb0a56",
+    "derived": false,
+    "bytes": 60145
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-vue-restored.png",
+    "rawSha256": "a775015f7acf37f0ca51ac7708d8c383ce9cb3065b5b6d21d4d9acc0972e112c",
+    "publicSha256": "a775015f7acf37f0ca51ac7708d8c383ce9cb3065b5b6d21d4d9acc0972e112c",
+    "derived": false,
+    "bytes": 57808
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-wc-430-settled.png",
+    "rawSha256": "0ad1fb7ada7e481b905088cecf49cd4b4651636a18ec060e13951fe0fb4f38f7",
+    "publicSha256": "0ad1fb7ada7e481b905088cecf49cd4b4651636a18ec060e13951fe0fb4f38f7",
+    "derived": false,
+    "bytes": 64599
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-wc-390-resize-immediate.png",
+    "rawSha256": "b3b5dfdb952f0c6bd44732ebfd8d4344cf2eb71c5f88a9b4edba33ec32eb0a56",
+    "publicSha256": "b3b5dfdb952f0c6bd44732ebfd8d4344cf2eb71c5f88a9b4edba33ec32eb0a56",
+    "derived": false,
+    "bytes": 60145
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-vue-320-long-font200.png",
+    "rawSha256": "67bc589a1d0ec7056cb696f8ad3ebee294c251458cd23f9c089fc5af0ccc52f9",
+    "publicSha256": "67bc589a1d0ec7056cb696f8ad3ebee294c251458cd23f9c089fc5af0ccc52f9",
+    "derived": false,
+    "bytes": 21235
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-wc-1024-settled.png",
+    "rawSha256": "acd2276c94f1de83d2a7a52002e3b352f66c3c7c2c88f1bf2361cc9c5967a65f",
+    "publicSha256": "acd2276c94f1de83d2a7a52002e3b352f66c3c7c2c88f1bf2361cc9c5967a65f",
+    "derived": false,
+    "bytes": 91071
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-wc-long-action-reachable.png",
+    "rawSha256": "f3469373ced5b50ea60aa6180d53fcd4cf055d59f598cbae9d3bf4a54a19a972",
+    "publicSha256": "f3469373ced5b50ea60aa6180d53fcd4cf055d59f598cbae9d3bf4a54a19a972",
+    "derived": false,
+    "bytes": 23168
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-react-long-action-reachable.png",
+    "rawSha256": "9c0184153f5c58f8b2febe0dd2ada457b45ced07f02610dd811f87dc1b5dad63",
+    "publicSha256": "9c0184153f5c58f8b2febe0dd2ada457b45ced07f02610dd811f87dc1b5dad63",
+    "derived": false,
+    "bytes": 11698
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-vue-reopened.png",
+    "rawSha256": "0615145a1dfdeacf31ba69b8244d1e495a0a317c04fdd6853880b1e7960489c2",
+    "publicSha256": "0615145a1dfdeacf31ba69b8244d1e495a0a317c04fdd6853880b1e7960489c2",
+    "derived": false,
+    "bytes": 53603
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-react-390-settled.png",
+    "rawSha256": "a7962ac581a7902ce1bfe33fb5dc4a1fe52caa0d9ecd80c32653aed32f94827d",
+    "publicSha256": "a7962ac581a7902ce1bfe33fb5dc4a1fe52caa0d9ecd80c32653aed32f94827d",
+    "derived": false,
+    "bytes": 51463
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-react-long-action-reachable.png",
+    "rawSha256": "d27ef8a249104a2a61cf17703efec4d32565efeba9b8d024796c37922e6ed4ba",
+    "publicSha256": "d27ef8a249104a2a61cf17703efec4d32565efeba9b8d024796c37922e6ed4ba",
+    "derived": false,
+    "bytes": 22956
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-vue-320-long-action-reachable.png",
+    "rawSha256": "15ba3a07e5347eb819fd4be996e6ac8c15afb6ebdab703488f2dd593a99cdb87",
+    "publicSha256": "15ba3a07e5347eb819fd4be996e6ac8c15afb6ebdab703488f2dd593a99cdb87",
+    "derived": false,
+    "bytes": 21431
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-vue2-320-settled.png",
+    "rawSha256": "d6361701169837dd78820dd8ca356f15192d65c369a5e245b0ca60b522c7aa3b",
+    "publicSha256": "d6361701169837dd78820dd8ca356f15192d65c369a5e245b0ca60b522c7aa3b",
+    "derived": false,
+    "bytes": 44851
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-react-reopened.png",
+    "rawSha256": "53a1602355dab863157d0f37e217d80c041c9730968cd3bc3bdc4eb78770073c",
+    "publicSha256": "53a1602355dab863157d0f37e217d80c041c9730968cd3bc3bdc4eb78770073c",
+    "derived": false,
+    "bytes": 52699
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-wc-long-action-reachable.png",
+    "rawSha256": "dc2a804f0abc048ebacddb1bd209e8af9c0b6fd7738f910a3229d2ced4b45e33",
+    "publicSha256": "dc2a804f0abc048ebacddb1bd209e8af9c0b6fd7738f910a3229d2ced4b45e33",
+    "derived": false,
+    "bytes": 12960
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-vue2-restored.png",
+    "rawSha256": "db20c4de557a1bedb6631abdb2230ec8cbc2f9949aa65b04d3aadb0a32a42003",
+    "publicSha256": "db20c4de557a1bedb6631abdb2230ec8cbc2f9949aa65b04d3aadb0a32a42003",
+    "derived": false,
+    "bytes": 59580
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-vue-390-immediate.png",
+    "rawSha256": "eb1e23541ed6c3ba604489a3782d20998a0770c444fa17ecb9b1818d4443ea54",
+    "publicSha256": "eb1e23541ed6c3ba604489a3782d20998a0770c444fa17ecb9b1818d4443ea54",
+    "derived": false,
+    "bytes": 91733
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-wc-reopened.png",
+    "rawSha256": "98f71d34e12dc77f696ab0c6fce3b282fef44bb2db75755fa7c8f04be78753f7",
+    "publicSha256": "98f71d34e12dc77f696ab0c6fce3b282fef44bb2db75755fa7c8f04be78753f7",
+    "derived": false,
+    "bytes": 59727
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-vue2-390-immediate.png",
+    "rawSha256": "3f83c516f9d70b8908a62bd9640730854ceb0224a6e2d0bb690c9b1c541233f0",
+    "publicSha256": "3f83c516f9d70b8908a62bd9640730854ceb0224a6e2d0bb690c9b1c541233f0",
+    "derived": false,
+    "bytes": 83879
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-vue2-scale2.png",
+    "rawSha256": "8f227c7f215fc055880cbd4865894b812b3211f9968200d53b693980fbeb62d2",
+    "publicSha256": "8f227c7f215fc055880cbd4865894b812b3211f9968200d53b693980fbeb62d2",
+    "derived": false,
+    "bytes": 53789
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-react-430-settled.png",
+    "rawSha256": "b589003ad004bfa4a8091254005e9c806c37953e241128db650e5e7ec265d9a3",
+    "publicSha256": "b589003ad004bfa4a8091254005e9c806c37953e241128db650e5e7ec265d9a3",
+    "derived": false,
+    "bytes": 64594
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-vue2-430-settled.png",
+    "rawSha256": "b589003ad004bfa4a8091254005e9c806c37953e241128db650e5e7ec265d9a3",
+    "publicSha256": "b589003ad004bfa4a8091254005e9c806c37953e241128db650e5e7ec265d9a3",
+    "derived": false,
+    "bytes": 64594
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-react-320-resize-immediate.png",
+    "rawSha256": "4b4e5b3db37e7333deef9fb6f5cccc587938224d638de11a91c93c9ef3a4c905",
+    "publicSha256": "4b4e5b3db37e7333deef9fb6f5cccc587938224d638de11a91c93c9ef3a4c905",
+    "derived": false,
+    "bytes": 52531
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-react-320-settled.png",
+    "rawSha256": "93a49cfbb2264fd6dd6a8ebf37ce9fbafb258e79e512008d083e549fbdb91a83",
+    "publicSha256": "93a49cfbb2264fd6dd6a8ebf37ce9fbafb258e79e512008d083e549fbdb91a83",
+    "derived": false,
+    "bytes": 45033
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-wc-430-resize-immediate.png",
+    "rawSha256": "0ad1fb7ada7e481b905088cecf49cd4b4651636a18ec060e13951fe0fb4f38f7",
+    "publicSha256": "0ad1fb7ada7e481b905088cecf49cd4b4651636a18ec060e13951fe0fb4f38f7",
+    "derived": false,
+    "bytes": 64599
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-wc-long-font200.png",
+    "rawSha256": "2ac5ffdfeef4db59260ef3e599fc7607f495cc1c13894b9322431ea6a8c0ecd3",
+    "publicSha256": "2ac5ffdfeef4db59260ef3e599fc7607f495cc1c13894b9322431ea6a8c0ecd3",
+    "derived": false,
+    "bytes": 23213
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-vue-430-resize-immediate.png",
+    "rawSha256": "b589003ad004bfa4a8091254005e9c806c37953e241128db650e5e7ec265d9a3",
+    "publicSha256": "b589003ad004bfa4a8091254005e9c806c37953e241128db650e5e7ec265d9a3",
+    "derived": false,
+    "bytes": 64594
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-react-390-immediate.png",
+    "rawSha256": "b98d4f2406495dbcb7b13d95c87941c55d8963c5f64687d617c81c953a6a0965",
+    "publicSha256": "b98d4f2406495dbcb7b13d95c87941c55d8963c5f64687d617c81c953a6a0965",
+    "derived": false,
+    "bytes": 96966
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-vue2-long-font200.png",
+    "rawSha256": "2ac5ffdfeef4db59260ef3e599fc7607f495cc1c13894b9322431ea6a8c0ecd3",
+    "publicSha256": "2ac5ffdfeef4db59260ef3e599fc7607f495cc1c13894b9322431ea6a8c0ecd3",
+    "derived": false,
+    "bytes": 23213
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-wc-320-long-action-reachable.png",
+    "rawSha256": "500e7d62980bcadceff7400d5ebf5822e81b56cd833e3a341118b07b061e059b",
+    "publicSha256": "500e7d62980bcadceff7400d5ebf5822e81b56cd833e3a341118b07b061e059b",
+    "derived": false,
+    "bytes": 20997
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-wc-1024-resize-immediate.png",
+    "rawSha256": "a4e1c56f141320d296790d157650ee42a826f1fa418e0d8f7556bdd7d2a823f9",
+    "publicSha256": "a4e1c56f141320d296790d157650ee42a826f1fa418e0d8f7556bdd7d2a823f9",
+    "derived": false,
+    "bytes": 105742
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-vue2-430-resize-immediate.png",
+    "rawSha256": "b589003ad004bfa4a8091254005e9c806c37953e241128db650e5e7ec265d9a3",
+    "publicSha256": "b589003ad004bfa4a8091254005e9c806c37953e241128db650e5e7ec265d9a3",
+    "derived": false,
+    "bytes": 64594
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-vue2-430-settled.png",
+    "rawSha256": "c89eb4ef2ee8821f8d4c14a1d822c93eb907fb0848ec3b89d7609c1925bf8b47",
+    "publicSha256": "c89eb4ef2ee8821f8d4c14a1d822c93eb907fb0848ec3b89d7609c1925bf8b47",
+    "derived": false,
+    "bytes": 56693
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-react-430-resize-immediate.png",
+    "rawSha256": "b589003ad004bfa4a8091254005e9c806c37953e241128db650e5e7ec265d9a3",
+    "publicSha256": "b589003ad004bfa4a8091254005e9c806c37953e241128db650e5e7ec265d9a3",
+    "derived": false,
+    "bytes": 64594
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-vue2-reopened.png",
+    "rawSha256": "71443c6094945b9507cb2239c6cb97ee7f02201d8d60d9f43df1be8e84502b7d",
+    "publicSha256": "71443c6094945b9507cb2239c6cb97ee7f02201d8d60d9f43df1be8e84502b7d",
+    "derived": false,
+    "bytes": 57650
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-wc-scale2.png",
+    "rawSha256": "24332ab00cc175939959a79c1fdd1701821a8531b8a47ddfefbcdc68c1a667e7",
+    "publicSha256": "24332ab00cc175939959a79c1fdd1701821a8531b8a47ddfefbcdc68c1a667e7",
+    "derived": false,
+    "bytes": 43784
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-vue-390-resize-immediate.png",
+    "rawSha256": "985fd785e62320e6cad08b1bfa7a5ef02ac17e6b279bd121a29f4f6684c363dc",
+    "publicSha256": "985fd785e62320e6cad08b1bfa7a5ef02ac17e6b279bd121a29f4f6684c363dc",
+    "derived": false,
+    "bytes": 53220
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-react-scale2.png",
+    "rawSha256": "940afa7872b53aa778eb747aa92aab9f564e687453ce311a487c21720bc9b979",
+    "publicSha256": "940afa7872b53aa778eb747aa92aab9f564e687453ce311a487c21720bc9b979",
+    "derived": false,
+    "bytes": 45826
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-wc-320-long-font200.png",
+    "rawSha256": "67bc589a1d0ec7056cb696f8ad3ebee294c251458cd23f9c089fc5af0ccc52f9",
+    "publicSha256": "67bc589a1d0ec7056cb696f8ad3ebee294c251458cd23f9c089fc5af0ccc52f9",
+    "derived": false,
+    "bytes": 21235
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-wc-320-resize-immediate.png",
+    "rawSha256": "bdad546c67dfad8f15a48092722db6dc6f78d6411353fc58111e294b0ac526fe",
+    "publicSha256": "bdad546c67dfad8f15a48092722db6dc6f78d6411353fc58111e294b0ac526fe",
+    "derived": false,
+    "bytes": 52585
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-react-320-long-action-reachable.png",
+    "rawSha256": "15ba3a07e5347eb819fd4be996e6ac8c15afb6ebdab703488f2dd593a99cdb87",
+    "publicSha256": "15ba3a07e5347eb819fd4be996e6ac8c15afb6ebdab703488f2dd593a99cdb87",
+    "derived": false,
+    "bytes": 21431
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-vue2-320-settled.png",
+    "rawSha256": "f76e824ebdcd595c076ba6673e70812da5245c7368b4f79fa36df485dd23489d",
+    "publicSha256": "f76e824ebdcd595c076ba6673e70812da5245c7368b4f79fa36df485dd23489d",
+    "derived": false,
+    "bytes": 52203
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-vue2-430-resize-immediate.png",
+    "rawSha256": "c89eb4ef2ee8821f8d4c14a1d822c93eb907fb0848ec3b89d7609c1925bf8b47",
+    "publicSha256": "c89eb4ef2ee8821f8d4c14a1d822c93eb907fb0848ec3b89d7609c1925bf8b47",
+    "derived": false,
+    "bytes": 56693
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-wc-scale2.png",
+    "rawSha256": "8f227c7f215fc055880cbd4865894b812b3211f9968200d53b693980fbeb62d2",
+    "publicSha256": "8f227c7f215fc055880cbd4865894b812b3211f9968200d53b693980fbeb62d2",
+    "derived": false,
+    "bytes": 53789
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-react-390-resize-immediate.png",
+    "rawSha256": "b3b5dfdb952f0c6bd44732ebfd8d4344cf2eb71c5f88a9b4edba33ec32eb0a56",
+    "publicSha256": "b3b5dfdb952f0c6bd44732ebfd8d4344cf2eb71c5f88a9b4edba33ec32eb0a56",
+    "derived": false,
+    "bytes": 60145
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-vue2-390-resize-immediate.png",
+    "rawSha256": "b3b5dfdb952f0c6bd44732ebfd8d4344cf2eb71c5f88a9b4edba33ec32eb0a56",
+    "publicSha256": "b3b5dfdb952f0c6bd44732ebfd8d4344cf2eb71c5f88a9b4edba33ec32eb0a56",
+    "derived": false,
+    "bytes": 60145
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-vue2-long-action-reachable.png",
+    "rawSha256": "88988939c7d5eda39a2218c39b2735216c79415d2e8345492353b90ed4d0c131",
+    "publicSha256": "88988939c7d5eda39a2218c39b2735216c79415d2e8345492353b90ed4d0c131",
+    "derived": false,
+    "bytes": 22937
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-vue2-1024-settled.png",
+    "rawSha256": "3e6d9f42f437422f8a6e16292c1798cdc9f40224ae26faa024c6e662c4b83e3c",
+    "publicSha256": "3e6d9f42f437422f8a6e16292c1798cdc9f40224ae26faa024c6e662c4b83e3c",
+    "derived": false,
+    "bytes": 90430
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-vue-430-settled.png",
+    "rawSha256": "0615145a1dfdeacf31ba69b8244d1e495a0a317c04fdd6853880b1e7960489c2",
+    "publicSha256": "0615145a1dfdeacf31ba69b8244d1e495a0a317c04fdd6853880b1e7960489c2",
+    "derived": false,
+    "bytes": 53603
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/observations.json",
+    "rawSha256": "b362ae802e2692ffcc697b184bdde012a4f9198ae288ea12164ce97cec9ca495",
+    "publicSha256": "b362ae802e2692ffcc697b184bdde012a4f9198ae288ea12164ce97cec9ca495",
+    "derived": false,
+    "bytes": 1071817
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-vue2-390-immediate.png",
+    "rawSha256": "c7c2c0b0a353018b971afe6d3fe0f2be08fef946569302bfbe29d26b7750d21d",
+    "publicSha256": "c7c2c0b0a353018b971afe6d3fe0f2be08fef946569302bfbe29d26b7750d21d",
+    "derived": false,
+    "bytes": 102130
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-react-restored.png",
+    "rawSha256": "dd919c28771ee2e4c219382f778043fef08bae486c651ed64d87acca9a842743",
+    "publicSha256": "dd919c28771ee2e4c219382f778043fef08bae486c651ed64d87acca9a842743",
+    "derived": false,
+    "bytes": 61253
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-vue-390-resize-immediate.png",
+    "rawSha256": "b3b5dfdb952f0c6bd44732ebfd8d4344cf2eb71c5f88a9b4edba33ec32eb0a56",
+    "publicSha256": "b3b5dfdb952f0c6bd44732ebfd8d4344cf2eb71c5f88a9b4edba33ec32eb0a56",
+    "derived": false,
+    "bytes": 60145
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-vue2-390-resize-immediate.png",
+    "rawSha256": "206861fca7afbd2a9945a50f50d8b1f1159f2ec8776c0fe158f497d77a0a8021",
+    "publicSha256": "206861fca7afbd2a9945a50f50d8b1f1159f2ec8776c0fe158f497d77a0a8021",
+    "derived": false,
+    "bytes": 54221
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-wc-390-settled.png",
+    "rawSha256": "c2b60c8d6562bc4afbd1b15fc020689fe421f373acdf8a6034f2007cb68caaa7",
+    "publicSha256": "c2b60c8d6562bc4afbd1b15fc020689fe421f373acdf8a6034f2007cb68caaa7",
+    "derived": false,
+    "bytes": 54383
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-vue-430-resize-immediate.png",
+    "rawSha256": "0615145a1dfdeacf31ba69b8244d1e495a0a317c04fdd6853880b1e7960489c2",
+    "publicSha256": "0615145a1dfdeacf31ba69b8244d1e495a0a317c04fdd6853880b1e7960489c2",
+    "derived": false,
+    "bytes": 53603
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-react-390-immediate.png",
+    "rawSha256": "c2487c684cfb8ee20038b87d56fc7d319d95fa314f77234580eea9adc14f739d",
+    "publicSha256": "c2487c684cfb8ee20038b87d56fc7d319d95fa314f77234580eea9adc14f739d",
+    "derived": false,
+    "bytes": 92285
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-react-1024-resize-immediate.png",
+    "rawSha256": "c04299975a9ca67b5623449054ebfbe3c029753757d406b0c12574a63f2f4d40",
+    "publicSha256": "c04299975a9ca67b5623449054ebfbe3c029753757d406b0c12574a63f2f4d40",
+    "derived": false,
+    "bytes": 104777
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-vue-320-settled.png",
+    "rawSha256": "109c6015ef2e817f8ac0e389d2c731b6ef78c06ed9aa476d47a73a4206240d20",
+    "publicSha256": "109c6015ef2e817f8ac0e389d2c731b6ef78c06ed9aa476d47a73a4206240d20",
+    "derived": false,
+    "bytes": 52488
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-react-1024-resize-immediate.png",
+    "rawSha256": "d91cb205d1dc2a32ebff2e839d77b3692bc23e98ea68e551bdd7e6292e3b8303",
+    "publicSha256": "d91cb205d1dc2a32ebff2e839d77b3692bc23e98ea68e551bdd7e6292e3b8303",
+    "derived": false,
+    "bytes": 82317
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-wc-1024-resize-immediate.png",
+    "rawSha256": "acd2276c94f1de83d2a7a52002e3b352f66c3c7c2c88f1bf2361cc9c5967a65f",
+    "publicSha256": "acd2276c94f1de83d2a7a52002e3b352f66c3c7c2c88f1bf2361cc9c5967a65f",
+    "derived": false,
+    "bytes": 91071
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-vue-1024-settled.png",
+    "rawSha256": "7215c0c31cfde3c6df751a0c680dcd10fb11adf71ac4811dd8bb680409fb37ca",
+    "publicSha256": "7215c0c31cfde3c6df751a0c680dcd10fb11adf71ac4811dd8bb680409fb37ca",
+    "derived": false,
+    "bytes": 104457
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-react-reopened.png",
+    "rawSha256": "aea4d19deec0e4479c5cacb529679b41acca6e9d2c6f6053a24da21669534bb4",
+    "publicSha256": "aea4d19deec0e4479c5cacb529679b41acca6e9d2c6f6053a24da21669534bb4",
+    "derived": false,
+    "bytes": 60696
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-vue2-390-settled.png",
+    "rawSha256": "206861fca7afbd2a9945a50f50d8b1f1159f2ec8776c0fe158f497d77a0a8021",
+    "publicSha256": "206861fca7afbd2a9945a50f50d8b1f1159f2ec8776c0fe158f497d77a0a8021",
+    "derived": false,
+    "bytes": 54221
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-vue-long-action-reachable.png",
+    "rawSha256": "88988939c7d5eda39a2218c39b2735216c79415d2e8345492353b90ed4d0c131",
+    "publicSha256": "88988939c7d5eda39a2218c39b2735216c79415d2e8345492353b90ed4d0c131",
+    "derived": false,
+    "bytes": 22937
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-react-long-font200.png",
+    "rawSha256": "dc853671e1673a84a39a30a15eec965753bbc44d4b753d60d726c43841621219",
+    "publicSha256": "dc853671e1673a84a39a30a15eec965753bbc44d4b753d60d726c43841621219",
+    "derived": false,
+    "bytes": 17184
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-wc-long-font200.png",
+    "rawSha256": "e505512ef211e10b773f8e897ad285bf70f56706b28583626885fde240de8bc5",
+    "publicSha256": "e505512ef211e10b773f8e897ad285bf70f56706b28583626885fde240de8bc5",
+    "derived": false,
+    "bytes": 18404
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-vue-scale2.png",
+    "rawSha256": "14ca66df9bb2f0fb6bfc06ba6c295b68c4d38295ab80575a3ab7d51b6c3462e7",
+    "publicSha256": "14ca66df9bb2f0fb6bfc06ba6c295b68c4d38295ab80575a3ab7d51b6c3462e7",
+    "derived": false,
+    "bytes": 42694
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-vue-long-action-reachable.png",
+    "rawSha256": "a51dd7b6eac873bfba87f49dd523946a2e53b55b62deaa21fbc1ced60b89bb0e",
+    "publicSha256": "a51dd7b6eac873bfba87f49dd523946a2e53b55b62deaa21fbc1ced60b89bb0e",
+    "derived": false,
+    "bytes": 12375
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-vue2-long-action-reachable.png",
+    "rawSha256": "43c3e96cf2c48eac4ddda1afb34ea451e3fb3b9ea8ee48d387cac574517f5005",
+    "publicSha256": "43c3e96cf2c48eac4ddda1afb34ea451e3fb3b9ea8ee48d387cac574517f5005",
+    "derived": false,
+    "bytes": 12359
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-vue2-1024-settled.png",
+    "rawSha256": "22b1b930b2234be094c332437dd6dad2153feb5b28fe83cc37000e65615b6aa0",
+    "publicSha256": "22b1b930b2234be094c332437dd6dad2153feb5b28fe83cc37000e65615b6aa0",
+    "derived": false,
+    "bytes": 104677
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-vue2-320-long-font200.png",
+    "rawSha256": "67bc589a1d0ec7056cb696f8ad3ebee294c251458cd23f9c089fc5af0ccc52f9",
+    "publicSha256": "67bc589a1d0ec7056cb696f8ad3ebee294c251458cd23f9c089fc5af0ccc52f9",
+    "derived": false,
+    "bytes": 21235
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-react-390-resize-immediate.png",
+    "rawSha256": "a7962ac581a7902ce1bfe33fb5dc4a1fe52caa0d9ecd80c32653aed32f94827d",
+    "publicSha256": "a7962ac581a7902ce1bfe33fb5dc4a1fe52caa0d9ecd80c32653aed32f94827d",
+    "derived": false,
+    "bytes": 51463
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-react-320-long-font200.png",
+    "rawSha256": "67bc589a1d0ec7056cb696f8ad3ebee294c251458cd23f9c089fc5af0ccc52f9",
+    "publicSha256": "67bc589a1d0ec7056cb696f8ad3ebee294c251458cd23f9c089fc5af0ccc52f9",
+    "derived": false,
+    "bytes": 21235
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-wc-320-settled.png",
+    "rawSha256": "bdad546c67dfad8f15a48092722db6dc6f78d6411353fc58111e294b0ac526fe",
+    "publicSha256": "bdad546c67dfad8f15a48092722db6dc6f78d6411353fc58111e294b0ac526fe",
+    "derived": false,
+    "bytes": 52585
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-react-1024-settled.png",
+    "rawSha256": "e422ed34479bb354bf160e2f73606d885ab30ef1d0fa925a826c1309bbf230b1",
+    "publicSha256": "e422ed34479bb354bf160e2f73606d885ab30ef1d0fa925a826c1309bbf230b1",
+    "derived": false,
+    "bytes": 104828
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-vue-long-font200.png",
+    "rawSha256": "5ea0a9d1d8a3a218d7981ea801960d1c301b229d93957c24b897df1443745167",
+    "publicSha256": "5ea0a9d1d8a3a218d7981ea801960d1c301b229d93957c24b897df1443745167",
+    "derived": false,
+    "bytes": 17855
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-react-scale2.png",
+    "rawSha256": "8f227c7f215fc055880cbd4865894b812b3211f9968200d53b693980fbeb62d2",
+    "publicSha256": "8f227c7f215fc055880cbd4865894b812b3211f9968200d53b693980fbeb62d2",
+    "derived": false,
+    "bytes": 53789
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-vue-390-settled.png",
+    "rawSha256": "985fd785e62320e6cad08b1bfa7a5ef02ac17e6b279bd121a29f4f6684c363dc",
+    "publicSha256": "985fd785e62320e6cad08b1bfa7a5ef02ac17e6b279bd121a29f4f6684c363dc",
+    "derived": false,
+    "bytes": 53220
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-react-430-resize-immediate.png",
+    "rawSha256": "f9098c895f80f0915511dca7faddd26bf3918dfd76d741185c1a76943ed39fb3",
+    "publicSha256": "f9098c895f80f0915511dca7faddd26bf3918dfd76d741185c1a76943ed39fb3",
+    "derived": false,
+    "bytes": 52185
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-vue2-long-font200.png",
+    "rawSha256": "5ea0a9d1d8a3a218d7981ea801960d1c301b229d93957c24b897df1443745167",
+    "publicSha256": "5ea0a9d1d8a3a218d7981ea801960d1c301b229d93957c24b897df1443745167",
+    "derived": false,
+    "bytes": 17855
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-wc-430-settled.png",
+    "rawSha256": "d0e903908ac47996157744ef043e0491a19a6a026e3e036e4859413a381f04c5",
+    "publicSha256": "d0e903908ac47996157744ef043e0491a19a6a026e3e036e4859413a381f04c5",
+    "derived": false,
+    "bytes": 56847
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-wc-1024-settled.png",
+    "rawSha256": "a4e1c56f141320d296790d157650ee42a826f1fa418e0d8f7556bdd7d2a823f9",
+    "publicSha256": "a4e1c56f141320d296790d157650ee42a826f1fa418e0d8f7556bdd7d2a823f9",
+    "derived": false,
+    "bytes": 105742
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-wc-320-resize-immediate.png",
+    "rawSha256": "d968f82da057bc1608c155822ccd50c9a946eb72608c0ff55974dd4cb9dea832",
+    "publicSha256": "d968f82da057bc1608c155822ccd50c9a946eb72608c0ff55974dd4cb9dea832",
+    "derived": false,
+    "bytes": 45003
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/brutalist-vue2-restored.png",
+    "rawSha256": "1ee5ca5609611e8a52526a4ab4934a7824872fbb7af8f8f2c71f5c1b70bbc264",
+    "publicSha256": "1ee5ca5609611e8a52526a4ab4934a7824872fbb7af8f8f2c71f5c1b70bbc264",
+    "derived": false,
+    "bytes": 58220
+  },
+  {
+    "path": "dialog-candidate/dialog-available-space/shadcn-wc-390-immediate.png",
+    "rawSha256": "8693452d9b4a0a5e8bea2d254682760539accb41ac4f7e0481670f399fc4382e",
+    "publicSha256": "8693452d9b4a0a5e8bea2d254682760539accb41ac4f7e0481670f399fc4382e",
+    "derived": false,
+    "bytes": 103444
+  },
+  {
+    "path": "dialog-baseline/browser.log",
+    "rawSha256": "7d87304d093811be01082211fd529930a31672700364b8bfa571b8b45fd93c70",
+    "publicSha256": "a8f686b07df5d36fd4648c1cbcf3ae757359a2bf17b33ed0afe51edae0e2d8c3",
+    "derived": true,
+    "bytes": 10809
+  },
+  {
+    "path": "dialog-baseline/runner-integrity.json",
+    "rawSha256": "53ac6b884a09fe5c8c2ef6517b66eb3bdc82348cde40b874870d3c494605bd5b",
+    "publicSha256": "53ac6b884a09fe5c8c2ef6517b66eb3bdc82348cde40b874870d3c494605bd5b",
+    "derived": false,
+    "bytes": 603
+  },
+  {
+    "path": "dialog-baseline/vitest.json",
+    "rawSha256": "d83311c94b563e78c571ed3a47a738ecf2f26b093b6862389faaaa23e67da1c8",
+    "publicSha256": "f74cbb13df800bc27c31db5c7abc7e7651b24afbd511a23726ea4c17781cd8a3",
+    "derived": true,
+    "bytes": 15694
+  },
+  {
+    "path": "dialog-baseline/executed-probe.ts",
+    "rawSha256": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e",
+    "publicSha256": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e",
+    "derived": false,
+    "bytes": 29204
+  },
+  {
+    "path": "dialog-baseline/receipt.json",
+    "rawSha256": "dca09d177c877421484b03ba7d06c1934edc47163cd27b84ac92fe1ed6634034",
+    "publicSha256": "681d18067653504765552757a1dfa408611580ad5be96301000fd1b8253f9a76",
+    "derived": true,
+    "bytes": 754
+  },
+  {
+    "path": "dialog-baseline/dialog-available-space/brutalist-wc-failure.png",
+    "rawSha256": "8bb4566db6fd6b55f7a85dcee6b16852ca6e8a8bd03194bbbf4da46c77381b72",
+    "publicSha256": "8bb4566db6fd6b55f7a85dcee6b16852ca6e8a8bd03194bbbf4da46c77381b72",
+    "derived": false,
+    "bytes": 71053
+  },
+  {
+    "path": "dialog-baseline/dialog-available-space/brutalist-wc-390-immediate.png",
+    "rawSha256": "3e69a1281c6956200501dce6e84291272be8c077e3894f34ccaf0650f2f1f5f0",
+    "publicSha256": "3e69a1281c6956200501dce6e84291272be8c077e3894f34ccaf0650f2f1f5f0",
+    "derived": false,
+    "bytes": 86725
+  },
+  {
+    "path": "dialog-baseline/dialog-available-space/shadcn-vue-failure.png",
+    "rawSha256": "feaae2e301c2fbdccbe2974aedb70495429e2eee09ba4f8b79e2c270e99591af",
+    "publicSha256": "feaae2e301c2fbdccbe2974aedb70495429e2eee09ba4f8b79e2c270e99591af",
+    "derived": false,
+    "bytes": 53152
+  },
+  {
+    "path": "dialog-baseline/dialog-available-space/shadcn-vue-390-immediate.png",
+    "rawSha256": "a3d9ce65e59ba2c9df04122e4dbab08112440a896f7a18f48fd3e5f59833d957",
+    "publicSha256": "a3d9ce65e59ba2c9df04122e4dbab08112440a896f7a18f48fd3e5f59833d957",
+    "derived": false,
+    "bytes": 98347
+  },
+  {
+    "path": "dialog-baseline/dialog-available-space/brutalist-wc-390-settled.png",
+    "rawSha256": "8bb4566db6fd6b55f7a85dcee6b16852ca6e8a8bd03194bbbf4da46c77381b72",
+    "publicSha256": "8bb4566db6fd6b55f7a85dcee6b16852ca6e8a8bd03194bbbf4da46c77381b72",
+    "derived": false,
+    "bytes": 71053
+  },
+  {
+    "path": "dialog-baseline/dialog-available-space/brutalist-react-390-settled.png",
+    "rawSha256": "9288e27269034bf384ad5a435165bb8db95ed58d5ae783f077455aaf0185fd8f",
+    "publicSha256": "9288e27269034bf384ad5a435165bb8db95ed58d5ae783f077455aaf0185fd8f",
+    "derived": false,
+    "bytes": 64448
+  },
+  {
+    "path": "dialog-baseline/dialog-available-space/shadcn-vue2-failure.png",
+    "rawSha256": "5bbc639f2b0e6a60d72abd05a464210463fde69f8e8c5da17a07453d1480889a",
+    "publicSha256": "5bbc639f2b0e6a60d72abd05a464210463fde69f8e8c5da17a07453d1480889a",
+    "derived": false,
+    "bytes": 61968
+  },
+  {
+    "path": "dialog-baseline/dialog-available-space/brutalist-vue2-390-settled.png",
+    "rawSha256": "9288e27269034bf384ad5a435165bb8db95ed58d5ae783f077455aaf0185fd8f",
+    "publicSha256": "9288e27269034bf384ad5a435165bb8db95ed58d5ae783f077455aaf0185fd8f",
+    "derived": false,
+    "bytes": 64448
+  },
+  {
+    "path": "dialog-baseline/dialog-available-space/shadcn-wc-390-resize-immediate.png",
+    "rawSha256": "7c70f2f624724a23df31f886bc0b9c9beddadc548260a02605a2be5a10c8c401",
+    "publicSha256": "7c70f2f624724a23df31f886bc0b9c9beddadc548260a02605a2be5a10c8c401",
+    "derived": false,
+    "bytes": 61585
+  },
+  {
+    "path": "dialog-baseline/dialog-available-space/brutalist-react-failure.png",
+    "rawSha256": "9288e27269034bf384ad5a435165bb8db95ed58d5ae783f077455aaf0185fd8f",
+    "publicSha256": "9288e27269034bf384ad5a435165bb8db95ed58d5ae783f077455aaf0185fd8f",
+    "derived": false,
+    "bytes": 64448
+  },
+  {
+    "path": "dialog-baseline/dialog-available-space/brutalist-vue-failure.png",
+    "rawSha256": "9288e27269034bf384ad5a435165bb8db95ed58d5ae783f077455aaf0185fd8f",
+    "publicSha256": "9288e27269034bf384ad5a435165bb8db95ed58d5ae783f077455aaf0185fd8f",
+    "derived": false,
+    "bytes": 64448
+  },
+  {
+    "path": "dialog-baseline/dialog-available-space/brutalist-vue-390-settled.png",
+    "rawSha256": "9288e27269034bf384ad5a435165bb8db95ed58d5ae783f077455aaf0185fd8f",
+    "publicSha256": "9288e27269034bf384ad5a435165bb8db95ed58d5ae783f077455aaf0185fd8f",
+    "derived": false,
+    "bytes": 64448
+  },
+  {
+    "path": "dialog-baseline/dialog-available-space/brutalist-vue2-failure.png",
+    "rawSha256": "9288e27269034bf384ad5a435165bb8db95ed58d5ae783f077455aaf0185fd8f",
+    "publicSha256": "9288e27269034bf384ad5a435165bb8db95ed58d5ae783f077455aaf0185fd8f",
+    "derived": false,
+    "bytes": 64448
+  },
+  {
+    "path": "dialog-baseline/dialog-available-space/brutalist-wc-390-resize-immediate.png",
+    "rawSha256": "8bb4566db6fd6b55f7a85dcee6b16852ca6e8a8bd03194bbbf4da46c77381b72",
+    "publicSha256": "8bb4566db6fd6b55f7a85dcee6b16852ca6e8a8bd03194bbbf4da46c77381b72",
+    "derived": false,
+    "bytes": 71053
+  },
+  {
+    "path": "dialog-baseline/dialog-available-space/shadcn-react-390-settled.png",
+    "rawSha256": "a94c9fc7f49b3e28adc5e32482b35fb518e3f6489a4aa468833e0735ca2628ca",
+    "publicSha256": "a94c9fc7f49b3e28adc5e32482b35fb518e3f6489a4aa468833e0735ca2628ca",
+    "derived": false,
+    "bytes": 53241
+  },
+  {
+    "path": "dialog-baseline/dialog-available-space/brutalist-vue-390-immediate.png",
+    "rawSha256": "36a4b983779a695f72f5dfd054ce277ba26dfa57a3c66c7453a3c8d35cebf656",
+    "publicSha256": "36a4b983779a695f72f5dfd054ce277ba26dfa57a3c66c7453a3c8d35cebf656",
+    "derived": false,
+    "bytes": 89397
+  },
+  {
+    "path": "dialog-baseline/dialog-available-space/brutalist-vue2-390-immediate.png",
+    "rawSha256": "5b44a10a282d1b67aaad8cb9b886c0740239d1f01270f4bef5f93eb982d42523",
+    "publicSha256": "5b44a10a282d1b67aaad8cb9b886c0740239d1f01270f4bef5f93eb982d42523",
+    "derived": false,
+    "bytes": 89593
+  },
+  {
+    "path": "dialog-baseline/dialog-available-space/shadcn-react-390-immediate.png",
+    "rawSha256": "3e99fff2afc37982d2bd1764300ffdab5df62a3d5570ac9e836e1ca4651b639e",
+    "publicSha256": "3e99fff2afc37982d2bd1764300ffdab5df62a3d5570ac9e836e1ca4651b639e",
+    "derived": false,
+    "bytes": 87807
+  },
+  {
+    "path": "dialog-baseline/dialog-available-space/shadcn-vue-390-resize-immediate.png",
+    "rawSha256": "feaae2e301c2fbdccbe2974aedb70495429e2eee09ba4f8b79e2c270e99591af",
+    "publicSha256": "feaae2e301c2fbdccbe2974aedb70495429e2eee09ba4f8b79e2c270e99591af",
+    "derived": false,
+    "bytes": 53152
+  },
+  {
+    "path": "dialog-baseline/dialog-available-space/brutalist-react-390-resize-immediate.png",
+    "rawSha256": "9288e27269034bf384ad5a435165bb8db95ed58d5ae783f077455aaf0185fd8f",
+    "publicSha256": "9288e27269034bf384ad5a435165bb8db95ed58d5ae783f077455aaf0185fd8f",
+    "derived": false,
+    "bytes": 64448
+  },
+  {
+    "path": "dialog-baseline/dialog-available-space/shadcn-react-failure.png",
+    "rawSha256": "a94c9fc7f49b3e28adc5e32482b35fb518e3f6489a4aa468833e0735ca2628ca",
+    "publicSha256": "a94c9fc7f49b3e28adc5e32482b35fb518e3f6489a4aa468833e0735ca2628ca",
+    "derived": false,
+    "bytes": 53241
+  },
+  {
+    "path": "dialog-baseline/dialog-available-space/brutalist-vue2-390-resize-immediate.png",
+    "rawSha256": "9288e27269034bf384ad5a435165bb8db95ed58d5ae783f077455aaf0185fd8f",
+    "publicSha256": "9288e27269034bf384ad5a435165bb8db95ed58d5ae783f077455aaf0185fd8f",
+    "derived": false,
+    "bytes": 64448
+  },
+  {
+    "path": "dialog-baseline/dialog-available-space/observations.json",
+    "rawSha256": "21ae724a312224330efa26d581f30b13f65aa5c65bd77a7219a404d72e4a5f50",
+    "publicSha256": "21ae724a312224330efa26d581f30b13f65aa5c65bd77a7219a404d72e4a5f50",
+    "derived": false,
+    "bytes": 193327
+  },
+  {
+    "path": "dialog-baseline/dialog-available-space/brutalist-vue-390-resize-immediate.png",
+    "rawSha256": "9288e27269034bf384ad5a435165bb8db95ed58d5ae783f077455aaf0185fd8f",
+    "publicSha256": "9288e27269034bf384ad5a435165bb8db95ed58d5ae783f077455aaf0185fd8f",
+    "derived": false,
+    "bytes": 64448
+  },
+  {
+    "path": "dialog-baseline/dialog-available-space/shadcn-wc-390-settled.png",
+    "rawSha256": "7c70f2f624724a23df31f886bc0b9c9beddadc548260a02605a2be5a10c8c401",
+    "publicSha256": "7c70f2f624724a23df31f886bc0b9c9beddadc548260a02605a2be5a10c8c401",
+    "derived": false,
+    "bytes": 61585
+  },
+  {
+    "path": "dialog-baseline/dialog-available-space/brutalist-react-390-immediate.png",
+    "rawSha256": "b09141a1070f3dc7d8a9b8a559093f100893d48e4a954107891afb8bffc66421",
+    "publicSha256": "b09141a1070f3dc7d8a9b8a559093f100893d48e4a954107891afb8bffc66421",
+    "derived": false,
+    "bytes": 89690
+  },
+  {
+    "path": "dialog-baseline/dialog-available-space/shadcn-react-390-resize-immediate.png",
+    "rawSha256": "a94c9fc7f49b3e28adc5e32482b35fb518e3f6489a4aa468833e0735ca2628ca",
+    "publicSha256": "a94c9fc7f49b3e28adc5e32482b35fb518e3f6489a4aa468833e0735ca2628ca",
+    "derived": false,
+    "bytes": 53241
+  },
+  {
+    "path": "dialog-baseline/dialog-available-space/shadcn-wc-failure.png",
+    "rawSha256": "7c70f2f624724a23df31f886bc0b9c9beddadc548260a02605a2be5a10c8c401",
+    "publicSha256": "7c70f2f624724a23df31f886bc0b9c9beddadc548260a02605a2be5a10c8c401",
+    "derived": false,
+    "bytes": 61585
+  },
+  {
+    "path": "dialog-baseline/dialog-available-space/shadcn-vue-390-settled.png",
+    "rawSha256": "feaae2e301c2fbdccbe2974aedb70495429e2eee09ba4f8b79e2c270e99591af",
+    "publicSha256": "feaae2e301c2fbdccbe2974aedb70495429e2eee09ba4f8b79e2c270e99591af",
+    "derived": false,
+    "bytes": 53152
+  },
+  {
+    "path": "dialog-baseline/dialog-available-space/shadcn-wc-390-immediate.png",
+    "rawSha256": "43e1f017b84b7e0dad31ef4c6a84da893962ad3ad112a9c674ea3884a6f3ad4d",
+    "publicSha256": "43e1f017b84b7e0dad31ef4c6a84da893962ad3ad112a9c674ea3884a6f3ad4d",
+    "derived": false,
+    "bytes": 95839
+  },
+  {
+    "path": "focus-real/source-build.log",
+    "rawSha256": "861e475b5b7c0ee31f073606dac25d1cc9fdc54cbca8fde31f6123ebd063b2a2",
+    "publicSha256": "cc72c36769db96df71f164bde03291ccc25ee16d57ffefba3518bf18d9773bac",
+    "derived": true,
+    "bytes": 147
+  },
+  {
+    "path": "focus-real/packed-build.log",
+    "rawSha256": "5923b44b3df120c8cbacd3722a47bfe6945322a14dc9f71c40dc846abd90bdfd",
+    "publicSha256": "6bd016af5d16c06ad13039ddf7f958d081caaccb9dbcc5b1f6e162fe6b4e03b4",
+    "derived": true,
+    "bytes": 147
+  },
+  {
+    "path": "focus-real/source-ordinary.log",
+    "rawSha256": "56cea5016413f10a60295095109a9f64dc125b678f5c5f7b7f531a57167b222b",
+    "publicSha256": "97df49878d344d8d742dd01745fe25a2f468af8f8cfe05ce7cdb40812227ab32",
+    "derived": true,
+    "bytes": 73
+  },
+  {
+    "path": "focus-real/source-continuous.log",
+    "rawSha256": "3687dc4702178216834109b0e3870422a0f330921c8792dcc93a17de3d740267",
+    "publicSha256": "27939fd96f150b9dc18e212bd3550cd992fd4c14b47eedad925ca26d58a60c2e",
+    "derived": true,
+    "bytes": 489
+  },
+  {
+    "path": "focus-real/packed-continuous.log",
+    "rawSha256": "3687dc4702178216834109b0e3870422a0f330921c8792dcc93a17de3d740267",
+    "publicSha256": "27939fd96f150b9dc18e212bd3550cd992fd4c14b47eedad925ca26d58a60c2e",
+    "derived": true,
+    "bytes": 489
+  },
+  {
+    "path": "focus-real/packed-ordinary.log",
+    "rawSha256": "c85915191a96f6a895a5f7c6d7f52d4b2440508b0f69b482013e8844511693aa",
+    "publicSha256": "049e6d247fc24a8f4a20bbd4026867cbef97f454facf2fcc5e134015f4f65bfd",
+    "derived": true,
+    "bytes": 73
+  },
+  {
+    "path": "focus-real/receipt.json",
+    "rawSha256": "94ec25f02d16d3709e2c5c41a6e81cef7dc972ab5a2dc94fa642096380475fe9",
+    "publicSha256": "740e46a67443dfca1d3a3707627859ae99f4393ac0bdfcf0eaa67741996ef7e5",
+    "derived": true,
+    "bytes": 3512
+  },
+  {
+    "path": "focus-real/source-product/index.html",
+    "rawSha256": "79a29fa4c2dabf8bf99348d7ca81ed8eb305db6216b57d44969081d1b39acc53",
+    "publicSha256": "79a29fa4c2dabf8bf99348d7ca81ed8eb305db6216b57d44969081d1b39acc53",
+    "derived": false,
+    "bytes": 2967
+  },
+  {
+    "path": "focus-real/source-product/source.json",
+    "rawSha256": "188cdb0d4bf1088231baaf7d47a2fe410d86f8ab5e475e1b8bfed8f90d990858",
+    "publicSha256": "188cdb0d4bf1088231baaf7d47a2fe410d86f8ab5e475e1b8bfed8f90d990858",
+    "derived": false,
+    "bytes": 45253
+  },
+  {
+    "path": "focus-real/source-product/tokens.css",
+    "rawSha256": "e85225f218301dbe17de811f4b7e5f3028b1fe93acf1edaf07be68e8ba94dfc2",
+    "publicSha256": "e85225f218301dbe17de811f4b7e5f3028b1fe93acf1edaf07be68e8ba94dfc2",
+    "derived": false,
+    "bytes": 52313
+  },
+  {
+    "path": "focus-real/source-product/app.js",
+    "rawSha256": "275aeaa9c863d4b945c0137819fdba4960ec9b7ed0b01477cbfe608c64f1af6e",
+    "publicSha256": "275aeaa9c863d4b945c0137819fdba4960ec9b7ed0b01477cbfe608c64f1af6e",
+    "derived": false,
+    "bytes": 3501626
+  },
+  {
+    "path": "focus-real/packed-product/index.html",
+    "rawSha256": "79a29fa4c2dabf8bf99348d7ca81ed8eb305db6216b57d44969081d1b39acc53",
+    "publicSha256": "79a29fa4c2dabf8bf99348d7ca81ed8eb305db6216b57d44969081d1b39acc53",
+    "derived": false,
+    "bytes": 2967
+  },
+  {
+    "path": "focus-real/packed-product/source.json",
+    "rawSha256": "78d129e90d35f880dc0284445afaa59f50d6f90d1a0ee280f33b6d5c5add7e76",
+    "publicSha256": "78d129e90d35f880dc0284445afaa59f50d6f90d1a0ee280f33b6d5c5add7e76",
+    "derived": false,
+    "bytes": 23428
+  },
+  {
+    "path": "focus-real/packed-product/tokens.css",
+    "rawSha256": "e85225f218301dbe17de811f4b7e5f3028b1fe93acf1edaf07be68e8ba94dfc2",
+    "publicSha256": "e85225f218301dbe17de811f4b7e5f3028b1fe93acf1edaf07be68e8ba94dfc2",
+    "derived": false,
+    "bytes": 52313
+  },
+  {
+    "path": "focus-real/packed-product/app.js",
+    "rawSha256": "741df00746a693679999c10d8c9e6fd79b93998f585e81514a6d6cb0e6726843",
+    "publicSha256": "741df00746a693679999c10d8c9e6fd79b93998f585e81514a6d6cb0e6726843",
+    "derived": false,
+    "bytes": 3512035
+  },
+  {
+    "path": "focus-real/source-ordinary/dark-source-revoked.png",
+    "rawSha256": "c2adf70bb59468c08201db7419e938ce3b256fb6e7ac248054b62c613d125ada",
+    "publicSha256": "c2adf70bb59468c08201db7419e938ce3b256fb6e7ac248054b62c613d125ada",
+    "derived": false,
+    "bytes": 81824
+  },
+  {
+    "path": "focus-real/source-ordinary/dark-wc-pressed.png",
+    "rawSha256": "070e7bc28502acd7af86b0208a0af0a610ec5f9cbdbe310a3ad2d202db7fb7f6",
+    "publicSha256": "070e7bc28502acd7af86b0208a0af0a610ec5f9cbdbe310a3ad2d202db7fb7f6",
+    "derived": false,
+    "bytes": 92127
+  },
+  {
+    "path": "focus-real/source-ordinary/result.json",
+    "rawSha256": "f8a742fad000beed2c04a3991067e5ef9fc21db902dad02e37c9b251180c43c8",
+    "publicSha256": "f8a742fad000beed2c04a3991067e5ef9fc21db902dad02e37c9b251180c43c8",
+    "derived": false,
+    "bytes": 46458
+  },
+  {
+    "path": "focus-real/source-ordinary/dark-vue2-pressed.png",
+    "rawSha256": "7f2f68cbcc935192ba375e0008a142233dff5bf57aa3e681ffb06e217e49a7a6",
+    "publicSha256": "7f2f68cbcc935192ba375e0008a142233dff5bf57aa3e681ffb06e217e49a7a6",
+    "derived": false,
+    "bytes": 92785
+  },
+  {
+    "path": "focus-real/source-ordinary/light-react-pressed.png",
+    "rawSha256": "b4e41d94eae4f31a92097cd457cca5b87acd3ff72f53cabd2740a6b1753924d4",
+    "publicSha256": "b4e41d94eae4f31a92097cd457cca5b87acd3ff72f53cabd2740a6b1753924d4",
+    "derived": false,
+    "bytes": 97691
+  },
+  {
+    "path": "focus-real/source-ordinary/light-vue-pressed.png",
+    "rawSha256": "5d6a5845009fd3c6283d0fd54c8790a68b16486b3820c8a1a35e76447617fd27",
+    "publicSha256": "5d6a5845009fd3c6283d0fd54c8790a68b16486b3820c8a1a35e76447617fd27",
+    "derived": false,
+    "bytes": 103828
+  },
+  {
+    "path": "focus-real/source-ordinary/light-wc-pressed.png",
+    "rawSha256": "b2cc2cd7884438d3c2c4bff07c606ca47e294e4f4611d3d95c2cde03e0396064",
+    "publicSha256": "b2cc2cd7884438d3c2c4bff07c606ca47e294e4f4611d3d95c2cde03e0396064",
+    "derived": false,
+    "bytes": 97128
+  },
+  {
+    "path": "focus-real/source-ordinary/light-four-web.png",
+    "rawSha256": "1d09ac8d3a76fd06ece32f79ad591a04bb0e590830fb68e6ee7b726978d036c5",
+    "publicSha256": "1d09ac8d3a76fd06ece32f79ad591a04bb0e590830fb68e6ee7b726978d036c5",
+    "derived": false,
+    "bytes": 90409
+  },
+  {
+    "path": "focus-real/source-ordinary/dark-four-web.png",
+    "rawSha256": "a748f726a50f2c6ea8eac2069377b4d3680e8e684c22e8062839c963b5b9e276",
+    "publicSha256": "a748f726a50f2c6ea8eac2069377b4d3680e8e684c22e8062839c963b5b9e276",
+    "derived": false,
+    "bytes": 87705
+  },
+  {
+    "path": "focus-real/source-ordinary/dark-react-pressed.png",
+    "rawSha256": "0e353ed8c8b465f99c3bbb39d94445e5c70292db73d3b8f6426bd8b21736edf2",
+    "publicSha256": "0e353ed8c8b465f99c3bbb39d94445e5c70292db73d3b8f6426bd8b21736edf2",
+    "derived": false,
+    "bytes": 92655
+  },
+  {
+    "path": "focus-real/source-ordinary/light-source-revoked.png",
+    "rawSha256": "75a522a8bb35f3aee067ffe7ea16ae2b29549c71cbd0a351339f60b6ac12c08e",
+    "publicSha256": "75a522a8bb35f3aee067ffe7ea16ae2b29549c71cbd0a351339f60b6ac12c08e",
+    "derived": false,
+    "bytes": 84374
+  },
+  {
+    "path": "focus-real/source-ordinary/dark-vue-pressed.png",
+    "rawSha256": "cd923b41a0f5e0c3928cb26c4f1e16ecaf09873efecda81d8dbad1497bcc7bd7",
+    "publicSha256": "cd923b41a0f5e0c3928cb26c4f1e16ecaf09873efecda81d8dbad1497bcc7bd7",
+    "derived": false,
+    "bytes": 96357
+  },
+  {
+    "path": "focus-real/source-ordinary/light-vue2-pressed.png",
+    "rawSha256": "1003dabf64fed55976056da9a919bed374bb04679573c0a32727451b1fb76940",
+    "publicSha256": "1003dabf64fed55976056da9a919bed374bb04679573c0a32727451b1fb76940",
+    "derived": false,
+    "bytes": 97795
+  },
+  {
+    "path": "focus-real/packed-continuous/vue2-outside.png",
+    "rawSha256": "31de736af54d1152a32c7819525b48bb5ef6214ac7bc41a2ba91fa3ecade8e19",
+    "publicSha256": "31de736af54d1152a32c7819525b48bb5ef6214ac7bc41a2ba91fa3ecade8e19",
+    "derived": false,
+    "bytes": 96984
+  },
+  {
+    "path": "focus-real/packed-continuous/react-return.png",
+    "rawSha256": "c3161d80896aac7bad953353cdcb351d08f52b22784133bcf010512e0780b5da",
+    "publicSha256": "c3161d80896aac7bad953353cdcb351d08f52b22784133bcf010512e0780b5da",
+    "derived": false,
+    "bytes": 97272
+  },
+  {
+    "path": "focus-real/packed-continuous/failure-state.json",
+    "rawSha256": "4cab33a3e12e8b66b5761f2a5e38650b5dc68b23fadab1700c04cb824b36df28",
+    "publicSha256": "4cab33a3e12e8b66b5761f2a5e38650b5dc68b23fadab1700c04cb824b36df28",
+    "derived": false,
+    "bytes": 5982962
+  },
+  {
+    "path": "focus-real/packed-continuous/wc-capture-inside-cancelled.png",
+    "rawSha256": "ac6b4f2d03c4cfdc341a657ee98aa9804cf3fe61d07c6716ae471d1506303252",
+    "publicSha256": "ac6b4f2d03c4cfdc341a657ee98aa9804cf3fe61d07c6716ae471d1506303252",
+    "derived": false,
+    "bytes": 90289
+  },
+  {
+    "path": "focus-real/packed-continuous/vue-return.png",
+    "rawSha256": "66d011f61f56b02dde9cd9db2beaa1f04253d0f5fd7305e39a682be80181c408",
+    "publicSha256": "66d011f61f56b02dde9cd9db2beaa1f04253d0f5fd7305e39a682be80181c408",
+    "derived": false,
+    "bytes": 97974
+  },
+  {
+    "path": "focus-real/packed-continuous/result.json",
+    "rawSha256": "a800733d61873eaccf281d707b26d82e4bc0f6908d81a1a302a14e45c341fcbb",
+    "publicSha256": "13e1dc16e90c908c3565317f313a41f814aec14eba828d029cfef006e551c851",
+    "derived": true,
+    "bytes": 42722
+  },
+  {
+    "path": "focus-real/packed-continuous/vue-outside.png",
+    "rawSha256": "1a3970491f330a406314ac4d97612a482c8cedb841b4e8fb5cca0a0eb9a8c415",
+    "publicSha256": "1a3970491f330a406314ac4d97612a482c8cedb841b4e8fb5cca0a0eb9a8c415",
+    "derived": false,
+    "bytes": 96100
+  },
+  {
+    "path": "focus-real/packed-continuous/wc-outside.png",
+    "rawSha256": "a68c756740a91ba8ff5074719f1e288c18b7783a4e59917f596b34e9cc96ec70",
+    "publicSha256": "a68c756740a91ba8ff5074719f1e288c18b7783a4e59917f596b34e9cc96ec70",
+    "derived": false,
+    "bytes": 96286
+  },
+  {
+    "path": "focus-real/packed-continuous/wc-return.png",
+    "rawSha256": "0eaab66f6ef7ebb5d2e3434e77c643ebf7528798f8abc206d767fbcc13ed58c2",
+    "publicSha256": "0eaab66f6ef7ebb5d2e3434e77c643ebf7528798f8abc206d767fbcc13ed58c2",
+    "derived": false,
+    "bytes": 98216
+  },
+  {
+    "path": "focus-real/packed-continuous/wc-released.png",
+    "rawSha256": "5ed881d8f9d65b6d93e530f42767775d25e79c8c191c74a9c091f3299b3360ac",
+    "publicSha256": "5ed881d8f9d65b6d93e530f42767775d25e79c8c191c74a9c091f3299b3360ac",
+    "derived": false,
+    "bytes": 92418
+  },
+  {
+    "path": "focus-real/packed-continuous/react-down.png",
+    "rawSha256": "5fcd16dde4159470da8ef947effc144c3e56173f833947e101a14677f113030a",
+    "publicSha256": "5fcd16dde4159470da8ef947effc144c3e56173f833947e101a14677f113030a",
+    "derived": false,
+    "bytes": 96463
+  },
+  {
+    "path": "focus-real/packed-continuous/continuous-drag.mp4",
+    "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "publicSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "derived": false,
+    "bytes": 0
+  },
+  {
+    "path": "focus-real/packed-continuous/vue-released.png",
+    "rawSha256": "43c7e40b7bd94cfa08dbffac55e6752165f391f4d3dea18f4dfb988ea2013ab2",
+    "publicSha256": "43c7e40b7bd94cfa08dbffac55e6752165f391f4d3dea18f4dfb988ea2013ab2",
+    "derived": false,
+    "bytes": 92593
+  },
+  {
+    "path": "focus-real/packed-continuous/vue2-released.png",
+    "rawSha256": "5349de52326781cae63d262757bfe8b7a420c60973960b0dfcd3450e9f98fa06",
+    "publicSha256": "5349de52326781cae63d262757bfe8b7a420c60973960b0dfcd3450e9f98fa06",
+    "derived": false,
+    "bytes": 92216
+  },
+  {
+    "path": "focus-real/packed-continuous/wc-capture-inside-held.png",
+    "rawSha256": "aa016f09f6605b8b1ae7ac1b2b915af0048a5d9cfd40eca0da24966c7da2dfc4",
+    "publicSha256": "aa016f09f6605b8b1ae7ac1b2b915af0048a5d9cfd40eca0da24966c7da2dfc4",
+    "derived": false,
+    "bytes": 96841
+  },
+  {
+    "path": "focus-real/packed-continuous/react-released.png",
+    "rawSha256": "c50850215bd6b9078698f28b5639bd8ef29b7f5dc9279f88e8c13cb1fff67fe6",
+    "publicSha256": "c50850215bd6b9078698f28b5639bd8ef29b7f5dc9279f88e8c13cb1fff67fe6",
+    "derived": false,
+    "bytes": 92156
+  },
+  {
+    "path": "focus-real/packed-continuous/vue2-return.png",
+    "rawSha256": "780372cce42965b3340aa4abea4eb2394b245abb681e8183526404eb8a4f4cf7",
+    "publicSha256": "780372cce42965b3340aa4abea4eb2394b245abb681e8183526404eb8a4f4cf7",
+    "derived": false,
+    "bytes": 98330
+  },
+  {
+    "path": "focus-real/packed-continuous/vue-down.png",
+    "rawSha256": "bad0c1bcb23d26d5769cbc39555761172a3283c34753e1ffe841888bbbc35ba6",
+    "publicSha256": "bad0c1bcb23d26d5769cbc39555761172a3283c34753e1ffe841888bbbc35ba6",
+    "derived": false,
+    "bytes": 97984
+  },
+  {
+    "path": "focus-real/packed-continuous/wc-down.png",
+    "rawSha256": "2b6e0d6a1bbd72d4877c5a76b46cea94e7ee6301202dfd417379149ab06b88e6",
+    "publicSha256": "2b6e0d6a1bbd72d4877c5a76b46cea94e7ee6301202dfd417379149ab06b88e6",
+    "derived": false,
+    "bytes": 97278
+  },
+  {
+    "path": "focus-real/packed-continuous/wc-capture-outside-cancelled.png",
+    "rawSha256": "3316225fd6fa43920ddcc4913abfa543765a7f45a14c21a126fd5580453d96b6",
+    "publicSha256": "3316225fd6fa43920ddcc4913abfa543765a7f45a14c21a126fd5580453d96b6",
+    "derived": false,
+    "bytes": 90191
+  },
+  {
+    "path": "focus-real/packed-continuous/failure.png",
+    "rawSha256": "d5472fc94bbbbb628f0b92af6ba0b2ba5a1fd08d8ec0deee096b7a93bc220a9a",
+    "publicSha256": "d5472fc94bbbbb628f0b92af6ba0b2ba5a1fd08d8ec0deee096b7a93bc220a9a",
+    "derived": false,
+    "bytes": 92086
+  },
+  {
+    "path": "focus-real/packed-continuous/react-outside.png",
+    "rawSha256": "7e4dfe4d5721ec81d38124952332236c88af9abed568478364b9c73c1d31026a",
+    "publicSha256": "7e4dfe4d5721ec81d38124952332236c88af9abed568478364b9c73c1d31026a",
+    "derived": false,
+    "bytes": 95553
+  },
+  {
+    "path": "focus-real/packed-continuous/wc-capture-outside-held.png",
+    "rawSha256": "d6a610789120138578cb6829d5d09152598832741229676e2869784da5ac5027",
+    "publicSha256": "d6a610789120138578cb6829d5d09152598832741229676e2869784da5ac5027",
+    "derived": false,
+    "bytes": 97160
+  },
+  {
+    "path": "focus-real/packed-continuous/vue2-down.png",
+    "rawSha256": "387df6f709885c5713f96e6ebc7ad79ae0b62081310a55b4cb56cd615c628767",
+    "publicSha256": "387df6f709885c5713f96e6ebc7ad79ae0b62081310a55b4cb56cd615c628767",
+    "derived": false,
+    "bytes": 98281
+  },
+  {
+    "path": "focus-real/source-continuous/vue2-outside.png",
+    "rawSha256": "8fb07ca7278ae605bc505c1ad4acde606e8be6eb426541c6faef6ca196955ca3",
+    "publicSha256": "8fb07ca7278ae605bc505c1ad4acde606e8be6eb426541c6faef6ca196955ca3",
+    "derived": false,
+    "bytes": 97185
+  },
+  {
+    "path": "focus-real/source-continuous/react-return.png",
+    "rawSha256": "c3161d80896aac7bad953353cdcb351d08f52b22784133bcf010512e0780b5da",
+    "publicSha256": "c3161d80896aac7bad953353cdcb351d08f52b22784133bcf010512e0780b5da",
+    "derived": false,
+    "bytes": 97272
+  },
+  {
+    "path": "focus-real/source-continuous/failure-state.json",
+    "rawSha256": "e82be00b3ce47377159604f993eac66886d62c27c1bd7079b8ebf6371a5ac712",
+    "publicSha256": "e82be00b3ce47377159604f993eac66886d62c27c1bd7079b8ebf6371a5ac712",
+    "derived": false,
+    "bytes": 5931158
+  },
+  {
+    "path": "focus-real/source-continuous/wc-capture-inside-cancelled.png",
+    "rawSha256": "93109834aacf4d24049405ab65d9a3e9edbc87ecb87cbca6627553215c77e3d8",
+    "publicSha256": "93109834aacf4d24049405ab65d9a3e9edbc87ecb87cbca6627553215c77e3d8",
+    "derived": false,
+    "bytes": 90281
+  },
+  {
+    "path": "focus-real/source-continuous/vue-return.png",
+    "rawSha256": "66d011f61f56b02dde9cd9db2beaa1f04253d0f5fd7305e39a682be80181c408",
+    "publicSha256": "66d011f61f56b02dde9cd9db2beaa1f04253d0f5fd7305e39a682be80181c408",
+    "derived": false,
+    "bytes": 97974
+  },
+  {
+    "path": "focus-real/source-continuous/result.json",
+    "rawSha256": "0a9f227cda8d31e9b9f1a7af06f5389d4b3c0ebc8cc0cbdd02ea399a666f6f63",
+    "publicSha256": "7de089ca0bcaed44295641b5a6b9eae54b00f93b136f6fe6ea3be3f9e9fd03dd",
+    "derived": true,
+    "bytes": 65378
+  },
+  {
+    "path": "focus-real/source-continuous/vue-outside.png",
+    "rawSha256": "0f4e842ca78e990b46df500844b627f64e191bbac9f6f1475de4ba1be7ac02b9",
+    "publicSha256": "0f4e842ca78e990b46df500844b627f64e191bbac9f6f1475de4ba1be7ac02b9",
+    "derived": false,
+    "bytes": 96297
+  },
+  {
+    "path": "focus-real/source-continuous/wc-outside.png",
+    "rawSha256": "b256f351172c0fbc10d9799706a3d66b950835bc7581aee656f2c25142ebce6b",
+    "publicSha256": "b256f351172c0fbc10d9799706a3d66b950835bc7581aee656f2c25142ebce6b",
+    "derived": false,
+    "bytes": 96479
+  },
+  {
+    "path": "focus-real/source-continuous/wc-return.png",
+    "rawSha256": "0eaab66f6ef7ebb5d2e3434e77c643ebf7528798f8abc206d767fbcc13ed58c2",
+    "publicSha256": "0eaab66f6ef7ebb5d2e3434e77c643ebf7528798f8abc206d767fbcc13ed58c2",
+    "derived": false,
+    "bytes": 98216
+  },
+  {
+    "path": "focus-real/source-continuous/wc-released.png",
+    "rawSha256": "73e1526d01a6efba9e2259e738b3cb64b3caf73121bc64d02c319dc5cd3de9cd",
+    "publicSha256": "73e1526d01a6efba9e2259e738b3cb64b3caf73121bc64d02c319dc5cd3de9cd",
+    "derived": false,
+    "bytes": 92462
+  },
+  {
+    "path": "focus-real/source-continuous/react-down.png",
+    "rawSha256": "6be5055f601caca47172b22891aeb2749458c770cf9b46461b099eacdc606930",
+    "publicSha256": "6be5055f601caca47172b22891aeb2749458c770cf9b46461b099eacdc606930",
+    "derived": false,
+    "bytes": 96768
+  },
+  {
+    "path": "focus-real/source-continuous/continuous-drag.mp4",
+    "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "publicSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "derived": false,
+    "bytes": 0
+  },
+  {
+    "path": "focus-real/source-continuous/vue-released.png",
+    "rawSha256": "103c44e8767d45c7171b0744b27587320b530df9ac813284057e472ba13be5c5",
+    "publicSha256": "103c44e8767d45c7171b0744b27587320b530df9ac813284057e472ba13be5c5",
+    "derived": false,
+    "bytes": 92778
+  },
+  {
+    "path": "focus-real/source-continuous/vue2-released.png",
+    "rawSha256": "cdbc6c0aae1838ad9f4c45289d16593a4b0827eaa645558e9f1bebec752772b9",
+    "publicSha256": "cdbc6c0aae1838ad9f4c45289d16593a4b0827eaa645558e9f1bebec752772b9",
+    "derived": false,
+    "bytes": 92318
+  },
+  {
+    "path": "focus-real/source-continuous/wc-capture-inside-held.png",
+    "rawSha256": "fb1b187b48839411f7dcfb6e08640c2ef715dbf888f4c783e9cafc4a95aa488c",
+    "publicSha256": "fb1b187b48839411f7dcfb6e08640c2ef715dbf888f4c783e9cafc4a95aa488c",
+    "derived": false,
+    "bytes": 96712
+  },
+  {
+    "path": "focus-real/source-continuous/react-released.png",
+    "rawSha256": "a72b6b35397670ab12e4020d8ae19be2be54d38116ce20e68efa08af826a05b6",
+    "publicSha256": "a72b6b35397670ab12e4020d8ae19be2be54d38116ce20e68efa08af826a05b6",
+    "derived": false,
+    "bytes": 91952
+  },
+  {
+    "path": "focus-real/source-continuous/vue2-return.png",
+    "rawSha256": "6081ce7d37fafe085b60d7bd37b8ed9f934dcd7278b7d4946c2070f521eecf35",
+    "publicSha256": "6081ce7d37fafe085b60d7bd37b8ed9f934dcd7278b7d4946c2070f521eecf35",
+    "derived": false,
+    "bytes": 98764
+  },
+  {
+    "path": "focus-real/source-continuous/vue-down.png",
+    "rawSha256": "e1cb86b2ec0abe6cade7410cd830bd4f29d2e77a70131a801491e55f4f3b23a5",
+    "publicSha256": "e1cb86b2ec0abe6cade7410cd830bd4f29d2e77a70131a801491e55f4f3b23a5",
+    "derived": false,
+    "bytes": 97869
+  },
+  {
+    "path": "focus-real/source-continuous/wc-down.png",
+    "rawSha256": "2b6e0d6a1bbd72d4877c5a76b46cea94e7ee6301202dfd417379149ab06b88e6",
+    "publicSha256": "2b6e0d6a1bbd72d4877c5a76b46cea94e7ee6301202dfd417379149ab06b88e6",
+    "derived": false,
+    "bytes": 97278
+  },
+  {
+    "path": "focus-real/source-continuous/wc-capture-outside-cancelled.png",
+    "rawSha256": "d93070fdfee068826e36ccfa863a66bc9d90234e413fde27b3b20ba8454cc736",
+    "publicSha256": "d93070fdfee068826e36ccfa863a66bc9d90234e413fde27b3b20ba8454cc736",
+    "derived": false,
+    "bytes": 90319
+  },
+  {
+    "path": "focus-real/source-continuous/failure.png",
+    "rawSha256": "f2f093fe2cceb6f2bfba1d9f7b2604a8318b42d8939863153d0803e0b8137354",
+    "publicSha256": "f2f093fe2cceb6f2bfba1d9f7b2604a8318b42d8939863153d0803e0b8137354",
+    "derived": false,
+    "bytes": 92199
+  },
+  {
+    "path": "focus-real/source-continuous/react-outside.png",
+    "rawSha256": "9313548d16541a6f37f8534ad8ec66992d5ee7472b7d89c2172211ba1f78cb1c",
+    "publicSha256": "9313548d16541a6f37f8534ad8ec66992d5ee7472b7d89c2172211ba1f78cb1c",
+    "derived": false,
+    "bytes": 95592
+  },
+  {
+    "path": "focus-real/source-continuous/wc-capture-outside-held.png",
+    "rawSha256": "4ef6af37668dce0f893c705a193446776cfd51797009c4d1bca8d3e9a4d5cf89",
+    "publicSha256": "4ef6af37668dce0f893c705a193446776cfd51797009c4d1bca8d3e9a4d5cf89",
+    "derived": false,
+    "bytes": 96976
+  },
+  {
+    "path": "focus-real/source-continuous/vue2-down.png",
+    "rawSha256": "eff2bde0fd3b56c843498a32a9c6fc483dea924bc46d1d65e096366a807f741a",
+    "publicSha256": "eff2bde0fd3b56c843498a32a9c6fc483dea924bc46d1d65e096366a807f741a",
+    "derived": false,
+    "bytes": 98434
+  },
+  {
+    "path": "focus-real/packed-ordinary/dark-source-revoked.png",
+    "rawSha256": "c2adf70bb59468c08201db7419e938ce3b256fb6e7ac248054b62c613d125ada",
+    "publicSha256": "c2adf70bb59468c08201db7419e938ce3b256fb6e7ac248054b62c613d125ada",
+    "derived": false,
+    "bytes": 81824
+  },
+  {
+    "path": "focus-real/packed-ordinary/dark-wc-pressed.png",
+    "rawSha256": "070e7bc28502acd7af86b0208a0af0a610ec5f9cbdbe310a3ad2d202db7fb7f6",
+    "publicSha256": "070e7bc28502acd7af86b0208a0af0a610ec5f9cbdbe310a3ad2d202db7fb7f6",
+    "derived": false,
+    "bytes": 92127
+  },
+  {
+    "path": "focus-real/packed-ordinary/result.json",
+    "rawSha256": "a11403abb82c14bcbe9ecc68958ce6962787175f54b49bf8fe05b32653848c78",
+    "publicSha256": "a11403abb82c14bcbe9ecc68958ce6962787175f54b49bf8fe05b32653848c78",
+    "derived": false,
+    "bytes": 24632
+  },
+  {
+    "path": "focus-real/packed-ordinary/dark-vue2-pressed.png",
+    "rawSha256": "6a5190acd903f928d270a0d89fab9446685bf13f26a998dccd92b2079d466882",
+    "publicSha256": "6a5190acd903f928d270a0d89fab9446685bf13f26a998dccd92b2079d466882",
+    "derived": false,
+    "bytes": 92807
+  },
+  {
+    "path": "focus-real/packed-ordinary/light-react-pressed.png",
+    "rawSha256": "6451a3069f3e50cba736c15e701ccc89b676af745e70b916dfb44dbdbf25a661",
+    "publicSha256": "6451a3069f3e50cba736c15e701ccc89b676af745e70b916dfb44dbdbf25a661",
+    "derived": false,
+    "bytes": 97687
+  },
+  {
+    "path": "focus-real/packed-ordinary/light-vue-pressed.png",
+    "rawSha256": "ad58d63fb740414f0472ad024ac0a139bd76e6c3fe4645722675457719ebe388",
+    "publicSha256": "ad58d63fb740414f0472ad024ac0a139bd76e6c3fe4645722675457719ebe388",
+    "derived": false,
+    "bytes": 103861
+  },
+  {
+    "path": "focus-real/packed-ordinary/light-wc-pressed.png",
+    "rawSha256": "4c278b80e797e1aba5e6f3ef7febcf1c2dbe2708b655bdc6a18a1a9083a50c48",
+    "publicSha256": "4c278b80e797e1aba5e6f3ef7febcf1c2dbe2708b655bdc6a18a1a9083a50c48",
+    "derived": false,
+    "bytes": 97145
+  },
+  {
+    "path": "focus-real/packed-ordinary/light-four-web.png",
+    "rawSha256": "ca764f4525c6beb0e576294e8fc762f2597f412055772f77610e134d06dfd94f",
+    "publicSha256": "ca764f4525c6beb0e576294e8fc762f2597f412055772f77610e134d06dfd94f",
+    "derived": false,
+    "bytes": 90521
+  },
+  {
+    "path": "focus-real/packed-ordinary/dark-four-web.png",
+    "rawSha256": "a748f726a50f2c6ea8eac2069377b4d3680e8e684c22e8062839c963b5b9e276",
+    "publicSha256": "a748f726a50f2c6ea8eac2069377b4d3680e8e684c22e8062839c963b5b9e276",
+    "derived": false,
+    "bytes": 87705
+  },
+  {
+    "path": "focus-real/packed-ordinary/dark-react-pressed.png",
+    "rawSha256": "52e0ebd3de92328edbac43be7829ca95af14bb316f57b0a1c4fc6336a7018ea2",
+    "publicSha256": "52e0ebd3de92328edbac43be7829ca95af14bb316f57b0a1c4fc6336a7018ea2",
+    "derived": false,
+    "bytes": 92652
+  },
+  {
+    "path": "focus-real/packed-ordinary/light-source-revoked.png",
+    "rawSha256": "b10f9ea0facfdf21d418185ef4521696b787dfea69cf1bd03b6f28cb4e4fd49e",
+    "publicSha256": "b10f9ea0facfdf21d418185ef4521696b787dfea69cf1bd03b6f28cb4e4fd49e",
+    "derived": false,
+    "bytes": 84453
+  },
+  {
+    "path": "focus-real/packed-ordinary/dark-vue-pressed.png",
+    "rawSha256": "34ce33208516375bba6a94f725ffeb59ea79dbfdea5b87d8c96922cbcea962f1",
+    "publicSha256": "34ce33208516375bba6a94f725ffeb59ea79dbfdea5b87d8c96922cbcea962f1",
+    "derived": false,
+    "bytes": 95976
+  },
+  {
+    "path": "focus-real/packed-ordinary/light-vue2-pressed.png",
+    "rawSha256": "aafb37131a5dafd64156bbb6429303644f8ac0e172ab2dd5786ffd896c2b3f5a",
+    "publicSha256": "aafb37131a5dafd64156bbb6429303644f8ac0e172ab2dd5786ffd896c2b3f5a",
+    "derived": false,
+    "bytes": 97813
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00046.jpg",
+    "rawSha256": "e9960d6dc03b61da276486ca5643c132ae11448f10c5069d2221583d8c16c5a3",
+    "publicSha256": "e9960d6dc03b61da276486ca5643c132ae11448f10c5069d2221583d8c16c5a3",
+    "derived": false,
+    "bytes": 89257
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00052.jpg",
+    "rawSha256": "cc1bd5e6d4619829caa350056bdd346f977a1b160fee492a8b72788d644a3b37",
+    "publicSha256": "cc1bd5e6d4619829caa350056bdd346f977a1b160fee492a8b72788d644a3b37",
+    "derived": false,
+    "bytes": 88671
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00053.jpg",
+    "rawSha256": "1c69efeabc5ab84e7b824d018ffd98c7f6d379966f8234da922491122e2235ca",
+    "publicSha256": "1c69efeabc5ab84e7b824d018ffd98c7f6d379966f8234da922491122e2235ca",
+    "derived": false,
+    "bytes": 88878
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00047.jpg",
+    "rawSha256": "83670a9b96cccab87de5baaa11149b3953552749df945f8604f7ce68356a5f3a",
+    "publicSha256": "83670a9b96cccab87de5baaa11149b3953552749df945f8604f7ce68356a5f3a",
+    "derived": false,
+    "bytes": 89244
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00051.jpg",
+    "rawSha256": "521f7f04dc1d426fd50620c08a0bb98073acfbbb99ddb92b90b8f32fab8cb581",
+    "publicSha256": "521f7f04dc1d426fd50620c08a0bb98073acfbbb99ddb92b90b8f32fab8cb581",
+    "derived": false,
+    "bytes": 88680
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00045.jpg",
+    "rawSha256": "1857a8b7877b9e0f85baa5bd7e572627087cb6ba29665f93004b787d581d4471",
+    "publicSha256": "1857a8b7877b9e0f85baa5bd7e572627087cb6ba29665f93004b787d581d4471",
+    "derived": false,
+    "bytes": 89238
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00044.jpg",
+    "rawSha256": "b56ebc3271b341e56f41fdc13544f3908940c8f216eeb19e83df7ad8a078e61f",
+    "publicSha256": "b56ebc3271b341e56f41fdc13544f3908940c8f216eeb19e83df7ad8a078e61f",
+    "derived": false,
+    "bytes": 89263
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00050.jpg",
+    "rawSha256": "edffedd94de04e8c5ba6523db02014632901194e704ba8e7dea7a98045baa6ae",
+    "publicSha256": "edffedd94de04e8c5ba6523db02014632901194e704ba8e7dea7a98045baa6ae",
+    "derived": false,
+    "bytes": 88670
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00054.jpg",
+    "rawSha256": "664d879ee91e52e3e41008edf5376e778ed29a3e118872ac3d2e2839df5189f5",
+    "publicSha256": "664d879ee91e52e3e41008edf5376e778ed29a3e118872ac3d2e2839df5189f5",
+    "derived": false,
+    "bytes": 88899
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00040.jpg",
+    "rawSha256": "30865b10372c11e2f7b69b31f73a1805d996d93a1441e42623c5cbaf4cac1d39",
+    "publicSha256": "30865b10372c11e2f7b69b31f73a1805d996d93a1441e42623c5cbaf4cac1d39",
+    "derived": false,
+    "bytes": 88889
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00041.jpg",
+    "rawSha256": "33c1196e096cec410b464b1ddfd472660c08a4383150395f5051c6cf3e968109",
+    "publicSha256": "33c1196e096cec410b464b1ddfd472660c08a4383150395f5051c6cf3e968109",
+    "derived": false,
+    "bytes": 89204
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00055.jpg",
+    "rawSha256": "aa78a40372248f6c4f8e11ca5efae7fa5d2b737351d803be2a85e8641f6401f3",
+    "publicSha256": "aa78a40372248f6c4f8e11ca5efae7fa5d2b737351d803be2a85e8641f6401f3",
+    "derived": false,
+    "bytes": 88664
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00043.jpg",
+    "rawSha256": "217661c221c609d60d7805773075dc2a1607780a1f3801d1c5f36025f3f0ca4b",
+    "publicSha256": "217661c221c609d60d7805773075dc2a1607780a1f3801d1c5f36025f3f0ca4b",
+    "derived": false,
+    "bytes": 89255
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00057.jpg",
+    "rawSha256": "71b8185ff721553c1ba706730596e8a634decd497108479fb3f6c4fdd00262d2",
+    "publicSha256": "71b8185ff721553c1ba706730596e8a634decd497108479fb3f6c4fdd00262d2",
+    "derived": false,
+    "bytes": 89119
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00056.jpg",
+    "rawSha256": "5f13132e599f0a3b9b7d171576699f128d6c5e5daacc817e0b4094f98e29e181",
+    "publicSha256": "5f13132e599f0a3b9b7d171576699f128d6c5e5daacc817e0b4094f98e29e181",
+    "derived": false,
+    "bytes": 88672
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00042.jpg",
+    "rawSha256": "77846855e576920eb3641dcd8a6e10d19b9842e5880f51c1ab89a6eac518cc79",
+    "publicSha256": "77846855e576920eb3641dcd8a6e10d19b9842e5880f51c1ab89a6eac518cc79",
+    "derived": false,
+    "bytes": 89213
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00025.jpg",
+    "rawSha256": "d13a23d4b7d6347630e238c9264412c27a11c40fa14c57ce1565487c0751f75f",
+    "publicSha256": "d13a23d4b7d6347630e238c9264412c27a11c40fa14c57ce1565487c0751f75f",
+    "derived": false,
+    "bytes": 89230
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00031.jpg",
+    "rawSha256": "965be84ad7a699808afaf41307970cc45190aa801adb3f27579150666ba55c2d",
+    "publicSha256": "965be84ad7a699808afaf41307970cc45190aa801adb3f27579150666ba55c2d",
+    "derived": false,
+    "bytes": 89274
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00019.jpg",
+    "rawSha256": "26c4bab3053e423b055b548993652e6d1fa90a4c745c7da2f6a6e367a106c19c",
+    "publicSha256": "26c4bab3053e423b055b548993652e6d1fa90a4c745c7da2f6a6e367a106c19c",
+    "derived": false,
+    "bytes": 89332
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00018.jpg",
+    "rawSha256": "e5d2ae99e8299dda8dc1387111a5934e348c37fea9683f0780b23287a9446037",
+    "publicSha256": "e5d2ae99e8299dda8dc1387111a5934e348c37fea9683f0780b23287a9446037",
+    "derived": false,
+    "bytes": 89299
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00030.jpg",
+    "rawSha256": "fea3de1c7b9f99262e1206d69e44665e5e1d41d46beaf53c296f85384581ae9e",
+    "publicSha256": "fea3de1c7b9f99262e1206d69e44665e5e1d41d46beaf53c296f85384581ae9e",
+    "derived": false,
+    "bytes": 89270
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00024.jpg",
+    "rawSha256": "895a1269f8777646f6ccd3df95006b1829f0107bab5c3cd8df52077558cd0e61",
+    "publicSha256": "895a1269f8777646f6ccd3df95006b1829f0107bab5c3cd8df52077558cd0e61",
+    "derived": false,
+    "bytes": 89223
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00032.jpg",
+    "rawSha256": "db8afd14d1158e3ee63e2bca580a3096b3816dad89f8dd87b32b6995de864544",
+    "publicSha256": "db8afd14d1158e3ee63e2bca580a3096b3816dad89f8dd87b32b6995de864544",
+    "derived": false,
+    "bytes": 74451
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00026.jpg",
+    "rawSha256": "86fe94ebb5a29754dbd07f4322681996f7f393b027e990c0784aa2501f0e772b",
+    "publicSha256": "86fe94ebb5a29754dbd07f4322681996f7f393b027e990c0784aa2501f0e772b",
+    "derived": false,
+    "bytes": 89259
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00027.jpg",
+    "rawSha256": "c2092c45fd187ec00d3f9eac11485d2788d5dde3458ff7f94a3f98268159d1b3",
+    "publicSha256": "c2092c45fd187ec00d3f9eac11485d2788d5dde3458ff7f94a3f98268159d1b3",
+    "derived": false,
+    "bytes": 89242
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00033.jpg",
+    "rawSha256": "834f0fdd89616495e10b5b40f289e33f169a6c1d5bf103a1eca06ccd4a165d40",
+    "publicSha256": "834f0fdd89616495e10b5b40f289e33f169a6c1d5bf103a1eca06ccd4a165d40",
+    "derived": false,
+    "bytes": 89428
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00037.jpg",
+    "rawSha256": "5e8fdb4292bcecfd899147235fb70a7185903be30ad086e38bcbf4016d9b11d5",
+    "publicSha256": "5e8fdb4292bcecfd899147235fb70a7185903be30ad086e38bcbf4016d9b11d5",
+    "derived": false,
+    "bytes": 90200
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00023.jpg",
+    "rawSha256": "f0b91886f7bc2f741d1a352c334460bbc5bd19e718fd4aaf76cecbd4f95bd70a",
+    "publicSha256": "f0b91886f7bc2f741d1a352c334460bbc5bd19e718fd4aaf76cecbd4f95bd70a",
+    "derived": false,
+    "bytes": 89247
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00022.jpg",
+    "rawSha256": "a131c090e69dab1133db14367d961e1c99b06a472590d204791a1fee025bb66b",
+    "publicSha256": "a131c090e69dab1133db14367d961e1c99b06a472590d204791a1fee025bb66b",
+    "derived": false,
+    "bytes": 89236
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00036.jpg",
+    "rawSha256": "baeee87464c9e23524586a9059b9055b710c65b55073a790b0b0a3c05315e9e6",
+    "publicSha256": "baeee87464c9e23524586a9059b9055b710c65b55073a790b0b0a3c05315e9e6",
+    "derived": false,
+    "bytes": 89438
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00008.jpg",
+    "rawSha256": "0068319f946f25dea994175cf52c38d718e6e9cec4520e5f18f8d4de3b358916",
+    "publicSha256": "0068319f946f25dea994175cf52c38d718e6e9cec4520e5f18f8d4de3b358916",
+    "derived": false,
+    "bytes": 89034
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00020.jpg",
+    "rawSha256": "941fd4e7ec4d776e7cca7d6173def519b2ca41627141cec515c20bff75147c36",
+    "publicSha256": "941fd4e7ec4d776e7cca7d6173def519b2ca41627141cec515c20bff75147c36",
+    "derived": false,
+    "bytes": 89352
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00034.jpg",
+    "rawSha256": "c50d122f6dfe01e594d86b1874aacc9eb5d09341de7271fe7a0aaefb201b6cb1",
+    "publicSha256": "c50d122f6dfe01e594d86b1874aacc9eb5d09341de7271fe7a0aaefb201b6cb1",
+    "derived": false,
+    "bytes": 89420
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00035.jpg",
+    "rawSha256": "75d71d2391c45a33e41b926f541c6d33f262c73daf0399ff11360e652056242f",
+    "publicSha256": "75d71d2391c45a33e41b926f541c6d33f262c73daf0399ff11360e652056242f",
+    "derived": false,
+    "bytes": 89429
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00021.jpg",
+    "rawSha256": "f3c6192a2d6bcf3b07ce1400198dffab0f83d13c75e320a148adc73ea814ab1f",
+    "publicSha256": "f3c6192a2d6bcf3b07ce1400198dffab0f83d13c75e320a148adc73ea814ab1f",
+    "derived": false,
+    "bytes": 89272
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00009.jpg",
+    "rawSha256": "e06dc598dad1cd2e409bb6f915aee82af5892916609aea98274a536647dddd5e",
+    "publicSha256": "e06dc598dad1cd2e409bb6f915aee82af5892916609aea98274a536647dddd5e",
+    "derived": false,
+    "bytes": 89048
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00004.jpg",
+    "rawSha256": "586ce7feb5df3c0e8bf4a1f7f80fa9a3b0b5bca5772f9b8026234996502e8ce6",
+    "publicSha256": "586ce7feb5df3c0e8bf4a1f7f80fa9a3b0b5bca5772f9b8026234996502e8ce6",
+    "derived": false,
+    "bytes": 89260
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00010.jpg",
+    "rawSha256": "3a8c0649aaa72a71e149b94c4eecceb63a496e8dc9d36318203688cad096b61e",
+    "publicSha256": "3a8c0649aaa72a71e149b94c4eecceb63a496e8dc9d36318203688cad096b61e",
+    "derived": false,
+    "bytes": 89060
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00038.jpg",
+    "rawSha256": "37eb524adf71b98b2d20caa1ed876fa3a979b22dfdfd58d7da386453752883ca",
+    "publicSha256": "37eb524adf71b98b2d20caa1ed876fa3a979b22dfdfd58d7da386453752883ca",
+    "derived": false,
+    "bytes": 88970
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00039.jpg",
+    "rawSha256": "11be47bfd780c6c85aa2dfca81259028c490a16bd618c0469f2b1f5c05de7166",
+    "publicSha256": "11be47bfd780c6c85aa2dfca81259028c490a16bd618c0469f2b1f5c05de7166",
+    "derived": false,
+    "bytes": 88906
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00011.jpg",
+    "rawSha256": "95f6dc7beefd8e3dc76692ca3f51663f3edec8f89fae7c27f91c2870adfc30ef",
+    "publicSha256": "95f6dc7beefd8e3dc76692ca3f51663f3edec8f89fae7c27f91c2870adfc30ef",
+    "derived": false,
+    "bytes": 89063
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00005.jpg",
+    "rawSha256": "5c6a6eff248cc453ce71639cab8f8ebf802ddbc3fc399b91840c1bcd63922bcf",
+    "publicSha256": "5c6a6eff248cc453ce71639cab8f8ebf802ddbc3fc399b91840c1bcd63922bcf",
+    "derived": false,
+    "bytes": 90507
+  },
+  {
+    "path": "focus-real/source-continuous/recording/frames.json",
+    "rawSha256": "5cb1325d193cc3ac8fe199de4ab941b7e2e8031375e05dc9a32a7a6d2629df87",
+    "publicSha256": "5cb1325d193cc3ac8fe199de4ab941b7e2e8031375e05dc9a32a7a6d2629df87",
+    "derived": false,
+    "bytes": 3585
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00013.jpg",
+    "rawSha256": "5801bb49cc594941363a3a2909481250ccba725d1f4635bf2589955b608d80c2",
+    "publicSha256": "5801bb49cc594941363a3a2909481250ccba725d1f4635bf2589955b608d80c2",
+    "derived": false,
+    "bytes": 89293
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00007.jpg",
+    "rawSha256": "361849fa8269713b18db24844eef9b7813c9b68545bfbb04474e49be3046aef2",
+    "publicSha256": "361849fa8269713b18db24844eef9b7813c9b68545bfbb04474e49be3046aef2",
+    "derived": false,
+    "bytes": 89264
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00006.jpg",
+    "rawSha256": "babb161efafb768fb8569a1faf5ed82e6472a0c01e9c0c438e2ea140562ebdcf",
+    "publicSha256": "babb161efafb768fb8569a1faf5ed82e6472a0c01e9c0c438e2ea140562ebdcf",
+    "derived": false,
+    "bytes": 89277
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00012.jpg",
+    "rawSha256": "72342f3c115ec27c4b8ac9fdd934b4fdb7e495ef8db4637c93c825d59e64816f",
+    "publicSha256": "72342f3c115ec27c4b8ac9fdd934b4fdb7e495ef8db4637c93c825d59e64816f",
+    "derived": false,
+    "bytes": 89043
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00016.jpg",
+    "rawSha256": "ed8d899434dd9f839df96cda298ff5d06a8a25733b0445ff86a2fe6dabfa1b7d",
+    "publicSha256": "ed8d899434dd9f839df96cda298ff5d06a8a25733b0445ff86a2fe6dabfa1b7d",
+    "derived": false,
+    "bytes": 89265
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00002.jpg",
+    "rawSha256": "fa074d98de47e1a7e17968602761a17641a01aae274fb6bb7188e71894b99033",
+    "publicSha256": "fa074d98de47e1a7e17968602761a17641a01aae274fb6bb7188e71894b99033",
+    "derived": false,
+    "bytes": 88941
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00003.jpg",
+    "rawSha256": "49af1caec6e5adf3d2eeaa1022de03e4bb9b88432b34207a24656f478b73a621",
+    "publicSha256": "49af1caec6e5adf3d2eeaa1022de03e4bb9b88432b34207a24656f478b73a621",
+    "derived": false,
+    "bytes": 89263
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00017.jpg",
+    "rawSha256": "ff9239aaf2bd2218cd1e64273aa57c8a5af67a846f89d612911ead095424593a",
+    "publicSha256": "ff9239aaf2bd2218cd1e64273aa57c8a5af67a846f89d612911ead095424593a",
+    "derived": false,
+    "bytes": 89302
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00029.jpg",
+    "rawSha256": "6c2594d9b305f820308655fd4c1a1725e8f60884b1eb2b814da01f5ac35c7fa4",
+    "publicSha256": "6c2594d9b305f820308655fd4c1a1725e8f60884b1eb2b814da01f5ac35c7fa4",
+    "derived": false,
+    "bytes": 89245
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00001.jpg",
+    "rawSha256": "a9d2458b46c20d093b52db70e393a2cc23989c8711c6a7a767046159aaebae09",
+    "publicSha256": "a9d2458b46c20d093b52db70e393a2cc23989c8711c6a7a767046159aaebae09",
+    "derived": false,
+    "bytes": 88978
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00015.jpg",
+    "rawSha256": "e09dc12ca7fe99fa6eabc03584ca74e747936d89e96228de8527b3d69c6b77e5",
+    "publicSha256": "e09dc12ca7fe99fa6eabc03584ca74e747936d89e96228de8527b3d69c6b77e5",
+    "derived": false,
+    "bytes": 89276
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00014.jpg",
+    "rawSha256": "77b55988a0a09ce681c5c625b84ab99c9363ccb7e49ad1bc52f73c0543aca38c",
+    "publicSha256": "77b55988a0a09ce681c5c625b84ab99c9363ccb7e49ad1bc52f73c0543aca38c",
+    "derived": false,
+    "bytes": 89271
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00000.jpg",
+    "rawSha256": "03567373b8b3bdc4347f28655fe92badef06479f6a3c6d989f5212da2c69d9ff",
+    "publicSha256": "03567373b8b3bdc4347f28655fe92badef06479f6a3c6d989f5212da2c69d9ff",
+    "derived": false,
+    "bytes": 88958
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00028.jpg",
+    "rawSha256": "e3e93084b4bcb97f4726b50174152ec526d20eeba87ee0ab7e5a4480ecbb0bf0",
+    "publicSha256": "e3e93084b4bcb97f4726b50174152ec526d20eeba87ee0ab7e5a4480ecbb0bf0",
+    "derived": false,
+    "bytes": 89227
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00058.jpg",
+    "rawSha256": "6a430e52f31bb74bed1b0cad88cd09b134ba4880c1f6306d4b4adf447ffedf7a",
+    "publicSha256": "6a430e52f31bb74bed1b0cad88cd09b134ba4880c1f6306d4b4adf447ffedf7a",
+    "derived": false,
+    "bytes": 90373
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00049.jpg",
+    "rawSha256": "7159c7db13f9aadb0e97c36bc64f8d96200457b3426122a31a3c71ef533594ac",
+    "publicSha256": "7159c7db13f9aadb0e97c36bc64f8d96200457b3426122a31a3c71ef533594ac",
+    "derived": false,
+    "bytes": 88678
+  },
+  {
+    "path": "focus-real/source-continuous/recording/00048.jpg",
+    "rawSha256": "b3376269b0093c3cedb964b0db8a04406d9db99e53c1b4d23526d3b438fe1786",
+    "publicSha256": "b3376269b0093c3cedb964b0db8a04406d9db99e53c1b4d23526d3b438fe1786",
+    "derived": false,
+    "bytes": 88684
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00046.jpg",
+    "rawSha256": "c7bd8ea8cf590f5ae76d6926794cb7ad0b63f1d0e22680d56b4ec9f99e1610c2",
+    "publicSha256": "c7bd8ea8cf590f5ae76d6926794cb7ad0b63f1d0e22680d56b4ec9f99e1610c2",
+    "derived": false,
+    "bytes": 88650
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00052.jpg",
+    "rawSha256": "ebf5b288708cf7247080759a3869f3d0392c98bd09f0db11b39303d631ada952",
+    "publicSha256": "ebf5b288708cf7247080759a3869f3d0392c98bd09f0db11b39303d631ada952",
+    "derived": false,
+    "bytes": 88881
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00053.jpg",
+    "rawSha256": "c03aef74c84c15c0531c2456a90654e9b6b299bfa6411e633a067fc044359b38",
+    "publicSha256": "c03aef74c84c15c0531c2456a90654e9b6b299bfa6411e633a067fc044359b38",
+    "derived": false,
+    "bytes": 88883
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00047.jpg",
+    "rawSha256": "341073de57d9cbcbcbcb0f54b8767b18eda40ff274abec347a7f78e0e6103d00",
+    "publicSha256": "341073de57d9cbcbcbcb0f54b8767b18eda40ff274abec347a7f78e0e6103d00",
+    "derived": false,
+    "bytes": 88688
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00051.jpg",
+    "rawSha256": "5e1b82f8415269ad9e67e3fd72c12e4c30eaecb9b6a315f03e8d2b3ec47d29ae",
+    "publicSha256": "5e1b82f8415269ad9e67e3fd72c12e4c30eaecb9b6a315f03e8d2b3ec47d29ae",
+    "derived": false,
+    "bytes": 88668
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00045.jpg",
+    "rawSha256": "6460fc1aac631be9c10ff7631d548194e741234acb1211929c4ddd95c39b176a",
+    "publicSha256": "6460fc1aac631be9c10ff7631d548194e741234acb1211929c4ddd95c39b176a",
+    "derived": false,
+    "bytes": 88638
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00044.jpg",
+    "rawSha256": "74d5d43b832eff338cda93f57cef8bed1a41a0e7f0640384f60d757519436d74",
+    "publicSha256": "74d5d43b832eff338cda93f57cef8bed1a41a0e7f0640384f60d757519436d74",
+    "derived": false,
+    "bytes": 89221
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00050.jpg",
+    "rawSha256": "f29b42ce64dc3c73db69ca15e093a1abe64f51645fc7d3ce88cf6f12958bd13f",
+    "publicSha256": "f29b42ce64dc3c73db69ca15e093a1abe64f51645fc7d3ce88cf6f12958bd13f",
+    "derived": false,
+    "bytes": 88667
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00054.jpg",
+    "rawSha256": "664d879ee91e52e3e41008edf5376e778ed29a3e118872ac3d2e2839df5189f5",
+    "publicSha256": "664d879ee91e52e3e41008edf5376e778ed29a3e118872ac3d2e2839df5189f5",
+    "derived": false,
+    "bytes": 88899
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00040.jpg",
+    "rawSha256": "a558e6d459524cdd948c91615cf924f29ff1d7225b542c5947b739741ccf6a93",
+    "publicSha256": "a558e6d459524cdd948c91615cf924f29ff1d7225b542c5947b739741ccf6a93",
+    "derived": false,
+    "bytes": 89244
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00041.jpg",
+    "rawSha256": "da1efd0e428597e9ced4a83cadcd99e7588e6192763263ba56a8ff70c0a15a93",
+    "publicSha256": "da1efd0e428597e9ced4a83cadcd99e7588e6192763263ba56a8ff70c0a15a93",
+    "derived": false,
+    "bytes": 89250
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00055.jpg",
+    "rawSha256": "aa78a40372248f6c4f8e11ca5efae7fa5d2b737351d803be2a85e8641f6401f3",
+    "publicSha256": "aa78a40372248f6c4f8e11ca5efae7fa5d2b737351d803be2a85e8641f6401f3",
+    "derived": false,
+    "bytes": 88664
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00043.jpg",
+    "rawSha256": "2a57272c958bf36c13ecf662e5a62aaf906c067251cbd84f3e5b06dcf85f5dbf",
+    "publicSha256": "2a57272c958bf36c13ecf662e5a62aaf906c067251cbd84f3e5b06dcf85f5dbf",
+    "derived": false,
+    "bytes": 89228
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00057.jpg",
+    "rawSha256": "71b8185ff721553c1ba706730596e8a634decd497108479fb3f6c4fdd00262d2",
+    "publicSha256": "71b8185ff721553c1ba706730596e8a634decd497108479fb3f6c4fdd00262d2",
+    "derived": false,
+    "bytes": 89119
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00056.jpg",
+    "rawSha256": "5f13132e599f0a3b9b7d171576699f128d6c5e5daacc817e0b4094f98e29e181",
+    "publicSha256": "5f13132e599f0a3b9b7d171576699f128d6c5e5daacc817e0b4094f98e29e181",
+    "derived": false,
+    "bytes": 88672
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00042.jpg",
+    "rawSha256": "5fead19e0d2165ea9c0a211cffbe3cede7d8db032f8cf0747c98e33c2570daae",
+    "publicSha256": "5fead19e0d2165ea9c0a211cffbe3cede7d8db032f8cf0747c98e33c2570daae",
+    "derived": false,
+    "bytes": 89228
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00025.jpg",
+    "rawSha256": "e09a4f2faf62a6df11199c3b0dda6e0623f7da85798f970bf23801fb4a870a73",
+    "publicSha256": "e09a4f2faf62a6df11199c3b0dda6e0623f7da85798f970bf23801fb4a870a73",
+    "derived": false,
+    "bytes": 89235
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00031.jpg",
+    "rawSha256": "834f0fdd89616495e10b5b40f289e33f169a6c1d5bf103a1eca06ccd4a165d40",
+    "publicSha256": "834f0fdd89616495e10b5b40f289e33f169a6c1d5bf103a1eca06ccd4a165d40",
+    "derived": false,
+    "bytes": 89428
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00019.jpg",
+    "rawSha256": "26c4bab3053e423b055b548993652e6d1fa90a4c745c7da2f6a6e367a106c19c",
+    "publicSha256": "26c4bab3053e423b055b548993652e6d1fa90a4c745c7da2f6a6e367a106c19c",
+    "derived": false,
+    "bytes": 89332
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00018.jpg",
+    "rawSha256": "e5d2ae99e8299dda8dc1387111a5934e348c37fea9683f0780b23287a9446037",
+    "publicSha256": "e5d2ae99e8299dda8dc1387111a5934e348c37fea9683f0780b23287a9446037",
+    "derived": false,
+    "bytes": 89299
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00030.jpg",
+    "rawSha256": "965be84ad7a699808afaf41307970cc45190aa801adb3f27579150666ba55c2d",
+    "publicSha256": "965be84ad7a699808afaf41307970cc45190aa801adb3f27579150666ba55c2d",
+    "derived": false,
+    "bytes": 89274
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00024.jpg",
+    "rawSha256": "895a1269f8777646f6ccd3df95006b1829f0107bab5c3cd8df52077558cd0e61",
+    "publicSha256": "895a1269f8777646f6ccd3df95006b1829f0107bab5c3cd8df52077558cd0e61",
+    "derived": false,
+    "bytes": 89223
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00032.jpg",
+    "rawSha256": "7f8392dca4db23d6015c3cc889c73e8747aec9a185326dfc7e110cdd52a04058",
+    "publicSha256": "7f8392dca4db23d6015c3cc889c73e8747aec9a185326dfc7e110cdd52a04058",
+    "derived": false,
+    "bytes": 90650
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00026.jpg",
+    "rawSha256": "86fe94ebb5a29754dbd07f4322681996f7f393b027e990c0784aa2501f0e772b",
+    "publicSha256": "86fe94ebb5a29754dbd07f4322681996f7f393b027e990c0784aa2501f0e772b",
+    "derived": false,
+    "bytes": 89259
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00027.jpg",
+    "rawSha256": "c2092c45fd187ec00d3f9eac11485d2788d5dde3458ff7f94a3f98268159d1b3",
+    "publicSha256": "c2092c45fd187ec00d3f9eac11485d2788d5dde3458ff7f94a3f98268159d1b3",
+    "derived": false,
+    "bytes": 89242
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00033.jpg",
+    "rawSha256": "c50d122f6dfe01e594d86b1874aacc9eb5d09341de7271fe7a0aaefb201b6cb1",
+    "publicSha256": "c50d122f6dfe01e594d86b1874aacc9eb5d09341de7271fe7a0aaefb201b6cb1",
+    "derived": false,
+    "bytes": 89420
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00037.jpg",
+    "rawSha256": "52276f695910d888df69493bdfddc96badcffd840f0d18e527b37df12656c490",
+    "publicSha256": "52276f695910d888df69493bdfddc96badcffd840f0d18e527b37df12656c490",
+    "derived": false,
+    "bytes": 74575
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00023.jpg",
+    "rawSha256": "f0b91886f7bc2f741d1a352c334460bbc5bd19e718fd4aaf76cecbd4f95bd70a",
+    "publicSha256": "f0b91886f7bc2f741d1a352c334460bbc5bd19e718fd4aaf76cecbd4f95bd70a",
+    "derived": false,
+    "bytes": 89247
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00022.jpg",
+    "rawSha256": "a131c090e69dab1133db14367d961e1c99b06a472590d204791a1fee025bb66b",
+    "publicSha256": "a131c090e69dab1133db14367d961e1c99b06a472590d204791a1fee025bb66b",
+    "derived": false,
+    "bytes": 89236
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00036.jpg",
+    "rawSha256": "37eb524adf71b98b2d20caa1ed876fa3a979b22dfdfd58d7da386453752883ca",
+    "publicSha256": "37eb524adf71b98b2d20caa1ed876fa3a979b22dfdfd58d7da386453752883ca",
+    "derived": false,
+    "bytes": 88970
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00008.jpg",
+    "rawSha256": "0068319f946f25dea994175cf52c38d718e6e9cec4520e5f18f8d4de3b358916",
+    "publicSha256": "0068319f946f25dea994175cf52c38d718e6e9cec4520e5f18f8d4de3b358916",
+    "derived": false,
+    "bytes": 89034
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00020.jpg",
+    "rawSha256": "941fd4e7ec4d776e7cca7d6173def519b2ca41627141cec515c20bff75147c36",
+    "publicSha256": "941fd4e7ec4d776e7cca7d6173def519b2ca41627141cec515c20bff75147c36",
+    "derived": false,
+    "bytes": 89352
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00034.jpg",
+    "rawSha256": "75d71d2391c45a33e41b926f541c6d33f262c73daf0399ff11360e652056242f",
+    "publicSha256": "75d71d2391c45a33e41b926f541c6d33f262c73daf0399ff11360e652056242f",
+    "derived": false,
+    "bytes": 89429
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00035.jpg",
+    "rawSha256": "7fb6f608aa400824205f7f338d0911648d6fbd1637c1ffa01677448df05ded27",
+    "publicSha256": "7fb6f608aa400824205f7f338d0911648d6fbd1637c1ffa01677448df05ded27",
+    "derived": false,
+    "bytes": 89000
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00021.jpg",
+    "rawSha256": "b8cab8d2d56f910805faf1fd2b0b9ac49b4e4749ba632a430365588e33064d2a",
+    "publicSha256": "b8cab8d2d56f910805faf1fd2b0b9ac49b4e4749ba632a430365588e33064d2a",
+    "derived": false,
+    "bytes": 89294
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00009.jpg",
+    "rawSha256": "e06dc598dad1cd2e409bb6f915aee82af5892916609aea98274a536647dddd5e",
+    "publicSha256": "e06dc598dad1cd2e409bb6f915aee82af5892916609aea98274a536647dddd5e",
+    "derived": false,
+    "bytes": 89048
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00004.jpg",
+    "rawSha256": "586ce7feb5df3c0e8bf4a1f7f80fa9a3b0b5bca5772f9b8026234996502e8ce6",
+    "publicSha256": "586ce7feb5df3c0e8bf4a1f7f80fa9a3b0b5bca5772f9b8026234996502e8ce6",
+    "derived": false,
+    "bytes": 89260
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00010.jpg",
+    "rawSha256": "3a8c0649aaa72a71e149b94c4eecceb63a496e8dc9d36318203688cad096b61e",
+    "publicSha256": "3a8c0649aaa72a71e149b94c4eecceb63a496e8dc9d36318203688cad096b61e",
+    "derived": false,
+    "bytes": 89060
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00038.jpg",
+    "rawSha256": "21e6c95321e39d076039e566977edb9733318e8b8ec4222a8c72d100863e58a7",
+    "publicSha256": "21e6c95321e39d076039e566977edb9733318e8b8ec4222a8c72d100863e58a7",
+    "derived": false,
+    "bytes": 89316
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00039.jpg",
+    "rawSha256": "2f643963ee7b77bdd55a45f222a6970406b70fe94104629d3c4ab9ce968c6857",
+    "publicSha256": "2f643963ee7b77bdd55a45f222a6970406b70fe94104629d3c4ab9ce968c6857",
+    "derived": false,
+    "bytes": 89308
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00011.jpg",
+    "rawSha256": "95f6dc7beefd8e3dc76692ca3f51663f3edec8f89fae7c27f91c2870adfc30ef",
+    "publicSha256": "95f6dc7beefd8e3dc76692ca3f51663f3edec8f89fae7c27f91c2870adfc30ef",
+    "derived": false,
+    "bytes": 89063
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00005.jpg",
+    "rawSha256": "5c6a6eff248cc453ce71639cab8f8ebf802ddbc3fc399b91840c1bcd63922bcf",
+    "publicSha256": "5c6a6eff248cc453ce71639cab8f8ebf802ddbc3fc399b91840c1bcd63922bcf",
+    "derived": false,
+    "bytes": 90507
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/frames.json",
+    "rawSha256": "dba7ee3df07d47e40449fbccf1f2a8dabe7400f84cfa7857e35662cd0ba13b20",
+    "publicSha256": "dba7ee3df07d47e40449fbccf1f2a8dabe7400f84cfa7857e35662cd0ba13b20",
+    "derived": false,
+    "bytes": 3650
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00013.jpg",
+    "rawSha256": "5801bb49cc594941363a3a2909481250ccba725d1f4635bf2589955b608d80c2",
+    "publicSha256": "5801bb49cc594941363a3a2909481250ccba725d1f4635bf2589955b608d80c2",
+    "derived": false,
+    "bytes": 89293
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00007.jpg",
+    "rawSha256": "361849fa8269713b18db24844eef9b7813c9b68545bfbb04474e49be3046aef2",
+    "publicSha256": "361849fa8269713b18db24844eef9b7813c9b68545bfbb04474e49be3046aef2",
+    "derived": false,
+    "bytes": 89264
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00006.jpg",
+    "rawSha256": "babb161efafb768fb8569a1faf5ed82e6472a0c01e9c0c438e2ea140562ebdcf",
+    "publicSha256": "babb161efafb768fb8569a1faf5ed82e6472a0c01e9c0c438e2ea140562ebdcf",
+    "derived": false,
+    "bytes": 89277
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00012.jpg",
+    "rawSha256": "72342f3c115ec27c4b8ac9fdd934b4fdb7e495ef8db4637c93c825d59e64816f",
+    "publicSha256": "72342f3c115ec27c4b8ac9fdd934b4fdb7e495ef8db4637c93c825d59e64816f",
+    "derived": false,
+    "bytes": 89043
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00016.jpg",
+    "rawSha256": "ed8d899434dd9f839df96cda298ff5d06a8a25733b0445ff86a2fe6dabfa1b7d",
+    "publicSha256": "ed8d899434dd9f839df96cda298ff5d06a8a25733b0445ff86a2fe6dabfa1b7d",
+    "derived": false,
+    "bytes": 89265
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00002.jpg",
+    "rawSha256": "fa074d98de47e1a7e17968602761a17641a01aae274fb6bb7188e71894b99033",
+    "publicSha256": "fa074d98de47e1a7e17968602761a17641a01aae274fb6bb7188e71894b99033",
+    "derived": false,
+    "bytes": 88941
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00003.jpg",
+    "rawSha256": "49af1caec6e5adf3d2eeaa1022de03e4bb9b88432b34207a24656f478b73a621",
+    "publicSha256": "49af1caec6e5adf3d2eeaa1022de03e4bb9b88432b34207a24656f478b73a621",
+    "derived": false,
+    "bytes": 89263
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00017.jpg",
+    "rawSha256": "65649e3e4670b2ec18c732c5d0ac8f0f1403bea220f4b78117b6cc31c0dfd7d9",
+    "publicSha256": "65649e3e4670b2ec18c732c5d0ac8f0f1403bea220f4b78117b6cc31c0dfd7d9",
+    "derived": false,
+    "bytes": 89270
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00029.jpg",
+    "rawSha256": "c4755e55bc9d54c71552a0e8f7f5dab20ab5efe25e4ca19f5949a721d2e14225",
+    "publicSha256": "c4755e55bc9d54c71552a0e8f7f5dab20ab5efe25e4ca19f5949a721d2e14225",
+    "derived": false,
+    "bytes": 89262
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00001.jpg",
+    "rawSha256": "a9d2458b46c20d093b52db70e393a2cc23989c8711c6a7a767046159aaebae09",
+    "publicSha256": "a9d2458b46c20d093b52db70e393a2cc23989c8711c6a7a767046159aaebae09",
+    "derived": false,
+    "bytes": 88978
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00015.jpg",
+    "rawSha256": "e09dc12ca7fe99fa6eabc03584ca74e747936d89e96228de8527b3d69c6b77e5",
+    "publicSha256": "e09dc12ca7fe99fa6eabc03584ca74e747936d89e96228de8527b3d69c6b77e5",
+    "derived": false,
+    "bytes": 89276
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00014.jpg",
+    "rawSha256": "77b55988a0a09ce681c5c625b84ab99c9363ccb7e49ad1bc52f73c0543aca38c",
+    "publicSha256": "77b55988a0a09ce681c5c625b84ab99c9363ccb7e49ad1bc52f73c0543aca38c",
+    "derived": false,
+    "bytes": 89271
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00000.jpg",
+    "rawSha256": "03567373b8b3bdc4347f28655fe92badef06479f6a3c6d989f5212da2c69d9ff",
+    "publicSha256": "03567373b8b3bdc4347f28655fe92badef06479f6a3c6d989f5212da2c69d9ff",
+    "derived": false,
+    "bytes": 88958
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00028.jpg",
+    "rawSha256": "e3e93084b4bcb97f4726b50174152ec526d20eeba87ee0ab7e5a4480ecbb0bf0",
+    "publicSha256": "e3e93084b4bcb97f4726b50174152ec526d20eeba87ee0ab7e5a4480ecbb0bf0",
+    "derived": false,
+    "bytes": 89227
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00058.jpg",
+    "rawSha256": "2f1a96059872d5e4032346385d3929177b26c9815363dec6e461800dd86d52ce",
+    "publicSha256": "2f1a96059872d5e4032346385d3929177b26c9815363dec6e461800dd86d52ce",
+    "derived": false,
+    "bytes": 89143
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00059.jpg",
+    "rawSha256": "534f9084dd619f039f6e09eb1bf45149c7da7f9ab5e239294a7ee0cb9a7b76c7",
+    "publicSha256": "534f9084dd619f039f6e09eb1bf45149c7da7f9ab5e239294a7ee0cb9a7b76c7",
+    "derived": false,
+    "bytes": 90218
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00049.jpg",
+    "rawSha256": "d58ed8afb2130469936634ff317a5e121b0e4e1131e68d2073f9d65989b32f75",
+    "publicSha256": "d58ed8afb2130469936634ff317a5e121b0e4e1131e68d2073f9d65989b32f75",
+    "derived": false,
+    "bytes": 88656
+  },
+  {
+    "path": "focus-real/packed-continuous/recording/00048.jpg",
+    "rawSha256": "b1664e681fc501d4e8bf179c34476f2553ab2ff7764be4fe7731b5172bef0b71",
+    "publicSha256": "b1664e681fc501d4e8bf179c34476f2553ab2ff7764be4fe7731b5172bef0b71",
+    "derived": false,
+    "bytes": 88688
+  },
+  {
+    "path": "focus-real-clock/source-build.log",
+    "rawSha256": "84129943d8578df03e5ed178ef8dd2050779948795f4435191b298564d8217ee",
+    "publicSha256": "8766c255345fc2ef3876a9e863e1741baef90a4310bf15e4ef50058f669e5cce",
+    "derived": true,
+    "bytes": 159
+  },
+  {
+    "path": "focus-real-clock/packed-build.log",
+    "rawSha256": "773931504d35e21672f5ce25178c914d54e1c0b5c46ccf642b3e95103e538768",
+    "publicSha256": "1e3f9e659007db84abc0f645fa7c7126918da9bdf933d2f0f209502dd1370c01",
+    "derived": true,
+    "bytes": 159
+  },
+  {
+    "path": "focus-real-clock/source-ordinary.log",
+    "rawSha256": "23ac60c4efbd12b1a5073de1df9116a444f45515f57eb80275cd7ad72d7765ee",
+    "publicSha256": "0819be267640bc0d7faed310150389a29b70f35dfa967ce7267ce6f962bb6ba5",
+    "derived": true,
+    "bytes": 79
+  },
+  {
+    "path": "focus-real-clock/source-continuous.log",
+    "rawSha256": "5493484cf585bdacce245259488d86333e97b6899294942ecebd5f61a1783b2c",
+    "publicSha256": "0502e64990596fabef48419516e5fab608605a7aec25e6df6bb5690fde8c698a",
+    "derived": true,
+    "bytes": 489
+  },
+  {
+    "path": "focus-real-clock/packed-continuous.log",
+    "rawSha256": "5493484cf585bdacce245259488d86333e97b6899294942ecebd5f61a1783b2c",
+    "publicSha256": "0502e64990596fabef48419516e5fab608605a7aec25e6df6bb5690fde8c698a",
+    "derived": true,
+    "bytes": 489
+  },
+  {
+    "path": "focus-real-clock/packed-ordinary.log",
+    "rawSha256": "cafc28fc463a77e1c88e57cd4e93bd50bd216915469bbcd49689ea56463eb623",
+    "publicSha256": "f054eba833535d3bf8d739a04287d822207a0d69f6cd52b8b251e61900b1033a",
+    "derived": true,
+    "bytes": 79
+  },
+  {
+    "path": "focus-real-clock/receipt.json",
+    "rawSha256": "8076dadf746e4a027b01fabc41a75a77799c2639476501167744d48b2d112744",
+    "publicSha256": "3176d8aadbebd07368d6b57bc2b6aaa43d1023a5260642bf0874ac6b0c565e74",
+    "derived": true,
+    "bytes": 3572
+  },
+  {
+    "path": "focus-real-clock/source-product/index.html",
+    "rawSha256": "79a29fa4c2dabf8bf99348d7ca81ed8eb305db6216b57d44969081d1b39acc53",
+    "publicSha256": "79a29fa4c2dabf8bf99348d7ca81ed8eb305db6216b57d44969081d1b39acc53",
+    "derived": false,
+    "bytes": 2967
+  },
+  {
+    "path": "focus-real-clock/source-product/source.json",
+    "rawSha256": "ff4c8a06e1254ac6bce332363aa543ca6cc121153fa4ddd8793b1389b86b6e6f",
+    "publicSha256": "ff4c8a06e1254ac6bce332363aa543ca6cc121153fa4ddd8793b1389b86b6e6f",
+    "derived": false,
+    "bytes": 45253
+  },
+  {
+    "path": "focus-real-clock/source-product/tokens.css",
+    "rawSha256": "e85225f218301dbe17de811f4b7e5f3028b1fe93acf1edaf07be68e8ba94dfc2",
+    "publicSha256": "e85225f218301dbe17de811f4b7e5f3028b1fe93acf1edaf07be68e8ba94dfc2",
+    "derived": false,
+    "bytes": 52313
+  },
+  {
+    "path": "focus-real-clock/source-product/app.js",
+    "rawSha256": "275aeaa9c863d4b945c0137819fdba4960ec9b7ed0b01477cbfe608c64f1af6e",
+    "publicSha256": "275aeaa9c863d4b945c0137819fdba4960ec9b7ed0b01477cbfe608c64f1af6e",
+    "derived": false,
+    "bytes": 3501626
+  },
+  {
+    "path": "focus-real-clock/packed-product/index.html",
+    "rawSha256": "79a29fa4c2dabf8bf99348d7ca81ed8eb305db6216b57d44969081d1b39acc53",
+    "publicSha256": "79a29fa4c2dabf8bf99348d7ca81ed8eb305db6216b57d44969081d1b39acc53",
+    "derived": false,
+    "bytes": 2967
+  },
+  {
+    "path": "focus-real-clock/packed-product/source.json",
+    "rawSha256": "59fd16559bb6c7f1f9e720e22e315af5bb15b5963dcb15d4fdc57ba18c3c8b8a",
+    "publicSha256": "59fd16559bb6c7f1f9e720e22e315af5bb15b5963dcb15d4fdc57ba18c3c8b8a",
+    "derived": false,
+    "bytes": 23428
+  },
+  {
+    "path": "focus-real-clock/packed-product/tokens.css",
+    "rawSha256": "e85225f218301dbe17de811f4b7e5f3028b1fe93acf1edaf07be68e8ba94dfc2",
+    "publicSha256": "e85225f218301dbe17de811f4b7e5f3028b1fe93acf1edaf07be68e8ba94dfc2",
+    "derived": false,
+    "bytes": 52313
+  },
+  {
+    "path": "focus-real-clock/packed-product/app.js",
+    "rawSha256": "741df00746a693679999c10d8c9e6fd79b93998f585e81514a6d6cb0e6726843",
+    "publicSha256": "741df00746a693679999c10d8c9e6fd79b93998f585e81514a6d6cb0e6726843",
+    "derived": false,
+    "bytes": 3512035
+  },
+  {
+    "path": "focus-real-clock/source-ordinary/dark-source-revoked.png",
+    "rawSha256": "c2adf70bb59468c08201db7419e938ce3b256fb6e7ac248054b62c613d125ada",
+    "publicSha256": "c2adf70bb59468c08201db7419e938ce3b256fb6e7ac248054b62c613d125ada",
+    "derived": false,
+    "bytes": 81824
+  },
+  {
+    "path": "focus-real-clock/source-ordinary/dark-wc-pressed.png",
+    "rawSha256": "070e7bc28502acd7af86b0208a0af0a610ec5f9cbdbe310a3ad2d202db7fb7f6",
+    "publicSha256": "070e7bc28502acd7af86b0208a0af0a610ec5f9cbdbe310a3ad2d202db7fb7f6",
+    "derived": false,
+    "bytes": 92127
+  },
+  {
+    "path": "focus-real-clock/source-ordinary/result.json",
+    "rawSha256": "5a3df61b658d2080ebad7b31039aab164c718859e71df8cdbbd5244a74d4d3eb",
+    "publicSha256": "5a3df61b658d2080ebad7b31039aab164c718859e71df8cdbbd5244a74d4d3eb",
+    "derived": false,
+    "bytes": 46458
+  },
+  {
+    "path": "focus-real-clock/source-ordinary/dark-vue2-pressed.png",
+    "rawSha256": "33f287e3133ede08e6229c2faa33c91bb50f0eb0e1ff43194dd95ed54b550dbc",
+    "publicSha256": "33f287e3133ede08e6229c2faa33c91bb50f0eb0e1ff43194dd95ed54b550dbc",
+    "derived": false,
+    "bytes": 92785
+  },
+  {
+    "path": "focus-real-clock/source-ordinary/light-react-pressed.png",
+    "rawSha256": "ef18692cbfc12be82b2047c2fc52690d1be6d225203570f177f43fd35eb3fe66",
+    "publicSha256": "ef18692cbfc12be82b2047c2fc52690d1be6d225203570f177f43fd35eb3fe66",
+    "derived": false,
+    "bytes": 97673
+  },
+  {
+    "path": "focus-real-clock/source-ordinary/light-vue-pressed.png",
+    "rawSha256": "ad58d63fb740414f0472ad024ac0a139bd76e6c3fe4645722675457719ebe388",
+    "publicSha256": "ad58d63fb740414f0472ad024ac0a139bd76e6c3fe4645722675457719ebe388",
+    "derived": false,
+    "bytes": 103861
+  },
+  {
+    "path": "focus-real-clock/source-ordinary/light-wc-pressed.png",
+    "rawSha256": "4c278b80e797e1aba5e6f3ef7febcf1c2dbe2708b655bdc6a18a1a9083a50c48",
+    "publicSha256": "4c278b80e797e1aba5e6f3ef7febcf1c2dbe2708b655bdc6a18a1a9083a50c48",
+    "derived": false,
+    "bytes": 97145
+  },
+  {
+    "path": "focus-real-clock/source-ordinary/light-four-web.png",
+    "rawSha256": "ca764f4525c6beb0e576294e8fc762f2597f412055772f77610e134d06dfd94f",
+    "publicSha256": "ca764f4525c6beb0e576294e8fc762f2597f412055772f77610e134d06dfd94f",
+    "derived": false,
+    "bytes": 90521
+  },
+  {
+    "path": "focus-real-clock/source-ordinary/dark-four-web.png",
+    "rawSha256": "a748f726a50f2c6ea8eac2069377b4d3680e8e684c22e8062839c963b5b9e276",
+    "publicSha256": "a748f726a50f2c6ea8eac2069377b4d3680e8e684c22e8062839c963b5b9e276",
+    "derived": false,
+    "bytes": 87705
+  },
+  {
+    "path": "focus-real-clock/source-ordinary/dark-react-pressed.png",
+    "rawSha256": "558808cc27a4074f04dd56eafbe39e5061c6f0a09fd23bf3eb1ba106a80cea9e",
+    "publicSha256": "558808cc27a4074f04dd56eafbe39e5061c6f0a09fd23bf3eb1ba106a80cea9e",
+    "derived": false,
+    "bytes": 92570
+  },
+  {
+    "path": "focus-real-clock/source-ordinary/light-source-revoked.png",
+    "rawSha256": "b10f9ea0facfdf21d418185ef4521696b787dfea69cf1bd03b6f28cb4e4fd49e",
+    "publicSha256": "b10f9ea0facfdf21d418185ef4521696b787dfea69cf1bd03b6f28cb4e4fd49e",
+    "derived": false,
+    "bytes": 84453
+  },
+  {
+    "path": "focus-real-clock/source-ordinary/dark-vue-pressed.png",
+    "rawSha256": "e3127f0e7f701472074e3139d9b22f9eef74eac63b4ead418956c57e3a4b5687",
+    "publicSha256": "e3127f0e7f701472074e3139d9b22f9eef74eac63b4ead418956c57e3a4b5687",
+    "derived": false,
+    "bytes": 96647
+  },
+  {
+    "path": "focus-real-clock/source-ordinary/light-vue2-pressed.png",
+    "rawSha256": "1662a0db46ca89eecd7bf5a7b730c5ceb47e81db96dba76f4fb86bec672a63c9",
+    "publicSha256": "1662a0db46ca89eecd7bf5a7b730c5ceb47e81db96dba76f4fb86bec672a63c9",
+    "derived": false,
+    "bytes": 97707
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/vue2-outside.png",
+    "rawSha256": "31de736af54d1152a32c7819525b48bb5ef6214ac7bc41a2ba91fa3ecade8e19",
+    "publicSha256": "31de736af54d1152a32c7819525b48bb5ef6214ac7bc41a2ba91fa3ecade8e19",
+    "derived": false,
+    "bytes": 96984
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/react-return.png",
+    "rawSha256": "c3161d80896aac7bad953353cdcb351d08f52b22784133bcf010512e0780b5da",
+    "publicSha256": "c3161d80896aac7bad953353cdcb351d08f52b22784133bcf010512e0780b5da",
+    "derived": false,
+    "bytes": 97272
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/failure-state.json",
+    "rawSha256": "a9758e99f8af45cd7f8a0ba2e39515222a89dcfdc768b87ef93154f5ceaf6712",
+    "publicSha256": "a9758e99f8af45cd7f8a0ba2e39515222a89dcfdc768b87ef93154f5ceaf6712",
+    "derived": false,
+    "bytes": 6500346
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/wc-capture-inside-cancelled.png",
+    "rawSha256": "ac6b4f2d03c4cfdc341a657ee98aa9804cf3fe61d07c6716ae471d1506303252",
+    "publicSha256": "ac6b4f2d03c4cfdc341a657ee98aa9804cf3fe61d07c6716ae471d1506303252",
+    "derived": false,
+    "bytes": 90289
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/vue-return.png",
+    "rawSha256": "66d011f61f56b02dde9cd9db2beaa1f04253d0f5fd7305e39a682be80181c408",
+    "publicSha256": "66d011f61f56b02dde9cd9db2beaa1f04253d0f5fd7305e39a682be80181c408",
+    "derived": false,
+    "bytes": 97974
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/result.json",
+    "rawSha256": "09d4e48590e7638aebfff50228b922ed7b594aa214a74b93c3ff11f6aaa018ab",
+    "publicSha256": "e76165abaf8b3b1aabdf2ada5245d3a116a843a84be917e5cbf048f09701cfd5",
+    "derived": true,
+    "bytes": 48741
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/vue-outside.png",
+    "rawSha256": "1a3970491f330a406314ac4d97612a482c8cedb841b4e8fb5cca0a0eb9a8c415",
+    "publicSha256": "1a3970491f330a406314ac4d97612a482c8cedb841b4e8fb5cca0a0eb9a8c415",
+    "derived": false,
+    "bytes": 96100
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/wc-outside.png",
+    "rawSha256": "a68c756740a91ba8ff5074719f1e288c18b7783a4e59917f596b34e9cc96ec70",
+    "publicSha256": "a68c756740a91ba8ff5074719f1e288c18b7783a4e59917f596b34e9cc96ec70",
+    "derived": false,
+    "bytes": 96286
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/wc-return.png",
+    "rawSha256": "0eaab66f6ef7ebb5d2e3434e77c643ebf7528798f8abc206d767fbcc13ed58c2",
+    "publicSha256": "0eaab66f6ef7ebb5d2e3434e77c643ebf7528798f8abc206d767fbcc13ed58c2",
+    "derived": false,
+    "bytes": 98216
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/wc-released.png",
+    "rawSha256": "73e1526d01a6efba9e2259e738b3cb64b3caf73121bc64d02c319dc5cd3de9cd",
+    "publicSha256": "73e1526d01a6efba9e2259e738b3cb64b3caf73121bc64d02c319dc5cd3de9cd",
+    "derived": false,
+    "bytes": 92462
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/react-down.png",
+    "rawSha256": "9a188c2e4f59a4466bba8a85094ff052e50749c2fc4c93b833537706a74a85ff",
+    "publicSha256": "9a188c2e4f59a4466bba8a85094ff052e50749c2fc4c93b833537706a74a85ff",
+    "derived": false,
+    "bytes": 96650
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/continuous-drag.mp4",
+    "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "publicSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "derived": false,
+    "bytes": 0
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/vue-released.png",
+    "rawSha256": "43c7e40b7bd94cfa08dbffac55e6752165f391f4d3dea18f4dfb988ea2013ab2",
+    "publicSha256": "43c7e40b7bd94cfa08dbffac55e6752165f391f4d3dea18f4dfb988ea2013ab2",
+    "derived": false,
+    "bytes": 92593
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/vue2-released.png",
+    "rawSha256": "5349de52326781cae63d262757bfe8b7a420c60973960b0dfcd3450e9f98fa06",
+    "publicSha256": "5349de52326781cae63d262757bfe8b7a420c60973960b0dfcd3450e9f98fa06",
+    "derived": false,
+    "bytes": 92216
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/wc-capture-inside-held.png",
+    "rawSha256": "aa016f09f6605b8b1ae7ac1b2b915af0048a5d9cfd40eca0da24966c7da2dfc4",
+    "publicSha256": "aa016f09f6605b8b1ae7ac1b2b915af0048a5d9cfd40eca0da24966c7da2dfc4",
+    "derived": false,
+    "bytes": 96841
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/react-released.png",
+    "rawSha256": "c50850215bd6b9078698f28b5639bd8ef29b7f5dc9279f88e8c13cb1fff67fe6",
+    "publicSha256": "c50850215bd6b9078698f28b5639bd8ef29b7f5dc9279f88e8c13cb1fff67fe6",
+    "derived": false,
+    "bytes": 92156
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/vue2-return.png",
+    "rawSha256": "780372cce42965b3340aa4abea4eb2394b245abb681e8183526404eb8a4f4cf7",
+    "publicSha256": "780372cce42965b3340aa4abea4eb2394b245abb681e8183526404eb8a4f4cf7",
+    "derived": false,
+    "bytes": 98330
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/vue-down.png",
+    "rawSha256": "bad0c1bcb23d26d5769cbc39555761172a3283c34753e1ffe841888bbbc35ba6",
+    "publicSha256": "bad0c1bcb23d26d5769cbc39555761172a3283c34753e1ffe841888bbbc35ba6",
+    "derived": false,
+    "bytes": 97984
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/wc-down.png",
+    "rawSha256": "2b6e0d6a1bbd72d4877c5a76b46cea94e7ee6301202dfd417379149ab06b88e6",
+    "publicSha256": "2b6e0d6a1bbd72d4877c5a76b46cea94e7ee6301202dfd417379149ab06b88e6",
+    "derived": false,
+    "bytes": 97278
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/wc-capture-outside-cancelled.png",
+    "rawSha256": "3316225fd6fa43920ddcc4913abfa543765a7f45a14c21a126fd5580453d96b6",
+    "publicSha256": "3316225fd6fa43920ddcc4913abfa543765a7f45a14c21a126fd5580453d96b6",
+    "derived": false,
+    "bytes": 90191
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/failure.png",
+    "rawSha256": "57bb9841ca5fcce500102a92e60c60f64ab6e670d0483f41055bd6f5aff835cd",
+    "publicSha256": "57bb9841ca5fcce500102a92e60c60f64ab6e670d0483f41055bd6f5aff835cd",
+    "derived": false,
+    "bytes": 90834
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/react-outside.png",
+    "rawSha256": "7e4dfe4d5721ec81d38124952332236c88af9abed568478364b9c73c1d31026a",
+    "publicSha256": "7e4dfe4d5721ec81d38124952332236c88af9abed568478364b9c73c1d31026a",
+    "derived": false,
+    "bytes": 95553
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/wc-capture-outside-held.png",
+    "rawSha256": "d6a610789120138578cb6829d5d09152598832741229676e2869784da5ac5027",
+    "publicSha256": "d6a610789120138578cb6829d5d09152598832741229676e2869784da5ac5027",
+    "derived": false,
+    "bytes": 97160
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/vue2-down.png",
+    "rawSha256": "e682282af937ef845f876bb2043d7a57e3228aea1ad6c0907c19eb58d0ceebf0",
+    "publicSha256": "e682282af937ef845f876bb2043d7a57e3228aea1ad6c0907c19eb58d0ceebf0",
+    "derived": false,
+    "bytes": 98169
+  },
+  {
+    "path": "focus-real-clock/source-continuous/vue2-outside.png",
+    "rawSha256": "6370c5af499377d3d2ff878009982941fb0d6ca19f6a1e25fc6edb3f6e20cd7f",
+    "publicSha256": "6370c5af499377d3d2ff878009982941fb0d6ca19f6a1e25fc6edb3f6e20cd7f",
+    "derived": false,
+    "bytes": 96729
+  },
+  {
+    "path": "focus-real-clock/source-continuous/react-return.png",
+    "rawSha256": "df6cd5ad80d9979ab58ce9b80ca1f27d2425eee20e627f59b820e6a10b7505cc",
+    "publicSha256": "df6cd5ad80d9979ab58ce9b80ca1f27d2425eee20e627f59b820e6a10b7505cc",
+    "derived": false,
+    "bytes": 96893
+  },
+  {
+    "path": "focus-real-clock/source-continuous/failure-state.json",
+    "rawSha256": "9f5cafe215af4b8393b1f28fa23d4c6e93c8b45c6f6f25f63c3bb453e2d91853",
+    "publicSha256": "9f5cafe215af4b8393b1f28fa23d4c6e93c8b45c6f6f25f63c3bb453e2d91853",
+    "derived": false,
+    "bytes": 6201176
+  },
+  {
+    "path": "focus-real-clock/source-continuous/wc-capture-inside-cancelled.png",
+    "rawSha256": "3316225fd6fa43920ddcc4913abfa543765a7f45a14c21a126fd5580453d96b6",
+    "publicSha256": "3316225fd6fa43920ddcc4913abfa543765a7f45a14c21a126fd5580453d96b6",
+    "derived": false,
+    "bytes": 90191
+  },
+  {
+    "path": "focus-real-clock/source-continuous/vue-return.png",
+    "rawSha256": "3cd8d6882456319f0f1e41cab323ddf59dca48b56ac7fed3ec63572afaba34a3",
+    "publicSha256": "3cd8d6882456319f0f1e41cab323ddf59dca48b56ac7fed3ec63572afaba34a3",
+    "derived": false,
+    "bytes": 97805
+  },
+  {
+    "path": "focus-real-clock/source-continuous/result.json",
+    "rawSha256": "7bce49080f7023c2e42ba98f81b142cf96eeeaadc2b1a6d389d53fc2224b23d9",
+    "publicSha256": "2ba7281740a5411100974a70098a316ae2544cdb5bd1f41b59a98e6f54f62b67",
+    "derived": true,
+    "bytes": 67065
+  },
+  {
+    "path": "focus-real-clock/source-continuous/vue-outside.png",
+    "rawSha256": "90178601d5593f106aab2eab0b60097a0a4b25a191ae1141dbb597ef4c0b5c52",
+    "publicSha256": "90178601d5593f106aab2eab0b60097a0a4b25a191ae1141dbb597ef4c0b5c52",
+    "derived": false,
+    "bytes": 96368
+  },
+  {
+    "path": "focus-real-clock/source-continuous/wc-outside.png",
+    "rawSha256": "b256f351172c0fbc10d9799706a3d66b950835bc7581aee656f2c25142ebce6b",
+    "publicSha256": "b256f351172c0fbc10d9799706a3d66b950835bc7581aee656f2c25142ebce6b",
+    "derived": false,
+    "bytes": 96479
+  },
+  {
+    "path": "focus-real-clock/source-continuous/wc-return.png",
+    "rawSha256": "0eaab66f6ef7ebb5d2e3434e77c643ebf7528798f8abc206d767fbcc13ed58c2",
+    "publicSha256": "0eaab66f6ef7ebb5d2e3434e77c643ebf7528798f8abc206d767fbcc13ed58c2",
+    "derived": false,
+    "bytes": 98216
+  },
+  {
+    "path": "focus-real-clock/source-continuous/wc-released.png",
+    "rawSha256": "73e1526d01a6efba9e2259e738b3cb64b3caf73121bc64d02c319dc5cd3de9cd",
+    "publicSha256": "73e1526d01a6efba9e2259e738b3cb64b3caf73121bc64d02c319dc5cd3de9cd",
+    "derived": false,
+    "bytes": 92462
+  },
+  {
+    "path": "focus-real-clock/source-continuous/react-down.png",
+    "rawSha256": "9a188c2e4f59a4466bba8a85094ff052e50749c2fc4c93b833537706a74a85ff",
+    "publicSha256": "9a188c2e4f59a4466bba8a85094ff052e50749c2fc4c93b833537706a74a85ff",
+    "derived": false,
+    "bytes": 96650
+  },
+  {
+    "path": "focus-real-clock/source-continuous/continuous-drag.mp4",
+    "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "publicSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "derived": false,
+    "bytes": 0
+  },
+  {
+    "path": "focus-real-clock/source-continuous/vue-released.png",
+    "rawSha256": "3dd8bdc2e5c6875bb4dbea3f9058f3292cfb81235ab6748d6d1decd35d40552f",
+    "publicSha256": "3dd8bdc2e5c6875bb4dbea3f9058f3292cfb81235ab6748d6d1decd35d40552f",
+    "derived": false,
+    "bytes": 92663
+  },
+  {
+    "path": "focus-real-clock/source-continuous/vue2-released.png",
+    "rawSha256": "6a7d8b411d1aeebfc214288c1ad60cea00f6e34ef3d834cc5af52f35fa904b03",
+    "publicSha256": "6a7d8b411d1aeebfc214288c1ad60cea00f6e34ef3d834cc5af52f35fa904b03",
+    "derived": false,
+    "bytes": 92056
+  },
+  {
+    "path": "focus-real-clock/source-continuous/wc-capture-inside-held.png",
+    "rawSha256": "d7f8af8e97151c64e8b55c42b2e721880a1cb0ffcbb633585c9b1070ce046ce5",
+    "publicSha256": "d7f8af8e97151c64e8b55c42b2e721880a1cb0ffcbb633585c9b1070ce046ce5",
+    "derived": false,
+    "bytes": 97009
+  },
+  {
+    "path": "focus-real-clock/source-continuous/react-released.png",
+    "rawSha256": "9d2d107076a52ca14f36a47228282e76a790f26c5207b93e048065456b2fc49a",
+    "publicSha256": "9d2d107076a52ca14f36a47228282e76a790f26c5207b93e048065456b2fc49a",
+    "derived": false,
+    "bytes": 92192
+  },
+  {
+    "path": "focus-real-clock/source-continuous/vue2-return.png",
+    "rawSha256": "ae2702ca74ff40a27baa7b707d15ed0c4e46fc948169e56a64bc0914c03c11b2",
+    "publicSha256": "ae2702ca74ff40a27baa7b707d15ed0c4e46fc948169e56a64bc0914c03c11b2",
+    "derived": false,
+    "bytes": 98339
+  },
+  {
+    "path": "focus-real-clock/source-continuous/vue-down.png",
+    "rawSha256": "d382d69a8aacbdb1a6450021de85460deb2a6e6553907f489827137e04bae32f",
+    "publicSha256": "d382d69a8aacbdb1a6450021de85460deb2a6e6553907f489827137e04bae32f",
+    "derived": false,
+    "bytes": 97547
+  },
+  {
+    "path": "focus-real-clock/source-continuous/wc-down.png",
+    "rawSha256": "2b6e0d6a1bbd72d4877c5a76b46cea94e7ee6301202dfd417379149ab06b88e6",
+    "publicSha256": "2b6e0d6a1bbd72d4877c5a76b46cea94e7ee6301202dfd417379149ab06b88e6",
+    "derived": false,
+    "bytes": 97278
+  },
+  {
+    "path": "focus-real-clock/source-continuous/wc-capture-outside-cancelled.png",
+    "rawSha256": "bfb49f7c6e52061689651c3faae8d86554d0d3db81b65622ade9f252e2530be7",
+    "publicSha256": "bfb49f7c6e52061689651c3faae8d86554d0d3db81b65622ade9f252e2530be7",
+    "derived": false,
+    "bytes": 90212
+  },
+  {
+    "path": "focus-real-clock/source-continuous/failure.png",
+    "rawSha256": "dc413eab0f6fb3a02701b34e34e740964adee2c06b6bea1268ca765d105d04c7",
+    "publicSha256": "dc413eab0f6fb3a02701b34e34e740964adee2c06b6bea1268ca765d105d04c7",
+    "derived": false,
+    "bytes": 92344
+  },
+  {
+    "path": "focus-real-clock/source-continuous/react-outside.png",
+    "rawSha256": "72e471da816a45b7c6a5d787e899f59a04699c29609a8a58289d30ed71318b89",
+    "publicSha256": "72e471da816a45b7c6a5d787e899f59a04699c29609a8a58289d30ed71318b89",
+    "derived": false,
+    "bytes": 95771
+  },
+  {
+    "path": "focus-real-clock/source-continuous/wc-capture-outside-held.png",
+    "rawSha256": "b759117cc21e0c18eadbca30258b5b26a7aed6a3cd7b307b8a22cbdc763ed091",
+    "publicSha256": "b759117cc21e0c18eadbca30258b5b26a7aed6a3cd7b307b8a22cbdc763ed091",
+    "derived": false,
+    "bytes": 96860
+  },
+  {
+    "path": "focus-real-clock/source-continuous/vue2-down.png",
+    "rawSha256": "69fc105cb32ff833c4327ae654b69898b3b9b2e2491b6323dcb93511989105e0",
+    "publicSha256": "69fc105cb32ff833c4327ae654b69898b3b9b2e2491b6323dcb93511989105e0",
+    "derived": false,
+    "bytes": 98385
+  },
+  {
+    "path": "focus-real-clock/packed-ordinary/dark-source-revoked.png",
+    "rawSha256": "c2adf70bb59468c08201db7419e938ce3b256fb6e7ac248054b62c613d125ada",
+    "publicSha256": "c2adf70bb59468c08201db7419e938ce3b256fb6e7ac248054b62c613d125ada",
+    "derived": false,
+    "bytes": 81824
+  },
+  {
+    "path": "focus-real-clock/packed-ordinary/dark-wc-pressed.png",
+    "rawSha256": "070e7bc28502acd7af86b0208a0af0a610ec5f9cbdbe310a3ad2d202db7fb7f6",
+    "publicSha256": "070e7bc28502acd7af86b0208a0af0a610ec5f9cbdbe310a3ad2d202db7fb7f6",
+    "derived": false,
+    "bytes": 92127
+  },
+  {
+    "path": "focus-real-clock/packed-ordinary/result.json",
+    "rawSha256": "a553680e58c6c9d825db6644da711ad18c622b587f69cfe842783eebe0df8c72",
+    "publicSha256": "a553680e58c6c9d825db6644da711ad18c622b587f69cfe842783eebe0df8c72",
+    "derived": false,
+    "bytes": 24633
+  },
+  {
+    "path": "focus-real-clock/packed-ordinary/dark-vue2-pressed.png",
+    "rawSha256": "1d9a9258be07cefdb02f3f22f2ead3be0528a1160a71f02784e0dbfb9d2cc619",
+    "publicSha256": "1d9a9258be07cefdb02f3f22f2ead3be0528a1160a71f02784e0dbfb9d2cc619",
+    "derived": false,
+    "bytes": 92794
+  },
+  {
+    "path": "focus-real-clock/packed-ordinary/light-react-pressed.png",
+    "rawSha256": "c7e7f16e4007d3704861bb9694572149207c3337d7147cb1a0ca896020e5ab31",
+    "publicSha256": "c7e7f16e4007d3704861bb9694572149207c3337d7147cb1a0ca896020e5ab31",
+    "derived": false,
+    "bytes": 97654
+  },
+  {
+    "path": "focus-real-clock/packed-ordinary/light-vue-pressed.png",
+    "rawSha256": "d8e5328ff4e987462d3a2a45d21249497d15dc014bedbef208aca55352f2b567",
+    "publicSha256": "d8e5328ff4e987462d3a2a45d21249497d15dc014bedbef208aca55352f2b567",
+    "derived": false,
+    "bytes": 103882
+  },
+  {
+    "path": "focus-real-clock/packed-ordinary/light-wc-pressed.png",
+    "rawSha256": "4c278b80e797e1aba5e6f3ef7febcf1c2dbe2708b655bdc6a18a1a9083a50c48",
+    "publicSha256": "4c278b80e797e1aba5e6f3ef7febcf1c2dbe2708b655bdc6a18a1a9083a50c48",
+    "derived": false,
+    "bytes": 97145
+  },
+  {
+    "path": "focus-real-clock/packed-ordinary/light-four-web.png",
+    "rawSha256": "ca764f4525c6beb0e576294e8fc762f2597f412055772f77610e134d06dfd94f",
+    "publicSha256": "ca764f4525c6beb0e576294e8fc762f2597f412055772f77610e134d06dfd94f",
+    "derived": false,
+    "bytes": 90521
+  },
+  {
+    "path": "focus-real-clock/packed-ordinary/dark-four-web.png",
+    "rawSha256": "a748f726a50f2c6ea8eac2069377b4d3680e8e684c22e8062839c963b5b9e276",
+    "publicSha256": "a748f726a50f2c6ea8eac2069377b4d3680e8e684c22e8062839c963b5b9e276",
+    "derived": false,
+    "bytes": 87705
+  },
+  {
+    "path": "focus-real-clock/packed-ordinary/dark-react-pressed.png",
+    "rawSha256": "d334e4a585a831f5b72c8bc004b5fcad9e9cecb184b53acc410f0bd6c2c62a6d",
+    "publicSha256": "d334e4a585a831f5b72c8bc004b5fcad9e9cecb184b53acc410f0bd6c2c62a6d",
+    "derived": false,
+    "bytes": 92658
+  },
+  {
+    "path": "focus-real-clock/packed-ordinary/light-source-revoked.png",
+    "rawSha256": "b10f9ea0facfdf21d418185ef4521696b787dfea69cf1bd03b6f28cb4e4fd49e",
+    "publicSha256": "b10f9ea0facfdf21d418185ef4521696b787dfea69cf1bd03b6f28cb4e4fd49e",
+    "derived": false,
+    "bytes": 84453
+  },
+  {
+    "path": "focus-real-clock/packed-ordinary/dark-vue-pressed.png",
+    "rawSha256": "63b947845bc5d77ed1b95c55937b9d37ecf2aaa3ec2e0e5f3387a9eda7211c9f",
+    "publicSha256": "63b947845bc5d77ed1b95c55937b9d37ecf2aaa3ec2e0e5f3387a9eda7211c9f",
+    "derived": false,
+    "bytes": 96653
+  },
+  {
+    "path": "focus-real-clock/packed-ordinary/light-vue2-pressed.png",
+    "rawSha256": "e2e88b36a2d3c4cee8aad691a9c3160df3a670a7f9e1e104b99879e4e33ef124",
+    "publicSha256": "e2e88b36a2d3c4cee8aad691a9c3160df3a670a7f9e1e104b99879e4e33ef124",
+    "derived": false,
+    "bytes": 97844
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00046.jpg",
+    "rawSha256": "1c69efeabc5ab84e7b824d018ffd98c7f6d379966f8234da922491122e2235ca",
+    "publicSha256": "1c69efeabc5ab84e7b824d018ffd98c7f6d379966f8234da922491122e2235ca",
+    "derived": false,
+    "bytes": 88878
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00047.jpg",
+    "rawSha256": "664d879ee91e52e3e41008edf5376e778ed29a3e118872ac3d2e2839df5189f5",
+    "publicSha256": "664d879ee91e52e3e41008edf5376e778ed29a3e118872ac3d2e2839df5189f5",
+    "derived": false,
+    "bytes": 88899
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00051.jpg",
+    "rawSha256": "6a430e52f31bb74bed1b0cad88cd09b134ba4880c1f6306d4b4adf447ffedf7a",
+    "publicSha256": "6a430e52f31bb74bed1b0cad88cd09b134ba4880c1f6306d4b4adf447ffedf7a",
+    "derived": false,
+    "bytes": 90373
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00045.jpg",
+    "rawSha256": "cc1bd5e6d4619829caa350056bdd346f977a1b160fee492a8b72788d644a3b37",
+    "publicSha256": "cc1bd5e6d4619829caa350056bdd346f977a1b160fee492a8b72788d644a3b37",
+    "derived": false,
+    "bytes": 88671
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00044.jpg",
+    "rawSha256": "65d3e78fc07e5ffb48a6a1c16f532eb84d9427e9106c0351f9e0996d822bd2a1",
+    "publicSha256": "65d3e78fc07e5ffb48a6a1c16f532eb84d9427e9106c0351f9e0996d822bd2a1",
+    "derived": false,
+    "bytes": 88669
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00050.jpg",
+    "rawSha256": "71b8185ff721553c1ba706730596e8a634decd497108479fb3f6c4fdd00262d2",
+    "publicSha256": "71b8185ff721553c1ba706730596e8a634decd497108479fb3f6c4fdd00262d2",
+    "derived": false,
+    "bytes": 89119
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00040.jpg",
+    "rawSha256": "4c81285fe284acc7b6297a1bb98ffa357a7b201fb64b8d7c6fbae1c014b92a55",
+    "publicSha256": "4c81285fe284acc7b6297a1bb98ffa357a7b201fb64b8d7c6fbae1c014b92a55",
+    "derived": false,
+    "bytes": 89255
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00041.jpg",
+    "rawSha256": "6cafaba61e7fd5a8d4648b8a1104be5ad937cd419be64f12ef0e79279fc96fb4",
+    "publicSha256": "6cafaba61e7fd5a8d4648b8a1104be5ad937cd419be64f12ef0e79279fc96fb4",
+    "derived": false,
+    "bytes": 88699
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00043.jpg",
+    "rawSha256": "c5d1e053b8f406c6c92a633a68cada109087fca95e5cf6a0e9de558ee775d49b",
+    "publicSha256": "c5d1e053b8f406c6c92a633a68cada109087fca95e5cf6a0e9de558ee775d49b",
+    "derived": false,
+    "bytes": 88655
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00042.jpg",
+    "rawSha256": "895cb543efbbf1214033cbdd73bccfad3b052c43b9f510483088d7f47c8629a7",
+    "publicSha256": "895cb543efbbf1214033cbdd73bccfad3b052c43b9f510483088d7f47c8629a7",
+    "derived": false,
+    "bytes": 88653
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00025.jpg",
+    "rawSha256": "c2092c45fd187ec00d3f9eac11485d2788d5dde3458ff7f94a3f98268159d1b3",
+    "publicSha256": "c2092c45fd187ec00d3f9eac11485d2788d5dde3458ff7f94a3f98268159d1b3",
+    "derived": false,
+    "bytes": 89242
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00031.jpg",
+    "rawSha256": "baeee87464c9e23524586a9059b9055b710c65b55073a790b0b0a3c05315e9e6",
+    "publicSha256": "baeee87464c9e23524586a9059b9055b710c65b55073a790b0b0a3c05315e9e6",
+    "derived": false,
+    "bytes": 89438
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00019.jpg",
+    "rawSha256": "f3c6192a2d6bcf3b07ce1400198dffab0f83d13c75e320a148adc73ea814ab1f",
+    "publicSha256": "f3c6192a2d6bcf3b07ce1400198dffab0f83d13c75e320a148adc73ea814ab1f",
+    "derived": false,
+    "bytes": 89272
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00018.jpg",
+    "rawSha256": "941fd4e7ec4d776e7cca7d6173def519b2ca41627141cec515c20bff75147c36",
+    "publicSha256": "941fd4e7ec4d776e7cca7d6173def519b2ca41627141cec515c20bff75147c36",
+    "derived": false,
+    "bytes": 89352
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00030.jpg",
+    "rawSha256": "75d71d2391c45a33e41b926f541c6d33f262c73daf0399ff11360e652056242f",
+    "publicSha256": "75d71d2391c45a33e41b926f541c6d33f262c73daf0399ff11360e652056242f",
+    "derived": false,
+    "bytes": 89429
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00024.jpg",
+    "rawSha256": "86fe94ebb5a29754dbd07f4322681996f7f393b027e990c0784aa2501f0e772b",
+    "publicSha256": "86fe94ebb5a29754dbd07f4322681996f7f393b027e990c0784aa2501f0e772b",
+    "derived": false,
+    "bytes": 89259
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00032.jpg",
+    "rawSha256": "5e8fdb4292bcecfd899147235fb70a7185903be30ad086e38bcbf4016d9b11d5",
+    "publicSha256": "5e8fdb4292bcecfd899147235fb70a7185903be30ad086e38bcbf4016d9b11d5",
+    "derived": false,
+    "bytes": 90200
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00026.jpg",
+    "rawSha256": "e3e93084b4bcb97f4726b50174152ec526d20eeba87ee0ab7e5a4480ecbb0bf0",
+    "publicSha256": "e3e93084b4bcb97f4726b50174152ec526d20eeba87ee0ab7e5a4480ecbb0bf0",
+    "derived": false,
+    "bytes": 89227
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00027.jpg",
+    "rawSha256": "6c2594d9b305f820308655fd4c1a1725e8f60884b1eb2b814da01f5ac35c7fa4",
+    "publicSha256": "6c2594d9b305f820308655fd4c1a1725e8f60884b1eb2b814da01f5ac35c7fa4",
+    "derived": false,
+    "bytes": 89245
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00033.jpg",
+    "rawSha256": "11be47bfd780c6c85aa2dfca81259028c490a16bd618c0469f2b1f5c05de7166",
+    "publicSha256": "11be47bfd780c6c85aa2dfca81259028c490a16bd618c0469f2b1f5c05de7166",
+    "derived": false,
+    "bytes": 88906
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00037.jpg",
+    "rawSha256": "af616f5b1049c1debe4cba6a955391d41f5e60499d97cdcca98ad44ec4ba172a",
+    "publicSha256": "af616f5b1049c1debe4cba6a955391d41f5e60499d97cdcca98ad44ec4ba172a",
+    "derived": false,
+    "bytes": 89239
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00023.jpg",
+    "rawSha256": "d13a23d4b7d6347630e238c9264412c27a11c40fa14c57ce1565487c0751f75f",
+    "publicSha256": "d13a23d4b7d6347630e238c9264412c27a11c40fa14c57ce1565487c0751f75f",
+    "derived": false,
+    "bytes": 89230
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00022.jpg",
+    "rawSha256": "895a1269f8777646f6ccd3df95006b1829f0107bab5c3cd8df52077558cd0e61",
+    "publicSha256": "895a1269f8777646f6ccd3df95006b1829f0107bab5c3cd8df52077558cd0e61",
+    "derived": false,
+    "bytes": 89223
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00036.jpg",
+    "rawSha256": "6d9194aee0c8c68e8d5fdef0330576f9c47f65a990673b25c4f1e43c8a1f3abb",
+    "publicSha256": "6d9194aee0c8c68e8d5fdef0330576f9c47f65a990673b25c4f1e43c8a1f3abb",
+    "derived": false,
+    "bytes": 89256
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00008.jpg",
+    "rawSha256": "3a8c0649aaa72a71e149b94c4eecceb63a496e8dc9d36318203688cad096b61e",
+    "publicSha256": "3a8c0649aaa72a71e149b94c4eecceb63a496e8dc9d36318203688cad096b61e",
+    "derived": false,
+    "bytes": 89060
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00020.jpg",
+    "rawSha256": "a131c090e69dab1133db14367d961e1c99b06a472590d204791a1fee025bb66b",
+    "publicSha256": "a131c090e69dab1133db14367d961e1c99b06a472590d204791a1fee025bb66b",
+    "derived": false,
+    "bytes": 89236
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00034.jpg",
+    "rawSha256": "702794bd43fe91fc8771105d7bde9da0627b1e96bf6d9ac505097c07d7d9de60",
+    "publicSha256": "702794bd43fe91fc8771105d7bde9da0627b1e96bf6d9ac505097c07d7d9de60",
+    "derived": false,
+    "bytes": 89263
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00035.jpg",
+    "rawSha256": "e561df286c64529713de8417a9ce514f911743ea01b295907ac6448ab1c59eb3",
+    "publicSha256": "e561df286c64529713de8417a9ce514f911743ea01b295907ac6448ab1c59eb3",
+    "derived": false,
+    "bytes": 89219
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00021.jpg",
+    "rawSha256": "f0b91886f7bc2f741d1a352c334460bbc5bd19e718fd4aaf76cecbd4f95bd70a",
+    "publicSha256": "f0b91886f7bc2f741d1a352c334460bbc5bd19e718fd4aaf76cecbd4f95bd70a",
+    "derived": false,
+    "bytes": 89247
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00009.jpg",
+    "rawSha256": "95f6dc7beefd8e3dc76692ca3f51663f3edec8f89fae7c27f91c2870adfc30ef",
+    "publicSha256": "95f6dc7beefd8e3dc76692ca3f51663f3edec8f89fae7c27f91c2870adfc30ef",
+    "derived": false,
+    "bytes": 89063
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00004.jpg",
+    "rawSha256": "4ba13575b1ae317b536d51310968b5e39b5fbd70f63ee9deb1938da0bd72c965",
+    "publicSha256": "4ba13575b1ae317b536d51310968b5e39b5fbd70f63ee9deb1938da0bd72c965",
+    "derived": false,
+    "bytes": 89275
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00010.jpg",
+    "rawSha256": "72342f3c115ec27c4b8ac9fdd934b4fdb7e495ef8db4637c93c825d59e64816f",
+    "publicSha256": "72342f3c115ec27c4b8ac9fdd934b4fdb7e495ef8db4637c93c825d59e64816f",
+    "derived": false,
+    "bytes": 89043
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00038.jpg",
+    "rawSha256": "0353faf0b1cd0f068984548b6a667df301c00f40684a9d44626173f2d0e6d66a",
+    "publicSha256": "0353faf0b1cd0f068984548b6a667df301c00f40684a9d44626173f2d0e6d66a",
+    "derived": false,
+    "bytes": 89249
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00039.jpg",
+    "rawSha256": "1403ee4603cb9e324a36bb9eedb1c3c08944bc14a679f0b77cd71fa8fa361ace",
+    "publicSha256": "1403ee4603cb9e324a36bb9eedb1c3c08944bc14a679f0b77cd71fa8fa361ace",
+    "derived": false,
+    "bytes": 89258
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00011.jpg",
+    "rawSha256": "5801bb49cc594941363a3a2909481250ccba725d1f4635bf2589955b608d80c2",
+    "publicSha256": "5801bb49cc594941363a3a2909481250ccba725d1f4635bf2589955b608d80c2",
+    "derived": false,
+    "bytes": 89293
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00005.jpg",
+    "rawSha256": "361849fa8269713b18db24844eef9b7813c9b68545bfbb04474e49be3046aef2",
+    "publicSha256": "361849fa8269713b18db24844eef9b7813c9b68545bfbb04474e49be3046aef2",
+    "derived": false,
+    "bytes": 89264
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/frames.json",
+    "rawSha256": "389429c1d2425aa380ddf540f5e63e5312d7ff1235c06a1d13f387588a0dae16",
+    "publicSha256": "389429c1d2425aa380ddf540f5e63e5312d7ff1235c06a1d13f387588a0dae16",
+    "derived": false,
+    "bytes": 3163
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00013.jpg",
+    "rawSha256": "e09dc12ca7fe99fa6eabc03584ca74e747936d89e96228de8527b3d69c6b77e5",
+    "publicSha256": "e09dc12ca7fe99fa6eabc03584ca74e747936d89e96228de8527b3d69c6b77e5",
+    "derived": false,
+    "bytes": 89276
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00007.jpg",
+    "rawSha256": "e06dc598dad1cd2e409bb6f915aee82af5892916609aea98274a536647dddd5e",
+    "publicSha256": "e06dc598dad1cd2e409bb6f915aee82af5892916609aea98274a536647dddd5e",
+    "derived": false,
+    "bytes": 89048
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00006.jpg",
+    "rawSha256": "0068319f946f25dea994175cf52c38d718e6e9cec4520e5f18f8d4de3b358916",
+    "publicSha256": "0068319f946f25dea994175cf52c38d718e6e9cec4520e5f18f8d4de3b358916",
+    "derived": false,
+    "bytes": 89034
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00012.jpg",
+    "rawSha256": "77b55988a0a09ce681c5c625b84ab99c9363ccb7e49ad1bc52f73c0543aca38c",
+    "publicSha256": "77b55988a0a09ce681c5c625b84ab99c9363ccb7e49ad1bc52f73c0543aca38c",
+    "derived": false,
+    "bytes": 89271
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00016.jpg",
+    "rawSha256": "e5d2ae99e8299dda8dc1387111a5934e348c37fea9683f0780b23287a9446037",
+    "publicSha256": "e5d2ae99e8299dda8dc1387111a5934e348c37fea9683f0780b23287a9446037",
+    "derived": false,
+    "bytes": 89299
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00002.jpg",
+    "rawSha256": "4c529a218205a78940fd40aeec7c2e9487db031fb13b25ec0305a364b89e2061",
+    "publicSha256": "4c529a218205a78940fd40aeec7c2e9487db031fb13b25ec0305a364b89e2061",
+    "derived": false,
+    "bytes": 89237
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00003.jpg",
+    "rawSha256": "586ce7feb5df3c0e8bf4a1f7f80fa9a3b0b5bca5772f9b8026234996502e8ce6",
+    "publicSha256": "586ce7feb5df3c0e8bf4a1f7f80fa9a3b0b5bca5772f9b8026234996502e8ce6",
+    "derived": false,
+    "bytes": 89260
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00017.jpg",
+    "rawSha256": "26c4bab3053e423b055b548993652e6d1fa90a4c745c7da2f6a6e367a106c19c",
+    "publicSha256": "26c4bab3053e423b055b548993652e6d1fa90a4c745c7da2f6a6e367a106c19c",
+    "derived": false,
+    "bytes": 89332
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00029.jpg",
+    "rawSha256": "965be84ad7a699808afaf41307970cc45190aa801adb3f27579150666ba55c2d",
+    "publicSha256": "965be84ad7a699808afaf41307970cc45190aa801adb3f27579150666ba55c2d",
+    "derived": false,
+    "bytes": 89274
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00001.jpg",
+    "rawSha256": "a9d2458b46c20d093b52db70e393a2cc23989c8711c6a7a767046159aaebae09",
+    "publicSha256": "a9d2458b46c20d093b52db70e393a2cc23989c8711c6a7a767046159aaebae09",
+    "derived": false,
+    "bytes": 88978
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00015.jpg",
+    "rawSha256": "ff9239aaf2bd2218cd1e64273aa57c8a5af67a846f89d612911ead095424593a",
+    "publicSha256": "ff9239aaf2bd2218cd1e64273aa57c8a5af67a846f89d612911ead095424593a",
+    "derived": false,
+    "bytes": 89302
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00014.jpg",
+    "rawSha256": "ed8d899434dd9f839df96cda298ff5d06a8a25733b0445ff86a2fe6dabfa1b7d",
+    "publicSha256": "ed8d899434dd9f839df96cda298ff5d06a8a25733b0445ff86a2fe6dabfa1b7d",
+    "derived": false,
+    "bytes": 89265
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00000.jpg",
+    "rawSha256": "03567373b8b3bdc4347f28655fe92badef06479f6a3c6d989f5212da2c69d9ff",
+    "publicSha256": "03567373b8b3bdc4347f28655fe92badef06479f6a3c6d989f5212da2c69d9ff",
+    "derived": false,
+    "bytes": 88958
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00028.jpg",
+    "rawSha256": "fea3de1c7b9f99262e1206d69e44665e5e1d41d46beaf53c296f85384581ae9e",
+    "publicSha256": "fea3de1c7b9f99262e1206d69e44665e5e1d41d46beaf53c296f85384581ae9e",
+    "derived": false,
+    "bytes": 89270
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00049.jpg",
+    "rawSha256": "5f13132e599f0a3b9b7d171576699f128d6c5e5daacc817e0b4094f98e29e181",
+    "publicSha256": "5f13132e599f0a3b9b7d171576699f128d6c5e5daacc817e0b4094f98e29e181",
+    "derived": false,
+    "bytes": 88672
+  },
+  {
+    "path": "focus-real-clock/source-continuous/recording/00048.jpg",
+    "rawSha256": "aa78a40372248f6c4f8e11ca5efae7fa5d2b737351d803be2a85e8641f6401f3",
+    "publicSha256": "aa78a40372248f6c4f8e11ca5efae7fa5d2b737351d803be2a85e8641f6401f3",
+    "derived": false,
+    "bytes": 88664
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00046.jpg",
+    "rawSha256": "1c69efeabc5ab84e7b824d018ffd98c7f6d379966f8234da922491122e2235ca",
+    "publicSha256": "1c69efeabc5ab84e7b824d018ffd98c7f6d379966f8234da922491122e2235ca",
+    "derived": false,
+    "bytes": 88878
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00047.jpg",
+    "rawSha256": "664d879ee91e52e3e41008edf5376e778ed29a3e118872ac3d2e2839df5189f5",
+    "publicSha256": "664d879ee91e52e3e41008edf5376e778ed29a3e118872ac3d2e2839df5189f5",
+    "derived": false,
+    "bytes": 88899
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00051.jpg",
+    "rawSha256": "2f1a96059872d5e4032346385d3929177b26c9815363dec6e461800dd86d52ce",
+    "publicSha256": "2f1a96059872d5e4032346385d3929177b26c9815363dec6e461800dd86d52ce",
+    "derived": false,
+    "bytes": 89143
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00045.jpg",
+    "rawSha256": "cc1bd5e6d4619829caa350056bdd346f977a1b160fee492a8b72788d644a3b37",
+    "publicSha256": "cc1bd5e6d4619829caa350056bdd346f977a1b160fee492a8b72788d644a3b37",
+    "derived": false,
+    "bytes": 88671
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00044.jpg",
+    "rawSha256": "636b378b498d5bb1840880a1853cfeef15916d5547a9cc3c3329105ccf162c80",
+    "publicSha256": "636b378b498d5bb1840880a1853cfeef15916d5547a9cc3c3329105ccf162c80",
+    "derived": false,
+    "bytes": 88695
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00050.jpg",
+    "rawSha256": "71b8185ff721553c1ba706730596e8a634decd497108479fb3f6c4fdd00262d2",
+    "publicSha256": "71b8185ff721553c1ba706730596e8a634decd497108479fb3f6c4fdd00262d2",
+    "derived": false,
+    "bytes": 89119
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00040.jpg",
+    "rawSha256": "d3326fce777a0c8cd55da89035b01b7d197b0e56ed9fda46cdbc040ad5e68154",
+    "publicSha256": "d3326fce777a0c8cd55da89035b01b7d197b0e56ed9fda46cdbc040ad5e68154",
+    "derived": false,
+    "bytes": 88683
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00041.jpg",
+    "rawSha256": "890149f3e48b8656403b3b4c652da7b1ab45c55983900c3f5cf95ae06abb06b9",
+    "publicSha256": "890149f3e48b8656403b3b4c652da7b1ab45c55983900c3f5cf95ae06abb06b9",
+    "derived": false,
+    "bytes": 88689
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00043.jpg",
+    "rawSha256": "b1aadd469c40e0f0cad3ce6c86625e386d10c7be34d93a74ff9e718f0d10a8e1",
+    "publicSha256": "b1aadd469c40e0f0cad3ce6c86625e386d10c7be34d93a74ff9e718f0d10a8e1",
+    "derived": false,
+    "bytes": 88687
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00042.jpg",
+    "rawSha256": "acc8a1ec524a7c02ed6c5401d13b170c7ee318a0a3ae11610193895c9fd35506",
+    "publicSha256": "acc8a1ec524a7c02ed6c5401d13b170c7ee318a0a3ae11610193895c9fd35506",
+    "derived": false,
+    "bytes": 88647
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00025.jpg",
+    "rawSha256": "c2092c45fd187ec00d3f9eac11485d2788d5dde3458ff7f94a3f98268159d1b3",
+    "publicSha256": "c2092c45fd187ec00d3f9eac11485d2788d5dde3458ff7f94a3f98268159d1b3",
+    "derived": false,
+    "bytes": 89242
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00031.jpg",
+    "rawSha256": "667f382ec1b69b625671450537cc5d6c6f389e0c6bd3052c204905507bc10b39",
+    "publicSha256": "667f382ec1b69b625671450537cc5d6c6f389e0c6bd3052c204905507bc10b39",
+    "derived": false,
+    "bytes": 89003
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00019.jpg",
+    "rawSha256": "f3c6192a2d6bcf3b07ce1400198dffab0f83d13c75e320a148adc73ea814ab1f",
+    "publicSha256": "f3c6192a2d6bcf3b07ce1400198dffab0f83d13c75e320a148adc73ea814ab1f",
+    "derived": false,
+    "bytes": 89272
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00018.jpg",
+    "rawSha256": "941fd4e7ec4d776e7cca7d6173def519b2ca41627141cec515c20bff75147c36",
+    "publicSha256": "941fd4e7ec4d776e7cca7d6173def519b2ca41627141cec515c20bff75147c36",
+    "derived": false,
+    "bytes": 89352
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00030.jpg",
+    "rawSha256": "75d71d2391c45a33e41b926f541c6d33f262c73daf0399ff11360e652056242f",
+    "publicSha256": "75d71d2391c45a33e41b926f541c6d33f262c73daf0399ff11360e652056242f",
+    "derived": false,
+    "bytes": 89429
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00024.jpg",
+    "rawSha256": "86fe94ebb5a29754dbd07f4322681996f7f393b027e990c0784aa2501f0e772b",
+    "publicSha256": "86fe94ebb5a29754dbd07f4322681996f7f393b027e990c0784aa2501f0e772b",
+    "derived": false,
+    "bytes": 89259
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00032.jpg",
+    "rawSha256": "37eb524adf71b98b2d20caa1ed876fa3a979b22dfdfd58d7da386453752883ca",
+    "publicSha256": "37eb524adf71b98b2d20caa1ed876fa3a979b22dfdfd58d7da386453752883ca",
+    "derived": false,
+    "bytes": 88970
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00026.jpg",
+    "rawSha256": "e3e93084b4bcb97f4726b50174152ec526d20eeba87ee0ab7e5a4480ecbb0bf0",
+    "publicSha256": "e3e93084b4bcb97f4726b50174152ec526d20eeba87ee0ab7e5a4480ecbb0bf0",
+    "derived": false,
+    "bytes": 89227
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00027.jpg",
+    "rawSha256": "c4755e55bc9d54c71552a0e8f7f5dab20ab5efe25e4ca19f5949a721d2e14225",
+    "publicSha256": "c4755e55bc9d54c71552a0e8f7f5dab20ab5efe25e4ca19f5949a721d2e14225",
+    "derived": false,
+    "bytes": 89262
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00033.jpg",
+    "rawSha256": "292d499fc66f6dd476b987f9847918821315c84cf36aaf97704368cab3f8f828",
+    "publicSha256": "292d499fc66f6dd476b987f9847918821315c84cf36aaf97704368cab3f8f828",
+    "derived": false,
+    "bytes": 89270
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00037.jpg",
+    "rawSha256": "20a2e75160b18bb30c141d6235fe79f4063c49c8af2a7d08a9fc615d7a4f5bb3",
+    "publicSha256": "20a2e75160b18bb30c141d6235fe79f4063c49c8af2a7d08a9fc615d7a4f5bb3",
+    "derived": false,
+    "bytes": 89231
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00023.jpg",
+    "rawSha256": "d13a23d4b7d6347630e238c9264412c27a11c40fa14c57ce1565487c0751f75f",
+    "publicSha256": "d13a23d4b7d6347630e238c9264412c27a11c40fa14c57ce1565487c0751f75f",
+    "derived": false,
+    "bytes": 89230
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00022.jpg",
+    "rawSha256": "895a1269f8777646f6ccd3df95006b1829f0107bab5c3cd8df52077558cd0e61",
+    "publicSha256": "895a1269f8777646f6ccd3df95006b1829f0107bab5c3cd8df52077558cd0e61",
+    "derived": false,
+    "bytes": 89223
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00036.jpg",
+    "rawSha256": "ec212e53c7b0f3dd991ce9ae5610f62d67feb9f6aaae2de4ebcc2872a2406d45",
+    "publicSha256": "ec212e53c7b0f3dd991ce9ae5610f62d67feb9f6aaae2de4ebcc2872a2406d45",
+    "derived": false,
+    "bytes": 89249
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00008.jpg",
+    "rawSha256": "3a8c0649aaa72a71e149b94c4eecceb63a496e8dc9d36318203688cad096b61e",
+    "publicSha256": "3a8c0649aaa72a71e149b94c4eecceb63a496e8dc9d36318203688cad096b61e",
+    "derived": false,
+    "bytes": 89060
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00020.jpg",
+    "rawSha256": "a131c090e69dab1133db14367d961e1c99b06a472590d204791a1fee025bb66b",
+    "publicSha256": "a131c090e69dab1133db14367d961e1c99b06a472590d204791a1fee025bb66b",
+    "derived": false,
+    "bytes": 89236
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00034.jpg",
+    "rawSha256": "a62b93e7c32d0eea15e4f1c5a87c06317434b245dc1c57b3d778a78b343be0f8",
+    "publicSha256": "a62b93e7c32d0eea15e4f1c5a87c06317434b245dc1c57b3d778a78b343be0f8",
+    "derived": false,
+    "bytes": 89246
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00035.jpg",
+    "rawSha256": "52b56a1b00d2285c259ddbc6d5bf042824d83867cd90b8a36b512fe4f99690df",
+    "publicSha256": "52b56a1b00d2285c259ddbc6d5bf042824d83867cd90b8a36b512fe4f99690df",
+    "derived": false,
+    "bytes": 89226
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00021.jpg",
+    "rawSha256": "f0b91886f7bc2f741d1a352c334460bbc5bd19e718fd4aaf76cecbd4f95bd70a",
+    "publicSha256": "f0b91886f7bc2f741d1a352c334460bbc5bd19e718fd4aaf76cecbd4f95bd70a",
+    "derived": false,
+    "bytes": 89247
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00009.jpg",
+    "rawSha256": "95f6dc7beefd8e3dc76692ca3f51663f3edec8f89fae7c27f91c2870adfc30ef",
+    "publicSha256": "95f6dc7beefd8e3dc76692ca3f51663f3edec8f89fae7c27f91c2870adfc30ef",
+    "derived": false,
+    "bytes": 89063
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00004.jpg",
+    "rawSha256": "4ba13575b1ae317b536d51310968b5e39b5fbd70f63ee9deb1938da0bd72c965",
+    "publicSha256": "4ba13575b1ae317b536d51310968b5e39b5fbd70f63ee9deb1938da0bd72c965",
+    "derived": false,
+    "bytes": 89275
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00010.jpg",
+    "rawSha256": "72342f3c115ec27c4b8ac9fdd934b4fdb7e495ef8db4637c93c825d59e64816f",
+    "publicSha256": "72342f3c115ec27c4b8ac9fdd934b4fdb7e495ef8db4637c93c825d59e64816f",
+    "derived": false,
+    "bytes": 89043
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00038.jpg",
+    "rawSha256": "5982ae83142e62c8b516c735a22e0d9608f5c70ac4211b3c2102a4549acc3e07",
+    "publicSha256": "5982ae83142e62c8b516c735a22e0d9608f5c70ac4211b3c2102a4549acc3e07",
+    "derived": false,
+    "bytes": 89234
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00039.jpg",
+    "rawSha256": "95e6a6128c565a19e157c7d79ebb9e62ad578101a020ac986b3dede03d9dd598",
+    "publicSha256": "95e6a6128c565a19e157c7d79ebb9e62ad578101a020ac986b3dede03d9dd598",
+    "derived": false,
+    "bytes": 88671
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00011.jpg",
+    "rawSha256": "5801bb49cc594941363a3a2909481250ccba725d1f4635bf2589955b608d80c2",
+    "publicSha256": "5801bb49cc594941363a3a2909481250ccba725d1f4635bf2589955b608d80c2",
+    "derived": false,
+    "bytes": 89293
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00005.jpg",
+    "rawSha256": "361849fa8269713b18db24844eef9b7813c9b68545bfbb04474e49be3046aef2",
+    "publicSha256": "361849fa8269713b18db24844eef9b7813c9b68545bfbb04474e49be3046aef2",
+    "derived": false,
+    "bytes": 89264
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/frames.json",
+    "rawSha256": "b02dca47a917d202258453df9508724c511f79d8bbb6df76056b83332f365d93",
+    "publicSha256": "b02dca47a917d202258453df9508724c511f79d8bbb6df76056b83332f365d93",
+    "derived": false,
+    "bytes": 3158
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00013.jpg",
+    "rawSha256": "e09dc12ca7fe99fa6eabc03584ca74e747936d89e96228de8527b3d69c6b77e5",
+    "publicSha256": "e09dc12ca7fe99fa6eabc03584ca74e747936d89e96228de8527b3d69c6b77e5",
+    "derived": false,
+    "bytes": 89276
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00007.jpg",
+    "rawSha256": "e06dc598dad1cd2e409bb6f915aee82af5892916609aea98274a536647dddd5e",
+    "publicSha256": "e06dc598dad1cd2e409bb6f915aee82af5892916609aea98274a536647dddd5e",
+    "derived": false,
+    "bytes": 89048
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00006.jpg",
+    "rawSha256": "0068319f946f25dea994175cf52c38d718e6e9cec4520e5f18f8d4de3b358916",
+    "publicSha256": "0068319f946f25dea994175cf52c38d718e6e9cec4520e5f18f8d4de3b358916",
+    "derived": false,
+    "bytes": 89034
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00012.jpg",
+    "rawSha256": "77b55988a0a09ce681c5c625b84ab99c9363ccb7e49ad1bc52f73c0543aca38c",
+    "publicSha256": "77b55988a0a09ce681c5c625b84ab99c9363ccb7e49ad1bc52f73c0543aca38c",
+    "derived": false,
+    "bytes": 89271
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00016.jpg",
+    "rawSha256": "e5d2ae99e8299dda8dc1387111a5934e348c37fea9683f0780b23287a9446037",
+    "publicSha256": "e5d2ae99e8299dda8dc1387111a5934e348c37fea9683f0780b23287a9446037",
+    "derived": false,
+    "bytes": 89299
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00002.jpg",
+    "rawSha256": "4c529a218205a78940fd40aeec7c2e9487db031fb13b25ec0305a364b89e2061",
+    "publicSha256": "4c529a218205a78940fd40aeec7c2e9487db031fb13b25ec0305a364b89e2061",
+    "derived": false,
+    "bytes": 89237
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00003.jpg",
+    "rawSha256": "586ce7feb5df3c0e8bf4a1f7f80fa9a3b0b5bca5772f9b8026234996502e8ce6",
+    "publicSha256": "586ce7feb5df3c0e8bf4a1f7f80fa9a3b0b5bca5772f9b8026234996502e8ce6",
+    "derived": false,
+    "bytes": 89260
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00017.jpg",
+    "rawSha256": "26c4bab3053e423b055b548993652e6d1fa90a4c745c7da2f6a6e367a106c19c",
+    "publicSha256": "26c4bab3053e423b055b548993652e6d1fa90a4c745c7da2f6a6e367a106c19c",
+    "derived": false,
+    "bytes": 89332
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00029.jpg",
+    "rawSha256": "834f0fdd89616495e10b5b40f289e33f169a6c1d5bf103a1eca06ccd4a165d40",
+    "publicSha256": "834f0fdd89616495e10b5b40f289e33f169a6c1d5bf103a1eca06ccd4a165d40",
+    "derived": false,
+    "bytes": 89428
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00001.jpg",
+    "rawSha256": "a9d2458b46c20d093b52db70e393a2cc23989c8711c6a7a767046159aaebae09",
+    "publicSha256": "a9d2458b46c20d093b52db70e393a2cc23989c8711c6a7a767046159aaebae09",
+    "derived": false,
+    "bytes": 88978
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00015.jpg",
+    "rawSha256": "ff9239aaf2bd2218cd1e64273aa57c8a5af67a846f89d612911ead095424593a",
+    "publicSha256": "ff9239aaf2bd2218cd1e64273aa57c8a5af67a846f89d612911ead095424593a",
+    "derived": false,
+    "bytes": 89302
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00014.jpg",
+    "rawSha256": "ed8d899434dd9f839df96cda298ff5d06a8a25733b0445ff86a2fe6dabfa1b7d",
+    "publicSha256": "ed8d899434dd9f839df96cda298ff5d06a8a25733b0445ff86a2fe6dabfa1b7d",
+    "derived": false,
+    "bytes": 89265
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00000.jpg",
+    "rawSha256": "03567373b8b3bdc4347f28655fe92badef06479f6a3c6d989f5212da2c69d9ff",
+    "publicSha256": "03567373b8b3bdc4347f28655fe92badef06479f6a3c6d989f5212da2c69d9ff",
+    "derived": false,
+    "bytes": 88958
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00028.jpg",
+    "rawSha256": "965be84ad7a699808afaf41307970cc45190aa801adb3f27579150666ba55c2d",
+    "publicSha256": "965be84ad7a699808afaf41307970cc45190aa801adb3f27579150666ba55c2d",
+    "derived": false,
+    "bytes": 89274
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00049.jpg",
+    "rawSha256": "5f13132e599f0a3b9b7d171576699f128d6c5e5daacc817e0b4094f98e29e181",
+    "publicSha256": "5f13132e599f0a3b9b7d171576699f128d6c5e5daacc817e0b4094f98e29e181",
+    "derived": false,
+    "bytes": 88672
+  },
+  {
+    "path": "focus-real-clock/packed-continuous/recording/00048.jpg",
+    "rawSha256": "aa78a40372248f6c4f8e11ca5efae7fa5d2b737351d803be2a85e8641f6401f3",
+    "publicSha256": "aa78a40372248f6c4f8e11ca5efae7fa5d2b737351d803be2a85e8641f6401f3",
+    "derived": false,
+    "bytes": 88664
+  },
+  {
+    "path": "focus-followup-review/source-binding.json",
+    "rawSha256": "169e612235720ec994aaf43165621c439f0d2185ae0db823370dfac7077c8cbe",
+    "publicSha256": "169e612235720ec994aaf43165621c439f0d2185ae0db823370dfac7077c8cbe",
+    "derived": false,
+    "bytes": 1451
+  },
+  {
+    "path": "focus-followup-review/report.json",
+    "rawSha256": "a22815a53cc063b7400a836756763f27b9b142471572fab1ca05216bd94dc3a9",
+    "publicSha256": "84a2e5dc132dcf9cb72112030dda801ac7cc596daf344b5aca2f8c571e9fda05",
+    "derived": true,
+    "bytes": 6589
+  },
+  {
+    "path": "focus-followup-review/report.md",
+    "rawSha256": "9a2a0f495469d0a90b9da7fc5d25d6954221cb77cb036637b796bd6fba385907",
+    "publicSha256": "9a2a0f495469d0a90b9da7fc5d25d6954221cb77cb036637b796bd6fba385907",
+    "derived": false,
+    "bytes": 2694
+  },
+  {
+    "path": "focus-clock-review/source-binding.json",
+    "rawSha256": "4a21be4e7ce9f4a7b332ce16406187a3933f96be27fd691f3cd15d65160f2a97",
+    "publicSha256": "4a21be4e7ce9f4a7b332ce16406187a3933f96be27fd691f3cd15d65160f2a97",
+    "derived": false,
+    "bytes": 1178
+  },
+  {
+    "path": "focus-clock-review/report.json",
+    "rawSha256": "449e4e9e455ea28f3782a45019c27a55ad28b8e450245e7777da3a8320910dc0",
+    "publicSha256": "10947b1ce5475aa749217d0430f58e48819be8c1f8a4128f122d0ba7c6f98815",
+    "derived": true,
+    "bytes": 44222
+  },
+  {
+    "path": "focus-clock-review/report.md",
+    "rawSha256": "285db766e4456dffbabdba53454c6d12ca19fa2a5756cebbdaa69fb769ff0479",
+    "publicSha256": "285db766e4456dffbabdba53454c6d12ca19fa2a5756cebbdaa69fb769ff0479",
+    "derived": false,
+    "bytes": 5270
+  },
+  {
+    "path": "focus-clock-review/selected-observations.json",
+    "rawSha256": "30c6166b672002ea2c24bb94946cc1ccdc9fe8557758361af27ab0c4175d17ed",
+    "publicSha256": "374ef844620c410c8df45e669b12e1bd6bb16f7b3aac584fdafa231b7831bae3",
+    "derived": true,
+    "bytes": 8178
+  },
+  {
+    "path": "dialog-closure-review/expected-closure.json",
+    "rawSha256": "02af2e0305005f2e3162c1caf352f7a9c3c069680b90ce58807a327ea59bf73e",
+    "publicSha256": "02af2e0305005f2e3162c1caf352f7a9c3c069680b90ce58807a327ea59bf73e",
+    "derived": false,
+    "bytes": 843
+  },
+  {
+    "path": "dialog-closure-review/report.json",
+    "rawSha256": "e9807288471419357b4dd9054242a26a266503a2df3a2cc56f5c8cb83b53dd87",
+    "publicSha256": "e9807288471419357b4dd9054242a26a266503a2df3a2cc56f5c8cb83b53dd87",
+    "derived": false,
+    "bytes": 16236
+  },
+  {
+    "path": "dialog-closure-review/README.md",
+    "rawSha256": "a8dca0b1bb333bd3b638b20838dda244529702c41c747dabf7179235ac8a6776",
+    "publicSha256": "a8dca0b1bb333bd3b638b20838dda244529702c41c747dabf7179235ac8a6776",
+    "derived": false,
+    "bytes": 1956
+  },
+  {
+    "path": "sidebar-phase-plan/plan.json",
+    "rawSha256": "4d416fe067db580a9a681af00dc416d4ee66cb6f4016c374d1be28336baab36b",
+    "publicSha256": "b51ed8c2cb5eb1a12df1e22e903a3abee052e99e0cdcd2d1c01a6dcf719b2c21",
+    "derived": true,
+    "bytes": 15160
+  },
+  {
+    "path": "sidebar-phase-plan/README.md",
+    "rawSha256": "57d6f3edf69deaab457fd79aede0a463f63648ece32569847168aa1c96f1a644",
+    "publicSha256": "57d6f3edf69deaab457fd79aede0a463f63648ece32569847168aa1c96f1a644",
+    "derived": false,
+    "bytes": 2211
+  },
+  {
+    "path": "dialog-pair-binding.json",
+    "rawSha256": "55b78456727e11a6ba3c3a1f19fc0462c764149b5dca8fdcf074ae9bf10637ed",
+    "publicSha256": "55b78456727e11a6ba3c3a1f19fc0462c764149b5dca8fdcf074ae9bf10637ed",
+    "derived": false,
+    "bytes": 859
+  },
+  {
+    "path": "dialog-local-final-reconciliation.json",
+    "rawSha256": "6ce35e66ea475dedce465ed8fd603aefe2cf345823a8af7b4c412140768b4b63",
+    "publicSha256": "6ce35e66ea475dedce465ed8fd603aefe2cf345823a8af7b4c412140768b4b63",
+    "derived": false,
+    "bytes": 479
+  },
+  {
+    "path": "dialog-classifier-rejection.json",
+    "rawSha256": "ed16021df47187423c3b7a807a520a8d5b4b55da63c505d55fc6bc16f2a35b25",
+    "publicSha256": "5f1b77fdf7686a48ee7a2abddb0bdcc8e94c6130cda6f7f49a8606a5fddd0816",
+    "derived": true,
+    "bytes": 3053
+  },
+  {
+    "path": "verify-new-pair.mjs",
+    "rawSha256": "8d88764fb88b3d196f50895b2b94caa24aefb893cbfdaad0eb86fbf49c1611ac",
+    "publicSha256": "06f41f18150002526914fd05fe3dbf3e67c0011d814eedd62f1c9af51e3681cc",
+    "derived": true,
+    "bytes": 1875
+  },
+  {
+    "path": "dialog-node.log",
+    "rawSha256": "5ad6cd92608b6fb7141b4702f961520b4e3ab9176884653e4408292b3ba427ee",
+    "publicSha256": "5ad6cd92608b6fb7141b4702f961520b4e3ab9176884653e4408292b3ba427ee",
+    "derived": false,
+    "bytes": 9646
+  },
+  {
+    "path": "dialog-parent-focused.json",
+    "rawSha256": "e2fc1a62ea38ce000d43381e155a5e43050a34795dedf7eaaa12eff970a61b75",
+    "publicSha256": "3c5bf69c0465a679d935ed4ee7516ac1aa01152a652112e8b41ab0bb5326d8cf",
+    "derived": true,
+    "bytes": 60875
+  },
+  {
+    "path": "dialog-parent-focused.log",
+    "rawSha256": "19c322ead706516d650b3d0f865ed835e99a1c80f69f09c2f6ea62b303af87b6",
+    "publicSha256": "9fd25435ee0b282abf78249546bf36dc59a83e39dc39e87594312563f7ea5f2a",
+    "derived": true,
+    "bytes": 220008
+  },
+  {
+    "path": "dialog-types.log",
+    "rawSha256": "4e5efd4928ba14a6f5b58246f379dd9b3b49ab6f417b4dd9f79236036710f475",
+    "publicSha256": "6bfcffdd0d63aa66fae2d3e3ff064b31ca36bca3e002e0777fa9a44b171aee10",
+    "derived": true,
+    "bytes": 8791
+  },
+  {
+    "path": "dialog-parent-commit.json",
+    "rawSha256": "9911b116b5f5716e75aa8c73eb21e5c8f79d3c823a93d47c7fdde2d92789b9cd",
+    "publicSha256": "9911b116b5f5716e75aa8c73eb21e5c8f79d3c823a93d47c7fdde2d92789b9cd",
+    "derived": false,
+    "bytes": 195
+  },
+  {
+    "path": "dialog-push.json",
+    "rawSha256": "b1657e36c2ae75ec1959cf32d7efbd599f74c3f16fdb8e1672aa557a020adeb9",
+    "publicSha256": "b1657e36c2ae75ec1959cf32d7efbd599f74c3f16fdb8e1672aa557a020adeb9",
+    "derived": false,
+    "bytes": 337
+  },
+  {
+    "path": "focus-clock-final-binding.json",
+    "rawSha256": "b2d777151d7a8f5d5f44a85c8910fc681960f3263e754f1be14c2162d8e7a32f",
+    "publicSha256": "b2d777151d7a8f5d5f44a85c8910fc681960f3263e754f1be14c2162d8e7a32f",
+    "derived": false,
+    "bytes": 331
+  },
+  {
+    "path": "focus-tdz-binding.json",
+    "rawSha256": "ae1ac6234b1f9feda741bff6b3013611e03111c07ac641c3ec638203dc09e084",
+    "publicSha256": "ae1ac6234b1f9feda741bff6b3013611e03111c07ac641c3ec638203dc09e084",
+    "derived": false,
+    "bytes": 532
+  },
+  {
+    "path": "focus-clock-commit.json",
+    "rawSha256": "ec570fa5079af823b7092f8c88954a9ff4e78c79a7b85b164430616b0a0442df",
+    "publicSha256": "ec570fa5079af823b7092f8c88954a9ff4e78c79a7b85b164430616b0a0442df",
+    "derived": false,
+    "bytes": 259
+  },
+  {
+    "path": "focus-commit-receipt.json",
+    "rawSha256": "fdc08663a7833e0ea5f96fa76427fec6950acc17d10ca5d93786aa8ce97cb89b",
+    "publicSha256": "fdc08663a7833e0ea5f96fa76427fec6950acc17d10ca5d93786aa8ce97cb89b",
+    "derived": false,
+    "bytes": 258
+  },
+  {
+    "path": "focus-push.json",
+    "rawSha256": "fdb079fd781430aa68e62d2dbe2b79d8b56b891a51da02cc0036e33734152f37",
+    "publicSha256": "fdb079fd781430aa68e62d2dbe2b79d8b56b891a51da02cc0036e33734152f37",
+    "derived": false,
+    "bytes": 572
+  },
+  {
+    "path": "focus-unit.log",
+    "rawSha256": "a878ec468fa632c45af1964d294cc27c9e0d581824ff1810e6448f83b5938bcb",
+    "publicSha256": "9f0a567a6ad91697e76de64e6c04bb4bb57f3a5fe4a99c63e3a5133d91e102d7",
+    "derived": true,
+    "bytes": 192962
+  },
+  {
+    "path": "focus-unit-green.log",
+    "rawSha256": "997cebd91c3599a5e59c54865623279403f954596c7ed971198bdc985ac417ff",
+    "publicSha256": "6786dfb34f0d4c7265e2e366e96a644d8896f6f1008804562da930ef6115e174",
+    "derived": true,
+    "bytes": 156599
+  },
+  {
+    "path": "focus-clock-unit-final.log",
+    "rawSha256": "546339dcfb45a18526e57cde6b8cc64d185a35b488de357ba6bb550a06de6877",
+    "publicSha256": "364305e4ea3133ea710ba302af6438aab8d01bff3ec5b6dd68200d02c8662fec",
+    "derived": true,
+    "bytes": 156599
+  },
+  {
+    "path": "focus-falsy-controls.cjs",
+    "rawSha256": "942da86185596731d4929a3781ca5ccf6c58765e6ac5b5ee0ef61d0559eb7b2a",
+    "publicSha256": "708748da28789441833950775cdd435055f1c35e54830acd8f05046f9ac03584",
+    "derived": true,
+    "bytes": 4022
+  },
+  {
+    "path": "focus-falsy-controls.json",
+    "rawSha256": "02af5c322550db134680ea8d9512062d39f1683381b38f47f63b7399a831f952",
+    "publicSha256": "02af5c322550db134680ea8d9512062d39f1683381b38f47f63b7399a831f952",
+    "derived": false,
+    "bytes": 4094
+  },
+  {
+    "path": "focus-scope-controls-v2.cjs",
+    "rawSha256": "a4d99e299dae4a7b07d0e136ff41874acf918e16fe6dccb44e41eac7af9aae4f",
+    "publicSha256": "d5a59e97e715a1af5575064c67a0120e4a1c91fb1f448ac4a8287f715ec9d23a",
+    "derived": true,
+    "bytes": 4524
+  },
+  {
+    "path": "focus-scope-controls-v2.json",
+    "rawSha256": "a54cc9d1f6dafd047992d582700c2855a91b240a3f52fd01e3bfeb5a7fa44cd9",
+    "publicSha256": "a54cc9d1f6dafd047992d582700c2855a91b240a3f52fd01e3bfeb5a7fa44cd9",
+    "derived": false,
+    "bytes": 4223
+  },
+  {
+    "path": "focus-types.log",
+    "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "publicSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "derived": false,
+    "bytes": 0
+  },
+  {
+    "path": "focus-package-build.log",
+    "rawSha256": "f55545003d276e29c470cae241b0b832d73d58ff1813a6782a1fcbfbc2827a20",
+    "publicSha256": "b35bb525760e09d29915ac0fa3ea8948f48468fad10ef186fd452f58f67e4c53",
+    "derived": true,
+    "bytes": 2891
+  },
+  {
+    "path": "focus-manifests.log",
+    "rawSha256": "5ae1a01d0c73335dc4471fee39ec954281f6213449d3cd340a17280849375264",
+    "publicSha256": "0642149dc292bf6e89cec421747587097512ca6b348363d236a476b2c0141298",
+    "derived": true,
+    "bytes": 141
+  },
+  {
+    "path": "focus-kernel.log",
+    "rawSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "publicSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "derived": false,
+    "bytes": 0
+  },
+  {
+    "path": "evening-validation-summary.json",
+    "rawSha256": "c7342ac145c6d22f5f689dad21166e3692c3fbb48d422c293252707206b38075",
+    "publicSha256": "c7342ac145c6d22f5f689dad21166e3692c3fbb48d422c293252707206b38075",
+    "derived": false,
+    "bytes": 1853
+  },
+  {
+    "path": "run-dialog-candidate.py",
+    "rawSha256": "bc49cc02045348677ac29a593bb973ab780b6f270f9faa2787dbddfa30a19a1e",
+    "publicSha256": "4d113cd327c86ed8f750b98958a601737ae7851b11efb5fa42a0b4cad00b5b21",
+    "derived": true,
+    "bytes": 1946
+  },
+  {
+    "path": "run-dialog-baseline.py",
+    "rawSha256": "ea799bfdfd11461ce28e67fcb50d613f609a8026a71b94ba43548cfb24502c23",
+    "publicSha256": "0cf7b6559c88df4dd7aed29928150af164a0b3dce89cb69b081775fecfec5730",
+    "derived": true,
+    "bytes": 1958
+  },
+  {
+    "path": "run-real-focus-products.py",
+    "rawSha256": "c60935472ee1896fce0f300aa1c379bccf8cf6021aa049ce416c56e0cbe0f35f",
+    "publicSha256": "f5cdb37a0c06a53e5e226f30f30b451f238a0fedbdb107c1bdb651668dabbdf7",
+    "derived": true,
+    "bytes": 3064
+  },
+  {
+    "path": "run-real-focus-products-clock.py",
+    "rawSha256": "f7ff371258bc86395016ead3398e451456fa1742b31d746fb6a7d0f1605aaef2",
+    "publicSha256": "203383ec6fa8d0457487d31394d0ab4591e18781b3f3c5b6588e86401b4bd4fb",
+    "derived": true,
+    "bytes": 3070
+  },
+  {
+    "path": "committed-source/focus/experiments/material-v2/continuous-browser.test.mjs",
+    "rawSha256": "3bad8782fc81f3e577c1fc0c770996de31a8d840ee71a870fda502c2474fa9ba",
+    "publicSha256": "3bad8782fc81f3e577c1fc0c770996de31a8d840ee71a870fda502c2474fa9ba",
+    "derived": false,
+    "bytes": 50238,
+    "head": "352af52c42780af46c39d7732fba3f2d8c9e91a8",
+    "repositoryPath": "experiments/material-v2/continuous-browser.test.mjs"
+  },
+  {
+    "path": "committed-source/dialog/apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+    "rawSha256": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e",
+    "publicSha256": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e",
+    "derived": false,
+    "bytes": 29204,
+    "head": "2ca069c1aa80d7d798d246d0d1bd3e96e700e7b0",
+    "repositoryPath": "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts"
+  },
+  {
+    "path": "committed-source/dialog/apps/www/src/content/docs/zh-cn/browser-harness.ts",
+    "rawSha256": "3b425734cfb00602354bdc2b086e70a0434863f7cc3040415631be1627e0c9b6",
+    "publicSha256": "3b425734cfb00602354bdc2b086e70a0434863f7cc3040415631be1627e0c9b6",
+    "derived": false,
+    "bytes": 30379,
+    "head": "2ca069c1aa80d7d798d246d0d1bd3e96e700e7b0",
+    "repositoryPath": "apps/www/src/content/docs/zh-cn/browser-harness.ts"
+  },
+  {
+    "path": "committed-source/dialog/scripts/test/server-readiness.mjs",
+    "rawSha256": "4bbc332f34ebf8a9c24f0ccc01d53438dd7146e86118a932eacc63d819105fda",
+    "publicSha256": "4bbc332f34ebf8a9c24f0ccc01d53438dd7146e86118a932eacc63d819105fda",
+    "derived": false,
+    "bytes": 4717,
+    "head": "2ca069c1aa80d7d798d246d0d1bd3e96e700e7b0",
+    "repositoryPath": "scripts/test/server-readiness.mjs"
+  },
+  {
+    "path": "committed-source/dialog/scripts/test/check-dialog-baseline-evidence.mjs",
+    "rawSha256": "d8bd261c9d042381a861a463dec0b8b40b8d2a90520e4702d2b122d28986b0fd",
+    "publicSha256": "d8bd261c9d042381a861a463dec0b8b40b8d2a90520e4702d2b122d28986b0fd",
+    "derived": false,
+    "bytes": 12841,
+    "head": "2ca069c1aa80d7d798d246d0d1bd3e96e700e7b0",
+    "repositoryPath": "scripts/test/check-dialog-baseline-evidence.mjs"
+  }
+]
