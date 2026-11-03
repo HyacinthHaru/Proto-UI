@@ -1,0 +1,21 @@
+{
+  "branch": "codex/dialog-mask-identity",
+  "parent": "2e17ac9558ce87fbbe9a750da4d81b9cf89ff190",
+  "tree": "8897e8119f2ddcd2f559bb9c84268dce1a757be2",
+  "files": [
+    {
+      "path": "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+      "sha256": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e"
+    },
+    {
+      "path": "internal/records/2026-11-03-dialog-mask-identity.md",
+      "sha256": "7deb059bef3affb40e82d4463ed107a55cf421e44623100300e9285b39318544"
+    },
+    {
+      "path": "scripts/test/check-dialog-baseline-evidence.mjs",
+      "sha256": "59395534b03f3e51a1fa93a6759131140fdda73a992ef1dce434b4fc899acb07"
+    }
+  ],
+  "canonicalCI": "pending",
+  "independentAcceptance": "not given"
+}

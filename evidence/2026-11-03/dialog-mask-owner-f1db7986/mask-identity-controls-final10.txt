@@ -1,0 +1,122 @@
+{
+  "startedAt": "2026-11-03T00:52:58.914Z",
+  "finishedAt": "2026-11-03T00:52:59.694Z",
+  "node": "v24.21.0",
+  "scriptSha256": "bed31340347935665c7bfdb462b2b3114398dba44fe3fb9db80c71d87a6cf8c8",
+  "startedFromExactProbeSha256": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e",
+  "factsSourceSha256": "a55c1e89347102cc06a8754ff8786bf5718f2435a29683ca72e5d2ef38dfe1fa",
+  "browser": "155.0.8059.39",
+  "kind": "isolated synthetic DOM identity controls using the actual facts callback, not a real product journey",
+  "rows": [
+    {
+      "name": "unrelated-first-present-root",
+      "passed": true,
+      "status": "resolved",
+      "width": 390,
+      "originalWidth": 0,
+      "selectedMaskId": "mask",
+      "originalId": null,
+      "maskCount": 1,
+      "rootCount": 1
+    },
+    {
+      "name": "other-owner-full-mask",
+      "passed": true,
+      "status": "resolved",
+      "width": 390,
+      "originalWidth": 390,
+      "selectedMaskId": "mask",
+      "originalId": "other-owner-mask",
+      "maskCount": 1,
+      "rootCount": 1
+    },
+    {
+      "name": "old-generation-full-mask",
+      "passed": true,
+      "status": "resolved",
+      "width": 390,
+      "originalWidth": 390,
+      "selectedMaskId": "mask",
+      "originalId": "old-mask",
+      "maskCount": 1,
+      "rootCount": 1
+    },
+    {
+      "name": "mask-without-presence",
+      "passed": true,
+      "status": "unresolved",
+      "width": null,
+      "originalWidth": 0,
+      "selectedMaskId": "mask",
+      "originalId": null,
+      "maskCount": 1,
+      "rootCount": 1
+    },
+    {
+      "name": "missing-mask",
+      "passed": true,
+      "status": "unresolved",
+      "width": null,
+      "originalWidth": 0,
+      "selectedMaskId": null,
+      "originalId": null,
+      "maskCount": 0,
+      "rootCount": 1
+    },
+    {
+      "name": "duplicate-mask",
+      "passed": true,
+      "status": "unresolved",
+      "width": null,
+      "originalWidth": 0,
+      "selectedMaskId": "mask",
+      "originalId": null,
+      "maskCount": 2,
+      "rootCount": 1
+    },
+    {
+      "name": "duplicate-dialog-root",
+      "passed": true,
+      "status": "unresolved",
+      "width": null,
+      "originalWidth": 0,
+      "selectedMaskId": "mask",
+      "originalId": null,
+      "maskCount": 1,
+      "rootCount": 2
+    },
+    {
+      "name": "wrong-generation-host",
+      "passed": true,
+      "status": "unresolved",
+      "width": null,
+      "originalWidth": 0,
+      "selectedMaskId": "mask",
+      "originalId": null,
+      "maskCount": 1,
+      "rootCount": 1
+    },
+    {
+      "name": "wrong-controls",
+      "passed": true,
+      "status": "unresolved",
+      "width": null,
+      "originalWidth": 0,
+      "selectedMaskId": "mask",
+      "originalId": null,
+      "maskCount": 1,
+      "rootCount": 1
+    },
+    {
+      "name": "real-mask-zero-rect",
+      "passed": true,
+      "status": "resolved",
+      "width": 0,
+      "originalWidth": 0,
+      "selectedMaskId": "mask",
+      "originalId": null,
+      "maskCount": 1,
+      "rootCount": 1
+    }
+  ]
+}

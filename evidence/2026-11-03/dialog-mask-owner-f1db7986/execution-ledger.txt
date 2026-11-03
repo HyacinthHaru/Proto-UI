@@ -1,0 +1,86 @@
+[
+  {
+    "name": "diagnostic-original",
+    "probeSha256": "cb755b1169b1a03b36927a45da5afd458a1399288114253a7a4474f0fb85063c",
+    "startedAt": "2026-11-03T00:37:56.797526+00:00",
+    "finishedAt": "2026-11-03T00:38:41.982970+00:00",
+    "passed": 0,
+    "failed": 8,
+    "pending": 0,
+    "exitCode": 1,
+    "reportSha256": "39f67a2916bebdac33b9a71e9b536597e788f0cdf1086d732b72b2870cba4ba5",
+    "pngCount": 32
+  },
+  {
+    "name": "candidate-identity-fix",
+    "probeSha256": "1fde30e682e94e046da93f1b0603885b76d282ad2947ecf272f576f28bd04145",
+    "startedAt": "2026-11-03T00:44:33.027967+00:00",
+    "finishedAt": "2026-11-03T00:45:32.609062+00:00",
+    "passed": 6,
+    "failed": 2,
+    "pending": 0,
+    "exitCode": 1,
+    "reportSha256": "63d55359c671237ca08cc45b10dee7843a9184f06eed79295902ed0d3792fe07",
+    "pngCount": 92
+  },
+  {
+    "name": "candidate-wait-preserved",
+    "probeSha256": "95aef8d65cafd077e2e293c1957b181950f207c910412b789ca54349dd8f6c94",
+    "startedAt": "2026-11-03T00:46:33.746422+00:00",
+    "finishedAt": "2026-11-03T00:47:38.888446+00:00",
+    "passed": 8,
+    "failed": 0,
+    "pending": 0,
+    "exitCode": 0,
+    "reportSha256": "a5646f35e8b66996ec0dba1b403bbab3d14c09bf742cc2a3a5df1bbefa530057",
+    "pngCount": 120
+  },
+  {
+    "name": "candidate-presence-guard",
+    "probeSha256": "d3856a24aa01d2e0d42a77342176199450031b7404b78930656b3cd5faba87e1",
+    "startedAt": "2026-11-03T00:49:33.754227+00:00",
+    "finishedAt": "2026-11-03T00:50:38.065632+00:00",
+    "passed": 8,
+    "failed": 0,
+    "pending": 0,
+    "exitCode": 0,
+    "reportSha256": "7523ff6f8b310478cb3f3239247dc41403bf992397ea902fb2155e773ca57e0a",
+    "pngCount": 120
+  },
+  {
+    "name": "candidate-final-50f13884",
+    "probeSha256": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e",
+    "startedAt": "2026-11-03T00:53:10.458939+00:00",
+    "finishedAt": "2026-11-03T00:54:15.554558+00:00",
+    "passed": 8,
+    "failed": 0,
+    "pending": 0,
+    "exitCode": 0,
+    "reportSha256": "0508d25d693b4dbe75722cd265d0bcd990f3b1bddb8cd101163eaab9aacc4408",
+    "pngCount": 120
+  },
+  {
+    "name": "baseline-final-50f13884",
+    "probeSha256": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e",
+    "startedAt": "2026-11-03T00:54:22.605804+00:00",
+    "finishedAt": "2026-11-03T00:54:25.932220+00:00",
+    "passed": 0,
+    "failed": 0,
+    "pending": 8,
+    "exitCode": 1,
+    "reportSha256": "bd4044ab3ef474754e17de2e4893b052bf59ca312d913ecf11185b5137e6128d",
+    "pngCount": 0
+  },
+  {
+    "name": "baseline-locked-50f13884",
+    "probeSha256": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e",
+    "startedAt": "2026-11-03T00:56:25.912629+00:00",
+    "finishedAt": "2026-11-03T00:56:52.921310+00:00",
+    "passed": 0,
+    "failed": 8,
+    "pending": 0,
+    "exitCode": 1,
+    "reportSha256": "58fd8983dd3b36264a40d2b47cb7aa9fa5f145ad035a36c5750dcedd0f73b825",
+    "pngCount": 29
+  }
+]
