@@ -1,0 +1,12 @@
+{
+  "pureMain": "7969265c2104464acac2ac761b46906e7570f320",
+  "combo": "db909f378c978aae024b5658631208dfb031c6a5",
+  "mainIssueCount": 51,
+  "comboIssueCount": 51,
+  "identicalIssueSet": true,
+  "pureMainBuildExit": 0,
+  "pureMainGateExit": 1,
+  "comboGateExit": 1,
+  "mainBuildLogSha256": "7ea4815941513f8f17d0d639eaa99efad26e678cd8682384c63e67ad725840ce",
+  "mainGraphSha256": "dc8cd4f1f67916b0a13ebedffbb8f56cc8867cbb15c0d5831fe1fc96a899db25"
+}
