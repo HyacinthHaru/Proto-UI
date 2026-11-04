@@ -1,0 +1,1755 @@
+{
+  "actualExecutionHead": "ee0a6b7c1be7e569006597944eae4f84d5190583",
+  "latestReviewedMain": "6eb8ad0c4e8ac5c05fee762d096fd6f3d25f4063",
+  "virtualMergeTree": "9b9134797ce929596a3c7741f9c1e0e41e5fac7c",
+  "scope": "Read-only merge-tree construction, no commit/integration/test execution",
+  "totalRecordedBundleInputs": 435,
+  "trackedBundleInputCount": 435,
+  "unchangedTrackedInputs": [
+    {
+      "path": "packages/adapters/base/src/events/pointer-contact.ts",
+      "blob": "2d3e6fea704ce9339272a1d650ce10ecd2cc58e1"
+    },
+    {
+      "path": "packages/adapters/base/src/events/pointer-sample.ts",
+      "blob": "6741425420f11e1f43078cb8e1c5db48009d4c73"
+    },
+    {
+      "path": "packages/adapters/base/src/events/web-default-action.ts",
+      "blob": "aaed0a223bb7c8a914f0fd13aaad2a9abfb8b1b0"
+    },
+    {
+      "path": "packages/adapters/base/src/events/web-event-router.ts",
+      "blob": "723de0ca1c732cfd5dcb8ba04b445c32bafe803a"
+    },
+    {
+      "path": "packages/adapters/base/src/gate/event-gate.ts",
+      "blob": "0e894727216f938b102a856217b6c98170f2ff9d"
+    },
+    {
+      "path": "packages/adapters/base/src/gestures/web-axis-input-host.ts",
+      "blob": "0b559476b8911e0d4c780c9d8f456a34ee61e5de"
+    },
+    {
+      "path": "packages/adapters/base/src/gestures/web-move-click-arbitration.ts",
+      "blob": "6059d6bf7a3786058047cba450d0893b8b49e3f3"
+    },
+    {
+      "path": "packages/adapters/base/src/gestures/web-move-gesture-host.ts",
+      "blob": "abb06b29150d2efa44952cca9d0c2ffb830c716b"
+    },
+    {
+      "path": "packages/adapters/base/src/host/adapter-host.ts",
+      "blob": "9271baa9a6511a77e453483414a8725480a4d422"
+    },
+    {
+      "path": "packages/adapters/base/src/host/exposes.ts",
+      "blob": "a6146dc8fe5fbd8282d178d4f9c852da958d5871"
+    },
+    {
+      "path": "packages/adapters/base/src/host/instance-associations.ts",
+      "blob": "365d791c4302640a2b95e15f213b411cfc44a216"
+    },
+    {
+      "path": "packages/adapters/base/src/host/surface-projection.ts",
+      "blob": "e497ba70222426ee38bb7feb9acfa9fc1250537e"
+    },
+    {
+      "path": "packages/adapters/base/src/host/view-epoch-owner.ts",
+      "blob": "eaf32dc77b92556abd2ed60a024e75a5b5fc60eb"
+    },
+    {
+      "path": "packages/adapters/base/src/host/view-visibility.ts",
+      "blob": "e964327e7f0a723c0e0b272f2dcaacc9333e7335"
+    },
+    {
+      "path": "packages/adapters/base/src/index.ts",
+      "blob": "023e5d709892d1cee0a7fd178bcd84b14daa5ab9"
+    },
+    {
+      "path": "packages/adapters/base/src/lifecycle/teardown.ts",
+      "blob": "7a1da1b6c5f13ffe692ceef2fd2b5f2e986e8921"
+    },
+    {
+      "path": "packages/adapters/base/src/material/contact-carrier.ts",
+      "blob": "26168a5e07243cad742193dbce348bbe33eff822"
+    },
+    {
+      "path": "packages/adapters/base/src/material/contact-motion.ts",
+      "blob": "26c29c228a47d188f6298c800a2e8ee932af1987"
+    },
+    {
+      "path": "packages/adapters/base/src/material/contact-profile.ts",
+      "blob": "d84b08103e2e61c4437a8f8a82f4dde068063db5"
+    },
+    {
+      "path": "packages/adapters/base/src/material/geometry-watch.ts",
+      "blob": "db9690300d85640a426717277563b904a91dcaa7"
+    },
+    {
+      "path": "packages/adapters/base/src/material/image-prepare.ts",
+      "blob": "a32bf02154fb85b351685487e22de4ce6c1b1ff0"
+    },
+    {
+      "path": "packages/adapters/base/src/material/index.ts",
+      "blob": "902ed53ed7f13ea97369c53b733b76cba343c0ee"
+    },
+    {
+      "path": "packages/adapters/base/src/material/initial-paint-bridge.ts",
+      "blob": "c68abf807554c6734ffa8543fad028e3e02639fb"
+    },
+    {
+      "path": "packages/adapters/base/src/material/liquidgl-kernel.generated.ts",
+      "blob": "63543476cd7cc3f35556b71e94b81d421871e222"
+    },
+    {
+      "path": "packages/adapters/base/src/material/paint-mutations.ts",
+      "blob": "f9c6a79f63e8c3a19dc5f7e2b14a45c5125a39f2"
+    },
+    {
+      "path": "packages/adapters/base/src/material/preferences.ts",
+      "blob": "9e5e7be3bcc5e400a9cb1c61eae629152347e74b"
+    },
+    {
+      "path": "packages/adapters/base/src/material/program-pool.ts",
+      "blob": "5b01be1c18f30d623d227abb1225f97d4a04f387"
+    },
+    {
+      "path": "packages/adapters/base/src/material/program.ts",
+      "blob": "a94c98b787b869f29bac54194489755ccd1a9eec"
+    },
+    {
+      "path": "packages/adapters/base/src/material/sink.ts",
+      "blob": "bec336871055aab4b015825979fe83d22b0be89f"
+    },
+    {
+      "path": "packages/adapters/base/src/material/source.ts",
+      "blob": "db2f7fe95d85b3ec4b6656e846e59873ce4a0deb"
+    },
+    {
+      "path": "packages/adapters/base/src/material/style-tint-profile.ts",
+      "blob": "d84b4869afdc86fae962801b46a18579ed1daf47"
+    },
+    {
+      "path": "packages/adapters/base/src/material/style.ts",
+      "blob": "6f677310e3829889afc038c726228bc3e19ec286"
+    },
+    {
+      "path": "packages/adapters/base/src/motion/web-presence-presentation.ts",
+      "blob": "89828ff457ae3f956f8dc52c1f437e595342700e"
+    },
+    {
+      "path": "packages/adapters/base/src/motion/web-resident-motion.ts",
+      "blob": "8c7ca1376b3715fc83905290d019299f5139746e"
+    },
+    {
+      "path": "packages/adapters/base/src/platform/focus-entry.ts",
+      "blob": "23c164e7ec023efa82b1388c2b4c6aaa4909970d"
+    },
+    {
+      "path": "packages/adapters/base/src/platform/focus-order.ts",
+      "blob": "5b8416591ca017780b366fedfd9e79a96c3d1fa9"
+    },
+    {
+      "path": "packages/adapters/base/src/platform/instance-tree.ts",
+      "blob": "29736afa27b5a662fedd5b4c27e349a5fd360c26"
+    },
+    {
+      "path": "packages/adapters/base/src/platform/layout-ready.ts",
+      "blob": "45070c0f0179eec70232e1bf033af7d8597785e8"
+    },
+    {
+      "path": "packages/adapters/base/src/platform/portal-destination.ts",
+      "blob": "0d494416e9243011a1cfa256a49a513813c8ea8c"
+    },
+    {
+      "path": "packages/adapters/base/src/platform/portal-direction.ts",
+      "blob": "baa1299e61318b009b47999550aad9eb4461be89"
+    },
+    {
+      "path": "packages/adapters/base/src/platform/portal-inline-size.ts",
+      "blob": "2888128931272646ce6e2af9d3462017a6cdec32"
+    },
+    {
+      "path": "packages/adapters/base/src/platform/web-color-scheme-source.ts",
+      "blob": "4d5463d06a11c48a17d174de4d7d08262487e01b"
+    },
+    {
+      "path": "packages/adapters/base/src/platform/web-owned-decoration-portal.ts",
+      "blob": "46c0f7d236e3ef8dd2cf5e08992e9d236c1dc85d"
+    },
+    {
+      "path": "packages/adapters/base/src/platform/web-owned-decoration.ts",
+      "blob": "bf66ba23490f43aae98f15f6584aa4199bf9dee9"
+    },
+    {
+      "path": "packages/adapters/base/src/platform/web-preference-source.ts",
+      "blob": "4aaba960004967832c84697849db2ca1705ab5a1"
+    },
+    {
+      "path": "packages/adapters/base/src/platform/web-preferences.ts",
+      "blob": "705106115cb3f888625e7acbda626ad45a093859"
+    },
+    {
+      "path": "packages/adapters/base/src/platform/web-style-support-source.ts",
+      "blob": "772994ad2265dfeacd8e9911dc2a85b607241907"
+    },
+    {
+      "path": "packages/adapters/base/src/platform/web-viewport-source.ts",
+      "blob": "ee7b68cb2dcf69ee0085eb311550f825a787091f"
+    },
+    {
+      "path": "packages/adapters/base/src/public-types.ts",
+      "blob": "e4454ab51b5e0ffdd35fe8db0743cc7550651469"
+    },
+    {
+      "path": "packages/adapters/base/src/types.ts",
+      "blob": "edfc94d59d46e7476a55627f962457b2bd31155e"
+    },
+    {
+      "path": "packages/adapters/base/src/wiring/caps-builder.ts",
+      "blob": "02d78dcfc519107abae9ff44f740bcc81185f746"
+    },
+    {
+      "path": "packages/adapters/base/src/wiring/host-wiring.ts",
+      "blob": "a95b5a3852b4c7d2cde8c782db2341074bef5ca2"
+    },
+    {
+      "path": "packages/adapters/react/src/adapt.ts",
+      "blob": "790f9386a2e859d80e1485e7f94cc5d3fa67a7ae"
+    },
+    {
+      "path": "packages/adapters/react/src/index.ts",
+      "blob": "a193d16959a61bca2a59144408c2da37341cc19b"
+    },
+    {
+      "path": "packages/adapters/react/src/platform/instance-tree.ts",
+      "blob": "c99604702111d38818a0f32b66a2238111a68c2a"
+    },
+    {
+      "path": "packages/adapters/react/src/platform/meta.ts",
+      "blob": "7494aa5933446c151cc994c49a5f9123faa58789"
+    },
+    {
+      "path": "packages/adapters/react/src/runtime/effects-port.ts",
+      "blob": "43368fcf4c6dc0ac6a3fe1f5565c19c51115356f"
+    },
+    {
+      "path": "packages/adapters/react/src/runtime/modules.ts",
+      "blob": "fe0dc3c14c82d721ef7c13846822c32d0abcdb4c"
+    },
+    {
+      "path": "packages/adapters/react/src/runtime/session.ts",
+      "blob": "4608eede9f04de727fa0a27340956734c38cd734"
+    },
+    {
+      "path": "packages/adapters/react/src/template.ts",
+      "blob": "78714f7a54f70da130c7c4c1a793a5f5900dc345"
+    },
+    {
+      "path": "packages/adapters/react/src/types.ts",
+      "blob": "94a510c105f21c946b6580633853b83c2da14b71"
+    },
+    {
+      "path": "packages/adapters/vue/src/adapt.ts",
+      "blob": "41bd4aac5f365cf9ad3a2f214cbb56768ba00aec"
+    },
+    {
+      "path": "packages/adapters/vue/src/index.ts",
+      "blob": "b413823cc6e1dc53aed4c7bd0977304e54a77c4a"
+    },
+    {
+      "path": "packages/adapters/vue/src/platform/instance-tree.ts",
+      "blob": "1fe293423353529ff7b3d8fc52d99026be3a5296"
+    },
+    {
+      "path": "packages/adapters/vue/src/platform/meta.ts",
+      "blob": "7494aa5933446c151cc994c49a5f9123faa58789"
+    },
+    {
+      "path": "packages/adapters/vue/src/runtime/effects-port.ts",
+      "blob": "6250c270c325ac7d9e45829b79ed34f2a9826a37"
+    },
+    {
+      "path": "packages/adapters/vue/src/runtime/modules.ts",
+      "blob": "f5fda79a9c2118b8194ea325e0d36a7db38233b0"
+    },
+    {
+      "path": "packages/adapters/vue/src/runtime/session.ts",
+      "blob": "a6ea9efb9d25437473da66ef5a898a5c294c7d86"
+    },
+    {
+      "path": "packages/adapters/vue/src/template.ts",
+      "blob": "ed103f05cef61b3799c123121c27b4675f2ddead"
+    },
+    {
+      "path": "packages/adapters/vue/src/types.ts",
+      "blob": "5a64cc8bffb926fc72995eb670c541ffc7106cc3"
+    },
+    {
+      "path": "packages/adapters/vue2/src/adapt.ts",
+      "blob": "3169320ee0a43de859885c0066559b3ce386f8a7"
+    },
+    {
+      "path": "packages/adapters/vue2/src/index.ts",
+      "blob": "66d077cfc6324aa8c00fddd831aabf38d250f30b"
+    },
+    {
+      "path": "packages/adapters/vue2/src/platform/instance-tree.ts",
+      "blob": "0eddd3674e2e414da6e5d30f6ea25c538fd788b4"
+    },
+    {
+      "path": "packages/adapters/vue2/src/platform/meta.ts",
+      "blob": "7494aa5933446c151cc994c49a5f9123faa58789"
+    },
+    {
+      "path": "packages/adapters/vue2/src/runtime/effects-port.ts",
+      "blob": "968d9612d23b99cb488c94d40e001f54a51763ac"
+    },
+    {
+      "path": "packages/adapters/vue2/src/runtime/modules.ts",
+      "blob": "2688e75e355292a152384da151ba40c8407ffa54"
+    },
+    {
+      "path": "packages/adapters/vue2/src/runtime/session.ts",
+      "blob": "f7aa811490b0b2a80dd9f599b89f2a523710d59b"
+    },
+    {
+      "path": "packages/adapters/vue2/src/template.ts",
+      "blob": "a1c1f8ab9d15b8e933b56343d80edd09ceaba6ea"
+    },
+    {
+      "path": "packages/adapters/vue2/src/types.ts",
+      "blob": "cee8f09fbc2204558dd519d32241a879018e373f"
+    },
+    {
+      "path": "packages/adapters/web-component/src/adapt.ts",
+      "blob": "528b084121c92805b1b213e67cf050007923b493"
+    },
+    {
+      "path": "packages/adapters/web-component/src/color-scheme-source.ts",
+      "blob": "4232f966d77a5b0ad1b89bff70fb3db40c35d408"
+    },
+    {
+      "path": "packages/adapters/web-component/src/commit.ts",
+      "blob": "9d275dc4ca1778242c55cdefd58bd45faa66e819"
+    },
+    {
+      "path": "packages/adapters/web-component/src/debug/hooks.ts",
+      "blob": "5ef1996087b9024434b1904e616da5904c13dd75"
+    },
+    {
+      "path": "packages/adapters/web-component/src/feedback-style.ts",
+      "blob": "96835b02bef76ec8ef3008ecf1ca662e294c6bc9"
+    },
+    {
+      "path": "packages/adapters/web-component/src/focus-scope-targets.ts",
+      "blob": "68746494667b4ec895885145d06518d4f2e63f7f"
+    },
+    {
+      "path": "packages/adapters/web-component/src/host-display.ts",
+      "blob": "fe9168ee2039b7efa754e3680b18e5fc4539c5da"
+    },
+    {
+      "path": "packages/adapters/web-component/src/index.ts",
+      "blob": "76c9240902246d41eba21f6cf69a5fecb9aa0ecd"
+    },
+    {
+      "path": "packages/adapters/web-component/src/keyed-meta-sources.ts",
+      "blob": "164a2f0551b6ec19a3f4363ed354ca4744c15b4f"
+    },
+    {
+      "path": "packages/adapters/web-component/src/material/owned-texture-sink.ts",
+      "blob": "032b68e07ab66dfdd66b6b28d5aef860411c75f4"
+    },
+    {
+      "path": "packages/adapters/web-component/src/native-text-layout.ts",
+      "blob": "faf22e43310f8751d44581fac53b7f04c4446037"
+    },
+    {
+      "path": "packages/adapters/web-component/src/owned-decoration.ts",
+      "blob": "f7f09e0fb9fbf13c404fa46be4ecc4e414e44b08"
+    },
+    {
+      "path": "packages/adapters/web-component/src/owned-relocation.ts",
+      "blob": "6c946a5cbf57ae18dbbdaa1e2d4023e17f9ad2d3"
+    },
+    {
+      "path": "packages/adapters/web-component/src/platform/instance-tree.ts",
+      "blob": "360f6483ea64fc810feb4ab14fee4264c559a6a4"
+    },
+    {
+      "path": "packages/adapters/web-component/src/platform/meta.ts",
+      "blob": "7494aa5933446c151cc994c49a5f9123faa58789"
+    },
+    {
+      "path": "packages/adapters/web-component/src/portal-conceal.ts",
+      "blob": "54b2ce90791197f72b6dcff8461b8938a524bb5e"
+    },
+    {
+      "path": "packages/adapters/web-component/src/portal-mount.ts",
+      "blob": "45516d96694d94b13eb30f43f7f69156be932488"
+    },
+    {
+      "path": "packages/adapters/web-component/src/props.ts",
+      "blob": "f8d47ca59cf22e0bafc0e9c7475f4d324389c262"
+    },
+    {
+      "path": "packages/adapters/web-component/src/runtime/effects-port.ts",
+      "blob": "462118e4b2ad9704a24544d80139792f1de511db"
+    },
+    {
+      "path": "packages/adapters/web-component/src/runtime/experimental-visual-consumer.ts",
+      "blob": "1627ce3c2d8218433a8a0917a74979a0d027a867"
+    },
+    {
+      "path": "packages/adapters/web-component/src/runtime/modules.ts",
+      "blob": "e7f06f2a77edd068b70c591561e97457c04dfab9"
+    },
+    {
+      "path": "packages/adapters/web-component/src/runtime/scroll-target.ts",
+      "blob": "a5190138b2eadcd9c8d5021c031569fddbde95f4"
+    },
+    {
+      "path": "packages/adapters/web-component/src/runtime/session.ts",
+      "blob": "df139b5b6794645212d0a411f72d40788c810331"
+    },
+    {
+      "path": "packages/adapters/web-component/src/shadow-color-scheme-environment.ts",
+      "blob": "485e91094fe75eb974553ba97abbf44760afc7f9"
+    },
+    {
+      "path": "packages/adapters/web-component/src/shadow-inner-surface.ts",
+      "blob": "e7d58d9092c2c3224cf7a5123e75af26d14f4ebb"
+    },
+    {
+      "path": "packages/adapters/web-component/src/shadow-owner-shell.ts",
+      "blob": "e7cae486d08277a6f4c8844be039995ee1b7be8a"
+    },
+    {
+      "path": "packages/adapters/web-component/src/shadow-profile.ts",
+      "blob": "d67af6d346786cde8edfbb54824848d0d6b412a0"
+    },
+    {
+      "path": "packages/adapters/web-component/src/shadow-split-effects.ts",
+      "blob": "794717c772df3a2a0076c6e44f6cc01e26f172a5"
+    },
+    {
+      "path": "packages/adapters/web-component/src/shadow-split-meta.ts",
+      "blob": "a14994d567e3b84048385d1d4c23afe63e708948"
+    },
+    {
+      "path": "packages/adapters/web-component/src/shadow-split-resources.ts",
+      "blob": "8acd833b7c3d07d6d492c34bd01b2f65389febc9"
+    },
+    {
+      "path": "packages/adapters/web-component/src/shadow-style-artifact.ts",
+      "blob": "a384f745333b777afaac4cd7b60cde1e178d5a40"
+    },
+    {
+      "path": "packages/adapters/web-component/src/shadow-stylesheet-owner.ts",
+      "blob": "3114701b81694eba1f7cf5dbe9c9503eba182f1b"
+    },
+    {
+      "path": "packages/adapters/web-component/src/shadow-text-control-surface.ts",
+      "blob": "e096743f4884987ef07bb0cb03f422ddb6b365c6"
+    },
+    {
+      "path": "packages/adapters/web-component/src/slot-projector.ts",
+      "blob": "19bb77e10599ca82e7a0bed74c133c91832655d2"
+    },
+    {
+      "path": "packages/adapters/web-component/src/style.ts",
+      "blob": "1e2f83a812217ad03b96cd0703fedd5e9ef28882"
+    },
+    {
+      "path": "packages/adapters/web-component/src/types.ts",
+      "blob": "c2aa33e6b205a8cb094e1c44ae700eb0f597af28"
+    },
+    {
+      "path": "packages/adapters/web-component/src/visual-surface.ts",
+      "blob": "8800a4b45328109b46945c9a7eb36485bafe92bf"
+    },
+    {
+      "path": "packages/core/src/a11y.ts",
+      "blob": "fcd467d6218f61aa38485193d6c9f54318a361d4"
+    },
+    {
+      "path": "packages/core/src/anatomy.ts",
+      "blob": "9ad879e3560ddb8d00ad2808532c0033b3fd40cd"
+    },
+    {
+      "path": "packages/core/src/axis-input.ts",
+      "blob": "c0adb122871b7eb42ee38cd0b12e050e24b5b283"
+    },
+    {
+      "path": "packages/core/src/boundary.ts",
+      "blob": "ef9face05ce2a81df5743692a11e953b366f9dc6"
+    },
+    {
+      "path": "packages/core/src/caps/host.ts",
+      "blob": "002173ba9da01775590c00937d868180950355f8"
+    },
+    {
+      "path": "packages/core/src/caps/index.ts",
+      "blob": "a5ea97b480b78043bed8741059e49be6f29b8485"
+    },
+    {
+      "path": "packages/core/src/caps/token.ts",
+      "blob": "63ad39e723c724fb30ad25c83775e6672f99dfdf"
+    },
+    {
+      "path": "packages/core/src/collection.ts",
+      "blob": "4f055258656fece360b4c1f5285276aa2526bca2"
+    },
+    {
+      "path": "packages/core/src/context-menu-input.ts",
+      "blob": "33e876b2ff3987a671395055bb38b26cd1a0269a"
+    },
+    {
+      "path": "packages/core/src/context.ts",
+      "blob": "5c0b015319482d9bfa4772f04721a14608760dad"
+    },
+    {
+      "path": "packages/core/src/control-label.ts",
+      "blob": "446c2ed5d1167ffa2fa4c6c7382df6cd4c8e8f69"
+    },
+    {
+      "path": "packages/core/src/delay.ts",
+      "blob": "e3feb8e3d771aa4c41f4cf1a7ddf0be6c41185e5"
+    },
+    {
+      "path": "packages/core/src/effects/index.ts",
+      "blob": "fcb073fefcd6bebc8afd726f830e66828ebc5e90"
+    },
+    {
+      "path": "packages/core/src/effects/types.ts",
+      "blob": "871a3a298d5517b797da2a6f60a3089fe1ddbb26"
+    },
+    {
+      "path": "packages/core/src/errors/codes.ts",
+      "blob": "c9aa31ad8d8d163f0b9f24ede17a260e014347a9"
+    },
+    {
+      "path": "packages/core/src/errors/index.ts",
+      "blob": "6492fac9dd5d7b861b7fb0662898e76e76c21472"
+    },
+    {
+      "path": "packages/core/src/focus.ts",
+      "blob": "dc01369da1e06994a50fd188886d895d43909caa"
+    },
+    {
+      "path": "packages/core/src/handles.ts",
+      "blob": "15ef2f2677a037a2091b83c3c37973487ea89c8e"
+    },
+    {
+      "path": "packages/core/src/hit-participation.ts",
+      "blob": "d6e034ac1c08cfebb63c8a0e0307ecbaacc78a7d"
+    },
+    {
+      "path": "packages/core/src/image-view.ts",
+      "blob": "d7bbb6a1697b737d2c1fc7a535f07902aac26740"
+    },
+    {
+      "path": "packages/core/src/index.ts",
+      "blob": "966968b8fc399f7c391e51a892b32c496eb5609b"
+    },
+    {
+      "path": "packages/core/src/internal.ts",
+      "blob": "66e6dc82f121e46da9e91069883abab326665cd6"
+    },
+    {
+      "path": "packages/core/src/material.ts",
+      "blob": "0a44bacc2f46b7fa3b48a35e8ebcf90b964a9d9f"
+    },
+    {
+      "path": "packages/core/src/module/index.ts",
+      "blob": "fcb073fefcd6bebc8afd726f830e66828ebc5e90"
+    },
+    {
+      "path": "packages/core/src/module/types.ts",
+      "blob": "1432584f5e7bd6af3fc79d2869d9ee0f25fae6e8"
+    },
+    {
+      "path": "packages/core/src/move.ts",
+      "blob": "8db67f37b54d8c48dbf71def8ae2ce208cb410d6"
+    },
+    {
+      "path": "packages/core/src/native-link.ts",
+      "blob": "b739e62ec353c8496e30782c54a1cc488f45bd7e"
+    },
+    {
+      "path": "packages/core/src/overlay.ts",
+      "blob": "a41e9a0fc18e339af7941e54eaaec6316d65eadc"
+    },
+    {
+      "path": "packages/core/src/positioning.ts",
+      "blob": "4a33fbfaa4d024c6a201b582aa649357d1984707"
+    },
+    {
+      "path": "packages/core/src/presence-presentation.ts",
+      "blob": "befcce3e43ec967f3358d3c7c89feaadab0daa05"
+    },
+    {
+      "path": "packages/core/src/prototype.ts",
+      "blob": "98f09837478e1cdb668a88f826a31792f42c08b1"
+    },
+    {
+      "path": "packages/core/src/resident-motion.ts",
+      "blob": "a49f85ef907da055ab4a1a6810d899b8101b96e6"
+    },
+    {
+      "path": "packages/core/src/scroll.ts",
+      "blob": "9a567b214b24e2911ee6b681654b6b4ffb9ce255"
+    },
+    {
+      "path": "packages/core/src/spec/feedback/application-role.ts",
+      "blob": "54e10d5a63812ddbbf574ef35d4de2d86b002559"
+    },
+    {
+      "path": "packages/core/src/spec/feedback/index.ts",
+      "blob": "9d4f5ba12ec60cabe96843dbe21c834034d05ddc"
+    },
+    {
+      "path": "packages/core/src/spec/feedback/placeholder.ts",
+      "blob": "dd90ff5e5f46517d375ccf2b147c0885b436cb71"
+    },
+    {
+      "path": "packages/core/src/spec/feedback/recorder.ts",
+      "blob": "bb99d51b1606d96bdb41177551363e0ab8757d12"
+    },
+    {
+      "path": "packages/core/src/spec/feedback/root-effect.ts",
+      "blob": "eac47be3da2e5573c9bfd94abc976fea0fc13722"
+    },
+    {
+      "path": "packages/core/src/spec/feedback/semantic-merge.ts",
+      "blob": "2000e3fb91fd0f2f40fef252105facb52b774993"
+    },
+    {
+      "path": "packages/core/src/spec/feedback/style.ts",
+      "blob": "cc3fd2b507de4e9b2d87268dc77b28224cc6760f"
+    },
+    {
+      "path": "packages/core/src/spec/feedback/tokens.ts",
+      "blob": "3d8eb3e1f9af9eeda621e25ce9f1ffdad80a5804"
+    },
+    {
+      "path": "packages/core/src/spec/index.ts",
+      "blob": "1a08c1367b78a7ae75d311525fa6d1fbbe1f990f"
+    },
+    {
+      "path": "packages/core/src/spec/owned-template-blueprint.ts",
+      "blob": "0bd2e688b08006aab57931aeaa52373dbd762558"
+    },
+    {
+      "path": "packages/core/src/spec/template.ts",
+      "blob": "f4a469c3c60548a2081b99d1047636b8bba676eb"
+    },
+    {
+      "path": "packages/core/src/state.ts",
+      "blob": "23c28110fb5d45c29a430d4685a7888278976ae5"
+    },
+    {
+      "path": "packages/core/src/text-control.ts",
+      "blob": "9639fd2c82cee28d8d8c7c85a0569cec5bb26677"
+    },
+    {
+      "path": "packages/hooks/src/as-accessible.ts",
+      "blob": "1a922752a27a6a1c28e27191a49fae5e84a62c3e"
+    },
+    {
+      "path": "packages/hooks/src/as-axis-input.ts",
+      "blob": "5e6d9990f9edf89c6e6dae5a11347953b62c6b7f"
+    },
+    {
+      "path": "packages/hooks/src/as-boundary.ts",
+      "blob": "0de0975b687b9d21256b6374b3d83215cc1d0db3"
+    },
+    {
+      "path": "packages/hooks/src/as-collection-item.ts",
+      "blob": "2d60c1e2648a9151b46ca99c4c9e56fcc67301b2"
+    },
+    {
+      "path": "packages/hooks/src/as-collection.ts",
+      "blob": "97023e765604b329d8169db289281010944d3c7a"
+    },
+    {
+      "path": "packages/hooks/src/as-context-menu-input.ts",
+      "blob": "9d3a91e5f92d2cc95c93b2809401c3a92ea8691c"
+    },
+    {
+      "path": "packages/hooks/src/as-control-label.ts",
+      "blob": "ce703d92e79e70775d4844e18c1cc91b01f7bf73"
+    },
+    {
+      "path": "packages/hooks/src/as-focus-entry.ts",
+      "blob": "28f891a774c39f2777e8e003f4415b062f0f445b"
+    },
+    {
+      "path": "packages/hooks/src/as-focus-roving.ts",
+      "blob": "807b14c3cf477d4a73b319ad303d1cfe29ba0657"
+    },
+    {
+      "path": "packages/hooks/src/as-focus-scope.ts",
+      "blob": "6b68045318029795e9b9febe5fa9b8452a31172d"
+    },
+    {
+      "path": "packages/hooks/src/as-focusable.ts",
+      "blob": "5248b7c631eb37e1e36ac59a129d1316fd2ce65f"
+    },
+    {
+      "path": "packages/hooks/src/as-hit-participation.ts",
+      "blob": "04b9e372b0e76dda81cd3f4db8dd37c0fef2b88d"
+    },
+    {
+      "path": "packages/hooks/src/as-image-view.ts",
+      "blob": "2dbd2ae564fab8e55941347c69f8a23c3bd0da53"
+    },
+    {
+      "path": "packages/hooks/src/as-native-link.ts",
+      "blob": "63205b1353892cc8141aa7bd2101e480f084d367"
+    },
+    {
+      "path": "packages/hooks/src/as-overlay.ts",
+      "blob": "40280ce6b17302e10846fa464147089d70dc8ed9"
+    },
+    {
+      "path": "packages/hooks/src/as-scroll-surface.ts",
+      "blob": "3d153a561c7124102519830b7027ec0100800103"
+    },
+    {
+      "path": "packages/hooks/src/as-table-structure.ts",
+      "blob": "533f75618841f1cac2e87ea7691984ff3125843f"
+    },
+    {
+      "path": "packages/hooks/src/as-text-control.ts",
+      "blob": "6f6d2ecb4b32ba0b05990764130ea197398015bf"
+    },
+    {
+      "path": "packages/hooks/src/as-trigger.ts",
+      "blob": "c251de695e2a73665bc39d729434011a96d23fa4"
+    },
+    {
+      "path": "packages/hooks/src/collection/use-collection-item.ts",
+      "blob": "c7d8497d24e244896d9640243e5352c4d4e83c57"
+    },
+    {
+      "path": "packages/hooks/src/collection/use-collection.ts",
+      "blob": "c8ee7680533622e0218851461469c7480af4cd9d"
+    },
+    {
+      "path": "packages/hooks/src/index.ts",
+      "blob": "cef9a17f04f6b6b2949877048f5bd7af3191d38f"
+    },
+    {
+      "path": "packages/hooks/src/privileged.ts",
+      "blob": "dc60520d0e5cac5bf8ad01cfe4d5f9537ba6a218"
+    },
+    {
+      "path": "packages/modules/a11y/src/caps.ts",
+      "blob": "f7728173fef700f0b2674dd1755c43819080effd"
+    },
+    {
+      "path": "packages/modules/a11y/src/create.ts",
+      "blob": "c6ad0bab479fea71baad82013fc159929ec0af98"
+    },
+    {
+      "path": "packages/modules/a11y/src/index.ts",
+      "blob": "2d8daa08d76f4e95e94b48674ce66019a6cc883d"
+    },
+    {
+      "path": "packages/modules/a11y/src/part-relationships.ts",
+      "blob": "149b3788db1d038063e6b336638cc03ce970c972"
+    },
+    {
+      "path": "packages/modules/a11y/src/types.ts",
+      "blob": "bd521a5b4ac01e8cbef4b9401f0d4a8c1602fe10"
+    },
+    {
+      "path": "packages/modules/a11y/src/web.ts",
+      "blob": "c6214483b8074b0b31921d753f7abb9f860753b3"
+    },
+    {
+      "path": "packages/modules/anatomy/src/caps.ts",
+      "blob": "e3ab74aa5707fa8cc3429373773e2e29e4da6836"
+    },
+    {
+      "path": "packages/modules/anatomy/src/create.ts",
+      "blob": "097c5dcd29ca996a347a597339125d8ca3be1fd9"
+    },
+    {
+      "path": "packages/modules/anatomy/src/error.ts",
+      "blob": "dbe4a9911545219e79bedba10181c1c7c55ed644"
+    },
+    {
+      "path": "packages/modules/anatomy/src/impl.ts",
+      "blob": "36c56fcde247c9f8e557f9dac5cad130397280f2"
+    },
+    {
+      "path": "packages/modules/anatomy/src/index.ts",
+      "blob": "eb8770c2513a2bb9124427edce31ccee202229ae"
+    },
+    {
+      "path": "packages/modules/anatomy/src/types.ts",
+      "blob": "e5bda6285a42005b443b967c7c90811d82566c7f"
+    },
+    {
+      "path": "packages/modules/anatomy/src/web/order-observer.ts",
+      "blob": "ef7f822d859845b35e259ececc7e72fd6759729f"
+    },
+    {
+      "path": "packages/modules/as-trigger/src/caps.ts",
+      "blob": "97183b3bae5289ac9302a0c135dcb2f3518c1438"
+    },
+    {
+      "path": "packages/modules/as-trigger/src/create.ts",
+      "blob": "5d817fa0ac431d4b2e5440b5c707ba092ea85ddf"
+    },
+    {
+      "path": "packages/modules/as-trigger/src/impl.ts",
+      "blob": "aef3e18679ff65a11299384cdeb59579a26620be"
+    },
+    {
+      "path": "packages/modules/as-trigger/src/index.ts",
+      "blob": "4f2f2deffe2a6f8a5b0eb5314426288dac815b57"
+    },
+    {
+      "path": "packages/modules/axis-input/src/caps.ts",
+      "blob": "aba66172a789164a06e84afa4abd4154f0f8ae2e"
+    },
+    {
+      "path": "packages/modules/axis-input/src/create.ts",
+      "blob": "6719df9352b1f747750b0d0806fdac37843063a4"
+    },
+    {
+      "path": "packages/modules/axis-input/src/index.ts",
+      "blob": "0b7da05faed939b410ed662c83f302752b4af181"
+    },
+    {
+      "path": "packages/modules/base/src/caps-vault/index.ts",
+      "blob": "4c6948bf818c7b4412d7afacba564bce594ab19c"
+    },
+    {
+      "path": "packages/modules/base/src/caps-vault/types.ts",
+      "blob": "d910bf1c0b5c92a0e3909e3c5ee540c0f850a59b"
+    },
+    {
+      "path": "packages/modules/base/src/caps-vault/vault.ts",
+      "blob": "64827e0aa438e6ce2149982aa412cd80588965f5"
+    },
+    {
+      "path": "packages/modules/base/src/create-module.ts",
+      "blob": "f874f01ad68477f144dce1c326f70f6e983db050"
+    },
+    {
+      "path": "packages/modules/base/src/index.ts",
+      "blob": "868a4793a6ba62dc8b738da2303b72d13d393d3f"
+    },
+    {
+      "path": "packages/modules/base/src/module-base.ts",
+      "blob": "05f4d97f80825434eeb76db1c0b429d84be926ab"
+    },
+    {
+      "path": "packages/modules/base/src/system-caps.ts",
+      "blob": "82aa9aba83eedeb0b11c68059b89204cc4335f49"
+    },
+    {
+      "path": "packages/modules/boundary/src/caps.ts",
+      "blob": "e5047ddddfeb392c173680074bafb24e53f782e8"
+    },
+    {
+      "path": "packages/modules/boundary/src/create.ts",
+      "blob": "7913a383cce9363e03f387c9d8aa5ce8350a0448"
+    },
+    {
+      "path": "packages/modules/boundary/src/impl.ts",
+      "blob": "06eccfa04ef6741071265c5419ebe45bfa50fbae"
+    },
+    {
+      "path": "packages/modules/boundary/src/index.ts",
+      "blob": "88ed84b9593f7b294dd81d2484cd7092ee5497d6"
+    },
+    {
+      "path": "packages/modules/boundary/src/web/host-bridge.ts",
+      "blob": "c4c9f746442b05104b2571d39dcfde0e0224e997"
+    },
+    {
+      "path": "packages/modules/collection/src/create.ts",
+      "blob": "ef70f4d0645abf26894a5cddf9f6399880a5e06d"
+    },
+    {
+      "path": "packages/modules/collection/src/index.ts",
+      "blob": "4cb82feebbd15089b4818279aa02952abfa25740"
+    },
+    {
+      "path": "packages/modules/collection/src/types.ts",
+      "blob": "aa831dfa7c7b346b1075cf87c0912398c652fe4b"
+    },
+    {
+      "path": "packages/modules/context/src/caps.ts",
+      "blob": "625a67df35bc9c305ea2ed50304d6b2c23c82595"
+    },
+    {
+      "path": "packages/modules/context/src/center.ts",
+      "blob": "6f58d56a57ebcb1d013c813c5eec92ffb0b2d6b0"
+    },
+    {
+      "path": "packages/modules/context/src/create.ts",
+      "blob": "a109135bf164f6705bda3a61556c9b04d4cd758a"
+    },
+    {
+      "path": "packages/modules/context/src/impl.ts",
+      "blob": "d5f98c09a056887629a6594e179e6909dbbbcb44"
+    },
+    {
+      "path": "packages/modules/context/src/index.ts",
+      "blob": "1cf0f81ad626b9f88032f4b1b0a14078abdb593f"
+    },
+    {
+      "path": "packages/modules/context/src/types.ts",
+      "blob": "117dd75b134b3124ef91b05210ea26211ec12301"
+    },
+    {
+      "path": "packages/modules/control-label/src/anatomy-pair.ts",
+      "blob": "2c36130147057ae5fab0e959bbf6af97bc128511"
+    },
+    {
+      "path": "packages/modules/control-label/src/caps.ts",
+      "blob": "e1e42002fcd9f818a06faea9c9c9becdddf775f8"
+    },
+    {
+      "path": "packages/modules/control-label/src/create.ts",
+      "blob": "cd31f08e5dc0baaa8cc51de173d62eeba48864d0"
+    },
+    {
+      "path": "packages/modules/control-label/src/index.ts",
+      "blob": "030353c73469977328c09347b5158838cfe85437"
+    },
+    {
+      "path": "packages/modules/control-label/src/registry.ts",
+      "blob": "2ed7fe29af4fbe86347e0ea8557f695eba8a9b07"
+    },
+    {
+      "path": "packages/modules/control-label/src/web.ts",
+      "blob": "ee00255b325dd3ba8571bb3bbf29eb6dc8750ad1"
+    },
+    {
+      "path": "packages/modules/event/src/caps.ts",
+      "blob": "e3d92d55f807bc548a3ae09c9c94f25388d4ce4a"
+    },
+    {
+      "path": "packages/modules/event/src/create.ts",
+      "blob": "39f13a44a9625d2d9a7a671ac379a38b3e01ce86"
+    },
+    {
+      "path": "packages/modules/event/src/error.ts",
+      "blob": "5bd15767b44d97d9742ca2f0992f2d2ef4c00d81"
+    },
+    {
+      "path": "packages/modules/event/src/impl.ts",
+      "blob": "e84b9b37aa079843b9f89904e431f07d3db89ffa"
+    },
+    {
+      "path": "packages/modules/event/src/index.ts",
+      "blob": "8083c9e169a831d33ed386165ce135eb17c67037"
+    },
+    {
+      "path": "packages/modules/event/src/kernel.ts",
+      "blob": "572dc0136763c563066ec8d220ba285d601e7914"
+    },
+    {
+      "path": "packages/modules/event/src/types.ts",
+      "blob": "1c6cc16965e37e22984fb3563aad241c3776e9eb"
+    },
+    {
+      "path": "packages/modules/expose-event/src/caps.ts",
+      "blob": "54d666369a4902e035770cdfcce7b92537cf9f2b"
+    },
+    {
+      "path": "packages/modules/expose-event/src/create.ts",
+      "blob": "fd89e926aaa1a8100bb1001cbf4b0e737cfdd26a"
+    },
+    {
+      "path": "packages/modules/expose-event/src/error.ts",
+      "blob": "7e4846d8a1676215e3e9ba2f4a86f909f5255bd4"
+    },
+    {
+      "path": "packages/modules/expose-event/src/impl.ts",
+      "blob": "8718df6e6ee502040d8d0f280ff54949cd78a65f"
+    },
+    {
+      "path": "packages/modules/expose-event/src/index.ts",
+      "blob": "ff12f1454e63fe25371751db7f2db2ee541cd6e6"
+    },
+    {
+      "path": "packages/modules/expose-event/src/types.ts",
+      "blob": "eedc5c3c1ca4c4ad90e9d3d888a04e8a140d7bfd"
+    },
+    {
+      "path": "packages/modules/expose-state-web/src/caps.ts",
+      "blob": "82f54d2eaada219cba7a3bbb45b1e581042c6cad"
+    },
+    {
+      "path": "packages/modules/expose-state-web/src/create.ts",
+      "blob": "fc6aadd5bf738e4feab4bcebf05937c0085b1b20"
+    },
+    {
+      "path": "packages/modules/expose-state-web/src/impl.ts",
+      "blob": "c7d86e13917e1d2f13a6e3480eb7e7d3b9f804d7"
+    },
+    {
+      "path": "packages/modules/expose-state-web/src/index.ts",
+      "blob": "0df3143e778e79cc8d0cd15170a2d42d5351a7ee"
+    },
+    {
+      "path": "packages/modules/expose-state-web/src/types.ts",
+      "blob": "3a188e5b3a1a645a7ac7f41b0976773297edd741"
+    },
+    {
+      "path": "packages/modules/expose-state-web/src/utils.ts",
+      "blob": "f3ea8722cbd5e3207f0985021f92e473a8600fa2"
+    },
+    {
+      "path": "packages/modules/expose-state/src/caps.ts",
+      "blob": "a7fc6926dd7d96350061a269403256cc8c40f7bf"
+    },
+    {
+      "path": "packages/modules/expose-state/src/create.ts",
+      "blob": "d96c9ce813f9937962c7c7e61f5022dd4ac9b377"
+    },
+    {
+      "path": "packages/modules/expose-state/src/impl.ts",
+      "blob": "1d3a7135e32a356c72f97642d9eb0ff6dc08067a"
+    },
+    {
+      "path": "packages/modules/expose-state/src/index.ts",
+      "blob": "1d418c2682a8c600a0f20bb7ca3b0ebbe847fba1"
+    },
+    {
+      "path": "packages/modules/expose-state/src/types.ts",
+      "blob": "d0d18438e7556838212eb89825fb33ed467d338e"
+    },
+    {
+      "path": "packages/modules/expose/src/create.ts",
+      "blob": "37ff065120312b52b483e4af4e969adebeaa6064"
+    },
+    {
+      "path": "packages/modules/expose/src/error.ts",
+      "blob": "d502a71fde958144242563f003bcd02701aae6b2"
+    },
+    {
+      "path": "packages/modules/expose/src/impl.ts",
+      "blob": "7110899b04a1f86792e41b3a92e5e22c0c120a6f"
+    },
+    {
+      "path": "packages/modules/expose/src/index.ts",
+      "blob": "b6294d49ead638693a26e3d9ca774664fdb0de3f"
+    },
+    {
+      "path": "packages/modules/expose/src/kernel.ts",
+      "blob": "31f99c9a852a61f2be68bb4f13286a8dcd8c9cee"
+    },
+    {
+      "path": "packages/modules/expose/src/types.ts",
+      "blob": "f576ca29e71faa8af8e429f630a229411bf829c8"
+    },
+    {
+      "path": "packages/modules/feedback/src/caps.ts",
+      "blob": "bc6384dd88f0591c9e8c8fc1b11c027ee851951d"
+    },
+    {
+      "path": "packages/modules/feedback/src/create.ts",
+      "blob": "bc86f929abec1d902fca8b78613886db5566702d"
+    },
+    {
+      "path": "packages/modules/feedback/src/index.ts",
+      "blob": "33cb720174f4c8917926f141fe7a9a76c1a91c94"
+    },
+    {
+      "path": "packages/modules/feedback/src/material/declaration-id.ts",
+      "blob": "1286a0d9d7fbb8cac641aa79d526789535ac1a18"
+    },
+    {
+      "path": "packages/modules/feedback/src/material/deferred-view-sink.ts",
+      "blob": "214fac1bc6556aa4645f946c5aad71dc0654a5d3"
+    },
+    {
+      "path": "packages/modules/feedback/src/material/final-style-sink.ts",
+      "blob": "659d76f24e38d64c30fdf916e43ed42c4e5bd12e"
+    },
+    {
+      "path": "packages/modules/feedback/src/material/owned-slot.ts",
+      "blob": "0f6bd8c7ef604098c201868e9f6dc61969ab354f"
+    },
+    {
+      "path": "packages/modules/feedback/src/material/runtime-cap.ts",
+      "blob": "e88788afb3a4e8d5d8a891be8c08a970c10da93e"
+    },
+    {
+      "path": "packages/modules/feedback/src/material/shared-policy.ts",
+      "blob": "b349f4ecacbaf38cbe5a25a4ed6bc83e44f4d4dd"
+    },
+    {
+      "path": "packages/modules/feedback/src/material/shared-sink.ts",
+      "blob": "6045f5f8246682895b3042773a4198a66fc72a24"
+    },
+    {
+      "path": "packages/modules/feedback/src/motion/color.ts",
+      "blob": "588218104b66df55c8a7d4b759d6a814a791aaea"
+    },
+    {
+      "path": "packages/modules/feedback/src/motion/projector.ts",
+      "blob": "62e959e067fa103737b762bc41eb290905785714"
+    },
+    {
+      "path": "packages/modules/feedback/src/motion/sampler.ts",
+      "blob": "e47f625e033a051806d9dfa7afa17845d07baa19"
+    },
+    {
+      "path": "packages/modules/feedback/src/motion/sink.ts",
+      "blob": "b64bc7e726967327f7e821562faf547271279887"
+    },
+    {
+      "path": "packages/modules/feedback/src/motion/targets.ts",
+      "blob": "5593ddc92c3616b813303379f8de46e069b20215"
+    },
+    {
+      "path": "packages/modules/feedback/src/presence/controller.ts",
+      "blob": "36cbf25d28dc46a056790a8f917ba3f6b1dd7d6c"
+    },
+    {
+      "path": "packages/modules/feedback/src/presence/projector.ts",
+      "blob": "f3860be5f04683bbcd4453a8a5fb8cdd7e0c1f74"
+    },
+    {
+      "path": "packages/modules/feedback/src/presence/sink.ts",
+      "blob": "45a886c278b25e5bc28effba23a7495c9227e150"
+    },
+    {
+      "path": "packages/modules/feedback/src/style/owned-decoration-cap.ts",
+      "blob": "1115d6f587520c0add0f07e352e1a65ab7a9b2a3"
+    },
+    {
+      "path": "packages/modules/feedback/src/style/owned-decoration-registry.ts",
+      "blob": "baa1ba711f9015eed89459152dd413e0c35ebda7"
+    },
+    {
+      "path": "packages/modules/feedback/src/types.ts",
+      "blob": "ebc67fb40bf27e3d2f106723f7012fe1705f3754"
+    },
+    {
+      "path": "packages/modules/focus/src/caps.ts",
+      "blob": "bfc51ad94b37dbc815834bda5fd78f04bbf48c60"
+    },
+    {
+      "path": "packages/modules/focus/src/center.ts",
+      "blob": "379653feb32e59cd55bf99bc9ddd50073a25a79a"
+    },
+    {
+      "path": "packages/modules/focus/src/create.ts",
+      "blob": "b58dfeaa792ed2a96ac9ef57b6bb6934c064ff8d"
+    },
+    {
+      "path": "packages/modules/focus/src/index.ts",
+      "blob": "4ae832867c3dbbdafd7b514500d2573523856f9f"
+    },
+    {
+      "path": "packages/modules/focus/src/request-intent.ts",
+      "blob": "dbef4925b86126b44ece63fa52129980cc16a360"
+    },
+    {
+      "path": "packages/modules/focus/src/types.ts",
+      "blob": "bfb7c7fbb7bdda88e7a06cbe22d3f03b5e9af291"
+    },
+    {
+      "path": "packages/modules/hit-participation/src/caps.ts",
+      "blob": "b30eb0aface4f1a11a0424278ec834feda2adc77"
+    },
+    {
+      "path": "packages/modules/hit-participation/src/create.ts",
+      "blob": "f903c3cf200867a2a571e1feaea3871c71b7f737"
+    },
+    {
+      "path": "packages/modules/hit-participation/src/impl.ts",
+      "blob": "9e953d3ca11c95cea4ab21d162318c8b2663be30"
+    },
+    {
+      "path": "packages/modules/hit-participation/src/index.ts",
+      "blob": "039cf7e2f015dad06a18af1ccde4e2f843c0cf88"
+    },
+    {
+      "path": "packages/modules/hit-participation/src/types.ts",
+      "blob": "8b74fa0ea2c8bffcd8ea16f230dc7805a85d1550"
+    },
+    {
+      "path": "packages/modules/hit-participation/src/web/host-bridge.ts",
+      "blob": "45dc563b8e6d94e0fcedb1fb38aed58eb57f9abf"
+    },
+    {
+      "path": "packages/modules/hit-participation/src/web/static-hit-inset.ts",
+      "blob": "b8a9dfe93ee98abc1bd944877c4c8eae5a120baf"
+    },
+    {
+      "path": "packages/modules/image-view/src/caps.ts",
+      "blob": "59cf55e9883b2e48e66be6eacb58ab7d08099bc8"
+    },
+    {
+      "path": "packages/modules/image-view/src/create.ts",
+      "blob": "5ec3d2951eb1829314508d74971b8f2e48314613"
+    },
+    {
+      "path": "packages/modules/image-view/src/declaration.ts",
+      "blob": "8804f069af2655c011ca8d4480e03c1b33ad141a"
+    },
+    {
+      "path": "packages/modules/image-view/src/index.ts",
+      "blob": "3999be846d0c8514e7d57f1fffaed59ae88c885d"
+    },
+    {
+      "path": "packages/modules/image-view/src/web.ts",
+      "blob": "a36c9ed4b7d94672873c78d8808cec007a8df1fc"
+    },
+    {
+      "path": "packages/modules/native-link/src/caps.ts",
+      "blob": "089625140197ab87d65382bb9f48045bda1c93e0"
+    },
+    {
+      "path": "packages/modules/native-link/src/config.ts",
+      "blob": "a35bac417e6f50832745f727e9409b516782ca6d"
+    },
+    {
+      "path": "packages/modules/native-link/src/create.ts",
+      "blob": "9489c17cde5ca6688c638a23a5d5a2ada255a3b4"
+    },
+    {
+      "path": "packages/modules/native-link/src/declaration.ts",
+      "blob": "06db8a6a133e5556e6c4ba0b17b41de58ce0b2fc"
+    },
+    {
+      "path": "packages/modules/native-link/src/index.ts",
+      "blob": "eb11cd367e35f0453535f6d24bb00d394c9fcf64"
+    },
+    {
+      "path": "packages/modules/native-link/src/web.ts",
+      "blob": "1e576fa2e73a0a456bc56e6362b2c0a9e7778346"
+    },
+    {
+      "path": "packages/modules/overlay/src/caps.ts",
+      "blob": "70889dc3e3139662e2807e60c64b90210fd470f1"
+    },
+    {
+      "path": "packages/modules/overlay/src/create.ts",
+      "blob": "6982bc58e21cd8c1a4e2bb234bc9af926ec36866"
+    },
+    {
+      "path": "packages/modules/overlay/src/escape-coordinator.ts",
+      "blob": "67f43cf4b834ba41c9321109c52eb36aaf2fed3e"
+    },
+    {
+      "path": "packages/modules/overlay/src/impl.ts",
+      "blob": "ed01db3863f1731c7d1b371607e656d31a00a8e0"
+    },
+    {
+      "path": "packages/modules/overlay/src/index.ts",
+      "blob": "92dc62c630f27b72934756b574da21431eecc49d"
+    },
+    {
+      "path": "packages/modules/overlay/src/size-match-binding.ts",
+      "blob": "03e54f5269dd38c896b8d8ee8761b978320033a3"
+    },
+    {
+      "path": "packages/modules/overlay/src/target-alignment-binding.ts",
+      "blob": "e038e8d0ff1251eabcd287e84588387313e0c54a"
+    },
+    {
+      "path": "packages/modules/overlay/src/web/modal-lock.ts",
+      "blob": "cc6a25774793c5f1547eebe161aa15fbc96e4c11"
+    },
+    {
+      "path": "packages/modules/overlay/src/web/z-index-layer-scheduler.ts",
+      "blob": "8c95e601aadcf292e35b12ef2c258a65afbecb7f"
+    },
+    {
+      "path": "packages/modules/positioning/src/available-layout.ts",
+      "blob": "67a08e770c5561db3b614e0112cb9441b9d0cd6c"
+    },
+    {
+      "path": "packages/modules/positioning/src/caps.ts",
+      "blob": "13620360c500dd41d722a3f3b4f195f41c0cf0c5"
+    },
+    {
+      "path": "packages/modules/positioning/src/context-menu-input.ts",
+      "blob": "61e3218011c151cd9f0f0f303e86f1b846b914ad"
+    },
+    {
+      "path": "packages/modules/positioning/src/create.ts",
+      "blob": "f4a7a46814200ab5c8975e896a051d48ae10eddc"
+    },
+    {
+      "path": "packages/modules/positioning/src/geometry/target-alignment.ts",
+      "blob": "5852bec926a713b3afe9c96fd4b4ae3fe6602064"
+    },
+    {
+      "path": "packages/modules/positioning/src/impl.ts",
+      "blob": "def2571234a1c8deaf56d3314a37e9c9f592e6b4"
+    },
+    {
+      "path": "packages/modules/positioning/src/index.ts",
+      "blob": "c6b934a3b21dfda6ef42866091ca636c097256c5"
+    },
+    {
+      "path": "packages/modules/positioning/src/web/available-layout-host.ts",
+      "blob": "501b2aef8ecea813ada10ff1c197ca4b6450aa07"
+    },
+    {
+      "path": "packages/modules/positioning/src/web/available-space-host.ts",
+      "blob": "4db2a7f228e0b030258a6fc3caf44684a93b0d80"
+    },
+    {
+      "path": "packages/modules/positioning/src/web/border-box-size-lease.ts",
+      "blob": "a81e4cba461c23d3b7b2cdc73a3f87623e840fc4"
+    },
+    {
+      "path": "packages/modules/positioning/src/web/context-menu-input-host.ts",
+      "blob": "c39887a122a790fc5d295108ff39c802df52829c"
+    },
+    {
+      "path": "packages/modules/positioning/src/web/floating-ui-host.ts",
+      "blob": "2e598cf34f08c2bb217761c104c9c6a4a6ebdfcd"
+    },
+    {
+      "path": "packages/modules/positioning/src/web/input-origin-anchor.ts",
+      "blob": "5e6784325d6ed0864beb3ac3450743a9b7f5468e"
+    },
+    {
+      "path": "packages/modules/positioning/src/web/owned-style-lease.ts",
+      "blob": "7b0af6676b02d5799c491fdc650ca05422c9212f"
+    },
+    {
+      "path": "packages/modules/positioning/src/web/root-space-observer.ts",
+      "blob": "20728cf73601687a7bab02960358958e165b9296"
+    },
+    {
+      "path": "packages/modules/positioning/src/web/target-alignment-host.ts",
+      "blob": "cd1807d3829a253c00fe1d163b012ef5b19e35fa"
+    },
+    {
+      "path": "packages/modules/positioning/src/web/translation-composition.ts",
+      "blob": "b17e4ed008ec3ffebec4501406d4a51ffaf61b35"
+    },
+    {
+      "path": "packages/modules/presence/src/caps.ts",
+      "blob": "bd88f7a018a820cd1d0ff282f491aa230cdf18cb"
+    },
+    {
+      "path": "packages/modules/presence/src/create.ts",
+      "blob": "a0d890a1aa27fe388b8dce595a0c7683ad2ff872"
+    },
+    {
+      "path": "packages/modules/presence/src/impl.ts",
+      "blob": "abf403c0dc7329a58490a7cc7de679cecd240ccb"
+    },
+    {
+      "path": "packages/modules/presence/src/index.ts",
+      "blob": "9e63705cd4a04431bfdaa914c3941f7db1d856c3"
+    },
+    {
+      "path": "packages/modules/props/src/caps.ts",
+      "blob": "3b171c928ddce55e77bfed54a9b1779036724bef"
+    },
+    {
+      "path": "packages/modules/props/src/create.ts",
+      "blob": "e1f7278441f45398a9961009f954995506e4a855"
+    },
+    {
+      "path": "packages/modules/props/src/impl.ts",
+      "blob": "ae9b57326e9fe7e385a27a05069456214191f1a7"
+    },
+    {
+      "path": "packages/modules/props/src/index.ts",
+      "blob": "7221648e10693a0b5a328ca5d97cc1cfa0447010"
+    },
+    {
+      "path": "packages/modules/props/src/kernel/json-value.ts",
+      "blob": "407f6cdc16688f619033aa55941f6fb2a4f53a88"
+    },
+    {
+      "path": "packages/modules/props/src/kernel/kernel.ts",
+      "blob": "726aa485188c90f843344c69d3bb1045e37061e3"
+    },
+    {
+      "path": "packages/modules/props/src/kernel/merge.ts",
+      "blob": "96f002f31af4a940c863920f4ad91f2783ee81a9"
+    },
+    {
+      "path": "packages/modules/props/src/types.ts",
+      "blob": "315acb1b95325541e6956e5bee288f4b09f2af43"
+    },
+    {
+      "path": "packages/modules/rule-expose-state-web/src/caps.ts",
+      "blob": "39ec16d19a0bb496b91aa1dd31415fa29a641ad2"
+    },
+    {
+      "path": "packages/modules/rule-expose-state-web/src/create.ts",
+      "blob": "4320f52520d96594b4dcfbd77b155d5885490b0f"
+    },
+    {
+      "path": "packages/modules/rule-expose-state-web/src/generated/lowered-variant-order.ts",
+      "blob": "f174f2137814a081c98fad021d14f6939c622d5b"
+    },
+    {
+      "path": "packages/modules/rule-expose-state-web/src/index.ts",
+      "blob": "f6c908348e6efe82c25ff1e871260ac10788ab34"
+    },
+    {
+      "path": "packages/modules/rule-expose-state-web/src/types.ts",
+      "blob": "91ccd413c4cb62dee969817726228bf8c80315cb"
+    },
+    {
+      "path": "packages/modules/rule-meta/src/caps.ts",
+      "blob": "26c84424ecd08d9567b00e17012ca90c2be977a4"
+    },
+    {
+      "path": "packages/modules/rule-meta/src/create.ts",
+      "blob": "8285c15b9dd27931e1e96493f3fff8c28be28daf"
+    },
+    {
+      "path": "packages/modules/rule-meta/src/index.ts",
+      "blob": "4ae832867c3dbbdafd7b514500d2573523856f9f"
+    },
+    {
+      "path": "packages/modules/rule-meta/src/keyed-lease.ts",
+      "blob": "1e4f1c072367c844d668d9d570ca5ea9ffa9dcf4"
+    },
+    {
+      "path": "packages/modules/rule-meta/src/types.ts",
+      "blob": "efc39c11eccb78cd55d3075dba00c5e5f81adbfc"
+    },
+    {
+      "path": "packages/modules/rule/src/compile.ts",
+      "blob": "88acea42e06b004534d1cb5943bbc977455ac1a9"
+    },
+    {
+      "path": "packages/modules/rule/src/create.ts",
+      "blob": "80cccd15d17347cef063246345d7e3684a60b9e4"
+    },
+    {
+      "path": "packages/modules/rule/src/eval.ts",
+      "blob": "3f54c1a184ece2022ec043b30e005a64dd82404c"
+    },
+    {
+      "path": "packages/modules/rule/src/impl.ts",
+      "blob": "061a63930e08ac5043ab8ec6fc323c7fe2d49360"
+    },
+    {
+      "path": "packages/modules/rule/src/index.ts",
+      "blob": "c5519317460f3710db37ac7c70aa5a1157dc9600"
+    },
+    {
+      "path": "packages/modules/rule/src/intent-builder.ts",
+      "blob": "0e8785db6ca0dd9bbc50b9721c7b749624538c80"
+    },
+    {
+      "path": "packages/modules/rule/src/types.ts",
+      "blob": "2edb49a33039800c22a9f66b714aa3522ceb2fd4"
+    },
+    {
+      "path": "packages/modules/rule/src/when-builder.ts",
+      "blob": "a1eece0317673ddbe77d2f931668a28b71c8dcc9"
+    },
+    {
+      "path": "packages/modules/scroll/src/caps.ts",
+      "blob": "1cbda436f3aa0ca9c13a6680cdb3546606ab30c4"
+    },
+    {
+      "path": "packages/modules/scroll/src/create.ts",
+      "blob": "efe52338e7d8c7bfb7ea3f16cf8555c03136e3f5"
+    },
+    {
+      "path": "packages/modules/scroll/src/impl.ts",
+      "blob": "065bc082027e5d65ebb1778718d44821eb1d225c"
+    },
+    {
+      "path": "packages/modules/scroll/src/index.ts",
+      "blob": "c0cbae23e32085f0b2573fbde1e91b91a4db5055"
+    },
+    {
+      "path": "packages/modules/scroll/src/projection.ts",
+      "blob": "5576e0852547d7fb4fda9da157641bd1ce87ecaa"
+    },
+    {
+      "path": "packages/modules/scroll/src/web/create-bound-web-scroll-host.ts",
+      "blob": "af0352501e8cfec8879e3289d9e8813f6eb5f21e"
+    },
+    {
+      "path": "packages/modules/scroll/src/web/create-web-scroll-host.ts",
+      "blob": "11ae802d150de82fa7293fc22699d045d99f09ce"
+    },
+    {
+      "path": "packages/modules/scroll/src/web/reader-contact-session.ts",
+      "blob": "ec9d117e0250bfafcc59081499a5766496e1ccef"
+    },
+    {
+      "path": "packages/modules/scroll/src/web/scroll-policy-lease.ts",
+      "blob": "1f0ee5d9fb8784a13a0361d444c4e2d038b240c1"
+    },
+    {
+      "path": "packages/modules/state-accessibility/src/create.ts",
+      "blob": "226b6402eae6eacd823e007e272911e5c2036033"
+    },
+    {
+      "path": "packages/modules/state-accessibility/src/index.ts",
+      "blob": "0d79c7c20dddf609fd4b8f19e277c587f411447d"
+    },
+    {
+      "path": "packages/modules/state-accessibility/src/types.ts",
+      "blob": "e449653082de843ea06d690ee7254bacc5077292"
+    },
+    {
+      "path": "packages/modules/state-interaction/src/create.ts",
+      "blob": "9386b811d3f9c0641b80fcfc8ff05f48813c8cd0"
+    },
+    {
+      "path": "packages/modules/state-interaction/src/index.ts",
+      "blob": "0d79c7c20dddf609fd4b8f19e277c587f411447d"
+    },
+    {
+      "path": "packages/modules/state-interaction/src/types.ts",
+      "blob": "6ee0f61224bdda86faa84913eea2fb3670b0c220"
+    },
+    {
+      "path": "packages/modules/state/src/create.ts",
+      "blob": "fc2cae9a8608027cdf8de8e42b0c0f26b580cebf"
+    },
+    {
+      "path": "packages/modules/state/src/impl.ts",
+      "blob": "9c2bc00b96a626a4fb8268c801a5d2b4e92e0453"
+    },
+    {
+      "path": "packages/modules/state/src/index.ts",
+      "blob": "874a5a53fe5bea67cfb14a65476f0a35209bb15d"
+    },
+    {
+      "path": "packages/modules/state/src/kernel.ts",
+      "blob": "dd38585f7c81c17bdb89bab6fdeb2c1a3311bbdf"
+    },
+    {
+      "path": "packages/modules/state/src/types.ts",
+      "blob": "d17c89a517075246e7a4dcd34009631f98c744d0"
+    },
+    {
+      "path": "packages/modules/state/src/validate.ts",
+      "blob": "b00ec0cf0a77dd7b500106d3d45f964f4cd70ede"
+    },
+    {
+      "path": "packages/modules/table-structure/src/create.ts",
+      "blob": "b4c06727ba9587789bf6b74f9e0207d8f070c9fc"
+    },
+    {
+      "path": "packages/modules/table-structure/src/family.ts",
+      "blob": "9dd796d56c434b18bbef5ea2f5df88d448c96804"
+    },
+    {
+      "path": "packages/modules/table-structure/src/index.ts",
+      "blob": "9f5b159b7bc911d0c7d58c55e7aa4fa905fd6079"
+    },
+    {
+      "path": "packages/modules/table-structure/src/projection.ts",
+      "blob": "fec53ba254af5ca87b78290836791b534c7a9375"
+    },
+    {
+      "path": "packages/modules/table-structure/src/types.ts",
+      "blob": "e022581dd4ed34eab6cd7d2fac3d4d583ac442f7"
+    },
+    {
+      "path": "packages/modules/test-sys/src/create.ts",
+      "blob": "2fc6e080f1f4919ba8d6a86614633f22f425288f"
+    },
+    {
+      "path": "packages/modules/test-sys/src/impl.ts",
+      "blob": "9b927f94edd5fb83cbc4d9dd9f9ead16af4a2bc5"
+    },
+    {
+      "path": "packages/modules/test-sys/src/index.ts",
+      "blob": "61198746a4becedc2547b139dc124993f62c5e0d"
+    },
+    {
+      "path": "packages/modules/test-sys/src/types.ts",
+      "blob": "970d4154056f778aee3da5e40d5c681443d723ce"
+    },
+    {
+      "path": "packages/modules/text-control/src/caps.ts",
+      "blob": "2af91cee69f8ead8604652e2fb92458e79aede80"
+    },
+    {
+      "path": "packages/modules/text-control/src/create.ts",
+      "blob": "f7b857b4e70fe91558e4d068169b4b5e4adf5075"
+    },
+    {
+      "path": "packages/modules/text-control/src/declaration.ts",
+      "blob": "3abed6e64868c1aa24c764729addd47bd33d5d86"
+    },
+    {
+      "path": "packages/modules/text-control/src/impl.ts",
+      "blob": "d845fe77c0db9daf0a4c8c50cf093ef751b0830a"
+    },
+    {
+      "path": "packages/modules/text-control/src/index.ts",
+      "blob": "4efe1181ba02d4eae7dfbbf7451009468e76ae24"
+    },
+    {
+      "path": "packages/modules/text-control/src/types.ts",
+      "blob": "b5fd41dc94d869e79143709dde6d0bce54b3a726"
+    },
+    {
+      "path": "packages/modules/text-control/src/web.ts",
+      "blob": "98d55c6f58700ac8510e86c4bcf7bf045498db34"
+    },
+    {
+      "path": "packages/prototypes/base/src/button/button.proto.ts",
+      "blob": "7cf17b251d79bba5e38fefc17e7a7a1a182ef85f"
+    },
+    {
+      "path": "packages/prototypes/base/src/button/index.ts",
+      "blob": "bd60ac35a30ff27e5e514879ed5d879332143cd6"
+    },
+    {
+      "path": "packages/prototypes/liquid-glass/src/button/button.proto.ts",
+      "blob": "004462e13936d6af03816172afd14b7016d487f3"
+    },
+    {
+      "path": "packages/prototypes/liquid-glass/src/button/index.ts",
+      "blob": "04e76a61fe5b284aea4cc02754a96d998feaa89d"
+    },
+    {
+      "path": "packages/prototypes/liquid-glass/src/interactive-surface.ts",
+      "blob": "89736c8be187daf4ab55a1804c29887c44be2d3b"
+    },
+    {
+      "path": "packages/prototypes/liquid-glass/src/theme.ts",
+      "blob": "116b93cdc7d035060a9b0e2c2433c25b02f11886"
+    },
+    {
+      "path": "packages/runtime/src/index.ts",
+      "blob": "67ca390ad1d0819dad5fce81006cd1be22c19745"
+    },
+    {
+      "path": "packages/runtime/src/instance/execute/callback-scope.ts",
+      "blob": "ca8a7777d723edfeb8226131950268d57b3b533f"
+    },
+    {
+      "path": "packages/runtime/src/instance/execute/index.ts",
+      "blob": "f91e4ab67646dc35d6ffd766b039e2fe95cc5057"
+    },
+    {
+      "path": "packages/runtime/src/instance/execute/prototype.ts",
+      "blob": "d940b1f3c5161dd9f2d52a41375f67c1e0f44e42"
+    },
+    {
+      "path": "packages/runtime/src/instance/execute/types.ts",
+      "blob": "6639a7aee0a87b11b44e2d34d321f3a1c54917de"
+    },
+    {
+      "path": "packages/runtime/src/instance/execute/with-host.ts",
+      "blob": "c69b50415d733299d40b41c9cf729f4078c1326f"
+    },
+    {
+      "path": "packages/runtime/src/instance/host.ts",
+      "blob": "b404065d246f175ea21c78749f576a55c8b5e369"
+    },
+    {
+      "path": "packages/runtime/src/instance/index.ts",
+      "blob": "6c17d6996ec347dfe3a0b8a3e0c53fbc566db298"
+    },
+    {
+      "path": "packages/runtime/src/instance/instance.ts",
+      "blob": "61d0716ed52e8fbad267c8946b333d3b0acad5a8"
+    },
+    {
+      "path": "packages/runtime/src/instance/session.ts",
+      "blob": "b2a3933959d3ef4f0084bed9066dc9eddedeedba"
+    },
+    {
+      "path": "packages/runtime/src/kernel/as-hook.ts",
+      "blob": "1bf05f2e0ad9e306427ff57d111fb989dafedd9d"
+    },
+    {
+      "path": "packages/runtime/src/kernel/event/index.ts",
+      "blob": "d3171a0f654f72360e0488cb4abd5cff63aa9c46"
+    },
+    {
+      "path": "packages/runtime/src/kernel/event/runtime-event-callbacks.ts",
+      "blob": "ff2384bb5cdd5a88d440cd2e556f8628074c19e3"
+    },
+    {
+      "path": "packages/runtime/src/kernel/guard.ts",
+      "blob": "16b8ac504521ed8d3a539c7eec88f312a1468e9a"
+    },
+    {
+      "path": "packages/runtime/src/kernel/handles/def.ts",
+      "blob": "76b46b2a2bc2758d9ab862e8756eb9f8cee96ce8"
+    },
+    {
+      "path": "packages/runtime/src/kernel/handles/index.ts",
+      "blob": "0feb66b920c667b9bdc83a16fad4363f23b314e1"
+    },
+    {
+      "path": "packages/runtime/src/kernel/handles/run.ts",
+      "blob": "46077ebeefd1c237a8151a208e5bc6576c8ac788"
+    },
+    {
+      "path": "packages/runtime/src/kernel/index.ts",
+      "blob": "1d7bb87e2b8077552e8b9417681c90ee0c9cb5ac"
+    },
+    {
+      "path": "packages/runtime/src/kernel/kernel.ts",
+      "blob": "e009c661f182d0fd6c8083c6aae4bd5d3c1bb97b"
+    },
+    {
+      "path": "packages/runtime/src/kernel/lifecycle-events.ts",
+      "blob": "7196b68005cc3aa64ceb9d9f54a2acddf19b01cc"
+    },
+    {
+      "path": "packages/runtime/src/kernel/timeline.ts",
+      "blob": "f44742b8397005090eea7d4fb604800f454e5028"
+    },
+    {
+      "path": "packages/runtime/src/kernel/view-intent.ts",
+      "blob": "172fb108e7eaf51cebc23b23007973b42e0bbeb5"
+    },
+    {
+      "path": "packages/runtime/src/kernel/view-operation.ts",
+      "blob": "91cf8a4f5d7f3a8fa5faa2ee21437d86479c6ef8"
+    },
+    {
+      "path": "packages/runtime/src/orchestrator/caps/index.ts",
+      "blob": "fcb073fefcd6bebc8afd726f830e66828ebc5e90"
+    },
+    {
+      "path": "packages/runtime/src/orchestrator/caps/types.ts",
+      "blob": "863a2987d6f42bc28c8e9b1eac4f9274c212c909"
+    },
+    {
+      "path": "packages/runtime/src/orchestrator/index.ts",
+      "blob": "26d791251bc31c7c2dd6777eadd4e1392c2e8e31"
+    },
+    {
+      "path": "packages/runtime/src/orchestrator/module-orchestrator/graph.ts",
+      "blob": "58736b5cde8189c73c2db1b95d470f84d8094c54"
+    },
+    {
+      "path": "packages/runtime/src/orchestrator/module-orchestrator/index.ts",
+      "blob": "054592d0981451323758ec82bc59cf7cf4f8d980"
+    },
+    {
+      "path": "packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+      "blob": "01589c6b21ed0b9181af2902fa2adc83e430be85"
+    }
+  ],
+  "untrackedInputsScope": "Third-party/external inputs are not covered by the Git blob comparison; original source metadata and locked tools remain in artifacts",
+  "deltaFromActualHead": [
+    "apps/www/src/components/override/PageFrame.astro"
+  ],
+  "interpretation": "Exact ee0a execution remains its own epoch. Reviewed later-base delta is solely Contents CSS, absent from these bundle inputs. Not relabeled as a new main or merged-tree browser execution."
+}

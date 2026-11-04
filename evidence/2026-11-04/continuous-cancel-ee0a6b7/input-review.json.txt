@@ -1,0 +1,606 @@
+{
+  "reviewedAt": "2026-11-04T10:08:35.576488+00:00",
+  "reviewMode": "human-assisted/current-user",
+  "assessment": "unassessed/advisory",
+  "reviewClass": "bounded local source and evidence review",
+  "disposition": "partial/ABSTAIN",
+  "formalGitHubApproval": false,
+  "base": "ee0a6b7c1be7e569006597944eae4f84d5190583",
+  "branch": "codex/continuous-cancel-boundary-20261104",
+  "workingTreeStatus": [],
+  "source": [
+    {
+      "path": "<C_SOURCE_ROOT>/packages/adapters/base/src/events/web-event-router.ts",
+      "bytes": 36628,
+      "sha256": "f51df525e43ac92bc6c5faa040ca45fe22ac7314608ffb4ddcb2da47897066a1"
+    },
+    {
+      "path": "<C_SOURCE_ROOT>/packages/adapters/base/test/window-blur-activation.test.ts",
+      "bytes": 5364,
+      "sha256": "68d0f859ab8778f8e7d741d1fa13fa38bddb5896e5e4c2574ccce27f04458d56"
+    }
+  ],
+  "baseRouterSha256": "f51df525e43ac92bc6c5faa040ca45fe22ac7314608ffb4ddcb2da47897066a1",
+  "authority": [
+    {
+      "path": "<C_SOURCE_ROOT>/spec/contracts/C-EVENT-TYPE-0002.yaml",
+      "bytes": 4955,
+      "sha256": "633740dfe7997480dca0a1a3e93e1f2b5a777cda93829bd62235ca5c93f6df82",
+      "criteria": [
+        "C-EVENT-TYPE-0002-B",
+        "C-EVENT-TYPE-0002-D",
+        "C-EVENT-TYPE-0002-E",
+        "C-EVENT-TYPE-0002-G"
+      ],
+      "role": "Draft activation intent begins/valid commit/cancel is not success; Adapter interprets host input. Existing window blur already emits press.cancel, so rejecting its matched pending pointer click is an implementation reconciliation, not authority derived from visual contact."
+    },
+    {
+      "path": "<C_SOURCE_ROOT>/spec/contracts/C-EVENT-0003.yaml",
+      "bytes": 4067,
+      "sha256": "bc6ea0fe2023f91c5f37bbdb03a0548923b7d3c7e504646ea004a4aea5be26cc",
+      "criteria": [
+        "C-EVENT-0003-A",
+        "C-EVENT-0003-D",
+        "C-EVENT-0003-E"
+      ],
+      "role": "Draft root/global mapping and ownership; one consumed physical-root dispatch must not replay through retargeted global fallback; genuine Portal route remains eligible."
+    },
+    {
+      "path": "<C_SOURCE_ROOT>/spec/contracts/C-FEEDBACK-MATERIAL-0001.yaml",
+      "bytes": 19383,
+      "sha256": "a234caedb2f87cd00ea17641b806cf955392831bf89747329f35db9a7092e601",
+      "criteria": [
+        "C-FEEDBACK-MATERIAL-0001-SEMANTICS",
+        "C-FEEDBACK-MATERIAL-0001-CONTACT"
+      ],
+      "role": "Draft visual-only contact; window blur/lost capture cancel visual tracking but this alone cannot establish activation cancellation. Existing separate pointercancel/lostcapture later-click controls remain unchanged."
+    },
+    {
+      "path": "<C_SOURCE_ROOT>/internal/contracts/event/event-type.v0.md",
+      "bytes": 6422,
+      "sha256": "a8c18f37232c4a08e35ee1aed9d817251293ff7eea7e26d57a75f8434b85f7cf",
+      "criteria": [
+        "Press Event Family — Activation Intent"
+      ],
+      "role": "Transitional explanatory source consistent with cataloged draft intent; not used to promote lifecycle."
+    },
+    {
+      "path": "<C_SOURCE_ROOT>/internal/records/2026-10-08-liquid-pointer-contact-session.md",
+      "bytes": 3277,
+      "sha256": "6d57c36580c7fc7f96765b8300f0d2ead9d7f64b451b3c6c3134fb86f93ab583",
+      "criteria": [],
+      "role": "Historical engineering record, not normative. Explicitly separates visual tracking from input activation."
+    }
+  ],
+  "findings": [
+    {
+      "id": "INPUT-BLUR-001",
+      "severity": "P2",
+      "status": "closed in current working candidate",
+      "initialReport": {
+        "path": "<STATE_ROOT>/input-review/report-v1.json",
+        "bytes": 3533,
+        "sha256": "e95654cac6ae69f8566f2a69a720e2533395e1c62cde687c48120a7f0af33cb8"
+      },
+      "oldRouter": {
+        "path": "<STATE_ROOT>/input-review/reviewed-router-v2.ts",
+        "bytes": 36596,
+        "sha256": "dbfc74a76883d7823f98d72b3dc50bd6e21d93c2a3bfe999f1ccbe36326afc86"
+      },
+      "newRouterSha256": "f51df525e43ac92bc6c5faa040ca45fe22ac7314608ffb4ddcb2da47897066a1",
+      "correction": "Retire the old pointerActivation immediately within the already admitted primary finite-ID down branch, before reading the new optional pointerType. A successful identity read may then start a fresh uncancelled record.",
+      "sourceDeltaVerified": "Exactly one pointerActivation = null statement relative to the reviewed safe-read source; test bytes equal archived reviewed-test-v2.ts.",
+      "actualDiscriminatingEvidence": "review-finding-red: 9 pass / 1 fail; unique failure was the fresh unreadable-down click being suppressed. input-candidate-final: the same named control passes; its file is 10/10, complete reviewed group is 215/215."
+    }
+  ],
+  "openFindings": 0,
+  "conclusions": [
+    "Current source reconciles existing window-blur press.cancel with matched pending pointer activation; it does not use contact geometry, session.active or nonzero visual rectangles as activation authority.",
+    "Cancellation matching requires stored finite primary pointer ID and readable string type, then a nonzero-detail matching click. Unknown identity and detail-zero events do not consume the cancelled record.",
+    "A fresh owned primary down clears prior state before attempting a readable new identity. Fresh Enter/Space direct commit and their zero-detail duplicate suppression remain the original keyboard paths.",
+    "Root suppression marks the consumed physical dispatch so Shadow retargeting does not reach a second global fallback. External Portal events still use the existing current-owner route and enabled checks.",
+    "Pointercancel and lostpointercapture do not mark this blur-specific activation state; original visual cancellation/later native-click controls are preserved. No material code, pointer capture, timers, default prevention, event replay or compiler/prototype changes are introduced.",
+    "Existing activeRouterByRoot gating and listener disposal remain unchanged. Old router closures cannot clear the replacement router's local state. This static fact and existing retired-contact/keyboard controls do not constitute a new native retired-owner blur journey."
+  ],
+  "evidence": [
+    {
+      "epoch": "input-red",
+      "scope": "Original source plus original new eight cases",
+      "report": {
+        "path": "<STATE_ROOT>/input-red.json",
+        "bytes": 24700,
+        "sha256": "5fffdc13d8c4af404d973fd55d1e318a9e96bfba97ddd67cf6fcc1873d377ceb"
+      },
+      "log": {
+        "path": "<STATE_ROOT>/input-red.log",
+        "bytes": 26516,
+        "sha256": "60c77ce5b9b671ff16e7f5f25c3eb03292dfc142f58ee3db8f8be8edfcaae64f"
+      },
+      "startTimeEpochMs": 1793786268115,
+      "counts": {
+        "total": 8,
+        "passed": 1,
+        "failed": 7,
+        "pending": 0
+      },
+      "success": false,
+      "actualTestResultFiles": 1,
+      "suites": [
+        {
+          "file": "packages/adapters/base/test/window-blur-activation.test.ts",
+          "cases": 8,
+          "passed": 1,
+          "failed": 7,
+          "pending": 0,
+          "failures": [
+            {
+              "name": "C-EVENT-TYPE-0002-D/E: window blur cancels the pending pointer activation rejects the canceled root click and admits a fresh pointer press",
+              "firstFailureLine": "AssertionError: expected \"spy\" to not be called at all, but actually been called 1 times"
+            },
+            {
+              "name": "C-EVENT-TYPE-0002-D/E: window blur cancels the pending pointer activation rejects the canceled shadow click and admits a fresh pointer press",
+              "firstFailureLine": "AssertionError: expected \"spy\" to not be called at all, but actually been called 1 times"
+            },
+            {
+              "name": "C-EVENT-TYPE-0002-D/E: window blur cancels the pending pointer activation rejects the canceled portal click and admits a fresh pointer press",
+              "firstFailureLine": "AssertionError: expected \"spy\" to not be called at all, but actually been called 1 times"
+            },
+            {
+              "name": "C-EVENT-TYPE-0002-D/E: window blur cancels the pending pointer activation preserves an independent zero-detail activation without consuming the canceled pointer",
+              "firstFailureLine": "AssertionError: expected \"spy\" to be called once, but got 2 times"
+            },
+            {
+              "name": "C-EVENT-TYPE-0002-D/E: window blur cancels the pending pointer activation does not consume the canceled identity on another pointer click",
+              "firstFailureLine": "AssertionError: expected \"spy\" to be called once, but got 2 times"
+            },
+            {
+              "name": "C-EVENT-TYPE-0002-D/E: window blur cancels the pending pointer activation preserves a fresh \"Enter\" commit and its follow-up click control",
+              "firstFailureLine": "AssertionError: expected \"spy\" to be called once, but got 2 times"
+            },
+            {
+              "name": "C-EVENT-TYPE-0002-D/E: window blur cancels the pending pointer activation preserves a fresh \" \" commit and its follow-up click control",
+              "firstFailureLine": "AssertionError: expected \"spy\" to be called once, but got 2 times"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "epoch": "input-green",
+      "scope": "First direct-read candidate; four-file focus",
+      "report": {
+        "path": "<STATE_ROOT>/input-green.json",
+        "bytes": 22250,
+        "sha256": "98b4ba4a5aad44c6afcb7affb91b371e574f838dbca5581c670495c6b71ee9d4"
+      },
+      "log": {
+        "path": "<STATE_ROOT>/input-green.log",
+        "bytes": 5040,
+        "sha256": "f85da4585bc1f6336bf0d7f730c5bd19e1dd7b4fd0a3d08bbe57ca2d374fc79f"
+      },
+      "startTimeEpochMs": 1793786345900,
+      "counts": {
+        "total": 55,
+        "passed": 55,
+        "failed": 0,
+        "pending": 0
+      },
+      "success": true,
+      "actualTestResultFiles": 4,
+      "suites": [
+        {
+          "file": "packages/adapters/base/test/event-router-work.test.ts",
+          "cases": 18,
+          "passed": 18,
+          "failed": 0,
+          "pending": 0,
+          "failures": []
+        },
+        {
+          "file": "packages/adapters/base/test/pointer-contact.test.ts",
+          "cases": 16,
+          "passed": 16,
+          "failed": 0,
+          "pending": 0,
+          "failures": []
+        },
+        {
+          "file": "packages/adapters/base/test/shadow-retarget-routing.test.ts",
+          "cases": 13,
+          "passed": 13,
+          "failed": 0,
+          "pending": 0,
+          "failures": []
+        },
+        {
+          "file": "packages/adapters/base/test/window-blur-activation.test.ts",
+          "cases": 8,
+          "passed": 8,
+          "failed": 0,
+          "pending": 0,
+          "failures": []
+        }
+      ]
+    },
+    {
+      "epoch": "input-compat",
+      "scope": "Compatibility regression caused by direct pointerType read",
+      "report": {
+        "path": "<STATE_ROOT>/input-compat.json",
+        "bytes": 68421,
+        "sha256": "62bf53280eb3cc60baf1620a40281bc9694092fad1f60fa62ee1fefd1f51d9e5"
+      },
+      "log": {
+        "path": "<STATE_ROOT>/input-compat.log",
+        "bytes": 135276,
+        "sha256": "6379aa78caac82cbfad42f5ccb9e4bffc3cd8e15a51030432b805514eb88f907"
+      },
+      "startTimeEpochMs": 1793786446781,
+      "counts": {
+        "total": 158,
+        "passed": 154,
+        "failed": 4,
+        "pending": 0
+      },
+      "success": false,
+      "actualTestResultFiles": 7,
+      "suites": [
+        {
+          "file": "packages/adapters/base/test/event-gate.test.ts",
+          "cases": 2,
+          "passed": 2,
+          "failed": 0,
+          "pending": 0,
+          "failures": []
+        },
+        {
+          "file": "packages/adapters/base/test/native-focus-event-router.test.ts",
+          "cases": 2,
+          "passed": 2,
+          "failed": 0,
+          "pending": 0,
+          "failures": []
+        },
+        {
+          "file": "packages/adapters/base/test/pointer-facts-router.test.ts",
+          "cases": 128,
+          "passed": 128,
+          "failed": 0,
+          "pending": 0,
+          "failures": []
+        },
+        {
+          "file": "packages/adapters/base/test/pointer-sample-readers.test.ts",
+          "cases": 11,
+          "passed": 7,
+          "failed": 4,
+          "pending": 0,
+          "failures": [
+            {
+              "name": "private pointer reads preserve facts and existing gesture ownership immediate/root: unreadable down declines new gesture ownership but delivers unknown author facts",
+              "firstFailureLine": "AssertionError: expected [Function] to not throw an error but 'Error: unreadable kind' was thrown"
+            },
+            {
+              "name": "private pointer reads preserve facts and existing gesture ownership immediate/global: unreadable down declines new gesture ownership but delivers unknown author facts",
+              "firstFailureLine": "AssertionError: expected [Function] to not throw an error but 'Error: unreadable kind' was thrown"
+            },
+            {
+              "name": "private pointer reads preserve facts and existing gesture ownership directional/root: unreadable down declines new gesture ownership but delivers unknown author facts",
+              "firstFailureLine": "AssertionError: expected [Function] to not throw an error but 'Error: unreadable kind' was thrown"
+            },
+            {
+              "name": "private pointer reads preserve facts and existing gesture ownership directional/global: unreadable down declines new gesture ownership but delivers unknown author facts",
+              "firstFailureLine": "AssertionError: expected [Function] to not throw an error but 'Error: unreadable kind' was thrown"
+            }
+          ]
+        },
+        {
+          "file": "packages/adapters/base/test/contract/event-default-action.v0.contract.test.ts",
+          "cases": 2,
+          "passed": 2,
+          "failed": 0,
+          "pending": 0,
+          "failures": []
+        },
+        {
+          "file": "packages/adapters/base/test/contract/event-target-requirements.v0.contract.test.ts",
+          "cases": 3,
+          "passed": 3,
+          "failed": 0,
+          "pending": 0,
+          "failures": []
+        },
+        {
+          "file": "packages/adapters/base/test/contract/pointer-root-ownership.v0.contract.test.ts",
+          "cases": 10,
+          "passed": 10,
+          "failed": 0,
+          "pending": 0,
+          "failures": []
+        }
+      ]
+    },
+    {
+      "epoch": "input-final",
+      "scope": "Safe-read candidate before new fresh-unreadable-down counterexample",
+      "report": {
+        "path": "<STATE_ROOT>/input-final.json",
+        "bytes": 84142,
+        "sha256": "18b774a29faaa0368eb247513197259e3fd55aad8c8771becb513c7af69c7fa4"
+      },
+      "log": {
+        "path": "<STATE_ROOT>/input-final.log",
+        "bytes": 134604,
+        "sha256": "3b6e2b638c6c7f92f2477de529e20a1337c4c12c19a2f0f60a6e457590c0db0c"
+      },
+      "startTimeEpochMs": 1793786593729,
+      "counts": {
+        "total": 214,
+        "passed": 214,
+        "failed": 0,
+        "pending": 0
+      },
+      "success": true,
+      "actualTestResultFiles": 11,
+      "suites": [
+        {
+          "file": "packages/adapters/base/test/event-gate.test.ts",
+          "cases": 2,
+          "passed": 2,
+          "failed": 0,
+          "pending": 0,
+          "failures": []
+        },
+        {
+          "file": "packages/adapters/base/test/event-router-work.test.ts",
+          "cases": 18,
+          "passed": 18,
+          "failed": 0,
+          "pending": 0,
+          "failures": []
+        },
+        {
+          "file": "packages/adapters/base/test/native-focus-event-router.test.ts",
+          "cases": 2,
+          "passed": 2,
+          "failed": 0,
+          "pending": 0,
+          "failures": []
+        },
+        {
+          "file": "packages/adapters/base/test/pointer-contact.test.ts",
+          "cases": 16,
+          "passed": 16,
+          "failed": 0,
+          "pending": 0,
+          "failures": []
+        },
+        {
+          "file": "packages/adapters/base/test/pointer-facts-router.test.ts",
+          "cases": 128,
+          "passed": 128,
+          "failed": 0,
+          "pending": 0,
+          "failures": []
+        },
+        {
+          "file": "packages/adapters/base/test/pointer-sample-readers.test.ts",
+          "cases": 11,
+          "passed": 11,
+          "failed": 0,
+          "pending": 0,
+          "failures": []
+        },
+        {
+          "file": "packages/adapters/base/test/shadow-retarget-routing.test.ts",
+          "cases": 13,
+          "passed": 13,
+          "failed": 0,
+          "pending": 0,
+          "failures": []
+        },
+        {
+          "file": "packages/adapters/base/test/window-blur-activation.test.ts",
+          "cases": 9,
+          "passed": 9,
+          "failed": 0,
+          "pending": 0,
+          "failures": []
+        },
+        {
+          "file": "packages/adapters/base/test/contract/event-default-action.v0.contract.test.ts",
+          "cases": 2,
+          "passed": 2,
+          "failed": 0,
+          "pending": 0,
+          "failures": []
+        },
+        {
+          "file": "packages/adapters/base/test/contract/event-target-requirements.v0.contract.test.ts",
+          "cases": 3,
+          "passed": 3,
+          "failed": 0,
+          "pending": 0,
+          "failures": []
+        },
+        {
+          "file": "packages/adapters/base/test/contract/pointer-root-ownership.v0.contract.test.ts",
+          "cases": 10,
+          "passed": 10,
+          "failed": 0,
+          "pending": 0,
+          "failures": []
+        }
+      ]
+    },
+    {
+      "epoch": "review-finding-red",
+      "scope": "New exact fresh-unreadable-down counterexample against safe-read candidate",
+      "report": {
+        "path": "<STATE_ROOT>/review-finding-red.json",
+        "bytes": 6433,
+        "sha256": "3fd46c8151935d26ebe2615bd483e4f706c266a66e2fce41a930020b2272bd0e"
+      },
+      "log": {
+        "path": "<STATE_ROOT>/review-finding-red.log",
+        "bytes": 3920,
+        "sha256": "1815d466f726630f9a5aefb13051a960c1fb55f17dfea98bef1f7d3a8ed47059"
+      },
+      "startTimeEpochMs": 1793786706023,
+      "counts": {
+        "total": 10,
+        "passed": 9,
+        "failed": 1,
+        "pending": 0
+      },
+      "success": false,
+      "actualTestResultFiles": 1,
+      "suites": [
+        {
+          "file": "packages/adapters/base/test/window-blur-activation.test.ts",
+          "cases": 10,
+          "passed": 9,
+          "failed": 1,
+          "pending": 0,
+          "failures": [
+            {
+              "name": "C-EVENT-TYPE-0002-D/E: window blur cancels the pending pointer activation retires the canceled identity on a fresh owned down with an unreadable kind",
+              "firstFailureLine": "AssertionError: expected \"spy\" to be called once, but got 0 times"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "epoch": "input-candidate-final",
+      "scope": "Current repaired candidate; original compatibility controls plus all ten blur controls",
+      "report": {
+        "path": "<STATE_ROOT>/input-candidate-final.json",
+        "bytes": 84533,
+        "sha256": "ed69652ba773962a9112594fae50407bd2d1c35db78760233f731a812e6a1fae"
+      },
+      "log": {
+        "path": "<STATE_ROOT>/input-candidate-final.log",
+        "bytes": 134615,
+        "sha256": "94a4dc4190ef5fd5c6f1be348e6dd269c2530e643f49833ce5fd62befe2b64d8"
+      },
+      "startTimeEpochMs": 1793786719475,
+      "counts": {
+        "total": 215,
+        "passed": 215,
+        "failed": 0,
+        "pending": 0
+      },
+      "success": true,
+      "actualTestResultFiles": 11,
+      "suites": [
+        {
+          "file": "packages/adapters/base/test/event-gate.test.ts",
+          "cases": 2,
+          "passed": 2,
+          "failed": 0,
+          "pending": 0,
+          "failures": []
+        },
+        {
+          "file": "packages/adapters/base/test/event-router-work.test.ts",
+          "cases": 18,
+          "passed": 18,
+          "failed": 0,
+          "pending": 0,
+          "failures": []
+        },
+        {
+          "file": "packages/adapters/base/test/native-focus-event-router.test.ts",
+          "cases": 2,
+          "passed": 2,
+          "failed": 0,
+          "pending": 0,
+          "failures": []
+        },
+        {
+          "file": "packages/adapters/base/test/pointer-contact.test.ts",
+          "cases": 16,
+          "passed": 16,
+          "failed": 0,
+          "pending": 0,
+          "failures": []
+        },
+        {
+          "file": "packages/adapters/base/test/pointer-facts-router.test.ts",
+          "cases": 128,
+          "passed": 128,
+          "failed": 0,
+          "pending": 0,
+          "failures": []
+        },
+        {
+          "file": "packages/adapters/base/test/pointer-sample-readers.test.ts",
+          "cases": 11,
+          "passed": 11,
+          "failed": 0,
+          "pending": 0,
+          "failures": []
+        },
+        {
+          "file": "packages/adapters/base/test/shadow-retarget-routing.test.ts",
+          "cases": 13,
+          "passed": 13,
+          "failed": 0,
+          "pending": 0,
+          "failures": []
+        },
+        {
+          "file": "packages/adapters/base/test/window-blur-activation.test.ts",
+          "cases": 10,
+          "passed": 10,
+          "failed": 0,
+          "pending": 0,
+          "failures": []
+        },
+        {
+          "file": "packages/adapters/base/test/contract/event-default-action.v0.contract.test.ts",
+          "cases": 2,
+          "passed": 2,
+          "failed": 0,
+          "pending": 0,
+          "failures": []
+        },
+        {
+          "file": "packages/adapters/base/test/contract/event-target-requirements.v0.contract.test.ts",
+          "cases": 3,
+          "passed": 3,
+          "failed": 0,
+          "pending": 0,
+          "failures": []
+        },
+        {
+          "file": "packages/adapters/base/test/contract/pointer-root-ownership.v0.contract.test.ts",
+          "cases": 10,
+          "passed": 10,
+          "failed": 0,
+          "pending": 0,
+          "failures": []
+        }
+      ]
+    }
+  ],
+  "coverageLimits": [
+    "Reviewer ran read-only source/Git/data operations and the pui-review resolver only; no tests, browser, build, API or Git mutation were performed.",
+    "All newly reviewed result files are Vitest/Happy DOM or existing contract controls. Shadow retargeting is explicitly modeled; detail-zero MouseEvent is an AT/keyboard-shaped input control, not actual assistive-technology evidence.",
+    "Root/Shadow/Portal cancellation, other pointer identity, unknown click kind, fresh unreadable down, fresh pointer, Enter/Space and click-only/no-pending-blur are covered by the ten-case file. A new full native source/packed continuous run remains outside these results.",
+    "Click events lacking usable pointer identity remain on the previous click path; this review does not promise suppression of an unidentifiable host event or broader cross-engine equivalence.",
+    "The implementation keeps one current pending pointer identity per router. Interleaved multiple primary devices or transferring a cancelled gesture to a new logical owner were not executed here; no expanded guarantee is asserted.",
+    "Existing green 55 and 214 summaries are historical stages, not evidence for later source bytes or the new counterexample. The 158-test compatibility 154/4 and 10-test counterexample 9/1 remain preserved.",
+    "No full tracked-input execution census or independent process supervisor receipt is embedded in these Vitest reports. Current exact file hashes and retained reviewer snapshots were checked; execution reports/logs and the parent-provided sequence supply their recorded source epochs.",
+    "No previous 2b906308 browser failure package was independently re-audited in this bounded pass; it is not used to claim current native behavior.",
+    "Catalog entities cited here remain draft. No stable guarantee, full C acceptance, deployment, main integration or GitHub review is granted."
+  ],
+  "reviewOperations": [
+    "Read current pui-dev; resolve pui-review human-assisted/current-user and read returned leaf.",
+    "Read exact two-path working diff, base Git source, relevant catalog entities/contracts/records and directly affected tests.",
+    "Hash/read all six recorded red/green stages; recompute counts from actual assertionResults.",
+    "Independently identify INPUT-BLUR-001, preserve its pre-repair source snapshot and report, then compare the one-line repair and actual distinguishing red/green.",
+    "Write only private input-review artifacts."
+  ]
+}

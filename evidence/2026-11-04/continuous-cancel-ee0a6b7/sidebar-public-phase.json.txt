@@ -1,0 +1,428 @@
+{
+  "source": {
+    "sha": "70ca1f1a0a9c8c2ab1223ab13a88d2b3aaff1ee1",
+    "dirty": true,
+    "expectedSha": "70ca1f1a0a9c8c2ab1223ab13a88d2b3aaff1ee1",
+    "files": {
+      "components/SiteContentsCommand.astro": "da3634a9516a41a004018d67dda423c8edb2008a1eb43f6ce1934f985c452989",
+      "components/site-contents-command.ts": "cd558589c0000aa7f48d0a49a29129ac53ec159c28091ea0af4d388150f37c9a",
+      "components/site-contents-panel.ts": "9326b101164f857df0f00dd088f6f15f754f56d5bcd18294c5bdaf15729c36ae",
+      "components/site-header-surface.ts": "bf30bef1bd9edda369fb6f9bea8cbba0d1e2abdf452c64dc31dc9a1d4e458c09",
+      "components/site-header-disclosure.ts": "8bac00183922de04d25f8b3699adf4848c44226522fe66b4891611d4e8bf3801",
+      "components/override/Sidebar.astro": "bdd177350d79cdb6114d1d77254d3188fbc99ad46dae8dfadc915bd541940d6c",
+      "components/override/PageFrame.astro": "db09b8ed5541455e1c07001802f7c6a256cf2025d1b99962cfae0376d293aa3a",
+      "styles/site-contents-command.css": "634ef35af2f4297eb25f0c03aa1bc974ef068dd33b737a468fda1ff39469fe58"
+    }
+  },
+  "first": [
+    {
+      "phase": "unwound.open",
+      "at": 2400,
+      "owner": "site-contents-panel-1",
+      "treeHome": true,
+      "treeConnected": true,
+      "contentConnected": null,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": false
+    },
+    {
+      "phase": "finish.open",
+      "at": 2400,
+      "owner": "site-contents-panel-1",
+      "treeHome": true,
+      "treeConnected": true,
+      "contentConnected": null,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": false
+    },
+    {
+      "phase": "finish.present",
+      "at": 2400,
+      "owner": "site-contents-panel-1",
+      "treeHome": true,
+      "treeConnected": true,
+      "contentConnected": null,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": false
+    },
+    {
+      "phase": "public.open",
+      "at": 2978.600000023842,
+      "owner": "site-contents-panel-1",
+      "treeHome": true,
+      "treeConnected": true,
+      "contentConnected": null,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "event": {
+        "type": "next",
+        "prev": false,
+        "next": true,
+        "reason": "reason: dialog context sync => content"
+      }
+    },
+    {
+      "phase": "unwound.open",
+      "at": 3024.5,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": null,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": true
+    },
+    {
+      "phase": "public.present",
+      "at": 3034.7000000476837,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": null,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "event": {
+        "type": "next",
+        "prev": false,
+        "next": true,
+        "reason": "reason: asTransition presence => entering"
+      },
+      "requestedOpen": true,
+      "closeReturnReady": false
+    },
+    {
+      "phase": "unwound.open",
+      "at": 3107.600000023842,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": null,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": true
+    },
+    {
+      "phase": "public.open",
+      "at": 3300.900000035763,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": true,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "event": {
+        "type": "next",
+        "prev": true,
+        "next": false,
+        "reason": "reason: dialog context sync => content"
+      }
+    },
+    {
+      "phase": "unwound.open",
+      "at": 3326.7000000476837,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": true,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": false
+    },
+    {
+      "phase": "finish.open",
+      "at": 3326.7000000476837,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": true,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": false
+    },
+    {
+      "phase": "finish.present",
+      "at": 3326.7000000476837,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": true,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": true
+    },
+    {
+      "phase": "verdict-observed-after-original-count",
+      "at": 3335.2000000476837
+    }
+  ],
+  "after": [
+    {
+      "phase": "unwound.open",
+      "at": 2400,
+      "owner": "site-contents-panel-1",
+      "treeHome": true,
+      "treeConnected": true,
+      "contentConnected": null,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": false
+    },
+    {
+      "phase": "finish.open",
+      "at": 2400,
+      "owner": "site-contents-panel-1",
+      "treeHome": true,
+      "treeConnected": true,
+      "contentConnected": null,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": false
+    },
+    {
+      "phase": "finish.present",
+      "at": 2400,
+      "owner": "site-contents-panel-1",
+      "treeHome": true,
+      "treeConnected": true,
+      "contentConnected": null,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": false
+    },
+    {
+      "phase": "public.open",
+      "at": 2978.600000023842,
+      "owner": "site-contents-panel-1",
+      "treeHome": true,
+      "treeConnected": true,
+      "contentConnected": null,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "event": {
+        "type": "next",
+        "prev": false,
+        "next": true,
+        "reason": "reason: dialog context sync => content"
+      }
+    },
+    {
+      "phase": "unwound.open",
+      "at": 3024.5,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": null,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": true
+    },
+    {
+      "phase": "public.present",
+      "at": 3034.7000000476837,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": null,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "event": {
+        "type": "next",
+        "prev": false,
+        "next": true,
+        "reason": "reason: asTransition presence => entering"
+      },
+      "requestedOpen": true,
+      "closeReturnReady": false
+    },
+    {
+      "phase": "unwound.open",
+      "at": 3107.600000023842,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": null,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": true
+    },
+    {
+      "phase": "public.open",
+      "at": 3300.900000035763,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": true,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "event": {
+        "type": "next",
+        "prev": true,
+        "next": false,
+        "reason": "reason: dialog context sync => content"
+      }
+    },
+    {
+      "phase": "unwound.open",
+      "at": 3326.7000000476837,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": true,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": false
+    },
+    {
+      "phase": "finish.open",
+      "at": 3326.7000000476837,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": true,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": false
+    },
+    {
+      "phase": "finish.present",
+      "at": 3326.7000000476837,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": true,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": true
+    },
+    {
+      "phase": "verdict-observed-after-original-count",
+      "at": 3335.2000000476837
+    },
+    {
+      "phase": "public.present",
+      "at": 3503.400000035763,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": true,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "event": {
+        "type": "next",
+        "prev": true,
+        "next": false,
+        "reason": "reason: asTransition presence => closed"
+      },
+      "requestedOpen": false,
+      "closeReturnReady": true
+    },
+    {
+      "phase": "finish.open",
+      "at": 3503.400000035763,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": true,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": false
+    },
+    {
+      "phase": "finish.present",
+      "at": 3503.5,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": true,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": false
+    },
+    {
+      "phase": "tree-return.before",
+      "at": 3503.5,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": true,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn"
+    },
+    {
+      "phase": "tree-return.after",
+      "at": 3565.7000000476837,
+      "owner": "site-contents-panel-1",
+      "treeHome": true,
+      "treeConnected": true,
+      "contentConnected": true,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn"
+    },
+    {
+      "phase": "post-verdict-500ms",
+      "at": 3863.5,
+      "contentConnected": true
+    }
+  ],
+  "originalError": "AssertionError: expected +0 to be 1 // Object.is equality",
+  "originalDeadlineMs": 180000,
+  "diagnosticOnly": true,
+  "postVerdictWaitMs": 500
+}

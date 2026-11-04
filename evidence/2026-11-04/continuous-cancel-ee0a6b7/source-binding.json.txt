@@ -1,0 +1,152 @@
+{
+  "head": "ee0a6b7c1be7e569006597944eae4f84d5190583",
+  "tree": "f2ac4a71a0a5bc51e01a7b6d7f7e8bfdffa844d9",
+  "inputUnit": 215,
+  "fullTypes": "1152files/0errors/0warnings/24hints",
+  "publicBuild": "44/47 actual packages,47manifests",
+  "products": {
+    "source": {
+      "blurArms": [
+        {
+          "runtime": "wc",
+          "disabled": false,
+          "windowBlurBeforeMatchingUp": false,
+          "before": 4,
+          "after": 5,
+          "cleanupErrors": []
+        },
+        {
+          "runtime": "wc",
+          "disabled": true,
+          "windowBlurBeforeMatchingUp": true,
+          "before": 5,
+          "after": 5,
+          "cleanupErrors": []
+        },
+        {
+          "runtime": "react",
+          "disabled": false,
+          "windowBlurBeforeMatchingUp": false,
+          "before": 4,
+          "after": 5,
+          "cleanupErrors": []
+        },
+        {
+          "runtime": "react",
+          "disabled": true,
+          "windowBlurBeforeMatchingUp": true,
+          "before": 5,
+          "after": 5,
+          "cleanupErrors": []
+        },
+        {
+          "runtime": "vue",
+          "disabled": false,
+          "windowBlurBeforeMatchingUp": false,
+          "before": 4,
+          "after": 5,
+          "cleanupErrors": []
+        },
+        {
+          "runtime": "vue",
+          "disabled": true,
+          "windowBlurBeforeMatchingUp": true,
+          "before": 5,
+          "after": 5,
+          "cleanupErrors": []
+        },
+        {
+          "runtime": "vue2",
+          "disabled": false,
+          "windowBlurBeforeMatchingUp": false,
+          "before": 4,
+          "after": 5,
+          "cleanupErrors": []
+        },
+        {
+          "runtime": "vue2",
+          "disabled": true,
+          "windowBlurBeforeMatchingUp": true,
+          "before": 5,
+          "after": 5,
+          "cleanupErrors": []
+        }
+      ],
+      "continuousExecution": "failed",
+      "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 157.609\n- 157.609375\n\n    at file://<C_SOURCE_ROOT>/experiments/material-v2/continuous-browser.test.mjs:1000:12",
+      "resultSha256": "34a9a67d80d7409437e16e0f9ec6bd0f43480a9097a0e841df726222260cc561"
+    },
+    "packed": {
+      "blurArms": [
+        {
+          "runtime": "wc",
+          "disabled": false,
+          "windowBlurBeforeMatchingUp": false,
+          "before": 4,
+          "after": 5,
+          "cleanupErrors": []
+        },
+        {
+          "runtime": "wc",
+          "disabled": true,
+          "windowBlurBeforeMatchingUp": true,
+          "before": 5,
+          "after": 5,
+          "cleanupErrors": []
+        },
+        {
+          "runtime": "react",
+          "disabled": false,
+          "windowBlurBeforeMatchingUp": false,
+          "before": 4,
+          "after": 5,
+          "cleanupErrors": []
+        },
+        {
+          "runtime": "react",
+          "disabled": true,
+          "windowBlurBeforeMatchingUp": true,
+          "before": 5,
+          "after": 5,
+          "cleanupErrors": []
+        },
+        {
+          "runtime": "vue",
+          "disabled": false,
+          "windowBlurBeforeMatchingUp": false,
+          "before": 4,
+          "after": 5,
+          "cleanupErrors": []
+        },
+        {
+          "runtime": "vue",
+          "disabled": true,
+          "windowBlurBeforeMatchingUp": true,
+          "before": 5,
+          "after": 5,
+          "cleanupErrors": []
+        },
+        {
+          "runtime": "vue2",
+          "disabled": false,
+          "windowBlurBeforeMatchingUp": false,
+          "before": 4,
+          "after": 5,
+          "cleanupErrors": []
+        },
+        {
+          "runtime": "vue2",
+          "disabled": true,
+          "windowBlurBeforeMatchingUp": true,
+          "before": 5,
+          "after": 5,
+          "cleanupErrors": []
+        }
+      ],
+      "continuousExecution": "failed",
+      "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 157.609\n- 157.609375\n\n    at file://<C_SOURCE_ROOT>/experiments/material-v2/continuous-browser.test.mjs:1000:12",
+      "resultSha256": "276847e1b3dfbffa4770b0bb4de5e2c49ce0950638cb9a7b2b27292dc62a01bb"
+    }
+  },
+  "claim": "Bounded activation cancellation fixed; complete continuous still fails original resize paint equality; no optical acceptance"
+}

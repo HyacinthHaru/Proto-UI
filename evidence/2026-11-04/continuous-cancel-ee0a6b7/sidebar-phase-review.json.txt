@@ -1,0 +1,544 @@
+{
+  "reviewedAt": "2026-11-04T10:32:11.681370+00:00",
+  "mode": "human-assisted/current-user",
+  "assessment": "unassessed/advisory",
+  "disposition": "partial/ABSTAIN",
+  "scope": "Bounded read-only review of existing pristine and two diagnostic runs, archived source, output records and restoration. No browser/test/build/API or source/Git mutation.",
+  "executionHead": "70ca1f1a0a9c8c2ab1223ab13a88d2b3aaff1ee1",
+  "executionTree": "dccebb7cd93e2791c4b993a13daaccb013d4f16a",
+  "runs": [
+    {
+      "epoch": "sidebar-70ca-original",
+      "receipt": {
+        "path": "<STATE_ROOT>/sidebar-70ca-original/receipt.json",
+        "bytes": 1013,
+        "sha256": "c41d1292a7aa10e86a4e2d385829ef2e95e93d333a42bf132f793a513c18bf9e"
+      },
+      "vitest": {
+        "path": "<STATE_ROOT>/sidebar-70ca-original/vitest.json",
+        "bytes": 5555,
+        "sha256": "9600a917b647b91c4f7b34425e7491da1006aa968f8710aa929d8b1f8ed14f93"
+      },
+      "runnerIntegrity": {
+        "path": "<STATE_ROOT>/sidebar-70ca-original/runner-integrity.json",
+        "bytes": 597,
+        "sha256": "1a833ef211dea88564468f4894caab2273306ecfa01a29752ec9bb5243a4e073"
+      },
+      "browserLog": {
+        "path": "<STATE_ROOT>/sidebar-70ca-original/browser.log",
+        "bytes": 7817,
+        "sha256": "26ca805f507bc65e07ba9bb431fe8e25f78195486fd6af02c27a9d4b4a2aa405"
+      },
+      "transitionSourceRecord": {
+        "path": "<STATE_ROOT>/sidebar-70ca-original/contents-command/shadcn-wc-transition.json",
+        "bytes": 2582,
+        "sha256": "fc0afcdc9104844cc8c952e9ab9fc6e436a427add8da91ec082f196b8e0fcbe8"
+      },
+      "startedAt": "2026-11-04T10:15:09.271281+00:00",
+      "finishedAt": "2026-11-04T10:15:39.452448+00:00",
+      "counts": {
+        "total": 9,
+        "passed": 0,
+        "failed": 1,
+        "pending": 8
+      },
+      "exitCode": 1,
+      "failedPredicate": [
+        "AssertionError: expected +0 to be 1 // Object.is equality",
+        "    at <CONTENTS_ROOT>/apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts:954:80"
+      ],
+      "source": {
+        "sha": "70ca1f1a0a9c8c2ab1223ab13a88d2b3aaff1ee1",
+        "dirty": false,
+        "expectedSha": "70ca1f1a0a9c8c2ab1223ab13a88d2b3aaff1ee1",
+        "files": {
+          "components/SiteContentsCommand.astro": "da3634a9516a41a004018d67dda423c8edb2008a1eb43f6ce1934f985c452989",
+          "components/site-contents-command.ts": "cd558589c0000aa7f48d0a49a29129ac53ec159c28091ea0af4d388150f37c9a",
+          "components/site-contents-panel.ts": "e8e26a939111f7f791f16ad00aaf7df5f86cdf94206cb8d5bf8be996292fb96b",
+          "components/site-header-surface.ts": "bf30bef1bd9edda369fb6f9bea8cbba0d1e2abdf452c64dc31dc9a1d4e458c09",
+          "components/site-header-disclosure.ts": "8bac00183922de04d25f8b3699adf4848c44226522fe66b4891611d4e8bf3801",
+          "components/override/Sidebar.astro": "bdd177350d79cdb6114d1d77254d3188fbc99ad46dae8dfadc915bd541940d6c",
+          "components/override/PageFrame.astro": "db09b8ed5541455e1c07001802f7c6a256cf2025d1b99962cfae0376d293aa3a",
+          "styles/site-contents-command.css": "634ef35af2f4297eb25f0c03aa1bc974ef068dd33b737a468fda1ff39469fe58"
+        }
+      },
+      "restoredOriginalBytes": null,
+      "runner": {
+        "schemaVersion": 1,
+        "vitestVersion": "2.1.9",
+        "reporterSha256": "d26d77c9a57a8997394a21b70dee15cf7408c25e3d7bd7e22f48e5b1e6e4c6fa",
+        "phase": "process-exit",
+        "finishedCalls": 1,
+        "closeStarted": true,
+        "closeFinished": true,
+        "processTimedOut": false,
+        "runnerErrors": [],
+        "unhandledErrors": [],
+        "files": [
+          {
+            "path": "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+            "state": "fail",
+            "suiteErrors": []
+          }
+        ],
+        "exitCode": 1,
+        "cancelled": false,
+        "reportSha256": "9600a917b647b91c4f7b34425e7491da1006aa968f8710aa929d8b1f8ed14f93"
+      }
+    },
+    {
+      "epoch": "sidebar-70ca-phase",
+      "receipt": {
+        "path": "<STATE_ROOT>/sidebar-70ca-phase/receipt.json",
+        "bytes": 1475,
+        "sha256": "d6632c6bc7adfed1008778d663abb8569696944616cfb7258a6e1da312e437a9"
+      },
+      "vitest": {
+        "path": "<STATE_ROOT>/sidebar-70ca-phase/vitest.json",
+        "bytes": 5549,
+        "sha256": "b445f03aeaebc2e6aca3fb8ab362a953ae1a738a7bff0cffbf29f940a85f0de8"
+      },
+      "runnerIntegrity": {
+        "path": "<STATE_ROOT>/sidebar-70ca-phase/runner-integrity.json",
+        "bytes": 597,
+        "sha256": "6879fbca4180c5b9e665f7a5df2caf748c91d27e45e22d3bc5740136203d3158"
+      },
+      "browserLog": {
+        "path": "<STATE_ROOT>/sidebar-70ca-phase/browser.log",
+        "bytes": 7034,
+        "sha256": "7eeeb924a26418963d54f294a6c7d614400171fce98da5569a2104a2089bd8b2"
+      },
+      "transitionSourceRecord": {
+        "path": "<STATE_ROOT>/sidebar-70ca-phase/contents-command/shadcn-wc-transition.json",
+        "bytes": 2579,
+        "sha256": "7e052c0a37efb45c4b98ccc7eec2a892c1c01fad3a81e61a3be68ab2b5599122"
+      },
+      "startedAt": "2026-11-04T10:22:56.965175+00:00",
+      "finishedAt": "2026-11-04T10:23:26.119478+00:00",
+      "counts": {
+        "total": 9,
+        "passed": 0,
+        "failed": 1,
+        "pending": 8
+      },
+      "exitCode": 1,
+      "failedPredicate": [
+        "AssertionError: expected +0 to be 1 // Object.is equality",
+        "    at <CONTENTS_ROOT>/apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts:955:80"
+      ],
+      "source": {
+        "sha": "70ca1f1a0a9c8c2ab1223ab13a88d2b3aaff1ee1",
+        "dirty": true,
+        "expectedSha": "70ca1f1a0a9c8c2ab1223ab13a88d2b3aaff1ee1",
+        "files": {
+          "components/SiteContentsCommand.astro": "da3634a9516a41a004018d67dda423c8edb2008a1eb43f6ce1934f985c452989",
+          "components/site-contents-command.ts": "cd558589c0000aa7f48d0a49a29129ac53ec159c28091ea0af4d388150f37c9a",
+          "components/site-contents-panel.ts": "40f717ea24fa234543e383e37d3f97c97dcc864f076ddcb76db63f3fd3d3a942",
+          "components/site-header-surface.ts": "bf30bef1bd9edda369fb6f9bea8cbba0d1e2abdf452c64dc31dc9a1d4e458c09",
+          "components/site-header-disclosure.ts": "8bac00183922de04d25f8b3699adf4848c44226522fe66b4891611d4e8bf3801",
+          "components/override/Sidebar.astro": "bdd177350d79cdb6114d1d77254d3188fbc99ad46dae8dfadc915bd541940d6c",
+          "components/override/PageFrame.astro": "db09b8ed5541455e1c07001802f7c6a256cf2025d1b99962cfae0376d293aa3a",
+          "styles/site-contents-command.css": "634ef35af2f4297eb25f0c03aa1bc974ef068dd33b737a468fda1ff39469fe58"
+        }
+      },
+      "restoredOriginalBytes": true,
+      "runner": {
+        "schemaVersion": 1,
+        "vitestVersion": "2.1.9",
+        "reporterSha256": "d26d77c9a57a8997394a21b70dee15cf7408c25e3d7bd7e22f48e5b1e6e4c6fa",
+        "phase": "process-exit",
+        "finishedCalls": 1,
+        "closeStarted": true,
+        "closeFinished": true,
+        "processTimedOut": false,
+        "runnerErrors": [],
+        "unhandledErrors": [],
+        "files": [
+          {
+            "path": "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+            "state": "fail",
+            "suiteErrors": []
+          }
+        ],
+        "exitCode": 1,
+        "cancelled": false,
+        "reportSha256": "b445f03aeaebc2e6aca3fb8ab362a953ae1a738a7bff0cffbf29f940a85f0de8"
+      }
+    },
+    {
+      "epoch": "sidebar-70ca-phase-tagged",
+      "receipt": {
+        "path": "<STATE_ROOT>/sidebar-70ca-phase-tagged/receipt.json",
+        "bytes": 1528,
+        "sha256": "ec979b0a4506bc1bb0503897ea4d8d0e562d91ebe521ced3aa43fdd26d95c887"
+      },
+      "vitest": {
+        "path": "<STATE_ROOT>/sidebar-70ca-phase-tagged/vitest.json",
+        "bytes": 5556,
+        "sha256": "1b27409930f0bed4cea476fd3983c688f38241f31c8a6b5db3351c6f2c2adb39"
+      },
+      "runnerIntegrity": {
+        "path": "<STATE_ROOT>/sidebar-70ca-phase-tagged/runner-integrity.json",
+        "bytes": 597,
+        "sha256": "806b9c290a15ad7e93bd2037e06e7f9c8203595f94de57c3f5833d25a8c3a185"
+      },
+      "browserLog": {
+        "path": "<STATE_ROOT>/sidebar-70ca-phase-tagged/browser.log",
+        "bytes": 7041,
+        "sha256": "877472fa4cef0d398fb04c303c401b32194d11dfa963ceab39e16439e072e865"
+      },
+      "transitionSourceRecord": {
+        "path": "<STATE_ROOT>/sidebar-70ca-phase-tagged/contents-command/shadcn-wc-transition.json",
+        "bytes": 2581,
+        "sha256": "3095f2e040ea25accc638bdb43898c9c6a3ff2fd7e17f767c82e245b0c3d449e"
+      },
+      "startedAt": "2026-11-04T10:25:01.094863+00:00",
+      "finishedAt": "2026-11-04T10:25:29.591267+00:00",
+      "counts": {
+        "total": 9,
+        "passed": 0,
+        "failed": 1,
+        "pending": 8
+      },
+      "exitCode": 1,
+      "failedPredicate": [
+        "AssertionError: expected +0 to be 1 // Object.is equality",
+        "    at <CONTENTS_ROOT>/apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts:955:80"
+      ],
+      "source": {
+        "sha": "70ca1f1a0a9c8c2ab1223ab13a88d2b3aaff1ee1",
+        "dirty": true,
+        "expectedSha": "70ca1f1a0a9c8c2ab1223ab13a88d2b3aaff1ee1",
+        "files": {
+          "components/SiteContentsCommand.astro": "da3634a9516a41a004018d67dda423c8edb2008a1eb43f6ce1934f985c452989",
+          "components/site-contents-command.ts": "cd558589c0000aa7f48d0a49a29129ac53ec159c28091ea0af4d388150f37c9a",
+          "components/site-contents-panel.ts": "9326b101164f857df0f00dd088f6f15f754f56d5bcd18294c5bdaf15729c36ae",
+          "components/site-header-surface.ts": "bf30bef1bd9edda369fb6f9bea8cbba0d1e2abdf452c64dc31dc9a1d4e458c09",
+          "components/site-header-disclosure.ts": "8bac00183922de04d25f8b3699adf4848c44226522fe66b4891611d4e8bf3801",
+          "components/override/Sidebar.astro": "bdd177350d79cdb6114d1d77254d3188fbc99ad46dae8dfadc915bd541940d6c",
+          "components/override/PageFrame.astro": "db09b8ed5541455e1c07001802f7c6a256cf2025d1b99962cfae0376d293aa3a",
+          "styles/site-contents-command.css": "634ef35af2f4297eb25f0c03aa1bc974ef068dd33b737a468fda1ff39469fe58"
+        }
+      },
+      "restoredOriginalBytes": true,
+      "runner": {
+        "schemaVersion": 1,
+        "vitestVersion": "2.1.9",
+        "reporterSha256": "d26d77c9a57a8997394a21b70dee15cf7408c25e3d7bd7e22f48e5b1e6e4c6fa",
+        "phase": "process-exit",
+        "finishedCalls": 1,
+        "closeStarted": true,
+        "closeFinished": true,
+        "processTimedOut": false,
+        "runnerErrors": [],
+        "unhandledErrors": [],
+        "files": [
+          {
+            "path": "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+            "state": "fail",
+            "suiteErrors": []
+          }
+        ],
+        "exitCode": 1,
+        "cancelled": false,
+        "reportSha256": "1b27409930f0bed4cea476fd3983c688f38241f31c8a6b5db3351c6f2c2adb39"
+      }
+    }
+  ],
+  "diagnosticSourceBindings": [
+    {
+      "epoch": "sidebar-70ca-phase",
+      "path": "apps/www/src/components/site-contents-panel.ts",
+      "snapshot": {
+        "path": "<STATE_ROOT>/sidebar-70ca-phase/site-contents-panel.ts.txt",
+        "bytes": 17450,
+        "sha256": "40f717ea24fa234543e383e37d3f97c97dcc864f076ddcb76db63f3fd3d3a942"
+      },
+      "originalSha256": "e8e26a939111f7f791f16ad00aaf7df5f86cdf94206cb8d5bf8be996292fb96b",
+      "inverseMatchesExactGitSource": true
+    },
+    {
+      "epoch": "sidebar-70ca-phase",
+      "path": "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+      "snapshot": {
+        "path": "<STATE_ROOT>/sidebar-70ca-phase/homepage-dogfood.browser.test.ts.txt",
+        "bytes": 97710,
+        "sha256": "602955ac30ae8f1999e461b3e7a5c787f2c154a6a4245c0c7c0d7a5d759f5134"
+      },
+      "originalSha256": "6c95a98c65186112fe382c9e5fdadd2f8462fd46b4fe44760e75ab480dbf0cb7",
+      "inverseMatchesExactGitSource": true
+    },
+    {
+      "epoch": "sidebar-70ca-phase-tagged",
+      "path": "apps/www/src/components/site-contents-panel.ts",
+      "snapshot": {
+        "path": "<STATE_ROOT>/sidebar-70ca-phase-tagged/site-contents-panel.ts.txt",
+        "bytes": 17823,
+        "sha256": "9326b101164f857df0f00dd088f6f15f754f56d5bcd18294c5bdaf15729c36ae"
+      },
+      "originalSha256": "e8e26a939111f7f791f16ad00aaf7df5f86cdf94206cb8d5bf8be996292fb96b",
+      "inverseMatchesExactGitSource": true
+    },
+    {
+      "epoch": "sidebar-70ca-phase-tagged",
+      "path": "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+      "snapshot": {
+        "path": "<STATE_ROOT>/sidebar-70ca-phase-tagged/homepage-dogfood.browser.test.ts.txt",
+        "bytes": 97710,
+        "sha256": "602955ac30ae8f1999e461b3e7a5c787f2c154a6a4245c0c7c0d7a5d759f5134"
+      },
+      "originalSha256": "6c95a98c65186112fe382c9e5fdadd2f8462fd46b4fe44760e75ab480dbf0cb7",
+      "inverseMatchesExactGitSource": true
+    }
+  ],
+  "checks": {
+    "sidebar-70ca-phase:site-contents-panel.ts:recordedDiagnosticSHA": true,
+    "sidebar-70ca-phase:site-contents-panel.ts:recordedOriginalSHA": true,
+    "sidebar-70ca-phase:site-contents-panel.ts:removeOnlyObserverRestoresExactOriginal": true,
+    "sidebar-70ca-phase:homepage-dogfood.browser.test.ts:recordedDiagnosticSHA": true,
+    "sidebar-70ca-phase:homepage-dogfood.browser.test.ts:recordedOriginalSHA": true,
+    "sidebar-70ca-phase:homepage-dogfood.browser.test.ts:removeOnlyObserverRestoresExactOriginal": true,
+    "sidebar-70ca-phase-tagged:site-contents-panel.ts:recordedDiagnosticSHA": true,
+    "sidebar-70ca-phase-tagged:site-contents-panel.ts:recordedOriginalSHA": true,
+    "sidebar-70ca-phase-tagged:site-contents-panel.ts:removeOnlyObserverRestoresExactOriginal": true,
+    "sidebar-70ca-phase-tagged:homepage-dogfood.browser.test.ts:recordedDiagnosticSHA": true,
+    "sidebar-70ca-phase-tagged:homepage-dogfood.browser.test.ts:recordedOriginalSHA": true,
+    "sidebar-70ca-phase-tagged:homepage-dogfood.browser.test.ts:removeOnlyObserverRestoresExactOriginal": true,
+    "pristineExecutedTestEquals70ca": true,
+    "sidebar-70ca-original:runnerReportHash": true,
+    "sidebar-70ca-original:actual0pass1fail8filtered": true,
+    "sidebar-70ca-original:cleanTerminal": true,
+    "sidebar-70ca-original:sourceHead": true,
+    "sidebar-70ca-original:dirtyBoundary": true,
+    "sidebar-70ca-phase:runnerReportHash": true,
+    "sidebar-70ca-phase:actual0pass1fail8filtered": true,
+    "sidebar-70ca-phase:cleanTerminal": true,
+    "sidebar-70ca-phase:sourceHead": true,
+    "sidebar-70ca-phase:dirtyBoundary": true,
+    "sidebar-70ca-phase-tagged:runnerReportHash": true,
+    "sidebar-70ca-phase-tagged:actual0pass1fail8filtered": true,
+    "sidebar-70ca-phase-tagged:cleanTerminal": true,
+    "sidebar-70ca-phase-tagged:sourceHead": true,
+    "sidebar-70ca-phase-tagged:dirtyBoundary": true,
+    "firstSnapshotExactPrefix": true,
+    "taggedRowsSingleIdentity": true,
+    "phaseOriginalError": true,
+    "declared180sUnchanged": true,
+    "currentDiagnosticWorktreeRestored": true
+  },
+  "allMechanicalChecksTrue": true,
+  "reviewedProgramSemantics": [
+    "Removing only added observer declarations/calls and the post-verdict catch reconstructs the exact original Git bytes in both source files for both diagnostic revisions.",
+    "phaseValue receives the result of the original optional get call, logs it and returns that same value. requestedOpen short-circuit, open-before-present ordering, one read per original evaluated operand and original boolean comparisons are preserved. No new public state get is added.",
+    "Original open callback still calls afterPublicUpdate once; present callback still runs the same branch and finishClosed path. The tagged version adds a WeakMap of original lease coordinates.",
+    "The test sets the retained Content element reference inside the existing dialog.evaluate before its original geometry work. It adds no pre-verdict evaluate/RPC/input/wait. This assignment and all synchronous callback logging nevertheless add cost before the original count.",
+    "The catch runs after the original assertion has thrown, adds two evaluate calls and a requested 500ms wait plus file/PNG capture, then throws the same originalError reference. Original finally context.close remains. Actual final failure stacks still identify the original count assertion.",
+    "The logger has a 256-row cap; two test-side marker pushes are outside that cap. Actual after has 18 rows (16 logger rows + 2 markers), so that cap was not reached. There is no independent drop/error counter or universal no-throw guard; do not call the design fully non-interfering."
+  ],
+  "taggedObservation": {
+    "file": {
+      "path": "<STATE_ROOT>/sidebar-70ca-phase-tagged/contents-command/same-run-public-phase.json",
+      "bytes": 11827,
+      "sha256": "afd0a78a986ff5917e49557e0d610ddbbeb1f8499821f12cc4e149319276e43e"
+    },
+    "firstRows": 12,
+    "afterRows": 18,
+    "taggedRows": 16,
+    "untaggedMarkers": [
+      {
+        "phase": "verdict-observed-after-original-count",
+        "at": 3335.2000000476837
+      },
+      {
+        "phase": "post-verdict-500ms",
+        "at": 3863.5,
+        "contentConnected": true
+      }
+    ],
+    "identity": {
+      "owner": "site-contents-panel-1",
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn"
+    },
+    "closeSequence": [
+      {
+        "phase": "public.open",
+        "at": 3300.900000035763,
+        "owner": "site-contents-panel-1",
+        "treeHome": false,
+        "treeConnected": true,
+        "contentConnected": true,
+        "slotId": "site-contents-panel-1-docs-1-1",
+        "generation": 1,
+        "runtime": "wc",
+        "family": "shadcn",
+        "event": {
+          "type": "next",
+          "prev": true,
+          "next": false,
+          "reason": "reason: dialog context sync => content"
+        }
+      },
+      {
+        "phase": "unwound.open",
+        "at": 3326.7000000476837,
+        "owner": "site-contents-panel-1",
+        "treeHome": false,
+        "treeConnected": true,
+        "contentConnected": true,
+        "slotId": "site-contents-panel-1-docs-1-1",
+        "generation": 1,
+        "runtime": "wc",
+        "family": "shadcn",
+        "value": false
+      },
+      {
+        "phase": "finish.open",
+        "at": 3326.7000000476837,
+        "owner": "site-contents-panel-1",
+        "treeHome": false,
+        "treeConnected": true,
+        "contentConnected": true,
+        "slotId": "site-contents-panel-1-docs-1-1",
+        "generation": 1,
+        "runtime": "wc",
+        "family": "shadcn",
+        "value": false
+      },
+      {
+        "phase": "finish.present",
+        "at": 3326.7000000476837,
+        "owner": "site-contents-panel-1",
+        "treeHome": false,
+        "treeConnected": true,
+        "contentConnected": true,
+        "slotId": "site-contents-panel-1-docs-1-1",
+        "generation": 1,
+        "runtime": "wc",
+        "family": "shadcn",
+        "value": true
+      },
+      {
+        "phase": "verdict-observed-after-original-count",
+        "at": 3335.2000000476837
+      },
+      {
+        "phase": "public.present",
+        "at": 3503.400000035763,
+        "owner": "site-contents-panel-1",
+        "treeHome": false,
+        "treeConnected": true,
+        "contentConnected": true,
+        "slotId": "site-contents-panel-1-docs-1-1",
+        "generation": 1,
+        "runtime": "wc",
+        "family": "shadcn",
+        "event": {
+          "type": "next",
+          "prev": true,
+          "next": false,
+          "reason": "reason: asTransition presence => closed"
+        },
+        "requestedOpen": false,
+        "closeReturnReady": true
+      },
+      {
+        "phase": "finish.open",
+        "at": 3503.400000035763,
+        "owner": "site-contents-panel-1",
+        "treeHome": false,
+        "treeConnected": true,
+        "contentConnected": true,
+        "slotId": "site-contents-panel-1-docs-1-1",
+        "generation": 1,
+        "runtime": "wc",
+        "family": "shadcn",
+        "value": false
+      },
+      {
+        "phase": "finish.present",
+        "at": 3503.5,
+        "owner": "site-contents-panel-1",
+        "treeHome": false,
+        "treeConnected": true,
+        "contentConnected": true,
+        "slotId": "site-contents-panel-1-docs-1-1",
+        "generation": 1,
+        "runtime": "wc",
+        "family": "shadcn",
+        "value": false
+      },
+      {
+        "phase": "tree-return.before",
+        "at": 3503.5,
+        "owner": "site-contents-panel-1",
+        "treeHome": false,
+        "treeConnected": true,
+        "contentConnected": true,
+        "slotId": "site-contents-panel-1-docs-1-1",
+        "generation": 1,
+        "runtime": "wc",
+        "family": "shadcn"
+      },
+      {
+        "phase": "tree-return.after",
+        "at": 3565.7000000476837,
+        "owner": "site-contents-panel-1",
+        "treeHome": true,
+        "treeConnected": true,
+        "contentConnected": true,
+        "slotId": "site-contents-panel-1-docs-1-1",
+        "generation": 1,
+        "runtime": "wc",
+        "family": "shadcn"
+      },
+      {
+        "phase": "post-verdict-500ms",
+        "at": 3863.5,
+        "contentConnected": true
+      }
+    ],
+    "derivedSameBrowserClockMilliseconds": {
+      "presentFalseAfterPostFailureMarker": 168.19999998807907,
+      "returnBeforeAfterPostFailureMarker": 168.29999995231628,
+      "returnAfterAfterPostFailureMarker": 230.5,
+      "returnBracketDuration": 62.200000047683716,
+      "lastMarkerAfterFirstMarker": 528.2999999523163
+    },
+    "interpretation": "The observer recorded public open=false/present=true before the post-failure marker. The later public presence false callback was followed by the original getters and original tree home-return path. This is evidence of this instrumented close crossing the existing public leave barrier after the preserved original failure; it is not a new success or a maintainer decision about the immediate count contract."
+  },
+  "restoration": [
+    {
+      "path": "<CONTENTS_ROOT>/apps/www/src/components/site-contents-panel.ts",
+      "sha256": "e8e26a939111f7f791f16ad00aaf7df5f86cdf94206cb8d5bf8be996292fb96b",
+      "equals70caOriginal": true
+    },
+    {
+      "path": "<CONTENTS_ROOT>/apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+      "sha256": "6c95a98c65186112fe382c9e5fdadd2f8462fd46b4fe44760e75ab480dbf0cb7",
+      "equals70caOriginal": true
+    }
+  ],
+  "precisionNotes": [
+    "Correct the shorthand “18 rows all owner-tagged”: sixteen source-phase rows carry the single owner/slot/generation/runtime/family tuple; the two post-failure markers do not. first12 is a copied prefix of after18, not thirty distinct events.",
+    "The marker at3335.200ms is a browser evaluate observation after Node received/caught the original failed count assertion. It is not the exact count getter time, exact Node verdict timestamp or Escape end-to-end start.",
+    "Original finish getter values at3326.700ms are public facts read at that callback, not a new direct snapshot at the count assertion. Clock equality at the represented tick does not mean zero execution cost.",
+    "Public present=false is logged at3503.400ms; finish.present=false and tree-return.before at3503.500ms; tree-return.after at3565.700ms. The62.200ms bracket includes the original native move lease, insertion, scroll restoration and observer overhead, not pure DOM insertion cost.",
+    "contentConnected=true records a retained physical element reference at those sample points and the post500 marker. No actual renderer/L1 detach event was captured, and transient detach/reconnect or an internal view detach was not excluded.",
+    "The requested500ms post-verdict wait yielded a528.300ms marker-to-marker interval including RPC/serialization/scheduling. It does not extend the original1s assertion or change the original180s declared case, and it is not guaranteed exact500ms observation.",
+    "The logger stores event object references and its own private window state, uses no dedicated exception isolation, and does not separately count diagnostic exceptions. The outer diagnostic catch uses String(originalError) and console.error; this actual Error survived, but arbitrary throwing conversion/console behavior is not proved safe.",
+    "The actual first failed Shadcn/WC/click path terminated the original case. No other runtime/family/action gained acceptance from these records. Pristine70ca remains independently0/1/8.",
+    "The reviewer did not inspect PNG pixels in this task. After-original-verdict images are post-verdict captures and cannot be relabeled as original count frames.",
+    "#1212 merge/main movement does not alter these70ca execution epochs. Earlier09:50 OPEN snapshot remains historical; no GitHub query or current-main equivalence audit was performed in this review."
+  ],
+  "semanticBoundary": "The same-run data narrows the timing explanation to the implemented public leave/presence barrier for this cycle. It does not decide whether the Website contract must return the native sidebar by the first expanded=false/focus/count sequence. Preserve that semantic question and the original failed assertion.",
+  "sourceOpenFindings": 0,
+  "newVerificationRequested": false,
+  "relatedPriorReport": {
+    "path": "<STATE_ROOT>/sidebar-current-review/report.json",
+    "bytes": 23242,
+    "sha256": "b023413c439582b33e17e508a22482cd2974d8d8af3b11c98b005e0715092dbf"
+  }
+}

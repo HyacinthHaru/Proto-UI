@@ -1,0 +1,59 @@
+{
+  "kind": "Isolated owned CSSOM serialization diagnostic; no application/product or optical acceptance",
+  "node": "v24.21.0",
+  "browser": "155.0.8059.39",
+  "requestedWidth": 157.609375,
+  "cssom": {
+    "inlineWidth": "",
+    "authoredCustomProperty": "157.609375px",
+    "computedWidth": "157.609px",
+    "computedPseudoWidth": "157.609px",
+    "physicalElementWidth": 157.609375
+  },
+  "pseudoBoxModel": {
+    "content": [
+      0,
+      0,
+      157.609375,
+      0,
+      157.609375,
+      62,
+      0,
+      62
+    ],
+    "padding": [
+      0,
+      0,
+      157.609375,
+      0,
+      157.609375,
+      62,
+      0,
+      62
+    ],
+    "border": [
+      0,
+      0,
+      157.609375,
+      0,
+      157.609375,
+      62,
+      0,
+      62
+    ],
+    "margin": [
+      0,
+      0,
+      157.609375,
+      0,
+      157.609375,
+      62,
+      0,
+      62
+    ],
+    "width": 158,
+    "height": 62
+  },
+  "pseudoBorderWidth": 157.609375,
+  "cleanupFinished": true
+}

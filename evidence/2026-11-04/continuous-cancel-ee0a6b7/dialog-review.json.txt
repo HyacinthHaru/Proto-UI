@@ -1,0 +1,504 @@
+{
+  "schemaVersion": 1,
+  "kind": "Exact-head official Dialog paired raw-evidence review",
+  "executionMode": "human-assisted",
+  "modeSource": "current-user",
+  "reviewSkill": "pui-review",
+  "reviewDisposition": "partial/ABSTAIN",
+  "formalApproval": false,
+  "calibrationAccepted": false,
+  "generatedAt": "2026-11-04T10:15:35.731907+00:00",
+  "reviewedHead": "2ca069c1aa80d7d798d246d0d1bd3e96e700e7b0",
+  "reviewedTree": "5e47265c4fe837fb77b821bfb9ac3e6c051ef37a",
+  "fixedBaseline": "15d864de54210c2eebc4f4b2fec6235324989989",
+  "run": {
+    "id": 41643601508,
+    "name": "Dialog available-space matched evidence",
+    "html_url": "https://github.com/Proto-UI/Proto-UI/actions/runs/41643601508",
+    "head_sha": "2ca069c1aa80d7d798d246d0d1bd3e96e700e7b0",
+    "status": "completed",
+    "conclusion": "failure",
+    "event": "pull_request",
+    "path": ".github/workflows/dialog-available-space-evidence.yml",
+    "created_at": "2026-11-03T13:21:24Z",
+    "updated_at": "2026-11-03T14:43:41Z"
+  },
+  "pagination": {
+    "jobsPages": 1,
+    "jobsActualTotal": 2,
+    "jobsDeclaredTotal": 2,
+    "artifactsPages": 1,
+    "artifactsActualTotal": 2,
+    "artifactsDeclaredTotal": 2,
+    "complete": true
+  },
+  "collectionTimes": {
+    "runMetadataReceipt": {
+      "endpoint": "repos/Proto-UI/Proto-UI/actions/runs/41643601508",
+      "startedAt": "2026-11-04T10:03:20.305560+00:00",
+      "completedAt": "2026-11-04T10:03:21.238371+00:00",
+      "exitCode": 0,
+      "sha256": "1ae77268daa86550d040bd0af1d08f046f33077972651230dfdbab1b427bacd0",
+      "bytes": 12395,
+      "path": "<STATE_ROOT>/dialog-hosted-2ca/metadata/run.json",
+      "paginated": false
+    },
+    "jobMetadataReceipt": {
+      "endpoint": "repos/Proto-UI/Proto-UI/actions/runs/41643601508/jobs?per_page=100",
+      "startedAt": "2026-11-04T10:03:20.305871+00:00",
+      "completedAt": "2026-11-04T10:03:21.670715+00:00",
+      "exitCode": 0,
+      "sha256": "f3a7dcb04d8767b16db06093a009aa5ed07485bdbf63dcd7e7df39095cdad350",
+      "bytes": 6475,
+      "path": "<STATE_ROOT>/dialog-hosted-2ca/metadata/jobs-pages.json",
+      "paginated": true
+    },
+    "artifactMetadataReceipt": {
+      "endpoint": "repos/Proto-UI/Proto-UI/actions/runs/41643601508/artifacts?per_page=100",
+      "startedAt": "2026-11-04T10:03:20.305854+00:00",
+      "completedAt": "2026-11-04T10:03:21.238752+00:00",
+      "exitCode": 0,
+      "sha256": "14ed3bce686fcb6ad1ad73b52699a0ceab2b9af55dbf8853c1525570217eb6ce",
+      "bytes": 1556,
+      "path": "<STATE_ROOT>/dialog-hosted-2ca/metadata/artifacts-pages.json",
+      "paginated": true
+    }
+  },
+  "arms": {
+    "candidate": {
+      "job": {
+        "id": 125943046657,
+        "name": "matched-browser (candidate)",
+        "html_url": "https://github.com/Proto-UI/Proto-UI/actions/runs/41643601508/job/125943046657",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-11-03T14:34:30Z",
+        "completed_at": "2026-11-03T14:37:26Z"
+      },
+      "artifact": {
+        "id": 13240200185,
+        "name": "dialog-space-candidate-2ca069c1aa80d7d798d246d0d1bd3e96e700e7b0-41643601508-1",
+        "size_in_bytes": 8025164,
+        "digest": "sha256:2d459212de0c760fa2aeb20432c7bbf6e6d0358fb42a83207fbc909065879858",
+        "created_at": "2026-11-03T14:37:23Z",
+        "updated_at": "2026-11-03T14:37:23Z",
+        "expired": false
+      },
+      "archiveVerification": {
+        "artifactId": 13240200185,
+        "archiveBytes": 8025164,
+        "archiveSha256": "2d459212de0c760fa2aeb20432c7bbf6e6d0358fb42a83207fbc909065879858",
+        "allMemberCRCPassed": true,
+        "uniquePaths": true,
+        "safeOrdinaryFileTypes": true,
+        "extractionByteHashesPassed": true,
+        "memberCount": 130,
+        "fileCount": 130,
+        "pngCount": 120,
+        "expandedBytes": 9309363,
+        "finishedAt": "2026-11-04T10:05:03.117561+00:00"
+      },
+      "archivePath": "artifacts/candidate-13240200185.zip",
+      "originalLog": {
+        "path": "logs/candidate-125943046657.log",
+        "bytes": 68450,
+        "sha256": "482b26867cf322436be3dbd380a4bb7ad4e60f849f066388cf69df482bdb61fc"
+      },
+      "originalReport": {
+        "path": "extracted/candidate/vitest.json",
+        "bytes": 3540,
+        "sha256": "e3caddfcf92507b3b9645ee8c1591cfc66b19713c23dc617c59271a9f98cfccf"
+      },
+      "originalObservations": {
+        "path": "extracted/candidate/dialog-available-space/observations.json",
+        "bytes": 1071912,
+        "sha256": "8feeb8b5ba6b48d003772f1e1921ab30ecd58df72bd63274d411e1076312cffb"
+      },
+      "runnerIntegrity": {
+        "path": "extracted/candidate/runner-integrity.json",
+        "bytes": 603,
+        "sha256": "30803e735fbdf12e9a6863b2ee3f922721b16a87c9609671aa5a8cf884124c3e"
+      },
+      "environment": {
+        "node": "v24.22.2",
+        "browser": "156.0.8078.79",
+        "ubuntu": "24.04.5",
+        "runnerImage": "20261101.360.1",
+        "fontEnvironment": "fontconfig 2.15.0-1.1ubuntu2\nfonts-noto-cjk 1:20230817+repack1-3\nDejaVu Sans\n/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf\n"
+      },
+      "preBrowserNodeControls": {
+        "tests": 132,
+        "pass": 132,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "productExitCode": 0,
+      "caseCounts": {
+        "numTotalTests": 8,
+        "numPassedTests": 8,
+        "numFailedTests": 0,
+        "numPendingTests": 0
+      },
+      "observationCounts": {
+        "geometry": 120,
+        "action": 52,
+        "title": 24
+      },
+      "cases": [
+        {
+          "identity": "shadcn/wc",
+          "status": "passed",
+          "rowCount": 25,
+          "firstFailure": null
+        },
+        {
+          "identity": "shadcn/react",
+          "status": "passed",
+          "rowCount": 25,
+          "firstFailure": null
+        },
+        {
+          "identity": "shadcn/vue",
+          "status": "passed",
+          "rowCount": 25,
+          "firstFailure": null
+        },
+        {
+          "identity": "shadcn/vue2",
+          "status": "passed",
+          "rowCount": 25,
+          "firstFailure": null
+        },
+        {
+          "identity": "brutalist/wc",
+          "status": "passed",
+          "rowCount": 24,
+          "firstFailure": null
+        },
+        {
+          "identity": "brutalist/react",
+          "status": "passed",
+          "rowCount": 24,
+          "firstFailure": null
+        },
+        {
+          "identity": "brutalist/vue",
+          "status": "passed",
+          "rowCount": 24,
+          "firstFailure": null
+        },
+        {
+          "identity": "brutalist/vue2",
+          "status": "passed",
+          "rowCount": 24,
+          "firstFailure": null
+        }
+      ],
+      "runnerReportSha256Verified": true,
+      "runnerReporterSourceSha256Verified": true,
+      "processExitSealed": true,
+      "cleanupScope": "Actual reporter phase=process-exit, finishedCalls=1, closeStarted/closeFinished true, processTimedOut/cancelled false, runnerErrors/unhandledErrors/suiteErrors empty. This is runner and hook evidence, not a separate OS process inventory."
+    },
+    "baseline": {
+      "job": {
+        "id": 125943047024,
+        "name": "matched-browser (baseline)",
+        "html_url": "https://github.com/Proto-UI/Proto-UI/actions/runs/41643601508/job/125943047024",
+        "status": "completed",
+        "conclusion": "failure",
+        "started_at": "2026-11-03T14:42:25Z",
+        "completed_at": "2026-11-03T14:43:41Z"
+      },
+      "artifact": {
+        "id": 13240700385,
+        "name": "dialog-space-baseline-2ca069c1aa80d7d798d246d0d1bd3e96e700e7b0-41643601508-1",
+        "size_in_bytes": 2310539,
+        "digest": "sha256:0bb0856b35671e5e0249b5c404b0a165038ee25875bd408f75c4eaa74a53f2e4",
+        "created_at": "2026-11-03T14:43:37Z",
+        "updated_at": "2026-11-03T14:43:37Z",
+        "expired": false
+      },
+      "archiveVerification": {
+        "artifactId": 13240700385,
+        "archiveBytes": 2310539,
+        "archiveSha256": "0bb0856b35671e5e0249b5c404b0a165038ee25875bd408f75c4eaa74a53f2e4",
+        "allMemberCRCPassed": true,
+        "uniquePaths": true,
+        "safeOrdinaryFileTypes": true,
+        "extractionByteHashesPassed": true,
+        "memberCount": 40,
+        "fileCount": 40,
+        "pngCount": 29,
+        "expandedBytes": 2599667,
+        "finishedAt": "2026-11-04T10:05:03.132823+00:00"
+      },
+      "archivePath": "artifacts/baseline-13240700385.zip",
+      "originalLog": {
+        "path": "logs/baseline-125943047024.log",
+        "bytes": 74154,
+        "sha256": "14725c5b7216d407fd5c1a6345027710e27fc58d4c7c36d202ed451f17c10349"
+      },
+      "originalReport": {
+        "path": "extracted/baseline/vitest.json",
+        "bytes": 17976,
+        "sha256": "d8171b8da572b8fb2ffc44eadd30128f5d1c24db169637f9b1af753436d51cb4"
+      },
+      "originalObservations": {
+        "path": "extracted/baseline/dialog-available-space/observations.json",
+        "bytes": 193664,
+        "sha256": "1282757f99fe73fcdebe78f3e4f66376cb327b2959f85c32786669ca396681e4"
+      },
+      "runnerIntegrity": {
+        "path": "extracted/baseline/runner-integrity.json",
+        "bytes": 603,
+        "sha256": "528df186f5ddbbae7a67b045f54263e8bf12ebb7b64bdccfbd63db31494a3f7b"
+      },
+      "environment": {
+        "node": "v24.22.1",
+        "browser": "156.0.8078.47",
+        "ubuntu": "24.04.5",
+        "runnerImage": "20261025.353.1",
+        "fontEnvironment": "fontconfig 2.15.0-1.1ubuntu2\nfonts-noto-cjk 1:20230817+repack1-3\nDejaVu Sans\n/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf\n"
+      },
+      "preBrowserNodeControls": {
+        "tests": 132,
+        "pass": 132,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "productExitCode": 1,
+      "caseCounts": {
+        "numTotalTests": 8,
+        "numPassedTests": 0,
+        "numFailedTests": 8,
+        "numPendingTests": 0
+      },
+      "observationCounts": {
+        "geometry": 21,
+        "failure": 8,
+        "title": 4
+      },
+      "cases": [
+        {
+          "identity": "shadcn/wc",
+          "status": "failed",
+          "rowCount": 4,
+          "firstFailure": "AssertionError: expected 0 to be greater than or equal to 15"
+        },
+        {
+          "identity": "shadcn/react",
+          "status": "failed",
+          "rowCount": 4,
+          "firstFailure": "AssertionError: expected 0 to be greater than or equal to 15"
+        },
+        {
+          "identity": "shadcn/vue",
+          "status": "failed",
+          "rowCount": 4,
+          "firstFailure": "AssertionError: expected 0 to be greater than or equal to 15"
+        },
+        {
+          "identity": "shadcn/vue2",
+          "status": "failed",
+          "rowCount": 1,
+          "firstFailure": "Error: RuntimeNotOffered:shadcn/vue2:[\"wc\",\"react\",\"vue\"]"
+        },
+        {
+          "identity": "brutalist/wc",
+          "status": "failed",
+          "rowCount": 5,
+          "firstFailure": "AssertionError: CloseIcon must not cover the Title box: expected 504 to be +0 // Object.is equality"
+        },
+        {
+          "identity": "brutalist/react",
+          "status": "failed",
+          "rowCount": 5,
+          "firstFailure": "AssertionError: CloseIcon must not cover the Title box: expected 504 to be +0 // Object.is equality"
+        },
+        {
+          "identity": "brutalist/vue",
+          "status": "failed",
+          "rowCount": 5,
+          "firstFailure": "AssertionError: CloseIcon must not cover the Title box: expected 504 to be +0 // Object.is equality"
+        },
+        {
+          "identity": "brutalist/vue2",
+          "status": "failed",
+          "rowCount": 5,
+          "firstFailure": "AssertionError: CloseIcon must not cover the Title box: expected 504 to be +0 // Object.is equality"
+        }
+      ],
+      "runnerReportSha256Verified": true,
+      "runnerReporterSourceSha256Verified": true,
+      "processExitSealed": true,
+      "cleanupScope": "Actual reporter phase=process-exit, finishedCalls=1, closeStarted/closeFinished true, processTimedOut/cancelled false, runnerErrors/unhandledErrors/suiteErrors empty. This is runner and hook evidence, not a separate OS process inventory."
+    }
+  },
+  "probeClosure": {
+    "actual": {
+      "subject/apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e",
+      "subject/apps/www/src/content/docs/zh-cn/browser-harness.ts": "3b425734cfb00602354bdc2b086e70a0434863f7cc3040415631be1627e0c9b6",
+      "subject/scripts/test/server-readiness.mjs": "4bbc332f34ebf8a9c24f0ccc01d53438dd7146e86118a932eacc63d819105fda"
+    },
+    "candidateCurrentBinding": {
+      "subject/apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e",
+      "subject/apps/www/src/content/docs/zh-cn/browser-harness.ts": "3b425734cfb00602354bdc2b086e70a0434863f7cc3040415631be1627e0c9b6",
+      "subject/scripts/test/server-readiness.mjs": "4bbc332f34ebf8a9c24f0ccc01d53438dd7146e86118a932eacc63d819105fda"
+    },
+    "historicallyCalibrated": {
+      "subject/apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts": "181f88d9a711103f00437fd1866a30e5a383612c14aad8b0a63c46a043b5df88",
+      "subject/apps/www/src/content/docs/zh-cn/browser-harness.ts": "e3792a3e0003b79385c3aae90b08728c51d7564bf1abd16a32a47ff9f37fca9d",
+      "subject/scripts/test/server-readiness.mjs": "4bbc332f34ebf8a9c24f0ccc01d53438dd7146e86118a932eacc63d819105fda"
+    },
+    "sameExactThreeFilesAcrossBothArms": true,
+    "allActualThreeHashesEqualImmutableCandidateGit": true,
+    "baselineOverlay": "Historical15d product with three candidate-owned probe files copied by workflow. The original15d Git tree has no Dialog probe file; this overlay is explicit."
+  },
+  "baselineClassifier": {
+    "source": {
+      "path": "source/candidate/scripts/test/check-dialog-baseline-evidence.mjs",
+      "bytes": 12841,
+      "sha256": "d8bd261c9d042381a861a463dec0b8b40b8d2a90520e4702d2b122d28986b0fd"
+    },
+    "rejectAtSourceLine": 109,
+    "originalJobRejection": {
+      "line": 736,
+      "text": "2026-11-03T14:43:36.3717777Z AssertionError [ERR_ASSERTION]: Uncalibrated probe closure"
+    },
+    "classificationOutput": {
+      "path": "extracted/baseline/expected-failure-classification.json",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "actualResult": "Uncalibrated probe closure; no accepted classification JSON produced",
+    "notRunAgainByReviewer": true
+  },
+  "fullObservationReconciliation": {
+    "report": {
+      "path": "observation-audit.json",
+      "bytes": 8336,
+      "sha256": "20dd48a59e20b2b688ac75309a36a7153b234d636ff063f8a8be2532e68c2c7d"
+    },
+    "checkedComparisons": 2629,
+    "mismatchCount": 0,
+    "candidateRows": 196,
+    "baselineRows": 33,
+    "candidateAll120MaskIdentitiesResolvedAndConsistent": true,
+    "baselineAll21MaskIdentitiesResolvedAndConsistent": true,
+    "all149PNGReferencesShaMatch": true,
+    "candidateBoundedStoredRowsRecomputed": 100,
+    "candidateTitleRowsRecomputed": 24,
+    "candidateActionRowsChecked": 52,
+    "baselineNativeFailurePartition": {
+      "reportedFailedTests": 8,
+      "nativeProductJourneysFailedAtFirst390Phase": 7,
+      "shadcnZeroInsetAssertions": 3,
+      "brutalistTitleBoxOverlapAssertions": 4,
+      "runtimeNotOfferedEntries": 1,
+      "completedProductJourneys": 0
+    },
+    "baselineTitleBoxOverlapArea": 504,
+    "baselineTextRangeOverlapAreas": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "focusAndCloseLimit": "Final native pass records support execution of exact-source focus, Tab/Shift+Tab, close/reopen/Escape assertions. Stored numeric rows alone are not an independent replay of those interactions."
+  },
+  "sourceBinding": {
+    "path": "source/binding.json",
+    "bytes": 5194,
+    "sha256": "5123470152a92ee84afe1984094a7fd2b25fd39fc0bd06e93702ea82de0e6401"
+  },
+  "mainAndMergeScope": {
+    "inputSnapshot": {
+      "path": "<STATE_ROOT>/final-live-1272.json",
+      "bytes": 589242,
+      "sha256": "d3de7486e92afd877d88a9187e2e56c360fbc1e8a5459c864a18f2999274adca"
+    },
+    "snapshotObservedAt": "2026-11-04T09:49:54.181978+00:00",
+    "pr": 1272,
+    "head": "2ca069c1aa80d7d798d246d0d1bd3e96e700e7b0",
+    "merged": true,
+    "mergedAt": "2026-11-04T00:43:45Z",
+    "mergeCommit": "ac6812860215709eabf54285cca8a845f0561c15",
+    "baseRef": "dot/select-header-followups-20261102",
+    "baseSha": "8c496094fba393e0c571f2b290dac4befd3db007",
+    "reportedMainObject": "dd621dd00f77eb1358a13c1ff94419b048deef59",
+    "candidateAncestorOfReportedMain": false,
+    "mainOriginalClosure": {
+      "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts": {
+        "existsInSubjectGit": true,
+        "sha256": "181f88d9a711103f00437fd1866a30e5a383612c14aad8b0a63c46a043b5df88"
+      },
+      "apps/www/src/content/docs/zh-cn/browser-harness.ts": {
+        "existsInSubjectGit": true,
+        "sha256": "d5afee7ea8067f46fc492fd1049665d4b224f0ea75bc31b5f04f980dcee7362f"
+      },
+      "scripts/test/server-readiness.mjs": {
+        "existsInSubjectGit": true,
+        "sha256": "4bbc332f34ebf8a9c24f0ccc01d53438dd7146e86118a932eacc63d819105fda"
+      }
+    },
+    "mainNotFreshlyPolledByReviewer": true
+  },
+  "byteOrRecordFindings": [],
+  "acceptanceLimitations": [
+    {
+      "id": "ENVIRONMENT-NOT-IDENTICAL",
+      "kind": "verification-boundary",
+      "facts": {
+        "candidate": {
+          "node": "v24.22.2",
+          "browser": "156.0.8078.79",
+          "ubuntu": "24.04.5",
+          "runnerImage": "20261101.360.1",
+          "fontEnvironment": "fontconfig 2.15.0-1.1ubuntu2\nfonts-noto-cjk 1:20230817+repack1-3\nDejaVu Sans\n/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf\n"
+        },
+        "baseline": {
+          "node": "v24.22.1",
+          "browser": "156.0.8078.47",
+          "ubuntu": "24.04.5",
+          "runnerImage": "20261025.353.1",
+          "fontEnvironment": "fontconfig 2.15.0-1.1ubuntu2\nfonts-noto-cjk 1:20230817+repack1-3\nDejaVu Sans\n/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf\n"
+        }
+      },
+      "meaning": "The workflow pairs the same three probe bytes with two source subjects, but actual runner image, Node patch and Chrome patch differ. No pure-source causal effect, equal browser environment, or environment-caused failure is inferred."
+    },
+    {
+      "id": "CALIBRATION-STILL-REJECTED",
+      "kind": "unresolved-acceptance",
+      "meaning": "The original classifier rejected the new complete closure at its historical PROBE_HASHES check. Independent raw-record arithmetic is not calibration registration, approval or changing a guard."
+    },
+    {
+      "id": "MAIN-NOT-THIS-CLOSURE",
+      "kind": "scope",
+      "meaning": "PR1272 merged into its parent topic. The exact locally inspected main object dd621 still has181f/d5afee/4bbc; candidate2ca is not its ancestor. Current public-main compatibility is not certified."
+    },
+    {
+      "id": "NO-PIXEL-REVIEW",
+      "kind": "outside-scope",
+      "meaning": "All149PNG are byte-hashed and matched to observation references; none was opened by this reviewer. No full visual, optical or physical keyboard/notch acceptance is claimed."
+    }
+  ],
+  "previousEpochBoundary": "No f1db ZIP, row, job result or classifier acceptance was substituted. All reviewed artifacts have2ca in GitHub metadata and matching raw probe records. Prior f1db report remains historical only.",
+  "reviewerActions": {
+    "readonlyGithubGET": true,
+    "localPrivateDownloadsAndReports": true,
+    "newTestsOrBrowser": false,
+    "repositoryVerifierRerun": false,
+    "sourceGitGithubWrites": false,
+    "pngVisualInspection": false
+  },
+  "priorReadPreparationError": {
+    "path": "source/first-binding-read-error.json",
+    "bytes": 519,
+    "sha256": "b66c5edb6ed21f859cc010b91eb59f98546c1813d7c25c59968815e666d2bda4"
+  },
+  "commandsScope": "GET exact run/jobs/artifacts and two completed logs/two ZIPs; local Git show/cat-file/ancestry reads; offline ZIP CRC/SHA and recorded JSON arithmetic. No Action mutation, repository modification, calibration update or publication."
+}
