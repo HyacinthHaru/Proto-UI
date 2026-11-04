@@ -1,0 +1,12 @@
+{
+  "head": "ee0a6b7c1be7e569006597944eae4f84d5190583",
+  "startedAt": "2026-11-04T10:42:26.110647+00:00",
+  "command": [
+    "corepack",
+    "pnpm@10.32.1",
+    "check:package-budgets"
+  ],
+  "exitCode": 0,
+  "finishedAt": "2026-11-04T10:42:27.023829+00:00",
+  "scope": "Local diagnostic under existing Finf advisory size policy; not canonical hosted or a threshold change"
+}

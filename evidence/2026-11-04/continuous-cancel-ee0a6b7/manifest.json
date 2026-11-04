@@ -16,8 +16,8 @@
   "files": [
     {
       "path": "README.md",
-      "bytes": 7164,
-      "sha256": "8667bb346ad4b132a59fae63e73f9bd8e595c0a9b1a48c4a95a0aec80b9a1629"
+      "bytes": 7620,
+      "sha256": "7ab12b9623af941c8d33fe7aaeae3d26cd893f327c59da7e263cd4a3190befa4"
     },
     {
       "path": "cssom-width-diagnostic.json.txt",
@@ -78,6 +78,16 @@
       "path": "material-commit-final.log.txt",
       "bytes": 156084,
       "sha256": "1e352022c49b693786de995b06fe7347cafd102348721032441ec4e0598fd59d"
+    },
+    {
+      "path": "package-budget-receipt.json.txt",
+      "bytes": 377,
+      "sha256": "32ed832b7034ce8f87ccf5c0f1d445ab770d2074aa08629ce06fdba96b91ea00"
+    },
+    {
+      "path": "package-budget.log.txt",
+      "bytes": 2816,
+      "sha256": "30f63105ddfe706714d41fc8eb9466687ab15595f02450a4964152846b90b0be"
     },
     {
       "path": "packed-resize-failure.png",
@@ -143,6 +153,22 @@
       "path": "source-result.json.txt",
       "bytes": 125438,
       "sha256": "3a78d48781297e9689c2e12efefb1e28c9fd2e2bd11cf9ae549d26b04052ad15"
+    }
+  ],
+  "localSizeSupplement": [
+    {
+      "path": "package-budget.log.txt",
+      "rawSha256": "aa234bc03b2154e6622be199c5ed465a9e2bb4f92ebb7fb17cf7a29e160fb013",
+      "publicSha256": "30f63105ddfe706714d41fc8eb9466687ab15595f02450a4964152846b90b0be",
+      "derived": true,
+      "inArchive": false
+    },
+    {
+      "path": "package-budget-receipt.json.txt",
+      "rawSha256": "32ed832b7034ce8f87ccf5c0f1d445ab770d2074aa08629ce06fdba96b91ea00",
+      "publicSha256": "32ed832b7034ce8f87ccf5c0f1d445ab770d2074aa08629ce06fdba96b91ea00",
+      "derived": false,
+      "inArchive": false
     }
   ]
 }

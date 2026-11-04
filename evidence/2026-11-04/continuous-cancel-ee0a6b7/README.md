@@ -46,3 +46,7 @@ archive包含本轮真实source/packed结果、失败、完整产品产物、隔
 archive中244个PNG成员（外层副本不重复计数）中，95是本轮本地执行截图，149来自既有官方2ca原件的本次检索，不计为新增本地执行。root实际看本轮两个product失败、tagged sidebar开/关及两个canonical选图，共6张；其余只核完整性，不称全图视觉、真实AT、跨引擎、安装包或完整光学/发行验收。
 
 AI assistance: Codex。没有改旧证据或公布历史；证据分支永不合入产品。
+
+## 本地尺寸补充
+
+准确ee0a另实际运行现有check:package-budgets：3项PASS、6项ADVISORY超原上限，不是九项strict通过；另有两项consumer诊断。沿用当前Finf开发期advisory，ledger仍5/68，不改上限；原比较、minified/gzip/SHA、Node/zlib/esbuild/平台全部保留于外层package-budget.log.txt和receipt，不在原archive内。这是本地测量，非canonical hosted或新增成本的baseline差值证明。

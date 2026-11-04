@@ -1,0 +1,17 @@
+
+> proto-ui@ check:package-budgets <C_SOURCE_ROOT>
+> node scripts/analysis/package-budgets.mjs --finf-development
+
+[package-budgets] {"node":"v24.21.0","zlib":"1.3.2.1-motley-8002e91","esbuild":"0.25.12","platform":"darwin","arch":"arm64"}
+[package-budgets] policy={"mode":"finf-development-advisory","scope":"Proto-UI/Proto-UI Finf #870/#872: current nine whole-entry measurements only","advisoryEntries":["packages/prototypes/lucide/src/icons/x.ts","packages/prototypes/lucide/src/index.ts","packages/core/src/index.ts","packages/runtime/src/index.ts","packages/adapters/react/src/index.ts","packages/adapters/vue/src/index.ts","packages/adapters/web-component/src/index.ts","packages/prototypes/base/src/button/index.ts","packages/prototypes/shadcn/src/button/index.ts"],"expiresWhen":"All 68 full-delivery/closeout items are recorded complete, or the explicit Finf opt-in is removed","ledger":"internal/coverage-matrices/prototype-coverage-matrix.json","ledgerSha256":"916a08b2d0b658686ed50a9e9820fccbbc24d6cd6d11406e7d4b8398df2e3ba1","recordedCompleteItems":5,"totalItems":68,"completionIsAcceptance":false}
+PASS lucide/icons/x: 2879 / 3000 gzip bytes; overBudget=0; minified=8695 sha256=02838c5b1d4db7b0d62eab9b1d502848e268dfea098798ee87665caa966772fb
+PASS lucide root: 637308 / 700000 gzip bytes; overBudget=0; minified=4087403 sha256=2ba0aea0963eea8884fb5ad453534bbe7f1783a8d8a5e31c41749c6f75ab1fd9
+ADVISORY core root: 11134 / 7600 gzip bytes; overBudget=3534; minified=35139 sha256=5b3a3455024ae42e9e5304ce0b9f8a3888c975bea3387859d172fbeea80b4645
+ADVISORY runtime root: 96977 / 78500 gzip bytes; overBudget=18477; minified=375899 sha256=d781c8c4278b488551a866e90b077654cde85a03380ba12db0c23e0d792cd235
+ADVISORY adapter-react root: 156742 / 106000 gzip bytes; overBudget=50742; minified=555271 sha256=d4238b80c413e4888132eab4dafcb550a38cf0f1fc4094be9e374dd68a0a10da
+ADVISORY adapter-vue root: 156093 / 106000 gzip bytes; overBudget=50093; minified=552211 sha256=8cf0b5b858ff1ab5a900accb881de833bd90a1730763b7985d5935ced4cbef4e
+ADVISORY adapter-web-component root: 183558 / 132000 gzip bytes; overBudget=51558; minified=635547 sha256=195ed89a2e8601dffe6a71451b244c9dfa9a9f93805cd494a5c4ec5ee927a823
+PASS prototypes-base/button: 5201 / 6000 gzip bytes; overBudget=0; minified=17965 sha256=ac668438d0f9dc32d2aee4eed0926d55689916e5a7fccec73551ba91b5ea713a
+ADVISORY prototypes-shadcn/button: 7725 / 7000 gzip bytes; overBudget=725; minified=34291 sha256=c3826b1dd7d7386d46b8c2a34e04cdb4ba380e9dbc104d8434812ba4f3d73395
+DIAGNOSTIC consumer light-dom button: 189683 gzip bytes; minified=665358 sha256=8a7f29aeabd98fc2278206c021876c46a9f30eda11a412ff76eafec7577abff6
+DIAGNOSTIC consumer direct-shadow button: 189687 gzip bytes; minified=665369 sha256=b948aefb4a405e369482cbbc6839e92595c5a34504823a0bab10d08887df03cd
