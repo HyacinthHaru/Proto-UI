@@ -1,0 +1,678 @@
+{
+  "schemaVersion": 1,
+  "kind": "Read-only exact-epoch delivery evidence review",
+  "disposition": "partial/ABSTAIN",
+  "formalApproval": false,
+  "calibrationAccepted": false,
+  "generatedAt": "2026-11-05T08:27:44.542273+00:00",
+  "mode": "human-assisted",
+  "modeSource": "current-user",
+  "rawAudit": {
+    "path": "delivery-review/audit.json",
+    "bytes": 86605,
+    "sha256": "9f079f32c84fa055d0248e1a53d2390213c5a67116c1c6a6fdc6ecde6e75a4f5"
+  },
+  "independentDataComparisons": 1362,
+  "specificConsistencyFindings": [],
+  "materialEpoch": {
+    "head": "e439f958d42bb8edc4efbb5bd6ead767a86d6efd",
+    "tree": "ebb24f8d14409aca08177352b9a1fc5deea9ed9a",
+    "parents": [
+      "c54f2523178c87db74d147ea79e93c56f2487a41"
+    ],
+    "receipt": {
+      "path": "products-e439f95/receipt.json",
+      "bytes": 4031,
+      "sha256": "fc4ed67036a1a1761b48f0ebaba9b391bbc813644d9ea7c9df0aa0aa768d90ce"
+    },
+    "startedAt": "2026-11-05T07:27:14.972684+00:00",
+    "finishedAt": "2026-11-05T07:28:25.709237+00:00",
+    "actualSteps": [
+      {
+        "name": "source-build",
+        "exitCode": 0,
+        "sourceHeadAfter": "e439f958d42bb8edc4efbb5bd6ead767a86d6efd",
+        "trackedStatusAfter": ""
+      },
+      {
+        "name": "source-ordinary",
+        "exitCode": 0,
+        "sourceHeadAfter": "e439f958d42bb8edc4efbb5bd6ead767a86d6efd",
+        "trackedStatusAfter": ""
+      },
+      {
+        "name": "source-continuous",
+        "exitCode": 0,
+        "sourceHeadAfter": "e439f958d42bb8edc4efbb5bd6ead767a86d6efd",
+        "trackedStatusAfter": ""
+      },
+      {
+        "name": "packed-build",
+        "exitCode": 0,
+        "sourceHeadAfter": "e439f958d42bb8edc4efbb5bd6ead767a86d6efd",
+        "trackedStatusAfter": ""
+      },
+      {
+        "name": "packed-ordinary",
+        "exitCode": 0,
+        "sourceHeadAfter": "e439f958d42bb8edc4efbb5bd6ead767a86d6efd",
+        "trackedStatusAfter": ""
+      },
+      {
+        "name": "packed-continuous",
+        "exitCode": 0,
+        "sourceHeadAfter": "e439f958d42bb8edc4efbb5bd6ead767a86d6efd",
+        "trackedStatusAfter": ""
+      }
+    ],
+    "node": "v24.21.0",
+    "sourceAndPacked": {
+      "source": {
+        "execution": "passed",
+        "flowRecords": 42,
+        "browser": "155.0.8059.39",
+        "buildMode": "workspace-source",
+        "privatePrototype": "packages/prototypes/liquid-glass",
+        "appSha256": "31df6c990af92fac96b1f7a231261fe8b5e2355bc19d64e3df945f7371c36d20",
+        "geometry": [
+          {
+            "runtime": "wc",
+            "hostWidth": 133.609375,
+            "hostHeight": 38,
+            "paintWidth": 157.609375,
+            "paintHeight": 62,
+            "cssomPaintWidth": 157.609,
+            "materialFrame": "231",
+            "sourceRevision": 156,
+            "hostBackendNodeId": 10,
+            "paintBackendNodeId": 72,
+            "snapshotNodeIndices": [
+              32,
+              33
+            ],
+            "exactOutset": 12
+          },
+          {
+            "runtime": "react",
+            "hostWidth": 133.609375,
+            "hostHeight": 38,
+            "paintWidth": 157.609375,
+            "paintHeight": 62,
+            "cssomPaintWidth": 157.609,
+            "materialFrame": "226",
+            "sourceRevision": 155,
+            "hostBackendNodeId": 12,
+            "paintBackendNodeId": 84,
+            "snapshotNodeIndices": [
+              50,
+              51
+            ],
+            "exactOutset": 12
+          },
+          {
+            "runtime": "vue",
+            "hostWidth": 133.609375,
+            "hostHeight": 38,
+            "paintWidth": 157.609375,
+            "paintHeight": 62,
+            "cssomPaintWidth": 157.609,
+            "materialFrame": "232",
+            "sourceRevision": 155,
+            "hostBackendNodeId": 14,
+            "paintBackendNodeId": 99,
+            "snapshotNodeIndices": [
+              68,
+              69
+            ],
+            "exactOutset": 12
+          },
+          {
+            "runtime": "vue2",
+            "hostWidth": 133.609375,
+            "hostHeight": 38,
+            "paintWidth": 157.609375,
+            "paintHeight": 62,
+            "cssomPaintWidth": 157.609,
+            "materialFrame": "233",
+            "sourceRevision": 155,
+            "hostBackendNodeId": 16,
+            "paintBackendNodeId": 111,
+            "snapshotNodeIndices": [
+              86,
+              87
+            ],
+            "exactOutset": 12
+          }
+        ],
+        "observedResizeFrames": 21,
+        "originalBlurArms": [
+          {
+            "runtime": "wc",
+            "disableFocusEmulation": false,
+            "trustedWindowBlurBeforeUp": false,
+            "countBefore": 4,
+            "countAfter": 5,
+            "nativeEvents": 5,
+            "cleanupErrors": 0
+          },
+          {
+            "runtime": "wc",
+            "disableFocusEmulation": true,
+            "trustedWindowBlurBeforeUp": true,
+            "countBefore": 5,
+            "countAfter": 5,
+            "nativeEvents": 6,
+            "cleanupErrors": 0
+          },
+          {
+            "runtime": "react",
+            "disableFocusEmulation": false,
+            "trustedWindowBlurBeforeUp": false,
+            "countBefore": 4,
+            "countAfter": 5,
+            "nativeEvents": 4,
+            "cleanupErrors": 0
+          },
+          {
+            "runtime": "react",
+            "disableFocusEmulation": true,
+            "trustedWindowBlurBeforeUp": true,
+            "countBefore": 5,
+            "countAfter": 5,
+            "nativeEvents": 6,
+            "cleanupErrors": 0
+          },
+          {
+            "runtime": "vue",
+            "disableFocusEmulation": false,
+            "trustedWindowBlurBeforeUp": false,
+            "countBefore": 4,
+            "countAfter": 5,
+            "nativeEvents": 4,
+            "cleanupErrors": 0
+          },
+          {
+            "runtime": "vue",
+            "disableFocusEmulation": true,
+            "trustedWindowBlurBeforeUp": true,
+            "countBefore": 5,
+            "countAfter": 5,
+            "nativeEvents": 6,
+            "cleanupErrors": 0
+          },
+          {
+            "runtime": "vue2",
+            "disableFocusEmulation": false,
+            "trustedWindowBlurBeforeUp": false,
+            "countBefore": 4,
+            "countAfter": 5,
+            "nativeEvents": 4,
+            "cleanupErrors": 0
+          },
+          {
+            "runtime": "vue2",
+            "disableFocusEmulation": true,
+            "trustedWindowBlurBeforeUp": true,
+            "countBefore": 5,
+            "countAfter": 5,
+            "nativeEvents": 6,
+            "cleanupErrors": 0
+          }
+        ],
+        "disposeMaterialCounters": {
+          "contexts": 0,
+          "consumers": 0,
+          "lost": false,
+          "pendingImages": 0,
+          "decodedImages": 0,
+          "imagePreparations": 1019,
+          "peakPendingImages": 4
+        },
+        "screencast": {
+          "capturedFrames": 54,
+          "observedCaptureFps": 27.0439640291542,
+          "note": "Capture cadence is not UI frame-rate proof",
+          "encoded": false,
+          "error": "[libx264 @ 0x756f030a80] height not divisible by 2 (1300x813)\n[vost#0:0/libx264 @ 0x756f0a0000] [enc:libx264 @ 0x756f009570] Error while opening encoder - maybe incorrect parameters such as bit_rate, rate, width or height.\n[vf#0:0 @ 0x756ec1c000] Error sending frames to consumers: Generic error in an external library\n[vf#0:0 @ 0x756ec1c000] Task finished with error code: -542398533 (Generic error in an external library)\n[vf#0:0 @ 0x756ec1c000] Terminating thread with return code -542398533 (Generic error in an external library)\n[vost#0:0/libx264 @ 0x756f0a0000] [enc:libx264 @ 0x756f009570] Could not open encoder before EOF\n[vost#0:0/libx264 @ 0x756f0a0000] Task finished with error code: -22 (Invalid argument)\n[vost#0:0/libx264 @ 0x756f0a0000] Terminating thread with return code -22 (Invalid argument)\n[out#0/mp4 @ 0x756ec04780] Nothing was written into output file, because at least one of its streams received no packets.\n"
+        }
+      },
+      "packed": {
+        "execution": "passed",
+        "flowRecords": 42,
+        "browser": "155.0.8059.39",
+        "buildMode": "emitted-public-packages-with-explicit-private-prototype-source",
+        "privatePrototype": "packages/prototypes/liquid-glass",
+        "appSha256": "8e1de81d4afb731c90c682a7ce1a26c7926bf395a6eb0cdbfa1d56318409afc6",
+        "geometry": [
+          {
+            "runtime": "wc",
+            "hostWidth": 133.609375,
+            "hostHeight": 38,
+            "paintWidth": 157.609375,
+            "paintHeight": 62,
+            "cssomPaintWidth": 157.609,
+            "materialFrame": "226",
+            "sourceRevision": 155,
+            "hostBackendNodeId": 10,
+            "paintBackendNodeId": 73,
+            "snapshotNodeIndices": [
+              32,
+              33
+            ],
+            "exactOutset": 12
+          },
+          {
+            "runtime": "react",
+            "hostWidth": 133.609375,
+            "hostHeight": 38,
+            "paintWidth": 157.609375,
+            "paintHeight": 62,
+            "cssomPaintWidth": 157.609,
+            "materialFrame": "228",
+            "sourceRevision": 154,
+            "hostBackendNodeId": 12,
+            "paintBackendNodeId": 85,
+            "snapshotNodeIndices": [
+              50,
+              51
+            ],
+            "exactOutset": 12
+          },
+          {
+            "runtime": "vue",
+            "hostWidth": 133.609375,
+            "hostHeight": 38,
+            "paintWidth": 157.609375,
+            "paintHeight": 62,
+            "cssomPaintWidth": 157.609,
+            "materialFrame": "228",
+            "sourceRevision": 154,
+            "hostBackendNodeId": 14,
+            "paintBackendNodeId": 100,
+            "snapshotNodeIndices": [
+              68,
+              69
+            ],
+            "exactOutset": 12
+          },
+          {
+            "runtime": "vue2",
+            "hostWidth": 133.609375,
+            "hostHeight": 38,
+            "paintWidth": 157.609375,
+            "paintHeight": 62,
+            "cssomPaintWidth": 157.609,
+            "materialFrame": "229",
+            "sourceRevision": 154,
+            "hostBackendNodeId": 16,
+            "paintBackendNodeId": 112,
+            "snapshotNodeIndices": [
+              86,
+              87
+            ],
+            "exactOutset": 12
+          }
+        ],
+        "observedResizeFrames": 21,
+        "originalBlurArms": [
+          {
+            "runtime": "wc",
+            "disableFocusEmulation": false,
+            "trustedWindowBlurBeforeUp": false,
+            "countBefore": 4,
+            "countAfter": 5,
+            "nativeEvents": 5,
+            "cleanupErrors": 0
+          },
+          {
+            "runtime": "wc",
+            "disableFocusEmulation": true,
+            "trustedWindowBlurBeforeUp": true,
+            "countBefore": 5,
+            "countAfter": 5,
+            "nativeEvents": 6,
+            "cleanupErrors": 0
+          },
+          {
+            "runtime": "react",
+            "disableFocusEmulation": false,
+            "trustedWindowBlurBeforeUp": false,
+            "countBefore": 4,
+            "countAfter": 5,
+            "nativeEvents": 4,
+            "cleanupErrors": 0
+          },
+          {
+            "runtime": "react",
+            "disableFocusEmulation": true,
+            "trustedWindowBlurBeforeUp": true,
+            "countBefore": 5,
+            "countAfter": 5,
+            "nativeEvents": 6,
+            "cleanupErrors": 0
+          },
+          {
+            "runtime": "vue",
+            "disableFocusEmulation": false,
+            "trustedWindowBlurBeforeUp": false,
+            "countBefore": 4,
+            "countAfter": 5,
+            "nativeEvents": 4,
+            "cleanupErrors": 0
+          },
+          {
+            "runtime": "vue",
+            "disableFocusEmulation": true,
+            "trustedWindowBlurBeforeUp": true,
+            "countBefore": 5,
+            "countAfter": 5,
+            "nativeEvents": 6,
+            "cleanupErrors": 0
+          },
+          {
+            "runtime": "vue2",
+            "disableFocusEmulation": false,
+            "trustedWindowBlurBeforeUp": false,
+            "countBefore": 4,
+            "countAfter": 5,
+            "nativeEvents": 4,
+            "cleanupErrors": 0
+          },
+          {
+            "runtime": "vue2",
+            "disableFocusEmulation": true,
+            "trustedWindowBlurBeforeUp": true,
+            "countBefore": 5,
+            "countAfter": 5,
+            "nativeEvents": 6,
+            "cleanupErrors": 0
+          }
+        ],
+        "disposeMaterialCounters": {
+          "contexts": 0,
+          "consumers": 0,
+          "lost": false,
+          "pendingImages": 0,
+          "decodedImages": 0,
+          "imagePreparations": 1004,
+          "peakPendingImages": 4
+        },
+        "screencast": {
+          "capturedFrames": 56,
+          "observedCaptureFps": 26.594152408137102,
+          "note": "Capture cadence is not UI frame-rate proof",
+          "encoded": false,
+          "error": "[libx264 @ 0x7bbd02ca80] height not divisible by 2 (1300x813)\n[vost#0:0/libx264 @ 0x7bbcc80000] [enc:libx264 @ 0x7bbd0201c0] Error while opening encoder - maybe incorrect parameters such as bit_rate, rate, width or height.\n[vf#0:0 @ 0x7bbcc84000] Error sending frames to consumers: Generic error in an external library\n[vf#0:0 @ 0x7bbcc84000] Task finished with error code: -542398533 (Generic error in an external library)\n[vf#0:0 @ 0x7bbcc84000] Terminating thread with return code -542398533 (Generic error in an external library)\n[vost#0:0/libx264 @ 0x7bbcc80000] [enc:libx264 @ 0x7bbd0201c0] Could not open encoder before EOF\n[vost#0:0/libx264 @ 0x7bbcc80000] Task finished with error code: -22 (Invalid argument)\n[vost#0:0/libx264 @ 0x7bbcc80000] Terminating thread with return code -22 (Invalid argument)\n[out#0/mp4 @ 0x7bbd030180] Nothing was written into output file, because at least one of its streams received no packets.\n"
+        }
+      }
+    },
+    "noWholeOpticalOrPerformanceAcceptance": true,
+    "note": "Source and packed are two actual paths. Each42 flow records is a completed sequential flow log, not42 isolated tests. Build source.json retains its earlier pending-browser-evidence marker; final top-level continuous execution and process exit are the later authoritative runtime outcome."
+  },
+  "dialogEpoch": {
+    "candidate": "aab98dd4c5b8e9ee6bfa246d82b9b97f7b1ba229",
+    "candidateTree": "8e7b28c85a6d900d385e12cdd7d9a561eabf65d3",
+    "candidateParents": [
+      "4db5275154fbc80b393c27d6148b8403e7c61361"
+    ],
+    "fixedBaseline": "15d864de54210c2eebc4f4b2fec6235324989989",
+    "baselineTree": "b9e371657d5bf13a2ab66787ba8ce7d47cd725ac",
+    "pairBinding": {
+      "path": "dialog-fixed-pair-binding.json",
+      "bytes": 1238,
+      "sha256": "dd7fc55606caae76b18dc73981ee40736ac99a6df6178c264c1bd2112e28f8ed"
+    },
+    "sameThreeProbeFiles": [
+      {
+        "path": "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+        "sha256": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e"
+      },
+      {
+        "path": "apps/www/src/content/docs/zh-cn/browser-harness.ts",
+        "sha256": "3b425734cfb00602354bdc2b086e70a0434863f7cc3040415631be1627e0c9b6"
+      },
+      {
+        "path": "scripts/test/server-readiness.mjs",
+        "sha256": "4bbc332f34ebf8a9c24f0ccc01d53438dd7146e86118a932eacc63d819105fda"
+      }
+    ],
+    "nodeToolchain": "24.21.0",
+    "nodeEvidence": "Pair binding plus identical launcher PATH pinned to the same Node24.21.0 toolchain. The per-run browser records directly report Chrome155; no new Node version command was executed by reviewer.",
+    "browser": "155.0.8059.39",
+    "results": {
+      "dialog-fixed-native": {
+        "receipt": {
+          "path": "dialog-fixed-native/receipt.json",
+          "bytes": 785,
+          "sha256": "8fb2fdd25b68a21e59a434cca6afdf388521342391037951316a8c61c33122bf"
+        },
+        "head": "aab98dd4c5b8e9ee6bfa246d82b9b97f7b1ba229",
+        "probeLabel": "aab98dd4c5b8e9ee6bfa246d82b9b97f7b1ba229",
+        "counts": {
+          "numPassedTests": 8,
+          "numFailedTests": 0,
+          "numPendingTests": 0
+        },
+        "observations": 196,
+        "rowTypes": {
+          "geometry": 120,
+          "action": 52,
+          "title": 24
+        },
+        "pngShaReferencesVerified": 120,
+        "reportSha256": "5f92ad3ec3b8d29aff88e76e5d4e9661370f444dd9fdb8d8ce1c23b127fba03c",
+        "cleanupComplete": true,
+        "runnerErrors": [],
+        "unhandledErrors": [],
+        "processTimedOut": false
+      },
+      "dialog-fixed-baseline": {
+        "receipt": {
+          "path": "dialog-fixed-baseline/receipt.json",
+          "bytes": 837,
+          "sha256": "261d462f277b39b585e4d2be4e808edf20afc3996fec0e76c2bd819aad50ad44"
+        },
+        "head": "15d864de54210c2eebc4f4b2fec6235324989989",
+        "probeLabel": "aab98dd4c5b8e9ee6bfa246d82b9b97f7b1ba229",
+        "counts": {
+          "numPassedTests": 0,
+          "numFailedTests": 8,
+          "numPendingTests": 0
+        },
+        "observations": 33,
+        "rowTypes": {
+          "geometry": 21,
+          "failure": 8,
+          "title": 4
+        },
+        "pngShaReferencesVerified": 29,
+        "reportSha256": "e59a4743fe20a41ad30f9cd50a51717637f3bc712d71ef69789e6738f473686a",
+        "cleanupComplete": true,
+        "runnerErrors": [],
+        "unhandledErrors": [],
+        "processTimedOut": false
+      }
+    },
+    "baselineFailurePartition": {
+      "reportedFailedTests": 8,
+      "nativeJourneysStoppedAtFirst390Phase": 7,
+      "zeroInset": 3,
+      "titleBoxOverlap504": 4,
+      "runtimeNotOffered": 1,
+      "glyphOverlap": 0
+    },
+    "historicalClassifierExecutedInThisLocalPair": false,
+    "calibrationAccepted": false,
+    "formerOfficial2caComparison": "This local aab/15d pair is a different source/environment epoch. Prior official2ca used Node24.22.2/24.22.1 and Chrome156.0.8078.79/.47 and actually rejected its closure. Neither those artifacts nor a current calibration acceptance are substituted here."
+  },
+  "priorRedEvidence": [
+    {
+      "kind": "material",
+      "directory": "main-post-verdict/source-continuous",
+      "head": "4db5275154fbc80b393c27d6148b8403e7c61361",
+      "result": {
+        "path": "main-post-verdict/source-continuous/result.json",
+        "bytes": 125301,
+        "sha256": "fe32c3efa17e33b8cce626cf8f91a0336ae09e488a8c8911ad643a1a63ec4342"
+      },
+      "execution": "failed",
+      "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 157.609\n- 157.609375\n\n    at file://<STATE_ROOT>/continuous-post-verdict.mjs:1000:12",
+      "flowRows": 30,
+      "privateDiagnosticCopy": true
+    },
+    {
+      "kind": "material",
+      "directory": "main-post-verdict/packed-continuous",
+      "head": "4db5275154fbc80b393c27d6148b8403e7c61361",
+      "result": {
+        "path": "main-post-verdict/packed-continuous/result.json",
+        "bytes": 102450,
+        "sha256": "4c61e33b0f80032977a163890c1a2dcd4692687cac95c911f6450bbac1c9c112"
+      },
+      "execution": "failed",
+      "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 157.609\n- 157.609375\n\n    at file://<STATE_ROOT>/continuous-post-verdict.mjs:1000:12",
+      "flowRows": 30,
+      "privateDiagnosticCopy": true
+    },
+    {
+      "kind": "material",
+      "directory": "main-checkpoint-post-verdict/source-continuous",
+      "head": "4db5275154fbc80b393c27d6148b8403e7c61361",
+      "result": {
+        "path": "main-checkpoint-post-verdict/source-continuous/result.json",
+        "bytes": 286065,
+        "sha256": "b43af013f46a5aad4a9a9a4736a2133651ae96f33ec4bc67b8ab0f68a33e1e8d"
+      },
+      "execution": "failed",
+      "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 157.609\n- 157.609375\n\n    at file://<STATE_ROOT>/continuous-checkpoint-post-verdict.mjs:1002:12",
+      "flowRows": 30,
+      "privateDiagnosticCopy": true
+    },
+    {
+      "kind": "material",
+      "directory": "main-checkpoint-post-verdict/packed-continuous",
+      "head": "4db5275154fbc80b393c27d6148b8403e7c61361",
+      "result": {
+        "path": "main-checkpoint-post-verdict/packed-continuous/result.json",
+        "bytes": 263326,
+        "sha256": "954919cbae561a4e97068578691bb114fbe0e5da8cec7ca3eb157bbf39ef13a4"
+      },
+      "execution": "failed",
+      "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 157.609\n- 157.609375\n\n    at file://<STATE_ROOT>/continuous-checkpoint-post-verdict.mjs:1002:12",
+      "flowRows": 30,
+      "privateDiagnosticCopy": true
+    },
+    {
+      "kind": "material",
+      "directory": "products-c54f252/source-continuous",
+      "head": "c54f2523178c87db74d147ea79e93c56f2487a41",
+      "result": {
+        "path": "products-c54f252/source-continuous/result.json",
+        "bytes": 302853,
+        "sha256": "6e8f3afe957c0bbcfce59f53897ba7fc4e434a0874d056480e13ef4bbcce6098"
+      },
+      "execution": "failed",
+      "failure": "page.evaluate: Error: rendered-contrast-unsafe\n    at Object.render (http://127.0.0.1:61688/app.js:94235:19)\n    at http://127.0.0.1:61688/app.js:95585:26\n    at Array.map (<anonymous>)\n    at Object.controls (http://127.0.0.1:61688/app.js:95580:77)\n    at eval (eval at evaluate (:290:30), <anonymous>:9:30)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at <MATERIAL_FIX_ROOT>/experiments/material-v2/continuous-browser.test.mjs:1234:36",
+      "flowRows": 40,
+      "privateDiagnosticCopy": false
+    },
+    {
+      "kind": "material",
+      "directory": "products-c54f252/packed-continuous",
+      "head": "c54f2523178c87db74d147ea79e93c56f2487a41",
+      "result": {
+        "path": "products-c54f252/packed-continuous/result.json",
+        "bytes": 279773,
+        "sha256": "0710b545a1d16d193d5daf55e74793077b4e255b53c9091ad059ae66662d2042"
+      },
+      "execution": "failed",
+      "failure": "page.evaluate: Error: rendered-contrast-unsafe\n    at Object.render (http://127.0.0.1:61760/app.js:95712:19)\n    at http://127.0.0.1:61760/app.js:97086:26\n    at Array.map (<anonymous>)\n    at Object.controls (http://127.0.0.1:61760/app.js:97081:77)\n    at eval (eval at evaluate (:290:30), <anonymous>:9:30)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at <MATERIAL_FIX_ROOT>/experiments/material-v2/continuous-browser.test.mjs:1234:36",
+      "flowRows": 40,
+      "privateDiagnosticCopy": false
+    },
+    {
+      "kind": "dialog-before-fix",
+      "directory": "dialog-candidate",
+      "head": "e439f958d42bb8edc4efbb5bd6ead767a86d6efd",
+      "counts": {
+        "numPassedTests": 4,
+        "numFailedTests": 4,
+        "numPendingTests": 0
+      },
+      "failures": [
+        {
+          "name": "shadcn/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "message": "AssertionError: expected 'all' not to be 'all' // Object.is equality\n    at <MATERIAL_FIX_ROOT>/apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts:507:58\n    at file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)\n    at startTests (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1271:3)\n    at file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:126:11\n    at withEnv (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:90:5)\n    at run (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:112:3)\n    at runBaseTests (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/base.BZZh4cSm.js:29:3)"
+        },
+        {
+          "name": "shadcn/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "message": "AssertionError: expected 'all' not to be 'all' // Object.is equality\n    at <MATERIAL_FIX_ROOT>/apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts:507:58\n    at file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)\n    at startTests (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1271:3)\n    at file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:126:11\n    at withEnv (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:90:5)\n    at run (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:112:3)\n    at runBaseTests (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/base.BZZh4cSm.js:29:3)"
+        },
+        {
+          "name": "shadcn/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "message": "AssertionError: expected 'all' not to be 'all' // Object.is equality\n    at <MATERIAL_FIX_ROOT>/apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts:507:58\n    at file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)\n    at startTests (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1271:3)\n    at file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:126:11\n    at withEnv (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:90:5)\n    at run (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:112:3)\n    at runBaseTests (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/base.BZZh4cSm.js:29:3)"
+        },
+        {
+          "name": "shadcn/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "message": "AssertionError: expected 'all' not to be 'all' // Object.is equality\n    at <MATERIAL_FIX_ROOT>/apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts:507:58\n    at file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)\n    at startTests (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1271:3)\n    at file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:126:11\n    at withEnv (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:90:5)\n    at run (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:112:3)\n    at runBaseTests (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/base.BZZh4cSm.js:29:3)"
+        }
+      ]
+    },
+    {
+      "kind": "original-sidebar",
+      "directory": "sidebar-current-original",
+      "head": "e439f958d42bb8edc4efbb5bd6ead767a86d6efd",
+      "counts": {
+        "numPassedTests": 0,
+        "numFailedTests": 1,
+        "numPendingTests": 8
+      },
+      "failures": [
+        {
+          "name": "Homepage end-to-end dogfood boundary uses real family Contents Buttons through all four Docs runtimes with keyboard and exact-source visual evidence",
+          "message": "AssertionError: expected +0 to be 1 // Object.is equality\n    at <MATERIAL_FIX_ROOT>/apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts:954:80\n    at file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)\n    at startTests (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1271:3)\n    at file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:126:11\n    at withEnv (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:90:5)\n    at run (file://<MATERIAL_FIX_ROOT>/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:112:3)"
+        }
+      ]
+    },
+    {
+      "kind": "original-sidebar",
+      "directory": "sidebar-dialog-fix-original",
+      "head": "aab98dd4c5b8e9ee6bfa246d82b9b97f7b1ba229",
+      "counts": {
+        "numPassedTests": 0,
+        "numFailedTests": 1,
+        "numPendingTests": 8
+      },
+      "failures": [
+        {
+          "name": "Homepage end-to-end dogfood boundary uses real family Contents Buttons through all four Docs runtimes with keyboard and exact-source visual evidence",
+          "message": "AssertionError: expected +0 to be 1 // Object.is equality\n    at <DIALOG_FIX_ROOT>/apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts:954:80\n    at file://<DIALOG_FIX_ROOT>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://<DIALOG_FIX_ROOT>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://<DIALOG_FIX_ROOT>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file://<DIALOG_FIX_ROOT>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://<DIALOG_FIX_ROOT>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)\n    at startTests (file://<DIALOG_FIX_ROOT>/node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1271:3)\n    at file://<DIALOG_FIX_ROOT>/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:126:11\n    at withEnv (file://<DIALOG_FIX_ROOT>/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:90:5)\n    at run (file://<DIALOG_FIX_ROOT>/node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:112:3)"
+        }
+      ]
+    }
+  ],
+  "baselineArchiveAndRestore": {
+    "path": "delivery-review/restoration-readback.json",
+    "bytes": 829,
+    "sha256": "0952e2c2b502816cc3f2eb3aace10da47c5e909fc36af20ad2396370ab7f69c1"
+  },
+  "limitations": [
+    "No browser/test/source/Git/GitHub mutation was performed. This audit only reads retained local evidence and immutable source.",
+    "Two42-flow arrays are sequential recorded milestones, not84 independent test cases.",
+    "Packed mode explicitly retains private Liquid prototype source and is not an all-public-package installation acceptance.",
+    "Video encoded=false on both paths remains an evidence debt even though the test command exits0; capture cadence is not UI frame-rate proof.",
+    "Final contexts/consumers/pendingImages/decodedImages zero are material resource counters. Browser/server cleanup is supported by normal awaited-finally exit, not a new OS process sweep.",
+    "Geometry frame identity guards tie snapshot to the already-frozen material sample; this is not global optical, performance, all-browser or semantic acceptance.",
+    "This aab/15d local pair uses the same declared Node24.21 toolchain and recorded Chrome155, distinct from the old2ca official runs with differing Node24.22 and Chrome156 patches.",
+    "Local pair wrappers run Vitest and integrity reporter, not the historical calibration classifier. No accepted calibration registration is inferred.",
+    "PNG hash verification is not pixel review; no screenshot was opened here."
+  ],
+  "reviewerActions": {
+    "noNewTestsOrBrowser": true,
+    "noNetwork": true,
+    "noSourceGitGithubWrites": true,
+    "privateReportsOnly": true,
+    "noImageVisualReview": true
+  },
+  "nextScope": "Parent may publish a factual evidence update with original red epochs and video failure. This report grants no calibration registration, formal GitHub approval, all-main acceptance or optical/performance claim."
+}

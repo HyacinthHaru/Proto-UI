@@ -1,0 +1,11 @@
+
+> proto-ui@ check:prototype-catalog <DIALOG_FIX_ROOT>
+> node scripts/spec/check-prototype-catalog.mjs && node --test scripts/spec/bounded-map.test.mjs
+
+[prototype-catalog] 981 declaration files, 1364 static authoring entries, 446 cataloged P entities, 479 known debt files, 3 dynamic factory files.
+
+[prototype-catalog] FAILED (3)
+- spec/tests/T-BASE-SELECT-SIZE-POLICY-0001.yaml: T-BASE-SELECT-SIZE-POLICY-0001 must exercise verified prototype P-BASE-SELECT-ITEM
+- spec/tests/T-BASE-SELECT-SIZE-POLICY-0001.yaml: T-BASE-SELECT-SIZE-POLICY-0001 must exercise verified prototype P-BASE-SELECT
+- spec/tests/T-BRUTALIST-SELECT-ITEM-MOTION-0001.yaml: T-BRUTALIST-SELECT-ITEM-MOTION-0001 must exercise verified prototype P-BRUTALIST-SELECT-ITEM
+ ELIFECYCLE  Command failed with exit code 1.

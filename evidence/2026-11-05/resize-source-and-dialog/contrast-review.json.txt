@@ -1,0 +1,347 @@
+{
+  "reviewedAt": "2026-11-05T07:26:50.666808+00:00",
+  "mode": "human-assisted/current-user",
+  "assessment": "unassessed/advisory",
+  "disposition": "partial/ABSTAIN",
+  "scope": "Read-only attribution and review of a proposed one-color positive-fixture correction, using exact c54 source and completed real control records. No source edit or new test/browser/build/API by reviewer.",
+  "head": "c54f2523178c87db74d147ea79e93c56f2487a41",
+  "tree": "519752311a1755a922d4ef9b3b7f2cf2b3f6c818",
+  "sourceBindings": [
+    {
+      "path": "experiments/material-v2/continuous-browser.test.mjs",
+      "head": "c54f2523178c87db74d147ea79e93c56f2487a41",
+      "sha256": "2973f2a01e639da5f67265e414f6527b3c7d09421912336d938db4395cc5bb09",
+      "bytes": 51089
+    },
+    {
+      "path": "experiments/material-v2/browser-entry.ts",
+      "head": "c54f2523178c87db74d147ea79e93c56f2487a41",
+      "sha256": "1db17b8281ee5f5259ffaa38090b80acdfc99cf72726cfef7d1b0624db22d716",
+      "bytes": 3593
+    },
+    {
+      "path": "packages/adapters/base/src/material/program.ts",
+      "head": "c54f2523178c87db74d147ea79e93c56f2487a41",
+      "sha256": "844be51a9b40a16f04e53888602bcd5235117b7949359cf20042203e477d156d",
+      "bytes": 17020
+    },
+    {
+      "path": "packages/adapters/base/src/material/sink.ts",
+      "head": "c54f2523178c87db74d147ea79e93c56f2487a41",
+      "sha256": "e5de14a554483dc0877673b8ea6618a4162e26b58a113a232e8102379a000ae9",
+      "bytes": 40192
+    },
+    {
+      "path": "spec/contracts/C-FEEDBACK-MATERIAL-0001.yaml",
+      "head": "c54f2523178c87db74d147ea79e93c56f2487a41",
+      "sha256": "a234caedb2f87cd00ea17641b806cf955392831bf89747329f35db9a7092e601",
+      "bytes": 19383
+    },
+    {
+      "path": "spec/tests/T-MATERIAL-VISUAL-RESULT-0001.yaml",
+      "head": "c54f2523178c87db74d147ea79e93c56f2487a41",
+      "sha256": "73311256e99f2ba150fbe0cfa4e4382b82dadf73a4223656d256e52a8b821631",
+      "bytes": 18432
+    }
+  ],
+  "authority": {
+    "C-FEEDBACK-MATERIAL-0001": "draft",
+    "applicableCriteria": [
+      "C-FEEDBACK-MATERIAL-0001-SAFETY",
+      "C-FEEDBACK-MATERIAL-0001-QUALITY",
+      "C-FEEDBACK-MATERIAL-0001-GEOMETRY"
+    ],
+    "T-MATERIAL-VISUAL-RESULT-0001": "draft",
+    "applicableTestCase": "T-MATERIAL-VISUAL-RESULT-0001-CASE-LEASE",
+    "interpretation": "Unsafe rendered contrast cannot grant optical enhancement. Source replacement is exercised within an admitted host/profile and must preserve source/geometry/freshness ownership. Neither entity requires this specific deep-blue test literal or promotes the experimental reference controls to full consumer acceptance."
+  },
+  "failureAttribution": {
+    "actualLocation": "continuous-browser.test.mjs:1234 calls scene.lease.draw then window.v2Material.controls()[0]. controls maps four diagnostic program variants, with fixed black foreground, clear variant, pressed/contact and geometry.",
+    "fixedFrame": {
+      "variant": "clear",
+      "foreground": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "fill": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "pressed": true,
+      "contact": {
+        "x": 0.72,
+        "y": 0.25,
+        "deltaX": 0.4,
+        "deltaY": -0.1,
+        "strength": 1
+      }
+    },
+    "programBoundary": "program.ts reads real RGBA GPU pixels; untinted near-opaque samples alpha>=250 with contrast to frame.foreground below4.5 throw rendered-contrast-unsafe before image encoding/return. The same guard is retained.",
+    "consumerBoundary": "Reference controls call program.render directly; their direct rejection is not by itself evidence that the normal consumer is erroneous. The sink separately catches renderer failure and selects fallback/ordinary output. No current consumer fallback correctness is inferred solely from the control rejection."
+  },
+  "exactC54Execution": {
+    "receipt": {
+      "path": "<STATE_ROOT>/products-c54f252/receipt.json",
+      "bytes": 4032,
+      "sha256": "a8a3ab4838cb77c65cbae8bcedb0bc121d3605be28f6303c9f24d14e125960cd"
+    },
+    "node": "v24.21.0",
+    "allStepsPassed": false,
+    "subjects": [
+      {
+        "mode": "source",
+        "result": {
+          "path": "<STATE_ROOT>/products-c54f252/source-continuous/result.json",
+          "bytes": 302853,
+          "sha256": "6e8f3afe957c0bbcfce59f53897ba7fc4e434a0874d056480e13ef4bbcce6098"
+        },
+        "step": {
+          "name": "source-continuous",
+          "startedAt": "2026-11-05T07:14:26.351889+00:00",
+          "finishedAt": "2026-11-05T07:14:55.755537+00:00",
+          "exitCode": 1,
+          "sourceHeadAfter": "c54f2523178c87db74d147ea79e93c56f2487a41",
+          "trackedStatusAfter": ""
+        },
+        "browser": "155.0.8059.39",
+        "failure": "page.evaluate: Error: rendered-contrast-unsafe\n    at Object.render (http://127.0.0.1:61688/app.js:94235:19)\n    at http://127.0.0.1:61688/app.js:95585:26\n    at Array.map (<anonymous>)\n    at Object.controls (http://127.0.0.1:61688/app.js:95580:77)\n    at eval (eval at evaluate (:290:30), <anonymous>:9:30)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at <MATERIAL_FIX_ROOT>/experiments/material-v2/continuous-browser.test.mjs:1234:36",
+        "resizeChecks": [
+          {
+            "runtime": "wc",
+            "exactWidth": true,
+            "exactHeight": true,
+            "materialFrameEqual": true,
+            "sourceRevisionEqual": true,
+            "quality": "self-optical"
+          },
+          {
+            "runtime": "react",
+            "exactWidth": true,
+            "exactHeight": true,
+            "materialFrameEqual": true,
+            "sourceRevisionEqual": true,
+            "quality": "self-optical"
+          },
+          {
+            "runtime": "vue",
+            "exactWidth": true,
+            "exactHeight": true,
+            "materialFrameEqual": true,
+            "sourceRevisionEqual": true,
+            "quality": "self-optical"
+          },
+          {
+            "runtime": "vue2",
+            "exactWidth": true,
+            "exactHeight": true,
+            "materialFrameEqual": true,
+            "sourceRevisionEqual": true,
+            "quality": "self-optical"
+          }
+        ],
+        "reachedFlows": [
+          "focus second page",
+          "focus second page",
+          "reducedMotion",
+          "delayed real decode then source revoke",
+          "resize invalidates pending old decode and recovers new geometry",
+          "WebGL actual context loss/recovery",
+          "actual CSS rejection, idle and external-change recovery",
+          "actual CSS rejection, idle and external-change recovery",
+          "actual CSS rejection, idle and external-change recovery",
+          "actual CSS rejection, idle and external-change recovery",
+          "actual CSS rejection, idle and external-change recovery",
+          "actual CSS rejection, idle and external-change recovery",
+          "resource and timing observations",
+          "matched real WebGL controls",
+          "actual browser screencast"
+        ],
+        "notReached": "actual owned source pixel replacement success record and later final disposal-success assertions are not recorded as passed; continuous remains failed."
+      },
+      {
+        "mode": "packed",
+        "result": {
+          "path": "<STATE_ROOT>/products-c54f252/packed-continuous/result.json",
+          "bytes": 279773,
+          "sha256": "0710b545a1d16d193d5daf55e74793077b4e255b53c9091ad059ae66662d2042"
+        },
+        "step": {
+          "name": "packed-continuous",
+          "startedAt": "2026-11-05T07:15:01.612075+00:00",
+          "finishedAt": "2026-11-05T07:15:30.039792+00:00",
+          "exitCode": 1,
+          "sourceHeadAfter": "c54f2523178c87db74d147ea79e93c56f2487a41",
+          "trackedStatusAfter": ""
+        },
+        "browser": "155.0.8059.39",
+        "failure": "page.evaluate: Error: rendered-contrast-unsafe\n    at Object.render (http://127.0.0.1:61760/app.js:95712:19)\n    at http://127.0.0.1:61760/app.js:97086:26\n    at Array.map (<anonymous>)\n    at Object.controls (http://127.0.0.1:61760/app.js:97081:77)\n    at eval (eval at evaluate (:290:30), <anonymous>:9:30)\n    at UtilityScript.evaluate (<anonymous>:292:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at <MATERIAL_FIX_ROOT>/experiments/material-v2/continuous-browser.test.mjs:1234:36",
+        "resizeChecks": [
+          {
+            "runtime": "wc",
+            "exactWidth": true,
+            "exactHeight": true,
+            "materialFrameEqual": true,
+            "sourceRevisionEqual": true,
+            "quality": "self-optical"
+          },
+          {
+            "runtime": "react",
+            "exactWidth": true,
+            "exactHeight": true,
+            "materialFrameEqual": true,
+            "sourceRevisionEqual": true,
+            "quality": "self-optical"
+          },
+          {
+            "runtime": "vue",
+            "exactWidth": true,
+            "exactHeight": true,
+            "materialFrameEqual": true,
+            "sourceRevisionEqual": true,
+            "quality": "self-optical"
+          },
+          {
+            "runtime": "vue2",
+            "exactWidth": true,
+            "exactHeight": true,
+            "materialFrameEqual": true,
+            "sourceRevisionEqual": true,
+            "quality": "self-optical"
+          }
+        ],
+        "reachedFlows": [
+          "focus second page",
+          "focus second page",
+          "reducedMotion",
+          "delayed real decode then source revoke",
+          "resize invalidates pending old decode and recovers new geometry",
+          "WebGL actual context loss/recovery",
+          "actual CSS rejection, idle and external-change recovery",
+          "actual CSS rejection, idle and external-change recovery",
+          "actual CSS rejection, idle and external-change recovery",
+          "actual CSS rejection, idle and external-change recovery",
+          "actual CSS rejection, idle and external-change recovery",
+          "actual CSS rejection, idle and external-change recovery",
+          "resource and timing observations",
+          "matched real WebGL controls",
+          "actual browser screencast"
+        ],
+        "notReached": "actual owned source pixel replacement success record and later final disposal-success assertions are not recorded as passed; continuous remains failed."
+      }
+    ]
+  },
+  "proposedCorrection": {
+    "file": "experiments/material-v2/continuous-browser.test.mjs",
+    "oldLiteral": "#0735ce",
+    "newLiteral": "#c3d5fc",
+    "occurrences": 1,
+    "expectedCandidateSha256IfOnlyLiteralChanges": "6f1d01eb03b17c0e94978d2eb6ef1c4bd8af706f2b3992527ddfe78998581b19",
+    "preserved": [
+      "yellow stripe #fcda32",
+      "stripe step20/width8 and full-source fill geometry",
+      "actual scene.lease.draw",
+      "fixed black foreground and clear variant",
+      "program render/readPixels safety and4.5 threshold",
+      "original assert.notEqual(changedSource.image, controls[0].image)",
+      "all original native inputs/assertions/waits/deadlines and resize safeguards",
+      "source and packed negative receipts and earlier blue rejection"
+    ],
+    "judgment": "Supported as a bounded positive-reference-fixture premise correction, not an assertion or safety weakening. The old source is outside the admitted positive frame's safety assumptions; a distinct admissible replacement still tests that actual source pixels affect sampled lens output.",
+    "currentCandidateState": "The one-color edit is proposed at this review point; no new committed/full-run outcome is inferred. A later actual diff must remain limited to this literal and factual record."
+  },
+  "actualPrivateControl": {
+    "script": {
+      "path": "<STATE_ROOT>/replacement-source-control.mjs",
+      "bytes": 2908,
+      "sha256": "cbd7b6aedc98ca4f546b147dcbca5b6df1ceab4934aec19cb4c7594d18d2be15"
+    },
+    "log": {
+      "path": "<STATE_ROOT>/replacement-source-control.log",
+      "bytes": 687,
+      "sha256": "58140d49afebef337f1b0c5ffc539536d50262ed87b073263e34a78ad161563a"
+    },
+    "receipt": {
+      "path": "<STATE_ROOT>/replacement-source-control/receipt.json",
+      "bytes": 845,
+      "sha256": "3587e31ceff3b509de190757bddb8b017c8c7c23a147b19b0300f83f15a57295"
+    },
+    "productSourceManifest": {
+      "path": "<STATE_ROOT>/products-c54f252/source-product/source.json",
+      "bytes": 45637,
+      "sha256": "c79a6726342ade1342ce12aaaec9432c3f2c6f21c69d179cb970a4d35f1ac202"
+    },
+    "productRevision": "c54f2523178c87db74d147ea79e93c56f2487a41",
+    "productMode": "workspace-source",
+    "productPrivatePrototype": "packages/prototypes/liquid-glass",
+    "productApp": {
+      "path": "<STATE_ROOT>/products-c54f252/source-product/app.js",
+      "bytes": 3532927,
+      "sha256": "31df6c990af92fac96b1f7a231261fe8b5e2355bc19d64e3df945f7371c36d20"
+    },
+    "browser": "155.0.8059.39",
+    "observed": {
+      "unsafe": "rendered-contrast-unsafe",
+      "sourceImageChanged": true,
+      "geometryEqual": true,
+      "foregroundAndVariant": "fixed browser-entry controls(): black / clear",
+      "metrics": {
+        "contexts": 1,
+        "consumers": 8,
+        "lost": false,
+        "renders": 10,
+        "programBuilds": 2,
+        "sourceUploads": 11,
+        "sourcePreparations": 11,
+        "renderMilliseconds": 108.59999996423721,
+        "encodeMilliseconds": 9.099999904632568,
+        "pendingImages": 1,
+        "decodedImages": 3,
+        "imagePreparations": 10,
+        "peakPendingImages": 4
+      }
+    },
+    "cleanupFinished": true,
+    "positivePNG": {
+      "path": "<STATE_ROOT>/replacement-source-control/valid-replacement.png",
+      "bytes": 6616,
+      "sha256": "7aa33d343a8b5ac200c3856f1b3708ecd4b67d1d7dabde86ea0634f1ce752eea",
+      "dimensions": [
+        158,
+        62
+      ]
+    },
+    "procedure": "One synchronous page evaluate captures baseline controls image, replaces source with original deep-blue/yellow and records actual rendered-contrast-unsafe, replaces only blue with pale-blue and obtains controls, compares full image strings and geometry JSON, then calls scene.redraw. Context/browser/server close is awaited by the script.",
+    "bounds": [
+      "The recorded image inequality and geometry equality are executed script comparisons. Baseline image bytes/geometry pair were not separately persisted for reviewer re-comparison.",
+      "Each controls call constructs/disposes independent program instances in its own finally. Returning the new controls array means its four diagnostic variant renders completed, but only the first/full image is used by the original source replacement assertion.",
+      "scene.redraw was called to restore the normal scene path; there is no retained independent pixel-equality restoration check.",
+      "Recorded metrics are before context/browser close and include pendingImages1/contexts1. They are not post-dispose zero-resource measurements. cleanupFinished records successful close awaits, not an independently measured GPU resource census.",
+      "The control is a separate isolated experiment on retained c54 source product, not a newly passing full continuous or packed product run. PNG pixels were not independently visually reviewed in this pass."
+    ]
+  },
+  "checks": {
+    "source:resize4Strict": true,
+    "source:retainedOriginalL1234ContrastFailure": true,
+    "source:postResizePriorFlowsReached": true,
+    "packed:resize4Strict": true,
+    "packed:retainedOriginalL1234ContrastFailure": true,
+    "packed:postResizePriorFlowsReached": true,
+    "actualSourceProductSHA": true,
+    "controlUsesC54RealSourceProduct": true,
+    "controlOldUnsafeAndNewDistinctSameGeometry": true,
+    "controlDeclaredCleanupComplete": true,
+    "unchangedProductionProgram": true
+  },
+  "allCheckedConditionsTrue": true,
+  "openSourceFindings": 0,
+  "remainingVerification": [
+    "Review actual one-literal/record diff once created; do not add foreground/variant/threshold changes or catch/skip the unsafe render inside the positive assertion.",
+    "Run original source/packed journey on its eventual exact candidate and preserve all outcomes. This review does not predict later-stage success.",
+    "Preserve c54 two continuous failures and the old unsafe palette control as their own negative epochs; do not call them preexisting consumer defects resolved by the fixture."
+  ],
+  "noApprovalOrLifecyclePromotion": true
+}

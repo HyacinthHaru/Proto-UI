@@ -1,0 +1,483 @@
+{
+  "reviewedAt": "2026-11-05T07:57:42.301959+00:00",
+  "mode": "human-assisted/current-user",
+  "assessment": "unassessed/advisory",
+  "disposition": "partial/ABSTAIN",
+  "base": "4db5275154fbc80b393c27d6148b8403e7c61361",
+  "worktree": "<DIALOG_FIX_ROOT>",
+  "branch": "codex/dialog-geometry-transition-20261105",
+  "scope": "Current three-path working candidate only; read-only source/data review, no tests/browser/build/Git/GitHub mutation by reviewer.",
+  "workingStatus": [
+    " M packages/prototypes/shadcn/src/dialog/content.proto.ts",
+    " M packages/prototypes/shadcn/test/overlay-profiles-r91.test.ts",
+    "?? internal/records/2026-11-05-dialog-geometry-transition.md"
+  ],
+  "source": [
+    {
+      "path": "<DIALOG_FIX_ROOT>/packages/prototypes/shadcn/src/dialog/content.proto.ts",
+      "bytes": 1752,
+      "sha256": "b3d79845b536f9123b0d31c7007d94c034c72392961911c0516b4b1fd817f63f"
+    },
+    {
+      "path": "<DIALOG_FIX_ROOT>/packages/prototypes/shadcn/test/overlay-profiles-r91.test.ts",
+      "bytes": 20196,
+      "sha256": "fba0437f6fd2daee601ecd365132f7cb430f872fd5e5d17f31c649deffa9fb4a"
+    },
+    {
+      "path": "<DIALOG_FIX_ROOT>/internal/records/2026-11-05-dialog-geometry-transition.md",
+      "bytes": 1663,
+      "sha256": "6eef09a8f135c3f1cea9ebbc2ba4be5d28ed5619b253b4980097c90dc3e333af"
+    }
+  ],
+  "unchangedBindings": [
+    {
+      "path": "<DIALOG_FIX_ROOT>/packages/prototypes/shadcn/src/dialog/recipes.ts",
+      "bytes": 5954,
+      "sha256": "b49cbc4af068a02fdfa59df8baf016a91960b2c34a023d3a6a364d1b12ed8689",
+      "equalsBase": true
+    },
+    {
+      "path": "<DIALOG_FIX_ROOT>/packages/prototypes/shadcn/src/dialog/style.ts",
+      "bytes": 4169,
+      "sha256": "40ad12ca61713479c9eeec40fe7c0562e629b866f37c2eed7f985d9ed54afd15",
+      "equalsBase": true
+    },
+    {
+      "path": "<DIALOG_FIX_ROOT>/packages/prototypes/shadcn/src/dialog/types.ts",
+      "bytes": 2366,
+      "sha256": "3253a24ef3b5ede0c719104faaf366a53c104305d80260c2debe1d1b8e3c9cd1",
+      "equalsBase": true
+    },
+    {
+      "path": "<DIALOG_FIX_ROOT>/packages/prototypes/base/src/dialog/content.proto.ts",
+      "bytes": 9978,
+      "sha256": "8c58eeba11413db5b9381f103b97fd12e20c0b0f6d58e0fe73c24710db484c67",
+      "equalsBase": true
+    },
+    {
+      "path": "<DIALOG_FIX_ROOT>/packages/prototypes/shadcn/test/dialog.test.ts",
+      "bytes": 6935,
+      "sha256": "aaf85247ef64ac77c67761024933aec1566c49bcc217329fb867d29b20d56bfc",
+      "equalsBase": true
+    },
+    {
+      "path": "<DIALOG_FIX_ROOT>/packages/cli/src/services/proto-style-css.ts",
+      "bytes": 77489,
+      "sha256": "93137428d7fa9c2fbe3b2ed4e19a9c956a1044485ebf89c9678dc8066d6ca6ae",
+      "equalsBase": true
+    },
+    {
+      "path": "<DIALOG_FIX_ROOT>/apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+      "bytes": 29204,
+      "sha256": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e",
+      "equalsBase": true
+    },
+    {
+      "path": "<DIALOG_FIX_ROOT>/scripts/test/check-dialog-baseline-evidence.mjs",
+      "bytes": 12841,
+      "sha256": "d8bd261c9d042381a861a463dec0b8b40b8d2a90520e4702d2b122d28986b0fd",
+      "equalsBase": true
+    }
+  ],
+  "checks": {
+    "baseHeadExact": true,
+    "productionDiffOnlyOnePropertyToken": true,
+    "testDiffOnlyExact10AddedLines": true,
+    "recipesBaseTypesCompilerProbeClassifierUnchanged": true,
+    "oldGuardEightModernRed": true,
+    "new27AllPass": true
+  },
+  "allChecksTrue": true,
+  "openFindings": 0,
+  "findings": [],
+  "priorImplementationFinding": {
+    "id": "DIALOG-CONTENT-TRANSITION-001",
+    "sourceReport": {
+      "path": "<STATE_ROOT>/dialog-current-review/report.json",
+      "bytes": 29095,
+      "sha256": "879dc8dc71ef2e5270d7ce98ab13463445f5266a2a3003e1fed8b292fe15011a"
+    },
+    "candidateStatus": "The proposed missing common transition-property is implemented by the single token and discriminated by real source-host/Rule tests. Native geometry completion remains unexecuted in this candidate review; not closed as full product/native acceptance."
+  },
+  "sourceAnalysis": [
+    "Production content reconstructs the exact base bytes by removing only the appended transition-opacity token. All common available-region geometry, Base asDialogContent call, public boundary, configure enterDuration200/leaveDuration200 and enter/leave fade/zoom Rules remain byte-identical.",
+    "All nine DIALOG_PANEL recipes remain unchanged: eight modern duration100 profiles and New York transition-opacity/duration200. Root recipe selection, dark ring logic and all other anatomy parts are untouched.",
+    "The existing CLI maps transition-opacity to opacity-only transitions and emits explicit duration/ease overrides after generic transition defaults. Independent pui-enter/pui-exit animation keyframes still use the existing opacity/transform variables. No compiler/codegen edit is introduced.",
+    "Test inverse reconstruction confirms no original assertions, setup, profile-switch sequence, style withdrawal, relation/open-owner identity or controlled refusal behavior was removed. The new assertions cover the common property, original per-profile duration and original open fade/zoom tokens in each existing nine-profile case.",
+    "The current original Dialog browser probe, all numeric/input/deadline controls and historical classifier bytes are unchanged. No sleep, retry, animation cancellation or test predicate weakening is added.",
+    "The fact record accurately distinguishes first390-to390 property failures from unobserved later interpolation, source-host27passes from native geometry, logical200ms presence from recipe durations, and retained draft/upstream/calibration limits."
+  ],
+  "authorityBoundary": {
+    "entities": [
+      "P-SHADCN-DIALOG-CONTENT-AVAILABLE",
+      "P-SHADCN-DIALOG-CONTENT-TRANSITION",
+      "P-BASE-DIALOG-CONTENT-AVAILABLE",
+      "P-BASE-DIALOG-CONTENT-PRESENCE",
+      "T-AVAILABLE-SPACE-0001-CASE-DIALOG"
+    ],
+    "lifecycle": "draft",
+    "judgment": "Candidate stays within the supported common Dialog geometry repair direction. It does not settle exact modern upstream parity, redesign recipes or promote stable support."
+  },
+  "unitEvidence": [
+    {
+      "epoch": "dialog-profile-red",
+      "report": {
+        "path": "<STATE_ROOT>/dialog-profile-red.json",
+        "bytes": 24407,
+        "sha256": "0ad2dd3d97d5495b297f02a7560a96c740e672442f49bf60ca353aab2ebd46ba"
+      },
+      "log": {
+        "path": "<STATE_ROOT>/dialog-profile-red.log",
+        "bytes": 233210,
+        "sha256": "4a680292b7134eaa25efec7db65c61b24244a39441a36a8a072e65eb4aa37f54"
+      },
+      "counts": {
+        "numTotalTests": 25,
+        "numPassedTests": 17,
+        "numFailedTests": 8,
+        "numPendingTests": 0
+      },
+      "cases": [
+        {
+          "name": "source-bound overlay style owners vega paints a live Dialog and withdraws its old profile without replacing the owner",
+          "status": "failed",
+          "failureFirstLine": "AssertionError: expected [ 'fixed', …(23) ] to deeply equal ArrayContaining{…}"
+        },
+        {
+          "name": "source-bound overlay style owners nova paints a live Dialog and withdraws its old profile without replacing the owner",
+          "status": "failed",
+          "failureFirstLine": "AssertionError: expected [ 'fixed', …(23) ] to deeply equal ArrayContaining{…}"
+        },
+        {
+          "name": "source-bound overlay style owners maia paints a live Dialog and withdraws its old profile without replacing the owner",
+          "status": "failed",
+          "failureFirstLine": "AssertionError: expected [ 'fixed', …(23) ] to deeply equal ArrayContaining{…}"
+        },
+        {
+          "name": "source-bound overlay style owners lyra paints a live Dialog and withdraws its old profile without replacing the owner",
+          "status": "failed",
+          "failureFirstLine": "AssertionError: expected [ 'fixed', …(24) ] to deeply equal ArrayContaining{…}"
+        },
+        {
+          "name": "source-bound overlay style owners mira paints a live Dialog and withdraws its old profile without replacing the owner",
+          "status": "failed",
+          "failureFirstLine": "AssertionError: expected [ 'fixed', …(24) ] to deeply equal ArrayContaining{…}"
+        },
+        {
+          "name": "source-bound overlay style owners luma paints a live Dialog and withdraws its old profile without replacing the owner",
+          "status": "failed",
+          "failureFirstLine": "AssertionError: expected [ 'fixed', …(24) ] to deeply equal ArrayContaining{…}"
+        },
+        {
+          "name": "source-bound overlay style owners sera paints a live Dialog and withdraws its old profile without replacing the owner",
+          "status": "failed",
+          "failureFirstLine": "AssertionError: expected [ 'fixed', …(24) ] to deeply equal ArrayContaining{…}"
+        },
+        {
+          "name": "source-bound overlay style owners rhea paints a live Dialog and withdraws its old profile without replacing the owner",
+          "status": "failed",
+          "failureFirstLine": "AssertionError: expected [ 'fixed', …(24) ] to deeply equal ArrayContaining{…}"
+        },
+        {
+          "name": "source-bound overlay style owners new-york-v4 paints a live Dialog and withdraws its old profile without replacing the owner",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners retains controlled Dialog refusal and a single close request across profile change",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners preserves AlertDialog command ownership and independently withdrawn action paint",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners keeps Drawer accepted-side observation, owned decoration and authored slots distinct",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners keeps Popover Nova default and New York explicit typography while retaining its controlled owner",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners vega applies the pinned Popover surface without replacing its open owner",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners nova applies the pinned Popover surface without replacing its open owner",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners maia applies the pinned Popover surface without replacing its open owner",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners lyra applies the pinned Popover surface without replacing its open owner",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners mira applies the pinned Popover surface without replacing its open owner",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners luma applies the pinned Popover surface without replacing its open owner",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners sera applies the pinned Popover surface without replacing its open owner",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners rhea applies the pinned Popover surface without replacing its open owner",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners new-york-v4 applies the pinned Popover surface without replacing its open owner",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners retains HoverCard preview ownership while explicit style withdrawal restores the inherited New York typography",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners keeps Tooltip default Nova provenance and Root semantics when selecting New York",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners keeps Toast action order, controlled refusal and timer state across its radius switch",
+          "status": "passed",
+          "failureFirstLine": null
+        }
+      ]
+    },
+    {
+      "epoch": "dialog-profile-green",
+      "report": {
+        "path": "<STATE_ROOT>/dialog-profile-green.json",
+        "bytes": 10413,
+        "sha256": "f0dc797ad87d4f1742656e25ecd623fdd270eda3afa1c0d36c77cb3c91e94f1a"
+      },
+      "log": {
+        "path": "<STATE_ROOT>/dialog-profile-green.log",
+        "bytes": 228135,
+        "sha256": "469313c8aecce9f31f27404e042dd69df11bc075b1694b7cac854dd8fa5eef00"
+      },
+      "counts": {
+        "numTotalTests": 27,
+        "numPassedTests": 27,
+        "numFailedTests": 0,
+        "numPendingTests": 0
+      },
+      "cases": [
+        {
+          "name": "prototypes/shadcn: dialog keeps every Dialog anatomy part as a named direct entry",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "prototypes/shadcn: dialog styles and opens a dialog compound prototype",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners vega paints a live Dialog and withdraws its old profile without replacing the owner",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners nova paints a live Dialog and withdraws its old profile without replacing the owner",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners maia paints a live Dialog and withdraws its old profile without replacing the owner",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners lyra paints a live Dialog and withdraws its old profile without replacing the owner",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners mira paints a live Dialog and withdraws its old profile without replacing the owner",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners luma paints a live Dialog and withdraws its old profile without replacing the owner",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners sera paints a live Dialog and withdraws its old profile without replacing the owner",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners rhea paints a live Dialog and withdraws its old profile without replacing the owner",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners new-york-v4 paints a live Dialog and withdraws its old profile without replacing the owner",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners retains controlled Dialog refusal and a single close request across profile change",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners preserves AlertDialog command ownership and independently withdrawn action paint",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners keeps Drawer accepted-side observation, owned decoration and authored slots distinct",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners keeps Popover Nova default and New York explicit typography while retaining its controlled owner",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners vega applies the pinned Popover surface without replacing its open owner",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners nova applies the pinned Popover surface without replacing its open owner",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners maia applies the pinned Popover surface without replacing its open owner",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners lyra applies the pinned Popover surface without replacing its open owner",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners mira applies the pinned Popover surface without replacing its open owner",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners luma applies the pinned Popover surface without replacing its open owner",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners sera applies the pinned Popover surface without replacing its open owner",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners rhea applies the pinned Popover surface without replacing its open owner",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners new-york-v4 applies the pinned Popover surface without replacing its open owner",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners retains HoverCard preview ownership while explicit style withdrawal restores the inherited New York typography",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners keeps Tooltip default Nova provenance and Root semantics when selecting New York",
+          "status": "passed",
+          "failureFirstLine": null
+        },
+        {
+          "name": "source-bound overlay style owners keeps Toast action order, controlled refusal and timer state across its radius switch",
+          "status": "passed",
+          "failureFirstLine": null
+        }
+      ]
+    }
+  ],
+  "otherValidationSnapshot": {
+    "file": {
+      "path": "<STATE_ROOT>/dialog-fix-validation.json",
+      "bytes": 1400,
+      "sha256": "64ba402c256dbe7cb5b9c8864d4a50aad4fc42a06b6db534d1f151a1d4754b14"
+    },
+    "capturedContentSha256": "64ba402c256dbe7cb5b9c8864d4a50aad4fc42a06b6db534d1f151a1d4754b14",
+    "steps": [
+      {
+        "name": "dialog-fix-package-build",
+        "exitCode": 0,
+        "startedAt": "2026-11-05T07:53:12.755300+00:00",
+        "finishedAt": "2026-11-05T07:53:25.271300+00:00"
+      },
+      {
+        "name": "dialog-fix-manifests",
+        "exitCode": 0,
+        "startedAt": "2026-11-05T07:53:25.271704+00:00",
+        "finishedAt": "2026-11-05T07:53:25.460003+00:00"
+      },
+      {
+        "name": "dialog-fix-catalog",
+        "exitCode": 1,
+        "startedAt": "2026-11-05T07:53:25.460245+00:00",
+        "finishedAt": "2026-11-05T07:53:26.744463+00:00"
+      },
+      {
+        "name": "dialog-fix-types",
+        "exitCode": 0,
+        "startedAt": "2026-11-05T07:53:26.744822+00:00",
+        "finishedAt": "2026-11-05T07:54:48.353906+00:00"
+      }
+    ],
+    "overallFinishedAt": "2026-11-05T07:54:48.354491+00:00",
+    "catalogLog": {
+      "path": "<STATE_ROOT>/dialog-fix-catalog.log",
+      "bytes": 838,
+      "sha256": "60811f1302ac5bd6df394adc95d39436af22abeae2a9980cbf4e3db627051bf1"
+    },
+    "catalogFailures": [
+      "T-BASE-SELECT-SIZE-POLICY-0001 must exercise verified prototype P-BASE-SELECT-ITEM",
+      "T-BASE-SELECT-SIZE-POLICY-0001 must exercise verified prototype P-BASE-SELECT",
+      "T-BRUTALIST-SELECT-ITEM-MOTION-0001 must exercise verified prototype P-BRUTALIST-SELECT-ITEM"
+    ],
+    "boundary": "Package build and manifests have recorded exit0; catalog has recorded exit1. These named Select entities are outside the three-path diff. This pass did not execute a baseline control, so it does not claim a separately observed pure-main catalog failure. Types and any later result are not inferred from a growing/empty log."
+  },
+  "remainingEvidence": [
+    "Exact committed candidate original native eight cases, with all original immediate/settled geometry, long text/200%, scale/restore, Mask/focus/action/close assertions and150s preserved.",
+    "Any actual emitted CSS/native duration and fade/zoom behavior should be tied to that execution; token controls alone do not prove physical motion.",
+    "Catalog relation errors remain preserved and owned separately; no blanket validation-green claim.",
+    "Final combined-head results remain separate from base+dirty27unit evidence."
+  ],
+  "limitations": [
+    "No new tests/browser or screenshots were run/read by this reviewer.",
+    "Read-only unit reports and log summaries were reconciled with current exact hashes; no independent full execution source census was reconstructed.",
+    "The assertion against transition-all checks the token list, while native computed transition-property still requires its original actual browser assertion.",
+    "This is not GitHub APPROVE, historical calibration acceptance, release/merge admission or full family visual acceptance."
+  ]
+}

@@ -1,0 +1,665 @@
+{
+  "reviewedAt": "2026-11-05T07:11:20.753575+00:00",
+  "mode": "human-assisted/current-user",
+  "assessment": "unassessed/advisory",
+  "disposition": "partial/ABSTAIN",
+  "formalGitHubApproval": false,
+  "base": "4db5275154fbc80b393c27d6148b8403e7c61361",
+  "source": [
+    {
+      "path": "<MATERIAL_FIX_ROOT>/experiments/material-v2/continuous-browser.test.mjs",
+      "bytes": 51089,
+      "sha256": "2973f2a01e639da5f67265e414f6527b3c7d09421912336d938db4395cc5bb09"
+    },
+    {
+      "path": "<MATERIAL_FIX_ROOT>/experiments/material-v2/resize-geometry.ts",
+      "bytes": 5067,
+      "sha256": "56cea7820525d84ae8b859869777e33d5c9d8d5ac1096edc884da971f8a381cd"
+    },
+    {
+      "path": "<MATERIAL_FIX_ROOT>/experiments/material-v2/resize-geometry.test.ts",
+      "bytes": 5288,
+      "sha256": "8f7e68e365e8a3216970c86ed119610eb3a7764c5a7b2515f2cbba4ba36eb2ac"
+    }
+  ],
+  "workingScope": [
+    " M experiments/material-v2/continuous-browser.test.mjs",
+    "?? experiments/material-v2/resize-geometry.test.ts",
+    "?? experiments/material-v2/resize-geometry.ts",
+    "?? internal/records/2026-11-05-material-resize-measurement.md"
+  ],
+  "initialReview": {
+    "path": "<STATE_ROOT>/candidate-review/initial-review.json",
+    "bytes": 1965,
+    "sha256": "413c9e25941d222611a38671f3e3537d385f91ce9f801f18259469756d5c5d78"
+  },
+  "openFindings": 0,
+  "findings": [
+    {
+      "id": "RESIZE-FRAME-001",
+      "severity": "P2",
+      "status": "closed in exact current candidate",
+      "problem": "Initial helper only required a truthy later material frame; a corrected publication on the same source revision and host geometry could replace the original measurement.",
+      "correction": "The original existing evaluate now freezes materialFrame; helper requires a nonempty frozen field and exact snapshot equality, with no retry/wait. Exact existing carrier marker contact-v1 is also required.",
+      "evidence": "New same-source/same-host/later-frame counterexample was the sole failure in48tests (47/1); current same named counterexample and all47existing cases pass (48/0)."
+    }
+  ],
+  "independentSourceConclusions": [
+    "All original assertions, native inputs and waits/deadlines in continuous-browser.test.mjs are byte-preserved after reversing only the declared reader/checkpoint additions. Strict numeric equalities are unchanged; no tolerance, rounding, expected-variable substitution or retry is introduced.",
+    "Checkpoint freezes original resize data before original activation-count and stale-image assertions. Only after those two original checks does one DOMSnapshot capture run. Raw snapshot is written before parsing; strict failure keeps original arrays plus any successfully parsed geometry.",
+    "Parser binds the first page document URL, original runtime cardinality and unique runtime ancestors, one direct before pseudo, its actual layout row and backend IDs; it returns original runtime order. It fails missing/ambiguous rows rather than selecting nonzero geometry.",
+    "Root snapshot width/height must equal frozen BCR exactly; quality/sourceRevision/materialFrame must agree with the frozen read; carrier must be contact-v1. Pseudo padding/border must be zero. Element ancestry with layout and the pseudo must have neutral transform/scale/rotate/translate/zoom.",
+    "Paint width/height use snapshot numeric bounds. Original CSSOM values are retained separately; success after fields report actual measured geometry. Original quality/revision/stale-frame assertions still execute.",
+    "CDP uses the existing owned session; no extra input/Runtime.evaluate/warmup or new scene alteration is introduced in the tracked production journey. The standalone wrong-width CSS injection is confined to its separate diagnostic control.",
+    "The protocol frameId is correctly decoded through the StringIndex table. materialFrame is a material publication counter and is distinct from CDP document frameId or a displayed compositor frame."
+  ],
+  "checks": {
+    "callerInverseReconstructionExactMain": true,
+    "newFrameCounterexampleWasOnlyRed": true,
+    "currentUnit48Passed": true,
+    "strictControlAll12FrozenFramesMatch": true,
+    "strictControlInitialAndRestoredFourPass": true,
+    "strictControlWrongWidthOnlyWCRejected": true,
+    "strictControlSourceRevisionAllStable": true,
+    "strictControlReportedRestoredCleaned": true
+  },
+  "allChecksTrue": true,
+  "unitHistory": [
+    {
+      "epoch": "geometry-unit",
+      "json": {
+        "path": "<STATE_ROOT>/geometry-unit.json",
+        "bytes": 18547,
+        "sha256": "dcfc2663938850577772fccef50c20027d97476565768c40a7adc5a60873f626"
+      },
+      "log": {
+        "path": "<STATE_ROOT>/geometry-unit.log",
+        "bytes": 172301,
+        "sha256": "c61fc56fb4df09cee8c2bb61e3f25a4fbb7f30713fbaf0ebd29bc373d812dd9d"
+      },
+      "counts": {
+        "numTotalTests": 47,
+        "numPassedTests": 47,
+        "numFailedTests": 0,
+        "numPendingTests": 0
+      },
+      "failures": [],
+      "actualFiles": 5
+    },
+    {
+      "epoch": "geometry-candidate-unit",
+      "json": {
+        "path": "<STATE_ROOT>/geometry-candidate-unit.json",
+        "bytes": 18547,
+        "sha256": "0c30225774e0a497c0783664d89cd87e4f41e5ec4df9cf437ce5a53ab314c383"
+      },
+      "log": {
+        "path": "<STATE_ROOT>/geometry-candidate-unit.log",
+        "bytes": 172311,
+        "sha256": "53551c61d1f66fe6c13a01e71aeb99e2cb61650d66a3ec5c28db09c7d94799c3"
+      },
+      "counts": {
+        "numTotalTests": 47,
+        "numPassedTests": 47,
+        "numFailedTests": 0,
+        "numPendingTests": 0
+      },
+      "failures": [],
+      "actualFiles": 5
+    },
+    {
+      "epoch": "frame-guard-red",
+      "json": {
+        "path": "<STATE_ROOT>/frame-guard-red.json",
+        "bytes": 20473,
+        "sha256": "931d25d6cbdd25087e7b28e5f3f8f4f365a6a2a330e26f097376b0bfd296a7d8"
+      },
+      "log": {
+        "path": "<STATE_ROOT>/frame-guard-red.log",
+        "bytes": 173324,
+        "sha256": "9b8b1e869edc92da632318cc95b3627f1fae0e1b5d5c2f319820f14fefef2a2d"
+      },
+      "counts": {
+        "numTotalTests": 48,
+        "numPassedTests": 47,
+        "numFailedTests": 1,
+        "numPendingTests": 0
+      },
+      "failures": [
+        {
+          "name": "physical resize paint measurement rejects a later corrected paint publication on the same source and host geometry",
+          "firstLine": "AssertionError: expected [Function] to throw an error"
+        }
+      ],
+      "actualFiles": 5
+    },
+    {
+      "epoch": "frame-guard-green",
+      "json": {
+        "path": "<STATE_ROOT>/frame-guard-green.json",
+        "bytes": 18907,
+        "sha256": "e01875413d27e81f56bfdeabd14a7e0a00b34c7f42b9b317b31d42a1ee310106"
+      },
+      "log": {
+        "path": "<STATE_ROOT>/frame-guard-green.log",
+        "bytes": 172305,
+        "sha256": "b3271fda1552db0e23129261d0b8b2656977ac9d1e323489488bf81c505886c9"
+      },
+      "counts": {
+        "numTotalTests": 48,
+        "numPassedTests": 48,
+        "numFailedTests": 0,
+        "numPendingTests": 0
+      },
+      "failures": [],
+      "actualFiles": 5
+    }
+  ],
+  "typeEvidence": {
+    "originalFailureLog": {
+      "path": "<STATE_ROOT>/geometry-types.log",
+      "bytes": 9826,
+      "sha256": "a4702dbec2611fee10a8dcccbc63b11d7d6ec6a64e661684ef00dba88047ede4"
+    },
+    "correction": "Test fixture frameId changed from literal string to StringIndex; returned frameId decoded through strings.",
+    "fixedLog": {
+      "path": "<STATE_ROOT>/geometry-types-fixed.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "currentLog": {
+      "path": "<STATE_ROOT>/geometry-types-final.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "boundary": "Logs are empty for the repaired checks; root reported actual exit0. An empty log by itself is not independent proof of process exit. Reviewer did not execute tsc."
+  },
+  "nativeMeasurementControls": [
+    {
+      "epoch": "geometry-browser-control",
+      "receipt": {
+        "path": "<STATE_ROOT>/geometry-browser-control/receipt.json",
+        "bytes": 11829,
+        "sha256": "b62220f9a32a20e70475cd1297355b55cf07146ebedddb89f06ba7ed1b979e14"
+      },
+      "kind": "Precommit exact helper on retained real main product; owned CSS wrong-size injection is a negative control, not original native product acceptance",
+      "browser": "155.0.8059.39",
+      "reportedInjectedWidthRejected": true,
+      "reportedRestored": true,
+      "reportedCleanupFinished": true,
+      "error": null,
+      "steps": [
+        {
+          "name": "initial",
+          "rows": [
+            {
+              "runtime": "wc",
+              "hostWidth": 133.609375,
+              "paintWidth": 157.609375,
+              "expectedPaintWidth": 157.609375,
+              "heightEquation": true,
+              "widthEquation": true,
+              "frozenFrame": null,
+              "measuredFrame": "2",
+              "frozenFrameMatches": null,
+              "sourceRevision": 4,
+              "sourceRevisionMatches": true,
+              "backendNodeId": 40,
+              "paintBackendNodeId": 41,
+              "frameId": "629A30FCE26D8FAF006C2EB7615AFDA8"
+            },
+            {
+              "runtime": "react",
+              "hostWidth": 133.609375,
+              "paintWidth": 157.609375,
+              "expectedPaintWidth": 157.609375,
+              "heightEquation": true,
+              "widthEquation": true,
+              "frozenFrame": null,
+              "measuredFrame": "2",
+              "frozenFrameMatches": null,
+              "sourceRevision": 4,
+              "sourceRevisionMatches": true,
+              "backendNodeId": 57,
+              "paintBackendNodeId": 58,
+              "frameId": "629A30FCE26D8FAF006C2EB7615AFDA8"
+            },
+            {
+              "runtime": "vue",
+              "hostWidth": 133.609375,
+              "paintWidth": 157.609375,
+              "expectedPaintWidth": 157.609375,
+              "heightEquation": true,
+              "widthEquation": true,
+              "frozenFrame": null,
+              "measuredFrame": "2",
+              "frozenFrameMatches": null,
+              "sourceRevision": 4,
+              "sourceRevisionMatches": true,
+              "backendNodeId": 73,
+              "paintBackendNodeId": 74,
+              "frameId": "629A30FCE26D8FAF006C2EB7615AFDA8"
+            },
+            {
+              "runtime": "vue2",
+              "hostWidth": 133.609375,
+              "paintWidth": 157.609375,
+              "expectedPaintWidth": 157.609375,
+              "heightEquation": true,
+              "widthEquation": true,
+              "frozenFrame": null,
+              "measuredFrame": "2",
+              "frozenFrameMatches": null,
+              "sourceRevision": 4,
+              "sourceRevisionMatches": true,
+              "backendNodeId": 89,
+              "paintBackendNodeId": 90,
+              "frameId": "629A30FCE26D8FAF006C2EB7615AFDA8"
+            }
+          ],
+          "snapshot": {
+            "path": "<STATE_ROOT>/geometry-browser-control/initial-snapshot.json",
+            "bytes": 25796,
+            "sha256": "bd7a016c4a11570a900f4696c21f2291e6505bcae33604137237bdfd7e276ba3"
+          }
+        },
+        {
+          "name": "wrong-width",
+          "rows": [
+            {
+              "runtime": "wc",
+              "hostWidth": 133.609375,
+              "paintWidth": 158.609375,
+              "expectedPaintWidth": 157.609375,
+              "heightEquation": true,
+              "widthEquation": false,
+              "frozenFrame": null,
+              "measuredFrame": "2",
+              "frozenFrameMatches": null,
+              "sourceRevision": 4,
+              "sourceRevisionMatches": true,
+              "backendNodeId": 40,
+              "paintBackendNodeId": 41,
+              "frameId": "629A30FCE26D8FAF006C2EB7615AFDA8"
+            },
+            {
+              "runtime": "react",
+              "hostWidth": 133.609375,
+              "paintWidth": 157.609375,
+              "expectedPaintWidth": 157.609375,
+              "heightEquation": true,
+              "widthEquation": true,
+              "frozenFrame": null,
+              "measuredFrame": "2",
+              "frozenFrameMatches": null,
+              "sourceRevision": 4,
+              "sourceRevisionMatches": true,
+              "backendNodeId": 57,
+              "paintBackendNodeId": 58,
+              "frameId": "629A30FCE26D8FAF006C2EB7615AFDA8"
+            },
+            {
+              "runtime": "vue",
+              "hostWidth": 133.609375,
+              "paintWidth": 157.609375,
+              "expectedPaintWidth": 157.609375,
+              "heightEquation": true,
+              "widthEquation": true,
+              "frozenFrame": null,
+              "measuredFrame": "2",
+              "frozenFrameMatches": null,
+              "sourceRevision": 4,
+              "sourceRevisionMatches": true,
+              "backendNodeId": 73,
+              "paintBackendNodeId": 74,
+              "frameId": "629A30FCE26D8FAF006C2EB7615AFDA8"
+            },
+            {
+              "runtime": "vue2",
+              "hostWidth": 133.609375,
+              "paintWidth": 157.609375,
+              "expectedPaintWidth": 157.609375,
+              "heightEquation": true,
+              "widthEquation": true,
+              "frozenFrame": null,
+              "measuredFrame": "2",
+              "frozenFrameMatches": null,
+              "sourceRevision": 4,
+              "sourceRevisionMatches": true,
+              "backendNodeId": 89,
+              "paintBackendNodeId": 90,
+              "frameId": "629A30FCE26D8FAF006C2EB7615AFDA8"
+            }
+          ],
+          "snapshot": {
+            "path": "<STATE_ROOT>/geometry-browser-control/wrong-width-snapshot.json",
+            "bytes": 25998,
+            "sha256": "370f78a3dd062d99666e0cbf0afdcfedec2fe83acba155f8188b4835dba130ef"
+          }
+        },
+        {
+          "name": "restored",
+          "rows": [
+            {
+              "runtime": "wc",
+              "hostWidth": 133.609375,
+              "paintWidth": 157.609375,
+              "expectedPaintWidth": 157.609375,
+              "heightEquation": true,
+              "widthEquation": true,
+              "frozenFrame": null,
+              "measuredFrame": "2",
+              "frozenFrameMatches": null,
+              "sourceRevision": 4,
+              "sourceRevisionMatches": true,
+              "backendNodeId": 40,
+              "paintBackendNodeId": 41,
+              "frameId": "629A30FCE26D8FAF006C2EB7615AFDA8"
+            },
+            {
+              "runtime": "react",
+              "hostWidth": 133.609375,
+              "paintWidth": 157.609375,
+              "expectedPaintWidth": 157.609375,
+              "heightEquation": true,
+              "widthEquation": true,
+              "frozenFrame": null,
+              "measuredFrame": "2",
+              "frozenFrameMatches": null,
+              "sourceRevision": 4,
+              "sourceRevisionMatches": true,
+              "backendNodeId": 57,
+              "paintBackendNodeId": 58,
+              "frameId": "629A30FCE26D8FAF006C2EB7615AFDA8"
+            },
+            {
+              "runtime": "vue",
+              "hostWidth": 133.609375,
+              "paintWidth": 157.609375,
+              "expectedPaintWidth": 157.609375,
+              "heightEquation": true,
+              "widthEquation": true,
+              "frozenFrame": null,
+              "measuredFrame": "2",
+              "frozenFrameMatches": null,
+              "sourceRevision": 4,
+              "sourceRevisionMatches": true,
+              "backendNodeId": 73,
+              "paintBackendNodeId": 74,
+              "frameId": "629A30FCE26D8FAF006C2EB7615AFDA8"
+            },
+            {
+              "runtime": "vue2",
+              "hostWidth": 133.609375,
+              "paintWidth": 157.609375,
+              "expectedPaintWidth": 157.609375,
+              "heightEquation": true,
+              "widthEquation": true,
+              "frozenFrame": null,
+              "measuredFrame": "2",
+              "frozenFrameMatches": null,
+              "sourceRevision": 4,
+              "sourceRevisionMatches": true,
+              "backendNodeId": 89,
+              "paintBackendNodeId": 90,
+              "frameId": "629A30FCE26D8FAF006C2EB7615AFDA8"
+            }
+          ],
+          "snapshot": {
+            "path": "<STATE_ROOT>/geometry-browser-control/restored-snapshot.json",
+            "bytes": 25796,
+            "sha256": "bd7a016c4a11570a900f4696c21f2291e6505bcae33604137237bdfd7e276ba3"
+          }
+        }
+      ]
+    },
+    {
+      "epoch": "geometry-browser-control-frame-bound",
+      "receipt": {
+        "path": "<STATE_ROOT>/geometry-browser-control-frame-bound/receipt.json",
+        "bytes": 12213,
+        "sha256": "99cd2a86ed3d0a8a336d8fa2eb87e3d3a92deaf9d9da629a11bd790b5c30e099"
+      },
+      "kind": "Precommit exact helper on retained real main product; owned CSS wrong-size injection is a negative control, not original native product acceptance",
+      "browser": "155.0.8059.39",
+      "reportedInjectedWidthRejected": true,
+      "reportedRestored": true,
+      "reportedCleanupFinished": true,
+      "error": null,
+      "steps": [
+        {
+          "name": "initial",
+          "rows": [
+            {
+              "runtime": "wc",
+              "hostWidth": 133.609375,
+              "paintWidth": 157.609375,
+              "expectedPaintWidth": 157.609375,
+              "heightEquation": true,
+              "widthEquation": true,
+              "frozenFrame": "2",
+              "measuredFrame": "2",
+              "frozenFrameMatches": true,
+              "sourceRevision": 4,
+              "sourceRevisionMatches": true,
+              "backendNodeId": 40,
+              "paintBackendNodeId": 41,
+              "frameId": "9531C986606A5D6462349D621EB472F2"
+            },
+            {
+              "runtime": "react",
+              "hostWidth": 133.609375,
+              "paintWidth": 157.609375,
+              "expectedPaintWidth": 157.609375,
+              "heightEquation": true,
+              "widthEquation": true,
+              "frozenFrame": "2",
+              "measuredFrame": "2",
+              "frozenFrameMatches": true,
+              "sourceRevision": 4,
+              "sourceRevisionMatches": true,
+              "backendNodeId": 57,
+              "paintBackendNodeId": 58,
+              "frameId": "9531C986606A5D6462349D621EB472F2"
+            },
+            {
+              "runtime": "vue",
+              "hostWidth": 133.609375,
+              "paintWidth": 157.609375,
+              "expectedPaintWidth": 157.609375,
+              "heightEquation": true,
+              "widthEquation": true,
+              "frozenFrame": "2",
+              "measuredFrame": "2",
+              "frozenFrameMatches": true,
+              "sourceRevision": 4,
+              "sourceRevisionMatches": true,
+              "backendNodeId": 73,
+              "paintBackendNodeId": 74,
+              "frameId": "9531C986606A5D6462349D621EB472F2"
+            },
+            {
+              "runtime": "vue2",
+              "hostWidth": 133.609375,
+              "paintWidth": 157.609375,
+              "expectedPaintWidth": 157.609375,
+              "heightEquation": true,
+              "widthEquation": true,
+              "frozenFrame": "2",
+              "measuredFrame": "2",
+              "frozenFrameMatches": true,
+              "sourceRevision": 4,
+              "sourceRevisionMatches": true,
+              "backendNodeId": 89,
+              "paintBackendNodeId": 90,
+              "frameId": "9531C986606A5D6462349D621EB472F2"
+            }
+          ],
+          "snapshot": {
+            "path": "<STATE_ROOT>/geometry-browser-control-frame-bound/initial-snapshot.json",
+            "bytes": 25796,
+            "sha256": "77cac3be4788503f93cfd3ce6ac268c705c1105dfb0e90baea61396a178e3fac"
+          }
+        },
+        {
+          "name": "wrong-width",
+          "rows": [
+            {
+              "runtime": "wc",
+              "hostWidth": 133.609375,
+              "paintWidth": 158.609375,
+              "expectedPaintWidth": 157.609375,
+              "heightEquation": true,
+              "widthEquation": false,
+              "frozenFrame": "2",
+              "measuredFrame": "2",
+              "frozenFrameMatches": true,
+              "sourceRevision": 4,
+              "sourceRevisionMatches": true,
+              "backendNodeId": 40,
+              "paintBackendNodeId": 41,
+              "frameId": "9531C986606A5D6462349D621EB472F2"
+            },
+            {
+              "runtime": "react",
+              "hostWidth": 133.609375,
+              "paintWidth": 157.609375,
+              "expectedPaintWidth": 157.609375,
+              "heightEquation": true,
+              "widthEquation": true,
+              "frozenFrame": "2",
+              "measuredFrame": "2",
+              "frozenFrameMatches": true,
+              "sourceRevision": 4,
+              "sourceRevisionMatches": true,
+              "backendNodeId": 57,
+              "paintBackendNodeId": 58,
+              "frameId": "9531C986606A5D6462349D621EB472F2"
+            },
+            {
+              "runtime": "vue",
+              "hostWidth": 133.609375,
+              "paintWidth": 157.609375,
+              "expectedPaintWidth": 157.609375,
+              "heightEquation": true,
+              "widthEquation": true,
+              "frozenFrame": "2",
+              "measuredFrame": "2",
+              "frozenFrameMatches": true,
+              "sourceRevision": 4,
+              "sourceRevisionMatches": true,
+              "backendNodeId": 73,
+              "paintBackendNodeId": 74,
+              "frameId": "9531C986606A5D6462349D621EB472F2"
+            },
+            {
+              "runtime": "vue2",
+              "hostWidth": 133.609375,
+              "paintWidth": 157.609375,
+              "expectedPaintWidth": 157.609375,
+              "heightEquation": true,
+              "widthEquation": true,
+              "frozenFrame": "2",
+              "measuredFrame": "2",
+              "frozenFrameMatches": true,
+              "sourceRevision": 4,
+              "sourceRevisionMatches": true,
+              "backendNodeId": 89,
+              "paintBackendNodeId": 90,
+              "frameId": "9531C986606A5D6462349D621EB472F2"
+            }
+          ],
+          "snapshot": {
+            "path": "<STATE_ROOT>/geometry-browser-control-frame-bound/wrong-width-snapshot.json",
+            "bytes": 25998,
+            "sha256": "22f68ddc9554ad22ee196835d9f944e66d12b45b15b987eb9209838ba28132e7"
+          }
+        },
+        {
+          "name": "restored",
+          "rows": [
+            {
+              "runtime": "wc",
+              "hostWidth": 133.609375,
+              "paintWidth": 157.609375,
+              "expectedPaintWidth": 157.609375,
+              "heightEquation": true,
+              "widthEquation": true,
+              "frozenFrame": "2",
+              "measuredFrame": "2",
+              "frozenFrameMatches": true,
+              "sourceRevision": 4,
+              "sourceRevisionMatches": true,
+              "backendNodeId": 40,
+              "paintBackendNodeId": 41,
+              "frameId": "9531C986606A5D6462349D621EB472F2"
+            },
+            {
+              "runtime": "react",
+              "hostWidth": 133.609375,
+              "paintWidth": 157.609375,
+              "expectedPaintWidth": 157.609375,
+              "heightEquation": true,
+              "widthEquation": true,
+              "frozenFrame": "2",
+              "measuredFrame": "2",
+              "frozenFrameMatches": true,
+              "sourceRevision": 4,
+              "sourceRevisionMatches": true,
+              "backendNodeId": 57,
+              "paintBackendNodeId": 58,
+              "frameId": "9531C986606A5D6462349D621EB472F2"
+            },
+            {
+              "runtime": "vue",
+              "hostWidth": 133.609375,
+              "paintWidth": 157.609375,
+              "expectedPaintWidth": 157.609375,
+              "heightEquation": true,
+              "widthEquation": true,
+              "frozenFrame": "2",
+              "measuredFrame": "2",
+              "frozenFrameMatches": true,
+              "sourceRevision": 4,
+              "sourceRevisionMatches": true,
+              "backendNodeId": 73,
+              "paintBackendNodeId": 74,
+              "frameId": "9531C986606A5D6462349D621EB472F2"
+            },
+            {
+              "runtime": "vue2",
+              "hostWidth": 133.609375,
+              "paintWidth": 157.609375,
+              "expectedPaintWidth": 157.609375,
+              "heightEquation": true,
+              "widthEquation": true,
+              "frozenFrame": "2",
+              "measuredFrame": "2",
+              "frozenFrameMatches": true,
+              "sourceRevision": 4,
+              "sourceRevisionMatches": true,
+              "backendNodeId": 89,
+              "paintBackendNodeId": 90,
+              "frameId": "9531C986606A5D6462349D621EB472F2"
+            }
+          ],
+          "snapshot": {
+            "path": "<STATE_ROOT>/geometry-browser-control-frame-bound/restored-snapshot.json",
+            "bytes": 25796,
+            "sha256": "77cac3be4788503f93cfd3ce6ac268c705c1105dfb0e90baea61396a178e3fac"
+          }
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Both standalone browser controls use retained real main source product and independently injected WC before width+1px. They validate measurement discrimination and restoration, not the entire source/packed continuous journey.",
+    "The first47greens and old browser control do not close RESIZE-FRAME-001. Only the later48case counterexample/control and current frame-bound browser receipt are used for that boundary.",
+    "The parser is scoped to this known single main-document fixture. It does not establish cross-navigation/iframe document identity beyond its URL/current-session/table selection, nor arbitrary transformed geometry support.",
+    "DOMSnapshot may synchronously flush lifecycle/layout and is later than the original JS read. Frozen material counter, source revision and exact host BCR catch specified drift but do not prove a zero-time atomic join with original JS or a compositor paint frame.",
+    "Original main source/packed strict failures and all private post-verdict records remain failures at their original epochs. This report does not retroactively reclassify them.",
+    "No full current source/packed original continuous execution was reviewed here. Future exact candidate execution remains a separate result.",
+    "Receipts/JSON/logs were checked read-only. No new tests/browser/build/API or source/Git mutation by reviewer; no new screenshot pixel review.",
+    "Draft material semantics remain draft; this is local partial review and does not grant formal acceptance or integration permission."
+  ]
+}

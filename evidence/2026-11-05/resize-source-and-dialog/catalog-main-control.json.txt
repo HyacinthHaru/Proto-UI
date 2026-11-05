@@ -1,0 +1,9 @@
+{
+  "head": "4db5275154fbc80b393c27d6148b8403e7c61361",
+  "kind": "Exact tracked main source control for catalog failure; own three candidate files restored afterward",
+  "startedAt": "2026-11-05T07:57:46.434979+00:00",
+  "cleanMainSourceBefore": true,
+  "exitCode": 1,
+  "restoredExactCandidateBytes": true,
+  "finishedAt": "2026-11-05T07:57:47.825448+00:00"
+}
