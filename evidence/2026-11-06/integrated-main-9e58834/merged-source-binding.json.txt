@@ -1,0 +1,30 @@
+{
+  "material": {
+    "original": "e439f958d42bb8edc4efbb5bd6ead767a86d6efd",
+    "main": "9e58834d167618216ed9b39278eb8dded2f2f596",
+    "unchangedPaths": [
+      {
+        "path": "experiments/material-v2/continuous-browser.test.mjs",
+        "blob": "81f10ab4da23173445989928f26c89fd349a4f53"
+      },
+      {
+        "path": "experiments/material-v2/resize-geometry.ts",
+        "blob": "594cab05acba8f77123447980052de34a8cde449"
+      },
+      {
+        "path": "experiments/material-v2/resize-geometry.test.ts",
+        "blob": "2ae853f093952a6b8338b80c3b14544b964349d9"
+      }
+    ]
+  },
+  "dialog": {
+    "original": "aab98dd4c5b8e9ee6bfa246d82b9b97f7b1ba229",
+    "main": "9e58834d167618216ed9b39278eb8dded2f2f596",
+    "unchangedPaths": [
+      {
+        "path": "packages/prototypes/shadcn/src/dialog/content.proto.ts",
+        "blob": "e0e15fe211fec9368e406400a2d08a3f998aac79"
+      }
+    ]
+  }
+}

@@ -1,0 +1,415 @@
+{
+  "head": "9e58834d167618216ed9b39278eb8dded2f2f596",
+  "tree": "9f9b425720a3e52c9f9b1c3a8b6f7629484e8a96",
+  "observedAt": "2026-11-06T05:41:38.998961+00:00",
+  "sourceChangedThisRound": false,
+  "products": {
+    "source": {
+      "resultSha256": "eb804bf2c4d220b73a10ff2545b9e7bb301435ce00230929cf5c2945afe49db5",
+      "flowRecords": 42,
+      "blurArms": 8,
+      "resizeRows": [
+        {
+          "runtime": "wc",
+          "width": 133.609375,
+          "height": 38,
+          "paintWidth": 157.609375,
+          "paintHeight": 62,
+          "quality": "self-optical",
+          "sourceRevision": 154,
+          "materialFrame": "231",
+          "cssomPaintWidth": 157.609,
+          "cssomPaintHeight": 62,
+          "frameId": "BC05398FA3858E5931190AB04759FA5A",
+          "hostBackendNodeId": 10,
+          "paintBackendNodeId": 73,
+          "hostBounds": [
+            84,
+            228.3125,
+            133.609375,
+            38
+          ],
+          "paintBounds": [
+            72,
+            216.3125,
+            157.609375,
+            62
+          ]
+        },
+        {
+          "runtime": "react",
+          "width": 133.609375,
+          "height": 38,
+          "paintWidth": 157.609375,
+          "paintHeight": 62,
+          "quality": "self-optical",
+          "sourceRevision": 153,
+          "materialFrame": "228",
+          "cssomPaintWidth": 157.609,
+          "cssomPaintHeight": 62,
+          "frameId": "BC05398FA3858E5931190AB04759FA5A",
+          "hostBackendNodeId": 12,
+          "paintBackendNodeId": 85,
+          "hostBounds": [
+            572,
+            228.3125,
+            133.609375,
+            38
+          ],
+          "paintBounds": [
+            560,
+            216.3125,
+            157.609375,
+            62
+          ]
+        },
+        {
+          "runtime": "vue",
+          "width": 133.609375,
+          "height": 38,
+          "paintWidth": 157.609375,
+          "paintHeight": 62,
+          "quality": "self-optical",
+          "sourceRevision": 153,
+          "materialFrame": "231",
+          "cssomPaintWidth": 157.609,
+          "cssomPaintHeight": 62,
+          "frameId": "BC05398FA3858E5931190AB04759FA5A",
+          "hostBackendNodeId": 14,
+          "paintBackendNodeId": 100,
+          "hostBounds": [
+            84,
+            511.1875,
+            133.609375,
+            38
+          ],
+          "paintBounds": [
+            72,
+            499.1875,
+            157.609375,
+            62
+          ]
+        },
+        {
+          "runtime": "vue2",
+          "width": 133.609375,
+          "height": 38,
+          "paintWidth": 157.609375,
+          "paintHeight": 62,
+          "quality": "self-optical",
+          "sourceRevision": 153,
+          "materialFrame": "227",
+          "cssomPaintWidth": 157.609,
+          "cssomPaintHeight": 62,
+          "frameId": "BC05398FA3858E5931190AB04759FA5A",
+          "hostBackendNodeId": 16,
+          "paintBackendNodeId": 112,
+          "hostBounds": [
+            572,
+            511.1875,
+            133.609375,
+            38
+          ],
+          "paintBounds": [
+            560,
+            499.1875,
+            157.609375,
+            62
+          ]
+        }
+      ],
+      "dispose": {
+        "frames": 1338,
+        "metrics": {
+          "contexts": 0,
+          "consumers": 0,
+          "lost": false,
+          "pendingImages": 0,
+          "decodedImages": 0,
+          "imagePreparations": 998,
+          "peakPendingImages": 4
+        },
+        "decode": 1002,
+        "counts": [
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      "browser": "155.0.8059.39",
+      "video": {
+        "capturedFrames": 57,
+        "observedCaptureFps": 28.762701522023736,
+        "note": "Capture cadence is not UI frame-rate proof",
+        "encoded": false,
+        "error": "[libx264 @ 0x7748c14a80] height not divisible by 2 (1300x813)\n[vost#0:0/libx264 @ 0x7749060000] [enc:libx264 @ 0x77490241c0] Error while opening encoder - maybe incorrect parameters such as bit_rate, rate, width or height.\n[vf#0:0 @ 0x7748c68000] Error sending frames to consumers: Generic error in an external library\n[vf#0:0 @ 0x7748c68000] Task finished with error code: -542398533 (Generic error in an external library)\n[vf#0:0 @ 0x7748c68000] Terminating thread with return code -542398533 (Generic error in an external library)\n[vost#0:0/libx264 @ 0x7749060000] [enc:libx264 @ 0x77490241c0] Could not open encoder before EOF\n[vost#0:0/libx264 @ 0x7749060000] Task finished with error code: -22 (Invalid argument)\n[vost#0:0/libx264 @ 0x7749060000] Terminating thread with return code -22 (Invalid argument)\n[out#0/mp4 @ 0x7748c18180] Nothing was written into output file, because at least one of its streams received no packets.\n"
+      },
+      "ordinaryThemes": [
+        "light",
+        "dark"
+      ]
+    },
+    "packed": {
+      "resultSha256": "7491c563de15650c50f85cf8667c3ca7abda9e7e48cfbfcfeee4e162941044e5",
+      "flowRecords": 42,
+      "blurArms": 8,
+      "resizeRows": [
+        {
+          "runtime": "wc",
+          "width": 133.609375,
+          "height": 38,
+          "paintWidth": 157.609375,
+          "paintHeight": 62,
+          "quality": "self-optical",
+          "sourceRevision": 159,
+          "materialFrame": "224",
+          "cssomPaintWidth": 157.609,
+          "cssomPaintHeight": 62,
+          "frameId": "C3A6556FD7EDD7CBB3950A83FA03EC0D",
+          "hostBackendNodeId": 10,
+          "paintBackendNodeId": 73,
+          "hostBounds": [
+            84,
+            228.3125,
+            133.609375,
+            38
+          ],
+          "paintBounds": [
+            72,
+            216.3125,
+            157.609375,
+            62
+          ]
+        },
+        {
+          "runtime": "react",
+          "width": 133.609375,
+          "height": 38,
+          "paintWidth": 157.609375,
+          "paintHeight": 62,
+          "quality": "self-optical",
+          "sourceRevision": 158,
+          "materialFrame": "224",
+          "cssomPaintWidth": 157.609,
+          "cssomPaintHeight": 62,
+          "frameId": "C3A6556FD7EDD7CBB3950A83FA03EC0D",
+          "hostBackendNodeId": 12,
+          "paintBackendNodeId": 85,
+          "hostBounds": [
+            572,
+            228.3125,
+            133.609375,
+            38
+          ],
+          "paintBounds": [
+            560,
+            216.3125,
+            157.609375,
+            62
+          ]
+        },
+        {
+          "runtime": "vue",
+          "width": 133.609375,
+          "height": 38,
+          "paintWidth": 157.609375,
+          "paintHeight": 62,
+          "quality": "self-optical",
+          "sourceRevision": 158,
+          "materialFrame": "231",
+          "cssomPaintWidth": 157.609,
+          "cssomPaintHeight": 62,
+          "frameId": "C3A6556FD7EDD7CBB3950A83FA03EC0D",
+          "hostBackendNodeId": 14,
+          "paintBackendNodeId": 100,
+          "hostBounds": [
+            84,
+            511.1875,
+            133.609375,
+            38
+          ],
+          "paintBounds": [
+            72,
+            499.1875,
+            157.609375,
+            62
+          ]
+        },
+        {
+          "runtime": "vue2",
+          "width": 133.609375,
+          "height": 38,
+          "paintWidth": 157.609375,
+          "paintHeight": 62,
+          "quality": "self-optical",
+          "sourceRevision": 158,
+          "materialFrame": "232",
+          "cssomPaintWidth": 157.609,
+          "cssomPaintHeight": 62,
+          "frameId": "C3A6556FD7EDD7CBB3950A83FA03EC0D",
+          "hostBackendNodeId": 16,
+          "paintBackendNodeId": 112,
+          "hostBounds": [
+            572,
+            511.1875,
+            133.609375,
+            38
+          ],
+          "paintBounds": [
+            560,
+            499.1875,
+            157.609375,
+            62
+          ]
+        }
+      ],
+      "dispose": {
+        "frames": 1364,
+        "metrics": {
+          "contexts": 0,
+          "consumers": 0,
+          "lost": false,
+          "pendingImages": 0,
+          "decodedImages": 0,
+          "imagePreparations": 1008,
+          "peakPendingImages": 4
+        },
+        "decode": 1012,
+        "counts": [
+          6,
+          6,
+          6,
+          6
+        ]
+      },
+      "browser": "155.0.8059.39",
+      "video": {
+        "capturedFrames": 61,
+        "observedCaptureFps": 28.865553780105248,
+        "note": "Capture cadence is not UI frame-rate proof",
+        "encoded": false,
+        "error": "[libx264 @ 0x7ca902ca80] height not divisible by 2 (1300x813)\n[vost#0:0/libx264 @ 0x7ca9080000] [enc:libx264 @ 0x7ca90201c0] Error while opening encoder - maybe incorrect parameters such as bit_rate, rate, width or height.\n[vf#0:0 @ 0x7ca8c44000] Error sending frames to consumers: Generic error in an external library\n[vf#0:0 @ 0x7ca8c44000] Task finished with error code: -542398533 (Generic error in an external library)\n[vf#0:0 @ 0x7ca8c44000] Terminating thread with return code -542398533 (Generic error in an external library)\n[vost#0:0/libx264 @ 0x7ca9080000] [enc:libx264 @ 0x7ca90201c0] Could not open encoder before EOF\n[vost#0:0/libx264 @ 0x7ca9080000] Task finished with error code: -22 (Invalid argument)\n[vost#0:0/libx264 @ 0x7ca9080000] Terminating thread with return code -22 (Invalid argument)\n[out#0/mp4 @ 0x7ca9030180] Nothing was written into output file, because at least one of its streams received no packets.\n"
+      },
+      "ordinaryThemes": [
+        "light",
+        "dark"
+      ]
+    }
+  },
+  "native": {
+    "dialog": {
+      "passed": 8,
+      "failed": 0,
+      "pending": 0,
+      "reportSha256": "77771c72dd31a3d33541c5737a00d3a9f90e3b6ca58e65bf548bb849c04980eb",
+      "runnerClean": true,
+      "observationRows": 196,
+      "pngFiles": 120,
+      "browser": "155.0.8059.39"
+    },
+    "sidebar": {
+      "passed": 0,
+      "failed": 1,
+      "pending": 8,
+      "reportSha256": "499b00fe4be30be4e5c0f8b9eaceb2e3361baa4388e48a9146d2975ea98a88c9",
+      "runnerClean": true,
+      "failure": "Original immediate sidebar count 0 != 1 at homepage-dogfood.browser.test.ts:954, after logical-close poll and focus check; not an elapsed-1s return failure",
+      "pngFiles": 1
+    }
+  },
+  "sourceFiles": [
+    {
+      "path": "experiments/material-v2/build-browser.mjs",
+      "blob": "7222f226c6148c6a6cafdcc6739a7b020c8fec49",
+      "sha256": "9e6608a99000f90069c7050b6ae37f1ad195a1e49621b5aa56de3ac89c7a2f39"
+    },
+    {
+      "path": "experiments/material-v2/browser.test.mjs",
+      "blob": "d261dcc8cb6788092fec8e757a75b0344170d7a5",
+      "sha256": "381aa3acb06adbc6655931fe2d343442e96783804856c906e927da5204f440e0"
+    },
+    {
+      "path": "experiments/material-v2/continuous-browser.test.mjs",
+      "blob": "81f10ab4da23173445989928f26c89fd349a4f53",
+      "sha256": "6f1d01eb03b17c0e94978d2eb6ef1c4bd8af706f2b3992527ddfe78998581b19"
+    },
+    {
+      "path": "experiments/material-v2/resize-geometry.ts",
+      "blob": "594cab05acba8f77123447980052de34a8cde449",
+      "sha256": "56cea7820525d84ae8b859869777e33d5c9d8d5ac1096edc884da971f8a381cd"
+    },
+    {
+      "path": "experiments/material-v2/resize-geometry.test.ts",
+      "blob": "2ae853f093952a6b8338b80c3b14544b964349d9",
+      "sha256": "8f7e68e365e8a3216970c86ed119610eb3a7764c5a7b2515f2cbba4ba36eb2ac"
+    },
+    {
+      "path": "packages/prototypes/shadcn/src/dialog/content.proto.ts",
+      "blob": "e0e15fe211fec9368e406400a2d08a3f998aac79",
+      "sha256": "b3d79845b536f9123b0d31c7007d94c034c72392961911c0516b4b1fd817f63f"
+    },
+    {
+      "path": "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+      "blob": "f3a517c207b24560b3b67ff8852d2e7190f6c219",
+      "sha256": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e"
+    },
+    {
+      "path": "apps/www/src/content/docs/zh-cn/browser-harness.ts",
+      "blob": "26be3954ed358241bb46963a96f23f90bc4ee762",
+      "sha256": "3b425734cfb00602354bdc2b086e70a0434863f7cc3040415631be1627e0c9b6"
+    },
+    {
+      "path": "scripts/test/server-readiness.mjs",
+      "blob": "8e7f9374d4a0c85f9df0d029944898eb55325ee0",
+      "sha256": "4bbc332f34ebf8a9c24f0ccc01d53438dd7146e86118a932eacc63d819105fda"
+    },
+    {
+      "path": "scripts/test/dialog-run-integrity-reporter.mjs",
+      "blob": "3e595023f90efb5a078578c0c6ec59cbb3a001b5",
+      "sha256": "d26d77c9a57a8997394a21b70dee15cf7408c25e3d7bd7e22f48e5b1e6e4c6fa"
+    },
+    {
+      "path": "scripts/test/check-dialog-baseline-evidence.mjs",
+      "blob": "5c78cdc6972fdebfcaa3e721931944f64abbbe4f",
+      "sha256": "d8bd261c9d042381a861a463dec0b8b40b8d2a90520e4702d2b122d28986b0fd"
+    },
+    {
+      "path": "scripts/test/check-dialog-baseline-evidence.test.mjs",
+      "blob": "c0acf0567a3085a409dc22b05cbcc6805ab421ba",
+      "sha256": "983608a4be81f2f9004464196abe90f603fc277aa8fbbff06a3861d93ac73d2f"
+    },
+    {
+      "path": "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+      "blob": "ae5252e8ae64f76745c750be4e6982bbc7db1611",
+      "sha256": "6c95a98c65186112fe382c9e5fdadd2f8462fd46b4fe44760e75ab480dbf0cb7"
+    },
+    {
+      "path": "apps/www/src/components/site-contents-panel.ts",
+      "blob": "b2651fecf5712727d29a082e25c90dea26d46cf5",
+      "sha256": "e8e26a939111f7f791f16ad00aaf7df5f86cdf94206cb8d5bf8be996292fb96b"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "blob": "2e61d039437eb82af7068653be86e553f2304e0e",
+      "sha256": "3ac437fda5666f744c02587d9c90b47a927a6e2521973f6a18b47cc3c7cbe422"
+    },
+    {
+      "path": "package.json",
+      "blob": "b778dc3d5ae4066369d593b2822555304dc7abfd",
+      "sha256": "3e985b82d75d079b3b8233451912ec72a01327e52a675d04d664438558419fb2"
+    }
+  ],
+  "remaining": [
+    "Independent current closure calibration; historical accepted table unchanged",
+    "Sidebar immediate logical-close first read versus public leave/presence barrier semantic decision",
+    "Hosted full CI and broader install/optical/performance/GPUI acceptance remain outside this local pass"
+  ],
+  "limitations": [
+    "Local Node24.21/Chrome155/macOS arm64; not hosted CI",
+    "Packed uses emitted public packages plus explicit private Liquid source, not installed public Liquid package",
+    "Screencast JPEGs retained; encoded:false due odd-height 1300x813, two zero-byte MP4 placeholders, no playable video/performance claim",
+    "No new fixed-baseline run today; prior matched local aab pair remains dated Nov5",
+    "Five selected main product/Dialog/sidebar PNGs viewed; remaining PNGs retained/hash verified, not all visually reviewed"
+  ]
+}
