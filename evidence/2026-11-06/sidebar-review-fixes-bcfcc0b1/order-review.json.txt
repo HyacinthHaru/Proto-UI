@@ -1,0 +1,258 @@
+{
+  "reviewedAt": "2026-11-06T07:57:03.771015+00:00",
+  "mode": "human-assisted/current-user",
+  "assessment": "unassessed/advisory",
+  "disposition": "partial/ABSTAIN",
+  "canonicalReviewInputDigest": null,
+  "scope": "Bounded incremental review of PR1299 handback-order candidate and two completed existing browser executions.",
+  "externalThread": {
+    "id": "PRRT_kwDOMhQZjc60araw",
+    "cachedSnapshot": {
+      "path": "final-live-1299.json",
+      "bytes": 199048,
+      "sha256": "cdb29848bb81671a325aea1511d01d8ce299b3d560ce9315ac4c4de8ef025fc2"
+    },
+    "technicalDisposition": "The candidate directly checks the reported mutation-order regression, including two synchronous operations delivered in one notification turn. Platform thread state is a separate action."
+  },
+  "base": "e8ae5f4bc6e744196e48ed5bf0b740246578dc93",
+  "baseTree": "8ebea504cd7ad61d547704df0e60e097db6de42c",
+  "baseTest": {
+    "path": "sidebar-position-candidate/executed-test.ts",
+    "bytes": 98215,
+    "sha256": "67345619b7684536a3b506ba4ab8394b64b3f9b282ec7d24142bfa62d3bcfdba"
+  },
+  "workingCandidate": {
+    "path": "sidebar-order-candidate/executed-test.ts",
+    "bytes": 101608,
+    "sha256": "8a5db042fcaee8550630c755fdc72583c8bc5645cc5418eccc416523b5453e8e"
+  },
+  "pureInsertionHunks": [
+    {
+      "oldAfterLine": 589,
+      "newStart": 590,
+      "newEnd": 597,
+      "addedLines": 8
+    },
+    {
+      "oldAfterLine": 617,
+      "newStart": 626,
+      "newEnd": 630,
+      "addedLines": 5
+    },
+    {
+      "oldAfterLine": 950,
+      "newStart": 964,
+      "newEnd": 1005,
+      "addedLines": 42
+    },
+    {
+      "oldAfterLine": 975,
+      "newStart": 1031,
+      "newEnd": 1037,
+      "addedLines": 7
+    },
+    {
+      "oldAfterLine": 994,
+      "newStart": 1057,
+      "newEnd": 1061,
+      "addedLines": 5
+    },
+    {
+      "oldAfterLine": 1039,
+      "newStart": 1107,
+      "newEnd": 1114,
+      "addedLines": 8
+    }
+  ],
+  "checks": {
+    "allOriginalInputAssertionsAndBudgetsPreservedByInverse": true,
+    "same180sCase": true,
+    "observerAndDeadlineSequence": true,
+    "singleQueueAndRecordProvenance": true,
+    "actualCatchRethrowsOriginal": true,
+    "sidebar-order-candidate:runnerAndCounts": true,
+    "marker-order-control:runnerAndCounts": true,
+    "24DistinctExpectedCloseCycles": true,
+    "positive24MutationSequences": true,
+    "positiveEpoch": true,
+    "onlyReversedTwoProductionDOMOperations": true,
+    "controlTestSourceAndRestore": true,
+    "negativeArrayAndOldEndpoints": true,
+    "existingTypeSummary": true,
+    "staleKindRecordedSeparately": true
+  },
+  "verified": 15,
+  "checkCount": 15,
+  "openSourceFindings": 0,
+  "findings": [],
+  "sourceAssessment": [
+    "One observer registers the original home for direct child-list changes and the original tree for changes to the single lease attribute with its old value. Both registrations append to the same MutationObserver queue. collect visits the delivered records in their given order. Successive callback deliveries append to one array. The final synchronous takeRecords drains the undelivered tail before disconnect and removal of the private page hook.",
+    "The home event is derived from the MutationRecord target, membership of the saved tree in addedNodes and record.nextSibling identity. The attribute event is derived from the exact observed target/filter and record.oldValue. The two event positions are not reconstructed from a later DOM read.",
+    "Within the observed interval the initial marker is present, the existing same-original-tree poll sees it absent before drain, and the event assertion permits exactly one matching attribute record with the original present value. Therefore the accepted trace contains a single present-to-absent removal during that interval. Additional set/remove operations would add records and fail the two-entry equality.",
+    "The original home count, marker-null, exact-parent and exact-next-sibling predicates still run. The new order equality is immediate. No retry/wait-for-order was added. Initial observer installation occurs before Escape. Draining, assertions and the final monotonic check occur inside the same1000ms acceptance window after Escape returns. The original180s case remains.",
+    "Positive runs explicitly disconnect their observer and delete their hook. A failure after drain includes that cycle in saved evidence and rethrows the caught assertion. An earlier failure before drain writes the completed prefix and the existing context-close finally releases outstanding page resources. There is no universal promise that every pre-drain failure serializes that active partial queue.",
+    "The current production restore uses single-node insertBefore, so the recorded following sibling is the relevant insertion anchor. MutationRecord.nextSibling describes the boundary of an added-node batch in general. The review is scoped to this consumer handback and the actual two-operation reversal.",
+    "This mechanism reports ordered DOM mutations for the selected tree, without physical timestamps or a fresh observation of core renderer detach. Earlier, separate held-leave/public-fact evidence remains scoped to normal release sequencing."
+  ],
+  "runs": [
+    {
+      "directory": "sidebar-order-candidate",
+      "head": "e8ae5f4bc6e744196e48ed5bf0b740246578dc93",
+      "startedAt": "2026-11-06T07:41:57.007220+00:00",
+      "finishedAt": "2026-11-06T07:42:47.246046+00:00",
+      "receipt": {
+        "path": "sidebar-order-candidate/receipt.json",
+        "bytes": 1193,
+        "sha256": "00dd63d820634f53279f2687fe2374d42ffc22770b2352292f8a4ce3e97a881a"
+      },
+      "reportedProcessExit": 0,
+      "rawVitest": {
+        "path": "sidebar-order-candidate/vitest.json",
+        "bytes": 3554,
+        "sha256": "de93b1cd4738a1d583adb12942308e69c97641f60984cc2f36a2995f0c8f300f"
+      },
+      "runnerIntegrity": {
+        "path": "sidebar-order-candidate/runner-integrity.json",
+        "bytes": 597,
+        "sha256": "a0558472f43599130412082fc6bde5ecfea2a1ddc91aac31ba8a7335d4c3ccf9"
+      },
+      "runnerReportSHA256": "de93b1cd4738a1d583adb12942308e69c97641f60984cc2f36a2995f0c8f300f",
+      "counts": {
+        "skipped": 8,
+        "passed": 1
+      },
+      "failure": []
+    },
+    {
+      "directory": "marker-order-control",
+      "head": "e8ae5f4bc6e744196e48ed5bf0b740246578dc93",
+      "startedAt": "2026-11-06T07:49:15.478819+00:00",
+      "finishedAt": "2026-11-06T07:49:45.620051+00:00",
+      "receipt": {
+        "path": "marker-order-control/receipt.json",
+        "bytes": 1550,
+        "sha256": "f4cebab6fecd3c399e42b9b36d61753874904b5334c08ef46c51dd416ee43e7f"
+      },
+      "reportedProcessExit": 1,
+      "rawVitest": {
+        "path": "marker-order-control/vitest.json",
+        "bytes": 5418,
+        "sha256": "985be5885651be20118d5f07c01a5562f6f77e4c14b749a6c3cba5ee60a322db"
+      },
+      "runnerIntegrity": {
+        "path": "marker-order-control/runner-integrity.json",
+        "bytes": 597,
+        "sha256": "c66a8b0473ded10450e3fc6f229a62b1bd20be6da11daa4128d11515bea8bbfb"
+      },
+      "runnerReportSHA256": "985be5885651be20118d5f07c01a5562f6f77e4c14b749a6c3cba5ee60a322db",
+      "counts": {
+        "skipped": 8,
+        "failed": 1
+      },
+      "failure": [
+        [
+          "AssertionError: expected [ …(2) ] to deeply equal [ …(2) ]",
+          "    at <SOURCE_ROOT>/apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts:1058:45"
+        ]
+      ]
+    }
+  ],
+  "positive": {
+    "sourceObservationFile": {
+      "path": "sidebar-order-candidate/contents-command/normal-close-mutations.json",
+      "bytes": 9859,
+      "sha256": "769fb1e5ad2ee6a51349ddc9665b8d581922d4eb73794c47646ecdb4818d39f6"
+    },
+    "positiveCount": 24,
+    "contexts": 8,
+    "actionsPerContext": 3,
+    "sourceHead": "e8ae5f4bc6e744196e48ed5bf0b740246578dc93",
+    "sourceDirty": true,
+    "tagOrder": "home-inserted(siblingMatches=true), marker-change(oldValue=initialMarker)",
+    "initialMarkerValues": {
+      "": 24
+    }
+  },
+  "negative": {
+    "observationFile": {
+      "path": "marker-order-control/contents-command/normal-close-mutations.json",
+      "bytes": 1461,
+      "sha256": "e429b8a3e844ae28727edfa00662f4c9ec783668e555d6d4f97aeba45d2d89f6"
+    },
+    "factsFile": {
+      "path": "marker-order-control/contents-command/order-control-final-facts.json",
+      "bytes": 1379,
+      "sha256": "460655367889ffefec7f8575e2593fadcb0af83a27ffdbbf0b5865b6d67d30a1"
+    },
+    "executedController": {
+      "path": "marker-order-control/site-contents-panel.ts.txt",
+      "bytes": 16526,
+      "sha256": "a8e0d88321ddfd43edfcb400fe423d21412ded12fc87fbbaf2f702c51ab40065"
+    },
+    "executedPrivateCaller": {
+      "path": "marker-order-control/homepage-dogfood.browser.test.ts.txt",
+      "bytes": 102785,
+      "sha256": "6323aaaee76684e96bda6db12f50a5c08fe008482d684834516a4d5700ab59c8"
+    },
+    "mutatedCompositionHead": "e8ae5f4bc6e744196e48ed5bf0b740246578dc93",
+    "receiptOriginalAndExecutedBindings": {
+      "apps/www/src/components/site-contents-panel.ts": {
+        "originalSha256": "e8e26a939111f7f791f16ad00aaf7df5f86cdf94206cb8d5bf8be996292fb96b",
+        "executedSha256": "a8e0d88321ddfd43edfcb400fe423d21412ded12fc87fbbaf2f702c51ab40065"
+      },
+      "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts": {
+        "originalSha256": "8a5db042fcaee8550630c755fdc72583c8bc5645cc5418eccc416523b5453e8e",
+        "executedSha256": "6323aaaee76684e96bda6db12f50a5c08fe008482d684834516a4d5700ab59c8"
+      }
+    },
+    "observedFirstFailure": {
+      "family": "shadcn",
+      "runtime": "wc",
+      "action": "click",
+      "observation": {
+        "initialMarker": "",
+        "events": [
+          {
+            "kind": "marker-change",
+            "oldValue": ""
+          },
+          {
+            "kind": "home-inserted",
+            "siblingMatches": true
+          }
+        ]
+      }
+    },
+    "originalError": "AssertionError: expected [ …(2) ] to deeply equal [ …(2) ]",
+    "priorEndpointFacts": {
+      "originalConnected": true,
+      "originalIsCurrent": true,
+      "homeCount": 1,
+      "markerNull": true,
+      "parentMatches": true,
+      "siblingMatches": true
+    },
+    "restoredExactCandidate": true,
+    "meaning": "The private same-turn synchronous reversal retained all prior final state/identity/position facts. The new matcher actually failed on reversed records. This result is a diagnostic control, separate from the positive candidate."
+  },
+  "metadataClarification": {
+    "field": "sidebar-order-candidate/receipt.json:candidateKind",
+    "historicalFreeText": "precommit base1f10 plus externalP2 mutationrecord order observation, oldasserts/deadline unchanged; dirty=true is retained in browser source receipts",
+    "correctBinding": "Receipt.head, browser source.sha/expectedSha, archived execution test bytes and runner/readback select e8ae plus the8a5 candidate. The base1f10 text is a stale description and is retained as received."
+  },
+  "types": {
+    "log": {
+      "path": "order-types.log",
+      "bytes": 8959,
+      "sha256": "373057e30a161ff94d1ed834246ddf1244ca22a952e8c50b597c56861e725cfc"
+    },
+    "observedSummary": "1156 files,0 errors,0 warnings,24 hints",
+    "exitProvenance": "Root reports successful completion; the reviewer read the terminal log summary."
+  },
+  "limits": [
+    "Positive evidence is one selected working-candidate test covering24 close cycles, with eight other cases filtered. A later clean commit and hosted results have separate provenance.",
+    "The test observes DOM record order within its armed interval. Operations outside it, all possible multi-node fragment manipulations, and terminal lifecycle/renderer disposal require separate criteria.",
+    "Source reading stopped before the private mutation. Later checks used archived private sources, observations, runner receipts and restoration receipt. Reviewer performed no browser/test or product/GitHub write.",
+    "The earlier23-check source report, published-packet review and earlier position review were not edited."
+  ]
+}

@@ -1,0 +1,164 @@
+{
+  "reviewedAt": "2026-11-06T07:24:03.873231+00:00",
+  "mode": "human-assisted/current-user",
+  "assessment": "unassessed/advisory",
+  "disposition": "partial/ABSTAIN",
+  "canonicalReviewInputDigest": null,
+  "scope": "Bounded local source review of the candidate for PR1299 thread PRRT_kwDOMhQZjc60aWj1 and its completed positive test evidence.",
+  "baseCommit": "1f10f0c9bc76d6d305c43ccbe04c9065f982bf1d",
+  "baseTree": "d7a34d5f3e33bb2b5a59209462fe4349ffabc0bc",
+  "changedPath": "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+  "baseSource": {
+    "path": "sidebar-final-1f10f0c9/executed-test.ts",
+    "bytes": 97388,
+    "sha256": "6456b32d61ebe3e3b96f9c02ff3bd1245e2b3248ab63d319cdc0c7aa48ecfb3d"
+  },
+  "candidateSource": {
+    "path": "sidebar-position-candidate/executed-test.ts",
+    "bytes": 98215,
+    "sha256": "67345619b7684536a3b506ba4ab8394b64b3f9b282ec7d24142bfa62d3bcfdba"
+  },
+  "workingDiffHunks": [
+    {
+      "oldLineBeforeInsertion": 670,
+      "newStartLine": 671,
+      "newEndLine": 672,
+      "insertedLines": 2
+    },
+    {
+      "oldLineBeforeInsertion": 977,
+      "newStartLine": 980,
+      "newEndLine": 994,
+      "insertedLines": 15
+    }
+  ],
+  "priorReviewFiles": [
+    {
+      "path": "review/report.json",
+      "bytes": 17973,
+      "sha256": "544419a3ffd2c50a498107715ff375f2ec77938624338d2fa4fc11c1a4a8120c"
+    },
+    {
+      "path": "byte-audit.json",
+      "bytes": 14747,
+      "sha256": "344413ae13c64a3e3cbb909ea4f38d5015726a6b6570efb8b649d526e211638f"
+    }
+  ],
+  "sourceOpenFindings": 0,
+  "priorExternalFinding": {
+    "thread": "PRRT_kwDOMhQZjc60aWj1",
+    "reference": "https://github.com/Proto-UI/Proto-UI/pull/1299",
+    "cachedReviewSnapshot": {
+      "path": "final-live-1299.json",
+      "bytes": 188543,
+      "sha256": "c70a66a29f8ee95f0899c19b044781f68273c4876ffecee1305dea9fbfcefe7b"
+    },
+    "observedPlatformState": "unresolved in the saved snapshot",
+    "candidateDisposition": "Both exact placement dimensions called out by the review are covered in the candidate assertion. Maintainers own the thread disposition."
+  },
+  "sourceConclusions": [
+    "The existing initial synchronous page.evaluate now records parentNode and nextSibling references beside the original tree. Their values are actual Nodes (including text/comment nodes) or null for an end position.",
+    "Every normal close still observes the original connected tree, compares it with the first current nav.docs-sidebar, waits for marker withdrawal within the residual budget, checks the original home count1 and marker-null, and then makes one immediate position evaluation.",
+    "That evaluation reads the retained original tree and requires BOTH strict reference equalities on its current parentNode and current nextSibling. A different parent fails even with the saved next sibling. A different following sibling fails even with the saved parent. The checks establish the requested insertion anchor, without using a numeric child index or waiting for the position to become acceptable.",
+    "The final performance.now() comparison follows this additional RPC. Successful observations share the same1000ms deadline starting at Escape promise return. The original180s case budget and all original inputs and predicates remain part of the exact byte-subsequence proof.",
+    "One extra browser RPC is required for the position comparison. Each close observes its original assertions in sequence, so the result is an endpoint check rather than continuous mutation tracking. The root/sibling comparison does not establish terminal lifecycle behavior."
+  ],
+  "checks": {
+    "twoPureInsertionHunks": true,
+    "exactly17LinesAdded": true,
+    "inverseRetainsWhole1f10Test": true,
+    "originalReferenceCaptureBeforeRuntimeLoop": true,
+    "allChecksInOriginalBudgetAndPositionFollowsReturn": true,
+    "singleUnpolledPositionEvaluation": true,
+    "originalCaseBudget180s": true,
+    "actualPositive": true,
+    "runnerFinishedCleanly": true,
+    "earlierReportsDigests": true
+  },
+  "verified": 10,
+  "checkCount": 10,
+  "positiveRun": {
+    "kind": "precommit base1f10 plus externalP2 originalparent/sibling observation, oldasserts/deadline unchanged; dirty=true is retained in browser source receipts",
+    "receipt": {
+      "path": "sidebar-position-candidate/receipt.json",
+      "bytes": 1198,
+      "sha256": "82e8f8afdd322c4aaab13744764d43934c3d3b79a26fdc4656a2ab8af1ca78b7"
+    },
+    "vitest": {
+      "path": "sidebar-position-candidate/vitest.json",
+      "bytes": 3554,
+      "sha256": "e9ddd5a8f95a43511f72c31ef93fe63af4c94777c09b7b118feb355a2de154f5"
+    },
+    "runnerIntegrity": {
+      "path": "sidebar-position-candidate/runner-integrity.json",
+      "bytes": 597,
+      "sha256": "b5a71f7641a8dd923e60268a39e6ad3fe1e1efb697502670a31590bae8d43315"
+    },
+    "startedAt": "2026-11-06T07:16:57.656930+00:00",
+    "finishedAt": "2026-11-06T07:17:47.541257+00:00",
+    "caseStatuses": {
+      "skipped": 8,
+      "passed": 1
+    },
+    "exitCode": 0,
+    "completedFamilyRuntimeContexts": [
+      [
+        "brutalist",
+        "react"
+      ],
+      [
+        "brutalist",
+        "vue"
+      ],
+      [
+        "brutalist",
+        "vue2"
+      ],
+      [
+        "brutalist",
+        "wc"
+      ],
+      [
+        "shadcn",
+        "react"
+      ],
+      [
+        "shadcn",
+        "vue"
+      ],
+      [
+        "shadcn",
+        "vue2"
+      ],
+      [
+        "shadcn",
+        "wc"
+      ]
+    ],
+    "originalActionsPerContext": [
+      "click",
+      "Enter",
+      "Space"
+    ],
+    "closeCyclesImpliedByOriginalLoops": 24,
+    "note": "Executed on1f10 plus the working candidate bytes above. Separate private negative controls and future committed-source results retain their own epochs."
+  },
+  "expectedDiscriminatingControls": [
+    {
+      "arm": "wrong parent with original immediate next sibling",
+      "olderEndpoints": "original connected/current, marker withdrawn, home count1",
+      "expectedNewPredicate": "correctParent=false, correctFollowingSibling=true"
+    },
+    {
+      "arm": "correct parent with different following sibling",
+      "olderEndpoints": "original connected/current, marker withdrawn, home count1",
+      "expectedNewPredicate": "correctParent=true, correctFollowingSibling=false"
+    }
+  ],
+  "negativeControlExecutionStatus": "Pending at closure of source reading. No execution result is inferred.",
+  "limits": [
+    "The current positive evidence is one selected native case spanning eight family/runtime contexts; eight other cases were filtered.",
+    "The saved external thread remains platform-owned. This local review does not perform a reply, resolve the thread or grant GitHub approval.",
+    "Source review ended before the primary operator performed any planned private position overlays. Product/source files were not changed by this reviewer."
+  ]
+}

@@ -1,0 +1,142 @@
+{
+  "subject": "PR #1299 third P2 PRRT_kwDOMhQZjc60bHxM, held-leave same-view reopen in the website consumer",
+  "reviewMode": "human-assisted/current-user, finite read-only source and existing-result review",
+  "disposition": "partial / ABSTAIN",
+  "formalApproval": false,
+  "openFindings": 0,
+  "findings": [],
+  "source": {
+    "commit": "bcfcc0b1841f62691509069d51b8a737f1c09dfa",
+    "tree": "d4e379f0fcb2afb8a8a48ac2c0dcfaae589833bd",
+    "parent": "94a66e10d4f95dffe2425354825dc906383de7b9",
+    "onlyChangedPath": "apps/www/src/components/site-contents-panel.test.ts",
+    "addedLines": 35,
+    "removedLines": 0,
+    "baseTestSHA256": "d9528712c2bfc2b6fba260483809ade518a2c20e73fcf987b2e1e46680fc158c",
+    "headTestSHA256": "eb1ec4af039eb321c07170537eda95091e938e91b27ece1f475a9923ae3e0cb2",
+    "unchangedHeadInputsSHA256": {
+      "apps/www/src/components/site-contents-panel.ts": "e8e26a939111f7f791f16ad00aaf7df5f86cdf94206cb8d5bf8be996292fb96b",
+      "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts": "8a5db042fcaee8550630c755fdc72583c8bc5645cc5418eccc416523b5453e8e",
+      "internal/contracts/website/contents-navigation.v0.md": "707e14ffddb69d8c5246f0d1179b3091623e7ed5103d3faa2023eda3433d96f9",
+      "apps/www/src/components/site-header-disclosure.ts": "f1fdabecbcea76a920a564f43d86ebc5a5077011226a278410f2e954a0fea60a"
+    },
+    "reconstruction": "Removing the single new test block and separator exactly recovers the parent test bytes. The original ten tests, their fixture and browser assertions/deadlines retain identical bytes."
+  },
+  "authority": "The draft website Contents navigation contract selects retention through the normal public leave and specifies same-view reopen interrupts the pending close while retaining its lease.",
+  "sourceReview": {
+    "consumer": "The new test invokes the existing navigation.toggle/close API and materializes one generation. The real controller in openPublicView accepts the same active lease, settles the old close barrier, submits open:true and reuses the existing slot. The normal close path waits for public open=false and isPresent=false before restoring the native tree.",
+    "host": "The existing happy-dom host uses open/isPresent handles. Held close sets open=false while isPresent stays true. Reopening the same panel sets open=true. Its per-instance finish() immediately returns while open; otherwise it publishes isPresent=false and removes the synthetic panel. Calling that same completion function in both phases introduces no impossible public state.",
+    "discriminators": "After the stale finish attempt, the command is expanded, the original tree is connected and is the single navigation at its captured slot, the marker remains present, and the sole order entry is the first logical close. A subsequent deliberate close and finish returns it to the original home before the original main sibling, with the marker absent.",
+    "scope": "Assertions sample observable states at the specified checkpoints. They do not directly observe the internal close-barrier Promise or prove continuous absence of every transient move, native Transition timing/cancellation, focus or terminal teardown."
+  },
+  "unit": {
+    "base": "94a66e10d4f95dffe2425354825dc906383de7b9",
+    "testSHA256": "eb1ec4af039eb321c07170537eda95091e938e91b27ece1f475a9923ae3e0cb2",
+    "originalControllerSHA256": "e8e26a939111f7f791f16ad00aaf7df5f86cdf94206cb8d5bf8be996292fb96b",
+    "sameCandidateAsCommit": true,
+    "positive": {
+      "exit": 0,
+      "passFailFiltered": [
+        11,
+        0,
+        0
+      ]
+    },
+    "counterfactual": {
+      "scope": "Suppress the public open:true update solely when the same lease is already active. Actual host logic otherwise untouched.",
+      "executedControllerSHA256": "bfd6e7af2bcc12990f8c37a02d93b070074b92f2e46b7b38125999b0ea140059",
+      "restored": true,
+      "exit": 1,
+      "passFailFiltered": [
+        10,
+        1,
+        0
+      ],
+      "failure": "Only the added case failed at line 355 tree.isConnected, expected true and received false. The other ten reported test names all passed."
+    }
+  },
+  "typeCheck": {
+    "epoch": "precommit94+candidate, samebytes in bcfcc0b1; not a postcommit rerun",
+    "exit": 0,
+    "files": 1156,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 24
+  },
+  "separateNativeEvidence": {
+    "head": "bcfcc0b1841f62691509069d51b8a737f1c09dfa",
+    "sourceDirty": false,
+    "passFailFiltered": [
+      1,
+      0,
+      8
+    ],
+    "ordinaryCloseCycles": 24,
+    "integrityMatchesRawVitest": true,
+    "cleanProcessExit": true,
+    "scope": "Exact-head normal Contents browser journey. These 24 normal-close observations are not a native held-leave reopen experiment."
+  },
+  "inputs": {
+    "reopen-source-binding.json": {
+      "sha256": "9e32fa33e6987a6d119b11579cb372e46c0c446edd00ff28b82be0c2f4b7fad6",
+      "bytes": 626
+    },
+    "reopen-final-binding.json": {
+      "sha256": "d2c13af83ea41cd05dbf93aa515bb767f86511c805d681164ef932c73253d312",
+      "bytes": 722
+    },
+    "reopen-unit-executed-test.ts": {
+      "sha256": "eb1ec4af039eb321c07170537eda95091e938e91b27ece1f475a9923ae3e0cb2",
+      "bytes": 17718
+    },
+    "reopen-unit-vitest.json": {
+      "sha256": "6a9d3ebc6fbac31f413ef9801d7d213437813ab7d8664973544c83f19e14580e",
+      "bytes": 5494
+    },
+    "reopen-unit-receipt.json": {
+      "sha256": "3e806c8188ada55de8f2e3838eacdda2eb020eb655d53a804fa5314c505deaa8",
+      "bytes": 495
+    },
+    "reopen-control/executed-controller.ts": {
+      "sha256": "bfd6e7af2bcc12990f8c37a02d93b070074b92f2e46b7b38125999b0ea140059",
+      "bytes": 16591
+    },
+    "reopen-control/executed-test.ts": {
+      "sha256": "eb1ec4af039eb321c07170537eda95091e938e91b27ece1f475a9923ae3e0cb2",
+      "bytes": 17718
+    },
+    "reopen-control/vitest.json": {
+      "sha256": "a1f54f1110929bbb500648e3457a793289be032c3e99da94ab3e7321a5644ba1",
+      "bytes": 7198
+    },
+    "reopen-control/receipt.json": {
+      "sha256": "4e5d65163b5bb7ea8288e88fad69baebd9cfa473d93ab2329a6b51a56323c48d",
+      "bytes": 975
+    },
+    "reopen-types.log": {
+      "sha256": "2c2dd2ea7e0f4d93c0d45766c5444eed14249c11e7057e681ba6419d1df6467b",
+      "bytes": 8959
+    },
+    "reopen-types-receipt.json": {
+      "sha256": "0863f9cfe1c84e33b24b69645bad8dcc91469d3cdaa06c019c86c68e5e076934",
+      "bytes": 408
+    },
+    "sidebar-final-bcfcc0b1/receipt.json": {
+      "sha256": "7254257d507c98a7ab98c93d7317b99ffa5f925078c8eefad90ad2e8b0ffdb88",
+      "bytes": 1020
+    },
+    "sidebar-final-bcfcc0b1/vitest.json": {
+      "sha256": "95d8a61aaa9a9791273fdf177f0ff65e645cb0678c71722bdc9cb1256a31fbbe",
+      "bytes": 3554
+    },
+    "sidebar-final-bcfcc0b1/runner-integrity.json": {
+      "sha256": "1d74fdbbbb0f9a578e7d5b7a8496c507552c2e8dc6de57c935fec5444130c8a3",
+      "bytes": 597
+    },
+    "sidebar-final-bcfcc0b1/contents-command/normal-close-mutations.json": {
+      "sha256": "412e2ef878a08408964b85207fa91b13bcc343689f12b560c38aa4cdac3b91b6",
+      "bytes": 9860
+    }
+  },
+  "reviewerActions": "Local Git object/source reads and data/hash comparisons, followed by writing this private report. No tests, browser, source edits, GitHub requests or repository mutations."
+}

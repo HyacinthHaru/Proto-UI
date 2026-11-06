@@ -1,0 +1,82 @@
+{
+  "sourceHead": "bcfcc0b1841f62691509069d51b8a737f1c09dfa",
+  "files": [
+    {
+      "path": "README.md",
+      "bytes": 7030,
+      "sha256": "2baaf0c722f3600a3fabf6f603a36dd94fbccc4f02356954e9e51f7d6ec10815"
+    },
+    {
+      "path": "contents-final-brutalist-vue2-focus.png",
+      "bytes": 44554,
+      "sha256": "1936dd7dda1492ce840675ff04f1723ff22cb0104e27dbfa7c6748c79ac4ff62"
+    },
+    {
+      "path": "contents-final-shadcn-wc-open.png",
+      "bytes": 25666,
+      "sha256": "448bcc961cd1871e4ec8829568ba0d3c6883facfc44c6891dd04119c7ba7b23b"
+    },
+    {
+      "path": "dialog-final-shadcn-wc-390.png",
+      "bytes": 71954,
+      "sha256": "ef055b7a33aecb8e504d9c73e51c4262d5f6ece4d30ad71cb4efde89708208ba"
+    },
+    {
+      "path": "final-close-mutations.json.txt",
+      "bytes": 9860,
+      "sha256": "412e2ef878a08408964b85207fa91b13bcc343689f12b560c38aa4cdac3b91b6"
+    },
+    {
+      "path": "final-contents-result.json.txt",
+      "bytes": 3516,
+      "sha256": "7824169aaf934773bbea088d82f14c510fc800e1768d0ae8dcf34a5ea4bee4a3"
+    },
+    {
+      "path": "final-dialog-observations.json.txt",
+      "bytes": 1072513,
+      "sha256": "0242df52b26f60f4f34c16b5150934c9ef5a12a104496d6135e7f962c0c3acb1"
+    },
+    {
+      "path": "final-source-binding.json.txt",
+      "bytes": 722,
+      "sha256": "d2c13af83ea41cd05dbf93aa515bb767f86511c805d681164ef932c73253d312"
+    },
+    {
+      "path": "final-validation.json.txt",
+      "bytes": 3518,
+      "sha256": "070ae82a9a6b12fcaa560d29ef8554166a8ccfddb6eb8a229c29b27585071a91"
+    },
+    {
+      "path": "order-review.json.txt",
+      "bytes": 12142,
+      "sha256": "7355147509d6fa88deda0926aa3e9308f7ac98395d3f356183dd74e14e3a2af9"
+    },
+    {
+      "path": "position-review.json.txt",
+      "bytes": 6889,
+      "sha256": "35164f92ab8e02ae47d725d013ddec5b9fa341f1f1741b57c849c3d32c1d1022"
+    },
+    {
+      "path": "raw-public-map.json",
+      "bytes": 227477,
+      "sha256": "2ac63525d6e3a4095d4064a0e2f41be24b3fbecf30c35d2bdf3fe48e6ecf3154"
+    },
+    {
+      "path": "reopen-review.json.txt",
+      "bytes": 7253,
+      "sha256": "cf7302dc228e867314049d083dc2e26634be69c49d646203a3d7dafb2979b93b"
+    },
+    {
+      "path": "review-fixes-final-controls.tar.gz",
+      "bytes": 76593,
+      "sha256": "79369eeec042b4202f8f7818520535ffb8a9302f24bc3d761f6029bbbbebaec0"
+    },
+    {
+      "path": "review-fixes-final-native.tar.gz",
+      "bytes": 7867686,
+      "sha256": "c4b21d84ad4f36f590e58feb6c83be98d502a8b7dfdb9062af5150045162ab2a"
+    }
+  ],
+  "rawPublicMap": "raw-public-map.json",
+  "appendOnly": true
+}

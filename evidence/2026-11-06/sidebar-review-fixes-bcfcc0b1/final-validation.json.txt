@@ -1,0 +1,89 @@
+{
+  "head": "bcfcc0b1841f62691509069d51b8a737f1c09dfa",
+  "tree": "d4e379f0fcb2afb8a8a48ac2c0dcfaae589833bd",
+  "runs": [
+    {
+      "directory": "sidebar-final-bcfcc0b1",
+      "passed": 1,
+      "failed": 0,
+      "filtered": 8,
+      "png": 16,
+      "runnerErrors": 0,
+      "unhandledErrors": 0,
+      "cleanup": true,
+      "reportSha256": "95d8a61aaa9a9791273fdf177f0ff65e645cb0678c71722bdc9cb1256a31fbbe"
+    },
+    {
+      "directory": "dialog-final-bcfcc0b1",
+      "passed": 8,
+      "failed": 0,
+      "filtered": 0,
+      "png": 120,
+      "runnerErrors": 0,
+      "unhandledErrors": 0,
+      "cleanup": true,
+      "reportSha256": "8e706ac38405a22a8775ed8bd99d8cff1bc075342050d7103b8ac0e08bfc2d96"
+    }
+  ],
+  "mutationRows": 24,
+  "sourceHost": {
+    "passed": 11,
+    "failed": 0,
+    "negative": {
+      "originalPassed": 10,
+      "newFailed": 1
+    },
+    "native": false
+  },
+  "types": {
+    "command": [
+      "corepack",
+      "pnpm@10.32.1",
+      "check:types"
+    ],
+    "exitCode": 0,
+    "files": 1156,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 24,
+    "testSha256": "eb1ec4af039eb321c07170537eda95091e938e91b27ece1f475a9923ae3e0cb2",
+    "epoch": "precommit94+candidate, samebytes in bcfcc0b1; not a postcommit rerun",
+    "logSha256": "2c2dd2ea7e0f4d93c0d45766c5444eed14249c11e7057e681ba6419d1df6467b"
+  },
+  "source": {
+    "head": "bcfcc0b1841f62691509069d51b8a737f1c09dfa",
+    "tree": "d4e379f0fcb2afb8a8a48ac2c0dcfaae589833bd",
+    "parent": "94a66e10d4f95dffe2425354825dc906383de7b9",
+    "identityMessage": "HyacinthHaru|hyacinth@haru.ac|HyacinthHaru|hyacinth@haru.ac\ntest(www): cover Contents reopen during leave\n\nSigned-off-by: HyacinthHaru <hyacinth@haru.ac>",
+    "signatureVerified": true,
+    "verifyOutput": "Good \"git\" signature for hyacinth@haru.ac with ED25519 key SHA256:RWDxJ0JCS9WIN0anD3VUGv9yBp1UtQmZM6HYa98uj7M\n",
+    "testSha256": "eb1ec4af039eb321c07170537eda95091e938e91b27ece1f475a9923ae3e0cb2",
+    "browserSha256": "8a5db042fcaee8550630c755fdc72583c8bc5645cc5418eccc416523b5453e8e",
+    "productionUnchangedFromMain": true
+  },
+  "originalAssertions": {
+    "base": "508e2d3b7dc397c06d843d61748aa7962fc67bb8",
+    "originalAssertionCalls": 207,
+    "allOriginalAssertionsInOrder": true,
+    "originalSelectedNativeInputCalls": 30,
+    "nativeInputSequenceUnchanged": true,
+    "pureInsertion": true,
+    "case180sRetained": true,
+    "closeBudget": "1000ms after Escape returns, including original logical/focus and lease/return assertions; final hard elapsed assertion"
+  },
+  "limitations": [
+    "No native Transition cancellation or terminal FocusScope claim",
+    "No new fixed baseline or independent current-closure calibration",
+    "No full hosted test/package or Material source/packed rerun",
+    "Original failures and all prior epochs retained; partial local review is not GitHub APPROVE"
+  ],
+  "dialogObservationCount": 196,
+  "visualInspection": {
+    "actuallyViewedFinalImages": [
+      "sidebar-final-bcfcc0b1/contents-command/shadcn-wc-public-dialog-open.png",
+      "sidebar-final-bcfcc0b1/contents-command/brutalist-vue2-keyboard-focus.png",
+      "dialog-final-bcfcc0b1/dialog-available-space/shadcn-wc-390-settled.png"
+    ],
+    "finding": "Contents original nav is visible in dialog and close control focus outlined; after close original header trigger focused; Dialog390 visiblecontent/actions within viewport. Functional evidence only, not broader navigationdesign acceptance. Other screenshots byte/CRC only."
+  }
+}

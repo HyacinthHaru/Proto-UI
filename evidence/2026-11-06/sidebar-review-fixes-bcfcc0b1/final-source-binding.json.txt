@@ -1,0 +1,11 @@
+{
+  "head": "bcfcc0b1841f62691509069d51b8a737f1c09dfa",
+  "tree": "d4e379f0fcb2afb8a8a48ac2c0dcfaae589833bd",
+  "parent": "94a66e10d4f95dffe2425354825dc906383de7b9",
+  "identityMessage": "HyacinthHaru|hyacinth@haru.ac|HyacinthHaru|hyacinth@haru.ac\ntest(www): cover Contents reopen during leave\n\nSigned-off-by: HyacinthHaru <hyacinth@haru.ac>",
+  "signatureVerified": true,
+  "verifyOutput": "Good \"git\" signature for hyacinth@haru.ac with ED25519 key SHA256:RWDxJ0JCS9WIN0anD3VUGv9yBp1UtQmZM6HYa98uj7M\n",
+  "testSha256": "eb1ec4af039eb321c07170537eda95091e938e91b27ece1f475a9923ae3e0cb2",
+  "browserSha256": "8a5db042fcaee8550630c755fdc72583c8bc5645cc5418eccc416523b5453e8e",
+  "productionUnchangedFromMain": true
+}
