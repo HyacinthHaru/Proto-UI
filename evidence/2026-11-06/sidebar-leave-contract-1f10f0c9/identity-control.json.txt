@@ -1,0 +1,32 @@
+{
+  "source": {
+    "sha": "508e2d3b7dc397c06d843d61748aa7962fc67bb8",
+    "dirty": true,
+    "expectedSha": "508e2d3b7dc397c06d843d61748aa7962fc67bb8",
+    "files": {
+      "components/SiteContentsCommand.astro": "da3634a9516a41a004018d67dda423c8edb2008a1eb43f6ce1934f985c452989",
+      "components/site-contents-command.ts": "cd558589c0000aa7f48d0a49a29129ac53ec159c28091ea0af4d388150f37c9a",
+      "components/site-contents-panel.ts": "e8e26a939111f7f791f16ad00aaf7df5f86cdf94206cb8d5bf8be996292fb96b",
+      "components/site-header-surface.ts": "bf30bef1bd9edda369fb6f9bea8cbba0d1e2abdf452c64dc31dc9a1d4e458c09",
+      "components/site-header-disclosure.ts": "f1fdabecbcea76a920a564f43d86ebc5a5077011226a278410f2e954a0fea60a",
+      "components/override/Sidebar.astro": "bdd177350d79cdb6114d1d77254d3188fbc99ad46dae8dfadc915bd541940d6c",
+      "components/override/PageFrame.astro": "db09b8ed5541455e1c07001802f7c6a256cf2025d1b99962cfae0376d293aa3a",
+      "styles/site-contents-command.css": "634ef35af2f4297eb25f0c03aa1bc974ef068dd33b737a468fda1ff39469fe58"
+    }
+  },
+  "facts": {
+    "mutation": {
+      "at": 4184.199999988079,
+      "originalConnected": false,
+      "replaced": true
+    },
+    "originalConnected": false,
+    "originalIsCurrent": false,
+    "oldMarkerPredicate": true,
+    "oldHomeCount": 1,
+    "oldMarkerNull": true
+  },
+  "error": "Error: Matcher did not succeed in 993.5710419999996ms",
+  "intentionalDOMReplacement": true,
+  "originalBudgetMs": 1000
+}

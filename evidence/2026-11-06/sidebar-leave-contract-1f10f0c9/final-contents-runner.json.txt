@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "vitestVersion": "2.1.9",
+  "reporterSha256": "d26d77c9a57a8997394a21b70dee15cf7408c25e3d7bd7e22f48e5b1e6e4c6fa",
+  "phase": "process-exit",
+  "finishedCalls": 1,
+  "closeStarted": true,
+  "closeFinished": true,
+  "processTimedOut": false,
+  "runnerErrors": [],
+  "unhandledErrors": [],
+  "files": [
+    {
+      "path": "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+      "state": "pass",
+      "suiteErrors": []
+    }
+  ],
+  "exitCode": 0,
+  "cancelled": false,
+  "reportSha256": "6705d68a2407271e8f22ae89a6b5f7733e2572f89a3279edc50307b8a95da3e2"
+}

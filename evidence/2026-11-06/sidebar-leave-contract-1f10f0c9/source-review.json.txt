@@ -1,0 +1,433 @@
+{
+  "reviewedAt": "2026-11-06T06:38:18.623980+00:00",
+  "mode": "human-assisted/current-user",
+  "assessment": "unassessed/advisory",
+  "disposition": "partial/ABSTAIN",
+  "class": "bounded local test and draft consumer-contract review",
+  "canonicalReviewInputDigest": null,
+  "base": "508e2d3b7dc397c06d843d61748aa7962fc67bb8",
+  "scope": "Two-path working candidate on codex/sidebar-contract-20261106. Review used direct source reads, exact archived runner inputs, output JSON and the current user-selected normal-close boundary A.",
+  "source": [
+    {
+      "path": "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+      "sha256": "6456b32d61ebe3e3b96f9c02ff3bd1245e2b3248ab63d319cdc0c7aa48ecfb3d",
+      "bytes": 97388
+    },
+    {
+      "path": "internal/contracts/website/contents-navigation.v0.md",
+      "sha256": "707e14ffddb69d8c5246f0d1179b3091623e7ed5103d3faa2023eda3433d96f9",
+      "bytes": 3408
+    }
+  ],
+  "initialAndFinalDiff": {
+    "initial": {
+      "insertedLines": 16,
+      "removedOriginalLines": 0,
+      "raw": {
+        "path": "sidebar-candidate-precommit/executed-test.ts",
+        "bytes": 97153,
+        "sha256": "6ec8c406d7de2ad18dfd136f8418ec18573b2346ec74a725357b1087d9d5ead2"
+      }
+    },
+    "final": {
+      "insertedLines": 21,
+      "removedOriginalLines": 0,
+      "raw": {
+        "path": "sidebar-candidate-identity/executed-test.ts",
+        "bytes": 97388,
+        "sha256": "6456b32d61ebe3e3b96f9c02ff3bd1245e2b3248ab63d319cdc0c7aa48ecfb3d"
+      }
+    }
+  },
+  "producerASTBinding": {
+    "record": {
+      "path": "assertion-binding.json",
+      "bytes": 405,
+      "sha256": "c0a1c537a8372264fb5b925e82f1d98d37f678c856568b5015eb909d115d40f4"
+    },
+    "scope": "Producer-supplied AST inventory accompanies independent exact pure-insertion reconstruction."
+  },
+  "findings": [
+    {
+      "id": "CONTENTS-HANDBACK-IDENTITY-001",
+      "severity": "P2",
+      "status": "closed by reviewed source and recorded discriminating browser control",
+      "initial": {
+        "path": "sidebar-candidate-precommit/executed-test.ts",
+        "bytes": 97153,
+        "sha256": "6ec8c406d7de2ad18dfd136f8418ec18573b2346ec74a725357b1087d9d5ead2"
+      },
+      "problem": "The 16-line candidate accepted the first unmarked nav matching a global selector. Replacing a detached original with an unmarked clone at home could satisfy that poll and the two later original assertions.",
+      "correction": "Final source reads the retained __contentsOriginalTree reference, requires connectedness and equality to the current first nav.docs-sidebar query result, then observes marker removal. It retains the original immediate home count=1 and marker-null assertions after the poll.",
+      "evidence": "Original connected node identity is required by the final predicate. A real, separate test-only replacement control reached originalDisconnected/oldMarkerPredicate=true/oldHomeCount=1/oldMarkerNull=true and correctly failed at the new identity poll within the shared remaining budget."
+    }
+  ],
+  "openSourceFindings": 0,
+  "sourceConclusions": [
+    "A close cycle starts its Node monotonic deadline immediately after the original Escape promise resolves. The original expanded=false poll and direct focus read consume this same elapsed window. The second poll receives only the measured remainder, with a positive remainder assertion. Original handback count and marker assertions precede a final Node monotonic deadline check. A successful cycle therefore has to finish those observations within1000ms.",
+    "Waiting only for the original connected tree marker keeps the subsequent physical home-count predicate independently discriminating. Clearing a marker while the actual nav remains outside .docs-shell gives the original count a chance to fail. The predicate compares the current first global selector result to the saved reference. Global uniqueness is separately asserted during open; the close-time numeric assertion counts the nav inside .docs-shell.",
+    "The deadline is an acceptance deadline. Existing asynchronous RPCs and assertion teardown may return or reject after the nominal boundary. The final monotonic guard rejects late successful sequences; process-level cancellation of an outstanding host call is a separate property.",
+    "The draft describes a Website consumer lease and defers core semantics to draft C-AS-TRANSITION-0001-B/E/K and both family Content definitions. Its ordinary-close choice is bound to the actual current-user decision. Existing controller checks requestedOpen=false/public open=false/public present=false and current treeOwner before moving the original node home and removing its marker. Same-view reopening settles the pending close and retains the active lease.",
+    "Ordinary finishClosed and exceptional retireNativeLease both eventually use restoreTree. An unmarked original node at home establishes physical handback. The held-leave control and same-run public fact diagnostic establish ordinary ordering in their respective scopes; the separate fatal-retirement control preserves stranded-tree return/disposal rejection. The browser endpoint alone cannot distinguish those reasons or establish actual structural detach. The draft explicitly scopes terminal/failed retirement to separate lifecycle evidence.",
+    "If a future regression both moves the real tree home and clears the marker before public leave completion, physical endpoints alone can succeed. The existing held-leave sequencing test is the discriminating companion guard. This review does not attribute the direct public callback observation to all 24 native close cycles."
+  ],
+  "executionEvidence": [
+    {
+      "epoch": "sidebar-main-508e2d3",
+      "receipt": {
+        "path": "sidebar-main-508e2d3/receipt.json",
+        "bytes": 1018,
+        "sha256": "8b97f55b46d60d0e873426052b2b04919571917fe3977bd69d84eb2152972784"
+      },
+      "runtimeReport": {
+        "path": "sidebar-main-508e2d3/vitest.json",
+        "bytes": 5412,
+        "sha256": "b053c731d8e69e928d414b13a988cca2d36eab3db96b767e5e29b6318abf55ff"
+      },
+      "runnerIntegrity": {
+        "path": "sidebar-main-508e2d3/runner-integrity.json",
+        "bytes": 597,
+        "sha256": "75cb5444e014a04dfd12cf326228350bd913690a92b438b3207bc7a45b51513d"
+      },
+      "actualExit": 1,
+      "caseStatuses": {
+        "skipped": 8,
+        "failed": 1
+      },
+      "failedPredicate": [
+        [
+          "AssertionError: expected +0 to be 1 // Object.is equality",
+          "    at <SOURCE_ROOT>/apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts:954:80"
+        ]
+      ],
+      "startedAt": "2026-11-06T06:18:01.899828+00:00",
+      "finishedAt": "2026-11-06T06:18:32.427837+00:00",
+      "runnerReportSha256": "b053c731d8e69e928d414b13a988cca2d36eab3db96b767e5e29b6318abf55ff",
+      "diagnosticRestoredOriginalBytes": null
+    },
+    {
+      "epoch": "sidebar-main-508e2d3-phase",
+      "receipt": {
+        "path": "sidebar-main-508e2d3-phase/receipt.json",
+        "bytes": 1535,
+        "sha256": "63072d152e0b0f3216653d04dd9217992a062d19fc95d2b303e65a23d602507d"
+      },
+      "runtimeReport": {
+        "path": "sidebar-main-508e2d3-phase/vitest.json",
+        "bytes": 5414,
+        "sha256": "28ac1cd125b6993b461443b25137fd76948e733f8e61ec3196c1104c2aef3bb9"
+      },
+      "runnerIntegrity": {
+        "path": "sidebar-main-508e2d3-phase/runner-integrity.json",
+        "bytes": 597,
+        "sha256": "1a956bfff98da2950407e452222e6359d05c11769f77ea50682121f946fbcca7"
+      },
+      "actualExit": 1,
+      "caseStatuses": {
+        "skipped": 8,
+        "failed": 1
+      },
+      "failedPredicate": [
+        [
+          "AssertionError: expected +0 to be 1 // Object.is equality",
+          "    at <SOURCE_ROOT>/apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts:955:80"
+        ]
+      ],
+      "startedAt": "2026-11-06T06:18:54.319725+00:00",
+      "finishedAt": "2026-11-06T06:19:24.097465+00:00",
+      "runnerReportSha256": "28ac1cd125b6993b461443b25137fd76948e733f8e61ec3196c1104c2aef3bb9",
+      "diagnosticRestoredOriginalBytes": true
+    },
+    {
+      "epoch": "sidebar-candidate-precommit",
+      "receipt": {
+        "path": "sidebar-candidate-precommit/receipt.json",
+        "bytes": 1173,
+        "sha256": "d447e8300690c7935ef4adf29d921a34edfa9dbed603ed03c3e0ed7b3cf9475e"
+      },
+      "runtimeReport": {
+        "path": "sidebar-candidate-precommit/vitest.json",
+        "bytes": 3554,
+        "sha256": "2189c435463061329de0e100d899f0c4b578ae0132e07743c4897e0582f4629b"
+      },
+      "runnerIntegrity": {
+        "path": "sidebar-candidate-precommit/runner-integrity.json",
+        "bytes": 597,
+        "sha256": "71b30535dc97b61485c6dc3ed3401580c400b28494d5d5d721092a841b27772e"
+      },
+      "actualExit": 0,
+      "caseStatuses": {
+        "skipped": 8,
+        "passed": 1
+      },
+      "failedPredicate": [],
+      "startedAt": "2026-11-06T06:25:49.776832+00:00",
+      "finishedAt": "2026-11-06T06:26:40.827114+00:00",
+      "runnerReportSha256": "2189c435463061329de0e100d899f0c4b578ae0132e07743c4897e0582f4629b",
+      "diagnosticRestoredOriginalBytes": null
+    },
+    {
+      "epoch": "sidebar-candidate-identity",
+      "receipt": {
+        "path": "sidebar-candidate-identity/receipt.json",
+        "bytes": 1180,
+        "sha256": "5a0eef04ce6d361786774f48c7ae94138b9b40cc2e2e7d1fbebba0cf64115a82"
+      },
+      "runtimeReport": {
+        "path": "sidebar-candidate-identity/vitest.json",
+        "bytes": 3555,
+        "sha256": "f290ba4e0bb9de11744ce50cf6ef83c852cbce938f36b9491af4d41d9c5f08a9"
+      },
+      "runnerIntegrity": {
+        "path": "sidebar-candidate-identity/runner-integrity.json",
+        "bytes": 597,
+        "sha256": "ffb854084d2da2e2b01958a19d1ae173905a2a59085f6c08a30752a990dd3491"
+      },
+      "actualExit": 0,
+      "caseStatuses": {
+        "skipped": 8,
+        "passed": 1
+      },
+      "failedPredicate": [],
+      "startedAt": "2026-11-06T06:29:01.375048+00:00",
+      "finishedAt": "2026-11-06T06:29:52.445444+00:00",
+      "runnerReportSha256": "f290ba4e0bb9de11744ce50cf6ef83c852cbce938f36b9491af4d41d9c5f08a9",
+      "diagnosticRestoredOriginalBytes": null
+    }
+  ],
+  "finalPositiveMatrix": {
+    "nativeTestCasesPassed": 1,
+    "filteredCases": 8,
+    "familyRuntimeContexts": [
+      [
+        "brutalist",
+        "react"
+      ],
+      [
+        "brutalist",
+        "vue"
+      ],
+      [
+        "brutalist",
+        "vue2"
+      ],
+      [
+        "brutalist",
+        "wc"
+      ],
+      [
+        "shadcn",
+        "react"
+      ],
+      [
+        "shadcn",
+        "vue"
+      ],
+      [
+        "shadcn",
+        "vue2"
+      ],
+      [
+        "shadcn",
+        "wc"
+      ]
+    ],
+    "actionsPerContext": [
+      "click",
+      "Enter",
+      "Space"
+    ],
+    "completePositiveCloseCycles": 24,
+    "evidenceJSONFiles": 24,
+    "evidencePNGFiles": 16,
+    "scope": "Single selected whole consumer case on base plus the final test candidate. Root executed this path. Per-cycle latency was not separately logged."
+  },
+  "sourceHostControls": {
+    "record": {
+      "path": "contents-unit.json",
+      "bytes": 5084,
+      "sha256": "205367b184e74367f96e0286426ec2c2a18e7ab708a74654a99488c9dde9b470"
+    },
+    "passed": 10,
+    "includes": "normal held-leave, original sibling identity, rollback and separate fatal-retirement/disposal rejection"
+  },
+  "phaseEvidence": {
+    "file": {
+      "path": "sidebar-main-508e2d3-phase/contents-command/same-run-public-phase.json",
+      "bytes": 11904,
+      "sha256": "767d7c9cfdb6cb5f3b795cf76d7f66d338262213cfcb5a7848633e82d04a5d51"
+    },
+    "phaseSubject": "Instrumented base, selected first Shadcn/WC/click cycle, same original failed count rethrown",
+    "sequence": [
+      {
+        "phase": "public.open",
+        "at": 3203.599999964237,
+        "value": null,
+        "next": false,
+        "treeHome": false,
+        "contentConnected": true
+      },
+      {
+        "phase": "unwound.open",
+        "at": 3228.699999988079,
+        "value": false,
+        "next": null,
+        "treeHome": false,
+        "contentConnected": true
+      },
+      {
+        "phase": "finish.open",
+        "at": 3228.699999988079,
+        "value": false,
+        "next": null,
+        "treeHome": false,
+        "contentConnected": true
+      },
+      {
+        "phase": "finish.present",
+        "at": 3228.699999988079,
+        "value": true,
+        "next": null,
+        "treeHome": false,
+        "contentConnected": true
+      },
+      {
+        "phase": "verdict-observed-after-original-count",
+        "at": 3237,
+        "value": null,
+        "next": null,
+        "treeHome": null,
+        "contentConnected": null
+      },
+      {
+        "phase": "public.present",
+        "at": 3406.399999976158,
+        "value": null,
+        "next": false,
+        "treeHome": false,
+        "contentConnected": true
+      },
+      {
+        "phase": "finish.open",
+        "at": 3406.399999976158,
+        "value": false,
+        "next": null,
+        "treeHome": false,
+        "contentConnected": true
+      },
+      {
+        "phase": "finish.present",
+        "at": 3406.399999976158,
+        "value": false,
+        "next": null,
+        "treeHome": false,
+        "contentConnected": true
+      },
+      {
+        "phase": "tree-return.before",
+        "at": 3406.399999976158,
+        "value": null,
+        "next": null,
+        "treeHome": false,
+        "contentConnected": true
+      },
+      {
+        "phase": "tree-return.after",
+        "at": 3481.2999999523163,
+        "value": null,
+        "next": null,
+        "treeHome": true,
+        "contentConnected": true
+      },
+      {
+        "phase": "post-verdict-500ms",
+        "at": 3739.099999964237,
+        "value": null,
+        "next": null,
+        "treeHome": null,
+        "contentConnected": true
+      }
+    ],
+    "scope": "Browser callback/getter observations. The marker is after the failed count and the500ms tail is diagnostic. Source reported restoredOriginalBytes=true. Retained Content connected at sampled points; no physical-detach event is claimed."
+  },
+  "checks": {
+    "initialOriginalSourceIsPureSubsequence": true,
+    "finalOriginalSourceIsPureSubsequence": true,
+    "final21AddedLines": true,
+    "orderedCloseSequence": true,
+    "sameOriginalCaseDeadline": true,
+    "originalTreeWasCapturedAndProvenAtOpen": true,
+    "sidebar-main-508e2d3SourceAndExit": true,
+    "sidebar-main-508e2d3RunnerClean": true,
+    "sidebar-main-508e2d3-phaseSourceAndExit": true,
+    "sidebar-main-508e2d3-phaseRunnerClean": true,
+    "sidebar-candidate-precommitSourceAndExit": true,
+    "sidebar-candidate-precommitRunnerClean": true,
+    "sidebar-candidate-identitySourceAndExit": true,
+    "sidebar-candidate-identityRunnerClean": true,
+    "eightFamilyRuntimeContexts": true,
+    "allThreeOriginalInputsEachContext": true,
+    "original10HostControls": true,
+    "phaseRethrewOriginalCountError": true,
+    "sharedBudgetEndGuard": true,
+    "realCloneControlDiscriminates": true,
+    "realCloneControlBoundAndExit": true,
+    "realCloneControlFailureWithinSharedRemainder": true,
+    "privateControlMechanism": true
+  },
+  "allMechanicalChecksTrue": true,
+  "remainingEvidence": [
+    "Accurate committed-head execution and wider acceptance use their own future receipts.",
+    "The native endpoint does not separately measure exact original sibling position, transition callbacks, terminal teardown or all possible duplicate-tree histories. Those scopes have dedicated code/controls."
+  ],
+  "reviewOperations": "The reviewer stopped working-tree reads before the root-owned private clone control. The final addition uses the terminal task-state receipts, archived private test and measured predicates. Review involved existing data and private report writing only.",
+  "replacementNegativeControl": {
+    "receipt": {
+      "path": "identity-replacement-control/receipt.json",
+      "bytes": 1258,
+      "sha256": "76ac4750ae8f28ce04110041ec01354b66b8997daa149f9686bc9bcc1e0cb3dd"
+    },
+    "vitest": {
+      "path": "identity-replacement-control/vitest.json",
+      "bytes": 5413,
+      "sha256": "292841324b8ce0d58b78e997f3d955c62fbb67993725725640d9a9e7b66cbbe3"
+    },
+    "runner": {
+      "path": "identity-replacement-control/runner-integrity.json",
+      "bytes": 597,
+      "sha256": "4bfd448096cbcf35e927714d7c794b3288ba33e4ce46c5a94e2b7d2dc54e8c0b"
+    },
+    "executedPrivateTest": {
+      "path": "identity-replacement-control/executed-test.ts",
+      "bytes": 99370,
+      "sha256": "58d514bc7b2c48102b75f13f95bf054bed2f15066ecb07aaf7e761d1458d4195"
+    },
+    "factsFile": {
+      "path": "identity-replacement-control/contents-command/identity-control.json",
+      "bytes": 1484,
+      "sha256": "ffae0b0abcb79bcfa6119a153feb68d96c08626ffcbec07bba13f604f02641e5"
+    },
+    "observedPredicates": {
+      "mutation": {
+        "at": 4184.199999988079,
+        "originalConnected": false,
+        "replaced": true
+      },
+      "originalConnected": false,
+      "originalIsCurrent": false,
+      "oldMarkerPredicate": true,
+      "oldHomeCount": 1,
+      "oldMarkerNull": true
+    },
+    "error": "Error: Matcher did not succeed in 993.5710419999996ms",
+    "caseCounts": {
+      "passed": 0,
+      "failed": 1,
+      "filtered": 8
+    },
+    "sharedBudgetMs": 1000,
+    "rejectingPollRemainingMs": 993.5710419999996,
+    "restoredExactCandidate": true,
+    "scope": "The private observer replaced the original with an empty native nav after the marker removal. The recorded data establish the prior three checks at the sampled endpoint and the actual rejection by the final identity poll. The original complete browser case on that substituted tree was not executed. This deliberate control is independent of normal product behavior."
+  }
+}

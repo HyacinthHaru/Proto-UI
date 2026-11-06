@@ -1,0 +1,19 @@
+{
+  "head": "1f10f0c9bc76d6d305c43ccbe04c9065f982bf1d",
+  "parent": "508e2d3b7dc397c06d843d61748aa7962fc67bb8",
+  "tree": "d7a34d5f3e33bb2b5a59209462fe4349ffabc0bc",
+  "signatureVerified": true,
+  "identity": "HyacinthHaru|hyacinth@haru.ac|HyacinthHaru|hyacinth@haru.ac\ntest(www): observe Contents handback after leave\n\nSigned-off-by: HyacinthHaru <hyacinth@haru.ac>",
+  "source": [
+    {
+      "path": "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+      "sha256": "6456b32d61ebe3e3b96f9c02ff3bd1245e2b3248ab63d319cdc0c7aa48ecfb3d",
+      "blob": "43870f748c6f068133afa9fb1817b0743e5362cf"
+    },
+    {
+      "path": "internal/contracts/website/contents-navigation.v0.md",
+      "sha256": "707e14ffddb69d8c5246f0d1179b3091623e7ed5103d3faa2023eda3433d96f9",
+      "blob": "a99c20f66bb5437706401273af9ef5baf954f298"
+    }
+  ]
+}

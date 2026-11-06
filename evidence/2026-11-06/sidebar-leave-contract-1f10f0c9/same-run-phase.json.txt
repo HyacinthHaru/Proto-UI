@@ -1,0 +1,428 @@
+{
+  "source": {
+    "sha": "508e2d3b7dc397c06d843d61748aa7962fc67bb8",
+    "dirty": true,
+    "expectedSha": "508e2d3b7dc397c06d843d61748aa7962fc67bb8",
+    "files": {
+      "components/SiteContentsCommand.astro": "da3634a9516a41a004018d67dda423c8edb2008a1eb43f6ce1934f985c452989",
+      "components/site-contents-command.ts": "cd558589c0000aa7f48d0a49a29129ac53ec159c28091ea0af4d388150f37c9a",
+      "components/site-contents-panel.ts": "9326b101164f857df0f00dd088f6f15f754f56d5bcd18294c5bdaf15729c36ae",
+      "components/site-header-surface.ts": "bf30bef1bd9edda369fb6f9bea8cbba0d1e2abdf452c64dc31dc9a1d4e458c09",
+      "components/site-header-disclosure.ts": "f1fdabecbcea76a920a564f43d86ebc5a5077011226a278410f2e954a0fea60a",
+      "components/override/Sidebar.astro": "bdd177350d79cdb6114d1d77254d3188fbc99ad46dae8dfadc915bd541940d6c",
+      "components/override/PageFrame.astro": "db09b8ed5541455e1c07001802f7c6a256cf2025d1b99962cfae0376d293aa3a",
+      "styles/site-contents-command.css": "634ef35af2f4297eb25f0c03aa1bc974ef068dd33b737a468fda1ff39469fe58"
+    }
+  },
+  "first": [
+    {
+      "phase": "unwound.open",
+      "at": 2327.099999964237,
+      "owner": "site-contents-panel-1",
+      "treeHome": true,
+      "treeConnected": true,
+      "contentConnected": null,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": false
+    },
+    {
+      "phase": "finish.open",
+      "at": 2327.099999964237,
+      "owner": "site-contents-panel-1",
+      "treeHome": true,
+      "treeConnected": true,
+      "contentConnected": null,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": false
+    },
+    {
+      "phase": "finish.present",
+      "at": 2327.099999964237,
+      "owner": "site-contents-panel-1",
+      "treeHome": true,
+      "treeConnected": true,
+      "contentConnected": null,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": false
+    },
+    {
+      "phase": "public.open",
+      "at": 2899.5,
+      "owner": "site-contents-panel-1",
+      "treeHome": true,
+      "treeConnected": true,
+      "contentConnected": null,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "event": {
+        "type": "next",
+        "prev": false,
+        "next": true,
+        "reason": "reason: dialog context sync => content"
+      }
+    },
+    {
+      "phase": "unwound.open",
+      "at": 2948.399999976158,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": null,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": true
+    },
+    {
+      "phase": "public.present",
+      "at": 2958.7999999523163,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": null,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "event": {
+        "type": "next",
+        "prev": false,
+        "next": true,
+        "reason": "reason: asTransition presence => entering"
+      },
+      "requestedOpen": true,
+      "closeReturnReady": false
+    },
+    {
+      "phase": "unwound.open",
+      "at": 3031.199999988079,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": null,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": true
+    },
+    {
+      "phase": "public.open",
+      "at": 3203.599999964237,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": true,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "event": {
+        "type": "next",
+        "prev": true,
+        "next": false,
+        "reason": "reason: dialog context sync => content"
+      }
+    },
+    {
+      "phase": "unwound.open",
+      "at": 3228.699999988079,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": true,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": false
+    },
+    {
+      "phase": "finish.open",
+      "at": 3228.699999988079,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": true,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": false
+    },
+    {
+      "phase": "finish.present",
+      "at": 3228.699999988079,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": true,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": true
+    },
+    {
+      "phase": "verdict-observed-after-original-count",
+      "at": 3237
+    }
+  ],
+  "after": [
+    {
+      "phase": "unwound.open",
+      "at": 2327.099999964237,
+      "owner": "site-contents-panel-1",
+      "treeHome": true,
+      "treeConnected": true,
+      "contentConnected": null,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": false
+    },
+    {
+      "phase": "finish.open",
+      "at": 2327.099999964237,
+      "owner": "site-contents-panel-1",
+      "treeHome": true,
+      "treeConnected": true,
+      "contentConnected": null,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": false
+    },
+    {
+      "phase": "finish.present",
+      "at": 2327.099999964237,
+      "owner": "site-contents-panel-1",
+      "treeHome": true,
+      "treeConnected": true,
+      "contentConnected": null,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": false
+    },
+    {
+      "phase": "public.open",
+      "at": 2899.5,
+      "owner": "site-contents-panel-1",
+      "treeHome": true,
+      "treeConnected": true,
+      "contentConnected": null,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "event": {
+        "type": "next",
+        "prev": false,
+        "next": true,
+        "reason": "reason: dialog context sync => content"
+      }
+    },
+    {
+      "phase": "unwound.open",
+      "at": 2948.399999976158,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": null,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": true
+    },
+    {
+      "phase": "public.present",
+      "at": 2958.7999999523163,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": null,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "event": {
+        "type": "next",
+        "prev": false,
+        "next": true,
+        "reason": "reason: asTransition presence => entering"
+      },
+      "requestedOpen": true,
+      "closeReturnReady": false
+    },
+    {
+      "phase": "unwound.open",
+      "at": 3031.199999988079,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": null,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": true
+    },
+    {
+      "phase": "public.open",
+      "at": 3203.599999964237,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": true,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "event": {
+        "type": "next",
+        "prev": true,
+        "next": false,
+        "reason": "reason: dialog context sync => content"
+      }
+    },
+    {
+      "phase": "unwound.open",
+      "at": 3228.699999988079,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": true,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": false
+    },
+    {
+      "phase": "finish.open",
+      "at": 3228.699999988079,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": true,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": false
+    },
+    {
+      "phase": "finish.present",
+      "at": 3228.699999988079,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": true,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": true
+    },
+    {
+      "phase": "verdict-observed-after-original-count",
+      "at": 3237
+    },
+    {
+      "phase": "public.present",
+      "at": 3406.399999976158,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": true,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "event": {
+        "type": "next",
+        "prev": true,
+        "next": false,
+        "reason": "reason: asTransition presence => closed"
+      },
+      "requestedOpen": false,
+      "closeReturnReady": true
+    },
+    {
+      "phase": "finish.open",
+      "at": 3406.399999976158,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": true,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": false
+    },
+    {
+      "phase": "finish.present",
+      "at": 3406.399999976158,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": true,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn",
+      "value": false
+    },
+    {
+      "phase": "tree-return.before",
+      "at": 3406.399999976158,
+      "owner": "site-contents-panel-1",
+      "treeHome": false,
+      "treeConnected": true,
+      "contentConnected": true,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn"
+    },
+    {
+      "phase": "tree-return.after",
+      "at": 3481.2999999523163,
+      "owner": "site-contents-panel-1",
+      "treeHome": true,
+      "treeConnected": true,
+      "contentConnected": true,
+      "slotId": "site-contents-panel-1-docs-1-1",
+      "generation": 1,
+      "runtime": "wc",
+      "family": "shadcn"
+    },
+    {
+      "phase": "post-verdict-500ms",
+      "at": 3739.099999964237,
+      "contentConnected": true
+    }
+  ],
+  "originalError": "AssertionError: expected +0 to be 1 // Object.is equality",
+  "originalDeadlineMs": 180000,
+  "diagnosticOnly": true,
+  "postVerdictWaitMs": 500
+}

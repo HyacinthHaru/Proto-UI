@@ -1,0 +1,492 @@
+{
+  "source": {
+    "head": "1f10f0c9bc76d6d305c43ccbe04c9065f982bf1d",
+    "parent": "508e2d3b7dc397c06d843d61748aa7962fc67bb8",
+    "tree": "d7a34d5f3e33bb2b5a59209462fe4349ffabc0bc",
+    "signatureVerified": true,
+    "identity": "HyacinthHaru|hyacinth@haru.ac|HyacinthHaru|hyacinth@haru.ac\ntest(www): observe Contents handback after leave\n\nSigned-off-by: HyacinthHaru <hyacinth@haru.ac>",
+    "source": [
+      {
+        "path": "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+        "sha256": "6456b32d61ebe3e3b96f9c02ff3bd1245e2b3248ab63d319cdc0c7aa48ecfb3d",
+        "blob": "43870f748c6f068133afa9fb1817b0743e5362cf"
+      },
+      {
+        "path": "internal/contracts/website/contents-navigation.v0.md",
+        "sha256": "707e14ffddb69d8c5246f0d1179b3091623e7ed5103d3faa2023eda3433d96f9",
+        "blob": "a99c20f66bb5437706401273af9ef5baf954f298"
+      }
+    ]
+  },
+  "mode": "human-assisted/current-user",
+  "decision": "A confirmed by actual current-user reply; no remaining choice between A/B",
+  "runs": {
+    "base": {
+      "directory": "sidebar-main-508e2d3",
+      "passed": 0,
+      "failed": 1,
+      "filtered": 8,
+      "PNG": 1,
+      "reportSha256": "b053c731d8e69e928d414b13a988cca2d36eab3db96b767e5e29b6318abf55ff",
+      "receipt": {
+        "startedAt": "2026-11-06T06:18:01.899828+00:00",
+        "command": [
+          "corepack",
+          "pnpm@10.32.1",
+          "exec",
+          "vitest",
+          "run",
+          "--no-file-parallelism",
+          "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+          "-t",
+          "uses real family Contents Buttons",
+          "--reporter=./scripts/test/dialog-run-integrity-reporter.mjs",
+          "--reporter=default",
+          "--reporter=json",
+          "--outputFile=<STATE_ROOT>/sidebar-main-508e2d3/vitest.json"
+        ],
+        "head": "508e2d3b7dc397c06d843d61748aa7962fc67bb8",
+        "tree": "51988a973b0e76dfaeaf16dc86e9848ce6c02577",
+        "sourceSha256": "6c95a98c65186112fe382c9e5fdadd2f8462fd46b4fe44760e75ab480dbf0cb7",
+        "originalAssertionsAndDeadlines": true,
+        "reporter": "Existing shared process-integrity reporter, unchanged. Its historical environment variable names contain DIALOG; the actual tracked test path is Homepage Contents.",
+        "exitCode": 1,
+        "finishedAt": "2026-11-06T06:18:32.427837+00:00"
+      }
+    },
+    "phase": {
+      "directory": "sidebar-main-508e2d3-phase",
+      "passed": 0,
+      "failed": 1,
+      "filtered": 8,
+      "PNG": 2,
+      "reportSha256": "28ac1cd125b6993b461443b25137fd76948e733f8e61ec3196c1104c2aef3bb9",
+      "receipt": {
+        "head": "508e2d3b7dc397c06d843d61748aa7962fc67bb8",
+        "startedAt": "2026-11-06T06:18:54.319725+00:00",
+        "kind": "Private two-file passive public-callback/getter trace with exact lease slot/generation/runtime tags. Original short-circuit getter order/number/values and count/assertion/deadlines preserved; synchronous trace writes can perturb timing. Added500ms only after original verdict; rethrow same error.",
+        "bindings": {
+          "apps/www/src/components/site-contents-panel.ts": {
+            "originalSha256": "e8e26a939111f7f791f16ad00aaf7df5f86cdf94206cb8d5bf8be996292fb96b",
+            "diagnosticSha256": "9326b101164f857df0f00dd088f6f15f754f56d5bcd18294c5bdaf15729c36ae"
+          },
+          "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts": {
+            "originalSha256": "6c95a98c65186112fe382c9e5fdadd2f8462fd46b4fe44760e75ab480dbf0cb7",
+            "diagnosticSha256": "602955ac30ae8f1999e461b3e7a5c787f2c154a6a4245c0c7c0d7a5d759f5134"
+          }
+        },
+        "argv": [
+          "corepack",
+          "pnpm@10.32.1",
+          "exec",
+          "vitest",
+          "run",
+          "--no-file-parallelism",
+          "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+          "-t",
+          "uses real family Contents Buttons",
+          "--reporter=./scripts/test/dialog-run-integrity-reporter.mjs",
+          "--reporter=default",
+          "--reporter=json",
+          "--outputFile=<STATE_ROOT>/sidebar-main-508e2d3-phase/vitest.json"
+        ],
+        "exitCode": 1,
+        "restoredOriginalBytes": true,
+        "finishedAt": "2026-11-06T06:19:24.097465+00:00"
+      }
+    },
+    "firstCandidate": {
+      "directory": "sidebar-candidate-precommit",
+      "passed": 1,
+      "failed": 0,
+      "filtered": 8,
+      "PNG": 16,
+      "reportSha256": "2189c435463061329de0e100d899f0c4b578ae0132e07743c4897e0582f4629b",
+      "receipt": {
+        "startedAt": "2026-11-06T06:25:49.776832+00:00",
+        "command": [
+          "corepack",
+          "pnpm@10.32.1",
+          "exec",
+          "vitest",
+          "run",
+          "--no-file-parallelism",
+          "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+          "-t",
+          "uses real family Contents Buttons",
+          "--reporter=./scripts/test/dialog-run-integrity-reporter.mjs",
+          "--reporter=default",
+          "--reporter=json",
+          "--outputFile=<STATE_ROOT>/sidebar-candidate-precommit/vitest.json"
+        ],
+        "head": "508e2d3b7dc397c06d843d61748aa7962fc67bb8",
+        "tree": "51988a973b0e76dfaeaf16dc86e9848ce6c02577",
+        "sourceSha256": "6ec8c406d7de2ad18dfd136f8418ec18573b2346ec74a725357b1087d9d5ead2",
+        "originalAssertionsAndDeadlines": true,
+        "candidateKind": "precommit base508 plus accepted A contract and exact16-line test insertion; dirty=true is retained in browser source receipts",
+        "reporter": "Existing shared process-integrity reporter, unchanged. Its historical environment variable names contain DIALOG; the actual tracked test path is Homepage Contents.",
+        "exitCode": 0,
+        "finishedAt": "2026-11-06T06:26:40.827114+00:00"
+      }
+    },
+    "identityCandidate": {
+      "directory": "sidebar-candidate-identity",
+      "passed": 1,
+      "failed": 0,
+      "filtered": 8,
+      "PNG": 16,
+      "reportSha256": "f290ba4e0bb9de11744ce50cf6ef83c852cbce938f36b9491af4d41d9c5f08a9",
+      "receipt": {
+        "startedAt": "2026-11-06T06:29:01.375048+00:00",
+        "command": [
+          "corepack",
+          "pnpm@10.32.1",
+          "exec",
+          "vitest",
+          "run",
+          "--no-file-parallelism",
+          "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+          "-t",
+          "uses real family Contents Buttons",
+          "--reporter=./scripts/test/dialog-run-integrity-reporter.mjs",
+          "--reporter=default",
+          "--reporter=json",
+          "--outputFile=<STATE_ROOT>/sidebar-candidate-identity/vitest.json"
+        ],
+        "head": "508e2d3b7dc397c06d843d61748aa7962fc67bb8",
+        "tree": "51988a973b0e76dfaeaf16dc86e9848ce6c02577",
+        "sourceSha256": "6456b32d61ebe3e3b96f9c02ff3bd1245e2b3248ab63d319cdc0c7aa48ecfb3d",
+        "originalAssertionsAndDeadlines": true,
+        "candidateKind": "precommit base508 plus accepted A contract and exact identity-bound test insertion; dirty=true is retained in browser source receipts",
+        "reporter": "Existing shared process-integrity reporter, unchanged. Its historical environment variable names contain DIALOG; the actual tracked test path is Homepage Contents.",
+        "exitCode": 0,
+        "finishedAt": "2026-11-06T06:29:52.445444+00:00"
+      }
+    },
+    "replacementControl": {
+      "directory": "identity-replacement-control",
+      "passed": 0,
+      "failed": 1,
+      "filtered": 8,
+      "PNG": 2,
+      "reportSha256": "292841324b8ce0d58b78e997f3d955c62fbb67993725725640d9a9e7b66cbbe3",
+      "receipt": {
+        "head": "508e2d3b7dc397c06d843d61748aa7962fc67bb8",
+        "startedAt": "2026-11-06T06:34:21.204161+00:00",
+        "candidateTestSha256": "6456b32d61ebe3e3b96f9c02ff3bd1245e2b3248ab63d319cdc0c7aa48ecfb3d",
+        "executedTestSha256": "58d514bc7b2c48102b75f13f95bf054bed2f15066ecb07aaf7e761d1458d4195",
+        "kind": "Private negative control: real normal-close callback first restores the original tree, then a test-only DOM MutationObserver replaces it with an empty native nav. No synthetic keyboard event or production/private state injection. Retain every assertion/deadline; log and rethrow the original rejection. This is not a product defect or a full old-case false pass.",
+        "command": [
+          "corepack",
+          "pnpm@10.32.1",
+          "exec",
+          "vitest",
+          "run",
+          "--no-file-parallelism",
+          "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+          "-t",
+          "uses real family Contents Buttons",
+          "--reporter=./scripts/test/dialog-run-integrity-reporter.mjs",
+          "--reporter=default",
+          "--reporter=json",
+          "--outputFile=<STATE_ROOT>/identity-replacement-control/vitest.json"
+        ],
+        "exitCode": 1,
+        "restoredExactCandidate": true,
+        "finishedAt": "2026-11-06T06:34:54.100602+00:00"
+      }
+    },
+    "finalContents": {
+      "directory": "sidebar-final-1f10f0c9",
+      "passed": 1,
+      "failed": 0,
+      "filtered": 8,
+      "PNG": 16,
+      "reportSha256": "6705d68a2407271e8f22ae89a6b5f7733e2572f89a3279edc50307b8a95da3e2",
+      "receipt": {
+        "startedAt": "2026-11-06T06:38:20.484946+00:00",
+        "command": [
+          "corepack",
+          "pnpm@10.32.1",
+          "exec",
+          "vitest",
+          "run",
+          "--no-file-parallelism",
+          "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+          "-t",
+          "uses real family Contents Buttons",
+          "--reporter=./scripts/test/dialog-run-integrity-reporter.mjs",
+          "--reporter=default",
+          "--reporter=json",
+          "--outputFile=<STATE_ROOT>/sidebar-final-1f10f0c9/vitest.json"
+        ],
+        "head": "1f10f0c9bc76d6d305c43ccbe04c9065f982bf1d",
+        "tree": "d7a34d5f3e33bb2b5a59209462fe4349ffabc0bc",
+        "sourceSha256": "6456b32d61ebe3e3b96f9c02ff3bd1245e2b3248ab63d319cdc0c7aa48ecfb3d",
+        "originalAssertionsAndDeadlines": true,
+        "reporter": "Existing shared process-integrity reporter, unchanged. Its historical environment variable names contain DIALOG; the actual tracked test path is Homepage Contents.",
+        "exitCode": 0,
+        "finishedAt": "2026-11-06T06:39:13.909052+00:00"
+      }
+    },
+    "baseDialog": {
+      "directory": "dialog-main-508e2d3",
+      "passed": 8,
+      "failed": 0,
+      "filtered": 0,
+      "PNG": 120,
+      "reportSha256": "771e28600f37141ac7d6f5ede8cdf5606b19e0bf89a33b6ec68ec4bc0203c2d2",
+      "receipt": {
+        "startedAt": "2026-11-06T06:20:10.618239+00:00",
+        "command": [
+          "corepack",
+          "pnpm@10.32.1",
+          "exec",
+          "vitest",
+          "run",
+          "--no-file-parallelism",
+          "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+          "--reporter=./scripts/test/dialog-run-integrity-reporter.mjs",
+          "--reporter=default",
+          "--reporter=json",
+          "--outputFile=<STATE_ROOT>/dialog-main-508e2d3/vitest.json"
+        ],
+        "head": "508e2d3b7dc397c06d843d61748aa7962fc67bb8",
+        "probeSha256": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e",
+        "originalAssertionPreserved": true,
+        "outerResourceBoundSeconds": 1080,
+        "platform": "arm64",
+        "exitCode": 0,
+        "finishedAt": "2026-11-06T06:21:17.551480+00:00"
+      }
+    },
+    "finalDialog": {
+      "directory": "dialog-final-1f10f0c9",
+      "passed": 8,
+      "failed": 0,
+      "filtered": 0,
+      "PNG": 120,
+      "reportSha256": "a957d471bf33a51f09a14e2ab4dc019e947bc18f9951668505c2a18eed0c927d",
+      "receipt": {
+        "startedAt": "2026-11-06T06:39:59.886907+00:00",
+        "command": [
+          "corepack",
+          "pnpm@10.32.1",
+          "exec",
+          "vitest",
+          "run",
+          "--no-file-parallelism",
+          "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+          "--reporter=./scripts/test/dialog-run-integrity-reporter.mjs",
+          "--reporter=default",
+          "--reporter=json",
+          "--outputFile=<STATE_ROOT>/dialog-final-1f10f0c9/vitest.json"
+        ],
+        "head": "1f10f0c9bc76d6d305c43ccbe04c9065f982bf1d",
+        "probeSha256": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e",
+        "originalAssertionPreserved": true,
+        "outerResourceBoundSeconds": 1080,
+        "platform": "arm64",
+        "exitCode": 0,
+        "finishedAt": "2026-11-06T06:41:08.641619+00:00"
+      }
+    }
+  },
+  "finalContentsSourceRecords": [
+    {
+      "path": "sidebar-final-1f10f0c9/contents-command/brutalist-react-keyboard-focus.json",
+      "family": "brutalist",
+      "runtime": "react",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "path": "sidebar-final-1f10f0c9/contents-command/shadcn-vue2-public-dialog-open.json",
+      "family": "shadcn",
+      "runtime": "vue2",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "path": "sidebar-final-1f10f0c9/contents-command/brutalist-wc-public-dialog-open.json",
+      "family": "brutalist",
+      "runtime": "wc",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "path": "sidebar-final-1f10f0c9/contents-command/shadcn-wc-public-dialog-open.json",
+      "family": "shadcn",
+      "runtime": "wc",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "path": "sidebar-final-1f10f0c9/contents-command/brutalist-vue2-public-dialog-open.json",
+      "family": "brutalist",
+      "runtime": "vue2",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "path": "sidebar-final-1f10f0c9/contents-command/brutalist-wc-keyboard-focus.json",
+      "family": "brutalist",
+      "runtime": "wc",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "path": "sidebar-final-1f10f0c9/contents-command/shadcn-react-keyboard-focus.json",
+      "family": "shadcn",
+      "runtime": "react",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "path": "sidebar-final-1f10f0c9/contents-command/shadcn-vue-keyboard-focus.json",
+      "family": "shadcn",
+      "runtime": "vue",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "path": "sidebar-final-1f10f0c9/contents-command/brutalist-vue-keyboard-focus.json",
+      "family": "brutalist",
+      "runtime": "vue",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "path": "sidebar-final-1f10f0c9/contents-command/shadcn-wc-keyboard-focus.json",
+      "family": "shadcn",
+      "runtime": "wc",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "path": "sidebar-final-1f10f0c9/contents-command/brutalist-vue-public-dialog-open.json",
+      "family": "brutalist",
+      "runtime": "vue",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "path": "sidebar-final-1f10f0c9/contents-command/brutalist-vue2-keyboard-focus.json",
+      "family": "brutalist",
+      "runtime": "vue2",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "path": "sidebar-final-1f10f0c9/contents-command/shadcn-vue2-keyboard-focus.json",
+      "family": "shadcn",
+      "runtime": "vue2",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "path": "sidebar-final-1f10f0c9/contents-command/shadcn-react-public-dialog-open.json",
+      "family": "shadcn",
+      "runtime": "react",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "path": "sidebar-final-1f10f0c9/contents-command/shadcn-vue-public-dialog-open.json",
+      "family": "shadcn",
+      "runtime": "vue",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "path": "sidebar-final-1f10f0c9/contents-command/brutalist-react-public-dialog-open.json",
+      "family": "brutalist",
+      "runtime": "react",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    }
+  ],
+  "phase": {
+    "first": 12,
+    "after": 18,
+    "identity": "site-contents-panel-1-docs-1-1/Shadcn/WC",
+    "dirty": true,
+    "postVerdictOnly500ms": true,
+    "observerMayPerturb": true
+  },
+  "counterfeitFacts": {
+    "mutation": {
+      "at": 4184.199999988079,
+      "originalConnected": false,
+      "replaced": true
+    },
+    "originalConnected": false,
+    "originalIsCurrent": false,
+    "oldMarkerPredicate": true,
+    "oldHomeCount": 1,
+    "oldMarkerNull": true
+  },
+  "counterfeitError": "Error: Matcher did not succeed in 993.5710419999996ms",
+  "types": {
+    "exitCode": 0,
+    "files": 1156,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 24,
+    "kind": "Precommit exactcandidatebytes, no postcommit rerunclaim"
+  },
+  "sourceHostControls": {
+    "passed": 10,
+    "failed": 0,
+    "kind": "Source-host substitutes, notnativefatalteardownproof"
+  },
+  "review": {
+    "sourceReport": "review/report.json",
+    "finding": "CONTENTS-HANDBACK-IDENTITY-001 resolved",
+    "openSourceFindings": 0,
+    "status": "partial/ABSTAIN, not GitHub APPROVE"
+  },
+  "visualReview": {
+    "selectedNewPNGsViewedByPrimary": 5,
+    "allPNGsVisuallyReviewed": false
+  },
+  "boundaries": [
+    "Native green proves real inputs/focus/original-tree physical handback. Normal callback order additionally has source-host held-leave control and one ShadcnWC same-failure phase trace. No fatal/native-detach guarantee.",
+    "No fixedbaseline calibration run today; historical closure table stillstrict and independentdecisionpending.",
+    "No new Material source/packed/package-budget measurements,fullhomepage9cases,hostedfullCI/GPUI/optical/release acceptance.",
+    "Modal Contents screenshots are functional evidence, not acceptance of rejected website navigation design.",
+    "Original immediate-first-read failures and initial identity-incomplete candidate retained."
+  ]
+}
