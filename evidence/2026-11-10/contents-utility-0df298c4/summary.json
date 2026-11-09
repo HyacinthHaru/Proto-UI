@@ -1,0 +1,137 @@
+{
+  "head": "0df298c4b48c2e4805ec7ce81b5644c0f4e5aef5",
+  "scope": "instrumented source copies, both original assertions passed",
+  "publicationOnly": {
+    "react": {
+      "originalError": null,
+      "verdictMs": 704,
+      "clockOffsetBoundMs": [0, 1],
+      "publicationMsBound": [582.4, 583.4],
+      "pollsAtVerdict": [
+        {
+          "entered": 0,
+          "value": "wc",
+          "returned": 7
+        },
+        {
+          "entered": 59,
+          "value": "wc",
+          "returned": 251
+        },
+        {
+          "entered": 303,
+          "value": "wc",
+          "returned": 562
+        },
+        {
+          "entered": 614,
+          "value": "react",
+          "returned": 704
+        }
+      ]
+    },
+    "vue": {
+      "originalError": null,
+      "verdictMs": 922,
+      "clockOffsetBoundMs": [0.1, 1.1],
+      "publicationMsBound": [649.6, 650.6],
+      "pollsAtVerdict": [
+        {
+          "entered": 0,
+          "value": "react",
+          "returned": 8
+        },
+        {
+          "entered": 59,
+          "value": "react",
+          "returned": 617
+        },
+        {
+          "entered": 670,
+          "value": "vue",
+          "returned": 922
+        }
+      ]
+    }
+  },
+  "utility": {
+    "react": {
+      "originalVerdictMs": 672,
+      "error": null,
+      "publicationMs": [554.7, 555.7],
+      "clockBoundWidthMs": 1.0,
+      "utilityUsable": true,
+      "reads": 4,
+      "restoration": true,
+      "calls": [
+        {
+          "nodeStart": 0,
+          "nodeEnd": 7,
+          "getterStart": [5.8, 6.8],
+          "getterEnd": [5.8, 6.8],
+          "nativeGetterMs": 0.0,
+          "value": "wc"
+        },
+        {
+          "nodeStart": 58,
+          "nodeEnd": 245,
+          "getterStart": [243.6, 244.6],
+          "getterEnd": [243.6, 244.6],
+          "nativeGetterMs": 0.0,
+          "value": "wc"
+        },
+        {
+          "nodeStart": 295,
+          "nodeEnd": 535,
+          "getterStart": [534.1, 535.1],
+          "getterEnd": [534.1, 535.1],
+          "nativeGetterMs": 0.0,
+          "value": "wc"
+        },
+        {
+          "nodeStart": 587,
+          "nodeEnd": 672,
+          "getterStart": [670.8, 671.8],
+          "getterEnd": [670.8, 671.8],
+          "nativeGetterMs": 0.0,
+          "value": "react"
+        }
+      ]
+    },
+    "vue": {
+      "originalVerdictMs": 923,
+      "error": null,
+      "publicationMs": [648.8, 649.8],
+      "clockBoundWidthMs": 1.0,
+      "utilityUsable": true,
+      "reads": 3,
+      "restoration": true,
+      "calls": [
+        {
+          "nodeStart": 0,
+          "nodeEnd": 7,
+          "getterStart": [5.9, 6.9],
+          "getterEnd": [5.9, 6.9],
+          "nativeGetterMs": 0,
+          "value": "react"
+        },
+        {
+          "nodeStart": 59,
+          "nodeEnd": 618,
+          "getterStart": [617.2, 618.2],
+          "getterEnd": [617.2, 618.2],
+          "nativeGetterMs": 0.0,
+          "value": "react"
+        },
+        {
+          "nodeStart": 671,
+          "nodeEnd": 923,
+          "getterStart": [922.4, 923.4],
+          "getterEnd": [922.4, 923.4],
+          "nativeGetterMs": 0.0,
+          "value": "vue"
+        }
+      ]
+    }
+  }
+}
