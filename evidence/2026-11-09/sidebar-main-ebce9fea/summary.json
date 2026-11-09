@@ -1,0 +1,275 @@
+{
+  "head": "ebce9feae890d8b9b318e1da82611331ceeb0e19",
+  "mergedCommit": "b42cfc5d7a456c8b243427abb293086f6d1e636c",
+  "runtime": {
+    "node": "24.21.0",
+    "pnpm": "10.32.1",
+    "platform": "macOS arm64",
+    "chromium": "155.0.8059.39"
+  },
+  "contents": [
+    {
+      "name": "sidebar-main-ebce9fea",
+      "head": "ebce9feae890d8b9b318e1da82611331ceeb0e19",
+      "dirty": false,
+      "exit": 1,
+      "deadline": 1000,
+      "verdictMs": 1001,
+      "firstRuntime": "wc",
+      "firstAtMs": 1492,
+      "lateRuntime": "react",
+      "lateAtMs": 3239,
+      "closeCount": 3,
+      "longTasksAfterClick": [252, 1185, 1239],
+      "runnerIntegrity": {
+        "schemaVersion": 1,
+        "vitestVersion": "2.1.9",
+        "reporterSha256": "d26d77c9a57a8997394a21b70dee15cf7408c25e3d7bd7e22f48e5b1e6e4c6fa",
+        "phase": "process-exit",
+        "finishedCalls": 1,
+        "closeStarted": true,
+        "closeFinished": true,
+        "processTimedOut": false,
+        "runnerErrors": [],
+        "unhandledErrors": [],
+        "files": [
+          {
+            "path": "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+            "state": "fail",
+            "suiteErrors": []
+          }
+        ],
+        "exitCode": 1,
+        "cancelled": false,
+        "reportSha256": "78b2e52ff89568b8ff2a6cd8f8e077e334bc6fc55c8f12a0bb84ca55a9dde19d"
+      }
+    },
+    {
+      "name": "sidebar-profile-ebce9fea",
+      "head": "ebce9feae890d8b9b318e1da82611331ceeb0e19",
+      "dirty": true,
+      "exit": 1,
+      "deadline": 1000,
+      "verdictMs": 1001,
+      "firstRuntime": "wc",
+      "firstAtMs": 1617,
+      "lateRuntime": "react",
+      "lateAtMs": 3496,
+      "closeCount": 3,
+      "longTasksAfterClick": [282, 1281, 1329],
+      "runnerIntegrity": {
+        "schemaVersion": 1,
+        "vitestVersion": "2.1.9",
+        "reporterSha256": "d26d77c9a57a8997394a21b70dee15cf7408c25e3d7bd7e22f48e5b1e6e4c6fa",
+        "phase": "process-exit",
+        "finishedCalls": 1,
+        "closeStarted": true,
+        "closeFinished": true,
+        "processTimedOut": false,
+        "runnerErrors": [],
+        "unhandledErrors": [],
+        "files": [
+          {
+            "path": "apps/www/src/content/docs/zh-cn/contents-nov09-diagnostic.browser.test.ts",
+            "state": "fail",
+            "suiteErrors": []
+          }
+        ],
+        "exitCode": 1,
+        "cancelled": false,
+        "reportSha256": "132db21c21e30144004088cb0bc1309b46f70450731686f2cf79420c515992fc"
+      }
+    },
+    {
+      "name": "sidebar-control-bcfcc0b1",
+      "head": "bcfcc0b1841f62691509069d51b8a737f1c09dfa",
+      "dirty": false,
+      "exit": 0,
+      "deadline": 1000,
+      "verdictMs": 247,
+      "firstRuntime": "react",
+      "firstAtMs": 264,
+      "lateRuntime": null,
+      "lateAtMs": null,
+      "closeCount": 24,
+      "longTasksAfterClick": [62],
+      "runnerIntegrity": {
+        "schemaVersion": 1,
+        "vitestVersion": "2.1.9",
+        "reporterSha256": "d26d77c9a57a8997394a21b70dee15cf7408c25e3d7bd7e22f48e5b1e6e4c6fa",
+        "phase": "process-exit",
+        "finishedCalls": 1,
+        "closeStarted": true,
+        "closeFinished": true,
+        "processTimedOut": false,
+        "runnerErrors": [],
+        "unhandledErrors": [],
+        "files": [
+          {
+            "path": "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+            "state": "pass",
+            "suiteErrors": []
+          }
+        ],
+        "exitCode": 0,
+        "cancelled": false,
+        "reportSha256": "a049b1ecbdc125e93deba227d68466e239ef327c399d4322f5a33dcb5e8e2697"
+      }
+    },
+    {
+      "name": "sidebar-doc-control-ebce9fea",
+      "head": "ebce9feae890d8b9b318e1da82611331ceeb0e19",
+      "dirty": true,
+      "exit": 0,
+      "deadline": 1000,
+      "verdictMs": 169,
+      "firstRuntime": "react",
+      "firstAtMs": 186,
+      "lateRuntime": null,
+      "lateAtMs": null,
+      "closeCount": 24,
+      "longTasksAfterClick": [59],
+      "runnerIntegrity": {
+        "schemaVersion": 1,
+        "vitestVersion": "2.1.9",
+        "reporterSha256": "d26d77c9a57a8997394a21b70dee15cf7408c25e3d7bd7e22f48e5b1e6e4c6fa",
+        "phase": "process-exit",
+        "finishedCalls": 1,
+        "closeStarted": true,
+        "closeFinished": true,
+        "processTimedOut": false,
+        "runnerErrors": [],
+        "unhandledErrors": [],
+        "files": [
+          {
+            "path": "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+            "state": "pass",
+            "suiteErrors": []
+          }
+        ],
+        "exitCode": 0,
+        "cancelled": false,
+        "reportSha256": "653718e873f95f809688d674f7832da5325f2b33c820eea899c418a24e984507"
+      }
+    }
+  ],
+  "profile": {
+    "durationMs": 4534,
+    "inclusiveMs": {
+      "sampleWebComponentScopeTargets": 1459,
+      "isPrunedByExternalAncestor": 976,
+      "collectEntryStyleDependencies": 1444,
+      "refreshTree": 1876
+    }
+  },
+  "dialog": {
+    "passed": 8,
+    "rows": 196,
+    "pngs": 120,
+    "checkerControls": 113,
+    "closureHashes": [
+      "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e  apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+      "3b425734cfb00602354bdc2b086e70a0434863f7cc3040415631be1627e0c9b6  apps/www/src/content/docs/zh-cn/browser-harness.ts",
+      "4bbc332f34ebf8a9c24f0ccc01d53438dd7146e86118a932eacc63d819105fda  scripts/test/server-readiness.mjs"
+    ],
+    "runnerIntegrity": {
+      "schemaVersion": 1,
+      "vitestVersion": "2.1.9",
+      "reporterSha256": "d26d77c9a57a8997394a21b70dee15cf7408c25e3d7bd7e22f48e5b1e6e4c6fa",
+      "phase": "process-exit",
+      "finishedCalls": 1,
+      "closeStarted": true,
+      "closeFinished": true,
+      "processTimedOut": false,
+      "runnerErrors": [],
+      "unhandledErrors": [],
+      "files": [
+        {
+          "path": "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+          "state": "pass",
+          "suiteErrors": []
+        }
+      ],
+      "exitCode": 0,
+      "cancelled": false,
+      "reportSha256": "d4245880ffd92057d75668749a13e524bdd5227ba1049120aad673e9e89a9a6a"
+    },
+    "independentCalibration": "pending"
+  },
+  "contentsUnit": 11,
+  "officialPopover": {
+    "source": "94e1c11f7390269a4f8119f59964edaa6604cb1e",
+    "members": 210,
+    "archiveSha256": "54c356d98338339a1fd0ae0b94c6c27996ab47ca6217f84598783e2423d3f508",
+    "failures": [
+      {
+        "runtime": "wc",
+        "stage": "native-wheel-scroll",
+        "result": "failed",
+        "failure": "Error: Matcher did not succeed in 1000ms",
+        "geometry": {
+          "availableWidth": 374,
+          "availableHeight": 394,
+          "box": {
+            "x": 8,
+            "y": 8,
+            "right": 382,
+            "bottom": 402,
+            "width": 374,
+            "height": 394
+          },
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "splitSurface": false,
+          "overflowY": "auto",
+          "overscroll": "contain",
+          "scrollTop": 0,
+          "scrollHeight": 1424,
+          "clientHeight": 390,
+          "pageX": 0,
+          "pageY": 1276,
+          "documentWidth": 390,
+          "documentHeight": 2203,
+          "hostTokens": "rounded-base border-2 border-black bg-background text-foreground font-sans font-medium z-50 w-[var(--proto-ui-available-width)] h-[var(--proto-ui-available-height)] max-w-[var(--proto-ui-available-width)] max-h-[var(--proto-ui-available-height)] overflow-y-auto overscroll-contain p-0 outline-none",
+          "surfaceTokens": "rounded-base border-2 border-black bg-background text-foreground font-sans font-medium z-50 w-[var(--proto-ui-available-width)] h-[var(--proto-ui-available-height)] max-w-[var(--proto-ui-available-width)] max-h-[var(--proto-ui-available-height)] overflow-y-auto overscroll-contain p-0 outline-none"
+        }
+      },
+      {
+        "runtime": "vue2",
+        "stage": "native-wheel-scroll",
+        "result": "failed",
+        "failure": "Error: Matcher did not succeed in 1000ms",
+        "geometry": {
+          "availableWidth": 374,
+          "availableHeight": 394,
+          "box": {
+            "x": 8,
+            "y": 8,
+            "right": 382,
+            "bottom": 402,
+            "width": 374,
+            "height": 394
+          },
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "splitSurface": false,
+          "overflowY": "auto",
+          "overscroll": "contain",
+          "scrollTop": 0,
+          "scrollHeight": 1424,
+          "clientHeight": 390,
+          "pageX": 0,
+          "pageY": 1276,
+          "documentWidth": 390,
+          "documentHeight": 2203,
+          "hostTokens": "rounded-base border-2 border-black bg-background text-foreground font-sans font-medium z-50 w-[var(--proto-ui-available-width)] h-[var(--proto-ui-available-height)] max-w-[var(--proto-ui-available-width)] max-h-[var(--proto-ui-available-height)] overflow-y-auto overscroll-contain p-0 outline-none",
+          "surfaceTokens": "rounded-base border-2 border-black bg-background text-foreground font-sans font-medium z-50 w-[var(--proto-ui-available-width)] h-[var(--proto-ui-available-height)] max-w-[var(--proto-ui-available-width)] max-h-[var(--proto-ui-available-height)] overflow-y-auto overscroll-contain p-0 outline-none"
+        }
+      }
+    ]
+  }
+}
