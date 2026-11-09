@@ -1,0 +1,214 @@
+{
+  "head": "0df298c4b48c2e4805ec7ce81b5644c0f4e5aef5",
+  "parent": "d25e7f46bfffe2efe3279ad48ed1fd2269865bd9",
+  "base": "0607c6c5c386b8a932ab850e92a8873b2121dc45",
+  "tree": "1f6d91d62c9d3f73055ae82f426947ff9b05183b",
+  "scope": [
+    "packages/adapters/web-component/src/runtime/modules.ts",
+    "packages/adapters/web-component/test/shadow-closeout.browser.test.ts"
+  ],
+  "originalCodeExamples": 7,
+  "originalContentsAndDialogAssertionsAndDeadlines": true,
+  "newAnBRedCases": 2,
+  "unchangedPositionControls": 4,
+  "focusedPassed": 171,
+  "types": {
+    "files": 1179,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 25
+  },
+  "packages": {
+    "builds": 47,
+    "manifests": 47,
+    "policyTests": 9,
+    "budgetMeasurements": 9,
+    "advisoryOverruns": 6,
+    "withinBudgets": false,
+    "blocking": 0
+  },
+  "contents": [
+    {
+      "run": 1,
+      "exitCode": 0,
+      "timing": {
+        "shadcn-wc": {
+          "elapsedMs": 2,
+          "error": null,
+          "firstMs": 3.4,
+          "firstRuntime": "wc"
+        },
+        "shadcn-vue2": {
+          "elapsedMs": 927,
+          "error": null,
+          "firstMs": 1001.9,
+          "firstRuntime": "vue2"
+        },
+        "shadcn-vue": {
+          "elapsedMs": 927,
+          "error": null,
+          "firstMs": 933.2,
+          "firstRuntime": "vue"
+        },
+        "brutalist-wc": {
+          "elapsedMs": 2,
+          "error": null,
+          "firstMs": 3.2,
+          "firstRuntime": "wc"
+        },
+        "brutalist-react": {
+          "elapsedMs": 325,
+          "error": null,
+          "firstMs": 326.4,
+          "firstRuntime": "react"
+        },
+        "brutalist-vue2": {
+          "elapsedMs": 243,
+          "error": null,
+          "firstMs": 248.1,
+          "firstRuntime": "vue2"
+        },
+        "brutalist-vue": {
+          "elapsedMs": 309,
+          "error": null,
+          "firstMs": 342.6,
+          "firstRuntime": "vue"
+        },
+        "shadcn-react": {
+          "elapsedMs": 687,
+          "error": null,
+          "firstMs": 693.8,
+          "firstRuntime": "react"
+        }
+      },
+      "closes": 24
+    },
+    {
+      "run": 2,
+      "exitCode": 0,
+      "timing": {
+        "shadcn-wc": {
+          "elapsedMs": 2,
+          "error": null,
+          "firstMs": 3.3,
+          "firstRuntime": "wc"
+        },
+        "shadcn-vue2": {
+          "elapsedMs": 931,
+          "error": null,
+          "firstMs": 1006.1,
+          "firstRuntime": "vue2"
+        },
+        "shadcn-vue": {
+          "elapsedMs": 925,
+          "error": null,
+          "firstMs": 930.3,
+          "firstRuntime": "vue"
+        },
+        "brutalist-wc": {
+          "elapsedMs": 3,
+          "error": null,
+          "firstMs": 3.6,
+          "firstRuntime": "wc"
+        },
+        "brutalist-react": {
+          "elapsedMs": 328,
+          "error": null,
+          "firstMs": 329.6,
+          "firstRuntime": "react"
+        },
+        "brutalist-vue2": {
+          "elapsedMs": 237,
+          "error": null,
+          "firstMs": 241.4,
+          "firstRuntime": "vue2"
+        },
+        "brutalist-vue": {
+          "elapsedMs": 302,
+          "error": null,
+          "firstMs": 337.8,
+          "firstRuntime": "vue"
+        },
+        "shadcn-react": {
+          "elapsedMs": 671,
+          "error": null,
+          "firstMs": 677.4,
+          "firstRuntime": "react"
+        }
+      },
+      "closes": 24
+    },
+    {
+      "run": 3,
+      "exitCode": 0,
+      "timing": {
+        "shadcn-wc": {
+          "elapsedMs": 3,
+          "error": null,
+          "firstMs": 4.3,
+          "firstRuntime": "wc"
+        },
+        "shadcn-vue2": {
+          "elapsedMs": 928,
+          "error": null,
+          "firstMs": 1003.9,
+          "firstRuntime": "vue2"
+        },
+        "shadcn-vue": {
+          "elapsedMs": 935,
+          "error": null,
+          "firstMs": 941.1,
+          "firstRuntime": "vue"
+        },
+        "brutalist-wc": {
+          "elapsedMs": 2,
+          "error": null,
+          "firstMs": 3,
+          "firstRuntime": "wc"
+        },
+        "brutalist-react": {
+          "elapsedMs": 324,
+          "error": null,
+          "firstMs": 337.9,
+          "firstRuntime": "react"
+        },
+        "brutalist-vue2": {
+          "elapsedMs": 239,
+          "error": null,
+          "firstMs": 243.4,
+          "firstRuntime": "vue2"
+        },
+        "brutalist-vue": {
+          "elapsedMs": 302,
+          "error": null,
+          "firstMs": 336.1,
+          "firstRuntime": "vue"
+        },
+        "shadcn-react": {
+          "elapsedMs": 676,
+          "error": null,
+          "firstMs": 683,
+          "firstRuntime": "react"
+        }
+      },
+      "closes": 24
+    }
+  ],
+  "dialog": {
+    "passed": 8,
+    "observations": 196,
+    "pngs": 120,
+    "browser": "155.0.8059.39"
+  },
+  "hosted": {
+    "base": "0607c6c5c386b8a932ab850e92a8873b2121dc45",
+    "run": 42674546918,
+    "contentsJob": 129352498796,
+    "contentsVerdict": "original Shadcn React 1000ms publication assertion failed",
+    "dialogJob": 129352469059,
+    "dialogVerdict": "all eight cases passed in log; shard exited 124",
+    "popoverJob": 129356573834,
+    "popoverPassed": 32,
+    "originalMobileWheelPassed": 16
+  }
+}

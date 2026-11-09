@@ -1,0 +1,1772 @@
+{
+  "source": "0df298c4b48c2e4805ec7ce81b5644c0f4e5aef5",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "47e4706fee7b6373320ff5c60558c77cbea5b9a7cf4220d96e00b50a20a27fc5",
+      "bytes": 2733
+    },
+    {
+      "path": "contents-shadcn-vue-open.png",
+      "sha256": "87280f44c97fae0342db6e71c843d3acdf9a28d72f8117960637886fff2eb267",
+      "bytes": 30110
+    },
+    {
+      "path": "dialog-shadcn-wc-390-settled.png",
+      "sha256": "9fbbb0dcb19207ba0593f5e5d04c26fcf7e28608d12dc6d58e0dc6810373a991",
+      "bytes": 71577
+    },
+    {
+      "path": "raw-evidence.tar.gz",
+      "sha256": "4e5c0c4d318738275f1ef62ac793f9ae68caea4a76f16866aa56e877637e4dd5",
+      "bytes": 9395500
+    },
+    {
+      "path": "summary.json",
+      "sha256": "9ea77e28cd2ec4778c46c1f5bf168bf4c980fca35c6346a77dddd3d3f67d145b",
+      "bytes": 5231
+    }
+  ],
+  "archive": [
+    {
+      "path": "anb-build-packages.exit",
+      "rawSha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "publishedSha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "anb-build-packages.log",
+      "rawSha256": "8bd812fa2430f9d2545fe3cf4853a3a336f2cb1a60b4cc78da00d4457354d359",
+      "publishedSha256": "196bc872ab9e874af15138f2975395a78a6177db179f14695699eb7fc1179a91",
+      "bytes": 2871
+    },
+    {
+      "path": "anb-candidate-sha.txt",
+      "rawSha256": "3b604cc6ec732b66d0b157bb076390e7af40d9684656f9895058b3036a7a8e2c",
+      "publishedSha256": "3b604cc6ec732b66d0b157bb076390e7af40d9684656f9895058b3036a7a8e2c",
+      "bytes": 256
+    },
+    {
+      "path": "anb-candidate.patch",
+      "rawSha256": "be282d3cff6f824be46df39e989d5a4b5591e7b30bb080bc760380e4e4183a9d",
+      "publishedSha256": "be282d3cff6f824be46df39e989d5a4b5591e7b30bb080bc760380e4e4183a9d",
+      "bytes": 3589
+    },
+    {
+      "path": "anb-check-package-manifests.exit",
+      "rawSha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "publishedSha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "anb-check-package-manifests.log",
+      "rawSha256": "1949166cf036f8fa6fe8b2331b651129400a688c924887ecee5a39b3a6d1dc33",
+      "publishedSha256": "17d82f5b4ce696687489f6902736a77487509069b07b9c133845864523cd8d19",
+      "bytes": 132
+    },
+    {
+      "path": "anb-commit-receipt.json",
+      "rawSha256": "5c378b35ad8e856e70acc4b9c2382633f3e392ee0514f8e8a41358a148269aaf",
+      "publishedSha256": "5c378b35ad8e856e70acc4b9c2382633f3e392ee0514f8e8a41358a148269aaf",
+      "bytes": 249
+    },
+    {
+      "path": "anb-contents-1/browser.log",
+      "rawSha256": "9e4114974587e39c0870626af69b20c381230061822d58c80e983d26863765c3",
+      "publishedSha256": "548473fa120c874766e74a93d9eaf11891176138a31a56dc811412e724b6a2e1",
+      "bytes": 5987
+    },
+    {
+      "path": "anb-contents-1/contents-command/brutalist-react-keyboard-focus.json",
+      "rawSha256": "7cf9b0a0e080a633379d6e7e65fa6527424b206510320ffd00788f7a5b241fa8",
+      "publishedSha256": "7cf9b0a0e080a633379d6e7e65fa6527424b206510320ffd00788f7a5b241fa8",
+      "bytes": 2428
+    },
+    {
+      "path": "anb-contents-1/contents-command/brutalist-react-keyboard-focus.png",
+      "rawSha256": "9bbdb169cc844c832808003e78bc8506e8b5eddcff77118473ed19820a8f9883",
+      "publishedSha256": "9bbdb169cc844c832808003e78bc8506e8b5eddcff77118473ed19820a8f9883",
+      "bytes": 47414
+    },
+    {
+      "path": "anb-contents-1/contents-command/brutalist-react-public-dialog-open.json",
+      "rawSha256": "cff8fc8adadc1bfed6d3228ec595c9b8c3acff8da327a14f48b8b3511ec74acd",
+      "publishedSha256": "cff8fc8adadc1bfed6d3228ec595c9b8c3acff8da327a14f48b8b3511ec74acd",
+      "bytes": 1632
+    },
+    {
+      "path": "anb-contents-1/contents-command/brutalist-react-public-dialog-open.png",
+      "rawSha256": "e6e97dac2dbcfd4861eef30786ab35b0cd19abc4201024d485513b0fe2ca969a",
+      "publishedSha256": "e6e97dac2dbcfd4861eef30786ab35b0cd19abc4201024d485513b0fe2ca969a",
+      "bytes": 47785
+    },
+    {
+      "path": "anb-contents-1/contents-command/brutalist-react-transition.json",
+      "rawSha256": "5a29ace375fcd148f61b6c3e1073083130121313b2ee63c186088ce2daf4af6f",
+      "publishedSha256": "5a29ace375fcd148f61b6c3e1073083130121313b2ee63c186088ce2daf4af6f",
+      "bytes": 2890
+    },
+    {
+      "path": "anb-contents-1/contents-command/brutalist-vue-keyboard-focus.json",
+      "rawSha256": "15c59d7f6158e199bdaf6a36cb85602491c3d7dfc1a8a82a04dfb5da266b8aea",
+      "publishedSha256": "15c59d7f6158e199bdaf6a36cb85602491c3d7dfc1a8a82a04dfb5da266b8aea",
+      "bytes": 2424
+    },
+    {
+      "path": "anb-contents-1/contents-command/brutalist-vue-keyboard-focus.png",
+      "rawSha256": "464f2f4254aef3fa5c286dc23ac7c2efb0bc6140cc647b58e6e90de6ac02252a",
+      "publishedSha256": "464f2f4254aef3fa5c286dc23ac7c2efb0bc6140cc647b58e6e90de6ac02252a",
+      "bytes": 47374
+    },
+    {
+      "path": "anb-contents-1/contents-command/brutalist-vue-public-dialog-open.json",
+      "rawSha256": "38c43c087016119cf6df2af4fe0a24cfe06e3f20044f70a9436a051bd116c57f",
+      "publishedSha256": "38c43c087016119cf6df2af4fe0a24cfe06e3f20044f70a9436a051bd116c57f",
+      "bytes": 1632
+    },
+    {
+      "path": "anb-contents-1/contents-command/brutalist-vue-public-dialog-open.png",
+      "rawSha256": "609ad0315b53467a62e09fb48d76c5edc94a22066a794ca06d9bf0cf368c12d7",
+      "publishedSha256": "609ad0315b53467a62e09fb48d76c5edc94a22066a794ca06d9bf0cf368c12d7",
+      "bytes": 47851
+    },
+    {
+      "path": "anb-contents-1/contents-command/brutalist-vue-transition.json",
+      "rawSha256": "b4f5fb5d16820e07dbc7d2686f0c51b6a269266e1a2e958189a514863632db0b",
+      "publishedSha256": "b4f5fb5d16820e07dbc7d2686f0c51b6a269266e1a2e958189a514863632db0b",
+      "bytes": 3031
+    },
+    {
+      "path": "anb-contents-1/contents-command/brutalist-vue2-keyboard-focus.json",
+      "rawSha256": "8b7e1f8b64649cd0094c576d57033de5db0504087d73b5b68d4bfb88821dd6e4",
+      "publishedSha256": "8b7e1f8b64649cd0094c576d57033de5db0504087d73b5b68d4bfb88821dd6e4",
+      "bytes": 2426
+    },
+    {
+      "path": "anb-contents-1/contents-command/brutalist-vue2-keyboard-focus.png",
+      "rawSha256": "b5bf28252aaad6dcf382f7ea4f719cc25e1fcda6a21ada3e13715ac8597ca47a",
+      "publishedSha256": "b5bf28252aaad6dcf382f7ea4f719cc25e1fcda6a21ada3e13715ac8597ca47a",
+      "bytes": 47358
+    },
+    {
+      "path": "anb-contents-1/contents-command/brutalist-vue2-public-dialog-open.json",
+      "rawSha256": "e88159e1eaa1a6393d1c86491dc0f96767394a0cfe7d98fbc2d38d66b00b0ba9",
+      "publishedSha256": "e88159e1eaa1a6393d1c86491dc0f96767394a0cfe7d98fbc2d38d66b00b0ba9",
+      "bytes": 1631
+    },
+    {
+      "path": "anb-contents-1/contents-command/brutalist-vue2-public-dialog-open.png",
+      "rawSha256": "c5da00d9563717a918cb792142b77274d3c2388ba96a88abdf021848141248ef",
+      "publishedSha256": "c5da00d9563717a918cb792142b77274d3c2388ba96a88abdf021848141248ef",
+      "bytes": 43832
+    },
+    {
+      "path": "anb-contents-1/contents-command/brutalist-vue2-transition.json",
+      "rawSha256": "7b29afe68f4b69e5870ba1c7befa55fae74439f983c7376b063e1efb9634cc66",
+      "publishedSha256": "7b29afe68f4b69e5870ba1c7befa55fae74439f983c7376b063e1efb9634cc66",
+      "bytes": 3000
+    },
+    {
+      "path": "anb-contents-1/contents-command/brutalist-wc-keyboard-focus.json",
+      "rawSha256": "73c5e3443566981b46825d7c08efc7f27109c2e6f5faa29d3376acbae0b70754",
+      "publishedSha256": "73c5e3443566981b46825d7c08efc7f27109c2e6f5faa29d3376acbae0b70754",
+      "bytes": 2422
+    },
+    {
+      "path": "anb-contents-1/contents-command/brutalist-wc-keyboard-focus.png",
+      "rawSha256": "0d59bbb5a8a9c44b1866a179af85e812df5b86997872c6b6a34fd0d975459092",
+      "publishedSha256": "0d59bbb5a8a9c44b1866a179af85e812df5b86997872c6b6a34fd0d975459092",
+      "bytes": 47362
+    },
+    {
+      "path": "anb-contents-1/contents-command/brutalist-wc-public-dialog-open.json",
+      "rawSha256": "b888844d7bb2af9f5242f0f04aaad9c5d6b49092024adc6b5403fdd5b9b53581",
+      "publishedSha256": "b888844d7bb2af9f5242f0f04aaad9c5d6b49092024adc6b5403fdd5b9b53581",
+      "bytes": 1619
+    },
+    {
+      "path": "anb-contents-1/contents-command/brutalist-wc-public-dialog-open.png",
+      "rawSha256": "1a44532298876d1ebb73774a31e48c3205fe1768ba100cad2ecee8260a44b57c",
+      "publishedSha256": "1a44532298876d1ebb73774a31e48c3205fe1768ba100cad2ecee8260a44b57c",
+      "bytes": 31430
+    },
+    {
+      "path": "anb-contents-1/contents-command/brutalist-wc-transition.json",
+      "rawSha256": "9b97b9e61102c11e4a7b19fd7be5f3e7905bd2ec02327836571a4d51883eb077",
+      "publishedSha256": "9b97b9e61102c11e4a7b19fd7be5f3e7905bd2ec02327836571a4d51883eb077",
+      "bytes": 2401
+    },
+    {
+      "path": "anb-contents-1/contents-command/normal-close-mutations.json",
+      "rawSha256": "34a51a8dba772af62b2d13a6e5feb153565a8c3c1aa4e36dd55deb69a2250807",
+      "publishedSha256": "34a51a8dba772af62b2d13a6e5feb153565a8c3c1aa4e36dd55deb69a2250807",
+      "bytes": 9860
+    },
+    {
+      "path": "anb-contents-1/contents-command/shadcn-react-keyboard-focus.json",
+      "rawSha256": "6c124ba90d906c57866f35644623278031e9cd284054468111eeb84c8e50a9ae",
+      "publishedSha256": "6c124ba90d906c57866f35644623278031e9cd284054468111eeb84c8e50a9ae",
+      "bytes": 2204
+    },
+    {
+      "path": "anb-contents-1/contents-command/shadcn-react-keyboard-focus.png",
+      "rawSha256": "240fa7bd5ce141b665bf6cf522336e713f1e10d1bd72313240ca3351246bfebc",
+      "publishedSha256": "240fa7bd5ce141b665bf6cf522336e713f1e10d1bd72313240ca3351246bfebc",
+      "bytes": 50768
+    },
+    {
+      "path": "anb-contents-1/contents-command/shadcn-react-public-dialog-open.json",
+      "rawSha256": "b6d14ad53aed70f1e7c3d448f5df72fa46af35064f8584deaa3212019e59a42f",
+      "publishedSha256": "b6d14ad53aed70f1e7c3d448f5df72fa46af35064f8584deaa3212019e59a42f",
+      "bytes": 1543
+    },
+    {
+      "path": "anb-contents-1/contents-command/shadcn-react-public-dialog-open.png",
+      "rawSha256": "ac8c34fa2b56c73cbad507841f611bbd62a6be91ea9831e535e2cc6d7fd8493c",
+      "publishedSha256": "ac8c34fa2b56c73cbad507841f611bbd62a6be91ea9831e535e2cc6d7fd8493c",
+      "bytes": 27544
+    },
+    {
+      "path": "anb-contents-1/contents-command/shadcn-react-transition.json",
+      "rawSha256": "5a8d745c3eed98e197b56e60014a4778a5c24e94441da6a3678bda99f0d5d274",
+      "publishedSha256": "5a8d745c3eed98e197b56e60014a4778a5c24e94441da6a3678bda99f0d5d274",
+      "bytes": 2893
+    },
+    {
+      "path": "anb-contents-1/contents-command/shadcn-vue-keyboard-focus.json",
+      "rawSha256": "aedc572c12cbf1511932422b6610088cb562492409db790c63810887342ed7d6",
+      "publishedSha256": "aedc572c12cbf1511932422b6610088cb562492409db790c63810887342ed7d6",
+      "bytes": 2200
+    },
+    {
+      "path": "anb-contents-1/contents-command/shadcn-vue-keyboard-focus.png",
+      "rawSha256": "6988e89dc592a3d3861cf2463a8de4c27bcc8ab93b13329578119dabfb0ba12f",
+      "publishedSha256": "6988e89dc592a3d3861cf2463a8de4c27bcc8ab93b13329578119dabfb0ba12f",
+      "bytes": 50766
+    },
+    {
+      "path": "anb-contents-1/contents-command/shadcn-vue-public-dialog-open.json",
+      "rawSha256": "60caa93cf334855424641f5b4e383d7b1a2f971231c451b7332c36621d96643f",
+      "publishedSha256": "60caa93cf334855424641f5b4e383d7b1a2f971231c451b7332c36621d96643f",
+      "bytes": 1541
+    },
+    {
+      "path": "anb-contents-1/contents-command/shadcn-vue-public-dialog-open.png",
+      "rawSha256": "87280f44c97fae0342db6e71c843d3acdf9a28d72f8117960637886fff2eb267",
+      "publishedSha256": "87280f44c97fae0342db6e71c843d3acdf9a28d72f8117960637886fff2eb267",
+      "bytes": 30110
+    },
+    {
+      "path": "anb-contents-1/contents-command/shadcn-vue-transition.json",
+      "rawSha256": "4b17a67b6570b76f679245e0a03ace452bb3cc3fc97c98d7f6cba292646bf382",
+      "publishedSha256": "4b17a67b6570b76f679245e0a03ace452bb3cc3fc97c98d7f6cba292646bf382",
+      "bytes": 3033
+    },
+    {
+      "path": "anb-contents-1/contents-command/shadcn-vue2-keyboard-focus.json",
+      "rawSha256": "32bbf43e5cfd3e5088b98aaf1b2d18e2225adb0896bd4a4f37d2d796f6e18e3e",
+      "publishedSha256": "32bbf43e5cfd3e5088b98aaf1b2d18e2225adb0896bd4a4f37d2d796f6e18e3e",
+      "bytes": 2202
+    },
+    {
+      "path": "anb-contents-1/contents-command/shadcn-vue2-keyboard-focus.png",
+      "rawSha256": "240fa7bd5ce141b665bf6cf522336e713f1e10d1bd72313240ca3351246bfebc",
+      "publishedSha256": "240fa7bd5ce141b665bf6cf522336e713f1e10d1bd72313240ca3351246bfebc",
+      "bytes": 50768
+    },
+    {
+      "path": "anb-contents-1/contents-command/shadcn-vue2-public-dialog-open.json",
+      "rawSha256": "66dfb52ccf4cbcbdab556d1b28f1183ec3a7449306a3c4b5119dd90cbca11012",
+      "publishedSha256": "66dfb52ccf4cbcbdab556d1b28f1183ec3a7449306a3c4b5119dd90cbca11012",
+      "bytes": 1542
+    },
+    {
+      "path": "anb-contents-1/contents-command/shadcn-vue2-public-dialog-open.png",
+      "rawSha256": "87280f44c97fae0342db6e71c843d3acdf9a28d72f8117960637886fff2eb267",
+      "publishedSha256": "87280f44c97fae0342db6e71c843d3acdf9a28d72f8117960637886fff2eb267",
+      "bytes": 30110
+    },
+    {
+      "path": "anb-contents-1/contents-command/shadcn-vue2-transition.json",
+      "rawSha256": "476cebe21552116b8bfba90675e4719f41d3cfa3bf70d00011c5e49ef384c96b",
+      "publishedSha256": "476cebe21552116b8bfba90675e4719f41d3cfa3bf70d00011c5e49ef384c96b",
+      "bytes": 3148
+    },
+    {
+      "path": "anb-contents-1/contents-command/shadcn-wc-keyboard-focus.json",
+      "rawSha256": "ecd955be7070b36641f76b68f6dbd2779b7ec0a0fc5bc4f054368c4c239bbc14",
+      "publishedSha256": "ecd955be7070b36641f76b68f6dbd2779b7ec0a0fc5bc4f054368c4c239bbc14",
+      "bytes": 2283
+    },
+    {
+      "path": "anb-contents-1/contents-command/shadcn-wc-keyboard-focus.png",
+      "rawSha256": "cbe0884f079e74a208316d39095b55daf3945d376e45e77c68e15d2a7de3e27b",
+      "publishedSha256": "cbe0884f079e74a208316d39095b55daf3945d376e45e77c68e15d2a7de3e27b",
+      "bytes": 50790
+    },
+    {
+      "path": "anb-contents-1/contents-command/shadcn-wc-public-dialog-open.json",
+      "rawSha256": "b96c228e3ef3991f08c97b86bfaa174e65002ee75671689bae3ea3435b16f0ac",
+      "publishedSha256": "b96c228e3ef3991f08c97b86bfaa174e65002ee75671689bae3ea3435b16f0ac",
+      "bytes": 1540
+    },
+    {
+      "path": "anb-contents-1/contents-command/shadcn-wc-public-dialog-open.png",
+      "rawSha256": "a476efc2d92e32a4ff3bb599492d191f01a410fa42dd63f62bab4742cbf33944",
+      "publishedSha256": "a476efc2d92e32a4ff3bb599492d191f01a410fa42dd63f62bab4742cbf33944",
+      "bytes": 26769
+    },
+    {
+      "path": "anb-contents-1/contents-command/shadcn-wc-transition.json",
+      "rawSha256": "3e0ce13c0df2f30b01aeb6c2560b9be42a1b7936f3e9ae4b45e3ad28ed5afb3e",
+      "publishedSha256": "3e0ce13c0df2f30b01aeb6c2560b9be42a1b7936f3e9ae4b45e3ad28ed5afb3e",
+      "bytes": 2392
+    },
+    {
+      "path": "anb-contents-1/executed-test.ts",
+      "rawSha256": "8a5db042fcaee8550630c755fdc72583c8bc5645cc5418eccc416523b5453e8e",
+      "publishedSha256": "8a5db042fcaee8550630c755fdc72583c8bc5645cc5418eccc416523b5453e8e",
+      "bytes": 101608
+    },
+    {
+      "path": "anb-contents-1/receipt.json",
+      "rawSha256": "f18220ced03cc623afe594224718b34c3fe373cfb0c6c6ab17c287b3c77b2dd0",
+      "publishedSha256": "6f2d42ff73d3123a086b70495b21c9023579b3e82ec3b25feb76df7a26be54ed",
+      "bytes": 934
+    },
+    {
+      "path": "anb-contents-1/runner-integrity.json",
+      "rawSha256": "8cf7f1c78c434d7a1b1d6320ff46e1941cda1312090c05669d4955242c60e403",
+      "publishedSha256": "8cf7f1c78c434d7a1b1d6320ff46e1941cda1312090c05669d4955242c60e403",
+      "bytes": 597
+    },
+    {
+      "path": "anb-contents-1/vitest.json",
+      "rawSha256": "cbc69888bf4399fd1c678ac39b4f942e0c91841f109bfabc94aa1f1d64656458",
+      "publishedSha256": "2d760ae54ace4df0b647f8bbbb574dbcb81631a12615cc04d804fda85e7b6675",
+      "bytes": 3514
+    },
+    {
+      "path": "anb-contents-2/browser.log",
+      "rawSha256": "04dca7a26ee6de54b28933ad292811a6039eebcc4d08acd7ab5174c977a707cb",
+      "publishedSha256": "0be9c9715fa2e7ae54c43a84adcc1a8db803b63856e2cba2ca27b976bf6cf99a",
+      "bytes": 5727
+    },
+    {
+      "path": "anb-contents-2/contents-command/brutalist-react-keyboard-focus.json",
+      "rawSha256": "7cf9b0a0e080a633379d6e7e65fa6527424b206510320ffd00788f7a5b241fa8",
+      "publishedSha256": "7cf9b0a0e080a633379d6e7e65fa6527424b206510320ffd00788f7a5b241fa8",
+      "bytes": 2428
+    },
+    {
+      "path": "anb-contents-2/contents-command/brutalist-react-keyboard-focus.png",
+      "rawSha256": "9bbdb169cc844c832808003e78bc8506e8b5eddcff77118473ed19820a8f9883",
+      "publishedSha256": "9bbdb169cc844c832808003e78bc8506e8b5eddcff77118473ed19820a8f9883",
+      "bytes": 47414
+    },
+    {
+      "path": "anb-contents-2/contents-command/brutalist-react-public-dialog-open.json",
+      "rawSha256": "9d6ad4277a8345ea344c438b85520bc5b1604c0b2ce405fa6dd83e19b5eff3d9",
+      "publishedSha256": "9d6ad4277a8345ea344c438b85520bc5b1604c0b2ce405fa6dd83e19b5eff3d9",
+      "bytes": 1635
+    },
+    {
+      "path": "anb-contents-2/contents-command/brutalist-react-public-dialog-open.png",
+      "rawSha256": "e6e97dac2dbcfd4861eef30786ab35b0cd19abc4201024d485513b0fe2ca969a",
+      "publishedSha256": "e6e97dac2dbcfd4861eef30786ab35b0cd19abc4201024d485513b0fe2ca969a",
+      "bytes": 47785
+    },
+    {
+      "path": "anb-contents-2/contents-command/brutalist-react-transition.json",
+      "rawSha256": "95df212f0e7f70c7d4dfa2941118d8a5c514f72aeac4fe233a835269db43c26b",
+      "publishedSha256": "95df212f0e7f70c7d4dfa2941118d8a5c514f72aeac4fe233a835269db43c26b",
+      "bytes": 2887
+    },
+    {
+      "path": "anb-contents-2/contents-command/brutalist-vue-keyboard-focus.json",
+      "rawSha256": "15c59d7f6158e199bdaf6a36cb85602491c3d7dfc1a8a82a04dfb5da266b8aea",
+      "publishedSha256": "15c59d7f6158e199bdaf6a36cb85602491c3d7dfc1a8a82a04dfb5da266b8aea",
+      "bytes": 2424
+    },
+    {
+      "path": "anb-contents-2/contents-command/brutalist-vue-keyboard-focus.png",
+      "rawSha256": "8113b84502b8b4cd618e5d04f6bd89b73cd1a3cb93a66ba1ea9cf46277ea8441",
+      "publishedSha256": "8113b84502b8b4cd618e5d04f6bd89b73cd1a3cb93a66ba1ea9cf46277ea8441",
+      "bytes": 47507
+    },
+    {
+      "path": "anb-contents-2/contents-command/brutalist-vue-public-dialog-open.json",
+      "rawSha256": "4e8b240f6e9b33b57fc7b7ceaf19e13107c2eff5ce4f9624c2061ce861ccb90d",
+      "publishedSha256": "4e8b240f6e9b33b57fc7b7ceaf19e13107c2eff5ce4f9624c2061ce861ccb90d",
+      "bytes": 1630
+    },
+    {
+      "path": "anb-contents-2/contents-command/brutalist-vue-public-dialog-open.png",
+      "rawSha256": "75a74a729a96cd02160fb37993fb879ecd6eb9b2fb1acd3b8a43c48fbb889949",
+      "publishedSha256": "75a74a729a96cd02160fb37993fb879ecd6eb9b2fb1acd3b8a43c48fbb889949",
+      "bytes": 51992
+    },
+    {
+      "path": "anb-contents-2/contents-command/brutalist-vue-transition.json",
+      "rawSha256": "c4b86200aa5288d4306dafac65a0233995785b7cc784e77151faabc12390468a",
+      "publishedSha256": "c4b86200aa5288d4306dafac65a0233995785b7cc784e77151faabc12390468a",
+      "bytes": 2967
+    },
+    {
+      "path": "anb-contents-2/contents-command/brutalist-vue2-keyboard-focus.json",
+      "rawSha256": "8b7e1f8b64649cd0094c576d57033de5db0504087d73b5b68d4bfb88821dd6e4",
+      "publishedSha256": "8b7e1f8b64649cd0094c576d57033de5db0504087d73b5b68d4bfb88821dd6e4",
+      "bytes": 2426
+    },
+    {
+      "path": "anb-contents-2/contents-command/brutalist-vue2-keyboard-focus.png",
+      "rawSha256": "b5bf28252aaad6dcf382f7ea4f719cc25e1fcda6a21ada3e13715ac8597ca47a",
+      "publishedSha256": "b5bf28252aaad6dcf382f7ea4f719cc25e1fcda6a21ada3e13715ac8597ca47a",
+      "bytes": 47358
+    },
+    {
+      "path": "anb-contents-2/contents-command/brutalist-vue2-public-dialog-open.json",
+      "rawSha256": "684c256e9c00501f58944d299af774c7a13faeae0c9feb9a5931feb267c3c5a8",
+      "publishedSha256": "684c256e9c00501f58944d299af774c7a13faeae0c9feb9a5931feb267c3c5a8",
+      "bytes": 1623
+    },
+    {
+      "path": "anb-contents-2/contents-command/brutalist-vue2-public-dialog-open.png",
+      "rawSha256": "49668211dbbf4732a5904dee5de8472abdcbdf6b3f939c03abae3b27e1d2aea1",
+      "publishedSha256": "49668211dbbf4732a5904dee5de8472abdcbdf6b3f939c03abae3b27e1d2aea1",
+      "bytes": 47580
+    },
+    {
+      "path": "anb-contents-2/contents-command/brutalist-vue2-transition.json",
+      "rawSha256": "d568b24e3eea145bf247cca02ac28379e4545ae6cb5ed6a024c09082973884e4",
+      "publishedSha256": "d568b24e3eea145bf247cca02ac28379e4545ae6cb5ed6a024c09082973884e4",
+      "bytes": 2996
+    },
+    {
+      "path": "anb-contents-2/contents-command/brutalist-wc-keyboard-focus.json",
+      "rawSha256": "73c5e3443566981b46825d7c08efc7f27109c2e6f5faa29d3376acbae0b70754",
+      "publishedSha256": "73c5e3443566981b46825d7c08efc7f27109c2e6f5faa29d3376acbae0b70754",
+      "bytes": 2422
+    },
+    {
+      "path": "anb-contents-2/contents-command/brutalist-wc-keyboard-focus.png",
+      "rawSha256": "0d59bbb5a8a9c44b1866a179af85e812df5b86997872c6b6a34fd0d975459092",
+      "publishedSha256": "0d59bbb5a8a9c44b1866a179af85e812df5b86997872c6b6a34fd0d975459092",
+      "bytes": 47362
+    },
+    {
+      "path": "anb-contents-2/contents-command/brutalist-wc-public-dialog-open.json",
+      "rawSha256": "2de05bed227b11ea85fd4b45891a32f922149c11bcb42d6963534a6d9f632be6",
+      "publishedSha256": "2de05bed227b11ea85fd4b45891a32f922149c11bcb42d6963534a6d9f632be6",
+      "bytes": 1621
+    },
+    {
+      "path": "anb-contents-2/contents-command/brutalist-wc-public-dialog-open.png",
+      "rawSha256": "e514952085e7ca5a291905ed86cdc966f14e56d4ad1573f358a91bda18936a00",
+      "publishedSha256": "e514952085e7ca5a291905ed86cdc966f14e56d4ad1573f358a91bda18936a00",
+      "bytes": 31108
+    },
+    {
+      "path": "anb-contents-2/contents-command/brutalist-wc-transition.json",
+      "rawSha256": "9d8e83bd1d04ed87f3964ad097666b18db3d4bf687b35ccff74c45416ecb36c6",
+      "publishedSha256": "9d8e83bd1d04ed87f3964ad097666b18db3d4bf687b35ccff74c45416ecb36c6",
+      "bytes": 2404
+    },
+    {
+      "path": "anb-contents-2/contents-command/normal-close-mutations.json",
+      "rawSha256": "34a51a8dba772af62b2d13a6e5feb153565a8c3c1aa4e36dd55deb69a2250807",
+      "publishedSha256": "34a51a8dba772af62b2d13a6e5feb153565a8c3c1aa4e36dd55deb69a2250807",
+      "bytes": 9860
+    },
+    {
+      "path": "anb-contents-2/contents-command/shadcn-react-keyboard-focus.json",
+      "rawSha256": "6c124ba90d906c57866f35644623278031e9cd284054468111eeb84c8e50a9ae",
+      "publishedSha256": "6c124ba90d906c57866f35644623278031e9cd284054468111eeb84c8e50a9ae",
+      "bytes": 2204
+    },
+    {
+      "path": "anb-contents-2/contents-command/shadcn-react-keyboard-focus.png",
+      "rawSha256": "240fa7bd5ce141b665bf6cf522336e713f1e10d1bd72313240ca3351246bfebc",
+      "publishedSha256": "240fa7bd5ce141b665bf6cf522336e713f1e10d1bd72313240ca3351246bfebc",
+      "bytes": 50768
+    },
+    {
+      "path": "anb-contents-2/contents-command/shadcn-react-public-dialog-open.json",
+      "rawSha256": "6dbdc87190eac51cde41bffb11fb4b830390e2ce18ac6fb404da1186c7ac88d4",
+      "publishedSha256": "6dbdc87190eac51cde41bffb11fb4b830390e2ce18ac6fb404da1186c7ac88d4",
+      "bytes": 1626
+    },
+    {
+      "path": "anb-contents-2/contents-command/shadcn-react-public-dialog-open.png",
+      "rawSha256": "ac8c34fa2b56c73cbad507841f611bbd62a6be91ea9831e535e2cc6d7fd8493c",
+      "publishedSha256": "ac8c34fa2b56c73cbad507841f611bbd62a6be91ea9831e535e2cc6d7fd8493c",
+      "bytes": 27544
+    },
+    {
+      "path": "anb-contents-2/contents-command/shadcn-react-transition.json",
+      "rawSha256": "d54ad0663e78b85023ce772ecffbdaf3d6232ca7ba049265b5cfbcfa6b937c1d",
+      "publishedSha256": "d54ad0663e78b85023ce772ecffbdaf3d6232ca7ba049265b5cfbcfa6b937c1d",
+      "bytes": 2890
+    },
+    {
+      "path": "anb-contents-2/contents-command/shadcn-vue-keyboard-focus.json",
+      "rawSha256": "aedc572c12cbf1511932422b6610088cb562492409db790c63810887342ed7d6",
+      "publishedSha256": "aedc572c12cbf1511932422b6610088cb562492409db790c63810887342ed7d6",
+      "bytes": 2200
+    },
+    {
+      "path": "anb-contents-2/contents-command/shadcn-vue-keyboard-focus.png",
+      "rawSha256": "6988e89dc592a3d3861cf2463a8de4c27bcc8ab93b13329578119dabfb0ba12f",
+      "publishedSha256": "6988e89dc592a3d3861cf2463a8de4c27bcc8ab93b13329578119dabfb0ba12f",
+      "bytes": 50766
+    },
+    {
+      "path": "anb-contents-2/contents-command/shadcn-vue-public-dialog-open.json",
+      "rawSha256": "d543cb504a7ebef3c33189b9d8da3cac39e59f9741313427678a683f8ca2ff48",
+      "publishedSha256": "d543cb504a7ebef3c33189b9d8da3cac39e59f9741313427678a683f8ca2ff48",
+      "bytes": 1629
+    },
+    {
+      "path": "anb-contents-2/contents-command/shadcn-vue-public-dialog-open.png",
+      "rawSha256": "ac8c34fa2b56c73cbad507841f611bbd62a6be91ea9831e535e2cc6d7fd8493c",
+      "publishedSha256": "ac8c34fa2b56c73cbad507841f611bbd62a6be91ea9831e535e2cc6d7fd8493c",
+      "bytes": 27544
+    },
+    {
+      "path": "anb-contents-2/contents-command/shadcn-vue-transition.json",
+      "rawSha256": "187fc69dedc09d22beb697fdb577adb9855656874cd0042689027554a60fd3a0",
+      "publishedSha256": "187fc69dedc09d22beb697fdb577adb9855656874cd0042689027554a60fd3a0",
+      "bytes": 3038
+    },
+    {
+      "path": "anb-contents-2/contents-command/shadcn-vue2-keyboard-focus.json",
+      "rawSha256": "32bbf43e5cfd3e5088b98aaf1b2d18e2225adb0896bd4a4f37d2d796f6e18e3e",
+      "publishedSha256": "32bbf43e5cfd3e5088b98aaf1b2d18e2225adb0896bd4a4f37d2d796f6e18e3e",
+      "bytes": 2202
+    },
+    {
+      "path": "anb-contents-2/contents-command/shadcn-vue2-keyboard-focus.png",
+      "rawSha256": "6988e89dc592a3d3861cf2463a8de4c27bcc8ab93b13329578119dabfb0ba12f",
+      "publishedSha256": "6988e89dc592a3d3861cf2463a8de4c27bcc8ab93b13329578119dabfb0ba12f",
+      "bytes": 50766
+    },
+    {
+      "path": "anb-contents-2/contents-command/shadcn-vue2-public-dialog-open.json",
+      "rawSha256": "66dfb52ccf4cbcbdab556d1b28f1183ec3a7449306a3c4b5119dd90cbca11012",
+      "publishedSha256": "66dfb52ccf4cbcbdab556d1b28f1183ec3a7449306a3c4b5119dd90cbca11012",
+      "bytes": 1542
+    },
+    {
+      "path": "anb-contents-2/contents-command/shadcn-vue2-public-dialog-open.png",
+      "rawSha256": "87280f44c97fae0342db6e71c843d3acdf9a28d72f8117960637886fff2eb267",
+      "publishedSha256": "87280f44c97fae0342db6e71c843d3acdf9a28d72f8117960637886fff2eb267",
+      "bytes": 30110
+    },
+    {
+      "path": "anb-contents-2/contents-command/shadcn-vue2-transition.json",
+      "rawSha256": "03344afd20b0c93d00e23a9715d7a4763d308c0499a338915546ab09f95e7e56",
+      "publishedSha256": "03344afd20b0c93d00e23a9715d7a4763d308c0499a338915546ab09f95e7e56",
+      "bytes": 3151
+    },
+    {
+      "path": "anb-contents-2/contents-command/shadcn-wc-keyboard-focus.json",
+      "rawSha256": "e5e6dbbdf409c796358fe37717f48f6320b4844e5a53ddd57471fac02644e013",
+      "publishedSha256": "e5e6dbbdf409c796358fe37717f48f6320b4844e5a53ddd57471fac02644e013",
+      "bytes": 2283
+    },
+    {
+      "path": "anb-contents-2/contents-command/shadcn-wc-keyboard-focus.png",
+      "rawSha256": "cbe0884f079e74a208316d39095b55daf3945d376e45e77c68e15d2a7de3e27b",
+      "publishedSha256": "cbe0884f079e74a208316d39095b55daf3945d376e45e77c68e15d2a7de3e27b",
+      "bytes": 50790
+    },
+    {
+      "path": "anb-contents-2/contents-command/shadcn-wc-public-dialog-open.json",
+      "rawSha256": "b96c228e3ef3991f08c97b86bfaa174e65002ee75671689bae3ea3435b16f0ac",
+      "publishedSha256": "b96c228e3ef3991f08c97b86bfaa174e65002ee75671689bae3ea3435b16f0ac",
+      "bytes": 1540
+    },
+    {
+      "path": "anb-contents-2/contents-command/shadcn-wc-public-dialog-open.png",
+      "rawSha256": "1a97dcec8461fe308ece1d5a99e4dc13d4836d72cdbdd59a2bc6760a196f4503",
+      "publishedSha256": "1a97dcec8461fe308ece1d5a99e4dc13d4836d72cdbdd59a2bc6760a196f4503",
+      "bytes": 26204
+    },
+    {
+      "path": "anb-contents-2/contents-command/shadcn-wc-transition.json",
+      "rawSha256": "8c9adf3e470764babc24817a4b2bb32cf51e0a85dcd3f762e3ffd8c8b3d87a16",
+      "publishedSha256": "8c9adf3e470764babc24817a4b2bb32cf51e0a85dcd3f762e3ffd8c8b3d87a16",
+      "bytes": 2395
+    },
+    {
+      "path": "anb-contents-2/executed-test.ts",
+      "rawSha256": "8a5db042fcaee8550630c755fdc72583c8bc5645cc5418eccc416523b5453e8e",
+      "publishedSha256": "8a5db042fcaee8550630c755fdc72583c8bc5645cc5418eccc416523b5453e8e",
+      "bytes": 101608
+    },
+    {
+      "path": "anb-contents-2/receipt.json",
+      "rawSha256": "ed1c1b78d7d444efb2f040e9043e5aaab1a19ab4f1fc8df41971b4d0158fa12e",
+      "publishedSha256": "9a8b664044fcd5235314bebb0694db95255a66b23c2b2c13b09a021d64a0161c",
+      "bytes": 934
+    },
+    {
+      "path": "anb-contents-2/runner-integrity.json",
+      "rawSha256": "c2715232061d55cee212f12b0ab968b492e5ad87040c0bd5c67afa698bb68db7",
+      "publishedSha256": "c2715232061d55cee212f12b0ab968b492e5ad87040c0bd5c67afa698bb68db7",
+      "bytes": 597
+    },
+    {
+      "path": "anb-contents-2/vitest.json",
+      "rawSha256": "fdbbea19b259426738a54c83d261ad69387994405d5782efb9f94491a4a9e36c",
+      "publishedSha256": "40be0498e602e4415fd2a3992a7c89db2c8f28f92f9e66bd6f1f18996d84d8a5",
+      "bytes": 3514
+    },
+    {
+      "path": "anb-contents-3/browser.log",
+      "rawSha256": "7b0c2f77dfe5c3fd4ce6546a0f76f9ad419db8d176649c6f3cafece5d33ff290",
+      "publishedSha256": "ab09f9638dae302bbf1328d44b41ffd304e74c466ec8b66e6e85ebe2093652cb",
+      "bytes": 5987
+    },
+    {
+      "path": "anb-contents-3/contents-command/brutalist-react-keyboard-focus.json",
+      "rawSha256": "7cf9b0a0e080a633379d6e7e65fa6527424b206510320ffd00788f7a5b241fa8",
+      "publishedSha256": "7cf9b0a0e080a633379d6e7e65fa6527424b206510320ffd00788f7a5b241fa8",
+      "bytes": 2428
+    },
+    {
+      "path": "anb-contents-3/contents-command/brutalist-react-keyboard-focus.png",
+      "rawSha256": "9bbdb169cc844c832808003e78bc8506e8b5eddcff77118473ed19820a8f9883",
+      "publishedSha256": "9bbdb169cc844c832808003e78bc8506e8b5eddcff77118473ed19820a8f9883",
+      "bytes": 47414
+    },
+    {
+      "path": "anb-contents-3/contents-command/brutalist-react-public-dialog-open.json",
+      "rawSha256": "fc8c6d238dd0b868ea35a7a650beb54dd1523e48ca0f2932dd5d6035c8e186d3",
+      "publishedSha256": "fc8c6d238dd0b868ea35a7a650beb54dd1523e48ca0f2932dd5d6035c8e186d3",
+      "bytes": 1628
+    },
+    {
+      "path": "anb-contents-3/contents-command/brutalist-react-public-dialog-open.png",
+      "rawSha256": "e3985439e3aba48613d3172578241624b35efa8e20daad64c95194f595dc35a9",
+      "publishedSha256": "e3985439e3aba48613d3172578241624b35efa8e20daad64c95194f595dc35a9",
+      "bytes": 51943
+    },
+    {
+      "path": "anb-contents-3/contents-command/brutalist-react-transition.json",
+      "rawSha256": "5a97df0365c5d2afd00bd4661d49faa4bf3f3798dd31e8660cbf231b1796db03",
+      "publishedSha256": "5a97df0365c5d2afd00bd4661d49faa4bf3f3798dd31e8660cbf231b1796db03",
+      "bytes": 2822
+    },
+    {
+      "path": "anb-contents-3/contents-command/brutalist-vue-keyboard-focus.json",
+      "rawSha256": "15c59d7f6158e199bdaf6a36cb85602491c3d7dfc1a8a82a04dfb5da266b8aea",
+      "publishedSha256": "15c59d7f6158e199bdaf6a36cb85602491c3d7dfc1a8a82a04dfb5da266b8aea",
+      "bytes": 2424
+    },
+    {
+      "path": "anb-contents-3/contents-command/brutalist-vue-keyboard-focus.png",
+      "rawSha256": "8113b84502b8b4cd618e5d04f6bd89b73cd1a3cb93a66ba1ea9cf46277ea8441",
+      "publishedSha256": "8113b84502b8b4cd618e5d04f6bd89b73cd1a3cb93a66ba1ea9cf46277ea8441",
+      "bytes": 47507
+    },
+    {
+      "path": "anb-contents-3/contents-command/brutalist-vue-public-dialog-open.json",
+      "rawSha256": "5581956ef69277471a12375a4efa8cd7121f26eeea73c2076ef21ad04f104e8b",
+      "publishedSha256": "5581956ef69277471a12375a4efa8cd7121f26eeea73c2076ef21ad04f104e8b",
+      "bytes": 1631
+    },
+    {
+      "path": "anb-contents-3/contents-command/brutalist-vue-public-dialog-open.png",
+      "rawSha256": "342037b415cb7eccfbfec21d0283b1a3d0c54023ff842eaa930ff222439ab4b8",
+      "publishedSha256": "342037b415cb7eccfbfec21d0283b1a3d0c54023ff842eaa930ff222439ab4b8",
+      "bytes": 43918
+    },
+    {
+      "path": "anb-contents-3/contents-command/brutalist-vue-transition.json",
+      "rawSha256": "082d4b6838d3eb5309f8f2e8c2325add308b74571e8f9c1f85b7841f28ac41f8",
+      "publishedSha256": "082d4b6838d3eb5309f8f2e8c2325add308b74571e8f9c1f85b7841f28ac41f8",
+      "bytes": 3041
+    },
+    {
+      "path": "anb-contents-3/contents-command/brutalist-vue2-keyboard-focus.json",
+      "rawSha256": "8b7e1f8b64649cd0094c576d57033de5db0504087d73b5b68d4bfb88821dd6e4",
+      "publishedSha256": "8b7e1f8b64649cd0094c576d57033de5db0504087d73b5b68d4bfb88821dd6e4",
+      "bytes": 2426
+    },
+    {
+      "path": "anb-contents-3/contents-command/brutalist-vue2-keyboard-focus.png",
+      "rawSha256": "b5bf28252aaad6dcf382f7ea4f719cc25e1fcda6a21ada3e13715ac8597ca47a",
+      "publishedSha256": "b5bf28252aaad6dcf382f7ea4f719cc25e1fcda6a21ada3e13715ac8597ca47a",
+      "bytes": 47358
+    },
+    {
+      "path": "anb-contents-3/contents-command/brutalist-vue2-public-dialog-open.json",
+      "rawSha256": "fd49dac7fce115642df16d065ff74debd9c0625f478dddaf727054c5be97e689",
+      "publishedSha256": "fd49dac7fce115642df16d065ff74debd9c0625f478dddaf727054c5be97e689",
+      "bytes": 1627
+    },
+    {
+      "path": "anb-contents-3/contents-command/brutalist-vue2-public-dialog-open.png",
+      "rawSha256": "c5da00d9563717a918cb792142b77274d3c2388ba96a88abdf021848141248ef",
+      "publishedSha256": "c5da00d9563717a918cb792142b77274d3c2388ba96a88abdf021848141248ef",
+      "bytes": 43832
+    },
+    {
+      "path": "anb-contents-3/contents-command/brutalist-vue2-transition.json",
+      "rawSha256": "6f8dd5c2cf43f9d9aa5c66dd3c85e57bc864d9d92d60956ad0555147c32b5296",
+      "publishedSha256": "6f8dd5c2cf43f9d9aa5c66dd3c85e57bc864d9d92d60956ad0555147c32b5296",
+      "bytes": 3006
+    },
+    {
+      "path": "anb-contents-3/contents-command/brutalist-wc-keyboard-focus.json",
+      "rawSha256": "73c5e3443566981b46825d7c08efc7f27109c2e6f5faa29d3376acbae0b70754",
+      "publishedSha256": "73c5e3443566981b46825d7c08efc7f27109c2e6f5faa29d3376acbae0b70754",
+      "bytes": 2422
+    },
+    {
+      "path": "anb-contents-3/contents-command/brutalist-wc-keyboard-focus.png",
+      "rawSha256": "0d59bbb5a8a9c44b1866a179af85e812df5b86997872c6b6a34fd0d975459092",
+      "publishedSha256": "0d59bbb5a8a9c44b1866a179af85e812df5b86997872c6b6a34fd0d975459092",
+      "bytes": 47362
+    },
+    {
+      "path": "anb-contents-3/contents-command/brutalist-wc-public-dialog-open.json",
+      "rawSha256": "17d99f9c978c27bded369f78280dbab942811c4ce07bb23186788debd929f459",
+      "publishedSha256": "17d99f9c978c27bded369f78280dbab942811c4ce07bb23186788debd929f459",
+      "bytes": 1624
+    },
+    {
+      "path": "anb-contents-3/contents-command/brutalist-wc-public-dialog-open.png",
+      "rawSha256": "e514952085e7ca5a291905ed86cdc966f14e56d4ad1573f358a91bda18936a00",
+      "publishedSha256": "e514952085e7ca5a291905ed86cdc966f14e56d4ad1573f358a91bda18936a00",
+      "bytes": 31108
+    },
+    {
+      "path": "anb-contents-3/contents-command/brutalist-wc-transition.json",
+      "rawSha256": "4cb44d2d76cadeb51627055e4884ea6c7929f9abd536d35e13f33c92f15ca6cb",
+      "publishedSha256": "4cb44d2d76cadeb51627055e4884ea6c7929f9abd536d35e13f33c92f15ca6cb",
+      "bytes": 2399
+    },
+    {
+      "path": "anb-contents-3/contents-command/normal-close-mutations.json",
+      "rawSha256": "34a51a8dba772af62b2d13a6e5feb153565a8c3c1aa4e36dd55deb69a2250807",
+      "publishedSha256": "34a51a8dba772af62b2d13a6e5feb153565a8c3c1aa4e36dd55deb69a2250807",
+      "bytes": 9860
+    },
+    {
+      "path": "anb-contents-3/contents-command/shadcn-react-keyboard-focus.json",
+      "rawSha256": "6c124ba90d906c57866f35644623278031e9cd284054468111eeb84c8e50a9ae",
+      "publishedSha256": "6c124ba90d906c57866f35644623278031e9cd284054468111eeb84c8e50a9ae",
+      "bytes": 2204
+    },
+    {
+      "path": "anb-contents-3/contents-command/shadcn-react-keyboard-focus.png",
+      "rawSha256": "6988e89dc592a3d3861cf2463a8de4c27bcc8ab93b13329578119dabfb0ba12f",
+      "publishedSha256": "6988e89dc592a3d3861cf2463a8de4c27bcc8ab93b13329578119dabfb0ba12f",
+      "bytes": 50766
+    },
+    {
+      "path": "anb-contents-3/contents-command/shadcn-react-public-dialog-open.json",
+      "rawSha256": "b6d14ad53aed70f1e7c3d448f5df72fa46af35064f8584deaa3212019e59a42f",
+      "publishedSha256": "b6d14ad53aed70f1e7c3d448f5df72fa46af35064f8584deaa3212019e59a42f",
+      "bytes": 1543
+    },
+    {
+      "path": "anb-contents-3/contents-command/shadcn-react-public-dialog-open.png",
+      "rawSha256": "87280f44c97fae0342db6e71c843d3acdf9a28d72f8117960637886fff2eb267",
+      "publishedSha256": "87280f44c97fae0342db6e71c843d3acdf9a28d72f8117960637886fff2eb267",
+      "bytes": 30110
+    },
+    {
+      "path": "anb-contents-3/contents-command/shadcn-react-transition.json",
+      "rawSha256": "8c2f325229ad0d1c8c30c5415edd41d50a99f2d6e0d3013b3885ce72953745a7",
+      "publishedSha256": "8c2f325229ad0d1c8c30c5415edd41d50a99f2d6e0d3013b3885ce72953745a7",
+      "bytes": 2885
+    },
+    {
+      "path": "anb-contents-3/contents-command/shadcn-vue-keyboard-focus.json",
+      "rawSha256": "aedc572c12cbf1511932422b6610088cb562492409db790c63810887342ed7d6",
+      "publishedSha256": "aedc572c12cbf1511932422b6610088cb562492409db790c63810887342ed7d6",
+      "bytes": 2200
+    },
+    {
+      "path": "anb-contents-3/contents-command/shadcn-vue-keyboard-focus.png",
+      "rawSha256": "6988e89dc592a3d3861cf2463a8de4c27bcc8ab93b13329578119dabfb0ba12f",
+      "publishedSha256": "6988e89dc592a3d3861cf2463a8de4c27bcc8ab93b13329578119dabfb0ba12f",
+      "bytes": 50766
+    },
+    {
+      "path": "anb-contents-3/contents-command/shadcn-vue-public-dialog-open.json",
+      "rawSha256": "38df8f1239f999a0bf02a018e97d74a32c4871173b3fcd697770011fd68d55bd",
+      "publishedSha256": "38df8f1239f999a0bf02a018e97d74a32c4871173b3fcd697770011fd68d55bd",
+      "bytes": 1630
+    },
+    {
+      "path": "anb-contents-3/contents-command/shadcn-vue-public-dialog-open.png",
+      "rawSha256": "ac8c34fa2b56c73cbad507841f611bbd62a6be91ea9831e535e2cc6d7fd8493c",
+      "publishedSha256": "ac8c34fa2b56c73cbad507841f611bbd62a6be91ea9831e535e2cc6d7fd8493c",
+      "bytes": 27544
+    },
+    {
+      "path": "anb-contents-3/contents-command/shadcn-vue-transition.json",
+      "rawSha256": "878cc471c1d25f9b911da85f11ddd2eb8c55cd36253839e4468bd5eb95edb4cc",
+      "publishedSha256": "878cc471c1d25f9b911da85f11ddd2eb8c55cd36253839e4468bd5eb95edb4cc",
+      "bytes": 3041
+    },
+    {
+      "path": "anb-contents-3/contents-command/shadcn-vue2-keyboard-focus.json",
+      "rawSha256": "32bbf43e5cfd3e5088b98aaf1b2d18e2225adb0896bd4a4f37d2d796f6e18e3e",
+      "publishedSha256": "32bbf43e5cfd3e5088b98aaf1b2d18e2225adb0896bd4a4f37d2d796f6e18e3e",
+      "bytes": 2202
+    },
+    {
+      "path": "anb-contents-3/contents-command/shadcn-vue2-keyboard-focus.png",
+      "rawSha256": "240fa7bd5ce141b665bf6cf522336e713f1e10d1bd72313240ca3351246bfebc",
+      "publishedSha256": "240fa7bd5ce141b665bf6cf522336e713f1e10d1bd72313240ca3351246bfebc",
+      "bytes": 50768
+    },
+    {
+      "path": "anb-contents-3/contents-command/shadcn-vue2-public-dialog-open.json",
+      "rawSha256": "66dfb52ccf4cbcbdab556d1b28f1183ec3a7449306a3c4b5119dd90cbca11012",
+      "publishedSha256": "66dfb52ccf4cbcbdab556d1b28f1183ec3a7449306a3c4b5119dd90cbca11012",
+      "bytes": 1542
+    },
+    {
+      "path": "anb-contents-3/contents-command/shadcn-vue2-public-dialog-open.png",
+      "rawSha256": "ac8c34fa2b56c73cbad507841f611bbd62a6be91ea9831e535e2cc6d7fd8493c",
+      "publishedSha256": "ac8c34fa2b56c73cbad507841f611bbd62a6be91ea9831e535e2cc6d7fd8493c",
+      "bytes": 27544
+    },
+    {
+      "path": "anb-contents-3/contents-command/shadcn-vue2-transition.json",
+      "rawSha256": "a7cb321b7dff41d5f24b74f9b47ac2a309db8734dec4ef33e4f18df238210316",
+      "publishedSha256": "a7cb321b7dff41d5f24b74f9b47ac2a309db8734dec4ef33e4f18df238210316",
+      "bytes": 3150
+    },
+    {
+      "path": "anb-contents-3/contents-command/shadcn-wc-keyboard-focus.json",
+      "rawSha256": "e5e6dbbdf409c796358fe37717f48f6320b4844e5a53ddd57471fac02644e013",
+      "publishedSha256": "e5e6dbbdf409c796358fe37717f48f6320b4844e5a53ddd57471fac02644e013",
+      "bytes": 2283
+    },
+    {
+      "path": "anb-contents-3/contents-command/shadcn-wc-keyboard-focus.png",
+      "rawSha256": "cbe0884f079e74a208316d39095b55daf3945d376e45e77c68e15d2a7de3e27b",
+      "publishedSha256": "cbe0884f079e74a208316d39095b55daf3945d376e45e77c68e15d2a7de3e27b",
+      "bytes": 50790
+    },
+    {
+      "path": "anb-contents-3/contents-command/shadcn-wc-public-dialog-open.json",
+      "rawSha256": "b96c228e3ef3991f08c97b86bfaa174e65002ee75671689bae3ea3435b16f0ac",
+      "publishedSha256": "b96c228e3ef3991f08c97b86bfaa174e65002ee75671689bae3ea3435b16f0ac",
+      "bytes": 1540
+    },
+    {
+      "path": "anb-contents-3/contents-command/shadcn-wc-public-dialog-open.png",
+      "rawSha256": "97adefde77d94fe496c3c640e0568eaeac0772970e74485d46637eff29a02afc",
+      "publishedSha256": "97adefde77d94fe496c3c640e0568eaeac0772970e74485d46637eff29a02afc",
+      "bytes": 28220
+    },
+    {
+      "path": "anb-contents-3/contents-command/shadcn-wc-transition.json",
+      "rawSha256": "7c58b8c2c3c76975f2c335fd7c77e638c0bb01c1740f71a94701dd200af189ec",
+      "publishedSha256": "7c58b8c2c3c76975f2c335fd7c77e638c0bb01c1740f71a94701dd200af189ec",
+      "bytes": 2395
+    },
+    {
+      "path": "anb-contents-3/executed-test.ts",
+      "rawSha256": "8a5db042fcaee8550630c755fdc72583c8bc5645cc5418eccc416523b5453e8e",
+      "publishedSha256": "8a5db042fcaee8550630c755fdc72583c8bc5645cc5418eccc416523b5453e8e",
+      "bytes": 101608
+    },
+    {
+      "path": "anb-contents-3/receipt.json",
+      "rawSha256": "554360c80710dc1ecb580d6b78157736c48a40d68658346a08caca3aad54de03",
+      "publishedSha256": "9e6e193345aff44aaf306c72677c4deb4ba6be4d96785a1fa40631dba10d290d",
+      "bytes": 934
+    },
+    {
+      "path": "anb-contents-3/runner-integrity.json",
+      "rawSha256": "f79a9de7b8857c3a632b3ae67c4f189ba8f233de4b010e701fb220dc6302bdc3",
+      "publishedSha256": "f79a9de7b8857c3a632b3ae67c4f189ba8f233de4b010e701fb220dc6302bdc3",
+      "bytes": 597
+    },
+    {
+      "path": "anb-contents-3/vitest.json",
+      "rawSha256": "6cd6812881de9aaf7e3bdce760e74ddf2ac64295e5de2c02775a85ce5a4f5a71",
+      "publishedSha256": "7d616f7a61beb0f71e751ef8164cec0eeff287364c5f3d509ac1fb9594e0bba4",
+      "bytes": 3514
+    },
+    {
+      "path": "anb-dialog/browser.log",
+      "rawSha256": "c297d4b5ed7eef592ea274489163e5bfad18d0cccbf430a4e62794c3ab6388cf",
+      "publishedSha256": "faee75a7af0f0ccf1c672522ddd521e0a68118a195e3ff8d2d52a27337f55686",
+      "bytes": 5505
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-react-1024-resize-immediate.png",
+      "rawSha256": "2f51c4adea5818c09486718401dd0c95badbaed3f00ea2cd80b9207bca38ec18",
+      "publishedSha256": "2f51c4adea5818c09486718401dd0c95badbaed3f00ea2cd80b9207bca38ec18",
+      "bytes": 100198
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-react-1024-settled.png",
+      "rawSha256": "9ae5b4c213ab3c88a11adb7b4e203a087607552c8b4524158e83fa50607a74a4",
+      "publishedSha256": "9ae5b4c213ab3c88a11adb7b4e203a087607552c8b4524158e83fa50607a74a4",
+      "bytes": 100755
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-react-320-resize-immediate.png",
+      "rawSha256": "e1e18f90a5d34ac5a642186d81ca26dc9b6401c9d70cf3973f11c21a2653f864",
+      "publishedSha256": "e1e18f90a5d34ac5a642186d81ca26dc9b6401c9d70cf3973f11c21a2653f864",
+      "bytes": 42520
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-react-320-settled.png",
+      "rawSha256": "e1e18f90a5d34ac5a642186d81ca26dc9b6401c9d70cf3973f11c21a2653f864",
+      "publishedSha256": "e1e18f90a5d34ac5a642186d81ca26dc9b6401c9d70cf3973f11c21a2653f864",
+      "bytes": 42520
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-react-390-immediate.png",
+      "rawSha256": "dee970ee75c30ed7b896754207758a4fa9448ab2d77dbca0a0144ae8df295aa5",
+      "publishedSha256": "dee970ee75c30ed7b896754207758a4fa9448ab2d77dbca0a0144ae8df295aa5",
+      "bytes": 87800
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-react-390-resize-immediate.png",
+      "rawSha256": "daebd3b65d88c17ddcb6db8e72060e60d3476c9e84b4c1f60e0bfcbc48364854",
+      "publishedSha256": "daebd3b65d88c17ddcb6db8e72060e60d3476c9e84b4c1f60e0bfcbc48364854",
+      "bytes": 59822
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-react-390-settled.png",
+      "rawSha256": "daebd3b65d88c17ddcb6db8e72060e60d3476c9e84b4c1f60e0bfcbc48364854",
+      "publishedSha256": "daebd3b65d88c17ddcb6db8e72060e60d3476c9e84b4c1f60e0bfcbc48364854",
+      "bytes": 59822
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-react-430-resize-immediate.png",
+      "rawSha256": "e5a29a29e2eec0ee226b77bae827b55ed8eb8b8dd6689dcb02d006b73aeea5f2",
+      "publishedSha256": "e5a29a29e2eec0ee226b77bae827b55ed8eb8b8dd6689dcb02d006b73aeea5f2",
+      "bytes": 69477
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-react-430-settled.png",
+      "rawSha256": "e5a29a29e2eec0ee226b77bae827b55ed8eb8b8dd6689dcb02d006b73aeea5f2",
+      "publishedSha256": "e5a29a29e2eec0ee226b77bae827b55ed8eb8b8dd6689dcb02d006b73aeea5f2",
+      "bytes": 69477
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-react-long-action-reachable.png",
+      "rawSha256": "d20fc1891c7be7dcde6890a350fb476edd6e3efee1f3e46b06f37d3132cfd2c6",
+      "publishedSha256": "d20fc1891c7be7dcde6890a350fb476edd6e3efee1f3e46b06f37d3132cfd2c6",
+      "bytes": 13907
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-react-long-font200.png",
+      "rawSha256": "d42200451e2c561af51b72c0d1a262ee1564988bc11dc6bcdfce55aebb7fc260",
+      "publishedSha256": "d42200451e2c561af51b72c0d1a262ee1564988bc11dc6bcdfce55aebb7fc260",
+      "bytes": 19363
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-react-reopened.png",
+      "rawSha256": "b7e5c64e9bb5a12c02cc8d3dc32abfdbe3b7de85dac93f07262c89079c2b5a78",
+      "publishedSha256": "b7e5c64e9bb5a12c02cc8d3dc32abfdbe3b7de85dac93f07262c89079c2b5a78",
+      "bytes": 64109
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-react-restored.png",
+      "rawSha256": "52dff612156b96486bf39839eb64c6586e993c8577a41b522b7c56f0a19672aa",
+      "publishedSha256": "52dff612156b96486bf39839eb64c6586e993c8577a41b522b7c56f0a19672aa",
+      "bytes": 64645
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-react-scale2.png",
+      "rawSha256": "e9385e1774cba8441f553582434f95f14b9acc2f43fddc978dbee4610ebf55aa",
+      "publishedSha256": "e9385e1774cba8441f553582434f95f14b9acc2f43fddc978dbee4610ebf55aa",
+      "bytes": 51590
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-vue-1024-resize-immediate.png",
+      "rawSha256": "288833f8c0d8802cd2a31ae9cf04567df98632339f5e3ce0a467e5b9685c22a7",
+      "publishedSha256": "288833f8c0d8802cd2a31ae9cf04567df98632339f5e3ce0a467e5b9685c22a7",
+      "bytes": 100414
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-vue-1024-settled.png",
+      "rawSha256": "288833f8c0d8802cd2a31ae9cf04567df98632339f5e3ce0a467e5b9685c22a7",
+      "publishedSha256": "288833f8c0d8802cd2a31ae9cf04567df98632339f5e3ce0a467e5b9685c22a7",
+      "bytes": 100414
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-vue-320-resize-immediate.png",
+      "rawSha256": "41078d62103f66459df8eb11d90e58b46967e4f96e8d964231ea123135a4541d",
+      "publishedSha256": "41078d62103f66459df8eb11d90e58b46967e4f96e8d964231ea123135a4541d",
+      "bytes": 42468
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-vue-320-settled.png",
+      "rawSha256": "41078d62103f66459df8eb11d90e58b46967e4f96e8d964231ea123135a4541d",
+      "publishedSha256": "41078d62103f66459df8eb11d90e58b46967e4f96e8d964231ea123135a4541d",
+      "bytes": 42468
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-vue-390-immediate.png",
+      "rawSha256": "7a54a569d756b2458dfb4a01f775d2537ffe73f0f20eb7b804d9276421ad57fc",
+      "publishedSha256": "7a54a569d756b2458dfb4a01f775d2537ffe73f0f20eb7b804d9276421ad57fc",
+      "bytes": 89344
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-vue-390-resize-immediate.png",
+      "rawSha256": "daebd3b65d88c17ddcb6db8e72060e60d3476c9e84b4c1f60e0bfcbc48364854",
+      "publishedSha256": "daebd3b65d88c17ddcb6db8e72060e60d3476c9e84b4c1f60e0bfcbc48364854",
+      "bytes": 59822
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-vue-390-settled.png",
+      "rawSha256": "daebd3b65d88c17ddcb6db8e72060e60d3476c9e84b4c1f60e0bfcbc48364854",
+      "publishedSha256": "daebd3b65d88c17ddcb6db8e72060e60d3476c9e84b4c1f60e0bfcbc48364854",
+      "bytes": 59822
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-vue-430-resize-immediate.png",
+      "rawSha256": "e5a29a29e2eec0ee226b77bae827b55ed8eb8b8dd6689dcb02d006b73aeea5f2",
+      "publishedSha256": "e5a29a29e2eec0ee226b77bae827b55ed8eb8b8dd6689dcb02d006b73aeea5f2",
+      "bytes": 69477
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-vue-430-settled.png",
+      "rawSha256": "e5a29a29e2eec0ee226b77bae827b55ed8eb8b8dd6689dcb02d006b73aeea5f2",
+      "publishedSha256": "e5a29a29e2eec0ee226b77bae827b55ed8eb8b8dd6689dcb02d006b73aeea5f2",
+      "bytes": 69477
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-vue-long-action-reachable.png",
+      "rawSha256": "40f7a6a8d3474a599841f1472ffd0df60f010636cdc953e409199a49c704b358",
+      "publishedSha256": "40f7a6a8d3474a599841f1472ffd0df60f010636cdc953e409199a49c704b358",
+      "bytes": 13896
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-vue-long-font200.png",
+      "rawSha256": "d42200451e2c561af51b72c0d1a262ee1564988bc11dc6bcdfce55aebb7fc260",
+      "publishedSha256": "d42200451e2c561af51b72c0d1a262ee1564988bc11dc6bcdfce55aebb7fc260",
+      "bytes": 19363
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-vue-reopened.png",
+      "rawSha256": "4db8a1cf431705278af233fd978ee03ff9952989a6407209b85813555101d142",
+      "publishedSha256": "4db8a1cf431705278af233fd978ee03ff9952989a6407209b85813555101d142",
+      "bytes": 63936
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-vue-restored.png",
+      "rawSha256": "52dff612156b96486bf39839eb64c6586e993c8577a41b522b7c56f0a19672aa",
+      "publishedSha256": "52dff612156b96486bf39839eb64c6586e993c8577a41b522b7c56f0a19672aa",
+      "bytes": 64645
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-vue-scale2.png",
+      "rawSha256": "acdf44188581dc5b7a9e028390daaf24d041e3ff1898f3979158f7b4f269857a",
+      "publishedSha256": "acdf44188581dc5b7a9e028390daaf24d041e3ff1898f3979158f7b4f269857a",
+      "bytes": 50408
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-vue2-1024-resize-immediate.png",
+      "rawSha256": "2db830aa80c77ac7d62715706861ffcd0c691234bf7779f36d6bc482ca1e8bed",
+      "publishedSha256": "2db830aa80c77ac7d62715706861ffcd0c691234bf7779f36d6bc482ca1e8bed",
+      "bytes": 100710
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-vue2-1024-settled.png",
+      "rawSha256": "2db830aa80c77ac7d62715706861ffcd0c691234bf7779f36d6bc482ca1e8bed",
+      "publishedSha256": "2db830aa80c77ac7d62715706861ffcd0c691234bf7779f36d6bc482ca1e8bed",
+      "bytes": 100710
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-vue2-320-resize-immediate.png",
+      "rawSha256": "887172782755c0eaaaae2173edbd22d313afa5f36b12506a95ea9d8153c78e5b",
+      "publishedSha256": "887172782755c0eaaaae2173edbd22d313afa5f36b12506a95ea9d8153c78e5b",
+      "bytes": 42427
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-vue2-320-settled.png",
+      "rawSha256": "887172782755c0eaaaae2173edbd22d313afa5f36b12506a95ea9d8153c78e5b",
+      "publishedSha256": "887172782755c0eaaaae2173edbd22d313afa5f36b12506a95ea9d8153c78e5b",
+      "bytes": 42427
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-vue2-390-immediate.png",
+      "rawSha256": "a2f3311523e59031854cb0c9f864f99a669509e096acf3946c8248ce4d974c8b",
+      "publishedSha256": "a2f3311523e59031854cb0c9f864f99a669509e096acf3946c8248ce4d974c8b",
+      "bytes": 89489
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-vue2-390-resize-immediate.png",
+      "rawSha256": "daebd3b65d88c17ddcb6db8e72060e60d3476c9e84b4c1f60e0bfcbc48364854",
+      "publishedSha256": "daebd3b65d88c17ddcb6db8e72060e60d3476c9e84b4c1f60e0bfcbc48364854",
+      "bytes": 59822
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-vue2-390-settled.png",
+      "rawSha256": "daebd3b65d88c17ddcb6db8e72060e60d3476c9e84b4c1f60e0bfcbc48364854",
+      "publishedSha256": "daebd3b65d88c17ddcb6db8e72060e60d3476c9e84b4c1f60e0bfcbc48364854",
+      "bytes": 59822
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-vue2-430-resize-immediate.png",
+      "rawSha256": "e5a29a29e2eec0ee226b77bae827b55ed8eb8b8dd6689dcb02d006b73aeea5f2",
+      "publishedSha256": "e5a29a29e2eec0ee226b77bae827b55ed8eb8b8dd6689dcb02d006b73aeea5f2",
+      "bytes": 69477
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-vue2-430-settled.png",
+      "rawSha256": "e5a29a29e2eec0ee226b77bae827b55ed8eb8b8dd6689dcb02d006b73aeea5f2",
+      "publishedSha256": "e5a29a29e2eec0ee226b77bae827b55ed8eb8b8dd6689dcb02d006b73aeea5f2",
+      "bytes": 69477
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-vue2-long-action-reachable.png",
+      "rawSha256": "a7d553d26710460ceb56448326279888928fedf49a4185b63c7493b5613d3ec7",
+      "publishedSha256": "a7d553d26710460ceb56448326279888928fedf49a4185b63c7493b5613d3ec7",
+      "bytes": 11897
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-vue2-long-font200.png",
+      "rawSha256": "a011a3227cd0f0a87906d5d7b417184a5d934fa7f305c3ef9b51502ea946c936",
+      "publishedSha256": "a011a3227cd0f0a87906d5d7b417184a5d934fa7f305c3ef9b51502ea946c936",
+      "bytes": 17429
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-vue2-reopened.png",
+      "rawSha256": "3566888f9d7352a9e414aedc85856c8c372610297933fb7cd9f1480e306a39d3",
+      "publishedSha256": "3566888f9d7352a9e414aedc85856c8c372610297933fb7cd9f1480e306a39d3",
+      "bytes": 74676
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-vue2-restored.png",
+      "rawSha256": "a1cf12ff807201c2be457b772441b712d6117c50065d1bb4178fb4b9deb1f653",
+      "publishedSha256": "a1cf12ff807201c2be457b772441b712d6117c50065d1bb4178fb4b9deb1f653",
+      "bytes": 65176
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-vue2-scale2.png",
+      "rawSha256": "616211f879eda646879de7f5f240ee131651231bec3870735e781849cc6cc3fd",
+      "publishedSha256": "616211f879eda646879de7f5f240ee131651231bec3870735e781849cc6cc3fd",
+      "bytes": 51571
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-wc-1024-resize-immediate.png",
+      "rawSha256": "d18d94fef1803f85ab4fc98cd03249fc4cfab2bb1978e815293dd848d70cf7c2",
+      "publishedSha256": "d18d94fef1803f85ab4fc98cd03249fc4cfab2bb1978e815293dd848d70cf7c2",
+      "bytes": 101975
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-wc-1024-settled.png",
+      "rawSha256": "d18d94fef1803f85ab4fc98cd03249fc4cfab2bb1978e815293dd848d70cf7c2",
+      "publishedSha256": "d18d94fef1803f85ab4fc98cd03249fc4cfab2bb1978e815293dd848d70cf7c2",
+      "bytes": 101975
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-wc-320-resize-immediate.png",
+      "rawSha256": "924336419f45816ab2a83b23b562979c9be9e9ef715d9da48b299522e1460ec0",
+      "publishedSha256": "924336419f45816ab2a83b23b562979c9be9e9ef715d9da48b299522e1460ec0",
+      "bytes": 42598
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-wc-320-settled.png",
+      "rawSha256": "924336419f45816ab2a83b23b562979c9be9e9ef715d9da48b299522e1460ec0",
+      "publishedSha256": "924336419f45816ab2a83b23b562979c9be9e9ef715d9da48b299522e1460ec0",
+      "bytes": 42598
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-wc-390-immediate.png",
+      "rawSha256": "032b814505ca03ca12f33cd6c829a447dc35ff16c8dea893503cd395d2fed84d",
+      "publishedSha256": "032b814505ca03ca12f33cd6c829a447dc35ff16c8dea893503cd395d2fed84d",
+      "bytes": 85690
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-wc-390-resize-immediate.png",
+      "rawSha256": "daebd3b65d88c17ddcb6db8e72060e60d3476c9e84b4c1f60e0bfcbc48364854",
+      "publishedSha256": "daebd3b65d88c17ddcb6db8e72060e60d3476c9e84b4c1f60e0bfcbc48364854",
+      "bytes": 59822
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-wc-390-settled.png",
+      "rawSha256": "daebd3b65d88c17ddcb6db8e72060e60d3476c9e84b4c1f60e0bfcbc48364854",
+      "publishedSha256": "daebd3b65d88c17ddcb6db8e72060e60d3476c9e84b4c1f60e0bfcbc48364854",
+      "bytes": 59822
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-wc-430-resize-immediate.png",
+      "rawSha256": "7c8ce3d9e35dc029f4e96c8c66d14556864b5efe38f5eec45f158fd75c589105",
+      "publishedSha256": "7c8ce3d9e35dc029f4e96c8c66d14556864b5efe38f5eec45f158fd75c589105",
+      "bytes": 69480
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-wc-430-settled.png",
+      "rawSha256": "7c8ce3d9e35dc029f4e96c8c66d14556864b5efe38f5eec45f158fd75c589105",
+      "publishedSha256": "7c8ce3d9e35dc029f4e96c8c66d14556864b5efe38f5eec45f158fd75c589105",
+      "bytes": 69480
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-wc-long-action-reachable.png",
+      "rawSha256": "d07a0b8825f49b9220e415ad8d58451ca0cf3484a8d21728eb7da47d75fb01fc",
+      "publishedSha256": "d07a0b8825f49b9220e415ad8d58451ca0cf3484a8d21728eb7da47d75fb01fc",
+      "bytes": 11074
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-wc-long-font200.png",
+      "rawSha256": "247ac955199a6894ded4abf18c5b5318d62166c74c2b50569dd92cf575e48036",
+      "publishedSha256": "247ac955199a6894ded4abf18c5b5318d62166c74c2b50569dd92cf575e48036",
+      "bytes": 16549
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-wc-reopened.png",
+      "rawSha256": "8d656c0a0f902e71f4cebe99ca3c896d3affcc2c5cff9f19c9e2bb06dfb0a2ac",
+      "publishedSha256": "8d656c0a0f902e71f4cebe99ca3c896d3affcc2c5cff9f19c9e2bb06dfb0a2ac",
+      "bytes": 64116
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-wc-restored.png",
+      "rawSha256": "66e3983e3c4a15b417a899557f7c1f6b401fdaf62555ed71ffef82f0dace7578",
+      "publishedSha256": "66e3983e3c4a15b417a899557f7c1f6b401fdaf62555ed71ffef82f0dace7578",
+      "bytes": 64659
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/brutalist-wc-scale2.png",
+      "rawSha256": "48c9c51981e19d18e9ce915da7d896d2493cb9fb0044b9ebd562b2ea63318d78",
+      "publishedSha256": "48c9c51981e19d18e9ce915da7d896d2493cb9fb0044b9ebd562b2ea63318d78",
+      "bytes": 52591
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/observations.json",
+      "rawSha256": "259947c274050b4a9a9b4e6b720cbbbf149e7bb37bfa2e69290644e285ae737b",
+      "publishedSha256": "259947c274050b4a9a9b4e6b720cbbbf149e7bb37bfa2e69290644e285ae737b",
+      "bytes": 1026931
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-react-1024-resize-immediate.png",
+      "rawSha256": "ad049e583ade767954572e3c6a72d6a77277e797ee4db02a5b637bbf8aad1e21",
+      "publishedSha256": "ad049e583ade767954572e3c6a72d6a77277e797ee4db02a5b637bbf8aad1e21",
+      "bytes": 103507
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-react-1024-settled.png",
+      "rawSha256": "ad049e583ade767954572e3c6a72d6a77277e797ee4db02a5b637bbf8aad1e21",
+      "publishedSha256": "ad049e583ade767954572e3c6a72d6a77277e797ee4db02a5b637bbf8aad1e21",
+      "bytes": 103507
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-react-320-long-action-reachable.png",
+      "rawSha256": "77852eca68644e680a156fb17e816c4aaf8fa83d6d2ebca1ffbf0f0a8a39b19a",
+      "publishedSha256": "77852eca68644e680a156fb17e816c4aaf8fa83d6d2ebca1ffbf0f0a8a39b19a",
+      "bytes": 21077
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-react-320-long-font200.png",
+      "rawSha256": "84a306750945e5984aed7a6c8f3229148b318963b8fe645924fda8bf82f7a4ce",
+      "publishedSha256": "84a306750945e5984aed7a6c8f3229148b318963b8fe645924fda8bf82f7a4ce",
+      "bytes": 22199
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-react-320-resize-immediate.png",
+      "rawSha256": "2e8e9a4777851c2b75d2d14892d4239ac87f4812acdc4399b80277671de0427e",
+      "publishedSha256": "2e8e9a4777851c2b75d2d14892d4239ac87f4812acdc4399b80277671de0427e",
+      "bytes": 62472
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-react-320-settled.png",
+      "rawSha256": "2e8e9a4777851c2b75d2d14892d4239ac87f4812acdc4399b80277671de0427e",
+      "publishedSha256": "2e8e9a4777851c2b75d2d14892d4239ac87f4812acdc4399b80277671de0427e",
+      "bytes": 62472
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-react-390-immediate.png",
+      "rawSha256": "0c6f4fb788ae585caf7a1218fa94bb88b07828a33e009042ca0beea6552c1f77",
+      "publishedSha256": "0c6f4fb788ae585caf7a1218fa94bb88b07828a33e009042ca0beea6552c1f77",
+      "bytes": 69658
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-react-390-resize-immediate.png",
+      "rawSha256": "f6cca0b27fbef18f318ac24b31a0c2c21f3afcab33a193c93e6ed6d91a7c39ce",
+      "publishedSha256": "f6cca0b27fbef18f318ac24b31a0c2c21f3afcab33a193c93e6ed6d91a7c39ce",
+      "bytes": 65745
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-react-390-settled.png",
+      "rawSha256": "f6cca0b27fbef18f318ac24b31a0c2c21f3afcab33a193c93e6ed6d91a7c39ce",
+      "publishedSha256": "f6cca0b27fbef18f318ac24b31a0c2c21f3afcab33a193c93e6ed6d91a7c39ce",
+      "bytes": 65745
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-react-430-resize-immediate.png",
+      "rawSha256": "befc8607196d2e141a09062f6be91ba3087357ddd498b85d630e8221d292e45e",
+      "publishedSha256": "befc8607196d2e141a09062f6be91ba3087357ddd498b85d630e8221d292e45e",
+      "bytes": 78177
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-react-430-settled.png",
+      "rawSha256": "befc8607196d2e141a09062f6be91ba3087357ddd498b85d630e8221d292e45e",
+      "publishedSha256": "befc8607196d2e141a09062f6be91ba3087357ddd498b85d630e8221d292e45e",
+      "bytes": 78177
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-react-long-action-reachable.png",
+      "rawSha256": "763ff6e842b5f4c8c6b4ca541e68226cfc942a2947a326c592b94e2618f55f36",
+      "publishedSha256": "763ff6e842b5f4c8c6b4ca541e68226cfc942a2947a326c592b94e2618f55f36",
+      "bytes": 26704
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-react-long-font200.png",
+      "rawSha256": "a83b14c3f7a7daa82aa27e068822f7939f06377dfc654285501cd012ba7970b1",
+      "publishedSha256": "a83b14c3f7a7daa82aa27e068822f7939f06377dfc654285501cd012ba7970b1",
+      "bytes": 25784
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-react-reopened.png",
+      "rawSha256": "7564fa71e01a925f57532ad1c1d86dc4b0d6276b5c4c6e50046a910a00679225",
+      "publishedSha256": "7564fa71e01a925f57532ad1c1d86dc4b0d6276b5c4c6e50046a910a00679225",
+      "bytes": 76944
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-react-restored.png",
+      "rawSha256": "054154f4fc02fa76a870daf08bd6af7d029ece8790f5444a9fbd111b77c4470f",
+      "publishedSha256": "054154f4fc02fa76a870daf08bd6af7d029ece8790f5444a9fbd111b77c4470f",
+      "bytes": 79256
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-react-scale2.png",
+      "rawSha256": "d3c8b6a716ba37c4d99ebd23f37472cea36016baebb3951d9c23103492bb5329",
+      "publishedSha256": "d3c8b6a716ba37c4d99ebd23f37472cea36016baebb3951d9c23103492bb5329",
+      "bytes": 55085
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-vue-1024-resize-immediate.png",
+      "rawSha256": "5ac754af2fa5b8d26e610abcb9edd3665ea9b518fda375b94467d5e8a2e8b099",
+      "publishedSha256": "5ac754af2fa5b8d26e610abcb9edd3665ea9b518fda375b94467d5e8a2e8b099",
+      "bytes": 104500
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-vue-1024-settled.png",
+      "rawSha256": "5ac754af2fa5b8d26e610abcb9edd3665ea9b518fda375b94467d5e8a2e8b099",
+      "publishedSha256": "5ac754af2fa5b8d26e610abcb9edd3665ea9b518fda375b94467d5e8a2e8b099",
+      "bytes": 104500
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-vue-320-long-action-reachable.png",
+      "rawSha256": "1e47e8acc4b96f73767c4ef7dd069ffe9cb3e68809bed99e8e4d571bcdb031e6",
+      "publishedSha256": "1e47e8acc4b96f73767c4ef7dd069ffe9cb3e68809bed99e8e4d571bcdb031e6",
+      "bytes": 21229
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-vue-320-long-font200.png",
+      "rawSha256": "84a306750945e5984aed7a6c8f3229148b318963b8fe645924fda8bf82f7a4ce",
+      "publishedSha256": "84a306750945e5984aed7a6c8f3229148b318963b8fe645924fda8bf82f7a4ce",
+      "bytes": 22199
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-vue-320-resize-immediate.png",
+      "rawSha256": "a79c8607f0300b90c29b78f48d8c3f70af336cf4123e64ada8e70e89643598f1",
+      "publishedSha256": "a79c8607f0300b90c29b78f48d8c3f70af336cf4123e64ada8e70e89643598f1",
+      "bytes": 64150
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-vue-320-settled.png",
+      "rawSha256": "a79c8607f0300b90c29b78f48d8c3f70af336cf4123e64ada8e70e89643598f1",
+      "publishedSha256": "a79c8607f0300b90c29b78f48d8c3f70af336cf4123e64ada8e70e89643598f1",
+      "bytes": 64150
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-vue-390-immediate.png",
+      "rawSha256": "75102943369fa26d58ec74da4a5cc7caca620bb3faae6b8f53bd54a950133c50",
+      "publishedSha256": "75102943369fa26d58ec74da4a5cc7caca620bb3faae6b8f53bd54a950133c50",
+      "bytes": 69752
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-vue-390-resize-immediate.png",
+      "rawSha256": "27d56a01a1e506347ece2f0e0d9abb9d90f11371910650dcb74a12e5bc7e6da0",
+      "publishedSha256": "27d56a01a1e506347ece2f0e0d9abb9d90f11371910650dcb74a12e5bc7e6da0",
+      "bytes": 67340
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-vue-390-settled.png",
+      "rawSha256": "27d56a01a1e506347ece2f0e0d9abb9d90f11371910650dcb74a12e5bc7e6da0",
+      "publishedSha256": "27d56a01a1e506347ece2f0e0d9abb9d90f11371910650dcb74a12e5bc7e6da0",
+      "bytes": 67340
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-vue-430-resize-immediate.png",
+      "rawSha256": "d20e884d1bd7789866ea675bbd06d6cdef68b8dd86375b1f20efc9392b7df93f",
+      "publishedSha256": "d20e884d1bd7789866ea675bbd06d6cdef68b8dd86375b1f20efc9392b7df93f",
+      "bytes": 79564
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-vue-430-settled.png",
+      "rawSha256": "d20e884d1bd7789866ea675bbd06d6cdef68b8dd86375b1f20efc9392b7df93f",
+      "publishedSha256": "d20e884d1bd7789866ea675bbd06d6cdef68b8dd86375b1f20efc9392b7df93f",
+      "bytes": 79564
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-vue-long-action-reachable.png",
+      "rawSha256": "238600f6a7d25c6a27a27cad165d0f642396e60d75c90d84c4cf6dfcae88aecb",
+      "publishedSha256": "238600f6a7d25c6a27a27cad165d0f642396e60d75c90d84c4cf6dfcae88aecb",
+      "bytes": 26479
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-vue-long-font200.png",
+      "rawSha256": "a83b14c3f7a7daa82aa27e068822f7939f06377dfc654285501cd012ba7970b1",
+      "publishedSha256": "a83b14c3f7a7daa82aa27e068822f7939f06377dfc654285501cd012ba7970b1",
+      "bytes": 25784
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-vue-reopened.png",
+      "rawSha256": "bffa15f804d5558e337b85436a579bd7c78ad4b7131aab4725342fa8f56a8629",
+      "publishedSha256": "bffa15f804d5558e337b85436a579bd7c78ad4b7131aab4725342fa8f56a8629",
+      "bytes": 76563
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-vue-restored.png",
+      "rawSha256": "114ff173bc27a2158e1dfedd5708e69ed33693c31ae9ff09be64a04afe966a43",
+      "publishedSha256": "114ff173bc27a2158e1dfedd5708e69ed33693c31ae9ff09be64a04afe966a43",
+      "bytes": 79354
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-vue-scale2.png",
+      "rawSha256": "98208df21cff0528b5546ad8cd9f07857d01a9f126ae85b6979f115a42ea150e",
+      "publishedSha256": "98208df21cff0528b5546ad8cd9f07857d01a9f126ae85b6979f115a42ea150e",
+      "bytes": 54948
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-vue2-1024-resize-immediate.png",
+      "rawSha256": "28063d1e6c5801809c8b2d9930f3ace76029678167772f06ebbc530e69d60f36",
+      "publishedSha256": "28063d1e6c5801809c8b2d9930f3ace76029678167772f06ebbc530e69d60f36",
+      "bytes": 108729
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-vue2-1024-settled.png",
+      "rawSha256": "28063d1e6c5801809c8b2d9930f3ace76029678167772f06ebbc530e69d60f36",
+      "publishedSha256": "28063d1e6c5801809c8b2d9930f3ace76029678167772f06ebbc530e69d60f36",
+      "bytes": 108729
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-vue2-320-long-action-reachable.png",
+      "rawSha256": "5889d351f576fa6a35f7c0427bf65ae4fd427ff054688efdef2e010aadb45b5c",
+      "publishedSha256": "5889d351f576fa6a35f7c0427bf65ae4fd427ff054688efdef2e010aadb45b5c",
+      "bytes": 21073
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-vue2-320-long-font200.png",
+      "rawSha256": "84a306750945e5984aed7a6c8f3229148b318963b8fe645924fda8bf82f7a4ce",
+      "publishedSha256": "84a306750945e5984aed7a6c8f3229148b318963b8fe645924fda8bf82f7a4ce",
+      "bytes": 22199
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-vue2-320-resize-immediate.png",
+      "rawSha256": "f1f4a56356bbf0007f6a3dbaa657b5ada52508ba58bf77037b778694daff4746",
+      "publishedSha256": "f1f4a56356bbf0007f6a3dbaa657b5ada52508ba58bf77037b778694daff4746",
+      "bytes": 64414
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-vue2-320-settled.png",
+      "rawSha256": "f1f4a56356bbf0007f6a3dbaa657b5ada52508ba58bf77037b778694daff4746",
+      "publishedSha256": "f1f4a56356bbf0007f6a3dbaa657b5ada52508ba58bf77037b778694daff4746",
+      "bytes": 64414
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-vue2-390-immediate.png",
+      "rawSha256": "bac376dd4beecd35f67fd523f64bf589774bb45fe4c504cab08f733956d5cfb2",
+      "publishedSha256": "bac376dd4beecd35f67fd523f64bf589774bb45fe4c504cab08f733956d5cfb2",
+      "bytes": 72594
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-vue2-390-resize-immediate.png",
+      "rawSha256": "f386f6ea6dabc9ae2202b77d82a2ad6e84c85942c3ba55628e0725d9365f0fd1",
+      "publishedSha256": "f386f6ea6dabc9ae2202b77d82a2ad6e84c85942c3ba55628e0725d9365f0fd1",
+      "bytes": 68887
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-vue2-390-settled.png",
+      "rawSha256": "f386f6ea6dabc9ae2202b77d82a2ad6e84c85942c3ba55628e0725d9365f0fd1",
+      "publishedSha256": "f386f6ea6dabc9ae2202b77d82a2ad6e84c85942c3ba55628e0725d9365f0fd1",
+      "bytes": 68887
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-vue2-430-resize-immediate.png",
+      "rawSha256": "e13c90ce41f39336a8f69fd3f9a6fdfa40b0c59a74630fde4adab70a6ef87c2f",
+      "publishedSha256": "e13c90ce41f39336a8f69fd3f9a6fdfa40b0c59a74630fde4adab70a6ef87c2f",
+      "bytes": 81963
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-vue2-430-settled.png",
+      "rawSha256": "e13c90ce41f39336a8f69fd3f9a6fdfa40b0c59a74630fde4adab70a6ef87c2f",
+      "publishedSha256": "e13c90ce41f39336a8f69fd3f9a6fdfa40b0c59a74630fde4adab70a6ef87c2f",
+      "bytes": 81963
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-vue2-long-action-reachable.png",
+      "rawSha256": "238600f6a7d25c6a27a27cad165d0f642396e60d75c90d84c4cf6dfcae88aecb",
+      "publishedSha256": "238600f6a7d25c6a27a27cad165d0f642396e60d75c90d84c4cf6dfcae88aecb",
+      "bytes": 26479
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-vue2-long-font200.png",
+      "rawSha256": "a83b14c3f7a7daa82aa27e068822f7939f06377dfc654285501cd012ba7970b1",
+      "publishedSha256": "a83b14c3f7a7daa82aa27e068822f7939f06377dfc654285501cd012ba7970b1",
+      "bytes": 25784
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-vue2-reopened.png",
+      "rawSha256": "5a931994166d80c7cc3b2911ca503df32e82d71f152d1d8b6d99491e172e361a",
+      "publishedSha256": "5a931994166d80c7cc3b2911ca503df32e82d71f152d1d8b6d99491e172e361a",
+      "bytes": 82803
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-vue2-restored.png",
+      "rawSha256": "5a931994166d80c7cc3b2911ca503df32e82d71f152d1d8b6d99491e172e361a",
+      "publishedSha256": "5a931994166d80c7cc3b2911ca503df32e82d71f152d1d8b6d99491e172e361a",
+      "bytes": 82803
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-vue2-scale2.png",
+      "rawSha256": "98208df21cff0528b5546ad8cd9f07857d01a9f126ae85b6979f115a42ea150e",
+      "publishedSha256": "98208df21cff0528b5546ad8cd9f07857d01a9f126ae85b6979f115a42ea150e",
+      "bytes": 54948
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-wc-1024-resize-immediate.png",
+      "rawSha256": "b2eebc29c38f15e1ca770a532fbc3b19201bc49b0c3fa79f2ac6ee4014bc6c7a",
+      "publishedSha256": "b2eebc29c38f15e1ca770a532fbc3b19201bc49b0c3fa79f2ac6ee4014bc6c7a",
+      "bytes": 115621
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-wc-1024-settled.png",
+      "rawSha256": "b2eebc29c38f15e1ca770a532fbc3b19201bc49b0c3fa79f2ac6ee4014bc6c7a",
+      "publishedSha256": "b2eebc29c38f15e1ca770a532fbc3b19201bc49b0c3fa79f2ac6ee4014bc6c7a",
+      "bytes": 115621
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-wc-320-long-action-reachable.png",
+      "rawSha256": "ce7effc590e4115ebf7ec00f0f300f5ba9e3e0c6ea6a500ee7b7e40cf12a255e",
+      "publishedSha256": "ce7effc590e4115ebf7ec00f0f300f5ba9e3e0c6ea6a500ee7b7e40cf12a255e",
+      "bytes": 20986
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-wc-320-long-font200.png",
+      "rawSha256": "84a306750945e5984aed7a6c8f3229148b318963b8fe645924fda8bf82f7a4ce",
+      "publishedSha256": "84a306750945e5984aed7a6c8f3229148b318963b8fe645924fda8bf82f7a4ce",
+      "bytes": 22199
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-wc-320-resize-immediate.png",
+      "rawSha256": "c658784496f854af87e5783a9569e42a88c67515784682ab00a96b6e3cdc0d1d",
+      "publishedSha256": "c658784496f854af87e5783a9569e42a88c67515784682ab00a96b6e3cdc0d1d",
+      "bytes": 65665
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-wc-320-settled.png",
+      "rawSha256": "c658784496f854af87e5783a9569e42a88c67515784682ab00a96b6e3cdc0d1d",
+      "publishedSha256": "c658784496f854af87e5783a9569e42a88c67515784682ab00a96b6e3cdc0d1d",
+      "bytes": 65665
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-wc-390-immediate.png",
+      "rawSha256": "a71b048e89e93bc092e4e6882edbcc10b59d534bfbb9789a7b53435eaafcd278",
+      "publishedSha256": "a71b048e89e93bc092e4e6882edbcc10b59d534bfbb9789a7b53435eaafcd278",
+      "bytes": 75459
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-wc-390-resize-immediate.png",
+      "rawSha256": "9fbbb0dcb19207ba0593f5e5d04c26fcf7e28608d12dc6d58e0dc6810373a991",
+      "publishedSha256": "9fbbb0dcb19207ba0593f5e5d04c26fcf7e28608d12dc6d58e0dc6810373a991",
+      "bytes": 71577
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-wc-390-settled.png",
+      "rawSha256": "9fbbb0dcb19207ba0593f5e5d04c26fcf7e28608d12dc6d58e0dc6810373a991",
+      "publishedSha256": "9fbbb0dcb19207ba0593f5e5d04c26fcf7e28608d12dc6d58e0dc6810373a991",
+      "bytes": 71577
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-wc-430-resize-immediate.png",
+      "rawSha256": "364053bd6b985ddbb7ae135acb4c36a6aeaba52423a9d75d4c803f1a71c4aa97",
+      "publishedSha256": "364053bd6b985ddbb7ae135acb4c36a6aeaba52423a9d75d4c803f1a71c4aa97",
+      "bytes": 85247
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-wc-430-settled.png",
+      "rawSha256": "364053bd6b985ddbb7ae135acb4c36a6aeaba52423a9d75d4c803f1a71c4aa97",
+      "publishedSha256": "364053bd6b985ddbb7ae135acb4c36a6aeaba52423a9d75d4c803f1a71c4aa97",
+      "bytes": 85247
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-wc-long-action-reachable.png",
+      "rawSha256": "5fe44faf2646ef4abc6abcfc8323e0fe6721e9b81db7560bc57938dc6c47e0de",
+      "publishedSha256": "5fe44faf2646ef4abc6abcfc8323e0fe6721e9b81db7560bc57938dc6c47e0de",
+      "bytes": 26707
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-wc-long-font200.png",
+      "rawSha256": "a83b14c3f7a7daa82aa27e068822f7939f06377dfc654285501cd012ba7970b1",
+      "publishedSha256": "a83b14c3f7a7daa82aa27e068822f7939f06377dfc654285501cd012ba7970b1",
+      "bytes": 25784
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-wc-reopened.png",
+      "rawSha256": "3f9786734a839654be676d59db243bba18975c0de5690d115710a68af968cc6d",
+      "publishedSha256": "3f9786734a839654be676d59db243bba18975c0de5690d115710a68af968cc6d",
+      "bytes": 84043
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-wc-restored.png",
+      "rawSha256": "3f9786734a839654be676d59db243bba18975c0de5690d115710a68af968cc6d",
+      "publishedSha256": "3f9786734a839654be676d59db243bba18975c0de5690d115710a68af968cc6d",
+      "bytes": 84043
+    },
+    {
+      "path": "anb-dialog/dialog-available-space/shadcn-wc-scale2.png",
+      "rawSha256": "3961677bbe6be40cc921e542b080945395f49cdbf10906de6b92699cdb5e816c",
+      "publishedSha256": "3961677bbe6be40cc921e542b080945395f49cdbf10906de6b92699cdb5e816c",
+      "bytes": 54959
+    },
+    {
+      "path": "anb-dialog/executed-test.ts",
+      "rawSha256": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e",
+      "publishedSha256": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e",
+      "bytes": 29204
+    },
+    {
+      "path": "anb-dialog/receipt.json",
+      "rawSha256": "fc4e44dcce7f8afd9e7bc105b165c464fcd363d79c93ed0700742227c44178aa",
+      "publishedSha256": "8776a1bf7787eb0c7aab6751a368a38268dc046faa7288e524d5b9422685b190",
+      "bytes": 885
+    },
+    {
+      "path": "anb-dialog/runner-integrity.json",
+      "rawSha256": "5eb8a81e0a9e40c8b8d1b0fbf3fbc004b1b542618531afd1bc5addf72135caff",
+      "publishedSha256": "5eb8a81e0a9e40c8b8d1b0fbf3fbc004b1b542618531afd1bc5addf72135caff",
+      "bytes": 603
+    },
+    {
+      "path": "anb-dialog/vitest.json",
+      "rawSha256": "f5bb163fc18b9612e4f483d142a55f593671d3a4246603ee3f49b5048f5a9b4f",
+      "publishedSha256": "7cc02e77134a0a405019d4386309a5bee4ca07556b3a9c1b685444848520748e",
+      "bytes": 3505
+    },
+    {
+      "path": "anb-focused.exit",
+      "rawSha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "publishedSha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "anb-focused.log",
+      "rawSha256": "2a61a5b29e279c5d8ef42ff233dd91603b26fa605c42d274d693b66e8385e802",
+      "publishedSha256": "dc609f3903d4cc715f4a7b024afd2037b2e868dd0b14778d08be1b3e69f5f9bf",
+      "bytes": 145131
+    },
+    {
+      "path": "anb-independent-review.json",
+      "rawSha256": "42d6899eff58de471865287b632c633e831e3db79706e825791d958ba4216e15",
+      "publishedSha256": "42d6899eff58de471865287b632c633e831e3db79706e825791d958ba4216e15",
+      "bytes": 3969
+    },
+    {
+      "path": "anb-package-budgets.exit",
+      "rawSha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "publishedSha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "anb-package-budgets.json",
+      "rawSha256": "045b0dc89f2e895ad41b122bc583ed53b2070b866735dbbd42bec62e9895fa59",
+      "publishedSha256": "045b0dc89f2e895ad41b122bc583ed53b2070b866735dbbd42bec62e9895fa59",
+      "bytes": 5140
+    },
+    {
+      "path": "anb-red.exit",
+      "rawSha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "publishedSha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "bytes": 2
+    },
+    {
+      "path": "anb-red.log",
+      "rawSha256": "d853f55dc20bc192cb904be3cc388314fc6b9251053a5632b3affda3e6b97620",
+      "publishedSha256": "83e795b0bd5e16da322c6d8356cfd894049dfed6afbdaeedb3fbfbe8159e6984",
+      "bytes": 5571
+    },
+    {
+      "path": "anb-test-package-budget-policy.exit",
+      "rawSha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "publishedSha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "anb-test-package-budget-policy.log",
+      "rawSha256": "7117122906d4c5c5180780ec0afb1897d4a61f5d329f7a1d5be1c372a6510389",
+      "publishedSha256": "c315f2306275de20d36001a14ba637d7a5f42e6aa01b15d1243dcebf1a8db387",
+      "bytes": 1163
+    },
+    {
+      "path": "anb-test.patch",
+      "rawSha256": "98600c09a0b9254f92cda1ad9bac3ebc98c160b2e3d4b3566625ffc575250194",
+      "publishedSha256": "98600c09a0b9254f92cda1ad9bac3ebc98c160b2e3d4b3566625ffc575250194",
+      "bytes": 1962
+    },
+    {
+      "path": "anb-types.exit",
+      "rawSha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "publishedSha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "bytes": 2
+    },
+    {
+      "path": "anb-types.log",
+      "rawSha256": "cd3ff49a814d4b1423b4b79437c136d044f9e00542681e5f7f463d515cbc0937",
+      "publishedSha256": "36ad801366b1619f74b4feace9848ebc367ab2526b73d9357806d3d29b13a934",
+      "bytes": 9146
+    },
+    {
+      "path": "native-visibility-control.cjs",
+      "rawSha256": "8df8cdfd8f2ae6a6573fef3eaba4d10bc263bc96724d254936e46feb6ad0544b",
+      "publishedSha256": "8df8cdfd8f2ae6a6573fef3eaba4d10bc263bc96724d254936e46feb6ad0544b",
+      "bytes": 2592
+    },
+    {
+      "path": "native-visibility-control.json",
+      "rawSha256": "d72f7474ab57d37cd7e5a5fc849888e496428cd4f61b40cfc4b583ee6b12dc45",
+      "publishedSha256": "d72f7474ab57d37cd7e5a5fc849888e496428cd4f61b40cfc4b583ee6b12dc45",
+      "bytes": 1811
+    },
+    {
+      "path": "run-exact.py",
+      "rawSha256": "7a332fe70cd8d18efba693d1556e6a3d296a77a0c6f1bcc309e0a486f8ba1697",
+      "publishedSha256": "a600b26fedafaac55ea73f5adb0ba12199e98079ff132c538cba8991bfdb7e57",
+      "bytes": 3043
+    },
+    {
+      "path": "structural-vue-observers/contents-command/entry-observer-trace.json",
+      "rawSha256": "b51ace7efe5513c5bf4939de37473a0865d25debc65af636f276ae6ca10c9d2c",
+      "publishedSha256": "7750587e7cf57d18bbf1af50d4f9d1a85cee4a7744de791d2160440a906c54de",
+      "bytes": 190924
+    },
+    {
+      "path": "structural-vue-observers/receipt.json",
+      "rawSha256": "17236be2a160a4ed97993b1ce407a39762a659520305736a668dbb8f62c4813d",
+      "publishedSha256": "d22825b53cf8e82eeaf9abd872ffdecba2b27894720b0466d214b92249a6c06f",
+      "bytes": 1083
+    },
+    {
+      "path": "structural-vue-profile/contents-command/shadcn-vue.cpuprofile",
+      "rawSha256": "9629479b5832b96e0d7208d1f2985ac0c7c705bc24f313feaf866d4d00b96ab7",
+      "publishedSha256": "e7cf9afff09fd443384274dbf961c610c5a1cd1f8c6d76adaf12c63d0a25b495",
+      "bytes": 704163
+    },
+    {
+      "path": "structural-vue-profile/cpu-summary.json",
+      "rawSha256": "1cc346677b96db24e55e23f411a54e5a385053d9678888c9bbb49ab13e65d49f",
+      "publishedSha256": "1cc346677b96db24e55e23f411a54e5a385053d9678888c9bbb49ab13e65d49f",
+      "bytes": 12981
+    }
+  ]
+}
