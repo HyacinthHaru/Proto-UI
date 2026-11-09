@@ -1,0 +1,174 @@
+{
+  "head": "d25e7f46bfffe2efe3279ad48ed1fd2269865bd9",
+  "base": "0607c6c5c386b8a932ab850e92a8873b2121dc45",
+  "tree": "fd5d130c63c70b4aa14be47384f6e4afcdc64e13",
+  "scope": [
+    "packages/adapters/web-component/src/runtime/modules.ts",
+    "packages/adapters/web-component/test/shadow-closeout.browser.test.ts"
+  ],
+  "originalCodeExamples": 7,
+  "originalContentsAndDialogAssertionsAndDeadlines": true,
+  "redCases": 4,
+  "intermediateBodyRedCases": 2,
+  "focusedPassed": 169,
+  "types": {
+    "files": 1179,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 25
+  },
+  "contents": [
+    {
+      "run": 1,
+      "exitCode": 0,
+      "timing": {
+        "shadcn-wc": {
+          "elapsedMs": 3,
+          "error": null,
+          "firstMs": 4.3,
+          "firstRuntime": "wc"
+        },
+        "shadcn-vue2": {
+          "elapsedMs": 933,
+          "error": null,
+          "firstMs": 1010.6,
+          "firstRuntime": "vue2"
+        },
+        "shadcn-vue": {
+          "elapsedMs": 938,
+          "error": null,
+          "firstMs": 944.3,
+          "firstRuntime": "vue"
+        },
+        "brutalist-wc": {
+          "elapsedMs": 2,
+          "error": null,
+          "firstMs": 2.7,
+          "firstRuntime": "wc"
+        },
+        "brutalist-react": {
+          "elapsedMs": 333,
+          "error": null,
+          "firstMs": 347,
+          "firstRuntime": "react"
+        },
+        "brutalist-vue2": {
+          "elapsedMs": 248,
+          "error": null,
+          "firstMs": 252.3,
+          "firstRuntime": "vue2"
+        },
+        "brutalist-vue": {
+          "elapsedMs": 311,
+          "error": null,
+          "firstMs": 347.2,
+          "firstRuntime": "vue"
+        },
+        "shadcn-react": {
+          "elapsedMs": 693,
+          "error": null,
+          "firstMs": 699.8,
+          "firstRuntime": "react"
+        }
+      },
+      "closes": 24
+    },
+    {
+      "run": 2,
+      "exitCode": 1,
+      "timing": {
+        "shadcn-wc": {
+          "elapsedMs": 2,
+          "error": null,
+          "firstMs": 3.4,
+          "firstRuntime": "wc"
+        },
+        "shadcn-vue": {
+          "elapsedMs": 1001,
+          "error": "Error: Matcher did not succeed in 1000ms",
+          "firstMs": 1067.9,
+          "firstRuntime": "vue"
+        },
+        "shadcn-react": {
+          "elapsedMs": 691,
+          "error": null,
+          "firstMs": 697.7,
+          "firstRuntime": "react"
+        }
+      },
+      "closes": 6
+    },
+    {
+      "run": 3,
+      "exitCode": 0,
+      "timing": {
+        "shadcn-wc": {
+          "elapsedMs": 2,
+          "error": null,
+          "firstMs": 3.4,
+          "firstRuntime": "wc"
+        },
+        "shadcn-vue2": {
+          "elapsedMs": 942,
+          "error": null,
+          "firstMs": 1021.5,
+          "firstRuntime": "vue2"
+        },
+        "shadcn-vue": {
+          "elapsedMs": 940,
+          "error": null,
+          "firstMs": 946.4,
+          "firstRuntime": "vue"
+        },
+        "brutalist-wc": {
+          "elapsedMs": 2,
+          "error": null,
+          "firstMs": 2.6,
+          "firstRuntime": "wc"
+        },
+        "brutalist-react": {
+          "elapsedMs": 334,
+          "error": null,
+          "firstMs": 348.5,
+          "firstRuntime": "react"
+        },
+        "brutalist-vue2": {
+          "elapsedMs": 246,
+          "error": null,
+          "firstMs": 250.6,
+          "firstRuntime": "vue2"
+        },
+        "brutalist-vue": {
+          "elapsedMs": 310,
+          "error": null,
+          "firstMs": 347.2,
+          "firstRuntime": "vue"
+        },
+        "shadcn-react": {
+          "elapsedMs": 692,
+          "error": null,
+          "firstMs": 698.1,
+          "firstRuntime": "react"
+        }
+      },
+      "closes": 24
+    }
+  ],
+  "dialog": {
+    "passed": 8,
+    "observations": 196,
+    "pngs": 120,
+    "browser": "155.0.8059.39"
+  },
+  "hosted": {
+    "base": "0607c6c5c386b8a932ab850e92a8873b2121dc45",
+    "run": 42674546918,
+    "contentsJob": 129352498796,
+    "contentsVerdict": "original Shadcn React 1000ms publication assertion failed",
+    "dialogJob": 129352469059,
+    "dialogVerdict": "all eight cases passed in log; shard exited 124",
+    "popoverJob": 129356573834,
+    "popoverPassed": 32,
+    "originalMobileWheelPassed": 16
+  }
+}
