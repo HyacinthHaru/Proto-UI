@@ -1,0 +1,253 @@
+{
+  "main": "ebce9feae890d8b9b318e1da82611331ceeb0e19",
+  "head": "e88a630aa3eb3a272851f2b5b8ee5c4b157092f2",
+  "tree": "a4077d6d5c4610e0fc687b785a7fed4172c16e01",
+  "source": {
+    "allDocsAndOriginalProbesByteIdentical": true,
+    "shadcnButtonCodeExamples": 7,
+    "contentsSha256": "8a5db042fcaee8550630c755fdc72583c8bc5645cc5418eccc416523b5453e8e",
+    "dialogSha256": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e"
+  },
+  "environment": {
+    "node": "24.21.0",
+    "pnpm": "10.32.1",
+    "platform": "macOS arm64",
+    "browser": "155.0.8059.39"
+  },
+  "contents": {
+    "transitionMs": {
+      "brutalist-react": 333,
+      "brutalist-vue": 318,
+      "brutalist-vue2": 214,
+      "brutalist-wc": 3,
+      "shadcn-react": 669,
+      "shadcn-vue": 948,
+      "shadcn-vue2": 926,
+      "shadcn-wc": 3
+    },
+    "closeCount": 24,
+    "runner": {
+      "schemaVersion": 1,
+      "vitestVersion": "2.1.9",
+      "reporterSha256": "d26d77c9a57a8997394a21b70dee15cf7408c25e3d7bd7e22f48e5b1e6e4c6fa",
+      "phase": "process-exit",
+      "finishedCalls": 1,
+      "closeStarted": true,
+      "closeFinished": true,
+      "processTimedOut": false,
+      "runnerErrors": [],
+      "unhandledErrors": [],
+      "files": [
+        {
+          "path": "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+          "state": "pass",
+          "suiteErrors": []
+        }
+      ],
+      "exitCode": 0,
+      "cancelled": false,
+      "reportSha256": "632946e139a7f9652e327462790fda2dc3f38fdae52426aeb3aae4d2a0781c69"
+    }
+  },
+  "dialog": {
+    "passed": 8,
+    "observations": 196,
+    "pngs": 120,
+    "runner": {
+      "schemaVersion": 1,
+      "vitestVersion": "2.1.9",
+      "reporterSha256": "d26d77c9a57a8997394a21b70dee15cf7408c25e3d7bd7e22f48e5b1e6e4c6fa",
+      "phase": "process-exit",
+      "finishedCalls": 1,
+      "closeStarted": true,
+      "closeFinished": true,
+      "processTimedOut": false,
+      "runnerErrors": [],
+      "unhandledErrors": [],
+      "files": [
+        {
+          "path": "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+          "state": "pass",
+          "suiteErrors": []
+        }
+      ],
+      "exitCode": 0,
+      "cancelled": false,
+      "reportSha256": "328dc5e73d782867b6ae02ee60d72ff305f9bc8549478800f68df22bea90425e"
+    }
+  },
+  "focused": {
+    "passed": 356,
+    "failed": 1,
+    "baselineFailureTitle": "remembers logical portal focus without accepting unrelated document focus"
+  },
+  "types": {
+    "mainExit": 1,
+    "candidateExit": 1,
+    "mainErrors": 22,
+    "candidateErrors": 22,
+    "identical": true
+  },
+  "trialTimeline": {
+    "contents-candidate-a": {
+      "exitCode": 1,
+      "transitions": {
+        "shadcn-react": {
+          "elapsedMs": 1001,
+          "error": "Error: Matcher did not succeed in 1000ms",
+          "lateObservedMs": 2139.5
+        },
+        "shadcn-wc": {
+          "elapsedMs": 4,
+          "error": null,
+          "lateObservedMs": null
+        }
+      }
+    },
+    "contents-candidate-b": {
+      "exitCode": 1,
+      "transitions": {
+        "shadcn-react": {
+          "elapsedMs": 1001,
+          "error": "Error: Matcher did not succeed in 1000ms",
+          "lateObservedMs": 1997.2
+        },
+        "shadcn-wc": {
+          "elapsedMs": 3,
+          "error": null,
+          "lateObservedMs": null
+        }
+      }
+    },
+    "contents-candidate-c": {
+      "exitCode": 1,
+      "transitions": {
+        "shadcn-react": {
+          "elapsedMs": 1001,
+          "error": "Error: Matcher did not succeed in 1000ms",
+          "lateObservedMs": 1930.7
+        },
+        "shadcn-wc": {
+          "elapsedMs": 4,
+          "error": null,
+          "lateObservedMs": null
+        }
+      }
+    },
+    "contents-candidate-d": {
+      "exitCode": 1,
+      "transitions": {
+        "shadcn-react": {
+          "elapsedMs": 1001,
+          "error": "Error: Matcher did not succeed in 1000ms",
+          "lateObservedMs": 1986.5
+        },
+        "shadcn-wc": {
+          "elapsedMs": 3,
+          "error": null,
+          "lateObservedMs": null
+        }
+      }
+    },
+    "contents-candidate-e": {
+      "exitCode": 1,
+      "transitions": {
+        "shadcn-react": {
+          "elapsedMs": 1001,
+          "error": "Error: Matcher did not succeed in 1000ms",
+          "lateObservedMs": 1164.1
+        },
+        "shadcn-wc": {
+          "elapsedMs": 2,
+          "error": null,
+          "lateObservedMs": null
+        }
+      }
+    },
+    "contents-candidate-f": {
+      "exitCode": 1,
+      "transitions": {
+        "shadcn-react": {
+          "elapsedMs": 833,
+          "error": null,
+          "lateObservedMs": null
+        },
+        "shadcn-vue": {
+          "elapsedMs": 1002,
+          "error": "Error: Matcher did not succeed in 1000ms",
+          "lateObservedMs": 1367.5
+        },
+        "shadcn-wc": {
+          "elapsedMs": 5,
+          "error": null,
+          "lateObservedMs": null
+        }
+      }
+    },
+    "contents-candidate-g": {
+      "exitCode": 1,
+      "transitions": {
+        "shadcn-react": {
+          "elapsedMs": 830,
+          "error": null,
+          "lateObservedMs": null
+        },
+        "shadcn-vue": {
+          "elapsedMs": 1002,
+          "error": "Error: Matcher did not succeed in 1000ms",
+          "lateObservedMs": 1252.7
+        },
+        "shadcn-wc": {
+          "elapsedMs": 3,
+          "error": null,
+          "lateObservedMs": null
+        }
+      }
+    },
+    "contents-candidate-h": {
+      "exitCode": 0,
+      "transitions": {
+        "brutalist-react": {
+          "elapsedMs": 337,
+          "error": null,
+          "lateObservedMs": null
+        },
+        "brutalist-vue": {
+          "elapsedMs": 308,
+          "error": null,
+          "lateObservedMs": null
+        },
+        "brutalist-vue2": {
+          "elapsedMs": 242,
+          "error": null,
+          "lateObservedMs": null
+        },
+        "brutalist-wc": {
+          "elapsedMs": 2,
+          "error": null,
+          "lateObservedMs": null
+        },
+        "shadcn-react": {
+          "elapsedMs": 692,
+          "error": null,
+          "lateObservedMs": null
+        },
+        "shadcn-vue": {
+          "elapsedMs": 935,
+          "error": null,
+          "lateObservedMs": null
+        },
+        "shadcn-vue2": {
+          "elapsedMs": 946,
+          "error": null,
+          "lateObservedMs": null
+        },
+        "shadcn-wc": {
+          "elapsedMs": 4,
+          "error": null,
+          "lateObservedMs": null
+        }
+      }
+    }
+  }
+}
