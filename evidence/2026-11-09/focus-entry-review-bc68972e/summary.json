@@ -1,0 +1,609 @@
+{
+  "head": "bc68972e5852f85ac5633b8445bb788663a74f38",
+  "base": "ebce9feae890d8b9b318e1da82611331ceeb0e19",
+  "tree": "d42c4c9c9eed97c53f0cf142821aa4851a42451a",
+  "originalDocsProbesWorkflowBytes": true,
+  "shadcnButtonCodeExamples": 7,
+  "local": {
+    "contentsByHead": {
+      "a9588f241a052ad01ae5e71e94276e15cc218425": [
+        {
+          "run": 1,
+          "folder": "contents-a9588f24-local-1",
+          "exit": 0,
+          "timing": {
+            "brutalist-react": {
+              "elapsedMs": 334,
+              "error": null,
+              "firstObservedMs": 348.8,
+              "firstRuntime": "react"
+            },
+            "brutalist-vue": {
+              "elapsedMs": 311,
+              "error": null,
+              "firstObservedMs": 347.5,
+              "firstRuntime": "vue"
+            },
+            "brutalist-vue2": {
+              "elapsedMs": 245,
+              "error": null,
+              "firstObservedMs": 250,
+              "firstRuntime": "vue2"
+            },
+            "brutalist-wc": {
+              "elapsedMs": 2,
+              "error": null,
+              "firstObservedMs": 3,
+              "firstRuntime": "wc"
+            },
+            "shadcn-react": {
+              "elapsedMs": 682,
+              "error": null,
+              "firstObservedMs": 688.2,
+              "firstRuntime": "react"
+            },
+            "shadcn-vue": {
+              "elapsedMs": 928,
+              "error": null,
+              "firstObservedMs": 934.1,
+              "firstRuntime": "vue"
+            },
+            "shadcn-vue2": {
+              "elapsedMs": 944,
+              "error": null,
+              "firstObservedMs": 1021.1,
+              "firstRuntime": "vue2"
+            },
+            "shadcn-wc": {
+              "elapsedMs": 3,
+              "error": null,
+              "firstObservedMs": 3.7,
+              "firstRuntime": "wc"
+            }
+          },
+          "closes": 24,
+          "runner": {
+            "schemaVersion": 1,
+            "vitestVersion": "2.1.9",
+            "reporterSha256": "d26d77c9a57a8997394a21b70dee15cf7408c25e3d7bd7e22f48e5b1e6e4c6fa",
+            "phase": "process-exit",
+            "finishedCalls": 1,
+            "closeStarted": true,
+            "closeFinished": true,
+            "processTimedOut": false,
+            "runnerErrors": [],
+            "unhandledErrors": [],
+            "files": [
+              {
+                "path": "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+                "state": "pass",
+                "suiteErrors": []
+              }
+            ],
+            "exitCode": 0,
+            "cancelled": false,
+            "reportSha256": "a7c98f40da2f364c0d882fff6b8071856d4badbcc46e793d13840e9f270df87a"
+          }
+        },
+        {
+          "run": 2,
+          "folder": "contents-a9588f24-local-2",
+          "exit": 0,
+          "timing": {
+            "brutalist-react": {
+              "elapsedMs": 340,
+              "error": null,
+              "firstObservedMs": 354.6,
+              "firstRuntime": "react"
+            },
+            "brutalist-vue": {
+              "elapsedMs": 313,
+              "error": null,
+              "firstObservedMs": 347.6,
+              "firstRuntime": "vue"
+            },
+            "brutalist-vue2": {
+              "elapsedMs": 218,
+              "error": null,
+              "firstObservedMs": 254.2,
+              "firstRuntime": "vue2"
+            },
+            "brutalist-wc": {
+              "elapsedMs": 2,
+              "error": null,
+              "firstObservedMs": 3.4,
+              "firstRuntime": "wc"
+            },
+            "shadcn-react": {
+              "elapsedMs": 678,
+              "error": null,
+              "firstObservedMs": 685,
+              "firstRuntime": "react"
+            },
+            "shadcn-vue": {
+              "elapsedMs": 933,
+              "error": null,
+              "firstObservedMs": 939.2,
+              "firstRuntime": "vue"
+            },
+            "shadcn-vue2": {
+              "elapsedMs": 944,
+              "error": null,
+              "firstObservedMs": 1024.2,
+              "firstRuntime": "vue2"
+            },
+            "shadcn-wc": {
+              "elapsedMs": 3,
+              "error": null,
+              "firstObservedMs": 4.2,
+              "firstRuntime": "wc"
+            }
+          },
+          "closes": 24,
+          "runner": {
+            "schemaVersion": 1,
+            "vitestVersion": "2.1.9",
+            "reporterSha256": "d26d77c9a57a8997394a21b70dee15cf7408c25e3d7bd7e22f48e5b1e6e4c6fa",
+            "phase": "process-exit",
+            "finishedCalls": 1,
+            "closeStarted": true,
+            "closeFinished": true,
+            "processTimedOut": false,
+            "runnerErrors": [],
+            "unhandledErrors": [],
+            "files": [
+              {
+                "path": "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+                "state": "pass",
+                "suiteErrors": []
+              }
+            ],
+            "exitCode": 0,
+            "cancelled": false,
+            "reportSha256": "5e999e9d25864ddebec047b6b615406c0e78b36ec4ea8ebf988e3dcb8c47a1a8"
+          }
+        },
+        {
+          "run": 3,
+          "folder": "contents-a9588f24-local-3",
+          "exit": 1,
+          "timing": {
+            "shadcn-react": {
+              "elapsedMs": 683,
+              "error": null,
+              "firstObservedMs": 690,
+              "firstRuntime": "react"
+            },
+            "shadcn-vue": {
+              "elapsedMs": 1003,
+              "error": "Error: Matcher did not succeed in 1000ms",
+              "firstObservedMs": 1094.1,
+              "firstRuntime": "vue"
+            },
+            "shadcn-wc": {
+              "elapsedMs": 3,
+              "error": null,
+              "firstObservedMs": 5.6,
+              "firstRuntime": "wc"
+            }
+          },
+          "closes": 6,
+          "runner": {
+            "schemaVersion": 1,
+            "vitestVersion": "2.1.9",
+            "reporterSha256": "d26d77c9a57a8997394a21b70dee15cf7408c25e3d7bd7e22f48e5b1e6e4c6fa",
+            "phase": "process-exit",
+            "finishedCalls": 1,
+            "closeStarted": true,
+            "closeFinished": true,
+            "processTimedOut": false,
+            "runnerErrors": [],
+            "unhandledErrors": [],
+            "files": [
+              {
+                "path": "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+                "state": "fail",
+                "suiteErrors": []
+              }
+            ],
+            "exitCode": 1,
+            "cancelled": false,
+            "reportSha256": "b064597bded317a88b03b285a85533ed3ba8d514afad3a4ac0035e785e98edd3"
+          }
+        }
+      ],
+      "2fe79bff530abbe74b1503c57cda5c92df083bf6": [
+        {
+          "run": 1,
+          "folder": "contents-2fe79bff-local-1",
+          "exit": 1,
+          "timing": {
+            "shadcn-react": {
+              "elapsedMs": 1001,
+              "error": "Error: Matcher did not succeed in 1000ms",
+              "firstObservedMs": 1064.4,
+              "firstRuntime": "wc"
+            },
+            "shadcn-wc": {
+              "elapsedMs": 8,
+              "error": null,
+              "firstObservedMs": 10,
+              "firstRuntime": "wc"
+            }
+          },
+          "closes": 3,
+          "runner": {
+            "schemaVersion": 1,
+            "vitestVersion": "2.1.9",
+            "reporterSha256": "d26d77c9a57a8997394a21b70dee15cf7408c25e3d7bd7e22f48e5b1e6e4c6fa",
+            "phase": "process-exit",
+            "finishedCalls": 1,
+            "closeStarted": true,
+            "closeFinished": true,
+            "processTimedOut": false,
+            "runnerErrors": [],
+            "unhandledErrors": [],
+            "files": [
+              {
+                "path": "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+                "state": "fail",
+                "suiteErrors": []
+              }
+            ],
+            "exitCode": 1,
+            "cancelled": false,
+            "reportSha256": "a070659eba1927e3540e3d4481da475d27c589c9fd9b544e559faeb7d3f4f47c"
+          }
+        },
+        {
+          "run": 2,
+          "folder": "contents-2fe79bff-local-2",
+          "exit": 1,
+          "timing": {
+            "shadcn-react": {
+              "elapsedMs": 1001,
+              "error": "Error: Matcher did not succeed in 1000ms",
+              "firstObservedMs": 1506.6,
+              "firstRuntime": "react"
+            },
+            "shadcn-wc": {
+              "elapsedMs": 13,
+              "error": null,
+              "firstObservedMs": 17.5,
+              "firstRuntime": "wc"
+            }
+          },
+          "closes": 3,
+          "runner": {
+            "schemaVersion": 1,
+            "vitestVersion": "2.1.9",
+            "reporterSha256": "d26d77c9a57a8997394a21b70dee15cf7408c25e3d7bd7e22f48e5b1e6e4c6fa",
+            "phase": "process-exit",
+            "finishedCalls": 1,
+            "closeStarted": true,
+            "closeFinished": true,
+            "processTimedOut": false,
+            "runnerErrors": [],
+            "unhandledErrors": [],
+            "files": [
+              {
+                "path": "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+                "state": "fail",
+                "suiteErrors": []
+              }
+            ],
+            "exitCode": 1,
+            "cancelled": false,
+            "reportSha256": "b7ccebb0d9a5a26dcdfe8a75810101b0c9058f309193f1b6d417677829f7814f"
+          }
+        },
+        {
+          "run": 3,
+          "folder": "contents-2fe79bff-local-3",
+          "exit": 1,
+          "timing": {
+            "shadcn-react": {
+              "elapsedMs": 1001,
+              "error": "Error: Matcher did not succeed in 1000ms",
+              "firstObservedMs": 1551.2,
+              "firstRuntime": "react"
+            },
+            "shadcn-wc": {
+              "elapsedMs": 4,
+              "error": null,
+              "firstObservedMs": 4.8,
+              "firstRuntime": "wc"
+            }
+          },
+          "closes": 3,
+          "runner": {
+            "schemaVersion": 1,
+            "vitestVersion": "2.1.9",
+            "reporterSha256": "d26d77c9a57a8997394a21b70dee15cf7408c25e3d7bd7e22f48e5b1e6e4c6fa",
+            "phase": "process-exit",
+            "finishedCalls": 1,
+            "closeStarted": true,
+            "closeFinished": true,
+            "processTimedOut": false,
+            "runnerErrors": [],
+            "unhandledErrors": [],
+            "files": [
+              {
+                "path": "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+                "state": "fail",
+                "suiteErrors": []
+              }
+            ],
+            "exitCode": 1,
+            "cancelled": false,
+            "reportSha256": "ae85a0b6d744e833543e9103e5d1a5461dc298ed634373cc1eac07f55bb69179"
+          }
+        }
+      ],
+      "bc68972e5852f85ac5633b8445bb788663a74f38": [
+        {
+          "run": 1,
+          "folder": "contents-bc68972e-local-1",
+          "exit": 1,
+          "timing": {
+            "shadcn-react": {
+              "elapsedMs": 773,
+              "error": null,
+              "firstObservedMs": 779.5,
+              "firstRuntime": "react"
+            },
+            "shadcn-vue": {
+              "elapsedMs": 1001,
+              "error": "Error: Matcher did not succeed in 1000ms",
+              "firstObservedMs": 1051.4,
+              "firstRuntime": "vue"
+            },
+            "shadcn-wc": {
+              "elapsedMs": 4,
+              "error": null,
+              "firstObservedMs": 5.3,
+              "firstRuntime": "wc"
+            }
+          },
+          "closes": 6,
+          "runner": {
+            "schemaVersion": 1,
+            "vitestVersion": "2.1.9",
+            "reporterSha256": "d26d77c9a57a8997394a21b70dee15cf7408c25e3d7bd7e22f48e5b1e6e4c6fa",
+            "phase": "process-exit",
+            "finishedCalls": 1,
+            "closeStarted": true,
+            "closeFinished": true,
+            "processTimedOut": false,
+            "runnerErrors": [],
+            "unhandledErrors": [],
+            "files": [
+              {
+                "path": "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+                "state": "fail",
+                "suiteErrors": []
+              }
+            ],
+            "exitCode": 1,
+            "cancelled": false,
+            "reportSha256": "d1cdbb505aafcfe1209e4605f8b414ee84ea0b2de236534bc474624f773fd699"
+          }
+        },
+        {
+          "run": 2,
+          "folder": "contents-bc68972e-local-2",
+          "exit": 1,
+          "timing": {
+            "shadcn-react": {
+              "elapsedMs": 767,
+              "error": null,
+              "firstObservedMs": 774.1,
+              "firstRuntime": "react"
+            },
+            "shadcn-vue": {
+              "elapsedMs": 1001,
+              "error": "Error: Matcher did not succeed in 1000ms",
+              "firstObservedMs": 1128.9,
+              "firstRuntime": "vue"
+            },
+            "shadcn-wc": {
+              "elapsedMs": 3,
+              "error": null,
+              "firstObservedMs": 4.2,
+              "firstRuntime": "wc"
+            }
+          },
+          "closes": 6,
+          "runner": {
+            "schemaVersion": 1,
+            "vitestVersion": "2.1.9",
+            "reporterSha256": "d26d77c9a57a8997394a21b70dee15cf7408c25e3d7bd7e22f48e5b1e6e4c6fa",
+            "phase": "process-exit",
+            "finishedCalls": 1,
+            "closeStarted": true,
+            "closeFinished": true,
+            "processTimedOut": false,
+            "runnerErrors": [],
+            "unhandledErrors": [],
+            "files": [
+              {
+                "path": "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+                "state": "fail",
+                "suiteErrors": []
+              }
+            ],
+            "exitCode": 1,
+            "cancelled": false,
+            "reportSha256": "450e607ae319c696abf75f3f61844ef21aff8bdd8ad22f1abdbadd9477126e24"
+          }
+        },
+        {
+          "run": 3,
+          "folder": "contents-bc68972e-local-3",
+          "exit": 1,
+          "timing": {
+            "shadcn-react": {
+              "elapsedMs": 702,
+              "error": null,
+              "firstObservedMs": 708.9,
+              "firstRuntime": "react"
+            },
+            "shadcn-vue": {
+              "elapsedMs": 1000,
+              "error": "Error: Matcher did not succeed in 1000ms",
+              "firstObservedMs": 1035.5,
+              "firstRuntime": "vue"
+            },
+            "shadcn-wc": {
+              "elapsedMs": 3,
+              "error": null,
+              "firstObservedMs": 4,
+              "firstRuntime": "wc"
+            }
+          },
+          "closes": 6,
+          "runner": {
+            "schemaVersion": 1,
+            "vitestVersion": "2.1.9",
+            "reporterSha256": "d26d77c9a57a8997394a21b70dee15cf7408c25e3d7bd7e22f48e5b1e6e4c6fa",
+            "phase": "process-exit",
+            "finishedCalls": 1,
+            "closeStarted": true,
+            "closeFinished": true,
+            "processTimedOut": false,
+            "runnerErrors": [],
+            "unhandledErrors": [],
+            "files": [
+              {
+                "path": "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+                "state": "fail",
+                "suiteErrors": []
+              }
+            ],
+            "exitCode": 1,
+            "cancelled": false,
+            "reportSha256": "1b38fea10fa51fdc384472aa4a5d1cd4ad7fc7a3e0919d77178db4ff9810688a"
+          }
+        }
+      ]
+    },
+    "dialogByHead": {
+      "a9588f241a052ad01ae5e71e94276e15cc218425": {
+        "passed": 8,
+        "observations": 196,
+        "pngs": 120,
+        "runner": {
+          "schemaVersion": 1,
+          "vitestVersion": "2.1.9",
+          "reporterSha256": "d26d77c9a57a8997394a21b70dee15cf7408c25e3d7bd7e22f48e5b1e6e4c6fa",
+          "phase": "process-exit",
+          "finishedCalls": 1,
+          "closeStarted": true,
+          "closeFinished": true,
+          "processTimedOut": false,
+          "runnerErrors": [],
+          "unhandledErrors": [],
+          "files": [
+            {
+              "path": "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+              "state": "pass",
+              "suiteErrors": []
+            }
+          ],
+          "exitCode": 0,
+          "cancelled": false,
+          "reportSha256": "7c9e4816d5991917c5f437f9e74e63cae433a20b783ff24be269dc85ab0bbba4"
+        },
+        "browser": "155.0.8059.39"
+      },
+      "bc68972e5852f85ac5633b8445bb788663a74f38": {
+        "passed": 8,
+        "observations": 196,
+        "pngs": 120,
+        "runner": {
+          "schemaVersion": 1,
+          "vitestVersion": "2.1.9",
+          "reporterSha256": "d26d77c9a57a8997394a21b70dee15cf7408c25e3d7bd7e22f48e5b1e6e4c6fa",
+          "phase": "process-exit",
+          "finishedCalls": 1,
+          "closeStarted": true,
+          "closeFinished": true,
+          "processTimedOut": false,
+          "runnerErrors": [],
+          "unhandledErrors": [],
+          "files": [
+            {
+              "path": "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+              "state": "pass",
+              "suiteErrors": []
+            }
+          ],
+          "exitCode": 0,
+          "cancelled": false,
+          "reportSha256": "8c99b0733d4e83b97d566580b1e47ba1cd836fed2adbe7be5c03784441caa6c6"
+        },
+        "browser": "155.0.8059.39"
+      }
+    },
+    "focusedPassed": 89,
+    "workspaceTypes": "passed"
+  },
+  "hosted": {
+    "run": 42611397965,
+    "head": "a9588f241a052ad01ae5e71e94276e15cc218425",
+    "runStatus": "queued",
+    "runConclusion": null,
+    "jobs": {
+      "browser-5-of-8": {
+        "job": 129140539289,
+        "url": "https://github.com/HyacinthHaru/Proto-UI/actions/runs/42611397965/job/129140539289",
+        "status": "completed",
+        "conclusion": "failure",
+        "artifact": 13671511851,
+        "sha256": "0b8d874f10cf681d6ec6347d0ffb7cc207388de95f9b6463467134d32f54fefd",
+        "bytes": 24412685,
+        "members": 430,
+        "receiptOutcome": "failure",
+        "selectedTarget": true,
+        "timing": {
+          "shadcn-react": {
+            "elapsedMs": 1002,
+            "error": "Error: Matcher did not succeed in 1000ms",
+            "lateObservedMs": 1595.4,
+            "firstRuntime": "wc"
+          },
+          "shadcn-wc": {
+            "elapsedMs": 3,
+            "error": null,
+            "lateObservedMs": null,
+            "firstRuntime": "wc"
+          }
+        },
+        "closeCount": 3,
+        "shardExit124": true,
+        "targetVerdict": "Original Contents case failed at Shadcn React publication; Vue not reached"
+      },
+      "browser-8-of-8": {
+        "job": 129140539454,
+        "url": "https://github.com/HyacinthHaru/Proto-UI/actions/runs/42611397965/job/129140539454",
+        "status": "completed",
+        "conclusion": "failure",
+        "artifact": 13671377523,
+        "sha256": "56c0f808117f0921c0ce7680648b79e7994d4b86f009d04d429ba3c73a6a5957",
+        "bytes": 14733815,
+        "members": 335,
+        "receiptOutcome": "failure",
+        "selectedTarget": true,
+        "dialogRows": 196,
+        "browser": "156.0.8078.79",
+        "pngCount": 120,
+        "shardExit124": true,
+        "targetVerdict": "Vitest text reports the eight Dialog cases passing; shard failed and produced no final aggregate Vitest JSON"
+      }
+    }
+  },
+  "excluded": {
+    "intermediateDialog": "2fe79bff530abbe74b1503c57cda5c92df083bf6",
+    "reason": "Next draft changed the runtime file during this intermediate run"
+  }
+}
