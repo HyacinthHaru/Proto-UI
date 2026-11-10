@@ -1,0 +1,1591 @@
+{
+  "head": "7339d17588918417708b558e2b69828d1b233032",
+  "base": "02c725bbfe77b33331b77a69e7acd9e9009ac3d7",
+  "originalCodeExamples": 7,
+  "originalProbesUnchanged": true,
+  "diagnostic": {
+    "diagnosticHead": "89cc7bb014b6ee69658aaeb2ea103e796acdb18a",
+    "parent": "0df298c4b48c2e4805ec7ce81b5644c0f4e5aef5",
+    "run": 42816658553,
+    "job": 129831485163,
+    "assets": {
+      "plan": {
+        "id": 13764721245,
+        "sha256": "10a736cd9ba4889e1f7fb51ae011376d38712ea3553c7cf655bd50260b0e3af4",
+        "bytes": 26349
+      },
+      "browser5": {
+        "id": 13764979086,
+        "sha256": "de77c12fd068e6a74c008d0c49d51cf715f7bc476b1646bb9a0ccdb353463273",
+        "bytes": 25714917
+      }
+    },
+    "originalFailure": "Error: Matcher did not succeed in 1000ms",
+    "exactRendererTrace": {
+      "complete": true,
+      "bytes": 13012920,
+      "dataLossOccurred": false,
+      "sha256": "2e4aebfc197e4eea04c620dc0b3dc0e8162e93fc071c2cc8a3f6221cfcea5550"
+    },
+    "originalVerdict": {
+      "passed": false,
+      "clickedAt": 1794314121412,
+      "originalCheckAt": 1794314122413
+    },
+    "unrelatedDiagnosticTypes": {
+      "job": 129831350251,
+      "error": "TS2554: existing declaration expects 2 arguments; diagnostic test passes the third trace options argument."
+    },
+    "productTimingLimits": "This run profiles diagnostic source bytes, not the uninstrumented product revision. Previous uninstrumented hosted runs failed the same original React assertion."
+  },
+  "diagnosticTimeline": {
+    "source": {
+      "sha": "89cc7bb014b6ee69658aaeb2ea103e796acdb18a",
+      "dirty": false,
+      "expectedSha": "89cc7bb014b6ee69658aaeb2ea103e796acdb18a",
+      "files": {
+        "components/SiteContentsCommand.astro": "da3634a9516a41a004018d67dda423c8edb2008a1eb43f6ce1934f985c452989",
+        "components/site-contents-command.ts": "cd558589c0000aa7f48d0a49a29129ac53ec159c28091ea0af4d388150f37c9a",
+        "components/site-contents-panel.ts": "e8e26a939111f7f791f16ad00aaf7df5f86cdf94206cb8d5bf8be996292fb96b",
+        "components/site-header-surface.ts": "c44ba1c3d43bf840e0e877a59d5bad5d5f1f3ea87ea0b3f99547939971856d9b",
+        "components/site-header-disclosure.ts": "f1fdabecbcea76a920a564f43d86ebc5a5077011226a278410f2e954a0fea60a",
+        "components/override/Sidebar.astro": "bdd177350d79cdb6114d1d77254d3188fbc99ad46dae8dfadc915bd541940d6c",
+        "components/override/PageFrame.astro": "db09b8ed5541455e1c07001802f7c6a256cf2025d1b99962cfae0376d293aa3a",
+        "styles/site-contents-command.css": "634ef35af2f4297eb25f0c03aa1bc974ef068dd33b737a468fda1ff39469fe58"
+      }
+    },
+    "deadlineMs": 1000,
+    "originalError": "Error: Matcher did not succeed in 1000ms",
+    "originalPollMs": 1001,
+    "browserClickEpochMs": 1794314120728,
+    "traceSha256": "2e4aebfc197e4eea04c620dc0b3dc0e8162e93fc071c2cc8a3f6221cfcea5550",
+    "sourceBinding": {
+      "passed": false,
+      "clickedAt": 1794314121412,
+      "originalCheckAt": 1794314122413
+    },
+    "renderer": [3134, 3134],
+    "header": {
+      "transaction-prepare-start": 52.9,
+      "participants-ready": 2025.6,
+      "transaction-theme-ready": 2041.55,
+      "commit-prepare-start": 2042.5,
+      "commit-prepare-end": 2042.54,
+      "activation-start": 2042.55,
+      "activation-end": 2043.52,
+      "publication-start": 2043.54,
+      "publication-0-end": 2062.92,
+      "publication-1-end": 2062.96,
+      "publication-2-end": 2064.46
+    },
+    "stages": {
+      "probe:0": {
+        "before-click": -89.13,
+        "trusted-click": 0.0
+      },
+      "site-search-1-docs-1-open:2": {
+        "prepare-start": 36.57,
+        "theme-read": 49.41,
+        "dependencies-start": 51.83,
+        "dependencies-ready": 881.98,
+        "staging-attached": 882.1,
+        "render-start": 882.12,
+        "render-ready": 1378.48,
+        "paint-wait": 1378.85,
+        "paint-resumed": 2008.82,
+        "candidate-ready": 2009.47
+      },
+      "docs-1:2": {
+        "transaction-prepare-start": 52.9,
+        "participants-ready": 2025.6,
+        "transaction-theme-ready": 2041.55,
+        "commit-prepare-start": 2042.5,
+        "commit-prepare-end": 2042.54,
+        "activation-start": 2042.55,
+        "activation-end": 2043.52,
+        "publication-start": 2043.54,
+        "publication-0-end": 2062.92,
+        "publication-1-end": 2062.96,
+        "publication-2-end": 2064.46
+      },
+      "site-header-surface-1:2": {
+        "prepare-start": 52.94,
+        "theme-read": 56.84,
+        "dependencies-start": 57.61,
+        "dependencies-ready": 882.7,
+        "staging-attached": 882.76,
+        "render-start": 882.78,
+        "render-ready": 1379.75,
+        "paint-wait": 1380.07,
+        "paint-resumed": 2024.75,
+        "candidate-ready": 2025.03
+      },
+      "site-contents-1-docs-1:2": {
+        "prepare-start": 57.7,
+        "theme-read": 57.74,
+        "dependencies-start": 58.29,
+        "dependencies-ready": 883.06,
+        "staging-attached": 883.11,
+        "render-start": 883.12,
+        "render-ready": 1382.23,
+        "paint-wait": 1382.59,
+        "paint-resumed": 2025.07,
+        "candidate-ready": 2025.31
+      },
+      "site-contents-panel-1-docs-1:2": {
+        "prepare-start": 58.41,
+        "theme-read": 58.5,
+        "dependencies-start": 59.31,
+        "dependencies-ready": 883.4,
+        "staging-attached": 883.43,
+        "render-start": 883.44,
+        "render-ready": 1385.03,
+        "paint-wait": 1385.35,
+        "paint-resumed": 2025.34,
+        "candidate-ready": 2025.58
+      },
+      "website-code-surface-1-attempt-1:2": {
+        "prepare-start": 62.93,
+        "theme-read": 62.95,
+        "dependencies-start": 63.38,
+        "dependencies-ready": 887.79,
+        "staging-attached": 887.85,
+        "render-start": 887.86,
+        "render-ready": 1481.25,
+        "paint-wait": 1481.7,
+        "paint-resumed": 2093.78,
+        "candidate-ready": 2094.05
+      },
+      "website-code-surface-2-attempt-1:2": {
+        "prepare-start": 64.0,
+        "theme-read": 64.02,
+        "dependencies-start": 64.45,
+        "dependencies-ready": 888.04,
+        "staging-attached": 888.07,
+        "render-start": 888.08,
+        "render-ready": 1484.0,
+        "paint-wait": 1484.41,
+        "paint-resumed": 2102.63,
+        "candidate-ready": 2102.91
+      },
+      "website-code-surface-3-attempt-1:2": {
+        "prepare-start": 65.07,
+        "theme-read": 65.08,
+        "dependencies-start": 65.5,
+        "dependencies-ready": 888.22,
+        "staging-attached": 888.25,
+        "render-start": 888.28,
+        "render-ready": 1486.72,
+        "paint-wait": 1487.14,
+        "paint-resumed": 2111.68,
+        "candidate-ready": 2111.94
+      },
+      "website-code-surface-4-attempt-1:2": {
+        "prepare-start": 66.1,
+        "theme-read": 66.12,
+        "dependencies-start": 66.53,
+        "dependencies-ready": 888.41,
+        "staging-attached": 888.44,
+        "render-start": 888.45,
+        "render-ready": 1489.46,
+        "paint-wait": 1489.9,
+        "paint-resumed": 2120.55,
+        "candidate-ready": 2120.83
+      },
+      "website-code-surface-5-attempt-1:2": {
+        "prepare-start": 67.12,
+        "theme-read": 67.14,
+        "dependencies-start": 67.54,
+        "dependencies-ready": 888.58,
+        "staging-attached": 888.62,
+        "render-start": 888.62,
+        "render-ready": 1492.21,
+        "paint-wait": 1492.63,
+        "paint-resumed": 2129.37,
+        "candidate-ready": 2129.64
+      },
+      "website-code-surface-6-attempt-1:2": {
+        "prepare-start": 68.07,
+        "theme-read": 68.08,
+        "dependencies-start": 68.49,
+        "dependencies-ready": 888.77,
+        "staging-attached": 888.8,
+        "render-start": 888.81,
+        "render-ready": 1495.03,
+        "paint-wait": 1495.46,
+        "paint-resumed": 2138.09,
+        "candidate-ready": 2138.35
+      },
+      "website-code-surface-7-attempt-1:2": {
+        "prepare-start": 68.99,
+        "theme-read": 69.0,
+        "dependencies-start": 69.4,
+        "dependencies-ready": 888.95,
+        "staging-attached": 888.97,
+        "render-start": 888.98,
+        "render-ready": 1497.79,
+        "paint-wait": 1498.21,
+        "paint-resumed": 2146.79,
+        "candidate-ready": 2147.05
+      },
+      "website-code-surface-8-attempt-1:2": {
+        "prepare-start": 69.89,
+        "theme-read": 69.9,
+        "dependencies-start": 70.31,
+        "dependencies-ready": 889.11,
+        "staging-attached": 889.14,
+        "render-start": 889.15,
+        "render-ready": 1500.52,
+        "paint-wait": 1500.95,
+        "paint-resumed": 2156.95,
+        "candidate-ready": 2157.2
+      },
+      "website-code-surface-9-attempt-1:2": {
+        "prepare-start": 70.79,
+        "theme-read": 70.81,
+        "dependencies-start": 71.2,
+        "dependencies-ready": 889.29,
+        "staging-attached": 889.32,
+        "render-start": 889.33,
+        "render-ready": 1503.24,
+        "paint-wait": 1503.67,
+        "paint-resumed": 2165.73,
+        "candidate-ready": 2165.98
+      },
+      "website-copy-1-attempt-1:2": {
+        "prepare-start": 72.44,
+        "theme-read": 72.45,
+        "dependencies-start": 73.42,
+        "dependencies-ready": 889.47,
+        "staging-attached": 889.49,
+        "render-start": 889.5,
+        "render-ready": 1512.74,
+        "paint-wait": 1513.23,
+        "paint-resumed": 2174.51,
+        "candidate-ready": 2174.77
+      },
+      "website-copy-2-attempt-1:2": {
+        "prepare-start": 74.46,
+        "theme-read": 74.48,
+        "dependencies-start": 75.45,
+        "dependencies-ready": 890.26,
+        "staging-attached": 890.29,
+        "render-start": 890.3,
+        "render-ready": 1521.7,
+        "paint-wait": 1522.21,
+        "paint-resumed": 2186.57,
+        "candidate-ready": 2186.85
+      },
+      "website-copy-3-attempt-1:2": {
+        "prepare-start": 76.25,
+        "theme-read": 76.27,
+        "dependencies-start": 77.18,
+        "dependencies-ready": 890.93,
+        "staging-attached": 890.96,
+        "render-start": 890.97,
+        "render-ready": 1530.46,
+        "paint-wait": 1530.94,
+        "paint-resumed": 2198.06,
+        "candidate-ready": 2198.31
+      },
+      "website-copy-4-attempt-1:2": {
+        "prepare-start": 77.98,
+        "theme-read": 77.99,
+        "dependencies-start": 83.78,
+        "dependencies-ready": 891.6,
+        "staging-attached": 891.66,
+        "render-start": 891.66,
+        "render-ready": 1538.78,
+        "paint-wait": 1539.24,
+        "paint-resumed": 2212.82,
+        "candidate-ready": 2213.06
+      },
+      "website-copy-5-attempt-1:2": {
+        "prepare-start": 84.81,
+        "theme-read": 84.83,
+        "dependencies-start": 85.97,
+        "dependencies-ready": 892.28,
+        "staging-attached": 892.31,
+        "render-start": 892.32,
+        "render-ready": 1547.21,
+        "paint-wait": 1547.7,
+        "paint-resumed": 2224.15,
+        "candidate-ready": 2224.37
+      },
+      "website-copy-6-attempt-1:2": {
+        "prepare-start": 86.8,
+        "theme-read": 86.82,
+        "dependencies-start": 87.64,
+        "dependencies-ready": 892.96,
+        "staging-attached": 893.0,
+        "render-start": 893.01,
+        "render-ready": 1555.33,
+        "paint-wait": 1555.82,
+        "paint-resumed": 2235.21,
+        "candidate-ready": 2235.43
+      },
+      "website-copy-7-attempt-1:2": {
+        "prepare-start": 88.44,
+        "theme-read": 88.45,
+        "dependencies-start": 89.28,
+        "dependencies-ready": 893.71,
+        "staging-attached": 893.76,
+        "render-start": 893.77,
+        "render-ready": 1563.45,
+        "paint-wait": 1563.94,
+        "paint-resumed": 2246.06,
+        "candidate-ready": 2246.27
+      },
+      "website-copy-8-attempt-1:2": {
+        "prepare-start": 90.07,
+        "theme-read": 90.09,
+        "dependencies-start": 90.92,
+        "dependencies-ready": 894.45,
+        "staging-attached": 894.49,
+        "render-start": 894.49,
+        "render-ready": 1571.53,
+        "paint-wait": 1572.01,
+        "paint-resumed": 2257.88,
+        "candidate-ready": 2258.1
+      },
+      "website-copy-9-attempt-1:1": {
+        "prepare-start": 475.87,
+        "theme-read": 475.9,
+        "dependencies-start": 476.9,
+        "dependencies-ready": 895.12,
+        "staging-attached": 895.17,
+        "render-start": 895.18,
+        "render-ready": 1666.34,
+        "paint-wait": 1667.19,
+        "paint-resumed": 2269.16,
+        "candidate-ready": 2269.36
+      },
+      "website-copy-10-attempt-1:1": {
+        "prepare-start": 488.7,
+        "theme-read": 488.72,
+        "dependencies-start": 489.64,
+        "dependencies-ready": 901.96,
+        "staging-attached": 902.04,
+        "render-start": 902.05,
+        "render-ready": 1712.0,
+        "paint-wait": 1712.62,
+        "paint-resumed": 2292.8,
+        "candidate-ready": 2293.1
+      },
+      "website-copy-11-attempt-1:1": {
+        "prepare-start": 501.17,
+        "theme-read": 501.21,
+        "dependencies-start": 502.18,
+        "dependencies-ready": 902.71,
+        "staging-attached": 902.77,
+        "render-start": 902.78,
+        "render-ready": 1753.64,
+        "paint-wait": 1754.24,
+        "paint-resumed": 2297.74,
+        "candidate-ready": 2297.97
+      },
+      "website-copy-12-attempt-1:1": {
+        "prepare-start": 513.68,
+        "theme-read": 513.7,
+        "dependencies-start": 514.57,
+        "dependencies-ready": 903.41,
+        "staging-attached": 903.45,
+        "render-start": 903.46,
+        "render-ready": 1796.75,
+        "paint-wait": 1797.34,
+        "paint-resumed": 2302.63,
+        "candidate-ready": 2302.88
+      },
+      "website-copy-13-attempt-1:1": {
+        "prepare-start": 526.0,
+        "theme-read": 526.02,
+        "dependencies-start": 527.1,
+        "dependencies-ready": 904.08,
+        "staging-attached": 904.12,
+        "render-start": 904.13,
+        "render-ready": 1845.88,
+        "paint-wait": 1846.59,
+        "paint-resumed": 2308.36,
+        "candidate-ready": 2308.6
+      },
+      "website-copy-14-attempt-1:1": {
+        "prepare-start": 538.67,
+        "theme-read": 538.68,
+        "dependencies-start": 539.87,
+        "dependencies-ready": 904.95,
+        "staging-attached": 905.01,
+        "render-start": 905.02,
+        "render-ready": 1888.34,
+        "paint-wait": 1889.01,
+        "paint-resumed": 2313.3,
+        "candidate-ready": 2313.51
+      },
+      "website-copy-15-attempt-1:1": {
+        "prepare-start": 552.36,
+        "theme-read": 552.38,
+        "dependencies-start": 553.67,
+        "dependencies-ready": 905.67,
+        "staging-attached": 905.72,
+        "render-start": 905.73,
+        "render-ready": 1931.7,
+        "paint-wait": 1932.37,
+        "paint-resumed": 2318.21,
+        "candidate-ready": 2318.44
+      },
+      "website-code-surface-10-attempt-1:1": {
+        "prepare-start": 579.2,
+        "theme-read": 579.23,
+        "dependencies-start": 580.09,
+        "dependencies-ready": 906.35,
+        "staging-attached": 906.4,
+        "render-start": 906.41,
+        "render-ready": 1952.25,
+        "paint-wait": 1952.98,
+        "paint-resumed": 2322.98,
+        "candidate-ready": 2323.2
+      },
+      "website-code-surface-11-attempt-1:1": {
+        "prepare-start": 580.25,
+        "theme-read": 580.25,
+        "dependencies-start": 580.63,
+        "dependencies-ready": 906.57,
+        "staging-attached": 906.6,
+        "render-start": 906.61,
+        "render-ready": 1958.98,
+        "paint-wait": 1959.48,
+        "paint-resumed": 2327.67,
+        "candidate-ready": 2327.89
+      },
+      "website-code-surface-12-attempt-1:1": {
+        "prepare-start": 580.77,
+        "theme-read": 580.78,
+        "dependencies-start": 581.15,
+        "dependencies-ready": 906.77,
+        "staging-attached": 906.81,
+        "render-start": 906.81,
+        "render-ready": 1965.18,
+        "paint-wait": 1965.69,
+        "paint-resumed": 2332.09,
+        "candidate-ready": 2332.31
+      },
+      "website-code-surface-13-attempt-1:1": {
+        "prepare-start": 581.27,
+        "theme-read": 581.29,
+        "dependencies-start": 581.87,
+        "dependencies-ready": 906.95,
+        "staging-attached": 906.98,
+        "render-start": 906.99,
+        "render-ready": 1971.79,
+        "paint-wait": 1972.3,
+        "paint-resumed": 2336.6,
+        "candidate-ready": 2336.82
+      },
+      "website-code-surface-14-attempt-1:1": {
+        "prepare-start": 581.98,
+        "theme-read": 581.99,
+        "dependencies-start": 582.35,
+        "dependencies-ready": 907.13,
+        "staging-attached": 907.16,
+        "render-start": 907.16,
+        "render-ready": 1978.27,
+        "paint-wait": 1978.77,
+        "paint-resumed": 2341.46,
+        "candidate-ready": 2341.68
+      },
+      "website-code-surface-15-attempt-1:1": {
+        "prepare-start": 582.44,
+        "theme-read": 582.45,
+        "dependencies-start": 582.99,
+        "dependencies-ready": 907.3,
+        "staging-attached": 907.33,
+        "render-start": 907.34,
+        "render-ready": 1984.4,
+        "paint-wait": 1984.9,
+        "paint-resumed": 2346.49,
+        "candidate-ready": 2346.74
+      },
+      "website-code-surface-16-attempt-1:1": {
+        "prepare-start": 583.14,
+        "theme-read": 583.16,
+        "dependencies-start": 583.82,
+        "dependencies-ready": 907.47,
+        "staging-attached": 907.5,
+        "render-start": 907.5,
+        "render-ready": 1990.71,
+        "paint-wait": 1991.19,
+        "paint-resumed": 2351.55,
+        "candidate-ready": 2351.79
+      }
+    },
+    "runTasks": [
+      {
+        "start": -19.23,
+        "end": 608.06,
+        "duration": 627.28,
+        "samples": 7598,
+        "self": [
+          {
+            "frame": ["(program)", "", 0],
+            "samples": 3827
+          },
+          {
+            "frame": ["getPropertyValue", "", 0],
+            "samples": 1990
+          },
+          {
+            "frame": ["withNativeContentLease", "native-content-lease.ts", 34],
+            "samples": 462
+          },
+          {
+            "frame": ["visitRule", "adapters/web-component/src/runtime/modules.ts", 568],
+            "samples": 254
+          },
+          {
+            "frame": ["mark", "", 0],
+            "samples": 117
+          },
+          {
+            "frame": ["removeEventListener", "", 0],
+            "samples": 50
+          },
+          {
+            "frame": ["validateProjectionFamilyManifest", "projection-families.ts", 1982],
+            "samples": 36
+          },
+          {
+            "frame": ["get selectorText", "", 0],
+            "samples": 33
+          },
+          {
+            "frame": ["visit", "adapters/web-component/src/focus-scope-targets.ts", 101],
+            "samples": 32
+          },
+          {
+            "frame": ["set cssText", "", 0],
+            "samples": 30
+          }
+        ],
+        "inclusive": [
+          {
+            "frame": ["(program)", "", 0],
+            "samples": 3827
+          },
+          {
+            "frame": ["getPropertyValue", "", 0],
+            "samples": 1990
+          },
+          {
+            "frame": ["runInScope", "runtime/src/instance/execute/callback-scope.ts", 43],
+            "samples": 1887
+          },
+          {
+            "frame": [
+              "Object.defineProperty.get",
+              "adapters/web-component/src/runtime/modules.ts",
+              726
+            ],
+            "samples": 1282
+          },
+          {
+            "frame": ["registration.<computed>", "adapters/base/src/platform/instance-tree.ts", 44],
+            "samples": 1191
+          },
+          {
+            "frame": ["(anonymous)", "modules/anatomy/src/impl.ts", 933],
+            "samples": 1149
+          },
+          {
+            "frame": ["invoke", "modules/anatomy/src/impl.ts", 234],
+            "samples": 1149
+          },
+          {
+            "frame": ["(anonymous)", "runtime/src/instance/instance.ts", 129],
+            "samples": 1149
+          },
+          {
+            "frame": ["(anonymous)", "modules/anatomy/src/impl.ts", 929],
+            "samples": 1149
+          },
+          {
+            "frame": ["emit", "adapters/base/src/events/web-event-router.ts", 112],
+            "samples": 1148
+          },
+          {
+            "frame": ["emitFromPhysicalRoot", "adapters/base/src/events/web-event-router.ts", 129],
+            "samples": 1148
+          },
+          {
+            "frame": ["run", "runtime/src/instance/execute/callback-scope.ts", 32],
+            "samples": 1148
+          },
+          {
+            "frame": ["dispatchWithControl", "modules/event/src/impl.ts", 245],
+            "samples": 1147
+          },
+          {
+            "frame": ["wrapper", "modules/event/src/kernel.ts", 80],
+            "samples": 1147
+          },
+          {
+            "frame": ["record.wrapped", "adapters/base/src/events/web-event-router.ts", 673],
+            "samples": 1147
+          },
+          {
+            "frame": ["(anonymous)", "runtime/src/instance/session.ts", 136],
+            "samples": 1147
+          },
+          {
+            "frame": ["dispatchEvent", "", 0],
+            "samples": 1147
+          },
+          {
+            "frame": ["(anonymous)", "runtime/src/instance/session.ts", 138],
+            "samples": 1147
+          },
+          {
+            "frame": ["(anonymous)", "prototypes/base/src/select/item.proto.ts", 111],
+            "samples": 1146
+          },
+          {
+            "frame": ["(anonymous)", "adapters/base/src/events/web-event-router.ts", 486],
+            "samples": 1146
+          },
+          {
+            "frame": ["requestSelectValue", "prototypes/base/src/select/shared.ts", 27],
+            "samples": 1140
+          },
+          {
+            "frame": ["submitValueRequest", "prototypes/base/src/select/root.proto.ts", 178],
+            "samples": 1140
+          }
+        ],
+        "applicationStacks": [
+          {
+            "stack": [
+              ["Object.defineProperty.get", "adapters/web-component/src/runtime/modules.ts", 726],
+              ["(anonymous)", "adapters/web-component/src/focus-scope-targets.ts", 46],
+              [
+                "isPrunedByExternalAncestor",
+                "adapters/web-component/src/focus-scope-targets.ts",
+                32
+              ],
+              [
+                "sampleWebComponentScopeTargets",
+                "adapters/web-component/src/focus-scope-targets.ts",
+                83
+              ],
+              ["resolveFocusEntryTarget", "adapters/web-component/src/runtime/modules.ts", 1865],
+              ["projectEntry", "adapters/web-component/src/runtime/modules.ts", 1219],
+              [
+                "createControlWiring.use.use.use.use.use.request.options",
+                "adapters/web-component/src/runtime/modules.ts",
+                1210
+              ],
+              ["syncHostEntry", "modules/focus/src/create.ts", 467],
+              ["setEntryDisabled", "modules/focus/src/create.ts", 1068],
+              ["setDisabled", "modules/focus/src/create.ts", 121]
+            ],
+            "samples": 551
+          },
+          {
+            "stack": [
+              ["Object.defineProperty.get", "adapters/web-component/src/runtime/modules.ts", 726],
+              ["isFirstActivationVisible", "hidden-first-activation.ts", 1],
+              ["tryActivate", "hidden-first-activation.ts", 15],
+              ["(anonymous)", "hidden-first-activation.ts", 46]
+            ],
+            "samples": 539
+          },
+          {
+            "stack": [
+              ["(anonymous)", "projection-theme.ts", 69],
+              ["readWebsiteShadcnTheme", "projection-theme.ts", 64],
+              ["resolveProjectionThemeSurfaceStyle", "projection-theme.ts", 93],
+              ["emit", "projection-theme.ts", 125],
+              ["watchProjectionThemeSurfaceStyle", "projection-theme.ts", 116],
+              ["materializeProjectionCandidate", "projection-materializer.ts", 217],
+              ["materialize", "site-copy-command.ts", 198],
+              ["materializeGeneration", "projection-scope.ts", 153],
+              ["(anonymous)", "projection-scope.ts", 291],
+              ["trackSnapshotOperation", "projection-scope.ts", 128]
+            ],
+            "samples": 491
+          },
+          {
+            "stack": [
+              ["withNativeContentLease", "native-content-lease.ts", 34],
+              ["move", "passive-shell-composition.ts", 59],
+              ["destroy", "passive-shell-composition.ts", 230],
+              ["(anonymous)", "runtime-preview-surface.ts", 251],
+              ["cleanupSteps", "demo-renderer.ts", 350],
+              ["runCleanupSteps", "demo-renderer.ts", 110],
+              ["(anonymous)", "demo-renderer.ts", 343],
+              ["disposeCurrent", "host-mount.ts", 10],
+              ["resetHost", "host-mount.ts", 19],
+              ["releaseHostMount", "host-mount.ts", 62]
+            ],
+            "samples": 462
+          },
+          {
+            "stack": [
+              ["visitRule", "adapters/web-component/src/runtime/modules.ts", 568],
+              ["visitRule", "adapters/web-component/src/runtime/modules.ts", 568],
+              ["visitSheet", "adapters/web-component/src/runtime/modules.ts", 613],
+              [
+                "collectEntryStyleDependencies",
+                "adapters/web-component/src/runtime/modules.ts",
+                555
+              ],
+              ["observeTree", "adapters/web-component/src/runtime/modules.ts", 1252],
+              ["refreshTree", "adapters/web-component/src/runtime/modules.ts", 1230],
+              ["(anonymous)", "adapters/web-component/src/runtime/modules.ts", 1702]
+            ],
+            "samples": 115
+          }
+        ],
+        "nestedEventMs": {
+          "EventDispatch": 987.07,
+          "FunctionCall": 604.5,
+          "UpdateLayoutTree": 290.45,
+          "Layout": 86.57
+        }
+      },
+      {
+        "start": 775.71,
+        "end": 1338.45,
+        "duration": 562.74,
+        "samples": 4311,
+        "self": [
+          {
+            "frame": ["(program)", "", 0],
+            "samples": 929
+          },
+          {
+            "frame": ["getPropertyValue", "", 0],
+            "samples": 434
+          },
+          {
+            "frame": ["visitRule", "adapters/web-component/src/runtime/modules.ts", 568],
+            "samples": 291
+          },
+          {
+            "frame": ["addEventListener", "", 0],
+            "samples": 212
+          },
+          {
+            "frame": ["(garbage collector)", "", 0],
+            "samples": 162
+          },
+          {
+            "frame": ["mark", "", 0],
+            "samples": 108
+          },
+          {
+            "frame": ["(anonymous)", "modules/rule-meta/src/create.ts", 118],
+            "samples": 66
+          },
+          {
+            "frame": ["setAttribute", "", 0],
+            "samples": 57
+          },
+          {
+            "frame": ["querySelectorAll", "", 0],
+            "samples": 45
+          },
+          {
+            "frame": ["appendChild", "", 0],
+            "samples": 40
+          }
+        ],
+        "inclusive": [
+          {
+            "frame": ["renderDemoReact", "demo-renderer.ts", 735],
+            "samples": 1935
+          },
+          {
+            "frame": ["flushSync$1", ".vite/deps/chunk-2MALL255.js", 21590],
+            "samples": 1779
+          },
+          {
+            "frame": ["flushSync", ".vite/deps/chunk-2MALL255.js", 18991],
+            "samples": 1779
+          },
+          {
+            "frame": ["flushReact", "demo-renderer.ts", 895],
+            "samples": 1779
+          },
+          {
+            "frame": ["flushSyncCallbacks", ".vite/deps/chunk-2MALL255.js", 9154],
+            "samples": 1727
+          },
+          {
+            "frame": ["performSyncWorkOnRoot", ".vite/deps/chunk-2MALL255.js", 18914],
+            "samples": 1727
+          },
+          {
+            "frame": ["commitRoot", ".vite/deps/chunk-2MALL255.js", 19324],
+            "samples": 1293
+          },
+          {
+            "frame": ["commitRootImpl", ".vite/deps/chunk-2MALL255.js", 19337],
+            "samples": 1290
+          },
+          {
+            "frame": ["commitLayoutEffects", ".vite/deps/chunk-2MALL255.js", 17966],
+            "samples": 1205
+          },
+          {
+            "frame": ["commitLayoutEffects_begin", ".vite/deps/chunk-2MALL255.js", 17974],
+            "samples": 1203
+          },
+          {
+            "frame": ["commitLayoutMountEffects_complete", ".vite/deps/chunk-2MALL255.js", 18023],
+            "samples": 1201
+          },
+          {
+            "frame": ["commitLayoutEffectOnFiber", ".vite/deps/chunk-2MALL255.js", 17040],
+            "samples": 1195
+          },
+          {
+            "frame": ["commitHookEffectListMount", ".vite/deps/chunk-2MALL255.js", 16942],
+            "samples": 1193
+          },
+          {
+            "frame": ["refreshTree", "adapters/web-component/src/runtime/modules.ts", 1230],
+            "samples": 955
+          },
+          {
+            "frame": ["(anonymous)", "adapters/web-component/src/runtime/modules.ts", 1702],
+            "samples": 955
+          },
+          {
+            "frame": ["(program)", "", 0],
+            "samples": 929
+          },
+          {
+            "frame": ["projectEntry", "adapters/web-component/src/runtime/modules.ts", 1219],
+            "samples": 478
+          },
+          {
+            "frame": [
+              "resolveFocusEntryTarget",
+              "adapters/web-component/src/runtime/modules.ts",
+              1865
+            ],
+            "samples": 478
+          },
+          {
+            "frame": [
+              "sampleWebComponentScopeTargets",
+              "adapters/web-component/src/focus-scope-targets.ts",
+              83
+            ],
+            "samples": 478
+          },
+          {
+            "frame": ["observeTree", "adapters/web-component/src/runtime/modules.ts", 1252],
+            "samples": 477
+          },
+          {
+            "frame": ["(anonymous)", "adapters/react/src/adapt.ts", 438],
+            "samples": 447
+          },
+          {
+            "frame": ["initialize", "adapters/base/src/host/view-epoch-owner.ts", 48],
+            "samples": 440
+          }
+        ],
+        "applicationStacks": [
+          {
+            "stack": [
+              ["Object.defineProperty.get", "adapters/web-component/src/runtime/modules.ts", 726],
+              ["(anonymous)", "adapters/web-component/src/focus-scope-targets.ts", 46],
+              [
+                "isPrunedByExternalAncestor",
+                "adapters/web-component/src/focus-scope-targets.ts",
+                32
+              ],
+              [
+                "sampleWebComponentScopeTargets",
+                "adapters/web-component/src/focus-scope-targets.ts",
+                83
+              ],
+              ["resolveFocusEntryTarget", "adapters/web-component/src/runtime/modules.ts", 1865],
+              ["projectEntry", "adapters/web-component/src/runtime/modules.ts", 1219],
+              ["refreshTree", "adapters/web-component/src/runtime/modules.ts", 1230],
+              ["(anonymous)", "adapters/web-component/src/runtime/modules.ts", 1702]
+            ],
+            "samples": 424
+          },
+          {
+            "stack": [
+              ["visitRule", "adapters/web-component/src/runtime/modules.ts", 568],
+              ["visitRule", "adapters/web-component/src/runtime/modules.ts", 568],
+              ["visitSheet", "adapters/web-component/src/runtime/modules.ts", 613],
+              [
+                "collectEntryStyleDependencies",
+                "adapters/web-component/src/runtime/modules.ts",
+                555
+              ],
+              ["observeTree", "adapters/web-component/src/runtime/modules.ts", 1252],
+              ["refreshTree", "adapters/web-component/src/runtime/modules.ts", 1230],
+              ["(anonymous)", "adapters/web-component/src/runtime/modules.ts", 1702]
+            ],
+            "samples": 182
+          },
+          {
+            "stack": [
+              ["listen", "adapters/base/src/events/web-event-router.ts", 583],
+              ["createWebProtoEventRouter", "adapters/base/src/events/web-event-router.ts", 40],
+              ["(anonymous)", "adapters/react/src/adapt.ts", 478],
+              ["commitHookEffectListMount", ".vite/deps/chunk-2MALL255.js", 16942],
+              ["commitLayoutEffectOnFiber", ".vite/deps/chunk-2MALL255.js", 17040],
+              ["commitLayoutMountEffects_complete", ".vite/deps/chunk-2MALL255.js", 18023],
+              ["commitLayoutEffects_begin", ".vite/deps/chunk-2MALL255.js", 17974],
+              ["commitLayoutEffects", ".vite/deps/chunk-2MALL255.js", 17966],
+              ["commitRootImpl", ".vite/deps/chunk-2MALL255.js", 19337],
+              ["commitRoot", ".vite/deps/chunk-2MALL255.js", 19324]
+            ],
+            "samples": 155
+          },
+          {
+            "stack": [
+              ["visitRule", "adapters/web-component/src/runtime/modules.ts", 568],
+              ["visitSheet", "adapters/web-component/src/runtime/modules.ts", 613],
+              [
+                "collectEntryStyleDependencies",
+                "adapters/web-component/src/runtime/modules.ts",
+                555
+              ],
+              ["observeTree", "adapters/web-component/src/runtime/modules.ts", 1252],
+              ["refreshTree", "adapters/web-component/src/runtime/modules.ts", 1230],
+              ["(anonymous)", "adapters/web-component/src/runtime/modules.ts", 1702]
+            ],
+            "samples": 124
+          },
+          {
+            "stack": [
+              ["markContentsStaging", "projection-materializer.ts", 20],
+              ["mark", "projection-materializer.ts", 272],
+              ["prepareProjectionCandidate", "projection-materializer.ts", 252]
+            ],
+            "samples": 108
+          }
+        ],
+        "nestedEventMs": {
+          "FunctionCall": 201.78,
+          "UpdateLayoutTree": 65.84,
+          "Layout": 1.69
+        }
+      },
+      {
+        "start": 1350.95,
+        "end": 2000.79,
+        "duration": 649.84,
+        "samples": 5366,
+        "self": [
+          {
+            "frame": ["getPropertyValue", "", 0],
+            "samples": 1480
+          },
+          {
+            "frame": ["(program)", "", 0],
+            "samples": 1368
+          },
+          {
+            "frame": ["querySelectorAll", "", 0],
+            "samples": 410
+          },
+          {
+            "frame": ["visitRule", "adapters/web-component/src/runtime/modules.ts", 568],
+            "samples": 206
+          },
+          {
+            "frame": ["setProperty", "", 0],
+            "samples": 189
+          },
+          {
+            "frame": ["append", "", 0],
+            "samples": 168
+          },
+          {
+            "frame": ["closest", "", 0],
+            "samples": 156
+          },
+          {
+            "frame": ["preserveSelection", "site-typography.ts", 93],
+            "samples": 117
+          },
+          {
+            "frame": ["hasHandler", "documentation-image-source.ts", 133],
+            "samples": 109
+          },
+          {
+            "frame": ["mark", "", 0],
+            "samples": 73
+          }
+        ],
+        "inclusive": [
+          {
+            "frame": ["getPropertyValue", "", 0],
+            "samples": 1480
+          },
+          {
+            "frame": ["refreshTree", "adapters/web-component/src/runtime/modules.ts", 1230],
+            "samples": 1479
+          },
+          {
+            "frame": ["(anonymous)", "adapters/web-component/src/runtime/modules.ts", 1702],
+            "samples": 1479
+          },
+          {
+            "frame": ["projectEntry", "adapters/web-component/src/runtime/modules.ts", 1219],
+            "samples": 1461
+          },
+          {
+            "frame": [
+              "resolveFocusEntryTarget",
+              "adapters/web-component/src/runtime/modules.ts",
+              1865
+            ],
+            "samples": 1460
+          },
+          {
+            "frame": [
+              "sampleWebComponentScopeTargets",
+              "adapters/web-component/src/focus-scope-targets.ts",
+              83
+            ],
+            "samples": 1457
+          },
+          {
+            "frame": [
+              "Object.defineProperty.get",
+              "adapters/web-component/src/runtime/modules.ts",
+              726
+            ],
+            "samples": 1373
+          },
+          {
+            "frame": ["(program)", "", 0],
+            "samples": 1368
+          },
+          {
+            "frame": [
+              "isPrunedByExternalAncestor",
+              "adapters/web-component/src/focus-scope-targets.ts",
+              32
+            ],
+            "samples": 1341
+          },
+          {
+            "frame": ["(anonymous)", "adapters/web-component/src/focus-scope-targets.ts", 46],
+            "samples": 1340
+          },
+          {
+            "frame": ["(anonymous)", "documentation-image-preview.ts", 339],
+            "samples": 663
+          },
+          {
+            "frame": ["scan", "documentation-image-preview.ts", 272],
+            "samples": 662
+          },
+          {
+            "frame": ["querySelectorAll", "", 0],
+            "samples": 410
+          },
+          {
+            "frame": ["observeTree", "adapters/web-component/src/runtime/modules.ts", 1252],
+            "samples": 385
+          },
+          {
+            "frame": ["(anonymous)", "adapters/web-component/src/runtime/modules.ts", 1365],
+            "samples": 357
+          },
+          {
+            "frame": [
+              "collectEntryStyleDependencies",
+              "adapters/web-component/src/runtime/modules.ts",
+              555
+            ],
+            "samples": 343
+          },
+          {
+            "frame": ["visitSheet", "adapters/web-component/src/runtime/modules.ts", 613],
+            "samples": 330
+          },
+          {
+            "frame": ["isPreviewCandidate", "documentation-image-source.ts", 127],
+            "samples": 328
+          },
+          {
+            "frame": ["visitRule", "adapters/web-component/src/runtime/modules.ts", 568],
+            "samples": 302
+          },
+          {
+            "frame": ["renderDemoReact", "demo-renderer.ts", 735],
+            "samples": 299
+          },
+          {
+            "frame": ["invokeCandidateCallback", "projection-scope.ts", 43],
+            "samples": 268
+          },
+          {
+            "frame": ["dispose", "site-typography-client.ts", 50],
+            "samples": 268
+          }
+        ],
+        "applicationStacks": [
+          {
+            "stack": [
+              ["Object.defineProperty.get", "adapters/web-component/src/runtime/modules.ts", 726],
+              ["(anonymous)", "adapters/web-component/src/focus-scope-targets.ts", 46],
+              [
+                "isPrunedByExternalAncestor",
+                "adapters/web-component/src/focus-scope-targets.ts",
+                32
+              ],
+              [
+                "sampleWebComponentScopeTargets",
+                "adapters/web-component/src/focus-scope-targets.ts",
+                83
+              ],
+              ["resolveFocusEntryTarget", "adapters/web-component/src/runtime/modules.ts", 1865],
+              ["projectEntry", "adapters/web-component/src/runtime/modules.ts", 1219],
+              ["refreshTree", "adapters/web-component/src/runtime/modules.ts", 1230],
+              ["(anonymous)", "adapters/web-component/src/runtime/modules.ts", 1702]
+            ],
+            "samples": 1055
+          },
+          {
+            "stack": [
+              ["scan", "documentation-image-preview.ts", 272],
+              ["(anonymous)", "documentation-image-preview.ts", 339]
+            ],
+            "samples": 334
+          },
+          {
+            "stack": [
+              ["Object.defineProperty.get", "adapters/web-component/src/runtime/modules.ts", 726],
+              ["(anonymous)", "adapters/web-component/src/focus-scope-targets.ts", 46],
+              [
+                "isPrunedByExternalAncestor",
+                "adapters/web-component/src/focus-scope-targets.ts",
+                32
+              ],
+              [
+                "sampleWebComponentScopeTargets",
+                "adapters/web-component/src/focus-scope-targets.ts",
+                83
+              ],
+              ["resolveFocusEntryTarget", "adapters/web-component/src/runtime/modules.ts", 1865],
+              ["projectEntry", "adapters/web-component/src/runtime/modules.ts", 1219],
+              ["(anonymous)", "adapters/web-component/src/runtime/modules.ts", 1365]
+            ],
+            "samples": 284
+          },
+          {
+            "stack": [
+              ["isPreviewCandidate", "documentation-image-source.ts", 127],
+              ["scan", "documentation-image-preview.ts", 272],
+              ["(anonymous)", "documentation-image-preview.ts", 339]
+            ],
+            "samples": 197
+          },
+          {
+            "stack": [
+              ["visitRule", "adapters/web-component/src/runtime/modules.ts", 568],
+              ["visitRule", "adapters/web-component/src/runtime/modules.ts", 568],
+              ["visitSheet", "adapters/web-component/src/runtime/modules.ts", 613],
+              [
+                "collectEntryStyleDependencies",
+                "adapters/web-component/src/runtime/modules.ts",
+                555
+              ],
+              ["observeTree", "adapters/web-component/src/runtime/modules.ts", 1252],
+              ["refreshTree", "adapters/web-component/src/runtime/modules.ts", 1230],
+              ["(anonymous)", "adapters/web-component/src/runtime/modules.ts", 1702]
+            ],
+            "samples": 168
+          }
+        ],
+        "nestedEventMs": {
+          "FunctionCall": 522.4,
+          "UpdateLayoutTree": 246.78,
+          "Layout": 18.5,
+          "Paint": 2.0
+        }
+      },
+      {
+        "start": 2008.56,
+        "end": 2362.56,
+        "duration": 354.0,
+        "samples": 4892,
+        "self": [
+          {
+            "frame": ["(program)", "", 0],
+            "samples": 2656
+          },
+          {
+            "frame": ["querySelectorAll", "", 0],
+            "samples": 502
+          },
+          {
+            "frame": ["getPropertyValue", "", 0],
+            "samples": 253
+          },
+          {
+            "frame": ["visitRule", "adapters/web-component/src/runtime/modules.ts", 568],
+            "samples": 149
+          },
+          {
+            "frame": ["closest", "", 0],
+            "samples": 109
+          },
+          {
+            "frame": ["removeEventListener", "", 0],
+            "samples": 98
+          },
+          {
+            "frame": ["mark", "", 0],
+            "samples": 91
+          },
+          {
+            "frame": ["remove", "", 0],
+            "samples": 91
+          },
+          {
+            "frame": ["insertBefore", "", 0],
+            "samples": 61
+          },
+          {
+            "frame": ["externalProjectionPortalRoots", "projection-materializer.ts", 72],
+            "samples": 53
+          }
+        ],
+        "inclusive": [
+          {
+            "frame": ["(program)", "", 0],
+            "samples": 2656
+          },
+          {
+            "frame": ["querySelectorAll", "", 0],
+            "samples": 502
+          },
+          {
+            "frame": ["refreshTree", "adapters/web-component/src/runtime/modules.ts", 1230],
+            "samples": 451
+          },
+          {
+            "frame": ["(anonymous)", "adapters/web-component/src/runtime/modules.ts", 1702],
+            "samples": 451
+          },
+          {
+            "frame": ["needsRefresh", "site-typography.ts", 150],
+            "samples": 399
+          },
+          {
+            "frame": ["(anonymous)", "site-typography-client.ts", 87],
+            "samples": 399
+          },
+          {
+            "frame": ["refresh", "site-typography-client.ts", 66],
+            "samples": 399
+          },
+          {
+            "frame": ["targets", "site-typography.ts", 123],
+            "samples": 388
+          },
+          {
+            "frame": ["collectSiteTypographyTargets", "site-typography.ts", 27],
+            "samples": 376
+          },
+          {
+            "frame": ["getPropertyValue", "", 0],
+            "samples": 253
+          },
+          {
+            "frame": ["materializeGeneration", "projection-scope.ts", 153],
+            "samples": 252
+          },
+          {
+            "frame": ["observeTree", "adapters/web-component/src/runtime/modules.ts", 1252],
+            "samples": 235
+          },
+          {
+            "frame": ["projectEntry", "adapters/web-component/src/runtime/modules.ts", 1219],
+            "samples": 228
+          },
+          {
+            "frame": [
+              "resolveFocusEntryTarget",
+              "adapters/web-component/src/runtime/modules.ts",
+              1865
+            ],
+            "samples": 227
+          },
+          {
+            "frame": [
+              "sampleWebComponentScopeTargets",
+              "adapters/web-component/src/focus-scope-targets.ts",
+              83
+            ],
+            "samples": 227
+          },
+          {
+            "frame": ["(anonymous)", "documentation-image-preview.ts", 339],
+            "samples": 224
+          },
+          {
+            "frame": ["scan", "documentation-image-preview.ts", 272],
+            "samples": 222
+          },
+          {
+            "frame": [
+              "collectEntryStyleDependencies",
+              "adapters/web-component/src/runtime/modules.ts",
+              555
+            ],
+            "samples": 217
+          },
+          {
+            "frame": ["retireOwner", "adapters/web-component/src/adapt.ts", 1085],
+            "samples": 214
+          },
+          {
+            "frame": ["(anonymous)", "adapters/web-component/src/adapt.ts", 1067],
+            "samples": 214
+          },
+          {
+            "frame": ["_invokeUnmounted", "adapters/web-component/src/adapt.ts", 414],
+            "samples": 209
+          },
+          {
+            "frame": ["completeCleanup", "adapters/base/src/host/view-epoch-owner.ts", 179],
+            "samples": 208
+          }
+        ],
+        "applicationStacks": [
+          {
+            "stack": [
+              ["collectSiteTypographyTargets", "site-typography.ts", 27],
+              ["targets", "site-typography.ts", 123],
+              ["needsRefresh", "site-typography.ts", 150],
+              ["refresh", "site-typography-client.ts", 66],
+              ["(anonymous)", "site-typography-client.ts", 87]
+            ],
+            "samples": 289
+          },
+          {
+            "stack": [
+              ["Object.defineProperty.get", "adapters/web-component/src/runtime/modules.ts", 726],
+              ["(anonymous)", "adapters/web-component/src/focus-scope-targets.ts", 46],
+              [
+                "isPrunedByExternalAncestor",
+                "adapters/web-component/src/focus-scope-targets.ts",
+                32
+              ],
+              [
+                "sampleWebComponentScopeTargets",
+                "adapters/web-component/src/focus-scope-targets.ts",
+                83
+              ],
+              ["resolveFocusEntryTarget", "adapters/web-component/src/runtime/modules.ts", 1865],
+              ["projectEntry", "adapters/web-component/src/runtime/modules.ts", 1219],
+              ["refreshTree", "adapters/web-component/src/runtime/modules.ts", 1230],
+              ["(anonymous)", "adapters/web-component/src/runtime/modules.ts", 1702]
+            ],
+            "samples": 158
+          },
+          {
+            "stack": [
+              ["scan", "documentation-image-preview.ts", 272],
+              ["(anonymous)", "documentation-image-preview.ts", 339]
+            ],
+            "samples": 107
+          },
+          {
+            "stack": [
+              ["visitRule", "adapters/web-component/src/runtime/modules.ts", 568],
+              ["visitRule", "adapters/web-component/src/runtime/modules.ts", 568],
+              ["visitSheet", "adapters/web-component/src/runtime/modules.ts", 613],
+              [
+                "collectEntryStyleDependencies",
+                "adapters/web-component/src/runtime/modules.ts",
+                555
+              ],
+              ["observeTree", "adapters/web-component/src/runtime/modules.ts", 1252],
+              ["refreshTree", "adapters/web-component/src/runtime/modules.ts", 1230],
+              ["(anonymous)", "adapters/web-component/src/runtime/modules.ts", 1702]
+            ],
+            "samples": 100
+          },
+          {
+            "stack": [
+              ["(anonymous)", "site-typography.ts", 33],
+              ["collectSiteTypographyTargets", "site-typography.ts", 27],
+              ["targets", "site-typography.ts", 123],
+              ["needsRefresh", "site-typography.ts", 150],
+              ["refresh", "site-typography-client.ts", 66],
+              ["(anonymous)", "site-typography-client.ts", 87]
+            ],
+            "samples": 87
+          }
+        ],
+        "nestedEventMs": {
+          "FunctionCall": 279.4,
+          "UpdateLayoutTree": 19.03,
+          "Layout": 20.0,
+          "Paint": 2.03
+        }
+      }
+    ],
+    "pageLongTasks": [
+      {
+        "start": -19.2,
+        "duration": 627
+      },
+      {
+        "start": 775.7,
+        "duration": 562
+      },
+      {
+        "start": 1351,
+        "duration": 649
+      },
+      {
+        "start": 2008.6,
+        "duration": 354
+      }
+    ],
+    "trustedClickToClickReturnMs": 684,
+    "trustedClickToNodeVerdictMs": 1685,
+    "limits": "Native task spans share the same renderer trace clock with User Timing. CPU sample counts attribute sampled stacks only. Nested event durations may overlap."
+  },
+  "productHosted": {
+    "head": "7339d17588918417708b558e2b69828d1b233032",
+    "tree": "87fa5623c8607ad8dc4b46b6a6f6d2911bf92145",
+    "run": 42820288316,
+    "contents": {
+      "job": 129843950251,
+      "artifact": 13767328165,
+      "archiveSha256": "2e2431784f706f912afa0261d643e8d251b4f60158e5473147478b68ccc29319",
+      "archiveMembers": 393,
+      "producerExitCodes": [124],
+      "targetLines": [
+        "× Homepage end-to-end dogfood boundary > uses real family Contents Buttons through all four Docs runtimes with keyboard and exact-source visual evidence 17663ms"
+      ],
+      "aggregateVitestJson": [],
+      "transitions": [
+        {
+          "family": "shadcn",
+          "runtime": "react",
+          "elapsedMs": 1001,
+          "error": "Error: Matcher did not succeed in 1000ms",
+          "first": {
+            "ms": 1417.6,
+            "runtime": "wc",
+            "generations": [
+              {
+                "state": "active",
+                "inert": true
+              },
+              {
+                "state": "staging",
+                "inert": true
+              },
+              {
+                "state": "active",
+                "inert": true
+              },
+              {
+                "state": "staging",
+                "inert": true
+              },
+              {
+                "state": "active",
+                "inert": true
+              },
+              {
+                "state": "staging",
+                "inert": true
+              }
+            ]
+          },
+          "late": {
+            "ms": 1892.9,
+            "runtime": "react",
+            "generations": [
+              {
+                "state": "active",
+                "inert": false
+              },
+              {
+                "state": "active",
+                "inert": false
+              },
+              {
+                "state": "active",
+                "inert": false
+              }
+            ]
+          }
+        },
+        {
+          "family": "shadcn",
+          "runtime": "wc",
+          "elapsedMs": 5,
+          "error": null,
+          "first": {
+            "ms": 6.7,
+            "runtime": "wc",
+            "generations": [
+              {
+                "state": "active",
+                "inert": false
+              },
+              {
+                "state": "active",
+                "inert": false
+              },
+              {
+                "state": "active",
+                "inert": false
+              }
+            ]
+          },
+          "late": null
+        }
+      ],
+      "closes": 3
+    },
+    "dialog": {
+      "job": 129843950332,
+      "artifact": 13766564008,
+      "archiveSha256": "5006f8ab6401982e65c9007ae7a5df38a93403ce5c46486254be1c4b2a18bba8",
+      "archiveMembers": 290,
+      "producerExitCodes": [124],
+      "targetLines": [
+        "✓ apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts (8 tests) 69980ms"
+      ],
+      "aggregateVitestJson": [],
+      "observations": 196,
+      "referencedPngHashesVerified": 120,
+      "browser": "156.0.8078.79"
+    }
+  },
+  "local": {
+    "react": 668,
+    "vue": 919,
+    "contentsCloses": 24,
+    "dialog": 8,
+    "imageFocused": 29,
+    "imageNative": 2,
+    "types": "1179 Astro files, zero errors and warnings"
+  },
+  "imageObserverTrace": {
+    "nativeFunctionCallSpans": 204,
+    "durationSumMs": 107.76,
+    "limits": "Compiled observer call spans in the 649.84ms RunTask. The trace does not classify every batch or measure the savings from the fix."
+  }
+}
