@@ -1,0 +1,1056 @@
+{
+  "head": "cc4318d4904a73a6e30a6b7b4832ba1ad01d2a07",
+  "base": "9b7ae6aa5a0c0909c0769f476ff47da57cd00423",
+  "originalCodeExamples": 7,
+  "originalProbesAndWorkflowsUnchanged": true,
+  "local": {
+    "contentsCloses": 24,
+    "shadcnPollMs": {
+      "react": 596,
+      "vue": 849,
+      "vue2": 907,
+      "wc": 3
+    },
+    "dialog": 8,
+    "types": "1179 Astro files; zero errors and warnings",
+    "focusedFinal": "197 passed",
+    "parentFocusedFirst": "194 passed, 1 failed",
+    "parentFocusedRepeat": "195 passed"
+  },
+  "hosted": {
+    "official-main": {
+      "head": "9b7ae6aa5a0c0909c0769f476ff47da57cd00423",
+      "tree": "2ffa684216fa52660d3a0b7ef97c663fbf44f61a",
+      "run": 42852767630,
+      "contents": {
+        "job": 129957790336,
+        "artifact": 13783085623,
+        "archiveSha256": "2ea4dea8088c967fcbde70636e6dfa396a9a2e0c5bfcb1be2327f9029555d757",
+        "archiveMembers": 358,
+        "producerExitCodes": [124],
+        "targetLines": [
+          "× Homepage end-to-end dogfood boundary > uses real family Contents Buttons through all four Docs runtimes with keyboard and exact-source visual evidence 18235ms"
+        ],
+        "aggregateVitestJson": [],
+        "transitions": [
+          {
+            "family": "shadcn",
+            "runtime": "react",
+            "elapsedMs": 1000,
+            "error": "Error: Matcher did not succeed in 1000ms",
+            "first": {
+              "ms": 1443.3,
+              "runtime": "wc",
+              "generations": [
+                {
+                  "state": "active",
+                  "inert": true
+                },
+                {
+                  "state": "staging",
+                  "inert": true
+                },
+                {
+                  "state": "active",
+                  "inert": true
+                },
+                {
+                  "state": "staging",
+                  "inert": true
+                },
+                {
+                  "state": "active",
+                  "inert": true
+                },
+                {
+                  "state": "staging",
+                  "inert": true
+                }
+              ]
+            },
+            "late": {
+              "ms": 1928.5,
+              "runtime": "react",
+              "generations": [
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                }
+              ]
+            }
+          },
+          {
+            "family": "shadcn",
+            "runtime": "wc",
+            "elapsedMs": 3,
+            "error": null,
+            "first": {
+              "ms": 5,
+              "runtime": "wc",
+              "generations": [
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                }
+              ]
+            },
+            "late": null
+          }
+        ],
+        "closes": 3
+      },
+      "dialog": {
+        "job": 129957790568,
+        "artifact": 13783240245,
+        "archiveSha256": "56437eb7407f9cb4761b0e4fe80ebbe77d42a46b7a97b3421b65e3db4f940ae3",
+        "archiveMembers": 300,
+        "producerExitCodes": [124],
+        "targetLines": [
+          "✓ apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts (8 tests) 61550ms"
+        ],
+        "aggregateVitestJson": [],
+        "observations": 196,
+        "referencedPngHashesVerified": 120,
+        "browser": "156.0.8078.79"
+      }
+    },
+    "combined": {
+      "head": "b7cd060f015147a855b727a5cf8a895dc95639d3",
+      "tree": "e13e294a9d8e2babe6a909bcc8cbd1c3a310347e",
+      "run": 42834190472,
+      "contents": {
+        "job": 129892075495,
+        "artifact": 13774726332,
+        "archiveSha256": "765ed47dbba239ea12b883bd336f30f168cb523244c2e6bbb3fe0f324fa0a7be",
+        "archiveMembers": 438,
+        "producerExitCodes": [124],
+        "targetLines": [
+          "× Homepage end-to-end dogfood boundary > uses real family Contents Buttons through all four Docs runtimes with keyboard and exact-source visual evidence 13274ms"
+        ],
+        "aggregateVitestJson": [],
+        "transitions": [
+          {
+            "family": "shadcn",
+            "runtime": "react",
+            "elapsedMs": 1000,
+            "error": "Error: Matcher did not succeed in 1000ms",
+            "first": {
+              "ms": 1139.8,
+              "runtime": "react",
+              "generations": [
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                }
+              ]
+            },
+            "late": {
+              "ms": 1198.8,
+              "runtime": "react",
+              "generations": [
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                }
+              ]
+            }
+          },
+          {
+            "family": "shadcn",
+            "runtime": "wc",
+            "elapsedMs": 3,
+            "error": null,
+            "first": {
+              "ms": 5,
+              "runtime": "wc",
+              "generations": [
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                }
+              ]
+            },
+            "late": null
+          }
+        ],
+        "closes": 3
+      },
+      "dialog": {
+        "job": 129892075427,
+        "artifact": 13773847595,
+        "archiveSha256": "eafdde651a70d6d7e7a8ea878df973975334e8d777a39e5faedf11e1ec785ec9",
+        "archiveMembers": 335,
+        "producerExitCodes": [124],
+        "targetLines": [
+          "✓ apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts (8 tests) 58919ms"
+        ],
+        "aggregateVitestJson": [],
+        "observations": 196,
+        "referencedPngHashesVerified": 120,
+        "browser": "156.0.8078.79"
+      }
+    },
+    "target": {
+      "head": "8c0a30e7380614a78fe264b522a31a0e71aae91d",
+      "tree": "4df1f5b6e163f04e812d3502986c2d19a7e99128",
+      "run": 42846183748,
+      "contents": {
+        "job": 129934349127,
+        "artifact": 13780200256,
+        "archiveSha256": "900f9543855532c528cfa1b008251b7f38528bb1e8548eb94fa005a2092bc8e4",
+        "archiveMembers": 356,
+        "producerExitCodes": [124],
+        "targetLines": [
+          "× Homepage end-to-end dogfood boundary > uses real family Contents Buttons through all four Docs runtimes with keyboard and exact-source visual evidence 19144ms"
+        ],
+        "aggregateVitestJson": [],
+        "transitions": [
+          {
+            "family": "shadcn",
+            "runtime": "react",
+            "elapsedMs": 1001,
+            "error": "Error: Matcher did not succeed in 1000ms",
+            "first": {
+              "ms": 1343.9,
+              "runtime": "wc",
+              "generations": [
+                {
+                  "state": "active",
+                  "inert": true
+                },
+                {
+                  "state": "staging",
+                  "inert": true
+                },
+                {
+                  "state": "active",
+                  "inert": true
+                },
+                {
+                  "state": "staging",
+                  "inert": true
+                },
+                {
+                  "state": "active",
+                  "inert": true
+                },
+                {
+                  "state": "staging",
+                  "inert": true
+                }
+              ]
+            },
+            "late": {
+              "ms": 1868.3,
+              "runtime": "react",
+              "generations": [
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                }
+              ]
+            }
+          },
+          {
+            "family": "shadcn",
+            "runtime": "wc",
+            "elapsedMs": 4,
+            "error": null,
+            "first": {
+              "ms": 5.7,
+              "runtime": "wc",
+              "generations": [
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                }
+              ]
+            },
+            "late": null
+          }
+        ],
+        "closes": 3
+      },
+      "dialog": {
+        "job": 129934349126,
+        "artifact": 13780180204,
+        "archiveSha256": "5ff2bee5d6994f1b1fa15e25b2f71ba71ebb380e7d040844e9189e0f8231a421",
+        "archiveMembers": 290,
+        "producerExitCodes": [124],
+        "targetLines": [
+          "✓ apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts (8 tests) 69797ms"
+        ],
+        "aggregateVitestJson": [],
+        "observations": 196,
+        "referencedPngHashesVerified": 120,
+        "browser": "156.0.8078.79"
+      }
+    },
+    "defined": {
+      "head": "f45268a69aebea9694950ba1f4288a875ed72773",
+      "tree": "587c9e0277697a15942fcf7a5716232fa239e000",
+      "run": 42852452773,
+      "contents": {
+        "job": 129956685052,
+        "artifact": 13781449053,
+        "archiveSha256": "5cab414c612a141232c477953c2c5c8a1480cd1c6ee76ffc29468c7cfad0c914",
+        "archiveMembers": 414,
+        "producerExitCodes": [124],
+        "targetLines": [
+          "× Homepage end-to-end dogfood boundary > uses real family Contents Buttons through all four Docs runtimes with keyboard and exact-source visual evidence 15373ms"
+        ],
+        "aggregateVitestJson": [],
+        "transitions": [
+          {
+            "family": "shadcn",
+            "runtime": "react",
+            "elapsedMs": 1001,
+            "error": "Error: Matcher did not succeed in 1000ms",
+            "first": {
+              "ms": 1083.7,
+              "runtime": "wc",
+              "generations": [
+                {
+                  "state": "active",
+                  "inert": true
+                },
+                {
+                  "state": "staging",
+                  "inert": true
+                },
+                {
+                  "state": "active",
+                  "inert": true
+                },
+                {
+                  "state": "staging",
+                  "inert": true
+                },
+                {
+                  "state": "active",
+                  "inert": true
+                },
+                {
+                  "state": "staging",
+                  "inert": true
+                }
+              ]
+            },
+            "late": {
+              "ms": 1532.3,
+              "runtime": "react",
+              "generations": [
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                }
+              ]
+            }
+          },
+          {
+            "family": "shadcn",
+            "runtime": "wc",
+            "elapsedMs": 7,
+            "error": null,
+            "first": {
+              "ms": 13,
+              "runtime": "wc",
+              "generations": [
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                }
+              ]
+            },
+            "late": null
+          }
+        ],
+        "closes": 3
+      },
+      "dialog": {
+        "job": 129956685147,
+        "artifact": 13782751369,
+        "archiveSha256": "a2bc7c5752af351649c54ebfb58d7b502d2949694738408ebc87626a1b3fcaeb",
+        "archiveMembers": 335,
+        "producerExitCodes": [124],
+        "targetLines": [
+          "✓ apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts (8 tests) 60524ms"
+        ],
+        "aggregateVitestJson": [],
+        "observations": 196,
+        "referencedPngHashesVerified": 120,
+        "browser": "156.0.8078.79"
+      }
+    },
+    "verified": {
+      "head": "bf184714c80706dca611d7e06d4dddd34081487a",
+      "tree": "5903feaec31129001fb1a30323015b180254dcf6",
+      "run": 42855951077,
+      "contents": {
+        "job": 129969046656,
+        "artifact": 13784760469,
+        "archiveSha256": "3bf8d51f6c35f100dd27d41d3a379002e54370135142ccd1344efec0faecb778",
+        "archiveMembers": 361,
+        "producerExitCodes": [124],
+        "targetLines": [
+          "× Homepage end-to-end dogfood boundary > uses real family Contents Buttons through all four Docs runtimes with keyboard and exact-source visual evidence 18180ms"
+        ],
+        "aggregateVitestJson": [],
+        "transitions": [
+          {
+            "family": "shadcn",
+            "runtime": "react",
+            "elapsedMs": 1000,
+            "error": "Error: Matcher did not succeed in 1000ms",
+            "first": {
+              "ms": 1333.9,
+              "runtime": "wc",
+              "generations": [
+                {
+                  "state": "active",
+                  "inert": true
+                },
+                {
+                  "state": "staging",
+                  "inert": true
+                },
+                {
+                  "state": "active",
+                  "inert": true
+                },
+                {
+                  "state": "staging",
+                  "inert": true
+                },
+                {
+                  "state": "active",
+                  "inert": true
+                },
+                {
+                  "state": "staging",
+                  "inert": true
+                }
+              ]
+            },
+            "late": {
+              "ms": 1829.3,
+              "runtime": "react",
+              "generations": [
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                }
+              ]
+            }
+          },
+          {
+            "family": "shadcn",
+            "runtime": "wc",
+            "elapsedMs": 3,
+            "error": null,
+            "first": {
+              "ms": 5,
+              "runtime": "wc",
+              "generations": [
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                }
+              ]
+            },
+            "late": null
+          }
+        ],
+        "closes": 3
+      },
+      "dialog": {
+        "job": 129969046760,
+        "artifact": 13784830313,
+        "archiveSha256": "444c084cc2025c36fe3947ad9b5d5178049ed58fa757cd089f1141c830a3bd07",
+        "archiveMembers": 323,
+        "producerExitCodes": [124],
+        "targetLines": [
+          "✓ apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts (8 tests) 62525ms"
+        ],
+        "aggregateVitestJson": [],
+        "observations": 196,
+        "referencedPngHashesVerified": 120,
+        "browser": "156.0.8078.79"
+      }
+    },
+    "reset": {
+      "head": "4f5d1e90504141eef4955a74c9ffa4c2dda2aa0f",
+      "tree": "1834a08a3ee6a395dce6f99fe002d1977cff109f",
+      "run": 42859749789,
+      "contents": {
+        "job": 129982551939,
+        "artifact": 13784339594,
+        "archiveSha256": "8cac114e8bef420bdbbc9fec5b2ac2d23d7e0ffd2292cef2567657b7287b1976",
+        "archiveMembers": 428,
+        "producerExitCodes": [124],
+        "targetLines": [
+          "× Homepage end-to-end dogfood boundary > uses real family Contents Buttons through all four Docs runtimes with keyboard and exact-source visual evidence 14758ms"
+        ],
+        "aggregateVitestJson": [],
+        "transitions": [
+          {
+            "family": "shadcn",
+            "runtime": "react",
+            "elapsedMs": 1002,
+            "error": "Error: Matcher did not succeed in 1000ms",
+            "first": {
+              "ms": 1054.6,
+              "runtime": "wc",
+              "generations": [
+                {
+                  "state": "active",
+                  "inert": true
+                },
+                {
+                  "state": "staging",
+                  "inert": true
+                },
+                {
+                  "state": "active",
+                  "inert": true
+                },
+                {
+                  "state": "staging",
+                  "inert": true
+                },
+                {
+                  "state": "active",
+                  "inert": true
+                },
+                {
+                  "state": "staging",
+                  "inert": true
+                }
+              ]
+            },
+            "late": {
+              "ms": 1425.6,
+              "runtime": "react",
+              "generations": [
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                }
+              ]
+            }
+          },
+          {
+            "family": "shadcn",
+            "runtime": "wc",
+            "elapsedMs": 7,
+            "error": null,
+            "first": {
+              "ms": 12.4,
+              "runtime": "wc",
+              "generations": [
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                }
+              ]
+            },
+            "late": null
+          }
+        ],
+        "closes": 3
+      },
+      "dialog": {
+        "job": 129982551978,
+        "artifact": 13786330661,
+        "archiveSha256": "70080e7cee9ea993e2b1f763ac70796b826e1857cc29e0533b0479badaa5fd69",
+        "archiveMembers": 280,
+        "producerExitCodes": [124],
+        "targetLines": [
+          "✓ apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts (8 tests) 74392ms"
+        ],
+        "aggregateVitestJson": [],
+        "observations": 196,
+        "referencedPngHashesVerified": 120,
+        "browser": "156.0.8078.79"
+      }
+    },
+    "ancestor-review": {
+      "head": "cfd1cd4afc8cbafef49210320a1ce582131573a2",
+      "tree": "30b8f6af92212f60db1aa05f786906796b2b5160",
+      "run": 42862858875,
+      "contents": {
+        "job": 129993509524,
+        "artifact": 13786962058,
+        "archiveSha256": "5d3620ed75120dcbfa12f0e842eda379e75876f4a600e574f7116632524f412a",
+        "archiveMembers": 357,
+        "producerExitCodes": [124],
+        "targetLines": [
+          "× Homepage end-to-end dogfood boundary > uses real family Contents Buttons through all four Docs runtimes with keyboard and exact-source visual evidence 20087ms"
+        ],
+        "aggregateVitestJson": [],
+        "transitions": [
+          {
+            "family": "shadcn",
+            "runtime": "react",
+            "elapsedMs": 1001,
+            "error": "Error: Matcher did not succeed in 1000ms",
+            "first": {
+              "ms": 1325.8,
+              "runtime": "wc",
+              "generations": [
+                {
+                  "state": "active",
+                  "inert": true
+                },
+                {
+                  "state": "staging",
+                  "inert": true
+                },
+                {
+                  "state": "active",
+                  "inert": true
+                },
+                {
+                  "state": "staging",
+                  "inert": true
+                },
+                {
+                  "state": "active",
+                  "inert": true
+                },
+                {
+                  "state": "staging",
+                  "inert": true
+                }
+              ]
+            },
+            "late": {
+              "ms": 1807.6,
+              "runtime": "react",
+              "generations": [
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                }
+              ]
+            }
+          },
+          {
+            "family": "shadcn",
+            "runtime": "wc",
+            "elapsedMs": 6,
+            "error": null,
+            "first": {
+              "ms": 7.4,
+              "runtime": "wc",
+              "generations": [
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                }
+              ]
+            },
+            "late": null
+          }
+        ],
+        "closes": 3
+      },
+      "dialog": {
+        "job": 129993509245,
+        "artifact": 13786712963,
+        "archiveSha256": "59f80faf368422717b25e93c20680cb2f0395b80e907d82febba766ddc73ea2d",
+        "archiveMembers": 291,
+        "producerExitCodes": [124],
+        "targetLines": [
+          "✓ apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts (8 tests) 69341ms"
+        ],
+        "aggregateVitestJson": [],
+        "observations": 196,
+        "referencedPngHashesVerified": 120,
+        "browser": "156.0.8078.79"
+      }
+    },
+    "portal-review": {
+      "head": "cc4318d4904a73a6e30a6b7b4832ba1ad01d2a07",
+      "tree": "b43d4c578452ab122b4d9e4449d80027b39797b2",
+      "run": 42865909361,
+      "contents": {
+        "job": 130004212023,
+        "artifact": 13788571366,
+        "archiveSha256": "1a5fbdb6e71a0562e8086da712f8902ced59f55896547774d8ac6a82d4bfbb3e",
+        "archiveMembers": 355,
+        "producerExitCodes": [124],
+        "targetLines": [
+          "× Homepage end-to-end dogfood boundary > uses real family Contents Buttons through all four Docs runtimes with keyboard and exact-source visual evidence 19003ms"
+        ],
+        "aggregateVitestJson": [],
+        "transitions": [
+          {
+            "family": "shadcn",
+            "runtime": "react",
+            "elapsedMs": 1001,
+            "error": "Error: Matcher did not succeed in 1000ms",
+            "first": {
+              "ms": 1387.5,
+              "runtime": "wc",
+              "generations": [
+                {
+                  "state": "active",
+                  "inert": true
+                },
+                {
+                  "state": "staging",
+                  "inert": true
+                },
+                {
+                  "state": "active",
+                  "inert": true
+                },
+                {
+                  "state": "staging",
+                  "inert": true
+                },
+                {
+                  "state": "active",
+                  "inert": true
+                },
+                {
+                  "state": "staging",
+                  "inert": true
+                }
+              ]
+            },
+            "late": {
+              "ms": 1931.9,
+              "runtime": "react",
+              "generations": [
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                }
+              ]
+            }
+          },
+          {
+            "family": "shadcn",
+            "runtime": "wc",
+            "elapsedMs": 4,
+            "error": null,
+            "first": {
+              "ms": 6.2,
+              "runtime": "wc",
+              "generations": [
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                },
+                {
+                  "state": "active",
+                  "inert": false
+                }
+              ]
+            },
+            "late": null
+          }
+        ],
+        "closes": 3
+      },
+      "dialog": {
+        "job": 130004212080,
+        "artifact": 13787738581,
+        "archiveSha256": "c099368d23e6b1ac7c485224c41dc59dc3680e453c33edf70b5285ee50568420",
+        "archiveMembers": 291,
+        "producerExitCodes": [124],
+        "targetLines": [
+          "✓ apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts (8 tests) 68575ms"
+        ],
+        "aggregateVitestJson": [],
+        "observations": 196,
+        "referencedPngHashesVerified": 120,
+        "browser": "156.0.8078.79"
+      }
+    }
+  },
+  "forkPlan": {
+    "artifact": 13787227299,
+    "sha256": "83d8ba3e0431657b071c5d70c839ebe09639bc00b7e9623dd60ab898469f7164"
+  },
+  "compilerNative": {
+    "forkJob": 130004060693,
+    "officialMainJob": 129957620946,
+    "error": "unshare: write failed /proc/self/uid_map: Operation not permitted"
+  },
+  "census": {
+    "combined-census": {
+      "kind": "local diagnostic, original assertion passed",
+      "receipt": {
+        "head": "b7cd060f015147a855b727a5cf8a895dc95639d3",
+        "command": [
+          "corepack",
+          "pnpm@10.32.1",
+          "exec",
+          "vitest",
+          "run",
+          "--no-file-parallelism",
+          "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+          "-t",
+          "uses real family Contents Buttons"
+        ],
+        "diagnostic": true,
+        "source": {
+          "runtime": "85bc09b83e62da862c6d226900329d97d3236355dce7bfaa13a695657e09819b",
+          "test": "f2979885fbbf41acd59512e75fd3219252427207c45c915eef9e1dc3c3335012"
+        },
+        "original": {
+          "runtime": "936ca3bbdb0064b0ed6a50ab9df5b606bbab047d707702bc110c842769e8546b",
+          "test": "8a5db042fcaee8550630c755fdc72583c8bc5645cc5418eccc416523b5453e8e"
+        },
+        "exitCode": 0,
+        "cleanAfter": true
+      },
+      "reactPollMs": 761,
+      "counts": {
+        "project-current": 266,
+        "mutation": 77,
+        "entry-observer": 77,
+        "graph": 84,
+        "configure": 99,
+        "initial": 7,
+        "external-style": 49
+      },
+      "durationMs": {
+        "project-current": 38.7,
+        "mutation": 0.2,
+        "entry-observer": 186.9,
+        "graph": 104.4,
+        "configure": 0.1,
+        "initial": 58.5,
+        "external-style": 33.9
+      }
+    },
+    "candidate-census": {
+      "kind": "local diagnostic, original assertion passed",
+      "receipt": {
+        "head": "b7cd060f015147a855b727a5cf8a895dc95639d3",
+        "command": [
+          "corepack",
+          "pnpm@10.32.1",
+          "exec",
+          "vitest",
+          "run",
+          "--no-file-parallelism",
+          "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+          "-t",
+          "uses real family Contents Buttons"
+        ],
+        "diagnostic": true,
+        "source": {
+          "runtime": "e07ad35aa7b8289fbd53b1b9a7d70e26a8da193ae6d6d314e749080e8977e09b",
+          "test": "f2979885fbbf41acd59512e75fd3219252427207c45c915eef9e1dc3c3335012"
+        },
+        "original": {
+          "runtime": "b01cd7451c807805cbbdbf597302fdc86b7731f58d05ae69c1d00b575904ca1e",
+          "test": "8a5db042fcaee8550630c755fdc72583c8bc5645cc5418eccc416523b5453e8e"
+        },
+        "exitCode": 0,
+        "restoredAfter": true
+      },
+      "reactPollMs": 800,
+      "counts": {
+        "project-current": 266,
+        "entry-observer": 77,
+        "graph": 84,
+        "configure": 99,
+        "initial": 7,
+        "external-style": 49
+      },
+      "durationMs": {
+        "project-current": 44.9,
+        "entry-observer": 189.2,
+        "graph": 134.1,
+        "configure": 0.1,
+        "initial": 59.0,
+        "external-style": 33.2
+      }
+    },
+    "neighbor-census": {
+      "kind": "local diagnostic, original assertion passed",
+      "receipt": {
+        "head": "b7cd060f015147a855b727a5cf8a895dc95639d3",
+        "command": [
+          "corepack",
+          "pnpm@10.32.1",
+          "exec",
+          "vitest",
+          "run",
+          "--no-file-parallelism",
+          "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+          "-t",
+          "uses real family Contents Buttons"
+        ],
+        "diagnostic": true,
+        "source": {
+          "runtime": "8ec45129cffd65f160daa7d87273ef8a5abe9585d529f73618c462fae3997718",
+          "test": "f2979885fbbf41acd59512e75fd3219252427207c45c915eef9e1dc3c3335012"
+        },
+        "original": {
+          "runtime": "0da36f25ac180ccaa9ebce2661aca7419fc3db012ba3fa009fa675def25537d9",
+          "test": "8a5db042fcaee8550630c755fdc72583c8bc5645cc5418eccc416523b5453e8e"
+        },
+        "exitCode": 0,
+        "restoredAfter": true
+      },
+      "reactPollMs": 621,
+      "counts": {
+        "project-current": 231,
+        "mutation": 70,
+        "configure": 99,
+        "initial": 7,
+        "graph": 70,
+        "entry-observer": 63,
+        "external-style": 49
+      },
+      "durationMs": {
+        "project-current": 31.5,
+        "mutation": 0.4,
+        "configure": 0,
+        "initial": 54.1,
+        "graph": 80.9,
+        "entry-observer": 107.0,
+        "external-style": 31.2
+      }
+    }
+  }
+}
