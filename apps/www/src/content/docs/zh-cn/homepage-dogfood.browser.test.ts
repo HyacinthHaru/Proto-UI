@@ -9,6 +9,7 @@ import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { installDocsCallTimingObserver } from './docs-query-timing.mjs';
+import { createQueryDispatchTrace } from './query-dispatch-trace.mjs';
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
@@ -639,6 +640,7 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           : route.abort()
       );
       const page = await context.newPage();
+      let stagingTrace: ReturnType<typeof createQueryDispatchTrace> | undefined;
       const pageErrors: string[] = [];
       page.on('pageerror', (error) => pageErrors.push(error.message));
       page.on('console', (message) => {
@@ -694,6 +696,30 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           const select = page.locator('[data-adapter-select] [role="combobox"]');
           await select.click();
           const popup = await select.getAttribute('aria-controls');
+          const traceReact = family === 'shadcn' && runtime === 'react';
+          if (traceReact) {
+            stagingTrace = createQueryDispatchTrace(
+              page,
+              path.join(directory, 'shadcn-react-trace'),
+              {
+                contentsStaging: true,
+              }
+            );
+            await stagingTrace.prepare();
+            await page
+              .evaluate(() => {
+                Object.assign(window, { __puiContentsStagingTrace: true });
+                performance.mark('pui-contents:probe:0:before-click');
+                window.addEventListener(
+                  'click',
+                  (event) => {
+                    if (event.isTrusted) performance.mark('pui-contents:probe:0:trusted-click');
+                  },
+                  { capture: true, once: true }
+                );
+              })
+              .catch((error) => console.error('[Contents staging marker setup]', error));
+          }
           const transitionStartedAt = Date.now();
           await page
             .locator(`[id=${JSON.stringify(popup)}]`)
@@ -707,6 +733,8 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
             originalError = error;
           }
           const originalCheckAt = Date.now();
+          const verdict = { passed: !originalError, clickedAt, originalCheckAt };
+          stagingTrace?.markVerdict({ verdict });
           const readTransition = () =>
             page.evaluate((since) => {
               const contents = document.querySelector<HTMLElement>('[data-site-contents-command]');
@@ -729,6 +757,13 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
                     'header [data-projection-generation-host]'
                   ),
                 ].map((element) => ({ ...element.dataset, inert: element.inert })),
+                stages: performance
+                  .getEntriesByType('mark')
+                  .filter((entry) => entry.name.startsWith('pui-contents:'))
+                  .map((entry) => ({
+                    name: entry.name,
+                    at: performance.timeOrigin + entry.startTime,
+                  })),
                 longTasks: evidence?.longTasks.filter((entry) => entry.start >= since),
                 changes: evidence?.changes.filter((entry) => entry.at >= since),
                 resources: performance
@@ -788,6 +823,18 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
             );
           } catch (diagnosticError) {
             console.error('[Contents runtime evidence]', diagnosticError);
+          }
+          if (stagingTrace) {
+            const ownedTrace = stagingTrace;
+            stagingTrace = undefined;
+            await ownedTrace.finish(false, { verdict }).catch((error) => {
+              console.error('[Contents staging trace]', error);
+            });
+            await page
+              .evaluate(() => {
+                Object.assign(window, { __puiContentsStagingTrace: false });
+              })
+              .catch((error) => console.error('[Contents staging marker cleanup]', error));
           }
           if (originalError) throw originalError;
           expect(await root.getAttribute('data-contents-family')).toBe(family);
@@ -1113,7 +1160,11 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
         }
         throw originalError;
       } finally {
+        stagingTrace?.beforeContextClose();
         await context.close();
+        await stagingTrace?.finish(true, {}).catch((error) => {
+          console.error('[Contents staging trace cleanup]', error);
+        });
       }
     }
   }, 180_000);

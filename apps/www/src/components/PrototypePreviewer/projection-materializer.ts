@@ -55,6 +55,22 @@ export type MaterializedProjectionCandidate = ProjectionScopeCandidate &
 // A focus lease belongs to the exact materialized composition, not a DOM role.
 const compositionFocusRestorers = new WeakMap<HTMLElement, (key: ProjectionFocusKey) => boolean>();
 
+export function markContentsStaging(
+  element: HTMLElement,
+  runtime: string,
+  generation: number,
+  owner: string,
+  phase: string
+) {
+  const view = element.ownerDocument.defaultView as
+    | (Window & {
+        __puiContentsStagingTrace?: boolean;
+      })
+    | null;
+  if (runtime === 'react' && view?.__puiContentsStagingTrace)
+    view.performance.mark(`pui-contents:${owner}:${generation}:${phase}`);
+}
+
 function nextPaint(element: HTMLElement): Promise<void> {
   return new Promise((resolve) => {
     const view = element.ownerDocument.defaultView;
@@ -406,8 +422,12 @@ async function prepareProjectionCandidate(
     );
   }
 
+  const mark = (phase: string) =>
+    markContentsStaging(options.mount, runtimeId, request.generation, options.ownerId, phase);
+  mark('prepare-start');
   const themeSurfaceStyle =
     initialTheme ?? resolveProjectionThemeSurfaceStyle(projectionFamilyId, options.mount);
+  mark('theme-read');
   const childDemo = options.content?.demo ?? (await loadDemo(componentManifest.recipeId));
   const composition = createProjectionComposition({
     ownerId: options.ownerId,
@@ -426,7 +446,9 @@ async function prepareProjectionCandidate(
 
   const prototypeIds = new Set<string>();
   collectPrototypeIds(composition.demo.root, prototypeIds);
+  mark('dependencies-start');
   await Promise.all([loadPrototypes(Array.from(prototypeIds)), prepareDemoRuntime(runtimeId)]);
+  mark('dependencies-ready');
 
   const host = options.mount.ownerDocument.createElement('div');
   host.className = 'pui-projection-generation';
@@ -434,6 +456,7 @@ async function prepareProjectionCandidate(
   host.dataset.projectionOwnerHost = options.ownerId;
   setGenerationVisibility(host, false);
   options.mount.appendChild(host);
+  mark('staging-attached');
 
   let renderResult: Awaited<ReturnType<typeof renderDemo>> | null = null;
   let disposed = false;
@@ -492,11 +515,13 @@ async function prepareProjectionCandidate(
     if (teardownFailed) throw teardownFailure;
   };
   try {
+    mark('render-start');
     renderResult = await renderDemo({
       runtime: runtimeId,
       demo: composition.demo,
       host,
     });
+    mark('render-ready');
     const scope = Array.from(host.querySelectorAll<HTMLElement>('[data-projection-scope]')).find(
       (element) => element.dataset.projectionScope === options.ownerId
     );
@@ -509,8 +534,11 @@ async function prepareProjectionCandidate(
     // that update before activation exposes the generation.
     composition.setLocked(false);
     reconcileCandidateExternalPortals();
+    mark('paint-wait');
     await nextPaint(host);
+    mark('paint-resumed');
     reconcileCandidateExternalPortals();
+    mark('candidate-ready');
 
     const candidate: MaterializedProjectionCandidate = {
       host,

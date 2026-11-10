@@ -10,6 +10,7 @@ import {
 } from './PrototypePreviewer/projection-scope';
 import {
   materializeProjectionCandidate,
+  markContentsStaging,
   type MaterializedProjectionCandidate,
 } from './PrototypePreviewer/projection-materializer';
 import { watchProjectionThemeSurfaceStyle } from './PrototypePreviewer/projection-theme';
@@ -158,11 +159,21 @@ export function initDocumentationHeaderSurface(header: HTMLElement) {
     return createProjectionScopeController({
       initialSelection: { runtimeId: runtime, projectionFamilyId: family },
       async materialize(request) {
+        const mark = (phase: string) =>
+          markContentsStaging(
+            header,
+            request.selection.runtimeId,
+            request.generation,
+            namespace,
+            phase
+          );
+        mark('transaction-prepare-start');
         const outcomes = await Promise.allSettled([
           participant.materialize(request),
           ...(contents ? [contents.materialize(request, namespace)] : []),
           ...(contentsPanel ? [contentsPanel.materialize(request, namespace)] : []),
         ]);
+        mark('participants-ready');
         const candidates = outcomes.flatMap((outcome) =>
           outcome.status === 'fulfilled' ? [outcome.value] : []
         );
@@ -183,9 +194,12 @@ export function initDocumentationHeaderSurface(header: HTMLElement) {
           await Promise.allSettled(candidates.map((candidate) => candidate.dispose()));
           throw error;
         }
+        mark('transaction-theme-ready');
         return {
           activate() {
+            mark('activation-start');
             candidates.forEach((candidate) => candidate.activate());
+            mark('activation-end');
           },
           setLocked(locked: boolean) {
             candidates.forEach((candidate) => candidate.setLocked?.(locked));
@@ -211,6 +225,15 @@ export function initDocumentationHeaderSurface(header: HTMLElement) {
         };
       },
       prepareCommit(commit) {
+        const mark = (phase: string) =>
+          markContentsStaging(
+            header,
+            commit.selection.runtimeId,
+            commit.generation,
+            namespace,
+            phase
+          );
+        mark('commit-prepare-start');
         const publications = [participant.prepareCommit(commit)];
         try {
           if (contents) publications.push(contents.prepareCommit(commit));
@@ -219,9 +242,14 @@ export function initDocumentationHeaderSurface(header: HTMLElement) {
           for (const publication of publications.reverse()) publication.rollback();
           throw error;
         }
+        mark('commit-prepare-end');
         return {
           publish() {
-            publications.forEach((publication) => publication.publish());
+            mark('publication-start');
+            publications.forEach((publication, index) => {
+              publication.publish();
+              mark(`publication-${index}-end`);
+            });
           },
           rollback() {
             [...publications].reverse().forEach((publication) => publication.rollback());
