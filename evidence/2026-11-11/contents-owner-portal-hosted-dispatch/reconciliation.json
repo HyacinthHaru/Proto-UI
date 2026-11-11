@@ -1,0 +1,64 @@
+{
+  "product": "03b803f158dba2353a4d384aace64b7f7a0db99f",
+  "carrier": "0bf6d475ab1ebb6297588f60af5bae8a86fdfa7f",
+  "run": 42980231327,
+  "job": 130388781191,
+  "artifact": 13837089650,
+  "zipSHA256": "d4ce4c952ec69e9ac94dfba0247d1f13623d669e4484700dddbe14e327eef5dc",
+  "traceSHA256": "12acad34655b403cca4e01a2254a7595d34c71f6425cd522149487d26c9013e4",
+  "normalCPU": true,
+  "codeExamples": 7,
+  "originalPassed": false,
+  "originalGetters": [
+    {
+      "ms": 16.7,
+      "value": "wc"
+    },
+    {
+      "ms": 86.5,
+      "value": "wc"
+    },
+    {
+      "ms": 655.3,
+      "value": "wc"
+    },
+    {
+      "ms": 993.8,
+      "value": "wc"
+    }
+  ],
+  "finalOriginalQuery": {
+    "nodeEnterMs": 707.457,
+    "chromeForwardMs": 708.746,
+    "rendererDispatchMs": 991.82,
+    "nodeReturnMs": 994.947,
+    "verdictMs": 1001.595,
+    "pendingAtVerdict": false
+  },
+  "reactObservationMs": 1044.781,
+  "firstPostVerdictReactMs": 1091.6,
+  "rendererTasks": [
+    {
+      "from": 140.305,
+      "to": 645.712,
+      "sampled": ["React synchronous rendering", "WC Focus Entry refresh"]
+    },
+    {
+      "from": 656.453,
+      "to": 991.61,
+      "sampled": ["animation frames", "WC Focus Entry projection", "theme application"]
+    },
+    {
+      "from": 994.038,
+      "to": 1091.004,
+      "sampledBeforeDOMObserver": [
+        "Header publish",
+        "moveContent",
+        "theme read",
+        "Contents publish"
+      ],
+      "sampledAfterDOMObserver": ["typography refresh", "WC retirement"]
+    }
+  ],
+  "screenshotSHA256": "9af5f4b64578d563b61b607c03fd008628064523444465d0fd62e9167427f067"
+}
