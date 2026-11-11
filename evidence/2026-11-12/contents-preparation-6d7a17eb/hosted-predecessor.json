@@ -1,0 +1,136 @@
+{
+  "head": "30aebb5445f5e271d0a45112f20226dd97533d06",
+  "run": 43058917799,
+  "attempt": 1,
+  "contents": {
+    "job": {
+      "id": 130689404707,
+      "name": "test-browser (1/8, browser-1-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/HyacinthHaru/Proto-UI/actions/runs/43058917799/job/130689404707"
+    },
+    "fileSummary": "\u276f apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts (10 tests | 1 failed) 183257ms",
+    "producerExits": [124],
+    "artifact": {
+      "id": 13878656034,
+      "name": "runtime-ci-43058917799-browser-1-of-8-attempt-1",
+      "size_in_bytes": 5561386,
+      "digest": "sha256:99f85a647a923f694841419a5fe25e11a7982f59e88a9774061b39dc8be19b8d"
+    },
+    "transitions": {
+      "brutalist-react-transition": {
+        "passed": true,
+        "originalError": null,
+        "verdictMs": 595,
+        "first": {
+          "ms": 628.9,
+          "runtime": "react"
+        }
+      },
+      "brutalist-vue-transition": {
+        "passed": true,
+        "originalError": null,
+        "verdictMs": 530,
+        "first": {
+          "ms": 531.8,
+          "runtime": "vue"
+        }
+      },
+      "brutalist-vue2-transition": {
+        "passed": true,
+        "originalError": null,
+        "verdictMs": 378,
+        "first": {
+          "ms": 380.6,
+          "runtime": "vue2"
+        }
+      },
+      "brutalist-wc-transition": {
+        "passed": true,
+        "originalError": null,
+        "verdictMs": 4,
+        "first": {
+          "ms": 9.9,
+          "runtime": "wc"
+        }
+      },
+      "shadcn-react-transition": {
+        "passed": true,
+        "originalError": null,
+        "verdictMs": 592,
+        "first": {
+          "ms": 599.8,
+          "runtime": "react"
+        }
+      },
+      "shadcn-vue-transition": {
+        "passed": true,
+        "originalError": null,
+        "verdictMs": 431,
+        "first": {
+          "ms": 508.8,
+          "runtime": "vue"
+        }
+      },
+      "shadcn-vue2-transition": {
+        "passed": true,
+        "originalError": null,
+        "verdictMs": 524,
+        "first": {
+          "ms": 528.6,
+          "runtime": "vue2"
+        }
+      },
+      "shadcn-wc-transition": {
+        "passed": true,
+        "originalError": null,
+        "verdictMs": 20,
+        "first": {
+          "ms": 33,
+          "runtime": "wc"
+        }
+      }
+    },
+    "returnOrderObservations": 24
+  },
+  "dialog": {
+    "job": {
+      "id": 130689404678,
+      "name": "test-browser (3/8, browser-3-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/HyacinthHaru/Proto-UI/actions/runs/43058917799/job/130689404678"
+    },
+    "fileSummary": "\u2713 apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts (8 tests) 70225ms",
+    "producerExits": [124],
+    "artifact": {
+      "id": 13876918859,
+      "name": "runtime-ci-43058917799-browser-3-of-8-attempt-1",
+      "size_in_bytes": 10413904,
+      "digest": "sha256:19ad643c3f29dd39f987d82553ea5ad1c15fac34422754b5ae23a1673de96706"
+    },
+    "dialog": {
+      "browser": "156.0.8078.79",
+      "observations": 196,
+      "pngs": 120
+    }
+  },
+  "copy": {
+    "job": {
+      "id": 130689404744,
+      "name": "test-browser (5/8, browser-5-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/HyacinthHaru/Proto-UI/actions/runs/43058917799/job/130689404744"
+    },
+    "fileSummary": "\u2713 apps/www/src/content/docs/zh-cn/site-copy-commands.browser.test.ts (15 tests) 179506ms",
+    "producerExits": [124]
+  },
+  "general": {
+    "job": 130689422222,
+    "failure": "Coverage matrices validation reported 1615 diagnostics before the downstream repository test stages."
+  },
+  "latestCandidateRun": 43069833437,
+  "limits": "The candidate run was pending when this packet was prepared. The older three enclosing shards exited 124, and the narrow named successes do not change their outcomes."
+}

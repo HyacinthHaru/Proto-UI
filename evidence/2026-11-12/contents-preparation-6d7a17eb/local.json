@@ -1,0 +1,57 @@
+{
+  "native": {
+    "passed": 9,
+    "failed": 0,
+    "reportSha256": "91a40f139702f2414295fe488e2c58be1ffe0bcfa42d10dbd8c2b17f44ca8d31"
+  },
+  "wide": {
+    "passed": 1,
+    "failed": 0,
+    "reportSha256": "c80930d41aeb558a2be2e471a730ebadf29b3ad76361ec8861d8d5fa13c2b202"
+  },
+  "copy-code": {
+    "passed": 22,
+    "failed": 0,
+    "reportSha256": "79be6742ecf320e91297a8bcf6591188874c6c2cda8660d590cb49b39fa114de"
+  },
+  "switchesMs": {
+    "brutalist-react-transition": 211,
+    "brutalist-vue-transition": 203,
+    "brutalist-vue2-transition": 203,
+    "brutalist-wc-transition": 1,
+    "shadcn-react-transition": 200,
+    "shadcn-vue-transition": 198,
+    "shadcn-vue2-transition": 208,
+    "shadcn-wc-transition": 4
+  },
+  "orderedSidebarReturns": 24,
+  "dialog": {
+    "browser": "156.0.8078.79",
+    "observations": 196,
+    "pngs": 120
+  },
+  "types": {
+    "astroFiles": 1215,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 30
+  },
+  "focusControl": {
+    "files": 8,
+    "passed": 168,
+    "originalFailed": 1,
+    "originalReason": "The newer replacement was queued as background for both already committed owners."
+  },
+  "images": [
+    {
+      "path": "contents-react-focus-return.png",
+      "sha256": "c2ff321afaff93dc9f08eeaf4021225659f50ff3e3c5519e870c341ae4cff797"
+    },
+    {
+      "path": "dialog-react-390.png",
+      "sha256": "66efcb95ab858375053eb9be1a701e0c6bfa3efa322d54fef07d8a92779f6fa9"
+    }
+  ],
+  "head": "6d7a17eb6e0f837069b3d8847c05244c41984bab",
+  "tree": "44b91cb944bababa1e986f04c53ac8ccfe6f1715"
+}
