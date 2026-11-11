@@ -1,0 +1,86 @@
+{
+  "base": "3971e87e6643965d8b9f9872a9420f6ae94b5c4a",
+  "head": "df9eaf2f095a149766fa3ca05c380d63b2074571",
+  "sourceSHA256": {
+    "apps/www/src/components/site-search-commands.public-mode.test.ts": "420e1e8755a8e3a728e3bbccae7c9cd08e050b973e33af38d1c8591dd7eb2660",
+    "apps/www/src/components/site-search-commands.ts": "609af06750ef7445a972d6e3dc450b5969a38f0d4f4f1ed5334fe5dc4f1edc9f",
+    "apps/www/src/components/site-search-composition.ts": "18e8228b7cee9eaf27af40d6b4d135f64dcca4a87ff071551eca1afa3cd1dfc1",
+    "apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts": "2cf2d8023f562bb612c5c411aa5172b89046a9fd2763c5423aba0c3f5167d02f"
+  },
+  "exactBrowserSelected": {
+    "passed": 11,
+    "failed": 0,
+    "filtered": 69
+  },
+  "rollback": {
+    "nativeProbeTestSHA256": "e839340e012ec90b6633e4d05b9559c9e9bac874ca94204be08306a136a8f2b8",
+    "baseline": "failed original retained focus",
+    "candidate": "passed same native probe",
+    "focusedUnitPassed": 90
+  },
+  "geometry": {
+    "observe": {
+      "pointer": {
+        "x": 1038.4000244140625,
+        "y": 36
+      },
+      "hit": {
+        "tag": "wc-brutalist-button",
+        "ref": "search-command",
+        "onTrigger": true
+      },
+      "hover": true,
+      "focused": true,
+      "translate": "none",
+      "transform": "matrix(1, 0, 0, 1, 0, 0)",
+      "shadow": "rgb(220, 235, 254) 0px 0px 0px 2px, rgb(0, 0, 0) 0px 0px 0px 4px, rgb(0, 0, 0) 4px 4px 0px 0px",
+      "animations": [
+        {
+          "property": "box-shadow",
+          "currentTime": 0,
+          "playState": "running",
+          "progress": 0
+        },
+        {
+          "property": "transform",
+          "currentTime": 0,
+          "playState": "running",
+          "progress": 0
+        }
+      ],
+      "deltaY": 0
+    },
+    "pointer-away": {
+      "pointer": {
+        "x": 590,
+        "y": 745
+      },
+      "hit": {
+        "tag": "astro-dev-toolbar",
+        "ref": null,
+        "onTrigger": false
+      },
+      "hover": false,
+      "focused": true,
+      "translate": "none",
+      "transform": "none",
+      "shadow": "rgb(220, 235, 254) 0px 0px 0px 2px, rgb(0, 0, 0) 0px 0px 0px 4px, rgb(0, 0, 0) 4px 4px 0px 0px",
+      "animations": [],
+      "deltaY": 0
+    },
+    "originalExact3971DeltaY": 1.829986572265625
+  },
+  "production": {
+    "pages": 673,
+    "indexed": 647,
+    "responses": 26,
+    "sameProcess": true,
+    "browser": "156.0.8078.79",
+    "allRealIndexStatuses": [200]
+  },
+  "screenshots": {
+    "rollback-retained-focus.png": "e4d77ec13df877c5cdaed0ab8ed653c04532bdd2f532f9a168157c6df20e1756",
+    "rollback-baseline-failure.png": "e4d77ec13df877c5cdaed0ab8ed653c04532bdd2f532f9a168157c6df20e1756",
+    "production-search-ime.png": "1fada691084f167dc5e4ed7e4436a2d5ce72deb498c9366d031570cfc5daa38d"
+  }
+}
