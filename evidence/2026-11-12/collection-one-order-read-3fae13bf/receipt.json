@@ -1,0 +1,86 @@
+{
+  "head": "3fae13bf85dd618836e55cb2ef62cc5a382b4894",
+  "tree": "de698a62e9ecf41db438e039830eacf5e71cf5aa",
+  "main": "b25229a94251398bc2f375554fcb9622dc8e79ab",
+  "finalRegression": {
+    "baselineTestOnlyFailed": 1,
+    "exactCandidateFocusedPassed": 161,
+    "files": 12,
+    "sourceTestBlob": "e5acbec6fb032174ba7831d94182329473552643"
+  },
+  "productionCodeBlob": "df578b7eb820dbc04f0ecd73a18249d2b56cbb5c",
+  "abInput": {
+    "base": "3139922b91dd94111a6a290687ab43adc479788b",
+    "privatePatchSha256": "9b8ac06b645cd55916a8fb84d35ab46c4ec0dd9361d07374b8b95ce845d7c115",
+    "rounds": [
+      {
+        "round": 1,
+        "baselineComparisons": 2081253,
+        "candidateComparisons": 1112569,
+        "baselineLastGetterMs": 2762.104,
+        "candidateLastGetterMs": 2453.616,
+        "sameRenderedRows": 97,
+        "bothOneSecondPollsPassed": false
+      },
+      {
+        "round": 2,
+        "baselineComparisons": 2081253,
+        "candidateComparisons": 1112569,
+        "baselineLastGetterMs": 2828.448,
+        "candidateLastGetterMs": 2444.338,
+        "sameRenderedRows": 97,
+        "bothOneSecondPollsPassed": false
+      }
+    ],
+    "scope": "Counted native DOM order comparisons on the same production interaction. The patch product source is identical to final; final test annotation is separate."
+  },
+  "exactTypes": {
+    "files": 1214,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 30
+  },
+  "exactProduction": [
+    {
+      "family": "shadcn",
+      "rows": 97,
+      "oneSecondPollPassed": false
+    },
+    {
+      "family": "brutalist",
+      "rows": 97,
+      "oneSecondPollPassed": false
+    }
+  ],
+  "coverage": {
+    "main": 1614,
+    "candidate": 1614,
+    "added": [],
+    "removed": [],
+    "exitCode": 1
+  },
+  "package": {
+    "name": "@proto.ui/module-collection",
+    "version": "0.3.0-alpha.1",
+    "tarSha256": "d077894ad1896593e2857d9044b8ad230f78cc64724d344a864f68e5e1784763",
+    "compiledCreateSha256": "20629f9b2bd2913b28b314f1fc1d2bf99dd8c2cd9812fc0242c4c742e965136b",
+    "bytes": 3657,
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "import": "./dist/index.js",
+        "default": "./dist/index.js"
+      }
+    },
+    "dependencies": {
+      "@proto.ui/module-anatomy": "0.3.0-alpha.1",
+      "@proto.ui/core": "0.3.0-alpha.1",
+      "@proto.ui/module-base": "0.3.0-alpha.1",
+      "@proto.ui/types": "0.3.0-alpha.1"
+    }
+  },
+  "image": {
+    "path": "real-pagefind-react-entry.png",
+    "sha256": "0db288c6329a103110a49fe0eace1a74751c93329ceb018469fb6b6f20aedb43"
+  }
+}
