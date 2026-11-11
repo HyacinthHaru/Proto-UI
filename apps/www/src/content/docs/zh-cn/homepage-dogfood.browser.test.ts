@@ -1019,11 +1019,11 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           const select = page.locator('[data-adapter-select] [role="combobox"]');
           await select.click();
           const popup = await select.getAttribute('aria-controls');
-          const traceReact = !!callTiming && runtime === 'react';
-          if (traceReact) {
+          const traceVue = !!callTiming && runtime === 'vue';
+          if (traceVue) {
             stagingTrace = createQueryDispatchTrace(
               page,
-              path.join(directory, 'shadcn-react-timing-trace'),
+              path.join(directory, 'shadcn-vue-timing-trace'),
               { contentsStaging: true }
             );
             try {
@@ -1064,7 +1064,7 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           try {
             await expect
               .poll(() =>
-                traceReact && callTiming
+                traceVue && callTiming
                   ? callTiming.runOriginalQuery(++pollCount, readRuntime)
                   : readRuntime()
               )
@@ -1074,7 +1074,7 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           }
           const originalCheckAt = Date.now();
           const verdict = { passed: !originalError, clickedAt, originalCheckAt };
-          if (traceReact) {
+          if (traceVue) {
             callTiming?.freezeVerdict(verdict.passed);
             stagingTrace?.markVerdict({ source, verdict, cpuRate, query: callTiming?.snapshot() });
           }
@@ -1552,7 +1552,7 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
             .catch((error) => console.error('[Contents timing trace cleanup]', error));
           if (callTiming) {
             await writeFile(
-              path.join(directory, 'shadcn-react-getter-timing.json'),
+              path.join(directory, 'shadcn-vue-getter-timing.json'),
               JSON.stringify(
                 { source, cpuRate, contextClosed, query: callTiming.snapshot() },
                 null,
