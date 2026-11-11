@@ -1,0 +1,41 @@
+{
+  "base": "a7ed62929ead8e63e069af7a413338dc05a882f9",
+  "head": "e8f337acb728ae988f40763f51cc0562456aa05c",
+  "sourceSha256": {
+    "apps/www/src/components/site-search-commands.ts": "bfe8180dec98b35603707f1ef61b145d9e2647156eaf034f3126f5340ed5508a",
+    "apps/www/src/components/site-search-composition.ts": "ef07d53e0d4d1ce931ef578950a5c96ee539a8eab23e7fd34c505bbce53c6586",
+    "apps/www/src/components/site-search-commands.public-mode.test.ts": "0ebad75c26963b495befb7d49af83feb8efa15a78d1e1fba1045b2f412a364db",
+    "apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts": "8383ef934a7b88d111dd7ec036141bc8c777647e864d75f2b23bd9915f04f3fb"
+  },
+  "focused": {
+    "baseline": {
+      "failed": 4,
+      "filtered": 12
+    },
+    "candidate": {
+      "passed": 86,
+      "files": 5
+    }
+  },
+  "native": {
+    "baseline": {
+      "failed": 2,
+      "filtered": 78
+    },
+    "candidate": {
+      "passed": 3,
+      "filtered": 77
+    },
+    "assertions": [
+      "Bootstrap family selection commits and opens/closes public Search",
+      "Close retained through WC to React followed by trusted Control+k and current opener focus",
+      "existing active Search session persists across all four runtime generations"
+    ],
+    "data": "only external Pagefind empty success controlled in two new scenarios"
+  },
+  "screenshots": {
+    "candidate-returned.png": "bd3bdebf7ac0e659d83736ffa0af70ce79bc3b1cf4bba74beefeff0d5c0fd36b",
+    "baseline-retained-close-failure.png": "95f997e508783cd9ac54c28a35b8ce1b7466b74fe93b04df3f7cf2ab940ac06d",
+    "baseline-bootstrap-rollback.png": "e20cd4b4351f53921bc965d8f2e901ff4faa2058b154ef107e93240f6062db24"
+  }
+}
