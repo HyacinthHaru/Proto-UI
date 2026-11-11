@@ -1,0 +1,99 @@
+{
+  "head": "bef68094fc537aabe36302c8d9f7417d41959799",
+  "tree": "213227828e53a546799c9851f3b8199d4280d3da",
+  "testBlob": "e33916cfebe721a13e63387ec47c6d463c982375",
+  "baseline": {
+    "passed": 75,
+    "failed": 8,
+    "reportSha256": "a3f404cea80aa1686e537dd96bc6b4a3c599164b26d7e25ad9a1d033ad9d37d4"
+  },
+  "controlled": {
+    "passed": 0,
+    "failed": 8,
+    "filtered": 75,
+    "reportSha256": "b72c9e689c5b650c9e99003c48883f671eeb6e88c531f32369ef52579ec3dcc0",
+    "runtime": "macOS arm64 Chrome 156.0.8078.79"
+  },
+  "environmentChange": "Repository-standard project-only astro preferences disable devToolbar, confirmed false; same clean source, assertion and timeout.",
+  "runs": [
+    {
+      "case": "Search brutalist/react keeps nested scrollports and dismissal reachable at 200%",
+      "baselineToolbarIntercepted": false,
+      "endSelectedLast": true,
+      "lastBottom": 3862.0,
+      "bodyBottomWithTolerance": 213.0,
+      "result": "failed"
+    },
+    {
+      "case": "Search brutalist/vue keeps nested scrollports and dismissal reachable at 200%",
+      "baselineToolbarIntercepted": false,
+      "endSelectedLast": true,
+      "lastBottom": 3854.760009765625,
+      "bodyBottomWithTolerance": 212.96644592285156,
+      "result": "failed"
+    },
+    {
+      "case": "Search brutalist/vue2 keeps nested scrollports and dismissal reachable at 200%",
+      "baselineToolbarIntercepted": false,
+      "endSelectedLast": true,
+      "lastBottom": 3858.966064453125,
+      "bodyBottomWithTolerance": 212.98594665527344,
+      "result": "failed"
+    },
+    {
+      "case": "Search brutalist/wc keeps nested scrollports and dismissal reachable at 200%",
+      "baselineToolbarIntercepted": false,
+      "endSelectedLast": true,
+      "lastBottom": 3825.77880859375,
+      "bodyBottomWithTolerance": 212.8320770263672,
+      "result": "failed"
+    },
+    {
+      "case": "Search shadcn/react keeps nested scrollports and dismissal reachable at 200%",
+      "baselineToolbarIntercepted": false,
+      "endSelectedLast": true,
+      "lastBottom": 5626.5,
+      "bodyBottomWithTolerance": 220.0,
+      "result": "failed"
+    },
+    {
+      "case": "Search shadcn/vue keeps nested scrollports and dismissal reachable at 200%",
+      "baselineToolbarIntercepted": true,
+      "endSelectedLast": true,
+      "lastBottom": 5626.5,
+      "bodyBottomWithTolerance": 220.0,
+      "result": "failed"
+    },
+    {
+      "case": "Search shadcn/vue2 keeps nested scrollports and dismissal reachable at 200%",
+      "baselineToolbarIntercepted": true,
+      "endSelectedLast": true,
+      "lastBottom": 5626.5,
+      "bodyBottomWithTolerance": 220.0,
+      "result": "failed"
+    },
+    {
+      "case": "Search shadcn/wc keeps nested scrollports and dismissal reachable at 200%",
+      "baselineToolbarIntercepted": false,
+      "endSelectedLast": true,
+      "lastBottom": 5626.5,
+      "bodyBottomWithTolerance": 220.0,
+      "result": "failed"
+    }
+  ],
+  "images": [
+    {
+      "path": "brutalist-wc.png",
+      "sha256": "4a24325a2ffd5d2f4bcd068149fba48ad524aa61031c267a115cce60ee211de4"
+    },
+    {
+      "path": "shadcn-vue.png",
+      "sha256": "af0ed742e58f1a856bb96e4ec5bd50ebcec7aed00a3fdddb7c02d9245070965f"
+    }
+  ],
+  "limits": [
+    "The two old Select click failures happened before the test applied the 200% root font size and before opening Search.",
+    "The eight controlled runs stopped before the Close hit test, Home and touch scrolling.",
+    "This receipt does not report editor focus or the scrollTop values after End."
+  ]
+}
