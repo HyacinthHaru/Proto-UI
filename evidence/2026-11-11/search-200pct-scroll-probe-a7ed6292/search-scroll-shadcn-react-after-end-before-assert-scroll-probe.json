@@ -1,0 +1,648 @@
+{
+  "source": {
+    "sha": "a7ed62929ead8e63e069af7a413338dc05a882f9",
+    "dirty": true
+  },
+  "phase": "after-end-before-assert",
+  "url": "http://127.0.0.1:53787/zh-cn/ui-libraries/shadcn/button/",
+  "geometry": {
+    "at": 5027.5,
+    "timeOrigin": 1794369713710.6,
+    "owner": "site-search-1-docs-dialog-2-dialog",
+    "generation": "1",
+    "activeHostCount": 1,
+    "panelOwner": "site-search-1-docs-dialog-2-dialog",
+    "panelGeneration": "1",
+    "panelRuntime": "react",
+    "transitionState": "entered",
+    "viewport": {
+      "width": 320,
+      "height": 390
+    },
+    "rootFontSize": "32px",
+    "header": {
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 193,
+        "top": 0,
+        "right": 320,
+        "bottom": 193,
+        "left": 0
+      },
+      "ownsCenter": false,
+      "clientHeight": 193,
+      "scrollHeight": 382,
+      "scrollTop": 0,
+      "offsetHeight": 193,
+      "height": "193px",
+      "minHeight": "112px",
+      "maxHeight": "none",
+      "overflowX": "visible",
+      "overflowY": "visible",
+      "display": "grid",
+      "position": "relative",
+      "flexBasis": "auto"
+    },
+    "panel": {
+      "box": {
+        "x": 32,
+        "y": 58.5,
+        "width": 256,
+        "height": 299.5,
+        "top": 58.5,
+        "right": 288,
+        "bottom": 358,
+        "left": 32
+      },
+      "ownsCenter": true,
+      "clientHeight": 300,
+      "scrollHeight": 300,
+      "scrollTop": 0,
+      "offsetHeight": 300,
+      "height": "299.5px",
+      "minHeight": "0px",
+      "maxHeight": "299.5px",
+      "overflowX": "hidden",
+      "overflowY": "hidden",
+      "display": "grid",
+      "position": "fixed",
+      "flexBasis": "auto"
+    },
+    "command": {
+      "box": {
+        "x": 32,
+        "y": 58.5,
+        "width": 256,
+        "height": 299.5,
+        "top": 58.5,
+        "right": 288,
+        "bottom": 358,
+        "left": 32
+      },
+      "ownsCenter": true,
+      "clientHeight": 300,
+      "scrollHeight": 300,
+      "scrollTop": 0,
+      "offsetHeight": 300,
+      "height": "299.5px",
+      "minHeight": "0px",
+      "maxHeight": "none",
+      "overflowX": "hidden",
+      "overflowY": "hidden",
+      "display": "flex",
+      "position": "static",
+      "flexBasis": "auto"
+    },
+    "queryShell": {
+      "box": {
+        "x": 105,
+        "y": 74.5,
+        "width": 142,
+        "height": 72,
+        "top": 74.5,
+        "right": 247,
+        "bottom": 146.5,
+        "left": 105
+      },
+      "ownsCenter": true,
+      "clientHeight": 72,
+      "scrollHeight": 72,
+      "scrollTop": 0,
+      "offsetHeight": 72,
+      "height": "72px",
+      "minHeight": "auto",
+      "maxHeight": "none",
+      "overflowX": "visible",
+      "overflowY": "visible",
+      "display": "flex",
+      "position": "relative",
+      "flexBasis": "0%"
+    },
+    "editor": {
+      "box": {
+        "x": 105,
+        "y": 74.5,
+        "width": 142,
+        "height": 72,
+        "top": 74.5,
+        "right": 247,
+        "bottom": 146.5,
+        "left": 105
+      },
+      "ownsCenter": true,
+      "clientHeight": 72,
+      "scrollHeight": 72,
+      "scrollTop": 0,
+      "offsetHeight": 72,
+      "height": "72px",
+      "minHeight": "auto",
+      "maxHeight": "none",
+      "overflowX": "clip",
+      "overflowY": "clip",
+      "display": "block",
+      "position": "static",
+      "flexBasis": "auto"
+    },
+    "list": {
+      "box": {
+        "x": 48,
+        "y": 162.5,
+        "width": 224,
+        "height": 5464,
+        "top": 162.5,
+        "right": 272,
+        "bottom": 5626.5,
+        "left": 48
+      },
+      "ownsCenter": false,
+      "clientHeight": 5464,
+      "scrollHeight": 5464,
+      "scrollTop": 0,
+      "offsetHeight": 5464,
+      "height": "5464px",
+      "minHeight": "0px",
+      "maxHeight": "none",
+      "overflowX": "hidden",
+      "overflowY": "auto",
+      "display": "block",
+      "position": "static",
+      "flexBasis": "0%"
+    },
+    "scrollBody": {
+      "box": {
+        "x": 32,
+        "y": 162.5,
+        "width": 256,
+        "height": 56.5,
+        "top": 162.5,
+        "right": 288,
+        "bottom": 219,
+        "left": 32
+      },
+      "ownsCenter": true,
+      "clientHeight": 57,
+      "scrollHeight": 5568,
+      "scrollTop": 0,
+      "offsetHeight": 57,
+      "height": "56.5px",
+      "minHeight": "0px",
+      "maxHeight": "none",
+      "overflowX": "auto",
+      "overflowY": "auto",
+      "display": "block",
+      "position": "static",
+      "flexBasis": "640px"
+    },
+    "results": {
+      "box": {
+        "x": 48,
+        "y": 162.5,
+        "width": 224,
+        "height": 5464,
+        "top": 162.5,
+        "right": 272,
+        "bottom": 5626.5,
+        "left": 48
+      },
+      "ownsCenter": false,
+      "clientHeight": 5464,
+      "scrollHeight": 5464,
+      "scrollTop": 0,
+      "offsetHeight": 5464,
+      "height": "5464px",
+      "minHeight": "0px",
+      "maxHeight": "none",
+      "overflowX": "visible",
+      "overflowY": "visible",
+      "display": "block",
+      "position": "static",
+      "flexBasis": "auto"
+    },
+    "status": {
+      "box": {
+        "x": 64,
+        "y": 5642.5,
+        "width": 192,
+        "height": 40,
+        "top": 5642.5,
+        "right": 256,
+        "bottom": 5682.5,
+        "left": 64
+      },
+      "ownsCenter": false,
+      "clientHeight": 40,
+      "scrollHeight": 40,
+      "scrollTop": 0,
+      "offsetHeight": 40,
+      "height": "40px",
+      "minHeight": "auto",
+      "maxHeight": "none",
+      "overflowX": "visible",
+      "overflowY": "visible",
+      "display": "block",
+      "position": "static",
+      "flexBasis": "auto"
+    },
+    "footer": {
+      "box": {
+        "x": 32,
+        "y": 219,
+        "width": 256,
+        "height": 139,
+        "top": 219,
+        "right": 288,
+        "bottom": 358,
+        "left": 32
+      },
+      "ownsCenter": true,
+      "clientHeight": 138,
+      "scrollHeight": 138,
+      "scrollTop": 0,
+      "offsetHeight": 139,
+      "height": "139px",
+      "minHeight": "88px",
+      "maxHeight": "none",
+      "overflowX": "visible",
+      "overflowY": "visible",
+      "display": "flex",
+      "position": "static",
+      "flexBasis": "auto"
+    },
+    "close": {
+      "box": {
+        "x": 64,
+        "y": 270,
+        "width": 96,
+        "height": 88,
+        "top": 270,
+        "right": 160,
+        "bottom": 358,
+        "left": 64
+      },
+      "ownsCenter": true,
+      "clientHeight": 88,
+      "scrollHeight": 88,
+      "scrollTop": 0,
+      "offsetHeight": 88,
+      "height": "88px",
+      "minHeight": "88px",
+      "maxHeight": "none",
+      "overflowX": "visible",
+      "overflowY": "visible",
+      "display": "flex",
+      "position": "static",
+      "flexBasis": "auto"
+    },
+    "activeDescendant": "pui-command-option-26",
+    "editorActiveDescendant": "pui-command-option-26",
+    "queryActiveDescendant": "pui-command-option-26",
+    "focused": {
+      "id": "",
+      "ref": "query"
+    },
+    "rows": [
+      {
+        "id": "pui-command-option-7",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 250,
+        "box": {
+          "x": 48,
+          "y": 226.5,
+          "width": 224,
+          "height": 250,
+          "top": 226.5,
+          "right": 272,
+          "bottom": 476.5,
+          "left": 48
+        }
+      },
+      {
+        "id": "pui-command-option-8",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 250,
+        "box": {
+          "x": 48,
+          "y": 476.5,
+          "width": 224,
+          "height": 250,
+          "top": 476.5,
+          "right": 272,
+          "bottom": 726.5,
+          "left": 48
+        }
+      },
+      {
+        "id": "pui-command-option-9",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 250,
+        "box": {
+          "x": 48,
+          "y": 726.5,
+          "width": 224,
+          "height": 250,
+          "top": 726.5,
+          "right": 272,
+          "bottom": 976.5,
+          "left": 48
+        }
+      },
+      {
+        "id": "pui-command-option-10",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 250,
+        "box": {
+          "x": 48,
+          "y": 976.5,
+          "width": 224,
+          "height": 250,
+          "top": 976.5,
+          "right": 272,
+          "bottom": 1226.5,
+          "left": 48
+        }
+      },
+      {
+        "id": "pui-command-option-11",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 250,
+        "box": {
+          "x": 48,
+          "y": 1226.5,
+          "width": 224,
+          "height": 250,
+          "top": 1226.5,
+          "right": 272,
+          "bottom": 1476.5,
+          "left": 48
+        }
+      },
+      {
+        "id": "pui-command-option-12",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 250,
+        "box": {
+          "x": 48,
+          "y": 1476.5,
+          "width": 224,
+          "height": 250,
+          "top": 1476.5,
+          "right": 272,
+          "bottom": 1726.5,
+          "left": 48
+        }
+      },
+      {
+        "id": "pui-command-option-13",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 250,
+        "box": {
+          "x": 48,
+          "y": 1726.5,
+          "width": 224,
+          "height": 250,
+          "top": 1726.5,
+          "right": 272,
+          "bottom": 1976.5,
+          "left": 48
+        }
+      },
+      {
+        "id": "pui-command-option-14",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 250,
+        "box": {
+          "x": 48,
+          "y": 1976.5,
+          "width": 224,
+          "height": 250,
+          "top": 1976.5,
+          "right": 272,
+          "bottom": 2226.5,
+          "left": 48
+        }
+      },
+      {
+        "id": "pui-command-option-15",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 250,
+        "box": {
+          "x": 48,
+          "y": 2226.5,
+          "width": 224,
+          "height": 250,
+          "top": 2226.5,
+          "right": 272,
+          "bottom": 2476.5,
+          "left": 48
+        }
+      },
+      {
+        "id": "pui-command-option-16",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 250,
+        "box": {
+          "x": 48,
+          "y": 2476.5,
+          "width": 224,
+          "height": 250,
+          "top": 2476.5,
+          "right": 272,
+          "bottom": 2726.5,
+          "left": 48
+        }
+      },
+      {
+        "id": "pui-command-option-17",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 290,
+        "box": {
+          "x": 48,
+          "y": 2726.5,
+          "width": 224,
+          "height": 290,
+          "top": 2726.5,
+          "right": 272,
+          "bottom": 3016.5,
+          "left": 48
+        }
+      },
+      {
+        "id": "pui-command-option-18",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 290,
+        "box": {
+          "x": 48,
+          "y": 3016.5,
+          "width": 224,
+          "height": 290,
+          "top": 3016.5,
+          "right": 272,
+          "bottom": 3306.5,
+          "left": 48
+        }
+      },
+      {
+        "id": "pui-command-option-19",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 290,
+        "box": {
+          "x": 48,
+          "y": 3306.5,
+          "width": 224,
+          "height": 290,
+          "top": 3306.5,
+          "right": 272,
+          "bottom": 3596.5,
+          "left": 48
+        }
+      },
+      {
+        "id": "pui-command-option-20",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 290,
+        "box": {
+          "x": 48,
+          "y": 3596.5,
+          "width": 224,
+          "height": 290,
+          "top": 3596.5,
+          "right": 272,
+          "bottom": 3886.5,
+          "left": 48
+        }
+      },
+      {
+        "id": "pui-command-option-21",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 290,
+        "box": {
+          "x": 48,
+          "y": 3886.5,
+          "width": 224,
+          "height": 290,
+          "top": 3886.5,
+          "right": 272,
+          "bottom": 4176.5,
+          "left": 48
+        }
+      },
+      {
+        "id": "pui-command-option-22",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 290,
+        "box": {
+          "x": 48,
+          "y": 4176.5,
+          "width": 224,
+          "height": 290,
+          "top": 4176.5,
+          "right": 272,
+          "bottom": 4466.5,
+          "left": 48
+        }
+      },
+      {
+        "id": "pui-command-option-23",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 290,
+        "box": {
+          "x": 48,
+          "y": 4466.5,
+          "width": 224,
+          "height": 290,
+          "top": 4466.5,
+          "right": 272,
+          "bottom": 4756.5,
+          "left": 48
+        }
+      },
+      {
+        "id": "pui-command-option-24",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 290,
+        "box": {
+          "x": 48,
+          "y": 4756.5,
+          "width": 224,
+          "height": 290,
+          "top": 4756.5,
+          "right": 272,
+          "bottom": 5046.5,
+          "left": 48
+        }
+      },
+      {
+        "id": "pui-command-option-25",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 290,
+        "box": {
+          "x": 48,
+          "y": 5046.5,
+          "width": 224,
+          "height": 290,
+          "top": 5046.5,
+          "right": 272,
+          "bottom": 5336.5,
+          "left": 48
+        }
+      },
+      {
+        "id": "pui-command-option-26",
+        "selected": "true",
+        "isActiveDescendant": true,
+        "offsetHeight": 290,
+        "box": {
+          "x": 48,
+          "y": 5336.5,
+          "width": 224,
+          "height": 290,
+          "top": 5336.5,
+          "right": 272,
+          "bottom": 5626.5,
+          "left": 48
+        }
+      }
+    ]
+  },
+  "originalReads": {
+    "endInput": {
+      "at": 4956.199999928474,
+      "key": "End",
+      "isTrusted": true,
+      "targetIsEditor": true
+    },
+    "lastBox": {
+      "x": 48,
+      "y": 5336.5,
+      "width": 224,
+      "height": 290
+    },
+    "bodyBox": {
+      "x": 32,
+      "y": 162.5,
+      "width": 256,
+      "height": 56.5
+    }
+  }
+}

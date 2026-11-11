@@ -1,0 +1,89 @@
+{
+  "head": "a7ed62929ead8e63e069af7a413338dc05a882f9",
+  "diagnosticTestBlob": "af2ac6b4eb75d9bbf0eecdd2d8aa6335a6425e95",
+  "selected": 12,
+  "passed": 2,
+  "failed": 10,
+  "skipped": 66,
+  "rows": [
+    {
+      "case": "search-scroll-brutalist-react",
+      "generation": "1",
+      "endTrusted": true,
+      "bodyHeight": 90.34107208251953,
+      "itemHeight": 176.837890625,
+      "itemBottom": 3719.262939453125,
+      "bodyBottom": 211.33828735351562,
+      "bodyScrollBefore": 0,
+      "bodyScrollAfter": 0,
+      "listScrollBefore": 0,
+      "listScrollAfter": 0
+    },
+    {
+      "case": "search-scroll-brutalist-vue",
+      "generation": "1",
+      "endTrusted": true,
+      "bodyHeight": 90.33644104003906,
+      "itemHeight": 176.828857421875,
+      "itemBottom": 3719.08203125,
+      "bodyBottom": 211.3374481201172,
+      "bodyScrollBefore": 0,
+      "bodyScrollAfter": 0,
+      "listScrollBefore": 0,
+      "listScrollAfter": 0
+    },
+    {
+      "case": "search-scroll-brutalist-vue2",
+      "generation": "1",
+      "endTrusted": true,
+      "bodyHeight": 94,
+      "itemHeight": 184,
+      "itemBottom": 3862,
+      "bodyBottom": 212,
+      "bodyScrollBefore": 0,
+      "bodyScrollAfter": 0,
+      "listScrollBefore": 0,
+      "listScrollAfter": 0
+    },
+    {
+      "case": "search-scroll-brutalist-wc",
+      "generation": "1",
+      "endTrusted": true,
+      "bodyHeight": 93.07147979736328,
+      "itemHeight": 182.182373046875,
+      "itemBottom": 3825.77783203125,
+      "bodyBottom": 211.8320770263672,
+      "bodyScrollBefore": 0,
+      "bodyScrollAfter": 0,
+      "listScrollBefore": 0,
+      "listScrollAfter": 0
+    },
+    {
+      "case": "search-scroll-shadcn-react",
+      "generation": "1",
+      "endTrusted": true,
+      "bodyHeight": 56.5,
+      "itemHeight": 290,
+      "itemBottom": 5626.5,
+      "bodyBottom": 219,
+      "bodyScrollBefore": 0,
+      "bodyScrollAfter": 0,
+      "listScrollBefore": 0,
+      "listScrollAfter": 0
+    },
+    {
+      "case": "search-scroll-shadcn-wc",
+      "generation": "1",
+      "endTrusted": true,
+      "bodyHeight": 56.5,
+      "itemHeight": 290,
+      "itemBottom": 5626.5,
+      "bodyBottom": 219,
+      "bodyScrollBefore": 0,
+      "bodyScrollAfter": 0,
+      "listScrollBefore": 0,
+      "listScrollAfter": 0
+    }
+  ],
+  "reporterSha256": "110aace9028111bc9c7be41dee8d1920dd944163ee395188deeacdb0d0da75bf"
+}

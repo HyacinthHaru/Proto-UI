@@ -1,0 +1,624 @@
+{
+  "source": {
+    "sha": "a7ed62929ead8e63e069af7a413338dc05a882f9",
+    "dirty": true
+  },
+  "phase": "after-end-before-assert",
+  "url": "http://127.0.0.1:53787/zh-cn/ui-libraries/brutalist/components/button/",
+  "geometry": {
+    "at": 1625.1000000238419,
+    "timeOrigin": 1794369783064.9,
+    "owner": "site-search-1-docs-dialog-2-dialog",
+    "generation": "1",
+    "activeHostCount": 1,
+    "panelOwner": "site-search-1-docs-dialog-2-dialog",
+    "panelGeneration": "1",
+    "panelRuntime": "wc",
+    "transitionState": "entering",
+    "viewport": {
+      "width": 320,
+      "height": 390
+    },
+    "rootFontSize": "32px",
+    "header": {
+      "box": {
+        "x": 0,
+        "y": 0,
+        "width": 320,
+        "height": 200,
+        "top": 0,
+        "right": 320,
+        "bottom": 200,
+        "left": 0
+      },
+      "ownsCenter": false,
+      "clientHeight": 200,
+      "scrollHeight": 382,
+      "scrollTop": 0,
+      "offsetHeight": 200,
+      "height": "200px",
+      "minHeight": "112px",
+      "maxHeight": "none",
+      "overflowX": "visible",
+      "overflowY": "visible",
+      "display": "grid",
+      "position": "relative",
+      "flexBasis": "auto"
+    },
+    "panel": {
+      "box": {
+        "x": 33.264366149902344,
+        "y": 33.61009216308594,
+        "width": 253.47125244140625,
+        "height": 322.77978515625,
+        "top": 33.61009216308594,
+        "right": 286.7356185913086,
+        "bottom": 356.38987731933594,
+        "left": 33.264366149902344
+      },
+      "ownsCenter": true,
+      "clientHeight": 326,
+      "scrollHeight": 326,
+      "scrollTop": 0,
+      "offsetHeight": 326,
+      "height": "326px",
+      "minHeight": "0px",
+      "maxHeight": "calc(19.7557% + 248.953px)",
+      "overflowX": "hidden",
+      "overflowY": "hidden",
+      "display": "grid",
+      "position": "fixed",
+      "flexBasis": "auto"
+    },
+    "command": {
+      "box": {
+        "x": 33.264366149902344,
+        "y": 33.61009216308594,
+        "width": 253.47125244140625,
+        "height": 322.77978515625,
+        "top": 33.61009216308594,
+        "right": 286.7356185913086,
+        "bottom": 356.38987731933594,
+        "left": 33.264366149902344
+      },
+      "ownsCenter": true,
+      "clientHeight": 322,
+      "scrollHeight": 322,
+      "scrollTop": 0,
+      "offsetHeight": 326,
+      "height": "326px",
+      "minHeight": "0px",
+      "maxHeight": "none",
+      "overflowX": "hidden",
+      "overflowY": "hidden",
+      "display": "flex",
+      "position": "static",
+      "flexBasis": "auto"
+    },
+    "queryShell": null,
+    "editor": {
+      "box": {
+        "x": 35.24460983276367,
+        "y": 35.590335845947266,
+        "width": 249.5107879638672,
+        "height": 83.17025756835938,
+        "top": 35.590335845947266,
+        "right": 284.75539779663086,
+        "bottom": 118.76059341430664,
+        "left": 35.24460983276367
+      },
+      "ownsCenter": true,
+      "clientHeight": 80,
+      "scrollHeight": 80,
+      "scrollTop": 0,
+      "offsetHeight": 84,
+      "height": "84px",
+      "minHeight": "0px",
+      "maxHeight": "none",
+      "overflowX": "clip",
+      "overflowY": "clip",
+      "display": "inline-block",
+      "position": "static",
+      "flexBasis": "auto"
+    },
+    "list": {
+      "box": {
+        "x": 35.24460983276367,
+        "y": 118.7605972290039,
+        "width": 249.5107879638672,
+        "height": 594.0733032226562,
+        "top": 118.7605972290039,
+        "right": 284.75539779663086,
+        "bottom": 712.8339004516602,
+        "left": 35.24460983276367
+      },
+      "ownsCenter": false,
+      "clientHeight": 600,
+      "scrollHeight": 3744,
+      "scrollTop": 0,
+      "offsetHeight": 600,
+      "height": "600px",
+      "minHeight": "0px",
+      "maxHeight": "600px",
+      "overflowX": "hidden",
+      "overflowY": "auto",
+      "display": "block",
+      "position": "static",
+      "flexBasis": "auto"
+    },
+    "scrollBody": {
+      "box": {
+        "x": 35.24460983276367,
+        "y": 118.7605972290039,
+        "width": 249.5107879638672,
+        "height": 93.07147979736328,
+        "top": 118.7605972290039,
+        "right": 284.75539779663086,
+        "bottom": 211.8320770263672,
+        "left": 35.24460983276367
+      },
+      "ownsCenter": true,
+      "clientHeight": 94,
+      "scrollHeight": 704,
+      "scrollTop": 0,
+      "offsetHeight": 94,
+      "height": "94px",
+      "minHeight": "0px",
+      "maxHeight": "none",
+      "overflowX": "auto",
+      "overflowY": "auto",
+      "display": "block",
+      "position": "static",
+      "flexBasis": "0%"
+    },
+    "results": {
+      "box": {
+        "x": 35.24460983276367,
+        "y": 118.7605972290039,
+        "width": 249.5107879638672,
+        "height": 3707.017333984375,
+        "top": 118.7605972290039,
+        "right": 284.75539779663086,
+        "bottom": 3825.777931213379,
+        "left": 35.24460983276367
+      },
+      "ownsCenter": false,
+      "clientHeight": 3744,
+      "scrollHeight": 3744,
+      "scrollTop": 0,
+      "offsetHeight": 3744,
+      "height": "3744px",
+      "minHeight": "0px",
+      "maxHeight": "none",
+      "overflowX": "visible",
+      "overflowY": "visible",
+      "display": "block",
+      "position": "static",
+      "flexBasis": "auto"
+    },
+    "status": {
+      "box": {
+        "x": 51.08656311035156,
+        "y": 728.6758422851562,
+        "width": 217.8268585205078,
+        "height": 55.44683837890625,
+        "top": 728.6758422851562,
+        "right": 268.9134216308594,
+        "bottom": 784.1226806640625,
+        "left": 51.08656311035156
+      },
+      "ownsCenter": false,
+      "clientHeight": 56,
+      "scrollHeight": 56,
+      "scrollTop": 0,
+      "offsetHeight": 56,
+      "height": "56px",
+      "minHeight": "auto",
+      "maxHeight": "none",
+      "overflowX": "visible",
+      "overflowY": "visible",
+      "display": "block",
+      "position": "static",
+      "flexBasis": "auto"
+    },
+    "footer": {
+      "box": {
+        "x": 35.24460983276367,
+        "y": 211.8320770263672,
+        "width": 249.5107879638672,
+        "height": 142.5775909423828,
+        "top": 211.8320770263672,
+        "right": 284.75539779663086,
+        "bottom": 354.40966796875,
+        "left": 35.24460983276367
+      },
+      "ownsCenter": true,
+      "clientHeight": 144,
+      "scrollHeight": 144,
+      "scrollTop": 0,
+      "offsetHeight": 144,
+      "height": "144px",
+      "minHeight": "auto",
+      "maxHeight": "none",
+      "overflowX": "visible",
+      "overflowY": "visible",
+      "display": "flex",
+      "position": "static",
+      "flexBasis": "auto"
+    },
+    "close": {
+      "box": {
+        "x": 177.791259765625,
+        "y": 227.6740264892578,
+        "width": 91.12216186523438,
+        "height": 110.89366149902344,
+        "top": 227.6740264892578,
+        "right": 268.9134216308594,
+        "bottom": 338.56768798828125,
+        "left": 177.791259765625
+      },
+      "ownsCenter": true,
+      "clientHeight": 112,
+      "scrollHeight": 112,
+      "scrollTop": 0,
+      "offsetHeight": 112,
+      "height": "112px",
+      "minHeight": "88px",
+      "maxHeight": "none",
+      "overflowX": "visible",
+      "overflowY": "visible",
+      "display": "flex",
+      "position": "static",
+      "flexBasis": "auto"
+    },
+    "activeDescendant": "pui-command-option-6",
+    "editorActiveDescendant": "pui-command-option-6",
+    "queryActiveDescendant": null,
+    "focused": {
+      "id": "",
+      "ref": null
+    },
+    "rows": [
+      {
+        "id": "pui-command-option-25",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 184,
+        "box": {
+          "x": 35.24460983276367,
+          "y": 182.12841796875,
+          "width": 249.5107879638672,
+          "height": 182.1824951171875,
+          "top": 182.12841796875,
+          "right": 284.75539779663086,
+          "bottom": 364.3109130859375,
+          "left": 35.24460983276367
+        }
+      },
+      {
+        "id": "pui-command-option-24",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 184,
+        "box": {
+          "x": 35.24460983276367,
+          "y": 364.3109130859375,
+          "width": 249.5107879638672,
+          "height": 182.18243408203125,
+          "top": 364.3109130859375,
+          "right": 284.75539779663086,
+          "bottom": 546.4933471679688,
+          "left": 35.24460983276367
+        }
+      },
+      {
+        "id": "pui-command-option-23",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 184,
+        "box": {
+          "x": 35.24460983276367,
+          "y": 546.4933471679688,
+          "width": 249.5107879638672,
+          "height": 182.1824951171875,
+          "top": 546.4933471679688,
+          "right": 284.75539779663086,
+          "bottom": 728.6758422851562,
+          "left": 35.24460983276367
+        }
+      },
+      {
+        "id": "pui-command-option-22",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 184,
+        "box": {
+          "x": 35.24460983276367,
+          "y": 728.6758422851562,
+          "width": 249.5107879638672,
+          "height": 182.1824951171875,
+          "top": 728.6758422851562,
+          "right": 284.75539779663086,
+          "bottom": 910.8583374023438,
+          "left": 35.24460983276367
+        }
+      },
+      {
+        "id": "pui-command-option-21",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 184,
+        "box": {
+          "x": 35.24460983276367,
+          "y": 910.8583374023438,
+          "width": 249.5107879638672,
+          "height": 182.18243408203125,
+          "top": 910.8583374023438,
+          "right": 284.75539779663086,
+          "bottom": 1093.040771484375,
+          "left": 35.24460983276367
+        }
+      },
+      {
+        "id": "pui-command-option-20",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 184,
+        "box": {
+          "x": 35.24460983276367,
+          "y": 1093.040771484375,
+          "width": 249.5107879638672,
+          "height": 182.1824951171875,
+          "top": 1093.040771484375,
+          "right": 284.75539779663086,
+          "bottom": 1275.2232666015625,
+          "left": 35.24460983276367
+        }
+      },
+      {
+        "id": "pui-command-option-19",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 184,
+        "box": {
+          "x": 35.24460983276367,
+          "y": 1275.2232666015625,
+          "width": 249.5107879638672,
+          "height": 182.1824951171875,
+          "top": 1275.2232666015625,
+          "right": 284.75539779663086,
+          "bottom": 1457.40576171875,
+          "left": 35.24460983276367
+        }
+      },
+      {
+        "id": "pui-command-option-18",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 184,
+        "box": {
+          "x": 35.24460983276367,
+          "y": 1457.40576171875,
+          "width": 249.5107879638672,
+          "height": 182.1824951171875,
+          "top": 1457.40576171875,
+          "right": 284.75539779663086,
+          "bottom": 1639.5882568359375,
+          "left": 35.24460983276367
+        }
+      },
+      {
+        "id": "pui-command-option-17",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 184,
+        "box": {
+          "x": 35.24460983276367,
+          "y": 1639.5882568359375,
+          "width": 249.5107879638672,
+          "height": 182.1824951171875,
+          "top": 1639.5882568359375,
+          "right": 284.75539779663086,
+          "bottom": 1821.770751953125,
+          "left": 35.24460983276367
+        }
+      },
+      {
+        "id": "pui-command-option-16",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 184,
+        "box": {
+          "x": 35.24460983276367,
+          "y": 1821.770751953125,
+          "width": 249.5107879638672,
+          "height": 182.182373046875,
+          "top": 1821.770751953125,
+          "right": 284.75539779663086,
+          "bottom": 2003.953125,
+          "left": 35.24460983276367
+        }
+      },
+      {
+        "id": "pui-command-option-15",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 184,
+        "box": {
+          "x": 35.24460983276367,
+          "y": 2003.953125,
+          "width": 249.5107879638672,
+          "height": 182.1826171875,
+          "top": 2003.953125,
+          "right": 284.75539779663086,
+          "bottom": 2186.1357421875,
+          "left": 35.24460983276367
+        }
+      },
+      {
+        "id": "pui-command-option-14",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 184,
+        "box": {
+          "x": 35.24460983276367,
+          "y": 2186.1357421875,
+          "width": 249.5107879638672,
+          "height": 182.182373046875,
+          "top": 2186.1357421875,
+          "right": 284.75539779663086,
+          "bottom": 2368.318115234375,
+          "left": 35.24460983276367
+        }
+      },
+      {
+        "id": "pui-command-option-13",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 184,
+        "box": {
+          "x": 35.24460983276367,
+          "y": 2368.318115234375,
+          "width": 249.5107879638672,
+          "height": 182.182373046875,
+          "top": 2368.318115234375,
+          "right": 284.75539779663086,
+          "bottom": 2550.50048828125,
+          "left": 35.24460983276367
+        }
+      },
+      {
+        "id": "pui-command-option-12",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 184,
+        "box": {
+          "x": 35.24460983276367,
+          "y": 2550.50048828125,
+          "width": 249.5107879638672,
+          "height": 182.1826171875,
+          "top": 2550.50048828125,
+          "right": 284.75539779663086,
+          "bottom": 2732.68310546875,
+          "left": 35.24460983276367
+        }
+      },
+      {
+        "id": "pui-command-option-11",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 184,
+        "box": {
+          "x": 35.24460983276367,
+          "y": 2732.68310546875,
+          "width": 249.5107879638672,
+          "height": 182.182373046875,
+          "top": 2732.68310546875,
+          "right": 284.75539779663086,
+          "bottom": 2914.865478515625,
+          "left": 35.24460983276367
+        }
+      },
+      {
+        "id": "pui-command-option-10",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 184,
+        "box": {
+          "x": 35.24460983276367,
+          "y": 2914.865478515625,
+          "width": 249.5107879638672,
+          "height": 182.1826171875,
+          "top": 2914.865478515625,
+          "right": 284.75539779663086,
+          "bottom": 3097.048095703125,
+          "left": 35.24460983276367
+        }
+      },
+      {
+        "id": "pui-command-option-9",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 184,
+        "box": {
+          "x": 35.24460983276367,
+          "y": 3097.048095703125,
+          "width": 249.5107879638672,
+          "height": 182.182373046875,
+          "top": 3097.048095703125,
+          "right": 284.75539779663086,
+          "bottom": 3279.23046875,
+          "left": 35.24460983276367
+        }
+      },
+      {
+        "id": "pui-command-option-8",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 184,
+        "box": {
+          "x": 35.24460983276367,
+          "y": 3279.23046875,
+          "width": 249.5107879638672,
+          "height": 182.182373046875,
+          "top": 3279.23046875,
+          "right": 284.75539779663086,
+          "bottom": 3461.412841796875,
+          "left": 35.24460983276367
+        }
+      },
+      {
+        "id": "pui-command-option-7",
+        "selected": "false",
+        "isActiveDescendant": false,
+        "offsetHeight": 184,
+        "box": {
+          "x": 35.24460983276367,
+          "y": 3461.412841796875,
+          "width": 249.5107879638672,
+          "height": 182.1826171875,
+          "top": 3461.412841796875,
+          "right": 284.75539779663086,
+          "bottom": 3643.595458984375,
+          "left": 35.24460983276367
+        }
+      },
+      {
+        "id": "pui-command-option-6",
+        "selected": "true",
+        "isActiveDescendant": true,
+        "offsetHeight": 184,
+        "box": {
+          "x": 35.24460983276367,
+          "y": 3643.595458984375,
+          "width": 249.5107879638672,
+          "height": 182.182373046875,
+          "top": 3643.595458984375,
+          "right": 284.75539779663086,
+          "bottom": 3825.77783203125,
+          "left": 35.24460983276367
+        }
+      }
+    ]
+  },
+  "originalReads": {
+    "endInput": {
+      "at": 1610.7999999523163,
+      "key": "End",
+      "isTrusted": true,
+      "targetIsEditor": true
+    },
+    "lastBox": {
+      "x": 35.24460983276367,
+      "y": 3643.595458984375,
+      "width": 249.51079177856445,
+      "height": 182.182373046875
+    },
+    "bodyBox": {
+      "x": 35.24460983276367,
+      "y": 118.7605972290039,
+      "width": 249.51079177856445,
+      "height": 93.07147979736328
+    }
+  }
+}
