@@ -1,0 +1,167 @@
+{
+  "at": "2026-11-11T19:28:44.195934+00:00",
+  "id": 43069833437,
+  "exact": "6d7a17eb6e0f837069b3d8847c05244c41984bab",
+  "attempt": 1,
+  "runStatus": "queued",
+  "runConclusion": null,
+  "contents": {
+    "job": {
+      "id": 130746633944,
+      "name": "test-browser (1/8, browser-1-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/HyacinthHaru/Proto-UI/actions/runs/43069833437/job/130746633944"
+    },
+    "fileSummary": "\u276f apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts (10 tests | 1 failed) 188234ms",
+    "producerExits": [124],
+    "artifact": {
+      "id": 13886103626,
+      "name": "runtime-ci-43069833437-browser-1-of-8-attempt-1",
+      "size_in_bytes": 5522151,
+      "digest": "sha256:b247ce3ef0961ece0f1e93e369fb68c16b8c7ca60d06f574418eb8439a7c55d8"
+    },
+    "transitions": {
+      "brutalist-react-transition": {
+        "passed": true,
+        "originalError": null,
+        "verdictMs": 569,
+        "first": {
+          "ms": 570.9,
+          "runtime": "react"
+        }
+      },
+      "brutalist-vue-transition": {
+        "passed": true,
+        "originalError": null,
+        "verdictMs": 494,
+        "first": {
+          "ms": 495.5,
+          "runtime": "vue"
+        }
+      },
+      "brutalist-vue2-transition": {
+        "passed": true,
+        "originalError": null,
+        "verdictMs": 384,
+        "first": {
+          "ms": 390.2,
+          "runtime": "vue2"
+        }
+      },
+      "brutalist-wc-transition": {
+        "passed": true,
+        "originalError": null,
+        "verdictMs": 3,
+        "first": {
+          "ms": 4.1,
+          "runtime": "wc"
+        }
+      },
+      "shadcn-react-transition": {
+        "passed": true,
+        "originalError": null,
+        "verdictMs": 581,
+        "first": {
+          "ms": 588.6,
+          "runtime": "react"
+        }
+      },
+      "shadcn-vue-transition": {
+        "passed": true,
+        "originalError": null,
+        "verdictMs": 412,
+        "first": {
+          "ms": 492.1,
+          "runtime": "vue"
+        }
+      },
+      "shadcn-vue2-transition": {
+        "passed": true,
+        "originalError": null,
+        "verdictMs": 437,
+        "first": {
+          "ms": 544.6,
+          "runtime": "vue2"
+        }
+      },
+      "shadcn-wc-transition": {
+        "passed": true,
+        "originalError": null,
+        "verdictMs": 4,
+        "first": {
+          "ms": 5.2,
+          "runtime": "wc"
+        }
+      }
+    },
+    "returnOrderObservations": 24
+  },
+  "dialog": {
+    "job": {
+      "id": 130746634013,
+      "name": "test-browser (3/8, browser-3-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/HyacinthHaru/Proto-UI/actions/runs/43069833437/job/130746634013"
+    },
+    "fileSummary": "\u2713 apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts (8 tests) 64303ms",
+    "producerExits": [124],
+    "artifact": {
+      "id": 13886328531,
+      "name": "runtime-ci-43069833437-browser-3-of-8-attempt-1",
+      "size_in_bytes": 13679099,
+      "digest": "sha256:f8da7f7c3b9269d5186dd09587454fed894878a1a9e986a8d18b8fb9521fc560"
+    },
+    "dialog": {
+      "browser": "156.0.8078.79",
+      "observations": 196,
+      "pngs": 120
+    }
+  },
+  "copy": {
+    "job": {
+      "id": 130746633635,
+      "name": "test-browser (5/8, browser-5-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/HyacinthHaru/Proto-UI/actions/runs/43069833437/job/130746633635"
+    },
+    "fileSummary": "\u2713 apps/www/src/content/docs/zh-cn/site-copy-commands.browser.test.ts (15 tests) 223892ms",
+    "producerExits": [124],
+    "artifact": {
+      "id": 13887530811,
+      "digest": "sha256:cfac377985f40148ce204056cc1467af8b2c2f55d1e253daa5ea25dce091198d",
+      "size": 15205998,
+      "members": 314,
+      "copyMembers": 0
+    }
+  },
+  "separateHomepageFailure": "Brutalist preference reconnect family-commit predicate, original 1000ms",
+  "matrixOnlyCandidate": {
+    "head": "26418fe1ba55e13bb4ede4fc4ad107e405c42b3e",
+    "tree": "175ef45a4a3fc722dac6653f668e37952fe52eee",
+    "coverage": {
+      "head": "26418fe1ba55e13bb4ede4fc4ad107e405c42b3e",
+      "inherited": 1614,
+      "candidateBefore": 1615,
+      "candidateAfter": 1614,
+      "repaired": [
+        "internal/website/self-hosting-coverage-matrix.md:258: source fingerprint for `apps/www/src/components/site-typography-client.ts` does not match its reviewed SHA-256"
+      ],
+      "candidateOnlyAfter": [],
+      "missingInherited": [],
+      "exactGateExit": 1
+    }
+  },
+  "images": [
+    {
+      "name": "shadcn-vue-keyboard-focus.png",
+      "sha256": "76b356caaa47cd6b92c7b17e754c0ce57cce5498f1e6c9a9a547403feb7cd4dd"
+    },
+    {
+      "name": "shadcn-vue-public-popover-open.png",
+      "sha256": "e8ade7e29418752620fc06706435b79077578e8620562561cb72bb8e2a6b9916"
+    }
+  ]
+}
