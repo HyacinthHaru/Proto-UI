@@ -1,0 +1,7 @@
+# External Portal owner lookup at 03b803f1
+
+The materializer narrows external Portal selection to the matching ASCII owner before it checks containment. Quoted and other non-simple owner identifiers retain the original broad lookup and exact ownership filter. Generation equality, containment in both directions, and same-generation ancestor deduplication retain their checks.
+
+The isolated earlier test observed containment checks against unrelated owner Portals. The candidate avoids those checks and preserves the exact quoted-owner staging, activation and cleanup control. The three focused files passed 64/64. The exact signed clean head passed the original Contents and Dialog selection 10/10 and the complete original Copy and Code Surface files 21/21. The former retained 24 sidebar handbacks, 196 Dialog observations and 120 Dialog captures. The two public PNGs are unedited frames from those exact runs.
+
+The original browser tests, one-second Contents assertion, case deadlines and Shadcn Button source match the accepted main. The prior exact 2b2f3cfe hosted run timed out on the React assertion, with WC still observed at +1217ms. The new exact hosted run evaluates the current source separately. [Prior hosted result](https://github.com/HyacinthHaru/Proto-UI/actions/runs/42973892131/job/130372654522) · [Current hosted run](https://github.com/HyacinthHaru/Proto-UI/actions/runs/42978032141)

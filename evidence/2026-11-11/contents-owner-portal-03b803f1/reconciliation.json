@@ -1,0 +1,117 @@
+{
+  "head": "03b803f158dba2353a4d384aace64b7f7a0db99f",
+  "base": "2b2f3cfe57314ec64b92fca5c022d894fa333c9b",
+  "main": "a46b18cd271c10e30ecf29cf3f539fa82cf82f6d",
+  "sourceSHA256": {
+    "apps/www/src/components/PrototypePreviewer/projection-materializer.test.ts": "9cef939704ec162e40348a1d9ba3b87107ccf4c702bd5bbf759d4fc2f966e624",
+    "apps/www/src/components/PrototypePreviewer/projection-materializer.ts": "9473160c18b7007500c96eb576984d674238f02c1d8580c1e6af0ac330a2d13a"
+  },
+  "local": {
+    "contentsAndDialog": {
+      "passed": 10,
+      "filtered": 8,
+      "reportSHA256": "ed2ed2cbd469eaac56e7c9c24c92292399adf8d403f0e3fd75bf31c689b2162f"
+    },
+    "copyAndCode": {
+      "passed": 21,
+      "filtered": 0,
+      "reportSHA256": "a6e02e6c59257d18268f01aa784b7f1b954af8547dac7a77dee2311356406e34"
+    }
+  },
+  "originalTransitionsMs": {
+    "brutalist-react-transition": 257,
+    "brutalist-vue-transition": 229,
+    "brutalist-vue2-transition": 191,
+    "brutalist-wc-transition": 1,
+    "shadcn-react-transition": 487,
+    "shadcn-vue-transition": 599,
+    "shadcn-vue2-transition": 688,
+    "shadcn-wc-transition": 31
+  },
+  "orderedHandbacks": 24,
+  "dialogObservations": 196,
+  "dialogPNGs": 120,
+  "focusedUnitPassed": 64,
+  "composedTypes": {
+    "astroFiles": 1214,
+    "errors": 0,
+    "warnings": 0,
+    "combinedWith": [1434, 1435]
+  },
+  "previousHosted": {
+    "at": "2026-11-11T07:13:38.614458+00:00",
+    "id": 42973892131,
+    "exact": "2b2f3cfe57314ec64b92fca5c022d894fa333c9b",
+    "attempt": 1,
+    "runStatus": "queued",
+    "runConclusion": null,
+    "contents": {
+      "job": {
+        "id": 130372654522,
+        "name": "test-browser (1/8, browser-1-of-8)",
+        "status": "completed",
+        "conclusion": "failure",
+        "html_url": "https://github.com/HyacinthHaru/Proto-UI/actions/runs/42973892131/job/130372654522"
+      },
+      "fileSummary": "❯ apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts (10 tests | 2 failed) 141657ms",
+      "producerExits": [124],
+      "artifact": {
+        "id": 13835618262,
+        "name": "runtime-ci-42973892131-browser-1-of-8-attempt-1",
+        "size_in_bytes": 4901786,
+        "digest": "sha256:b9dd996cb4f44cba6f51bd6588b2ac0bbd8fc2c4b4ad3dec20520d1031cb6b71"
+      },
+      "transitions": {
+        "shadcn-react-transition": {
+          "passed": false,
+          "originalError": "Error: Matcher did not succeed in 1000ms",
+          "verdictMs": 1001,
+          "first": {
+            "ms": 1217,
+            "runtime": "wc"
+          },
+          "late": {
+            "ms": 1543.3,
+            "runtime": "react"
+          }
+        },
+        "shadcn-wc-transition": {
+          "passed": true,
+          "originalError": null,
+          "verdictMs": 3,
+          "first": {
+            "ms": 4.6,
+            "runtime": "wc"
+          }
+        }
+      },
+      "returnOrderObservations": 3
+    },
+    "dialog": {
+      "job": {
+        "id": 130372654607,
+        "name": "test-browser (3/8, browser-3-of-8)",
+        "status": "completed",
+        "conclusion": "failure",
+        "html_url": "https://github.com/HyacinthHaru/Proto-UI/actions/runs/42973892131/job/130372654607"
+      },
+      "fileSummary": "✓ apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts (8 tests) 47387ms",
+      "producerExits": [124],
+      "artifact": {
+        "id": 13835364011,
+        "name": "runtime-ci-42973892131-browser-3-of-8-attempt-1",
+        "size_in_bytes": 15475692,
+        "digest": "sha256:867dbe6dfe19fb6b513b25ffb3fbca95fbaa257e6a70428304a1586ef94999f8"
+      },
+      "dialog": {
+        "browser": "156.0.8078.79",
+        "observations": 196,
+        "pngs": 120
+      }
+    }
+  },
+  "screenshots": {
+    "vue-contents-open.png": "eafe03c6ff671a027b9acb5a6f292025861afde460ad0fa03109fd2afdafdcd2",
+    "code-surface-320.png": "b1042c06a6a27a0ea1dbfc90a2be0b4e3c4202fc283ff97d3288c5a2584d9fc1"
+  }
+}
