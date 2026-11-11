@@ -1,0 +1,184 @@
+{
+  "method": "Renderer trace intervals are clipped and unioned per event type. CPU weights describe sampled stacks, overlap trace intervals, and do not establish counterfactual savings.",
+  "traceProtocolCallId": 109,
+  "forwardToCommit": {
+    "durationMs": 932.281,
+    "rendererTaskOverlapMs": 932.272,
+    "styleTreeUpdateOverlapMs": 320.446,
+    "layoutOverlapMs": 26.507,
+    "topWeightedLeafSamples": [
+      {
+        "frame": "getPropertyValue",
+        "ms": 147.198
+      },
+      {
+        "frame": "preserveSelection [apps/www/src/components/site-typography.ts:96]",
+        "ms": 125.866
+      },
+      {
+        "frame": "(program)",
+        "ms": 96.651
+      },
+      {
+        "frame": "setProperty",
+        "ms": 91.452
+      },
+      {
+        "frame": "replaceValuePreservingEditingSession [packages/modules/text-control/src/web.ts:136]",
+        "ms": 41.125
+      },
+      {
+        "frame": "visitRule [packages/adapters/web-component/src/runtime/modules.ts:630]",
+        "ms": 38.74
+      },
+      {
+        "frame": "appendChild",
+        "ms": 30.129
+      },
+      {
+        "frame": "createElement",
+        "ms": 19.506
+      },
+      {
+        "frame": "setAttribute",
+        "ms": 17.235
+      },
+      {
+        "frame": "(garbage collector)",
+        "ms": 12.484
+      },
+      {
+        "frame": "(anonymous) [packages/modules/anatomy/src/impl.ts:890]",
+        "ms": 9.013
+      },
+      {
+        "frame": "observed [packages/modules/scroll/src/impl.ts:117]",
+        "ms": 8.979
+      },
+      {
+        "frame": "addMarkerCoordinates [apps/www/src/components/PrototypePreviewer/projection-composition.ts:61]",
+        "ms": 8.094
+      },
+      {
+        "frame": "addEventListener",
+        "ms": 7.757
+      },
+      {
+        "frame": "createKeyedMetaLease [packages/modules/rule-meta/src/keyed-lease.ts:1]",
+        "ms": 7.618
+      }
+    ],
+    "styleReadCallers": [
+      {
+        "read": "getPropertyValue",
+        "caller": "current [apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts:26]",
+        "ms": 146.021
+      },
+      {
+        "read": "getPropertyValue",
+        "caller": "syncOwnedSurfaceStyles [packages/adapters/web-component/src/props.ts:147]",
+        "ms": 0.732
+      },
+      {
+        "read": "getPropertyValue",
+        "caller": "readProjection [packages/modules/expose-state-web/src/impl.ts:172]",
+        "ms": 0.417
+      },
+      {
+        "read": "getPropertyValue",
+        "caller": "sync [packages/modules/hit-participation/src/web/host-bridge.ts:25]",
+        "ms": 0.028
+      }
+    ]
+  },
+  "commitToDispatch": {
+    "durationMs": 768.805,
+    "rendererTaskOverlapMs": 768.784,
+    "styleTreeUpdateOverlapMs": 210.168,
+    "layoutOverlapMs": 29.949,
+    "topWeightedLeafSamples": [
+      {
+        "frame": "getBoundingClientRect",
+        "ms": 157.609
+      },
+      {
+        "frame": "(program)",
+        "ms": 99.064
+      },
+      {
+        "frame": "getPropertyValue",
+        "ms": 76.882
+      },
+      {
+        "frame": "(anonymous) [packages/modules/anatomy/src/impl.ts:890]",
+        "ms": 43.144
+      },
+      {
+        "frame": "compareDocumentPosition",
+        "ms": 31.064
+      },
+      {
+        "frame": "setProperty",
+        "ms": 30.043
+      },
+      {
+        "frame": "visitRule [packages/adapters/web-component/src/runtime/modules.ts:630]",
+        "ms": 27.336
+      },
+      {
+        "frame": "moveBefore",
+        "ms": 23.631
+      },
+      {
+        "frame": "resolveCurrentDomain [packages/modules/anatomy/src/impl.ts:879]",
+        "ms": 16.038
+      },
+      {
+        "frame": "remove",
+        "ms": 15.019
+      },
+      {
+        "frame": "listClaims [packages/modules/anatomy/src/impl.ts:73]",
+        "ms": 14.787
+      },
+      {
+        "frame": "getClaim [packages/modules/anatomy/src/impl.ts:38]",
+        "ms": 11.939
+      },
+      {
+        "frame": "(anonymous) [packages/modules/rule-meta/src/create.ts:118]",
+        "ms": 10.34
+      },
+      {
+        "frame": "addMarkerCoordinates [apps/www/src/components/PrototypePreviewer/projection-composition.ts:61]",
+        "ms": 9.636
+      },
+      {
+        "frame": "removeEventListener",
+        "ms": 8.949
+      }
+    ],
+    "styleReadCallers": [
+      {
+        "read": "getPropertyValue",
+        "caller": "current [apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts:26]",
+        "ms": 68.927
+      },
+      {
+        "read": "getPropertyValue",
+        "caller": "Object.defineProperty.get [packages/adapters/web-component/src/runtime/modules.ts:841]",
+        "ms": 7.496
+      },
+      {
+        "read": "getPropertyValue",
+        "caller": "readProjection [packages/modules/expose-state-web/src/impl.ts:172]",
+        "ms": 0.434
+      },
+      {
+        "read": "getPropertyValue",
+        "caller": "commitWebComponentChildren [packages/adapters/web-component/src/runtime/session.ts:35]",
+        "ms": 0.025
+      }
+    ]
+  }
+}

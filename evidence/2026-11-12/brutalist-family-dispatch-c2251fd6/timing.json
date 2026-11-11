@@ -1,0 +1,122 @@
+{
+  "head": "c2251fd6c7c16629ba0976bf64e479e3ee1517ed",
+  "instrumentedWorktree": true,
+  "browser": "156.0.8078.79",
+  "cpuThrottle": 3,
+  "originalVerdict": "rejected",
+  "originalVerdictAfterPollMs": 1001.203,
+  "clockOffsetBoundsMs": [-0.59, 0.214],
+  "actualFamilyWriteAfterOriginalPollMs": [[1279.866, 1280.67]],
+  "originalQueries": [
+    {
+      "query": 1,
+      "callId": "call@26",
+      "protocolId": 106,
+      "method": "Runtime.callFunctionOn",
+      "wasPendingAtOriginalVerdict": false,
+      "stages": {
+        "DevToolsSession::HandleCommand in Browser": [1.73, 2.534],
+        "DevToolsSession::DispatchToAgent": [1.731, 2.535],
+        "DevToolsSession::DispatchProtocolCommand": [11.513, 12.317],
+        "DevToolsSession::SendProtocolResponse": [16.326, 17.13],
+        "DevToolsSession::DispatchProtocolResponse": [16.405, 17.209]
+      },
+      "nodePipe": {
+        "cdp.pipe.write.return": 2.32,
+        "cdp.pipe.read-dispatch.enter": 17.05
+      },
+      "getter": [
+        {
+          "value": "shadcn",
+          "afterOriginalPollMs": [15.666, 16.47]
+        }
+      ],
+      "browserForwardToRendererDispatchMs": 9.782,
+      "rendererDispatchDurationMs": 4.83
+    },
+    {
+      "query": 2,
+      "callId": "call@27",
+      "protocolId": 107,
+      "method": "Runtime.callFunctionOn",
+      "wasPendingAtOriginalVerdict": false,
+      "stages": {
+        "DevToolsSession::HandleCommand in Browser": [68.637, 69.441],
+        "DevToolsSession::DispatchToAgent": [68.64, 69.444],
+        "DevToolsSession::DispatchProtocolCommand": [196.107, 196.911],
+        "DevToolsSession::SendProtocolResponse": [198.07, 198.874],
+        "DevToolsSession::DispatchProtocolResponse": [198.584, 199.388]
+      },
+      "nodePipe": {
+        "cdp.pipe.write.return": 69.203,
+        "cdp.pipe.read-dispatch.enter": 199.232
+      },
+      "getter": [
+        {
+          "value": "shadcn",
+          "afterOriginalPollMs": [197.866, 198.67]
+        }
+      ],
+      "browserForwardToRendererDispatchMs": 127.467,
+      "rendererDispatchDurationMs": 2.461
+    },
+    {
+      "query": 3,
+      "callId": "call@28",
+      "protocolId": 108,
+      "method": "Runtime.callFunctionOn",
+      "wasPendingAtOriginalVerdict": false,
+      "stages": {
+        "DevToolsSession::HandleCommand in Browser": [250.138, 250.942],
+        "DevToolsSession::DispatchToAgent": [250.141, 250.945],
+        "DevToolsSession::DispatchProtocolCommand": [294.767, 295.571],
+        "DevToolsSession::SendProtocolResponse": [296.677, 297.481],
+        "DevToolsSession::DispatchProtocolResponse": [296.712, 297.516]
+      },
+      "nodePipe": {
+        "cdp.pipe.write.return": 250.714,
+        "cdp.pipe.read-dispatch.enter": 297.589
+      },
+      "getter": [
+        {
+          "value": "shadcn",
+          "afterOriginalPollMs": [296.466, 297.27]
+        }
+      ],
+      "browserForwardToRendererDispatchMs": 44.626,
+      "rendererDispatchDurationMs": 1.933
+    },
+    {
+      "query": 4,
+      "callId": "call@29",
+      "protocolId": 109,
+      "method": "Runtime.callFunctionOn",
+      "wasPendingAtOriginalVerdict": true,
+      "stages": {
+        "DevToolsSession::HandleCommand in Browser": [347.582, 348.386],
+        "DevToolsSession::DispatchToAgent": [347.585, 348.389],
+        "DevToolsSession::DispatchProtocolCommand": [2048.671, 2049.475],
+        "DevToolsSession::SendProtocolResponse": [2050.898, 2051.702],
+        "DevToolsSession::DispatchProtocolResponse": [2050.971, 2051.775]
+      },
+      "nodePipe": {
+        "cdp.pipe.write.return": 348.147,
+        "cdp.pipe.read-dispatch.enter": 2051.88
+      },
+      "getter": [
+        {
+          "value": "brutalist",
+          "afterOriginalPollMs": [2050.666, 2051.47]
+        }
+      ],
+      "browserForwardToRendererDispatchMs": 1701.086,
+      "rendererDispatchDurationMs": 2.249
+    }
+  ],
+  "trace": {
+    "complete": true,
+    "bytes": 14353494,
+    "dataLossOccurred": false,
+    "sha256": "86d57ae960b92e2fd805267d9f50cdd39d053bc7bf8b7af6e5b850e9bb9e3758"
+  }
+}
