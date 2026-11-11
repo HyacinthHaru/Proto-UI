@@ -1,0 +1,135 @@
+{
+  "head": "05ec69ea517e33c88117a21e9beb810e8ccedad8",
+  "tree": "6a70a3064f00c60d234a25f9105cc6fd7fa0304a",
+  "main": "b25229a94251398bc2f375554fcb9622dc8e79ab",
+  "contentsCandidate": "26418fe1ba55e13bb4ede4fc4ad107e405c42b3e",
+  "originalMain": {
+    "passed": 3,
+    "failed": 2,
+    "filtered": 2,
+    "reportSha256": "e1f6c0105d0450afe6d062ad6a6b430a89b5e10c5d449d5b3038ab809263e860"
+  },
+  "originalContents": {
+    "passed": 2,
+    "failed": 3,
+    "filtered": 2,
+    "reportSha256": "104838e23517c87d729865569a7ec8313f78fed78990097033da786e883cb351"
+  },
+  "mainPlusFixture": {
+    "passed": 7,
+    "failed": 0,
+    "filtered": 0,
+    "reportSha256": "366aecb52c6dd061820cf70a892d9316fe587be4ff1a2a1cdf91299f704ae39d"
+  },
+  "contentsPlusFixture": {
+    "passed": 7,
+    "failed": 0,
+    "filtered": 0,
+    "reportSha256": "81b874604739e56005faa31505ea59335d04ca1717c5e160d8080a1819f980c7"
+  },
+  "exactSignedFixture": {
+    "passed": 7,
+    "failed": 0,
+    "filtered": 0,
+    "reportSha256": "36248e4ba91dad410481b23cc30d06020566cc55513837f7fff51dc5d7df9bcb"
+  },
+  "workspaceTypes": "passed",
+  "mobileOriginalFailureFacts": {
+    "root": {
+      "siteContentsCommand": "",
+      "contentsLabel": "\u9875\u9762\u76ee\u5f55",
+      "contentsRuntime": "wc",
+      "contentsFamily": "shadcn",
+      "contentsGeneration": "1"
+    },
+    "controls": [
+      {
+        "tag": "button",
+        "fallback": true,
+        "enhanced": false,
+        "ariaHidden": null,
+        "hidden": true,
+        "role": null,
+        "display": "none",
+        "visibility": "visible",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      },
+      {
+        "tag": "wc-shadcn-popover-trigger",
+        "fallback": false,
+        "enhanced": true,
+        "ariaHidden": null,
+        "hidden": false,
+        "role": "button",
+        "display": "flex",
+        "visibility": "visible",
+        "active": "active",
+        "box": {
+          "x": 186,
+          "y": 6,
+          "width": 44,
+          "height": 44,
+          "top": 6,
+          "right": 230,
+          "bottom": 50,
+          "left": 186
+        }
+      }
+    ]
+  },
+  "exactNoJsControl": {
+    "source": "05ec69ea517e33c88117a21e9beb810e8ccedad8",
+    "browser": "156.0.8078.79",
+    "javaScriptEnabled": false,
+    "route": "/zh-cn/start-here/quick-start/",
+    "before": {
+      "visible": false,
+      "label": "Button",
+      "href": "/zh-cn/ui-libraries/base/button/",
+      "groups": [
+        {
+          "name": "Base",
+          "open": false
+        },
+        {
+          "name": "UI Libraries",
+          "open": true
+        }
+      ]
+    },
+    "after": {
+      "visible": true,
+      "label": "Button",
+      "href": "/zh-cn/ui-libraries/base/button/",
+      "groups": [
+        {
+          "name": "Base",
+          "open": true
+        },
+        {
+          "name": "UI Libraries",
+          "open": true
+        }
+      ]
+    }
+  },
+  "images": [
+    {
+      "path": "nested-native-link-visible.png",
+      "sha256": "232871c123c0f6379bcbd69813862cccf14f70539bd2c215ada228a369a34970"
+    },
+    {
+      "path": "outer-only.png",
+      "sha256": "16a0df679ad7872224d24513ca9293cb22b025af086a03652f59399c9566dc18"
+    }
+  ]
+}
