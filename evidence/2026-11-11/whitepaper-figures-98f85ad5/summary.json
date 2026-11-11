@@ -1,0 +1,483 @@
+{
+  "head": "98f85ad53cd1c876c7c7e436d89cd9822c22600a",
+  "build": {
+    "inventorySha256": "c21019c47c2023406938029ae40cab225feab0010c5f7e90e0e9f738a6615926",
+    "files": 4043,
+    "source": {
+      "head": "98f85ad53cd1c876c7c7e436d89cd9822c22600a",
+      "tree": "31052f4a0896fde550e4bf3eb37e7ad84c895576",
+      "generated": {
+        "apps/www/src/styles/proto-ui-tokens.generated.css": "082d7449cb1f637f9e2bfe7d9f3539310de5a3074979e3a9bc27985bf92aff47",
+        "apps/www/src/styles/proto-ui-style.css": "446d2249e0672bdee7ddf77de55c7a8f2140adfb60c41d13ec0183d5f7199d88",
+        "apps/www/src/styles/shadcn-theme.css": "3de2d4ce2a38e83086128c8863d3391eb74159adde7b1a8b7f450f93fd643f96"
+      }
+    },
+    "rawReceiptSha256": "44d6168363600411db8e7cde749eb3815a81f6275e49c0c1271ecd8db6ab1e26"
+  },
+  "figures": [
+    {
+      "figure": "conditional-consistency",
+      "browser": "155.0.8059.39",
+      "rawMetricsSha256": "965a84ebf19ab45903afc1de2e3a0128ec7de0bbe2cc8bc71f0076a6c0122260",
+      "fontProbes": 4,
+      "cases": [
+        {
+          "route": "/zh-cn/whitepaper/6-consistency-boundary/",
+          "locale": "zh-cn",
+          "theme": "light",
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "svgSha256": "9eaaf1b5c7f69ca6fe8cdbe6808d43695b1115830d83b003849c7ba15a529fb7",
+          "sourceSha256": "9eaaf1b5c7f69ca6fe8cdbe6808d43695b1115830d83b003849c7ba15a529fb7",
+          "captures": [
+            {
+              "kind": "articleCapture",
+              "file": "conditional-consistency-zh-cn-light-1440-98f85ad53cd1c876c7c7e436d89cd9822c22600a-9eaaf1b5c7f69ca6fe8cdbe6808d43695b1115830d83b003849c7ba15a529fb7-article.png",
+              "sha256": "734a4378077fb8506b2f655ae6365e1b926dc28d11aca9f630daede08120e1f7"
+            },
+            {
+              "kind": "figureCapture",
+              "file": "conditional-consistency-zh-cn-light-1440-98f85ad53cd1c876c7c7e436d89cd9822c22600a-9eaaf1b5c7f69ca6fe8cdbe6808d43695b1115830d83b003849c7ba15a529fb7-figure.png",
+              "sha256": "6bc1158b6e1e3173cf7c90b051435854eec24a88ae85f6e29782b9df76761586"
+            },
+            {
+              "kind": "previewCapture",
+              "file": "conditional-consistency-zh-cn-light-1440-98f85ad53cd1c876c7c7e436d89cd9822c22600a-9eaaf1b5c7f69ca6fe8cdbe6808d43695b1115830d83b003849c7ba15a529fb7-preview.png",
+              "sha256": "84d0b16fa0c0507531e96cea56fc2d8268dff1e7819aa270c8d8d44d07079d6c"
+            }
+          ]
+        },
+        {
+          "route": "/zh-cn/whitepaper/6-consistency-boundary/",
+          "locale": "zh-cn",
+          "theme": "light",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "svgSha256": "9eaaf1b5c7f69ca6fe8cdbe6808d43695b1115830d83b003849c7ba15a529fb7",
+          "sourceSha256": "9eaaf1b5c7f69ca6fe8cdbe6808d43695b1115830d83b003849c7ba15a529fb7",
+          "captures": [
+            {
+              "kind": "articleCapture",
+              "file": "conditional-consistency-zh-cn-light-390-98f85ad53cd1c876c7c7e436d89cd9822c22600a-9eaaf1b5c7f69ca6fe8cdbe6808d43695b1115830d83b003849c7ba15a529fb7-article.png",
+              "sha256": "3c67c6bc93314e5f90bb032372d9f11541bf5ff77bba68a8b88db6056ac271f5"
+            },
+            {
+              "kind": "figureCapture",
+              "file": "conditional-consistency-zh-cn-light-390-98f85ad53cd1c876c7c7e436d89cd9822c22600a-9eaaf1b5c7f69ca6fe8cdbe6808d43695b1115830d83b003849c7ba15a529fb7-figure.png",
+              "sha256": "f43d7e7382d12c673c9b0aad1782e4f9f73d70e58964d98ba3bdae8d089964bd"
+            },
+            {
+              "kind": "previewCapture",
+              "file": "conditional-consistency-zh-cn-light-390-98f85ad53cd1c876c7c7e436d89cd9822c22600a-9eaaf1b5c7f69ca6fe8cdbe6808d43695b1115830d83b003849c7ba15a529fb7-preview.png",
+              "sha256": "aa6b991acfcedc560cfaea669c9a6582ba4d9f23291a0ceb3c758d6d8793c773"
+            }
+          ]
+        },
+        {
+          "route": "/zh-cn/whitepaper/6-consistency-boundary/",
+          "locale": "zh-cn",
+          "theme": "dark",
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "svgSha256": "9eaaf1b5c7f69ca6fe8cdbe6808d43695b1115830d83b003849c7ba15a529fb7",
+          "sourceSha256": "9eaaf1b5c7f69ca6fe8cdbe6808d43695b1115830d83b003849c7ba15a529fb7",
+          "captures": [
+            {
+              "kind": "articleCapture",
+              "file": "conditional-consistency-zh-cn-dark-1440-98f85ad53cd1c876c7c7e436d89cd9822c22600a-9eaaf1b5c7f69ca6fe8cdbe6808d43695b1115830d83b003849c7ba15a529fb7-article.png",
+              "sha256": "65287dcfbb11c401f3c7cfa63997eb8d45a97ed913e108eb83de8b6723cf2311"
+            },
+            {
+              "kind": "figureCapture",
+              "file": "conditional-consistency-zh-cn-dark-1440-98f85ad53cd1c876c7c7e436d89cd9822c22600a-9eaaf1b5c7f69ca6fe8cdbe6808d43695b1115830d83b003849c7ba15a529fb7-figure.png",
+              "sha256": "07122fc4461464242a46c410ac7e145524f6de2a625b5f4392cf02ff902c58f3"
+            },
+            {
+              "kind": "previewCapture",
+              "file": "conditional-consistency-zh-cn-dark-1440-98f85ad53cd1c876c7c7e436d89cd9822c22600a-9eaaf1b5c7f69ca6fe8cdbe6808d43695b1115830d83b003849c7ba15a529fb7-preview.png",
+              "sha256": "ff9b598897fe45a716c77eb3bbb363edfb4017b1479347a7826781b0e9d1cd1a"
+            }
+          ]
+        },
+        {
+          "route": "/zh-cn/whitepaper/6-consistency-boundary/",
+          "locale": "zh-cn",
+          "theme": "dark",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "svgSha256": "9eaaf1b5c7f69ca6fe8cdbe6808d43695b1115830d83b003849c7ba15a529fb7",
+          "sourceSha256": "9eaaf1b5c7f69ca6fe8cdbe6808d43695b1115830d83b003849c7ba15a529fb7",
+          "captures": [
+            {
+              "kind": "articleCapture",
+              "file": "conditional-consistency-zh-cn-dark-390-98f85ad53cd1c876c7c7e436d89cd9822c22600a-9eaaf1b5c7f69ca6fe8cdbe6808d43695b1115830d83b003849c7ba15a529fb7-article.png",
+              "sha256": "9567413f9a8a052a6f7ed8996bfdb46fa039834bbd1d63810d736f052468a27d"
+            },
+            {
+              "kind": "figureCapture",
+              "file": "conditional-consistency-zh-cn-dark-390-98f85ad53cd1c876c7c7e436d89cd9822c22600a-9eaaf1b5c7f69ca6fe8cdbe6808d43695b1115830d83b003849c7ba15a529fb7-figure.png",
+              "sha256": "3238934107fc9773fd36c97333881b965043bbd6b1f3c7439bfbf8764f9d7164"
+            },
+            {
+              "kind": "previewCapture",
+              "file": "conditional-consistency-zh-cn-dark-390-98f85ad53cd1c876c7c7e436d89cd9822c22600a-9eaaf1b5c7f69ca6fe8cdbe6808d43695b1115830d83b003849c7ba15a529fb7-preview.png",
+              "sha256": "6095e968eff5b3f382961bae615ddf3fc22bcfcc64b03d6fd56780298c32ccea"
+            }
+          ]
+        },
+        {
+          "route": "/en/whitepaper/6-consistency-boundary/",
+          "locale": "en",
+          "theme": "light",
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "svgSha256": "5d24f0d566cbcfb8bba47c43336e12afe7424137424294182bfffe81bf827e1a",
+          "sourceSha256": "5d24f0d566cbcfb8bba47c43336e12afe7424137424294182bfffe81bf827e1a",
+          "captures": [
+            {
+              "kind": "articleCapture",
+              "file": "conditional-consistency-en-light-1440-98f85ad53cd1c876c7c7e436d89cd9822c22600a-5d24f0d566cbcfb8bba47c43336e12afe7424137424294182bfffe81bf827e1a-article.png",
+              "sha256": "addb257b791982ec77ebcc1d619302b18981505ac90451529756e0bbba4d903d"
+            },
+            {
+              "kind": "figureCapture",
+              "file": "conditional-consistency-en-light-1440-98f85ad53cd1c876c7c7e436d89cd9822c22600a-5d24f0d566cbcfb8bba47c43336e12afe7424137424294182bfffe81bf827e1a-figure.png",
+              "sha256": "6487be33dea2f07f12f8753dac0e118ad60a19786456d49c22f2576db0a07b90"
+            },
+            {
+              "kind": "previewCapture",
+              "file": "conditional-consistency-en-light-1440-98f85ad53cd1c876c7c7e436d89cd9822c22600a-5d24f0d566cbcfb8bba47c43336e12afe7424137424294182bfffe81bf827e1a-preview.png",
+              "sha256": "0a635a05672e5f1e13c7eeebf1b241926749192f286da0cc8971b139b9cc762b"
+            }
+          ]
+        },
+        {
+          "route": "/en/whitepaper/6-consistency-boundary/",
+          "locale": "en",
+          "theme": "light",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "svgSha256": "5d24f0d566cbcfb8bba47c43336e12afe7424137424294182bfffe81bf827e1a",
+          "sourceSha256": "5d24f0d566cbcfb8bba47c43336e12afe7424137424294182bfffe81bf827e1a",
+          "captures": [
+            {
+              "kind": "articleCapture",
+              "file": "conditional-consistency-en-light-390-98f85ad53cd1c876c7c7e436d89cd9822c22600a-5d24f0d566cbcfb8bba47c43336e12afe7424137424294182bfffe81bf827e1a-article.png",
+              "sha256": "47bbefb8557994d6b9727a34633996652ae8ecfd4cd88883a76e8f32940359f5"
+            },
+            {
+              "kind": "figureCapture",
+              "file": "conditional-consistency-en-light-390-98f85ad53cd1c876c7c7e436d89cd9822c22600a-5d24f0d566cbcfb8bba47c43336e12afe7424137424294182bfffe81bf827e1a-figure.png",
+              "sha256": "b42080aeebbedf73e197d8de1e48d80425d79c3e0d65341b64d920c81037fc81"
+            },
+            {
+              "kind": "previewCapture",
+              "file": "conditional-consistency-en-light-390-98f85ad53cd1c876c7c7e436d89cd9822c22600a-5d24f0d566cbcfb8bba47c43336e12afe7424137424294182bfffe81bf827e1a-preview.png",
+              "sha256": "8b908683a2b62aa53a7e36df54dbccd8ffe5bab4c9ceae3d6dfd665020c15114"
+            }
+          ]
+        },
+        {
+          "route": "/en/whitepaper/6-consistency-boundary/",
+          "locale": "en",
+          "theme": "dark",
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "svgSha256": "5d24f0d566cbcfb8bba47c43336e12afe7424137424294182bfffe81bf827e1a",
+          "sourceSha256": "5d24f0d566cbcfb8bba47c43336e12afe7424137424294182bfffe81bf827e1a",
+          "captures": [
+            {
+              "kind": "articleCapture",
+              "file": "conditional-consistency-en-dark-1440-98f85ad53cd1c876c7c7e436d89cd9822c22600a-5d24f0d566cbcfb8bba47c43336e12afe7424137424294182bfffe81bf827e1a-article.png",
+              "sha256": "82c7a9a655fbcfe90f4a7a480c9d89bac229efff15f480dead65de79e1e5d06c"
+            },
+            {
+              "kind": "figureCapture",
+              "file": "conditional-consistency-en-dark-1440-98f85ad53cd1c876c7c7e436d89cd9822c22600a-5d24f0d566cbcfb8bba47c43336e12afe7424137424294182bfffe81bf827e1a-figure.png",
+              "sha256": "01c475da5ebb236f91b8ea7fabeaac945d177fd2ae38d9b0454742b6dcb50dfa"
+            },
+            {
+              "kind": "previewCapture",
+              "file": "conditional-consistency-en-dark-1440-98f85ad53cd1c876c7c7e436d89cd9822c22600a-5d24f0d566cbcfb8bba47c43336e12afe7424137424294182bfffe81bf827e1a-preview.png",
+              "sha256": "56c8fd2cb4db5bd86970338785a3669d2407e6a1710db1e40c29c33be34f30bd"
+            }
+          ]
+        },
+        {
+          "route": "/en/whitepaper/6-consistency-boundary/",
+          "locale": "en",
+          "theme": "dark",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "svgSha256": "5d24f0d566cbcfb8bba47c43336e12afe7424137424294182bfffe81bf827e1a",
+          "sourceSha256": "5d24f0d566cbcfb8bba47c43336e12afe7424137424294182bfffe81bf827e1a",
+          "captures": [
+            {
+              "kind": "articleCapture",
+              "file": "conditional-consistency-en-dark-390-98f85ad53cd1c876c7c7e436d89cd9822c22600a-5d24f0d566cbcfb8bba47c43336e12afe7424137424294182bfffe81bf827e1a-article.png",
+              "sha256": "ee1a4b74b7af657129685b5f019e61d3ce6daa4188f1eb412116de4c715cda70"
+            },
+            {
+              "kind": "figureCapture",
+              "file": "conditional-consistency-en-dark-390-98f85ad53cd1c876c7c7e436d89cd9822c22600a-5d24f0d566cbcfb8bba47c43336e12afe7424137424294182bfffe81bf827e1a-figure.png",
+              "sha256": "4ccd9a188c762389a57b76ec3e4bdaaeb6e0a3b8740b67bb2e20dbd277d8e467"
+            },
+            {
+              "kind": "previewCapture",
+              "file": "conditional-consistency-en-dark-390-98f85ad53cd1c876c7c7e436d89cd9822c22600a-5d24f0d566cbcfb8bba47c43336e12afe7424137424294182bfffe81bf827e1a-preview.png",
+              "sha256": "b9be32f8be855b70da6b95db714b5259b9ee52c7d1d8d528a80aa21742b97b47"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "figure": "component-anatomy",
+      "browser": "155.0.8059.39",
+      "rawMetricsSha256": "30570d4bdfb86c59c03902d5c4a84ac10a8409738ebdbce532dc8c22a5f5d4be",
+      "fontProbes": 4,
+      "cases": [
+        {
+          "route": "/zh-cn/whitepaper/3-component-boundary/",
+          "locale": "zh-cn",
+          "theme": "light",
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "svgSha256": "fca77c8262744dcc370ba89e8239d43c28122db5f6b4cfecb9ee46b4a5bd1184",
+          "sourceSha256": "fca77c8262744dcc370ba89e8239d43c28122db5f6b4cfecb9ee46b4a5bd1184",
+          "captures": [
+            {
+              "kind": "articleCapture",
+              "file": "component-anatomy-zh-cn-light-1440-98f85ad53cd1c876c7c7e436d89cd9822c22600a-fca77c8262744dcc370ba89e8239d43c28122db5f6b4cfecb9ee46b4a5bd1184-article.png",
+              "sha256": "0af0f982887e927f15d2afabaa70610765996d98fdf7b0c52d3488f318fe1e92"
+            },
+            {
+              "kind": "figureCapture",
+              "file": "component-anatomy-zh-cn-light-1440-98f85ad53cd1c876c7c7e436d89cd9822c22600a-fca77c8262744dcc370ba89e8239d43c28122db5f6b4cfecb9ee46b4a5bd1184-figure.png",
+              "sha256": "060de7a8fa7f159f87357eeba2202fc010fec2b0a369f6705bb17c7cff3aac7e"
+            },
+            {
+              "kind": "previewCapture",
+              "file": "component-anatomy-zh-cn-light-1440-98f85ad53cd1c876c7c7e436d89cd9822c22600a-fca77c8262744dcc370ba89e8239d43c28122db5f6b4cfecb9ee46b4a5bd1184-preview.png",
+              "sha256": "228712dea65a19cb308cd8bd62a754e3e6d8ae06b23ec3533065401e67e5f819"
+            }
+          ]
+        },
+        {
+          "route": "/zh-cn/whitepaper/3-component-boundary/",
+          "locale": "zh-cn",
+          "theme": "light",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "svgSha256": "fca77c8262744dcc370ba89e8239d43c28122db5f6b4cfecb9ee46b4a5bd1184",
+          "sourceSha256": "fca77c8262744dcc370ba89e8239d43c28122db5f6b4cfecb9ee46b4a5bd1184",
+          "captures": [
+            {
+              "kind": "articleCapture",
+              "file": "component-anatomy-zh-cn-light-390-98f85ad53cd1c876c7c7e436d89cd9822c22600a-fca77c8262744dcc370ba89e8239d43c28122db5f6b4cfecb9ee46b4a5bd1184-article.png",
+              "sha256": "800a6754f3ffb798f60bb36d971a22a6bfaa29a6e958bf2ba79417621eb1eee7"
+            },
+            {
+              "kind": "figureCapture",
+              "file": "component-anatomy-zh-cn-light-390-98f85ad53cd1c876c7c7e436d89cd9822c22600a-fca77c8262744dcc370ba89e8239d43c28122db5f6b4cfecb9ee46b4a5bd1184-figure.png",
+              "sha256": "1794e02e47a927aa53010af16e13d756b131ed65db3240b7bda193ab410c22ce"
+            },
+            {
+              "kind": "previewCapture",
+              "file": "component-anatomy-zh-cn-light-390-98f85ad53cd1c876c7c7e436d89cd9822c22600a-fca77c8262744dcc370ba89e8239d43c28122db5f6b4cfecb9ee46b4a5bd1184-preview.png",
+              "sha256": "0249476c1a63167636125eb680721bd571103b24cab32ba6dceecb8ebeb814df"
+            }
+          ]
+        },
+        {
+          "route": "/zh-cn/whitepaper/3-component-boundary/",
+          "locale": "zh-cn",
+          "theme": "dark",
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "svgSha256": "fca77c8262744dcc370ba89e8239d43c28122db5f6b4cfecb9ee46b4a5bd1184",
+          "sourceSha256": "fca77c8262744dcc370ba89e8239d43c28122db5f6b4cfecb9ee46b4a5bd1184",
+          "captures": [
+            {
+              "kind": "articleCapture",
+              "file": "component-anatomy-zh-cn-dark-1440-98f85ad53cd1c876c7c7e436d89cd9822c22600a-fca77c8262744dcc370ba89e8239d43c28122db5f6b4cfecb9ee46b4a5bd1184-article.png",
+              "sha256": "42b58b00b289c919c3ada254710ae83a0c4ef5aede642cb5d4951d4a07638a00"
+            },
+            {
+              "kind": "figureCapture",
+              "file": "component-anatomy-zh-cn-dark-1440-98f85ad53cd1c876c7c7e436d89cd9822c22600a-fca77c8262744dcc370ba89e8239d43c28122db5f6b4cfecb9ee46b4a5bd1184-figure.png",
+              "sha256": "8d0a706b3f3d1973da78d530dd11331accc07ba617abc723311e70c4abd883e1"
+            },
+            {
+              "kind": "previewCapture",
+              "file": "component-anatomy-zh-cn-dark-1440-98f85ad53cd1c876c7c7e436d89cd9822c22600a-fca77c8262744dcc370ba89e8239d43c28122db5f6b4cfecb9ee46b4a5bd1184-preview.png",
+              "sha256": "0817ba2065210086d60bef5cc1da5ab93bad07b10e824ff7807d5681fa36cf03"
+            }
+          ]
+        },
+        {
+          "route": "/zh-cn/whitepaper/3-component-boundary/",
+          "locale": "zh-cn",
+          "theme": "dark",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "svgSha256": "fca77c8262744dcc370ba89e8239d43c28122db5f6b4cfecb9ee46b4a5bd1184",
+          "sourceSha256": "fca77c8262744dcc370ba89e8239d43c28122db5f6b4cfecb9ee46b4a5bd1184",
+          "captures": [
+            {
+              "kind": "articleCapture",
+              "file": "component-anatomy-zh-cn-dark-390-98f85ad53cd1c876c7c7e436d89cd9822c22600a-fca77c8262744dcc370ba89e8239d43c28122db5f6b4cfecb9ee46b4a5bd1184-article.png",
+              "sha256": "593d37b85c77254c2867670217e2cca8d595579f1dbb174c7638c2d7a4f81cb2"
+            },
+            {
+              "kind": "figureCapture",
+              "file": "component-anatomy-zh-cn-dark-390-98f85ad53cd1c876c7c7e436d89cd9822c22600a-fca77c8262744dcc370ba89e8239d43c28122db5f6b4cfecb9ee46b4a5bd1184-figure.png",
+              "sha256": "dc5e149cebc88820d1a1087a128a66d2049f86860310f916ddc2dcec98e331ff"
+            },
+            {
+              "kind": "previewCapture",
+              "file": "component-anatomy-zh-cn-dark-390-98f85ad53cd1c876c7c7e436d89cd9822c22600a-fca77c8262744dcc370ba89e8239d43c28122db5f6b4cfecb9ee46b4a5bd1184-preview.png",
+              "sha256": "739e893de8f5cc9cce2f1208add9abc5a7075bed13bf97bbfb45000b10df1839"
+            }
+          ]
+        },
+        {
+          "route": "/en/whitepaper/3-component-boundary/",
+          "locale": "en",
+          "theme": "light",
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "svgSha256": "b198d0969717417504b0631ed58b6b6698b4243dfc5a2d4475e038b61a4c8157",
+          "sourceSha256": "b198d0969717417504b0631ed58b6b6698b4243dfc5a2d4475e038b61a4c8157",
+          "captures": [
+            {
+              "kind": "articleCapture",
+              "file": "component-anatomy-en-light-1440-98f85ad53cd1c876c7c7e436d89cd9822c22600a-b198d0969717417504b0631ed58b6b6698b4243dfc5a2d4475e038b61a4c8157-article.png",
+              "sha256": "cd6ac7415f4bd3c42227e2534e369be8dba43b9a0a61f7bf262b3a26794f08a4"
+            },
+            {
+              "kind": "figureCapture",
+              "file": "component-anatomy-en-light-1440-98f85ad53cd1c876c7c7e436d89cd9822c22600a-b198d0969717417504b0631ed58b6b6698b4243dfc5a2d4475e038b61a4c8157-figure.png",
+              "sha256": "ed64535042b40eac5448820b01940ed8fc972cd7753bd8b7f78b1082044687ef"
+            },
+            {
+              "kind": "previewCapture",
+              "file": "component-anatomy-en-light-1440-98f85ad53cd1c876c7c7e436d89cd9822c22600a-b198d0969717417504b0631ed58b6b6698b4243dfc5a2d4475e038b61a4c8157-preview.png",
+              "sha256": "14fbb46bbaf029582d5d2b9230784edead50112fb003156656a5a3d72a820b05"
+            }
+          ]
+        },
+        {
+          "route": "/en/whitepaper/3-component-boundary/",
+          "locale": "en",
+          "theme": "light",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "svgSha256": "b198d0969717417504b0631ed58b6b6698b4243dfc5a2d4475e038b61a4c8157",
+          "sourceSha256": "b198d0969717417504b0631ed58b6b6698b4243dfc5a2d4475e038b61a4c8157",
+          "captures": [
+            {
+              "kind": "articleCapture",
+              "file": "component-anatomy-en-light-390-98f85ad53cd1c876c7c7e436d89cd9822c22600a-b198d0969717417504b0631ed58b6b6698b4243dfc5a2d4475e038b61a4c8157-article.png",
+              "sha256": "53ca3dd3fe26d3c9f33d7d969481676bc1f148f7bde90f695c3d501f72feb8e2"
+            },
+            {
+              "kind": "figureCapture",
+              "file": "component-anatomy-en-light-390-98f85ad53cd1c876c7c7e436d89cd9822c22600a-b198d0969717417504b0631ed58b6b6698b4243dfc5a2d4475e038b61a4c8157-figure.png",
+              "sha256": "cc99e29884864908d6647ce71c787c06d3234fa5b08109cd09c6c87ee42cf3e3"
+            },
+            {
+              "kind": "previewCapture",
+              "file": "component-anatomy-en-light-390-98f85ad53cd1c876c7c7e436d89cd9822c22600a-b198d0969717417504b0631ed58b6b6698b4243dfc5a2d4475e038b61a4c8157-preview.png",
+              "sha256": "21a64d06cb53018cdd8abe5a883a8b9cf7a5b7e27e985622068b3971c754e3a6"
+            }
+          ]
+        },
+        {
+          "route": "/en/whitepaper/3-component-boundary/",
+          "locale": "en",
+          "theme": "dark",
+          "viewport": {
+            "width": 1440,
+            "height": 1000
+          },
+          "svgSha256": "b198d0969717417504b0631ed58b6b6698b4243dfc5a2d4475e038b61a4c8157",
+          "sourceSha256": "b198d0969717417504b0631ed58b6b6698b4243dfc5a2d4475e038b61a4c8157",
+          "captures": [
+            {
+              "kind": "articleCapture",
+              "file": "component-anatomy-en-dark-1440-98f85ad53cd1c876c7c7e436d89cd9822c22600a-b198d0969717417504b0631ed58b6b6698b4243dfc5a2d4475e038b61a4c8157-article.png",
+              "sha256": "8eaef767786b4203ea840d383548e51822264952503234edb120a2c45898df36"
+            },
+            {
+              "kind": "figureCapture",
+              "file": "component-anatomy-en-dark-1440-98f85ad53cd1c876c7c7e436d89cd9822c22600a-b198d0969717417504b0631ed58b6b6698b4243dfc5a2d4475e038b61a4c8157-figure.png",
+              "sha256": "f998533c635db58deb57a0092c88a9cd6ebd1c90b9a53128ad8daee5bdfb12a0"
+            },
+            {
+              "kind": "previewCapture",
+              "file": "component-anatomy-en-dark-1440-98f85ad53cd1c876c7c7e436d89cd9822c22600a-b198d0969717417504b0631ed58b6b6698b4243dfc5a2d4475e038b61a4c8157-preview.png",
+              "sha256": "34bb901608a974a77bfb418cf940cab4fc4258d536d040f7b4af50110c78833a"
+            }
+          ]
+        },
+        {
+          "route": "/en/whitepaper/3-component-boundary/",
+          "locale": "en",
+          "theme": "dark",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "svgSha256": "b198d0969717417504b0631ed58b6b6698b4243dfc5a2d4475e038b61a4c8157",
+          "sourceSha256": "b198d0969717417504b0631ed58b6b6698b4243dfc5a2d4475e038b61a4c8157",
+          "captures": [
+            {
+              "kind": "articleCapture",
+              "file": "component-anatomy-en-dark-390-98f85ad53cd1c876c7c7e436d89cd9822c22600a-b198d0969717417504b0631ed58b6b6698b4243dfc5a2d4475e038b61a4c8157-article.png",
+              "sha256": "fab6f14abfc6c69e27d96f69d215d7fa216ab35c880dcd6afad4dc4590c62e3d"
+            },
+            {
+              "kind": "figureCapture",
+              "file": "component-anatomy-en-dark-390-98f85ad53cd1c876c7c7e436d89cd9822c22600a-b198d0969717417504b0631ed58b6b6698b4243dfc5a2d4475e038b61a4c8157-figure.png",
+              "sha256": "7bb0e428ade4a528c9441f46255831b171be522dd018969951414ae8e874a80b"
+            },
+            {
+              "kind": "previewCapture",
+              "file": "component-anatomy-en-dark-390-98f85ad53cd1c876c7c7e436d89cd9822c22600a-b198d0969717417504b0631ed58b6b6698b4243dfc5a2d4475e038b61a4c8157-preview.png",
+              "sha256": "9cfd2cfddfce32acce0d05d75dee3f0bf33ce30fe3113dabcb822eefb84e6c4e"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
