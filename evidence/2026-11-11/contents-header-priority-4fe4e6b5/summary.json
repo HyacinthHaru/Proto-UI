@@ -1,0 +1,284 @@
+{
+  "candidate": "4fe4e6b548ad9c6b0a4fa4b337341eb8e1be6c6a",
+  "tree": "6f3706426cf38f4986a9cfa36bcd265e6dd72072",
+  "parent": "03b803f158dba2353a4d384aace64b7f7a0db99f",
+  "upstreamMain": "a46b18cd271c10e30ecf29cf3f539fa82cf82f6d",
+  "changedSourceSha256": {
+    "apps/www/src/components/docs-header-preparation.ts": "e0ed48e84b9e231780e6f468a2f1555156e578c8f597c00cc0a9eeaf1ba91f1c",
+    "apps/www/src/components/site-code-surface.ts": "bed869e444badc4f22b058b19bf90b6f32e89f5c2c039077ee2c94e80ed16885",
+    "apps/www/src/components/site-copy-command.ts": "eeb6b61671eff7782a5ed87f1a5e0b2b7c5ce21b42b036ce1ff3587b962e6e00",
+    "apps/www/src/components/site-header-surface.test.ts": "3b6e43d51f256b2def1c28e90158f3e3421629093db7c4ea6155ad38c5000147",
+    "apps/www/src/components/site-header-surface.ts": "7d6f1107d4761555fbfd8373da0704da4be96b0b1ef5d3288ac00a46603f2864"
+  },
+  "unchangedOriginalSourceSha256": {
+    "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts": "a28a264e74b85bb3aec2ec600e73db5e2d583eb466ea8c2fb89417e6995c74d2",
+    "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e",
+    "apps/www/src/content/docs/zh-cn/site-copy-commands.browser.test.ts": "da3d2ca03983528072a66dbc62fca64694b05d6e522a3a9757b6d06ea8f7599b",
+    "apps/www/src/content/docs/zh-cn/code-surfaces.browser.test.ts": "0de9e6f1988b36783ff922c6d2a50af665d9f8ea52884f4d7f7993b5b74379ab",
+    "apps/www/src/content/docs/zh-cn/ui-libraries/shadcn/button.mdx": "7127e1c55c17ee8821a7c09ac1d6bb14a1340da3dcd44c7fbc64c07e09251209"
+  },
+  "localExact": {
+    "browser": "156.0.8078.79",
+    "platform": "macOS arm64",
+    "contentsAndMobilePassed": 2,
+    "dialogPassed": 8,
+    "otherHomepageCasesFiltered": 8,
+    "transitions": [
+      {
+        "family": "brutalist",
+        "runtime": "react",
+        "originalElapsedMs": 250,
+        "deadlineMs": 1000
+      },
+      {
+        "family": "brutalist",
+        "runtime": "vue",
+        "originalElapsedMs": 219,
+        "deadlineMs": 1000
+      },
+      {
+        "family": "brutalist",
+        "runtime": "vue2",
+        "originalElapsedMs": 189,
+        "deadlineMs": 1000
+      },
+      {
+        "family": "brutalist",
+        "runtime": "wc",
+        "originalElapsedMs": 2,
+        "deadlineMs": 1000
+      },
+      {
+        "family": "shadcn",
+        "runtime": "react",
+        "originalElapsedMs": 201,
+        "deadlineMs": 1000
+      },
+      {
+        "family": "shadcn",
+        "runtime": "vue",
+        "originalElapsedMs": 200,
+        "deadlineMs": 1000
+      },
+      {
+        "family": "shadcn",
+        "runtime": "vue2",
+        "originalElapsedMs": 225,
+        "deadlineMs": 1000
+      },
+      {
+        "family": "shadcn",
+        "runtime": "wc",
+        "originalElapsedMs": 7,
+        "deadlineMs": 1000
+      }
+    ],
+    "orderedHandbacks": 24,
+    "dialogObservations": 196,
+    "dialogCaptureCount": 120,
+    "codeExamplesInUnchangedShadcnSource": 7,
+    "nativeCopyPassed": 14,
+    "nativeCodePassed": 7,
+    "copySourceBinding": {
+      "exactSHA": "4fe4e6b548ad9c6b0a4fa4b337341eb8e1be6c6a",
+      "dirty": false,
+      "expectedSHA": "4fe4e6b548ad9c6b0a4fa4b337341eb8e1be6c6a",
+      "eventSHA": null
+    }
+  },
+  "sameBytesFocusedPrecommit": {
+    "passed": 74,
+    "failed": 0
+  },
+  "localCpu2Diagnostic": {
+    "boundary": "Three sequential local diagnostic runs; original predicate and case deadline preserved. Diagnostic test wiring and explicit Chrome CPU throttle are excluded from product. The priority diagnostic precedes the per-owner wait-cancellation refinement.",
+    "results": [
+      {
+        "directory": "contents-prerender-cpu2-baseline",
+        "browser": "156.0.8078.79",
+        "trace": {
+          "complete": true,
+          "bytes": 9489502,
+          "dataLossOccurred": false,
+          "sha256": "5fbe5fa5a19ca5dbc7e5c0a3124c058d5b984ab307312068b83e095dc4b0fc30"
+        },
+        "reactOriginalPassed": true,
+        "reactVerdictMsAfterFirstNodeQuery": 993.033,
+        "pendingAtVerdict": 0,
+        "originalGetters": [
+          {
+            "afterNodeStartMs": 12.412,
+            "runtime": "wc"
+          },
+          {
+            "afterNodeStartMs": 505.512,
+            "runtime": "wc"
+          },
+          {
+            "afterNodeStartMs": 889.612,
+            "runtime": "wc"
+          },
+          {
+            "afterNodeStartMs": 992.412,
+            "runtime": "react"
+          }
+        ],
+        "reactObserverMsAfterTrustedClick": 1529.237,
+        "reactObserverMsAfterFirstNodeQuery": 943.212,
+        "longestRendererTasksDurationAndStartAfterTrustedClick": [
+          [570.393, -27.409],
+          [435.192, 647.705],
+          [378.763, 1093.294],
+          [94.698, 1476.143],
+          [22.423, 559.805],
+          [19.78, -107.61]
+        ],
+        "failures": [
+          {
+            "target": "vue",
+            "checkElapsedMs": 1001,
+            "first": {
+              "siteContentsCommand": "",
+              "contentsLabel": "页面目录",
+              "contentsRuntime": "react",
+              "contentsFamily": "shadcn",
+              "contentsGeneration": "2"
+            },
+            "late": {
+              "siteContentsCommand": "",
+              "contentsLabel": "页面目录",
+              "contentsRuntime": "vue",
+              "contentsFamily": "shadcn",
+              "contentsGeneration": "3"
+            },
+            "codeExampleCount": 7
+          }
+        ]
+      },
+      {
+        "directory": "contents-prerender-cpu2-task-control",
+        "browser": "156.0.8078.79",
+        "trace": {
+          "complete": true,
+          "bytes": 15007883,
+          "dataLossOccurred": false,
+          "sha256": "55f5d666b7eda834755f0f2a3e09b8d8cd17e41ccfc0b2d2d5c2c37a355f4fab"
+        },
+        "reactOriginalPassed": false,
+        "reactVerdictMsAfterFirstNodeQuery": 1001.842,
+        "pendingAtVerdict": 1,
+        "originalGetters": [
+          {
+            "afterNodeStartMs": 9.3,
+            "runtime": "wc"
+          },
+          {
+            "afterNodeStartMs": 236.6,
+            "runtime": "wc"
+          },
+          {
+            "afterNodeStartMs": 1843.2,
+            "runtime": "react"
+          }
+        ],
+        "reactObserverMsAfterTrustedClick": 1313.938,
+        "reactObserverMsAfterFirstNodeQuery": 670.8,
+        "longestRendererTasksDurationAndStartAfterTrustedClick": [
+          [561.086, -4.174],
+          [165.526, 1250.569],
+          [145.56, 705.59],
+          [133.862, 982.858],
+          [87.211, 1163.32],
+          [50.701, 589.42]
+        ],
+        "failures": [
+          {
+            "target": "react",
+            "checkElapsedMs": 1002,
+            "first": {
+              "siteContentsCommand": "",
+              "contentsLabel": "页面目录",
+              "contentsRuntime": "react",
+              "contentsFamily": "shadcn",
+              "contentsGeneration": "2"
+            },
+            "late": {
+              "siteContentsCommand": "",
+              "contentsLabel": "页面目录",
+              "contentsRuntime": "react",
+              "contentsFamily": "shadcn",
+              "contentsGeneration": "2"
+            },
+            "codeExampleCount": 7
+          }
+        ]
+      },
+      {
+        "directory": "contents-header-priority-cpu2",
+        "browser": "156.0.8078.79",
+        "trace": {
+          "complete": true,
+          "bytes": 6816856,
+          "dataLossOccurred": false,
+          "sha256": "08c628ba6fca7593c3c970632e4ef20ed54965c11c8624f8dbaabd1796f09c70"
+        },
+        "reactOriginalPassed": true,
+        "reactVerdictMsAfterFirstNodeQuery": 479.036,
+        "pendingAtVerdict": 0,
+        "originalGetters": [
+          {
+            "afterNodeStartMs": 5.126,
+            "runtime": "wc"
+          },
+          {
+            "afterNodeStartMs": 201.026,
+            "runtime": "wc"
+          },
+          {
+            "afterNodeStartMs": 340.226,
+            "runtime": "wc"
+          },
+          {
+            "afterNodeStartMs": 478.226,
+            "runtime": "react"
+          }
+        ],
+        "reactObserverMsAfterTrustedClick": 950.875,
+        "reactObserverMsAfterFirstNodeQuery": 391.726,
+        "longestRendererTasksDurationAndStartAfterTrustedClick": [
+          [514.556, -24.626],
+          [136.413, 760.376],
+          [129.401, 600.748],
+          [89.394, 899.613],
+          [50.276, 506.928],
+          [49.864, -85.44]
+        ],
+        "failures": []
+      }
+    ]
+  },
+  "standardHostedPackage": {
+    "run": 42986595327,
+    "job": 130409271072,
+    "checkout": "4fe4e6b548ad9c6b0a4fa4b337341eb8e1be6c6a",
+    "publicPackagesBuilt": 47,
+    "publicManifestsChecked": 47,
+    "wcAdvisoryGzipBytes": 186702,
+    "wcAdvisoryCeilingBytes": 132000
+  },
+  "composedTypeValidation": {
+    "tree": "b15123d91ed32284132e9be8d5cfa28560ec5ff9",
+    "includesOwnedPullRequests": [1434, 1435, 1438],
+    "astroFiles": 1215,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 30,
+    "sourceBinding": "All five candidate paths match the signed product blobs.",
+    "localLogSha256": "a71a42ef23157ba82fb0b04b5acc6fe13237cdee7d7f8e0971224e3c1a642a67"
+  },
+  "unchangedImages": {
+    "react-contents-keyboard-focus.png": "2bcb3cc04a190ed5e4962cf51c0d75e0245ca44c0159ada9596926fad0cf8af6",
+    "react-dialog-long-action.png": "f01eef78c9a501bea0574608fc01f5189484aac057a64fca561f1ec953fbd7b7",
+    "vue-contents-open.png": "eafe03c6ff671a027b9acb5a6f292025861afde460ad0fa03109fd2afdafdcd2"
+  }
+}
