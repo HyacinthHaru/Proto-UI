@@ -1,0 +1,227 @@
+{
+  "version": "156.0.8078.79",
+  "platform": "darwin",
+  "arch": "arm64",
+  "selection": {
+    "value": "Button",
+    "start": 4,
+    "end": 6,
+    "active": true
+  },
+  "partial": {
+    "value": "中",
+    "start": 1,
+    "end": 1,
+    "active": true
+  },
+  "committed": {
+    "value": "Button",
+    "start": 6,
+    "end": 6,
+    "active": true
+  },
+  "events": [
+    {
+      "type": "beforeinput",
+      "at": 101.5,
+      "trusted": true,
+      "composing": false,
+      "data": "Button",
+      "inputType": "insertText",
+      "value": "",
+      "start": 0,
+      "end": 0
+    },
+    {
+      "type": "input",
+      "at": 102.5,
+      "trusted": true,
+      "composing": false,
+      "data": "Button",
+      "inputType": "insertText",
+      "value": "Button",
+      "start": 6,
+      "end": 6
+    },
+    {
+      "type": "keydown",
+      "at": 104.70000004768372,
+      "trusted": true,
+      "composing": false,
+      "key": "Shift",
+      "value": "Button",
+      "start": 6,
+      "end": 6
+    },
+    {
+      "type": "keydown",
+      "at": 105.90000009536743,
+      "trusted": true,
+      "composing": false,
+      "key": "ArrowLeft",
+      "value": "Button",
+      "start": 6,
+      "end": 6
+    },
+    {
+      "type": "keyup",
+      "at": 106.40000009536743,
+      "trusted": true,
+      "composing": false,
+      "key": "ArrowLeft",
+      "value": "Button",
+      "start": 5,
+      "end": 6
+    },
+    {
+      "type": "keyup",
+      "at": 106.5,
+      "trusted": true,
+      "composing": false,
+      "key": "Shift",
+      "value": "Button",
+      "start": 5,
+      "end": 6
+    },
+    {
+      "type": "keydown",
+      "at": 107,
+      "trusted": true,
+      "composing": false,
+      "key": "Shift",
+      "value": "Button",
+      "start": 5,
+      "end": 6
+    },
+    {
+      "type": "keydown",
+      "at": 107.10000002384186,
+      "trusted": true,
+      "composing": false,
+      "key": "ArrowLeft",
+      "value": "Button",
+      "start": 5,
+      "end": 6
+    },
+    {
+      "type": "keyup",
+      "at": 107.30000007152557,
+      "trusted": true,
+      "composing": false,
+      "key": "ArrowLeft",
+      "value": "Button",
+      "start": 4,
+      "end": 6
+    },
+    {
+      "type": "keyup",
+      "at": 107.40000009536743,
+      "trusted": true,
+      "composing": false,
+      "key": "Shift",
+      "value": "Button",
+      "start": 4,
+      "end": 6
+    },
+    {
+      "type": "compositionstart",
+      "at": 116.90000009536743,
+      "trusted": true,
+      "data": "Button",
+      "value": "Button",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "type": "compositionupdate",
+      "at": 116.90000009536743,
+      "trusted": true,
+      "data": "中",
+      "value": "Button",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "type": "beforeinput",
+      "at": 116.90000009536743,
+      "trusted": true,
+      "composing": true,
+      "data": "中",
+      "inputType": "insertCompositionText",
+      "value": "Button",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "type": "input",
+      "at": 117.5,
+      "trusted": true,
+      "composing": true,
+      "data": "中",
+      "inputType": "insertCompositionText",
+      "value": "中",
+      "start": 1,
+      "end": 1
+    },
+    {
+      "type": "keydown",
+      "at": 117.90000009536743,
+      "trusted": true,
+      "composing": true,
+      "key": "ArrowDown",
+      "value": "中",
+      "start": 1,
+      "end": 1
+    },
+    {
+      "type": "keyup",
+      "at": 118.20000004768372,
+      "trusted": true,
+      "composing": true,
+      "key": "ArrowDown",
+      "value": "中",
+      "start": 1,
+      "end": 1
+    },
+    {
+      "type": "compositionupdate",
+      "at": 120.80000007152557,
+      "trusted": true,
+      "data": "Button",
+      "value": "中",
+      "start": 0,
+      "end": 1
+    },
+    {
+      "type": "beforeinput",
+      "at": 120.80000007152557,
+      "trusted": true,
+      "composing": true,
+      "data": "Button",
+      "inputType": "insertCompositionText",
+      "value": "中",
+      "start": 0,
+      "end": 1
+    },
+    {
+      "type": "input",
+      "at": 120.90000009536743,
+      "trusted": true,
+      "composing": true,
+      "data": "Button",
+      "inputType": "insertCompositionText",
+      "value": "Button",
+      "start": 6,
+      "end": 6
+    },
+    {
+      "type": "compositionend",
+      "at": 121,
+      "trusted": false,
+      "data": "Button",
+      "value": "Button",
+      "start": 6,
+      "end": 6
+    }
+  ]
+}

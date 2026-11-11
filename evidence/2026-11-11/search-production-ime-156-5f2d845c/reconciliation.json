@@ -1,0 +1,4546 @@
+{
+  "hostedSource": "5f2d845ce54666a167f06895033a616d8bfa3382",
+  "hostedBrowser": "156.0.8078.79 Linux x64",
+  "artifact": 13829486107,
+  "zipSHA256": "0640278e68c2d4a370d2ef685daf0812134fd680da2409e400bc9af8db02c5da",
+  "verifiedMembers": 19,
+  "hostedCases": {
+    "passed": 0,
+    "failed": 4
+  },
+  "ime": {
+    "shadcn": {
+      "sourceReportSHA256": "3811a59102c05cb4d742cefc4ae4a93d0393f905c166717e3c9d881505081b2f",
+      "eventCount": 20,
+      "compositionEnd": {
+        "type": "compositionend",
+        "trusted": false,
+        "data": "Button",
+        "value": "Button",
+        "start": 6,
+        "end": 6
+      },
+      "query": "Button",
+      "results": [
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/button/",
+          "text": "Button/zh-cn/ui-libraries/shadcn/button/",
+          "box": {
+            "x": 392,
+            "y": 192,
+            "width": 481,
+            "height": 50,
+            "top": 192,
+            "right": 873,
+            "bottom": 242,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 217
+          },
+          "hit": "<wc-shadcn-command-item data-demo-owner=\"demo-38\" data-demo-ref=\"__pui_projection__dynamic_%5B%22results%22%2C%22zh-cn_3410f27%3A%2Fzh-cn%2Fui-libraries%2Fshadcn%2Fbutton%2F%22%2C%5B%5D%5D\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_73_65_61_72_63_68_2d_31_2d_64_6f_63_73_2d_64_69_61_6c_6f_67_2d_32_2d_64_69_61_6c_6f_67 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_63_6f_6d_6d_61_6e_64_2d_69_74_65_6d\" style=\"--pui-radius: .625rem; --pui-radius-xl: calc(.625rem + 4px); --pui-radius-lg: .625rem; --pui-radius-md: max(calc(.625rem - 2px), 0px); --pui-radius-sm: max(calc(.625rem - 4px), 0px); --pui-background: lab(100% 0 0); --pui-foreground: lab(2.75381% 0 0); --pui-card: la",
+          "ownsCenter": true,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/button/#_top",
+          "text": "Button/zh-cn/ui-libraries/shadcn/button/#_top",
+          "box": {
+            "x": 392,
+            "y": 242,
+            "width": 481,
+            "height": 50,
+            "top": 242,
+            "right": 873,
+            "bottom": 292,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 267
+          },
+          "hit": "<div data-demo-owner=\"demo-38\" data-projection-owner=\"site-search-1-docs-dialog-2-dialog\" data-projection-family=\"shadcn\" data-projection-runtime=\"wc\" data-projection-generation=\"1\" class=\"flex min-w-0 flex-col pui-projection-box\">Button<div data-demo-owner=\"demo-38\" data-search-result-url=\"\" data-projection-owner=\"site-search-1-docs-dialog-2-dialog\" data-projection-family=\"shadcn\" data-projection-runtime=\"wc\" data-projection-generation=\"1\" class=\"text-xs opacity-70 break-words pui-projection-box\">/zh-cn/ui-libraries/shadcn/button/#_top</div></div>",
+          "ownsCenter": true,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/button/#%E5%AE%89%E8%A3%85",
+          "text": "安装/zh-cn/ui-libraries/shadcn/button/#%E5%AE%89%E8%A3%85",
+          "box": {
+            "x": 392,
+            "y": 292,
+            "width": 481,
+            "height": 50,
+            "top": 292,
+            "right": 873,
+            "bottom": 342,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 317
+          },
+          "hit": "<div data-demo-owner=\"demo-38\" data-projection-owner=\"site-search-1-docs-dialog-2-dialog\" data-projection-family=\"shadcn\" data-projection-runtime=\"wc\" data-projection-generation=\"1\" class=\"flex min-w-0 flex-col pui-projection-box\">安装<div data-demo-owner=\"demo-38\" data-search-result-url=\"\" data-projection-owner=\"site-search-1-docs-dialog-2-dialog\" data-projection-family=\"shadcn\" data-projection-runtime=\"wc\" data-projection-generation=\"1\" class=\"text-xs opacity-70 break-words pui-projection-box\">/zh-cn/ui-libraries/shadcn/button/#%E5%AE%89%E8%A3%85</div></div>",
+          "ownsCenter": true,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/button/#%E9%BB%98%E8%AE%A4",
+          "text": "默认/zh-cn/ui-libraries/shadcn/button/#%E9%BB%98%E8%AE%A4",
+          "box": {
+            "x": 392,
+            "y": 342,
+            "width": 481,
+            "height": 50,
+            "top": 342,
+            "right": 873,
+            "bottom": 392,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 367
+          },
+          "hit": "<div data-demo-owner=\"demo-38\" data-projection-owner=\"site-search-1-docs-dialog-2-dialog\" data-projection-family=\"shadcn\" data-projection-runtime=\"wc\" data-projection-generation=\"1\" class=\"flex min-w-0 flex-col pui-projection-box\">默认<div data-demo-owner=\"demo-38\" data-search-result-url=\"\" data-projection-owner=\"site-search-1-docs-dialog-2-dialog\" data-projection-family=\"shadcn\" data-projection-runtime=\"wc\" data-projection-generation=\"1\" class=\"text-xs opacity-70 break-words pui-projection-box\">/zh-cn/ui-libraries/shadcn/button/#%E9%BB%98%E8%AE%A4</div></div>",
+          "ownsCenter": true,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/button/#%E6%AC%A1%E8%A6%81",
+          "text": "次要/zh-cn/ui-libraries/shadcn/button/#%E6%AC%A1%E8%A6%81",
+          "box": {
+            "x": 392,
+            "y": 392,
+            "width": 481,
+            "height": 50,
+            "top": 392,
+            "right": 873,
+            "bottom": 442,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 417
+          },
+          "hit": "<div data-demo-owner=\"demo-38\" data-projection-owner=\"site-search-1-docs-dialog-2-dialog\" data-projection-family=\"shadcn\" data-projection-runtime=\"wc\" data-projection-generation=\"1\" class=\"flex min-w-0 flex-col pui-projection-box\">次要<div data-demo-owner=\"demo-38\" data-search-result-url=\"\" data-projection-owner=\"site-search-1-docs-dialog-2-dialog\" data-projection-family=\"shadcn\" data-projection-runtime=\"wc\" data-projection-generation=\"1\" class=\"text-xs opacity-70 break-words pui-projection-box\">/zh-cn/ui-libraries/shadcn/button/#%E6%AC%A1%E8%A6%81</div></div>",
+          "ownsCenter": true,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/button/#%E6%8F%8F%E8%BE%B9",
+          "text": "描边/zh-cn/ui-libraries/shadcn/button/#%E6%8F%8F%E8%BE%B9",
+          "box": {
+            "x": 392,
+            "y": 442,
+            "width": 481,
+            "height": 50,
+            "top": 442,
+            "right": 873,
+            "bottom": 492,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 467
+          },
+          "hit": "<div data-demo-owner=\"demo-38\" data-projection-owner=\"site-search-1-docs-dialog-2-dialog\" data-projection-family=\"shadcn\" data-projection-runtime=\"wc\" data-projection-generation=\"1\" class=\"flex min-w-0 flex-col pui-projection-box\">描边<div data-demo-owner=\"demo-38\" data-search-result-url=\"\" data-projection-owner=\"site-search-1-docs-dialog-2-dialog\" data-projection-family=\"shadcn\" data-projection-runtime=\"wc\" data-projection-generation=\"1\" class=\"text-xs opacity-70 break-words pui-projection-box\">/zh-cn/ui-libraries/shadcn/button/#%E6%8F%8F%E8%BE%B9</div></div>",
+          "ownsCenter": true,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/button/#%E5%B9%BD%E7%81%B5",
+          "text": "幽灵/zh-cn/ui-libraries/shadcn/button/#%E5%B9%BD%E7%81%B5",
+          "box": {
+            "x": 392,
+            "y": 492,
+            "width": 481,
+            "height": 50,
+            "top": 492,
+            "right": 873,
+            "bottom": 542,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 517
+          },
+          "hit": "<div data-projection-owner=\"site-search-1-docs-dialog-2-dialog\" data-projection-family=\"shadcn\" data-projection-runtime=\"wc\" data-projection-generation=\"1\" class=\"flex min-h-11 shrink-0 min-w-0 flex-wrap items-center justify-between gap-2 border-t border-border bg-muted/50 px-4 text-xs text-muted-foreground pui-projection-box\" data-demo-ref=\"dismissal\" data-demo-owner=\"demo-38\"><div data-projection-owner=\"site-search-1-docs-dialog-2-dialog\" data-projection-family=\"shadcn\" data-projection-runtime=\"wc\" data-projection-generation=\"1\" class=\"flex min-w-0 items-center gap-2 pui-projection-box\" data-demo-ref=\"keyboard-hint\" data-demo-owner=\"demo-38\"><span data-demo-owner=\"demo-38\" aria-label=\"Enter\" data-projection-owner=\"site-search-1-docs-dialog-2-dialog\" data-projection-family=\"shadcn\" data-p",
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/button/#%E5%8D%B1%E9%99%A9%E6%93%8D%E4%BD%9C",
+          "text": "危险操作/zh-cn/ui-libraries/shadcn/button/#%E5%8D%B1%E9%99%A9%E6%93%8D%E4%BD%9C",
+          "box": {
+            "x": 392,
+            "y": 542,
+            "width": 481,
+            "height": 82,
+            "top": 542,
+            "right": 873,
+            "bottom": 624,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 583
+          },
+          "hit": "<wc-shadcn-command-dialog-mask data-demo-ref=\"mask\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_73_65_61_72_63_68_2d_31_2d_64_6f_63_73_2d_64_69_61_6c_6f_67_2d_32_2d_64_69_61_6c_6f_67 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_63_6f_6d_6d_61_6e_64_2d_64_69_61_6c_6f_67_2d_6d_61_73_6b pui-host-root\" data-pui-root=\"\" data-demo-owner=\"demo-38\" data-projection-owner=\"site-search-1-docs-dialog-2-dialog\" data-projection-family=\"shadcn\" data-projection-runtime=\"wc\" data-projection-generation=\"1\" data-projection-prototype=\"shadcn-command-dialog-mask\" style=\"--pui-radius: .625rem; --pui-radius-xl: calc(.625rem + 4px); --pui-radius-lg: .625rem; --pui-radius-md: max(calc(.625rem ",
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/button/#%E5%B0%BA%E5%AF%B8",
+          "text": "尺寸/zh-cn/ui-libraries/shadcn/button/#%E5%B0%BA%E5%AF%B8",
+          "box": {
+            "x": 392,
+            "y": 624,
+            "width": 481,
+            "height": 50,
+            "top": 624,
+            "right": 873,
+            "bottom": 674,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 649
+          },
+          "hit": "<wc-shadcn-command-dialog-mask data-demo-ref=\"mask\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_73_65_61_72_63_68_2d_31_2d_64_6f_63_73_2d_64_69_61_6c_6f_67_2d_32_2d_64_69_61_6c_6f_67 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_63_6f_6d_6d_61_6e_64_2d_64_69_61_6c_6f_67_2d_6d_61_73_6b pui-host-root\" data-pui-root=\"\" data-demo-owner=\"demo-38\" data-projection-owner=\"site-search-1-docs-dialog-2-dialog\" data-projection-family=\"shadcn\" data-projection-runtime=\"wc\" data-projection-generation=\"1\" data-projection-prototype=\"shadcn-command-dialog-mask\" style=\"--pui-radius: .625rem; --pui-radius-xl: calc(.625rem + 4px); --pui-radius-lg: .625rem; --pui-radius-md: max(calc(.625rem ",
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/button/#%E7%A6%81%E7%94%A8",
+          "text": "禁用/zh-cn/ui-libraries/shadcn/button/#%E7%A6%81%E7%94%A8",
+          "box": {
+            "x": 392,
+            "y": 674,
+            "width": 481,
+            "height": 50,
+            "top": 674,
+            "right": 873,
+            "bottom": 724,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 699
+          },
+          "hit": "<wc-shadcn-command-dialog-mask data-demo-ref=\"mask\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_73_65_61_72_63_68_2d_31_2d_64_6f_63_73_2d_64_69_61_6c_6f_67_2d_32_2d_64_69_61_6c_6f_67 pui-projection-family-73_68_61_64_63_6e pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-73_68_61_64_63_6e_2d_63_6f_6d_6d_61_6e_64_2d_64_69_61_6c_6f_67_2d_6d_61_73_6b pui-host-root\" data-pui-root=\"\" data-demo-owner=\"demo-38\" data-projection-owner=\"site-search-1-docs-dialog-2-dialog\" data-projection-family=\"shadcn\" data-projection-runtime=\"wc\" data-projection-generation=\"1\" data-projection-prototype=\"shadcn-command-dialog-mask\" style=\"--pui-radius: .625rem; --pui-radius-xl: calc(.625rem + 4px); --pui-radius-lg: .625rem; --pui-radius-md: max(calc(.625rem ",
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/button/#%E5%8F%82%E8%80%83",
+          "text": "参考/zh-cn/ui-libraries/shadcn/button/#%E5%8F%82%E8%80%83",
+          "box": {
+            "x": 392,
+            "y": 724,
+            "width": 481,
+            "height": 50,
+            "top": 724,
+            "right": 873,
+            "bottom": 774,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 749
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/select/",
+          "text": "Select/zh-cn/ui-libraries/liquid-glass/select/",
+          "box": {
+            "x": 392,
+            "y": 774,
+            "width": 481,
+            "height": 50,
+            "top": 774,
+            "right": 873,
+            "bottom": 824,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 799
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/select/#%E5%8D%81%E4%B8%80%E4%B8%AA-part%E4%B8%80%E4%B8%AA-owner",
+          "text": "十一个 part，一个 owner/zh-cn/ui-libraries/liquid-glass/select/#%E5%8D%81%E4%B8%80%E4%B8%AA-part%E4%B8%80%E4%B8%AA-owner",
+          "box": {
+            "x": 392,
+            "y": 824,
+            "width": 481,
+            "height": 82,
+            "top": 824,
+            "right": 873,
+            "bottom": 906,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 865
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/brutalist/components/button/",
+          "text": "Brutalist Button/zh-cn/ui-libraries/brutalist/components/button/",
+          "box": {
+            "x": 392,
+            "y": 906,
+            "width": 481,
+            "height": 50,
+            "top": 906,
+            "right": 873,
+            "bottom": 956,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 931
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/brutalist/components/button/#_top",
+          "text": "Brutalist Button/zh-cn/ui-libraries/brutalist/components/button/#_top",
+          "box": {
+            "x": 392,
+            "y": 956,
+            "width": 481,
+            "height": 50,
+            "top": 956,
+            "right": 873,
+            "bottom": 1006,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 981
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/brutalist/components/button/#%E5%AE%89%E8%A3%85",
+          "text": "安装/zh-cn/ui-libraries/brutalist/components/button/#%E5%AE%89%E8%A3%85",
+          "box": {
+            "x": 392,
+            "y": 1006,
+            "width": 481,
+            "height": 66,
+            "top": 1006,
+            "right": 873,
+            "bottom": 1072,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1039
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/brutalist/components/button/#%E7%94%A8%E6%B3%95",
+          "text": "用法/zh-cn/ui-libraries/brutalist/components/button/#%E7%94%A8%E6%B3%95",
+          "box": {
+            "x": 392,
+            "y": 1072,
+            "width": 481,
+            "height": 66,
+            "top": 1072,
+            "right": 873,
+            "bottom": 1138,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1105
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/brutalist/components/button/#%E5%AE%9E%E5%BF%83",
+          "text": "实心/zh-cn/ui-libraries/brutalist/components/button/#%E5%AE%9E%E5%BF%83",
+          "box": {
+            "x": 392,
+            "y": 1138,
+            "width": 481,
+            "height": 66,
+            "top": 1138,
+            "right": 873,
+            "bottom": 1204,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1171
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/brutalist/components/button/#%E8%A1%A8%E9%9D%A2",
+          "text": "表面/zh-cn/ui-libraries/brutalist/components/button/#%E8%A1%A8%E9%9D%A2",
+          "box": {
+            "x": 392,
+            "y": 1204,
+            "width": 481,
+            "height": 66,
+            "top": 1204,
+            "right": 873,
+            "bottom": 1270,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1237
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/brutalist/components/button/#%E5%8D%B1%E9%99%A9",
+          "text": "危险/zh-cn/ui-libraries/brutalist/components/button/#%E5%8D%B1%E9%99%A9",
+          "box": {
+            "x": 392,
+            "y": 1270,
+            "width": 481,
+            "height": 66,
+            "top": 1270,
+            "right": 873,
+            "bottom": 1336,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1303
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/brutalist/components/button/#%E5%9B%BE%E6%A0%87",
+          "text": "图标/zh-cn/ui-libraries/brutalist/components/button/#%E5%9B%BE%E6%A0%87",
+          "box": {
+            "x": 392,
+            "y": 1336,
+            "width": 481,
+            "height": 66,
+            "top": 1336,
+            "right": 873,
+            "bottom": 1402,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1369
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/brutalist/components/button/#%E7%A6%81%E7%94%A8",
+          "text": "禁用/zh-cn/ui-libraries/brutalist/components/button/#%E7%A6%81%E7%94%A8",
+          "box": {
+            "x": 392,
+            "y": 1402,
+            "width": 481,
+            "height": 50,
+            "top": 1402,
+            "right": 873,
+            "bottom": 1452,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1427
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/brutalist/components/button/#%E5%8F%82%E8%80%83",
+          "text": "参考/zh-cn/ui-libraries/brutalist/components/button/#%E5%8F%82%E8%80%83",
+          "box": {
+            "x": 392,
+            "y": 1452,
+            "width": 481,
+            "height": 66,
+            "top": 1452,
+            "right": 873,
+            "bottom": 1518,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1485
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/button/",
+          "text": "Button/zh-cn/ui-libraries/base/button/",
+          "box": {
+            "x": 392,
+            "y": 1518,
+            "width": 481,
+            "height": 50,
+            "top": 1518,
+            "right": 873,
+            "bottom": 1568,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1543
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/button/#_top",
+          "text": "Button/zh-cn/ui-libraries/base/button/#_top",
+          "box": {
+            "x": 392,
+            "y": 1568,
+            "width": 481,
+            "height": 50,
+            "top": 1568,
+            "right": 873,
+            "bottom": 1618,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1593
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/button/#protocol-%E8%BE%B9%E7%95%8C",
+          "text": "Protocol 边界/zh-cn/ui-libraries/base/button/#protocol-%E8%BE%B9%E7%95%8C",
+          "box": {
+            "x": 392,
+            "y": 1618,
+            "width": 481,
+            "height": 50,
+            "top": 1618,
+            "right": 873,
+            "bottom": 1668,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1643
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/button/#%E4%BA%A4%E4%BA%92%E4%B8%8E%E5%8F%AF%E8%AE%BF%E9%97%AE%E6%80%A7",
+          "text": "交互与可访问性/zh-cn/ui-libraries/base/button/#%E4%BA%A4%E4%BA%92%E4%B8%8E%E5%8F%AF%E8%AE%BF%E9%97%AE%E6%80%A7",
+          "box": {
+            "x": 392,
+            "y": 1668,
+            "width": 481,
+            "height": 82,
+            "top": 1668,
+            "right": 873,
+            "bottom": 1750,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1709
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/button/#%E5%AE%89%E8%A3%85",
+          "text": "安装/zh-cn/ui-libraries/base/button/#%E5%AE%89%E8%A3%85",
+          "box": {
+            "x": 392,
+            "y": 1750,
+            "width": 481,
+            "height": 50,
+            "top": 1750,
+            "right": 873,
+            "bottom": 1800,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1775
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/button/#%E7%94%A8%E6%B3%95",
+          "text": "用法/zh-cn/ui-libraries/base/button/#%E7%94%A8%E6%B3%95",
+          "box": {
+            "x": 392,
+            "y": 1800,
+            "width": 481,
+            "height": 50,
+            "top": 1800,
+            "right": 873,
+            "bottom": 1850,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1825
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/button/#%E9%BB%98%E8%AE%A4",
+          "text": "默认/zh-cn/ui-libraries/base/button/#%E9%BB%98%E8%AE%A4",
+          "box": {
+            "x": 392,
+            "y": 1850,
+            "width": 481,
+            "height": 50,
+            "top": 1850,
+            "right": 873,
+            "bottom": 1900,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1875
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/button/#%E7%A6%81%E7%94%A8",
+          "text": "禁用/zh-cn/ui-libraries/base/button/#%E7%A6%81%E7%94%A8",
+          "box": {
+            "x": 392,
+            "y": 1900,
+            "width": 481,
+            "height": 50,
+            "top": 1900,
+            "right": 873,
+            "bottom": 1950,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1925
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/button/#02-%E4%BA%A4%E4%BB%98%E4%B8%8E%E8%AF%81%E6%8D%AE",
+          "text": "0.2 交付与证据/zh-cn/ui-libraries/base/button/#02-%E4%BA%A4%E4%BB%98%E4%B8%8E%E8%AF%81%E6%8D%AE",
+          "box": {
+            "x": 392,
+            "y": 1950,
+            "width": 481,
+            "height": 66,
+            "top": 1950,
+            "right": 873,
+            "bottom": 2016,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1983
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/button/#lifecycle",
+          "text": "Lifecycle/zh-cn/ui-libraries/base/button/#lifecycle",
+          "box": {
+            "x": 392,
+            "y": 2016,
+            "width": 481,
+            "height": 50,
+            "top": 2016,
+            "right": 873,
+            "bottom": 2066,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2041
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/button/#%E5%8F%82%E8%80%83",
+          "text": "参考/zh-cn/ui-libraries/base/button/#%E5%8F%82%E8%80%83",
+          "box": {
+            "x": 392,
+            "y": 2066,
+            "width": 481,
+            "height": 50,
+            "top": 2066,
+            "right": 873,
+            "bottom": 2116,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2091
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/button/#api",
+          "text": "API/zh-cn/ui-libraries/base/button/#api",
+          "box": {
+            "x": 392,
+            "y": 2116,
+            "width": 481,
+            "height": 50,
+            "top": 2116,
+            "right": 873,
+            "bottom": 2166,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2141
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/button/#%E5%8F%82%E8%80%83-1",
+          "text": "参考/zh-cn/ui-libraries/base/button/#%E5%8F%82%E8%80%83-1",
+          "box": {
+            "x": 392,
+            "y": 2166,
+            "width": 481,
+            "height": 50,
+            "top": 2166,
+            "right": 873,
+            "bottom": 2216,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2191
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/bootstrap-2-3-2/button/",
+          "text": "Bootstrap 2.3.2 Button/zh-cn/ui-libraries/bootstrap-2-3-2/button/",
+          "box": {
+            "x": 392,
+            "y": 2216,
+            "width": 481,
+            "height": 50,
+            "top": 2216,
+            "right": 873,
+            "bottom": 2266,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2241
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/bootstrap-2-3-2/button/#_top",
+          "text": "Bootstrap 2.3.2 Button/zh-cn/ui-libraries/bootstrap-2-3-2/button/#_top",
+          "box": {
+            "x": 392,
+            "y": 2266,
+            "width": 481,
+            "height": 50,
+            "top": 2266,
+            "right": 873,
+            "bottom": 2316,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2291
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/bootstrap-2-3-2/button/#%E5%AE%89%E8%A3%85",
+          "text": "安装/zh-cn/ui-libraries/bootstrap-2-3-2/button/#%E5%AE%89%E8%A3%85",
+          "box": {
+            "x": 392,
+            "y": 2316,
+            "width": 481,
+            "height": 50,
+            "top": 2316,
+            "right": 873,
+            "bottom": 2366,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2341
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/bootstrap-2-3-2/button/#%E4%BD%BF%E7%94%A8",
+          "text": "使用/zh-cn/ui-libraries/bootstrap-2-3-2/button/#%E4%BD%BF%E7%94%A8",
+          "box": {
+            "x": 392,
+            "y": 2366,
+            "width": 481,
+            "height": 50,
+            "top": 2366,
+            "right": 873,
+            "bottom": 2416,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2391
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/bootstrap-2-3-2/button/#%E6%97%A0%E9%9A%9C%E7%A2%8D",
+          "text": "无障碍/zh-cn/ui-libraries/bootstrap-2-3-2/button/#%E6%97%A0%E9%9A%9C%E7%A2%8D",
+          "box": {
+            "x": 392,
+            "y": 2416,
+            "width": 481,
+            "height": 66,
+            "top": 2416,
+            "right": 873,
+            "bottom": 2482,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2449
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/button/",
+          "text": "Liquid Glass Button/zh-cn/ui-libraries/liquid-glass/button/",
+          "box": {
+            "x": 392,
+            "y": 2482,
+            "width": 481,
+            "height": 50,
+            "top": 2482,
+            "right": 873,
+            "bottom": 2532,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2507
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/button/#_top",
+          "text": "Liquid Glass Button/zh-cn/ui-libraries/liquid-glass/button/#_top",
+          "box": {
+            "x": 392,
+            "y": 2532,
+            "width": 481,
+            "height": 50,
+            "top": 2532,
+            "right": 873,
+            "bottom": 2582,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2557
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/button/#%E5%AE%89%E8%A3%85",
+          "text": "安装/zh-cn/ui-libraries/liquid-glass/button/#%E5%AE%89%E8%A3%85",
+          "box": {
+            "x": 392,
+            "y": 2582,
+            "width": 481,
+            "height": 50,
+            "top": 2582,
+            "right": 873,
+            "bottom": 2632,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2607
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/button/#%E7%94%A8%E6%B3%95",
+          "text": "用法/zh-cn/ui-libraries/liquid-glass/button/#%E7%94%A8%E6%B3%95",
+          "box": {
+            "x": 392,
+            "y": 2632,
+            "width": 481,
+            "height": 50,
+            "top": 2632,
+            "right": 873,
+            "bottom": 2682,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2657
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/button/#%E5%B8%B8%E8%A7%84",
+          "text": "常规/zh-cn/ui-libraries/liquid-glass/button/#%E5%B8%B8%E8%A7%84",
+          "box": {
+            "x": 392,
+            "y": 2682,
+            "width": 481,
+            "height": 50,
+            "top": 2682,
+            "right": 873,
+            "bottom": 2732,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2707
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/button/#%E5%BC%BA%E8%B0%83",
+          "text": "强调/zh-cn/ui-libraries/liquid-glass/button/#%E5%BC%BA%E8%B0%83",
+          "box": {
+            "x": 392,
+            "y": 2732,
+            "width": 481,
+            "height": 50,
+            "top": 2732,
+            "right": 873,
+            "bottom": 2782,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2757
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/button/#%E7%A6%81%E7%94%A8",
+          "text": "禁用/zh-cn/ui-libraries/liquid-glass/button/#%E7%A6%81%E7%94%A8",
+          "box": {
+            "x": 392,
+            "y": 2782,
+            "width": 481,
+            "height": 50,
+            "top": 2782,
+            "right": 873,
+            "bottom": 2832,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2807
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/button/#api",
+          "text": "API/zh-cn/ui-libraries/liquid-glass/button/#api",
+          "box": {
+            "x": 392,
+            "y": 2832,
+            "width": 481,
+            "height": 50,
+            "top": 2832,
+            "right": 873,
+            "bottom": 2882,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2857
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/writing-a-custom-primitive-prototype/",
+          "text": "编写一个定制的单体原型/zh-cn/build/prototypes/writing-a-custom-primitive-prototype/",
+          "box": {
+            "x": 392,
+            "y": 2882,
+            "width": 481,
+            "height": 50,
+            "top": 2882,
+            "right": 873,
+            "bottom": 2932,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2907
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/writing-a-custom-primitive-prototype/#_top",
+          "text": "编写一个定制的单体原型/zh-cn/build/prototypes/writing-a-custom-primitive-prototype/#_top",
+          "box": {
+            "x": 392,
+            "y": 2932,
+            "width": 481,
+            "height": 50,
+            "top": 2932,
+            "right": 873,
+            "bottom": 2982,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2957
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/writing-a-custom-primitive-prototype/#%E4%BB%8E%E5%AE%9E%E4%BD%93%E5%92%8C%E8%AF%81%E6%8D%AE%E5%BC%80%E5%A7%8B",
+          "text": "从实体和证据开始/zh-cn/build/prototypes/writing-a-custom-primitive-prototype/#%E4%BB%8E%E5%AE%9E%E4%BD%93%E5%92%8C%E8%AF%81%E6%8D%AE%E5%BC%80%E5%A7%8B",
+          "box": {
+            "x": 392,
+            "y": 2982,
+            "width": 481,
+            "height": 82,
+            "top": 2982,
+            "right": 873,
+            "bottom": 3064,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3023
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/writing-a-custom-primitive-prototype/#base-button-%E5%B1%95%E7%A4%BA%E4%BA%86%E4%BB%80%E4%B9%88",
+          "text": "base-button 展示了什么/zh-cn/build/prototypes/writing-a-custom-primitive-prototype/#base-button-%E5%B1%95%E7%A4%BA%E4%BA%86%E4%BB%80%E4%B9%88",
+          "box": {
+            "x": 392,
+            "y": 3064,
+            "width": 481,
+            "height": 66,
+            "top": 3064,
+            "right": 873,
+            "bottom": 3130,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3097
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/reference-patterns/",
+          "text": "参考实现应该怎么看/zh-cn/build/prototypes/reference-patterns/",
+          "box": {
+            "x": 392,
+            "y": 3130,
+            "width": 481,
+            "height": 50,
+            "top": 3130,
+            "right": 873,
+            "bottom": 3180,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3155
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/reference-patterns/#2-%E9%98%85%E8%AF%BB%E5%8D%95%E4%BD%93-prototype",
+          "text": "2. 阅读单体 Prototype/zh-cn/build/prototypes/reference-patterns/#2-%E9%98%85%E8%AF%BB%E5%8D%95%E4%BD%93-prototype",
+          "box": {
+            "x": 392,
+            "y": 3180,
+            "width": 481,
+            "height": 66,
+            "top": 3180,
+            "right": 873,
+            "bottom": 3246,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3213
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/reference-patterns/#4-%E9%98%85%E8%AF%BB%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%E6%8A%95%E5%B0%84",
+          "text": "4. 阅读设计语言投射/zh-cn/build/prototypes/reference-patterns/#4-%E9%98%85%E8%AF%BB%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%E6%8A%95%E5%B0%84",
+          "box": {
+            "x": 392,
+            "y": 3246,
+            "width": 481,
+            "height": 82,
+            "top": 3246,
+            "right": 873,
+            "bottom": 3328,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3287
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/reference-patterns/#lifecycle-%E6%8F%90%E9%86%92",
+          "text": "Lifecycle 提醒/zh-cn/build/prototypes/reference-patterns/#lifecycle-%E6%8F%90%E9%86%92",
+          "box": {
+            "x": 392,
+            "y": 3328,
+            "width": 481,
+            "height": 66,
+            "top": 3328,
+            "right": 873,
+            "bottom": 3394,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3361
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/building-a-styled-library-on-top-of-base/",
+          "text": "基于 Base 长出一个带风格的原型库/zh-cn/build/prototypes/building-a-styled-library-on-top-of-base/",
+          "box": {
+            "x": 392,
+            "y": 3394,
+            "width": 481,
+            "height": 50,
+            "top": 3394,
+            "right": 873,
+            "bottom": 3444,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3419
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/building-a-styled-library-on-top-of-base/#shadcn-button-%E7%9A%84%E5%BD%93%E5%89%8D%E5%BD%A2%E7%8A%B6",
+          "text": "Shadcn Button 的当前形状/zh-cn/build/prototypes/building-a-styled-library-on-top-of-base/#shadcn-button-%E7%9A%84%E5%BD%93%E5%89%8D%E5%BD%A2%E7%8A%B6",
+          "box": {
+            "x": 392,
+            "y": 3444,
+            "width": 481,
+            "height": 66,
+            "top": 3444,
+            "right": 873,
+            "bottom": 3510,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3477
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/documentation-coverage/",
+          "text": "原型文档覆盖索引/zh-cn/build/prototypes/documentation-coverage/",
+          "box": {
+            "x": 392,
+            "y": 3510,
+            "width": 481,
+            "height": 50,
+            "top": 3510,
+            "right": 873,
+            "bottom": 3560,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3535
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/documentation-coverage/#base",
+          "text": "base/zh-cn/build/prototypes/documentation-coverage/#base",
+          "box": {
+            "x": 392,
+            "y": 3560,
+            "width": 481,
+            "height": 50,
+            "top": 3560,
+            "right": 873,
+            "bottom": 3610,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3585
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/documentation-coverage/#bootstrap-2-3-2",
+          "text": "bootstrap-2-3-2/zh-cn/build/prototypes/documentation-coverage/#bootstrap-2-3-2",
+          "box": {
+            "x": 392,
+            "y": 3610,
+            "width": 481,
+            "height": 50,
+            "top": 3610,
+            "right": 873,
+            "bottom": 3660,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3635
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/documentation-coverage/#brutalist",
+          "text": "brutalist/zh-cn/build/prototypes/documentation-coverage/#brutalist",
+          "box": {
+            "x": 392,
+            "y": 3660,
+            "width": 481,
+            "height": 50,
+            "top": 3660,
+            "right": 873,
+            "bottom": 3710,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3685
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/documentation-coverage/#liquid-glass",
+          "text": "liquid-glass/zh-cn/build/prototypes/documentation-coverage/#liquid-glass",
+          "box": {
+            "x": 392,
+            "y": 3710,
+            "width": 481,
+            "height": 50,
+            "top": 3710,
+            "right": 873,
+            "bottom": 3760,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3735
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/documentation-coverage/#shadcn",
+          "text": "shadcn/zh-cn/build/prototypes/documentation-coverage/#shadcn",
+          "box": {
+            "x": 392,
+            "y": 3760,
+            "width": 481,
+            "height": 50,
+            "top": 3760,
+            "right": 873,
+            "bottom": 3810,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3785
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/documentation-coverage/#%E5%88%86%E6%94%AF%E6%96%B0%E5%A2%9E%E9%A1%B9%E4%B8%8E%E7%BC%BA%E5%8F%A3",
+          "text": "分支新增项与缺口/zh-cn/build/prototypes/documentation-coverage/#%E5%88%86%E6%94%AF%E6%96%B0%E5%A2%9E%E9%A1%B9%E4%B8%8E%E7%BC%BA%E5%8F%A3",
+          "box": {
+            "x": 392,
+            "y": 3810,
+            "width": 481,
+            "height": 82,
+            "top": 3810,
+            "right": 873,
+            "bottom": 3892,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3851
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/material-experiment/",
+          "text": "Material 实验/zh-cn/ui-libraries/liquid-glass/material-experiment/",
+          "box": {
+            "x": 392,
+            "y": 3892,
+            "width": 481,
+            "height": 50,
+            "top": 3892,
+            "right": 873,
+            "bottom": 3942,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3917
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/material-experiment/#_top",
+          "text": "Material 实验/zh-cn/ui-libraries/liquid-glass/material-experiment/#_top",
+          "box": {
+            "x": 392,
+            "y": 3942,
+            "width": 481,
+            "height": 50,
+            "top": 3942,
+            "right": 873,
+            "bottom": 3992,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3967
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/material-experiment/#%E5%AE%9E%E9%AA%8C%E7%BB%84%E5%90%88%E5%A3%B0%E6%98%8E%E4%BB%80%E4%B9%88",
+          "text": "实验组合声明什么/zh-cn/ui-libraries/liquid-glass/material-experiment/#%E5%AE%9E%E9%AA%8C%E7%BB%84%E5%90%88%E5%A3%B0%E6%98%8E%E4%BB%80%E4%B9%88",
+          "box": {
+            "x": 392,
+            "y": 3992,
+            "width": 481,
+            "height": 82,
+            "top": 3992,
+            "right": 873,
+            "bottom": 4074,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4033
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/material-experiment/#%E8%AF%81%E6%8D%AE%E4%B8%8E%E9%99%90%E5%88%B6",
+          "text": "证据与限制/zh-cn/ui-libraries/liquid-glass/material-experiment/#%E8%AF%81%E6%8D%AE%E4%B8%8E%E9%99%90%E5%88%B6",
+          "box": {
+            "x": 392,
+            "y": 4074,
+            "width": 481,
+            "height": 82,
+            "top": 4074,
+            "right": 873,
+            "bottom": 4156,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4115
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/material-experiment/#%E6%9D%A5%E6%BA%90%E4%B8%8E%E8%AE%B8%E5%8F%AF%E8%AF%81",
+          "text": "来源与许可证/zh-cn/ui-libraries/liquid-glass/material-experiment/#%E6%9D%A5%E6%BA%90%E4%B8%8E%E8%AE%B8%E5%8F%AF%E8%AF%81",
+          "box": {
+            "x": 392,
+            "y": 4156,
+            "width": 481,
+            "height": 82,
+            "top": 4156,
+            "right": 873,
+            "bottom": 4238,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4197
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/brutalist/components/toolbar/",
+          "text": "Toolbar/zh-cn/ui-libraries/brutalist/components/toolbar/",
+          "box": {
+            "x": 392,
+            "y": 4238,
+            "width": 481,
+            "height": 50,
+            "top": 4238,
+            "right": 873,
+            "bottom": 4288,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4263
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/brutalist/components/toolbar/#_top",
+          "text": "Toolbar/zh-cn/ui-libraries/brutalist/components/toolbar/#_top",
+          "box": {
+            "x": 392,
+            "y": 4288,
+            "width": 481,
+            "height": 50,
+            "top": 4288,
+            "right": 873,
+            "bottom": 4338,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4313
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/brutalist/components/toolbar/#api",
+          "text": "API/zh-cn/ui-libraries/brutalist/components/toolbar/#api",
+          "box": {
+            "x": 392,
+            "y": 4338,
+            "width": 481,
+            "height": 50,
+            "top": 4338,
+            "right": 873,
+            "bottom": 4388,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4363
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/whitepaper/0-preface/",
+          "text": "序章：我们还要发明多少次 Button？/zh-cn/whitepaper/0-preface/",
+          "box": {
+            "x": 392,
+            "y": 4388,
+            "width": 481,
+            "height": 50,
+            "top": 4388,
+            "right": 873,
+            "bottom": 4438,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4413
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/whitepaper/0-preface/#_top",
+          "text": "序章：我们还要发明多少次 Button？/zh-cn/whitepaper/0-preface/#_top",
+          "box": {
+            "x": 392,
+            "y": 4438,
+            "width": 481,
+            "height": 50,
+            "top": 4438,
+            "right": 873,
+            "bottom": 4488,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4463
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/whitepaper/0-preface/#%E4%B8%80%E5%86%8D%E5%87%BA%E7%8E%B0%E7%9A%84%E4%BA%A4%E4%BA%92%E8%B4%A3%E4%BB%BB",
+          "text": "一再出现的交互责任/zh-cn/whitepaper/0-preface/#%E4%B8%80%E5%86%8D%E5%87%BA%E7%8E%B0%E7%9A%84%E4%BA%A4%E4%BA%92%E8%B4%A3%E4%BB%BB",
+          "box": {
+            "x": 392,
+            "y": 4488,
+            "width": 481,
+            "height": 82,
+            "top": 4488,
+            "right": 873,
+            "bottom": 4570,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4529
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/toolbar/",
+          "text": "Toolbar/zh-cn/ui-libraries/base/toolbar/",
+          "box": {
+            "x": 392,
+            "y": 4570,
+            "width": 481,
+            "height": 50,
+            "top": 4570,
+            "right": 873,
+            "bottom": 4620,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4595
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/toolbar/#_top",
+          "text": "Toolbar/zh-cn/ui-libraries/base/toolbar/#_top",
+          "box": {
+            "x": 392,
+            "y": 4620,
+            "width": 481,
+            "height": 50,
+            "top": 4620,
+            "right": 873,
+            "bottom": 4670,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4645
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/toolbar/#api",
+          "text": "API/zh-cn/ui-libraries/base/toolbar/#api",
+          "box": {
+            "x": 392,
+            "y": 4670,
+            "width": 481,
+            "height": 50,
+            "top": 4670,
+            "right": 873,
+            "bottom": 4720,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4695
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/when-not-to-write-a-new-prototype/",
+          "text": "为什么你通常不需要新写一个原型？/zh-cn/build/prototypes/when-not-to-write-a-new-prototype/",
+          "box": {
+            "x": 392,
+            "y": 4720,
+            "width": 481,
+            "height": 50,
+            "top": 4720,
+            "right": 873,
+            "bottom": 4770,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4745
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/when-not-to-write-a-new-prototype/#ashook-%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E4%B8%8D%E8%83%BD%E8%AF%81%E6%98%8E%E4%BB%80%E4%B9%88",
+          "text": "asHook 能解决什么，不能证明什么/zh-cn/build/prototypes/when-not-to-write-a-new-prototype/#ashook-%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E4%B8%8D%E8%83%BD%E8%AF%81%E6%98%8E%E4%BB%80%E4%B9%88",
+          "box": {
+            "x": 392,
+            "y": 4770,
+            "width": 481,
+            "height": 82,
+            "top": 4770,
+            "right": 873,
+            "bottom": 4852,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4811
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/when-not-to-write-a-new-prototype/#lifecycle-%E6%8F%90%E9%86%92",
+          "text": "Lifecycle 提醒/zh-cn/build/prototypes/when-not-to-write-a-new-prototype/#lifecycle-%E6%8F%90%E9%86%92",
+          "box": {
+            "x": 392,
+            "y": 4852,
+            "width": 481,
+            "height": 66,
+            "top": 4852,
+            "right": 873,
+            "bottom": 4918,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4885
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/toolbar/",
+          "text": "Toolbar/zh-cn/ui-libraries/shadcn/toolbar/",
+          "box": {
+            "x": 392,
+            "y": 4918,
+            "width": 481,
+            "height": 50,
+            "top": 4918,
+            "right": 873,
+            "bottom": 4968,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4943
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/toolbar/#_top",
+          "text": "Toolbar/zh-cn/ui-libraries/shadcn/toolbar/#_top",
+          "box": {
+            "x": 392,
+            "y": 4968,
+            "width": 481,
+            "height": 50,
+            "top": 4968,
+            "right": 873,
+            "bottom": 5018,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4993
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/toolbar/#api",
+          "text": "API/zh-cn/ui-libraries/shadcn/toolbar/#api",
+          "box": {
+            "x": 392,
+            "y": 5018,
+            "width": 481,
+            "height": 50,
+            "top": 5018,
+            "right": 873,
+            "bottom": 5068,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 5043
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/toggle/",
+          "text": "Toggle/zh-cn/ui-libraries/base/toggle/",
+          "box": {
+            "x": 392,
+            "y": 5068,
+            "width": 481,
+            "height": 50,
+            "top": 5068,
+            "right": 873,
+            "bottom": 5118,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 5093
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/toggle/#_top",
+          "text": "Toggle/zh-cn/ui-libraries/base/toggle/#_top",
+          "box": {
+            "x": 392,
+            "y": 5118,
+            "width": 481,
+            "height": 50,
+            "top": 5118,
+            "right": 873,
+            "bottom": 5168,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 5143
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/toggle/#protocol-%E8%BE%B9%E7%95%8C",
+          "text": "Protocol 边界/zh-cn/ui-libraries/base/toggle/#protocol-%E8%BE%B9%E7%95%8C",
+          "box": {
+            "x": 392,
+            "y": 5168,
+            "width": 481,
+            "height": 50,
+            "top": 5168,
+            "right": 873,
+            "bottom": 5218,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 5193
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/toggle/#%E4%BA%A4%E4%BA%92%E4%B8%8E%E5%8F%AF%E8%AE%BF%E9%97%AE%E6%80%A7",
+          "text": "交互与可访问性/zh-cn/ui-libraries/base/toggle/#%E4%BA%A4%E4%BA%92%E4%B8%8E%E5%8F%AF%E8%AE%BF%E9%97%AE%E6%80%A7",
+          "box": {
+            "x": 392,
+            "y": 5218,
+            "width": 481,
+            "height": 82,
+            "top": 5218,
+            "right": 873,
+            "bottom": 5300,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 5259
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/bootstrap-2-3-2/toolbar/",
+          "text": "Toolbar/zh-cn/ui-libraries/bootstrap-2-3-2/toolbar/",
+          "box": {
+            "x": 392,
+            "y": 5300,
+            "width": 481,
+            "height": 50,
+            "top": 5300,
+            "right": 873,
+            "bottom": 5350,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 5325
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/bootstrap-2-3-2/toolbar/#_top",
+          "text": "Toolbar/zh-cn/ui-libraries/bootstrap-2-3-2/toolbar/#_top",
+          "box": {
+            "x": 392,
+            "y": 5350,
+            "width": 481,
+            "height": 50,
+            "top": 5350,
+            "right": 873,
+            "bottom": 5400,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 5375
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/toolbar/",
+          "text": "Toolbar/zh-cn/ui-libraries/liquid-glass/toolbar/",
+          "box": {
+            "x": 392,
+            "y": 5400,
+            "width": 481,
+            "height": 50,
+            "top": 5400,
+            "right": 873,
+            "bottom": 5450,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 5425
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/toolbar/#_top",
+          "text": "Toolbar/zh-cn/ui-libraries/liquid-glass/toolbar/#_top",
+          "box": {
+            "x": 392,
+            "y": 5450,
+            "width": 481,
+            "height": 50,
+            "top": 5450,
+            "right": 873,
+            "bottom": 5500,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 5475
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/dialog/",
+          "text": "Dialog/zh-cn/ui-libraries/shadcn/dialog/",
+          "box": {
+            "x": 392,
+            "y": 5500,
+            "width": 481,
+            "height": 50,
+            "top": 5500,
+            "right": 873,
+            "bottom": 5550,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 5525
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/dialog/#_top",
+          "text": "Dialog/zh-cn/ui-libraries/shadcn/dialog/#_top",
+          "box": {
+            "x": 392,
+            "y": 5550,
+            "width": 481,
+            "height": 50,
+            "top": 5550,
+            "right": 873,
+            "bottom": 5600,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 5575
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/dialog/#compound-parts",
+          "text": "Compound parts/zh-cn/ui-libraries/shadcn/dialog/#compound-parts",
+          "box": {
+            "x": 392,
+            "y": 5600,
+            "width": 481,
+            "height": 50,
+            "top": 5600,
+            "right": 873,
+            "bottom": 5650,
+            "left": 392
+          },
+          "point": {
+            "x": 632.5,
+            "y": 5625
+          },
+          "ownsCenter": false,
+          "role": "option"
+        }
+      ],
+      "fragments": 20
+    },
+    "brutalist": {
+      "sourceReportSHA256": "0882af5e861905d3eb47fe7b8c40e7f7760e143f7f57f786701723b70198a7d0",
+      "eventCount": 20,
+      "compositionEnd": {
+        "type": "compositionend",
+        "trusted": false,
+        "data": "Button",
+        "value": "Button",
+        "start": 6,
+        "end": 6
+      },
+      "query": "Button",
+      "results": [
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/button/",
+          "text": "Button/zh-cn/ui-libraries/shadcn/button/",
+          "box": {
+            "x": 386,
+            "y": 206,
+            "width": 493,
+            "height": 52,
+            "top": 206,
+            "right": 879,
+            "bottom": 258,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 232
+          },
+          "hit": "<wc-brutalist-command-item data-demo-owner=\"demo-20\" data-demo-ref=\"__pui_projection__dynamic_%5B%22results%22%2C%22zh-cn_3410f27%3A%2Fzh-cn%2Fui-libraries%2Fshadcn%2Fbutton%2F%22%2C%5B%5D%5D\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_73_65_61_72_63_68_2d_31_2d_64_6f_63_73_2d_64_69_61_6c_6f_67_2d_32_2d_64_69_61_6c_6f_67 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_63_6f_6d_6d_61_6e_64_2d_69_74_65_6d\" style=\"--pui-radius: 5px; --pui-radius-sm: 3px; --pui-radius-md: 5px; --pui-radius-lg: 5px; --pui-radius-xl: 5px; --pui-font-sans: &quot;DM Sans&quot;, ui-sans-serif, system-ui, sans-serif; --pui-font-heading: &quot;DM Sans&quot;, ui-sans-serif, system-",
+          "ownsCenter": true,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/button/#_top",
+          "text": "Button/zh-cn/ui-libraries/shadcn/button/#_top",
+          "box": {
+            "x": 386,
+            "y": 258,
+            "width": 493,
+            "height": 52,
+            "top": 258,
+            "right": 879,
+            "bottom": 310,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 284
+          },
+          "hit": "<div data-demo-owner=\"demo-20\" data-projection-owner=\"site-search-1-docs-dialog-2-dialog\" data-projection-family=\"brutalist\" data-projection-runtime=\"wc\" data-projection-generation=\"1\" class=\"flex min-w-0 flex-col pui-projection-box\">Button<div data-demo-owner=\"demo-20\" data-search-result-url=\"\" data-projection-owner=\"site-search-1-docs-dialog-2-dialog\" data-projection-family=\"brutalist\" data-projection-runtime=\"wc\" data-projection-generation=\"1\" class=\"text-xs opacity-70 break-words pui-projection-box\">/zh-cn/ui-libraries/shadcn/button/#_top</div></div>",
+          "ownsCenter": true,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/button/#%E5%AE%89%E8%A3%85",
+          "text": "安装/zh-cn/ui-libraries/shadcn/button/#%E5%AE%89%E8%A3%85",
+          "box": {
+            "x": 386,
+            "y": 310,
+            "width": 493,
+            "height": 52,
+            "top": 310,
+            "right": 879,
+            "bottom": 362,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 336
+          },
+          "hit": "<div data-demo-owner=\"demo-20\" data-projection-owner=\"site-search-1-docs-dialog-2-dialog\" data-projection-family=\"brutalist\" data-projection-runtime=\"wc\" data-projection-generation=\"1\" class=\"flex min-w-0 flex-col pui-projection-box\">安装<div data-demo-owner=\"demo-20\" data-search-result-url=\"\" data-projection-owner=\"site-search-1-docs-dialog-2-dialog\" data-projection-family=\"brutalist\" data-projection-runtime=\"wc\" data-projection-generation=\"1\" class=\"text-xs opacity-70 break-words pui-projection-box\">/zh-cn/ui-libraries/shadcn/button/#%E5%AE%89%E8%A3%85</div></div>",
+          "ownsCenter": true,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/button/#%E9%BB%98%E8%AE%A4",
+          "text": "默认/zh-cn/ui-libraries/shadcn/button/#%E9%BB%98%E8%AE%A4",
+          "box": {
+            "x": 386,
+            "y": 362,
+            "width": 493,
+            "height": 52,
+            "top": 362,
+            "right": 879,
+            "bottom": 414,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 388
+          },
+          "hit": "<div data-demo-owner=\"demo-20\" data-projection-owner=\"site-search-1-docs-dialog-2-dialog\" data-projection-family=\"brutalist\" data-projection-runtime=\"wc\" data-projection-generation=\"1\" class=\"flex min-w-0 flex-col pui-projection-box\">默认<div data-demo-owner=\"demo-20\" data-search-result-url=\"\" data-projection-owner=\"site-search-1-docs-dialog-2-dialog\" data-projection-family=\"brutalist\" data-projection-runtime=\"wc\" data-projection-generation=\"1\" class=\"text-xs opacity-70 break-words pui-projection-box\">/zh-cn/ui-libraries/shadcn/button/#%E9%BB%98%E8%AE%A4</div></div>",
+          "ownsCenter": true,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/button/#%E6%AC%A1%E8%A6%81",
+          "text": "次要/zh-cn/ui-libraries/shadcn/button/#%E6%AC%A1%E8%A6%81",
+          "box": {
+            "x": 386,
+            "y": 414,
+            "width": 493,
+            "height": 52,
+            "top": 414,
+            "right": 879,
+            "bottom": 466,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 440
+          },
+          "hit": "<div data-demo-owner=\"demo-20\" data-projection-owner=\"site-search-1-docs-dialog-2-dialog\" data-projection-family=\"brutalist\" data-projection-runtime=\"wc\" data-projection-generation=\"1\" class=\"flex min-w-0 flex-col pui-projection-box\">次要<div data-demo-owner=\"demo-20\" data-search-result-url=\"\" data-projection-owner=\"site-search-1-docs-dialog-2-dialog\" data-projection-family=\"brutalist\" data-projection-runtime=\"wc\" data-projection-generation=\"1\" class=\"text-xs opacity-70 break-words pui-projection-box\">/zh-cn/ui-libraries/shadcn/button/#%E6%AC%A1%E8%A6%81</div></div>",
+          "ownsCenter": true,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/button/#%E6%8F%8F%E8%BE%B9",
+          "text": "描边/zh-cn/ui-libraries/shadcn/button/#%E6%8F%8F%E8%BE%B9",
+          "box": {
+            "x": 386,
+            "y": 466,
+            "width": 493,
+            "height": 52,
+            "top": 466,
+            "right": 879,
+            "bottom": 518,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 492
+          },
+          "hit": "<div role=\"status\" aria-live=\"polite\" aria-atomic=\"true\" data-projection-owner=\"site-search-1-docs-dialog-2-dialog\" data-projection-family=\"brutalist\" data-projection-runtime=\"wc\" data-projection-generation=\"1\" class=\"min-w-0 grow pui-projection-box\" data-demo-ref=\"status\" data-demo-owner=\"demo-20\">87 条匹配文档</div>",
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/button/#%E5%B9%BD%E7%81%B5",
+          "text": "幽灵/zh-cn/ui-libraries/shadcn/button/#%E5%B9%BD%E7%81%B5",
+          "box": {
+            "x": 386,
+            "y": 518,
+            "width": 493,
+            "height": 52,
+            "top": 518,
+            "right": 879,
+            "bottom": 570,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 544
+          },
+          "hit": "<div data-projection-owner=\"site-search-1-docs-dialog-2-dialog\" data-projection-family=\"brutalist\" data-projection-runtime=\"wc\" data-projection-generation=\"1\" class=\"flex shrink-0 min-w-0 items-center justify-end p-2 pui-projection-box\" data-demo-ref=\"dismissal\" data-demo-owner=\"demo-20\"><div data-projection-owner=\"site-search-1-docs-dialog-2-dialog\" data-projection-family=\"brutalist\" data-projection-runtime=\"wc\" data-projection-generation=\"1\" class=\"flex min-w-0 items-center gap-2 pui-projection-box\" data-demo-ref=\"keyboard-hint\" data-demo-owner=\"demo-20\"><span data-demo-owner=\"demo-20\" aria-label=\"Enter\" data-projection-owner=\"site-search-1-docs-dialog-2-dialog\" data-projection-family=\"brutalist\" data-projection-runtime=\"wc\" data-projection-generation=\"1\" class=\"rounded border bg-backgro",
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/button/#%E5%8D%B1%E9%99%A9%E6%93%8D%E4%BD%9C",
+          "text": "危险操作/zh-cn/ui-libraries/shadcn/button/#%E5%8D%B1%E9%99%A9%E6%93%8D%E4%BD%9C",
+          "box": {
+            "x": 386,
+            "y": 570,
+            "width": 493,
+            "height": 68,
+            "top": 570,
+            "right": 879,
+            "bottom": 638,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 604
+          },
+          "hit": "<wc-brutalist-dialog-mask data-demo-ref=\"mask\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_73_65_61_72_63_68_2d_31_2d_64_6f_63_73_2d_64_69_61_6c_6f_67_2d_32_2d_64_69_61_6c_6f_67 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_64_69_61_6c_6f_67_2d_6d_61_73_6b pui-host-root\" data-pui-root=\"\" data-demo-owner=\"demo-20\" data-projection-owner=\"site-search-1-docs-dialog-2-dialog\" data-projection-family=\"brutalist\" data-projection-runtime=\"wc\" data-projection-generation=\"1\" data-projection-prototype=\"brutalist-dialog-mask\" style=\"--pui-radius: 5px; --pui-radius-sm: 3px; --pui-radius-md: 5px; --pui-radius-lg: 5px; --pui-radius-xl: 5px; --pui-font-sans: &quot;DM S",
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/button/#%E5%B0%BA%E5%AF%B8",
+          "text": "尺寸/zh-cn/ui-libraries/shadcn/button/#%E5%B0%BA%E5%AF%B8",
+          "box": {
+            "x": 386,
+            "y": 638,
+            "width": 493,
+            "height": 52,
+            "top": 638,
+            "right": 879,
+            "bottom": 690,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 664
+          },
+          "hit": "<wc-brutalist-dialog-mask data-demo-ref=\"mask\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_73_65_61_72_63_68_2d_31_2d_64_6f_63_73_2d_64_69_61_6c_6f_67_2d_32_2d_64_69_61_6c_6f_67 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_64_69_61_6c_6f_67_2d_6d_61_73_6b pui-host-root\" data-pui-root=\"\" data-demo-owner=\"demo-20\" data-projection-owner=\"site-search-1-docs-dialog-2-dialog\" data-projection-family=\"brutalist\" data-projection-runtime=\"wc\" data-projection-generation=\"1\" data-projection-prototype=\"brutalist-dialog-mask\" style=\"--pui-radius: 5px; --pui-radius-sm: 3px; --pui-radius-md: 5px; --pui-radius-lg: 5px; --pui-radius-xl: 5px; --pui-font-sans: &quot;DM S",
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/button/#%E7%A6%81%E7%94%A8",
+          "text": "禁用/zh-cn/ui-libraries/shadcn/button/#%E7%A6%81%E7%94%A8",
+          "box": {
+            "x": 386,
+            "y": 690,
+            "width": 493,
+            "height": 52,
+            "top": 690,
+            "right": 879,
+            "bottom": 742,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 716
+          },
+          "hit": "<wc-brutalist-dialog-mask data-demo-ref=\"mask\" class=\"pui-projection-prototype pui-projection-owner-73_69_74_65_2d_73_65_61_72_63_68_2d_31_2d_64_6f_63_73_2d_64_69_61_6c_6f_67_2d_32_2d_64_69_61_6c_6f_67 pui-projection-family-62_72_75_74_61_6c_69_73_74 pui-projection-runtime-77_63 pui-projection-generation-31 pui-projection-prototype-62_72_75_74_61_6c_69_73_74_2d_64_69_61_6c_6f_67_2d_6d_61_73_6b pui-host-root\" data-pui-root=\"\" data-demo-owner=\"demo-20\" data-projection-owner=\"site-search-1-docs-dialog-2-dialog\" data-projection-family=\"brutalist\" data-projection-runtime=\"wc\" data-projection-generation=\"1\" data-projection-prototype=\"brutalist-dialog-mask\" style=\"--pui-radius: 5px; --pui-radius-sm: 3px; --pui-radius-md: 5px; --pui-radius-lg: 5px; --pui-radius-xl: 5px; --pui-font-sans: &quot;DM S",
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/button/#%E5%8F%82%E8%80%83",
+          "text": "参考/zh-cn/ui-libraries/shadcn/button/#%E5%8F%82%E8%80%83",
+          "box": {
+            "x": 386,
+            "y": 742,
+            "width": 493,
+            "height": 52,
+            "top": 742,
+            "right": 879,
+            "bottom": 794,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 768
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/select/",
+          "text": "Select/zh-cn/ui-libraries/liquid-glass/select/",
+          "box": {
+            "x": 386,
+            "y": 794,
+            "width": 493,
+            "height": 52,
+            "top": 794,
+            "right": 879,
+            "bottom": 846,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 820
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/select/#%E5%8D%81%E4%B8%80%E4%B8%AA-part%E4%B8%80%E4%B8%AA-owner",
+          "text": "十一个 part，一个 owner/zh-cn/ui-libraries/liquid-glass/select/#%E5%8D%81%E4%B8%80%E4%B8%AA-part%E4%B8%80%E4%B8%AA-owner",
+          "box": {
+            "x": 386,
+            "y": 846,
+            "width": 493,
+            "height": 84,
+            "top": 846,
+            "right": 879,
+            "bottom": 930,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 888
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/brutalist/components/button/",
+          "text": "Brutalist Button/zh-cn/ui-libraries/brutalist/components/button/",
+          "box": {
+            "x": 386,
+            "y": 930,
+            "width": 493,
+            "height": 52,
+            "top": 930,
+            "right": 879,
+            "bottom": 982,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 956
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/brutalist/components/button/#_top",
+          "text": "Brutalist Button/zh-cn/ui-libraries/brutalist/components/button/#_top",
+          "box": {
+            "x": 386,
+            "y": 982,
+            "width": 493,
+            "height": 52,
+            "top": 982,
+            "right": 879,
+            "bottom": 1034,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1008
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/brutalist/components/button/#%E5%AE%89%E8%A3%85",
+          "text": "安装/zh-cn/ui-libraries/brutalist/components/button/#%E5%AE%89%E8%A3%85",
+          "box": {
+            "x": 386,
+            "y": 1034,
+            "width": 493,
+            "height": 52,
+            "top": 1034,
+            "right": 879,
+            "bottom": 1086,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1060
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/brutalist/components/button/#%E7%94%A8%E6%B3%95",
+          "text": "用法/zh-cn/ui-libraries/brutalist/components/button/#%E7%94%A8%E6%B3%95",
+          "box": {
+            "x": 386,
+            "y": 1086,
+            "width": 493,
+            "height": 52,
+            "top": 1086,
+            "right": 879,
+            "bottom": 1138,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1112
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/brutalist/components/button/#%E5%AE%9E%E5%BF%83",
+          "text": "实心/zh-cn/ui-libraries/brutalist/components/button/#%E5%AE%9E%E5%BF%83",
+          "box": {
+            "x": 386,
+            "y": 1138,
+            "width": 493,
+            "height": 52,
+            "top": 1138,
+            "right": 879,
+            "bottom": 1190,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1164
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/brutalist/components/button/#%E8%A1%A8%E9%9D%A2",
+          "text": "表面/zh-cn/ui-libraries/brutalist/components/button/#%E8%A1%A8%E9%9D%A2",
+          "box": {
+            "x": 386,
+            "y": 1190,
+            "width": 493,
+            "height": 52,
+            "top": 1190,
+            "right": 879,
+            "bottom": 1242,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1216
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/brutalist/components/button/#%E5%8D%B1%E9%99%A9",
+          "text": "危险/zh-cn/ui-libraries/brutalist/components/button/#%E5%8D%B1%E9%99%A9",
+          "box": {
+            "x": 386,
+            "y": 1242,
+            "width": 493,
+            "height": 52,
+            "top": 1242,
+            "right": 879,
+            "bottom": 1294,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1268
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/brutalist/components/button/#%E5%9B%BE%E6%A0%87",
+          "text": "图标/zh-cn/ui-libraries/brutalist/components/button/#%E5%9B%BE%E6%A0%87",
+          "box": {
+            "x": 386,
+            "y": 1294,
+            "width": 493,
+            "height": 52,
+            "top": 1294,
+            "right": 879,
+            "bottom": 1346,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1320
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/brutalist/components/button/#%E7%A6%81%E7%94%A8",
+          "text": "禁用/zh-cn/ui-libraries/brutalist/components/button/#%E7%A6%81%E7%94%A8",
+          "box": {
+            "x": 386,
+            "y": 1346,
+            "width": 493,
+            "height": 52,
+            "top": 1346,
+            "right": 879,
+            "bottom": 1398,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1372
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/brutalist/components/button/#%E5%8F%82%E8%80%83",
+          "text": "参考/zh-cn/ui-libraries/brutalist/components/button/#%E5%8F%82%E8%80%83",
+          "box": {
+            "x": 386,
+            "y": 1398,
+            "width": 493,
+            "height": 52,
+            "top": 1398,
+            "right": 879,
+            "bottom": 1450,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1424
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/button/",
+          "text": "Button/zh-cn/ui-libraries/base/button/",
+          "box": {
+            "x": 386,
+            "y": 1450,
+            "width": 493,
+            "height": 52,
+            "top": 1450,
+            "right": 879,
+            "bottom": 1502,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1476
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/button/#_top",
+          "text": "Button/zh-cn/ui-libraries/base/button/#_top",
+          "box": {
+            "x": 386,
+            "y": 1502,
+            "width": 493,
+            "height": 52,
+            "top": 1502,
+            "right": 879,
+            "bottom": 1554,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1528
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/button/#protocol-%E8%BE%B9%E7%95%8C",
+          "text": "Protocol 边界/zh-cn/ui-libraries/base/button/#protocol-%E8%BE%B9%E7%95%8C",
+          "box": {
+            "x": 386,
+            "y": 1554,
+            "width": 493,
+            "height": 52,
+            "top": 1554,
+            "right": 879,
+            "bottom": 1606,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1580
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/button/#%E4%BA%A4%E4%BA%92%E4%B8%8E%E5%8F%AF%E8%AE%BF%E9%97%AE%E6%80%A7",
+          "text": "交互与可访问性/zh-cn/ui-libraries/base/button/#%E4%BA%A4%E4%BA%92%E4%B8%8E%E5%8F%AF%E8%AE%BF%E9%97%AE%E6%80%A7",
+          "box": {
+            "x": 386,
+            "y": 1606,
+            "width": 493,
+            "height": 84,
+            "top": 1606,
+            "right": 879,
+            "bottom": 1690,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1648
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/button/#%E5%AE%89%E8%A3%85",
+          "text": "安装/zh-cn/ui-libraries/base/button/#%E5%AE%89%E8%A3%85",
+          "box": {
+            "x": 386,
+            "y": 1690,
+            "width": 493,
+            "height": 52,
+            "top": 1690,
+            "right": 879,
+            "bottom": 1742,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1716
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/button/#%E7%94%A8%E6%B3%95",
+          "text": "用法/zh-cn/ui-libraries/base/button/#%E7%94%A8%E6%B3%95",
+          "box": {
+            "x": 386,
+            "y": 1742,
+            "width": 493,
+            "height": 52,
+            "top": 1742,
+            "right": 879,
+            "bottom": 1794,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1768
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/button/#%E9%BB%98%E8%AE%A4",
+          "text": "默认/zh-cn/ui-libraries/base/button/#%E9%BB%98%E8%AE%A4",
+          "box": {
+            "x": 386,
+            "y": 1794,
+            "width": 493,
+            "height": 52,
+            "top": 1794,
+            "right": 879,
+            "bottom": 1846,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1820
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/button/#%E7%A6%81%E7%94%A8",
+          "text": "禁用/zh-cn/ui-libraries/base/button/#%E7%A6%81%E7%94%A8",
+          "box": {
+            "x": 386,
+            "y": 1846,
+            "width": 493,
+            "height": 52,
+            "top": 1846,
+            "right": 879,
+            "bottom": 1898,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1872
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/button/#02-%E4%BA%A4%E4%BB%98%E4%B8%8E%E8%AF%81%E6%8D%AE",
+          "text": "0.2 交付与证据/zh-cn/ui-libraries/base/button/#02-%E4%BA%A4%E4%BB%98%E4%B8%8E%E8%AF%81%E6%8D%AE",
+          "box": {
+            "x": 386,
+            "y": 1898,
+            "width": 493,
+            "height": 68,
+            "top": 1898,
+            "right": 879,
+            "bottom": 1966,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1932
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/button/#lifecycle",
+          "text": "Lifecycle/zh-cn/ui-libraries/base/button/#lifecycle",
+          "box": {
+            "x": 386,
+            "y": 1966,
+            "width": 493,
+            "height": 52,
+            "top": 1966,
+            "right": 879,
+            "bottom": 2018,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 1992
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/button/#%E5%8F%82%E8%80%83",
+          "text": "参考/zh-cn/ui-libraries/base/button/#%E5%8F%82%E8%80%83",
+          "box": {
+            "x": 386,
+            "y": 2018,
+            "width": 493,
+            "height": 52,
+            "top": 2018,
+            "right": 879,
+            "bottom": 2070,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2044
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/button/#api",
+          "text": "API/zh-cn/ui-libraries/base/button/#api",
+          "box": {
+            "x": 386,
+            "y": 2070,
+            "width": 493,
+            "height": 52,
+            "top": 2070,
+            "right": 879,
+            "bottom": 2122,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2096
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/button/#%E5%8F%82%E8%80%83-1",
+          "text": "参考/zh-cn/ui-libraries/base/button/#%E5%8F%82%E8%80%83-1",
+          "box": {
+            "x": 386,
+            "y": 2122,
+            "width": 493,
+            "height": 52,
+            "top": 2122,
+            "right": 879,
+            "bottom": 2174,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2148
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/bootstrap-2-3-2/button/",
+          "text": "Bootstrap 2.3.2 Button/zh-cn/ui-libraries/bootstrap-2-3-2/button/",
+          "box": {
+            "x": 386,
+            "y": 2174,
+            "width": 493,
+            "height": 52,
+            "top": 2174,
+            "right": 879,
+            "bottom": 2226,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2200
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/bootstrap-2-3-2/button/#_top",
+          "text": "Bootstrap 2.3.2 Button/zh-cn/ui-libraries/bootstrap-2-3-2/button/#_top",
+          "box": {
+            "x": 386,
+            "y": 2226,
+            "width": 493,
+            "height": 52,
+            "top": 2226,
+            "right": 879,
+            "bottom": 2278,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2252
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/bootstrap-2-3-2/button/#%E5%AE%89%E8%A3%85",
+          "text": "安装/zh-cn/ui-libraries/bootstrap-2-3-2/button/#%E5%AE%89%E8%A3%85",
+          "box": {
+            "x": 386,
+            "y": 2278,
+            "width": 493,
+            "height": 52,
+            "top": 2278,
+            "right": 879,
+            "bottom": 2330,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2304
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/bootstrap-2-3-2/button/#%E4%BD%BF%E7%94%A8",
+          "text": "使用/zh-cn/ui-libraries/bootstrap-2-3-2/button/#%E4%BD%BF%E7%94%A8",
+          "box": {
+            "x": 386,
+            "y": 2330,
+            "width": 493,
+            "height": 52,
+            "top": 2330,
+            "right": 879,
+            "bottom": 2382,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2356
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/bootstrap-2-3-2/button/#%E6%97%A0%E9%9A%9C%E7%A2%8D",
+          "text": "无障碍/zh-cn/ui-libraries/bootstrap-2-3-2/button/#%E6%97%A0%E9%9A%9C%E7%A2%8D",
+          "box": {
+            "x": 386,
+            "y": 2382,
+            "width": 493,
+            "height": 68,
+            "top": 2382,
+            "right": 879,
+            "bottom": 2450,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2416
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/button/",
+          "text": "Liquid Glass Button/zh-cn/ui-libraries/liquid-glass/button/",
+          "box": {
+            "x": 386,
+            "y": 2450,
+            "width": 493,
+            "height": 52,
+            "top": 2450,
+            "right": 879,
+            "bottom": 2502,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2476
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/button/#_top",
+          "text": "Liquid Glass Button/zh-cn/ui-libraries/liquid-glass/button/#_top",
+          "box": {
+            "x": 386,
+            "y": 2502,
+            "width": 493,
+            "height": 52,
+            "top": 2502,
+            "right": 879,
+            "bottom": 2554,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2528
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/button/#%E5%AE%89%E8%A3%85",
+          "text": "安装/zh-cn/ui-libraries/liquid-glass/button/#%E5%AE%89%E8%A3%85",
+          "box": {
+            "x": 386,
+            "y": 2554,
+            "width": 493,
+            "height": 52,
+            "top": 2554,
+            "right": 879,
+            "bottom": 2606,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2580
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/button/#%E7%94%A8%E6%B3%95",
+          "text": "用法/zh-cn/ui-libraries/liquid-glass/button/#%E7%94%A8%E6%B3%95",
+          "box": {
+            "x": 386,
+            "y": 2606,
+            "width": 493,
+            "height": 52,
+            "top": 2606,
+            "right": 879,
+            "bottom": 2658,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2632
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/button/#%E5%B8%B8%E8%A7%84",
+          "text": "常规/zh-cn/ui-libraries/liquid-glass/button/#%E5%B8%B8%E8%A7%84",
+          "box": {
+            "x": 386,
+            "y": 2658,
+            "width": 493,
+            "height": 52,
+            "top": 2658,
+            "right": 879,
+            "bottom": 2710,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2684
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/button/#%E5%BC%BA%E8%B0%83",
+          "text": "强调/zh-cn/ui-libraries/liquid-glass/button/#%E5%BC%BA%E8%B0%83",
+          "box": {
+            "x": 386,
+            "y": 2710,
+            "width": 493,
+            "height": 52,
+            "top": 2710,
+            "right": 879,
+            "bottom": 2762,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2736
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/button/#%E7%A6%81%E7%94%A8",
+          "text": "禁用/zh-cn/ui-libraries/liquid-glass/button/#%E7%A6%81%E7%94%A8",
+          "box": {
+            "x": 386,
+            "y": 2762,
+            "width": 493,
+            "height": 52,
+            "top": 2762,
+            "right": 879,
+            "bottom": 2814,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2788
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/button/#api",
+          "text": "API/zh-cn/ui-libraries/liquid-glass/button/#api",
+          "box": {
+            "x": 386,
+            "y": 2814,
+            "width": 493,
+            "height": 52,
+            "top": 2814,
+            "right": 879,
+            "bottom": 2866,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2840
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/writing-a-custom-primitive-prototype/",
+          "text": "编写一个定制的单体原型/zh-cn/build/prototypes/writing-a-custom-primitive-prototype/",
+          "box": {
+            "x": 386,
+            "y": 2866,
+            "width": 493,
+            "height": 52,
+            "top": 2866,
+            "right": 879,
+            "bottom": 2918,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2892
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/writing-a-custom-primitive-prototype/#_top",
+          "text": "编写一个定制的单体原型/zh-cn/build/prototypes/writing-a-custom-primitive-prototype/#_top",
+          "box": {
+            "x": 386,
+            "y": 2918,
+            "width": 493,
+            "height": 52,
+            "top": 2918,
+            "right": 879,
+            "bottom": 2970,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 2944
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/writing-a-custom-primitive-prototype/#%E4%BB%8E%E5%AE%9E%E4%BD%93%E5%92%8C%E8%AF%81%E6%8D%AE%E5%BC%80%E5%A7%8B",
+          "text": "从实体和证据开始/zh-cn/build/prototypes/writing-a-custom-primitive-prototype/#%E4%BB%8E%E5%AE%9E%E4%BD%93%E5%92%8C%E8%AF%81%E6%8D%AE%E5%BC%80%E5%A7%8B",
+          "box": {
+            "x": 386,
+            "y": 2970,
+            "width": 493,
+            "height": 84,
+            "top": 2970,
+            "right": 879,
+            "bottom": 3054,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3012
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/writing-a-custom-primitive-prototype/#base-button-%E5%B1%95%E7%A4%BA%E4%BA%86%E4%BB%80%E4%B9%88",
+          "text": "base-button 展示了什么/zh-cn/build/prototypes/writing-a-custom-primitive-prototype/#base-button-%E5%B1%95%E7%A4%BA%E4%BA%86%E4%BB%80%E4%B9%88",
+          "box": {
+            "x": 386,
+            "y": 3054,
+            "width": 493,
+            "height": 68,
+            "top": 3054,
+            "right": 879,
+            "bottom": 3122,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3088
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/reference-patterns/",
+          "text": "参考实现应该怎么看/zh-cn/build/prototypes/reference-patterns/",
+          "box": {
+            "x": 386,
+            "y": 3122,
+            "width": 493,
+            "height": 52,
+            "top": 3122,
+            "right": 879,
+            "bottom": 3174,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3148
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/reference-patterns/#2-%E9%98%85%E8%AF%BB%E5%8D%95%E4%BD%93-prototype",
+          "text": "2. 阅读单体 Prototype/zh-cn/build/prototypes/reference-patterns/#2-%E9%98%85%E8%AF%BB%E5%8D%95%E4%BD%93-prototype",
+          "box": {
+            "x": 386,
+            "y": 3174,
+            "width": 493,
+            "height": 68,
+            "top": 3174,
+            "right": 879,
+            "bottom": 3242,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3208
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/reference-patterns/#4-%E9%98%85%E8%AF%BB%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%E6%8A%95%E5%B0%84",
+          "text": "4. 阅读设计语言投射/zh-cn/build/prototypes/reference-patterns/#4-%E9%98%85%E8%AF%BB%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%E6%8A%95%E5%B0%84",
+          "box": {
+            "x": 386,
+            "y": 3242,
+            "width": 493,
+            "height": 84,
+            "top": 3242,
+            "right": 879,
+            "bottom": 3326,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3284
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/reference-patterns/#lifecycle-%E6%8F%90%E9%86%92",
+          "text": "Lifecycle 提醒/zh-cn/build/prototypes/reference-patterns/#lifecycle-%E6%8F%90%E9%86%92",
+          "box": {
+            "x": 386,
+            "y": 3326,
+            "width": 493,
+            "height": 68,
+            "top": 3326,
+            "right": 879,
+            "bottom": 3394,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3360
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/building-a-styled-library-on-top-of-base/",
+          "text": "基于 Base 长出一个带风格的原型库/zh-cn/build/prototypes/building-a-styled-library-on-top-of-base/",
+          "box": {
+            "x": 386,
+            "y": 3394,
+            "width": 493,
+            "height": 52,
+            "top": 3394,
+            "right": 879,
+            "bottom": 3446,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3420
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/building-a-styled-library-on-top-of-base/#shadcn-button-%E7%9A%84%E5%BD%93%E5%89%8D%E5%BD%A2%E7%8A%B6",
+          "text": "Shadcn Button 的当前形状/zh-cn/build/prototypes/building-a-styled-library-on-top-of-base/#shadcn-button-%E7%9A%84%E5%BD%93%E5%89%8D%E5%BD%A2%E7%8A%B6",
+          "box": {
+            "x": 386,
+            "y": 3446,
+            "width": 493,
+            "height": 68,
+            "top": 3446,
+            "right": 879,
+            "bottom": 3514,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3480
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/documentation-coverage/",
+          "text": "原型文档覆盖索引/zh-cn/build/prototypes/documentation-coverage/",
+          "box": {
+            "x": 386,
+            "y": 3514,
+            "width": 493,
+            "height": 52,
+            "top": 3514,
+            "right": 879,
+            "bottom": 3566,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3540
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/documentation-coverage/#base",
+          "text": "base/zh-cn/build/prototypes/documentation-coverage/#base",
+          "box": {
+            "x": 386,
+            "y": 3566,
+            "width": 493,
+            "height": 52,
+            "top": 3566,
+            "right": 879,
+            "bottom": 3618,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3592
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/documentation-coverage/#bootstrap-2-3-2",
+          "text": "bootstrap-2-3-2/zh-cn/build/prototypes/documentation-coverage/#bootstrap-2-3-2",
+          "box": {
+            "x": 386,
+            "y": 3618,
+            "width": 493,
+            "height": 52,
+            "top": 3618,
+            "right": 879,
+            "bottom": 3670,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3644
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/documentation-coverage/#brutalist",
+          "text": "brutalist/zh-cn/build/prototypes/documentation-coverage/#brutalist",
+          "box": {
+            "x": 386,
+            "y": 3670,
+            "width": 493,
+            "height": 52,
+            "top": 3670,
+            "right": 879,
+            "bottom": 3722,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3696
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/documentation-coverage/#liquid-glass",
+          "text": "liquid-glass/zh-cn/build/prototypes/documentation-coverage/#liquid-glass",
+          "box": {
+            "x": 386,
+            "y": 3722,
+            "width": 493,
+            "height": 52,
+            "top": 3722,
+            "right": 879,
+            "bottom": 3774,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3748
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/documentation-coverage/#shadcn",
+          "text": "shadcn/zh-cn/build/prototypes/documentation-coverage/#shadcn",
+          "box": {
+            "x": 386,
+            "y": 3774,
+            "width": 493,
+            "height": 52,
+            "top": 3774,
+            "right": 879,
+            "bottom": 3826,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3800
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/documentation-coverage/#%E5%88%86%E6%94%AF%E6%96%B0%E5%A2%9E%E9%A1%B9%E4%B8%8E%E7%BC%BA%E5%8F%A3",
+          "text": "分支新增项与缺口/zh-cn/build/prototypes/documentation-coverage/#%E5%88%86%E6%94%AF%E6%96%B0%E5%A2%9E%E9%A1%B9%E4%B8%8E%E7%BC%BA%E5%8F%A3",
+          "box": {
+            "x": 386,
+            "y": 3826,
+            "width": 493,
+            "height": 84,
+            "top": 3826,
+            "right": 879,
+            "bottom": 3910,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3868
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/material-experiment/",
+          "text": "Material 实验/zh-cn/ui-libraries/liquid-glass/material-experiment/",
+          "box": {
+            "x": 386,
+            "y": 3910,
+            "width": 493,
+            "height": 52,
+            "top": 3910,
+            "right": 879,
+            "bottom": 3962,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3936
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/material-experiment/#_top",
+          "text": "Material 实验/zh-cn/ui-libraries/liquid-glass/material-experiment/#_top",
+          "box": {
+            "x": 386,
+            "y": 3962,
+            "width": 493,
+            "height": 52,
+            "top": 3962,
+            "right": 879,
+            "bottom": 4014,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 3988
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/material-experiment/#%E5%AE%9E%E9%AA%8C%E7%BB%84%E5%90%88%E5%A3%B0%E6%98%8E%E4%BB%80%E4%B9%88",
+          "text": "实验组合声明什么/zh-cn/ui-libraries/liquid-glass/material-experiment/#%E5%AE%9E%E9%AA%8C%E7%BB%84%E5%90%88%E5%A3%B0%E6%98%8E%E4%BB%80%E4%B9%88",
+          "box": {
+            "x": 386,
+            "y": 4014,
+            "width": 493,
+            "height": 84,
+            "top": 4014,
+            "right": 879,
+            "bottom": 4098,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4056
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/material-experiment/#%E8%AF%81%E6%8D%AE%E4%B8%8E%E9%99%90%E5%88%B6",
+          "text": "证据与限制/zh-cn/ui-libraries/liquid-glass/material-experiment/#%E8%AF%81%E6%8D%AE%E4%B8%8E%E9%99%90%E5%88%B6",
+          "box": {
+            "x": 386,
+            "y": 4098,
+            "width": 493,
+            "height": 68,
+            "top": 4098,
+            "right": 879,
+            "bottom": 4166,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4132
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/material-experiment/#%E6%9D%A5%E6%BA%90%E4%B8%8E%E8%AE%B8%E5%8F%AF%E8%AF%81",
+          "text": "来源与许可证/zh-cn/ui-libraries/liquid-glass/material-experiment/#%E6%9D%A5%E6%BA%90%E4%B8%8E%E8%AE%B8%E5%8F%AF%E8%AF%81",
+          "box": {
+            "x": 386,
+            "y": 4166,
+            "width": 493,
+            "height": 84,
+            "top": 4166,
+            "right": 879,
+            "bottom": 4250,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4208
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/brutalist/components/toolbar/",
+          "text": "Toolbar/zh-cn/ui-libraries/brutalist/components/toolbar/",
+          "box": {
+            "x": 386,
+            "y": 4250,
+            "width": 493,
+            "height": 52,
+            "top": 4250,
+            "right": 879,
+            "bottom": 4302,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4276
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/brutalist/components/toolbar/#_top",
+          "text": "Toolbar/zh-cn/ui-libraries/brutalist/components/toolbar/#_top",
+          "box": {
+            "x": 386,
+            "y": 4302,
+            "width": 493,
+            "height": 52,
+            "top": 4302,
+            "right": 879,
+            "bottom": 4354,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4328
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/brutalist/components/toolbar/#api",
+          "text": "API/zh-cn/ui-libraries/brutalist/components/toolbar/#api",
+          "box": {
+            "x": 386,
+            "y": 4354,
+            "width": 493,
+            "height": 52,
+            "top": 4354,
+            "right": 879,
+            "bottom": 4406,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4380
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/whitepaper/0-preface/",
+          "text": "序章：我们还要发明多少次 Button？/zh-cn/whitepaper/0-preface/",
+          "box": {
+            "x": 386,
+            "y": 4406,
+            "width": 493,
+            "height": 52,
+            "top": 4406,
+            "right": 879,
+            "bottom": 4458,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4432
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/whitepaper/0-preface/#_top",
+          "text": "序章：我们还要发明多少次 Button？/zh-cn/whitepaper/0-preface/#_top",
+          "box": {
+            "x": 386,
+            "y": 4458,
+            "width": 493,
+            "height": 52,
+            "top": 4458,
+            "right": 879,
+            "bottom": 4510,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4484
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/whitepaper/0-preface/#%E4%B8%80%E5%86%8D%E5%87%BA%E7%8E%B0%E7%9A%84%E4%BA%A4%E4%BA%92%E8%B4%A3%E4%BB%BB",
+          "text": "一再出现的交互责任/zh-cn/whitepaper/0-preface/#%E4%B8%80%E5%86%8D%E5%87%BA%E7%8E%B0%E7%9A%84%E4%BA%A4%E4%BA%92%E8%B4%A3%E4%BB%BB",
+          "box": {
+            "x": 386,
+            "y": 4510,
+            "width": 493,
+            "height": 84,
+            "top": 4510,
+            "right": 879,
+            "bottom": 4594,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4552
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/toolbar/",
+          "text": "Toolbar/zh-cn/ui-libraries/base/toolbar/",
+          "box": {
+            "x": 386,
+            "y": 4594,
+            "width": 493,
+            "height": 52,
+            "top": 4594,
+            "right": 879,
+            "bottom": 4646,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4620
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/toolbar/#_top",
+          "text": "Toolbar/zh-cn/ui-libraries/base/toolbar/#_top",
+          "box": {
+            "x": 386,
+            "y": 4646,
+            "width": 493,
+            "height": 52,
+            "top": 4646,
+            "right": 879,
+            "bottom": 4698,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4672
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/toolbar/#api",
+          "text": "API/zh-cn/ui-libraries/base/toolbar/#api",
+          "box": {
+            "x": 386,
+            "y": 4698,
+            "width": 493,
+            "height": 52,
+            "top": 4698,
+            "right": 879,
+            "bottom": 4750,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4724
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/when-not-to-write-a-new-prototype/",
+          "text": "为什么你通常不需要新写一个原型？/zh-cn/build/prototypes/when-not-to-write-a-new-prototype/",
+          "box": {
+            "x": 386,
+            "y": 4750,
+            "width": 493,
+            "height": 52,
+            "top": 4750,
+            "right": 879,
+            "bottom": 4802,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4776
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/when-not-to-write-a-new-prototype/#ashook-%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E4%B8%8D%E8%83%BD%E8%AF%81%E6%98%8E%E4%BB%80%E4%B9%88",
+          "text": "asHook 能解决什么，不能证明什么/zh-cn/build/prototypes/when-not-to-write-a-new-prototype/#ashook-%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E4%B8%8D%E8%83%BD%E8%AF%81%E6%98%8E%E4%BB%80%E4%B9%88",
+          "box": {
+            "x": 386,
+            "y": 4802,
+            "width": 493,
+            "height": 84,
+            "top": 4802,
+            "right": 879,
+            "bottom": 4886,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4844
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/build/prototypes/when-not-to-write-a-new-prototype/#lifecycle-%E6%8F%90%E9%86%92",
+          "text": "Lifecycle 提醒/zh-cn/build/prototypes/when-not-to-write-a-new-prototype/#lifecycle-%E6%8F%90%E9%86%92",
+          "box": {
+            "x": 386,
+            "y": 4886,
+            "width": 493,
+            "height": 68,
+            "top": 4886,
+            "right": 879,
+            "bottom": 4954,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4920
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/toolbar/",
+          "text": "Toolbar/zh-cn/ui-libraries/shadcn/toolbar/",
+          "box": {
+            "x": 386,
+            "y": 4954,
+            "width": 493,
+            "height": 52,
+            "top": 4954,
+            "right": 879,
+            "bottom": 5006,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 4980
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/toolbar/#_top",
+          "text": "Toolbar/zh-cn/ui-libraries/shadcn/toolbar/#_top",
+          "box": {
+            "x": 386,
+            "y": 5006,
+            "width": 493,
+            "height": 52,
+            "top": 5006,
+            "right": 879,
+            "bottom": 5058,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 5032
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/toolbar/#api",
+          "text": "API/zh-cn/ui-libraries/shadcn/toolbar/#api",
+          "box": {
+            "x": 386,
+            "y": 5058,
+            "width": 493,
+            "height": 52,
+            "top": 5058,
+            "right": 879,
+            "bottom": 5110,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 5084
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/toggle/",
+          "text": "Toggle/zh-cn/ui-libraries/base/toggle/",
+          "box": {
+            "x": 386,
+            "y": 5110,
+            "width": 493,
+            "height": 52,
+            "top": 5110,
+            "right": 879,
+            "bottom": 5162,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 5136
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/toggle/#_top",
+          "text": "Toggle/zh-cn/ui-libraries/base/toggle/#_top",
+          "box": {
+            "x": 386,
+            "y": 5162,
+            "width": 493,
+            "height": 52,
+            "top": 5162,
+            "right": 879,
+            "bottom": 5214,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 5188
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/toggle/#protocol-%E8%BE%B9%E7%95%8C",
+          "text": "Protocol 边界/zh-cn/ui-libraries/base/toggle/#protocol-%E8%BE%B9%E7%95%8C",
+          "box": {
+            "x": 386,
+            "y": 5214,
+            "width": 493,
+            "height": 52,
+            "top": 5214,
+            "right": 879,
+            "bottom": 5266,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 5240
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/base/toggle/#%E4%BA%A4%E4%BA%92%E4%B8%8E%E5%8F%AF%E8%AE%BF%E9%97%AE%E6%80%A7",
+          "text": "交互与可访问性/zh-cn/ui-libraries/base/toggle/#%E4%BA%A4%E4%BA%92%E4%B8%8E%E5%8F%AF%E8%AE%BF%E9%97%AE%E6%80%A7",
+          "box": {
+            "x": 386,
+            "y": 5266,
+            "width": 493,
+            "height": 84,
+            "top": 5266,
+            "right": 879,
+            "bottom": 5350,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 5308
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/bootstrap-2-3-2/toolbar/",
+          "text": "Toolbar/zh-cn/ui-libraries/bootstrap-2-3-2/toolbar/",
+          "box": {
+            "x": 386,
+            "y": 5350,
+            "width": 493,
+            "height": 52,
+            "top": 5350,
+            "right": 879,
+            "bottom": 5402,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 5376
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/bootstrap-2-3-2/toolbar/#_top",
+          "text": "Toolbar/zh-cn/ui-libraries/bootstrap-2-3-2/toolbar/#_top",
+          "box": {
+            "x": 386,
+            "y": 5402,
+            "width": 493,
+            "height": 52,
+            "top": 5402,
+            "right": 879,
+            "bottom": 5454,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 5428
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/toolbar/",
+          "text": "Toolbar/zh-cn/ui-libraries/liquid-glass/toolbar/",
+          "box": {
+            "x": 386,
+            "y": 5454,
+            "width": 493,
+            "height": 52,
+            "top": 5454,
+            "right": 879,
+            "bottom": 5506,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 5480
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/liquid-glass/toolbar/#_top",
+          "text": "Toolbar/zh-cn/ui-libraries/liquid-glass/toolbar/#_top",
+          "box": {
+            "x": 386,
+            "y": 5506,
+            "width": 493,
+            "height": 52,
+            "top": 5506,
+            "right": 879,
+            "bottom": 5558,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 5532
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/dialog/",
+          "text": "Dialog/zh-cn/ui-libraries/shadcn/dialog/",
+          "box": {
+            "x": 386,
+            "y": 5558,
+            "width": 493,
+            "height": 52,
+            "top": 5558,
+            "right": 879,
+            "bottom": 5610,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 5584
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/dialog/#_top",
+          "text": "Dialog/zh-cn/ui-libraries/shadcn/dialog/#_top",
+          "box": {
+            "x": 386,
+            "y": 5610,
+            "width": 493,
+            "height": 52,
+            "top": 5610,
+            "right": 879,
+            "bottom": 5662,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 5636
+          },
+          "ownsCenter": false,
+          "role": "option"
+        },
+        {
+          "href": "/zh-cn/ui-libraries/shadcn/dialog/#compound-parts",
+          "text": "Compound parts/zh-cn/ui-libraries/shadcn/dialog/#compound-parts",
+          "box": {
+            "x": 386,
+            "y": 5662,
+            "width": 493,
+            "height": 52,
+            "top": 5662,
+            "right": 879,
+            "bottom": 5714,
+            "left": 386
+          },
+          "point": {
+            "x": 632.5,
+            "y": 5688
+          },
+          "ownsCenter": false,
+          "role": "option"
+        }
+      ],
+      "fragments": 20
+    }
+  },
+  "index": {
+    "pages": 647,
+    "words": 15857,
+    "languages": ["en", "zh-cn"],
+    "brutalist": {
+      "rows": [
+        {
+          "index": 0,
+          "rawHref": "/zh-cn/ui-libraries/shadcn/button/",
+          "label": "Button/zh-cn/ui-libraries/shadcn/button/",
+          "visibleURL": "/zh-cn/ui-libraries/shadcn/button/"
+        },
+        {
+          "index": 1,
+          "rawHref": "/zh-cn/ui-libraries/shadcn/button/#_top",
+          "label": "Button/zh-cn/ui-libraries/shadcn/button/#_top",
+          "visibleURL": "/zh-cn/ui-libraries/shadcn/button/#_top"
+        },
+        {
+          "index": 2,
+          "rawHref": "/zh-cn/ui-libraries/shadcn/button/#%E5%AE%89%E8%A3%85",
+          "label": "安装/zh-cn/ui-libraries/shadcn/button/#%E5%AE%89%E8%A3%85",
+          "visibleURL": "/zh-cn/ui-libraries/shadcn/button/#%E5%AE%89%E8%A3%85"
+        },
+        {
+          "index": 3,
+          "rawHref": "/zh-cn/ui-libraries/shadcn/button/#%E9%BB%98%E8%AE%A4",
+          "label": "默认/zh-cn/ui-libraries/shadcn/button/#%E9%BB%98%E8%AE%A4",
+          "visibleURL": "/zh-cn/ui-libraries/shadcn/button/#%E9%BB%98%E8%AE%A4"
+        },
+        {
+          "index": 4,
+          "rawHref": "/zh-cn/ui-libraries/shadcn/button/#%E6%AC%A1%E8%A6%81",
+          "label": "次要/zh-cn/ui-libraries/shadcn/button/#%E6%AC%A1%E8%A6%81",
+          "visibleURL": "/zh-cn/ui-libraries/shadcn/button/#%E6%AC%A1%E8%A6%81"
+        },
+        {
+          "index": 5,
+          "rawHref": "/zh-cn/ui-libraries/shadcn/button/#%E6%8F%8F%E8%BE%B9",
+          "label": "描边/zh-cn/ui-libraries/shadcn/button/#%E6%8F%8F%E8%BE%B9",
+          "visibleURL": "/zh-cn/ui-libraries/shadcn/button/#%E6%8F%8F%E8%BE%B9"
+        },
+        {
+          "index": 6,
+          "rawHref": "/zh-cn/ui-libraries/shadcn/button/#%E5%B9%BD%E7%81%B5",
+          "label": "幽灵/zh-cn/ui-libraries/shadcn/button/#%E5%B9%BD%E7%81%B5",
+          "visibleURL": "/zh-cn/ui-libraries/shadcn/button/#%E5%B9%BD%E7%81%B5"
+        },
+        {
+          "index": 7,
+          "rawHref": "/zh-cn/ui-libraries/shadcn/button/#%E5%8D%B1%E9%99%A9%E6%93%8D%E4%BD%9C",
+          "label": "危险操作/zh-cn/ui-libraries/shadcn/button/#%E5%8D%B1%E9%99%A9%E6%93%8D%E4%BD%9C",
+          "visibleURL": "/zh-cn/ui-libraries/shadcn/button/#%E5%8D%B1%E9%99%A9%E6%93%8D%E4%BD%9C"
+        },
+        {
+          "index": 8,
+          "rawHref": "/zh-cn/ui-libraries/shadcn/button/#%E5%B0%BA%E5%AF%B8",
+          "label": "尺寸/zh-cn/ui-libraries/shadcn/button/#%E5%B0%BA%E5%AF%B8",
+          "visibleURL": "/zh-cn/ui-libraries/shadcn/button/#%E5%B0%BA%E5%AF%B8"
+        },
+        {
+          "index": 9,
+          "rawHref": "/zh-cn/ui-libraries/shadcn/button/#%E7%A6%81%E7%94%A8",
+          "label": "禁用/zh-cn/ui-libraries/shadcn/button/#%E7%A6%81%E7%94%A8",
+          "visibleURL": "/zh-cn/ui-libraries/shadcn/button/#%E7%A6%81%E7%94%A8"
+        },
+        {
+          "index": 10,
+          "rawHref": "/zh-cn/ui-libraries/shadcn/button/#%E5%8F%82%E8%80%83",
+          "label": "参考/zh-cn/ui-libraries/shadcn/button/#%E5%8F%82%E8%80%83",
+          "visibleURL": "/zh-cn/ui-libraries/shadcn/button/#%E5%8F%82%E8%80%83"
+        },
+        {
+          "index": 11,
+          "rawHref": "/zh-cn/ui-libraries/liquid-glass/select/",
+          "label": "Select/zh-cn/ui-libraries/liquid-glass/select/",
+          "visibleURL": "/zh-cn/ui-libraries/liquid-glass/select/"
+        },
+        {
+          "index": 12,
+          "rawHref": "/zh-cn/ui-libraries/liquid-glass/select/#%E5%8D%81%E4%B8%80%E4%B8%AA-part%E4%B8%80%E4%B8%AA-owner",
+          "label": "十一个 part，一个 owner/zh-cn/ui-libraries/liquid-glass/select/#%E5%8D%81%E4%B8%80%E4%B8%AA-part%E4%B8%80%E4%B8%AA-owner",
+          "visibleURL": "/zh-cn/ui-libraries/liquid-glass/select/#%E5%8D%81%E4%B8%80%E4%B8%AA-part%E4%B8%80%E4%B8%AA-owner"
+        },
+        {
+          "index": 13,
+          "rawHref": "/zh-cn/ui-libraries/brutalist/components/button/",
+          "label": "Brutalist Button/zh-cn/ui-libraries/brutalist/components/button/",
+          "visibleURL": "/zh-cn/ui-libraries/brutalist/components/button/"
+        },
+        {
+          "index": 14,
+          "rawHref": "/zh-cn/ui-libraries/brutalist/components/button/#_top",
+          "label": "Brutalist Button/zh-cn/ui-libraries/brutalist/components/button/#_top",
+          "visibleURL": "/zh-cn/ui-libraries/brutalist/components/button/#_top"
+        },
+        {
+          "index": 15,
+          "rawHref": "/zh-cn/ui-libraries/brutalist/components/button/#%E5%AE%89%E8%A3%85",
+          "label": "安装/zh-cn/ui-libraries/brutalist/components/button/#%E5%AE%89%E8%A3%85",
+          "visibleURL": "/zh-cn/ui-libraries/brutalist/components/button/#%E5%AE%89%E8%A3%85"
+        },
+        {
+          "index": 16,
+          "rawHref": "/zh-cn/ui-libraries/brutalist/components/button/#%E7%94%A8%E6%B3%95",
+          "label": "用法/zh-cn/ui-libraries/brutalist/components/button/#%E7%94%A8%E6%B3%95",
+          "visibleURL": "/zh-cn/ui-libraries/brutalist/components/button/#%E7%94%A8%E6%B3%95"
+        },
+        {
+          "index": 17,
+          "rawHref": "/zh-cn/ui-libraries/brutalist/components/button/#%E5%AE%9E%E5%BF%83",
+          "label": "实心/zh-cn/ui-libraries/brutalist/components/button/#%E5%AE%9E%E5%BF%83",
+          "visibleURL": "/zh-cn/ui-libraries/brutalist/components/button/#%E5%AE%9E%E5%BF%83"
+        },
+        {
+          "index": 18,
+          "rawHref": "/zh-cn/ui-libraries/brutalist/components/button/#%E8%A1%A8%E9%9D%A2",
+          "label": "表面/zh-cn/ui-libraries/brutalist/components/button/#%E8%A1%A8%E9%9D%A2",
+          "visibleURL": "/zh-cn/ui-libraries/brutalist/components/button/#%E8%A1%A8%E9%9D%A2"
+        },
+        {
+          "index": 19,
+          "rawHref": "/zh-cn/ui-libraries/brutalist/components/button/#%E5%8D%B1%E9%99%A9",
+          "label": "危险/zh-cn/ui-libraries/brutalist/components/button/#%E5%8D%B1%E9%99%A9",
+          "visibleURL": "/zh-cn/ui-libraries/brutalist/components/button/#%E5%8D%B1%E9%99%A9"
+        },
+        {
+          "index": 20,
+          "rawHref": "/zh-cn/ui-libraries/brutalist/components/button/#%E5%9B%BE%E6%A0%87",
+          "label": "图标/zh-cn/ui-libraries/brutalist/components/button/#%E5%9B%BE%E6%A0%87",
+          "visibleURL": "/zh-cn/ui-libraries/brutalist/components/button/#%E5%9B%BE%E6%A0%87"
+        },
+        {
+          "index": 21,
+          "rawHref": "/zh-cn/ui-libraries/brutalist/components/button/#%E7%A6%81%E7%94%A8",
+          "label": "禁用/zh-cn/ui-libraries/brutalist/components/button/#%E7%A6%81%E7%94%A8",
+          "visibleURL": "/zh-cn/ui-libraries/brutalist/components/button/#%E7%A6%81%E7%94%A8"
+        },
+        {
+          "index": 22,
+          "rawHref": "/zh-cn/ui-libraries/brutalist/components/button/#%E5%8F%82%E8%80%83",
+          "label": "参考/zh-cn/ui-libraries/brutalist/components/button/#%E5%8F%82%E8%80%83",
+          "visibleURL": "/zh-cn/ui-libraries/brutalist/components/button/#%E5%8F%82%E8%80%83"
+        },
+        {
+          "index": 23,
+          "rawHref": "/zh-cn/ui-libraries/base/button/",
+          "label": "Button/zh-cn/ui-libraries/base/button/",
+          "visibleURL": "/zh-cn/ui-libraries/base/button/"
+        },
+        {
+          "index": 24,
+          "rawHref": "/zh-cn/ui-libraries/base/button/#_top",
+          "label": "Button/zh-cn/ui-libraries/base/button/#_top",
+          "visibleURL": "/zh-cn/ui-libraries/base/button/#_top"
+        },
+        {
+          "index": 25,
+          "rawHref": "/zh-cn/ui-libraries/base/button/#protocol-%E8%BE%B9%E7%95%8C",
+          "label": "Protocol 边界/zh-cn/ui-libraries/base/button/#protocol-%E8%BE%B9%E7%95%8C",
+          "visibleURL": "/zh-cn/ui-libraries/base/button/#protocol-%E8%BE%B9%E7%95%8C"
+        },
+        {
+          "index": 26,
+          "rawHref": "/zh-cn/ui-libraries/base/button/#%E4%BA%A4%E4%BA%92%E4%B8%8E%E5%8F%AF%E8%AE%BF%E9%97%AE%E6%80%A7",
+          "label": "交互与可访问性/zh-cn/ui-libraries/base/button/#%E4%BA%A4%E4%BA%92%E4%B8%8E%E5%8F%AF%E8%AE%BF%E9%97%AE%E6%80%A7",
+          "visibleURL": "/zh-cn/ui-libraries/base/button/#%E4%BA%A4%E4%BA%92%E4%B8%8E%E5%8F%AF%E8%AE%BF%E9%97%AE%E6%80%A7"
+        },
+        {
+          "index": 27,
+          "rawHref": "/zh-cn/ui-libraries/base/button/#%E5%AE%89%E8%A3%85",
+          "label": "安装/zh-cn/ui-libraries/base/button/#%E5%AE%89%E8%A3%85",
+          "visibleURL": "/zh-cn/ui-libraries/base/button/#%E5%AE%89%E8%A3%85"
+        },
+        {
+          "index": 28,
+          "rawHref": "/zh-cn/ui-libraries/base/button/#%E7%94%A8%E6%B3%95",
+          "label": "用法/zh-cn/ui-libraries/base/button/#%E7%94%A8%E6%B3%95",
+          "visibleURL": "/zh-cn/ui-libraries/base/button/#%E7%94%A8%E6%B3%95"
+        },
+        {
+          "index": 29,
+          "rawHref": "/zh-cn/ui-libraries/base/button/#%E9%BB%98%E8%AE%A4",
+          "label": "默认/zh-cn/ui-libraries/base/button/#%E9%BB%98%E8%AE%A4",
+          "visibleURL": "/zh-cn/ui-libraries/base/button/#%E9%BB%98%E8%AE%A4"
+        },
+        {
+          "index": 30,
+          "rawHref": "/zh-cn/ui-libraries/base/button/#%E7%A6%81%E7%94%A8",
+          "label": "禁用/zh-cn/ui-libraries/base/button/#%E7%A6%81%E7%94%A8",
+          "visibleURL": "/zh-cn/ui-libraries/base/button/#%E7%A6%81%E7%94%A8"
+        },
+        {
+          "index": 31,
+          "rawHref": "/zh-cn/ui-libraries/base/button/#02-%E4%BA%A4%E4%BB%98%E4%B8%8E%E8%AF%81%E6%8D%AE",
+          "label": "0.2 交付与证据/zh-cn/ui-libraries/base/button/#02-%E4%BA%A4%E4%BB%98%E4%B8%8E%E8%AF%81%E6%8D%AE",
+          "visibleURL": "/zh-cn/ui-libraries/base/button/#02-%E4%BA%A4%E4%BB%98%E4%B8%8E%E8%AF%81%E6%8D%AE"
+        },
+        {
+          "index": 32,
+          "rawHref": "/zh-cn/ui-libraries/base/button/#lifecycle",
+          "label": "Lifecycle/zh-cn/ui-libraries/base/button/#lifecycle",
+          "visibleURL": "/zh-cn/ui-libraries/base/button/#lifecycle"
+        },
+        {
+          "index": 33,
+          "rawHref": "/zh-cn/ui-libraries/base/button/#%E5%8F%82%E8%80%83",
+          "label": "参考/zh-cn/ui-libraries/base/button/#%E5%8F%82%E8%80%83",
+          "visibleURL": "/zh-cn/ui-libraries/base/button/#%E5%8F%82%E8%80%83"
+        },
+        {
+          "index": 34,
+          "rawHref": "/zh-cn/ui-libraries/base/button/#api",
+          "label": "API/zh-cn/ui-libraries/base/button/#api",
+          "visibleURL": "/zh-cn/ui-libraries/base/button/#api"
+        },
+        {
+          "index": 35,
+          "rawHref": "/zh-cn/ui-libraries/base/button/#%E5%8F%82%E8%80%83-1",
+          "label": "参考/zh-cn/ui-libraries/base/button/#%E5%8F%82%E8%80%83-1",
+          "visibleURL": "/zh-cn/ui-libraries/base/button/#%E5%8F%82%E8%80%83-1"
+        },
+        {
+          "index": 36,
+          "rawHref": "/zh-cn/ui-libraries/bootstrap-2-3-2/button/",
+          "label": "Bootstrap 2.3.2 Button/zh-cn/ui-libraries/bootstrap-2-3-2/button/",
+          "visibleURL": "/zh-cn/ui-libraries/bootstrap-2-3-2/button/"
+        },
+        {
+          "index": 37,
+          "rawHref": "/zh-cn/ui-libraries/bootstrap-2-3-2/button/#_top",
+          "label": "Bootstrap 2.3.2 Button/zh-cn/ui-libraries/bootstrap-2-3-2/button/#_top",
+          "visibleURL": "/zh-cn/ui-libraries/bootstrap-2-3-2/button/#_top"
+        },
+        {
+          "index": 38,
+          "rawHref": "/zh-cn/ui-libraries/bootstrap-2-3-2/button/#%E5%AE%89%E8%A3%85",
+          "label": "安装/zh-cn/ui-libraries/bootstrap-2-3-2/button/#%E5%AE%89%E8%A3%85",
+          "visibleURL": "/zh-cn/ui-libraries/bootstrap-2-3-2/button/#%E5%AE%89%E8%A3%85"
+        },
+        {
+          "index": 39,
+          "rawHref": "/zh-cn/ui-libraries/bootstrap-2-3-2/button/#%E4%BD%BF%E7%94%A8",
+          "label": "使用/zh-cn/ui-libraries/bootstrap-2-3-2/button/#%E4%BD%BF%E7%94%A8",
+          "visibleURL": "/zh-cn/ui-libraries/bootstrap-2-3-2/button/#%E4%BD%BF%E7%94%A8"
+        },
+        {
+          "index": 40,
+          "rawHref": "/zh-cn/ui-libraries/bootstrap-2-3-2/button/#%E6%97%A0%E9%9A%9C%E7%A2%8D",
+          "label": "无障碍/zh-cn/ui-libraries/bootstrap-2-3-2/button/#%E6%97%A0%E9%9A%9C%E7%A2%8D",
+          "visibleURL": "/zh-cn/ui-libraries/bootstrap-2-3-2/button/#%E6%97%A0%E9%9A%9C%E7%A2%8D"
+        },
+        {
+          "index": 41,
+          "rawHref": "/zh-cn/ui-libraries/liquid-glass/button/",
+          "label": "Liquid Glass Button/zh-cn/ui-libraries/liquid-glass/button/",
+          "visibleURL": "/zh-cn/ui-libraries/liquid-glass/button/"
+        },
+        {
+          "index": 42,
+          "rawHref": "/zh-cn/ui-libraries/liquid-glass/button/#_top",
+          "label": "Liquid Glass Button/zh-cn/ui-libraries/liquid-glass/button/#_top",
+          "visibleURL": "/zh-cn/ui-libraries/liquid-glass/button/#_top"
+        },
+        {
+          "index": 43,
+          "rawHref": "/zh-cn/ui-libraries/liquid-glass/button/#%E5%AE%89%E8%A3%85",
+          "label": "安装/zh-cn/ui-libraries/liquid-glass/button/#%E5%AE%89%E8%A3%85",
+          "visibleURL": "/zh-cn/ui-libraries/liquid-glass/button/#%E5%AE%89%E8%A3%85"
+        },
+        {
+          "index": 44,
+          "rawHref": "/zh-cn/ui-libraries/liquid-glass/button/#%E7%94%A8%E6%B3%95",
+          "label": "用法/zh-cn/ui-libraries/liquid-glass/button/#%E7%94%A8%E6%B3%95",
+          "visibleURL": "/zh-cn/ui-libraries/liquid-glass/button/#%E7%94%A8%E6%B3%95"
+        },
+        {
+          "index": 45,
+          "rawHref": "/zh-cn/ui-libraries/liquid-glass/button/#%E5%B8%B8%E8%A7%84",
+          "label": "常规/zh-cn/ui-libraries/liquid-glass/button/#%E5%B8%B8%E8%A7%84",
+          "visibleURL": "/zh-cn/ui-libraries/liquid-glass/button/#%E5%B8%B8%E8%A7%84"
+        },
+        {
+          "index": 46,
+          "rawHref": "/zh-cn/ui-libraries/liquid-glass/button/#%E5%BC%BA%E8%B0%83",
+          "label": "强调/zh-cn/ui-libraries/liquid-glass/button/#%E5%BC%BA%E8%B0%83",
+          "visibleURL": "/zh-cn/ui-libraries/liquid-glass/button/#%E5%BC%BA%E8%B0%83"
+        },
+        {
+          "index": 47,
+          "rawHref": "/zh-cn/ui-libraries/liquid-glass/button/#%E7%A6%81%E7%94%A8",
+          "label": "禁用/zh-cn/ui-libraries/liquid-glass/button/#%E7%A6%81%E7%94%A8",
+          "visibleURL": "/zh-cn/ui-libraries/liquid-glass/button/#%E7%A6%81%E7%94%A8"
+        },
+        {
+          "index": 48,
+          "rawHref": "/zh-cn/ui-libraries/liquid-glass/button/#api",
+          "label": "API/zh-cn/ui-libraries/liquid-glass/button/#api",
+          "visibleURL": "/zh-cn/ui-libraries/liquid-glass/button/#api"
+        },
+        {
+          "index": 49,
+          "rawHref": "/zh-cn/build/prototypes/writing-a-custom-primitive-prototype/",
+          "label": "编写一个定制的单体原型/zh-cn/build/prototypes/writing-a-custom-primitive-prototype/",
+          "visibleURL": "/zh-cn/build/prototypes/writing-a-custom-primitive-prototype/"
+        },
+        {
+          "index": 50,
+          "rawHref": "/zh-cn/build/prototypes/writing-a-custom-primitive-prototype/#_top",
+          "label": "编写一个定制的单体原型/zh-cn/build/prototypes/writing-a-custom-primitive-prototype/#_top",
+          "visibleURL": "/zh-cn/build/prototypes/writing-a-custom-primitive-prototype/#_top"
+        },
+        {
+          "index": 51,
+          "rawHref": "/zh-cn/build/prototypes/writing-a-custom-primitive-prototype/#%E4%BB%8E%E5%AE%9E%E4%BD%93%E5%92%8C%E8%AF%81%E6%8D%AE%E5%BC%80%E5%A7%8B",
+          "label": "从实体和证据开始/zh-cn/build/prototypes/writing-a-custom-primitive-prototype/#%E4%BB%8E%E5%AE%9E%E4%BD%93%E5%92%8C%E8%AF%81%E6%8D%AE%E5%BC%80%E5%A7%8B",
+          "visibleURL": "/zh-cn/build/prototypes/writing-a-custom-primitive-prototype/#%E4%BB%8E%E5%AE%9E%E4%BD%93%E5%92%8C%E8%AF%81%E6%8D%AE%E5%BC%80%E5%A7%8B"
+        },
+        {
+          "index": 52,
+          "rawHref": "/zh-cn/build/prototypes/writing-a-custom-primitive-prototype/#base-button-%E5%B1%95%E7%A4%BA%E4%BA%86%E4%BB%80%E4%B9%88",
+          "label": "base-button 展示了什么/zh-cn/build/prototypes/writing-a-custom-primitive-prototype/#base-button-%E5%B1%95%E7%A4%BA%E4%BA%86%E4%BB%80%E4%B9%88",
+          "visibleURL": "/zh-cn/build/prototypes/writing-a-custom-primitive-prototype/#base-button-%E5%B1%95%E7%A4%BA%E4%BA%86%E4%BB%80%E4%B9%88"
+        },
+        {
+          "index": 53,
+          "rawHref": "/zh-cn/build/prototypes/reference-patterns/",
+          "label": "参考实现应该怎么看/zh-cn/build/prototypes/reference-patterns/",
+          "visibleURL": "/zh-cn/build/prototypes/reference-patterns/"
+        },
+        {
+          "index": 54,
+          "rawHref": "/zh-cn/build/prototypes/reference-patterns/#2-%E9%98%85%E8%AF%BB%E5%8D%95%E4%BD%93-prototype",
+          "label": "2. 阅读单体 Prototype/zh-cn/build/prototypes/reference-patterns/#2-%E9%98%85%E8%AF%BB%E5%8D%95%E4%BD%93-prototype",
+          "visibleURL": "/zh-cn/build/prototypes/reference-patterns/#2-%E9%98%85%E8%AF%BB%E5%8D%95%E4%BD%93-prototype"
+        },
+        {
+          "index": 55,
+          "rawHref": "/zh-cn/build/prototypes/reference-patterns/#4-%E9%98%85%E8%AF%BB%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%E6%8A%95%E5%B0%84",
+          "label": "4. 阅读设计语言投射/zh-cn/build/prototypes/reference-patterns/#4-%E9%98%85%E8%AF%BB%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%E6%8A%95%E5%B0%84",
+          "visibleURL": "/zh-cn/build/prototypes/reference-patterns/#4-%E9%98%85%E8%AF%BB%E8%AE%BE%E8%AE%A1%E8%AF%AD%E8%A8%80%E6%8A%95%E5%B0%84"
+        },
+        {
+          "index": 56,
+          "rawHref": "/zh-cn/build/prototypes/reference-patterns/#lifecycle-%E6%8F%90%E9%86%92",
+          "label": "Lifecycle 提醒/zh-cn/build/prototypes/reference-patterns/#lifecycle-%E6%8F%90%E9%86%92",
+          "visibleURL": "/zh-cn/build/prototypes/reference-patterns/#lifecycle-%E6%8F%90%E9%86%92"
+        },
+        {
+          "index": 57,
+          "rawHref": "/zh-cn/build/prototypes/building-a-styled-library-on-top-of-base/",
+          "label": "基于 Base 长出一个带风格的原型库/zh-cn/build/prototypes/building-a-styled-library-on-top-of-base/",
+          "visibleURL": "/zh-cn/build/prototypes/building-a-styled-library-on-top-of-base/"
+        },
+        {
+          "index": 58,
+          "rawHref": "/zh-cn/build/prototypes/building-a-styled-library-on-top-of-base/#shadcn-button-%E7%9A%84%E5%BD%93%E5%89%8D%E5%BD%A2%E7%8A%B6",
+          "label": "Shadcn Button 的当前形状/zh-cn/build/prototypes/building-a-styled-library-on-top-of-base/#shadcn-button-%E7%9A%84%E5%BD%93%E5%89%8D%E5%BD%A2%E7%8A%B6",
+          "visibleURL": "/zh-cn/build/prototypes/building-a-styled-library-on-top-of-base/#shadcn-button-%E7%9A%84%E5%BD%93%E5%89%8D%E5%BD%A2%E7%8A%B6"
+        },
+        {
+          "index": 59,
+          "rawHref": "/zh-cn/build/prototypes/documentation-coverage/",
+          "label": "原型文档覆盖索引/zh-cn/build/prototypes/documentation-coverage/",
+          "visibleURL": "/zh-cn/build/prototypes/documentation-coverage/"
+        },
+        {
+          "index": 60,
+          "rawHref": "/zh-cn/build/prototypes/documentation-coverage/#base",
+          "label": "base/zh-cn/build/prototypes/documentation-coverage/#base",
+          "visibleURL": "/zh-cn/build/prototypes/documentation-coverage/#base"
+        },
+        {
+          "index": 61,
+          "rawHref": "/zh-cn/build/prototypes/documentation-coverage/#bootstrap-2-3-2",
+          "label": "bootstrap-2-3-2/zh-cn/build/prototypes/documentation-coverage/#bootstrap-2-3-2",
+          "visibleURL": "/zh-cn/build/prototypes/documentation-coverage/#bootstrap-2-3-2"
+        },
+        {
+          "index": 62,
+          "rawHref": "/zh-cn/build/prototypes/documentation-coverage/#brutalist",
+          "label": "brutalist/zh-cn/build/prototypes/documentation-coverage/#brutalist",
+          "visibleURL": "/zh-cn/build/prototypes/documentation-coverage/#brutalist"
+        },
+        {
+          "index": 63,
+          "rawHref": "/zh-cn/build/prototypes/documentation-coverage/#liquid-glass",
+          "label": "liquid-glass/zh-cn/build/prototypes/documentation-coverage/#liquid-glass",
+          "visibleURL": "/zh-cn/build/prototypes/documentation-coverage/#liquid-glass"
+        },
+        {
+          "index": 64,
+          "rawHref": "/zh-cn/build/prototypes/documentation-coverage/#shadcn",
+          "label": "shadcn/zh-cn/build/prototypes/documentation-coverage/#shadcn",
+          "visibleURL": "/zh-cn/build/prototypes/documentation-coverage/#shadcn"
+        },
+        {
+          "index": 65,
+          "rawHref": "/zh-cn/build/prototypes/documentation-coverage/#%E5%88%86%E6%94%AF%E6%96%B0%E5%A2%9E%E9%A1%B9%E4%B8%8E%E7%BC%BA%E5%8F%A3",
+          "label": "分支新增项与缺口/zh-cn/build/prototypes/documentation-coverage/#%E5%88%86%E6%94%AF%E6%96%B0%E5%A2%9E%E9%A1%B9%E4%B8%8E%E7%BC%BA%E5%8F%A3",
+          "visibleURL": "/zh-cn/build/prototypes/documentation-coverage/#%E5%88%86%E6%94%AF%E6%96%B0%E5%A2%9E%E9%A1%B9%E4%B8%8E%E7%BC%BA%E5%8F%A3"
+        },
+        {
+          "index": 66,
+          "rawHref": "/zh-cn/ui-libraries/liquid-glass/material-experiment/",
+          "label": "Material 实验/zh-cn/ui-libraries/liquid-glass/material-experiment/",
+          "visibleURL": "/zh-cn/ui-libraries/liquid-glass/material-experiment/"
+        },
+        {
+          "index": 67,
+          "rawHref": "/zh-cn/ui-libraries/liquid-glass/material-experiment/#_top",
+          "label": "Material 实验/zh-cn/ui-libraries/liquid-glass/material-experiment/#_top",
+          "visibleURL": "/zh-cn/ui-libraries/liquid-glass/material-experiment/#_top"
+        },
+        {
+          "index": 68,
+          "rawHref": "/zh-cn/ui-libraries/liquid-glass/material-experiment/#%E5%AE%9E%E9%AA%8C%E7%BB%84%E5%90%88%E5%A3%B0%E6%98%8E%E4%BB%80%E4%B9%88",
+          "label": "实验组合声明什么/zh-cn/ui-libraries/liquid-glass/material-experiment/#%E5%AE%9E%E9%AA%8C%E7%BB%84%E5%90%88%E5%A3%B0%E6%98%8E%E4%BB%80%E4%B9%88",
+          "visibleURL": "/zh-cn/ui-libraries/liquid-glass/material-experiment/#%E5%AE%9E%E9%AA%8C%E7%BB%84%E5%90%88%E5%A3%B0%E6%98%8E%E4%BB%80%E4%B9%88"
+        },
+        {
+          "index": 69,
+          "rawHref": "/zh-cn/ui-libraries/liquid-glass/material-experiment/#%E8%AF%81%E6%8D%AE%E4%B8%8E%E9%99%90%E5%88%B6",
+          "label": "证据与限制/zh-cn/ui-libraries/liquid-glass/material-experiment/#%E8%AF%81%E6%8D%AE%E4%B8%8E%E9%99%90%E5%88%B6",
+          "visibleURL": "/zh-cn/ui-libraries/liquid-glass/material-experiment/#%E8%AF%81%E6%8D%AE%E4%B8%8E%E9%99%90%E5%88%B6"
+        },
+        {
+          "index": 70,
+          "rawHref": "/zh-cn/ui-libraries/liquid-glass/material-experiment/#%E6%9D%A5%E6%BA%90%E4%B8%8E%E8%AE%B8%E5%8F%AF%E8%AF%81",
+          "label": "来源与许可证/zh-cn/ui-libraries/liquid-glass/material-experiment/#%E6%9D%A5%E6%BA%90%E4%B8%8E%E8%AE%B8%E5%8F%AF%E8%AF%81",
+          "visibleURL": "/zh-cn/ui-libraries/liquid-glass/material-experiment/#%E6%9D%A5%E6%BA%90%E4%B8%8E%E8%AE%B8%E5%8F%AF%E8%AF%81"
+        },
+        {
+          "index": 71,
+          "rawHref": "/zh-cn/ui-libraries/brutalist/components/toolbar/",
+          "label": "Toolbar/zh-cn/ui-libraries/brutalist/components/toolbar/",
+          "visibleURL": "/zh-cn/ui-libraries/brutalist/components/toolbar/"
+        },
+        {
+          "index": 72,
+          "rawHref": "/zh-cn/ui-libraries/brutalist/components/toolbar/#_top",
+          "label": "Toolbar/zh-cn/ui-libraries/brutalist/components/toolbar/#_top",
+          "visibleURL": "/zh-cn/ui-libraries/brutalist/components/toolbar/#_top"
+        },
+        {
+          "index": 73,
+          "rawHref": "/zh-cn/ui-libraries/brutalist/components/toolbar/#api",
+          "label": "API/zh-cn/ui-libraries/brutalist/components/toolbar/#api",
+          "visibleURL": "/zh-cn/ui-libraries/brutalist/components/toolbar/#api"
+        },
+        {
+          "index": 74,
+          "rawHref": "/zh-cn/whitepaper/0-preface/",
+          "label": "序章：我们还要发明多少次 Button？/zh-cn/whitepaper/0-preface/",
+          "visibleURL": "/zh-cn/whitepaper/0-preface/"
+        },
+        {
+          "index": 75,
+          "rawHref": "/zh-cn/whitepaper/0-preface/#_top",
+          "label": "序章：我们还要发明多少次 Button？/zh-cn/whitepaper/0-preface/#_top",
+          "visibleURL": "/zh-cn/whitepaper/0-preface/#_top"
+        },
+        {
+          "index": 76,
+          "rawHref": "/zh-cn/whitepaper/0-preface/#%E4%B8%80%E5%86%8D%E5%87%BA%E7%8E%B0%E7%9A%84%E4%BA%A4%E4%BA%92%E8%B4%A3%E4%BB%BB",
+          "label": "一再出现的交互责任/zh-cn/whitepaper/0-preface/#%E4%B8%80%E5%86%8D%E5%87%BA%E7%8E%B0%E7%9A%84%E4%BA%A4%E4%BA%92%E8%B4%A3%E4%BB%BB",
+          "visibleURL": "/zh-cn/whitepaper/0-preface/#%E4%B8%80%E5%86%8D%E5%87%BA%E7%8E%B0%E7%9A%84%E4%BA%A4%E4%BA%92%E8%B4%A3%E4%BB%BB"
+        },
+        {
+          "index": 77,
+          "rawHref": "/zh-cn/ui-libraries/base/toolbar/",
+          "label": "Toolbar/zh-cn/ui-libraries/base/toolbar/",
+          "visibleURL": "/zh-cn/ui-libraries/base/toolbar/"
+        },
+        {
+          "index": 78,
+          "rawHref": "/zh-cn/ui-libraries/base/toolbar/#_top",
+          "label": "Toolbar/zh-cn/ui-libraries/base/toolbar/#_top",
+          "visibleURL": "/zh-cn/ui-libraries/base/toolbar/#_top"
+        },
+        {
+          "index": 79,
+          "rawHref": "/zh-cn/ui-libraries/base/toolbar/#api",
+          "label": "API/zh-cn/ui-libraries/base/toolbar/#api",
+          "visibleURL": "/zh-cn/ui-libraries/base/toolbar/#api"
+        },
+        {
+          "index": 80,
+          "rawHref": "/zh-cn/build/prototypes/when-not-to-write-a-new-prototype/",
+          "label": "为什么你通常不需要新写一个原型？/zh-cn/build/prototypes/when-not-to-write-a-new-prototype/",
+          "visibleURL": "/zh-cn/build/prototypes/when-not-to-write-a-new-prototype/"
+        },
+        {
+          "index": 81,
+          "rawHref": "/zh-cn/build/prototypes/when-not-to-write-a-new-prototype/#ashook-%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E4%B8%8D%E8%83%BD%E8%AF%81%E6%98%8E%E4%BB%80%E4%B9%88",
+          "label": "asHook 能解决什么，不能证明什么/zh-cn/build/prototypes/when-not-to-write-a-new-prototype/#ashook-%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E4%B8%8D%E8%83%BD%E8%AF%81%E6%98%8E%E4%BB%80%E4%B9%88",
+          "visibleURL": "/zh-cn/build/prototypes/when-not-to-write-a-new-prototype/#ashook-%E8%83%BD%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E4%B8%8D%E8%83%BD%E8%AF%81%E6%98%8E%E4%BB%80%E4%B9%88"
+        },
+        {
+          "index": 82,
+          "rawHref": "/zh-cn/build/prototypes/when-not-to-write-a-new-prototype/#lifecycle-%E6%8F%90%E9%86%92",
+          "label": "Lifecycle 提醒/zh-cn/build/prototypes/when-not-to-write-a-new-prototype/#lifecycle-%E6%8F%90%E9%86%92",
+          "visibleURL": "/zh-cn/build/prototypes/when-not-to-write-a-new-prototype/#lifecycle-%E6%8F%90%E9%86%92"
+        },
+        {
+          "index": 83,
+          "rawHref": "/zh-cn/ui-libraries/shadcn/toolbar/",
+          "label": "Toolbar/zh-cn/ui-libraries/shadcn/toolbar/",
+          "visibleURL": "/zh-cn/ui-libraries/shadcn/toolbar/"
+        },
+        {
+          "index": 84,
+          "rawHref": "/zh-cn/ui-libraries/shadcn/toolbar/#_top",
+          "label": "Toolbar/zh-cn/ui-libraries/shadcn/toolbar/#_top",
+          "visibleURL": "/zh-cn/ui-libraries/shadcn/toolbar/#_top"
+        },
+        {
+          "index": 85,
+          "rawHref": "/zh-cn/ui-libraries/shadcn/toolbar/#api",
+          "label": "API/zh-cn/ui-libraries/shadcn/toolbar/#api",
+          "visibleURL": "/zh-cn/ui-libraries/shadcn/toolbar/#api"
+        },
+        {
+          "index": 86,
+          "rawHref": "/zh-cn/ui-libraries/base/toggle/",
+          "label": "Toggle/zh-cn/ui-libraries/base/toggle/",
+          "visibleURL": "/zh-cn/ui-libraries/base/toggle/"
+        },
+        {
+          "index": 87,
+          "rawHref": "/zh-cn/ui-libraries/base/toggle/#_top",
+          "label": "Toggle/zh-cn/ui-libraries/base/toggle/#_top",
+          "visibleURL": "/zh-cn/ui-libraries/base/toggle/#_top"
+        },
+        {
+          "index": 88,
+          "rawHref": "/zh-cn/ui-libraries/base/toggle/#protocol-%E8%BE%B9%E7%95%8C",
+          "label": "Protocol 边界/zh-cn/ui-libraries/base/toggle/#protocol-%E8%BE%B9%E7%95%8C",
+          "visibleURL": "/zh-cn/ui-libraries/base/toggle/#protocol-%E8%BE%B9%E7%95%8C"
+        },
+        {
+          "index": 89,
+          "rawHref": "/zh-cn/ui-libraries/base/toggle/#%E4%BA%A4%E4%BA%92%E4%B8%8E%E5%8F%AF%E8%AE%BF%E9%97%AE%E6%80%A7",
+          "label": "交互与可访问性/zh-cn/ui-libraries/base/toggle/#%E4%BA%A4%E4%BA%92%E4%B8%8E%E5%8F%AF%E8%AE%BF%E9%97%AE%E6%80%A7",
+          "visibleURL": "/zh-cn/ui-libraries/base/toggle/#%E4%BA%A4%E4%BA%92%E4%B8%8E%E5%8F%AF%E8%AE%BF%E9%97%AE%E6%80%A7"
+        },
+        {
+          "index": 90,
+          "rawHref": "/zh-cn/ui-libraries/bootstrap-2-3-2/toolbar/",
+          "label": "Toolbar/zh-cn/ui-libraries/bootstrap-2-3-2/toolbar/",
+          "visibleURL": "/zh-cn/ui-libraries/bootstrap-2-3-2/toolbar/"
+        },
+        {
+          "index": 91,
+          "rawHref": "/zh-cn/ui-libraries/bootstrap-2-3-2/toolbar/#_top",
+          "label": "Toolbar/zh-cn/ui-libraries/bootstrap-2-3-2/toolbar/#_top",
+          "visibleURL": "/zh-cn/ui-libraries/bootstrap-2-3-2/toolbar/#_top"
+        },
+        {
+          "index": 92,
+          "rawHref": "/zh-cn/ui-libraries/liquid-glass/toolbar/",
+          "label": "Toolbar/zh-cn/ui-libraries/liquid-glass/toolbar/",
+          "visibleURL": "/zh-cn/ui-libraries/liquid-glass/toolbar/"
+        },
+        {
+          "index": 93,
+          "rawHref": "/zh-cn/ui-libraries/liquid-glass/toolbar/#_top",
+          "label": "Toolbar/zh-cn/ui-libraries/liquid-glass/toolbar/#_top",
+          "visibleURL": "/zh-cn/ui-libraries/liquid-glass/toolbar/#_top"
+        },
+        {
+          "index": 94,
+          "rawHref": "/zh-cn/ui-libraries/shadcn/dialog/",
+          "label": "Dialog/zh-cn/ui-libraries/shadcn/dialog/",
+          "visibleURL": "/zh-cn/ui-libraries/shadcn/dialog/"
+        },
+        {
+          "index": 95,
+          "rawHref": "/zh-cn/ui-libraries/shadcn/dialog/#_top",
+          "label": "Dialog/zh-cn/ui-libraries/shadcn/dialog/#_top",
+          "visibleURL": "/zh-cn/ui-libraries/shadcn/dialog/#_top"
+        },
+        {
+          "index": 96,
+          "rawHref": "/zh-cn/ui-libraries/shadcn/dialog/#compound-parts",
+          "label": "Compound parts/zh-cn/ui-libraries/shadcn/dialog/#compound-parts",
+          "visibleURL": "/zh-cn/ui-libraries/shadcn/dialog/#compound-parts"
+        }
+      ],
+      "destination": {
+        "index": 0,
+        "rawHref": "/zh-cn/ui-libraries/shadcn/button/",
+        "label": "Button/zh-cn/ui-libraries/shadcn/button/",
+        "visibleURL": "/zh-cn/ui-libraries/shadcn/button/"
+      },
+      "destinationStatus": 200,
+      "failedProbes": 1,
+      "completedResponses": 27
+    }
+  },
+  "publishedPNGHash": "4bdcb366d569713a1c3fcaad008c3577a5b62132da05fb769699228a5350418d"
+}
