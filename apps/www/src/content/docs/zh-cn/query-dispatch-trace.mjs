@@ -30,11 +30,19 @@ function errorReason(error) {
 
 // Observe one original query. No Runtime/Debugger evaluation, sourceURL, warmup
 // or replacement query is sent. Browser dispatch is not the pipe receipt time.
-export function createQueryDispatchTrace(page, directory) {
+export function createQueryDispatchTrace(page, directory, options = {}) {
+  const maxBytes = options.contentsStaging ? 48 * 1024 * 1024 : MAX_BYTES;
+  const traceCategories = options.contentsStaging
+    ? [
+        ...categories.filter((category) => category !== 'disabled-by-default-v8.compile'),
+        'blink.user_timing',
+        'disabled-by-default-v8.cpu_profiler',
+      ]
+    : categories;
   const browser = page.context().browser();
   const report = {
     kind: 'original-query-dispatch-trace-v1',
-    categories,
+    categories: traceCategories,
     browserVersion: browser?.version(),
     rows: [],
     errors: [],
@@ -138,9 +146,9 @@ export function createQueryDispatchTrace(page, directory) {
               streamCompression: 'none',
               traceConfig: {
                 recordMode: 'recordUntilFull',
-                traceBufferSizeInKb: MAX_BYTES / 1024,
-                includedCategories: categories,
-                enableSampling: false,
+                traceBufferSizeInKb: maxBytes / 1024,
+                includedCategories: traceCategories,
+                enableSampling: !!options.contentsStaging,
               },
             }).then(
               () => {
@@ -194,7 +202,7 @@ export function createQueryDispatchTrace(page, directory) {
       report.cleanup.originalContextClosed = contextClosed;
       report.originalObservation = observation;
       const chunks = [];
-      const deadline = performance.now() + 8000;
+      const deadline = performance.now() + (options.contentsStaging ? 12000 : 8000);
       let startSettled = false;
       try {
         if (acquirePromise) await bounded(acquirePromise, 'pending trace setup', 2000);
@@ -206,7 +214,7 @@ export function createQueryDispatchTrace(page, directory) {
         if (!stream) throw new Error('Trace completed without a stream');
         let eof = false;
         while (!eof && performance.now() < deadline) {
-          const remaining = MAX_BYTES - report.trace.bytes;
+          const remaining = maxBytes - report.trace.bytes;
           const result = await bounded(
             send('IO.read', {
               handle: stream,
@@ -219,7 +227,9 @@ export function createQueryDispatchTrace(page, directory) {
           chunks.push(bytes.subarray(0, remaining));
           report.trace.bytes += Math.min(bytes.length, remaining);
           if (bytes.length > remaining)
-            throw new Error('Trace exceeds 32MiB; retained prefix is incomplete');
+            throw new Error(
+              `Trace exceeds ${maxBytes / 1024 / 1024}MiB; retained prefix is incomplete`
+            );
           eof = result.eof;
         }
         report.trace.complete = eof;

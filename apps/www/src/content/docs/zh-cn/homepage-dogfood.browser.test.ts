@@ -9,6 +9,7 @@ import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { installDocsCallTimingObserver } from './docs-query-timing.mjs';
+import { createQueryDispatchTrace } from './query-dispatch-trace.mjs';
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
@@ -646,8 +647,7 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
         sibling.textContent = 'Original home sibling';
         home.append(tree, sibling);
         const host = document.createElement('div');
-        host.style.cssText =
-          'position:fixed;left:16px;top:300px;width:240px;z-index:2147483000';
+        host.style.cssText = 'position:fixed;left:16px;top:300px;width:240px;z-index:2147483000';
         const shadow = host.attachShadow({ mode: 'open' });
         const content = document.createElement('div');
         content.style.cssText =
@@ -704,7 +704,8 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
               viewportBottom: bottom,
               rowTop: row.top,
               rowBottom: row.bottom,
-              visible: row.width > 0 && row.height > 0 && row.top >= top - 1 && row.bottom <= bottom + 1,
+              visible:
+                row.width > 0 && row.height > 0 && row.top >= top - 1 && row.bottom <= bottom + 1,
               nearestBottom: Math.abs(row.bottom - bottom) <= 1,
               trustedManualInput:
                 manualInputs.length > 0 &&
@@ -885,6 +886,9 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
   }, 60_000);
 
   it('uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence', async () => {
+    const timingProbe =
+      process.env.GITHUB_ACTIONS === 'true' || process.env.PROTO_UI_CONTENTS_TIMING_PROBE === '1';
+    const cpuRate = 1;
     type CloseObservation = {
       initialMarker: string | null;
       events: (
@@ -913,6 +917,17 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           'components/override/Sidebar.astro',
           'components/override/PageFrame.astro',
           'styles/site-contents-command.css',
+          ...(timingProbe
+            ? [
+                'components/PrototypePreviewer/demo-renderer.ts',
+                'components/PrototypePreviewer/projection-materializer.ts',
+                'content/docs/zh-cn/docs-query-timing.mjs',
+                'content/docs/zh-cn/homepage-dogfood.browser.test.ts',
+                'content/docs/zh-cn/query-dispatch-trace.d.mts',
+                'content/docs/zh-cn/query-dispatch-trace.mjs',
+                'content/docs/zh-cn/ui-libraries/shadcn/button.mdx',
+              ]
+            : []),
         ].map((file) => [
           file,
           createHash('sha256')
@@ -937,6 +952,9 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           : route.abort()
       );
       const page = await context.newPage();
+      let callTiming: ReturnType<typeof installDocsCallTimingObserver> | undefined;
+      let stagingTrace: ReturnType<typeof createQueryDispatchTrace> | undefined;
+      let pollCount = 0;
       const pageErrors: string[] = [];
       page.on('pageerror', (error) => pageErrors.push(error.message));
       page.on('console', (message) => {
@@ -966,6 +984,15 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           }).observe({ type: 'longtask', buffered: true });
       });
       try {
+        if (timingProbe && family === 'shadcn') {
+          callTiming = installDocsCallTimingObserver(page, {
+            sdkRoot: path.dirname(
+              createRequire(import.meta.url).resolve('playwright-core/package.json')
+            ),
+            selector: '[data-site-contents-command]',
+            attribute: 'data-contents-runtime',
+          });
+        }
         const route =
           family === 'shadcn'
             ? '/zh-cn/ui-libraries/shadcn/button/'
@@ -992,6 +1019,40 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           const select = page.locator('[data-adapter-select] [role="combobox"]');
           await select.click();
           const popup = await select.getAttribute('aria-controls');
+          const traceReact = !!callTiming && runtime === 'react';
+          if (traceReact) {
+            stagingTrace = createQueryDispatchTrace(
+              page,
+              path.join(directory, 'shadcn-react-timing-trace'),
+              { contentsStaging: true }
+            );
+            try {
+              await stagingTrace.prepare();
+            } catch (error) {
+              stagingTrace = undefined;
+              console.error('[Contents dispatch trace unavailable]', error);
+            }
+            await page.evaluate(() => {
+              const target = document.querySelector('[data-site-contents-command]');
+              if (target)
+                new MutationObserver(() => {
+                  performance.mark(
+                    `pui-contents:observer:runtime:${target.getAttribute('data-contents-runtime')}`
+                  );
+                }).observe(target, {
+                  attributes: true,
+                  attributeFilter: ['data-contents-runtime'],
+                });
+              performance.mark('pui-contents:probe:0:before-click');
+              window.addEventListener(
+                'click',
+                (event) => {
+                  if (event.isTrusted) performance.mark('pui-contents:probe:0:trusted-click');
+                },
+                { capture: true, once: true }
+              );
+            });
+          }
           const transitionStartedAt = Date.now();
           await page
             .locator(`[id=${JSON.stringify(popup)}]`)
@@ -999,12 +1060,24 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
             .click();
           const clickedAt = Date.now();
           let originalError: unknown;
+          const readRuntime = () => root.getAttribute('data-contents-runtime');
           try {
-            await expect.poll(() => root.getAttribute('data-contents-runtime')).toBe(runtime);
+            await expect
+              .poll(() =>
+                traceReact && callTiming
+                  ? callTiming.runOriginalQuery(++pollCount, readRuntime)
+                  : readRuntime()
+              )
+              .toBe(runtime);
           } catch (error) {
             originalError = error;
           }
           const originalCheckAt = Date.now();
+          const verdict = { passed: !originalError, clickedAt, originalCheckAt };
+          if (traceReact) {
+            callTiming?.freezeVerdict(verdict.passed);
+            stagingTrace?.markVerdict({ source, verdict, cpuRate, query: callTiming?.snapshot() });
+          }
           const readTransition = () =>
             page.evaluate((since) => {
               const contents = document.querySelector<HTMLElement>('[data-site-contents-command]');
@@ -1027,6 +1100,14 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
                     'header [data-projection-generation-host]'
                   ),
                 ].map((element) => ({ ...element.dataset, inert: element.inert })),
+                stages: performance
+                  .getEntriesByType('mark')
+                  .filter((entry) => entry.name.startsWith('pui-contents:'))
+                  .map((entry) => ({
+                    name: entry.name,
+                    at: performance.timeOrigin + entry.startTime,
+                  })),
+                codeExamples: document.querySelectorAll('[data-code-example]').length,
                 longTasks: evidence?.longTasks.filter((entry) => entry.start >= since),
                 changes: evidence?.changes.filter((entry) => entry.at >= since),
                 resources: performance
@@ -1086,6 +1167,21 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
             );
           } catch (diagnosticError) {
             console.error('[Contents runtime evidence]', diagnosticError);
+          }
+          if (stagingTrace) {
+            const trace = stagingTrace;
+            stagingTrace = undefined;
+            await trace
+              .finish(false, { source, verdict, cpuRate, query: callTiming?.snapshot() })
+              .catch((error) => console.error('[Contents timing trace]', error));
+            await page
+              .evaluate(() => {
+                Object.assign(window, { __puiContentsStagingTrace: false });
+                for (const mark of performance.getEntriesByType('mark')) {
+                  if (mark.name.startsWith('pui-contents:')) performance.clearMarks(mark.name);
+                }
+              })
+              .catch((error) => console.error('[Contents timing cleanup]', error));
           }
           if (originalError) throw originalError;
           expect(await root.getAttribute('data-contents-family')).toBe(family);
@@ -1443,7 +1539,28 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
         }
         throw originalError;
       } finally {
-        await context.close();
+        stagingTrace?.beforeContextClose();
+        callTiming?.markContextCloseStart();
+        let contextClosed = false;
+        try {
+          await context.close();
+          contextClosed = true;
+        } finally {
+          callTiming?.disposeAfterContextClosed(contextClosed);
+          await stagingTrace
+            ?.finish(contextClosed, { source, cpuRate, query: callTiming?.snapshot() })
+            .catch((error) => console.error('[Contents timing trace cleanup]', error));
+          if (callTiming) {
+            await writeFile(
+              path.join(directory, 'shadcn-react-getter-timing.json'),
+              JSON.stringify(
+                { source, cpuRate, contextClosed, query: callTiming.snapshot() },
+                null,
+                2
+              )
+            ).catch((error) => console.error('[Contents getter timing]', error));
+          }
+        }
       }
     }
   }, 180_000);
