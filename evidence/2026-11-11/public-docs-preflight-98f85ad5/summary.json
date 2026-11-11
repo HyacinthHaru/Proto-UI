@@ -1,0 +1,1001 @@
+{
+  "head": "98f85ad53cd1c876c7c7e436d89cd9822c22600a",
+  "base": "98ac19762f08351684d801db8006ca7c71fb6f30",
+  "popover": {
+    "source": {
+      "head": "98f85ad53cd1c876c7c7e436d89cd9822c22600a",
+      "status": "captured",
+      "kind": "complete clean Git tree plus generated CSS, bound to the opt-in dev server startup identity and current source checks",
+      "cleanTree": "31052f4a0896fde550e4bf3eb37e7ad84c895576",
+      "generatedCSS": {
+        "apps/www/src/styles/proto-ui-tokens.generated.css": "082d7449cb1f637f9e2bfe7d9f3539310de5a3074979e3a9bc27985bf92aff47",
+        "apps/www/src/styles/proto-ui-style.css": "446d2249e0672bdee7ddf77de55c7a8f2140adfb60c41d13ec0183d5f7199d88",
+        "apps/www/src/styles/shadcn-theme.css": "3de2d4ce2a38e83086128c8863d3391eb74159adde7b1a8b7f450f93fd643f96"
+      },
+      "sourceSetDigest": "sha256:e4a711ecf54ce0c71968d6d21aca42b9804243ece85ac9cce46effb4747ef591",
+      "runnerDigest": "sha256:a526a204e29de354fefffa6428d30ae64891ba51dabcb4c43673dcbcbb98c483",
+      "probeDigest": "sha256:44ca7f0b11ffa2cbde3b1e52b0f4be57d6dd38a436e5edef184b0acfafb937b8"
+    },
+    "summary": {
+      "collectedFrames": 32,
+      "pngFactMatchedFrames": 32,
+      "achievedTargetPredicates": 32,
+      "expectedRuntimeThemeCases": 8,
+      "observedRuntimeThemeCases": 8,
+      "knownUnsupportedRuntimeThemeCases": 0,
+      "knownUnsupportedPairedRawFrames": 0,
+      "knownUnsupportedUnexecutedTargets": 0,
+      "unresolvedRuntimeThemeCases": 0,
+      "distinctUnresolvedFamilies": 0,
+      "caseCoverage": [
+        {
+          "family": "popover",
+          "runtime": "wc",
+          "theme": "light",
+          "status": "observed",
+          "missingTargets": []
+        },
+        {
+          "family": "popover",
+          "runtime": "wc",
+          "theme": "dark",
+          "status": "observed",
+          "missingTargets": []
+        },
+        {
+          "family": "popover",
+          "runtime": "react",
+          "theme": "light",
+          "status": "observed",
+          "missingTargets": []
+        },
+        {
+          "family": "popover",
+          "runtime": "react",
+          "theme": "dark",
+          "status": "observed",
+          "missingTargets": []
+        },
+        {
+          "family": "popover",
+          "runtime": "vue",
+          "theme": "light",
+          "status": "observed",
+          "missingTargets": []
+        },
+        {
+          "family": "popover",
+          "runtime": "vue",
+          "theme": "dark",
+          "status": "observed",
+          "missingTargets": []
+        },
+        {
+          "family": "popover",
+          "runtime": "vue2",
+          "theme": "light",
+          "status": "observed",
+          "missingTargets": []
+        },
+        {
+          "family": "popover",
+          "runtime": "vue2",
+          "theme": "dark",
+          "status": "observed",
+          "missingTargets": []
+        }
+      ],
+      "conformance": "not evaluated; frame count and target predicate count are not full conformance"
+    },
+    "frames": [
+      {
+        "name": "popover-wc-light-rest",
+        "requestedState": "rest",
+        "runtime": "wc",
+        "theme": "light",
+        "refs": {
+          "image": {
+            "path": "popover-wc-light-rest.png",
+            "digest": "sha256:ebfbfe0b604898ed9422eb3f0cc386759443d62cc53451a018ae12c3512d7243"
+          },
+          "factsFile": {
+            "path": "popover-wc-light-rest.facts.json",
+            "digest": "sha256:38020e8820db51366a733453dbda892812a4c43c71799fde22f8a7e4810cfa93"
+          },
+          "fingerprintsFile": {
+            "path": "popover-wc-light-rest.fingerprints.json",
+            "digest": "sha256:b33a930882a80fe88447d9d14f7344028670b462e620bec3c5b5ff57321d245f"
+          }
+        },
+        "frameResultDigest": "sha256:9e5451a7a0efa768a1e498ec68dc8b5b17b84f5bb0d158cc7cc016f13dd963ba"
+      },
+      {
+        "name": "popover-wc-light-hover",
+        "requestedState": "hover",
+        "runtime": "wc",
+        "theme": "light",
+        "refs": {
+          "image": {
+            "path": "popover-wc-light-hover.png",
+            "digest": "sha256:ebfbfe0b604898ed9422eb3f0cc386759443d62cc53451a018ae12c3512d7243"
+          },
+          "factsFile": {
+            "path": "popover-wc-light-hover.facts.json",
+            "digest": "sha256:16be81b01053375659070f4b498a1fe7ca07bfcf202308f7392d7bdb4711a395"
+          },
+          "fingerprintsFile": {
+            "path": "popover-wc-light-hover.fingerprints.json",
+            "digest": "sha256:c2c76855b013edcb5e2b7447eefa19844cc5dcf9fe7b2c1d12a18df849f470a7"
+          }
+        },
+        "frameResultDigest": "sha256:2479aa86d84b33d8a5fab28a5dc2cee287d151b690a4398afa0bdf40957a3561"
+      },
+      {
+        "name": "popover-wc-light-keyboard-focus",
+        "requestedState": "keyboard-focus",
+        "runtime": "wc",
+        "theme": "light",
+        "refs": {
+          "image": {
+            "path": "popover-wc-light-keyboard-focus.png",
+            "digest": "sha256:14af73c07b1a503555afb97d1d27b58994dcd36ab4769bdaa9e54dfd16471cc8"
+          },
+          "factsFile": {
+            "path": "popover-wc-light-keyboard-focus.facts.json",
+            "digest": "sha256:7dbc1783c056d759989124855e0200fed59d120f03d77a5257d8f99e8145a286"
+          },
+          "fingerprintsFile": {
+            "path": "popover-wc-light-keyboard-focus.fingerprints.json",
+            "digest": "sha256:7459b960ee725990acd710de5b2a4386541ffbcb95de8121318b615e2c8b42e9"
+          }
+        },
+        "frameResultDigest": "sha256:163942261e2f55cc9b1e94ea060319e77e9eca81c59c0dc600fb7c110bbaa70f"
+      },
+      {
+        "name": "popover-wc-light-open",
+        "requestedState": "open",
+        "runtime": "wc",
+        "theme": "light",
+        "refs": {
+          "image": {
+            "path": "popover-wc-light-open.png",
+            "digest": "sha256:61341fedb4d1773331e8aeba1fd047e7393950e4b228db04043f8d0756cd0a25"
+          },
+          "factsFile": {
+            "path": "popover-wc-light-open.facts.json",
+            "digest": "sha256:7d6fa07d9575fc55b25861e03b77db8ee818d1c36b9fd6f8db0e7d730a6eaa7c"
+          },
+          "fingerprintsFile": {
+            "path": "popover-wc-light-open.fingerprints.json",
+            "digest": "sha256:702baf626aad3c6e8e1ccfa6454ee56eeafee6843ac63ea1adcdc136c22d87f4"
+          }
+        },
+        "frameResultDigest": "sha256:ebac22cd80be24c9a3691cd522bbb6f532ee6c2538cecae51679490c6df436c8"
+      },
+      {
+        "name": "popover-wc-dark-rest",
+        "requestedState": "rest",
+        "runtime": "wc",
+        "theme": "dark",
+        "refs": {
+          "image": {
+            "path": "popover-wc-dark-rest.png",
+            "digest": "sha256:75de540bcdf14137d91358a1a0af8ad2429b097c9c21fad4b6f9d9702db64bc6"
+          },
+          "factsFile": {
+            "path": "popover-wc-dark-rest.facts.json",
+            "digest": "sha256:3b3ed270f4d6e560bfd190983cdb4ef16fe08d27a5569f51dedd811e3d9cfb7a"
+          },
+          "fingerprintsFile": {
+            "path": "popover-wc-dark-rest.fingerprints.json",
+            "digest": "sha256:981d18c1a69f081ff4741f6a2b86d86e7c78c223c7522493ca281f3e818a77d6"
+          }
+        },
+        "frameResultDigest": "sha256:8b96678f327253816466f4897e8ed82fd69c43de1ff7b7d0e9f87e780131cf66"
+      },
+      {
+        "name": "popover-wc-dark-hover",
+        "requestedState": "hover",
+        "runtime": "wc",
+        "theme": "dark",
+        "refs": {
+          "image": {
+            "path": "popover-wc-dark-hover.png",
+            "digest": "sha256:75de540bcdf14137d91358a1a0af8ad2429b097c9c21fad4b6f9d9702db64bc6"
+          },
+          "factsFile": {
+            "path": "popover-wc-dark-hover.facts.json",
+            "digest": "sha256:8f4b515b242b659822090c717ac04c5bca5b83ec148c512d716f0dcc3ba13ca3"
+          },
+          "fingerprintsFile": {
+            "path": "popover-wc-dark-hover.fingerprints.json",
+            "digest": "sha256:e90e30c3ffd196980f709f527f53cf633491d448c543dc754bb878da1906571c"
+          }
+        },
+        "frameResultDigest": "sha256:24eb4423670c6b3476aeaf16d73fc09bd0308e53d951e871bd89cd821b7a4730"
+      },
+      {
+        "name": "popover-wc-dark-keyboard-focus",
+        "requestedState": "keyboard-focus",
+        "runtime": "wc",
+        "theme": "dark",
+        "refs": {
+          "image": {
+            "path": "popover-wc-dark-keyboard-focus.png",
+            "digest": "sha256:1d674f0c9dc2fc0203af98d026fa8a18980b5229727d49613304d7a2480d1937"
+          },
+          "factsFile": {
+            "path": "popover-wc-dark-keyboard-focus.facts.json",
+            "digest": "sha256:a6644ce877265226c2d4cbf3814276e0c9623b40ed997c474ad3ee7e079c6e52"
+          },
+          "fingerprintsFile": {
+            "path": "popover-wc-dark-keyboard-focus.fingerprints.json",
+            "digest": "sha256:1f49eb587ac6e517fa00a25796840019530b759b5ade69fae24c52512bf72641"
+          }
+        },
+        "frameResultDigest": "sha256:618609256fa23e25f411119c4b9bbd41672dff992875f60f85f720ad849df004"
+      },
+      {
+        "name": "popover-wc-dark-open",
+        "requestedState": "open",
+        "runtime": "wc",
+        "theme": "dark",
+        "refs": {
+          "image": {
+            "path": "popover-wc-dark-open.png",
+            "digest": "sha256:1b715bf62b03eb7f31dad4fb94e31fed459aa4d2eb891a1113f775f80402ffe3"
+          },
+          "factsFile": {
+            "path": "popover-wc-dark-open.facts.json",
+            "digest": "sha256:b6a4746542575a813a591ef38df52c8a1d8290f0460b38cd46f144a8b2403b0b"
+          },
+          "fingerprintsFile": {
+            "path": "popover-wc-dark-open.fingerprints.json",
+            "digest": "sha256:66d44d22a6a2c444c5f0686cefbccddebdc2e0371f3042bb0a3222a334291b02"
+          }
+        },
+        "frameResultDigest": "sha256:0e8e9ae15540af73c5e7554bf658408782c789b9d26bdbe7624065933a79fa59"
+      },
+      {
+        "name": "popover-react-light-rest",
+        "requestedState": "rest",
+        "runtime": "react",
+        "theme": "light",
+        "refs": {
+          "image": {
+            "path": "popover-react-light-rest.png",
+            "digest": "sha256:8e37b7ebc6fa0854f9d5ca314f67f67200d524101b68b0a192e88fb1fd304602"
+          },
+          "factsFile": {
+            "path": "popover-react-light-rest.facts.json",
+            "digest": "sha256:220b46085da9aefe3b702303aa1a8b97ef9d7431619849549fce857b94bc98f0"
+          },
+          "fingerprintsFile": {
+            "path": "popover-react-light-rest.fingerprints.json",
+            "digest": "sha256:eff74a3768483a7a638d1ae1ee32c879f127c8d3c9a309fc1ab093404b6c4ece"
+          }
+        },
+        "frameResultDigest": "sha256:4ebc0e4a0f84e431a0ff6636653cf8ed856e72d6f00aab3946d9f40df46b2989"
+      },
+      {
+        "name": "popover-react-light-hover",
+        "requestedState": "hover",
+        "runtime": "react",
+        "theme": "light",
+        "refs": {
+          "image": {
+            "path": "popover-react-light-hover.png",
+            "digest": "sha256:8e37b7ebc6fa0854f9d5ca314f67f67200d524101b68b0a192e88fb1fd304602"
+          },
+          "factsFile": {
+            "path": "popover-react-light-hover.facts.json",
+            "digest": "sha256:c47a122588a738b6c5a5f85a3734e81b499a1461309fe7a84e5332998dff4c0d"
+          },
+          "fingerprintsFile": {
+            "path": "popover-react-light-hover.fingerprints.json",
+            "digest": "sha256:a6d9eea17ff1a102742b1ee751c5399aafedc029fa814d32b6955e7f140651f2"
+          }
+        },
+        "frameResultDigest": "sha256:992799f528cf3e8f55d5db2b8e3917439098e48950993f0f025a0bc4b746f522"
+      },
+      {
+        "name": "popover-react-light-keyboard-focus",
+        "requestedState": "keyboard-focus",
+        "runtime": "react",
+        "theme": "light",
+        "refs": {
+          "image": {
+            "path": "popover-react-light-keyboard-focus.png",
+            "digest": "sha256:2caa07b81e04861fe61b0aa88b143701eb6ad25cad291a9ba3c7eea4f20f3174"
+          },
+          "factsFile": {
+            "path": "popover-react-light-keyboard-focus.facts.json",
+            "digest": "sha256:be556ce9630a25ff150b5af61d69182076268aad853cce10670a8f0de5b78f55"
+          },
+          "fingerprintsFile": {
+            "path": "popover-react-light-keyboard-focus.fingerprints.json",
+            "digest": "sha256:928d9b7fef1f46d94fb31cbd8eaaa9afa30cd618cd913c1a7a93129787f980a8"
+          }
+        },
+        "frameResultDigest": "sha256:6dce5fb0c11fe956c0f42f4ecff2e221f2a55cea2141b655be812c292f4550d1"
+      },
+      {
+        "name": "popover-react-light-open",
+        "requestedState": "open",
+        "runtime": "react",
+        "theme": "light",
+        "refs": {
+          "image": {
+            "path": "popover-react-light-open.png",
+            "digest": "sha256:7c99d37f490bacec0a6a301f388dccd84793195163a8de72df031f1b0e42a7d3"
+          },
+          "factsFile": {
+            "path": "popover-react-light-open.facts.json",
+            "digest": "sha256:a58f7e5a89cd89d4c5b6b78169a3ffe12ca3b45d4d1256ee497aaf582ba81cf3"
+          },
+          "fingerprintsFile": {
+            "path": "popover-react-light-open.fingerprints.json",
+            "digest": "sha256:8971f80f1707d1d50ee7ce6c132ca74c365e4aaf498a62c7da0e5a0e5b89ac8b"
+          }
+        },
+        "frameResultDigest": "sha256:0e68b02659b54e87391a792524d2ca58167ca871cee10c5aeffdfccba5bf601b"
+      },
+      {
+        "name": "popover-react-dark-rest",
+        "requestedState": "rest",
+        "runtime": "react",
+        "theme": "dark",
+        "refs": {
+          "image": {
+            "path": "popover-react-dark-rest.png",
+            "digest": "sha256:31504456a0429ce358a9dede3a8e3b8d2e7d65ee359cbe47fb6e0beea6a54443"
+          },
+          "factsFile": {
+            "path": "popover-react-dark-rest.facts.json",
+            "digest": "sha256:26f6c43591c3cfd294493d31cf0dbba1385e201f542278a203e9beda0793b414"
+          },
+          "fingerprintsFile": {
+            "path": "popover-react-dark-rest.fingerprints.json",
+            "digest": "sha256:0a9750eeed5b9725fcd43c6c67c1244a28dcdc8b46f5fed767cf6a2a7f2692de"
+          }
+        },
+        "frameResultDigest": "sha256:26981a2ffbe6f59eaf606b0c3555d638abd8c9bd282c4150242bc01e070f0b61"
+      },
+      {
+        "name": "popover-react-dark-hover",
+        "requestedState": "hover",
+        "runtime": "react",
+        "theme": "dark",
+        "refs": {
+          "image": {
+            "path": "popover-react-dark-hover.png",
+            "digest": "sha256:31504456a0429ce358a9dede3a8e3b8d2e7d65ee359cbe47fb6e0beea6a54443"
+          },
+          "factsFile": {
+            "path": "popover-react-dark-hover.facts.json",
+            "digest": "sha256:62e9fe498a11fcf844b5434be26db65aba6a9712f4729fb87d1e45b058a1120d"
+          },
+          "fingerprintsFile": {
+            "path": "popover-react-dark-hover.fingerprints.json",
+            "digest": "sha256:94bb049a6621e48715ce0f7ded8eca8c263977b30280ea83248657c8af0e3938"
+          }
+        },
+        "frameResultDigest": "sha256:974ad104a0a54ddac0e13ce45f7c654754b7993fefc8abbe2b99a958793fc354"
+      },
+      {
+        "name": "popover-react-dark-keyboard-focus",
+        "requestedState": "keyboard-focus",
+        "runtime": "react",
+        "theme": "dark",
+        "refs": {
+          "image": {
+            "path": "popover-react-dark-keyboard-focus.png",
+            "digest": "sha256:b9a2825122075585dbe9a10b0d9c5cd0fd3a5fee292b51d0439db1b0ee5cb083"
+          },
+          "factsFile": {
+            "path": "popover-react-dark-keyboard-focus.facts.json",
+            "digest": "sha256:59d6b2439d23e93c184d2e96f509502b93171d548a4f79e3bb246f35a9196204"
+          },
+          "fingerprintsFile": {
+            "path": "popover-react-dark-keyboard-focus.fingerprints.json",
+            "digest": "sha256:a75ba56f479b825a97833b4c1751496061fd409d2dd186d677e05348c30d133e"
+          }
+        },
+        "frameResultDigest": "sha256:81622817520e53d1e3e9f1c8efcc1af6a644d606632a60d98d17cfe846b65e09"
+      },
+      {
+        "name": "popover-react-dark-open",
+        "requestedState": "open",
+        "runtime": "react",
+        "theme": "dark",
+        "refs": {
+          "image": {
+            "path": "popover-react-dark-open.png",
+            "digest": "sha256:30f23c1e3d1ea874ea4a36ebf6936ec09cae65214a71365456f3aaf4abe7c80e"
+          },
+          "factsFile": {
+            "path": "popover-react-dark-open.facts.json",
+            "digest": "sha256:00fc3da43d3faf50d2cd4c0f4340c952b8ad100998ca4a7521afff03845ca907"
+          },
+          "fingerprintsFile": {
+            "path": "popover-react-dark-open.fingerprints.json",
+            "digest": "sha256:b574d42f2112faf9734c56d7df4e6323a93bceb37c60685213dcc6d6da0494d6"
+          }
+        },
+        "frameResultDigest": "sha256:557df5f8684c3071ac761109e24fe5af41c42e4e1a47cef83aa08747f082e12e"
+      },
+      {
+        "name": "popover-vue-light-rest",
+        "requestedState": "rest",
+        "runtime": "vue",
+        "theme": "light",
+        "refs": {
+          "image": {
+            "path": "popover-vue-light-rest.png",
+            "digest": "sha256:97c5e4063c1f326b12ec3f15a431559a4400a899dc1256ec2e962acc37e43627"
+          },
+          "factsFile": {
+            "path": "popover-vue-light-rest.facts.json",
+            "digest": "sha256:6e351a88319636fb6a23a31047068c61bdccf906729063efa62442ee9913f0bb"
+          },
+          "fingerprintsFile": {
+            "path": "popover-vue-light-rest.fingerprints.json",
+            "digest": "sha256:a6c8c5c957d0c130cd6bb4717345ed9181226a6d3b78a5dd5a94ce87f1252d1b"
+          }
+        },
+        "frameResultDigest": "sha256:2de5e1097ef6d496f89d5b3b06cd6d48daa26dc82e30f25ea26853168216c4f7"
+      },
+      {
+        "name": "popover-vue-light-hover",
+        "requestedState": "hover",
+        "runtime": "vue",
+        "theme": "light",
+        "refs": {
+          "image": {
+            "path": "popover-vue-light-hover.png",
+            "digest": "sha256:97c5e4063c1f326b12ec3f15a431559a4400a899dc1256ec2e962acc37e43627"
+          },
+          "factsFile": {
+            "path": "popover-vue-light-hover.facts.json",
+            "digest": "sha256:0a5ffca44d5367b7788f2a70f68599c6555e42263394c614792bb921fe39b9b1"
+          },
+          "fingerprintsFile": {
+            "path": "popover-vue-light-hover.fingerprints.json",
+            "digest": "sha256:d12b7768fa020e54cf6788bfaa47e4af7369a39d6b7df2be0069f8b6fd6a3861"
+          }
+        },
+        "frameResultDigest": "sha256:f15ee1dd3fc15150a9a097e1f64aa150d853abc4c59584a84c8e610778f44d88"
+      },
+      {
+        "name": "popover-vue-light-keyboard-focus",
+        "requestedState": "keyboard-focus",
+        "runtime": "vue",
+        "theme": "light",
+        "refs": {
+          "image": {
+            "path": "popover-vue-light-keyboard-focus.png",
+            "digest": "sha256:b6a140fff19bc355ec0728c2982595413fcb158d1276fd5c7c26f20bb0154700"
+          },
+          "factsFile": {
+            "path": "popover-vue-light-keyboard-focus.facts.json",
+            "digest": "sha256:c916af83b842c414faba5e3e06da784988e09861ad8b48320de46a70c1b2420f"
+          },
+          "fingerprintsFile": {
+            "path": "popover-vue-light-keyboard-focus.fingerprints.json",
+            "digest": "sha256:3a7362b4212941f3563308cdccc52dd1ab3f75621062de91bf7d7ae8cad904dd"
+          }
+        },
+        "frameResultDigest": "sha256:8fedea3b96cd7b47e977dad178a514eab1df96591de2d42a88d3b16d219b43fe"
+      },
+      {
+        "name": "popover-vue-light-open",
+        "requestedState": "open",
+        "runtime": "vue",
+        "theme": "light",
+        "refs": {
+          "image": {
+            "path": "popover-vue-light-open.png",
+            "digest": "sha256:8feaa2245cc7a603e1ec7aec1bb869d1e8fc78291b0c9c4af8e8c935983c4564"
+          },
+          "factsFile": {
+            "path": "popover-vue-light-open.facts.json",
+            "digest": "sha256:03e98c869c06e6e30e6461c774e26239b5b27ab42028dc7c7d6f74548e621b41"
+          },
+          "fingerprintsFile": {
+            "path": "popover-vue-light-open.fingerprints.json",
+            "digest": "sha256:336e0b308c240d84f1af108f415f5c409cc502f193025101d95ff56af273972f"
+          }
+        },
+        "frameResultDigest": "sha256:a1c2963318ddd378b1296bd8149a425652509a25ade4265884463d92301ddf3a"
+      },
+      {
+        "name": "popover-vue-dark-rest",
+        "requestedState": "rest",
+        "runtime": "vue",
+        "theme": "dark",
+        "refs": {
+          "image": {
+            "path": "popover-vue-dark-rest.png",
+            "digest": "sha256:e7291a5531b403274829f2bf0143a416a52a9235acce84465e0dae13c399d73d"
+          },
+          "factsFile": {
+            "path": "popover-vue-dark-rest.facts.json",
+            "digest": "sha256:3bbc1457c13ccd85816a0623a7e3341b72034a1b3cdb33ac8acec9e64e6205e0"
+          },
+          "fingerprintsFile": {
+            "path": "popover-vue-dark-rest.fingerprints.json",
+            "digest": "sha256:2757c7f997356c69c8633e0f8bece9e175ca87c393122f2daabdcfe487613145"
+          }
+        },
+        "frameResultDigest": "sha256:a460c9f62c2e7a0231ea6e69ac544ea7b3f8f553908f1be7b8c2d2194dd73566"
+      },
+      {
+        "name": "popover-vue-dark-hover",
+        "requestedState": "hover",
+        "runtime": "vue",
+        "theme": "dark",
+        "refs": {
+          "image": {
+            "path": "popover-vue-dark-hover.png",
+            "digest": "sha256:e7291a5531b403274829f2bf0143a416a52a9235acce84465e0dae13c399d73d"
+          },
+          "factsFile": {
+            "path": "popover-vue-dark-hover.facts.json",
+            "digest": "sha256:5cb06116c2d53ffb8cd588b27a09693038be26eca97df7555bf6a40b8d336f89"
+          },
+          "fingerprintsFile": {
+            "path": "popover-vue-dark-hover.fingerprints.json",
+            "digest": "sha256:d9af7b4657eef1000abc598918d143f7375f7f410d4fbc9942bb12b597f57d06"
+          }
+        },
+        "frameResultDigest": "sha256:9270c509824bd8abc936390ef4c095a27ede7fec947dadd55b50d91199ead64f"
+      },
+      {
+        "name": "popover-vue-dark-keyboard-focus",
+        "requestedState": "keyboard-focus",
+        "runtime": "vue",
+        "theme": "dark",
+        "refs": {
+          "image": {
+            "path": "popover-vue-dark-keyboard-focus.png",
+            "digest": "sha256:3b9d7f39cd28f7769aa8e859dd4e25e7523ecebe77b7ec254defb6327c059c6b"
+          },
+          "factsFile": {
+            "path": "popover-vue-dark-keyboard-focus.facts.json",
+            "digest": "sha256:0bdd3cda2c27a77807070e641e1c7ce41ba0d41c74e4a0715c6941c79ef3c791"
+          },
+          "fingerprintsFile": {
+            "path": "popover-vue-dark-keyboard-focus.fingerprints.json",
+            "digest": "sha256:487b5e145585738f6f656089db6b5deb0be88dac52d90b0c6b54753fb19de9e6"
+          }
+        },
+        "frameResultDigest": "sha256:3e4ee0219463482c7ce2a904775197eede232046d4a28fcde87a83c1504ab8c6"
+      },
+      {
+        "name": "popover-vue-dark-open",
+        "requestedState": "open",
+        "runtime": "vue",
+        "theme": "dark",
+        "refs": {
+          "image": {
+            "path": "popover-vue-dark-open.png",
+            "digest": "sha256:a144c1afa1cb5b0b11c81d166764630a789a8eeab6b88c041ab7c98a5b93d8d5"
+          },
+          "factsFile": {
+            "path": "popover-vue-dark-open.facts.json",
+            "digest": "sha256:f49c6c4d2442857f8f02abc08d26f1c1f75c6ff4bc9a4ac48ea593ae08ccf532"
+          },
+          "fingerprintsFile": {
+            "path": "popover-vue-dark-open.fingerprints.json",
+            "digest": "sha256:24cdeaed5ac83baeb101724b0135140ae70489d749c1850826f4ae643827eb18"
+          }
+        },
+        "frameResultDigest": "sha256:9bd89c8151df94ad210fbc150bac46944457b12e59df2271e7fe28be2d7fac5b"
+      },
+      {
+        "name": "popover-vue2-light-rest",
+        "requestedState": "rest",
+        "runtime": "vue2",
+        "theme": "light",
+        "refs": {
+          "image": {
+            "path": "popover-vue2-light-rest.png",
+            "digest": "sha256:f7169f8b54a4030756680d3e4d5ae3bb8c0d9b5a43df7eebb3c3d9ed5a62444d"
+          },
+          "factsFile": {
+            "path": "popover-vue2-light-rest.facts.json",
+            "digest": "sha256:7e565ae9bd320e7ddfa9baa8e31325d1ba82dd19f206ecc191df5303105e760b"
+          },
+          "fingerprintsFile": {
+            "path": "popover-vue2-light-rest.fingerprints.json",
+            "digest": "sha256:fc482b2ee51aa14c17a7c8f8b6c052ad2213eeb5605e0374bcd08b7fd7471f61"
+          }
+        },
+        "frameResultDigest": "sha256:558c31b847412ce17080fcdb6305d4fc8225d25887d632c95ed1a75d738f72fe"
+      },
+      {
+        "name": "popover-vue2-light-hover",
+        "requestedState": "hover",
+        "runtime": "vue2",
+        "theme": "light",
+        "refs": {
+          "image": {
+            "path": "popover-vue2-light-hover.png",
+            "digest": "sha256:f7169f8b54a4030756680d3e4d5ae3bb8c0d9b5a43df7eebb3c3d9ed5a62444d"
+          },
+          "factsFile": {
+            "path": "popover-vue2-light-hover.facts.json",
+            "digest": "sha256:2d2fac65df51c62821b892233cfb5e566c05bd6ba39ce590d8d35b00fa88747d"
+          },
+          "fingerprintsFile": {
+            "path": "popover-vue2-light-hover.fingerprints.json",
+            "digest": "sha256:03ff449f09ac2ed1babedb44a7a23162b194157664b11d2d8d91d7df6d358282"
+          }
+        },
+        "frameResultDigest": "sha256:c05d1662a55cbc89a6d8ac03baa0dfd3188180f89722065684d45c63678fa04b"
+      },
+      {
+        "name": "popover-vue2-light-keyboard-focus",
+        "requestedState": "keyboard-focus",
+        "runtime": "vue2",
+        "theme": "light",
+        "refs": {
+          "image": {
+            "path": "popover-vue2-light-keyboard-focus.png",
+            "digest": "sha256:c295696a0347a3b36ac7222cd76121660eaa331dd0c4000072d1be59396898c4"
+          },
+          "factsFile": {
+            "path": "popover-vue2-light-keyboard-focus.facts.json",
+            "digest": "sha256:ee8721483813d0150df652cd6f8c6f45a242048fd33aaf9dc6a5308020d503f4"
+          },
+          "fingerprintsFile": {
+            "path": "popover-vue2-light-keyboard-focus.fingerprints.json",
+            "digest": "sha256:84d388c6bc7a5bce5d2656df884dc4bb0b6052cc11370379b89c09744b088e16"
+          }
+        },
+        "frameResultDigest": "sha256:b460aa085c602d9de607c7080f006dbba30a270180c56e54c87ae8265338e4da"
+      },
+      {
+        "name": "popover-vue2-light-open",
+        "requestedState": "open",
+        "runtime": "vue2",
+        "theme": "light",
+        "refs": {
+          "image": {
+            "path": "popover-vue2-light-open.png",
+            "digest": "sha256:7fabec41d84fadb959e2cec8d388a2a8f55494ee93f30c9f950134640f14db61"
+          },
+          "factsFile": {
+            "path": "popover-vue2-light-open.facts.json",
+            "digest": "sha256:498572d632a7ef14516478491447e8abc1e15bf0f8bb70ad8ceb84ffbad8c66d"
+          },
+          "fingerprintsFile": {
+            "path": "popover-vue2-light-open.fingerprints.json",
+            "digest": "sha256:0c5658b8886da92f2766d446ca61b05bef2c307a1a2f8480eda5fe8749098907"
+          }
+        },
+        "frameResultDigest": "sha256:c9918399ac213db6402fe3424ea8bce68c990deae8deb48fd10eb1dce04cd48b"
+      },
+      {
+        "name": "popover-vue2-dark-rest",
+        "requestedState": "rest",
+        "runtime": "vue2",
+        "theme": "dark",
+        "refs": {
+          "image": {
+            "path": "popover-vue2-dark-rest.png",
+            "digest": "sha256:caa5a499bcfa836a9e0a6667b866716fa835e5fbf10c25592667c36871bdb80e"
+          },
+          "factsFile": {
+            "path": "popover-vue2-dark-rest.facts.json",
+            "digest": "sha256:28286dd9662e8336fb76bc0b56ac366d52dac15d60dca0ac80ff4b4e06336d83"
+          },
+          "fingerprintsFile": {
+            "path": "popover-vue2-dark-rest.fingerprints.json",
+            "digest": "sha256:71a0255f02951a1d69f16878a4be6564f1770f64ec73ee65340f2fe90381a410"
+          }
+        },
+        "frameResultDigest": "sha256:9cc7567d0a42f0be2a4a6194a503527a011eeaae47e2194dc13a87abd4028809"
+      },
+      {
+        "name": "popover-vue2-dark-hover",
+        "requestedState": "hover",
+        "runtime": "vue2",
+        "theme": "dark",
+        "refs": {
+          "image": {
+            "path": "popover-vue2-dark-hover.png",
+            "digest": "sha256:caa5a499bcfa836a9e0a6667b866716fa835e5fbf10c25592667c36871bdb80e"
+          },
+          "factsFile": {
+            "path": "popover-vue2-dark-hover.facts.json",
+            "digest": "sha256:7300c15081103165a52bb2b465dab918a995e9fe56ed3cc9f44c0134112e675d"
+          },
+          "fingerprintsFile": {
+            "path": "popover-vue2-dark-hover.fingerprints.json",
+            "digest": "sha256:6d031e28274f618538d5039715ff75d9ff2b91b51d9edb2df161d65027710568"
+          }
+        },
+        "frameResultDigest": "sha256:c0d998a04887ee1f4e3bb1d940e47cd40d20180f3975d1ee650ba3f12f4ae721"
+      },
+      {
+        "name": "popover-vue2-dark-keyboard-focus",
+        "requestedState": "keyboard-focus",
+        "runtime": "vue2",
+        "theme": "dark",
+        "refs": {
+          "image": {
+            "path": "popover-vue2-dark-keyboard-focus.png",
+            "digest": "sha256:75fbb0c0d1369ddee0aeb5db081536a267d8b03ca0dcbcd317ba46fb48bb1971"
+          },
+          "factsFile": {
+            "path": "popover-vue2-dark-keyboard-focus.facts.json",
+            "digest": "sha256:6378c54459fa96e678398ad0ec4518af0dfa9a514730ffef0f7af7302d20778b"
+          },
+          "fingerprintsFile": {
+            "path": "popover-vue2-dark-keyboard-focus.fingerprints.json",
+            "digest": "sha256:6d517a8043b55c944b4657a509211c1836a6f494dcbb926c55f4d40e8cf06125"
+          }
+        },
+        "frameResultDigest": "sha256:5aa9b5063131e0be598c057ccce84e8abcddd74b3cbb7f80d661d87773ea2958"
+      },
+      {
+        "name": "popover-vue2-dark-open",
+        "requestedState": "open",
+        "runtime": "vue2",
+        "theme": "dark",
+        "refs": {
+          "image": {
+            "path": "popover-vue2-dark-open.png",
+            "digest": "sha256:dd7ce3f92b096650392966419bbfbac5005716b3274ee6a1691fefe75c76e09f"
+          },
+          "factsFile": {
+            "path": "popover-vue2-dark-open.facts.json",
+            "digest": "sha256:a9400d1af1d91cea4f09cae768507da49b9b43c392c9b6b6ca9c87e13f8a7240"
+          },
+          "fingerprintsFile": {
+            "path": "popover-vue2-dark-open.fingerprints.json",
+            "digest": "sha256:c123a25fd110aa0d0609c0cae2f1729d5705ce1b2531163f54ef3ae30317f02b"
+          }
+        },
+        "frameResultDigest": "sha256:8e911c12f3ca298b3e05a43fd80a9de7373da15b955b752aca4d060476854cfb"
+      }
+    ],
+    "freshServerAuditExit": 1,
+    "prewarmedAuditExit": 0,
+    "prewarm": {
+      "route": "/en/ui-libraries/brutalist/components/popover/",
+      "status": 200,
+      "bytes": 647027
+    }
+  },
+  "homepageTypography": {
+    "main": "98ac19762f08351684d801db8006ca7c71fb6f30",
+    "suiteFiles": 22,
+    "passed": 280,
+    "typography": [
+      {
+        "file": "apps/www/src/components/site-typography.ownership.test.ts",
+        "assertions": [
+          {
+            "name": "wc: forwards language and preserves source with an explicit HappyDOM :lang fixture",
+            "status": "passed"
+          },
+          {
+            "name": "react: forwards language and preserves source with an explicit HappyDOM :lang fixture",
+            "status": "passed"
+          },
+          {
+            "name": "vue: forwards language and preserves source with an explicit HappyDOM :lang fixture",
+            "status": "passed"
+          },
+          {
+            "name": "vue2: forwards language and preserves source with an explicit HappyDOM :lang fixture",
+            "status": "passed"
+          },
+          {
+            "name": "disposes when the documentation owner is detached, then admits the next owner",
+            "status": "passed"
+          },
+          {
+            "name": "projects newly appended native source under the current typography owner",
+            "status": "passed"
+          },
+          {
+            "name": "wc: preserves a collapsed caret before the same inline child",
+            "status": "passed"
+          },
+          {
+            "name": "react: preserves a collapsed caret before the same inline child",
+            "status": "passed"
+          },
+          {
+            "name": "vue: preserves a collapsed caret before the same inline child",
+            "status": "passed"
+          },
+          {
+            "name": "vue2: preserves a collapsed caret before the same inline child",
+            "status": "passed"
+          },
+          {
+            "name": "wc: interrupted preparation leaves original source and no batch",
+            "status": "passed"
+          },
+          {
+            "name": "wc: stale prepared work cannot retire the new source owner",
+            "status": "passed"
+          },
+          {
+            "name": "react: interrupted preparation leaves original source and no batch",
+            "status": "passed"
+          },
+          {
+            "name": "react: stale prepared work cannot retire the new source owner",
+            "status": "passed"
+          },
+          {
+            "name": "vue: interrupted preparation leaves original source and no batch",
+            "status": "passed"
+          },
+          {
+            "name": "vue: stale prepared work cannot retire the new source owner",
+            "status": "passed"
+          },
+          {
+            "name": "vue2: interrupted preparation leaves original source and no batch",
+            "status": "passed"
+          },
+          {
+            "name": "vue2: stale prepared work cannot retire the new source owner",
+            "status": "passed"
+          },
+          {
+            "name": "explicit destroy permits clean documentation re-init",
+            "status": "passed"
+          },
+          {
+            "name": "reconciles a source addition whose observer ran during empty-scope preparation",
+            "status": "passed"
+          },
+          {
+            "name": "wc: absorbs appended/prepended/inserted source exactly once in native order",
+            "status": "passed"
+          },
+          {
+            "name": "react: absorbs appended/prepended/inserted source exactly once in native order",
+            "status": "passed"
+          },
+          {
+            "name": "vue: absorbs appended/prepended/inserted source exactly once in native order",
+            "status": "passed"
+          },
+          {
+            "name": "vue2: absorbs appended/prepended/inserted source exactly once in native order",
+            "status": "passed"
+          },
+          {
+            "name": "admits a replacement before observer delivery and stale teardown cannot revoke it",
+            "status": "passed"
+          },
+          {
+            "name": "revokes a scope when its entire containing subtree is removed",
+            "status": "passed"
+          },
+          {
+            "name": "wc: maps start/interior/end boundaries through replace, rollback and teardown",
+            "status": "passed"
+          },
+          {
+            "name": "wc: maps a caret after the carrier to the source end and preserves an empty slot caret",
+            "status": "passed"
+          },
+          {
+            "name": "react: maps start/interior/end boundaries through replace, rollback and teardown",
+            "status": "passed"
+          },
+          {
+            "name": "react: maps a caret after the carrier to the source end and preserves an empty slot caret",
+            "status": "passed"
+          },
+          {
+            "name": "vue: maps start/interior/end boundaries through replace, rollback and teardown",
+            "status": "passed"
+          },
+          {
+            "name": "vue: maps a caret after the carrier to the source end and preserves an empty slot caret",
+            "status": "passed"
+          },
+          {
+            "name": "vue2: maps start/interior/end boundaries through replace, rollback and teardown",
+            "status": "passed"
+          },
+          {
+            "name": "vue2: maps a caret after the carrier to the source end and preserves an empty slot caret",
+            "status": "passed"
+          },
+          {
+            "name": "maps directional endpoint pair 1 \u2192 2 with an explicit HappyDOM getter fixture",
+            "status": "passed"
+          },
+          {
+            "name": "maps directional endpoint pair 2 \u2192 1 with an explicit HappyDOM getter fixture",
+            "status": "passed"
+          }
+        ]
+      },
+      {
+        "file": "apps/www/src/components/Homepage/homepage-typography-state.test.ts",
+        "assertions": [
+          {
+            "name": "viewport: keeps the original logical owners, draft, switch, caret and page snapshot",
+            "status": "passed"
+          },
+          {
+            "name": "new source heading: keeps the original logical owners, draft, switch, caret and page snapshot",
+            "status": "passed"
+          },
+          {
+            "name": "prepare failure keeps the current gallery, typography owner and page snapshot",
+            "status": "passed"
+          },
+          {
+            "name": "partial activate failure keeps the current gallery, typography owner and page snapshot",
+            "status": "passed"
+          },
+          {
+            "name": "coalesces source and viewport changes during local preparation without activating stale source",
+            "status": "passed"
+          },
+          {
+            "name": "a whole-page family commit revokes an older same-generation local preparation",
+            "status": "passed"
+          },
+          {
+            "name": "whole-page publication rollback restores the latest locally refreshed typography and live gallery",
+            "status": "passed"
+          },
+          {
+            "name": "a failed publication keeps the committed owner and no replacement batch",
+            "status": "passed"
+          },
+          {
+            "name": "a source added during a failed publication joins the retained generation",
+            "status": "passed"
+          },
+          {
+            "name": "a source added during a whole-page runtime preparation joins its committed generation without a second page commit",
+            "status": "passed"
+          },
+          {
+            "name": "destroy waits for and retires an in-flight local batch without reviving source or framework owners",
+            "status": "passed"
+          },
+          {
+            "name": "change role: observes only the authored change, keeps gallery state and settles after one batch",
+            "status": "passed"
+          },
+          {
+            "name": "remove role: observes only the authored change, keeps gallery state and settles after one batch",
+            "status": "passed"
+          },
+          {
+            "name": "new marker: observes only the authored change, keeps gallery state and settles after one batch",
+            "status": "passed"
+          },
+          {
+            "name": "keeps language and complete textContent replacement fresh in the same page generation",
+            "status": "passed"
+          },
+          {
+            "name": "reconciles source changes arriving while a failed local batch is being disposed",
+            "status": "passed"
+          },
+          {
+            "name": "publishes a committed runtime preference when a live family request supersedes its pending retirement observer",
+            "status": "passed"
+          }
+        ]
+      }
+    ]
+  }
+}

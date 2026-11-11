@@ -1,0 +1,522 @@
+{
+  "source": "98f85ad53cd1c876c7c7e436d89cd9822c22600a",
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "ca63a250875caba992e8d059669cb7d3d1443fdd2e7d5d158eba62f6de6adba4",
+      "bytes": 1517
+    },
+    {
+      "path": "popover-raw-frames.tar.gz",
+      "sha256": "24a2922f40dce91e063cb6766cb72c7c046d4dcb894d0bfdb647fa821ba0c9a5",
+      "bytes": 8107231
+    },
+    {
+      "path": "popover-react-dark-open.png",
+      "sha256": "30f23c1e3d1ea874ea4a36ebf6936ec09cae65214a71365456f3aaf4abe7c80e",
+      "bytes": 173702
+    },
+    {
+      "path": "popover-vue-light-open.png",
+      "sha256": "8feaa2245cc7a603e1ec7aec1bb869d1e8fc78291b0c9c4af8e8c935983c4564",
+      "bytes": 195981
+    },
+    {
+      "path": "popover-vue2-dark-open.png",
+      "sha256": "dd7ce3f92b096650392966419bbfbac5005716b3274ee6a1691fefe75c76e09f",
+      "bytes": 173610
+    },
+    {
+      "path": "popover-wc-light-open.png",
+      "sha256": "61341fedb4d1773331e8aeba1fd047e7393950e4b228db04043f8d0756cd0a25",
+      "bytes": 197750
+    },
+    {
+      "path": "summary.json",
+      "sha256": "9041e91c79d9dfc706230765f5404df645a2bbfae15d9bec8ace6f764c76c780",
+      "bytes": 39767
+    }
+  ],
+  "members": [
+    {
+      "path": "popover-react-dark-hover.facts.json",
+      "sha256": "62e9fe498a11fcf844b5434be26db65aba6a9712f4729fb87d1e45b058a1120d",
+      "bytes": 43989
+    },
+    {
+      "path": "popover-react-dark-hover.fingerprints.json",
+      "sha256": "94bb049a6621e48715ce0f7ded8eca8c263977b30280ea83248657c8af0e3938",
+      "bytes": 2548558
+    },
+    {
+      "path": "popover-react-dark-hover.png",
+      "sha256": "31504456a0429ce358a9dede3a8e3b8d2e7d65ee359cbe47fb6e0beea6a54443",
+      "bytes": 168462
+    },
+    {
+      "path": "popover-react-dark-keyboard-focus.facts.json",
+      "sha256": "59d6b2439d23e93c184d2e96f509502b93171d548a4f79e3bb246f35a9196204",
+      "bytes": 47399
+    },
+    {
+      "path": "popover-react-dark-keyboard-focus.fingerprints.json",
+      "sha256": "a75ba56f479b825a97833b4c1751496061fd409d2dd186d677e05348c30d133e",
+      "bytes": 2549800
+    },
+    {
+      "path": "popover-react-dark-keyboard-focus.png",
+      "sha256": "b9a2825122075585dbe9a10b0d9c5cd0fd3a5fee292b51d0439db1b0ee5cb083",
+      "bytes": 168480
+    },
+    {
+      "path": "popover-react-dark-open.facts.json",
+      "sha256": "00fc3da43d3faf50d2cd4c0f4340c952b8ad100998ca4a7521afff03845ca907",
+      "bytes": 64126
+    },
+    {
+      "path": "popover-react-dark-open.fingerprints.json",
+      "sha256": "b574d42f2112faf9734c56d7df4e6323a93bceb37c60685213dcc6d6da0494d6",
+      "bytes": 1411861
+    },
+    {
+      "path": "popover-react-dark-open.png",
+      "sha256": "30f23c1e3d1ea874ea4a36ebf6936ec09cae65214a71365456f3aaf4abe7c80e",
+      "bytes": 173702
+    },
+    {
+      "path": "popover-react-dark-rest.facts.json",
+      "sha256": "26f6c43591c3cfd294493d31cf0dbba1385e201f542278a203e9beda0793b414",
+      "bytes": 43991
+    },
+    {
+      "path": "popover-react-dark-rest.fingerprints.json",
+      "sha256": "0a9750eeed5b9725fcd43c6c67c1244a28dcdc8b46f5fed767cf6a2a7f2692de",
+      "bytes": 2548858
+    },
+    {
+      "path": "popover-react-dark-rest.png",
+      "sha256": "31504456a0429ce358a9dede3a8e3b8d2e7d65ee359cbe47fb6e0beea6a54443",
+      "bytes": 168462
+    },
+    {
+      "path": "popover-react-light-hover.facts.json",
+      "sha256": "c47a122588a738b6c5a5f85a3734e81b499a1461309fe7a84e5332998dff4c0d",
+      "bytes": 43898
+    },
+    {
+      "path": "popover-react-light-hover.fingerprints.json",
+      "sha256": "a6d9eea17ff1a102742b1ee751c5399aafedc029fa814d32b6955e7f140651f2",
+      "bytes": 2485930
+    },
+    {
+      "path": "popover-react-light-hover.png",
+      "sha256": "8e37b7ebc6fa0854f9d5ca314f67f67200d524101b68b0a192e88fb1fd304602",
+      "bytes": 190814
+    },
+    {
+      "path": "popover-react-light-keyboard-focus.facts.json",
+      "sha256": "be556ce9630a25ff150b5af61d69182076268aad853cce10670a8f0de5b78f55",
+      "bytes": 47297
+    },
+    {
+      "path": "popover-react-light-keyboard-focus.fingerprints.json",
+      "sha256": "928d9b7fef1f46d94fb31cbd8eaaa9afa30cd618cd913c1a7a93129787f980a8",
+      "bytes": 2487145
+    },
+    {
+      "path": "popover-react-light-keyboard-focus.png",
+      "sha256": "2caa07b81e04861fe61b0aa88b143701eb6ad25cad291a9ba3c7eea4f20f3174",
+      "bytes": 190831
+    },
+    {
+      "path": "popover-react-light-open.facts.json",
+      "sha256": "a58f7e5a89cd89d4c5b6b78169a3ffe12ca3b45d4d1256ee497aaf582ba81cf3",
+      "bytes": 64202
+    },
+    {
+      "path": "popover-react-light-open.fingerprints.json",
+      "sha256": "8971f80f1707d1d50ee7ce6c132ca74c365e4aaf498a62c7da0e5a0e5b89ac8b",
+      "bytes": 1375618
+    },
+    {
+      "path": "popover-react-light-open.png",
+      "sha256": "7c99d37f490bacec0a6a301f388dccd84793195163a8de72df031f1b0e42a7d3",
+      "bytes": 196364
+    },
+    {
+      "path": "popover-react-light-rest.facts.json",
+      "sha256": "220b46085da9aefe3b702303aa1a8b97ef9d7431619849549fce857b94bc98f0",
+      "bytes": 43900
+    },
+    {
+      "path": "popover-react-light-rest.fingerprints.json",
+      "sha256": "eff74a3768483a7a638d1ae1ee32c879f127c8d3c9a309fc1ab093404b6c4ece",
+      "bytes": 2486230
+    },
+    {
+      "path": "popover-react-light-rest.png",
+      "sha256": "8e37b7ebc6fa0854f9d5ca314f67f67200d524101b68b0a192e88fb1fd304602",
+      "bytes": 190814
+    },
+    {
+      "path": "popover-vue-dark-hover.facts.json",
+      "sha256": "5cb06116c2d53ffb8cd588b27a09693038be26eca97df7555bf6a40b8d336f89",
+      "bytes": 43987
+    },
+    {
+      "path": "popover-vue-dark-hover.fingerprints.json",
+      "sha256": "d9af7b4657eef1000abc598918d143f7375f7f410d4fbc9942bb12b597f57d06",
+      "bytes": 2546470
+    },
+    {
+      "path": "popover-vue-dark-hover.png",
+      "sha256": "e7291a5531b403274829f2bf0143a416a52a9235acce84465e0dae13c399d73d",
+      "bytes": 168034
+    },
+    {
+      "path": "popover-vue-dark-keyboard-focus.facts.json",
+      "sha256": "0bdd3cda2c27a77807070e641e1c7ce41ba0d41c74e4a0715c6941c79ef3c791",
+      "bytes": 47397
+    },
+    {
+      "path": "popover-vue-dark-keyboard-focus.fingerprints.json",
+      "sha256": "487b5e145585738f6f656089db6b5deb0be88dac52d90b0c6b54753fb19de9e6",
+      "bytes": 2547748
+    },
+    {
+      "path": "popover-vue-dark-keyboard-focus.png",
+      "sha256": "3b9d7f39cd28f7769aa8e859dd4e25e7523ecebe77b7ec254defb6327c059c6b",
+      "bytes": 168052
+    },
+    {
+      "path": "popover-vue-dark-open.facts.json",
+      "sha256": "f49c6c4d2442857f8f02abc08d26f1c1f75c6ff4bc9a4ac48ea593ae08ccf532",
+      "bytes": 64118
+    },
+    {
+      "path": "popover-vue-dark-open.fingerprints.json",
+      "sha256": "24cdeaed5ac83baeb101724b0135140ae70489d749c1850826f4ae643827eb18",
+      "bytes": 1368151
+    },
+    {
+      "path": "popover-vue-dark-open.png",
+      "sha256": "a144c1afa1cb5b0b11c81d166764630a789a8eeab6b88c041ab7c98a5b93d8d5",
+      "bytes": 173295
+    },
+    {
+      "path": "popover-vue-dark-rest.facts.json",
+      "sha256": "3bbc1457c13ccd85816a0623a7e3341b72034a1b3cdb33ac8acec9e64e6205e0",
+      "bytes": 43989
+    },
+    {
+      "path": "popover-vue-dark-rest.fingerprints.json",
+      "sha256": "2757c7f997356c69c8633e0f8bece9e175ca87c393122f2daabdcfe487613145",
+      "bytes": 2546770
+    },
+    {
+      "path": "popover-vue-dark-rest.png",
+      "sha256": "e7291a5531b403274829f2bf0143a416a52a9235acce84465e0dae13c399d73d",
+      "bytes": 168034
+    },
+    {
+      "path": "popover-vue-light-hover.facts.json",
+      "sha256": "0a5ffca44d5367b7788f2a70f68599c6555e42263394c614792bb921fe39b9b1",
+      "bytes": 43897
+    },
+    {
+      "path": "popover-vue-light-hover.fingerprints.json",
+      "sha256": "d12b7768fa020e54cf6788bfaa47e4af7369a39d6b7df2be0069f8b6fd6a3861",
+      "bytes": 2484598
+    },
+    {
+      "path": "popover-vue-light-hover.png",
+      "sha256": "97c5e4063c1f326b12ec3f15a431559a4400a899dc1256ec2e962acc37e43627",
+      "bytes": 190379
+    },
+    {
+      "path": "popover-vue-light-keyboard-focus.facts.json",
+      "sha256": "c916af83b842c414faba5e3e06da784988e09861ad8b48320de46a70c1b2420f",
+      "bytes": 47296
+    },
+    {
+      "path": "popover-vue-light-keyboard-focus.fingerprints.json",
+      "sha256": "3a7362b4212941f3563308cdccc52dd1ab3f75621062de91bf7d7ae8cad904dd",
+      "bytes": 2485849
+    },
+    {
+      "path": "popover-vue-light-keyboard-focus.png",
+      "sha256": "b6a140fff19bc355ec0728c2982595413fcb158d1276fd5c7c26f20bb0154700",
+      "bytes": 190396
+    },
+    {
+      "path": "popover-vue-light-open.facts.json",
+      "sha256": "03e98c869c06e6e30e6461c774e26239b5b27ab42028dc7c7d6f74548e621b41",
+      "bytes": 64198
+    },
+    {
+      "path": "popover-vue-light-open.fingerprints.json",
+      "sha256": "336e0b308c240d84f1af108f415f5c409cc502f193025101d95ff56af273972f",
+      "bytes": 1334008
+    },
+    {
+      "path": "popover-vue-light-open.png",
+      "sha256": "8feaa2245cc7a603e1ec7aec1bb869d1e8fc78291b0c9c4af8e8c935983c4564",
+      "bytes": 195981
+    },
+    {
+      "path": "popover-vue-light-rest.facts.json",
+      "sha256": "6e351a88319636fb6a23a31047068c61bdccf906729063efa62442ee9913f0bb",
+      "bytes": 43899
+    },
+    {
+      "path": "popover-vue-light-rest.fingerprints.json",
+      "sha256": "a6c8c5c957d0c130cd6bb4717345ed9181226a6d3b78a5dd5a94ce87f1252d1b",
+      "bytes": 2484898
+    },
+    {
+      "path": "popover-vue-light-rest.png",
+      "sha256": "97c5e4063c1f326b12ec3f15a431559a4400a899dc1256ec2e962acc37e43627",
+      "bytes": 190379
+    },
+    {
+      "path": "popover-vue2-dark-hover.facts.json",
+      "sha256": "7300c15081103165a52bb2b465dab918a995e9fe56ed3cc9f44c0134112e675d",
+      "bytes": 43988
+    },
+    {
+      "path": "popover-vue2-dark-hover.fingerprints.json",
+      "sha256": "6d031e28274f618538d5039715ff75d9ff2b91b51d9edb2df161d65027710568",
+      "bytes": 2547148
+    },
+    {
+      "path": "popover-vue2-dark-hover.png",
+      "sha256": "caa5a499bcfa836a9e0a6667b866716fa835e5fbf10c25592667c36871bdb80e",
+      "bytes": 168364
+    },
+    {
+      "path": "popover-vue2-dark-keyboard-focus.facts.json",
+      "sha256": "6378c54459fa96e678398ad0ec4518af0dfa9a514730ffef0f7af7302d20778b",
+      "bytes": 47398
+    },
+    {
+      "path": "popover-vue2-dark-keyboard-focus.fingerprints.json",
+      "sha256": "6d517a8043b55c944b4657a509211c1836a6f494dcbb926c55f4d40e8cf06125",
+      "bytes": 2548312
+    },
+    {
+      "path": "popover-vue2-dark-keyboard-focus.png",
+      "sha256": "75fbb0c0d1369ddee0aeb5db081536a267d8b03ca0dcbcd317ba46fb48bb1971",
+      "bytes": 168381
+    },
+    {
+      "path": "popover-vue2-dark-open.facts.json",
+      "sha256": "a9400d1af1d91cea4f09cae768507da49b9b43c392c9b6b6ca9c87e13f8a7240",
+      "bytes": 64122
+    },
+    {
+      "path": "popover-vue2-dark-open.fingerprints.json",
+      "sha256": "c123a25fd110aa0d0609c0cae2f1729d5705ce1b2531163f54ef3ae30317f02b",
+      "bytes": 1359262
+    },
+    {
+      "path": "popover-vue2-dark-open.png",
+      "sha256": "dd7ce3f92b096650392966419bbfbac5005716b3274ee6a1691fefe75c76e09f",
+      "bytes": 173610
+    },
+    {
+      "path": "popover-vue2-dark-rest.facts.json",
+      "sha256": "28286dd9662e8336fb76bc0b56ac366d52dac15d60dca0ac80ff4b4e06336d83",
+      "bytes": 43990
+    },
+    {
+      "path": "popover-vue2-dark-rest.fingerprints.json",
+      "sha256": "71a0255f02951a1d69f16878a4be6564f1770f64ec73ee65340f2fe90381a410",
+      "bytes": 2547448
+    },
+    {
+      "path": "popover-vue2-dark-rest.png",
+      "sha256": "caa5a499bcfa836a9e0a6667b866716fa835e5fbf10c25592667c36871bdb80e",
+      "bytes": 168364
+    },
+    {
+      "path": "popover-vue2-light-hover.facts.json",
+      "sha256": "2d2fac65df51c62821b892233cfb5e566c05bd6ba39ce590d8d35b00fa88747d",
+      "bytes": 43898
+    },
+    {
+      "path": "popover-vue2-light-hover.fingerprints.json",
+      "sha256": "03ff449f09ac2ed1babedb44a7a23162b194157664b11d2d8d91d7df6d358282",
+      "bytes": 2485276
+    },
+    {
+      "path": "popover-vue2-light-hover.png",
+      "sha256": "f7169f8b54a4030756680d3e4d5ae3bb8c0d9b5a43df7eebb3c3d9ed5a62444d",
+      "bytes": 190737
+    },
+    {
+      "path": "popover-vue2-light-keyboard-focus.facts.json",
+      "sha256": "ee8721483813d0150df652cd6f8c6f45a242048fd33aaf9dc6a5308020d503f4",
+      "bytes": 47297
+    },
+    {
+      "path": "popover-vue2-light-keyboard-focus.fingerprints.json",
+      "sha256": "84d388c6bc7a5bce5d2656df884dc4bb0b6052cc11370379b89c09744b088e16",
+      "bytes": 2486413
+    },
+    {
+      "path": "popover-vue2-light-keyboard-focus.png",
+      "sha256": "c295696a0347a3b36ac7222cd76121660eaa331dd0c4000072d1be59396898c4",
+      "bytes": 190754
+    },
+    {
+      "path": "popover-vue2-light-open.facts.json",
+      "sha256": "498572d632a7ef14516478491447e8abc1e15bf0f8bb70ad8ceb84ffbad8c66d",
+      "bytes": 64202
+    },
+    {
+      "path": "popover-vue2-light-open.fingerprints.json",
+      "sha256": "0c5658b8886da92f2766d446ca61b05bef2c307a1a2f8480eda5fe8749098907",
+      "bytes": 1325533
+    },
+    {
+      "path": "popover-vue2-light-open.png",
+      "sha256": "7fabec41d84fadb959e2cec8d388a2a8f55494ee93f30c9f950134640f14db61",
+      "bytes": 196298
+    },
+    {
+      "path": "popover-vue2-light-rest.facts.json",
+      "sha256": "7e565ae9bd320e7ddfa9baa8e31325d1ba82dd19f206ecc191df5303105e760b",
+      "bytes": 43900
+    },
+    {
+      "path": "popover-vue2-light-rest.fingerprints.json",
+      "sha256": "fc482b2ee51aa14c17a7c8f8b6c052ad2213eeb5605e0374bcd08b7fd7471f61",
+      "bytes": 2485576
+    },
+    {
+      "path": "popover-vue2-light-rest.png",
+      "sha256": "f7169f8b54a4030756680d3e4d5ae3bb8c0d9b5a43df7eebb3c3d9ed5a62444d",
+      "bytes": 190737
+    },
+    {
+      "path": "popover-wc-dark-hover.facts.json",
+      "sha256": "8f4b515b242b659822090c717ac04c5bca5b83ec148c512d716f0dcc3ba13ca3",
+      "bytes": 43855
+    },
+    {
+      "path": "popover-wc-dark-hover.fingerprints.json",
+      "sha256": "e90e30c3ffd196980f709f527f53cf633491d448c543dc754bb878da1906571c",
+      "bytes": 2551657
+    },
+    {
+      "path": "popover-wc-dark-hover.png",
+      "sha256": "75de540bcdf14137d91358a1a0af8ad2429b097c9c21fad4b6f9d9702db64bc6",
+      "bytes": 169775
+    },
+    {
+      "path": "popover-wc-dark-keyboard-focus.facts.json",
+      "sha256": "a6644ce877265226c2d4cbf3814276e0c9623b40ed997c474ad3ee7e079c6e52",
+      "bytes": 47265
+    },
+    {
+      "path": "popover-wc-dark-keyboard-focus.fingerprints.json",
+      "sha256": "1f49eb587ac6e517fa00a25796840019530b759b5ade69fae24c52512bf72641",
+      "bytes": 2552836
+    },
+    {
+      "path": "popover-wc-dark-keyboard-focus.png",
+      "sha256": "1d674f0c9dc2fc0203af98d026fa8a18980b5229727d49613304d7a2480d1937",
+      "bytes": 169793
+    },
+    {
+      "path": "popover-wc-dark-open.facts.json",
+      "sha256": "b6a4746542575a813a591ef38df52c8a1d8290f0460b38cd46f144a8b2403b0b",
+      "bytes": 64118
+    },
+    {
+      "path": "popover-wc-dark-open.fingerprints.json",
+      "sha256": "66d44d22a6a2c444c5f0686cefbccddebdc2e0371f3042bb0a3222a334291b02",
+      "bytes": 1361314
+    },
+    {
+      "path": "popover-wc-dark-open.png",
+      "sha256": "1b715bf62b03eb7f31dad4fb94e31fed459aa4d2eb891a1113f775f80402ffe3",
+      "bytes": 175007
+    },
+    {
+      "path": "popover-wc-dark-rest.facts.json",
+      "sha256": "3b3ed270f4d6e560bfd190983cdb4ef16fe08d27a5569f51dedd811e3d9cfb7a",
+      "bytes": 43857
+    },
+    {
+      "path": "popover-wc-dark-rest.fingerprints.json",
+      "sha256": "981d18c1a69f081ff4741f6a2b86d86e7c78c223c7522493ca281f3e818a77d6",
+      "bytes": 2551957
+    },
+    {
+      "path": "popover-wc-dark-rest.png",
+      "sha256": "75de540bcdf14137d91358a1a0af8ad2429b097c9c21fad4b6f9d9702db64bc6",
+      "bytes": 169775
+    },
+    {
+      "path": "popover-wc-light-hover.facts.json",
+      "sha256": "16be81b01053375659070f4b498a1fe7ca07bfcf202308f7392d7bdb4711a395",
+      "bytes": 43766
+    },
+    {
+      "path": "popover-wc-light-hover.fingerprints.json",
+      "sha256": "c2c76855b013edcb5e2b7447eefa19844cc5dcf9fe7b2c1d12a18df849f470a7",
+      "bytes": 2490541
+    },
+    {
+      "path": "popover-wc-light-hover.png",
+      "sha256": "ebfbfe0b604898ed9422eb3f0cc386759443d62cc53451a018ae12c3512d7243",
+      "bytes": 192118
+    },
+    {
+      "path": "popover-wc-light-keyboard-focus.facts.json",
+      "sha256": "7dbc1783c056d759989124855e0200fed59d120f03d77a5257d8f99e8145a286",
+      "bytes": 47165
+    },
+    {
+      "path": "popover-wc-light-keyboard-focus.fingerprints.json",
+      "sha256": "7459b960ee725990acd710de5b2a4386541ffbcb95de8121318b615e2c8b42e9",
+      "bytes": 2491693
+    },
+    {
+      "path": "popover-wc-light-keyboard-focus.png",
+      "sha256": "14af73c07b1a503555afb97d1d27b58994dcd36ab4769bdaa9e54dfd16471cc8",
+      "bytes": 192135
+    },
+    {
+      "path": "popover-wc-light-open.facts.json",
+      "sha256": "7d6fa07d9575fc55b25861e03b77db8ee818d1c36b9fd6f8db0e7d730a6eaa7c",
+      "bytes": 64202
+    },
+    {
+      "path": "popover-wc-light-open.fingerprints.json",
+      "sha256": "702baf626aad3c6e8e1ccfa6454ee56eeafee6843ac63ea1adcdc136c22d87f4",
+      "bytes": 1328029
+    },
+    {
+      "path": "popover-wc-light-open.png",
+      "sha256": "61341fedb4d1773331e8aeba1fd047e7393950e4b228db04043f8d0756cd0a25",
+      "bytes": 197750
+    },
+    {
+      "path": "popover-wc-light-rest.facts.json",
+      "sha256": "38020e8820db51366a733453dbda892812a4c43c71799fde22f8a7e4810cfa93",
+      "bytes": 43768
+    },
+    {
+      "path": "popover-wc-light-rest.fingerprints.json",
+      "sha256": "b33a930882a80fe88447d9d14f7344028670b462e620bec3c5b5ff57321d245f",
+      "bytes": 2490841
+    },
+    {
+      "path": "popover-wc-light-rest.png",
+      "sha256": "ebfbfe0b604898ed9422eb3f0cc386759443d62cc53451a018ae12c3512d7243",
+      "bytes": 192118
+    }
+  ]
+}
