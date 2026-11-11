@@ -1,0 +1,27 @@
+{
+  "pullRequest": "https://github.com/Proto-UI/Proto-UI/pull/1435",
+  "finding": "https://github.com/Proto-UI/Proto-UI/pull/1435#discussion_r4540319375",
+  "baseline": {
+    "head": "ee86b3cbc452abf8a92a9ff0474752975397af99",
+    "tree": "e1e25a7807827107b6e08189aa4eec0c5e0601da",
+    "testBlob": "2562b1dc0ca510183d7cc5fc9c138bec2320839f",
+    "passed": 8,
+    "failed": 1,
+    "originalLogSha256": "4822d8c2a23fa570834e0e6331a11744164e6c2f6aeec1c27ca23ead8c6bb1ed"
+  },
+  "candidate": {
+    "head": "3139922b91dd94111a6a290687ab43adc479788b",
+    "tree": "5df78cad425522ac718db1a317589bd522b34cc9",
+    "testBlob": "a51f1d218cdaab6931559d8ec304264f17c9b463",
+    "passed": 39,
+    "failed": 0,
+    "focusedFiles": 3,
+    "sameFilePassed": 9,
+    "originalLogSha256": "64b5d984f3c239f32e4f931a3d160f3ac15096c68b1e8b62c4ac4a57e6e22dad"
+  },
+  "productBlobs": {
+    "packages/adapters/react/src/template.ts": "ee91cb6d412a1ea9ab896fd02b73065f08d76bb5",
+    "packages/adapters/base/src/platform/web-owned-decoration.ts": "bf66ba23490f43aae98f15f6584aa4199bf9dee9"
+  },
+  "scope": "One test file. No product bytes differ from the reviewed baseline. The exact candidate also reran the owned-decoration stage and public-mode Search tests."
+}
