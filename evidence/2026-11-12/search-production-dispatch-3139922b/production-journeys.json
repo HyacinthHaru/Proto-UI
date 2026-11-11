@@ -1,0 +1,148 @@
+{
+  "hosted": {
+    "head": "30aebb5445f5e271d0a45112f20226dd97533d06",
+    "run": 43058917799,
+    "job": 130722670259,
+    "artifact": 13883843138,
+    "zipSha256": "9b8069459f1615803bc57289605733d602fac6215046d65a952f23f369cc4168",
+    "passed": 0,
+    "failed": 4,
+    "outcomes": [
+      {
+        "family": "shadcn",
+        "reactRuntimeObservedAfterFailure": "react",
+        "lateResultRows": 97,
+        "nativeImeEnd": {
+          "type": "compositionend",
+          "trusted": false,
+          "data": "Button",
+          "value": "Button",
+          "start": 6,
+          "end": 6
+        },
+        "imeResultRows": 97
+      },
+      {
+        "family": "brutalist",
+        "reactRuntimeObservedAfterFailure": "react",
+        "lateResultRows": 97,
+        "nativeImeEnd": {
+          "type": "compositionend",
+          "trusted": false,
+          "data": "Button",
+          "value": "Button",
+          "start": 6,
+          "end": 6
+        },
+        "imeResultRows": 97
+      }
+    ]
+  },
+  "localTwoFamilies": {
+    "head": "3139922b91dd94111a6a290687ab43adc479788b",
+    "realGeneratedIndex": true,
+    "outcomes": [
+      {
+        "family": "shadcn",
+        "before": {
+          "runtime": "vue",
+          "generation": "2",
+          "rows": 97,
+          "headCalls": 2
+        },
+        "after": {
+          "runtime": "react",
+          "generation": "3",
+          "query": "Button",
+          "rows": 97
+        },
+        "originalWindow": {
+          "passed": false,
+          "elapsedMs": 1002.3465829999996,
+          "samples": [
+            {
+              "startedMs": 0.0015000000003055902,
+              "returnedMs": 58.6519159999998,
+              "value": "vue"
+            },
+            {
+              "startedMs": 111.13108299999931,
+              "returnedMs": 363.1975830000001,
+              "value": "vue"
+            },
+            {
+              "startedMs": 415.16075,
+              "returnedMs": 558.8640409999998,
+              "value": "vue"
+            },
+            {
+              "startedMs": 611.0208329999996,
+              "returnedMs": 753.257208,
+              "value": "vue"
+            },
+            {
+              "startedMs": 805.3866659999994,
+              "returnedMs": 3665.1090830000003,
+              "value": "react"
+            }
+          ]
+        },
+        "browserMutationDeliveries": [
+          {
+            "elapsedMs": 1023,
+            "current": "react",
+            "previous": ["vue"]
+          }
+        ]
+      },
+      {
+        "family": "brutalist",
+        "before": {
+          "runtime": "vue",
+          "generation": "2",
+          "rows": 97,
+          "headCalls": 2
+        },
+        "after": {
+          "runtime": "react",
+          "generation": "3",
+          "query": "Button",
+          "rows": 97
+        },
+        "originalWindow": {
+          "passed": false,
+          "elapsedMs": 1000.8571250000005,
+          "samples": [
+            {
+              "startedMs": 0.0023330000003625173,
+              "returnedMs": 5.174957999999606,
+              "value": "vue"
+            },
+            {
+              "startedMs": 56.924041999998735,
+              "returnedMs": 130.2828329999993,
+              "value": "vue"
+            },
+            {
+              "startedMs": 182.38495800000055,
+              "returnedMs": 206.18487500000083,
+              "value": "vue"
+            },
+            {
+              "startedMs": 258.36454200000117,
+              "returnedMs": 2746.9119999999984,
+              "value": "react"
+            }
+          ]
+        },
+        "browserMutationDeliveries": [
+          {
+            "elapsedMs": 243.10000002384186,
+            "current": "react",
+            "previous": ["vue"]
+          }
+        ]
+      }
+    ]
+  }
+}

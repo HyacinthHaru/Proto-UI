@@ -1,0 +1,56 @@
+{
+  "artifactId": 13883987901,
+  "digest": "sha256:232e722fd4d87bf9ee9c5801aeb8f946e935e740020551b77b8dcf5febb692ac",
+  "members": 585,
+  "transitions": {
+    "brutalist-react-transition": {
+      "passed": true,
+      "error": null,
+      "verdictMs": 523,
+      "firstAfterClickMs": 618.099853515625
+    },
+    "brutalist-vue-transition": {
+      "passed": true,
+      "error": null,
+      "verdictMs": 417,
+      "firstAfterClickMs": 418.599853515625
+    },
+    "brutalist-vue2-transition": {
+      "passed": true,
+      "error": null,
+      "verdictMs": 364,
+      "firstAfterClickMs": 366.599853515625
+    },
+    "brutalist-wc-transition": {
+      "passed": true,
+      "error": null,
+      "verdictMs": 3,
+      "firstAfterClickMs": 8.699951171875
+    },
+    "shadcn-react-transition": {
+      "passed": true,
+      "error": null,
+      "verdictMs": 475,
+      "firstAfterClickMs": 481.300048828125
+    },
+    "shadcn-vue-transition": {
+      "passed": true,
+      "error": null,
+      "verdictMs": 459,
+      "firstAfterClickMs": 464.800048828125
+    },
+    "shadcn-vue2-transition": {
+      "passed": true,
+      "error": null,
+      "verdictMs": 468,
+      "firstAfterClickMs": 471.2001953125
+    },
+    "shadcn-wc-transition": {
+      "passed": true,
+      "error": null,
+      "verdictMs": 10,
+      "firstAfterClickMs": 206.10009765625
+    }
+  },
+  "sidebarReturns": 24
+}

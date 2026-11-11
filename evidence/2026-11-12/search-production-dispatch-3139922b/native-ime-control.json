@@ -1,0 +1,467 @@
+{
+  "browser": "156.0.8078.79",
+  "platform": "darwin",
+  "arch": "arm64",
+  "outcomes": [
+    {
+      "shadow": false,
+      "steps": "Same native CDP input sequence on an isolated plain HTML input",
+      "samples": [
+        {
+          "where": "document",
+          "type": "beforeinput",
+          "trusted": true,
+          "composing": false,
+          "composed": true,
+          "data": "Button",
+          "inputType": "insertText",
+          "value": "",
+          "focused": true
+        },
+        {
+          "where": "input",
+          "type": "beforeinput",
+          "trusted": true,
+          "composing": false,
+          "composed": true,
+          "data": "Button",
+          "inputType": "insertText",
+          "value": "",
+          "focused": true
+        },
+        {
+          "where": "document",
+          "type": "input",
+          "trusted": true,
+          "composing": false,
+          "composed": true,
+          "data": "Button",
+          "inputType": "insertText",
+          "value": "Button",
+          "focused": true
+        },
+        {
+          "where": "input",
+          "type": "input",
+          "trusted": true,
+          "composing": false,
+          "composed": true,
+          "data": "Button",
+          "inputType": "insertText",
+          "value": "Button",
+          "focused": true
+        },
+        {
+          "where": "document",
+          "type": "compositionstart",
+          "trusted": true,
+          "composed": true,
+          "data": "Button",
+          "value": "Button",
+          "focused": true
+        },
+        {
+          "where": "input",
+          "type": "compositionstart",
+          "trusted": true,
+          "composed": true,
+          "data": "Button",
+          "value": "Button",
+          "focused": true
+        },
+        {
+          "where": "document",
+          "type": "compositionupdate",
+          "trusted": true,
+          "composed": true,
+          "data": "中",
+          "value": "Button",
+          "focused": true
+        },
+        {
+          "where": "input",
+          "type": "compositionupdate",
+          "trusted": true,
+          "composed": true,
+          "data": "中",
+          "value": "Button",
+          "focused": true
+        },
+        {
+          "where": "document",
+          "type": "beforeinput",
+          "trusted": true,
+          "composing": true,
+          "composed": true,
+          "data": "中",
+          "inputType": "insertCompositionText",
+          "value": "Button",
+          "focused": true
+        },
+        {
+          "where": "input",
+          "type": "beforeinput",
+          "trusted": true,
+          "composing": true,
+          "composed": true,
+          "data": "中",
+          "inputType": "insertCompositionText",
+          "value": "Button",
+          "focused": true
+        },
+        {
+          "where": "document",
+          "type": "input",
+          "trusted": true,
+          "composing": true,
+          "composed": true,
+          "data": "中",
+          "inputType": "insertCompositionText",
+          "value": "中",
+          "focused": true
+        },
+        {
+          "where": "input",
+          "type": "input",
+          "trusted": true,
+          "composing": true,
+          "composed": true,
+          "data": "中",
+          "inputType": "insertCompositionText",
+          "value": "中",
+          "focused": true
+        },
+        {
+          "where": "document",
+          "type": "compositionupdate",
+          "trusted": true,
+          "composed": true,
+          "data": "Button",
+          "value": "中",
+          "focused": true
+        },
+        {
+          "where": "input",
+          "type": "compositionupdate",
+          "trusted": true,
+          "composed": true,
+          "data": "Button",
+          "value": "中",
+          "focused": true
+        },
+        {
+          "where": "document",
+          "type": "beforeinput",
+          "trusted": true,
+          "composing": true,
+          "composed": true,
+          "data": "Button",
+          "inputType": "insertCompositionText",
+          "value": "中",
+          "focused": true
+        },
+        {
+          "where": "input",
+          "type": "beforeinput",
+          "trusted": true,
+          "composing": true,
+          "composed": true,
+          "data": "Button",
+          "inputType": "insertCompositionText",
+          "value": "中",
+          "focused": true
+        },
+        {
+          "where": "document",
+          "type": "input",
+          "trusted": true,
+          "composing": true,
+          "composed": true,
+          "data": "Button",
+          "inputType": "insertCompositionText",
+          "value": "Button",
+          "focused": true
+        },
+        {
+          "where": "input",
+          "type": "input",
+          "trusted": true,
+          "composing": true,
+          "composed": true,
+          "data": "Button",
+          "inputType": "insertCompositionText",
+          "value": "Button",
+          "focused": true
+        },
+        {
+          "where": "document",
+          "type": "compositionend",
+          "trusted": false,
+          "composed": true,
+          "data": "Button",
+          "value": "Button",
+          "focused": true
+        },
+        {
+          "where": "input",
+          "type": "compositionend",
+          "trusted": false,
+          "composed": true,
+          "data": "Button",
+          "value": "Button",
+          "focused": true
+        }
+      ],
+      "compositionEnd": [
+        {
+          "where": "document",
+          "type": "compositionend",
+          "trusted": false,
+          "composed": true,
+          "data": "Button",
+          "value": "Button",
+          "focused": true
+        },
+        {
+          "where": "input",
+          "type": "compositionend",
+          "trusted": false,
+          "composed": true,
+          "data": "Button",
+          "value": "Button",
+          "focused": true
+        }
+      ]
+    },
+    {
+      "shadow": true,
+      "steps": "Same native CDP input sequence on an isolated plain HTML input",
+      "samples": [
+        {
+          "where": "document",
+          "type": "beforeinput",
+          "trusted": true,
+          "composing": false,
+          "composed": true,
+          "data": "Button",
+          "inputType": "insertText",
+          "value": "",
+          "focused": true
+        },
+        {
+          "where": "input",
+          "type": "beforeinput",
+          "trusted": true,
+          "composing": false,
+          "composed": true,
+          "data": "Button",
+          "inputType": "insertText",
+          "value": "",
+          "focused": true
+        },
+        {
+          "where": "document",
+          "type": "input",
+          "trusted": true,
+          "composing": false,
+          "composed": true,
+          "data": "Button",
+          "inputType": "insertText",
+          "value": "Button",
+          "focused": true
+        },
+        {
+          "where": "input",
+          "type": "input",
+          "trusted": true,
+          "composing": false,
+          "composed": true,
+          "data": "Button",
+          "inputType": "insertText",
+          "value": "Button",
+          "focused": true
+        },
+        {
+          "where": "document",
+          "type": "compositionstart",
+          "trusted": true,
+          "composed": true,
+          "data": "Button",
+          "value": "Button",
+          "focused": true
+        },
+        {
+          "where": "input",
+          "type": "compositionstart",
+          "trusted": true,
+          "composed": true,
+          "data": "Button",
+          "value": "Button",
+          "focused": true
+        },
+        {
+          "where": "document",
+          "type": "compositionupdate",
+          "trusted": true,
+          "composed": true,
+          "data": "中",
+          "value": "Button",
+          "focused": true
+        },
+        {
+          "where": "input",
+          "type": "compositionupdate",
+          "trusted": true,
+          "composed": true,
+          "data": "中",
+          "value": "Button",
+          "focused": true
+        },
+        {
+          "where": "document",
+          "type": "beforeinput",
+          "trusted": true,
+          "composing": true,
+          "composed": true,
+          "data": "中",
+          "inputType": "insertCompositionText",
+          "value": "Button",
+          "focused": true
+        },
+        {
+          "where": "input",
+          "type": "beforeinput",
+          "trusted": true,
+          "composing": true,
+          "composed": true,
+          "data": "中",
+          "inputType": "insertCompositionText",
+          "value": "Button",
+          "focused": true
+        },
+        {
+          "where": "document",
+          "type": "input",
+          "trusted": true,
+          "composing": true,
+          "composed": true,
+          "data": "中",
+          "inputType": "insertCompositionText",
+          "value": "中",
+          "focused": true
+        },
+        {
+          "where": "input",
+          "type": "input",
+          "trusted": true,
+          "composing": true,
+          "composed": true,
+          "data": "中",
+          "inputType": "insertCompositionText",
+          "value": "中",
+          "focused": true
+        },
+        {
+          "where": "document",
+          "type": "compositionupdate",
+          "trusted": true,
+          "composed": true,
+          "data": "Button",
+          "value": "中",
+          "focused": true
+        },
+        {
+          "where": "input",
+          "type": "compositionupdate",
+          "trusted": true,
+          "composed": true,
+          "data": "Button",
+          "value": "中",
+          "focused": true
+        },
+        {
+          "where": "document",
+          "type": "beforeinput",
+          "trusted": true,
+          "composing": true,
+          "composed": true,
+          "data": "Button",
+          "inputType": "insertCompositionText",
+          "value": "中",
+          "focused": true
+        },
+        {
+          "where": "input",
+          "type": "beforeinput",
+          "trusted": true,
+          "composing": true,
+          "composed": true,
+          "data": "Button",
+          "inputType": "insertCompositionText",
+          "value": "中",
+          "focused": true
+        },
+        {
+          "where": "document",
+          "type": "input",
+          "trusted": true,
+          "composing": true,
+          "composed": true,
+          "data": "Button",
+          "inputType": "insertCompositionText",
+          "value": "Button",
+          "focused": true
+        },
+        {
+          "where": "input",
+          "type": "input",
+          "trusted": true,
+          "composing": true,
+          "composed": true,
+          "data": "Button",
+          "inputType": "insertCompositionText",
+          "value": "Button",
+          "focused": true
+        },
+        {
+          "where": "document",
+          "type": "compositionend",
+          "trusted": false,
+          "composed": true,
+          "data": "Button",
+          "value": "Button",
+          "focused": true
+        },
+        {
+          "where": "input",
+          "type": "compositionend",
+          "trusted": false,
+          "composed": true,
+          "data": "Button",
+          "value": "Button",
+          "focused": true
+        }
+      ],
+      "compositionEnd": [
+        {
+          "where": "document",
+          "type": "compositionend",
+          "trusted": false,
+          "composed": true,
+          "data": "Button",
+          "value": "Button",
+          "focused": true
+        },
+        {
+          "where": "input",
+          "type": "compositionend",
+          "trusted": false,
+          "composed": true,
+          "data": "Button",
+          "value": "Button",
+          "focused": true
+        }
+      ]
+    }
+  ]
+}

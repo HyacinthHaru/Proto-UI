@@ -1,0 +1,47 @@
+{
+  "source": {
+    "sha": "3139922b91dd94111a6a290687ab43adc479788b",
+    "tree": "5df78cad425522ac718db1a317589bd522b34cc9",
+    "dirty": false
+  },
+  "browser": "156.0.8078.79",
+  "platform": "darwin",
+  "family": "brutalist",
+  "originalVerdictMs": 1001.788,
+  "browserSetterMs": [204.639, 204.738],
+  "browserGetterMs": [2600.339, 2600.438],
+  "protocolId": 318,
+  "query": 4,
+  "method": "Runtime.callFunctionOn",
+  "nodePipe": {
+    "cdp.pipe.write.return": 256.799,
+    "cdp.pipe.read-dispatch.enter": 2601.025
+  },
+  "protocolStages": {
+    "DevToolsSession::HandleCommand in Browser": [256.763, 256.862],
+    "DevToolsSession::DispatchToAgent": [256.769, 256.868],
+    "DevToolsSession::DispatchProtocolCommand": [2599.594, 2599.693],
+    "DevToolsSession::SendProtocolResponse": [2600.41, 2600.509],
+    "DevToolsSession::DispatchProtocolResponse": [2600.448, 2600.547]
+  },
+  "forwardingToRendererDispatchMs": 2342.825,
+  "rendererDispatchDurationMs": 0.839,
+  "before": {
+    "runtime": "vue",
+    "generation": "2",
+    "rows": 97,
+    "headCalls": 2
+  },
+  "after": {
+    "runtime": "react",
+    "generation": "3",
+    "query": "Button",
+    "rows": 97
+  },
+  "trace": {
+    "complete": true,
+    "bytes": 142116,
+    "dataLossOccurred": false,
+    "sha256": "85f6585605de85bafaa7d98a84f118bf42c1694d3a0e9286eff8b1c89d57a424"
+  }
+}
