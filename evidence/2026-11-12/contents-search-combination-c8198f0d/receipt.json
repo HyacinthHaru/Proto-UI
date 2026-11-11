@@ -1,0 +1,99 @@
+{
+  "head": "c8198f0dba6337442e155b41ced0533fd5de8e2d",
+  "tree": "aa2e9a266c347e5f6a3a2327a0a8340495399b4d",
+  "inputs": [
+    "6d7a17eb6e0f837069b3d8847c05244c41984bab",
+    "3139922b91dd94111a6a290687ab43adc479788b",
+    "9ea956c8a14e0f059130462dfe4613287a3a70ed"
+  ],
+  "browser": "Chrome 156.0.8078.79 on macOS arm64, project Astro toolbar disabled as in CI",
+  "exactHomepageDialog": {
+    "passed": 17,
+    "failed": 1,
+    "filtered": 0,
+    "reportSha256": "b8fd5f5a80aff5f2b96301285721bf39f86eccd3cf69acf5e43e6089ca12963c"
+  },
+  "exactSearch": {
+    "passed": 73,
+    "failed": 10,
+    "filtered": 0,
+    "reportSha256": "53398791a470cb706ec5b796933ff2dc815171e1773dda72d01112ae5998adda"
+  },
+  "exactTypes": {
+    "astroFiles": 1215,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 30
+  },
+  "originalSearchReopenFailures": [
+    {
+      "width": 320,
+      "source": "c8198f0dba6337442e155b41ced0533fd5de8e2d",
+      "runtime": "wc",
+      "panelOpen": true,
+      "queryFocused": true,
+      "captureSha256": "6405f47a682d193804ca640c7458835aa43c4c73e1cde00e3dfc67e1dc3e66fa"
+    },
+    {
+      "width": 390,
+      "source": "c8198f0dba6337442e155b41ced0533fd5de8e2d",
+      "runtime": "wc",
+      "panelOpen": true,
+      "queryFocused": true,
+      "captureSha256": "58082f3083a3760dd23d195b5efb8df58e14d68ee8aba2a130b0aa5e6de11164"
+    }
+  ],
+  "testOnlySearchControls": {
+    "focused": {
+      "passed": 4,
+      "failed": 0,
+      "filtered": 79,
+      "reportSha256": "0f1818e738c709847ce1b542da2f280251593154a8bb35fe9b9a9dbd2388b6cf"
+    },
+    "fullOrder": {
+      "passed": 75,
+      "failed": 8,
+      "filtered": 0,
+      "reportSha256": "5194715472978cb69195d8d76f47af1c5dd6d75ef5a91a1a1c32fcd5fbd59fc6"
+    },
+    "cpu2": {
+      "passed": 2,
+      "failed": 0,
+      "filtered": 81,
+      "reportSha256": "696396ca45772546d834ad6a706afa4d9d77c9a64b3010ff2f41ca476a4ebfa4"
+    },
+    "meaning": "The original WC close failures did not recur with test-only event observation. The original failures remain unresolved."
+  },
+  "testOnlyBrutalistFocus": {
+    "sameFirstShadow": true,
+    "originalRingWidth": 2,
+    "originalRingOffset": 2,
+    "frames": 16,
+    "focusedThroughout": true,
+    "firstObservedTransitionTimeMs": 33.26799999999963,
+    "configuredDuration": "0.15s",
+    "observationsSha256": "e52ddc70d748bdfb5c767d794a8e620e4adde09d1f2e431fc9396d6468520543"
+  },
+  "matrixCandidate": {
+    "head": "26418fe1ba55e13bb4ede4fc4ad107e405c42b3e",
+    "inherited": 1614,
+    "candidateBefore": 1615,
+    "candidateAfter": 1614,
+    "repaired": [
+      "internal/website/self-hosting-coverage-matrix.md:258: source fingerprint for `apps/www/src/components/site-typography-client.ts` does not match its reviewed SHA-256"
+    ],
+    "candidateOnlyAfter": [],
+    "missingInherited": [],
+    "exactGateExit": 1
+  },
+  "images": [
+    {
+      "path": "brutalist-focus-capture.png",
+      "sha256": "660d090ea7fc10222daa8a49841d19f27e1d6d9de438417bbe78c9325711ef72"
+    },
+    {
+      "path": "search-reopen-failure.png",
+      "sha256": "830e320043f3b065dbb3557f6cd1c9160d2112c23f5df10a6fe4193eab042672"
+    }
+  ]
+}

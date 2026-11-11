@@ -1,0 +1,11 @@
+# Latest Contents and Search combination observations
+
+Clean local combination `c8198f0dba6337442e155b41ced0533fd5de8e2d` ran the complete original Homepage and Dialog files, all 83 Search cases and workspace types. The original Contents cases and Dialog passed. The complete Homepage and Dialog result was 17/18. Search was 73/83. The combined check used the same project-only Astro toolbar preference as CI.
+
+Two Shadcn narrow Search cases reached the bounded list, panel and status checks and passed them. After reopening, both failed the original 1000ms Enter-close poll in WC. At the later capture, the panel was still open and Query held focus. A targeted test-only event control, a complete original-order run with that control and a ×2 Chromium renderer control did not reproduce those two failures. In the observed passing runs the trusted Enter reached the current Close. The original run did not record the key target at the failure. The other eight failures still stop at the known End target-reveal condition.
+
+The separate Brutalist Homepage failure reached a keyboard-focused, focus-visible WC trigger with a 2px ring and 2px offset. The stored immediate box-shadow equaled its unfocused shadow. A test-only replay reproduced that first-read failure. Subsequent samples kept the same focused control and observed the declared 150ms shadow transition through visible paint. The screenshot is the original evidence capture, which occurs after the measured read. Original test conditions remain unchanged.
+
+On a separate exact Contents candidate, the same local coverage audit found one new reviewed-source fingerprint mismatch beyond the 1614 identical current-main diagnostics. The one-line binding in `26418fe1ba55e13bb4ede4fc4ad107e405c42b3e` removes that difference. Its gate still fails with all 1614 inherited diagnostics. Typography ownership remains blocked. Two actual Docs preference journeys and 127 focused tests passed. An earlier native-labels test failed at the same authored rich-list block on both exact main and candidate, before its selection checks.
+
+[Command target-reveal tracking](https://github.com/Proto-UI/Proto-UI/issues/848) · [Original narrow-list fix](https://github.com/Proto-UI/Proto-UI/pull/1443)
