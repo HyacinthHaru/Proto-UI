@@ -1,0 +1,9 @@
+# Contents runtime switching and Focus Entry
+
+On unchanged main and on signed `5f00ef46b05b0be728d1ecf7faf82d5ec24d8a98`, the original Chromium assertions passed for the mobile Contents and Dialog selection. Both runs checked 24 ordered handbacks of the original sidebar tree. Each Dialog run reports 196 observations and 120 captures. All CodeExamples and the original 1000ms Contents assertion and case deadlines remain in place.
+
+In this single clean candidate run, Shadcn React was read at 524ms, Vue at 770ms and Vue 2 at 850ms after the click command returned. The matched main run recorded 589ms, 969ms and 919ms. These are local original verdict times. Separate CPU-rate-2 instrumentation on the real seven-CodeExample page retained a late React failure on both baseline and combined candidate. The synchronous publication upper bounds in those two captures were about 1117ms and 1029ms. The candidate reduced document-image inventory scans from 254 to 62 in the measured interval. The controlled timing does not establish a stable distribution.
+
+The WC projection only needs to know if a self fallback is required. Its native counter regression fails on earlier source because it reads the later positive-tabindex button after admitting an ordinary descendant. The candidate skips that read and the actual entry request still focuses the positive-tabindex button. The original Shadow suite passed 153/153. The image mutation regression fails on the earlier source's unnecessary inventory read. The candidate passed 82 focused and 24 native image cases, including source/geometry and raw authored media.
+
+The three images are unedited Chromium captures from the exact signed candidate's Contents and Dialog run. The reconciliation binds the original verdicts, source hashes and unexposed local Dialog image hashes. [Exact fork-hosted candidate CI](https://github.com/HyacinthHaru/Proto-UI/actions/runs/42960005147) runs separately.
