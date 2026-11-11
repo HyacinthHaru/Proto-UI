@@ -1,0 +1,344 @@
+{
+  "mainBaseline": "b25229a94251398bc2f375554fcb9622dc8e79ab",
+  "signedCandidate": "9ea956c8a14e0f059130462dfe4613287a3a70ed",
+  "tree": "1dd026a3d213858defb3f3b50dd9dd0cffee0991",
+  "testSource": "apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts",
+  "unchangedTestSha256": "fb0e0a7ba6e511de025f6e2ba22084c317b351b828f45b1eb343b6dc5b95d5e8",
+  "mainNative": {
+    "failedOriginalShadcnCases": 2,
+    "reason": "The family list computed maxHeight none inside the bounded Search body"
+  },
+  "candidateNative": {
+    "passed": 4,
+    "sameProductPrecommit": true,
+    "allRuntimeLoops": ["wc", "react", "vue", "vue2"]
+  },
+  "privateSeparateEe86Geometry": {
+    "baseline": [
+      {
+        "source": {
+          "sha": "ee86b3cbc452abf8a92a9ff0474752975397af99",
+          "dirty": true
+        },
+        "family": "shadcn",
+        "runtime": "wc",
+        "width": 320,
+        "scrollGeometry": {
+          "list": {
+            "height": 348.5320739746094,
+            "clientHeight": 352,
+            "scrollHeight": 352,
+            "maxHeight": "none",
+            "overflowY": "auto"
+          },
+          "body": {
+            "height": 55.943359375,
+            "clientHeight": 57,
+            "scrollHeight": 560,
+            "maxHeight": "none",
+            "overflowY": "auto"
+          }
+        }
+      },
+      {
+        "source": {
+          "sha": "ee86b3cbc452abf8a92a9ff0474752975397af99",
+          "dirty": true
+        },
+        "family": "shadcn",
+        "runtime": "wc",
+        "width": 390,
+        "scrollGeometry": {
+          "list": {
+            "height": 348.5273742675781,
+            "clientHeight": 352,
+            "scrollHeight": 352,
+            "maxHeight": "none",
+            "overflowY": "auto"
+          },
+          "body": {
+            "height": 105.44935607910156,
+            "clientHeight": 107,
+            "scrollHeight": 560,
+            "maxHeight": "none",
+            "overflowY": "auto"
+          }
+        }
+      }
+    ],
+    "candidate": [
+      {
+        "source": {
+          "sha": "ee86b3cbc452abf8a92a9ff0474752975397af99",
+          "dirty": true
+        },
+        "family": "shadcn",
+        "runtime": "react",
+        "width": 320,
+        "scrollGeometry": {
+          "list": {
+            "height": 40.34791564941406,
+            "clientHeight": 41,
+            "scrollHeight": 352,
+            "maxHeight": "100%",
+            "overflowY": "auto"
+          },
+          "body": {
+            "height": 56.287841796875,
+            "clientHeight": 57,
+            "scrollHeight": 249,
+            "maxHeight": "none",
+            "overflowY": "auto"
+          }
+        }
+      },
+      {
+        "source": {
+          "sha": "ee86b3cbc452abf8a92a9ff0474752975397af99",
+          "dirty": true
+        },
+        "family": "shadcn",
+        "runtime": "vue",
+        "width": 320,
+        "scrollGeometry": {
+          "list": {
+            "height": 40.10041046142578,
+            "clientHeight": 41,
+            "scrollHeight": 352,
+            "maxHeight": "100%",
+            "overflowY": "auto"
+          },
+          "body": {
+            "height": 55.94255065917969,
+            "clientHeight": 57,
+            "scrollHeight": 249,
+            "maxHeight": "none",
+            "overflowY": "auto"
+          }
+        }
+      },
+      {
+        "source": {
+          "sha": "ee86b3cbc452abf8a92a9ff0474752975397af99",
+          "dirty": true
+        },
+        "family": "shadcn",
+        "runtime": "vue2",
+        "width": 320,
+        "scrollGeometry": {
+          "list": {
+            "height": 40.5,
+            "clientHeight": 41,
+            "scrollHeight": 352,
+            "maxHeight": "100%",
+            "overflowY": "auto"
+          },
+          "body": {
+            "height": 56.5,
+            "clientHeight": 57,
+            "scrollHeight": 249,
+            "maxHeight": "none",
+            "overflowY": "auto"
+          }
+        }
+      },
+      {
+        "source": {
+          "sha": "ee86b3cbc452abf8a92a9ff0474752975397af99",
+          "dirty": true
+        },
+        "family": "shadcn",
+        "runtime": "wc",
+        "width": 320,
+        "scrollGeometry": {
+          "list": {
+            "height": 40.10093307495117,
+            "clientHeight": 41,
+            "scrollHeight": 352,
+            "maxHeight": "100%",
+            "overflowY": "auto"
+          },
+          "body": {
+            "height": 55.94328308105469,
+            "clientHeight": 57,
+            "scrollHeight": 249,
+            "maxHeight": "none",
+            "overflowY": "auto"
+          }
+        }
+      },
+      {
+        "source": {
+          "sha": "ee86b3cbc452abf8a92a9ff0474752975397af99",
+          "dirty": true
+        },
+        "family": "shadcn",
+        "runtime": "react",
+        "width": 390,
+        "scrollGeometry": {
+          "list": {
+            "height": 89.60816955566406,
+            "clientHeight": 91,
+            "scrollHeight": 352,
+            "maxHeight": "100%",
+            "overflowY": "auto"
+          },
+          "body": {
+            "height": 105.45050048828125,
+            "clientHeight": 107,
+            "scrollHeight": 299,
+            "maxHeight": "none",
+            "overflowY": "auto"
+          }
+        }
+      },
+      {
+        "source": {
+          "sha": "ee86b3cbc452abf8a92a9ff0474752975397af99",
+          "dirty": true
+        },
+        "family": "shadcn",
+        "runtime": "vue",
+        "width": 390,
+        "scrollGeometry": {
+          "list": {
+            "height": 90.16053771972656,
+            "clientHeight": 91,
+            "scrollHeight": 352,
+            "maxHeight": "100%",
+            "overflowY": "auto"
+          },
+          "body": {
+            "height": 106.10052490234375,
+            "clientHeight": 107,
+            "scrollHeight": 299,
+            "maxHeight": "none",
+            "overflowY": "auto"
+          }
+        }
+      },
+      {
+        "source": {
+          "sha": "ee86b3cbc452abf8a92a9ff0474752975397af99",
+          "dirty": true
+        },
+        "family": "shadcn",
+        "runtime": "vue2",
+        "width": 390,
+        "scrollGeometry": {
+          "list": {
+            "height": 90.5,
+            "clientHeight": 91,
+            "scrollHeight": 352,
+            "maxHeight": "100%",
+            "overflowY": "auto"
+          },
+          "body": {
+            "height": 106.5,
+            "clientHeight": 107,
+            "scrollHeight": 299,
+            "maxHeight": "none",
+            "overflowY": "auto"
+          }
+        }
+      },
+      {
+        "source": {
+          "sha": "ee86b3cbc452abf8a92a9ff0474752975397af99",
+          "dirty": true
+        },
+        "family": "shadcn",
+        "runtime": "wc",
+        "width": 390,
+        "scrollGeometry": {
+          "list": {
+            "height": 89.60834503173828,
+            "clientHeight": 91,
+            "scrollHeight": 352,
+            "maxHeight": "100%",
+            "overflowY": "auto"
+          },
+          "body": {
+            "height": 105.45071411132812,
+            "clientHeight": 107,
+            "scrollHeight": 299,
+            "maxHeight": "none",
+            "overflowY": "auto"
+          }
+        }
+      }
+    ]
+  },
+  "exactTrustedWheel": {
+    "source": {
+      "sha": "9ea956c8a14e0f059130462dfe4613287a3a70ed",
+      "dirty": false
+    },
+    "viewport": {
+      "width": 320,
+      "height": 390
+    },
+    "rootFont": "200%",
+    "dataBoundary": "Controlled successful empty dev Pagefind response. Real menu, document navigation and wheel.",
+    "browser": "156.0.8078.79",
+    "initial": {
+      "maxHeight": "100%",
+      "list": {
+        "clientHeight": 41,
+        "scrollHeight": 352,
+        "top": 0
+      },
+      "body": {
+        "clientHeight": 57,
+        "scrollHeight": 185,
+        "top": 0
+      }
+    },
+    "before": {
+      "maxHeight": "100%",
+      "list": {
+        "clientHeight": 41,
+        "scrollHeight": 352,
+        "top": 0
+      },
+      "body": {
+        "clientHeight": 57,
+        "scrollHeight": 185,
+        "top": 0
+      }
+    },
+    "wheelHitOwned": true,
+    "after": {
+      "maxHeight": "100%",
+      "list": {
+        "clientHeight": 41,
+        "scrollHeight": 352,
+        "top": 90
+      },
+      "body": {
+        "clientHeight": 57,
+        "scrollHeight": 185,
+        "top": 0
+      }
+    },
+    "wheel": {
+      "trusted": true,
+      "deltaY": 90
+    },
+    "closed": true,
+    "outcome": "passed"
+  },
+  "earlierSupplementalFailure": {
+    "source": {
+      "sha": "9ea956c8a14e0f059130462dfe4613287a3a70ed",
+      "dirty": false
+    },
+    "bodyTopBeforeWheel": 156,
+    "outcome": "failed",
+    "reason": "An attempted wheel with the list already outside the visible body did not move the inner list within the observation deadline."
+  },
+  "unchangedImages": {
+    "independent-list-scroll.png": "80d7060eaab030de87ee9e1943e7644b3cc1a472f31eade91f13a4f568141072",
+    "main-enlarged-failure.png": "4080c12b9872495d24d9fdc6c65a9d3aac6f252751c68b1c294971d8e3260790"
+  }
+}
