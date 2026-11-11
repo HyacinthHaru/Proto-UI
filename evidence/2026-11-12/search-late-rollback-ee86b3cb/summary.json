@@ -1,0 +1,122 @@
+{
+  "reviewedCommit": "df9eaf2f095a149766fa3ca05c380d63b2074571",
+  "maintainerReview": 5858251930,
+  "candidate": "ee86b3cbc452abf8a92a9ff0474752975397af99",
+  "repair": "053eb4c3fbea711458f7755ac88062d9acfbd33c",
+  "mainParent": "b25229a94251398bc2f375554fcb9622dc8e79ab",
+  "tree": "e1e25a7807827107b6e08189aa4eec0c5e0601da",
+  "testSource": "apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts",
+  "identicalTestSha256": "ce5663d8f4a5fb0a89074dfd7b300cc76126692b809be76fc1e44dc3c4bae1a3",
+  "reviewedBaseline": {
+    "productSource": "df9eaf2f095a149766fa3ca05c380d63b2074571",
+    "worktreeDelta": "Only the new browser test",
+    "originalPollMs": 1000,
+    "failed": 3,
+    "logicalSessionOpen": true,
+    "oldPanelVisible": false,
+    "observations": {
+      "query": {
+        "source": {
+          "sha": "df9eaf2f095a149766fa3ca05c380d63b2074571",
+          "dirty": true
+        },
+        "fault": {
+          "generation": "2",
+          "active": true,
+          "searchRuntime": "react",
+          "newerFocusLanded": false,
+          "speculativeFocusLanded": false
+        },
+        "previousGeneration": "1"
+      },
+      "close": {
+        "source": {
+          "sha": "df9eaf2f095a149766fa3ca05c380d63b2074571",
+          "dirty": true
+        },
+        "fault": {
+          "generation": "2",
+          "active": true,
+          "searchRuntime": "react",
+          "newerFocusLanded": false,
+          "speculativeFocusLanded": true
+        },
+        "previousGeneration": "1"
+      },
+      "newer-focus": {
+        "source": {
+          "sha": "df9eaf2f095a149766fa3ca05c380d63b2074571",
+          "dirty": true
+        },
+        "fault": {
+          "generation": "2",
+          "active": true,
+          "searchRuntime": "react",
+          "newerFocusLanded": true,
+          "speculativeFocusLanded": false
+        },
+        "previousGeneration": "1"
+      }
+    }
+  },
+  "cleanCandidate": {
+    "focusedNativePassed": 6,
+    "otherCasesFiltered": 77,
+    "sameProductFocusedPrecommitPassed": 127,
+    "observations": {
+      "query": {
+        "source": {
+          "sha": "ee86b3cbc452abf8a92a9ff0474752975397af99",
+          "dirty": false
+        },
+        "fault": {
+          "generation": "2",
+          "active": true,
+          "searchRuntime": "react",
+          "newerFocusLanded": false,
+          "speculativeFocusLanded": false
+        },
+        "previousGeneration": "1"
+      },
+      "close": {
+        "source": {
+          "sha": "ee86b3cbc452abf8a92a9ff0474752975397af99",
+          "dirty": false
+        },
+        "fault": {
+          "generation": "2",
+          "active": true,
+          "searchRuntime": "react",
+          "newerFocusLanded": false,
+          "speculativeFocusLanded": true
+        },
+        "previousGeneration": "1"
+      },
+      "newer-focus": {
+        "source": {
+          "sha": "ee86b3cbc452abf8a92a9ff0474752975397af99",
+          "dirty": false
+        },
+        "fault": {
+          "generation": "2",
+          "active": true,
+          "searchRuntime": "react",
+          "newerFocusLanded": true,
+          "speculativeFocusLanded": false
+        },
+        "previousGeneration": "1"
+      }
+    }
+  },
+  "forkChecks": {
+    "run": 43053760577,
+    "typeJob": 130637638626,
+    "packageJob": 130638878957,
+    "browserPreparationFailureJob": 130637785177
+  },
+  "unchangedImages": {
+    "repaired-retained-close.png": "b1f47536ed2f8a0227bee91c4577e2be85ff9cfe37478affe71f44f358aec627",
+    "repaired-retained-newer-focus.png": "350edb6b6b6dcf42b3f94b0df484f419fef790134d7c0ce5b5470364c24a3a7a",
+    "reviewed-head-after-rollback.png": "3ad7cdd0d63edaa0ddd7285b6128ac117d2aace8b5643d27728d85f7ec73a534"
+  }
+}

@@ -1,0 +1,11 @@
+# Homepage Search late publication rollback
+
+The independent finding in [PR #1435](https://github.com/Proto-UI/Proto-UI/pull/1435#pullrequestreview-5858251930) identified a failure after Search activation. This packet binds the exact reviewed product `df9eaf2f` and the clean candidate `ee86b3cb` to the same native test bytes. The candidate includes upstream main `b25229a9`.
+
+The test opens the real WC Homepage Search and then requests React. An instance-only dataset interposition throws once when the Homepage is about to finish publishing ready React. At the throw, the replacement Search is actually active and Search has published its React coordinate. The Close variation gives the activated candidate's existing content carrier real programmatic focus before that throw. The newer-focus variation records actual unrelated DOM focus while the old Search is locked. The data boundary uses an empty Pagefind response fixture.
+
+The three reviewed-product cases failed the original one-second visible-panel poll after rollback. The shared public Search session remained open. On the clean candidate, all three retained the original visible WC panel, native editor, query and selection. Query and Close regain their eligible focus, and the unrelated newer focus remains in place in its own variation. Ctrl+K closes and the retained opener reopens the Search. The existing successful four-runtime, Bootstrap and shortcut-handback cases also pass, making 6/6 in this focused clean run.
+
+The images show the failure's lost Search panel and two real retained states. Native focus and element identity are asserted by Chromium, with exact fault and source bindings in `summary.json`. The broader dev file and the managed production Pagefind lane have their own evidence boundaries. The exact fork type and package jobs passed. The uncached browser shard stopped at CJK preparation before starting browser tests.
+
+[Type job](https://github.com/HyacinthHaru/Proto-UI/actions/runs/43053760577/job/130637638626) · [Package job](https://github.com/HyacinthHaru/Proto-UI/actions/runs/43053760577/job/130638878957) · [Browser setup](https://github.com/HyacinthHaru/Proto-UI/actions/runs/43053760577/job/130637785177)
