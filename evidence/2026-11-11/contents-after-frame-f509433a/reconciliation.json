@@ -1,0 +1,82 @@
+{
+  "head": "f509433af1bceef311c58eb3c1578a69326f88c5",
+  "base": "98ac19762f08351684d801db8006ca7c71fb6f30",
+  "sourceSHA256": {
+    "apps/www/src/components/PrototypePreviewer/projection-composition.ts": "7e2783ede856daa3b2d62f668861e4e78bee8ae3377fb674c12af537dc4c5266",
+    "apps/www/src/components/PrototypePreviewer/projection-materializer.test.ts": "863bac56d3ef89814906a8b4554157d2e8a5148a069fdf88df86a90e2e650f4e",
+    "apps/www/src/components/PrototypePreviewer/projection-materializer.ts": "2c3371c40097ce53948278050d2db503be0a6d0aa7620f4cf77cf285850ef9cf",
+    "apps/www/src/components/documentation-image-preview.test.ts": "31a33e2110e00bb6440ef5b3348a40f6b29c4d4e01197b1e1a69404d80b84c0e",
+    "apps/www/src/components/documentation-image-preview.ts": "cbef4a75ac03be3969312cec0c724e608753836626770a9682079845257e4349",
+    "apps/www/src/components/site-code-surface.ts": "9f3a3bbf3c1c0e0f3ca912ac5c1e568668987e5bb885d0d1d90a01261194153c",
+    "apps/www/src/components/site-copy-command.ts": "64fc4a50d5a3fa672b6e3c7ebe14d3fdd0c8fdcd82cb56978e7474852dfa10f1",
+    "apps/www/src/components/site-typography-client.ts": "83f9ce0d2345c177d5c3d3edf6d46eb346714c463cbd82a32c19322219003545",
+    "apps/www/src/components/site-typography.ownership.test.ts": "2b2facbf151d5da90535a1c88c57fb9532f3d0151d4163e84271318e14dabf0b",
+    "apps/www/src/components/site-typography.ts": "640f031fa2e308c5a53e14aa0a35a499362ccb6f1c1ca338d40e92ada61ba232",
+    "packages/adapters/web-component/src/focus-scope-targets.ts": "784690dab5f675c5e90d61e7e3d11af872e7b5be85e329098df1adb5d8a5131a",
+    "packages/adapters/web-component/src/runtime/modules.ts": "39b16582ce62437fda9e4a0a3422c1a9018fcfbed380cb3637e1800581d09820",
+    "packages/adapters/web-component/test/shadow-closeout.browser.test.ts": "87163b9240528d7446ecd19776b3e2a2f28766e6d68e4acde4fdd938d38df358"
+  },
+  "caseReceipts": {
+    "vitest": {
+      "passed": 10,
+      "failed": 0,
+      "filtered": 8,
+      "privateReportSHA256": "5ed8e12ac80a4c53a5f6ecd37838ba10090228bf9d90c9361156820e7e3240d1"
+    },
+    "copy-code-vitest": {
+      "passed": 21,
+      "failed": 0,
+      "filtered": 0,
+      "privateReportSHA256": "8d09189d40751a95d2366dc817a62e2b4c69c9cdfb2d744ef39fc682a184fd03"
+    }
+  },
+  "originalTransitionsMs": {
+    "brutalist-react-transition": 250,
+    "brutalist-vue-transition": 233,
+    "brutalist-vue2-transition": 197,
+    "brutalist-wc-transition": 1,
+    "shadcn-react-transition": 502,
+    "shadcn-vue-transition": 643,
+    "shadcn-vue2-transition": 763,
+    "shadcn-wc-transition": 141
+  },
+  "orderedHandbacks": 24,
+  "dialogObservations": 196,
+  "dialogPrivatePNGs": 120,
+  "publishedPNGHashes": {
+    "shadcn-react-public-popover-open.png": "c64899704244a056eefed5d126a06b432580e25db1b1d694bff9e1fadeecad17",
+    "shadcn-react-320-settled.png": "b7b9c62c28d7eec5652efe8daaa4a400cb4829c8b8c647d0a8676b6081e7255b",
+    "320-dark-expanded.png": "b1042c06a6a27a0ea1dbfc90a2be0b4e3c4202fc283ff97d3288c5a2584d9fc1",
+    "react-brutalist-0-dark-focus.png": "c98ba2a804d8c55b5be2d4a7f08e6fe39c979ff605b4eb57a07ac8f6b1ce124a"
+  },
+  "cpu2Controls": {
+    "typography": {
+      "diagnosticPatchSHA256": "e2013e29783ca7e6c3e09ffe97e1411560d9f44e1ca6c65919b5eeedb8fa281c",
+      "verdictMs": 1000,
+      "originalError": "Error: Matcher did not succeed in 1000ms",
+      "codeExamples": 7,
+      "publicationMs": 930.7,
+      "getterValue": "react",
+      "getterMs": 1133,
+      "privateTraceSHA256": "67b486ab44461b23f9c415d3183aeb814c6ad07edcc590744e22353e0b08e9e9",
+      "forwardMs": 934.242,
+      "rendererDispatchMs": 1130.541,
+      "nodeReturnMs": 1133.433,
+      "nodeVerdictMs": 1001.021
+    },
+    "afterFrame": {
+      "diagnosticPatchSHA256": "19808c4694218186278f7ea6e385e305f78af37e3613f366bc17a5e7aa75c678",
+      "verdictMs": 1000,
+      "originalError": "Error: Matcher did not succeed in 1000ms",
+      "codeExamples": 7,
+      "publicationMs": 945.2,
+      "getterValue": "react",
+      "getterMs": 999.9,
+      "privateTraceSHA256": "0e4cc4264cf536eb5d8a0ad6dc9eb9c2b73619b56462c6e93c42b8c31568b6be",
+      "forwardMs": 948.736,
+      "rendererDispatchMs": 997.781,
+      "nodeReturnMs": 1001.261,
+      "nodeVerdictMs": 1000.429
+    }
+  }
+}
