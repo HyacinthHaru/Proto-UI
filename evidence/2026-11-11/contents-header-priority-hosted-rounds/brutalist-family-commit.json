@@ -1,0 +1,16 @@
+{
+  "run": 42986595327,
+  "job": 130409228172,
+  "artifact": 13841290098,
+  "head": "4fe4e6b548ad9c6b0a4fa4b337341eb8e1be6c6a",
+  "stage": "homepage brutalist family-commit, independent of docs Contents",
+  "clockCalibrationOffsetsMs": [-0.552, 0.227],
+  "setterWriteStartBoundsAfterOriginalPollMs": [820.396, 821.175],
+  "setterWriteReturnBoundsAfterOriginalPollMs": [820.496, 821.275],
+  "domObserverDeliveryBoundsAfterOriginalPollMs": [1039.697, 1040.475],
+  "originalVerdictAfterPollMs": 1000.984,
+  "originalLastGetterBoundsAfterPollMs": [1315.396, 1316.175],
+  "originalLastNodeReturnAfterPollMs": 1317.351,
+  "pendingOriginalAtVerdict": 1,
+  "scope": "One exact failed hosted case. Clock bounds assume stable offset across same document and calibration. Setter return is family dataset publication; lifecycle case original assertions after the failure are unreached. Protocol-queue locus remains unverified."
+}
