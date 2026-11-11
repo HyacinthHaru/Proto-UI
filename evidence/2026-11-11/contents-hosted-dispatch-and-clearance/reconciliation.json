@@ -1,0 +1,328 @@
+{
+  "baseProduct": "1ed7c69226158837021aa84facac9efbcea654bf",
+  "plain": [
+    {
+      "run": 42967416413,
+      "contents": {
+        "job": {
+          "id": 130347837006,
+          "name": "test-browser (1/8, browser-1-of-8)",
+          "status": "completed",
+          "conclusion": "failure",
+          "html_url": "https://github.com/HyacinthHaru/Proto-UI/actions/runs/42967416413/job/130347837006"
+        },
+        "fileSummary": "❯ apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts (10 tests | 2 failed) 115456ms",
+        "producerExits": [1],
+        "artifact": {
+          "id": 13831863757,
+          "name": "runtime-ci-42967416413-browser-1-of-8-attempt-1",
+          "size_in_bytes": 5020214,
+          "digest": "sha256:23504709e20583c8ab57785f3a9a3432e9a7f95a203c130e6c6b6d9205a24959"
+        },
+        "transitions": {
+          "shadcn-react-transition": {
+            "passed": true,
+            "originalError": null,
+            "verdictMs": 941,
+            "first": {
+              "ms": 1101.1,
+              "runtime": "react"
+            }
+          },
+          "shadcn-vue-transition": {
+            "passed": false,
+            "originalError": "Error: Matcher did not succeed in 1000ms",
+            "verdictMs": 1001,
+            "first": {
+              "ms": 1056,
+              "runtime": "react"
+            },
+            "late": {
+              "ms": 1428.1,
+              "runtime": "vue"
+            }
+          },
+          "shadcn-wc-transition": {
+            "passed": true,
+            "originalError": null,
+            "verdictMs": 12,
+            "first": {
+              "ms": 188.8,
+              "runtime": "wc"
+            }
+          }
+        },
+        "returnOrderObservations": 6
+      },
+      "dialog": {
+        "job": {
+          "id": 130347836976,
+          "name": "test-browser (3/8, browser-3-of-8)",
+          "status": "completed",
+          "conclusion": "failure",
+          "html_url": "https://github.com/HyacinthHaru/Proto-UI/actions/runs/42967416413/job/130347836976"
+        },
+        "fileSummary": "✓ apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts (8 tests) 58408ms",
+        "producerExits": [124],
+        "artifact": {
+          "id": 13832148627,
+          "name": "runtime-ci-42967416413-browser-3-of-8-attempt-1",
+          "size_in_bytes": 13820380,
+          "digest": "sha256:8a22728c7c2cf5c7625dec847a39131d7e98e5d8464af10a590371efcce283f5"
+        },
+        "dialog": {
+          "browser": "156.0.8078.79",
+          "observations": 196,
+          "pngs": 120
+        }
+      }
+    },
+    {
+      "run": 42969360194,
+      "contents": {
+        "job": {
+          "id": 130354073897,
+          "name": "test-browser (1/8, browser-1-of-8)",
+          "status": "completed",
+          "conclusion": "failure",
+          "html_url": "https://github.com/HyacinthHaru/Proto-UI/actions/runs/42969360194/job/130354073897"
+        },
+        "fileSummary": "❯ apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts (10 tests | 2 failed) 125382ms",
+        "producerExits": [1],
+        "artifact": {
+          "id": 13832739663,
+          "name": "runtime-ci-42969360194-browser-1-of-8-attempt-1",
+          "size_in_bytes": 4946026,
+          "digest": "sha256:63f8ef138b9ee63ea2727d785aecfd19df2b379cfb0714c00b8d6f625714e229"
+        },
+        "transitions": {
+          "shadcn-react-transition": {
+            "passed": false,
+            "originalError": "Error: Matcher did not succeed in 1000ms",
+            "verdictMs": 1002,
+            "first": {
+              "ms": 1032.8,
+              "runtime": "wc"
+            },
+            "late": {
+              "ms": 1314.6,
+              "runtime": "react"
+            }
+          },
+          "shadcn-wc-transition": {
+            "passed": true,
+            "originalError": null,
+            "verdictMs": 3,
+            "first": {
+              "ms": 5,
+              "runtime": "wc"
+            }
+          }
+        },
+        "returnOrderObservations": 3
+      },
+      "dialog": {
+        "job": {
+          "id": 130354073943,
+          "name": "test-browser (3/8, browser-3-of-8)",
+          "status": "completed",
+          "conclusion": "failure",
+          "html_url": "https://github.com/HyacinthHaru/Proto-UI/actions/runs/42969360194/job/130354073943"
+        },
+        "fileSummary": "✓ apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts (8 tests) 81360ms",
+        "producerExits": [124],
+        "artifact": {
+          "id": 13832904907,
+          "name": "runtime-ci-42969360194-browser-3-of-8-attempt-1",
+          "size_in_bytes": 9243172,
+          "digest": "sha256:d712cb8c221407f40d08a8c16553c05337ff946ca39e8ddc5b8a6dba16d2be76"
+        },
+        "dialog": {
+          "browser": "156.0.8078.79",
+          "observations": 196,
+          "pngs": 120
+        }
+      }
+    },
+    {
+      "run": 42969379045,
+      "contents": {
+        "job": {
+          "id": 130354463302,
+          "name": "test-browser (1/8, browser-1-of-8)",
+          "status": "completed",
+          "conclusion": "failure",
+          "html_url": "https://github.com/HyacinthHaru/Proto-UI/actions/runs/42969379045/job/130354463302"
+        },
+        "fileSummary": "❯ apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts (10 tests | 2 failed) 132822ms",
+        "producerExits": [124],
+        "artifact": {
+          "id": 13833841901,
+          "name": "runtime-ci-42969379045-browser-1-of-8-attempt-1",
+          "size_in_bytes": 4908102,
+          "digest": "sha256:c560022d07238d98974b014237a372291001698828159cfb9a487c10dd5ea0fc"
+        },
+        "transitions": {
+          "shadcn-react-transition": {
+            "passed": false,
+            "originalError": "Error: Matcher did not succeed in 1000ms",
+            "verdictMs": 1001,
+            "first": {
+              "ms": 1079.9,
+              "runtime": "wc"
+            },
+            "late": {
+              "ms": 1393.2,
+              "runtime": "react"
+            }
+          },
+          "shadcn-wc-transition": {
+            "passed": true,
+            "originalError": null,
+            "verdictMs": 11,
+            "first": {
+              "ms": 26.1,
+              "runtime": "wc"
+            }
+          }
+        },
+        "returnOrderObservations": 3
+      },
+      "dialog": {
+        "job": {
+          "id": 130354463196,
+          "name": "test-browser (3/8, browser-3-of-8)",
+          "status": "completed",
+          "conclusion": "failure",
+          "html_url": "https://github.com/HyacinthHaru/Proto-UI/actions/runs/42969379045/job/130354463196"
+        },
+        "fileSummary": "✓ apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts (8 tests) 68280ms",
+        "producerExits": [124],
+        "artifact": {
+          "id": 13833612944,
+          "name": "runtime-ci-42969379045-browser-3-of-8-attempt-1",
+          "size_in_bytes": 11111041,
+          "digest": "sha256:6c19d6745771a68314b4f671c6ecc90b2aa9893f9d605ab77d00a7a5e4930a32"
+        },
+        "dialog": {
+          "browser": "156.0.8078.79",
+          "observations": 196,
+          "pngs": 120
+        }
+      }
+    }
+  ],
+  "diagnostics": {
+    "react": {
+      "carrier": "9dcf3fc781614e4454c30c503f403056bf9235aa",
+      "artifact": 13833336701,
+      "run": 42967715375,
+      "job": 130350939663,
+      "zipSHA256": "0963ea986dcffd367d985c24dc89306514d5d529b43d0f933bd7726f0033b64a",
+      "firstDeadlineMs": 1000,
+      "passed": false,
+      "codeExamples": 7,
+      "requests": 5,
+      "originalNodeEnter": 961.749,
+      "chromeForward": 963.689,
+      "rendererDispatch": 1488.959,
+      "getterWC": 1491.6,
+      "originalVerdict": 1001.02,
+      "observedReact": 1568.01,
+      "lateGetterReact": 1631.8
+    },
+    "vue": {
+      "carrier": "c00caaa87198a50974b798286cc3d1cf011a04f3",
+      "artifact": 13834127166,
+      "run": 42969500944,
+      "job": 130355547334,
+      "zipSHA256": "348208959f637073a9491cabc905ebf9f250ac56e4e52e2f8283bb7c6e6d5c71",
+      "firstDeadlineMs": 988,
+      "passed": true,
+      "codeExamples": 7,
+      "requests": 4,
+      "lastReactGetter": 889.6,
+      "observedVue": 939.503,
+      "originalNodeEnter": 940.146,
+      "chromeForward": 941.565,
+      "rendererDispatch": 984.743,
+      "getterVue": 987,
+      "originalNodeReturn": 987.968,
+      "originalVerdict": 988.149,
+      "vue2OriginalTimedOut": true
+    }
+  },
+  "currentLocalExact": {
+    "head": "334ef6d4575a4bc3a17b0ee58bd710b96eb0dbca",
+    "transitionVerdictsMs": {
+      "shadcn-wc-transition": 5,
+      "shadcn-vue2-transition": 755,
+      "shadcn-vue-transition": 631,
+      "brutalist-wc-transition": 1,
+      "brutalist-react-transition": 260,
+      "brutalist-vue2-transition": 194,
+      "brutalist-vue-transition": 230,
+      "shadcn-react-transition": 478
+    },
+    "passed": 10,
+    "filtered": 8,
+    "placements": [
+      {
+        "source": "69796b363444f64309baebca7efa8dc247c88624",
+        "runtime": "react",
+        "observation": {
+          "at": 3615.399999976158,
+          "headerBottom": 56,
+          "triggerBottom": 50,
+          "panelTop": 60,
+          "panelBottom": 836,
+          "viewport": 844,
+          "panelId": "pui-popover-2-content"
+        }
+      },
+      {
+        "source": "69796b363444f64309baebca7efa8dc247c88624",
+        "runtime": "vue",
+        "observation": {
+          "at": 3711.5,
+          "headerBottom": 56,
+          "triggerBottom": 50,
+          "panelTop": 60,
+          "panelBottom": 836,
+          "viewport": 844,
+          "panelId": "pui-popover-2-content"
+        }
+      },
+      {
+        "source": "69796b363444f64309baebca7efa8dc247c88624",
+        "runtime": "vue2",
+        "observation": {
+          "at": 3482.5999999046326,
+          "headerBottom": 56,
+          "triggerBottom": 50,
+          "panelTop": 60,
+          "panelBottom": 836,
+          "viewport": 844,
+          "panelId": "pui-popover-2-content"
+        }
+      },
+      {
+        "source": "69796b363444f64309baebca7efa8dc247c88624",
+        "runtime": "wc",
+        "observation": {
+          "at": 2727,
+          "headerBottom": 56,
+          "triggerBottom": 50,
+          "panelTop": 60,
+          "panelBottom": 836,
+          "viewport": 844,
+          "panelId": "pui-popover-1-content"
+        }
+      }
+    ]
+  },
+  "publishedPNGHashes": {
+    "hosted-react-failure.png": "9af5f4b64578d563b61b607c03fd008628064523444465d0fd62e9167427f067",
+    "latest-vue-keyboard-focus.png": "2b5267a87bd45988450bdd55fb32c6d7d1cd5adfa39139d9ebbaba0837fc2cfd"
+  }
+}
