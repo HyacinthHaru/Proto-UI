@@ -1,0 +1,367 @@
+{
+  "at": "2026-11-11T21:34:58.110034+00:00",
+  "id": 43088111759,
+  "exact": "26418fe1ba55e13bb4ede4fc4ad107e405c42b3e",
+  "attempt": 1,
+  "runStatus": "queued",
+  "runConclusion": null,
+  "contents": {
+    "job": {
+      "id": 130795062534,
+      "name": "test-browser (1/8, browser-1-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/HyacinthHaru/Proto-UI/actions/runs/43088111759/job/130795062534"
+    },
+    "fileSummary": "\u276f apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts (10 tests | 1 failed) 125982ms",
+    "producerExits": [1],
+    "artifact": {
+      "id": 13892977816,
+      "name": "runtime-ci-43088111759-browser-1-of-8-attempt-1",
+      "size_in_bytes": 5484045,
+      "digest": "sha256:96b18b31d642f0837a486d17daca990d7829a5bab12bb4d5438d7413a1268091"
+    },
+    "transitions": {
+      "brutalist-react-transition": {
+        "passed": true,
+        "originalError": null,
+        "verdictMs": 391,
+        "first": {
+          "ms": 458.2,
+          "runtime": "react"
+        }
+      },
+      "brutalist-vue-transition": {
+        "passed": true,
+        "originalError": null,
+        "verdictMs": 311,
+        "first": {
+          "ms": 312.5,
+          "runtime": "vue"
+        }
+      },
+      "brutalist-vue2-transition": {
+        "passed": true,
+        "originalError": null,
+        "verdictMs": 260,
+        "first": {
+          "ms": 261.4,
+          "runtime": "vue2"
+        }
+      },
+      "brutalist-wc-transition": {
+        "passed": true,
+        "originalError": null,
+        "verdictMs": 3,
+        "first": {
+          "ms": 9,
+          "runtime": "wc"
+        }
+      },
+      "shadcn-react-transition": {
+        "passed": true,
+        "originalError": null,
+        "verdictMs": 346,
+        "first": {
+          "ms": 351,
+          "runtime": "react"
+        }
+      },
+      "shadcn-vue-transition": {
+        "passed": true,
+        "originalError": null,
+        "verdictMs": 342,
+        "first": {
+          "ms": 346.5,
+          "runtime": "vue"
+        }
+      },
+      "shadcn-vue2-transition": {
+        "passed": true,
+        "originalError": null,
+        "verdictMs": 379,
+        "first": {
+          "ms": 382.9,
+          "runtime": "vue2"
+        }
+      },
+      "shadcn-wc-transition": {
+        "passed": true,
+        "originalError": null,
+        "verdictMs": 160,
+        "first": {
+          "ms": 192.9,
+          "runtime": "wc"
+        }
+      }
+    },
+    "returnOrderObservations": 24
+  },
+  "dialog": {
+    "job": {
+      "id": 130795062381,
+      "name": "test-browser (3/8, browser-3-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/HyacinthHaru/Proto-UI/actions/runs/43088111759/job/130795062381"
+    },
+    "fileSummary": "\u2713 apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts (8 tests) 80392ms",
+    "producerExits": [124],
+    "artifact": {
+      "id": 13892369368,
+      "name": "runtime-ci-43088111759-browser-3-of-8-attempt-1",
+      "size_in_bytes": 9893494,
+      "digest": "sha256:d3ca254427464d07c62202b2e80addcd2978e066b3e4c1b57d53e519e69d1656"
+    },
+    "dialog": {
+      "browser": "156.0.8078.79",
+      "observations": 196,
+      "pngs": 120
+    }
+  },
+  "copy": {
+    "job": {
+      "id": 130795062480,
+      "name": "test-browser (5/8, browser-5-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/HyacinthHaru/Proto-UI/actions/runs/43088111759/job/130795062480"
+    },
+    "fileSummary": "\u2713 apps/www/src/content/docs/zh-cn/site-copy-commands.browser.test.ts (15 tests) 235728ms",
+    "producerExits": [124],
+    "artifact": {
+      "id": 13893486272,
+      "digest": "sha256:979e40a14f4f4e3a2c1e297949d6026b0d76e68ae817125bc1290c0cd4753b43",
+      "size": 13572653,
+      "members": 252,
+      "copyMembers": 0
+    }
+  },
+  "browserShards": [
+    {
+      "id": 130795062294,
+      "name": "test-browser (2/8, browser-2-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "startedAt": "2026-11-11T21:18:09Z",
+      "completedAt": "2026-11-11T21:34:24Z",
+      "sourcePrinted": true,
+      "producerExits": [124],
+      "testSummaries": [],
+      "failedSubjects": [],
+      "logSha256": "4e300b255d37024fb1ca19c254fa3b7240f4179d9100a9dd0e1275deebcd2b09"
+    },
+    {
+      "id": 130795062315,
+      "name": "test-browser (4/8, browser-4-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "startedAt": "2026-11-11T21:18:11Z",
+      "completedAt": "2026-11-11T21:30:42Z",
+      "sourcePrinted": true,
+      "producerExits": [1],
+      "testSummaries": [
+        "Test Files  4 failed | 8 passed (12)",
+        "Tests  9 failed | 53 passed | 17 skipped (79)"
+      ],
+      "failedSubjects": [
+        "FAIL  apps/www/src/content/docs/zh-cn/website-markup-provenance.browser.test.ts [ apps/www/src/content/docs/zh-cn/website-markup-provenance.browser.test.ts ]",
+        "FAIL  apps/www/src/content/docs/zh-cn/brutalist-passive-consumers.browser.test.ts > Brutalist passive public consumer evidence > wc: Separator follows consumer extent under resizing, font pressure and orientation reversal",
+        "FAIL  apps/www/src/content/docs/zh-cn/brutalist-passive-consumers.browser.test.ts > Brutalist passive public consumer evidence > react: Separator follows consumer extent under resizing, font pressure and orientation reversal",
+        "FAIL  apps/www/src/content/docs/zh-cn/brutalist-passive-consumers.browser.test.ts > Brutalist passive public consumer evidence > vue: Separator follows consumer extent under resizing, font pressure and orientation reversal",
+        "FAIL  apps/www/src/content/docs/zh-cn/brutalist-passive-consumers.browser.test.ts > Brutalist passive public consumer evidence > vue2: Separator follows consumer extent under resizing, font pressure and orientation reversal",
+        "FAIL  apps/www/src/content/docs/zh-cn/demo-liquid-glass-material.browser.test.ts > V2 optical paint through four real Web Adapter runtimes > light: visible dynamic source, optical pixels, motion, input and revocation",
+        "FAIL  apps/www/src/content/docs/zh-cn/demo-liquid-glass-material.browser.test.ts > V2 optical paint through four real Web Adapter runtimes > dark: visible dynamic source, optical pixels, motion, input and revocation",
+        "FAIL  apps/www/src/content/docs/zh-cn/demo-liquid-glass-material.browser.test.ts > V2 optical paint through four real Web Adapter runtimes > the actual public Button documentation uses the same optical path on all four runtime panels",
+        "FAIL  apps/www/src/content/docs/zh-cn/demo-liquid-glass-material.browser.test.ts > bounded public Liquid live-canvas diagnostics > records actual four-runtime idle/hover work without accepting an optimization",
+        "FAIL  apps/www/src/content/docs/zh-cn/prototype-projection-scope.browser.test.ts > Homepage Prototype projection scope > atomically seals an open child portal during programmatic lane and Runtime switches"
+      ],
+      "logSha256": "28bb81ba176a1d7cff288cb4976dd9334472c4813771eec2ed0eba13b6fa04d3"
+    },
+    {
+      "id": 130795062326,
+      "name": "test-browser (7/8, browser-7-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "startedAt": "2026-11-11T21:18:08Z",
+      "completedAt": "2026-11-11T21:33:35Z",
+      "sourcePrinted": true,
+      "producerExits": [124],
+      "testSummaries": [],
+      "failedSubjects": [],
+      "logSha256": "72a60de5aae7f9b91ab21233eb0b1912956505f8d357c34e3a90827f11e048d5"
+    },
+    {
+      "id": 130795062340,
+      "name": "test-browser (6/8, browser-6-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "startedAt": "2026-11-11T21:18:08Z",
+      "completedAt": "2026-11-11T21:33:39Z",
+      "sourcePrinted": true,
+      "producerExits": [124],
+      "testSummaries": [],
+      "failedSubjects": [],
+      "logSha256": "999755d1a91c5bd266e776e0a56f5160c279bd75d6427523291fc5bd928ec86e"
+    },
+    {
+      "id": 130795062356,
+      "name": "test-browser (8/8, browser-8-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "startedAt": "2026-11-11T21:18:09Z",
+      "completedAt": "2026-11-11T21:33:44Z",
+      "sourcePrinted": true,
+      "producerExits": [124],
+      "testSummaries": [],
+      "failedSubjects": [],
+      "logSha256": "bfe0c56168d939410a699f1032b2936ca3b2ec549f4d7deb4f8116f8357dac21"
+    },
+    {
+      "id": 130795062381,
+      "name": "test-browser (3/8, browser-3-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "startedAt": "2026-11-11T21:18:09Z",
+      "completedAt": "2026-11-11T21:33:35Z",
+      "sourcePrinted": true,
+      "producerExits": [124],
+      "testSummaries": [],
+      "failedSubjects": [],
+      "logSha256": "3fdec22aad5dd712e015e5a50459602d2db85d9c2aad5b387efa0d0ed8746cdc"
+    },
+    {
+      "id": 130795062480,
+      "name": "test-browser (5/8, browser-5-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "startedAt": "2026-11-11T21:18:08Z",
+      "completedAt": "2026-11-11T21:33:43Z",
+      "sourcePrinted": true,
+      "producerExits": [124],
+      "testSummaries": [],
+      "failedSubjects": [],
+      "logSha256": "17d7f4f7eb60500c2c677a8c7fe22221d3825200c1e0ea4900dd0055c27cbf07"
+    },
+    {
+      "id": 130795062534,
+      "name": "test-browser (1/8, browser-1-of-8)",
+      "status": "completed",
+      "conclusion": "failure",
+      "startedAt": "2026-11-11T21:18:09Z",
+      "completedAt": "2026-11-11T21:32:04Z",
+      "sourcePrinted": true,
+      "producerExits": [1],
+      "testSummaries": [
+        "Test Files  5 failed | 6 passed | 1 skipped (12)",
+        "Tests  13 failed | 140 passed | 15 skipped (168)"
+      ],
+      "failedSubjects": [
+        "FAIL  apps/www/src/content/docs/zh-cn/demo-prototype-style-closure.browser.test.ts > Prototype style closure without Website CSS > loads only scoped Proto UI physical styles and mounts every real runtime",
+        "FAIL  apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts > Shadcn Radio Group public browser acceptance > 'wc' 'interaction' projects selection, focus, disabled and theme states through the real family",
+        "FAIL  apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts > Shadcn Radio Group public browser acceptance > 'react' 'interaction' projects selection, focus, disabled and theme states through the real family",
+        "FAIL  apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts > Shadcn Radio Group public browser acceptance > 'vue' 'interaction' projects selection, focus, disabled and theme states through the real family",
+        "FAIL  apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts > Shadcn Radio Group public browser acceptance > 'vue2' 'interaction' projects selection, focus, disabled and theme states through the real family",
+        "FAIL  apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts > S4 complete public Dialog settings > zh-cn: native Light/split/mixed acceptance",
+        "FAIL  apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts > S4 complete public Dialog settings > en: native Light/split/mixed acceptance",
+        "FAIL  apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts > retains brutalist preference owners and portals through real breakpoint reconnects",
+        "FAIL  apps/www/src/content/docs/zh-cn/site-sidebar-disclosure.browser.test.ts > preserves native manual disclosure across reload and locale zh-cn/320",
+        "FAIL  apps/www/src/content/docs/zh-cn/site-sidebar-disclosure.browser.test.ts > preserves native manual disclosure across reload and locale zh-cn/390",
+        "FAIL  apps/www/src/content/docs/zh-cn/site-sidebar-disclosure.browser.test.ts > preserves native manual disclosure across reload and locale en/320",
+        "FAIL  apps/www/src/content/docs/zh-cn/site-sidebar-disclosure.browser.test.ts > preserves native manual disclosure across reload and locale en/390",
+        "FAIL  apps/www/src/content/docs/zh-cn/site-sidebar-disclosure.browser.test.ts > no-JS SSR scopes current-only defaults to UI Libraries and preserves other native groups"
+      ],
+      "logSha256": "1f34cb3e8a71f4fc372e295b8e5bec07d470dac96be43e3d8fb86af762409c5a"
+    }
+  ],
+  "general": {
+    "job": 130795062103,
+    "coverageDiagnostics": 1614,
+    "identicalToLocalCurrentMain": true,
+    "logSha256": "d008a8a83e89b4ba1dd19691f8203f5209a3c11fa56fda229adac82b70b0132e"
+  },
+  "package": {
+    "job": 130794922864,
+    "packages": 47,
+    "manifests": 47,
+    "sizeMeasurements": [
+      "PASS lucide/icons/x: 2879 / 3000 gzip bytes; overBudget=0; minified=8695 sha256=02838c5b1d4db7b0d62eab9b1d502848e268dfea098798ee87665caa966772fb",
+      "PASS lucide root: 637306 / 700000 gzip bytes; overBudget=0; minified=4087403 sha256=eadc64d34ea6f16b5390348d0e237be4bff80fc2450410640f0eb2bc60f2f30c",
+      "ADVISORY core root: 11196 / 7600 gzip bytes; overBudget=3596; minified=35217 sha256=8eda843d6f059efc2e9bb9eed81d6f6c792675d7c2ee2a395ec2da7f7ed4244a",
+      "ADVISORY runtime root: 97777 / 78500 gzip bytes; overBudget=19277; minified=379694 sha256=687a12905a5a642d57d12f8e53de6d616233b0d4b83314cee348aa5be68832e6",
+      "ADVISORY adapter-react root: 157832 / 106000 gzip bytes; overBudget=51832; minified=560104 sha256=d70df6cca7997a1f6d1083fbf38b2fc11de09e355393cf4916d5f9d939de0800",
+      "ADVISORY adapter-vue root: 157171 / 106000 gzip bytes; overBudget=51171; minified=557040 sha256=82e6944e7ca84dfe0634d0481652c188207da3f5e4db0566f8cb5e897fe4bd0a",
+      "ADVISORY adapter-web-component root: 186702 / 132000 gzip bytes; overBudget=54702; minified=645792 sha256=da2265444d0a962f0103c7cd16beaa2d513137ae5781f7a1795c2f3b5b6a674b",
+      "PASS prototypes-base/button: 5201 / 6000 gzip bytes; overBudget=0; minified=17965 sha256=e087c436a0ec86eef2a0f06da757c78c1af5981e34a116237e9c6e6cddfc8bdf",
+      "ADVISORY prototypes-shadcn/button: 7725 / 7000 gzip bytes; overBudget=725; minified=34291 sha256=c3826b1dd7d7386d46b8c2a34e04cdb4ba380e9dbc104d8434812ba4f3d73395"
+    ],
+    "logSha256": "c701b3550417e63309d019610a8d5e09a2173e2ced914e37f10307495a79337d"
+  },
+  "types": {
+    "job": 130794778533,
+    "astroFiles": 1215,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 30,
+    "logSha256": "9794173ce76a5b913df50c75d3ad200deb2f1ef0fa1139312b85f57e4b98b3be"
+  },
+  "previous6dSecondHosted": {
+    "artifact": 13891435102,
+    "digest": "sha256:8dce60c10e0e76e46bae3022a708edef3e9b677c329cd32fed399652d6748a6e",
+    "head": "6d7a17eb6e0f837069b3d8847c05244c41984bab",
+    "transitions": {
+      "brutalist-react-transition": {
+        "passed": true,
+        "verdictMs": 361,
+        "error": null
+      },
+      "brutalist-vue-transition": {
+        "passed": true,
+        "verdictMs": 312,
+        "error": null
+      },
+      "brutalist-vue2-transition": {
+        "passed": true,
+        "verdictMs": 254,
+        "error": null
+      },
+      "brutalist-wc-transition": {
+        "passed": true,
+        "verdictMs": 2,
+        "error": null
+      },
+      "shadcn-react-transition": {
+        "passed": true,
+        "verdictMs": 319,
+        "error": null
+      },
+      "shadcn-vue-transition": {
+        "passed": true,
+        "verdictMs": 285,
+        "error": null
+      },
+      "shadcn-vue2-transition": {
+        "passed": true,
+        "verdictMs": 351,
+        "error": null
+      },
+      "shadcn-wc-transition": {
+        "passed": true,
+        "verdictMs": 14,
+        "error": null
+      }
+    },
+    "sidebarReturns": 24,
+    "logs": ["browser-regressions.log"]
+  },
+  "images": [
+    {
+      "path": "contents-26418-hosted-shadcn-react-public-popover-open.png",
+      "sha256": "bd4878e87308472cfd0cd90048ed5e19a8c0d5dfa1688b40a2c427577e8f5219"
+    },
+    {
+      "path": "contents-26418-hosted-shadcn-vue-keyboard-focus.png",
+      "sha256": "76b356caaa47cd6b92c7b17e754c0ce57cce5498f1e6c9a9a547403feb7cd4dd"
+    }
+  ]
+}
