@@ -1,0 +1,989 @@
+{
+  "head": "5f2d845ce54666a167f06895033a616d8bfa3382",
+  "main": "98ac19762f08351684d801db8006ca7c71fb6f30",
+  "sameCaseNames": true,
+  "mainPass": 10,
+  "candidatePass": 60,
+  "improved": 50,
+  "remaining": 18,
+  "mainReporterSha256": "b63c43ed12d748d62f09358471f6b19eb277df53b13bab720a4bb17b98179da2",
+  "candidateReporterSha256": "cb2b34b9e40bae23bcdb5be17ab9ac5ea4cda7cf32268c2bb778bd3dd3bbe78c",
+  "readiness": {
+    "98ac19762f08351684d801db8006ca7c71fb6f30": [
+      {
+        "id": "brutalist-dark-1440",
+        "observation": {
+          "startedAt": 1794364565473,
+          "deadline": 1794364566473,
+          "observedReadyAt": 1794364564918,
+          "completedAt": 1794364565475,
+          "currentDisabled": "false",
+          "owner": "site-search-1-docs-1-open",
+          "generation": "1",
+          "browserEnteredAt": 1794364565475,
+          "sampleCount": 1,
+          "droppedSamples": 0,
+          "samples": [
+            {
+              "atEpochMs": 1794364565475,
+              "selectorStartedAt": 1794364565475,
+              "selectorResolvedAt": 1794364565475,
+              "getterStartedAt": 1794364565475,
+              "getterSettledAt": 1794364565475,
+              "commandCount": 1,
+              "currentDisabled": "false",
+              "owner": "site-search-1-docs-1-open",
+              "generation": "1",
+              "timerSample": false
+            }
+          ]
+        },
+        "receiptSha256": "f1e45a29cff4d6bd382c8d38c73af95db571038d74b43831cb4515d70bd7a26c"
+      },
+      {
+        "id": "brutalist-dark-390",
+        "observation": {
+          "startedAt": 1794364561772,
+          "deadline": 1794364562772,
+          "observedReadyAt": 1794364561209,
+          "completedAt": 1794364561776,
+          "currentDisabled": "false",
+          "owner": "site-search-1-docs-1-open",
+          "generation": "1",
+          "browserEnteredAt": 1794364561776,
+          "sampleCount": 1,
+          "droppedSamples": 0,
+          "samples": [
+            {
+              "atEpochMs": 1794364561776,
+              "selectorStartedAt": 1794364561776,
+              "selectorResolvedAt": 1794364561776,
+              "getterStartedAt": 1794364561776,
+              "getterSettledAt": 1794364561776,
+              "commandCount": 1,
+              "currentDisabled": "false",
+              "owner": "site-search-1-docs-1-open",
+              "generation": "1",
+              "timerSample": false
+            }
+          ]
+        },
+        "receiptSha256": "345ec967f46f4c2e72154855811fdd7199b492572a61338e74a2cbd5c6c98cb1"
+      },
+      {
+        "id": "brutalist-light-1440",
+        "observation": {
+          "startedAt": 1794364557556,
+          "deadline": 1794364558556,
+          "observedReadyAt": 1794364556994,
+          "completedAt": 1794364557561,
+          "currentDisabled": "false",
+          "owner": "site-search-1-docs-1-open",
+          "generation": "1",
+          "browserEnteredAt": 1794364557560,
+          "sampleCount": 1,
+          "droppedSamples": 0,
+          "samples": [
+            {
+              "atEpochMs": 1794364557561,
+              "selectorStartedAt": 1794364557560,
+              "selectorResolvedAt": 1794364557560,
+              "getterStartedAt": 1794364557560,
+              "getterSettledAt": 1794364557560,
+              "commandCount": 1,
+              "currentDisabled": "false",
+              "owner": "site-search-1-docs-1-open",
+              "generation": "1",
+              "timerSample": false
+            }
+          ]
+        },
+        "receiptSha256": "1261d0da45a0999fbf1b8234f1abe6d1060323d755c03762cd52de2da789f698"
+      },
+      {
+        "id": "brutalist-light-390",
+        "observation": {
+          "startedAt": 1794364553761,
+          "deadline": 1794364554761,
+          "observedReadyAt": 1794364553195,
+          "completedAt": 1794364553763,
+          "currentDisabled": "false",
+          "owner": "site-search-1-docs-1-open",
+          "generation": "1",
+          "browserEnteredAt": 1794364553763,
+          "sampleCount": 1,
+          "droppedSamples": 0,
+          "samples": [
+            {
+              "atEpochMs": 1794364553763,
+              "selectorStartedAt": 1794364553763,
+              "selectorResolvedAt": 1794364553763,
+              "getterStartedAt": 1794364553763,
+              "getterSettledAt": 1794364553763,
+              "commandCount": 1,
+              "currentDisabled": "false",
+              "owner": "site-search-1-docs-1-open",
+              "generation": "1",
+              "timerSample": false
+            }
+          ]
+        },
+        "receiptSha256": "f1844992d2702483433dd7b9c8af6d6d4d84cd7c40d9db6e89033af6223e1bfc"
+      },
+      {
+        "id": "shadcn-dark-1440",
+        "observation": {
+          "startedAt": 1794364547508,
+          "deadline": 1794364548508,
+          "observedReadyAt": 1794364546825,
+          "completedAt": 1794364547512,
+          "currentDisabled": "false",
+          "owner": "site-search-1-docs-1-open",
+          "generation": "1",
+          "browserEnteredAt": 1794364547512,
+          "sampleCount": 1,
+          "droppedSamples": 0,
+          "samples": [
+            {
+              "atEpochMs": 1794364547512,
+              "selectorStartedAt": 1794364547512,
+              "selectorResolvedAt": 1794364547512,
+              "getterStartedAt": 1794364547512,
+              "getterSettledAt": 1794364547512,
+              "commandCount": 1,
+              "currentDisabled": "false",
+              "owner": "site-search-1-docs-1-open",
+              "generation": "1",
+              "timerSample": false
+            }
+          ]
+        },
+        "receiptSha256": "8cab06f199622a9b587097a256e6ae8a4a726a349dcc67836eece949511b63fb"
+      },
+      {
+        "id": "shadcn-dark-390",
+        "observation": {
+          "startedAt": 1794364541033,
+          "deadline": 1794364542033,
+          "observedReadyAt": 1794364540393,
+          "completedAt": 1794364541034,
+          "currentDisabled": "false",
+          "owner": "site-search-1-docs-1-open",
+          "generation": "1",
+          "browserEnteredAt": 1794364541034,
+          "sampleCount": 1,
+          "droppedSamples": 0,
+          "samples": [
+            {
+              "atEpochMs": 1794364541034,
+              "selectorStartedAt": 1794364541034,
+              "selectorResolvedAt": 1794364541034,
+              "getterStartedAt": 1794364541034,
+              "getterSettledAt": 1794364541034,
+              "commandCount": 1,
+              "currentDisabled": "false",
+              "owner": "site-search-1-docs-1-open",
+              "generation": "1",
+              "timerSample": false
+            }
+          ]
+        },
+        "receiptSha256": "735ddd80efc61243767a96ce48c0eed6f993534fe0c23b907dc02077ea58892e"
+      },
+      {
+        "id": "shadcn-light-1440",
+        "observation": {
+          "startedAt": 1794364535022,
+          "deadline": 1794364536022,
+          "observedReadyAt": 1794364534395,
+          "completedAt": 1794364535023,
+          "currentDisabled": "false",
+          "owner": "site-search-1-docs-1-open",
+          "generation": "1",
+          "browserEnteredAt": 1794364535023,
+          "sampleCount": 1,
+          "droppedSamples": 0,
+          "samples": [
+            {
+              "atEpochMs": 1794364535023,
+              "selectorStartedAt": 1794364535023,
+              "selectorResolvedAt": 1794364535023,
+              "getterStartedAt": 1794364535023,
+              "getterSettledAt": 1794364535023,
+              "commandCount": 1,
+              "currentDisabled": "false",
+              "owner": "site-search-1-docs-1-open",
+              "generation": "1",
+              "timerSample": false
+            }
+          ]
+        },
+        "receiptSha256": "4077d321a729895f9e065b48c81d37c8107b88068cdda873e52c9880417b31b5"
+      },
+      {
+        "id": "shadcn-light-390",
+        "observation": {
+          "startedAt": 1794364529592,
+          "deadline": 1794364530592,
+          "observedReadyAt": 1794364528945,
+          "completedAt": 1794364529598,
+          "currentDisabled": "false",
+          "owner": "site-search-1-docs-1-open",
+          "generation": "1",
+          "browserEnteredAt": 1794364529598,
+          "sampleCount": 1,
+          "droppedSamples": 0,
+          "samples": [
+            {
+              "atEpochMs": 1794364529598,
+              "selectorStartedAt": 1794364529598,
+              "selectorResolvedAt": 1794364529598,
+              "getterStartedAt": 1794364529598,
+              "getterSettledAt": 1794364529598,
+              "commandCount": 1,
+              "currentDisabled": "false",
+              "owner": "site-search-1-docs-1-open",
+              "generation": "1",
+              "timerSample": false
+            }
+          ]
+        },
+        "receiptSha256": "2b4c02291ba05473cd678f95d2fbc1396f97246240296192699d69398d665c2a"
+      }
+    ],
+    "5f2d845ce54666a167f06895033a616d8bfa3382": [
+      {
+        "id": "brutalist-dark-1440",
+        "observation": {
+          "startedAt": 1794367146816,
+          "deadline": 1794367147816,
+          "observedReadyAt": 1794367146256,
+          "completedAt": 1794367146818,
+          "currentDisabled": "false",
+          "owner": "site-search-1-docs-1-open",
+          "generation": "1",
+          "browserEnteredAt": 1794367146818,
+          "sampleCount": 1,
+          "droppedSamples": 0,
+          "samples": [
+            {
+              "atEpochMs": 1794367146818,
+              "selectorStartedAt": 1794367146818,
+              "selectorResolvedAt": 1794367146818,
+              "getterStartedAt": 1794367146818,
+              "getterSettledAt": 1794367146818,
+              "commandCount": 1,
+              "currentDisabled": "false",
+              "owner": "site-search-1-docs-1-open",
+              "generation": "1",
+              "timerSample": false
+            }
+          ]
+        },
+        "receiptSha256": "ff3a3cb4f0784852f429670d44e0568453c4b7f4ee4dcacc03eba85bf5cc06b4"
+      },
+      {
+        "id": "brutalist-dark-390",
+        "observation": {
+          "startedAt": 1794367142829,
+          "deadline": 1794367143829,
+          "observedReadyAt": 1794367142268,
+          "completedAt": 1794367142831,
+          "currentDisabled": "false",
+          "owner": "site-search-1-docs-1-open",
+          "generation": "1",
+          "browserEnteredAt": 1794367142831,
+          "sampleCount": 1,
+          "droppedSamples": 0,
+          "samples": [
+            {
+              "atEpochMs": 1794367142831,
+              "selectorStartedAt": 1794367142831,
+              "selectorResolvedAt": 1794367142831,
+              "getterStartedAt": 1794367142831,
+              "getterSettledAt": 1794367142831,
+              "commandCount": 1,
+              "currentDisabled": "false",
+              "owner": "site-search-1-docs-1-open",
+              "generation": "1",
+              "timerSample": false
+            }
+          ]
+        },
+        "receiptSha256": "724f5a7f1910c90a9b5c27bc21e046db1cf5da33735b5a9497cf9c03b319d83e"
+      },
+      {
+        "id": "brutalist-light-1440",
+        "observation": {
+          "startedAt": 1794367138313,
+          "deadline": 1794367139313,
+          "observedReadyAt": 1794367137754,
+          "completedAt": 1794367138318,
+          "currentDisabled": "false",
+          "owner": "site-search-1-docs-1-open",
+          "generation": "1",
+          "browserEnteredAt": 1794367138318,
+          "sampleCount": 1,
+          "droppedSamples": 0,
+          "samples": [
+            {
+              "atEpochMs": 1794367138318,
+              "selectorStartedAt": 1794367138318,
+              "selectorResolvedAt": 1794367138318,
+              "getterStartedAt": 1794367138318,
+              "getterSettledAt": 1794367138318,
+              "commandCount": 1,
+              "currentDisabled": "false",
+              "owner": "site-search-1-docs-1-open",
+              "generation": "1",
+              "timerSample": false
+            }
+          ]
+        },
+        "receiptSha256": "4fdf040f1d970fdfe8c3da7cf900e99377d89451d91ed4e0080eb4c9fe3d78e2"
+      },
+      {
+        "id": "brutalist-light-390",
+        "observation": {
+          "startedAt": 1794367134422,
+          "deadline": 1794367135422,
+          "observedReadyAt": 1794367133840,
+          "completedAt": 1794367134424,
+          "currentDisabled": "false",
+          "owner": "site-search-1-docs-1-open",
+          "generation": "1",
+          "browserEnteredAt": 1794367134423,
+          "sampleCount": 1,
+          "droppedSamples": 0,
+          "samples": [
+            {
+              "atEpochMs": 1794367134424,
+              "selectorStartedAt": 1794367134424,
+              "selectorResolvedAt": 1794367134424,
+              "getterStartedAt": 1794367134424,
+              "getterSettledAt": 1794367134424,
+              "commandCount": 1,
+              "currentDisabled": "false",
+              "owner": "site-search-1-docs-1-open",
+              "generation": "1",
+              "timerSample": false
+            }
+          ]
+        },
+        "receiptSha256": "eb97a872a4fe0894936b6dcaea80f227a90c7fc3ff96e7b62046d9b2c9bd7c34"
+      },
+      {
+        "id": "shadcn-dark-1440",
+        "observation": {
+          "startedAt": 1794367128281,
+          "deadline": 1794367129281,
+          "observedReadyAt": 1794367127648,
+          "completedAt": 1794367128282,
+          "currentDisabled": "false",
+          "owner": "site-search-1-docs-1-open",
+          "generation": "1",
+          "browserEnteredAt": 1794367128282,
+          "sampleCount": 1,
+          "droppedSamples": 0,
+          "samples": [
+            {
+              "atEpochMs": 1794367128282,
+              "selectorStartedAt": 1794367128282,
+              "selectorResolvedAt": 1794367128282,
+              "getterStartedAt": 1794367128282,
+              "getterSettledAt": 1794367128282,
+              "commandCount": 1,
+              "currentDisabled": "false",
+              "owner": "site-search-1-docs-1-open",
+              "generation": "1",
+              "timerSample": false
+            }
+          ]
+        },
+        "receiptSha256": "bcdb8ed4f17c5f6f88eb640dc2ad60ac8d96fd5c15a09685569bb4c67cf4e66c"
+      },
+      {
+        "id": "shadcn-dark-390",
+        "observation": {
+          "startedAt": 1794367122596,
+          "deadline": 1794367123596,
+          "observedReadyAt": 1794367121977,
+          "completedAt": 1794367122600,
+          "currentDisabled": "false",
+          "owner": "site-search-1-docs-1-open",
+          "generation": "1",
+          "browserEnteredAt": 1794367122600,
+          "sampleCount": 1,
+          "droppedSamples": 0,
+          "samples": [
+            {
+              "atEpochMs": 1794367122600,
+              "selectorStartedAt": 1794367122600,
+              "selectorResolvedAt": 1794367122600,
+              "getterStartedAt": 1794367122600,
+              "getterSettledAt": 1794367122600,
+              "commandCount": 1,
+              "currentDisabled": "false",
+              "owner": "site-search-1-docs-1-open",
+              "generation": "1",
+              "timerSample": false
+            }
+          ]
+        },
+        "receiptSha256": "dfc6b870571b1973663abd7d3aef3451fe523e99eaf92ba57c4ad3ff94b01a3e"
+      },
+      {
+        "id": "shadcn-light-1440",
+        "observation": {
+          "startedAt": 1794367116466,
+          "deadline": 1794367117466,
+          "observedReadyAt": 1794367115836,
+          "completedAt": 1794367116474,
+          "currentDisabled": "false",
+          "owner": "site-search-1-docs-1-open",
+          "generation": "1",
+          "browserEnteredAt": 1794367116474,
+          "sampleCount": 1,
+          "droppedSamples": 0,
+          "samples": [
+            {
+              "atEpochMs": 1794367116474,
+              "selectorStartedAt": 1794367116474,
+              "selectorResolvedAt": 1794367116474,
+              "getterStartedAt": 1794367116474,
+              "getterSettledAt": 1794367116474,
+              "commandCount": 1,
+              "currentDisabled": "false",
+              "owner": "site-search-1-docs-1-open",
+              "generation": "1",
+              "timerSample": false
+            }
+          ]
+        },
+        "receiptSha256": "43afdc590f57a6619ba631b35e4b0efd456ff1441edb49e065612a263b39c7da"
+      },
+      {
+        "id": "shadcn-light-390",
+        "observation": {
+          "startedAt": 1794367110563,
+          "deadline": 1794367111563,
+          "observedReadyAt": 1794367109906,
+          "completedAt": 1794367110567,
+          "currentDisabled": "false",
+          "owner": "site-search-1-docs-1-open",
+          "generation": "1",
+          "browserEnteredAt": 1794367110567,
+          "sampleCount": 1,
+          "droppedSamples": 0,
+          "samples": [
+            {
+              "atEpochMs": 1794367110567,
+              "selectorStartedAt": 1794367110567,
+              "selectorResolvedAt": 1794367110567,
+              "getterStartedAt": 1794367110567,
+              "getterSettledAt": 1794367110567,
+              "commandCount": 1,
+              "currentDisabled": "false",
+              "owner": "site-search-1-docs-1-open",
+              "generation": "1",
+              "timerSample": false
+            }
+          ]
+        },
+        "receiptSha256": "07c31049963879d338ad7fb52d942ed37fb875a64088b54a22bef5451bd3d5e5"
+      }
+    ]
+  },
+  "assertions": [
+    {
+      "name": "Search family Button commands shadcn light 390px preserves activation, dismissal and focus",
+      "main": "passed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "Search family Button commands shadcn light 1440px preserves activation, dismissal and focus",
+      "main": "passed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "Search family Button commands shadcn dark 390px preserves activation, dismissal and focus",
+      "main": "passed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "Search family Button commands shadcn dark 1440px preserves activation, dismissal and focus",
+      "main": "passed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "Search family Button commands brutalist light 390px preserves activation, dismissal and focus",
+      "main": "passed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "Search family Button commands brutalist light 1440px preserves activation, dismissal and focus",
+      "main": "passed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "Search family Button commands brutalist dark 390px preserves activation, dismissal and focus",
+      "main": "passed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "Search family Button commands brutalist dark 1440px preserves activation, dismissal and focus",
+      "main": "passed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "homepage shadcn/wc mobile keeps the Search trigger centered through closed/open/reopen",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "homepage shadcn/react mobile keeps the Search trigger centered through closed/open/reopen",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "homepage shadcn/vue mobile keeps the Search trigger centered through closed/open/reopen",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "homepage shadcn/vue2 mobile keeps the Search trigger centered through closed/open/reopen",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "homepage brutalist/wc mobile keeps the Search trigger centered through closed/open/reopen",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "homepage brutalist/react mobile keeps the Search trigger centered through closed/open/reopen",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "homepage brutalist/vue mobile keeps the Search trigger centered through closed/open/reopen",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "homepage brutalist/vue2 mobile keeps the Search trigger centered through closed/open/reopen",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "homepage shadcn/wc desktop keeps the Search trigger centered through closed/open/reopen",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "homepage shadcn/react desktop keeps the Search trigger centered through closed/open/reopen",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "homepage shadcn/vue desktop keeps the Search trigger centered through closed/open/reopen",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "homepage shadcn/vue2 desktop keeps the Search trigger centered through closed/open/reopen",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "homepage brutalist/wc desktop keeps the Search trigger centered through closed/open/reopen",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "homepage brutalist/react desktop keeps the Search trigger centered through closed/open/reopen",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "homepage brutalist/vue desktop keeps the Search trigger centered through closed/open/reopen",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "homepage brutalist/vue2 desktop keeps the Search trigger centered through closed/open/reopen",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "homepage shadcn 1280px aligns actual Search and both selectors in every runtime",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "homepage brutalist 1280px aligns actual Search and both selectors in every runtime",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "homepage shadcn 1440px aligns actual Search and both selectors in every runtime",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "homepage brutalist 1440px aligns actual Search and both selectors in every runtime",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "homepage shadcn 2048px aligns actual Search and both selectors in every runtime",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "homepage brutalist 2048px aligns actual Search and both selectors in every runtime",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "homepage keeps one active public Search session through runtime transitions and repeat initialization",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "keeps a documentation link available without JavaScript",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "Docs shadcn 320px shows complete runtime values beside real Search",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "Docs brutalist 320px shows complete runtime values beside real Search",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "Docs shadcn 390px shows complete runtime values beside real Search",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "Docs brutalist 390px shows complete runtime values beside real Search",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "Docs shadcn 1280px shows complete runtime values beside real Search",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "Docs brutalist 1280px shows complete runtime values beside real Search",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "Docs shadcn 1440px shows complete runtime values beside real Search",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "Docs brutalist 1440px shows complete runtime values beside real Search",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "Docs shadcn 2048px shows complete runtime values beside real Search",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "Docs brutalist 2048px shows complete runtime values beside real Search",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "Docs shadcn 320px keeps enlarged 200% text reachable without clipping",
+      "main": "failed",
+      "candidate": "failed",
+      "error": "AssertionError: expected 'none' not to be 'none' // Object.is equality"
+    },
+    {
+      "name": "Docs brutalist 320px keeps enlarged 200% text reachable without clipping",
+      "main": "passed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "Docs shadcn 390px keeps enlarged 200% text reachable without clipping",
+      "main": "failed",
+      "candidate": "failed",
+      "error": "AssertionError: expected 'none' not to be 'none' // Object.is equality"
+    },
+    {
+      "name": "Docs brutalist 390px keeps enlarged 200% text reachable without clipping",
+      "main": "passed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "Search shadcn/wc keeps nested scrollports and dismissal reachable at 200%",
+      "main": "failed",
+      "candidate": "failed",
+      "error": "AssertionError: expected 5626.5 to be less than or equal to 220"
+    },
+    {
+      "name": "Search shadcn/react keeps nested scrollports and dismissal reachable at 200%",
+      "main": "failed",
+      "candidate": "failed",
+      "error": "AssertionError: expected 5626.5 to be less than or equal to 220"
+    },
+    {
+      "name": "Search shadcn/vue keeps nested scrollports and dismissal reachable at 200%",
+      "main": "failed",
+      "candidate": "failed",
+      "error": "locator.click: Timeout 30000ms exceeded."
+    },
+    {
+      "name": "Search shadcn/vue2 keeps nested scrollports and dismissal reachable at 200%",
+      "main": "failed",
+      "candidate": "failed",
+      "error": "locator.click: Timeout 30000ms exceeded."
+    },
+    {
+      "name": "Search brutalist/wc keeps nested scrollports and dismissal reachable at 200%",
+      "main": "failed",
+      "candidate": "failed",
+      "error": "AssertionError: expected 3825.80517578125 to be less than or equal to 212.8321990966797"
+    },
+    {
+      "name": "Search brutalist/react keeps nested scrollports and dismissal reachable at 200%",
+      "main": "failed",
+      "candidate": "failed",
+      "error": "AssertionError: expected 3862 to be less than or equal to 213"
+    },
+    {
+      "name": "Search brutalist/vue keeps nested scrollports and dismissal reachable at 200%",
+      "main": "failed",
+      "candidate": "failed",
+      "error": "AssertionError: expected 3858.984130859375 to be less than or equal to 212.9860076904297"
+    },
+    {
+      "name": "Search brutalist/vue2 keeps nested scrollports and dismissal reachable at 200%",
+      "main": "failed",
+      "candidate": "failed",
+      "error": "AssertionError: expected 3862 to be less than or equal to 213"
+    },
+    {
+      "name": "homepage shadcn/wc mobile renders the explicit Rhea website menu anatomy",
+      "main": "failed",
+      "candidate": "failed",
+      "error": "AssertionError: expected 15.986858367919922 to be greater than or equal to 16"
+    },
+    {
+      "name": "homepage shadcn/react mobile renders the explicit Rhea website menu anatomy",
+      "main": "failed",
+      "candidate": "failed",
+      "error": "AssertionError: expected 1.3385009765625 to be less than or equal to 1"
+    },
+    {
+      "name": "homepage shadcn/vue mobile renders the explicit Rhea website menu anatomy",
+      "main": "failed",
+      "candidate": "failed",
+      "error": "AssertionError: expected 3.52490234375 to be less than or equal to 1"
+    },
+    {
+      "name": "homepage shadcn/vue2 mobile renders the explicit Rhea website menu anatomy",
+      "main": "failed",
+      "candidate": "failed",
+      "error": "AssertionError: expected 32 to be less than or equal to 1"
+    },
+    {
+      "name": "homepage shadcn/wc desktop renders the explicit Rhea website menu anatomy",
+      "main": "failed",
+      "candidate": "failed",
+      "error": "AssertionError: expected 15.986846923828125 to be greater than or equal to 16"
+    },
+    {
+      "name": "homepage shadcn/react desktop renders the explicit Rhea website menu anatomy",
+      "main": "failed",
+      "candidate": "failed",
+      "error": "AssertionError: expected 1.92529296875 to be less than or equal to 1"
+    },
+    {
+      "name": "homepage shadcn/vue desktop renders the explicit Rhea website menu anatomy",
+      "main": "failed",
+      "candidate": "failed",
+      "error": "AssertionError: expected 1.916473388671875 to be less than or equal to 1"
+    },
+    {
+      "name": "homepage shadcn/vue2 desktop renders the explicit Rhea website menu anatomy",
+      "main": "failed",
+      "candidate": "failed",
+      "error": "AssertionError: expected 15.98681640625 to be greater than or equal to 16"
+    },
+    {
+      "name": "homepage shadcn/wc missing Pagefind keeps the real Retry action focused",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "homepage shadcn/react missing Pagefind keeps the real Retry action focused",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "homepage shadcn/vue missing Pagefind keeps the real Retry action focused",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "homepage shadcn/vue2 missing Pagefind keeps the real Retry action focused",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "homepage brutalist/wc missing Pagefind keeps the real Retry action focused",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "homepage brutalist/react missing Pagefind keeps the real Retry action focused",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "homepage brutalist/vue missing Pagefind keeps the real Retry action focused",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "homepage brutalist/vue2 missing Pagefind keeps the real Retry action focused",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "default public Command wc mobile retains the no-addon Rhea editor inset",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "default public Command react mobile retains the no-addon Rhea editor inset",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "default public Command vue mobile retains the no-addon Rhea editor inset",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "default public Command vue2 mobile retains the no-addon Rhea editor inset",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "default public Command wc desktop retains the no-addon Rhea editor inset",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "default public Command react desktop retains the no-addon Rhea editor inset",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "default public Command vue desktop retains the no-addon Rhea editor inset",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    },
+    {
+      "name": "default public Command vue2 desktop retains the no-addon Rhea editor inset",
+      "main": "failed",
+      "candidate": "passed",
+      "error": null
+    }
+  ],
+  "selectedReceipts": [
+    {
+      "path": "home-open-runtime-final.json",
+      "rawSha256": "767ba89d43c62a12a0e393be4633d64fe3cf75fe84f96b2c00612f298111d35b"
+    },
+    {
+      "path": "search-missing-index-shadcn-react-focus.json",
+      "rawSha256": "82b32929b79c28611e06c97f80f5de6a87bf47de8e6235c5dcff604322909036"
+    },
+    {
+      "path": "command-default-inset-wc-mobile-geometry.json",
+      "rawSha256": "2168839e7d64821763d6cf672d83fe5114f3f509cd7b7937c8af846d74a0d79f"
+    },
+    {
+      "path": "docs-shadcn-wc-390-rects.json",
+      "rawSha256": "af9cb5b8ed73fbfeb557807c36b93a7d9d32eb8212db6464d96f82ccd0f5de54"
+    },
+    {
+      "path": "no-js-destination.json",
+      "rawSha256": "2ad304bb5c2acc598dbfaf7b29773081cc1e4f2a95c0631011fe0067d336adeb"
+    }
+  ]
+}

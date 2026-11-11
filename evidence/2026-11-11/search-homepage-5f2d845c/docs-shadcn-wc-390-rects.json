@@ -1,0 +1,98 @@
+{
+  "source": {
+    "sha": "5f2d845ce54666a167f06895033a616d8bfa3382",
+    "dirty": false
+  },
+  "family": "shadcn",
+  "runtime": "wc",
+  "width": 390,
+  "geometry": {
+    "header": {
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 56,
+      "top": 0,
+      "right": 390,
+      "bottom": 56,
+      "left": 0,
+      "center": 28,
+      "scrollWidth": 390,
+      "clientWidth": 390
+    },
+    "select": {
+      "x": 25,
+      "y": 277,
+      "width": 340,
+      "height": 44,
+      "top": 277,
+      "right": 365,
+      "bottom": 321,
+      "left": 25,
+      "center": 299,
+      "scrollWidth": 338,
+      "clientWidth": 338
+    },
+    "search": {
+      "x": 234,
+      "y": 6,
+      "width": 44,
+      "height": 44,
+      "top": 6,
+      "right": 278,
+      "bottom": 50,
+      "left": 234,
+      "center": 28,
+      "scrollWidth": 42,
+      "clientWidth": 42
+    },
+    "label": {
+      "x": 25,
+      "y": 257,
+      "width": 340,
+      "height": 16,
+      "top": 257,
+      "right": 365,
+      "bottom": 273,
+      "left": 25,
+      "center": 265,
+      "scrollWidth": 340,
+      "clientWidth": 340
+    },
+    "labelDisplay": "block",
+    "value": {
+      "x": 38,
+      "y": 289,
+      "width": 292,
+      "height": 20,
+      "top": 289,
+      "right": 330,
+      "bottom": 309,
+      "left": 38,
+      "center": 299,
+      "scrollWidth": 292,
+      "clientWidth": 292
+    },
+    "valueText": "Web Components",
+    "textWidth": 113.703125,
+    "selectTag": "wc-shadcn-select-trigger",
+    "searchRole": "button",
+    "searchDisabled": "false",
+    "overflow": 0,
+    "settings": {
+      "x": 8,
+      "y": 61,
+      "width": 374,
+      "height": 434,
+      "top": 61,
+      "right": 382,
+      "bottom": 495,
+      "left": 8,
+      "center": 278,
+      "scrollWidth": 374,
+      "clientWidth": 374,
+      "open": true,
+      "ownsSelect": true
+    }
+  }
+}

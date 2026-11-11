@@ -1,0 +1,42 @@
+{
+  "source": {
+    "sha": "5f2d845ce54666a167f06895033a616d8bfa3382",
+    "dirty": false
+  },
+  "runtime": "wc",
+  "viewport": {
+    "name": "mobile",
+    "width": 390,
+    "height": 844
+  },
+  "geometry": {
+    "input": {
+      "x": 25,
+      "y": 102,
+      "width": 340,
+      "height": 20,
+      "top": 102,
+      "right": 365,
+      "bottom": 122,
+      "left": 25
+    },
+    "shell": {
+      "x": 24,
+      "y": 96,
+      "width": 342,
+      "height": 32,
+      "top": 96,
+      "right": 366,
+      "bottom": 128,
+      "left": 24
+    },
+    "paddingStart": 10,
+    "paddingEnd": 10,
+    "rootFont": 16,
+    "textInset": 11,
+    "inputRole": "combobox",
+    "shellRole": null,
+    "shellTabIndex": null
+  },
+  "scope": "independent default public fixture, not production menu"
+}

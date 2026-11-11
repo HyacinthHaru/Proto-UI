@@ -1,0 +1,1703 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "sha": "5f2d845ce54666a167f06895033a616d8bfa3382",
+    "dirty": false
+  },
+  "capturedAt": "2026-11-11T03:21:02.502Z",
+  "screenshot": "no-js-destination.png",
+  "url": "http://127.0.0.1:63336/zh-cn/ui-libraries/shadcn/button/",
+  "viewport": {
+    "width": 1280,
+    "height": 720
+  },
+  "observed": {
+    "searchState": {
+      "searchComposition": "command-dialog",
+      "searchStyle": "rhea",
+      "searchCopy": "{\"title\":\"搜索\",\"description\":\"搜索全部文档并打开结果\",\"placeholder\":\"搜索文档…\",\"pages\":\"页面\",\"results\":\"搜索结果\",\"goToPage\":\"打开页面\",\"hint\":\"输入关键词搜索全部文档\",\"loading\":\"正在加载搜索…\",\"empty\":\"未找到结果\",\"error\":\"搜索暂不可用，请重试\",\"retry\":\"重试\",\"more\":\"加载更多结果\",\"close\":\"取消\",\"count\":\"{count} 条匹配文档\"}",
+      "searchNavigation": "[{\"title\":\"首页\",\"href\":\"/zh-cn/\"},{\"title\":\"文档\",\"href\":\"/zh-cn/start-here/what-you-saw/\"},{\"title\":\"组件库\",\"href\":\"/zh-cn/ui-libraries/shadcn/button/\"},{\"title\":\"白皮书\",\"href\":\"/zh-cn/whitepaper/0-preface/\"}]",
+      "pagefindBundle": "/pagefind/",
+      "searchInitialFamily": "shadcn",
+      "openLabel": "搜索",
+      "closeLabel": "取消",
+      "retryLabel": "重试",
+      "ctrlLabel": "Ctrl",
+      "astroSourceFile": "<task-output>/search-repair/apps/www/src/components/override/Search.astro"
+    },
+    "startup": {
+      "documentReadyState": "complete",
+      "capturedAtMs": 301.39999997615814,
+      "trace": null,
+      "customElementDefined": false,
+      "upgraded": false,
+      "connected": true,
+      "serviceOwnerInstalled": false,
+      "commandRefreshInstalled": false,
+      "mounts": [
+        {
+          "command": "open",
+          "html": "",
+          "generations": []
+        }
+      ],
+      "scripts": [
+        {
+          "src": "http://127.0.0.1:63336/@vite/client",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32.0_rollup@4.60.1_tsx@4.21.0_typescript@5.9.3_yaml@2.8.3/node_modules/astro/dist/runtime/client/dev-toolbar/entrypoint.js?v=a4e66cb2",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/@id/astro:scripts/page.js",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/style/layers.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/style/props.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/style/reset.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/style/asides.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/style/util.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/style/anchor-links.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/components/Banner.astro?astro&type=style&index=0&lang.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/user-components/Icon.astro?astro&type=style&index=0&lang.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/components/ContentNotice.astro?astro&type=style&index=0&lang.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/components/EditLink.astro?astro&type=style&index=0&lang.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/components/Pagination.astro?astro&type=style&index=0&lang.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/user-components/Badge.astro?astro&type=style&index=0&lang.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/user-components/Card.astro?astro&type=style&index=0&lang.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/user-components/CardGrid.astro?astro&type=style&index=0&lang.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/user-components/Tabs.astro?astro&type=style&index=0&lang.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/user-components/LinkCard.astro?astro&type=style&index=0&lang.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/user-components/Steps.astro?astro&type=style&index=0&lang.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/user-components/FileTree.astro?astro&type=style&index=0&lang.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/user-components/LinkButton.astro?astro&type=style&index=0&lang.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/components/Footer.astro?astro&type=style&index=0&lang.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/styles/site-contents-command.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/components/override/LanguageSelect.astro?astro&type=style&index=0&lang.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/components/StaticLucideIcon.astro?astro&type=style&index=0&lang.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/components/override/Search.astro?astro&type=style&index=0&lang.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/styles/site-native-links.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/components/Homepage/HomeActions.astro?astro&type=style&index=0&lang.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/components/override/AdapterSelect.astro?astro&type=style&index=0&lang.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/styles/site-header.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/components/override/Hero.astro?astro&type=style&index=0&lang.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/styles/site-copy-command.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/styles/site-note-surface.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/styles/global.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/styles/site-library-family.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/styles/documentation-image-preview.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/components/documentation-image-zoom.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/components/override/PageFrame.astro?astro&type=style&index=0&lang.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/components/TableOfContents/TableOfContentsList.astro?astro&type=style&index=0&lang.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/components/MobileTableOfContents.astro?astro&type=style&index=0&lang.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/components/override/TableOfContents/TableOfContentsList.astro?astro&type=style&index=0&lang.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/components/PageSidebar.astro?astro&type=style&index=0&lang.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/components/SidebarSublist.astro?astro&type=style&index=0&lang.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/components/SkipLink.astro?astro&type=style&index=0&lang.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/components/override/TwoColumnContent.astro?astro&type=style&index=0&lang.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/style/print.css?url&no-inline",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/components/Page.astro?astro&type=style&index=0&lang.css",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/components/DocumentationImagePreview.astro?astro&type=script&index=0&lang.ts",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/components/override/PageFrame.astro?astro&type=script&index=0&lang.ts",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/components/override/AdapterSelect.astro?astro&type=script&index=0&lang.ts",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/components/override/LanguageSelect.astro?astro&type=script&index=0&lang.ts",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/components/override/SocialIcons.astro?astro&type=script&index=0&lang.ts",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/components/override/Search.astro?astro&type=script&index=0&lang.ts",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/components/override/ThemeToggle.astro?astro&type=script&index=0&lang.ts",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/components/override/Header.astro?astro&type=script&index=0&lang.ts",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/components/Page.astro?v=a4e66cb2&astro&type=script&index=0&lang.ts",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/components/MobileTableOfContents.astro?v=a4e66cb2&astro&type=script&index=0&lang.ts",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/components/override/TableOfContents/TableOfContents.astro?astro&type=script&index=0&lang.ts",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/components/SiteTypographyBootstrap.astro?astro&type=script&index=0&lang.ts",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/components/PrototypePreviewer/PrototypePreviewer.astro?astro&type=script&index=0&lang.ts",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/components/SiteCopyBootstrap.astro?astro&type=script&index=0&lang.ts",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/components/InstallCommandCard.astro?astro&type=script&index=0&lang.ts",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/components/InstallCommandCard.astro?astro&type=script&index=1&lang.ts",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/components/PrototypePreviewer/CodePanel.astro?astro&type=script&index=0&lang.ts",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/components/CodeFileBrowser.astro?astro&type=script&index=0&lang.ts",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/components/CodeExample.astro?astro&type=script&index=0&lang.ts",
+          "type": "module"
+        },
+        {
+          "src": "http://127.0.0.1:63336/src/components/override/PageFrame.astro?astro&type=script&index=1&lang.ts",
+          "type": "module"
+        }
+      ],
+      "resources": [
+        {
+          "name": "http://127.0.0.1:63336/@vite/client",
+          "startTime": 169.5,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32.0_rollup@4.60.1_tsx@4.21.0_typescript@5.9.3_yaml@2.8.3/node_modules/astro/dist/runtime/client/dev-toolbar/entrypoint.js?v=a4e66cb2",
+          "startTime": 169.5,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/@id/astro:scripts/page.js",
+          "startTime": 169.5,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/style/layers.css",
+          "startTime": 169.5,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/style/props.css",
+          "startTime": 169.5,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/style/reset.css",
+          "startTime": 169.5,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/style/asides.css",
+          "startTime": 169.5,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/style/util.css",
+          "startTime": 169.5,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/style/anchor-links.css",
+          "startTime": 169.5,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/components/Banner.astro?astro&type=style&index=0&lang.css",
+          "startTime": 169.5,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/user-components/Icon.astro?astro&type=style&index=0&lang.css",
+          "startTime": 169.5,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/components/ContentNotice.astro?astro&type=style&index=0&lang.css",
+          "startTime": 169.5,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/components/EditLink.astro?astro&type=style&index=0&lang.css",
+          "startTime": 169.5,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/components/Pagination.astro?astro&type=style&index=0&lang.css",
+          "startTime": 169.5,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/user-components/Badge.astro?astro&type=style&index=0&lang.css",
+          "startTime": 169.5,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/user-components/Card.astro?astro&type=style&index=0&lang.css",
+          "startTime": 169.5,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/user-components/CardGrid.astro?astro&type=style&index=0&lang.css",
+          "startTime": 169.5,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/user-components/Tabs.astro?astro&type=style&index=0&lang.css",
+          "startTime": 169.5,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/user-components/LinkCard.astro?astro&type=style&index=0&lang.css",
+          "startTime": 169.5,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/user-components/Steps.astro?astro&type=style&index=0&lang.css",
+          "startTime": 169.60000002384186,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/user-components/FileTree.astro?astro&type=style&index=0&lang.css",
+          "startTime": 169.60000002384186,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/user-components/LinkButton.astro?astro&type=style&index=0&lang.css",
+          "startTime": 169.60000002384186,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/components/Footer.astro?astro&type=style&index=0&lang.css",
+          "startTime": 169.60000002384186,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/styles/site-contents-command.css",
+          "startTime": 169.60000002384186,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/components/override/LanguageSelect.astro?astro&type=style&index=0&lang.css",
+          "startTime": 169.60000002384186,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/components/StaticLucideIcon.astro?astro&type=style&index=0&lang.css",
+          "startTime": 169.60000002384186,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/components/override/Search.astro?astro&type=style&index=0&lang.css",
+          "startTime": 169.60000002384186,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/styles/site-native-links.css",
+          "startTime": 169.60000002384186,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/components/Homepage/HomeActions.astro?astro&type=style&index=0&lang.css",
+          "startTime": 169.60000002384186,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/components/override/AdapterSelect.astro?astro&type=style&index=0&lang.css",
+          "startTime": 169.60000002384186,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/styles/site-header.css",
+          "startTime": 169.60000002384186,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/components/override/Hero.astro?astro&type=style&index=0&lang.css",
+          "startTime": 169.60000002384186,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/styles/site-copy-command.css",
+          "startTime": 169.60000002384186,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/styles/site-note-surface.css",
+          "startTime": 169.60000002384186,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/styles/global.css",
+          "startTime": 169.60000002384186,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/styles/site-library-family.css",
+          "startTime": 169.60000002384186,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/styles/documentation-image-preview.css",
+          "startTime": 169.60000002384186,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/components/documentation-image-zoom.css",
+          "startTime": 169.60000002384186,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/components/override/PageFrame.astro?astro&type=style&index=0&lang.css",
+          "startTime": 169.60000002384186,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/components/TableOfContents/TableOfContentsList.astro?astro&type=style&index=0&lang.css",
+          "startTime": 169.60000002384186,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/components/MobileTableOfContents.astro?astro&type=style&index=0&lang.css",
+          "startTime": 169.60000002384186,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/components/override/TableOfContents/TableOfContentsList.astro?astro&type=style&index=0&lang.css",
+          "startTime": 169.60000002384186,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/components/PageSidebar.astro?astro&type=style&index=0&lang.css",
+          "startTime": 169.60000002384186,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/components/SidebarSublist.astro?astro&type=style&index=0&lang.css",
+          "startTime": 169.60000002384186,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/components/SkipLink.astro?astro&type=style&index=0&lang.css",
+          "startTime": 169.60000002384186,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/components/override/TwoColumnContent.astro?astro&type=style&index=0&lang.css",
+          "startTime": 169.60000002384186,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/style/print.css?url&no-inline",
+          "startTime": 169.60000002384186,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/components/Page.astro?astro&type=style&index=0&lang.css",
+          "startTime": 169.60000002384186,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/components/DocumentationImagePreview.astro?astro&type=script&index=0&lang.ts",
+          "startTime": 169.70000004768372,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/components/override/PageFrame.astro?astro&type=script&index=0&lang.ts",
+          "startTime": 169.70000004768372,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/components/override/AdapterSelect.astro?astro&type=script&index=0&lang.ts",
+          "startTime": 169.70000004768372,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/components/override/LanguageSelect.astro?astro&type=script&index=0&lang.ts",
+          "startTime": 169.70000004768372,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/components/override/SocialIcons.astro?astro&type=script&index=0&lang.ts",
+          "startTime": 169.70000004768372,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/components/override/Search.astro?astro&type=script&index=0&lang.ts",
+          "startTime": 169.70000004768372,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/components/override/ThemeToggle.astro?astro&type=script&index=0&lang.ts",
+          "startTime": 169.70000004768372,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/components/override/Header.astro?astro&type=script&index=0&lang.ts",
+          "startTime": 169.70000004768372,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/components/Page.astro?v=a4e66cb2&astro&type=script&index=0&lang.ts",
+          "startTime": 169.70000004768372,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/components/MobileTableOfContents.astro?v=a4e66cb2&astro&type=script&index=0&lang.ts",
+          "startTime": 169.70000004768372,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/components/override/TableOfContents/TableOfContents.astro?astro&type=script&index=0&lang.ts",
+          "startTime": 169.70000004768372,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/components/SiteTypographyBootstrap.astro?astro&type=script&index=0&lang.ts",
+          "startTime": 169.70000004768372,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/styles/site-library-theme.css",
+          "startTime": 169.70000004768372,
+          "duration": 8.599999904632568
+        },
+        {
+          "name": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/style/print.css?no-inline",
+          "startTime": 171.5,
+          "duration": 7.600000023841858
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/components/PrototypePreviewer/PrototypePreviewer.astro?astro&type=script&index=0&lang.ts",
+          "startTime": 178.70000004768372,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/styles/site-code-startup.css",
+          "startTime": 178.70000004768372,
+          "duration": 11.5
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/components/SiteCopyBootstrap.astro?astro&type=script&index=0&lang.ts",
+          "startTime": 178.79999995231628,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/components/InstallCommandCard.astro?astro&type=script&index=0&lang.ts",
+          "startTime": 178.79999995231628,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/components/InstallCommandCard.astro?astro&type=script&index=1&lang.ts",
+          "startTime": 178.79999995231628,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/components/PrototypePreviewer/CodePanel.astro?astro&type=script&index=0&lang.ts",
+          "startTime": 178.79999995231628,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/components/CodeFileBrowser.astro?astro&type=script&index=0&lang.ts",
+          "startTime": 178.79999995231628,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/components/CodeExample.astro?astro&type=script&index=0&lang.ts",
+          "startTime": 178.79999995231628,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/components/override/PageFrame.astro?astro&type=script&index=1&lang.ts",
+          "startTime": 178.89999997615814,
+          "duration": 0
+        },
+        {
+          "name": "http://127.0.0.1:63336/src/styles/assets/font/geist/Geist-Variable.ttf",
+          "startTime": 194.10000002384186,
+          "duration": 1.399999976158142
+        },
+        {
+          "name": "http://127.0.0.1:63336/favicon.svg",
+          "startTime": 290,
+          "duration": 1.600000023841858
+        }
+      ]
+    },
+    "overflowElements": [
+      {
+        "tag": "div",
+        "id": "",
+        "classes": "",
+        "right": 1402.40625,
+        "left": 1210.40625,
+        "width": 192,
+        "scrollWidth": 192,
+        "clientWidth": 192,
+        "display": "block",
+        "position": "static",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": ""
+      },
+      {
+        "tag": "div",
+        "id": "",
+        "classes": "site-header-runtime",
+        "right": 1402.40625,
+        "left": 1210.40625,
+        "width": 192,
+        "scrollWidth": 192,
+        "clientWidth": 192,
+        "display": "flex",
+        "position": "static",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": ""
+      },
+      {
+        "tag": "div",
+        "id": "",
+        "classes": "adapter-select-wrapper relative inline-flex items-center astro-glxqhcdx",
+        "right": 1402.40625,
+        "left": 1210.40625,
+        "width": 192,
+        "scrollWidth": 192,
+        "clientWidth": 192,
+        "display": "flex",
+        "position": "relative",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": "site-header-runtime"
+      },
+      {
+        "tag": "wc-shadcn-select-root",
+        "id": "adapter-select",
+        "classes": "astro-glxqhcdx",
+        "right": 1290.03125,
+        "left": 1210.40625,
+        "width": 79.625,
+        "scrollWidth": 80,
+        "clientWidth": 80,
+        "display": "flex",
+        "position": "static",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": "adapter-select-wrapper relative inline-flex items-center astro-glxqhcdx"
+      },
+      {
+        "tag": "wc-shadcn-select-trigger",
+        "id": "",
+        "classes": "adapter-select astro-glxqhcdx",
+        "right": 1290.03125,
+        "left": 1210.40625,
+        "width": 79.625,
+        "scrollWidth": 78,
+        "clientWidth": 78,
+        "display": "flex",
+        "position": "static",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": "astro-glxqhcdx"
+      },
+      {
+        "tag": "div",
+        "id": "site-header-settings",
+        "classes": "site-header-settings",
+        "right": 1402.40625,
+        "left": 1210.40625,
+        "width": 192,
+        "scrollWidth": 192,
+        "clientWidth": 192,
+        "display": "grid",
+        "position": "static",
+        "overflowX": "visible",
+        "gridTemplateColumns": "192px",
+        "parent": ""
+      },
+      {
+        "tag": "div",
+        "id": "",
+        "classes": "site-header-setting",
+        "right": 1402.40625,
+        "left": 1210.40625,
+        "width": 192,
+        "scrollWidth": 192,
+        "clientWidth": 192,
+        "display": "flex",
+        "position": "static",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": "site-header-settings"
+      },
+      {
+        "tag": "div",
+        "id": "",
+        "classes": "language-select-wrapper relative inline-flex items-center astro-3pzatpsy",
+        "right": 1402.40625,
+        "left": 1330.40625,
+        "width": 72,
+        "scrollWidth": 72,
+        "clientWidth": 72,
+        "display": "flex",
+        "position": "relative",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": "site-header-setting"
+      },
+      {
+        "tag": "span",
+        "id": "language-select-label-mz02nvk94uo",
+        "classes": "sr-only astro-3pzatpsy",
+        "right": 1330.40625,
+        "left": 1329.40625,
+        "width": 1,
+        "scrollWidth": 178,
+        "clientWidth": 1,
+        "display": "block",
+        "position": "absolute",
+        "overflowX": "hidden",
+        "gridTemplateColumns": "none",
+        "parent": "language-select-wrapper relative inline-flex items-center astro-3pzatpsy"
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "language-select-fallback astro-3pzatpsy",
+        "right": 1402.40625,
+        "left": 1330.40625,
+        "width": 72,
+        "scrollWidth": 72,
+        "clientWidth": 72,
+        "display": "block",
+        "position": "static",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": "language-select-wrapper relative inline-flex items-center astro-3pzatpsy"
+      },
+      {
+        "tag": "select",
+        "id": "",
+        "classes": "astro-3pzatpsy",
+        "right": 1402.40625,
+        "left": 1330.40625,
+        "width": 72,
+        "scrollWidth": 72,
+        "clientWidth": 72,
+        "display": "inline-block",
+        "position": "static",
+        "overflowX": "clip",
+        "gridTemplateColumns": "none",
+        "parent": "language-select-fallback astro-3pzatpsy"
+      },
+      {
+        "tag": "div",
+        "id": "",
+        "classes": "site-header-setting",
+        "right": 1402.40625,
+        "left": 1210.40625,
+        "width": 192,
+        "scrollWidth": 192,
+        "clientWidth": 192,
+        "display": "flex",
+        "position": "static",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": "site-header-settings"
+      },
+      {
+        "tag": "div",
+        "id": "",
+        "classes": "site-social-links",
+        "right": 1402.40625,
+        "left": 1210.40625,
+        "width": 192,
+        "scrollWidth": 192,
+        "clientWidth": 192,
+        "display": "flex",
+        "position": "static",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": "site-header-setting"
+      },
+      {
+        "tag": "a",
+        "id": "",
+        "classes": "site-native-link",
+        "right": 1308.796875,
+        "left": 1264.796875,
+        "width": 44,
+        "scrollWidth": 44,
+        "clientWidth": 44,
+        "display": "flex",
+        "position": "static",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": "site-social-links"
+      },
+      {
+        "tag": "svg",
+        "id": "",
+        "classes": {},
+        "right": 1282.796875,
+        "left": 1264.796875,
+        "width": 18,
+        "scrollWidth": 18,
+        "clientWidth": 18,
+        "display": "block",
+        "position": "static",
+        "overflowX": "hidden",
+        "gridTemplateColumns": "none",
+        "parent": "site-native-link"
+      },
+      {
+        "tag": "path",
+        "id": "",
+        "classes": {},
+        "right": 1282.796875,
+        "left": 1264.796875,
+        "width": 18,
+        "scrollWidth": 0,
+        "clientWidth": 0,
+        "display": "inline",
+        "position": "static",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": {}
+      },
+      {
+        "tag": "a",
+        "id": "",
+        "classes": "site-native-link",
+        "right": 1363.1875,
+        "left": 1319.1875,
+        "width": 44,
+        "scrollWidth": 44,
+        "clientWidth": 44,
+        "display": "flex",
+        "position": "static",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": "site-social-links"
+      },
+      {
+        "tag": "svg",
+        "id": "",
+        "classes": {},
+        "right": 1337.1875,
+        "left": 1319.1875,
+        "width": 18,
+        "scrollWidth": 18,
+        "clientWidth": 18,
+        "display": "block",
+        "position": "static",
+        "overflowX": "hidden",
+        "gridTemplateColumns": "none",
+        "parent": "site-native-link"
+      },
+      {
+        "tag": "path",
+        "id": "",
+        "classes": {},
+        "right": 1336.9940185546875,
+        "left": 1319.3809814453125,
+        "width": 17.613037109375,
+        "scrollWidth": 0,
+        "clientWidth": 0,
+        "display": "inline",
+        "position": "static",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": {}
+      },
+      {
+        "tag": "code",
+        "id": "",
+        "classes": "",
+        "right": 1313.421875,
+        "left": 499.1875,
+        "width": 814.234375,
+        "scrollWidth": 814,
+        "clientWidth": 814,
+        "display": "grid",
+        "position": "static",
+        "overflowX": "visible",
+        "gridTemplateColumns": "814.234px",
+        "parent": "proto-previewer__code shiki shiki-themes github-light github-dark"
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "line",
+        "right": 1313.421875,
+        "left": 499.1875,
+        "width": 814.234375,
+        "scrollWidth": 814,
+        "clientWidth": 814,
+        "display": "block",
+        "position": "relative",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": ""
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "line",
+        "right": 1313.421875,
+        "left": 499.1875,
+        "width": 814.234375,
+        "scrollWidth": 814,
+        "clientWidth": 814,
+        "display": "block",
+        "position": "relative",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": ""
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "",
+        "right": 1304.984375,
+        "left": 1170.125,
+        "width": 134.859375,
+        "scrollWidth": 0,
+        "clientWidth": 0,
+        "display": "inline",
+        "position": "static",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": "line"
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "",
+        "right": 1313.421875,
+        "left": 1304.984375,
+        "width": 8.4375,
+        "scrollWidth": 0,
+        "clientWidth": 0,
+        "display": "inline",
+        "position": "static",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": "line"
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "line",
+        "right": 1313.421875,
+        "left": 499.1875,
+        "width": 814.234375,
+        "scrollWidth": 814,
+        "clientWidth": 814,
+        "display": "block",
+        "position": "relative",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": ""
+      },
+      {
+        "tag": "code",
+        "id": "",
+        "classes": "",
+        "right": 1397.71875,
+        "left": 499.1875,
+        "width": 898.53125,
+        "scrollWidth": 899,
+        "clientWidth": 899,
+        "display": "grid",
+        "position": "static",
+        "overflowX": "visible",
+        "gridTemplateColumns": "898.531px",
+        "parent": "proto-previewer__code shiki shiki-themes github-light github-dark"
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "line",
+        "right": 1397.71875,
+        "left": 499.1875,
+        "width": 898.53125,
+        "scrollWidth": 899,
+        "clientWidth": 899,
+        "display": "block",
+        "position": "relative",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": ""
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "line",
+        "right": 1397.71875,
+        "left": 499.1875,
+        "width": 898.53125,
+        "scrollWidth": 899,
+        "clientWidth": 899,
+        "display": "block",
+        "position": "relative",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": ""
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "line",
+        "right": 1397.71875,
+        "left": 499.1875,
+        "width": 898.53125,
+        "scrollWidth": 899,
+        "clientWidth": 899,
+        "display": "block",
+        "position": "relative",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": ""
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "",
+        "right": 1389.28125,
+        "left": 1254.421875,
+        "width": 134.859375,
+        "scrollWidth": 0,
+        "clientWidth": 0,
+        "display": "inline",
+        "position": "static",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": "line"
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "",
+        "right": 1397.71875,
+        "left": 1389.28125,
+        "width": 8.4375,
+        "scrollWidth": 0,
+        "clientWidth": 0,
+        "display": "inline",
+        "position": "static",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": "line"
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "line",
+        "right": 1397.71875,
+        "left": 499.1875,
+        "width": 898.53125,
+        "scrollWidth": 899,
+        "clientWidth": 899,
+        "display": "block",
+        "position": "relative",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": ""
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "",
+        "right": 1313.421875,
+        "left": 891.984375,
+        "width": 421.4375,
+        "scrollWidth": 0,
+        "clientWidth": 0,
+        "display": "inline",
+        "position": "static",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": "line"
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "",
+        "right": 1338.71875,
+        "left": 1313.421875,
+        "width": 25.296875,
+        "scrollWidth": 0,
+        "clientWidth": 0,
+        "display": "inline",
+        "position": "static",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": "line"
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "",
+        "right": 1347.15625,
+        "left": 1338.71875,
+        "width": 8.4375,
+        "scrollWidth": 0,
+        "clientWidth": 0,
+        "display": "inline",
+        "position": "static",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": "line"
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "line",
+        "right": 1397.71875,
+        "left": 499.1875,
+        "width": 898.53125,
+        "scrollWidth": 899,
+        "clientWidth": 899,
+        "display": "block",
+        "position": "relative",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": ""
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "line",
+        "right": 1397.71875,
+        "left": 499.1875,
+        "width": 898.53125,
+        "scrollWidth": 899,
+        "clientWidth": 899,
+        "display": "block",
+        "position": "relative",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": ""
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "line",
+        "right": 1397.71875,
+        "left": 499.1875,
+        "width": 898.53125,
+        "scrollWidth": 899,
+        "clientWidth": 899,
+        "display": "block",
+        "position": "relative",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": ""
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "line",
+        "right": 1397.71875,
+        "left": 499.1875,
+        "width": 898.53125,
+        "scrollWidth": 899,
+        "clientWidth": 899,
+        "display": "block",
+        "position": "relative",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": ""
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "line",
+        "right": 1397.71875,
+        "left": 499.1875,
+        "width": 898.53125,
+        "scrollWidth": 899,
+        "clientWidth": 899,
+        "display": "block",
+        "position": "relative",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": ""
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "line",
+        "right": 1397.71875,
+        "left": 499.1875,
+        "width": 898.53125,
+        "scrollWidth": 899,
+        "clientWidth": 899,
+        "display": "block",
+        "position": "relative",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": ""
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "line",
+        "right": 1397.71875,
+        "left": 499.1875,
+        "width": 898.53125,
+        "scrollWidth": 899,
+        "clientWidth": 899,
+        "display": "block",
+        "position": "relative",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": ""
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "line",
+        "right": 1397.71875,
+        "left": 499.1875,
+        "width": 898.53125,
+        "scrollWidth": 899,
+        "clientWidth": 899,
+        "display": "block",
+        "position": "relative",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": ""
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "line",
+        "right": 1397.71875,
+        "left": 499.1875,
+        "width": 898.53125,
+        "scrollWidth": 899,
+        "clientWidth": 899,
+        "display": "block",
+        "position": "relative",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": ""
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "line",
+        "right": 1397.71875,
+        "left": 499.1875,
+        "width": 898.53125,
+        "scrollWidth": 899,
+        "clientWidth": 899,
+        "display": "block",
+        "position": "relative",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": ""
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "line",
+        "right": 1397.71875,
+        "left": 499.1875,
+        "width": 898.53125,
+        "scrollWidth": 899,
+        "clientWidth": 899,
+        "display": "block",
+        "position": "relative",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": ""
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "line",
+        "right": 1397.71875,
+        "left": 499.1875,
+        "width": 898.53125,
+        "scrollWidth": 899,
+        "clientWidth": 899,
+        "display": "block",
+        "position": "relative",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": ""
+      },
+      {
+        "tag": "code",
+        "id": "",
+        "classes": "",
+        "right": 1709.671875,
+        "left": 499.1875,
+        "width": 1210.484375,
+        "scrollWidth": 1210,
+        "clientWidth": 1210,
+        "display": "grid",
+        "position": "static",
+        "overflowX": "visible",
+        "gridTemplateColumns": "1210.48px",
+        "parent": "proto-previewer__code shiki shiki-themes github-light github-dark"
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "line",
+        "right": 1709.671875,
+        "left": 499.1875,
+        "width": 1210.484375,
+        "scrollWidth": 1210,
+        "clientWidth": 1210,
+        "display": "block",
+        "position": "relative",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": ""
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "line",
+        "right": 1709.671875,
+        "left": 499.1875,
+        "width": 1210.484375,
+        "scrollWidth": 1210,
+        "clientWidth": 1210,
+        "display": "block",
+        "position": "relative",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": ""
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "line",
+        "right": 1709.671875,
+        "left": 499.1875,
+        "width": 1210.484375,
+        "scrollWidth": 1210,
+        "clientWidth": 1210,
+        "display": "block",
+        "position": "relative",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": ""
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "line",
+        "right": 1709.671875,
+        "left": 499.1875,
+        "width": 1210.484375,
+        "scrollWidth": 1210,
+        "clientWidth": 1210,
+        "display": "block",
+        "position": "relative",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": ""
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "line",
+        "right": 1709.671875,
+        "left": 499.1875,
+        "width": 1210.484375,
+        "scrollWidth": 1210,
+        "clientWidth": 1210,
+        "display": "block",
+        "position": "relative",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": ""
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "line",
+        "right": 1709.671875,
+        "left": 499.1875,
+        "width": 1210.484375,
+        "scrollWidth": 1210,
+        "clientWidth": 1210,
+        "display": "block",
+        "position": "relative",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": ""
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "line",
+        "right": 1709.671875,
+        "left": 499.1875,
+        "width": 1210.484375,
+        "scrollWidth": 1210,
+        "clientWidth": 1210,
+        "display": "block",
+        "position": "relative",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": ""
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "line",
+        "right": 1709.671875,
+        "left": 499.1875,
+        "width": 1210.484375,
+        "scrollWidth": 1210,
+        "clientWidth": 1210,
+        "display": "block",
+        "position": "relative",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": ""
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "line",
+        "right": 1709.671875,
+        "left": 499.1875,
+        "width": 1210.484375,
+        "scrollWidth": 1210,
+        "clientWidth": 1210,
+        "display": "block",
+        "position": "relative",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": ""
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "",
+        "right": 1288.171875,
+        "left": 1271.3125,
+        "width": 16.859375,
+        "scrollWidth": 0,
+        "clientWidth": 0,
+        "display": "inline",
+        "position": "static",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": "line"
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "",
+        "right": 1305.03125,
+        "left": 1288.171875,
+        "width": 16.859375,
+        "scrollWidth": 0,
+        "clientWidth": 0,
+        "display": "inline",
+        "position": "static",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": "line"
+      },
+      {
+        "tag": "span",
+        "id": "",
+        "classes": "",
+        "right": 1330.328125,
+        "left": 1305.03125,
+        "width": 25.296875,
+        "scrollWidth": 0,
+        "clientWidth": 0,
+        "display": "inline",
+        "position": "static",
+        "overflowX": "visible",
+        "gridTemplateColumns": "none",
+        "parent": "line"
+      }
+    ],
+    "native": {
+      "activeElement": "<body class=\"astro-4c6dygrl\" data-astro-source-file=\"<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/components/Page.astro\" data-astro-source-loc=\"82:8\"> <a href=\"#_top\" class=\"astro-5ofaz2js\" data-astro-source-file=\"<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/components/SkipLink.astro\" data-astro-source-loc=\"5:31\">跳转到内容</a>  <link rel=\"stylesheet\" href=\"/styles/site-library-theme.css\"> <documentation-image-preview data-astro-source-file=\"<task-output>/search-repair/apps/www/src/components/DocumentationImagePreview.astro\"></documentation-image-preview> <script type=\"module\" src=\"/src/components/DocumentationImagePreview.astro?astro&amp;type=script&amp;index=0&amp;lang.ts\"></script> <div data-site-family-scope=\"\" data-site-library-family=\"shadcn\" class=\"site-page-frame bg-background text-foreground group/body overscroll-none font-sans antialiased [--footer-height:calc(var(--spacing)*14)] xl:[--footer-height:calc(var(--spacing)*24)] astro-ceehzq5e\" data-astro-source-file=\"<task-output>/search-repair/apps/www/src/components/override/PageFrame.astro\" data-astro-source-loc=\"18:2\"> <script type=\"module\" src=\"/src/components/override/PageFrame.astro?astro&amp;type=script&amp;index=0&amp;lang.ts\"></script> <!-- Header owns the full-width chrome; reading content keeps its own canvas. --> <header class=\"bg-background sticky top-0 z-50 w-full astro-ceehzq5e\" data-astro-source-file=\"<task-output>/search-repair/apps/www/src/components/override/PageFrame.astro\" data-astro-sour"
+    },
+    "timeline": [],
+    "theme": "dark",
+    "service": "public-dialog-command-pagefind-api",
+    "focused": "astro-4c6dygrl",
+    "commands": []
+  },
+  "publicSearch": {
+    "generation": null,
+    "open": false,
+    "inputFocused": false,
+    "openCount": 0
+  },
+  "errors": [],
+  "pendingRequests": [],
+  "summary": {
+    "source": {
+      "sha": "5f2d845ce54666a167f06895033a616d8bfa3382",
+      "dirty": false
+    },
+    "id": "no-js",
+    "state": "destination",
+    "elapsedMs": 649,
+    "stageElapsedMs": 63,
+    "pendingCount": 0,
+    "byType": {},
+    "samples": [],
+    "owner": {
+      "state": {
+        "searchComposition": "command-dialog",
+        "searchStyle": "rhea",
+        "searchCopy": "{\"title\":\"搜索\",\"description\":\"搜索全部文档并打开结果\",\"placeholder\":\"搜索文档…\",\"pages\":\"页面\",\"results\":\"搜索结果\",\"goToPage\":\"打开页面\",\"hint\":\"输入关键词搜索全部文档\",\"loading\":\"正在加载搜索…\",\"empty\":\"未找到结果\",\"error\":\"搜索暂不可用，请重试\",\"retry\":\"重试\",\"more\":\"加载更多结果\",\"close\":\"取消\",\"count\":\"{count} 条匹配文档\"}",
+        "searchNavigation": "[{\"title\":\"首页\",\"href\":\"/zh-cn/\"},{\"title\":\"文档\",\"href\":\"/zh-cn/start-here/what-you-saw/\"},{\"title\":\"组件库\",\"href\":\"/zh-cn/ui-libraries/shadcn/button/\"},{\"title\":\"白皮书\",\"href\":\"/zh-cn/whitepaper/0-preface/\"}]",
+        "pagefindBundle": "/pagefind/",
+        "searchInitialFamily": "shadcn",
+        "openLabel": "搜索",
+        "closeLabel": "取消",
+        "retryLabel": "重试",
+        "ctrlLabel": "Ctrl",
+        "astroSourceFile": "<task-output>/search-repair/apps/www/src/components/override/Search.astro"
+      },
+      "defined": false,
+      "upgraded": false,
+      "connected": true,
+      "service": false,
+      "refresh": false,
+      "mounts": [
+        {
+          "command": "open",
+          "generations": []
+        }
+      ]
+    },
+    "activeCommands": [],
+    "initialGetterSamples": [],
+    "initialReadiness": null,
+    "initialPollFailure": null,
+    "startupTrace": null,
+    "errorCount": 0,
+    "lateObservation": null
+  },
+  "recentRequests": [
+    {
+      "url": "http://127.0.0.1:63336/styles/site-library-theme.css",
+      "outcome": "finished"
+    },
+    {
+      "url": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/style/print.css?no-inline",
+      "outcome": "finished"
+    },
+    {
+      "url": "http://127.0.0.1:63336/zh-cn/ui-libraries/shadcn/button/",
+      "outcome": "finished"
+    },
+    {
+      "url": "http://127.0.0.1:63336/styles/site-code-startup.css",
+      "outcome": "finished"
+    },
+    {
+      "url": "http://127.0.0.1:63336/src/styles/assets/font/geist/Geist-Variable.ttf",
+      "outcome": "finished"
+    },
+    {
+      "url": "http://127.0.0.1:63336/favicon.svg",
+      "outcome": "finished"
+    },
+    {
+      "url": "http://127.0.0.1:63336/styles/site-library-theme.css",
+      "outcome": "finished"
+    },
+    {
+      "url": "http://127.0.0.1:63336/@fs<task-output>/search-repair/node_modules/.pnpm/@astrojs+starlight@0.35.3_astro@5.18.1_@types+node@25.6.2_jiti@2.6.1_lightningcss@1.32._b0aa86eccf551483ed1b86c82fc51956/node_modules/@astrojs/starlight/style/print.css?no-inline",
+      "outcome": "finished"
+    },
+    {
+      "url": "http://127.0.0.1:63336/zh-cn/ui-libraries/shadcn/button/",
+      "outcome": "finished"
+    },
+    {
+      "url": "http://127.0.0.1:63336/styles/site-code-startup.css",
+      "outcome": "finished"
+    },
+    {
+      "url": "http://127.0.0.1:63336/src/styles/assets/font/geist/Geist-Variable.ttf",
+      "outcome": "finished"
+    },
+    {
+      "url": "http://127.0.0.1:63336/favicon.svg",
+      "outcome": "finished"
+    }
+  ],
+  "renderer": "Real Chromium via existing repository browser harness",
+  "scope": "Public family Dialog + Command composition; development harness does not prove generated-index results"
+}

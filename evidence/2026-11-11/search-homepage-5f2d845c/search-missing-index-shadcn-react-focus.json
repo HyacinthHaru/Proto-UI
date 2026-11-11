@@ -1,0 +1,28 @@
+{
+  "source": {
+    "sha": "5f2d845ce54666a167f06895033a616d8bfa3382",
+    "dirty": false
+  },
+  "family": "shadcn",
+  "runtime": "react",
+  "state": {
+    "owner": "site-search-1-homepage-dialog",
+    "generation": "2",
+    "open": true,
+    "panelBox": {
+      "x": 24.949996948242188,
+      "y": 137.0187530517578,
+      "width": 340.0999755859375,
+      "height": 396.1500244140625,
+      "top": 137.0187530517578,
+      "right": 365.0499725341797,
+      "bottom": 533.1687774658203,
+      "left": 24.949996948242188
+    },
+    "query": "",
+    "inputConnected": true,
+    "inputFocused": false,
+    "openCount": 0
+  },
+  "failedDataResponses": 1
+}
