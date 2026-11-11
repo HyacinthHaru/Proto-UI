@@ -1,0 +1,19 @@
+{
+  "source": "e617cf8a89aa1fafe9f7e80e62766114e15bf867",
+  "sourceTree": "5c77806e1316f7e071ba292a951c48b7e10abc15",
+  "files": [
+    {
+      "file": "apps/www/src/content/docs/zh-cn/demo-shadcn-select.demo.ts",
+      "sha256": "c970ce38944dca2017729c6882d9953f74237593bb2d0e70a6bad2a695933c9c"
+    },
+    {
+      "file": "apps/www/src/content/docs/zh-cn/demo-select-item-sizing.browser.test.ts",
+      "sha256": "5b81f687e760563bada76e36a828cd11a6b1b661f73b56d5f175bbe3aec05271"
+    },
+    {
+      "file": "apps/www/src/content/docs/zh-cn/demo-select-item-sizing-motion.ts",
+      "sha256": "e1be26feed0090eb4cfbc0540e913fb0a28fe4cf4ad8f5fcdc4b2798a49c7136"
+    }
+  ],
+  "claim": "Styled public demo, actual chosen runtime, own checkout server; not compiled/AT acceptance"
+}

@@ -1,0 +1,1645 @@
+{
+  "head": "e617cf8a89aa1fafe9f7e80e62766114e15bf867",
+  "tree": "5c77806e1316f7e071ba292a951c48b7e10abc15",
+  "passed": 24,
+  "caseCount": 24,
+  "astroFiles": 1214,
+  "errors": 0,
+  "warnings": 0,
+  "hints": 30,
+  "cases": [
+    {
+      "locale": "en",
+      "runtime": "react",
+      "environment": {
+        "id": "reduced-motion",
+        "direction": "ltr",
+        "reducedMotion": "reduce"
+      },
+      "direction": {
+        "documentBefore": "ltr",
+        "articleBefore": "ltr",
+        "trigger": "ltr"
+      },
+      "geometry": [
+        {
+          "phase": "first-entry",
+          "alignedText": "React",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "selected-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "narrow-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "disabled-keyboard-skip",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "pointer-selected-reopen",
+          "alignedText": "Vue",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        }
+      ],
+      "motionCount": 5,
+      "receiptSha256": "dc852932eea5990ab4c85273d178e66eba0683589e19a7a2870371b84ee830a8"
+    },
+    {
+      "locale": "en",
+      "runtime": "react",
+      "environment": {
+        "id": "rtl",
+        "direction": "rtl",
+        "reducedMotion": "no-preference"
+      },
+      "direction": {
+        "documentBefore": "ltr",
+        "articleBefore": "ltr",
+        "trigger": "rtl"
+      },
+      "geometry": [
+        {
+          "phase": "first-entry",
+          "alignedText": "React",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "selected-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "narrow-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "disabled-keyboard-skip",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "pointer-selected-reopen",
+          "alignedText": "Vue",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        }
+      ],
+      "motionCount": 5,
+      "receiptSha256": "7abfeda1152fff4f6f71f524d565ed7a9f5c05bbf5e3caa7eeef7960abc9e456"
+    },
+    {
+      "locale": "en",
+      "runtime": "react",
+      "environment": {
+        "id": "default",
+        "direction": "ltr",
+        "reducedMotion": "no-preference"
+      },
+      "direction": {
+        "documentBefore": "ltr",
+        "articleBefore": "ltr",
+        "trigger": "ltr"
+      },
+      "geometry": [
+        {
+          "phase": "first-entry",
+          "alignedText": "React",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "selected-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "narrow-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "disabled-keyboard-skip",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "pointer-selected-reopen",
+          "alignedText": "Vue",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        }
+      ],
+      "motionCount": 5,
+      "receiptSha256": "5003a3b6818604dded0e638b35c95b31b5a6495dedc0fde3e5cac28efb378c76"
+    },
+    {
+      "locale": "en",
+      "runtime": "vue",
+      "environment": {
+        "id": "reduced-motion",
+        "direction": "ltr",
+        "reducedMotion": "reduce"
+      },
+      "direction": {
+        "documentBefore": "ltr",
+        "articleBefore": "ltr",
+        "trigger": "ltr"
+      },
+      "geometry": [
+        {
+          "phase": "first-entry",
+          "alignedText": "React",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "selected-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "narrow-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "disabled-keyboard-skip",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "pointer-selected-reopen",
+          "alignedText": "Vue",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        }
+      ],
+      "motionCount": 5,
+      "receiptSha256": "08709743f82837ccde9c2a58371c31038481fcd990ec7635ceb7d436cd1a3322"
+    },
+    {
+      "locale": "en",
+      "runtime": "vue",
+      "environment": {
+        "id": "rtl",
+        "direction": "rtl",
+        "reducedMotion": "no-preference"
+      },
+      "direction": {
+        "documentBefore": "ltr",
+        "articleBefore": "ltr",
+        "trigger": "rtl"
+      },
+      "geometry": [
+        {
+          "phase": "first-entry",
+          "alignedText": "React",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "selected-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "narrow-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "disabled-keyboard-skip",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "pointer-selected-reopen",
+          "alignedText": "Vue",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        }
+      ],
+      "motionCount": 5,
+      "receiptSha256": "c97840357b081b79611a6e21506b6930b0ad8819d6da3ded920bd2fa53426639"
+    },
+    {
+      "locale": "en",
+      "runtime": "vue",
+      "environment": {
+        "id": "default",
+        "direction": "ltr",
+        "reducedMotion": "no-preference"
+      },
+      "direction": {
+        "documentBefore": "ltr",
+        "articleBefore": "ltr",
+        "trigger": "ltr"
+      },
+      "geometry": [
+        {
+          "phase": "first-entry",
+          "alignedText": "React",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "selected-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "narrow-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "disabled-keyboard-skip",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "pointer-selected-reopen",
+          "alignedText": "Vue",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        }
+      ],
+      "motionCount": 5,
+      "receiptSha256": "1e1e07a1226fc3cdb4dec71558a78bcb7ed9862be9b854979026b9d3ddb1c2d6"
+    },
+    {
+      "locale": "en",
+      "runtime": "vue2",
+      "environment": {
+        "id": "reduced-motion",
+        "direction": "ltr",
+        "reducedMotion": "reduce"
+      },
+      "direction": {
+        "documentBefore": "ltr",
+        "articleBefore": "ltr",
+        "trigger": "ltr"
+      },
+      "geometry": [
+        {
+          "phase": "first-entry",
+          "alignedText": "React",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "selected-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "narrow-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "disabled-keyboard-skip",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "pointer-selected-reopen",
+          "alignedText": "Vue",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        }
+      ],
+      "motionCount": 5,
+      "receiptSha256": "9de645af2b569ef58f0832cab63205fa2488deaebd92946745074ce1a78531ba"
+    },
+    {
+      "locale": "en",
+      "runtime": "vue2",
+      "environment": {
+        "id": "rtl",
+        "direction": "rtl",
+        "reducedMotion": "no-preference"
+      },
+      "direction": {
+        "documentBefore": "ltr",
+        "articleBefore": "ltr",
+        "trigger": "rtl"
+      },
+      "geometry": [
+        {
+          "phase": "first-entry",
+          "alignedText": "React",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "selected-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "narrow-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "disabled-keyboard-skip",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "pointer-selected-reopen",
+          "alignedText": "Vue",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        }
+      ],
+      "motionCount": 5,
+      "receiptSha256": "d6089a03e0cfcb8df90414f68cda0d9579d10e09b9288ca3e1521aabbbce4ca2"
+    },
+    {
+      "locale": "en",
+      "runtime": "vue2",
+      "environment": {
+        "id": "default",
+        "direction": "ltr",
+        "reducedMotion": "no-preference"
+      },
+      "direction": {
+        "documentBefore": "ltr",
+        "articleBefore": "ltr",
+        "trigger": "ltr"
+      },
+      "geometry": [
+        {
+          "phase": "first-entry",
+          "alignedText": "React",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "selected-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "narrow-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "disabled-keyboard-skip",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "pointer-selected-reopen",
+          "alignedText": "Vue",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        }
+      ],
+      "motionCount": 5,
+      "receiptSha256": "d9e66e13482a507eced6ef0c9af2982f48ac42f36e20dc61af611aaedd1ae915"
+    },
+    {
+      "locale": "en",
+      "runtime": "wc",
+      "environment": {
+        "id": "reduced-motion",
+        "direction": "ltr",
+        "reducedMotion": "reduce"
+      },
+      "direction": {
+        "documentBefore": "ltr",
+        "articleBefore": "ltr",
+        "trigger": "ltr"
+      },
+      "geometry": [
+        {
+          "phase": "first-entry",
+          "alignedText": "React",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "selected-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "narrow-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "disabled-keyboard-skip",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "pointer-selected-reopen",
+          "alignedText": "Vue",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        }
+      ],
+      "motionCount": 5,
+      "receiptSha256": "eeb8b30d38aa8e3f8d3626892a8c84626def912acfcd794cf1e80d07ce559946"
+    },
+    {
+      "locale": "en",
+      "runtime": "wc",
+      "environment": {
+        "id": "rtl",
+        "direction": "rtl",
+        "reducedMotion": "no-preference"
+      },
+      "direction": {
+        "documentBefore": "ltr",
+        "articleBefore": "ltr",
+        "trigger": "rtl"
+      },
+      "geometry": [
+        {
+          "phase": "first-entry",
+          "alignedText": "React",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "selected-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "narrow-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "disabled-keyboard-skip",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "pointer-selected-reopen",
+          "alignedText": "Vue",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        }
+      ],
+      "motionCount": 5,
+      "receiptSha256": "cf0d18927a2a40f6d02e8d84b23d17b1af27729100d9a4ba6c3c4af75fe0cfe3"
+    },
+    {
+      "locale": "en",
+      "runtime": "wc",
+      "environment": {
+        "id": "default",
+        "direction": "ltr",
+        "reducedMotion": "no-preference"
+      },
+      "direction": {
+        "documentBefore": "ltr",
+        "articleBefore": "ltr",
+        "trigger": "ltr"
+      },
+      "geometry": [
+        {
+          "phase": "first-entry",
+          "alignedText": "React",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "selected-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "narrow-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "disabled-keyboard-skip",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "pointer-selected-reopen",
+          "alignedText": "Vue",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        }
+      ],
+      "motionCount": 5,
+      "receiptSha256": "d776da947647a56286861945c7b1649fb603bdbe9a975b43143fa9245d3f9425"
+    },
+    {
+      "locale": "zh-cn",
+      "runtime": "react",
+      "environment": {
+        "id": "reduced-motion",
+        "direction": "ltr",
+        "reducedMotion": "reduce"
+      },
+      "direction": {
+        "documentBefore": "ltr",
+        "articleBefore": "ltr",
+        "trigger": "ltr"
+      },
+      "geometry": [
+        {
+          "phase": "first-entry",
+          "alignedText": "React",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "selected-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "narrow-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "disabled-keyboard-skip",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "pointer-selected-reopen",
+          "alignedText": "Vue",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        }
+      ],
+      "motionCount": 5,
+      "receiptSha256": "0809e65c72267d653a866e445b725a4ed2fd2cad8efb8ce2b94819112406e1d2"
+    },
+    {
+      "locale": "zh-cn",
+      "runtime": "react",
+      "environment": {
+        "id": "rtl",
+        "direction": "rtl",
+        "reducedMotion": "no-preference"
+      },
+      "direction": {
+        "documentBefore": "ltr",
+        "articleBefore": "ltr",
+        "trigger": "rtl"
+      },
+      "geometry": [
+        {
+          "phase": "first-entry",
+          "alignedText": "React",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "selected-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "narrow-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "disabled-keyboard-skip",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "pointer-selected-reopen",
+          "alignedText": "Vue",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        }
+      ],
+      "motionCount": 5,
+      "receiptSha256": "f6ecd43532759e2517c37dee4838616264bcd22d0dd193cea300c016515ecd07"
+    },
+    {
+      "locale": "zh-cn",
+      "runtime": "react",
+      "environment": {
+        "id": "default",
+        "direction": "ltr",
+        "reducedMotion": "no-preference"
+      },
+      "direction": {
+        "documentBefore": "ltr",
+        "articleBefore": "ltr",
+        "trigger": "ltr"
+      },
+      "geometry": [
+        {
+          "phase": "first-entry",
+          "alignedText": "React",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "selected-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "narrow-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "disabled-keyboard-skip",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "pointer-selected-reopen",
+          "alignedText": "Vue",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        }
+      ],
+      "motionCount": 5,
+      "receiptSha256": "caa5907543c4726e5ced78e33d0e7877de422cf933956f746452a790e5275f31"
+    },
+    {
+      "locale": "zh-cn",
+      "runtime": "vue",
+      "environment": {
+        "id": "reduced-motion",
+        "direction": "ltr",
+        "reducedMotion": "reduce"
+      },
+      "direction": {
+        "documentBefore": "ltr",
+        "articleBefore": "ltr",
+        "trigger": "ltr"
+      },
+      "geometry": [
+        {
+          "phase": "first-entry",
+          "alignedText": "React",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "selected-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "narrow-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "disabled-keyboard-skip",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "pointer-selected-reopen",
+          "alignedText": "Vue",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        }
+      ],
+      "motionCount": 5,
+      "receiptSha256": "d54900f6d9bbb5fd95616b83f7c557b7adbe537da23c2c9a29ffc05cac06cb5a"
+    },
+    {
+      "locale": "zh-cn",
+      "runtime": "vue",
+      "environment": {
+        "id": "rtl",
+        "direction": "rtl",
+        "reducedMotion": "no-preference"
+      },
+      "direction": {
+        "documentBefore": "ltr",
+        "articleBefore": "ltr",
+        "trigger": "rtl"
+      },
+      "geometry": [
+        {
+          "phase": "first-entry",
+          "alignedText": "React",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "selected-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "narrow-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "disabled-keyboard-skip",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "pointer-selected-reopen",
+          "alignedText": "Vue",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        }
+      ],
+      "motionCount": 5,
+      "receiptSha256": "a86a4c219ff93a503dc9457bcd8286ec41658edc4df47a6a1c5880d1f7d7c1e3"
+    },
+    {
+      "locale": "zh-cn",
+      "runtime": "vue",
+      "environment": {
+        "id": "default",
+        "direction": "ltr",
+        "reducedMotion": "no-preference"
+      },
+      "direction": {
+        "documentBefore": "ltr",
+        "articleBefore": "ltr",
+        "trigger": "ltr"
+      },
+      "geometry": [
+        {
+          "phase": "first-entry",
+          "alignedText": "React",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "selected-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "narrow-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "disabled-keyboard-skip",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "pointer-selected-reopen",
+          "alignedText": "Vue",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        }
+      ],
+      "motionCount": 5,
+      "receiptSha256": "3d4d94b4295acd29dfe022fcfa48eba2df40e8f53e4eb1a3641e6d360e5954a2"
+    },
+    {
+      "locale": "zh-cn",
+      "runtime": "vue2",
+      "environment": {
+        "id": "reduced-motion",
+        "direction": "ltr",
+        "reducedMotion": "reduce"
+      },
+      "direction": {
+        "documentBefore": "ltr",
+        "articleBefore": "ltr",
+        "trigger": "ltr"
+      },
+      "geometry": [
+        {
+          "phase": "first-entry",
+          "alignedText": "React",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "selected-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "narrow-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "disabled-keyboard-skip",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "pointer-selected-reopen",
+          "alignedText": "Vue",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        }
+      ],
+      "motionCount": 5,
+      "receiptSha256": "acc3e466546a631a2e34f24c2b475aa064dac3714711bc69e97a2670ec2b6392"
+    },
+    {
+      "locale": "zh-cn",
+      "runtime": "vue2",
+      "environment": {
+        "id": "rtl",
+        "direction": "rtl",
+        "reducedMotion": "no-preference"
+      },
+      "direction": {
+        "documentBefore": "ltr",
+        "articleBefore": "ltr",
+        "trigger": "rtl"
+      },
+      "geometry": [
+        {
+          "phase": "first-entry",
+          "alignedText": "React",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "selected-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "narrow-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "disabled-keyboard-skip",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "pointer-selected-reopen",
+          "alignedText": "Vue",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        }
+      ],
+      "motionCount": 5,
+      "receiptSha256": "710f22fae1e109835fc70f5870877c1804ff7df145cad66e0bec8bcc8a1c67b9"
+    },
+    {
+      "locale": "zh-cn",
+      "runtime": "vue2",
+      "environment": {
+        "id": "default",
+        "direction": "ltr",
+        "reducedMotion": "no-preference"
+      },
+      "direction": {
+        "documentBefore": "ltr",
+        "articleBefore": "ltr",
+        "trigger": "ltr"
+      },
+      "geometry": [
+        {
+          "phase": "first-entry",
+          "alignedText": "React",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "selected-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "narrow-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "disabled-keyboard-skip",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "pointer-selected-reopen",
+          "alignedText": "Vue",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        }
+      ],
+      "motionCount": 5,
+      "receiptSha256": "f54283c1f9c80dfe875c93663ab4c434a1583dbf9b1492627a2f1290f491c851"
+    },
+    {
+      "locale": "zh-cn",
+      "runtime": "wc",
+      "environment": {
+        "id": "reduced-motion",
+        "direction": "ltr",
+        "reducedMotion": "reduce"
+      },
+      "direction": {
+        "documentBefore": "ltr",
+        "articleBefore": "ltr",
+        "trigger": "ltr"
+      },
+      "geometry": [
+        {
+          "phase": "first-entry",
+          "alignedText": "React",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "selected-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "narrow-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "disabled-keyboard-skip",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "pointer-selected-reopen",
+          "alignedText": "Vue",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        }
+      ],
+      "motionCount": 5,
+      "receiptSha256": "623a59eb732f4c3e42e5ceeab6a40f6d3f2e8a66abbca0d9d9e1074f38e176a7"
+    },
+    {
+      "locale": "zh-cn",
+      "runtime": "wc",
+      "environment": {
+        "id": "rtl",
+        "direction": "rtl",
+        "reducedMotion": "no-preference"
+      },
+      "direction": {
+        "documentBefore": "ltr",
+        "articleBefore": "ltr",
+        "trigger": "rtl"
+      },
+      "geometry": [
+        {
+          "phase": "first-entry",
+          "alignedText": "React",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "selected-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "narrow-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "disabled-keyboard-skip",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "pointer-selected-reopen",
+          "alignedText": "Vue",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        }
+      ],
+      "motionCount": 5,
+      "receiptSha256": "8cd48b8184f73d8df1acf34bf61e4206e1c154bf9ee79f774cd9072410dd6af0"
+    },
+    {
+      "locale": "zh-cn",
+      "runtime": "wc",
+      "environment": {
+        "id": "default",
+        "direction": "ltr",
+        "reducedMotion": "no-preference"
+      },
+      "direction": {
+        "documentBefore": "ltr",
+        "articleBefore": "ltr",
+        "trigger": "ltr"
+      },
+      "geometry": [
+        {
+          "phase": "first-entry",
+          "alignedText": "React",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "selected-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0.0,
+            "right": 0.0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "narrow-reopen",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "disabled-keyboard-skip",
+          "alignedText": "Web Components",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        },
+        {
+          "phase": "pointer-selected-reopen",
+          "alignedText": "Vue",
+          "edgeErrors": {
+            "left": 0,
+            "right": 0,
+            "top": 0.0,
+            "bottom": 0.0
+          }
+        }
+      ],
+      "motionCount": 5,
+      "receiptSha256": "cf64be65a6ce4b6c85e101de1415690036f64d2abfb240f90762a9216646dd87"
+    }
+  ],
+  "reporterSha256": "dabb0634f490a274ead4e6e9eed5a8e6c0ce1a6b2eec5f6b0c018686db491c14"
+}
