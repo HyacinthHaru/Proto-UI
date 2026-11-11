@@ -1,0 +1,251 @@
+{
+  "head": "5f2d845ce54666a167f06895033a616d8bfa3382",
+  "artifact": 13826590814,
+  "zipSha": "sha256:f45fdf2540133a11172c1bd1810c84f96ec2ad86f111774eb2dd246919273869",
+  "readiness": [
+    {
+      "id": "brutalist-dark-1440",
+      "onTime": true,
+      "evidence": {
+        "startedAt": 1794367370157,
+        "deadline": 1794367371157,
+        "observedReadyAt": 1794367369475,
+        "completedAt": 1794367370160,
+        "currentDisabled": "false",
+        "owner": "site-search-1-docs-1-open",
+        "generation": "1",
+        "browserEnteredAt": 1794367370160,
+        "sampleCount": 1,
+        "droppedSamples": 0,
+        "samples": [
+          {
+            "atEpochMs": 1794367370160,
+            "selectorStartedAt": 1794367370160,
+            "selectorResolvedAt": 1794367370160,
+            "getterStartedAt": 1794367370160,
+            "getterSettledAt": 1794367370160,
+            "commandCount": 1,
+            "currentDisabled": "false",
+            "owner": "site-search-1-docs-1-open",
+            "generation": "1",
+            "timerSample": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "brutalist-dark-390",
+      "onTime": true,
+      "evidence": {
+        "startedAt": 1794367363777,
+        "deadline": 1794367364777,
+        "observedReadyAt": 1794367363068,
+        "completedAt": 1794367363783,
+        "currentDisabled": "false",
+        "owner": "site-search-1-docs-1-open",
+        "generation": "1",
+        "browserEnteredAt": 1794367363783,
+        "sampleCount": 1,
+        "droppedSamples": 0,
+        "samples": [
+          {
+            "atEpochMs": 1794367363783,
+            "selectorStartedAt": 1794367363783,
+            "selectorResolvedAt": 1794367363783,
+            "getterStartedAt": 1794367363783,
+            "getterSettledAt": 1794367363783,
+            "commandCount": 1,
+            "currentDisabled": "false",
+            "owner": "site-search-1-docs-1-open",
+            "generation": "1",
+            "timerSample": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "brutalist-light-1440",
+      "onTime": true,
+      "evidence": {
+        "startedAt": 1794367356932,
+        "deadline": 1794367357932,
+        "observedReadyAt": 1794367356259,
+        "completedAt": 1794367356938,
+        "currentDisabled": "false",
+        "owner": "site-search-1-docs-1-open",
+        "generation": "1",
+        "browserEnteredAt": 1794367356938,
+        "sampleCount": 1,
+        "droppedSamples": 0,
+        "samples": [
+          {
+            "atEpochMs": 1794367356938,
+            "selectorStartedAt": 1794367356938,
+            "selectorResolvedAt": 1794367356938,
+            "getterStartedAt": 1794367356938,
+            "getterSettledAt": 1794367356938,
+            "commandCount": 1,
+            "currentDisabled": "false",
+            "owner": "site-search-1-docs-1-open",
+            "generation": "1",
+            "timerSample": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "brutalist-light-390",
+      "onTime": true,
+      "evidence": {
+        "startedAt": 1794367350562,
+        "deadline": 1794367351562,
+        "observedReadyAt": 1794367349866,
+        "completedAt": 1794367350573,
+        "currentDisabled": "false",
+        "owner": "site-search-1-docs-1-open",
+        "generation": "1",
+        "browserEnteredAt": 1794367350572,
+        "sampleCount": 1,
+        "droppedSamples": 0,
+        "samples": [
+          {
+            "atEpochMs": 1794367350573,
+            "selectorStartedAt": 1794367350573,
+            "selectorResolvedAt": 1794367350573,
+            "getterStartedAt": 1794367350573,
+            "getterSettledAt": 1794367350573,
+            "commandCount": 1,
+            "currentDisabled": "false",
+            "owner": "site-search-1-docs-1-open",
+            "generation": "1",
+            "timerSample": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "shadcn-dark-1440",
+      "onTime": true,
+      "evidence": {
+        "startedAt": 1794367336619,
+        "deadline": 1794367337619,
+        "observedReadyAt": 1794367335697,
+        "completedAt": 1794367336630,
+        "currentDisabled": "false",
+        "owner": "site-search-1-docs-1-open",
+        "generation": "1",
+        "browserEnteredAt": 1794367336629,
+        "sampleCount": 1,
+        "droppedSamples": 0,
+        "samples": [
+          {
+            "atEpochMs": 1794367336630,
+            "selectorStartedAt": 1794367336630,
+            "selectorResolvedAt": 1794367336630,
+            "getterStartedAt": 1794367336630,
+            "getterSettledAt": 1794367336630,
+            "commandCount": 1,
+            "currentDisabled": "false",
+            "owner": "site-search-1-docs-1-open",
+            "generation": "1",
+            "timerSample": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "shadcn-dark-390",
+      "onTime": true,
+      "evidence": {
+        "startedAt": 1794367323023,
+        "deadline": 1794367324023,
+        "observedReadyAt": 1794367322106,
+        "completedAt": 1794367323042,
+        "currentDisabled": "false",
+        "owner": "site-search-1-docs-1-open",
+        "generation": "1",
+        "browserEnteredAt": 1794367323042,
+        "sampleCount": 1,
+        "droppedSamples": 0,
+        "samples": [
+          {
+            "atEpochMs": 1794367323042,
+            "selectorStartedAt": 1794367323042,
+            "selectorResolvedAt": 1794367323042,
+            "getterStartedAt": 1794367323042,
+            "getterSettledAt": 1794367323042,
+            "commandCount": 1,
+            "currentDisabled": "false",
+            "owner": "site-search-1-docs-1-open",
+            "generation": "1",
+            "timerSample": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "shadcn-light-1440",
+      "onTime": true,
+      "evidence": {
+        "startedAt": 1794367308188,
+        "deadline": 1794367309188,
+        "observedReadyAt": 1794367307232,
+        "completedAt": 1794367308208,
+        "currentDisabled": "false",
+        "owner": "site-search-1-docs-1-open",
+        "generation": "1",
+        "browserEnteredAt": 1794367308208,
+        "sampleCount": 1,
+        "droppedSamples": 0,
+        "samples": [
+          {
+            "atEpochMs": 1794367308208,
+            "selectorStartedAt": 1794367308208,
+            "selectorResolvedAt": 1794367308208,
+            "getterStartedAt": 1794367308208,
+            "getterSettledAt": 1794367308208,
+            "commandCount": 1,
+            "currentDisabled": "false",
+            "owner": "site-search-1-docs-1-open",
+            "generation": "1",
+            "timerSample": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "shadcn-light-390",
+      "onTime": true,
+      "evidence": {
+        "startedAt": 1794367293601,
+        "deadline": 1794367294601,
+        "observedReadyAt": 1794367292658,
+        "completedAt": 1794367293619,
+        "currentDisabled": "false",
+        "owner": "site-search-1-docs-1-open",
+        "generation": "1",
+        "browserEnteredAt": 1794367293619,
+        "sampleCount": 1,
+        "droppedSamples": 0,
+        "samples": [
+          {
+            "atEpochMs": 1794367293619,
+            "selectorStartedAt": 1794367293619,
+            "selectorResolvedAt": 1794367293619,
+            "getterStartedAt": 1794367293619,
+            "getterSettledAt": 1794367293619,
+            "commandCount": 1,
+            "currentDisabled": "false",
+            "owner": "site-search-1-docs-1-open",
+            "generation": "1",
+            "timerSample": false
+          }
+        ]
+      }
+    }
+  ],
+  "verdicts": [
+    "2026-11-11T03:32:30.4041956Z  \u276f apps/www/src/content/docs/zh-cn/site-search-commands.browser.test.ts (78 tests | 24 failed) 669168ms",
+    "2026-11-11T03:34:00.4829493Z ##[error]Process completed with exit code 124."
+  ]
+}

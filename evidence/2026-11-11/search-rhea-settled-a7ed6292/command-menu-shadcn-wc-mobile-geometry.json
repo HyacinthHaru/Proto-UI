@@ -1,0 +1,226 @@
+{
+  "source": {
+    "sha": "a7ed62929ead8e63e069af7a413338dc05a882f9",
+    "dirty": false
+  },
+  "runtime": "wc",
+  "viewport": {
+    "name": "mobile",
+    "width": 390,
+    "height": 844
+  },
+  "initialGeometry": {
+    "input": {
+      "x": 61.10992431640625,
+      "y": 134.7582244873047,
+      "width": 291.760498046875,
+      "height": 35.97047424316406,
+      "top": 134.7582244873047,
+      "right": 352.87042236328125,
+      "bottom": 170.72869873046875,
+      "left": 61.10992431640625
+    },
+    "shell": {
+      "x": 61.10992431640625,
+      "y": 134.7582244873047,
+      "width": 291.760498046875,
+      "height": 35.97047424316406,
+      "top": 134.7582244873047,
+      "right": 352.87042236328125,
+      "bottom": 170.72869873046875,
+      "left": 61.10992431640625
+    },
+    "wrapper": {
+      "x": 24.140274047851562,
+      "y": 134.7582244873047,
+      "width": 341.719482421875,
+      "height": 35.97047424316406,
+      "top": 134.7582244873047,
+      "right": 365.85975646972656,
+      "bottom": 170.72869873046875,
+      "left": 24.140274047851562
+    },
+    "panel": {
+      "x": 16.146835327148438,
+      "y": 126.76478576660156,
+      "width": 357.706298828125,
+      "height": 416.657958984375,
+      "top": 126.76478576660156,
+      "right": 373.85313415527344,
+      "bottom": 543.4227447509766,
+      "left": 16.146835327148438
+    },
+    "panelPaint": {
+      "owner": "site-search-1-homepage-dialog",
+      "generation": "1",
+      "scale": "none",
+      "maxWidth": "calc(0% + 352.127px + (0.016405 * min(512px, 100% - 32px)))",
+      "maxHeight": "701.4px",
+      "activeMotion": ["left", "max-width", "pui-enter"]
+    },
+    "glyph": {
+      "x": 37.129608154296875,
+      "y": 144.75001525878906,
+      "width": 15.98687744140625,
+      "height": 15.98687744140625,
+      "top": 144.75001525878906,
+      "right": 53.116485595703125,
+      "bottom": 160.7368927001953,
+      "left": 37.129608154296875
+    },
+    "footer": {
+      "x": 16.146835327148438,
+      "y": 498.45965576171875,
+      "width": 357.706298828125,
+      "height": 44.96307373046875,
+      "top": 498.45965576171875,
+      "right": 373.85313415527344,
+      "bottom": 543.4227294921875,
+      "left": 16.146835327148438
+    },
+    "body": {
+      "x": 16.146835327148438,
+      "y": 178.72213745117188,
+      "width": 357.706298828125,
+      "height": 319.7375183105469,
+      "top": 178.72213745117188,
+      "right": 373.85313415527344,
+      "bottom": 498.45965576171875,
+      "left": 16.146835327148438
+    },
+    "paddingStart": 0,
+    "paddingEnd": 0,
+    "wrapperPaddingStart": 12,
+    "wrapperPaddingEnd": 12,
+    "wrapperGap": 8,
+    "wrapperBorder": 1,
+    "rootFont": 16,
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "inputRole": "combobox",
+    "shellRole": null,
+    "shellTabIndex": null,
+    "glyphHidden": "true",
+    "glyphSvgCount": 1,
+    "nativeEditorCount": 1
+  },
+  "geometry": {
+    "input": {
+      "x": 61,
+      "y": 134.59375,
+      "width": 292,
+      "height": 36,
+      "top": 134.59375,
+      "right": 353,
+      "bottom": 170.59375,
+      "left": 61
+    },
+    "shell": {
+      "x": 61,
+      "y": 134.59375,
+      "width": 292,
+      "height": 36,
+      "top": 134.59375,
+      "right": 353,
+      "bottom": 170.59375,
+      "left": 61
+    },
+    "wrapper": {
+      "x": 24,
+      "y": 134.59375,
+      "width": 342,
+      "height": 36,
+      "top": 134.59375,
+      "right": 366,
+      "bottom": 170.59375,
+      "left": 24
+    },
+    "panel": {
+      "x": 16,
+      "y": 126.59375,
+      "width": 358,
+      "height": 417,
+      "top": 126.59375,
+      "right": 374,
+      "bottom": 543.59375,
+      "left": 16
+    },
+    "panelPaint": {
+      "owner": "site-search-1-homepage-dialog",
+      "generation": "1",
+      "scale": "none",
+      "maxWidth": "358px",
+      "maxHeight": "701.4px",
+      "activeMotion": []
+    },
+    "glyph": {
+      "x": 37,
+      "y": 144.59375,
+      "width": 16,
+      "height": 16,
+      "top": 144.59375,
+      "right": 53,
+      "bottom": 160.59375,
+      "left": 37
+    },
+    "footer": {
+      "x": 16,
+      "y": 498.59375,
+      "width": 358,
+      "height": 45,
+      "top": 498.59375,
+      "right": 374,
+      "bottom": 543.59375,
+      "left": 16
+    },
+    "body": {
+      "x": 16,
+      "y": 178.59375,
+      "width": 358,
+      "height": 320,
+      "top": 178.59375,
+      "right": 374,
+      "bottom": 498.59375,
+      "left": 16
+    },
+    "paddingStart": 0,
+    "paddingEnd": 0,
+    "wrapperPaddingStart": 12,
+    "wrapperPaddingEnd": 12,
+    "wrapperGap": 8,
+    "wrapperBorder": 1,
+    "rootFont": 16,
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "inputRole": "combobox",
+    "shellRole": null,
+    "shellTabIndex": null,
+    "glyphHidden": "true",
+    "glyphSvgCount": 1,
+    "nativeEditorCount": 1
+  },
+  "state": {
+    "owner": "site-search-1-homepage-dialog",
+    "generation": "1",
+    "open": true,
+    "panelBox": {
+      "x": 16,
+      "y": 126.59375,
+      "width": 358,
+      "height": 417,
+      "top": 126.59375,
+      "right": 374,
+      "bottom": 543.59375,
+      "left": 16
+    },
+    "query": "",
+    "inputConnected": true,
+    "inputFocused": true,
+    "openCount": 0
+  },
+  "dataFixture": "successful empty Pagefind boundary; real native composition"
+}

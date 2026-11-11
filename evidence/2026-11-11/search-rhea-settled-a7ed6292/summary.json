@@ -1,0 +1,373 @@
+{
+  "head": "a7ed62929ead8e63e069af7a413338dc05a882f9",
+  "previous": "5f2d845ce54666a167f06895033a616d8bfa3382",
+  "caseCount": 78,
+  "passed": 68,
+  "priorPassesRetained": 60,
+  "improvedRhea": 8,
+  "remaining": 10,
+  "candidateReporterSha256": "cf5380afb7f0846fc6a1719bce2e75e5fc55c7e3b671f8227bddeace4815c421",
+  "rows": [
+    {
+      "file": "command-menu-shadcn-react-desktop-200pct-geometry.json",
+      "runtime": "react",
+      "viewport": {
+        "name": "desktop",
+        "width": 1180,
+        "height": 757
+      },
+      "initialWidth": 624.96875,
+      "settledWidth": 1024,
+      "initialMotion": [
+        "border-bottom-left-radius",
+        "border-bottom-right-radius",
+        "border-top-left-radius",
+        "border-top-right-radius",
+        "font-size",
+        "line-height",
+        "max-height",
+        "max-width"
+      ]
+    },
+    {
+      "file": "command-menu-shadcn-react-desktop-geometry.json",
+      "runtime": "react",
+      "viewport": {
+        "name": "desktop",
+        "width": 1180,
+        "height": 757
+      },
+      "initialWidth": 506.9580078125,
+      "settledWidth": 512,
+      "initialMotion": ["pui-enter"]
+    },
+    {
+      "file": "command-menu-shadcn-react-mobile-200pct-geometry.json",
+      "runtime": "react",
+      "viewport": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "initialWidth": 339.5625,
+      "settledWidth": 326,
+      "initialMotion": [
+        "border-bottom-left-radius",
+        "border-bottom-right-radius",
+        "border-top-left-radius",
+        "border-top-right-radius",
+        "font-size",
+        "line-height",
+        "max-height",
+        "max-width"
+      ]
+    },
+    {
+      "file": "command-menu-shadcn-react-mobile-geometry.json",
+      "runtime": "react",
+      "viewport": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "initialWidth": 354.45733642578125,
+      "settledWidth": 358,
+      "initialMotion": ["pui-enter"]
+    },
+    {
+      "file": "command-menu-shadcn-vue-desktop-200pct-geometry.json",
+      "runtime": "vue",
+      "viewport": {
+        "name": "desktop",
+        "width": 1180,
+        "height": 757
+      },
+      "initialWidth": 512,
+      "settledWidth": 1024,
+      "initialMotion": [
+        "border-bottom-left-radius",
+        "border-bottom-right-radius",
+        "border-top-left-radius",
+        "border-top-right-radius",
+        "font-size",
+        "line-height",
+        "max-height",
+        "max-width"
+      ]
+    },
+    {
+      "file": "command-menu-shadcn-vue-desktop-geometry.json",
+      "runtime": "vue",
+      "viewport": {
+        "name": "desktop",
+        "width": 1180,
+        "height": 757
+      },
+      "initialWidth": 510.0809326171875,
+      "settledWidth": 512,
+      "initialMotion": ["pui-enter"]
+    },
+    {
+      "file": "command-menu-shadcn-vue-mobile-200pct-geometry.json",
+      "runtime": "vue",
+      "viewport": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "initialWidth": 358,
+      "settledWidth": 326,
+      "initialMotion": [
+        "border-bottom-left-radius",
+        "border-bottom-right-radius",
+        "border-top-left-radius",
+        "border-top-right-radius",
+        "font-size",
+        "line-height",
+        "max-height",
+        "max-width"
+      ]
+    },
+    {
+      "file": "command-menu-shadcn-vue-mobile-geometry.json",
+      "runtime": "vue",
+      "viewport": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "initialWidth": 350.4119873046875,
+      "settledWidth": 358,
+      "initialMotion": ["pui-enter"]
+    },
+    {
+      "file": "command-menu-shadcn-vue2-desktop-200pct-geometry.json",
+      "runtime": "vue2",
+      "viewport": {
+        "name": "desktop",
+        "width": 1180,
+        "height": 757
+      },
+      "initialWidth": 806.828125,
+      "settledWidth": 1024,
+      "initialMotion": [
+        "border-bottom-left-radius",
+        "border-bottom-right-radius",
+        "border-top-left-radius",
+        "border-top-right-radius",
+        "font-size",
+        "line-height",
+        "max-height",
+        "max-width"
+      ]
+    },
+    {
+      "file": "command-menu-shadcn-vue2-desktop-geometry.json",
+      "runtime": "vue2",
+      "viewport": {
+        "name": "desktop",
+        "width": 1180,
+        "height": 757
+      },
+      "initialWidth": 512,
+      "settledWidth": 512,
+      "initialMotion": []
+    },
+    {
+      "file": "command-menu-shadcn-vue2-mobile-200pct-geometry.json",
+      "runtime": "vue2",
+      "viewport": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "initialWidth": 358,
+      "settledWidth": 326,
+      "initialMotion": [
+        "border-bottom-left-radius",
+        "border-bottom-right-radius",
+        "border-top-left-radius",
+        "border-top-right-radius",
+        "font-size",
+        "line-height",
+        "max-height",
+        "max-width"
+      ]
+    },
+    {
+      "file": "command-menu-shadcn-vue2-mobile-geometry.json",
+      "runtime": "vue2",
+      "viewport": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "initialWidth": 356.66015625,
+      "settledWidth": 358,
+      "initialMotion": ["left", "max-width", "pui-enter"]
+    },
+    {
+      "file": "command-menu-shadcn-wc-desktop-200pct-geometry.json",
+      "runtime": "wc",
+      "viewport": {
+        "name": "desktop",
+        "width": 1180,
+        "height": 757
+      },
+      "initialWidth": 624.96875,
+      "settledWidth": 1024,
+      "initialMotion": [
+        "border-bottom-left-radius",
+        "border-bottom-right-radius",
+        "border-top-left-radius",
+        "border-top-right-radius",
+        "font-size",
+        "line-height",
+        "max-height",
+        "max-width"
+      ]
+    },
+    {
+      "file": "command-menu-shadcn-wc-desktop-geometry.json",
+      "runtime": "wc",
+      "viewport": {
+        "name": "desktop",
+        "width": 1180,
+        "height": 757
+      },
+      "initialWidth": 511.5801086425781,
+      "settledWidth": 512,
+      "initialMotion": ["left", "max-width", "pui-enter"]
+    },
+    {
+      "file": "command-menu-shadcn-wc-mobile-200pct-geometry.json",
+      "runtime": "wc",
+      "viewport": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "initialWidth": 350.9375,
+      "settledWidth": 326,
+      "initialMotion": [
+        "border-bottom-left-radius",
+        "border-bottom-right-radius",
+        "border-top-left-radius",
+        "border-top-right-radius",
+        "font-size",
+        "line-height",
+        "max-height",
+        "max-width"
+      ]
+    },
+    {
+      "file": "command-menu-shadcn-wc-mobile-geometry.json",
+      "runtime": "wc",
+      "viewport": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "initialWidth": 357.706298828125,
+      "settledWidth": 358,
+      "initialMotion": ["left", "max-width", "pui-enter"]
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "command-menu-shadcn-react-desktop-200pct-geometry.json",
+      "sha256": "262f855bc32388997206307800d7788e9e79bd82d3b8248b582e07dc23f8f7e9",
+      "bytes": 4588
+    },
+    {
+      "path": "command-menu-shadcn-react-desktop-200pct-menu-anatomy.png",
+      "sha256": "a30c56795b5d130d7332b3c393f593141ed7a0f85ad0e7cd7efae0e6c5308d4b",
+      "bytes": 44532
+    },
+    {
+      "path": "command-menu-shadcn-react-desktop-geometry.json",
+      "sha256": "18f48910b076d259c4f3fd6a124330b253c22e4f33c03ce908016aa027153f59",
+      "bytes": 5254
+    },
+    {
+      "path": "command-menu-shadcn-react-mobile-200pct-geometry.json",
+      "sha256": "c7a1bb265eb8a878ad53e1bb42da3f306793161f3651587368670b6521789160",
+      "bytes": 4502
+    },
+    {
+      "path": "command-menu-shadcn-react-mobile-geometry.json",
+      "sha256": "ee3b3e7d45c7fb264286d38c53e53292a7ecb1402c74aaa2d66fbc37c5680b77",
+      "bytes": 5248
+    },
+    {
+      "path": "command-menu-shadcn-vue-desktop-200pct-geometry.json",
+      "sha256": "058298a340c51cf9c6c1925f251a0675c7873cba880035be00fbaa4cbc6c0614",
+      "bytes": 4396
+    },
+    {
+      "path": "command-menu-shadcn-vue-desktop-geometry.json",
+      "sha256": "220488aecc61b6cc8194f1363c6aae79409b699d9de4383144c06ee3e77b6ddc",
+      "bytes": 5281
+    },
+    {
+      "path": "command-menu-shadcn-vue-mobile-200pct-geometry.json",
+      "sha256": "4a54cebb6a90a2bcd288b355129420831c46303e1c3781fb294bc9ecf17c61a8",
+      "bytes": 4338
+    },
+    {
+      "path": "command-menu-shadcn-vue-mobile-geometry.json",
+      "sha256": "a6a8a4d9d2a24d88ee806c3d4419e5ffd5373f7b2552578b5c494a86f05bf3ee",
+      "bytes": 5255
+    },
+    {
+      "path": "command-menu-shadcn-vue2-desktop-200pct-geometry.json",
+      "sha256": "ebe5d63246bb82dd8e037a176c8d5b9a4f2b8127c058a77161db79941f8ca84f",
+      "bytes": 4611
+    },
+    {
+      "path": "command-menu-shadcn-vue2-desktop-geometry.json",
+      "sha256": "f7f7e72ead844fdf8e4ff07443788d0eed79e79cde9186f7d9bbef0783967393",
+      "bytes": 4607
+    },
+    {
+      "path": "command-menu-shadcn-vue2-mobile-200pct-geometry.json",
+      "sha256": "c89e967d7a0bb06b950772be113f535171ac8c5265aafe725db82857b284e0a2",
+      "bytes": 4339
+    },
+    {
+      "path": "command-menu-shadcn-vue2-mobile-200pct-menu-anatomy.png",
+      "sha256": "8ee9fc0dd9b422896b369f74200f8ecdbcbd41030aa1b9c2d690b02ce9af37af",
+      "bytes": 36363
+    },
+    {
+      "path": "command-menu-shadcn-vue2-mobile-geometry.json",
+      "sha256": "d54254027abc7b77344c00c7c788dce44fb63b9838637a9d6d4e0b114762a2b2",
+      "bytes": 5333
+    },
+    {
+      "path": "command-menu-shadcn-wc-desktop-200pct-geometry.json",
+      "sha256": "17edbe9cdee9b84a84ae65f801c401e81c3f4670649d477dd7278fd5f557480b",
+      "bytes": 4585
+    },
+    {
+      "path": "command-menu-shadcn-wc-desktop-geometry.json",
+      "sha256": "e0ecfb92bffc9e9e11d445c9cdcdcb4df3acff3aa6ce8022e6357df347419847",
+      "bytes": 5373
+    },
+    {
+      "path": "command-menu-shadcn-wc-mobile-200pct-geometry.json",
+      "sha256": "37a44b309743b6466b88991a647b9c2b125c5c77a677c87a854d0aed39ef3ddc",
+      "bytes": 4499
+    },
+    {
+      "path": "command-menu-shadcn-wc-mobile-geometry.json",
+      "sha256": "b8846cc5fe1730aa363cd737bf312b3c99dcbb0f2cc22966b615088e026727b6",
+      "bytes": 5341
+    },
+    {
+      "path": "hosted-readiness-5f2d845c.json",
+      "sha256": "f73d763f5b53d7da425d1578cf9ec6f40d48aa214e65d9db4e5a0d467205427e",
+      "bytes": 7828
+    }
+  ]
+}
