@@ -1,0 +1,184 @@
+{
+  "candidate": "ee86b3cbc452abf8a92a9ff0474752975397af99",
+  "latestMain": "b25229a94251398bc2f375554fcb9622dc8e79ab",
+  "localBuild": {
+    "astroPages": 673,
+    "pagefindIndexedPages": 647,
+    "buildLogSha256": "5c44f9b5136feca047f7e7deddd67102804afabb7857a7e32246dc7a70e39a80"
+  },
+  "localProduction": {
+    "source": {
+      "sha": "ee86b3cbc452abf8a92a9ff0474752975397af99",
+      "dirty": false
+    },
+    "boundary": "Supplementary macOS real Astro preview and generated Pagefind. No managed Linux acceptance claim.",
+    "assets": [
+      {
+        "path": "/pagefind/pagefind.js",
+        "status": 200
+      },
+      {
+        "path": "/pagefind/pagefind.js",
+        "status": 200
+      },
+      {
+        "path": "/pagefind/pagefind-entry.json",
+        "status": 200
+      },
+      {
+        "path": "/pagefind/pagefind.zh-cn_a73e826abd931.pf_meta",
+        "status": 200
+      },
+      {
+        "path": "/pagefind/wasm.unknown.pagefind",
+        "status": 200
+      },
+      {
+        "path": "/pagefind/index/zh-cn_cb73ca3.pf_index",
+        "status": 200
+      },
+      {
+        "path": "/pagefind/fragment/zh-cn_8db73a4.pf_fragment",
+        "status": 200
+      },
+      {
+        "path": "/pagefind/fragment/zh-cn_067f4ec.pf_fragment",
+        "status": 200
+      },
+      {
+        "path": "/pagefind/fragment/zh-cn_67e7f7f.pf_fragment",
+        "status": 200
+      },
+      {
+        "path": "/pagefind/fragment/zh-cn_f6da899.pf_fragment",
+        "status": 200
+      },
+      {
+        "path": "/pagefind/fragment/zh-cn_1af5f3d.pf_fragment",
+        "status": 200
+      },
+      {
+        "path": "/pagefind/fragment/zh-cn_a9f48e3.pf_fragment",
+        "status": 200
+      },
+      {
+        "path": "/pagefind/fragment/zh-cn_36dd1a4.pf_fragment",
+        "status": 200
+      },
+      {
+        "path": "/pagefind/fragment/zh-cn_79abacb.pf_fragment",
+        "status": 200
+      },
+      {
+        "path": "/pagefind/fragment/zh-cn_8e8b09b.pf_fragment",
+        "status": 200
+      },
+      {
+        "path": "/pagefind/fragment/zh-cn_d2e95fe.pf_fragment",
+        "status": 200
+      },
+      {
+        "path": "/pagefind/fragment/zh-cn_314e51c.pf_fragment",
+        "status": 200
+      },
+      {
+        "path": "/pagefind/fragment/zh-cn_61563d3.pf_fragment",
+        "status": 200
+      },
+      {
+        "path": "/pagefind/fragment/zh-cn_d29a54c.pf_fragment",
+        "status": 200
+      },
+      {
+        "path": "/pagefind/fragment/zh-cn_f364896.pf_fragment",
+        "status": 200
+      },
+      {
+        "path": "/pagefind/fragment/zh-cn_5c60e17.pf_fragment",
+        "status": 200
+      },
+      {
+        "path": "/pagefind/fragment/zh-cn_a8bd7f4.pf_fragment",
+        "status": 200
+      },
+      {
+        "path": "/pagefind/fragment/zh-cn_b7f9b19.pf_fragment",
+        "status": 200
+      },
+      {
+        "path": "/pagefind/fragment/zh-cn_e9a4167.pf_fragment",
+        "status": 200
+      },
+      {
+        "path": "/pagefind/fragment/zh-cn_d3ad0c0.pf_fragment",
+        "status": 200
+      },
+      {
+        "path": "/pagefind/fragment/zh-cn_8dec843.pf_fragment",
+        "status": 200
+      }
+    ],
+    "indexEntryStatus": 200,
+    "browser": "156.0.8078.79",
+    "before": {
+      "runtime": "wc",
+      "generation": "1",
+      "resultRows": 97,
+      "firstResult": "Button/zh-cn/ui-libraries/shadcn/button/"
+    },
+    "fault": {
+      "generation": "2",
+      "active": true,
+      "searchRuntime": "react"
+    },
+    "after": {
+      "runtime": "wc",
+      "generation": "1",
+      "samePanel": true,
+      "sameEditor": true,
+      "focus": true,
+      "value": "Button",
+      "selection": [1, 4],
+      "resultRows": 97
+    },
+    "outcome": "passed"
+  },
+  "completeDevBrowser": {
+    "candidate": "ee86b3cbc452abf8a92a9ff0474752975397af99",
+    "previousReference": "3971e87e6643965d8b9f9872a9420f6ae94b5c4a",
+    "testCount": 83,
+    "passed": 73,
+    "failed": 10,
+    "changed": {
+      "homepage brutalist/wc desktop keeps the Search trigger centered through closed/open/reopen": [
+        "failed",
+        "passed"
+      ]
+    },
+    "removed": [],
+    "new": {
+      "retains Homepage Search close through a failure after replacement publication begins": "passed",
+      "retains Homepage Search newer focus through a failure after replacement publication begins": "passed",
+      "retains Homepage Search query through a failure after replacement publication begins": "passed"
+    },
+    "failedCases": [
+      "Docs shadcn 320px keeps enlarged 200% text reachable without clipping",
+      "Docs shadcn 390px keeps enlarged 200% text reachable without clipping",
+      "Search brutalist/react keeps nested scrollports and dismissal reachable at 200%",
+      "Search brutalist/vue keeps nested scrollports and dismissal reachable at 200%",
+      "Search brutalist/vue2 keeps nested scrollports and dismissal reachable at 200%",
+      "Search brutalist/wc keeps nested scrollports and dismissal reachable at 200%",
+      "Search shadcn/react keeps nested scrollports and dismissal reachable at 200%",
+      "Search shadcn/vue keeps nested scrollports and dismissal reachable at 200%",
+      "Search shadcn/vue2 keeps nested scrollports and dismissal reachable at 200%",
+      "Search shadcn/wc keeps nested scrollports and dismissal reachable at 200%"
+    ]
+  },
+  "localPreflights": {
+    "baseAwareCatalogInputs": 93,
+    "base": "66fa6e49ba3c1eba6de5be2d8136811fafe6ec15",
+    "publicPrimaryRoutes": 288,
+    "publicLibraryInventories": 4
+  },
+  "unchangedCaptureSha256": "2136ea311e209a4e7c595c89a9475a73670ee929eae3fb3a03331cc01ceec792"
+}
