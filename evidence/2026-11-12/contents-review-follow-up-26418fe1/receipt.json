@@ -1,0 +1,220 @@
+{
+  "main": {
+    "head": "b25229a94251398bc2f375554fcb9622dc8e79ab",
+    "run": 43112160868,
+    "job": 130832993579,
+    "artifact": 13897827660,
+    "artifactSha256": "181eb48d768e3ea094e867cfc93ec891255409796811b9ecf147fc523b356d04",
+    "casePhase": "family-commit",
+    "originalVerdictMs": 1001.486,
+    "clockOffsetMs": [-0.563, 0.5],
+    "familyWriteMs": [1005.198, 1006.261],
+    "reads": [
+      {
+        "call": 1,
+        "startMs": 0.364,
+        "returnedMs": 16.464,
+        "value": "shadcn"
+      },
+      {
+        "call": 2,
+        "startMs": 66.812,
+        "returnedMs": 174.659,
+        "value": "shadcn"
+      },
+      {
+        "call": 3,
+        "startMs": 225.159,
+        "returnedMs": 266.016,
+        "value": "shadcn"
+      },
+      {
+        "call": 4,
+        "startMs": 316.397,
+        "returnedMs": 1604.551,
+        "value": "brutalist"
+      }
+    ],
+    "pendingQueryTransport": [
+      {
+        "stage": "cdp.pipe.write.return",
+        "afterPollMs": 317.936
+      },
+      {
+        "stage": "cdp.pipe.write.return",
+        "afterPollMs": 317.95
+      },
+      {
+        "stage": "cdp.pipe.read-dispatch.enter",
+        "afterPollMs": 1604.366
+      }
+    ],
+    "contentsVerdicts": {
+      "shadcn-react-transition": {
+        "pass": false,
+        "verdictMs": 1001
+      },
+      "shadcn-wc-transition": {
+        "pass": true,
+        "verdictMs": 5
+      }
+    }
+  },
+  "candidate": {
+    "head": "26418fe1ba55e13bb4ede4fc4ad107e405c42b3e",
+    "run": 43088111759,
+    "job": 130795062534,
+    "artifact": 13892977816,
+    "artifactSha256": "96b18b31d642f0837a486d17daca990d7829a5bab12bb4d5438d7413a1268091",
+    "casePhase": "family-commit",
+    "originalVerdictMs": 999.875,
+    "clockOffsetMs": [-0.556, 0.16],
+    "familyWriteMs": [649.933, 650.649],
+    "reads": [
+      {
+        "call": 1,
+        "startMs": 0.362,
+        "returnedMs": 10.92,
+        "value": "shadcn"
+      },
+      {
+        "call": 2,
+        "startMs": 61.063,
+        "returnedMs": 108.296,
+        "value": "shadcn"
+      },
+      {
+        "call": 3,
+        "startMs": 158.73,
+        "returnedMs": 162.958,
+        "value": "shadcn"
+      },
+      {
+        "call": 4,
+        "startMs": 213.268,
+        "returnedMs": 1036.408,
+        "value": "brutalist"
+      }
+    ],
+    "pendingQueryTransport": [
+      {
+        "stage": "cdp.pipe.write.return",
+        "afterPollMs": 214.671
+      },
+      {
+        "stage": "cdp.pipe.write.return",
+        "afterPollMs": 214.682
+      },
+      {
+        "stage": "cdp.pipe.read-dispatch.enter",
+        "afterPollMs": 1036.064
+      }
+    ],
+    "contentsVerdicts": {
+      "brutalist-react-transition": {
+        "pass": true,
+        "verdictMs": 391
+      },
+      "brutalist-vue-transition": {
+        "pass": true,
+        "verdictMs": 311
+      },
+      "brutalist-vue2-transition": {
+        "pass": true,
+        "verdictMs": 260
+      },
+      "brutalist-wc-transition": {
+        "pass": true,
+        "verdictMs": 3
+      },
+      "shadcn-react-transition": {
+        "pass": true,
+        "verdictMs": 346
+      },
+      "shadcn-vue-transition": {
+        "pass": true,
+        "verdictMs": 342
+      },
+      "shadcn-vue2-transition": {
+        "pass": true,
+        "verdictMs": 379
+      },
+      "shadcn-wc-transition": {
+        "pass": true,
+        "verdictMs": 160
+      }
+    }
+  },
+  "sameHomepageTestBlob": "9f13f896e6e595b940e7bd83189dadfe77ac2029",
+  "coverage": {
+    "mainCount": 1614,
+    "candidateCount": 1614,
+    "mainOnly": 0,
+    "candidateOnly": 0,
+    "mainLogSha256": "2e38107f2b3f397cda54636e433ad9aa9beb481c0459ac4bf487f81a5db46f35",
+    "candidateLogSha256": "d008a8a83e89b4ba1dd19691f8203f5209a3c11fa56fda229adac82b70b0132e"
+  },
+  "shard4": {
+    "mainExit": 1,
+    "candidateExit": 1,
+    "commonFailureHeadings": 10,
+    "mainOnly": 0,
+    "candidateOnly": 0,
+    "mainLogSha256": "7880e14e3fe5ea52f1a0118a84e87f79ad0bd6f349bb00b4902575e149f24733",
+    "candidateLogSha256": "28bb81ba176a1d7cff288cb4976dd9334472c4813771eec2ed0eba13b6fa04d3"
+  },
+  "focused": {
+    "head": "26418fe1ba55e13bb4ede4fc4ad107e405c42b3e",
+    "tree": "175ef45a4a3fc722dac6653f668e37952fe52eee",
+    "node": "24.21.0",
+    "pnpm": "10.32.1",
+    "platform": "macOS arm64",
+    "workers": 1,
+    "passed": 227,
+    "failed": 0,
+    "pending": 0,
+    "reportSha256": "90aa021f020e1f92adc23730262bf398c33045738259cbb442d33ceb6cd63ab0",
+    "files": {
+      "apps/www/src/components/documentation-image-preview.test.ts": {
+        "tests": 22,
+        "blob": "af2603a49bb4978a74d07848e39f012acace0635"
+      },
+      "apps/www/src/components/site-code-surface.test.ts": {
+        "tests": 24,
+        "blob": "de4c0f47b69808095d4cae4fdeac75ce7aafe015"
+      },
+      "apps/www/src/components/site-contents-command.test.ts": {
+        "tests": 30,
+        "blob": "d6303cbd4c2bf78eef5e1334af5d8d83d1859051"
+      },
+      "apps/www/src/components/site-contents-panel.test.ts": {
+        "tests": 13,
+        "blob": "99d2f35e605a2f3161030b00c81145d42013b4d1"
+      },
+      "apps/www/src/components/site-contents-select-ownership.test.ts": {
+        "tests": 7,
+        "blob": "368338a7451dcfbe619fb09ebd9686ad2829a4ee"
+      },
+      "apps/www/src/components/site-copy-command.test.ts": {
+        "tests": 18,
+        "blob": "ae048f7a59541c118ac2b9513fdc18380029ac23"
+      },
+      "apps/www/src/components/site-header-surface.test.ts": {
+        "tests": 22,
+        "blob": "6936f818f2e9a293c61eb9125ef92976850e35a2"
+      },
+      "apps/www/src/components/site-typography.ownership.test.ts": {
+        "tests": 37,
+        "blob": "9fa8851efaff0b9b79c9ee37f7f032bc2c9b6a5f"
+      },
+      "apps/www/src/components/PrototypePreviewer/projection-materializer.test.ts": {
+        "tests": 13,
+        "blob": "e41a501c06dce1ab5d98aaed0164dc52974209af"
+      },
+      "apps/www/src/components/PrototypePreviewer/projection-scope.test.ts": {
+        "tests": 41,
+        "blob": "d4beb600a55b3b7e2d6a76ff1b1050fc55969d2d"
+      }
+    }
+  }
+}
