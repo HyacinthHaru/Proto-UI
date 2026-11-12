@@ -9,6 +9,7 @@ import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { installDocsCallTimingObserver } from './docs-query-timing.mjs';
+import { createQueryDispatchTrace } from './query-dispatch-trace.mjs';
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
@@ -646,8 +647,7 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
         sibling.textContent = 'Original home sibling';
         home.append(tree, sibling);
         const host = document.createElement('div');
-        host.style.cssText =
-          'position:fixed;left:16px;top:300px;width:240px;z-index:2147483000';
+        host.style.cssText = 'position:fixed;left:16px;top:300px;width:240px;z-index:2147483000';
         const shadow = host.attachShadow({ mode: 'open' });
         const content = document.createElement('div');
         content.style.cssText =
@@ -704,7 +704,8 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
               viewportBottom: bottom,
               rowTop: row.top,
               rowBottom: row.bottom,
-              visible: row.width > 0 && row.height > 0 && row.top >= top - 1 && row.bottom <= bottom + 1,
+              visible:
+                row.width > 0 && row.height > 0 && row.top >= top - 1 && row.bottom <= bottom + 1,
               nearestBottom: Math.abs(row.bottom - bottom) <= 1,
               trustedManualInput:
                 manualInputs.length > 0 &&
@@ -1831,6 +1832,7 @@ for (const family of ['shadcn', 'brutalist'] as const) {
     };
     let utilityObservation: Awaited<ReturnType<typeof prepareUtilityFamilyReadObservation>> | null =
       null;
+    let familyTrace: ReturnType<typeof createQueryDispatchTrace> | undefined;
     // Keep every original Promise until post-verdict settlement; only displayed rows are capped.
     const familyQueryRequests: Array<{
       request: Promise<string | null>;
@@ -1886,6 +1888,16 @@ for (const family of ['shadcn', 'brutalist'] as const) {
             nodeMs: familyCommitTiming.finishedMs,
             frozenAtMs: performance.now(),
           };
+          if (familyCommitTiming.startedMs !== null && familyCommitTiming.finishedMs !== null)
+            familyTrace?.markVerdict({
+              source,
+              verdict: {
+                passed: familyCommitTiming.outcome === 'fulfilled',
+                clickedAt: familyCommitTiming.timeOrigin + familyCommitTiming.startedMs,
+                originalCheckAt: familyCommitTiming.timeOrigin + familyCommitTiming.finishedMs,
+              },
+              query: familySDK?.snapshot(),
+            });
           familyQueryObservation.referenceCountAtVerdict = familyQueryRequests.length;
           const pending = familyQueryRequests.filter(({ call }) => call.returnedMs === undefined);
           familyQueryObservation.pendingAtVerdictCount = pending.length;
@@ -2238,6 +2250,24 @@ for (const family of ['shadcn', 'brutalist'] as const) {
         const id = await control.getAttribute('aria-controls');
         if (familyQueryMode === 'hybrid')
           utilityObservation = await prepareUtilityFamilyReadObservation(page);
+        if (process.env.PROTO_UI_FAMILY_DISPATCH_PROBE === '1') {
+          familyTrace = createQueryDispatchTrace(
+            page,
+            path.join(evidenceDirectory, 'brutalist-family-dispatch-trace'),
+            { contentsStaging: true }
+          );
+          await familyTrace.prepare();
+          await page.evaluate(() => {
+            performance.mark('pui-brutalist-family:before-click');
+            window.addEventListener(
+              'click',
+              (event) => {
+                if (event.isTrusted) performance.mark('pui-brutalist-family:trusted-click');
+              },
+              { capture: true, once: true }
+            );
+          });
+        }
         stage = 'family-choice';
         await page
           .locator(`[id=${JSON.stringify(id)}]`)
@@ -2551,6 +2581,7 @@ for (const family of ['shadcn', 'brutalist'] as const) {
       }
       let contextCloseSucceeded = false;
       try {
+        familyTrace?.beforeContextClose();
         await context.close();
         contextCloseSucceeded = true;
       } finally {
@@ -2569,6 +2600,14 @@ for (const family of ['shadcn', 'brutalist'] as const) {
         } catch (error) {
           noteQueryError(error);
         }
+        await familyTrace
+          ?.finish(contextCloseSucceeded, {
+            source,
+            familyCommitTiming,
+            familyMutationTiming,
+            query: familySDK?.snapshot(),
+          })
+          .catch(noteQueryError);
         if (utilityObservation && familyQueryObservation.cleanupDeferredUntilContextClose) {
           try {
             familyQueryObservation.utility =

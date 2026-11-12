@@ -2,7 +2,8 @@ import type { Page } from 'playwright-core';
 
 export function createQueryDispatchTrace(
   page: Page,
-  directory: string
+  directory: string,
+  options?: { contentsStaging?: boolean }
 ): {
   prepare(): Promise<void>;
   markVerdict(observation: unknown): void;
