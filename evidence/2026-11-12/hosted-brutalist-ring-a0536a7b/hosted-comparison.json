@@ -1,0 +1,283 @@
+{
+  "before": {
+    "run": {
+      "conclusion": "failure",
+      "event": "workflow_dispatch",
+      "head_sha": "09ea34042e625a2e9ba171c59fe505dec2cd3bc0",
+      "html_url": "https://github.com/HyacinthHaru/Proto-UI/actions/runs/43169302472",
+      "id": 43169302472,
+      "run_attempt": 1,
+      "status": "completed",
+      "updated_at": "2026-11-12T06:52:11Z"
+    },
+    "artifacts": [
+      {
+        "slot": 1,
+        "artifact": {
+          "digest": "sha256:6f8ad375d4e5c361ee1f8a9bf615141ab0c0ff9b9c1203536418a532f3af2a63",
+          "expired": false,
+          "id": 13921623676,
+          "name": "runtime-ci-43169302472-browser-1-of-8-attempt-1",
+          "size_in_bytes": 6419379
+        },
+        "source": "09ea34042e625a2e9ba171c59fe505dec2cd3bc0",
+        "product": "26418fe1ba55e13bb4ede4fc4ad107e405c42b3e",
+        "selectedSuites": [
+          "apps/workspace/test/lifecycle.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/contrast-probe.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-bootstrap-state-controls.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-prototype-style-closure.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/runtime-preview-surface.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/site-sidebar-disclosure.browser.test.ts",
+          "apps/www/test/message-composition.browser.test.ts",
+          "packages/adapters/vue/test/focus-request-readiness.browser.test.ts"
+        ],
+        "node": "v24.22.2",
+        "chrome": "Google Chrome 156.0.8078.79",
+        "job": 131018453079,
+        "exit": 124,
+        "jobLogSha256": "27927922a307f5a4c5d250216b8937dccec0642f410870bbc2a0866d52b3f7f9",
+        "runnerImage": "ubuntu-26.04",
+        "runnerImageVersion": "20261101.186.1",
+        "fontPackageSha256": "7d64b985f6fe128c99eae5610d5c047338e572bdcfb2bb09736be01b824a7f6c"
+      },
+      {
+        "slot": 3,
+        "artifact": {
+          "digest": "sha256:d9dec458efadc0ed7e144b56c7145d91fe8cd05f53088420183262a245316b99",
+          "expired": false,
+          "id": 13921504425,
+          "name": "runtime-ci-43169302472-browser-3-of-8-attempt-1",
+          "size_in_bytes": 9892045
+        },
+        "source": "09ea34042e625a2e9ba171c59fe505dec2cd3bc0",
+        "product": "26418fe1ba55e13bb4ede4fc4ad107e405c42b3e",
+        "selectedSuites": [
+          "apps/www/src/content/docs/zh-cn/base-accordion-layout-parity.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-accordion-family.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-brutalist-checkbox.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-field-family.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-select-draft-projections.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-shadcn-switch-compositions.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/overlay-scrollbar-geometry.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/scroll-chrome-display.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/table-react19.browser.test.ts",
+          "apps/www/test/radio-group-entry.browser.test.ts",
+          "packages/adapters/web-component/test/shadow-closeout.browser.test.ts"
+        ],
+        "node": "v24.22.2",
+        "chrome": "Google Chrome 156.0.8078.79",
+        "job": 131018452800,
+        "exit": 124,
+        "jobLogSha256": "42cdc7d501173771545466db3854105e1044285f23d5a3984e0839d8fd25186e",
+        "runnerImage": "ubuntu-26.04",
+        "runnerImageVersion": "20261101.186.1",
+        "fontPackageSha256": "7d64b985f6fe128c99eae5610d5c047338e572bdcfb2bb09736be01b824a7f6c"
+      }
+    ],
+    "familyDeadlineMs": 1000,
+    "verdictMs": 1001.363,
+    "cdpId": 14634,
+    "rawCalibratedFamilyWriteMs": [[1256.666, 1258.374]],
+    "timing": {
+      "nodeTransportSendBeforeMs": 370.276,
+      "nodeMatchingPipeIngressMs": 2029.587,
+      "calibratedClockOffsetMs": [-1.204, 0.505],
+      "causallyRefinedClockOffsetMs": [-0.489, 0.505],
+      "chromeCommandHandlerMs": [370.276, 371.269],
+      "familyWriteMs": [[1257.381, 1258.374]],
+      "rendererDispatchStartMs": [2026.086, 2027.079]
+    },
+    "browserHandleToForwardMs": 0.009,
+    "rendererQueueMs": 1655.801,
+    "rendererRunTaskOverlapMs": 1655.768,
+    "rendererDispatchMs": 1.503,
+    "nodeQueryReturnedMs": 2029.979,
+    "chromeForwardToFamilyWriteMs": 887.096,
+    "familyWriteToDispatchMs": 768.705,
+    "geometryV8": {
+      "product": "26418fe1",
+      "diagnosticHead": "09ea34042e625a2e9ba171c59fe505dec2cd3bc0",
+      "traceProtocolId": 14634,
+      "path": "apps/www/src/components/site-header-disclosure.ts",
+      "traceSha256": "b95fb0dca742ab8dfa8028c88cb6999af86ee971ab9879a8b17e8f9c49e5bbe7",
+      "locallyReconstructedViteVersion": "6.4.1",
+      "sourceSha256": "6826de36850c2af4c4d2fa8ec8505b8ec473706549b4e5994027ec10b40e17ca",
+      "v8SampleLocationsWithLocalTransform": [
+        {
+          "reader": "getBoundingClientRect",
+          "generatedLine": 84,
+          "generatedColumn": 27,
+          "weightedMs": 119.685,
+          "compiledSource": "const anchor = button.getBoundingClientRect();",
+          "authoredLine": 130
+        }
+      ],
+      "interval": "Chrome forward to renderer dispatch"
+    },
+    "contents": {
+      "switchVerdictMs": {
+        "shadcn/wc": 12,
+        "shadcn/vue2": 609,
+        "shadcn/vue": 457,
+        "brutalist/wc": 8,
+        "brutalist/react": 643,
+        "brutalist/vue2": 380,
+        "brutalist/vue": 503,
+        "shadcn/react": 614
+      },
+      "orderedHandbacks": 24
+    },
+    "dialog": {
+      "passed": 8,
+      "observations": 196,
+      "captures": 120
+    }
+  },
+  "after": {
+    "run": {
+      "conclusion": "failure",
+      "event": "workflow_dispatch",
+      "head_sha": "416f8cb72f340d64750c02729899caeb4ee7fa26",
+      "html_url": "https://github.com/HyacinthHaru/Proto-UI/actions/runs/43198607525",
+      "id": 43198607525,
+      "run_attempt": 1,
+      "status": "completed",
+      "updated_at": "2026-11-12T10:30:12Z"
+    },
+    "artifacts": [
+      {
+        "slot": 1,
+        "artifact": {
+          "digest": "sha256:f419259f717204c727eb61fbdf51bcbf87ff8e264c4a05c1e7666f694bbe6a86",
+          "expired": false,
+          "id": 13934193781,
+          "name": "runtime-ci-43198607525-browser-1-of-8-attempt-1",
+          "size_in_bytes": 6470505
+        },
+        "source": "416f8cb72f340d64750c02729899caeb4ee7fa26",
+        "product": "f58c7af3350cee5c6fe456e0dc7b92e790a8c288",
+        "selectedSuites": [
+          "apps/workspace/test/lifecycle.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/contrast-probe.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-bootstrap-state-controls.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-prototype-style-closure.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/runtime-preview-surface.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/site-sidebar-disclosure.browser.test.ts",
+          "apps/www/test/message-composition.browser.test.ts",
+          "packages/adapters/vue/test/focus-request-readiness.browser.test.ts"
+        ],
+        "node": "v24.22.2",
+        "chrome": "Google Chrome 156.0.8078.79",
+        "job": 131115873704,
+        "exit": 124,
+        "jobLogSha256": "49c714e8efa3ff897eb4bdf3e3a70d33786e3e9cc2d068ddc48214eae06d36bc",
+        "runnerImage": "ubuntu-26.04",
+        "runnerImageVersion": "20261101.186.1",
+        "fontPackageSha256": "7d64b985f6fe128c99eae5610d5c047338e572bdcfb2bb09736be01b824a7f6c"
+      },
+      {
+        "slot": 3,
+        "artifact": {
+          "digest": "sha256:e8874a9e2f53f90e09df1b1a53604f3b9a114f16ff3efa0856ef0c13223c3c5a",
+          "expired": false,
+          "id": 13934942524,
+          "name": "runtime-ci-43198607525-browser-3-of-8-attempt-1",
+          "size_in_bytes": 13820835
+        },
+        "source": "416f8cb72f340d64750c02729899caeb4ee7fa26",
+        "product": "f58c7af3350cee5c6fe456e0dc7b92e790a8c288",
+        "selectedSuites": [
+          "apps/www/src/content/docs/zh-cn/base-accordion-layout-parity.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-accordion-family.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-brutalist-checkbox.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-field-family.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-select-draft-projections.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/demo-shadcn-switch-compositions.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/overlay-scrollbar-geometry.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/scroll-chrome-display.browser.test.ts",
+          "apps/www/src/content/docs/zh-cn/table-react19.browser.test.ts",
+          "apps/www/test/radio-group-entry.browser.test.ts",
+          "packages/adapters/web-component/test/shadow-closeout.browser.test.ts"
+        ],
+        "node": "v24.22.2",
+        "chrome": "Google Chrome 156.0.8078.79",
+        "job": 131115873321,
+        "exit": 124,
+        "jobLogSha256": "07d7fb9b5ea9b0d1b3d71fc70bc66957facdcda029b457b3d37ea6c69529f128",
+        "runnerImage": "ubuntu-26.04",
+        "runnerImageVersion": "20261101.186.1",
+        "fontPackageSha256": "7d64b985f6fe128c99eae5610d5c047338e572bdcfb2bb09736be01b824a7f6c"
+      }
+    ],
+    "familyDeadlineMs": 1000,
+    "verdictMs": 1000.579,
+    "cdpId": 14523,
+    "rawCalibratedFamilyWriteMs": [[1290.793, 1335.572]],
+    "timing": {
+      "nodeTransportSendBeforeMs": 402.066,
+      "nodeMatchingPipeIngressMs": 2083.388,
+      "calibratedClockOffsetMs": [-44.045, 0.734],
+      "causallyRefinedClockOffsetMs": [-0.493, 0.313],
+      "chromeCommandHandlerMs": [402.066, 402.872],
+      "familyWriteMs": [[1334.346, 1335.152]],
+      "rendererDispatchStartMs": [2080.465, 2081.271]
+    },
+    "browserHandleToForwardMs": 0.009,
+    "rendererQueueMs": 1678.39,
+    "rendererRunTaskOverlapMs": 1678.346,
+    "rendererDispatchMs": 2.018,
+    "nodeQueryReturnedMs": 2084.207,
+    "chromeForwardToFamilyWriteMs": 932.271,
+    "familyWriteToDispatchMs": 746.119,
+    "geometryV8": {
+      "product": "f58c7af3",
+      "diagnosticHead": "416f8cb72f340d64750c02729899caeb4ee7fa26",
+      "traceProtocolId": 14523,
+      "path": "apps/www/src/components/site-header-disclosure.ts",
+      "traceSha256": "40fc0c7fc905a62d60f7ed835c929fbc91321ce099882c75085c34fec356032e",
+      "locallyReconstructedViteVersion": "6.4.1",
+      "sourceSha256": "9d614feb355d24ff181afcacbb31ae5b1acfc299cd90bdae9c89460eff5b92e4",
+      "v8SampleLocationsWithLocalTransform": [
+        {
+          "reader": "getBoundingClientRect",
+          "generatedLine": 84,
+          "generatedColumn": 27,
+          "weightedMs": 111.658,
+          "compiledSource": "const anchor = button.getBoundingClientRect();",
+          "authoredLine": 130
+        }
+      ],
+      "interval": "Chrome forward to renderer dispatch"
+    },
+    "contents": {
+      "switchVerdictMs": {
+        "shadcn/wc": 13,
+        "shadcn/vue2": 473,
+        "shadcn/vue": 481,
+        "brutalist/wc": 6,
+        "brutalist/react": 630,
+        "brutalist/vue2": 419,
+        "brutalist/vue": 541,
+        "shadcn/react": 582
+      },
+      "orderedHandbacks": 24
+    },
+    "dialog": {
+      "passed": 8,
+      "observations": 196,
+      "captures": 120
+    }
+  },
+  "scope": "One hosted sample per product with the same diagnostic overlay and no CPU throttle. The measured differences do not isolate a performance effect."
+}

@@ -1,0 +1,396 @@
+{
+  "method": "Renderer trace intervals are clipped and unioned per event type. CPU weights describe sampled stacks, overlap trace intervals, and do not establish counterfactual savings.",
+  "traceProtocolCallId": 14523,
+  "writeAfterForwardMs": 932.271,
+  "queueBeforeCommit": {
+    "largestRendererTasks": [
+      {
+        "startsAfterForwardMs": 0.0,
+        "overlapMs": 710.827,
+        "leafSamples": [
+          {
+            "frame": "getPropertyValue",
+            "ms": 101.209
+          },
+          {
+            "frame": "(garbage collector)",
+            "ms": 45.501
+          },
+          {
+            "frame": "setProperty",
+            "ms": 36.569
+          },
+          {
+            "frame": "(program)",
+            "ms": 35.81
+          },
+          {
+            "frame": "addEventListener",
+            "ms": 35.075
+          },
+          {
+            "frame": "visitRule [packages/adapters/web-component/src/runtime/modules.ts:630]",
+            "ms": 33.249
+          }
+        ]
+      },
+      {
+        "startsAfterForwardMs": 710.845,
+        "overlapMs": 221.426,
+        "leafSamples": [
+          {
+            "frame": "preserveSelection [apps/www/src/components/site-typography.ts:96]",
+            "ms": 82.519
+          },
+          {
+            "frame": "(program)",
+            "ms": 38.649
+          },
+          {
+            "frame": "setProperty",
+            "ms": 34.852
+          },
+          {
+            "frame": "markDirty [packages/modules/feedback/src/create.ts:464]",
+            "ms": 8.058
+          },
+          {
+            "frame": "stampProjectionSurfaces [apps/www/src/components/PrototypePreviewer/projection-composition.ts:679]",
+            "ms": 4.955
+          },
+          {
+            "frame": "visitRule [packages/adapters/web-component/src/runtime/modules.ts:630]",
+            "ms": 4.475
+          }
+        ]
+      }
+    ],
+    "durationMs": 932.271,
+    "rendererTaskOverlapMs": 932.253,
+    "styleTreeUpdateOverlapMs": 210.874,
+    "layoutOverlapMs": 21.155,
+    "topWeightedLeafSamples": [
+      {
+        "frame": "getPropertyValue",
+        "ms": 101.209
+      },
+      {
+        "frame": "preserveSelection [apps/www/src/components/site-typography.ts:96]",
+        "ms": 82.519
+      },
+      {
+        "frame": "(program)",
+        "ms": 74.477
+      },
+      {
+        "frame": "setProperty",
+        "ms": 71.421
+      },
+      {
+        "frame": "(garbage collector)",
+        "ms": 45.667
+      },
+      {
+        "frame": "visitRule [packages/adapters/web-component/src/runtime/modules.ts:630]",
+        "ms": 37.724
+      },
+      {
+        "frame": "addEventListener",
+        "ms": 36.424
+      },
+      {
+        "frame": "appendChild",
+        "ms": 29.332
+      },
+      {
+        "frame": "replaceValuePreservingEditingSession [packages/modules/text-control/src/web.ts:136]",
+        "ms": 28.352
+      },
+      {
+        "frame": "createElement",
+        "ms": 17.713
+      },
+      {
+        "frame": "setAttribute",
+        "ms": 15.934
+      },
+      {
+        "frame": "get selectorText",
+        "ms": 9.952
+      },
+      {
+        "frame": "stampProjectionSurfaces [apps/www/src/components/PrototypePreviewer/projection-composition.ts:679]",
+        "ms": 9.311
+      },
+      {
+        "frame": "markDirty [packages/modules/feedback/src/create.ts:464]",
+        "ms": 8.231
+      },
+      {
+        "frame": "getSemanticGroupKeyV0 [packages/core/src/spec/feedback/semantic-merge.ts:54]",
+        "ms": 6.721
+      }
+    ],
+    "styleReadCallers": [
+      {
+        "read": "getPropertyValue",
+        "caller": "current [apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts:26]",
+        "ms": 99.756
+      },
+      {
+        "read": "getPropertyValue",
+        "caller": "syncOwnedSurfaceStyles [packages/adapters/web-component/src/props.ts:147]",
+        "ms": 0.893
+      },
+      {
+        "read": "getPropertyValue",
+        "caller": "readProjection [packages/modules/expose-state-web/src/impl.ts:172]",
+        "ms": 0.399
+      },
+      {
+        "read": "getPropertyValue",
+        "caller": "sync [packages/modules/hit-participation/src/web/host-bridge.ts:25]",
+        "ms": 0.161
+      }
+    ],
+    "geometryReadCallers": [],
+    "selectionScopeSamples": [
+      {
+        "scope": "preserveSelection [apps/www/src/components/site-typography.ts:96]",
+        "leaf": "preserveSelection [apps/www/src/components/site-typography.ts:96]",
+        "ms": 82.519
+      },
+      {
+        "scope": "preserveSelection [apps/www/src/components/site-typography.ts:96]",
+        "leaf": "markDirty [packages/modules/feedback/src/create.ts:464]",
+        "ms": 8.058
+      },
+      {
+        "scope": "preserveSelection [apps/www/src/components/site-typography.ts:96]",
+        "leaf": "createImageViewModule [packages/modules/image-view/src/create.ts:242]",
+        "ms": 3.411
+      },
+      {
+        "scope": "preserveSelection [apps/www/src/components/site-typography.ts:96]",
+        "leaf": "append",
+        "ms": 2.847
+      },
+      {
+        "scope": "preserveSelection [apps/www/src/components/site-typography.ts:96]",
+        "leaf": "OwnedDecorationRegistryModel [packages/modules/feedback/src/style/owned-decoration-registry.ts:3]",
+        "ms": 1.34
+      },
+      {
+        "scope": "preserveSelection [apps/www/src/components/site-typography.ts:96]",
+        "leaf": "createWebProtoEventRouter [packages/adapters/base/src/events/web-event-router.ts:40]",
+        "ms": 1.265
+      },
+      {
+        "scope": "preserveSelection [apps/www/src/components/site-typography.ts:96]",
+        "leaf": "addEventListener",
+        "ms": 1.189
+      },
+      {
+        "scope": "preserveSelection [apps/www/src/components/site-typography.ts:96]",
+        "leaf": "createModule [packages/modules/base/src/create-module.ts:4]",
+        "ms": 1.069
+      },
+      {
+        "scope": "preserveSelection [apps/www/src/components/site-typography.ts:96]",
+        "leaf": "AnatomyModuleImpl [packages/modules/anatomy/src/impl.ts:171]",
+        "ms": 0.869
+      },
+      {
+        "scope": "preserveSelection [apps/www/src/components/site-typography.ts:96]",
+        "leaf": "projectedScalarAttributes [packages/modules/a11y/src/web.ts:718]",
+        "ms": 0.747
+      },
+      {
+        "scope": "preserveSelection [apps/www/src/components/site-typography.ts:96]",
+        "leaf": "subscribeSurfaceTarget [packages/adapters/base/src/host/surface-projection.ts:13]",
+        "ms": 0.684
+      },
+      {
+        "scope": "preserveSelection [apps/www/src/components/site-typography.ts:96]",
+        "leaf": "getPhysicalTriggerSurface [packages/adapters/web-component/src/runtime/modules.ts:1121]",
+        "ms": 0.682
+      }
+    ]
+  },
+  "queueAfterCommit": {
+    "largestRendererTasks": [
+      {
+        "startsAfterForwardMs": 932.271,
+        "overlapMs": 745.829,
+        "leafSamples": [
+          {
+            "frame": "getBoundingClientRect",
+            "ms": 111.658
+          },
+          {
+            "frame": "(program)",
+            "ms": 83.801
+          },
+          {
+            "frame": "getPropertyValue",
+            "ms": 59.151
+          },
+          {
+            "frame": "setProperty",
+            "ms": 28.454
+          },
+          {
+            "frame": "(anonymous) [packages/modules/anatomy/src/impl.ts:890]",
+            "ms": 28.188
+          },
+          {
+            "frame": "removeEventListener",
+            "ms": 28.102
+          }
+        ]
+      },
+      {
+        "startsAfterForwardMs": 1678.116,
+        "overlapMs": 0.234,
+        "leafSamples": [
+          {
+            "frame": "(program)",
+            "ms": 0.234
+          }
+        ]
+      },
+      {
+        "startsAfterForwardMs": 1678.355,
+        "overlapMs": 0.023,
+        "leafSamples": [
+          {
+            "frame": "(program)",
+            "ms": 0.023
+          }
+        ]
+      },
+      {
+        "startsAfterForwardMs": 1678.383,
+        "overlapMs": 0.007,
+        "leafSamples": [
+          {
+            "frame": "(program)",
+            "ms": 0.007
+          }
+        ]
+      }
+    ],
+    "durationMs": 746.119,
+    "rendererTaskOverlapMs": 746.093,
+    "styleTreeUpdateOverlapMs": 151.336,
+    "layoutOverlapMs": 22.915,
+    "topWeightedLeafSamples": [
+      {
+        "frame": "getBoundingClientRect",
+        "ms": 111.658
+      },
+      {
+        "frame": "(program)",
+        "ms": 84.091
+      },
+      {
+        "frame": "getPropertyValue",
+        "ms": 59.151
+      },
+      {
+        "frame": "setProperty",
+        "ms": 28.454
+      },
+      {
+        "frame": "(anonymous) [packages/modules/anatomy/src/impl.ts:890]",
+        "ms": 28.188
+      },
+      {
+        "frame": "removeEventListener",
+        "ms": 28.102
+      },
+      {
+        "frame": "visitRule [packages/adapters/web-component/src/runtime/modules.ts:630]",
+        "ms": 23.144
+      },
+      {
+        "frame": "compareDocumentPosition",
+        "ms": 20.119
+      },
+      {
+        "frame": "moveBefore",
+        "ms": 16.967
+      },
+      {
+        "frame": "remove",
+        "ms": 16.678
+      },
+      {
+        "frame": "listClaims [packages/modules/anatomy/src/impl.ts:73]",
+        "ms": 12.767
+      },
+      {
+        "frame": "(garbage collector)",
+        "ms": 10.972
+      },
+      {
+        "frame": "querySelectorAll",
+        "ms": 10.317
+      },
+      {
+        "frame": "setAttribute",
+        "ms": 10.162
+      },
+      {
+        "frame": "(anonymous) [packages/modules/rule-meta/src/create.ts:118]",
+        "ms": 9.894
+      }
+    ],
+    "styleReadCallers": [
+      {
+        "read": "getPropertyValue",
+        "caller": "current [apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts:26]",
+        "ms": 52.951
+      },
+      {
+        "read": "getPropertyValue",
+        "caller": "Object.defineProperty.get [packages/adapters/web-component/src/runtime/modules.ts:841]",
+        "ms": 5.579
+      },
+      {
+        "read": "getPropertyValue",
+        "caller": "write [packages/adapters/base/src/motion/web-resident-motion.ts:44]",
+        "ms": 0.164
+      },
+      {
+        "read": "getPropertyValue",
+        "caller": "syncOwnedSurfaceStyles [packages/adapters/web-component/src/props.ts:147]",
+        "ms": 0.16
+      },
+      {
+        "read": "getPropertyValue",
+        "caller": "sync [packages/modules/hit-participation/src/web/host-bridge.ts:25]",
+        "ms": 0.156
+      },
+      {
+        "read": "getPropertyValue",
+        "caller": "readProjection [packages/modules/expose-state-web/src/impl.ts:172]",
+        "ms": 0.141
+      }
+    ],
+    "geometryReadCallers": [
+      {
+        "read": "getBoundingClientRect",
+        "caller": "positionPanel [apps/www/src/components/site-header-disclosure.ts:81]",
+        "ms": 111.658
+      }
+    ],
+    "selectionScopeSamples": [
+      {
+        "scope": "preserveSelection [apps/www/src/components/site-typography.ts:96]",
+        "leaf": "preserveSelection [apps/www/src/components/site-typography.ts:96]",
+        "ms": 5.147
+      }
+    ]
+  }
+}

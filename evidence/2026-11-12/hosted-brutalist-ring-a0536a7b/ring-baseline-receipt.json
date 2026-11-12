@@ -1,0 +1,120 @@
+{
+  "source": {
+    "sha": "f58c7af3350cee5c6fe456e0dc7b92e790a8c288",
+    "dirty": true,
+    "expectedSha": null,
+    "eventSha": null
+  },
+  "stage": "wc-runtime-narrow-focus-ring",
+  "unfocused": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(0, 0, 0) 4px 4px 0px 0px",
+  "original": {
+    "focused": true,
+    "focusVisible": true,
+    "prototype": "brutalist-select-trigger",
+    "tokens": [
+      "flex",
+      "w-full",
+      "items-center",
+      "justify-between",
+      "gap-2",
+      "rounded-base",
+      "border-2",
+      "border-black",
+      "bg-main",
+      "text-main-foreground",
+      "font-sans",
+      "font-medium",
+      "px-3",
+      "py-2",
+      "text-sm",
+      "whitespace-nowrap",
+      "outline-none",
+      "select-none",
+      "data-[placeholder]:text-main-foreground",
+      "data-[hovered]:border-black",
+      "data-[pressed]:border-black",
+      "data-[focus-visible]:outline-none",
+      "data-[focus-visible]:ring-2",
+      "data-[focus-visible]:ring-ring",
+      "data-[focus-visible]:ring-offset-2",
+      "data-[focus-visible]:ring-offset-background",
+      "data-[disabled]:pointer-events-none",
+      "data-[disabled]:opacity-50",
+      "transition-all",
+      "h-10",
+      "shadow-[4px_4px_0_0_#000]"
+    ],
+    "ringWidth": 2,
+    "ringOffset": 2,
+    "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(0, 0, 0) 4px 4px 0px 0px",
+    "ringColor": "#000000",
+    "target": {
+      "x": 26,
+      "y": 230,
+      "width": 268,
+      "height": 44,
+      "top": 230,
+      "right": 294,
+      "bottom": 274,
+      "left": 26
+    },
+    "ring": {
+      "left": 22,
+      "right": 298,
+      "top": 226,
+      "bottom": 278
+    },
+    "clipping": [
+      {
+        "tag": "DIV",
+        "marker": "site-header-native-slot pui-projection-box",
+        "overflowX": "auto",
+        "overflowY": "auto",
+        "left": 22,
+        "right": 298,
+        "top": 75,
+        "bottom": 278,
+        "containsX": true,
+        "containsY": true,
+        "unsupportedClip": false
+      }
+    ],
+    "viewport": {
+      "width": 320,
+      "height": 300
+    },
+    "inViewport": true,
+    "unclipped": true
+  },
+  "lastFocusAt": 3332.2000000476837,
+  "sampledFirstChanged": {
+    "at": 3379.100000023842,
+    "focused": true,
+    "focusVisible": true,
+    "shadow": "rgba(220, 235, 254, 0.173) 0px 0px 0px 0.347672px, rgba(0, 0, 0, 0.173) 0px 0px 0px 0.695344px, rgb(0, 0, 0) 4px 4px 0px 0px",
+    "width": "2px",
+    "offset": "2px",
+    "transitionProperty": "all",
+    "transitionDuration": "0.15s",
+    "animations": [
+      {
+        "property": "box-shadow",
+        "state": "running",
+        "currentTime": 33.23400000000021
+      }
+    ]
+  },
+  "sampledLast": {
+    "at": 3622.2000000476837,
+    "focused": true,
+    "focusVisible": true,
+    "shadow": "rgb(220, 235, 254) 0px 0px 0px 2px, rgb(0, 0, 0) 0px 0px 0px 4px, rgb(0, 0, 0) 4px 4px 0px 0px",
+    "width": "2px",
+    "offset": "2px",
+    "transitionProperty": "all",
+    "transitionDuration": "0.15s",
+    "animations": []
+  },
+  "frames": 16,
+  "earliestObservedChangeAfterLastFocusMs": 46.9
+}

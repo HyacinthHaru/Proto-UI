@@ -1,0 +1,198 @@
+{
+  "head": "a0536a7b7d2b24e469a9baa76a0422803baba0df",
+  "tree": "3170b99eecf24bd12bdb4390f569ad22a85827aa",
+  "platform": "macOS arm64",
+  "toolchain": {
+    "node": "24.21.0",
+    "pnpm": "10.32.1",
+    "chrome": "156.0.8078.79",
+    "workers": 1,
+    "devToolbar": false
+  },
+  "native": {
+    "passed": 14,
+    "failed": 0,
+    "filtered": 4,
+    "exit": 0,
+    "reportSha256": "74494ffdeae045e21b1acc458cf2eabe2b80a65c3d7e746921c5d1b856d5b060",
+    "files": {
+      "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts": {
+        "blob": "f3a517c207b24560b3b67ff8852d2e7190f6c219",
+        "tests": [
+          {
+            "title": "shadcn/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "title": "shadcn/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "title": "shadcn/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "title": "shadcn/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "title": "brutalist/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "title": "brutalist/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "title": "brutalist/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "title": "brutalist/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          }
+        ]
+      },
+      "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts": {
+        "blob": "c734f0dc6b947e11729e2d3ba646544f1e29602f",
+        "tests": [
+          {
+            "title": "switches every registered homepage group through real adapters, preserving native anchors and theme",
+            "status": "skipped"
+          },
+          {
+            "title": "keeps native navigation available without JavaScript and does not overflow mobile",
+            "status": "skipped"
+          },
+          {
+            "title": "retains saved React across cold library routes and exercises actual family chrome",
+            "status": "skipped"
+          },
+          {
+            "title": "reveals current articles through native shadow slots and preserves viewport handback",
+            "status": "skipped"
+          },
+          {
+            "title": "uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence",
+            "status": "passed"
+          },
+          {
+            "title": "uses the same mobile shell on documentation with independent global navigation and contents",
+            "status": "passed"
+          },
+          {
+            "title": "compact shadcn preferences stay usable at 200% text, RTL and breakpoint moves",
+            "status": "passed"
+          },
+          {
+            "title": "compact brutalist preferences stay usable at 200% text, RTL and breakpoint moves",
+            "status": "passed"
+          },
+          {
+            "title": "retains shadcn preference owners and portals through real breakpoint reconnects",
+            "status": "passed"
+          },
+          {
+            "title": "retains brutalist preference owners and portals through real breakpoint reconnects",
+            "status": "passed"
+          }
+        ]
+      }
+    }
+  },
+  "types": {
+    "astroFiles": 1215,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 30,
+    "logSha256": "781ca9f809153a9aaa260f82b3f74c22e08294ce90d4049c76d91f8866910815"
+  },
+  "contents": {
+    "originalSwitchDeadlineMs": 1000,
+    "transitions": {
+      "brutalist/react": {
+        "clickToOriginalVerdictMs": 267,
+        "sha256": "352bcd86989ebc727e06c5977c79601a8cbe7f6a46889d1070d2cc064672e5bc"
+      },
+      "brutalist/vue": {
+        "clickToOriginalVerdictMs": 199,
+        "sha256": "82914d821325a84d0f0cf38ca581380649cb48915b86b938b6319af13a5b4dd8"
+      },
+      "brutalist/vue2": {
+        "clickToOriginalVerdictMs": 176,
+        "sha256": "ff7586e4fee243210fb10b8cf40ffe9ebc828d5d7dcb64824578a07ebb5f4195"
+      },
+      "brutalist/wc": {
+        "clickToOriginalVerdictMs": 1,
+        "sha256": "df1fca9de69296afd67d124d89d4dbed7bb90ea2b32e7c8bd9e9e09c5cd9c780"
+      },
+      "shadcn/react": {
+        "clickToOriginalVerdictMs": 198,
+        "sha256": "9ecc0c98cdeb009844913e9a48948c2a03923299ef526e0c9d333e470f7ed50f"
+      },
+      "shadcn/vue": {
+        "clickToOriginalVerdictMs": 189,
+        "sha256": "decd7bcfee2c5f74717a1ff4530faa3a2be1b50209e835bb630de0bb167b5e16"
+      },
+      "shadcn/vue2": {
+        "clickToOriginalVerdictMs": 202,
+        "sha256": "1c8ae577c01e0d28d575bb0a6424d50b125d0d53934b0a5e1dafc963a5bbed05"
+      },
+      "shadcn/wc": {
+        "clickToOriginalVerdictMs": 56,
+        "sha256": "3cf8d92e4b816afa1962d1cfd8bf5e7f308bea74e8b9f7646ed184e9abbde17b"
+      }
+    },
+    "orderedSidebarHandbacks": 24,
+    "handbacksSha256": "7c4fc130fee6ef3f48a045324eceb19e572cc069e9e7f632d11e04a5c1d9f16f"
+  },
+  "dialog": {
+    "observations": 196,
+    "captures": 120,
+    "sha256": "2bd03943c3e0e239b9989f91977d01b6c813b4274b1b58c435d079604c044c86"
+  },
+  "brutalist": {
+    "originalFamilyCommitVerdict": "fulfilled",
+    "originalFamilyCommitMs": 603.154,
+    "originalRingTokenPollTimeoutMs": 1000,
+    "rings": {
+      "wc": {
+        "width": 2,
+        "offset": 2,
+        "inViewport": true,
+        "unclipped": true,
+        "restingShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(0, 0, 0) 4px 4px 0px 0px",
+        "paintedShadow": "rgba(220, 235, 254, 0.173) 0px 0px 0px 0.346763px, rgba(0, 0, 0, 0.173) 0px 0px 0px 0.693526px, rgb(0, 0, 0) 4px 4px 0px 0px",
+        "sha256": "635ea4280b4e2151b790c18e4a8b69eadec47134cd4f4d2c9c6c7bba33e9f49e"
+      },
+      "react": {
+        "width": 2,
+        "offset": 2,
+        "inViewport": true,
+        "unclipped": true,
+        "restingShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(0, 0, 0) 4px 4px 0px 0px",
+        "paintedShadow": "rgba(220, 235, 254, 0.46) 0px 0px 0px 0.914503px, rgba(0, 0, 0, 0.46) 0px 0px 0px 1.82901px, rgb(0, 0, 0) 4px 4px 0px 0px",
+        "sha256": "f6e7fbc4d63c742a8726a2c808f014b3e8701c23feb616809f7e33b990d1830a"
+      },
+      "vue": {
+        "width": 2,
+        "offset": 2,
+        "inViewport": true,
+        "unclipped": true,
+        "restingShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(0, 0, 0) 4px 4px 0px 0px",
+        "paintedShadow": "rgba(220, 235, 254, 0.46) 0px 0px 0px 0.914573px, rgba(0, 0, 0, 0.46) 0px 0px 0px 1.82915px, rgb(0, 0, 0) 4px 4px 0px 0px",
+        "sha256": "bc32822553a1d1221e8bdee32681eba81215e9eab8e90bc6b518eef58d3885a8"
+      },
+      "vue2": {
+        "width": 2,
+        "offset": 2,
+        "inViewport": true,
+        "unclipped": true,
+        "restingShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(0, 0, 0) 4px 4px 0px 0px",
+        "paintedShadow": "rgba(220, 235, 254, 0.455) 0px 0px 0px 0.909879px, rgba(0, 0, 0, 0.455) 0px 0px 0px 1.81976px, rgb(0, 0, 0) 4px 4px 0px 0px",
+        "sha256": "850c3ef044de837e2883fed754aba5b8f691bd8eb19287646781b17a6e34d4d6"
+      }
+    }
+  },
+  "selectedRingCaptureSha256": "53c1ed203bebdef06ce938b7958095014d4223c2008a670d8096157a30b16475"
+}
