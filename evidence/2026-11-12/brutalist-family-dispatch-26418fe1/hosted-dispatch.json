@@ -1,0 +1,36 @@
+{
+  "head": "26418fe1ba55e13bb4ede4fc4ad107e405c42b3e",
+  "dirtyTestOnlyInstrumentation": false,
+  "originalVerdict": "rejected",
+  "originalVerdictAfterPollMs": 999.875,
+  "diagnosticFreezeAfterPollMs": 1000.109,
+  "clockOffsetBoundsMs": [-0.556, 0.16],
+  "familyWritesAfterPollMs": [[649.932, 650.649]],
+  "query": {
+    "ordinal": 4,
+    "cdpId": 14702,
+    "method": "Runtime.callFunctionOn",
+    "startedAfterPollMs": 213.268,
+    "returnedAfterPollMs": 1036.408,
+    "returnedValue": "brutalist",
+    "nodePipeStagesAfterPollMs": {
+      "cdp.pipe.write.return": [214.671, 214.682],
+      "cdp.pipe.read-dispatch.enter": [1036.064],
+      "cdp.pipe.frame.callback.enter": [1036.213],
+      "cdp.response.received": [1036.259]
+    },
+    "browserGetterStagesAfterPollMs": {
+      "selector.enter": [1034.232, 1034.949],
+      "selector.exit": [1034.832, 1035.549],
+      "getter.enter": [1034.932, 1035.649],
+      "getter.exit": [1034.932, 1035.649]
+    },
+    "selectorEntryToGetterEntryMs": 0.7,
+    "getterDurationAtPageClockPrecisionMs": 0.0,
+    "targetArrivalBatchCount": 0
+  },
+  "inputSha256": {
+    "lifecycle": "56e14afa4baf16eb64ad684689843b22f7faf9186803738d87e86e354faa6eb8",
+    "sdk": "c476591d5545f2d4c33e9c11b09877ae8edfcaffb46707f13f47c6358a9ba476"
+  }
+}

@@ -1,0 +1,152 @@
+{
+  "head": "26418fe1ba55e13bb4ede4fc4ad107e405c42b3e",
+  "tree": "175ef45a4a3fc722dac6653f668e37952fe52eee",
+  "platform": "macOS arm64",
+  "toolchain": {
+    "node": "24.21.0",
+    "pnpm": "10.32.1",
+    "browser": "156.0.8078.79",
+    "workers": 1,
+    "devToolbar": false
+  },
+  "vitest": {
+    "passed": 10,
+    "failed": 0,
+    "filtered": 8,
+    "reportSha256": "7cbe63f397978098b25e00845f7b07575b9a652f4f85e87d6d0d738d44bb9491",
+    "runnerResult": "success from Vitest JSON and terminal summary",
+    "wrapperExitNote": "Post-run zsh readonly status variable prevented exit-code capture. No repeat execution."
+  },
+  "executedFiles": {
+    "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts": {
+      "blob": "f3a517c207b24560b3b67ff8852d2e7190f6c219",
+      "tests": [
+        {
+          "title": "shadcn/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "shadcn/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "shadcn/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "shadcn/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "brutalist/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "brutalist/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "brutalist/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "brutalist/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        }
+      ]
+    },
+    "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts": {
+      "blob": "9f13f896e6e595b940e7bd83189dadfe77ac2029",
+      "tests": [
+        {
+          "title": "switches every registered homepage group through real adapters, preserving native anchors and theme",
+          "status": "skipped"
+        },
+        {
+          "title": "keeps native navigation available without JavaScript and does not overflow mobile",
+          "status": "skipped"
+        },
+        {
+          "title": "retains saved React across cold library routes and exercises actual family chrome",
+          "status": "skipped"
+        },
+        {
+          "title": "reveals current articles through native shadow slots and preserves viewport handback",
+          "status": "skipped"
+        },
+        {
+          "title": "uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence",
+          "status": "passed"
+        },
+        {
+          "title": "uses the same mobile shell on documentation with independent global navigation and contents",
+          "status": "passed"
+        },
+        {
+          "title": "compact shadcn preferences stay usable at 200% text, RTL and breakpoint moves",
+          "status": "skipped"
+        },
+        {
+          "title": "compact brutalist preferences stay usable at 200% text, RTL and breakpoint moves",
+          "status": "skipped"
+        },
+        {
+          "title": "retains shadcn preference owners and portals through real breakpoint reconnects",
+          "status": "skipped"
+        },
+        {
+          "title": "retains brutalist preference owners and portals through real breakpoint reconnects",
+          "status": "skipped"
+        }
+      ]
+    }
+  },
+  "contents": {
+    "originalSwitchDeadlineMs": 1000,
+    "transitions": {
+      "brutalist/react": {
+        "clickToOriginalVerdictMs": 249,
+        "captureSha256": "1d0fd9007b1cf95f20922c882047cb65e8059116fe0066b567e8cb6e607d0f0b"
+      },
+      "brutalist/vue": {
+        "clickToOriginalVerdictMs": 200,
+        "captureSha256": "d06c2fe2a0923e9a7e810465bbd22fd7fb2bccab6f7cebe9aa4132750f0a6396"
+      },
+      "brutalist/vue2": {
+        "clickToOriginalVerdictMs": 194,
+        "captureSha256": "4a6dcd7caf437ec33e1e55a2afac847913b9e0d9a0cd35d44efb20174b05b520"
+      },
+      "brutalist/wc": {
+        "clickToOriginalVerdictMs": 1,
+        "captureSha256": "2fda442dcb4a80d16090715a9fee33ea4780763da25a3bc0549f4ed275c215c8"
+      },
+      "shadcn/react": {
+        "clickToOriginalVerdictMs": 226,
+        "captureSha256": "152a68f983c171ae89bc03e2265843f3df8ba71aeefcab5e592e4e193340d710"
+      },
+      "shadcn/vue": {
+        "clickToOriginalVerdictMs": 217,
+        "captureSha256": "3d6a18d7e772b28049cd6d1f7654457f472ace5fbdd6fc834681a4b4073e4af9"
+      },
+      "shadcn/vue2": {
+        "clickToOriginalVerdictMs": 220,
+        "captureSha256": "187314e49d0524176cb00c06d268973c5bfb88b6f29275755a0ded7c4f4c1d54"
+      },
+      "shadcn/wc": {
+        "clickToOriginalVerdictMs": 3,
+        "captureSha256": "a22945af3d3a668d1f56e4528bf5ff32ebdedf3517ea82d8550317ccfaa1c4cc"
+      }
+    },
+    "orderedSidebarHandbacks": 24,
+    "handbacksSha256": "60f5df82e60e3a1909b52c668689e38de29a3d62ad5e3925f31a5b5a275d68b7"
+  },
+  "dialog": {
+    "observations": 196,
+    "pngCaptures": 120,
+    "observationsSha256": "cc819468ad4d15d2970cc2739d658ff500f56625a958ee7b2914e75b2e5ba735"
+  },
+  "reviewedImages": {
+    "shadcn-react-public-popover-open.png": "2eb39d72228407501302c227413f077711494e8c054f1949c082c7ff20cd4330",
+    "brutalist-react-long-font200.png": "d42200451e2c561af51b72c0d1a262ee1564988bc11dc6bcdfce55aebb7fc260"
+  }
+}

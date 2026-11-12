@@ -1,0 +1,175 @@
+diff --git a/apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts b/apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts
+index 9f13f896e..63980faf3 100644
+--- a/apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts
++++ b/apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts
+@@ -9,6 +9,7 @@ import { createHash } from 'node:crypto';
+ import { readFileSync } from 'node:fs';
+ import { createRequire } from 'node:module';
+ import { installDocsCallTimingObserver } from './docs-query-timing.mjs';
++import { createQueryDispatchTrace } from './query-dispatch-trace.mjs';
+ import { mkdir, writeFile } from 'node:fs/promises';
+ import path from 'node:path';
+ import os from 'node:os';
+@@ -1831,6 +1832,8 @@ for (const family of ['shadcn', 'brutalist'] as const) {
+     };
+     let utilityObservation: Awaited<ReturnType<typeof prepareUtilityFamilyReadObservation>> | null =
+       null;
++    let familyTrace: ReturnType<typeof createQueryDispatchTrace> | undefined;
++    let resetFamilyCpu: (() => Promise<unknown>) | undefined;
+     // Keep every original Promise until post-verdict settlement; only displayed rows are capped.
+     const familyQueryRequests: Array<{
+       request: Promise<string | null>;
+@@ -1886,6 +1889,17 @@ for (const family of ['shadcn', 'brutalist'] as const) {
+             nodeMs: familyCommitTiming.finishedMs,
+             frozenAtMs: performance.now(),
+           };
++          if (familyCommitTiming.startedMs !== null && familyCommitTiming.finishedMs !== null)
++            familyTrace?.markVerdict({
++              source,
++              cpuRate: 3,
++              verdict: {
++                passed: familyCommitTiming.outcome === 'fulfilled',
++                clickedAt: familyCommitTiming.timeOrigin + familyCommitTiming.startedMs,
++                originalCheckAt: familyCommitTiming.timeOrigin + familyCommitTiming.finishedMs,
++              },
++              query: familySDK?.snapshot(),
++            });
+           familyQueryObservation.referenceCountAtVerdict = familyQueryRequests.length;
+           const pending = familyQueryRequests.filter(({ call }) => call.returnedMs === undefined);
+           familyQueryObservation.pendingAtVerdictCount = pending.length;
+@@ -2238,6 +2252,23 @@ for (const family of ['shadcn', 'brutalist'] as const) {
+         const id = await control.getAttribute('aria-controls');
+         if (familyQueryMode === 'hybrid')
+           utilityObservation = await prepareUtilityFamilyReadObservation(page);
++        if (process.env.PROTO_UI_FAMILY_DISPATCH_PROBE === '1') {
++          const cpu = await context.newCDPSession(page);
++          await cpu.send('Emulation.setCPUThrottlingRate', { rate: 3 });
++          resetFamilyCpu = () => cpu.send('Emulation.setCPUThrottlingRate', { rate: 1 });
++          familyTrace = createQueryDispatchTrace(
++            page,
++            path.join(evidenceDirectory, 'brutalist-family-dispatch-trace'),
++            { contentsStaging: true }
++          );
++          await familyTrace.prepare();
++          await page.evaluate(() => {
++            performance.mark('pui-brutalist-family:before-click');
++            window.addEventListener('click', (event) => {
++              if (event.isTrusted) performance.mark('pui-brutalist-family:trusted-click');
++            }, { capture: true, once: true });
++          });
++        }
+         stage = 'family-choice';
+         await page
+           .locator(`[id=${JSON.stringify(id)}]`)
+@@ -2285,6 +2316,7 @@ for (const family of ['shadcn', 'brutalist'] as const) {
+         familyCommitTiming.outcome = 'fulfilled';
+         await finishFamilyQueryObservation();
+         await collectFamilyMutation();
++        await resetFamilyCpu?.().catch(noteQueryError);
+         stage = 'family-ready';
+         await ready(page, 'wc');
+       }
+@@ -2551,6 +2583,7 @@ for (const family of ['shadcn', 'brutalist'] as const) {
+       }
+       let contextCloseSucceeded = false;
+       try {
++        familyTrace?.beforeContextClose();
+         await context.close();
+         contextCloseSucceeded = true;
+       } finally {
+@@ -2569,6 +2602,13 @@ for (const family of ['shadcn', 'brutalist'] as const) {
+         } catch (error) {
+           noteQueryError(error);
+         }
++        await familyTrace?.finish(contextCloseSucceeded, {
++          source,
++          cpuRate: 3,
++          familyCommitTiming,
++          familyMutationTiming,
++          query: familySDK?.snapshot(),
++        }).catch(noteQueryError);
+         if (utilityObservation && familyQueryObservation.cleanupDeferredUntilContextClose) {
+           try {
+             familyQueryObservation.utility =
+diff --git a/apps/www/src/content/docs/zh-cn/query-dispatch-trace.d.mts b/apps/www/src/content/docs/zh-cn/query-dispatch-trace.d.mts
+index b364bee82..55683f3cc 100644
+--- a/apps/www/src/content/docs/zh-cn/query-dispatch-trace.d.mts
++++ b/apps/www/src/content/docs/zh-cn/query-dispatch-trace.d.mts
+@@ -2,7 +2,8 @@ import type { Page } from 'playwright-core';
+ 
+ export function createQueryDispatchTrace(
+   page: Page,
+-  directory: string
++  directory: string,
++  options?: { contentsStaging?: boolean }
+ ): {
+   prepare(): Promise<void>;
+   markVerdict(observation: unknown): void;
+diff --git a/apps/www/src/content/docs/zh-cn/query-dispatch-trace.mjs b/apps/www/src/content/docs/zh-cn/query-dispatch-trace.mjs
+index e487254f3..c59d6fa79 100644
+--- a/apps/www/src/content/docs/zh-cn/query-dispatch-trace.mjs
++++ b/apps/www/src/content/docs/zh-cn/query-dispatch-trace.mjs
+@@ -30,11 +30,19 @@ function errorReason(error) {
+ 
+ // Observe one original query. No Runtime/Debugger evaluation, sourceURL, warmup
+ // or replacement query is sent. Browser dispatch is not the pipe receipt time.
+-export function createQueryDispatchTrace(page, directory) {
++export function createQueryDispatchTrace(page, directory, options = {}) {
++  const maxBytes = options.contentsStaging ? 48 * 1024 * 1024 : MAX_BYTES;
++  const traceCategories = options.contentsStaging
++    ? [
++        ...categories.filter((category) => category !== 'disabled-by-default-v8.compile'),
++        'blink.user_timing',
++        'disabled-by-default-v8.cpu_profiler',
++      ]
++    : categories;
+   const browser = page.context().browser();
+   const report = {
+     kind: 'original-query-dispatch-trace-v1',
+-    categories,
++    categories: traceCategories,
+     browserVersion: browser?.version(),
+     rows: [],
+     errors: [],
+@@ -138,9 +146,9 @@ export function createQueryDispatchTrace(page, directory) {
+               streamCompression: 'none',
+               traceConfig: {
+                 recordMode: 'recordUntilFull',
+-                traceBufferSizeInKb: MAX_BYTES / 1024,
+-                includedCategories: categories,
+-                enableSampling: false,
++                traceBufferSizeInKb: maxBytes / 1024,
++                includedCategories: traceCategories,
++                enableSampling: !!options.contentsStaging,
+               },
+             }).then(
+               () => {
+@@ -194,7 +202,7 @@ export function createQueryDispatchTrace(page, directory) {
+       report.cleanup.originalContextClosed = contextClosed;
+       report.originalObservation = observation;
+       const chunks = [];
+-      const deadline = performance.now() + 8000;
++      const deadline = performance.now() + (options.contentsStaging ? 12000 : 8000);
+       let startSettled = false;
+       try {
+         if (acquirePromise) await bounded(acquirePromise, 'pending trace setup', 2000);
+@@ -206,7 +214,7 @@ export function createQueryDispatchTrace(page, directory) {
+         if (!stream) throw new Error('Trace completed without a stream');
+         let eof = false;
+         while (!eof && performance.now() < deadline) {
+-          const remaining = MAX_BYTES - report.trace.bytes;
++          const remaining = maxBytes - report.trace.bytes;
+           const result = await bounded(
+             send('IO.read', {
+               handle: stream,
+@@ -219,7 +227,9 @@ export function createQueryDispatchTrace(page, directory) {
+           chunks.push(bytes.subarray(0, remaining));
+           report.trace.bytes += Math.min(bytes.length, remaining);
+           if (bytes.length > remaining)
+-            throw new Error('Trace exceeds 32MiB; retained prefix is incomplete');
++            throw new Error(
++              `Trace exceeds ${maxBytes / 1024 / 1024}MiB; retained prefix is incomplete`
++            );
+           eof = result.eof;
+         }
+         report.trace.complete = eof;
