@@ -1,0 +1,95 @@
+{
+  "run": {
+    "conclusion": "failure",
+    "event": "workflow_dispatch",
+    "head_sha": "09ea34042e625a2e9ba171c59fe505dec2cd3bc0",
+    "html_url": "https://github.com/HyacinthHaru/Proto-UI/actions/runs/43169302472",
+    "id": 43169302472,
+    "run_attempt": 1,
+    "status": "completed",
+    "updated_at": "2026-11-12T06:52:11Z"
+  },
+  "artifacts": [
+    {
+      "slot": 1,
+      "artifact": {
+        "digest": "sha256:6f8ad375d4e5c361ee1f8a9bf615141ab0c0ff9b9c1203536418a532f3af2a63",
+        "expired": false,
+        "id": 13921623676,
+        "name": "runtime-ci-43169302472-browser-1-of-8-attempt-1",
+        "size_in_bytes": 6419379
+      },
+      "source": "09ea34042e625a2e9ba171c59fe505dec2cd3bc0",
+      "product": "26418fe1ba55e13bb4ede4fc4ad107e405c42b3e",
+      "selectedSuites": [
+        "apps/workspace/test/lifecycle.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/contrast-probe.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-bootstrap-state-controls.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-prototype-style-closure.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/runtime-preview-surface.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/site-sidebar-disclosure.browser.test.ts",
+        "apps/www/test/message-composition.browser.test.ts",
+        "packages/adapters/vue/test/focus-request-readiness.browser.test.ts"
+      ],
+      "node": "v24.22.2",
+      "chrome": "Google Chrome 156.0.8078.79",
+      "job": 131018453079,
+      "exit": 124,
+      "jobLogSha256": "27927922a307f5a4c5d250216b8937dccec0642f410870bbc2a0866d52b3f7f9"
+    },
+    {
+      "slot": 3,
+      "artifact": {
+        "digest": "sha256:d9dec458efadc0ed7e144b56c7145d91fe8cd05f53088420183262a245316b99",
+        "expired": false,
+        "id": 13921504425,
+        "name": "runtime-ci-43169302472-browser-3-of-8-attempt-1",
+        "size_in_bytes": 9892045
+      },
+      "source": "09ea34042e625a2e9ba171c59fe505dec2cd3bc0",
+      "product": "26418fe1ba55e13bb4ede4fc4ad107e405c42b3e",
+      "selectedSuites": [
+        "apps/www/src/content/docs/zh-cn/base-accordion-layout-parity.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-accordion-family.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-brutalist-checkbox.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-field-family.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-select-draft-projections.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-shadcn-switch-compositions.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/overlay-scrollbar-geometry.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/scroll-chrome-display.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/table-react19.browser.test.ts",
+        "apps/www/test/radio-group-entry.browser.test.ts",
+        "packages/adapters/web-component/test/shadow-closeout.browser.test.ts"
+      ],
+      "node": "v24.22.2",
+      "chrome": "Google Chrome 156.0.8078.79",
+      "job": 131018452800,
+      "exit": 124,
+      "jobLogSha256": "42cdc7d501173771545466db3854105e1044285f23d5a3984e0839d8fd25186e"
+    }
+  ],
+  "contents": {
+    "verdictMs": {
+      "brutalist/react": 643,
+      "brutalist/vue": 503,
+      "brutalist/vue2": 380,
+      "brutalist/wc": 8,
+      "shadcn/react": 614,
+      "shadcn/vue": 457,
+      "shadcn/vue2": 609,
+      "shadcn/wc": 12
+    },
+    "orderedHandbacks": 24
+  },
+  "dialog": {
+    "passed": 8,
+    "observations": 196,
+    "pngCaptures": 120
+  },
+  "searchNativeLaneRun": false
+}

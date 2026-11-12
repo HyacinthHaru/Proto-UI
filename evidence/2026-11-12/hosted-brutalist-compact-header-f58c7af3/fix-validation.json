@@ -1,0 +1,183 @@
+{
+  "head": "f58c7af3350cee5c6fe456e0dc7b92e790a8c288",
+  "tree": "790d5a13a6771c2036ceccef8299bfbcaeb17eb4",
+  "platform": "macOS arm64",
+  "toolchain": {
+    "node": "24.21.0",
+    "pnpm": "10.32.1",
+    "browser": "156.0.8078.79",
+    "workers": 1,
+    "devToolbar": false
+  },
+  "readRegression": {
+    "baselineHead": "26418fe1ba55e13bb4ede4fc4ad107e405c42b3e",
+    "baseline44Passed2Failed": "580326936998a0abbd9df8c575582b67ab950e3d40502c691fb667951e9eea99",
+    "callsPerCaseBefore": {
+      "panelWidth": 3,
+      "rootStyle": 3
+    },
+    "callsPerCaseAfter": {
+      "panelWidth": 0,
+      "rootStyle": 0
+    },
+    "exactFocused118Passed": "5bc33557f6545e40df41b58bb88f0f9f6898714e3d013ffea704c8b691327864"
+  },
+  "native": {
+    "passed": 10,
+    "failed": 1,
+    "filtered": 7,
+    "exit": 1,
+    "reportSha256": "0bdcbf93f8c99b145693a321dee3abd40c9a749b1e6750c7f9dda21572459730",
+    "executedFiles": {
+      "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts": {
+        "blob": "f3a517c207b24560b3b67ff8852d2e7190f6c219",
+        "tests": [
+          {
+            "title": "shadcn/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "title": "shadcn/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "title": "shadcn/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "title": "shadcn/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "title": "brutalist/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "title": "brutalist/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "title": "brutalist/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "title": "brutalist/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          }
+        ]
+      },
+      "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts": {
+        "blob": "9f13f896e6e595b940e7bd83189dadfe77ac2029",
+        "tests": [
+          {
+            "title": "switches every registered homepage group through real adapters, preserving native anchors and theme",
+            "status": "skipped"
+          },
+          {
+            "title": "keeps native navigation available without JavaScript and does not overflow mobile",
+            "status": "skipped"
+          },
+          {
+            "title": "retains saved React across cold library routes and exercises actual family chrome",
+            "status": "skipped"
+          },
+          {
+            "title": "reveals current articles through native shadow slots and preserves viewport handback",
+            "status": "skipped"
+          },
+          {
+            "title": "uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence",
+            "status": "passed"
+          },
+          {
+            "title": "uses the same mobile shell on documentation with independent global navigation and contents",
+            "status": "passed"
+          },
+          {
+            "title": "compact shadcn preferences stay usable at 200% text, RTL and breakpoint moves",
+            "status": "skipped"
+          },
+          {
+            "title": "compact brutalist preferences stay usable at 200% text, RTL and breakpoint moves",
+            "status": "skipped"
+          },
+          {
+            "title": "retains shadcn preference owners and portals through real breakpoint reconnects",
+            "status": "skipped"
+          },
+          {
+            "title": "retains brutalist preference owners and portals through real breakpoint reconnects",
+            "status": "failed"
+          }
+        ]
+      }
+    }
+  },
+  "contents": {
+    "originalSwitchDeadlineMs": 1000,
+    "transitions": {
+      "brutalist/react": {
+        "clickToOriginalVerdictMs": 238,
+        "captureSha256": "cb57e1a6df19393f0c95457382f97e3a5dd002848ce89f1b6696e4f4d6d8e1e9"
+      },
+      "brutalist/vue": {
+        "clickToOriginalVerdictMs": 230,
+        "captureSha256": "de3fa1ef1d9076d168ef27663ca73656572a114cf0cb286fa642de42e4fcbdd2"
+      },
+      "brutalist/vue2": {
+        "clickToOriginalVerdictMs": 175,
+        "captureSha256": "c90539185171adb851cbfdadba2202f06bb19b4dec5860c0bb00b7b1427dbf74"
+      },
+      "brutalist/wc": {
+        "clickToOriginalVerdictMs": 2,
+        "captureSha256": "0e17e825011f7ebb7d1a1a8437eac63a8873958cc055b250423721cdaa0e6a8c"
+      },
+      "shadcn/react": {
+        "clickToOriginalVerdictMs": 199,
+        "captureSha256": "02545086101c0370460b978e1699de23f5a0c88a728c4a6d9bcf559d68189c1d"
+      },
+      "shadcn/vue": {
+        "clickToOriginalVerdictMs": 181,
+        "captureSha256": "ecc13f05799cef6a09aabc19a83e53ef4de43670332a5872f28c85044b4419ca"
+      },
+      "shadcn/vue2": {
+        "clickToOriginalVerdictMs": 257,
+        "captureSha256": "c4d59dcad38c9322c6e3aa9a5ee3fe1d32d99dd59cf6b220fc30af02ae33d914"
+      },
+      "shadcn/wc": {
+        "clickToOriginalVerdictMs": 4,
+        "captureSha256": "260a450ee657aec908f3fbb5f83ae418ade37477e84b375fe13a11189ebac370"
+      }
+    },
+    "orderedSidebarHandbacks": 24,
+    "handbacksSha256": "d8095a73ed53aff46042f84acc99321a8626ab985904fb75b87700e7686c21b7"
+  },
+  "dialog": {
+    "observations": 196,
+    "pngCaptures": 120,
+    "observationsSha256": "8598791918c22b4db6c7fb22ccb07b65e74e737a959e2127e87371b527459d92"
+  },
+  "compact200PercentAndRtl": {
+    "passed": 2,
+    "reportSha256": "034247fc889f61640a210af0ff7e45b4104f8bed6bee4a9e79b79b0749dff3d9"
+  },
+  "brutalistPreferenceReconnect": {
+    "familyCommitVerdict": "fulfilled",
+    "familyCommitMs": 652.534,
+    "laterFailingStage": "wc-runtime-narrow-focus-ring",
+    "originalShadowPredicate": "focused shadow differs from unfocused shadow",
+    "shadowEqualityObserved": true,
+    "focusVisible": true,
+    "ringWidth": 2,
+    "ringOffset": 2,
+    "ringCaptureSha256": "68f5ea7dd33531e20677cc54ce59150550894f8c3a1a704ec242a816746acaa0"
+  },
+  "types": {
+    "workspaceExit": 0,
+    "astroFiles": 1215,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 30,
+    "logSha256": "2ca69dd7beb0f6769dcad168e7bc662c2024bba979a1e6b906ca1971046bd2e1"
+  }
+}
