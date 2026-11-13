@@ -1,0 +1,659 @@
+{
+  "head": "a7952f1ce1e47399f6928b42a48c8d162afa2a8b",
+  "scope": "Same-host wall-clock join of browser request/response delivery to the dev server middleware. Finish means Node finished writing, not browser consumption. The delayed observer spans transport, browser processing and reporting.",
+  "patchSha256": "76994fe81e5da6092516c3011253af5c3c618eeed2d6912a93f6d66ff09d3175",
+  "serverJournalSha256": "ec4eb16b8c1c07c8d5d7955a919e97e46ed430c7f949db2488114ec896c923f3",
+  "logSha256": "def638caa327b94648d99b837645d8e6c39fe0d65052043aee071dd7469b1ab2",
+  "observations": [
+    {
+      "locale": "zh-cn",
+      "source": {
+        "sha": "a7952f1ce1e47399f6928b42a48c8d162afa2a8b",
+        "dirty": true
+      },
+      "startupPassed": false,
+      "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+      "errors": 18,
+      "consoleErrors": 0,
+      "originalError": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "outcome": "error",
+        "nodeMs": 204317.270792,
+        "nodeTimeOrigin": 1794579482550.98,
+        "dateNow": 1794579686868
+      },
+      "requests": [
+        {
+          "asset": "react.js",
+          "version": "a403fd29",
+          "browserRequestNodeMs": 71183.301042,
+          "browserRequestEpochMs": 1794579553734,
+          "server": [
+            {
+              "name": "react.js",
+              "version": "a403fd29",
+              "receivedAt": 1794579553734,
+              "stage": "received"
+            },
+            {
+              "name": "react.js",
+              "version": "a403fd29",
+              "receivedAt": 1794579553734,
+              "at": 1794579553735,
+              "stage": "finished",
+              "status": 200
+            }
+          ],
+          "browserTerminal": [
+            {
+              "locale": "zh-cn",
+              "stage": "response",
+              "asset": "react.js",
+              "version": "a403fd29",
+              "nodeMs": 71582.091333,
+              "dateNow": 1794579554133,
+              "status": 200
+            },
+            {
+              "locale": "zh-cn",
+              "stage": "finished",
+              "asset": "react.js",
+              "version": "a403fd29",
+              "nodeMs": 71582.144875,
+              "dateNow": 1794579554133
+            }
+          ],
+          "serverElapsedMs": 1,
+          "serverStatus": 200,
+          "serverFinishToBrowserResponseObservationMs": 398
+        },
+        {
+          "asset": "react-dom.js",
+          "version": "a403fd29",
+          "browserRequestNodeMs": 71183.455375,
+          "browserRequestEpochMs": 1794579553734,
+          "server": [
+            {
+              "name": "react-dom.js",
+              "version": "a403fd29",
+              "receivedAt": 1794579553734,
+              "stage": "received"
+            },
+            {
+              "name": "react-dom.js",
+              "version": "a403fd29",
+              "receivedAt": 1794579553734,
+              "at": 1794579553735,
+              "stage": "finished",
+              "status": 200
+            }
+          ],
+          "browserTerminal": [
+            {
+              "locale": "zh-cn",
+              "stage": "response",
+              "asset": "react-dom.js",
+              "version": "a403fd29",
+              "nodeMs": 71581.843333,
+              "dateNow": 1794579554132,
+              "status": 200
+            },
+            {
+              "locale": "zh-cn",
+              "stage": "finished",
+              "asset": "react-dom.js",
+              "version": "a403fd29",
+              "nodeMs": 71581.899833,
+              "dateNow": 1794579554132
+            }
+          ],
+          "serverElapsedMs": 1,
+          "serverStatus": 200,
+          "serverFinishToBrowserResponseObservationMs": 397
+        },
+        {
+          "asset": "react-dom_client.js",
+          "version": "a403fd29",
+          "browserRequestNodeMs": 71183.544167,
+          "browserRequestEpochMs": 1794579553734,
+          "server": [
+            {
+              "name": "react-dom_client.js",
+              "version": "a403fd29",
+              "receivedAt": 1794579553734,
+              "stage": "received"
+            },
+            {
+              "name": "react-dom_client.js",
+              "version": "a403fd29",
+              "receivedAt": 1794579553734,
+              "at": 1794579553738,
+              "stage": "finished",
+              "status": 200
+            }
+          ],
+          "browserTerminal": [
+            {
+              "locale": "zh-cn",
+              "stage": "response",
+              "asset": "react-dom_client.js",
+              "version": "a403fd29",
+              "nodeMs": 71602.363542,
+              "dateNow": 1794579554153,
+              "status": 200
+            },
+            {
+              "locale": "zh-cn",
+              "stage": "finished",
+              "asset": "react-dom_client.js",
+              "version": "a403fd29",
+              "nodeMs": 71602.436292,
+              "dateNow": 1794579554153
+            }
+          ],
+          "serverElapsedMs": 4,
+          "serverStatus": 200,
+          "serverFinishToBrowserResponseObservationMs": 415
+        },
+        {
+          "asset": "chunk-2MALL255.js",
+          "version": "a403fd29",
+          "browserRequestNodeMs": 91042.159875,
+          "browserRequestEpochMs": 1794579573593,
+          "server": [
+            {
+              "name": "chunk-2MALL255.js",
+              "version": "a403fd29",
+              "receivedAt": 1794579573593,
+              "stage": "received"
+            },
+            {
+              "name": "chunk-2MALL255.js",
+              "version": "a403fd29",
+              "receivedAt": 1794579573593,
+              "at": 1794579573597,
+              "stage": "finished",
+              "status": 200
+            }
+          ],
+          "browserTerminal": [
+            {
+              "locale": "zh-cn",
+              "stage": "response",
+              "asset": "chunk-2MALL255.js",
+              "version": "a403fd29",
+              "nodeMs": 168367.61575,
+              "dateNow": 1794579650918,
+              "status": 200
+            },
+            {
+              "locale": "zh-cn",
+              "stage": "finished",
+              "asset": "chunk-2MALL255.js",
+              "version": "a403fd29",
+              "nodeMs": 168367.633667,
+              "dateNow": 1794579650918
+            }
+          ],
+          "serverElapsedMs": 4,
+          "serverStatus": 200,
+          "serverFinishToBrowserResponseObservationMs": 77321
+        },
+        {
+          "asset": "chunk-EK7DFB6S.js",
+          "version": "a403fd29",
+          "browserRequestNodeMs": 91042.284333,
+          "browserRequestEpochMs": 1794579573593,
+          "server": [
+            {
+              "name": "chunk-EK7DFB6S.js",
+              "version": "a403fd29",
+              "receivedAt": 1794579573596,
+              "stage": "received"
+            },
+            {
+              "name": "chunk-EK7DFB6S.js",
+              "version": "a403fd29",
+              "receivedAt": 1794579573596,
+              "at": 1794579573596,
+              "stage": "finished",
+              "status": 200
+            }
+          ],
+          "browserTerminal": [
+            {
+              "locale": "zh-cn",
+              "stage": "response",
+              "asset": "chunk-EK7DFB6S.js",
+              "version": "a403fd29",
+              "nodeMs": 168367.15075,
+              "dateNow": 1794579650918,
+              "status": 200
+            },
+            {
+              "locale": "zh-cn",
+              "stage": "finished",
+              "asset": "chunk-EK7DFB6S.js",
+              "version": "a403fd29",
+              "nodeMs": 168367.254208,
+              "dateNow": 1794579650918
+            }
+          ],
+          "serverElapsedMs": 0,
+          "serverStatus": 200,
+          "serverFinishToBrowserResponseObservationMs": 77322
+        },
+        {
+          "asset": "chunk-BUSYA2B4.js",
+          "version": "a403fd29",
+          "browserRequestNodeMs": 56018.143042,
+          "browserRequestEpochMs": 1794579538569,
+          "server": [
+            {
+              "name": "chunk-BUSYA2B4.js",
+              "version": "a403fd29",
+              "receivedAt": 1794579538566,
+              "stage": "received"
+            },
+            {
+              "name": "chunk-BUSYA2B4.js",
+              "version": "a403fd29",
+              "receivedAt": 1794579538566,
+              "at": 1794579538566,
+              "stage": "finished",
+              "status": 200
+            }
+          ],
+          "browserTerminal": [
+            {
+              "locale": "zh-cn",
+              "stage": "response",
+              "asset": "chunk-BUSYA2B4.js",
+              "version": "a403fd29",
+              "nodeMs": 56023.887958,
+              "dateNow": 1794579538574,
+              "status": 200
+            },
+            {
+              "locale": "zh-cn",
+              "stage": "finished",
+              "asset": "chunk-BUSYA2B4.js",
+              "version": "a403fd29",
+              "nodeMs": 56023.997375,
+              "dateNow": 1794579538574
+            }
+          ],
+          "serverElapsedMs": 0,
+          "serverStatus": 200,
+          "serverFinishToBrowserResponseObservationMs": 8
+        }
+      ],
+      "reactPhases": [
+        {
+          "phase": "demo-begin",
+          "runtime": "react",
+          "owner": "pp-536sr1m43ao",
+          "pageMs": 9146.199999928474,
+          "hostChildren": 0
+        },
+        {
+          "phase": "demo-return",
+          "runtime": "react",
+          "owner": "pp-536sr1m43ao",
+          "pageMs": 11347.199999928474,
+          "hostChildren": 0
+        },
+        {
+          "phase": "prototype-begin",
+          "runtime": "react",
+          "owner": "pp-536sr1m43ao",
+          "pageMs": 11347.299999952316,
+          "hostChildren": 0
+        },
+        {
+          "phase": "prototype-return",
+          "runtime": "react",
+          "owner": "pp-536sr1m43ao",
+          "pageMs": 22658.100000023842,
+          "hostChildren": 0
+        },
+        {
+          "phase": "render-begin",
+          "runtime": "react",
+          "owner": "pp-536sr1m43ao",
+          "pageMs": 22658.199999928474,
+          "hostChildren": 0
+        },
+        {
+          "phase": "react-modules-begin",
+          "runtime": "react",
+          "owner": "pp-536sr1m43ao",
+          "pageMs": 22658.5,
+          "hostChildren": 0
+        },
+        {
+          "phase": "react-modules-return",
+          "runtime": "react",
+          "owner": "pp-536sr1m43ao",
+          "pageMs": 22692.5,
+          "hostChildren": 0
+        },
+        {
+          "phase": "react-runtime-begin",
+          "runtime": "react",
+          "owner": "pp-536sr1m43ao",
+          "pageMs": 22692.5,
+          "hostChildren": 0
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "source": {
+        "sha": "a7952f1ce1e47399f6928b42a48c8d162afa2a8b",
+        "dirty": true
+      },
+      "startupPassed": false,
+      "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+      "errors": 18,
+      "consoleErrors": 0,
+      "originalError": {
+        "locale": "en",
+        "phase": "startup-wait",
+        "outcome": "error",
+        "nodeMs": 354858.474375,
+        "nodeTimeOrigin": 1794579482550.98,
+        "dateNow": 1794579837409
+      },
+      "requests": [
+        {
+          "asset": "react.js",
+          "version": "a403fd29",
+          "browserRequestNodeMs": 225670.915833,
+          "browserRequestEpochMs": 1794579708221,
+          "server": [
+            {
+              "name": "react.js",
+              "version": "a403fd29",
+              "receivedAt": 1794579708222,
+              "stage": "received"
+            },
+            {
+              "name": "react.js",
+              "version": "a403fd29",
+              "receivedAt": 1794579708222,
+              "at": 1794579708223,
+              "stage": "finished",
+              "status": 200
+            }
+          ],
+          "browserTerminal": [
+            {
+              "locale": "en",
+              "stage": "response",
+              "asset": "react.js",
+              "version": "a403fd29",
+              "nodeMs": 228713.908875,
+              "dateNow": 1794579711264,
+              "status": 200
+            },
+            {
+              "locale": "en",
+              "stage": "finished",
+              "asset": "react.js",
+              "version": "a403fd29",
+              "nodeMs": 228713.933833,
+              "dateNow": 1794579711264
+            }
+          ],
+          "serverElapsedMs": 1,
+          "serverStatus": 200,
+          "serverFinishToBrowserResponseObservationMs": 3041
+        },
+        {
+          "asset": "react-dom.js",
+          "version": "a403fd29",
+          "browserRequestNodeMs": 225670.996542,
+          "browserRequestEpochMs": 1794579708221,
+          "server": [
+            {
+              "name": "react-dom.js",
+              "version": "a403fd29",
+              "receivedAt": 1794579708223,
+              "stage": "received"
+            },
+            {
+              "name": "react-dom.js",
+              "version": "a403fd29",
+              "receivedAt": 1794579708223,
+              "at": 1794579708223,
+              "stage": "finished",
+              "status": 200
+            }
+          ],
+          "browserTerminal": [
+            {
+              "locale": "en",
+              "stage": "response",
+              "asset": "react-dom.js",
+              "version": "a403fd29",
+              "nodeMs": 228713.959583,
+              "dateNow": 1794579711264,
+              "status": 200
+            },
+            {
+              "locale": "en",
+              "stage": "finished",
+              "asset": "react-dom.js",
+              "version": "a403fd29",
+              "nodeMs": 228713.971375,
+              "dateNow": 1794579711264
+            }
+          ],
+          "serverElapsedMs": 0,
+          "serverStatus": 200,
+          "serverFinishToBrowserResponseObservationMs": 3041
+        },
+        {
+          "asset": "react-dom_client.js",
+          "version": "a403fd29",
+          "browserRequestNodeMs": 225671.015417,
+          "browserRequestEpochMs": 1794579708221,
+          "server": [
+            {
+              "name": "react-dom_client.js",
+              "version": "a403fd29",
+              "receivedAt": 1794579708223,
+              "stage": "received"
+            },
+            {
+              "name": "react-dom_client.js",
+              "version": "a403fd29",
+              "receivedAt": 1794579708223,
+              "at": 1794579708223,
+              "stage": "finished",
+              "status": 200
+            }
+          ],
+          "browserTerminal": [
+            {
+              "locale": "en",
+              "stage": "response",
+              "asset": "react-dom_client.js",
+              "version": "a403fd29",
+              "nodeMs": 228714.488542,
+              "dateNow": 1794579711265,
+              "status": 200
+            },
+            {
+              "locale": "en",
+              "stage": "finished",
+              "asset": "react-dom_client.js",
+              "version": "a403fd29",
+              "nodeMs": 228714.542667,
+              "dateNow": 1794579711265
+            }
+          ],
+          "serverElapsedMs": 0,
+          "serverStatus": 200,
+          "serverFinishToBrowserResponseObservationMs": 3042
+        },
+        {
+          "asset": "chunk-2MALL255.js",
+          "version": "a403fd29",
+          "browserRequestNodeMs": 231857.815333,
+          "browserRequestEpochMs": 1794579714408,
+          "server": [
+            {
+              "name": "chunk-2MALL255.js",
+              "version": "a403fd29",
+              "receivedAt": 1794579714409,
+              "stage": "received"
+            },
+            {
+              "name": "chunk-2MALL255.js",
+              "version": "a403fd29",
+              "receivedAt": 1794579714409,
+              "at": 1794579714411,
+              "stage": "finished",
+              "status": 200
+            }
+          ],
+          "browserTerminal": [],
+          "serverElapsedMs": 2,
+          "serverStatus": 200,
+          "serverFinishToOriginalErrorWithoutBrowserResponseMs": 122998
+        },
+        {
+          "asset": "chunk-EK7DFB6S.js",
+          "version": "a403fd29",
+          "browserRequestNodeMs": 231857.326833,
+          "browserRequestEpochMs": 1794579714408,
+          "server": [
+            {
+              "name": "chunk-EK7DFB6S.js",
+              "version": "a403fd29",
+              "receivedAt": 1794579714408,
+              "stage": "received"
+            },
+            {
+              "name": "chunk-EK7DFB6S.js",
+              "version": "a403fd29",
+              "receivedAt": 1794579714408,
+              "at": 1794579714409,
+              "stage": "finished",
+              "status": 200
+            }
+          ],
+          "browserTerminal": [],
+          "serverElapsedMs": 1,
+          "serverStatus": 200,
+          "serverFinishToOriginalErrorWithoutBrowserResponseMs": 123000
+        },
+        {
+          "asset": "chunk-BUSYA2B4.js",
+          "version": "a403fd29",
+          "browserRequestNodeMs": 208941.66825,
+          "browserRequestEpochMs": 1794579691492,
+          "server": [
+            {
+              "name": "chunk-BUSYA2B4.js",
+              "version": "a403fd29",
+              "receivedAt": 1794579691487,
+              "stage": "received"
+            },
+            {
+              "name": "chunk-BUSYA2B4.js",
+              "version": "a403fd29",
+              "receivedAt": 1794579691487,
+              "at": 1794579691487,
+              "stage": "finished",
+              "status": 200
+            }
+          ],
+          "browserTerminal": [
+            {
+              "locale": "en",
+              "stage": "response",
+              "asset": "chunk-BUSYA2B4.js",
+              "version": "a403fd29",
+              "nodeMs": 208943.419167,
+              "dateNow": 1794579691494,
+              "status": 200
+            },
+            {
+              "locale": "en",
+              "stage": "finished",
+              "asset": "chunk-BUSYA2B4.js",
+              "version": "a403fd29",
+              "nodeMs": 208943.454375,
+              "dateNow": 1794579691494
+            }
+          ],
+          "serverElapsedMs": 0,
+          "serverStatus": 200,
+          "serverFinishToBrowserResponseObservationMs": 7
+        }
+      ],
+      "reactPhases": [
+        {
+          "phase": "demo-begin",
+          "runtime": "react",
+          "owner": "pp-oet3aqzw5g",
+          "pageMs": 11056.699999928474,
+          "hostChildren": 0
+        },
+        {
+          "phase": "demo-return",
+          "runtime": "react",
+          "owner": "pp-oet3aqzw5g",
+          "pageMs": 13282,
+          "hostChildren": 0
+        },
+        {
+          "phase": "prototype-begin",
+          "runtime": "react",
+          "owner": "pp-oet3aqzw5g",
+          "pageMs": 13282,
+          "hostChildren": 0
+        },
+        {
+          "phase": "prototype-return",
+          "runtime": "react",
+          "owner": "pp-oet3aqzw5g",
+          "pageMs": 22481.799999952316,
+          "hostChildren": 0
+        },
+        {
+          "phase": "render-begin",
+          "runtime": "react",
+          "owner": "pp-oet3aqzw5g",
+          "pageMs": 22481.799999952316,
+          "hostChildren": 0
+        },
+        {
+          "phase": "react-modules-begin",
+          "runtime": "react",
+          "owner": "pp-oet3aqzw5g",
+          "pageMs": 22482.199999928474,
+          "hostChildren": 0
+        },
+        {
+          "phase": "react-modules-return",
+          "runtime": "react",
+          "owner": "pp-oet3aqzw5g",
+          "pageMs": 22514.799999952316,
+          "hostChildren": 0
+        },
+        {
+          "phase": "react-runtime-begin",
+          "runtime": "react",
+          "owner": "pp-oet3aqzw5g",
+          "pageMs": 22514.799999952316,
+          "hostChildren": 0
+        }
+      ]
+    }
+  ]
+}

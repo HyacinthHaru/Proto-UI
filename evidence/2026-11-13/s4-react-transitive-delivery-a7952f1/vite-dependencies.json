@@ -1,0 +1,41 @@
+{
+  "assets": {
+    "react.js": {
+      "sha256": "7aa287563d897b8d1a13beaad3da937368e0cae207256141cb054374037c5f26",
+      "imports": ["chunk-EK7DFB6S.js", "chunk-BUSYA2B4.js"],
+      "zh-cn": ["request", "response", "finished"],
+      "en": ["request", "response", "finished"]
+    },
+    "chunk-EK7DFB6S.js": {
+      "sha256": "3df381ecb334f558364486c7eab929da43a18f9b01ac0d5bd643256bec8cc188",
+      "imports": ["chunk-BUSYA2B4.js"],
+      "zh-cn": ["request"],
+      "en": ["request"]
+    },
+    "chunk-BUSYA2B4.js": {
+      "sha256": "efc482031d78ba54060196a3697583e15ae5b95ebc6bb80fc79757a21523687a",
+      "imports": [],
+      "zh-cn": ["request", "response", "finished"],
+      "en": ["request", "response", "finished"]
+    },
+    "react-dom.js": {
+      "sha256": "b2123c3c85cc7bf54713ff8f91dd28a4919757cc91f7c87be9d28850dd501ee1",
+      "imports": ["chunk-2MALL255.js", "chunk-EK7DFB6S.js", "chunk-BUSYA2B4.js"],
+      "zh-cn": ["request", "response", "finished"],
+      "en": ["request", "response", "finished"]
+    },
+    "chunk-2MALL255.js": {
+      "sha256": "29cc05e35d78ca35003e780aa79b1b50e24b2899dde72b5ab85de98f1ac52d0d",
+      "imports": ["chunk-EK7DFB6S.js", "chunk-BUSYA2B4.js"],
+      "zh-cn": ["request"],
+      "en": ["request"]
+    },
+    "react-dom_client.js": {
+      "sha256": "f629d4ba89f62c558254ca3e491af8f360f8d64371fe2579564144b6aa73fb47",
+      "imports": ["chunk-2MALL255.js", "chunk-EK7DFB6S.js", "chunk-BUSYA2B4.js"],
+      "zh-cn": ["request", "response", "finished"],
+      "en": ["request", "response", "finished"]
+    }
+  },
+  "scope": "Local Vite optimized output bytes in the observed worktree, names joined to the corresponding browser requests. Exact HTTP body bytes were not independently captured."
+}

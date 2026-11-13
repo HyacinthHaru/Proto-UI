@@ -1,0 +1,41 @@
+[
+  {
+    "trace": {
+      "eof": true,
+      "bytes": 10510985,
+      "dataLossOccurred": true,
+      "sha256": "d8639c3c3842e83c2732408b004d7563fb44cbea84ae1fa9d90c9b532f0477f9",
+      "eventCount": 1639922
+    },
+    "patchSha256": "e1945c6196e5d5a2996c164298c3a538f607609d5ba75c0c236503b914c955f7",
+    "observed": [
+      {
+        "locale": "zh-cn",
+        "traceMarks": [],
+        "startupPassed": false
+      },
+      {
+        "locale": "en",
+        "traceMarks": [],
+        "startupPassed": false
+      }
+    ]
+  },
+  {
+    "trace": {
+      "eof": true,
+      "bytes": 6607526,
+      "dataLossOccurred": true,
+      "sha256": "cc4ccc28aa0b6927322217cb3e26cbbf0eb3ad0c68ed2253f45f8b2177244f8e",
+      "eventCount": 992230
+    },
+    "patchSha256": "7086060179425c95814f1a3b533155877552db2a780f145e8caa99ad7a6fcfb8",
+    "observed": [
+      {
+        "locale": "zh-cn",
+        "traceMarks": [],
+        "startupPassed": false
+      }
+    ]
+  }
+]
