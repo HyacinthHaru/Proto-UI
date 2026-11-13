@@ -1,0 +1,501 @@
+{
+  "parent": "22683ce0f2357e1a10501637550fbbe6515137ad",
+  "candidate": "29a61c4cee7e55d160fbe9a6a7242359d5461c8b",
+  "parentResults": [
+    {
+      "file": "homepage-runtime-client.test.ts",
+      "cases": [
+        {
+          "title": "stages all action groups before hiding native SSR links, with the one global runtime/library control group",
+          "status": "passed"
+        },
+        {
+          "title": "commits repeated runtime switches to every group and publishes preference after success",
+          "status": "passed"
+        },
+        {
+          "title": "commits a deferred page control change without restoring newer outside focus",
+          "status": "failed"
+        },
+        {
+          "title": "retains owned focus restoration for a portaled page selector surface",
+          "status": "passed"
+        },
+        {
+          "title": "keeps the prior whole page on partial materialization failure and disposes prepared siblings",
+          "status": "passed"
+        },
+        {
+          "title": "discards late candidates after a newer selection and preserves the latest whole page",
+          "status": "passed"
+        },
+        {
+          "title": "restores fallback and removes subscriptions on disposal",
+          "status": "passed"
+        },
+        {
+          "title": "switches header, native action recipes and demo in one generation with orthogonal runtime/library state and the explicit task recipe",
+          "status": "passed"
+        },
+        {
+          "title": "rejects unsupported family requests before changing the committed homepage transaction",
+          "status": "passed"
+        },
+        {
+          "title": "runs the real Bootstrap homepage composition as a WIP family",
+          "status": "passed"
+        },
+        {
+          "title": "a failed demo prevents the header and native action groups from committing",
+          "status": "passed"
+        },
+        {
+          "title": "rolls back every site family marker when publication fails, including absent markers",
+          "status": "passed"
+        },
+        {
+          "title": "ignores stale preference side effects without taking over native navigation",
+          "status": "passed"
+        },
+        {
+          "title": "uses the public icon-size Button prop for compact accessible header preferences",
+          "status": "passed"
+        },
+        {
+          "title": "projects the menu as a real family Button and binds only its current runtime command channel",
+          "status": "passed"
+        },
+        {
+          "title": "supports a preferences-only header group without inventing a command control",
+          "status": "passed"
+        },
+        {
+          "title": "uses one generation for all commands and preserves the native service DOM through library/runtime changes",
+          "status": "passed"
+        },
+        {
+          "title": "retains the whole old page if one Search command fails and never publishes mixed generations",
+          "status": "passed"
+        },
+        {
+          "title": "carries user intent through a superseding family coordinator request exactly once",
+          "status": "passed"
+        },
+        {
+          "title": "carries user intent through a superseding component coordinator request exactly once",
+          "status": "passed"
+        },
+        {
+          "title": "discards a never-committed intent after superseding failure and does not publish it on a later family success",
+          "status": "passed"
+        },
+        {
+          "title": "retains the one pending intent across repeated same-runtime selections",
+          "status": "passed"
+        },
+        {
+          "title": "replaces pending intent when the user explicitly selects the old runtime again",
+          "status": "passed"
+        },
+        {
+          "title": "does not publish after teardown or resurrect late pending candidates",
+          "status": "passed"
+        },
+        {
+          "title": "still notifies the document once if optional preference storage throws",
+          "status": "passed"
+        },
+        {
+          "title": "does not republish an external adapter request as a pending homepage choice",
+          "status": "passed"
+        },
+        {
+          "title": "publishes only the already-committed runtime retained by a later failed family request",
+          "status": "passed"
+        },
+        {
+          "title": "reads one page-owned theme before updating nested language/social candidates",
+          "status": "passed"
+        },
+        {
+          "title": "cancels through its real public Button without replacing the retained generation or publishing stale preference",
+          "status": "passed"
+        },
+        {
+          "title": "keeps a failed target retryable through a real Button and removes the mask after success",
+          "status": "passed"
+        },
+        {
+          "title": "recomputes both Header control policies for the requested shadcn family, including return switches",
+          "status": "passed"
+        },
+        {
+          "title": "recomputes both Header control policies for the requested brutalist family, including return switches",
+          "status": "passed"
+        }
+      ]
+    }
+  ],
+  "candidateResults": [
+    {
+      "file": "homepage-runtime-client.test.ts",
+      "cases": [
+        {
+          "title": "stages all action groups before hiding native SSR links, with the one global runtime/library control group",
+          "status": "passed"
+        },
+        {
+          "title": "commits repeated runtime switches to every group and publishes preference after success",
+          "status": "passed"
+        },
+        {
+          "title": "commits a deferred page control change without restoring newer outside focus",
+          "status": "passed"
+        },
+        {
+          "title": "retains owned focus restoration for a portaled page selector surface",
+          "status": "passed"
+        },
+        {
+          "title": "keeps the prior whole page on partial materialization failure and disposes prepared siblings",
+          "status": "passed"
+        },
+        {
+          "title": "discards late candidates after a newer selection and preserves the latest whole page",
+          "status": "passed"
+        },
+        {
+          "title": "restores fallback and removes subscriptions on disposal",
+          "status": "passed"
+        },
+        {
+          "title": "switches header, native action recipes and demo in one generation with orthogonal runtime/library state and the explicit task recipe",
+          "status": "passed"
+        },
+        {
+          "title": "rejects unsupported family requests before changing the committed homepage transaction",
+          "status": "passed"
+        },
+        {
+          "title": "runs the real Bootstrap homepage composition as a WIP family",
+          "status": "passed"
+        },
+        {
+          "title": "a failed demo prevents the header and native action groups from committing",
+          "status": "passed"
+        },
+        {
+          "title": "rolls back every site family marker when publication fails, including absent markers",
+          "status": "passed"
+        },
+        {
+          "title": "ignores stale preference side effects without taking over native navigation",
+          "status": "passed"
+        },
+        {
+          "title": "uses the public icon-size Button prop for compact accessible header preferences",
+          "status": "passed"
+        },
+        {
+          "title": "projects the menu as a real family Button and binds only its current runtime command channel",
+          "status": "passed"
+        },
+        {
+          "title": "supports a preferences-only header group without inventing a command control",
+          "status": "passed"
+        },
+        {
+          "title": "uses one generation for all commands and preserves the native service DOM through library/runtime changes",
+          "status": "passed"
+        },
+        {
+          "title": "retains the whole old page if one Search command fails and never publishes mixed generations",
+          "status": "passed"
+        },
+        {
+          "title": "carries user intent through a superseding family coordinator request exactly once",
+          "status": "passed"
+        },
+        {
+          "title": "carries user intent through a superseding component coordinator request exactly once",
+          "status": "passed"
+        },
+        {
+          "title": "discards a never-committed intent after superseding failure and does not publish it on a later family success",
+          "status": "passed"
+        },
+        {
+          "title": "retains the one pending intent across repeated same-runtime selections",
+          "status": "passed"
+        },
+        {
+          "title": "replaces pending intent when the user explicitly selects the old runtime again",
+          "status": "passed"
+        },
+        {
+          "title": "does not publish after teardown or resurrect late pending candidates",
+          "status": "passed"
+        },
+        {
+          "title": "still notifies the document once if optional preference storage throws",
+          "status": "passed"
+        },
+        {
+          "title": "does not republish an external adapter request as a pending homepage choice",
+          "status": "passed"
+        },
+        {
+          "title": "publishes only the already-committed runtime retained by a later failed family request",
+          "status": "passed"
+        },
+        {
+          "title": "reads one page-owned theme before updating nested language/social candidates",
+          "status": "passed"
+        },
+        {
+          "title": "cancels through its real public Button without replacing the retained generation or publishing stale preference",
+          "status": "passed"
+        },
+        {
+          "title": "keeps a failed target retryable through a real Button and removes the mask after success",
+          "status": "passed"
+        },
+        {
+          "title": "recomputes both Header control policies for the requested shadcn family, including return switches",
+          "status": "passed"
+        },
+        {
+          "title": "recomputes both Header control policies for the requested brutalist family, including return switches",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "file": "projection-materializer.test.ts",
+      "cases": [
+        {
+          "title": "prepares from the watched theme and applies a pending change before returning the candidate",
+          "status": "passed"
+        },
+        {
+          "title": "revokes an independent background theme task on owner disposal",
+          "status": "passed"
+        },
+        {
+          "title": "revokes an independent background render task on owner disposal",
+          "status": "passed"
+        },
+        {
+          "title": "renders without another background task after the competing preparation finishes",
+          "status": "passed"
+        },
+        {
+          "title": "retains a hidden candidate and its late portal through the opted-in post-paint task",
+          "status": "passed"
+        },
+        {
+          "title": "keeps quoted owner coordinates exact when looking up external portals",
+          "status": "passed"
+        },
+        {
+          "title": "seals staging portals and atomically swaps exact owner generations on activation",
+          "status": "passed"
+        },
+        {
+          "title": "never seals or removes an owned mount ancestor while still managing sibling portals",
+          "status": "passed"
+        },
+        {
+          "title": "shares one owner-filtered document portal observer across candidates",
+          "status": "passed"
+        },
+        {
+          "title": "removes only the failed candidate external portal roots",
+          "status": "passed"
+        },
+        {
+          "title": "preserves preparation failure while exhaustively cleaning secondary teardown failures",
+          "status": "passed"
+        },
+        {
+          "title": "releases Runtime, host, and portal leases when disposal sealing throws",
+          "status": "passed"
+        },
+        {
+          "title": "distinguishes newer focus from teardown blur before restoration",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "file": "projection-scope.test.ts",
+      "cases": [
+        {
+          "title": "recovers through start after a newer initial request fails after the stale start settled",
+          "status": "passed"
+        },
+        {
+          "title": "recovers through request after a newer initial request fails after the stale start settled",
+          "status": "passed"
+        },
+        {
+          "title": "does not reopen admission when disposal interleaves with a stale start and pending request",
+          "status": "passed"
+        },
+        {
+          "title": "still requires start admission and permits a fresh start after an idle initial failure",
+          "status": "passed"
+        },
+        {
+          "title": "keeps request admission when a stale initial start fulfills before a newer preparing generation",
+          "status": "passed"
+        },
+        {
+          "title": "keeps request admission when a stale initial start fulfills before a newer ready generation",
+          "status": "passed"
+        },
+        {
+          "title": "keeps request admission when a stale initial start rejects before a newer preparing generation",
+          "status": "passed"
+        },
+        {
+          "title": "keeps request admission when a stale initial start rejects before a newer ready generation",
+          "status": "passed"
+        },
+        {
+          "title": "switches Runtime and projection family as orthogonal coordinates",
+          "status": "passed"
+        },
+        {
+          "title": "supersedes a pending initial generation before it can activate",
+          "status": "passed"
+        },
+        {
+          "title": "starts new work after a stale initial start fulfills without a commit",
+          "status": "passed"
+        },
+        {
+          "title": "keeps the committed generation active until the prepared candidate activates",
+          "status": "passed"
+        },
+        {
+          "title": "fails closed and retains the complete committed generation when preparation fails",
+          "status": "passed"
+        },
+        {
+          "title": "preserves the target failure when retained-generation unlock also rejects",
+          "status": "passed"
+        },
+        {
+          "title": "keeps a committed request successful when replaced-generation disposal reports failure",
+          "status": "passed"
+        },
+        {
+          "title": "keeps the committed generation ready when post-commit focus restoration throws",
+          "status": "passed"
+        },
+        {
+          "title": "lets the latest requested coordinates win and disposes a candidate that resolves stale",
+          "status": "passed"
+        },
+        {
+          "title": "reports controlled commits and restores focus by semantic key only after activation",
+          "status": "passed"
+        },
+        {
+          "title": "restores switch focus before delayed retired-generation cleanup",
+          "status": "passed"
+        },
+        {
+          "title": "rematerializes controlled content without adding it to the projection coordinates",
+          "status": "passed"
+        },
+        {
+          "title": "publishes activation and commit metadata in the same synchronous stack",
+          "status": "passed"
+        },
+        {
+          "title": "fails closed when an erased candidate returns a thenable from activation",
+          "status": "passed"
+        },
+        {
+          "title": "restores the retained candidate when activation mutates visibility and then throws",
+          "status": "passed"
+        },
+        {
+          "title": "rolls back the activated candidate when client commit publication throws",
+          "status": "passed"
+        },
+        {
+          "title": "keeps the superseding target and retained lease locked when publication reenters request",
+          "status": "passed"
+        },
+        {
+          "title": "disposes a stale prepared candidate even when its rollback throws",
+          "status": "passed"
+        },
+        {
+          "title": "waits for pending materialization and stale lease cleanup before destroy resolves",
+          "status": "passed"
+        },
+        {
+          "title": "restores and unlocks the committed generation when lock acquisition throws",
+          "status": "passed"
+        },
+        {
+          "title": "restores and unlocks the committed generation when async lock acquisition rejects",
+          "status": "passed"
+        },
+        {
+          "title": "does not let a stale async unlock reopen a superseding preparation",
+          "status": "passed"
+        },
+        {
+          "title": "reserves the lock queue before a candidate synchronously reenters request",
+          "status": "passed"
+        },
+        {
+          "title": "disposes the retained generation while an async seal is still pending",
+          "status": "passed"
+        },
+        {
+          "title": "breaks a request-destroy cycle returned directly from the lock callback",
+          "status": "passed"
+        },
+        {
+          "title": "breaks a request-destroy cycle returned through a lock callback wrapper",
+          "status": "passed"
+        },
+        {
+          "title": "breaks a destroy-dispose cycle returned from the candidate disposal callback",
+          "status": "passed"
+        },
+        {
+          "title": "awaits independent async disposal after the candidate synchronously reenters destroy",
+          "status": "passed"
+        },
+        {
+          "title": "locks the committed request surfaces and unlocks them after a fail-closed rejection",
+          "status": "passed"
+        },
+        {
+          "title": "keeps the committed candidate and disposes late work without remounting or losing owned state",
+          "status": "passed"
+        },
+        {
+          "title": "does not let a cancelled late rejection hide a newer successful request",
+          "status": "passed"
+        },
+        {
+          "title": "makes a failed retained unlock retryable after cancellation without remounting",
+          "status": "passed"
+        },
+        {
+          "title": "does not report a double cancellation complete before a delayed failing unlock is retried",
+          "status": "passed"
+        }
+      ]
+    }
+  ],
+  "scope": "Homepage selectors preserve outside focus, actual owned origin and current portaled owner/generation."
+}

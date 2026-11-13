@@ -1,0 +1,1136 @@
+{
+  "product": "29a61c4cee7e55d160fbe9a6a7242359d5461c8b",
+  "tree": "9362f6463620235e06f481928a5628464bbaf173",
+  "parent": "22683ce0f2357e1a10501637550fbbe6515137ad",
+  "exact": {
+    "focused": [
+      {
+        "file": "homepage-runtime-client.test.ts",
+        "cases": [
+          {
+            "status": "passed",
+            "title": "stages all action groups before hiding native SSR links, with the one global runtime/library control group",
+            "duration": 9.937166999999818
+          },
+          {
+            "status": "passed",
+            "title": "commits repeated runtime switches to every group and publishes preference after success",
+            "duration": 3.49416599999995
+          },
+          {
+            "status": "passed",
+            "title": "commits a deferred page control change without restoring newer outside focus",
+            "duration": 3.469041999999945
+          },
+          {
+            "status": "passed",
+            "title": "retains owned focus restoration for a portaled page selector surface",
+            "duration": 2.2592500000000655
+          },
+          {
+            "status": "passed",
+            "title": "keeps the prior whole page on partial materialization failure and disposes prepared siblings",
+            "duration": 1.6271670000000995
+          },
+          {
+            "status": "passed",
+            "title": "discards late candidates after a newer selection and preserves the latest whole page",
+            "duration": 1.768000000000029
+          },
+          {
+            "status": "passed",
+            "title": "restores fallback and removes subscriptions on disposal",
+            "duration": 1.0824579999998605
+          },
+          {
+            "status": "passed",
+            "title": "switches header, native action recipes and demo in one generation with orthogonal runtime/library state and the explicit task recipe",
+            "duration": 70.0914580000001
+          },
+          {
+            "status": "passed",
+            "title": "rejects unsupported family requests before changing the committed homepage transaction",
+            "duration": 28.516582999999855
+          },
+          {
+            "status": "passed",
+            "title": "runs the real Bootstrap homepage composition as a WIP family",
+            "duration": 14.975124999999935
+          },
+          {
+            "status": "passed",
+            "title": "a failed demo prevents the header and native action groups from committing",
+            "duration": 18.4038750000002
+          },
+          {
+            "status": "passed",
+            "title": "rolls back every site family marker when publication fails, including absent markers",
+            "duration": 12.197208000000046
+          },
+          {
+            "status": "passed",
+            "title": "ignores stale preference side effects without taking over native navigation",
+            "duration": 0.8304580000001351
+          },
+          {
+            "status": "passed",
+            "title": "uses the public icon-size Button prop for compact accessible header preferences",
+            "duration": 0.5552499999998872
+          },
+          {
+            "status": "passed",
+            "title": "projects the menu as a real family Button and binds only its current runtime command channel",
+            "duration": 1.0166669999998703
+          },
+          {
+            "status": "passed",
+            "title": "supports a preferences-only header group without inventing a command control",
+            "duration": 0.7934579999998732
+          },
+          {
+            "status": "passed",
+            "title": "uses one generation for all commands and preserves the native service DOM through library/runtime changes",
+            "duration": 29.475374999999985
+          },
+          {
+            "status": "passed",
+            "title": "retains the whole old page if one Search command fails and never publishes mixed generations",
+            "duration": 15.063666999999896
+          },
+          {
+            "status": "passed",
+            "title": "carries user intent through a superseding family coordinator request exactly once",
+            "duration": 2.614417000000003
+          },
+          {
+            "status": "passed",
+            "title": "carries user intent through a superseding component coordinator request exactly once",
+            "duration": 1.695791999999983
+          },
+          {
+            "status": "passed",
+            "title": "discards a never-committed intent after superseding failure and does not publish it on a later family success",
+            "duration": 1.7052080000000842
+          },
+          {
+            "status": "passed",
+            "title": "retains the one pending intent across repeated same-runtime selections",
+            "duration": 1.4900829999999132
+          },
+          {
+            "status": "passed",
+            "title": "replaces pending intent when the user explicitly selects the old runtime again",
+            "duration": 1.3947499999999309
+          },
+          {
+            "status": "passed",
+            "title": "does not publish after teardown or resurrect late pending candidates",
+            "duration": 1.069833000000017
+          },
+          {
+            "status": "passed",
+            "title": "still notifies the document once if optional preference storage throws",
+            "duration": 1.2629579999997986
+          },
+          {
+            "status": "passed",
+            "title": "does not republish an external adapter request as a pending homepage choice",
+            "duration": 1.7342499999999745
+          },
+          {
+            "status": "passed",
+            "title": "publishes only the already-committed runtime retained by a later failed family request",
+            "duration": 1.5881669999998849
+          },
+          {
+            "status": "passed",
+            "title": "reads one page-owned theme before updating nested language/social candidates",
+            "duration": 3.078083000000106
+          },
+          {
+            "status": "passed",
+            "title": "cancels through its real public Button without replacing the retained generation or publishing stale preference",
+            "duration": 60.89016699999979
+          },
+          {
+            "status": "passed",
+            "title": "keeps a failed target retryable through a real Button and removes the mask after success",
+            "duration": 61.46008299999994
+          },
+          {
+            "status": "passed",
+            "title": "recomputes both Header control policies for the requested shadcn family, including return switches",
+            "duration": 2.3733750000001237
+          },
+          {
+            "status": "passed",
+            "title": "recomputes both Header control policies for the requested brutalist family, including return switches",
+            "duration": 1.9272500000001855
+          }
+        ]
+      },
+      {
+        "file": "projected-previewer-client.test.ts",
+        "cases": [
+          {
+            "status": "passed",
+            "title": "materializes only the Runtime control with the fixed recipe content",
+            "duration": 53.69625000000002
+          },
+          {
+            "status": "passed",
+            "title": "renders the exact initial projection failure in the empty host",
+            "duration": 52.07287500000001
+          },
+          {
+            "status": "passed",
+            "title": "switches Runtime once while preserving the fixed family and component",
+            "duration": 106.48787500000003
+          },
+          {
+            "status": "passed",
+            "title": "does not restore Runtime focus when a newer outside owner already has it",
+            "duration": 104.61658299999999
+          },
+          {
+            "status": "passed",
+            "title": "seals the current generation before a preference event can reenter Runtime switching",
+            "duration": 105.44566699999996
+          },
+          {
+            "status": "passed",
+            "title": "settles a same-turn Runtime switch away and back without leaving loading state",
+            "duration": 54.72950000000003
+          },
+          {
+            "status": "passed",
+            "title": "supersedes a pending initial generation with the latest Runtime intent",
+            "duration": 108.13991700000008
+          },
+          {
+            "status": "passed",
+            "title": "keeps the replacement ready when retired-generation cleanup reports failure",
+            "duration": 105.8109169999999
+          },
+          {
+            "status": "passed",
+            "title": "does not mark an already-committed generation as error when focus restoration fails",
+            "duration": 105.92654199999993
+          },
+          {
+            "status": "passed",
+            "title": "handles one page preference event through one projection request",
+            "duration": 103.66704099999993
+          },
+          {
+            "status": "passed",
+            "title": "fails closed and retains the committed Runtime generation",
+            "duration": 105.31966699999998
+          },
+          {
+            "status": "passed",
+            "title": "rejects a theme preparation failure before activating the replacement generation",
+            "duration": 103.23983300000009
+          },
+          {
+            "status": "passed",
+            "title": "uses the first watcher sample and still reads live theme on replacement",
+            "duration": 54.33183400000007
+          },
+          {
+            "status": "passed",
+            "title": "routes theme updates to the currently active candidate without rematerializing",
+            "duration": 52.54816699999992
+          },
+          {
+            "status": "passed",
+            "title": "keeps a committed generation ready when deferred code-panel work throws",
+            "duration": 53.172207999999955
+          },
+          {
+            "status": "passed",
+            "title": "omits all scope controls when the Previewer toolbar is disabled",
+            "duration": 52.16949999999997
+          },
+          {
+            "status": "passed",
+            "title": "returns the in-flight teardown promise to repeated callers",
+            "duration": 103.38325000000009
+          },
+          {
+            "status": "passed",
+            "title": "does not retain a candidate that finishes after client destroy",
+            "duration": 53.374708000000055
+          },
+          {
+            "status": "passed",
+            "title": "does not retain a superseded candidate when the latest request fails",
+            "duration": 157.48462499999982
+          },
+          {
+            "status": "passed",
+            "title": "does not retain an older candidate superseded by a concurrent reload",
+            "duration": 153.36645799999997
+          },
+          {
+            "status": "passed",
+            "title": "materializes an exact lane-only recipe without inventing a cross-lane family",
+            "duration": 52.17337499999985
+          }
+        ]
+      },
+      {
+        "file": "projected-previewer-shell.integration.test.ts",
+        "cases": [
+          {
+            "status": "passed",
+            "title": "shadcn/wc: real projected caller commits independent content and matching ready public shell",
+            "duration": 160.64441699999998
+          },
+          {
+            "status": "passed",
+            "title": "shadcn/react: real projected caller commits independent content and matching ready public shell",
+            "duration": 159.80212500000005
+          },
+          {
+            "status": "passed",
+            "title": "shadcn/vue: real projected caller commits independent content and matching ready public shell",
+            "duration": 167.33829200000002
+          },
+          {
+            "status": "passed",
+            "title": "shadcn/vue2: real projected caller commits independent content and matching ready public shell",
+            "duration": 136.27420800000004
+          },
+          {
+            "status": "passed",
+            "title": "brutalist/wc: real projected caller commits independent content and matching ready public shell",
+            "duration": 82.56141700000012
+          },
+          {
+            "status": "passed",
+            "title": "brutalist/react: real projected caller commits independent content and matching ready public shell",
+            "duration": 54.44137499999988
+          },
+          {
+            "status": "passed",
+            "title": "brutalist/vue: real projected caller commits independent content and matching ready public shell",
+            "duration": 56.18795799999998
+          },
+          {
+            "status": "passed",
+            "title": "brutalist/vue2: real projected caller commits independent content and matching ready public shell",
+            "duration": 57.488333999999895
+          },
+          {
+            "status": "passed",
+            "title": "bootstrap-2-3-2/wc: real projected caller commits independent content and matching ready public shell",
+            "duration": 70.56812500000001
+          },
+          {
+            "status": "passed",
+            "title": "bootstrap-2-3-2/react: real projected caller commits independent content and matching ready public shell",
+            "duration": 109.2076669999999
+          },
+          {
+            "status": "passed",
+            "title": "bootstrap-2-3-2/vue: real projected caller commits independent content and matching ready public shell",
+            "duration": 57.8537080000001
+          },
+          {
+            "status": "passed",
+            "title": "bootstrap-2-3-2/vue2: real projected caller commits independent content and matching ready public shell",
+            "duration": 59.007457999999815
+          },
+          {
+            "status": "passed",
+            "title": "liquid-glass/wc: real projected caller commits independent content and matching ready public shell",
+            "duration": 126.65929200000005
+          },
+          {
+            "status": "passed",
+            "title": "liquid-glass/react: real projected caller commits independent content and matching ready public shell",
+            "duration": 57.72270800000001
+          },
+          {
+            "status": "passed",
+            "title": "liquid-glass/vue: real projected caller commits independent content and matching ready public shell",
+            "duration": 54.60916700000007
+          },
+          {
+            "status": "passed",
+            "title": "liquid-glass/vue2: real projected caller commits independent content and matching ready public shell",
+            "duration": 54.705208000000084
+          },
+          {
+            "status": "passed",
+            "title": "wc: generic caller publishes runtime-ready only after its real shell exists",
+            "duration": 129.42908299999976
+          },
+          {
+            "status": "passed",
+            "title": "react: generic caller publishes runtime-ready only after its real shell exists",
+            "duration": 54.82191699999976
+          },
+          {
+            "status": "passed",
+            "title": "vue: generic caller publishes runtime-ready only after its real shell exists",
+            "duration": 56.469290999999885
+          },
+          {
+            "status": "passed",
+            "title": "vue2: generic caller publishes runtime-ready only after its real shell exists",
+            "duration": 56.56637499999988
+          },
+          {
+            "status": "passed",
+            "title": "shadcn/wc: Runtime Tabs activate the next real generation exactly once",
+            "duration": 246.45875000000024
+          },
+          {
+            "status": "passed",
+            "title": "shadcn/react: Runtime Tabs activate the next real generation exactly once",
+            "duration": 264.1902919999998
+          },
+          {
+            "status": "passed",
+            "title": "shadcn/vue: Runtime Tabs activate the next real generation exactly once",
+            "duration": 255.18287499999997
+          },
+          {
+            "status": "passed",
+            "title": "shadcn/vue2: Runtime Tabs activate the next real generation exactly once",
+            "duration": 242.64125000000013
+          },
+          {
+            "status": "passed",
+            "title": "brutalist/wc: Runtime Tabs activate the next real generation exactly once",
+            "duration": 206.1550000000002
+          },
+          {
+            "status": "passed",
+            "title": "brutalist/react: Runtime Tabs activate the next real generation exactly once",
+            "duration": 271.97337500000003
+          },
+          {
+            "status": "passed",
+            "title": "brutalist/vue: Runtime Tabs activate the next real generation exactly once",
+            "duration": 263.069708
+          },
+          {
+            "status": "passed",
+            "title": "brutalist/vue2: Runtime Tabs activate the next real generation exactly once",
+            "duration": 247.14758299999994
+          },
+          {
+            "status": "passed",
+            "title": "bootstrap-2-3-2/wc: Runtime Tabs activate the next real generation exactly once",
+            "duration": 220.51008399999955
+          },
+          {
+            "status": "passed",
+            "title": "bootstrap-2-3-2/react: Runtime Tabs activate the next real generation exactly once",
+            "duration": 218.78891600000043
+          },
+          {
+            "status": "passed",
+            "title": "bootstrap-2-3-2/vue: Runtime Tabs activate the next real generation exactly once",
+            "duration": 211.6125830000001
+          },
+          {
+            "status": "passed",
+            "title": "bootstrap-2-3-2/vue2: Runtime Tabs activate the next real generation exactly once",
+            "duration": 216.15599999999995
+          },
+          {
+            "status": "passed",
+            "title": "liquid-glass/wc: Runtime Tabs activate the next real generation exactly once",
+            "duration": 220.22270800000024
+          },
+          {
+            "status": "passed",
+            "title": "liquid-glass/react: Runtime Tabs activate the next real generation exactly once",
+            "duration": 162.4893750000001
+          },
+          {
+            "status": "passed",
+            "title": "liquid-glass/vue: Runtime Tabs activate the next real generation exactly once",
+            "duration": 193.2574169999998
+          },
+          {
+            "status": "passed",
+            "title": "liquid-glass/vue2: Runtime Tabs activate the next real generation exactly once",
+            "duration": 185.67183300000033
+          },
+          {
+            "status": "passed",
+            "title": "wc: legacy Runtime Tabs keep a single real demo host across teardown and switch",
+            "duration": 132.336542
+          },
+          {
+            "status": "passed",
+            "title": "react: legacy Runtime Tabs keep a single real demo host across teardown and switch",
+            "duration": 129.62416699999994
+          },
+          {
+            "status": "passed",
+            "title": "vue: legacy Runtime Tabs keep a single real demo host across teardown and switch",
+            "duration": 128.13579200000004
+          },
+          {
+            "status": "passed",
+            "title": "vue2: legacy Runtime Tabs keep a single real demo host across teardown and switch",
+            "duration": 130.38145799999984
+          },
+          {
+            "status": "passed",
+            "title": "wc: manual Runtime Tabs navigate without remount and restore the new selected tab after Enter and Space",
+            "duration": 367.9990000000007
+          },
+          {
+            "status": "passed",
+            "title": "wc: newer external focus survives pending and superseded generations, old callbacks and destroy",
+            "duration": 374.325417
+          },
+          {
+            "status": "passed",
+            "title": "react: manual Runtime Tabs navigate without remount and restore the new selected tab after Enter and Space",
+            "duration": 313.3767079999998
+          },
+          {
+            "status": "passed",
+            "title": "react: newer external focus survives pending and superseded generations, old callbacks and destroy",
+            "duration": 276.76037499999984
+          },
+          {
+            "status": "passed",
+            "title": "vue: manual Runtime Tabs navigate without remount and restore the new selected tab after Enter and Space",
+            "duration": 366.90625
+          },
+          {
+            "status": "passed",
+            "title": "vue: newer external focus survives pending and superseded generations, old callbacks and destroy",
+            "duration": 442.7445830000006
+          },
+          {
+            "status": "passed",
+            "title": "vue2: manual Runtime Tabs navigate without remount and restore the new selected tab after Enter and Space",
+            "duration": 373.82387500000004
+          },
+          {
+            "status": "passed",
+            "title": "vue2: newer external focus survives pending and superseded generations, old callbacks and destroy",
+            "duration": 429.73312500000065
+          }
+        ]
+      },
+      {
+        "file": "projection-materializer.test.ts",
+        "cases": [
+          {
+            "status": "passed",
+            "title": "prepares from the watched theme and applies a pending change before returning the candidate",
+            "duration": 5.738708000000003
+          },
+          {
+            "status": "passed",
+            "title": "revokes an independent background theme task on owner disposal",
+            "duration": 1.1583750000000066
+          },
+          {
+            "status": "passed",
+            "title": "revokes an independent background render task on owner disposal",
+            "duration": 51.600415999999996
+          },
+          {
+            "status": "passed",
+            "title": "renders without another background task after the competing preparation finishes",
+            "duration": 0.84050000000002
+          },
+          {
+            "status": "passed",
+            "title": "retains a hidden candidate and its late portal through the opted-in post-paint task",
+            "duration": 103.33020800000003
+          },
+          {
+            "status": "passed",
+            "title": "keeps quoted owner coordinates exact when looking up external portals",
+            "duration": 0.8595829999999864
+          },
+          {
+            "status": "passed",
+            "title": "seals staging portals and atomically swaps exact owner generations on activation",
+            "duration": 55.144375000000025
+          },
+          {
+            "status": "passed",
+            "title": "never seals or removes an owned mount ancestor while still managing sibling portals",
+            "duration": 0.9600410000000466
+          },
+          {
+            "status": "passed",
+            "title": "shares one owner-filtered document portal observer across candidates",
+            "duration": 54.44729100000001
+          },
+          {
+            "status": "passed",
+            "title": "removes only the failed candidate external portal roots",
+            "duration": 1.433917000000008
+          },
+          {
+            "status": "passed",
+            "title": "preserves preparation failure while exhaustively cleaning secondary teardown failures",
+            "duration": 0.6952500000000441
+          },
+          {
+            "status": "passed",
+            "title": "releases Runtime, host, and portal leases when disposal sealing throws",
+            "duration": 0.5122079999999869
+          },
+          {
+            "status": "passed",
+            "title": "distinguishes newer focus from teardown blur before restoration",
+            "duration": 2.3439590000000408
+          }
+        ]
+      },
+      {
+        "file": "projection-scope.test.ts",
+        "cases": [
+          {
+            "status": "passed",
+            "title": "recovers through start after a newer initial request fails after the stale start settled",
+            "duration": 1.9717919999999935
+          },
+          {
+            "status": "passed",
+            "title": "recovers through request after a newer initial request fails after the stale start settled",
+            "duration": 0.3156659999999931
+          },
+          {
+            "status": "passed",
+            "title": "does not reopen admission when disposal interleaves with a stale start and pending request",
+            "duration": 0.5290830000000142
+          },
+          {
+            "status": "passed",
+            "title": "still requires start admission and permits a fresh start after an idle initial failure",
+            "duration": 0.2680000000000007
+          },
+          {
+            "status": "passed",
+            "title": "keeps request admission when a stale initial start fulfills before a newer preparing generation",
+            "duration": 0.3564169999999933
+          },
+          {
+            "status": "passed",
+            "title": "keeps request admission when a stale initial start fulfills before a newer ready generation",
+            "duration": 0.18125000000000568
+          },
+          {
+            "status": "passed",
+            "title": "keeps request admission when a stale initial start rejects before a newer preparing generation",
+            "duration": 0.17516699999998764
+          },
+          {
+            "status": "passed",
+            "title": "keeps request admission when a stale initial start rejects before a newer ready generation",
+            "duration": 0.14612500000001205
+          },
+          {
+            "status": "passed",
+            "title": "switches Runtime and projection family as orthogonal coordinates",
+            "duration": 0.19229100000001154
+          },
+          {
+            "status": "passed",
+            "title": "supersedes a pending initial generation before it can activate",
+            "duration": 0.17575000000002206
+          },
+          {
+            "status": "passed",
+            "title": "starts new work after a stale initial start fulfills without a commit",
+            "duration": 0.16320899999999483
+          },
+          {
+            "status": "passed",
+            "title": "keeps the committed generation active until the prepared candidate activates",
+            "duration": 0.18174999999999386
+          },
+          {
+            "status": "passed",
+            "title": "fails closed and retains the complete committed generation when preparation fails",
+            "duration": 0.14674999999999727
+          },
+          {
+            "status": "passed",
+            "title": "preserves the target failure when retained-generation unlock also rejects",
+            "duration": 0.4143750000000068
+          },
+          {
+            "status": "passed",
+            "title": "keeps a committed request successful when replaced-generation disposal reports failure",
+            "duration": 0.1927090000000362
+          },
+          {
+            "status": "passed",
+            "title": "keeps the committed generation ready when post-commit focus restoration throws",
+            "duration": 0.15324999999995725
+          },
+          {
+            "status": "passed",
+            "title": "lets the latest requested coordinates win and disposes a candidate that resolves stale",
+            "duration": 0.2242090000000303
+          },
+          {
+            "status": "passed",
+            "title": "reports controlled commits and restores focus by semantic key only after activation",
+            "duration": 0.36116600000002563
+          },
+          {
+            "status": "passed",
+            "title": "restores switch focus before delayed retired-generation cleanup",
+            "duration": 51.07687500000003
+          },
+          {
+            "status": "passed",
+            "title": "rematerializes controlled content without adding it to the projection coordinates",
+            "duration": 0.1832920000000513
+          },
+          {
+            "status": "passed",
+            "title": "publishes activation and commit metadata in the same synchronous stack",
+            "duration": 0.12579200000004676
+          },
+          {
+            "status": "passed",
+            "title": "fails closed when an erased candidate returns a thenable from activation",
+            "duration": 0.234375
+          },
+          {
+            "status": "passed",
+            "title": "restores the retained candidate when activation mutates visibility and then throws",
+            "duration": 0.2017500000000041
+          },
+          {
+            "status": "passed",
+            "title": "rolls back the activated candidate when client commit publication throws",
+            "duration": 0.23541600000004337
+          },
+          {
+            "status": "passed",
+            "title": "keeps the superseding target and retained lease locked when publication reenters request",
+            "duration": 0.24475000000001046
+          },
+          {
+            "status": "passed",
+            "title": "disposes a stale prepared candidate even when its rollback throws",
+            "duration": 0.1606249999999818
+          },
+          {
+            "status": "passed",
+            "title": "waits for pending materialization and stale lease cleanup before destroy resolves",
+            "duration": 52.02054199999998
+          },
+          {
+            "status": "passed",
+            "title": "restores and unlocks the committed generation when lock acquisition throws",
+            "duration": 0.29087499999997135
+          },
+          {
+            "status": "passed",
+            "title": "restores and unlocks the committed generation when async lock acquisition rejects",
+            "duration": 0.17458399999998164
+          },
+          {
+            "status": "passed",
+            "title": "does not let a stale async unlock reopen a superseding preparation",
+            "duration": 52.922416999999996
+          },
+          {
+            "status": "passed",
+            "title": "reserves the lock queue before a candidate synchronously reenters request",
+            "duration": 0.6669999999999732
+          },
+          {
+            "status": "passed",
+            "title": "disposes the retained generation while an async seal is still pending",
+            "duration": 53.056917
+          },
+          {
+            "status": "passed",
+            "title": "breaks a request-destroy cycle returned directly from the lock callback",
+            "duration": 1.0336659999999824
+          },
+          {
+            "status": "passed",
+            "title": "breaks a request-destroy cycle returned through a lock callback wrapper",
+            "duration": 0.45537500000000364
+          },
+          {
+            "status": "passed",
+            "title": "breaks a destroy-dispose cycle returned from the candidate disposal callback",
+            "duration": 0.23091700000003357
+          },
+          {
+            "status": "passed",
+            "title": "awaits independent async disposal after the candidate synchronously reenters destroy",
+            "duration": 53.477791000000025
+          },
+          {
+            "status": "passed",
+            "title": "locks the committed request surfaces and unlocks them after a fail-closed rejection",
+            "duration": 0.807083999999918
+          },
+          {
+            "status": "passed",
+            "title": "keeps the committed candidate and disposes late work without remounting or losing owned state",
+            "duration": 0.652084000000059
+          },
+          {
+            "status": "passed",
+            "title": "does not let a cancelled late rejection hide a newer successful request",
+            "duration": 0.31500000000005457
+          },
+          {
+            "status": "passed",
+            "title": "makes a failed retained unlock retryable after cancellation without remounting",
+            "duration": 0.43708300000002964
+          },
+          {
+            "status": "passed",
+            "title": "does not report a double cancellation complete before a delayed failing unlock is retried",
+            "duration": 0.40695800000003146
+          }
+        ]
+      }
+    ],
+    "native": [
+      {
+        "file": "dialog-available-space.browser.test.ts",
+        "cases": [
+          {
+            "status": "passed",
+            "title": "shadcn/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "duration": 6142.0249579999945
+          },
+          {
+            "status": "passed",
+            "title": "shadcn/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "duration": 5116.614250000006
+          },
+          {
+            "status": "passed",
+            "title": "shadcn/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "duration": 5009.310583000013
+          },
+          {
+            "status": "passed",
+            "title": "shadcn/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "duration": 5095.662790999995
+          },
+          {
+            "status": "passed",
+            "title": "brutalist/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "duration": 4266.031709000003
+          },
+          {
+            "status": "passed",
+            "title": "brutalist/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "duration": 4553.153583000007
+          },
+          {
+            "status": "passed",
+            "title": "brutalist/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "duration": 4548.825250000009
+          },
+          {
+            "status": "passed",
+            "title": "brutalist/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "duration": 4338.563957999999
+          }
+        ]
+      },
+      {
+        "file": "homepage-dogfood.browser.test.ts",
+        "cases": [
+          {
+            "status": "skipped",
+            "title": "switches every registered homepage group through real adapters, preserving native anchors and theme"
+          },
+          {
+            "status": "skipped",
+            "title": "keeps native navigation available without JavaScript and does not overflow mobile"
+          },
+          {
+            "status": "skipped",
+            "title": "retains saved React across cold library routes and exercises actual family chrome"
+          },
+          {
+            "status": "skipped",
+            "title": "reveals current articles through native shadow slots and preserves viewport handback"
+          },
+          {
+            "status": "passed",
+            "title": "uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence",
+            "duration": 27519.009916999996
+          },
+          {
+            "status": "passed",
+            "title": "uses the same mobile shell on documentation with independent global navigation and contents",
+            "duration": 7123.726957999999
+          },
+          {
+            "status": "passed",
+            "title": "compact shadcn preferences stay usable at 200% text, RTL and breakpoint moves",
+            "duration": 2811.306125000003
+          },
+          {
+            "status": "passed",
+            "title": "compact brutalist preferences stay usable at 200% text, RTL and breakpoint moves",
+            "duration": 3682.6528749999998
+          },
+          {
+            "status": "passed",
+            "title": "retains shadcn preference owners and portals through real breakpoint reconnects",
+            "duration": 7141.022250000009
+          },
+          {
+            "status": "passed",
+            "title": "retains brutalist preference owners and portals through real breakpoint reconnects",
+            "duration": 9783.822249999997
+          }
+        ]
+      },
+      {
+        "file": "runtime-preview-surface.browser.test.ts",
+        "cases": [
+          {
+            "status": "passed",
+            "title": "keeps Runtime Tabs outside the canvas and the demonstrated Select popup usable at 390px",
+            "duration": 2807.097625000002
+          },
+          {
+            "status": "skipped",
+            "title": "covers the generic Base path and keeps its demonstrated command operable"
+          },
+          {
+            "status": "skipped",
+            "title": "wc: preserves forward/backward generated shell and slot Selection endpoints"
+          },
+          {
+            "status": "skipped",
+            "title": "react: preserves forward/backward generated shell and slot Selection endpoints"
+          },
+          {
+            "status": "skipped",
+            "title": "vue: preserves forward/backward generated shell and slot Selection endpoints"
+          },
+          {
+            "status": "skipped",
+            "title": "vue2: preserves forward/backward generated shell and slot Selection endpoints"
+          }
+        ]
+      }
+    ]
+  },
+  "localFamilyMs": 556.012,
+  "narrowWcRuntimeRing": {
+    "source": {
+      "sha": "29a61c4cee7e55d160fbe9a6a7242359d5461c8b",
+      "dirty": false,
+      "expectedSha": null,
+      "eventSha": null
+    },
+    "screenshot": "brutalist-wc-runtime-narrow-focus-ring.png",
+    "family": "brutalist",
+    "stage": "wc-runtime-narrow-focus-ring",
+    "viewport": {
+      "width": 320,
+      "height": 300
+    },
+    "capturedAt": "2026-11-13T08:07:05.495Z",
+    "facts": {
+      "unfocused": {
+        "focused": false,
+        "focusVisible": false,
+        "prototype": "brutalist-select-trigger",
+        "tokens": [
+          "flex",
+          "w-full",
+          "items-center",
+          "justify-between",
+          "gap-2",
+          "rounded-base",
+          "border-2",
+          "border-black",
+          "bg-main",
+          "text-main-foreground",
+          "font-sans",
+          "font-medium",
+          "px-3",
+          "py-2",
+          "text-sm",
+          "whitespace-nowrap",
+          "outline-none",
+          "select-none",
+          "data-[placeholder]:text-main-foreground",
+          "data-[hovered]:border-black",
+          "data-[pressed]:border-black",
+          "data-[focus-visible]:outline-none",
+          "data-[focus-visible]:ring-2",
+          "data-[focus-visible]:ring-ring",
+          "data-[focus-visible]:ring-offset-2",
+          "data-[focus-visible]:ring-offset-background",
+          "data-[disabled]:pointer-events-none",
+          "data-[disabled]:opacity-50",
+          "transition-all",
+          "h-10",
+          "shadow-[4px_4px_0_0_#000]"
+        ],
+        "ringWidth": 0,
+        "ringOffset": 0,
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(0, 0, 0) 4px 4px 0px 0px",
+        "ringColor": "",
+        "target": {
+          "x": 26,
+          "y": 267,
+          "width": 268,
+          "height": 44,
+          "top": 267,
+          "right": 294,
+          "bottom": 311,
+          "left": 26
+        },
+        "ring": {
+          "left": 26,
+          "right": 294,
+          "top": 267,
+          "bottom": 311
+        },
+        "clipping": [
+          {
+            "tag": "DIV",
+            "marker": "site-header-native-slot pui-projection-box",
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "left": 22,
+            "right": 298,
+            "top": 75,
+            "bottom": 278,
+            "containsX": true,
+            "containsY": false,
+            "unsupportedClip": false
+          }
+        ],
+        "viewport": {
+          "width": 320,
+          "height": 300
+        },
+        "inViewport": false,
+        "unclipped": false
+      },
+      "focused": {
+        "focused": true,
+        "focusVisible": true,
+        "prototype": "brutalist-select-trigger",
+        "tokens": [
+          "flex",
+          "w-full",
+          "items-center",
+          "justify-between",
+          "gap-2",
+          "rounded-base",
+          "border-2",
+          "border-black",
+          "bg-main",
+          "text-main-foreground",
+          "font-sans",
+          "font-medium",
+          "px-3",
+          "py-2",
+          "text-sm",
+          "whitespace-nowrap",
+          "outline-none",
+          "select-none",
+          "data-[placeholder]:text-main-foreground",
+          "data-[hovered]:border-black",
+          "data-[pressed]:border-black",
+          "data-[focus-visible]:outline-none",
+          "data-[focus-visible]:ring-2",
+          "data-[focus-visible]:ring-ring",
+          "data-[focus-visible]:ring-offset-2",
+          "data-[focus-visible]:ring-offset-background",
+          "data-[disabled]:pointer-events-none",
+          "data-[disabled]:opacity-50",
+          "transition-all",
+          "h-10",
+          "shadow-[4px_4px_0_0_#000]"
+        ],
+        "ringWidth": 2,
+        "ringOffset": 2,
+        "shadow": "rgba(220, 235, 254, 0.46) 0px 0px 0px 0.914503px, rgba(0, 0, 0, 0.46) 0px 0px 0px 1.82901px, rgb(0, 0, 0) 4px 4px 0px 0px",
+        "ringColor": "#000000",
+        "target": {
+          "x": 26,
+          "y": 230,
+          "width": 268,
+          "height": 44,
+          "top": 230,
+          "right": 294,
+          "bottom": 274,
+          "left": 26
+        },
+        "ring": {
+          "left": 22,
+          "right": 298,
+          "top": 226,
+          "bottom": 278
+        },
+        "clipping": [
+          {
+            "tag": "DIV",
+            "marker": "site-header-native-slot pui-projection-box",
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "left": 22,
+            "right": 298,
+            "top": 75,
+            "bottom": 278,
+            "containsX": true,
+            "containsY": true,
+            "unsupportedClip": false
+          }
+        ],
+        "viewport": {
+          "width": 320,
+          "height": 300
+        },
+        "inViewport": true,
+        "unclipped": true
+      }
+    },
+    "screenshotComplete": true
+  },
+  "coverage": {
+    "main": 1614,
+    "candidate": 1610,
+    "added": {},
+    "removed": {
+      "- internal/website/self-hosting-coverage-matrix.md:186: source fingerprint for `apps/www/src/components/Homepage/homepage-runtime-client.ts` does not match its reviewed SHA-256": 1,
+      "- internal/website/self-hosting-coverage-matrix.md:216: source fingerprint for `apps/www/src/components/PrototypePreviewer/projection-theme.ts` does not match its reviewed SHA-256": 1,
+      "- internal/website/self-hosting-coverage-matrix.md:248: source fingerprint for `apps/www/src/components/site-header-disclosure.ts` does not match its reviewed SHA-256": 1,
+      "- internal/website/self-hosting-coverage-matrix.md:259: source fingerprint for `apps/www/src/components/site-typography.ts` does not match its reviewed SHA-256": 1
+    }
+  },
+  "images": [
+    {
+      "file": "brutalist-wc-runtime-narrow-focus-ring.png",
+      "sha256": "32fa2bd5f6f87ef2e575e31b01332f71f7855a8361d73246265ecce5e5cb5a41"
+    },
+    {
+      "file": "shadcn-wc-public-popover-open.png",
+      "sha256": "34d3f7eb8f05c8ce265bdca01b5826328adc11124027b7c1398fb00dea93afa7"
+    }
+  ]
+}
