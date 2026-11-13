@@ -1,0 +1,7 @@
+# Original hosted browser shards on dbe246b
+
+The signed carrier `2dee543d` contains exact product parent `dbe246b` and the same diagnostic-only overlay as the preceding run. All three original suite selections and artifact digests/ZIPs verified. All three jobs failed overall. Both named Contents/mobile cases, all eight Dialog cases and all seven Sidebar cases passed. Typography passed 33/34 with the removed Overview route case retained. Both original S4 locales failed their original deadlines and recorded 18 inherited owned-decoration page errors each.
+
+The original Brutalist check rejected at +1001.067ms. On shard 1 Chrome 156, family wrote at +1038.287–1050.649ms. The outstanding third query waited 1428.813ms after browser forwarding for renderer dispatch, took 1.785ms to dispatch, and returned Brutalist to Node at +1680.668ms. The trace completed without reported loss. The remaining sampled Header rectangle after the write is consistent with retained Header/desktop geometry. The paired compact 390px and 430px fixture proves the unused Button read is gone; the hosted sample does not isolate the repair's latency effect.
+
+A separate full-matrix visit on clean exact `dbe246b` recorded HTTP 200, 18 inherited page errors and an acknowledged page-level Profiler.start. Profiler.stop was sent after a fixed 32-second window and did not return during the additional 90-second observation budget. The owned browser closed. No CPU samples or S4 acceptance result came from this diagnostic.

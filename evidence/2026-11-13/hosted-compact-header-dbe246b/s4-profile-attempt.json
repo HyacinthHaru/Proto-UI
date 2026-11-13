@@ -1,0 +1,38 @@
+{
+  "head": "dbe246b74370c52169169864f06ccc4b76f75fd1",
+  "browser": "156.0.8078.79",
+  "navigation": {
+    "status": 200
+  },
+  "times": {
+    "profilerStartAcknowledged": 1393.116,
+    "navigationReturned": 9265.100166,
+    "profilerStopSent": 33395.438583,
+    "browserClosed": 123624.386875
+  },
+  "scope": "Separate complete Demo Matrix visit; page CDP Profiler only, no trace stream or S4 acceptance.",
+  "errors": [
+    "[feedback] owned-decoration unsupported by this adapter",
+    "[feedback] owned-decoration unsupported by this adapter",
+    "[feedback] owned-decoration unsupported by this adapter",
+    "[feedback] owned-decoration unsupported by this adapter",
+    "[feedback] owned-decoration unsupported by this adapter",
+    "[feedback] owned-decoration unsupported by this adapter",
+    "[feedback] owned-decoration unsupported by this adapter",
+    "[feedback] owned-decoration unsupported by this adapter",
+    "[feedback] owned-decoration unsupported by this adapter",
+    "[feedback] owned-decoration unsupported by this adapter",
+    "[feedback] owned-decoration unsupported by this adapter",
+    "[feedback] owned-decoration unsupported by this adapter",
+    "[feedback] owned-decoration unsupported by this adapter",
+    "[feedback] owned-decoration unsupported by this adapter",
+    "[feedback] owned-decoration unsupported by this adapter",
+    "[feedback] owned-decoration unsupported by this adapter",
+    "[feedback] owned-decoration unsupported by this adapter",
+    "[feedback] owned-decoration unsupported by this adapter"
+  ],
+  "profileCaptured": false,
+  "stopError": "90s observation budget elapsed",
+  "profileSamples": 0,
+  "sourceSha256": "6941ab5e7d7ff7bbb88bc912a00d6e4ebc05b9e77c317bfd241b0a6d3d3b5200"
+}
