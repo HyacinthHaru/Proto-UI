@@ -1,0 +1,26 @@
+{
+  "chrome": "156.0.8078.79",
+  "scope": "standalone native observer mechanism control, no website or Search",
+  "records": [
+    {
+      "attribute": "data-site-menu-open",
+      "old": "true",
+      "new": "true"
+    },
+    {
+      "attribute": "aria-expanded",
+      "old": "true",
+      "new": "true"
+    },
+    {
+      "attribute": "aria-controls",
+      "old": "navigation-panel",
+      "new": "navigation-panel"
+    },
+    {
+      "attribute": "hidden",
+      "old": "",
+      "new": ""
+    }
+  ]
+}

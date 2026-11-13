@@ -1,0 +1,67 @@
+{
+  "head": "1e3f268f445c91e712c6df7d4e92e6c4b230a16f",
+  "parent": "29a61c4cee7e55d160fbe9a6a7242359d5461c8b",
+  "tree": "fa38eb4969648e959ff24761a6512d9542567af9",
+  "focused": {
+    "passed": 146,
+    "failed": 0,
+    "scope": "same precommit candidate bytes"
+  },
+  "pairedHeader": {
+    "parentPassed": 48,
+    "parentFailed": 1,
+    "candidatePassed": 49,
+    "repeatedMarkerWrites": [1, 0],
+    "repeatedButtonRelationshipWrites": [2, 0],
+    "geometryTopPx": [61, 105]
+  },
+  "exactBrowser": {
+    "passed": 15,
+    "failed": 0,
+    "filtered": 9,
+    "dialogPassed": 8,
+    "contentsSwitches": {
+      "shadcn/wc": 8,
+      "shadcn/vue2": 193,
+      "shadcn/vue": 183,
+      "brutalist/wc": 2,
+      "brutalist/react": 228,
+      "brutalist/vue2": 170,
+      "brutalist/vue": 192,
+      "shadcn/react": 199
+    },
+    "orderedHandbacks": 24,
+    "familyPollMs": 545.709,
+    "ring": {
+      "focused": true,
+      "focusVisible": true,
+      "shadow": "rgba(220, 235, 254, 0.46) 0px 0px 0px 0.914503px, rgba(0, 0, 0, 0.46) 0px 0px 0px 1.82901px, rgb(0, 0, 0) 4px 4px 0px 0px",
+      "ringWidth": 2,
+      "ringOffset": 2,
+      "unclipped": true
+    }
+  },
+  "exactTypes": {
+    "files": 1215,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 30
+  },
+  "sourceSha256": {
+    "apps/www/src/components/site-header-disclosure.ts": "9d597364cb274a62613d9c0e252f7f4ef15eb333c0f0ed999dea3c0e6241e0f7",
+    "apps/www/src/components/site-header-disclosure.test.ts": "ea61f59ee494dbc5e640df9c22d7dfa0608409a89072b9191d00fe6cb796c501",
+    "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts": "7ab7bb2225c22469254a7488c4c646c98cb0e180f06c20ba900e6dd232609d4a",
+    "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e"
+  },
+  "selectedCaptureSha256": {
+    "brutalist-wc-contents-open.png": "d2e692f424771bec86ab5b8f7629bc908c5148d939443420086e6e48988f8128",
+    "brutalist-wc-dialog-390-settled.png": "9c6f2261f8fece53504ff4ab1cadb1338ef9a80698f8f06b0658266da8585672",
+    "brutalist-wc-runtime-narrow-focus-ring.png": "32fa2bd5f6f87ef2e575e31b01332f71f7855a8361d73246265ecce5e5cb5a41"
+  },
+  "rawLocalSha256": {
+    "header-exact-paired-red.log": "9910eb7956d94168ad42d27cbd56fa14c7d3cadfcaea65bc09b74bc47a30960e",
+    "header-green-final.json": "1bfd45fc9b35d7daf8ca110d21dabc3b890e74b0a6cf0fcbd5f2c53c9828d76d",
+    "1e3-native.json": "06896e66fcc4eb30c0e161a5d8aaa81d63e1297d2b2457948651ba1ffcbd5d0e",
+    "1e3-types.log": "1bc688b78adac9d04bd4b95d17a973b1af937dc2c75c5e962ee90d6297aaf307"
+  }
+}
