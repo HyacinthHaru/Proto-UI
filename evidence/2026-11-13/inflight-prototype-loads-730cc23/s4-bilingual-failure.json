@@ -1,0 +1,24 @@
+{
+  "zh-cn": {
+    "source": {
+      "sha": "730cc23b57b65a7c873db78a8c21f86248a5350a",
+      "dirty": false
+    },
+    "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+    "startupPassed": false,
+    "collectionOutcome": "rejected",
+    "errors": 18,
+    "consoleErrors": 0
+  },
+  "en": {
+    "source": {
+      "sha": "730cc23b57b65a7c873db78a8c21f86248a5350a",
+      "dirty": false
+    },
+    "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+    "startupPassed": false,
+    "collectionOutcome": "rejected",
+    "errors": 18,
+    "consoleErrors": 0
+  }
+}
