@@ -1,0 +1,252 @@
+{
+  "product": "22683ce0f2357e1a10501637550fbbe6515137ad",
+  "browser": "156.0.8078.79",
+  "route": "/zh-cn/ui-libraries/brutalist/components/select/",
+  "scope": "Separate actual fixed-family Select article and trusted Enter; deterministic external sibling receives focus in bubbling after the runtime request. Also exercises two superseding public requests and disposal with a pending request. Does not replace the original synthetic suite or imply baseline failure on this browser.",
+  "results": [
+    {
+      "initial": "wc",
+      "next": "react",
+      "status": 200,
+      "facts": {
+        "initial": "wc",
+        "mode": "fixed-family",
+        "generation": "1"
+      },
+      "focus": {
+        "outside": true,
+        "activeRole": null,
+        "activeText": "Diagnostic external focus",
+        "events": [
+          {
+            "type": "focusin",
+            "pageMs": 1145.6999999284744,
+            "isTrusted": true,
+            "target": "WC-BRUTALIST-TABS-TRIGGER",
+            "role": "tab",
+            "fixture": null,
+            "text": "React"
+          },
+          {
+            "type": "keydown",
+            "pageMs": 1154,
+            "isTrusted": true,
+            "target": "WC-BRUTALIST-TABS-TRIGGER",
+            "role": "tab",
+            "fixture": null,
+            "text": "React"
+          },
+          {
+            "type": "focusin",
+            "pageMs": 1167.5,
+            "isTrusted": true,
+            "target": "BUTTON",
+            "role": null,
+            "fixture": "",
+            "text": "Diagnostic external focus"
+          }
+        ]
+      },
+      "requests": [
+        {
+          "phase": "preparing",
+          "runtime": "react"
+        },
+        {
+          "phase": "ready",
+          "runtime": "vue2"
+        }
+      ],
+      "afterSupersede": true,
+      "retirement": {
+        "noTabs": true,
+        "focusedOutside": true
+      },
+      "afterDestroy": true,
+      "errors": []
+    },
+    {
+      "initial": "react",
+      "next": "vue",
+      "status": 200,
+      "facts": {
+        "initial": "react",
+        "mode": "fixed-family",
+        "generation": "1"
+      },
+      "focus": {
+        "outside": true,
+        "activeRole": null,
+        "activeText": "Diagnostic external focus",
+        "events": [
+          {
+            "type": "focusin",
+            "pageMs": 513.1000000238419,
+            "isTrusted": true,
+            "target": "DIV",
+            "role": "tab",
+            "fixture": null,
+            "text": "Vue"
+          },
+          {
+            "type": "keydown",
+            "pageMs": 519.3999999761581,
+            "isTrusted": true,
+            "target": "DIV",
+            "role": "tab",
+            "fixture": null,
+            "text": "Vue"
+          },
+          {
+            "type": "focusin",
+            "pageMs": 525.8000000715256,
+            "isTrusted": true,
+            "target": "BUTTON",
+            "role": null,
+            "fixture": "",
+            "text": "Diagnostic external focus"
+          }
+        ]
+      },
+      "requests": [
+        {
+          "phase": "ready",
+          "runtime": "vue"
+        },
+        {
+          "phase": "ready",
+          "runtime": "vue2"
+        }
+      ],
+      "afterSupersede": true,
+      "retirement": {
+        "noTabs": true,
+        "focusedOutside": true
+      },
+      "afterDestroy": true,
+      "errors": []
+    },
+    {
+      "initial": "vue",
+      "next": "react",
+      "status": 200,
+      "facts": {
+        "initial": "vue",
+        "mode": "fixed-family",
+        "generation": "1"
+      },
+      "focus": {
+        "outside": true,
+        "activeRole": null,
+        "activeText": "Diagnostic external focus",
+        "events": [
+          {
+            "type": "focusin",
+            "pageMs": 448.59999990463257,
+            "isTrusted": true,
+            "target": "DIV",
+            "role": "tab",
+            "fixture": null,
+            "text": "React"
+          },
+          {
+            "type": "keydown",
+            "pageMs": 449.6999999284744,
+            "isTrusted": true,
+            "target": "DIV",
+            "role": "tab",
+            "fixture": null,
+            "text": "React"
+          },
+          {
+            "type": "focusin",
+            "pageMs": 456.6999999284744,
+            "isTrusted": true,
+            "target": "BUTTON",
+            "role": null,
+            "fixture": "",
+            "text": "Diagnostic external focus"
+          }
+        ]
+      },
+      "requests": [
+        {
+          "phase": "preparing",
+          "runtime": "react"
+        },
+        {
+          "phase": "ready",
+          "runtime": "vue2"
+        }
+      ],
+      "afterSupersede": true,
+      "retirement": {
+        "noTabs": true,
+        "focusedOutside": true
+      },
+      "afterDestroy": true,
+      "errors": []
+    },
+    {
+      "initial": "vue2",
+      "next": "react",
+      "status": 200,
+      "facts": {
+        "initial": "vue2",
+        "mode": "fixed-family",
+        "generation": "1"
+      },
+      "focus": {
+        "outside": true,
+        "activeRole": null,
+        "activeText": "Diagnostic external focus",
+        "events": [
+          {
+            "type": "focusin",
+            "pageMs": 436.10000002384186,
+            "isTrusted": true,
+            "target": "DIV",
+            "role": "tab",
+            "fixture": null,
+            "text": "React"
+          },
+          {
+            "type": "keydown",
+            "pageMs": 439.89999997615814,
+            "isTrusted": true,
+            "target": "DIV",
+            "role": "tab",
+            "fixture": null,
+            "text": "React"
+          },
+          {
+            "type": "focusin",
+            "pageMs": 446.7000000476837,
+            "isTrusted": true,
+            "target": "BUTTON",
+            "role": null,
+            "fixture": "",
+            "text": "Diagnostic external focus"
+          }
+        ]
+      },
+      "requests": [
+        {
+          "phase": "ready",
+          "runtime": "vue2"
+        },
+        {
+          "phase": "ready",
+          "runtime": "vue2"
+        }
+      ],
+      "afterSupersede": true,
+      "retirement": {
+        "noTabs": true,
+        "focusedOutside": true
+      },
+      "afterDestroy": true,
+      "errors": []
+    }
+  ]
+}
