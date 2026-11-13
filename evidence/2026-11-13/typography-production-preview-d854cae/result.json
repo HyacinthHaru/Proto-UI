@@ -1,0 +1,30 @@
+{
+  "head": "d854cae0da2d0c3178b801ea18574a9eac88257f",
+  "distHashes": {
+    "zh-cn/index.html": "7c1ec3c149cb6264f3db09bbead1a77ff1712919c5e1dfac1f42ddb3be9e9140",
+    "zh-cn/ui-libraries/shadcn/button/index.html": "94565884d310926ccbbb572b7e4b364d85124acbd47a53ffea36302d127cfafd",
+    "zh-cn/ui-libraries/brutalist/components/button/index.html": "b8f72dac0385f32b3206f6b8f353f14ac35ae8f668b76f4347ee2e6e0e1bdd79",
+    "en/ui-libraries/shadcn/dialog/index.html": "870779dad6bf5a172ed1ed5438625bfbc415c656e2cc84f6b1cf686d71450ffe",
+    "proto-ui-bundle-graph.json": "a03a7fb044c987b34954993a2e6164de3300d52ad5417b79667b38b37f53a00a"
+  },
+  "selector": "uses real family Popover Triggers|uses the same mobile shell|retains (shadcn|brutalist) preference owners|compact (shadcn|brutalist)|live available region|keeps Runtime Tabs outside",
+  "exitCode": 0,
+  "server": "Repository astro preview on the exact clean d854 static output",
+  "result": {
+    "passed": 15,
+    "failed": 0,
+    "filtered": 9,
+    "dialog": 8,
+    "originalFamilyPollMs": 482.463
+  },
+  "productionBundle": {
+    "base": "35195a6e6f1ba6a7d800da0029f2683013abd18b",
+    "head": "d854cae0da2d0c3178b801ea18574a9eac88257f",
+    "pages": 673,
+    "diagnostics": 53,
+    "added": 0,
+    "removed": 0,
+    "exit": 1
+  },
+  "captureSha256": "1c846060c9c9080c82cc56aa7536876782b9c54c651447f469f6ab930cb8a60b"
+}
