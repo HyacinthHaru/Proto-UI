@@ -3,7 +3,7 @@
   "base": "35195a6e6f1ba6a7d800da0029f2683013abd18b",
   "localVite": "6.4.1",
   "target": "esnext",
-  "callerStackReceiptSha256": "2ac854664cd9b99fd7c7d245bf9495d65948e9d4a9b930b30b5b524e6381dbde",
+  "callerStackReceiptSha256": "35b60afde1c693320932dc309bffb09f2ffd6096d0f574962bfac77ad6df1054",
   "explanation": "The generated lines were checked by reconstructing the TypeScript transform locally. They are not a claim that browser-request module bytes and the local reconstruction were captured and compared.",
   "source": [
     {
