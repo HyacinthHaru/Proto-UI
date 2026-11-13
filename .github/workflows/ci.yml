@@ -64,7 +64,7 @@ jobs:
           export PROTO_UI_MATERIAL_EVIDENCE_DIR="$PROTO_UI_RUNTIME_EVIDENCE_DIR/material"
           mkdir -p "$PROTO_UI_RUNTIME_EVIDENCE_DIR"
           git rev-parse HEAD | tee "$PROTO_UI_RUNTIME_EVIDENCE_DIR/source-sha.txt"
-          printf '%s\n' 'f725a36975abfff69c41ce02d794faf7a922988f' > "$PROTO_UI_RUNTIME_EVIDENCE_DIR/product-parent.txt"
+          printf '%s\n' '38aac9f6a5927ddd1880a52809f07e202a8ef1f4' > "$PROTO_UI_RUNTIME_EVIDENCE_DIR/product-parent.txt"
           node --version | tee "$PROTO_UI_RUNTIME_EVIDENCE_DIR/node-version.txt"
           "$CHROME_PATH" --version | tee "$PROTO_UI_RUNTIME_EVIDENCE_DIR/chrome-version.txt"
           # Each matrix job owns an independent checkout, server and Astro cache.
