@@ -1,0 +1,20 @@
+{
+  "source": {
+    "actualGitHead": "d854cae0da2d0c3178b801ea18574a9eac88257f",
+    "expectedHead": null,
+    "eventSha": null,
+    "eventName": null,
+    "dirty": false,
+    "runId": null,
+    "runAttempt": null
+  },
+  "caseNames": [
+    "native SiteTypography rendered evidence wc/brutalist: native labels, accessibility, original nodes, genuine copy and cross-generation selection",
+    "native SiteTypography rendered evidence react/brutalist: native labels, accessibility, original nodes, genuine copy and cross-generation selection",
+    "native SiteTypography rendered evidence vue/brutalist: native labels, accessibility, original nodes, genuine copy and cross-generation selection",
+    "native SiteTypography rendered evidence vue2/brutalist: native labels, accessibility, original nodes, genuine copy and cross-generation selection"
+  ],
+  "rawMeasurementsSha256": "56e5c1fa06cf95d3463497f3b32d274b25b40c38d360a04e534ae8a162983bce",
+  "imageSha256": "ee779cec3b108e4ff5665fe5eb8580057a574ee05f2d6c81fde53f26472a0a5a",
+  "otherCasesFiltered": 30
+}
