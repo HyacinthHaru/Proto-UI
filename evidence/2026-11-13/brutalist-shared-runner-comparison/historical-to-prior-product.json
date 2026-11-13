@@ -1,0 +1,1277 @@
+{
+  "run": 43410821425,
+  "shards": [
+    {
+      "arm": "baseline",
+      "slot": 1,
+      "carrier": "416f8cb72f340d64750c02729899caeb4ee7fa26",
+      "product": "f58c7af3350cee5c6fe456e0dc7b92e790a8c288",
+      "artifactId": 14030708161,
+      "artifactDigest": "sha256:9c74f872a675b376d7aa3257496a5cb3e12275ebf6402ecf9774201995210171",
+      "runner": [
+        "workflowSha=368f0e7e649844cb1dcecb16477b0fa0b4bce13b",
+        "runId=43410821425",
+        "attempt=1",
+        "slot=browser-1-of-8",
+        "runnerImage=ubuntu26",
+        "runnerImageVersion=20261101.186.1",
+        "Linux 7.0.0-1019-azure x86_64",
+        "cpuCount=4",
+        "INTEL(R) XEON(R) PLATINUM 8573C",
+        "Google Chrome for Testing 157.0.8103.50 ",
+        "061f752aa63d26ee05581742df728a2f8f5097446e85e04145ebaea49e469e15",
+        "chromeArchiveSha256=d17167bc092eb495a3b768c7467f27e35f625aa03834233a1663af67dcb668c9",
+        "v24.22.2",
+        "10.32.1"
+      ],
+      "status": "failure",
+      "processExit": 124,
+      "sameOriginalSuites": true,
+      "caseVerdicts": [
+        "\u2713 Homepage end-to-end dogfood boundary > uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence 59087ms",
+        "\u2713 Homepage end-to-end dogfood boundary > uses the same mobile shell on documentation with independent global navigation and contents 11589ms",
+        "\u00d7 retains brutalist preference owners and portals through real breakpoint reconnects 7628ms",
+        "\u276f apps/www/src/content/docs/zh-cn/site-sidebar-disclosure.browser.test.ts (7 tests | 3 failed) 108216ms"
+      ],
+      "s4": [
+        {
+          "locale": "zh-cn",
+          "startupPassed": false,
+          "collectionOutcome": "budget-expired",
+          "errors": {
+            "[feedback] owned-decoration unsupported by this adapter": 18
+          }
+        }
+      ]
+    },
+    {
+      "arm": "candidate",
+      "slot": 1,
+      "carrier": "51751ae1b9213aca255d67ac07ba2a691b5f4771",
+      "product": "29a61c4cee7e55d160fbe9a6a7242359d5461c8b",
+      "artifactId": 14030708161,
+      "artifactDigest": "sha256:9c74f872a675b376d7aa3257496a5cb3e12275ebf6402ecf9774201995210171",
+      "runner": [
+        "workflowSha=368f0e7e649844cb1dcecb16477b0fa0b4bce13b",
+        "runId=43410821425",
+        "attempt=1",
+        "slot=browser-1-of-8",
+        "runnerImage=ubuntu26",
+        "runnerImageVersion=20261101.186.1",
+        "Linux 7.0.0-1019-azure x86_64",
+        "cpuCount=4",
+        "INTEL(R) XEON(R) PLATINUM 8573C",
+        "Google Chrome for Testing 157.0.8103.50 ",
+        "061f752aa63d26ee05581742df728a2f8f5097446e85e04145ebaea49e469e15",
+        "chromeArchiveSha256=d17167bc092eb495a3b768c7467f27e35f625aa03834233a1663af67dcb668c9",
+        "v24.22.2",
+        "10.32.1"
+      ],
+      "status": "failure",
+      "processExit": 124,
+      "sameOriginalSuites": true,
+      "caseVerdicts": [
+        "\u2713 Homepage end-to-end dogfood boundary > uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence 56785ms",
+        "\u2713 Homepage end-to-end dogfood boundary > uses the same mobile shell on documentation with independent global navigation and contents 11457ms",
+        "\u00d7 retains brutalist preference owners and portals through real breakpoint reconnects 6732ms",
+        "\u2713 apps/www/src/content/docs/zh-cn/site-sidebar-disclosure.browser.test.ts (7 tests) 62254ms",
+        "\u276f apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts (2 tests | 2 failed) 235413ms"
+      ],
+      "s4": [
+        {
+          "locale": "en",
+          "startupPassed": false,
+          "collectionOutcome": "rejected",
+          "errors": {
+            "[feedback] owned-decoration unsupported by this adapter": 18
+          }
+        },
+        {
+          "locale": "zh-cn",
+          "startupPassed": false,
+          "collectionOutcome": "budget-expired",
+          "errors": {
+            "[feedback] owned-decoration unsupported by this adapter": 18
+          }
+        }
+      ]
+    },
+    {
+      "arm": "baseline",
+      "slot": 3,
+      "carrier": "416f8cb72f340d64750c02729899caeb4ee7fa26",
+      "product": "f58c7af3350cee5c6fe456e0dc7b92e790a8c288",
+      "artifactId": 14031381733,
+      "artifactDigest": "sha256:69280b545d6203605054c73e2a62db1d83b7e24a3047ece6deb6706606ae4925",
+      "runner": [
+        "workflowSha=368f0e7e649844cb1dcecb16477b0fa0b4bce13b",
+        "runId=43410821425",
+        "attempt=1",
+        "slot=browser-3-of-8",
+        "runnerImage=ubuntu26",
+        "runnerImageVersion=20261101.186.1",
+        "Linux 7.0.0-1019-azure x86_64",
+        "cpuCount=4",
+        "AMD EPYC 7763 64-Core Processor",
+        "Google Chrome for Testing 157.0.8103.50 ",
+        "061f752aa63d26ee05581742df728a2f8f5097446e85e04145ebaea49e469e15",
+        "chromeArchiveSha256=d17167bc092eb495a3b768c7467f27e35f625aa03834233a1663af67dcb668c9",
+        "v24.22.2",
+        "10.32.1"
+      ],
+      "status": "failure",
+      "processExit": 124,
+      "sameOriginalSuites": true,
+      "caseVerdicts": [
+        "\u2713 apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts (8 tests) 71224ms"
+      ],
+      "s4": []
+    },
+    {
+      "arm": "candidate",
+      "slot": 3,
+      "carrier": "51751ae1b9213aca255d67ac07ba2a691b5f4771",
+      "product": "29a61c4cee7e55d160fbe9a6a7242359d5461c8b",
+      "artifactId": 14031381733,
+      "artifactDigest": "sha256:69280b545d6203605054c73e2a62db1d83b7e24a3047ece6deb6706606ae4925",
+      "runner": [
+        "workflowSha=368f0e7e649844cb1dcecb16477b0fa0b4bce13b",
+        "runId=43410821425",
+        "attempt=1",
+        "slot=browser-3-of-8",
+        "runnerImage=ubuntu26",
+        "runnerImageVersion=20261101.186.1",
+        "Linux 7.0.0-1019-azure x86_64",
+        "cpuCount=4",
+        "AMD EPYC 7763 64-Core Processor",
+        "Google Chrome for Testing 157.0.8103.50 ",
+        "061f752aa63d26ee05581742df728a2f8f5097446e85e04145ebaea49e469e15",
+        "chromeArchiveSha256=d17167bc092eb495a3b768c7467f27e35f625aa03834233a1663af67dcb668c9",
+        "v24.22.2",
+        "10.32.1"
+      ],
+      "status": "failure",
+      "processExit": 124,
+      "sameOriginalSuites": true,
+      "caseVerdicts": [
+        "\u2713 apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts (8 tests) 69293ms"
+      ],
+      "s4": []
+    }
+  ],
+  "traces": [
+    {
+      "arm": "baseline",
+      "product": "f58c7af3350cee5c6fe456e0dc7b92e790a8c288",
+      "carrier": "416f8cb72f340d64750c02729899caeb4ee7fa26",
+      "status": "reconciled",
+      "result": "rejected",
+      "originalVerdictMs": 1001.144,
+      "familyWritesMs": [[1281.696, 1283.405]],
+      "query": {
+        "ordinal": 4,
+        "outstandingAtVerdict": true,
+        "cdpId": 14594,
+        "method": "Runtime.callFunctionOn",
+        "startedAfterPollMs": 364.845,
+        "returnedAfterPollMs": 2018.459,
+        "returnedValue": "brutalist",
+        "nodePipeStagesAfterPollMs": {
+          "cdp.pipe.write.return": [366.412, 366.435],
+          "cdp.pipe.read-dispatch.enter": [2018.123],
+          "cdp.pipe.frame.callback.enter": [2018.167],
+          "cdp.response.received": [2018.233]
+        },
+        "browserGetterStagesAfterPollMs": {
+          "selector.enter": [2014.196, 2015.905],
+          "selector.exit": [2015.296, 2017.005],
+          "getter.enter": [2015.396, 2017.105],
+          "getter.exit": [2015.396, 2017.105]
+        },
+        "selectorEntryToGetterEntryMs": 1.2,
+        "getterDurationAtPageClockPrecisionMs": 0.0,
+        "targetArrivalBatchCount": 0
+      },
+      "chromeTrace": {
+        "browserVersion": "157.0.8103.50",
+        "explicitCpuThrottle": null,
+        "traceBytes": 14737405,
+        "sha256": "fb6a634160562816031114f576abb3921aabc84051f5c720aad40b09ce96c749",
+        "traceComplete": true,
+        "dataLossOccurred": false,
+        "cleanup": {
+          "originalContextClosed": true,
+          "streamClosed": true,
+          "sessionDetached": true,
+          "unresolvedTraceOwnership": false
+        },
+        "commandStagesAfterPollMs": {
+          "DevToolsSession::HandleCommand in Browser": [365.422, 367.131],
+          "DevToolsSession::DispatchToAgent": [365.431, 367.14],
+          "DevToolsSession::DispatchProtocolCommand": [2013.771, 2015.48],
+          "DevToolsSession::SendProtocolResponse": [2015.687, 2017.396],
+          "DevToolsSession::DispatchProtocolResponse": [2016.759, 2018.468]
+        },
+        "browserHandleToForwardMs": 0.009,
+        "browserForwardToRendererDispatchMs": 1648.34,
+        "rendererDispatchDurationMs": 1.992,
+        "rendererRunTaskUnionDuringWaitMs": 1648.286,
+        "rendererNestedEventDurationDuringWaitMs": {
+          "FunctionCall": 1313.254,
+          "UpdateLayoutTree": 336.689,
+          "Layout": 46.496
+        }
+      },
+      "phase": {
+        "queueBeforeCommit": {
+          "durationMs": 916.265,
+          "rendererTaskOverlapMs": 916.241,
+          "styleTreeUpdateOverlapMs": 202.358,
+          "layoutOverlapMs": 23.809,
+          "largestRendererTasks": [
+            {
+              "startsAfterForwardMs": 0.0,
+              "overlapMs": 689.255,
+              "leafSamples": [
+                {
+                  "frame": "getPropertyValue",
+                  "ms": 97.464
+                },
+                {
+                  "frame": "setProperty",
+                  "ms": 44.712
+                },
+                {
+                  "frame": "(garbage collector)",
+                  "ms": 37.229
+                },
+                {
+                  "frame": "visitRule [apps/www/src/runtime/modules.ts:630]",
+                  "ms": 34.249
+                },
+                {
+                  "frame": "(program)",
+                  "ms": 34.191
+                },
+                {
+                  "frame": "replaceValuePreservingEditingSession [apps/www/src/web.ts:136]",
+                  "ms": 30.543
+                }
+              ]
+            },
+            {
+              "startsAfterForwardMs": 689.279,
+              "overlapMs": 226.986,
+              "leafSamples": [
+                {
+                  "frame": "preserveSelection [apps/www/src/components/site-typography.ts:96]",
+                  "ms": 79.796
+                },
+                {
+                  "frame": "(program)",
+                  "ms": 42.121
+                },
+                {
+                  "frame": "setProperty",
+                  "ms": 39.745
+                },
+                {
+                  "frame": "exportBaseEntries [apps/www/src/spec/feedback/recorder.ts:123]",
+                  "ms": 7.265
+                },
+                {
+                  "frame": "setAttribute",
+                  "ms": 4.864
+                },
+                {
+                  "frame": "applyProjectionThemeSurfaceStyle [apps/www/src/components/PrototypePreviewer/projection-theme.ts:106]",
+                  "ms": 4.477
+                }
+              ]
+            }
+          ]
+        },
+        "queueAfterCommit": {
+          "durationMs": 732.075,
+          "rendererTaskOverlapMs": 732.045,
+          "styleTreeUpdateOverlapMs": 134.331,
+          "layoutOverlapMs": 22.687,
+          "largestRendererTasks": [
+            {
+              "startsAfterForwardMs": 916.265,
+              "overlapMs": 731.707,
+              "leafSamples": [
+                {
+                  "frame": "getBoundingClientRect",
+                  "ms": 104.128
+                },
+                {
+                  "frame": "(program)",
+                  "ms": 87.098
+                },
+                {
+                  "frame": "getPropertyValue",
+                  "ms": 49.439
+                },
+                {
+                  "frame": "setProperty",
+                  "ms": 28.789
+                },
+                {
+                  "frame": "(anonymous) [apps/www/src/impl.ts:890]",
+                  "ms": 27.755
+                },
+                {
+                  "frame": "removeEventListener",
+                  "ms": 25.665
+                }
+              ]
+            },
+            {
+              "startsAfterForwardMs": 1647.997,
+              "overlapMs": 0.327,
+              "leafSamples": [
+                {
+                  "frame": "(program)",
+                  "ms": 0.327
+                }
+              ]
+            },
+            {
+              "startsAfterForwardMs": 1648.329,
+              "overlapMs": 0.011,
+              "leafSamples": [
+                {
+                  "frame": "(program)",
+                  "ms": 0.011
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "callSamples": [
+        {
+          "category": "header-rectangle",
+          "phase": "after-family-write",
+          "sampleWeightMs": 104.128,
+          "v8SampleLocation": [84, 27],
+          "v8GeneratedStack": [
+            ["getBoundingClientRect", "", 0, 0],
+            ["positionPanel", "apps/www/src/components/site-header-disclosure.ts", 81, 25],
+            ["measureLayout", "apps/www/src/components/site-header-disclosure.ts", 114, 25],
+            ["sync", "apps/www/src/components/site-header-disclosure.ts", 150, 16],
+            ["enhance", "apps/www/src/components/site-header-disclosure.ts", 330, 12],
+            ["publish", "apps/www/src/components/Homepage/homepage-runtime-client.ts", 524, 16],
+            [
+              "materializeGeneration",
+              "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+              153,
+              33
+            ],
+            ["(root)", "", 0, 0]
+          ],
+          "path": "apps/www/src/components/site-header-disclosure.ts",
+          "authoredLine": 130,
+          "sourceSha256": "9d614feb355d24ff181afcacbb31ae5b1acfc299cd90bdae9c89460eff5b92e4",
+          "code": "const anchor = button.getBoundingClientRect();"
+        },
+        {
+          "category": "typography-selection",
+          "phase": "before-family-write",
+          "sampleWeightMs": 79.632,
+          "v8SampleLocation": [99, 18],
+          "v8GeneratedStack": [
+            ["preserveSelection", "apps/www/src/components/site-typography.ts", 96, 27],
+            ["activate", "apps/www/src/components/site-typography.ts", 288, 19],
+            ["activate", "apps/www/src/components/Homepage/homepage-runtime-client.ts", 477, 17],
+            [
+              "materializeGeneration",
+              "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+              153,
+              33
+            ],
+            ["(root)", "", 0, 0]
+          ],
+          "path": "apps/www/src/components/site-typography.ts",
+          "authoredLine": 183,
+          "sourceSha256": "640f031fa2e308c5a53e14aa0a35a499362ccb6f1c1ca338d40e92ada61ba232",
+          "code": "const anchor = captureBoundary(selection?.anchorNode ?? null, selection?.anchorOffset ?? 0);"
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 56.22,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            [
+              "notify",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              59,
+              22
+            ],
+            ["(root)", "", 0, 0]
+          ],
+          "path": "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+          "authoredLine": 45,
+          "sourceSha256": "b94735696bd58e8570817ab630816a5e8e3f9aa0e90bbd50daee2e01a8f5b851",
+          "code": "const observed = computed?.getPropertyValue('--pui-' + role) ?? '';"
+        },
+        {
+          "category": "motion-palette",
+          "phase": "after-family-write",
+          "sampleWeightMs": 43.978,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            [
+              "notify",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              59,
+              22
+            ],
+            ["(root)", "", 0, 0]
+          ],
+          "path": "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+          "authoredLine": 45,
+          "sourceSha256": "b94735696bd58e8570817ab630816a5e8e3f9aa0e90bbd50daee2e01a8f5b851",
+          "code": "const observed = computed?.getPropertyValue('--pui-' + role) ?? '';"
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 19.665,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            ["environment", "apps/www/src/motion/web-resident-motion.ts", 73, 18],
+            ["render", "apps/www/src/motion/projector.ts", 36, 18],
+            ["commit", "apps/www/src/motion/projector.ts", 146, 11],
+            ["commit", "apps/www/src/runtime/modules.ts", 1253, 15],
+            ["projectFinalStyle", "apps/www/src/create.ts", 468, 26],
+            ["afterRenderCommit", "apps/www/src/create.ts", 550, 26],
+            ["onMountPhase", "apps/www/src/create.ts", 396, 21],
+            ["onMountPhase", "apps/www/src/create.ts", 675, 25],
+            [
+              "setMountPhase",
+              "apps/www/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+              193,
+              16
+            ],
+            ["setMountPhase", "apps/www/src/instance/session.ts", 127, 25]
+          ],
+          "path": "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+          "authoredLine": 45,
+          "sourceSha256": "b94735696bd58e8570817ab630816a5e8e3f9aa0e90bbd50daee2e01a8f5b851",
+          "code": "const observed = computed?.getPropertyValue('--pui-' + role) ?? '';"
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 9.759,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            ["environment", "apps/www/src/motion/web-resident-motion.ts", 73, 18],
+            ["render", "apps/www/src/motion/projector.ts", 36, 18],
+            ["commit", "apps/www/src/motion/projector.ts", 146, 11],
+            ["commit", "apps/www/src/runtime/modules.ts", 1253, 15],
+            ["projectFinalStyle", "apps/www/src/create.ts", 468, 26],
+            ["flushIfPossible", "apps/www/src/create.ts", 526, 24],
+            ["replaceVisualRuntime", "apps/www/src/create.ts", 254, 29],
+            ["replaceVisualRuntime", "apps/www/src/create.ts", 659, 33],
+            ["applyVisualPlan", "apps/www/src/impl.ts", 190, 18],
+            ["evaluateAndApply", "apps/www/src/impl.ts", 169, 19]
+          ],
+          "path": "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+          "authoredLine": 45,
+          "sourceSha256": "b94735696bd58e8570817ab630816a5e8e3f9aa0e90bbd50daee2e01a8f5b851",
+          "code": "const observed = computed?.getPropertyValue('--pui-' + role) ?? '';"
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 9.669,
+          "v8SampleLocation": [36, 64],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            ["environment", "apps/www/src/motion/web-resident-motion.ts", 73, 18],
+            ["render", "apps/www/src/motion/projector.ts", 36, 18],
+            ["commit", "apps/www/src/motion/projector.ts", 146, 11],
+            ["commit", "apps/www/src/runtime/modules.ts", 1253, 15],
+            ["projectFinalStyle", "apps/www/src/create.ts", 468, 26],
+            ["afterRenderCommit", "apps/www/src/create.ts", 550, 26],
+            ["onMountPhase", "apps/www/src/create.ts", 396, 21],
+            ["onMountPhase", "apps/www/src/create.ts", 675, 25],
+            [
+              "setMountPhase",
+              "apps/www/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+              193,
+              16
+            ],
+            ["setMountPhase", "apps/www/src/instance/session.ts", 127, 25]
+          ],
+          "path": "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+          "authoredLine": 45,
+          "sourceSha256": "b94735696bd58e8570817ab630816a5e8e3f9aa0e90bbd50daee2e01a8f5b851",
+          "code": "const observed = computed?.getPropertyValue('--pui-' + role) ?? '';"
+        },
+        {
+          "category": "typography-selection",
+          "phase": "after-family-write",
+          "sampleWeightMs": 4.705,
+          "v8SampleLocation": [99, 18],
+          "v8GeneratedStack": [
+            ["preserveSelection", "apps/www/src/components/site-typography.ts", 96, 27],
+            ["restoreNative", "apps/www/src/components/site-typography.ts", 183, 29],
+            ["dispose", "apps/www/src/components/site-typography.ts", 192, 23],
+            ["", "apps/www/src/components/Homepage/homepage-runtime-client.ts", 488, 28],
+            ["dispose", "apps/www/src/components/Homepage/homepage-runtime-client.ts", 483, 22],
+            ["", "apps/www/src/components/PrototypePreviewer/projection-scope.ts", 55, 37],
+            [
+              "invokeCandidateCallback",
+              "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+              43,
+              35
+            ],
+            ["", "apps/www/src/components/PrototypePreviewer/projection-scope.ts", 55, 7],
+            ["(root)", "", 0, 0]
+          ],
+          "path": "apps/www/src/components/site-typography.ts",
+          "authoredLine": 183,
+          "sourceSha256": "640f031fa2e308c5a53e14aa0a35a499362ccb6f1c1ca338d40e92ada61ba232",
+          "code": "const anchor = captureBoundary(selection?.anchorNode ?? null, selection?.anchorOffset ?? 0);"
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 0.647,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            ["environment", "apps/www/src/motion/web-resident-motion.ts", 73, 18],
+            ["render", "apps/www/src/motion/projector.ts", 36, 18],
+            ["commit", "apps/www/src/motion/projector.ts", 146, 11],
+            ["commit", "apps/www/src/runtime/modules.ts", 1253, 15],
+            ["projectFinalStyle", "apps/www/src/create.ts", 468, 26],
+            ["afterRenderCommit", "apps/www/src/create.ts", 550, 26],
+            ["afterRenderCommit", "apps/www/src/create.ts", 677, 30],
+            [
+              "afterRenderCommit",
+              "apps/www/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+              209,
+              20
+            ],
+            ["done", "apps/www/src/instance/session.ts", 155, 11],
+            ["commit", "apps/www/src/runtime/session.ts", 167, 15]
+          ],
+          "path": "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+          "authoredLine": 45,
+          "sourceSha256": "b94735696bd58e8570817ab630816a5e8e3f9aa0e90bbd50daee2e01a8f5b851",
+          "code": "const observed = computed?.getPropertyValue('--pui-' + role) ?? '';"
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 0.646,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            ["environment", "apps/www/src/motion/web-resident-motion.ts", 73, 18],
+            ["render", "apps/www/src/motion/projector.ts", 36, 18],
+            ["commit", "apps/www/src/motion/projector.ts", 146, 11],
+            ["commit", "apps/www/src/runtime/modules.ts", 1253, 15],
+            ["projectFinalStyle", "apps/www/src/create.ts", 468, 26],
+            ["flushIfPossible", "apps/www/src/create.ts", 526, 24],
+            ["onProtoPhase", "apps/www/src/create.ts", 383, 21],
+            ["onProtoPhase", "apps/www/src/create.ts", 676, 25],
+            [
+              "setProtoPhase",
+              "apps/www/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+              181,
+              16
+            ],
+            ["scheduleFinish", "apps/www/src/instance/session.ts", 284, 32]
+          ],
+          "path": "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+          "authoredLine": 45,
+          "sourceSha256": "b94735696bd58e8570817ab630816a5e8e3f9aa0e90bbd50daee2e01a8f5b851",
+          "code": "const observed = computed?.getPropertyValue('--pui-' + role) ?? '';"
+        },
+        {
+          "category": "typography-selection",
+          "phase": "before-family-write",
+          "sampleWeightMs": 0.164,
+          "v8SampleLocation": [100, 43],
+          "v8GeneratedStack": [
+            ["preserveSelection", "apps/www/src/components/site-typography.ts", 96, 27],
+            ["activate", "apps/www/src/components/site-typography.ts", 288, 19],
+            ["activate", "apps/www/src/components/Homepage/homepage-runtime-client.ts", 477, 17],
+            [
+              "materializeGeneration",
+              "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+              153,
+              33
+            ],
+            ["(root)", "", 0, 0]
+          ],
+          "path": "apps/www/src/components/site-typography.ts",
+          "authoredLine": 184,
+          "sourceSha256": "640f031fa2e308c5a53e14aa0a35a499362ccb6f1c1ca338d40e92ada61ba232",
+          "code": "const extent = captureBoundary(selection?.focusNode ?? null, selection?.focusOffset ?? 0);"
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 0.16,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            ["environment", "apps/www/src/motion/web-resident-motion.ts", 73, 18],
+            ["render", "apps/www/src/motion/projector.ts", 36, 18],
+            ["", "apps/www/src/motion/projector.ts", 131, 43],
+            ["(root)", "", 0, 0]
+          ],
+          "path": "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+          "authoredLine": 45,
+          "sourceSha256": "b94735696bd58e8570817ab630816a5e8e3f9aa0e90bbd50daee2e01a8f5b851",
+          "code": "const observed = computed?.getPropertyValue('--pui-' + role) ?? '';"
+        }
+      ],
+      "callWeightsMs": [
+        {
+          "category": "header-rectangle",
+          "phase": "after-family-write",
+          "ms": 104.128
+        },
+        {
+          "category": "typography-selection",
+          "phase": "before-family-write",
+          "ms": 79.796
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "ms": 96.766
+        },
+        {
+          "category": "motion-palette",
+          "phase": "after-family-write",
+          "ms": 43.978
+        },
+        {
+          "category": "typography-selection",
+          "phase": "after-family-write",
+          "ms": 4.705
+        }
+      ],
+      "narrowRingSamples": [],
+      "lifecycleSha256": "21cbe0247479068e5709ad9f67a21c364b54f0eaa3204b9cde7be4af6477396a"
+    },
+    {
+      "arm": "candidate",
+      "product": "29a61c4cee7e55d160fbe9a6a7242359d5461c8b",
+      "carrier": "51751ae1b9213aca255d67ac07ba2a691b5f4771",
+      "status": "reconciled",
+      "result": "rejected",
+      "originalVerdictMs": 1000.331,
+      "familyWritesMs": [[1067.638, 1069.37]],
+      "query": {
+        "ordinal": 3,
+        "outstandingAtVerdict": true,
+        "cdpId": 14571,
+        "method": "Runtime.callFunctionOn",
+        "startedAfterPollMs": 307.184,
+        "returnedAfterPollMs": 1737.583,
+        "returnedValue": "brutalist",
+        "nodePipeStagesAfterPollMs": {
+          "cdp.pipe.write.return": [308.308, 308.323],
+          "cdp.pipe.read-dispatch.enter": [1736.802],
+          "cdp.pipe.frame.callback.enter": [1737.259],
+          "cdp.response.received": [1737.309]
+        },
+        "browserGetterStagesAfterPollMs": {
+          "selector.enter": [1734.038, 1735.77],
+          "selector.exit": [1734.938, 1736.67],
+          "getter.enter": [1734.938, 1736.67],
+          "getter.exit": [1735.038, 1736.77]
+        },
+        "selectorEntryToGetterEntryMs": 0.9,
+        "getterDurationAtPageClockPrecisionMs": 0.1,
+        "targetArrivalBatchCount": 0
+      },
+      "chromeTrace": {
+        "browserVersion": "157.0.8103.50",
+        "explicitCpuThrottle": null,
+        "traceBytes": 13730997,
+        "sha256": "544bb36d7beb7a7192299be24603a60ea61c622712647e1b0b8bf67525e43ff4",
+        "traceComplete": true,
+        "dataLossOccurred": false,
+        "cleanup": {
+          "originalContextClosed": true,
+          "streamClosed": true,
+          "sessionDetached": true,
+          "unresolvedTraceOwnership": false
+        },
+        "commandStagesAfterPollMs": {
+          "DevToolsSession::HandleCommand in Browser": [307.344, 309.076],
+          "DevToolsSession::DispatchToAgent": [307.351, 309.083],
+          "DevToolsSession::DispatchProtocolCommand": [1733.661, 1735.393],
+          "DevToolsSession::SendProtocolResponse": [1735.33, 1737.062],
+          "DevToolsSession::DispatchProtocolResponse": [1735.504, 1737.236]
+        },
+        "browserHandleToForwardMs": 0.007,
+        "browserForwardToRendererDispatchMs": 1426.31,
+        "rendererDispatchDurationMs": 1.736,
+        "rendererRunTaskUnionDuringWaitMs": 1426.27,
+        "rendererNestedEventDurationDuringWaitMs": {
+          "FunctionCall": 1138.155,
+          "UpdateLayoutTree": 317.678,
+          "Layout": 44.12
+        }
+      },
+      "phase": {
+        "queueBeforeCommit": {
+          "durationMs": 760.287,
+          "rendererTaskOverlapMs": 760.272,
+          "styleTreeUpdateOverlapMs": 189.064,
+          "layoutOverlapMs": 22.915,
+          "largestRendererTasks": [
+            {
+              "startsAfterForwardMs": 0.0,
+              "overlapMs": 580.869,
+              "leafSamples": [
+                {
+                  "frame": "getPropertyValue",
+                  "ms": 91.483
+                },
+                {
+                  "frame": "(garbage collector)",
+                  "ms": 32.632
+                },
+                {
+                  "frame": "appendChild",
+                  "ms": 31.859
+                },
+                {
+                  "frame": "(program)",
+                  "ms": 30.886
+                },
+                {
+                  "frame": "replaceValuePreservingEditingSession [apps/www/src/web.ts:136]",
+                  "ms": 28.551
+                },
+                {
+                  "frame": "visitRule [apps/www/src/runtime/modules.ts:630]",
+                  "ms": 27.5
+                }
+              ]
+            },
+            {
+              "startsAfterForwardMs": 580.884,
+              "overlapMs": 179.403,
+              "leafSamples": [
+                {
+                  "frame": "preserveSelection [apps/www/src/components/site-typography.ts:98]",
+                  "ms": 76.927
+                },
+                {
+                  "frame": "(program)",
+                  "ms": 37.702
+                },
+                {
+                  "frame": "isWebPortalMaterialSuspended [apps/www/src/platform/portal-destination.ts:123]",
+                  "ms": 7.358
+                },
+                {
+                  "frame": "createModule [apps/www/src/create-module.ts:4]",
+                  "ms": 4.767
+                },
+                {
+                  "frame": "getPropertyValue",
+                  "ms": 4.565
+                },
+                {
+                  "frame": "stampProjectionSurfaces [apps/www/src/components/PrototypePreviewer/projection-composition.ts:679]",
+                  "ms": 4.016
+                }
+              ]
+            }
+          ]
+        },
+        "queueAfterCommit": {
+          "durationMs": 666.023,
+          "rendererTaskOverlapMs": 665.998,
+          "styleTreeUpdateOverlapMs": 128.614,
+          "layoutOverlapMs": 21.205,
+          "largestRendererTasks": [
+            {
+              "startsAfterForwardMs": 760.287,
+              "overlapMs": 665.627,
+              "leafSamples": [
+                {
+                  "frame": "getBoundingClientRect",
+                  "ms": 101.56
+                },
+                {
+                  "frame": "(program)",
+                  "ms": 84.945
+                },
+                {
+                  "frame": "getPropertyValue",
+                  "ms": 53.986
+                },
+                {
+                  "frame": "(anonymous) [apps/www/src/impl.ts:890]",
+                  "ms": 32.821
+                },
+                {
+                  "frame": "visitRule [apps/www/src/runtime/modules.ts:630]",
+                  "ms": 20.805
+                },
+                {
+                  "frame": "removeEventListener",
+                  "ms": 19.763
+                }
+              ]
+            },
+            {
+              "startsAfterForwardMs": 1425.93,
+              "overlapMs": 0.327,
+              "leafSamples": [
+                {
+                  "frame": "(program)",
+                  "ms": 0.327
+                }
+              ]
+            },
+            {
+              "startsAfterForwardMs": 1426.286,
+              "overlapMs": 0.024,
+              "leafSamples": [
+                {
+                  "frame": "(program)",
+                  "ms": 0.024
+                }
+              ]
+            },
+            {
+              "startsAfterForwardMs": 1426.261,
+              "overlapMs": 0.02,
+              "leafSamples": [
+                {
+                  "frame": "(program)",
+                  "ms": 0.02
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "callSamples": [
+        {
+          "category": "header-rectangle",
+          "phase": "after-family-write",
+          "sampleWeightMs": 101.56,
+          "v8SampleLocation": [86, 25],
+          "v8GeneratedStack": [
+            ["getBoundingClientRect", "", 0, 0],
+            ["positionPanel", "apps/www/src/components/site-header-disclosure.ts", 81, 25],
+            ["measureLayout", "apps/www/src/components/site-header-disclosure.ts", 114, 25],
+            ["sync", "apps/www/src/components/site-header-disclosure.ts", 156, 16],
+            ["enhance", "apps/www/src/components/site-header-disclosure.ts", 334, 12],
+            ["publish", "apps/www/src/components/Homepage/homepage-runtime-client.ts", 524, 16],
+            [
+              "materializeGeneration",
+              "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+              153,
+              33
+            ],
+            ["(root)", "", 0, 0]
+          ],
+          "path": "apps/www/src/components/site-header-disclosure.ts",
+          "authoredLine": 132,
+          "sourceSha256": "de015b1ba532fcd04dbba06b845328b8c6ff2ea970a14f76cc0730cd756506d1",
+          "code": "const header = root.getBoundingClientRect();"
+        },
+        {
+          "category": "typography-selection",
+          "phase": "before-family-write",
+          "sampleWeightMs": 76.766,
+          "v8SampleLocation": [101, 22],
+          "v8GeneratedStack": [
+            ["preserveSelection", "apps/www/src/components/site-typography.ts", 98, 27],
+            ["activate", "apps/www/src/components/site-typography.ts", 295, 19],
+            ["activate", "apps/www/src/components/Homepage/homepage-runtime-client.ts", 477, 17],
+            [
+              "materializeGeneration",
+              "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+              153,
+              33
+            ],
+            ["(root)", "", 0, 0]
+          ],
+          "path": "apps/www/src/components/site-typography.ts",
+          "authoredLine": 185,
+          "sourceSha256": "5d82f8d027b7f3f4540dc61a367a09a03cabb137f543387265f03bb89b299697",
+          "code": "const anchorNode = selection?.anchorNode;"
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 48.982,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            [
+              "notify",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              59,
+              22
+            ],
+            ["(root)", "", 0, 0]
+          ],
+          "path": "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+          "authoredLine": 45,
+          "sourceSha256": "b94735696bd58e8570817ab630816a5e8e3f9aa0e90bbd50daee2e01a8f5b851",
+          "code": "const observed = computed?.getPropertyValue('--pui-' + role) ?? '';"
+        },
+        {
+          "category": "motion-palette",
+          "phase": "after-family-write",
+          "sampleWeightMs": 40.313,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            [
+              "notify",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              59,
+              22
+            ],
+            ["(root)", "", 0, 0]
+          ],
+          "path": "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+          "authoredLine": 45,
+          "sourceSha256": "b94735696bd58e8570817ab630816a5e8e3f9aa0e90bbd50daee2e01a8f5b851",
+          "code": "const observed = computed?.getPropertyValue('--pui-' + role) ?? '';"
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 17.299,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            ["environment", "apps/www/src/motion/web-resident-motion.ts", 73, 18],
+            ["render", "apps/www/src/motion/projector.ts", 36, 18],
+            ["commit", "apps/www/src/motion/projector.ts", 146, 11],
+            ["commit", "apps/www/src/runtime/modules.ts", 1253, 15],
+            ["projectFinalStyle", "apps/www/src/create.ts", 468, 26],
+            ["afterRenderCommit", "apps/www/src/create.ts", 550, 26],
+            ["onMountPhase", "apps/www/src/create.ts", 396, 21],
+            ["onMountPhase", "apps/www/src/create.ts", 675, 25],
+            [
+              "setMountPhase",
+              "apps/www/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+              193,
+              16
+            ],
+            ["setMountPhase", "apps/www/src/instance/session.ts", 127, 25]
+          ],
+          "path": "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+          "authoredLine": 45,
+          "sourceSha256": "b94735696bd58e8570817ab630816a5e8e3f9aa0e90bbd50daee2e01a8f5b851",
+          "code": "const observed = computed?.getPropertyValue('--pui-' + role) ?? '';"
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 9.862,
+          "v8SampleLocation": [36, 64],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            ["environment", "apps/www/src/motion/web-resident-motion.ts", 73, 18],
+            ["render", "apps/www/src/motion/projector.ts", 36, 18],
+            ["commit", "apps/www/src/motion/projector.ts", 146, 11],
+            ["commit", "apps/www/src/runtime/modules.ts", 1253, 15],
+            ["projectFinalStyle", "apps/www/src/create.ts", 468, 26],
+            ["afterRenderCommit", "apps/www/src/create.ts", 550, 26],
+            ["onMountPhase", "apps/www/src/create.ts", 396, 21],
+            ["onMountPhase", "apps/www/src/create.ts", 675, 25],
+            [
+              "setMountPhase",
+              "apps/www/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+              193,
+              16
+            ],
+            ["setMountPhase", "apps/www/src/instance/session.ts", 127, 25]
+          ],
+          "path": "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+          "authoredLine": 45,
+          "sourceSha256": "b94735696bd58e8570817ab630816a5e8e3f9aa0e90bbd50daee2e01a8f5b851",
+          "code": "const observed = computed?.getPropertyValue('--pui-' + role) ?? '';"
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 9.028,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            ["environment", "apps/www/src/motion/web-resident-motion.ts", 73, 18],
+            ["render", "apps/www/src/motion/projector.ts", 36, 18],
+            ["commit", "apps/www/src/motion/projector.ts", 146, 11],
+            ["commit", "apps/www/src/runtime/modules.ts", 1253, 15],
+            ["projectFinalStyle", "apps/www/src/create.ts", 468, 26],
+            ["flushIfPossible", "apps/www/src/create.ts", 526, 24],
+            ["replaceVisualRuntime", "apps/www/src/create.ts", 254, 29],
+            ["replaceVisualRuntime", "apps/www/src/create.ts", 659, 33],
+            ["applyVisualPlan", "apps/www/src/impl.ts", 190, 18],
+            ["evaluateAndApply", "apps/www/src/impl.ts", 169, 19]
+          ],
+          "path": "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+          "authoredLine": 45,
+          "sourceSha256": "b94735696bd58e8570817ab630816a5e8e3f9aa0e90bbd50daee2e01a8f5b851",
+          "code": "const observed = computed?.getPropertyValue('--pui-' + role) ?? '';"
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 0.83,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            ["environment", "apps/www/src/motion/web-resident-motion.ts", 73, 18],
+            ["render", "apps/www/src/motion/projector.ts", 36, 18],
+            ["commit", "apps/www/src/motion/projector.ts", 146, 11],
+            ["commit", "apps/www/src/runtime/modules.ts", 1253, 15],
+            ["projectFinalStyle", "apps/www/src/create.ts", 468, 26],
+            ["afterRenderCommit", "apps/www/src/create.ts", 550, 26],
+            ["afterRenderCommit", "apps/www/src/create.ts", 677, 30],
+            [
+              "afterRenderCommit",
+              "apps/www/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+              209,
+              20
+            ],
+            ["done", "apps/www/src/instance/session.ts", 155, 11],
+            ["commit", "apps/www/src/runtime/session.ts", 167, 15]
+          ],
+          "path": "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+          "authoredLine": 45,
+          "sourceSha256": "b94735696bd58e8570817ab630816a5e8e3f9aa0e90bbd50daee2e01a8f5b851",
+          "code": "const observed = computed?.getPropertyValue('--pui-' + role) ?? '';"
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 0.66,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            ["environment", "apps/www/src/motion/web-resident-motion.ts", 73, 18],
+            ["render", "apps/www/src/motion/projector.ts", 36, 18],
+            ["commit", "apps/www/src/motion/projector.ts", 146, 11],
+            ["commit", "apps/www/src/runtime/modules.ts", 1253, 15],
+            ["projectFinalStyle", "apps/www/src/create.ts", 468, 26],
+            ["flushIfPossible", "apps/www/src/create.ts", 526, 24],
+            ["onProtoPhase", "apps/www/src/create.ts", 383, 21],
+            ["onProtoPhase", "apps/www/src/create.ts", 676, 25],
+            [
+              "setProtoPhase",
+              "apps/www/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+              181,
+              16
+            ],
+            ["scheduleFinish", "apps/www/src/instance/session.ts", 284, 32]
+          ],
+          "path": "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+          "authoredLine": 45,
+          "sourceSha256": "b94735696bd58e8570817ab630816a5e8e3f9aa0e90bbd50daee2e01a8f5b851",
+          "code": "const observed = computed?.getPropertyValue('--pui-' + role) ?? '';"
+        },
+        {
+          "category": "typography-selection",
+          "phase": "before-family-write",
+          "sampleWeightMs": 0.161,
+          "v8SampleLocation": [106, 3],
+          "v8GeneratedStack": [
+            ["preserveSelection", "apps/www/src/components/site-typography.ts", 98, 27],
+            ["activate", "apps/www/src/components/site-typography.ts", 295, 19],
+            ["activate", "apps/www/src/components/Homepage/homepage-runtime-client.ts", 477, 17],
+            [
+              "materializeGeneration",
+              "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+              153,
+              33
+            ],
+            ["(root)", "", 0, 0]
+          ]
+        },
+        {
+          "category": "motion-palette",
+          "phase": "after-family-write",
+          "sampleWeightMs": 0.159,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            ["environment", "apps/www/src/motion/web-resident-motion.ts", 73, 18],
+            ["render", "apps/www/src/motion/projector.ts", 36, 18],
+            ["", "apps/www/src/motion/projector.ts", 166, 46],
+            ["resize", "apps/www/src/motion/web-resident-motion.ts", 101, 89],
+            ["(root)", "", 0, 0]
+          ],
+          "path": "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+          "authoredLine": 45,
+          "sourceSha256": "b94735696bd58e8570817ab630816a5e8e3f9aa0e90bbd50daee2e01a8f5b851",
+          "code": "const observed = computed?.getPropertyValue('--pui-' + role) ?? '';"
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 0.126,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            ["environment", "apps/www/src/motion/web-resident-motion.ts", 73, 18],
+            ["render", "apps/www/src/motion/projector.ts", 36, 18],
+            ["", "apps/www/src/motion/projector.ts", 131, 43],
+            ["(root)", "", 0, 0]
+          ],
+          "path": "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+          "authoredLine": 45,
+          "sourceSha256": "b94735696bd58e8570817ab630816a5e8e3f9aa0e90bbd50daee2e01a8f5b851",
+          "code": "const observed = computed?.getPropertyValue('--pui-' + role) ?? '';"
+        }
+      ],
+      "callWeightsMs": [
+        {
+          "category": "header-rectangle",
+          "phase": "after-family-write",
+          "ms": 101.56
+        },
+        {
+          "category": "typography-selection",
+          "phase": "before-family-write",
+          "ms": 76.927
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "ms": 86.787
+        },
+        {
+          "category": "motion-palette",
+          "phase": "after-family-write",
+          "ms": 40.472
+        }
+      ],
+      "narrowRingSamples": [],
+      "lifecycleSha256": "aebbf897fe9c7eb36c95f5d966f8ff1822c300ac25ca9bdcfaaa7f2d7b17f29d"
+    }
+  ]
+}

@@ -1,0 +1,294 @@
+{
+  "vite": "6.4.1",
+  "target": "esnext",
+  "records": [
+    {
+      "head": "f58c7af3350cee5c6fe456e0dc7b92e790a8c288",
+      "revision": "f58c7af3",
+      "file": "apps/www/src/components/site-header-disclosure.ts",
+      "sourceSha256": "9d614feb355d24ff181afcacbb31ae5b1acfc299cd90bdae9c89460eff5b92e4",
+      "transformSha256": "608c4b5c42415b342a4dc42b6f23936053fbcf4ede7a758bb190c461c3dc48ea",
+      "stem": "site-header-disclosure",
+      "generatedMatches": [
+        {
+          "line": 84,
+          "code": "const anchor = button.getBoundingClientRect();"
+        },
+        {
+          "line": 85,
+          "code": "const header = root.getBoundingClientRect();"
+        }
+      ],
+      "authoredMatches": [
+        {
+          "line": 130,
+          "code": "const anchor = button.getBoundingClientRect();"
+        },
+        {
+          "line": 131,
+          "code": "const header = root.getBoundingClientRect();"
+        }
+      ]
+    },
+    {
+      "head": "f58c7af3350cee5c6fe456e0dc7b92e790a8c288",
+      "revision": "f58c7af3",
+      "file": "apps/www/src/components/site-typography.ts",
+      "sourceSha256": "640f031fa2e308c5a53e14aa0a35a499362ccb6f1c1ca338d40e92ada61ba232",
+      "transformSha256": "332ac114289af771a56797ca9e673ff9bef35e43399cae09ee8cb6a7d4c7eac5",
+      "stem": "site-typography",
+      "generatedMatches": [
+        {
+          "line": 99,
+          "code": "const anchor = captureBoundary(selection?.anchorNode ?? null, selection?.anchorOffset ?? 0);"
+        },
+        {
+          "line": 100,
+          "code": "const extent = captureBoundary(selection?.focusNode ?? null, selection?.focusOffset ?? 0);"
+        }
+      ],
+      "authoredMatches": [
+        {
+          "line": 183,
+          "code": "const anchor = captureBoundary(selection?.anchorNode ?? null, selection?.anchorOffset ?? 0);"
+        },
+        {
+          "line": 184,
+          "code": "const extent = captureBoundary(selection?.focusNode ?? null, selection?.focusOffset ?? 0);"
+        }
+      ]
+    },
+    {
+      "head": "f58c7af3350cee5c6fe456e0dc7b92e790a8c288",
+      "revision": "f58c7af3",
+      "file": "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+      "sourceSha256": "b94735696bd58e8570817ab630816a5e8e3f9aa0e90bbd50daee2e01a8f5b851",
+      "transformSha256": "a89f38bf2b396f3a48cd60a0599e19bbe7b423bf9b0d06e2dd89946dab116bd0",
+      "stem": "canonical-motion-palette",
+      "generatedMatches": [
+        {
+          "line": 36,
+          "code": "const observed = computed?.getPropertyValue(\"--pui-\" + role) ?? \"\";"
+        }
+      ],
+      "authoredMatches": [
+        {
+          "line": 45,
+          "code": "const observed = computed?.getPropertyValue('--pui-' + role) ?? '';"
+        }
+      ]
+    },
+    {
+      "head": "f58c7af3350cee5c6fe456e0dc7b92e790a8c288",
+      "revision": "f58c7af3",
+      "file": "apps/www/src/components/Homepage/homepage-runtime-client.ts",
+      "sourceSha256": "4e4fbc9147e59043866d72456998fadea16f208bbc824ac4f35f2bb8942cf1a8",
+      "transformSha256": "7979e37dfb9f109a8f95a393890087ed99b15180d6593e55f4cde84a02fd65a8",
+      "stem": "homepage-runtime-client",
+      "generatedMatches": [
+        {
+          "line": 546,
+          "code": "disclosure?.enhance();"
+        }
+      ],
+      "authoredMatches": [
+        {
+          "line": 654,
+          "code": "disclosure?.enhance();"
+        }
+      ]
+    },
+    {
+      "head": "29a61c4cee7e55d160fbe9a6a7242359d5461c8b",
+      "revision": "29a61c4",
+      "file": "apps/www/src/components/site-header-disclosure.ts",
+      "sourceSha256": "de015b1ba532fcd04dbba06b845328b8c6ff2ea970a14f76cc0730cd756506d1",
+      "transformSha256": "16e68acdb1d6d5aa77b2dd1bdf67f99595ff038c7ff7ba1c6cbfc88c3155a4fb",
+      "stem": "site-header-disclosure",
+      "generatedMatches": [
+        {
+          "line": 85,
+          "code": "const anchor = mobile ? null : button.getBoundingClientRect();"
+        },
+        {
+          "line": 86,
+          "code": "const header = root.getBoundingClientRect();"
+        }
+      ],
+      "authoredMatches": [
+        {
+          "line": 131,
+          "code": "const anchor = mobile ? null : button.getBoundingClientRect();"
+        },
+        {
+          "line": 132,
+          "code": "const header = root.getBoundingClientRect();"
+        }
+      ]
+    },
+    {
+      "head": "29a61c4cee7e55d160fbe9a6a7242359d5461c8b",
+      "revision": "29a61c4",
+      "file": "apps/www/src/components/site-typography.ts",
+      "sourceSha256": "5d82f8d027b7f3f4540dc61a367a09a03cabb137f543387265f03bb89b299697",
+      "transformSha256": "3b282a27f048ead359ffacadc025d57430ceb92f32d6f804367fd8457a155738",
+      "stem": "site-typography",
+      "generatedMatches": [
+        {
+          "line": 101,
+          "code": "const anchorNode = selection?.anchorNode;"
+        },
+        {
+          "line": 102,
+          "code": "const focusNode = selection?.focusNode;"
+        }
+      ],
+      "authoredMatches": [
+        {
+          "line": 185,
+          "code": "const anchorNode = selection?.anchorNode;"
+        },
+        {
+          "line": 186,
+          "code": "const focusNode = selection?.focusNode;"
+        }
+      ]
+    },
+    {
+      "head": "29a61c4cee7e55d160fbe9a6a7242359d5461c8b",
+      "revision": "29a61c4",
+      "file": "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+      "sourceSha256": "b94735696bd58e8570817ab630816a5e8e3f9aa0e90bbd50daee2e01a8f5b851",
+      "transformSha256": "a89f38bf2b396f3a48cd60a0599e19bbe7b423bf9b0d06e2dd89946dab116bd0",
+      "stem": "canonical-motion-palette",
+      "generatedMatches": [
+        {
+          "line": 36,
+          "code": "const observed = computed?.getPropertyValue(\"--pui-\" + role) ?? \"\";"
+        }
+      ],
+      "authoredMatches": [
+        {
+          "line": 45,
+          "code": "const observed = computed?.getPropertyValue('--pui-' + role) ?? '';"
+        }
+      ]
+    },
+    {
+      "head": "29a61c4cee7e55d160fbe9a6a7242359d5461c8b",
+      "revision": "29a61c4",
+      "file": "apps/www/src/components/Homepage/homepage-runtime-client.ts",
+      "sourceSha256": "a653d6e45c54de213e846a6ce4a3f80c140669c13b93131b6eb177c808d5cbd0",
+      "transformSha256": "351e95198fbec6b9899b71ddebd0c6fb66880785b4aafecfc1dd117b2d0280c4",
+      "stem": "homepage-runtime-client",
+      "generatedMatches": [
+        {
+          "line": 546,
+          "code": "disclosure?.enhance();"
+        }
+      ],
+      "authoredMatches": [
+        {
+          "line": 654,
+          "code": "disclosure?.enhance();"
+        }
+      ]
+    },
+    {
+      "head": "1e3f268f445c91e712c6df7d4e92e6c4b230a16f",
+      "revision": "1e3f268",
+      "file": "apps/www/src/components/site-header-disclosure.ts",
+      "sourceSha256": "9d597364cb274a62613d9c0e252f7f4ef15eb333c0f0ed999dea3c0e6241e0f7",
+      "transformSha256": "62e39dd36343e546a30818d1f9241b2799d9802ec3ac3b2cbb3d72be85f45301",
+      "stem": "site-header-disclosure",
+      "generatedMatches": [
+        {
+          "line": 85,
+          "code": "const anchor = mobile ? null : button.getBoundingClientRect();"
+        },
+        {
+          "line": 86,
+          "code": "const header = root.getBoundingClientRect();"
+        }
+      ],
+      "authoredMatches": [
+        {
+          "line": 131,
+          "code": "const anchor = mobile ? null : button.getBoundingClientRect();"
+        },
+        {
+          "line": 132,
+          "code": "const header = root.getBoundingClientRect();"
+        }
+      ]
+    },
+    {
+      "head": "1e3f268f445c91e712c6df7d4e92e6c4b230a16f",
+      "revision": "1e3f268",
+      "file": "apps/www/src/components/site-typography.ts",
+      "sourceSha256": "5d82f8d027b7f3f4540dc61a367a09a03cabb137f543387265f03bb89b299697",
+      "transformSha256": "3b282a27f048ead359ffacadc025d57430ceb92f32d6f804367fd8457a155738",
+      "stem": "site-typography",
+      "generatedMatches": [
+        {
+          "line": 101,
+          "code": "const anchorNode = selection?.anchorNode;"
+        },
+        {
+          "line": 102,
+          "code": "const focusNode = selection?.focusNode;"
+        }
+      ],
+      "authoredMatches": [
+        {
+          "line": 185,
+          "code": "const anchorNode = selection?.anchorNode;"
+        },
+        {
+          "line": 186,
+          "code": "const focusNode = selection?.focusNode;"
+        }
+      ]
+    },
+    {
+      "head": "1e3f268f445c91e712c6df7d4e92e6c4b230a16f",
+      "revision": "1e3f268",
+      "file": "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+      "sourceSha256": "b94735696bd58e8570817ab630816a5e8e3f9aa0e90bbd50daee2e01a8f5b851",
+      "transformSha256": "a89f38bf2b396f3a48cd60a0599e19bbe7b423bf9b0d06e2dd89946dab116bd0",
+      "stem": "canonical-motion-palette",
+      "generatedMatches": [
+        {
+          "line": 36,
+          "code": "const observed = computed?.getPropertyValue(\"--pui-\" + role) ?? \"\";"
+        }
+      ],
+      "authoredMatches": [
+        {
+          "line": 45,
+          "code": "const observed = computed?.getPropertyValue('--pui-' + role) ?? '';"
+        }
+      ]
+    },
+    {
+      "head": "1e3f268f445c91e712c6df7d4e92e6c4b230a16f",
+      "revision": "1e3f268",
+      "file": "apps/www/src/components/Homepage/homepage-runtime-client.ts",
+      "sourceSha256": "a653d6e45c54de213e846a6ce4a3f80c140669c13b93131b6eb177c808d5cbd0",
+      "transformSha256": "351e95198fbec6b9899b71ddebd0c6fb66880785b4aafecfc1dd117b2d0280c4",
+      "stem": "homepage-runtime-client",
+      "generatedMatches": [
+        {
+          "line": 546,
+          "code": "disclosure?.enhance();"
+        }
+      ],
+      "authoredMatches": [
+        {
+          "line": 654,
+          "code": "disclosure?.enhance();"
+        }
+      ]
+    }
+  ]
+}
