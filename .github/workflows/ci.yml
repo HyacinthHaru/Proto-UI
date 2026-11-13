@@ -1,5 +1,5 @@
 name: CI
-run-name: Brutalist post-write workload on a shared runner
+run-name: Brutalist WC lifecycle on the original shards
 
 on: workflow_dispatch
 permissions:
@@ -20,8 +20,8 @@ jobs:
             slot: browser-3-of-8
             trace: '0'
     env:
-      BASELINE_CARRIER: 05ae9415291789ec31ad7f9d8b47372ca1289d11
-      CANDIDATE_CARRIER: b388cb265d30d3e84bcf56c7687f524aa717c08c
+      BASELINE_CARRIER: b388cb265d30d3e84bcf56c7687f524aa717c08c
+      CANDIDATE_CARRIER: 3e2c79545a7e1f1be7a06f90f19f8b96db3146a6
       CHROME_VERSION: 157.0.8103.50
       CHROME_ZIP_SHA256: d17167bc092eb495a3b768c7467f27e35f625aa03834233a1663af67dcb668c9
       PROTO_UI_RUNTIME_PHASE: browser
