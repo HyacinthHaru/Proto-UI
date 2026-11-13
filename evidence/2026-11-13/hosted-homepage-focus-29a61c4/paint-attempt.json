@@ -1,0 +1,9 @@
+{
+  "source": "22683ce0f2357e1a10501637550fbbe6515137ad",
+  "processExit": 124,
+  "originalFailure": "page.screenshot: Timeout 30000ms exceeded.",
+  "fontsLoaded": true,
+  "outerLimitSeconds": 170,
+  "acceptedFrames": 0,
+  "sourceLogSha256": "c1b2dd32fb0a4a36f6559c92d1ece7053bb4113e12e3106a5e4a254eae26a125"
+}
