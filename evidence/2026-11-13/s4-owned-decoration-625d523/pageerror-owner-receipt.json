@@ -1,0 +1,2071 @@
+{
+  "source": "625d523ea224c79e85e2b439b58a0f1bd4025d99",
+  "browser": "156.0.8078.79",
+  "scope": "Complete page pageerror and CDP exception stream; no startup or paint acceptance query.",
+  "navigation": {
+    "status": 200
+  },
+  "exceptionCount": 18,
+  "message": "[feedback] owned-decoration unsupported by this adapter",
+  "owningMountCounts": {
+    "shadow-split-s3.ts": 8,
+    "shadow-split-s4.ts": 8,
+    "shadow-split-s5.ts": 2
+  },
+  "sourceSha256": {
+    "packages/prototypes/shadcn/src/tabs/trigger.proto.ts": "e79ce2475609ae35cacb37493ab73aafcd017cb04f8fa32f05b9a282d8911757",
+    "packages/modules/feedback/src/create.ts": "50d31202484cba1ff28c45fcafbc2cce36dea8fd33f3c0674b2fd08456fc3103",
+    "packages/adapters/web-component/src/runtime/modules.ts": "39b16582ce62437fda9e4a0a3422c1a9018fcfbed380cb3637e1800581d09820",
+    "apps/www/src/components/PrototypePreviewer/shadow-split-s3.ts": "3b7d4778ff754adde59b7cd77862070416e5dcfbcc429a3eef3c99a6eb8df108",
+    "apps/www/src/components/PrototypePreviewer/shadow-split-s4.ts": "4492f622a7d0cd411f60ea7e3906205219cb9b4bc2d1062c0eed5703e1bfd514",
+    "apps/www/src/components/PrototypePreviewer/shadow-split-s5.ts": "fa92aa85ff8afb7a0f0233155e485dc3363ee886068015ceb979162e2ae66cbf"
+  },
+  "stackRows": [
+    {
+      "owner": "shadow-split-s3.ts",
+      "frames": [
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 51,
+          "generatedColumn": 19
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 639,
+          "generatedColumn": 41
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/runtime/src/kernel/handles/def.ts",
+          "generatedLine": 138,
+          "generatedColumn": 33
+        },
+        {
+          "function": "setup",
+          "path": "packages/prototypes/shadcn/src/tabs/trigger.proto.ts",
+          "generatedLine": 24,
+          "generatedColumn": 47
+        },
+        {
+          "function": "createKernel",
+          "path": "packages/runtime/src/kernel/kernel.ts",
+          "generatedLine": 33,
+          "generatedColumn": 25
+        },
+        {
+          "function": "createRuntimeInstance",
+          "path": "packages/runtime/src/instance/instance.ts",
+          "generatedLine": 80,
+          "generatedColumn": 18
+        },
+        {
+          "function": "createRuntimeSession",
+          "path": "packages/runtime/src/instance/session.ts",
+          "generatedLine": 18,
+          "generatedColumn": 16
+        },
+        {
+          "function": "createAdapterHost",
+          "path": "packages/adapters/base/src/host/adapter-host.ts",
+          "generatedLine": 12,
+          "generatedColumn": 19
+        },
+        {
+          "function": "createWebComponentHostSession",
+          "path": "packages/adapters/web-component/src/runtime/session.ts",
+          "generatedLine": 158,
+          "generatedColumn": 23
+        },
+        {
+          "function": "createHostSession",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 565,
+          "generatedColumn": 45
+        },
+        {
+          "function": "initialize",
+          "path": "packages/adapters/base/src/host/view-epoch-owner.ts",
+          "generatedLine": 62,
+          "generatedColumn": 29
+        },
+        {
+          "function": "_connectOwner",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 1016,
+          "generatedColumn": 33
+        },
+        {
+          "function": "connectedCallback",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 290,
+          "generatedColumn": 14
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s3.ts",
+          "generatedLine": 178,
+          "generatedColumn": 10
+        },
+        {
+          "function": "mountShadowSplitS3",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s3.ts",
+          "generatedLine": 30,
+          "generatedColumn": 66
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS3.astro",
+          "generatedLine": 2,
+          "generatedColumn": 88
+        },
+        {
+          "function": "initialize",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS3.astro",
+          "generatedLine": 2,
+          "generatedColumn": 72
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS3.astro",
+          "generatedLine": 3,
+          "generatedColumn": 1
+        }
+      ]
+    },
+    {
+      "owner": "shadow-split-s3.ts",
+      "frames": [
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 51,
+          "generatedColumn": 19
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 639,
+          "generatedColumn": 41
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/runtime/src/kernel/handles/def.ts",
+          "generatedLine": 138,
+          "generatedColumn": 33
+        },
+        {
+          "function": "setup",
+          "path": "packages/prototypes/shadcn/src/tabs/trigger.proto.ts",
+          "generatedLine": 24,
+          "generatedColumn": 47
+        },
+        {
+          "function": "createKernel",
+          "path": "packages/runtime/src/kernel/kernel.ts",
+          "generatedLine": 33,
+          "generatedColumn": 25
+        },
+        {
+          "function": "createRuntimeInstance",
+          "path": "packages/runtime/src/instance/instance.ts",
+          "generatedLine": 80,
+          "generatedColumn": 18
+        },
+        {
+          "function": "createRuntimeSession",
+          "path": "packages/runtime/src/instance/session.ts",
+          "generatedLine": 18,
+          "generatedColumn": 16
+        },
+        {
+          "function": "createAdapterHost",
+          "path": "packages/adapters/base/src/host/adapter-host.ts",
+          "generatedLine": 12,
+          "generatedColumn": 19
+        },
+        {
+          "function": "createWebComponentHostSession",
+          "path": "packages/adapters/web-component/src/runtime/session.ts",
+          "generatedLine": 158,
+          "generatedColumn": 23
+        },
+        {
+          "function": "createHostSession",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 565,
+          "generatedColumn": 45
+        },
+        {
+          "function": "initialize",
+          "path": "packages/adapters/base/src/host/view-epoch-owner.ts",
+          "generatedLine": 62,
+          "generatedColumn": 29
+        },
+        {
+          "function": "_connectOwner",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 1016,
+          "generatedColumn": 33
+        },
+        {
+          "function": "connectedCallback",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 290,
+          "generatedColumn": 14
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s3.ts",
+          "generatedLine": 178,
+          "generatedColumn": 10
+        },
+        {
+          "function": "mountShadowSplitS3",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s3.ts",
+          "generatedLine": 30,
+          "generatedColumn": 66
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS3.astro",
+          "generatedLine": 2,
+          "generatedColumn": 88
+        },
+        {
+          "function": "initialize",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS3.astro",
+          "generatedLine": 2,
+          "generatedColumn": 72
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS3.astro",
+          "generatedLine": 3,
+          "generatedColumn": 1
+        }
+      ]
+    },
+    {
+      "owner": "shadow-split-s3.ts",
+      "frames": [
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 51,
+          "generatedColumn": 19
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 639,
+          "generatedColumn": 41
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/runtime/src/kernel/handles/def.ts",
+          "generatedLine": 138,
+          "generatedColumn": 33
+        },
+        {
+          "function": "setup",
+          "path": "packages/prototypes/shadcn/src/tabs/trigger.proto.ts",
+          "generatedLine": 24,
+          "generatedColumn": 47
+        },
+        {
+          "function": "createKernel",
+          "path": "packages/runtime/src/kernel/kernel.ts",
+          "generatedLine": 33,
+          "generatedColumn": 25
+        },
+        {
+          "function": "createRuntimeInstance",
+          "path": "packages/runtime/src/instance/instance.ts",
+          "generatedLine": 80,
+          "generatedColumn": 18
+        },
+        {
+          "function": "createRuntimeSession",
+          "path": "packages/runtime/src/instance/session.ts",
+          "generatedLine": 18,
+          "generatedColumn": 16
+        },
+        {
+          "function": "createAdapterHost",
+          "path": "packages/adapters/base/src/host/adapter-host.ts",
+          "generatedLine": 12,
+          "generatedColumn": 19
+        },
+        {
+          "function": "createWebComponentHostSession",
+          "path": "packages/adapters/web-component/src/runtime/session.ts",
+          "generatedLine": 158,
+          "generatedColumn": 23
+        },
+        {
+          "function": "createHostSession",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 565,
+          "generatedColumn": 45
+        },
+        {
+          "function": "initialize",
+          "path": "packages/adapters/base/src/host/view-epoch-owner.ts",
+          "generatedLine": 62,
+          "generatedColumn": 29
+        },
+        {
+          "function": "_connectOwner",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 1016,
+          "generatedColumn": 33
+        },
+        {
+          "function": "connectedCallback",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 290,
+          "generatedColumn": 14
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s3.ts",
+          "generatedLine": 178,
+          "generatedColumn": 10
+        },
+        {
+          "function": "mountShadowSplitS3",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s3.ts",
+          "generatedLine": 30,
+          "generatedColumn": 66
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS3.astro",
+          "generatedLine": 2,
+          "generatedColumn": 88
+        },
+        {
+          "function": "initialize",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS3.astro",
+          "generatedLine": 2,
+          "generatedColumn": 72
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS3.astro",
+          "generatedLine": 3,
+          "generatedColumn": 1
+        }
+      ]
+    },
+    {
+      "owner": "shadow-split-s3.ts",
+      "frames": [
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 51,
+          "generatedColumn": 19
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 639,
+          "generatedColumn": 41
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/runtime/src/kernel/handles/def.ts",
+          "generatedLine": 138,
+          "generatedColumn": 33
+        },
+        {
+          "function": "setup",
+          "path": "packages/prototypes/shadcn/src/tabs/trigger.proto.ts",
+          "generatedLine": 24,
+          "generatedColumn": 47
+        },
+        {
+          "function": "createKernel",
+          "path": "packages/runtime/src/kernel/kernel.ts",
+          "generatedLine": 33,
+          "generatedColumn": 25
+        },
+        {
+          "function": "createRuntimeInstance",
+          "path": "packages/runtime/src/instance/instance.ts",
+          "generatedLine": 80,
+          "generatedColumn": 18
+        },
+        {
+          "function": "createRuntimeSession",
+          "path": "packages/runtime/src/instance/session.ts",
+          "generatedLine": 18,
+          "generatedColumn": 16
+        },
+        {
+          "function": "createAdapterHost",
+          "path": "packages/adapters/base/src/host/adapter-host.ts",
+          "generatedLine": 12,
+          "generatedColumn": 19
+        },
+        {
+          "function": "createWebComponentHostSession",
+          "path": "packages/adapters/web-component/src/runtime/session.ts",
+          "generatedLine": 158,
+          "generatedColumn": 23
+        },
+        {
+          "function": "createHostSession",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 565,
+          "generatedColumn": 45
+        },
+        {
+          "function": "initialize",
+          "path": "packages/adapters/base/src/host/view-epoch-owner.ts",
+          "generatedLine": 62,
+          "generatedColumn": 29
+        },
+        {
+          "function": "_connectOwner",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 1016,
+          "generatedColumn": 33
+        },
+        {
+          "function": "connectedCallback",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 290,
+          "generatedColumn": 14
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s3.ts",
+          "generatedLine": 178,
+          "generatedColumn": 10
+        },
+        {
+          "function": "mountShadowSplitS3",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s3.ts",
+          "generatedLine": 30,
+          "generatedColumn": 66
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS3.astro",
+          "generatedLine": 2,
+          "generatedColumn": 88
+        },
+        {
+          "function": "initialize",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS3.astro",
+          "generatedLine": 2,
+          "generatedColumn": 72
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS3.astro",
+          "generatedLine": 3,
+          "generatedColumn": 1
+        }
+      ]
+    },
+    {
+      "owner": "shadow-split-s3.ts",
+      "frames": [
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 51,
+          "generatedColumn": 19
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 639,
+          "generatedColumn": 41
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/runtime/src/kernel/handles/def.ts",
+          "generatedLine": 138,
+          "generatedColumn": 33
+        },
+        {
+          "function": "setup",
+          "path": "packages/prototypes/shadcn/src/tabs/trigger.proto.ts",
+          "generatedLine": 24,
+          "generatedColumn": 47
+        },
+        {
+          "function": "createKernel",
+          "path": "packages/runtime/src/kernel/kernel.ts",
+          "generatedLine": 33,
+          "generatedColumn": 25
+        },
+        {
+          "function": "createRuntimeInstance",
+          "path": "packages/runtime/src/instance/instance.ts",
+          "generatedLine": 80,
+          "generatedColumn": 18
+        },
+        {
+          "function": "createRuntimeSession",
+          "path": "packages/runtime/src/instance/session.ts",
+          "generatedLine": 18,
+          "generatedColumn": 16
+        },
+        {
+          "function": "createAdapterHost",
+          "path": "packages/adapters/base/src/host/adapter-host.ts",
+          "generatedLine": 12,
+          "generatedColumn": 19
+        },
+        {
+          "function": "createWebComponentHostSession",
+          "path": "packages/adapters/web-component/src/runtime/session.ts",
+          "generatedLine": 158,
+          "generatedColumn": 23
+        },
+        {
+          "function": "createHostSession",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 565,
+          "generatedColumn": 45
+        },
+        {
+          "function": "initialize",
+          "path": "packages/adapters/base/src/host/view-epoch-owner.ts",
+          "generatedLine": 62,
+          "generatedColumn": 29
+        },
+        {
+          "function": "_connectOwner",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 1016,
+          "generatedColumn": 33
+        },
+        {
+          "function": "connectedCallback",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 290,
+          "generatedColumn": 14
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s3.ts",
+          "generatedLine": 178,
+          "generatedColumn": 10
+        },
+        {
+          "function": "mountShadowSplitS3",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s3.ts",
+          "generatedLine": 30,
+          "generatedColumn": 66
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS3.astro",
+          "generatedLine": 2,
+          "generatedColumn": 88
+        },
+        {
+          "function": "initialize",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS3.astro",
+          "generatedLine": 2,
+          "generatedColumn": 72
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS3.astro",
+          "generatedLine": 3,
+          "generatedColumn": 1
+        }
+      ]
+    },
+    {
+      "owner": "shadow-split-s3.ts",
+      "frames": [
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 51,
+          "generatedColumn": 19
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 639,
+          "generatedColumn": 41
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/runtime/src/kernel/handles/def.ts",
+          "generatedLine": 138,
+          "generatedColumn": 33
+        },
+        {
+          "function": "setup",
+          "path": "packages/prototypes/shadcn/src/tabs/trigger.proto.ts",
+          "generatedLine": 24,
+          "generatedColumn": 47
+        },
+        {
+          "function": "createKernel",
+          "path": "packages/runtime/src/kernel/kernel.ts",
+          "generatedLine": 33,
+          "generatedColumn": 25
+        },
+        {
+          "function": "createRuntimeInstance",
+          "path": "packages/runtime/src/instance/instance.ts",
+          "generatedLine": 80,
+          "generatedColumn": 18
+        },
+        {
+          "function": "createRuntimeSession",
+          "path": "packages/runtime/src/instance/session.ts",
+          "generatedLine": 18,
+          "generatedColumn": 16
+        },
+        {
+          "function": "createAdapterHost",
+          "path": "packages/adapters/base/src/host/adapter-host.ts",
+          "generatedLine": 12,
+          "generatedColumn": 19
+        },
+        {
+          "function": "createWebComponentHostSession",
+          "path": "packages/adapters/web-component/src/runtime/session.ts",
+          "generatedLine": 158,
+          "generatedColumn": 23
+        },
+        {
+          "function": "createHostSession",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 565,
+          "generatedColumn": 45
+        },
+        {
+          "function": "initialize",
+          "path": "packages/adapters/base/src/host/view-epoch-owner.ts",
+          "generatedLine": 62,
+          "generatedColumn": 29
+        },
+        {
+          "function": "_connectOwner",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 1016,
+          "generatedColumn": 33
+        },
+        {
+          "function": "connectedCallback",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 290,
+          "generatedColumn": 14
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s3.ts",
+          "generatedLine": 178,
+          "generatedColumn": 10
+        },
+        {
+          "function": "mountShadowSplitS3",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s3.ts",
+          "generatedLine": 30,
+          "generatedColumn": 66
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS3.astro",
+          "generatedLine": 2,
+          "generatedColumn": 88
+        },
+        {
+          "function": "initialize",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS3.astro",
+          "generatedLine": 2,
+          "generatedColumn": 72
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS3.astro",
+          "generatedLine": 3,
+          "generatedColumn": 1
+        }
+      ]
+    },
+    {
+      "owner": "shadow-split-s3.ts",
+      "frames": [
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 51,
+          "generatedColumn": 19
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 639,
+          "generatedColumn": 41
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/runtime/src/kernel/handles/def.ts",
+          "generatedLine": 138,
+          "generatedColumn": 33
+        },
+        {
+          "function": "setup",
+          "path": "packages/prototypes/shadcn/src/tabs/trigger.proto.ts",
+          "generatedLine": 24,
+          "generatedColumn": 47
+        },
+        {
+          "function": "createKernel",
+          "path": "packages/runtime/src/kernel/kernel.ts",
+          "generatedLine": 33,
+          "generatedColumn": 25
+        },
+        {
+          "function": "createRuntimeInstance",
+          "path": "packages/runtime/src/instance/instance.ts",
+          "generatedLine": 80,
+          "generatedColumn": 18
+        },
+        {
+          "function": "createRuntimeSession",
+          "path": "packages/runtime/src/instance/session.ts",
+          "generatedLine": 18,
+          "generatedColumn": 16
+        },
+        {
+          "function": "createAdapterHost",
+          "path": "packages/adapters/base/src/host/adapter-host.ts",
+          "generatedLine": 12,
+          "generatedColumn": 19
+        },
+        {
+          "function": "createWebComponentHostSession",
+          "path": "packages/adapters/web-component/src/runtime/session.ts",
+          "generatedLine": 158,
+          "generatedColumn": 23
+        },
+        {
+          "function": "createHostSession",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 565,
+          "generatedColumn": 45
+        },
+        {
+          "function": "initialize",
+          "path": "packages/adapters/base/src/host/view-epoch-owner.ts",
+          "generatedLine": 62,
+          "generatedColumn": 29
+        },
+        {
+          "function": "_connectOwner",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 1016,
+          "generatedColumn": 33
+        },
+        {
+          "function": "connectedCallback",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 290,
+          "generatedColumn": 14
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s3.ts",
+          "generatedLine": 178,
+          "generatedColumn": 10
+        },
+        {
+          "function": "mountShadowSplitS3",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s3.ts",
+          "generatedLine": 30,
+          "generatedColumn": 66
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS3.astro",
+          "generatedLine": 2,
+          "generatedColumn": 88
+        },
+        {
+          "function": "initialize",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS3.astro",
+          "generatedLine": 2,
+          "generatedColumn": 72
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS3.astro",
+          "generatedLine": 3,
+          "generatedColumn": 1
+        }
+      ]
+    },
+    {
+      "owner": "shadow-split-s3.ts",
+      "frames": [
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 51,
+          "generatedColumn": 19
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 639,
+          "generatedColumn": 41
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/runtime/src/kernel/handles/def.ts",
+          "generatedLine": 138,
+          "generatedColumn": 33
+        },
+        {
+          "function": "setup",
+          "path": "packages/prototypes/shadcn/src/tabs/trigger.proto.ts",
+          "generatedLine": 24,
+          "generatedColumn": 47
+        },
+        {
+          "function": "createKernel",
+          "path": "packages/runtime/src/kernel/kernel.ts",
+          "generatedLine": 33,
+          "generatedColumn": 25
+        },
+        {
+          "function": "createRuntimeInstance",
+          "path": "packages/runtime/src/instance/instance.ts",
+          "generatedLine": 80,
+          "generatedColumn": 18
+        },
+        {
+          "function": "createRuntimeSession",
+          "path": "packages/runtime/src/instance/session.ts",
+          "generatedLine": 18,
+          "generatedColumn": 16
+        },
+        {
+          "function": "createAdapterHost",
+          "path": "packages/adapters/base/src/host/adapter-host.ts",
+          "generatedLine": 12,
+          "generatedColumn": 19
+        },
+        {
+          "function": "createWebComponentHostSession",
+          "path": "packages/adapters/web-component/src/runtime/session.ts",
+          "generatedLine": 158,
+          "generatedColumn": 23
+        },
+        {
+          "function": "createHostSession",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 565,
+          "generatedColumn": 45
+        },
+        {
+          "function": "initialize",
+          "path": "packages/adapters/base/src/host/view-epoch-owner.ts",
+          "generatedLine": 62,
+          "generatedColumn": 29
+        },
+        {
+          "function": "_connectOwner",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 1016,
+          "generatedColumn": 33
+        },
+        {
+          "function": "connectedCallback",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 290,
+          "generatedColumn": 14
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s3.ts",
+          "generatedLine": 178,
+          "generatedColumn": 10
+        },
+        {
+          "function": "mountShadowSplitS3",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s3.ts",
+          "generatedLine": 30,
+          "generatedColumn": 66
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS3.astro",
+          "generatedLine": 2,
+          "generatedColumn": 88
+        },
+        {
+          "function": "initialize",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS3.astro",
+          "generatedLine": 2,
+          "generatedColumn": 72
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS3.astro",
+          "generatedLine": 3,
+          "generatedColumn": 1
+        }
+      ]
+    },
+    {
+      "owner": "shadow-split-s4.ts",
+      "frames": [
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 51,
+          "generatedColumn": 19
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 639,
+          "generatedColumn": 41
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/runtime/src/kernel/handles/def.ts",
+          "generatedLine": 138,
+          "generatedColumn": 33
+        },
+        {
+          "function": "setup",
+          "path": "packages/prototypes/shadcn/src/tabs/trigger.proto.ts",
+          "generatedLine": 24,
+          "generatedColumn": 47
+        },
+        {
+          "function": "createKernel",
+          "path": "packages/runtime/src/kernel/kernel.ts",
+          "generatedLine": 33,
+          "generatedColumn": 25
+        },
+        {
+          "function": "createRuntimeInstance",
+          "path": "packages/runtime/src/instance/instance.ts",
+          "generatedLine": 80,
+          "generatedColumn": 18
+        },
+        {
+          "function": "createRuntimeSession",
+          "path": "packages/runtime/src/instance/session.ts",
+          "generatedLine": 18,
+          "generatedColumn": 16
+        },
+        {
+          "function": "createAdapterHost",
+          "path": "packages/adapters/base/src/host/adapter-host.ts",
+          "generatedLine": 12,
+          "generatedColumn": 19
+        },
+        {
+          "function": "createWebComponentHostSession",
+          "path": "packages/adapters/web-component/src/runtime/session.ts",
+          "generatedLine": 158,
+          "generatedColumn": 23
+        },
+        {
+          "function": "createHostSession",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 565,
+          "generatedColumn": 45
+        },
+        {
+          "function": "initialize",
+          "path": "packages/adapters/base/src/host/view-epoch-owner.ts",
+          "generatedLine": 62,
+          "generatedColumn": 29
+        },
+        {
+          "function": "_connectOwner",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 1016,
+          "generatedColumn": 33
+        },
+        {
+          "function": "connectedCallback",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 290,
+          "generatedColumn": 14
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s4.ts",
+          "generatedLine": 152,
+          "generatedColumn": 10
+        },
+        {
+          "function": "mountShadowSplitS4",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s4.ts",
+          "generatedLine": 23,
+          "generatedColumn": 44
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS4.astro",
+          "generatedLine": 2,
+          "generatedColumn": 88
+        },
+        {
+          "function": "initialize",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS4.astro",
+          "generatedLine": 2,
+          "generatedColumn": 72
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS4.astro",
+          "generatedLine": 3,
+          "generatedColumn": 1
+        }
+      ]
+    },
+    {
+      "owner": "shadow-split-s4.ts",
+      "frames": [
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 51,
+          "generatedColumn": 19
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 639,
+          "generatedColumn": 41
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/runtime/src/kernel/handles/def.ts",
+          "generatedLine": 138,
+          "generatedColumn": 33
+        },
+        {
+          "function": "setup",
+          "path": "packages/prototypes/shadcn/src/tabs/trigger.proto.ts",
+          "generatedLine": 24,
+          "generatedColumn": 47
+        },
+        {
+          "function": "createKernel",
+          "path": "packages/runtime/src/kernel/kernel.ts",
+          "generatedLine": 33,
+          "generatedColumn": 25
+        },
+        {
+          "function": "createRuntimeInstance",
+          "path": "packages/runtime/src/instance/instance.ts",
+          "generatedLine": 80,
+          "generatedColumn": 18
+        },
+        {
+          "function": "createRuntimeSession",
+          "path": "packages/runtime/src/instance/session.ts",
+          "generatedLine": 18,
+          "generatedColumn": 16
+        },
+        {
+          "function": "createAdapterHost",
+          "path": "packages/adapters/base/src/host/adapter-host.ts",
+          "generatedLine": 12,
+          "generatedColumn": 19
+        },
+        {
+          "function": "createWebComponentHostSession",
+          "path": "packages/adapters/web-component/src/runtime/session.ts",
+          "generatedLine": 158,
+          "generatedColumn": 23
+        },
+        {
+          "function": "createHostSession",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 565,
+          "generatedColumn": 45
+        },
+        {
+          "function": "initialize",
+          "path": "packages/adapters/base/src/host/view-epoch-owner.ts",
+          "generatedLine": 62,
+          "generatedColumn": 29
+        },
+        {
+          "function": "_connectOwner",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 1016,
+          "generatedColumn": 33
+        },
+        {
+          "function": "connectedCallback",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 290,
+          "generatedColumn": 14
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s4.ts",
+          "generatedLine": 152,
+          "generatedColumn": 10
+        },
+        {
+          "function": "mountShadowSplitS4",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s4.ts",
+          "generatedLine": 23,
+          "generatedColumn": 44
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS4.astro",
+          "generatedLine": 2,
+          "generatedColumn": 88
+        },
+        {
+          "function": "initialize",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS4.astro",
+          "generatedLine": 2,
+          "generatedColumn": 72
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS4.astro",
+          "generatedLine": 3,
+          "generatedColumn": 1
+        }
+      ]
+    },
+    {
+      "owner": "shadow-split-s4.ts",
+      "frames": [
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 51,
+          "generatedColumn": 19
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 639,
+          "generatedColumn": 41
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/runtime/src/kernel/handles/def.ts",
+          "generatedLine": 138,
+          "generatedColumn": 33
+        },
+        {
+          "function": "setup",
+          "path": "packages/prototypes/shadcn/src/tabs/trigger.proto.ts",
+          "generatedLine": 24,
+          "generatedColumn": 47
+        },
+        {
+          "function": "createKernel",
+          "path": "packages/runtime/src/kernel/kernel.ts",
+          "generatedLine": 33,
+          "generatedColumn": 25
+        },
+        {
+          "function": "createRuntimeInstance",
+          "path": "packages/runtime/src/instance/instance.ts",
+          "generatedLine": 80,
+          "generatedColumn": 18
+        },
+        {
+          "function": "createRuntimeSession",
+          "path": "packages/runtime/src/instance/session.ts",
+          "generatedLine": 18,
+          "generatedColumn": 16
+        },
+        {
+          "function": "createAdapterHost",
+          "path": "packages/adapters/base/src/host/adapter-host.ts",
+          "generatedLine": 12,
+          "generatedColumn": 19
+        },
+        {
+          "function": "createWebComponentHostSession",
+          "path": "packages/adapters/web-component/src/runtime/session.ts",
+          "generatedLine": 158,
+          "generatedColumn": 23
+        },
+        {
+          "function": "createHostSession",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 565,
+          "generatedColumn": 45
+        },
+        {
+          "function": "initialize",
+          "path": "packages/adapters/base/src/host/view-epoch-owner.ts",
+          "generatedLine": 62,
+          "generatedColumn": 29
+        },
+        {
+          "function": "_connectOwner",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 1016,
+          "generatedColumn": 33
+        },
+        {
+          "function": "connectedCallback",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 290,
+          "generatedColumn": 14
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s4.ts",
+          "generatedLine": 152,
+          "generatedColumn": 10
+        },
+        {
+          "function": "mountShadowSplitS4",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s4.ts",
+          "generatedLine": 23,
+          "generatedColumn": 44
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS4.astro",
+          "generatedLine": 2,
+          "generatedColumn": 88
+        },
+        {
+          "function": "initialize",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS4.astro",
+          "generatedLine": 2,
+          "generatedColumn": 72
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS4.astro",
+          "generatedLine": 3,
+          "generatedColumn": 1
+        }
+      ]
+    },
+    {
+      "owner": "shadow-split-s4.ts",
+      "frames": [
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 51,
+          "generatedColumn": 19
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 639,
+          "generatedColumn": 41
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/runtime/src/kernel/handles/def.ts",
+          "generatedLine": 138,
+          "generatedColumn": 33
+        },
+        {
+          "function": "setup",
+          "path": "packages/prototypes/shadcn/src/tabs/trigger.proto.ts",
+          "generatedLine": 24,
+          "generatedColumn": 47
+        },
+        {
+          "function": "createKernel",
+          "path": "packages/runtime/src/kernel/kernel.ts",
+          "generatedLine": 33,
+          "generatedColumn": 25
+        },
+        {
+          "function": "createRuntimeInstance",
+          "path": "packages/runtime/src/instance/instance.ts",
+          "generatedLine": 80,
+          "generatedColumn": 18
+        },
+        {
+          "function": "createRuntimeSession",
+          "path": "packages/runtime/src/instance/session.ts",
+          "generatedLine": 18,
+          "generatedColumn": 16
+        },
+        {
+          "function": "createAdapterHost",
+          "path": "packages/adapters/base/src/host/adapter-host.ts",
+          "generatedLine": 12,
+          "generatedColumn": 19
+        },
+        {
+          "function": "createWebComponentHostSession",
+          "path": "packages/adapters/web-component/src/runtime/session.ts",
+          "generatedLine": 158,
+          "generatedColumn": 23
+        },
+        {
+          "function": "createHostSession",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 565,
+          "generatedColumn": 45
+        },
+        {
+          "function": "initialize",
+          "path": "packages/adapters/base/src/host/view-epoch-owner.ts",
+          "generatedLine": 62,
+          "generatedColumn": 29
+        },
+        {
+          "function": "_connectOwner",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 1016,
+          "generatedColumn": 33
+        },
+        {
+          "function": "connectedCallback",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 290,
+          "generatedColumn": 14
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s4.ts",
+          "generatedLine": 152,
+          "generatedColumn": 10
+        },
+        {
+          "function": "mountShadowSplitS4",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s4.ts",
+          "generatedLine": 23,
+          "generatedColumn": 44
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS4.astro",
+          "generatedLine": 2,
+          "generatedColumn": 88
+        },
+        {
+          "function": "initialize",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS4.astro",
+          "generatedLine": 2,
+          "generatedColumn": 72
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS4.astro",
+          "generatedLine": 3,
+          "generatedColumn": 1
+        }
+      ]
+    },
+    {
+      "owner": "shadow-split-s4.ts",
+      "frames": [
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 51,
+          "generatedColumn": 19
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 639,
+          "generatedColumn": 41
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/runtime/src/kernel/handles/def.ts",
+          "generatedLine": 138,
+          "generatedColumn": 33
+        },
+        {
+          "function": "setup",
+          "path": "packages/prototypes/shadcn/src/tabs/trigger.proto.ts",
+          "generatedLine": 24,
+          "generatedColumn": 47
+        },
+        {
+          "function": "createKernel",
+          "path": "packages/runtime/src/kernel/kernel.ts",
+          "generatedLine": 33,
+          "generatedColumn": 25
+        },
+        {
+          "function": "createRuntimeInstance",
+          "path": "packages/runtime/src/instance/instance.ts",
+          "generatedLine": 80,
+          "generatedColumn": 18
+        },
+        {
+          "function": "createRuntimeSession",
+          "path": "packages/runtime/src/instance/session.ts",
+          "generatedLine": 18,
+          "generatedColumn": 16
+        },
+        {
+          "function": "createAdapterHost",
+          "path": "packages/adapters/base/src/host/adapter-host.ts",
+          "generatedLine": 12,
+          "generatedColumn": 19
+        },
+        {
+          "function": "createWebComponentHostSession",
+          "path": "packages/adapters/web-component/src/runtime/session.ts",
+          "generatedLine": 158,
+          "generatedColumn": 23
+        },
+        {
+          "function": "createHostSession",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 565,
+          "generatedColumn": 45
+        },
+        {
+          "function": "initialize",
+          "path": "packages/adapters/base/src/host/view-epoch-owner.ts",
+          "generatedLine": 62,
+          "generatedColumn": 29
+        },
+        {
+          "function": "_connectOwner",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 1016,
+          "generatedColumn": 33
+        },
+        {
+          "function": "connectedCallback",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 290,
+          "generatedColumn": 14
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s4.ts",
+          "generatedLine": 152,
+          "generatedColumn": 10
+        },
+        {
+          "function": "mountShadowSplitS4",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s4.ts",
+          "generatedLine": 23,
+          "generatedColumn": 44
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS4.astro",
+          "generatedLine": 2,
+          "generatedColumn": 88
+        },
+        {
+          "function": "initialize",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS4.astro",
+          "generatedLine": 2,
+          "generatedColumn": 72
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS4.astro",
+          "generatedLine": 3,
+          "generatedColumn": 1
+        }
+      ]
+    },
+    {
+      "owner": "shadow-split-s4.ts",
+      "frames": [
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 51,
+          "generatedColumn": 19
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 639,
+          "generatedColumn": 41
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/runtime/src/kernel/handles/def.ts",
+          "generatedLine": 138,
+          "generatedColumn": 33
+        },
+        {
+          "function": "setup",
+          "path": "packages/prototypes/shadcn/src/tabs/trigger.proto.ts",
+          "generatedLine": 24,
+          "generatedColumn": 47
+        },
+        {
+          "function": "createKernel",
+          "path": "packages/runtime/src/kernel/kernel.ts",
+          "generatedLine": 33,
+          "generatedColumn": 25
+        },
+        {
+          "function": "createRuntimeInstance",
+          "path": "packages/runtime/src/instance/instance.ts",
+          "generatedLine": 80,
+          "generatedColumn": 18
+        },
+        {
+          "function": "createRuntimeSession",
+          "path": "packages/runtime/src/instance/session.ts",
+          "generatedLine": 18,
+          "generatedColumn": 16
+        },
+        {
+          "function": "createAdapterHost",
+          "path": "packages/adapters/base/src/host/adapter-host.ts",
+          "generatedLine": 12,
+          "generatedColumn": 19
+        },
+        {
+          "function": "createWebComponentHostSession",
+          "path": "packages/adapters/web-component/src/runtime/session.ts",
+          "generatedLine": 158,
+          "generatedColumn": 23
+        },
+        {
+          "function": "createHostSession",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 565,
+          "generatedColumn": 45
+        },
+        {
+          "function": "initialize",
+          "path": "packages/adapters/base/src/host/view-epoch-owner.ts",
+          "generatedLine": 62,
+          "generatedColumn": 29
+        },
+        {
+          "function": "_connectOwner",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 1016,
+          "generatedColumn": 33
+        },
+        {
+          "function": "connectedCallback",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 290,
+          "generatedColumn": 14
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s4.ts",
+          "generatedLine": 152,
+          "generatedColumn": 10
+        },
+        {
+          "function": "mountShadowSplitS4",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s4.ts",
+          "generatedLine": 23,
+          "generatedColumn": 44
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS4.astro",
+          "generatedLine": 2,
+          "generatedColumn": 88
+        },
+        {
+          "function": "initialize",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS4.astro",
+          "generatedLine": 2,
+          "generatedColumn": 72
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS4.astro",
+          "generatedLine": 3,
+          "generatedColumn": 1
+        }
+      ]
+    },
+    {
+      "owner": "shadow-split-s4.ts",
+      "frames": [
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 51,
+          "generatedColumn": 19
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 639,
+          "generatedColumn": 41
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/runtime/src/kernel/handles/def.ts",
+          "generatedLine": 138,
+          "generatedColumn": 33
+        },
+        {
+          "function": "setup",
+          "path": "packages/prototypes/shadcn/src/tabs/trigger.proto.ts",
+          "generatedLine": 24,
+          "generatedColumn": 47
+        },
+        {
+          "function": "createKernel",
+          "path": "packages/runtime/src/kernel/kernel.ts",
+          "generatedLine": 33,
+          "generatedColumn": 25
+        },
+        {
+          "function": "createRuntimeInstance",
+          "path": "packages/runtime/src/instance/instance.ts",
+          "generatedLine": 80,
+          "generatedColumn": 18
+        },
+        {
+          "function": "createRuntimeSession",
+          "path": "packages/runtime/src/instance/session.ts",
+          "generatedLine": 18,
+          "generatedColumn": 16
+        },
+        {
+          "function": "createAdapterHost",
+          "path": "packages/adapters/base/src/host/adapter-host.ts",
+          "generatedLine": 12,
+          "generatedColumn": 19
+        },
+        {
+          "function": "createWebComponentHostSession",
+          "path": "packages/adapters/web-component/src/runtime/session.ts",
+          "generatedLine": 158,
+          "generatedColumn": 23
+        },
+        {
+          "function": "createHostSession",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 565,
+          "generatedColumn": 45
+        },
+        {
+          "function": "initialize",
+          "path": "packages/adapters/base/src/host/view-epoch-owner.ts",
+          "generatedLine": 62,
+          "generatedColumn": 29
+        },
+        {
+          "function": "_connectOwner",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 1016,
+          "generatedColumn": 33
+        },
+        {
+          "function": "connectedCallback",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 290,
+          "generatedColumn": 14
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s4.ts",
+          "generatedLine": 152,
+          "generatedColumn": 10
+        },
+        {
+          "function": "mountShadowSplitS4",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s4.ts",
+          "generatedLine": 23,
+          "generatedColumn": 44
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS4.astro",
+          "generatedLine": 2,
+          "generatedColumn": 88
+        },
+        {
+          "function": "initialize",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS4.astro",
+          "generatedLine": 2,
+          "generatedColumn": 72
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS4.astro",
+          "generatedLine": 3,
+          "generatedColumn": 1
+        }
+      ]
+    },
+    {
+      "owner": "shadow-split-s4.ts",
+      "frames": [
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 51,
+          "generatedColumn": 19
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 639,
+          "generatedColumn": 41
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/runtime/src/kernel/handles/def.ts",
+          "generatedLine": 138,
+          "generatedColumn": 33
+        },
+        {
+          "function": "setup",
+          "path": "packages/prototypes/shadcn/src/tabs/trigger.proto.ts",
+          "generatedLine": 24,
+          "generatedColumn": 47
+        },
+        {
+          "function": "createKernel",
+          "path": "packages/runtime/src/kernel/kernel.ts",
+          "generatedLine": 33,
+          "generatedColumn": 25
+        },
+        {
+          "function": "createRuntimeInstance",
+          "path": "packages/runtime/src/instance/instance.ts",
+          "generatedLine": 80,
+          "generatedColumn": 18
+        },
+        {
+          "function": "createRuntimeSession",
+          "path": "packages/runtime/src/instance/session.ts",
+          "generatedLine": 18,
+          "generatedColumn": 16
+        },
+        {
+          "function": "createAdapterHost",
+          "path": "packages/adapters/base/src/host/adapter-host.ts",
+          "generatedLine": 12,
+          "generatedColumn": 19
+        },
+        {
+          "function": "createWebComponentHostSession",
+          "path": "packages/adapters/web-component/src/runtime/session.ts",
+          "generatedLine": 158,
+          "generatedColumn": 23
+        },
+        {
+          "function": "createHostSession",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 565,
+          "generatedColumn": 45
+        },
+        {
+          "function": "initialize",
+          "path": "packages/adapters/base/src/host/view-epoch-owner.ts",
+          "generatedLine": 62,
+          "generatedColumn": 29
+        },
+        {
+          "function": "_connectOwner",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 1016,
+          "generatedColumn": 33
+        },
+        {
+          "function": "connectedCallback",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 290,
+          "generatedColumn": 14
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s4.ts",
+          "generatedLine": 152,
+          "generatedColumn": 10
+        },
+        {
+          "function": "mountShadowSplitS4",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s4.ts",
+          "generatedLine": 23,
+          "generatedColumn": 44
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS4.astro",
+          "generatedLine": 2,
+          "generatedColumn": 88
+        },
+        {
+          "function": "initialize",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS4.astro",
+          "generatedLine": 2,
+          "generatedColumn": 72
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS4.astro",
+          "generatedLine": 3,
+          "generatedColumn": 1
+        }
+      ]
+    },
+    {
+      "owner": "shadow-split-s5.ts",
+      "frames": [
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 51,
+          "generatedColumn": 19
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 639,
+          "generatedColumn": 41
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/runtime/src/kernel/handles/def.ts",
+          "generatedLine": 138,
+          "generatedColumn": 33
+        },
+        {
+          "function": "setup",
+          "path": "packages/prototypes/shadcn/src/tabs/trigger.proto.ts",
+          "generatedLine": 24,
+          "generatedColumn": 47
+        },
+        {
+          "function": "createKernel",
+          "path": "packages/runtime/src/kernel/kernel.ts",
+          "generatedLine": 33,
+          "generatedColumn": 25
+        },
+        {
+          "function": "createRuntimeInstance",
+          "path": "packages/runtime/src/instance/instance.ts",
+          "generatedLine": 80,
+          "generatedColumn": 18
+        },
+        {
+          "function": "createRuntimeSession",
+          "path": "packages/runtime/src/instance/session.ts",
+          "generatedLine": 18,
+          "generatedColumn": 16
+        },
+        {
+          "function": "createAdapterHost",
+          "path": "packages/adapters/base/src/host/adapter-host.ts",
+          "generatedLine": 12,
+          "generatedColumn": 19
+        },
+        {
+          "function": "createWebComponentHostSession",
+          "path": "packages/adapters/web-component/src/runtime/session.ts",
+          "generatedLine": 158,
+          "generatedColumn": 23
+        },
+        {
+          "function": "createHostSession",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 565,
+          "generatedColumn": 45
+        },
+        {
+          "function": "initialize",
+          "path": "packages/adapters/base/src/host/view-epoch-owner.ts",
+          "generatedLine": 62,
+          "generatedColumn": 29
+        },
+        {
+          "function": "_connectOwner",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 1016,
+          "generatedColumn": 33
+        },
+        {
+          "function": "connectedCallback",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 290,
+          "generatedColumn": 14
+        },
+        {
+          "function": "headings",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s5.ts",
+          "generatedLine": 117,
+          "generatedColumn": 12
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s5.ts",
+          "generatedLine": 153,
+          "generatedColumn": 5
+        },
+        {
+          "function": "mountShadowSplitS5",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s5.ts",
+          "generatedLine": 21,
+          "generatedColumn": 44
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS5.astro",
+          "generatedLine": 2,
+          "generatedColumn": 88
+        },
+        {
+          "function": "initialize",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS5.astro",
+          "generatedLine": 2,
+          "generatedColumn": 72
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS5.astro",
+          "generatedLine": 3,
+          "generatedColumn": 1
+        }
+      ]
+    },
+    {
+      "owner": "shadow-split-s5.ts",
+      "frames": [
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 51,
+          "generatedColumn": 19
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/modules/feedback/src/create.ts",
+          "generatedLine": 639,
+          "generatedColumn": 41
+        },
+        {
+          "function": "declareDecoration",
+          "path": "packages/runtime/src/kernel/handles/def.ts",
+          "generatedLine": 138,
+          "generatedColumn": 33
+        },
+        {
+          "function": "setup",
+          "path": "packages/prototypes/shadcn/src/tabs/trigger.proto.ts",
+          "generatedLine": 24,
+          "generatedColumn": 47
+        },
+        {
+          "function": "createKernel",
+          "path": "packages/runtime/src/kernel/kernel.ts",
+          "generatedLine": 33,
+          "generatedColumn": 25
+        },
+        {
+          "function": "createRuntimeInstance",
+          "path": "packages/runtime/src/instance/instance.ts",
+          "generatedLine": 80,
+          "generatedColumn": 18
+        },
+        {
+          "function": "createRuntimeSession",
+          "path": "packages/runtime/src/instance/session.ts",
+          "generatedLine": 18,
+          "generatedColumn": 16
+        },
+        {
+          "function": "createAdapterHost",
+          "path": "packages/adapters/base/src/host/adapter-host.ts",
+          "generatedLine": 12,
+          "generatedColumn": 19
+        },
+        {
+          "function": "createWebComponentHostSession",
+          "path": "packages/adapters/web-component/src/runtime/session.ts",
+          "generatedLine": 158,
+          "generatedColumn": 23
+        },
+        {
+          "function": "createHostSession",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 565,
+          "generatedColumn": 45
+        },
+        {
+          "function": "initialize",
+          "path": "packages/adapters/base/src/host/view-epoch-owner.ts",
+          "generatedLine": 62,
+          "generatedColumn": 29
+        },
+        {
+          "function": "_connectOwner",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 1016,
+          "generatedColumn": 33
+        },
+        {
+          "function": "connectedCallback",
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 290,
+          "generatedColumn": 14
+        },
+        {
+          "function": "headings",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s5.ts",
+          "generatedLine": 117,
+          "generatedColumn": 12
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s5.ts",
+          "generatedLine": 153,
+          "generatedColumn": 5
+        },
+        {
+          "function": "mountShadowSplitS5",
+          "path": "apps/www/src/components/PrototypePreviewer/shadow-split-s5.ts",
+          "generatedLine": 21,
+          "generatedColumn": 44
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS5.astro",
+          "generatedLine": 2,
+          "generatedColumn": 88
+        },
+        {
+          "function": "initialize",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS5.astro",
+          "generatedLine": 2,
+          "generatedColumn": 72
+        },
+        {
+          "function": "",
+          "path": "apps/www/src/components/PrototypePreviewer/ShadowSplitS5.astro",
+          "generatedLine": 3,
+          "generatedColumn": 1
+        }
+      ]
+    }
+  ]
+}
