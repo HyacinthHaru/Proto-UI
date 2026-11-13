@@ -1,0 +1,23 @@
+{
+  "node": "24.21.0",
+  "pnpm": "10.32.1",
+  "command": "corepack pnpm@10.32.1 check:website-production-bundle",
+  "main": {
+    "head": "35195a6e6f1ba6a7d800da0029f2683013abd18b",
+    "exit": 1,
+    "pages": 673,
+    "built": true,
+    "logSha256": "80f76d0fdf480a2e8a32f4e62d6860ff0375836793155a81973ebdfd08ab734d",
+    "diagnosticCount": 53
+  },
+  "candidate": {
+    "head": "dbe246b74370c52169169864f06ccc4b76f75fd1",
+    "exit": 1,
+    "pages": 673,
+    "built": true,
+    "logSha256": "c79c104b7069a044be1a45863288faa455c867358d42148368ead86bb8a7a739",
+    "diagnosticCount": 53
+  },
+  "added": 0,
+  "removed": 0
+}
