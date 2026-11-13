@@ -1,0 +1,466 @@
+{
+  "head": "d854cae0da2d0c3178b801ea18574a9eac88257f",
+  "patchSha256": "a22b15f72bf73d3538aa7868afb65053411e25703acb7688ad649ef7fee19039",
+  "logSha256": "010df969aa3b420c305d1bd43449d7080e264e52a0c05ce102a2e31b8cf1de48",
+  "locales": {
+    "zh-cn": {
+      "network": [
+        {
+          "locale": "zh-cn",
+          "stage": "request",
+          "asset": "react-runtime.ts",
+          "nodeMs": 66045.464167,
+          "dateNow": 1794573732045
+        },
+        {
+          "locale": "zh-cn",
+          "stage": "response",
+          "asset": "react-runtime.ts",
+          "nodeMs": 66230.970875,
+          "dateNow": 1794573732231,
+          "status": 200
+        },
+        {
+          "locale": "zh-cn",
+          "stage": "finished",
+          "asset": "react-runtime.ts",
+          "nodeMs": 66231.062125,
+          "dateNow": 1794573732231
+        },
+        {
+          "locale": "zh-cn",
+          "stage": "request",
+          "asset": "react.js",
+          "nodeMs": 77343.977709,
+          "dateNow": 1794573743344
+        },
+        {
+          "locale": "zh-cn",
+          "stage": "request",
+          "asset": "react-dom.js",
+          "nodeMs": 77344.227875,
+          "dateNow": 1794573743344
+        },
+        {
+          "locale": "zh-cn",
+          "stage": "request",
+          "asset": "react-dom_client.js",
+          "nodeMs": 77344.329209,
+          "dateNow": 1794573743344
+        },
+        {
+          "locale": "zh-cn",
+          "stage": "response",
+          "asset": "react.js",
+          "nodeMs": 77849.714792,
+          "dateNow": 1794573743850,
+          "status": 200
+        },
+        {
+          "locale": "zh-cn",
+          "stage": "finished",
+          "asset": "react.js",
+          "nodeMs": 77849.769334,
+          "dateNow": 1794573743850
+        },
+        {
+          "locale": "zh-cn",
+          "stage": "response",
+          "asset": "react-dom.js",
+          "nodeMs": 78028.531584,
+          "dateNow": 1794573744028,
+          "status": 200
+        },
+        {
+          "locale": "zh-cn",
+          "stage": "finished",
+          "asset": "react-dom.js",
+          "nodeMs": 78028.588542,
+          "dateNow": 1794573744028
+        },
+        {
+          "locale": "zh-cn",
+          "stage": "response",
+          "asset": "react-dom_client.js",
+          "nodeMs": 78411.913625,
+          "dateNow": 1794573744412,
+          "status": 200
+        },
+        {
+          "locale": "zh-cn",
+          "stage": "finished",
+          "asset": "react-dom_client.js",
+          "nodeMs": 78412.001542,
+          "dateNow": 1794573744412
+        }
+      ],
+      "react": [
+        {
+          "phase": "demo-begin",
+          "runtime": "react",
+          "owner": "pp-u8aun2san4",
+          "pageMs": 9280.899999976158,
+          "hostChildren": 0,
+          "receivedNodeMs": 64229.471167
+        },
+        {
+          "phase": "demo-return",
+          "runtime": "react",
+          "owner": "pp-u8aun2san4",
+          "pageMs": 11422.600000023842,
+          "hostChildren": 0,
+          "receivedNodeMs": 66371.654042
+        },
+        {
+          "phase": "prototype-begin",
+          "runtime": "react",
+          "owner": "pp-u8aun2san4",
+          "pageMs": 11422.799999952316,
+          "hostChildren": 0,
+          "receivedNodeMs": 66371.809
+        },
+        {
+          "phase": "prototype-return",
+          "runtime": "react",
+          "owner": "pp-u8aun2san4",
+          "pageMs": 25412.399999976158,
+          "hostChildren": 0,
+          "receivedNodeMs": 80361.166917
+        },
+        {
+          "phase": "render-begin",
+          "runtime": "react",
+          "owner": "pp-u8aun2san4",
+          "pageMs": 25412.399999976158,
+          "hostChildren": 0,
+          "receivedNodeMs": 80361.182292
+        },
+        {
+          "phase": "react-modules-begin",
+          "runtime": "react",
+          "owner": "pp-u8aun2san4",
+          "pageMs": 25412.699999928474,
+          "hostChildren": 0,
+          "receivedNodeMs": 80361.527625
+        },
+        {
+          "phase": "react-modules-return",
+          "runtime": "react",
+          "owner": "pp-u8aun2san4",
+          "pageMs": 25429.799999952316,
+          "hostChildren": 0,
+          "receivedNodeMs": 80378.729542
+        },
+        {
+          "phase": "react-runtime-begin",
+          "runtime": "react",
+          "owner": "pp-u8aun2san4",
+          "pageMs": 25429.899999976158,
+          "hostChildren": 0,
+          "receivedNodeMs": 80378.749084
+        }
+      ],
+      "node": [
+        {
+          "locale": "zh-cn",
+          "phase": "init-script",
+          "outcome": "begin",
+          "nodeMs": 54942.665125,
+          "nodeTimeOrigin": 1794573666000.369,
+          "dateNow": 1794573720943
+        },
+        {
+          "locale": "zh-cn",
+          "phase": "init-script",
+          "outcome": "return",
+          "nodeMs": 54946.87375,
+          "nodeTimeOrigin": 1794573666000.369,
+          "dateNow": 1794573720947
+        },
+        {
+          "locale": "zh-cn",
+          "phase": "goto",
+          "outcome": "begin",
+          "nodeMs": 54946.919,
+          "nodeTimeOrigin": 1794573666000.369,
+          "dateNow": 1794573720947
+        },
+        {
+          "locale": "zh-cn",
+          "phase": "goto",
+          "outcome": "return",
+          "nodeMs": 62640.5335,
+          "nodeTimeOrigin": 1794573666000.369,
+          "dateNow": 1794573728640
+        },
+        {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "outcome": "begin",
+          "nodeMs": 62640.818875,
+          "nodeTimeOrigin": 1794573666000.369,
+          "dateNow": 1794573728641
+        },
+        {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "outcome": "error",
+          "nodeMs": 205290.612584,
+          "nodeTimeOrigin": 1794573666000.369,
+          "dateNow": 1794573871290
+        },
+        {
+          "locale": "zh-cn",
+          "phase": "context-close",
+          "outcome": "begin",
+          "nodeMs": 205394.447459,
+          "nodeTimeOrigin": 1794573666000.369,
+          "dateNow": 1794573871394
+        },
+        {
+          "locale": "zh-cn",
+          "phase": "context-close",
+          "outcome": "return",
+          "nodeMs": 205394.47825,
+          "nodeTimeOrigin": 1794573666000.369,
+          "dateNow": 1794573871394
+        }
+      ],
+      "terminalNodeMs": 205290.612584,
+      "ownedDecorationErrors": 18,
+      "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+      "startupPassed": false,
+      "originalCaseDeadlineMs": 150000
+    },
+    "en": {
+      "network": [
+        {
+          "locale": "en",
+          "stage": "request",
+          "asset": "react-runtime.ts",
+          "nodeMs": 219535.512625,
+          "dateNow": 1794573885535
+        },
+        {
+          "locale": "en",
+          "stage": "response",
+          "asset": "react-runtime.ts",
+          "nodeMs": 219631.140792,
+          "dateNow": 1794573885631,
+          "status": 200
+        },
+        {
+          "locale": "en",
+          "stage": "finished",
+          "asset": "react-runtime.ts",
+          "nodeMs": 219631.191125,
+          "dateNow": 1794573885631
+        },
+        {
+          "locale": "en",
+          "stage": "request",
+          "asset": "react.js",
+          "nodeMs": 226970.940584,
+          "dateNow": 1794573892971
+        },
+        {
+          "locale": "en",
+          "stage": "request",
+          "asset": "react-dom.js",
+          "nodeMs": 226971.046542,
+          "dateNow": 1794573892971
+        },
+        {
+          "locale": "en",
+          "stage": "request",
+          "asset": "react-dom_client.js",
+          "nodeMs": 226971.104584,
+          "dateNow": 1794573892971
+        },
+        {
+          "locale": "en",
+          "stage": "response",
+          "asset": "react.js",
+          "nodeMs": 230739.404709,
+          "dateNow": 1794573896739,
+          "status": 200
+        },
+        {
+          "locale": "en",
+          "stage": "finished",
+          "asset": "react.js",
+          "nodeMs": 230739.542209,
+          "dateNow": 1794573896739
+        },
+        {
+          "locale": "en",
+          "stage": "response",
+          "asset": "react-dom.js",
+          "nodeMs": 230739.573375,
+          "dateNow": 1794573896739,
+          "status": 200
+        },
+        {
+          "locale": "en",
+          "stage": "finished",
+          "asset": "react-dom.js",
+          "nodeMs": 230739.584709,
+          "dateNow": 1794573896739
+        },
+        {
+          "locale": "en",
+          "stage": "response",
+          "asset": "react-dom_client.js",
+          "nodeMs": 230739.601875,
+          "dateNow": 1794573896739,
+          "status": 200
+        },
+        {
+          "locale": "en",
+          "stage": "finished",
+          "asset": "react-dom_client.js",
+          "nodeMs": 230739.612042,
+          "dateNow": 1794573896739
+        }
+      ],
+      "react": [
+        {
+          "phase": "demo-begin",
+          "runtime": "react",
+          "owner": "pp-5lfs3pl1xbr",
+          "pageMs": 11927.699999928474,
+          "hostChildren": 0,
+          "receivedNodeMs": 217425.961667
+        },
+        {
+          "phase": "demo-return",
+          "runtime": "react",
+          "owner": "pp-5lfs3pl1xbr",
+          "pageMs": 14199.099999904633,
+          "hostChildren": 0,
+          "receivedNodeMs": 219697.663875
+        },
+        {
+          "phase": "prototype-begin",
+          "runtime": "react",
+          "owner": "pp-5lfs3pl1xbr",
+          "pageMs": 14199.199999928474,
+          "hostChildren": 0,
+          "receivedNodeMs": 219697.8325
+        },
+        {
+          "phase": "prototype-return",
+          "runtime": "react",
+          "owner": "pp-5lfs3pl1xbr",
+          "pageMs": 22701.799999952316,
+          "hostChildren": 0,
+          "receivedNodeMs": 228200.294375
+        },
+        {
+          "phase": "render-begin",
+          "runtime": "react",
+          "owner": "pp-5lfs3pl1xbr",
+          "pageMs": 22701.799999952316,
+          "hostChildren": 0,
+          "receivedNodeMs": 228200.352417
+        },
+        {
+          "phase": "react-modules-begin",
+          "runtime": "react",
+          "owner": "pp-5lfs3pl1xbr",
+          "pageMs": 22702.199999928474,
+          "hostChildren": 0,
+          "receivedNodeMs": 228200.575
+        },
+        {
+          "phase": "react-modules-return",
+          "runtime": "react",
+          "owner": "pp-5lfs3pl1xbr",
+          "pageMs": 22892.899999976158,
+          "hostChildren": 0,
+          "receivedNodeMs": 228391.2955
+        },
+        {
+          "phase": "react-runtime-begin",
+          "runtime": "react",
+          "owner": "pp-5lfs3pl1xbr",
+          "pageMs": 22892.899999976158,
+          "hostChildren": 0,
+          "receivedNodeMs": 228391.33925
+        }
+      ],
+      "node": [
+        {
+          "locale": "en",
+          "phase": "init-script",
+          "outcome": "begin",
+          "nodeMs": 205496.562209,
+          "nodeTimeOrigin": 1794573666000.369,
+          "dateNow": 1794573871496
+        },
+        {
+          "locale": "en",
+          "phase": "init-script",
+          "outcome": "return",
+          "nodeMs": 205497.219417,
+          "nodeTimeOrigin": 1794573666000.369,
+          "dateNow": 1794573871497
+        },
+        {
+          "locale": "en",
+          "phase": "goto",
+          "outcome": "begin",
+          "nodeMs": 205497.23775,
+          "nodeTimeOrigin": 1794573666000.369,
+          "dateNow": 1794573871497
+        },
+        {
+          "locale": "en",
+          "phase": "goto",
+          "outcome": "return",
+          "nodeMs": 216270.145875,
+          "nodeTimeOrigin": 1794573666000.369,
+          "dateNow": 1794573882270
+        },
+        {
+          "locale": "en",
+          "phase": "startup-wait",
+          "outcome": "begin",
+          "nodeMs": 216270.450459,
+          "nodeTimeOrigin": 1794573666000.369,
+          "dateNow": 1794573882270
+        },
+        {
+          "locale": "en",
+          "phase": "startup-wait",
+          "outcome": "error",
+          "nodeMs": 355849.861375,
+          "nodeTimeOrigin": 1794573666000.369,
+          "dateNow": 1794574021850
+        },
+        {
+          "locale": "en",
+          "phase": "context-close",
+          "outcome": "begin",
+          "nodeMs": 356016.598667,
+          "nodeTimeOrigin": 1794573666000.369,
+          "dateNow": 1794574022016
+        },
+        {
+          "locale": "en",
+          "phase": "context-close",
+          "outcome": "return",
+          "nodeMs": 356016.627375,
+          "nodeTimeOrigin": 1794573666000.369,
+          "dateNow": 1794574022016
+        }
+      ],
+      "terminalNodeMs": 355849.861375,
+      "ownedDecorationErrors": 18,
+      "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+      "startupPassed": false,
+      "originalCaseDeadlineMs": 150000
+    }
+  },
+  "observed": "All three observed optimized entry URLs returned HTTP200 and finished transport; no observed individual import completion or root render. Dependency evaluation and browser scheduling remain unseparated. This does not prove all transitive fetches completed."
+}
