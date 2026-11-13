@@ -1,0 +1,5 @@
+# Original hosted browser shards on 22683ce
+
+The signed diagnostic carrier `251d1975` contains exact product `22683ce` with the same four-file observation overlay and original three shard lists. All three artifact digests, ZIP integrity and source/suite bindings were verified. The containing jobs failed overall. Both named Contents/mobile cases, Dialog 8/8, RuntimeBox 6/6 and Sidebar 7/7 passed. Typography was 33/34 with the removed Overview case retained. The original bilingual S4 cases failed with 18 inherited owned-decoration errors per locale.
+
+Shard 1 Chrome 157.0.8103.50 records the original Brutalist rejection at +1000.907ms. Family wrote at +909.402–918.710ms. The outstanding original query waited 1205.365ms for renderer dispatch and returned Brutalist to Node at +1467.814ms. The trace completed without reported loss. The Vite reconstruction attributes the sampled rectangle to the retained Header root, at 76.833ms of weighted samples. This source binding does not establish an isolated latency effect.
