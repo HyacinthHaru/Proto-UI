@@ -1,0 +1,7 @@
+# Current Copy review and controlled Sidebar stream
+
+Clean product `dbe246b` passed all 15 original Copy browser cases in Chrome 156, including the maintainer's first-Copy scenario with the real Header preparation reservation still held. The original test requires a successful trusted click and exact browser Clipboard text. The attached image is the real post-check page capture and was visually inspected; the test receipt supplies the Clipboard verdict.
+
+A separate diagnostic serves the exact complete quick-start response bytes through a loopback proxy with a single 500ms pause before the twelfth Sidebar group. The full bytes are delivered and hashed. It seeds the existing saved-manual schema and samples native details, computed visibility and geometry without changing the product. Before the tail and original bootstrap, both widths observe 11 groups, zero assigned identities and the UI group still collapsed. The 390px pane remains closed, display:none and 0×0 across 17 pre-epoch samples. At 1440px the pane is already visible and 240px wide across 30 pre-epoch samples. After the tail arrives, all 18 groups have identities and the saved group is open.
+
+This controlled pause demonstrates a genuine possible visible desktop restoration interval and explains how the hosted 390px frame can be partially parsed. It does not attribute the hosted transport schedule, demonstrate a visible narrow flash or replace the original assertion. The native disclosure, no-JavaScript access and original tests remain in place.

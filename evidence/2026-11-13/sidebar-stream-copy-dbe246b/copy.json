@@ -1,0 +1,2153 @@
+{
+  "cases": [
+    {
+      "status": "passed",
+      "title": "writes the real browser clipboard from trusted activation",
+      "duration": 1681.3613330000007
+    },
+    {
+      "status": "passed",
+      "title": "activates the first Copy on a new Docs source while Header preparation stays pending",
+      "duration": 933.367542
+    },
+    {
+      "status": "passed",
+      "title": "leaves exact selectable source available without JavaScript",
+      "duration": 316.35470799999894
+    },
+    {
+      "status": "passed",
+      "title": "wc: InstallCommand keeps source-host identity separate from its Copy runtime",
+      "duration": 3044.827041000004
+    },
+    {
+      "status": "passed",
+      "title": "react: InstallCommand keeps source-host identity separate from its Copy runtime",
+      "duration": 3261.7072499999995
+    },
+    {
+      "status": "passed",
+      "title": "vue: InstallCommand keeps source-host identity separate from its Copy runtime",
+      "duration": 1757.904708999995
+    },
+    {
+      "status": "passed",
+      "title": "vue2: InstallCommand keeps source-host identity separate from its Copy runtime",
+      "duration": 3164.019291999997
+    },
+    {
+      "status": "passed",
+      "title": "wc/shadcn: exact EC and CodePanel payload, paint, keyboard, failure and repeat",
+      "duration": 9881.749540999997
+    },
+    {
+      "status": "passed",
+      "title": "wc/brutalist: exact EC and CodePanel payload, paint, keyboard, failure and repeat",
+      "duration": 11832.058292000002
+    },
+    {
+      "status": "passed",
+      "title": "react/shadcn: exact EC and CodePanel payload, paint, keyboard, failure and repeat",
+      "duration": 9083.462708000006
+    },
+    {
+      "status": "passed",
+      "title": "react/brutalist: exact EC and CodePanel payload, paint, keyboard, failure and repeat",
+      "duration": 11193.866249999992
+    },
+    {
+      "status": "passed",
+      "title": "vue/shadcn: exact EC and CodePanel payload, paint, keyboard, failure and repeat",
+      "duration": 9284.873999999996
+    },
+    {
+      "status": "passed",
+      "title": "vue/brutalist: exact EC and CodePanel payload, paint, keyboard, failure and repeat",
+      "duration": 11187.595417000004
+    },
+    {
+      "status": "passed",
+      "title": "vue2/shadcn: exact EC and CodePanel payload, paint, keyboard, failure and repeat",
+      "duration": 9079.525166999985
+    },
+    {
+      "status": "passed",
+      "title": "vue2/brutalist: exact EC and CodePanel payload, paint, keyboard, failure and repeat",
+      "duration": 10873.031000000017
+    }
+  ],
+  "firstCopy": {
+    "exactSHA": "dbe246b74370c52169169864f06ccc4b76f75fd1",
+    "dirty": false,
+    "expectedSHA": null,
+    "eventSHA": null,
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    },
+    "url": "/zh-cn/ui-libraries/base/collapsible/",
+    "outcome": "passed",
+    "errors": [],
+    "observed": {
+      "readyState": "complete",
+      "documentFamily": "shadcn",
+      "theme": "light",
+      "preferredRuntime": null,
+      "trace": [
+        {
+          "at": 297,
+          "kind": "attribute",
+          "detail": {
+            "tag": "html",
+            "id": "",
+            "attribute": "data-site-library-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 378.3000000715256,
+          "kind": "DOMContentLoaded",
+          "detail": "shadcn"
+        },
+        {
+          "at": 378.89999997615814,
+          "kind": "window.load",
+          "detail": "shadcn"
+        },
+        {
+          "at": 400.2000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-button",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 400.2000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-search-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 401.3000000715256,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-button",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 401.3000000715256,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-search-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 405.60000002384186,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-surface-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 405.60000002384186,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-surface-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 405.60000002384186,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-surface-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 405.60000002384186,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-surface-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 406.10000002384186,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-surface-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 406.10000002384186,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-surface-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 406.10000002384186,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-surface-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 406.10000002384186,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-surface-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 451.8000000715256,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-button",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 451.8000000715256,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-search-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 468.7000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-surface-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 468.7000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-button",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 468.7000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-copy-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 468.7000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-loader-circle-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 468.7000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-check-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 468.7000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-circle-alert-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 468.7000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-base-live-region-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 468.7000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-surface-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 468.7000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-button",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 468.7000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-copy-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 468.7000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-loader-circle-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 468.7000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-check-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 468.7000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-circle-alert-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 468.7000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-base-live-region-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 470.60000002384186,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-surface-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 470.60000002384186,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-button",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 470.60000002384186,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-copy-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 470.60000002384186,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-loader-circle-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 470.60000002384186,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-check-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 470.60000002384186,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-circle-alert-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 470.60000002384186,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-base-live-region-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 470.60000002384186,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-surface-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 470.60000002384186,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-button",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 470.60000002384186,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-copy-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 470.60000002384186,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-loader-circle-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 470.60000002384186,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-check-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 470.60000002384186,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-circle-alert-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 470.7000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-base-live-region-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 471.2000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-surface-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 471.2000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-button",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 471.2000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-copy-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 471.2000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-loader-circle-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 471.2000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-check-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 471.2000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-circle-alert-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 471.2000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-base-live-region-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 471.2000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-surface-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 471.2000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-button",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 471.2000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-copy-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 471.2000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-loader-circle-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 471.2000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-check-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 471.2000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-circle-alert-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 471.2000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-base-live-region-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 481.10000002384186,
+          "kind": "attribute",
+          "detail": {
+            "tag": "div",
+            "id": "",
+            "attribute": "data-copy-runtime",
+            "old": null,
+            "value": "wc",
+            "copy": true,
+            "scope": false
+          }
+        },
+        {
+          "at": 481.10000002384186,
+          "kind": "attribute",
+          "detail": {
+            "tag": "div",
+            "id": "",
+            "attribute": "data-copy-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": true,
+            "scope": false
+          }
+        },
+        {
+          "at": 481.10000002384186,
+          "kind": "attribute",
+          "detail": {
+            "tag": "div",
+            "id": "",
+            "attribute": "data-copy-view",
+            "old": null,
+            "value": "ready",
+            "copy": true,
+            "scope": false
+          }
+        },
+        {
+          "at": 481.3000000715256,
+          "kind": "attribute",
+          "detail": {
+            "tag": "div",
+            "id": "",
+            "attribute": "data-copy-runtime",
+            "old": null,
+            "value": "wc",
+            "copy": true,
+            "scope": false
+          }
+        },
+        {
+          "at": 481.3000000715256,
+          "kind": "attribute",
+          "detail": {
+            "tag": "div",
+            "id": "",
+            "attribute": "data-copy-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": true,
+            "scope": false
+          }
+        },
+        {
+          "at": 481.3000000715256,
+          "kind": "attribute",
+          "detail": {
+            "tag": "div",
+            "id": "",
+            "attribute": "data-copy-view",
+            "old": null,
+            "value": "ready",
+            "copy": true,
+            "scope": false
+          }
+        },
+        {
+          "at": 493.39999997615814,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-popover-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 493.39999997615814,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-popover-trigger",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 493.39999997615814,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-list-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 493.39999997615814,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-popover-content",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 493.39999997615814,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-popover-title",
+            "id": "pui-popover-1-title",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 494.3000000715256,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-popover-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 494.3000000715256,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-popover-trigger",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 494.3000000715256,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-list-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 494.3000000715256,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-popover-content",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 494.3000000715256,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-popover-title",
+            "id": "pui-popover-1-title",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 496.2000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-surface-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 496.2000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-popover-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 496.2000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-popover-trigger",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 496.2000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-list-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 496.2000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-popover-content",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 496.2000000476837,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-popover-title",
+            "id": "pui-popover-1-title",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 499.89999997615814,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-popover-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 499.89999997615814,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-popover-trigger",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 499.89999997615814,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-list-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 499.89999997615814,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-popover-content",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 499.89999997615814,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-popover-title",
+            "id": "pui-popover-1-title",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 568.3000000715256,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-surface-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 590.6000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-surface-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 590.6000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-button",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 590.6000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-copy-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 590.6000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-loader-circle-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 590.6000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-check-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 590.6000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-circle-alert-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 590.6000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-base-live-region-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 591.6000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-surface-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 591.6000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-button",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 591.6000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-copy-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 591.6000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-loader-circle-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 591.6000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-check-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 591.6000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-circle-alert-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 591.6000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-base-live-region-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 591.8999999761581,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-surface-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 591.8999999761581,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-button",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 591.8999999761581,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-copy-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 591.8999999761581,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-loader-circle-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 591.8999999761581,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-check-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 591.8999999761581,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-circle-alert-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 591.8999999761581,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-base-live-region-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 594.3999999761581,
+          "kind": "attribute",
+          "detail": {
+            "tag": "div",
+            "id": "copy-added-during-header-preparation",
+            "attribute": "data-copy-runtime",
+            "old": null,
+            "value": "wc",
+            "copy": true,
+            "scope": false
+          }
+        },
+        {
+          "at": 594.3999999761581,
+          "kind": "attribute",
+          "detail": {
+            "tag": "div",
+            "id": "copy-added-during-header-preparation",
+            "attribute": "data-copy-family",
+            "old": null,
+            "value": "shadcn",
+            "copy": true,
+            "scope": false
+          }
+        },
+        {
+          "at": 594.3999999761581,
+          "kind": "attribute",
+          "detail": {
+            "tag": "div",
+            "id": "copy-added-during-header-preparation",
+            "attribute": "data-copy-view",
+            "old": null,
+            "value": "ready",
+            "copy": true,
+            "scope": false
+          }
+        },
+        {
+          "at": 651.1000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-surface-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 651.1000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-button",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 651.1000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-copy-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 651.1000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-loader-circle-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 651.1000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-check-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 651.1000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-circle-alert-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 651.1000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-base-live-region-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 653.5,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-surface-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 653.5,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-button",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 653.5,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-copy-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 653.5,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-loader-circle-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 653.5,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-check-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 653.5,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-circle-alert-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 653.5,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-base-live-region-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 656.6000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-surface-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 656.6000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-button",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 656.6000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-copy-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 656.6000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-loader-circle-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 656.6000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-check-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 656.6000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-circle-alert-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 656.6000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-base-live-region-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 658.3999999761581,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-surface-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 658.3999999761581,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-button",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 658.3999999761581,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-copy-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 658.3999999761581,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-loader-circle-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 658.3999999761581,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-check-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 658.3999999761581,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-circle-alert-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 658.3999999761581,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-base-live-region-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 682.6000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-surface-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 682.6000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-shadcn-button",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 682.6000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-copy-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 682.6000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-loader-circle-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 682.6000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-check-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 682.6000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-lucide-circle-alert-icon",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        },
+        {
+          "at": 682.6000000238419,
+          "kind": "attribute",
+          "detail": {
+            "tag": "wc-base-live-region-root",
+            "id": "",
+            "attribute": "data-projection-family",
+            "old": "shadcn",
+            "value": "shadcn",
+            "copy": false,
+            "scope": false
+          }
+        }
+      ],
+      "roots": [
+        {
+          "id": "copy-test-b0021ce8-8254-47e6-9772-9a02f6302f8a",
+          "view": "ready",
+          "runtime": "wc",
+          "family": "shadcn",
+          "title": "",
+          "ancestors": [
+            {
+              "tag": "div",
+              "id": "",
+              "family": "shadcn"
+            },
+            {
+              "tag": "html",
+              "id": "",
+              "family": "shadcn"
+            }
+          ],
+          "generations": [
+            {
+              "state": "active",
+              "inert": false
+            }
+          ],
+          "buttons": [
+            {
+              "tag": "wc-shadcn-button",
+              "state": "idle",
+              "tokens": "select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 inline-flex box-border shrink-0 items-center justify-center border border-border bg-clip-padding py-0 transition-all outline-none text-sm leading-5 font-medium rounded-[var(--pui-radius-2xl)] bg-background text-foreground size-8 whitespace-nowrap",
+              "focused": false,
+              "focusVisible": false,
+              "nativeFocusVisible": false,
+              "shadow": "none",
+              "background": "lab(100 0 0)",
+              "ringColor": "lab(66.128% -0.0000298023 0.0000119209)",
+              "animations": [],
+              "rect": {
+                "x": 896.8125,
+                "y": -1648.5,
+                "width": 32,
+                "height": 32,
+                "top": -1648.5,
+                "right": 928.8125,
+                "bottom": -1616.5,
+                "left": 896.8125
+              }
+            }
+          ]
+        },
+        {
+          "id": "",
+          "view": "ready",
+          "runtime": "wc",
+          "family": "shadcn",
+          "title": "",
+          "ancestors": [
+            {
+              "tag": "div",
+              "id": "",
+              "family": "shadcn"
+            },
+            {
+              "tag": "html",
+              "id": "",
+              "family": "shadcn"
+            }
+          ],
+          "generations": [
+            {
+              "state": "active",
+              "inert": false
+            }
+          ],
+          "buttons": [
+            {
+              "tag": "wc-shadcn-button",
+              "state": "idle",
+              "tokens": "select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 inline-flex box-border shrink-0 items-center justify-center border border-border bg-clip-padding py-0 transition-all outline-none text-sm leading-5 font-medium rounded-[var(--pui-radius-2xl)] bg-background text-foreground size-8 whitespace-nowrap",
+              "focused": false,
+              "focusVisible": false,
+              "nativeFocusVisible": false,
+              "shadow": "none",
+              "background": "lab(100 0 0)",
+              "ringColor": "lab(66.128% -0.0000298023 0.0000119209)",
+              "animations": [],
+              "rect": {
+                "x": 902.8125,
+                "y": -1248.5,
+                "width": 32,
+                "height": 32,
+                "top": -1248.5,
+                "right": 934.8125,
+                "bottom": -1216.5,
+                "left": 902.8125
+              }
+            }
+          ]
+        },
+        {
+          "id": "copy-added-during-header-preparation",
+          "view": "ready",
+          "runtime": "wc",
+          "family": "shadcn",
+          "title": "",
+          "ancestors": [
+            {
+              "tag": "div",
+              "id": "",
+              "family": "shadcn"
+            },
+            {
+              "tag": "html",
+              "id": "",
+              "family": "shadcn"
+            }
+          ],
+          "generations": [
+            {
+              "state": "active",
+              "inert": false
+            }
+          ],
+          "buttons": [
+            {
+              "tag": "wc-shadcn-button",
+              "state": "success",
+              "tokens": "select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 inline-flex box-border shrink-0 items-center justify-center border border-border bg-clip-padding py-0 transition-all outline-none text-sm leading-5 font-medium rounded-[var(--pui-radius-2xl)] bg-muted text-foreground size-8 whitespace-nowrap",
+              "focused": true,
+              "focusVisible": false,
+              "nativeFocusVisible": false,
+              "shadow": "none",
+              "background": "oklab(0.999998 -0.00000980496 0.0000234246)",
+              "ringColor": "lab(66.128% -0.0000298023 0.0000119209)",
+              "animations": [
+                {
+                  "property": "background-color",
+                  "currentTime": 0,
+                  "playState": "running",
+                  "timing": {
+                    "delay": 0,
+                    "direction": "normal",
+                    "duration": 150,
+                    "easing": "cubic-bezier(0.4, 0, 0.2, 1)",
+                    "endDelay": 0,
+                    "fill": "backwards",
+                    "iterationStart": 0,
+                    "iterations": 1,
+                    "activeDuration": 150,
+                    "currentIteration": 0,
+                    "endTime": 150,
+                    "localTime": 0,
+                    "progress": 0
+                  }
+                }
+              ],
+              "rect": {
+                "x": 291.1875,
+                "y": 633.484375,
+                "width": 32,
+                "height": 32,
+                "top": 633.484375,
+                "right": 323.1875,
+                "bottom": 665.484375,
+                "left": 291.1875
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "imageSha256": "8c415460f2887271dcc3a77dc519d6debc05dde6c27a8ac0ab6478570255dbbf"
+}
