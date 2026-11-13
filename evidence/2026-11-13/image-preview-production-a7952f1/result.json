@@ -1,0 +1,29 @@
+{
+  "head": "a7952f1ce1e47399f6928b42a48c8d162afa2a8b",
+  "distHashes": {
+    "zh-cn/index.html": "4bcbff7c5ef68508d577fd21ab68825e3751d2cd6bf0ca0a75b4a412fe6e6001",
+    "zh-cn/ui-libraries/shadcn/button/index.html": "576189bf56e54e4cf868654d44fdb9e1dc08d56d84f4c8a2862e9eeba63fdc2a",
+    "zh-cn/ui-libraries/brutalist/components/button/index.html": "e48e7fb35f958c962a37623d43c634249a98d39016b32de9e5069560611fe6de",
+    "en/ui-libraries/shadcn/dialog/index.html": "0acd135e9593a36598b721054e517db69208b6fca3a84976de64a297a17ddf20",
+    "proto-ui-bundle-graph.json": "ce8b30304829aaa302766f154e7735abf40ff3e9a4239d12ec555b4bf626772a"
+  },
+  "selector": "uses real family Popover Triggers|uses the same mobile shell|retains (shadcn|brutalist) preference owners|compact (shadcn|brutalist)|live available region|keeps Runtime Tabs outside",
+  "exitCode": 0,
+  "server": "Repository astro preview on the exact clean a795 static output",
+  "result": {
+    "passed": 15,
+    "filtered": 9,
+    "dialog": 8,
+    "originalFamilyPollMs": 538.684
+  },
+  "productionBundle": {
+    "base": "35195a6e6f1ba6a7d800da0029f2683013abd18b",
+    "head": "a7952f1ce1e47399f6928b42a48c8d162afa2a8b",
+    "pages": 673,
+    "diagnostics": 53,
+    "added": 0,
+    "removed": 0,
+    "exit": 1
+  },
+  "ringCaptureSha256": "97efcbfaf2916222be79ed3e9ec2632947c2cb82156a3a5dbb3c5d899cb99d7b"
+}
