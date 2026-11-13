@@ -1,5 +1,5 @@
 name: CI
-run-name: Brutalist original shards on a shared runner
+run-name: Brutalist original shards in alternating order
 
 on: workflow_dispatch
 permissions:
@@ -8,7 +8,7 @@ permissions:
 jobs:
   paired-browser:
     runs-on: ubuntu-26.04
-    timeout-minutes: 40
+    timeout-minutes: 74
     strategy:
       fail-fast: false
       matrix:
@@ -20,8 +20,8 @@ jobs:
             slot: browser-3-of-8
             trace: '0'
     env:
-      BASELINE_CARRIER: 51751ae1b9213aca255d67ac07ba2a691b5f4771
-      CANDIDATE_CARRIER: 11e4132616a934a91a8139f8d5025f335ac834e7
+      BASELINE_CARRIER: 11e4132616a934a91a8139f8d5025f335ac834e7
+      CANDIDATE_CARRIER: 05ae9415291789ec31ad7f9d8b47372ca1289d11
       CHROME_VERSION: 157.0.8103.50
       CHROME_ZIP_SHA256: d17167bc092eb495a3b768c7467f27e35f625aa03834233a1663af67dcb668c9
       PROTO_UI_RUNTIME_PHASE: browser
@@ -60,13 +60,13 @@ jobs:
         env:
           FONT_EVIDENCE_DIR: ${{ runner.temp }}/pair-evidence/environment/font-preparation
         run: bash apps/www/scripts/prepare-homepage-composition-fonts.sh
-      - name: Prepare both clean source trees
+      - name: Prepare a clean source tree per arm
         run: |
           set -euo pipefail
           corepack enable
-          for arm in baseline candidate; do
+          for arm in 01-baseline 02-candidate 03-candidate 04-baseline; do
             sha="$BASELINE_CARRIER"
-            if [[ "$arm" == candidate ]]; then sha="$CANDIDATE_CARRIER"; fi
+            if [[ "$arm" == *-candidate ]]; then sha="$CANDIDATE_CARRIER"; fi
             root="$RUNNER_TEMP/pair-$arm"
             git worktree add --detach "$root" "$sha"
             (
@@ -78,7 +78,7 @@ jobs:
               git diff --cached --quiet
             )
           done
-      - name: Execute both original shard arms sequentially
+      - name: Execute original shard arms in AB then BA order
         run: |
           set -euo pipefail
           evidence="$RUNNER_TEMP/pair-evidence"
@@ -96,7 +96,8 @@ jobs:
             corepack pnpm@10.32.1 --version
           } > "$evidence/environment/runner.txt"
           result=0
-          for arm in baseline candidate; do
+          printf '%s\n' 01-baseline 02-candidate 03-candidate 04-baseline > "$evidence/environment/order.txt"
+          for arm in 01-baseline 02-candidate 03-candidate 04-baseline; do
             root="$RUNNER_TEMP/pair-$arm"
             export PROTO_UI_RUNTIME_EVIDENCE_DIR="$evidence/$arm"
             export PROTO_UI_TYPOGRAPHY_EVIDENCE_DIR="$PROTO_UI_RUNTIME_EVIDENCE_DIR/typography"
