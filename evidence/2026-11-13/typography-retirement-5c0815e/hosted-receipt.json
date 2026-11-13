@@ -1,0 +1,143 @@
+{
+  "run": {
+    "id": 43355667455,
+    "html_url": "https://github.com/HyacinthHaru/Proto-UI/actions/runs/43355667455",
+    "head_sha": "19d3aabe65cf3305892665e2eeb051f9dc567407",
+    "run_attempt": 1,
+    "status": "completed",
+    "conclusion": "failure"
+  },
+  "artifacts": [
+    {
+      "slot": 1,
+      "artifact": {
+        "id": 14007135954,
+        "node_id": "MDg6QXJ0aWZhY3QxNDAwNzEzNTk1NA==",
+        "name": "runtime-ci-43355667455-browser-1-of-8-attempt-1",
+        "size_in_bytes": 6389623,
+        "url": "https://api.github.com/repos/HyacinthHaru/Proto-UI/actions/artifacts/14007135954",
+        "archive_download_url": "https://api.github.com/repos/HyacinthHaru/Proto-UI/actions/artifacts/14007135954/zip",
+        "expired": false,
+        "digest": "sha256:9706522051ab7378e7e2865e09e87fc28c8fea20e01be40fba2552aec110b742",
+        "created_at": "2026-11-13T03:13:06Z",
+        "updated_at": "2026-11-13T03:13:06Z",
+        "expires_at": "2026-11-27T03:13:04Z",
+        "workflow_run": {
+          "id": 43355667455,
+          "repository_id": 1335201319,
+          "head_repository_id": 1335201319,
+          "head_branch": "codex/verify-1438-priority-4fe4e6b5-round3",
+          "head_sha": "19d3aabe65cf3305892665e2eeb051f9dc567407"
+        }
+      },
+      "source": "19d3aabe65cf3305892665e2eeb051f9dc567407",
+      "product": "beeb377483e699fcb8659fbac86d28e74c9c1d8d",
+      "selectedSuites": [
+        "apps/workspace/test/lifecycle.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/contrast-probe.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-bootstrap-state-controls.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-prototype-style-closure.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/runtime-preview-surface.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/site-sidebar-disclosure.browser.test.ts",
+        "apps/www/test/message-composition.browser.test.ts",
+        "packages/adapters/vue/test/focus-request-readiness.browser.test.ts"
+      ],
+      "node": "v24.22.2",
+      "chrome": "Google Chrome 157.0.8103.50"
+    },
+    {
+      "slot": 2,
+      "artifact": {
+        "id": 14006517664,
+        "node_id": "MDg6QXJ0aWZhY3QxNDAwNjUxNzY2NA==",
+        "name": "runtime-ci-43355667455-browser-2-of-8-attempt-1",
+        "size_in_bytes": 60690895,
+        "url": "https://api.github.com/repos/HyacinthHaru/Proto-UI/actions/artifacts/14006517664",
+        "archive_download_url": "https://api.github.com/repos/HyacinthHaru/Proto-UI/actions/artifacts/14006517664/zip",
+        "expired": false,
+        "digest": "sha256:bea3c4abf8cd194e9854f45bdbe518d9d217834e385af58d1637fae2bc18bfcf",
+        "created_at": "2026-11-13T03:12:54Z",
+        "updated_at": "2026-11-13T03:12:54Z",
+        "expires_at": "2026-11-27T03:12:51Z",
+        "workflow_run": {
+          "id": 43355667455,
+          "repository_id": 1335201319,
+          "head_repository_id": 1335201319,
+          "head_branch": "codex/verify-1438-priority-4fe4e6b5-round3",
+          "head_sha": "19d3aabe65cf3305892665e2eeb051f9dc567407"
+        }
+      },
+      "source": "19d3aabe65cf3305892665e2eeb051f9dc567407",
+      "product": "beeb377483e699fcb8659fbac86d28e74c9c1d8d",
+      "selectedSuites": [
+        "apps/www/src/components/documentation-image-preview.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/contrast-tooltip-warm-handoff.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-brutalist-button.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-composed-style-isolation.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-ring-offset-default.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-shadcn-scroll-area.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-shadow-split-s5.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/overlay-portal-direction.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/scroll-area-corner.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/site-typography.browser.test.ts",
+        "apps/www/test/preferences.browser.test.ts",
+        "packages/adapters/web-component/test/native-text-width.browser.test.ts"
+      ],
+      "node": "v24.22.2",
+      "chrome": "Google Chrome 156.0.8078.79"
+    },
+    {
+      "slot": 3,
+      "artifact": {
+        "id": 14006417894,
+        "node_id": "MDg6QXJ0aWZhY3QxNDAwNjQxNzg5NA==",
+        "name": "runtime-ci-43355667455-browser-3-of-8-attempt-1",
+        "size_in_bytes": 10572711,
+        "url": "https://api.github.com/repos/HyacinthHaru/Proto-UI/actions/artifacts/14006417894",
+        "archive_download_url": "https://api.github.com/repos/HyacinthHaru/Proto-UI/actions/artifacts/14006417894/zip",
+        "expired": false,
+        "digest": "sha256:b13ee61d6511f7bf4ef47695916b7f0977c9e175118ca41d12fe74a4b8f527a6",
+        "created_at": "2026-11-13T03:12:55Z",
+        "updated_at": "2026-11-13T03:12:55Z",
+        "expires_at": "2026-11-27T03:12:53Z",
+        "workflow_run": {
+          "id": 43355667455,
+          "repository_id": 1335201319,
+          "head_repository_id": 1335201319,
+          "head_branch": "codex/verify-1438-priority-4fe4e6b5-round3",
+          "head_sha": "19d3aabe65cf3305892665e2eeb051f9dc567407"
+        }
+      },
+      "source": "19d3aabe65cf3305892665e2eeb051f9dc567407",
+      "product": "beeb377483e699fcb8659fbac86d28e74c9c1d8d",
+      "selectedSuites": [
+        "apps/www/src/content/docs/zh-cn/base-accordion-layout-parity.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-accordion-family.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-brutalist-checkbox.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-field-family.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-select-draft-projections.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-shadcn-switch-compositions.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/overlay-scrollbar-geometry.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/scroll-chrome-display.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/table-react19.browser.test.ts",
+        "apps/www/test/radio-group-entry.browser.test.ts",
+        "packages/adapters/web-component/test/shadow-closeout.browser.test.ts"
+      ],
+      "node": "v24.22.2",
+      "chrome": "Google Chrome 156.0.8078.79"
+    }
+  ],
+  "typography": {
+    "passed": 33,
+    "failed": 1,
+    "remainingObservation": "overview-shadcn-wc-en-enhanced-light"
+  },
+  "namedContentsPassed": true,
+  "dialogPassed": 8,
+  "sampleComparison": "Shard 1 now uses Chrome 157; prior b3e and f58 traces used 156. All retain separate failure verdicts."
+}
