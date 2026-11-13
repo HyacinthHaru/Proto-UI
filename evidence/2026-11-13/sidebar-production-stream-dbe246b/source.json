@@ -1,0 +1,8 @@
+{
+  "head": "dbe246b74370c52169169864f06ccc4b76f75fd1",
+  "fileHashes": {
+    "zh-cn/start-here/quick-start/index.html": "37366d57a1fe8f4dbf54ecad47862d373c2dd8ecb3507eaf37791354b773aeb5",
+    "proto-ui-bundle-graph.json": "702008f6016c999ed1b78ec64c99ccf4a15e9c356dc832d081fcf117c8e9cbbf"
+  },
+  "scope": "Static output from the earlier exact clean dbe production step; serving raw bytes with one fixed delivery pause. The bundle gate failed independently."
+}
