@@ -1,0 +1,24 @@
+{
+  "head": "a7952f1ce1e47399f6928b42a48c8d162afa2a8b",
+  "originalLocalChromium": {
+    "passed": 15,
+    "filtered": 9,
+    "dialogPassed": 8,
+    "originalFamilyPollMs": 546.136
+  },
+  "originalImagePreview": {
+    "passed": 24,
+    "failed": 0
+  },
+  "focused": {
+    "passed": 65,
+    "fail": 0,
+    "observedAdmissionCurrentSrcReads": [2, 1]
+  },
+  "rawSha256": {
+    "image-red.log": "90c0183913cfe3a39c863cbb93d7919d83659eb1b4fd13113e0ffaaf72fa52be",
+    "image-green.log": "65ddce79cd345b084d930b9e971e33aaa19676b0626ed66c3bc250b614473249",
+    "exact-native.json": "3d099632e5879467aed73c6ba0796c675d297fb59ac8c2462b6220f439135ec0",
+    "exact-image.json": "fa0afe4f2b8c230227e9c7d8e600e599b036da3baa7f2d781c500556a62ecb99"
+  }
+}
