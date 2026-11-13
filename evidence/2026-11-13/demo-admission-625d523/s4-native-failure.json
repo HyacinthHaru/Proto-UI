@@ -1,0 +1,56 @@
+{
+  "tests": {
+    "passed": 0,
+    "failed": 2,
+    "filtered": 0
+  },
+  "local": {
+    "zh-cn": {
+      "source": {
+        "sha": "625d523ea224c79e85e2b439b58a0f1bd4025d99",
+        "dirty": false
+      },
+      "startupPassed": false,
+      "collectionOutcome": "rejected",
+      "pageErrors": {
+        "[feedback] owned-decoration unsupported by this adapter": 18
+      },
+      "consoleErrors": 0,
+      "expressionHash": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+      "phases": [
+        ["init-script", "begin", 0.0],
+        ["init-script", "return", 8.805],
+        ["goto", "begin", 8.86],
+        ["goto", "return", 8121.753],
+        ["startup-wait", "begin", 8124.429],
+        ["startup-wait", "error", 150166.266],
+        ["context-close", "begin", 150374.364],
+        ["context-close", "return", 150374.407]
+      ]
+    },
+    "en": {
+      "source": {
+        "sha": "625d523ea224c79e85e2b439b58a0f1bd4025d99",
+        "dirty": false
+      },
+      "startupPassed": false,
+      "collectionOutcome": "rejected",
+      "pageErrors": {
+        "[feedback] owned-decoration unsupported by this adapter": 18
+      },
+      "consoleErrors": 0,
+      "expressionHash": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+      "phases": [
+        ["init-script", "begin", 0.0],
+        ["init-script", "return", 1.299],
+        ["goto", "begin", 1.349],
+        ["goto", "return", 11111.373],
+        ["startup-wait", "begin", 11113.141],
+        ["startup-wait", "error", 150290.294],
+        ["context-close", "begin", 150487.408],
+        ["context-close", "return", 150487.448]
+      ]
+    }
+  },
+  "notes": "Both original 150000ms case timeouts with the original 60000ms startup predicate issued. Context close preempted terminal page journal. Earlier live stream preserved 1268 Previewers and a Base Accordion host first missing."
+}

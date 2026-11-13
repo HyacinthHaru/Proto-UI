@@ -1,0 +1,44 @@
+[
+  {
+    "locale": "zh-cn",
+    "main": {
+      "sha": "35195a6e6f1ba6a7d800da0029f2683013abd18b",
+      "dirty": false
+    },
+    "candidate": {
+      "sha": "625d523ea224c79e85e2b439b58a0f1bd4025d99",
+      "dirty": false
+    },
+    "samePredicate": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+    "mainPageErrors": 18,
+    "candidatePageErrors": 18,
+    "mainNamedConsoleErrors": {
+      "duplicate ref \"density-default\"": 2,
+      "website-runtime-preview:demo-bootstrap-2-3-2-dialog": 4
+    },
+    "candidateConsoleErrors": 0,
+    "mainStartupPassed": false,
+    "candidateStartupPassed": false
+  },
+  {
+    "locale": "en",
+    "main": {
+      "sha": "35195a6e6f1ba6a7d800da0029f2683013abd18b",
+      "dirty": false
+    },
+    "candidate": {
+      "sha": "625d523ea224c79e85e2b439b58a0f1bd4025d99",
+      "dirty": false
+    },
+    "samePredicate": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+    "mainPageErrors": 18,
+    "candidatePageErrors": 18,
+    "mainNamedConsoleErrors": {
+      "duplicate ref \"density-default\"": 2,
+      "website-runtime-preview:demo-bootstrap-2-3-2-dialog": 4
+    },
+    "candidateConsoleErrors": 0,
+    "mainStartupPassed": false,
+    "candidateStartupPassed": false
+  }
+]

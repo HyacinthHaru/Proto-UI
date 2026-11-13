@@ -1,0 +1,679 @@
+{
+  "head": "625d523ea224c79e85e2b439b58a0f1bd4025d99",
+  "tree": "ef7c6736516d75fd52c9fefc3be7666287bb8e3e",
+  "parent": "638ec61aaff11e01990c385b8c2c15678bdec751",
+  "blobs": {
+    "apps/www/src/components/PrototypePreviewer/runtime-preview-surface.test.ts": {
+      "blob": "547177ea463629bf45cd53501aa074b370a79b41",
+      "sha256": "b27249e3ea38d1151046974699fa3172863f15cc678b6daecbbcbe7a9b7c69b5"
+    },
+    "apps/www/src/content/docs/overlay-control-recipes-r94.shared.ts": {
+      "blob": "e8b887ede3ab0514bb7f8098d1a79775f47266f9",
+      "sha256": "e839585bb7ad5a3db641c508203229770c8afa2f34180f40991958694bb4b948"
+    },
+    "apps/www/src/content/docs/zh-cn/demo-brutalist-radio-group.demo.ts": {
+      "blob": "5f8e5f5c6c1648e0d15bce179b14f6a813799d2a",
+      "sha256": "a1d8080e4c5ab6be16a020be60a755c76688c42fa76f748862d35aef549a8945"
+    },
+    "apps/www/src/content/docs/zh-cn/demo-brutalist-radio-group.test.ts": {
+      "blob": "160c28f4562c6d435102ab95ccf3a423f111b008",
+      "sha256": "6a882bf4357017a166d404aff45a2344f312c8089ecee0033ada59f9a2e3b932"
+    }
+  },
+  "clean": true,
+  "environment": {
+    "node": "v24.21.0",
+    "chrome": "156.0.8078.79",
+    "os": "macOS arm64"
+  },
+  "focused": {
+    "exit": 0,
+    "passed": 49,
+    "failed": 0,
+    "filtered": 0,
+    "cases": [
+      {
+        "title": "en: separates title bar, body and action bar",
+        "status": "passed"
+      },
+      {
+        "title": "zh-cn: separates title bar, body and action bar",
+        "status": "passed"
+      },
+      {
+        "title": "includes declared future prototypes before an initially empty slot loads",
+        "status": "passed"
+      },
+      {
+        "title": "copies and freezes initial declarations, incoming nested data and published entries",
+        "status": "passed"
+      },
+      {
+        "title": "retains same-key same-type identities through append/reorder and retires deletion/replacement",
+        "status": "passed"
+      },
+      {
+        "title": "supersedes pending updates without publishing them and keeps commit idempotent",
+        "status": "passed"
+      },
+      {
+        "title": "rejects collisions against static, committed and pending refs across slots",
+        "status": "passed"
+      },
+      {
+        "title": "allows same-slot ref reuse but rejects duplicates across descendants/items",
+        "status": "passed"
+      },
+      {
+        "title": "releases pending reservations on cancellation without removing the committed tree",
+        "status": "passed"
+      },
+      {
+        "title": "invalid updates do not cancel a valid pending update or mutate the committed tree",
+        "status": "passed"
+      },
+      {
+        "title": "validation snapshots without reserving refs or superseding pending transactions",
+        "status": "passed"
+      },
+      {
+        "title": "rejects undeclared slots/prototypes, nested declarations and malformed authored data",
+        "status": "passed"
+      },
+      {
+        "title": "rejects invalid initial declarations and duplicate static refs",
+        "status": "passed"
+      },
+      {
+        "title": "disposal invalidates pending commits, clears model resources, and prohibits later updates",
+        "status": "passed"
+      },
+      {
+        "title": "allows retained subtree value changes but rejects topology or ref changes before superseding",
+        "status": "passed"
+      },
+      {
+        "title": "preserves original recipe identity and forwards only child refs with one cleanup",
+        "status": "passed"
+      },
+      {
+        "title": "keeps content and independent shell recipe closures separate",
+        "status": "passed"
+      },
+      {
+        "title": "admits the authored Bootstrap Dialog with its complete runtime recipe",
+        "status": "passed"
+      },
+      {
+        "title": "bootstrap-2-3-2/wc: owns a neutral partial-family canvas without aliasing Shadcn or the demonstrated Button",
+        "status": "passed"
+      },
+      {
+        "title": "bootstrap-2-3-2/react: owns a neutral partial-family canvas without aliasing Shadcn or the demonstrated Button",
+        "status": "passed"
+      },
+      {
+        "title": "bootstrap-2-3-2/vue: owns a neutral partial-family canvas without aliasing Shadcn or the demonstrated Button",
+        "status": "passed"
+      },
+      {
+        "title": "bootstrap-2-3-2/vue2: owns a neutral partial-family canvas without aliasing Shadcn or the demonstrated Button",
+        "status": "passed"
+      },
+      {
+        "title": "liquid-glass/wc: owns a neutral partial-family canvas without aliasing Shadcn or the demonstrated Button",
+        "status": "passed"
+      },
+      {
+        "title": "liquid-glass/react: owns a neutral partial-family canvas without aliasing Shadcn or the demonstrated Button",
+        "status": "passed"
+      },
+      {
+        "title": "liquid-glass/vue: owns a neutral partial-family canvas without aliasing Shadcn or the demonstrated Button",
+        "status": "passed"
+      },
+      {
+        "title": "liquid-glass/vue2: owns a neutral partial-family canvas without aliasing Shadcn or the demonstrated Button",
+        "status": "passed"
+      },
+      {
+        "title": "rejects unknown canvas families instead of falling back to another family",
+        "status": "passed"
+      },
+      {
+        "title": "rejects a child ref collision instead of taking over the demonstrated instance",
+        "status": "passed"
+      },
+      {
+        "title": "honors a fixed family before document presentation and resolves current generic ancestry",
+        "status": "passed"
+      },
+      {
+        "title": "wc: keeps the demonstrated uncontrolled state and activation after a surface family change",
+        "status": "passed"
+      },
+      {
+        "title": "wc: projects the real slot, keeps native node/focus identity on family/theme update and revokes cleanup",
+        "status": "passed"
+      },
+      {
+        "title": "react: keeps the demonstrated uncontrolled state and activation after a surface family change",
+        "status": "passed"
+      },
+      {
+        "title": "react: projects the real slot, keeps native node/focus identity on family/theme update and revokes cleanup",
+        "status": "passed"
+      },
+      {
+        "title": "vue: keeps the demonstrated uncontrolled state and activation after a surface family change",
+        "status": "passed"
+      },
+      {
+        "title": "vue: projects the real slot, keeps native node/focus identity on family/theme update and revokes cleanup",
+        "status": "passed"
+      },
+      {
+        "title": "vue2: keeps the demonstrated uncontrolled state and activation after a surface family change",
+        "status": "passed"
+      },
+      {
+        "title": "vue2: projects the real slot, keeps native node/focus identity on family/theme update and revokes cleanup",
+        "status": "passed"
+      },
+      {
+        "title": "wc: latest family wins while the original focused content and state survive",
+        "status": "passed"
+      },
+      {
+        "title": "wc: restores a removed borrowed source before teardown and rejects late publication",
+        "status": "passed"
+      },
+      {
+        "title": "react: latest family wins while the original focused content and state survive",
+        "status": "passed"
+      },
+      {
+        "title": "react: restores a removed borrowed source before teardown and rejects late publication",
+        "status": "passed"
+      },
+      {
+        "title": "vue: latest family wins while the original focused content and state survive",
+        "status": "passed"
+      },
+      {
+        "title": "vue: restores a removed borrowed source before teardown and rejects late publication",
+        "status": "passed"
+      },
+      {
+        "title": "vue2: latest family wins while the original focused content and state survive",
+        "status": "passed"
+      },
+      {
+        "title": "vue2: restores a removed borrowed source before teardown and rejects late publication",
+        "status": "passed"
+      },
+      {
+        "title": "reserves both shell and borrowed-content refs recursively",
+        "status": "passed"
+      },
+      {
+        "title": "keeps four explicit stages with a real Liquid shell and through family replacements",
+        "status": "passed"
+      },
+      {
+        "title": "admits both authored groups in the same renderer",
+        "status": "passed"
+      },
+      {
+        "title": "keeps single Base selection with visible in-item captions",
+        "status": "passed"
+      }
+    ]
+  },
+  "native": {
+    "exit": 0,
+    "passed": 15,
+    "failed": 0,
+    "filtered": 3,
+    "cases": [
+      {
+        "title": "shadcn/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+        "status": "passed"
+      },
+      {
+        "title": "shadcn/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+        "status": "passed"
+      },
+      {
+        "title": "shadcn/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+        "status": "passed"
+      },
+      {
+        "title": "shadcn/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+        "status": "passed"
+      },
+      {
+        "title": "brutalist/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+        "status": "passed"
+      },
+      {
+        "title": "brutalist/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+        "status": "passed"
+      },
+      {
+        "title": "brutalist/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+        "status": "passed"
+      },
+      {
+        "title": "brutalist/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+        "status": "passed"
+      },
+      {
+        "title": "switches every registered homepage group through real adapters, preserving native anchors and theme",
+        "status": "passed"
+      },
+      {
+        "title": "keeps native navigation available without JavaScript and does not overflow mobile",
+        "status": "skipped"
+      },
+      {
+        "title": "retains saved React across cold library routes and exercises actual family chrome",
+        "status": "skipped"
+      },
+      {
+        "title": "reveals current articles through native shadow slots and preserves viewport handback",
+        "status": "skipped"
+      },
+      {
+        "title": "uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence",
+        "status": "passed"
+      },
+      {
+        "title": "uses the same mobile shell on documentation with independent global navigation and contents",
+        "status": "passed"
+      },
+      {
+        "title": "compact shadcn preferences stay usable at 200% text, RTL and breakpoint moves",
+        "status": "passed"
+      },
+      {
+        "title": "compact brutalist preferences stay usable at 200% text, RTL and breakpoint moves",
+        "status": "passed"
+      },
+      {
+        "title": "retains shadcn preference owners and portals through real breakpoint reconnects",
+        "status": "passed"
+      },
+      {
+        "title": "retains brutalist preference owners and portals through real breakpoint reconnects",
+        "status": "passed"
+      }
+    ]
+  },
+  "localBrutalistFamilyMs": 556.189,
+  "recipeControls": {
+    "radioBefore": {
+      "exit": 1,
+      "passed": 1,
+      "failed": 1,
+      "filtered": 0,
+      "cases": [
+        {
+          "title": "admits both authored groups in the same renderer",
+          "status": "failed"
+        },
+        {
+          "title": "keeps single Base selection with visible in-item captions",
+          "status": "passed"
+        }
+      ]
+    },
+    "bootstrapBefore": {
+      "exit": 1,
+      "passed": 0,
+      "failed": 1,
+      "filtered": 31,
+      "cases": [
+        {
+          "title": "preserves original recipe identity and forwards only child refs with one cleanup",
+          "status": "skipped"
+        },
+        {
+          "title": "keeps content and independent shell recipe closures separate",
+          "status": "skipped"
+        },
+        {
+          "title": "admits the authored Bootstrap Dialog with its complete runtime recipe",
+          "status": "failed"
+        },
+        {
+          "title": "bootstrap-2-3-2/wc: owns a neutral partial-family canvas without aliasing Shadcn or the demonstrated Button",
+          "status": "skipped"
+        },
+        {
+          "title": "bootstrap-2-3-2/react: owns a neutral partial-family canvas without aliasing Shadcn or the demonstrated Button",
+          "status": "skipped"
+        },
+        {
+          "title": "bootstrap-2-3-2/vue: owns a neutral partial-family canvas without aliasing Shadcn or the demonstrated Button",
+          "status": "skipped"
+        },
+        {
+          "title": "bootstrap-2-3-2/vue2: owns a neutral partial-family canvas without aliasing Shadcn or the demonstrated Button",
+          "status": "skipped"
+        },
+        {
+          "title": "liquid-glass/wc: owns a neutral partial-family canvas without aliasing Shadcn or the demonstrated Button",
+          "status": "skipped"
+        },
+        {
+          "title": "liquid-glass/react: owns a neutral partial-family canvas without aliasing Shadcn or the demonstrated Button",
+          "status": "skipped"
+        },
+        {
+          "title": "liquid-glass/vue: owns a neutral partial-family canvas without aliasing Shadcn or the demonstrated Button",
+          "status": "skipped"
+        },
+        {
+          "title": "liquid-glass/vue2: owns a neutral partial-family canvas without aliasing Shadcn or the demonstrated Button",
+          "status": "skipped"
+        },
+        {
+          "title": "rejects unknown canvas families instead of falling back to another family",
+          "status": "skipped"
+        },
+        {
+          "title": "rejects a child ref collision instead of taking over the demonstrated instance",
+          "status": "skipped"
+        },
+        {
+          "title": "honors a fixed family before document presentation and resolves current generic ancestry",
+          "status": "skipped"
+        },
+        {
+          "title": "wc: keeps the demonstrated uncontrolled state and activation after a surface family change",
+          "status": "skipped"
+        },
+        {
+          "title": "wc: projects the real slot, keeps native node/focus identity on family/theme update and revokes cleanup",
+          "status": "skipped"
+        },
+        {
+          "title": "react: keeps the demonstrated uncontrolled state and activation after a surface family change",
+          "status": "skipped"
+        },
+        {
+          "title": "react: projects the real slot, keeps native node/focus identity on family/theme update and revokes cleanup",
+          "status": "skipped"
+        },
+        {
+          "title": "vue: keeps the demonstrated uncontrolled state and activation after a surface family change",
+          "status": "skipped"
+        },
+        {
+          "title": "vue: projects the real slot, keeps native node/focus identity on family/theme update and revokes cleanup",
+          "status": "skipped"
+        },
+        {
+          "title": "vue2: keeps the demonstrated uncontrolled state and activation after a surface family change",
+          "status": "skipped"
+        },
+        {
+          "title": "vue2: projects the real slot, keeps native node/focus identity on family/theme update and revokes cleanup",
+          "status": "skipped"
+        },
+        {
+          "title": "wc: latest family wins while the original focused content and state survive",
+          "status": "skipped"
+        },
+        {
+          "title": "wc: restores a removed borrowed source before teardown and rejects late publication",
+          "status": "skipped"
+        },
+        {
+          "title": "react: latest family wins while the original focused content and state survive",
+          "status": "skipped"
+        },
+        {
+          "title": "react: restores a removed borrowed source before teardown and rejects late publication",
+          "status": "skipped"
+        },
+        {
+          "title": "vue: latest family wins while the original focused content and state survive",
+          "status": "skipped"
+        },
+        {
+          "title": "vue: restores a removed borrowed source before teardown and rejects late publication",
+          "status": "skipped"
+        },
+        {
+          "title": "vue2: latest family wins while the original focused content and state survive",
+          "status": "skipped"
+        },
+        {
+          "title": "vue2: restores a removed borrowed source before teardown and rejects late publication",
+          "status": "skipped"
+        },
+        {
+          "title": "reserves both shell and borrowed-content refs recursively",
+          "status": "skipped"
+        },
+        {
+          "title": "keeps four explicit stages with a real Liquid shell and through family replacements",
+          "status": "skipped"
+        }
+      ]
+    },
+    "after": {
+      "exit": 0,
+      "passed": 49,
+      "failed": 0,
+      "filtered": 0,
+      "cases": [
+        {
+          "title": "en: separates title bar, body and action bar",
+          "status": "passed"
+        },
+        {
+          "title": "zh-cn: separates title bar, body and action bar",
+          "status": "passed"
+        },
+        {
+          "title": "includes declared future prototypes before an initially empty slot loads",
+          "status": "passed"
+        },
+        {
+          "title": "copies and freezes initial declarations, incoming nested data and published entries",
+          "status": "passed"
+        },
+        {
+          "title": "retains same-key same-type identities through append/reorder and retires deletion/replacement",
+          "status": "passed"
+        },
+        {
+          "title": "supersedes pending updates without publishing them and keeps commit idempotent",
+          "status": "passed"
+        },
+        {
+          "title": "rejects collisions against static, committed and pending refs across slots",
+          "status": "passed"
+        },
+        {
+          "title": "allows same-slot ref reuse but rejects duplicates across descendants/items",
+          "status": "passed"
+        },
+        {
+          "title": "releases pending reservations on cancellation without removing the committed tree",
+          "status": "passed"
+        },
+        {
+          "title": "invalid updates do not cancel a valid pending update or mutate the committed tree",
+          "status": "passed"
+        },
+        {
+          "title": "validation snapshots without reserving refs or superseding pending transactions",
+          "status": "passed"
+        },
+        {
+          "title": "rejects undeclared slots/prototypes, nested declarations and malformed authored data",
+          "status": "passed"
+        },
+        {
+          "title": "rejects invalid initial declarations and duplicate static refs",
+          "status": "passed"
+        },
+        {
+          "title": "disposal invalidates pending commits, clears model resources, and prohibits later updates",
+          "status": "passed"
+        },
+        {
+          "title": "allows retained subtree value changes but rejects topology or ref changes before superseding",
+          "status": "passed"
+        },
+        {
+          "title": "preserves original recipe identity and forwards only child refs with one cleanup",
+          "status": "passed"
+        },
+        {
+          "title": "keeps content and independent shell recipe closures separate",
+          "status": "passed"
+        },
+        {
+          "title": "admits the authored Bootstrap Dialog with its complete runtime recipe",
+          "status": "passed"
+        },
+        {
+          "title": "bootstrap-2-3-2/wc: owns a neutral partial-family canvas without aliasing Shadcn or the demonstrated Button",
+          "status": "passed"
+        },
+        {
+          "title": "bootstrap-2-3-2/react: owns a neutral partial-family canvas without aliasing Shadcn or the demonstrated Button",
+          "status": "passed"
+        },
+        {
+          "title": "bootstrap-2-3-2/vue: owns a neutral partial-family canvas without aliasing Shadcn or the demonstrated Button",
+          "status": "passed"
+        },
+        {
+          "title": "bootstrap-2-3-2/vue2: owns a neutral partial-family canvas without aliasing Shadcn or the demonstrated Button",
+          "status": "passed"
+        },
+        {
+          "title": "liquid-glass/wc: owns a neutral partial-family canvas without aliasing Shadcn or the demonstrated Button",
+          "status": "passed"
+        },
+        {
+          "title": "liquid-glass/react: owns a neutral partial-family canvas without aliasing Shadcn or the demonstrated Button",
+          "status": "passed"
+        },
+        {
+          "title": "liquid-glass/vue: owns a neutral partial-family canvas without aliasing Shadcn or the demonstrated Button",
+          "status": "passed"
+        },
+        {
+          "title": "liquid-glass/vue2: owns a neutral partial-family canvas without aliasing Shadcn or the demonstrated Button",
+          "status": "passed"
+        },
+        {
+          "title": "rejects unknown canvas families instead of falling back to another family",
+          "status": "passed"
+        },
+        {
+          "title": "rejects a child ref collision instead of taking over the demonstrated instance",
+          "status": "passed"
+        },
+        {
+          "title": "honors a fixed family before document presentation and resolves current generic ancestry",
+          "status": "passed"
+        },
+        {
+          "title": "wc: keeps the demonstrated uncontrolled state and activation after a surface family change",
+          "status": "passed"
+        },
+        {
+          "title": "wc: projects the real slot, keeps native node/focus identity on family/theme update and revokes cleanup",
+          "status": "passed"
+        },
+        {
+          "title": "react: keeps the demonstrated uncontrolled state and activation after a surface family change",
+          "status": "passed"
+        },
+        {
+          "title": "react: projects the real slot, keeps native node/focus identity on family/theme update and revokes cleanup",
+          "status": "passed"
+        },
+        {
+          "title": "vue: keeps the demonstrated uncontrolled state and activation after a surface family change",
+          "status": "passed"
+        },
+        {
+          "title": "vue: projects the real slot, keeps native node/focus identity on family/theme update and revokes cleanup",
+          "status": "passed"
+        },
+        {
+          "title": "vue2: keeps the demonstrated uncontrolled state and activation after a surface family change",
+          "status": "passed"
+        },
+        {
+          "title": "vue2: projects the real slot, keeps native node/focus identity on family/theme update and revokes cleanup",
+          "status": "passed"
+        },
+        {
+          "title": "wc: latest family wins while the original focused content and state survive",
+          "status": "passed"
+        },
+        {
+          "title": "wc: restores a removed borrowed source before teardown and rejects late publication",
+          "status": "passed"
+        },
+        {
+          "title": "react: latest family wins while the original focused content and state survive",
+          "status": "passed"
+        },
+        {
+          "title": "react: restores a removed borrowed source before teardown and rejects late publication",
+          "status": "passed"
+        },
+        {
+          "title": "vue: latest family wins while the original focused content and state survive",
+          "status": "passed"
+        },
+        {
+          "title": "vue: restores a removed borrowed source before teardown and rejects late publication",
+          "status": "passed"
+        },
+        {
+          "title": "vue2: latest family wins while the original focused content and state survive",
+          "status": "passed"
+        },
+        {
+          "title": "vue2: restores a removed borrowed source before teardown and rejects late publication",
+          "status": "passed"
+        },
+        {
+          "title": "reserves both shell and borrowed-content refs recursively",
+          "status": "passed"
+        },
+        {
+          "title": "keeps four explicit stages with a real Liquid shell and through family replacements",
+          "status": "passed"
+        },
+        {
+          "title": "admits both authored groups in the same renderer",
+          "status": "passed"
+        },
+        {
+          "title": "keeps single Base selection with visible in-item captions",
+          "status": "passed"
+        }
+      ]
+    }
+  },
+  "types": {
+    "exit": 0,
+    "astroFiles": 1215,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 30
+  }
+}
