@@ -1,0 +1,213 @@
+{
+  "product": "21439e6c2da40ae742bb0e1c97ed0317208a3208",
+  "productTree": "1b5a5c476cf6d6b2bf7b539bdb89e9851f5816b6",
+  "diagnostic": "d9dedb181284a52ad1a80e4bdc5cbf3ea10a58b3",
+  "run": "https://github.com/HyacinthHaru/Proto-UI/actions/runs/43379666448",
+  "verdict": "failure",
+  "shardJobs": [
+    {
+      "id": 131734234303,
+      "name": "test-browser (2/8, browser-2-of-8, 0)",
+      "conclusion": "failure"
+    },
+    {
+      "id": 131734234599,
+      "name": "test-browser (3/8, browser-3-of-8, 0)",
+      "conclusion": "failure"
+    },
+    {
+      "id": 131734234606,
+      "name": "test-browser (1/8, browser-1-of-8, 1)",
+      "conclusion": "failure"
+    }
+  ],
+  "artifacts": [
+    {
+      "slot": 1,
+      "artifact": {
+        "id": 14017140224,
+        "node_id": "MDg6QXJ0aWZhY3QxNDAxNzE0MDIyNA==",
+        "name": "runtime-ci-43379666448-browser-1-of-8-attempt-1",
+        "size_in_bytes": 6310743,
+        "url": "https://api.github.com/repos/HyacinthHaru/Proto-UI/actions/artifacts/14017140224",
+        "archive_download_url": "https://api.github.com/repos/HyacinthHaru/Proto-UI/actions/artifacts/14017140224/zip",
+        "expired": false,
+        "digest": "sha256:b516f6512efa21aaffb1025c49cd67f99c1bb39bb4fa1af4c6eb830a9411f04b",
+        "created_at": "2026-11-13T06:48:52Z",
+        "updated_at": "2026-11-13T06:48:52Z",
+        "expires_at": "2026-11-27T06:48:51Z",
+        "workflow_run": {
+          "id": 43379666448,
+          "repository_id": 1335201319,
+          "head_repository_id": 1335201319,
+          "head_branch": "codex/verify-1438-priority-4fe4e6b5-round3",
+          "head_sha": "d9dedb181284a52ad1a80e4bdc5cbf3ea10a58b3"
+        }
+      },
+      "source": "d9dedb181284a52ad1a80e4bdc5cbf3ea10a58b3",
+      "product": "21439e6c2da40ae742bb0e1c97ed0317208a3208",
+      "selectedSuites": [
+        "apps/workspace/test/lifecycle.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/contrast-probe.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-bootstrap-state-controls.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-prototype-style-closure.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/runtime-preview-surface.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/site-sidebar-disclosure.browser.test.ts",
+        "apps/www/test/message-composition.browser.test.ts",
+        "packages/adapters/vue/test/focus-request-readiness.browser.test.ts"
+      ],
+      "node": "v24.22.2",
+      "chrome": "Google Chrome 156.0.8078.79"
+    },
+    {
+      "slot": 2,
+      "artifact": {
+        "id": 14016781424,
+        "node_id": "MDg6QXJ0aWZhY3QxNDAxNjc4MTQyNA==",
+        "name": "runtime-ci-43379666448-browser-2-of-8-attempt-1",
+        "size_in_bytes": 62584563,
+        "url": "https://api.github.com/repos/HyacinthHaru/Proto-UI/actions/artifacts/14016781424",
+        "archive_download_url": "https://api.github.com/repos/HyacinthHaru/Proto-UI/actions/artifacts/14016781424/zip",
+        "expired": false,
+        "digest": "sha256:3b15e8c7840498ad3543958d3d5b97e196783afb90a4a2ae5e90a212f3edb528",
+        "created_at": "2026-11-13T06:50:20Z",
+        "updated_at": "2026-11-13T06:50:20Z",
+        "expires_at": "2026-11-27T06:50:18Z",
+        "workflow_run": {
+          "id": 43379666448,
+          "repository_id": 1335201319,
+          "head_repository_id": 1335201319,
+          "head_branch": "codex/verify-1438-priority-4fe4e6b5-round3",
+          "head_sha": "d9dedb181284a52ad1a80e4bdc5cbf3ea10a58b3"
+        }
+      },
+      "source": "d9dedb181284a52ad1a80e4bdc5cbf3ea10a58b3",
+      "product": "21439e6c2da40ae742bb0e1c97ed0317208a3208",
+      "selectedSuites": [
+        "apps/www/src/components/documentation-image-preview.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/contrast-tooltip-warm-handoff.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-brutalist-button.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-composed-style-isolation.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-ring-offset-default.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-shadcn-scroll-area.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-shadow-split-s5.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/overlay-portal-direction.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/scroll-area-corner.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/site-typography.browser.test.ts",
+        "apps/www/test/preferences.browser.test.ts",
+        "packages/adapters/web-component/test/native-text-width.browser.test.ts"
+      ],
+      "node": "v24.22.2",
+      "chrome": "Google Chrome 156.0.8078.79"
+    },
+    {
+      "slot": 3,
+      "artifact": {
+        "id": 14017000759,
+        "node_id": "MDg6QXJ0aWZhY3QxNDAxNzAwMDc1OQ==",
+        "name": "runtime-ci-43379666448-browser-3-of-8-attempt-1",
+        "size_in_bytes": 10212536,
+        "url": "https://api.github.com/repos/HyacinthHaru/Proto-UI/actions/artifacts/14017000759",
+        "archive_download_url": "https://api.github.com/repos/HyacinthHaru/Proto-UI/actions/artifacts/14017000759/zip",
+        "expired": false,
+        "digest": "sha256:efdbd842558208cbf6288488e354bd12dc8a81b168fcb701b7cca2df230fc0b0",
+        "created_at": "2026-11-13T06:50:14Z",
+        "updated_at": "2026-11-13T06:50:14Z",
+        "expires_at": "2026-11-27T06:50:12Z",
+        "workflow_run": {
+          "id": 43379666448,
+          "repository_id": 1335201319,
+          "head_repository_id": 1335201319,
+          "head_branch": "codex/verify-1438-priority-4fe4e6b5-round3",
+          "head_sha": "d9dedb181284a52ad1a80e4bdc5cbf3ea10a58b3"
+        }
+      },
+      "source": "d9dedb181284a52ad1a80e4bdc5cbf3ea10a58b3",
+      "product": "21439e6c2da40ae742bb0e1c97ed0317208a3208",
+      "selectedSuites": [
+        "apps/www/src/content/docs/zh-cn/base-accordion-layout-parity.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-accordion-family.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-brutalist-checkbox.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-field-family.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-select-draft-projections.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-shadcn-switch-compositions.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/overlay-scrollbar-geometry.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/scroll-chrome-display.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/table-react19.browser.test.ts",
+        "apps/www/test/radio-group-entry.browser.test.ts",
+        "packages/adapters/web-component/test/shadow-closeout.browser.test.ts"
+      ],
+      "node": "v24.22.2",
+      "chrome": "Google Chrome 156.0.8078.79"
+    }
+  ],
+  "contentsNamedPass": 2,
+  "dialogPass": 8,
+  "typography": {
+    "passed": 33,
+    "total": 34
+  },
+  "sidebar": {
+    "passed": 7,
+    "total": 7
+  },
+  "s4": [
+    {
+      "locale": "zh-cn",
+      "startupPassed": false,
+      "errors": [
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter"
+      ],
+      "consoleErrors": [],
+      "collectionOutcome": "budget-expired"
+    },
+    {
+      "locale": "en",
+      "startupPassed": false,
+      "errors": [
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter",
+        "[feedback] owned-decoration unsupported by this adapter"
+      ],
+      "consoleErrors": [],
+      "collectionOutcome": "rejected"
+    }
+  ]
+}

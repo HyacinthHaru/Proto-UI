@@ -1,0 +1,439 @@
+{
+  "dispatch": {
+    "head": "d9dedb181284a52ad1a80e4bdc5cbf3ea10a58b3",
+    "dirtyWorktree": false,
+    "originalVerdict": "rejected",
+    "originalVerdictAfterPollMs": 1000.845,
+    "diagnosticFreezeAfterPollMs": 1001.259,
+    "clockOffsetBoundsMs": [-10.171, 0.608],
+    "familyWritesAfterPollMs": [[986.948, 997.726]],
+    "query": {
+      "ordinal": 3,
+      "outstandingAtVerdict": true,
+      "cdpId": 14726,
+      "method": "Runtime.callFunctionOn",
+      "startedAfterPollMs": 247.001,
+      "returnedAfterPollMs": 1583.036,
+      "returnedValue": "brutalist",
+      "nodePipeStagesAfterPollMs": {
+        "cdp.pipe.write.return": [248.055, 248.064],
+        "cdp.pipe.read-dispatch.enter": [1582.682],
+        "cdp.pipe.frame.callback.enter": [1582.842],
+        "cdp.response.received": [1582.893]
+      },
+      "browserGetterStagesAfterPollMs": {
+        "selector.enter": [1570.648, 1581.426],
+        "selector.exit": [1571.348, 1582.126],
+        "getter.enter": [1571.448, 1582.226],
+        "getter.exit": [1571.448, 1582.226]
+      },
+      "selectorEntryToGetterEntryMs": 0.8,
+      "getterDurationAtPageClockPrecisionMs": 0.0,
+      "targetArrivalBatchCount": 0
+    },
+    "inputSha256": {
+      "lifecycle": "8179ac499e34d4f06a0434e852df3e836127249d22a85da8b70a519f66c22633",
+      "sdk": "7d5003296de168e37b2b664ae57793b61cdf1a2d14f5ac5e7dc1d5b5cb9df2aa"
+    },
+    "chromeTrace": {
+      "browserVersion": "156.0.8078.79",
+      "explicitCpuThrottle": null,
+      "traceBytes": 13418766,
+      "sha256": "2595d51e6fc064b5b30d20068f33227d7b792e6d4b5467a046ec6339c8f0c960",
+      "traceComplete": true,
+      "dataLossOccurred": false,
+      "cleanup": {
+        "originalContextClosed": true,
+        "streamClosed": true,
+        "sessionDetached": true,
+        "unresolvedTraceOwnership": false
+      },
+      "commandStagesAfterPollMs": {
+        "DevToolsSession::HandleCommand in Browser": [237.909, 248.687],
+        "DevToolsSession::DispatchToAgent": [237.915, 248.693],
+        "DevToolsSession::DispatchProtocolCommand": [1570.264, 1581.042],
+        "DevToolsSession::SendProtocolResponse": [1571.676, 1582.454],
+        "DevToolsSession::DispatchProtocolResponse": [1572.042, 1582.82]
+      },
+      "browserHandleToForwardMs": 0.006,
+      "browserForwardToRendererDispatchMs": 1332.349,
+      "rendererDispatchDurationMs": 1.473,
+      "rendererRunTaskUnionDuringWaitMs": 1332.317,
+      "rendererNestedEventDurationDuringWaitMs": {
+        "FunctionCall": 1014.076,
+        "UpdateLayoutTree": 313.39,
+        "Layout": 45.064
+      }
+    }
+  },
+  "profile": {
+    "method": "Renderer trace intervals are clipped and unioned per event type. CPU weights describe sampled stacks, overlap trace intervals, and do not establish counterfactual savings.",
+    "traceProtocolCallId": 14726,
+    "writeAfterForwardMs": 749.033,
+    "queueBeforeCommit": {
+      "largestRendererTasks": [
+        {
+          "startsAfterForwardMs": 0.0,
+          "overlapMs": 553.607,
+          "leafSamples": [
+            {
+              "frame": "getPropertyValue",
+              "ms": 80.467
+            },
+            {
+              "frame": "(garbage collector)",
+              "ms": 38.868
+            },
+            {
+              "frame": "replaceValuePreservingEditingSession [packages/modules/text-control/src/web.ts:136]",
+              "ms": 36.327
+            },
+            {
+              "frame": "(program)",
+              "ms": 26.844
+            },
+            {
+              "frame": "visitRule [packages/adapters/web-component/src/runtime/modules.ts:630]",
+              "ms": 26.201
+            },
+            {
+              "frame": "appendChild",
+              "ms": 25.679
+            }
+          ]
+        },
+        {
+          "startsAfterForwardMs": 553.621,
+          "overlapMs": 195.412,
+          "leafSamples": [
+            {
+              "frame": "preserveSelection [apps/www/src/components/site-typography.ts:98]",
+              "ms": 99.007
+            },
+            {
+              "frame": "(program)",
+              "ms": 33.288
+            },
+            {
+              "frame": "(garbage collector)",
+              "ms": 11.284
+            },
+            {
+              "frame": "getPropertyValue",
+              "ms": 6.548
+            },
+            {
+              "frame": "setAttribute",
+              "ms": 6.293
+            },
+            {
+              "frame": "applyProjectionThemeSurfaceStyle [apps/www/src/components/PrototypePreviewer/projection-theme.ts:106]",
+              "ms": 5.314
+            }
+          ]
+        }
+      ],
+      "durationMs": 749.033,
+      "rendererTaskOverlapMs": 749.019,
+      "styleTreeUpdateOverlapMs": 200.027,
+      "layoutOverlapMs": 27.721,
+      "topWeightedLeafSamples": [
+        {
+          "frame": "preserveSelection [apps/www/src/components/site-typography.ts:98]",
+          "ms": 99.007
+        },
+        {
+          "frame": "getPropertyValue",
+          "ms": 87.015
+        },
+        {
+          "frame": "(program)",
+          "ms": 60.146
+        },
+        {
+          "frame": "(garbage collector)",
+          "ms": 50.152
+        },
+        {
+          "frame": "replaceValuePreservingEditingSession [packages/modules/text-control/src/web.ts:136]",
+          "ms": 36.327
+        },
+        {
+          "frame": "visitRule [packages/adapters/web-component/src/runtime/modules.ts:630]",
+          "ms": 30.277
+        },
+        {
+          "frame": "appendChild",
+          "ms": 25.679
+        },
+        {
+          "frame": "addEventListener",
+          "ms": 20.032
+        },
+        {
+          "frame": "setAttribute",
+          "ms": 17.518
+        },
+        {
+          "frame": "createElement",
+          "ms": 17.405
+        },
+        {
+          "frame": "applyProjectionThemeSurfaceStyle [apps/www/src/components/PrototypePreviewer/projection-theme.ts:106]",
+          "ms": 9.207
+        },
+        {
+          "frame": "getSemanticGroupKeyV0 [packages/core/src/spec/feedback/semantic-merge.ts:54]",
+          "ms": 5.675
+        },
+        {
+          "frame": "ModuleBase [packages/modules/base/src/module-base.ts:8]",
+          "ms": 5.671
+        },
+        {
+          "frame": "stampProjectionSurfaces [apps/www/src/components/PrototypePreviewer/projection-composition.ts:679]",
+          "ms": 5.608
+        },
+        {
+          "frame": "get selectorText",
+          "ms": 5.398
+        }
+      ],
+      "styleReadCallers": [
+        {
+          "read": "getPropertyValue",
+          "caller": "current [apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts:26]",
+          "ms": 75.591
+        },
+        {
+          "read": "getPropertyValue",
+          "caller": "applyProjectionThemeSurfaceStyle [apps/www/src/components/PrototypePreviewer/projection-theme.ts:106]",
+          "ms": 10.575
+        },
+        {
+          "read": "getPropertyValue",
+          "caller": "syncOwnedSurfaceStyles [packages/adapters/web-component/src/props.ts:147]",
+          "ms": 0.531
+        },
+        {
+          "read": "getPropertyValue",
+          "caller": "readProjection [packages/modules/expose-state-web/src/impl.ts:172]",
+          "ms": 0.16
+        },
+        {
+          "read": "getPropertyValue",
+          "caller": "sync [packages/modules/hit-participation/src/web/host-bridge.ts:25]",
+          "ms": 0.158
+        }
+      ],
+      "geometryReadCallers": [],
+      "selectionScopeSamples": [
+        {
+          "scope": "preserveSelection [apps/www/src/components/site-typography.ts:98]",
+          "leaf": "preserveSelection [apps/www/src/components/site-typography.ts:98]",
+          "ms": 99.007
+        },
+        {
+          "scope": "preserveSelection [apps/www/src/components/site-typography.ts:98]",
+          "leaf": "append",
+          "ms": 3.468
+        },
+        {
+          "scope": "preserveSelection [apps/www/src/components/site-typography.ts:98]",
+          "leaf": "ModuleBase [packages/modules/base/src/module-base.ts:8]",
+          "ms": 1.522
+        },
+        {
+          "scope": "preserveSelection [apps/www/src/components/site-typography.ts:98]",
+          "leaf": "OverlayTargetAlignment [packages/modules/overlay/src/target-alignment-binding.ts:2]",
+          "ms": 1.237
+        },
+        {
+          "scope": "preserveSelection [apps/www/src/components/site-typography.ts:98]",
+          "leaf": "RuntimeModuleOrchestrator [packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts:18]",
+          "ms": 1.057
+        },
+        {
+          "scope": "preserveSelection [apps/www/src/components/site-typography.ts:98]",
+          "leaf": "connectedCallback [packages/adapters/web-component/src/adapt.ts:274]",
+          "ms": 0.989
+        },
+        {
+          "scope": "preserveSelection [apps/www/src/components/site-typography.ts:98]",
+          "leaf": "addEventListener",
+          "ms": 0.926
+        },
+        {
+          "scope": "preserveSelection [apps/www/src/components/site-typography.ts:98]",
+          "leaf": "getSemanticGroupKeyV0 [packages/core/src/spec/feedback/semantic-merge.ts:54]",
+          "ms": 0.645
+        },
+        {
+          "scope": "preserveSelection [apps/www/src/components/site-typography.ts:98]",
+          "leaf": "subscribe [packages/adapters/web-component/src/adapt.ts:472]",
+          "ms": 0.636
+        },
+        {
+          "scope": "preserveSelection [apps/www/src/components/site-typography.ts:98]",
+          "leaf": "evaluate [packages/modules/rule/src/impl.ts:52]",
+          "ms": 0.324
+        },
+        {
+          "scope": "preserveSelection [apps/www/src/components/site-typography.ts:98]",
+          "leaf": "(anonymous) [packages/core/src/spec/feedback/application-role.ts:172]",
+          "ms": 0.323
+        },
+        {
+          "scope": "preserveSelection [apps/www/src/components/site-typography.ts:98]",
+          "leaf": "(anonymous) [packages/modules/rule-meta/src/create.ts:118]",
+          "ms": 0.322
+        }
+      ]
+    },
+    "queueAfterCommit": {
+      "largestRendererTasks": [
+        {
+          "startsAfterForwardMs": 749.033,
+          "overlapMs": 583.043,
+          "leafSamples": [
+            {
+              "frame": "getBoundingClientRect",
+              "ms": 86.967
+            },
+            {
+              "frame": "(program)",
+              "ms": 73.549
+            },
+            {
+              "frame": "getPropertyValue",
+              "ms": 49.027
+            },
+            {
+              "frame": "compareDocumentPosition",
+              "ms": 25.808
+            },
+            {
+              "frame": "getClaim [packages/modules/anatomy/src/impl.ts:38]",
+              "ms": 19.8
+            },
+            {
+              "frame": "removeEventListener",
+              "ms": 17.226
+            }
+          ]
+        },
+        {
+          "startsAfterForwardMs": 1332.089,
+          "overlapMs": 0.247,
+          "leafSamples": [
+            {
+              "frame": "(program)",
+              "ms": 0.247
+            }
+          ]
+        },
+        {
+          "startsAfterForwardMs": 1332.341,
+          "overlapMs": 0.008,
+          "leafSamples": [
+            {
+              "frame": "(program)",
+              "ms": 0.008
+            }
+          ]
+        }
+      ],
+      "durationMs": 583.316,
+      "rendererTaskOverlapMs": 583.298,
+      "styleTreeUpdateOverlapMs": 113.363,
+      "layoutOverlapMs": 17.343,
+      "topWeightedLeafSamples": [
+        {
+          "frame": "getBoundingClientRect",
+          "ms": 86.967
+        },
+        {
+          "frame": "(program)",
+          "ms": 73.822
+        },
+        {
+          "frame": "getPropertyValue",
+          "ms": 49.027
+        },
+        {
+          "frame": "compareDocumentPosition",
+          "ms": 25.808
+        },
+        {
+          "frame": "getClaim [packages/modules/anatomy/src/impl.ts:38]",
+          "ms": 19.8
+        },
+        {
+          "frame": "removeEventListener",
+          "ms": 17.226
+        },
+        {
+          "frame": "visitRule [packages/adapters/web-component/src/runtime/modules.ts:630]",
+          "ms": 17.053
+        },
+        {
+          "frame": "moveBefore",
+          "ms": 16.437
+        },
+        {
+          "frame": "remove",
+          "ms": 12.42
+        },
+        {
+          "frame": "findDomainRoot [packages/modules/anatomy/src/impl.ts:899]",
+          "ms": 10.185
+        },
+        {
+          "frame": "listClaims [packages/modules/anatomy/src/impl.ts:73]",
+          "ms": 10.099
+        },
+        {
+          "frame": "resolveCurrentDomain [packages/modules/anatomy/src/impl.ts:879]",
+          "ms": 8.729
+        },
+        {
+          "frame": "computeOrderSignature [packages/modules/anatomy/src/impl.ts:701]",
+          "ms": 8.686
+        },
+        {
+          "frame": "(garbage collector)",
+          "ms": 7.66
+        },
+        {
+          "frame": "setAttribute",
+          "ms": 7.576
+        }
+      ],
+      "styleReadCallers": [
+        {
+          "read": "getPropertyValue",
+          "caller": "current [apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts:26]",
+          "ms": 36.675
+        },
+        {
+          "read": "getPropertyValue",
+          "caller": "Object.defineProperty.get [packages/adapters/web-component/src/runtime/modules.ts:841]",
+          "ms": 7.754
+        },
+        {
+          "read": "getPropertyValue",
+          "caller": "applyProjectionThemeSurfaceStyle [apps/www/src/components/PrototypePreviewer/projection-theme.ts:106]",
+          "ms": 4.598
+        }
+      ],
+      "geometryReadCallers": [
+        {
+          "read": "getBoundingClientRect",
+          "caller": "positionPanel [apps/www/src/components/site-header-disclosure.ts:81]",
+          "ms": 86.967
+        }
+      ],
+      "selectionScopeSamples": []
+    }
+  }
+}
