@@ -1,0 +1,13 @@
+{
+  "main": "35195a6e6f1ba6a7d800da0029f2683013abd18b",
+  "head": "31ba38a9d5072f4d168995b54e6c8e3d3fdebfc1",
+  "mainDiagnostics": 53,
+  "headDiagnostics": 53,
+  "sameDiagnostics": true,
+  "mainExit": 1,
+  "headExit": 1,
+  "mainLogSha256": "80f76d0fdf480a2e8a32f4e62d6860ff0375836793155a81973ebdfd08ab734d",
+  "headLogSha256": "ed7f386395ff1f41c9fea1e55c5d705eada18714706a4d6b6129d96d3ae42987",
+  "candidateOnlyDiagnostics": [],
+  "mainOnlyDiagnostics": []
+}

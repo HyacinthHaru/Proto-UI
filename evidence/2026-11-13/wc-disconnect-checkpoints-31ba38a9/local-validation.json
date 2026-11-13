@@ -1,0 +1,152 @@
+{
+  "main": "35195a6e6f1ba6a7d800da0029f2683013abd18b",
+  "parent": "a7952f1ce1e47399f6928b42a48c8d162afa2a8b",
+  "head": "31ba38a9d5072f4d168995b54e6c8e3d3fdebfc1",
+  "tree": "a14a34be0fc2dcc5c04e02d88e4447778e97c289",
+  "changedPaths": [
+    {
+      "path": "packages/adapters/web-component/src/adapt.ts",
+      "oldBlob": "528b084121c92805b1b213e67cf050007923b493",
+      "newBlob": "5974b905b760551695f82aaa1371ae6371cbae0b",
+      "newSourceSha256": "f47eefb8c949d1156451e42d10aba352b82474f05b0fcf874e34e11666b6e575"
+    },
+    {
+      "path": "packages/adapters/web-component/test/contract/lifecycle-wc-adapter.v0.contract.test.ts",
+      "oldBlob": "3c74fa2f3f28e4a7b11f6a3d4097d33c2ca0a5e0",
+      "newBlob": "1b6711805e8e0696e240f25821f9cfc483dfb824",
+      "newSourceSha256": "382a7224e0a511e37fb7599542effd54529e80d7005dc8f0100e61b33534bcad"
+    }
+  ],
+  "regression": {
+    "parentWithExactCandidateTest": {
+      "passed": 6,
+      "failed": 1,
+      "logSha256": "cf2ee502f77ce770440fe019035f8b8813569c5a7d0b9ed08ba702028ca79fec"
+    },
+    "candidate": {
+      "files": 8,
+      "passed": 131,
+      "logSha256": "80cd53e16dd4629db173cbaf8d24aebc05776acbf09e724b652ecbfea361acb3"
+    }
+  },
+  "localNative": {
+    "browser": "Chrome for Testing 156.0.8078.79 macOS arm64",
+    "passed": 15,
+    "failed": 0,
+    "unselected": 9,
+    "suites": [
+      {
+        "file": "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+        "cases": [
+          "shadcn/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "shadcn/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "shadcn/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "shadcn/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "brutalist/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "brutalist/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "brutalist/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "brutalist/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close"
+        ]
+      },
+      {
+        "file": "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+        "cases": [
+          "Homepage end-to-end dogfood boundary uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence",
+          "Homepage end-to-end dogfood boundary uses the same mobile shell on documentation with independent global navigation and contents",
+          "compact shadcn preferences stay usable at 200% text, RTL and breakpoint moves",
+          "compact brutalist preferences stay usable at 200% text, RTL and breakpoint moves",
+          "retains shadcn preference owners and portals through real breakpoint reconnects",
+          "retains brutalist preference owners and portals through real breakpoint reconnects"
+        ]
+      },
+      {
+        "file": "apps/www/src/content/docs/zh-cn/runtime-preview-surface.browser.test.ts",
+        "cases": [
+          "RuntimeBox single actual Prototype surface keeps Runtime Tabs outside the canvas and the demonstrated Select popup usable at 390px"
+        ]
+      }
+    ],
+    "logSha256": "981120660fc7e7343c0f7ff2fe7cd6cbd47bdcd5bea78ad893e3ac46df25bd41",
+    "testReportSha256": "41f349ce03e44f8e351a2f58e1e0528772ceb0d05e1ebc9063ca6a0e1a80ba5f",
+    "dialogGeometryObservations": 196,
+    "dialogReportSha256": "7887a0ce8565dc6dad216029598c56d798f8ccbfc80336bfd6d7d8c3a231fa82",
+    "images": {
+      "brutalist-wc-narrow-focus-ring.png": "1c846060c9c9080c82cc56aa7536876782b9c54c651447f469f6ab930cb8a60b",
+      "brutalist-wc-dialog-390-settled.png": "9c6f2261f8fece53504ff4ab1cadb1338ef9a80698f8f06b0658266da8585672",
+      "brutalist-react-contents-open.png": "f49904dffdfa6f1aa0968c3e84cf18d665d088aa73ea7025a5932f57324c5eb6"
+    },
+    "condition": "Clean source checkout, test workers limited to one. S4 observational run overlapped part of this execution.",
+    "contentsOriginalSwitches": [
+      {
+        "family": "brutalist",
+        "runtime": "react",
+        "originalCheckMs": 265,
+        "originalDeadlineMs": 1000,
+        "sha256": "eedc55f0afb68a4d41f4f0c8b3ee1c2f24bd7c1117c227cfcb07c5461c231d69"
+      },
+      {
+        "family": "brutalist",
+        "runtime": "vue",
+        "originalCheckMs": 223,
+        "originalDeadlineMs": 1000,
+        "sha256": "64896c8bcae371200d9aa211e82e1bba53d1fb1163ee208c04cc2b1dfd122b06"
+      },
+      {
+        "family": "brutalist",
+        "runtime": "vue2",
+        "originalCheckMs": 190,
+        "originalDeadlineMs": 1000,
+        "sha256": "43b0e2bf7c10a8d29f0fe4eb8c3a9b7ffdf829fbd8c99e0502b521ac81197873"
+      },
+      {
+        "family": "brutalist",
+        "runtime": "wc",
+        "originalCheckMs": 3,
+        "originalDeadlineMs": 1000,
+        "sha256": "3af51a9ecd3969e43ba9c986cf3a74b1974fd1e8213a6a01f014b972bbfc4c82"
+      },
+      {
+        "family": "shadcn",
+        "runtime": "react",
+        "originalCheckMs": 209,
+        "originalDeadlineMs": 1000,
+        "sha256": "4dc493e496fff329327b4eff81758e9b2a9f4fc5567aa06b11ace1af40fd2b0e"
+      },
+      {
+        "family": "shadcn",
+        "runtime": "vue",
+        "originalCheckMs": 200,
+        "originalDeadlineMs": 1000,
+        "sha256": "ab02e3b74c3c465ba5c7421db82cb9695d948c41ac95a2c730fe90d7d7da3c81"
+      },
+      {
+        "family": "shadcn",
+        "runtime": "vue2",
+        "originalCheckMs": 202,
+        "originalDeadlineMs": 1000,
+        "sha256": "a83267d22c5872b215e64a34ee6cec42c4871ebe2ba1d141fd1cb031ddb80ce5"
+      },
+      {
+        "family": "shadcn",
+        "runtime": "wc",
+        "originalCheckMs": 3,
+        "originalDeadlineMs": 1000,
+        "sha256": "ba4dfa6204beb215b5000af259968955569fc4795dfef91e63d1ad44eebd6317"
+      }
+    ],
+    "orderedSidebarReturns": 24,
+    "sidebarReturnsSha256": "0a3ae8586eca646cbebe098ea2787ca0c433075e3aa938891fe64ab1466283a2"
+  },
+  "types": {
+    "files": 1215,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 30,
+    "logSha256": "96ca82b5c32d29e8db8131b47d46058d282760fce7d59e0f7790cccf958b0496"
+  },
+  "unchangedDocs": {
+    "path": "apps/www/src/content/docs/zh-cn/ui-libraries/shadcn/button.mdx",
+    "sha256": "7127e1c55c17ee8821a7c09ac1d6bb14a1340da3dcd44c7fbc64c07e09251209",
+    "codeExamples": 7
+  }
+}

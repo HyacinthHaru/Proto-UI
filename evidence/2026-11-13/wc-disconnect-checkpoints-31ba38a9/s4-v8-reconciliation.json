@@ -1,0 +1,285 @@
+{
+  "head": "31ba38a9d5072f4d168995b54e6c8e3d3fdebfc1",
+  "patchSha256": "2ec458084482bd03733cede4a6dd79870b27c1a1ec99174e3b985be260876115",
+  "attempt": "s4-evaluation-fixed-env",
+  "traceSha256": "2dab8a4fe759e8f36ed55d8377983f1ea22d24b2f85d3495866e11b29d6985d5",
+  "traceBytes": 13608133,
+  "traceEventCount": 3542797,
+  "traceComplete": true,
+  "traceDataLoss": false,
+  "categories": ["v8", "blink.user_timing"],
+  "allModuleEvaluationEvents": 7468,
+  "allModuleEvaluationArgKeys": ["worldId"],
+  "allS4ReactMarks": 12,
+  "observations": [
+    {
+      "locale": "zh-cn",
+      "reactPhaseReached": true,
+      "assetRequests": {
+        "chunk-2MALL255.js": {
+          "lastBodyAfterReactMarkMs": 3879.348,
+          "rendererAssetEvents": [
+            {
+              "kind": "BackgroundJSStreamManager::OnFinishStreaming",
+              "startAfterBodyMs": 4.751,
+              "durationMs": 0.007
+            },
+            {
+              "kind": "v8.compileModule",
+              "startAfterBodyMs": 4205.773,
+              "durationMs": 0.009
+            }
+          ]
+        },
+        "chunk-EK7DFB6S.js": {
+          "lastBodyAfterReactMarkMs": 3879.348,
+          "rendererAssetEvents": [
+            {
+              "kind": "BackgroundJSStreamManager::OnFinishStreaming",
+              "startAfterBodyMs": 1.17,
+              "durationMs": 0.004
+            },
+            {
+              "kind": "v8.compileModule",
+              "startAfterBodyMs": 4205.52,
+              "durationMs": 0.021
+            }
+          ]
+        }
+      },
+      "reactTracePoints": [
+        {
+          "kind": "react-modules-begin",
+          "sinceRuntimeBeginMs": -569.706
+        },
+        {
+          "kind": "react-modules-return",
+          "sinceRuntimeBeginMs": -0.072
+        },
+        {
+          "kind": "react-runtime-begin",
+          "sinceRuntimeBeginMs": 0.0
+        },
+        {
+          "kind": "react-package-return",
+          "sinceRuntimeBeginMs": 75428.846
+        },
+        {
+          "kind": "react-dom-client-package-return",
+          "sinceRuntimeBeginMs": 75438.869
+        },
+        {
+          "kind": "react-dom-package-return",
+          "sinceRuntimeBeginMs": 75439.034
+        },
+        {
+          "kind": "react-runtime-return",
+          "sinceRuntimeBeginMs": 96953.065
+        },
+        {
+          "kind": "react-render-request",
+          "sinceRuntimeBeginMs": 96953.351
+        },
+        {
+          "kind": "react-render-request-return",
+          "sinceRuntimeBeginMs": 98732.443
+        }
+      ],
+      "verdictAfterReactBeginMs": 121668.348,
+      "lastRendererTraceAfterReactBeginMs": 121301.34,
+      "moduleEvaluationEventsAfterRuntimeBegin": 357,
+      "sameRendererUnattributedEvaluation": {
+        "scopeEnd": "first observed React import return",
+        "intervalAfterLastChunkBodyMs": 71549.498,
+        "allEvaluationEventsOverlapping": 146,
+        "unionMs": 3.118,
+        "limit": "V8 evaluation event args contain worldId only. Parse/streaming/compilation stages with a URL have asset attribution. Sampling cannot assign evaluation or scheduling to these packages.",
+        "longestRecordedEventAfterBothBodiesMs": 9.726,
+        "largestRecordedEventsAfterBothBodies": [
+          {
+            "startAfterBodyMs": 71549.671,
+            "durationMs": 9.726
+          },
+          {
+            "startAfterBodyMs": -0.924,
+            "durationMs": 1.844
+          },
+          {
+            "startAfterBodyMs": 4206.959,
+            "durationMs": 0.703
+          },
+          {
+            "startAfterBodyMs": 71548.934,
+            "durationMs": 0.331
+          },
+          {
+            "startAfterBodyMs": 48886.658,
+            "durationMs": 0.079
+          },
+          {
+            "startAfterBodyMs": 226.353,
+            "durationMs": 0.071
+          },
+          {
+            "startAfterBodyMs": 48534.507,
+            "durationMs": 0.066
+          },
+          {
+            "startAfterBodyMs": 50499.895,
+            "durationMs": 0.056
+          }
+        ]
+      }
+    },
+    {
+      "locale": "en",
+      "reactPhaseReached": true,
+      "assetRequests": {
+        "chunk-EK7DFB6S.js": {
+          "lastBodyAfterReactMarkMs": 5026.478,
+          "rendererAssetEvents": [
+            {
+              "kind": "BackgroundJSStreamManager::OnFinishStreaming",
+              "startAfterBodyMs": 0.618,
+              "durationMs": 0.003
+            }
+          ]
+        },
+        "chunk-2MALL255.js": {
+          "lastBodyAfterReactMarkMs": 5029.478,
+          "rendererAssetEvents": [
+            {
+              "kind": "BackgroundJSStreamManager::OnFinishStreaming",
+              "startAfterBodyMs": 4.199,
+              "durationMs": 0.006
+            }
+          ]
+        }
+      },
+      "reactTracePoints": [
+        {
+          "kind": "react-modules-begin",
+          "sinceRuntimeBeginMs": -21.054
+        },
+        {
+          "kind": "react-modules-return",
+          "sinceRuntimeBeginMs": -0.04
+        },
+        {
+          "kind": "react-runtime-begin",
+          "sinceRuntimeBeginMs": 0.0
+        }
+      ],
+      "verdictAfterReactBeginMs": 126577.478,
+      "lastRendererTraceAfterReactBeginMs": 126248.809,
+      "moduleEvaluationEventsAfterRuntimeBegin": 192,
+      "sameRendererUnattributedEvaluation": {
+        "scopeEnd": "original test verdict",
+        "intervalAfterLastChunkBodyMs": 121548.0,
+        "allEvaluationEventsOverlapping": 57,
+        "unionMs": 1.856,
+        "limit": "V8 evaluation event args contain worldId only. Parse/streaming/compilation stages with a URL have asset attribution. Sampling cannot assign evaluation or scheduling to these packages.",
+        "longestRecordedEventAfterBothBodiesMs": 0.827,
+        "largestRecordedEventsAfterBothBodies": [
+          {
+            "startAfterBodyMs": 99230.036,
+            "durationMs": 0.827
+          },
+          {
+            "startAfterBodyMs": 33095.576,
+            "durationMs": 0.585
+          },
+          {
+            "startAfterBodyMs": 5358.182,
+            "durationMs": 0.033
+          },
+          {
+            "startAfterBodyMs": 6137.422,
+            "durationMs": 0.033
+          },
+          {
+            "startAfterBodyMs": 7092.111,
+            "durationMs": 0.033
+          },
+          {
+            "startAfterBodyMs": 1579.399,
+            "durationMs": 0.029
+          },
+          {
+            "startAfterBodyMs": 3829.366,
+            "durationMs": 0.026
+          },
+          {
+            "startAfterBodyMs": 164.93,
+            "durationMs": 0.025
+          }
+        ]
+      }
+    }
+  ],
+  "correctionControls": [
+    {
+      "control": "s4-evaluation",
+      "traceSha256": "bd6485ad31e635d77603a8e53fbc6c6f6b6400b90c23792f84c9370c4bc65406",
+      "traceComplete": true,
+      "traceDataLoss": false,
+      "testExit": 1,
+      "perLocale": [
+        {
+          "locale": "zh-cn",
+          "startupWaitObservedMs": 60013,
+          "devModule500s": [
+            "@floating-ui_dom.js",
+            "astro___aria-query.js",
+            "astro___axobject-query.js"
+          ],
+          "reactPhaseReached": false
+        },
+        {
+          "locale": "en",
+          "startupWaitObservedMs": 60013,
+          "devModule500s": [
+            "@floating-ui_dom.js",
+            "astro___aria-query.js",
+            "astro___axobject-query.js"
+          ],
+          "reactPhaseReached": false
+        }
+      ]
+    },
+    {
+      "control": "s4-evaluation-cold",
+      "traceSha256": "96220da66f08012c2960812ed22b0f76e009335a20fd2b870cabd4124447e277",
+      "traceComplete": true,
+      "traceDataLoss": false,
+      "testExit": 1,
+      "perLocale": [
+        {
+          "locale": "zh-cn",
+          "startupWaitObservedMs": 60004,
+          "devModule500s": [
+            "@floating-ui_dom.js",
+            "astro___aria-query.js",
+            "astro___axobject-query.js"
+          ],
+          "reactPhaseReached": false
+        },
+        {
+          "locale": "en",
+          "startupWaitObservedMs": 60001,
+          "devModule500s": [
+            "@floating-ui_dom.js",
+            "astro___aria-query.js",
+            "astro___axobject-query.js"
+          ],
+          "reactPhaseReached": false
+        }
+      ]
+    }
+  ],
+  "correctionControlCause": "The two preliminary runs omitted PUI_S4_SERVER_JOURNAL, required by the added diagnostic middleware. Moving only the diagnostic worktree Vite cache did not change that failure. The next run used the same tracked patch with the required environment and reached React in both locales.",
+  "productSourceUntouched": true,
+  "diagnosticPatchSha256": "2ec458084482bd03733cede4a6dd79870b27c1a1ec99174e3b985be260876115",
+  "testLogSha256": "639b59be43bb6d48fc5722b2c962f6997606c1967f3a92e3abec8a8ff48dd72d",
+  "netLogSha256": "82796caf481e8e1ac14a504fbc5da69b51fa56ee6723a1b301d02b2ffc712535"
+}

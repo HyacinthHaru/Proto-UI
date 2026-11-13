@@ -1,0 +1,96 @@
+{
+  "vite": "6.4.1",
+  "target": "esnext",
+  "records": [
+    {
+      "head": "a7952f1ce1e47399f6928b42a48c8d162afa2a8b",
+      "file": "packages/adapters/web-component/src/adapt.ts",
+      "sourceSha256": "572487b25312d80826988effdd99a5984052bbb2fd88bfbf42f52c035c927273",
+      "traceLineContext": [
+        {
+          "line": 274,
+          "context": [
+            "    }",
+            "    connectedCallback() {",
+            "      const relocation = claimWebComponentOwnedRelocation(this);",
+            "      const owner = this._instanceToken;",
+            "      if (!this.isConnected) return;",
+            "      if (this._mountedOnce && !relocation) this._withdrawViewOperations?.();"
+          ]
+        },
+        {
+          "line": 1059,
+          "context": [
+            "    }",
+            "    disconnectedCallback() {",
+            "      if (this._terminalDisposing) return;",
+            "      if (!isWebComponentOwnedRelocating(this)) this._withdrawViewOperations?.();",
+            "      this._pendingOwnedTokens = this._applier ? Array.from(this._applier.getOwned()) : null;",
+            "      this._applier?.clear();"
+          ]
+        },
+        {
+          "line": 1067,
+          "context": [
+            "      const instanceToken = this._instanceToken;",
+            "      queueMicrotask(async () => {",
+            "        if (this._instanceToken !== instanceToken) return;",
+            "        if (this._disconnectVersion !== disconnectVersion) {",
+            "          if (this._pendingOwnedTokens?.length) {",
+            "            this._applier?.apply(this._pendingOwnedTokens);"
+          ]
+        }
+      ],
+      "symbolLocations": {
+        "connectedCallback": [274, 1113],
+        "disconnectedCallback": [1059],
+        "queueMicrotask": [126, 978, 993, 1067, 1111]
+      }
+    },
+    {
+      "head": "31ba38a9d5072f4d168995b54e6c8e3d3fdebfc1",
+      "file": "packages/adapters/web-component/src/adapt.ts",
+      "sourceSha256": "f47eefb8c949d1156451e42d10aba352b82474f05b0fcf874e34e11666b6e575",
+      "traceLineContext": [
+        {
+          "line": 274,
+          "context": [
+            "    }",
+            "    connectedCallback() {",
+            "      const relocation = claimWebComponentOwnedRelocation(this);",
+            "      const owner = this._instanceToken;",
+            "      if (!this.isConnected) return;",
+            "      if (this._mountedOnce && !relocation) this._withdrawViewOperations?.();"
+          ]
+        },
+        {
+          "line": 1059,
+          "context": [
+            "    }",
+            "    disconnectedCallback() {",
+            "      if (this._terminalDisposing) return;",
+            "      if (!isWebComponentOwnedRelocating(this)) this._withdrawViewOperations?.();",
+            "      this._pendingOwnedTokens = this._applier ? Array.from(this._applier.getOwned()) : null;",
+            "      this._applier?.clear();"
+          ]
+        },
+        {
+          "line": 1067,
+          "context": [
+            "      const instanceToken = this._instanceToken;",
+            "      queueMicrotask(async () => {",
+            "        if (this._instanceToken !== instanceToken || this._disconnectVersion !== disconnectVersion)",
+            "          return;",
+            "        refreshWebComponentPortalProjection(this);",
+            "        if (this.isConnected) {"
+          ]
+        }
+      ],
+      "symbolLocations": {
+        "connectedCallback": [274, 1106],
+        "disconnectedCallback": [1059],
+        "queueMicrotask": [126, 978, 993, 1067, 1104]
+      }
+    }
+  ]
+}

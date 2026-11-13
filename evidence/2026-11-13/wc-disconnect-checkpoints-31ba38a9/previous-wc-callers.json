@@ -1,0 +1,677 @@
+{
+  "scope": "V8 stack sample weights in the same post-family-write to renderer-dispatch interval, kept separate from FunctionCall wall-time unions. Nested branches and sampling cannot measure causal savings.",
+  "observations": [
+    {
+      "arm": "baseline",
+      "carrier": "05ae9415291789ec31ad7f9d8b47372ca1289d11",
+      "traceSha256": "33cfeba073572418e73c56b343709ea655bad2643738558253a1a0bd89972c67",
+      "samples": 6414,
+      "windowMs": 709.264,
+      "callbacks": [
+        {
+          "kind": "connectedCallback",
+          "sampledWeightMs": 133.154,
+          "direct": [
+            {
+              "path": "packages/adapters/web-component/src/adapt.ts",
+              "generatedLine": 306,
+              "function": "_connectOwner",
+              "weightMs": 132.809
+            },
+            {
+              "path": "packages/adapters/web-component/src/adapt.ts",
+              "generatedLine": 274,
+              "function": "connectedCallback",
+              "weightMs": 0.345
+            }
+          ],
+          "leaf": [
+            {
+              "path": "",
+              "generatedLine": 0,
+              "function": "compareDocumentPosition",
+              "weightMs": 16.788
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "generatedLine": 38,
+              "function": "getClaim",
+              "weightMs": 14.02
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "generatedLine": 899,
+              "function": "findDomainRoot",
+              "weightMs": 7.529
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "generatedLine": 73,
+              "function": "listClaims",
+              "weightMs": 7.108
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "generatedLine": 701,
+              "function": "computeOrderSignature",
+              "weightMs": 5.906
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "generatedLine": 879,
+              "function": "resolveCurrentDomain",
+              "weightMs": 5.266
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "generatedLine": 743,
+              "function": "compareClaims",
+              "weightMs": 4.03
+            },
+            {
+              "path": "",
+              "generatedLine": 0,
+              "function": "setAttribute",
+              "weightMs": 3.135
+            },
+            {
+              "path": "packages/core/src/spec/feedback/semantic-merge.ts",
+              "generatedLine": 118,
+              "function": "mergeTwTokensV0",
+              "weightMs": 2.225
+            },
+            {
+              "path": "packages/adapters/web-component/src/host-display.ts",
+              "generatedLine": 58,
+              "function": "hasExplicitDisplayClass",
+              "weightMs": 2.105
+            },
+            {
+              "path": "",
+              "generatedLine": 0,
+              "function": "addEventListener",
+              "weightMs": 2.004
+            },
+            {
+              "path": "packages/core/src/spec/feedback/semantic-merge.ts",
+              "generatedLine": 54,
+              "function": "getSemanticGroupKeyV0",
+              "weightMs": 1.892
+            }
+          ]
+        },
+        {
+          "kind": "disconnectedCallback",
+          "sampledWeightMs": 3.888,
+          "direct": [
+            {
+              "path": "packages/adapters/web-component/src/feedback-style.ts",
+              "generatedLine": 28,
+              "function": "clear",
+              "weightMs": 2.526
+            },
+            {
+              "path": "packages/adapters/web-component/src/host-display.ts",
+              "generatedLine": 33,
+              "function": "sync",
+              "weightMs": 0.955
+            },
+            {
+              "path": "packages/adapters/web-component/src/adapt.ts",
+              "generatedLine": 1059,
+              "function": "disconnectedCallback",
+              "weightMs": 0.462
+            },
+            {
+              "path": "packages/adapters/web-component/src/adapt.ts",
+              "generatedLine": 357,
+              "function": "_withdrawViewOperations",
+              "weightMs": 0.159
+            },
+            {
+              "path": "",
+              "generatedLine": 0,
+              "function": "queueMicrotask",
+              "weightMs": -0.01
+            },
+            {
+              "path": "packages/adapters/web-component/src/owned-relocation.ts",
+              "generatedLine": 12,
+              "function": "isWebComponentOwnedRelocating",
+              "weightMs": -0.062
+            },
+            {
+              "path": "packages/adapters/web-component/src/native-text-layout.ts",
+              "generatedLine": 17,
+              "function": "clear",
+              "weightMs": -0.142
+            }
+          ],
+          "leaf": [
+            {
+              "path": "packages/adapters/web-component/src/host-display.ts",
+              "generatedLine": 58,
+              "function": "hasExplicitDisplayClass",
+              "weightMs": 1.344
+            },
+            {
+              "path": "",
+              "generatedLine": 0,
+              "function": "add",
+              "weightMs": 0.889
+            },
+            {
+              "path": "packages/adapters/web-component/src/adapt.ts",
+              "generatedLine": 1059,
+              "function": "disconnectedCallback",
+              "weightMs": 0.462
+            },
+            {
+              "path": "packages/adapters/web-component/src/feedback-style.ts",
+              "generatedLine": 84,
+              "function": "rewriteStyleAttribute",
+              "weightMs": 0.361
+            },
+            {
+              "path": "packages/adapters/web-component/src/adapt.ts",
+              "generatedLine": 740,
+              "function": "onChange",
+              "weightMs": 0.304
+            },
+            {
+              "path": "packages/adapters/web-component/src/feedback-style.ts",
+              "generatedLine": 28,
+              "function": "clear",
+              "weightMs": 0.162
+            },
+            {
+              "path": "",
+              "generatedLine": 0,
+              "function": "getAttribute",
+              "weightMs": 0.161
+            },
+            {
+              "path": "packages/adapters/base/src/host/view-epoch-owner.ts",
+              "generatedLine": 36,
+              "function": "withdrawViewOperations",
+              "weightMs": 0.159
+            },
+            {
+              "path": "packages/adapters/web-component/src/feedback-style.ts",
+              "generatedLine": 68,
+              "function": "clearOwnedStyleTokens",
+              "weightMs": 0.098
+            },
+            {
+              "path": "",
+              "generatedLine": 0,
+              "function": "removeAttribute",
+              "weightMs": 0.034
+            },
+            {
+              "path": "packages/adapters/web-component/src/host-display.ts",
+              "generatedLine": 49,
+              "function": "ensureDefaultHostDisplayRule",
+              "weightMs": 0.018
+            },
+            {
+              "path": "",
+              "generatedLine": 0,
+              "function": "queueMicrotask",
+              "weightMs": -0.01
+            }
+          ]
+        },
+        {
+          "kind": "disconnectCheckpoint",
+          "sampledWeightMs": 186.519,
+          "direct": [
+            {
+              "path": "packages/adapters/web-component/src/adapt.ts",
+              "generatedLine": 1085,
+              "function": "retireOwner",
+              "weightMs": 185.539
+            },
+            {
+              "path": "packages/adapters/web-component/src/adapt.ts",
+              "generatedLine": 1067,
+              "function": "(anonymous)",
+              "weightMs": 0.96
+            },
+            {
+              "path": "packages/adapters/web-component/src/feedback-style.ts",
+              "generatedLine": 21,
+              "function": "apply",
+              "weightMs": 0.02
+            },
+            {
+              "path": "packages/adapters/web-component/src/host-display.ts",
+              "generatedLine": 33,
+              "function": "sync",
+              "weightMs": 0.0
+            }
+          ],
+          "leaf": [
+            {
+              "path": "",
+              "generatedLine": 0,
+              "function": "removeEventListener",
+              "weightMs": 19.475
+            },
+            {
+              "path": "",
+              "generatedLine": 0,
+              "function": "compareDocumentPosition",
+              "weightMs": 9.155
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "generatedLine": 38,
+              "function": "getClaim",
+              "weightMs": 8.283
+            },
+            {
+              "path": "packages/modules/rule-meta/src/create.ts",
+              "generatedLine": 118,
+              "function": "(anonymous)",
+              "weightMs": 7.256
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "generatedLine": 701,
+              "function": "computeOrderSignature",
+              "weightMs": 5.115
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "generatedLine": 879,
+              "function": "resolveCurrentDomain",
+              "weightMs": 3.916
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "generatedLine": 899,
+              "function": "findDomainRoot",
+              "weightMs": 3.857
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "generatedLine": 73,
+              "function": "listClaims",
+              "weightMs": 3.387
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "generatedLine": 626,
+              "function": "notifyTargetChange",
+              "weightMs": 3.248
+            },
+            {
+              "path": "packages/modules/rule-meta/src/create.ts",
+              "generatedLine": 114,
+              "function": "reconcileKeyedLease",
+              "weightMs": 3.117
+            },
+            {
+              "path": "",
+              "generatedLine": 0,
+              "function": "removeAttribute",
+              "weightMs": 3.013
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "generatedLine": 620,
+              "function": "notifyStructuralChange",
+              "weightMs": 2.366
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "candidate",
+      "carrier": "b388cb265d30d3e84bcf56c7687f524aa717c08c",
+      "traceSha256": "4ebf60aa16074bdd29c5ca0d0f9e171f7d5d0f0fc69dc0ba13a72bf16f5fe071",
+      "samples": 6170,
+      "windowMs": 682.051,
+      "callbacks": [
+        {
+          "kind": "connectedCallback",
+          "sampledWeightMs": 119.627,
+          "direct": [
+            {
+              "path": "packages/adapters/web-component/src/adapt.ts",
+              "generatedLine": 306,
+              "function": "_connectOwner",
+              "weightMs": 118.788
+            },
+            {
+              "path": "packages/adapters/web-component/src/adapt.ts",
+              "generatedLine": 274,
+              "function": "connectedCallback",
+              "weightMs": 0.503
+            },
+            {
+              "path": "packages/adapters/base/src/platform/instance-tree.ts",
+              "generatedLine": 301,
+              "function": "markProtoInstance",
+              "weightMs": 0.168
+            },
+            {
+              "path": "packages/adapters/web-component/src/owned-relocation.ts",
+              "generatedLine": 18,
+              "function": "claimWebComponentOwnedRelocation",
+              "weightMs": 0.162
+            },
+            {
+              "path": "packages/adapters/web-component/src/adapt.ts",
+              "generatedLine": 357,
+              "function": "_withdrawViewOperations",
+              "weightMs": 0.006
+            }
+          ],
+          "leaf": [
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "generatedLine": 890,
+              "function": "(anonymous)",
+              "weightMs": 26.85
+            },
+            {
+              "path": "",
+              "generatedLine": 0,
+              "function": "compareDocumentPosition",
+              "weightMs": 14.693
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "generatedLine": 73,
+              "function": "listClaims",
+              "weightMs": 6.611
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "generatedLine": 701,
+              "function": "computeOrderSignature",
+              "weightMs": 4.695
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "generatedLine": 737,
+              "function": "(anonymous)",
+              "weightMs": 3.791
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "generatedLine": 879,
+              "function": "resolveCurrentDomain",
+              "weightMs": 3.67
+            },
+            {
+              "path": "",
+              "generatedLine": 0,
+              "function": "addEventListener",
+              "weightMs": 3.115
+            },
+            {
+              "path": "",
+              "generatedLine": 0,
+              "function": "removeAttribute",
+              "weightMs": 2.702
+            },
+            {
+              "path": "",
+              "generatedLine": 0,
+              "function": "setAttribute",
+              "weightMs": 2.042
+            },
+            {
+              "path": "packages/core/src/spec/feedback/semantic-merge.ts",
+              "generatedLine": 54,
+              "function": "getSemanticGroupKeyV0",
+              "weightMs": 1.802
+            },
+            {
+              "path": "",
+              "generatedLine": 0,
+              "function": "add",
+              "weightMs": 1.75
+            },
+            {
+              "path": "packages/adapters/web-component/src/host-display.ts",
+              "generatedLine": 58,
+              "function": "hasExplicitDisplayClass",
+              "weightMs": 1.745
+            }
+          ]
+        },
+        {
+          "kind": "disconnectedCallback",
+          "sampledWeightMs": 2.967,
+          "direct": [
+            {
+              "path": "packages/adapters/web-component/src/feedback-style.ts",
+              "generatedLine": 28,
+              "function": "clear",
+              "weightMs": 2.131
+            },
+            {
+              "path": "packages/adapters/web-component/src/adapt.ts",
+              "generatedLine": 1059,
+              "function": "disconnectedCallback",
+              "weightMs": 0.39
+            },
+            {
+              "path": "packages/adapters/web-component/src/host-display.ts",
+              "generatedLine": 33,
+              "function": "sync",
+              "weightMs": 0.315
+            },
+            {
+              "path": "",
+              "generatedLine": 0,
+              "function": "queueMicrotask",
+              "weightMs": 0.08
+            },
+            {
+              "path": "packages/adapters/web-component/src/adapt.ts",
+              "generatedLine": 357,
+              "function": "_withdrawViewOperations",
+              "weightMs": 0.041
+            },
+            {
+              "path": "packages/adapters/web-component/src/native-text-layout.ts",
+              "generatedLine": 17,
+              "function": "clear",
+              "weightMs": 0.01
+            }
+          ],
+          "leaf": [
+            {
+              "path": "packages/adapters/web-component/src/host-display.ts",
+              "generatedLine": 58,
+              "function": "hasExplicitDisplayClass",
+              "weightMs": 0.814
+            },
+            {
+              "path": "packages/adapters/web-component/src/adapt.ts",
+              "generatedLine": 1059,
+              "function": "disconnectedCallback",
+              "weightMs": 0.39
+            },
+            {
+              "path": "packages/adapters/web-component/src/feedback-style.ts",
+              "generatedLine": 36,
+              "function": "normalizeTokens",
+              "weightMs": 0.383
+            },
+            {
+              "path": "",
+              "generatedLine": 0,
+              "function": "add",
+              "weightMs": 0.371
+            },
+            {
+              "path": "packages/adapters/web-component/src/feedback-style.ts",
+              "generatedLine": 77,
+              "function": "collectOwnedTokens",
+              "weightMs": 0.353
+            },
+            {
+              "path": "",
+              "generatedLine": 0,
+              "function": "removeAttribute",
+              "weightMs": 0.33
+            },
+            {
+              "path": "packages/adapters/web-component/src/feedback-style.ts",
+              "generatedLine": 68,
+              "function": "clearOwnedStyleTokens",
+              "weightMs": 0.18
+            },
+            {
+              "path": "",
+              "generatedLine": 0,
+              "function": "queueMicrotask",
+              "weightMs": 0.08
+            },
+            {
+              "path": "packages/adapters/web-component/src/feedback-style.ts",
+              "generatedLine": 84,
+              "function": "rewriteStyleAttribute",
+              "weightMs": 0.042
+            },
+            {
+              "path": "packages/adapters/web-component/src/host-display.ts",
+              "generatedLine": 33,
+              "function": "sync",
+              "weightMs": 0.039
+            },
+            {
+              "path": "packages/adapters/web-component/src/adapt.ts",
+              "generatedLine": 357,
+              "function": "_withdrawViewOperations",
+              "weightMs": 0.034
+            },
+            {
+              "path": "packages/adapters/web-component/src/adapt.ts",
+              "generatedLine": 740,
+              "function": "onChange",
+              "weightMs": 0.017
+            }
+          ]
+        },
+        {
+          "kind": "disconnectCheckpoint",
+          "sampledWeightMs": 171.231,
+          "direct": [
+            {
+              "path": "packages/adapters/web-component/src/adapt.ts",
+              "generatedLine": 1085,
+              "function": "retireOwner",
+              "weightMs": 170.734
+            },
+            {
+              "path": "packages/adapters/web-component/src/adapt.ts",
+              "generatedLine": 1067,
+              "function": "(anonymous)",
+              "weightMs": 0.319
+            },
+            {
+              "path": "packages/adapters/web-component/src/portal-mount.ts",
+              "generatedLine": 20,
+              "function": "refreshWebComponentPortalProjection",
+              "weightMs": 0.176
+            },
+            {
+              "path": "packages/adapters/web-component/src/host-display.ts",
+              "generatedLine": 33,
+              "function": "sync",
+              "weightMs": 0.021
+            },
+            {
+              "path": "packages/adapters/web-component/src/adapt.ts",
+              "generatedLine": 1104,
+              "function": "releaseTerminal",
+              "weightMs": -0.019
+            }
+          ],
+          "leaf": [
+            {
+              "path": "",
+              "generatedLine": 0,
+              "function": "removeEventListener",
+              "weightMs": 15.009
+            },
+            {
+              "path": "packages/modules/rule-meta/src/create.ts",
+              "generatedLine": 118,
+              "function": "(anonymous)",
+              "weightMs": 8.406
+            },
+            {
+              "path": "",
+              "generatedLine": 0,
+              "function": "compareDocumentPosition",
+              "weightMs": 6.216
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "generatedLine": 73,
+              "function": "listClaims",
+              "weightMs": 6.054
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "generatedLine": 38,
+              "function": "getClaim",
+              "weightMs": 5.656
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "generatedLine": 899,
+              "function": "findDomainRoot",
+              "weightMs": 4.744
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "generatedLine": 626,
+              "function": "notifyTargetChange",
+              "weightMs": 3.264
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "generatedLine": 58,
+              "function": "isRetiredBoundary",
+              "weightMs": 2.973
+            },
+            {
+              "path": "",
+              "generatedLine": 0,
+              "function": "removeAttribute",
+              "weightMs": 2.973
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "generatedLine": 879,
+              "function": "resolveCurrentDomain",
+              "weightMs": 2.811
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "generatedLine": 701,
+              "function": "computeOrderSignature",
+              "weightMs": 2.811
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "generatedLine": 737,
+              "function": "(anonymous)",
+              "weightMs": 2.762
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
