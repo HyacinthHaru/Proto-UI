@@ -1,0 +1,373 @@
+{
+  "head": "579d963445a2096a08700a1500a5daf83847e80c",
+  "productionGate": {
+    "mainPages": 673,
+    "candidatePages": 673,
+    "mainExit": 1,
+    "candidateExit": 1,
+    "mainCount": 53,
+    "candidateCount": 53,
+    "added": {},
+    "removed": {}
+  },
+  "firstServer": {
+    "head": "579d963445a2096a08700a1500a5daf83847e80c",
+    "distHashes": {
+      "zh-cn/index.html": "21a45238ccc06a261a4b754ce2756d917bbb8cf7a98866d82d2baf668b0ebae4",
+      "zh-cn/ui-libraries/shadcn/button/index.html": "d08f3c98eff96ee384485811c4e01681980d78c8fdb126eb3212bdcf95de299a",
+      "zh-cn/ui-libraries/brutalist/components/button/index.html": "0aa0949a22c7a4b929e1f127ae66e05b2635f079eccc9f417e8f70f3ee7cb1c6",
+      "en/ui-libraries/shadcn/dialog/index.html": "3805e76801aeff1273ea81fc7afba3e0b98b891a71be45738d9f0ed4a935bcad",
+      "proto-ui-bundle-graph.json": "0994d355036a8296814718fbc653a2aa532f275ca22ee3f95b9db850b036bdb7"
+    },
+    "originalCaseSelector": "uses real family Popover Triggers|uses the same mobile shell|retains (shadcn|brutalist) preference owners|compact (shadcn|brutalist)|live available region",
+    "exitCode": 1,
+    "source": "Actual exact 579 static output, local loopback. External browser server retained real full authored pages and original assertions."
+  },
+  "repositoryPreview": {
+    "head": "579d963445a2096a08700a1500a5daf83847e80c",
+    "distHashes": {
+      "zh-cn/index.html": "21a45238ccc06a261a4b754ce2756d917bbb8cf7a98866d82d2baf668b0ebae4",
+      "zh-cn/ui-libraries/shadcn/button/index.html": "d08f3c98eff96ee384485811c4e01681980d78c8fdb126eb3212bdcf95de299a",
+      "zh-cn/ui-libraries/brutalist/components/button/index.html": "0aa0949a22c7a4b929e1f127ae66e05b2635f079eccc9f417e8f70f3ee7cb1c6",
+      "en/ui-libraries/shadcn/dialog/index.html": "3805e76801aeff1273ea81fc7afba3e0b98b891a71be45738d9f0ed4a935bcad",
+      "proto-ui-bundle-graph.json": "0994d355036a8296814718fbc653a2aa532f275ca22ee3f95b9db850b036bdb7"
+    },
+    "selector": "uses real family Popover Triggers|uses the same mobile shell|retains (shadcn|brutalist) preference owners|compact (shadcn|brutalist)|live available region",
+    "exitCode": 0,
+    "server": "Repository astro preview, same static bytes after observed Python server connection resets"
+  },
+  "firstResults": [
+    {
+      "file": "dialog-available-space.browser.test.ts",
+      "cases": [
+        {
+          "status": "passed",
+          "title": "shadcn/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "duration": 4613.155042
+        },
+        {
+          "status": "passed",
+          "title": "shadcn/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "duration": 4460.8018329999995
+        },
+        {
+          "status": "failed",
+          "title": "shadcn/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "duration": 31041.414665999997,
+          "reason": "page.waitForFunction: Timeout 30000ms exceeded."
+        },
+        {
+          "status": "passed",
+          "title": "shadcn/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "duration": 4513.722291999999
+        },
+        {
+          "status": "failed",
+          "title": "brutalist/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "duration": 30861.211875,
+          "reason": "page.waitForFunction: Timeout 30000ms exceeded."
+        },
+        {
+          "status": "passed",
+          "title": "brutalist/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "duration": 4297.100833000004
+        },
+        {
+          "status": "passed",
+          "title": "brutalist/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "duration": 4132.2412919999915
+        },
+        {
+          "status": "passed",
+          "title": "brutalist/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "duration": 4165.024124999996
+        }
+      ]
+    },
+    {
+      "file": "homepage-dogfood.browser.test.ts",
+      "cases": [
+        {
+          "status": "skipped",
+          "title": "switches every registered homepage group through real adapters, preserving native anchors and theme"
+        },
+        {
+          "status": "skipped",
+          "title": "keeps native navigation available without JavaScript and does not overflow mobile"
+        },
+        {
+          "status": "skipped",
+          "title": "retains saved React across cold library routes and exercises actual family chrome"
+        },
+        {
+          "status": "skipped",
+          "title": "reveals current articles through native shadow slots and preserves viewport handback"
+        },
+        {
+          "status": "passed",
+          "title": "uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence",
+          "duration": 22640.433333
+        },
+        {
+          "status": "passed",
+          "title": "uses the same mobile shell on documentation with independent global navigation and contents",
+          "duration": 5647.957124999997
+        },
+        {
+          "status": "passed",
+          "title": "compact shadcn preferences stay usable at 200% text, RTL and breakpoint moves",
+          "duration": 2384.075125000003
+        },
+        {
+          "status": "failed",
+          "title": "compact brutalist preferences stay usable at 200% text, RTL and breakpoint moves",
+          "duration": 30732.511958,
+          "reason": "page.waitForFunction: Timeout 30000ms exceeded."
+        },
+        {
+          "status": "failed",
+          "title": "retains shadcn preference owners and portals through real breakpoint reconnects",
+          "duration": 31016.769708,
+          "reason": "page.waitForFunction: Timeout 30000ms exceeded."
+        },
+        {
+          "status": "failed",
+          "title": "retains brutalist preference owners and portals through real breakpoint reconnects",
+          "duration": 30876.144708000007,
+          "reason": "page.waitForFunction: Timeout 30000ms exceeded."
+        }
+      ]
+    }
+  ],
+  "repositoryPreviewResults": [
+    {
+      "file": "dialog-available-space.browser.test.ts",
+      "cases": [
+        {
+          "status": "passed",
+          "title": "shadcn/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "duration": 4971.707125000001
+        },
+        {
+          "status": "passed",
+          "title": "shadcn/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "duration": 4875.696291000001
+        },
+        {
+          "status": "passed",
+          "title": "shadcn/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "duration": 4925.069834
+        },
+        {
+          "status": "passed",
+          "title": "shadcn/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "duration": 4952.491041000001
+        },
+        {
+          "status": "passed",
+          "title": "brutalist/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "duration": 4264.407166000001
+        },
+        {
+          "status": "passed",
+          "title": "brutalist/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "duration": 4419.981667
+        },
+        {
+          "status": "passed",
+          "title": "brutalist/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "duration": 4464.083791000001
+        },
+        {
+          "status": "passed",
+          "title": "brutalist/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "duration": 4437.593041
+        }
+      ]
+    },
+    {
+      "file": "homepage-dogfood.browser.test.ts",
+      "cases": [
+        {
+          "status": "skipped",
+          "title": "switches every registered homepage group through real adapters, preserving native anchors and theme"
+        },
+        {
+          "status": "skipped",
+          "title": "keeps native navigation available without JavaScript and does not overflow mobile"
+        },
+        {
+          "status": "skipped",
+          "title": "retains saved React across cold library routes and exercises actual family chrome"
+        },
+        {
+          "status": "skipped",
+          "title": "reveals current articles through native shadow slots and preserves viewport handback"
+        },
+        {
+          "status": "passed",
+          "title": "uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence",
+          "duration": 22683.994749999998
+        },
+        {
+          "status": "passed",
+          "title": "uses the same mobile shell on documentation with independent global navigation and contents",
+          "duration": 6292.957208
+        },
+        {
+          "status": "passed",
+          "title": "compact shadcn preferences stay usable at 200% text, RTL and breakpoint moves",
+          "duration": 2601.6008330000004
+        },
+        {
+          "status": "passed",
+          "title": "compact brutalist preferences stay usable at 200% text, RTL and breakpoint moves",
+          "duration": 3971.734083000003
+        },
+        {
+          "status": "passed",
+          "title": "retains shadcn preference owners and portals through real breakpoint reconnects",
+          "duration": 6852.264875000001
+        },
+        {
+          "status": "passed",
+          "title": "retains brutalist preference owners and portals through real breakpoint reconnects",
+          "duration": 9621.024375
+        }
+      ]
+    }
+  ],
+  "firstHomeFailure": {
+    "shadcn": {
+      "stage": "initial-ready",
+      "familyPoll": "not-run",
+      "console": [
+        "Failed to load resource: net::ERR_CONNECTION_RESET",
+        "Failed to load resource: net::ERR_CONNECTION_RESET",
+        "[HomepageRuntime] retained previous generation or native SSR links. Error: [PrototypePreviewer] 加载原型模块 \"shadcn-dropdown-root\" 失败: Failed to fetch dynamically imported module: [loopback]/_astro/root.proto.CybKLmiU.js\n    at [loopback]/_astro/prototype-modules.CksvEJYt.js:7:182\n    at async Promise.all (index 61)\n    at async w ([loopback]/_astro/prototype-modules.CksvEJYt.js:7:318)\n    at async Promise.all (index 0)\n    at async kt ([loopback]/_astro/projection-materializer.B-HPAJGQ.js:5:82367)\n    at async Promise.allSettled (index 10)\n    at async Object.materialize ([loopback]/_astro/HomepageRuntime.astro_astro_type_script_index_0_lang.p38wV4hr.js:1:47522)\n    at async B ([loopback]/_astro/projection-scope.C38VOVYm.js:1:3779)"
+      ],
+      "state": {
+        "header": {
+          "tag": "DIV",
+          "id": "",
+          "connected": true,
+          "dataset": {
+            "siteHeader": "",
+            "homepageRuntime": "",
+            "runtimeState": "error",
+            "familyLabel": "整页组件库",
+            "runtimeLabel": "整页 Runtime",
+            "statusReady": "页面控件已就绪",
+            "statusLoading": "准备页面控件",
+            "statusError": "切换失败，已保留可用页面",
+            "runtime": "wc"
+          },
+          "busy": "false",
+          "hidden": false
+        },
+        "showcase": {
+          "tag": "SECTION",
+          "id": "home-demo-previewer",
+          "connected": true,
+          "dataset": {
+            "homeShowcase": "website-component-gallery",
+            "locale": "zh-cn",
+            "projectionOwner": "home-demo-previewer-projection-fqhzvnpfo27",
+            "familyLabel": "页面风格",
+            "runnerState": "error",
+            "runnerRuntime": "wc",
+            "statusLoading": "准备中",
+            "statusReady": "就绪",
+            "statusError": "错误",
+            "runtimeMaskReady": "true",
+            "runtimeMaskFamily": "shadcn"
+          },
+          "busy": null,
+          "hidden": false
+        },
+        "status": "Web Components · 切换失败，已保留可用页面",
+        "transaction": {
+          "selection": {
+            "runtimeId": "wc",
+            "projectionFamilyId": "shadcn"
+          },
+          "generation": 0,
+          "phase": "idle"
+        },
+        "generations": [],
+        "familyTrigger": null,
+        "portal": null
+      }
+    },
+    "brutalist": {
+      "stage": "initial-ready",
+      "familyPoll": "not-run",
+      "console": [
+        "Failed to load resource: net::ERR_CONNECTION_RESET",
+        "Failed to load resource: net::ERR_CONNECTION_RESET",
+        "Failed to load resource: net::ERR_CONNECTION_RESET",
+        "Failed to load resource: net::ERR_CONNECTION_RESET"
+      ],
+      "state": {
+        "header": {
+          "tag": "DIV",
+          "id": "",
+          "connected": true,
+          "dataset": {
+            "siteHeader": "",
+            "homepageRuntime": "",
+            "runtimeState": "loading",
+            "familyLabel": "整页组件库",
+            "runtimeLabel": "整页 Runtime",
+            "statusReady": "页面控件已就绪",
+            "statusLoading": "准备页面控件",
+            "statusError": "切换失败，已保留可用页面"
+          },
+          "busy": null,
+          "hidden": false
+        },
+        "showcase": {
+          "tag": "SECTION",
+          "id": "home-demo-previewer",
+          "connected": true,
+          "dataset": {
+            "homeShowcase": "website-component-gallery",
+            "locale": "zh-cn",
+            "projectionOwner": "home-demo-previewer-projection-fqhzvnpfo27",
+            "familyLabel": "页面风格",
+            "runnerState": "loading",
+            "runnerRuntime": "wc",
+            "statusLoading": "准备中",
+            "statusReady": "就绪",
+            "statusError": "错误"
+          },
+          "busy": null,
+          "hidden": false
+        },
+        "status": " 原生链接可用 · Runtime 加载中 ",
+        "generations": [],
+        "familyTrigger": null,
+        "portal": null
+      }
+    }
+  },
+  "repositoryPreviewFamilyMs": 487.868,
+  "images": [
+    {
+      "file": "brutalist-wc-390-settled.png",
+      "sha256": "9c6f2261f8fece53504ff4ab1cadb1338ef9a80698f8f06b0658266da8585672"
+    },
+    {
+      "file": "brutalist-wc-runtime-narrow-focus-ring.png",
+      "sha256": "32fa2bd5f6f87ef2e575e31b01332f71f7855a8361d73246265ecce5e5cb5a41"
+    },
+    {
+      "file": "initial-brutalist-failure.png",
+      "sha256": "b407e7d335aae5bc4c5f3687b5091443ec76a49ec543b35b0e0cba46ee6f1438"
+    },
+    {
+      "file": "initial-shadcn-failure.png",
+      "sha256": "5bf84a4501fab805083febf2a802329c366d793a352fa9fbcee71d4d0ff80e3f"
+    }
+  ]
+}
