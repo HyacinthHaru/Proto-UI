@@ -1,0 +1,68 @@
+{
+  "samples": [
+    {
+      "run": 43342572818,
+      "product": "4bcf4301d9e1054e79de2b3a40e6133bd1cfd11d",
+      "diagnostic": "f48fd7b8e1daf17c06dda1a5e956b123b8bb5b38",
+      "node": "v24.22.2",
+      "chrome": "Google Chrome 156.0.8078.79",
+      "originalDeadlineMs": 1000,
+      "failedAtMs": 1001.137,
+      "familyWriteMs": [[1223.95, 1225.454]],
+      "query": 4,
+      "rendererQueueMs": 1554.984,
+      "dispatchDurationMs": 2.16,
+      "returnMs": 1922.244,
+      "artifact": {
+        "digest": "sha256:20f0a088e58a5947ea1f16312a22537efefe36ef8895c52cd16b7bb8a2a7b747",
+        "expired": false,
+        "id": 14000069159,
+        "name": "runtime-ci-43342572818-browser-1-of-8-attempt-1",
+        "size_in_bytes": 6451387
+      }
+    },
+    {
+      "run": 43345187178,
+      "product": "155da9dfd7f2e46a7f5b5c7c06eb528e6afe4f2a",
+      "diagnostic": "5e7d4a690117d05c4557d71acd3e28dc7e79128f",
+      "node": "v24.22.2",
+      "chrome": "Google Chrome 156.0.8078.79",
+      "originalDeadlineMs": 1000,
+      "failedAtMs": 1001.015,
+      "familyWriteMs": [[1057.663, 1058.792]],
+      "query": 4,
+      "rendererQueueMs": 1331.562,
+      "dispatchDurationMs": 1.559,
+      "returnMs": 1662.165,
+      "artifact": {
+        "digest": "sha256:59473e644714b76c6faf5ea5a701a22a84b3f933564358d4cef21e48be3241b6",
+        "expired": false,
+        "id": 14002476021,
+        "name": "runtime-ci-43345187178-browser-1-of-8-attempt-1",
+        "size_in_bytes": 6355527
+      }
+    },
+    {
+      "run": 43347480175,
+      "product": "1c21bcc9ea63100039b32058723feb0e05508258",
+      "diagnostic": "3620138571b15dc68be8cb53c460564b3bd1fae3",
+      "node": "v24.22.2",
+      "chrome": "Google Chrome 156.0.8078.79",
+      "originalDeadlineMs": 1000,
+      "failedAtMs": 1001.469,
+      "familyWriteMs": [[666.454, 667.194]],
+      "query": 3,
+      "rendererQueueMs": 840.558,
+      "dispatchDurationMs": 1.204,
+      "returnMs": 1067.455,
+      "artifact": {
+        "digest": "sha256:c822bd174edbfe06c5afe8d3a78951bbe8f3427053434e543297388e1a128409",
+        "expired": false,
+        "id": 14002678281,
+        "name": "runtime-ci-43347480175-browser-1-of-8-attempt-1",
+        "size_in_bytes": 6295349
+      }
+    }
+  ],
+  "limitations": "One separately hosted sample per product. All original family verdicts red. Sample differences do not isolate a code-level latency gain."
+}

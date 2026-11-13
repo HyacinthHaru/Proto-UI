@@ -1,0 +1,51 @@
+{
+  "browserProduct": "dae1b11fbb424d0c6c824dfa06b4af90a8e8f738",
+  "publishedHead": "fceabcff1e6d368697c62ee36e7e9d656a04d1bc",
+  "compatibility": "Only an HTMLElement type argument changes one unit test. Browser source and test bytes match, as do the unit test transpilation outputs.",
+  "focused": {
+    "passed": 318,
+    "reportSha256": "2620d17b330ebe0369e35d93a5d3578f6068e6f089fe4f8381b11b74ef606ab9"
+  },
+  "exactPublishedOwnership": {
+    "passed": 38,
+    "reportSha256": "1d4322269dc1a81263643b8a38893d86b344b4ae6ce5e4f2eb890c39dba97188"
+  },
+  "native": {
+    "passed": 14,
+    "failed": 0,
+    "filtered": 4,
+    "reportSha256": "1c88b889969c4b0db6b8be7e570f0b17b54b2ecf7cf23918de5ad65fab6f2e9a"
+  },
+  "typography": {
+    "passed": 19,
+    "failed": 0,
+    "filtered": 15,
+    "homepageViewportSamples": 64,
+    "reportSha256": "eae9ad05e6de18ac7f5bc1e9b21067d80b91ea5fd7d79d1184215d76824dd5ac"
+  },
+  "contents": {
+    "shadcn/wc": 147,
+    "shadcn/vue2": 179,
+    "shadcn/vue": 179,
+    "brutalist/wc": 3,
+    "brutalist/react": 243,
+    "brutalist/vue2": 189,
+    "brutalist/vue": 203,
+    "shadcn/react": 214
+  },
+  "handbacks": 24,
+  "dialog": {
+    "passed": 8,
+    "observations": 196,
+    "pngCaptures": 120
+  },
+  "localBrutalistFamilyMs": 570.014,
+  "types": {
+    "exit": 0,
+    "astroFiles": 1215,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 30,
+    "logSha256": "5c4dbb50840f41ef82cd10a711a4a88826ca7665777f0ac681ad338fa3a25427"
+  }
+}

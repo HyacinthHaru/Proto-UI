@@ -1,0 +1,184 @@
+{
+  "main": {
+    "actualGitHead": "35195a6e6f1ba6a7d800da0029f2683013abd18b",
+    "expectedHead": null,
+    "eventSha": "35195a6e6f1ba6a7d800da0029f2683013abd18b",
+    "eventName": "schedule",
+    "dirty": false,
+    "runId": "43316320185",
+    "runAttempt": "1"
+  },
+  "hosted": {
+    "actualGitHead": "3bb6f34d5cd5617f83686ab0c89d95e9baf9dede",
+    "expectedHead": null,
+    "eventSha": "3bb6f34d5cd5617f83686ab0c89d95e9baf9dede",
+    "eventName": "workflow_dispatch",
+    "dirty": false,
+    "runId": "43349659101",
+    "runAttempt": "1"
+  },
+  "artifacts": [
+    {
+      "slot": 1,
+      "artifact": {
+        "digest": "sha256:ba0750a20ab8cbd1556fbf0eb8e1749fb53921216842f8d04654285c96226334",
+        "expired": false,
+        "id": 14003453509,
+        "name": "runtime-ci-43349659101-browser-1-of-8-attempt-1",
+        "size_in_bytes": 6452452
+      },
+      "source": "3bb6f34d5cd5617f83686ab0c89d95e9baf9dede",
+      "product": "dae1b11fbb424d0c6c824dfa06b4af90a8e8f738",
+      "selectedSuites": [
+        "apps/workspace/test/lifecycle.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/contrast-probe.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-bootstrap-state-controls.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-prototype-style-closure.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/runtime-preview-surface.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/site-sidebar-disclosure.browser.test.ts",
+        "apps/www/test/message-composition.browser.test.ts",
+        "packages/adapters/vue/test/focus-request-readiness.browser.test.ts"
+      ],
+      "node": "v24.22.2",
+      "chrome": "Google Chrome 156.0.8078.79"
+    },
+    {
+      "slot": 2,
+      "artifact": {
+        "digest": "sha256:8df417801b744e74d6a9065bc00311b1f1ec963a8b3a0b063cbf03f5fae8c4f0",
+        "expired": false,
+        "id": 14003773279,
+        "name": "runtime-ci-43349659101-browser-2-of-8-attempt-1",
+        "size_in_bytes": 60483324
+      },
+      "source": "3bb6f34d5cd5617f83686ab0c89d95e9baf9dede",
+      "product": "dae1b11fbb424d0c6c824dfa06b4af90a8e8f738",
+      "selectedSuites": [
+        "apps/www/src/components/documentation-image-preview.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/contrast-tooltip-warm-handoff.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-brutalist-button.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-composed-style-isolation.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-ring-offset-default.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-shadcn-scroll-area.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-shadow-split-s5.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/overlay-portal-direction.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/scroll-area-corner.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/site-typography.browser.test.ts",
+        "apps/www/test/preferences.browser.test.ts",
+        "packages/adapters/web-component/test/native-text-width.browser.test.ts"
+      ],
+      "node": "v24.22.2",
+      "chrome": "Google Chrome 156.0.8078.79"
+    },
+    {
+      "slot": 3,
+      "artifact": {
+        "digest": "sha256:3817d5d509a631726994b86063df5c1fb2cea19f5b8c162d37f3e0f2abff2f4f",
+        "expired": false,
+        "id": 14003977715,
+        "name": "runtime-ci-43349659101-browser-3-of-8-attempt-1",
+        "size_in_bytes": 10147609
+      },
+      "source": "3bb6f34d5cd5617f83686ab0c89d95e9baf9dede",
+      "product": "dae1b11fbb424d0c6c824dfa06b4af90a8e8f738",
+      "selectedSuites": [
+        "apps/www/src/content/docs/zh-cn/base-accordion-layout-parity.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-accordion-family.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-brutalist-checkbox.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-field-family.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-select-draft-projections.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/demo-shadcn-switch-compositions.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/overlay-scrollbar-geometry.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/scroll-chrome-display.browser.test.ts",
+        "apps/www/src/content/docs/zh-cn/table-react19.browser.test.ts",
+        "apps/www/test/radio-group-entry.browser.test.ts",
+        "packages/adapters/web-component/test/shadow-closeout.browser.test.ts"
+      ],
+      "node": "v24.22.2",
+      "chrome": "Google Chrome 156.0.8078.79"
+    }
+  ],
+  "browserProduct": "dae1b11fbb424d0c6c824dfa06b4af90a8e8f738",
+  "publishedHead": "fceabcff1e6d368697c62ee36e7e9d656a04d1bc",
+  "sameBrowserInputs": true,
+  "resolved": [
+    "docs-shadcn",
+    "homepage-en-react-brutalist",
+    "homepage-en-react-shadcn",
+    "homepage-en-vue-brutalist",
+    "homepage-en-vue-shadcn",
+    "homepage-en-vue2-brutalist",
+    "homepage-en-vue2-shadcn",
+    "homepage-en-wc-brutalist",
+    "homepage-en-wc-shadcn",
+    "homepage-zh-cn-react-brutalist",
+    "homepage-zh-cn-react-shadcn",
+    "homepage-zh-cn-vue-brutalist",
+    "homepage-zh-cn-vue-shadcn",
+    "homepage-zh-cn-vue2-brutalist",
+    "homepage-zh-cn-vue2-shadcn",
+    "homepage-zh-cn-wc-brutalist",
+    "homepage-zh-cn-wc-shadcn",
+    "native-react-brutalist",
+    "native-react-shadcn",
+    "native-vue-brutalist",
+    "native-vue-shadcn",
+    "native-vue2-brutalist",
+    "native-vue2-shadcn",
+    "native-wc-brutalist",
+    "native-wc-shadcn",
+    "reading-fallback-homepage"
+  ],
+  "remaining": [
+    {
+      "id": "overview-shadcn-wc-en-enhanced-light",
+      "error": "TimeoutError: page.waitForFunction: Timeout 20000ms exceeded."
+    }
+  ],
+  "passed": 33,
+  "failed": 1,
+  "contents": [
+    {
+      "case": "shadcn-wc-transition",
+      "elapsedMs": 12
+    },
+    {
+      "case": "shadcn-vue2-transition",
+      "elapsedMs": 527
+    },
+    {
+      "case": "shadcn-vue-transition",
+      "elapsedMs": 503
+    },
+    {
+      "case": "brutalist-wc-transition",
+      "elapsedMs": 3
+    },
+    {
+      "case": "brutalist-react-transition",
+      "elapsedMs": 580
+    },
+    {
+      "case": "brutalist-vue2-transition",
+      "elapsedMs": 394
+    },
+    {
+      "case": "brutalist-vue-transition",
+      "elapsedMs": 495
+    },
+    {
+      "case": "shadcn-react-transition",
+      "elapsedMs": 558
+    }
+  ],
+  "sidebarHandbacks": 24,
+  "dialog": {
+    "passed": 8,
+    "observations": 196
+  }
+}

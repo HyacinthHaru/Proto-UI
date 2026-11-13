@@ -1,0 +1,136 @@
+{
+  "originalHostedTrace": [
+    {
+      "method": "getAttribute",
+      "attribute": "aria-controls",
+      "startedMs": 399979.081,
+      "finishedMs": 400022.356,
+      "value": "pui-select-1-content"
+    },
+    {
+      "method": "getAttribute",
+      "attribute": "data-typography-generation",
+      "startedMs": 400461.18,
+      "finishedMs": 400749.065,
+      "value": "1"
+    },
+    {
+      "method": "getAttribute",
+      "attribute": "data-typography-runtime",
+      "startedMs": 401646.756,
+      "finishedMs": 401978.725,
+      "value": "wc"
+    },
+    {
+      "method": "getAttribute",
+      "attribute": "data-typography-generation",
+      "startedMs": 402082.426,
+      "finishedMs": 402302.743,
+      "value": "4"
+    }
+  ],
+  "localControls": [
+    {
+      "label": "instrumentedParent",
+      "source": {
+        "actualGitHead": "1c21bcc9ea63100039b32058723feb0e05508258",
+        "expectedHead": null,
+        "eventSha": null,
+        "eventName": null,
+        "dirty": true,
+        "runId": null,
+        "runAttempt": null
+      },
+      "testOutcome": "passed",
+      "explicitRuntimeGenerations": [
+        {
+          "runtime": "wc",
+          "generation": "8"
+        },
+        {
+          "runtime": "react",
+          "generation": "9"
+        },
+        {
+          "runtime": "vue",
+          "generation": "10"
+        },
+        {
+          "runtime": "vue2",
+          "generation": "11"
+        }
+      ],
+      "instrumentedRefreshRequests": 7,
+      "requestGenerations": [1, 2, 3, 4, 5, 6, 7],
+      "manifestSha256": "076bd41d56af0b92385d2d4fe7530a47c121e3981b8f95addd0ffea8539f70e0"
+    },
+    {
+      "label": "instrumentedExclusion",
+      "source": {
+        "actualGitHead": "1c21bcc9ea63100039b32058723feb0e05508258",
+        "expectedHead": null,
+        "eventSha": null,
+        "eventName": null,
+        "dirty": true,
+        "runId": null,
+        "runAttempt": null
+      },
+      "testOutcome": "passed",
+      "explicitRuntimeGenerations": [
+        {
+          "runtime": "wc",
+          "generation": "1"
+        },
+        {
+          "runtime": "react",
+          "generation": "2"
+        },
+        {
+          "runtime": "vue",
+          "generation": "3"
+        },
+        {
+          "runtime": "vue2",
+          "generation": "4"
+        }
+      ],
+      "instrumentedRefreshRequests": 0,
+      "requestGenerations": [],
+      "manifestSha256": "fb0841ab0974c8f20ae7a9b1186f53f79aaaafa84c4fc6922896205276d7be67"
+    },
+    {
+      "label": "exactFix",
+      "source": {
+        "actualGitHead": "dae1b11fbb424d0c6c824dfa06b4af90a8e8f738",
+        "expectedHead": null,
+        "eventSha": null,
+        "eventName": null,
+        "dirty": false,
+        "runId": null,
+        "runAttempt": null
+      },
+      "testOutcome": "passed",
+      "explicitRuntimeGenerations": [
+        {
+          "runtime": "wc",
+          "generation": "1"
+        },
+        {
+          "runtime": "react",
+          "generation": "2"
+        },
+        {
+          "runtime": "vue",
+          "generation": "3"
+        },
+        {
+          "runtime": "vue2",
+          "generation": "4"
+        }
+      ],
+      "instrumentedRefreshRequests": null,
+      "requestGenerations": [],
+      "manifestSha256": "581b6b05f29f8f78cf1cba7398a13a582a23bdd1ba8d3aaea1b4f92142474225"
+    }
+  ]
+}
