@@ -1,0 +1,138 @@
+{
+  "sourceHead": "31ba38a9d5072f4d168995b54e6c8e3d3fdebfc1",
+  "sourceRun": "2026-11-13 SGT corrected diagnostic",
+  "traceSha256": "2dab8a4fe759e8f36ed55d8377983f1ea22d24b2f85d3495866e11b29d6985d5",
+  "networkReceiptSha256": "df8bb753f38078beb7de7b7d059235d153e28565acfffaf84b96b468e4b023a6",
+  "scope": "Historical trace reanalysis. Same renderer thread. Each event family is unioned independently; nested families overlap. RunTask events were outside the enabled categories. Absence or uncovered wall time cannot be interpreted as renderer idle. V8 evaluation records do not name the evaluated module.",
+  "windows": [
+    {
+      "window": "last response body to Node response delivery",
+      "fromBodyMs": 0.0,
+      "toBodyMs": 4208.0,
+      "events": [
+        {
+          "event": "v8.callFunction",
+          "intervals": 22336,
+          "unionMs": 3744.101,
+          "longestMs": 116.321
+        },
+        {
+          "event": "v8.evaluateModule",
+          "intervals": 51,
+          "unionMs": 1.907,
+          "longestMs": 0.92
+        },
+        {
+          "event": "v8.compileModule",
+          "intervals": 3,
+          "unionMs": 0.044,
+          "longestMs": 0.021
+        },
+        {
+          "event": "MinorGC",
+          "intervals": 15,
+          "unionMs": 28.756,
+          "longestMs": 3.297
+        },
+        {
+          "event": "RunTask",
+          "intervals": 0,
+          "unionMs": 0.0,
+          "longestMs": 0.0
+        },
+        {
+          "event": "V8.GCIncrementalMarking",
+          "intervals": 366,
+          "unionMs": 6.55,
+          "longestMs": 0.945
+        }
+      ]
+    },
+    {
+      "window": "Node response delivery to first React import return",
+      "fromBodyMs": 4208.0,
+      "toBodyMs": 71549.498,
+      "events": [
+        {
+          "event": "v8.callFunction",
+          "intervals": 250179,
+          "unionMs": 23338.745,
+          "longestMs": 973.334
+        },
+        {
+          "event": "v8.evaluateModule",
+          "intervals": 95,
+          "unionMs": 1.211,
+          "longestMs": 0.331
+        },
+        {
+          "event": "v8.compileModule",
+          "intervals": 1,
+          "unionMs": 0.024,
+          "longestMs": 0.024
+        },
+        {
+          "event": "MinorGC",
+          "intervals": 261,
+          "unionMs": 432.547,
+          "longestMs": 31.605
+        },
+        {
+          "event": "RunTask",
+          "intervals": 0,
+          "unionMs": 0.0,
+          "longestMs": 0.0
+        },
+        {
+          "event": "V8.GCIncrementalMarking",
+          "intervals": 1467,
+          "unionMs": 120.221,
+          "longestMs": 8.612
+        }
+      ]
+    },
+    {
+      "window": "first React import return to aggregate runtime continuation",
+      "fromBodyMs": 71549.498,
+      "toBodyMs": 93073.717,
+      "events": [
+        {
+          "event": "v8.callFunction",
+          "intervals": 0,
+          "unionMs": 0.0,
+          "longestMs": 0.0
+        },
+        {
+          "event": "v8.evaluateModule",
+          "intervals": 2,
+          "unionMs": 9.728,
+          "longestMs": 9.726
+        },
+        {
+          "event": "v8.compileModule",
+          "intervals": 0,
+          "unionMs": 0.0,
+          "longestMs": 0.0
+        },
+        {
+          "event": "MinorGC",
+          "intervals": 92,
+          "unionMs": 117.781,
+          "longestMs": 2.651
+        },
+        {
+          "event": "RunTask",
+          "intervals": 0,
+          "unionMs": 0.0,
+          "longestMs": 0.0
+        },
+        {
+          "event": "V8.GCIncrementalMarking",
+          "intervals": 0,
+          "unionMs": 0.0,
+          "longestMs": 0.0
+        }
+      ]
+    }
+  ]
+}

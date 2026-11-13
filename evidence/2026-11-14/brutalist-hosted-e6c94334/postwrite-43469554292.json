@@ -1,0 +1,545 @@
+{
+  "scope": "Clipped same-thread wall intervals. Each category is unioned independently; nesting means categories overlap. FunctionCall locations are generated coordinates.",
+  "observations": [
+    {
+      "arm": "baseline",
+      "checkout": "73d2eb37bc1fa0f142f804dc386197353845e7c8",
+      "traceSha256": "2107ecc2fdcd24fcc0e67270d5a8c1c1704928b32ca0e75ceb60954e11febdf3",
+      "protocolId": 14669,
+      "wcCallbacks": [
+        {
+          "kind": "connectedCallback",
+          "generatedLine": 274,
+          "eventCount": 73,
+          "unionMs": 113.7
+        },
+        {
+          "kind": "disconnectedCallback",
+          "generatedLine": 1059,
+          "eventCount": 334,
+          "unionMs": 11.832
+        },
+        {
+          "kind": "disconnectCheckpoint",
+          "generatedLine": 1067,
+          "eventCount": 386,
+          "unionMs": 174.559
+        }
+      ],
+      "originalVerdict": "rejected",
+      "familyWriteAfterPollMs": [[898.207, 902.859]],
+      "originalVerdictAfterPollMs": 1000.293,
+      "originalReturnAfterPollMs": 1462.184,
+      "forwardToDispatchMs": 1232.371,
+      "dispatchMs": 1.512,
+      "postWriteToDispatchMs": 557.138,
+      "postWriteUncoveredByRunTaskMs": 0.017,
+      "rendererIntervals": [
+        {
+          "kind": "RunTask",
+          "events": 3,
+          "unionMs": 557.121
+        },
+        {
+          "kind": "FireAnimationFrame",
+          "events": 1,
+          "unionMs": 532.985
+        },
+        {
+          "kind": "FunctionCall",
+          "events": 2015,
+          "unionMs": 444.807
+        },
+        {
+          "kind": "UpdateLayoutTree",
+          "events": 7,
+          "unionMs": 108.269
+        },
+        {
+          "kind": "Layout",
+          "events": 4,
+          "unionMs": 17.142
+        },
+        {
+          "kind": "PrePaint",
+          "events": 4,
+          "unionMs": 1.101
+        },
+        {
+          "kind": "Paint",
+          "events": 2,
+          "unionMs": 1.298
+        },
+        {
+          "kind": "Commit",
+          "events": 1,
+          "unionMs": 0.108
+        },
+        {
+          "kind": "MinorGC",
+          "events": 2,
+          "unionMs": 6.246
+        },
+        {
+          "kind": "v8.evaluateModule",
+          "events": 0,
+          "unionMs": 0.0
+        }
+      ],
+      "frameMilestones": [
+        {
+          "kind": "FireAnimationFrame",
+          "firstStartAfterWriteMs": -138.955
+        },
+        {
+          "kind": "PrePaint",
+          "firstStartAfterWriteMs": 533.01
+        },
+        {
+          "kind": "Paint",
+          "firstStartAfterWriteMs": 554.6
+        },
+        {
+          "kind": "Commit",
+          "firstStartAfterWriteMs": 556.704
+        }
+      ],
+      "rendererTasks": [
+        {
+          "fromWriteMs": 0.0,
+          "toWriteMs": 556.858,
+          "overlapMs": 556.858,
+          "fullMs": 747.946
+        },
+        {
+          "fromWriteMs": 556.868,
+          "toWriteMs": 557.121,
+          "overlapMs": 0.253,
+          "fullMs": 0.253
+        },
+        {
+          "fromWriteMs": 557.128,
+          "toWriteMs": 557.138,
+          "overlapMs": 0.01,
+          "fullMs": 1.529
+        }
+      ],
+      "calls": [
+        {
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 1067,
+          "generatedColumn": 22,
+          "function": "(anonymous)",
+          "callCount": 386,
+          "unionMs": 174.559
+        },
+        {
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 274,
+          "generatedColumn": 22,
+          "function": "connectedCallback",
+          "callCount": 73,
+          "unionMs": 113.7
+        },
+        {
+          "path": "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+          "generatedLine": 59,
+          "generatedColumn": 22,
+          "function": "notify",
+          "callCount": 6,
+          "unionMs": 35.297
+        },
+        {
+          "path": "packages/adapters/web-component/src/runtime/modules.ts",
+          "generatedLine": 1363,
+          "generatedColumn": 28,
+          "function": "(anonymous)",
+          "callCount": 6,
+          "unionMs": 25.545
+        },
+        {
+          "path": "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+          "generatedLine": 90,
+          "generatedColumn": 48,
+          "function": "(anonymous)",
+          "callCount": 7,
+          "unionMs": 22.288
+        },
+        {
+          "path": "apps/www/src/components/documentation-image-preview.ts",
+          "generatedLine": 375,
+          "generatedColumn": 46,
+          "function": "(anonymous)",
+          "callCount": 1,
+          "unionMs": 17.361
+        },
+        {
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 1059,
+          "generatedColumn": 25,
+          "function": "disconnectedCallback",
+          "callCount": 334,
+          "unionMs": 11.832
+        },
+        {
+          "path": "packages/adapters/web-component/src/runtime/modules.ts",
+          "generatedLine": 752,
+          "generatedColumn": 22,
+          "function": "(anonymous)",
+          "callCount": 5,
+          "unionMs": 11.603
+        },
+        {
+          "path": "apps/www/src/components/documentation-image-controls.ts",
+          "generatedLine": 69,
+          "generatedColumn": 18,
+          "function": "(anonymous)",
+          "callCount": 14,
+          "unionMs": 5.003
+        },
+        {
+          "path": "apps/www/src/components/PrototypePreviewer/projection-materializer.ts",
+          "generatedLine": 130,
+          "generatedColumn": 48,
+          "function": "(anonymous)",
+          "callCount": 6,
+          "unionMs": 4.676
+        },
+        {
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 473,
+          "generatedColumn": 43,
+          "function": "(anonymous)",
+          "callCount": 899,
+          "unionMs": 4.224
+        },
+        {
+          "path": "packages/modules/control-label/src/web.ts",
+          "generatedLine": 42,
+          "generatedColumn": 35,
+          "function": "(anonymous)",
+          "callCount": 4,
+          "unionMs": 3.935
+        },
+        {
+          "path": "apps/www/src/components/documentation-image-preview.ts",
+          "generatedLine": 369,
+          "generatedColumn": 48,
+          "function": "(anonymous)",
+          "callCount": 8,
+          "unionMs": 3.617
+        },
+        {
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 336,
+          "generatedColumn": 18,
+          "function": "(anonymous)",
+          "callCount": 97,
+          "unionMs": 2.137
+        },
+        {
+          "path": "packages/modules/anatomy/src/web/order-observer.ts",
+          "generatedLine": 9,
+          "generatedColumn": 41,
+          "function": "(anonymous)",
+          "callCount": 23,
+          "unionMs": 1.785
+        },
+        {
+          "path": "apps/www/src/components/Homepage/homepage-runtime-client.ts",
+          "generatedLine": 828,
+          "generatedColumn": 41,
+          "function": "(anonymous)",
+          "callCount": 4,
+          "unionMs": 1.662
+        },
+        {
+          "path": "packages/adapters/base/src/motion/web-resident-motion.ts",
+          "generatedLine": 101,
+          "generatedColumn": 89,
+          "function": "resize",
+          "callCount": 2,
+          "unionMs": 1.01
+        },
+        {
+          "path": "packages/adapters/web-component/src/runtime/modules.ts",
+          "generatedLine": 865,
+          "generatedColumn": 35,
+          "function": "(anonymous)",
+          "callCount": 4,
+          "unionMs": 0.733
+        }
+      ]
+    },
+    {
+      "arm": "candidate",
+      "checkout": "deb3e87418571192075b5ff5796e12ce6579065a",
+      "traceSha256": "b122e44aad50fef31042adc7933b04c0e9e0b929712ce16ab0b03cfc79769e51",
+      "protocolId": 14621,
+      "wcCallbacks": [
+        {
+          "kind": "connectedCallback",
+          "generatedLine": 274,
+          "eventCount": 73,
+          "unionMs": 107.22
+        },
+        {
+          "kind": "disconnectedCallback",
+          "generatedLine": 1059,
+          "eventCount": 334,
+          "unionMs": 10.833
+        },
+        {
+          "kind": "disconnectCheckpoint",
+          "generatedLine": 1067,
+          "eventCount": 386,
+          "unionMs": 169.032
+        }
+      ],
+      "originalVerdict": "rejected",
+      "familyWriteAfterPollMs": [[856.781, 857.688]],
+      "originalVerdictAfterPollMs": 1000.76,
+      "originalReturnAfterPollMs": 1384.055,
+      "forwardToDispatchMs": 1152.164,
+      "dispatchMs": 1.657,
+      "postWriteToDispatchMs": 523.726,
+      "postWriteUncoveredByRunTaskMs": 0.019,
+      "rendererIntervals": [
+        {
+          "kind": "RunTask",
+          "events": 3,
+          "unionMs": 523.707
+        },
+        {
+          "kind": "FireAnimationFrame",
+          "events": 1,
+          "unionMs": 511.835
+        },
+        {
+          "kind": "FunctionCall",
+          "events": 1509,
+          "unionMs": 410.276
+        },
+        {
+          "kind": "UpdateLayoutTree",
+          "events": 7,
+          "unionMs": 109.828
+        },
+        {
+          "kind": "Layout",
+          "events": 4,
+          "unionMs": 19.309
+        },
+        {
+          "kind": "PrePaint",
+          "events": 2,
+          "unionMs": 1.113
+        },
+        {
+          "kind": "Paint",
+          "events": 2,
+          "unionMs": 1.131
+        },
+        {
+          "kind": "Commit",
+          "events": 1,
+          "unionMs": 0.113
+        },
+        {
+          "kind": "MinorGC",
+          "events": 2,
+          "unionMs": 9.74
+        },
+        {
+          "kind": "v8.evaluateModule",
+          "events": 0,
+          "unionMs": 0.0
+        }
+      ],
+      "frameMilestones": [
+        {
+          "kind": "FireAnimationFrame",
+          "firstStartAfterWriteMs": -112.529
+        },
+        {
+          "kind": "PrePaint",
+          "firstStartAfterWriteMs": 511.879
+        },
+        {
+          "kind": "Paint",
+          "firstStartAfterWriteMs": 521.372
+        },
+        {
+          "kind": "Commit",
+          "firstStartAfterWriteMs": 523.306
+        }
+      ],
+      "rendererTasks": [
+        {
+          "fromWriteMs": 0.0,
+          "toWriteMs": 523.448,
+          "overlapMs": 523.448,
+          "fullMs": 673.398
+        },
+        {
+          "fromWriteMs": 523.463,
+          "toWriteMs": 523.713,
+          "overlapMs": 0.25,
+          "fullMs": 0.25
+        },
+        {
+          "fromWriteMs": 523.717,
+          "toWriteMs": 523.726,
+          "overlapMs": 0.009,
+          "fullMs": 1.685
+        }
+      ],
+      "calls": [
+        {
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 1067,
+          "generatedColumn": 22,
+          "function": "(anonymous)",
+          "callCount": 386,
+          "unionMs": 169.032
+        },
+        {
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 274,
+          "generatedColumn": 22,
+          "function": "connectedCallback",
+          "callCount": 73,
+          "unionMs": 107.22
+        },
+        {
+          "path": "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+          "generatedLine": 59,
+          "generatedColumn": 22,
+          "function": "notify",
+          "callCount": 6,
+          "unionMs": 35.635
+        },
+        {
+          "path": "packages/adapters/web-component/src/runtime/modules.ts",
+          "generatedLine": 1363,
+          "generatedColumn": 28,
+          "function": "(anonymous)",
+          "callCount": 6,
+          "unionMs": 19.786
+        },
+        {
+          "path": "apps/www/src/components/documentation-image-preview.ts",
+          "generatedLine": 375,
+          "generatedColumn": 46,
+          "function": "(anonymous)",
+          "callCount": 1,
+          "unionMs": 16.674
+        },
+        {
+          "path": "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+          "generatedLine": 90,
+          "generatedColumn": 48,
+          "function": "(anonymous)",
+          "callCount": 7,
+          "unionMs": 16.038
+        },
+        {
+          "path": "packages/adapters/web-component/src/runtime/modules.ts",
+          "generatedLine": 752,
+          "generatedColumn": 22,
+          "function": "(anonymous)",
+          "callCount": 5,
+          "unionMs": 11.756
+        },
+        {
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 1059,
+          "generatedColumn": 25,
+          "function": "disconnectedCallback",
+          "callCount": 334,
+          "unionMs": 10.833
+        },
+        {
+          "path": "packages/modules/control-label/src/web.ts",
+          "generatedLine": 42,
+          "generatedColumn": 35,
+          "function": "(anonymous)",
+          "callCount": 4,
+          "unionMs": 3.519
+        },
+        {
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 473,
+          "generatedColumn": 43,
+          "function": "(anonymous)",
+          "callCount": 399,
+          "unionMs": 2.643
+        },
+        {
+          "path": "apps/www/src/components/documentation-image-preview.ts",
+          "generatedLine": 369,
+          "generatedColumn": 48,
+          "function": "(anonymous)",
+          "callCount": 6,
+          "unionMs": 2.584
+        },
+        {
+          "path": "apps/www/src/components/PrototypePreviewer/projection-materializer.ts",
+          "generatedLine": 130,
+          "generatedColumn": 48,
+          "function": "(anonymous)",
+          "callCount": 4,
+          "unionMs": 2.445
+        },
+        {
+          "path": "apps/www/src/components/documentation-image-controls.ts",
+          "generatedLine": 69,
+          "generatedColumn": 18,
+          "function": "(anonymous)",
+          "callCount": 14,
+          "unionMs": 2.404
+        },
+        {
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "generatedLine": 336,
+          "generatedColumn": 18,
+          "function": "(anonymous)",
+          "callCount": 97,
+          "unionMs": 1.836
+        },
+        {
+          "path": "packages/modules/anatomy/src/web/order-observer.ts",
+          "generatedLine": 9,
+          "generatedColumn": 41,
+          "function": "(anonymous)",
+          "callCount": 23,
+          "unionMs": 1.643
+        },
+        {
+          "path": "apps/www/src/components/Homepage/homepage-runtime-client.ts",
+          "generatedLine": 828,
+          "generatedColumn": 41,
+          "function": "(anonymous)",
+          "callCount": 4,
+          "unionMs": 1.105
+        },
+        {
+          "path": "packages/adapters/base/src/motion/web-resident-motion.ts",
+          "generatedLine": 101,
+          "generatedColumn": 89,
+          "function": "resize",
+          "callCount": 2,
+          "unionMs": 0.992
+        },
+        {
+          "path": "packages/adapters/web-component/src/runtime/modules.ts",
+          "generatedLine": 865,
+          "generatedColumn": 35,
+          "function": "(anonymous)",
+          "callCount": 4,
+          "unionMs": 0.816
+        }
+      ]
+    }
+  ]
+}
