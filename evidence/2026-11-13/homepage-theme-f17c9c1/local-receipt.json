@@ -1,0 +1,497 @@
+{
+  "head": "f17c9c127cfea9c8d7bc3c1e1125e8b9693a7d0d",
+  "tree": "a4c8106ca5ec9d1dca0e30fa7ebb038a3d62230d",
+  "parent": "6eddf384ae1a189f832f2feb41b0808d824e5f3b",
+  "blobs": {
+    "apps/www/src/components/Homepage/homepage-runtime-client.ts": {
+      "blob": "5355d2082b6e9813719fd62d664b1b9181961eca",
+      "sha256": "25beab20a8000287d53f5c59ba15e79a56b614dda3c5b1185e1e4b99e1223ebe"
+    },
+    "apps/www/src/components/Homepage/homepage-runtime-client.test.ts": {
+      "blob": "c97ad8b47b28fb675c8e1818672e860897bdfa03",
+      "sha256": "4437c2bcd02693033f0e17ce83f5bc761446ce1ad30985c6c18172ad7a06c49d"
+    },
+    "apps/www/src/components/PrototypePreviewer/projection-theme.ts": {
+      "blob": "f12f2712ca5e662512d4fa3ec8e255f17d0655e3",
+      "sha256": "d2fabc42580014e9a1cdb52be5207d1931ca5823d6019822b17f0b3f18d5cb0e"
+    },
+    "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts": {
+      "blob": "c734f0dc6b947e11729e2d3ba646544f1e29602f",
+      "sha256": "7ab7bb2225c22469254a7488c4c646c98cb0e180f06c20ba900e6dd232609d4a"
+    },
+    "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts": {
+      "blob": "f3a517c207b24560b3b67ff8852d2e7190f6c219",
+      "sha256": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e"
+    }
+  },
+  "clean": true,
+  "environment": {
+    "node": "v24.21.0",
+    "chrome": "156.0.8078.79",
+    "os": "macOS arm64",
+    "vitest": "2.1.9"
+  },
+  "focused": {
+    "exit": 0,
+    "passed": 196,
+    "failed": 0,
+    "filtered": 0,
+    "files": [
+      {
+        "path": "apps/www/src/components/site-typography.ownership.test.ts",
+        "passed": [
+          "wc: forwards language and preserves source with an explicit HappyDOM :lang fixture",
+          "react: forwards language and preserves source with an explicit HappyDOM :lang fixture",
+          "vue: forwards language and preserves source with an explicit HappyDOM :lang fixture",
+          "vue2: forwards language and preserves source with an explicit HappyDOM :lang fixture",
+          "disposes when the documentation owner is detached, then admits the next owner",
+          "projects newly appended native source under the current typography owner",
+          "wc: preserves a collapsed caret before the same inline child",
+          "react: preserves a collapsed caret before the same inline child",
+          "vue: preserves a collapsed caret before the same inline child",
+          "vue2: preserves a collapsed caret before the same inline child",
+          "wc: interrupted preparation leaves original source and no batch",
+          "wc: stale prepared work cannot retire the new source owner",
+          "react: interrupted preparation leaves original source and no batch",
+          "react: stale prepared work cannot retire the new source owner",
+          "vue: interrupted preparation leaves original source and no batch",
+          "vue: stale prepared work cannot retire the new source owner",
+          "vue2: interrupted preparation leaves original source and no batch",
+          "vue2: stale prepared work cannot retire the new source owner",
+          "explicit destroy permits clean documentation re-init",
+          "keeps a CodeExample tab hint in its native owner without replacing the Docs generation",
+          "ignores renderer-owned Copy and Code children but reconciles their native caption parent",
+          "reconciles a source addition whose observer ran during empty-scope preparation",
+          "wc: absorbs appended/prepended/inserted source exactly once in native order",
+          "react: absorbs appended/prepended/inserted source exactly once in native order",
+          "vue: absorbs appended/prepended/inserted source exactly once in native order",
+          "vue2: absorbs appended/prepended/inserted source exactly once in native order",
+          "admits a replacement before observer delivery and stale teardown cannot revoke it",
+          "revokes a scope when its entire containing subtree is removed",
+          "wc: maps start/interior/end boundaries through replace, rollback and teardown",
+          "wc: maps a caret after the carrier to the source end and preserves an empty slot caret",
+          "react: maps start/interior/end boundaries through replace, rollback and teardown",
+          "react: maps a caret after the carrier to the source end and preserves an empty slot caret",
+          "vue: maps start/interior/end boundaries through replace, rollback and teardown",
+          "vue: maps a caret after the carrier to the source end and preserves an empty slot caret",
+          "vue2: maps start/interior/end boundaries through replace, rollback and teardown",
+          "vue2: maps a caret after the carrier to the source end and preserves an empty slot caret",
+          "maps directional endpoint pair 1 \u2192 2 with an explicit HappyDOM getter fixture",
+          "maps directional endpoint pair 2 \u2192 1 with an explicit HappyDOM getter fixture"
+        ]
+      },
+      {
+        "path": "apps/www/src/components/site-typography.test.ts",
+        "passed": [
+          "wc: valid inline slots, one native source, repeated replacement and complete teardown",
+          "react: valid inline slots, one native source, repeated replacement and complete teardown",
+          "vue: valid inline slots, one native source, repeated replacement and complete teardown",
+          "vue2: valid inline slots, one native source, repeated replacement and complete teardown",
+          "restores previous real batch after failed commit and retains source edits/language replacement",
+          "honors an explicit committed Shadcn family on a Brutalist documentation path",
+          "uses one documentation scope, follows global runtime and responds to new semantic content",
+          "wc: projects document list, table, definition, quote and summary owners with native rhythm",
+          "react: projects document list, table, definition, quote and summary owners with native rhythm",
+          "vue: projects document list, table, definition, quote and summary owners with native rhythm",
+          "vue2: projects document list, table, definition, quote and summary owners with native rhythm",
+          "shares the homepage exact generation across real adapter changes and teardown",
+          "batches 100 semantic owners in one renderer root and does not react to text edits with stale copy",
+          "react: keeps span and default roots distinct for the same prototype",
+          "vue: keeps span and default roots distinct for the same prototype",
+          "vue2: keeps span and default roots distinct for the same prototype",
+          "only lets explicit native labels cross the exact actual passive Header frame",
+          "preserves a text caret and backward labelled-input selection through replacement",
+          "wc: changes document Text inputs, preserves notice/chrome owners and survives family round-trip",
+          "wc: refreshes recipe ownership when the same paragraph moves into and out of an aside",
+          "wc: retains document roles while using the source-aligned medium homepage slogan",
+          "react: changes document Text inputs, preserves notice/chrome owners and survives family round-trip",
+          "react: refreshes recipe ownership when the same paragraph moves into and out of an aside",
+          "react: retains document roles while using the source-aligned medium homepage slogan",
+          "vue: changes document Text inputs, preserves notice/chrome owners and survives family round-trip",
+          "vue: refreshes recipe ownership when the same paragraph moves into and out of an aside",
+          "vue: retains document roles while using the source-aligned medium homepage slogan",
+          "vue2: changes document Text inputs, preserves notice/chrome owners and survives family round-trip",
+          "vue2: refreshes recipe ownership when the same paragraph moves into and out of an aside",
+          "vue2: retains document roles while using the source-aligned medium homepage slogan",
+          "discovers native note-title intent before any asynchronous Surface bootstrap",
+          "reads document selection only when a disposing batch still owns native text",
+          "preserves the native owner without reading offsets for an empty selection",
+          "does not reapply a retained code selection while button owns focus",
+          "does not reapply a retained code selection while a owns focus",
+          "keeps native ownership evidence pending while real React Typography publication is delayed",
+          "does not recollect empty-token Base/Lucide parts (docsOnly=false)",
+          "does not recollect empty-token Base/Lucide parts (docsOnly=true)",
+          "increments revision exactly at Hero/compact boundaries, including backwards, without source edits",
+          "wc/320px: consumes exact public Text tokens in retained native owners",
+          "wc/639px: consumes exact public Text tokens in retained native owners",
+          "wc/640px: consumes exact public Text tokens in retained native owners",
+          "wc/767px: consumes exact public Text tokens in retained native owners",
+          "wc/768px: consumes exact public Text tokens in retained native owners",
+          "wc/1024px: consumes exact public Text tokens in retained native owners",
+          "wc/1279px: consumes exact public Text tokens in retained native owners",
+          "wc/1280px: consumes exact public Text tokens in retained native owners",
+          "wc/1440px: consumes exact public Text tokens in retained native owners",
+          "wc: refresh follows committed small/medium/wide snapshots and restores original source",
+          "react/320px: consumes exact public Text tokens in retained native owners",
+          "react/639px: consumes exact public Text tokens in retained native owners",
+          "react/640px: consumes exact public Text tokens in retained native owners",
+          "react/767px: consumes exact public Text tokens in retained native owners",
+          "react/768px: consumes exact public Text tokens in retained native owners",
+          "react/1024px: consumes exact public Text tokens in retained native owners",
+          "react/1279px: consumes exact public Text tokens in retained native owners",
+          "react/1280px: consumes exact public Text tokens in retained native owners",
+          "react/1440px: consumes exact public Text tokens in retained native owners",
+          "react: refresh follows committed small/medium/wide snapshots and restores original source",
+          "vue/320px: consumes exact public Text tokens in retained native owners",
+          "vue/639px: consumes exact public Text tokens in retained native owners",
+          "vue/640px: consumes exact public Text tokens in retained native owners",
+          "vue/767px: consumes exact public Text tokens in retained native owners",
+          "vue/768px: consumes exact public Text tokens in retained native owners",
+          "vue/1024px: consumes exact public Text tokens in retained native owners",
+          "vue/1279px: consumes exact public Text tokens in retained native owners",
+          "vue/1280px: consumes exact public Text tokens in retained native owners",
+          "vue/1440px: consumes exact public Text tokens in retained native owners",
+          "vue: refresh follows committed small/medium/wide snapshots and restores original source",
+          "vue2/320px: consumes exact public Text tokens in retained native owners",
+          "vue2/639px: consumes exact public Text tokens in retained native owners",
+          "vue2/640px: consumes exact public Text tokens in retained native owners",
+          "vue2/767px: consumes exact public Text tokens in retained native owners",
+          "vue2/768px: consumes exact public Text tokens in retained native owners",
+          "vue2/1024px: consumes exact public Text tokens in retained native owners",
+          "vue2/1279px: consumes exact public Text tokens in retained native owners",
+          "vue2/1280px: consumes exact public Text tokens in retained native owners",
+          "vue2/1440px: consumes exact public Text tokens in retained native owners",
+          "vue2: refresh follows committed small/medium/wide snapshots and restores original source",
+          "commits the Hero bucket for empty scopes rather than refreshing forever",
+          "wc: refreshes both Hero boundaries and removes every listener on destruction",
+          "react: refreshes both Hero boundaries and removes every listener on destruction",
+          "vue: refreshes both Hero boundaries and removes every listener on destruction",
+          "vue2: refreshes both Hero boundaries and removes every listener on destruction",
+          "wc/shadcn: projects all five inherited inputs and retains source identity",
+          "wc/brutalist: projects all five inherited inputs and retains source identity",
+          "react/shadcn: projects all five inherited inputs and retains source identity",
+          "react/brutalist: projects all five inherited inputs and retains source identity",
+          "vue/shadcn: projects all five inherited inputs and retains source identity",
+          "vue/brutalist: projects all five inherited inputs and retains source identity",
+          "vue2/shadcn: projects all five inherited inputs and retains source identity",
+          "vue2/brutalist: projects all five inherited inputs and retains source identity"
+        ]
+      },
+      {
+        "path": "apps/www/src/components/Homepage/homepage-runtime-client.test.ts",
+        "passed": [
+          "stages all action groups before hiding native SSR links, with the one global runtime/library control group",
+          "commits repeated runtime switches to every group and publishes preference after success",
+          "keeps the prior whole page on partial materialization failure and disposes prepared siblings",
+          "discards late candidates after a newer selection and preserves the latest whole page",
+          "restores fallback and removes subscriptions on disposal",
+          "switches header, native action recipes and demo in one generation with orthogonal runtime/library state and the explicit task recipe",
+          "rejects unsupported family requests before changing the committed homepage transaction",
+          "runs the real Bootstrap homepage composition as a WIP family",
+          "a failed demo prevents the header and native action groups from committing",
+          "rolls back every site family marker when publication fails, including absent markers",
+          "ignores stale preference side effects without taking over native navigation",
+          "uses the public icon-size Button prop for compact accessible header preferences",
+          "projects the menu as a real family Button and binds only its current runtime command channel",
+          "supports a preferences-only header group without inventing a command control",
+          "uses one generation for all commands and preserves the native service DOM through library/runtime changes",
+          "retains the whole old page if one Search command fails and never publishes mixed generations",
+          "carries user intent through a superseding family coordinator request exactly once",
+          "carries user intent through a superseding component coordinator request exactly once",
+          "discards a never-committed intent after superseding failure and does not publish it on a later family success",
+          "retains the one pending intent across repeated same-runtime selections",
+          "replaces pending intent when the user explicitly selects the old runtime again",
+          "does not publish after teardown or resurrect late pending candidates",
+          "still notifies the document once if optional preference storage throws",
+          "does not republish an external adapter request as a pending homepage choice",
+          "publishes only the already-committed runtime retained by a later failed family request",
+          "reads one page-owned theme before updating nested language/social candidates",
+          "cancels through its real public Button without replacing the retained generation or publishing stale preference",
+          "keeps a failed target retryable through a real Button and removes the mask after success",
+          "recomputes both Header control policies for the requested shadcn family, including return switches",
+          "recomputes both Header control policies for the requested brutalist family, including return switches"
+        ]
+      },
+      {
+        "path": "apps/www/src/components/Homepage/homepage-typography-language.test.ts",
+        "passed": [
+          "html lang alone automatically refreshes the slogan and preserves native form state",
+          "main lang alone automatically refreshes the slogan and preserves native form state",
+          "h1 lang alone automatically refreshes the slogan and preserves native form state",
+          "an explicit English slogan overrides Chinese html until that override is removed",
+          "does not rebuild typography when only a non-slogan target changes language",
+          "coalesces language changes during preparation without publishing the stale recipe",
+          "destroy retires a pending language refresh and ignores later language changes"
+        ]
+      },
+      {
+        "path": "apps/www/src/components/Homepage/homepage-typography-state.test.ts",
+        "passed": [
+          "viewport: keeps the original logical owners, draft, switch, caret and page snapshot",
+          "new source heading: keeps the original logical owners, draft, switch, caret and page snapshot",
+          "prepare failure keeps the current gallery, typography owner and page snapshot",
+          "partial activate failure keeps the current gallery, typography owner and page snapshot",
+          "coalesces source and viewport changes during local preparation without activating stale source",
+          "a whole-page family commit revokes an older same-generation local preparation",
+          "whole-page publication rollback restores the latest locally refreshed typography and live gallery",
+          "a failed publication keeps the committed owner and no replacement batch",
+          "a source added during a failed publication joins the retained generation",
+          "a source added during a whole-page runtime preparation joins its committed generation without a second page commit",
+          "destroy waits for and retires an in-flight local batch without reviving source or framework owners",
+          "change role: observes only the authored change, keeps gallery state and settles after one batch",
+          "remove role: observes only the authored change, keeps gallery state and settles after one batch",
+          "new marker: observes only the authored change, keeps gallery state and settles after one batch",
+          "keeps language and complete textContent replacement fresh in the same page generation",
+          "reconciles source changes arriving while a failed local batch is being disposed",
+          "publishes a committed runtime preference when a live family request supersedes its pending retirement observer"
+        ]
+      },
+      {
+        "path": "apps/www/src/components/PrototypePreviewer/projection-theme.test.ts",
+        "passed": [
+          "copies only the explicit Website Shadcn input and fails closed on a missing token",
+          "reads explicit Shadcn typography overrides without borrowing a retained other-family font",
+          "withdraws a previous family font with the owned theme map and leaves caller style alone",
+          "uses the Prototype-owned Brutalist theme for the active Website color mode",
+          "resolves the nearest explicit Brutalist frame theme before the document theme",
+          "watches the owning scope ancestry for explicit Brutalist theme changes",
+          "uses an explicit light class before a dark system preference",
+          "only writes changed live theme declarations and still reclaims owned priority",
+          "applies a closed theme copy and removes properties retired from its owned shape",
+          "watches color-mode changes without self-looping and returns idempotent cleanup",
+          "disconnects every observer when the initial watcher publication throws",
+          "preserves historical Bootstrap light paint and explicit accessible dark adaptations"
+        ]
+      }
+    ]
+  },
+  "native": {
+    "exit": 0,
+    "passed": 16,
+    "failed": 0,
+    "filtered": 17,
+    "files": [
+      {
+        "path": "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+        "passed": [
+          "shadcn/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "shadcn/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "shadcn/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "shadcn/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "brutalist/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "brutalist/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "brutalist/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "brutalist/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close"
+        ]
+      },
+      {
+        "path": "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+        "passed": [
+          "switches every registered homepage group through real adapters, preserving native anchors and theme",
+          "uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence",
+          "uses the same mobile shell on documentation with independent global navigation and contents",
+          "compact shadcn preferences stay usable at 200% text, RTL and breakpoint moves",
+          "compact brutalist preferences stay usable at 200% text, RTL and breakpoint moves",
+          "retains shadcn preference owners and portals through real breakpoint reconnects",
+          "retains brutalist preference owners and portals through real breakpoint reconnects"
+        ]
+      },
+      {
+        "path": "apps/www/src/content/docs/zh-cn/site-copy-commands.browser.test.ts",
+        "passed": [
+          "activates the first Copy on a new Docs source while Header preparation stays pending"
+        ]
+      }
+    ]
+  },
+  "types": {
+    "exit": 0,
+    "astroFiles": 1215,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 30
+  },
+  "pageThemeControl": {
+    "additionalPageResolverCallsBefore": 1,
+    "additionalPageResolverCallsAfter": 0,
+    "sameSnapshotDeliveredToAllNestedCandidates": true,
+    "transitions": 3
+  },
+  "localBrutalistFamilyMs": 559.314,
+  "ring": {
+    "source": {
+      "sha": "f17c9c127cfea9c8d7bc3c1e1125e8b9693a7d0d",
+      "dirty": false,
+      "expectedSha": null,
+      "eventSha": null
+    },
+    "family": "brutalist",
+    "stage": "wc-runtime-narrow-focus-ring",
+    "viewport": {
+      "width": 320,
+      "height": 300
+    },
+    "capturedAt": "2026-11-13T03:42:24.508Z",
+    "facts": {
+      "unfocused": {
+        "focused": false,
+        "focusVisible": false,
+        "prototype": "brutalist-select-trigger",
+        "tokens": [
+          "flex",
+          "w-full",
+          "items-center",
+          "justify-between",
+          "gap-2",
+          "rounded-base",
+          "border-2",
+          "border-black",
+          "bg-main",
+          "text-main-foreground",
+          "font-sans",
+          "font-medium",
+          "px-3",
+          "py-2",
+          "text-sm",
+          "whitespace-nowrap",
+          "outline-none",
+          "select-none",
+          "data-[placeholder]:text-main-foreground",
+          "data-[hovered]:border-black",
+          "data-[pressed]:border-black",
+          "data-[focus-visible]:outline-none",
+          "data-[focus-visible]:ring-2",
+          "data-[focus-visible]:ring-ring",
+          "data-[focus-visible]:ring-offset-2",
+          "data-[focus-visible]:ring-offset-background",
+          "data-[disabled]:pointer-events-none",
+          "data-[disabled]:opacity-50",
+          "transition-all",
+          "h-10",
+          "shadow-[4px_4px_0_0_#000]"
+        ],
+        "ringWidth": 0,
+        "ringOffset": 0,
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(0, 0, 0) 4px 4px 0px 0px",
+        "ringColor": "",
+        "target": {
+          "x": 26,
+          "y": 267,
+          "width": 268,
+          "height": 44,
+          "top": 267,
+          "right": 294,
+          "bottom": 311,
+          "left": 26
+        },
+        "ring": {
+          "left": 26,
+          "right": 294,
+          "top": 267,
+          "bottom": 311
+        },
+        "clipping": [
+          {
+            "tag": "DIV",
+            "marker": "site-header-native-slot pui-projection-box",
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "left": 22,
+            "right": 298,
+            "top": 75,
+            "bottom": 278,
+            "containsX": true,
+            "containsY": false,
+            "unsupportedClip": false
+          }
+        ],
+        "viewport": {
+          "width": 320,
+          "height": 300
+        },
+        "inViewport": false,
+        "unclipped": false
+      },
+      "focused": {
+        "focused": true,
+        "focusVisible": true,
+        "prototype": "brutalist-select-trigger",
+        "tokens": [
+          "flex",
+          "w-full",
+          "items-center",
+          "justify-between",
+          "gap-2",
+          "rounded-base",
+          "border-2",
+          "border-black",
+          "bg-main",
+          "text-main-foreground",
+          "font-sans",
+          "font-medium",
+          "px-3",
+          "py-2",
+          "text-sm",
+          "whitespace-nowrap",
+          "outline-none",
+          "select-none",
+          "data-[placeholder]:text-main-foreground",
+          "data-[hovered]:border-black",
+          "data-[pressed]:border-black",
+          "data-[focus-visible]:outline-none",
+          "data-[focus-visible]:ring-2",
+          "data-[focus-visible]:ring-ring",
+          "data-[focus-visible]:ring-offset-2",
+          "data-[focus-visible]:ring-offset-background",
+          "data-[disabled]:pointer-events-none",
+          "data-[disabled]:opacity-50",
+          "transition-all",
+          "h-10",
+          "shadow-[4px_4px_0_0_#000]"
+        ],
+        "ringWidth": 2,
+        "ringOffset": 2,
+        "shadow": "rgba(220, 235, 254, 0.173) 0px 0px 0px 0.347672px, rgba(0, 0, 0, 0.173) 0px 0px 0px 0.695344px, rgb(0, 0, 0) 4px 4px 0px 0px",
+        "ringColor": "#000000",
+        "target": {
+          "x": 26,
+          "y": 230,
+          "width": 268,
+          "height": 44,
+          "top": 230,
+          "right": 294,
+          "bottom": 274,
+          "left": 26
+        },
+        "ring": {
+          "left": 22,
+          "right": 298,
+          "top": 226,
+          "bottom": 278
+        },
+        "clipping": [
+          {
+            "tag": "DIV",
+            "marker": "site-header-native-slot pui-projection-box",
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "left": 22,
+            "right": 298,
+            "top": 75,
+            "bottom": 278,
+            "containsX": true,
+            "containsY": true,
+            "unsupportedClip": false
+          }
+        ],
+        "viewport": {
+          "width": 320,
+          "height": 300
+        },
+        "inViewport": true,
+        "unclipped": true
+      }
+    },
+    "screenshotComplete": true
+  }
+}

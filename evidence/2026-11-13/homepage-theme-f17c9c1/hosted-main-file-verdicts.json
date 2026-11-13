@@ -1,0 +1,311 @@
+{
+  "main": "35195a6e6f1ba6a7d800da0029f2683013abd18b",
+  "candidate": "5c0815e550a3bb3f64597070c57a2edc26a213fa",
+  "scope": "Only terminal per-file rows in partial original shard logs. Missing rows are unverified, never passing.",
+  "shards": {
+    "1": {
+      "shared": [
+        {
+          "path": "apps/workspace/test/lifecycle.browser.test.ts",
+          "main": {
+            "total": 7,
+            "failed": 0,
+            "skipped": 0
+          },
+          "candidate": {
+            "total": 7,
+            "failed": 0,
+            "skipped": 0
+          }
+        },
+        {
+          "path": "apps/www/src/content/docs/zh-cn/contrast-probe.browser.test.ts",
+          "main": {
+            "total": 48,
+            "failed": 0,
+            "skipped": 0
+          },
+          "candidate": {
+            "total": 48,
+            "failed": 0,
+            "skipped": 0
+          }
+        },
+        {
+          "path": "apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts",
+          "main": {
+            "total": 36,
+            "failed": 0,
+            "skipped": 0
+          },
+          "candidate": {
+            "total": 36,
+            "failed": 0,
+            "skipped": 0
+          }
+        },
+        {
+          "path": "apps/www/src/content/docs/zh-cn/demo-prototype-style-closure.browser.test.ts",
+          "main": {
+            "total": 10,
+            "failed": 1,
+            "skipped": 0
+          },
+          "candidate": {
+            "total": 10,
+            "failed": 1,
+            "skipped": 0
+          }
+        },
+        {
+          "path": "apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts",
+          "main": {
+            "total": 12,
+            "failed": 4,
+            "skipped": 0
+          },
+          "candidate": {
+            "total": 12,
+            "failed": 4,
+            "skipped": 0
+          }
+        },
+        {
+          "path": "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts",
+          "main": {
+            "total": 2,
+            "failed": 2,
+            "skipped": 0
+          },
+          "candidate": {
+            "total": 2,
+            "failed": 2,
+            "skipped": 0
+          }
+        },
+        {
+          "path": "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+          "main": {
+            "total": 10,
+            "failed": 2,
+            "skipped": 0
+          },
+          "candidate": {
+            "total": 10,
+            "failed": 1,
+            "skipped": 0
+          }
+        },
+        {
+          "path": "apps/www/src/content/docs/zh-cn/runtime-preview-surface.browser.test.ts",
+          "main": {
+            "total": 6,
+            "failed": 0,
+            "skipped": 0
+          },
+          "candidate": {
+            "total": 6,
+            "failed": 0,
+            "skipped": 0
+          }
+        },
+        {
+          "path": "apps/www/src/content/docs/zh-cn/site-sidebar-disclosure.browser.test.ts",
+          "main": {
+            "total": 7,
+            "failed": 3,
+            "skipped": 0
+          },
+          "candidate": {
+            "total": 7,
+            "failed": 4,
+            "skipped": 0
+          }
+        },
+        {
+          "path": "apps/www/test/message-composition.browser.test.ts",
+          "main": {
+            "total": 6,
+            "failed": 0,
+            "skipped": 0
+          },
+          "candidate": {
+            "total": 6,
+            "failed": 0,
+            "skipped": 0
+          }
+        }
+      ],
+      "mainOnly": [],
+      "candidateOnly": []
+    },
+    "2": {
+      "shared": [
+        {
+          "path": "apps/www/src/components/documentation-image-preview.browser.test.ts",
+          "main": {
+            "total": 24,
+            "failed": 0,
+            "skipped": 0
+          },
+          "candidate": {
+            "total": 24,
+            "failed": 0,
+            "skipped": 0
+          }
+        },
+        {
+          "path": "apps/www/src/content/docs/zh-cn/contrast-tooltip-warm-handoff.browser.test.ts",
+          "main": {
+            "total": 17,
+            "failed": 0,
+            "skipped": 0
+          },
+          "candidate": {
+            "total": 17,
+            "failed": 0,
+            "skipped": 0
+          }
+        },
+        {
+          "path": "apps/www/src/content/docs/zh-cn/demo-brutalist-button.browser.test.ts",
+          "main": {
+            "total": 8,
+            "failed": 4,
+            "skipped": 0
+          },
+          "candidate": {
+            "total": 8,
+            "failed": 4,
+            "skipped": 0
+          }
+        },
+        {
+          "path": "apps/www/src/content/docs/zh-cn/demo-composed-style-isolation.browser.test.ts",
+          "main": {
+            "total": 2,
+            "failed": 0,
+            "skipped": 0
+          },
+          "candidate": {
+            "total": 2,
+            "failed": 0,
+            "skipped": 0
+          }
+        },
+        {
+          "path": "apps/www/src/content/docs/zh-cn/demo-ring-offset-default.browser.test.ts",
+          "main": {
+            "total": 1,
+            "failed": 0,
+            "skipped": 0
+          },
+          "candidate": {
+            "total": 1,
+            "failed": 0,
+            "skipped": 0
+          }
+        },
+        {
+          "path": "apps/www/src/content/docs/zh-cn/demo-shadcn-scroll-area.browser.test.ts",
+          "main": {
+            "total": 1,
+            "failed": 1,
+            "skipped": 0
+          },
+          "candidate": {
+            "total": 1,
+            "failed": 1,
+            "skipped": 0
+          }
+        },
+        {
+          "path": "apps/www/src/content/docs/zh-cn/overlay-portal-direction.browser.test.ts",
+          "main": {
+            "total": 8,
+            "failed": 0,
+            "skipped": 0
+          },
+          "candidate": {
+            "total": 8,
+            "failed": 0,
+            "skipped": 0
+          }
+        },
+        {
+          "path": "apps/www/src/content/docs/zh-cn/scroll-area-corner.browser.test.ts",
+          "main": {
+            "total": 2,
+            "failed": 1,
+            "skipped": 0
+          },
+          "candidate": {
+            "total": 2,
+            "failed": 1,
+            "skipped": 0
+          }
+        },
+        {
+          "path": "apps/www/src/content/docs/zh-cn/site-typography.browser.test.ts",
+          "main": {
+            "total": 34,
+            "failed": 27,
+            "skipped": 0
+          },
+          "candidate": {
+            "total": 34,
+            "failed": 1,
+            "skipped": 0
+          }
+        },
+        {
+          "path": "apps/www/test/preferences.browser.test.ts",
+          "main": {
+            "total": 4,
+            "failed": 0,
+            "skipped": 0
+          },
+          "candidate": {
+            "total": 4,
+            "failed": 0,
+            "skipped": 0
+          }
+        }
+      ],
+      "mainOnly": [],
+      "candidateOnly": ["apps/www/src/content/docs/zh-cn/demo-shadow-split-s5.browser.test.ts"]
+    },
+    "3": {
+      "shared": [
+        {
+          "path": "apps/www/src/content/docs/zh-cn/demo-select-draft-projections.browser.test.ts",
+          "main": {
+            "total": 24,
+            "failed": 20,
+            "skipped": 0
+          },
+          "candidate": {
+            "total": 24,
+            "failed": 20,
+            "skipped": 0
+          }
+        },
+        {
+          "path": "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+          "main": {
+            "total": 8,
+            "failed": 0,
+            "skipped": 0
+          },
+          "candidate": {
+            "total": 8,
+            "failed": 0,
+            "skipped": 0
+          }
+        }
+      ],
+      "mainOnly": ["apps/www/src/content/docs/zh-cn/demo-accordion-family.browser.test.ts"],
+      "candidateOnly": []
+    }
+  }
+}
