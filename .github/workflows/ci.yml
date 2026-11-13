@@ -1,86 +1,142 @@
 name: CI
-run-name: Brutalist dispatch on the original browser shards
+run-name: Brutalist original shards on a shared runner
 
-# Owned verification ref only. Preserve the original shard selection and
-# runtime invocation while keeping the held Search lanes out of this run.
 on: workflow_dispatch
+permissions:
+  contents: read
 
 jobs:
-  test-browser:
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
+  paired-browser:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 40
     strategy:
       fail-fast: false
-      max-parallel: 8
       matrix:
         include:
           - shard: 1/8
             slot: browser-1-of-8
             trace: '1'
-          - shard: 2/8
-            slot: browser-2-of-8
-            trace: '0'
           - shard: 3/8
             slot: browser-3-of-8
             trace: '0'
     env:
-      CANDIDATE_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+      BASELINE_CARRIER: 416f8cb72f340d64750c02729899caeb4ee7fa26
+      CANDIDATE_CARRIER: 51751ae1b9213aca255d67ac07ba2a691b5f4771
+      CHROME_VERSION: 157.0.8103.50
+      CHROME_ZIP_SHA256: d17167bc092eb495a3b768c7467f27e35f625aa03834233a1663af67dcb668c9
       PROTO_UI_RUNTIME_PHASE: browser
       PROTO_UI_RUNTIME_SHARD: ${{ matrix.shard }}
       PROTO_UI_RUNTIME_SLOT: ${{ matrix.slot }}
       PROTO_UI_FAMILY_DISPATCH_PROBE: ${{ matrix.trace }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
       - uses: actions/setup-node@v4
         with:
-          node-version: 24
-      - name: Install locked dependencies and locate Chromium
+          node-version: 24.22.2
+      - name: Verify and prepare the shared browser
         run: |
-          corepack enable
-          corepack pnpm@10.32.1 install --frozen-lockfile
-          CHROME=$(command -v google-chrome || command -v chromium || command -v chromium-browser)
-          echo "CHROME_PATH=$CHROME" >> "$GITHUB_ENV"
+          set -euo pipefail
+          chrome_dir="$RUNNER_TEMP/pair-chrome"
+          mkdir -p "$chrome_dir"
+          curl -q --fail --silent --show-error --location --retry 2 --max-time 180 \
+            "https://storage.googleapis.com/chrome-for-testing-public/$CHROME_VERSION/linux64/chrome-linux64.zip" \
+            -o "$chrome_dir/chrome.zip"
+          printf '%s  %s\n' "$CHROME_ZIP_SHA256" "$chrome_dir/chrome.zip" | sha256sum --check --strict
+          unzip -q "$chrome_dir/chrome.zip" -d "$chrome_dir"
+          chrome="$chrome_dir/chrome-linux64/chrome"
+          [[ "$("$chrome" --version)" == *" $CHROME_VERSION"* ]]
+          echo "CHROME_PATH=$chrome" >> "$GITHUB_ENV"
       - name: Restore the exact browser font package only
         timeout-minutes: 1
         uses: actions/cache@v4
         with:
           path: ${{ runner.temp }}/homepage-font-cache/fonts-noto-cjk_20230817+repack1-3_all.deb
           key: ubuntu24-fonts-noto-cjk-7d64b985f6fe128c99eae5610d5c047338e572bdcfb2bb09736be01b824a7f6c
-      - name: Install real CJK fallback for typography glyph evidence
-        # Fail setup before a slow mirror consumes the browser execution budget.
+      - name: Install real CJK fallback
         timeout-minutes: 3
         env:
-          FONT_EVIDENCE_DIR: ${{ runner.temp }}/runtime-ci/font-preparation
+          FONT_EVIDENCE_DIR: ${{ runner.temp }}/pair-evidence/environment/font-preparation
         run: bash apps/www/scripts/prepare-homepage-composition-fonts.sh
-      - name: Disable the development toolbar before public-page browser tests
-        run: |
-          corepack pnpm@10.32.1 --filter apps-www exec astro preferences disable devToolbar
-          corepack pnpm@10.32.1 --filter apps-www exec astro preferences get devToolbar.enabled
-      - name: Run the bounded shard with its own documentation server
+      - name: Prepare both clean source trees
         run: |
           set -euo pipefail
-          export PROTO_UI_RUNTIME_EVIDENCE_DIR="$RUNNER_TEMP/runtime-ci"
-          export PROTO_UI_TYPOGRAPHY_EVIDENCE_DIR="$PROTO_UI_RUNTIME_EVIDENCE_DIR/typography"
-          export PROTO_UI_MATERIAL_EVIDENCE_DIR="$PROTO_UI_RUNTIME_EVIDENCE_DIR/material"
-          mkdir -p "$PROTO_UI_RUNTIME_EVIDENCE_DIR"
-          git rev-parse HEAD | tee "$PROTO_UI_RUNTIME_EVIDENCE_DIR/source-sha.txt"
-          printf '%s\n' '29a61c4cee7e55d160fbe9a6a7242359d5461c8b' > "$PROTO_UI_RUNTIME_EVIDENCE_DIR/product-parent.txt"
-          node --version | tee "$PROTO_UI_RUNTIME_EVIDENCE_DIR/node-version.txt"
-          "$CHROME_PATH" --version | tee "$PROTO_UI_RUNTIME_EVIDENCE_DIR/chrome-version.txt"
-          # Each matrix job owns an independent checkout, server and Astro cache.
-          # Keep room within the job deadline for teardown and artifact retention.
-          timeout --signal=TERM --kill-after=10s 900s \
-            node scripts/test/run-runtime-tests.mjs 2>&1 | tee "$PROTO_UI_RUNTIME_EVIDENCE_DIR/browser.log"
-      - name: Record terminal producer outcome
-        if: always()
-        env:
-          RUNTIME_CI_OUTCOME: ${{ job.status }}
-        run: node scripts/test/runtime-ci.mjs finish "$RUNNER_TEMP/runtime-ci"
-      - name: Preserve source-bound shard selection, results and failure output
+          corepack enable
+          for arm in baseline candidate; do
+            sha="$BASELINE_CARRIER"
+            if [[ "$arm" == candidate ]]; then sha="$CANDIDATE_CARRIER"; fi
+            root="$RUNNER_TEMP/pair-$arm"
+            git worktree add --detach "$root" "$sha"
+            (
+              cd "$root"
+              corepack pnpm@10.32.1 install --frozen-lockfile
+              corepack pnpm@10.32.1 --filter apps-www exec astro preferences disable devToolbar
+              corepack pnpm@10.32.1 --filter apps-www exec astro preferences get devToolbar.enabled
+              git diff --quiet
+              git diff --cached --quiet
+            )
+          done
+      - name: Execute both original shard arms sequentially
+        run: |
+          set -euo pipefail
+          evidence="$RUNNER_TEMP/pair-evidence"
+          mkdir -p "$evidence/environment"
+          {
+            printf 'workflowSha=%s\nrunId=%s\nattempt=%s\nslot=%s\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" "$PROTO_UI_RUNTIME_SLOT"
+            printf 'runnerImage=%s\nrunnerImageVersion=%s\n' "${ImageOS:-missing}" "${ImageVersion:-missing}"
+            uname -srm
+            printf 'cpuCount=%s\n' "$(nproc)"
+            awk -F ': ' '/^model name/ {print $2; exit}' /proc/cpuinfo
+            "$CHROME_PATH" --version
+            sha256sum "$CHROME_PATH" | cut -d' ' -f1
+            printf 'chromeArchiveSha256=%s\n' "$CHROME_ZIP_SHA256"
+            node --version
+            corepack pnpm@10.32.1 --version
+          } > "$evidence/environment/runner.txt"
+          result=0
+          for arm in baseline candidate; do
+            root="$RUNNER_TEMP/pair-$arm"
+            export PROTO_UI_RUNTIME_EVIDENCE_DIR="$evidence/$arm"
+            export PROTO_UI_TYPOGRAPHY_EVIDENCE_DIR="$PROTO_UI_RUNTIME_EVIDENCE_DIR/typography"
+            export PROTO_UI_MATERIAL_EVIDENCE_DIR="$PROTO_UI_RUNTIME_EVIDENCE_DIR/material"
+            mkdir -p "$PROTO_UI_RUNTIME_EVIDENCE_DIR"
+            set +e
+            (
+              set -e
+              cd "$root"
+              # The workflow event and tested source are separately recorded.
+              # Use the tested source for the original runtime receipt checks.
+              export GITHUB_SHA="$(git rev-parse HEAD)"
+              export CANDIDATE_SHA="$GITHUB_SHA"
+              git status --porcelain=v1 | tee "$PROTO_UI_RUNTIME_EVIDENCE_DIR/source-status.txt"
+              test ! -s "$PROTO_UI_RUNTIME_EVIDENCE_DIR/source-status.txt"
+              printf '%s\n' "$GITHUB_SHA" > "$PROTO_UI_RUNTIME_EVIDENCE_DIR/source-sha.txt"
+              git rev-parse HEAD^2 > "$PROTO_UI_RUNTIME_EVIDENCE_DIR/product-parent.txt"
+              git rev-parse 'HEAD^{tree}' > "$PROTO_UI_RUNTIME_EVIDENCE_DIR/source-tree.txt"
+              set +e
+              timeout --signal=TERM --kill-after=10s 900s \
+                node scripts/test/run-runtime-tests.mjs 2>&1 | tee "$PROTO_UI_RUNTIME_EVIDENCE_DIR/browser.log"
+              codes=("${PIPESTATUS[@]}")
+              set -e
+              printf '%s\n' "${codes[0]}" > "$PROTO_UI_RUNTIME_EVIDENCE_DIR/process-exit.txt"
+              test "${codes[1]}" = 0
+              export RUNTIME_CI_OUTCOME=failure
+              if [[ "${codes[0]}" == 0 ]]; then export RUNTIME_CI_OUTCOME=success; fi
+              node scripts/test/runtime-ci.mjs finish "$PROTO_UI_RUNTIME_EVIDENCE_DIR"
+              exit "${codes[0]}"
+            )
+            arm_exit="$?"
+            set -e
+            if [[ "$arm_exit" != 0 ]]; then result=1; fi
+          done
+          exit "$result"
+      - name: Preserve both original verdicts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: runtime-ci-${{ github.run_id }}-${{ env.PROTO_UI_RUNTIME_SLOT }}-attempt-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/runtime-ci
+          name: paired-brutalist-${{ github.run_id }}-${{ env.PROTO_UI_RUNTIME_SLOT }}-attempt-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pair-evidence
           if-no-files-found: error
           retention-days: 14
