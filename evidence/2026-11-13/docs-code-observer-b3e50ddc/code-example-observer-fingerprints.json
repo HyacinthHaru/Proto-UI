@@ -1,0 +1,12 @@
+[
+  {
+    "path": "apps/www/src/components/site-typography.ts",
+    "parent": "bf03cddba3a5d1dcb4d033b0d991ac1dea66db09a26c666a9a42ea00ceb57ce0",
+    "candidate": "ad973ec2e488ef9ba22d1e468f766959eef375598f319374232af4ed239a492d"
+  },
+  {
+    "path": "apps/www/src/components/site-typography-client.ts",
+    "parent": "83f9ce0d2345c177d5c3d3edf6d46eb346714c463cbd82a32c19322219003545",
+    "candidate": "3a84f0de8e025b10a8098d958e4f43f328c219bef210536d8195128d81b22354"
+  }
+]

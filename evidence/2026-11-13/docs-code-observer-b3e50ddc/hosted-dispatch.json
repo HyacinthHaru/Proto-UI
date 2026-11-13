@@ -1,0 +1,67 @@
+{
+  "head": "9c857d5ca62c0fdba67e899700c8221a614e00da",
+  "dirtyWorktree": false,
+  "originalVerdict": "rejected",
+  "originalVerdictAfterPollMs": 1000.858,
+  "diagnosticFreezeAfterPollMs": 1001.165,
+  "clockOffsetBoundsMs": [-15.483, 0.642],
+  "familyWritesAfterPollMs": [[1289.429, 1305.554]],
+  "query": {
+    "ordinal": 4,
+    "outstandingAtVerdict": true,
+    "cdpId": 14590,
+    "method": "Runtime.callFunctionOn",
+    "startedAfterPollMs": 383.298,
+    "returnedAfterPollMs": 2054.545,
+    "returnedValue": "brutalist",
+    "nodePipeStagesAfterPollMs": {
+      "cdp.pipe.write.return": [384.539, 384.56],
+      "cdp.pipe.read-dispatch.enter": [2054.227],
+      "cdp.pipe.frame.callback.enter": [2054.259],
+      "cdp.response.received": [2054.319]
+    },
+    "browserGetterStagesAfterPollMs": {
+      "selector.enter": [2036.329, 2052.454],
+      "selector.exit": [2037.229, 2053.354],
+      "getter.enter": [2037.429, 2053.554],
+      "getter.exit": [2037.429, 2053.554]
+    },
+    "selectorEntryToGetterEntryMs": 1.1,
+    "getterDurationAtPageClockPrecisionMs": 0.0,
+    "targetArrivalBatchCount": 0
+  },
+  "inputSha256": {
+    "lifecycle": "84862059cde68b5bed8740a8b27b7dd7334cc8a3152e636bdf11c77dff32775c",
+    "sdk": "1ac9388b933cfe61b9a721cc690d1b1b0835c4b006cd9c490f27f8f05bc9c56f"
+  },
+  "chromeTrace": {
+    "browserVersion": "156.0.8078.79",
+    "explicitCpuThrottle": null,
+    "traceBytes": 14170929,
+    "sha256": "7201d1d5d42ebc8d62ff11fd1fca1d36c51456f33d243b634066bc8f7f7ec8c0",
+    "traceComplete": true,
+    "dataLossOccurred": false,
+    "cleanup": {
+      "originalContextClosed": true,
+      "streamClosed": true,
+      "sessionDetached": true,
+      "unresolvedTraceOwnership": false
+    },
+    "commandStagesAfterPollMs": {
+      "DevToolsSession::HandleCommand in Browser": [369.171, 385.296],
+      "DevToolsSession::DispatchToAgent": [369.18, 385.305],
+      "DevToolsSession::DispatchProtocolCommand": [2035.974, 2052.099],
+      "DevToolsSession::SendProtocolResponse": [2037.718, 2053.843],
+      "DevToolsSession::DispatchProtocolResponse": [2037.856, 2053.981]
+    },
+    "browserHandleToForwardMs": 0.009,
+    "browserForwardToRendererDispatchMs": 1666.794,
+    "rendererDispatchDurationMs": 1.833,
+    "rendererRunTaskUnionDuringWaitMs": 1666.75,
+    "rendererNestedEventDurationDuringWaitMs": {
+      "FunctionCall": 1261.837,
+      "UpdateLayoutTree": 433.329,
+      "Layout": 48.187
+    }
+  }
+}

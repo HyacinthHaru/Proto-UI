@@ -1,0 +1,9 @@
+{
+  "main": 1614,
+  "candidate": 1612,
+  "added": {},
+  "removed": {
+    "- internal/website/self-hosting-coverage-matrix.md:216: source fingerprint for `apps/www/src/components/PrototypePreviewer/projection-theme.ts` does not match its reviewed SHA-256": 1,
+    "- internal/website/self-hosting-coverage-matrix.md:259: source fingerprint for `apps/www/src/components/site-typography.ts` does not match its reviewed SHA-256": 1
+  }
+}

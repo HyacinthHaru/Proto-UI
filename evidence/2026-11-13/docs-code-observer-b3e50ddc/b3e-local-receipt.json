@@ -1,0 +1,32 @@
+{
+  "head": "b3e50ddc72e3209786580769c3f19d78e9b4f54f",
+  "focused": 318,
+  "typography": 19,
+  "contentsDialogBrowser": 14,
+  "contentsSwitches": {
+    "shadcn/wc": 4,
+    "shadcn/vue2": 186,
+    "shadcn/vue": 185,
+    "brutalist/wc": 2,
+    "brutalist/react": 255,
+    "brutalist/vue2": 190,
+    "brutalist/vue": 198,
+    "shadcn/react": 188
+  },
+  "sidebarHandbacks": 24,
+  "dialogCases": 8,
+  "dialogObservations": 196,
+  "localFamilyMs": 569.973,
+  "types": {
+    "astroFiles": 1215,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 30
+  },
+  "sourceBoundReports": {
+    "b3e-focused.json": "40a40ca7ab5ca8ba3b9e15b3cfe176f056df6512fe300f91f8c5e84c59cde567",
+    "b3e-typography.json": "4e9cbafb2239be38b3ad01a13905fc85012a53c6779de746f8fc394d0dc20372",
+    "b3e-native.json": "cd0579b1d61073cd80d85903602f0d979103307f612fb66b48c177bb958a8a7a",
+    "b3e-types.log": "98d530d718bab9560952c7f4c706cb87bdcb20f2363ed61348e03ac551a7f68c"
+  }
+}
