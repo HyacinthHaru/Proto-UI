@@ -1,0 +1,5 @@
+# Loading mask retirement during asynchronous renderer cleanup
+
+An actual mounted loading-mask renderer was held in its existing asynchronous cleanup. The parent installed a second owner theme MutationObserver after public disposal while the old renderer cleanup completed. The candidate keeps just the first observer registration and installs none after disposal. The initial diagnostic spy on a document event measured the wrong channel and did not reproduce the case; the paired test observes the real owner and data-theme filter.
+
+The clean exact candidate passed 101 focused and 14 original Chromium cases, including both named Contents/mobile cases, both compact 200%/RTL cases, both reconnect cases and Dialog 8/8. The local original Brutalist family poll passed at 534.570ms and the narrow WC runtime ring changed shadow with its original 2px width, offset and clipping assertions. Both supplied native images were inspected. All CodeExamples and original deadlines remain. The hosted result is separate.
