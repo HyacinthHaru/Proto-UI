@@ -1,0 +1,5 @@
+# Original hosted browser shards on 298ed4b
+
+The signed carrier `ba76e07b` contains exact product parent `298ed4b` and the same four-file diagnostic overlay as the preceding run. All three original suite selections and artifact digests/ZIP checks were verified, with no CPU throttle or Search lane. All three jobs failed overall. Both named Contents and mobile cases passed, Dialog passed 8/8, Sidebar 7/7 and Typography 33/34. The prior Sidebar pre-epoch first-frame failure did not occur in this run; it remains in the prior receipt. Both complete S4 locale cases reached their original failures, with 18 inherited page errors and zero console errors per locale.
+
+The original Brutalist check rejected at +1000.863ms. Chrome 156 recorded the family write at +883.930–884.882ms, followed by the third outstanding query's renderer dispatch after 1193.009ms in the browser-to-renderer queue. Node received the family value at +1427.247ms. The trace completed without reported loss. This run supplies another predeadline family write with a late original result. Individual hosted samples do not estimate a causal improvement from the Previewer theme change.
