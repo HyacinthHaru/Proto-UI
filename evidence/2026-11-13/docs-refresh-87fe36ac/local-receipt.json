@@ -1,0 +1,960 @@
+{
+  "head": "87fe36ac41377faa5fef52fd24f624a283f40168",
+  "tree": "262a6a603b1c058a023e09735cabbaca2bba301d",
+  "parent": "730cc23b57b65a7c873db78a8c21f86248a5350a",
+  "blobs": {
+    "apps/www/src/components/site-typography-client.ts": {
+      "blob": "b32fc922d9dc5914b3a6f85fd3f1856b88277dd9",
+      "sha256": "47b13667f6a8374b9ec9b3181700cac87f765410933c6f7f430e072108ecf8ca"
+    },
+    "apps/www/src/components/site-typography.ownership.test.ts": {
+      "blob": "a8ff14888eeaaf423c9e93994bbba675e71c2eb6",
+      "sha256": "06c1a0f094867eb2e4c80ac1203d0f41f58c7d5f32675748dffbaf4943496c47"
+    },
+    "internal/website/self-hosting-coverage-matrix.md": {
+      "blob": "be520de75096f66f10bcf5c723d6d88a2a9d6a74",
+      "sha256": "13f729fbcbb21d980e84d0a1889b1ed9ec92703cbc3436abbfe4bb3a537eb938"
+    }
+  },
+  "clean": true,
+  "environment": {
+    "node": "v24.21.0",
+    "chrome": "156.0.8078.79",
+    "os": "macOS arm64"
+  },
+  "tests": {
+    "87fe-focused": {
+      "exit": 0,
+      "passed": 131,
+      "failed": 0,
+      "filtered": 0,
+      "cases": [
+        {
+          "title": "wc: forwards language and preserves source with an explicit HappyDOM :lang fixture",
+          "status": "passed"
+        },
+        {
+          "title": "react: forwards language and preserves source with an explicit HappyDOM :lang fixture",
+          "status": "passed"
+        },
+        {
+          "title": "vue: forwards language and preserves source with an explicit HappyDOM :lang fixture",
+          "status": "passed"
+        },
+        {
+          "title": "vue2: forwards language and preserves source with an explicit HappyDOM :lang fixture",
+          "status": "passed"
+        },
+        {
+          "title": "disposes when the documentation owner is detached, then admits the next owner",
+          "status": "passed"
+        },
+        {
+          "title": "projects newly appended native source under the current typography owner",
+          "status": "passed"
+        },
+        {
+          "title": "wc: preserves a collapsed caret before the same inline child",
+          "status": "passed"
+        },
+        {
+          "title": "react: preserves a collapsed caret before the same inline child",
+          "status": "passed"
+        },
+        {
+          "title": "vue: preserves a collapsed caret before the same inline child",
+          "status": "passed"
+        },
+        {
+          "title": "vue2: preserves a collapsed caret before the same inline child",
+          "status": "passed"
+        },
+        {
+          "title": "wc: interrupted preparation leaves original source and no batch",
+          "status": "passed"
+        },
+        {
+          "title": "wc: stale prepared work cannot retire the new source owner",
+          "status": "passed"
+        },
+        {
+          "title": "react: interrupted preparation leaves original source and no batch",
+          "status": "passed"
+        },
+        {
+          "title": "react: stale prepared work cannot retire the new source owner",
+          "status": "passed"
+        },
+        {
+          "title": "vue: interrupted preparation leaves original source and no batch",
+          "status": "passed"
+        },
+        {
+          "title": "vue: stale prepared work cannot retire the new source owner",
+          "status": "passed"
+        },
+        {
+          "title": "vue2: interrupted preparation leaves original source and no batch",
+          "status": "passed"
+        },
+        {
+          "title": "vue2: stale prepared work cannot retire the new source owner",
+          "status": "passed"
+        },
+        {
+          "title": "explicit destroy permits clean documentation re-init",
+          "status": "passed"
+        },
+        {
+          "title": "scans native source once when scheduling a Docs replacement",
+          "status": "passed"
+        },
+        {
+          "title": "keeps a CodeExample tab hint in its native owner without replacing the Docs generation",
+          "status": "passed"
+        },
+        {
+          "title": "ignores renderer-owned Copy and Code children but reconciles their native caption parent",
+          "status": "passed"
+        },
+        {
+          "title": "reconciles a source addition whose observer ran during empty-scope preparation",
+          "status": "passed"
+        },
+        {
+          "title": "wc: absorbs appended/prepended/inserted source exactly once in native order",
+          "status": "passed"
+        },
+        {
+          "title": "react: absorbs appended/prepended/inserted source exactly once in native order",
+          "status": "passed"
+        },
+        {
+          "title": "vue: absorbs appended/prepended/inserted source exactly once in native order",
+          "status": "passed"
+        },
+        {
+          "title": "vue2: absorbs appended/prepended/inserted source exactly once in native order",
+          "status": "passed"
+        },
+        {
+          "title": "admits a replacement before observer delivery and stale teardown cannot revoke it",
+          "status": "passed"
+        },
+        {
+          "title": "revokes a scope when its entire containing subtree is removed",
+          "status": "passed"
+        },
+        {
+          "title": "wc: maps start/interior/end boundaries through replace, rollback and teardown",
+          "status": "passed"
+        },
+        {
+          "title": "wc: maps a caret after the carrier to the source end and preserves an empty slot caret",
+          "status": "passed"
+        },
+        {
+          "title": "react: maps start/interior/end boundaries through replace, rollback and teardown",
+          "status": "passed"
+        },
+        {
+          "title": "react: maps a caret after the carrier to the source end and preserves an empty slot caret",
+          "status": "passed"
+        },
+        {
+          "title": "vue: maps start/interior/end boundaries through replace, rollback and teardown",
+          "status": "passed"
+        },
+        {
+          "title": "vue: maps a caret after the carrier to the source end and preserves an empty slot caret",
+          "status": "passed"
+        },
+        {
+          "title": "vue2: maps start/interior/end boundaries through replace, rollback and teardown",
+          "status": "passed"
+        },
+        {
+          "title": "vue2: maps a caret after the carrier to the source end and preserves an empty slot caret",
+          "status": "passed"
+        },
+        {
+          "title": "maps directional endpoint pair 1 \u2192 2 with an explicit HappyDOM getter fixture",
+          "status": "passed"
+        },
+        {
+          "title": "maps directional endpoint pair 2 \u2192 1 with an explicit HappyDOM getter fixture",
+          "status": "passed"
+        },
+        {
+          "title": "wc: valid inline slots, one native source, repeated replacement and complete teardown",
+          "status": "passed"
+        },
+        {
+          "title": "react: valid inline slots, one native source, repeated replacement and complete teardown",
+          "status": "passed"
+        },
+        {
+          "title": "vue: valid inline slots, one native source, repeated replacement and complete teardown",
+          "status": "passed"
+        },
+        {
+          "title": "vue2: valid inline slots, one native source, repeated replacement and complete teardown",
+          "status": "passed"
+        },
+        {
+          "title": "restores previous real batch after failed commit and retains source edits/language replacement",
+          "status": "passed"
+        },
+        {
+          "title": "honors an explicit committed Shadcn family on a Brutalist documentation path",
+          "status": "passed"
+        },
+        {
+          "title": "uses one documentation scope, follows global runtime and responds to new semantic content",
+          "status": "passed"
+        },
+        {
+          "title": "wc: projects document list, table, definition, quote and summary owners with native rhythm",
+          "status": "passed"
+        },
+        {
+          "title": "react: projects document list, table, definition, quote and summary owners with native rhythm",
+          "status": "passed"
+        },
+        {
+          "title": "vue: projects document list, table, definition, quote and summary owners with native rhythm",
+          "status": "passed"
+        },
+        {
+          "title": "vue2: projects document list, table, definition, quote and summary owners with native rhythm",
+          "status": "passed"
+        },
+        {
+          "title": "shares the homepage exact generation across real adapter changes and teardown",
+          "status": "passed"
+        },
+        {
+          "title": "batches 100 semantic owners in one renderer root and does not react to text edits with stale copy",
+          "status": "passed"
+        },
+        {
+          "title": "react: keeps span and default roots distinct for the same prototype",
+          "status": "passed"
+        },
+        {
+          "title": "vue: keeps span and default roots distinct for the same prototype",
+          "status": "passed"
+        },
+        {
+          "title": "vue2: keeps span and default roots distinct for the same prototype",
+          "status": "passed"
+        },
+        {
+          "title": "only lets explicit native labels cross the exact actual passive Header frame",
+          "status": "passed"
+        },
+        {
+          "title": "preserves a text caret and backward labelled-input selection through replacement",
+          "status": "passed"
+        },
+        {
+          "title": "wc: changes document Text inputs, preserves notice/chrome owners and survives family round-trip",
+          "status": "passed"
+        },
+        {
+          "title": "wc: refreshes recipe ownership when the same paragraph moves into and out of an aside",
+          "status": "passed"
+        },
+        {
+          "title": "wc: retains document roles while using the source-aligned medium homepage slogan",
+          "status": "passed"
+        },
+        {
+          "title": "react: changes document Text inputs, preserves notice/chrome owners and survives family round-trip",
+          "status": "passed"
+        },
+        {
+          "title": "react: refreshes recipe ownership when the same paragraph moves into and out of an aside",
+          "status": "passed"
+        },
+        {
+          "title": "react: retains document roles while using the source-aligned medium homepage slogan",
+          "status": "passed"
+        },
+        {
+          "title": "vue: changes document Text inputs, preserves notice/chrome owners and survives family round-trip",
+          "status": "passed"
+        },
+        {
+          "title": "vue: refreshes recipe ownership when the same paragraph moves into and out of an aside",
+          "status": "passed"
+        },
+        {
+          "title": "vue: retains document roles while using the source-aligned medium homepage slogan",
+          "status": "passed"
+        },
+        {
+          "title": "vue2: changes document Text inputs, preserves notice/chrome owners and survives family round-trip",
+          "status": "passed"
+        },
+        {
+          "title": "vue2: refreshes recipe ownership when the same paragraph moves into and out of an aside",
+          "status": "passed"
+        },
+        {
+          "title": "vue2: retains document roles while using the source-aligned medium homepage slogan",
+          "status": "passed"
+        },
+        {
+          "title": "discovers native note-title intent before any asynchronous Surface bootstrap",
+          "status": "passed"
+        },
+        {
+          "title": "reads document selection only when a disposing batch still owns native text",
+          "status": "passed"
+        },
+        {
+          "title": "preserves the native owner without reading offsets for an empty selection",
+          "status": "passed"
+        },
+        {
+          "title": "does not reapply a retained code selection while button owns focus",
+          "status": "passed"
+        },
+        {
+          "title": "does not reapply a retained code selection while a owns focus",
+          "status": "passed"
+        },
+        {
+          "title": "keeps native ownership evidence pending while real React Typography publication is delayed",
+          "status": "passed"
+        },
+        {
+          "title": "does not recollect empty-token Base/Lucide parts (docsOnly=false)",
+          "status": "passed"
+        },
+        {
+          "title": "does not recollect empty-token Base/Lucide parts (docsOnly=true)",
+          "status": "passed"
+        },
+        {
+          "title": "increments revision exactly at Hero/compact boundaries, including backwards, without source edits",
+          "status": "passed"
+        },
+        {
+          "title": "wc/320px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "wc/639px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "wc/640px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "wc/767px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "wc/768px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "wc/1024px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "wc/1279px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "wc/1280px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "wc/1440px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "wc: refresh follows committed small/medium/wide snapshots and restores original source",
+          "status": "passed"
+        },
+        {
+          "title": "react/320px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "react/639px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "react/640px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "react/767px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "react/768px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "react/1024px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "react/1279px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "react/1280px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "react/1440px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "react: refresh follows committed small/medium/wide snapshots and restores original source",
+          "status": "passed"
+        },
+        {
+          "title": "vue/320px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "vue/639px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "vue/640px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "vue/767px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "vue/768px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "vue/1024px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "vue/1279px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "vue/1280px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "vue/1440px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "vue: refresh follows committed small/medium/wide snapshots and restores original source",
+          "status": "passed"
+        },
+        {
+          "title": "vue2/320px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "vue2/639px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "vue2/640px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "vue2/767px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "vue2/768px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "vue2/1024px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "vue2/1279px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "vue2/1280px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "vue2/1440px: consumes exact public Text tokens in retained native owners",
+          "status": "passed"
+        },
+        {
+          "title": "vue2: refresh follows committed small/medium/wide snapshots and restores original source",
+          "status": "passed"
+        },
+        {
+          "title": "commits the Hero bucket for empty scopes rather than refreshing forever",
+          "status": "passed"
+        },
+        {
+          "title": "wc: refreshes both Hero boundaries and removes every listener on destruction",
+          "status": "passed"
+        },
+        {
+          "title": "react: refreshes both Hero boundaries and removes every listener on destruction",
+          "status": "passed"
+        },
+        {
+          "title": "vue: refreshes both Hero boundaries and removes every listener on destruction",
+          "status": "passed"
+        },
+        {
+          "title": "vue2: refreshes both Hero boundaries and removes every listener on destruction",
+          "status": "passed"
+        },
+        {
+          "title": "wc/shadcn: projects all five inherited inputs and retains source identity",
+          "status": "passed"
+        },
+        {
+          "title": "wc/brutalist: projects all five inherited inputs and retains source identity",
+          "status": "passed"
+        },
+        {
+          "title": "react/shadcn: projects all five inherited inputs and retains source identity",
+          "status": "passed"
+        },
+        {
+          "title": "react/brutalist: projects all five inherited inputs and retains source identity",
+          "status": "passed"
+        },
+        {
+          "title": "vue/shadcn: projects all five inherited inputs and retains source identity",
+          "status": "passed"
+        },
+        {
+          "title": "vue/brutalist: projects all five inherited inputs and retains source identity",
+          "status": "passed"
+        },
+        {
+          "title": "vue2/shadcn: projects all five inherited inputs and retains source identity",
+          "status": "passed"
+        },
+        {
+          "title": "vue2/brutalist: projects all five inherited inputs and retains source identity",
+          "status": "passed"
+        }
+      ]
+    },
+    "87fe-native": {
+      "exit": 0,
+      "passed": 14,
+      "failed": 0,
+      "filtered": 4,
+      "cases": [
+        {
+          "title": "shadcn/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "shadcn/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "shadcn/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "shadcn/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "brutalist/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "brutalist/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "brutalist/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "brutalist/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "switches every registered homepage group through real adapters, preserving native anchors and theme",
+          "status": "skipped"
+        },
+        {
+          "title": "keeps native navigation available without JavaScript and does not overflow mobile",
+          "status": "skipped"
+        },
+        {
+          "title": "retains saved React across cold library routes and exercises actual family chrome",
+          "status": "skipped"
+        },
+        {
+          "title": "reveals current articles through native shadow slots and preserves viewport handback",
+          "status": "skipped"
+        },
+        {
+          "title": "uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence",
+          "status": "passed"
+        },
+        {
+          "title": "uses the same mobile shell on documentation with independent global navigation and contents",
+          "status": "passed"
+        },
+        {
+          "title": "compact shadcn preferences stay usable at 200% text, RTL and breakpoint moves",
+          "status": "passed"
+        },
+        {
+          "title": "compact brutalist preferences stay usable at 200% text, RTL and breakpoint moves",
+          "status": "passed"
+        },
+        {
+          "title": "retains shadcn preference owners and portals through real breakpoint reconnects",
+          "status": "passed"
+        },
+        {
+          "title": "retains brutalist preference owners and portals through real breakpoint reconnects",
+          "status": "passed"
+        }
+      ]
+    },
+    "87fe-typography": {
+      "exit": 0,
+      "passed": 21,
+      "failed": 0,
+      "filtered": 13,
+      "cases": [
+        {
+          "title": "wc/shadcn: native labels, accessibility, original nodes, genuine copy and cross-generation selection",
+          "status": "skipped"
+        },
+        {
+          "title": "wc/brutalist: native labels, accessibility, original nodes, genuine copy and cross-generation selection",
+          "status": "skipped"
+        },
+        {
+          "title": "react/shadcn: native labels, accessibility, original nodes, genuine copy and cross-generation selection",
+          "status": "skipped"
+        },
+        {
+          "title": "react/brutalist: native labels, accessibility, original nodes, genuine copy and cross-generation selection",
+          "status": "skipped"
+        },
+        {
+          "title": "vue/shadcn: native labels, accessibility, original nodes, genuine copy and cross-generation selection",
+          "status": "skipped"
+        },
+        {
+          "title": "vue/brutalist: native labels, accessibility, original nodes, genuine copy and cross-generation selection",
+          "status": "skipped"
+        },
+        {
+          "title": "vue2/shadcn: native labels, accessibility, original nodes, genuine copy and cross-generation selection",
+          "status": "skipped"
+        },
+        {
+          "title": "vue2/brutalist: native labels, accessibility, original nodes, genuine copy and cross-generation selection",
+          "status": "skipped"
+        },
+        {
+          "title": "zh-cn/wc/shadcn: real homepage generation and narrow text resize",
+          "status": "passed"
+        },
+        {
+          "title": "zh-cn/wc/brutalist: real homepage generation and narrow text resize",
+          "status": "passed"
+        },
+        {
+          "title": "zh-cn/react/shadcn: real homepage generation and narrow text resize",
+          "status": "passed"
+        },
+        {
+          "title": "zh-cn/react/brutalist: real homepage generation and narrow text resize",
+          "status": "passed"
+        },
+        {
+          "title": "zh-cn/vue/shadcn: real homepage generation and narrow text resize",
+          "status": "passed"
+        },
+        {
+          "title": "zh-cn/vue/brutalist: real homepage generation and narrow text resize",
+          "status": "passed"
+        },
+        {
+          "title": "zh-cn/vue2/shadcn: real homepage generation and narrow text resize",
+          "status": "passed"
+        },
+        {
+          "title": "zh-cn/vue2/brutalist: real homepage generation and narrow text resize",
+          "status": "passed"
+        },
+        {
+          "title": "en/wc/shadcn: real homepage generation and narrow text resize",
+          "status": "passed"
+        },
+        {
+          "title": "en/wc/brutalist: real homepage generation and narrow text resize",
+          "status": "passed"
+        },
+        {
+          "title": "en/react/shadcn: real homepage generation and narrow text resize",
+          "status": "passed"
+        },
+        {
+          "title": "en/react/brutalist: real homepage generation and narrow text resize",
+          "status": "passed"
+        },
+        {
+          "title": "en/vue/shadcn: real homepage generation and narrow text resize",
+          "status": "passed"
+        },
+        {
+          "title": "en/vue/brutalist: real homepage generation and narrow text resize",
+          "status": "passed"
+        },
+        {
+          "title": "en/vue2/shadcn: real homepage generation and narrow text resize",
+          "status": "passed"
+        },
+        {
+          "title": "en/vue2/brutalist: real homepage generation and narrow text resize",
+          "status": "passed"
+        },
+        {
+          "title": "shadcn: real documentation follows shared runtime preferences with separate scope ownership",
+          "status": "passed"
+        },
+        {
+          "title": "brutalist: real documentation follows shared runtime preferences with separate scope ownership",
+          "status": "passed"
+        },
+        {
+          "title": "homepage/no-js: original SSR hierarchy and native activation remain available",
+          "status": "skipped"
+        },
+        {
+          "title": "native-fixture/no-js: original SSR hierarchy and native activation remain available",
+          "status": "skipped"
+        },
+        {
+          "title": "homepage/initial-module-failure: original SSR hierarchy and native activation remain available",
+          "status": "skipped"
+        },
+        {
+          "title": "native-fixture/initial-module-failure: original SSR hierarchy and native activation remain available",
+          "status": "skipped"
+        },
+        {
+          "title": "shadcn: retains its own no-JavaScript heading scale",
+          "status": "passed"
+        },
+        {
+          "title": "brutalist: retains its own no-JavaScript heading scale",
+          "status": "passed"
+        },
+        {
+          "title": "homepage: retains its own no-JavaScript heading scale",
+          "status": "passed"
+        },
+        {
+          "title": "retains Overview card native density in each runtime and without JavaScript",
+          "status": "skipped"
+        }
+      ]
+    }
+  },
+  "pairedBefore": {
+    "exit": 1,
+    "passed": 0,
+    "failed": 1,
+    "filtered": 38,
+    "cases": [
+      {
+        "title": "wc: forwards language and preserves source with an explicit HappyDOM :lang fixture",
+        "status": "skipped"
+      },
+      {
+        "title": "react: forwards language and preserves source with an explicit HappyDOM :lang fixture",
+        "status": "skipped"
+      },
+      {
+        "title": "vue: forwards language and preserves source with an explicit HappyDOM :lang fixture",
+        "status": "skipped"
+      },
+      {
+        "title": "vue2: forwards language and preserves source with an explicit HappyDOM :lang fixture",
+        "status": "skipped"
+      },
+      {
+        "title": "disposes when the documentation owner is detached, then admits the next owner",
+        "status": "skipped"
+      },
+      {
+        "title": "projects newly appended native source under the current typography owner",
+        "status": "skipped"
+      },
+      {
+        "title": "wc: preserves a collapsed caret before the same inline child",
+        "status": "skipped"
+      },
+      {
+        "title": "react: preserves a collapsed caret before the same inline child",
+        "status": "skipped"
+      },
+      {
+        "title": "vue: preserves a collapsed caret before the same inline child",
+        "status": "skipped"
+      },
+      {
+        "title": "vue2: preserves a collapsed caret before the same inline child",
+        "status": "skipped"
+      },
+      {
+        "title": "wc: interrupted preparation leaves original source and no batch",
+        "status": "skipped"
+      },
+      {
+        "title": "wc: stale prepared work cannot retire the new source owner",
+        "status": "skipped"
+      },
+      {
+        "title": "react: interrupted preparation leaves original source and no batch",
+        "status": "skipped"
+      },
+      {
+        "title": "react: stale prepared work cannot retire the new source owner",
+        "status": "skipped"
+      },
+      {
+        "title": "vue: interrupted preparation leaves original source and no batch",
+        "status": "skipped"
+      },
+      {
+        "title": "vue: stale prepared work cannot retire the new source owner",
+        "status": "skipped"
+      },
+      {
+        "title": "vue2: interrupted preparation leaves original source and no batch",
+        "status": "skipped"
+      },
+      {
+        "title": "vue2: stale prepared work cannot retire the new source owner",
+        "status": "skipped"
+      },
+      {
+        "title": "explicit destroy permits clean documentation re-init",
+        "status": "skipped"
+      },
+      {
+        "title": "scans native source once when scheduling a Docs replacement",
+        "status": "failed"
+      },
+      {
+        "title": "keeps a CodeExample tab hint in its native owner without replacing the Docs generation",
+        "status": "skipped"
+      },
+      {
+        "title": "ignores renderer-owned Copy and Code children but reconciles their native caption parent",
+        "status": "skipped"
+      },
+      {
+        "title": "reconciles a source addition whose observer ran during empty-scope preparation",
+        "status": "skipped"
+      },
+      {
+        "title": "wc: absorbs appended/prepended/inserted source exactly once in native order",
+        "status": "skipped"
+      },
+      {
+        "title": "react: absorbs appended/prepended/inserted source exactly once in native order",
+        "status": "skipped"
+      },
+      {
+        "title": "vue: absorbs appended/prepended/inserted source exactly once in native order",
+        "status": "skipped"
+      },
+      {
+        "title": "vue2: absorbs appended/prepended/inserted source exactly once in native order",
+        "status": "skipped"
+      },
+      {
+        "title": "admits a replacement before observer delivery and stale teardown cannot revoke it",
+        "status": "skipped"
+      },
+      {
+        "title": "revokes a scope when its entire containing subtree is removed",
+        "status": "skipped"
+      },
+      {
+        "title": "wc: maps start/interior/end boundaries through replace, rollback and teardown",
+        "status": "skipped"
+      },
+      {
+        "title": "wc: maps a caret after the carrier to the source end and preserves an empty slot caret",
+        "status": "skipped"
+      },
+      {
+        "title": "react: maps start/interior/end boundaries through replace, rollback and teardown",
+        "status": "skipped"
+      },
+      {
+        "title": "react: maps a caret after the carrier to the source end and preserves an empty slot caret",
+        "status": "skipped"
+      },
+      {
+        "title": "vue: maps start/interior/end boundaries through replace, rollback and teardown",
+        "status": "skipped"
+      },
+      {
+        "title": "vue: maps a caret after the carrier to the source end and preserves an empty slot caret",
+        "status": "skipped"
+      },
+      {
+        "title": "vue2: maps start/interior/end boundaries through replace, rollback and teardown",
+        "status": "skipped"
+      },
+      {
+        "title": "vue2: maps a caret after the carrier to the source end and preserves an empty slot caret",
+        "status": "skipped"
+      },
+      {
+        "title": "maps directional endpoint pair 1 \u2192 2 with an explicit HappyDOM getter fixture",
+        "status": "skipped"
+      },
+      {
+        "title": "maps directional endpoint pair 2 \u2192 1 with an explicit HappyDOM getter fixture",
+        "status": "skipped"
+      }
+    ]
+  },
+  "pairedControl": {
+    "beforeRefreshReads": 2,
+    "afterRefreshReads": 1,
+    "originalTextNodeRetained": true
+  },
+  "localFamilyMs": 562.174,
+  "types": {
+    "exit": 0,
+    "astroFiles": 1215,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 30
+  }
+}
