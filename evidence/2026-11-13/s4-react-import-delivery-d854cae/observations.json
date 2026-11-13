@@ -1,0 +1,138 @@
+{
+  "head": "d854cae0da2d0c3178b801ea18574a9eac88257f",
+  "patchSha256": "4cffe4456d63da2405edebade6b9bd18633858fc0814f0ad82d60396fbfe12e1",
+  "logSha256": "dbf7cd24c03128bcc48fd6b0480ba8dd241bb260c8d1bd23f2b0ca250742511b",
+  "rows": [
+    {
+      "locale": "zh-cn",
+      "deadlineMs": 150000,
+      "passed": false,
+      "events": [
+        {
+          "phase": "demo-begin",
+          "runtime": "react",
+          "owner": "pp-rlt73d47n2p",
+          "pageMs": 9251.200000047684,
+          "hostChildren": 0
+        },
+        {
+          "phase": "demo-return",
+          "runtime": "react",
+          "owner": "pp-rlt73d47n2p",
+          "pageMs": 11398.399999976158,
+          "hostChildren": 0
+        },
+        {
+          "phase": "prototype-begin",
+          "runtime": "react",
+          "owner": "pp-rlt73d47n2p",
+          "pageMs": 11398.600000023842,
+          "hostChildren": 0
+        },
+        {
+          "phase": "prototype-return",
+          "runtime": "react",
+          "owner": "pp-rlt73d47n2p",
+          "pageMs": 27545.799999952316,
+          "hostChildren": 0
+        },
+        {
+          "phase": "render-begin",
+          "runtime": "react",
+          "owner": "pp-rlt73d47n2p",
+          "pageMs": 27545.799999952316,
+          "hostChildren": 0
+        },
+        {
+          "phase": "react-modules-begin",
+          "runtime": "react",
+          "owner": "pp-rlt73d47n2p",
+          "pageMs": 27546.200000047684,
+          "hostChildren": 0
+        },
+        {
+          "phase": "react-modules-return",
+          "runtime": "react",
+          "owner": "pp-rlt73d47n2p",
+          "pageMs": 27682.700000047684,
+          "hostChildren": 0
+        },
+        {
+          "phase": "react-runtime-begin",
+          "runtime": "react",
+          "owner": "pp-rlt73d47n2p",
+          "pageMs": 27682.799999952316,
+          "hostChildren": 0
+        }
+      ],
+      "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+      "rawSha256": "65f144c9f0e41f61731756d35fe93aec71969ada3eb56bf39c0a0802092a02f9"
+    },
+    {
+      "locale": "en",
+      "deadlineMs": 150000,
+      "passed": false,
+      "events": [
+        {
+          "phase": "demo-begin",
+          "runtime": "react",
+          "owner": "pp-rzpwesv3s5",
+          "pageMs": 11342.400000095367,
+          "hostChildren": 0
+        },
+        {
+          "phase": "demo-return",
+          "runtime": "react",
+          "owner": "pp-rzpwesv3s5",
+          "pageMs": 13212,
+          "hostChildren": 0
+        },
+        {
+          "phase": "prototype-begin",
+          "runtime": "react",
+          "owner": "pp-rzpwesv3s5",
+          "pageMs": 13212.200000047684,
+          "hostChildren": 0
+        },
+        {
+          "phase": "prototype-return",
+          "runtime": "react",
+          "owner": "pp-rzpwesv3s5",
+          "pageMs": 22955.5,
+          "hostChildren": 0
+        },
+        {
+          "phase": "render-begin",
+          "runtime": "react",
+          "owner": "pp-rzpwesv3s5",
+          "pageMs": 22955.600000023842,
+          "hostChildren": 0
+        },
+        {
+          "phase": "react-modules-begin",
+          "runtime": "react",
+          "owner": "pp-rzpwesv3s5",
+          "pageMs": 22955.800000071526,
+          "hostChildren": 0
+        },
+        {
+          "phase": "react-modules-return",
+          "runtime": "react",
+          "owner": "pp-rzpwesv3s5",
+          "pageMs": 23168,
+          "hostChildren": 0
+        },
+        {
+          "phase": "react-runtime-begin",
+          "runtime": "react",
+          "owner": "pp-rzpwesv3s5",
+          "pageMs": 23168.100000023842,
+          "hostChildren": 0
+        }
+      ],
+      "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+      "rawSha256": "62d42ee84d6252c3c9a0444fcf5e1fee02e94202a25a3f8afa5bb90dc47124ef"
+    }
+  ],
+  "observed": "No resolve or reject callback for any of react, react-dom, or react-dom/client was streamed before either original test expired. The observations do not separate module fetch, module evaluation, or renderer scheduling."
+}
