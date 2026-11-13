@@ -1,0 +1,46 @@
+{
+  "head": "298ed4b672d8a4a773a775a6375ce40350629a87",
+  "file": "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts",
+  "cases": [
+    {
+      "status": "passed",
+      "title": "shadcn/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+      "duration": 5843.4000839999935
+    },
+    {
+      "status": "passed",
+      "title": "shadcn/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+      "duration": 5061.836457999991
+    },
+    {
+      "status": "passed",
+      "title": "shadcn/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+      "duration": 5048.8036250000005
+    },
+    {
+      "status": "passed",
+      "title": "shadcn/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+      "duration": 5010.000874999998
+    },
+    {
+      "status": "passed",
+      "title": "brutalist/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+      "duration": 4466.639959000007
+    },
+    {
+      "status": "passed",
+      "title": "brutalist/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+      "duration": 4421.894459000003
+    },
+    {
+      "status": "passed",
+      "title": "brutalist/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+      "duration": 4464.267749999999
+    },
+    {
+      "status": "passed",
+      "title": "brutalist/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+      "duration": 4288.036666999993
+    }
+  ]
+}
