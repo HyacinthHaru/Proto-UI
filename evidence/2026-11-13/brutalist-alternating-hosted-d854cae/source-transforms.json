@@ -1,0 +1,198 @@
+{
+  "vite": "6.4.1",
+  "target": "esnext",
+  "records": [
+    {
+      "head": "1e3f268f445c91e712c6df7d4e92e6c4b230a16f",
+      "revision": "1e3f268",
+      "file": "apps/www/src/components/site-header-disclosure.ts",
+      "sourceSha256": "9d597364cb274a62613d9c0e252f7f4ef15eb333c0f0ed999dea3c0e6241e0f7",
+      "transformSha256": "62e39dd36343e546a30818d1f9241b2799d9802ec3ac3b2cbb3d72be85f45301",
+      "stem": "site-header-disclosure",
+      "generatedMatches": [
+        {
+          "line": 85,
+          "code": "const anchor = mobile ? null : button.getBoundingClientRect();"
+        },
+        {
+          "line": 86,
+          "code": "const header = root.getBoundingClientRect();"
+        }
+      ],
+      "authoredMatches": [
+        {
+          "line": 131,
+          "code": "const anchor = mobile ? null : button.getBoundingClientRect();"
+        },
+        {
+          "line": 132,
+          "code": "const header = root.getBoundingClientRect();"
+        }
+      ]
+    },
+    {
+      "head": "1e3f268f445c91e712c6df7d4e92e6c4b230a16f",
+      "revision": "1e3f268",
+      "file": "apps/www/src/components/site-typography.ts",
+      "sourceSha256": "5d82f8d027b7f3f4540dc61a367a09a03cabb137f543387265f03bb89b299697",
+      "transformSha256": "3b282a27f048ead359ffacadc025d57430ceb92f32d6f804367fd8457a155738",
+      "stem": "site-typography",
+      "generatedMatches": [
+        {
+          "line": 101,
+          "code": "const anchorNode = selection?.anchorNode;"
+        },
+        {
+          "line": 102,
+          "code": "const focusNode = selection?.focusNode;"
+        }
+      ],
+      "authoredMatches": [
+        {
+          "line": 185,
+          "code": "const anchorNode = selection?.anchorNode;"
+        },
+        {
+          "line": 186,
+          "code": "const focusNode = selection?.focusNode;"
+        }
+      ]
+    },
+    {
+      "head": "1e3f268f445c91e712c6df7d4e92e6c4b230a16f",
+      "revision": "1e3f268",
+      "file": "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+      "sourceSha256": "b94735696bd58e8570817ab630816a5e8e3f9aa0e90bbd50daee2e01a8f5b851",
+      "transformSha256": "a89f38bf2b396f3a48cd60a0599e19bbe7b423bf9b0d06e2dd89946dab116bd0",
+      "stem": "canonical-motion-palette",
+      "generatedMatches": [
+        {
+          "line": 36,
+          "code": "const observed = computed?.getPropertyValue(\"--pui-\" + role) ?? \"\";"
+        }
+      ],
+      "authoredMatches": [
+        {
+          "line": 45,
+          "code": "const observed = computed?.getPropertyValue('--pui-' + role) ?? '';"
+        }
+      ]
+    },
+    {
+      "head": "1e3f268f445c91e712c6df7d4e92e6c4b230a16f",
+      "revision": "1e3f268",
+      "file": "apps/www/src/components/Homepage/homepage-runtime-client.ts",
+      "sourceSha256": "a653d6e45c54de213e846a6ce4a3f80c140669c13b93131b6eb177c808d5cbd0",
+      "transformSha256": "351e95198fbec6b9899b71ddebd0c6fb66880785b4aafecfc1dd117b2d0280c4",
+      "stem": "homepage-runtime-client",
+      "generatedMatches": [
+        {
+          "line": 546,
+          "code": "disclosure?.enhance();"
+        }
+      ],
+      "authoredMatches": [
+        {
+          "line": 654,
+          "code": "disclosure?.enhance();"
+        }
+      ]
+    },
+    {
+      "head": "d854cae0da2d0c3178b801ea18574a9eac88257f",
+      "revision": "d854cae",
+      "file": "apps/www/src/components/site-header-disclosure.ts",
+      "sourceSha256": "9d597364cb274a62613d9c0e252f7f4ef15eb333c0f0ed999dea3c0e6241e0f7",
+      "transformSha256": "62e39dd36343e546a30818d1f9241b2799d9802ec3ac3b2cbb3d72be85f45301",
+      "stem": "site-header-disclosure",
+      "generatedMatches": [
+        {
+          "line": 85,
+          "code": "const anchor = mobile ? null : button.getBoundingClientRect();"
+        },
+        {
+          "line": 86,
+          "code": "const header = root.getBoundingClientRect();"
+        }
+      ],
+      "authoredMatches": [
+        {
+          "line": 131,
+          "code": "const anchor = mobile ? null : button.getBoundingClientRect();"
+        },
+        {
+          "line": 132,
+          "code": "const header = root.getBoundingClientRect();"
+        }
+      ]
+    },
+    {
+      "head": "d854cae0da2d0c3178b801ea18574a9eac88257f",
+      "revision": "d854cae",
+      "file": "apps/www/src/components/site-typography.ts",
+      "sourceSha256": "68972340f1b074e57f771905d75ceec346a227c3ae5bd838f92ab414cfd9936e",
+      "transformSha256": "2f29b61711b697b3e2a0186f0d54575838d91667857710b829ccedb7e81ce917",
+      "stem": "site-typography",
+      "generatedMatches": [
+        {
+          "line": 101,
+          "code": "const anchorNode = selection?.anchorNode;"
+        },
+        {
+          "line": 103,
+          "code": "const focusNode = anchor ? selection?.focusNode : null;"
+        }
+      ],
+      "authoredMatches": [
+        {
+          "line": 185,
+          "code": "const anchorNode = selection?.anchorNode;"
+        },
+        {
+          "line": 189,
+          "code": "const focusNode = anchor ? selection?.focusNode : null;"
+        }
+      ]
+    },
+    {
+      "head": "d854cae0da2d0c3178b801ea18574a9eac88257f",
+      "revision": "d854cae",
+      "file": "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+      "sourceSha256": "b94735696bd58e8570817ab630816a5e8e3f9aa0e90bbd50daee2e01a8f5b851",
+      "transformSha256": "a89f38bf2b396f3a48cd60a0599e19bbe7b423bf9b0d06e2dd89946dab116bd0",
+      "stem": "canonical-motion-palette",
+      "generatedMatches": [
+        {
+          "line": 36,
+          "code": "const observed = computed?.getPropertyValue(\"--pui-\" + role) ?? \"\";"
+        }
+      ],
+      "authoredMatches": [
+        {
+          "line": 45,
+          "code": "const observed = computed?.getPropertyValue('--pui-' + role) ?? '';"
+        }
+      ]
+    },
+    {
+      "head": "d854cae0da2d0c3178b801ea18574a9eac88257f",
+      "revision": "d854cae",
+      "file": "apps/www/src/components/Homepage/homepage-runtime-client.ts",
+      "sourceSha256": "a653d6e45c54de213e846a6ce4a3f80c140669c13b93131b6eb177c808d5cbd0",
+      "transformSha256": "351e95198fbec6b9899b71ddebd0c6fb66880785b4aafecfc1dd117b2d0280c4",
+      "stem": "homepage-runtime-client",
+      "generatedMatches": [
+        {
+          "line": 546,
+          "code": "disclosure?.enhance();"
+        }
+      ],
+      "authoredMatches": [
+        {
+          "line": 654,
+          "code": "disclosure?.enhance();"
+        }
+      ]
+    }
+  ]
+}

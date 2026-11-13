@@ -1,0 +1,206 @@
+[
+  {
+    "slot": 1,
+    "arm": "01-baseline",
+    "head": "1e3f268f445c91e712c6df7d4e92e6c4b230a16f",
+    "switches": {
+      "brutalist/react": {
+        "originalError": null,
+        "atMs": 448
+      },
+      "brutalist/vue": {
+        "originalError": null,
+        "atMs": 356
+      },
+      "brutalist/vue2": {
+        "originalError": null,
+        "atMs": 342
+      },
+      "brutalist/wc": {
+        "originalError": null,
+        "atMs": 4
+      },
+      "shadcn/react": {
+        "originalError": null,
+        "atMs": 453
+      },
+      "shadcn/vue": {
+        "originalError": null,
+        "atMs": 382
+      },
+      "shadcn/vue2": {
+        "originalError": null,
+        "atMs": 395
+      },
+      "shadcn/wc": {
+        "originalError": null,
+        "atMs": 16
+      }
+    },
+    "orderedHandbacks": 24,
+    "totalHandbacks": 24,
+    "namedCasePassed": true,
+    "mobileShellPassed": true
+  },
+  {
+    "slot": 1,
+    "arm": "02-candidate",
+    "head": "d854cae0da2d0c3178b801ea18574a9eac88257f",
+    "switches": {
+      "brutalist/react": {
+        "originalError": null,
+        "atMs": 475
+      },
+      "brutalist/vue": {
+        "originalError": null,
+        "atMs": 365
+      },
+      "brutalist/vue2": {
+        "originalError": null,
+        "atMs": 333
+      },
+      "brutalist/wc": {
+        "originalError": null,
+        "atMs": 4
+      },
+      "shadcn/react": {
+        "originalError": null,
+        "atMs": 421
+      },
+      "shadcn/vue": {
+        "originalError": null,
+        "atMs": 429
+      },
+      "shadcn/vue2": {
+        "originalError": null,
+        "atMs": 412
+      },
+      "shadcn/wc": {
+        "originalError": null,
+        "atMs": 63
+      }
+    },
+    "orderedHandbacks": 24,
+    "totalHandbacks": 24,
+    "namedCasePassed": true,
+    "mobileShellPassed": true
+  },
+  {
+    "slot": 1,
+    "arm": "03-candidate",
+    "head": "d854cae0da2d0c3178b801ea18574a9eac88257f",
+    "switches": {
+      "brutalist/react": {
+        "originalError": null,
+        "atMs": 480
+      },
+      "brutalist/vue": {
+        "originalError": null,
+        "atMs": 350
+      },
+      "brutalist/vue2": {
+        "originalError": null,
+        "atMs": 334
+      },
+      "brutalist/wc": {
+        "originalError": null,
+        "atMs": 3
+      },
+      "shadcn/react": {
+        "originalError": null,
+        "atMs": 425
+      },
+      "shadcn/vue": {
+        "originalError": null,
+        "atMs": 390
+      },
+      "shadcn/vue2": {
+        "originalError": null,
+        "atMs": 410
+      },
+      "shadcn/wc": {
+        "originalError": null,
+        "atMs": 235
+      }
+    },
+    "orderedHandbacks": 24,
+    "totalHandbacks": 24,
+    "namedCasePassed": true,
+    "mobileShellPassed": true
+  },
+  {
+    "slot": 1,
+    "arm": "04-baseline",
+    "head": "1e3f268f445c91e712c6df7d4e92e6c4b230a16f",
+    "switches": {
+      "brutalist/react": {
+        "originalError": null,
+        "atMs": 474
+      },
+      "brutalist/vue": {
+        "originalError": null,
+        "atMs": 381
+      },
+      "brutalist/vue2": {
+        "originalError": null,
+        "atMs": 344
+      },
+      "brutalist/wc": {
+        "originalError": null,
+        "atMs": 3
+      },
+      "shadcn/react": {
+        "originalError": null,
+        "atMs": 443
+      },
+      "shadcn/vue": {
+        "originalError": null,
+        "atMs": 377
+      },
+      "shadcn/vue2": {
+        "originalError": null,
+        "atMs": 392
+      },
+      "shadcn/wc": {
+        "originalError": null,
+        "atMs": 64
+      }
+    },
+    "orderedHandbacks": 24,
+    "totalHandbacks": 24,
+    "namedCasePassed": true,
+    "mobileShellPassed": true
+  },
+  {
+    "slot": 3,
+    "arm": "01-baseline",
+    "head": "1e3f268f445c91e712c6df7d4e92e6c4b230a16f",
+    "observations": 196,
+    "captures": 120,
+    "dialog8Passed": true
+  },
+  {
+    "slot": 3,
+    "arm": "02-candidate",
+    "head": "d854cae0da2d0c3178b801ea18574a9eac88257f",
+    "observations": 196,
+    "captures": 120,
+    "dialog8Passed": true
+  },
+  {
+    "slot": 3,
+    "arm": "03-candidate",
+    "head": "d854cae0da2d0c3178b801ea18574a9eac88257f",
+    "observations": 196,
+    "captures": 120,
+    "dialog8Passed": true
+  },
+  {
+    "slot": 3,
+    "arm": "04-baseline",
+    "head": "1e3f268f445c91e712c6df7d4e92e6c4b230a16f",
+    "observations": 196,
+    "captures": 120,
+    "dialog8Passed": true
+  }
+]

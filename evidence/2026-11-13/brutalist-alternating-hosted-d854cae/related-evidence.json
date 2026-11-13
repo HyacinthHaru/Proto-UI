@@ -1,0 +1,34 @@
+{
+  "local": {
+    "head": "5b413928fa5933812f166ede8515fdc188554ab5",
+    "url": "https://github.com/HyacinthHaru/Proto-UI/tree/5b413928fa5933812f166ede8515fdc188554ab5/evidence/2026-11-13/typography-empty-selection-d854cae",
+    "verifiedFiles": 4
+  },
+  "controls": {
+    "head": "920941c35d9520b66f527d2edcc3e11d66981717",
+    "url": "https://github.com/HyacinthHaru/Proto-UI/tree/920941c35d9520b66f527d2edcc3e11d66981717/evidence/2026-11-13/typography-palette-header-s4-controls-d854cae",
+    "verifiedFiles": 4
+  },
+  "production": {
+    "head": "87f7dd855e9089cb140c62abf356c4ca6f60bc1c",
+    "url": "https://github.com/HyacinthHaru/Proto-UI/tree/87f7dd855e9089cb140c62abf356c4ca6f60bc1c/evidence/2026-11-13/typography-production-preview-d854cae",
+    "verifiedFiles": 3
+  },
+  "s4-import": {
+    "head": "8a425bf048e9b374c76d5e52755801f8c9539c5f",
+    "url": "https://github.com/HyacinthHaru/Proto-UI/tree/8a425bf048e9b374c76d5e52755801f8c9539c5f/evidence/2026-11-13/s4-react-import-delivery-d854cae",
+    "verifiedFiles": 2
+  },
+  "s4-network": {
+    "head": "3765b68ed2b38c8ef2c776b1038897981d57d3a7",
+    "url": "https://github.com/HyacinthHaru/Proto-UI/tree/3765b68ed2b38c8ef2c776b1038897981d57d3a7/evidence/2026-11-13/s4-react-entry-transport-d854cae",
+    "verifiedFiles": 2
+  },
+  "nativeTypography": {
+    "scope": "4 original Brutalist cross-generation selection and Clipboard cases on exact d854cae",
+    "passed": 4,
+    "failed": 0,
+    "filtered": 30,
+    "rawSha256": "bd606065a37ca5eff7d1783008a7cd0add72439c842f7fe5a84c4cc889696091"
+  }
+}
