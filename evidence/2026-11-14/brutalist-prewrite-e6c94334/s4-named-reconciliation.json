@@ -1,0 +1,352 @@
+{
+  "head": "e6c94334645e349e977f61a69e4d21f9bcd6411c",
+  "traceSha256": "31b7db5aa815bffa6ad9b75d98ec4a93bdb5623b824daa2769369ad2145636a9",
+  "traceEventCount": 3265801,
+  "traceReceipt": {
+    "eof": true,
+    "bytes": 12613407,
+    "dataLossOccurred": false
+  },
+  "allNamedModuleMarks": 4,
+  "rawLogSha256": "1344f4235c4222aab039d1a9f779501b38159f149ff287715921c3ee89a4a0ed",
+  "patchSha256": "5f2c340704b6cf18e1cdaff6911574f822edb7901529ce1fdc25ef75fd53400c",
+  "originalTestExit": 1,
+  "scope": "Module marks bracket named optimized bodies only. Dependency graph resolution and Promise delivery can extend outside those marks. Long-task delivery is bounded and is not a complete renderer scheduling inventory.",
+  "observations": [
+    {
+      "locale": "zh-cn",
+      "reactPhaseReached": true,
+      "originalVerdictPageClockMs": 150429.8,
+      "assets": [
+        {
+          "rendererAssetEvents": [
+            {
+              "kind": "BackgroundJSStreamManager::OnFinishStreaming",
+              "pageMs": 2215.065,
+              "afterLastBodyMs": 1.265
+            },
+            {
+              "kind": "v8.compileModule",
+              "pageMs": 2215.094,
+              "afterLastBodyMs": 1.294
+            }
+          ],
+          "asset": "chunk-BUSYA2B4.js",
+          "version": "ac6ac829",
+          "bodyComplete": true,
+          "bodyPageMs": 2213.8,
+          "responseNodeDeliveryPageClockMs": 2224.8,
+          "moduleBodyMarks": [
+            {
+              "kind": "body-start",
+              "pageMs": 2232.365,
+              "afterLastBodyMs": 18.565
+            },
+            {
+              "kind": "body-end",
+              "pageMs": 2232.4,
+              "afterLastBodyMs": 18.6
+            }
+          ]
+        },
+        {
+          "rendererAssetEvents": [
+            {
+              "kind": "BackgroundJSStreamManager::OnFinishStreaming",
+              "pageMs": 25499.787,
+              "afterLastBodyMs": 1.987
+            },
+            {
+              "kind": "v8.compileModule",
+              "pageMs": 29114.691,
+              "afterLastBodyMs": 3616.891
+            }
+          ],
+          "asset": "react.js",
+          "version": "31380079",
+          "bodyComplete": true,
+          "bodyPageMs": 25497.8,
+          "responseNodeDeliveryPageClockMs": 29114.8,
+          "moduleBodyMarks": []
+        },
+        {
+          "rendererAssetEvents": [
+            {
+              "kind": "BackgroundJSStreamManager::OnFinishStreaming",
+              "pageMs": 25498.938,
+              "afterLastBodyMs": 1.138
+            },
+            {
+              "kind": "v8.compileModule",
+              "pageMs": 29114.545,
+              "afterLastBodyMs": 3616.745
+            }
+          ],
+          "asset": "react-dom.js",
+          "version": "65d9a9a8",
+          "bodyComplete": true,
+          "bodyPageMs": 25497.8,
+          "responseNodeDeliveryPageClockMs": 29114.8,
+          "moduleBodyMarks": []
+        },
+        {
+          "rendererAssetEvents": [
+            {
+              "kind": "BackgroundJSStreamManager::OnFinishStreaming",
+              "pageMs": 25500.259,
+              "afterLastBodyMs": 1.459
+            },
+            {
+              "kind": "v8.compileModule",
+              "pageMs": 29114.77,
+              "afterLastBodyMs": 3615.97
+            }
+          ],
+          "asset": "react-dom_client.js",
+          "version": "b4be4546",
+          "bodyComplete": true,
+          "bodyPageMs": 25498.8,
+          "responseNodeDeliveryPageClockMs": 29114.8,
+          "moduleBodyMarks": []
+        },
+        {
+          "rendererAssetEvents": [
+            {
+              "kind": "BackgroundJSStreamManager::OnFinishStreaming",
+              "pageMs": 37567.83,
+              "afterLastBodyMs": 4.03
+            }
+          ],
+          "asset": "chunk-2MALL255.js",
+          "version": "ac6ac829",
+          "bodyComplete": true,
+          "bodyPageMs": 37563.8,
+          "responseNodeDeliveryPageClockMs": null,
+          "moduleBodyMarks": []
+        },
+        {
+          "rendererAssetEvents": [
+            {
+              "kind": "BackgroundJSStreamManager::OnFinishStreaming",
+              "pageMs": 37564.65,
+              "afterLastBodyMs": 1.85
+            }
+          ],
+          "asset": "chunk-EK7DFB6S.js",
+          "version": "ac6ac829",
+          "bodyComplete": true,
+          "bodyPageMs": 37562.8,
+          "responseNodeDeliveryPageClockMs": null,
+          "moduleBodyMarks": []
+        }
+      ],
+      "reactMarksPageMs": {
+        "react-modules-begin": 27493.474,
+        "react-modules-return": 27630.929,
+        "react-runtime-begin": 27631.0
+      },
+      "windowAfterBothBodiesMs": 112866.0,
+      "windowEnd": "original test verdict",
+      "longTaskDelivery": {
+        "totalUnique": 76,
+        "lastDeliveredEntryStartMs": 35597.5,
+        "windowObservations": 0,
+        "clippedUnionMs": 0,
+        "longest": []
+      },
+      "rendererEvaluations": {
+        "events": 15,
+        "unionMs": 3.151,
+        "argKeys": ["worldId"]
+      }
+    },
+    {
+      "locale": "en",
+      "reactPhaseReached": true,
+      "originalVerdictPageClockMs": 150237.5,
+      "assets": [
+        {
+          "rendererAssetEvents": [
+            {
+              "kind": "BackgroundJSStreamManager::OnFinishStreaming",
+              "pageMs": 5445.783,
+              "afterLastBodyMs": 11.283
+            },
+            {
+              "kind": "v8.compileModule",
+              "pageMs": 5445.873,
+              "afterLastBodyMs": 11.373
+            }
+          ],
+          "asset": "chunk-BUSYA2B4.js",
+          "version": "ac6ac829",
+          "bodyComplete": true,
+          "bodyPageMs": 5434.5,
+          "responseNodeDeliveryPageClockMs": 5451.5,
+          "moduleBodyMarks": [
+            {
+              "kind": "body-start",
+              "pageMs": 5464.707,
+              "afterLastBodyMs": 30.207
+            },
+            {
+              "kind": "body-end",
+              "pageMs": 5464.745,
+              "afterLastBodyMs": 30.245
+            }
+          ]
+        },
+        {
+          "rendererAssetEvents": [
+            {
+              "kind": "BackgroundJSStreamManager::OnFinishStreaming",
+              "pageMs": 22134.648,
+              "afterLastBodyMs": 1.148
+            },
+            {
+              "kind": "v8.compileModule",
+              "pageMs": 25204.431,
+              "afterLastBodyMs": 3070.931
+            }
+          ],
+          "asset": "react.js",
+          "version": "31380079",
+          "bodyComplete": true,
+          "bodyPageMs": 22133.5,
+          "responseNodeDeliveryPageClockMs": 25204.5,
+          "moduleBodyMarks": []
+        },
+        {
+          "rendererAssetEvents": [
+            {
+              "kind": "BackgroundJSStreamManager::OnFinishStreaming",
+              "pageMs": 22135.002,
+              "afterLastBodyMs": 1.502
+            },
+            {
+              "kind": "v8.compileModule",
+              "pageMs": 25204.518,
+              "afterLastBodyMs": 3071.018
+            }
+          ],
+          "asset": "react-dom.js",
+          "version": "65d9a9a8",
+          "bodyComplete": true,
+          "bodyPageMs": 22133.5,
+          "responseNodeDeliveryPageClockMs": 25204.5,
+          "moduleBodyMarks": []
+        },
+        {
+          "rendererAssetEvents": [
+            {
+              "kind": "BackgroundJSStreamManager::OnFinishStreaming",
+              "pageMs": 22135.258,
+              "afterLastBodyMs": 1.758
+            },
+            {
+              "kind": "v8.compileModule",
+              "pageMs": 25204.577,
+              "afterLastBodyMs": 3071.077
+            }
+          ],
+          "asset": "react-dom_client.js",
+          "version": "b4be4546",
+          "bodyComplete": true,
+          "bodyPageMs": 22133.5,
+          "responseNodeDeliveryPageClockMs": 25204.5,
+          "moduleBodyMarks": []
+        },
+        {
+          "rendererAssetEvents": [
+            {
+              "kind": "BackgroundJSStreamManager::OnFinishStreaming",
+              "pageMs": 28510.228,
+              "afterLastBodyMs": 1.728
+            }
+          ],
+          "asset": "chunk-EK7DFB6S.js",
+          "version": "ac6ac829",
+          "bodyComplete": true,
+          "bodyPageMs": 28508.5,
+          "responseNodeDeliveryPageClockMs": null,
+          "moduleBodyMarks": []
+        },
+        {
+          "rendererAssetEvents": [
+            {
+              "kind": "BackgroundJSStreamManager::OnFinishStreaming",
+              "pageMs": 28523.872,
+              "afterLastBodyMs": 5.372
+            }
+          ],
+          "asset": "chunk-2MALL255.js",
+          "version": "ac6ac829",
+          "bodyComplete": true,
+          "bodyPageMs": 28518.5,
+          "responseNodeDeliveryPageClockMs": null,
+          "moduleBodyMarks": []
+        }
+      ],
+      "reactMarksPageMs": {
+        "react-modules-begin": 24607.911,
+        "react-modules-return": 24624.054,
+        "react-runtime-begin": 24624.1
+      },
+      "windowAfterBothBodiesMs": 121719.0,
+      "windowEnd": "original test verdict",
+      "longTaskDelivery": {
+        "totalUnique": 68,
+        "lastDeliveredEntryStartMs": 33466,
+        "windowObservations": 12,
+        "clippedUnionMs": 5068.7,
+        "longest": [
+          {
+            "pageStartMs": 29391.100000023842,
+            "durationMs": 1059
+          },
+          {
+            "pageStartMs": 28503.200000047684,
+            "durationMs": 735
+          },
+          {
+            "pageStartMs": 31381.800000071526,
+            "durationMs": 696
+          },
+          {
+            "pageStartMs": 32118.700000047684,
+            "durationMs": 674
+          },
+          {
+            "pageStartMs": 30524.400000095367,
+            "durationMs": 592
+          },
+          {
+            "pageStartMs": 33466,
+            "durationMs": 527
+          },
+          {
+            "pageStartMs": 33044.5,
+            "durationMs": 363
+          },
+          {
+            "pageStartMs": 31156.5,
+            "durationMs": 120
+          },
+          {
+            "pageStartMs": 32834.40000009537,
+            "durationMs": 120
+          },
+          {
+            "pageStartMs": 29302.400000095367,
+            "durationMs": 88
+          }
+        ]
+      },
+      "rendererEvaluations": {
+        "events": 64,
+        "unionMs": 3.378,
+        "argKeys": ["worldId"]
+      }
+    }
+  ]
+}

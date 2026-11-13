@@ -1,0 +1,110 @@
+{
+  "head": "e6c94334645e349e977f61a69e4d21f9bcd6411c",
+  "tree": "05fd7991a4675421ff227c577ce158129c22b13a",
+  "baseline": "d12af742efa57fa8a68d41c1f542caa83c00d2a8",
+  "parents": [
+    "31ba38a9d5072f4d168995b54e6c8e3d3fdebfc1",
+    "02bef55f8fc7870032136e5ee6bb2c5459f09612"
+  ],
+  "testedMain": "02bef55f8fc7870032136e5ee6bb2c5459f09612",
+  "newMain": "e8529591a4f78ad2929204cc1e20f35e3f712684",
+  "newMainCombinationTree": "9fa0439a0d516dc0958cfab0902167513c68ea71",
+  "newerMainPaths": [".github/workflows/ci.yml", "scripts/test/run-runtime-tests.test.mjs"],
+  "sourceChange": [
+    {
+      "path": "apps/www/src/components/PrototypePreviewer/projection-composition.test.ts",
+      "parentBlob": "2a4d26b16a1495497bb3fe729b3072230c8184a3",
+      "candidateBlob": "63a5984fec55cf4829f24c637086ba07317efdd3"
+    },
+    {
+      "path": "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+      "parentBlob": "957e44ef257b4014f3679dc7e714493fcbdd5ed0",
+      "candidateBlob": "4eed64887378155fc1dedfc124f77e4339830b1b"
+    }
+  ],
+  "unchangedInputs": {
+    "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts": "c734f0dc6b947e11729e2d3ba646544f1e29602f",
+    "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts": "f3a517c207b24560b3b67ff8852d2e7190f6c219",
+    "apps/www/src/content/docs/zh-cn/runtime-preview-surface.browser.test.ts": "dd48e5a0c5210047873c9d26eb85b80950f90a08",
+    "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "2953f82547685b1dd5f99129833bf76163190649",
+    "apps/www/src/content/docs/zh-cn/ui-libraries/shadcn/button.mdx": "60cb2124ffb6882e2683b03aa64786ec39987ee7"
+  },
+  "codeExamples": 7,
+  "focusedRegression": {
+    "parentMutationRecords": 10,
+    "candidateMutationRecords": 1,
+    "redLogSha256": "e3791c12cb45391f2990d23b96ac505f0efbdca93cc08c3a2bad87674efc22d4",
+    "greenLogSha256": "f3beb9c1a4de9000991023698d08370f1638c469604d9bdfd70ba5ca7fba5425",
+    "candidateBroaderPassed": 80,
+    "candidateBroaderFailed": 1,
+    "failedTest": "finishes real Item close and Trigger handback before accepting react",
+    "sameFailureOnParent": true,
+    "redParentControlLogSha256": "1f2a8ed0a4160f6d4df8f7fd956c7b4dbad868040755d12708d8224ee53e553b",
+    "candidateBroaderLogSha256": "304fb53903b34bad8f11c4938ac26d9fbc505a92794ab223f419ce1951eaab9d"
+  },
+  "native": {
+    "browser": "Chrome for Testing 156.0.8078.79 macOS arm64",
+    "passed": 15,
+    "failed": 0,
+    "unselected": 9,
+    "testLogSha256": "431a0c9686bc7b4ec73df6e4666eea0d3ea02b0c1a9b8720679ccf897d877ca0",
+    "testJsonSha256": "bff2193d3d295d0bd87aae192319b156140709fdcd497441f57381e96af9dce9",
+    "contentsTransitions": [
+      {
+        "family": "brutalist",
+        "runtime": "react",
+        "atMs": 246
+      },
+      {
+        "family": "brutalist",
+        "runtime": "vue",
+        "atMs": 203
+      },
+      {
+        "family": "brutalist",
+        "runtime": "vue2",
+        "atMs": 191
+      },
+      {
+        "family": "brutalist",
+        "runtime": "wc",
+        "atMs": 1
+      },
+      {
+        "family": "shadcn",
+        "runtime": "react",
+        "atMs": 188
+      },
+      {
+        "family": "shadcn",
+        "runtime": "vue",
+        "atMs": 221
+      },
+      {
+        "family": "shadcn",
+        "runtime": "vue2",
+        "atMs": 191
+      },
+      {
+        "family": "shadcn",
+        "runtime": "wc",
+        "atMs": 14
+      }
+    ],
+    "orderedSidebarReturns": 24,
+    "dialogOriginalCases": 8,
+    "dialogObservations": 196,
+    "images": {
+      "wc-narrow-focus.png": "a4e3930b066332ac703145ac6c8009ccff5aa41efbff3e4d4e2d08e25e39b613",
+      "react-contents-open.png": "f49904dffdfa6f1aa0968c3e84cf18d665d088aa73ea7025a5932f57324c5eb6",
+      "wc-dialog-settled.png": "9c6f2261f8fece53504ff4ab1cadb1338ef9a80698f8f06b0658266da8585672"
+    }
+  },
+  "typeCheck": {
+    "astroFiles": 1215,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 30,
+    "logSha256": "da0905b32851cd92b5a2a3a462934162d25882bc9468a807c7925e13e623d5b7"
+  }
+}

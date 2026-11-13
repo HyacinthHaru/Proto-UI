@@ -1,0 +1,18 @@
+{
+  "head": "e6c94334645e349e977f61a69e4d21f9bcd6411c",
+  "distHashes": {
+    "zh-cn/index.html": "666d1d76ca67865bc0d902343e701f01aeae01c275a3826c0de24c15e7fdd5eb",
+    "zh-cn/ui-libraries/shadcn/button/index.html": "1cc7d87a645e6b11488f487b4564f8dde6856c184c06dcd77c2efd3857709782",
+    "zh-cn/ui-libraries/brutalist/components/button/index.html": "4408cab933a265a4c93c8a7947dab3ca2e288f4e00fe57d393b3cb6f14f62b09",
+    "en/ui-libraries/shadcn/dialog/index.html": "13b84f4c363dbd4d09609ed2d0c35fbda35170e0e960cb41dd38025cadee2589",
+    "proto-ui-bundle-graph.json": "cbe8872b92da97e151dcb324c7ced4712d00867a97d48dad868ce86c60acbb7b"
+  },
+  "selector": "uses real family Popover Triggers|uses the same mobile shell|retains (shadcn|brutalist) preference owners|compact (shadcn|brutalist)|live available region|keeps Runtime Tabs outside",
+  "exitCode": 0,
+  "server": "Repository astro preview on the exact clean candidate static output",
+  "passed": 15,
+  "failed": 0,
+  "unselected": 9,
+  "testJsonSha256": "12a2265cb8397b349f38727d10c5e59240ac09351510f1fcdb891382c096f717",
+  "testLogSha256": "ab735b36fddabe52c43b16bfb7076bee55ac1b8513e5e90624cc88b6f71802f8"
+}

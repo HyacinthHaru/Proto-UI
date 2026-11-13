@@ -1,0 +1,11 @@
+{
+  "head": "e6c94334645e349e977f61a69e4d21f9bcd6411c",
+  "referenceMain": "35195a6e6f1ba6a7d800da0029f2683013abd18b",
+  "candidateCount": 53,
+  "referenceCount": 53,
+  "same": true,
+  "exactExit": 1,
+  "referenceExit": 1,
+  "candidateLogSha256": "ed3bedb2ac557a9edfc9c990253b6daffb5b0e2f6811adcb4955c9d77008f252",
+  "referenceLogSha256": "80f76d0fdf480a2e8a32f4e62d6860ff0375836793155a81973ebdfd08ab734d"
+}
