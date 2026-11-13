@@ -1,0 +1,108 @@
+{
+  "head": "d854cae0da2d0c3178b801ea18574a9eac88257f",
+  "browser": "156.0.8078.79",
+  "scope": "Separate native mechanism and first animation frame diagnostics. Header geometry reads can force layout and were excluded from original hosted timing.",
+  "css": {
+    "before": "#000",
+    "after": "#fff",
+    "records": 0
+  },
+  "results": [
+    {
+      "width": 320,
+      "samples": [
+        {
+          "phase": "family mutation delivery",
+          "at": 2309.7999999523163,
+          "family": "brutalist",
+          "generation": "2",
+          "top": 61,
+          "bottom": 545,
+          "left": 8,
+          "right": 312,
+          "width": 304,
+          "headerBottom": 56,
+          "hidden": false,
+          "position": "61px"
+        },
+        {
+          "phase": "first animation frame",
+          "at": 2463.6999999284744,
+          "family": "brutalist",
+          "generation": "2",
+          "top": 61,
+          "bottom": 545,
+          "left": 8,
+          "right": 312,
+          "width": 304,
+          "headerBottom": 56,
+          "hidden": false,
+          "position": "61px"
+        },
+        {
+          "phase": "second animation frame",
+          "at": 2486.7999999523163,
+          "family": "brutalist",
+          "generation": "2",
+          "top": 61,
+          "bottom": 545,
+          "left": 8,
+          "right": 312,
+          "width": 304,
+          "headerBottom": 56,
+          "hidden": false,
+          "position": "61px"
+        }
+      ],
+      "trusted": true
+    },
+    {
+      "width": 390,
+      "samples": [
+        {
+          "phase": "family mutation delivery",
+          "at": 1613,
+          "family": "brutalist",
+          "generation": "2",
+          "top": 61,
+          "bottom": 545,
+          "left": 8,
+          "right": 382,
+          "width": 374,
+          "headerBottom": 56,
+          "hidden": false,
+          "position": "61px"
+        },
+        {
+          "phase": "first animation frame",
+          "at": 1762.1000000238419,
+          "family": "brutalist",
+          "generation": "2",
+          "top": 61,
+          "bottom": 545,
+          "left": 8,
+          "right": 382,
+          "width": 374,
+          "headerBottom": 56,
+          "hidden": false,
+          "position": "61px"
+        },
+        {
+          "phase": "second animation frame",
+          "at": 1782.1999999284744,
+          "family": "brutalist",
+          "generation": "2",
+          "top": 61,
+          "bottom": 545,
+          "left": 8,
+          "right": 382,
+          "width": 374,
+          "headerBottom": 56,
+          "hidden": false,
+          "position": "61px"
+        }
+      ],
+      "trusted": true
+    }
+  ]
+}

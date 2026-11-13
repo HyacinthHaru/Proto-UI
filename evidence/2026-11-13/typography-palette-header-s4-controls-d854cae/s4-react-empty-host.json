@@ -1,0 +1,308 @@
+{
+  "patchSha256": "3a4051a971c4d71a43bf7a71b43eb1b1fe749178b6770e08769da0afcaea68d6",
+  "originalExit": 1,
+  "rows": [
+    {
+      "locale": "zh-cn",
+      "exactProduct": "d854cae0da2d0c3178b801ea18574a9eac88257f",
+      "patchApplied": true,
+      "caseDeadlineMs": 150000,
+      "startupPassed": false,
+      "firstMissObservations": [
+        {
+          "timeOrigin": 1794572451873.3,
+          "pageMs": 7557.399999976158,
+          "dateNow": 1794572459430,
+          "count": 1268,
+          "ready": false,
+          "firstMissing": {
+            "previewerId": "pp-ag1oce9lie8",
+            "index": 0,
+            "inited": null,
+            "hostChildren": null
+          },
+          "firstMissingOwner": {
+            "demoId": "demo-base-accordion",
+            "prototypeId": "",
+            "declaredRuntime": "wc",
+            "projectionMode": null,
+            "projectionState": null,
+            "mounting": "1",
+            "hostTag": null,
+            "hostOwner": null,
+            "startupPending": null,
+            "hostOwnInert": null,
+            "hostText": null
+          }
+        },
+        {
+          "timeOrigin": 1794572451873.3,
+          "pageMs": 8850.699999928474,
+          "dateNow": 1794572460723,
+          "count": 1268,
+          "ready": false,
+          "firstMissing": {
+            "previewerId": "pp-ag1oce9lie8",
+            "index": 0,
+            "inited": "1",
+            "hostChildren": 0
+          },
+          "firstMissingOwner": {
+            "demoId": "demo-base-accordion",
+            "prototypeId": "",
+            "declaredRuntime": "wc",
+            "projectionMode": null,
+            "projectionState": null,
+            "mounting": null,
+            "hostTag": "DIV",
+            "hostOwner": "pp-ag1oce9lie8",
+            "startupPending": true,
+            "hostOwnInert": true,
+            "hostText": ""
+          }
+        },
+        {
+          "timeOrigin": 1794572451873.3,
+          "pageMs": 25547.5,
+          "dateNow": 1794572477420,
+          "count": 1268,
+          "ready": false,
+          "firstMissing": {
+            "previewerId": "pp-tpw65cn166",
+            "index": 1,
+            "inited": "1",
+            "hostChildren": 0
+          },
+          "firstMissingOwner": {
+            "demoId": "demo-base-accordion",
+            "prototypeId": "",
+            "declaredRuntime": "react",
+            "projectionMode": null,
+            "projectionState": null,
+            "mounting": null,
+            "hostTag": "DIV",
+            "hostOwner": "pp-tpw65cn166",
+            "startupPending": true,
+            "hostOwnInert": true,
+            "hostText": ""
+          }
+        }
+      ],
+      "react": [
+        {
+          "phase": "demo-begin",
+          "runtime": "react",
+          "owner": "pp-tpw65cn166",
+          "pageMs": 8771.699999928474,
+          "hostChildren": 0
+        },
+        {
+          "phase": "demo-return",
+          "runtime": "react",
+          "owner": "pp-tpw65cn166",
+          "pageMs": 11192.199999928474,
+          "hostChildren": 0
+        },
+        {
+          "phase": "prototype-begin",
+          "runtime": "react",
+          "owner": "pp-tpw65cn166",
+          "pageMs": 11192.399999976158,
+          "hostChildren": 0
+        },
+        {
+          "phase": "prototype-return",
+          "runtime": "react",
+          "owner": "pp-tpw65cn166",
+          "pageMs": 25294.899999976158,
+          "hostChildren": 0
+        },
+        {
+          "phase": "render-begin",
+          "runtime": "react",
+          "owner": "pp-tpw65cn166",
+          "pageMs": 25294.899999976158,
+          "hostChildren": 0
+        },
+        {
+          "phase": "react-modules-begin",
+          "runtime": "react",
+          "owner": "pp-tpw65cn166",
+          "pageMs": 25295.199999928474,
+          "hostChildren": 0
+        },
+        {
+          "phase": "react-modules-return",
+          "runtime": "react",
+          "owner": "pp-tpw65cn166",
+          "pageMs": 25545.799999952316,
+          "hostChildren": 0
+        },
+        {
+          "phase": "react-runtime-begin",
+          "runtime": "react",
+          "owner": "pp-tpw65cn166",
+          "pageMs": 25545.799999952316,
+          "hostChildren": 0
+        }
+      ],
+      "collectionOutcome": "rejected",
+      "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+      "ownedDecorationErrors": 18,
+      "consoleErrors": 0,
+      "rawSha256": "2e2ed7326e332f29907a17699d831d55811ee798d4206896f2a7ea318b9bd16d"
+    },
+    {
+      "locale": "en",
+      "exactProduct": "d854cae0da2d0c3178b801ea18574a9eac88257f",
+      "patchApplied": true,
+      "caseDeadlineMs": 150000,
+      "startupPassed": false,
+      "firstMissObservations": [
+        {
+          "timeOrigin": 1794572602607.9,
+          "pageMs": 11121.600000023842,
+          "dateNow": 1794572613729,
+          "count": 1268,
+          "ready": false,
+          "firstMissing": {
+            "previewerId": "pp-yo9br1x71jj",
+            "index": 0,
+            "inited": null,
+            "hostChildren": null
+          },
+          "firstMissingOwner": {
+            "demoId": "demo-base-accordion",
+            "prototypeId": "",
+            "declaredRuntime": "wc",
+            "projectionMode": null,
+            "projectionState": null,
+            "mounting": "1",
+            "hostTag": null,
+            "hostOwner": null,
+            "startupPending": null,
+            "hostOwnInert": null,
+            "hostText": null
+          }
+        },
+        {
+          "timeOrigin": 1794572602607.9,
+          "pageMs": 12261.800000071526,
+          "dateNow": 1794572614869,
+          "count": 1268,
+          "ready": false,
+          "firstMissing": {
+            "previewerId": "pp-yo9br1x71jj",
+            "index": 0,
+            "inited": "1",
+            "hostChildren": 0
+          },
+          "firstMissingOwner": {
+            "demoId": "demo-base-accordion",
+            "prototypeId": "",
+            "declaredRuntime": "wc",
+            "projectionMode": null,
+            "projectionState": null,
+            "mounting": null,
+            "hostTag": "DIV",
+            "hostOwner": "pp-yo9br1x71jj",
+            "startupPending": true,
+            "hostOwnInert": true,
+            "hostText": ""
+          }
+        },
+        {
+          "timeOrigin": 1794572602607.9,
+          "pageMs": 24006.900000095367,
+          "dateNow": 1794572626614,
+          "count": 1268,
+          "ready": false,
+          "firstMissing": {
+            "previewerId": "pp-3aqiahyjwwp",
+            "index": 1,
+            "inited": "1",
+            "hostChildren": 0
+          },
+          "firstMissingOwner": {
+            "demoId": "demo-base-accordion",
+            "prototypeId": "",
+            "declaredRuntime": "react",
+            "projectionMode": null,
+            "projectionState": null,
+            "mounting": null,
+            "hostTag": "DIV",
+            "hostOwner": "pp-3aqiahyjwwp",
+            "startupPending": true,
+            "hostOwnInert": true,
+            "hostText": ""
+          }
+        }
+      ],
+      "react": [
+        {
+          "phase": "demo-begin",
+          "runtime": "react",
+          "owner": "pp-3aqiahyjwwp",
+          "pageMs": 12532.200000047684,
+          "hostChildren": 0
+        },
+        {
+          "phase": "demo-return",
+          "runtime": "react",
+          "owner": "pp-3aqiahyjwwp",
+          "pageMs": 14352.800000071526,
+          "hostChildren": 0
+        },
+        {
+          "phase": "prototype-begin",
+          "runtime": "react",
+          "owner": "pp-3aqiahyjwwp",
+          "pageMs": 14352.900000095367,
+          "hostChildren": 0
+        },
+        {
+          "phase": "prototype-return",
+          "runtime": "react",
+          "owner": "pp-3aqiahyjwwp",
+          "pageMs": 23991.200000047684,
+          "hostChildren": 0
+        },
+        {
+          "phase": "render-begin",
+          "runtime": "react",
+          "owner": "pp-3aqiahyjwwp",
+          "pageMs": 23991.200000047684,
+          "hostChildren": 0
+        },
+        {
+          "phase": "react-modules-begin",
+          "runtime": "react",
+          "owner": "pp-3aqiahyjwwp",
+          "pageMs": 23991.5,
+          "hostChildren": 0
+        },
+        {
+          "phase": "react-modules-return",
+          "runtime": "react",
+          "owner": "pp-3aqiahyjwwp",
+          "pageMs": 24006.200000047684,
+          "hostChildren": 0
+        },
+        {
+          "phase": "react-runtime-begin",
+          "runtime": "react",
+          "owner": "pp-3aqiahyjwwp",
+          "pageMs": 24006.200000047684,
+          "hostChildren": 0
+        }
+      ],
+      "collectionOutcome": "rejected",
+      "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+      "ownedDecorationErrors": 18,
+      "consoleErrors": 0,
+      "rawSha256": "b5611918954bda8b60191a340ad80dc7e10e18983b53fdc884997e8c6196d87d"
+    }
+  ],
+  "logSha256": "6c7d3fb8b3b449ff425a25f446513a993f8f4efde285f8bfdee94a761a165cef",
+  "scope": "Original complete bilingual case with a separate detached phase-observation patch. Renderer module acquisition completed, entered loadReact (React, react-dom, react-dom/client Promise.all). No completion or root render observed within original case. No individual import or CPU cause inferred."
+}

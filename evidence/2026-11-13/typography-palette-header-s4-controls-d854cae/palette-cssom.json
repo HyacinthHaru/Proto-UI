@@ -1,0 +1,20 @@
+{
+  "head": "d854cae0da2d0c3178b801ea18574a9eac88257f",
+  "browser": "156.0.8078.79",
+  "scope": "Separate native mechanism and first animation frame diagnostics. Header geometry reads can force layout and were excluded from original hosted timing.",
+  "css": {
+    "before": "#000",
+    "after": "#fff",
+    "records": 0
+  },
+  "palette": {
+    "first": [0.09052732, 0.090527427, 0.090527399, 1],
+    "red": null,
+    "redDiagnostics": ["theme-source-mismatch:primary"],
+    "restored": [0.09052732, 0.090527427, 0.090527399, 1],
+    "expected": [0.09052732, 0.090527427, 0.090527399, 1],
+    "records": 0,
+    "invalidations": 0,
+    "revisions": [1, 2, 3]
+  }
+}

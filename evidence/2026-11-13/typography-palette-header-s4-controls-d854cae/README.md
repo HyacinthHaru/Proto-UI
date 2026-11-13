@@ -1,0 +1,9 @@
+# Native controls and separate S4 phase observations
+
+The clean exact d854cae Website control clicked the real Brutalist option at 320px and 390px in Chrome 156. The open Header panel was 5px below the Header with 8px margins when the family mutation was delivered, in the first requestAnimationFrame callback and in the second. These reads can flush layout and were kept outside the original hosted query benchmark. They are animation-frame geometry observations, not compositor paint timing.
+
+The clean exact canonical palette source was then exercised against a real stylesheet edited through CSSOM. The source initially resolved the canonical primary input, rejected the silent override, and re-admitted the restored canonical value with revisions 1, 2 and 3. The CSSOM mutation produced zero DOM mutation records or subscriber invalidations before the explicit read. This is a negative control for a mutation-only cache. It leaves the live authority read at target and active frames in place.
+
+The independent S4 observation retained the complete original bilingual case, 1,268 Previewers and its original 150-second deadline. It ran on a detached d854cae plus the named diagnostic patch. The Base Accordion React host was empty when renderer modules returned and when loadReact began at 25.546s zh-cn and 24.006s en on the page clock. No loadReact return or root render request was observed within either case. Both failed and each retained 18 existing unsupported owned-decoration page errors. The phase identifies an outstanding combined import wait for react, react-dom and react-dom/client. It does not identify which individual import or browser scheduling condition caused the wait, and the Shadow errors have a separate owner.
+
+[Demo Matrix tracking](https://github.com/Proto-UI/Proto-UI/issues/1178) · [Product PR](https://github.com/Proto-UI/Proto-UI/pull/1438)
