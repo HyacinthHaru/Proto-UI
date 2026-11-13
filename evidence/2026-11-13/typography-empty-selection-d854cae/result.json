@@ -1,0 +1,26 @@
+{
+  "head": "d854cae0da2d0c3178b801ea18574a9eac88257f",
+  "parent": "1e3f268f445c91e712c6df7d4e92e6c4b230a16f",
+  "synthetic": {
+    "parentPassed": 130,
+    "parentFailed": 1,
+    "candidatePassed": 131,
+    "focusGetterCalls": [2, 0]
+  },
+  "chromium": {
+    "passed": 15,
+    "failed": 0,
+    "filtered": 9,
+    "dialog": 8,
+    "familyPollMs": 547.275
+  },
+  "rawHashes": {
+    "selection-red.log": "71b97fa0fee5d56f749206d4cbcb1731bfb0be035b728f5f024e783912135269",
+    "selection-green.log": "c13b6d68df146db7b8cf9526110629ec9b4addac034e93b359b90c218f65b4d1",
+    "exact-native.json": "99c3aa7b28d54d76c0956515372b1310b10db37a6030199a3a7a05238dae5b82"
+  },
+  "captureHashes": {
+    "brutalist-wc-dialog.png": "9c6f2261f8fece53504ff4ab1cadb1338ef9a80698f8f06b0658266da8585672",
+    "brutalist-wc-runtime-ring.png": "32fa2bd5f6f87ef2e575e31b01332f71f7855a8361d73246265ecce5e5cb5a41"
+  }
+}
