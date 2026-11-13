@@ -1,0 +1,87 @@
+{
+  "parent": "38aac9f6a5927ddd1880a52809f07e202a8ef1f4",
+  "candidate": "22683ce0f2357e1a10501637550fbbe6515137ad",
+  "parentCases": 69,
+  "candidateCases": 123,
+  "changedVerdicts": [
+    {
+      "file": "projected-previewer-client.test.ts",
+      "title": "does not restore Runtime focus when a newer outside owner already has it",
+      "status": "failed"
+    },
+    {
+      "file": "projected-previewer-shell.integration.test.ts",
+      "title": "wc: newer external focus survives pending and superseded generations, old callbacks and destroy",
+      "status": "failed"
+    },
+    {
+      "file": "projected-previewer-shell.integration.test.ts",
+      "title": "react: newer external focus survives pending and superseded generations, old callbacks and destroy",
+      "status": "failed"
+    },
+    {
+      "file": "projected-previewer-shell.integration.test.ts",
+      "title": "vue: newer external focus survives pending and superseded generations, old callbacks and destroy",
+      "status": "failed"
+    },
+    {
+      "file": "projected-previewer-shell.integration.test.ts",
+      "title": "vue2: newer external focus survives pending and superseded generations, old callbacks and destroy",
+      "status": "failed"
+    }
+  ],
+  "stack": [
+    {
+      "runtime": "wc",
+      "before": {
+        "tag": "BUTTON",
+        "role": null,
+        "text": "Outside"
+      },
+      "target": {
+        "tag": "DIV",
+        "role": "tab",
+        "text": "React"
+      },
+      "stack": [
+        "packages/adapters/react/src/runtime/modules.ts:503:18",
+        "packages/modules/focus/src/create.ts:1120:60",
+        "packages/modules/focus/src/create.ts:600:32",
+        "packages/runtime/src/instance/execute/callback-scope.ts:95:14",
+        "packages/runtime/src/instance/execute/callback-scope.ts:57:17",
+        "packages/runtime/src/instance/session.ts:672:50",
+        "packages/adapters/react/src/adapt.ts:912:15",
+        "packages/modules/focus/src/create.ts:526:46",
+        "packages/modules/focus/src/create.ts:598:18",
+        "packages/modules/focus/src/center.ts:292:48",
+        "packages/modules/focus/src/center.ts:315:23",
+        "packages/modules/focus/src/center.ts:333:17",
+        "packages/modules/focus/src/create.ts:1186:31",
+        "packages/modules/focus/src/create.ts:1298:12",
+        "packages/modules/focus/src/create.ts:388:9",
+        "packages/modules/focus/src/create.ts:1297:10",
+        "packages/modules/focus/src/create.ts:253:58",
+        "packages/prototypes/base/src/tabs/trigger.proto.ts:124:15",
+        "packages/adapters/base/src/host/exposes.ts:60:26",
+        "packages/runtime/src/instance/execute/callback-scope.ts:95:14",
+        "packages/runtime/src/instance/execute/callback-scope.ts:57:17",
+        "packages/runtime/src/instance/session.ts:672:50",
+        "packages/adapters/base/src/host/exposes.ts:59:7",
+        "apps/www/src/components/PrototypePreviewer/demo-renderer.ts:1177:42",
+        "apps/www/src/components/PrototypePreviewer/demo-renderer.ts:271:16",
+        "packages/runtime/src/instance/execute/callback-scope.ts:95:14",
+        "packages/runtime/src/instance/execute/callback-scope.ts:57:17",
+        "packages/runtime/src/instance/session.ts:672:50",
+        "packages/adapters/react/src/adapt.ts:542:79",
+        "apps/www/src/components/PrototypePreviewer/demo-renderer.ts:269:10",
+        "apps/www/src/components/PrototypePreviewer/demo-renderer.ts:1177:18",
+        "apps/www/src/components/PrototypePreviewer/demo-renderer.ts:1142:39",
+        "apps/www/src/components/PrototypePreviewer/demo-renderer.ts:1176:7",
+        "apps/www/src/components/PrototypePreviewer/projection-composition.ts:1411:25",
+        "apps/www/src/components/PrototypePreviewer/projection-materializer.ts:609:26",
+        "apps/www/src/components/PrototypePreviewer/projection-materializer.ts:666:61"
+      ]
+    }
+  ],
+  "scope": "Current parent plus bounded observation patch; same test assertions. Separate candidate focused executions."
+}

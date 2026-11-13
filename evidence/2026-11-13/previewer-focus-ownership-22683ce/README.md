@@ -1,0 +1,7 @@
+# Fixed-family Previewer Runtime focus ownership
+
+The parent deferred Runtime switch could capture a newer external active element as if it belonged to the retiring Previewer. The source-bound Happy DOM observation reproduced all four original failures. A deeper WC-to-React observation reaches the real deferred projection focus restorer, public Tabs focusSelf and the React Focus capability after the external button already holds focus. This explains the original failed checks without treating the earlier distinct Chrome control as a failure.
+
+Exact `22683ce` requests Runtime focus restoration only if the current origin is inside this Previewer's mount. Normal owned Enter and Space handback remains. The same expanded candidate focused selection passes 123/123, including all 48 unchanged real-adapter Previewer-shell cases and the four complete original outside-focus, supersession, stale callback and disposal cases. The paired new outside-owner check is red on the parent and green on the candidate.
+
+The clean exact candidate passed 15 selected Chrome 156 cases, including both named Contents/mobile journeys, both compact and reconnect pairs, Dialog 8/8 and the original 390px RuntimeBox Select journey. The local original Brutalist poll passed at 549.206ms. The narrow WC runtime ring changed shadow with the original width, offset and clipping checks. Both actual images were visually inspected. All CodeExamples and original deadlines remain. The hosted gate is separate.
