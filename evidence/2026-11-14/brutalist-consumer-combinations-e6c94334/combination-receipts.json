@@ -1,0 +1,354 @@
+{
+  "localCombinations": [
+    {
+      "product": "e6c94334645e349e977f61a69e4d21f9bcd6411c",
+      "main": "008531e66690e08c7ad2966f02e00e3af139bfe3",
+      "signedLocalCombination": "fb9c0683798910d9ae54ffbf0f66415a7cd3bdce",
+      "tree": "f8c5140e827e569c2e3547b6559956bf592d33b1",
+      "originalBrowserCases": 15,
+      "unselected": 9,
+      "dialog": 8,
+      "dialogObservations": 196,
+      "orderedSidebarReturns": 24,
+      "contentsTransitions": [
+        {
+          "family": "brutalist",
+          "runtime": "react",
+          "originalCheckMs": 212
+        },
+        {
+          "family": "brutalist",
+          "runtime": "vue",
+          "originalCheckMs": 194
+        },
+        {
+          "family": "brutalist",
+          "runtime": "vue2",
+          "originalCheckMs": 165
+        },
+        {
+          "family": "brutalist",
+          "runtime": "wc",
+          "originalCheckMs": 1
+        },
+        {
+          "family": "shadcn",
+          "runtime": "react",
+          "originalCheckMs": 234
+        },
+        {
+          "family": "shadcn",
+          "runtime": "vue",
+          "originalCheckMs": 210
+        },
+        {
+          "family": "shadcn",
+          "runtime": "vue2",
+          "originalCheckMs": 190
+        },
+        {
+          "family": "shadcn",
+          "runtime": "wc",
+          "originalCheckMs": 4
+        }
+      ],
+      "documentPath": "apps/www/src/content/docs/zh-cn/ui-libraries/shadcn/button.mdx",
+      "codeExamples": 7,
+      "documentSha256": "7127e1c55c17ee8821a7c09ac1d6bb14a1340da3dcd44c7fbc64c07e09251209",
+      "headerControls": {
+        "head": "fb9c0683798910d9ae54ffbf0f66415a7cd3bdce",
+        "browser": "156.0.8078.79",
+        "scope": "Separate native mechanism and first animation frame diagnostics. Header geometry reads can force layout and were excluded from original hosted timing.",
+        "css": {
+          "before": "#000",
+          "after": "#fff",
+          "records": 0
+        },
+        "lifecycle": {
+          "initial": "inline-flex",
+          "reconnected": "inline-flex",
+          "immediately": null,
+          "intermediate": null,
+          "final": null,
+          "disposed": 1
+        },
+        "results": [
+          {
+            "width": 320,
+            "samples": [
+              {
+                "phase": "family mutation delivery",
+                "at": 1603.7999999523163,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 312,
+                "width": 304,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              },
+              {
+                "phase": "first animation frame",
+                "at": 1734.7999999523163,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 312,
+                "width": 304,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              },
+              {
+                "phase": "second animation frame",
+                "at": 1755,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 312,
+                "width": 304,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              }
+            ],
+            "trusted": true
+          },
+          {
+            "width": 390,
+            "samples": [
+              {
+                "phase": "family mutation delivery",
+                "at": 1574.8000000715256,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 382,
+                "width": 374,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              },
+              {
+                "phase": "first animation frame",
+                "at": 1708.3000000715256,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 382,
+                "width": 374,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              },
+              {
+                "phase": "second animation frame",
+                "at": 1728.3999999761581,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 382,
+                "width": 374,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              }
+            ],
+            "trusted": true
+          }
+        ]
+      },
+      "testLogSha256": "93038223920f4c13a80777ace423e1994a9ce5333009df2ad1e05efeacf5028c",
+      "testJsonSha256": "724c85b0186ac6cd866088409a107c18d782adcb105717db57dbc2a8aa68807b"
+    },
+    {
+      "product": "e6c94334645e349e977f61a69e4d21f9bcd6411c",
+      "main": "abe10e39e80cfd47413bcdcd11a83885ca86104a",
+      "signedLocalCombination": "e92d6ecaaaad57731eabc05830ae721ad593bd3a",
+      "tree": "9eee3ed9756629b2536faa2ac27fafcae8b8c653",
+      "originalBrowserCases": 15,
+      "unselected": 9,
+      "dialog": 8,
+      "dialogObservations": 196,
+      "orderedSidebarReturns": 24,
+      "contentsTransitions": [
+        {
+          "family": "brutalist",
+          "runtime": "react",
+          "originalCheckMs": 213
+        },
+        {
+          "family": "brutalist",
+          "runtime": "vue",
+          "originalCheckMs": 189
+        },
+        {
+          "family": "brutalist",
+          "runtime": "vue2",
+          "originalCheckMs": 202
+        },
+        {
+          "family": "brutalist",
+          "runtime": "wc",
+          "originalCheckMs": 1
+        },
+        {
+          "family": "shadcn",
+          "runtime": "react",
+          "originalCheckMs": 283
+        },
+        {
+          "family": "shadcn",
+          "runtime": "vue",
+          "originalCheckMs": 266
+        },
+        {
+          "family": "shadcn",
+          "runtime": "vue2",
+          "originalCheckMs": 311
+        },
+        {
+          "family": "shadcn",
+          "runtime": "wc",
+          "originalCheckMs": 31
+        }
+      ],
+      "documentPath": "apps/www/src/content/docs/zh-cn/ui-libraries/shadcn/button.mdx",
+      "codeExamples": 9,
+      "documentSha256": "837e4b19f374198255b670c2098a3b65b3713b1fbc8afd2d688ff6cb3c8d3b14",
+      "headerControls": {
+        "head": "e92d6ecaaaad57731eabc05830ae721ad593bd3a",
+        "browser": "156.0.8078.79",
+        "scope": "Separate native mechanism and first animation frame diagnostics. Header geometry reads can force layout and were excluded from original hosted timing.",
+        "css": {
+          "before": "#000",
+          "after": "#fff",
+          "records": 0
+        },
+        "lifecycle": {
+          "initial": "inline-flex",
+          "reconnected": "inline-flex",
+          "immediately": null,
+          "intermediate": null,
+          "final": null,
+          "disposed": 1
+        },
+        "results": [
+          {
+            "width": 320,
+            "samples": [
+              {
+                "phase": "family mutation delivery",
+                "at": 1572.7999999523163,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 312,
+                "width": 304,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              },
+              {
+                "phase": "first animation frame",
+                "at": 1706.1999999284744,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 312,
+                "width": 304,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              },
+              {
+                "phase": "second animation frame",
+                "at": 1742.2999999523163,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 312,
+                "width": 304,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              }
+            ],
+            "trusted": true
+          },
+          {
+            "width": 390,
+            "samples": [
+              {
+                "phase": "family mutation delivery",
+                "at": 1574.6000000238419,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 382,
+                "width": 374,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              },
+              {
+                "phase": "first animation frame",
+                "at": 1707.3999999761581,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 382,
+                "width": 374,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              },
+              {
+                "phase": "second animation frame",
+                "at": 1727.6999999284744,
+                "family": "brutalist",
+                "generation": "2",
+                "top": 61,
+                "bottom": 545,
+                "left": 8,
+                "right": 382,
+                "width": 374,
+                "headerBottom": 56,
+                "hidden": false,
+                "position": "61px"
+              }
+            ],
+            "trusted": true
+          }
+        ]
+      },
+      "testLogSha256": "53b988cf5ec814838d815a45af98c4d86d759e7d6265f21c63116a7e75550bc1",
+      "testJsonSha256": "ff17326f478b7b30a9d11e5787cec4a0fcc2985bb446bd3f0ac832ffd0ca558a"
+    }
+  ],
+  "latestCaptureSha256": "54a82ec595c4e167f98fe64972c8102e4ec2ec8f6cc40fa4c090b7eeb6e9ced7",
+  "scope": "Exact signed disposable source combinations. Hosted paired comparison ran on the earlier shared 02bef55f source and original lists."
+}
