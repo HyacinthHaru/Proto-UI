@@ -1,0 +1,34 @@
+[
+  {
+    "productLabel": "scheduled-main",
+    "checkout": "35195a6e6f1ba6a7d800da0029f2683013abd18b",
+    "counts": {
+      "total": 7,
+      "failed": 3
+    }
+  },
+  {
+    "productLabel": "5c0815e",
+    "checkout": "1c541b5b99301a32efb1d04a4ad4b2a430f6e928",
+    "counts": {
+      "total": 7,
+      "failed": 4
+    }
+  },
+  {
+    "productLabel": "6eddf384",
+    "checkout": "c6c31ae67da24d2713410136e447ffeefa3fbb0e",
+    "counts": {
+      "total": 7,
+      "failed": 5
+    }
+  },
+  {
+    "productLabel": "f17c9c1",
+    "checkout": "5cc16843fc42acc46c7238e1904824b5ca0e6c0d",
+    "counts": {
+      "total": 7,
+      "failed": 4
+    }
+  }
+]

@@ -1,0 +1,612 @@
+{
+  "head": "b2ef764f4f8dc67b94e6165ca27c45f26a9f75c0",
+  "tree": "d62fd6d2032ddb57e09f81ed8675a6d42e197d1d",
+  "parent": "015f7041f51167becb9083c6e966b51cff22ca00",
+  "blobs": {
+    "apps/www/src/content/docs/zh-cn/site-sidebar-disclosure.browser.test.ts": {
+      "blob": "92b64987d8a458ea8053e4583b7a4740c0f56bba",
+      "sha256": "f7f6ac85fd47190373b389c654343dd0a47ba913b17b1f516ecb936b2c2e8309"
+    },
+    "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts": {
+      "blob": "c734f0dc6b947e11729e2d3ba646544f1e29602f",
+      "sha256": "7ab7bb2225c22469254a7488c4c646c98cb0e180f06c20ba900e6dd232609d4a"
+    },
+    "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts": {
+      "blob": "f3a517c207b24560b3b67ff8852d2e7190f6c219",
+      "sha256": "50f13884d5081c13d126f06c5297a6b98c1c185ea2f8b5e0af46187bacd35b0e"
+    }
+  },
+  "environment": {
+    "node": "v24.21.0",
+    "chrome": "156.0.8078.79",
+    "playwright": "1.58.2",
+    "os": "macOS arm64"
+  },
+  "suites": {
+    "f17-sidebar": {
+      "exit": 1,
+      "passed": 6,
+      "failed": 1,
+      "filtered": 0,
+      "cases": [
+        {
+          "title": "preserves native manual disclosure across reload and locale zh-cn/320",
+          "status": "passed"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale zh-cn/390",
+          "status": "passed"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale zh-cn/1440",
+          "status": "passed"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale en/320",
+          "status": "passed"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale en/390",
+          "status": "passed"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale en/1440",
+          "status": "passed"
+        },
+        {
+          "title": "no-JS SSR scopes current-only defaults to UI Libraries and preserves other native groups",
+          "status": "failed"
+        }
+      ]
+    },
+    "015-sidebar": {
+      "exit": 1,
+      "passed": 6,
+      "failed": 1,
+      "filtered": 0,
+      "cases": [
+        {
+          "title": "preserves native manual disclosure across reload and locale zh-cn/320",
+          "status": "passed"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale zh-cn/390",
+          "status": "failed"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale zh-cn/1440",
+          "status": "passed"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale en/320",
+          "status": "passed"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale en/390",
+          "status": "passed"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale en/1440",
+          "status": "passed"
+        },
+        {
+          "title": "no-JS SSR scopes current-only defaults to UI Libraries and preserves other native groups",
+          "status": "passed"
+        }
+      ]
+    },
+    "sidebar-nojs-owner-red": {
+      "exit": 1,
+      "passed": 0,
+      "failed": 1,
+      "filtered": 6,
+      "cases": [
+        {
+          "title": "preserves native manual disclosure across reload and locale zh-cn/320",
+          "status": "skipped"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale zh-cn/390",
+          "status": "skipped"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale zh-cn/1440",
+          "status": "skipped"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale en/320",
+          "status": "skipped"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale en/390",
+          "status": "skipped"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale en/1440",
+          "status": "skipped"
+        },
+        {
+          "title": "no-JS SSR scopes current-only defaults to UI Libraries and preserves other native groups",
+          "status": "failed"
+        }
+      ]
+    },
+    "sidebar-nojs-owner-green": {
+      "exit": 0,
+      "passed": 1,
+      "failed": 0,
+      "filtered": 6,
+      "cases": [
+        {
+          "title": "preserves native manual disclosure across reload and locale zh-cn/320",
+          "status": "skipped"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale zh-cn/390",
+          "status": "skipped"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale zh-cn/1440",
+          "status": "skipped"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale en/320",
+          "status": "skipped"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale en/390",
+          "status": "skipped"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale en/1440",
+          "status": "skipped"
+        },
+        {
+          "title": "no-JS SSR scopes current-only defaults to UI Libraries and preserves other native groups",
+          "status": "passed"
+        }
+      ]
+    },
+    "sidebar-click-owner-observed": {
+      "exit": 0,
+      "passed": 4,
+      "failed": 0,
+      "filtered": 3,
+      "cases": [
+        {
+          "title": "preserves native manual disclosure across reload and locale zh-cn/320",
+          "status": "passed"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale zh-cn/390",
+          "status": "passed"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale zh-cn/1440",
+          "status": "skipped"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale en/320",
+          "status": "passed"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale en/390",
+          "status": "passed"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale en/1440",
+          "status": "skipped"
+        },
+        {
+          "title": "no-JS SSR scopes current-only defaults to UI Libraries and preserves other native groups",
+          "status": "skipped"
+        }
+      ]
+    },
+    "sidebar-click-owner-after-only": {
+      "exit": 1,
+      "passed": 6,
+      "failed": 1,
+      "filtered": 0,
+      "cases": [
+        {
+          "title": "preserves native manual disclosure across reload and locale zh-cn/320",
+          "status": "passed"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale zh-cn/390",
+          "status": "failed"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale zh-cn/1440",
+          "status": "passed"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale en/320",
+          "status": "passed"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale en/390",
+          "status": "passed"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale en/1440",
+          "status": "passed"
+        },
+        {
+          "title": "no-JS SSR scopes current-only defaults to UI Libraries and preserves other native groups",
+          "status": "passed"
+        }
+      ]
+    },
+    "sidebar-click-owner-fix": {
+      "exit": 0,
+      "passed": 7,
+      "failed": 0,
+      "filtered": 0,
+      "cases": [
+        {
+          "title": "preserves native manual disclosure across reload and locale zh-cn/320",
+          "status": "passed"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale zh-cn/390",
+          "status": "passed"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale zh-cn/1440",
+          "status": "passed"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale en/320",
+          "status": "passed"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale en/390",
+          "status": "passed"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale en/1440",
+          "status": "passed"
+        },
+        {
+          "title": "no-JS SSR scopes current-only defaults to UI Libraries and preserves other native groups",
+          "status": "passed"
+        }
+      ]
+    },
+    "b2ef-sidebar": {
+      "exit": 0,
+      "passed": 7,
+      "failed": 0,
+      "filtered": 0,
+      "cases": [
+        {
+          "title": "preserves native manual disclosure across reload and locale zh-cn/320",
+          "status": "passed"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale zh-cn/390",
+          "status": "passed"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale zh-cn/1440",
+          "status": "passed"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale en/320",
+          "status": "passed"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale en/390",
+          "status": "passed"
+        },
+        {
+          "title": "preserves native manual disclosure across reload and locale en/1440",
+          "status": "passed"
+        },
+        {
+          "title": "no-JS SSR scopes current-only defaults to UI Libraries and preserves other native groups",
+          "status": "passed"
+        }
+      ]
+    },
+    "b2ef-native": {
+      "exit": 0,
+      "passed": 15,
+      "failed": 0,
+      "filtered": 3,
+      "cases": [
+        {
+          "title": "shadcn/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "shadcn/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "shadcn/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "shadcn/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "brutalist/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "brutalist/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "brutalist/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "brutalist/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "switches every registered homepage group through real adapters, preserving native anchors and theme",
+          "status": "passed"
+        },
+        {
+          "title": "keeps native navigation available without JavaScript and does not overflow mobile",
+          "status": "skipped"
+        },
+        {
+          "title": "retains saved React across cold library routes and exercises actual family chrome",
+          "status": "skipped"
+        },
+        {
+          "title": "reveals current articles through native shadow slots and preserves viewport handback",
+          "status": "skipped"
+        },
+        {
+          "title": "uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence",
+          "status": "passed"
+        },
+        {
+          "title": "uses the same mobile shell on documentation with independent global navigation and contents",
+          "status": "passed"
+        },
+        {
+          "title": "compact shadcn preferences stay usable at 200% text, RTL and breakpoint moves",
+          "status": "passed"
+        },
+        {
+          "title": "compact brutalist preferences stay usable at 200% text, RTL and breakpoint moves",
+          "status": "passed"
+        },
+        {
+          "title": "retains shadcn preference owners and portals through real breakpoint reconnects",
+          "status": "passed"
+        },
+        {
+          "title": "retains brutalist preference owners and portals through real breakpoint reconnects",
+          "status": "passed"
+        }
+      ]
+    }
+  },
+  "privatePatchDigests": {
+    "sidebar-nojs-owner-diagnostic.patch": "84fcfb8d13b868a37d6efc7ff4c6f329b05ebf2f1d58c8069602caa8a4530b4e",
+    "sidebar-click-owner-before-and-after.patch": "f2e133e7de5dfef1e1df484f8674f11ec5353f3ea16b7a76d900998fd8404bc0",
+    "sidebar-click-owner-after-only.patch": "567569e58cebb594cd7dd6521a41cdd118d73975c77c0eb9d6a594219282df2b",
+    "sidebar-click-owner-fix.patch": "8f780dd808d482322bdb3de48b857cf8d06d305b25c39a54835baff88d66af9b"
+  },
+  "noJsOwner": {
+    "firstLink": "/zh-cn/ui-libraries/base/button/",
+    "outerOpen": true,
+    "innerOpen": false
+  },
+  "failedClickObservation": {
+    "locale": "zh-cn",
+    "width": 390,
+    "originalActionTimeoutMs": 30000,
+    "fallback": {
+      "connected": true,
+      "hidden": true,
+      "inert": true,
+      "display": "none",
+      "width": 0,
+      "height": 0
+    },
+    "activeTrigger": {
+      "connected": true,
+      "hidden": false,
+      "inert": false,
+      "display": "flex",
+      "visibility": "visible",
+      "width": 44,
+      "height": 44
+    }
+  },
+  "localBrutalistFamilyMs": 600.778,
+  "ring": {
+    "source": {
+      "sha": "b2ef764f4f8dc67b94e6165ca27c45f26a9f75c0",
+      "dirty": false,
+      "expectedSha": null,
+      "eventSha": null
+    },
+    "family": "brutalist",
+    "stage": "wc-runtime-narrow-focus-ring",
+    "viewport": {
+      "width": 320,
+      "height": 300
+    },
+    "capturedAt": "2026-11-13T04:12:13.099Z",
+    "facts": {
+      "unfocused": {
+        "focused": false,
+        "focusVisible": false,
+        "prototype": "brutalist-select-trigger",
+        "tokens": [
+          "flex",
+          "w-full",
+          "items-center",
+          "justify-between",
+          "gap-2",
+          "rounded-base",
+          "border-2",
+          "border-black",
+          "bg-main",
+          "text-main-foreground",
+          "font-sans",
+          "font-medium",
+          "px-3",
+          "py-2",
+          "text-sm",
+          "whitespace-nowrap",
+          "outline-none",
+          "select-none",
+          "data-[placeholder]:text-main-foreground",
+          "data-[hovered]:border-black",
+          "data-[pressed]:border-black",
+          "data-[focus-visible]:outline-none",
+          "data-[focus-visible]:ring-2",
+          "data-[focus-visible]:ring-ring",
+          "data-[focus-visible]:ring-offset-2",
+          "data-[focus-visible]:ring-offset-background",
+          "data-[disabled]:pointer-events-none",
+          "data-[disabled]:opacity-50",
+          "transition-all",
+          "h-10",
+          "shadow-[4px_4px_0_0_#000]"
+        ],
+        "ringWidth": 0,
+        "ringOffset": 0,
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(0, 0, 0) 4px 4px 0px 0px",
+        "ringColor": "",
+        "target": {
+          "x": 26,
+          "y": 267,
+          "width": 268,
+          "height": 44,
+          "top": 267,
+          "right": 294,
+          "bottom": 311,
+          "left": 26
+        },
+        "ring": {
+          "left": 26,
+          "right": 294,
+          "top": 267,
+          "bottom": 311
+        },
+        "clipping": [
+          {
+            "tag": "DIV",
+            "marker": "site-header-native-slot pui-projection-box",
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "left": 22,
+            "right": 298,
+            "top": 75,
+            "bottom": 278,
+            "containsX": true,
+            "containsY": false,
+            "unsupportedClip": false
+          }
+        ],
+        "viewport": {
+          "width": 320,
+          "height": 300
+        },
+        "inViewport": false,
+        "unclipped": false
+      },
+      "focused": {
+        "focused": true,
+        "focusVisible": true,
+        "prototype": "brutalist-select-trigger",
+        "tokens": [
+          "flex",
+          "w-full",
+          "items-center",
+          "justify-between",
+          "gap-2",
+          "rounded-base",
+          "border-2",
+          "border-black",
+          "bg-main",
+          "text-main-foreground",
+          "font-sans",
+          "font-medium",
+          "px-3",
+          "py-2",
+          "text-sm",
+          "whitespace-nowrap",
+          "outline-none",
+          "select-none",
+          "data-[placeholder]:text-main-foreground",
+          "data-[hovered]:border-black",
+          "data-[pressed]:border-black",
+          "data-[focus-visible]:outline-none",
+          "data-[focus-visible]:ring-2",
+          "data-[focus-visible]:ring-ring",
+          "data-[focus-visible]:ring-offset-2",
+          "data-[focus-visible]:ring-offset-background",
+          "data-[disabled]:pointer-events-none",
+          "data-[disabled]:opacity-50",
+          "transition-all",
+          "h-10",
+          "shadow-[4px_4px_0_0_#000]"
+        ],
+        "ringWidth": 2,
+        "ringOffset": 2,
+        "shadow": "rgba(220, 235, 254, 0.455) 0px 0px 0px 0.912193px, rgba(0, 0, 0, 0.455) 0px 0px 0px 1.82439px, rgb(0, 0, 0) 4px 4px 0px 0px",
+        "ringColor": "#000000",
+        "target": {
+          "x": 26,
+          "y": 230,
+          "width": 268,
+          "height": 44,
+          "top": 230,
+          "right": 294,
+          "bottom": 274,
+          "left": 26
+        },
+        "ring": {
+          "left": 22,
+          "right": 298,
+          "top": 226,
+          "bottom": 278
+        },
+        "clipping": [
+          {
+            "tag": "DIV",
+            "marker": "site-header-native-slot pui-projection-box",
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "left": 22,
+            "right": 298,
+            "top": 75,
+            "bottom": 278,
+            "containsX": true,
+            "containsY": true,
+            "unsupportedClip": false
+          }
+        ],
+        "viewport": {
+          "width": 320,
+          "height": 300
+        },
+        "inViewport": true,
+        "unclipped": true
+      }
+    },
+    "screenshotComplete": true
+  },
+  "types": {
+    "exit": 0,
+    "astroFiles": 1215,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 30
+  }
+}

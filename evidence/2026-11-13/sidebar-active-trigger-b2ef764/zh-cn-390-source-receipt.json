@@ -1,0 +1,2347 @@
+{
+  "source": "b2ef764f4f8dc67b94e6165ca27c45f26a9f75c0",
+  "tree": "d62fd6d2032ddb57e09f81ed8675a6d42e197d1d",
+  "url": "/en/start-here/quick-start/",
+  "errors": [],
+  "frames": [
+    [
+      {
+        "t": 559.7000000476837,
+        "ready": "1",
+        "groups": [
+          {
+            "id": "[\"/start-here/what-you-saw\"]",
+            "open": true,
+            "current": true
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/1-components-before-code\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/5-translation-layer\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/7-evolving-within-boundaries\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/base/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/shadcn/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/lucide\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/brutalist/design-contract\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/bootstrap-2-3-2/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/liquid-glass/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/build\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/build\",\"/build/prototypes\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/contribute\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/specifications/introduction\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/reference\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/project/about\"]",
+            "open": true,
+            "current": false
+          }
+        ]
+      },
+      {
+        "t": 587.6000000238419,
+        "ready": "1",
+        "groups": [
+          {
+            "id": "[\"/start-here/what-you-saw\"]",
+            "open": true,
+            "current": true
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/1-components-before-code\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/5-translation-layer\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/7-evolving-within-boundaries\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/base/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/shadcn/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/lucide\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/brutalist/design-contract\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/bootstrap-2-3-2/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/liquid-glass/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/build\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/build\",\"/build/prototypes\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/contribute\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/specifications/introduction\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/reference\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/project/about\"]",
+            "open": true,
+            "current": false
+          }
+        ]
+      },
+      {
+        "t": 591.7000000476837,
+        "ready": "1",
+        "groups": [
+          {
+            "id": "[\"/start-here/what-you-saw\"]",
+            "open": true,
+            "current": true
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/1-components-before-code\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/5-translation-layer\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/7-evolving-within-boundaries\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/base/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/shadcn/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/lucide\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/brutalist/design-contract\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/bootstrap-2-3-2/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/liquid-glass/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/build\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/build\",\"/build/prototypes\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/contribute\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/specifications/introduction\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/reference\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/project/about\"]",
+            "open": true,
+            "current": false
+          }
+        ]
+      },
+      {
+        "t": 601.6000000238419,
+        "ready": "1",
+        "groups": [
+          {
+            "id": "[\"/start-here/what-you-saw\"]",
+            "open": true,
+            "current": true
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/1-components-before-code\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/5-translation-layer\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/7-evolving-within-boundaries\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/base/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/shadcn/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/lucide\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/brutalist/design-contract\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/bootstrap-2-3-2/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/liquid-glass/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/build\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/build\",\"/build/prototypes\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/contribute\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/specifications/introduction\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/reference\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/project/about\"]",
+            "open": true,
+            "current": false
+          }
+        ]
+      },
+      {
+        "t": 634.3999999761581,
+        "ready": "1",
+        "groups": [
+          {
+            "id": "[\"/start-here/what-you-saw\"]",
+            "open": true,
+            "current": true
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/1-components-before-code\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/5-translation-layer\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/7-evolving-within-boundaries\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/base/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/shadcn/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/lucide\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/brutalist/design-contract\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/bootstrap-2-3-2/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/liquid-glass/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/build\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/build\",\"/build/prototypes\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/contribute\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/specifications/introduction\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/reference\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/project/about\"]",
+            "open": true,
+            "current": false
+          }
+        ]
+      },
+      {
+        "t": 636.7000000476837,
+        "ready": "1",
+        "groups": [
+          {
+            "id": "[\"/start-here/what-you-saw\"]",
+            "open": true,
+            "current": true
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/1-components-before-code\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/5-translation-layer\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/7-evolving-within-boundaries\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/base/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/shadcn/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/lucide\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/brutalist/design-contract\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/bootstrap-2-3-2/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/liquid-glass/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/build\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/build\",\"/build/prototypes\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/contribute\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/specifications/introduction\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/reference\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/project/about\"]",
+            "open": true,
+            "current": false
+          }
+        ]
+      },
+      {
+        "t": 651.7999999523163,
+        "ready": "1",
+        "groups": [
+          {
+            "id": "[\"/start-here/what-you-saw\"]",
+            "open": true,
+            "current": true
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/1-components-before-code\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/5-translation-layer\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/7-evolving-within-boundaries\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/base/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/shadcn/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/lucide\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/brutalist/design-contract\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/bootstrap-2-3-2/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/liquid-glass/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/build\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/build\",\"/build/prototypes\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/contribute\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/specifications/introduction\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/reference\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/project/about\"]",
+            "open": true,
+            "current": false
+          }
+        ]
+      },
+      {
+        "t": 668.2999999523163,
+        "ready": "1",
+        "groups": [
+          {
+            "id": "[\"/start-here/what-you-saw\"]",
+            "open": true,
+            "current": true
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/1-components-before-code\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/5-translation-layer\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/7-evolving-within-boundaries\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/base/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/shadcn/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/lucide\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/brutalist/design-contract\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/bootstrap-2-3-2/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/liquid-glass/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/build\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/build\",\"/build/prototypes\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/contribute\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/specifications/introduction\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/reference\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/project/about\"]",
+            "open": true,
+            "current": false
+          }
+        ]
+      },
+      {
+        "t": 685,
+        "ready": "1",
+        "groups": [
+          {
+            "id": "[\"/start-here/what-you-saw\"]",
+            "open": true,
+            "current": true
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/1-components-before-code\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/5-translation-layer\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/7-evolving-within-boundaries\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/base/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/shadcn/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/lucide\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/brutalist/design-contract\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/bootstrap-2-3-2/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/liquid-glass/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/build\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/build\",\"/build/prototypes\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/contribute\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/specifications/introduction\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/reference\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/project/about\"]",
+            "open": true,
+            "current": false
+          }
+        ]
+      },
+      {
+        "t": 703.2000000476837,
+        "ready": "1",
+        "groups": [
+          {
+            "id": "[\"/start-here/what-you-saw\"]",
+            "open": true,
+            "current": true
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/1-components-before-code\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/5-translation-layer\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/7-evolving-within-boundaries\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/base/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/shadcn/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/lucide\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/brutalist/design-contract\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/bootstrap-2-3-2/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/liquid-glass/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/build\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/build\",\"/build/prototypes\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/contribute\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/specifications/introduction\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/reference\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/project/about\"]",
+            "open": true,
+            "current": false
+          }
+        ]
+      },
+      {
+        "t": 718.1000000238419,
+        "ready": "1",
+        "groups": [
+          {
+            "id": "[\"/start-here/what-you-saw\"]",
+            "open": true,
+            "current": true
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/1-components-before-code\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/5-translation-layer\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/7-evolving-within-boundaries\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/base/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/shadcn/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/lucide\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/brutalist/design-contract\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/bootstrap-2-3-2/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/liquid-glass/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/build\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/build\",\"/build/prototypes\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/contribute\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/specifications/introduction\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/reference\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/project/about\"]",
+            "open": true,
+            "current": false
+          }
+        ]
+      },
+      {
+        "t": 734.5,
+        "ready": "1",
+        "groups": [
+          {
+            "id": "[\"/start-here/what-you-saw\"]",
+            "open": true,
+            "current": true
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/1-components-before-code\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/5-translation-layer\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/7-evolving-within-boundaries\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/base/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/shadcn/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/lucide\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/brutalist/design-contract\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/bootstrap-2-3-2/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/liquid-glass/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/build\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/build\",\"/build/prototypes\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/contribute\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/specifications/introduction\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/reference\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/project/about\"]",
+            "open": true,
+            "current": false
+          }
+        ]
+      },
+      {
+        "t": 868.6000000238419,
+        "ready": "1",
+        "groups": [
+          {
+            "id": "[\"/start-here/what-you-saw\"]",
+            "open": true,
+            "current": true
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/1-components-before-code\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/5-translation-layer\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/7-evolving-within-boundaries\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/base/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/shadcn/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/lucide\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/brutalist/design-contract\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/bootstrap-2-3-2/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/liquid-glass/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/build\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/build\",\"/build/prototypes\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/contribute\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/specifications/introduction\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/reference\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/project/about\"]",
+            "open": true,
+            "current": false
+          }
+        ]
+      },
+      {
+        "t": 915.7999999523163,
+        "ready": "1",
+        "groups": [
+          {
+            "id": "[\"/start-here/what-you-saw\"]",
+            "open": true,
+            "current": true
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/1-components-before-code\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/5-translation-layer\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/7-evolving-within-boundaries\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/base/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/shadcn/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/lucide\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/brutalist/design-contract\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/bootstrap-2-3-2/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/liquid-glass/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/build\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/build\",\"/build/prototypes\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/contribute\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/specifications/introduction\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/reference\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/project/about\"]",
+            "open": true,
+            "current": false
+          }
+        ]
+      },
+      {
+        "t": 928.7000000476837,
+        "ready": "1",
+        "groups": [
+          {
+            "id": "[\"/start-here/what-you-saw\"]",
+            "open": true,
+            "current": true
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/1-components-before-code\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/5-translation-layer\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/7-evolving-within-boundaries\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/base/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/shadcn/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/lucide\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/brutalist/design-contract\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/bootstrap-2-3-2/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/liquid-glass/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/build\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/build\",\"/build/prototypes\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/contribute\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/specifications/introduction\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/reference\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/project/about\"]",
+            "open": true,
+            "current": false
+          }
+        ]
+      },
+      {
+        "t": 941.7999999523163,
+        "ready": "1",
+        "groups": [
+          {
+            "id": "[\"/start-here/what-you-saw\"]",
+            "open": true,
+            "current": true
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/1-components-before-code\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/5-translation-layer\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/7-evolving-within-boundaries\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/base/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/shadcn/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/lucide\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/brutalist/design-contract\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/bootstrap-2-3-2/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/liquid-glass/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/build\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/build\",\"/build/prototypes\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/contribute\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/specifications/introduction\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/reference\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/project/about\"]",
+            "open": true,
+            "current": false
+          }
+        ]
+      },
+      {
+        "t": 1048.2000000476837,
+        "ready": "1",
+        "groups": [
+          {
+            "id": "[\"/start-here/what-you-saw\"]",
+            "open": true,
+            "current": true
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/1-components-before-code\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/5-translation-layer\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/7-evolving-within-boundaries\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/base/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/shadcn/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/lucide\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/brutalist/design-contract\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/bootstrap-2-3-2/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/liquid-glass/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/build\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/build\",\"/build/prototypes\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/contribute\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/specifications/introduction\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/reference\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/project/about\"]",
+            "open": true,
+            "current": false
+          }
+        ]
+      },
+      {
+        "t": 1055.5,
+        "ready": "1",
+        "groups": [
+          {
+            "id": "[\"/start-here/what-you-saw\"]",
+            "open": true,
+            "current": true
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/1-components-before-code\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/5-translation-layer\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/7-evolving-within-boundaries\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/base/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/shadcn/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/lucide\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/brutalist/design-contract\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/bootstrap-2-3-2/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/liquid-glass/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/build\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/build\",\"/build/prototypes\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/contribute\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/specifications/introduction\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/reference\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/project/about\"]",
+            "open": true,
+            "current": false
+          }
+        ]
+      },
+      {
+        "t": 1150,
+        "ready": "1",
+        "groups": [
+          {
+            "id": "[\"/start-here/what-you-saw\"]",
+            "open": true,
+            "current": true
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/1-components-before-code\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/5-translation-layer\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/7-evolving-within-boundaries\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/base/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/shadcn/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/lucide\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/brutalist/design-contract\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/bootstrap-2-3-2/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/liquid-glass/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/build\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/build\",\"/build/prototypes\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/contribute\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/specifications/introduction\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/reference\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/project/about\"]",
+            "open": true,
+            "current": false
+          }
+        ]
+      },
+      {
+        "t": 1161.7000000476837,
+        "ready": "1",
+        "groups": [
+          {
+            "id": "[\"/start-here/what-you-saw\"]",
+            "open": true,
+            "current": true
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/1-components-before-code\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/5-translation-layer\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/7-evolving-within-boundaries\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/base/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/shadcn/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/lucide\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/brutalist/design-contract\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/bootstrap-2-3-2/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/liquid-glass/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/build\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/build\",\"/build/prototypes\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/contribute\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/specifications/introduction\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/reference\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/project/about\"]",
+            "open": true,
+            "current": false
+          }
+        ]
+      },
+      {
+        "t": 1184.5,
+        "ready": "1",
+        "groups": [
+          {
+            "id": "[\"/start-here/what-you-saw\"]",
+            "open": true,
+            "current": true
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/1-components-before-code\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/5-translation-layer\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/7-evolving-within-boundaries\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/base/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/shadcn/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/lucide\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/brutalist/design-contract\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/bootstrap-2-3-2/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/liquid-glass/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/build\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/build\",\"/build/prototypes\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/contribute\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/specifications/introduction\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/reference\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/project/about\"]",
+            "open": true,
+            "current": false
+          }
+        ]
+      },
+      {
+        "t": 1206.5,
+        "ready": "1",
+        "groups": [
+          {
+            "id": "[\"/start-here/what-you-saw\"]",
+            "open": true,
+            "current": true
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/1-components-before-code\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/5-translation-layer\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/7-evolving-within-boundaries\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/base/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/shadcn/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/lucide\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/brutalist/design-contract\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/bootstrap-2-3-2/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/liquid-glass/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/build\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/build\",\"/build/prototypes\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/contribute\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/specifications/introduction\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/reference\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/project/about\"]",
+            "open": true,
+            "current": false
+          }
+        ]
+      },
+      {
+        "t": 1354.2999999523163,
+        "ready": "1",
+        "groups": [
+          {
+            "id": "[\"/start-here/what-you-saw\"]",
+            "open": true,
+            "current": true
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/1-components-before-code\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/5-translation-layer\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/whitepaper/0-preface\",\"/whitepaper/7-evolving-within-boundaries\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/base/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/shadcn/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/lucide\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/brutalist/design-contract\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/bootstrap-2-3-2/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/liquid-glass/button\"]",
+            "open": false,
+            "current": false
+          },
+          {
+            "id": "[\"/build\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/build\",\"/build/prototypes\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/contribute\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/specifications/introduction\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/reference\"]",
+            "open": true,
+            "current": false
+          },
+          {
+            "id": "[\"/project/about\"]",
+            "open": true,
+            "current": false
+          }
+        ]
+      }
+    ]
+  ],
+  "evidenceErrors": [],
+  "facts": [
+    {
+      "id": "[\"/start-here/what-you-saw\"]",
+      "managed": false,
+      "open": true,
+      "current": true,
+      "summary": "Start Here"
+    },
+    {
+      "id": "[\"/whitepaper/0-preface\"]",
+      "managed": false,
+      "open": true,
+      "current": false,
+      "summary": "Whitepaper"
+    },
+    {
+      "id": "[\"/whitepaper/0-preface\",\"/whitepaper/1-components-before-code\"]",
+      "managed": false,
+      "open": true,
+      "current": false,
+      "summary": "Part I \u00b7 Prototype"
+    },
+    {
+      "id": "[\"/whitepaper/0-preface\",\"/whitepaper/5-translation-layer\"]",
+      "managed": false,
+      "open": true,
+      "current": false,
+      "summary": "Part II \u00b7 Translation"
+    },
+    {
+      "id": "[\"/whitepaper/0-preface\",\"/whitepaper/7-evolving-within-boundaries\"]",
+      "managed": false,
+      "open": true,
+      "current": false,
+      "summary": "Part III \u00b7 Evolution"
+    },
+    {
+      "id": "[\"/ui-libraries/base/button\"]",
+      "managed": true,
+      "open": true,
+      "current": false,
+      "summary": "UI Libraries"
+    },
+    {
+      "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/base/button\"]",
+      "managed": true,
+      "open": false,
+      "current": false,
+      "summary": "Base"
+    },
+    {
+      "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/shadcn/button\"]",
+      "managed": true,
+      "open": false,
+      "current": false,
+      "summary": "Shadcn"
+    },
+    {
+      "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/lucide\"]",
+      "managed": true,
+      "open": false,
+      "current": false,
+      "summary": "Lucide"
+    },
+    {
+      "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/brutalist/design-contract\"]",
+      "managed": true,
+      "open": false,
+      "current": false,
+      "summary": "Brutalist"
+    },
+    {
+      "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/bootstrap-2-3-2/button\"]",
+      "managed": true,
+      "open": false,
+      "current": false,
+      "summary": "Bootstrap 2.3.2 WIP / Experimental"
+    },
+    {
+      "id": "[\"/ui-libraries/base/button\",\"/ui-libraries/liquid-glass/button\"]",
+      "managed": true,
+      "open": false,
+      "current": false,
+      "summary": "Liquid Glass WIP / Experimental"
+    },
+    {
+      "id": "[\"/build\"]",
+      "managed": false,
+      "open": true,
+      "current": false,
+      "summary": "Build"
+    },
+    {
+      "id": "[\"/build\",\"/build/prototypes\"]",
+      "managed": false,
+      "open": true,
+      "current": false,
+      "summary": "Prototypes"
+    },
+    {
+      "id": "[\"/contribute\"]",
+      "managed": false,
+      "open": true,
+      "current": false,
+      "summary": "Contribute"
+    },
+    {
+      "id": "[\"/specifications/introduction\"]",
+      "managed": false,
+      "open": true,
+      "current": false,
+      "summary": "Specifications"
+    },
+    {
+      "id": "[\"/reference\"]",
+      "managed": false,
+      "open": true,
+      "current": false,
+      "summary": "Reference"
+    },
+    {
+      "id": "[\"/project/about\"]",
+      "managed": false,
+      "open": true,
+      "current": false,
+      "summary": "Project"
+    }
+  ]
+}
