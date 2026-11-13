@@ -1,0 +1,20 @@
+{
+  "product": "f58c7af3",
+  "diagnosticHead": "416f8cb72f340d64750c02729899caeb4ee7fa26",
+  "traceProtocolId": 14690,
+  "path": "apps/www/src/components/site-header-disclosure.ts",
+  "traceSha256": "bbb1761c6a7a05103bab7b20faebe8dfcbf3a39d3ff9090d95e1e508e29b6f7b",
+  "locallyReconstructedViteVersion": "6.4.1",
+  "sourceSha256": "9d614feb355d24ff181afcacbb31ae5b1acfc299cd90bdae9c89460eff5b92e4",
+  "v8SampleLocationsWithLocalTransform": [
+    {
+      "reader": "getBoundingClientRect",
+      "generatedLine": 84,
+      "generatedColumn": 27,
+      "weightedMs": 75.848,
+      "compiledSource": "const anchor = button.getBoundingClientRect();",
+      "authoredLine": 130
+    }
+  ],
+  "interval": "Chrome forward to renderer dispatch"
+}

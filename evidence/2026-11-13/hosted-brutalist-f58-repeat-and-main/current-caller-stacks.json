@@ -1,0 +1,807 @@
+{
+  "scope": "Source-bound original query trace intervals. Weighted V8 samples are not causal savings; call-frame locations use generated source.",
+  "runs": [
+    {
+      "directory": "hosted-compact-resize",
+      "carrier": "3dadda2853cc88672a37c20121c59791f367fbff",
+      "traceSha256": "583607bd42c9b1dce401eb30eddd15c88629aa34db4c52827a6a2ac6c7e7ba7f",
+      "protocolId": 14661,
+      "rows": [
+        {
+          "category": "header-rectangle",
+          "phase": "after-family-write",
+          "sampleWeightMs": 89.128,
+          "v8SampleLocation": [86, 25],
+          "v8GeneratedStack": [
+            ["getBoundingClientRect", "", 0, 0],
+            ["positionPanel", "apps/www/src/components/site-header-disclosure.ts", 81, 25],
+            ["measureLayout", "apps/www/src/components/site-header-disclosure.ts", 114, 25],
+            ["sync", "apps/www/src/components/site-header-disclosure.ts", 156, 16],
+            ["enhance", "apps/www/src/components/site-header-disclosure.ts", 334, 12],
+            ["publish", "apps/www/src/components/Homepage/homepage-runtime-client.ts", 524, 16],
+            [
+              "materializeGeneration",
+              "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+              153,
+              33
+            ],
+            ["(root)", "", 0, 0]
+          ]
+        },
+        {
+          "category": "typography-selection",
+          "phase": "before-family-write",
+          "sampleWeightMs": 69.447,
+          "v8SampleLocation": [101, 22],
+          "v8GeneratedStack": [
+            ["preserveSelection", "apps/www/src/components/site-typography.ts", 98, 27],
+            ["activate", "apps/www/src/components/site-typography.ts", 295, 19],
+            ["activate", "apps/www/src/components/Homepage/homepage-runtime-client.ts", 477, 17],
+            [
+              "materializeGeneration",
+              "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+              153,
+              33
+            ],
+            ["(root)", "", 0, 0]
+          ]
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 45.381,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            [
+              "notify",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              59,
+              22
+            ],
+            ["(root)", "", 0, 0]
+          ]
+        },
+        {
+          "category": "motion-palette",
+          "phase": "after-family-write",
+          "sampleWeightMs": 35.953,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            [
+              "notify",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              59,
+              22
+            ],
+            ["(root)", "", 0, 0]
+          ]
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 14.194,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            ["environment", "packages/adapters/base/src/motion/web-resident-motion.ts", 73, 18],
+            ["render", "packages/modules/feedback/src/motion/projector.ts", 36, 18],
+            ["commit", "packages/modules/feedback/src/motion/projector.ts", 146, 11],
+            ["commit", "packages/adapters/web-component/src/runtime/modules.ts", 1253, 15],
+            ["projectFinalStyle", "packages/modules/feedback/src/create.ts", 468, 26],
+            ["afterRenderCommit", "packages/modules/feedback/src/create.ts", 550, 26],
+            ["onMountPhase", "packages/modules/feedback/src/create.ts", 396, 21],
+            ["onMountPhase", "packages/modules/feedback/src/create.ts", 675, 25],
+            [
+              "setMountPhase",
+              "packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+              193,
+              16
+            ],
+            ["setMountPhase", "packages/runtime/src/instance/session.ts", 127, 25]
+          ]
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 8.476,
+          "v8SampleLocation": [36, 64],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            ["environment", "packages/adapters/base/src/motion/web-resident-motion.ts", 73, 18],
+            ["render", "packages/modules/feedback/src/motion/projector.ts", 36, 18],
+            ["commit", "packages/modules/feedback/src/motion/projector.ts", 146, 11],
+            ["commit", "packages/adapters/web-component/src/runtime/modules.ts", 1253, 15],
+            ["projectFinalStyle", "packages/modules/feedback/src/create.ts", 468, 26],
+            ["afterRenderCommit", "packages/modules/feedback/src/create.ts", 550, 26],
+            ["onMountPhase", "packages/modules/feedback/src/create.ts", 396, 21],
+            ["onMountPhase", "packages/modules/feedback/src/create.ts", 675, 25],
+            [
+              "setMountPhase",
+              "packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+              193,
+              16
+            ],
+            ["setMountPhase", "packages/runtime/src/instance/session.ts", 127, 25]
+          ]
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 7.677,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            ["environment", "packages/adapters/base/src/motion/web-resident-motion.ts", 73, 18],
+            ["render", "packages/modules/feedback/src/motion/projector.ts", 36, 18],
+            ["commit", "packages/modules/feedback/src/motion/projector.ts", 146, 11],
+            ["commit", "packages/adapters/web-component/src/runtime/modules.ts", 1253, 15],
+            ["projectFinalStyle", "packages/modules/feedback/src/create.ts", 468, 26],
+            ["flushIfPossible", "packages/modules/feedback/src/create.ts", 526, 24],
+            ["replaceVisualRuntime", "packages/modules/feedback/src/create.ts", 254, 29],
+            ["replaceVisualRuntime", "packages/modules/feedback/src/create.ts", 659, 33],
+            ["applyVisualPlan", "packages/modules/rule/src/impl.ts", 190, 18],
+            ["evaluateAndApply", "packages/modules/rule/src/impl.ts", 169, 19]
+          ]
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 0.613,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            ["environment", "packages/adapters/base/src/motion/web-resident-motion.ts", 73, 18],
+            ["render", "packages/modules/feedback/src/motion/projector.ts", 36, 18],
+            ["commit", "packages/modules/feedback/src/motion/projector.ts", 146, 11],
+            ["commit", "packages/adapters/web-component/src/runtime/modules.ts", 1253, 15],
+            ["projectFinalStyle", "packages/modules/feedback/src/create.ts", 468, 26],
+            ["afterRenderCommit", "packages/modules/feedback/src/create.ts", 550, 26],
+            ["afterRenderCommit", "packages/modules/feedback/src/create.ts", 677, 30],
+            [
+              "afterRenderCommit",
+              "packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+              209,
+              20
+            ],
+            ["done", "packages/runtime/src/instance/session.ts", 155, 11],
+            ["commit", "packages/adapters/web-component/src/runtime/session.ts", 167, 15]
+          ]
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 0.33,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            ["environment", "packages/adapters/base/src/motion/web-resident-motion.ts", 73, 18],
+            ["render", "packages/modules/feedback/src/motion/projector.ts", 36, 18],
+            ["commit", "packages/modules/feedback/src/motion/projector.ts", 146, 11],
+            ["commit", "packages/adapters/web-component/src/runtime/modules.ts", 1253, 15],
+            ["projectFinalStyle", "packages/modules/feedback/src/create.ts", 468, 26],
+            ["flushIfPossible", "packages/modules/feedback/src/create.ts", 526, 24],
+            ["onProtoPhase", "packages/modules/feedback/src/create.ts", 383, 21],
+            ["onProtoPhase", "packages/modules/feedback/src/create.ts", 676, 25],
+            [
+              "setProtoPhase",
+              "packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+              181,
+              16
+            ],
+            ["scheduleFinish", "packages/runtime/src/instance/session.ts", 284, 32]
+          ]
+        },
+        {
+          "category": "typography-selection",
+          "phase": "before-family-write",
+          "sampleWeightMs": 0.119,
+          "v8SampleLocation": [106, 12],
+          "v8GeneratedStack": [
+            ["preserveSelection", "apps/www/src/components/site-typography.ts", 98, 27],
+            ["activate", "apps/www/src/components/site-typography.ts", 295, 19],
+            ["activate", "apps/www/src/components/Homepage/homepage-runtime-client.ts", 477, 17],
+            [
+              "materializeGeneration",
+              "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+              153,
+              33
+            ],
+            ["(root)", "", 0, 0]
+          ]
+        }
+      ]
+    },
+    {
+      "directory": "hosted-projected-focus-ownership",
+      "carrier": "251d1975a3d2d440c43e4f5b6e4b1f8563d645ba",
+      "traceSha256": "660bf913e9ddb6df4c2511359ed91808a777e6cd7cab532afd66ebf1de81f20d",
+      "protocolId": 14634,
+      "rows": [
+        {
+          "category": "header-rectangle",
+          "phase": "after-family-write",
+          "sampleWeightMs": 76.833,
+          "v8SampleLocation": [86, 25],
+          "v8GeneratedStack": [
+            ["getBoundingClientRect", "", 0, 0],
+            ["positionPanel", "apps/www/src/components/site-header-disclosure.ts", 81, 25],
+            ["measureLayout", "apps/www/src/components/site-header-disclosure.ts", 114, 25],
+            ["sync", "apps/www/src/components/site-header-disclosure.ts", 156, 16],
+            ["enhance", "apps/www/src/components/site-header-disclosure.ts", 334, 12],
+            ["publish", "apps/www/src/components/Homepage/homepage-runtime-client.ts", 524, 16],
+            [
+              "materializeGeneration",
+              "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+              153,
+              33
+            ],
+            ["(root)", "", 0, 0]
+          ]
+        },
+        {
+          "category": "typography-selection",
+          "phase": "before-family-write",
+          "sampleWeightMs": 74.451,
+          "v8SampleLocation": [101, 22],
+          "v8GeneratedStack": [
+            ["preserveSelection", "apps/www/src/components/site-typography.ts", 98, 27],
+            ["activate", "apps/www/src/components/site-typography.ts", 295, 19],
+            ["activate", "apps/www/src/components/Homepage/homepage-runtime-client.ts", 477, 17],
+            [
+              "materializeGeneration",
+              "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+              153,
+              33
+            ],
+            ["(root)", "", 0, 0]
+          ]
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 38.625,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            [
+              "notify",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              59,
+              22
+            ],
+            ["(root)", "", 0, 0]
+          ]
+        },
+        {
+          "category": "motion-palette",
+          "phase": "after-family-write",
+          "sampleWeightMs": 32.793,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            [
+              "notify",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              59,
+              22
+            ],
+            ["(root)", "", 0, 0]
+          ]
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 11.832,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            ["environment", "packages/adapters/base/src/motion/web-resident-motion.ts", 73, 18],
+            ["render", "packages/modules/feedback/src/motion/projector.ts", 36, 18],
+            ["commit", "packages/modules/feedback/src/motion/projector.ts", 146, 11],
+            ["commit", "packages/adapters/web-component/src/runtime/modules.ts", 1253, 15],
+            ["projectFinalStyle", "packages/modules/feedback/src/create.ts", 468, 26],
+            ["afterRenderCommit", "packages/modules/feedback/src/create.ts", 550, 26],
+            ["onMountPhase", "packages/modules/feedback/src/create.ts", 396, 21],
+            ["onMountPhase", "packages/modules/feedback/src/create.ts", 675, 25],
+            [
+              "setMountPhase",
+              "packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+              193,
+              16
+            ],
+            ["setMountPhase", "packages/runtime/src/instance/session.ts", 127, 25]
+          ]
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 6.997,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            ["environment", "packages/adapters/base/src/motion/web-resident-motion.ts", 73, 18],
+            ["render", "packages/modules/feedback/src/motion/projector.ts", 36, 18],
+            ["commit", "packages/modules/feedback/src/motion/projector.ts", 146, 11],
+            ["commit", "packages/adapters/web-component/src/runtime/modules.ts", 1253, 15],
+            ["projectFinalStyle", "packages/modules/feedback/src/create.ts", 468, 26],
+            ["flushIfPossible", "packages/modules/feedback/src/create.ts", 526, 24],
+            ["replaceVisualRuntime", "packages/modules/feedback/src/create.ts", 254, 29],
+            ["replaceVisualRuntime", "packages/modules/feedback/src/create.ts", 659, 33],
+            ["applyVisualPlan", "packages/modules/rule/src/impl.ts", 190, 18],
+            ["evaluateAndApply", "packages/modules/rule/src/impl.ts", 169, 19]
+          ]
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 6.797,
+          "v8SampleLocation": [36, 64],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            ["environment", "packages/adapters/base/src/motion/web-resident-motion.ts", 73, 18],
+            ["render", "packages/modules/feedback/src/motion/projector.ts", 36, 18],
+            ["commit", "packages/modules/feedback/src/motion/projector.ts", 146, 11],
+            ["commit", "packages/adapters/web-component/src/runtime/modules.ts", 1253, 15],
+            ["projectFinalStyle", "packages/modules/feedback/src/create.ts", 468, 26],
+            ["afterRenderCommit", "packages/modules/feedback/src/create.ts", 550, 26],
+            ["onMountPhase", "packages/modules/feedback/src/create.ts", 396, 21],
+            ["onMountPhase", "packages/modules/feedback/src/create.ts", 675, 25],
+            [
+              "setMountPhase",
+              "packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+              193,
+              16
+            ],
+            ["setMountPhase", "packages/runtime/src/instance/session.ts", 127, 25]
+          ]
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 0.8,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            ["environment", "packages/adapters/base/src/motion/web-resident-motion.ts", 73, 18],
+            ["render", "packages/modules/feedback/src/motion/projector.ts", 36, 18],
+            ["", "packages/modules/feedback/src/motion/projector.ts", 131, 43],
+            ["(root)", "", 0, 0]
+          ]
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 0.74,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            ["environment", "packages/adapters/base/src/motion/web-resident-motion.ts", 73, 18],
+            ["render", "packages/modules/feedback/src/motion/projector.ts", 36, 18],
+            ["commit", "packages/modules/feedback/src/motion/projector.ts", 146, 11],
+            ["commit", "packages/adapters/web-component/src/runtime/modules.ts", 1253, 15],
+            ["projectFinalStyle", "packages/modules/feedback/src/create.ts", 468, 26],
+            ["flushIfPossible", "packages/modules/feedback/src/create.ts", 526, 24],
+            ["onProtoPhase", "packages/modules/feedback/src/create.ts", 383, 21],
+            ["onProtoPhase", "packages/modules/feedback/src/create.ts", 676, 25],
+            [
+              "setProtoPhase",
+              "packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+              181,
+              16
+            ],
+            ["scheduleFinish", "packages/runtime/src/instance/session.ts", 284, 32]
+          ]
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 0.504,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            ["environment", "packages/adapters/base/src/motion/web-resident-motion.ts", 73, 18],
+            ["render", "packages/modules/feedback/src/motion/projector.ts", 36, 18],
+            ["commit", "packages/modules/feedback/src/motion/projector.ts", 146, 11],
+            ["commit", "packages/adapters/web-component/src/runtime/modules.ts", 1253, 15],
+            ["projectFinalStyle", "packages/modules/feedback/src/create.ts", 468, 26],
+            ["afterRenderCommit", "packages/modules/feedback/src/create.ts", 550, 26],
+            ["afterRenderCommit", "packages/modules/feedback/src/create.ts", 677, 30],
+            [
+              "afterRenderCommit",
+              "packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+              209,
+              20
+            ],
+            ["done", "packages/runtime/src/instance/session.ts", 155, 11],
+            ["commit", "packages/adapters/web-component/src/runtime/session.ts", 167, 15]
+          ]
+        },
+        {
+          "category": "typography-selection",
+          "phase": "before-family-write",
+          "sampleWeightMs": 0.16,
+          "v8SampleLocation": [106, 3],
+          "v8GeneratedStack": [
+            ["preserveSelection", "apps/www/src/components/site-typography.ts", 98, 27],
+            ["activate", "apps/www/src/components/site-typography.ts", 295, 19],
+            ["activate", "apps/www/src/components/Homepage/homepage-runtime-client.ts", 477, 17],
+            [
+              "materializeGeneration",
+              "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+              153,
+              33
+            ],
+            ["(root)", "", 0, 0]
+          ]
+        },
+        {
+          "category": "motion-palette",
+          "phase": "after-family-write",
+          "sampleWeightMs": 0.118,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            ["environment", "packages/adapters/base/src/motion/web-resident-motion.ts", 73, 18],
+            ["render", "packages/modules/feedback/src/motion/projector.ts", 36, 18],
+            ["", "packages/modules/feedback/src/motion/projector.ts", 166, 46],
+            ["resize", "packages/adapters/base/src/motion/web-resident-motion.ts", 101, 89],
+            ["(root)", "", 0, 0]
+          ]
+        }
+      ]
+    },
+    {
+      "directory": "hosted-homepage-focus-ownership",
+      "carrier": "51751ae1b9213aca255d67ac07ba2a691b5f4771",
+      "traceSha256": "8ac6eecf213598c7f11ee7d3e8a10bd157586eb865dd56afaaa852ff9c2d2e27",
+      "protocolId": 14578,
+      "rows": [
+        {
+          "category": "header-rectangle",
+          "phase": "after-family-write",
+          "sampleWeightMs": 124.408,
+          "v8SampleLocation": [86, 25],
+          "v8GeneratedStack": [
+            ["getBoundingClientRect", "", 0, 0],
+            ["positionPanel", "apps/www/src/components/site-header-disclosure.ts", 81, 25],
+            ["measureLayout", "apps/www/src/components/site-header-disclosure.ts", 114, 25],
+            ["sync", "apps/www/src/components/site-header-disclosure.ts", 156, 16],
+            ["enhance", "apps/www/src/components/site-header-disclosure.ts", 334, 12],
+            ["publish", "apps/www/src/components/Homepage/homepage-runtime-client.ts", 524, 16],
+            [
+              "materializeGeneration",
+              "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+              153,
+              33
+            ],
+            ["(root)", "", 0, 0]
+          ]
+        },
+        {
+          "category": "typography-selection",
+          "phase": "before-family-write",
+          "sampleWeightMs": 93.128,
+          "v8SampleLocation": [101, 22],
+          "v8GeneratedStack": [
+            ["preserveSelection", "apps/www/src/components/site-typography.ts", 98, 27],
+            ["activate", "apps/www/src/components/site-typography.ts", 295, 19],
+            ["activate", "apps/www/src/components/Homepage/homepage-runtime-client.ts", 477, 17],
+            [
+              "materializeGeneration",
+              "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+              153,
+              33
+            ],
+            ["(root)", "", 0, 0]
+          ]
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 61.354,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            [
+              "notify",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              59,
+              22
+            ],
+            ["(root)", "", 0, 0]
+          ]
+        },
+        {
+          "category": "motion-palette",
+          "phase": "after-family-write",
+          "sampleWeightMs": 47.224,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            [
+              "notify",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              59,
+              22
+            ],
+            ["(root)", "", 0, 0]
+          ]
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 17.308,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            ["environment", "packages/adapters/base/src/motion/web-resident-motion.ts", 73, 18],
+            ["render", "packages/modules/feedback/src/motion/projector.ts", 36, 18],
+            ["commit", "packages/modules/feedback/src/motion/projector.ts", 146, 11],
+            ["commit", "packages/adapters/web-component/src/runtime/modules.ts", 1253, 15],
+            ["projectFinalStyle", "packages/modules/feedback/src/create.ts", 468, 26],
+            ["afterRenderCommit", "packages/modules/feedback/src/create.ts", 550, 26],
+            ["onMountPhase", "packages/modules/feedback/src/create.ts", 396, 21],
+            ["onMountPhase", "packages/modules/feedback/src/create.ts", 675, 25],
+            [
+              "setMountPhase",
+              "packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+              193,
+              16
+            ],
+            ["setMountPhase", "packages/runtime/src/instance/session.ts", 127, 25]
+          ]
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 12.691,
+          "v8SampleLocation": [36, 64],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            ["environment", "packages/adapters/base/src/motion/web-resident-motion.ts", 73, 18],
+            ["render", "packages/modules/feedback/src/motion/projector.ts", 36, 18],
+            ["commit", "packages/modules/feedback/src/motion/projector.ts", 146, 11],
+            ["commit", "packages/adapters/web-component/src/runtime/modules.ts", 1253, 15],
+            ["projectFinalStyle", "packages/modules/feedback/src/create.ts", 468, 26],
+            ["afterRenderCommit", "packages/modules/feedback/src/create.ts", 550, 26],
+            ["onMountPhase", "packages/modules/feedback/src/create.ts", 396, 21],
+            ["onMountPhase", "packages/modules/feedback/src/create.ts", 675, 25],
+            [
+              "setMountPhase",
+              "packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+              193,
+              16
+            ],
+            ["setMountPhase", "packages/runtime/src/instance/session.ts", 127, 25]
+          ]
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 11.706,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            ["environment", "packages/adapters/base/src/motion/web-resident-motion.ts", 73, 18],
+            ["render", "packages/modules/feedback/src/motion/projector.ts", 36, 18],
+            ["commit", "packages/modules/feedback/src/motion/projector.ts", 146, 11],
+            ["commit", "packages/adapters/web-component/src/runtime/modules.ts", 1253, 15],
+            ["projectFinalStyle", "packages/modules/feedback/src/create.ts", 468, 26],
+            ["flushIfPossible", "packages/modules/feedback/src/create.ts", 526, 24],
+            ["replaceVisualRuntime", "packages/modules/feedback/src/create.ts", 254, 29],
+            ["replaceVisualRuntime", "packages/modules/feedback/src/create.ts", 659, 33],
+            ["applyVisualPlan", "packages/modules/rule/src/impl.ts", 190, 18],
+            ["evaluateAndApply", "packages/modules/rule/src/impl.ts", 169, 19]
+          ]
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 0.661,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            ["environment", "packages/adapters/base/src/motion/web-resident-motion.ts", 73, 18],
+            ["render", "packages/modules/feedback/src/motion/projector.ts", 36, 18],
+            ["commit", "packages/modules/feedback/src/motion/projector.ts", 146, 11],
+            ["commit", "packages/adapters/web-component/src/runtime/modules.ts", 1253, 15],
+            ["projectFinalStyle", "packages/modules/feedback/src/create.ts", 468, 26],
+            ["flushIfPossible", "packages/modules/feedback/src/create.ts", 526, 24],
+            ["onProtoPhase", "packages/modules/feedback/src/create.ts", 383, 21],
+            ["onProtoPhase", "packages/modules/feedback/src/create.ts", 676, 25],
+            [
+              "setProtoPhase",
+              "packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+              181,
+              16
+            ],
+            ["scheduleFinish", "packages/runtime/src/instance/session.ts", 284, 32]
+          ]
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 0.65,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            ["environment", "packages/adapters/base/src/motion/web-resident-motion.ts", 73, 18],
+            ["render", "packages/modules/feedback/src/motion/projector.ts", 36, 18],
+            ["commit", "packages/modules/feedback/src/motion/projector.ts", 146, 11],
+            ["commit", "packages/adapters/web-component/src/runtime/modules.ts", 1253, 15],
+            ["projectFinalStyle", "packages/modules/feedback/src/create.ts", 468, 26],
+            ["afterRenderCommit", "packages/modules/feedback/src/create.ts", 550, 26],
+            ["afterRenderCommit", "packages/modules/feedback/src/create.ts", 677, 30],
+            [
+              "afterRenderCommit",
+              "packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+              209,
+              20
+            ],
+            ["done", "packages/runtime/src/instance/session.ts", 155, 11],
+            ["commit", "packages/adapters/web-component/src/runtime/session.ts", 167, 15]
+          ]
+        },
+        {
+          "category": "motion-palette",
+          "phase": "before-family-write",
+          "sampleWeightMs": 0.143,
+          "v8SampleLocation": [36, 38],
+          "v8GeneratedStack": [
+            ["getPropertyValue", "", 0, 0],
+            [
+              "current",
+              "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+              26,
+              12
+            ],
+            ["environment", "packages/adapters/base/src/motion/web-resident-motion.ts", 73, 18],
+            ["render", "packages/modules/feedback/src/motion/projector.ts", 36, 18],
+            ["", "packages/modules/feedback/src/motion/projector.ts", 131, 43],
+            ["(root)", "", 0, 0]
+          ]
+        }
+      ]
+    }
+  ]
+}

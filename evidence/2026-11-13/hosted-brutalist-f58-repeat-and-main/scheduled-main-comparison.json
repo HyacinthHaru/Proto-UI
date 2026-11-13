@@ -1,0 +1,234 @@
+{
+  "run": 43375522817,
+  "head": "35195a6e6f1ba6a7d800da0029f2683013abd18b",
+  "lifeSha256": "14fc754bf8c1b325a506c15e725a044368dff484895b7c95cf17449f0540d7c4",
+  "verdictMs": 999.775,
+  "writeMs": [[990.042, 990.939]],
+  "query": 4,
+  "queryStartedMs": 288.853,
+  "queryReturnedMs": 1610.941,
+  "browserFileVerdicts": {
+    "1": [
+      "\u00d7 Homepage end-to-end dogfood boundary > uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence 15599ms",
+      "\u2713 Homepage end-to-end dogfood boundary > uses the same mobile shell on documentation with independent global navigation and contents 12096ms",
+      "\u00d7 retains brutalist preference owners and portals through real breakpoint reconnects 5447ms",
+      "\u276f apps/www/src/content/docs/zh-cn/site-sidebar-disclosure.browser.test.ts (7 tests | 3 failed) 94593ms",
+      "\u276f apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts (2 tests | 2 failed) 198737ms"
+    ],
+    "2": [
+      "\u276f apps/www/src/content/docs/zh-cn/site-typography.browser.test.ts (34 tests | 27 failed) 378571ms"
+    ],
+    "3": [
+      "\u2713 apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts (8 tests) 58494ms"
+    ]
+  },
+  "sourceArchiveBindings": [
+    {
+      "shard": 1,
+      "id": 14015116521,
+      "source": "35195a6e6f1ba6a7d800da0029f2683013abd18b",
+      "sha256": "58431657f840cf59b3371429852716601a1523dd9de80602a56302742c5086f3",
+      "members": 80,
+      "sameSuiteList": true
+    },
+    {
+      "shard": 2,
+      "id": 14014877105,
+      "source": "35195a6e6f1ba6a7d800da0029f2683013abd18b",
+      "sha256": "42593ef88ec98bf6b02f0b2a4e7001cb73735fa4edc346d443d34461fd51f956",
+      "members": 173,
+      "sameSuiteList": true
+    },
+    {
+      "shard": 3,
+      "id": 14014972839,
+      "source": "35195a6e6f1ba6a7d800da0029f2683013abd18b",
+      "sha256": "36f50828df97afb2e0384abf6405b0c83709b484a4c6c99a43ba50f921caf11b",
+      "members": 323,
+      "sameSuiteList": true
+    }
+  ],
+  "mainContentsAndS4": {
+    "head": "35195a6e6f1ba6a7d800da0029f2683013abd18b",
+    "rows": [
+      {
+        "family": "shadcn",
+        "runtime": "react",
+        "originalDeadlineMs": 1000,
+        "originalError": "Error: Matcher did not succeed in 1000ms",
+        "originalCheckMs": 1000,
+        "firstMs": 1232.1,
+        "firstContents": "wc",
+        "firstHeader": "wc",
+        "lateMs": 1676.1,
+        "lateContents": "react",
+        "lateHeader": "react",
+        "sourceSha256": "de6983e0c7d3296e0e4d08e699f91b901f32d03aa7edd0d45d90875a1ea80b5e"
+      },
+      {
+        "family": "shadcn",
+        "runtime": "wc",
+        "originalDeadlineMs": 1000,
+        "originalError": null,
+        "originalCheckMs": 4,
+        "firstMs": 5.5,
+        "firstContents": "wc",
+        "firstHeader": "wc",
+        "lateMs": null,
+        "lateContents": null,
+        "lateHeader": null,
+        "sourceSha256": "15ae8268824af1b1c9b6be2e1b626173c66f5e60dd9d444862d7397d09a51a2e"
+      }
+    ],
+    "sidebarHandbacks": 3,
+    "s4": [
+      {
+        "locale": "en",
+        "startupPassed": false,
+        "pageErrors": 18,
+        "consoleErrors": 5,
+        "collectionOutcome": "budget-expired",
+        "predicateRecordSha256": "3cbcfa325c9bda29124a38f42891c58c26397f8d38546a415fa8c6e3f004d2ff",
+        "memberSha256": "04fbde43800351fa56131e39ce5ecc3fa61b014aa716e2e25b37dae3ef5f392e"
+      },
+      {
+        "locale": "zh-cn",
+        "startupPassed": false,
+        "pageErrors": 18,
+        "consoleErrors": 5,
+        "collectionOutcome": "budget-expired",
+        "predicateRecordSha256": "3cbcfa325c9bda29124a38f42891c58c26397f8d38546a415fa8c6e3f004d2ff",
+        "memberSha256": "6130c6c316ff93b7c005eebcc12e5db63a1f91d317d9076929935a7c8438d828"
+      }
+    ]
+  },
+  "candidateContentsAndS4": {
+    "head": "51751ae1b9213aca255d67ac07ba2a691b5f4771",
+    "rows": [
+      {
+        "family": "brutalist",
+        "runtime": "react",
+        "originalDeadlineMs": 1000,
+        "originalError": null,
+        "originalCheckMs": 578,
+        "firstMs": 619.6,
+        "firstContents": "react",
+        "firstHeader": "react",
+        "lateMs": null,
+        "lateContents": null,
+        "lateHeader": null,
+        "sourceSha256": "325a9e4194f066c15725088fd7666be70bdea666cdc93d060a0f89cdd891d212"
+      },
+      {
+        "family": "brutalist",
+        "runtime": "vue",
+        "originalDeadlineMs": 1000,
+        "originalError": null,
+        "originalCheckMs": 486,
+        "firstMs": 613.3,
+        "firstContents": "vue",
+        "firstHeader": "vue",
+        "lateMs": null,
+        "lateContents": null,
+        "lateHeader": null,
+        "sourceSha256": "40a9b5f79622a47de18c3d434226dc45174b9b4acd2076bd760bc024aa8d2f75"
+      },
+      {
+        "family": "brutalist",
+        "runtime": "vue2",
+        "originalDeadlineMs": 1000,
+        "originalError": null,
+        "originalCheckMs": 397,
+        "firstMs": 403.2,
+        "firstContents": "vue2",
+        "firstHeader": "vue2",
+        "lateMs": null,
+        "lateContents": null,
+        "lateHeader": null,
+        "sourceSha256": "54bdcb4fd8960e145171979137c5750570e3873b571478855d61b8f8876c4395"
+      },
+      {
+        "family": "brutalist",
+        "runtime": "wc",
+        "originalDeadlineMs": 1000,
+        "originalError": null,
+        "originalCheckMs": 4,
+        "firstMs": 10.7,
+        "firstContents": "wc",
+        "firstHeader": "wc",
+        "lateMs": null,
+        "lateContents": null,
+        "lateHeader": null,
+        "sourceSha256": "d3525263986c5f89a06ee24f436816e36eb7bc5a85320346c468f38fd0503aed"
+      },
+      {
+        "family": "shadcn",
+        "runtime": "react",
+        "originalDeadlineMs": 1000,
+        "originalError": null,
+        "originalCheckMs": 611,
+        "firstMs": 618.8,
+        "firstContents": "react",
+        "firstHeader": "react",
+        "lateMs": null,
+        "lateContents": null,
+        "lateHeader": null,
+        "sourceSha256": "1382ee598b11d191b82c53507e00d2c2752138efc574356ef17412c7e8d7a295"
+      },
+      {
+        "family": "shadcn",
+        "runtime": "vue",
+        "originalDeadlineMs": 1000,
+        "originalError": null,
+        "originalCheckMs": 510,
+        "firstMs": 515,
+        "firstContents": "vue",
+        "firstHeader": "vue",
+        "lateMs": null,
+        "lateContents": null,
+        "lateHeader": null,
+        "sourceSha256": "41c85f07b82a1fe60378dede062e1ba4798dd6532a9860dea4ab130ed020cb69"
+      },
+      {
+        "family": "shadcn",
+        "runtime": "vue2",
+        "originalDeadlineMs": 1000,
+        "originalError": null,
+        "originalCheckMs": 543,
+        "firstMs": 631.1,
+        "firstContents": "vue2",
+        "firstHeader": "vue2",
+        "lateMs": null,
+        "lateContents": null,
+        "lateHeader": null,
+        "sourceSha256": "b083b86a583440298f59f86c2966af9840717e16618fb373d3544eef15dbe18d"
+      },
+      {
+        "family": "shadcn",
+        "runtime": "wc",
+        "originalDeadlineMs": 1000,
+        "originalError": null,
+        "originalCheckMs": 240,
+        "firstMs": 288,
+        "firstContents": "wc",
+        "firstHeader": "wc",
+        "lateMs": null,
+        "lateContents": null,
+        "lateHeader": null,
+        "sourceSha256": "c4883bdc76195073e4f402b3efb25e82f1587dc80c9d73e4e31cf7fa7e1df5f9"
+      }
+    ],
+    "sidebarHandbacks": 24,
+    "s4": [
+      {
+        "locale": "zh-cn",
+        "startupPassed": false,
+        "pageErrors": 18,
+        "consoleErrors": 0,
+        "collectionOutcome": "budget-expired",
+        "predicateRecordSha256": "3cbcfa325c9bda29124a38f42891c58c26397f8d38546a415fa8c6e3f004d2ff",
+        "memberSha256": "d214093e4704a0e3c58c473536e3ce2927591dcde3ec780a9e3bca2fc5d1ae89"
+      }
+    ]
+  }
+}
