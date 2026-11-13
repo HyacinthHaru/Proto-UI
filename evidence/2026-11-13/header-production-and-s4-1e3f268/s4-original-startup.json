@@ -1,0 +1,490 @@
+{
+  "head": "1e3f268f445c91e712c6df7d4e92e6c4b230a16f",
+  "exactLocalBilingual": [
+    {
+      "locale": "zh-cn",
+      "caseVerdict": "150000ms original case timeout",
+      "startupPassed": false,
+      "nodeStartupWaitMs": 142791.942,
+      "collectionOutcome": "rejected",
+      "ownedDecorationErrors": 18,
+      "consoleErrors": 0,
+      "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+      "sourceMemberSha256": "131fd7802dc0ac7503facc808e925251dc944432b92996d371deb173bca90324",
+      "firstMissTransitions": [
+        {
+          "pageMs": 7582.100000023842,
+          "count": 1268,
+          "ready": false,
+          "firstMissing": {
+            "previewerId": "pp-hkp0398s7yi",
+            "index": 0,
+            "inited": null,
+            "hostChildren": null
+          },
+          "firstMissingOwner": {
+            "demoId": "demo-base-accordion",
+            "prototypeId": "",
+            "declaredRuntime": "wc",
+            "projectionMode": null,
+            "projectionState": null,
+            "mounting": "1",
+            "hostTag": null,
+            "hostOwner": null,
+            "startupPending": null,
+            "hostOwnInert": null,
+            "hostText": null
+          }
+        },
+        {
+          "pageMs": 9262.400000095367,
+          "count": 1268,
+          "ready": false,
+          "firstMissing": {
+            "previewerId": "pp-hkp0398s7yi",
+            "index": 0,
+            "inited": "1",
+            "hostChildren": 0
+          },
+          "firstMissingOwner": {
+            "demoId": "demo-base-accordion",
+            "prototypeId": "",
+            "declaredRuntime": "wc",
+            "projectionMode": null,
+            "projectionState": null,
+            "mounting": null,
+            "hostTag": "DIV",
+            "hostOwner": "pp-hkp0398s7yi",
+            "startupPending": true,
+            "hostOwnInert": true,
+            "hostText": ""
+          }
+        },
+        {
+          "pageMs": 22004.400000095367,
+          "count": 1268,
+          "ready": false,
+          "firstMissing": {
+            "previewerId": "pp-928wqmbjzgv",
+            "index": 1,
+            "inited": "1",
+            "hostChildren": 0
+          },
+          "firstMissingOwner": {
+            "demoId": "demo-base-accordion",
+            "prototypeId": "",
+            "declaredRuntime": "react",
+            "projectionMode": null,
+            "projectionState": null,
+            "mounting": null,
+            "hostTag": "DIV",
+            "hostOwner": "pp-928wqmbjzgv",
+            "startupPending": true,
+            "hostOwnInert": true,
+            "hostText": ""
+          }
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "caseVerdict": "150000ms original case timeout",
+      "startupPassed": false,
+      "nodeStartupWaitMs": 139555.842,
+      "collectionOutcome": "rejected",
+      "ownedDecorationErrors": 18,
+      "consoleErrors": 0,
+      "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+      "sourceMemberSha256": "506ff67cbf7f78303b58e2c4f947cf750ce1fa13cfd5426449d838c7ecb33d61",
+      "firstMissTransitions": [
+        {
+          "pageMs": 10891.199999928474,
+          "count": 1268,
+          "ready": false,
+          "firstMissing": {
+            "previewerId": "pp-z7s9bt46t18",
+            "index": 0,
+            "inited": null,
+            "hostChildren": null
+          },
+          "firstMissingOwner": {
+            "demoId": "demo-base-accordion",
+            "prototypeId": "",
+            "declaredRuntime": "wc",
+            "projectionMode": null,
+            "projectionState": null,
+            "mounting": "1",
+            "hostTag": null,
+            "hostOwner": null,
+            "startupPending": null,
+            "hostOwnInert": null,
+            "hostText": null
+          }
+        },
+        {
+          "pageMs": 12182.399999976158,
+          "count": 1268,
+          "ready": false,
+          "firstMissing": {
+            "previewerId": "pp-z7s9bt46t18",
+            "index": 0,
+            "inited": "1",
+            "hostChildren": 0
+          },
+          "firstMissingOwner": {
+            "demoId": "demo-base-accordion",
+            "prototypeId": "",
+            "declaredRuntime": "wc",
+            "projectionMode": null,
+            "projectionState": null,
+            "mounting": null,
+            "hostTag": "DIV",
+            "hostOwner": "pp-z7s9bt46t18",
+            "startupPending": true,
+            "hostOwnInert": true,
+            "hostText": ""
+          }
+        },
+        {
+          "pageMs": 23826.299999952316,
+          "count": 1268,
+          "ready": false,
+          "firstMissing": {
+            "previewerId": "pp-80wm4fxuxak",
+            "index": 1,
+            "inited": "1",
+            "hostChildren": 0
+          },
+          "firstMissingOwner": {
+            "demoId": "demo-base-accordion",
+            "prototypeId": "",
+            "declaredRuntime": "react",
+            "projectionMode": null,
+            "projectionState": null,
+            "mounting": null,
+            "hostTag": "DIV",
+            "hostOwner": "pp-80wm4fxuxak",
+            "startupPending": true,
+            "hostOwnInert": true,
+            "hostText": ""
+          }
+        }
+      ]
+    }
+  ],
+  "browser": "Chrome 156.0.8078.79 on macOS arm64",
+  "s4Tracking": "#1178 tracks Demo Matrix separately; linked #568 is closed",
+  "logSha256": "a93e9a204572f0257e970f1800adbcf60f32ce7074293aa8a075b58e3574fb11",
+  "context": [
+    {
+      "run": 43375522817,
+      "checkout": "35195a6e6f1ba6a7d800da0029f2683013abd18b",
+      "receipts": [
+        {
+          "locale": "en",
+          "passed": false,
+          "captureOutcome": "budget-expired",
+          "errorKinds": {
+            "[feedback] owned-decoration unsupported by this adapter": 18
+          },
+          "consoleErrors": 5,
+          "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+          "firstMissingOwner": null,
+          "memberSha256": "04fbde43800351fa56131e39ce5ecc3fa61b014aa716e2e25b37dae3ef5f392e"
+        },
+        {
+          "locale": "zh-cn",
+          "passed": false,
+          "captureOutcome": "budget-expired",
+          "errorKinds": {
+            "[feedback] owned-decoration unsupported by this adapter": 18
+          },
+          "consoleErrors": 5,
+          "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+          "firstMissingOwner": null,
+          "memberSha256": "6130c6c316ff93b7c005eebcc12e5db63a1f91d317d9076929935a7c8438d828"
+        }
+      ],
+      "nodePhases": [
+        {
+          "locale": "zh-cn",
+          "phase": "init-script",
+          "outcome": "begin"
+        },
+        {
+          "locale": "zh-cn",
+          "phase": "init-script",
+          "outcome": "return"
+        },
+        {
+          "locale": "zh-cn",
+          "phase": "goto",
+          "outcome": "begin"
+        },
+        {
+          "locale": "zh-cn",
+          "phase": "goto",
+          "outcome": "return"
+        },
+        {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "outcome": "begin"
+        },
+        {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "outcome": "error"
+        },
+        {
+          "locale": "zh-cn",
+          "phase": "context-close",
+          "outcome": "begin"
+        },
+        {
+          "locale": "zh-cn",
+          "phase": "context-close",
+          "outcome": "return"
+        },
+        {
+          "locale": "en",
+          "phase": "init-script",
+          "outcome": "begin"
+        },
+        {
+          "locale": "en",
+          "phase": "init-script",
+          "outcome": "return"
+        },
+        {
+          "locale": "en",
+          "phase": "goto",
+          "outcome": "begin"
+        },
+        {
+          "locale": "en",
+          "phase": "goto",
+          "outcome": "return"
+        },
+        {
+          "locale": "en",
+          "phase": "startup-wait",
+          "outcome": "begin"
+        },
+        {
+          "locale": "en",
+          "phase": "startup-wait",
+          "outcome": "error"
+        },
+        {
+          "locale": "en",
+          "phase": "context-close",
+          "outcome": "begin"
+        },
+        {
+          "locale": "en",
+          "phase": "context-close",
+          "outcome": "return"
+        }
+      ]
+    },
+    {
+      "run": 43390494372,
+      "checkout": "51751ae1b9213aca255d67ac07ba2a691b5f4771",
+      "receipts": [
+        {
+          "locale": "zh-cn",
+          "passed": false,
+          "captureOutcome": "budget-expired",
+          "errorKinds": {
+            "[feedback] owned-decoration unsupported by this adapter": 18
+          },
+          "consoleErrors": 0,
+          "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+          "firstMissingOwner": null,
+          "memberSha256": "d214093e4704a0e3c58c473536e3ce2927591dcde3ec780a9e3bca2fc5d1ae89"
+        }
+      ],
+      "nodePhases": [
+        {
+          "locale": "zh-cn",
+          "phase": "init-script",
+          "outcome": "begin"
+        },
+        {
+          "locale": "zh-cn",
+          "phase": "init-script",
+          "outcome": "return"
+        },
+        {
+          "locale": "zh-cn",
+          "phase": "goto",
+          "outcome": "begin"
+        },
+        {
+          "locale": "zh-cn",
+          "phase": "goto",
+          "outcome": "return"
+        },
+        {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "outcome": "begin"
+        },
+        {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "outcome": "error"
+        },
+        {
+          "locale": "zh-cn",
+          "phase": "context-close",
+          "outcome": "begin"
+        },
+        {
+          "locale": "zh-cn",
+          "phase": "context-close",
+          "outcome": "return"
+        },
+        {
+          "locale": "en",
+          "phase": "init-script",
+          "outcome": "begin"
+        },
+        {
+          "locale": "en",
+          "phase": "init-script",
+          "outcome": "return"
+        },
+        {
+          "locale": "en",
+          "phase": "goto",
+          "outcome": "begin"
+        },
+        {
+          "locale": "en",
+          "phase": "goto",
+          "outcome": "return"
+        },
+        {
+          "locale": "en",
+          "phase": "startup-wait",
+          "outcome": "begin"
+        }
+      ]
+    },
+    {
+      "run": 43198607525,
+      "checkout": "416f8cb72f340d64750c02729899caeb4ee7fa26",
+      "receipts": [
+        {
+          "locale": "en",
+          "passed": false,
+          "captureOutcome": "rejected",
+          "errorKinds": {
+            "[feedback] owned-decoration unsupported by this adapter": 18
+          },
+          "consoleErrors": 5,
+          "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+          "firstMissingOwner": null,
+          "memberSha256": "b1cb9ecfcafd9b3ff0014e4f96b6a5a70d6f638f67fd26a6658281030c29fafe"
+        },
+        {
+          "locale": "zh-cn",
+          "passed": false,
+          "captureOutcome": "budget-expired",
+          "errorKinds": {
+            "[feedback] owned-decoration unsupported by this adapter": 18
+          },
+          "consoleErrors": 5,
+          "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+          "firstMissingOwner": null,
+          "memberSha256": "054874149b29437bc97c820036c7dafd2330aed36f7331590b4104fd7b999d86"
+        }
+      ],
+      "nodePhases": [
+        {
+          "locale": "zh-cn",
+          "phase": "init-script",
+          "outcome": "begin"
+        },
+        {
+          "locale": "zh-cn",
+          "phase": "init-script",
+          "outcome": "return"
+        },
+        {
+          "locale": "zh-cn",
+          "phase": "goto",
+          "outcome": "begin"
+        },
+        {
+          "locale": "zh-cn",
+          "phase": "goto",
+          "outcome": "return"
+        },
+        {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "outcome": "begin"
+        },
+        {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "outcome": "error"
+        },
+        {
+          "locale": "zh-cn",
+          "phase": "context-close",
+          "outcome": "begin"
+        },
+        {
+          "locale": "zh-cn",
+          "phase": "context-close",
+          "outcome": "return"
+        },
+        {
+          "locale": "en",
+          "phase": "init-script",
+          "outcome": "begin"
+        },
+        {
+          "locale": "en",
+          "phase": "init-script",
+          "outcome": "return"
+        },
+        {
+          "locale": "en",
+          "phase": "goto",
+          "outcome": "begin"
+        },
+        {
+          "locale": "en",
+          "phase": "goto",
+          "outcome": "return"
+        },
+        {
+          "locale": "en",
+          "phase": "startup-wait",
+          "outcome": "begin"
+        },
+        {
+          "locale": "en",
+          "phase": "startup-wait",
+          "outcome": "error"
+        },
+        {
+          "locale": "en",
+          "phase": "context-close",
+          "outcome": "begin"
+        },
+        {
+          "locale": "en",
+          "phase": "context-close",
+          "outcome": "return"
+        }
+      ]
+    }
+  ],
+  "scope": "Retain the original startup failure. The first short-circuit miss is separate from the known unsupported Shadow declaration. No paint or readiness completion follows from host child appearance."
+}

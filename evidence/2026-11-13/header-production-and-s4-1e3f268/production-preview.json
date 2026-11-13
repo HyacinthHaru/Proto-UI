@@ -1,0 +1,38 @@
+{
+  "head": "1e3f268f445c91e712c6df7d4e92e6c4b230a16f",
+  "distHashes": {
+    "zh-cn/index.html": "4ca4b1a6e6af531aea5a77faa56bd6f3b018041ad3f0e6761ad3d1a64e27849d",
+    "zh-cn/ui-libraries/shadcn/button/index.html": "3dac0440608dc81a78d2f6abd6c005aee5cc946b51efd105c4979dd8e7e6560a",
+    "zh-cn/ui-libraries/brutalist/components/button/index.html": "379e5d8cd0e062ac30ec9091b14e7a086b3805d3e4d3fc22820703847864b50d",
+    "en/ui-libraries/shadcn/dialog/index.html": "8f7fc317e67fe1f9fefe895d76a3c64a0c63339ccf180e387933831caa370460",
+    "proto-ui-bundle-graph.json": "c5b2bff0f2a68f8f74d59d986bde8a7d8c3da700239e596add81bca8148e0793"
+  },
+  "selector": "uses real family Popover Triggers|uses the same mobile shell|retains (shadcn|brutalist) preference owners|compact (shadcn|brutalist)|live available region|keeps Runtime Tabs outside",
+  "exitCode": 0,
+  "server": "Repository astro preview on the exact clean 1e3 static output",
+  "result": {
+    "passed": 15,
+    "failed": 0,
+    "filtered": 9,
+    "dialog": 8,
+    "brutalistFamilyPollMs": 453.179
+  },
+  "productionBundle": {
+    "baseline": "35195a6e6f1ba6a7d800da0029f2683013abd18b",
+    "head": "1e3f268f445c91e712c6df7d4e92e6c4b230a16f",
+    "buildPages": 673,
+    "bundleGateExit": 1,
+    "baselineDiagnostics": 53,
+    "candidateDiagnostics": 53,
+    "added": [],
+    "removed": []
+  },
+  "rawLocalHashes": {
+    "1e3-production.log": "9376f6d6e218825e2a8b97457b2ce5908d9a85c02d2195e3733dbb8ced336984",
+    "1e3-official-preview.json": "f985cc3571d6f5953c958ec91df94e040f8dbf4eade7b838d02c8fcc41c728a7"
+  },
+  "captureHashes": {
+    "production-brutalist-wc-ring.png": "0371d04b6630eeadc7013890f560e2d107f1f408e5ff57c9325fae1b94213d0a",
+    "production-brutalist-wc-dialog.png": "9c6f2261f8fece53504ff4ab1cadb1338ef9a80698f8f06b0658266da8585672"
+  }
+}

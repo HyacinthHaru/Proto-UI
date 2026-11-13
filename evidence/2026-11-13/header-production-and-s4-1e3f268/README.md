@@ -1,0 +1,7 @@
+# Header production preview and independent S4 startup
+
+The exact 1e3f268 Website build emitted 673 pages. The full production bundle guard still failed with the same 53 consumer-boundary diagnostics as exact main. The repository Astro preview served the recorded output bytes and passed 15 selected original Chromium cases, with nine filtered. Dialog passed all eight, Contents retained both journeys and the narrow WC focus ring remained fully visible. The original Brutalist family poll passed locally in 453.179 ms. Both images are from that actual output.
+
+S4 is tracked separately. The original bilingual full-matrix test failed both 150-second cases during startup. All 1,268 Previewers and the same startup predicate remained. Both runs observed the first miss progress from uninitialized WC Base Accordion to its empty host, then to the React Base Accordion empty host. Both locales report 18 inherited unsupported owned-decoration page errors and no console errors. The browser context rejected terminal journal collection, so streamed samples are the bounded observation. These startup receipts do not settle the continuous paint verdict or widen Shadow support.
+
+[Demo Matrix tracking](https://github.com/Proto-UI/Proto-UI/issues/1178) · [Prior owned-decoration owner stacks](https://github.com/HyacinthHaru/Proto-UI/tree/c066b1fc8c0e4ab559c7b44c60d19f567516480e/evidence/2026-11-13/s4-owned-decoration-625d523)
