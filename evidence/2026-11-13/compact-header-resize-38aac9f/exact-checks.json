@@ -1,0 +1,988 @@
+{
+  "product": "38aac9f6a5927ddd1880a52809f07e202a8ef1f4",
+  "tree": "6cc0c6f49740a3f10d454302e6f87e8e4b87f085",
+  "parent": "f725a36975abfff69c41ce02d794faf7a922988f",
+  "compactButtonOnlyRectReads": {
+    "parent": 1,
+    "candidate": 0
+  },
+  "combinedResizeRectReads": 1,
+  "parentRegression": [
+    {
+      "file": "site-header-disclosure.test.ts",
+      "cases": [
+        {
+          "status": "passed",
+          "title": "keeps SSR navigation available until a real Button is ready, then opens and returns focus on Escape",
+          "duration": 6.9128749999999854
+        },
+        {
+          "status": "passed",
+          "title": "moves the same preferences owner into the compact panel only after enhancement",
+          "duration": 0.7354170000000124
+        },
+        {
+          "status": "passed",
+          "title": "keeps focused preferences visible and preserves identity across both breakpoint moves",
+          "duration": 1.5604580000000112
+        },
+        {
+          "status": "passed",
+          "title": "keeps desktop links inline while the controlled settings are collapsed",
+          "duration": 1.3119580000000042
+        },
+        {
+          "status": "passed",
+          "title": "retains open state and rebinds return focus across a runtime generation",
+          "duration": 0.7899590000000103
+        },
+        {
+          "status": "passed",
+          "title": "does not close while using Runtime or a portaled Select, and respects the Select Escape",
+          "duration": 0.9979999999999905
+        },
+        {
+          "status": "passed",
+          "title": "lets an open nested Select consume immediate Escape before its delayed focus entry",
+          "duration": 1.0909580000000005
+        },
+        {
+          "status": "passed",
+          "title": "does not treat an unrelated portaled listbox as Header-owned",
+          "duration": 1.5235000000000127
+        },
+        {
+          "status": "passed",
+          "title": "does not give a CSS-closed retained listbox the Header Escape (popup-ancestor)",
+          "duration": 1.0883330000000058
+        },
+        {
+          "status": "passed",
+          "title": "does not give a CSS-closed retained listbox the Header Escape (trigger-ancestor)",
+          "duration": 0.7701669999999865
+        },
+        {
+          "status": "passed",
+          "title": "does not give a CSS-closed retained listbox the Header Escape (popup-itself)",
+          "duration": 0.7038749999999823
+        },
+        {
+          "status": "passed",
+          "title": "keeps a genuinely available nested popup as the first Escape owner without layout boxes",
+          "duration": 0.8961669999999913
+        },
+        {
+          "status": "passed",
+          "title": "restores a focused inline link to Menu when shrinking, without moving mounted nodes",
+          "duration": 0.4158329999999921
+        },
+        {
+          "status": "passed",
+          "title": "keeps an open disclosure usable when mobile navigation becomes hidden on desktop",
+          "duration": 0.44308300000000145
+        },
+        {
+          "status": "passed",
+          "title": "restores readable fallback and removes listeners on disposal",
+          "duration": 0.34029099999997925
+        },
+        {
+          "status": "passed",
+          "title": "makes global navigation and contents mutually exclusive so one Escape returns focus only to the active opener",
+          "duration": 4.295041999999995
+        },
+        {
+          "status": "passed",
+          "title": "cleans both drawer listeners and contents observer before Astro navigation",
+          "duration": 1.9512079999999798
+        },
+        {
+          "status": "passed",
+          "title": "keeps the current binding when an older lease for the same Button retires",
+          "duration": 0.7386250000000132
+        },
+        {
+          "status": "passed",
+          "title": "follows state-driven Button translation without a resize and cancels late work",
+          "duration": 106.27720800000003
+        },
+        {
+          "status": "passed",
+          "title": "320px LTR anchors the painted box to the current Button",
+          "duration": 1.4057500000000118
+        },
+        {
+          "status": "passed",
+          "title": "320px RTL anchors the painted box to the current Button",
+          "duration": 0.9771250000000009
+        },
+        {
+          "status": "passed",
+          "title": "390px LTR anchors the painted box to the current Button",
+          "duration": 0.7637080000000083
+        },
+        {
+          "status": "passed",
+          "title": "390px RTL anchors the painted box to the current Button",
+          "duration": 0.7639169999999922
+        },
+        {
+          "status": "passed",
+          "title": "repositions from the newly active runtime Button and clears owned measurements on destroy",
+          "duration": 0.9506250000000023
+        },
+        {
+          "status": "passed",
+          "title": "publishes actual height once, ignores unchanged portal delivery and follows font-driven height",
+          "duration": 1.816958999999997
+        },
+        {
+          "status": "passed",
+          "title": "restores the exact fallback priority, disconnects and ignores late observer delivery",
+          "duration": 0.5011250000000018
+        },
+        {
+          "status": "passed",
+          "title": "removes an initially absent value without overwriting a later external owner",
+          "duration": 0.6775000000000091
+        },
+        {
+          "status": "passed",
+          "title": "390px uses the remaining visual viewport rather than a 22rem trigger popup",
+          "duration": 1.941709000000003
+        },
+        {
+          "status": "passed",
+          "title": "430px uses the remaining visual viewport rather than a 22rem trigger popup",
+          "duration": 0.7156249999999886
+        },
+        {
+          "status": "passed",
+          "title": "ignores compact Button movement but follows a desktop anchor after the breakpoint",
+          "duration": 2.5237089999999966
+        },
+        {
+          "status": "failed",
+          "title": "remeasures a compact panel for Header resize without reading it for a Button-only resize",
+          "duration": 4.47445799999997
+        },
+        {
+          "status": "passed",
+          "title": "closes on Back/Forward and restored pages without adding history entries",
+          "duration": 0.7205000000000155
+        },
+        {
+          "status": "passed",
+          "title": "adopts an open native fallback disclosure without closing its focused content",
+          "duration": 0.7822500000000332
+        },
+        {
+          "status": "passed",
+          "title": "transfers a focused native summary to the real menu button on enhancement",
+          "duration": 0.4670419999999922
+        },
+        {
+          "status": "passed",
+          "title": "keeps an adopted native menu open when initial pageshow follows delayed scripts",
+          "duration": 0.4706249999999841
+        },
+        {
+          "status": "passed",
+          "title": "adopts the latest native state true changed after binding but before enhancement",
+          "duration": 0.42416699999995444
+        },
+        {
+          "status": "passed",
+          "title": "adopts the latest native state false changed after binding but before enhancement",
+          "duration": 0.425707999999986
+        },
+        {
+          "status": "passed",
+          "title": "preserves one native owner until enhancement and restores it at teardown (compact=true)",
+          "duration": 0.4807910000000106
+        },
+        {
+          "status": "passed",
+          "title": "preserves one native owner until enhancement and restores it at teardown (compact=false)",
+          "duration": 0.378832999999986
+        },
+        {
+          "status": "passed",
+          "title": "remeasures the current Button after transitionend without another attribute or resize",
+          "duration": 53.40183300000001
+        },
+        {
+          "status": "passed",
+          "title": "remeasures the current Button after transitioncancel without another attribute or resize",
+          "duration": 54.31212500000004
+        },
+        {
+          "status": "passed",
+          "title": "ignores descendant transition events and coalesces current end/cancel without stealing focus",
+          "duration": 1.6342919999999594
+        },
+        {
+          "status": "passed",
+          "title": "retires a same-node lease without letting its callback or cleanup retire the successor",
+          "duration": 1.1016669999999635
+        },
+        {
+          "status": "passed",
+          "title": "does not let an old projection event or queued callback position the new active Button",
+          "duration": 1.1402089999999703
+        },
+        {
+          "status": "passed",
+          "title": "fences a close/reopen callback without consuming the current open cycle frame",
+          "duration": 1.31412499999999
+        },
+        {
+          "status": "passed",
+          "title": "removes settlement listeners and fences the pending frame when destroyed",
+          "duration": 0.7800000000000296
+        },
+        {
+          "status": "passed",
+          "title": "settles a zero-duration transform through the existing mutation frame without any transition event",
+          "duration": 106.75870800000007
+        },
+        {
+          "status": "passed",
+          "title": "does not schedule a detached Button transition",
+          "duration": 1.397542000000044
+        }
+      ]
+    }
+  ],
+  "exact": {
+    "focused": [
+      {
+        "file": "site-contents-panel.test.ts",
+        "cases": [
+          {
+            "status": "passed",
+            "title": "composes one real Header trigger with Content and preserves its public Content relationship",
+            "duration": 5.922624999999982
+          },
+          {
+            "status": "passed",
+            "title": "reads clearance for the open and leaving lease and refreshes it before reopening",
+            "duration": 1.3559580000000153
+          },
+          {
+            "status": "passed",
+            "title": "opens a lazy slot, moves exactly the original nav, and restores its original sibling and disclosure identity",
+            "duration": 1.2165409999999781
+          },
+          {
+            "status": "passed",
+            "title": "delegates Escape and outside policy exclusively while a public view is published",
+            "duration": 1.0502079999999978
+          },
+          {
+            "status": "passed",
+            "title": "keeps only one tree through replacement and ignores retired-generation cleanup",
+            "duration": 1.5395839999999907
+          },
+          {
+            "status": "passed",
+            "title": "retains the in-flow tree after preparation failure and restores a live prior view on publication rollback",
+            "duration": 1.3786249999999995
+          },
+          {
+            "status": "passed",
+            "title": "preserves modified native links, closes same-page history changes, and returns the desktop scroll state",
+            "duration": 2.2750830000000235
+          },
+          {
+            "status": "passed",
+            "title": "retains the native lease until public leave completion and returns it before renderer detach",
+            "duration": 0.6197909999999922
+          },
+          {
+            "status": "passed",
+            "title": "retains the same marked lease when reopened before the previous leave completes",
+            "duration": 0.6747919999999965
+          },
+          {
+            "status": "passed",
+            "title": "fails preparation without public facts without hiding or borrowing the only native tree",
+            "duration": 0.31912499999998545
+          },
+          {
+            "status": "passed",
+            "title": "returns a stranded lease after public instance retirement and rejects disposal instead of hanging",
+            "duration": 0.5472910000000013
+          },
+          {
+            "status": "passed",
+            "title": "waits for actual asynchronous renderer disposal before fatal native-tree handback",
+            "duration": 0.4878750000000025
+          },
+          {
+            "status": "passed",
+            "title": "keeps shared header SSR recipe, no-JS reachability and no legacy footer/body-lock paint",
+            "duration": 0.41295900000000074
+          }
+        ]
+      },
+      {
+        "file": "site-header-disclosure.test.ts",
+        "cases": [
+          {
+            "status": "passed",
+            "title": "keeps SSR navigation available until a real Button is ready, then opens and returns focus on Escape",
+            "duration": 7.3887499999999875
+          },
+          {
+            "status": "passed",
+            "title": "moves the same preferences owner into the compact panel only after enhancement",
+            "duration": 0.7001250000000141
+          },
+          {
+            "status": "passed",
+            "title": "keeps focused preferences visible and preserves identity across both breakpoint moves",
+            "duration": 1.4926250000000039
+          },
+          {
+            "status": "passed",
+            "title": "keeps desktop links inline while the controlled settings are collapsed",
+            "duration": 0.6657079999999951
+          },
+          {
+            "status": "passed",
+            "title": "retains open state and rebinds return focus across a runtime generation",
+            "duration": 0.6717079999999953
+          },
+          {
+            "status": "passed",
+            "title": "does not close while using Runtime or a portaled Select, and respects the Select Escape",
+            "duration": 0.9082089999999994
+          },
+          {
+            "status": "passed",
+            "title": "lets an open nested Select consume immediate Escape before its delayed focus entry",
+            "duration": 1.0575839999999914
+          },
+          {
+            "status": "passed",
+            "title": "does not treat an unrelated portaled listbox as Header-owned",
+            "duration": 0.46641700000000696
+          },
+          {
+            "status": "passed",
+            "title": "does not give a CSS-closed retained listbox the Header Escape (popup-ancestor)",
+            "duration": 0.9550829999999735
+          },
+          {
+            "status": "passed",
+            "title": "does not give a CSS-closed retained listbox the Header Escape (trigger-ancestor)",
+            "duration": 0.7550839999999823
+          },
+          {
+            "status": "passed",
+            "title": "does not give a CSS-closed retained listbox the Header Escape (popup-itself)",
+            "duration": 0.7257079999999974
+          },
+          {
+            "status": "passed",
+            "title": "keeps a genuinely available nested popup as the first Escape owner without layout boxes",
+            "duration": 0.8846249999999998
+          },
+          {
+            "status": "passed",
+            "title": "restores a focused inline link to Menu when shrinking, without moving mounted nodes",
+            "duration": 0.4341660000000047
+          },
+          {
+            "status": "passed",
+            "title": "keeps an open disclosure usable when mobile navigation becomes hidden on desktop",
+            "duration": 0.4319590000000062
+          },
+          {
+            "status": "passed",
+            "title": "restores readable fallback and removes listeners on disposal",
+            "duration": 0.3313750000000084
+          },
+          {
+            "status": "passed",
+            "title": "makes global navigation and contents mutually exclusive so one Escape returns focus only to the active opener",
+            "duration": 4.016999999999996
+          },
+          {
+            "status": "passed",
+            "title": "cleans both drawer listeners and contents observer before Astro navigation",
+            "duration": 2.0268330000000105
+          },
+          {
+            "status": "passed",
+            "title": "keeps the current binding when an older lease for the same Button retires",
+            "duration": 0.7332499999999982
+          },
+          {
+            "status": "passed",
+            "title": "follows state-driven Button translation without a resize and cancels late work",
+            "duration": 105.760875
+          },
+          {
+            "status": "passed",
+            "title": "320px LTR anchors the painted box to the current Button",
+            "duration": 1.5292910000000006
+          },
+          {
+            "status": "passed",
+            "title": "320px RTL anchors the painted box to the current Button",
+            "duration": 0.9584580000000074
+          },
+          {
+            "status": "passed",
+            "title": "390px LTR anchors the painted box to the current Button",
+            "duration": 0.8625410000000215
+          },
+          {
+            "status": "passed",
+            "title": "390px RTL anchors the painted box to the current Button",
+            "duration": 0.8412920000000099
+          },
+          {
+            "status": "passed",
+            "title": "repositions from the newly active runtime Button and clears owned measurements on destroy",
+            "duration": 1.002207999999996
+          },
+          {
+            "status": "passed",
+            "title": "publishes actual height once, ignores unchanged portal delivery and follows font-driven height",
+            "duration": 2.545500000000004
+          },
+          {
+            "status": "passed",
+            "title": "restores the exact fallback priority, disconnects and ignores late observer delivery",
+            "duration": 0.6275420000000054
+          },
+          {
+            "status": "passed",
+            "title": "removes an initially absent value without overwriting a later external owner",
+            "duration": 0.7017910000000143
+          },
+          {
+            "status": "passed",
+            "title": "390px uses the remaining visual viewport rather than a 22rem trigger popup",
+            "duration": 0.9774999999999636
+          },
+          {
+            "status": "passed",
+            "title": "430px uses the remaining visual viewport rather than a 22rem trigger popup",
+            "duration": 0.7676250000000095
+          },
+          {
+            "status": "passed",
+            "title": "ignores compact Button movement but follows a desktop anchor after the breakpoint",
+            "duration": 2.431124999999952
+          },
+          {
+            "status": "passed",
+            "title": "remeasures a compact panel for Header resize without reading it for a Button-only resize",
+            "duration": 0.7155419999999708
+          },
+          {
+            "status": "passed",
+            "title": "closes on Back/Forward and restored pages without adding history entries",
+            "duration": 0.7331660000000397
+          },
+          {
+            "status": "passed",
+            "title": "adopts an open native fallback disclosure without closing its focused content",
+            "duration": 0.8289169999999899
+          },
+          {
+            "status": "passed",
+            "title": "transfers a focused native summary to the real menu button on enhancement",
+            "duration": 0.4975000000000023
+          },
+          {
+            "status": "passed",
+            "title": "keeps an adopted native menu open when initial pageshow follows delayed scripts",
+            "duration": 0.5074999999999932
+          },
+          {
+            "status": "passed",
+            "title": "adopts the latest native state true changed after binding but before enhancement",
+            "duration": 0.46399999999999864
+          },
+          {
+            "status": "passed",
+            "title": "adopts the latest native state false changed after binding but before enhancement",
+            "duration": 0.4636249999999791
+          },
+          {
+            "status": "passed",
+            "title": "preserves one native owner until enhancement and restores it at teardown (compact=true)",
+            "duration": 0.5112910000000284
+          },
+          {
+            "status": "passed",
+            "title": "preserves one native owner until enhancement and restores it at teardown (compact=false)",
+            "duration": 0.41391699999996945
+          },
+          {
+            "status": "passed",
+            "title": "remeasures the current Button after transitionend without another attribute or resize",
+            "duration": 53.25933300000003
+          },
+          {
+            "status": "passed",
+            "title": "remeasures the current Button after transitioncancel without another attribute or resize",
+            "duration": 53.74820900000003
+          },
+          {
+            "status": "passed",
+            "title": "ignores descendant transition events and coalesces current end/cancel without stealing focus",
+            "duration": 2.410459000000003
+          },
+          {
+            "status": "passed",
+            "title": "retires a same-node lease without letting its callback or cleanup retire the successor",
+            "duration": 1.6379589999999666
+          },
+          {
+            "status": "passed",
+            "title": "does not let an old projection event or queued callback position the new active Button",
+            "duration": 1.6776669999999854
+          },
+          {
+            "status": "passed",
+            "title": "fences a close/reopen callback without consuming the current open cycle frame",
+            "duration": 1.7385830000000055
+          },
+          {
+            "status": "passed",
+            "title": "removes settlement listeners and fences the pending frame when destroyed",
+            "duration": 0.9946669999999926
+          },
+          {
+            "status": "passed",
+            "title": "settles a zero-duration transform through the existing mutation frame without any transition event",
+            "duration": 108.97558299999997
+          },
+          {
+            "status": "passed",
+            "title": "does not schedule a detached Button transition",
+            "duration": 3.9372919999999567
+          }
+        ]
+      },
+      {
+        "file": "site-header-surface.test.ts",
+        "cases": [
+          {
+            "status": "passed",
+            "title": "shadcn/wc: keeps native identity and focus through slot publication and retired cleanup",
+            "duration": 36.82333300000005
+          },
+          {
+            "status": "passed",
+            "title": "shadcn/react: keeps native identity and focus through slot publication and retired cleanup",
+            "duration": 54.231250000000045
+          },
+          {
+            "status": "passed",
+            "title": "shadcn/vue: keeps native identity and focus through slot publication and retired cleanup",
+            "duration": 56.05054199999995
+          },
+          {
+            "status": "passed",
+            "title": "shadcn/vue2: keeps native identity and focus through slot publication and retired cleanup",
+            "duration": 41.505042
+          },
+          {
+            "status": "passed",
+            "title": "brutalist/wc: keeps native identity and focus through slot publication and retired cleanup",
+            "duration": 8.289541999999983
+          },
+          {
+            "status": "passed",
+            "title": "brutalist/react: keeps native identity and focus through slot publication and retired cleanup",
+            "duration": 7.766750000000002
+          },
+          {
+            "status": "passed",
+            "title": "brutalist/vue: keeps native identity and focus through slot publication and retired cleanup",
+            "duration": 6.05337499999996
+          },
+          {
+            "status": "passed",
+            "title": "brutalist/vue2: keeps native identity and focus through slot publication and retired cleanup",
+            "duration": 7.141750000000002
+          },
+          {
+            "status": "passed",
+            "title": "preserves an actual WC child instance and uncontrolled state across synchronous slot moves",
+            "duration": 22.66233299999999
+          },
+          {
+            "status": "passed",
+            "title": "commits the popup with the homepage generation and keeps open state through all four runtimes",
+            "duration": 527.9102919999998
+          },
+          {
+            "status": "passed",
+            "title": "retains nested preference owners through compact moves, runtime publication and failure rollback",
+            "duration": 453.33258399999977
+          },
+          {
+            "status": "passed",
+            "title": "rolls back partial publication into the previous physical slot and restores coordinates",
+            "duration": 4.0128749999998945
+          },
+          {
+            "status": "passed",
+            "title": "restarts an initially failed Docs renderer from the latest preference, then destroys once",
+            "duration": 107.79333300000008
+          },
+          {
+            "status": "passed",
+            "title": "keeps independently registered Docs Copy and Code views usable until Header publication",
+            "duration": 132.8905420000001
+          },
+          {
+            "status": "passed",
+            "title": "keeps independently registered Docs Copy and Code views usable until Header preparation failure",
+            "duration": 120.64466700000003
+          },
+          {
+            "status": "passed",
+            "title": "coalesces Docs decoration requests and respects superseding preparation and removal",
+            "duration": 0.39116699999976845
+          },
+          {
+            "status": "passed",
+            "title": "prepares a Docs Copy and Code $reason while Header preparation is still pending",
+            "duration": 56.14791699999978
+          },
+          {
+            "status": "passed",
+            "title": "prepares a Docs Copy and Code $reason while Header preparation is still pending",
+            "duration": 110.22070900000017
+          },
+          {
+            "status": "passed",
+            "title": "keeps a superseding replacement of committed Docs decorations in the foreground",
+            "duration": 152.60633300000018
+          },
+          {
+            "status": "passed",
+            "title": "revokes a queued Docs decoration replacement when its owner is destroyed",
+            "duration": 13.568832999999813
+          },
+          {
+            "status": "passed",
+            "title": "keeps local previewer Copy and Code independent of pending Docs Header preparation",
+            "duration": 55.05562500000042
+          },
+          {
+            "status": "passed",
+            "title": "preserves a focused native language destination when the first homepage projection replaces its fallback",
+            "duration": 63.24366699999973
+          }
+        ]
+      }
+    ],
+    "native": [
+      {
+        "file": "dialog-available-space.browser.test.ts",
+        "cases": [
+          {
+            "status": "passed",
+            "title": "shadcn/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "duration": 6019.927000000003
+          },
+          {
+            "status": "passed",
+            "title": "shadcn/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "duration": 5333.931084000011
+          },
+          {
+            "status": "passed",
+            "title": "shadcn/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "duration": 5150.729082999998
+          },
+          {
+            "status": "passed",
+            "title": "shadcn/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "duration": 5218.807584000009
+          },
+          {
+            "status": "passed",
+            "title": "brutalist/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "duration": 4389.127124999999
+          },
+          {
+            "status": "passed",
+            "title": "brutalist/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "duration": 4374.422332999995
+          },
+          {
+            "status": "passed",
+            "title": "brutalist/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "duration": 4464.181582999998
+          },
+          {
+            "status": "passed",
+            "title": "brutalist/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "duration": 4492.816499999986
+          }
+        ]
+      },
+      {
+        "file": "homepage-dogfood.browser.test.ts",
+        "cases": [
+          {
+            "status": "skipped",
+            "title": "switches every registered homepage group through real adapters, preserving native anchors and theme"
+          },
+          {
+            "status": "skipped",
+            "title": "keeps native navigation available without JavaScript and does not overflow mobile"
+          },
+          {
+            "status": "skipped",
+            "title": "retains saved React across cold library routes and exercises actual family chrome"
+          },
+          {
+            "status": "skipped",
+            "title": "reveals current articles through native shadow slots and preserves viewport handback"
+          },
+          {
+            "status": "passed",
+            "title": "uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence",
+            "duration": 25782.912957999994
+          },
+          {
+            "status": "passed",
+            "title": "uses the same mobile shell on documentation with independent global navigation and contents",
+            "duration": 6922.261333999995
+          },
+          {
+            "status": "passed",
+            "title": "compact shadcn preferences stay usable at 200% text, RTL and breakpoint moves",
+            "duration": 2557.695292000004
+          },
+          {
+            "status": "passed",
+            "title": "compact brutalist preferences stay usable at 200% text, RTL and breakpoint moves",
+            "duration": 3910.358082999999
+          },
+          {
+            "status": "passed",
+            "title": "retains shadcn preference owners and portals through real breakpoint reconnects",
+            "duration": 7017.126375000007
+          },
+          {
+            "status": "passed",
+            "title": "retains brutalist preference owners and portals through real breakpoint reconnects",
+            "duration": 9718.987125
+          }
+        ]
+      }
+    ]
+  },
+  "localFamilyMs": 555.003,
+  "narrowWcRuntimeRing": {
+    "source": {
+      "sha": "38aac9f6a5927ddd1880a52809f07e202a8ef1f4",
+      "dirty": false,
+      "expectedSha": null,
+      "eventSha": null
+    },
+    "screenshot": "brutalist-wc-runtime-narrow-focus-ring.png",
+    "family": "brutalist",
+    "stage": "wc-runtime-narrow-focus-ring",
+    "viewport": {
+      "width": 320,
+      "height": 300
+    },
+    "capturedAt": "2026-11-13T07:17:54.490Z",
+    "facts": {
+      "unfocused": {
+        "focused": false,
+        "focusVisible": false,
+        "prototype": "brutalist-select-trigger",
+        "tokens": [
+          "flex",
+          "w-full",
+          "items-center",
+          "justify-between",
+          "gap-2",
+          "rounded-base",
+          "border-2",
+          "border-black",
+          "bg-main",
+          "text-main-foreground",
+          "font-sans",
+          "font-medium",
+          "px-3",
+          "py-2",
+          "text-sm",
+          "whitespace-nowrap",
+          "outline-none",
+          "select-none",
+          "data-[placeholder]:text-main-foreground",
+          "data-[hovered]:border-black",
+          "data-[pressed]:border-black",
+          "data-[focus-visible]:outline-none",
+          "data-[focus-visible]:ring-2",
+          "data-[focus-visible]:ring-ring",
+          "data-[focus-visible]:ring-offset-2",
+          "data-[focus-visible]:ring-offset-background",
+          "data-[disabled]:pointer-events-none",
+          "data-[disabled]:opacity-50",
+          "transition-all",
+          "h-10",
+          "shadow-[4px_4px_0_0_#000]"
+        ],
+        "ringWidth": 0,
+        "ringOffset": 0,
+        "shadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(0, 0, 0) 4px 4px 0px 0px",
+        "ringColor": "",
+        "target": {
+          "x": 26,
+          "y": 267,
+          "width": 268,
+          "height": 44,
+          "top": 267,
+          "right": 294,
+          "bottom": 311,
+          "left": 26
+        },
+        "ring": {
+          "left": 26,
+          "right": 294,
+          "top": 267,
+          "bottom": 311
+        },
+        "clipping": [
+          {
+            "tag": "DIV",
+            "marker": "site-header-native-slot pui-projection-box",
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "left": 22,
+            "right": 298,
+            "top": 75,
+            "bottom": 278,
+            "containsX": true,
+            "containsY": false,
+            "unsupportedClip": false
+          }
+        ],
+        "viewport": {
+          "width": 320,
+          "height": 300
+        },
+        "inViewport": false,
+        "unclipped": false
+      },
+      "focused": {
+        "focused": true,
+        "focusVisible": true,
+        "prototype": "brutalist-select-trigger",
+        "tokens": [
+          "flex",
+          "w-full",
+          "items-center",
+          "justify-between",
+          "gap-2",
+          "rounded-base",
+          "border-2",
+          "border-black",
+          "bg-main",
+          "text-main-foreground",
+          "font-sans",
+          "font-medium",
+          "px-3",
+          "py-2",
+          "text-sm",
+          "whitespace-nowrap",
+          "outline-none",
+          "select-none",
+          "data-[placeholder]:text-main-foreground",
+          "data-[hovered]:border-black",
+          "data-[pressed]:border-black",
+          "data-[focus-visible]:outline-none",
+          "data-[focus-visible]:ring-2",
+          "data-[focus-visible]:ring-ring",
+          "data-[focus-visible]:ring-offset-2",
+          "data-[focus-visible]:ring-offset-background",
+          "data-[disabled]:pointer-events-none",
+          "data-[disabled]:opacity-50",
+          "transition-all",
+          "h-10",
+          "shadow-[4px_4px_0_0_#000]"
+        ],
+        "ringWidth": 2,
+        "ringOffset": 2,
+        "shadow": "rgba(220, 235, 254, 0.176) 0px 0px 0px 0.349441px, rgba(0, 0, 0, 0.176) 0px 0px 0px 0.698882px, rgb(0, 0, 0) 4px 4px 0px 0px",
+        "ringColor": "#000000",
+        "target": {
+          "x": 26,
+          "y": 230,
+          "width": 268,
+          "height": 44,
+          "top": 230,
+          "right": 294,
+          "bottom": 274,
+          "left": 26
+        },
+        "ring": {
+          "left": 22,
+          "right": 298,
+          "top": 226,
+          "bottom": 278
+        },
+        "clipping": [
+          {
+            "tag": "DIV",
+            "marker": "site-header-native-slot pui-projection-box",
+            "overflowX": "auto",
+            "overflowY": "auto",
+            "left": 22,
+            "right": 298,
+            "top": 75,
+            "bottom": 278,
+            "containsX": true,
+            "containsY": true,
+            "unsupportedClip": false
+          }
+        ],
+        "viewport": {
+          "width": 320,
+          "height": 300
+        },
+        "inViewport": true,
+        "unclipped": true
+      }
+    },
+    "screenshotComplete": true
+  },
+  "coverage": {
+    "main": 1614,
+    "candidate": 1610,
+    "added": {},
+    "removed": {
+      "- internal/website/self-hosting-coverage-matrix.md:186: source fingerprint for `apps/www/src/components/Homepage/homepage-runtime-client.ts` does not match its reviewed SHA-256": 1,
+      "- internal/website/self-hosting-coverage-matrix.md:216: source fingerprint for `apps/www/src/components/PrototypePreviewer/projection-theme.ts` does not match its reviewed SHA-256": 1,
+      "- internal/website/self-hosting-coverage-matrix.md:248: source fingerprint for `apps/www/src/components/site-header-disclosure.ts` does not match its reviewed SHA-256": 1,
+      "- internal/website/self-hosting-coverage-matrix.md:259: source fingerprint for `apps/www/src/components/site-typography.ts` does not match its reviewed SHA-256": 1
+    }
+  },
+  "images": [
+    {
+      "file": "brutalist-wc-public-popover-open.png",
+      "sha256": "11894cfb7e357cd108444a5621de66dfb5e61602c72e410d2be36ad30d57e33b"
+    },
+    {
+      "file": "brutalist-wc-runtime-narrow-focus-ring.png",
+      "sha256": "32fa2bd5f6f87ef2e575e31b01332f71f7855a8361d73246265ecce5e5cb5a41"
+    }
+  ]
+}
