@@ -1,0 +1,169 @@
+{
+  "first": {
+    "head": "29a61c4cee7e55d160fbe9a6a7242359d5461c8b",
+    "browser": "156.0.8078.79",
+    "results": [
+      {
+        "control": "family",
+        "expected": "brutalist",
+        "status": 200,
+        "terminal": {
+          "focusedOutside": false,
+          "events": [
+            {
+              "type": "focusin",
+              "trusted": true,
+              "external": false
+            },
+            {
+              "type": "click",
+              "trusted": true,
+              "targetRole": "option"
+            },
+            {
+              "type": "focusin",
+              "trusted": true,
+              "external": true
+            },
+            {
+              "type": "focusin",
+              "trusted": true,
+              "external": false
+            },
+            {
+              "type": "focusin",
+              "trusted": true,
+              "external": false
+            }
+          ]
+        },
+        "errors": []
+      },
+      {
+        "control": "runtime",
+        "expected": "react",
+        "status": 200,
+        "terminal": {
+          "focusedOutside": false,
+          "events": [
+            {
+              "type": "focusin",
+              "trusted": true,
+              "external": false
+            },
+            {
+              "type": "click",
+              "trusted": true,
+              "targetRole": "option"
+            },
+            {
+              "type": "focusin",
+              "trusted": true,
+              "external": true
+            },
+            {
+              "type": "focusin",
+              "trusted": true,
+              "external": false
+            },
+            {
+              "type": "focusin",
+              "trusted": true,
+              "external": false
+            }
+          ]
+        },
+        "errors": []
+      }
+    ],
+    "scope": "Separate actual Homepage with full content and trusted native Select click; microtask fixture acquires newer focus after input. No original acceptance substitution."
+  },
+  "afterSelectHandback": {
+    "head": "29a61c4cee7e55d160fbe9a6a7242359d5461c8b",
+    "browser": "156.0.8078.79",
+    "results": [
+      {
+        "control": "family",
+        "expected": "brutalist",
+        "status": 200,
+        "terminal": {
+          "focusedOutside": true,
+          "events": [
+            {
+              "type": "focusin",
+              "trusted": true,
+              "external": false,
+              "role": "option",
+              "owner": "homepage-home-preferences"
+            },
+            {
+              "type": "click",
+              "trusted": true,
+              "targetRole": "option"
+            },
+            {
+              "type": "focusin",
+              "trusted": true,
+              "external": false,
+              "role": "combobox",
+              "owner": "homepage-home-preferences"
+            },
+            {
+              "type": "focusin",
+              "trusted": true,
+              "external": true,
+              "role": null,
+              "owner": null
+            }
+          ]
+        },
+        "errors": []
+      },
+      {
+        "control": "runtime",
+        "expected": "react",
+        "status": 200,
+        "terminal": {
+          "focusedOutside": true,
+          "events": [
+            {
+              "type": "focusin",
+              "trusted": true,
+              "external": false,
+              "role": "option",
+              "owner": "homepage-home-preferences"
+            },
+            {
+              "type": "focusin",
+              "trusted": true,
+              "external": false,
+              "role": "option",
+              "owner": "homepage-home-preferences"
+            },
+            {
+              "type": "click",
+              "trusted": true,
+              "targetRole": "option"
+            },
+            {
+              "type": "focusin",
+              "trusted": true,
+              "external": false,
+              "role": "combobox",
+              "owner": "homepage-home-preferences"
+            },
+            {
+              "type": "focusin",
+              "trusted": true,
+              "external": true,
+              "role": null,
+              "owner": null
+            }
+          ]
+        },
+        "errors": []
+      }
+    ],
+    "scope": "Separate actual Homepage with full content and trusted native Select click; fixture acquires newer external focus from the Select’s own close handback focusin. No original acceptance substitution."
+  }
+}
