@@ -1,0 +1,150 @@
+[
+  {
+    "arm": "baseline",
+    "slot": 1,
+    "carrier": "05ae9415291789ec31ad7f9d8b47372ca1289d11",
+    "product": "d854cae0da2d0c3178b801ea18574a9eac88257f",
+    "artifactId": 14047226339,
+    "artifactDigest": "sha256:85fd21c9fa0d01d28747e31aae99685c5a5d4e5b7b75b9e291ba44ba2edc2ced",
+    "runner": [
+      "workflowSha=15e96c9c309ce2f291c10372dd81a4f41af6ec64",
+      "runId=43438495099",
+      "attempt=1",
+      "slot=browser-1-of-8",
+      "runnerImage=ubuntu26",
+      "runnerImageVersion=20261111.196.1",
+      "Linux 7.0.0-1019-azure x86_64",
+      "cpuCount=4",
+      "Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz",
+      "Google Chrome for Testing 157.0.8103.50 ",
+      "061f752aa63d26ee05581742df728a2f8f5097446e85e04145ebaea49e469e15",
+      "chromeArchiveSha256=d17167bc092eb495a3b768c7467f27e35f625aa03834233a1663af67dcb668c9",
+      "v24.22.2",
+      "10.32.1"
+    ],
+    "status": "failure",
+    "processExit": 124,
+    "sameOriginalSuites": true,
+    "caseVerdicts": [
+      "\u2713 Homepage end-to-end dogfood boundary > uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence 63309ms",
+      "\u2713 Homepage end-to-end dogfood boundary > uses the same mobile shell on documentation with independent global navigation and contents 12062ms",
+      "\u00d7 retains brutalist preference owners and portals through real breakpoint reconnects 7590ms",
+      "\u2713 apps/www/src/content/docs/zh-cn/site-sidebar-disclosure.browser.test.ts (7 tests) 68509ms"
+    ],
+    "s4": [
+      {
+        "locale": "zh-cn",
+        "startupPassed": false,
+        "collectionOutcome": "budget-expired",
+        "errors": {
+          "[feedback] owned-decoration unsupported by this adapter": 18
+        }
+      }
+    ]
+  },
+  {
+    "arm": "candidate",
+    "slot": 1,
+    "carrier": "b388cb265d30d3e84bcf56c7687f524aa717c08c",
+    "product": "a7952f1ce1e47399f6928b42a48c8d162afa2a8b",
+    "artifactId": 14047226339,
+    "artifactDigest": "sha256:85fd21c9fa0d01d28747e31aae99685c5a5d4e5b7b75b9e291ba44ba2edc2ced",
+    "runner": [
+      "workflowSha=15e96c9c309ce2f291c10372dd81a4f41af6ec64",
+      "runId=43438495099",
+      "attempt=1",
+      "slot=browser-1-of-8",
+      "runnerImage=ubuntu26",
+      "runnerImageVersion=20261111.196.1",
+      "Linux 7.0.0-1019-azure x86_64",
+      "cpuCount=4",
+      "Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz",
+      "Google Chrome for Testing 157.0.8103.50 ",
+      "061f752aa63d26ee05581742df728a2f8f5097446e85e04145ebaea49e469e15",
+      "chromeArchiveSha256=d17167bc092eb495a3b768c7467f27e35f625aa03834233a1663af67dcb668c9",
+      "v24.22.2",
+      "10.32.1"
+    ],
+    "status": "failure",
+    "processExit": 124,
+    "sameOriginalSuites": true,
+    "caseVerdicts": [
+      "\u2713 Homepage end-to-end dogfood boundary > uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence 63291ms",
+      "\u2713 Homepage end-to-end dogfood boundary > uses the same mobile shell on documentation with independent global navigation and contents 11772ms",
+      "\u00d7 retains brutalist preference owners and portals through real breakpoint reconnects 7085ms",
+      "\u2713 apps/www/src/content/docs/zh-cn/site-sidebar-disclosure.browser.test.ts (7 tests) 67399ms"
+    ],
+    "s4": [
+      {
+        "locale": "zh-cn",
+        "startupPassed": false,
+        "collectionOutcome": "budget-expired",
+        "errors": {
+          "[feedback] owned-decoration unsupported by this adapter": 18
+        }
+      }
+    ]
+  },
+  {
+    "arm": "baseline",
+    "slot": 3,
+    "carrier": "05ae9415291789ec31ad7f9d8b47372ca1289d11",
+    "product": "d854cae0da2d0c3178b801ea18574a9eac88257f",
+    "artifactId": 14046217171,
+    "artifactDigest": "sha256:8a71a5cc23fc5cfc8cb98892ef10c8650a5c4b967c797f2a456f10638503a2e8",
+    "runner": [
+      "workflowSha=15e96c9c309ce2f291c10372dd81a4f41af6ec64",
+      "runId=43438495099",
+      "attempt=1",
+      "slot=browser-3-of-8",
+      "runnerImage=ubuntu26",
+      "runnerImageVersion=20261101.186.1",
+      "Linux 7.0.0-1019-azure x86_64",
+      "cpuCount=4",
+      "AMD EPYC 9V45 96-Core Processor",
+      "Google Chrome for Testing 157.0.8103.50 ",
+      "061f752aa63d26ee05581742df728a2f8f5097446e85e04145ebaea49e469e15",
+      "chromeArchiveSha256=d17167bc092eb495a3b768c7467f27e35f625aa03834233a1663af67dcb668c9",
+      "v24.22.2",
+      "10.32.1"
+    ],
+    "status": "failure",
+    "processExit": 124,
+    "sameOriginalSuites": true,
+    "caseVerdicts": [
+      "\u2713 apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts (8 tests) 58884ms"
+    ],
+    "s4": []
+  },
+  {
+    "arm": "candidate",
+    "slot": 3,
+    "carrier": "b388cb265d30d3e84bcf56c7687f524aa717c08c",
+    "product": "a7952f1ce1e47399f6928b42a48c8d162afa2a8b",
+    "artifactId": 14046217171,
+    "artifactDigest": "sha256:8a71a5cc23fc5cfc8cb98892ef10c8650a5c4b967c797f2a456f10638503a2e8",
+    "runner": [
+      "workflowSha=15e96c9c309ce2f291c10372dd81a4f41af6ec64",
+      "runId=43438495099",
+      "attempt=1",
+      "slot=browser-3-of-8",
+      "runnerImage=ubuntu26",
+      "runnerImageVersion=20261101.186.1",
+      "Linux 7.0.0-1019-azure x86_64",
+      "cpuCount=4",
+      "AMD EPYC 9V45 96-Core Processor",
+      "Google Chrome for Testing 157.0.8103.50 ",
+      "061f752aa63d26ee05581742df728a2f8f5097446e85e04145ebaea49e469e15",
+      "chromeArchiveSha256=d17167bc092eb495a3b768c7467f27e35f625aa03834233a1663af67dcb668c9",
+      "v24.22.2",
+      "10.32.1"
+    ],
+    "status": "failure",
+    "processExit": 124,
+    "sameOriginalSuites": true,
+    "caseVerdicts": [
+      "\u2713 apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts (8 tests) 53919ms"
+    ],
+    "s4": []
+  }
+]

@@ -1,0 +1,188 @@
+{
+  "vite": "6.4.1",
+  "target": "esnext",
+  "records": [
+    {
+      "head": "d854cae0da2d0c3178b801ea18574a9eac88257f",
+      "file": "packages/adapters/web-component/src/adapt.ts",
+      "sourceSha256": "572487b25312d80826988effdd99a5984052bbb2fd88bfbf42f52c035c927273",
+      "traceLineContext": [
+        {
+          "line": 274,
+          "context": [
+            "    }",
+            "    connectedCallback() {",
+            "      const relocation = claimWebComponentOwnedRelocation(this);",
+            "      const owner = this._instanceToken;"
+          ]
+        },
+        {
+          "line": 1067,
+          "context": [
+            "      const instanceToken = this._instanceToken;",
+            "      queueMicrotask(async () => {",
+            "        if (this._instanceToken !== instanceToken) return;",
+            "        if (this._disconnectVersion !== disconnectVersion) {"
+          ]
+        }
+      ]
+    },
+    {
+      "head": "d854cae0da2d0c3178b801ea18574a9eac88257f",
+      "file": "packages/adapters/web-component/src/runtime/modules.ts",
+      "sourceSha256": "39b16582ce62437fda9e4a0a3422c1a9018fcfbed380cb3637e1800581d09820",
+      "traceLineContext": [
+        {
+          "line": 752,
+          "context": [
+            "      pending = inlineOnly ? \"inline\" : \"stylesheet\";",
+            "      queueMicrotask(() => {",
+            "        const inlineOnly2 = pending === \"inline\";",
+            "        pending = null;"
+          ]
+        },
+        {
+          "line": 1363,
+          "context": [
+            "            pendingEntryRefresh = refresh;",
+            "            queueMicrotask(() => {",
+            "              const rebuild = pendingEntryRefresh;",
+            "              pendingEntryRefresh = void 0;"
+          ]
+        }
+      ]
+    },
+    {
+      "head": "d854cae0da2d0c3178b801ea18574a9eac88257f",
+      "file": "apps/www/src/components/documentation-image-preview.ts",
+      "sourceSha256": "cbef4a75ac03be3969312cec0c724e608753836626770a9682079845257e4349",
+      "traceLineContext": [
+        {
+          "line": 367,
+          "context": [
+            "  scan();",
+            "  const contentObserver = new MutationObserver((records) => {",
+            "    if (records.some(affectsPreviewInventory)) scan();",
+            "    geometry();"
+          ]
+        },
+        {
+          "line": 373,
+          "context": [
+            "    contentObserver.observe(body, { childList: true, subtree: true, attributes: true });",
+            "  const themeObserver = new MutationObserver(() => {",
+            "    const nextFamily = previewFamily(doc);",
+            "    if (nextFamily !== family) {"
+          ]
+        }
+      ]
+    },
+    {
+      "head": "d854cae0da2d0c3178b801ea18574a9eac88257f",
+      "file": "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+      "sourceSha256": "b94735696bd58e8570817ab630816a5e8e3f9aa0e90bbd50daee2e01a8f5b851",
+      "traceLineContext": [
+        {
+          "line": 59,
+          "context": [
+            "      let active = true;",
+            "      const notify = () => {",
+            "        if (!active) return;",
+            "        const before = revision;"
+          ]
+        }
+      ]
+    },
+    {
+      "head": "a7952f1ce1e47399f6928b42a48c8d162afa2a8b",
+      "file": "packages/adapters/web-component/src/adapt.ts",
+      "sourceSha256": "572487b25312d80826988effdd99a5984052bbb2fd88bfbf42f52c035c927273",
+      "traceLineContext": [
+        {
+          "line": 274,
+          "context": [
+            "    }",
+            "    connectedCallback() {",
+            "      const relocation = claimWebComponentOwnedRelocation(this);",
+            "      const owner = this._instanceToken;"
+          ]
+        },
+        {
+          "line": 1067,
+          "context": [
+            "      const instanceToken = this._instanceToken;",
+            "      queueMicrotask(async () => {",
+            "        if (this._instanceToken !== instanceToken) return;",
+            "        if (this._disconnectVersion !== disconnectVersion) {"
+          ]
+        }
+      ]
+    },
+    {
+      "head": "a7952f1ce1e47399f6928b42a48c8d162afa2a8b",
+      "file": "packages/adapters/web-component/src/runtime/modules.ts",
+      "sourceSha256": "39b16582ce62437fda9e4a0a3422c1a9018fcfbed380cb3637e1800581d09820",
+      "traceLineContext": [
+        {
+          "line": 752,
+          "context": [
+            "      pending = inlineOnly ? \"inline\" : \"stylesheet\";",
+            "      queueMicrotask(() => {",
+            "        const inlineOnly2 = pending === \"inline\";",
+            "        pending = null;"
+          ]
+        },
+        {
+          "line": 1363,
+          "context": [
+            "            pendingEntryRefresh = refresh;",
+            "            queueMicrotask(() => {",
+            "              const rebuild = pendingEntryRefresh;",
+            "              pendingEntryRefresh = void 0;"
+          ]
+        }
+      ]
+    },
+    {
+      "head": "a7952f1ce1e47399f6928b42a48c8d162afa2a8b",
+      "file": "apps/www/src/components/documentation-image-preview.ts",
+      "sourceSha256": "f404732aae9830832165a820877d209082befe0aac3f4f64290b1e22129d2c85",
+      "traceLineContext": [
+        {
+          "line": 369,
+          "context": [
+            "  scan();",
+            "  const contentObserver = new MutationObserver((records) => {",
+            "    if (records.some(affectsPreviewInventory)) scan();",
+            "    geometry();"
+          ]
+        },
+        {
+          "line": 375,
+          "context": [
+            "    contentObserver.observe(body, { childList: true, subtree: true, attributes: true });",
+            "  const themeObserver = new MutationObserver(() => {",
+            "    const nextFamily = previewFamily(doc);",
+            "    if (nextFamily !== family) {"
+          ]
+        }
+      ]
+    },
+    {
+      "head": "a7952f1ce1e47399f6928b42a48c8d162afa2a8b",
+      "file": "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+      "sourceSha256": "b94735696bd58e8570817ab630816a5e8e3f9aa0e90bbd50daee2e01a8f5b851",
+      "traceLineContext": [
+        {
+          "line": 59,
+          "context": [
+            "      let active = true;",
+            "      const notify = () => {",
+            "        if (!active) return;",
+            "        const before = revision;"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+[
+  {
+    "slot": 1,
+    "arm": "baseline",
+    "head": "d854cae0da2d0c3178b801ea18574a9eac88257f",
+    "switches": {
+      "brutalist/react": {
+        "originalError": null,
+        "atMs": 602
+      },
+      "brutalist/vue": {
+        "originalError": null,
+        "atMs": 506
+      },
+      "brutalist/vue2": {
+        "originalError": null,
+        "atMs": 388
+      },
+      "brutalist/wc": {
+        "originalError": null,
+        "atMs": 3
+      },
+      "shadcn/react": {
+        "originalError": null,
+        "atMs": 614
+      },
+      "shadcn/vue": {
+        "originalError": null,
+        "atMs": 432
+      },
+      "shadcn/vue2": {
+        "originalError": null,
+        "atMs": 562
+      },
+      "shadcn/wc": {
+        "originalError": null,
+        "atMs": 16
+      }
+    },
+    "orderedHandbacks": 24,
+    "totalHandbacks": 24,
+    "namedCasePassed": true,
+    "mobileShellPassed": true
+  },
+  {
+    "slot": 1,
+    "arm": "candidate",
+    "head": "a7952f1ce1e47399f6928b42a48c8d162afa2a8b",
+    "switches": {
+      "brutalist/react": {
+        "originalError": null,
+        "atMs": 591
+      },
+      "brutalist/vue": {
+        "originalError": null,
+        "atMs": 495
+      },
+      "brutalist/vue2": {
+        "originalError": null,
+        "atMs": 385
+      },
+      "brutalist/wc": {
+        "originalError": null,
+        "atMs": 8
+      },
+      "shadcn/react": {
+        "originalError": null,
+        "atMs": 587
+      },
+      "shadcn/vue": {
+        "originalError": null,
+        "atMs": 461
+      },
+      "shadcn/vue2": {
+        "originalError": null,
+        "atMs": 569
+      },
+      "shadcn/wc": {
+        "originalError": null,
+        "atMs": 18
+      }
+    },
+    "orderedHandbacks": 24,
+    "totalHandbacks": 24,
+    "namedCasePassed": true,
+    "mobileShellPassed": true
+  },
+  {
+    "slot": 3,
+    "arm": "baseline",
+    "head": "d854cae0da2d0c3178b801ea18574a9eac88257f",
+    "observations": 196,
+    "captures": 120,
+    "dialog8Passed": true
+  },
+  {
+    "slot": 3,
+    "arm": "candidate",
+    "head": "a7952f1ce1e47399f6928b42a48c8d162afa2a8b",
+    "observations": 196,
+    "captures": 120,
+    "dialog8Passed": true
+  }
+]

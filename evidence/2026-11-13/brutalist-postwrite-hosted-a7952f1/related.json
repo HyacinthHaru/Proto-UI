@@ -1,0 +1,17 @@
+{
+  "local": {
+    "head": "b6f464f197e5f11ca2cfa23a3ef86982960ad452",
+    "url": "https://github.com/HyacinthHaru/Proto-UI/tree/b6f464f197e5f11ca2cfa23a3ef86982960ad452/evidence/2026-11-13/brutalist-postwrite-task-breakdown",
+    "files": 7
+  },
+  "production": {
+    "head": "fe26df10e1fd332410f42909ac1733674262416f",
+    "url": "https://github.com/HyacinthHaru/Proto-UI/tree/fe26df10e1fd332410f42909ac1733674262416f/evidence/2026-11-13/image-preview-production-a7952f1",
+    "files": 3
+  },
+  "s4": {
+    "head": "06542d56be3f7f6fd9f5b939b43a8404c5320d4c",
+    "url": "https://github.com/HyacinthHaru/Proto-UI/tree/06542d56be3f7f6fd9f5b939b43a8404c5320d4c/evidence/2026-11-13/s4-react-transitive-delivery-a7952f1",
+    "files": 4
+  }
+}
