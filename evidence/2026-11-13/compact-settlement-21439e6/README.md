@@ -1,0 +1,5 @@
+# Compact Button settlement on 21439e6
+
+On a compact Header panel, Button transform completion and feedback attribute changes do not drive placement. The paired fixture observed one queued frame from the first compact transition event on the parent and zero on the change. The compact feedback mutation also schedules no frame. After the breakpoint, the same connected owner still schedules one desktop geometry frame and follows the actual anchor. Header, viewport, scroll and resize paths are unchanged. Any old desktop settlement callback also checks the current breakpoint before taking geometry.
+
+The clean candidate passed 82 focused and 14 original Chrome 156 cases, including the two named Contents/mobile cases, both compact 200%/RTL cases, both reconnect cases and Dialog 8/8. The original local Brutalist family check passed at 563.773ms and the original WC runtime ring shadow changed with a 2px ring and offset and no clipping. Both PNGs came from the actual passing journeys and were inspected. All CodeExamples and original assertion deadlines remain. The three hosted shards are an independent outcome.
