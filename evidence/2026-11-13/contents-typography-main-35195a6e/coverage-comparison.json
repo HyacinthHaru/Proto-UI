@@ -1,0 +1,8 @@
+{
+  "parent": 1614,
+  "candidate": 1613,
+  "new": {},
+  "removed": {
+    "- internal/website/self-hosting-coverage-matrix.md:259: source fingerprint for `apps/www/src/components/site-typography.ts` does not match its reviewed SHA-256": 1
+  }
+}

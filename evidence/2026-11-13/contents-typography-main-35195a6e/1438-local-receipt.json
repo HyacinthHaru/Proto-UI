@@ -1,0 +1,21 @@
+{
+  "head": "4bcf4301d9e1054e79de2b3a40e6133bd1cfd11d",
+  "focused": 119,
+  "browser": 14,
+  "filtered": 4,
+  "contents": {
+    "shadcn/wc": 52,
+    "shadcn/vue2": 218,
+    "shadcn/vue": 224,
+    "brutalist/wc": 4,
+    "brutalist/react": 249,
+    "brutalist/vue2": 191,
+    "brutalist/vue": 206,
+    "shadcn/react": 205
+  },
+  "handbacks": 24,
+  "dialog": 8,
+  "dialogObservations": 196,
+  "dialogPng": 120,
+  "typesExit": 0
+}

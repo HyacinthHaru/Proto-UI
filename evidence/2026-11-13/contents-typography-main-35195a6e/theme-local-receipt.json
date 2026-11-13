@@ -1,0 +1,34 @@
+{
+  "head": "1c21bcc9ea63100039b32058723feb0e05508258",
+  "browser": {
+    "passed": 14,
+    "failed": 0,
+    "filtered": 4
+  },
+  "contents": {
+    "shadcn/wc": 137,
+    "shadcn/vue2": 208,
+    "shadcn/vue": 185,
+    "brutalist/wc": 1,
+    "brutalist/react": 257,
+    "brutalist/vue2": 190,
+    "brutalist/vue": 199,
+    "shadcn/react": 195
+  },
+  "handbacks": 24,
+  "dialog": 8,
+  "dialogObservations": 196,
+  "dialogCaptures": 120,
+  "localBrutalistFamilyMs": 570.491,
+  "typesExit": 0,
+  "focused": {
+    "passed": 284,
+    "inheritedFailures": [
+      "canonical palette with real Switch and Web Component lifecycle (DOM harness) preserves the same owner across a same-tick move and checks the new ancestor theme, shadow=false",
+      "canonical palette with real Switch and Web Component lifecycle (DOM harness) preserves the same owner across a same-tick move and checks the new ancestor theme, shadow=true",
+      "canonical palette with real Switch and Web Component lifecycle (DOM harness) rejects a real connected theme override after reattach without reusing canonical colors",
+      "canonical palette with real Switch and Web Component lifecycle (DOM harness) retires an async detached view and freshly binds on reattach, shadow=false",
+      "canonical palette with real Switch and Web Component lifecycle (DOM harness) retires an async detached view and freshly binds on reattach, shadow=true"
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "prHead": "3139922b91dd94111a6a290687ab43adc479788b",
+  "upstreamMain": "35195a6e6f1ba6a7d800da0029f2683013abd18b",
+  "hypotheticalCleanCompositionTree": "3c35ea252db21b7ded4de91a0d112bca73f80a4e",
+  "unchangedPropsBlob": "f8d47ca59cf22e0bafc0e9c7475f4d324389c262",
+  "existingInterventionSha256": "441339020597ff7cb2a8f7531938710080b127f6b4cd8319b4c76da62d05cb7f",
+  "localGitApplyCheckPassed": true,
+  "nativeRunsStarted": 0,
+  "unresolvedReviewThreads": 5,
+  "applicability": "Read-only merge-tree and patch check; the live Search head is unchanged. A/B and current native acceptance remain open."
+}

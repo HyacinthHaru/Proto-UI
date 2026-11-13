@@ -1,0 +1,30 @@
+{
+  "chrome": "156.0.8078.79",
+  "context": "isolated CSSOM control, no site or Search product loaded",
+  "rows": [
+    {
+      "name": "same nonempty value and normal priority",
+      "before": "--pui-primary: rgb(10 20 30); color: black",
+      "after": "--pui-primary: rgb(10 20 30); color: black",
+      "records": []
+    },
+    {
+      "name": "same value with new important priority",
+      "before": "--pui-primary: rgb(10 20 30); color: black",
+      "after": "--pui-primary: rgb(10 20 30) !important; color: black;",
+      "records": ["--pui-primary: rgb(10 20 30); color: black"]
+    },
+    {
+      "name": "same value and equal important priority",
+      "before": "--pui-primary: rgb(10 20 30) !important; color: black;",
+      "after": "--pui-primary: rgb(10 20 30) !important; color: black;",
+      "records": []
+    },
+    {
+      "name": "same value with priority removed",
+      "before": "--pui-primary: rgb(10 20 30) !important; color: black;",
+      "after": "--pui-primary: rgb(10 20 30); color: black;",
+      "records": ["--pui-primary: rgb(10 20 30) !important; color: black;"]
+    }
+  ]
+}

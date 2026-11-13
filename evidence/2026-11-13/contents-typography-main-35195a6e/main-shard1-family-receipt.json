@@ -1,0 +1,29 @@
+{
+  "source": "35195a6e6f1ba6a7d800da0029f2683013abd18b",
+  "run": 43316320185,
+  "job": 131525300228,
+  "artifact": 13989032618,
+  "verdictMs": 1000.566,
+  "familyWritesMs": [[713.02, 713.9]],
+  "queries": [
+    {
+      "call": 1,
+      "startedMs": 0.331,
+      "returnedMs": 86.609,
+      "value": "shadcn"
+    },
+    {
+      "call": 2,
+      "startedMs": 137.844,
+      "returnedMs": 184.329,
+      "value": "shadcn"
+    },
+    {
+      "call": 3,
+      "startedMs": 234.868,
+      "returnedMs": 1125.411,
+      "value": "brutalist"
+    }
+  ],
+  "pendingAtVerdict": ["call@5666"]
+}

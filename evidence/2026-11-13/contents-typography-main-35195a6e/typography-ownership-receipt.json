@@ -1,0 +1,739 @@
+{
+  "environment": {
+    "chrome": "156.0.8078.79",
+    "os": "macOS arm64",
+    "node": "24.21.0"
+  },
+  "runs": [
+    {
+      "label": "parent original",
+      "source": {
+        "actualGitHead": "4bcf4301d9e1054e79de2b3a40e6133bd1cfd11d",
+        "expectedHead": null,
+        "eventSha": null,
+        "eventName": null,
+        "dirty": false,
+        "runId": null,
+        "runAttempt": null
+      },
+      "exit": 1,
+      "rows": [
+        {
+          "id": "native-wc-shadcn",
+          "outcome": "failed",
+          "outer": {
+            "tag": "LI",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 1
+          },
+          "inner": {
+            "tag": "P",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 0
+          }
+        },
+        {
+          "id": "native-wc-brutalist",
+          "outcome": "failed",
+          "outer": {
+            "tag": "LI",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 1
+          },
+          "inner": {
+            "tag": "P",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 0
+          }
+        },
+        {
+          "id": "native-react-shadcn",
+          "outcome": "failed",
+          "outer": {
+            "tag": "LI",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 1
+          },
+          "inner": {
+            "tag": "P",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 0
+          }
+        },
+        {
+          "id": "native-react-brutalist",
+          "outcome": "failed",
+          "outer": {
+            "tag": "LI",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 1
+          },
+          "inner": {
+            "tag": "P",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 0
+          }
+        },
+        {
+          "id": "native-vue-shadcn",
+          "outcome": "failed",
+          "outer": {
+            "tag": "LI",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 1
+          },
+          "inner": {
+            "tag": "P",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 0
+          }
+        },
+        {
+          "id": "native-vue-brutalist",
+          "outcome": "failed",
+          "outer": {
+            "tag": "LI",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 1
+          },
+          "inner": {
+            "tag": "P",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 0
+          }
+        },
+        {
+          "id": "native-vue2-shadcn",
+          "outcome": "failed",
+          "outer": {
+            "tag": "LI",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 1
+          },
+          "inner": {
+            "tag": "P",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 0
+          }
+        },
+        {
+          "id": "native-vue2-brutalist",
+          "outcome": "failed",
+          "outer": {
+            "tag": "LI",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 1
+          },
+          "inner": {
+            "tag": "P",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 0
+          }
+        }
+      ],
+      "measurementsSha256": "3fb69d13d0d9a7373929f1be14e3500e09a7c3a31e8e84d310eca48437bd90c6"
+    },
+    {
+      "label": "candidate original",
+      "source": {
+        "actualGitHead": "b9c83922eea2d68df5fa345e2ee17f70b8a7f3b1",
+        "expectedHead": null,
+        "eventSha": null,
+        "eventName": null,
+        "dirty": false,
+        "runId": null,
+        "runAttempt": null
+      },
+      "exit": 1,
+      "rows": [
+        {
+          "id": "native-wc-shadcn",
+          "outcome": "failed",
+          "outer": {
+            "tag": "LI",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 1
+          },
+          "inner": {
+            "tag": "P",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 0
+          }
+        },
+        {
+          "id": "native-wc-brutalist",
+          "outcome": "failed",
+          "outer": {
+            "tag": "LI",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 1
+          },
+          "inner": {
+            "tag": "P",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 0
+          }
+        },
+        {
+          "id": "native-react-shadcn",
+          "outcome": "failed",
+          "outer": {
+            "tag": "LI",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 1
+          },
+          "inner": {
+            "tag": "P",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 0
+          }
+        },
+        {
+          "id": "native-react-brutalist",
+          "outcome": "failed",
+          "outer": {
+            "tag": "LI",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 1
+          },
+          "inner": {
+            "tag": "P",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 0
+          }
+        },
+        {
+          "id": "native-vue-shadcn",
+          "outcome": "failed",
+          "outer": {
+            "tag": "LI",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 1
+          },
+          "inner": {
+            "tag": "P",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 0
+          }
+        },
+        {
+          "id": "native-vue-brutalist",
+          "outcome": "failed",
+          "outer": {
+            "tag": "LI",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 1
+          },
+          "inner": {
+            "tag": "P",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 0
+          }
+        },
+        {
+          "id": "native-vue2-shadcn",
+          "outcome": "failed",
+          "outer": {
+            "tag": "LI",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 1
+          },
+          "inner": {
+            "tag": "P",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 0
+          }
+        },
+        {
+          "id": "native-vue2-brutalist",
+          "outcome": "failed",
+          "outer": {
+            "tag": "LI",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 1
+          },
+          "inner": {
+            "tag": "P",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 0
+          }
+        }
+      ],
+      "measurementsSha256": "ba7d77ffeeb3f173c14749a01e986252c060818a98f9c418e792d5f979d1d483"
+    },
+    {
+      "label": "candidate corrected fixture",
+      "source": {
+        "actualGitHead": "b9c83922eea2d68df5fa345e2ee17f70b8a7f3b1",
+        "expectedHead": null,
+        "eventSha": null,
+        "eventName": null,
+        "dirty": true,
+        "runId": null,
+        "runAttempt": null
+      },
+      "exit": 1,
+      "rows": [
+        {
+          "id": "native-wc-shadcn",
+          "outcome": "failed",
+          "outer": {
+            "tag": "LI",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 0,
+            "surfaceCount": 0,
+            "invalidBlocks": 0
+          },
+          "inner": {
+            "tag": "P",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 0
+          },
+          "selection": {
+            "anchorIsLastSource": true,
+            "focusIsFirstSource": true,
+            "anchorOffset": 11,
+            "focusOffset": 1,
+            "focusAtFirstWord": true
+          },
+          "originalMouseCopyPreserved": true,
+          "originalBackwardCopyPreserved": true,
+          "latinFonts": [
+            {
+              "familyName": "Geist",
+              "postScriptName": "Geist-Regular",
+              "isCustomFont": true,
+              "glyphCount": 25
+            }
+          ],
+          "cjkFonts": [
+            {
+              "familyName": "PingFang SC",
+              "postScriptName": "PingFangSC-Regular",
+              "isCustomFont": false,
+              "glyphCount": 9
+            }
+          ]
+        },
+        {
+          "id": "native-wc-brutalist",
+          "outcome": "passed",
+          "outer": {
+            "tag": "LI",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 0,
+            "surfaceCount": 0,
+            "invalidBlocks": 0
+          },
+          "inner": {
+            "tag": "P",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 0
+          },
+          "selection": {
+            "anchorIsLastSource": true,
+            "focusIsFirstSource": true,
+            "anchorOffset": 11,
+            "focusOffset": 1,
+            "focusAtFirstWord": true
+          },
+          "originalMouseCopyPreserved": true,
+          "originalBackwardCopyPreserved": true,
+          "latinFonts": [
+            {
+              "familyName": "DM Sans 9pt",
+              "postScriptName": "DMSans-9ptRegular_opsz100000_wght1F40000",
+              "isCustomFont": true,
+              "glyphCount": 25
+            }
+          ],
+          "cjkFonts": [
+            {
+              "familyName": "PingFang SC",
+              "postScriptName": "PingFangSC-Medium",
+              "isCustomFont": false,
+              "glyphCount": 9
+            }
+          ]
+        },
+        {
+          "id": "native-react-shadcn",
+          "outcome": "failed",
+          "outer": {
+            "tag": "LI",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 0,
+            "surfaceCount": 0,
+            "invalidBlocks": 0
+          },
+          "inner": {
+            "tag": "P",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 0
+          },
+          "selection": {
+            "anchorIsLastSource": true,
+            "focusIsFirstSource": true,
+            "anchorOffset": 11,
+            "focusOffset": 1,
+            "focusAtFirstWord": true
+          },
+          "originalMouseCopyPreserved": true,
+          "originalBackwardCopyPreserved": true,
+          "latinFonts": [
+            {
+              "familyName": "Geist",
+              "postScriptName": "Geist-Regular",
+              "isCustomFont": true,
+              "glyphCount": 25
+            }
+          ],
+          "cjkFonts": [
+            {
+              "familyName": "PingFang SC",
+              "postScriptName": "PingFangSC-Regular",
+              "isCustomFont": false,
+              "glyphCount": 9
+            }
+          ]
+        },
+        {
+          "id": "native-react-brutalist",
+          "outcome": "passed",
+          "outer": {
+            "tag": "LI",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 0,
+            "surfaceCount": 0,
+            "invalidBlocks": 0
+          },
+          "inner": {
+            "tag": "P",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 0
+          },
+          "selection": {
+            "anchorIsLastSource": true,
+            "focusIsFirstSource": true,
+            "anchorOffset": 11,
+            "focusOffset": 1,
+            "focusAtFirstWord": true
+          },
+          "originalMouseCopyPreserved": true,
+          "originalBackwardCopyPreserved": true,
+          "latinFonts": [
+            {
+              "familyName": "DM Sans 9pt",
+              "postScriptName": "DMSans-9ptRegular_opsz100000_wght1F40000",
+              "isCustomFont": true,
+              "glyphCount": 25
+            }
+          ],
+          "cjkFonts": [
+            {
+              "familyName": "PingFang SC",
+              "postScriptName": "PingFangSC-Medium",
+              "isCustomFont": false,
+              "glyphCount": 9
+            }
+          ]
+        },
+        {
+          "id": "native-vue-shadcn",
+          "outcome": "failed",
+          "outer": {
+            "tag": "LI",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 0,
+            "surfaceCount": 0,
+            "invalidBlocks": 0
+          },
+          "inner": {
+            "tag": "P",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 0
+          },
+          "selection": {
+            "anchorIsLastSource": true,
+            "focusIsFirstSource": true,
+            "anchorOffset": 11,
+            "focusOffset": 1,
+            "focusAtFirstWord": true
+          },
+          "originalMouseCopyPreserved": true,
+          "originalBackwardCopyPreserved": true,
+          "latinFonts": [
+            {
+              "familyName": "Geist",
+              "postScriptName": "Geist-Regular",
+              "isCustomFont": true,
+              "glyphCount": 25
+            }
+          ],
+          "cjkFonts": [
+            {
+              "familyName": "PingFang SC",
+              "postScriptName": "PingFangSC-Regular",
+              "isCustomFont": false,
+              "glyphCount": 9
+            }
+          ]
+        },
+        {
+          "id": "native-vue-brutalist",
+          "outcome": "passed",
+          "outer": {
+            "tag": "LI",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 0,
+            "surfaceCount": 0,
+            "invalidBlocks": 0
+          },
+          "inner": {
+            "tag": "P",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 0
+          },
+          "selection": {
+            "anchorIsLastSource": true,
+            "focusIsFirstSource": true,
+            "anchorOffset": 11,
+            "focusOffset": 1,
+            "focusAtFirstWord": true
+          },
+          "originalMouseCopyPreserved": true,
+          "originalBackwardCopyPreserved": true,
+          "latinFonts": [
+            {
+              "familyName": "DM Sans 9pt",
+              "postScriptName": "DMSans-9ptRegular_opsz100000_wght1F40000",
+              "isCustomFont": true,
+              "glyphCount": 25
+            }
+          ],
+          "cjkFonts": [
+            {
+              "familyName": "PingFang SC",
+              "postScriptName": "PingFangSC-Medium",
+              "isCustomFont": false,
+              "glyphCount": 9
+            }
+          ]
+        },
+        {
+          "id": "native-vue2-shadcn",
+          "outcome": "failed",
+          "outer": {
+            "tag": "LI",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 0,
+            "surfaceCount": 0,
+            "invalidBlocks": 0
+          },
+          "inner": {
+            "tag": "P",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 0
+          },
+          "selection": {
+            "anchorIsLastSource": true,
+            "focusIsFirstSource": true,
+            "anchorOffset": 11,
+            "focusOffset": 1,
+            "focusAtFirstWord": true
+          },
+          "originalMouseCopyPreserved": true,
+          "originalBackwardCopyPreserved": true,
+          "latinFonts": [
+            {
+              "familyName": "Geist",
+              "postScriptName": "Geist-Regular",
+              "isCustomFont": true,
+              "glyphCount": 25
+            }
+          ],
+          "cjkFonts": [
+            {
+              "familyName": "PingFang SC",
+              "postScriptName": "PingFangSC-Regular",
+              "isCustomFont": false,
+              "glyphCount": 9
+            }
+          ]
+        },
+        {
+          "id": "native-vue2-brutalist",
+          "outcome": "passed",
+          "outer": {
+            "tag": "LI",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 0,
+            "surfaceCount": 0,
+            "invalidBlocks": 0
+          },
+          "inner": {
+            "tag": "P",
+            "originalSources": true,
+            "textNodeCount": 1,
+            "carrierCount": 1,
+            "surfaceCount": 1,
+            "invalidBlocks": 0
+          },
+          "selection": {
+            "anchorIsLastSource": true,
+            "focusIsFirstSource": true,
+            "anchorOffset": 11,
+            "focusOffset": 1,
+            "focusAtFirstWord": true
+          },
+          "originalMouseCopyPreserved": true,
+          "originalBackwardCopyPreserved": true,
+          "latinFonts": [
+            {
+              "familyName": "DM Sans 9pt",
+              "postScriptName": "DMSans-9ptRegular_opsz100000_wght1F40000",
+              "isCustomFont": true,
+              "glyphCount": 25
+            }
+          ],
+          "cjkFonts": [
+            {
+              "familyName": "PingFang SC",
+              "postScriptName": "PingFangSC-Medium",
+              "isCustomFont": false,
+              "glyphCount": 9
+            }
+          ]
+        }
+      ],
+      "measurementsSha256": "d554f92ca87ade44f50274da70ee220d3486a922415d9f686a936da84c63f7b3"
+    }
+  ],
+  "finalTestCommit": "155da9dfd7f2e46a7f5b5c7c06eb528e6afe4f2a",
+  "executedTestPatchSha256": "8da39477d15a04190aed5329c5745a781f0327a76011eaaf9ac10d73834a271f"
+}

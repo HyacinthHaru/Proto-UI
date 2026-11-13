@@ -1,0 +1,11 @@
+{
+  "parentPassed": 36,
+  "candidatePassed": 37,
+  "commonFailures": [
+    "canonical palette with real Switch and Web Component lifecycle (DOM harness) preserves the same owner across a same-tick move and checks the new ancestor theme, shadow=false",
+    "canonical palette with real Switch and Web Component lifecycle (DOM harness) preserves the same owner across a same-tick move and checks the new ancestor theme, shadow=true",
+    "canonical palette with real Switch and Web Component lifecycle (DOM harness) rejects a real connected theme override after reattach without reusing canonical colors",
+    "canonical palette with real Switch and Web Component lifecycle (DOM harness) retires an async detached view and freshly binds on reattach, shadow=false",
+    "canonical palette with real Switch and Web Component lifecycle (DOM harness) retires an async detached view and freshly binds on reattach, shadow=true"
+  ]
+}

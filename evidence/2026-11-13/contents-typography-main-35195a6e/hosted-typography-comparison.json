@@ -1,0 +1,1480 @@
+{
+  "main": {
+    "source": {
+      "actualGitHead": "35195a6e6f1ba6a7d800da0029f2683013abd18b",
+      "expectedHead": null,
+      "eventSha": "35195a6e6f1ba6a7d800da0029f2683013abd18b",
+      "eventName": "schedule",
+      "dirty": false,
+      "runId": "43316320185",
+      "runAttempt": "1"
+    },
+    "passed": 7,
+    "failed": 27
+  },
+  "candidate": {
+    "source": {
+      "actualGitHead": "5e7d4a690117d05c4557d71acd3e28dc7e79128f",
+      "expectedHead": null,
+      "eventSha": "5e7d4a690117d05c4557d71acd3e28dc7e79128f",
+      "eventName": "workflow_dispatch",
+      "dirty": false,
+      "runId": "43345187178",
+      "runAttempt": "1"
+    },
+    "passed": 15,
+    "failed": 19
+  },
+  "resolvedNativeCases": [
+    "native-wc-shadcn",
+    "native-wc-brutalist",
+    "native-react-shadcn",
+    "native-react-brutalist",
+    "native-vue-shadcn",
+    "native-vue-brutalist",
+    "native-vue2-shadcn",
+    "native-vue2-brutalist"
+  ],
+  "newFailures": [],
+  "sharedFailures": [
+    {
+      "id": "homepage-zh-cn-wc-shadcn",
+      "mainError": "AssertionError: every configured viewport was attempted: expected [ \u2026(4) ] to deeply equal []",
+      "candidateError": "AssertionError: every configured viewport was attempted: expected [ \u2026(4) ] to deeply equal []",
+      "mainSamples": [
+        {
+          "width": 320,
+          "textPercent": 100,
+          "error": "Error: Matcher did not succeed in 15000ms",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "37.5px"
+          }
+        },
+        {
+          "width": 320,
+          "textPercent": 200,
+          "error": "Error: Matcher did not succeed in 15000ms",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "37.5px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 100,
+          "error": "Error: Matcher did not succeed in 15000ms",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "37.5px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 200,
+          "error": "Error: Matcher did not succeed in 15000ms",
+          "headingLast": {
+            "token": true,
+            "size": 60,
+            "lineHeight": "75px"
+          }
+        }
+      ],
+      "candidateSamples": [
+        {
+          "width": 320,
+          "textPercent": 100,
+          "error": "Error: Matcher did not succeed in 15000ms",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "37.5px"
+          }
+        },
+        {
+          "width": 320,
+          "textPercent": 200,
+          "error": "Error: Matcher did not succeed in 15000ms",
+          "headingLast": {
+            "token": true,
+            "size": 60,
+            "lineHeight": "75px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 100,
+          "error": "Error: Matcher did not succeed in 15000ms",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "37.5px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 200,
+          "error": "Error: Matcher did not succeed in 15000ms",
+          "headingLast": {
+            "token": true,
+            "size": 60,
+            "lineHeight": "75px"
+          }
+        }
+      ]
+    },
+    {
+      "id": "homepage-zh-cn-wc-brutalist",
+      "mainError": "AssertionError: every configured viewport was attempted: expected [ \u2026(4) ] to deeply equal []",
+      "candidateError": "AssertionError: every configured viewport was attempted: expected [ \u2026(4) ] to deeply equal []",
+      "mainSamples": [
+        {
+          "width": 320,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { text: '\u6309\u94ae\u4e0e\u9009\u62e9', \u2026(1) }, \u2026(51) ] to have a length of 37 but got 52",
+          "headingLast": {
+            "token": true,
+            "size": 24,
+            "lineHeight": "30px"
+          }
+        },
+        {
+          "width": 320,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { text: '\u6309\u94ae\u4e0e\u9009\u62e9', \u2026(1) }, \u2026(51) ] to have a length of 37 but got 52",
+          "headingLast": {
+            "token": true,
+            "size": 48,
+            "lineHeight": "60px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { text: '\u6309\u94ae\u4e0e\u9009\u62e9', \u2026(1) }, \u2026(51) ] to have a length of 37 but got 52",
+          "headingLast": {
+            "token": true,
+            "size": 24,
+            "lineHeight": "30px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { text: '\u6309\u94ae\u4e0e\u9009\u62e9', \u2026(1) }, \u2026(51) ] to have a length of 37 but got 52",
+          "headingLast": {
+            "token": true,
+            "size": 48,
+            "lineHeight": "60px"
+          }
+        }
+      ],
+      "candidateSamples": [
+        {
+          "width": 320,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { text: '\u6309\u94ae\u4e0e\u9009\u62e9', \u2026(1) }, \u2026(51) ] to have a length of 37 but got 52",
+          "headingLast": {
+            "token": true,
+            "size": 24,
+            "lineHeight": "30px"
+          }
+        },
+        {
+          "width": 320,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { text: '\u6309\u94ae\u4e0e\u9009\u62e9', \u2026(1) }, \u2026(51) ] to have a length of 37 but got 52",
+          "headingLast": {
+            "token": true,
+            "size": 48,
+            "lineHeight": "60px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { text: '\u6309\u94ae\u4e0e\u9009\u62e9', \u2026(1) }, \u2026(51) ] to have a length of 37 but got 52",
+          "headingLast": {
+            "token": true,
+            "size": 24,
+            "lineHeight": "30px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { text: '\u6309\u94ae\u4e0e\u9009\u62e9', \u2026(1) }, \u2026(51) ] to have a length of 37 but got 52",
+          "headingLast": {
+            "token": true,
+            "size": 48,
+            "lineHeight": "60px"
+          }
+        }
+      ]
+    },
+    {
+      "id": "homepage-zh-cn-react-shadcn",
+      "mainError": "AssertionError: every configured viewport was attempted: expected [ \u2026(4) ] to deeply equal []",
+      "candidateError": "AssertionError: every configured viewport was attempted: expected [ \u2026(4) ] to deeply equal []",
+      "mainSamples": [
+        {
+          "width": 320,
+          "textPercent": 100,
+          "error": "Error: Matcher did not succeed in 15000ms",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "37.5px"
+          }
+        },
+        {
+          "width": 320,
+          "textPercent": 200,
+          "error": "Error: Matcher did not succeed in 15000ms",
+          "headingLast": {
+            "token": true,
+            "size": 60,
+            "lineHeight": "75px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 100,
+          "error": "Error: Matcher did not succeed in 15000ms",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "37.5px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 200,
+          "error": "Error: Matcher did not succeed in 15000ms",
+          "headingLast": {
+            "token": true,
+            "size": 60,
+            "lineHeight": "75px"
+          }
+        }
+      ],
+      "candidateSamples": [
+        {
+          "width": 320,
+          "textPercent": 100,
+          "error": "Error: Matcher did not succeed in 15000ms",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "37.5px"
+          }
+        },
+        {
+          "width": 320,
+          "textPercent": 200,
+          "error": "Error: Matcher did not succeed in 15000ms",
+          "headingLast": {
+            "token": true,
+            "size": 60,
+            "lineHeight": "75px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 100,
+          "error": "Error: Matcher did not succeed in 15000ms",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "37.5px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 200,
+          "error": "Error: Matcher did not succeed in 15000ms",
+          "headingLast": {
+            "token": true,
+            "size": 60,
+            "lineHeight": "75px"
+          }
+        }
+      ]
+    },
+    {
+      "id": "homepage-zh-cn-react-brutalist",
+      "mainError": "AssertionError: every configured viewport was attempted: expected [ \u2026(4) ] to deeply equal []",
+      "candidateError": "AssertionError: every configured viewport was attempted: expected [ \u2026(4) ] to deeply equal []",
+      "mainSamples": [
+        {
+          "width": 320,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { text: '\u6309\u94ae\u4e0e\u9009\u62e9', \u2026(1) }, \u2026(49) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 24,
+            "lineHeight": "30px"
+          }
+        },
+        {
+          "width": 320,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { text: '\u6309\u94ae\u4e0e\u9009\u62e9', \u2026(1) }, \u2026(49) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 48,
+            "lineHeight": "60px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { text: '\u6309\u94ae\u4e0e\u9009\u62e9', \u2026(1) }, \u2026(49) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 24,
+            "lineHeight": "30px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { text: '\u6309\u94ae\u4e0e\u9009\u62e9', \u2026(1) }, \u2026(49) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 48,
+            "lineHeight": "60px"
+          }
+        }
+      ],
+      "candidateSamples": [
+        {
+          "width": 320,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { text: '\u6309\u94ae\u4e0e\u9009\u62e9', \u2026(1) }, \u2026(49) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 24,
+            "lineHeight": "30px"
+          }
+        },
+        {
+          "width": 320,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { text: '\u6309\u94ae\u4e0e\u9009\u62e9', \u2026(1) }, \u2026(49) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 48,
+            "lineHeight": "60px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { text: '\u6309\u94ae\u4e0e\u9009\u62e9', \u2026(1) }, \u2026(49) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 24,
+            "lineHeight": "30px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { text: '\u6309\u94ae\u4e0e\u9009\u62e9', \u2026(1) }, \u2026(49) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 48,
+            "lineHeight": "60px"
+          }
+        }
+      ]
+    },
+    {
+      "id": "homepage-zh-cn-vue-shadcn",
+      "mainError": "AssertionError: every configured viewport was attempted: expected [ \u2026(4) ] to deeply equal []",
+      "candidateError": "AssertionError: every configured viewport was attempted: expected [ \u2026(4) ] to deeply equal []",
+      "mainSamples": [
+        {
+          "width": 320,
+          "textPercent": 100,
+          "error": "Error: Matcher did not succeed in 15000ms",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "37.5px"
+          }
+        },
+        {
+          "width": 320,
+          "textPercent": 200,
+          "error": "Error: Matcher did not succeed in 15000ms",
+          "headingLast": {
+            "token": true,
+            "size": 60,
+            "lineHeight": "75px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 100,
+          "error": "Error: Matcher did not succeed in 15000ms",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "37.5px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 200,
+          "error": "Error: Matcher did not succeed in 15000ms",
+          "headingLast": {
+            "token": true,
+            "size": 60,
+            "lineHeight": "75px"
+          }
+        }
+      ],
+      "candidateSamples": [
+        {
+          "width": 320,
+          "textPercent": 100,
+          "error": "Error: Matcher did not succeed in 15000ms",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "37.5px"
+          }
+        },
+        {
+          "width": 320,
+          "textPercent": 200,
+          "error": "Error: Matcher did not succeed in 15000ms",
+          "headingLast": {
+            "token": true,
+            "size": 60,
+            "lineHeight": "75px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 100,
+          "error": "Error: Matcher did not succeed in 15000ms",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "37.5px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 200,
+          "error": "Error: Matcher did not succeed in 15000ms",
+          "headingLast": {
+            "token": true,
+            "size": 60,
+            "lineHeight": "75px"
+          }
+        }
+      ]
+    },
+    {
+      "id": "homepage-zh-cn-vue-brutalist",
+      "mainError": "AssertionError: every configured viewport was attempted: expected [ \u2026(4) ] to deeply equal []",
+      "candidateError": "AssertionError: every configured viewport was attempted: expected [ \u2026(4) ] to deeply equal []",
+      "mainSamples": [
+        {
+          "width": 320,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { text: '\u6309\u94ae\u4e0e\u9009\u62e9', \u2026(1) }, \u2026(49) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 24,
+            "lineHeight": "30px"
+          }
+        },
+        {
+          "width": 320,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { text: '\u6309\u94ae\u4e0e\u9009\u62e9', \u2026(1) }, \u2026(49) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 48,
+            "lineHeight": "60px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { text: '\u6309\u94ae\u4e0e\u9009\u62e9', \u2026(1) }, \u2026(49) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 24,
+            "lineHeight": "30px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { text: '\u6309\u94ae\u4e0e\u9009\u62e9', \u2026(1) }, \u2026(49) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 48,
+            "lineHeight": "60px"
+          }
+        }
+      ],
+      "candidateSamples": [
+        {
+          "width": 320,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { text: '\u6309\u94ae\u4e0e\u9009\u62e9', \u2026(1) }, \u2026(49) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 24,
+            "lineHeight": "30px"
+          }
+        },
+        {
+          "width": 320,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { text: '\u6309\u94ae\u4e0e\u9009\u62e9', \u2026(1) }, \u2026(49) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 48,
+            "lineHeight": "60px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { text: '\u6309\u94ae\u4e0e\u9009\u62e9', \u2026(1) }, \u2026(49) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 24,
+            "lineHeight": "30px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { text: '\u6309\u94ae\u4e0e\u9009\u62e9', \u2026(1) }, \u2026(49) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 48,
+            "lineHeight": "60px"
+          }
+        }
+      ]
+    },
+    {
+      "id": "homepage-zh-cn-vue2-shadcn",
+      "mainError": "AssertionError: every configured viewport was attempted: expected [ \u2026(4) ] to deeply equal []",
+      "candidateError": "AssertionError: every configured viewport was attempted: expected [ \u2026(4) ] to deeply equal []",
+      "mainSamples": [
+        {
+          "width": 320,
+          "textPercent": 100,
+          "error": "Error: Matcher did not succeed in 15000ms",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "37.5px"
+          }
+        },
+        {
+          "width": 320,
+          "textPercent": 200,
+          "error": "Error: Matcher did not succeed in 15000ms",
+          "headingLast": {
+            "token": true,
+            "size": 60,
+            "lineHeight": "75px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 100,
+          "error": "Error: Matcher did not succeed in 15000ms",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "37.5px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 200,
+          "error": "Error: Matcher did not succeed in 15000ms",
+          "headingLast": {
+            "token": true,
+            "size": 60,
+            "lineHeight": "75px"
+          }
+        }
+      ],
+      "candidateSamples": [
+        {
+          "width": 320,
+          "textPercent": 100,
+          "error": "Error: Matcher did not succeed in 15000ms",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "37.5px"
+          }
+        },
+        {
+          "width": 320,
+          "textPercent": 200,
+          "error": "Error: Matcher did not succeed in 15000ms",
+          "headingLast": {
+            "token": true,
+            "size": 60,
+            "lineHeight": "75px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 100,
+          "error": "Error: Matcher did not succeed in 15000ms",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "37.5px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 200,
+          "error": "Error: Matcher did not succeed in 15000ms",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "37.5px"
+          }
+        }
+      ]
+    },
+    {
+      "id": "homepage-zh-cn-vue2-brutalist",
+      "mainError": "AssertionError: every configured viewport was attempted: expected [ \u2026(4) ] to deeply equal []",
+      "candidateError": "AssertionError: every configured viewport was attempted: expected [ \u2026(4) ] to deeply equal []",
+      "mainSamples": [
+        {
+          "width": 320,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { text: '\u6309\u94ae\u4e0e\u9009\u62e9', \u2026(1) }, \u2026(49) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 24,
+            "lineHeight": "30px"
+          }
+        },
+        {
+          "width": 320,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { text: '\u6309\u94ae\u4e0e\u9009\u62e9', \u2026(1) }, \u2026(49) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 48,
+            "lineHeight": "60px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { text: '\u6309\u94ae\u4e0e\u9009\u62e9', \u2026(1) }, \u2026(49) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 24,
+            "lineHeight": "30px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { text: '\u6309\u94ae\u4e0e\u9009\u62e9', \u2026(1) }, \u2026(49) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 48,
+            "lineHeight": "60px"
+          }
+        }
+      ],
+      "candidateSamples": [
+        {
+          "width": 320,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { text: '\u6309\u94ae\u4e0e\u9009\u62e9', \u2026(1) }, \u2026(49) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 24,
+            "lineHeight": "30px"
+          }
+        },
+        {
+          "width": 320,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { text: '\u6309\u94ae\u4e0e\u9009\u62e9', \u2026(1) }, \u2026(49) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 48,
+            "lineHeight": "60px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { text: '\u6309\u94ae\u4e0e\u9009\u62e9', \u2026(1) }, \u2026(49) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 24,
+            "lineHeight": "30px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { text: '\u6309\u94ae\u4e0e\u9009\u62e9', \u2026(1) }, \u2026(49) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 48,
+            "lineHeight": "60px"
+          }
+        }
+      ]
+    },
+    {
+      "id": "homepage-en-wc-shadcn",
+      "mainError": "AssertionError: every configured viewport was attempted: expected [ \u2026(4) ] to deeply equal []",
+      "candidateError": "AssertionError: every configured viewport was attempted: expected [ \u2026(4) ] to deeply equal []",
+      "mainSamples": [
+        {
+          "width": 320,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(49) ] to have a length of 37 but got 52",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "33px"
+          }
+        },
+        {
+          "width": 320,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(49) ] to have a length of 37 but got 52",
+          "headingLast": {
+            "token": true,
+            "size": 60,
+            "lineHeight": "66px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(49) ] to have a length of 37 but got 52",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "33px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(49) ] to have a length of 37 but got 52",
+          "headingLast": {
+            "token": true,
+            "size": 60,
+            "lineHeight": "66px"
+          }
+        }
+      ],
+      "candidateSamples": [
+        {
+          "width": 320,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(49) ] to have a length of 37 but got 52",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "33px"
+          }
+        },
+        {
+          "width": 320,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(49) ] to have a length of 37 but got 52",
+          "headingLast": {
+            "token": true,
+            "size": 60,
+            "lineHeight": "66px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(49) ] to have a length of 37 but got 52",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "33px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(49) ] to have a length of 37 but got 52",
+          "headingLast": {
+            "token": true,
+            "size": 60,
+            "lineHeight": "66px"
+          }
+        }
+      ]
+    },
+    {
+      "id": "homepage-en-wc-brutalist",
+      "mainError": "AssertionError: every configured viewport was attempted: expected [ \u2026(4) ] to deeply equal []",
+      "candidateError": "AssertionError: every configured viewport was attempted: expected [ \u2026(4) ] to deeply equal []",
+      "mainSamples": [
+        {
+          "width": 320,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(49) ] to have a length of 37 but got 52",
+          "headingLast": {
+            "token": true,
+            "size": 24,
+            "lineHeight": "30px"
+          }
+        },
+        {
+          "width": 320,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(49) ] to have a length of 37 but got 52",
+          "headingLast": {
+            "token": true,
+            "size": 48,
+            "lineHeight": "60px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(49) ] to have a length of 37 but got 52",
+          "headingLast": {
+            "token": true,
+            "size": 24,
+            "lineHeight": "30px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(49) ] to have a length of 37 but got 52",
+          "headingLast": {
+            "token": true,
+            "size": 48,
+            "lineHeight": "60px"
+          }
+        }
+      ],
+      "candidateSamples": [
+        {
+          "width": 320,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(49) ] to have a length of 37 but got 52",
+          "headingLast": {
+            "token": true,
+            "size": 24,
+            "lineHeight": "30px"
+          }
+        },
+        {
+          "width": 320,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(49) ] to have a length of 37 but got 52",
+          "headingLast": {
+            "token": true,
+            "size": 48,
+            "lineHeight": "60px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(49) ] to have a length of 37 but got 52",
+          "headingLast": {
+            "token": true,
+            "size": 24,
+            "lineHeight": "30px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(49) ] to have a length of 37 but got 52",
+          "headingLast": {
+            "token": true,
+            "size": 48,
+            "lineHeight": "60px"
+          }
+        }
+      ]
+    },
+    {
+      "id": "homepage-en-react-shadcn",
+      "mainError": "AssertionError: every configured viewport was attempted: expected [ \u2026(4) ] to deeply equal []",
+      "candidateError": "AssertionError: every configured viewport was attempted: expected [ \u2026(4) ] to deeply equal []",
+      "mainSamples": [
+        {
+          "width": 320,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "33px"
+          }
+        },
+        {
+          "width": 320,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 60,
+            "lineHeight": "66px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "33px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 60,
+            "lineHeight": "66px"
+          }
+        }
+      ],
+      "candidateSamples": [
+        {
+          "width": 320,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "33px"
+          }
+        },
+        {
+          "width": 320,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 60,
+            "lineHeight": "66px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "33px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 60,
+            "lineHeight": "66px"
+          }
+        }
+      ]
+    },
+    {
+      "id": "homepage-en-react-brutalist",
+      "mainError": "AssertionError: every configured viewport was attempted: expected [ \u2026(4) ] to deeply equal []",
+      "candidateError": "AssertionError: every configured viewport was attempted: expected [ \u2026(4) ] to deeply equal []",
+      "mainSamples": [
+        {
+          "width": 320,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 24,
+            "lineHeight": "30px"
+          }
+        },
+        {
+          "width": 320,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 48,
+            "lineHeight": "60px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 24,
+            "lineHeight": "30px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 48,
+            "lineHeight": "60px"
+          }
+        }
+      ],
+      "candidateSamples": [
+        {
+          "width": 320,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 24,
+            "lineHeight": "30px"
+          }
+        },
+        {
+          "width": 320,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 48,
+            "lineHeight": "60px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 24,
+            "lineHeight": "30px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 48,
+            "lineHeight": "60px"
+          }
+        }
+      ]
+    },
+    {
+      "id": "homepage-en-vue-shadcn",
+      "mainError": "AssertionError: every configured viewport was attempted: expected [ \u2026(4) ] to deeply equal []",
+      "candidateError": "AssertionError: every configured viewport was attempted: expected [ \u2026(4) ] to deeply equal []",
+      "mainSamples": [
+        {
+          "width": 320,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "33px"
+          }
+        },
+        {
+          "width": 320,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 60,
+            "lineHeight": "66px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "33px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 60,
+            "lineHeight": "66px"
+          }
+        }
+      ],
+      "candidateSamples": [
+        {
+          "width": 320,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "33px"
+          }
+        },
+        {
+          "width": 320,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 60,
+            "lineHeight": "66px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "33px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 60,
+            "lineHeight": "66px"
+          }
+        }
+      ]
+    },
+    {
+      "id": "homepage-en-vue-brutalist",
+      "mainError": "AssertionError: every configured viewport was attempted: expected [ \u2026(4) ] to deeply equal []",
+      "candidateError": "AssertionError: every configured viewport was attempted: expected [ \u2026(4) ] to deeply equal []",
+      "mainSamples": [
+        {
+          "width": 320,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 24,
+            "lineHeight": "30px"
+          }
+        },
+        {
+          "width": 320,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 48,
+            "lineHeight": "60px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 24,
+            "lineHeight": "30px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 48,
+            "lineHeight": "60px"
+          }
+        }
+      ],
+      "candidateSamples": [
+        {
+          "width": 320,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 24,
+            "lineHeight": "30px"
+          }
+        },
+        {
+          "width": 320,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 48,
+            "lineHeight": "60px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 24,
+            "lineHeight": "30px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 48,
+            "lineHeight": "60px"
+          }
+        }
+      ]
+    },
+    {
+      "id": "homepage-en-vue2-shadcn",
+      "mainError": "AssertionError: every configured viewport was attempted: expected [ \u2026(4) ] to deeply equal []",
+      "candidateError": "AssertionError: every configured viewport was attempted: expected [ \u2026(4) ] to deeply equal []",
+      "mainSamples": [
+        {
+          "width": 320,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "33px"
+          }
+        },
+        {
+          "width": 320,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 60,
+            "lineHeight": "66px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "33px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 60,
+            "lineHeight": "66px"
+          }
+        }
+      ],
+      "candidateSamples": [
+        {
+          "width": 320,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "33px"
+          }
+        },
+        {
+          "width": 320,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 60,
+            "lineHeight": "66px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 30,
+            "lineHeight": "33px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 60,
+            "lineHeight": "66px"
+          }
+        }
+      ]
+    },
+    {
+      "id": "homepage-en-vue2-brutalist",
+      "mainError": "AssertionError: every configured viewport was attempted: expected [ \u2026(4) ] to deeply equal []",
+      "candidateError": "AssertionError: every configured viewport was attempted: expected [ \u2026(4) ] to deeply equal []",
+      "mainSamples": [
+        {
+          "width": 320,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 24,
+            "lineHeight": "30px"
+          }
+        },
+        {
+          "width": 320,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 48,
+            "lineHeight": "60px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 24,
+            "lineHeight": "30px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 48,
+            "lineHeight": "60px"
+          }
+        }
+      ],
+      "candidateSamples": [
+        {
+          "width": 320,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 24,
+            "lineHeight": "30px"
+          }
+        },
+        {
+          "width": 320,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 48,
+            "lineHeight": "60px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 100,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 24,
+            "lineHeight": "30px"
+          }
+        },
+        {
+          "width": 390,
+          "textPercent": 200,
+          "error": "AssertionError: expected [ { \u2026(2) }, { \u2026(2) }, { \u2026(2) }, \u2026(47) ] to have a length of 35 but got 50",
+          "headingLast": {
+            "token": true,
+            "size": 48,
+            "lineHeight": "60px"
+          }
+        }
+      ]
+    },
+    {
+      "id": "docs-shadcn",
+      "mainError": "AssertionError: expected '5' to be '4' // Object.is equality",
+      "candidateError": "AssertionError: expected '4' to be '1' // Object.is equality"
+    },
+    {
+      "id": "reading-fallback-homepage",
+      "mainError": "AssertionError: expected '37.5px' to be '33px' // Object.is equality",
+      "candidateError": "AssertionError: expected '37.5px' to be '33px' // Object.is equality"
+    },
+    {
+      "id": "overview-shadcn-wc-en-enhanced-light",
+      "mainError": "TimeoutError: page.waitForFunction: Timeout 20000ms exceeded.",
+      "candidateError": "TimeoutError: page.waitForFunction: Timeout 20000ms exceeded."
+    }
+  ]
+}
