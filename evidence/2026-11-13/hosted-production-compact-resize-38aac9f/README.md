@@ -1,0 +1,7 @@
+# Hosted and production preview on 38aac9f
+
+The original three hosted shards ran from the signed carrier `3dadda28` with exact product `38aac9f` and the unchanged four-file diagnostic overlay. All artifact digests, ZIPs and original selections verified. All three containing jobs failed overall. Both named Contents/mobile cases, Dialog 8/8 and Sidebar 7/7 passed. Typography reached 33/34 with the old Overview case retained. Both S4 locales failed their original cases, with 18 inherited owned-decoration errors each and zero console errors.
+
+On Chrome 156 the original Brutalist verdict rejected at +1000.925ms. The page wrote family at +895.653–896.971ms. The third original query waited 1195.914ms after browser forwarding and returned Brutalist to Node at +1432.986ms. The trace completed without reported loss. The sampled rectangle is the retained Header root read in the exact Vite reconstruction. Weighted stack samples are not an isolated latency estimate.
+
+The exact static output step built 673 pages and the bundle checker rejected the same 53 diagnostics as exact main. The repository Astro preview served the real hashed static output and all 14 original selected Chromium cases passed, including both named Contents/mobile cases, both compact 200%/RTL cases, both reconnects and Dialog 8/8. The local original family poll passed at 468.233ms and the narrow WC shadow check passed. Both supplied images are actual original-case captures and were inspected. All CodeExamples, original assertions and deadlines remain.

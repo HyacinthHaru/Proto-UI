@@ -1,0 +1,120 @@
+{
+  "source": {
+    "head": "38aac9f6a5927ddd1880a52809f07e202a8ef1f4",
+    "distHashes": {
+      "zh-cn/index.html": "804c3b96eded88734862fd22ae72d3ff919dc7e19391d15cdfa2d302ca10beed",
+      "zh-cn/ui-libraries/shadcn/button/index.html": "2d384022047a26aa9eed2a02cff8489a704ba1b52f9a3fbbd9b3bc414b59e3cc",
+      "zh-cn/ui-libraries/brutalist/components/button/index.html": "ed637f69d945528280b714d0ce53dd8fa2c0b833f957f3768d5253b2901c4999",
+      "en/ui-libraries/shadcn/dialog/index.html": "354bfbcff37248a3b4eaddcdc45ba638806125112dc83a5676b5b418dc1a6a60",
+      "proto-ui-bundle-graph.json": "35f8a55a0bf5a631899e95e0c42102dd86c818450689057121286e8b46e79a15"
+    },
+    "selector": "uses real family Popover Triggers|uses the same mobile shell|retains (shadcn|brutalist) preference owners|compact (shadcn|brutalist)|live available region",
+    "exitCode": 0,
+    "server": "Repository astro preview on the exact clean 38aa static output"
+  },
+  "productionGate": {
+    "mainPages": 673,
+    "candidatePages": 673,
+    "mainExit": 1,
+    "candidateExit": 1,
+    "mainCount": 53,
+    "candidateCount": 53,
+    "added": {},
+    "removed": {}
+  },
+  "cases": [
+    {
+      "file": "dialog-available-space.browser.test.ts",
+      "cases": [
+        {
+          "title": "shadcn/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "shadcn/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "shadcn/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "shadcn/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "brutalist/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "brutalist/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "brutalist/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        },
+        {
+          "title": "brutalist/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "file": "homepage-dogfood.browser.test.ts",
+      "cases": [
+        {
+          "title": "switches every registered homepage group through real adapters, preserving native anchors and theme",
+          "status": "skipped"
+        },
+        {
+          "title": "keeps native navigation available without JavaScript and does not overflow mobile",
+          "status": "skipped"
+        },
+        {
+          "title": "retains saved React across cold library routes and exercises actual family chrome",
+          "status": "skipped"
+        },
+        {
+          "title": "reveals current articles through native shadow slots and preserves viewport handback",
+          "status": "skipped"
+        },
+        {
+          "title": "uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence",
+          "status": "passed"
+        },
+        {
+          "title": "uses the same mobile shell on documentation with independent global navigation and contents",
+          "status": "passed"
+        },
+        {
+          "title": "compact shadcn preferences stay usable at 200% text, RTL and breakpoint moves",
+          "status": "passed"
+        },
+        {
+          "title": "compact brutalist preferences stay usable at 200% text, RTL and breakpoint moves",
+          "status": "passed"
+        },
+        {
+          "title": "retains shadcn preference owners and portals through real breakpoint reconnects",
+          "status": "passed"
+        },
+        {
+          "title": "retains brutalist preference owners and portals through real breakpoint reconnects",
+          "status": "passed"
+        }
+      ]
+    }
+  ],
+  "familyPollMs": 468.233,
+  "images": [
+    {
+      "file": "brutalist-wc-390-settled.png",
+      "sha256": "9c6f2261f8fece53504ff4ab1cadb1338ef9a80698f8f06b0658266da8585672"
+    },
+    {
+      "file": "brutalist-wc-runtime-narrow-focus-ring.png",
+      "sha256": "32fa2bd5f6f87ef2e575e31b01332f71f7855a8361d73246265ecce5e5cb5a41"
+    }
+  ]
+}
