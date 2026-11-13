@@ -1,0 +1,9 @@
+# Header measurement follows the active Button
+
+While an open Header stages a replacement, the earlier code reads the retained Button's rectangle once inside the staged binding. The paired geometry control records zero reads against either Button during staging on `6eddf384`. The staged Button receives the live ARIA relationship and expanded state. The retained panel stays at 55px, and publication reads the activated Button once to place the panel at 77px top and 44px left. This DOM harness injects geometry. The exact browser checks use actual placement and retained owners.
+
+The exact clean product passed 256 focused tests, all six selected Homepage cases, all eight Dialog cases and the first Copy case with held Header preparation. Contents exercises eight switches and 24 ordered returns, including native tree handback after leave. Both compact 200%/RTL and both breakpoint-reconnect cases pass. The original local Brutalist family poll passed at 560.228ms, and the 320×300 WC Trigger's original focus shadow and clipping checks passed. Workspace and Astro types passed with 0 errors and warnings across 1,215 Astro files, with 30 hints. Coverage still reports 1,611 issues against 1,614 on matching main, with no new diagnostic strings.
+
+The captures show the narrow focused Runtime Trigger, the actual desktop Runtime list and Header panel after reconnect, and the Brutalist React Dialog with reachable Close action at 320px. The staged-binding change retains active Button geometry, including the rect read sampled during the previous hosted publication. Full hosted acceptance is still open.
+
+[Previous hosted family failure and exact Typography verification](https://github.com/HyacinthHaru/Proto-UI/tree/2f2b8ff9999e98ae4294d68d17090f41697fd3e4/evidence/2026-11-13/typography-retirement-5c0815e)
