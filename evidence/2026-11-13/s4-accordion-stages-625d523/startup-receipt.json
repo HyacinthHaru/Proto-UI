@@ -1,0 +1,156 @@
+{
+  "product": "625d523ea224c79e85e2b439b58a0f1bd4025d99",
+  "dirty": true,
+  "patchSha256": "7aca1c94be1387958430a06e4895d8a36a88c71ae6703119eb3d93e13a93c2f0",
+  "predicateExpressionSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+  "startupPassed": false,
+  "originalTestOutcome": "page.waitForFunction timeout 60000ms",
+  "enFiltered": true,
+  "locale": "zh-cn",
+  "capturedStages": {
+    "vue": [
+      {
+        "phase": "demo-begin",
+        "runtime": "vue",
+        "pageMs": 8864.699999928474,
+        "hostChildren": 0
+      },
+      {
+        "phase": "demo-return",
+        "runtime": "vue",
+        "pageMs": 11266,
+        "hostChildren": 0
+      },
+      {
+        "phase": "prototype-begin",
+        "runtime": "vue",
+        "pageMs": 11266.199999928474,
+        "hostChildren": 0
+      },
+      {
+        "phase": "prototype-return",
+        "runtime": "vue",
+        "pageMs": 22941.699999928474,
+        "hostChildren": 0
+      },
+      {
+        "phase": "render-begin",
+        "runtime": "vue",
+        "pageMs": 22941.699999928474,
+        "hostChildren": 0
+      }
+    ],
+    "wc": [
+      {
+        "phase": "demo-begin",
+        "runtime": "wc",
+        "pageMs": 8890.199999928474,
+        "hostChildren": 0
+      },
+      {
+        "phase": "demo-return",
+        "runtime": "wc",
+        "pageMs": 11283.299999952316,
+        "hostChildren": 0
+      },
+      {
+        "phase": "prototype-begin",
+        "runtime": "wc",
+        "pageMs": 11283.399999976158,
+        "hostChildren": 0
+      },
+      {
+        "phase": "prototype-return",
+        "runtime": "wc",
+        "pageMs": 22942.600000023842,
+        "hostChildren": 0
+      },
+      {
+        "phase": "render-begin",
+        "runtime": "wc",
+        "pageMs": 22942.600000023842,
+        "hostChildren": 0
+      },
+      {
+        "phase": "render-return",
+        "runtime": "wc",
+        "pageMs": 23340.199999928474,
+        "hostChildren": 1
+      }
+    ],
+    "react": [
+      {
+        "phase": "demo-begin",
+        "runtime": "react",
+        "pageMs": 9362,
+        "hostChildren": 0
+      },
+      {
+        "phase": "demo-return",
+        "runtime": "react",
+        "pageMs": 11274.399999976158,
+        "hostChildren": 0
+      },
+      {
+        "phase": "prototype-begin",
+        "runtime": "react",
+        "pageMs": 11274.5,
+        "hostChildren": 0
+      },
+      {
+        "phase": "prototype-return",
+        "runtime": "react",
+        "pageMs": 22942.100000023842,
+        "hostChildren": 0
+      },
+      {
+        "phase": "render-begin",
+        "runtime": "react",
+        "pageMs": 22942.100000023842,
+        "hostChildren": 0
+      },
+      {
+        "phase": "render-return",
+        "runtime": "react",
+        "pageMs": 90235.39999997616,
+        "hostChildren": 1
+      }
+    ],
+    "vue2": [
+      {
+        "phase": "demo-begin",
+        "runtime": "vue2",
+        "pageMs": 9591.5,
+        "hostChildren": 0
+      },
+      {
+        "phase": "demo-return",
+        "runtime": "vue2",
+        "pageMs": 11273.399999976158,
+        "hostChildren": 0
+      },
+      {
+        "phase": "prototype-begin",
+        "runtime": "vue2",
+        "pageMs": 11273.5,
+        "hostChildren": 0
+      },
+      {
+        "phase": "prototype-return",
+        "runtime": "vue2",
+        "pageMs": 22942.399999976158,
+        "hostChildren": 0
+      },
+      {
+        "phase": "render-begin",
+        "runtime": "vue2",
+        "pageMs": 22942.399999976158,
+        "hostChildren": 0
+      }
+    ]
+  },
+  "collectionOutcome": "budget-expired",
+  "nodeStartupWaitMs": 90971.869,
+  "nodeReactRenderEventAfterWaitIssuedMs": 82699.692,
+  "nodeReactRenderEventBeforeRejectionMs": 8272.178
+}
