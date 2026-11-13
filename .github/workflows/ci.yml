@@ -17,6 +17,9 @@ jobs:
           - shard: 1/8
             slot: browser-1-of-8
             trace: '1'
+          - shard: 2/8
+            slot: browser-2-of-8
+            trace: '0'
           - shard: 3/8
             slot: browser-3-of-8
             trace: '0'
@@ -61,7 +64,7 @@ jobs:
           export PROTO_UI_MATERIAL_EVIDENCE_DIR="$PROTO_UI_RUNTIME_EVIDENCE_DIR/material"
           mkdir -p "$PROTO_UI_RUNTIME_EVIDENCE_DIR"
           git rev-parse HEAD | tee "$PROTO_UI_RUNTIME_EVIDENCE_DIR/source-sha.txt"
-          printf '%s\n' '4bcf4301d9e1054e79de2b3a40e6133bd1cfd11d' > "$PROTO_UI_RUNTIME_EVIDENCE_DIR/product-parent.txt"
+          printf '%s\n' '155da9dfd7f2e46a7f5b5c7c06eb528e6afe4f2a' > "$PROTO_UI_RUNTIME_EVIDENCE_DIR/product-parent.txt"
           node --version | tee "$PROTO_UI_RUNTIME_EVIDENCE_DIR/node-version.txt"
           "$CHROME_PATH" --version | tee "$PROTO_UI_RUNTIME_EVIDENCE_DIR/chrome-version.txt"
           # Each matrix job owns an independent checkout, server and Astro cache.
