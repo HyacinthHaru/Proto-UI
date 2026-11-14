@@ -938,6 +938,25 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           : route.abort()
       );
       const page = await context.newPage();
+      const observeReact = process.env.PROTO_UI_CONTENTS_REACT_PROBE === '1' && family === 'shadcn';
+      const sdk = observeReact
+        ? installDocsCallTimingObserver(page, {
+            sdkRoot: path.dirname(
+              createRequire(import.meta.url).resolve('playwright-core/package.json')
+            ),
+            selector: '[data-site-contents-command]',
+            attribute: 'data-contents-runtime',
+          })
+        : null;
+      let reactTrace: ReturnType<typeof createQueryDispatchTrace> | undefined;
+      let reactRecord: Record<string, unknown> | undefined;
+      const saveReact = async () => {
+        if (!reactRecord) return;
+        await writeFile(
+          path.join(directory, 'shadcn-react-original-query.json'),
+          JSON.stringify({ ...reactRecord, sdk: sdk?.snapshot() }, null, 2)
+        );
+      };
       const pageErrors: string[] = [];
       page.on('pageerror', (error) => pageErrors.push(error.message));
       page.on('console', (message) => {
@@ -971,6 +990,7 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           family === 'shadcn'
             ? '/zh-cn/ui-libraries/shadcn/button/'
             : '/zh-cn/ui-libraries/brutalist/components/button/';
+        if (sdk) await page.addInitScript(sdk.targetObserver, sdk.initOptions);
         await page.goto(`${baseUrl}${route}`, { waitUntil: 'networkidle' });
         const root = page.locator('[data-site-contents-command]');
         const command = root.locator(
@@ -993,6 +1013,41 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           const select = page.locator('[data-adapter-select] [role="combobox"]');
           await select.click();
           const popup = await select.getAttribute('aria-controls');
+          const tracingReact = observeReact && runtime === 'react';
+          if (tracingReact) {
+            reactTrace = createQueryDispatchTrace(
+              page,
+              path.join(directory, 'shadcn-react-dispatch-trace'),
+              {
+                contentsStaging: true,
+              }
+            );
+            await reactTrace.prepare();
+            await page.evaluate(() => {
+              const root = document.querySelector<HTMLElement>('[data-site-contents-command]')!;
+              const live = root.dataset;
+              const generation = () => live.contentsGeneration ?? null;
+              const data = new Proxy(live, {
+                set(target, key, value) {
+                  const result = Reflect.set(target, key, value, target);
+                  if (key === 'contentsRuntime' || key === 'contentsGeneration') {
+                    performance.mark('pui-contents:write:' + String(key) + ':' + String(value), {
+                      detail: { generation: generation() },
+                    });
+                  }
+                  return result;
+                },
+              });
+              Object.defineProperty(root, 'dataset', { configurable: true, get: () => data });
+              window.addEventListener(
+                'click',
+                (event) => {
+                  if (event.isTrusted) performance.mark('pui-contents:trusted-click');
+                },
+                { capture: true, once: true }
+              );
+            });
+          }
           const transitionStartedAt = Date.now();
           await page
             .locator(`[id=${JSON.stringify(popup)}]`)
@@ -1000,12 +1055,73 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
             .click();
           const clickedAt = Date.now();
           let originalError: unknown;
+          const calls: Array<{
+            id: number;
+            startedMs: number;
+            returnedMs?: number;
+            value?: string | null;
+            error?: string;
+          }> = [];
+          const requests: Promise<string | null>[] = [];
+          const nodeTimeOrigin = performance.timeOrigin;
+          const pollStartedMs = performance.now();
           try {
-            await expect.poll(() => root.getAttribute('data-contents-runtime')).toBe(runtime);
+            await expect
+              .poll(() => {
+                if (!tracingReact || !sdk) return root.getAttribute('data-contents-runtime');
+                const call: (typeof calls)[number] = {
+                  id: calls.length + 1,
+                  startedMs: performance.now(),
+                };
+                calls.push(call);
+                const request = sdk.runOriginalQuery(call.id, () =>
+                  root.getAttribute('data-contents-runtime')
+                );
+                requests.push(request);
+                void request.then(
+                  (value) => {
+                    call.returnedMs = performance.now();
+                    call.value = value;
+                  },
+                  (error) => {
+                    call.returnedMs = performance.now();
+                    call.error = String(error);
+                  }
+                );
+                return request;
+              })
+              .toBe(runtime);
           } catch (error) {
             originalError = error;
           }
+          const pollVerdictMs = performance.now();
           const originalCheckAt = Date.now();
+          if (tracingReact) {
+            sdk?.freezeVerdict(!originalError);
+            reactRecord = {
+              source,
+              family,
+              runtime,
+              clickedAt,
+              originalCheckAt,
+              originalDeadlineMs: 1000,
+              nodeTimeOrigin,
+              pollStartedMs,
+              pollVerdictMs,
+              originalError: originalError ? String(originalError) : null,
+              callsAtVerdict: calls.map((row) => ({ ...row })),
+              calls,
+            };
+            reactTrace?.markVerdict({
+              source,
+              verdict: { passed: !originalError, clickedAt, originalCheckAt },
+            });
+            await saveReact();
+            // The unchanged poll has already ruled. Observe the pending original reads.
+            await settleFamilyQueryBatch(requests, 1000);
+            await saveReact();
+            if (originalError) throw originalError;
+          }
           const readTransition = () =>
             page.evaluate((since) => {
               const contents = document.querySelector<HTMLElement>('[data-site-contents-command]');
@@ -1444,7 +1560,20 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
         }
         throw originalError;
       } finally {
-        await context.close();
+        reactTrace?.beforeContextClose();
+        let contextClosed = false;
+        try {
+          await context.close();
+          contextClosed = true;
+        } finally {
+          if (sdk) {
+            sdk.disposeAfterContextClosed(contextClosed);
+            await saveReact().catch((error) => console.error('[Contents React receipt]', error));
+          }
+          await reactTrace
+            ?.finish(contextClosed, reactRecord)
+            .catch((error) => console.error('[Contents React trace]', error));
+        }
       }
     }
   }, 180_000);
