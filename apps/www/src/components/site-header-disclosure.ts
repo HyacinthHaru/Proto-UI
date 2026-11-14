@@ -222,8 +222,7 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
   const sync = () => {
     const focused = document.activeElement as HTMLElement | null;
     const focusInPreferences = !!focused && !!preferences?.contains(focused);
-    const isCompact = !!compact?.matches;
-    const compactLayout = enhanced && isCompact;
+    const compactLayout = enhanced && !!compact?.matches;
     // A breakpoint cannot hide the settings currently being used, including a
     // portaled Select. Preserve that interaction by revealing its destination.
     if (
@@ -235,13 +234,10 @@ export function initSiteHeaderDisclosure(root: HTMLElement): SiteHeaderDisclosur
     const expanded = String(open);
     if (root.dataset.siteMenuOpen !== expanded) root.dataset.siteMenuOpen = expanded;
     root.toggleAttribute('data-site-menu-ready', enhanced);
-    const hidePanel = enhanced && !open;
-    const hideNavigation = !isCompact || hidePanel;
-    if (desktopNavigation && desktopNavigation.hidden !== isCompact)
-      desktopNavigation.hidden = isCompact;
-    if (navigation && navigation.hidden !== hideNavigation) navigation.hidden = hideNavigation;
-    if (panel && panel.hidden !== hidePanel) panel.hidden = hidePanel;
-    if (settings && settings.hidden !== hidePanel) settings.hidden = hidePanel;
+    if (desktopNavigation) desktopNavigation.hidden = !!compact?.matches;
+    if (navigation) navigation.hidden = !compact?.matches || (enhanced && !open);
+    if (panel) panel.hidden = enhanced && !open;
+    if (settings) settings.hidden = enhanced && !open;
     if (enhanced) movePreferences(compactLayout);
     if (
       focusInPreferences &&

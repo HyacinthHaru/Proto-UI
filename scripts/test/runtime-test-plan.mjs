@@ -354,6 +354,35 @@ export function selectBrowserShard(shard) {
     throw new Error(
       `Expected browser shard 1/${BROWSER_SHARD_COUNT} through ${BROWSER_SHARD_COUNT}/${BROWSER_SHARD_COUNT}`
     );
+  // Diagnostic carrier replays the original 1/8 and 3/8 workload after inventory changes.
+  if (index === 1) return [
+    'apps/workspace/test/lifecycle.browser.test.ts',
+    'apps/www/src/content/docs/zh-cn/contrast-probe.browser.test.ts',
+    'apps/www/src/content/docs/zh-cn/demo-bootstrap-state-controls.browser.test.ts',
+    'apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts',
+    'apps/www/src/content/docs/zh-cn/demo-prototype-style-closure.browser.test.ts',
+    'apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts',
+    'apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts',
+    'apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts',
+    'apps/www/src/content/docs/zh-cn/runtime-preview-surface.browser.test.ts',
+    'apps/www/src/content/docs/zh-cn/site-sidebar-disclosure.browser.test.ts',
+    'apps/www/test/message-composition.browser.test.ts',
+    'packages/adapters/vue/test/focus-request-readiness.browser.test.ts',
+  ];
+  if (index === 3) return [
+    'apps/www/src/content/docs/zh-cn/base-accordion-layout-parity.browser.test.ts',
+    'apps/www/src/content/docs/zh-cn/demo-accordion-family.browser.test.ts',
+    'apps/www/src/content/docs/zh-cn/demo-brutalist-checkbox.browser.test.ts',
+    'apps/www/src/content/docs/zh-cn/demo-field-family.browser.test.ts',
+    'apps/www/src/content/docs/zh-cn/demo-select-draft-projections.browser.test.ts',
+    'apps/www/src/content/docs/zh-cn/demo-shadcn-switch-compositions.browser.test.ts',
+    'apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts',
+    'apps/www/src/content/docs/zh-cn/overlay-scrollbar-geometry.browser.test.ts',
+    'apps/www/src/content/docs/zh-cn/scroll-chrome-display.browser.test.ts',
+    'apps/www/src/content/docs/zh-cn/table-react19.browser.test.ts',
+    'apps/www/test/radio-group-entry.browser.test.ts',
+    'packages/adapters/web-component/test/shadow-closeout.browser.test.ts',
+  ];
   return browserShards()[index - 1];
 }
 
