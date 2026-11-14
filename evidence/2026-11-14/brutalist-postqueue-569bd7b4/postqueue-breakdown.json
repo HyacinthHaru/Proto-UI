@@ -1,0 +1,184 @@
+{
+  "run": 43469554292,
+  "scope": "Same traced command and renderer thread. Trace event unions overlap across categories.",
+  "observations": [
+    {
+      "arm": "baseline",
+      "source": "73d2eb37bc1fa0f142f804dc386197353845e7c8",
+      "trace": "2107ecc2fdcd24fcc0e67270d5a8c1c1704928b32ca0e75ceb60954e11febdf3",
+      "cdpId": 14669,
+      "familyWrite": [[898.207, 902.859]],
+      "rendererDispatch": [1455.345, 1459.997],
+      "commandForward": [222.974, 227.626],
+      "dispatchDurationMs": 1.512,
+      "getterPageClockDurationMs": 0.0,
+      "principalTaskTotalMs": 747.946,
+      "principalTaskStartRelativeToWriteMs": -191.088,
+      "totalWriteToDispatchMs": 557.138,
+      "windows": [
+        {
+          "name": "remaining animation frame callback",
+          "fromWriteMs": 0.0,
+          "toWriteMs": 532.985,
+          "durationMs": 532.985,
+          "traced": [
+            {
+              "name": "FunctionCall",
+              "count": 1671,
+              "unionMs": 425.818
+            },
+            {
+              "name": "UpdateLayoutTree",
+              "count": 5,
+              "unionMs": 107.834
+            },
+            {
+              "name": "Layout",
+              "count": 4,
+              "unionMs": 17.142
+            },
+            {
+              "name": "MinorGC",
+              "count": 2,
+              "unionMs": 6.246
+            },
+            {
+              "name": "FireAnimationFrame",
+              "count": 1,
+              "unionMs": 532.985
+            }
+          ]
+        },
+        {
+          "name": "after animation frame to task end",
+          "fromWriteMs": 532.985,
+          "toWriteMs": 556.858,
+          "durationMs": 23.873,
+          "traced": [
+            {
+              "name": "FunctionCall",
+              "count": 344,
+              "unionMs": 18.989
+            },
+            {
+              "name": "UpdateLayoutTree",
+              "count": 2,
+              "unionMs": 0.435
+            },
+            {
+              "name": "PrePaint",
+              "count": 4,
+              "unionMs": 1.101
+            },
+            {
+              "name": "Paint",
+              "count": 2,
+              "unionMs": 1.298
+            },
+            {
+              "name": "Commit",
+              "count": 1,
+              "unionMs": 0.108
+            }
+          ]
+        },
+        {
+          "name": "task end to CDP dispatch",
+          "fromWriteMs": 556.858,
+          "toWriteMs": 557.138,
+          "durationMs": 0.28,
+          "traced": []
+        }
+      ]
+    },
+    {
+      "arm": "candidate",
+      "source": "deb3e87418571192075b5ff5796e12ce6579065a",
+      "trace": "b122e44aad50fef31042adc7933b04c0e9e0b929712ce16ab0b03cfc79769e51",
+      "cdpId": 14621,
+      "familyWrite": [[856.781, 857.688]],
+      "rendererDispatch": [1380.507, 1381.414],
+      "commandForward": [228.343, 229.25],
+      "dispatchDurationMs": 1.657,
+      "getterPageClockDurationMs": 0.0,
+      "principalTaskTotalMs": 673.398,
+      "principalTaskStartRelativeToWriteMs": -149.95,
+      "totalWriteToDispatchMs": 523.726,
+      "windows": [
+        {
+          "name": "remaining animation frame callback",
+          "fromWriteMs": 0.0,
+          "toWriteMs": 511.835,
+          "durationMs": 511.835,
+          "traced": [
+            {
+              "name": "FunctionCall",
+              "count": 1491,
+              "unionMs": 402.168
+            },
+            {
+              "name": "UpdateLayoutTree",
+              "count": 5,
+              "unionMs": 109.399
+            },
+            {
+              "name": "Layout",
+              "count": 4,
+              "unionMs": 19.309
+            },
+            {
+              "name": "MinorGC",
+              "count": 2,
+              "unionMs": 9.74
+            },
+            {
+              "name": "FireAnimationFrame",
+              "count": 1,
+              "unionMs": 511.835
+            }
+          ]
+        },
+        {
+          "name": "after animation frame to task end",
+          "fromWriteMs": 511.835,
+          "toWriteMs": 523.448,
+          "durationMs": 11.613,
+          "traced": [
+            {
+              "name": "FunctionCall",
+              "count": 18,
+              "unionMs": 8.108
+            },
+            {
+              "name": "UpdateLayoutTree",
+              "count": 2,
+              "unionMs": 0.429
+            },
+            {
+              "name": "PrePaint",
+              "count": 2,
+              "unionMs": 1.113
+            },
+            {
+              "name": "Paint",
+              "count": 2,
+              "unionMs": 1.131
+            },
+            {
+              "name": "Commit",
+              "count": 1,
+              "unionMs": 0.113
+            }
+          ]
+        },
+        {
+          "name": "task end to CDP dispatch",
+          "fromWriteMs": 523.448,
+          "toWriteMs": 523.726,
+          "durationMs": 0.278,
+          "traced": []
+        }
+      ]
+    }
+  ]
+}

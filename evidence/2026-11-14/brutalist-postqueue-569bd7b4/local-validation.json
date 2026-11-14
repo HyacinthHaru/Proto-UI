@@ -1,0 +1,78 @@
+{
+  "head": "569bd7b410c5b41b73c37504030574f040181dd4",
+  "baseline": "4bcaa8f7fd04329826b72803448f04590372ccf6",
+  "main": "7d30a788f4bd79189cbe2dd499ded9ff22ba91e1",
+  "tree": "b70b9f506946e3d10fec8e82900bc4cc29ee3835",
+  "changePaths": [
+    "apps/www/src/components/site-header-disclosure.test.ts",
+    "apps/www/src/components/site-header-disclosure.ts"
+  ],
+  "codeExamples": 9,
+  "docsSourceSha256": "837e4b19f374198255b670c2098a3b65b3713b1fbc8afd2d688ff6cb3c8d3b14",
+  "localFocused": {
+    "redPass": 49,
+    "redFail": 1,
+    "greenPass": 102,
+    "greenFail": 0,
+    "redLogSha256": "da7c516d09d5eaaf02be30fea47f55350ed5c944677066e4a11ade2fab93aade",
+    "greenLogSha256": "f0cab00c2125cf0d3e32ef8ae0c4328530d9e5231a22be1c49568fcb13f3517e"
+  },
+  "native": {
+    "passed": 15,
+    "failed": 0,
+    "unselected": 9,
+    "chrome": "156.0.8078.79 macOS arm64",
+    "dialog": 8,
+    "dialogObservations": 196,
+    "orderedSidebarReturns": 24,
+    "contentsTransitions": [
+      {
+        "family": "brutalist",
+        "runtime": "react",
+        "atMs": 236
+      },
+      {
+        "family": "brutalist",
+        "runtime": "vue",
+        "atMs": 196
+      },
+      {
+        "family": "brutalist",
+        "runtime": "vue2",
+        "atMs": 186
+      },
+      {
+        "family": "brutalist",
+        "runtime": "wc",
+        "atMs": 1
+      },
+      {
+        "family": "shadcn",
+        "runtime": "react",
+        "atMs": 338
+      },
+      {
+        "family": "shadcn",
+        "runtime": "vue",
+        "atMs": 317
+      },
+      {
+        "family": "shadcn",
+        "runtime": "vue2",
+        "atMs": 285
+      },
+      {
+        "family": "shadcn",
+        "runtime": "wc",
+        "atMs": 14
+      }
+    ],
+    "logSha256": "8828f5a620e7314982e8c833d145bb7a742d13df48686f48c5ecee2e1be5df7d",
+    "reportSha256": "a6799ac9ab691e828b45a923345003735652a8d797b8843f1f427065864d76d5",
+    "images": {
+      "wc-header-ring.png": "32fa2bd5f6f87ef2e575e31b01332f71f7855a8361d73246265ecce5e5cb5a41",
+      "react-contents.png": "0b7eaa028ec5f8ae659176d48a90ad512f53ebce99f64ac0e873a00b9687f49a",
+      "wc-dialog.png": "9c6f2261f8fece53504ff4ab1cadb1338ef9a80698f8f06b0658266da8585672"
+    }
+  }
+}
