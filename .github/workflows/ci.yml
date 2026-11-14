@@ -1,5 +1,5 @@
 name: CI
-run-name: Brutalist pre-write on the original shards
+run-name: Contents React on the original shards
 
 on: workflow_dispatch
 permissions:
@@ -20,14 +20,15 @@ jobs:
             slot: browser-3-of-8
             trace: '0'
     env:
-      BASELINE_CARRIER: 73d2eb37bc1fa0f142f804dc386197353845e7c8
-      CANDIDATE_CARRIER: deb3e87418571192075b5ff5796e12ce6579065a
+      BASELINE_CARRIER: abad0c57e7a3571831dcb7b96c433848d13730df
+      CANDIDATE_CARRIER: d322562d56d6609bc60afffc350f11e3b3675df0
       CHROME_VERSION: 157.0.8103.50
       CHROME_ZIP_SHA256: d17167bc092eb495a3b768c7467f27e35f625aa03834233a1663af67dcb668c9
       PROTO_UI_RUNTIME_PHASE: browser
       PROTO_UI_RUNTIME_SHARD: ${{ matrix.shard }}
       PROTO_UI_RUNTIME_SLOT: ${{ matrix.slot }}
       PROTO_UI_FAMILY_DISPATCH_PROBE: ${{ matrix.trace }}
+      PROTO_UI_CONTENTS_REACT_PROBE: ${{ matrix.trace }}
     steps:
       - uses: actions/checkout@v4
         with:
