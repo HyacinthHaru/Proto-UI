@@ -1,0 +1,81 @@
+{
+  "head": "01b9398ab590d198aa69ab26c1b21cc90210a92d",
+  "baseline": "7271fab52ae59fe6e8dd1fc1d879335b6d79e778",
+  "main": "7d30a788f4bd79189cbe2dd499ded9ff22ba91e1",
+  "tree": "2f8b68d85b84e5f9ed4f1a2f7617f5d0300408f9",
+  "changePaths": [
+    "packages/modules/anatomy/src/impl.ts",
+    "packages/modules/anatomy/test/domain-scope-query.test.ts"
+  ],
+  "codeExamples": 9,
+  "docsSourceSha256": "837e4b19f374198255b670c2098a3b65b3713b1fbc8afd2d688ff6cb3c8d3b14",
+  "localFocused": {
+    "redPass": 1,
+    "redFail": 1,
+    "greenPass": 52,
+    "greenFail": 0,
+    "oldParentReads": 6,
+    "newParentReads": 1,
+    "initialInvalidMatcherLogSha256": "86c6065e45b2f4907337abc14a07e80cac6af36462fc311f666339c51ecb08f3",
+    "redLogSha256": "f5000c794d6a1fbedbd67dd25158bf5644e4e131f9af064f32d982b4fa6e08a5",
+    "greenLogSha256": "1d0927946bdbbb8ce52e90bdd6adf17496a4d2760657856695f89808fdd4cb8b"
+  },
+  "native": {
+    "passed": 15,
+    "failed": 0,
+    "unselected": 9,
+    "chrome": "156.0.8078.79 macOS arm64",
+    "dialog": 8,
+    "dialogObservations": 196,
+    "orderedSidebarReturns": 24,
+    "contentsTransitions": [
+      {
+        "family": "brutalist",
+        "runtime": "react",
+        "atMs": 231
+      },
+      {
+        "family": "brutalist",
+        "runtime": "vue",
+        "atMs": 233
+      },
+      {
+        "family": "brutalist",
+        "runtime": "vue2",
+        "atMs": 174
+      },
+      {
+        "family": "brutalist",
+        "runtime": "wc",
+        "atMs": 1
+      },
+      {
+        "family": "shadcn",
+        "runtime": "react",
+        "atMs": 285
+      },
+      {
+        "family": "shadcn",
+        "runtime": "vue",
+        "atMs": 267
+      },
+      {
+        "family": "shadcn",
+        "runtime": "vue2",
+        "atMs": 287
+      },
+      {
+        "family": "shadcn",
+        "runtime": "wc",
+        "atMs": 21
+      }
+    ],
+    "logSha256": "862bf85ebf0738fbe1ee17be5d52de8ce671588c4babc375ed76b33ef681df31",
+    "reportSha256": "5ac64e8a94731e5f1b18ee04e839033c578888f75bee0981057d8a097df1adf9",
+    "images": {
+      "wc-header-ring.png": "97efcbfaf2916222be79ed3e9ec2632947c2cb82156a3a5dbb3c5d899cb99d7b",
+      "react-contents.png": "e5f2c12edfdcebd73d986049729514c0fc8cc8e13922135a604e150e58448594",
+      "wc-dialog.png": "9c6f2261f8fece53504ff4ab1cadb1338ef9a80698f8f06b0658266da8585672"
+    }
+  }
+}

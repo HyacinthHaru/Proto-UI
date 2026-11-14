@@ -1,0 +1,11 @@
+{
+  "run": 43549449280,
+  "candidate": "7271fab52ae59fe6e8dd1fc1d879335b6d79e778",
+  "originalVerdict": "failed",
+  "originalMatcher": "Matcher did not succeed in 1000ms",
+  "lastCompletedSwitch": "shadcn/wc",
+  "nextRuntimeFromOriginalLoop": "react",
+  "expectedFailureArtifactPresent": false,
+  "browserLogSha256": "3338699fe135dc5bb6f31fa8574d055c2d1352d511a6179f83438d2b66f7cdca",
+  "scope": "The next expected runtime is source-derived. No original failed query stage or same-event publication state is present in this run."
+}
