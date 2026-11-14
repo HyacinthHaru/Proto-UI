@@ -1,0 +1,80 @@
+{
+  "head": "7271fab52ae59fe6e8dd1fc1d879335b6d79e778",
+  "baseline": "569bd7b410c5b41b73c37504030574f040181dd4",
+  "main": "7d30a788f4bd79189cbe2dd499ded9ff22ba91e1",
+  "tree": "ee7d2d1cf4701a860f899bd5888ae759150fdbf5",
+  "changePaths": [
+    "packages/modules/anatomy/src/impl.ts",
+    "packages/modules/anatomy/test/catalog-boundary.test.ts"
+  ],
+  "codeExamples": 9,
+  "docsSourceSha256": "837e4b19f374198255b670c2098a3b65b3713b1fbc8afd2d688ff6cb3c8d3b14",
+  "localFocused": {
+    "redPass": 3,
+    "redFail": 1,
+    "greenPass": 51,
+    "greenFail": 0,
+    "parentReadsAtDispatch": 4,
+    "candidateReadsAtDispatch": 2,
+    "redLogSha256": "0e0a93f42374ec13c9068155483de4161bb0afc877787798cef7690dbd48255a",
+    "greenLogSha256": "79e34f813b785c302b0777fb72bbbebd87bccd0667b055b25ff0a24166ad8f47"
+  },
+  "native": {
+    "passed": 15,
+    "failed": 0,
+    "unselected": 9,
+    "chrome": "156.0.8078.79 macOS arm64",
+    "dialog": 8,
+    "dialogObservations": 196,
+    "orderedSidebarReturns": 24,
+    "contentsTransitions": [
+      {
+        "family": "brutalist",
+        "runtime": "react",
+        "atMs": 238
+      },
+      {
+        "family": "brutalist",
+        "runtime": "vue",
+        "atMs": 195
+      },
+      {
+        "family": "brutalist",
+        "runtime": "vue2",
+        "atMs": 190
+      },
+      {
+        "family": "brutalist",
+        "runtime": "wc",
+        "atMs": 2
+      },
+      {
+        "family": "shadcn",
+        "runtime": "react",
+        "atMs": 290
+      },
+      {
+        "family": "shadcn",
+        "runtime": "vue",
+        "atMs": 270
+      },
+      {
+        "family": "shadcn",
+        "runtime": "vue2",
+        "atMs": 283
+      },
+      {
+        "family": "shadcn",
+        "runtime": "wc",
+        "atMs": 25
+      }
+    ],
+    "logSha256": "b308dffb48e09a089b4993dfb8ba516daf6296cbb7a19d4f01ec8bcbd8fbd7d0",
+    "reportSha256": "f31fed4274ea0c09f7f8a04c5b3da5a8737314da0e855965a232fa5c73aba565",
+    "images": {
+      "wc-header-ring.png": "97efcbfaf2916222be79ed3e9ec2632947c2cb82156a3a5dbb3c5d899cb99d7b",
+      "react-contents.png": "e5f2c12edfdcebd73d986049729514c0fc8cc8e13922135a604e150e58448594",
+      "wc-dialog.png": "9c6f2261f8fece53504ff4ab1cadb1338ef9a80698f8f06b0658266da8585672"
+    }
+  }
+}

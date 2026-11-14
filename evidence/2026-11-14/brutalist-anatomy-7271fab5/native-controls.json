@@ -1,0 +1,116 @@
+{
+  "head": "7271fab52ae59fe6e8dd1fc1d879335b6d79e778",
+  "browser": "156.0.8078.79",
+  "scope": "Separate native mechanism and first animation frame diagnostics. Header geometry reads can force layout and were excluded from original hosted timing.",
+  "css": {
+    "before": "#000",
+    "after": "#fff",
+    "records": 0
+  },
+  "lifecycle": {
+    "initial": "inline-flex",
+    "reconnected": "inline-flex",
+    "immediately": null,
+    "intermediate": null,
+    "final": null,
+    "disposed": 1
+  },
+  "results": [
+    {
+      "width": 320,
+      "samples": [
+        {
+          "phase": "family mutation delivery",
+          "at": 1611.2999999523163,
+          "family": "brutalist",
+          "generation": "2",
+          "top": 61,
+          "bottom": 545,
+          "left": 8,
+          "right": 312,
+          "width": 304,
+          "headerBottom": 56,
+          "hidden": false,
+          "position": "61px"
+        },
+        {
+          "phase": "first animation frame",
+          "at": 1745.7999999523163,
+          "family": "brutalist",
+          "generation": "2",
+          "top": 61,
+          "bottom": 545,
+          "left": 8,
+          "right": 312,
+          "width": 304,
+          "headerBottom": 56,
+          "hidden": false,
+          "position": "61px"
+        },
+        {
+          "phase": "second animation frame",
+          "at": 1766,
+          "family": "brutalist",
+          "generation": "2",
+          "top": 61,
+          "bottom": 545,
+          "left": 8,
+          "right": 312,
+          "width": 304,
+          "headerBottom": 56,
+          "hidden": false,
+          "position": "61px"
+        }
+      ],
+      "trusted": true
+    },
+    {
+      "width": 390,
+      "samples": [
+        {
+          "phase": "family mutation delivery",
+          "at": 1567.6000000238419,
+          "family": "brutalist",
+          "generation": "2",
+          "top": 61,
+          "bottom": 545,
+          "left": 8,
+          "right": 382,
+          "width": 374,
+          "headerBottom": 56,
+          "hidden": false,
+          "position": "61px"
+        },
+        {
+          "phase": "first animation frame",
+          "at": 1700,
+          "family": "brutalist",
+          "generation": "2",
+          "top": 61,
+          "bottom": 545,
+          "left": 8,
+          "right": 382,
+          "width": 374,
+          "headerBottom": 56,
+          "hidden": false,
+          "position": "61px"
+        },
+        {
+          "phase": "second animation frame",
+          "at": 1720.2999999523163,
+          "family": "brutalist",
+          "generation": "2",
+          "top": 61,
+          "bottom": 545,
+          "left": 8,
+          "right": 382,
+          "width": 374,
+          "headerBottom": 56,
+          "hidden": false,
+          "position": "61px"
+        }
+      ],
+      "trusted": true
+    }
+  ]
+}
