@@ -1,5 +1,5 @@
 name: CI
-run-name: Brutalist Anatomy on the original shards
+run-name: Brutalist pre-write on the original shards
 
 on: workflow_dispatch
 permissions:
@@ -20,8 +20,8 @@ jobs:
             slot: browser-3-of-8
             trace: '0'
     env:
-      BASELINE_CARRIER: 37b7b16de103bba98be122541ac5a390dddc259d
-      CANDIDATE_CARRIER: 18361c23534b3b3904fd3c95a46187ce2596b052
+      BASELINE_CARRIER: 73d2eb37bc1fa0f142f804dc386197353845e7c8
+      CANDIDATE_CARRIER: deb3e87418571192075b5ff5796e12ce6579065a
       CHROME_VERSION: 157.0.8103.50
       CHROME_ZIP_SHA256: d17167bc092eb495a3b768c7467f27e35f625aa03834233a1663af67dcb668c9
       PROTO_UI_RUNTIME_PHASE: browser
