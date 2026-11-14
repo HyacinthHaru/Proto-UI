@@ -1,0 +1,19 @@
+{
+  "head": "01b9398ab590d198aa69ab26c1b21cc90210a92d",
+  "astroFiles": 1221,
+  "errors": 0,
+  "warnings": 0,
+  "hints": 30,
+  "typesLogSha256": "349e0fc429b3e9c9ca0bec2e27b299b97a41a9149e5f55352beb74608cd4885b",
+  "productionPages": 679,
+  "productionCheckerExit": 1,
+  "productionDiagnostics": 53,
+  "earlierMain": "35195a6e6f1ba6a7d800da0029f2683013abd18b",
+  "earlierMainDiagnostics": 53,
+  "sameDiagnostics": true,
+  "productionLogSha256": "c88797ce87971b7bb0926ee81d8c35faccfcbf7ab2729e950776ac12fe363af5",
+  "earlierMainLogSha256": "80f76d0fdf480a2e8a32f4e62d6860ff0375836793155a81973ebdfd08ab734d",
+  "previewOriginalPassed": 15,
+  "previewUnselected": 9,
+  "previewTestLogSha256": "b63a84f59cdb74e033fb985073e30bd9f0176bde45dc1bb310329282f884054c"
+}

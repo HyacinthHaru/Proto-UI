@@ -1,0 +1,216 @@
+{
+  "head": "01b9398ab590d198aa69ab26c1b21cc90210a92d",
+  "patchSha256": "2bc0040729b8b8533771f2e33b73ae1ca426aca5ceea3df915cc0519de99370e",
+  "originalTestExit": 1,
+  "scope": "Same renderer main thread. Event families are independently unioned and nested. Gaps are intervals without a recorded RunTask, not proof of process idleness. Node receipt and the renderer trace use joined monotonic clocks.",
+  "reports": [
+    {
+      "locale": "zh-cn",
+      "reactReached": true,
+      "originalStartupPassed": false,
+      "traceThread": [77267, 18473395],
+      "traceSha256": "bf5b898acff05739bb0ad224d19a549cd59b29f5e8096f4f997ed5d3e9dbbaff",
+      "traceReceipt": {
+        "bytes": 647726947,
+        "traceEventArrayClosed": true,
+        "clockDomain": "MAC_MACH_ABSOLUTE_TIME",
+        "finalFlush": 1,
+        "buffers": [
+          {
+            "buffer_size": 1073741824,
+            "bytes_overwritten": 0,
+            "chunks_discarded": 0,
+            "sequence_packet_loss": 0,
+            "trace_writer_packet_loss": 0
+          },
+          {
+            "buffer_size": 262144,
+            "bytes_overwritten": 0,
+            "chunks_discarded": 0,
+            "sequence_packet_loss": 0,
+            "trace_writer_packet_loss": 0
+          }
+        ],
+        "stats": {}
+      },
+      "traceEventCount": 3071277,
+      "lastTraceEventRelativeToReactStartMs": 135534.914,
+      "lastSelectedRendererEventRelativeToReactStartMs": 97247.297,
+      "chunks": [
+        {
+          "asset": "chunk-EK7DFB6S.js",
+          "netLogLastBodyAfterRequestMs": 4,
+          "netLogCompletedBody": true,
+          "cdpResponseDeliveryAfterLastBodyMs": null,
+          "observedCdpStages": ["request"]
+        },
+        {
+          "asset": "chunk-2MALL255.js",
+          "netLogLastBodyAfterRequestMs": 8,
+          "netLogCompletedBody": true,
+          "cdpResponseDeliveryAfterLastBodyMs": null,
+          "observedCdpStages": ["request"]
+        }
+      ],
+      "stageMarks": {
+        "react-modules-begin": -19933.459,
+        "react-modules-return": -0.35,
+        "react-runtime-begin": 0.0
+      },
+      "moduleBodyMarks": [
+        {
+          "name": "pui-s4-module:chunk-BUSYA2B4.js:body-start",
+          "atMs": -41429.638
+        },
+        {
+          "name": "pui-s4-module:chunk-BUSYA2B4.js:body-end",
+          "atMs": -41429.6
+        }
+      ],
+      "namedRendererEvents": [
+        {
+          "asset": "chunk-2MALL255.js",
+          "event": "BackgroundJSStreamManager::OnFinishStreaming",
+          "atMs": 14834.519,
+          "durationMs": 0.009
+        },
+        {
+          "asset": "chunk-EK7DFB6S.js",
+          "event": "BackgroundJSStreamManager::OnFinishStreaming",
+          "atMs": 14826.004,
+          "durationMs": 0.003
+        }
+      ],
+      "windows": [
+        {
+          "window": "last body to trace cutoff during post-verdict observation",
+          "lengthMs": 120705.339,
+          "requestedEndRelativeToReactStartMs": 146103.575,
+          "boundariesRelativeToReactStartMs": [14829.575, 135534.914],
+          "observed": [
+            {
+              "event": "ThreadControllerImpl::RunTask",
+              "events": 2679,
+              "unionMs": 9425.313,
+              "longestMs": 9364.728
+            },
+            {
+              "event": "RunTask",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "RunMicrotasks",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "V8.RunMicrotasks",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "FunctionCall",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "v8.evaluateModule",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "v8.compileModule",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "EvaluateScript",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "Layout",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "Paint",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "MinorGC",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            }
+          ],
+          "largestRecordedTaskGaps": [
+            {
+              "fromReactStartMs": 15413.064,
+              "durationMs": 72466.955
+            },
+            {
+              "fromReactStartMs": 97247.297,
+              "durationMs": 38287.617
+            },
+            {
+              "fromReactStartMs": 14829.575,
+              "durationMs": 520.019
+            },
+            {
+              "fromReactStartMs": 97244.747,
+              "durationMs": 0.215
+            },
+            {
+              "fromReactStartMs": 15394.125,
+              "durationMs": 0.056
+            },
+            {
+              "fromReactStartMs": 15395.607,
+              "durationMs": 0.014
+            },
+            {
+              "fromReactStartMs": 15401.555,
+              "durationMs": 0.014
+            },
+            {
+              "fromReactStartMs": 15398.366,
+              "durationMs": 0.012
+            }
+          ]
+        }
+      ],
+      "startupWaitRejectionRelativeToReactStartMs": 146103.575
+    },
+    {
+      "locale": "en",
+      "reactReached": false,
+      "originalStartupPassed": null
+    }
+  ],
+  "diagnosticContinuation": {
+    "afterOriginalCaseFinished": true,
+    "observationMs": 40002,
+    "originalCaseDeadlineMs": 150000,
+    "originalPredicateTimeoutMs": 60000,
+    "scope": "The recorded startup rejection followed delayed context close. The runner independently reported the original 150s timeout."
+  },
+  "rawLogSha256": "0483b62a9bd6124ba5bf9039f4474b5e1088739a11a432c2d1835a955ad04493"
+}

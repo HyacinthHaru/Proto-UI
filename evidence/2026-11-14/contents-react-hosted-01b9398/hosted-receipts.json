@@ -1,0 +1,391 @@
+{
+  "run": {
+    "id": 43582122063,
+    "head_sha": "6ab0eb650e07dbf61e4f1583dd5a1c35737f1606",
+    "status": "completed",
+    "conclusion": "failure",
+    "run_attempt": 1,
+    "run_started_at": "2026-11-14T09:46:21Z",
+    "updated_at": "2026-11-14T10:17:17Z",
+    "html_url": "https://github.com/HyacinthHaru/Proto-UI/actions/runs/43582122063"
+  },
+  "jobs": [
+    {
+      "name": "paired-browser (1/8, browser-1-of-8, 1)",
+      "id": 132408880479,
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-11-14T09:46:26Z",
+      "completed_at": "2026-11-14T10:17:16Z",
+      "html_url": "https://github.com/HyacinthHaru/Proto-UI/actions/runs/43582122063/job/132408880479"
+    },
+    {
+      "name": "paired-browser (3/8, browser-3-of-8, 0)",
+      "id": 132408880681,
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-11-14T09:46:26Z",
+      "completed_at": "2026-11-14T10:17:13Z",
+      "html_url": "https://github.com/HyacinthHaru/Proto-UI/actions/runs/43582122063/job/132408880681"
+    }
+  ],
+  "baselineCarrier": "abad0c57e7a3571831dcb7b96c433848d13730df",
+  "candidateCarrier": "d322562d56d6609bc60afffc350f11e3b3675df0",
+  "workflow": "6ab0eb650e07dbf61e4f1583dd5a1c35737f1606",
+  "onlyCarrierDiff": [
+    "packages/modules/anatomy/src/impl.ts",
+    "packages/modules/anatomy/test/domain-scope-query.test.ts"
+  ],
+  "diagnosticOverlay": [
+    ".github/workflows/ci.yml",
+    "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+    "apps/www/src/content/docs/zh-cn/query-dispatch-trace.d.mts",
+    "apps/www/src/content/docs/zh-cn/query-dispatch-trace.mjs",
+    "scripts/test/runtime-test-plan.mjs"
+  ],
+  "originalShards": true,
+  "perArmDeadlineSeconds": 900,
+  "arms": [
+    {
+      "arm": "baseline",
+      "slot": 1,
+      "carrier": "abad0c57e7a3571831dcb7b96c433848d13730df",
+      "product": "7271fab52ae59fe6e8dd1fc1d879335b6d79e778",
+      "artifactId": 14109458936,
+      "artifactDigest": "sha256:3141fce673fba353c3469512248cc20e54274e9c57122baf9844b2d399dfa757",
+      "runner": [
+        "workflowSha=6ab0eb650e07dbf61e4f1583dd5a1c35737f1606",
+        "runId=43582122063",
+        "attempt=1",
+        "slot=browser-1-of-8",
+        "runnerImage=ubuntu26",
+        "runnerImageVersion=20261111.196.1",
+        "Linux 7.0.0-1019-azure x86_64",
+        "cpuCount=4",
+        "AMD EPYC 7763 64-Core Processor",
+        "Google Chrome for Testing 157.0.8103.50 ",
+        "061f752aa63d26ee05581742df728a2f8f5097446e85e04145ebaea49e469e15",
+        "chromeArchiveSha256=d17167bc092eb495a3b768c7467f27e35f625aa03834233a1663af67dcb668c9",
+        "v24.22.2",
+        "10.32.1"
+      ],
+      "status": "failure",
+      "processExit": 124,
+      "shadowCloseoutPassed": null,
+      "englishS4Entered": true,
+      "visibleNamedFailures": [
+        "Prototype style closure without Website CSS > loads only scoped Proto UI physical styles and mounts every real runtime",
+        "Shadcn Radio Group public browser acceptance > 'react' 'interaction' projects selection, focus, disabled and theme states through the real family",
+        "Shadcn Radio Group public browser acceptance > 'vue' 'interaction' projects selection, focus, disabled and theme states through the real family",
+        "Shadcn Radio Group public browser acceptance > 'vue2' 'interaction' projects selection, focus, disabled and theme states through the real family",
+        "Shadcn Radio Group public browser acceptance > 'wc' 'interaction' projects selection, focus, disabled and theme states through the real family",
+        "preserves native manual disclosure across reload and locale en/320",
+        "retains brutalist preference owners and portals through real breakpoint reconnects"
+      ],
+      "sameOriginalSuites": true,
+      "selectedFileCount": 12,
+      "sourceTree": "d8e94b93263dfc679ac79c54a1db6502cff4fa01",
+      "browserLogSha256": "a2315e1bfd4dea9ca0afc58ea385930b91101427e5c991e4ada14cbd283e0f8f",
+      "terminalReceiptSha256": "e2434f8a0e1378db8671421da85213449c58e0c9044e820fe25de7780e1dc9ea",
+      "suiteTotals": [],
+      "caseVerdicts": [
+        "\u2713 Homepage end-to-end dogfood boundary > uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence 78946ms",
+        "\u2713 Homepage end-to-end dogfood boundary > uses the same mobile shell on documentation with independent global navigation and contents 11615ms",
+        "\u00d7 retains brutalist preference owners and portals through real breakpoint reconnects 7186ms",
+        "\u276f apps/www/src/content/docs/zh-cn/site-sidebar-disclosure.browser.test.ts (7 tests | 1 failed) 68093ms"
+      ],
+      "s4": [
+        {
+          "locale": "zh-cn",
+          "startupPassed": false,
+          "collectionOutcome": "rejected",
+          "errors": {
+            "[feedback] owned-decoration unsupported by this adapter": 18
+          }
+        }
+      ]
+    },
+    {
+      "arm": "candidate",
+      "slot": 1,
+      "carrier": "d322562d56d6609bc60afffc350f11e3b3675df0",
+      "product": "01b9398ab590d198aa69ab26c1b21cc90210a92d",
+      "artifactId": 14109458936,
+      "artifactDigest": "sha256:3141fce673fba353c3469512248cc20e54274e9c57122baf9844b2d399dfa757",
+      "runner": [
+        "workflowSha=6ab0eb650e07dbf61e4f1583dd5a1c35737f1606",
+        "runId=43582122063",
+        "attempt=1",
+        "slot=browser-1-of-8",
+        "runnerImage=ubuntu26",
+        "runnerImageVersion=20261111.196.1",
+        "Linux 7.0.0-1019-azure x86_64",
+        "cpuCount=4",
+        "AMD EPYC 7763 64-Core Processor",
+        "Google Chrome for Testing 157.0.8103.50 ",
+        "061f752aa63d26ee05581742df728a2f8f5097446e85e04145ebaea49e469e15",
+        "chromeArchiveSha256=d17167bc092eb495a3b768c7467f27e35f625aa03834233a1663af67dcb668c9",
+        "v24.22.2",
+        "10.32.1"
+      ],
+      "status": "failure",
+      "processExit": 124,
+      "shadowCloseoutPassed": null,
+      "englishS4Entered": true,
+      "visibleNamedFailures": [
+        "Prototype style closure without Website CSS > loads only scoped Proto UI physical styles and mounts every real runtime",
+        "Shadcn Radio Group public browser acceptance > 'react' 'interaction' projects selection, focus, disabled and theme states through the real family",
+        "Shadcn Radio Group public browser acceptance > 'vue' 'interaction' projects selection, focus, disabled and theme states through the real family",
+        "Shadcn Radio Group public browser acceptance > 'vue2' 'interaction' projects selection, focus, disabled and theme states through the real family",
+        "Shadcn Radio Group public browser acceptance > 'wc' 'interaction' projects selection, focus, disabled and theme states through the real family",
+        "retains brutalist preference owners and portals through real breakpoint reconnects"
+      ],
+      "sameOriginalSuites": true,
+      "selectedFileCount": 12,
+      "sourceTree": "e33d32b011bf8490c6f65729d49abf3bfadb591d",
+      "browserLogSha256": "e7dcd39d962805cb02709095046f3d2a25c528a9654f34c4da8ecd7722465190",
+      "terminalReceiptSha256": "d8b356d56db55503a0dd6901f9ef32d6cff37561f0b20218b694a9153d26609f",
+      "suiteTotals": [],
+      "caseVerdicts": [
+        "\u2713 Homepage end-to-end dogfood boundary > uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence 78041ms",
+        "\u2713 Homepage end-to-end dogfood boundary > uses the same mobile shell on documentation with independent global navigation and contents 11465ms",
+        "\u00d7 retains brutalist preference owners and portals through real breakpoint reconnects 6919ms",
+        "\u2713 apps/www/src/content/docs/zh-cn/site-sidebar-disclosure.browser.test.ts (7 tests) 69226ms"
+      ],
+      "s4": [
+        {
+          "locale": "zh-cn",
+          "startupPassed": false,
+          "collectionOutcome": "rejected",
+          "errors": {
+            "[feedback] owned-decoration unsupported by this adapter": 18
+          }
+        }
+      ]
+    },
+    {
+      "arm": "baseline",
+      "slot": 3,
+      "carrier": "abad0c57e7a3571831dcb7b96c433848d13730df",
+      "product": "7271fab52ae59fe6e8dd1fc1d879335b6d79e778",
+      "artifactId": 14109861016,
+      "artifactDigest": "sha256:9b610c1504ff97cfcb8955ac30ee021928c5931878bdb8b83cd094dcde79595f",
+      "runner": [
+        "workflowSha=6ab0eb650e07dbf61e4f1583dd5a1c35737f1606",
+        "runId=43582122063",
+        "attempt=1",
+        "slot=browser-3-of-8",
+        "runnerImage=ubuntu26",
+        "runnerImageVersion=20261111.196.1",
+        "Linux 7.0.0-1019-azure x86_64",
+        "cpuCount=4",
+        "AMD EPYC 9V74 80-Core Processor",
+        "Google Chrome for Testing 157.0.8103.50 ",
+        "061f752aa63d26ee05581742df728a2f8f5097446e85e04145ebaea49e469e15",
+        "chromeArchiveSha256=d17167bc092eb495a3b768c7467f27e35f625aa03834233a1663af67dcb668c9",
+        "v24.22.2",
+        "10.32.1"
+      ],
+      "status": "failure",
+      "processExit": 124,
+      "shadowCloseoutPassed": 153,
+      "englishS4Entered": false,
+      "visibleNamedFailures": [
+        "actual Bootstrap/Liquid Select input, layout and source-bound paint > bootstrap-2-3-2/react/dark: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "actual Bootstrap/Liquid Select input, layout and source-bound paint > bootstrap-2-3-2/react/light: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "actual Bootstrap/Liquid Select input, layout and source-bound paint > bootstrap-2-3-2/vue/dark: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "actual Bootstrap/Liquid Select input, layout and source-bound paint > bootstrap-2-3-2/vue/light: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "actual Bootstrap/Liquid Select input, layout and source-bound paint > bootstrap-2-3-2/vue2/dark: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "actual Bootstrap/Liquid Select input, layout and source-bound paint > bootstrap-2-3-2/vue2/light: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "actual Bootstrap/Liquid Select input, layout and source-bound paint > bootstrap-2-3-2/wc/dark: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "actual Bootstrap/Liquid Select input, layout and source-bound paint > bootstrap-2-3-2/wc/light: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "actual Bootstrap/Liquid Select input, layout and source-bound paint > liquid-glass/react/dark: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "actual Bootstrap/Liquid Select input, layout and source-bound paint > liquid-glass/react/light: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "actual Bootstrap/Liquid Select input, layout and source-bound paint > liquid-glass/vue/dark: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "actual Bootstrap/Liquid Select input, layout and source-bound paint > liquid-glass/vue/light: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "actual Bootstrap/Liquid Select input, layout and source-bound paint > liquid-glass/vue2/dark: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "actual Bootstrap/Liquid Select input, layout and source-bound paint > liquid-glass/vue2/light: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "actual Bootstrap/Liquid Select input, layout and source-bound paint > liquid-glass/wc/dark: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "actual Bootstrap/Liquid Select input, layout and source-bound paint > liquid-glass/wc/light: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "actual family Text selection and typography > bootstrap-2-3-2/react: document Text stays selectable beside nonselectable Select content",
+        "actual family Text selection and typography > bootstrap-2-3-2/vue2: document Text stays selectable beside nonselectable Select content",
+        "actual family Text selection and typography > bootstrap-2-3-2/vue: document Text stays selectable beside nonselectable Select content",
+        "actual family Text selection and typography > bootstrap-2-3-2/wc: document Text stays selectable beside nonselectable Select content"
+      ],
+      "sameOriginalSuites": true,
+      "selectedFileCount": 12,
+      "sourceTree": "d8e94b93263dfc679ac79c54a1db6502cff4fa01",
+      "browserLogSha256": "1fc31e71b381f8c0c5dd8b97539f59df367c7c0dda2c0e091e497f5c5fca6caf",
+      "terminalReceiptSha256": "d6a838b8cbd29f50c647ccf2998056e5db1e87cc4c65e5cb41576cebefc68fbe",
+      "suiteTotals": [],
+      "caseVerdicts": [
+        "\u2713 apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts (8 tests) 56154ms"
+      ],
+      "s4": []
+    },
+    {
+      "arm": "candidate",
+      "slot": 3,
+      "carrier": "d322562d56d6609bc60afffc350f11e3b3675df0",
+      "product": "01b9398ab590d198aa69ab26c1b21cc90210a92d",
+      "artifactId": 14109861016,
+      "artifactDigest": "sha256:9b610c1504ff97cfcb8955ac30ee021928c5931878bdb8b83cd094dcde79595f",
+      "runner": [
+        "workflowSha=6ab0eb650e07dbf61e4f1583dd5a1c35737f1606",
+        "runId=43582122063",
+        "attempt=1",
+        "slot=browser-3-of-8",
+        "runnerImage=ubuntu26",
+        "runnerImageVersion=20261111.196.1",
+        "Linux 7.0.0-1019-azure x86_64",
+        "cpuCount=4",
+        "AMD EPYC 9V74 80-Core Processor",
+        "Google Chrome for Testing 157.0.8103.50 ",
+        "061f752aa63d26ee05581742df728a2f8f5097446e85e04145ebaea49e469e15",
+        "chromeArchiveSha256=d17167bc092eb495a3b768c7467f27e35f625aa03834233a1663af67dcb668c9",
+        "v24.22.2",
+        "10.32.1"
+      ],
+      "status": "failure",
+      "processExit": 124,
+      "shadowCloseoutPassed": 153,
+      "englishS4Entered": false,
+      "visibleNamedFailures": [
+        "actual Bootstrap/Liquid Select input, layout and source-bound paint > bootstrap-2-3-2/react/dark: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "actual Bootstrap/Liquid Select input, layout and source-bound paint > bootstrap-2-3-2/react/light: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "actual Bootstrap/Liquid Select input, layout and source-bound paint > bootstrap-2-3-2/vue/dark: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "actual Bootstrap/Liquid Select input, layout and source-bound paint > bootstrap-2-3-2/vue/light: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "actual Bootstrap/Liquid Select input, layout and source-bound paint > bootstrap-2-3-2/vue2/dark: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "actual Bootstrap/Liquid Select input, layout and source-bound paint > bootstrap-2-3-2/vue2/light: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "actual Bootstrap/Liquid Select input, layout and source-bound paint > bootstrap-2-3-2/wc/dark: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "actual Bootstrap/Liquid Select input, layout and source-bound paint > bootstrap-2-3-2/wc/light: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "actual Bootstrap/Liquid Select input, layout and source-bound paint > liquid-glass/react/dark: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "actual Bootstrap/Liquid Select input, layout and source-bound paint > liquid-glass/react/light: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "actual Bootstrap/Liquid Select input, layout and source-bound paint > liquid-glass/vue/dark: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "actual Bootstrap/Liquid Select input, layout and source-bound paint > liquid-glass/vue/light: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "actual Bootstrap/Liquid Select input, layout and source-bound paint > liquid-glass/vue2/dark: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "actual Bootstrap/Liquid Select input, layout and source-bound paint > liquid-glass/vue2/light: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "actual Bootstrap/Liquid Select input, layout and source-bound paint > liquid-glass/wc/dark: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "actual Bootstrap/Liquid Select input, layout and source-bound paint > liquid-glass/wc/light: full selection flow, own toolbar, RTL portal and narrow long labels",
+        "actual family Text selection and typography > bootstrap-2-3-2/react: document Text stays selectable beside nonselectable Select content",
+        "actual family Text selection and typography > bootstrap-2-3-2/vue2: document Text stays selectable beside nonselectable Select content",
+        "actual family Text selection and typography > bootstrap-2-3-2/vue: document Text stays selectable beside nonselectable Select content",
+        "actual family Text selection and typography > bootstrap-2-3-2/wc: document Text stays selectable beside nonselectable Select content"
+      ],
+      "sameOriginalSuites": true,
+      "selectedFileCount": 12,
+      "sourceTree": "e33d32b011bf8490c6f65729d49abf3bfadb591d",
+      "browserLogSha256": "ed0bec763a8b164e8ec584fb50f0a09c1af318c634f00b2532773dca5a713251",
+      "terminalReceiptSha256": "73c975bcfdab3a82646254e13323c1556df9b7ec7988d319a3b933a9bc6c2cda",
+      "suiteTotals": [],
+      "caseVerdicts": [
+        "\u2713 apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts (8 tests) 56174ms"
+      ],
+      "s4": []
+    }
+  ],
+  "consumers": [
+    {
+      "slot": 1,
+      "arm": "baseline",
+      "head": "7271fab52ae59fe6e8dd1fc1d879335b6d79e778",
+      "switches": {
+        "brutalist/react": {
+          "originalError": null,
+          "atMs": 593
+        },
+        "brutalist/vue": {
+          "originalError": null,
+          "atMs": 474
+        },
+        "brutalist/vue2": {
+          "originalError": null,
+          "atMs": 385
+        },
+        "brutalist/wc": {
+          "originalError": null,
+          "atMs": 3
+        },
+        "shadcn/react": {
+          "originalError": null,
+          "atMs": 860
+        },
+        "shadcn/vue": {
+          "originalError": null,
+          "atMs": 585
+        },
+        "shadcn/vue2": {
+          "originalError": null,
+          "atMs": 591
+        },
+        "shadcn/wc": {
+          "originalError": null,
+          "atMs": 34
+        }
+      },
+      "orderedHandbacks": 24,
+      "totalHandbacks": 24,
+      "namedCasePassed": true,
+      "mobileShellPassed": true
+    },
+    {
+      "slot": 1,
+      "arm": "candidate",
+      "head": "01b9398ab590d198aa69ab26c1b21cc90210a92d",
+      "switches": {
+        "brutalist/react": {
+          "originalError": null,
+          "atMs": 595
+        },
+        "brutalist/vue": {
+          "originalError": null,
+          "atMs": 594
+        },
+        "brutalist/vue2": {
+          "originalError": null,
+          "atMs": 413
+        },
+        "brutalist/wc": {
+          "originalError": null,
+          "atMs": 3
+        },
+        "shadcn/react": {
+          "originalError": null,
+          "atMs": 835
+        },
+        "shadcn/vue": {
+          "originalError": null,
+          "atMs": 655
+        },
+        "shadcn/vue2": {
+          "originalError": null,
+          "atMs": 589
+        },
+        "shadcn/wc": {
+          "originalError": null,
+          "atMs": 5
+        }
+      },
+      "orderedHandbacks": 24,
+      "totalHandbacks": 24,
+      "namedCasePassed": true,
+      "mobileShellPassed": true
+    },
+    {
+      "slot": 3,
+      "arm": "baseline",
+      "head": "7271fab52ae59fe6e8dd1fc1d879335b6d79e778",
+      "observations": 196,
+      "captures": 120,
+      "dialog8Passed": true
+    },
+    {
+      "slot": 3,
+      "arm": "candidate",
+      "head": "01b9398ab590d198aa69ab26c1b21cc90210a92d",
+      "observations": 196,
+      "captures": 120,
+      "dialog8Passed": true
+    }
+  ]
+}

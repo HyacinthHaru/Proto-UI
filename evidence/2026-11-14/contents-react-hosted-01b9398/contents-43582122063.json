@@ -1,0 +1,341 @@
+{
+  "scope": "Original SDK locator read; browser publication marks run immediately after the native setter. CDP alignment is a bounded interval, not equal clocks.",
+  "observations": [
+    {
+      "arm": "baseline",
+      "available": true,
+      "source": "abad0c57e7a3571831dcb7b96c433848d13730df",
+      "verdict": "fulfilled",
+      "error": null,
+      "deadlineMs": 1000,
+      "pollObservedMs": 859.703,
+      "calls": [
+        {
+          "id": 1,
+          "startedMs": 85334.931051,
+          "returnedMs": 85349.776052,
+          "value": "wc"
+        },
+        {
+          "id": 2,
+          "startedMs": 85400.403988,
+          "returnedMs": 85409.065489,
+          "value": "wc"
+        },
+        {
+          "id": 3,
+          "startedMs": 85459.242072,
+          "returnedMs": 85781.114718,
+          "value": "wc"
+        },
+        {
+          "id": 4,
+          "startedMs": 85831.487672,
+          "returnedMs": 86016.700255,
+          "value": "wc"
+        },
+        {
+          "id": 5,
+          "startedMs": 86067.183268,
+          "returnedMs": 86194.472068,
+          "value": "react"
+        }
+      ],
+      "callsAtVerdict": [
+        {
+          "id": 1,
+          "startedMs": 85334.931051,
+          "returnedMs": 85349.776052,
+          "value": "wc"
+        },
+        {
+          "id": 2,
+          "startedMs": 85400.403988,
+          "returnedMs": 85409.065489,
+          "value": "wc"
+        },
+        {
+          "id": 3,
+          "startedMs": 85459.242072,
+          "returnedMs": 85781.114718,
+          "value": "wc"
+        },
+        {
+          "id": 4,
+          "startedMs": 85831.487672,
+          "returnedMs": 86016.700255,
+          "value": "wc"
+        },
+        {
+          "id": 5,
+          "startedMs": 86067.183268,
+          "returnedMs": 86194.472068,
+          "value": "react"
+        }
+      ],
+      "pendingIds": [],
+      "sdkMappingComplete": true,
+      "sdkErrors": [],
+      "receiptSha256": "486dc9e74c6dc0e2a9311c51ebb476dea7659e0fe4a7e3320227c4f161a2c6f7",
+      "traceAvailable": true,
+      "traceComplete": true,
+      "traceDataLoss": false,
+      "traceSha256": "b6cbf125231f8e735a16798665d60f384a2cb69e03c429dd4ea6f6ce95c64e35",
+      "traceErrors": [],
+      "clockBinding": {
+        "syncRoundTripMs": 3.048,
+        "mapping": "CDP clock sync command interval bounds"
+      },
+      "clickAfterPollMs": [-1102.656, -1099.607],
+      "writes": [
+        {
+          "mark": "pui-contents:write:contentsRuntime:react",
+          "afterPollMs": [765.264, 768.313],
+          "afterVerdictMs": [-94.439, -91.39],
+          "afterClickMs": 1867.92
+        },
+        {
+          "mark": "pui-contents:write:contentsGeneration:2",
+          "afterPollMs": [765.345, 768.394],
+          "afterVerdictMs": [-94.358, -91.309],
+          "afterClickMs": 1868.001
+        }
+      ],
+      "joinedQueries": [
+        {
+          "query": 1,
+          "cdpId": 4613,
+          "responseObserved": true,
+          "stagesAfterPollMs": {
+            "browserForward": [2.497, 5.546],
+            "rendererEnter": [3.671, 6.72],
+            "rendererResponse": [10.006, 13.055]
+          },
+          "browserForwardToRendererMs": 1.174,
+          "returnedAfterPollMs": 14.957,
+          "value": "wc"
+        },
+        {
+          "query": 2,
+          "cdpId": 4628,
+          "responseObserved": true,
+          "stagesAfterPollMs": {
+            "browserForward": [65.866, 68.915],
+            "rendererEnter": [66.239, 69.288],
+            "rendererResponse": [70.681, 73.73]
+          },
+          "browserForwardToRendererMs": 0.373,
+          "returnedAfterPollMs": 74.247,
+          "value": "wc"
+        },
+        {
+          "query": 3,
+          "cdpId": 4629,
+          "responseObserved": true,
+          "stagesAfterPollMs": {
+            "browserForward": [124.899, 127.948],
+            "rendererEnter": [436.608, 439.657],
+            "rendererResponse": [442.752, 445.801]
+          },
+          "browserForwardToRendererMs": 311.709,
+          "returnedAfterPollMs": 446.296,
+          "value": "wc"
+        },
+        {
+          "query": 4,
+          "cdpId": 4630,
+          "responseObserved": true,
+          "stagesAfterPollMs": {
+            "browserForward": [495.941, 498.99],
+            "rendererEnter": [673.512, 676.561],
+            "rendererResponse": [678.271, 681.32]
+          },
+          "browserForwardToRendererMs": 177.571,
+          "returnedAfterPollMs": 681.881,
+          "value": "wc"
+        },
+        {
+          "query": 5,
+          "cdpId": 4631,
+          "responseObserved": true,
+          "stagesAfterPollMs": {
+            "browserForward": [732.174, 735.223],
+            "rendererEnter": [851.778, 854.827],
+            "rendererResponse": [856.111, 859.16]
+          },
+          "browserForwardToRendererMs": 119.604,
+          "returnedAfterPollMs": 859.653,
+          "value": "react"
+        }
+      ]
+    },
+    {
+      "arm": "candidate",
+      "available": true,
+      "source": "d322562d56d6609bc60afffc350f11e3b3675df0",
+      "verdict": "fulfilled",
+      "error": null,
+      "deadlineMs": 1000,
+      "pollObservedMs": 834.337,
+      "calls": [
+        {
+          "id": 1,
+          "startedMs": 103387.615982,
+          "returnedMs": 103403.145135,
+          "value": "wc"
+        },
+        {
+          "id": 2,
+          "startedMs": 103452.570796,
+          "returnedMs": 103463.714738,
+          "value": "wc"
+        },
+        {
+          "id": 3,
+          "startedMs": 103514.47656,
+          "returnedMs": 103850.296906,
+          "value": "wc"
+        },
+        {
+          "id": 4,
+          "startedMs": 103900.73492,
+          "returnedMs": 104073.767906,
+          "value": "wc"
+        },
+        {
+          "id": 5,
+          "startedMs": 104124.106986,
+          "returnedMs": 104221.781106,
+          "value": "react"
+        }
+      ],
+      "callsAtVerdict": [
+        {
+          "id": 1,
+          "startedMs": 103387.615982,
+          "returnedMs": 103403.145135,
+          "value": "wc"
+        },
+        {
+          "id": 2,
+          "startedMs": 103452.570796,
+          "returnedMs": 103463.714738,
+          "value": "wc"
+        },
+        {
+          "id": 3,
+          "startedMs": 103514.47656,
+          "returnedMs": 103850.296906,
+          "value": "wc"
+        },
+        {
+          "id": 4,
+          "startedMs": 103900.73492,
+          "returnedMs": 104073.767906,
+          "value": "wc"
+        },
+        {
+          "id": 5,
+          "startedMs": 104124.106986,
+          "returnedMs": 104221.781106,
+          "value": "react"
+        }
+      ],
+      "pendingIds": [],
+      "sdkMappingComplete": true,
+      "sdkErrors": [],
+      "receiptSha256": "c0ed4b49cf6b48c70db61e55a7a4729b14138e2ba7d7eaa77c8fe871ba5ce2e7",
+      "traceAvailable": true,
+      "traceComplete": true,
+      "traceDataLoss": false,
+      "traceSha256": "ffb898e1273581de40a0f928827f5c1b7c908b5ea9674e76f8941c0fec744249",
+      "traceErrors": [],
+      "clockBinding": {
+        "syncRoundTripMs": 2.102,
+        "mapping": "CDP clock sync command interval bounds"
+      },
+      "clickAfterPollMs": [-1125.053, -1122.95],
+      "writes": [
+        {
+          "mark": "pui-contents:write:contentsRuntime:react",
+          "afterPollMs": [753.943, 756.046],
+          "afterVerdictMs": [-80.394, -78.291],
+          "afterClickMs": 1878.996
+        },
+        {
+          "mark": "pui-contents:write:contentsGeneration:2",
+          "afterPollMs": [754.015, 756.118],
+          "afterVerdictMs": [-80.322, -78.219],
+          "afterClickMs": 1879.068
+        }
+      ],
+      "joinedQueries": [
+        {
+          "query": 1,
+          "cdpId": 4592,
+          "responseObserved": true,
+          "stagesAfterPollMs": {
+            "browserForward": [3.991, 6.094],
+            "rendererEnter": [5.291, 7.394],
+            "rendererResponse": [11.982, 14.085]
+          },
+          "browserForwardToRendererMs": 1.3,
+          "returnedAfterPollMs": 15.661,
+          "value": "wc"
+        },
+        {
+          "query": 2,
+          "cdpId": 4607,
+          "responseObserved": true,
+          "stagesAfterPollMs": {
+            "browserForward": [65.327, 67.43],
+            "rendererEnter": [66.702, 68.805],
+            "rendererResponse": [73.67, 75.773]
+          },
+          "browserForwardToRendererMs": 1.375,
+          "returnedAfterPollMs": 76.231,
+          "value": "wc"
+        },
+        {
+          "query": 3,
+          "cdpId": 4608,
+          "responseObserved": true,
+          "stagesAfterPollMs": {
+            "browserForward": [127.257, 129.36],
+            "rendererEnter": [454.228, 456.331],
+            "rendererResponse": [460.152, 462.255]
+          },
+          "browserForwardToRendererMs": 326.971,
+          "returnedAfterPollMs": 462.813,
+          "value": "wc"
+        },
+        {
+          "query": 4,
+          "cdpId": 4609,
+          "responseObserved": true,
+          "stagesAfterPollMs": {
+            "browserForward": [512.894, 514.997],
+            "rendererEnter": [679.165, 681.268],
+            "rendererResponse": [683.617, 685.72]
+          },
+          "browserForwardToRendererMs": 166.271,
+          "returnedAfterPollMs": 686.284,
+          "value": "wc"
+        },
+        {
+          "query": 5,
+          "cdpId": 4610,
+          "responseObserved": true,
+          "stagesAfterPollMs": {
+            "browserForward": [736.521, 738.624],
+            "rendererEnter": [827.261, 829.364],
+            "rendererResponse": [831.612, 833.715]
+          },
+          "browserForwardToRendererMs": 90.74,
+          "returnedAfterPollMs": 834.297,
+          "value": "react"
+        }
+      ]
+    }
+  ]
+}
