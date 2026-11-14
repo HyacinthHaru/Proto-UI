@@ -1,5 +1,5 @@
 name: CI
-run-name: Brutalist pre-write on the original shards
+run-name: Brutalist post-write on the original shards
 
 on: workflow_dispatch
 permissions:
@@ -20,8 +20,8 @@ jobs:
             slot: browser-3-of-8
             trace: '0'
     env:
-      BASELINE_CARRIER: 73d2eb37bc1fa0f142f804dc386197353845e7c8
-      CANDIDATE_CARRIER: deb3e87418571192075b5ff5796e12ce6579065a
+      BASELINE_CARRIER: 2af4280c372994eabb32eb7a03838b5634e7bcac
+      CANDIDATE_CARRIER: 86018cbe7a6fa58ff78e4432f659ca904c39bedb
       CHROME_VERSION: 157.0.8103.50
       CHROME_ZIP_SHA256: d17167bc092eb495a3b768c7467f27e35f625aa03834233a1663af67dcb668c9
       PROTO_UI_RUNTIME_PHASE: browser
