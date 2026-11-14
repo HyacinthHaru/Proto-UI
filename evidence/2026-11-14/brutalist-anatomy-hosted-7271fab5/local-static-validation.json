@@ -1,0 +1,25 @@
+{
+  "head": "7271fab52ae59fe6e8dd1fc1d879335b6d79e778",
+  "astroFiles": 1221,
+  "errors": 0,
+  "warnings": 0,
+  "hints": 30,
+  "typesLogSha256": "5f007f07597348935bb13b454cd30e0dc601720e71787f5a3c89d7b6ccf4495b",
+  "productionPages": 679,
+  "productionCheckerExit": 1,
+  "productionDiagnostics": 53,
+  "earlierMain": "35195a6e6f1ba6a7d800da0029f2683013abd18b",
+  "earlierMainDiagnostics": 53,
+  "sameDiagnostics": true,
+  "productionLogSha256": "c2b4ba7053ede2eeb16fa9d33c4cd0d964b35de8269526dd3955e0da6230e4aa",
+  "earlierMainLogSha256": "80f76d0fdf480a2e8a32f4e62d6860ff0375836793155a81973ebdfd08ab734d",
+  "previewOriginalPassed": 15,
+  "previewUnselected": 9,
+  "previewTestLogSha256": "e2d1dd4a4941c06745ae108815da1d7950de9cc80c81deb0adbe6e945b6881bd",
+  "packageBuild": {
+    "target": "@proto.ui/module-anatomy",
+    "packagesBuilt": 5,
+    "repositoryPublicPackages": 47,
+    "logSha256": "d33917f8a65da9d45c7f4e002d33a24f74ae643ce923d8dff8684a00b0f75d1b"
+  }
+}

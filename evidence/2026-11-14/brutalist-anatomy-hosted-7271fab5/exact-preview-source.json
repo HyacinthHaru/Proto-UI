@@ -1,0 +1,13 @@
+{
+  "head": "7271fab52ae59fe6e8dd1fc1d879335b6d79e778",
+  "distHashes": {
+    "zh-cn/index.html": "58344e7fe378268d2a03905dfb842301bbb3c7c7326375cc7da6c3c5f87e2c58",
+    "zh-cn/ui-libraries/shadcn/button/index.html": "9fb48c8e737e92d1f72e2477669de4c0dc131b446f6ba31dc3f6e1a83661dd89",
+    "zh-cn/ui-libraries/brutalist/components/button/index.html": "97bc4962964fe536a1a7b370c7bd55218af0552845b1e0da25e3238751c13aa5",
+    "en/ui-libraries/shadcn/dialog/index.html": "d76c37f0bd5b0d33d83b74a753dc23191d42b843d28e38262cfdc48cd8ec2c0b",
+    "proto-ui-bundle-graph.json": "3e84c4166f66fe28671360ae437e1bab336ae4b2ca7fa1600e4a5ec06e577c27"
+  },
+  "selector": "uses real family Popover Triggers|uses the same mobile shell|retains (shadcn|brutalist) preference owners|compact (shadcn|brutalist)|live available region|keeps Runtime Tabs outside",
+  "exitCode": 0,
+  "server": "Repository astro preview on the exact clean candidate static output"
+}

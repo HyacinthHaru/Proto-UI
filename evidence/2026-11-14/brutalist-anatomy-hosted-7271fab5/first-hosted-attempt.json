@@ -1,0 +1,27 @@
+{
+  "run": 43547861183,
+  "status": "completed",
+  "conclusion": "failure",
+  "workflow": "3a28a11f65646bfbf18c280949b5c2c62b2bd9bf",
+  "reason": "The designated baseline was the previous workflow carrier, which has one parent. The required source-provenance command failed before browser execution. Only the candidate executed.",
+  "slots": [
+    {
+      "slot": 1,
+      "archiveSha256": "995172c36185fea479b48de9d7893eafe7c95376915334132737aa2197e6a7a7",
+      "baseline": "37b7b16de103bba98be122541ac5a390dddc259d",
+      "baselineFailedField": "HEAD^2",
+      "candidate": "18361c23534b3b3904fd3c95a46187ce2596b052",
+      "candidateExit": 124,
+      "candidateLogSha256": "591994633b7c4e3f85f52f5138a6ec0b11531b0ba64fc32b0fca32ce36ee7212"
+    },
+    {
+      "slot": 3,
+      "archiveSha256": "9eb3d05fefb788b960a6c8b1a35f648791e5675c2576b488ee2622f068e64a25",
+      "baseline": "37b7b16de103bba98be122541ac5a390dddc259d",
+      "baselineFailedField": "HEAD^2",
+      "candidate": "18361c23534b3b3904fd3c95a46187ce2596b052",
+      "candidateExit": 124,
+      "candidateLogSha256": "88a1f9be977bcd9cbc88a3874fe0fb6079f18b605557ddb2e1cbe632fb527393"
+    }
+  ]
+}

@@ -1,0 +1,286 @@
+{
+  "head": "7271fab52ae59fe6e8dd1fc1d879335b6d79e778",
+  "patchSha256": "efab09aab03ab171a0876c5479ebe4e7c616fecc1fcf3ab9e892e596acc3efab",
+  "originalTestExit": 1,
+  "scope": "Same renderer main thread. Event families are independently unioned and nested. Gaps are intervals without a recorded RunTask, not proof of process idleness. Node receipt and the renderer trace use joined monotonic clocks.",
+  "reports": [
+    {
+      "locale": "zh-cn",
+      "reactReached": true,
+      "originalStartupPassed": false,
+      "traceThread": [61278, 18176088],
+      "traceSha256": "9255979bf1457419c8896e56c9a117b55ee68bfc56ec5028c40c2013248dbc3b",
+      "traceReceipt": {
+        "bytes": 580198353,
+        "traceEventArrayClosed": true,
+        "clockDomain": "MAC_MACH_ABSOLUTE_TIME",
+        "finalFlush": 1,
+        "buffers": [
+          {
+            "buffer_size": 1073741824,
+            "bytes_overwritten": 0,
+            "chunks_discarded": 0,
+            "sequence_packet_loss": 0,
+            "trace_writer_packet_loss": 0
+          },
+          {
+            "buffer_size": 262144,
+            "bytes_overwritten": 0,
+            "chunks_discarded": 0,
+            "sequence_packet_loss": 0,
+            "trace_writer_packet_loss": 0
+          }
+        ],
+        "stats": {}
+      },
+      "traceEventCount": 2710376,
+      "lastTraceEventRelativeToReactStartMs": 110174.647,
+      "lastSelectedRendererEventRelativeToReactStartMs": 109141.691,
+      "originalVerdictRelativeToReactStartMs": 113795.058,
+      "chunks": [
+        {
+          "asset": "chunk-2MALL255.js",
+          "netLogLastBodyAfterRequestMs": 71,
+          "netLogCompletedBody": true,
+          "cdpResponseDeliveryAfterLastBodyMs": null,
+          "observedCdpStages": ["request"]
+        },
+        {
+          "asset": "chunk-EK7DFB6S.js",
+          "netLogLastBodyAfterRequestMs": 87,
+          "netLogCompletedBody": true,
+          "cdpResponseDeliveryAfterLastBodyMs": null,
+          "observedCdpStages": ["request"]
+        }
+      ],
+      "stageMarks": {
+        "react-modules-begin": -13425.296,
+        "react-modules-return": -0.109,
+        "react-runtime-begin": 0.0
+      },
+      "moduleBodyMarks": [
+        {
+          "name": "pui-s4-module:chunk-BUSYA2B4.js:body-start",
+          "atMs": -33865.203
+        },
+        {
+          "name": "pui-s4-module:chunk-BUSYA2B4.js:body-end",
+          "atMs": -33865.156
+        }
+      ],
+      "namedRendererEvents": [],
+      "windows": [
+        {
+          "window": "last body to original deadline or import return",
+          "lengthMs": 91264.589,
+          "requestedEndRelativeToReactStartMs": 113795.058,
+          "boundariesRelativeToReactStartMs": [18910.058, 110174.647],
+          "observed": [
+            {
+              "event": "ThreadControllerImpl::RunTask",
+              "events": 1818,
+              "unionMs": 8585.314,
+              "longestMs": 8105.302
+            },
+            {
+              "event": "RunTask",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "RunMicrotasks",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "V8.RunMicrotasks",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "FunctionCall",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "v8.evaluateModule",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "v8.compileModule",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "EvaluateScript",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "Layout",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "Paint",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "MinorGC",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            }
+          ],
+          "largestRecordedTaskGaps": [
+            {
+              "fromReactStartMs": 19725.537,
+              "durationMs": 74892.728
+            },
+            {
+              "fromReactStartMs": 102724.292,
+              "durationMs": 6088.086
+            },
+            {
+              "fromReactStartMs": 109141.691,
+              "durationMs": 1032.956
+            },
+            {
+              "fromReactStartMs": 18910.058,
+              "durationMs": 660.977
+            },
+            {
+              "fromReactStartMs": 109136.269,
+              "durationMs": 0.397
+            },
+            {
+              "fromReactStartMs": 102723.664,
+              "durationMs": 0.145
+            },
+            {
+              "fromReactStartMs": 102724.079,
+              "durationMs": 0.113
+            },
+            {
+              "fromReactStartMs": 19715.26,
+              "durationMs": 0.085
+            }
+          ]
+        }
+      ],
+      "namedLoadingTraceEvents": [
+        {
+          "asset": "chunk-2MALL255.js",
+          "event": "CorsURLLoader::CorsURLLoader",
+          "withinRendererProcess": false,
+          "rendererMainThread": false,
+          "fromNetLogRequestMs": 0.2,
+          "fromLastBodyMs": -70.8
+        },
+        {
+          "asset": "chunk-EK7DFB6S.js",
+          "event": "CorsURLLoader::CorsURLLoader",
+          "withinRendererProcess": false,
+          "rendererMainThread": false,
+          "fromNetLogRequestMs": 0.419,
+          "fromLastBodyMs": -86.581
+        },
+        {
+          "asset": "chunk-2MALL255.js",
+          "event": "URLLoader::ProcessAcceptCHFrameOnConnected",
+          "withinRendererProcess": false,
+          "rendererMainThread": false,
+          "fromNetLogRequestMs": 1.991,
+          "fromLastBodyMs": -69.009
+        },
+        {
+          "asset": "chunk-EK7DFB6S.js",
+          "event": "URLLoader::ProcessAcceptCHFrameOnConnected",
+          "withinRendererProcess": false,
+          "rendererMainThread": false,
+          "fromNetLogRequestMs": 1.314,
+          "fromLastBodyMs": -85.686
+        },
+        {
+          "asset": "chunk-2MALL255.js",
+          "event": "network::URLLoader::SendResponseToClient",
+          "withinRendererProcess": false,
+          "rendererMainThread": false,
+          "fromNetLogRequestMs": 70.448,
+          "fromLastBodyMs": -0.552
+        },
+        {
+          "asset": "chunk-2MALL255.js",
+          "event": "ThrottlingURLLoader::OnReceiveResponse",
+          "withinRendererProcess": true,
+          "rendererMainThread": false,
+          "fromNetLogRequestMs": 70.673,
+          "fromLastBodyMs": -0.327
+        },
+        {
+          "asset": "chunk-2MALL255.js",
+          "event": "MojoURLLoaderClient::OnReceiveResponse",
+          "withinRendererProcess": true,
+          "rendererMainThread": false,
+          "fromNetLogRequestMs": 70.705,
+          "fromLastBodyMs": -0.295
+        },
+        {
+          "asset": "chunk-EK7DFB6S.js",
+          "event": "network::URLLoader::SendResponseToClient",
+          "withinRendererProcess": false,
+          "rendererMainThread": false,
+          "fromNetLogRequestMs": 87.258,
+          "fromLastBodyMs": 0.258
+        },
+        {
+          "asset": "chunk-EK7DFB6S.js",
+          "event": "ThrottlingURLLoader::OnReceiveResponse",
+          "withinRendererProcess": true,
+          "rendererMainThread": false,
+          "fromNetLogRequestMs": 87.377,
+          "fromLastBodyMs": 0.377
+        },
+        {
+          "asset": "chunk-EK7DFB6S.js",
+          "event": "MojoURLLoaderClient::OnReceiveResponse",
+          "withinRendererProcess": true,
+          "rendererMainThread": false,
+          "fromNetLogRequestMs": 87.407,
+          "fromLastBodyMs": 0.407
+        }
+      ],
+      "longestRendererTask": {
+        "fromReactStartMs": 94618.362,
+        "overlapMs": 8105.302,
+        "source": {
+          "src_file": "cc/trees/proxy_impl.cc",
+          "src_func": "ScheduledActionSendBeginMainFrame",
+          "src_line": 849
+        }
+      }
+    },
+    {
+      "locale": "en",
+      "reactReached": false,
+      "originalStartupPassed": null
+    }
+  ]
+}

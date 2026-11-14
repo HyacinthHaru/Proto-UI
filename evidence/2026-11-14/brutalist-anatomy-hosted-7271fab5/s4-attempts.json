@@ -1,0 +1,102 @@
+[
+  {
+    "attempt": "s4-startup-cn",
+    "originalTestExit": 1,
+    "english": "unselected",
+    "traceBytes": 537800061,
+    "traceSha256": "10f961df8acd3204a4e7e1be88552043dda410b525e88b01e5197b9ede31b9b6",
+    "traceEndMs": 115627.533,
+    "patchSha256": "4c0b6f3f73efb67698beb438bef54cc11fda2d1727f5f77bc4b9a0c5d8860757",
+    "logSha256": "412783fa48297a530f5490c9e1a6d27373dd007757b8fc40849173723a434388",
+    "observedReactImportReturn": false,
+    "namedChunkRequests": [
+      {
+        "asset": "chunk-2MALL255.js",
+        "netLogCompletedBody": true,
+        "netLogLastBodyAfterRequestMs": 8,
+        "observedCdpStages": ["request"]
+      },
+      {
+        "asset": "chunk-EK7DFB6S.js",
+        "netLogCompletedBody": true,
+        "netLogLastBodyAfterRequestMs": 7,
+        "observedCdpStages": ["request"]
+      }
+    ]
+  },
+  {
+    "attempt": "s4-loading-cn",
+    "originalTestExit": 1,
+    "english": "unselected",
+    "traceBytes": 580198353,
+    "traceSha256": "9255979bf1457419c8896e56c9a117b55ee68bfc56ec5028c40c2013248dbc3b",
+    "traceEndMs": 110174.647,
+    "patchSha256": "efab09aab03ab171a0876c5479ebe4e7c616fecc1fcf3ab9e892e596acc3efab",
+    "logSha256": "508798c9d6525d24a5fa25342be872af5ff38bd32cf5838b5cd9307540e2b53f",
+    "observedReactImportReturn": false,
+    "namedChunkRequests": [
+      {
+        "asset": "chunk-2MALL255.js",
+        "netLogCompletedBody": true,
+        "netLogLastBodyAfterRequestMs": 71,
+        "observedCdpStages": ["request"]
+      },
+      {
+        "asset": "chunk-EK7DFB6S.js",
+        "netLogCompletedBody": true,
+        "netLogLastBodyAfterRequestMs": 87,
+        "observedCdpStages": ["request"]
+      }
+    ]
+  },
+  {
+    "attempt": "s4-continuation-cn",
+    "originalTestExit": 1,
+    "english": "unselected",
+    "traceBytes": 604111246,
+    "traceSha256": "785423a9f17a6717ca64b05512edf24e46b77ca2107bc3992fd3df4a22cf1b55",
+    "traceEndMs": 148738.377,
+    "patchSha256": "1b74682fc705f13f4f40c8e30e487757e3b14737582bfd29c9ca4a0ec9c6e668",
+    "logSha256": "abcff8a37fdabf9af47b510467e921782ba221aebecebd3c78554c23b533cf21",
+    "observedReactImportReturn": false,
+    "namedChunkRequests": [
+      {
+        "asset": "chunk-2MALL255.js",
+        "netLogCompletedBody": true,
+        "netLogLastBodyAfterRequestMs": 10,
+        "observedCdpStages": ["request"]
+      },
+      {
+        "asset": "chunk-EK7DFB6S.js",
+        "netLogCompletedBody": true,
+        "netLogLastBodyAfterRequestMs": 8,
+        "observedCdpStages": ["request"]
+      }
+    ]
+  },
+  {
+    "attempt": "s4-main-loader-control",
+    "originalTestExit": 1,
+    "english": "unselected",
+    "traceBytes": 562718387,
+    "traceSha256": "82c7788f7d22a08b177e92ab8d37ba0cf98929b3b82140a2f22055cde99ad428",
+    "traceEndMs": 109837.557,
+    "patchSha256": "d893edf4d9fa80c2ffbc5a58618d3133a1b2f9b88ffd5bde8e2e9d29ada8e95c",
+    "logSha256": "5df880ed2e85d6a0977fbc8f1dfa602f077f2061811fd11dd70334f834318ce9",
+    "observedReactImportReturn": false,
+    "namedChunkRequests": [
+      {
+        "asset": "chunk-EK7DFB6S.js",
+        "netLogCompletedBody": true,
+        "netLogLastBodyAfterRequestMs": 5,
+        "observedCdpStages": ["request"]
+      },
+      {
+        "asset": "chunk-2MALL255.js",
+        "netLogCompletedBody": true,
+        "netLogLastBodyAfterRequestMs": 10,
+        "observedCdpStages": ["request"]
+      }
+    ]
+  }
+]

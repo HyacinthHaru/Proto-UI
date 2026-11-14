@@ -1,0 +1,203 @@
+{
+  "head": "7271fab52ae59fe6e8dd1fc1d879335b6d79e778",
+  "patchSha256": "1b74682fc705f13f4f40c8e30e487757e3b14737582bfd29c9ca4a0ec9c6e668",
+  "originalTestExit": 1,
+  "scope": "Same renderer main thread. Event families are independently unioned and nested. Gaps are intervals without a recorded RunTask, not proof of process idleness. Node receipt and the renderer trace use joined monotonic clocks.",
+  "reports": [
+    {
+      "locale": "zh-cn",
+      "reactReached": true,
+      "originalStartupPassed": false,
+      "traceThread": [62812, 18191856],
+      "traceSha256": "785423a9f17a6717ca64b05512edf24e46b77ca2107bc3992fd3df4a22cf1b55",
+      "traceReceipt": {
+        "bytes": 604111246,
+        "traceEventArrayClosed": true,
+        "clockDomain": "MAC_MACH_ABSOLUTE_TIME",
+        "finalFlush": 1,
+        "buffers": [
+          {
+            "buffer_size": 1073741824,
+            "bytes_overwritten": 0,
+            "chunks_discarded": 0,
+            "sequence_packet_loss": 0,
+            "trace_writer_packet_loss": 0
+          },
+          {
+            "buffer_size": 262144,
+            "bytes_overwritten": 0,
+            "chunks_discarded": 0,
+            "sequence_packet_loss": 0,
+            "trace_writer_packet_loss": 0
+          }
+        ],
+        "stats": {}
+      },
+      "traceEventCount": 2816624,
+      "lastTraceEventRelativeToReactStartMs": 148738.377,
+      "lastSelectedRendererEventRelativeToReactStartMs": 79503.196,
+      "chunks": [
+        {
+          "asset": "chunk-2MALL255.js",
+          "netLogLastBodyAfterRequestMs": 10,
+          "netLogCompletedBody": true,
+          "cdpResponseDeliveryAfterLastBodyMs": null,
+          "observedCdpStages": ["request"]
+        },
+        {
+          "asset": "chunk-EK7DFB6S.js",
+          "netLogLastBodyAfterRequestMs": 8,
+          "netLogCompletedBody": true,
+          "cdpResponseDeliveryAfterLastBodyMs": null,
+          "observedCdpStages": ["request"]
+        }
+      ],
+      "stageMarks": {
+        "react-modules-begin": -512.24,
+        "react-modules-return": -0.095,
+        "react-runtime-begin": 0.0
+      },
+      "moduleBodyMarks": [
+        {
+          "name": "pui-s4-module:chunk-BUSYA2B4.js:body-start",
+          "atMs": -28701.602
+        },
+        {
+          "name": "pui-s4-module:chunk-BUSYA2B4.js:body-end",
+          "atMs": -28701.561
+        }
+      ],
+      "namedRendererEvents": [],
+      "windows": [
+        {
+          "window": "last body to trace cutoff during post-verdict observation",
+          "lengthMs": 137188.776,
+          "requestedEndRelativeToReactStartMs": 160065.601,
+          "boundariesRelativeToReactStartMs": [11549.601, 148738.377],
+          "observed": [
+            {
+              "event": "ThreadControllerImpl::RunTask",
+              "events": 3111,
+              "unionMs": 7707.143,
+              "longestMs": 7387.496
+            },
+            {
+              "event": "RunTask",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "RunMicrotasks",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "V8.RunMicrotasks",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "FunctionCall",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "v8.evaluateModule",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "v8.compileModule",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "EvaluateScript",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "Layout",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "Paint",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "MinorGC",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            }
+          ],
+          "largestRecordedTaskGaps": [
+            {
+              "fromReactStartMs": 79503.196,
+              "durationMs": 69235.181
+            },
+            {
+              "fromReactStartMs": 16731.978,
+              "durationMs": 55379.877
+            },
+            {
+              "fromReactStartMs": 15431.927,
+              "durationMs": 1227.848
+            },
+            {
+              "fromReactStartMs": 14199.296,
+              "durationMs": 1187.407
+            },
+            {
+              "fromReactStartMs": 13156.149,
+              "durationMs": 987.964
+            },
+            {
+              "fromReactStartMs": 12225.592,
+              "durationMs": 885.845
+            },
+            {
+              "fromReactStartMs": 11635.581,
+              "durationMs": 509.977
+            },
+            {
+              "fromReactStartMs": 11573.87,
+              "durationMs": 35.039
+            }
+          ]
+        }
+      ],
+      "startupWaitRejectionRelativeToReactStartMs": 160065.601
+    },
+    {
+      "locale": "en",
+      "reactReached": false,
+      "originalStartupPassed": null
+    }
+  ],
+  "diagnosticContinuation": {
+    "afterOriginalCaseFinished": true,
+    "observationMs": 40003,
+    "originalCaseDeadlineMs": 150000,
+    "originalPredicateTimeoutMs": 60000,
+    "scope": "The startup-wait rejection marker followed the delayed diagnostic context close. It is not the original test verdict. The runner independently reported a 150s case timeout."
+  },
+  "rawLogSha256": "abcff8a37fdabf9af47b510467e921782ba221aebecebd3c78554c23b533cf21"
+}

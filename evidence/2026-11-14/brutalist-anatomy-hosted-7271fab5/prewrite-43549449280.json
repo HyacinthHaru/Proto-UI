@@ -1,0 +1,1973 @@
+[
+  {
+    "arm": "baseline",
+    "carrier": "86018cbe7a6fa58ff78e4432f659ca904c39bedb",
+    "traceSha256": "4eff7ec801430cdda068dc33e86f4ab4206633c833c68e4917a046cc6e0688e8",
+    "clickToWriteMs": 1448.0,
+    "setterPageMs": 0.1,
+    "originalPollVerdict": "rejected",
+    "originalPollVerdictAfterPollMs": 1001.474,
+    "clickToPollStartBoundsMs": [201.204, 202.302],
+    "originalPollVerdictAfterClickBoundsMs": [1202.678, 1203.776],
+    "familyWriteFinishedAfterPollBoundsMs": [1245.798, 1246.896],
+    "writeStartRelativeToVerdictBoundsMs": [244.224, 245.322],
+    "queryReturnedAfterPollMs": 1948.542,
+    "runTaskUnionMs": 1434.843,
+    "metrics": {
+      "RunTask": [5304, 1434.843],
+      "FireAnimationFrame": [17, 167.354],
+      "EventDispatch": [96, 174.098],
+      "FunctionCall": [4166, 1041.53],
+      "UpdateLayoutTree": [25, 306.069],
+      "Layout": [9, 39.476],
+      "PrePaint": [10, 1.974],
+      "Paint": [7, 1.751],
+      "MinorGC": [5, 43.414]
+    },
+    "longTasks": [
+      {
+        "fromClickMs": 0.0,
+        "toClickMs": 162.758,
+        "lengthMs": 162.758,
+        "phase": [
+          ["EventDispatch", "select"],
+          ["EventDispatch", "valueChange"],
+          ["EventDispatch", "blur"],
+          ["EventDispatch", "focusout"],
+          ["EventDispatch", "DOMFocusOut"],
+          ["EventDispatch", "beforeLeave"],
+          ["EventDispatch", "focus"],
+          ["EventDispatch", "focusin"],
+          ["EventDispatch", "DOMFocusIn"],
+          ["EventDispatch", "afterLeave"]
+        ],
+        "calls": [
+          {
+            "path": "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+            "line": 762,
+            "name": "",
+            "events": 1,
+            "unionMs": 57.092
+          },
+          {
+            "path": "packages/adapters/base/src/platform/portal-direction.ts",
+            "line": 17,
+            "name": "sourceObserver",
+            "events": 1,
+            "unionMs": 51.192
+          },
+          {
+            "path": "packages/adapters/base/src/events/web-event-router.ts",
+            "line": 486,
+            "name": "",
+            "events": 4,
+            "unionMs": 22.675
+          },
+          {
+            "path": "packages/adapters/web-component/src/runtime/modules.ts",
+            "line": 1363,
+            "name": "",
+            "events": 1,
+            "unionMs": 10.276
+          },
+          {
+            "path": "packages/adapters/base/src/platform/instance-tree.ts",
+            "line": 44,
+            "name": "registration.<computed>",
+            "events": 271,
+            "unionMs": 4.679
+          },
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 1067,
+            "name": "",
+            "events": 2,
+            "unionMs": 2.029
+          },
+          {
+            "path": "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+            "line": 90,
+            "name": "",
+            "events": 1,
+            "unionMs": 0.98
+          },
+          {
+            "path": "packages/modules/control-label/src/web.ts",
+            "line": 42,
+            "name": "",
+            "events": 1,
+            "unionMs": 0.35
+          },
+          {
+            "path": "packages/adapters/web-component/src/portal-mount.ts",
+            "line": 205,
+            "name": "onMutation",
+            "events": 1,
+            "unionMs": 0.222
+          },
+          {
+            "path": "apps/www/src/components/documentation-image-preview.ts",
+            "line": 369,
+            "name": "",
+            "events": 2,
+            "unionMs": 0.214
+          },
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 473,
+            "name": "",
+            "events": 18,
+            "unionMs": 0.116
+          },
+          {
+            "path": "packages/modules/a11y/src/web.ts",
+            "line": 93,
+            "name": "",
+            "events": 1,
+            "unionMs": 0.101
+          }
+        ],
+        "leaf": [
+          ["packages/adapters/base/src/platform/portal-direction.ts", 28, "sync", 51.143],
+          ["", 0, "getPropertyValue", 15.742],
+          ["", 0, "(program)", 15.051],
+          ["", 0, "set cssText", 10.998],
+          ["packages/adapters/web-component/src/runtime/modules.ts", 630, "visitRule", 8.119],
+          [
+            "apps/www/src/components/PrototypePreviewer/demo-types.ts",
+            59,
+            "hasImportantPriority",
+            5.759
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-families.ts",
+            2112,
+            "validateProjectionFamilyManifest",
+            3.771
+          ],
+          ["", 1077, "isOverflowElement", 2.962],
+          ["apps/www/src/components/PrototypePreviewer/demo-types.ts", 1, "assertJsonLike", 2.358],
+          ["", 0, "createElement", 1.98],
+          ["", 0, "querySelectorAll", 1.569],
+          ["packages/adapters/web-component/src/runtime/modules.ts", 833, "patched", 1.538],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+            162,
+            "(anonymous)",
+            1.403
+          ],
+          ["packages/modules/anatomy/src/impl.ts", 890, "(anonymous)", 1.213],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-families.ts",
+            2217,
+            "resolveProjectionPart",
+            1.202
+          ]
+        ],
+        "branches": [
+          [
+            "apps/www/src/components/Homepage/homepage-runtime-client.ts",
+            695,
+            "requestFamily",
+            56.531
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+            762,
+            "(anonymous)",
+            56.531
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+            338,
+            "request",
+            56.202
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+            338,
+            "(anonymous)",
+            56.202
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+            152,
+            "trackRequest",
+            56.202
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+            128,
+            "trackSnapshotOperation",
+            56.202
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+            299,
+            "runRequest",
+            56.02
+          ],
+          ["packages/adapters/base/src/platform/portal-direction.ts", 28, "sync", 51.143],
+          ["packages/adapters/base/src/platform/portal-direction.ts", 17, "sourceObserver", 51.143],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+            330,
+            "(anonymous)",
+            39.316
+          ],
+          [
+            "apps/www/src/components/Homepage/homepage-runtime-client.ts",
+            407,
+            "materialize",
+            39.316
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+            151,
+            "trackMaterialization",
+            39.316
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+            153,
+            "materializeGeneration",
+            39.316
+          ],
+          ["packages/runtime/src/instance/execute/callback-scope.ts", 43, "runInScope", 36.21],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-materializer.ts",
+            262,
+            "prepareProjectionCandidate",
+            34.816
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-materializer.ts",
+            224,
+            "materializeProjectionCandidate",
+            34.816
+          ],
+          ["packages/runtime/src/instance/execute/callback-scope.ts", 40, "runNoSync", 34.448],
+          ["packages/modules/context/src/create.ts", 22, "update", 34.085],
+          ["packages/runtime/src/kernel/handles/run.ts", 30, "update", 34.085],
+          ["packages/modules/context/src/center.ts", 96, "updateFromProvider", 34.085],
+          ["packages/runtime/src/instance/instance.ts", 116, "(anonymous)", 34.085],
+          ["packages/modules/context/src/center.ts", 113, "dispatch", 34.085],
+          ["packages/modules/context/src/impl.ts", 97, "wrapped", 34.085],
+          ["packages/modules/context/src/impl.ts", 193, "update", 34.085]
+        ]
+      },
+      {
+        "fromClickMs": 226.427,
+        "toClickMs": 337.053,
+        "lengthMs": 110.626,
+        "phase": [],
+        "calls": [
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 274,
+            "name": "connectedCallback",
+            "events": 22,
+            "unionMs": 73.298
+          },
+          {
+            "path": "packages/runtime/src/instance/session.ts",
+            "line": 292,
+            "name": "",
+            "events": 18,
+            "unionMs": 4.736
+          },
+          {
+            "path": "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+            "line": 90,
+            "name": "",
+            "events": 3,
+            "unionMs": 3.281
+          },
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 176,
+            "name": "ProtoElement",
+            "events": 21,
+            "unionMs": 1.077
+          },
+          {
+            "path": "packages/adapters/base/src/platform/instance-tree.ts",
+            "line": 352,
+            "name": "",
+            "events": 12,
+            "unionMs": 0.736
+          },
+          {
+            "path": "packages/adapters/base/src/platform/instance-tree.ts",
+            "line": 350,
+            "name": "",
+            "events": 12,
+            "unionMs": 0.668
+          },
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 515,
+            "name": "",
+            "events": 18,
+            "unionMs": 0.646
+          },
+          {
+            "path": "packages/modules/control-label/src/web.ts",
+            "line": 42,
+            "name": "",
+            "events": 3,
+            "unionMs": 0.383
+          },
+          {
+            "path": "packages/modules/anatomy/src/web/order-observer.ts",
+            "line": 9,
+            "name": "",
+            "events": 6,
+            "unionMs": 0.346
+          },
+          {
+            "path": "apps/www/src/components/PrototypePreviewer/projection-materializer.ts",
+            "line": 130,
+            "name": "",
+            "events": 2,
+            "unionMs": 0.306
+          },
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 473,
+            "name": "",
+            "events": 54,
+            "unionMs": 0.23
+          },
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 1059,
+            "name": "disconnectedCallback",
+            "events": 4,
+            "unionMs": 0.201
+          }
+        ],
+        "leaf": [
+          ["", 0, "(program)", 11.517],
+          ["packages/modules/anatomy/src/impl.ts", 890, "(anonymous)", 6.85],
+          ["", 0, "compareDocumentPosition", 5.016],
+          ["", 0, "createElement", 3.961],
+          ["", 0, "(garbage collector)", 3.564],
+          ["", 0, "appendChild", 2.892],
+          ["", 0, "replaceChildren", 2.798],
+          ["packages/modules/anatomy/src/impl.ts", 737, "(anonymous)", 2.448],
+          ["packages/core/src/spec/feedback/semantic-merge.ts", 54, "getSemanticGroupKeyV0", 2.4],
+          ["packages/modules/anatomy/src/impl.ts", 701, "computeOrderSignature", 2.212],
+          ["", 0, "setAttribute", 2.192],
+          [
+            "packages/adapters/web-component/src/host-display.ts",
+            58,
+            "hasExplicitDisplayClass",
+            1.848
+          ],
+          ["packages/modules/anatomy/src/impl.ts", 879, "resolveCurrentDomain", 1.814],
+          ["apps/www/src/components/PrototypePreviewer/demo-dynamic-children.ts", 9, "copy", 1.732],
+          ["packages/modules/anatomy/src/impl.ts", 626, "notifyTargetChange", 1.605]
+        ],
+        "branches": [
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-materializer.ts",
+            262,
+            "prepareProjectionCandidate",
+            94.574
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/demo-renderer.ts",
+            1556,
+            "renderDemo",
+            91.05
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/demo-renderer.ts",
+            330,
+            "renderDemoWc",
+            91.05
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/demo-renderer.ts",
+            191,
+            "renderDemoNodeWc",
+            76.388
+          ],
+          ["packages/adapters/web-component/src/adapt.ts", 274, "connectedCallback", 70.766],
+          ["packages/adapters/web-component/src/adapt.ts", 306, "_connectOwner", 70.728],
+          ["packages/runtime/src/instance/session.ts", 144, "renderCommit", 49.966],
+          ["packages/adapters/web-component/src/adapt.ts", 615, "attachView", 49.937],
+          ["packages/adapters/web-component/src/runtime/session.ts", 167, "commit", 49.31],
+          ["packages/adapters/base/src/host/view-epoch-owner.ts", 82, "attachView", 47.623],
+          ["packages/runtime/src/instance/session.ts", 246, "mount", 44.349],
+          ["packages/adapters/base/src/host/adapter-host.ts", 33, "mount", 44.349],
+          ["packages/runtime/src/instance/session.ts", 155, "done", 37.173],
+          ["packages/runtime/src/instance/session.ts", 282, "(anonymous)", 26.846],
+          ["packages/runtime/src/instance/session.ts", 284, "scheduleFinish", 26.846],
+          [
+            "packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+            181,
+            "setProtoPhase",
+            24.555
+          ],
+          ["packages/modules/anatomy/src/impl.ts", 356, "syncStructure", 21.025],
+          ["packages/modules/anatomy/src/impl.ts", 620, "notifyStructuralChange", 20.497],
+          ["packages/modules/anatomy/src/impl.ts", 688, "emitOrderChangeIfNeeded", 20.025],
+          ["packages/modules/anatomy/src/create.ts", 50, "onProtoPhase", 18.581],
+          ["packages/modules/anatomy/src/impl.ts", 501, "onProtoPhase", 18.581],
+          ["packages/runtime/src/instance/session.ts", 12, "createRuntimeSession", 17.574],
+          ["packages/adapters/base/src/host/view-epoch-owner.ts", 48, "initialize", 17.574],
+          [
+            "packages/adapters/web-component/src/runtime/session.ts",
+            6,
+            "createWebComponentHostSession",
+            17.574
+          ]
+        ]
+      },
+      {
+        "fromClickMs": 370.31,
+        "toClickMs": 425.285,
+        "lengthMs": 54.975,
+        "phase": [],
+        "calls": [
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 274,
+            "name": "connectedCallback",
+            "events": 24,
+            "unionMs": 34.909
+          },
+          {
+            "path": "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+            "line": 90,
+            "name": "",
+            "events": 1,
+            "unionMs": 1.623
+          },
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 176,
+            "name": "ProtoElement",
+            "events": 24,
+            "unionMs": 1.058
+          },
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 515,
+            "name": "",
+            "events": 24,
+            "unionMs": 0.539
+          },
+          {
+            "path": "apps/www/src/components/PrototypePreviewer/projection-materializer.ts",
+            "line": 130,
+            "name": "",
+            "events": 1,
+            "unionMs": 0.374
+          },
+          {
+            "path": "packages/runtime/src/instance/session.ts",
+            "line": 292,
+            "name": "",
+            "events": 24,
+            "unionMs": 0.289
+          },
+          {
+            "path": "packages/modules/control-label/src/web.ts",
+            "line": 42,
+            "name": "",
+            "events": 1,
+            "unionMs": 0.231
+          },
+          {
+            "path": "packages/adapters/web-component/src/runtime/modules.ts",
+            "line": 1058,
+            "name": "",
+            "events": 24,
+            "unionMs": 0.141
+          },
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 473,
+            "name": "",
+            "events": 24,
+            "unionMs": 0.115
+          },
+          {
+            "path": "packages/adapters/web-component/src/runtime/modules.ts",
+            "line": 1053,
+            "name": "normalizeOwnedSurface",
+            "events": 24,
+            "unionMs": 0.111
+          },
+          {
+            "path": "apps/www/src/components/site-code-surface.ts",
+            "line": 243,
+            "name": "scan",
+            "events": 1,
+            "unionMs": 0.106
+          },
+          {
+            "path": "packages/modules/a11y/src/web.ts",
+            "line": 93,
+            "name": "",
+            "events": 1,
+            "unionMs": 0.099
+          }
+        ],
+        "leaf": [
+          ["", 0, "(garbage collector)", 6.398],
+          ["", 0, "appendChild", 4.798],
+          ["", 0, "(program)", 3.737],
+          ["", 0, "createElement", 3.677],
+          ["", 0, "addEventListener", 2.067],
+          ["apps/www/src/components/PrototypePreviewer/demo-dynamic-children.ts", 9, "copy", 1.735],
+          ["", 0, "set cssText", 1.562],
+          ["", 0, "querySelectorAll", 1.224],
+          [
+            "packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+            18,
+            "RuntimeModuleOrchestrator",
+            1.208
+          ],
+          ["packages/modules/rule-meta/src/create.ts", 118, "(anonymous)", 1.054],
+          ["packages/modules/rule/src/compile.ts", 18, "compileRule", 1.029],
+          ["packages/modules/base/src/create-module.ts", 4, "createModule", 0.788],
+          [
+            "packages/runtime/src/orchestrator/module-orchestrator/graph.ts",
+            1,
+            "buildModuleGraph",
+            0.696
+          ],
+          ["", 0, "getPropertyValue", 0.679],
+          ["packages/prototypes/brutalist/src/text/root.proto.ts", 5, "setup", 0.673]
+        ],
+        "branches": [
+          [
+            "apps/www/src/components/PrototypePreviewer/demo-renderer.ts",
+            1556,
+            "renderDemo",
+            44.528
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/demo-renderer.ts",
+            330,
+            "renderDemoWc",
+            44.528
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-materializer.ts",
+            262,
+            "prepareProjectionCandidate",
+            38.472
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/demo-renderer.ts",
+            191,
+            "renderDemoNodeWc",
+            36.711
+          ],
+          ["packages/adapters/web-component/src/adapt.ts", 274, "connectedCallback", 26.113],
+          ["packages/adapters/web-component/src/adapt.ts", 306, "_connectOwner", 26.078],
+          ["packages/adapters/web-component/src/adapt.ts", 615, "attachView", 12.908],
+          ["packages/adapters/base/src/host/view-epoch-owner.ts", 48, "initialize", 11.672],
+          [
+            "packages/adapters/web-component/src/runtime/session.ts",
+            6,
+            "createWebComponentHostSession",
+            11.672
+          ],
+          ["packages/adapters/web-component/src/adapt.ts", 565, "createHostSession", 11.672],
+          ["packages/runtime/src/instance/session.ts", 12, "createRuntimeSession", 11.51],
+          ["packages/adapters/base/src/host/adapter-host.ts", 3, "createAdapterHost", 11.51],
+          ["packages/runtime/src/instance/instance.ts", 39, "createRuntimeInstance", 10.088],
+          ["packages/adapters/base/src/host/view-epoch-owner.ts", 82, "attachView", 8.631],
+          ["apps/www/src/components/site-typography.ts", 166, "materialize", 6.752],
+          ["packages/adapters/base/src/host/adapter-host.ts", 33, "mount", 6.396],
+          ["packages/runtime/src/instance/session.ts", 246, "mount", 6.28],
+          ["packages/runtime/src/instance/session.ts", 144, "renderCommit", 5.255],
+          [
+            "packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+            18,
+            "RuntimeModuleOrchestrator",
+            5.169
+          ],
+          ["packages/adapters/web-component/src/runtime/session.ts", 167, "commit", 4.906],
+          ["packages/runtime/src/instance/session.ts", 155, "done", 4.743],
+          [
+            "apps/www/src/components/PrototypePreviewer/demo-dynamic-children.ts",
+            67,
+            "createDynamicChildrenModel",
+            4.259
+          ],
+          ["packages/runtime/src/instance/session.ts", 282, "(anonymous)", 3.937],
+          ["packages/runtime/src/instance/session.ts", 284, "scheduleFinish", 3.937]
+        ]
+      },
+      {
+        "fromClickMs": 494.353,
+        "toClickMs": 1261.964,
+        "lengthMs": 767.611,
+        "phase": [["EventDispatch", "beforeEnter"]],
+        "calls": [
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 274,
+            "name": "connectedCallback",
+            "events": 160,
+            "unionMs": 487.34
+          },
+          {
+            "path": "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+            "line": 59,
+            "name": "notify",
+            "events": 3,
+            "unionMs": 59.891
+          },
+          {
+            "path": "packages/runtime/src/instance/session.ts",
+            "line": 292,
+            "name": "",
+            "events": 154,
+            "unionMs": 41.654
+          },
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 515,
+            "name": "",
+            "events": 154,
+            "unionMs": 20.143
+          },
+          {
+            "path": "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+            "line": 90,
+            "name": "",
+            "events": 2,
+            "unionMs": 16.621
+          },
+          {
+            "path": "packages/adapters/web-component/src/runtime/modules.ts",
+            "line": 752,
+            "name": "",
+            "events": 2,
+            "unionMs": 11.567
+          },
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 176,
+            "name": "ProtoElement",
+            "events": 161,
+            "unionMs": 9.124
+          },
+          {
+            "path": "packages/adapters/web-component/src/runtime/modules.ts",
+            "line": 1363,
+            "name": "",
+            "events": 5,
+            "unionMs": 4.157
+          },
+          {
+            "path": "packages/adapters/base/src/platform/instance-tree.ts",
+            "line": 350,
+            "name": "",
+            "events": 43,
+            "unionMs": 3.359
+          },
+          {
+            "path": "packages/adapters/base/src/platform/instance-tree.ts",
+            "line": 352,
+            "name": "",
+            "events": 43,
+            "unionMs": 3.062
+          },
+          {
+            "path": "apps/www/src/components/PrototypePreviewer/projection-materializer.ts",
+            "line": 130,
+            "name": "",
+            "events": 2,
+            "unionMs": 2.271
+          },
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 473,
+            "name": "",
+            "events": 268,
+            "unionMs": 1.834
+          }
+        ],
+        "leaf": [
+          ["", 0, "getPropertyValue", 104.879],
+          ["", 0, "(garbage collector)", 68.227],
+          ["", 0, "(program)", 38.624],
+          ["", 0, "appendChild", 34.298],
+          ["packages/adapters/web-component/src/runtime/modules.ts", 630, "visitRule", 32.596],
+          ["", 0, "addEventListener", 29.906],
+          [
+            "packages/modules/text-control/src/web.ts",
+            136,
+            "replaceValuePreservingEditingSession",
+            29.434
+          ],
+          ["", 0, "createElement", 26.149],
+          ["", 0, "setAttribute", 13.408],
+          ["packages/core/src/spec/feedback/semantic-merge.ts", 54, "getSemanticGroupKeyV0", 9.847],
+          ["", 0, "get selectorText", 8.651],
+          [
+            "packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+            18,
+            "RuntimeModuleOrchestrator",
+            7.637
+          ],
+          ["", 0, "removeAttribute", 6.96],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+            61,
+            "addMarkerCoordinates",
+            6.007
+          ],
+          ["", 0, "set cssText", 5.865]
+        ],
+        "branches": [
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-materializer.ts",
+            262,
+            "prepareProjectionCandidate",
+            530.856
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/demo-renderer.ts",
+            1556,
+            "renderDemo",
+            530.382
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/demo-renderer.ts",
+            330,
+            "renderDemoWc",
+            530.218
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/demo-renderer.ts",
+            191,
+            "renderDemoNodeWc",
+            496.239
+          ],
+          ["packages/adapters/web-component/src/adapt.ts", 274, "connectedCallback", 418.642],
+          ["packages/adapters/web-component/src/adapt.ts", 306, "_connectOwner", 417.279],
+          ["packages/adapters/web-component/src/adapt.ts", 615, "attachView", 283.723],
+          ["packages/adapters/base/src/host/view-epoch-owner.ts", 82, "attachView", 238.622],
+          ["packages/adapters/base/src/host/adapter-host.ts", 33, "mount", 201.982],
+          ["packages/runtime/src/instance/session.ts", 246, "mount", 201.804],
+          ["packages/runtime/src/instance/session.ts", 144, "renderCommit", 152.691],
+          ["packages/adapters/web-component/src/runtime/session.ts", 167, "commit", 148.747],
+          ["packages/runtime/src/instance/session.ts", 155, "done", 143.592],
+          ["packages/adapters/base/src/host/view-epoch-owner.ts", 48, "initialize", 120.228],
+          ["packages/adapters/web-component/src/adapt.ts", 565, "createHostSession", 119.394],
+          [
+            "packages/adapters/web-component/src/runtime/session.ts",
+            6,
+            "createWebComponentHostSession",
+            118.234
+          ],
+          ["packages/adapters/base/src/host/adapter-host.ts", 3, "createAdapterHost", 117.558],
+          ["packages/runtime/src/instance/session.ts", 12, "createRuntimeSession", 117.396],
+          ["packages/runtime/src/instance/session.ts", 282, "(anonymous)", 111.19],
+          ["packages/runtime/src/instance/session.ts", 284, "scheduleFinish", 110.842],
+          ["packages/runtime/src/instance/session.ts", 127, "setMountPhase", 109.008],
+          ["packages/runtime/src/instance/instance.ts", 39, "createRuntimeInstance", 103.434],
+          [
+            "packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+            193,
+            "setMountPhase",
+            102.504
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+            26,
+            "current",
+            99.569
+          ]
+        ]
+      },
+      {
+        "fromClickMs": 1261.989,
+        "toClickMs": 1448.0,
+        "lengthMs": 186.011,
+        "phase": [
+          ["EventDispatch", "transitionstart"],
+          ["EventDispatch", "transitionstart"],
+          ["EventDispatch", "transitionstart"],
+          ["EventDispatch", "transitionstart"],
+          ["EventDispatch", "transitionstart"],
+          ["EventDispatch", "transitionstart"],
+          ["EventDispatch", "transitionstart"],
+          ["EventDispatch", "transitionstart"],
+          ["EventDispatch", "transitionstart"],
+          ["EventDispatch", "transitionstart"]
+        ],
+        "calls": [
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 274,
+            "name": "connectedCallback",
+            "events": 8,
+            "unionMs": 35.237
+          },
+          {
+            "path": "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+            "line": 90,
+            "name": "",
+            "events": 2,
+            "unionMs": 8.763
+          },
+          {
+            "path": "packages/adapters/web-component/src/runtime/modules.ts",
+            "line": 1725,
+            "name": "onProjectionEvent",
+            "events": 1774,
+            "unionMs": 6.05
+          },
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 1059,
+            "name": "disconnectedCallback",
+            "events": 6,
+            "unionMs": 1.169
+          },
+          {
+            "path": "packages/modules/feedback/src/motion/projector.ts",
+            "line": 131,
+            "name": "",
+            "events": 2,
+            "unionMs": 0.915
+          },
+          {
+            "path": "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+            "line": 59,
+            "name": "notify",
+            "events": 2,
+            "unionMs": 0.212
+          },
+          {
+            "path": "packages/adapters/web-component/src/runtime/modules.ts",
+            "line": 1363,
+            "name": "",
+            "events": 4,
+            "unionMs": 0.096
+          },
+          {
+            "path": "apps/www/src/components/documentation-image-preview.ts",
+            "line": 369,
+            "name": "",
+            "events": 2,
+            "unionMs": 0.077
+          },
+          {
+            "path": "packages/adapters/web-component/src/runtime/modules.ts",
+            "line": 1496,
+            "name": "",
+            "events": 4,
+            "unionMs": 0.055
+          },
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 473,
+            "name": "",
+            "events": 2,
+            "unionMs": 0.015
+          },
+          {
+            "path": "apps/www/src/components/PrototypePreviewer/projection-materializer.ts",
+            "line": 33,
+            "name": "",
+            "events": 1,
+            "unionMs": 0.006
+          }
+        ],
+        "leaf": [
+          ["apps/www/src/components/site-typography.ts", 98, "preserveSelection", 93.018],
+          ["", 0, "(program)", 37.018],
+          ["packages/modules/hit-participation/src/impl.ts", 173, "getEffectiveRegions", 8.195],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-theme.ts",
+            106,
+            "applyProjectionThemeSurfaceStyle",
+            4.611
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+            679,
+            "stampProjectionSurfaces",
+            4.109
+          ],
+          ["", 0, "append", 4.004],
+          ["", 0, "getPropertyValue", 3.96],
+          ["packages/modules/expose/src/create.ts", 11, "build", 2.064],
+          ["", 0, "getPropertyPriority", 1.317],
+          ["", 0, "addEventListener", 1.29],
+          [
+            "packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+            18,
+            "RuntimeModuleOrchestrator",
+            1.185
+          ],
+          ["packages/runtime/src/kernel/handles/def.ts", 212, "rule", 1.09],
+          ["", 0, "querySelectorAll", 0.881],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+            173,
+            "updateRendererThemeSurfaceStyles",
+            0.868
+          ],
+          ["packages/modules/feedback/src/create.ts", 35, "Impl", 0.832]
+        ],
+        "branches": [
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+            153,
+            "materializeGeneration",
+            142.099
+          ],
+          ["apps/www/src/components/Homepage/homepage-runtime-client.ts", 477, "activate", 133.327],
+          ["apps/www/src/components/site-typography.ts", 98, "preserveSelection", 131.796],
+          ["apps/www/src/components/site-typography.ts", 295, "activate", 131.796],
+          ["apps/www/src/components/site-typography.ts", 297, "(anonymous)", 38.778],
+          ["packages/adapters/web-component/src/adapt.ts", 274, "connectedCallback", 34.6],
+          ["packages/adapters/web-component/src/adapt.ts", 306, "_connectOwner", 34.078],
+          ["packages/runtime/src/instance/session.ts", 12, "createRuntimeSession", 15.702],
+          ["packages/adapters/base/src/host/view-epoch-owner.ts", 48, "initialize", 15.702],
+          [
+            "packages/adapters/web-component/src/runtime/session.ts",
+            6,
+            "createWebComponentHostSession",
+            15.702
+          ],
+          ["packages/adapters/web-component/src/adapt.ts", 565, "createHostSession", 15.702],
+          ["packages/adapters/base/src/host/adapter-host.ts", 3, "createAdapterHost", 15.702],
+          ["packages/runtime/src/instance/instance.ts", 39, "createRuntimeInstance", 14.797],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+            679,
+            "stampProjectionSurfaces",
+            14.704
+          ],
+          ["packages/runtime/src/instance/session.ts", 144, "renderCommit", 14.21],
+          ["packages/runtime/src/instance/session.ts", 155, "done", 12.552],
+          ["packages/adapters/web-component/src/runtime/session.ts", 167, "commit", 12.552],
+          ["packages/adapters/web-component/src/adapt.ts", 615, "attachView", 12.457],
+          [
+            "packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+            18,
+            "RuntimeModuleOrchestrator",
+            12.243
+          ],
+          ["packages/adapters/base/src/host/view-epoch-owner.ts", 82, "attachView", 10.3],
+          ["packages/runtime/src/instance/session.ts", 246, "mount", 9.936],
+          ["packages/adapters/base/src/host/adapter-host.ts", 33, "mount", 9.936],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-theme.ts",
+            106,
+            "applyProjectionThemeSurfaceStyle",
+            9.888
+          ],
+          ["packages/runtime/src/instance/session.ts", 127, "setMountPhase", 8.903]
+        ]
+      }
+    ]
+  },
+  {
+    "arm": "candidate",
+    "carrier": "7f9128afb96da1f2657798e8d5c19c0a11e36c74",
+    "traceSha256": "bae4998c5f6f9d50f590241f878efb85f9b5e523ab72f032540214aa8bf598d3",
+    "clickToWriteMs": 1416.0,
+    "setterPageMs": 0.1,
+    "originalPollVerdict": "rejected",
+    "originalPollVerdictAfterPollMs": 1000.779,
+    "clickToPollStartBoundsMs": [212.401, 214.395],
+    "originalPollVerdictAfterClickBoundsMs": [1213.18, 1215.174],
+    "familyWriteFinishedAfterPollBoundsMs": [1201.705, 1203.699],
+    "writeStartRelativeToVerdictBoundsMs": [200.826, 202.82],
+    "queryReturnedAfterPollMs": 1937.095,
+    "runTaskUnionMs": 1401.496,
+    "metrics": {
+      "RunTask": [5306, 1401.496],
+      "FireAnimationFrame": [17, 165.034],
+      "EventDispatch": [96, 187.144],
+      "FunctionCall": [4166, 1033.45],
+      "UpdateLayoutTree": [26, 312.751],
+      "Layout": [10, 39.696],
+      "PrePaint": [12, 2.388],
+      "Paint": [9, 1.966],
+      "MinorGC": [6, 57.496]
+    },
+    "longTasks": [
+      {
+        "fromClickMs": 0.0,
+        "toClickMs": 174.874,
+        "lengthMs": 174.874,
+        "phase": [
+          ["EventDispatch", "select"],
+          ["EventDispatch", "valueChange"],
+          ["EventDispatch", "blur"],
+          ["EventDispatch", "focusout"],
+          ["EventDispatch", "DOMFocusOut"],
+          ["EventDispatch", "beforeLeave"],
+          ["EventDispatch", "focus"],
+          ["EventDispatch", "focusin"],
+          ["EventDispatch", "DOMFocusIn"],
+          ["EventDispatch", "afterLeave"]
+        ],
+        "calls": [
+          {
+            "path": "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+            "line": 762,
+            "name": "",
+            "events": 1,
+            "unionMs": 66.136
+          },
+          {
+            "path": "packages/adapters/base/src/platform/portal-direction.ts",
+            "line": 17,
+            "name": "sourceObserver",
+            "events": 1,
+            "unionMs": 51.868
+          },
+          {
+            "path": "packages/adapters/base/src/events/web-event-router.ts",
+            "line": 486,
+            "name": "",
+            "events": 4,
+            "unionMs": 22.845
+          },
+          {
+            "path": "packages/adapters/web-component/src/runtime/modules.ts",
+            "line": 1363,
+            "name": "",
+            "events": 1,
+            "unionMs": 11.017
+          },
+          {
+            "path": "packages/adapters/base/src/platform/instance-tree.ts",
+            "line": 44,
+            "name": "registration.<computed>",
+            "events": 271,
+            "unionMs": 5.302
+          },
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 1067,
+            "name": "",
+            "events": 2,
+            "unionMs": 2.258
+          },
+          {
+            "path": "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+            "line": 90,
+            "name": "",
+            "events": 1,
+            "unionMs": 1.023
+          },
+          {
+            "path": "packages/modules/control-label/src/web.ts",
+            "line": 42,
+            "name": "",
+            "events": 1,
+            "unionMs": 0.54
+          },
+          {
+            "path": "apps/www/src/components/documentation-image-preview.ts",
+            "line": 369,
+            "name": "",
+            "events": 2,
+            "unionMs": 0.28
+          },
+          {
+            "path": "packages/adapters/web-component/src/portal-mount.ts",
+            "line": 205,
+            "name": "onMutation",
+            "events": 1,
+            "unionMs": 0.264
+          },
+          {
+            "path": "apps/www/src/components/site-code-surface.ts",
+            "line": 243,
+            "name": "scan",
+            "events": 1,
+            "unionMs": 0.128
+          },
+          {
+            "path": "apps/www/src/components/PrototypePreviewer/projection-materializer.ts",
+            "line": 130,
+            "name": "",
+            "events": 1,
+            "unionMs": 0.119
+          }
+        ],
+        "leaf": [
+          ["packages/adapters/base/src/platform/portal-direction.ts", 28, "sync", 51.593],
+          ["", 0, "getPropertyValue", 15.547],
+          ["", 0, "(program)", 15.392],
+          ["", 0, "set cssText", 8.046],
+          ["packages/adapters/web-component/src/runtime/modules.ts", 630, "visitRule", 6.637],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-families.ts",
+            2112,
+            "validateProjectionFamilyManifest",
+            6.342
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/demo-types.ts",
+            59,
+            "hasImportantPriority",
+            5.231
+          ],
+          ["", 0, "(garbage collector)", 5.048],
+          ["apps/www/src/components/PrototypePreviewer/demo-types.ts", 1, "assertJsonLike", 4.586],
+          ["", 0, "createElement", 2.659],
+          ["", 1077, "isOverflowElement", 2.46],
+          ["", 0, "get selectorText", 1.848],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+            43,
+            "markerClass",
+            1.327
+          ],
+          ["", 0, "matches", 1.319],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+            165,
+            "mergeSurfaceStyle",
+            1.222
+          ]
+        ],
+        "branches": [
+          [
+            "apps/www/src/components/Homepage/homepage-runtime-client.ts",
+            695,
+            "requestFamily",
+            60.998
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+            762,
+            "(anonymous)",
+            60.998
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+            338,
+            "request",
+            60.339
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+            299,
+            "runRequest",
+            60.339
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+            338,
+            "(anonymous)",
+            60.339
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+            152,
+            "trackRequest",
+            60.339
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+            128,
+            "trackSnapshotOperation",
+            60.339
+          ],
+          ["packages/adapters/base/src/platform/portal-direction.ts", 28, "sync", 51.593],
+          ["packages/adapters/base/src/platform/portal-direction.ts", 17, "sourceObserver", 51.593],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+            330,
+            "(anonymous)",
+            45.051
+          ],
+          [
+            "apps/www/src/components/Homepage/homepage-runtime-client.ts",
+            407,
+            "materialize",
+            45.051
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+            151,
+            "trackMaterialization",
+            45.051
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+            153,
+            "materializeGeneration",
+            45.051
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-materializer.ts",
+            262,
+            "prepareProjectionCandidate",
+            39.379
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-materializer.ts",
+            224,
+            "materializeProjectionCandidate",
+            39.379
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+            490,
+            "createProjectionComposition",
+            36.673
+          ],
+          ["packages/runtime/src/instance/execute/callback-scope.ts", 43, "runInScope", 35.239],
+          ["packages/runtime/src/instance/execute/callback-scope.ts", 40, "runNoSync", 33.627],
+          ["packages/modules/context/src/create.ts", 22, "update", 33.444],
+          ["packages/runtime/src/kernel/handles/run.ts", 30, "update", 33.444],
+          ["packages/modules/context/src/center.ts", 96, "updateFromProvider", 33.444],
+          ["packages/modules/context/src/center.ts", 113, "dispatch", 33.444],
+          ["packages/modules/context/src/impl.ts", 193, "update", 33.444],
+          ["packages/runtime/src/instance/instance.ts", 116, "(anonymous)", 33.281]
+        ]
+      },
+      {
+        "fromClickMs": 238.71,
+        "toClickMs": 362.476,
+        "lengthMs": 123.766,
+        "phase": [],
+        "calls": [
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 274,
+            "name": "connectedCallback",
+            "events": 22,
+            "unionMs": 86.014
+          },
+          {
+            "path": "packages/runtime/src/instance/session.ts",
+            "line": 292,
+            "name": "",
+            "events": 18,
+            "unionMs": 4.982
+          },
+          {
+            "path": "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+            "line": 90,
+            "name": "",
+            "events": 3,
+            "unionMs": 3.672
+          },
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 176,
+            "name": "ProtoElement",
+            "events": 21,
+            "unionMs": 1.274
+          },
+          {
+            "path": "packages/adapters/base/src/platform/instance-tree.ts",
+            "line": 350,
+            "name": "",
+            "events": 12,
+            "unionMs": 0.8
+          },
+          {
+            "path": "packages/adapters/base/src/platform/instance-tree.ts",
+            "line": 352,
+            "name": "",
+            "events": 12,
+            "unionMs": 0.673
+          },
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 515,
+            "name": "",
+            "events": 18,
+            "unionMs": 0.641
+          },
+          {
+            "path": "packages/modules/control-label/src/web.ts",
+            "line": 42,
+            "name": "",
+            "events": 3,
+            "unionMs": 0.437
+          },
+          {
+            "path": "packages/modules/anatomy/src/web/order-observer.ts",
+            "line": 9,
+            "name": "",
+            "events": 6,
+            "unionMs": 0.4
+          },
+          {
+            "path": "apps/www/src/components/PrototypePreviewer/projection-materializer.ts",
+            "line": 130,
+            "name": "",
+            "events": 2,
+            "unionMs": 0.375
+          },
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 473,
+            "name": "",
+            "events": 54,
+            "unionMs": 0.272
+          },
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 1059,
+            "name": "disconnectedCallback",
+            "events": 4,
+            "unionMs": 0.259
+          }
+        ],
+        "leaf": [
+          ["", 0, "(program)", 10.6],
+          ["packages/modules/anatomy/src/impl.ts", 889, "(anonymous)", 9.06],
+          ["", 0, "compareDocumentPosition", 5.215],
+          ["", 0, "addEventListener", 4.104],
+          ["", 0, "appendChild", 3.495],
+          ["", 0, "createElement", 2.95],
+          ["packages/modules/anatomy/src/impl.ts", 73, "listClaims", 2.605],
+          ["", 0, "setAttribute", 2.349],
+          ["packages/modules/anatomy/src/impl.ts", 706, "computeOrderSignature", 2.306],
+          ["packages/modules/anatomy/src/impl.ts", 736, "(anonymous)", 2.284],
+          ["packages/core/src/spec/feedback/semantic-merge.ts", 54, "getSemanticGroupKeyV0", 2.266],
+          ["packages/modules/anatomy/src/impl.ts", 631, "notifyTargetChange", 1.874],
+          ["packages/runtime/src/kernel/kernel.ts", 13, "createKernel", 1.763],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+            61,
+            "addMarkerCoordinates",
+            1.705
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-theme.ts",
+            106,
+            "applyProjectionThemeSurfaceStyle",
+            1.675
+          ]
+        ],
+        "branches": [
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-materializer.ts",
+            262,
+            "prepareProjectionCandidate",
+            109.366
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/demo-renderer.ts",
+            1556,
+            "renderDemo",
+            105.32
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/demo-renderer.ts",
+            330,
+            "renderDemoWc",
+            104.97
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/demo-renderer.ts",
+            191,
+            "renderDemoNodeWc",
+            89.211
+          ],
+          ["packages/adapters/web-component/src/adapt.ts", 274, "connectedCallback", 83.372],
+          ["packages/adapters/web-component/src/adapt.ts", 306, "_connectOwner", 83.172],
+          ["packages/adapters/web-component/src/adapt.ts", 615, "attachView", 57.01],
+          ["packages/runtime/src/instance/session.ts", 144, "renderCommit", 55.83],
+          ["packages/adapters/web-component/src/runtime/session.ts", 167, "commit", 54.778],
+          ["packages/adapters/base/src/host/view-epoch-owner.ts", 82, "attachView", 52.41],
+          ["packages/runtime/src/instance/session.ts", 246, "mount", 49.073],
+          ["packages/adapters/base/src/host/adapter-host.ts", 33, "mount", 49.073],
+          ["packages/runtime/src/instance/session.ts", 155, "done", 43.505],
+          ["packages/runtime/src/instance/session.ts", 282, "(anonymous)", 31.424],
+          ["packages/runtime/src/instance/session.ts", 284, "scheduleFinish", 31.424],
+          [
+            "packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+            181,
+            "setProtoPhase",
+            27.984
+          ],
+          ["packages/modules/anatomy/src/impl.ts", 361, "syncStructure", 24.364],
+          ["packages/modules/anatomy/src/impl.ts", 625, "notifyStructuralChange", 24.005],
+          ["packages/modules/anatomy/src/impl.ts", 693, "emitOrderChangeIfNeeded", 23.334],
+          ["packages/adapters/base/src/host/view-epoch-owner.ts", 48, "initialize", 23.129],
+          [
+            "packages/adapters/web-component/src/runtime/session.ts",
+            6,
+            "createWebComponentHostSession",
+            23.032
+          ],
+          ["packages/adapters/web-component/src/adapt.ts", 565, "createHostSession", 23.032],
+          ["packages/adapters/base/src/host/adapter-host.ts", 3, "createAdapterHost", 23.032],
+          ["packages/runtime/src/instance/session.ts", 12, "createRuntimeSession", 22.869]
+        ]
+      },
+      {
+        "fromClickMs": 398.938,
+        "toClickMs": 460.749,
+        "lengthMs": 61.811,
+        "phase": [],
+        "calls": [
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 274,
+            "name": "connectedCallback",
+            "events": 24,
+            "unionMs": 39.312
+          },
+          {
+            "path": "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+            "line": 90,
+            "name": "",
+            "events": 1,
+            "unionMs": 1.895
+          },
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 176,
+            "name": "ProtoElement",
+            "events": 24,
+            "unionMs": 1.205
+          },
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 515,
+            "name": "",
+            "events": 24,
+            "unionMs": 0.673
+          },
+          {
+            "path": "apps/www/src/components/PrototypePreviewer/projection-materializer.ts",
+            "line": 130,
+            "name": "",
+            "events": 1,
+            "unionMs": 0.471
+          },
+          {
+            "path": "packages/runtime/src/instance/session.ts",
+            "line": 292,
+            "name": "",
+            "events": 24,
+            "unionMs": 0.419
+          },
+          {
+            "path": "packages/modules/control-label/src/web.ts",
+            "line": 42,
+            "name": "",
+            "events": 1,
+            "unionMs": 0.297
+          },
+          {
+            "path": "packages/adapters/web-component/src/runtime/modules.ts",
+            "line": 1058,
+            "name": "",
+            "events": 24,
+            "unionMs": 0.177
+          },
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 473,
+            "name": "",
+            "events": 24,
+            "unionMs": 0.144
+          },
+          {
+            "path": "packages/adapters/web-component/src/runtime/modules.ts",
+            "line": 1053,
+            "name": "normalizeOwnedSurface",
+            "events": 24,
+            "unionMs": 0.139
+          },
+          {
+            "path": "apps/www/src/components/site-copy-client.ts",
+            "line": 50,
+            "name": "",
+            "events": 1,
+            "unionMs": 0.132
+          },
+          {
+            "path": "packages/modules/a11y/src/web.ts",
+            "line": 93,
+            "name": "",
+            "events": 1,
+            "unionMs": 0.106
+          }
+        ],
+        "leaf": [
+          ["", 0, "(garbage collector)", 7.762],
+          ["", 0, "createElement", 5.081],
+          ["", 0, "appendChild", 5.018],
+          ["", 0, "(program)", 4.466],
+          ["", 0, "addEventListener", 2.018],
+          ["apps/www/src/components/PrototypePreviewer/demo-dynamic-children.ts", 9, "copy", 1.9],
+          ["", 0, "querySelectorAll", 1.397],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+            679,
+            "stampProjectionSurfaces",
+            1.354
+          ],
+          ["", 0, "set cssText", 1.171],
+          ["packages/modules/base/src/caps-vault/vault.ts", 45, "attach", 1.146],
+          ["packages/modules/rule-meta/src/create.ts", 118, "(anonymous)", 0.977],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+            61,
+            "addMarkerCoordinates",
+            0.69
+          ],
+          ["packages/modules/feedback/src/create.ts", 33, "build", 0.683],
+          ["packages/modules/props/src/kernel/kernel.ts", 143, "resolve", 0.677],
+          ["packages/modules/rule/src/compile.ts", 18, "compileRule", 0.674]
+        ],
+        "branches": [
+          [
+            "apps/www/src/components/PrototypePreviewer/demo-renderer.ts",
+            1556,
+            "renderDemo",
+            49.073
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/demo-renderer.ts",
+            330,
+            "renderDemoWc",
+            49.073
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-materializer.ts",
+            262,
+            "prepareProjectionCandidate",
+            43.033
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/demo-renderer.ts",
+            191,
+            "renderDemoNodeWc",
+            41.162
+          ],
+          ["packages/adapters/web-component/src/adapt.ts", 274, "connectedCallback", 28.916],
+          ["packages/adapters/web-component/src/adapt.ts", 306, "_connectOwner", 28.916],
+          ["packages/adapters/web-component/src/adapt.ts", 615, "attachView", 14.799],
+          ["packages/adapters/base/src/host/view-epoch-owner.ts", 48, "initialize", 12.673],
+          [
+            "packages/adapters/web-component/src/runtime/session.ts",
+            6,
+            "createWebComponentHostSession",
+            12.673
+          ],
+          ["packages/adapters/web-component/src/adapt.ts", 565, "createHostSession", 12.673],
+          ["packages/runtime/src/instance/session.ts", 12, "createRuntimeSession", 12.511],
+          ["packages/adapters/base/src/host/adapter-host.ts", 3, "createAdapterHost", 12.511],
+          ["packages/adapters/base/src/host/view-epoch-owner.ts", 82, "attachView", 10.548],
+          ["packages/runtime/src/instance/instance.ts", 39, "createRuntimeInstance", 10.537],
+          ["packages/runtime/src/instance/session.ts", 246, "mount", 7.396],
+          ["packages/adapters/base/src/host/adapter-host.ts", 33, "mount", 7.396],
+          ["apps/www/src/components/site-typography.ts", 166, "materialize", 6.699],
+          ["packages/runtime/src/instance/session.ts", 144, "renderCommit", 6.204],
+          ["packages/adapters/web-component/src/runtime/session.ts", 167, "commit", 5.864],
+          ["packages/runtime/src/instance/session.ts", 155, "done", 5.679],
+          [
+            "packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+            18,
+            "RuntimeModuleOrchestrator",
+            4.827
+          ],
+          ["packages/runtime/src/kernel/kernel.ts", 13, "createKernel", 4.722],
+          ["packages/runtime/src/instance/session.ts", 282, "(anonymous)", 4.638],
+          ["packages/runtime/src/instance/session.ts", 284, "scheduleFinish", 4.638]
+        ]
+      },
+      {
+        "fromClickMs": 529.11,
+        "toClickMs": 1228.634,
+        "lengthMs": 699.524,
+        "phase": [["EventDispatch", "beforeEnter"]],
+        "calls": [
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 274,
+            "name": "connectedCallback",
+            "events": 160,
+            "unionMs": 427.136
+          },
+          {
+            "path": "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+            "line": 59,
+            "name": "notify",
+            "events": 3,
+            "unionMs": 63.91
+          },
+          {
+            "path": "packages/runtime/src/instance/session.ts",
+            "line": 292,
+            "name": "",
+            "events": 154,
+            "unionMs": 40.668
+          },
+          {
+            "path": "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+            "line": 90,
+            "name": "",
+            "events": 2,
+            "unionMs": 31.114
+          },
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 515,
+            "name": "",
+            "events": 154,
+            "unionMs": 22.376
+          },
+          {
+            "path": "packages/adapters/web-component/src/runtime/modules.ts",
+            "line": 752,
+            "name": "",
+            "events": 2,
+            "unionMs": 12.96
+          },
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 176,
+            "name": "ProtoElement",
+            "events": 161,
+            "unionMs": 8.613
+          },
+          {
+            "path": "packages/adapters/web-component/src/runtime/modules.ts",
+            "line": 1363,
+            "name": "",
+            "events": 5,
+            "unionMs": 4.164
+          },
+          {
+            "path": "packages/adapters/base/src/platform/instance-tree.ts",
+            "line": 350,
+            "name": "",
+            "events": 43,
+            "unionMs": 3.646
+          },
+          {
+            "path": "packages/adapters/base/src/platform/instance-tree.ts",
+            "line": 352,
+            "name": "",
+            "events": 43,
+            "unionMs": 3.397
+          },
+          {
+            "path": "apps/www/src/components/PrototypePreviewer/projection-materializer.ts",
+            "line": 130,
+            "name": "",
+            "events": 2,
+            "unionMs": 2.419
+          },
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 473,
+            "name": "",
+            "events": 268,
+            "unionMs": 1.685
+          }
+        ],
+        "leaf": [
+          ["", 0, "getPropertyValue", 108.841],
+          ["", 0, "(garbage collector)", 46.152],
+          ["", 0, "(program)", 41.038],
+          ["packages/adapters/web-component/src/runtime/modules.ts", 630, "visitRule", 38.381],
+          [
+            "packages/modules/text-control/src/web.ts",
+            136,
+            "replaceValuePreservingEditingSession",
+            32.849
+          ],
+          ["", 0, "createElement", 29.449],
+          ["", 0, "appendChild", 29.103],
+          ["", 0, "addEventListener", 27.486],
+          ["", 0, "setAttribute", 10.795],
+          ["", 0, "get selectorText", 7.647],
+          ["packages/core/src/spec/feedback/semantic-merge.ts", 54, "getSemanticGroupKeyV0", 7.555],
+          ["", 0, "set cssText", 7.348],
+          ["", 0, "removeAttribute", 6.886],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+            61,
+            "addMarkerCoordinates",
+            6.854
+          ],
+          ["apps/www/src/components/PrototypePreviewer/demo-dynamic-children.ts", 9, "copy", 6.065]
+        ],
+        "branches": [
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-materializer.ts",
+            262,
+            "prepareProjectionCandidate",
+            475.768
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/demo-renderer.ts",
+            1556,
+            "renderDemo",
+            475.192
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/demo-renderer.ts",
+            330,
+            "renderDemoWc",
+            474.843
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/demo-renderer.ts",
+            191,
+            "renderDemoNodeWc",
+            443.603
+          ],
+          ["packages/adapters/web-component/src/adapt.ts", 274, "connectedCallback", 372.622],
+          ["packages/adapters/web-component/src/adapt.ts", 306, "_connectOwner", 371.004],
+          ["packages/adapters/web-component/src/adapt.ts", 615, "attachView", 265.735],
+          ["packages/adapters/base/src/host/view-epoch-owner.ts", 82, "attachView", 226.412],
+          ["packages/runtime/src/instance/session.ts", 246, "mount", 192.385],
+          ["packages/adapters/base/src/host/adapter-host.ts", 33, "mount", 192.385],
+          ["packages/runtime/src/instance/session.ts", 144, "renderCommit", 144.954],
+          ["packages/adapters/web-component/src/runtime/session.ts", 167, "commit", 142.285],
+          ["packages/runtime/src/instance/session.ts", 155, "done", 137.819],
+          ["packages/runtime/src/instance/session.ts", 127, "setMountPhase", 108.454],
+          ["packages/runtime/src/instance/session.ts", 282, "(anonymous)", 108.101],
+          ["packages/runtime/src/instance/session.ts", 284, "scheduleFinish", 108.101],
+          [
+            "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+            26,
+            "current",
+            104.824
+          ],
+          [
+            "packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+            193,
+            "setMountPhase",
+            101.814
+          ],
+          ["packages/adapters/base/src/host/view-epoch-owner.ts", 48, "initialize", 95.159],
+          ["packages/adapters/web-component/src/adapt.ts", 565, "createHostSession", 94.882],
+          [
+            "packages/adapters/web-component/src/runtime/session.ts",
+            6,
+            "createWebComponentHostSession",
+            94.633
+          ],
+          ["packages/adapters/base/src/host/adapter-host.ts", 3, "createAdapterHost", 94.451],
+          ["packages/runtime/src/instance/session.ts", 12, "createRuntimeSession", 93.855],
+          ["packages/runtime/src/instance/execute/callback-scope.ts", 43, "runInScope", 89.758]
+        ]
+      },
+      {
+        "fromClickMs": 1228.648,
+        "toClickMs": 1416.0,
+        "lengthMs": 187.352,
+        "phase": [
+          ["EventDispatch", "transitionstart"],
+          ["EventDispatch", "transitionstart"],
+          ["EventDispatch", "transitionstart"],
+          ["EventDispatch", "transitionstart"],
+          ["EventDispatch", "transitionstart"],
+          ["EventDispatch", "transitionstart"],
+          ["EventDispatch", "transitionstart"],
+          ["EventDispatch", "transitionstart"],
+          ["EventDispatch", "transitionstart"],
+          ["EventDispatch", "transitionstart"]
+        ],
+        "calls": [
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 274,
+            "name": "connectedCallback",
+            "events": 8,
+            "unionMs": 28.29
+          },
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 1059,
+            "name": "disconnectedCallback",
+            "events": 6,
+            "unionMs": 9.549
+          },
+          {
+            "path": "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+            "line": 90,
+            "name": "",
+            "events": 2,
+            "unionMs": 8.407
+          },
+          {
+            "path": "packages/adapters/web-component/src/runtime/modules.ts",
+            "line": 1725,
+            "name": "onProjectionEvent",
+            "events": 1774,
+            "unionMs": 6.476
+          },
+          {
+            "path": "packages/modules/feedback/src/motion/projector.ts",
+            "line": 131,
+            "name": "",
+            "events": 2,
+            "unionMs": 1.045
+          },
+          {
+            "path": "apps/www/src/components/PrototypePreviewer/canonical-motion-palette.ts",
+            "line": 59,
+            "name": "notify",
+            "events": 2,
+            "unionMs": 0.199
+          },
+          {
+            "path": "packages/adapters/web-component/src/runtime/modules.ts",
+            "line": 1363,
+            "name": "",
+            "events": 4,
+            "unionMs": 0.107
+          },
+          {
+            "path": "packages/adapters/web-component/src/runtime/modules.ts",
+            "line": 1496,
+            "name": "",
+            "events": 4,
+            "unionMs": 0.05
+          },
+          {
+            "path": "apps/www/src/components/documentation-image-preview.ts",
+            "line": 369,
+            "name": "",
+            "events": 2,
+            "unionMs": 0.04
+          },
+          {
+            "path": "packages/adapters/web-component/src/adapt.ts",
+            "line": 473,
+            "name": "",
+            "events": 2,
+            "unionMs": 0.014
+          },
+          {
+            "path": "apps/www/src/components/PrototypePreviewer/projection-materializer.ts",
+            "line": 33,
+            "name": "",
+            "events": 1,
+            "unionMs": 0.006
+          }
+        ],
+        "leaf": [
+          ["apps/www/src/components/site-typography.ts", 98, "preserveSelection", 91.105],
+          ["", 0, "(program)", 40.222],
+          ["packages/adapters/web-component/src/adapt.ts", 1059, "disconnectedCallback", 8.807],
+          ["", 0, "getPropertyValue", 4.566],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-theme.ts",
+            106,
+            "applyProjectionThemeSurfaceStyle",
+            4.078
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+            679,
+            "stampProjectionSurfaces",
+            3.852
+          ],
+          ["", 0, "append", 3.669],
+          ["packages/modules/state/src/impl.ts", 11, "StateModuleImpl", 2.839],
+          ["", 0, "addEventListener", 1.52],
+          ["", 0, "getPropertyPriority", 1.311],
+          ["packages/modules/anatomy/src/impl.ts", 500, "setOrderCallbackDispatcher", 1.247],
+          ["packages/runtime/src/instance/instance.ts", 39, "createRuntimeInstance", 0.982],
+          ["", 0, "querySelectorAll", 0.971],
+          ["packages/core/src/spec/feedback/semantic-merge.ts", 118, "mergeTwTokensV0", 0.96],
+          [
+            "packages/adapters/base/src/events/web-event-router.ts",
+            40,
+            "createWebProtoEventRouter",
+            0.891
+          ]
+        ],
+        "branches": [
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-scope.ts",
+            153,
+            "materializeGeneration",
+            140.64
+          ],
+          ["apps/www/src/components/Homepage/homepage-runtime-client.ts", 477, "activate", 132.688],
+          ["apps/www/src/components/site-typography.ts", 98, "preserveSelection", 131.17],
+          ["apps/www/src/components/site-typography.ts", 295, "activate", 131.17],
+          ["apps/www/src/components/site-typography.ts", 297, "(anonymous)", 40.065],
+          ["packages/adapters/web-component/src/adapt.ts", 274, "connectedCallback", 27.213],
+          ["packages/adapters/web-component/src/adapt.ts", 306, "_connectOwner", 27.051],
+          ["packages/adapters/base/src/host/view-epoch-owner.ts", 48, "initialize", 17.846],
+          ["packages/adapters/web-component/src/adapt.ts", 565, "createHostSession", 17.846],
+          [
+            "packages/adapters/web-component/src/runtime/session.ts",
+            6,
+            "createWebComponentHostSession",
+            17.694
+          ],
+          ["packages/adapters/base/src/host/adapter-host.ts", 3, "createAdapterHost", 17.694],
+          ["packages/runtime/src/instance/session.ts", 12, "createRuntimeSession", 17.505],
+          ["packages/runtime/src/instance/instance.ts", 39, "createRuntimeInstance", 17.0],
+          [
+            "packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+            18,
+            "RuntimeModuleOrchestrator",
+            14.366
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+            679,
+            "stampProjectionSurfaces",
+            14.132
+          ],
+          ["packages/modules/base/src/create-module.ts", 4, "createModule", 11.004],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-theme.ts",
+            106,
+            "applyProjectionThemeSurfaceStyle",
+            9.955
+          ],
+          ["packages/adapters/web-component/src/adapt.ts", 1059, "disconnectedCallback", 9.183],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+            90,
+            "(anonymous)",
+            7.984
+          ],
+          [
+            "apps/www/src/components/Homepage/homepage-runtime-client.ts",
+            495,
+            "prepareCommit",
+            7.817
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-materializer.ts",
+            417,
+            "setThemeSurfaceStyle",
+            7.332
+          ],
+          [
+            "apps/www/src/components/PrototypePreviewer/projection-composition.ts",
+            1069,
+            "setThemeSurfaceStyle",
+            7.168
+          ],
+          ["packages/adapters/web-component/src/adapt.ts", 615, "attachView", 5.515],
+          ["packages/runtime/src/instance/session.ts", 144, "renderCommit", 3.976]
+        ]
+      }
+    ]
+  }
+]

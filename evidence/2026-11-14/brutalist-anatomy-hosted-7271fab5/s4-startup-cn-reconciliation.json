@@ -1,0 +1,195 @@
+{
+  "head": "7271fab52ae59fe6e8dd1fc1d879335b6d79e778",
+  "patchSha256": "4c0b6f3f73efb67698beb438bef54cc11fda2d1727f5f77bc4b9a0c5d8860757",
+  "originalTestExit": 1,
+  "scope": "Same renderer main thread. Event families are independently unioned and nested. Gaps are intervals without a recorded RunTask, not proof of process idleness. Node receipt and the renderer trace use joined monotonic clocks.",
+  "reports": [
+    {
+      "locale": "zh-cn",
+      "reactReached": true,
+      "originalStartupPassed": false,
+      "traceThread": [59965, 18165167],
+      "traceSha256": "10f961df8acd3204a4e7e1be88552043dda410b525e88b01e5197b9ede31b9b6",
+      "traceReceipt": {
+        "bytes": 537800061,
+        "traceEventArrayClosed": true,
+        "clockDomain": "MAC_MACH_ABSOLUTE_TIME",
+        "finalFlush": 1,
+        "buffers": [
+          {
+            "buffer_size": 1073741824,
+            "bytes_overwritten": 0,
+            "chunks_discarded": 0,
+            "sequence_packet_loss": 0,
+            "trace_writer_packet_loss": 0
+          },
+          {
+            "buffer_size": 262144,
+            "bytes_overwritten": 0,
+            "chunks_discarded": 0,
+            "sequence_packet_loss": 0,
+            "trace_writer_packet_loss": 0
+          }
+        ],
+        "stats": {}
+      },
+      "traceEventCount": 2461367,
+      "lastTraceEventRelativeToReactStartMs": 115627.533,
+      "lastSelectedRendererEventRelativeToReactStartMs": 55990.251,
+      "originalVerdictRelativeToReactStartMs": 123220.211,
+      "chunks": [
+        {
+          "asset": "chunk-2MALL255.js",
+          "netLogLastBodyAfterRequestMs": 8,
+          "netLogCompletedBody": true,
+          "cdpResponseDeliveryAfterLastBodyMs": null,
+          "observedCdpStages": ["request"]
+        },
+        {
+          "asset": "chunk-EK7DFB6S.js",
+          "netLogLastBodyAfterRequestMs": 7,
+          "netLogCompletedBody": true,
+          "cdpResponseDeliveryAfterLastBodyMs": null,
+          "observedCdpStages": ["request"]
+        }
+      ],
+      "stageMarks": {
+        "react-modules-begin": -16.825,
+        "react-modules-return": -0.04,
+        "react-runtime-begin": 0.0
+      },
+      "moduleBodyMarks": [
+        {
+          "name": "pui-s4-module:chunk-BUSYA2B4.js:body-start",
+          "atMs": -24752.394
+        },
+        {
+          "name": "pui-s4-module:chunk-BUSYA2B4.js:body-end",
+          "atMs": -24752.346
+        }
+      ],
+      "namedRendererEvents": [],
+      "windows": [
+        {
+          "window": "last body to original deadline or import return",
+          "lengthMs": 105426.322,
+          "requestedEndRelativeToReactStartMs": 123220.211,
+          "boundariesRelativeToReactStartMs": [10201.211, 115627.533],
+          "observed": [
+            {
+              "event": "ThreadControllerImpl::RunTask",
+              "events": 1781,
+              "unionMs": 1953.809,
+              "longestMs": 1256.405
+            },
+            {
+              "event": "RunTask",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "RunMicrotasks",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "V8.RunMicrotasks",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "FunctionCall",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "v8.evaluateModule",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "v8.compileModule",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "EvaluateScript",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "Layout",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "Paint",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "MinorGC",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            }
+          ],
+          "largestRecordedTaskGaps": [
+            {
+              "fromReactStartMs": 55990.251,
+              "durationMs": 59637.282
+            },
+            {
+              "fromReactStartMs": 10900.717,
+              "durationMs": 43831.285
+            },
+            {
+              "fromReactStartMs": 55988.46,
+              "durationMs": 0.154
+            },
+            {
+              "fromReactStartMs": 54732.015,
+              "durationMs": 0.04
+            },
+            {
+              "fromReactStartMs": 10462.87,
+              "durationMs": 0.029
+            },
+            {
+              "fromReactStartMs": 10819.492,
+              "durationMs": 0.023
+            },
+            {
+              "fromReactStartMs": 10388.732,
+              "durationMs": 0.02
+            },
+            {
+              "fromReactStartMs": 10656.204,
+              "durationMs": 0.02
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "reactReached": false,
+      "originalStartupPassed": null
+    }
+  ]
+}
