@@ -1,0 +1,9 @@
+{
+  "chrome": "156.0.8078.79 macOS arm64",
+  "durationSeconds": 2,
+  "runTaskCount": 18817,
+  "controlMarkCount": 1,
+  "clockDomain": "MAC_MACH_ABSOLUTE_TIME",
+  "traceSha256": "e6616eb52d4df91f4295d3a4b0c784c221a08c7120f0f524d119bb6e7d51fa16",
+  "source": "Pinned Chrome startup tracing on a data URL control"
+}

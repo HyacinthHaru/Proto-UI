@@ -1,0 +1,31 @@
+{
+  "wholeSessionCdP": {
+    "outcome": "No trace saved. Collector observed undefined outcomes when its budget expired.",
+    "patchSha256": "a806320708833a568bb79ca737a08bfa0963a6cc34b7a766843e5eb365477374",
+    "logSha256": "8b3d6908681cd3c9e869a607334663f63b492f25cf616e51f15f310856a4666b"
+  },
+  "perLocaleCdP": {
+    "outcome": "First locale trace collection did not complete. English trace start reported active prior trace, and the diagnostic hook also exceeded its 10s runner bound.",
+    "patchSha256": "58246783d4cd01064132181fd83209e2e85216fdd687f579bdf37cbbbbabe5a4",
+    "logSha256": "9b79756d07e43ee2fb5ec8c9fe6b40e5ed43efde5d77d3c16309934e3bebb914"
+  },
+  "startupFileBilingual": {
+    "outcome": "Both original verdicts retained, no trace file observed. Chinese chunk response events recorded with no import return.",
+    "patchSha256": "630f0544b9cbc11b8f69a237b2e1f7109d148a3288576c27ff673bcf0f7826fd",
+    "logSha256": "ffd1814cdd1cd7c9cd8d1df2013b28445d506610e24770d45efa4dd670fbe659"
+  },
+  "startupFileChinese": {
+    "outcome": "Closed trace JSON and RunTask samples. Chinese original case failed, English not selected. Trace does not cover the full case window and both chunk response events and import return were unobserved.",
+    "patchSha256": "2834b43d14c883bc0acde80b7894af491626522505e233e31e0173d1afc6a7d9",
+    "logSha256": "78ac23dfd373b5a6b7bd7c3f6df29d0f94db9b7df01a7f6e81cfd8e5bd37bc8d",
+    "traceLastRendererMsAfterReactBegin": 85069.219,
+    "traceLastAnyEventMsAfterReactBegin": 90817.333,
+    "caseVerdictMsAfterReactBegin": 116375.629,
+    "longestRendererTask": {
+      "atMsAfterReactBegin": 77937.659,
+      "durationMs": 7130.044,
+      "source": "cc/trees/proxy_impl.cc",
+      "function": "ScheduledActionSendBeginMainFrame"
+    }
+  }
+}

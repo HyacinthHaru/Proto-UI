@@ -1,0 +1,10 @@
+{
+  "referenceMain": "35195a6e6f1ba6a7d800da0029f2683013abd18b",
+  "referenceCount": 53,
+  "candidateCount": 53,
+  "same": true,
+  "candidateOnly": [],
+  "referenceOnly": [],
+  "candidateLogSha256": "ae4f6595873b26db32e6a5d4120321bcbf99b0c2c7a4f9a8a66e75e6f6929194",
+  "referenceLogSha256": "80f76d0fdf480a2e8a32f4e62d6860ff0375836793155a81973ebdfd08ab734d"
+}

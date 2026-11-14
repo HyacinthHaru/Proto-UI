@@ -1,0 +1,173 @@
+{
+  "head": "569bd7b410c5b41b73c37504030574f040181dd4",
+  "patchSha256": "2834b43d14c883bc0acde80b7894af491626522505e233e31e0173d1afc6a7d9",
+  "originalTestExit": 1,
+  "scope": "Same renderer main thread. Event families are independently unioned and nested. Gaps are intervals without a recorded RunTask, not proof of process idleness. Node receipt and the renderer trace use joined monotonic clocks.",
+  "reports": [
+    {
+      "locale": "zh-cn",
+      "reactReached": true,
+      "originalStartupPassed": false,
+      "traceThread": [50859, 18067789],
+      "traceSha256": "1db95a013c518b32ef304ac484495dde834d47c6052a0bd4b4e49d768738a643",
+      "traceReceipt": {
+        "bytes": 535379786,
+        "traceEventArrayClosed": true,
+        "stats": {}
+      },
+      "traceEventCount": 2452308,
+      "chunks": [
+        {
+          "asset": "chunk-EK7DFB6S.js",
+          "netLogLastBodyAfterRequestMs": 4,
+          "netLogCompletedBody": true,
+          "cdpResponseDeliveryAfterLastBodyMs": null,
+          "observedCdpStages": ["request"]
+        },
+        {
+          "asset": "chunk-2MALL255.js",
+          "netLogLastBodyAfterRequestMs": 8,
+          "netLogCompletedBody": true,
+          "cdpResponseDeliveryAfterLastBodyMs": null,
+          "observedCdpStages": ["request"]
+        }
+      ],
+      "stageMarks": {
+        "react-modules-begin": -12060.892,
+        "react-modules-return": -0.084,
+        "react-runtime-begin": 0.0
+      },
+      "moduleBodyMarks": [
+        {
+          "name": "pui-s4-module:chunk-BUSYA2B4.js:body-start",
+          "atMs": -31644.974
+        },
+        {
+          "name": "pui-s4-module:chunk-BUSYA2B4.js:body-end",
+          "atMs": -31644.936
+        }
+      ],
+      "namedRendererEvents": [],
+      "windows": [
+        {
+          "window": "last body to original deadline or import return",
+          "lengthMs": 99238.0,
+          "boundariesRelativeToReactStartMs": [17137.629, 116375.629],
+          "observed": [
+            {
+              "event": "ThreadControllerImpl::RunTask",
+              "events": 3039,
+              "unionMs": 7230.887,
+              "longestMs": 7130.044
+            },
+            {
+              "event": "RunTask",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "RunMicrotasks",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "V8.RunMicrotasks",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "FunctionCall",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "v8.evaluateModule",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "v8.compileModule",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "EvaluateScript",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "UpdateLayoutTree",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "Layout",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "Paint",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            },
+            {
+              "event": "MinorGC",
+              "events": 0,
+              "unionMs": 0.0,
+              "longestMs": 0.0
+            }
+          ],
+          "largestRecordedTaskGaps": [
+            {
+              "fromReactStartMs": 17719.023,
+              "durationMs": 60218.436
+            },
+            {
+              "fromReactStartMs": 85069.217,
+              "durationMs": 31306.412
+            },
+            {
+              "fromReactStartMs": 17195.225,
+              "durationMs": 476.346
+            },
+            {
+              "fromReactStartMs": 77937.474,
+              "durationMs": 0.185
+            },
+            {
+              "fromReactStartMs": 85067.703,
+              "durationMs": 0.098
+            },
+            {
+              "fromReactStartMs": 17712.316,
+              "durationMs": 0.048
+            },
+            {
+              "fromReactStartMs": 17192.586,
+              "durationMs": 0.017
+            },
+            {
+              "fromReactStartMs": 17193.368,
+              "durationMs": 0.016
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "reactReached": false,
+      "originalStartupPassed": null
+    }
+  ]
+}

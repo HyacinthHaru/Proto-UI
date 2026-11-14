@@ -1,0 +1,14 @@
+[
+  {
+    "browserStep": "skipped",
+    "conclusion": "cancelled",
+    "id": 132272443609,
+    "name": "paired-browser (1/8, browser-1-of-8, 1)"
+  },
+  {
+    "browserStep": "skipped",
+    "conclusion": "cancelled",
+    "id": 132272443848,
+    "name": "paired-browser (3/8, browser-3-of-8, 0)"
+  }
+]
