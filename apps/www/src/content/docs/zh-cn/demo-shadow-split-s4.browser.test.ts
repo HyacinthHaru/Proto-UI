@@ -12,9 +12,38 @@ import { settleFamilyQueryBatch } from './family-query-observer';
 import { runS4Journey } from '../../../../../../scripts/analysis/shadow-s4-journey.mjs';
 let browser: Browser;
 let baseUrl: string;
+const observeHosted = process.env.PROTO_UI_S4_HOSTED_DIAGNOSTIC === '1';
+const hostLog = (
+  suite: string,
+  subject: string,
+  stage: string,
+  fields: Record<string, unknown> = {}
+) => {
+  if (!observeHosted) return;
+  console.info(
+    '[S4 hosted transport]',
+    JSON.stringify({
+      suite,
+      subject,
+      stage,
+      deliveredNodeMs: performance.now(),
+      nodeTimeOrigin: performance.timeOrigin,
+      wallMs: Date.now(),
+      ...fields,
+    })
+  );
+};
 beforeAll(async () => {
   baseUrl = await startServer('/zh-cn/internal/demo-matrix/');
-  browser = await launchBrowser();
+  const extras: string[] = [];
+  if (observeHosted && process.env.PROTO_UI_RUNTIME_EVIDENCE_DIR) {
+    const target = path.join(process.env.PROTO_UI_RUNTIME_EVIDENCE_DIR, 's4-hosted-profile');
+    await mkdir(target, { recursive: true });
+    extras.push(
+      '--js-flags=--prof --prof-sampling-interval=2000 --logfile=' + path.join(target, 'v8.log')
+    );
+  }
+  browser = await launchBrowser(extras);
 }, 150_000);
 afterAll(async () => {
   await browser?.close();
@@ -45,6 +74,50 @@ describe.sequential('S4 complete public Dialog settings', () => {
         }
       });
       const page = await context.newPage();
+      if (observeHosted) {
+        const session = await context.newCDPSession(page);
+        const sources = new Map<string, string>();
+        const event = (
+          stage: string,
+          value: {
+            requestId: string;
+            timestamp: number;
+            response?: { status: number };
+            encodedDataLength?: number;
+          }
+        ) => {
+          const asset = sources.get(value.requestId);
+          if (asset)
+            hostLog(locale, asset, stage, {
+              id: value.requestId,
+              chromiumSeconds: value.timestamp,
+              status: value.response?.status,
+              encodedBytes: value.encodedDataLength,
+            });
+        };
+        session.on('Network.requestWillBeSent', (value) => {
+          const route = new URL(value.request.url);
+          const asset = route.pathname.split('/').at(-1) ?? '';
+          if (
+            (route.pathname.includes('/.vite/deps/') &&
+              /^(?:react[._-]|react-dom[._-]|chunk-)/.test(asset)) ||
+            asset === 'react-runtime.ts'
+          ) {
+            sources.set(value.requestId, asset);
+            hostLog(locale, asset, 'request', {
+              id: value.requestId,
+              chromiumSeconds: value.timestamp,
+              chromiumWallSeconds: value.wallTime,
+            });
+          }
+        });
+        session.on('Network.responseReceived', (value) => event('response', value));
+        session.on('Network.loadingFinished', (value) => event('finished', value));
+        await session.send('Network.enable');
+        await page.addInitScript(() => {
+          Object.defineProperty(window, '__puiS4HostedTiming', { value: true, configurable: true });
+        });
+      }
       const errors: string[] = [];
       page.on('pageerror', (e) => errors.push(e.message));
       let phase = 'created';
@@ -71,6 +144,16 @@ describe.sequential('S4 complete public Dialog settings', () => {
       const browserObservation = (message: { text(): string; type(): string }) => {
         try {
           const text = message.text();
+          if (text.startsWith('[S4 hosted import boundary] ')) {
+            const mark = JSON.parse(text.slice('[S4 hosted import boundary] '.length));
+            hostLog(locale, 'promise:' + mark.asset, mark.stage, mark);
+            return;
+          }
+          if (text.startsWith('[S4 hosted React phase] ')) {
+            const phase = JSON.parse(text.slice('[S4 hosted React phase] '.length));
+            hostLog(locale, 'react-owner', phase.stage, phase);
+            return;
+          }
           if (message.type() === 'error') {
             if (consoleErrors.length < 32) {
               const row = {

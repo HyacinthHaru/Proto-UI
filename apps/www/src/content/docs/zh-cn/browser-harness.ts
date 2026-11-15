@@ -563,11 +563,11 @@ async function stopDevServer(): Promise<void> {
   }
 }
 
-export async function launchBrowser(): Promise<Browser> {
+export async function launchBrowser(extraArgs: readonly string[] = []): Promise<Browser> {
   return chromium.launch({
     executablePath: await chromeExecutable(),
     headless: true,
-    args: ['--disable-dev-shm-usage', '--no-sandbox'],
+    args: ['--disable-dev-shm-usage', '--no-sandbox', ...extraArgs],
   });
 }
 

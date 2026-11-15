@@ -4,26 +4,44 @@ import type { RuntimeAPI } from './ids';
 import type * as ReactTypes from 'react';
 import { claimHostMount, releaseHostMount } from './host-mount';
 
-const importReact = retryableModule(() => import('react'), runtimeUrls.react);
-const reactDomModule = retryableModule(() => import('react-dom'), runtimeUrls.reactDom);
+const importReact = retryableModule(
+  () => import('react'),
+  runtimeUrls.react,
+  undefined,
+  'react-package'
+);
+const reactDomModule = retryableModule(
+  () => import('react-dom'),
+  runtimeUrls.reactDom,
+  undefined,
+  'react-dom-package'
+);
 const reactDomClientModule = retryableModule(
   () => import('react-dom/client'),
-  runtimeUrls.reactDomClient
+  runtimeUrls.reactDomClient,
+  undefined,
+  'react-dom-client-package'
 );
 
 // Keep the React 18 reader runtime, but deliver the pinned pair through
 // the application's lazy assets. ReactDOM's peer resolves the same React
 // instance; no external CDN is required for a reader's mount.
 
-export async function loadReact(): Promise<{
+export async function loadReact(observe?: (stage: string) => void): Promise<{
   React: typeof ReactTypes;
   ReactDOM: any;
 }> {
-  const [reactModule, reactDOMModule, reactDOMClient] = await Promise.all([
-    importReact(),
-    reactDomModule(),
-    reactDomClientModule(),
-  ]);
+  const imports = [importReact(), reactDomModule(), reactDomClientModule()] as const;
+  if (observe) {
+    const names = ['react-package', 'react-dom-package', 'react-dom-client-package'];
+    imports.forEach((promise, index) => {
+      void promise.then(
+        () => observe(names[index] + '-return'),
+        () => observe(names[index] + '-reject')
+      );
+    });
+  }
+  const [reactModule, reactDOMModule, reactDOMClient] = await Promise.all(imports);
   const React = (reactModule.default ?? reactModule) as unknown as typeof ReactTypes;
   // Client roots do not export commit/portal APIs. Keep the public DOM APIs
   // used by composed demos, with client createRoot/hydrateRoot entry points.
