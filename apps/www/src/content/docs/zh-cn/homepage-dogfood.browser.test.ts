@@ -957,6 +957,19 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           JSON.stringify({ ...reactRecord, sdk: sdk?.snapshot() }, null, 2)
         );
       };
+      const noteContents = (runtime: string, stage: string, error?: unknown) => {
+        if (!observeReact) return;
+        console.info(
+          '[Contents original stage]',
+          JSON.stringify({
+            runtime,
+            stage,
+            nodeMs: performance.now(),
+            nodeTimeOrigin: performance.timeOrigin,
+            ...(error === undefined ? {} : { error: String(error) }),
+          })
+        );
+      };
       const pageErrors: string[] = [];
       page.on('pageerror', (error) => pageErrors.push(error.message));
       page.on('console', (message) => {
@@ -1010,11 +1023,14 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
         );
         for (const runtime of RUNTIMES) {
           await revealHeaderPreferences(page);
+          noteContents(runtime, 'combobox-click-start');
           const select = page.locator('[data-adapter-select] [role="combobox"]');
           await select.click();
+          noteContents(runtime, 'combobox-click-return');
           const popup = await select.getAttribute('aria-controls');
           const tracingReact = observeReact && runtime === 'react';
           if (tracingReact) {
+            noteContents(runtime, 'trace-prepare-start');
             reactTrace = createQueryDispatchTrace(
               page,
               path.join(directory, 'shadcn-react-dispatch-trace'),
@@ -1025,6 +1041,10 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
             await reactTrace.prepare();
             await page.evaluate(() => {
               const root = document.querySelector<HTMLElement>('[data-site-contents-command]')!;
+              Object.defineProperty(window, '__puiContentsStagingProbe', {
+                value: true,
+                configurable: true,
+              });
               const live = root.dataset;
               const generation = () => live.contentsGeneration ?? null;
               const data = new Proxy(live, {
@@ -1047,13 +1067,21 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
                 { capture: true, once: true }
               );
             });
+            noteContents(runtime, 'trace-prepare-return');
           }
+          noteContents(runtime, 'option-click-start');
           const transitionStartedAt = Date.now();
-          await page
-            .locator(`[id=${JSON.stringify(popup)}]`)
-            .getByRole('option', { name: LABELS[runtime], exact: true })
-            .click();
+          try {
+            await page
+              .locator(`[id=${JSON.stringify(popup)}]`)
+              .getByRole('option', { name: LABELS[runtime], exact: true })
+              .click();
+          } catch (error) {
+            noteContents(runtime, 'option-click-error', error);
+            throw error;
+          }
           const clickedAt = Date.now();
+          noteContents(runtime, 'option-click-return');
           let originalError: unknown;
           const calls: Array<{
             id: number;
@@ -1064,6 +1092,7 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           }> = [];
           const requests: Promise<string | null>[] = [];
           const nodeTimeOrigin = performance.timeOrigin;
+          noteContents(runtime, 'poll-start');
           const pollStartedMs = performance.now();
           try {
             await expect
@@ -1096,6 +1125,7 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           }
           const pollVerdictMs = performance.now();
           const originalCheckAt = Date.now();
+          noteContents(runtime, originalError ? 'poll-error' : 'poll-return', originalError);
           if (tracingReact) {
             sdk?.freezeVerdict(!originalError);
             reactRecord = {
@@ -1222,18 +1252,49 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           expect(contentId).toBeTruthy();
           expect(contentId).not.toBe('starlight__sidebar');
           for (const action of ['click', 'Enter', 'Space']) {
+            const observeWc = observeReact && runtime === 'wc';
+            const stage = (predicate: string, phase: string, value?: unknown) => {
+              if (observeWc)
+                console.info(
+                  '[Contents WC predicate]',
+                  JSON.stringify({
+                    action,
+                    predicate,
+                    phase,
+                    value,
+                    nodeMs: performance.now(),
+                    nodeTimeOrigin: performance.timeOrigin,
+                  })
+                );
+            };
+            const read = <T>(predicate: string, invoke: () => Promise<T>): Promise<T> => {
+              if (!observeWc) return invoke();
+              stage(predicate, 'read-start');
+              return invoke().then((value) => {
+                stage(predicate, 'read-return', value);
+                return value;
+              });
+            };
             expect(await command.getAttribute('aria-expanded')).toBe('false');
+            stage('activation', 'before-input');
             if (action === 'click') await command.click();
             else {
               await command.focus();
               await page.keyboard.press(action);
             }
-            await expect.poll(() => command.getAttribute('aria-expanded')).toBe('true');
+            stage('activation', 'after-input');
+            await expect
+              .poll(() => read('open-aria-expanded', () => command.getAttribute('aria-expanded')))
+              .toBe('true');
+            stage('open-aria-expanded', 'assertion-return');
             await expect
               .poll(() =>
-                page.locator('nav.docs-sidebar[data-site-contents-popover-tree]').isVisible()
+                read('open-tree-visible', () =>
+                  page.locator('nav.docs-sidebar[data-site-contents-popover-tree]').isVisible()
+                )
               )
               .toBe(true);
+            stage('open-tree-visible', 'assertion-return');
             expect(await command.getAttribute('aria-controls')).toBe(contentId);
             const dialog = page.getByRole('dialog');
             expect(await dialog.count()).toBe(1);
@@ -1330,16 +1391,20 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
             expect(scrolling.max).toBeGreaterThan(0);
             await page.mouse.move(scrolling.x, scrolling.y);
             await page.mouse.wheel(0, scrolling.top < scrolling.max / 2 ? 500 : -500);
+            stage('wheel-scroll', 'after-input', scrolling.top);
             await expect
               .poll(() =>
-                dialog.evaluate((element) => {
-                  const surface =
-                    element.shadowRoot?.querySelector<HTMLElement>('[data-pui-split-surface]') ??
-                    element;
-                  return surface.scrollTop;
-                })
+                read('wheel-scroll', () =>
+                  dialog.evaluate((element) => {
+                    const surface =
+                      element.shadowRoot?.querySelector<HTMLElement>('[data-pui-split-surface]') ??
+                      element;
+                    return surface.scrollTop;
+                  })
+                )
               )
               .not.toBe(scrolling.top);
+            stage('wheel-scroll', 'assertion-return');
             await page.evaluate(
               () =>
                 new Promise<void>((resolve) =>
@@ -1408,7 +1473,11 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
               expect(metrics.panel.x + metrics.panel.width).toBeLessThanOrEqual(391);
               expect(metrics.panel.height).toBeGreaterThan(0);
             }
-            await page.evaluate(() => {
+            const observerRequestAt = performance.now();
+            const pageAnchorMs = await page.evaluate((includeClock) => {
+              const transportClock = includeClock
+                ? { deliveryMs: [] as number[], readMs: null as number | null }
+                : null;
               const state = window as typeof window & {
                 __contentsOriginalTree?: Element;
                 __contentsOriginalParent?: Node | null;
@@ -1417,7 +1486,8 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
               };
               const tree = state.__contentsOriginalTree!;
               const home = state.__contentsOriginalParent!;
-              const observation: CloseObservation = {
+              const observation: CloseObservation & { transportClock: typeof transportClock } = {
+                transportClock,
                 initialMarker: tree.getAttribute('data-site-contents-popover-tree'),
                 events: [],
               };
@@ -1427,13 +1497,17 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
                     record.type === 'childList' &&
                     record.target === home &&
                     [...record.addedNodes].includes(tree)
-                  )
+                  ) {
                     observation.events.push({
                       kind: 'home-inserted',
                       siblingMatches: record.nextSibling === state.__contentsOriginalNextSibling,
                     });
-                  if (record.type === 'attributes' && record.target === tree)
+                    transportClock?.deliveryMs.push(performance.now());
+                  }
+                  if (record.type === 'attributes' && record.target === tree) {
                     observation.events.push({ kind: 'marker-change', oldValue: record.oldValue });
+                    transportClock?.deliveryMs.push(performance.now());
+                  }
                 }
               };
               const observer = new MutationObserver(collect);
@@ -1447,66 +1521,125 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
                 collect(observer.takeRecords());
                 observer.disconnect();
                 delete state.__contentsTakeCloseObservation;
+                if (transportClock) transportClock.readMs = performance.now();
                 return observation;
               };
-            });
+              return includeClock ? performance.now() : null;
+            }, observeReact);
+            const observerReturnAt = performance.now();
             await page.keyboard.press('Escape');
             const closeDeadline = performance.now() + 1000;
-            await expect.poll(() => command.getAttribute('aria-expanded')).toBe('false');
-            expect(await command.evaluate((element) => document.activeElement === element)).toBe(
-              true
-            );
-            // The website retains its native tree through the public leave barrier.
-            // Lease completion shares the original close budget, without a fixed sleep.
-            const remainingCloseMs = closeDeadline - performance.now();
-            expect(remainingCloseMs).toBeGreaterThan(0);
-            await expect
-              .poll(
-                () =>
+            const closeTiming: Record<string, number> = {};
+            const closeStage = (name: string) => {
+              if (observeReact) closeTiming[name] = performance.now();
+            };
+            try {
+              await expect
+                .poll(() =>
+                  read('close-aria-expanded', () => command.getAttribute('aria-expanded'))
+                )
+                .toBe('false');
+              stage('close-aria-expanded', 'assertion-return');
+              closeStage('expanded-return');
+              expect(await command.evaluate((element) => document.activeElement === element)).toBe(
+                true
+              );
+              closeStage('focus-return');
+              // The website retains its native tree through the public leave barrier.
+              // Lease completion shares the original close budget, without a fixed sleep.
+              const remainingCloseMs = closeDeadline - performance.now();
+              expect(remainingCloseMs).toBeGreaterThan(0);
+              await expect
+                .poll(
+                  () =>
+                    read('close-handback', () =>
+                      page.evaluate(() => {
+                        const state = window as typeof window & {
+                          __contentsOriginalTree?: Element;
+                        };
+                        const tree = state.__contentsOriginalTree;
+                        return (
+                          !!tree?.isConnected &&
+                          tree === document.querySelector('nav.docs-sidebar') &&
+                          !tree.hasAttribute('data-site-contents-popover-tree')
+                        );
+                      })
+                    ),
+                  { timeout: remainingCloseMs }
+                )
+                .toBe(true);
+              closeStage('handback-poll-return');
+              closeStage('journal-start');
+              const closeObservation = await page.evaluate(() => {
+                const state = window as typeof window & {
+                  __contentsTakeCloseObservation?: () => CloseObservation;
+                };
+                return state.__contentsTakeCloseObservation!();
+              });
+              closeStage('journal-return');
+              closeObservations.push({ family, runtime, action, observation: closeObservation });
+              const observeRead = <T>(read: Promise<T>, label: string): Promise<T> =>
+                observeReact
+                  ? read.then((value) => {
+                      closeStage(label);
+                      return value;
+                    })
+                  : read;
+              closeStage('parallel-dom-reads-start');
+              const [homeTreeCount, popoverMarker, hasOriginalPosition] = await Promise.all([
+                observeRead(
+                  page.locator('.docs-shell nav.docs-sidebar').count(),
+                  'single-tree-return'
+                ),
+                observeRead(
+                  page.locator('nav.docs-sidebar').getAttribute('data-site-contents-popover-tree'),
+                  'marker-read-return'
+                ),
+                observeRead(
                   page.evaluate(() => {
-                    const state = window as typeof window & { __contentsOriginalTree?: Element };
+                    const state = window as typeof window & {
+                      __contentsOriginalTree?: Element;
+                      __contentsOriginalParent?: Node | null;
+                      __contentsOriginalNextSibling?: Node | null;
+                    };
                     const tree = state.__contentsOriginalTree;
                     return (
-                      !!tree?.isConnected &&
-                      tree === document.querySelector('nav.docs-sidebar') &&
-                      !tree.hasAttribute('data-site-contents-popover-tree')
+                      !!tree &&
+                      tree.parentNode === state.__contentsOriginalParent &&
+                      tree.nextSibling === state.__contentsOriginalNextSibling
                     );
                   }),
-                { timeout: remainingCloseMs }
-              )
-              .toBe(true);
-            const closeObservation = await page.evaluate(() => {
-              const state = window as typeof window & {
-                __contentsTakeCloseObservation?: () => CloseObservation;
-              };
-              return state.__contentsTakeCloseObservation!();
-            });
-            closeObservations.push({ family, runtime, action, observation: closeObservation });
-            expect(await page.locator('.docs-shell nav.docs-sidebar').count()).toBe(1);
-            expect(
-              await page.locator('nav.docs-sidebar').getAttribute('data-site-contents-popover-tree')
-            ).toBeNull();
-            expect(
-              await page.evaluate(() => {
-                const state = window as typeof window & {
-                  __contentsOriginalTree?: Element;
-                  __contentsOriginalParent?: Node | null;
-                  __contentsOriginalNextSibling?: Node | null;
-                };
-                const tree = state.__contentsOriginalTree;
-                return (
-                  !!tree &&
-                  tree.parentNode === state.__contentsOriginalParent &&
-                  tree.nextSibling === state.__contentsOriginalNextSibling
+                  'position-check-return'
+                ),
+              ]);
+              expect(homeTreeCount).toBe(1);
+              expect(popoverMarker).toBeNull();
+              expect(hasOriginalPosition).toBe(true);
+              expect(closeObservation.initialMarker).not.toBeNull();
+              expect(closeObservation.events).toEqual([
+                { kind: 'home-inserted', siblingMatches: true },
+                { kind: 'marker-change', oldValue: closeObservation.initialMarker },
+              ]);
+              const deadlineCheckAt = performance.now();
+              if (observeReact) closeTiming['deadline-check'] = deadlineCheckAt;
+              expect(deadlineCheckAt).toBeLessThanOrEqual(closeDeadline);
+            } finally {
+              if (observeReact)
+                console.info(
+                  '[Contents Escape timing]',
+                  JSON.stringify({
+                    runtime,
+                    family,
+                    action,
+                    closeDeadline,
+                    nodeTimeOrigin: performance.timeOrigin,
+                    observerRequestAt,
+                    observerReturnAt,
+                    pageAnchorMs,
+                    closeTiming,
+                  })
                 );
-              })
-            ).toBe(true);
-            expect(closeObservation.initialMarker).not.toBeNull();
-            expect(closeObservation.events).toEqual([
-              { kind: 'home-inserted', siblingMatches: true },
-              { kind: 'marker-change', oldValue: closeObservation.initialMarker },
-            ]);
-            expect(performance.now()).toBeLessThanOrEqual(closeDeadline);
+            }
           }
           // Real keyboard navigation selects the focus-visible state for the capture.
           await page.keyboard.press('Tab');

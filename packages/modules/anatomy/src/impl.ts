@@ -75,6 +75,8 @@ const ORDER_PRECEDING = typeof Node !== 'undefined' ? Node.DOCUMENT_POSITION_PRE
 const CENTER = (() => {
   const families = new Map<AnatomyFamily, NormalizedFamily>();
   const claimsByInstance = new Map<AnatomyInstanceToken, Map<AnatomyFamily, ClaimRecord>>();
+  // Reuse the instance registration order until a claim in that family changes.
+  const claimsByFamily = new Map<AnatomyFamily, readonly ClaimRecord[]>();
   // A terminal owner can be disposed before its framework descendants. Keep
   // only its logical boundary (not its claim/exposes) while live claims still
   // traverse it, so those descendants cannot briefly join an outer domain.
@@ -124,6 +126,7 @@ const CENTER = (() => {
         claimsByInstance.set(record.instance, byFamily);
       }
       byFamily.set(record.family, record);
+      claimsByFamily.delete(record.family);
     },
     getClaim,
     isRetiredBoundary: (instance: AnatomyInstanceToken, family: AnatomyFamily) =>
@@ -138,16 +141,20 @@ const CENTER = (() => {
         if (!retired) retiredBoundaries.set(family, (retired = new Set()));
         retired.add(instance);
         byFamily.delete(family);
+        claimsByFamily.delete(family);
       }
       if (byFamily.size === 0) claimsByInstance.delete(instance);
       for (const family of families) pruneRetiredBoundaries(family);
     },
-    listClaims(family: AnatomyFamily): ClaimRecord[] {
+    listClaims(family: AnatomyFamily): readonly ClaimRecord[] {
+      const cached = claimsByFamily.get(family);
+      if (cached) return cached;
       const out: ClaimRecord[] = [];
       for (const byFamily of claimsByInstance.values()) {
         const claim = byFamily.get(family);
         if (claim) out.push(claim);
       }
+      claimsByFamily.set(family, out);
       return out;
     },
   };
@@ -1099,7 +1106,8 @@ export class AnatomyModuleImpl extends ModuleBase {
     profile: string | null;
   } {
     const instance = this.getSelfToken();
-    const rootInstance = this.findDomainRoot(instance, family);
+    const getParent = this.getParentGetter();
+    const rootInstance = this.findDomainRoot(instance, family, getParent);
     if (!rootInstance) {
       if (!strict) return { rootInstance: null, claims: [], profile: null };
       throw anatomyError(
@@ -1109,7 +1117,7 @@ export class AnatomyModuleImpl extends ModuleBase {
     }
 
     const claims = CENTER.listClaims(family).filter(
-      (claim) => this.findDomainRoot(claim.instance, family) === rootInstance
+      (claim) => this.findDomainRoot(claim.instance, family, getParent) === rootInstance
     );
     const rootClaim =
       claims.find((claim) => claim.role === 'root' && claim.instance === rootInstance) ?? null;
@@ -1122,9 +1130,9 @@ export class AnatomyModuleImpl extends ModuleBase {
 
   private findDomainRoot(
     instance: AnatomyInstanceToken,
-    family: AnatomyFamily
+    family: AnatomyFamily,
+    getParent = this.getParentGetter()
   ): AnatomyInstanceToken | null {
-    const getParent = this.getParentGetter();
     let cur: AnatomyInstanceToken | null = instance;
     while (cur) {
       if (CENTER.isRetiredBoundary(cur, family)) return null;
