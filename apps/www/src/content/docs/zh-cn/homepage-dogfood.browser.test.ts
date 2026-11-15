@@ -1534,30 +1534,43 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
               });
               closeStage('journal-return');
               closeObservations.push({ family, runtime, action, observation: closeObservation });
-              expect(await page.locator('.docs-shell nav.docs-sidebar').count()).toBe(1);
-              closeStage('single-tree-return');
-              expect(
-                await page
-                  .locator('nav.docs-sidebar')
-                  .getAttribute('data-site-contents-popover-tree')
-              ).toBeNull();
-              closeStage('marker-read-return');
-              expect(
-                await page.evaluate(() => {
-                  const state = window as typeof window & {
-                    __contentsOriginalTree?: Element;
-                    __contentsOriginalParent?: Node | null;
-                    __contentsOriginalNextSibling?: Node | null;
-                  };
-                  const tree = state.__contentsOriginalTree;
-                  return (
-                    !!tree &&
-                    tree.parentNode === state.__contentsOriginalParent &&
-                    tree.nextSibling === state.__contentsOriginalNextSibling
-                  );
-                })
-              ).toBe(true);
-              closeStage('position-check-return');
+              const observeRead = <T>(read: Promise<T>, label: string): Promise<T> =>
+                observeReact
+                  ? read.then((value) => {
+                      closeStage(label);
+                      return value;
+                    })
+                  : read;
+              closeStage('parallel-dom-reads-start');
+              const [homeTreeCount, popoverMarker, hasOriginalPosition] = await Promise.all([
+                observeRead(
+                  page.locator('.docs-shell nav.docs-sidebar').count(),
+                  'single-tree-return'
+                ),
+                observeRead(
+                  page.locator('nav.docs-sidebar').getAttribute('data-site-contents-popover-tree'),
+                  'marker-read-return'
+                ),
+                observeRead(
+                  page.evaluate(() => {
+                    const state = window as typeof window & {
+                      __contentsOriginalTree?: Element;
+                      __contentsOriginalParent?: Node | null;
+                      __contentsOriginalNextSibling?: Node | null;
+                    };
+                    const tree = state.__contentsOriginalTree;
+                    return (
+                      !!tree &&
+                      tree.parentNode === state.__contentsOriginalParent &&
+                      tree.nextSibling === state.__contentsOriginalNextSibling
+                    );
+                  }),
+                  'position-check-return'
+                ),
+              ]);
+              expect(homeTreeCount).toBe(1);
+              expect(popoverMarker).toBeNull();
+              expect(hasOriginalPosition).toBe(true);
               expect(closeObservation.initialMarker).not.toBeNull();
               expect(closeObservation.events).toEqual([
                 { kind: 'home-inserted', siblingMatches: true },
