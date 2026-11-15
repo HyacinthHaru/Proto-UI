@@ -16,20 +16,17 @@ jobs:
           - shard: 1/8
             slot: browser-1-of-8
             trace: '1'
-            order: baseline candidate
-          - shard: 3/8
-            slot: browser-3-of-8
-            trace: '0'
             order: candidate baseline
     env:
-      BASELINE_CARRIER: 41d9155b1ca7b4706ba78f28879607e72afe41c1
-      CANDIDATE_CARRIER: f4b4b99dff40252f9e2b66b9ade5477c30eabf5e
+      BASELINE_CARRIER: 4fd2ec9a8b6f9ea74b22ddb6cdb6716de9781ad1
+      CANDIDATE_CARRIER: 51ac847aaa1465dac9f673d47ac9d0e54aee7199
       CHROME_VERSION: 157.0.8103.50
       CHROME_ZIP_SHA256: d17167bc092eb495a3b768c7467f27e35f625aa03834233a1663af67dcb668c9
       PROTO_UI_RUNTIME_PHASE: browser
       PROTO_UI_RUNTIME_SHARD: ${{ matrix.shard }}
       PROTO_UI_RUNTIME_SLOT: ${{ matrix.slot }}
       PROTO_UI_FAMILY_DISPATCH_PROBE: ${{ matrix.trace }}
+      PROTO_UI_S4_HOSTED_DIAGNOSTIC: '1'
       ARM_ORDER: ${{ matrix.order }}
       PROTO_UI_CONTENTS_REACT_PROBE: ${{ matrix.trace }}
     steps:
