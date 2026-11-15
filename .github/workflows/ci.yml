@@ -1,5 +1,5 @@
 name: CI
-run-name: Contents React on the original shards
+run-name: Repeat exact f9 Contents and S4 on the original shard
 
 on: workflow_dispatch
 permissions:
@@ -18,8 +18,8 @@ jobs:
             trace: '1'
             order: baseline candidate
     env:
-      BASELINE_CARRIER: 117a38e9a586529e2acee2452effa6885871d7d6
-      CANDIDATE_CARRIER: 67e1b25e9837d0b351e9e00cb6572803b23d598b
+      BASELINE_CARRIER: fe68781a54327cb616d4720a33dc983ab0d920e5
+      CANDIDATE_CARRIER: fe68781a54327cb616d4720a33dc983ab0d920e5
       CHROME_VERSION: 157.0.8103.50
       CHROME_ZIP_SHA256: d17167bc092eb495a3b768c7467f27e35f625aa03834233a1663af67dcb668c9
       PROTO_UI_RUNTIME_PHASE: browser
