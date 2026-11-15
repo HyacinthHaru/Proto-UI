@@ -1,0 +1,549 @@
+{
+  "scope": "Original Shadcn WC predicates in the named Contents case. Timing probes only forward their original values.",
+  "observations": [
+    {
+      "arm": "baseline",
+      "caseVerdicts": [
+        "\u2713 Homepage end-to-end dogfood boundary > uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence 63334ms"
+      ],
+      "wcActions": {
+        "click": {
+          "activation": [
+            {
+              "phase": "before-input",
+              "relativeInputMs": 0.0
+            },
+            {
+              "phase": "after-input",
+              "relativeInputMs": 311.637
+            }
+          ],
+          "open-aria-expanded": [
+            {
+              "phase": "read-start",
+              "relativeInputMs": 311.987
+            },
+            {
+              "phase": "read-return",
+              "relativeInputMs": 331.222,
+              "value": "true"
+            },
+            {
+              "phase": "assertion-return",
+              "relativeInputMs": 331.378
+            }
+          ],
+          "open-tree-visible": [
+            {
+              "phase": "read-start",
+              "relativeInputMs": 331.518
+            },
+            {
+              "phase": "read-return",
+              "relativeInputMs": 336.9,
+              "value": true
+            },
+            {
+              "phase": "assertion-return",
+              "relativeInputMs": 337.002
+            }
+          ],
+          "wheel-scroll": [
+            {
+              "phase": "after-input",
+              "relativeInputMs": 972.503,
+              "value": 0
+            },
+            {
+              "phase": "read-start",
+              "relativeInputMs": 972.916
+            },
+            {
+              "phase": "read-return",
+              "relativeInputMs": 1028.128,
+              "value": 500
+            },
+            {
+              "phase": "assertion-return",
+              "relativeInputMs": 1028.256
+            }
+          ],
+          "close-aria-expanded": [
+            {
+              "phase": "read-start",
+              "relativeInputMs": 1603.243
+            },
+            {
+              "phase": "read-return",
+              "relativeInputMs": 1645.784,
+              "value": "false"
+            },
+            {
+              "phase": "assertion-return",
+              "relativeInputMs": 1645.922
+            }
+          ],
+          "close-handback": [
+            {
+              "phase": "read-start",
+              "relativeInputMs": 1946.303
+            },
+            {
+              "phase": "read-return",
+              "relativeInputMs": 2030.948,
+              "value": true
+            }
+          ]
+        },
+        "Enter": {
+          "activation": [
+            {
+              "phase": "before-input",
+              "relativeInputMs": 0.0
+            },
+            {
+              "phase": "after-input",
+              "relativeInputMs": 615.104
+            }
+          ],
+          "open-aria-expanded": [
+            {
+              "phase": "read-start",
+              "relativeInputMs": 615.34
+            },
+            {
+              "phase": "read-return",
+              "relativeInputMs": 624.476,
+              "value": "true"
+            },
+            {
+              "phase": "assertion-return",
+              "relativeInputMs": 624.619
+            }
+          ],
+          "open-tree-visible": [
+            {
+              "phase": "read-start",
+              "relativeInputMs": 624.777
+            },
+            {
+              "phase": "read-return",
+              "relativeInputMs": 643.527,
+              "value": true
+            },
+            {
+              "phase": "assertion-return",
+              "relativeInputMs": 643.692
+            }
+          ],
+          "wheel-scroll": [
+            {
+              "phase": "after-input",
+              "relativeInputMs": 5069.077,
+              "value": 0
+            },
+            {
+              "phase": "read-start",
+              "relativeInputMs": 5069.322
+            },
+            {
+              "phase": "read-return",
+              "relativeInputMs": 5157.946,
+              "value": 500
+            },
+            {
+              "phase": "assertion-return",
+              "relativeInputMs": 5158.083
+            }
+          ],
+          "close-aria-expanded": [
+            {
+              "phase": "read-start",
+              "relativeInputMs": 5317.809
+            },
+            {
+              "phase": "read-return",
+              "relativeInputMs": 5382.737,
+              "value": "false"
+            },
+            {
+              "phase": "assertion-return",
+              "relativeInputMs": 5382.859
+            }
+          ],
+          "close-handback": [
+            {
+              "phase": "read-start",
+              "relativeInputMs": 5463.105
+            },
+            {
+              "phase": "read-return",
+              "relativeInputMs": 5463.967,
+              "value": true
+            }
+          ]
+        },
+        "Space": {
+          "activation": [
+            {
+              "phase": "before-input",
+              "relativeInputMs": 0.0
+            },
+            {
+              "phase": "after-input",
+              "relativeInputMs": 366.776
+            }
+          ],
+          "open-aria-expanded": [
+            {
+              "phase": "read-start",
+              "relativeInputMs": 367.012
+            },
+            {
+              "phase": "read-return",
+              "relativeInputMs": 373.765,
+              "value": "true"
+            },
+            {
+              "phase": "assertion-return",
+              "relativeInputMs": 373.828
+            }
+          ],
+          "open-tree-visible": [
+            {
+              "phase": "read-start",
+              "relativeInputMs": 373.887
+            },
+            {
+              "phase": "read-return",
+              "relativeInputMs": 382.249,
+              "value": true
+            },
+            {
+              "phase": "assertion-return",
+              "relativeInputMs": 382.335
+            }
+          ],
+          "wheel-scroll": [
+            {
+              "phase": "after-input",
+              "relativeInputMs": 793.681,
+              "value": 0
+            },
+            {
+              "phase": "read-start",
+              "relativeInputMs": 793.863
+            },
+            {
+              "phase": "read-return",
+              "relativeInputMs": 844.825,
+              "value": 500
+            },
+            {
+              "phase": "assertion-return",
+              "relativeInputMs": 844.939
+            }
+          ],
+          "close-aria-expanded": [
+            {
+              "phase": "read-start",
+              "relativeInputMs": 992.429
+            },
+            {
+              "phase": "read-return",
+              "relativeInputMs": 1057.374,
+              "value": "false"
+            },
+            {
+              "phase": "assertion-return",
+              "relativeInputMs": 1057.504
+            }
+          ],
+          "close-handback": [
+            {
+              "phase": "read-start",
+              "relativeInputMs": 1140.399
+            },
+            {
+              "phase": "read-return",
+              "relativeInputMs": 1147.932,
+              "value": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "arm": "candidate",
+      "caseVerdicts": [
+        "\u2713 Homepage end-to-end dogfood boundary > uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence 66397ms"
+      ],
+      "wcActions": {
+        "click": {
+          "activation": [
+            {
+              "phase": "before-input",
+              "relativeInputMs": 0.0
+            },
+            {
+              "phase": "after-input",
+              "relativeInputMs": 349.33
+            }
+          ],
+          "open-aria-expanded": [
+            {
+              "phase": "read-start",
+              "relativeInputMs": 349.606
+            },
+            {
+              "phase": "read-return",
+              "relativeInputMs": 372.214,
+              "value": "true"
+            },
+            {
+              "phase": "assertion-return",
+              "relativeInputMs": 372.407
+            }
+          ],
+          "open-tree-visible": [
+            {
+              "phase": "read-start",
+              "relativeInputMs": 372.556
+            },
+            {
+              "phase": "read-return",
+              "relativeInputMs": 377.716,
+              "value": true
+            },
+            {
+              "phase": "assertion-return",
+              "relativeInputMs": 377.799
+            }
+          ],
+          "wheel-scroll": [
+            {
+              "phase": "after-input",
+              "relativeInputMs": 1129.345,
+              "value": 0
+            },
+            {
+              "phase": "read-start",
+              "relativeInputMs": 1129.755
+            },
+            {
+              "phase": "read-return",
+              "relativeInputMs": 1233.446,
+              "value": 500
+            },
+            {
+              "phase": "assertion-return",
+              "relativeInputMs": 1233.627
+            }
+          ],
+          "close-aria-expanded": [
+            {
+              "phase": "read-start",
+              "relativeInputMs": 2745.01
+            },
+            {
+              "phase": "read-return",
+              "relativeInputMs": 2796.352,
+              "value": "false"
+            },
+            {
+              "phase": "assertion-return",
+              "relativeInputMs": 2796.525
+            }
+          ],
+          "close-handback": [
+            {
+              "phase": "read-start",
+              "relativeInputMs": 2836.101
+            },
+            {
+              "phase": "read-return",
+              "relativeInputMs": 2838.61,
+              "value": true
+            }
+          ]
+        },
+        "Enter": {
+          "activation": [
+            {
+              "phase": "before-input",
+              "relativeInputMs": 0.0
+            },
+            {
+              "phase": "after-input",
+              "relativeInputMs": 274.47
+            }
+          ],
+          "open-aria-expanded": [
+            {
+              "phase": "read-start",
+              "relativeInputMs": 274.743
+            },
+            {
+              "phase": "read-return",
+              "relativeInputMs": 303.527,
+              "value": "true"
+            },
+            {
+              "phase": "assertion-return",
+              "relativeInputMs": 303.764
+            }
+          ],
+          "open-tree-visible": [
+            {
+              "phase": "read-start",
+              "relativeInputMs": 303.906
+            },
+            {
+              "phase": "read-return",
+              "relativeInputMs": 314.64,
+              "value": true
+            },
+            {
+              "phase": "assertion-return",
+              "relativeInputMs": 314.784
+            }
+          ],
+          "wheel-scroll": [
+            {
+              "phase": "after-input",
+              "relativeInputMs": 4966.081,
+              "value": 0
+            },
+            {
+              "phase": "read-start",
+              "relativeInputMs": 4966.322
+            },
+            {
+              "phase": "read-return",
+              "relativeInputMs": 5042.642,
+              "value": 500
+            },
+            {
+              "phase": "assertion-return",
+              "relativeInputMs": 5042.788
+            }
+          ],
+          "close-aria-expanded": [
+            {
+              "phase": "read-start",
+              "relativeInputMs": 5246.306
+            },
+            {
+              "phase": "read-return",
+              "relativeInputMs": 5300.368,
+              "value": "false"
+            },
+            {
+              "phase": "assertion-return",
+              "relativeInputMs": 5300.507
+            }
+          ],
+          "close-handback": [
+            {
+              "phase": "read-start",
+              "relativeInputMs": 5380.29
+            },
+            {
+              "phase": "read-return",
+              "relativeInputMs": 5400.696,
+              "value": true
+            }
+          ]
+        },
+        "Space": {
+          "activation": [
+            {
+              "phase": "before-input",
+              "relativeInputMs": 0.0
+            },
+            {
+              "phase": "after-input",
+              "relativeInputMs": 351.379
+            }
+          ],
+          "open-aria-expanded": [
+            {
+              "phase": "read-start",
+              "relativeInputMs": 351.561
+            },
+            {
+              "phase": "read-return",
+              "relativeInputMs": 358.614,
+              "value": "true"
+            },
+            {
+              "phase": "assertion-return",
+              "relativeInputMs": 358.694
+            }
+          ],
+          "open-tree-visible": [
+            {
+              "phase": "read-start",
+              "relativeInputMs": 358.77
+            },
+            {
+              "phase": "read-return",
+              "relativeInputMs": 376.938,
+              "value": true
+            },
+            {
+              "phase": "assertion-return",
+              "relativeInputMs": 377.037
+            }
+          ],
+          "wheel-scroll": [
+            {
+              "phase": "after-input",
+              "relativeInputMs": 821.588,
+              "value": 0
+            },
+            {
+              "phase": "read-start",
+              "relativeInputMs": 821.831
+            },
+            {
+              "phase": "read-return",
+              "relativeInputMs": 893.566,
+              "value": 500
+            },
+            {
+              "phase": "assertion-return",
+              "relativeInputMs": 893.727
+            }
+          ],
+          "close-aria-expanded": [
+            {
+              "phase": "read-start",
+              "relativeInputMs": 1047.741
+            },
+            {
+              "phase": "read-return",
+              "relativeInputMs": 1127.205,
+              "value": "false"
+            },
+            {
+              "phase": "assertion-return",
+              "relativeInputMs": 1127.34
+            }
+          ],
+          "close-handback": [
+            {
+              "phase": "read-start",
+              "relativeInputMs": 1176.238
+            },
+            {
+              "phase": "read-return",
+              "relativeInputMs": 1176.963,
+              "value": true
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

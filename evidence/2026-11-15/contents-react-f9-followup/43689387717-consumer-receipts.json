@@ -1,0 +1,88 @@
+[
+  {
+    "slot": 1,
+    "arm": "baseline",
+    "head": "f9b4b9e18aefbaa55f241a7682c140beeca3a7fd",
+    "switches": {
+      "brutalist/react": {
+        "originalError": null,
+        "atMs": 490
+      },
+      "brutalist/vue": {
+        "originalError": null,
+        "atMs": 395
+      },
+      "brutalist/vue2": {
+        "originalError": null,
+        "atMs": 329
+      },
+      "brutalist/wc": {
+        "originalError": null,
+        "atMs": 4
+      },
+      "shadcn/react": {
+        "originalError": null,
+        "atMs": 706
+      },
+      "shadcn/vue": {
+        "originalError": null,
+        "atMs": 585
+      },
+      "shadcn/vue2": {
+        "originalError": null,
+        "atMs": 713
+      },
+      "shadcn/wc": {
+        "originalError": null,
+        "atMs": 19
+      }
+    },
+    "orderedHandbacks": 24,
+    "totalHandbacks": 24,
+    "namedCasePassed": true,
+    "mobileShellPassed": true
+  },
+  {
+    "slot": 1,
+    "arm": "candidate",
+    "head": "f9b4b9e18aefbaa55f241a7682c140beeca3a7fd",
+    "switches": {
+      "brutalist/react": {
+        "originalError": null,
+        "atMs": 503
+      },
+      "brutalist/vue": {
+        "originalError": null,
+        "atMs": 375
+      },
+      "brutalist/vue2": {
+        "originalError": null,
+        "atMs": 360
+      },
+      "brutalist/wc": {
+        "originalError": null,
+        "atMs": 2
+      },
+      "shadcn/react": {
+        "originalError": null,
+        "atMs": 641
+      },
+      "shadcn/vue": {
+        "originalError": null,
+        "atMs": 463
+      },
+      "shadcn/vue2": {
+        "originalError": null,
+        "atMs": 940
+      },
+      "shadcn/wc": {
+        "originalError": null,
+        "atMs": 21
+      }
+    },
+    "orderedHandbacks": 24,
+    "totalHandbacks": 24,
+    "namedCasePassed": true,
+    "mobileShellPassed": true
+  }
+]

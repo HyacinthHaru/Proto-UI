@@ -1,0 +1,817 @@
+{
+  "scope": "Escape deadline stays anchored to the original Node time. Browser mutation delivery has a clock interval when both anchors agree.",
+  "observations": [
+    {
+      "arm": "baseline",
+      "source": "19323ade171f83b752dd44394e8df1516ac4f2e8",
+      "sourceLogSha256": "3fb177661e082c5d64469bf0da7e7dbf8e4f82fa406a3d7da6f9cebb3127d007",
+      "embeddedMarkerViolation": [],
+      "lastCaseEnd": ["brutalist", "vue2", "Space"],
+      "reactReached": true,
+      "timings": [
+        {
+          "family": "shadcn",
+          "runtime": "wc",
+          "input": "click",
+          "originalsEndingAtMs": {
+            "expanded-return": 42.98,
+            "focus-return": 343.039,
+            "handback-poll-return": 428.046,
+            "journal-start": 428.056,
+            "journal-return": 430.794,
+            "parallel-dom-reads-start": 430.811,
+            "single-tree-return": 437.337,
+            "marker-read-return": 439.564,
+            "position-check-return": 439.689,
+            "deadline-check": 439.868
+          },
+          "originalConfiguredBudgetMs": 1000,
+          "events": [
+            {
+              "kind": "home-inserted",
+              "siblingMatches": true
+            },
+            {
+              "kind": "marker-change",
+              "oldValue": ""
+            }
+          ],
+          "clockOffsetBoundsMs": [54189.447, 54192.185],
+          "mutationDeliveryAfterEscapeReturnMs": [
+            [22.756, 25.494],
+            [22.756, 25.494]
+          ]
+        },
+        {
+          "family": "shadcn",
+          "runtime": "wc",
+          "input": "Enter",
+          "originalsEndingAtMs": {
+            "expanded-return": 65.246,
+            "focus-return": 145.368,
+            "handback-poll-return": 146.377,
+            "journal-start": 146.377,
+            "journal-return": 166.552,
+            "parallel-dom-reads-start": 166.562,
+            "single-tree-return": 196.773,
+            "marker-read-return": 199.033,
+            "position-check-return": 199.194,
+            "deadline-check": 199.358
+          },
+          "originalConfiguredBudgetMs": 1000,
+          "events": [
+            {
+              "kind": "home-inserted",
+              "siblingMatches": true
+            },
+            {
+              "kind": "marker-change",
+              "oldValue": ""
+            }
+          ],
+          "clockOffsetBoundsMs": [54190.555, 54191.865],
+          "mutationDeliveryAfterEscapeReturnMs": [
+            [31.747, 33.057],
+            [31.747, 33.057]
+          ]
+        },
+        {
+          "family": "shadcn",
+          "runtime": "wc",
+          "input": "Space",
+          "originalsEndingAtMs": {
+            "expanded-return": 65.228,
+            "focus-return": 148.017,
+            "handback-poll-return": 155.733,
+            "journal-start": 155.734,
+            "journal-return": 158.933,
+            "parallel-dom-reads-start": 158.94,
+            "single-tree-return": 181.762,
+            "marker-read-return": 184.007,
+            "position-check-return": 184.182,
+            "deadline-check": 184.329
+          },
+          "originalConfiguredBudgetMs": 1000,
+          "events": [
+            {
+              "kind": "home-inserted",
+              "siblingMatches": true
+            },
+            {
+              "kind": "marker-change",
+              "oldValue": ""
+            }
+          ],
+          "clockOffsetBoundsMs": [54190.707, 54192.037],
+          "mutationDeliveryAfterEscapeReturnMs": [
+            [35.971, 37.301],
+            [35.971, 37.301]
+          ]
+        },
+        {
+          "family": "shadcn",
+          "runtime": "react",
+          "input": "click",
+          "originalsEndingAtMs": {
+            "expanded-return": 115.85,
+            "focus-return": 158.228,
+            "handback-poll-return": 159.255,
+            "journal-start": 159.255,
+            "journal-return": 178.715,
+            "parallel-dom-reads-start": 178.728,
+            "single-tree-return": 191.239,
+            "marker-read-return": 193.67,
+            "position-check-return": 193.84,
+            "deadline-check": 194.014
+          },
+          "originalConfiguredBudgetMs": 1000,
+          "events": [
+            {
+              "kind": "home-inserted",
+              "siblingMatches": true
+            },
+            {
+              "kind": "marker-change",
+              "oldValue": ""
+            }
+          ],
+          "clockOffsetBoundsMs": [54186.117, 54192.047],
+          "mutationDeliveryAfterEscapeReturnMs": [
+            [61.323, 67.253],
+            [61.323, 67.253]
+          ]
+        },
+        {
+          "family": "shadcn",
+          "runtime": "react",
+          "input": "Enter",
+          "originalsEndingAtMs": {
+            "expanded-return": 129.22,
+            "focus-return": 136.674,
+            "handback-poll-return": 137.452,
+            "journal-start": 137.453,
+            "journal-return": 138.252,
+            "parallel-dom-reads-start": 138.258,
+            "single-tree-return": 142.302,
+            "marker-read-return": 144.756,
+            "position-check-return": 144.824,
+            "deadline-check": 144.964
+          },
+          "originalConfiguredBudgetMs": 1000,
+          "events": [
+            {
+              "kind": "home-inserted",
+              "siblingMatches": true
+            },
+            {
+              "kind": "marker-change",
+              "oldValue": ""
+            }
+          ],
+          "clockOffsetBoundsMs": [54191.236, 54192.036],
+          "mutationDeliveryAfterEscapeReturnMs": [
+            [74.653, 75.452],
+            [74.653, 75.452]
+          ]
+        },
+        {
+          "family": "shadcn",
+          "runtime": "react",
+          "input": "Space",
+          "originalsEndingAtMs": {
+            "expanded-return": 136.345,
+            "focus-return": 200.361,
+            "handback-poll-return": 228.532,
+            "journal-start": 228.533,
+            "journal-return": 239.588,
+            "parallel-dom-reads-start": 239.604,
+            "single-tree-return": 261.178,
+            "marker-read-return": 263.511,
+            "position-check-return": 263.59,
+            "deadline-check": 263.764
+          },
+          "originalConfiguredBudgetMs": 1000,
+          "events": [
+            {
+              "kind": "home-inserted",
+              "siblingMatches": true
+            },
+            {
+              "kind": "marker-change",
+              "oldValue": ""
+            }
+          ],
+          "clockOffsetBoundsMs": [54185.961, 54191.955],
+          "mutationDeliveryAfterEscapeReturnMs": [
+            [79.302, 85.295],
+            [79.302, 85.295]
+          ]
+        },
+        {
+          "family": "shadcn",
+          "runtime": "vue",
+          "input": "click",
+          "originalsEndingAtMs": {
+            "expanded-return": 171.937,
+            "focus-return": 261.989,
+            "handback-poll-return": 271.682,
+            "journal-start": 271.683,
+            "journal-return": 289.604,
+            "parallel-dom-reads-start": 289.617,
+            "single-tree-return": 298.597,
+            "marker-read-return": 301.041,
+            "position-check-return": 301.105,
+            "deadline-check": 301.264
+          },
+          "originalConfiguredBudgetMs": 1000,
+          "events": [
+            {
+              "kind": "home-inserted",
+              "siblingMatches": true
+            },
+            {
+              "kind": "marker-change",
+              "oldValue": ""
+            }
+          ],
+          "clockOffsetBoundsMs": [54190.934, 54191.821],
+          "mutationDeliveryAfterEscapeReturnMs": [
+            [119.989, 120.876],
+            [120.089, 120.976]
+          ]
+        },
+        {
+          "family": "shadcn",
+          "runtime": "vue",
+          "input": "Enter",
+          "originalsEndingAtMs": {
+            "expanded-return": 184.734,
+            "focus-return": 248.421,
+            "handback-poll-return": 258.1,
+            "journal-start": 258.101,
+            "journal-return": 276.599,
+            "parallel-dom-reads-start": 276.61,
+            "single-tree-return": 308.884,
+            "marker-read-return": 311.405,
+            "position-check-return": 311.475,
+            "deadline-check": 311.662
+          },
+          "originalConfiguredBudgetMs": 1000,
+          "events": [
+            {
+              "kind": "home-inserted",
+              "siblingMatches": true
+            },
+            {
+              "kind": "marker-change",
+              "oldValue": ""
+            }
+          ],
+          "clockOffsetBoundsMs": [54183.868, 54192.207],
+          "mutationDeliveryAfterEscapeReturnMs": [
+            [124.816, 133.155],
+            [124.816, 133.155]
+          ]
+        },
+        {
+          "family": "shadcn",
+          "runtime": "vue",
+          "input": "Space",
+          "originalsEndingAtMs": {
+            "expanded-return": 233.586,
+            "focus-return": 296.246,
+            "handback-poll-return": 323.636,
+            "journal-start": 323.637,
+            "journal-return": 335.372,
+            "parallel-dom-reads-start": 335.384,
+            "single-tree-return": 357.638,
+            "marker-read-return": 360.157,
+            "position-check-return": 360.272,
+            "deadline-check": 360.419
+          },
+          "originalConfiguredBudgetMs": 1000,
+          "events": [
+            {
+              "kind": "home-inserted",
+              "siblingMatches": true
+            },
+            {
+              "kind": "marker-change",
+              "oldValue": ""
+            }
+          ],
+          "clockOffsetBoundsMs": [54190.978, 54191.938],
+          "mutationDeliveryAfterEscapeReturnMs": [
+            [177.79, 178.751],
+            [177.79, 178.751]
+          ]
+        },
+        {
+          "family": "shadcn",
+          "runtime": "vue2",
+          "input": "click",
+          "originalsEndingAtMs": {
+            "expanded-return": 218.267,
+            "focus-return": 286.263,
+            "handback-poll-return": 312.068,
+            "journal-start": 312.069,
+            "journal-return": 313.098,
+            "parallel-dom-reads-start": 313.106,
+            "single-tree-return": 343.134,
+            "marker-read-return": 345.617,
+            "position-check-return": 345.669,
+            "deadline-check": 345.815
+          },
+          "originalConfiguredBudgetMs": 1000,
+          "events": [
+            {
+              "kind": "home-inserted",
+              "siblingMatches": true
+            },
+            {
+              "kind": "marker-change",
+              "oldValue": ""
+            }
+          ],
+          "clockOffsetBoundsMs": [54191.107, 54191.98],
+          "mutationDeliveryAfterEscapeReturnMs": [
+            [163.569, 164.443],
+            [163.569, 164.443]
+          ]
+        },
+        {
+          "family": "shadcn",
+          "runtime": "vue2",
+          "input": "Enter",
+          "originalsEndingAtMs": {
+            "expanded-return": 224.512,
+            "focus-return": 264.367,
+            "handback-poll-return": 291.38,
+            "journal-start": 291.381,
+            "journal-return": 316.883,
+            "parallel-dom-reads-start": 316.895,
+            "single-tree-return": 346.74,
+            "marker-read-return": 349.333,
+            "position-check-return": 349.407,
+            "deadline-check": 349.549
+          },
+          "originalConfiguredBudgetMs": 1000,
+          "events": [
+            {
+              "kind": "home-inserted",
+              "siblingMatches": true
+            },
+            {
+              "kind": "marker-change",
+              "oldValue": ""
+            }
+          ],
+          "clockOffsetBoundsMs": [54191.074, 54191.933],
+          "mutationDeliveryAfterEscapeReturnMs": [
+            [178.243, 179.103],
+            [178.243, 179.103]
+          ]
+        },
+        {
+          "family": "shadcn",
+          "runtime": "vue2",
+          "input": "Space",
+          "originalsEndingAtMs": {
+            "expanded-return": 210.162,
+            "focus-return": 216.635,
+            "handback-poll-return": 217.336,
+            "journal-start": 217.336,
+            "journal-return": 218.196,
+            "parallel-dom-reads-start": 218.203,
+            "single-tree-return": 222.462,
+            "marker-read-return": 225.033,
+            "position-check-return": 225.083,
+            "deadline-check": 225.191
+          },
+          "originalConfiguredBudgetMs": 1000,
+          "events": [
+            {
+              "kind": "home-inserted",
+              "siblingMatches": true
+            },
+            {
+              "kind": "marker-change",
+              "oldValue": ""
+            }
+          ],
+          "clockOffsetBoundsMs": [54191.268, 54191.811],
+          "mutationDeliveryAfterEscapeReturnMs": [
+            [164.936, 165.479],
+            [164.936, 165.479]
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "candidate",
+      "source": "19323ade171f83b752dd44394e8df1516ac4f2e8",
+      "sourceLogSha256": "408057b51ef56dcd0b6c1f77eff2e49068623af99fdf1bfd42b09eec681bfd37",
+      "embeddedMarkerViolation": [],
+      "lastCaseEnd": ["brutalist", "vue2", "Space"],
+      "reactReached": true,
+      "timings": [
+        {
+          "family": "shadcn",
+          "runtime": "wc",
+          "input": "click",
+          "originalsEndingAtMs": {
+            "expanded-return": 51.927,
+            "focus-return": 91.148,
+            "handback-poll-return": 93.913,
+            "journal-start": 93.918,
+            "journal-return": 95.804,
+            "parallel-dom-reads-start": 95.824,
+            "single-tree-return": 103.688,
+            "marker-read-return": 108.721,
+            "position-check-return": 108.886,
+            "deadline-check": 109.106
+          },
+          "originalConfiguredBudgetMs": 1000,
+          "events": [
+            {
+              "kind": "home-inserted",
+              "siblingMatches": true
+            },
+            {
+              "kind": "marker-change",
+              "oldValue": ""
+            }
+          ],
+          "clockOffsetBoundsMs": [52957.374, 52959.198],
+          "mutationDeliveryAfterEscapeReturnMs": [
+            [22.918, 24.742],
+            [22.918, 24.742]
+          ]
+        },
+        {
+          "family": "shadcn",
+          "runtime": "wc",
+          "input": "Enter",
+          "originalsEndingAtMs": {
+            "expanded-return": 54.385,
+            "focus-return": 134.032,
+            "handback-poll-return": 154.668,
+            "journal-start": 154.669,
+            "journal-return": 164.102,
+            "parallel-dom-reads-start": 164.112,
+            "single-tree-return": 196.177,
+            "marker-read-return": 198.389,
+            "position-check-return": 198.472,
+            "deadline-check": 198.681
+          },
+          "originalConfiguredBudgetMs": 1000,
+          "events": [
+            {
+              "kind": "home-inserted",
+              "siblingMatches": true
+            },
+            {
+              "kind": "marker-change",
+              "oldValue": ""
+            }
+          ],
+          "clockOffsetBoundsMs": [52949.832, 52959.231],
+          "mutationDeliveryAfterEscapeReturnMs": [
+            [18.069, 27.468],
+            [18.069, 27.468]
+          ]
+        },
+        {
+          "family": "shadcn",
+          "runtime": "wc",
+          "input": "Space",
+          "originalsEndingAtMs": {
+            "expanded-return": 79.772,
+            "focus-return": 128.564,
+            "handback-poll-return": 129.417,
+            "journal-start": 129.417,
+            "journal-return": 130.634,
+            "parallel-dom-reads-start": 130.639,
+            "single-tree-return": 154.939,
+            "marker-read-return": 157.132,
+            "position-check-return": 157.191,
+            "deadline-check": 157.406
+          },
+          "originalConfiguredBudgetMs": 1000,
+          "events": [
+            {
+              "kind": "home-inserted",
+              "siblingMatches": true
+            },
+            {
+              "kind": "marker-change",
+              "oldValue": ""
+            }
+          ],
+          "clockOffsetBoundsMs": [52957.794, 52958.82],
+          "mutationDeliveryAfterEscapeReturnMs": [
+            [43.017, 44.043],
+            [43.017, 44.043]
+          ]
+        },
+        {
+          "family": "shadcn",
+          "runtime": "react",
+          "input": "click",
+          "originalsEndingAtMs": {
+            "expanded-return": 97.44,
+            "focus-return": 144.053,
+            "handback-poll-return": 154.601,
+            "journal-start": 154.602,
+            "journal-return": 155.66,
+            "parallel-dom-reads-start": 155.669,
+            "single-tree-return": 160.046,
+            "marker-read-return": 162.426,
+            "position-check-return": 162.614,
+            "deadline-check": 162.764
+          },
+          "originalConfiguredBudgetMs": 1000,
+          "events": [
+            {
+              "kind": "home-inserted",
+              "siblingMatches": true
+            },
+            {
+              "kind": "marker-change",
+              "oldValue": ""
+            }
+          ],
+          "clockOffsetBoundsMs": [52957.998, 52958.984],
+          "mutationDeliveryAfterEscapeReturnMs": [
+            [54.702, 55.689],
+            [54.702, 55.689]
+          ]
+        },
+        {
+          "family": "shadcn",
+          "runtime": "react",
+          "input": "Enter",
+          "originalsEndingAtMs": {
+            "expanded-return": 108.907,
+            "focus-return": 162.995,
+            "handback-poll-return": 180.75,
+            "journal-start": 180.751,
+            "journal-return": 208.22,
+            "parallel-dom-reads-start": 208.231,
+            "single-tree-return": 238.119,
+            "marker-read-return": 240.405,
+            "position-check-return": 240.481,
+            "deadline-check": 240.656
+          },
+          "originalConfiguredBudgetMs": 1000,
+          "events": [
+            {
+              "kind": "home-inserted",
+              "siblingMatches": true
+            },
+            {
+              "kind": "marker-change",
+              "oldValue": ""
+            }
+          ],
+          "clockOffsetBoundsMs": [52954.624, 52958.928],
+          "mutationDeliveryAfterEscapeReturnMs": [
+            [57.99, 62.294],
+            [57.99, 62.294]
+          ]
+        },
+        {
+          "family": "shadcn",
+          "runtime": "react",
+          "input": "Space",
+          "originalsEndingAtMs": {
+            "expanded-return": 142.404,
+            "focus-return": 220.974,
+            "handback-poll-return": 226.302,
+            "journal-start": 226.303,
+            "journal-return": 254.563,
+            "parallel-dom-reads-start": 254.574,
+            "single-tree-return": 286.538,
+            "marker-read-return": 288.831,
+            "position-check-return": 288.891,
+            "deadline-check": 289.072
+          },
+          "originalConfiguredBudgetMs": 1000,
+          "events": [
+            {
+              "kind": "home-inserted",
+              "siblingMatches": true
+            },
+            {
+              "kind": "marker-change",
+              "oldValue": ""
+            }
+          ],
+          "clockOffsetBoundsMs": [52958.088, 52958.846],
+          "mutationDeliveryAfterEscapeReturnMs": [
+            [91.769, 92.528],
+            [91.769, 92.528]
+          ]
+        },
+        {
+          "family": "shadcn",
+          "runtime": "vue",
+          "input": "click",
+          "originalsEndingAtMs": {
+            "expanded-return": 184.531,
+            "focus-return": 263.074,
+            "handback-poll-return": 277.473,
+            "journal-start": 277.474,
+            "journal-return": 297.111,
+            "parallel-dom-reads-start": 297.124,
+            "single-tree-return": 331.2,
+            "marker-read-return": 333.996,
+            "position-check-return": 334.114,
+            "deadline-check": 334.308
+          },
+          "originalConfiguredBudgetMs": 1000,
+          "events": [
+            {
+              "kind": "home-inserted",
+              "siblingMatches": true
+            },
+            {
+              "kind": "marker-change",
+              "oldValue": ""
+            }
+          ],
+          "clockOffsetBoundsMs": [52956.824, 52959.303],
+          "mutationDeliveryAfterEscapeReturnMs": [
+            [130.185, 132.664],
+            [130.185, 132.664]
+          ]
+        },
+        {
+          "family": "shadcn",
+          "runtime": "vue",
+          "input": "Enter",
+          "originalsEndingAtMs": {
+            "expanded-return": 191.284,
+            "focus-return": 283.132,
+            "handback-poll-return": 293.804,
+            "journal-start": 293.804,
+            "journal-return": 312.658,
+            "parallel-dom-reads-start": 312.673,
+            "single-tree-return": 347.416,
+            "marker-read-return": 352.796,
+            "position-check-return": 352.901,
+            "deadline-check": 353.132
+          },
+          "originalConfiguredBudgetMs": 1000,
+          "events": [
+            {
+              "kind": "home-inserted",
+              "siblingMatches": true
+            },
+            {
+              "kind": "marker-change",
+              "oldValue": ""
+            }
+          ],
+          "clockOffsetBoundsMs": [52952.803, 52959.102],
+          "mutationDeliveryAfterEscapeReturnMs": [
+            [131.701, 138.0],
+            [131.701, 138.0]
+          ]
+        },
+        {
+          "family": "shadcn",
+          "runtime": "vue",
+          "input": "Space",
+          "originalsEndingAtMs": {
+            "expanded-return": 195.831,
+            "focus-return": 260.211,
+            "handback-poll-return": 288.811,
+            "journal-start": 288.812,
+            "journal-return": 300.638,
+            "parallel-dom-reads-start": 300.649,
+            "single-tree-return": 323.091,
+            "marker-read-return": 325.72,
+            "position-check-return": 325.78,
+            "deadline-check": 325.922
+          },
+          "originalConfiguredBudgetMs": 1000,
+          "events": [
+            {
+              "kind": "home-inserted",
+              "siblingMatches": true
+            },
+            {
+              "kind": "marker-change",
+              "oldValue": ""
+            }
+          ],
+          "clockOffsetBoundsMs": [52947.422, 52959.227],
+          "mutationDeliveryAfterEscapeReturnMs": [
+            [124.233, 136.038],
+            [124.233, 136.038]
+          ]
+        },
+        {
+          "family": "shadcn",
+          "runtime": "vue2",
+          "input": "click",
+          "originalsEndingAtMs": {
+            "expanded-return": 230.704,
+            "focus-return": 308.745,
+            "handback-poll-return": 327.945,
+            "journal-start": 327.946,
+            "journal-return": 339.727,
+            "parallel-dom-reads-start": 339.739,
+            "single-tree-return": 362.587,
+            "marker-read-return": 365.33,
+            "position-check-return": 365.436,
+            "deadline-check": 365.618
+          },
+          "originalConfiguredBudgetMs": 1000,
+          "events": [
+            {
+              "kind": "home-inserted",
+              "siblingMatches": true
+            },
+            {
+              "kind": "marker-change",
+              "oldValue": ""
+            }
+          ],
+          "clockOffsetBoundsMs": [52952.96, 52958.917],
+          "mutationDeliveryAfterEscapeReturnMs": [
+            [176.271, 182.227],
+            [176.271, 182.227]
+          ]
+        },
+        {
+          "family": "shadcn",
+          "runtime": "vue2",
+          "input": "Enter",
+          "originalsEndingAtMs": {
+            "expanded-return": 202.878,
+            "focus-return": 210.073,
+            "handback-poll-return": 210.862,
+            "journal-start": 210.863,
+            "journal-return": 211.683,
+            "parallel-dom-reads-start": 211.689,
+            "single-tree-return": 216.585,
+            "marker-read-return": 219.359,
+            "position-check-return": 219.4,
+            "deadline-check": 219.52
+          },
+          "originalConfiguredBudgetMs": 1000,
+          "events": [
+            {
+              "kind": "home-inserted",
+              "siblingMatches": true
+            },
+            {
+              "kind": "marker-change",
+              "oldValue": ""
+            }
+          ],
+          "clockOffsetBoundsMs": [52958.201, 52958.946],
+          "mutationDeliveryAfterEscapeReturnMs": [
+            [155.563, 156.308],
+            [155.563, 156.308]
+          ]
+        },
+        {
+          "family": "shadcn",
+          "runtime": "vue2",
+          "input": "Space",
+          "originalsEndingAtMs": {
+            "expanded-return": 228.204,
+            "focus-return": 235.513,
+            "handback-poll-return": 236.279,
+            "journal-start": 236.279,
+            "journal-return": 237.296,
+            "parallel-dom-reads-start": 237.305,
+            "single-tree-return": 241.781,
+            "marker-read-return": 244.585,
+            "position-check-return": 244.627,
+            "deadline-check": 244.751
+          },
+          "originalConfiguredBudgetMs": 1000,
+          "events": [
+            {
+              "kind": "home-inserted",
+              "siblingMatches": true
+            },
+            {
+              "kind": "marker-change",
+              "oldValue": ""
+            }
+          ],
+          "clockOffsetBoundsMs": [52958.235, 52958.787],
+          "mutationDeliveryAfterEscapeReturnMs": [
+            [180.479, 181.032],
+            [180.479, 181.032]
+          ]
+        }
+      ]
+    }
+  ]
+}
