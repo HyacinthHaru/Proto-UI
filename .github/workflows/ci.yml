@@ -16,14 +16,14 @@ jobs:
           - shard: 1/8
             slot: browser-1-of-8
             trace: '1'
-            order: candidate baseline
+            order: baseline candidate
           - shard: 3/8
             slot: browser-3-of-8
             trace: '0'
-            order: baseline candidate
+            order: candidate baseline
     env:
-      BASELINE_CARRIER: db98db1ad9cf3ca698c1df949d0eb5b1b16b6870
-      CANDIDATE_CARRIER: 133e35c8775e0f52343190e12376684c2222de18
+      BASELINE_CARRIER: 41d9155b1ca7b4706ba78f28879607e72afe41c1
+      CANDIDATE_CARRIER: f4b4b99dff40252f9e2b66b9ade5477c30eabf5e
       CHROME_VERSION: 157.0.8103.50
       CHROME_ZIP_SHA256: d17167bc092eb495a3b768c7467f27e35f625aa03834233a1663af67dcb668c9
       PROTO_UI_RUNTIME_PHASE: browser
