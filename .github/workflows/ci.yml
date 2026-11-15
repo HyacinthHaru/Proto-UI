@@ -1,5 +1,5 @@
 name: CI
-run-name: Capture exact f9 Contents failure on the original shard
+run-name: Compare original Contents close observations on one runner
 
 on: workflow_dispatch
 permissions:
@@ -8,7 +8,7 @@ permissions:
 jobs:
   paired-browser:
     runs-on: ubuntu-26.04
-    timeout-minutes: 55
+    timeout-minutes: 40
     strategy:
       fail-fast: false
       matrix:
@@ -16,10 +16,10 @@ jobs:
           - shard: 1/8
             slot: browser-1-of-8
             trace: '1'
-            order: baseline candidate repeat
+            order: baseline candidate
     env:
       BASELINE_CARRIER: f2b20f8d7f6ed3f31f23db8e09b54fcb7db243ac
-      CANDIDATE_CARRIER: f2b20f8d7f6ed3f31f23db8e09b54fcb7db243ac
+      CANDIDATE_CARRIER: e4a3ef9daafc0113adae0dc48ff9b170c3f54b82
       CHROME_VERSION: 157.0.8103.50
       CHROME_ZIP_SHA256: d17167bc092eb495a3b768c7467f27e35f625aa03834233a1663af67dcb668c9
       PROTO_UI_RUNTIME_PHASE: browser
@@ -65,7 +65,7 @@ jobs:
         run: |
           set -euo pipefail
           corepack enable
-          for arm in baseline candidate repeat; do
+          for arm in baseline candidate; do
             sha="$BASELINE_CARRIER"
             if [[ "$arm" == candidate ]]; then sha="$CANDIDATE_CARRIER"; fi
             root="$RUNNER_TEMP/pair-$arm"
