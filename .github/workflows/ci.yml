@@ -1,5 +1,5 @@
 name: CI
-run-name: Compare original Contents close observations on one runner
+run-name: Brutalist pre-write on the original shards
 
 on: workflow_dispatch
 permissions:
@@ -16,19 +16,18 @@ jobs:
           - shard: 1/8
             slot: browser-1-of-8
             trace: '1'
-            order: baseline candidate
+          - shard: 3/8
+            slot: browser-3-of-8
+            trace: '0'
     env:
-      BASELINE_CARRIER: f2b20f8d7f6ed3f31f23db8e09b54fcb7db243ac
-      CANDIDATE_CARRIER: e4a3ef9daafc0113adae0dc48ff9b170c3f54b82
+      BASELINE_CARRIER: 73d2eb37bc1fa0f142f804dc386197353845e7c8
+      CANDIDATE_CARRIER: deb3e87418571192075b5ff5796e12ce6579065a
       CHROME_VERSION: 157.0.8103.50
       CHROME_ZIP_SHA256: d17167bc092eb495a3b768c7467f27e35f625aa03834233a1663af67dcb668c9
       PROTO_UI_RUNTIME_PHASE: browser
       PROTO_UI_RUNTIME_SHARD: ${{ matrix.shard }}
       PROTO_UI_RUNTIME_SLOT: ${{ matrix.slot }}
       PROTO_UI_FAMILY_DISPATCH_PROBE: ${{ matrix.trace }}
-      PROTO_UI_S4_HOSTED_DIAGNOSTIC: '1'
-      ARM_ORDER: ${{ matrix.order }}
-      PROTO_UI_CONTENTS_REACT_PROBE: ${{ matrix.trace }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -97,9 +96,8 @@ jobs:
             corepack pnpm@10.32.1 --version
           } > "$evidence/environment/runner.txt"
           result=0
-          read -r -a arms <<< "$ARM_ORDER"
-          printf '%s\n' "${arms[@]}" > "$evidence/environment/order.txt"
-          for arm in "${arms[@]}"; do
+          printf '%s\n' baseline candidate > "$evidence/environment/order.txt"
+          for arm in baseline candidate; do
             root="$RUNNER_TEMP/pair-$arm"
             export PROTO_UI_RUNTIME_EVIDENCE_DIR="$evidence/$arm"
             export PROTO_UI_TYPOGRAPHY_EVIDENCE_DIR="$PROTO_UI_RUNTIME_EVIDENCE_DIR/typography"

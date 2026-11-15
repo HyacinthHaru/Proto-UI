@@ -12,6 +12,27 @@ import { settleFamilyQueryBatch } from './family-query-observer';
 import { runS4Journey } from '../../../../../../scripts/analysis/shadow-s4-journey.mjs';
 let browser: Browser;
 let baseUrl: string;
+const observeHosted = process.env.PROTO_UI_S4_HOSTED_DIAGNOSTIC === '1';
+const hostLog = (
+  suite: string,
+  subject: string,
+  stage: string,
+  fields: Record<string, unknown> = {}
+) => {
+  if (!observeHosted) return;
+  console.info(
+    '[S4 hosted transport]',
+    JSON.stringify({
+      suite,
+      subject,
+      stage,
+      deliveredNodeMs: performance.now(),
+      nodeTimeOrigin: performance.timeOrigin,
+      wallMs: Date.now(),
+      ...fields,
+    })
+  );
+};
 beforeAll(async () => {
   baseUrl = await startServer('/zh-cn/internal/demo-matrix/');
   browser = await launchBrowser();
@@ -45,6 +66,59 @@ describe.sequential('S4 complete public Dialog settings', () => {
         }
       });
       const page = await context.newPage();
+      if (observeHosted) {
+        const session = await context.newCDPSession(page);
+        const sources = new Map<string, string>();
+        const event = (
+          stage: string,
+          value: {
+            requestId: string;
+            timestamp: number;
+            response?: { status: number };
+            encodedDataLength?: number;
+          }
+        ) => {
+          const asset = sources.get(value.requestId);
+          if (asset)
+            hostLog(locale, asset, stage, {
+              id: value.requestId,
+              chromiumSeconds: value.timestamp,
+              status: value.response?.status,
+              encodedBytes: value.encodedDataLength,
+            });
+        };
+        session.on('Network.requestWillBeSent', (value) => {
+          const route = new URL(value.request.url);
+          const asset = route.pathname.split('/').at(-1) ?? '';
+          if (
+            (route.pathname.includes('/.vite/deps/') &&
+              /^(?:react[._-]|react-dom[._-]|chunk-)/.test(asset)) ||
+            asset === 'react-runtime.ts'
+          ) {
+            sources.set(value.requestId, asset);
+            hostLog(locale, asset, 'request', {
+              id: value.requestId,
+              chromiumSeconds: value.timestamp,
+              chromiumWallSeconds: value.wallTime,
+            });
+          }
+        });
+        session.on('Network.responseReceived', (value) => event('response', value));
+        session.on('Network.loadingFinished', (value) => event('finished', value));
+        session.on('Network.loadingFailed', (value) => {
+          const asset = sources.get(value.requestId);
+          if (asset)
+            hostLog(locale, asset, 'loading-failed', {
+              id: value.requestId,
+              chromiumSeconds: value.timestamp,
+              canceled: value.canceled,
+            });
+        });
+        await session.send('Network.enable');
+        await page.addInitScript(() => {
+          Object.defineProperty(window, '__puiS4HostedTiming', { value: true, configurable: true });
+        });
+      }
       const errors: string[] = [];
       page.on('pageerror', (e) => errors.push(e.message));
       let phase = 'created';
@@ -71,6 +145,16 @@ describe.sequential('S4 complete public Dialog settings', () => {
       const browserObservation = (message: { text(): string; type(): string }) => {
         try {
           const text = message.text();
+          if (text.startsWith('[S4 hosted import boundary] ')) {
+            const mark = JSON.parse(text.slice('[S4 hosted import boundary] '.length));
+            hostLog(locale, 'promise:' + mark.asset, mark.stage, mark);
+            return;
+          }
+          if (text.startsWith('[S4 hosted React phase] ')) {
+            const phase = JSON.parse(text.slice('[S4 hosted React phase] '.length));
+            hostLog(locale, 'react-owner', phase.stage, phase);
+            return;
+          }
           if (message.type() === 'error') {
             if (consoleErrors.length < 32) {
               const row = {
@@ -148,6 +232,8 @@ describe.sequential('S4 complete public Dialog settings', () => {
                 page.evaluate(() => ({
                   startup: (window as any).__puiS4Startup ?? null,
                   init: (window as any).__puiS4InitJournal ?? null,
+                  importJournal: (window as any).__puiS4ImportJournal ?? null,
+                  importJournalCollectedAt: performance.timeOrigin + performance.now(),
                 })),
               ],
               2000
@@ -194,6 +280,14 @@ describe.sequential('S4 complete public Dialog settings', () => {
                 'Actual Node function passed to waitForFunction; not proof of browser execution.',
               observation,
               initObservation,
+              importJournal:
+                result.outcomes[0]?.status === 'fulfilled'
+                  ? result.outcomes[0].value.importJournal
+                  : null,
+              importJournalCollectedAt:
+                result.outcomes[0]?.status === 'fulfilled'
+                  ? result.outcomes[0].value.importJournalCollectedAt
+                  : null,
             };
             console.log('[S4 startup predicate]', JSON.stringify(evidence));
             const directory = path.join(

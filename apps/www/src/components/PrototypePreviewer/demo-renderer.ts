@@ -42,11 +42,15 @@ import { retryableModule } from './runtimes/retryable-module';
 
 const reactAdapter = retryableModule(
   () => import('@proto.ui/adapter-react'),
-  runtimeUrls.reactAdapter
+  runtimeUrls.reactAdapter,
+  undefined,
+  'react-adapter'
 );
 const reactRuntime = retryableModule(
   () => import('./runtimes/react-runtime'),
-  runtimeUrls.reactRuntime
+  runtimeUrls.reactRuntime,
+  undefined,
+  'react-runtime'
 );
 const vueAdapter = retryableModule(() => import('@proto.ui/adapter-vue'), runtimeUrls.vueAdapter);
 const vueRuntime = retryableModule(() => import('./runtimes/vue-runtime'), runtimeUrls.vueRuntime);
@@ -957,6 +961,25 @@ async function renderDemoReact(
   lease: HostMountLease
 ): Promise<DemoRenderResult> {
   const { host, demo } = opt;
+  const currentWindow = host.ownerDocument.defaultView as
+    | (Window & { __puiS4HostedTiming?: boolean })
+    | null;
+  const startupOwner = currentWindow?.__puiS4HostedTiming
+    ? host.closest('[data-demo-id="demo-base-accordion"]')
+    : null;
+  const noteStartup = (stage: string) => {
+    if (!startupOwner || !host.hasAttribute('data-previewer-startup-pending')) return;
+    console.info(
+      '[S4 hosted React phase]',
+      JSON.stringify({
+        stage,
+        owner: startupOwner.getAttribute('data-previewer-id'),
+        browserMs: performance.now(),
+        browserTimeOrigin: performance.timeOrigin,
+        hostChildren: host.childElementCount,
+      })
+    );
+  };
   const associations = createDemoAssociationScope();
   const dynamic = createDynamicChildrenModel(demo);
   for (const prototypeId of dynamic.prototypeIds) getPrototype(prototypeId);
@@ -969,9 +992,13 @@ async function renderDemoReact(
 
   // Non-WC modules join the graph only when this runtime is selected. A
   // superseded owner must not proceed to CDN loading after that import boundary.
+  noteStartup('react-modules-start');
   const [{ createReactAdapter }, { loadReact }] = await reactModules();
+  noteStartup('react-modules-return');
   if (!ownsLease(opt, lease)) return abandonLease(lease);
-  const { React, ReactDOM } = await loadReact();
+  noteStartup('react-runtime-start');
+  const { React, ReactDOM } = await loadReact(startupOwner ? noteStartup : undefined);
+  noteStartup('react-runtime-return');
   if (!ownsLease(opt, lease)) return abandonLease(lease);
   const adapter = createReactAdapter({
     ...React,
