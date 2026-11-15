@@ -957,6 +957,13 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           JSON.stringify({ ...reactRecord, sdk: sdk?.snapshot() }, null, 2)
         );
       };
+      const noteContents = (runtime: string, stage: string, error?: unknown) => {
+        if (!observeReact) return;
+        console.info('[Contents original stage]', JSON.stringify({
+          runtime, stage, nodeMs: performance.now(), nodeTimeOrigin: performance.timeOrigin,
+          ...(error === undefined ? {} : { error: String(error) }),
+        }));
+      };
       const pageErrors: string[] = [];
       page.on('pageerror', (error) => pageErrors.push(error.message));
       page.on('console', (message) => {
@@ -1010,11 +1017,14 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
         );
         for (const runtime of RUNTIMES) {
           await revealHeaderPreferences(page);
+          noteContents(runtime, 'combobox-click-start');
           const select = page.locator('[data-adapter-select] [role="combobox"]');
           await select.click();
+          noteContents(runtime, 'combobox-click-return');
           const popup = await select.getAttribute('aria-controls');
           const tracingReact = observeReact && runtime === 'react';
           if (tracingReact) {
+            noteContents(runtime, 'trace-prepare-start');
             reactTrace = createQueryDispatchTrace(
               page,
               path.join(directory, 'shadcn-react-dispatch-trace'),
@@ -1047,13 +1057,21 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
                 { capture: true, once: true }
               );
             });
+            noteContents(runtime, 'trace-prepare-return');
           }
+          noteContents(runtime, 'option-click-start');
           const transitionStartedAt = Date.now();
-          await page
-            .locator(`[id=${JSON.stringify(popup)}]`)
-            .getByRole('option', { name: LABELS[runtime], exact: true })
-            .click();
+          try {
+            await page
+              .locator(`[id=${JSON.stringify(popup)}]`)
+              .getByRole('option', { name: LABELS[runtime], exact: true })
+              .click();
+          } catch (error) {
+            noteContents(runtime, 'option-click-error', error);
+            throw error;
+          }
           const clickedAt = Date.now();
+          noteContents(runtime, 'option-click-return');
           let originalError: unknown;
           const calls: Array<{
             id: number;
@@ -1064,6 +1082,7 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           }> = [];
           const requests: Promise<string | null>[] = [];
           const nodeTimeOrigin = performance.timeOrigin;
+          noteContents(runtime, 'poll-start');
           const pollStartedMs = performance.now();
           try {
             await expect
@@ -1096,6 +1115,7 @@ describe.sequential('Homepage end-to-end dogfood boundary', () => {
           }
           const pollVerdictMs = performance.now();
           const originalCheckAt = Date.now();
+          noteContents(runtime, originalError ? 'poll-error' : 'poll-return', originalError);
           if (tracingReact) {
             sdk?.freezeVerdict(!originalError);
             reactRecord = {
