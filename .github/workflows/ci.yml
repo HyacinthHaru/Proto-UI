@@ -16,18 +16,21 @@ jobs:
           - shard: 1/8
             slot: browser-1-of-8
             trace: '1'
+            order: candidate baseline
           - shard: 3/8
             slot: browser-3-of-8
             trace: '0'
+            order: baseline candidate
     env:
-      BASELINE_CARRIER: abad0c57e7a3571831dcb7b96c433848d13730df
-      CANDIDATE_CARRIER: d322562d56d6609bc60afffc350f11e3b3675df0
+      BASELINE_CARRIER: db98db1ad9cf3ca698c1df949d0eb5b1b16b6870
+      CANDIDATE_CARRIER: 133e35c8775e0f52343190e12376684c2222de18
       CHROME_VERSION: 157.0.8103.50
       CHROME_ZIP_SHA256: d17167bc092eb495a3b768c7467f27e35f625aa03834233a1663af67dcb668c9
       PROTO_UI_RUNTIME_PHASE: browser
       PROTO_UI_RUNTIME_SHARD: ${{ matrix.shard }}
       PROTO_UI_RUNTIME_SLOT: ${{ matrix.slot }}
       PROTO_UI_FAMILY_DISPATCH_PROBE: ${{ matrix.trace }}
+      ARM_ORDER: ${{ matrix.order }}
       PROTO_UI_CONTENTS_REACT_PROBE: ${{ matrix.trace }}
     steps:
       - uses: actions/checkout@v4
@@ -97,8 +100,9 @@ jobs:
             corepack pnpm@10.32.1 --version
           } > "$evidence/environment/runner.txt"
           result=0
-          printf '%s\n' baseline candidate > "$evidence/environment/order.txt"
-          for arm in baseline candidate; do
+          read -r -a arms <<< "$ARM_ORDER"
+          printf '%s\n' "${arms[@]}" > "$evidence/environment/order.txt"
+          for arm in "${arms[@]}"; do
             root="$RUNNER_TEMP/pair-$arm"
             export PROTO_UI_RUNTIME_EVIDENCE_DIR="$evidence/$arm"
             export PROTO_UI_TYPOGRAPHY_EVIDENCE_DIR="$PROTO_UI_RUNTIME_EVIDENCE_DIR/typography"
