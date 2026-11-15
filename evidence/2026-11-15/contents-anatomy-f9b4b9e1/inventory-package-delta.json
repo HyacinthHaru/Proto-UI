@@ -1,0 +1,98 @@
+{
+  "head": "057a29b90621b7c0fde8c866ec950e55b9d60523",
+  "parent": "ed25e0f0713ee7cb3a9f69e9f2830d04e78e7ec6",
+  "environment": {
+    "node": "v24.21.0",
+    "zlib": "1.3.2.1-motley-8002e91",
+    "esbuild": "0.25.12",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "defaultScriptExit": 0,
+  "manifestExit": 0,
+  "builtAffectedPackages": 45,
+  "strictExit": 1,
+  "strictRows": [
+    {
+      "entry": "lucide/icons/x",
+      "budget": 3000,
+      "before": 2879,
+      "after": 2879,
+      "delta": 0,
+      "passBefore": true,
+      "passAfter": true
+    },
+    {
+      "entry": "lucide root",
+      "budget": 700000,
+      "before": 637306,
+      "after": 637306,
+      "delta": 0,
+      "passBefore": true,
+      "passAfter": true
+    },
+    {
+      "entry": "core root",
+      "budget": 7600,
+      "before": 11196,
+      "after": 11196,
+      "delta": 0,
+      "passBefore": false,
+      "passAfter": false
+    },
+    {
+      "entry": "runtime root",
+      "budget": 78500,
+      "before": 97802,
+      "after": 97828,
+      "delta": 26,
+      "passBefore": false,
+      "passAfter": false
+    },
+    {
+      "entry": "adapter-react root",
+      "budget": 106000,
+      "before": 158099,
+      "after": 158137,
+      "delta": 38,
+      "passBefore": false,
+      "passAfter": false
+    },
+    {
+      "entry": "adapter-vue root",
+      "budget": 106000,
+      "before": 157189,
+      "after": 157221,
+      "delta": 32,
+      "passBefore": false,
+      "passAfter": false
+    },
+    {
+      "entry": "adapter-web-component root",
+      "budget": 132000,
+      "before": 186712,
+      "after": 186746,
+      "delta": 34,
+      "passBefore": false,
+      "passAfter": false
+    },
+    {
+      "entry": "prototypes-base/button",
+      "budget": 6000,
+      "before": 5201,
+      "after": 5201,
+      "delta": 0,
+      "passBefore": true,
+      "passAfter": true
+    },
+    {
+      "entry": "prototypes-shadcn/button",
+      "budget": 7000,
+      "before": 7725,
+      "after": 7725,
+      "delta": 0,
+      "passBefore": false,
+      "passAfter": false
+    }
+  ]
+}

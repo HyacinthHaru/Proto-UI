@@ -1,0 +1,253 @@
+{
+  "scope": "Renderer statistical samples written after all observed React dependency loadingFinished events and before the original observed predicate error. Named source frames are code addresses from that isolate. Tick writer timestamps and stack counts do not time import evaluation.",
+  "rows": [
+    {
+      "arm": "candidate",
+      "locale": "zh-cn",
+      "engineVersion": "15.7.112.23",
+      "profileSha256": "374093ad2a4d0ef79f09ea2412a2ae3842c6a3e4fb38350e3cc9922a2153eba3",
+      "writerBoundsMs": [119565.0, 148541],
+      "samples": 13734,
+      "rawStateCounts": {
+        "0": 13535,
+        "6": 26,
+        "1": 133,
+        "5": 37,
+        "4": 3
+      },
+      "overflowRows": 0,
+      "latestFinishedToObservedPredicateErrorMs": 31053,
+      "nearestSourceFrames": [
+        {
+          "path": "packages/modules/a11y/src/web.ts",
+          "name": "releaseScalarAttributes",
+          "line": 151,
+          "column": 35,
+          "samples": 3010
+        },
+        {
+          "path": "packages/modules/props/src/kernel/kernel.ts",
+          "name": "setDefaults",
+          "line": 50,
+          "column": 14,
+          "samples": 2887
+        },
+        {
+          "path": "packages/modules/a11y/src/part-relationships.ts",
+          "name": "(anonymous)",
+          "line": 22,
+          "column": 57,
+          "samples": 2738
+        },
+        {
+          "path": "packages/modules/hit-participation/src/web/static-hit-inset.ts",
+          "name": "prepareStaticHitInset",
+          "line": 7,
+          "column": 38,
+          "samples": 792
+        },
+        {
+          "path": "packages/modules/anatomy/src/impl.ts",
+          "name": "resolveCurrentDomain",
+          "line": 877,
+          "column": 23,
+          "samples": 507
+        },
+        {
+          "path": "packages/adapters/base/src/events/web-event-router.ts",
+          "name": "createWebProtoEventRouter",
+          "line": 40,
+          "column": 42,
+          "samples": 371
+        },
+        {
+          "path": "packages/modules/control-label/src/web.ts",
+          "name": "(anonymous)",
+          "line": 42,
+          "column": 35,
+          "samples": 289
+        },
+        {
+          "path": "packages/adapters/base/src/platform/instance-tree.ts",
+          "name": "addEventListener",
+          "line": 25,
+          "column": 21,
+          "samples": 227
+        },
+        {
+          "path": "packages/adapters/web-component/src/runtime/modules.ts",
+          "name": "Object.defineProperty.get",
+          "line": 841,
+          "column": 39,
+          "samples": 152
+        },
+        {
+          "path": "packages/modules/a11y/src/web.ts",
+          "name": "(anonymous)",
+          "line": 93,
+          "column": 37,
+          "samples": 150
+        },
+        {
+          "path": "packages/modules/anatomy/src/impl.ts",
+          "name": "notifyTargetChange",
+          "line": 637,
+          "column": 28,
+          "samples": 133
+        },
+        {
+          "path": "packages/modules/a11y/src/part-relationships.ts",
+          "name": "publish",
+          "line": 62,
+          "column": 19,
+          "samples": 115
+        },
+        {
+          "path": "packages/modules/a11y/src/web.ts",
+          "name": "update",
+          "line": 518,
+          "column": 18,
+          "samples": 101
+        },
+        {
+          "path": "packages/adapters/web-component/src/runtime/modules.ts",
+          "name": "getControlLabelSurface",
+          "line": 1184,
+          "column": 34,
+          "samples": 98
+        },
+        {
+          "path": "packages/modules/a11y/src/create.ts",
+          "name": "getSnapshot",
+          "line": 441,
+          "column": 14,
+          "samples": 94
+        }
+      ],
+      "locatedFrames": [
+        {
+          "path": "packages/runtime/src/instance/execute/callback-scope.ts",
+          "name": "runInScope",
+          "line": 43,
+          "column": 13,
+          "samples": 9265
+        },
+        {
+          "path": "packages/modules/anatomy/src/impl.ts",
+          "name": "notifyTargetChange",
+          "line": 637,
+          "column": 28,
+          "samples": 8534
+        },
+        {
+          "path": "packages/runtime/src/instance/instance.ts",
+          "name": "(anonymous)",
+          "line": 129,
+          "column": 41,
+          "samples": 8394
+        },
+        {
+          "path": "packages/modules/anatomy/src/impl.ts",
+          "name": "ensureOrderObserver",
+          "line": 646,
+          "column": 22,
+          "samples": 8367
+        },
+        {
+          "path": "packages/adapters/base/src/host/view-epoch-owner.ts",
+          "name": "attachView",
+          "line": 82,
+          "column": 15,
+          "samples": 7901
+        },
+        {
+          "path": "packages/modules/a11y/src/create.ts",
+          "name": "(anonymous)",
+          "line": 317,
+          "column": 69,
+          "samples": 7855
+        },
+        {
+          "path": "packages/modules/a11y/src/web.ts",
+          "name": "update",
+          "line": 518,
+          "column": 18,
+          "samples": 6180
+        },
+        {
+          "path": "packages/prototypes/shadcn/src/text/root.proto.ts",
+          "name": "when",
+          "line": 41,
+          "column": 13,
+          "samples": 5609
+        },
+        {
+          "path": "apps/www/src/components/PrototypePreviewer/demo-renderer.ts",
+          "name": "renderDemo",
+          "line": 1575,
+          "column": 33,
+          "samples": 4162
+        },
+        {
+          "path": "apps/www/src/components/PrototypePreviewer/demo-renderer.ts",
+          "name": "renderDemoWc",
+          "line": 330,
+          "column": 28,
+          "samples": 4152
+        },
+        {
+          "path": "apps/www/src/components/PrototypePreviewer/demo-renderer.ts",
+          "name": "renderDemoNodeWc",
+          "line": 191,
+          "column": 26,
+          "samples": 4122
+        },
+        {
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "name": "connectedCallback",
+          "line": 274,
+          "column": 22,
+          "samples": 4116
+        },
+        {
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "name": "_connectOwner",
+          "line": 306,
+          "column": 18,
+          "samples": 4115
+        },
+        {
+          "path": ".vite/deps/vue2-runtime.js",
+          "name": "flushCallbacks",
+          "line": 1297,
+          "column": 24,
+          "samples": 3859
+        },
+        {
+          "path": "packages/adapters/web-component/src/adapt.ts",
+          "name": "attachView",
+          "line": 615,
+          "column": 26,
+          "samples": 3813
+        }
+      ],
+      "sourceFilesOnSampledStack": [
+        ["packages/modules/anatomy/src/impl.ts", 9735],
+        ["packages/modules/a11y/src/create.ts", 9379],
+        ["packages/runtime/src/instance/execute/callback-scope.ts", 9265],
+        ["packages/adapters/base/src/host/view-epoch-owner.ts", 8826],
+        ["packages/runtime/src/instance/instance.ts", 8506],
+        ["packages/modules/a11y/src/web.ts", 7940],
+        ["packages/runtime/src/instance/session.ts", 6046],
+        ["packages/adapters/base/src/wiring/host-wiring.ts", 5635],
+        ["packages/prototypes/shadcn/src/text/root.proto.ts", 5611],
+        [
+          "packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+          4974
+        ],
+        ["apps/www/src/components/PrototypePreviewer/demo-renderer.ts", 4197],
+        ["packages/adapters/web-component/src/adapt.ts", 4132]
+      ]
+    }
+  ]
+}

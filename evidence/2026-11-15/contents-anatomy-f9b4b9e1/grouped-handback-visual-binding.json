@@ -1,0 +1,12 @@
+[
+  {
+    "name": "handback-contents-react-preview.png",
+    "originalMember": "exact-preview/contents-command/shadcn-react-public-popover-open.png",
+    "sha256": "0b7eaa028ec5f8ae659176d48a90ad512f53ebce99f64ac0e873a00b9687f49a"
+  },
+  {
+    "name": "handback-dialog-wc-preview.png",
+    "originalMember": "exact-preview/dialog-available-space/shadcn-wc-390-settled.png",
+    "sha256": "59f931a2756ae78e07d1b0d3fe458331a9e36208c69604f4e957cb2c7da339bb"
+  }
+]

@@ -1,0 +1,194 @@
+[
+  {
+    "arm": "baseline",
+    "traceSha256": "ea3f525b75b8e13a391cf9935b877684978a803cab6144ec252c4f9b63898eec",
+    "rows": [
+      {
+        "name": "pui-contents:header:preference",
+        "relativeToTrustedClickMs": 51.701,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:header:materialize-start",
+        "relativeToTrustedClickMs": 52.007,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:stage:site-header-surface-1:begin",
+        "relativeToTrustedClickMs": 52.058,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:stage:site-contents-panel-1-docs-1:begin",
+        "relativeToTrustedClickMs": 57.322,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:stage:site-header-surface-1:dependencies-ready",
+        "relativeToTrustedClickMs": 849.253,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:stage:site-header-surface-1:render-start",
+        "relativeToTrustedClickMs": 849.348,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:stage:site-contents-panel-1-docs-1:dependencies-ready",
+        "relativeToTrustedClickMs": 849.531,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:stage:site-contents-panel-1-docs-1:render-start",
+        "relativeToTrustedClickMs": 849.567,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:stage:site-header-surface-1:render-return",
+        "relativeToTrustedClickMs": 966.783,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:stage:site-header-surface-1:paint-wait-start",
+        "relativeToTrustedClickMs": 966.876,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:stage:site-contents-panel-1-docs-1:render-return",
+        "relativeToTrustedClickMs": 969.008,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:stage:site-contents-panel-1-docs-1:paint-wait-start",
+        "relativeToTrustedClickMs": 969.079,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:stage:site-header-surface-1:paint-wait-return",
+        "relativeToTrustedClickMs": 1105.507,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:stage:site-contents-panel-1-docs-1:paint-wait-return",
+        "relativeToTrustedClickMs": 1105.609,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:header:materialize-return",
+        "relativeToTrustedClickMs": 1105.67,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:header:theme-watch-return",
+        "relativeToTrustedClickMs": 1120.664,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:header:publish-start",
+        "relativeToTrustedClickMs": 1120.939,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:write:contentsRuntime:react",
+        "relativeToTrustedClickMs": 1137.346,
+        "depth": null
+      }
+    ]
+  },
+  {
+    "arm": "candidate",
+    "traceSha256": "1409beb7888fbd555dec0aab65c79867864554c98f387c12291acfe4a6fafa74",
+    "rows": [
+      {
+        "name": "pui-contents:header:preference",
+        "relativeToTrustedClickMs": 72.763,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:header:materialize-start",
+        "relativeToTrustedClickMs": 73.308,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:stage:site-header-surface-1:begin",
+        "relativeToTrustedClickMs": 73.381,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:stage:site-contents-panel-1-docs-1:begin",
+        "relativeToTrustedClickMs": 78.928,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:stage:site-header-surface-1:dependencies-ready",
+        "relativeToTrustedClickMs": 961.754,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:stage:site-header-surface-1:render-start",
+        "relativeToTrustedClickMs": 961.841,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:stage:site-contents-panel-1-docs-1:dependencies-ready",
+        "relativeToTrustedClickMs": 962.06,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:stage:site-contents-panel-1-docs-1:render-start",
+        "relativeToTrustedClickMs": 962.101,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:stage:site-header-surface-1:render-return",
+        "relativeToTrustedClickMs": 1118.505,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:stage:site-header-surface-1:paint-wait-start",
+        "relativeToTrustedClickMs": 1118.633,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:stage:site-contents-panel-1-docs-1:render-return",
+        "relativeToTrustedClickMs": 1121.429,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:stage:site-contents-panel-1-docs-1:paint-wait-start",
+        "relativeToTrustedClickMs": 1121.517,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:stage:site-header-surface-1:paint-wait-return",
+        "relativeToTrustedClickMs": 1279.15,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:stage:site-contents-panel-1-docs-1:paint-wait-return",
+        "relativeToTrustedClickMs": 1279.259,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:header:materialize-return",
+        "relativeToTrustedClickMs": 1279.323,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:header:theme-watch-return",
+        "relativeToTrustedClickMs": 1294.799,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:header:publish-start",
+        "relativeToTrustedClickMs": 1295.157,
+        "depth": null
+      },
+      {
+        "name": "pui-contents:write:contentsRuntime:react",
+        "relativeToTrustedClickMs": 1311.812,
+        "depth": null
+      }
+    ]
+  }
+]

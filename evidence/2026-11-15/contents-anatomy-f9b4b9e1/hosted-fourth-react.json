@@ -1,0 +1,550 @@
+{
+  "scope": "Original SDK locator read; browser publication marks run immediately after the native setter. CDP alignment is a bounded interval, not equal clocks.",
+  "observations": [
+    {
+      "arm": "baseline",
+      "available": true,
+      "source": "117a38e9a586529e2acee2452effa6885871d7d6",
+      "verdict": "fulfilled",
+      "error": null,
+      "deadlineMs": 1000,
+      "pollObservedMs": 635.101,
+      "calls": [
+        {
+          "id": 1,
+          "startedMs": 63247.655128,
+          "returnedMs": 63260.50132,
+          "value": "wc"
+        },
+        {
+          "id": 2,
+          "startedMs": 63311.098586,
+          "returnedMs": 63350.245946,
+          "value": "wc"
+        },
+        {
+          "id": 3,
+          "startedMs": 63400.823117,
+          "returnedMs": 63587.565766,
+          "value": "wc"
+        },
+        {
+          "id": 4,
+          "startedMs": 63638.003631,
+          "returnedMs": 63732.597588,
+          "value": "wc"
+        },
+        {
+          "id": 5,
+          "startedMs": 63783.078428,
+          "returnedMs": 63881.382113,
+          "value": "react"
+        }
+      ],
+      "callsAtVerdict": [
+        {
+          "id": 1,
+          "startedMs": 63247.655128,
+          "returnedMs": 63260.50132,
+          "value": "wc"
+        },
+        {
+          "id": 2,
+          "startedMs": 63311.098586,
+          "returnedMs": 63350.245946,
+          "value": "wc"
+        },
+        {
+          "id": 3,
+          "startedMs": 63400.823117,
+          "returnedMs": 63587.565766,
+          "value": "wc"
+        },
+        {
+          "id": 4,
+          "startedMs": 63638.003631,
+          "returnedMs": 63732.597588,
+          "value": "wc"
+        },
+        {
+          "id": 5,
+          "startedMs": 63783.078428,
+          "returnedMs": 63881.382113,
+          "value": "react"
+        }
+      ],
+      "pendingIds": [],
+      "sdkMappingComplete": true,
+      "sdkErrors": [],
+      "receiptSha256": "57cf910a8bbe6ff8a9cb68766bdfc38a878a29212ffb1b96e60f8e9965b5dd0b",
+      "traceAvailable": true,
+      "traceComplete": true,
+      "traceDataLoss": false,
+      "traceSha256": "6c193ed1085a2db79e5eaf05ef4feb2e416bc85571f21c5d85cda4b53a823622",
+      "traceErrors": [],
+      "clockBinding": {
+        "syncRoundTripMs": 3.42,
+        "mapping": "CDP clock sync command interval bounds"
+      },
+      "clickAfterPollMs": [-754.436, -751.016],
+      "writes": [
+        {
+          "mark": "pui-contents:write:contentsRuntime:react",
+          "afterPollMs": [525.087, 528.507],
+          "afterVerdictMs": [-110.014, -106.594],
+          "afterClickMs": 1279.523
+        },
+        {
+          "mark": "pui-contents:write:contentsGeneration:2",
+          "afterPollMs": [525.148, 528.568],
+          "afterVerdictMs": [-109.953, -106.533],
+          "afterClickMs": 1279.584
+        }
+      ],
+      "joinedQueries": [
+        {
+          "query": 1,
+          "cdpId": 4629,
+          "responseObserved": true,
+          "stagesAfterPollMs": {
+            "browserForward": [3.275, 6.695],
+            "rendererEnter": [4.982, 8.402],
+            "rendererResponse": [9.511, 12.931]
+          },
+          "browserForwardToRendererMs": 1.707,
+          "returnedAfterPollMs": 12.962,
+          "value": "wc"
+        },
+        {
+          "query": 2,
+          "cdpId": 4644,
+          "responseObserved": true,
+          "stagesAfterPollMs": {
+            "browserForward": [63.731, 67.151],
+            "rendererEnter": [95.855, 99.275],
+            "rendererResponse": [99.521, 102.941]
+          },
+          "browserForwardToRendererMs": 32.124,
+          "returnedAfterPollMs": 102.707,
+          "value": "wc"
+        },
+        {
+          "query": 3,
+          "cdpId": 4645,
+          "responseObserved": true,
+          "stagesAfterPollMs": {
+            "browserForward": [152.548, 155.968],
+            "rendererEnter": [332.83, 336.25],
+            "rendererResponse": [336.685, 340.105]
+          },
+          "browserForwardToRendererMs": 180.282,
+          "returnedAfterPollMs": 340.027,
+          "value": "wc"
+        },
+        {
+          "query": 4,
+          "cdpId": 4646,
+          "responseObserved": true,
+          "stagesAfterPollMs": {
+            "browserForward": [389.624, 393.044],
+            "rendererEnter": [478.111, 481.531],
+            "rendererResponse": [481.623, 485.043]
+          },
+          "browserForwardToRendererMs": 88.487,
+          "returnedAfterPollMs": 485.059,
+          "value": "wc"
+        },
+        {
+          "query": 5,
+          "cdpId": 4647,
+          "responseObserved": true,
+          "stagesAfterPollMs": {
+            "browserForward": [534.521, 537.941],
+            "rendererEnter": [627.707, 631.127],
+            "rendererResponse": [630.484, 633.904]
+          },
+          "browserForwardToRendererMs": 93.186,
+          "returnedAfterPollMs": 633.843,
+          "value": "react"
+        }
+      ],
+      "exactOriginalSteps": {
+        "wc": [
+          {
+            "stage": "combobox-click-start",
+            "nodeMs": 51902.464
+          },
+          {
+            "stage": "combobox-click-return",
+            "nodeMs": 52106.647
+          },
+          {
+            "stage": "option-click-start",
+            "nodeMs": 52139.512
+          },
+          {
+            "stage": "option-click-return",
+            "nodeMs": 52274.443
+          },
+          {
+            "stage": "poll-start",
+            "nodeMs": 52274.542
+          },
+          {
+            "stage": "poll-return",
+            "nodeMs": 52280.083
+          }
+        ],
+        "react": [
+          {
+            "stage": "combobox-click-start",
+            "nodeMs": 61754.484
+          },
+          {
+            "stage": "combobox-click-return",
+            "nodeMs": 61944.972
+          },
+          {
+            "stage": "trace-prepare-start",
+            "nodeMs": 61973.544
+          },
+          {
+            "stage": "trace-prepare-return",
+            "nodeMs": 62364.964
+          },
+          {
+            "stage": "option-click-start",
+            "nodeMs": 62365.088
+          },
+          {
+            "stage": "option-click-return",
+            "nodeMs": 63247.445
+          },
+          {
+            "stage": "poll-start",
+            "nodeMs": 63247.529
+          },
+          {
+            "stage": "poll-return",
+            "nodeMs": 63882.647
+          }
+        ],
+        "vue": [
+          {
+            "stage": "combobox-click-start",
+            "nodeMs": 70321.983
+          },
+          {
+            "stage": "combobox-click-return",
+            "nodeMs": 70578.312
+          },
+          {
+            "stage": "option-click-start",
+            "nodeMs": 70606.255
+          },
+          {
+            "stage": "option-click-return",
+            "nodeMs": 71473.888
+          },
+          {
+            "stage": "poll-start",
+            "nodeMs": 71473.963
+          },
+          {
+            "stage": "poll-return",
+            "nodeMs": 71989.88
+          }
+        ],
+        "vue2": [
+          {
+            "stage": "combobox-click-start",
+            "nodeMs": 79692.413
+          },
+          {
+            "stage": "combobox-click-return",
+            "nodeMs": 79928.916
+          },
+          {
+            "stage": "option-click-start",
+            "nodeMs": 79955.257
+          },
+          {
+            "stage": "option-click-return",
+            "nodeMs": 80765.275
+          },
+          {
+            "stage": "poll-start",
+            "nodeMs": 80765.344
+          },
+          {
+            "stage": "poll-return",
+            "nodeMs": 81266.331
+          }
+        ]
+      },
+      "originalLogSha256": "72af261f4492e96b8a8364e5ae5706fe922839fda3ee9f0dac100bcdf002502e",
+      "targetCommitVsConfiguredDeadline": "before",
+      "targetCommitVsObservedVerdict": "before"
+    },
+    {
+      "arm": "candidate",
+      "available": true,
+      "source": "67e1b25e9837d0b351e9e00cb6572803b23d598b",
+      "verdict": "fulfilled",
+      "error": null,
+      "deadlineMs": 1000,
+      "pollObservedMs": 579.027,
+      "calls": [
+        {
+          "id": 1,
+          "startedMs": 62154.55894,
+          "returnedMs": 62163.679008,
+          "value": "wc"
+        },
+        {
+          "id": 2,
+          "startedMs": 62214.106124,
+          "returnedMs": 62439.17737,
+          "value": "wc"
+        },
+        {
+          "id": 3,
+          "startedMs": 62489.698332,
+          "returnedMs": 62583.565157,
+          "value": "wc"
+        },
+        {
+          "id": 4,
+          "startedMs": 62634.104201,
+          "returnedMs": 62733.360999,
+          "value": "react"
+        }
+      ],
+      "callsAtVerdict": [
+        {
+          "id": 1,
+          "startedMs": 62154.55894,
+          "returnedMs": 62163.679008,
+          "value": "wc"
+        },
+        {
+          "id": 2,
+          "startedMs": 62214.106124,
+          "returnedMs": 62439.17737,
+          "value": "wc"
+        },
+        {
+          "id": 3,
+          "startedMs": 62489.698332,
+          "returnedMs": 62583.565157,
+          "value": "wc"
+        },
+        {
+          "id": 4,
+          "startedMs": 62634.104201,
+          "returnedMs": 62733.360999,
+          "value": "react"
+        }
+      ],
+      "pendingIds": [],
+      "sdkMappingComplete": true,
+      "sdkErrors": [],
+      "receiptSha256": "cbf12bde6702e0562d1a0acf35bd682a6fa87f9e1656c0fac70869d72f2068c4",
+      "traceAvailable": true,
+      "traceComplete": true,
+      "traceDataLoss": false,
+      "traceSha256": "0f2de079c60c0dcbdc0e841b0d4f81fadc529ab6fe407b080660b3b647ef4973",
+      "traceErrors": [],
+      "clockBinding": {
+        "syncRoundTripMs": 4.553,
+        "mapping": "CDP clock sync command interval bounds"
+      },
+      "clickAfterPollMs": [-714.146, -709.593],
+      "writes": [
+        {
+          "mark": "pui-contents:write:contentsRuntime:react",
+          "afterPollMs": [470.009, 474.562],
+          "afterVerdictMs": [-109.018, -104.465],
+          "afterClickMs": 1184.155
+        },
+        {
+          "mark": "pui-contents:write:contentsGeneration:2",
+          "afterPollMs": [470.078, 474.631],
+          "afterVerdictMs": [-108.949, -104.396],
+          "afterClickMs": 1184.224
+        }
+      ],
+      "joinedQueries": [
+        {
+          "query": 1,
+          "cdpId": 4613,
+          "responseObserved": true,
+          "stagesAfterPollMs": {
+            "browserForward": [0.993, 5.546],
+            "rendererEnter": [1.643, 6.196],
+            "rendererResponse": [5.674, 10.227]
+          },
+          "browserForwardToRendererMs": 0.65,
+          "returnedAfterPollMs": 9.232,
+          "value": "wc"
+        },
+        {
+          "query": 2,
+          "cdpId": 4628,
+          "responseObserved": true,
+          "stagesAfterPollMs": {
+            "browserForward": [59.013, 63.566],
+            "rendererEnter": [267.84, 272.393],
+            "rendererResponse": [281.09, 285.643]
+          },
+          "browserForwardToRendererMs": 208.827,
+          "returnedAfterPollMs": 284.73,
+          "value": "wc"
+        },
+        {
+          "query": 3,
+          "cdpId": 4629,
+          "responseObserved": true,
+          "stagesAfterPollMs": {
+            "browserForward": [334.337, 338.89],
+            "rendererEnter": [421.908, 426.461],
+            "rendererResponse": [425.566, 430.119]
+          },
+          "browserForwardToRendererMs": 87.571,
+          "returnedAfterPollMs": 429.118,
+          "value": "wc"
+        },
+        {
+          "query": 4,
+          "cdpId": 4630,
+          "responseObserved": true,
+          "stagesAfterPollMs": {
+            "browserForward": [478.492, 483.045],
+            "rendererEnter": [572.335, 576.888],
+            "rendererResponse": [575.278, 579.831]
+          },
+          "browserForwardToRendererMs": 93.843,
+          "returnedAfterPollMs": 578.914,
+          "value": "react"
+        }
+      ],
+      "exactOriginalSteps": {
+        "wc": [
+          {
+            "stage": "combobox-click-start",
+            "nodeMs": 51515.874
+          },
+          {
+            "stage": "combobox-click-return",
+            "nodeMs": 51730.491
+          },
+          {
+            "stage": "option-click-start",
+            "nodeMs": 51750.518
+          },
+          {
+            "stage": "option-click-return",
+            "nodeMs": 51903.2
+          },
+          {
+            "stage": "poll-start",
+            "nodeMs": 51903.307
+          },
+          {
+            "stage": "poll-return",
+            "nodeMs": 51930.942
+          }
+        ],
+        "react": [
+          {
+            "stage": "combobox-click-start",
+            "nodeMs": 60720.906
+          },
+          {
+            "stage": "combobox-click-return",
+            "nodeMs": 60895.108
+          },
+          {
+            "stage": "trace-prepare-start",
+            "nodeMs": 60900.845
+          },
+          {
+            "stage": "trace-prepare-return",
+            "nodeMs": 61277.197
+          },
+          {
+            "stage": "option-click-start",
+            "nodeMs": 61277.316
+          },
+          {
+            "stage": "option-click-return",
+            "nodeMs": 62154.368
+          },
+          {
+            "stage": "poll-start",
+            "nodeMs": 62154.439
+          },
+          {
+            "stage": "poll-return",
+            "nodeMs": 62733.479
+          }
+        ],
+        "vue": [
+          {
+            "stage": "combobox-click-start",
+            "nodeMs": 68730.625
+          },
+          {
+            "stage": "combobox-click-return",
+            "nodeMs": 68952.92
+          },
+          {
+            "stage": "option-click-start",
+            "nodeMs": 68963.536
+          },
+          {
+            "stage": "option-click-return",
+            "nodeMs": 69747.732
+          },
+          {
+            "stage": "poll-start",
+            "nodeMs": 69747.799
+          },
+          {
+            "stage": "poll-return",
+            "nodeMs": 70191.175
+          }
+        ],
+        "vue2": [
+          {
+            "stage": "combobox-click-start",
+            "nodeMs": 77876.639
+          },
+          {
+            "stage": "combobox-click-return",
+            "nodeMs": 78063.07
+          },
+          {
+            "stage": "option-click-start",
+            "nodeMs": 78069.928
+          },
+          {
+            "stage": "option-click-return",
+            "nodeMs": 79050.058
+          },
+          {
+            "stage": "poll-start",
+            "nodeMs": 79050.117
+          },
+          {
+            "stage": "poll-return",
+            "nodeMs": 79830.262
+          }
+        ]
+      },
+      "originalLogSha256": "a09337dba47707abd5c9b05ef6b7dd4cea1921c11e05c47ae020b35fdf380cb7",
+      "targetCommitVsConfiguredDeadline": "before",
+      "targetCommitVsObservedVerdict": "before"
+    }
+  ]
+}

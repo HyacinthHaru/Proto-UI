@@ -1,0 +1,48 @@
+[
+  {
+    "slot": 1,
+    "arm": "baseline",
+    "head": "01b9398ab590d198aa69ab26c1b21cc90210a92d",
+    "switches": {
+      "shadcn/wc": {
+        "originalError": null,
+        "atMs": 5
+      }
+    },
+    "orderedHandbacks": 2,
+    "totalHandbacks": 2,
+    "namedCasePassed": false,
+    "mobileShellPassed": true
+  },
+  {
+    "slot": 1,
+    "arm": "candidate",
+    "head": "ed25e0f0713ee7cb3a9f69e9f2830d04e78e7ec6",
+    "switches": {
+      "shadcn/wc": {
+        "originalError": null,
+        "atMs": 6
+      }
+    },
+    "orderedHandbacks": 2,
+    "totalHandbacks": 2,
+    "namedCasePassed": false,
+    "mobileShellPassed": true
+  },
+  {
+    "slot": 3,
+    "arm": "baseline",
+    "head": "01b9398ab590d198aa69ab26c1b21cc90210a92d",
+    "observations": 196,
+    "captures": 120,
+    "dialog8Passed": true
+  },
+  {
+    "slot": 3,
+    "arm": "candidate",
+    "head": "ed25e0f0713ee7cb3a9f69e9f2830d04e78e7ec6",
+    "observations": 196,
+    "captures": 120,
+    "dialog8Passed": true
+  }
+]

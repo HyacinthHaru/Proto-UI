@@ -1,0 +1,53 @@
+{
+  "source": "ed25e0f0713ee7cb3a9f69e9f2830d04e78e7ec6",
+  "asset": "site-shadcn-controls.B_jlsOiz.js",
+  "assetSha256": "7bb4e90fe72869e28780ea1fd09b4b1e4be78f61fd8f6a38f98363ad56ee325e",
+  "profilerSha256": "7884260cd293f92f19923a06eb5572283f437b7e5d0975ab535b3be3779dc1de",
+  "samples": 48715,
+  "namedChunkOnStack": 40226,
+  "locatedFrames": [
+    {
+      "description": "Anatomy claim inventory",
+      "position": "site-shadcn-controls.B_jlsOiz.js:9:86277",
+      "samplesWithNearestLocatedJsFrame": 4444,
+      "generatedDeclarationSnippet": "c)}},listClaims(o){const i=[];for(const a of e.values()){const c=a.get(o);c&&i.push(c)}return i}}})();function Rb(t",
+      "identifiedBy": "literal function declaration in the executed chunk"
+    },
+    {
+      "description": "Anatomy root resolution",
+      "position": "site-shadcn-controls.B_jlsOiz.js:9:104522",
+      "samplesWithNearestLocatedJsFrame": 3501,
+      "generatedDeclarationSnippet": "ull}}findDomainRoot(e,n,r=this.getParentGetter()){let s=e;for(;s;){if(rt.isRetiredBoundary(s,n))return null;if(rt.getCl",
+      "identifiedBy": "literal function declaration in the executed chunk"
+    },
+    {
+      "description": "Anatomy domain resolution",
+      "position": "site-shadcn-controls.B_jlsOiz.js:9:104064",
+      "samplesWithNearestLocatedJsFrame": 1923,
+      "generatedDeclarationSnippet": "rn o}resolveCurrentDomain(e,n=!0){const r=this.getSelfToken(),s=this.getParentGetter(),o=this.findDomainRoot(r,e,s);if(!o){if",
+      "identifiedBy": "literal function declaration in the executed chunk"
+    },
+    {
+      "description": "Anatomy structural notification",
+      "position": "site-shadcn-controls.B_jlsOiz.js:9:99149",
+      "samplesWithNearestLocatedJsFrame": 3195,
+      "generatedDeclarationSnippet": "(e)}}static notifyStructuralChange(e){for(const n of et.liveInstances)n.orderListeners.has(e)&&n.emitOrderChangeIfNeeded(e)}static not",
+      "identifiedBy": "literal function declaration in the executed chunk"
+    },
+    {
+      "description": "Anatomy claim sorting",
+      "position": "site-shadcn-controls.B_jlsOiz.js:9:101346",
+      "samplesWithNearestLocatedJsFrame": 3153,
+      "generatedDeclarationSnippet": "n),n}sortClaims(e){return e.map((n,r)=>({claim:n,index:r})).sort((n,r)=>{const s=this.compareClaims(n.claim,r.claim);return s!==0?s:n.index-r.index}).map(n=>n.claim)",
+      "identifiedBy": "literal function declaration in the executed chunk"
+    },
+    {
+      "description": "A11y DOM writes",
+      "position": "site-shadcn-controls.B_jlsOiz.js:9:176047",
+      "samplesWithNearestLocatedJsFrame": 5171,
+      "generatedDeclarationSnippet": "g(t)}function Bv(t,e,n,r,s=!0){for(const[o,i]of r)i===void 0?t.removeAttribute(o):t.setAttribute(o,i);if(r.has(\"aria",
+      "identifiedBy": "literal function declaration in the executed chunk"
+    }
+  ],
+  "scope": "The generated position is in the exact saved executed file. Direct declaration matching does not claim the full minified source map."
+}

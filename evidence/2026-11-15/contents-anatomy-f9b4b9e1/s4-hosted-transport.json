@@ -1,0 +1,449 @@
+{
+  "scope": "Original selected source shard with symmetric hosted S4 diagnostics. CDP events carry their own observed delivery; raw V8 writer windows are scheduler samples. Missing stages remain unavailable.",
+  "observations": [
+    {
+      "arm": "baseline",
+      "processExit": 124,
+      "logSha256": "c3959909327afa3244598d66e1dda085f93ae531d34a2e71b57a8f896bfd309d",
+      "locales": [
+        {
+          "locale": "zh-cn",
+          "verdict": null,
+          "startupPredicateObserved": "error",
+          "parentProfileReceipts": [
+            {
+              "renderer": "17129",
+              "matchingIsolateProfiles": 1,
+              "bytes": 56794311,
+              "sha256": "7e250990c882bcd7ecfe28af33c4b3f5d1d8a69b9daebdff4feeba6e1dea8d04",
+              "aggregateRawVMStates": {
+                "5": 524,
+                "6": 1287,
+                "0": 41447,
+                "1": 1199,
+                "2": 100,
+                "3": 71,
+                "4": 51
+              },
+              "lastLoggedTickMs": 115767.15,
+              "conservativeWriterWindowMs": [86792.0, 109953],
+              "rawVMStatesForBoundedWindow": {
+                "0": 9376,
+                "1": 87,
+                "6": 253,
+                "5": 56,
+                "4": 5,
+                "3": 2,
+                "2": 5
+              }
+            }
+          ],
+          "reactOwnerPhases": [
+            {
+              "stage": "react-modules-start",
+              "browserMs": 85878.5,
+              "browserTimeOrigin": 1794717051414.6,
+              "hostChildren": 0,
+              "wallMs": 1794717137294,
+              "deliveredNodeMs": 87374.508532
+            },
+            {
+              "stage": "react-modules-return",
+              "browserMs": 86429.69999999995,
+              "browserTimeOrigin": 1794717051414.6,
+              "hostChildren": 0,
+              "wallMs": 1794717137845,
+              "deliveredNodeMs": 87925.651473
+            },
+            {
+              "stage": "react-runtime-start",
+              "browserMs": 86429.90000000014,
+              "browserTimeOrigin": 1794717051414.6,
+              "hostChildren": 0,
+              "wallMs": 1794717137845,
+              "deliveredNodeMs": 87925.899701
+            }
+          ],
+          "requests": [
+            {
+              "asset": "chunk-BUSYA2B4.js",
+              "requestId": "17129.739",
+              "responseDelivered": true,
+              "finishedDelivered": true,
+              "responseStatus": 200,
+              "requestAfterOriginalPredicateStartMs": -15274,
+              "responseDeliveryAfterRequestMs": 11,
+              "responseFromChromiumRequestMs": 11.651,
+              "finishedEncodedBytes": 1707
+            },
+            {
+              "asset": "react-runtime.ts",
+              "requestId": "17129.1143",
+              "responseDelivered": true,
+              "finishedDelivered": true,
+              "responseStatus": 200,
+              "requestAfterOriginalPredicateStartMs": 15555,
+              "responseDeliveryAfterRequestMs": 780,
+              "responseFromChromiumRequestMs": 784.189,
+              "finishedEncodedBytes": 8799,
+              "responseArrivalToBrowserImportMarkMs": 51668.3,
+              "responseArrivalToObservedOriginalPredicateVerdictMs": 78346
+            },
+            {
+              "asset": "react.js",
+              "requestId": "17129.4126",
+              "responseDelivered": true,
+              "finishedDelivered": true,
+              "responseStatus": 200,
+              "requestAfterOriginalPredicateStartMs": 34218,
+              "responseDeliveryAfterRequestMs": 14594,
+              "responseFromChromiumRequestMs": 14594.479,
+              "finishedEncodedBytes": 1332,
+              "responseArrivalToObservedOriginalPredicateVerdictMs": 45869
+            },
+            {
+              "asset": "react-dom.js",
+              "requestId": "17129.4127",
+              "responseDelivered": true,
+              "finishedDelivered": true,
+              "responseStatus": 200,
+              "requestAfterOriginalPredicateStartMs": 34219,
+              "responseDeliveryAfterRequestMs": 14594,
+              "responseFromChromiumRequestMs": 14594.9,
+              "finishedEncodedBytes": 1661,
+              "responseArrivalToObservedOriginalPredicateVerdictMs": 45868
+            },
+            {
+              "asset": "react-dom_client.js",
+              "requestId": "17129.4128",
+              "responseDelivered": true,
+              "finishedDelivered": true,
+              "responseStatus": 200,
+              "requestAfterOriginalPredicateStartMs": 34219,
+              "responseDeliveryAfterRequestMs": 14594,
+              "responseFromChromiumRequestMs": 14595.187,
+              "finishedEncodedBytes": 1537,
+              "responseArrivalToObservedOriginalPredicateVerdictMs": 45868
+            },
+            {
+              "asset": "chunk-EK7DFB6S.js",
+              "requestId": "17129.4150",
+              "responseDelivered": false,
+              "finishedDelivered": false,
+              "responseStatus": null,
+              "requestAfterOriginalPredicateStartMs": 78275,
+              "responseDeliveryAfterRequestMs": null,
+              "responseFromChromiumRequestMs": null,
+              "finishedEncodedBytes": null
+            },
+            {
+              "asset": "chunk-2MALL255.js",
+              "requestId": "17129.4151",
+              "responseDelivered": false,
+              "finishedDelivered": false,
+              "responseStatus": null,
+              "requestAfterOriginalPredicateStartMs": 78275,
+              "responseDeliveryAfterRequestMs": null,
+              "responseFromChromiumRequestMs": null,
+              "finishedEncodedBytes": null
+            }
+          ]
+        },
+        {
+          "locale": "en",
+          "verdict": null,
+          "startupPredicateObserved": null,
+          "parentProfileReceipts": [
+            {
+              "renderer": "17237",
+              "matchingIsolateProfiles": 1,
+              "bytes": 24949668,
+              "sha256": "6958112d36d40bccc8a0a0879fea094f3eddbff65c409fe513b46b9de708602b",
+              "aggregateRawVMStates": {
+                "5": 258,
+                "0": 9701,
+                "6": 199,
+                "1": 462,
+                "3": 20,
+                "2": 38,
+                "4": 12
+              },
+              "lastLoggedTickMs": 41267.718,
+              "conservativeWriterWindowMs": null,
+              "rawVMStatesForBoundedWindow": {}
+            }
+          ],
+          "reactOwnerPhases": [],
+          "requests": [
+            {
+              "asset": "chunk-BUSYA2B4.js",
+              "requestId": "17237.738",
+              "responseDelivered": true,
+              "finishedDelivered": true,
+              "responseStatus": 200,
+              "requestAfterOriginalPredicateStartMs": -15021,
+              "responseDeliveryAfterRequestMs": 10,
+              "responseFromChromiumRequestMs": 10.945,
+              "finishedEncodedBytes": 1707
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "candidate",
+      "processExit": 124,
+      "logSha256": "e98dd6a17eda234e8382b34415bfd1ccc79ebef1b81a8b2b3f51c21e55b781a5",
+      "locales": [
+        {
+          "locale": "zh-cn",
+          "verdict": null,
+          "startupPredicateObserved": "error",
+          "parentProfileReceipts": [
+            {
+              "renderer": "10025",
+              "matchingIsolateProfiles": 1,
+              "bytes": 55163284,
+              "sha256": "b9f2e94f77eff7626e0fb90d1e06cb4f50c2fc717c02d433d42a5b9ce3652893",
+              "aggregateRawVMStates": {
+                "5": 433,
+                "0": 36444,
+                "1": 1062,
+                "6": 1062,
+                "2": 70,
+                "3": 54,
+                "4": 44
+              },
+              "lastLoggedTickMs": 102741.141,
+              "conservativeWriterWindowMs": null,
+              "rawVMStatesForBoundedWindow": {}
+            }
+          ],
+          "reactOwnerPhases": [
+            {
+              "stage": "react-modules-start",
+              "browserMs": 83902.59999999998,
+              "browserTimeOrigin": 1794716080706,
+              "hostChildren": 0,
+              "wallMs": 1794716164609,
+              "deliveredNodeMs": 85347.45545
+            },
+            {
+              "stage": "react-modules-return",
+              "browserMs": 99333.19999999995,
+              "browserTimeOrigin": 1794716080706,
+              "hostChildren": 0,
+              "wallMs": 1794716180039,
+              "deliveredNodeMs": 100777.828951
+            },
+            {
+              "stage": "react-runtime-start",
+              "browserMs": 99333.30000000005,
+              "browserTimeOrigin": 1794716080706,
+              "hostChildren": 0,
+              "wallMs": 1794716180040,
+              "deliveredNodeMs": 100778.034017
+            }
+          ],
+          "requests": [
+            {
+              "asset": "chunk-BUSYA2B4.js",
+              "requestId": "10025.737",
+              "responseDelivered": true,
+              "finishedDelivered": true,
+              "responseStatus": 200,
+              "requestAfterOriginalPredicateStartMs": -14650,
+              "responseDeliveryAfterRequestMs": 20,
+              "responseFromChromiumRequestMs": 20.493,
+              "finishedEncodedBytes": 1707
+            },
+            {
+              "asset": "react-runtime.ts",
+              "requestId": "10025.1148",
+              "responseDelivered": true,
+              "finishedDelivered": true,
+              "responseStatus": 200,
+              "requestAfterOriginalPredicateStartMs": 13068,
+              "responseDeliveryAfterRequestMs": 634,
+              "responseFromChromiumRequestMs": 634.221,
+              "finishedEncodedBytes": 8800,
+              "responseArrivalToBrowserImportMarkMs": 66003.2,
+              "responseArrivalToObservedOriginalPredicateVerdictMs": 66769
+            },
+            {
+              "asset": "react.js",
+              "requestId": "10025.4147",
+              "responseDelivered": true,
+              "finishedDelivered": true,
+              "responseStatus": 200,
+              "requestAfterOriginalPredicateStartMs": 79712,
+              "responseDeliveryAfterRequestMs": 2284,
+              "responseFromChromiumRequestMs": 2289.219,
+              "finishedEncodedBytes": 1332,
+              "responseArrivalToObservedOriginalPredicateVerdictMs": -1525
+            },
+            {
+              "asset": "react-dom.js",
+              "requestId": "10025.4148",
+              "responseDelivered": true,
+              "finishedDelivered": true,
+              "responseStatus": 200,
+              "requestAfterOriginalPredicateStartMs": 79712,
+              "responseDeliveryAfterRequestMs": 2284,
+              "responseFromChromiumRequestMs": 2289.31,
+              "finishedEncodedBytes": 1661,
+              "responseArrivalToObservedOriginalPredicateVerdictMs": -1525
+            },
+            {
+              "asset": "react-dom_client.js",
+              "requestId": "10025.4149",
+              "responseDelivered": true,
+              "finishedDelivered": true,
+              "responseStatus": 200,
+              "requestAfterOriginalPredicateStartMs": 79712,
+              "responseDeliveryAfterRequestMs": 2283,
+              "responseFromChromiumRequestMs": 2288.254,
+              "finishedEncodedBytes": 1537,
+              "responseArrivalToObservedOriginalPredicateVerdictMs": -1524
+            }
+          ]
+        },
+        {
+          "locale": "en",
+          "verdict": null,
+          "startupPredicateObserved": "error",
+          "parentProfileReceipts": [
+            {
+              "renderer": "10130",
+              "matchingIsolateProfiles": 1,
+              "bytes": 57531379,
+              "sha256": "49342d38eebd83342450d3f44f90b20982eb0466e525f30ffd055e13b952e177",
+              "aggregateRawVMStates": {
+                "5": 521,
+                "2": 69,
+                "6": 1167,
+                "0": 42387,
+                "1": 1071,
+                "3": 51,
+                "4": 33
+              },
+              "lastLoggedTickMs": 124783.76,
+              "conservativeWriterWindowMs": null,
+              "rawVMStatesForBoundedWindow": {}
+            }
+          ],
+          "reactOwnerPhases": [
+            {
+              "stage": "react-modules-start",
+              "browserMs": 76000.59999999998,
+              "browserTimeOrigin": 1794716183548.4,
+              "hostChildren": 0,
+              "wallMs": 1794716259550,
+              "deliveredNodeMs": 180288.13435
+            },
+            {
+              "stage": "react-modules-return",
+              "browserMs": 76510,
+              "browserTimeOrigin": 1794716183548.4,
+              "hostChildren": 0,
+              "wallMs": 1794716260059,
+              "deliveredNodeMs": 180797.031503
+            },
+            {
+              "stage": "react-runtime-start",
+              "browserMs": 76510.19999999995,
+              "browserTimeOrigin": 1794716183548.4,
+              "hostChildren": 0,
+              "wallMs": 1794716260059,
+              "deliveredNodeMs": 180797.448299
+            }
+          ],
+          "requests": [
+            {
+              "asset": "chunk-BUSYA2B4.js",
+              "requestId": "10130.738",
+              "responseDelivered": true,
+              "finishedDelivered": true,
+              "responseStatus": 200,
+              "requestAfterOriginalPredicateStartMs": -14147,
+              "responseDeliveryAfterRequestMs": 20,
+              "responseFromChromiumRequestMs": 15.778,
+              "finishedEncodedBytes": 1707
+            },
+            {
+              "asset": "react-runtime.ts",
+              "requestId": "10130.1144",
+              "responseDelivered": true,
+              "finishedDelivered": true,
+              "responseStatus": 200,
+              "requestAfterOriginalPredicateStartMs": 12493,
+              "responseDeliveryAfterRequestMs": 413,
+              "responseFromChromiumRequestMs": 413.077,
+              "finishedEncodedBytes": 8800,
+              "responseArrivalToBrowserImportMarkMs": 36676.4,
+              "responseArrivalToObservedOriginalPredicateVerdictMs": 84622
+            },
+            {
+              "asset": "react.js",
+              "requestId": "10130.4125",
+              "responseDelivered": true,
+              "finishedDelivered": true,
+              "responseStatus": 200,
+              "requestAfterOriginalPredicateStartMs": 49585,
+              "responseDeliveryAfterRequestMs": 5139,
+              "responseFromChromiumRequestMs": 5140.085,
+              "finishedEncodedBytes": 1332,
+              "responseArrivalToObservedOriginalPredicateVerdictMs": 42804
+            },
+            {
+              "asset": "react-dom.js",
+              "requestId": "10130.4126",
+              "responseDelivered": true,
+              "finishedDelivered": true,
+              "responseStatus": 200,
+              "requestAfterOriginalPredicateStartMs": 49585,
+              "responseDeliveryAfterRequestMs": 5139,
+              "responseFromChromiumRequestMs": 5140.339,
+              "finishedEncodedBytes": 1661,
+              "responseArrivalToObservedOriginalPredicateVerdictMs": 42804
+            },
+            {
+              "asset": "react-dom_client.js",
+              "requestId": "10130.4127",
+              "responseDelivered": true,
+              "finishedDelivered": true,
+              "responseStatus": 200,
+              "requestAfterOriginalPredicateStartMs": 49585,
+              "responseDeliveryAfterRequestMs": 5140,
+              "responseFromChromiumRequestMs": 5140.59,
+              "finishedEncodedBytes": 1537,
+              "responseArrivalToObservedOriginalPredicateVerdictMs": 42803
+            },
+            {
+              "asset": "chunk-EK7DFB6S.js",
+              "requestId": "10130.4152",
+              "responseDelivered": false,
+              "finishedDelivered": false,
+              "responseStatus": null,
+              "requestAfterOriginalPredicateStartMs": 80399,
+              "responseDeliveryAfterRequestMs": null,
+              "responseFromChromiumRequestMs": null,
+              "finishedEncodedBytes": null
+            },
+            {
+              "asset": "chunk-2MALL255.js",
+              "requestId": "10130.4153",
+              "responseDelivered": false,
+              "finishedDelivered": false,
+              "responseStatus": null,
+              "requestAfterOriginalPredicateStartMs": 80402,
+              "responseDeliveryAfterRequestMs": null,
+              "responseFromChromiumRequestMs": null,
+              "finishedEncodedBytes": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "path": "contents-react-source.png",
+    "source": "exact-native/contents-command/shadcn-react-public-popover-open.png",
+    "bytes": 50057,
+    "sha256": "0b7eaa028ec5f8ae659176d48a90ad512f53ebce99f64ac0e873a00b9687f49a"
+  },
+  {
+    "path": "dialog-wc-source.png",
+    "source": "exact-native/dialog-available-space/shadcn-wc-390-settled.png",
+    "bytes": 71588,
+    "sha256": "f9e61966a57c7324218cfe154f34d4950f063364dece83025bab16f9f3db535e"
+  },
+  {
+    "path": "contents-react-preview.png",
+    "source": "exact-preview/contents-command/shadcn-react-public-popover-open.png",
+    "bytes": 50057,
+    "sha256": "0b7eaa028ec5f8ae659176d48a90ad512f53ebce99f64ac0e873a00b9687f49a"
+  },
+  {
+    "path": "dialog-wc-preview.png",
+    "source": "exact-preview/dialog-available-space/shadcn-wc-390-settled.png",
+    "bytes": 70908,
+    "sha256": "59f931a2756ae78e07d1b0d3fe458331a9e36208c69604f4e957cb2c7da339bb"
+  }
+]

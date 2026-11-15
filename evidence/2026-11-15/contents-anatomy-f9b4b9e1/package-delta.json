@@ -1,0 +1,108 @@
+{
+  "parent": "01b9398ab590d198aa69ab26c1b21cc90210a92d",
+  "head": "ed25e0f0713ee7cb3a9f69e9f2830d04e78e7ec6",
+  "environment": {
+    "node": "v24.21.0",
+    "zlib": "1.3.2.1-motley-8002e91",
+    "esbuild": "0.25.12",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "strictRows": [
+    {
+      "name": "lucide/icons/x",
+      "budget": 3000,
+      "old": 2879,
+      "new": 2879,
+      "deltaGzip": 0,
+      "oldPass": true,
+      "newPass": true,
+      "sameMinified": true
+    },
+    {
+      "name": "lucide root",
+      "budget": 700000,
+      "old": 637306,
+      "new": 637306,
+      "deltaGzip": 0,
+      "oldPass": true,
+      "newPass": true,
+      "sameMinified": true
+    },
+    {
+      "name": "core root",
+      "budget": 7600,
+      "old": 11196,
+      "new": 11196,
+      "deltaGzip": 0,
+      "oldPass": false,
+      "newPass": false,
+      "sameMinified": true
+    },
+    {
+      "name": "runtime root",
+      "budget": 78500,
+      "old": 97784,
+      "new": 97802,
+      "deltaGzip": 18,
+      "oldPass": false,
+      "newPass": false,
+      "sameMinified": false
+    },
+    {
+      "name": "adapter-react root",
+      "budget": 106000,
+      "old": 158082,
+      "new": 158099,
+      "deltaGzip": 17,
+      "oldPass": false,
+      "newPass": false,
+      "sameMinified": false
+    },
+    {
+      "name": "adapter-vue root",
+      "budget": 106000,
+      "old": 157172,
+      "new": 157189,
+      "deltaGzip": 17,
+      "oldPass": false,
+      "newPass": false,
+      "sameMinified": false
+    },
+    {
+      "name": "adapter-web-component root",
+      "budget": 132000,
+      "old": 186695,
+      "new": 186712,
+      "deltaGzip": 17,
+      "oldPass": false,
+      "newPass": false,
+      "sameMinified": false
+    },
+    {
+      "name": "prototypes-base/button",
+      "budget": 6000,
+      "old": 5201,
+      "new": 5201,
+      "deltaGzip": 0,
+      "oldPass": true,
+      "newPass": true,
+      "sameMinified": true
+    },
+    {
+      "name": "prototypes-shadcn/button",
+      "budget": 7000,
+      "old": 7725,
+      "new": 7725,
+      "deltaGzip": 0,
+      "oldPass": false,
+      "newPass": false,
+      "sameMinified": true
+    }
+  ],
+  "parentStrictExit": 1,
+  "candidateStrictExit": 1,
+  "ciScriptExit": 0,
+  "builtAffectedCount": 45,
+  "manifestExit": 0
+}

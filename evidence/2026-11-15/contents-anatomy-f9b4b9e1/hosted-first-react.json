@@ -1,0 +1,75 @@
+{
+  "scope": "Original SDK locator read; browser publication marks run immediately after the native setter. CDP alignment is a bounded interval, not equal clocks.",
+  "observations": [
+    {
+      "arm": "baseline",
+      "available": false,
+      "reason": "No original React poll receipt",
+      "exactOriginalSteps": {
+        "wc": [
+          {
+            "stage": "combobox-click-start",
+            "nodeMs": 65968.39
+          },
+          {
+            "stage": "combobox-click-return",
+            "nodeMs": 66185.058
+          },
+          {
+            "stage": "option-click-start",
+            "nodeMs": 66213.842
+          },
+          {
+            "stage": "option-click-return",
+            "nodeMs": 66381.927
+          },
+          {
+            "stage": "poll-start",
+            "nodeMs": 66382.029
+          },
+          {
+            "stage": "poll-return",
+            "nodeMs": 66386.987
+          }
+        ]
+      },
+      "originalLogSha256": "06a12863b92c038ea439e6ee932451f8a70422ccea5ebadb890efe0072f84201",
+      "lastRecordedReactStep": null
+    },
+    {
+      "arm": "candidate",
+      "available": false,
+      "reason": "No original React poll receipt",
+      "exactOriginalSteps": {
+        "wc": [
+          {
+            "stage": "combobox-click-start",
+            "nodeMs": 65557.516
+          },
+          {
+            "stage": "combobox-click-return",
+            "nodeMs": 65751.628
+          },
+          {
+            "stage": "option-click-start",
+            "nodeMs": 65776.98
+          },
+          {
+            "stage": "option-click-return",
+            "nodeMs": 65947.863
+          },
+          {
+            "stage": "poll-start",
+            "nodeMs": 65947.968
+          },
+          {
+            "stage": "poll-return",
+            "nodeMs": 65954.424
+          }
+        ]
+      },
+      "originalLogSha256": "33c66ef27e88631dcf8e47ff8a0acb3553437509b60722f1b94868cd394c0f2b",
+      "lastRecordedReactStep": null
+    }
+  ]
+}

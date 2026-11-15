@@ -1,0 +1,181 @@
+{
+  "source": {
+    "head": "ed25e0f0713ee7cb3a9f69e9f2830d04e78e7ec6",
+    "diagnosticDiff": "a02d58339013e3b42288e57d8929ce79888b6a8a39b0264fc50a1450d3813d1c",
+    "distHashes": {
+      "zh-cn/internal/demo-matrix/index.html": "5b7c6154acffc7660451747e7b22b12ef6e10f7d655d285563b3ee64dd2a5689",
+      "proto-ui-bundle-graph.json": "bce3466968b30d8b5f96836075af9a92c761d9c488015111f61b883544b14351"
+    },
+    "exitCode": 1,
+    "selector": "zh-cn: native Light",
+    "scope": "Private Astro build with the Chinese draft route enabled and V8 statistical profile",
+    "chrome": "Google Chrome for Testing 156.0.8078.79"
+  },
+  "originalPredicateTimeoutMs": 60000,
+  "originalVitestDeadlineMs": 150000,
+  "netlogClosed": true,
+  "netlogParsedEvents": 77939,
+  "network": [
+    {
+      "asset": "react-runtime.BG4XF9Th.js",
+      "matchedNetLogRequests": 1,
+      "netLogId": 2268,
+      "fileBytes": 1559,
+      "fileSha256": "17c4074f5e16c5e2f689e803b296aeff72f1a34189fe607c9697b138d7381389",
+      "bytesRead": 1559,
+      "completeBody": true,
+      "status": 200,
+      "clockSkewMs": 0.537,
+      "bodyAfterRequestMs": 28,
+      "responseDeliveryAfterBodyMs": 402,
+      "responseDeliveryAfterPredicateStartMs": 3246,
+      "nodeStages": ["request", "response", "finished"]
+    },
+    {
+      "asset": "index.BVKZFYvx.js",
+      "matchedNetLogRequests": 1,
+      "netLogId": 3613,
+      "fileBytes": 6901,
+      "fileSha256": "e179d583ae484267be2adda81a83ae0b5c4c521013d4ba4d5291eed7a46414f8",
+      "bytesRead": 6901,
+      "completeBody": true,
+      "status": 200,
+      "clockSkewMs": 0.539,
+      "bodyAfterRequestMs": 9,
+      "responseDeliveryAfterBodyMs": 11245,
+      "responseDeliveryAfterPredicateStartMs": 16436,
+      "nodeStages": ["request", "response", "finished"]
+    },
+    {
+      "asset": "index.C47PDzzu.js",
+      "matchedNetLogRequests": 1,
+      "netLogId": 3617,
+      "fileBytes": 471,
+      "fileSha256": "ea33a7184ac3150e2ced737a7dfecdd709868ad7ebf6bf2fa1503e511d935aeb",
+      "bytesRead": 471,
+      "completeBody": true,
+      "status": 200,
+      "clockSkewMs": 0.536,
+      "bodyAfterRequestMs": 9,
+      "responseDeliveryAfterBodyMs": 11244,
+      "responseDeliveryAfterPredicateStartMs": 16435,
+      "nodeStages": ["request", "response", "finished"]
+    },
+    {
+      "asset": "index.D5ahegtX.js",
+      "matchedNetLogRequests": 1,
+      "netLogId": 3625,
+      "fileBytes": 134648,
+      "fileSha256": "b9437fefaf0c02a15ddf84508c79a0c6f26afc7ffe79966c7b921d991c001b95",
+      "bytesRead": 134648,
+      "completeBody": true,
+      "status": 200,
+      "clockSkewMs": 0.534,
+      "bodyAfterRequestMs": 16,
+      "responseDeliveryAfterBodyMs": 11241,
+      "responseDeliveryAfterPredicateStartMs": 16440,
+      "nodeStages": ["request", "response", "finished"]
+    },
+    {
+      "asset": "index.CDDwQV5v.js",
+      "matchedNetLogRequests": 1,
+      "netLogId": 3629,
+      "fileBytes": 504,
+      "fileSha256": "53ffec8c458e7e0dcb4431597ef89712a135a89c48bba68a17dc209234d22daf",
+      "bytesRead": 504,
+      "completeBody": true,
+      "status": 200,
+      "clockSkewMs": 0.536,
+      "bodyAfterRequestMs": 14,
+      "responseDeliveryAfterBodyMs": 11239,
+      "responseDeliveryAfterPredicateStartMs": 16436,
+      "nodeStages": ["request", "response", "finished"]
+    },
+    {
+      "asset": "client.nHzutAOZ.js",
+      "matchedNetLogRequests": 1,
+      "netLogId": 3637,
+      "fileBytes": 619,
+      "fileSha256": "bfc54705984a4924fdad571c7b412cd6f1a76144f6557b387f9b5606f7c89523",
+      "bytesRead": 619,
+      "completeBody": true,
+      "status": 200,
+      "clockSkewMs": 0.535,
+      "bodyAfterRequestMs": 14,
+      "responseDeliveryAfterBodyMs": 11239,
+      "responseDeliveryAfterPredicateStartMs": 16436,
+      "nodeStages": ["request", "response", "finished"]
+    }
+  ],
+  "reactPhases": [
+    {
+      "phase": "demo-begin",
+      "pageMs": 6946.599999904633,
+      "deliveredNodeMs": 8828.791625,
+      "hostChildren": 0
+    },
+    {
+      "phase": "demo-return",
+      "pageMs": 9665.5,
+      "deliveredNodeMs": 11547.662834,
+      "hostChildren": 0
+    },
+    {
+      "phase": "prototype-begin",
+      "pageMs": 9665.599999904633,
+      "deliveredNodeMs": 11547.725792,
+      "hostChildren": 0
+    },
+    {
+      "phase": "prototype-return",
+      "pageMs": 19881.400000095367,
+      "deliveredNodeMs": 21763.556709,
+      "hostChildren": 0
+    },
+    {
+      "phase": "render-begin",
+      "pageMs": 19881.400000095367,
+      "deliveredNodeMs": 21763.569917,
+      "hostChildren": 0
+    },
+    {
+      "phase": "react-modules-begin",
+      "pageMs": 19881.599999904633,
+      "deliveredNodeMs": 21764.185375,
+      "hostChildren": 0
+    },
+    {
+      "phase": "react-modules-return",
+      "pageMs": 19895.900000095367,
+      "deliveredNodeMs": 21778.235792,
+      "hostChildren": 0
+    },
+    {
+      "phase": "react-runtime-begin",
+      "pageMs": 19895.900000095367,
+      "deliveredNodeMs": 21778.283375,
+      "hostChildren": 0
+    }
+  ],
+  "originalPredicateStages": [
+    {
+      "locale": "zh-cn",
+      "phase": "startup-wait",
+      "outcome": "begin",
+      "nodeMs": 8038.376917,
+      "nodeTimeOrigin": 1794712849017.018,
+      "dateNow": 1794712857055
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "startup-wait",
+      "outcome": "error",
+      "nodeMs": 152134.206625,
+      "nodeTimeOrigin": 1794712849017.018,
+      "dateNow": 1794713001151
+    }
+  ],
+  "postVerdictContinuation": [],
+  "testLogSha256": "595e1d9eff2e508862c301a5c38a421ae430699147dba301d53258eefa36fdd0",
+  "netLogSha256": "d1fa7629215536d22160ec33503029d81ce3e40b0861109bbfc5d0acb86e45ae"
+}

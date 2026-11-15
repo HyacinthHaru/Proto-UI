@@ -1,0 +1,190 @@
+{
+  "scope": "Escape deadline stays anchored to the original Node time. Browser mutation delivery has a clock interval when both anchors agree.",
+  "observations": [
+    {
+      "arm": "baseline",
+      "source": "4fd2ec9a8b6f9ea74b22ddb6cdb6716de9781ad1",
+      "sourceLogSha256": "c3959909327afa3244598d66e1dda085f93ae531d34a2e71b57a8f896bfd309d",
+      "embeddedMarkerViolation": [],
+      "lastCaseEnd": ["shadcn", "wc", "Space"],
+      "reactReached": true,
+      "timings": [
+        {
+          "family": "shadcn",
+          "runtime": "wc",
+          "input": "click",
+          "originalsEndingAtMs": {
+            "expanded-return": 46.328,
+            "focus-return": 168.454,
+            "handback-poll-return": 184.404,
+            "journal-start": 184.418,
+            "journal-return": 243.69,
+            "single-tree-return": 279.81,
+            "marker-read-return": 341.945,
+            "position-check-return": 368.568,
+            "deadline-check": 368.747
+          },
+          "originalConfiguredBudgetMs": 1000,
+          "events": [
+            {
+              "kind": "home-inserted",
+              "siblingMatches": true
+            },
+            {
+              "kind": "marker-change",
+              "oldValue": ""
+            }
+          ],
+          "clockOffsetBoundsMs": [93167.118, 93188.777],
+          "mutationDeliveryAfterEscapeReturnMs": [
+            [2.072, 23.731],
+            [2.072, 23.731],
+            [2.072, 23.731]
+          ]
+        },
+        {
+          "family": "shadcn",
+          "runtime": "wc",
+          "input": "Enter",
+          "originalsEndingAtMs": {
+            "expanded-return": 59.445,
+            "focus-return": 77.604,
+            "handback-poll-return": 79.295,
+            "journal-start": 79.302,
+            "journal-return": 112.632,
+            "single-tree-return": 128.457,
+            "marker-read-return": 155.614,
+            "position-check-return": 731.324,
+            "deadline-check": 731.45
+          },
+          "originalConfiguredBudgetMs": 1000,
+          "events": [
+            {
+              "kind": "home-inserted",
+              "siblingMatches": true
+            },
+            {
+              "kind": "marker-change",
+              "oldValue": ""
+            }
+          ],
+          "clockOffsetBoundsMs": [93182.858, 93188.939],
+          "mutationDeliveryAfterEscapeReturnMs": [
+            [22.411, 28.491],
+            [22.411, 28.491],
+            [22.411, 28.491]
+          ]
+        },
+        {
+          "family": "shadcn",
+          "runtime": "wc",
+          "input": "Space",
+          "originalsEndingAtMs": {
+            "expanded-return": 91.474,
+            "focus-return": 214.898,
+            "handback-poll-return": 244.733,
+            "journal-start": 244.737,
+            "journal-return": 303.389,
+            "single-tree-return": 349.749,
+            "marker-read-return": 404.016,
+            "position-check-return": 448.036,
+            "deadline-check": 448.253
+          },
+          "originalConfiguredBudgetMs": 1000,
+          "events": [
+            {
+              "kind": "home-inserted",
+              "siblingMatches": true
+            },
+            {
+              "kind": "marker-change",
+              "oldValue": ""
+            }
+          ],
+          "clockOffsetBoundsMs": [93166.537, 93188.842],
+          "mutationDeliveryAfterEscapeReturnMs": [
+            [28.429, 50.733],
+            [28.429, 50.733],
+            [28.529, 50.833]
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "candidate",
+      "source": "51ac847aaa1465dac9f673d47ac9d0e54aee7199",
+      "sourceLogSha256": "e98dd6a17eda234e8382b34415bfd1ccc79ebef1b81a8b2b3f51c21e55b781a5",
+      "embeddedMarkerViolation": [],
+      "lastCaseEnd": ["shadcn", "wc", "Enter"],
+      "reactReached": false,
+      "timings": [
+        {
+          "family": "shadcn",
+          "runtime": "wc",
+          "input": "click",
+          "originalsEndingAtMs": {
+            "expanded-return": 53.38,
+            "focus-return": 139.779,
+            "handback-poll-return": 153.431,
+            "journal-start": 153.442,
+            "journal-return": 166.62,
+            "single-tree-return": 184.077,
+            "marker-read-return": 233.499,
+            "position-check-return": 256.403,
+            "deadline-check": 256.565
+          },
+          "originalConfiguredBudgetMs": 1000,
+          "events": [
+            {
+              "kind": "home-inserted",
+              "siblingMatches": true
+            },
+            {
+              "kind": "marker-change",
+              "oldValue": ""
+            }
+          ],
+          "clockOffsetBoundsMs": [70607.713, 70620.516],
+          "mutationDeliveryAfterEscapeReturnMs": [
+            [12.842, 25.645],
+            [12.842, 25.645],
+            [12.842, 25.645]
+          ]
+        },
+        {
+          "family": "shadcn",
+          "runtime": "wc",
+          "input": "Enter",
+          "originalsEndingAtMs": {
+            "expanded-return": 47.114,
+            "focus-return": 514.845,
+            "handback-poll-return": 662.095,
+            "journal-start": 662.108,
+            "journal-return": 666.985,
+            "single-tree-return": 679.472,
+            "marker-read-return": 701.745,
+            "position-check-return": 1162.343,
+            "deadline-check": 1162.477
+          },
+          "originalConfiguredBudgetMs": 1000,
+          "events": [
+            {
+              "kind": "home-inserted",
+              "siblingMatches": true
+            },
+            {
+              "kind": "marker-change",
+              "oldValue": ""
+            }
+          ],
+          "clockOffsetBoundsMs": [70618.185, 70620.554],
+          "mutationDeliveryAfterEscapeReturnMs": [
+            [22.117, 24.485],
+            [22.117, 24.485],
+            [22.117, 24.485]
+          ]
+        }
+      ]
+    }
+  ]
+}

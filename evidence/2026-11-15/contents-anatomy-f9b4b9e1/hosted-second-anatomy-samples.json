@@ -1,0 +1,457 @@
+{
+  "scope": "Same renderer V8 samples clipped to the complete setter-to-dispatch window. Per-function weights include children and overlap. Owner-connection samples may include initial or retained activation. Samples cannot count invocations or predict causal savings.",
+  "observations": [
+    {
+      "arm": "baseline",
+      "carrier": "41d9155b1ca7b4706ba78f28879607e72afe41c1",
+      "traceSha256": "fa1f491ceaebc49ea34ef0b5db961d25a8758b620bb3262cc4a6712bfd0495b5",
+      "negativeProfileDeltas": 694,
+      "buckets": [
+        {
+          "ownerPath": "owner connection",
+          "sampleWeightMs": 45.326,
+          "branches": [
+            {
+              "function": "notifyStructuralChange",
+              "weightMs": 43.008
+            },
+            {
+              "function": "computeOrderSignature",
+              "weightMs": 41.385
+            },
+            {
+              "function": "resolveCurrentDomain",
+              "weightMs": 27.695
+            },
+            {
+              "function": "listClaims",
+              "weightMs": 4.301
+            },
+            {
+              "function": "tryOrderedPartsOf",
+              "weightMs": 1.418
+            },
+            {
+              "function": "notifyTargetChange",
+              "weightMs": 0.9
+            },
+            {
+              "function": "sortClaims",
+              "weightMs": 0.234
+            },
+            {
+              "function": "findDomainRoot",
+              "weightMs": 0.14
+            }
+          ],
+          "leaves": [
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "line": 883,
+              "function": "(anonymous)",
+              "weightMs": 19.504
+            },
+            {
+              "path": "",
+              "line": 0,
+              "function": "compareDocumentPosition",
+              "weightMs": 9.573
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "line": 73,
+              "function": "listClaims",
+              "weightMs": 4.301
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "line": 706,
+              "function": "computeOrderSignature",
+              "weightMs": 3.696
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "line": 871,
+              "function": "resolveCurrentDomain",
+              "weightMs": 3.155
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "line": 729,
+              "function": "(anonymous)",
+              "weightMs": 1.519
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "line": 625,
+              "function": "notifyStructuralChange",
+              "weightMs": 0.646
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "line": 693,
+              "function": "emitOrderChangeIfNeeded",
+              "weightMs": 0.646
+            }
+          ]
+        },
+        {
+          "ownerPath": "owner retirement",
+          "sampleWeightMs": 35.567,
+          "branches": [
+            {
+              "function": "notifyStructuralChange",
+              "weightMs": 25.958
+            },
+            {
+              "function": "computeOrderSignature",
+              "weightMs": 17.667
+            },
+            {
+              "function": "resolveCurrentDomain",
+              "weightMs": 14.537
+            },
+            {
+              "function": "findDomainRoot",
+              "weightMs": 10.631
+            },
+            {
+              "function": "notifyTargetChange",
+              "weightMs": 8.178
+            },
+            {
+              "function": "listClaims",
+              "weightMs": 2.468
+            },
+            {
+              "function": "pruneRetiredBoundaries",
+              "weightMs": 1.431
+            },
+            {
+              "function": "readOrderedRole",
+              "weightMs": 1.306
+            },
+            {
+              "function": "tryOrderedPartsOf",
+              "weightMs": 1.048
+            },
+            {
+              "function": "sortClaims",
+              "weightMs": 0.106
+            }
+          ],
+          "leaves": [
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "line": 38,
+              "function": "getClaim",
+              "weightMs": 6.894
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "line": 892,
+              "function": "findDomainRoot",
+              "weightMs": 2.552
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "line": 73,
+              "function": "listClaims",
+              "weightMs": 2.468
+            },
+            {
+              "path": "",
+              "line": 0,
+              "function": "compareDocumentPosition",
+              "weightMs": 2.453
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "line": 706,
+              "function": "computeOrderSignature",
+              "weightMs": 1.965
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "line": 729,
+              "function": "(anonymous)",
+              "weightMs": 1.461
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "line": 18,
+              "function": "pruneRetiredBoundaries",
+              "weightMs": 1.272
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "line": 631,
+              "function": "notifyTargetChange",
+              "weightMs": 1.158
+            }
+          ]
+        },
+        {
+          "ownerPath": "other",
+          "sampleWeightMs": 0.532,
+          "branches": [
+            {
+              "function": "resolveCurrentDomain",
+              "weightMs": 0.468
+            },
+            {
+              "function": "computeOrderSignature",
+              "weightMs": 0.371
+            },
+            {
+              "function": "tryOrderedPartsOf",
+              "weightMs": 0.161
+            }
+          ],
+          "leaves": [
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "line": 883,
+              "function": "(anonymous)",
+              "weightMs": 0.309
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "line": 871,
+              "function": "resolveCurrentDomain",
+              "weightMs": 0.159
+            },
+            {
+              "path": "",
+              "line": 0,
+              "function": "compareDocumentPosition",
+              "weightMs": 0.064
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "arm": "candidate",
+      "carrier": "f4b4b99dff40252f9e2b66b9ade5477c30eabf5e",
+      "traceSha256": "49a7a65b49b5151216f341e30ca309b7186e66b2d79c64a2709c2fa4f276fdc0",
+      "negativeProfileDeltas": 663,
+      "buckets": [
+        {
+          "ownerPath": "owner connection",
+          "sampleWeightMs": 69.082,
+          "branches": [
+            {
+              "function": "notifyStructuralChange",
+              "weightMs": 66.625
+            },
+            {
+              "function": "computeOrderSignature",
+              "weightMs": 65.369
+            },
+            {
+              "function": "resolveCurrentDomain",
+              "weightMs": 28.665
+            },
+            {
+              "function": "notifyTargetChange",
+              "weightMs": 1.728
+            },
+            {
+              "function": "tryOrderedPartsOf",
+              "weightMs": 0.729
+            },
+            {
+              "function": "findDomainRoot",
+              "weightMs": 0.161
+            },
+            {
+              "function": "sortClaims",
+              "weightMs": 0.043
+            }
+          ],
+          "leaves": [
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "line": 877,
+              "function": "resolveCurrentDomain",
+              "weightMs": 28.18
+            },
+            {
+              "path": "",
+              "line": 0,
+              "function": "compareDocumentPosition",
+              "weightMs": 24.073
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "line": 712,
+              "function": "computeOrderSignature",
+              "weightMs": 12.914
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "line": 637,
+              "function": "notifyTargetChange",
+              "weightMs": 1.241
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "line": 631,
+              "function": "notifyStructuralChange",
+              "weightMs": 0.931
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "line": 315,
+              "function": "tryOrderedPartsOf",
+              "weightMs": 0.403
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "line": 280,
+              "function": "partsOf",
+              "weightMs": 0.165
+            },
+            {
+              "path": "packages/adapters/web-component/src/runtime/modules.ts",
+              "line": 1122,
+              "function": "getConnectedTriggerSurface",
+              "weightMs": 0.164
+            }
+          ]
+        },
+        {
+          "ownerPath": "owner retirement",
+          "sampleWeightMs": 33.248,
+          "branches": [
+            {
+              "function": "notifyStructuralChange",
+              "weightMs": 24.084
+            },
+            {
+              "function": "computeOrderSignature",
+              "weightMs": 15.856
+            },
+            {
+              "function": "resolveCurrentDomain",
+              "weightMs": 9.69
+            },
+            {
+              "function": "notifyTargetChange",
+              "weightMs": 8.127
+            },
+            {
+              "function": "findDomainRoot",
+              "weightMs": 7.953
+            },
+            {
+              "function": "readOrderedRole",
+              "weightMs": 1.43
+            },
+            {
+              "function": "tryOrderedPartsOf",
+              "weightMs": 1.414
+            },
+            {
+              "function": "pruneRetiredBoundaries",
+              "weightMs": 1.037
+            },
+            {
+              "function": "listClaims",
+              "weightMs": 0.317
+            }
+          ],
+          "leaves": [
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "line": 712,
+              "function": "computeOrderSignature",
+              "weightMs": 4.565
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "line": 39,
+              "function": "getClaim",
+              "weightMs": 4.242
+            },
+            {
+              "path": "",
+              "line": 0,
+              "function": "compareDocumentPosition",
+              "weightMs": 3.966
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "line": 898,
+              "function": "findDomainRoot",
+              "weightMs": 2.774
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "line": 637,
+              "function": "notifyTargetChange",
+              "weightMs": 1.895
+            },
+            {
+              "path": "",
+              "line": 0,
+              "function": "removeAttribute",
+              "weightMs": 1.139
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "line": 19,
+              "function": "pruneRetiredBoundaries",
+              "weightMs": 1.037
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "line": 877,
+              "function": "resolveCurrentDomain",
+              "weightMs": 0.835
+            }
+          ]
+        },
+        {
+          "ownerPath": "other",
+          "sampleWeightMs": 0.519,
+          "branches": [
+            {
+              "function": "computeOrderSignature",
+              "weightMs": 0.358
+            },
+            {
+              "function": "resolveCurrentDomain",
+              "weightMs": 0.297
+            },
+            {
+              "function": "tryOrderedPartsOf",
+              "weightMs": 0.161
+            }
+          ],
+          "leaves": [
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "line": 877,
+              "function": "resolveCurrentDomain",
+              "weightMs": 0.297
+            },
+            {
+              "path": "packages/modules/anatomy/src/impl.ts",
+              "line": 712,
+              "function": "computeOrderSignature",
+              "weightMs": 0.175
+            },
+            {
+              "path": "",
+              "line": 0,
+              "function": "compareDocumentPosition",
+              "weightMs": 0.047
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

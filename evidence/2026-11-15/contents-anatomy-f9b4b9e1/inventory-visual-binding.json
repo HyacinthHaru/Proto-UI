@@ -1,0 +1,12 @@
+[
+  {
+    "path": "inventory-contents-react-preview.png",
+    "rawMember": "exact-preview/contents-command/shadcn-react-public-popover-open.png",
+    "sha256": "9e6e4ffb52b311496d4e84ee1d62bc750c50587bb9ce4e1e2cf705f46d01ebbf"
+  },
+  {
+    "path": "inventory-dialog-wc-preview.png",
+    "rawMember": "exact-preview/dialog-available-space/shadcn-wc-390-settled.png",
+    "sha256": "59f931a2756ae78e07d1b0d3fe458331a9e36208c69604f4e957cb2c7da339bb"
+  }
+]

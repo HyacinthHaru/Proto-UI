@@ -1,0 +1,32 @@
+[
+  {
+    "slot": 1,
+    "arm": "baseline",
+    "head": "ed25e0f0713ee7cb3a9f69e9f2830d04e78e7ec6",
+    "switches": {
+      "shadcn/wc": {
+        "originalError": null,
+        "atMs": 19
+      }
+    },
+    "orderedHandbacks": 3,
+    "totalHandbacks": 3,
+    "namedCasePassed": false,
+    "mobileShellPassed": true
+  },
+  {
+    "slot": 1,
+    "arm": "candidate",
+    "head": "057a29b90621b7c0fde8c866ec950e55b9d60523",
+    "switches": {
+      "shadcn/wc": {
+        "originalError": null,
+        "atMs": 44
+      }
+    },
+    "orderedHandbacks": 2,
+    "totalHandbacks": 2,
+    "namedCasePassed": false,
+    "mobileShellPassed": true
+  }
+]

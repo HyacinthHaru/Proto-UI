@@ -1,0 +1,35 @@
+{
+  "scope": "Escape deadline stays anchored to the original Node time. Browser mutation delivery has a clock interval when both anchors agree.",
+  "observations": [
+    {
+      "arm": "baseline",
+      "source": "db98db1ad9cf3ca698c1df949d0eb5b1b16b6870",
+      "sourceLogSha256": "06a12863b92c038ea439e6ee932451f8a70422ccea5ebadb890efe0072f84201",
+      "embeddedMarkerViolation": [
+        {
+          "observedMs": 74648.746,
+          "deadlineMs": 74214.127,
+          "lateMs": 434.619
+        }
+      ],
+      "lastCaseEnd": ["shadcn", "wc", "Enter"],
+      "reactReached": false,
+      "timings": []
+    },
+    {
+      "arm": "candidate",
+      "source": "133e35c8775e0f52343190e12376684c2222de18",
+      "sourceLogSha256": "33c66ef27e88631dcf8e47ff8a0acb3553437509b60722f1b94868cd394c0f2b",
+      "embeddedMarkerViolation": [
+        {
+          "observedMs": 72381.798,
+          "deadlineMs": 72156.824,
+          "lateMs": 224.974
+        }
+      ],
+      "lastCaseEnd": ["shadcn", "wc", "Enter"],
+      "reactReached": false,
+      "timings": []
+    }
+  ]
+}

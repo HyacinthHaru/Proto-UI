@@ -1,0 +1,111 @@
+{
+  "scope": "Same renderer markers after one observed trusted click, bounded by first React publication when available. Named stage intervals include queueing.",
+  "observations": [
+    {
+      "arm": "baseline",
+      "traceAvailable": true,
+      "traceSha256": "6c193ed1085a2db79e5eaf05ef4feb2e416bc85571f21c5d85cda4b53a823622",
+      "firstWriteAfterTrustedClickMs": 1279.523,
+      "originalPoll": "fulfilled",
+      "pollDurationMs": 635.101,
+      "headerAfterTrustedClickMs": {
+        "preference": [55.647],
+        "materialize-start": [56.153],
+        "materialize-return": [1247.856],
+        "theme-watch-return": [1263.109],
+        "publish-start": [1263.482]
+      },
+      "parts": [
+        {
+          "owner": "site-header-surface-1",
+          "afterTrustedClickMs": {
+            "begin": [56.257],
+            "prototypes-ready": [755.805],
+            "runtime-ready": [967.393],
+            "dependencies-ready": [975.293],
+            "render-start": [975.387],
+            "render-return": [1102.665],
+            "paint-wait-start": [1102.772],
+            "paint-wait-return": [1247.681]
+          },
+          "prototypeMs": 699.548,
+          "runtimeMs": 911.136,
+          "combinedDependenciesMs": 919.036,
+          "renderMs": 127.278,
+          "paintWaitMs": 144.909
+        },
+        {
+          "owner": "site-contents-panel-1-docs-1",
+          "afterTrustedClickMs": {
+            "begin": [61.149],
+            "prototypes-ready": [755.971],
+            "runtime-ready": [967.445],
+            "dependencies-ready": [975.637],
+            "render-start": [975.691],
+            "render-return": [1104.975],
+            "paint-wait-start": [1105.069],
+            "paint-wait-return": [1247.793]
+          },
+          "prototypeMs": 694.822,
+          "runtimeMs": 906.296,
+          "combinedDependenciesMs": 914.488,
+          "renderMs": 129.284,
+          "paintWaitMs": 142.724
+        }
+      ]
+    },
+    {
+      "arm": "candidate",
+      "traceAvailable": true,
+      "traceSha256": "0f2de079c60c0dcbdc0e841b0d4f81fadc529ab6fe407b080660b3b647ef4973",
+      "firstWriteAfterTrustedClickMs": 1184.155,
+      "originalPoll": "fulfilled",
+      "pollDurationMs": 579.027,
+      "headerAfterTrustedClickMs": {
+        "preference": [54.374],
+        "materialize-start": [54.843],
+        "materialize-return": [1151.837],
+        "theme-watch-return": [1167.45],
+        "publish-start": [1167.819]
+      },
+      "parts": [
+        {
+          "owner": "site-header-surface-1",
+          "afterTrustedClickMs": {
+            "begin": [54.896],
+            "prototypes-ready": [715.707],
+            "runtime-ready": [873.745],
+            "dependencies-ready": [881.522],
+            "render-start": [881.582],
+            "render-return": [1007.883],
+            "paint-wait-start": [1007.978],
+            "paint-wait-return": [1151.652]
+          },
+          "prototypeMs": 660.811,
+          "runtimeMs": 818.849,
+          "combinedDependenciesMs": 826.626,
+          "renderMs": 126.301,
+          "paintWaitMs": 143.674
+        },
+        {
+          "owner": "site-contents-panel-1-docs-1",
+          "afterTrustedClickMs": {
+            "begin": [60.323],
+            "prototypes-ready": [720.011],
+            "runtime-ready": [873.802],
+            "dependencies-ready": [881.834],
+            "render-start": [881.874],
+            "render-return": [1010.208],
+            "paint-wait-start": [1010.301],
+            "paint-wait-return": [1151.766]
+          },
+          "prototypeMs": 659.688,
+          "runtimeMs": 813.479,
+          "combinedDependenciesMs": 821.511,
+          "renderMs": 128.334,
+          "paintWaitMs": 141.465
+        }
+      ]
+    }
+  ]
+}
