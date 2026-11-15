@@ -1,5 +1,5 @@
 name: CI
-run-name: Repeat exact f9 Contents and S4 on the original shard
+run-name: Trace Contents predicate outcomes on the original shard
 
 on: workflow_dispatch
 permissions:
@@ -18,8 +18,8 @@ jobs:
             trace: '1'
             order: baseline candidate
     env:
-      BASELINE_CARRIER: fe68781a54327cb616d4720a33dc983ab0d920e5
-      CANDIDATE_CARRIER: fe68781a54327cb616d4720a33dc983ab0d920e5
+      BASELINE_CARRIER: 19323ade171f83b752dd44394e8df1516ac4f2e8
+      CANDIDATE_CARRIER: 19323ade171f83b752dd44394e8df1516ac4f2e8
       CHROME_VERSION: 157.0.8103.50
       CHROME_ZIP_SHA256: d17167bc092eb495a3b768c7467f27e35f625aa03834233a1663af67dcb668c9
       PROTO_UI_RUNTIME_PHASE: browser
