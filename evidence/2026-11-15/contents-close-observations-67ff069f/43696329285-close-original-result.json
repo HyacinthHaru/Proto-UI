@@ -1,0 +1,101 @@
+{
+  "scope": "Escape deadline stays anchored to the original Node time. Browser mutation delivery has a clock interval when both anchors agree.",
+  "observations": [
+    {
+      "arm": "baseline",
+      "source": "f2b20f8d7f6ed3f31f23db8e09b54fcb7db243ac",
+      "sourceLogSha256": "88cdb95b011f34bcca28d3085ba428df49088eb94ff0f965e7aff3f7ebb2f23e",
+      "embeddedMarkerViolation": [],
+      "lastCaseEnd": ["shadcn", "wc", "click"],
+      "reactReached": false,
+      "timings": [
+        {
+          "family": "shadcn",
+          "runtime": "wc",
+          "input": "click",
+          "originalsEndingAtMs": {
+            "expanded-return": 45.803,
+            "focus-return": 143.216,
+            "handback-poll-return": 173.778,
+            "journal-start": 173.788,
+            "journal-return": 187.251,
+            "parallel-dom-reads-start": 187.279,
+            "single-tree-return": 201.973,
+            "marker-read-return": 204.926,
+            "position-check-return": 205.017,
+            "deadline-check": 205.205
+          },
+          "originalConfiguredBudgetMs": 1000,
+          "events": [
+            {
+              "kind": "home-inserted",
+              "siblingMatches": true
+            },
+            {
+              "kind": "marker-change",
+              "oldValue": ""
+            }
+          ],
+          "clockOffsetBoundsMs": [73164.559, 73177.752],
+          "mutationDeliveryAfterEscapeReturnMs": [
+            [9.088, 22.281],
+            [9.088, 22.281]
+          ]
+        },
+        {
+          "family": "shadcn",
+          "runtime": "wc",
+          "input": "Enter",
+          "originalsEndingAtMs": {
+            "expanded-return": 286.0,
+            "focus-return": 922.984
+          },
+          "originalConfiguredBudgetMs": 1000
+        }
+      ]
+    },
+    {
+      "arm": "candidate",
+      "source": "e4a3ef9daafc0113adae0dc48ff9b170c3f54b82",
+      "sourceLogSha256": "d957dd7cf95fd50ab8a70f13d74f4564268f7f1e37c2c396360272a3b03c0aa6",
+      "embeddedMarkerViolation": [],
+      "lastCaseEnd": ["shadcn", "wc", "click"],
+      "reactReached": false,
+      "timings": [
+        {
+          "family": "shadcn",
+          "runtime": "wc",
+          "input": "click",
+          "originalsEndingAtMs": {
+            "expanded-return": 63.124,
+            "focus-return": 63.135,
+            "handback-poll-return": 64.684,
+            "journal-start": 64.689,
+            "parallel-dom-reads-start": 64.691,
+            "journal-return": 90.788,
+            "single-tree-return": 94.278,
+            "marker-read-return": 97.676,
+            "position-check-return": 97.837,
+            "deadline-check": 98.035
+          },
+          "originalConfiguredBudgetMs": 1000,
+          "events": [
+            {
+              "kind": "home-inserted",
+              "siblingMatches": true
+            },
+            {
+              "kind": "marker-change",
+              "oldValue": ""
+            }
+          ],
+          "clockOffsetBoundsMs": [91153.387, 91173.072],
+          "mutationDeliveryAfterEscapeReturnMs": [
+            [8.277, 27.961],
+            [8.277, 27.961]
+          ]
+        }
+      ]
+    }
+  ]
+}

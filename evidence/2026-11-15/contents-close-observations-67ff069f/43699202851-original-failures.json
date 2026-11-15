@@ -1,0 +1,20 @@
+{
+  "scope": "Original failure error chain emitted before evidence and teardown; S4 journal is read in the existing after-verdict collection.",
+  "observations": [
+    {
+      "arm": "candidate",
+      "logSha256": "95b0b42204f8b31019b2005af23f1e290c79cbf09eb257a4dc7027d35e6e6dde",
+      "failures": [],
+      "s4VerdictCollection": [
+        {
+          "locale": "zh-cn",
+          "collectedAt": null,
+          "journal": null,
+          "collectionOutcome": "rejected",
+          "startupPassed": false,
+          "fileSha256": "7bdd8ffd78ddab636db04bf28136c90fcb47cddf28cae4c8543e95fd2aee3053"
+        }
+      ]
+    }
+  ]
+}

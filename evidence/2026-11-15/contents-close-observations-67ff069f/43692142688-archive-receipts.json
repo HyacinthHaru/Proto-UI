@@ -1,0 +1,176 @@
+[
+  {
+    "arm": "baseline",
+    "slot": 1,
+    "carrier": "f2b20f8d7f6ed3f31f23db8e09b54fcb7db243ac",
+    "product": "f9b4b9e18aefbaa55f241a7682c140beeca3a7fd",
+    "artifactId": 14154351261,
+    "artifactDigest": "sha256:c813c7f5cd629f8827eb9bbf37d0d9f0c4cafc249457dd0a1bcea2ee8cd158f8",
+    "runner": [
+      "workflowSha=e2c6df805eb62054f8b3345db3a499d6172ac782",
+      "runId=43692142688",
+      "attempt=1",
+      "slot=browser-1-of-8",
+      "runnerImage=ubuntu26",
+      "runnerImageVersion=20261111.196.1",
+      "Linux 7.0.0-1019-azure x86_64",
+      "cpuCount=4",
+      "AMD EPYC 7763 64-Core Processor",
+      "Google Chrome for Testing 157.0.8103.50 ",
+      "061f752aa63d26ee05581742df728a2f8f5097446e85e04145ebaea49e469e15",
+      "chromeArchiveSha256=d17167bc092eb495a3b768c7467f27e35f625aa03834233a1663af67dcb668c9",
+      "v24.22.2",
+      "10.32.1"
+    ],
+    "status": "failure",
+    "processExit": 124,
+    "shadowCloseoutPassed": null,
+    "englishS4Entered": true,
+    "visibleNamedFailures": [
+      "Prototype style closure without Website CSS > loads only scoped Proto UI physical styles and mounts every real runtime",
+      "Shadcn Radio Group public browser acceptance > 'react' 'interaction' projects selection, focus, disabled and theme states through the real family",
+      "Shadcn Radio Group public browser acceptance > 'vue' 'interaction' projects selection, focus, disabled and theme states through the real family",
+      "Shadcn Radio Group public browser acceptance > 'vue2' 'interaction' projects selection, focus, disabled and theme states through the real family",
+      "Shadcn Radio Group public browser acceptance > 'wc' 'interaction' projects selection, focus, disabled and theme states through the real family",
+      "retains brutalist preference owners and portals through real breakpoint reconnects"
+    ],
+    "sameOriginalSuites": true,
+    "selectedFileCount": 12,
+    "sourceTree": "a2dfaaa1d2175e805feb90beb7402ec514c22e53",
+    "browserLogSha256": "da23c68145d2815f4b56eb7284027587945dad2db2e647ea0020e9beb23be8e4",
+    "terminalReceiptSha256": "876ce0905e369b71d5d32853ee9be7ec8ca1579d13480c2cd726d908e50e4c50",
+    "suiteTotals": [],
+    "caseVerdicts": [
+      "\u2713 Homepage end-to-end dogfood boundary > uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence 80032ms",
+      "\u2713 Homepage end-to-end dogfood boundary > uses the same mobile shell on documentation with independent global navigation and contents 11831ms",
+      "\u00d7 retains brutalist preference owners and portals through real breakpoint reconnects 7109ms",
+      "\u2713 apps/www/src/content/docs/zh-cn/site-sidebar-disclosure.browser.test.ts (7 tests) 71651ms"
+    ],
+    "s4": [
+      {
+        "member": "en.json",
+        "collectionOutcome": "unreadable",
+        "bytes": 0,
+        "fileSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  {
+    "arm": "candidate",
+    "slot": 1,
+    "carrier": "f2b20f8d7f6ed3f31f23db8e09b54fcb7db243ac",
+    "product": "f9b4b9e18aefbaa55f241a7682c140beeca3a7fd",
+    "artifactId": 14154351261,
+    "artifactDigest": "sha256:c813c7f5cd629f8827eb9bbf37d0d9f0c4cafc249457dd0a1bcea2ee8cd158f8",
+    "runner": [
+      "workflowSha=e2c6df805eb62054f8b3345db3a499d6172ac782",
+      "runId=43692142688",
+      "attempt=1",
+      "slot=browser-1-of-8",
+      "runnerImage=ubuntu26",
+      "runnerImageVersion=20261111.196.1",
+      "Linux 7.0.0-1019-azure x86_64",
+      "cpuCount=4",
+      "AMD EPYC 7763 64-Core Processor",
+      "Google Chrome for Testing 157.0.8103.50 ",
+      "061f752aa63d26ee05581742df728a2f8f5097446e85e04145ebaea49e469e15",
+      "chromeArchiveSha256=d17167bc092eb495a3b768c7467f27e35f625aa03834233a1663af67dcb668c9",
+      "v24.22.2",
+      "10.32.1"
+    ],
+    "status": "failure",
+    "processExit": 124,
+    "shadowCloseoutPassed": null,
+    "englishS4Entered": true,
+    "visibleNamedFailures": [
+      "Homepage end-to-end dogfood boundary > uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence",
+      "Prototype style closure without Website CSS > loads only scoped Proto UI physical styles and mounts every real runtime",
+      "Shadcn Radio Group public browser acceptance > 'react' 'interaction' projects selection, focus, disabled and theme states through the real family",
+      "Shadcn Radio Group public browser acceptance > 'vue' 'interaction' projects selection, focus, disabled and theme states through the real family",
+      "Shadcn Radio Group public browser acceptance > 'vue2' 'interaction' projects selection, focus, disabled and theme states through the real family",
+      "Shadcn Radio Group public browser acceptance > 'wc' 'interaction' projects selection, focus, disabled and theme states through the real family",
+      "retains brutalist preference owners and portals through real breakpoint reconnects"
+    ],
+    "sameOriginalSuites": true,
+    "selectedFileCount": 12,
+    "sourceTree": "a2dfaaa1d2175e805feb90beb7402ec514c22e53",
+    "browserLogSha256": "81839491a03df36400bb755bd874f7200923371dafb88a413d00a98a473e4a44",
+    "terminalReceiptSha256": "876ce0905e369b71d5d32853ee9be7ec8ca1579d13480c2cd726d908e50e4c50",
+    "suiteTotals": [],
+    "caseVerdicts": [
+      "\u00d7 Homepage end-to-end dogfood boundary > uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence 14028ms",
+      "\u2713 Homepage end-to-end dogfood boundary > uses the same mobile shell on documentation with independent global navigation and contents 12136ms",
+      "\u00d7 retains brutalist preference owners and portals through real breakpoint reconnects 7120ms",
+      "\u2713 apps/www/src/content/docs/zh-cn/site-sidebar-disclosure.browser.test.ts (7 tests) 70632ms"
+    ],
+    "s4": [
+      {
+        "locale": "zh-cn",
+        "startupPassed": false,
+        "collectionOutcome": "rejected",
+        "errors": {
+          "[feedback] owned-decoration unsupported by this adapter": 18
+        }
+      }
+    ]
+  },
+  {
+    "arm": "repeat",
+    "slot": 1,
+    "carrier": "f2b20f8d7f6ed3f31f23db8e09b54fcb7db243ac",
+    "product": "f9b4b9e18aefbaa55f241a7682c140beeca3a7fd",
+    "artifactId": 14154351261,
+    "artifactDigest": "sha256:c813c7f5cd629f8827eb9bbf37d0d9f0c4cafc249457dd0a1bcea2ee8cd158f8",
+    "runner": [
+      "workflowSha=e2c6df805eb62054f8b3345db3a499d6172ac782",
+      "runId=43692142688",
+      "attempt=1",
+      "slot=browser-1-of-8",
+      "runnerImage=ubuntu26",
+      "runnerImageVersion=20261111.196.1",
+      "Linux 7.0.0-1019-azure x86_64",
+      "cpuCount=4",
+      "AMD EPYC 7763 64-Core Processor",
+      "Google Chrome for Testing 157.0.8103.50 ",
+      "061f752aa63d26ee05581742df728a2f8f5097446e85e04145ebaea49e469e15",
+      "chromeArchiveSha256=d17167bc092eb495a3b768c7467f27e35f625aa03834233a1663af67dcb668c9",
+      "v24.22.2",
+      "10.32.1"
+    ],
+    "status": "failure",
+    "processExit": 124,
+    "shadowCloseoutPassed": null,
+    "englishS4Entered": true,
+    "visibleNamedFailures": [
+      "Homepage end-to-end dogfood boundary > uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence",
+      "Prototype style closure without Website CSS > loads only scoped Proto UI physical styles and mounts every real runtime",
+      "Shadcn Radio Group public browser acceptance > 'react' 'interaction' projects selection, focus, disabled and theme states through the real family",
+      "Shadcn Radio Group public browser acceptance > 'vue' 'interaction' projects selection, focus, disabled and theme states through the real family",
+      "Shadcn Radio Group public browser acceptance > 'vue2' 'interaction' projects selection, focus, disabled and theme states through the real family",
+      "Shadcn Radio Group public browser acceptance > 'wc' 'interaction' projects selection, focus, disabled and theme states through the real family",
+      "retains brutalist preference owners and portals through real breakpoint reconnects"
+    ],
+    "sameOriginalSuites": true,
+    "selectedFileCount": 12,
+    "sourceTree": "a2dfaaa1d2175e805feb90beb7402ec514c22e53",
+    "browserLogSha256": "c99f93bf9939571ddc835cc7c0125d469d60d4ffa691887a8125f0d8835b00e5",
+    "terminalReceiptSha256": "876ce0905e369b71d5d32853ee9be7ec8ca1579d13480c2cd726d908e50e4c50",
+    "suiteTotals": [],
+    "caseVerdicts": [
+      "\u00d7 Homepage end-to-end dogfood boundary > uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence 13527ms",
+      "\u2713 Homepage end-to-end dogfood boundary > uses the same mobile shell on documentation with independent global navigation and contents 11664ms",
+      "\u00d7 retains brutalist preference owners and portals through real breakpoint reconnects 7276ms",
+      "\u2713 apps/www/src/content/docs/zh-cn/site-sidebar-disclosure.browser.test.ts (7 tests) 69785ms"
+    ],
+    "s4": [
+      {
+        "locale": "zh-cn",
+        "startupPassed": false,
+        "collectionOutcome": "rejected",
+        "errors": {
+          "[feedback] owned-decoration unsupported by this adapter": 18
+        }
+      }
+    ]
+  }
+]

@@ -1,0 +1,45 @@
+[
+  {
+    "slot": 1,
+    "arm": "candidate",
+    "head": "67ff069f039c3c85eb20aa484764e4cc5daa043c",
+    "switches": {
+      "brutalist/react": {
+        "originalError": null,
+        "atMs": 555
+      },
+      "brutalist/vue": {
+        "originalError": null,
+        "atMs": 476
+      },
+      "brutalist/vue2": {
+        "originalError": null,
+        "atMs": 395
+      },
+      "brutalist/wc": {
+        "originalError": null,
+        "atMs": 3
+      },
+      "shadcn/react": {
+        "originalError": null,
+        "atMs": 763
+      },
+      "shadcn/vue": {
+        "originalError": null,
+        "atMs": 576
+      },
+      "shadcn/vue2": {
+        "originalError": null,
+        "atMs": 566
+      },
+      "shadcn/wc": {
+        "originalError": null,
+        "atMs": 6
+      }
+    },
+    "orderedHandbacks": 24,
+    "totalHandbacks": 24,
+    "namedCasePassed": true,
+    "mobileShellPassed": true
+  }
+]

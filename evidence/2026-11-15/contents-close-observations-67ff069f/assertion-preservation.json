@@ -1,0 +1,9 @@
+{
+  "head": "67ff069f039c3c85eb20aa484764e4cc5daa043c",
+  "parent": "f9b4b9e18aefbaa55f241a7682c140beeca3a7fd",
+  "path": "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+  "oldBlob": "8612c2eac72911644132d20c49a8315f01238041",
+  "newBlob": "1a08b76036bd61dd52daa155d5a3668bd5c00440",
+  "diffSha256": "37cbf03a9e0ea81b41e396fbe2b4d32ecb41684f7df33575b0b1bacca5ad6a5f",
+  "sourceScope": "Escape input, original 1000ms cutoff, handback predicate and remaining time, final count/marker/position/mutation-order/deadline assertions, and outside code are preserved. Focus is sampled at collapsed ARIA in the same command, and journal collection joins independent post-handback reads."
+}

@@ -1,0 +1,68 @@
+{
+  "scope": "Same renderer markers after one observed trusted click, bounded by first React publication when available. Named stage intervals include queueing.",
+  "observations": [
+    {
+      "arm": "baseline",
+      "traceAvailable": true,
+      "traceSha256": "5763c44c1f78f26f6c6e36e2a5d6173a37ba5cbd3364efd425336207fcd9a7a5",
+      "firstWriteAfterTrustedClickMs": 1907.233,
+      "originalPoll": "fulfilled",
+      "pollDurationMs": 843.554,
+      "headerAfterTrustedClickMs": {
+        "preference": [94.101],
+        "materialize-start": [94.558],
+        "materialize-return": [1851.765],
+        "theme-watch-return": [1876.508],
+        "publish-start": [1876.989]
+      },
+      "parts": [
+        {
+          "owner": "site-header-surface-1",
+          "afterTrustedClickMs": {
+            "begin": [94.639],
+            "prototypes-ready": [1150.996],
+            "runtime-ready": [1378.069],
+            "dependencies-ready": [1391.2],
+            "render-start": [1391.289],
+            "render-return": [1585.891],
+            "paint-wait-start": [1586.01],
+            "paint-wait-return": [1851.549]
+          },
+          "prototypeMs": 1056.357,
+          "runtimeMs": 1283.43,
+          "combinedDependenciesMs": 1296.561,
+          "renderMs": 194.602,
+          "paintWaitMs": 265.539
+        },
+        {
+          "owner": "site-contents-panel-1-docs-1",
+          "afterTrustedClickMs": {
+            "begin": [102.882],
+            "prototypes-ready": [1151.253],
+            "runtime-ready": [1378.134],
+            "dependencies-ready": [1391.625],
+            "render-start": [1391.703],
+            "render-return": [1602.208],
+            "paint-wait-start": [1602.367],
+            "paint-wait-return": [1851.674]
+          },
+          "prototypeMs": 1048.371,
+          "runtimeMs": 1275.252,
+          "combinedDependenciesMs": 1288.743,
+          "renderMs": 210.505,
+          "paintWaitMs": 249.307
+        }
+      ]
+    },
+    {
+      "arm": "candidate",
+      "traceAvailable": false,
+      "previousStage": null
+    },
+    {
+      "arm": "repeat",
+      "traceAvailable": false,
+      "previousStage": null
+    }
+  ]
+}

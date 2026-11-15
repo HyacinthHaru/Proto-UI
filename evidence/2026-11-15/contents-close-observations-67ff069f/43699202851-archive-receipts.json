@@ -1,0 +1,67 @@
+[
+  {
+    "arm": "candidate",
+    "slot": 1,
+    "carrier": "c3886f9150ec6608e2e91aa30e0f862b91ceb22f",
+    "product": "67ff069f039c3c85eb20aa484764e4cc5daa043c",
+    "artifactId": 14156380815,
+    "artifactDigest": "sha256:ca72e8dc7759b0f8a93be5c4e0aff9fa9a979022a63f018721d1cbded9b37fe0",
+    "runner": [
+      "workflowSha=233fe59d0ea6e897543eafd81ea8257afceff47b",
+      "runId=43699202851",
+      "attempt=1",
+      "slot=browser-1-of-8",
+      "runnerImage=ubuntu26",
+      "runnerImageVersion=20261111.196.1",
+      "Linux 7.0.0-1019-azure x86_64",
+      "cpuCount=4",
+      "INTEL(R) XEON(R) PLATINUM 8573C",
+      "Google Chrome for Testing 157.0.8103.50 ",
+      "061f752aa63d26ee05581742df728a2f8f5097446e85e04145ebaea49e469e15",
+      "chromeArchiveSha256=d17167bc092eb495a3b768c7467f27e35f625aa03834233a1663af67dcb668c9",
+      "v24.22.2",
+      "10.32.1"
+    ],
+    "status": "failure",
+    "processExit": 124,
+    "shadowCloseoutPassed": null,
+    "englishS4Entered": true,
+    "visibleNamedFailures": [
+      "Prototype style closure without Website CSS > loads only scoped Proto UI physical styles and mounts every real runtime",
+      "S4 complete public Dialog settings > en: native Light/split/mixed acceptance",
+      "S4 complete public Dialog settings > zh-cn: native Light/split/mixed acceptance",
+      "Shadcn Radio Group public browser acceptance > 'react' 'interaction' projects selection, focus, disabled and theme states through the real family",
+      "Shadcn Radio Group public browser acceptance > 'vue' 'interaction' projects selection, focus, disabled and theme states through the real family",
+      "Shadcn Radio Group public browser acceptance > 'vue2' 'interaction' projects selection, focus, disabled and theme states through the real family",
+      "Shadcn Radio Group public browser acceptance > 'wc' 'interaction' projects selection, focus, disabled and theme states through the real family",
+      "retains brutalist preference owners and portals through real breakpoint reconnects"
+    ],
+    "sameOriginalSuites": true,
+    "selectedFileCount": 12,
+    "sourceTree": "b210bd99198d5024fa858e73b2e2cfc7004b59cc",
+    "browserLogSha256": "95b0b42204f8b31019b2005af23f1e290c79cbf09eb257a4dc7027d35e6e6dde",
+    "terminalReceiptSha256": "7f140700bfb283189cd53d65c567a6ff28cef03ef7a11b18aab4ed5bae01c5eb",
+    "suiteTotals": [
+      "Test Files  4 failed | 7 passed | 1 skipped (12)",
+      "Tests  8 failed | 145 passed | 15 skipped (168)"
+    ],
+    "caseVerdicts": [
+      "\u2713 Homepage end-to-end dogfood boundary > uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence 74359ms",
+      "\u2713 Homepage end-to-end dogfood boundary > uses the same mobile shell on documentation with independent global navigation and contents 11228ms",
+      "\u00d7 retains brutalist preference owners and portals through real breakpoint reconnects 6517ms",
+      "\u2713 apps/www/src/content/docs/zh-cn/site-sidebar-disclosure.browser.test.ts (7 tests) 62110ms",
+      "\u276f apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts (2 tests | 2 failed) 250723ms",
+      "\u276f apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts:223:22"
+    ],
+    "s4": [
+      {
+        "locale": "zh-cn",
+        "startupPassed": false,
+        "collectionOutcome": "rejected",
+        "errors": {
+          "[feedback] owned-decoration unsupported by this adapter": 18
+        }
+      }
+    ]
+  }
+]

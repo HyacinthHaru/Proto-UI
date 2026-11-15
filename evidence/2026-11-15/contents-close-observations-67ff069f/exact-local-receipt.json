@@ -1,0 +1,379 @@
+{
+  "head": "f9b4b9e18aefbaa55f241a7682c140beeca3a7fd",
+  "tree": "7128c784f557bf6d829b8cdff986f15877cb94da",
+  "parent": "057a29b90621b7c0fde8c866ec950e55b9d60523",
+  "unchangedOriginalBlobs": {
+    "apps/www/src/content/docs/zh-cn/dialog-available-space.browser.test.ts": "f3a517c207b24560b3b67ff8852d2e7190f6c219",
+    "apps/www/src/content/docs/zh-cn/ui-libraries/shadcn/button.mdx": "1bdfc19af749da49d8dd95b626b76d0d3a4ae16c",
+    "apps/www/src/content/docs/zh-cn/ui-libraries/brutalist/components/button.mdx": "926fbdfa3acd5a1b00836e5b0ef5af0791c3cefe"
+  },
+  "groupedReadTestBlob": "8612c2eac72911644132d20c49a8315f01238041",
+  "documentationCodeExamples": 9,
+  "renderedCodeExamples": 9,
+  "builtPageCount": 679,
+  "types": {
+    "exit": 0,
+    "astroFiles": 1221,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 30
+  },
+  "websiteGraph": {
+    "exit": 1,
+    "previousFindings": 53,
+    "exactFindings": 53,
+    "sameEntries": true
+  },
+  "source": {
+    "exit": 0,
+    "passed": 15,
+    "failed": 0,
+    "unselected": 9,
+    "switches": [
+      {
+        "family": "brutalist",
+        "runtime": "react",
+        "originalPassed": true,
+        "noteToVerdictMs": 236,
+        "sha256": "2774757f58c7adf17ef6e0f27ce23078fe7dc3d8994ccb9ed36dee9fcc1d1f0b"
+      },
+      {
+        "family": "brutalist",
+        "runtime": "vue",
+        "originalPassed": true,
+        "noteToVerdictMs": 200,
+        "sha256": "98dc7f34d127c97a581b68204860eb56f5b33965b202070aba711163492a9c66"
+      },
+      {
+        "family": "brutalist",
+        "runtime": "vue2",
+        "originalPassed": true,
+        "noteToVerdictMs": 169,
+        "sha256": "68ff073f745fc8b9a0e5d549232ca75395a67ffb28b7d2413eeaa802191a5728"
+      },
+      {
+        "family": "brutalist",
+        "runtime": "wc",
+        "originalPassed": true,
+        "noteToVerdictMs": 2,
+        "sha256": "38d36cb054c935deaa6d6f5dea4d5a0c44fc202cc3faba4fa52e44fa15b5adba"
+      },
+      {
+        "family": "shadcn",
+        "runtime": "react",
+        "originalPassed": true,
+        "noteToVerdictMs": 289,
+        "sha256": "c0a5c12e1caa06da009fcfb08d519165b392b6f57bcf8d414d23f8a391897851"
+      },
+      {
+        "family": "shadcn",
+        "runtime": "vue",
+        "originalPassed": true,
+        "noteToVerdictMs": 313,
+        "sha256": "64c3c40c48479c3642356a035d90bc990049aebbd3369b2fd07ebfe11f218eea"
+      },
+      {
+        "family": "shadcn",
+        "runtime": "vue2",
+        "originalPassed": true,
+        "noteToVerdictMs": 287,
+        "sha256": "67324debc9de7c01c31a069f6106bd912d4f411fc99ae6a0d79aa27dad458165"
+      },
+      {
+        "family": "shadcn",
+        "runtime": "wc",
+        "originalPassed": true,
+        "noteToVerdictMs": 12,
+        "sha256": "21a473c5d35bae3fcff614fdb044f396da14fc816cc1135935a26d2ceddc9e3c"
+      }
+    ],
+    "handbacks": {
+      "count": 24,
+      "ordered": 24,
+      "sha256": "bccb35d5fdf11dab4d226478c77d932b1e3c61c4e6ae5cd08f1e20b8edda2cc9"
+    },
+    "dialog": {
+      "observations": 196,
+      "sha256": "2e6c69bc111e320a3cfa56dd80a5f6e9651f5049d1cbd0164968ec325f0c78d6"
+    },
+    "reportSha256": "6efb139b439be7621ca44d17fd95dc5c5215f59e832ac4f73f51f67bd6d46968"
+  },
+  "preview": {
+    "exit": 0,
+    "passed": 15,
+    "failed": 0,
+    "unselected": 9,
+    "switches": [
+      {
+        "family": "brutalist",
+        "runtime": "react",
+        "originalPassed": true,
+        "noteToVerdictMs": 254,
+        "sha256": "dc88c4e0eab808c80376c69d27b62544346e809e1f7bcac096b67fc10dc7a284"
+      },
+      {
+        "family": "brutalist",
+        "runtime": "vue",
+        "originalPassed": true,
+        "noteToVerdictMs": 218,
+        "sha256": "f33192623677ea485cb22bc3e405ebee0db89ee08bab883005100db67964aca1"
+      },
+      {
+        "family": "brutalist",
+        "runtime": "vue2",
+        "originalPassed": true,
+        "noteToVerdictMs": 183,
+        "sha256": "f32fad0fa088f5e01a5c304427563cc6250fee79744f16982ce32a9d2ea5434a"
+      },
+      {
+        "family": "brutalist",
+        "runtime": "wc",
+        "originalPassed": true,
+        "noteToVerdictMs": 2,
+        "sha256": "0e37891c254ca1b459868e72484435551ba87f6f2b49a75b0a267f408959ddc1"
+      },
+      {
+        "family": "shadcn",
+        "runtime": "react",
+        "originalPassed": true,
+        "noteToVerdictMs": 284,
+        "sha256": "115293de08576f11809c506c80546f617f758e6bb3666a7891cd8cd09d498392"
+      },
+      {
+        "family": "shadcn",
+        "runtime": "vue",
+        "originalPassed": true,
+        "noteToVerdictMs": 281,
+        "sha256": "9986b4524cdfbc3f813a2b67f04ae32e6ff48a15c6d7084d3d8000b4c03aaee2"
+      },
+      {
+        "family": "shadcn",
+        "runtime": "vue2",
+        "originalPassed": true,
+        "noteToVerdictMs": 297,
+        "sha256": "a67b7cbfe86790a89a437728882e7544072fb9bbdf184d2cd7b8d76ea9b50b36"
+      },
+      {
+        "family": "shadcn",
+        "runtime": "wc",
+        "originalPassed": true,
+        "noteToVerdictMs": 142,
+        "sha256": "bf1e9b419682d886317ecacc5646763bce83b5448a08296180afebf80d22ed70"
+      }
+    ],
+    "handbacks": {
+      "count": 24,
+      "ordered": 24,
+      "sha256": "bccb35d5fdf11dab4d226478c77d932b1e3c61c4e6ae5cd08f1e20b8edda2cc9"
+    },
+    "dialog": {
+      "observations": 196,
+      "sha256": "691ffc3a2f6e0585b26ef241fbd2f6031f98cf56dd203e32e0fbb6a65f1945e3"
+    },
+    "reportSha256": "2829718c614c8fb0014fb9d96132e0d374953219f4875aceff39a81392ffc0c4"
+  },
+  "sourceFrames": {
+    "browser": "156.0.8078.79",
+    "sha256": "dd436d668ac556e2ace8b60cfc265aad179e8c5cd4c7ed47d273c996b1edcd8b",
+    "viewports": [
+      {
+        "width": 320,
+        "samples": [
+          {
+            "phase": "family mutation delivery",
+            "at": 1663,
+            "family": "brutalist",
+            "generation": "2",
+            "top": 61,
+            "bottom": 545,
+            "left": 8,
+            "right": 312,
+            "width": 304,
+            "headerBottom": 56,
+            "hidden": false,
+            "position": "61px"
+          },
+          {
+            "phase": "first animation frame",
+            "at": 1803.8999998569489,
+            "family": "brutalist",
+            "generation": "2",
+            "top": 61,
+            "bottom": 545,
+            "left": 8,
+            "right": 312,
+            "width": 304,
+            "headerBottom": 56,
+            "hidden": false,
+            "position": "61px"
+          },
+          {
+            "phase": "second animation frame",
+            "at": 1825,
+            "family": "brutalist",
+            "generation": "2",
+            "top": 61,
+            "bottom": 545,
+            "left": 8,
+            "right": 312,
+            "width": 304,
+            "headerBottom": 56,
+            "hidden": false,
+            "position": "61px"
+          }
+        ],
+        "trusted": true
+      },
+      {
+        "width": 390,
+        "samples": [
+          {
+            "phase": "family mutation delivery",
+            "at": 1686.2999999523163,
+            "family": "brutalist",
+            "generation": "2",
+            "top": 61,
+            "bottom": 545,
+            "left": 8,
+            "right": 382,
+            "width": 374,
+            "headerBottom": 56,
+            "hidden": false,
+            "position": "61px"
+          },
+          {
+            "phase": "first animation frame",
+            "at": 1842.2999999523163,
+            "family": "brutalist",
+            "generation": "2",
+            "top": 61,
+            "bottom": 545,
+            "left": 8,
+            "right": 382,
+            "width": 374,
+            "headerBottom": 56,
+            "hidden": false,
+            "position": "61px"
+          },
+          {
+            "phase": "second animation frame",
+            "at": 1865.4000000953674,
+            "family": "brutalist",
+            "generation": "2",
+            "top": 61,
+            "bottom": 545,
+            "left": 8,
+            "right": 382,
+            "width": 374,
+            "headerBottom": 56,
+            "hidden": false,
+            "position": "61px"
+          }
+        ],
+        "trusted": true
+      }
+    ]
+  },
+  "packedFrames": {
+    "browser": "156.0.8078.79",
+    "sha256": "deed2541e605bece426526cc686535c903222c6d13a2844df3b5a9e7c7c48c61",
+    "viewports": [
+      {
+        "width": 320,
+        "samples": [
+          {
+            "phase": "family mutation delivery",
+            "at": 1528.9000000953674,
+            "family": "brutalist",
+            "generation": "2",
+            "top": 61,
+            "bottom": 545,
+            "left": 8,
+            "right": 312,
+            "width": 304,
+            "headerBottom": 56,
+            "hidden": false,
+            "position": "61px"
+          },
+          {
+            "phase": "first animation frame",
+            "at": 1660.4000000953674,
+            "family": "brutalist",
+            "generation": "2",
+            "top": 61,
+            "bottom": 545,
+            "left": 8,
+            "right": 312,
+            "width": 304,
+            "headerBottom": 56,
+            "hidden": false,
+            "position": "61px"
+          },
+          {
+            "phase": "second animation frame",
+            "at": 1694.2000000476837,
+            "family": "brutalist",
+            "generation": "2",
+            "top": 61,
+            "bottom": 545,
+            "left": 8,
+            "right": 312,
+            "width": 304,
+            "headerBottom": 56,
+            "hidden": false,
+            "position": "61px"
+          }
+        ],
+        "trusted": true
+      },
+      {
+        "width": 390,
+        "samples": [
+          {
+            "phase": "family mutation delivery",
+            "at": 1686.2999999523163,
+            "family": "brutalist",
+            "generation": "2",
+            "top": 61,
+            "bottom": 545,
+            "left": 8,
+            "right": 382,
+            "width": 374,
+            "headerBottom": 56,
+            "hidden": false,
+            "position": "61px"
+          },
+          {
+            "phase": "first animation frame",
+            "at": 1833.2000000476837,
+            "family": "brutalist",
+            "generation": "2",
+            "top": 61,
+            "bottom": 545,
+            "left": 8,
+            "right": 382,
+            "width": 374,
+            "headerBottom": 56,
+            "hidden": false,
+            "position": "61px"
+          },
+          {
+            "phase": "second animation frame",
+            "at": 1870.5999999046326,
+            "family": "brutalist",
+            "generation": "2",
+            "top": 61,
+            "bottom": 545,
+            "left": 8,
+            "right": 382,
+            "width": 374,
+            "headerBottom": 56,
+            "hidden": false,
+            "position": "61px"
+          }
+        ],
+        "trusted": true
+      }
+    ]
+  }
+}

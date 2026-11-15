@@ -1,0 +1,75 @@
+[
+  {
+    "slot": 1,
+    "arm": "baseline",
+    "head": "f9b4b9e18aefbaa55f241a7682c140beeca3a7fd",
+    "switches": {
+      "brutalist/react": {
+        "originalError": null,
+        "atMs": 544
+      },
+      "brutalist/vue": {
+        "originalError": null,
+        "atMs": 481
+      },
+      "brutalist/vue2": {
+        "originalError": null,
+        "atMs": 347
+      },
+      "brutalist/wc": {
+        "originalError": null,
+        "atMs": 9
+      },
+      "shadcn/react": {
+        "originalError": null,
+        "atMs": 844
+      },
+      "shadcn/vue": {
+        "originalError": null,
+        "atMs": 608
+      },
+      "shadcn/vue2": {
+        "originalError": null,
+        "atMs": 586
+      },
+      "shadcn/wc": {
+        "originalError": null,
+        "atMs": 4
+      }
+    },
+    "orderedHandbacks": 24,
+    "totalHandbacks": 24,
+    "namedCasePassed": true,
+    "mobileShellPassed": true
+  },
+  {
+    "slot": 1,
+    "arm": "candidate",
+    "head": "f9b4b9e18aefbaa55f241a7682c140beeca3a7fd",
+    "switches": {
+      "shadcn/wc": {
+        "originalError": null,
+        "atMs": 40
+      }
+    },
+    "orderedHandbacks": 2,
+    "totalHandbacks": 2,
+    "namedCasePassed": false,
+    "mobileShellPassed": true
+  },
+  {
+    "slot": 1,
+    "arm": "repeat",
+    "head": "f9b4b9e18aefbaa55f241a7682c140beeca3a7fd",
+    "switches": {
+      "shadcn/wc": {
+        "originalError": null,
+        "atMs": 44
+      }
+    },
+    "orderedHandbacks": 1,
+    "totalHandbacks": 1,
+    "namedCasePassed": false,
+    "mobileShellPassed": true
+  }
+]

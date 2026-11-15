@@ -1,0 +1,56 @@
+{
+  "sourceHead": "f9b4b9e18aefbaa55f241a7682c140beeca3a7fd",
+  "arm": "repeat",
+  "run": 43692142688,
+  "logSha256": "c99f93bf9939571ddc835cc7c0125d469d60d4ffa691887a8125f0d8835b00e5",
+  "observedOpening": [
+    {
+      "action": "Enter",
+      "predicate": "open-aria-expanded",
+      "phase": "read-start",
+      "nodeMs": 93135.847236,
+      "nodeTimeOrigin": 1794731332447.722
+    },
+    {
+      "action": "Enter",
+      "predicate": "open-aria-expanded",
+      "phase": "read-return",
+      "value": "true",
+      "nodeMs": 93164.105806,
+      "nodeTimeOrigin": 1794731332447.722
+    },
+    {
+      "action": "Enter",
+      "predicate": "open-aria-expanded",
+      "phase": "assertion-return",
+      "nodeMs": 93164.381492,
+      "nodeTimeOrigin": 1794731332447.722
+    },
+    {
+      "action": "Enter",
+      "predicate": "open-tree-visible",
+      "phase": "read-start",
+      "nodeMs": 93164.573151,
+      "nodeTimeOrigin": 1794731332447.722
+    },
+    {
+      "action": "Enter",
+      "predicate": "open-tree-visible",
+      "phase": "read-return",
+      "value": true,
+      "nodeMs": 93170.114925,
+      "nodeTimeOrigin": 1794731332447.722
+    },
+    {
+      "action": "Enter",
+      "predicate": "open-tree-visible",
+      "phase": "assertion-return",
+      "nodeMs": 93170.198773,
+      "nodeTimeOrigin": 1794731332447.722
+    }
+  ],
+  "wheelOriginalTop": 0,
+  "firstReadToOriginalErrorMs": 1000.856,
+  "readReturnsByOriginalError": 0,
+  "browserReadCallsStartedAfterOriginalError": 933
+}

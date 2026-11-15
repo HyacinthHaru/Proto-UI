@@ -1,0 +1,509 @@
+{
+  "contents": [
+    {
+      "arm": "candidate",
+      "verdict": "fulfilled",
+      "marksAfterTrustedClickMs": {
+        "react-adapter": {
+          "request": [72.142],
+          "reuse": [80.22],
+          "factory": [149.446],
+          "fulfilled": [1030.181]
+        },
+        "react-runtime": {
+          "request": [72.226],
+          "reuse": [80.259],
+          "factory": [149.71],
+          "fulfilled": [995.921]
+        },
+        "react-package": {
+          "request": [1030.324],
+          "reuse": [1030.414],
+          "factory": [1030.489],
+          "fulfilled": [1055.101]
+        },
+        "react-dom-package": {
+          "request": [1030.385],
+          "reuse": [1030.423],
+          "factory": [1030.723],
+          "fulfilled": [1078.548]
+        },
+        "react-dom-client-package": {
+          "request": [1030.4],
+          "reuse": [1030.431],
+          "factory": [1030.908],
+          "fulfilled": [1078.781]
+        }
+      },
+      "traceSha256": "b6323ff3cc3736afa3cbe04baeaef29f05d11de33daf0c57212912cfc553e2df"
+    }
+  ],
+  "s4": [
+    {
+      "arm": "candidate",
+      "locales": [
+        {
+          "locale": "zh-cn",
+          "predicate": "error",
+          "promises": [
+            {
+              "asset": "react-adapter",
+              "networkAsset": null,
+              "promiseMarks": [
+                {
+                  "stage": "request",
+                  "attempt": 0,
+                  "browserMs": 24838.79999999993,
+                  "browserTimeOrigin": 1794735426743.2,
+                  "nodeAfterPredicateStartMs": 10588.82,
+                  "nodeReceiptAfterLoadingFinishedMs": null
+                },
+                {
+                  "stage": "factory",
+                  "attempt": 0,
+                  "browserMs": 24839.599999999977,
+                  "browserTimeOrigin": 1794735426743.2,
+                  "nodeAfterPredicateStartMs": 10589.888,
+                  "nodeReceiptAfterLoadingFinishedMs": null
+                },
+                {
+                  "stage": "reuse",
+                  "attempt": 0,
+                  "browserMs": 24854.399999999907,
+                  "browserTimeOrigin": 1794735426743.2,
+                  "nodeAfterPredicateStartMs": 10603.685,
+                  "nodeReceiptAfterLoadingFinishedMs": null
+                },
+                {
+                  "stage": "fulfilled",
+                  "attempt": 0,
+                  "browserMs": 37674.69999999995,
+                  "browserTimeOrigin": 1794735426743.2,
+                  "nodeAfterPredicateStartMs": 23455.909,
+                  "nodeReceiptAfterLoadingFinishedMs": null
+                }
+              ]
+            },
+            {
+              "asset": "react-dom-client-package",
+              "networkAsset": "react-dom_client.js",
+              "promiseMarks": [
+                {
+                  "stage": "request",
+                  "attempt": 0,
+                  "browserMs": 37675.09999999998,
+                  "browserTimeOrigin": 1794735426743.2,
+                  "nodeAfterPredicateStartMs": 23458.872,
+                  "nodeReceiptAfterLoadingFinishedMs": -9989.101
+                },
+                {
+                  "stage": "reuse",
+                  "attempt": 0,
+                  "browserMs": 37675.79999999993,
+                  "browserTimeOrigin": 1794735426743.2,
+                  "nodeAfterPredicateStartMs": 23459.103,
+                  "nodeReceiptAfterLoadingFinishedMs": -9988.87
+                },
+                {
+                  "stage": "factory",
+                  "attempt": 0,
+                  "browserMs": 37676.89999999991,
+                  "browserTimeOrigin": 1794735426743.2,
+                  "nodeAfterPredicateStartMs": 23462.773,
+                  "nodeReceiptAfterLoadingFinishedMs": -9985.2
+                }
+              ]
+            },
+            {
+              "asset": "react-dom-package",
+              "networkAsset": "react-dom.js",
+              "promiseMarks": [
+                {
+                  "stage": "request",
+                  "attempt": 0,
+                  "browserMs": 37675.09999999998,
+                  "browserTimeOrigin": 1794735426743.2,
+                  "nodeAfterPredicateStartMs": 23456.18,
+                  "nodeReceiptAfterLoadingFinishedMs": -9991.417
+                },
+                {
+                  "stage": "reuse",
+                  "attempt": 0,
+                  "browserMs": 37675.69999999995,
+                  "browserTimeOrigin": 1794735426743.2,
+                  "nodeAfterPredicateStartMs": 23459.057,
+                  "nodeReceiptAfterLoadingFinishedMs": -9988.54
+                },
+                {
+                  "stage": "factory",
+                  "attempt": 0,
+                  "browserMs": 37676.59999999998,
+                  "browserTimeOrigin": 1794735426743.2,
+                  "nodeAfterPredicateStartMs": 23462.63,
+                  "nodeReceiptAfterLoadingFinishedMs": -9984.967
+                }
+              ]
+            },
+            {
+              "asset": "react-package",
+              "networkAsset": "react.js",
+              "promiseMarks": [
+                {
+                  "stage": "request",
+                  "attempt": 0,
+                  "browserMs": 37675,
+                  "browserTimeOrigin": 1794735426743.2,
+                  "nodeAfterPredicateStartMs": 23456.098,
+                  "nodeReceiptAfterLoadingFinishedMs": -9991.332
+                },
+                {
+                  "stage": "reuse",
+                  "attempt": 0,
+                  "browserMs": 37675.59999999998,
+                  "browserTimeOrigin": 1794735426743.2,
+                  "nodeAfterPredicateStartMs": 23458.995,
+                  "nodeReceiptAfterLoadingFinishedMs": -9988.434
+                },
+                {
+                  "stage": "factory",
+                  "attempt": 0,
+                  "browserMs": 37676.19999999995,
+                  "browserTimeOrigin": 1794735426743.2,
+                  "nodeAfterPredicateStartMs": 23459.149,
+                  "nodeReceiptAfterLoadingFinishedMs": -9988.281
+                }
+              ]
+            },
+            {
+              "asset": "react-runtime",
+              "networkAsset": "react-runtime.ts",
+              "promiseMarks": [
+                {
+                  "stage": "request",
+                  "attempt": 0,
+                  "browserMs": 24839.5,
+                  "browserTimeOrigin": 1794735426743.2,
+                  "nodeAfterPredicateStartMs": 10589.727,
+                  "nodeReceiptAfterLoadingFinishedMs": -521.586
+                },
+                {
+                  "stage": "factory",
+                  "attempt": 0,
+                  "browserMs": 24839.79999999993,
+                  "browserTimeOrigin": 1794735426743.2,
+                  "nodeAfterPredicateStartMs": 10590.302,
+                  "nodeReceiptAfterLoadingFinishedMs": -521.01
+                },
+                {
+                  "stage": "reuse",
+                  "attempt": 0,
+                  "browserMs": 24854.599999999977,
+                  "browserTimeOrigin": 1794735426743.2,
+                  "nodeAfterPredicateStartMs": 10606.268,
+                  "nodeReceiptAfterLoadingFinishedMs": -505.044
+                },
+                {
+                  "stage": "fulfilled",
+                  "attempt": 0,
+                  "browserMs": 26626.399999999907,
+                  "browserTimeOrigin": 1794735426743.2,
+                  "nodeAfterPredicateStartMs": 12377.417,
+                  "nodeReceiptAfterLoadingFinishedMs": 1266.104
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            {
+              "asset": "chunk-BUSYA2B4.js",
+              "responseObserved": true,
+              "finishObserved": true,
+              "loadingFailedObserved": false,
+              "loadingCanceled": null,
+              "nodeFinishBeforeObservedVerdictMs": 148449.539
+            },
+            {
+              "asset": "react-runtime.ts",
+              "responseObserved": true,
+              "finishObserved": true,
+              "loadingFailedObserved": false,
+              "loadingCanceled": null,
+              "nodeFinishBeforeObservedVerdictMs": 124995.543
+            },
+            {
+              "asset": "react.js",
+              "responseObserved": true,
+              "finishObserved": true,
+              "loadingFailedObserved": false,
+              "loadingCanceled": null,
+              "nodeFinishBeforeObservedVerdictMs": 102659.426
+            },
+            {
+              "asset": "react-dom.js",
+              "responseObserved": true,
+              "finishObserved": true,
+              "loadingFailedObserved": false,
+              "loadingCanceled": null,
+              "nodeFinishBeforeObservedVerdictMs": 102659.258
+            },
+            {
+              "asset": "react-dom_client.js",
+              "responseObserved": true,
+              "finishObserved": true,
+              "loadingFailedObserved": false,
+              "loadingCanceled": null,
+              "nodeFinishBeforeObservedVerdictMs": 102658.882
+            },
+            {
+              "asset": "chunk-EK7DFB6S.js",
+              "responseObserved": false,
+              "finishObserved": false,
+              "loadingFailedObserved": false,
+              "loadingCanceled": null,
+              "nodeFinishBeforeObservedVerdictMs": null
+            },
+            {
+              "asset": "chunk-2MALL255.js",
+              "responseObserved": false,
+              "finishObserved": false,
+              "loadingFailedObserved": false,
+              "loadingCanceled": null,
+              "nodeFinishBeforeObservedVerdictMs": null
+            }
+          ]
+        },
+        {
+          "locale": "en",
+          "predicate": "error",
+          "promises": [
+            {
+              "asset": "react-adapter",
+              "networkAsset": null,
+              "promiseMarks": [
+                {
+                  "stage": "request",
+                  "attempt": 0,
+                  "browserMs": 31884.599999999977,
+                  "browserTimeOrigin": 1794735577294,
+                  "nodeAfterPredicateStartMs": 10305.509,
+                  "nodeReceiptAfterLoadingFinishedMs": null
+                },
+                {
+                  "stage": "factory",
+                  "attempt": 0,
+                  "browserMs": 31885.400000000023,
+                  "browserTimeOrigin": 1794735577294,
+                  "nodeAfterPredicateStartMs": 10305.993,
+                  "nodeReceiptAfterLoadingFinishedMs": null
+                },
+                {
+                  "stage": "reuse",
+                  "attempt": 0,
+                  "browserMs": 31900.099999999977,
+                  "browserTimeOrigin": 1794735577294,
+                  "nodeAfterPredicateStartMs": 10321.079,
+                  "nodeReceiptAfterLoadingFinishedMs": null
+                },
+                {
+                  "stage": "fulfilled",
+                  "attempt": 0,
+                  "browserMs": 60792.90000000002,
+                  "browserTimeOrigin": 1794735577294,
+                  "nodeAfterPredicateStartMs": 39213.579,
+                  "nodeReceiptAfterLoadingFinishedMs": null
+                }
+              ]
+            },
+            {
+              "asset": "react-dom-client-package",
+              "networkAsset": "react-dom_client.js",
+              "promiseMarks": [
+                {
+                  "stage": "request",
+                  "attempt": 0,
+                  "browserMs": 60793.59999999998,
+                  "browserTimeOrigin": 1794735577294,
+                  "nodeAfterPredicateStartMs": 39214.176,
+                  "nodeReceiptAfterLoadingFinishedMs": -8307.025
+                },
+                {
+                  "stage": "reuse",
+                  "attempt": 0,
+                  "browserMs": 60793.69999999995,
+                  "browserTimeOrigin": 1794735577294,
+                  "nodeAfterPredicateStartMs": 39214.309,
+                  "nodeReceiptAfterLoadingFinishedMs": -8306.893
+                },
+                {
+                  "stage": "factory",
+                  "attempt": 0,
+                  "browserMs": 60794.80000000005,
+                  "browserTimeOrigin": 1794735577294,
+                  "nodeAfterPredicateStartMs": 39215.041,
+                  "nodeReceiptAfterLoadingFinishedMs": -8306.16
+                }
+              ]
+            },
+            {
+              "asset": "react-dom-package",
+              "networkAsset": "react-dom.js",
+              "promiseMarks": [
+                {
+                  "stage": "request",
+                  "attempt": 0,
+                  "browserMs": 60793.5,
+                  "browserTimeOrigin": 1794735577294,
+                  "nodeAfterPredicateStartMs": 39213.936,
+                  "nodeReceiptAfterLoadingFinishedMs": -8307.235
+                },
+                {
+                  "stage": "reuse",
+                  "attempt": 0,
+                  "browserMs": 60793.69999999995,
+                  "browserTimeOrigin": 1794735577294,
+                  "nodeAfterPredicateStartMs": 39214.268,
+                  "nodeReceiptAfterLoadingFinishedMs": -8306.904
+                },
+                {
+                  "stage": "factory",
+                  "attempt": 0,
+                  "browserMs": 60794.59999999998,
+                  "browserTimeOrigin": 1794735577294,
+                  "nodeAfterPredicateStartMs": 39214.851,
+                  "nodeReceiptAfterLoadingFinishedMs": -8306.321
+                }
+              ]
+            },
+            {
+              "asset": "react-package",
+              "networkAsset": "react.js",
+              "promiseMarks": [
+                {
+                  "stage": "request",
+                  "attempt": 0,
+                  "browserMs": 60793.40000000002,
+                  "browserTimeOrigin": 1794735577294,
+                  "nodeAfterPredicateStartMs": 39213.855,
+                  "nodeReceiptAfterLoadingFinishedMs": -8307.223
+                },
+                {
+                  "stage": "reuse",
+                  "attempt": 0,
+                  "browserMs": 60793.69999999995,
+                  "browserTimeOrigin": 1794735577294,
+                  "nodeAfterPredicateStartMs": 39214.223,
+                  "nodeReceiptAfterLoadingFinishedMs": -8306.855
+                },
+                {
+                  "stage": "factory",
+                  "attempt": 0,
+                  "browserMs": 60794.09999999998,
+                  "browserTimeOrigin": 1794735577294,
+                  "nodeAfterPredicateStartMs": 39214.43,
+                  "nodeReceiptAfterLoadingFinishedMs": -8306.648
+                }
+              ]
+            },
+            {
+              "asset": "react-runtime",
+              "networkAsset": "react-runtime.ts",
+              "promiseMarks": [
+                {
+                  "stage": "request",
+                  "attempt": 0,
+                  "browserMs": 31885.300000000047,
+                  "browserTimeOrigin": 1794735577294,
+                  "nodeAfterPredicateStartMs": 10305.821,
+                  "nodeReceiptAfterLoadingFinishedMs": -344.484
+                },
+                {
+                  "stage": "factory",
+                  "attempt": 0,
+                  "browserMs": 31885.800000000047,
+                  "browserTimeOrigin": 1794735577294,
+                  "nodeAfterPredicateStartMs": 10309.319,
+                  "nodeReceiptAfterLoadingFinishedMs": -340.985
+                },
+                {
+                  "stage": "reuse",
+                  "attempt": 0,
+                  "browserMs": 31900.199999999953,
+                  "browserTimeOrigin": 1794735577294,
+                  "nodeAfterPredicateStartMs": 10321.22,
+                  "nodeReceiptAfterLoadingFinishedMs": -329.085
+                },
+                {
+                  "stage": "fulfilled",
+                  "attempt": 0,
+                  "browserMs": 33192,
+                  "browserTimeOrigin": 1794735577294,
+                  "nodeAfterPredicateStartMs": 11620.198,
+                  "nodeReceiptAfterLoadingFinishedMs": 969.893
+                }
+              ]
+            }
+          ],
+          "dependencies": [
+            {
+              "asset": "chunk-BUSYA2B4.js",
+              "responseObserved": true,
+              "finishObserved": true,
+              "loadingFailedObserved": false,
+              "loadingCanceled": null,
+              "nodeFinishBeforeObservedVerdictMs": 87268.541
+            },
+            {
+              "asset": "react-runtime.ts",
+              "responseObserved": true,
+              "finishObserved": true,
+              "loadingFailedObserved": false,
+              "loadingCanceled": null,
+              "nodeFinishBeforeObservedVerdictMs": 64499.812
+            },
+            {
+              "asset": "react.js",
+              "responseObserved": true,
+              "finishObserved": true,
+              "loadingFailedObserved": false,
+              "loadingCanceled": null,
+              "nodeFinishBeforeObservedVerdictMs": 27629.038
+            },
+            {
+              "asset": "react-dom.js",
+              "responseObserved": true,
+              "finishObserved": true,
+              "loadingFailedObserved": false,
+              "loadingCanceled": null,
+              "nodeFinishBeforeObservedVerdictMs": 27628.945
+            },
+            {
+              "asset": "react-dom_client.js",
+              "responseObserved": true,
+              "finishObserved": true,
+              "loadingFailedObserved": false,
+              "loadingCanceled": null,
+              "nodeFinishBeforeObservedVerdictMs": 27628.915
+            },
+            {
+              "asset": "chunk-EK7DFB6S.js",
+              "responseObserved": false,
+              "finishObserved": false,
+              "loadingFailedObserved": false,
+              "loadingCanceled": null,
+              "nodeFinishBeforeObservedVerdictMs": null
+            },
+            {
+              "asset": "chunk-2MALL255.js",
+              "responseObserved": false,
+              "finishObserved": false,
+              "loadingFailedObserved": false,
+              "loadingCanceled": null,
+              "nodeFinishBeforeObservedVerdictMs": null
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "scope": "Diagnostic marks distinguish browser promise observations from Node event receipt; a missing mark does not prove evaluation did not occur. CDP loadingFinished is not module settlement."
+}

@@ -1,0 +1,87 @@
+{
+  "scope": "Original failure error chain emitted before evidence and teardown; S4 journal is read in the existing after-verdict collection.",
+  "observations": [
+    {
+      "arm": "baseline",
+      "logSha256": "88cdb95b011f34bcca28d3085ba428df49088eb94ff0f965e7aff3f7ebb2f23e",
+      "failures": [
+        {
+          "family": "shadcn",
+          "lastHandback": {
+            "family": "shadcn",
+            "runtime": "wc",
+            "action": "click",
+            "observation": {
+              "transportClock": {
+                "deliveryMs": [7296.700000000012, 7296.700000000012],
+                "readMs": 7461.400000000023
+              },
+              "initialMarker": "",
+              "events": [
+                {
+                  "kind": "home-inserted",
+                  "siblingMatches": true
+                },
+                {
+                  "kind": "marker-change",
+                  "oldValue": ""
+                }
+              ]
+            }
+          },
+          "nodeMs": 86127.199868,
+          "nodeTimeOrigin": 1794732757785.966,
+          "chain": [
+            {
+              "name": "Error",
+              "message": "Matcher did not succeed in 77.00604200000816ms",
+              "stack": "Error: Matcher did not succeed in 77.00604200000816ms\n    at Proxy.<anonymous> (file://./node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/vi.DgezovHB.js:66:37)\n    at ./apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts:1570:18\n    at file://./node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://./node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://./node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file://./node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://./node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)\n    at startTests (file://./node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1271:3)\n    at file://./node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:126:11\n    at withEnv (file://./node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:90:5)"
+            }
+          ]
+        }
+      ],
+      "s4VerdictCollection": []
+    },
+    {
+      "arm": "candidate",
+      "logSha256": "d957dd7cf95fd50ab8a70f13d74f4564268f7f1e37c2c396360272a3b03c0aa6",
+      "failures": [
+        {
+          "family": "shadcn",
+          "lastHandback": {
+            "family": "shadcn",
+            "runtime": "wc",
+            "action": "click",
+            "observation": {
+              "transportClock": {
+                "deliveryMs": [7952.300000000047, 7952.300000000047],
+                "readMs": 8014.800000000047
+              },
+              "initialMarker": "",
+              "events": [
+                {
+                  "kind": "home-inserted",
+                  "siblingMatches": true
+                },
+                {
+                  "kind": "marker-change",
+                  "oldValue": ""
+                }
+              ]
+            }
+          },
+          "nodeMs": 103613.34507,
+          "nodeTimeOrigin": 1794733677502.072,
+          "chain": [
+            {
+              "name": "Error",
+              "message": "Matcher did not succeed in 1000ms",
+              "stack": "Error: Matcher did not succeed in 1000ms\n    at Proxy.<anonymous> (file://./node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/vi.DgezovHB.js:66:37)\n    at ./apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts:1406:20\n    at file://./node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://./node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://./node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file://./node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://./node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)\n    at startTests (file://./node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1271:3)\n    at file://./node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:126:11\n    at withEnv (file://./node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:90:5)"
+            }
+          ]
+        }
+      ],
+      "s4VerdictCollection": []
+    }
+  ]
+}

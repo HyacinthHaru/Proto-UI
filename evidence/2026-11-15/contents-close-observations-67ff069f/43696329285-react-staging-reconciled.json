@@ -1,0 +1,15 @@
+{
+  "scope": "Same renderer markers after one observed trusted click, bounded by first React publication when available. Named stage intervals include queueing.",
+  "observations": [
+    {
+      "arm": "baseline",
+      "traceAvailable": false,
+      "previousStage": null
+    },
+    {
+      "arm": "candidate",
+      "traceAvailable": false,
+      "previousStage": null
+    }
+  ]
+}

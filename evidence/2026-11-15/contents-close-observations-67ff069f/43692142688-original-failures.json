@@ -1,0 +1,118 @@
+{
+  "scope": "Original failure error chain emitted before evidence and teardown; S4 journal is read in the existing after-verdict collection.",
+  "observations": [
+    {
+      "arm": "baseline",
+      "logSha256": "da23c68145d2815f4b56eb7284027587945dad2db2e647ea0020e9beb23be8e4",
+      "failures": [],
+      "s4VerdictCollection": [
+        {
+          "locale": "en",
+          "collectionOutcome": "unreadable",
+          "bytes": 0,
+          "fileSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ]
+    },
+    {
+      "arm": "candidate",
+      "logSha256": "81839491a03df36400bb755bd874f7200923371dafb88a413d00a98a473e4a44",
+      "failures": [
+        {
+          "family": "shadcn",
+          "lastHandback": {
+            "family": "shadcn",
+            "runtime": "wc",
+            "action": "Enter",
+            "observation": {
+              "transportClock": {
+                "deliveryMs": [11937.199999999953, 11937.199999999953],
+                "readMs": 13473.100000000093
+              },
+              "initialMarker": "",
+              "events": [
+                {
+                  "kind": "home-inserted",
+                  "siblingMatches": true
+                },
+                {
+                  "kind": "marker-change",
+                  "oldValue": ""
+                }
+              ]
+            }
+          },
+          "nodeMs": 99443.98094,
+          "nodeTimeOrigin": 1794730431787.189,
+          "chain": [
+            {
+              "name": "AssertionError",
+              "message": "expected 99443.387159 to be less than or equal to 98530.400246",
+              "stack": "AssertionError: expected 99443.387159 to be less than or equal to 98530.400246\n    at ./apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts:1625:39\n    at file://./node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://./node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://./node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file://./node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://./node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)\n    at startTests (file://./node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1271:3)\n    at file://./node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:126:11\n    at withEnv (file://./node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:90:5)\n    at run (file://./node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:112:3)"
+            }
+          ]
+        }
+      ],
+      "s4VerdictCollection": [
+        {
+          "locale": "zh-cn",
+          "collectedAt": null,
+          "journal": null,
+          "collectionOutcome": "rejected",
+          "startupPassed": false,
+          "fileSha256": "4d38c651201b4de9d95422a531c4799dfdde7faec48d587b94f08109e1f0ebbb"
+        }
+      ]
+    },
+    {
+      "arm": "repeat",
+      "logSha256": "c99f93bf9939571ddc835cc7c0125d469d60d4ffa691887a8125f0d8835b00e5",
+      "failures": [
+        {
+          "family": "shadcn",
+          "lastHandback": {
+            "family": "shadcn",
+            "runtime": "wc",
+            "action": "click",
+            "observation": {
+              "transportClock": {
+                "deliveryMs": [7638.399999999907, 7638.399999999907],
+                "readMs": 8193.80000000028
+              },
+              "initialMarker": "",
+              "events": [
+                {
+                  "kind": "home-inserted",
+                  "siblingMatches": true
+                },
+                {
+                  "kind": "marker-change",
+                  "oldValue": ""
+                }
+              ]
+            }
+          },
+          "nodeMs": 96919.664553,
+          "nodeTimeOrigin": 1794731332447.722,
+          "chain": [
+            {
+              "name": "Error",
+              "message": "Matcher did not succeed in 1000ms",
+              "stack": "Error: Matcher did not succeed in 1000ms\n    at Proxy.<anonymous> (file://./node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/vi.DgezovHB.js:66:37)\n    at ./apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts:1406:20\n    at file://./node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file://./node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file://./node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file://./node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file://./node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1262:5)\n    at startTests (file://./node_modules/.pnpm/@vitest+runner@2.1.9/node_modules/@vitest/runner/dist/index.js:1271:3)\n    at file://./node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:126:11\n    at withEnv (file://./node_modules/.pnpm/vitest@2.1.9_@types+node@25.6.2_happy-dom@15.11.7_lightningcss@1.32.0/node_modules/vitest/dist/chunks/runBaseTests.3qpJUEJM.js:90:5)"
+            }
+          ]
+        }
+      ],
+      "s4VerdictCollection": [
+        {
+          "locale": "zh-cn",
+          "collectedAt": null,
+          "journal": null,
+          "collectionOutcome": "rejected",
+          "startupPassed": false,
+          "fileSha256": "0fba4fc3add6b34fdc2f1b42256fa879559f86e05aecf74323b4b66ddac6a47f"
+        }
+      ]
+    }
+  ]
+}

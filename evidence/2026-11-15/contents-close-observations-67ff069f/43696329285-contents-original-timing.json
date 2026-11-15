@@ -1,0 +1,75 @@
+{
+  "scope": "Original SDK locator read; browser publication marks run immediately after the native setter. CDP alignment is a bounded interval, not equal clocks.",
+  "observations": [
+    {
+      "arm": "baseline",
+      "available": false,
+      "reason": "No original React poll receipt",
+      "exactOriginalSteps": {
+        "wc": [
+          {
+            "stage": "combobox-click-start",
+            "nodeMs": 77841.18
+          },
+          {
+            "stage": "combobox-click-return",
+            "nodeMs": 78023.122
+          },
+          {
+            "stage": "option-click-start",
+            "nodeMs": 78031.828
+          },
+          {
+            "stage": "option-click-return",
+            "nodeMs": 78230.193
+          },
+          {
+            "stage": "poll-start",
+            "nodeMs": 78230.308
+          },
+          {
+            "stage": "poll-return",
+            "nodeMs": 78239.138
+          }
+        ]
+      },
+      "originalLogSha256": "88cdb95b011f34bcca28d3085ba428df49088eb94ff0f965e7aff3f7ebb2f23e",
+      "lastRecordedReactStep": null
+    },
+    {
+      "arm": "candidate",
+      "available": false,
+      "reason": "No original React poll receipt",
+      "exactOriginalSteps": {
+        "wc": [
+          {
+            "stage": "combobox-click-start",
+            "nodeMs": 95951.768
+          },
+          {
+            "stage": "combobox-click-return",
+            "nodeMs": 96158.3
+          },
+          {
+            "stage": "option-click-start",
+            "nodeMs": 96200.408
+          },
+          {
+            "stage": "option-click-return",
+            "nodeMs": 96473.86
+          },
+          {
+            "stage": "poll-start",
+            "nodeMs": 96473.974
+          },
+          {
+            "stage": "poll-return",
+            "nodeMs": 96502.263
+          }
+        ]
+      },
+      "originalLogSha256": "d957dd7cf95fd50ab8a70f13d74f4564268f7f1e37c2c396360272a3b03c0aa6",
+      "lastRecordedReactStep": null
+    }
+  ]
+}
