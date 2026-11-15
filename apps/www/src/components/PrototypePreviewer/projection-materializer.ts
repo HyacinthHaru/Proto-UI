@@ -423,6 +423,20 @@ async function prepareProjectionCandidate(
     );
   }
   const runtimeId: RuntimeId = request.selection.runtimeId;
+  const view = options.mount.ownerDocument.defaultView as
+    | (Window & { __puiContentsStagingProbe?: boolean })
+    | null;
+  const observeStage =
+    runtimeId === 'react' &&
+    view?.__puiContentsStagingProbe &&
+    /^(?:site-header-surface-|site-contents-panel-)/.test(options.ownerId);
+  const markStage = (phase: string) => {
+    if (!observeStage) return;
+    view?.performance.mark('pui-contents:stage:' + options.ownerId + ':' + phase, {
+      detail: { generation: request.generation },
+    });
+  };
+  markStage('begin');
   const projectionFamilyId = request.selection.projectionFamilyId as ProjectionFamilyId;
   const familyManifest = PROJECTION_FAMILY_MANIFESTS[
     projectionFamilyId
@@ -466,6 +480,7 @@ async function prepareProjectionCandidate(
   const prototypeIds = new Set<string>();
   collectPrototypeIds(composition.demo.root, prototypeIds);
   await Promise.all([loadPrototypes(Array.from(prototypeIds)), prepareDemoRuntime(runtimeId)]);
+  markStage('dependencies-ready');
   // Shared dependency completion can otherwise start every independent
   // framework render in the same foreground turn.
   const renderPreparation = backgroundPreparationTask(options);
@@ -536,11 +551,13 @@ async function prepareProjectionCandidate(
     if (teardownFailed) throw teardownFailure;
   };
   try {
+    markStage('render-start');
     renderResult = await renderDemo({
       runtime: runtimeId,
       demo: composition.demo,
       host,
     });
+    markStage('render-return');
     const scope = Array.from(host.querySelectorAll<HTMLElement>('[data-projection-scope]')).find(
       (element) => element.dataset.projectionScope === options.ownerId
     );
@@ -553,7 +570,9 @@ async function prepareProjectionCandidate(
     // that update before activation exposes the generation.
     composition.setLocked(false);
     reconcileCandidateExternalPortals();
+    markStage('paint-wait-start');
     await nextPaint(host, options.yieldAfterPaint);
+    markStage('paint-wait-return');
     options.backgroundPreparation?.signal.throwIfAborted();
     reconcileCandidateExternalPortals();
 

@@ -182,6 +182,11 @@ export function initDocumentationHeaderSurface(header: HTMLElement) {
       document.defaultView.setTimeout(() => releasePreparation(preparation), 0);
     else releasePreparation(preparation);
   };
+  const markHeader = (phase: string, generation?: number) => {
+    const view = document.defaultView as (Window & { __puiContentsStagingProbe?: boolean }) | null;
+    if (!view?.__puiContentsStagingProbe) return;
+    view.performance.mark('pui-contents:header:' + phase, { detail: { generation } });
+  };
   let attempt = 0;
   const create = () => {
     const participant = headerSurfaceParticipant(header)!;
@@ -190,6 +195,7 @@ export function initDocumentationHeaderSurface(header: HTMLElement) {
     return createProjectionScopeController({
       initialSelection: { runtimeId: runtime, projectionFamilyId: family },
       async materialize(request) {
+        markHeader('materialize-start', request.generation);
         const preparation =
           preferencePreparation?.started &&
           preferencePreparation.runtime === request.selection.runtimeId
@@ -200,6 +206,7 @@ export function initDocumentationHeaderSurface(header: HTMLElement) {
           ...(contents ? [contents.materialize(request, namespace)] : []),
           ...(contentsPanel ? [contentsPanel.materialize(request, namespace)] : []),
         ]);
+        markHeader('materialize-return', request.generation);
         const candidates = outcomes.flatMap((outcome) =>
           outcome.status === 'fulfilled' ? [outcome.value] : []
         );
@@ -220,6 +227,7 @@ export function initDocumentationHeaderSurface(header: HTMLElement) {
           await Promise.allSettled(candidates.map((candidate) => candidate.dispose()));
           throw error;
         }
+        markHeader('theme-watch-return', request.generation);
         if (preparation) preparations.set(request.generation, preparation);
         return {
           activate() {
@@ -262,7 +270,9 @@ export function initDocumentationHeaderSurface(header: HTMLElement) {
         }
         return {
           publish() {
+            markHeader('publish-start', commit.generation);
             publications.forEach((publication) => publication.publish());
+            markHeader('publish-return', commit.generation);
             releasePreparationAfterTask(preparation);
           },
           rollback() {
@@ -307,6 +317,7 @@ export function initDocumentationHeaderSurface(header: HTMLElement) {
   const onPreference = (event: Event) => {
     const next = (event as CustomEvent<{ adapter?: unknown }>).detail?.adapter;
     if (!alive || !isRuntimeId(next)) return;
+    markHeader('preference');
     const preparation = preferencePreparation?.event === event ? preferencePreparation : undefined;
     if (preparation) preparation.started = true;
     runtime = next;
