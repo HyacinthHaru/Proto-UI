@@ -1,0 +1,3060 @@
+{
+  "baseline": {
+    "source": {
+      "head": "a834bd4e30b2cad49509ab6d0c056cc2878663b5",
+      "tree": "5858734d1abefe683eec08bfba7746c3cd52a276",
+      "parents": [
+        "69326eb91f9e31a5ce69e943b8f4f630995c7a3a",
+        "d94a6e0a6859236476c955b2bf444c83b3f1a568"
+      ],
+      "overlaySHA256": "b07e24d268752b5e49af830bd0c6b329c23f1526d7b699cd33f6911af92f0b66"
+    },
+    "environment": {
+      "node": "v24.21.0",
+      "pnpm": "10.32.1",
+      "chrome": "Google Chrome for Testing 156.0.8078.79",
+      "workers": 1
+    },
+    "test": {
+      "locale": "zh-cn",
+      "otherLocale": "unselected",
+      "previews": 1268,
+      "readinessMs": 60000,
+      "outerMs": 150000,
+      "exit": 1,
+      "counts": [0, 1, 1],
+      "startedAt": "2026-11-16T20:55:20Z",
+      "finishedAt": "2026-11-16T20:57:29Z",
+      "verdict": {
+        "startupPassed": false,
+        "errors": [],
+        "consoleErrors": [],
+        "collectionOutcome": "budget-expired",
+        "expressionSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684"
+      },
+      "latestOriginalReadiness": {
+        "timeOrigin": 1794862564238.9,
+        "pageMs": 73998.90000009537,
+        "dateNow": 1794862638237,
+        "count": 1268,
+        "ready": false,
+        "firstMissing": {
+          "previewerId": "pp-1rzd6wmhhlj",
+          "index": 20,
+          "inited": "1",
+          "hostChildren": 0
+        },
+        "firstMissingOwner": {
+          "demoId": "demo-base-calendar",
+          "prototypeId": "",
+          "declaredRuntime": "wc",
+          "projectionMode": null,
+          "projectionState": null,
+          "mounting": null,
+          "hostTag": "DIV",
+          "hostOwner": "pp-1rzd6wmhhlj",
+          "startupPending": true,
+          "hostOwnInert": true,
+          "hostText": ""
+        }
+      },
+      "observedMilestones": [
+        {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "outcome": "begin",
+          "nodeMs": 49084.938625,
+          "nodeTimeOrigin": 1794862522238.289,
+          "dateNow": 1794862571323
+        },
+        {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "outcome": "error",
+          "nodeMs": 124926.233917,
+          "nodeTimeOrigin": 1794862522238.289,
+          "dateNow": 1794862647164
+        }
+      ],
+      "logSHA256": "b0310c9056e8cbb4874090a52e17f2a2b44b387a965751ea4f7289885eccea40"
+    },
+    "calendar": {
+      "wc": {
+        "id": "pp-1rzd6wmhhlj",
+        "phases": [
+          {
+            "phase": "demo-import-begin",
+            "id": "pp-1rzd6wmhhlj",
+            "runtime": "wc",
+            "pageMs": 8233.400000095367,
+            "timeOrigin": 1794862564238.9,
+            "children": 0,
+            "inert": true
+          },
+          {
+            "phase": "demo-import-return",
+            "id": "pp-1rzd6wmhhlj",
+            "runtime": "wc",
+            "pageMs": 14121.400000095367,
+            "timeOrigin": 1794862564238.9,
+            "children": 0,
+            "inert": true
+          },
+          {
+            "phase": "prototype-imports-begin",
+            "details": [
+              "base-calendar-root",
+              "base-calendar-caption",
+              "base-calendar-previous",
+              "lucide-chevron-left-icon",
+              "base-select-root",
+              "base-select-trigger",
+              "base-select-value",
+              "lucide-chevron-down-icon",
+              "base-select-content",
+              "base-select-item",
+              "base-calendar-next",
+              "lucide-chevron-right-icon",
+              "base-calendar-heading",
+              "base-calendar-grid",
+              "base-calendar-weekdays",
+              "base-calendar-weekday",
+              "base-calendar-row",
+              "base-calendar-day"
+            ],
+            "id": "pp-1rzd6wmhhlj",
+            "runtime": "wc",
+            "pageMs": 14121.5,
+            "timeOrigin": 1794862564238.9,
+            "children": 0,
+            "inert": true
+          }
+        ],
+        "loadAttempts": [
+          {
+            "id": "base-calendar-root",
+            "generation": 1204,
+            "acquire": "owner-creates",
+            "acquirePageMs": 14121.5,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14121.700000047684],
+              ["generation-fulfilled", 14123.5]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-caption",
+            "generation": 1205,
+            "acquire": "owner-creates",
+            "acquirePageMs": 14121.5,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14121.799999952316],
+              ["generation-fulfilled", 14123.5]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-previous",
+            "generation": 1206,
+            "acquire": "owner-creates",
+            "acquirePageMs": 14121.5,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14121.799999952316],
+              ["generation-fulfilled", 14123.600000143051]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "lucide-chevron-left-icon",
+            "generation": 1207,
+            "acquire": "owner-creates",
+            "acquirePageMs": 14121.5,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14121.799999952316],
+              ["generation-fulfilled", 14122]
+            ],
+            "earlierFulfilled": [
+              {
+                "generation": 1134,
+                "stage": "generation-fulfilled",
+                "pageMs": 14110.900000095367
+              },
+              {
+                "generation": 1148,
+                "stage": "generation-fulfilled",
+                "pageMs": 14119.400000095367
+              },
+              {
+                "generation": 1159,
+                "stage": "generation-fulfilled",
+                "pageMs": 14119.5
+              },
+              {
+                "generation": 1164,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120
+              },
+              {
+                "generation": 1178,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.299999952316
+              },
+              {
+                "generation": 1183,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.5
+              },
+              {
+                "generation": 1194,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.700000047684
+              },
+              {
+                "generation": 1196,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.799999952316
+              },
+              {
+                "generation": 1198,
+                "stage": "generation-fulfilled",
+                "pageMs": 14121
+              },
+              {
+                "generation": 1200,
+                "stage": "generation-fulfilled",
+                "pageMs": 14121.100000143051
+              },
+              {
+                "generation": 1202,
+                "stage": "generation-fulfilled",
+                "pageMs": 14121.200000047684
+              }
+            ]
+          },
+          {
+            "id": "base-select-root",
+            "generation": 1208,
+            "acquire": "owner-creates",
+            "acquirePageMs": 14121.5,
+            "result": "pending-at-observation-limit",
+            "stages": [["generation-begin", 14121.900000095367]],
+            "earlierFulfilled": [
+              {
+                "generation": 108,
+                "stage": "generation-fulfilled",
+                "pageMs": 10256.600000143051
+              }
+            ]
+          },
+          {
+            "id": "base-select-trigger",
+            "generation": 1209,
+            "acquire": "owner-creates",
+            "acquirePageMs": 14121.5,
+            "result": "pending-at-observation-limit",
+            "stages": [["generation-begin", 14121.900000095367]],
+            "earlierFulfilled": [
+              {
+                "generation": 109,
+                "stage": "generation-fulfilled",
+                "pageMs": 10256.600000143051
+              }
+            ]
+          },
+          {
+            "id": "base-select-value",
+            "generation": 1210,
+            "acquire": "owner-creates",
+            "acquirePageMs": 14121.5,
+            "result": "pending-at-observation-limit",
+            "stages": [["generation-begin", 14121.900000095367]],
+            "earlierFulfilled": [
+              {
+                "generation": 110,
+                "stage": "generation-fulfilled",
+                "pageMs": 10256.700000047684
+              }
+            ]
+          },
+          {
+            "id": "lucide-chevron-down-icon",
+            "generation": 1211,
+            "acquire": "owner-creates",
+            "acquirePageMs": 14121.600000143051,
+            "result": "pending-at-observation-limit",
+            "stages": [["generation-begin", 14121.900000095367]],
+            "earlierFulfilled": [
+              {
+                "generation": 111,
+                "stage": "generation-fulfilled",
+                "pageMs": 12334.100000143051
+              }
+            ]
+          },
+          {
+            "id": "base-select-content",
+            "generation": 1212,
+            "acquire": "owner-creates",
+            "acquirePageMs": 14121.700000047684,
+            "result": "pending-at-observation-limit",
+            "stages": [["generation-begin", 14121.900000095367]],
+            "earlierFulfilled": [
+              {
+                "generation": 112,
+                "stage": "generation-fulfilled",
+                "pageMs": 10256.700000047684
+              }
+            ]
+          },
+          {
+            "id": "base-select-item",
+            "generation": 1213,
+            "acquire": "owner-creates",
+            "acquirePageMs": 14121.700000047684,
+            "result": "pending-at-observation-limit",
+            "stages": [["generation-begin", 14121.900000095367]],
+            "earlierFulfilled": [
+              {
+                "generation": 113,
+                "stage": "generation-fulfilled",
+                "pageMs": 10256.700000047684
+              }
+            ]
+          },
+          {
+            "id": "base-calendar-next",
+            "generation": 1214,
+            "acquire": "owner-creates",
+            "acquirePageMs": 14121.700000047684,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14121.900000095367],
+              ["generation-fulfilled", 14123.600000143051]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "lucide-chevron-right-icon",
+            "generation": 1215,
+            "acquire": "owner-creates",
+            "acquirePageMs": 14121.700000047684,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14121.900000095367],
+              ["generation-fulfilled", 14122]
+            ],
+            "earlierFulfilled": [
+              {
+                "generation": 1141,
+                "stage": "generation-fulfilled",
+                "pageMs": 14110.900000095367
+              },
+              {
+                "generation": 1155,
+                "stage": "generation-fulfilled",
+                "pageMs": 14119.400000095367
+              },
+              {
+                "generation": 1160,
+                "stage": "generation-fulfilled",
+                "pageMs": 14119.5
+              },
+              {
+                "generation": 1174,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.100000143051
+              },
+              {
+                "generation": 1179,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.299999952316
+              },
+              {
+                "generation": 1190,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.5
+              },
+              {
+                "generation": 1195,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.700000047684
+              },
+              {
+                "generation": 1197,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.799999952316
+              },
+              {
+                "generation": 1199,
+                "stage": "generation-fulfilled",
+                "pageMs": 14121
+              },
+              {
+                "generation": 1201,
+                "stage": "generation-fulfilled",
+                "pageMs": 14121.100000143051
+              },
+              {
+                "generation": 1203,
+                "stage": "generation-fulfilled",
+                "pageMs": 14121.200000047684
+              }
+            ]
+          },
+          {
+            "id": "base-calendar-heading",
+            "generation": 328,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14121.700000047684,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 9986.5],
+              ["generation-fulfilled", 14123.5]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-grid",
+            "generation": 329,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14121.700000047684,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 9986.600000143051],
+              ["generation-fulfilled", 14123.5]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-weekdays",
+            "generation": 1216,
+            "acquire": "owner-creates",
+            "acquirePageMs": 14121.700000047684,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14121.900000095367],
+              ["generation-fulfilled", 14123.700000047684]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-weekday",
+            "generation": 1217,
+            "acquire": "owner-creates",
+            "acquirePageMs": 14121.700000047684,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14122],
+              ["generation-fulfilled", 14123.700000047684]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-row",
+            "generation": 330,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14121.700000047684,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 9986.600000143051],
+              ["generation-fulfilled", 14123.5]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-day",
+            "generation": 1218,
+            "acquire": "owner-creates",
+            "acquirePageMs": 14121.700000047684,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14122],
+              ["generation-fulfilled", 14123.700000047684]
+            ],
+            "earlierFulfilled": []
+          }
+        ]
+      },
+      "react": {
+        "id": "pp-6q0qo9r7jc9",
+        "phases": [
+          {
+            "phase": "demo-import-begin",
+            "id": "pp-6q0qo9r7jc9",
+            "runtime": "react",
+            "pageMs": 8389.299999952316,
+            "timeOrigin": 1794862564238.9,
+            "children": 0,
+            "inert": true
+          },
+          {
+            "phase": "demo-import-return",
+            "id": "pp-6q0qo9r7jc9",
+            "runtime": "react",
+            "pageMs": 14122.100000143051,
+            "timeOrigin": 1794862564238.9,
+            "children": 0,
+            "inert": true
+          },
+          {
+            "phase": "prototype-imports-begin",
+            "details": [
+              "base-calendar-root",
+              "base-calendar-caption",
+              "base-calendar-previous",
+              "lucide-chevron-left-icon",
+              "base-select-root",
+              "base-select-trigger",
+              "base-select-value",
+              "lucide-chevron-down-icon",
+              "base-select-content",
+              "base-select-item",
+              "base-calendar-next",
+              "lucide-chevron-right-icon",
+              "base-calendar-heading",
+              "base-calendar-grid",
+              "base-calendar-weekdays",
+              "base-calendar-weekday",
+              "base-calendar-row",
+              "base-calendar-day"
+            ],
+            "id": "pp-6q0qo9r7jc9",
+            "runtime": "react",
+            "pageMs": 14122.100000143051,
+            "timeOrigin": 1794862564238.9,
+            "children": 0,
+            "inert": true
+          }
+        ],
+        "loadAttempts": [
+          {
+            "id": "base-calendar-root",
+            "generation": 1204,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14122.100000143051,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14121.700000047684],
+              ["generation-fulfilled", 14123.5]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-caption",
+            "generation": 1205,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14122.100000143051,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14121.799999952316],
+              ["generation-fulfilled", 14123.5]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-previous",
+            "generation": 1206,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14122.200000047684,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14121.799999952316],
+              ["generation-fulfilled", 14123.600000143051]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "lucide-chevron-left-icon",
+            "generation": 1219,
+            "acquire": "owner-creates",
+            "acquirePageMs": 14122.299999952316,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14122.5],
+              ["generation-fulfilled", 14122.5]
+            ],
+            "earlierFulfilled": [
+              {
+                "generation": 1134,
+                "stage": "generation-fulfilled",
+                "pageMs": 14110.900000095367
+              },
+              {
+                "generation": 1148,
+                "stage": "generation-fulfilled",
+                "pageMs": 14119.400000095367
+              },
+              {
+                "generation": 1159,
+                "stage": "generation-fulfilled",
+                "pageMs": 14119.5
+              },
+              {
+                "generation": 1164,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120
+              },
+              {
+                "generation": 1178,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.299999952316
+              },
+              {
+                "generation": 1183,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.5
+              },
+              {
+                "generation": 1194,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.700000047684
+              },
+              {
+                "generation": 1196,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.799999952316
+              },
+              {
+                "generation": 1198,
+                "stage": "generation-fulfilled",
+                "pageMs": 14121
+              },
+              {
+                "generation": 1200,
+                "stage": "generation-fulfilled",
+                "pageMs": 14121.100000143051
+              },
+              {
+                "generation": 1202,
+                "stage": "generation-fulfilled",
+                "pageMs": 14121.200000047684
+              },
+              {
+                "generation": 1207,
+                "stage": "generation-fulfilled",
+                "pageMs": 14122
+              }
+            ]
+          },
+          {
+            "id": "base-select-root",
+            "generation": 1208,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14122.299999952316,
+            "result": "pending-at-observation-limit",
+            "stages": [["generation-begin", 14121.900000095367]],
+            "earlierFulfilled": [
+              {
+                "generation": 108,
+                "stage": "generation-fulfilled",
+                "pageMs": 10256.600000143051
+              }
+            ]
+          },
+          {
+            "id": "base-select-trigger",
+            "generation": 1209,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14122.299999952316,
+            "result": "pending-at-observation-limit",
+            "stages": [["generation-begin", 14121.900000095367]],
+            "earlierFulfilled": [
+              {
+                "generation": 109,
+                "stage": "generation-fulfilled",
+                "pageMs": 10256.600000143051
+              }
+            ]
+          },
+          {
+            "id": "base-select-value",
+            "generation": 1210,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14122.299999952316,
+            "result": "pending-at-observation-limit",
+            "stages": [["generation-begin", 14121.900000095367]],
+            "earlierFulfilled": [
+              {
+                "generation": 110,
+                "stage": "generation-fulfilled",
+                "pageMs": 10256.700000047684
+              }
+            ]
+          },
+          {
+            "id": "lucide-chevron-down-icon",
+            "generation": 1211,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14122.299999952316,
+            "result": "pending-at-observation-limit",
+            "stages": [["generation-begin", 14121.900000095367]],
+            "earlierFulfilled": [
+              {
+                "generation": 111,
+                "stage": "generation-fulfilled",
+                "pageMs": 12334.100000143051
+              }
+            ]
+          },
+          {
+            "id": "base-select-content",
+            "generation": 1212,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14122.299999952316,
+            "result": "pending-at-observation-limit",
+            "stages": [["generation-begin", 14121.900000095367]],
+            "earlierFulfilled": [
+              {
+                "generation": 112,
+                "stage": "generation-fulfilled",
+                "pageMs": 10256.700000047684
+              }
+            ]
+          },
+          {
+            "id": "base-select-item",
+            "generation": 1213,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14122.299999952316,
+            "result": "pending-at-observation-limit",
+            "stages": [["generation-begin", 14121.900000095367]],
+            "earlierFulfilled": [
+              {
+                "generation": 113,
+                "stage": "generation-fulfilled",
+                "pageMs": 10256.700000047684
+              }
+            ]
+          },
+          {
+            "id": "base-calendar-next",
+            "generation": 1214,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14122.299999952316,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14121.900000095367],
+              ["generation-fulfilled", 14123.600000143051]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "lucide-chevron-right-icon",
+            "generation": 1220,
+            "acquire": "owner-creates",
+            "acquirePageMs": 14122.299999952316,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14122.5],
+              ["generation-fulfilled", 14122.5]
+            ],
+            "earlierFulfilled": [
+              {
+                "generation": 1141,
+                "stage": "generation-fulfilled",
+                "pageMs": 14110.900000095367
+              },
+              {
+                "generation": 1155,
+                "stage": "generation-fulfilled",
+                "pageMs": 14119.400000095367
+              },
+              {
+                "generation": 1160,
+                "stage": "generation-fulfilled",
+                "pageMs": 14119.5
+              },
+              {
+                "generation": 1174,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.100000143051
+              },
+              {
+                "generation": 1179,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.299999952316
+              },
+              {
+                "generation": 1190,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.5
+              },
+              {
+                "generation": 1195,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.700000047684
+              },
+              {
+                "generation": 1197,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.799999952316
+              },
+              {
+                "generation": 1199,
+                "stage": "generation-fulfilled",
+                "pageMs": 14121
+              },
+              {
+                "generation": 1201,
+                "stage": "generation-fulfilled",
+                "pageMs": 14121.100000143051
+              },
+              {
+                "generation": 1203,
+                "stage": "generation-fulfilled",
+                "pageMs": 14121.200000047684
+              },
+              {
+                "generation": 1215,
+                "stage": "generation-fulfilled",
+                "pageMs": 14122
+              }
+            ]
+          },
+          {
+            "id": "base-calendar-heading",
+            "generation": 328,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14122.400000095367,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 9986.5],
+              ["generation-fulfilled", 14123.5]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-grid",
+            "generation": 329,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14122.400000095367,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 9986.600000143051],
+              ["generation-fulfilled", 14123.5]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-weekdays",
+            "generation": 1216,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14122.400000095367,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14121.900000095367],
+              ["generation-fulfilled", 14123.700000047684]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-weekday",
+            "generation": 1217,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14122.5,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14122],
+              ["generation-fulfilled", 14123.700000047684]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-row",
+            "generation": 330,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14122.5,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 9986.600000143051],
+              ["generation-fulfilled", 14123.5]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-day",
+            "generation": 1218,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14122.5,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14122],
+              ["generation-fulfilled", 14123.700000047684]
+            ],
+            "earlierFulfilled": []
+          }
+        ]
+      },
+      "vue2": {
+        "id": "pp-ol8msheshf",
+        "phases": [
+          {
+            "phase": "demo-import-begin",
+            "id": "pp-ol8msheshf",
+            "runtime": "vue2",
+            "pageMs": 8388.200000047684,
+            "timeOrigin": 1794862564238.9,
+            "children": 0,
+            "inert": true
+          },
+          {
+            "phase": "demo-import-return",
+            "id": "pp-ol8msheshf",
+            "runtime": "vue2",
+            "pageMs": 14122.600000143051,
+            "timeOrigin": 1794862564238.9,
+            "children": 0,
+            "inert": true
+          },
+          {
+            "phase": "prototype-imports-begin",
+            "details": [
+              "base-calendar-root",
+              "base-calendar-caption",
+              "base-calendar-previous",
+              "lucide-chevron-left-icon",
+              "base-select-root",
+              "base-select-trigger",
+              "base-select-value",
+              "lucide-chevron-down-icon",
+              "base-select-content",
+              "base-select-item",
+              "base-calendar-next",
+              "lucide-chevron-right-icon",
+              "base-calendar-heading",
+              "base-calendar-grid",
+              "base-calendar-weekdays",
+              "base-calendar-weekday",
+              "base-calendar-row",
+              "base-calendar-day"
+            ],
+            "id": "pp-ol8msheshf",
+            "runtime": "vue2",
+            "pageMs": 14122.600000143051,
+            "timeOrigin": 1794862564238.9,
+            "children": 0,
+            "inert": true
+          }
+        ],
+        "loadAttempts": [
+          {
+            "id": "base-calendar-root",
+            "generation": 1204,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14122.600000143051,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14121.700000047684],
+              ["generation-fulfilled", 14123.5]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-caption",
+            "generation": 1205,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14122.600000143051,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14121.799999952316],
+              ["generation-fulfilled", 14123.5]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-previous",
+            "generation": 1206,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14122.600000143051,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14121.799999952316],
+              ["generation-fulfilled", 14123.600000143051]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "lucide-chevron-left-icon",
+            "generation": 1221,
+            "acquire": "owner-creates",
+            "acquirePageMs": 14122.600000143051,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14122.900000095367],
+              ["generation-fulfilled", 14122.900000095367]
+            ],
+            "earlierFulfilled": [
+              {
+                "generation": 1134,
+                "stage": "generation-fulfilled",
+                "pageMs": 14110.900000095367
+              },
+              {
+                "generation": 1148,
+                "stage": "generation-fulfilled",
+                "pageMs": 14119.400000095367
+              },
+              {
+                "generation": 1159,
+                "stage": "generation-fulfilled",
+                "pageMs": 14119.5
+              },
+              {
+                "generation": 1164,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120
+              },
+              {
+                "generation": 1178,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.299999952316
+              },
+              {
+                "generation": 1183,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.5
+              },
+              {
+                "generation": 1194,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.700000047684
+              },
+              {
+                "generation": 1196,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.799999952316
+              },
+              {
+                "generation": 1198,
+                "stage": "generation-fulfilled",
+                "pageMs": 14121
+              },
+              {
+                "generation": 1200,
+                "stage": "generation-fulfilled",
+                "pageMs": 14121.100000143051
+              },
+              {
+                "generation": 1202,
+                "stage": "generation-fulfilled",
+                "pageMs": 14121.200000047684
+              },
+              {
+                "generation": 1207,
+                "stage": "generation-fulfilled",
+                "pageMs": 14122
+              },
+              {
+                "generation": 1219,
+                "stage": "generation-fulfilled",
+                "pageMs": 14122.5
+              }
+            ]
+          },
+          {
+            "id": "base-select-root",
+            "generation": 1208,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14122.600000143051,
+            "result": "pending-at-observation-limit",
+            "stages": [["generation-begin", 14121.900000095367]],
+            "earlierFulfilled": [
+              {
+                "generation": 108,
+                "stage": "generation-fulfilled",
+                "pageMs": 10256.600000143051
+              }
+            ]
+          },
+          {
+            "id": "base-select-trigger",
+            "generation": 1209,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14122.700000047684,
+            "result": "pending-at-observation-limit",
+            "stages": [["generation-begin", 14121.900000095367]],
+            "earlierFulfilled": [
+              {
+                "generation": 109,
+                "stage": "generation-fulfilled",
+                "pageMs": 10256.600000143051
+              }
+            ]
+          },
+          {
+            "id": "base-select-value",
+            "generation": 1210,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14122.700000047684,
+            "result": "pending-at-observation-limit",
+            "stages": [["generation-begin", 14121.900000095367]],
+            "earlierFulfilled": [
+              {
+                "generation": 110,
+                "stage": "generation-fulfilled",
+                "pageMs": 10256.700000047684
+              }
+            ]
+          },
+          {
+            "id": "lucide-chevron-down-icon",
+            "generation": 1211,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14122.700000047684,
+            "result": "pending-at-observation-limit",
+            "stages": [["generation-begin", 14121.900000095367]],
+            "earlierFulfilled": [
+              {
+                "generation": 111,
+                "stage": "generation-fulfilled",
+                "pageMs": 12334.100000143051
+              }
+            ]
+          },
+          {
+            "id": "base-select-content",
+            "generation": 1212,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14122.700000047684,
+            "result": "pending-at-observation-limit",
+            "stages": [["generation-begin", 14121.900000095367]],
+            "earlierFulfilled": [
+              {
+                "generation": 112,
+                "stage": "generation-fulfilled",
+                "pageMs": 10256.700000047684
+              }
+            ]
+          },
+          {
+            "id": "base-select-item",
+            "generation": 1213,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14122.700000047684,
+            "result": "pending-at-observation-limit",
+            "stages": [["generation-begin", 14121.900000095367]],
+            "earlierFulfilled": [
+              {
+                "generation": 113,
+                "stage": "generation-fulfilled",
+                "pageMs": 10256.700000047684
+              }
+            ]
+          },
+          {
+            "id": "base-calendar-next",
+            "generation": 1214,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14122.799999952316,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14121.900000095367],
+              ["generation-fulfilled", 14123.600000143051]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "lucide-chevron-right-icon",
+            "generation": 1222,
+            "acquire": "owner-creates",
+            "acquirePageMs": 14122.799999952316,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14122.900000095367],
+              ["generation-fulfilled", 14122.900000095367]
+            ],
+            "earlierFulfilled": [
+              {
+                "generation": 1141,
+                "stage": "generation-fulfilled",
+                "pageMs": 14110.900000095367
+              },
+              {
+                "generation": 1155,
+                "stage": "generation-fulfilled",
+                "pageMs": 14119.400000095367
+              },
+              {
+                "generation": 1160,
+                "stage": "generation-fulfilled",
+                "pageMs": 14119.5
+              },
+              {
+                "generation": 1174,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.100000143051
+              },
+              {
+                "generation": 1179,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.299999952316
+              },
+              {
+                "generation": 1190,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.5
+              },
+              {
+                "generation": 1195,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.700000047684
+              },
+              {
+                "generation": 1197,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.799999952316
+              },
+              {
+                "generation": 1199,
+                "stage": "generation-fulfilled",
+                "pageMs": 14121
+              },
+              {
+                "generation": 1201,
+                "stage": "generation-fulfilled",
+                "pageMs": 14121.100000143051
+              },
+              {
+                "generation": 1203,
+                "stage": "generation-fulfilled",
+                "pageMs": 14121.200000047684
+              },
+              {
+                "generation": 1215,
+                "stage": "generation-fulfilled",
+                "pageMs": 14122
+              },
+              {
+                "generation": 1220,
+                "stage": "generation-fulfilled",
+                "pageMs": 14122.5
+              }
+            ]
+          },
+          {
+            "id": "base-calendar-heading",
+            "generation": 328,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14122.799999952316,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 9986.5],
+              ["generation-fulfilled", 14123.5]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-grid",
+            "generation": 329,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14122.799999952316,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 9986.600000143051],
+              ["generation-fulfilled", 14123.5]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-weekdays",
+            "generation": 1216,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14122.799999952316,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14121.900000095367],
+              ["generation-fulfilled", 14123.700000047684]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-weekday",
+            "generation": 1217,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14122.900000095367,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14122],
+              ["generation-fulfilled", 14123.700000047684]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-row",
+            "generation": 330,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14122.900000095367,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 9986.600000143051],
+              ["generation-fulfilled", 14123.5]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-day",
+            "generation": 1218,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14122.900000095367,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14122],
+              ["generation-fulfilled", 14123.700000047684]
+            ],
+            "earlierFulfilled": []
+          }
+        ]
+      },
+      "vue": {
+        "id": "pp-k50sx4sbkd9",
+        "phases": [
+          {
+            "phase": "demo-import-begin",
+            "id": "pp-k50sx4sbkd9",
+            "runtime": "vue",
+            "pageMs": 8548.799999952316,
+            "timeOrigin": 1794862564238.9,
+            "children": 0,
+            "inert": true
+          },
+          {
+            "phase": "demo-import-return",
+            "id": "pp-k50sx4sbkd9",
+            "runtime": "vue",
+            "pageMs": 14123.100000143051,
+            "timeOrigin": 1794862564238.9,
+            "children": 0,
+            "inert": true
+          },
+          {
+            "phase": "prototype-imports-begin",
+            "details": [
+              "base-calendar-root",
+              "base-calendar-caption",
+              "base-calendar-previous",
+              "lucide-chevron-left-icon",
+              "base-select-root",
+              "base-select-trigger",
+              "base-select-value",
+              "lucide-chevron-down-icon",
+              "base-select-content",
+              "base-select-item",
+              "base-calendar-next",
+              "lucide-chevron-right-icon",
+              "base-calendar-heading",
+              "base-calendar-grid",
+              "base-calendar-weekdays",
+              "base-calendar-weekday",
+              "base-calendar-row",
+              "base-calendar-day"
+            ],
+            "id": "pp-k50sx4sbkd9",
+            "runtime": "vue",
+            "pageMs": 14123.100000143051,
+            "timeOrigin": 1794862564238.9,
+            "children": 0,
+            "inert": true
+          }
+        ],
+        "loadAttempts": [
+          {
+            "id": "base-calendar-root",
+            "generation": 1204,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14123.100000143051,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14121.700000047684],
+              ["generation-fulfilled", 14123.5]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-caption",
+            "generation": 1205,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14123.200000047684,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14121.799999952316],
+              ["generation-fulfilled", 14123.5]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-previous",
+            "generation": 1206,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14123.200000047684,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14121.799999952316],
+              ["generation-fulfilled", 14123.600000143051]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "lucide-chevron-left-icon",
+            "generation": 1225,
+            "acquire": "owner-creates",
+            "acquirePageMs": 14123.200000047684,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14123.299999952316],
+              ["generation-fulfilled", 14123.299999952316]
+            ],
+            "earlierFulfilled": [
+              {
+                "generation": 1134,
+                "stage": "generation-fulfilled",
+                "pageMs": 14110.900000095367
+              },
+              {
+                "generation": 1148,
+                "stage": "generation-fulfilled",
+                "pageMs": 14119.400000095367
+              },
+              {
+                "generation": 1159,
+                "stage": "generation-fulfilled",
+                "pageMs": 14119.5
+              },
+              {
+                "generation": 1164,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120
+              },
+              {
+                "generation": 1178,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.299999952316
+              },
+              {
+                "generation": 1183,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.5
+              },
+              {
+                "generation": 1194,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.700000047684
+              },
+              {
+                "generation": 1196,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.799999952316
+              },
+              {
+                "generation": 1198,
+                "stage": "generation-fulfilled",
+                "pageMs": 14121
+              },
+              {
+                "generation": 1200,
+                "stage": "generation-fulfilled",
+                "pageMs": 14121.100000143051
+              },
+              {
+                "generation": 1202,
+                "stage": "generation-fulfilled",
+                "pageMs": 14121.200000047684
+              },
+              {
+                "generation": 1207,
+                "stage": "generation-fulfilled",
+                "pageMs": 14122
+              },
+              {
+                "generation": 1219,
+                "stage": "generation-fulfilled",
+                "pageMs": 14122.5
+              },
+              {
+                "generation": 1221,
+                "stage": "generation-fulfilled",
+                "pageMs": 14122.900000095367
+              },
+              {
+                "generation": 1223,
+                "stage": "generation-fulfilled",
+                "pageMs": 14123
+              }
+            ]
+          },
+          {
+            "id": "base-select-root",
+            "generation": 1208,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14123.200000047684,
+            "result": "pending-at-observation-limit",
+            "stages": [["generation-begin", 14121.900000095367]],
+            "earlierFulfilled": [
+              {
+                "generation": 108,
+                "stage": "generation-fulfilled",
+                "pageMs": 10256.600000143051
+              }
+            ]
+          },
+          {
+            "id": "base-select-trigger",
+            "generation": 1209,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14123.200000047684,
+            "result": "pending-at-observation-limit",
+            "stages": [["generation-begin", 14121.900000095367]],
+            "earlierFulfilled": [
+              {
+                "generation": 109,
+                "stage": "generation-fulfilled",
+                "pageMs": 10256.600000143051
+              }
+            ]
+          },
+          {
+            "id": "base-select-value",
+            "generation": 1210,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14123.200000047684,
+            "result": "pending-at-observation-limit",
+            "stages": [["generation-begin", 14121.900000095367]],
+            "earlierFulfilled": [
+              {
+                "generation": 110,
+                "stage": "generation-fulfilled",
+                "pageMs": 10256.700000047684
+              }
+            ]
+          },
+          {
+            "id": "lucide-chevron-down-icon",
+            "generation": 1211,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14123.299999952316,
+            "result": "pending-at-observation-limit",
+            "stages": [["generation-begin", 14121.900000095367]],
+            "earlierFulfilled": [
+              {
+                "generation": 111,
+                "stage": "generation-fulfilled",
+                "pageMs": 12334.100000143051
+              }
+            ]
+          },
+          {
+            "id": "base-select-content",
+            "generation": 1212,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14123.299999952316,
+            "result": "pending-at-observation-limit",
+            "stages": [["generation-begin", 14121.900000095367]],
+            "earlierFulfilled": [
+              {
+                "generation": 112,
+                "stage": "generation-fulfilled",
+                "pageMs": 10256.700000047684
+              }
+            ]
+          },
+          {
+            "id": "base-select-item",
+            "generation": 1213,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14123.299999952316,
+            "result": "pending-at-observation-limit",
+            "stages": [["generation-begin", 14121.900000095367]],
+            "earlierFulfilled": [
+              {
+                "generation": 113,
+                "stage": "generation-fulfilled",
+                "pageMs": 10256.700000047684
+              }
+            ]
+          },
+          {
+            "id": "base-calendar-next",
+            "generation": 1214,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14123.299999952316,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14121.900000095367],
+              ["generation-fulfilled", 14123.600000143051]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "lucide-chevron-right-icon",
+            "generation": 1226,
+            "acquire": "owner-creates",
+            "acquirePageMs": 14123.299999952316,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14123.299999952316],
+              ["generation-fulfilled", 14123.299999952316]
+            ],
+            "earlierFulfilled": [
+              {
+                "generation": 1141,
+                "stage": "generation-fulfilled",
+                "pageMs": 14110.900000095367
+              },
+              {
+                "generation": 1155,
+                "stage": "generation-fulfilled",
+                "pageMs": 14119.400000095367
+              },
+              {
+                "generation": 1160,
+                "stage": "generation-fulfilled",
+                "pageMs": 14119.5
+              },
+              {
+                "generation": 1174,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.100000143051
+              },
+              {
+                "generation": 1179,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.299999952316
+              },
+              {
+                "generation": 1190,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.5
+              },
+              {
+                "generation": 1195,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.700000047684
+              },
+              {
+                "generation": 1197,
+                "stage": "generation-fulfilled",
+                "pageMs": 14120.799999952316
+              },
+              {
+                "generation": 1199,
+                "stage": "generation-fulfilled",
+                "pageMs": 14121
+              },
+              {
+                "generation": 1201,
+                "stage": "generation-fulfilled",
+                "pageMs": 14121.100000143051
+              },
+              {
+                "generation": 1203,
+                "stage": "generation-fulfilled",
+                "pageMs": 14121.200000047684
+              },
+              {
+                "generation": 1215,
+                "stage": "generation-fulfilled",
+                "pageMs": 14122
+              },
+              {
+                "generation": 1220,
+                "stage": "generation-fulfilled",
+                "pageMs": 14122.5
+              },
+              {
+                "generation": 1222,
+                "stage": "generation-fulfilled",
+                "pageMs": 14122.900000095367
+              },
+              {
+                "generation": 1224,
+                "stage": "generation-fulfilled",
+                "pageMs": 14123
+              }
+            ]
+          },
+          {
+            "id": "base-calendar-heading",
+            "generation": 328,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14123.299999952316,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 9986.5],
+              ["generation-fulfilled", 14123.5]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-grid",
+            "generation": 329,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14123.299999952316,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 9986.600000143051],
+              ["generation-fulfilled", 14123.5]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-weekdays",
+            "generation": 1216,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14123.299999952316,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14121.900000095367],
+              ["generation-fulfilled", 14123.700000047684]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-weekday",
+            "generation": 1217,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14123.299999952316,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14122],
+              ["generation-fulfilled", 14123.700000047684]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-row",
+            "generation": 330,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14123.299999952316,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 9986.600000143051],
+              ["generation-fulfilled", 14123.5]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-day",
+            "generation": 1218,
+            "acquire": "owner-joins",
+            "acquirePageMs": 14123.299999952316,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 14122],
+              ["generation-fulfilled", 14123.700000047684]
+            ],
+            "earlierFulfilled": []
+          }
+        ]
+      }
+    }
+  },
+  "candidate": {
+    "source": {
+      "head": "e9a803162fa9835b285e89429b3795f134501d53",
+      "tree": "3138c94d389bde280b47f5889ef8234c31c30193",
+      "parents": [
+        "a834bd4e30b2cad49509ab6d0c056cc2878663b5",
+        "396576a8c91d249efef706eb30e18f00b52e9b47"
+      ],
+      "overlaySHA256": "ab7ef1056dc949d36ce3c0389a35eb46a67239ecd0a5ffd024c312bf3c34dbc4"
+    },
+    "environment": {
+      "node": "v24.21.0",
+      "pnpm": "10.32.1",
+      "chrome": "Google Chrome for Testing 156.0.8078.79",
+      "workers": 1
+    },
+    "test": {
+      "locale": "zh-cn",
+      "otherLocale": "unselected",
+      "previews": 1268,
+      "readinessMs": 60000,
+      "outerMs": 150000,
+      "exit": 1,
+      "counts": [0, 1, 1],
+      "startedAt": "2026-11-16T21:03:50Z",
+      "finishedAt": "2026-11-16T21:07:04Z",
+      "verdict": {
+        "startupPassed": false,
+        "errors": [],
+        "consoleErrors": [],
+        "collectionOutcome": "rejected",
+        "expressionSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684"
+      },
+      "latestOriginalReadiness": {
+        "timeOrigin": 1794863073767,
+        "pageMs": 124070.09999990463,
+        "dateNow": 1794863197837,
+        "count": 1268,
+        "ready": false,
+        "firstMissing": {
+          "previewerId": "pp-ducz9tih3yh",
+          "index": 236,
+          "inited": "1",
+          "hostChildren": 0
+        },
+        "firstMissingOwner": {
+          "demoId": "demo-base-virtual-list",
+          "prototypeId": "",
+          "declaredRuntime": "wc",
+          "projectionMode": null,
+          "projectionState": null,
+          "mounting": null,
+          "hostTag": "DIV",
+          "hostOwner": "pp-ducz9tih3yh",
+          "startupPending": true,
+          "hostOwnInert": true,
+          "hostText": ""
+        }
+      },
+      "observedMilestones": [
+        {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "outcome": "begin",
+          "nodeMs": 48959.305792,
+          "nodeTimeOrigin": 1794863031969.614,
+          "dateNow": 1794863080928
+        },
+        {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "outcome": "error",
+          "nodeMs": 192157.537334,
+          "nodeTimeOrigin": 1794863031969.614,
+          "dateNow": 1794863224127
+        }
+      ],
+      "logSHA256": "e52688a1291875bc69c642509e34b72daf00faf9d943c5d6a69637a90ed1aaff"
+    },
+    "calendar": {
+      "vue": {
+        "id": "pp-t1hrycpp8c",
+        "phases": [
+          {
+            "phase": "demo-import-begin",
+            "id": "pp-t1hrycpp8c",
+            "runtime": "vue",
+            "pageMs": 10441.400000095367,
+            "timeOrigin": 1794863073767,
+            "children": 0,
+            "inert": true
+          },
+          {
+            "phase": "demo-import-return",
+            "id": "pp-t1hrycpp8c",
+            "runtime": "vue",
+            "pageMs": 19368.299999952316,
+            "timeOrigin": 1794863073767,
+            "children": 0,
+            "inert": true
+          },
+          {
+            "phase": "prototype-imports-begin",
+            "details": [
+              "base-calendar-root",
+              "base-calendar-caption",
+              "base-calendar-previous",
+              "lucide-chevron-left-icon",
+              "base-select-root",
+              "base-select-trigger",
+              "base-select-value",
+              "lucide-chevron-down-icon",
+              "base-select-content",
+              "base-select-item",
+              "base-calendar-next",
+              "lucide-chevron-right-icon",
+              "base-calendar-heading",
+              "base-calendar-grid",
+              "base-calendar-weekdays",
+              "base-calendar-weekday",
+              "base-calendar-row",
+              "base-calendar-day"
+            ],
+            "id": "pp-t1hrycpp8c",
+            "runtime": "vue",
+            "pageMs": 19380.200000047684,
+            "timeOrigin": 1794863073767,
+            "children": 0,
+            "inert": true
+          },
+          {
+            "phase": "prototype-imports-return",
+            "id": "pp-t1hrycpp8c",
+            "runtime": "vue",
+            "pageMs": 19383.299999952316,
+            "timeOrigin": 1794863073767,
+            "children": 0,
+            "inert": true
+          },
+          {
+            "phase": "render-begin",
+            "id": "pp-t1hrycpp8c",
+            "runtime": "vue",
+            "pageMs": 19383.299999952316,
+            "timeOrigin": 1794863073767,
+            "children": 0,
+            "inert": true
+          },
+          {
+            "phase": "render-return",
+            "id": "pp-t1hrycpp8c",
+            "runtime": "vue",
+            "pageMs": 133998.59999990463,
+            "timeOrigin": 1794863073767,
+            "children": 1,
+            "inert": true
+          }
+        ],
+        "loadAttempts": [
+          {
+            "id": "base-calendar-root",
+            "generation": 1117,
+            "acquire": "owner-creates",
+            "acquirePageMs": 19380.299999952316,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.700000047684],
+              ["generation-fulfilled", 19383.099999904633]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-caption",
+            "generation": 1118,
+            "acquire": "owner-creates",
+            "acquirePageMs": 19380.400000095367,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.700000047684],
+              ["generation-fulfilled", 19383.200000047684]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-previous",
+            "generation": 1119,
+            "acquire": "owner-creates",
+            "acquirePageMs": 19380.400000095367,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.700000047684],
+              ["generation-fulfilled", 19383.200000047684]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "lucide-chevron-left-icon",
+            "generation": 1120,
+            "acquire": "owner-creates",
+            "acquirePageMs": 19380.400000095367,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.700000047684],
+              ["generation-fulfilled", 19380.900000095367]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-select-root",
+            "generation": 158,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19380.400000095367,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 12993.900000095367],
+              ["generation-fulfilled", 13449.299999952316]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-select-trigger",
+            "generation": 159,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19380.5,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 12994],
+              ["generation-fulfilled", 13449.400000095367]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-select-value",
+            "generation": 160,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19380.5,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 12994],
+              ["generation-fulfilled", 13449.400000095367]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "lucide-chevron-down-icon",
+            "generation": 161,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19380.5,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 12994],
+              ["generation-fulfilled", 14562.099999904633]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-select-content",
+            "generation": 162,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19380.5,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 12994.200000047684],
+              ["generation-fulfilled", 13449.400000095367]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-select-item",
+            "generation": 163,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19380.5,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 12994.200000047684],
+              ["generation-fulfilled", 13449.400000095367]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-next",
+            "generation": 1121,
+            "acquire": "owner-creates",
+            "acquirePageMs": 19380.5,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.700000047684],
+              ["generation-fulfilled", 19383.200000047684]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "lucide-chevron-right-icon",
+            "generation": 1122,
+            "acquire": "owner-creates",
+            "acquirePageMs": 19380.599999904633,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.700000047684],
+              ["generation-fulfilled", 19380.900000095367]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-heading",
+            "generation": 243,
+            "acquire": "owner-joins",
+            "acquirePageMs": 19380.599999904633,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 13004.299999952316],
+              ["generation-fulfilled", 19383.099999904633]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-grid",
+            "generation": 244,
+            "acquire": "owner-joins",
+            "acquirePageMs": 19380.599999904633,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 13004.299999952316],
+              ["generation-fulfilled", 19383.099999904633]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-weekdays",
+            "generation": 1123,
+            "acquire": "owner-creates",
+            "acquirePageMs": 19380.599999904633,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.799999952316],
+              ["generation-fulfilled", 19383.200000047684]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-weekday",
+            "generation": 1124,
+            "acquire": "owner-creates",
+            "acquirePageMs": 19380.599999904633,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.799999952316],
+              ["generation-fulfilled", 19383.200000047684]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-row",
+            "generation": 245,
+            "acquire": "owner-joins",
+            "acquirePageMs": 19380.700000047684,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 13004.400000095367],
+              ["generation-fulfilled", 19383.099999904633]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-day",
+            "generation": 1125,
+            "acquire": "owner-creates",
+            "acquirePageMs": 19380.700000047684,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.799999952316],
+              ["generation-fulfilled", 19383.299999952316]
+            ],
+            "earlierFulfilled": []
+          }
+        ]
+      },
+      "wc": {
+        "id": "pp-rdvp3rr7a8h",
+        "phases": [
+          {
+            "phase": "demo-import-begin",
+            "id": "pp-rdvp3rr7a8h",
+            "runtime": "wc",
+            "pageMs": 11999.400000095367,
+            "timeOrigin": 1794863073767,
+            "children": 0,
+            "inert": true
+          },
+          {
+            "phase": "demo-import-return",
+            "id": "pp-rdvp3rr7a8h",
+            "runtime": "wc",
+            "pageMs": 19381,
+            "timeOrigin": 1794863073767,
+            "children": 0,
+            "inert": true
+          },
+          {
+            "phase": "prototype-imports-begin",
+            "details": [
+              "base-calendar-root",
+              "base-calendar-caption",
+              "base-calendar-previous",
+              "lucide-chevron-left-icon",
+              "base-select-root",
+              "base-select-trigger",
+              "base-select-value",
+              "lucide-chevron-down-icon",
+              "base-select-content",
+              "base-select-item",
+              "base-calendar-next",
+              "lucide-chevron-right-icon",
+              "base-calendar-heading",
+              "base-calendar-grid",
+              "base-calendar-weekdays",
+              "base-calendar-weekday",
+              "base-calendar-row",
+              "base-calendar-day"
+            ],
+            "id": "pp-rdvp3rr7a8h",
+            "runtime": "wc",
+            "pageMs": 19381.099999904633,
+            "timeOrigin": 1794863073767,
+            "children": 0,
+            "inert": true
+          },
+          {
+            "phase": "prototype-imports-return",
+            "id": "pp-rdvp3rr7a8h",
+            "runtime": "wc",
+            "pageMs": 19383.599999904633,
+            "timeOrigin": 1794863073767,
+            "children": 0,
+            "inert": true
+          },
+          {
+            "phase": "render-begin",
+            "id": "pp-rdvp3rr7a8h",
+            "runtime": "wc",
+            "pageMs": 19383.700000047684,
+            "timeOrigin": 1794863073767,
+            "children": 0,
+            "inert": true
+          },
+          {
+            "phase": "render-return",
+            "id": "pp-rdvp3rr7a8h",
+            "runtime": "wc",
+            "pageMs": 19513.599999904633,
+            "timeOrigin": 1794863073767,
+            "children": 1,
+            "inert": true
+          },
+          {
+            "phase": "surface-ready",
+            "id": "pp-rdvp3rr7a8h",
+            "runtime": "wc",
+            "pageMs": 19665.099999904633,
+            "timeOrigin": 1794863073767,
+            "children": 1,
+            "inert": true
+          },
+          {
+            "phase": "startup-finished",
+            "id": "pp-rdvp3rr7a8h",
+            "runtime": "wc",
+            "pageMs": 19679.5,
+            "timeOrigin": 1794863073767,
+            "children": 1,
+            "inert": false
+          }
+        ],
+        "loadAttempts": [
+          {
+            "id": "base-calendar-root",
+            "generation": 1117,
+            "acquire": "owner-joins",
+            "acquirePageMs": 19381.099999904633,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.700000047684],
+              ["generation-fulfilled", 19383.099999904633]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-caption",
+            "generation": 1118,
+            "acquire": "owner-joins",
+            "acquirePageMs": 19381.099999904633,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.700000047684],
+              ["generation-fulfilled", 19383.200000047684]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-previous",
+            "generation": 1119,
+            "acquire": "owner-joins",
+            "acquirePageMs": 19381.099999904633,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.700000047684],
+              ["generation-fulfilled", 19383.200000047684]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "lucide-chevron-left-icon",
+            "generation": 1120,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19381.099999904633,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.700000047684],
+              ["generation-fulfilled", 19380.900000095367]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-select-root",
+            "generation": 158,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19381.200000047684,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 12993.900000095367],
+              ["generation-fulfilled", 13449.299999952316]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-select-trigger",
+            "generation": 159,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19381.200000047684,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 12994],
+              ["generation-fulfilled", 13449.400000095367]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-select-value",
+            "generation": 160,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19381.200000047684,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 12994],
+              ["generation-fulfilled", 13449.400000095367]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "lucide-chevron-down-icon",
+            "generation": 161,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19381.200000047684,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 12994],
+              ["generation-fulfilled", 14562.099999904633]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-select-content",
+            "generation": 162,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19381.200000047684,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 12994.200000047684],
+              ["generation-fulfilled", 13449.400000095367]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-select-item",
+            "generation": 163,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19381.200000047684,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 12994.200000047684],
+              ["generation-fulfilled", 13449.400000095367]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-next",
+            "generation": 1121,
+            "acquire": "owner-joins",
+            "acquirePageMs": 19381.200000047684,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.700000047684],
+              ["generation-fulfilled", 19383.200000047684]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "lucide-chevron-right-icon",
+            "generation": 1122,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19381.299999952316,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.700000047684],
+              ["generation-fulfilled", 19380.900000095367]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-heading",
+            "generation": 243,
+            "acquire": "owner-joins",
+            "acquirePageMs": 19381.299999952316,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 13004.299999952316],
+              ["generation-fulfilled", 19383.099999904633]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-grid",
+            "generation": 244,
+            "acquire": "owner-joins",
+            "acquirePageMs": 19381.299999952316,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 13004.299999952316],
+              ["generation-fulfilled", 19383.099999904633]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-weekdays",
+            "generation": 1123,
+            "acquire": "owner-joins",
+            "acquirePageMs": 19381.299999952316,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.799999952316],
+              ["generation-fulfilled", 19383.200000047684]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-weekday",
+            "generation": 1124,
+            "acquire": "owner-joins",
+            "acquirePageMs": 19381.299999952316,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.799999952316],
+              ["generation-fulfilled", 19383.200000047684]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-row",
+            "generation": 245,
+            "acquire": "owner-joins",
+            "acquirePageMs": 19381.299999952316,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 13004.400000095367],
+              ["generation-fulfilled", 19383.099999904633]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-day",
+            "generation": 1125,
+            "acquire": "owner-joins",
+            "acquirePageMs": 19381.299999952316,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.799999952316],
+              ["generation-fulfilled", 19383.299999952316]
+            ],
+            "earlierFulfilled": []
+          }
+        ]
+      },
+      "vue2": {
+        "id": "pp-ntj8furicpp",
+        "phases": [
+          {
+            "phase": "demo-import-begin",
+            "id": "pp-ntj8furicpp",
+            "runtime": "vue2",
+            "pageMs": 12472.200000047684,
+            "timeOrigin": 1794863073767,
+            "children": 0,
+            "inert": true
+          },
+          {
+            "phase": "demo-import-return",
+            "id": "pp-ntj8furicpp",
+            "runtime": "vue2",
+            "pageMs": 19382.700000047684,
+            "timeOrigin": 1794863073767,
+            "children": 0,
+            "inert": true
+          },
+          {
+            "phase": "prototype-imports-begin",
+            "details": [
+              "base-calendar-root",
+              "base-calendar-caption",
+              "base-calendar-previous",
+              "lucide-chevron-left-icon",
+              "base-select-root",
+              "base-select-trigger",
+              "base-select-value",
+              "lucide-chevron-down-icon",
+              "base-select-content",
+              "base-select-item",
+              "base-calendar-next",
+              "lucide-chevron-right-icon",
+              "base-calendar-heading",
+              "base-calendar-grid",
+              "base-calendar-weekdays",
+              "base-calendar-weekday",
+              "base-calendar-row",
+              "base-calendar-day"
+            ],
+            "id": "pp-ntj8furicpp",
+            "runtime": "vue2",
+            "pageMs": 19382.700000047684,
+            "timeOrigin": 1794863073767,
+            "children": 0,
+            "inert": true
+          },
+          {
+            "phase": "prototype-imports-return",
+            "id": "pp-ntj8furicpp",
+            "runtime": "vue2",
+            "pageMs": 19455.900000095367,
+            "timeOrigin": 1794863073767,
+            "children": 0,
+            "inert": true
+          },
+          {
+            "phase": "render-begin",
+            "id": "pp-ntj8furicpp",
+            "runtime": "vue2",
+            "pageMs": 19455.900000095367,
+            "timeOrigin": 1794863073767,
+            "children": 0,
+            "inert": true
+          },
+          {
+            "phase": "render-return",
+            "id": "pp-ntj8furicpp",
+            "runtime": "vue2",
+            "pageMs": 46965.90000009537,
+            "timeOrigin": 1794863073767,
+            "children": 1,
+            "inert": true
+          },
+          {
+            "phase": "surface-ready",
+            "id": "pp-ntj8furicpp",
+            "runtime": "vue2",
+            "pageMs": 76102.90000009537,
+            "timeOrigin": 1794863073767,
+            "children": 1,
+            "inert": true
+          },
+          {
+            "phase": "startup-finished",
+            "id": "pp-ntj8furicpp",
+            "runtime": "vue2",
+            "pageMs": 76157.29999995232,
+            "timeOrigin": 1794863073767,
+            "children": 1,
+            "inert": false
+          }
+        ],
+        "loadAttempts": [
+          {
+            "id": "base-calendar-root",
+            "generation": 1117,
+            "acquire": "owner-joins",
+            "acquirePageMs": 19382.700000047684,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.700000047684],
+              ["generation-fulfilled", 19383.099999904633]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-caption",
+            "generation": 1118,
+            "acquire": "owner-joins",
+            "acquirePageMs": 19382.700000047684,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.700000047684],
+              ["generation-fulfilled", 19383.200000047684]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-previous",
+            "generation": 1119,
+            "acquire": "owner-joins",
+            "acquirePageMs": 19382.799999952316,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.700000047684],
+              ["generation-fulfilled", 19383.200000047684]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "lucide-chevron-left-icon",
+            "generation": 1120,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19382.799999952316,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.700000047684],
+              ["generation-fulfilled", 19380.900000095367]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-select-root",
+            "generation": 158,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19382.799999952316,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 12993.900000095367],
+              ["generation-fulfilled", 13449.299999952316]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-select-trigger",
+            "generation": 159,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19382.900000095367,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 12994],
+              ["generation-fulfilled", 13449.400000095367]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-select-value",
+            "generation": 160,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19382.900000095367,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 12994],
+              ["generation-fulfilled", 13449.400000095367]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "lucide-chevron-down-icon",
+            "generation": 161,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19382.900000095367,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 12994],
+              ["generation-fulfilled", 14562.099999904633]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-select-content",
+            "generation": 162,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19382.900000095367,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 12994.200000047684],
+              ["generation-fulfilled", 13449.400000095367]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-select-item",
+            "generation": 163,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19382.900000095367,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 12994.200000047684],
+              ["generation-fulfilled", 13449.400000095367]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-next",
+            "generation": 1121,
+            "acquire": "owner-joins",
+            "acquirePageMs": 19382.900000095367,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.700000047684],
+              ["generation-fulfilled", 19383.200000047684]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "lucide-chevron-right-icon",
+            "generation": 1122,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19382.900000095367,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.700000047684],
+              ["generation-fulfilled", 19380.900000095367]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-heading",
+            "generation": 243,
+            "acquire": "owner-joins",
+            "acquirePageMs": 19382.900000095367,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 13004.299999952316],
+              ["generation-fulfilled", 19383.099999904633]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-grid",
+            "generation": 244,
+            "acquire": "owner-joins",
+            "acquirePageMs": 19382.900000095367,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 13004.299999952316],
+              ["generation-fulfilled", 19383.099999904633]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-weekdays",
+            "generation": 1123,
+            "acquire": "owner-joins",
+            "acquirePageMs": 19382.900000095367,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.799999952316],
+              ["generation-fulfilled", 19383.200000047684]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-weekday",
+            "generation": 1124,
+            "acquire": "owner-joins",
+            "acquirePageMs": 19382.900000095367,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.799999952316],
+              ["generation-fulfilled", 19383.200000047684]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-row",
+            "generation": 245,
+            "acquire": "owner-joins",
+            "acquirePageMs": 19382.900000095367,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 13004.400000095367],
+              ["generation-fulfilled", 19383.099999904633]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-day",
+            "generation": 1125,
+            "acquire": "owner-joins",
+            "acquirePageMs": 19382.900000095367,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.799999952316],
+              ["generation-fulfilled", 19383.299999952316]
+            ],
+            "earlierFulfilled": []
+          }
+        ]
+      },
+      "react": {
+        "id": "pp-oeyca9nxiuk",
+        "phases": [
+          {
+            "phase": "demo-import-begin",
+            "id": "pp-oeyca9nxiuk",
+            "runtime": "react",
+            "pageMs": 9535.799999952316,
+            "timeOrigin": 1794863073767,
+            "children": 0,
+            "inert": true
+          },
+          {
+            "phase": "demo-import-return",
+            "id": "pp-oeyca9nxiuk",
+            "runtime": "react",
+            "pageMs": 19726.5,
+            "timeOrigin": 1794863073767,
+            "children": 0,
+            "inert": true
+          },
+          {
+            "phase": "prototype-imports-begin",
+            "details": [
+              "base-calendar-root",
+              "base-calendar-caption",
+              "base-calendar-previous",
+              "lucide-chevron-left-icon",
+              "base-select-root",
+              "base-select-trigger",
+              "base-select-value",
+              "lucide-chevron-down-icon",
+              "base-select-content",
+              "base-select-item",
+              "base-calendar-next",
+              "lucide-chevron-right-icon",
+              "base-calendar-heading",
+              "base-calendar-grid",
+              "base-calendar-weekdays",
+              "base-calendar-weekday",
+              "base-calendar-row",
+              "base-calendar-day"
+            ],
+            "id": "pp-oeyca9nxiuk",
+            "runtime": "react",
+            "pageMs": 19726.599999904633,
+            "timeOrigin": 1794863073767,
+            "children": 0,
+            "inert": true
+          },
+          {
+            "phase": "prototype-imports-return",
+            "id": "pp-oeyca9nxiuk",
+            "runtime": "react",
+            "pageMs": 19726.799999952316,
+            "timeOrigin": 1794863073767,
+            "children": 0,
+            "inert": true
+          },
+          {
+            "phase": "render-begin",
+            "id": "pp-oeyca9nxiuk",
+            "runtime": "react",
+            "pageMs": 19726.799999952316,
+            "timeOrigin": 1794863073767,
+            "children": 0,
+            "inert": true
+          },
+          {
+            "phase": "render-return",
+            "id": "pp-oeyca9nxiuk",
+            "runtime": "react",
+            "pageMs": 125954.59999990463,
+            "timeOrigin": 1794863073767,
+            "children": 1,
+            "inert": true
+          }
+        ],
+        "loadAttempts": [
+          {
+            "id": "base-calendar-root",
+            "generation": 1117,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19726.599999904633,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.700000047684],
+              ["generation-fulfilled", 19383.099999904633]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-caption",
+            "generation": 1118,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19726.599999904633,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.700000047684],
+              ["generation-fulfilled", 19383.200000047684]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-previous",
+            "generation": 1119,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19726.599999904633,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.700000047684],
+              ["generation-fulfilled", 19383.200000047684]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "lucide-chevron-left-icon",
+            "generation": 1120,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19726.599999904633,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.700000047684],
+              ["generation-fulfilled", 19380.900000095367]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-select-root",
+            "generation": 158,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19726.599999904633,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 12993.900000095367],
+              ["generation-fulfilled", 13449.299999952316]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-select-trigger",
+            "generation": 159,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19726.599999904633,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 12994],
+              ["generation-fulfilled", 13449.400000095367]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-select-value",
+            "generation": 160,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19726.700000047684,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 12994],
+              ["generation-fulfilled", 13449.400000095367]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "lucide-chevron-down-icon",
+            "generation": 161,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19726.700000047684,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 12994],
+              ["generation-fulfilled", 14562.099999904633]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-select-content",
+            "generation": 162,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19726.700000047684,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 12994.200000047684],
+              ["generation-fulfilled", 13449.400000095367]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-select-item",
+            "generation": 163,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19726.700000047684,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 12994.200000047684],
+              ["generation-fulfilled", 13449.400000095367]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-next",
+            "generation": 1121,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19726.700000047684,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.700000047684],
+              ["generation-fulfilled", 19383.200000047684]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "lucide-chevron-right-icon",
+            "generation": 1122,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19726.700000047684,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.700000047684],
+              ["generation-fulfilled", 19380.900000095367]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-heading",
+            "generation": 243,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19726.700000047684,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 13004.299999952316],
+              ["generation-fulfilled", 19383.099999904633]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-grid",
+            "generation": 244,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19726.700000047684,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 13004.299999952316],
+              ["generation-fulfilled", 19383.099999904633]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-weekdays",
+            "generation": 1123,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19726.799999952316,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.799999952316],
+              ["generation-fulfilled", 19383.200000047684]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-weekday",
+            "generation": 1124,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19726.799999952316,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.799999952316],
+              ["generation-fulfilled", 19383.200000047684]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-row",
+            "generation": 245,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19726.799999952316,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 13004.400000095367],
+              ["generation-fulfilled", 19383.099999904633]
+            ],
+            "earlierFulfilled": []
+          },
+          {
+            "id": "base-calendar-day",
+            "generation": 1125,
+            "acquire": "owner-reuses",
+            "acquirePageMs": 19726.799999952316,
+            "result": "generation-fulfilled",
+            "stages": [
+              ["generation-begin", 19380.799999952316],
+              ["generation-fulfilled", 19383.299999952316]
+            ],
+            "earlierFulfilled": []
+          }
+        ]
+      }
+    }
+  }
+}

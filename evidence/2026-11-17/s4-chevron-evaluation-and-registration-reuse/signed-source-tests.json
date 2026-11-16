@@ -1,0 +1,14 @@
+{
+  "head": "396576a8c91d249efef706eb30e18f00b52e9b47",
+  "tree": "8e856679304e8091176c12548a936b325f7883e6",
+  "parent": "aa6d6b15d4aedb2863a935168dac73ea5f26ace1",
+  "red": [7, 2],
+  "green": [248, 0],
+  "files": 5,
+  "inputs": {
+    "apps/www/src/components/PrototypePreviewer/registry.ts": "d4719840fd5a8a0d036c66d079494bb8c7306df571769531323210aca08445c9",
+    "apps/www/src/components/PrototypePreviewer/prototype-modules.ts": "bbcbd108b836d0e3b46a84be731d8602d12221ddd34dbbf5a3f59ee761f74700",
+    "apps/www/src/components/PrototypePreviewer/prototype-modules.command.test.ts": "f6997a2ea33212d747d7527ff63add076d4ff2b020ed4b1b704fc400817f7204"
+  },
+  "focusSha256": "354c3aa269c589798ba6504ba8047382fa3fe7372f3e6633759d0bc5df992e6b"
+}

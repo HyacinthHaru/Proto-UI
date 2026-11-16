@@ -1,0 +1,627 @@
+{
+  "source": {
+    "head": "a834bd4e30b2cad49509ab6d0c056cc2878663b5",
+    "tree": "5858734d1abefe683eec08bfba7746c3cd52a276",
+    "parents": [
+      "69326eb91f9e31a5ce69e943b8f4f630995c7a3a",
+      "d94a6e0a6859236476c955b2bf444c83b3f1a568"
+    ],
+    "overlaySHA256": "39269210305d15ec6f08d929fa97c16adcb1207e540c88af0e367b7c90ce4570",
+    "observerSHA256": "8f91ff6e87f6a2e34fefe1c6960ab119a3a9aaa8d29110f289fd1b050dd0315a"
+  },
+  "environment": {
+    "node": "v24.21.0",
+    "pnpm": "10.32.1",
+    "chrome": "Google Chrome for Testing 156.0.8078.79",
+    "workers": 1
+  },
+  "test": {
+    "exit": 1,
+    "counts": [0, 1, 1],
+    "locale": "zh-cn",
+    "otherLocale": "unselected",
+    "previews": 1268,
+    "readinessMs": 60000,
+    "outerMs": 150000,
+    "startedAt": "2026-11-16T20:51:34Z",
+    "finishedAt": "2026-11-16T20:53:43Z",
+    "messages": ["page.waitForFunction: Timeout 60000ms exceeded."],
+    "outcome": {
+      "startupPassed": false,
+      "errors": [],
+      "consoleErrors": [],
+      "collectionOutcome": "budget-expired",
+      "predicateSHA256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684"
+    },
+    "lastOriginalReadiness": {
+      "timeOrigin": 1794862337932.8,
+      "pageMs": 73910.40000009537,
+      "dateNow": 1794862411843,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-f9mcorbsgin",
+        "index": 20,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-base-calendar",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-f9mcorbsgin",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      }
+    },
+    "logSHA256": "1053378ef79efb1aa690f42febb8fb6f18916f9ec0ef16144b16224d96e46981"
+  },
+  "wire": {
+    "events": 12210,
+    "requestIds": 4070,
+    "rawSHA256": "fe7367441fe7b4d55a4a2429349dd7e9a1add08c2a5a01a75e9b8ae9a507524e",
+    "transformedBodiesSHA256": "3ebbd7df535882bb016016853b210d133cdda9c1c747f6000f862b9500deabad",
+    "bodyReadFailures": 0
+  },
+  "modules": {
+    "chevron-left": {
+      "download": [
+        {
+          "file": "packages/prototypes/lucide/src/icons/chevron-left.ts",
+          "requestId": "83607.1020",
+          "events": [
+            {
+              "event": "request",
+              "timestamp": 1233064.568632,
+              "pageMs": 8302.386
+            },
+            {
+              "event": "response",
+              "status": 200,
+              "timestamp": 1233065.2528,
+              "pageMs": 8986.554
+            },
+            {
+              "event": "finish",
+              "bytes": 3646,
+              "timestamp": 1233064.636615,
+              "pageMs": 8370.369
+            }
+          ]
+        }
+      ],
+      "servedProbe": {
+        "sha256": "1c614ac4fb565b2821f76a447a6314358540273bfeb428a6fbf3ccb8be2b105a",
+        "moduleEnter": true,
+        "moduleExit": true,
+        "staticImportSources": [
+          "packages/prototypes/lucide/src/icon/fixed.ts",
+          "packages/prototypes/lucide/src/icon/render.ts"
+        ]
+      },
+      "module": [
+        {
+          "id": "chevron-left",
+          "stage": "module-eval-enter",
+          "pageMs": 10410.799999952316,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 52170.018625
+        },
+        {
+          "id": "chevron-left",
+          "stage": "module-eval-exit",
+          "pageMs": 10410.799999952316,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 52170.164125
+        }
+      ],
+      "caller": [
+        {
+          "id": "lucide-chevron-left-icon",
+          "stage": "early-prime",
+          "pageMs": 8302.200000047684,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 50061.393333
+        },
+        {
+          "id": "lucide-chevron-left-icon",
+          "stage": "early-fulfilled",
+          "pageMs": 10410.799999952316,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 52170.222625
+        },
+        {
+          "id": "lucide-chevron-left-icon",
+          "stage": "loader-begin",
+          "pageMs": 14601.5,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 56360.594958
+        },
+        {
+          "id": "lucide-chevron-left-icon",
+          "stage": "import-begin",
+          "pageMs": 14601.600000143051,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 56360.657416
+        },
+        {
+          "id": "lucide-chevron-left-icon",
+          "stage": "caller-microtask",
+          "pageMs": 14601.799999952316,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 56360.957583
+        },
+        {
+          "id": "lucide-chevron-left-icon",
+          "stage": "import-return",
+          "pageMs": 14601.799999952316,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 56360.972333
+        },
+        {
+          "id": "lucide-chevron-left-icon",
+          "stage": "register-return",
+          "pageMs": 14601.799999952316,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 56360.982875
+        },
+        {
+          "id": "lucide-chevron-left-icon",
+          "stage": "loader-return",
+          "pageMs": 14601.900000095367,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 56361.024666
+        },
+        {
+          "id": "lucide-chevron-left-icon",
+          "stage": "registration-return",
+          "pageMs": 14601.900000095367,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 56361.034125
+        },
+        {
+          "id": "lucide-chevron-left-icon",
+          "stage": "caller-timer",
+          "pageMs": 17874.299999952316,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 59633.449125
+        }
+      ]
+    },
+    "chevron-right": {
+      "download": [
+        {
+          "file": "packages/prototypes/lucide/src/icons/chevron-right.ts",
+          "requestId": "83607.1021",
+          "events": [
+            {
+              "event": "request",
+              "timestamp": 1233064.568726,
+              "pageMs": 8302.473
+            },
+            {
+              "event": "response",
+              "status": 200,
+              "timestamp": 1233065.252519,
+              "pageMs": 8986.266
+            },
+            {
+              "event": "finish",
+              "bytes": 3669,
+              "timestamp": 1233064.635922,
+              "pageMs": 8369.669
+            }
+          ]
+        }
+      ],
+      "servedProbe": {
+        "sha256": "9703e4f33eac24872956cd3041cd2597ea699663b1e2d80469e2f652177c532c",
+        "moduleEnter": true,
+        "moduleExit": true,
+        "staticImportSources": [
+          "packages/prototypes/lucide/src/icon/fixed.ts",
+          "packages/prototypes/lucide/src/icon/render.ts"
+        ]
+      },
+      "module": [
+        {
+          "id": "chevron-right",
+          "stage": "module-eval-enter",
+          "pageMs": 10410.5,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 52169.571666
+        },
+        {
+          "id": "chevron-right",
+          "stage": "module-eval-exit",
+          "pageMs": 10410.600000143051,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 52169.936833
+        }
+      ],
+      "caller": [
+        {
+          "id": "lucide-chevron-right-icon",
+          "stage": "early-prime",
+          "pageMs": 8302.400000095367,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 50061.587541
+        },
+        {
+          "id": "lucide-chevron-right-icon",
+          "stage": "early-fulfilled",
+          "pageMs": 10410.700000047684,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 52169.986583
+        },
+        {
+          "id": "lucide-chevron-right-icon",
+          "stage": "loader-begin",
+          "pageMs": 14601.700000047684,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 56360.721666
+        },
+        {
+          "id": "lucide-chevron-right-icon",
+          "stage": "import-begin",
+          "pageMs": 14601.700000047684,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 56360.741875
+        },
+        {
+          "id": "lucide-chevron-right-icon",
+          "stage": "caller-microtask",
+          "pageMs": 14601.799999952316,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 56360.994208
+        },
+        {
+          "id": "lucide-chevron-right-icon",
+          "stage": "import-return",
+          "pageMs": 14601.900000095367,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 56361.004791
+        },
+        {
+          "id": "lucide-chevron-right-icon",
+          "stage": "register-return",
+          "pageMs": 14601.900000095367,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 56361.013916
+        },
+        {
+          "id": "lucide-chevron-right-icon",
+          "stage": "loader-return",
+          "pageMs": 14601.900000095367,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 56361.045125
+        },
+        {
+          "id": "lucide-chevron-right-icon",
+          "stage": "registration-return",
+          "pageMs": 14601.900000095367,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 56361.05775
+        },
+        {
+          "id": "lucide-chevron-right-icon",
+          "stage": "caller-timer",
+          "pageMs": 17874.400000095367,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 59633.504541
+        }
+      ]
+    },
+    "chevron-down": {
+      "download": [
+        {
+          "file": "packages/prototypes/lucide/src/icons/chevron-down.ts",
+          "requestId": "83607.1151",
+          "events": [
+            {
+              "event": "request",
+              "timestamp": 1233066.313807,
+              "pageMs": 10047.55
+            },
+            {
+              "event": "response",
+              "status": 200,
+              "timestamp": 1233066.421955,
+              "pageMs": 10155.698
+            },
+            {
+              "event": "finish",
+              "bytes": 3640,
+              "timestamp": 1233066.322432,
+              "pageMs": 10056.175
+            }
+          ]
+        }
+      ],
+      "servedProbe": {
+        "sha256": "cbdd043695163175f93c4c9d8fc9ec65a5173012f8f3f1a6783a08f6d0a5f656",
+        "moduleEnter": true,
+        "moduleExit": true,
+        "staticImportSources": [
+          "packages/prototypes/lucide/src/icon/fixed.ts",
+          "packages/prototypes/lucide/src/icon/render.ts"
+        ]
+      },
+      "module": [
+        {
+          "id": "chevron-down",
+          "stage": "module-eval-enter",
+          "pageMs": 10744.799999952316,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 52504.131083
+        },
+        {
+          "id": "chevron-down",
+          "stage": "module-eval-exit",
+          "pageMs": 10745,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 52504.170375
+        }
+      ],
+      "caller": [
+        {
+          "id": "lucide-chevron-down-icon",
+          "stage": "loader-begin",
+          "pageMs": 10047.400000095367,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 51806.711125
+        },
+        {
+          "id": "lucide-chevron-down-icon",
+          "stage": "import-begin",
+          "pageMs": 10047.5,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 51807.086291
+        },
+        {
+          "id": "lucide-chevron-down-icon",
+          "stage": "caller-microtask",
+          "pageMs": 10047.600000143051,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 51807.34575
+        },
+        {
+          "id": "lucide-chevron-down-icon",
+          "stage": "join-pending",
+          "pageMs": 10047.700000047684,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 51808.910333
+        },
+        {
+          "id": "lucide-chevron-down-icon",
+          "stage": "caller-timer",
+          "pageMs": 10154.900000095367,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 51913.906375
+        },
+        {
+          "id": "lucide-chevron-down-icon",
+          "stage": "import-return",
+          "pageMs": 10745,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 52504.28475
+        },
+        {
+          "id": "lucide-chevron-down-icon",
+          "stage": "register-return",
+          "pageMs": 10745,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 52504.299625
+        },
+        {
+          "id": "lucide-chevron-down-icon",
+          "stage": "loader-return",
+          "pageMs": 10745,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 52504.311958
+        },
+        {
+          "id": "lucide-chevron-down-icon",
+          "stage": "registration-return",
+          "pageMs": 10745,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 52504.323416
+        }
+      ]
+    },
+    "icons.generated": {
+      "download": [
+        {
+          "file": "packages/prototypes/lucide/src/icon/icons.generated.ts",
+          "requestId": "83607.2376",
+          "events": [
+            {
+              "event": "request",
+              "timestamp": 1233069.30811,
+              "pageMs": 13041.845
+            },
+            {
+              "event": "response",
+              "status": 200,
+              "timestamp": 1233069.367208,
+              "pageMs": 13100.943
+            },
+            {
+              "event": "finish",
+              "bytes": 876025,
+              "timestamp": 1233069.315838,
+              "pageMs": 13049.573
+            }
+          ]
+        }
+      ],
+      "servedProbe": null,
+      "module": [
+        {
+          "id": "icons.generated",
+          "stage": "module-eval-enter",
+          "pageMs": 18096.5,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 59858.1985
+        },
+        {
+          "id": "icons.generated",
+          "stage": "module-eval-exit",
+          "pageMs": 18099.400000095367,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 59858.300416
+        }
+      ],
+      "caller": [
+        {
+          "id": "lucide-icon",
+          "stage": "import-begin",
+          "pageMs": 10169.400000095367,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 51928.428041
+        },
+        {
+          "id": "lucide-icon",
+          "stage": "import-return",
+          "pageMs": 18099.400000095367,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 59858.372791
+        },
+        {
+          "id": "lucide-icon",
+          "stage": "register-return",
+          "pageMs": 18099.5,
+          "timeOrigin": 1794862337932.8,
+          "observedNodeMs": 59858.389041
+        }
+      ]
+    }
+  },
+  "calendarLastStage": {
+    "wc": {
+      "phase": "prototype-imports-begin",
+      "details": [
+        "base-calendar-root",
+        "base-calendar-caption",
+        "base-calendar-previous",
+        "lucide-chevron-left-icon",
+        "base-select-root",
+        "base-select-trigger",
+        "base-select-value",
+        "lucide-chevron-down-icon",
+        "base-select-content",
+        "base-select-item",
+        "base-calendar-next",
+        "lucide-chevron-right-icon",
+        "base-calendar-heading",
+        "base-calendar-grid",
+        "base-calendar-weekdays",
+        "base-calendar-weekday",
+        "base-calendar-row",
+        "base-calendar-day"
+      ],
+      "id": "pp-f9mcorbsgin",
+      "runtime": "wc",
+      "pageMs": 14603.100000143051,
+      "timeOrigin": 1794862337932.8,
+      "children": 0,
+      "inert": true,
+      "observedNodeMs": 56361.869333
+    },
+    "react": {
+      "phase": "prototype-imports-begin",
+      "details": [
+        "base-calendar-root",
+        "base-calendar-caption",
+        "base-calendar-previous",
+        "lucide-chevron-left-icon",
+        "base-select-root",
+        "base-select-trigger",
+        "base-select-value",
+        "lucide-chevron-down-icon",
+        "base-select-content",
+        "base-select-item",
+        "base-calendar-next",
+        "lucide-chevron-right-icon",
+        "base-calendar-heading",
+        "base-calendar-grid",
+        "base-calendar-weekdays",
+        "base-calendar-weekday",
+        "base-calendar-row",
+        "base-calendar-day"
+      ],
+      "id": "pp-evrkma88jcs",
+      "runtime": "react",
+      "pageMs": 14604.5,
+      "timeOrigin": 1794862337932.8,
+      "children": 0,
+      "inert": true,
+      "observedNodeMs": 56363.213625
+    },
+    "vue": {
+      "phase": "prototype-imports-begin",
+      "details": [
+        "base-calendar-root",
+        "base-calendar-caption",
+        "base-calendar-previous",
+        "lucide-chevron-left-icon",
+        "base-select-root",
+        "base-select-trigger",
+        "base-select-value",
+        "lucide-chevron-down-icon",
+        "base-select-content",
+        "base-select-item",
+        "base-calendar-next",
+        "lucide-chevron-right-icon",
+        "base-calendar-heading",
+        "base-calendar-grid",
+        "base-calendar-weekdays",
+        "base-calendar-weekday",
+        "base-calendar-row",
+        "base-calendar-day"
+      ],
+      "id": "pp-52eogfqgh0t",
+      "runtime": "vue",
+      "pageMs": 14604.200000047684,
+      "timeOrigin": 1794862337932.8,
+      "children": 0,
+      "inert": true,
+      "observedNodeMs": 56363.074583
+    },
+    "vue2": {
+      "phase": "prototype-imports-begin",
+      "details": [
+        "base-calendar-root",
+        "base-calendar-caption",
+        "base-calendar-previous",
+        "lucide-chevron-left-icon",
+        "base-select-root",
+        "base-select-trigger",
+        "base-select-value",
+        "lucide-chevron-down-icon",
+        "base-select-content",
+        "base-select-item",
+        "base-calendar-next",
+        "lucide-chevron-right-icon",
+        "base-calendar-heading",
+        "base-calendar-grid",
+        "base-calendar-weekdays",
+        "base-calendar-weekday",
+        "base-calendar-row",
+        "base-calendar-day"
+      ],
+      "id": "pp-v96v8l7k7ik",
+      "runtime": "vue2",
+      "pageMs": 14602.5,
+      "timeOrigin": 1794862337932.8,
+      "children": 0,
+      "inert": true,
+      "observedNodeMs": 56361.402083
+    }
+  }
+}
