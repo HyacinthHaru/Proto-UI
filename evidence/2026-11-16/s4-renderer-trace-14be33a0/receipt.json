@@ -1,0 +1,129 @@
+{
+  "source": "14be33a0a367f478f78de13ca40ca666b460cac9",
+  "tree": "bf42077ed2f6959b29220ae0e9f59968b9bb718b",
+  "diagnosticPatchSha256": "b6f470803c59f499f075347a14ae72d80422849802940b208cc9140a3038eb6f",
+  "runtime": "Node 24.21.0, pnpm 10.32.1, macOS arm64, Chrome for Testing 156.0.8078.79",
+  "result": {
+    "locale": "zh-cn",
+    "originalStartupWaitMs": 60000,
+    "originalOuterTimeoutMs": 150000,
+    "exit": 1,
+    "startupPassed": false,
+    "nativeJourneyStarted": false,
+    "selectedFailed": 1,
+    "otherLocaleUnselected": 1,
+    "postVerdictObservation": "rejected"
+  },
+  "trace": {
+    "complete": true,
+    "bytes": 14991080,
+    "dataLossOccurred": false,
+    "sha256": "18d991bdb014f1048b63e2657970d2a3794c8c6fad90207370ad57e62a1c0f7b",
+    "requestedWindowMs": 50000,
+    "startAcknowledgementNodeMs": 10043.685,
+    "errors": [
+      {
+        "stage": "prepare",
+        "reason": "Error: trace setup: observation budget expired"
+      }
+    ],
+    "startTrigger": "CDP request for react.js delivered to Node",
+    "effectiveRetainedTimelineMs": 49958.336,
+    "relativeTimeOrigin": "First named background streaming task in this trace",
+    "observedEvents": 56780
+  },
+  "renderer": {
+    "chunks": [
+      {
+        "file": "chunk-EK7DFB6S.js",
+        "backgroundStreamingStartedMs": 0.0,
+        "backgroundStreamingDurationMs": 0.892,
+        "backgroundStreamingFinishCallbackMs": 0.91,
+        "cdpRequestAtNodeObserved": true,
+        "cdpFinishAtNodeObserved": false,
+        "resourceTimingCallbackObserved": false
+      },
+      {
+        "file": "chunk-2MALL255.js",
+        "backgroundStreamingStartedMs": 3.245,
+        "backgroundStreamingDurationMs": 5.628,
+        "backgroundStreamingFinishCallbackMs": 9.093,
+        "cdpRequestAtNodeObserved": true,
+        "cdpFinishAtNodeObserved": false,
+        "resourceTimingCallbackObserved": false
+      }
+    ],
+    "mainThreadEvaluationEvents": [
+      {
+        "afterLastStreamingFinishCallbackMs": 59.828,
+        "durationMs": 0.299,
+        "urlInEvent": null,
+        "worldId": 0
+      },
+      {
+        "afterLastStreamingFinishCallbackMs": 690.259,
+        "durationMs": 0.024,
+        "urlInEvent": null,
+        "worldId": 0
+      },
+      {
+        "afterLastStreamingFinishCallbackMs": 690.738,
+        "durationMs": 0.007,
+        "urlInEvent": null,
+        "worldId": 0
+      },
+      {
+        "afterLastStreamingFinishCallbackMs": 721.882,
+        "durationMs": 0.019,
+        "urlInEvent": null,
+        "worldId": 0
+      },
+      {
+        "afterLastStreamingFinishCallbackMs": 1023.753,
+        "durationMs": 1.696,
+        "urlInEvent": null,
+        "worldId": 0
+      }
+    ]
+  },
+  "imports": [
+    {
+      "name": "react-runtime",
+      "factoryBrowserMs": 10015.7,
+      "settlement": "fulfilled",
+      "settlementBrowserMs": 10275.6
+    },
+    {
+      "name": "react-adapter",
+      "factoryBrowserMs": 10015.6,
+      "settlement": "fulfilled",
+      "settlementBrowserMs": 20875.8
+    },
+    {
+      "name": "react-package",
+      "factoryBrowserMs": 20876.3,
+      "settlement": null,
+      "settlementBrowserMs": null
+    },
+    {
+      "name": "react-dom-package",
+      "factoryBrowserMs": 20876.5,
+      "settlement": null,
+      "settlementBrowserMs": null
+    },
+    {
+      "name": "react-dom-client-package",
+      "factoryBrowserMs": 20876.6,
+      "settlement": null,
+      "settlementBrowserMs": null
+    }
+  ],
+  "pageErrors": {
+    "reported": 18,
+    "stackGrouped": {
+      "Error: [feedback] owned-decoration unsupported by this adapter\n    at Impl.declareDecoration (packages/modules/feedback/src/create.ts:51:19)\n    at Object.declareDecoration (packages/modules/feedback/src/create.ts:639:41)\n    at Object.declareDecoration (packages/runtime/src/kernel/handles/def.ts:138:33)\n    at Object.setup (packages/prototypes/shadcn/src/tabs/trigger.proto.ts:24:47)\n    at createKernel (packages/runtime/src/kernel/kernel.ts:33:25)\n    at createRuntimeInstance (packages/runtime/src/instance/instance.ts:80:18)\n    at createRuntimeSession (packages/runtime/src/instance/session.ts:18:16)\n    at createAdapterHost (packages/adapters/base/src/host/adapter-host.ts:12:19)\n    at createWebComponentHostSession (packages/adapters/web-component/src/runtime/session.ts:158:23)\n    at Object.createHostSession [as createSession] (packages/adapters/web-component/src/adapt.ts:565:45)": 18
+    },
+    "scope": "Shadcn Tabs Trigger setup in Web Component adapter; exact profile-to-event mapping is source-derived"
+  },
+  "bootstrapClosureErrorsObserved": 0
+}
