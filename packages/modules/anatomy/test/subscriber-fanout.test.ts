@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createAnatomyFamily } from '@proto.ui/core';
+import { ANATOMY_INSTANCE_TOKEN_CAP, ANATOMY_PARENT_CAP } from '../src/caps';
 import { AnatomyModuleImpl } from '../src/impl';
 import { makeCaps } from './utils/fake-caps';
 
@@ -49,11 +50,28 @@ function domainFixture() {
   const make = (role: 'root' | 'item', parent: object | null) => {
     const token = {};
     parents.set(token, parent);
-    const caps = makeCaps({
+    const logicalParent = (instance: unknown) => parents.get(instance) ?? null;
+    let liveParentGetter = logicalParent;
+    let logicalCapsPresent = true;
+    const backing = makeCaps({
       instance: token,
-      getParent: (instance) => parents.get(instance) ?? null,
+      getParent: logicalParent,
       getPrototype: () => ({ name: 'domain-owner', setup() {} }),
     });
+    const caps = {
+      ...backing,
+      has(cap: { id: string }) {
+        if (
+          !logicalCapsPresent &&
+          (cap === ANATOMY_INSTANCE_TOKEN_CAP || cap === ANATOMY_PARENT_CAP)
+        )
+          return false;
+        return backing.has(cap);
+      },
+      get(cap: { id: string }) {
+        return cap === ANATOMY_PARENT_CAP ? liveParentGetter : backing.get(cap);
+      },
+    };
     const owner = new AnatomyModuleImpl(caps, 'domain-owner', {
       get: () => undefined,
       getAll: () => ({}),
@@ -66,6 +84,13 @@ function domainFixture() {
       token,
       owner,
       notify: () => owner.onMountPhase('mounted', 1),
+      bumpCaps: () => backing.__bumpEpoch(),
+      setLogicalCapsPresent: (present: boolean) => {
+        logicalCapsPresent = present;
+      },
+      replaceParentBridge: () => {
+        liveParentGetter = (instance) => logicalParent(instance);
+      },
       move: (next: object | null) => {
         parents.set(token, next);
       },
@@ -91,6 +116,55 @@ describe('Anatomy current-domain target notifications', () => {
     expect(same).toHaveBeenCalledTimes(2);
     expect(other).toHaveBeenCalledTimes(1);
     expect(legacy).toHaveBeenCalledTimes(2);
+  });
+
+  it('uses the retained logical bridge while view capabilities are absent', () => {
+    const f = domainFixture();
+    const publisher = f.item(f.first.token);
+    const same = vi.fn(),
+      other = vi.fn(),
+      legacy = vi.fn();
+    f.first.owner.port.subscribeTargets(f.family, same, 'current-domain');
+    f.second.owner.port.subscribeTargets(f.family, other, 'current-domain');
+    f.second.owner.port.subscribeTargets(f.family, legacy);
+    publisher.notify();
+    publisher.setLogicalCapsPresent(false);
+    publisher.bumpCaps();
+    publisher.setLogicalCapsPresent(true);
+    publisher.bumpCaps();
+    expect(same).toHaveBeenCalledTimes(3);
+    expect(other).toHaveBeenCalledTimes(1);
+    expect(legacy).toHaveBeenCalledTimes(3);
+  });
+
+  it('keeps bridge replacement broad before using the next stable capability publication', () => {
+    const f = domainFixture();
+    const publisher = f.item(f.first.token);
+    const other = vi.fn();
+    f.second.owner.port.subscribeTargets(f.family, other, 'current-domain');
+    publisher.notify();
+    publisher.replaceParentBridge();
+    publisher.bumpCaps();
+    expect(other).toHaveBeenCalledTimes(2);
+    publisher.bumpCaps();
+    expect(other).toHaveBeenCalledTimes(2);
+  });
+
+  it('keeps domain migration broad even when the parent getter is retained', () => {
+    const f = domainFixture();
+    const publisher = f.item(f.first.token);
+    const oldDomain = vi.fn(),
+      nextDomain = vi.fn();
+    f.first.owner.port.subscribeTargets(f.family, oldDomain, 'current-domain');
+    f.second.owner.port.subscribeTargets(f.family, nextDomain, 'current-domain');
+    publisher.notify();
+    publisher.move(f.second.token);
+    publisher.bumpCaps();
+    expect(oldDomain).toHaveBeenCalledTimes(2);
+    expect(nextDomain).toHaveBeenCalledTimes(2);
+    publisher.bumpCaps();
+    expect(oldDomain).toHaveBeenCalledTimes(2);
+    expect(nextDomain).toHaveBeenCalledTimes(3);
   });
 
   it('retains family-wide delivery for structural resynchronization', () => {

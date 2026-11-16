@@ -290,6 +290,7 @@ export class AnatomyModuleImpl extends ModuleBase {
   private readonly instanceOrder = AnatomyModuleImpl.nextInstanceOrder++;
   private disposed = false;
   private claimFamilies = new Set<AnatomyFamily>();
+  private claimedInstance: AnatomyInstanceToken | undefined;
   private orderDispatch: AnatomyOrderCallbackDispatcher = (fn) => fn(undefined);
   private orderListeners = new Map<AnatomyFamily, Set<AnatomyOrderChangeCb>>();
   private targetListeners = new Map<
@@ -360,6 +361,7 @@ export class AnatomyModuleImpl extends ModuleBase {
       getParent: this.caps.has(ANATOMY_PARENT_CAP) ? this.getParentGetter() : null,
       invoke: (fn) => this.orderDispatch(fn),
     });
+    this.claimedInstance = instance;
     this.claimFamilies.add(family);
   }
 
@@ -727,18 +729,27 @@ export class AnatomyModuleImpl extends ModuleBase {
 
   protected override onCapsEpoch(_epoch: number): void {
     if (this.disposed) return;
-    // A retained owner may temporarily lose its view capabilities. Keep its
-    // last valid logical getter (not a cached parent result) through that gap;
-    // replace it only when the new host supplies a valid bridge.
-    if (this.caps.has(ANATOMY_INSTANCE_TOKEN_CAP) && this.caps.has(ANATOMY_PARENT_CAP)) {
-      const instance = this.getSelfToken();
-      const getParent = this.getParentGetter();
+    // Keep the last valid logical getter through a view-capability gap.
+    // A different token or parent bridge needs family-wide invalidation.
+    const hasInstance = this.caps.has(ANATOMY_INSTANCE_TOKEN_CAP);
+    const instance = hasInstance ? this.getSelfToken() : this.claimedInstance;
+    const parent = this.caps.has(ANATOMY_PARENT_CAP) ? this.getParentGetter() : undefined;
+    let retained: Set<AnatomyFamily> | undefined;
+    if (instance !== undefined) {
       for (const family of this.claimFamilies) {
         const claim = CENTER.getClaim(instance, family);
-        if (claim) claim.getParent = getParent;
+        if (!claim) continue;
+        if (
+          instance === this.claimedInstance &&
+          claim.getParent &&
+          (parent === undefined || parent === claim.getParent) &&
+          AnatomyModuleImpl.scopedTargetSubscriberCounts.has(family)
+        )
+          (retained ??= new Set()).add(family);
+        if (hasInstance && parent) claim.getParent = parent;
       }
     }
-    for (const family of this.claimFamilies) this.notifyTargetChange(family);
+    for (const family of this.claimFamilies) this.notifyTargetChange(family, retained?.has(family));
     if (this.mountPhase !== 'mounted') return;
     for (const family of Array.from(this.observedOrderRoots.keys())) {
       this.teardownOrderObserver(family);
@@ -928,10 +939,15 @@ export class AnatomyModuleImpl extends ModuleBase {
   }
 
   private readTargetDomain(family: AnatomyFamily): AnatomyInstanceToken | null {
-    if (!this.caps.has(ANATOMY_INSTANCE_TOKEN_CAP) || !this.caps.has(ANATOMY_PARENT_CAP))
-      return null;
     try {
-      return this.findDomainRoot(this.getSelfToken(), family);
+      const hasInstance = this.caps.has(ANATOMY_INSTANCE_TOKEN_CAP);
+      const hasParent = this.caps.has(ANATOMY_PARENT_CAP);
+      if (hasInstance && hasParent) return this.findDomainRoot(this.getSelfToken(), family);
+      const instance = this.claimedInstance;
+      if (instance === undefined || (hasInstance && this.getSelfToken() !== instance)) return null;
+      const retained = CENTER.getClaim(instance, family)?.getParent;
+      if (!retained || (hasParent && this.getParentGetter() !== retained)) return null;
+      return this.findDomainRoot(instance, family, retained);
     } catch {
       // A domain must be proven to narrow delivery; keep the original callback path.
       return null;
@@ -951,12 +967,12 @@ export class AnatomyModuleImpl extends ModuleBase {
     return this.readTargetDomain(family) === last;
   }
 
-  private notifyTargetChange(family: AnatomyFamily, viewOnly = false): void {
+  private notifyTargetChange(family: AnatomyFamily, mayNarrow = false): void {
     const current = AnatomyModuleImpl.scopedTargetSubscriberCounts.has(family)
       ? this.readTargetDomain(family)
       : null;
     let stableSource =
-      viewOnly && current === this.publishedTargetDomains.get(family) ? current : null;
+      mayNarrow && current === this.publishedTargetDomains.get(family) ? current : null;
     if (current) this.publishedTargetDomains.set(family, current);
     else this.publishedTargetDomains.delete(family);
     for (const impl of AnatomyModuleImpl.subscribers(AnatomyModuleImpl.targetSubscribers, family)) {
