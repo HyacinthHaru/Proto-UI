@@ -2,14 +2,18 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 const imported = vi.hoisted(() => vi.fn());
 const loaded = vi.hoisted(() => vi.fn());
-const reactAdapterImport = vi.hoisted(() => ({ gate: undefined as Promise<void> | undefined }));
+const adapterImports = vi.hoisted(() => ({
+  react: undefined as Promise<void> | undefined,
+  vue: undefined as Promise<void> | undefined,
+}));
 vi.mock('@proto.ui/adapter-react', async () => {
   imported('react-adapter');
-  if (reactAdapterImport.gate) await reactAdapterImport.gate;
+  if (adapterImports.react) await adapterImports.react;
   return { createReactAdapter: vi.fn() };
 });
-vi.mock('@proto.ui/adapter-vue', () => {
+vi.mock('@proto.ui/adapter-vue', async () => {
   imported('vue-adapter');
+  if (adapterImports.vue) await adapterImports.vue;
   return { createVueAdapter: vi.fn() };
 });
 vi.mock('@proto.ui/adapter-vue2', () => {
@@ -82,8 +86,8 @@ describe('demo renderer runtime module activation', () => {
     async (runtime) => {
       const before = imported.mock.calls.length;
       const beforeLoad = loaded.mock.calls.length;
-      const gate = runtime === 'react' ? Promise.withResolvers<void>() : undefined;
-      reactAdapterImport.gate = gate?.promise;
+      const gate = runtime !== 'vue2' ? Promise.withResolvers<void>() : undefined;
+      if (runtime !== 'vue2') adapterImports[runtime] = gate?.promise;
       // Three Search commands prepare concurrently. The asynchronous original
       // module acquisition must finish once before any consumer uses its loader.
       const hosts = Array.from({ length: 3 }, () => document.createElement('div'));
@@ -99,11 +103,11 @@ describe('demo renderer runtime module activation', () => {
       try {
         if (gate)
           await vi.waitFor(() =>
-            expect(loaded.mock.calls.slice(beforeLoad)).toEqual([['react'], ['react'], ['react']])
+            expect(loaded.mock.calls.slice(beforeLoad)).toEqual([[runtime], [runtime], [runtime]])
           );
       } finally {
         gate?.resolve();
-        reactAdapterImport.gate = undefined;
+        if (runtime !== 'vue2') adapterImports[runtime] = undefined;
         await pending;
       }
       for (const result of await pending) {
