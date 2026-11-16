@@ -1,0 +1,40 @@
+{
+  "reactEarlyOnly": {
+    "reactRuntimeReturn": 22800.9,
+    "vueNativeDispatch": 14610.6,
+    "vueReturn": null,
+    "vuePublish": null,
+    "reactPublish": 43056,
+    "exit": 1,
+    "firstReportedFailure": "Error: Test timed out in 150000ms.",
+    "startupPassed": false,
+    "originalPredicateSHA256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+    "lastDeliveredFirstMissing": {
+      "demoId": "demo-base-accordion",
+      "prototypeId": "",
+      "declaredRuntime": "vue",
+      "projectionMode": null,
+      "projectionState": null,
+      "mounting": null,
+      "hostTag": "DIV",
+      "hostOwner": "pp-c8jfidky18g",
+      "startupPending": true,
+      "hostOwnInert": true,
+      "hostText": ""
+    }
+  },
+  "reactAndVueEarly": {
+    "reactRuntimeReturn": 42777,
+    "vueNativeDispatch": 13469.2,
+    "vueReturn": 15120.1,
+    "vuePublish": 71025.4,
+    "reactPublish": 73502.7,
+    "exit": 1,
+    "firstReportedFailure": "page.waitForFunction: Timeout 60000ms exceeded.",
+    "startupPassed": false,
+    "originalPredicateSHA256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684",
+    "lastDeliveredFirstMissing": null
+  },
+  "sameAssetOverlaySHA256": "d283ebc27a122ab342c199088feca18c467132a83f7c2ac8061fe9918628eb8c",
+  "intentionallyChanged": "A native module added at DOMContentLoaded also calls the existing compiled loadVue export."
+}

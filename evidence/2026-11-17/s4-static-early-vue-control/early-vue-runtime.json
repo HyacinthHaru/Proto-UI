@@ -1,0 +1,1302 @@
+{
+  "source": {
+    "head": "5d4f911370ca5e9cb4e4a17f20eca0b1945d6862",
+    "tree": "84b1020b1d8fdd3511e6f9d4215aad6fa94bf83b",
+    "parents": [
+      "621355701553eb1bded8537b0ae5a1881038d61f",
+      "624b878c166658ee99f798eaba2ee6b20f1a6bd5"
+    ],
+    "suiteOverlaySHA256": "369b4cf5adad5d8e36fc14366affdec073eca674903bb2c1f1acaae266f97205",
+    "observerSHA256": "b56ec096f72172a42e3f9d05275c82802c641e1fec5574d841a9b17defcc91e6",
+    "htmlSHA256": "9e397ace2d4a9af31b295ea4e4c40d2e1e62ffd6505d4240110dfc2c91fbc7a4"
+  },
+  "artifact": {
+    "runtime": "_astro/react-runtime.vwl59Oq4.js",
+    "sha256": "f3f06db74ca0d3627d6d719c007d3f3e83ce22eb99e935bf84c421b0e6aa5b39",
+    "helper": "/_astro/preload-helper.BlTxHScW.js",
+    "targets": [
+      {
+        "name": "react",
+        "url": "/_astro/index.J7E9Px8p.js",
+        "sha256": "d0cf7277124860a82ad200657fb6e58bfe6c9a122647a3e77c3e36d01ecfdfea",
+        "preloads": [
+          "_astro/index.J7E9Px8p.js",
+          "_astro/index.BVKZFYvx.js",
+          "_astro/index.C47PDzzu.js"
+        ]
+      },
+      {
+        "name": "react-dom",
+        "url": "/_astro/index.CWLepCMo.js",
+        "sha256": "874248eb2fcd43654ab755ae2131b8ae5fc38ba817c5a9cee4b76e1d8b2a9d4f",
+        "preloads": [
+          "_astro/index.CWLepCMo.js",
+          "_astro/index.BVKZFYvx.js",
+          "_astro/index.D5ahegtX.js",
+          "_astro/index.CDDwQV5v.js"
+        ]
+      },
+      {
+        "name": "react-dom/client",
+        "url": "/_astro/client.CwoxijIM.js",
+        "sha256": "248f69329c2bcd2706588327ff3d6f71de0a427050f80439c77544b4244f1bdd",
+        "preloads": [
+          "_astro/client.CwoxijIM.js",
+          "_astro/index.BVKZFYvx.js",
+          "_astro/client.nHzutAOZ.js",
+          "_astro/index.D5ahegtX.js"
+        ]
+      },
+      {
+        "label": "vue-runtime-wrapper",
+        "url": "/_astro/vue-runtime.B814raYV.js",
+        "preloads": []
+      },
+      {
+        "label": "vue-runtime",
+        "url": "/_astro/vue.runtime.esm-bundler.CyM3F5Ti.js",
+        "preloads": []
+      },
+      {
+        "label": "adapter-vue",
+        "url": "/_astro/index.BRlmFWB_.js",
+        "preloads": []
+      },
+      {
+        "label": "demo-renderer",
+        "url": "/_astro/demo-renderer.B7Ear75z.js",
+        "preloads": []
+      },
+      {
+        "label": "previewer-client",
+        "url": "/_astro/previewer-client.BhKnQCQC.js",
+        "preloads": []
+      }
+    ]
+  },
+  "environment": {
+    "node": "v24.21.0",
+    "pnpm": "10.32.1",
+    "chrome": "Google Chrome for Testing 156.0.8078.79",
+    "workers": 1
+  },
+  "test": {
+    "locale": "zh-cn",
+    "otherLocale": "unselected",
+    "previews": 1268,
+    "readinessMs": 60000,
+    "outerMs": 150000,
+    "exit": 1,
+    "counts": [0, 1, 1],
+    "latestOriginalReadiness": null,
+    "verdict": {
+      "startupPassed": false,
+      "errors": [],
+      "consoleErrors": [],
+      "collectionOutcome": "budget-expired",
+      "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684"
+    },
+    "markers": [
+      {
+        "stage": "early-warm-start",
+        "pageMs": 5662,
+        "timeOrigin": 1794869771052.5,
+        "receivedNodeMs": 6954.846833
+      },
+      {
+        "stage": "early-vue-warm-start",
+        "pageMs": 5662.299999952316,
+        "timeOrigin": 1794869771052.5,
+        "receivedNodeMs": 6955.193458
+      },
+      {
+        "stage": "demo-import-begin",
+        "owner": "pp-715ggtjnivc",
+        "pageMs": 6900.799999952316,
+        "timeOrigin": 1794869771052.5,
+        "children": 0,
+        "receivedNodeMs": 8193.788083
+      },
+      {
+        "stage": "vue-owner-demo-import-begin",
+        "owner": "pp-c8jfidky18g",
+        "pageMs": 6919.099999904633,
+        "timeOrigin": 1794869771052.5,
+        "children": 0,
+        "receivedNodeMs": 8212.087083
+      },
+      {
+        "stage": "vue-adapter-import-begin",
+        "pageMs": 12959.200000047684,
+        "timeOrigin": 1794869771052.5,
+        "receivedNodeMs": 14252.3105
+      },
+      {
+        "stage": "vue-wrapper-import-begin",
+        "pageMs": 12959.599999904633,
+        "timeOrigin": 1794869771052.5,
+        "receivedNodeMs": 14252.561166
+      },
+      {
+        "stage": "adapter-react-import-begin",
+        "pageMs": 12960.599999904633,
+        "timeOrigin": 1794869771052.5,
+        "receivedNodeMs": 14253.556958
+      },
+      {
+        "stage": "react-runtime-wrapper-import-begin",
+        "pageMs": 12960.799999952316,
+        "timeOrigin": 1794869771052.5,
+        "receivedNodeMs": 14253.865
+      },
+      {
+        "stage": "early-vue-wrapper-return",
+        "pageMs": 13469,
+        "timeOrigin": 1794869771052.5,
+        "receivedNodeMs": 14762.0245
+      },
+      {
+        "stage": "vue-import-begin",
+        "pageMs": 13469.200000047684,
+        "timeOrigin": 1794869771052.5,
+        "receivedNodeMs": 14762.183458
+      },
+      {
+        "stage": "vue-native-import-dispatch",
+        "pageMs": 13469.200000047684,
+        "timeOrigin": 1794869771052.5,
+        "receivedNodeMs": 14762.210125
+      },
+      {
+        "stage": "early-wrapper-return",
+        "pageMs": 13469.299999952316,
+        "timeOrigin": 1794869771052.5,
+        "receivedNodeMs": 14762.423375
+      },
+      {
+        "stage": "react-import-begin",
+        "pageMs": 13469.400000095367,
+        "timeOrigin": 1794869771052.5,
+        "receivedNodeMs": 14762.440041
+      },
+      {
+        "stage": "react-dom-import-begin",
+        "pageMs": 13470,
+        "timeOrigin": 1794869771052.5,
+        "receivedNodeMs": 14762.813666
+      },
+      {
+        "stage": "react-dom/client-import-begin",
+        "pageMs": 13470.5,
+        "timeOrigin": 1794869771052.5,
+        "receivedNodeMs": 14763.234333
+      },
+      {
+        "stage": "vue-owner-demo-import-return",
+        "owner": "pp-c8jfidky18g",
+        "pageMs": 13912.099999904633,
+        "timeOrigin": 1794869771052.5,
+        "children": 0,
+        "receivedNodeMs": 15204.943541
+      },
+      {
+        "stage": "vue-owner-prototype-imports-begin",
+        "owner": "pp-c8jfidky18g",
+        "pageMs": 13912.099999904633,
+        "timeOrigin": 1794869771052.5,
+        "children": 0,
+        "details": [
+          "base-accordion-root",
+          "base-accordion-item",
+          "base-accordion-heading",
+          "base-accordion-trigger",
+          "base-accordion-content",
+          "base-button"
+        ],
+        "receivedNodeMs": 15205.316541
+      },
+      {
+        "stage": "demo-import-return",
+        "owner": "pp-715ggtjnivc",
+        "pageMs": 13912.099999904633,
+        "timeOrigin": 1794869771052.5,
+        "children": 0,
+        "receivedNodeMs": 15205.39825
+      },
+      {
+        "stage": "prototype-imports-begin",
+        "owner": "pp-715ggtjnivc",
+        "pageMs": 13912.099999904633,
+        "timeOrigin": 1794869771052.5,
+        "children": 0,
+        "details": [
+          "base-accordion-root",
+          "base-accordion-item",
+          "base-accordion-heading",
+          "base-accordion-trigger",
+          "base-accordion-content",
+          "base-button"
+        ],
+        "receivedNodeMs": 15205.489458
+      },
+      {
+        "stage": "vue-wrapper-import-return",
+        "pageMs": 14483.799999952316,
+        "timeOrigin": 1794869771052.5,
+        "receivedNodeMs": 15778.250708
+      },
+      {
+        "stage": "react-runtime-wrapper-import-return",
+        "pageMs": 14484,
+        "timeOrigin": 1794869771052.5,
+        "receivedNodeMs": 15778.298166
+      },
+      {
+        "stage": "vue-import-return",
+        "pageMs": 15120.099999904633,
+        "timeOrigin": 1794869771052.5,
+        "receivedNodeMs": 16412.935541
+      },
+      {
+        "stage": "early-vue-runtime-return",
+        "pageMs": 15120.200000047684,
+        "timeOrigin": 1794869771052.5,
+        "receivedNodeMs": 16413.023333
+      },
+      {
+        "stage": "vue-adapter-import-return",
+        "pageMs": 15665,
+        "timeOrigin": 1794869771052.5,
+        "receivedNodeMs": 16957.997958
+      },
+      {
+        "stage": "adapter-react-import-return",
+        "pageMs": 16770.700000047684,
+        "timeOrigin": 1794869771052.5,
+        "receivedNodeMs": 18064.085583
+      },
+      {
+        "stage": "react-import-return",
+        "pageMs": 42774.200000047684,
+        "timeOrigin": 1794869771052.5,
+        "receivedNodeMs": 44069.656583
+      },
+      {
+        "stage": "react-dom-import-return",
+        "pageMs": 42776.700000047684,
+        "timeOrigin": 1794869771052.5,
+        "receivedNodeMs": 44071.24375
+      },
+      {
+        "stage": "react-dom/client-import-return",
+        "pageMs": 42776.90000009537,
+        "timeOrigin": 1794869771052.5,
+        "receivedNodeMs": 44071.502958
+      },
+      {
+        "stage": "early-runtime-return",
+        "pageMs": 42777,
+        "timeOrigin": 1794869771052.5,
+        "receivedNodeMs": 44071.59925
+      },
+      {
+        "stage": "vue-owner-prototype-imports-return",
+        "owner": "pp-c8jfidky18g",
+        "pageMs": 69590.5,
+        "timeOrigin": 1794869771052.5,
+        "children": 0,
+        "receivedNodeMs": 70884.104416
+      },
+      {
+        "stage": "vue-owner-render-call",
+        "owner": "pp-c8jfidky18g",
+        "pageMs": 69590.59999990463,
+        "timeOrigin": 1794869771052.5,
+        "children": 0,
+        "receivedNodeMs": 70884.288458
+      },
+      {
+        "stage": "vue-owner-runtime-join-begin",
+        "pageMs": 69590.79999995232,
+        "timeOrigin": 1794869771052.5,
+        "owner": "pp-c8jfidky18g",
+        "receivedNodeMs": 70884.380041
+      },
+      {
+        "stage": "prototype-imports-return",
+        "owner": "pp-715ggtjnivc",
+        "pageMs": 69591.20000004768,
+        "timeOrigin": 1794869771052.5,
+        "children": 0,
+        "receivedNodeMs": 70884.397916
+      },
+      {
+        "stage": "render-call",
+        "owner": "pp-715ggtjnivc",
+        "pageMs": 69591.20000004768,
+        "timeOrigin": 1794869771052.5,
+        "children": 0,
+        "receivedNodeMs": 70884.41025
+      },
+      {
+        "stage": "runtime-join-begin",
+        "owner": "pp-715ggtjnivc",
+        "pageMs": 69591.5,
+        "timeOrigin": 1794869771052.5,
+        "children": 0,
+        "receivedNodeMs": 70884.450208
+      },
+      {
+        "stage": "vue-owner-runtime-join-return",
+        "pageMs": 69608.90000009537,
+        "timeOrigin": 1794869771052.5,
+        "owner": "pp-c8jfidky18g",
+        "hasRuntime": true,
+        "ownsLease": true,
+        "receivedNodeMs": 70901.831583
+      },
+      {
+        "stage": "runtime-join-return",
+        "owner": "pp-715ggtjnivc",
+        "pageMs": 69750.90000009537,
+        "timeOrigin": 1794869771052.5,
+        "children": 0,
+        "details": {
+          "hasRuntime": true,
+          "ownsLease": true
+        },
+        "receivedNodeMs": 71043.993666
+      },
+      {
+        "stage": "vue-owner-render-return",
+        "owner": "pp-c8jfidky18g",
+        "pageMs": 70378.5,
+        "timeOrigin": 1794869771052.5,
+        "children": 1,
+        "receivedNodeMs": 71671.671458
+      },
+      {
+        "stage": "vue-owner-runtime-join-begin",
+        "pageMs": 70379.09999990463,
+        "timeOrigin": 1794869771052.5,
+        "owner": "pp-c8jfidky18g",
+        "receivedNodeMs": 71671.979291
+      },
+      {
+        "stage": "vue-owner-runtime-join-return",
+        "pageMs": 70387.29999995232,
+        "timeOrigin": 1794869771052.5,
+        "owner": "pp-c8jfidky18g",
+        "hasRuntime": true,
+        "ownsLease": true,
+        "receivedNodeMs": 71680.08175
+      },
+      {
+        "stage": "vue-owner-surface-ready",
+        "owner": "pp-c8jfidky18g",
+        "pageMs": 70995.5,
+        "timeOrigin": 1794869771052.5,
+        "children": 1,
+        "receivedNodeMs": 72288.512916
+      },
+      {
+        "stage": "vue-owner-published",
+        "owner": "pp-c8jfidky18g",
+        "pageMs": 71025.40000009537,
+        "timeOrigin": 1794869771052.5,
+        "children": 1,
+        "receivedNodeMs": 72318.437458
+      },
+      {
+        "stage": "render-return",
+        "owner": "pp-715ggtjnivc",
+        "pageMs": 71072.70000004768,
+        "timeOrigin": 1794869771052.5,
+        "children": 1,
+        "receivedNodeMs": 72365.660833
+      },
+      {
+        "stage": "runtime-join-begin",
+        "owner": "pp-715ggtjnivc",
+        "pageMs": 71073.29999995232,
+        "timeOrigin": 1794869771052.5,
+        "children": 0,
+        "receivedNodeMs": 72366.016166
+      },
+      {
+        "stage": "runtime-join-return",
+        "owner": "pp-715ggtjnivc",
+        "pageMs": 71081.59999990463,
+        "timeOrigin": 1794869771052.5,
+        "children": 0,
+        "details": {
+          "hasRuntime": true,
+          "ownsLease": true
+        },
+        "receivedNodeMs": 72374.364958
+      },
+      {
+        "stage": "surface-ready",
+        "owner": "pp-715ggtjnivc",
+        "pageMs": 73470.70000004768,
+        "timeOrigin": 1794869771052.5,
+        "children": 1,
+        "receivedNodeMs": 74763.655333
+      },
+      {
+        "stage": "published",
+        "owner": "pp-715ggtjnivc",
+        "pageMs": 73502.70000004768,
+        "timeOrigin": 1794869771052.5,
+        "children": 1,
+        "receivedNodeMs": 74795.727916
+      }
+    ],
+    "logSHA256": "c79352cee54326e86121e715f17eb94f8991947e9c0af68082cdc2334ea55769",
+    "startedAt": "2026-11-16T22:56:09Z",
+    "finishedAt": "2026-11-16T22:57:27Z"
+  },
+  "trace": {
+    "files": {
+      "/_astro/demo-renderer.B7Ear75z.js": [
+        {
+          "id": "6776.148",
+          "requestType": "Script",
+          "initiatorType": "script",
+          "initiatorFile": "/_astro/Search.astro_astro_type_script_index_0_lang.CCnEoWHY.js",
+          "events": [
+            {
+              "phase": "request",
+              "serial": 1,
+              "timestamp": 1240489.586805,
+              "nodeMs": 1496.43625,
+              "alignedPageMs": 200.841
+            },
+            {
+              "phase": "response",
+              "status": 200,
+              "protocol": "http/1.1",
+              "mime": "text/javascript",
+              "serial": 7,
+              "timestamp": 1240489.809797,
+              "nodeMs": 1717.485791,
+              "alignedPageMs": 423.833
+            },
+            {
+              "phase": "data",
+              "bytes": 50118,
+              "serial": 8,
+              "timestamp": 1240489.809802,
+              "nodeMs": 1717.505541,
+              "alignedPageMs": 423.838
+            },
+            {
+              "phase": "data",
+              "bytes": 10786,
+              "serial": 9,
+              "timestamp": 1240489.809802,
+              "nodeMs": 1717.521583,
+              "alignedPageMs": 423.838
+            },
+            {
+              "phase": "data",
+              "bytes": 0,
+              "serial": 10,
+              "timestamp": 1240489.809874,
+              "nodeMs": 1717.530625,
+              "alignedPageMs": 423.91
+            },
+            {
+              "phase": "finish",
+              "bytes": 19561,
+              "serial": 11,
+              "timestamp": 1240489.663751,
+              "nodeMs": 1717.537416,
+              "alignedPageMs": 277.787
+            }
+          ]
+        }
+      ],
+      "/_astro/preload-helper.BlTxHScW.js": [
+        {
+          "id": "6776.149",
+          "requestType": "Script",
+          "initiatorType": "script",
+          "initiatorFile": "/_astro/Search.astro_astro_type_script_index_0_lang.CCnEoWHY.js",
+          "events": [
+            {
+              "phase": "request",
+              "serial": 2,
+              "timestamp": 1240489.586827,
+              "nodeMs": 1496.4685,
+              "alignedPageMs": 200.864
+            },
+            {
+              "phase": "response",
+              "status": 200,
+              "protocol": "http/1.1",
+              "mime": "text/javascript",
+              "serial": 3,
+              "timestamp": 1240489.809756,
+              "nodeMs": 1716.865,
+              "alignedPageMs": 423.793
+            },
+            {
+              "phase": "data",
+              "bytes": 1110,
+              "serial": 4,
+              "timestamp": 1240489.809759,
+              "nodeMs": 1716.886916,
+              "alignedPageMs": 423.796
+            },
+            {
+              "phase": "data",
+              "bytes": 0,
+              "serial": 5,
+              "timestamp": 1240489.809766,
+              "nodeMs": 1716.940125,
+              "alignedPageMs": 423.803
+            },
+            {
+              "phase": "finish",
+              "bytes": 1021,
+              "serial": 6,
+              "timestamp": 1240489.663583,
+              "nodeMs": 1716.993041,
+              "alignedPageMs": 277.62
+            }
+          ]
+        }
+      ],
+      "/_astro/previewer-client.BhKnQCQC.js": [
+        {
+          "id": "6776.197",
+          "requestType": "Script",
+          "initiatorType": "script",
+          "initiatorFile": "client",
+          "events": [
+            {
+              "phase": "request",
+              "serial": 12,
+              "timestamp": 1240494.927885,
+              "nodeMs": 6953.2035,
+              "alignedPageMs": 5541.934
+            },
+            {
+              "phase": "response",
+              "status": 200,
+              "protocol": "http/1.1",
+              "mime": "text/javascript",
+              "serial": 13,
+              "timestamp": 1240495.074981,
+              "nodeMs": 6982.287833,
+              "alignedPageMs": 5689.03
+            },
+            {
+              "phase": "data",
+              "bytes": 19697,
+              "serial": 14,
+              "timestamp": 1240495.074984,
+              "nodeMs": 6982.292208,
+              "alignedPageMs": 5689.033
+            },
+            {
+              "phase": "data",
+              "bytes": 0,
+              "serial": 15,
+              "timestamp": 1240495.075151,
+              "nodeMs": 6982.293791,
+              "alignedPageMs": 5689.2
+            },
+            {
+              "phase": "finish",
+              "bytes": 8048,
+              "serial": 16,
+              "timestamp": 1240494.93901,
+              "nodeMs": 6982.295291,
+              "alignedPageMs": 5553.059
+            }
+          ]
+        }
+      ],
+      "/_astro/react-runtime.vwl59Oq4.js": [
+        {
+          "id": "6776.208",
+          "requestType": "Script",
+          "initiatorType": "script",
+          "initiatorFile": "/zh-cn/internal/demo-matrix/",
+          "events": [
+            {
+              "phase": "request",
+              "serial": 17,
+              "timestamp": 1240495.075483,
+              "nodeMs": 6982.735,
+              "alignedPageMs": 5689.525
+            },
+            {
+              "phase": "response",
+              "status": 200,
+              "protocol": "http/1.1",
+              "mime": "text/javascript",
+              "serial": 23,
+              "timestamp": 1240495.152174,
+              "nodeMs": 7059.269166,
+              "alignedPageMs": 5766.216
+            },
+            {
+              "phase": "data",
+              "bytes": 1688,
+              "serial": 24,
+              "timestamp": 1240495.152178,
+              "nodeMs": 7059.272375,
+              "alignedPageMs": 5766.22
+            },
+            {
+              "phase": "data",
+              "bytes": 0,
+              "serial": 25,
+              "timestamp": 1240495.152194,
+              "nodeMs": 7059.273916,
+              "alignedPageMs": 5766.236
+            },
+            {
+              "phase": "finish",
+              "bytes": 1197,
+              "serial": 26,
+              "timestamp": 1240495.079938,
+              "nodeMs": 7059.275416,
+              "alignedPageMs": 5693.98
+            }
+          ]
+        }
+      ],
+      "/_astro/vue-runtime.B814raYV.js": [
+        {
+          "id": "6776.209",
+          "requestType": "Script",
+          "initiatorType": "script",
+          "initiatorFile": "/zh-cn/internal/demo-matrix/",
+          "events": [
+            {
+              "phase": "request",
+              "serial": 18,
+              "timestamp": 1240495.075538,
+              "nodeMs": 6982.824208,
+              "alignedPageMs": 5689.573
+            },
+            {
+              "phase": "response",
+              "status": 200,
+              "protocol": "http/1.1",
+              "mime": "text/javascript",
+              "serial": 19,
+              "timestamp": 1240495.15204,
+              "nodeMs": 7059.229416,
+              "alignedPageMs": 5766.075
+            },
+            {
+              "phase": "data",
+              "bytes": 1403,
+              "serial": 20,
+              "timestamp": 1240495.152053,
+              "nodeMs": 7059.237958,
+              "alignedPageMs": 5766.088
+            },
+            {
+              "phase": "data",
+              "bytes": 0,
+              "serial": 21,
+              "timestamp": 1240495.152108,
+              "nodeMs": 7059.240375,
+              "alignedPageMs": 5766.143
+            },
+            {
+              "phase": "finish",
+              "bytes": 1035,
+              "serial": 22,
+              "timestamp": 1240495.079886,
+              "nodeMs": 7059.242291,
+              "alignedPageMs": 5693.921
+            }
+          ]
+        }
+      ],
+      "/_astro/index.BRlmFWB_.js": [
+        {
+          "id": "6776.565",
+          "requestType": "Script",
+          "initiatorType": "script",
+          "initiatorFile": "client",
+          "events": [
+            {
+              "phase": "request",
+              "serial": 27,
+              "timestamp": 1240502.345471,
+              "nodeMs": 14253.029625,
+              "alignedPageMs": 12959.51
+            },
+            {
+              "phase": "response",
+              "status": 200,
+              "protocol": "http/1.1",
+              "mime": "text/javascript",
+              "serial": 37,
+              "timestamp": 1240503.055341,
+              "nodeMs": 14962.818125,
+              "alignedPageMs": 13669.38
+            },
+            {
+              "phase": "data",
+              "bytes": 23063,
+              "serial": 38,
+              "timestamp": 1240503.055344,
+              "nodeMs": 14962.844791,
+              "alignedPageMs": 13669.383
+            },
+            {
+              "phase": "data",
+              "bytes": 0,
+              "serial": 39,
+              "timestamp": 1240503.055357,
+              "nodeMs": 14962.862125,
+              "alignedPageMs": 13669.396
+            },
+            {
+              "phase": "finish",
+              "bytes": 9293,
+              "serial": 40,
+              "timestamp": 1240502.36765,
+              "nodeMs": 14962.864875,
+              "alignedPageMs": 12981.689
+            }
+          ]
+        }
+      ],
+      "/_astro/vue.runtime.esm-bundler.CyM3F5Ti.js": [
+        {
+          "id": "6776.728",
+          "requestType": "Script",
+          "initiatorType": "script",
+          "initiatorFile": "/_astro/vue-runtime.B814raYV.js",
+          "events": [
+            {
+              "phase": "request",
+              "serial": 28,
+              "timestamp": 1240502.855237,
+              "nodeMs": 14762.366541,
+              "alignedPageMs": 13469.283
+            },
+            {
+              "phase": "response",
+              "status": 200,
+              "protocol": "http/1.1",
+              "mime": "text/javascript",
+              "serial": 69,
+              "timestamp": 1240503.865832,
+              "nodeMs": 15773.637875,
+              "alignedPageMs": 14479.878
+            },
+            {
+              "phase": "data",
+              "bytes": 7635,
+              "serial": 70,
+              "timestamp": 1240503.865836,
+              "nodeMs": 15773.639666,
+              "alignedPageMs": 14479.882
+            },
+            {
+              "phase": "data",
+              "bytes": 33617,
+              "serial": 71,
+              "timestamp": 1240503.865837,
+              "nodeMs": 15773.642166,
+              "alignedPageMs": 14479.883
+            },
+            {
+              "phase": "data",
+              "bytes": 11412,
+              "serial": 72,
+              "timestamp": 1240503.865837,
+              "nodeMs": 15773.643583,
+              "alignedPageMs": 14479.883
+            },
+            {
+              "phase": "data",
+              "bytes": 29572,
+              "serial": 73,
+              "timestamp": 1240503.865838,
+              "nodeMs": 15773.645,
+              "alignedPageMs": 14479.884
+            },
+            {
+              "phase": "data",
+              "bytes": 30711,
+              "serial": 74,
+              "timestamp": 1240503.86584,
+              "nodeMs": 15773.655916,
+              "alignedPageMs": 14479.886
+            },
+            {
+              "phase": "data",
+              "bytes": 9333,
+              "serial": 75,
+              "timestamp": 1240503.865841,
+              "nodeMs": 15773.658708,
+              "alignedPageMs": 14479.887
+            },
+            {
+              "phase": "data",
+              "bytes": 0,
+              "serial": 76,
+              "timestamp": 1240503.865858,
+              "nodeMs": 15773.660125,
+              "alignedPageMs": 14479.904
+            },
+            {
+              "phase": "finish",
+              "bytes": 48071,
+              "serial": 77,
+              "timestamp": 1240502.88348,
+              "nodeMs": 15773.669791,
+              "alignedPageMs": 13497.526
+            }
+          ]
+        }
+      ],
+      "/_astro/index.J7E9Px8p.js": [
+        {
+          "id": "6776.729",
+          "requestType": "Script",
+          "initiatorType": "script",
+          "initiatorFile": "client",
+          "events": [
+            {
+              "phase": "request",
+              "serial": 29,
+              "timestamp": 1240502.855726,
+              "nodeMs": 14763.640166,
+              "alignedPageMs": 13469.764
+            },
+            {
+              "phase": "response",
+              "status": 200,
+              "protocol": "http/1.1",
+              "mime": "text/javascript",
+              "serial": 45,
+              "timestamp": 1240503.865405,
+              "nodeMs": 15772.851791,
+              "alignedPageMs": 14479.443
+            },
+            {
+              "phase": "data",
+              "bytes": 90,
+              "serial": 46,
+              "timestamp": 1240503.865409,
+              "nodeMs": 15772.8825,
+              "alignedPageMs": 14479.447
+            },
+            {
+              "phase": "data",
+              "bytes": 0,
+              "serial": 47,
+              "timestamp": 1240503.865439,
+              "nodeMs": 15772.887,
+              "alignedPageMs": 14479.477
+            },
+            {
+              "phase": "finish",
+              "bytes": 410,
+              "serial": 48,
+              "timestamp": 1240502.864669,
+              "nodeMs": 15772.889083,
+              "alignedPageMs": 13478.707
+            }
+          ]
+        }
+      ],
+      "/_astro/index.BVKZFYvx.js": [
+        {
+          "id": "6776.730",
+          "requestType": "Script",
+          "initiatorType": "script",
+          "initiatorFile": "client",
+          "events": [
+            {
+              "phase": "request",
+              "serial": 30,
+              "timestamp": 1240502.855863,
+              "nodeMs": 14763.659125,
+              "alignedPageMs": 13469.898
+            },
+            {
+              "phase": "response",
+              "status": 200,
+              "protocol": "http/1.1",
+              "mime": "text/javascript",
+              "serial": 53,
+              "timestamp": 1240503.865544,
+              "nodeMs": 15773.2095,
+              "alignedPageMs": 14479.579
+            },
+            {
+              "phase": "data",
+              "bytes": 6901,
+              "serial": 54,
+              "timestamp": 1240503.865547,
+              "nodeMs": 15773.211208,
+              "alignedPageMs": 14479.582
+            },
+            {
+              "phase": "data",
+              "bytes": 0,
+              "serial": 55,
+              "timestamp": 1240503.865557,
+              "nodeMs": 15773.349708,
+              "alignedPageMs": 14479.592
+            },
+            {
+              "phase": "finish",
+              "bytes": 3127,
+              "serial": 56,
+              "timestamp": 1240502.874263,
+              "nodeMs": 15773.352541,
+              "alignedPageMs": 13488.298
+            }
+          ]
+        }
+      ],
+      "/_astro/index.C47PDzzu.js": [
+        {
+          "id": "6776.731",
+          "requestType": "Script",
+          "initiatorType": "script",
+          "initiatorFile": "client",
+          "events": [
+            {
+              "phase": "request",
+              "serial": 31,
+              "timestamp": 1240502.855982,
+              "nodeMs": 14763.662208,
+              "alignedPageMs": 13470.018
+            },
+            {
+              "phase": "response",
+              "status": 200,
+              "protocol": "http/1.1",
+              "mime": "text/javascript",
+              "serial": 41,
+              "timestamp": 1240503.865291,
+              "nodeMs": 15772.472833,
+              "alignedPageMs": 14479.327
+            },
+            {
+              "phase": "data",
+              "bytes": 471,
+              "serial": 42,
+              "timestamp": 1240503.865302,
+              "nodeMs": 15772.483958,
+              "alignedPageMs": 14479.338
+            },
+            {
+              "phase": "data",
+              "bytes": 0,
+              "serial": 43,
+              "timestamp": 1240503.865344,
+              "nodeMs": 15772.48825,
+              "alignedPageMs": 14479.38
+            },
+            {
+              "phase": "finish",
+              "bytes": 793,
+              "serial": 44,
+              "timestamp": 1240502.864522,
+              "nodeMs": 15772.49475,
+              "alignedPageMs": 13478.558
+            }
+          ]
+        }
+      ],
+      "/_astro/index.CWLepCMo.js": [
+        {
+          "id": "6776.732",
+          "requestType": "Script",
+          "initiatorType": "script",
+          "initiatorFile": "client",
+          "events": [
+            {
+              "phase": "request",
+              "serial": 32,
+              "timestamp": 1240502.856227,
+              "nodeMs": 14763.679458,
+              "alignedPageMs": 13470.261
+            },
+            {
+              "phase": "response",
+              "status": 200,
+              "protocol": "http/1.1",
+              "mime": "text/javascript",
+              "serial": 49,
+              "timestamp": 1240503.865486,
+              "nodeMs": 15773.085333,
+              "alignedPageMs": 14479.52
+            },
+            {
+              "phase": "data",
+              "bytes": 118,
+              "serial": 50,
+              "timestamp": 1240503.865489,
+              "nodeMs": 15773.200708,
+              "alignedPageMs": 14479.523
+            },
+            {
+              "phase": "data",
+              "bytes": 0,
+              "serial": 51,
+              "timestamp": 1240503.865504,
+              "nodeMs": 15773.205083,
+              "alignedPageMs": 14479.538
+            },
+            {
+              "phase": "finish",
+              "bytes": 440,
+              "serial": 52,
+              "timestamp": 1240502.864916,
+              "nodeMs": 15773.207625,
+              "alignedPageMs": 13478.95
+            }
+          ]
+        }
+      ],
+      "/_astro/index.D5ahegtX.js": [
+        {
+          "id": "6776.733",
+          "requestType": "Script",
+          "initiatorType": "script",
+          "initiatorFile": "client",
+          "events": [
+            {
+              "phase": "request",
+              "serial": 33,
+              "timestamp": 1240502.856343,
+              "nodeMs": 14763.682166,
+              "alignedPageMs": 13470.378
+            },
+            {
+              "phase": "response",
+              "status": 200,
+              "protocol": "http/1.1",
+              "mime": "text/javascript",
+              "serial": 78,
+              "timestamp": 1240503.866013,
+              "nodeMs": 15773.975708,
+              "alignedPageMs": 14480.048
+            },
+            {
+              "phase": "data",
+              "bytes": 8508,
+              "serial": 79,
+              "timestamp": 1240503.866015,
+              "nodeMs": 15773.978458,
+              "alignedPageMs": 14480.05
+            },
+            {
+              "phase": "data",
+              "bytes": 37379,
+              "serial": 80,
+              "timestamp": 1240503.866016,
+              "nodeMs": 15773.980125,
+              "alignedPageMs": 14480.051
+            },
+            {
+              "phase": "data",
+              "bytes": 17720,
+              "serial": 81,
+              "timestamp": 1240503.866016,
+              "nodeMs": 15773.981583,
+              "alignedPageMs": 14480.051
+            },
+            {
+              "phase": "data",
+              "bytes": 71041,
+              "serial": 82,
+              "timestamp": 1240503.866017,
+              "nodeMs": 15773.984333,
+              "alignedPageMs": 14480.052
+            },
+            {
+              "phase": "data",
+              "bytes": 0,
+              "serial": 83,
+              "timestamp": 1240503.866032,
+              "nodeMs": 15773.986083,
+              "alignedPageMs": 14480.067
+            },
+            {
+              "phase": "finish",
+              "bytes": 43612,
+              "serial": 84,
+              "timestamp": 1240502.884107,
+              "nodeMs": 15773.987625,
+              "alignedPageMs": 13498.142
+            }
+          ]
+        }
+      ],
+      "/_astro/index.CDDwQV5v.js": [
+        {
+          "id": "6776.734",
+          "requestType": "Script",
+          "initiatorType": "script",
+          "initiatorFile": "client",
+          "events": [
+            {
+              "phase": "request",
+              "serial": 34,
+              "timestamp": 1240502.856455,
+              "nodeMs": 14763.696916,
+              "alignedPageMs": 13470.49
+            },
+            {
+              "phase": "response",
+              "status": 200,
+              "protocol": "http/1.1",
+              "mime": "text/javascript",
+              "serial": 57,
+              "timestamp": 1240503.865596,
+              "nodeMs": 15773.354416,
+              "alignedPageMs": 14479.631
+            },
+            {
+              "phase": "data",
+              "bytes": 504,
+              "serial": 58,
+              "timestamp": 1240503.865599,
+              "nodeMs": 15773.404333,
+              "alignedPageMs": 14479.634
+            },
+            {
+              "phase": "data",
+              "bytes": 0,
+              "serial": 59,
+              "timestamp": 1240503.865629,
+              "nodeMs": 15773.406083,
+              "alignedPageMs": 14479.664
+            },
+            {
+              "phase": "finish",
+              "bytes": 826,
+              "serial": 60,
+              "timestamp": 1240502.874495,
+              "nodeMs": 15773.407666,
+              "alignedPageMs": 13488.53
+            }
+          ]
+        }
+      ],
+      "/_astro/client.CwoxijIM.js": [
+        {
+          "id": "6776.735",
+          "requestType": "Script",
+          "initiatorType": "script",
+          "initiatorFile": "client",
+          "events": [
+            {
+              "phase": "request",
+              "serial": 35,
+              "timestamp": 1240502.856692,
+              "nodeMs": 14763.699625,
+              "alignedPageMs": 13470.727
+            },
+            {
+              "phase": "response",
+              "status": 200,
+              "protocol": "http/1.1",
+              "mime": "text/javascript",
+              "serial": 61,
+              "timestamp": 1240503.865678,
+              "nodeMs": 15773.428375,
+              "alignedPageMs": 14479.713
+            },
+            {
+              "phase": "data",
+              "bytes": 119,
+              "serial": 62,
+              "timestamp": 1240503.865681,
+              "nodeMs": 15773.430083,
+              "alignedPageMs": 14479.716
+            },
+            {
+              "phase": "data",
+              "bytes": 0,
+              "serial": 63,
+              "timestamp": 1240503.865692,
+              "nodeMs": 15773.433333,
+              "alignedPageMs": 14479.727
+            },
+            {
+              "phase": "finish",
+              "bytes": 441,
+              "serial": 64,
+              "timestamp": 1240502.874776,
+              "nodeMs": 15773.43475,
+              "alignedPageMs": 13488.811
+            }
+          ]
+        }
+      ],
+      "/_astro/client.nHzutAOZ.js": [
+        {
+          "id": "6776.736",
+          "requestType": "Script",
+          "initiatorType": "script",
+          "initiatorFile": "client",
+          "events": [
+            {
+              "phase": "request",
+              "serial": 36,
+              "timestamp": 1240502.856806,
+              "nodeMs": 14763.718958,
+              "alignedPageMs": 13470.841
+            },
+            {
+              "phase": "response",
+              "status": 200,
+              "protocol": "http/1.1",
+              "mime": "text/javascript",
+              "serial": 65,
+              "timestamp": 1240503.865727,
+              "nodeMs": 15773.494208,
+              "alignedPageMs": 14479.762
+            },
+            {
+              "phase": "data",
+              "bytes": 619,
+              "serial": 66,
+              "timestamp": 1240503.86573,
+              "nodeMs": 15773.496125,
+              "alignedPageMs": 14479.765
+            },
+            {
+              "phase": "data",
+              "bytes": 0,
+              "serial": 67,
+              "timestamp": 1240503.865739,
+              "nodeMs": 15773.497541,
+              "alignedPageMs": 14479.774
+            },
+            {
+              "phase": "finish",
+              "bytes": 941,
+              "serial": 68,
+              "timestamp": 1240502.876484,
+              "nodeMs": 15773.498958,
+              "alignedPageMs": 13490.519
+            }
+          ]
+        }
+      ]
+    },
+    "rawSHA256": "bfa73d33021c0ef80c21f6ddc8552c4957b5f5161826f4f01d2e00b1557a88b8",
+    "clockMapping": "Each CDP request wallTime anchors its monotonic timestamps to document performance.timeOrigin."
+  }
+}
