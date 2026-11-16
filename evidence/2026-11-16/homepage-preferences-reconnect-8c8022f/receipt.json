@@ -1,0 +1,431 @@
+{
+  "head": "8c8022faea58a606de7a2584d92887f44ab0f6f3",
+  "tree": "881bff8b8ec672d7dc0aea8bffbbce555a7c63fc",
+  "testedParent": "124d9b4582f64b419420baefa5d56875ea1725ac",
+  "testedCssSha256": "fe81118561d4d78a1279f831fbdad725d06bcb118dc621b1002a4df55701f427",
+  "chrome": "156.0.8078.79",
+  "firstBaselineEvents": [
+    {
+      "kind": "armed",
+      "count": 1,
+      "at": 0.10000014305114746,
+      "viewport": 390,
+      "trigger": [340, 44]
+    },
+    {
+      "kind": "size-conflict",
+      "count": 2,
+      "at": 40.700000047683716,
+      "control": "family",
+      "reference": [120, 44],
+      "row": [120, 44],
+      "scroll": [142, 44],
+      "client": [120, 44],
+      "label": "Bootstrap 2.3.2 · WIP",
+      "compactParent": true
+    },
+    {
+      "kind": "phase",
+      "count": 3,
+      "at": 41.10000014305115,
+      "from": "valid",
+      "to": "geometry-unavailable",
+      "reason": "select.geometry.size-conflict",
+      "request": 2,
+      "structureVersion": 17,
+      "settled": true,
+      "mounted": true,
+      "root": "pui-select-7"
+    },
+    {
+      "kind": "unmount",
+      "count": 4,
+      "at": 46.90000009536743,
+      "phase": "geometry-unavailable",
+      "diagnostic": "select.geometry.size-conflict",
+      "request": 2,
+      "structureVersion": 17
+    },
+    {
+      "kind": "phase",
+      "count": 5,
+      "at": 48.200000047683716,
+      "from": "geometry-unavailable",
+      "to": "structure-invalid",
+      "reason": "select.structure.missing-or-ambiguous-parts",
+      "request": 4,
+      "structureVersion": 18,
+      "settled": true,
+      "mounted": false,
+      "root": "pui-select-7"
+    }
+  ],
+  "native": {
+    "passed": 6,
+    "failed": 0,
+    "unselected": 9,
+    "sha256": "1ac05c7c2c3602c7ed1f7dea86c1bade2b11612d9a334ed64fbc76495f8b42fe"
+  },
+  "leaseSnapshots": {
+    "shadcn": [
+      {
+        "stage": "wc-family-desktop",
+        "facts": {
+          "sameRoot": true,
+          "sameTrigger": true,
+          "connected": true,
+          "visible": true,
+          "expectedLocation": true,
+          "generation": "1",
+          "generationRetained": true,
+          "coordinatesRetained": true,
+          "selectionRetained": true,
+          "publicStateIdentityRetained": true,
+          "focusRetained": true,
+          "portalRetained": true,
+          "selectedOptionRetained": true,
+          "portalId": "pui-select-3-content",
+          "text": "Shadcn",
+          "value": "shadcn"
+        }
+      },
+      {
+        "stage": "wc-family-mobile-return",
+        "facts": {
+          "sameRoot": true,
+          "sameTrigger": true,
+          "connected": true,
+          "visible": true,
+          "expectedLocation": true,
+          "generation": "1",
+          "generationRetained": true,
+          "coordinatesRetained": true,
+          "selectionRetained": true,
+          "publicStateIdentityRetained": true,
+          "focusRetained": true,
+          "portalRetained": true,
+          "selectedOptionRetained": true,
+          "portalId": "pui-select-3-content",
+          "text": "Shadcn",
+          "value": "shadcn"
+        }
+      },
+      {
+        "stage": "react-family-desktop",
+        "facts": {
+          "sameRoot": true,
+          "sameTrigger": true,
+          "connected": true,
+          "visible": true,
+          "expectedLocation": true,
+          "generation": "2",
+          "generationRetained": true,
+          "coordinatesRetained": true,
+          "selectionRetained": true,
+          "publicStateIdentityRetained": true,
+          "focusRetained": true,
+          "portalRetained": true,
+          "selectedOptionRetained": true,
+          "portalId": "pui-select-7-content",
+          "text": "Shadcn",
+          "value": null
+        }
+      },
+      {
+        "stage": "react-family-mobile-return",
+        "facts": {
+          "sameRoot": true,
+          "sameTrigger": true,
+          "connected": true,
+          "visible": true,
+          "expectedLocation": true,
+          "generation": "2",
+          "generationRetained": true,
+          "coordinatesRetained": true,
+          "selectionRetained": true,
+          "publicStateIdentityRetained": true,
+          "focusRetained": true,
+          "portalRetained": true,
+          "selectedOptionRetained": true,
+          "portalId": "pui-select-7-content",
+          "text": "Shadcn",
+          "value": null
+        }
+      },
+      {
+        "stage": "vue-family-desktop",
+        "facts": {
+          "sameRoot": true,
+          "sameTrigger": true,
+          "connected": true,
+          "visible": true,
+          "expectedLocation": true,
+          "generation": "3",
+          "generationRetained": true,
+          "coordinatesRetained": true,
+          "selectionRetained": true,
+          "publicStateIdentityRetained": true,
+          "focusRetained": true,
+          "portalRetained": true,
+          "selectedOptionRetained": true,
+          "portalId": "pui-select-11-content",
+          "text": "Shadcn",
+          "value": null
+        }
+      },
+      {
+        "stage": "vue-family-mobile-return",
+        "facts": {
+          "sameRoot": true,
+          "sameTrigger": true,
+          "connected": true,
+          "visible": true,
+          "expectedLocation": true,
+          "generation": "3",
+          "generationRetained": true,
+          "coordinatesRetained": true,
+          "selectionRetained": true,
+          "publicStateIdentityRetained": true,
+          "focusRetained": true,
+          "portalRetained": true,
+          "selectedOptionRetained": true,
+          "portalId": "pui-select-11-content",
+          "text": "Shadcn",
+          "value": null
+        }
+      },
+      {
+        "stage": "vue2-family-desktop",
+        "facts": {
+          "sameRoot": true,
+          "sameTrigger": true,
+          "connected": true,
+          "visible": true,
+          "expectedLocation": true,
+          "generation": "4",
+          "generationRetained": true,
+          "coordinatesRetained": true,
+          "selectionRetained": true,
+          "publicStateIdentityRetained": true,
+          "focusRetained": true,
+          "portalRetained": true,
+          "selectedOptionRetained": true,
+          "portalId": "pui-select-15-content",
+          "text": "Shadcn",
+          "value": null
+        }
+      },
+      {
+        "stage": "vue2-family-mobile-return",
+        "facts": {
+          "sameRoot": true,
+          "sameTrigger": true,
+          "connected": true,
+          "visible": true,
+          "expectedLocation": true,
+          "generation": "4",
+          "generationRetained": true,
+          "coordinatesRetained": true,
+          "selectionRetained": true,
+          "publicStateIdentityRetained": true,
+          "focusRetained": true,
+          "portalRetained": true,
+          "selectedOptionRetained": true,
+          "portalId": "pui-select-15-content",
+          "text": "Shadcn",
+          "value": null
+        }
+      }
+    ],
+    "brutalist": [
+      {
+        "stage": "wc-family-desktop",
+        "facts": {
+          "sameRoot": true,
+          "sameTrigger": true,
+          "connected": true,
+          "visible": true,
+          "expectedLocation": true,
+          "generation": "2",
+          "generationRetained": true,
+          "coordinatesRetained": true,
+          "selectionRetained": true,
+          "publicStateIdentityRetained": true,
+          "focusRetained": true,
+          "portalRetained": true,
+          "selectedOptionRetained": true,
+          "portalId": "pui-select-7-content",
+          "text": "Brutalist",
+          "value": "brutalist"
+        }
+      },
+      {
+        "stage": "wc-family-mobile-return",
+        "facts": {
+          "sameRoot": true,
+          "sameTrigger": true,
+          "connected": true,
+          "visible": true,
+          "expectedLocation": true,
+          "generation": "2",
+          "generationRetained": true,
+          "coordinatesRetained": true,
+          "selectionRetained": true,
+          "publicStateIdentityRetained": true,
+          "focusRetained": true,
+          "portalRetained": true,
+          "selectedOptionRetained": true,
+          "portalId": "pui-select-7-content",
+          "text": "Brutalist",
+          "value": "brutalist"
+        }
+      },
+      {
+        "stage": "react-family-desktop",
+        "facts": {
+          "sameRoot": true,
+          "sameTrigger": true,
+          "connected": true,
+          "visible": true,
+          "expectedLocation": true,
+          "generation": "3",
+          "generationRetained": true,
+          "coordinatesRetained": true,
+          "selectionRetained": true,
+          "publicStateIdentityRetained": true,
+          "focusRetained": true,
+          "portalRetained": true,
+          "selectedOptionRetained": true,
+          "portalId": "pui-select-11-content",
+          "text": "Brutalist",
+          "value": null
+        }
+      },
+      {
+        "stage": "react-family-mobile-return",
+        "facts": {
+          "sameRoot": true,
+          "sameTrigger": true,
+          "connected": true,
+          "visible": true,
+          "expectedLocation": true,
+          "generation": "3",
+          "generationRetained": true,
+          "coordinatesRetained": true,
+          "selectionRetained": true,
+          "publicStateIdentityRetained": true,
+          "focusRetained": true,
+          "portalRetained": true,
+          "selectedOptionRetained": true,
+          "portalId": "pui-select-11-content",
+          "text": "Brutalist",
+          "value": null
+        }
+      },
+      {
+        "stage": "vue-family-desktop",
+        "facts": {
+          "sameRoot": true,
+          "sameTrigger": true,
+          "connected": true,
+          "visible": true,
+          "expectedLocation": true,
+          "generation": "4",
+          "generationRetained": true,
+          "coordinatesRetained": true,
+          "selectionRetained": true,
+          "publicStateIdentityRetained": true,
+          "focusRetained": true,
+          "portalRetained": true,
+          "selectedOptionRetained": true,
+          "portalId": "pui-select-15-content",
+          "text": "Brutalist",
+          "value": null
+        }
+      },
+      {
+        "stage": "vue-family-mobile-return",
+        "facts": {
+          "sameRoot": true,
+          "sameTrigger": true,
+          "connected": true,
+          "visible": true,
+          "expectedLocation": true,
+          "generation": "4",
+          "generationRetained": true,
+          "coordinatesRetained": true,
+          "selectionRetained": true,
+          "publicStateIdentityRetained": true,
+          "focusRetained": true,
+          "portalRetained": true,
+          "selectedOptionRetained": true,
+          "portalId": "pui-select-15-content",
+          "text": "Brutalist",
+          "value": null
+        }
+      },
+      {
+        "stage": "vue2-family-desktop",
+        "facts": {
+          "sameRoot": true,
+          "sameTrigger": true,
+          "connected": true,
+          "visible": true,
+          "expectedLocation": true,
+          "generation": "5",
+          "generationRetained": true,
+          "coordinatesRetained": true,
+          "selectionRetained": true,
+          "publicStateIdentityRetained": true,
+          "focusRetained": true,
+          "portalRetained": true,
+          "selectedOptionRetained": true,
+          "portalId": "pui-select-19-content",
+          "text": "Brutalist",
+          "value": null
+        }
+      },
+      {
+        "stage": "vue2-family-mobile-return",
+        "facts": {
+          "sameRoot": true,
+          "sameTrigger": true,
+          "connected": true,
+          "visible": true,
+          "expectedLocation": true,
+          "generation": "5",
+          "generationRetained": true,
+          "coordinatesRetained": true,
+          "selectionRetained": true,
+          "publicStateIdentityRetained": true,
+          "focusRetained": true,
+          "portalRetained": true,
+          "selectedOptionRetained": true,
+          "portalId": "pui-select-19-content",
+          "text": "Brutalist",
+          "value": null
+        }
+      }
+    ]
+  },
+  "combinedSource": {
+    "base": "f69d5969414b4e22c7748c7c8cfdc5ff2218667c",
+    "widthAndReconnect": "8c8022faea58a606de7a2584d92887f44ab0f6f3",
+    "portalSeal": "65eb442e8113b04353e2d5fb973654eb7500dcaf",
+    "splashFixture": "f0db1cb1e6a3557eeddfe96f03850d500a805b45",
+    "tree": "61056a2b7f124f475e6480697b50220418b8b502",
+    "head": "090d99a41e3606a03830215fa0d09f48df688225"
+  },
+  "combinedUnit": {
+    "passed": 163,
+    "failed": 0,
+    "unselected": 0,
+    "sha256": "6ae9b80efcd6016c40b0e3f7d7def13e581934ec2e3f951c82450889eba3cc3c"
+  },
+  "combinedBrowser": {
+    "passed": 9,
+    "failed": 0,
+    "unselected": 6,
+    "sha256": "5469e71fb1340cdd6aa6f43373906a5bca896f9c732deb4f27f092c88ae2e10f"
+  }
+}
