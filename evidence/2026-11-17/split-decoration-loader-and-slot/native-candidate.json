@@ -1,0 +1,24 @@
+{
+  "status": "passed",
+  "chrome": "156.0.8078.79",
+  "cases": [
+    {
+      "duringPublication": true,
+      "observed": true,
+      "rootRetained": true,
+      "slot": "other",
+      "text": "Caller content",
+      "assignedAfter": null,
+      "errors": ["[WC Adapter] decoration caller projection changed"]
+    },
+    {
+      "duringPublication": false,
+      "initiallyAssigned": true,
+      "updateError": null,
+      "rootRetained": true,
+      "slot": "other",
+      "assignedAfter": 0,
+      "errors": []
+    }
+  ]
+}

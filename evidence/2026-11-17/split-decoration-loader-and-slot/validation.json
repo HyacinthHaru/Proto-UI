@@ -1,0 +1,291 @@
+{
+  "candidate": {
+    "head": "1fac3bf39c73d9df060e3d40f8e3b2489d1b79dc",
+    "tree": "a2aa5aaa178c956f5cb87a49134dee5cde2aa33d",
+    "beforeHead": "70e81458ff802c8dc284439321cc55550766c414",
+    "executedFileSHA256": [
+      {
+        "path": "packages/adapters/web-component/src/runtime/session.ts",
+        "sha256": "1d19c48ab7a5c8c54d0cef65a40dbc9cc9589a31331ae19115a237a001f27ba0"
+      },
+      {
+        "path": "packages/adapters/web-component/test/owned-decoration.integration.test.ts",
+        "sha256": "126e6df7377783c9cdf9ff53afc1138d2c2c4f9e407e6873f77bf5f3e65c1fe0"
+      },
+      {
+        "path": "packages/cli/src/services/hook-source-module.ts",
+        "sha256": "17c061cf119aabf2b7cd3b5012fdb8381f0b7396717606b7fb9d8aaadf575c16"
+      },
+      {
+        "path": "packages/cli/src/services/hook-source-summary.ts",
+        "sha256": "9b34176516a34cf76e88a7282663f6613d29842ee88a78aa04d763bb6ada0421"
+      },
+      {
+        "path": "packages/cli/src/services/prototype-style-tokens.ts",
+        "sha256": "98c48060a948657e888b4c3783d9466936616f1b1f3dfc7646dea49cfec89d78"
+      },
+      {
+        "path": "packages/cli/test/shadow-template-style.test.ts",
+        "sha256": "0723f0b0be5d32d4817fad66ca53715e7b1734637fe78b09d89977f1f797a572"
+      }
+    ],
+    "focusedBaseline": {
+      "exit": 1,
+      "counts": "Tests  5 failed | 139 passed (144)",
+      "failures": [
+        "packages/cli/test/shadow-template-style.test.ts > source-scanned Shadow Template/Root separation > classifies targeted paint from an aliased canonical prototype factory",
+        "packages/cli/test/shadow-template-style.test.ts > source-scanned Shadow Template/Root separation > identifies a verified decoration helper receiver after its options argument",
+        "packages/cli/test/shadow-template-style.test.ts > source-scanned Shadow Template/Root separation > retains preflight for a dynamically imported helper escape",
+        "packages/cli/test/shadow-template-style.test.ts > source-scanned Shadow Template/Root separation > retains preflight for a dynamically imported helper escape",
+        "packages/adapters/web-component/test/owned-decoration.integration.test.ts > draft owned decoration through actual WC / Rule / feedback > rejects a split connection reaction that resets caller slot assignment in place"
+      ],
+      "logSHA256": "28716fc6bdcf2a397b9fb0598fcc218987beadee9e546e6ce5951ce3af895d16"
+    },
+    "focusedCandidate": {
+      "exit": 0,
+      "counts": "Tests  144 passed (144)",
+      "failures": [],
+      "logSHA256": "fff9ea60bc7640952caea9d05bb5fdec91a12e2aee56ed5dcfe6da3324c5f106"
+    },
+    "workspaceTypes": {
+      "exit": 0,
+      "logSHA256": "1e14fa87e413ec8ef9585ae214d5f036450d3cc636c31a34c01c2346df2a4d42"
+    }
+  },
+  "composition": {
+    "head": "aec024e168a3297d3cbcf7abf6d4fbcfead7f638",
+    "tree": "41c7e215d4e56c417d31e593af2b67eec2f3edfb",
+    "parents": [
+      "856a1ab4fdc7aee1aafa9546a701fa3fb5e1161c",
+      "1fac3bf39c73d9df060e3d40f8e3b2489d1b79dc"
+    ],
+    "packages": {
+      "built": 47,
+      "exit": 0,
+      "logSHA256": "b890ce63e6e30ceee396bc3d5bb63a2a4b4e1ee4c9b1c2ace8247879e7c94bf7"
+    },
+    "dialogSource": {
+      "exit": 0,
+      "logSHA256": "3afb360640adda58e8560d7b11d4a61b86db6aab25be4157f91838499f0c1246",
+      "result": [
+        {
+          "profile": "light",
+          "requests": 15,
+          "counts": {
+            "root": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "trigger": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "mask": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "content": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "title": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "description": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "close": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "icon": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "header": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "footer": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            }
+          }
+        },
+        {
+          "profile": "split",
+          "requests": 15,
+          "counts": {
+            "root": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "trigger": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "mask": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "content": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "title": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "description": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "close": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "icon": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "header": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "footer": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            }
+          }
+        },
+        {
+          "profile": "mixed",
+          "requests": 15,
+          "counts": {
+            "root": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "trigger": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "mask": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "content": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "title": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "description": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "close": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "icon": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "header": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "footer": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            }
+          }
+        }
+      ],
+      "errors": [],
+      "chrome": "156.0.8078.79"
+    },
+    "dialogDist": {
+      "exit": 0,
+      "logSHA256": "05bbf2e5a0e32d720dc2e79049267ceda9e847a1e30c357aa33f9479ce115907",
+      "requests": 15,
+      "chrome": "156.0.8078.79"
+    }
+  },
+  "nativeSlotComparison": {
+    "baseline": "856a1ab4fdc7aee1aafa9546a701fa3fb5e1161c",
+    "candidate": "aec024e168a3297d3cbcf7abf6d4fbcfead7f638",
+    "nativeInputSHA256": [
+      "b678f3a8a4924cb389f302470b6bc0275078c1644549c0c54fc64d4a83b44428",
+      "b3a4f425111a778ff2e153203209295fd0df082fc95db5e0cbae71137d5419cd",
+      "387b7e6fc7270df16dd3ada968c564e90dbd287c596a703f82c9cd81b99a8a04",
+      "530fee4d5ed30333aac526bc758c14d4b32dcac07782cf8c609018cf979405ce"
+    ],
+    "inputOrder": ["fixture", "shadow style artifact", "local route", "runner"]
+  }
+}

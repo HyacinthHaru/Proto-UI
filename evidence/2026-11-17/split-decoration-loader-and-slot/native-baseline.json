@@ -1,0 +1,25 @@
+{
+  "status": "failed",
+  "chrome": "156.0.8078.79",
+  "cases": [
+    {
+      "duringPublication": true,
+      "observed": true,
+      "rootRetained": true,
+      "slot": "other",
+      "text": "Caller content",
+      "assignedAfter": 0,
+      "errors": []
+    },
+    {
+      "duringPublication": false,
+      "initiallyAssigned": true,
+      "updateError": null,
+      "rootRetained": true,
+      "slot": "other",
+      "assignedAfter": 0,
+      "errors": []
+    }
+  ],
+  "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok((publication.errors as string[]).some(error => error.includes('decoration caller projection changed')))\n"
+}
