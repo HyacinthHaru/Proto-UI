@@ -1,0 +1,392 @@
+{
+  "source": {
+    "head": "5d4f911370ca5e9cb4e4a17f20eca0b1945d6862",
+    "tree": "84b1020b1d8fdd3511e6f9d4215aad6fa94bf83b",
+    "parents": [
+      "621355701553eb1bded8537b0ae5a1881038d61f",
+      "624b878c166658ee99f798eaba2ee6b20f1a6bd5"
+    ],
+    "suiteOverlaySHA256": "a6bfb3fa4bd6c914e9108effba49ea75b5ab10a1f58aef86991ba6402946caf8",
+    "observerSHA256": "b56ec096f72172a42e3f9d05275c82802c641e1fec5574d841a9b17defcc91e6",
+    "htmlSHA256": "9e397ace2d4a9af31b295ea4e4c40d2e1e62ffd6505d4240110dfc2c91fbc7a4"
+  },
+  "environment": {
+    "node": "v24.21.0",
+    "pnpm": "10.32.1",
+    "chrome": "Google Chrome for Testing 156.0.8078.79",
+    "workers": 1
+  },
+  "limits": {
+    "browserSamplerIntervalMs": 2000,
+    "readinessMs": 60000,
+    "outerMs": 150000,
+    "browserSamplerStopMs": 100000,
+    "browserSamplerMaxSamples": 52
+  },
+  "test": {
+    "exit": 1,
+    "reportedFailure": "page.waitForFunction: Timeout 60000ms exceeded.",
+    "verdict": {
+      "startupPassed": false,
+      "errors": [],
+      "consoleErrors": [],
+      "collectionOutcome": "budget-expired",
+      "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684"
+    },
+    "startupChange": null
+  },
+  "phases": [
+    {
+      "locale": "zh-cn",
+      "phase": "init-script",
+      "outcome": "begin",
+      "nodeMs": 1356.449458,
+      "nodeTimeOrigin": 1794870093893.92,
+      "dateNow": 1794870095250
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "init-script",
+      "outcome": "return",
+      "nodeMs": 1357.23725,
+      "nodeTimeOrigin": 1794870093893.92,
+      "dateNow": 1794870095251
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "goto",
+      "outcome": "begin",
+      "nodeMs": 1357.258708,
+      "nodeTimeOrigin": 1794870093893.92,
+      "dateNow": 1794870095251
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "goto",
+      "outcome": "return",
+      "nodeMs": 14359.661417,
+      "nodeTimeOrigin": 1794870093893.92,
+      "dateNow": 1794870108253
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "startup-wait",
+      "outcome": "begin",
+      "nodeMs": 14359.878,
+      "nodeTimeOrigin": 1794870093893.92,
+      "dateNow": 1794870108253
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "startup-wait",
+      "outcome": "error",
+      "nodeMs": 74363.232833,
+      "nodeTimeOrigin": 1794870093893.92,
+      "dateNow": 1794870168257
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "context-close",
+      "outcome": "begin",
+      "nodeMs": 76444.902083,
+      "nodeTimeOrigin": 1794870093893.92,
+      "dateNow": 1794870170338
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "context-close",
+      "outcome": "return",
+      "nodeMs": 76968.844667,
+      "nodeTimeOrigin": 1794870093893.92,
+      "dateNow": 1794870170862
+    }
+  ],
+  "samples": [
+    {
+      "browser": {
+        "pageMs": 5570.699999809265,
+        "dateNow": 1794870100823,
+        "timeOrigin": 1794870095252.4,
+        "sequence": 1,
+        "previousMs": null,
+        "observedCount": 1268,
+        "firstMissing": {
+          "index": 0,
+          "inited": null,
+          "children": null,
+          "owner": "pp-o26223tgir",
+          "demoId": "demo-base-accordion",
+          "prototypeId": "",
+          "initialRuntime": "wc",
+          "startupPending": null
+        }
+      },
+      "node": {
+        "phase": "goto",
+        "dateNow": 1794870100823,
+        "receivedNodeMs": 6929.611917
+      }
+    },
+    {
+      "browser": {
+        "pageMs": 12445.299999952316,
+        "dateNow": 1794870107698,
+        "timeOrigin": 1794870095252.4,
+        "sequence": 2,
+        "previousMs": 5570.699999809265,
+        "observedCount": 1268,
+        "firstMissing": {
+          "index": 0,
+          "inited": "1",
+          "children": 0,
+          "owner": "pp-o26223tgir",
+          "demoId": "demo-base-accordion",
+          "prototypeId": "",
+          "initialRuntime": "wc",
+          "startupPending": true
+        }
+      },
+      "node": {
+        "phase": "goto",
+        "dateNow": 1794870107699,
+        "receivedNodeMs": 13805.150208
+      }
+    },
+    {
+      "browser": {
+        "pageMs": 34561.89999985695,
+        "dateNow": 1794870129814,
+        "timeOrigin": 1794870095252.4,
+        "sequence": 3,
+        "previousMs": 12445.299999952316,
+        "observedCount": 1268,
+        "firstMissing": {
+          "index": 0,
+          "inited": "1",
+          "children": 0,
+          "owner": "pp-o26223tgir",
+          "demoId": "demo-base-accordion",
+          "prototypeId": "",
+          "initialRuntime": "wc",
+          "startupPending": true
+        }
+      },
+      "node": {
+        "phase": "startup-wait",
+        "dateNow": 1794870129816,
+        "receivedNodeMs": 35922.309542
+      }
+    }
+  ],
+  "runtimeMarkers": [
+    {
+      "stage": "early-warm-start",
+      "pageMs": 5570.299999952316,
+      "timeOrigin": 1794870095252.4,
+      "receivedNodeMs": 6929.045917
+    },
+    {
+      "stage": "early-vue-warm-start",
+      "pageMs": 5570.599999904633,
+      "timeOrigin": 1794870095252.4,
+      "receivedNodeMs": 6929.24725
+    },
+    {
+      "stage": "vue-owner-demo-import-begin",
+      "owner": "pp-c8jfidky18g",
+      "pageMs": 10811.199999809265,
+      "timeOrigin": 1794870095252.4,
+      "children": 0,
+      "receivedNodeMs": 12170.129583
+    },
+    {
+      "stage": "demo-import-begin",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 12398.699999809265,
+      "timeOrigin": 1794870095252.4,
+      "children": 0,
+      "receivedNodeMs": 13757.646375
+    },
+    {
+      "stage": "vue-adapter-import-begin",
+      "pageMs": 12478.399999856949,
+      "timeOrigin": 1794870095252.4,
+      "receivedNodeMs": 13837.640417
+    },
+    {
+      "stage": "vue-wrapper-import-begin",
+      "pageMs": 12479,
+      "timeOrigin": 1794870095252.4,
+      "receivedNodeMs": 13837.774875
+    },
+    {
+      "stage": "adapter-react-import-begin",
+      "pageMs": 12480,
+      "timeOrigin": 1794870095252.4,
+      "receivedNodeMs": 13839.182083
+    },
+    {
+      "stage": "react-runtime-wrapper-import-begin",
+      "pageMs": 12480.399999856949,
+      "timeOrigin": 1794870095252.4,
+      "receivedNodeMs": 13839.497917
+    },
+    {
+      "stage": "early-vue-wrapper-return",
+      "pageMs": 12985.599999904633,
+      "timeOrigin": 1794870095252.4,
+      "receivedNodeMs": 14344.329208
+    },
+    {
+      "stage": "vue-import-begin",
+      "pageMs": 12985.599999904633,
+      "timeOrigin": 1794870095252.4,
+      "receivedNodeMs": 14344.4895
+    },
+    {
+      "stage": "vue-native-import-dispatch",
+      "pageMs": 12985.699999809265,
+      "timeOrigin": 1794870095252.4,
+      "receivedNodeMs": 14344.522458
+    },
+    {
+      "stage": "early-wrapper-return",
+      "pageMs": 12985.899999856949,
+      "timeOrigin": 1794870095252.4,
+      "receivedNodeMs": 14344.711042
+    },
+    {
+      "stage": "react-import-begin",
+      "pageMs": 12986,
+      "timeOrigin": 1794870095252.4,
+      "receivedNodeMs": 14344.728083
+    },
+    {
+      "stage": "react-dom-import-begin",
+      "pageMs": 12986.599999904633,
+      "timeOrigin": 1794870095252.4,
+      "receivedNodeMs": 14345.543333
+    },
+    {
+      "stage": "react-dom/client-import-begin",
+      "pageMs": 12987.199999809265,
+      "timeOrigin": 1794870095252.4,
+      "receivedNodeMs": 14345.888917
+    },
+    {
+      "stage": "demo-import-return",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 13295.099999904633,
+      "timeOrigin": 1794870095252.4,
+      "children": 0,
+      "receivedNodeMs": 14654.150458
+    },
+    {
+      "stage": "prototype-imports-begin",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 13295.099999904633,
+      "timeOrigin": 1794870095252.4,
+      "children": 0,
+      "details": [
+        "base-accordion-root",
+        "base-accordion-item",
+        "base-accordion-heading",
+        "base-accordion-trigger",
+        "base-accordion-content",
+        "base-button"
+      ],
+      "receivedNodeMs": 14654.375625
+    },
+    {
+      "stage": "vue-owner-demo-import-return",
+      "owner": "pp-c8jfidky18g",
+      "pageMs": 13295.099999904633,
+      "timeOrigin": 1794870095252.4,
+      "children": 0,
+      "receivedNodeMs": 14654.43
+    },
+    {
+      "stage": "vue-owner-prototype-imports-begin",
+      "owner": "pp-c8jfidky18g",
+      "pageMs": 13295.199999809265,
+      "timeOrigin": 1794870095252.4,
+      "children": 0,
+      "details": [
+        "base-accordion-root",
+        "base-accordion-item",
+        "base-accordion-heading",
+        "base-accordion-trigger",
+        "base-accordion-content",
+        "base-button"
+      ],
+      "receivedNodeMs": 14654.681333
+    },
+    {
+      "stage": "vue-wrapper-import-return",
+      "pageMs": 13979.899999856949,
+      "timeOrigin": 1794870095252.4,
+      "receivedNodeMs": 15339.244375
+    },
+    {
+      "stage": "react-runtime-wrapper-import-return",
+      "pageMs": 13980.099999904633,
+      "timeOrigin": 1794870095252.4,
+      "receivedNodeMs": 15339.634875
+    },
+    {
+      "stage": "vue-adapter-import-return",
+      "pageMs": 14825,
+      "timeOrigin": 1794870095252.4,
+      "receivedNodeMs": 16183.934875
+    },
+    {
+      "stage": "adapter-react-import-return",
+      "pageMs": 14825,
+      "timeOrigin": 1794870095252.4,
+      "receivedNodeMs": 16183.987875
+    },
+    {
+      "stage": "vue-import-return",
+      "pageMs": 15130.599999904633,
+      "timeOrigin": 1794870095252.4,
+      "receivedNodeMs": 16489.38675
+    },
+    {
+      "stage": "early-vue-runtime-return",
+      "pageMs": 15130.699999809265,
+      "timeOrigin": 1794870095252.4,
+      "receivedNodeMs": 16489.490417
+    },
+    {
+      "stage": "react-import-return",
+      "pageMs": 40905.699999809265,
+      "timeOrigin": 1794870095252.4,
+      "receivedNodeMs": 42265.126083
+    },
+    {
+      "stage": "react-dom-import-return",
+      "pageMs": 40908,
+      "timeOrigin": 1794870095252.4,
+      "receivedNodeMs": 42266.846833
+    },
+    {
+      "stage": "react-dom/client-import-return",
+      "pageMs": 40908.199999809265,
+      "timeOrigin": 1794870095252.4,
+      "receivedNodeMs": 42266.945792
+    },
+    {
+      "stage": "early-runtime-return",
+      "pageMs": 40908.39999985695,
+      "timeOrigin": 1794870095252.4,
+      "receivedNodeMs": 42267.035542
+    }
+  ],
+  "clocks": {
+    "realNodeWaitMs": 60003.355,
+    "browserMsAtNodeVerdictFromWallClock": 73004.6,
+    "gapFromLastBrowserSampleMs": 38442.7,
+    "interpretation": "The renderer sample cadence is requested, not guaranteed. Node wall-clock projection is approximate."
+  },
+  "nativeLogSHA256": "d66354d779fe02a24caebb865a912e67bfd7c67f2cfba03444d3000fece4ff16"
+}
