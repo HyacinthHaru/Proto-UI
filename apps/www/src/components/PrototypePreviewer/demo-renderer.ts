@@ -68,7 +68,13 @@ const vueModules = (canLoad: () => boolean = () => true) =>
     vueAdapter(),
     vueRuntime().then((runtime) => (canLoad() ? runtime.loadVue() : undefined)),
   ]);
-const vue2Modules = () => Promise.all([vue2Adapter(), vue2Runtime()]);
+const vue2Modules = (canLoad: () => boolean = () => true) =>
+  Promise.all([
+    vue2Adapter(),
+    vue2Runtime().then(
+      async (runtime) => [runtime, canLoad() ? await runtime.loadVue2() : undefined] as const
+    ),
+  ]);
 
 type PropsBaseType = Record<string, unknown>;
 
@@ -147,7 +153,7 @@ export async function prepareDemoRuntime(runtime: RuntimeId): Promise<void> {
       await vueModules();
       return;
     case 'vue2':
-      await (await vue2Modules())[1].loadVue2();
+      await vue2Modules();
       return;
     default:
       throw unsupportedRuntime(runtime);
@@ -1591,11 +1597,10 @@ async function renderDemoVue2(
   const refs: Record<string, HTMLElement> = Object.create(null);
   let stopRefObservation: (() => void) | undefined;
 
-  const [{ createVue2Adapter }, { loadVue2, toVue2ComponentData, toVue2Runtime }] =
-    await vue2Modules();
-  if (!ownsLease(opt, lease)) return abandonLease(lease);
-  const Vue = await loadVue2();
-  if (!ownsLease(opt, lease)) return abandonLease(lease);
+  const [{ createVue2Adapter }, [{ toVue2ComponentData, toVue2Runtime }, runtime]] =
+    await vue2Modules(() => ownsLease(opt, lease));
+  if (!runtime || !ownsLease(opt, lease)) return abandonLease(lease);
+  const Vue = runtime;
   const adapter = createVue2Adapter(toVue2Runtime(Vue));
 
   const componentRefs = new Map<string, DemoInstance>();

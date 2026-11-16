@@ -5,6 +5,7 @@ const loaded = vi.hoisted(() => vi.fn());
 const adapterImports = vi.hoisted(() => ({
   react: undefined as Promise<void> | undefined,
   vue: undefined as Promise<void> | undefined,
+  vue2: undefined as Promise<void> | undefined,
 }));
 vi.mock('@proto.ui/adapter-react', async () => {
   imported('react-adapter');
@@ -16,8 +17,9 @@ vi.mock('@proto.ui/adapter-vue', async () => {
   if (adapterImports.vue) await adapterImports.vue;
   return { createVueAdapter: vi.fn() };
 });
-vi.mock('@proto.ui/adapter-vue2', () => {
+vi.mock('@proto.ui/adapter-vue2', async () => {
   imported('vue2-adapter');
+  if (adapterImports.vue2) await adapterImports.vue2;
   return { createVue2Adapter: vi.fn() };
 });
 vi.mock('./runtimes/react-runtime', async (original) => {
@@ -86,8 +88,8 @@ describe('demo renderer runtime module activation', () => {
     async (runtime) => {
       const before = imported.mock.calls.length;
       const beforeLoad = loaded.mock.calls.length;
-      const gate = runtime !== 'vue2' ? Promise.withResolvers<void>() : undefined;
-      if (runtime !== 'vue2') adapterImports[runtime] = gate?.promise;
+      const gate = Promise.withResolvers<void>();
+      adapterImports[runtime] = gate.promise;
       // Three Search commands prepare concurrently. The asynchronous original
       // module acquisition must finish once before any consumer uses its loader.
       const hosts = Array.from({ length: 3 }, () => document.createElement('div'));
@@ -101,13 +103,12 @@ describe('demo renderer runtime module activation', () => {
       );
       const pending = Promise.allSettled(attempts);
       try {
-        if (gate)
-          await vi.waitFor(() =>
-            expect(loaded.mock.calls.slice(beforeLoad)).toEqual([[runtime], [runtime], [runtime]])
-          );
+        await vi.waitFor(() =>
+          expect(loaded.mock.calls.slice(beforeLoad)).toEqual([[runtime], [runtime], [runtime]])
+        );
       } finally {
-        gate?.resolve();
-        if (runtime !== 'vue2') adapterImports[runtime] = undefined;
+        gate.resolve();
+        adapterImports[runtime] = undefined;
         await pending;
       }
       for (const result of await pending) {
