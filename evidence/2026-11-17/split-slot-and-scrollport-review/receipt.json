@@ -1,0 +1,25 @@
+{
+  "commits": {
+    "slot": {
+      "head": "1ddddd9d68706d8411f94b44e53b205c6bd95121",
+      "tree": "75e545c8a0667cb1b1036ffef281ec6ab3b30bd7"
+    },
+    "scrollport": {
+      "head": "52c89701fec2a6afaa4cd341fafb707795901fc8",
+      "tree": "70c6a3bd0b5d82be14d66473e3c2e999bf211959"
+    }
+  },
+  "unit": {
+    "slotBaseline": "8fb2594cc5d456906aa9ac8b16912ade6d913888",
+    "baselineNewFailures": 2,
+    "focusedFilesPassed": 4,
+    "focusedTestsPassed": 51,
+    "workspaceTypes": "passed"
+  },
+  "signedSlotSourceSHA256": {
+    "packages/adapters/web-component/src/runtime/session.ts": "ba9baa5729adc7b44d65e6a619d64e53007657182386f8c68392f0ece714690b",
+    "packages/adapters/web-component/test/owned-decoration.integration.test.ts": "9e217d754578b42bc10f5242859453eabb598e3bd5dd2fecbb51e2bfd422a747"
+  },
+  "nativeScope": "Chrome 156.0.8078.79 on the two corrected source inputs, before commit. Executed via an isolated Astro verification route.",
+  "catalogScope": "Actual engine diffSpecSnapshots between 0.3.0-alpha.1 and 0.3.0-alpha.2. Both selected entities are reported as revised."
+}

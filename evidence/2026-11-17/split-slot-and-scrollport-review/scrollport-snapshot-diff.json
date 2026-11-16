@@ -1,0 +1,26 @@
+{
+  "from": "0.3.0-alpha.1",
+  "to": "0.3.0-alpha.2",
+  "revised": [
+    {
+      "id": "D-FEEDBACK-STYLE-ROLE-RESOLUTION-0001",
+      "revisions": [
+        {
+          "version": "0.3.0-alpha.2",
+          "change": "revised",
+          "summary": "Admitted the exact overflow-y-auto surface role for ordinary split Roots with a validated scrollport recipe."
+        }
+      ]
+    },
+    {
+      "id": "T-FEEDBACK-STYLE-ROLE-RESOLUTION-0001",
+      "revisions": [
+        {
+          "version": "0.3.0-alpha.2",
+          "change": "revised",
+          "summary": "Mapped the exact vertical scroll role and split companion validation to the classifier and Adapter tests."
+        }
+      ]
+    }
+  ]
+}
