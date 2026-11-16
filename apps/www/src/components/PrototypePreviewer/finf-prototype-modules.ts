@@ -1,6 +1,16 @@
 import type { Prototype } from '@proto.ui/core';
 import { registerPrototype } from './registry';
 
+const importBaseCalendar = () => import('@proto.ui/prototypes-base/calendar');
+let calendarModule: ReturnType<typeof importBaseCalendar> | undefined;
+
+export function loadBaseCalendarPreviewModule() {
+  return (calendarModule ??= importBaseCalendar().catch((error) => {
+    calendarModule = undefined;
+    throw error;
+  }));
+}
+
 // Explicit source slices. This registry does not confer catalog or release admission.
 // Runtime-selected preview loaders keep unselected source families out of eager initialization.
 export const finfPrototypeModules: Record<string, () => Promise<void>> = {
@@ -2628,31 +2638,31 @@ export const finfPrototypeModules: Record<string, () => Promise<void>> = {
     registerExactPrototype('liquid-glass-input-otp-control', module.inputOtpControl);
   },
   'base-calendar-root': async () => {
-    const module = await import('@proto.ui/prototypes-base/calendar');
+    const module = await loadBaseCalendarPreviewModule();
     registerExactPrototype('base-calendar-root', module.calendarRoot);
   },
   'base-calendar-grid': async () => {
-    const module = await import('@proto.ui/prototypes-base/calendar');
+    const module = await loadBaseCalendarPreviewModule();
     registerExactPrototype('base-calendar-grid', module.calendarGrid);
   },
   'base-calendar-row': async () => {
-    const module = await import('@proto.ui/prototypes-base/calendar');
+    const module = await loadBaseCalendarPreviewModule();
     registerExactPrototype('base-calendar-row', module.calendarRow);
   },
   'base-calendar-day': async () => {
-    const module = await import('@proto.ui/prototypes-base/calendar');
+    const module = await loadBaseCalendarPreviewModule();
     registerExactPrototype('base-calendar-day', module.calendarDay);
   },
   'base-calendar-heading': async () => {
-    const module = await import('@proto.ui/prototypes-base/calendar');
+    const module = await loadBaseCalendarPreviewModule();
     registerExactPrototype('base-calendar-heading', module.calendarHeading);
   },
   'base-calendar-previous': async () => {
-    const module = await import('@proto.ui/prototypes-base/calendar');
+    const module = await loadBaseCalendarPreviewModule();
     registerExactPrototype('base-calendar-previous', module.calendarPrevious);
   },
   'base-calendar-next': async () => {
-    const module = await import('@proto.ui/prototypes-base/calendar');
+    const module = await loadBaseCalendarPreviewModule();
     registerExactPrototype('base-calendar-next', module.calendarNext);
   },
   'shadcn-calendar-root': async () => {
@@ -3506,15 +3516,15 @@ export const finfPrototypeModules: Record<string, () => Promise<void>> = {
     registerExactPrototype('liquid-glass-dropdown-item', module.dropdownItem);
   },
   'base-calendar-caption': async () => {
-    const module = await import('@proto.ui/prototypes-base/calendar');
+    const module = await loadBaseCalendarPreviewModule();
     registerExactPrototype('base-calendar-caption', module.calendarCaption);
   },
   'base-calendar-weekdays': async () => {
-    const module = await import('@proto.ui/prototypes-base/calendar');
+    const module = await loadBaseCalendarPreviewModule();
     registerExactPrototype('base-calendar-weekdays', module.calendarWeekdays);
   },
   'base-calendar-weekday': async () => {
-    const module = await import('@proto.ui/prototypes-base/calendar');
+    const module = await loadBaseCalendarPreviewModule();
     registerExactPrototype('base-calendar-weekday', module.calendarWeekday);
   },
   'shadcn-calendar-caption': async () => {

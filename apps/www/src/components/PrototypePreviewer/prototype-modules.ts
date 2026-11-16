@@ -2,7 +2,7 @@
 // 原型模块映射表 - 按需动态导入
 
 import { registerPrototype } from './registry';
-import { finfPrototypeModules } from './finf-prototype-modules';
+import { finfPrototypeModules, loadBaseCalendarPreviewModule } from './finf-prototype-modules';
 
 export type PrototypeModuleLoader = () => Promise<any>;
 
@@ -598,15 +598,15 @@ const manualPrototypeModules: Record<string, PrototypeModuleLoader> = {
     registerPrototype('base-date-picker-day', mod.datePickerDay);
   },
   'base-calendar-heading': async () => {
-    const mod = await import('@proto.ui/prototypes-base/calendar');
+    const mod = await loadBaseCalendarPreviewModule();
     registerPrototype('base-calendar-heading', mod.calendarHeading);
   },
   'base-calendar-grid': async () => {
-    const mod = await import('@proto.ui/prototypes-base/calendar');
+    const mod = await loadBaseCalendarPreviewModule();
     registerPrototype('base-calendar-grid', mod.calendarGrid);
   },
   'base-calendar-row': async () => {
-    const mod = await import('@proto.ui/prototypes-base/calendar');
+    const mod = await loadBaseCalendarPreviewModule();
     registerPrototype('base-calendar-row', mod.calendarRow);
   },
   // Runtime registry loaders keep each preview family out of the initial bundle.
