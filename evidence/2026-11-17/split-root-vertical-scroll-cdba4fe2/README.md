@@ -1,0 +1,7 @@
+# Split Dialog vertical scrollport comparison
+
+Both experimental placements used the same Chrome 156, actual S4 components, authored tall caller slot and wheel/focus probe. The Light reference kept its 512 × 548 viewport and scrolled 480px. With split host scrolling, the painted surface moved from y=16 to y=-464 during that wheel input. At the focused caller button, the panel background had moved out of the viewport. The host screenshot captures that regression.
+
+With split surface scrolling, the fixed host retained its max-height and placement, and the surface scrolled 480px at the same viewport bounds. The panel and mask stayed visible, focusing the last caller-owned button brought it into view, and Escape restored Trigger focus. Both scroll measurements used the corrected browser-serializable fixture after the initial evaluation helper failure.
+
+The signed candidate admits the exact surface recipe and checks its selector and declaration before mutation. Two catalog inputs and workspace/Astro type checks passed. The relevant unit selection recorded 121 passing and two matching clean-main failures. The original Light, split and mixed S4 interaction journey passed on a standalone S3/S4/S5 route composed with [#1484](https://github.com/Proto-UI/Proto-UI/pull/1484). All 18 split Trigger leaves mounted and each profile recorded 15 requests with zero browser errors. The full DemoMatrix readiness and hosted gates remain separately scoped.

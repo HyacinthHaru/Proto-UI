@@ -1,0 +1,565 @@
+{
+  "candidate": "cdba4fe2d01c338bd3b3f7feac8a8f5acefe0aee",
+  "tree": "99f5404127eda150a958dd9a2e01c2018812ae1d",
+  "testedRuntimeHashes": {
+    "packages/adapters/web-component/src/shadow-split-effects.ts": "c8d117ab3ccf839abea11a1922d8f208069d7f2e43270e87a1c21c6fc19996f7",
+    "packages/core/src/spec/feedback/application-role.ts": "4dcbb148476982d560f1957bb5cc49f4e53fc9cdb0027b2b14681d647711abe1"
+  },
+  "chrome": "156.0.8078.79",
+  "viewport": [880, 580],
+  "comparison": {
+    "light": {
+      "profile": "light",
+      "before": {
+        "host": {
+          "position": "fixed",
+          "overflowY": "auto",
+          "overflowX": "auto",
+          "maxHeight": "548px",
+          "width": 512,
+          "height": 548,
+          "x": 184,
+          "y": 16,
+          "clientHeight": 546,
+          "scrollHeight": 1466,
+          "scrollTop": 0
+        },
+        "surface": {
+          "position": "fixed",
+          "overflowY": "auto",
+          "overflowX": "auto",
+          "maxHeight": "548px",
+          "width": 512,
+          "height": 548,
+          "x": 184,
+          "y": 16,
+          "clientHeight": 546,
+          "scrollHeight": 1466,
+          "scrollTop": 0
+        },
+        "samePhysicalTarget": true,
+        "bodyScrollTop": 0,
+        "bodyLock": "hidden",
+        "portal": true,
+        "callerY": 1434.9375
+      },
+      "afterWheel": {
+        "host": {
+          "position": "fixed",
+          "overflowY": "auto",
+          "overflowX": "auto",
+          "maxHeight": "548px",
+          "width": 512,
+          "height": 548,
+          "x": 184,
+          "y": 16,
+          "clientHeight": 546,
+          "scrollHeight": 1466,
+          "scrollTop": 480
+        },
+        "surface": {
+          "position": "fixed",
+          "overflowY": "auto",
+          "overflowX": "auto",
+          "maxHeight": "548px",
+          "width": 512,
+          "height": 548,
+          "x": 184,
+          "y": 16,
+          "clientHeight": 546,
+          "scrollHeight": 1466,
+          "scrollTop": 480
+        },
+        "samePhysicalTarget": true,
+        "bodyScrollTop": 0,
+        "bodyLock": "hidden",
+        "portal": true,
+        "callerY": 954.9375
+      },
+      "afterCallerFocus": {
+        "host": {
+          "position": "fixed",
+          "overflowY": "auto",
+          "overflowX": "auto",
+          "maxHeight": "548px",
+          "width": 512,
+          "height": 548,
+          "x": 184,
+          "y": 16,
+          "clientHeight": 546,
+          "scrollHeight": 1466,
+          "scrollTop": 920
+        },
+        "surface": {
+          "position": "fixed",
+          "overflowY": "auto",
+          "overflowX": "auto",
+          "maxHeight": "548px",
+          "width": 512,
+          "height": 548,
+          "x": 184,
+          "y": 16,
+          "clientHeight": 546,
+          "scrollHeight": 1466,
+          "scrollTop": 920
+        },
+        "samePhysicalTarget": true,
+        "bodyScrollTop": 0,
+        "bodyLock": "hidden",
+        "portal": true,
+        "callerY": 514.9375
+      },
+      "focusReturned": true,
+      "status": "passed"
+    },
+    "hostHypothesis": {
+      "profile": "split",
+      "before": {
+        "host": {
+          "position": "fixed",
+          "overflowY": "auto",
+          "overflowX": "auto",
+          "maxHeight": "548px",
+          "width": 512,
+          "height": 548,
+          "x": 184,
+          "y": 16,
+          "clientHeight": 546,
+          "scrollHeight": 1442,
+          "scrollTop": 0
+        },
+        "surface": {
+          "position": "static",
+          "overflowY": "visible",
+          "overflowX": "visible",
+          "maxHeight": "none",
+          "width": 512,
+          "height": 548,
+          "x": 184,
+          "y": 16,
+          "clientHeight": 546,
+          "scrollHeight": 1442,
+          "scrollTop": 0
+        },
+        "samePhysicalTarget": false,
+        "bodyScrollTop": 0,
+        "bodyLock": "hidden",
+        "portal": true,
+        "callerY": 1434.9375
+      },
+      "afterWheel": {
+        "host": {
+          "position": "fixed",
+          "overflowY": "auto",
+          "overflowX": "auto",
+          "maxHeight": "548px",
+          "width": 512,
+          "height": 548,
+          "x": 184,
+          "y": 16,
+          "clientHeight": 546,
+          "scrollHeight": 1442,
+          "scrollTop": 480
+        },
+        "surface": {
+          "position": "static",
+          "overflowY": "visible",
+          "overflowX": "visible",
+          "maxHeight": "none",
+          "width": 512,
+          "height": 548,
+          "x": 184,
+          "y": -464,
+          "clientHeight": 546,
+          "scrollHeight": 1442,
+          "scrollTop": 0
+        },
+        "samePhysicalTarget": false,
+        "bodyScrollTop": 0,
+        "bodyLock": "hidden",
+        "portal": true,
+        "callerY": 954.9375
+      },
+      "afterCallerFocus": {
+        "host": {
+          "position": "fixed",
+          "overflowY": "auto",
+          "overflowX": "auto",
+          "maxHeight": "548px",
+          "width": 512,
+          "height": 548,
+          "x": 184,
+          "y": 16,
+          "clientHeight": 546,
+          "scrollHeight": 1442,
+          "scrollTop": 896
+        },
+        "surface": {
+          "position": "static",
+          "overflowY": "visible",
+          "overflowX": "visible",
+          "maxHeight": "none",
+          "width": 512,
+          "height": 548,
+          "x": 184,
+          "y": -880,
+          "clientHeight": 546,
+          "scrollHeight": 1442,
+          "scrollTop": 0
+        },
+        "samePhysicalTarget": false,
+        "bodyScrollTop": 0,
+        "bodyLock": "hidden",
+        "portal": true,
+        "callerY": 538.9375
+      },
+      "focusReturned": true,
+      "status": "passed"
+    },
+    "surfaceHypothesis": {
+      "profile": "split",
+      "before": {
+        "host": {
+          "position": "fixed",
+          "overflowY": "visible",
+          "overflowX": "visible",
+          "maxHeight": "548px",
+          "width": 512,
+          "height": 548,
+          "x": 184,
+          "y": 16,
+          "clientHeight": 546,
+          "scrollHeight": 547,
+          "scrollTop": 0
+        },
+        "surface": {
+          "position": "static",
+          "overflowY": "auto",
+          "overflowX": "auto",
+          "maxHeight": "none",
+          "width": 512,
+          "height": 548,
+          "x": 184,
+          "y": 16,
+          "clientHeight": 546,
+          "scrollHeight": 1466,
+          "scrollTop": 0
+        },
+        "samePhysicalTarget": false,
+        "bodyScrollTop": 0,
+        "bodyLock": "hidden",
+        "portal": true,
+        "callerY": 1434.9375
+      },
+      "afterWheel": {
+        "host": {
+          "position": "fixed",
+          "overflowY": "visible",
+          "overflowX": "visible",
+          "maxHeight": "548px",
+          "width": 512,
+          "height": 548,
+          "x": 184,
+          "y": 16,
+          "clientHeight": 546,
+          "scrollHeight": 547,
+          "scrollTop": 0
+        },
+        "surface": {
+          "position": "static",
+          "overflowY": "auto",
+          "overflowX": "auto",
+          "maxHeight": "none",
+          "width": 512,
+          "height": 548,
+          "x": 184,
+          "y": 16,
+          "clientHeight": 546,
+          "scrollHeight": 1466,
+          "scrollTop": 480
+        },
+        "samePhysicalTarget": false,
+        "bodyScrollTop": 0,
+        "bodyLock": "hidden",
+        "portal": true,
+        "callerY": 954.9375
+      },
+      "afterCallerFocus": {
+        "host": {
+          "position": "fixed",
+          "overflowY": "visible",
+          "overflowX": "visible",
+          "maxHeight": "548px",
+          "width": 512,
+          "height": 548,
+          "x": 184,
+          "y": 16,
+          "clientHeight": 546,
+          "scrollHeight": 547,
+          "scrollTop": 0
+        },
+        "surface": {
+          "position": "static",
+          "overflowY": "auto",
+          "overflowX": "auto",
+          "maxHeight": "none",
+          "width": 512,
+          "height": 548,
+          "x": 184,
+          "y": 16,
+          "clientHeight": 546,
+          "scrollHeight": 1466,
+          "scrollTop": 920
+        },
+        "samePhysicalTarget": false,
+        "bodyScrollTop": 0,
+        "bodyLock": "hidden",
+        "portal": true,
+        "callerY": 514.9375
+      },
+      "focusReturned": true,
+      "status": "passed"
+    }
+  },
+  "scrollHypothesisPatchSha256": {
+    "host": "6d0dbc0a07b56813bc12df9437a32c66c0b4d79376b662985cbd1d5d861a3377",
+    "surface": "79d63240ad312cc555258219692df74c39d730a6d2053c0fe44fa9c95ada85b9"
+  },
+  "nativeJourney": {
+    "scope": "Localized standalone S3/S4/S5 route on #1484 plus the guarded scrollport code",
+    "firstFrameSplitTriggers": 18,
+    "parent": "928c68550819521a6a0264d57de8a0c647d3f9d2",
+    "profiles": [
+      {
+        "profile": "light",
+        "requests": 15,
+        "counts": {
+          "root": {
+            "setup": 2,
+            "mount": 2,
+            "unmount": 1,
+            "dispose": 1
+          },
+          "trigger": {
+            "setup": 2,
+            "mount": 2,
+            "unmount": 1,
+            "dispose": 1
+          },
+          "mask": {
+            "setup": 2,
+            "mount": 6,
+            "unmount": 6,
+            "dispose": 1
+          },
+          "content": {
+            "setup": 2,
+            "mount": 6,
+            "unmount": 6,
+            "dispose": 1
+          },
+          "title": {
+            "setup": 2,
+            "mount": 2,
+            "unmount": 1,
+            "dispose": 1
+          },
+          "description": {
+            "setup": 2,
+            "mount": 2,
+            "unmount": 1,
+            "dispose": 1
+          },
+          "close": {
+            "setup": 2,
+            "mount": 2,
+            "unmount": 1,
+            "dispose": 1
+          },
+          "icon": {
+            "setup": 2,
+            "mount": 2,
+            "unmount": 1,
+            "dispose": 1
+          },
+          "header": {
+            "setup": 2,
+            "mount": 2,
+            "unmount": 1,
+            "dispose": 1
+          },
+          "footer": {
+            "setup": 2,
+            "mount": 2,
+            "unmount": 1,
+            "dispose": 1
+          }
+        }
+      },
+      {
+        "profile": "split",
+        "requests": 15,
+        "counts": {
+          "root": {
+            "setup": 2,
+            "mount": 2,
+            "unmount": 1,
+            "dispose": 1
+          },
+          "trigger": {
+            "setup": 2,
+            "mount": 2,
+            "unmount": 1,
+            "dispose": 1
+          },
+          "mask": {
+            "setup": 2,
+            "mount": 6,
+            "unmount": 6,
+            "dispose": 1
+          },
+          "content": {
+            "setup": 2,
+            "mount": 6,
+            "unmount": 6,
+            "dispose": 1
+          },
+          "title": {
+            "setup": 2,
+            "mount": 2,
+            "unmount": 1,
+            "dispose": 1
+          },
+          "description": {
+            "setup": 2,
+            "mount": 2,
+            "unmount": 1,
+            "dispose": 1
+          },
+          "close": {
+            "setup": 2,
+            "mount": 2,
+            "unmount": 1,
+            "dispose": 1
+          },
+          "icon": {
+            "setup": 2,
+            "mount": 2,
+            "unmount": 1,
+            "dispose": 1
+          },
+          "header": {
+            "setup": 2,
+            "mount": 2,
+            "unmount": 1,
+            "dispose": 1
+          },
+          "footer": {
+            "setup": 2,
+            "mount": 2,
+            "unmount": 1,
+            "dispose": 1
+          }
+        }
+      },
+      {
+        "profile": "mixed",
+        "requests": 15,
+        "counts": {
+          "root": {
+            "setup": 2,
+            "mount": 2,
+            "unmount": 1,
+            "dispose": 1
+          },
+          "trigger": {
+            "setup": 2,
+            "mount": 2,
+            "unmount": 1,
+            "dispose": 1
+          },
+          "mask": {
+            "setup": 2,
+            "mount": 6,
+            "unmount": 6,
+            "dispose": 1
+          },
+          "content": {
+            "setup": 2,
+            "mount": 6,
+            "unmount": 6,
+            "dispose": 1
+          },
+          "title": {
+            "setup": 2,
+            "mount": 2,
+            "unmount": 1,
+            "dispose": 1
+          },
+          "description": {
+            "setup": 2,
+            "mount": 2,
+            "unmount": 1,
+            "dispose": 1
+          },
+          "close": {
+            "setup": 2,
+            "mount": 2,
+            "unmount": 1,
+            "dispose": 1
+          },
+          "icon": {
+            "setup": 2,
+            "mount": 2,
+            "unmount": 1,
+            "dispose": 1
+          },
+          "header": {
+            "setup": 2,
+            "mount": 2,
+            "unmount": 1,
+            "dispose": 1
+          },
+          "footer": {
+            "setup": 2,
+            "mount": 2,
+            "unmount": 1,
+            "dispose": 1
+          }
+        }
+      }
+    ],
+    "errorCount": 0
+  },
+  "specAuthoringExit": 0,
+  "types": {
+    "files": 1240,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 31
+  },
+  "unitChecks": {
+    "totalFiles": 5,
+    "passed": 121,
+    "failed": 2,
+    "matchedCleanMainFailures": {
+      "shadow-split-effects.test.ts": [
+        [
+          "private Shadow split effects rejects unimplemented animated border rounding but retains fixed-border sizing animation",
+          "AssertionError: expected [Function] to throw an error"
+        ],
+        [
+          "private Shadow split effects rejects overlapping animated border widths independently of effect entry order",
+          "AssertionError: expected [Function] to throw an error"
+        ]
+      ]
+    },
+    "cleanMainBaselineSha256": "8db5711acec43090774e1dc5dd06a5537b7a8214a8902c2c642e566f4146e6c5",
+    "baselineRevision": "7780dba23e3fb14e0138ea4d24a1cbb8096c3cbf"
+  },
+  "captureSha256": {
+    "host-scroll.png": "456cefcad80c79d23bfabddc22107feddeef5bd0cf5d9f1b6d69666ad81f8d10",
+    "surface-scroll.png": "2859d32fb563db100c4d9800b14a14e6621b5e6107d842cc6a53b766d12cd32e"
+  },
+  "priorProbe": "First locator evaluation hit an injected TSX name helper. Browser-serializable mapping and a completed animation boundary supplied the comparable measurements."
+}
