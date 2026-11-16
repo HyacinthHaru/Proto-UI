@@ -1,0 +1,7 @@
+# Split surface opacity and function-valued decoration helpers
+
+This records the two review corrections in #1484 at `15386f8c`. The two regression files produced 3 failures and 100 passes on the previous source and 103 passes with the corrections. The broad CLI and Web Component selection passed 299 cases across 10 files. Workspace type checking, the CLI build and the Web Component dependency closure build passed.
+
+In Chrome for Testing 156.0.8078.79 the previous source accepted equal reuse with `opacity: var(--split-opacity)` after the custom property resolved to zero. The corrected source rejects that change and lets the half-opacity variable case reuse. The seven corrected cases retain the same original native slot and caller value. In the same candidate Chrome run, a real CLI-generated artifact from a relative function-valued helper chain places 10% padding on Template, measured as 64 pixels within the 640-pixel containing block. The baseline used its previously generated declaration-based helper artifact. The recipes and artifacts differ and are separately bound. Both runs use the same browser probe.
+
+Only the explicit inline opacity declaration requests a computed opacity read when its value is not directly numeric. Function-valued helpers use the existing same-source and relative source call proof, with synchronous const bindings and the existing rejection of an unverified caller. The draft lifecycle is unchanged.

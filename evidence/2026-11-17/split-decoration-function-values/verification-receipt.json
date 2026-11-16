@@ -1,0 +1,60 @@
+{
+  "candidate": {
+    "head": "15386f8c496324d341dc1606aef990570722e14e",
+    "tree": "4c8197be15e8e03926a73a3d606966c082eb25d7",
+    "parents": ["6f1c120842c7c33f1a55f452faf9a59ad344277d"],
+    "unitInputSHA256": {
+      "packages/adapters/web-component/src/runtime/session.ts": "da6a11d1a1d79c2f46193b09cfa25aff48cbef22396ea1a61679831f2b007270",
+      "packages/adapters/web-component/test/owned-decoration.integration.test.ts": "21e9cda71339e318ae3d93fbe6e08d5f7a738a20c9c98344e4edf48b1ae33f0c",
+      "packages/cli/src/services/prototype-style-tokens.ts": "799edd2e01665a8286a7b8ae64bacd922fd1217312274d931b808dcca2d02f32",
+      "packages/cli/test/shadow-template-style.test.ts": "466e0c9bce82f4d42e8c34a90f305cbe07b3dcf189cec701cc8b225696c928af"
+    },
+    "broadTests": {
+      "passed": 299,
+      "files": 10,
+      "reportSHA256": "a219a5e32a8e9256b7af459386675a614cc8e3297b3584cde0ebede8454b40c6",
+      "consoleSHA256": "24dd6df097c9c48322f9254f39cff9b09c2d3a4d47a91551dfbc2991fb9dfa72"
+    },
+    "redGreenSelection": {
+      "baselineFailed": 3,
+      "baselinePassed": 100,
+      "candidatePassed": 103,
+      "baselineConsoleSHA256": "1bf2fe664a1693ea5aaf392d980a8525c0d019292d369bf945fa97089a249068",
+      "candidateConsoleSHA256": "08ca995c953e8010d35a813f010f1e7caa3062354cdd9ea5535eaab61870f748",
+      "testSHA256": {
+        "packages/cli/test/shadow-template-style.test.ts": "466e0c9bce82f4d42e8c34a90f305cbe07b3dcf189cec701cc8b225696c928af",
+        "packages/adapters/web-component/test/owned-decoration.integration.test.ts": "21e9cda71339e318ae3d93fbe6e08d5f7a738a20c9c98344e4edf48b1ae33f0c"
+      }
+    },
+    "workspaceTypesExit": 0,
+    "builds": {
+      "cli": 1,
+      "wcDependencyClosure": 39,
+      "publicTotal": 47
+    },
+    "startedAt": "2026-11-16T19:34:27Z",
+    "finishedAt": "2026-11-16T19:35:09Z",
+    "chromeInputSHA256": {
+      "used-native.ts": "a91eca42f65ac6c11ec2c2567507d285fa634046de9479075a986b92cee50f33",
+      "used-native-paint.ts": "ee5d38c2c8bf004f4dc2e2d0532cfefec6e98fd3b598bafb7717417331a65863",
+      "used-native-artifact.json": "b3a4f425111a778ff2e153203209295fd0df082fc95db5e0cbae71137d5419cd",
+      "used-native.astro": "387b7e6fc7270df16dd3ada968c564e90dbd287c596a703f82c9cd81b99a8a04"
+    },
+    "chromeExit": 0
+  },
+  "baseline": {
+    "head": "c71bd59185db50f604d1e1757da300401f18ea3b",
+    "tree": "f17cdeada73a0a63cf6810c1e5adf1de14e6bcce",
+    "startedAt": "2026-11-16T19:31:37Z",
+    "finishedAt": "2026-11-16T19:32:19Z",
+    "chromeInputSHA256": {
+      "used-native.ts": "a91eca42f65ac6c11ec2c2567507d285fa634046de9479075a986b92cee50f33",
+      "used-native-paint.ts": "fd4dcda541c9906b35f88ca4a83c0530cfc80e40af835ee9191f7754ce8f00b5",
+      "used-native-artifact.json": "b3a4f425111a778ff2e153203209295fd0df082fc95db5e0cbae71137d5419cd",
+      "used-native.astro": "387b7e6fc7270df16dd3ada968c564e90dbd287c596a703f82c9cd81b99a8a04"
+    },
+    "chromeExit": 1,
+    "previouslyGeneratedArtifactSource": "c71bd59185db50f604d1e1757da300401f18ea3b"
+  },
+  "sharedNativeProbeSHA256": "647d28337a63429f463f10bef6211bdc8be908fc4cfb94ca538619e54660d4e4"
+}
