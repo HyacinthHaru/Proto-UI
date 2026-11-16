@@ -1,0 +1,20 @@
+[
+  {
+    "file": "demo-renderer.B7Ear75z.js",
+    "originalSHA256": "1b82864878c378f606afaa3ea6b6f3a0e23afaf1a4c83212039f3cfac4e694de",
+    "observedSHA256": "e7a4209e1ffe80fcb5fc649cbf3d483019911287a7bb40cfbf19686906c85f90",
+    "observedBytes": 60904
+  },
+  {
+    "file": "previewer-client.BhKnQCQC.js",
+    "originalSHA256": "76ff20702ffd199e15e4e8fed9c5e797145862454bdd60a4733ced8ead7e7485",
+    "observedSHA256": "f656d1d1be721d0c9b395697f8d283623becf87c687c79ab3396c43ca45da0f9",
+    "observedBytes": 19697
+  },
+  {
+    "file": "vue-runtime.B814raYV.js",
+    "originalSHA256": "d86bbee7bb5631e2d83c1155a3c420f073774fb772fed90bca958adc3f6c0928",
+    "observedSHA256": "1548d435a6760ba22c04588f333c4fd279377dee7e4dd51aea4a0a30e9098d46",
+    "observedBytes": 1403
+  }
+]

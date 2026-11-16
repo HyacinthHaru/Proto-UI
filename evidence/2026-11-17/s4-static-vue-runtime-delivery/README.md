@@ -1,0 +1,7 @@
+# Vue 3 on the static S4 Matrix
+
+This is a continuation of the [early React runtime comparison](https://github.com/HyacinthHaru/Proto-UI/tree/8730999f3a80857564546db3974195ed27004765/evidence/2026-11-17/s4-react-chunks-and-early-runtime). It uses the same local static Chinese HTML from signed source `5d4f9113`. The initial React module call remains enabled as a diagnostic control. The test retains all 1,268 previews, the 60-second readiness check, and its 150-second outer limit.
+
+Vue's actual wrapper returned and dispatched the native Vue 3 import at about 14.61 seconds. Chrome recorded HTTP 200 and transfer completion for the exact Vue asset. The Base Accordion owner finished the six prototype loads and entered the Vue runtime join at about 38.25 seconds. The Vue import and owner join had no observed return before the test reached its 150-second outer limit. No page or console errors were reported. The observed React owner published at 43.06 seconds, and the last delivered original readiness check named the Vue Base Accordion as the first missing owner. The full Dialog journey did not start.
+
+The named times refer to specific browser markers or delivered readiness changes. The timing fields attached to the individual Chrome Network events have different delivery semantics and do not establish a wire transfer or scheduling duration. The three asset overlays and the test observer were removed after the run.
