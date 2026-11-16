@@ -1,0 +1,46 @@
+{
+  "exactHead": "44489203fac531ff52d04ecf46545c393c2bcd97",
+  "commits": [
+    {
+      "head": "44489203fac531ff52d04ecf46545c393c2bcd97",
+      "tree": "14cdc90b28070f01e9ef06f3be0798cc01641810",
+      "parent": "6899f2c43f463bc7d876364993432761c75f2db4"
+    },
+    {
+      "head": "6899f2c43f463bc7d876364993432761c75f2db4",
+      "tree": "7b5b9ac6a403568bd1a84f256988a3b1d2c59473",
+      "parent": "bcbfd689aa6435e78a8c1e55923e3eca727b3df2"
+    }
+  ],
+  "baseline": {
+    "head": "bcbfd689aa6435e78a8c1e55923e3eca727b3df2",
+    "failed": 8,
+    "passed": 54
+  },
+  "narrowCorrectedBeforeTypeNarrowing": 62,
+  "initiallyBroad": {
+    "passingFiles": 9,
+    "passingTests": 252
+  },
+  "finalAdapterRerun": {
+    "passingFiles": 5,
+    "passingTests": 65
+  },
+  "finalWorkspaceTypes": "passed",
+  "finalBuilds": {
+    "cli": 1,
+    "wc-with-dependencies": 39
+  },
+  "finalCheckedSourcesSHA256": {
+    "packages/adapters/web-component/src/runtime/session.ts": "870aab20b5735c688ec8b2434f88b3f8137a91b6f9b53d2de4b7c7f5cd88c9d8",
+    "packages/adapters/web-component/test/owned-decoration.integration.test.ts": "06dfbd2caadcdc7cdac1b8eea4b2a60aa64a88e23a8748b654f5252f3064ed80",
+    "packages/cli/src/services/prototype-style-tokens.ts": "867d355d456862ebf5a8a15ca1baf531e61f8bf97292f7f913203409160761f0",
+    "packages/cli/test/shadow-template-style.test.ts": "d5c5f81b5ec09e4993b20425a67fa87a0ca6bce897e04fa68a1c1b60061797e5"
+  },
+  "nativeFixtureSHA256": {
+    "native-review.mts": "d231fe3fb720924827f2987437baf2a4ece0f04e9b5a5523685dc8ddeae1602a",
+    "used-native-final.ts": "254105e36961ad08554d673f6b8f2a1917719077ad7635fa1e39c579146377c9",
+    "used-native-final.astro": "106a7b11c6e0e341ef28943b5f652fad5c1f578a8b7bfd3c33d635d99b88d9f3",
+    "used-native-final-artifact.json": "b3a4f425111a778ff2e153203209295fd0df082fc95db5e0cbae71137d5419cd"
+  }
+}
