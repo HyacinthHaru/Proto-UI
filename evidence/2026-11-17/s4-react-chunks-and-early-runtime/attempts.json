@@ -1,0 +1,57 @@
+[
+  {
+    "run": "s4-static-react-wire",
+    "start": "2026-11-16T22:22:27Z",
+    "end": "2026-11-16T22:24:59Z",
+    "exit": 1,
+    "firstFailure": "Error: Test timed out in 150000ms.",
+    "logSHA256": "a6113af21e2f0ad8e8ba5973ac4dca616b79c8cff07d99563149fde7270adbde",
+    "testOverlaySHA256": "e0bf194587c87920676f2ae5444025d2769869ddeecc5254952829f2179b26db",
+    "htmlSHA256": "9e397ace2d4a9af31b295ea4e4c40d2e1e62ffd6505d4240110dfc2c91fbc7a4",
+    "disposition": "Three canonical React entry chunks and shared React received HTTP 200 and loadingFinished. The runtime imports did not return."
+  },
+  {
+    "run": "s4-static-react-module-eval",
+    "start": "2026-11-16T22:26:07Z",
+    "end": "2026-11-16T22:28:38Z",
+    "exit": 1,
+    "firstFailure": "Error: Test timed out in 150000ms.",
+    "logSHA256": "d5e69dd6f963973ba7bd9f13d9fc658bedeaf04e5cbcdd3792dda20c23a8fd1a",
+    "testOverlaySHA256": "e0bf194587c87920676f2ae5444025d2769869ddeecc5254952829f2179b26db",
+    "htmlSHA256": "9e397ace2d4a9af31b295ea4e4c40d2e1e62ffd6505d4240110dfc2c91fbc7a4",
+    "disposition": "Vite dispatched all three native imports. Emitted entry and shared body markers were not delivered."
+  },
+  {
+    "run": "s4-static-react-early-runtime",
+    "start": "2026-11-16T22:30:29Z",
+    "end": "2026-11-16T22:33:01Z",
+    "exit": 1,
+    "firstFailure": "Error: Test timed out in 150000ms.",
+    "logSHA256": "d3666dcb849ee206f81de10241a0d4a00b482bd8365cc1a5211eaa19a4313f2f",
+    "testOverlaySHA256": "2ea3410cc3236970cffa784f91aebdf5b3b84b753dc37280397ff3697a759759",
+    "htmlSHA256": "9e397ace2d4a9af31b295ea4e4c40d2e1e62ffd6505d4240110dfc2c91fbc7a4",
+    "disposition": "Vitest transformed the injected callback import into __vite_ssr_dynamic_import__, which does not exist in the page. This run cannot test early module loading."
+  },
+  {
+    "run": "s4-static-react-early-runtime-native",
+    "start": "2026-11-16T22:37:15Z",
+    "end": "2026-11-16T22:37:15Z",
+    "exit": 1,
+    "firstFailure": "Vitest could not resolve vitest.browser.config.ts",
+    "logSHA256": "7c23cd5dbf6d266c80640a888666bfd3e74201b23e050f004ef203bfabc64455",
+    "testOverlaySHA256": "22a3bc788a3f0ab0b89a478a46923f8531a34569560eed5bcd7fc9b1ea6b55da",
+    "htmlSHA256": "9e397ace2d4a9af31b295ea4e4c40d2e1e62ffd6505d4240110dfc2c91fbc7a4",
+    "disposition": "This invocation named a nonexistent Vitest config. Chrome never reached the case."
+  },
+  {
+    "run": "s4-static-react-early-runtime-native-control",
+    "start": "2026-11-16T22:39:38Z",
+    "end": "2026-11-16T22:42:09Z",
+    "exit": 1,
+    "firstFailure": "Error: Test timed out in 150000ms.",
+    "logSHA256": "bd3ed25680be1352bebbef6a6fa2a64133ad1d93f2ba857ad1541f531b1fcf35",
+    "testOverlaySHA256": "22a3bc788a3f0ab0b89a478a46923f8531a34569560eed5bcd7fc9b1ea6b55da",
+    "htmlSHA256": "9e397ace2d4a9af31b295ea4e4c40d2e1e62ffd6505d4240110dfc2c91fbc7a4",
+    "disposition": "The injected native module called the existing loadReact function. All three imports returned and the observed React Accordion owner published. The original whole-page case still hit its outer timeout."
+  }
+]

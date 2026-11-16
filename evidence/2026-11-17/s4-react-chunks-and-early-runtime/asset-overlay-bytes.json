@@ -1,0 +1,42 @@
+[
+  {
+    "file": "/_astro/index.J7E9Px8p.js",
+    "label": "react",
+    "originalSHA256": "d0cf7277124860a82ad200657fb6e58bfe6c9a122647a3e77c3e36d01ecfdfea",
+    "observedSHA256": "18229df6b327d0e4720a63dcc6c6d6ff0093be7111378053a24728f398aecea2",
+    "observedBytes": 394,
+    "originalBytes": 90
+  },
+  {
+    "file": "/_astro/index.CWLepCMo.js",
+    "label": "react-dom",
+    "originalSHA256": "874248eb2fcd43654ab755ae2131b8ae5fc38ba817c5a9cee4b76e1d8b2a9d4f",
+    "observedSHA256": "f2f68373a643d641c6f452647e64155e8d818e9ce0508a5a35de09bcd9bbdd34",
+    "observedBytes": 430,
+    "originalBytes": 118
+  },
+  {
+    "file": "/_astro/client.CwoxijIM.js",
+    "label": "react-dom/client",
+    "originalSHA256": "248f69329c2bcd2706588327ff3d6f71de0a427050f80439c77544b4244f1bdd",
+    "observedSHA256": "d712fbefe658d7006060dc8e5a8ac3f5f709ad87ac5997ef6e5d634912050cf5",
+    "observedBytes": 445,
+    "originalBytes": 119
+  },
+  {
+    "file": "/_astro/index.BVKZFYvx.js",
+    "label": "react-shared",
+    "originalSHA256": "e179d583ae484267be2adda81a83ae0b5c4c521013d4ba4d5291eed7a46414f8",
+    "observedSHA256": "98d7d6a6e2b6ea30ec0a4331ecd60b322bac24c630c39ccd9e6ffec98410313d",
+    "observedBytes": 7219,
+    "originalBytes": 6901
+  },
+  {
+    "file": "/_astro/preload-helper.BlTxHScW.js",
+    "label": "vite-preload",
+    "originalSHA256": "1a526fef747c3ce4f3c9dd4b3191886606ffb0447dfd46fb875e565f8381108b",
+    "observedSHA256": "8898ad9db4605f5e716af95a5a3ac36ac0a591bfe1bddd32dab88bb442b2ff2b",
+    "observedBytes": 1409,
+    "originalBytes": 1110
+  }
+]
