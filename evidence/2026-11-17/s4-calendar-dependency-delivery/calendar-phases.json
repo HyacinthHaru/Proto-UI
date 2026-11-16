@@ -1,0 +1,562 @@
+{
+  "source": {
+    "head": "d08ac5fb2e219df22dcbd3754053dbebb0b16a0d",
+    "tree": "5a85c2be3702961d9645a9ffb6f8f0ad1d61fa8f",
+    "parents": [
+      "414c833baa60bdf65b49df41f9c6a135770effbe",
+      "15386f8c496324d341dc1606aef990570722e14e"
+    ],
+    "overlaySHA256": "36b051fa26528ccd7eaa23f1ea7f2ddb70f08468f411dc1974de0dcac14eacf3",
+    "actualInputSHA256": {
+      "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "e3f355b661c590396c34044f6080b9f8d1ffe8eb3d21b6362ea2e1ad8d96092f",
+      "apps/www/src/components/PrototypePreviewer/previewer-client.ts": "e1449905562168bd93fc6518d107f9d1e1540906e2e12a71b276ffbf141caf0f"
+    },
+    "allCodeExamples": 1268,
+    "readinessLimitMs": 60000,
+    "outerLimitMs": 150000
+  },
+  "environment": {
+    "node": "v24.21.0",
+    "pnpm": "10.32.1",
+    "chrome": "Google Chrome for Testing 156.0.8078.79",
+    "workers": 1
+  },
+  "startedAt": "2026-11-16T19:39:12Z",
+  "finishedAt": "2026-11-16T19:41:25Z",
+  "exit": 1,
+  "observedLocale": "zh-cn",
+  "otherLocale": "unselected",
+  "test": {
+    "total": 2,
+    "passed": 0,
+    "failed": 1,
+    "skipped": 1,
+    "logSHA256": "8c3089179abce6d5b5f5d40ee815c9404e9f68e45844f920a40c6087d8aa1aed",
+    "terminalMessage": "page.waitForFunction: Timeout 60000ms exceeded."
+  },
+  "originalVerdict": {
+    "startupPassed": false,
+    "errors": [],
+    "consoleErrors": [],
+    "consoleErrorsDropped": 0,
+    "collectionComplete": false,
+    "collectionOutcome": "budget-expired",
+    "predicateExpressionSHA256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684"
+  },
+  "nodePhases": [
+    {
+      "locale": "zh-cn",
+      "phase": "init-script",
+      "outcome": "begin",
+      "nodeMs": 41798.579542,
+      "nodeTimeOrigin": 1794857954810.457,
+      "dateNow": 1794857996609
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "init-script",
+      "outcome": "return",
+      "nodeMs": 41801.665959,
+      "nodeTimeOrigin": 1794857954810.457,
+      "dateNow": 1794857996612
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "goto",
+      "outcome": "begin",
+      "nodeMs": 41801.69075,
+      "nodeTimeOrigin": 1794857954810.457,
+      "dateNow": 1794857996612
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "goto",
+      "outcome": "return",
+      "nodeMs": 48774.707084,
+      "nodeTimeOrigin": 1794857954810.457,
+      "dateNow": 1794858003585
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "startup-wait",
+      "outcome": "begin",
+      "nodeMs": 48774.967417,
+      "nodeTimeOrigin": 1794857954810.457,
+      "dateNow": 1794858003585
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "startup-wait",
+      "outcome": "error",
+      "nodeMs": 128084.69275,
+      "nodeTimeOrigin": 1794857954810.457,
+      "dateNow": 1794858082895
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "context-close",
+      "outcome": "begin",
+      "nodeMs": 130170.385042,
+      "nodeTimeOrigin": 1794857954810.457,
+      "dateNow": 1794858084980
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "context-close",
+      "outcome": "return",
+      "nodeMs": 130688.482834,
+      "nodeTimeOrigin": 1794857954810.457,
+      "dateNow": 1794858085498
+    }
+  ],
+  "observedPredicates": [
+    {
+      "timeOrigin": 1794857996613.8,
+      "pageMs": 7061.200000047684,
+      "dateNow": 1794858003674,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-qisphyc9bo",
+        "index": 0,
+        "inited": null,
+        "hostChildren": null
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": "1",
+        "hostTag": null,
+        "hostOwner": null,
+        "startupPending": null,
+        "hostOwnInert": null,
+        "hostText": null
+      }
+    },
+    {
+      "timeOrigin": 1794857996613.8,
+      "pageMs": 8183.899999856949,
+      "dateNow": 1794858004797,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-qisphyc9bo",
+        "index": 0,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-qisphyc9bo",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      }
+    },
+    {
+      "timeOrigin": 1794857996613.8,
+      "pageMs": 21844.200000047684,
+      "dateNow": 1794858018457,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-eerapkdfxo",
+        "index": 1,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "declaredRuntime": "react",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-eerapkdfxo",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      }
+    },
+    {
+      "timeOrigin": 1794857996613.8,
+      "pageMs": 51457.200000047684,
+      "dateNow": 1794858048070,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-ct0q6rg6qs8",
+        "index": 2,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "declaredRuntime": "vue",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-ct0q6rg6qs8",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      }
+    },
+    {
+      "timeOrigin": 1794857996613.8,
+      "pageMs": 81878.29999995232,
+      "dateNow": 1794858078491,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-uy3su954s6j",
+        "index": 20,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-base-calendar",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-uy3su954s6j",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      }
+    }
+  ],
+  "observedCalendarByRuntime": {
+    "vue": [
+      {
+        "phase": "demo-import-begin",
+        "id": "pp-k55zpij7ni",
+        "runtime": "vue",
+        "pageMs": 8105.099999904633,
+        "timeOrigin": 1794857996613.8,
+        "children": 0,
+        "inert": true,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 49909.571167,
+          "nodeTimeOrigin": 1794857954810.457
+        }
+      },
+      {
+        "phase": "demo-import-return",
+        "id": "pp-k55zpij7ni",
+        "runtime": "vue",
+        "pageMs": 14581.799999952316,
+        "timeOrigin": 1794857996613.8,
+        "children": 0,
+        "inert": true,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 56385.389375,
+          "nodeTimeOrigin": 1794857954810.457
+        }
+      },
+      {
+        "phase": "prototype-imports-begin",
+        "details": [
+          "base-calendar-root",
+          "base-calendar-caption",
+          "base-calendar-previous",
+          "lucide-chevron-left-icon",
+          "base-select-root",
+          "base-select-trigger",
+          "base-select-value",
+          "lucide-chevron-down-icon",
+          "base-select-content",
+          "base-select-item",
+          "base-calendar-next",
+          "lucide-chevron-right-icon",
+          "base-calendar-heading",
+          "base-calendar-grid",
+          "base-calendar-weekdays",
+          "base-calendar-weekday",
+          "base-calendar-row",
+          "base-calendar-day"
+        ],
+        "id": "pp-k55zpij7ni",
+        "runtime": "vue",
+        "pageMs": 14581.899999856949,
+        "timeOrigin": 1794857996613.8,
+        "children": 0,
+        "inert": true,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 56385.48825,
+          "nodeTimeOrigin": 1794857954810.457
+        }
+      }
+    ],
+    "react": [
+      {
+        "phase": "demo-import-begin",
+        "id": "pp-v2qameoxwso",
+        "runtime": "react",
+        "pageMs": 8111.200000047684,
+        "timeOrigin": 1794857996613.8,
+        "children": 0,
+        "inert": true,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 49915.022167,
+          "nodeTimeOrigin": 1794857954810.457
+        }
+      },
+      {
+        "phase": "demo-import-return",
+        "id": "pp-v2qameoxwso",
+        "runtime": "react",
+        "pageMs": 14582.799999952316,
+        "timeOrigin": 1794857996613.8,
+        "children": 0,
+        "inert": true,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 56386.247125,
+          "nodeTimeOrigin": 1794857954810.457
+        }
+      },
+      {
+        "phase": "prototype-imports-begin",
+        "details": [
+          "base-calendar-root",
+          "base-calendar-caption",
+          "base-calendar-previous",
+          "lucide-chevron-left-icon",
+          "base-select-root",
+          "base-select-trigger",
+          "base-select-value",
+          "lucide-chevron-down-icon",
+          "base-select-content",
+          "base-select-item",
+          "base-calendar-next",
+          "lucide-chevron-right-icon",
+          "base-calendar-heading",
+          "base-calendar-grid",
+          "base-calendar-weekdays",
+          "base-calendar-weekday",
+          "base-calendar-row",
+          "base-calendar-day"
+        ],
+        "id": "pp-v2qameoxwso",
+        "runtime": "react",
+        "pageMs": 14582.899999856949,
+        "timeOrigin": 1794857996613.8,
+        "children": 0,
+        "inert": true,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 56386.328417,
+          "nodeTimeOrigin": 1794857954810.457
+        }
+      }
+    ],
+    "vue2": [
+      {
+        "phase": "demo-import-begin",
+        "id": "pp-5ryy3c55kme",
+        "runtime": "vue2",
+        "pageMs": 8114,
+        "timeOrigin": 1794857996613.8,
+        "children": 0,
+        "inert": true,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 49917.797542,
+          "nodeTimeOrigin": 1794857954810.457
+        }
+      },
+      {
+        "phase": "demo-import-return",
+        "id": "pp-5ryy3c55kme",
+        "runtime": "vue2",
+        "pageMs": 14583,
+        "timeOrigin": 1794857996613.8,
+        "children": 0,
+        "inert": true,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 56386.432542,
+          "nodeTimeOrigin": 1794857954810.457
+        }
+      },
+      {
+        "phase": "prototype-imports-begin",
+        "details": [
+          "base-calendar-root",
+          "base-calendar-caption",
+          "base-calendar-previous",
+          "lucide-chevron-left-icon",
+          "base-select-root",
+          "base-select-trigger",
+          "base-select-value",
+          "lucide-chevron-down-icon",
+          "base-select-content",
+          "base-select-item",
+          "base-calendar-next",
+          "lucide-chevron-right-icon",
+          "base-calendar-heading",
+          "base-calendar-grid",
+          "base-calendar-weekdays",
+          "base-calendar-weekday",
+          "base-calendar-row",
+          "base-calendar-day"
+        ],
+        "id": "pp-5ryy3c55kme",
+        "runtime": "vue2",
+        "pageMs": 14583.099999904633,
+        "timeOrigin": 1794857996613.8,
+        "children": 0,
+        "inert": true,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 56386.509875,
+          "nodeTimeOrigin": 1794857954810.457
+        }
+      }
+    ],
+    "wc": [
+      {
+        "phase": "demo-import-begin",
+        "id": "pp-uy3su954s6j",
+        "runtime": "wc",
+        "pageMs": 8606.399999856949,
+        "timeOrigin": 1794857996613.8,
+        "children": 0,
+        "inert": true,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 50410.051959,
+          "nodeTimeOrigin": 1794857954810.457
+        }
+      },
+      {
+        "phase": "demo-import-return",
+        "id": "pp-uy3su954s6j",
+        "runtime": "wc",
+        "pageMs": 14673.399999856949,
+        "timeOrigin": 1794857996613.8,
+        "children": 0,
+        "inert": true,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 56476.950375,
+          "nodeTimeOrigin": 1794857954810.457
+        }
+      },
+      {
+        "phase": "prototype-imports-begin",
+        "details": [
+          "base-calendar-root",
+          "base-calendar-caption",
+          "base-calendar-previous",
+          "lucide-chevron-left-icon",
+          "base-select-root",
+          "base-select-trigger",
+          "base-select-value",
+          "lucide-chevron-down-icon",
+          "base-select-content",
+          "base-select-item",
+          "base-calendar-next",
+          "lucide-chevron-right-icon",
+          "base-calendar-heading",
+          "base-calendar-grid",
+          "base-calendar-weekdays",
+          "base-calendar-weekday",
+          "base-calendar-row",
+          "base-calendar-day"
+        ],
+        "id": "pp-uy3su954s6j",
+        "runtime": "wc",
+        "pageMs": 14673.399999856949,
+        "timeOrigin": 1794857996613.8,
+        "children": 0,
+        "inert": true,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 56477.035667,
+          "nodeTimeOrigin": 1794857954810.457
+        }
+      }
+    ]
+  },
+  "observedCalendarResources": [
+    {
+      "name": "demo-base-calendar.demo.ts",
+      "start": 8105.200000047684,
+      "responseStart": 8145.200000047684,
+      "responseEnd": 8145.299999952316,
+      "transferred": 812,
+      "delivered": 9877.099999904633,
+      "timeOrigin": 1794857996613.8,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 51680.883042,
+        "nodeTimeOrigin": 1794857954810.457
+      }
+    },
+    {
+      "name": "calendar-demo.shared.ts",
+      "start": 9883.299999952316,
+      "responseStart": 9898.700000047684,
+      "responseEnd": 9898.899999856949,
+      "transferred": 39795,
+      "delivered": 9991.200000047684,
+      "timeOrigin": 1794857996613.8,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 51794.986584,
+        "nodeTimeOrigin": 1794857954810.457
+      }
+    },
+    {
+      "name": "calendar.ts",
+      "start": 12902.899999856949,
+      "responseStart": 12931.899999856949,
+      "responseEnd": 12932.099999904633,
+      "transferred": 3747,
+      "delivered": 13120.700000047684,
+      "timeOrigin": 1794857996613.8,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 54924.44225,
+        "nodeTimeOrigin": 1794857954810.457
+      }
+    }
+  ],
+  "resourceBoundary": "Selected Calendar URL patterns. Coverage of the transitive graph is partial."
+}

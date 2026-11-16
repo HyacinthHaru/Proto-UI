@@ -1,0 +1,2392 @@
+{
+  "source": {
+    "head": "d08ac5fb2e219df22dcbd3754053dbebb0b16a0d",
+    "tree": "5a85c2be3702961d9645a9ffb6f8f0ad1d61fa8f",
+    "parents": [
+      "414c833baa60bdf65b49df41f9c6a135770effbe",
+      "15386f8c496324d341dc1606aef990570722e14e"
+    ],
+    "overlaySHA256": "2e5007a6ec42cf07ec39a2d9efe7f280b5d5aabc21049b876e9ff736e7bc94a8",
+    "actualInputSHA256": {
+      "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "4dde8b640d42b7a8140a3e2de52c85fdb04301409651478bafe33b921a42146a",
+      "apps/www/src/components/PrototypePreviewer/previewer-client.ts": "e1449905562168bd93fc6518d107f9d1e1540906e2e12a71b276ffbf141caf0f",
+      "apps/www/src/components/PrototypePreviewer/prototype-modules.ts": "a99ab8f2764707cc6081cf4371ff53f16027246eee38bdde496f8bf84d62e4d4"
+    },
+    "allCodeExamples": 1268,
+    "readinessLimitMs": 60000,
+    "outerLimitMs": 150000
+  },
+  "environment": {
+    "node": "v24.21.0",
+    "pnpm": "10.32.1",
+    "chrome": "Google Chrome for Testing 156.0.8078.79",
+    "workers": 1
+  },
+  "startedAt": "2026-11-16T19:43:05Z",
+  "finishedAt": "2026-11-16T19:46:19Z",
+  "exit": 1,
+  "observedLocale": "zh-cn",
+  "otherLocale": "unselected",
+  "test": {
+    "total": 2,
+    "passed": 0,
+    "failed": 1,
+    "skipped": 1,
+    "logSHA256": "63efcf7438547c7a26561550ea02231fd19a10e74e6fab0077594e76ff8833f4",
+    "terminalMessage": "Test timed out in 150000ms."
+  },
+  "originalVerdict": {
+    "startupPassed": false,
+    "errors": [],
+    "consoleErrors": [],
+    "consoleErrorsDropped": 0,
+    "collectionComplete": true,
+    "collectionOutcome": "rejected",
+    "predicateExpressionSHA256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684"
+  },
+  "nodePhases": [
+    {
+      "locale": "zh-cn",
+      "phase": "init-script",
+      "outcome": "begin",
+      "nodeMs": 41596.795375,
+      "nodeTimeOrigin": 1794858187327.053,
+      "dateNow": 1794858228923
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "init-script",
+      "outcome": "return",
+      "nodeMs": 41599.549958,
+      "nodeTimeOrigin": 1794858187327.053,
+      "dateNow": 1794858228926
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "goto",
+      "outcome": "begin",
+      "nodeMs": 41599.609583,
+      "nodeTimeOrigin": 1794858187327.053,
+      "dateNow": 1794858228926
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "goto",
+      "outcome": "return",
+      "nodeMs": 48539.078583,
+      "nodeTimeOrigin": 1794858187327.053,
+      "dateNow": 1794858235866
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "startup-wait",
+      "outcome": "begin",
+      "nodeMs": 48539.320958,
+      "nodeTimeOrigin": 1794858187327.053,
+      "dateNow": 1794858235866
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "startup-wait",
+      "outcome": "error",
+      "nodeMs": 191987.527583,
+      "nodeTimeOrigin": 1794858187327.053,
+      "dateNow": 1794858379314
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "context-close",
+      "outcome": "begin",
+      "nodeMs": 192076.000083,
+      "nodeTimeOrigin": 1794858187327.053,
+      "dateNow": 1794858379403
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "context-close",
+      "outcome": "return",
+      "nodeMs": 192076.032292,
+      "nodeTimeOrigin": 1794858187327.053,
+      "dateNow": 1794858379403
+    }
+  ],
+  "observedPredicates": [
+    {
+      "timeOrigin": 1794858228929.3,
+      "pageMs": 7026,
+      "dateNow": 1794858235955,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-rxtz9k3kq6",
+        "index": 0,
+        "inited": null,
+        "hostChildren": null
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": "1",
+        "hostTag": null,
+        "hostOwner": null,
+        "startupPending": null,
+        "hostOwnInert": null,
+        "hostText": null
+      }
+    },
+    {
+      "timeOrigin": 1794858228929.3,
+      "pageMs": 8161.900000095367,
+      "dateNow": 1794858237091,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-rxtz9k3kq6",
+        "index": 0,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-rxtz9k3kq6",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      }
+    },
+    {
+      "timeOrigin": 1794858228929.3,
+      "pageMs": 44122.60000014305,
+      "dateNow": 1794858273051,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-bnu3id2mqcs",
+        "index": 20,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-base-calendar",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-bnu3id2mqcs",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      }
+    }
+  ],
+  "observedCalendarByRuntime": {
+    "react": [
+      {
+        "phase": "demo-import-begin",
+        "id": "pp-yg6ybdwu72",
+        "runtime": "react",
+        "pageMs": 8117.200000047684,
+        "timeOrigin": 1794858228929.3,
+        "children": 0,
+        "inert": true,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 49720.585042,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "phase": "demo-import-return",
+        "id": "pp-yg6ybdwu72",
+        "runtime": "react",
+        "pageMs": 13734.200000047684,
+        "timeOrigin": 1794858228929.3,
+        "children": 0,
+        "inert": true,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 55336.872125,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "phase": "prototype-imports-begin",
+        "details": [
+          "base-calendar-root",
+          "base-calendar-caption",
+          "base-calendar-previous",
+          "lucide-chevron-left-icon",
+          "base-select-root",
+          "base-select-trigger",
+          "base-select-value",
+          "lucide-chevron-down-icon",
+          "base-select-content",
+          "base-select-item",
+          "base-calendar-next",
+          "lucide-chevron-right-icon",
+          "base-calendar-heading",
+          "base-calendar-grid",
+          "base-calendar-weekdays",
+          "base-calendar-weekday",
+          "base-calendar-row",
+          "base-calendar-day"
+        ],
+        "id": "pp-yg6ybdwu72",
+        "runtime": "react",
+        "pageMs": 13734.299999952316,
+        "timeOrigin": 1794858228929.3,
+        "children": 0,
+        "inert": true,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 55337.011417,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      }
+    ],
+    "wc": [
+      {
+        "phase": "demo-import-begin",
+        "id": "pp-bnu3id2mqcs",
+        "runtime": "wc",
+        "pageMs": 8205.5,
+        "timeOrigin": 1794858228929.3,
+        "children": 0,
+        "inert": true,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 49808.565542,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "phase": "demo-import-return",
+        "id": "pp-bnu3id2mqcs",
+        "runtime": "wc",
+        "pageMs": 13648.5,
+        "timeOrigin": 1794858228929.3,
+        "children": 0,
+        "inert": true,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 55250.889042,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "phase": "prototype-imports-begin",
+        "details": [
+          "base-calendar-root",
+          "base-calendar-caption",
+          "base-calendar-previous",
+          "lucide-chevron-left-icon",
+          "base-select-root",
+          "base-select-trigger",
+          "base-select-value",
+          "lucide-chevron-down-icon",
+          "base-select-content",
+          "base-select-item",
+          "base-calendar-next",
+          "lucide-chevron-right-icon",
+          "base-calendar-heading",
+          "base-calendar-grid",
+          "base-calendar-weekdays",
+          "base-calendar-weekday",
+          "base-calendar-row",
+          "base-calendar-day"
+        ],
+        "id": "pp-bnu3id2mqcs",
+        "runtime": "wc",
+        "pageMs": 13648.5,
+        "timeOrigin": 1794858228929.3,
+        "children": 0,
+        "inert": true,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 55251.003958,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      }
+    ],
+    "vue2": [
+      {
+        "phase": "demo-import-begin",
+        "id": "pp-b4xltb2oywa",
+        "runtime": "vue2",
+        "pageMs": 8253.799999952316,
+        "timeOrigin": 1794858228929.3,
+        "children": 0,
+        "inert": true,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 49856.357042,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "phase": "demo-import-return",
+        "id": "pp-b4xltb2oywa",
+        "runtime": "vue2",
+        "pageMs": 13648,
+        "timeOrigin": 1794858228929.3,
+        "children": 0,
+        "inert": true,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 55250.542375,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "phase": "prototype-imports-begin",
+        "details": [
+          "base-calendar-root",
+          "base-calendar-caption",
+          "base-calendar-previous",
+          "lucide-chevron-left-icon",
+          "base-select-root",
+          "base-select-trigger",
+          "base-select-value",
+          "lucide-chevron-down-icon",
+          "base-select-content",
+          "base-select-item",
+          "base-calendar-next",
+          "lucide-chevron-right-icon",
+          "base-calendar-heading",
+          "base-calendar-grid",
+          "base-calendar-weekdays",
+          "base-calendar-weekday",
+          "base-calendar-row",
+          "base-calendar-day"
+        ],
+        "id": "pp-b4xltb2oywa",
+        "runtime": "vue2",
+        "pageMs": 13648.100000143051,
+        "timeOrigin": 1794858228929.3,
+        "children": 0,
+        "inert": true,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 55250.654167,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      }
+    ],
+    "vue": [
+      {
+        "phase": "demo-import-begin",
+        "id": "pp-fxlpmbrf7km",
+        "runtime": "vue",
+        "pageMs": 8582.400000095367,
+        "timeOrigin": 1794858228929.3,
+        "children": 0,
+        "inert": true,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 50184.9645,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "phase": "demo-import-return",
+        "id": "pp-fxlpmbrf7km",
+        "runtime": "vue",
+        "pageMs": 13649.200000047684,
+        "timeOrigin": 1794858228929.3,
+        "children": 0,
+        "inert": true,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 55251.567167,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "phase": "prototype-imports-begin",
+        "details": [
+          "base-calendar-root",
+          "base-calendar-caption",
+          "base-calendar-previous",
+          "lucide-chevron-left-icon",
+          "base-select-root",
+          "base-select-trigger",
+          "base-select-value",
+          "lucide-chevron-down-icon",
+          "base-select-content",
+          "base-select-item",
+          "base-calendar-next",
+          "lucide-chevron-right-icon",
+          "base-calendar-heading",
+          "base-calendar-grid",
+          "base-calendar-weekdays",
+          "base-calendar-weekday",
+          "base-calendar-row",
+          "base-calendar-day"
+        ],
+        "id": "pp-fxlpmbrf7km",
+        "runtime": "vue",
+        "pageMs": 13649.200000047684,
+        "timeOrigin": 1794858228929.3,
+        "children": 0,
+        "inert": true,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 55251.640333,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      }
+    ]
+  },
+  "observedCalendarResources": [
+    {
+      "name": "select/index.ts",
+      "start": 439.7000000476837,
+      "responseStart": 469,
+      "responseEnd": 469,
+      "transferred": 4360,
+      "delivered": 469.40000009536743,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42072.390292,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/index.ts",
+      "start": 439.7000000476837,
+      "responseStart": 473.5,
+      "responseEnd": 473.60000014305115,
+      "transferred": 7338,
+      "delivered": 473.90000009536743,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42076.790042,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/root.proto.ts",
+      "start": 469.60000014305115,
+      "responseStart": 619.6000001430511,
+      "responseEnd": 619.7000000476837,
+      "transferred": 2059,
+      "delivered": 659.1000001430511,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42262.43925,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/trigger.proto.ts",
+      "start": 469.60000014305115,
+      "responseStart": 619.7999999523163,
+      "responseEnd": 620,
+      "transferred": 15973,
+      "delivered": 659.2000000476837,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42262.52475,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/value.proto.ts",
+      "start": 469.60000014305115,
+      "responseStart": 620,
+      "responseEnd": 620.1000001430511,
+      "transferred": 3022,
+      "delivered": 659.2000000476837,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42262.623542,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/content.proto.ts",
+      "start": 469.60000014305115,
+      "responseStart": 636.5,
+      "responseEnd": 636.6000001430511,
+      "transferred": 8542,
+      "delivered": 659.2000000476837,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42263.201917,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/item.proto.ts",
+      "start": 469.60000014305115,
+      "responseStart": 646.7000000476837,
+      "responseEnd": 646.9000000953674,
+      "transferred": 14349,
+      "delivered": 659.2000000476837,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42263.244625,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/content.proto.ts",
+      "start": 474,
+      "responseStart": 649.6000001430511,
+      "responseEnd": 649.7999999523163,
+      "transferred": 20043,
+      "delivered": 659.2000000476837,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42263.269208,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/root.proto.ts",
+      "start": 474,
+      "responseStart": 652.5,
+      "responseEnd": 652.7999999523163,
+      "transferred": 2249,
+      "delivered": 659.2000000476837,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42263.287,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/surface.proto.ts",
+      "start": 474,
+      "responseStart": 653,
+      "responseEnd": 653.1000001430511,
+      "transferred": 2593,
+      "delivered": 659.2000000476837,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42263.302958,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/item.proto.ts",
+      "start": 474,
+      "responseStart": 653.2000000476837,
+      "responseEnd": 653.2000000476837,
+      "transferred": 15937,
+      "delivered": 659.2000000476837,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42263.335708,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/trigger.proto.ts",
+      "start": 474,
+      "responseStart": 663.1000001430511,
+      "responseEnd": 663.2000000476837,
+      "transferred": 2400,
+      "delivered": 663.5,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42265.970833,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/item-text.proto.ts",
+      "start": 474.10000014305115,
+      "responseStart": 709.1000001430511,
+      "responseEnd": 709.4000000953674,
+      "transferred": 2782,
+      "delivered": 709.7999999523163,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42312.726167,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/group.proto.ts",
+      "start": 474.10000014305115,
+      "responseStart": 709.2999999523163,
+      "responseEnd": 709.5,
+      "transferred": 3134,
+      "delivered": 709.7999999523163,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42312.820333,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/viewport.proto.ts",
+      "start": 474.10000014305115,
+      "responseStart": 709.2999999523163,
+      "responseEnd": 709.5,
+      "transferred": 6151,
+      "delivered": 709.7999999523163,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42312.895042,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/value.proto.ts",
+      "start": 474,
+      "responseStart": 713.4000000953674,
+      "responseEnd": 713.5,
+      "transferred": 4545,
+      "delivered": 713.9000000953674,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42316.8145,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/separator.proto.ts",
+      "start": 474.10000014305115,
+      "responseStart": 723.9000000953674,
+      "responseEnd": 724.1000001430511,
+      "transferred": 3913,
+      "delivered": 724.4000000953674,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42327.191208,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/label.proto.ts",
+      "start": 474.10000014305115,
+      "responseStart": 724.5,
+      "responseEnd": 724.6000001430511,
+      "transferred": 3729,
+      "delivered": 724.7999999523163,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42327.570208,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/index.ts",
+      "start": 660.6000001430511,
+      "responseStart": 848.9000000953674,
+      "responseEnd": 849,
+      "transferred": 6349,
+      "delivered": 849.1000001430511,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42451.83975,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/visual.ts",
+      "start": 660.6000001430511,
+      "responseStart": 850.2999999523163,
+      "responseEnd": 850.4000000953674,
+      "transferred": 16391,
+      "delivered": 850.6000001430511,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42453.197792,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/style.ts",
+      "start": 660.6000001430511,
+      "responseStart": 850.4000000953674,
+      "responseEnd": 850.5,
+      "transferred": 4346,
+      "delivered": 850.7000000476837,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42453.494625,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/recipes.ts",
+      "start": 660.7999999523163,
+      "responseStart": 850.9000000953674,
+      "responseEnd": 851,
+      "transferred": 26196,
+      "delivered": 851.2000000476837,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42453.795375,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/trigger-visual.ts",
+      "start": 663.6000001430511,
+      "responseStart": 851,
+      "responseEnd": 851.2000000476837,
+      "transferred": 35310,
+      "delivered": 851.4000000953674,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42453.917667,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/root.proto.ts",
+      "start": 849.2999999523163,
+      "responseStart": 931.7999999523163,
+      "responseEnd": 931.9000000953674,
+      "transferred": 42744,
+      "delivered": 932.2000000476837,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42536.266667,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/shared.ts",
+      "start": 849.2999999523163,
+      "responseStart": 932,
+      "responseEnd": 932,
+      "transferred": 14798,
+      "delivered": 932.2999999523163,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42536.416917,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/value.proto.ts",
+      "start": 849.2999999523163,
+      "responseStart": 932.4000000953674,
+      "responseEnd": 932.4000000953674,
+      "transferred": 7416,
+      "delivered": 932.6000001430511,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42536.5495,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/viewport.proto.ts",
+      "start": 849.2999999523163,
+      "responseStart": 932.7000000476837,
+      "responseEnd": 932.7999999523163,
+      "transferred": 2266,
+      "delivered": 932.9000000953674,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42536.705542,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/content.proto.ts",
+      "start": 849.2999999523163,
+      "responseStart": 932.6000001430511,
+      "responseEnd": 932.6000001430511,
+      "transferred": 59471,
+      "delivered": 933,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42536.744125,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/trigger.proto.ts",
+      "start": 849.2999999523163,
+      "responseStart": 932.7000000476837,
+      "responseEnd": 932.7999999523163,
+      "transferred": 21356,
+      "delivered": 933.1000001430511,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42536.826333,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/item.proto.ts",
+      "start": 849.2999999523163,
+      "responseStart": 935.1000001430511,
+      "responseEnd": 935.2000000476837,
+      "transferred": 22381,
+      "delivered": 935.6000001430511,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42538.57725,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/surface.proto.ts",
+      "start": 849.2999999523163,
+      "responseStart": 935.4000000953674,
+      "responseEnd": 935.6000001430511,
+      "transferred": 2247,
+      "delivered": 935.7999999523163,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42538.957167,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/item-text.proto.ts",
+      "start": 849.2999999523163,
+      "responseStart": 935.6000001430511,
+      "responseEnd": 935.7000000476837,
+      "transferred": 2273,
+      "delivered": 935.7999999523163,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42539.074333,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/group.proto.ts",
+      "start": 849.4000000953674,
+      "responseStart": 935.5,
+      "responseEnd": 935.6000001430511,
+      "transferred": 3499,
+      "delivered": 935.9000000953674,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42539.0945,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/label.proto.ts",
+      "start": 849.4000000953674,
+      "responseStart": 935.7000000476837,
+      "responseEnd": 935.9000000953674,
+      "transferred": 3058,
+      "delivered": 936.2000000476837,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42539.534375,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/separator.proto.ts",
+      "start": 849.5,
+      "responseStart": 935.9000000953674,
+      "responseEnd": 936,
+      "transferred": 2740,
+      "delivered": 936.2000000476837,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 42539.808833,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/alignment-controller.ts",
+      "start": 933,
+      "responseStart": 954,
+      "responseEnd": 954,
+      "transferred": 44160,
+      "delivered": 1931.7000000476837,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 43534.658333,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/command.ts",
+      "start": 933.1000001430511,
+      "responseStart": 953.7000000476837,
+      "responseEnd": 953.9000000953674,
+      "transferred": 11166,
+      "delivered": 1931.7999999523163,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 43534.902458,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/alignment-intent.ts",
+      "start": 1934.2999999523163,
+      "responseStart": 1942.1000001430511,
+      "responseEnd": 1942.2000000476837,
+      "transferred": 11004,
+      "delivered": 1942.4000000953674,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "nodeMs": 43548.034667,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "demo-base-calendar.demo.ts",
+      "start": 8117.400000095367,
+      "responseStart": 8197.299999952316,
+      "responseEnd": 8197.400000095367,
+      "transferred": 812,
+      "delivered": 9844.400000095367,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 51447.232333,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/index.ts",
+      "start": 9849,
+      "responseStart": 9866.200000047684,
+      "responseEnd": 9866.600000143051,
+      "transferred": 6382,
+      "delivered": 9952.799999952316,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 51555.438917,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "calendar/index.ts",
+      "start": 9865.100000143051,
+      "responseStart": 9959.400000095367,
+      "responseEnd": 9959.5,
+      "transferred": 701,
+      "delivered": 10074,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 51677.244083,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "calendar/index.ts",
+      "start": 9870.200000047684,
+      "responseStart": 9994.900000095367,
+      "responseEnd": 9995.100000143051,
+      "transferred": 704,
+      "delivered": 10105.700000047684,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 51708.33575,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "calendar-demo.shared.ts",
+      "start": 9874.400000095367,
+      "responseStart": 9981.400000095367,
+      "responseEnd": 9981.5,
+      "transferred": 39803,
+      "delivered": 10105.799999952316,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 51708.628417,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "calendar/index.ts",
+      "start": 9880.799999952316,
+      "responseStart": 10013.5,
+      "responseEnd": 10013.600000143051,
+      "transferred": 696,
+      "delivered": 10105.799999952316,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 51708.762583,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "calendar/index.ts",
+      "start": 9895.400000095367,
+      "responseStart": 10087.5,
+      "responseEnd": 10087.600000143051,
+      "transferred": 707,
+      "delivered": 10122.200000047684,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 51725.15425,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/index.ts",
+      "start": 9915.400000095367,
+      "responseStart": 10139.600000143051,
+      "responseEnd": 10139.600000143051,
+      "transferred": 6502,
+      "delivered": 10596.100000143051,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 52198.94275,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/root.proto.ts",
+      "start": 9958.200000047684,
+      "responseStart": 10259.100000143051,
+      "responseEnd": 10259.200000047684,
+      "transferred": 1928,
+      "delivered": 10662.100000143051,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 52265.03625,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/trigger.proto.ts",
+      "start": 9958.200000047684,
+      "responseStart": 10259.900000095367,
+      "responseEnd": 10260,
+      "transferred": 2510,
+      "delivered": 10662.100000143051,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 52265.125167,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/value.proto.ts",
+      "start": 9958.200000047684,
+      "responseStart": 10259.900000095367,
+      "responseEnd": 10260.100000143051,
+      "transferred": 2767,
+      "delivered": 10662.100000143051,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 52265.485917,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/content.proto.ts",
+      "start": 9958.200000047684,
+      "responseStart": 10260.100000143051,
+      "responseEnd": 10260.200000047684,
+      "transferred": 3181,
+      "delivered": 10662.200000047684,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 52265.532208,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/item.proto.ts",
+      "start": 9958.200000047684,
+      "responseStart": 10263.100000143051,
+      "responseEnd": 10263.100000143051,
+      "transferred": 9086,
+      "delivered": 10662.200000047684,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 52265.562667,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/surface.proto.ts",
+      "start": 9958.299999952316,
+      "responseStart": 10262.700000047684,
+      "responseEnd": 10262.799999952316,
+      "transferred": 5552,
+      "delivered": 10662.200000047684,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 52265.591125,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/viewport.proto.ts",
+      "start": 9958.400000095367,
+      "responseStart": 10262.900000095367,
+      "responseEnd": 10263,
+      "transferred": 2382,
+      "delivered": 10662.200000047684,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 52265.622042,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/item-text.proto.ts",
+      "start": 9958.400000095367,
+      "responseStart": 10262.900000095367,
+      "responseEnd": 10263.100000143051,
+      "transferred": 2069,
+      "delivered": 10662.200000047684,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 52265.67675,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/separator.proto.ts",
+      "start": 9958.400000095367,
+      "responseStart": 10266.5,
+      "responseEnd": 10266.700000047684,
+      "transferred": 2136,
+      "delivered": 10662.200000047684,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 52265.715417,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/group.proto.ts",
+      "start": 9958.400000095367,
+      "responseStart": 10267.299999952316,
+      "responseEnd": 10267.5,
+      "transferred": 1849,
+      "delivered": 10662.299999952316,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 52265.744458,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/label.proto.ts",
+      "start": 9958.400000095367,
+      "responseStart": 10267.700000047684,
+      "responseEnd": 10267.799999952316,
+      "transferred": 2143,
+      "delivered": 10662.299999952316,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 52265.772542,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "calendar/index.ts",
+      "start": 9968.600000143051,
+      "responseStart": 10367,
+      "responseEnd": 10367,
+      "transferred": 1450,
+      "delivered": 10662.299999952316,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 52265.849625,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "calendar/calendar.proto.ts",
+      "start": 10103,
+      "responseStart": 11062.900000095367,
+      "responseEnd": 11063.100000143051,
+      "transferred": 23859,
+      "delivered": 11326.100000143051,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 52928.644,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "calendar/calendar.proto.ts",
+      "start": 10107.600000143051,
+      "responseStart": 11074.200000047684,
+      "responseEnd": 11074.400000095367,
+      "transferred": 28561,
+      "delivered": 11326.200000047684,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 52928.736458,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "calendar/calendar.proto.ts",
+      "start": 10114.299999952316,
+      "responseStart": 11087.799999952316,
+      "responseEnd": 11088.100000143051,
+      "transferred": 81090,
+      "delivered": 11326.299999952316,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 52928.762125,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "calendar/calendar.proto.ts",
+      "start": 10146.600000143051,
+      "responseStart": 11123.600000143051,
+      "responseEnd": 11123.799999952316,
+      "transferred": 34263,
+      "delivered": 11326.400000095367,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 52928.83775,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/root.proto.ts",
+      "start": 10616,
+      "responseStart": 11129.5,
+      "responseEnd": 11129.5,
+      "transferred": 1939,
+      "delivered": 11326.400000095367,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 52929.005875,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/trigger.proto.ts",
+      "start": 10616,
+      "responseStart": 11129.700000047684,
+      "responseEnd": 11129.700000047684,
+      "transferred": 2535,
+      "delivered": 11326.400000095367,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 52929.026167,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/content.proto.ts",
+      "start": 10616,
+      "responseStart": 11129.900000095367,
+      "responseEnd": 11129.900000095367,
+      "transferred": 3314,
+      "delivered": 11326.5,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 52929.043667,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/value.proto.ts",
+      "start": 10616,
+      "responseStart": 11130,
+      "responseEnd": 11130.100000143051,
+      "transferred": 2168,
+      "delivered": 11326.5,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 52929.056417,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/item.proto.ts",
+      "start": 10616,
+      "responseStart": 11130.200000047684,
+      "responseEnd": 11130.299999952316,
+      "transferred": 9560,
+      "delivered": 11326.5,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 52929.068667,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/surface.proto.ts",
+      "start": 10616,
+      "responseStart": 11130.400000095367,
+      "responseEnd": 11130.400000095367,
+      "transferred": 2202,
+      "delivered": 11326.5,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 52929.163667,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/viewport.proto.ts",
+      "start": 10616,
+      "responseStart": 11130.400000095367,
+      "responseEnd": 11130.400000095367,
+      "transferred": 2198,
+      "delivered": 11326.5,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 52929.176417,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/item-text.proto.ts",
+      "start": 10616.100000143051,
+      "responseStart": 11130.100000143051,
+      "responseEnd": 11130.200000047684,
+      "transferred": 2120,
+      "delivered": 11326.5,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 52929.190917,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/label.proto.ts",
+      "start": 10616.100000143051,
+      "responseStart": 11130.700000047684,
+      "responseEnd": 11130.700000047684,
+      "transferred": 2469,
+      "delivered": 11326.5,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 52929.202667,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/separator.proto.ts",
+      "start": 10616.100000143051,
+      "responseStart": 11130.799999952316,
+      "responseEnd": 11130.799999952316,
+      "transferred": 2636,
+      "delivered": 11326.5,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 52929.217167,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/group.proto.ts",
+      "start": 10616.100000143051,
+      "responseStart": 11131.100000143051,
+      "responseEnd": 11131.200000047684,
+      "transferred": 1859,
+      "delivered": 11326.600000143051,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 52929.2295,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/trigger-visual.ts",
+      "start": 10664.799999952316,
+      "responseStart": 11170,
+      "responseEnd": 11170,
+      "transferred": 10672,
+      "delivered": 12891.600000143051,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 54494.3605,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "calendar/calendar.proto.ts",
+      "start": 10697.799999952316,
+      "responseStart": 11181.600000143051,
+      "responseEnd": 11181.700000047684,
+      "transferred": 23810,
+      "delivered": 12891.900000095367,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 54494.781625,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "calendar/model.ts",
+      "start": 11399.100000143051,
+      "responseStart": 11399.799999952316,
+      "responseEnd": 11399.799999952316,
+      "transferred": 10245,
+      "delivered": 12947.700000047684,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 54550.225,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "calendar/caption-composition.ts",
+      "start": 11399.100000143051,
+      "responseStart": 11400.100000143051,
+      "responseEnd": 11400.200000047684,
+      "transferred": 11573,
+      "delivered": 12947.799999952316,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 54550.4025,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "calendar/day-paint.ts",
+      "start": 11400.100000143051,
+      "responseStart": 11401.400000095367,
+      "responseEnd": 11401.600000143051,
+      "transferred": 16953,
+      "delivered": 12947.799999952316,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 54550.438417,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "select/trigger-visual.ts",
+      "start": 11400.600000143051,
+      "responseStart": 11404.700000047684,
+      "responseEnd": 11404.700000047684,
+      "transferred": 4106,
+      "delivered": 12947.900000095367,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 54550.459125,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "calendar/visual.ts",
+      "start": 12895.5,
+      "responseStart": 12901.700000047684,
+      "responseEnd": 12901.900000095367,
+      "transferred": 18285,
+      "delivered": 13050.200000047684,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 54652.834833,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    },
+    {
+      "name": "calendar.ts",
+      "start": 13057.400000095367,
+      "responseStart": 13083.799999952316,
+      "responseEnd": 13083.900000095367,
+      "transferred": 3763,
+      "delivered": 13609,
+      "timeOrigin": 1794858228929.3,
+      "nodeDelivery": {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "nodeMs": 55211.510833,
+        "nodeTimeOrigin": 1794858187327.053
+      }
+    }
+  ],
+  "observedDependencies": {
+    "base-calendar-heading": [
+      {
+        "id": "base-calendar-heading",
+        "stage": "loader-begin",
+        "pageMs": 9880.700000047684,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 51483.295,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "base-calendar-heading",
+        "stage": "join-pending",
+        "pageMs": 9880.900000095367,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 51483.51025,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "base-calendar-heading",
+        "stage": "loader-return",
+        "pageMs": 13649.600000143051,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 55251.996625,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "base-calendar-heading",
+        "stage": "registration-return",
+        "pageMs": 13649.600000143051,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 55252.095917,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      }
+    ],
+    "base-calendar-grid": [
+      {
+        "id": "base-calendar-grid",
+        "stage": "loader-begin",
+        "pageMs": 9880.799999952316,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 51483.414083,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "base-calendar-grid",
+        "stage": "join-pending",
+        "pageMs": 9881,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 51483.524875,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "base-calendar-grid",
+        "stage": "loader-return",
+        "pageMs": 13648.400000095367,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 55250.847833,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "base-calendar-grid",
+        "stage": "registration-return",
+        "pageMs": 13648.400000095367,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 55250.858542,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      }
+    ],
+    "base-calendar-row": [
+      {
+        "id": "base-calendar-row",
+        "stage": "loader-begin",
+        "pageMs": 9880.799999952316,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 51483.439208,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "base-calendar-row",
+        "stage": "join-pending",
+        "pageMs": 9881,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 51483.538833,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "base-calendar-row",
+        "stage": "loader-return",
+        "pageMs": 13649.100000143051,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 55251.476292,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "base-calendar-row",
+        "stage": "registration-return",
+        "pageMs": 13649.100000143051,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 55251.513208,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      }
+    ],
+    "base-select-root": [
+      {
+        "id": "base-select-root",
+        "stage": "loader-begin",
+        "pageMs": 9892.299999952316,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 51494.990708,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "base-select-root",
+        "stage": "join-pending",
+        "pageMs": 9892.600000143051,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 51495.279375,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "base-select-root",
+        "stage": "loader-return",
+        "pageMs": 10170.900000095367,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 51773.795,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "base-select-root",
+        "stage": "registration-return",
+        "pageMs": 10170.900000095367,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 51774.29725,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      }
+    ],
+    "base-select-trigger": [
+      {
+        "id": "base-select-trigger",
+        "stage": "loader-begin",
+        "pageMs": 9892.400000095367,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 51495.05025,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "base-select-trigger",
+        "stage": "join-pending",
+        "pageMs": 9892.700000047684,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 51495.291167,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "base-select-trigger",
+        "stage": "loader-return",
+        "pageMs": 10171,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 51774.332083,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "base-select-trigger",
+        "stage": "registration-return",
+        "pageMs": 10171,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 51774.354875,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      }
+    ],
+    "base-select-value": [
+      {
+        "id": "base-select-value",
+        "stage": "loader-begin",
+        "pageMs": 9892.400000095367,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 51495.121083,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "base-select-value",
+        "stage": "join-pending",
+        "pageMs": 9892.700000047684,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 51495.342417,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "base-select-value",
+        "stage": "loader-return",
+        "pageMs": 10171,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 51774.372458,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "base-select-value",
+        "stage": "registration-return",
+        "pageMs": 10171.100000143051,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 51774.385958,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      }
+    ],
+    "lucide-chevron-down-icon": [
+      {
+        "id": "lucide-chevron-down-icon",
+        "stage": "loader-begin",
+        "pageMs": 9892.5,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 51495.138458,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "lucide-chevron-down-icon",
+        "stage": "join-pending",
+        "pageMs": 9892.700000047684,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 51495.360417,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "lucide-chevron-down-icon",
+        "stage": "loader-return",
+        "pageMs": 11330.100000143051,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 52932.588708,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "lucide-chevron-down-icon",
+        "stage": "registration-return",
+        "pageMs": 11330.200000047684,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 52932.638917,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      }
+    ],
+    "base-select-content": [
+      {
+        "id": "base-select-content",
+        "stage": "loader-begin",
+        "pageMs": 9892.5,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 51495.227667,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "base-select-content",
+        "stage": "join-pending",
+        "pageMs": 9892.700000047684,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 51495.3725,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "base-select-content",
+        "stage": "loader-return",
+        "pageMs": 10171.100000143051,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 51774.399958,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "base-select-content",
+        "stage": "registration-return",
+        "pageMs": 10171.100000143051,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 51774.413708,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      }
+    ],
+    "base-select-item": [
+      {
+        "id": "base-select-item",
+        "stage": "loader-begin",
+        "pageMs": 9892.5,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 51495.266542,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "base-select-item",
+        "stage": "join-pending",
+        "pageMs": 9892.700000047684,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 51495.493333,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "base-select-item",
+        "stage": "loader-return",
+        "pageMs": 10171.100000143051,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 51774.426208,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "base-select-item",
+        "stage": "registration-return",
+        "pageMs": 10171.100000143051,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 51774.438,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      }
+    ],
+    "lucide-chevron-left-icon": [
+      {
+        "id": "lucide-chevron-left-icon",
+        "stage": "loader-begin",
+        "pageMs": 13647.100000143051,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 55249.618792,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "lucide-chevron-left-icon",
+        "stage": "join-pending",
+        "pageMs": 13647.600000143051,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 55250.166167,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      }
+    ],
+    "lucide-chevron-right-icon": [
+      {
+        "id": "lucide-chevron-right-icon",
+        "stage": "loader-begin",
+        "pageMs": 13647.200000047684,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 55249.720958,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "lucide-chevron-right-icon",
+        "stage": "join-pending",
+        "pageMs": 13647.700000047684,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 55250.276375,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      }
+    ],
+    "base-calendar-root": [
+      {
+        "id": "base-calendar-root",
+        "stage": "loader-begin",
+        "pageMs": 13648.100000143051,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 55250.675208,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "base-calendar-root",
+        "stage": "join-pending",
+        "pageMs": 13648.5,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 55251.018208,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      }
+    ],
+    "base-calendar-caption": [
+      {
+        "id": "base-calendar-caption",
+        "stage": "loader-begin",
+        "pageMs": 13648.200000047684,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 55250.69575,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "base-calendar-caption",
+        "stage": "join-pending",
+        "pageMs": 13648.600000143051,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 55251.082792,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      }
+    ],
+    "base-calendar-previous": [
+      {
+        "id": "base-calendar-previous",
+        "stage": "loader-begin",
+        "pageMs": 13648.200000047684,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 55250.709625,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "base-calendar-previous",
+        "stage": "join-pending",
+        "pageMs": 13648.600000143051,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 55251.093833,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      }
+    ],
+    "base-calendar-next": [
+      {
+        "id": "base-calendar-next",
+        "stage": "loader-begin",
+        "pageMs": 13648.299999952316,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 55250.747792,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "base-calendar-next",
+        "stage": "join-pending",
+        "pageMs": 13648.600000143051,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 55251.104417,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      }
+    ],
+    "base-calendar-weekdays": [
+      {
+        "id": "base-calendar-weekdays",
+        "stage": "loader-begin",
+        "pageMs": 13648.299999952316,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 55250.814917,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "base-calendar-weekdays",
+        "stage": "join-pending",
+        "pageMs": 13648.600000143051,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 55251.114875,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      }
+    ],
+    "base-calendar-weekday": [
+      {
+        "id": "base-calendar-weekday",
+        "stage": "loader-begin",
+        "pageMs": 13648.400000095367,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 55250.826458,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "base-calendar-weekday",
+        "stage": "join-pending",
+        "pageMs": 13648.600000143051,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 55251.125333,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      }
+    ],
+    "base-calendar-day": [
+      {
+        "id": "base-calendar-day",
+        "stage": "loader-begin",
+        "pageMs": 13648.400000095367,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 55250.83725,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      },
+      {
+        "id": "base-calendar-day",
+        "stage": "join-pending",
+        "pageMs": 13648.600000143051,
+        "timeOrigin": 1794858228929.3,
+        "nodeDelivery": {
+          "locale": "zh-cn",
+          "phase": "startup-wait",
+          "nodeMs": 55251.16125,
+          "nodeTimeOrigin": 1794858187327.053
+        }
+      }
+    ]
+  },
+  "dependencyBoundary": "First marker per ID and stage on the shared loader. A custom loader may register internally before its return; joined callers may belong to other previews.",
+  "resourceBoundary": "Selected Calendar URL patterns. Coverage of the transitive graph is partial.",
+  "loaderCompletionObserved": {
+    "returned": [
+      "base-calendar-heading",
+      "base-calendar-grid",
+      "base-calendar-row",
+      "base-select-root",
+      "base-select-trigger",
+      "base-select-value",
+      "lucide-chevron-down-icon",
+      "base-select-content",
+      "base-select-item"
+    ],
+    "noReturnMarker": [
+      "lucide-chevron-left-icon",
+      "lucide-chevron-right-icon",
+      "base-calendar-root",
+      "base-calendar-caption",
+      "base-calendar-previous",
+      "base-calendar-next",
+      "base-calendar-weekdays",
+      "base-calendar-weekday",
+      "base-calendar-day"
+    ]
+  }
+}
