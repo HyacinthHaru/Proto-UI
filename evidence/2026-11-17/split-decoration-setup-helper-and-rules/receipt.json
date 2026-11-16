@@ -1,0 +1,28 @@
+{
+  "head": "0baec5a7bd312ce3e4b1c9bb5ca7775dbd20feec",
+  "tree": "78f35a324a2c947b6faa5f64b799a3dbc2684435",
+  "previousHead": "913b78bde65c0da51bb9d62f3df5788807cefda6",
+  "baseline": {
+    "failed": 3,
+    "passed": 45
+  },
+  "green": {
+    "files": 5,
+    "passed": 207
+  },
+  "workspaceTypes": "passed",
+  "builtCli": "1/47",
+  "sourceSHA256": {
+    "packages/cli/src/services/prototype-style-tokens.ts": "61970eaceebf9b0c2abbe51df6b53fb610a20d83cb511a00a640f9663815e8e7",
+    "packages/cli/test/shadow-template-style.test.ts": "26a31fedc9e6fb10a3142ea4da263ef5fa02cad204b839fcbc7b3a5fccc048bc"
+  },
+  "nativeFixtureSHA256": {
+    "native.mts": "27315a6f19f2e3bd8bc11585f530546f652d21ba58dd99681f6fbd0bff97e4f7",
+    "used-native.astro": "0df2028ca6486192f29a99b0efffec269e669e29ef339ed39bfadfdc70371082",
+    "used-helper.ts": "78214b18edebe17f06f282bf4b44cb1b73e2151fcab9cd2fd11a5532316acd25",
+    "used-palette.ts": "43f8e839de543ab60560be34915194fcf3c3bd19e90ced77c60e05d817ce2b90",
+    "used-helper.json": "b3a4f425111a778ff2e153203209295fd0df082fc95db5e0cbae71137d5419cd",
+    "used-rule.ts": "84beb1cbe736e75f49432c6b7fdf21cff1b90423e086139406764e37d76c5583",
+    "used-rule.json": "317a84275e50df81486241571b750d742cfe493cf7e66aa9e8596ca5e09a1e8f"
+  }
+}

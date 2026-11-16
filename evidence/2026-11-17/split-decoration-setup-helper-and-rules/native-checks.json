@@ -1,0 +1,24 @@
+{
+  "status": "passed",
+  "chrome": "156.0.8078.79",
+  "result": [
+    {
+      "kind": "helper",
+      "widths": [64],
+      "same": true,
+      "caller": "Caller input",
+      "focused": true,
+      "assigned": true,
+      "errors": []
+    },
+    {
+      "kind": "rule",
+      "widths": [64, 32],
+      "same": true,
+      "caller": "Caller input",
+      "focused": true,
+      "assigned": true,
+      "errors": []
+    }
+  ]
+}

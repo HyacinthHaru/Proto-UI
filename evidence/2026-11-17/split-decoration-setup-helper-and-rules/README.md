@@ -1,0 +1,5 @@
+# Owned-decoration setup helpers and multi-operation Rules
+
+[PR #1484](https://github.com/Proto-UI/Proto-UI/pull/1484) at `0baec5a7bd312ce3e4b1c9bb5ca7775dbd20feec` verifies direct operations in a Rule intent block against the original target binding and an unrebound intent receiver. The classifier also follows a private synchronous same-source helper whose references are direct, proven canonical setup call sites. Both the setup argument and the local setup closure are covered. Unknown helper call sites, rebound receivers and shadowed targets retain Root preflight.
+
+The same 48 tests produced three failures on the preceding exact head. The corrected broader selection passed 207 tests in five files. Workspace types and the CLI package build passed. The attached artifacts came from the built CLI and two actual authoring fixtures. Chrome measured the setup helper's imported paint as 64 px in a 640 px layout and measured the two Rule operations as 64 px and 32 px on separate leaves. Native repeat commits retained the caller's value, focus and slot assignment without page errors.
