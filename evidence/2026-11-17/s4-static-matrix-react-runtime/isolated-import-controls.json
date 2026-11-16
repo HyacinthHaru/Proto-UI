@@ -1,0 +1,128 @@
+[
+  {
+    "mode": "direct",
+    "output": [
+      {
+        "name": "react",
+        "elapsedMs": 25.09999990463257,
+        "version": "18.3.1",
+        "createRoot": false
+      },
+      {
+        "name": "react-dom",
+        "elapsedMs": 29.799999952316284,
+        "version": "18.3.1-next-f1338f8080-20240426",
+        "createRoot": true
+      },
+      {
+        "name": "react-dom/client",
+        "elapsedMs": 29.799999952316284,
+        "version": null,
+        "createRoot": true
+      }
+    ],
+    "responses": [
+      {
+        "file": "/__local_react_artifact_control__",
+        "status": 200
+      },
+      {
+        "file": "/_astro/index.J7E9Px8p.js",
+        "status": 200
+      },
+      {
+        "file": "/_astro/index.CWLepCMo.js",
+        "status": 200
+      },
+      {
+        "file": "/_astro/client.CwoxijIM.js",
+        "status": 200
+      },
+      {
+        "file": "/_astro/index.C47PDzzu.js",
+        "status": 200
+      },
+      {
+        "file": "/_astro/index.BVKZFYvx.js",
+        "status": 200
+      },
+      {
+        "file": "/_astro/index.CDDwQV5v.js",
+        "status": 200
+      },
+      {
+        "file": "/_astro/client.nHzutAOZ.js",
+        "status": 200
+      },
+      {
+        "file": "/_astro/index.D5ahegtX.js",
+        "status": 200
+      }
+    ]
+  },
+  {
+    "mode": "built-preload",
+    "output": [
+      {
+        "name": "react",
+        "elapsedMs": 14.600000143051147,
+        "version": "18.3.1",
+        "createRoot": false
+      },
+      {
+        "name": "react-dom",
+        "elapsedMs": 24.200000047683716,
+        "version": "18.3.1-next-f1338f8080-20240426",
+        "createRoot": true
+      },
+      {
+        "name": "react-dom/client",
+        "elapsedMs": 24.200000047683716,
+        "version": null,
+        "createRoot": true
+      }
+    ],
+    "responses": [
+      {
+        "file": "/__local_react_artifact_control__",
+        "status": 200
+      },
+      {
+        "file": "/_astro/preload-helper.BlTxHScW.js",
+        "status": 200
+      },
+      {
+        "file": "/_astro/index.J7E9Px8p.js",
+        "status": 200
+      },
+      {
+        "file": "/_astro/index.C47PDzzu.js",
+        "status": 200
+      },
+      {
+        "file": "/_astro/index.BVKZFYvx.js",
+        "status": 200
+      },
+      {
+        "file": "/_astro/client.CwoxijIM.js",
+        "status": 200
+      },
+      {
+        "file": "/_astro/index.CWLepCMo.js",
+        "status": 200
+      },
+      {
+        "file": "/_astro/client.nHzutAOZ.js",
+        "status": 200
+      },
+      {
+        "file": "/_astro/index.CDDwQV5v.js",
+        "status": 200
+      },
+      {
+        "file": "/_astro/index.D5ahegtX.js",
+        "status": 200
+      }
+    ]
+  }
+]

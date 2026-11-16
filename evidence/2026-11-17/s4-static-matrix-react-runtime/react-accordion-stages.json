@@ -1,0 +1,258 @@
+{
+  "source": {
+    "head": "5d4f911370ca5e9cb4e4a17f20eca0b1945d6862",
+    "tree": "84b1020b1d8fdd3511e6f9d4215aad6fa94bf83b",
+    "parents": [
+      "621355701553eb1bded8537b0ae5a1881038d61f",
+      "624b878c166658ee99f798eaba2ee6b20f1a6bd5"
+    ],
+    "overlaySHA256": "2338b64705132100d3e33c3a973532e54cc3436ba6d67f718625ef9c7518955f",
+    "htmlSHA256": "9e397ace2d4a9af31b295ea4e4c40d2e1e62ffd6505d4240110dfc2c91fbc7a4"
+  },
+  "test": {
+    "locale": "zh-cn",
+    "otherLocale": "unselected",
+    "previews": 1268,
+    "readinessMs": 60000,
+    "outerMs": 150000,
+    "exit": 1,
+    "verdict": {
+      "startupPassed": false,
+      "errors": [],
+      "consoleErrors": [],
+      "collectionOutcome": "rejected"
+    },
+    "lastOriginalReadiness": {
+      "timeOrigin": 1794866609517.8,
+      "pageMs": 24875.89999985695,
+      "dateNow": 1794866634393,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-715ggtjnivc",
+        "index": 1,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "declaredRuntime": "react",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-715ggtjnivc",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      }
+    },
+    "logSHA256": "041729d0aab9cf47f1d86ff29c5086ec103c3d3ae7fdb7ac34b5240b3beeee30",
+    "nodePhases": [
+      {
+        "locale": "zh-cn",
+        "phase": "init-script",
+        "outcome": "begin",
+        "nodeMs": 1369.712709,
+        "nodeTimeOrigin": 1794866608142.927,
+        "dateNow": 1794866609512
+      },
+      {
+        "locale": "zh-cn",
+        "phase": "init-script",
+        "outcome": "return",
+        "nodeMs": 1373.497125,
+        "nodeTimeOrigin": 1794866608142.927,
+        "dateNow": 1794866609516
+      },
+      {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "outcome": "begin",
+        "nodeMs": 1373.537667,
+        "nodeTimeOrigin": 1794866608142.927,
+        "dateNow": 1794866609516
+      },
+      {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "outcome": "return",
+        "nodeMs": 6826.479084,
+        "nodeTimeOrigin": 1794866608142.927,
+        "dateNow": 1794866614969
+      },
+      {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "outcome": "begin",
+        "nodeMs": 6826.654125,
+        "nodeTimeOrigin": 1794866608142.927,
+        "dateNow": 1794866614969
+      },
+      {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "outcome": "error",
+        "nodeMs": 151665.480209,
+        "nodeTimeOrigin": 1794866608142.927,
+        "dateNow": 1794866759808
+      },
+      {
+        "locale": "zh-cn",
+        "phase": "context-close",
+        "outcome": "begin",
+        "nodeMs": 151776.241667,
+        "nodeTimeOrigin": 1794866608142.927,
+        "dateNow": 1794866759919
+      },
+      {
+        "locale": "zh-cn",
+        "phase": "context-close",
+        "outcome": "return",
+        "nodeMs": 151776.264417,
+        "nodeTimeOrigin": 1794866608142.927,
+        "dateNow": 1794866759919
+      }
+    ]
+  },
+  "markers": [
+    {
+      "stage": "demo-import-begin",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 7201.700000047684,
+      "timeOrigin": 1794866609517.8,
+      "children": 0,
+      "receivedNodeMs": 8576.813917
+    },
+    {
+      "stage": "adapter-react-import-begin",
+      "pageMs": 11834.5,
+      "timeOrigin": 1794866609517.8,
+      "receivedNodeMs": 13209.764584
+    },
+    {
+      "stage": "react-runtime-wrapper-import-begin",
+      "pageMs": 11834.899999856949,
+      "timeOrigin": 1794866609517.8,
+      "receivedNodeMs": 13210.239542
+    },
+    {
+      "stage": "demo-import-return",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 12752.599999904633,
+      "timeOrigin": 1794866609517.8,
+      "children": 0,
+      "receivedNodeMs": 14127.622084
+    },
+    {
+      "stage": "prototype-imports-begin",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 12752.599999904633,
+      "timeOrigin": 1794866609517.8,
+      "children": 0,
+      "details": [
+        "base-accordion-root",
+        "base-accordion-item",
+        "base-accordion-heading",
+        "base-accordion-trigger",
+        "base-accordion-content",
+        "base-button"
+      ],
+      "receivedNodeMs": 14127.704042
+    },
+    {
+      "stage": "react-runtime-wrapper-import-return",
+      "pageMs": 14391.399999856949,
+      "timeOrigin": 1794866609517.8,
+      "receivedNodeMs": 15766.916
+    },
+    {
+      "stage": "react-import-begin",
+      "pageMs": 14391.5,
+      "timeOrigin": 1794866609517.8,
+      "receivedNodeMs": 15767.090625
+    },
+    {
+      "stage": "react-dom-import-begin",
+      "pageMs": 14392.299999952316,
+      "timeOrigin": 1794866609517.8,
+      "receivedNodeMs": 15767.386584
+    },
+    {
+      "stage": "react-dom/client-import-begin",
+      "pageMs": 14392.799999952316,
+      "timeOrigin": 1794866609517.8,
+      "receivedNodeMs": 15767.849542
+    },
+    {
+      "stage": "adapter-react-import-return",
+      "pageMs": 14455.200000047684,
+      "timeOrigin": 1794866609517.8,
+      "receivedNodeMs": 15830.344417
+    },
+    {
+      "stage": "prototype-imports-return",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 24775,
+      "timeOrigin": 1794866609517.8,
+      "children": 0,
+      "receivedNodeMs": 26150.320334
+    },
+    {
+      "stage": "render-call",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 24775.200000047684,
+      "timeOrigin": 1794866609517.8,
+      "children": 0,
+      "receivedNodeMs": 26150.372334
+    },
+    {
+      "stage": "runtime-join-begin",
+      "owner": "pp-715ggtjnivc",
+      "pageMs": 24775.39999985695,
+      "timeOrigin": 1794866609517.8,
+      "children": 0,
+      "receivedNodeMs": 26150.555209
+    }
+  ],
+  "runtimeArtifact": {
+    "runtime": "_astro/react-runtime.vwl59Oq4.js",
+    "sha256": "f3f06db74ca0d3627d6d719c007d3f3e83ce22eb99e935bf84c421b0e6aa5b39",
+    "helper": "/_astro/preload-helper.BlTxHScW.js",
+    "targets": [
+      {
+        "name": "react",
+        "url": "/_astro/index.J7E9Px8p.js",
+        "sha256": "d0cf7277124860a82ad200657fb6e58bfe6c9a122647a3e77c3e36d01ecfdfea",
+        "preloads": [
+          "_astro/index.J7E9Px8p.js",
+          "_astro/index.BVKZFYvx.js",
+          "_astro/index.C47PDzzu.js"
+        ]
+      },
+      {
+        "name": "react-dom",
+        "url": "/_astro/index.CWLepCMo.js",
+        "sha256": "874248eb2fcd43654ab755ae2131b8ae5fc38ba817c5a9cee4b76e1d8b2a9d4f",
+        "preloads": [
+          "_astro/index.CWLepCMo.js",
+          "_astro/index.BVKZFYvx.js",
+          "_astro/index.D5ahegtX.js",
+          "_astro/index.CDDwQV5v.js"
+        ]
+      },
+      {
+        "name": "react-dom/client",
+        "url": "/_astro/client.CwoxijIM.js",
+        "sha256": "248f69329c2bcd2706588327ff3d6f71de0a427050f80439c77544b4244f1bdd",
+        "preloads": [
+          "_astro/client.CwoxijIM.js",
+          "_astro/index.BVKZFYvx.js",
+          "_astro/client.nHzutAOZ.js",
+          "_astro/index.D5ahegtX.js"
+        ]
+      }
+    ]
+  }
+}

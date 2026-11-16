@@ -1,0 +1,289 @@
+{
+  "source": {
+    "head": "5d4f911370ca5e9cb4e4a17f20eca0b1945d6862",
+    "tree": "84b1020b1d8fdd3511e6f9d4215aad6fa94bf83b",
+    "parents": [
+      "621355701553eb1bded8537b0ae5a1881038d61f",
+      "624b878c166658ee99f798eaba2ee6b20f1a6bd5"
+    ]
+  },
+  "environment": {
+    "node": "v24.21.0",
+    "pnpm": "10.32.1",
+    "chrome": "Google Chrome for Testing 156.0.8078.79",
+    "workers": 1
+  },
+  "build": {
+    "kind": "repository static production build",
+    "start": "2026-11-16T21:53:05Z",
+    "finish": "2026-11-16T21:54:05Z",
+    "exit": 0,
+    "packageCount": 47,
+    "pages": [
+      {
+        "locale": "zh-cn",
+        "path": "apps/www/dist/zh-cn/internal/demo-matrix/index.html",
+        "bytes": 1862438,
+        "sha256": "61140f024bd0c96ed493955a9393f73c118ded40a88285738439315eb6fc47a7",
+        "previewCount": 1268,
+        "uniqueIds": 1268
+      },
+      {
+        "locale": "en",
+        "path": "apps/www/dist/en/internal/demo-matrix/index.html",
+        "bytes": 1914021,
+        "sha256": "8926675946e9476bcf839678e2240147057ea2cbd194b65a91763cc4bcb56480",
+        "previewCount": 1268,
+        "uniqueIds": 1268
+      }
+    ],
+    "astroLogSha256": "17aa931da9dda8ec93c9122fdf7fc60a7e87d1cbad0af0a9dbaa444d57f4045f",
+    "normalBuild": {
+      "exit": 0,
+      "pages": 683,
+      "matrixRoutesPresent": false,
+      "logSHA256": "b81b03a48da4b2787d050df34c4ea2e1c2299e8f7b2df4bc0608169f84ceafe9"
+    },
+    "diagnosticOverlay": {
+      "pages": 685,
+      "change": "Set draft false for two local matrix pages only.",
+      "sha256": "ae44b882e227090c5a1e09b4838c5cee97d9e01618c51209cc2ed0ac5df39a3f"
+    }
+  },
+  "native": {
+    "mode": "Astro preview from the exact dist output",
+    "start": "2026-11-16T21:54:06Z",
+    "finish": "2026-11-16T21:59:10Z",
+    "exit": 1,
+    "counts": [0, 2, 0],
+    "readinessMs": 60000,
+    "outerMs": 150000,
+    "previewsPerLocale": 1268,
+    "runLogSha256": "ec42f768bfef3d84c46c63bbed6d79c2ee4429ce7f4e18fe5b23effc6a5f8846",
+    "inputs": {
+      "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "e6590db342bddc56b37fa367ce6b1cc519130cdb201e06e8d14061569d5e0317",
+      "apps/www/src/content/docs/zh-cn/demo-matrix-observation.ts": "20ba7d7979b32daa05ec3320c4853673c081dd9edd6e831eac32afefed3bcbe8",
+      "scripts/analysis/shadow-s4-journey.mjs": "16c6af53316d131a06657a303c5d8d92138f64835d23495c4ab261d51d90b7b5"
+    },
+    "locales": {
+      "zh-cn": {
+        "lastOriginalReadiness": {
+          "timeOrigin": 1794866049401.5,
+          "pageMs": 23607.5,
+          "dateNow": 1794866073009,
+          "count": 1268,
+          "ready": false,
+          "firstMissing": {
+            "previewerId": "pp-7xbz402n299",
+            "index": 1,
+            "inited": "1",
+            "hostChildren": 0
+          },
+          "firstMissingOwner": {
+            "demoId": "demo-base-accordion",
+            "prototypeId": "",
+            "declaredRuntime": "react",
+            "projectionMode": null,
+            "projectionState": null,
+            "mounting": null,
+            "hostTag": "DIV",
+            "hostOwner": "pp-7xbz402n299",
+            "startupPending": true,
+            "hostOwnInert": true,
+            "hostText": ""
+          }
+        },
+        "phases": [
+          {
+            "locale": "zh-cn",
+            "phase": "init-script",
+            "outcome": "begin",
+            "nodeMs": 1295.457208,
+            "nodeTimeOrigin": 1794866048099.698,
+            "dateNow": 1794866049395
+          },
+          {
+            "locale": "zh-cn",
+            "phase": "init-script",
+            "outcome": "return",
+            "nodeMs": 1300.330416,
+            "nodeTimeOrigin": 1794866048099.698,
+            "dateNow": 1794866049400
+          },
+          {
+            "locale": "zh-cn",
+            "phase": "goto",
+            "outcome": "begin",
+            "nodeMs": 1300.411875,
+            "nodeTimeOrigin": 1794866048099.698,
+            "dateNow": 1794866049400
+          },
+          {
+            "locale": "zh-cn",
+            "phase": "goto",
+            "outcome": "return",
+            "nodeMs": 6755.634541,
+            "nodeTimeOrigin": 1794866048099.698,
+            "dateNow": 1794866054855
+          },
+          {
+            "locale": "zh-cn",
+            "phase": "startup-wait",
+            "outcome": "begin",
+            "nodeMs": 6755.807541,
+            "nodeTimeOrigin": 1794866048099.698,
+            "dateNow": 1794866054855
+          },
+          {
+            "locale": "zh-cn",
+            "phase": "startup-wait",
+            "outcome": "error",
+            "nodeMs": 151605.649125,
+            "nodeTimeOrigin": 1794866048099.698,
+            "dateNow": 1794866199705
+          },
+          {
+            "locale": "zh-cn",
+            "phase": "context-close",
+            "outcome": "begin",
+            "nodeMs": 151691.951958,
+            "nodeTimeOrigin": 1794866048099.698,
+            "dateNow": 1794866199791
+          },
+          {
+            "locale": "zh-cn",
+            "phase": "context-close",
+            "outcome": "return",
+            "nodeMs": 151691.974666,
+            "nodeTimeOrigin": 1794866048099.698,
+            "dateNow": 1794866199791
+          }
+        ],
+        "consoleErrors": [],
+        "startup": {
+          "startupPassed": false,
+          "errors": [],
+          "consoleErrors": [],
+          "consoleErrorsDropped": 0,
+          "collectionOutcome": "rejected",
+          "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684"
+        },
+        "testCase": {
+          "name": "zh-cn: native Light/split/mixed acceptance",
+          "status": "failed",
+          "duration": 150525.712792,
+          "firstFailure": "Error: Test timed out in 150000ms."
+        }
+      },
+      "en": {
+        "lastOriginalReadiness": {
+          "timeOrigin": 1794866199911.7,
+          "pageMs": 22774.200000047684,
+          "dateNow": 1794866222685,
+          "count": 1268,
+          "ready": false,
+          "firstMissing": {
+            "previewerId": "pp-w2tyijv8yi",
+            "index": 1,
+            "inited": "1",
+            "hostChildren": 0
+          },
+          "firstMissingOwner": {
+            "demoId": "demo-base-accordion",
+            "prototypeId": "",
+            "declaredRuntime": "react",
+            "projectionMode": null,
+            "projectionState": null,
+            "mounting": null,
+            "hostTag": "DIV",
+            "hostOwner": "pp-w2tyijv8yi",
+            "startupPending": true,
+            "hostOwnInert": true,
+            "hostText": ""
+          }
+        },
+        "phases": [
+          {
+            "locale": "en",
+            "phase": "init-script",
+            "outcome": "begin",
+            "nodeMs": 151802.941875,
+            "nodeTimeOrigin": 1794866048099.698,
+            "dateNow": 1794866199902
+          },
+          {
+            "locale": "en",
+            "phase": "init-script",
+            "outcome": "return",
+            "nodeMs": 151810.114041,
+            "nodeTimeOrigin": 1794866048099.698,
+            "dateNow": 1794866199909
+          },
+          {
+            "locale": "en",
+            "phase": "goto",
+            "outcome": "begin",
+            "nodeMs": 151810.188,
+            "nodeTimeOrigin": 1794866048099.698,
+            "dateNow": 1794866199909
+          },
+          {
+            "locale": "en",
+            "phase": "goto",
+            "outcome": "return",
+            "nodeMs": 157073.635416,
+            "nodeTimeOrigin": 1794866048099.698,
+            "dateNow": 1794866205173
+          },
+          {
+            "locale": "en",
+            "phase": "startup-wait",
+            "outcome": "begin",
+            "nodeMs": 157073.712458,
+            "nodeTimeOrigin": 1794866048099.698,
+            "dateNow": 1794866205173
+          },
+          {
+            "locale": "en",
+            "phase": "startup-wait",
+            "outcome": "error",
+            "nodeMs": 302144.291458,
+            "nodeTimeOrigin": 1794866048099.698,
+            "dateNow": 1794866350244
+          },
+          {
+            "locale": "en",
+            "phase": "context-close",
+            "outcome": "begin",
+            "nodeMs": 302230.439083,
+            "nodeTimeOrigin": 1794866048099.698,
+            "dateNow": 1794866350330
+          },
+          {
+            "locale": "en",
+            "phase": "context-close",
+            "outcome": "return",
+            "nodeMs": 302230.468833,
+            "nodeTimeOrigin": 1794866048099.698,
+            "dateNow": 1794866350330
+          }
+        ],
+        "consoleErrors": [],
+        "startup": {
+          "startupPassed": false,
+          "errors": [],
+          "consoleErrors": [],
+          "consoleErrorsDropped": 0,
+          "collectionOutcome": "rejected",
+          "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684"
+        },
+        "testCase": {
+          "name": "en: native Light/split/mixed acceptance",
+          "status": "failed",
+          "duration": 150537.93595900002,
+          "firstFailure": "Error: Test timed out in 150000ms."
+        }
+      }
+    }
+  }
+}
