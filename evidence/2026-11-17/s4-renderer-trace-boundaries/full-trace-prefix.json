@@ -1,0 +1,28 @@
+{
+  "prefixRows": 294422,
+  "unparsedLines": 1,
+  "buffer": {
+    "categories": "toplevel,devtools.timeline,blink.console",
+    "bytes": 89915392,
+    "peakBuffer": 0.9994148015975952,
+    "dataLossOccurred": true,
+    "truncated": true,
+    "sha256": "94ee4375bce7eb042fae3cf97e87b391476e3c44bb6c52e75374ac51ed00f7af"
+  },
+  "marks": [["pui-s4-sampler:1:5728.900000095367", 1241593002800, 11969, 22439324]],
+  "mostCommon": [
+    ["FunctionCall", 138368],
+    ["ThreadControllerImpl::RunTask", 66187],
+    ["BlinkScheduler_PerformMicrotaskCheckpoint", 23062],
+    ["Receive mojo message", 14177],
+    ["SimpleWatcher::OnHandleReady", 13469],
+    ["ThreadPool_RunTask", 12967],
+    ["Closed mojo endpoint", 1968],
+    ["V8.GC_SCAVENGER_BACKGROUND_SCAVENGE_PARALLEL", 1727],
+    ["EventDispatch", 1420],
+    ["SingleThreadTaskGraphRunner::RunTaskWithLockAcquired", 1401],
+    ["cc::SingleThreadTaskGraphRunner::RunTask", 1125],
+    ["Receive mojo reply", 907]
+  ],
+  "latestRecordedEventEndAlignedMs": 8720.547
+}

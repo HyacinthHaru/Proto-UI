@@ -1,0 +1,210 @@
+{
+  "trace": {
+    "categories": "toplevel,devtools.timeline,blink.console",
+    "start": {
+      "nodeTimeOrigin": 1794871145303.804,
+      "nodeMs": 68073.182875,
+      "dateNow": 1794871213376
+    },
+    "stop": {
+      "nodeTimeOrigin": 1794871145303.804,
+      "nodeMs": 83121.878459,
+      "dateNow": 1794871228425
+    },
+    "startMarker": {
+      "syncId": "pui-s4-late-start",
+      "before": {
+        "nodeTimeOrigin": 1794871145303.804,
+        "nodeMs": 78119.327834,
+        "dateNow": 1794871223423
+      },
+      "after": {
+        "nodeTimeOrigin": 1794871145303.804,
+        "nodeMs": 78120.143375,
+        "dateNow": 1794871223423
+      }
+    },
+    "endMarker": {
+      "syncId": "pui-s4-late-end",
+      "before": {
+        "nodeTimeOrigin": 1794871145303.804,
+        "nodeMs": 83120.921459,
+        "dateNow": 1794871228424
+      },
+      "after": {
+        "nodeTimeOrigin": 1794871145303.804,
+        "nodeMs": 83121.876375,
+        "dateNow": 1794871228425
+      }
+    },
+    "bytes": 1500801,
+    "peakBuffer": 0.00234082224778831,
+    "dataLossOccurred": false,
+    "truncated": false,
+    "sha256": "0d63d32eefcd1a0e403f2a78ea90360cecb4b91822c02b3a1c6eec5c401d5f8e"
+  },
+  "markers": {
+    "pui-s4-late-start": 1241941757308,
+    "pui-s4-late-end": 1241946759019
+  },
+  "capturedMarkerWindowMs": 5001.711,
+  "nodeWindowAfterReadinessMs": [54002.49825, 69051.193834],
+  "renderers": [
+    {
+      "pid": 12761,
+      "tid": 22446761,
+      "events": 70,
+      "siteDirectEvents": 0,
+      "deadlineMarkers": [],
+      "topLevelTaskCount": 10,
+      "topLevelTaskUnionMs": 0.172,
+      "topLevelSources": [
+        {
+          "source": "third_party/blink/renderer/controller/memory_usage_monitor.cc:StartMonitoringIfNeeded",
+          "wallMs": 0.136
+        },
+        {
+          "source": "base/allocator/partition_alloc_support.cc:RunThreadCachePeriodicPurge",
+          "wallMs": 0.036
+        }
+      ],
+      "siteAssets": [],
+      "longestSiteFunctions": []
+    },
+    {
+      "pid": 12763,
+      "tid": 22446781,
+      "events": 19,
+      "siteDirectEvents": 0,
+      "deadlineMarkers": [],
+      "topLevelTaskCount": 0,
+      "topLevelTaskUnionMs": 0.0,
+      "topLevelSources": [],
+      "siteAssets": [],
+      "longestSiteFunctions": []
+    }
+  ],
+  "phases": [
+    {
+      "locale": "zh-cn",
+      "phase": "init-script",
+      "outcome": "begin",
+      "nodeMs": 1716.082,
+      "nodeTimeOrigin": 1794871145303.804,
+      "dateNow": 1794871147019
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "init-script",
+      "outcome": "return",
+      "nodeMs": 1716.961,
+      "nodeTimeOrigin": 1794871145303.804,
+      "dateNow": 1794871147020
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "goto",
+      "outcome": "begin",
+      "nodeMs": 1716.988167,
+      "nodeTimeOrigin": 1794871145303.804,
+      "dateNow": 1794871147020
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "goto",
+      "outcome": "return",
+      "nodeMs": 14070.346875,
+      "nodeTimeOrigin": 1794871145303.804,
+      "dateNow": 1794871159374
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "startup-wait",
+      "outcome": "begin",
+      "nodeMs": 14070.684625,
+      "nodeTimeOrigin": 1794871145303.804,
+      "dateNow": 1794871159374
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "startup-wait",
+      "outcome": "error",
+      "nodeMs": 151945.585417,
+      "nodeTimeOrigin": 1794871145303.804,
+      "dateNow": 1794871297249
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "context-close",
+      "outcome": "begin",
+      "nodeMs": 152108.6605,
+      "nodeTimeOrigin": 1794871145303.804,
+      "dateNow": 1794871297412
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "context-close",
+      "outcome": "return",
+      "nodeMs": 152108.685625,
+      "nodeTimeOrigin": 1794871145303.804,
+      "dateNow": 1794871297412
+    }
+  ],
+  "samples": [
+    {
+      "pageMs": 5289.799999952316,
+      "dateNow": 1794871152313,
+      "timeOrigin": 1794871147022.3,
+      "sequence": 1,
+      "previousMs": null,
+      "observedCount": 1268,
+      "firstMissing": {
+        "index": 0,
+        "inited": null,
+        "children": null,
+        "owner": "pp-o26223tgir",
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "initialRuntime": "wc",
+        "startupPending": null
+      }
+    },
+    {
+      "pageMs": 11816.799999952316,
+      "dateNow": 1794871158839,
+      "timeOrigin": 1794871147022.3,
+      "sequence": 2,
+      "previousMs": 5289.799999952316,
+      "observedCount": 1268,
+      "firstMissing": {
+        "index": 0,
+        "inited": "1",
+        "children": 0,
+        "owner": "pp-o26223tgir",
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "initialRuntime": "wc",
+        "startupPending": true
+      }
+    },
+    {
+      "pageMs": 37725.799999952316,
+      "dateNow": 1794871184748,
+      "timeOrigin": 1794871147022.3,
+      "sequence": 3,
+      "previousMs": 11816.799999952316,
+      "observedCount": 1268,
+      "firstMissing": {
+        "index": 0,
+        "inited": "1",
+        "children": 0,
+        "owner": "pp-o26223tgir",
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "initialRuntime": "wc",
+        "startupPending": true
+      }
+    }
+  ],
+  "verdict": "Error: Test timed out in 150000ms."
+}

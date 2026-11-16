@@ -1,0 +1,68 @@
+[
+  {
+    "probe": "s4-static-renderer-trace",
+    "source": {
+      "head": "5d4f911370ca5e9cb4e4a17f20eca0b1945d6862",
+      "tree": "84b1020b1d8fdd3511e6f9d4215aad6fa94bf83b",
+      "parents": [
+        "621355701553eb1bded8537b0ae5a1881038d61f",
+        "624b878c166658ee99f798eaba2ee6b20f1a6bd5"
+      ],
+      "suiteOverlaySHA256": "8db98e9bd846cd61c656827e473137633e62958bdfef670c5446cebedd4c5ba6",
+      "observerSHA256": "b56ec096f72172a42e3f9d05275c82802c641e1fec5574d841a9b17defcc91e6",
+      "htmlSHA256": "9e397ace2d4a9af31b295ea4e4c40d2e1e62ffd6505d4240110dfc2c91fbc7a4"
+    },
+    "environment": {
+      "node": "v24.21.0",
+      "pnpm": "10.32.1",
+      "chrome": "Google Chrome for Testing 156.0.8078.79",
+      "workers": 1
+    },
+    "verdict": {
+      "startupPassed": false,
+      "errors": [],
+      "consoleErrors": [],
+      "collectionOutcome": "rejected",
+      "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684"
+    },
+    "caps": {
+      "readinessMs": 60000,
+      "outerMs": 150000
+    },
+    "traceObserverSHA256": "cf4509e9dd350a3f81b86a216341897321deb904e49c3b80998264de77956a54",
+    "nativeLogSHA256": "9ae0a5c64e37850039963c468e78768b354f2544be2980fe481d2e90e8ee1160"
+  },
+  {
+    "probe": "s4-static-late-renderer-trace",
+    "source": {
+      "head": "5d4f911370ca5e9cb4e4a17f20eca0b1945d6862",
+      "tree": "84b1020b1d8fdd3511e6f9d4215aad6fa94bf83b",
+      "parents": [
+        "621355701553eb1bded8537b0ae5a1881038d61f",
+        "624b878c166658ee99f798eaba2ee6b20f1a6bd5"
+      ],
+      "suiteOverlaySHA256": "be32597fc7732dc94b1a811dd8f6da674bfbd45a69f4c7c69816d909e5b8b5a1",
+      "observerSHA256": "b56ec096f72172a42e3f9d05275c82802c641e1fec5574d841a9b17defcc91e6",
+      "htmlSHA256": "9e397ace2d4a9af31b295ea4e4c40d2e1e62ffd6505d4240110dfc2c91fbc7a4"
+    },
+    "environment": {
+      "node": "v24.21.0",
+      "pnpm": "10.32.1",
+      "chrome": "Google Chrome for Testing 156.0.8078.79",
+      "workers": 1
+    },
+    "verdict": {
+      "startupPassed": false,
+      "errors": [],
+      "consoleErrors": [],
+      "collectionOutcome": "rejected",
+      "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684"
+    },
+    "caps": {
+      "readinessMs": 60000,
+      "outerMs": 150000
+    },
+    "traceObserverSHA256": "78f9c0386f788d71c2e0f24a338ea9069cd4583b61c7dedd0942d80269956c04",
+    "nativeLogSHA256": "cc9be3f65db934c42cbfff477ac73cbb3fde15bf7f4600df572570899197209d"
+  }
+]
