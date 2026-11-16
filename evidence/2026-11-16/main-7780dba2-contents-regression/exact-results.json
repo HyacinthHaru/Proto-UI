@@ -1,0 +1,393 @@
+{
+  "source": {
+    "head": "1954cd3566b8f93e388352e282701dd086df2cdd",
+    "passed": 14,
+    "failed": 1,
+    "unselected": 9,
+    "suiteResults": [
+      {
+        "suite": "dialog-available-space.browser.test.ts",
+        "cases": [
+          {
+            "name": "shadcn/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "name": "shadcn/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "name": "shadcn/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "name": "shadcn/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "name": "brutalist/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "name": "brutalist/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "name": "brutalist/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "name": "brutalist/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          }
+        ]
+      },
+      {
+        "suite": "homepage-dogfood.browser.test.ts",
+        "cases": [
+          {
+            "name": "Homepage end-to-end dogfood boundary switches every registered homepage group through real adapters, preserving native anchors and theme",
+            "status": "skipped"
+          },
+          {
+            "name": "Homepage end-to-end dogfood boundary keeps native navigation available without JavaScript and does not overflow mobile",
+            "status": "skipped"
+          },
+          {
+            "name": "Homepage end-to-end dogfood boundary retains saved React across cold library routes and exercises actual family chrome",
+            "status": "skipped"
+          },
+          {
+            "name": "Homepage end-to-end dogfood boundary reveals current articles through native shadow slots and preserves viewport handback",
+            "status": "skipped"
+          },
+          {
+            "name": "Homepage end-to-end dogfood boundary uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence",
+            "status": "passed"
+          },
+          {
+            "name": "Homepage end-to-end dogfood boundary uses the same mobile shell on documentation with independent global navigation and contents",
+            "status": "passed"
+          },
+          {
+            "name": "compact shadcn preferences stay usable at 200% text, RTL and breakpoint moves",
+            "status": "passed"
+          },
+          {
+            "name": "compact brutalist preferences stay usable at 200% text, RTL and breakpoint moves",
+            "status": "passed"
+          },
+          {
+            "name": "retains shadcn preference owners and portals through real breakpoint reconnects",
+            "status": "failed"
+          },
+          {
+            "name": "retains brutalist preference owners and portals through real breakpoint reconnects",
+            "status": "passed"
+          }
+        ]
+      },
+      {
+        "suite": "runtime-preview-surface.browser.test.ts",
+        "cases": [
+          {
+            "name": "RuntimeBox single actual Prototype surface keeps Runtime Tabs outside the canvas and the demonstrated Select popup usable at 390px",
+            "status": "passed"
+          },
+          {
+            "name": "RuntimeBox single actual Prototype surface covers the generic Base path and keeps its demonstrated command operable",
+            "status": "skipped"
+          },
+          {
+            "name": "RuntimeBox single actual Prototype surface wc: preserves forward/backward generated shell and slot Selection endpoints",
+            "status": "skipped"
+          },
+          {
+            "name": "RuntimeBox single actual Prototype surface react: preserves forward/backward generated shell and slot Selection endpoints",
+            "status": "skipped"
+          },
+          {
+            "name": "RuntimeBox single actual Prototype surface vue: preserves forward/backward generated shell and slot Selection endpoints",
+            "status": "skipped"
+          },
+          {
+            "name": "RuntimeBox single actual Prototype surface vue2: preserves forward/backward generated shell and slot Selection endpoints",
+            "status": "skipped"
+          }
+        ]
+      }
+    ],
+    "dialogObservations": 196,
+    "contentsOrderedHandbacks": 24,
+    "switches": [
+      {
+        "family": "brutalist",
+        "runtime": "react",
+        "deadline": 1000,
+        "msFromClickToVerdict": 229,
+        "originalPassed": true,
+        "source": "1954cd3566b8f93e388352e282701dd086df2cdd"
+      },
+      {
+        "family": "brutalist",
+        "runtime": "vue",
+        "deadline": 1000,
+        "msFromClickToVerdict": 194,
+        "originalPassed": true,
+        "source": "1954cd3566b8f93e388352e282701dd086df2cdd"
+      },
+      {
+        "family": "brutalist",
+        "runtime": "vue2",
+        "deadline": 1000,
+        "msFromClickToVerdict": 166,
+        "originalPassed": true,
+        "source": "1954cd3566b8f93e388352e282701dd086df2cdd"
+      },
+      {
+        "family": "brutalist",
+        "runtime": "wc",
+        "deadline": 1000,
+        "msFromClickToVerdict": 1,
+        "originalPassed": true,
+        "source": "1954cd3566b8f93e388352e282701dd086df2cdd"
+      },
+      {
+        "family": "shadcn",
+        "runtime": "react",
+        "deadline": 1000,
+        "msFromClickToVerdict": 263,
+        "originalPassed": true,
+        "source": "1954cd3566b8f93e388352e282701dd086df2cdd"
+      },
+      {
+        "family": "shadcn",
+        "runtime": "vue",
+        "deadline": 1000,
+        "msFromClickToVerdict": 245,
+        "originalPassed": true,
+        "source": "1954cd3566b8f93e388352e282701dd086df2cdd"
+      },
+      {
+        "family": "shadcn",
+        "runtime": "vue2",
+        "deadline": 1000,
+        "msFromClickToVerdict": 261,
+        "originalPassed": true,
+        "source": "1954cd3566b8f93e388352e282701dd086df2cdd"
+      },
+      {
+        "family": "shadcn",
+        "runtime": "wc",
+        "deadline": 1000,
+        "msFromClickToVerdict": 5,
+        "originalPassed": true,
+        "source": "1954cd3566b8f93e388352e282701dd086df2cdd"
+      }
+    ]
+  },
+  "staticPreview": {
+    "head": "7780dba23e3fb14e0138ea4d24a1cbb8096c3cbf",
+    "passed": 11,
+    "failed": 0,
+    "unselected": 13,
+    "suiteResults": [
+      {
+        "suite": "dialog-available-space.browser.test.ts",
+        "cases": [
+          {
+            "name": "shadcn/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "name": "shadcn/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "name": "shadcn/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "name": "shadcn/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "name": "brutalist/wc: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "name": "brutalist/react: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "name": "brutalist/vue: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          },
+          {
+            "name": "brutalist/vue2: live available region bounds content, leaves Mask full-size, scrolls long text and restores on close",
+            "status": "passed"
+          }
+        ]
+      },
+      {
+        "suite": "homepage-dogfood.browser.test.ts",
+        "cases": [
+          {
+            "name": "Homepage end-to-end dogfood boundary switches every registered homepage group through real adapters, preserving native anchors and theme",
+            "status": "skipped"
+          },
+          {
+            "name": "Homepage end-to-end dogfood boundary keeps native navigation available without JavaScript and does not overflow mobile",
+            "status": "skipped"
+          },
+          {
+            "name": "Homepage end-to-end dogfood boundary retains saved React across cold library routes and exercises actual family chrome",
+            "status": "skipped"
+          },
+          {
+            "name": "Homepage end-to-end dogfood boundary reveals current articles through native shadow slots and preserves viewport handback",
+            "status": "skipped"
+          },
+          {
+            "name": "Homepage end-to-end dogfood boundary uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence",
+            "status": "passed"
+          },
+          {
+            "name": "Homepage end-to-end dogfood boundary uses the same mobile shell on documentation with independent global navigation and contents",
+            "status": "passed"
+          },
+          {
+            "name": "compact shadcn preferences stay usable at 200% text, RTL and breakpoint moves",
+            "status": "skipped"
+          },
+          {
+            "name": "compact brutalist preferences stay usable at 200% text, RTL and breakpoint moves",
+            "status": "skipped"
+          },
+          {
+            "name": "retains shadcn preference owners and portals through real breakpoint reconnects",
+            "status": "skipped"
+          },
+          {
+            "name": "retains brutalist preference owners and portals through real breakpoint reconnects",
+            "status": "skipped"
+          }
+        ]
+      },
+      {
+        "suite": "runtime-preview-surface.browser.test.ts",
+        "cases": [
+          {
+            "name": "RuntimeBox single actual Prototype surface keeps Runtime Tabs outside the canvas and the demonstrated Select popup usable at 390px",
+            "status": "passed"
+          },
+          {
+            "name": "RuntimeBox single actual Prototype surface covers the generic Base path and keeps its demonstrated command operable",
+            "status": "skipped"
+          },
+          {
+            "name": "RuntimeBox single actual Prototype surface wc: preserves forward/backward generated shell and slot Selection endpoints",
+            "status": "skipped"
+          },
+          {
+            "name": "RuntimeBox single actual Prototype surface react: preserves forward/backward generated shell and slot Selection endpoints",
+            "status": "skipped"
+          },
+          {
+            "name": "RuntimeBox single actual Prototype surface vue: preserves forward/backward generated shell and slot Selection endpoints",
+            "status": "skipped"
+          },
+          {
+            "name": "RuntimeBox single actual Prototype surface vue2: preserves forward/backward generated shell and slot Selection endpoints",
+            "status": "skipped"
+          }
+        ]
+      }
+    ],
+    "dialogObservations": 196,
+    "contentsOrderedHandbacks": 24,
+    "switches": [
+      {
+        "family": "brutalist",
+        "runtime": "react",
+        "deadline": 1000,
+        "msFromClickToVerdict": 179,
+        "originalPassed": true,
+        "source": "7780dba23e3fb14e0138ea4d24a1cbb8096c3cbf"
+      },
+      {
+        "family": "brutalist",
+        "runtime": "vue",
+        "deadline": 1000,
+        "msFromClickToVerdict": 197,
+        "originalPassed": true,
+        "source": "7780dba23e3fb14e0138ea4d24a1cbb8096c3cbf"
+      },
+      {
+        "family": "brutalist",
+        "runtime": "vue2",
+        "deadline": 1000,
+        "msFromClickToVerdict": 180,
+        "originalPassed": true,
+        "source": "7780dba23e3fb14e0138ea4d24a1cbb8096c3cbf"
+      },
+      {
+        "family": "brutalist",
+        "runtime": "wc",
+        "deadline": 1000,
+        "msFromClickToVerdict": 4,
+        "originalPassed": true,
+        "source": "7780dba23e3fb14e0138ea4d24a1cbb8096c3cbf"
+      },
+      {
+        "family": "shadcn",
+        "runtime": "react",
+        "deadline": 1000,
+        "msFromClickToVerdict": 294,
+        "originalPassed": true,
+        "source": "7780dba23e3fb14e0138ea4d24a1cbb8096c3cbf"
+      },
+      {
+        "family": "shadcn",
+        "runtime": "vue",
+        "deadline": 1000,
+        "msFromClickToVerdict": 336,
+        "originalPassed": true,
+        "source": "7780dba23e3fb14e0138ea4d24a1cbb8096c3cbf"
+      },
+      {
+        "family": "shadcn",
+        "runtime": "vue2",
+        "deadline": 1000,
+        "msFromClickToVerdict": 348,
+        "originalPassed": true,
+        "source": "7780dba23e3fb14e0138ea4d24a1cbb8096c3cbf"
+      },
+      {
+        "family": "shadcn",
+        "runtime": "wc",
+        "deadline": 1000,
+        "msFromClickToVerdict": 17,
+        "originalPassed": true,
+        "source": "7780dba23e3fb14e0138ea4d24a1cbb8096c3cbf"
+      }
+    ]
+  },
+  "build": {
+    "exit": 0,
+    "pages": 683,
+    "diagnosticsFromBundleGate": 53,
+    "bundleGateExit": 1
+  },
+  "shadcnReconnect": {
+    "source": "1954cd3566b8f93e388352e282701dd086df2cdd",
+    "stage": "react-family-desktop",
+    "innerTimedPredicateMs": 1000,
+    "originalOuterTimeoutMs": 180000,
+    "postVerdictSnapshot": "unavailable after browser context close"
+  },
+  "browser": "Chrome for Testing 156.0.8078.79",
+  "node": "24.21.0",
+  "pnpm": "10.32.1",
+  "platform": "macOS arm64"
+}

@@ -1,0 +1,14 @@
+{
+  "head": "7780dba23e3fb14e0138ea4d24a1cbb8096c3cbf",
+  "tree": "8d850441266a42cefd8e8d97d7bc88953866510a",
+  "distHashes": {
+    "zh-cn/index.html": "ca4eb6e8c6019cd39fe45856499de2be0b08c2df1f5340aac7129d9fa25bedb6",
+    "zh-cn/ui-libraries/shadcn/button/index.html": "5c8e8c430ab585e52ef3d3fc40cbf21c681484c834da1d9c3db5766827418850",
+    "zh-cn/ui-libraries/brutalist/components/button/index.html": "90b7c0fc2ee8cf5ece197f7e18ac6f9607d565cbd36fa65efa05e0b4fe1f70c6"
+  },
+  "sourceCodeExamples": 9,
+  "renderedCodeExamples": 9,
+  "packedHeaderExit": 0,
+  "previewBrowserExit": 0,
+  "selector": "uses real family Popover Triggers|uses the same mobile shell|live available region|keeps Runtime Tabs outside"
+}

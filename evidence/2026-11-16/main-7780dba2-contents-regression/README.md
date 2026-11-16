@@ -1,0 +1,8 @@
+# Contents, Dialog and Header after integration
+
+Local Chromium 156.0.8078.79 on macOS arm64 verified the original product cases after [#1438](https://github.com/Proto-UI/Proto-UI/pull/1438) and [#1435](https://github.com/Proto-UI/Proto-UI/pull/1435) landed.
+
+- Clean source `1954cd35` finished with 14 pass, one fail and nine unselected. The original Contents and mobile journeys passed, including eight Runtime transitions and 24 ordered handbacks. Dialog passed 8/8 with 196 observations. The Shadcn reconnect case failed at the React desktop move with the original 1,000ms matcher and 180-second outer timeout. Its post-timeout page sample was unavailable. This is the stage covered by the pending [#1476](https://github.com/Proto-UI/Proto-UI/pull/1476).
+- Clean `7780dba2` built 683 pages. Its separate production bundle check reported 53 diagnostics. Its exact static Astro preview passed 11 selected original tests, including the two original Contents/mobile journeys, Dialog 8/8 and the narrow RuntimeBox case. The build contains all nine CodeExamples on the checked Shadcn Button article.
+- The trusted family change in the static preview kept the Header panel 5px below the Header at the family mutation and the next two frames in both the 320px and 390px viewports. The attached image shows returned keyboard focus after the Shadcn React Contents close in the same preview.
+- [#1482](https://github.com/Proto-UI/Proto-UI/pull/1482) changed only CI configuration and the Runtime test planner between these two main commits. The product worktree stayed clean and the original assertions and deadlines were used. These are local source and static preview results. The new hosted ten-shard cycle has no terminal receipt.
