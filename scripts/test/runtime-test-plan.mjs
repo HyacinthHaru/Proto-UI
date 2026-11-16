@@ -354,6 +354,21 @@ export function selectBrowserShard(shard) {
     throw new Error(
       `Expected browser shard 1/${BROWSER_SHARD_COUNT} through ${BROWSER_SHARD_COUNT}/${BROWSER_SHARD_COUNT}`
     );
+  // Replay the previously recorded shard with the original suite inventory.
+  if (index === 1) return [
+    'apps/workspace/test/lifecycle.browser.test.ts',
+    'apps/www/src/content/docs/zh-cn/contrast-probe.browser.test.ts',
+    'apps/www/src/content/docs/zh-cn/demo-bootstrap-state-controls.browser.test.ts',
+    'apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts',
+    'apps/www/src/content/docs/zh-cn/demo-prototype-style-closure.browser.test.ts',
+    'apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts',
+    'apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts',
+    'apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts',
+    'apps/www/src/content/docs/zh-cn/runtime-preview-surface.browser.test.ts',
+    'apps/www/src/content/docs/zh-cn/site-sidebar-disclosure.browser.test.ts',
+    'apps/www/test/message-composition.browser.test.ts',
+    'packages/adapters/vue/test/focus-request-readiness.browser.test.ts',
+  ];
   return browserShards()[index - 1];
 }
 
