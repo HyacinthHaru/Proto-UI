@@ -38,6 +38,120 @@ function fixture() {
   return { family, root, make, notify: () => root.port.syncStructure() };
 }
 
+function domainFixture() {
+  const family = createAnatomyFamily('domain-target-fanout', {
+    roles: {
+      root: { cardinality: { min: 1, max: 1 } },
+      item: { cardinality: { min: 0, max: '*' } },
+    },
+  });
+  const parents = new Map<unknown, object | null>();
+  const make = (role: 'root' | 'item', parent: object | null) => {
+    const token = {};
+    parents.set(token, parent);
+    const caps = makeCaps({
+      instance: token,
+      getParent: (instance) => parents.get(instance) ?? null,
+      getPrototype: () => ({ name: 'domain-owner', setup() {} }),
+    });
+    const owner = new AnatomyModuleImpl(caps, 'domain-owner', {
+      get: () => undefined,
+      getAll: () => ({}),
+      has: () => false,
+      keys: () => [],
+    });
+    cleanup.push(owner);
+    owner.claim(family, { role });
+    return {
+      token,
+      owner,
+      notify: () => owner.onMountPhase('mounted', 1),
+      move: (next: object | null) => {
+        parents.set(token, next);
+      },
+    };
+  };
+  const first = make('root', null);
+  const second = make('root', null);
+  return { family, first, second, item: (parent: object) => make('item', parent) };
+}
+
+describe('Anatomy current-domain target notifications', () => {
+  it('skips only domain subscribers when both established domains are disjoint', () => {
+    const f = domainFixture();
+    const publisher = f.item(f.first.token);
+    const same = vi.fn(),
+      other = vi.fn(),
+      legacy = vi.fn();
+    f.first.owner.port.subscribeTargets(f.family, same, 'current-domain');
+    f.second.owner.port.subscribeTargets(f.family, other, 'current-domain');
+    f.second.owner.port.subscribeTargets(f.family, legacy);
+    publisher.notify();
+    publisher.notify();
+    expect(same).toHaveBeenCalledTimes(2);
+    expect(other).toHaveBeenCalledTimes(1);
+    expect(legacy).toHaveBeenCalledTimes(2);
+  });
+
+  it('retains family-wide delivery for structural resynchronization', () => {
+    const f = domainFixture();
+    const publisher = f.item(f.first.token);
+    const other = vi.fn();
+    f.second.owner.port.subscribeTargets(f.family, other, 'current-domain');
+    publisher.notify();
+    publisher.notify();
+    publisher.owner.port.syncStructure();
+    expect(other).toHaveBeenCalledTimes(2);
+  });
+
+  it('delivers the domain transition to old and new recipients before limiting later replay', () => {
+    const f = domainFixture();
+    const publisher = f.item(f.first.token);
+    const oldDomain = vi.fn(),
+      nextDomain = vi.fn();
+    f.first.owner.port.subscribeTargets(f.family, oldDomain, 'current-domain');
+    f.second.owner.port.subscribeTargets(f.family, nextDomain, 'current-domain');
+    publisher.notify();
+    publisher.notify();
+    publisher.move(f.second.token);
+    publisher.notify();
+    publisher.notify();
+    expect(oldDomain).toHaveBeenCalledTimes(3);
+    expect(nextDomain).toHaveBeenCalledTimes(3);
+  });
+
+  it('delivers when the subscriber moves or its domain becomes unknown', () => {
+    const f = domainFixture();
+    const publisher = f.item(f.first.token);
+    const subscriber = f.item(f.first.token);
+    const callback = vi.fn();
+    subscriber.owner.port.subscribeTargets(f.family, callback, 'current-domain');
+    publisher.notify();
+    subscriber.move(f.second.token);
+    publisher.notify();
+    publisher.notify();
+    subscriber.move(null);
+    publisher.notify();
+    expect(callback).toHaveBeenCalledTimes(3);
+  });
+
+  it('continues to notify when a preceding family callback moves the publisher', () => {
+    const f = domainFixture();
+    const publisher = f.item(f.first.token);
+    let move = false;
+    f.first.owner.port.subscribeTargets(f.family, () => {
+      if (move) publisher.move(f.second.token);
+    });
+    const subscriber = vi.fn();
+    f.second.owner.port.subscribeTargets(f.family, subscriber, 'current-domain');
+    publisher.notify();
+    publisher.notify();
+    move = true;
+    publisher.notify();
+    expect(subscriber).toHaveBeenCalledTimes(2);
+  });
+});
+
 describe('Anatomy family subscriber notification', () => {
   it('does not inspect unrelated owners when one family publishes a structural change', () => {
     const f = fixture();

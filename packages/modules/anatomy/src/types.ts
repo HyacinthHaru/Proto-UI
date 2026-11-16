@@ -73,8 +73,14 @@ export type AnatomyPort = ModulePort & {
   order: AnatomyQueryOrderView;
   setOrderCallbackDispatcher(dispatch: AnatomyOrderCallbackDispatcher): void;
   subscribeOrder(family: AnatomyFamily, cb: AnatomyOrderChangeCb): Unsubscribe;
-  /** Module-internal target readiness/replacement signal; carries no target or data payload. */
-  subscribeTargets(family: AnatomyFamily, cb: AnatomyOrderChangeCb): Unsubscribe;
+  /** Module-internal target readiness/replacement signal; carries no target or data payload.
+   * Domain subscribers narrow view notifications only; topology, cap changes and unknown domains remain family-wide.
+   */
+  subscribeTargets(
+    family: AnatomyFamily,
+    cb: AnatomyOrderChangeCb,
+    scope?: 'current-domain'
+  ): Unsubscribe;
 };
 
 export type AnatomyModule = ModuleInstance<AnatomyFacade> & {

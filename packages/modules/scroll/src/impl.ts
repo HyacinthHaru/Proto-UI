@@ -210,7 +210,11 @@ export class ScrollModuleImpl extends ModuleBase {
         this.lease.update(this.createHostAttachment());
       };
       this.offAnatomyOrder = this.anatomyPort.subscribeOrder(binding.anatomy, refresh);
-      this.offAnatomyTargets = this.anatomyPort.subscribeTargets(binding.anatomy, refresh);
+      this.offAnatomyTargets = this.anatomyPort.subscribeTargets(
+        binding.anatomy,
+        refresh,
+        'current-domain'
+      );
     }
   }
 

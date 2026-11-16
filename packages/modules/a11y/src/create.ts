@@ -404,7 +404,11 @@ class A11yModuleImpl extends ModuleBase {
         if (this.familyWatchOffs.has(family)) continue;
         if (!this.anatomyPort.resolveSelfRole(family)) continue;
         const orderOff = this.anatomyPort.subscribeOrder(family, () => this.applyProjection());
-        const targetOff = this.anatomyPort.subscribeTargets(family, () => this.applyProjection());
+        const targetOff = this.anatomyPort.subscribeTargets(
+          family,
+          () => this.applyProjection(),
+          'current-domain'
+        );
         this.familyWatchOffs.set(family, () => {
           orderOff();
           targetOff();
