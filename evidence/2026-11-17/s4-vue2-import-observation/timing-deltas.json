@@ -1,0 +1,12 @@
+{
+  "wrapperToPackageFactoryMs": 11290.0,
+  "wrapperToAdapterMs": 11289.5,
+  "requestToEncodedFinishMs": 3.614,
+  "encodedFinishToNodeEventReceiptMs": 117741.5747,
+  "responseEventToNodeEventReceiptMs": 0.7236,
+  "sourceOverlayInputsSHA256": {
+    "apps/www/src/components/PrototypePreviewer/demo-renderer.ts": "e197377feefbe1344057824aff63a156eda4fd22ae9341b9f7d9833983029973",
+    "apps/www/src/components/PrototypePreviewer/runtimes/vue2-runtime.ts": "a43e90bc644d325cc3e1d565fce22da806af935485e6e6cc556c2b352a7f31b1",
+    "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "262edec31fd948254e5c16ae8bfdcd255203d31b78fe09b027fa88ada2348a22"
+  }
+}

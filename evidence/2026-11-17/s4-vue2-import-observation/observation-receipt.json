@@ -1,0 +1,390 @@
+{
+  "source": [
+    "1217fdb87ba08812d85b8461a02a6478eed97944",
+    "bd90201b5667049324b6c02e700fa2e3b5a1654b",
+    "670d8f055beaa34d0447118597e37c645ef08ea1 f655cc39c6df04b398490b92dcd1c8705d6cf198"
+  ],
+  "observationSHA256": "a8670df91a063b60493a1f25e61d69c70e25b1e96ce2a08f6389a91c05b088a7",
+  "application": [
+    {
+      "stage": "module-wrappers-requested",
+      "previewerId": null,
+      "declaredRuntime": null,
+      "children": null,
+      "pageMs": 10069.599999904633,
+      "timeOrigin": 1794848050146.5,
+      "receivedNodeMs": 50569.844042
+    },
+    {
+      "stage": "wrapper-fulfilled",
+      "previewerId": null,
+      "declaredRuntime": null,
+      "children": null,
+      "pageMs": 10373.099999904633,
+      "timeOrigin": 1794848050146.5,
+      "receivedNodeMs": 50872.557292
+    },
+    {
+      "stage": "adapter-fulfilled",
+      "previewerId": null,
+      "declaredRuntime": null,
+      "children": null,
+      "pageMs": 21662.599999904633,
+      "timeOrigin": 1794848050146.5,
+      "receivedNodeMs": 62162.159042
+    },
+    {
+      "stage": "package-request",
+      "pageMs": 21662.700000047684,
+      "timeOrigin": 1794848050146.5,
+      "receivedNodeMs": 62162.292417
+    },
+    {
+      "stage": "package-factory",
+      "pageMs": 21663.099999904633,
+      "timeOrigin": 1794848050146.5,
+      "receivedNodeMs": 62162.392458
+    },
+    {
+      "stage": "accordion-render-entry",
+      "previewerId": "pp-e3wvd37zwv8",
+      "declaredRuntime": "vue2",
+      "children": 0,
+      "pageMs": 40114.799999952316,
+      "timeOrigin": 1794848050146.5,
+      "receivedNodeMs": 80617.37725
+    },
+    {
+      "stage": "accordion-wrappers-joined",
+      "previewerId": "pp-e3wvd37zwv8",
+      "declaredRuntime": "vue2",
+      "children": 0,
+      "pageMs": 40738.40000009537,
+      "timeOrigin": 1794848050146.5,
+      "receivedNodeMs": 81238.360667
+    }
+  ],
+  "graph": {
+    "chunk-BUSYA2B4.js": {
+      "dependencyFiles": [],
+      "sha256": "efc482031d78ba54060196a3697583e15ae5b95ebc6bb80fc79757a21523687a",
+      "observedNetwork": [
+        {
+          "stage": "request",
+          "requestId": "48967.745",
+          "asset": "chunk-BUSYA2B4.js",
+          "cdpSeconds": 1218770.422721,
+          "cdpWallMs": 1794848052089.257,
+          "receivedNodeMs": 42448.410958,
+          "nodeTimeOrigin": 1794848009647.408
+        },
+        {
+          "stage": "response",
+          "requestId": "48967.745",
+          "asset": "chunk-BUSYA2B4.js",
+          "cdpSeconds": 1218770.431586,
+          "cdpWallMs": 1794848052098.122,
+          "receivedNodeMs": 42454.230333,
+          "nodeTimeOrigin": 1794848009647.408,
+          "status": 200
+        },
+        {
+          "stage": "finished",
+          "requestId": "48967.745",
+          "asset": "chunk-BUSYA2B4.js",
+          "cdpSeconds": 1218770.42541,
+          "cdpWallMs": 1794848052091.946,
+          "receivedNodeMs": 42454.334333,
+          "nodeTimeOrigin": 1794848009647.408,
+          "encodedDataLength": 1707
+        }
+      ]
+    },
+    "vue2-runtime.js": {
+      "dependencyFiles": ["chunk-BUSYA2B4.js"],
+      "sha256": "bc25a31f51fa184c3b4a71709e97940c39789a9584416c7fcc2e6e5f716db807",
+      "observedNetwork": [
+        {
+          "stage": "request",
+          "requestId": "48967.4165",
+          "asset": "vue2-runtime.js",
+          "cdpSeconds": 1218790.143161,
+          "cdpWallMs": 1794848071809.713,
+          "receivedNodeMs": 62162.584333,
+          "nodeTimeOrigin": 1794848009647.408
+        },
+        {
+          "stage": "response",
+          "requestId": "48967.4165",
+          "asset": "vue2-runtime.js",
+          "cdpSeconds": 1218907.887042,
+          "cdpWallMs": 1794848189553.594,
+          "receivedNodeMs": 179906.90975,
+          "nodeTimeOrigin": 1794848009647.408,
+          "status": 200
+        },
+        {
+          "stage": "finished",
+          "requestId": "48967.4165",
+          "asset": "vue2-runtime.js",
+          "cdpSeconds": 1218790.146775,
+          "cdpWallMs": 1794848071813.327,
+          "receivedNodeMs": 179907.49375,
+          "nodeTimeOrigin": 1794848009647.408,
+          "encodedDataLength": 178865
+        }
+      ]
+    }
+  },
+  "otherNetwork": [
+    {
+      "stage": "request",
+      "requestId": "48967.1160",
+      "asset": "vue2-adapter-index",
+      "cdpSeconds": 1218778.54987,
+      "cdpWallMs": 1794848060216.42,
+      "receivedNodeMs": 50570.155333,
+      "nodeTimeOrigin": 1794848009647.408
+    },
+    {
+      "stage": "request",
+      "requestId": "48967.1161",
+      "asset": "vue2-wrapper",
+      "cdpSeconds": 1218778.549916,
+      "cdpWallMs": 1794848060216.4531,
+      "receivedNodeMs": 50570.205167,
+      "nodeTimeOrigin": 1794848009647.408
+    },
+    {
+      "stage": "response",
+      "requestId": "48967.1160",
+      "asset": "vue2-adapter-index",
+      "cdpSeconds": 1218778.65983,
+      "cdpWallMs": 1794848060326.38,
+      "receivedNodeMs": 50679.929833,
+      "nodeTimeOrigin": 1794848009647.408,
+      "status": 200
+    },
+    {
+      "stage": "finished",
+      "requestId": "48967.1160",
+      "asset": "vue2-adapter-index",
+      "cdpSeconds": 1218778.576561,
+      "cdpWallMs": 1794848060243.1108,
+      "receivedNodeMs": 50680.000125,
+      "nodeTimeOrigin": 1794848009647.408,
+      "encodedDataLength": 1768
+    },
+    {
+      "stage": "response",
+      "requestId": "48967.1161",
+      "asset": "vue2-wrapper",
+      "cdpSeconds": 1218778.660189,
+      "cdpWallMs": 1794848060326.726,
+      "receivedNodeMs": 50680.194167,
+      "nodeTimeOrigin": 1794848009647.408,
+      "status": 200
+    },
+    {
+      "stage": "finished",
+      "requestId": "48967.1161",
+      "asset": "vue2-wrapper",
+      "cdpSeconds": 1218778.584697,
+      "cdpWallMs": 1794848060251.2341,
+      "receivedNodeMs": 50680.208042,
+      "nodeTimeOrigin": 1794848009647.408,
+      "encodedDataLength": 11478
+    },
+    {
+      "stage": "request",
+      "requestId": "48967.2359",
+      "asset": "chunk-2MALL255.js",
+      "cdpSeconds": 1218782.049516,
+      "cdpWallMs": 1794848063716.052,
+      "receivedNodeMs": 54069.619125,
+      "nodeTimeOrigin": 1794848009647.408
+    },
+    {
+      "stage": "request",
+      "requestId": "48967.2360",
+      "asset": "chunk-EK7DFB6S.js",
+      "cdpSeconds": 1218782.049532,
+      "cdpWallMs": 1794848063716.066,
+      "receivedNodeMs": 54069.706833,
+      "nodeTimeOrigin": 1794848009647.408
+    },
+    {
+      "stage": "response",
+      "requestId": "48967.2360",
+      "asset": "chunk-EK7DFB6S.js",
+      "cdpSeconds": 1218782.107649,
+      "cdpWallMs": 1794848063774.1829,
+      "receivedNodeMs": 54126.99475,
+      "nodeTimeOrigin": 1794848009647.408,
+      "status": 200
+    },
+    {
+      "stage": "finished",
+      "requestId": "48967.2360",
+      "asset": "chunk-EK7DFB6S.js",
+      "cdpSeconds": 1218782.053717,
+      "cdpWallMs": 1794848063720.251,
+      "receivedNodeMs": 54127.082792,
+      "nodeTimeOrigin": 1794848009647.408,
+      "encodedDataLength": 78282
+    },
+    {
+      "stage": "response",
+      "requestId": "48967.2359",
+      "asset": "chunk-2MALL255.js",
+      "cdpSeconds": 1218782.108631,
+      "cdpWallMs": 1794848063775.167,
+      "receivedNodeMs": 54128.520125,
+      "nodeTimeOrigin": 1794848009647.408,
+      "status": 200
+    },
+    {
+      "stage": "finished",
+      "requestId": "48967.2359",
+      "asset": "chunk-2MALL255.js",
+      "cdpSeconds": 1218782.053337,
+      "cdpWallMs": 1794848063719.873,
+      "receivedNodeMs": 54128.58625,
+      "nodeTimeOrigin": 1794848009647.408,
+      "encodedDataLength": 932641
+    }
+  ],
+  "readiness": [
+    {
+      "timeOrigin": 1794848050146.5,
+      "pageMs": 7308.700000047684,
+      "dateNow": 1794848057455,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-2fgq58el1gt",
+        "index": 0,
+        "inited": null,
+        "hostChildren": null
+      },
+      "receivedNodeMs": 47808.35425,
+      "runtime": "wc",
+      "demo": "demo-base-accordion",
+      "pending": null
+    },
+    {
+      "timeOrigin": 1794848050146.5,
+      "pageMs": 8677.5,
+      "dateNow": 1794848058824,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-2fgq58el1gt",
+        "index": 0,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "receivedNodeMs": 49176.913958,
+      "runtime": "wc",
+      "demo": "demo-base-accordion",
+      "pending": true
+    },
+    {
+      "timeOrigin": 1794848050146.5,
+      "pageMs": 42288.90000009537,
+      "dateNow": 1794848092435,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-e3wvd37zwv8",
+        "index": 3,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "receivedNodeMs": 82788.59025,
+      "runtime": "vue2",
+      "demo": "demo-base-accordion",
+      "pending": true
+    }
+  ],
+  "phases": [
+    {
+      "locale": "zh-cn",
+      "phase": "vue2-network-observation",
+      "outcome": "return",
+      "nodeMs": 40494.808333,
+      "nodeTimeOrigin": 1794848009647.408,
+      "dateNow": 1794848050142
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "init-script",
+      "outcome": "begin",
+      "nodeMs": 40494.8665,
+      "nodeTimeOrigin": 1794848009647.408,
+      "dateNow": 1794848050142
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "init-script",
+      "outcome": "return",
+      "nodeMs": 40497.288833,
+      "nodeTimeOrigin": 1794848009647.408,
+      "dateNow": 1794848050144
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "goto",
+      "outcome": "begin",
+      "nodeMs": 40497.323417,
+      "nodeTimeOrigin": 1794848009647.408,
+      "dateNow": 1794848050144
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "goto",
+      "outcome": "return",
+      "nodeMs": 47722.501167,
+      "nodeTimeOrigin": 1794848009647.408,
+      "dateNow": 1794848057369
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "startup-wait",
+      "outcome": "begin",
+      "nodeMs": 47722.769042,
+      "nodeTimeOrigin": 1794848009647.408,
+      "dateNow": 1794848057370
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "startup-wait",
+      "outcome": "error",
+      "nodeMs": 190796.485208,
+      "nodeTimeOrigin": 1794848009647.408,
+      "dateNow": 1794848200443
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "context-close",
+      "outcome": "begin",
+      "nodeMs": 190881.874167,
+      "nodeTimeOrigin": 1794848009647.408,
+      "dateNow": 1794848200529
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "context-close",
+      "outcome": "return",
+      "nodeMs": 190881.903875,
+      "nodeTimeOrigin": 1794848009647.408,
+      "dateNow": 1794848200529
+    }
+  ],
+  "rawLogSHA256": "c7341ea1454fcbd9ac0934cd2f110aac6fb17f518240cf95689e352ee1eb0f5e",
+  "exit": 1,
+  "startupPassed": false,
+  "pageErrors": 0,
+  "consoleErrors": 0,
+  "collectionOutcome": "rejected"
+}
