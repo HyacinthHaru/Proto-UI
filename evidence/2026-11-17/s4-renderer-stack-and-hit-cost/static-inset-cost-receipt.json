@@ -1,0 +1,186 @@
+{
+  "source": {
+    "head": "0ba01ae75ce3e2454af622d234fe0577672e5252",
+    "tree": "768ad6ac9d1e8d839853c0686d64891d50341194",
+    "parents": [
+      "e41c8673da766b9e6d08d7dd00091d2c5e80de6c",
+      "913b78bde65c0da51bb9d62f3df5788807cefda6"
+    ]
+  },
+  "overlaySHA256": "cf17062b5ce8208df51a9e5a3885853b2eb5e27e7375217eaba3c354b0821373",
+  "exactInputsSHA256": {
+    "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "ea4642021d9720bb8c286e5f5920a7bffa19bc313c8865fb004eefe412ffe3e9",
+    "packages/modules/hit-participation/src/web/static-hit-inset.ts": "a22a6dc8f4f0fca4937ac779ac9969cbf56c45fdd0ada5636b19491b4c96d271"
+  },
+  "rawLogSHA256": "c4f8a3ebad67cfb4d1117bc042ad72bc14544b8206ec404d1ca378374699ed2c",
+  "versions": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+  "outcome": {
+    "exit": 1,
+    "startupPassed": false,
+    "logs": {
+      "pageErrors": 0,
+      "consoleErrors": 0
+    },
+    "postVerdict": "budget-expired",
+    "English": "unselected",
+    "startupLimitMs": 60000,
+    "testLimitMs": 150000
+  },
+  "observedReports": 11,
+  "lastTimedReport": {
+    "pageMs": 81315.40000009537,
+    "timeOrigin": 1794852061848.1,
+    "latestTag": "div",
+    "stages": {
+      "capability-and-ownership:wc-shadcn-switch-root": {
+        "calls": 6,
+        "totalMs": 0,
+        "maxMs": 0
+      },
+      "principal-box-style:wc-shadcn-switch-root": {
+        "calls": 6,
+        "totalMs": 129.599999666214,
+        "maxMs": 62.09999990463257
+      },
+      "pseudo-style:wc-shadcn-switch-root": {
+        "calls": 6,
+        "totalMs": 0.20000004768371582,
+        "maxMs": 0.10000014305114746
+      },
+      "prepare:wc-shadcn-switch-root": {
+        "calls": 6,
+        "totalMs": 130,
+        "maxMs": 62.200000047683716
+      },
+      "append-and-mark:wc-shadcn-switch-root": {
+        "calls": 6,
+        "totalMs": 0.20000004768371582,
+        "maxMs": 0.10000014305114746
+      },
+      "read-lease-cssom:wc-shadcn-switch-root": {
+        "calls": 6,
+        "totalMs": 0.5999999046325684,
+        "maxMs": 0.20000004768371582
+      },
+      "capability-and-ownership:div": {
+        "calls": 47,
+        "totalMs": 0.39999985694885254,
+        "maxMs": 0.10000014305114746
+      },
+      "principal-box-style:div": {
+        "calls": 47,
+        "totalMs": 1244.2999997138977,
+        "maxMs": 79.29999995231628
+      },
+      "pseudo-style:div": {
+        "calls": 47,
+        "totalMs": 0.5999999046325684,
+        "maxMs": 0.10000014305114746
+      },
+      "prepare:div": {
+        "calls": 47,
+        "totalMs": 1245.3999996185303,
+        "maxMs": 79.29999995231628
+      },
+      "append-and-mark:div": {
+        "calls": 46,
+        "totalMs": 2.499999761581421,
+        "maxMs": 0.10000014305114746
+      },
+      "read-lease-cssom:div": {
+        "calls": 46,
+        "totalMs": 2.8000004291534424,
+        "maxMs": 0.10000014305114746
+      },
+      "capability-and-ownership:wc-shadcn-field-switch": {
+        "calls": 10,
+        "totalMs": 0,
+        "maxMs": 0
+      },
+      "principal-box-style:wc-shadcn-field-switch": {
+        "calls": 10,
+        "totalMs": 574.9000000953674,
+        "maxMs": 80.90000009536743
+      },
+      "pseudo-style:wc-shadcn-field-switch": {
+        "calls": 10,
+        "totalMs": 0.20000004768371582,
+        "maxMs": 0.10000014305114746
+      },
+      "prepare:wc-shadcn-field-switch": {
+        "calls": 10,
+        "totalMs": 575.2000000476837,
+        "maxMs": 80.90000009536743
+      },
+      "append-and-mark:wc-shadcn-field-switch": {
+        "calls": 10,
+        "totalMs": 0.7999997138977051,
+        "maxMs": 0.20000004768371582
+      },
+      "read-lease-cssom:wc-shadcn-field-switch": {
+        "calls": 10,
+        "totalMs": 0.799999475479126,
+        "maxMs": 0.19999980926513672
+      }
+    }
+  },
+  "totalsAtLastReport": {
+    "capability-and-ownership": {
+      "calls": 63,
+      "totalMs": 0.39999985694885254,
+      "maxMs": 0.10000014305114746
+    },
+    "principal-box-style": {
+      "calls": 63,
+      "totalMs": 1948.7999994754791,
+      "maxMs": 80.90000009536743
+    },
+    "pseudo-style": {
+      "calls": 63,
+      "totalMs": 1.0,
+      "maxMs": 0.10000014305114746
+    },
+    "prepare": {
+      "calls": 63,
+      "totalMs": 1950.599999666214,
+      "maxMs": 80.90000009536743
+    },
+    "append-and-mark": {
+      "calls": 62,
+      "totalMs": 3.499999523162842,
+      "maxMs": 0.20000004768371582
+    },
+    "read-lease-cssom": {
+      "calls": 62,
+      "totalMs": 4.199999809265137,
+      "maxMs": 0.20000004768371582
+    }
+  },
+  "lastReadiness": {
+    "timeOrigin": 1794852061848.1,
+    "pageMs": 111106.60000014305,
+    "dateNow": 1794852172954,
+    "count": 1268,
+    "ready": false,
+    "firstMissing": {
+      "previewerId": "pp-2ylplmh47at",
+      "index": 20,
+      "inited": "1",
+      "hostChildren": 0
+    },
+    "firstMissingOwner": {
+      "demoId": "demo-base-calendar",
+      "prototypeId": "",
+      "declaredRuntime": "wc",
+      "projectionMode": null,
+      "projectionState": null,
+      "mounting": null,
+      "hostTag": "DIV",
+      "hostOwner": "pp-2ylplmh47at",
+      "startupPending": true,
+      "hostOwnInert": true,
+      "hostText": ""
+    }
+  },
+  "costBoundary": "Cumulative synchronous duration through the last delivered sampled report. Prepare contains the preceding read components. This is not the entire case or an attribution of unobserved time."
+}

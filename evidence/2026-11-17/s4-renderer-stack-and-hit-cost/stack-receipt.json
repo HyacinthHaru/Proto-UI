@@ -1,0 +1,204 @@
+{
+  "source": {
+    "head": "0ba01ae75ce3e2454af622d234fe0577672e5252",
+    "tree": "768ad6ac9d1e8d839853c0686d64891d50341194",
+    "parents": [
+      "e41c8673da766b9e6d08d7dd00091d2c5e80de6c",
+      "913b78bde65c0da51bb9d62f3df5788807cefda6"
+    ]
+  },
+  "overlaySHA256": "a8a8ce13735e7f4a50e9848c8953ea44c2bf8f48d8850d744fd765836782ecf9",
+  "exactInputsSHA256": {
+    "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "5acde342492f050a70cfada3e4647894ae30136e38553e4307cdbda7fac12994"
+  },
+  "rawLogSHA256": "1d72eb4bfad699dc35cf334b3a79bc4c3c21ce7e59c030b62f754a21d0ff4437",
+  "versions": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+  "outcome": {
+    "exit": 1,
+    "startupPassed": false,
+    "logs": {
+      "pageErrors": 0,
+      "consoleErrors": 0
+    },
+    "postVerdict": "rejected",
+    "English": "unselected",
+    "startupLimitMs": 60000,
+    "testLimitMs": 150000
+  },
+  "stackCapture": [
+    {
+      "stage": "debugger-enabled",
+      "locale": "zh-cn",
+      "nodeMs": 41218.696583,
+      "timeOrigin": 1794851767522.555
+    },
+    {
+      "stage": "pause-requested",
+      "locale": "zh-cn",
+      "nodeMs": 86486.198333,
+      "timeOrigin": 1794851767522.555,
+      "waitAfterOriginalPredicateMs": 38000
+    },
+    {
+      "stage": "pause-ack",
+      "locale": "zh-cn",
+      "nodeMs": 86499.116875,
+      "timeOrigin": 1794851767522.555
+    },
+    {
+      "stage": "paused",
+      "locale": "zh-cn",
+      "nodeMs": 86501.426666,
+      "timeOrigin": 1794851767522.555,
+      "reason": "other",
+      "parsedSourceCount": 3880,
+      "frames": [
+        {
+          "function": "prepareStaticHitInset",
+          "scriptId": "624",
+          "file": "/packages/modules/hit-participation/src/web/static-hit-inset.ts",
+          "line": 25,
+          "column": 36
+        },
+        {
+          "function": "sync",
+          "scriptId": "567",
+          "file": "/packages/modules/hit-participation/src/web/host-bridge.ts",
+          "line": 50,
+          "column": 28
+        },
+        {
+          "function": "syncHostBridge",
+          "scriptId": "623",
+          "file": "/packages/modules/hit-participation/src/impl.ts",
+          "line": 198,
+          "column": 21
+        },
+        {
+          "function": "replaceRegions",
+          "scriptId": "623",
+          "file": "/packages/modules/hit-participation/src/impl.ts",
+          "line": 147,
+          "column": 12
+        },
+        {
+          "function": "registerRegion",
+          "scriptId": "623",
+          "file": "/packages/modules/hit-participation/src/impl.ts",
+          "line": 135,
+          "column": 10
+        },
+        {
+          "function": "registerSelfRegion",
+          "scriptId": "623",
+          "file": "/packages/modules/hit-participation/src/impl.ts",
+          "line": 117,
+          "column": 17
+        },
+        {
+          "function": "registerSelfRegion",
+          "scriptId": "623",
+          "file": "/packages/modules/hit-participation/src/impl.ts",
+          "line": 209,
+          "column": 43
+        },
+        {
+          "function": "",
+          "scriptId": "319",
+          "file": "/packages/prototypes/shadcn/src/switch/root-visual.ts",
+          "line": 108,
+          "column": 15
+        },
+        {
+          "function": "sync",
+          "scriptId": "474",
+          "file": "/packages/prototypes/shadcn/src/switch/hit-lease.ts",
+          "line": 18,
+          "column": 18
+        },
+        {
+          "function": "sync",
+          "scriptId": "319",
+          "file": "/packages/prototypes/shadcn/src/switch/root-visual.ts",
+          "line": 122,
+          "column": 14
+        },
+        {
+          "function": "",
+          "scriptId": "319",
+          "file": "/packages/prototypes/shadcn/src/switch/root-visual.ts",
+          "line": 127,
+          "column": 5
+        },
+        {
+          "function": "",
+          "scriptId": "652",
+          "file": "/packages/runtime/src/instance/session.ts",
+          "line": 275,
+          "column": 45
+        },
+        {
+          "function": "runInScope",
+          "scriptId": "683",
+          "file": "/packages/runtime/src/instance/execute/callback-scope.ts",
+          "line": 58,
+          "column": 14
+        },
+        {
+          "function": "run",
+          "scriptId": "683",
+          "file": "/packages/runtime/src/instance/execute/callback-scope.ts",
+          "line": 33,
+          "column": 17
+        },
+        {
+          "function": "finishMount",
+          "scriptId": "652",
+          "file": "/packages/runtime/src/instance/session.ts",
+          "line": 274,
+          "column": 21
+        },
+        {
+          "function": "",
+          "scriptId": "652",
+          "file": "/packages/runtime/src/instance/session.ts",
+          "line": 294,
+          "column": 15
+        }
+      ]
+    },
+    {
+      "stage": "resume-ack",
+      "locale": "zh-cn",
+      "nodeMs": 86528.645666,
+      "timeOrigin": 1794851767522.555
+    }
+  ],
+  "stackBoundary": "One sampled call stack. Reported locations are Chrome script coordinates and only the shown call is directly attributed. Debugger setup and pause are diagnostic.",
+  "lastReadiness": {
+    "timeOrigin": 1794851808743.8,
+    "pageMs": 136528.20000004768,
+    "dateNow": 1794851945271,
+    "count": 1268,
+    "ready": false,
+    "firstMissing": {
+      "previewerId": "pp-sq1cfb3ex9",
+      "index": 20,
+      "inited": "1",
+      "hostChildren": 0
+    },
+    "firstMissingOwner": {
+      "demoId": "demo-base-calendar",
+      "prototypeId": "",
+      "declaredRuntime": "wc",
+      "projectionMode": null,
+      "projectionState": null,
+      "mounting": null,
+      "hostTag": "DIV",
+      "hostOwner": "pp-sq1cfb3ex9",
+      "startupPending": true,
+      "hostOwnInert": true,
+      "hostText": ""
+    }
+  }
+}
