@@ -1,0 +1,288 @@
+diff --git a/apps/www/src/components/PrototypePreviewer/demo-renderer.ts b/apps/www/src/components/PrototypePreviewer/demo-renderer.ts
+index 681e86d6a..241d2f4fe 100644
+--- a/apps/www/src/components/PrototypePreviewer/demo-renderer.ts
++++ b/apps/www/src/components/PrototypePreviewer/demo-renderer.ts
+@@ -42,11 +42,15 @@ import { retryableModule } from './runtimes/retryable-module';
+ 
+ const reactAdapter = retryableModule(
+   () => import('@proto.ui/adapter-react'),
+-  runtimeUrls.reactAdapter
++  runtimeUrls.reactAdapter,
++  undefined,
++  'react-adapter'
+ );
+ const reactRuntime = retryableModule(
+   () => import('./runtimes/react-runtime'),
+-  runtimeUrls.reactRuntime
++  runtimeUrls.reactRuntime,
++  undefined,
++  'react-runtime'
+ );
+ const vueAdapter = retryableModule(() => import('@proto.ui/adapter-vue'), runtimeUrls.vueAdapter);
+ const vueRuntime = retryableModule(() => import('./runtimes/vue-runtime'), runtimeUrls.vueRuntime);
+diff --git a/apps/www/src/components/PrototypePreviewer/runtimes/react-runtime.ts b/apps/www/src/components/PrototypePreviewer/runtimes/react-runtime.ts
+index ddb136480..d9a624864 100644
+--- a/apps/www/src/components/PrototypePreviewer/runtimes/react-runtime.ts
++++ b/apps/www/src/components/PrototypePreviewer/runtimes/react-runtime.ts
+@@ -4,11 +4,23 @@ import type { RuntimeAPI } from './ids';
+ import type * as ReactTypes from 'react';
+ import { claimHostMount, releaseHostMount } from './host-mount';
+ 
+-const importReact = retryableModule(() => import('react'), runtimeUrls.react);
+-const reactDomModule = retryableModule(() => import('react-dom'), runtimeUrls.reactDom);
++const importReact = retryableModule(
++  () => import('react'),
++  runtimeUrls.react,
++  undefined,
++  'react-package'
++);
++const reactDomModule = retryableModule(
++  () => import('react-dom'),
++  runtimeUrls.reactDom,
++  undefined,
++  'react-dom-package'
++);
+ const reactDomClientModule = retryableModule(
+   () => import('react-dom/client'),
+-  runtimeUrls.reactDomClient
++  runtimeUrls.reactDomClient,
++  undefined,
++  'react-dom-client-package'
+ );
+ 
+ // Keep the React 18 reader runtime, but deliver the pinned pair through
+diff --git a/apps/www/src/components/PrototypePreviewer/runtimes/retryable-module.ts b/apps/www/src/components/PrototypePreviewer/runtimes/retryable-module.ts
+index 7481a8dc2..7a72bc99c 100644
+--- a/apps/www/src/components/PrototypePreviewer/runtimes/retryable-module.ts
++++ b/apps/www/src/components/PrototypePreviewer/runtimes/retryable-module.ts
+@@ -7,15 +7,52 @@
+ export function retryableModule<T>(
+   load: () => Promise<T>,
+   moduleUrl: string,
+-  importModule: (url: string) => Promise<T> = (url) => import(/* @vite-ignore */ url)
++  importModule: (url: string) => Promise<T> = (url) => import(/* @vite-ignore */ url),
++  diagnosticName?: string
+ ): () => Promise<T> {
+   let pending: Promise<T> | undefined;
+   let attempt = 0;
++  let reused = false;
++  const markAttempt = (stage: string, index: number) => {
++    const target = globalThis as typeof globalThis & {
++      __puiContentsStagingProbe?: boolean;
++      __puiS4HostedTiming?: boolean;
++    };
++    if (!diagnosticName || (!target.__puiContentsStagingProbe && !target.__puiS4HostedTiming))
++      return false;
++    try {
++      const browserMs = performance.now();
++      if (target.__puiContentsStagingProbe)
++        performance.mark('pui-contents:react-dependency:' + diagnosticName + ':' + stage, {
++          detail: { attempt: index },
++        });
++      if (target.__puiS4HostedTiming)
++        console.info(
++          '[S4 hosted import boundary]',
++          JSON.stringify({
++            asset: diagnosticName,
++            stage,
++            attempt: index,
++            browserMs,
++            browserTimeOrigin: performance.timeOrigin,
++          })
++        );
++      return true;
++    } catch {
++      return false;
++    }
++  };
+   return () => {
+-    if (pending) return pending;
++    if (pending) {
++      if (!reused) reused = markAttempt('reuse', attempt - 1);
++      return pending;
++    }
+     const currentAttempt = attempt++;
++    reused = false;
++    markAttempt('request', currentAttempt);
+     pending = Promise.resolve()
+       .then(() => {
++        markAttempt('factory', currentAttempt);
+         if (currentAttempt === 0) return load();
+         const url = new URL(moduleUrl, globalThis.location.href);
+         if (url.origin !== globalThis.location.origin || !/^https?:$/.test(url.protocol)) {
+@@ -28,6 +65,12 @@ export function retryableModule<T>(
+         pending = undefined;
+         throw error;
+       });
++    if (diagnosticName) {
++      void pending.then(
++        () => markAttempt('fulfilled', currentAttempt),
++        () => markAttempt('rejected', currentAttempt)
++      );
++    }
+     return pending;
+   };
+ }
+diff --git a/apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts b/apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts
+index 2953f8254..d7d1a374c 100644
+--- a/apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts
++++ b/apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts
+@@ -12,6 +12,27 @@ import { settleFamilyQueryBatch } from './family-query-observer';
+ import { runS4Journey } from '../../../../../../scripts/analysis/shadow-s4-journey.mjs';
+ let browser: Browser;
+ let baseUrl: string;
++const observeHosted = process.env.PROTO_UI_S4_HOSTED_DIAGNOSTIC === '1';
++const hostLog = (
++  suite: string,
++  subject: string,
++  stage: string,
++  fields: Record<string, unknown> = {}
++) => {
++  if (!observeHosted) return;
++  console.info(
++    '[S4 hosted transport]',
++    JSON.stringify({
++      suite,
++      subject,
++      stage,
++      deliveredNodeMs: performance.now(),
++      nodeTimeOrigin: performance.timeOrigin,
++      wallMs: Date.now(),
++      ...fields,
++    })
++  );
++};
+ beforeAll(async () => {
+   baseUrl = await startServer('/zh-cn/internal/demo-matrix/');
+   browser = await launchBrowser();
+@@ -45,6 +66,84 @@ describe.sequential('S4 complete public Dialog settings', () => {
+         }
+       });
+       const page = await context.newPage();
++      if (observeHosted) {
++        const session = await context.newCDPSession(page);
++        const sources = new Map<string, string>();
++        const event = (
++          stage: string,
++          value: {
++            requestId: string;
++            timestamp: number;
++            response?: { status: number };
++            encodedDataLength?: number;
++          }
++        ) => {
++          const asset = sources.get(value.requestId);
++          if (asset)
++            hostLog(locale, asset, stage, {
++              id: value.requestId,
++              chromiumSeconds: value.timestamp,
++              status: value.response?.status,
++              encodedBytes: value.encodedDataLength,
++            });
++        };
++        session.on('Network.requestWillBeSent', (value) => {
++          const route = new URL(value.request.url);
++          const asset = route.pathname.split('/').at(-1) ?? '';
++          if (
++            (route.pathname.includes('/.vite/deps/') &&
++              /^(?:react[._-]|react-dom[._-]|chunk-)/.test(asset)) ||
++            asset === 'react-runtime.ts'
++          ) {
++            sources.set(value.requestId, asset);
++            hostLog(locale, asset, 'request', {
++              id: value.requestId,
++              chromiumSeconds: value.timestamp,
++              chromiumWallSeconds: value.wallTime,
++            });
++          }
++        });
++        session.on('Network.responseReceived', (value) => event('response', value));
++        session.on('Network.loadingFinished', (value) => event('finished', value));
++        session.on('Network.loadingFailed', (value) => {
++          const asset = sources.get(value.requestId);
++          if (asset)
++            hostLog(locale, asset, 'loading-failed', {
++              id: value.requestId,
++              chromiumSeconds: value.timestamp,
++              canceled: value.canceled,
++            });
++        });
++        await session.send('Network.enable');
++        await page.addInitScript(() => {
++          Object.defineProperty(window, '__puiS4HostedTiming', { value: true, configurable: true });
++          let remaining = 80;
++          const resources = new PerformanceObserver((list) => {
++            for (const item of list.getEntries()) {
++              const entry = item as PerformanceResourceTiming;
++              const route = new URL(entry.name, window.location.href);
++              const asset = route.pathname.split('/').at(-1) ?? '';
++              if (
++                route.origin !== window.location.origin ||
++                !route.pathname.includes('/.vite/deps/') ||
++                !/^(?:react[._-]|react-dom[._-]|chunk-)/.test(asset)
++              ) continue;
++              if (remaining === 0) return;
++              remaining--;
++              console.info('[S4 browser resource clock]', JSON.stringify({
++                asset, version: route.searchParams.get('v'),
++                browserTimeOrigin: performance.timeOrigin,
++                browserObservedMs: performance.now(),
++                browserStartMs: entry.startTime,
++                browserResponseEndMs: entry.responseEnd,
++                initiatorType: entry.initiatorType,
++                transferSize: entry.transferSize,
++              }));
++            }
++          });
++          resources.observe({ type: 'resource', buffered: true });
++        });
++      }
+       const errors: string[] = [];
+       page.on('pageerror', (e) => errors.push(e.message));
+       let phase = 'created';
+@@ -71,6 +170,21 @@ describe.sequential('S4 complete public Dialog settings', () => {
+       const browserObservation = (message: { text(): string; type(): string }) => {
+         try {
+           const text = message.text();
++          if (text.startsWith('[S4 browser resource clock] ')) {
++            const mark = JSON.parse(text.slice('[S4 browser resource clock] '.length));
++            hostLog(locale, 'resource:' + mark.asset, 'browser-resource-complete', mark);
++            return;
++          }
++          if (text.startsWith('[S4 hosted import boundary] ')) {
++            const mark = JSON.parse(text.slice('[S4 hosted import boundary] '.length));
++            hostLog(locale, 'promise:' + mark.asset, mark.stage, mark);
++            return;
++          }
++          if (text.startsWith('[S4 hosted React phase] ')) {
++            const phase = JSON.parse(text.slice('[S4 hosted React phase] '.length));
++            hostLog(locale, 'react-owner', phase.stage, phase);
++            return;
++          }
+           if (message.type() === 'error') {
+             if (consoleErrors.length < 32) {
+               const row = {
+@@ -148,6 +262,8 @@ describe.sequential('S4 complete public Dialog settings', () => {
+                 page.evaluate(() => ({
+                   startup: (window as any).__puiS4Startup ?? null,
+                   init: (window as any).__puiS4InitJournal ?? null,
++                  importJournal: (window as any).__puiS4ImportJournal ?? null,
++                  importJournalCollectedAt: performance.timeOrigin + performance.now(),
+                 })),
+               ],
+               2000
+@@ -194,6 +310,14 @@ describe.sequential('S4 complete public Dialog settings', () => {
+                 'Actual Node function passed to waitForFunction; not proof of browser execution.',
+               observation,
+               initObservation,
++              importJournal:
++                result.outcomes[0]?.status === 'fulfilled'
++                  ? result.outcomes[0].value.importJournal
++                  : null,
++              importJournalCollectedAt:
++                result.outcomes[0]?.status === 'fulfilled'
++                  ? result.outcomes[0].value.importJournalCollectedAt
++                  : null,
+             };
+             console.log('[S4 startup predicate]', JSON.stringify(evidence));
+             const directory = path.join(

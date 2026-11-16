@@ -1,0 +1,229 @@
+{
+  "scope": "Clean main parent plus a local observational patch. Current on-disk Vite import graph is matched by resource basename and browser time origin. Network body bytes were not captured. Browser resource entry responseEnd and the Promise callback share the page performance clock. Node event delivery is recorded separately.",
+  "sourceBindings": {
+    "react.js": "7aa287563d897b8d1a13beaad3da937368e0cae207256141cb054374037c5f26",
+    "chunk-EK7DFB6S.js": "3df381ecb334f558364486c7eab929da43a18f9b01ac0d5bd643256bec8cc188",
+    "chunk-BUSYA2B4.js": "efc482031d78ba54060196a3697583e15ae5b95ebc6bb80fc79757a21523687a",
+    "react-dom.js": "b2123c3c85cc7bf54713ff8f91dd28a4919757cc91f7c87be9d28850dd501ee1",
+    "chunk-2MALL255.js": "29cc05e35d78ca35003e780aa79b1b50e24b2899dde72b5ab85de98f1ac52d0d",
+    "react-dom_client.js": "f629d4ba89f62c558254ca3e491af8f360f8d64371fe2579564144b6aa73fb47"
+  },
+  "result": [
+    {
+      "locale": "zh-cn",
+      "startupVerdict": {
+        "outcome": "error",
+        "nodeMs": 192803.569959
+      },
+      "packages": [
+        {
+          "name": "react-package",
+          "entry": "react.js",
+          "factoryBrowserMs": 22050.89999985695,
+          "requestToFactoryMs": 0.2999999523162842,
+          "settlement": null,
+          "browserResponseEndToSettlementMs": null,
+          "lastResource": null,
+          "resources": [
+            {
+              "asset": "chunk-BUSYA2B4.js",
+              "browserResponseEndMs": 2104.5999999046326,
+              "browserDeliveryMs": 2110.899999856949,
+              "transportFinishedNodeMs": 44596.236709
+            },
+            {
+              "asset": "chunk-EK7DFB6S.js",
+              "browserResponseEndMs": null,
+              "browserDeliveryMs": null,
+              "transportFinishedNodeMs": 85285.767167
+            },
+            {
+              "asset": "react.js",
+              "browserResponseEndMs": 22056.39999985695,
+              "browserDeliveryMs": 23462,
+              "transportFinishedNodeMs": 65643.276625
+            }
+          ]
+        },
+        {
+          "name": "react-dom-package",
+          "entry": "react-dom.js",
+          "factoryBrowserMs": 22051.099999904633,
+          "requestToFactoryMs": 0.40000009536743164,
+          "settlement": null,
+          "browserResponseEndToSettlementMs": null,
+          "lastResource": null,
+          "resources": [
+            {
+              "asset": "chunk-2MALL255.js",
+              "browserResponseEndMs": null,
+              "browserDeliveryMs": null,
+              "transportFinishedNodeMs": 85288.991542
+            },
+            {
+              "asset": "chunk-BUSYA2B4.js",
+              "browserResponseEndMs": 2104.5999999046326,
+              "browserDeliveryMs": 2110.899999856949,
+              "transportFinishedNodeMs": 44596.236709
+            },
+            {
+              "asset": "chunk-EK7DFB6S.js",
+              "browserResponseEndMs": null,
+              "browserDeliveryMs": null,
+              "transportFinishedNodeMs": 85285.767167
+            },
+            {
+              "asset": "react-dom.js",
+              "browserResponseEndMs": 22057.89999985695,
+              "browserDeliveryMs": 23462.099999904633,
+              "transportFinishedNodeMs": 65643.542625
+            }
+          ]
+        },
+        {
+          "name": "react-dom-client-package",
+          "entry": "react-dom_client.js",
+          "factoryBrowserMs": 22051.199999809265,
+          "requestToFactoryMs": 0.5,
+          "settlement": null,
+          "browserResponseEndToSettlementMs": null,
+          "lastResource": null,
+          "resources": [
+            {
+              "asset": "chunk-2MALL255.js",
+              "browserResponseEndMs": null,
+              "browserDeliveryMs": null,
+              "transportFinishedNodeMs": 85288.991542
+            },
+            {
+              "asset": "chunk-BUSYA2B4.js",
+              "browserResponseEndMs": 2104.5999999046326,
+              "browserDeliveryMs": 2110.899999856949,
+              "transportFinishedNodeMs": 44596.236709
+            },
+            {
+              "asset": "chunk-EK7DFB6S.js",
+              "browserResponseEndMs": null,
+              "browserDeliveryMs": null,
+              "transportFinishedNodeMs": 85285.767167
+            },
+            {
+              "asset": "react-dom_client.js",
+              "browserResponseEndMs": 22057.39999985695,
+              "browserDeliveryMs": 23462.099999904633,
+              "transportFinishedNodeMs": 65643.522667
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "startupVerdict": {
+        "outcome": "error",
+        "nodeMs": 343484.276959
+      },
+      "packages": [
+        {
+          "name": "react-package",
+          "entry": "react.js",
+          "factoryBrowserMs": 21976.39999985695,
+          "requestToFactoryMs": 0.2999999523162842,
+          "settlement": null,
+          "browserResponseEndToSettlementMs": null,
+          "lastResource": null,
+          "resources": [
+            {
+              "asset": "chunk-BUSYA2B4.js",
+              "browserResponseEndMs": 5459.399999856949,
+              "browserDeliveryMs": 5465.700000047684,
+              "transportFinishedNodeMs": 198907.962584
+            },
+            {
+              "asset": "chunk-EK7DFB6S.js",
+              "browserResponseEndMs": null,
+              "browserDeliveryMs": null,
+              "transportFinishedNodeMs": null
+            },
+            {
+              "asset": "react.js",
+              "browserResponseEndMs": 21977.599999904633,
+              "browserDeliveryMs": 26944.39999985695,
+              "transportFinishedNodeMs": 217911.403167
+            }
+          ]
+        },
+        {
+          "name": "react-dom-package",
+          "entry": "react-dom.js",
+          "factoryBrowserMs": 21976.599999904633,
+          "requestToFactoryMs": 0.5,
+          "settlement": null,
+          "browserResponseEndToSettlementMs": null,
+          "lastResource": null,
+          "resources": [
+            {
+              "asset": "chunk-2MALL255.js",
+              "browserResponseEndMs": null,
+              "browserDeliveryMs": null,
+              "transportFinishedNodeMs": null
+            },
+            {
+              "asset": "chunk-BUSYA2B4.js",
+              "browserResponseEndMs": 5459.399999856949,
+              "browserDeliveryMs": 5465.700000047684,
+              "transportFinishedNodeMs": 198907.962584
+            },
+            {
+              "asset": "chunk-EK7DFB6S.js",
+              "browserResponseEndMs": null,
+              "browserDeliveryMs": null,
+              "transportFinishedNodeMs": null
+            },
+            {
+              "asset": "react-dom.js",
+              "browserResponseEndMs": 21978.39999985695,
+              "browserDeliveryMs": 26944.5,
+              "transportFinishedNodeMs": 217911.552792
+            }
+          ]
+        },
+        {
+          "name": "react-dom-client-package",
+          "entry": "react-dom_client.js",
+          "factoryBrowserMs": 21976.700000047684,
+          "requestToFactoryMs": 0.5,
+          "settlement": null,
+          "browserResponseEndToSettlementMs": null,
+          "lastResource": null,
+          "resources": [
+            {
+              "asset": "chunk-2MALL255.js",
+              "browserResponseEndMs": null,
+              "browserDeliveryMs": null,
+              "transportFinishedNodeMs": null
+            },
+            {
+              "asset": "chunk-BUSYA2B4.js",
+              "browserResponseEndMs": 5459.399999856949,
+              "browserDeliveryMs": 5465.700000047684,
+              "transportFinishedNodeMs": 198907.962584
+            },
+            {
+              "asset": "chunk-EK7DFB6S.js",
+              "browserResponseEndMs": null,
+              "browserDeliveryMs": null,
+              "transportFinishedNodeMs": null
+            },
+            {
+              "asset": "react-dom_client.js",
+              "browserResponseEndMs": 21978.599999904633,
+              "browserDeliveryMs": 26944.5,
+              "transportFinishedNodeMs": 217911.590292
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

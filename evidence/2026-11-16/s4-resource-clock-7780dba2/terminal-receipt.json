@@ -1,0 +1,108 @@
+{
+  "source": "7780dba23e3fb14e0138ea4d24a1cbb8096c3cbf",
+  "tree": "8d850441266a42cefd8e8d97d7bc88953866510a",
+  "platform": "macOS arm64",
+  "node": "24.21.0",
+  "pnpm": "10.32.1",
+  "chrome": "156.0.8078.79",
+  "processExit": 1,
+  "diagnosticPatchSha256": "9b27e2a5d95244247f26d9b4c170115238256c56f178922dcd544063e7f4206f",
+  "executedPatchedInputs": [
+    {
+      "path": "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts",
+      "sha256": "539a8da2d494d21d482d929c936264e82c44e2255f2c3c560237798af3a292be"
+    },
+    {
+      "path": "apps/www/src/components/PrototypePreviewer/runtimes/retryable-module.ts",
+      "sha256": "6d3ea66cf368073fc5903238d4689ad2b27f847b74ed2667c9a255f8f20ec022"
+    },
+    {
+      "path": "apps/www/src/components/PrototypePreviewer/demo-renderer.ts",
+      "sha256": "1aec376904a143af4e0da72d4cb4677ae79b65fe49051e420027b00cac42d550"
+    },
+    {
+      "path": "apps/www/src/components/PrototypePreviewer/runtimes/react-runtime.ts",
+      "sha256": "98b1f230f60bebf55669f3ad3c4bcc958493658e9de1bac2f443aedab7d42772"
+    }
+  ],
+  "locales": [
+    {
+      "locale": "zh-cn",
+      "outerTimeoutMs": 150000,
+      "originalWaitForFunctionTimeoutMs": 60000,
+      "terminalStatus": "failed",
+      "postVerdictSnapshot": "rejected",
+      "pageErrors": {
+        "[feedback] owned-decoration unsupported by this adapter": 18
+      },
+      "packages": [
+        {
+          "name": "react-package",
+          "responsesCompletedAtNode": 3,
+          "reachedAssetCount": 3,
+          "lastObservedTransportFinish": "chunk-EK7DFB6S.js",
+          "lastObservedTransportFinishToNodeStartupErrorMs": 107517.803,
+          "browserCompletionMissing": ["chunk-EK7DFB6S.js"],
+          "importSettlementObserved": false
+        },
+        {
+          "name": "react-dom-package",
+          "responsesCompletedAtNode": 4,
+          "reachedAssetCount": 4,
+          "lastObservedTransportFinish": "chunk-2MALL255.js",
+          "lastObservedTransportFinishToNodeStartupErrorMs": 107514.578,
+          "browserCompletionMissing": ["chunk-2MALL255.js", "chunk-EK7DFB6S.js"],
+          "importSettlementObserved": false
+        },
+        {
+          "name": "react-dom-client-package",
+          "responsesCompletedAtNode": 4,
+          "reachedAssetCount": 4,
+          "lastObservedTransportFinish": "chunk-2MALL255.js",
+          "lastObservedTransportFinishToNodeStartupErrorMs": 107514.578,
+          "browserCompletionMissing": ["chunk-2MALL255.js", "chunk-EK7DFB6S.js"],
+          "importSettlementObserved": false
+        }
+      ]
+    },
+    {
+      "locale": "en",
+      "outerTimeoutMs": 150000,
+      "originalWaitForFunctionTimeoutMs": 60000,
+      "terminalStatus": "failed",
+      "postVerdictSnapshot": "rejected",
+      "pageErrors": {
+        "[feedback] owned-decoration unsupported by this adapter": 18
+      },
+      "packages": [
+        {
+          "name": "react-package",
+          "responsesCompletedAtNode": 2,
+          "reachedAssetCount": 3,
+          "lastObservedTransportFinish": "react.js",
+          "lastObservedTransportFinishToNodeStartupErrorMs": 125572.874,
+          "browserCompletionMissing": ["chunk-EK7DFB6S.js"],
+          "importSettlementObserved": false
+        },
+        {
+          "name": "react-dom-package",
+          "responsesCompletedAtNode": 2,
+          "reachedAssetCount": 4,
+          "lastObservedTransportFinish": "react-dom.js",
+          "lastObservedTransportFinishToNodeStartupErrorMs": 125572.724,
+          "browserCompletionMissing": ["chunk-2MALL255.js", "chunk-EK7DFB6S.js"],
+          "importSettlementObserved": false
+        },
+        {
+          "name": "react-dom-client-package",
+          "responsesCompletedAtNode": 2,
+          "reachedAssetCount": 4,
+          "lastObservedTransportFinish": "react-dom_client.js",
+          "lastObservedTransportFinishToNodeStartupErrorMs": 125572.687,
+          "browserCompletionMissing": ["chunk-2MALL255.js", "chunk-EK7DFB6S.js"],
+          "importSettlementObserved": false
+        }
+      ]
+    }
+  ]
+}
