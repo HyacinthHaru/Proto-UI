@@ -1,0 +1,71 @@
+{
+  "author": {
+    "head": "940261d62ed1ae5480875dc2758201c08521b24a",
+    "tree": "21ec87f732e0727867869a800b58f9bb87ffc088",
+    "parent": "4bc7ded17ddef2f02e3ace2229797dc282afd860",
+    "files": {
+      "packages/adapters/web-component/src/runtime/session.ts": "c2db0aad63f062d2886aafb525587d7ecb217554a92c1ee68a5b5092165fd19c",
+      "packages/adapters/web-component/test/shadow-closeout.browser.test.ts": "3205f1716fc0fff8f12381ad91d46021809900970c0252fcd4193d65a602ee3e",
+      "packages/cli/src/services/hook-source-summary.ts": "144ff6d0e07877e3aa4d1e92b3b64e0f18408897838e1f5bad37e25ad2edd8b0",
+      "packages/cli/src/services/prototype-style-tokens.ts": "02891400f3a4a7a6cc4bc5d695f1a1d89b5dc7266c9f54367b8508ac1c665a02",
+      "packages/cli/test/shadow-template-style.test.ts": "2de508a8a29ecc36bfab58cb7b2d3aa668e7307fcdf315722b9216da14a4e2f7"
+    }
+  },
+  "exactCombination": {
+    "head": "fa76c52374b008b444ec4b85690a070fe55de0c8",
+    "tree": "ee9a019e27e466f01d9107a4a2deee66999f1abb",
+    "parents": [
+      "c96093a1efb03731c51c5b4935d997d235a35aae",
+      "940261d62ed1ae5480875dc2758201c08521b24a"
+    ],
+    "testedFileHashesIdentical": true,
+    "packages": 47
+  },
+  "baseline": {
+    "reviewHead": "4f6057d9910b84381d2c27a69c449696e96d357d",
+    "red": 6,
+    "positive": 6,
+    "logSHA256": "6d08fe6234fb4adc4406cfe20f35c5a282e26dd0d18caf0a9e084d82977db226"
+  },
+  "interim": {
+    "firstCandidateFailed": 1,
+    "firstCandidatePassed": 11,
+    "firstBuiltFixture": "Valid local Rule spec plus explicit helper target reproduced Root preflight.",
+    "redComposition": {
+      "failed": 1,
+      "passed": 1,
+      "logSHA256": "c1c63d08002cc900dc525b9cfa7e21626142b82c40f5bcfe99f33f54a2c3b1ab"
+    }
+  },
+  "test": {
+    "focused": {
+      "passed": 315,
+      "suites": 3,
+      "logSHA256": "eae942928bde0424f6f8ad8a769a5f7e2b94b71a1ff51f8b5ecc73b9456a1dc4"
+    },
+    "types": {
+      "exit": 0,
+      "logSHA256": "1e14fa87e413ec8ef9585ae214d5f036450d3cc636c31a34c01c2346df2a4d42"
+    },
+    "chrome": "156.0.8078.79",
+    "combinedChromeRegressions": {
+      "passed": 4,
+      "logSHA256": "13508e226da535f40a8684db04651c56c2f5d0c4a2024224b4f20ee92298f392"
+    },
+    "isolatedDialog": {
+      "source": {
+        "light": 15,
+        "split": 15,
+        "mixed": 15
+      },
+      "dist": {
+        "light": 15,
+        "split": 15,
+        "mixed": 15
+      },
+      "sourceTotal": 45,
+      "distTotal": 45,
+      "sourceErrors": []
+    }
+  }
+}

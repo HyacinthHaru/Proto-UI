@@ -1,0 +1,7 @@
+# Split focus, surface transforms, and decoration provenance
+
+Five findings on `4f6057d9` produced six red scenarios across the CLI and native Chrome. The physical guard rejects an external singular 2D transform and zero x/y scale while permitting visible transforms. At late upgrade, split publication checks a previously focused caller in its own document or open shadow tree, and rejects a connection-time blur. The positive late-upgrade case preserves caller focus and value.
+
+The CLI preserves Root preflight for literal dynamic imports of exported style handles, including direct re-exports. It verifies explicit helper targets through the argument positions of every admissible call, and classifies a local immutable Rule spec only when its references are verified calls. Opaque uses and object mutation retain preflight.
+
+The first corrected source passed the individual fixtures. The built CLI then exposed an interaction between a valid explicit helper receiver and a local Rule spec in the same setup. The added composition fixture reproduced that error, while an actual receiver escape continued to require Root preflight. The final built CLI emits 10% padding on the Template selector for the original mixed input. Final targeted tests pass 315/315 and workspace types pass. The 34-file broader run passes 751 cases with 25 unchanged baseline failures. On the signed combination all 47 packages build, the four current native split regressions pass, and the original isolated Dialog passes all three profiles in source and public dist.
