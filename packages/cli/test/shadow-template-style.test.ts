@@ -279,6 +279,263 @@ describe('source-scanned Shadow Template/Root separation', () => {
     ).rejects.toThrow(/verified length recipe/);
   });
 
+  it('classifies targeted Rule styles declared by a verified setup helper', async () => {
+    const { artifact } = await generate(`
+      import { definePrototype, tw } from '@proto.ui/core';
+      function declarePaint(definition) {
+        const target = definition.feedback.style.declareDecoration();
+        const enabled = definition.state.bool('enabled', true);
+        definition.rule({
+          when: w => w.state(enabled).eq(true),
+          intent: i => i.feedback.style.to(target).use(tw('p-[10%]')),
+        });
+        return target;
+      }
+      definePrototype({ name: 'helper-rule', setup(def) {
+        const target = declarePaint(def);
+        return r => r.decoration(target);
+      }});
+    `);
+    expect(artifact.cssText).toContain('padding: 10%;');
+    expect(artifact.cssText).not.toContain('[data-pui-split-root-style~="p-[10%]"]');
+  });
+
+  it('keeps decoration scope when setup retains the targeted use disposer', async () => {
+    const { artifact } = await generate(`
+      import { definePrototype, tw } from '@proto.ui/core';
+      definePrototype({ name: 'decoration-disposer', setup(def) {
+        const target = def.feedback.style.declareDecoration();
+        const stop = def.feedback.style.to(target).use(tw('p-[10%]'));
+        def.lifecycle.onUnmounted(stop);
+        return r => r.decoration(target);
+      }});
+    `);
+    expect(artifact.cssText).toContain('padding: 10%;');
+    expect(artifact.cssText).not.toContain('[data-pui-split-root-style~="p-[10%]"]');
+  });
+
+  it('follows a verified setup helper call through a conditional block', async () => {
+    const { artifact } = await generate(`
+      import { definePrototype, tw } from '@proto.ui/core';
+      function declarePaint(definition) {
+        const target = definition.feedback.style.declareDecoration();
+        definition.feedback.style.to(target).use(tw('p-[10%]'));
+        return target;
+      }
+      definePrototype({ name: 'conditional-helper', setup(def) {
+        if (enabled) {
+          const decoration = declarePaint(def);
+          return r => r.decoration(decoration);
+        }
+        return r => r.slot();
+      }});
+    `);
+    expect(artifact.cssText).toContain('padding: 10%;');
+    expect(artifact.cssText).not.toContain('[data-pui-split-root-style~="p-[10%]"]');
+  });
+
+  it('keeps preflight for a helper called from an unverified nested callback', async () => {
+    await expect(
+      generate(`
+      import { definePrototype, tw } from '@proto.ui/core';
+      function declarePaint(definition) {
+        const target = definition.feedback.style.declareDecoration();
+        definition.feedback.style.to(target).use(tw('p-[10%]'));
+        return target;
+      }
+      definePrototype({ name: 'deferred-helper', setup(def) {
+        register(() => declarePaint(def));
+        return r => r.slot();
+      }});
+    `)
+    ).rejects.toThrow(/verified length recipe/);
+  });
+
+  it('follows the proven setup receiver through two synchronous helpers', async () => {
+    const { artifact } = await generate(`
+      import { definePrototype, tw } from '@proto.ui/core';
+      function inner(definition) {
+        const target = definition.feedback.style.declareDecoration();
+        definition.feedback.style.to(target).use(tw('p-[10%]'));
+        return target;
+      }
+      function outer(definition) { return inner(definition); }
+      definePrototype({ name: 'nested-decoration-helpers', setup(def) {
+        const target = outer(def);
+        return r => r.decoration(target);
+      }});
+    `);
+    expect(artifact.cssText).toContain('padding: 10%;');
+    expect(artifact.cssText).not.toContain('[data-pui-split-root-style~="p-[10%]"]');
+  });
+
+  it.each(['(definition) =>', 'function (definition)'])(
+    'follows an imported synchronous helper declared as %s',
+    async (prefix) => {
+      const { artifact } = await generate(
+        `
+        import { definePrototype } from '@proto.ui/core';
+        import { add as prepare } from './paint';
+        const delegate = definition => prepare(definition);
+        definePrototype({ name: 'function-valued-decoration-helper', setup(def) {
+          const target = delegate(def);
+          return r => r.decoration(target);
+        }});
+      `,
+        {
+          'paint.ts': `
+          import { tw } from '@proto.ui/core';
+          export const add = ${prefix} {
+            const target = definition.feedback.style.declareDecoration();
+            definition.feedback.style.to(target).use(tw('p-[10%]'));
+            return target;
+          };
+        `,
+        }
+      );
+      expect(artifact.cssText).toContain('padding: 10%;');
+      expect(artifact.cssText).not.toContain('[data-pui-split-root-style~="p-[10%]"]');
+    }
+  );
+
+  it('retains preflight when a function-valued helper escapes setup', async () => {
+    await expect(
+      generate(`
+        import { definePrototype, tw } from '@proto.ui/core';
+        const add = definition => {
+          const target = definition.feedback.style.declareDecoration();
+          definition.feedback.style.to(target).use(tw('p-[10%]'));
+          return target;
+        };
+        definePrototype({ name: 'escaping-decoration-helper', setup(def) {
+          const target = add(def);
+          register(add);
+          return r => r.decoration(target);
+        }});
+      `)
+    ).rejects.toThrow(/verified length recipe/);
+  });
+
+  it.each(['(def) =>', 'function (def)'])(
+    'accepts the canonical function-valued setup form %s',
+    async (prefix) => {
+      const { artifact } = await generate(`
+        import { definePrototype, tw } from '@proto.ui/core';
+        definePrototype({ name: 'function-setup', setup: ${prefix} {
+          const target = def.feedback.style.declareDecoration();
+          def.feedback.style.to(target).use(tw('p-[10%]'));
+          return r => r.decoration(target);
+        }});
+      `);
+      expect(artifact.cssText).toContain('padding: 10%;');
+      expect(artifact.cssText).not.toContain('[data-pui-split-root-style~="p-[10%]"]');
+    }
+  );
+
+  it('retains preflight when an intermediate helper also has an opaque caller', async () => {
+    await expect(
+      generate(`
+      import { definePrototype, tw } from '@proto.ui/core';
+      function inner(definition) {
+        const target = definition.feedback.style.declareDecoration();
+        definition.feedback.style.to(target).use(tw('p-[10%]'));
+        return target;
+      }
+      function outer(definition) { return inner(definition); }
+      definePrototype({ name: 'mixed-helper-chain', setup(def) {
+        const target = outer(def);
+        return r => r.decoration(target);
+      }});
+      outer(opaque);
+    `)
+    ).rejects.toThrow(/verified length recipe/);
+  });
+
+  it('follows a renamed re-export of a synchronous setup helper', async () => {
+    const { artifact } = await generate(
+      `
+      import { definePrototype } from '@proto.ui/core';
+      import { prepare as addDecoration } from './recipe';
+      definePrototype({ name: 'exported-decoration-helper', setup(def) {
+        const target = addDecoration(def);
+        return r => r.decoration(target);
+      }});
+    `,
+      {
+        'recipe.ts': "export { declarePaint as prepare } from './paint';",
+        'paint.ts': `
+        import { tw } from '@proto.ui/core';
+        export function declarePaint(def) {
+          const target = def.feedback.style.declareDecoration();
+          def.feedback.style.to(target).use(tw('p-[10%]'));
+          return target;
+        }
+      `,
+      }
+    );
+    expect(artifact.cssText).toContain('padding: 10%;');
+    expect(artifact.cssText).not.toContain('[data-pui-split-root-style~="p-[10%]"]');
+  });
+
+  it('retains preflight for an exported helper with an opaque caller elsewhere', async () => {
+    await expect(
+      generate(
+        `
+      import { definePrototype } from '@proto.ui/core';
+      import { declarePaint } from './paint';
+      definePrototype({ name: 'mixed-external-helper', setup(def) {
+        const target = declarePaint(def);
+        return r => r.decoration(target);
+      }});
+    `,
+        {
+          'paint.ts': `
+        import { tw } from '@proto.ui/core';
+        export function declarePaint(def) {
+          const target = def.feedback.style.declareDecoration();
+          def.feedback.style.to(target).use(tw('p-[10%]'));
+          return target;
+        }
+      `,
+          'other.ts': "import { declarePaint } from './paint'; declarePaint(opaque);",
+        }
+      )
+    ).rejects.toThrow(/verified length recipe/);
+  });
+
+  it('keeps the original target identity when passing an immutable alias to style and render', async () => {
+    const { artifact } = await generate(`
+      import { definePrototype, tw } from '@proto.ui/core';
+      definePrototype({ name: 'aliased-decoration', setup(def) {
+        const target = def.feedback.style.declareDecoration();
+        const alias = target;
+        const second = alias;
+        def.feedback.style.to(second).use(tw('p-[10%]'));
+        return r => r.decoration(second);
+      }});
+    `);
+    expect(artifact.cssText).toContain('padding: 10%;');
+    expect(artifact.cssText).not.toContain('[data-pui-split-root-style~="p-[10%]"]');
+  });
+
+  it('retains preflight when an alias shadows the declared target', async () => {
+    await expect(
+      generate(`
+      import { definePrototype, tw } from '@proto.ui/core';
+      definePrototype({ name: 'shadowed-alias', setup(def) {
+        const target = def.feedback.style.declareDecoration();
+        const alias = target;
+        {
+          const target = opaque;
+          const alias = target;
+          def.feedback.style.to(alias).use(tw('p-[10%]'));
+        }
+        return r => r.decoration(alias);
+      }});
+    `)
+    ).rejects.toThrow(/verified length recipe/);
+  });
+
   it('follows a renamed imported recipe handle into the targeted argument', async () => {
     const { artifact } = await generate(
       `

@@ -174,6 +174,10 @@ describe('draft owned decoration through actual WC / Rule / feedback', () => {
     'hide surface',
     'inert surface',
     'retag surface',
+    'conceal surface with display',
+    'conceal surface with visibility',
+    'conceal surface with zero opacity',
+    'conceal surface with variable opacity',
     'remove split marker',
   ] as const)('rejects invalid split decoration reuse after %s', (mutation) => {
     const C = AdaptToWebComponent(
@@ -220,6 +224,12 @@ describe('draft owned decoration through actual WC / Rule / feedback', () => {
     if (mutation === 'hide surface') surface.setAttribute('aria-hidden', 'true');
     if (mutation === 'inert surface') surface.setAttribute('inert', '');
     if (mutation === 'retag surface') surface.setAttribute('part', 'other');
+    if (mutation === 'conceal surface with display')
+      (surface as HTMLElement).style.setProperty('display', 'none', 'important');
+    if (mutation === 'conceal surface with visibility')
+      (surface as HTMLElement).style.visibility = 'hidden';
+    if (mutation === 'conceal surface with zero opacity')
+      (surface as HTMLElement).style.opacity = '0';
     if (mutation === 'remove split marker') {
       expect(surface.hasAttribute('data-pui-split-surface')).toBe(true);
       surface.removeAttribute('data-pui-split-surface');
@@ -230,7 +240,23 @@ describe('draft owned decoration through actual WC / Rule / feedback', () => {
         : mutation === 'remove paint tokens' || mutation === 'add inline paint'
           ? 'decoration physical leaf changed'
           : 'decoration physical blueprint changed';
-    expect(() => host.update()).toThrow(expected);
+    if (mutation === 'conceal surface with variable opacity') {
+      const { style } = surface as HTMLElement;
+      style.setProperty('--split-opacity', '0');
+      style.opacity = 'var(--split-opacity)';
+      // The DOM test environment exposes the declaration without resolving var().
+      const window = host.ownerDocument.defaultView!;
+      const computed = window.getComputedStyle(surface);
+      Object.defineProperty(computed, 'opacity', { value: '0' });
+      const readStyle = vi.spyOn(window, 'getComputedStyle').mockReturnValueOnce(computed);
+      try {
+        expect(() => host.update()).toThrow(expected);
+      } finally {
+        readStyle.mockRestore();
+      }
+    } else {
+      expect(() => host.update()).toThrow(expected);
+    }
     expect(surface.contains(leaf)).toBe(true);
     expect(caller.data).toBe('Updated caller text');
   });
