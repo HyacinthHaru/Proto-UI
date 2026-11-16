@@ -1,0 +1,33 @@
+{
+  "status": "failed",
+  "chrome": "156.0.8078.79",
+  "cases": [
+    {
+      "mode": "owned-zero",
+      "mountPublished": false,
+      "callerRetained": true,
+      "errors": ["[WC Adapter] decoration physical blueprint changed"]
+    },
+    {
+      "mode": "unowned-zero",
+      "mountPublished": true,
+      "before": true,
+      "opacity": "0",
+      "firstAttempt": "Error: [WC Adapter] decoration physical blueprint changed",
+      "secondAttempt": "Error: [WC Adapter] decoration physical blueprint changed",
+      "assignedReplacement": true,
+      "errors": []
+    },
+    {
+      "mode": "remove",
+      "mutationObserved": true,
+      "errors": []
+    },
+    {
+      "mode": "replace",
+      "mutationObserved": true,
+      "errors": []
+    }
+  ],
+  "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'owned-zero',\n+   'remove',\n+   'replace'\n+ ]\n- []\n"
+}

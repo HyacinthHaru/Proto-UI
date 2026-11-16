@@ -1,0 +1,36 @@
+{
+  "status": "passed",
+  "chrome": "156.0.8078.79",
+  "cases": [
+    {
+      "mode": "owned-zero",
+      "mountPublished": true,
+      "before": true,
+      "opacity": "0",
+      "firstAttempt": null,
+      "secondAttempt": null,
+      "assignedReplacement": true,
+      "errors": []
+    },
+    {
+      "mode": "unowned-zero",
+      "mountPublished": true,
+      "before": true,
+      "opacity": "0",
+      "firstAttempt": "Error: [WC Adapter] decoration physical blueprint changed",
+      "secondAttempt": "Error: [WC Adapter] decoration physical blueprint changed",
+      "assignedReplacement": true,
+      "errors": []
+    },
+    {
+      "mode": "remove",
+      "mutationObserved": true,
+      "errors": ["[WC Adapter] decoration caller projection changed"]
+    },
+    {
+      "mode": "replace",
+      "mutationObserved": true,
+      "errors": ["[WC Adapter] decoration caller projection changed"]
+    }
+  ]
+}
