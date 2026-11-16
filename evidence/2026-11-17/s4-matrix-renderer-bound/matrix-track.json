@@ -1,0 +1,147 @@
+{
+  "rows": 379232,
+  "unparsedLines": 1,
+  "binding": {
+    "categories": "toplevel,blink.user_timing",
+    "bytes": 89915392,
+    "peakBuffer": 0.07826154679059982,
+    "dataLossOccurred": false,
+    "truncated": true,
+    "requestedEnd": 1794871561829,
+    "sha256": "5b8e78a95ff05ac06f008c31639fbd7fcb3b2d173be7737aec74a3d825df7ea5"
+  },
+  "marks": [
+    {
+      "ts": 1242214509378,
+      "name": "pui-s4-sampler:1:5235.700000047684",
+      "pid": 13852,
+      "tid": 22453890
+    },
+    {
+      "ts": 1242221124279,
+      "name": "pui-s4-sampler:2:11850.700000047684",
+      "pid": 13852,
+      "tid": 22453890
+    },
+    {
+      "ts": 1242234729722,
+      "name": "pui-s4-sampler:3:25456.10000014305",
+      "pid": 13852,
+      "tid": 22453890
+    }
+  ],
+  "offsetSpreadMs": 0.0989999771118164,
+  "latestRecordStartPageMs": 70891.18200016022,
+  "latestMatrixRecordStartPageMs": 70669.87600016594,
+  "windowFromPageMs": 25456.10000014305,
+  "matrixTaskRows": 1356,
+  "inclusiveWallMsBySource": [
+    ["cc/trees/proxy_impl.cc:ScheduledActionSendBeginMainFrame", 16794.168999999994],
+    [
+      "third_party/blink/renderer/core/script/module_map.cc:DispatchFinishedNotificationAsync",
+      7.531999999217078
+    ],
+    [
+      "third_party/blink/renderer/platform/loader/fetch/url_loader/background_url_loader.cc:PostTaskToMainThread",
+      2.2989999999845168
+    ],
+    ["third_party/blink/renderer/core/scheduler/dom_timer.cc:DOMTimer", 0.3370000610339048],
+    [
+      "third_party/blink/renderer/bindings/core/v8/v8_script_runner.cc:EvaluateModule",
+      0.228999999948428
+    ],
+    ["cc/trees/proxy_impl.cc:~ScopedCommitCompletionEvent", 0.21699999998236308],
+    [
+      "third_party/blink/renderer/core/svg/graphics/svg_image_chrome_client.cc:ScheduleAnimation",
+      0.08799999999973807
+    ],
+    ["cc/trees/proxy_impl.cc:DidPresentCompositorFrameOnImplThread", 0.07599999999365536],
+    [
+      "third_party/blink/renderer/platform/loader/fetch/url_loader/background_url_loader.cc:~Context",
+      0.058999999942898285
+    ],
+    [
+      "components/page_load_metrics/renderer/page_timing_metrics_sender.cc:EnsureSendTimer",
+      0.046000000002095476
+    ],
+    ["third_party/blink/renderer/core/frame/web_frame_widget_impl.cc:DidSwap", 0.0399999999863212],
+    [
+      "third_party/blink/renderer/core/frame/web_frame_widget_impl.cc:ReportSwapAndPresentationFailureOnTaskRunner",
+      0.0329999999703432
+    ]
+  ],
+  "largest": [
+    [
+      61117.898000240326,
+      70169.39900024033,
+      "cc/trees/proxy_impl.cc:ScheduledActionSendBeginMainFrame",
+      9045.838
+    ],
+    [
+      57610.44700026512,
+      60174.93600026512,
+      "cc/trees/proxy_impl.cc:ScheduledActionSendBeginMainFrame",
+      2557.053
+    ],
+    [
+      70335.93200016022,
+      70666.74200016021,
+      "cc/trees/proxy_impl.cc:ScheduledActionSendBeginMainFrame",
+      330.794
+    ],
+    [
+      30049.864000320435,
+      30256.794000320435,
+      "cc/trees/proxy_impl.cc:ScheduledActionSendBeginMainFrame",
+      206.851
+    ],
+    [
+      31827.53300023079,
+      32028.10700023079,
+      "cc/trees/proxy_impl.cc:ScheduledActionSendBeginMainFrame",
+      200.574
+    ],
+    [
+      60569.80800032616,
+      60760.43900032616,
+      "cc/trees/proxy_impl.cc:ScheduledActionSendBeginMainFrame",
+      190.631
+    ],
+    [
+      38518.77700018883,
+      38706.233000188826,
+      "cc/trees/proxy_impl.cc:ScheduledActionSendBeginMainFrame",
+      187.452
+    ],
+    [
+      26201.16200017929,
+      26382.82500017929,
+      "cc/trees/proxy_impl.cc:ScheduledActionSendBeginMainFrame",
+      181.847
+    ],
+    [
+      34530.330000162125,
+      34693.080000162125,
+      "cc/trees/proxy_impl.cc:ScheduledActionSendBeginMainFrame",
+      162.749
+    ],
+    [
+      31531.06700015068,
+      31693.11600015068,
+      "cc/trees/proxy_impl.cc:ScheduledActionSendBeginMainFrame",
+      160.656
+    ],
+    [
+      38192.35600018501,
+      38350.19800018501,
+      "cc/trees/proxy_impl.cc:ScheduledActionSendBeginMainFrame",
+      157.824
+    ],
+    [
+      36972.82400035858,
+      37128.81400035858,
+      "cc/trees/proxy_impl.cc:ScheduledActionSendBeginMainFrame",
+      155.99
+    ]
+  ]
+}
