@@ -1,0 +1,86 @@
+{
+  "requestedIds": [
+    "base-calendar-root",
+    "base-calendar-caption",
+    "base-calendar-previous",
+    "lucide-chevron-left-icon",
+    "base-select-root",
+    "base-select-trigger",
+    "base-select-value",
+    "lucide-chevron-down-icon",
+    "base-select-content",
+    "base-select-item",
+    "base-calendar-next",
+    "lucide-chevron-right-icon",
+    "base-calendar-heading",
+    "base-calendar-grid",
+    "base-calendar-weekdays",
+    "base-calendar-weekday",
+    "base-calendar-row",
+    "base-calendar-day"
+  ],
+  "observedFulfillments": [
+    {
+      "id": "base-calendar-heading",
+      "pageMs": 15794.400000095367
+    }
+  ],
+  "requestedIdsWithoutSettlement": [
+    "base-calendar-caption",
+    "base-calendar-day",
+    "base-calendar-grid",
+    "base-calendar-next",
+    "base-calendar-previous",
+    "base-calendar-root",
+    "base-calendar-row",
+    "base-calendar-weekday",
+    "base-calendar-weekdays",
+    "base-select-content",
+    "base-select-item",
+    "base-select-root",
+    "base-select-trigger",
+    "base-select-value",
+    "lucide-chevron-down-icon",
+    "lucide-chevron-left-icon",
+    "lucide-chevron-right-icon"
+  ],
+  "priorPendingPromises": [
+    "lucide-chevron-left-icon",
+    "lucide-chevron-right-icon",
+    "base-calendar-heading"
+  ],
+  "producerStages": {
+    "request": 25,
+    "write-head": 25,
+    "finish": 25
+  },
+  "chromiumStages": {
+    "request": 25,
+    "response": 25,
+    "finish": 25
+  },
+  "latestRetainedCalendarSample": {
+    "pageMs": 128901.5,
+    "count": 1268,
+    "ready": false,
+    "index": 20,
+    "children": 0,
+    "owner": "pp-9izig325ku4",
+    "runtime": "wc",
+    "demo": "demo-base-calendar",
+    "pending": true
+  },
+  "verdict": {
+    "exit": 1,
+    "startupPassed": false,
+    "casePassed": 0,
+    "caseFailed": 1,
+    "unselected": 1,
+    "pageErrors": 0,
+    "consoleErrors": 0,
+    "postVerdict": "budget-expired",
+    "originalStartupWaitMs": 60000,
+    "originalOuterTestLimitMs": 150000,
+    "rawLogSHA256": "25774a467c02676d2b479af593172f9df82a0ff83feb0cb4fbae8ae126f994de"
+  }
+}
