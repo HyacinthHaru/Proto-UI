@@ -1,0 +1,59 @@
+{
+  "source": {
+    "head": "621355701553eb1bded8537b0ae5a1881038d61f",
+    "tree": "20edd0fbfed25f56c8e26a539fecee14adfd746d",
+    "parents": [
+      "e9a803162fa9835b285e89429b3795f134501d53",
+      "0ab97d07a270e41ddb2bec6303292d1c03f925f4"
+    ],
+    "observerSHA256": "10a78ed580480e86f5eb4920def09a4632d8babcdd4cdbe37523d590529c6c2b",
+    "overlaySha256": "217d4e2822103b51cdb0f0bed69d5b5d0f8b4a964e4bd4942de9e3169cc2034c"
+  },
+  "test": {
+    "previews": 1268,
+    "locale": "zh-cn",
+    "otherLocale": "unselected",
+    "readinessMs": 60000,
+    "outerMs": 150000,
+    "exit": 1,
+    "counts": [0, 1, 1],
+    "outcome": {
+      "startupPassed": false,
+      "error": null,
+      "errors": [],
+      "consoleErrors": [],
+      "collectionOutcome": "budget-expired",
+      "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684"
+    },
+    "lastOriginalReadiness": {
+      "timeOrigin": 1794864250897.3,
+      "pageMs": 9055.600000143051,
+      "dateNow": 1794864259952,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-mhdb92n4si",
+        "index": 0,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-base-accordion",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-mhdb92n4si",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      }
+    },
+    "messages": ["page.waitForFunction: Timeout 60000ms exceeded."],
+    "logSHA256": "c38f89b23548d86d2b02b09e7a2ab764e54ebf3fd6439bc82f9cbb3d4369ad6b"
+  },
+  "reason": "The modified Finf entries are superseded by the same IDs in the active manual loader map.",
+  "actualCalls": "No shared-promise marker emitted."
+}
