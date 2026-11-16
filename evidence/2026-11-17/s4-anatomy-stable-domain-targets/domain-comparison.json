@@ -1,0 +1,3274 @@
+{
+  "cleanCandidate": {
+    "head": "5ea6d398084a17b12e89f813c479b87b71cb9f13",
+    "tree": "c4214ce89f3b1d2e9c245c5511b3435f7eee6ce7",
+    "parent": "aa6d6b15d4aedb2863a935168dac73ea5f26ace1",
+    "tests": {
+      "files": 26,
+      "passed": 407
+    },
+    "workspaceTypes": "passed",
+    "catalogAuthoring": "passed",
+    "redSameTest": {
+      "failed": 5,
+      "passed": 10
+    },
+    "greenSameTest": {
+      "passed": 15
+    },
+    "checkedInputSHA256": {
+      "packages/modules/a11y/src/create.ts": "20157fae05787e4d0b49f71d56e35d23368668b5acdf52f0db4f6e7fe1767a73",
+      "packages/modules/anatomy/src/impl.ts": "08ab65958bcbfb29ca098faba066d003f9dd5be49190261b8a2b5965c9317c07",
+      "packages/modules/anatomy/src/types.ts": "8cf88534c82310e141b3eea23b6e2e9a48306c56bd37a4f94b6acfa3046f043d",
+      "packages/modules/anatomy/test/subscriber-fanout.test.ts": "1a83a9506a5c633515f660ce689fafc967b79ed3880b637e75ff89345ec8f176",
+      "packages/modules/scroll/src/impl.ts": "a56aa3a376abce61b5c98ee6c8f0c723c3181c3ce5a440bbb366d274ee45ce55",
+      "spec/modules/M-ANATOMY-0001.yaml": "fb46ccbde41909e8302671a0bfdeda3736281f8ba5c1025f877e51ece4ac09a0"
+    }
+  },
+  "suite": {
+    "previewers": 1268,
+    "startupMs": 60000,
+    "outerMs": 150000,
+    "locale": "zh-cn",
+    "en": "unselected"
+  },
+  "baselineConsumerLastCounts": {
+    "a11y": {
+      "same": 676,
+      "other": 35412,
+      "unknown": 28226
+    },
+    "other": {
+      "same": 306,
+      "other": 13542,
+      "unknown": 14195
+    },
+    "scroll": {
+      "same": 22,
+      "other": 411,
+      "unknown": 190
+    }
+  },
+  "baseline": {
+    "head": "db532777b6980739fe0bc1bddc7086c9aa11e9cb",
+    "tree": "6d25577a602321a8329fd91cbe6aadbb117c3621",
+    "parents": [
+      "1a47c483dd1b0f6dfaffc4bd2c7f0f3e2aad9ac7",
+      "7f9d2054376e690570e0f33da42657afdab6da4e"
+    ],
+    "overlaySHA256": "4e3285ad7d7b62d73181f3876a160c70b160cc7bdbcbfd21aa6235d256092757",
+    "exactInputsSHA256": {
+      "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "396530cb93cff3871cf6101124c34d4d2a82f14543d5f0fa6ce74dda9e828fbb",
+      "packages/modules/a11y/src/create.ts": "1fc9547a37a192f7cee010d5d12418cc209d64f3aaaaaae2b9d3cf3a2a78102e",
+      "packages/modules/anatomy/src/impl.ts": "9756e28d6cf01300383a16358d48146c24362397299c5237fd411c5f39c668dc",
+      "packages/modules/scroll/src/impl.ts": "c85fce55ea10f55126834e231ea7ac53338cdfefb32c562b4b4da18d3db42bc6"
+    },
+    "versions": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+    "reports": [
+      {
+        "pageMs": 1951.7000000476837,
+        "timeOrigin": 1794854271944.8,
+        "publications": 1,
+        "sampledPublications": 1,
+        "sampledCallbacks": {}
+      },
+      {
+        "pageMs": 3595.5999999046326,
+        "timeOrigin": 1794854271944.8,
+        "publications": 321,
+        "sampledPublications": 21,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 8,
+            "other": 24,
+            "unknown": 0
+          },
+          "mounted:other": {
+            "same": 1,
+            "other": 4,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 5148.299999952316,
+        "timeOrigin": 1794854271944.8,
+        "publications": 513,
+        "sampledPublications": 33,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 18,
+            "other": 152,
+            "unknown": 0
+          },
+          "mounted:other": {
+            "same": 3,
+            "other": 15,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 6907.200000047684,
+        "timeOrigin": 1794854271944.8,
+        "publications": 657,
+        "sampledPublications": 42,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 30,
+            "other": 436,
+            "unknown": 0
+          },
+          "mounted:other": {
+            "same": 3,
+            "other": 15,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 10144.700000047684,
+        "timeOrigin": 1794854271944.8,
+        "publications": 673,
+        "sampledPublications": 43,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 30,
+            "other": 436,
+            "unknown": 0
+          },
+          "mounted:other": {
+            "same": 3,
+            "other": 15,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 11871,
+        "timeOrigin": 1794854271944.8,
+        "publications": 1313,
+        "sampledPublications": 83,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 30,
+            "other": 436,
+            "unknown": 0
+          },
+          "mounted:other": {
+            "same": 4,
+            "other": 33,
+            "unknown": 0
+          },
+          "detached:a11y": {
+            "same": 0,
+            "other": 0,
+            "unknown": 878
+          },
+          "detached:other": {
+            "same": 0,
+            "other": 0,
+            "unknown": 71
+          }
+        }
+      },
+      {
+        "pageMs": 13371.5,
+        "timeOrigin": 1794854271944.8,
+        "publications": 2097,
+        "sampledPublications": 132,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 42,
+            "other": 624,
+            "unknown": 0
+          },
+          "mounted:other": {
+            "same": 4,
+            "other": 33,
+            "unknown": 0
+          },
+          "detached:a11y": {
+            "same": 12,
+            "other": 188,
+            "unknown": 878
+          },
+          "detached:other": {
+            "same": 0,
+            "other": 0,
+            "unknown": 71
+          },
+          "mounting:other": {
+            "same": 8,
+            "other": 24,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 14923.200000047684,
+        "timeOrigin": 1794854271944.8,
+        "publications": 4033,
+        "sampledPublications": 253,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 42,
+            "other": 624,
+            "unknown": 0
+          },
+          "mounted:other": {
+            "same": 4,
+            "other": 33,
+            "unknown": 0
+          },
+          "detached:a11y": {
+            "same": 12,
+            "other": 188,
+            "unknown": 878
+          },
+          "detached:other": {
+            "same": 0,
+            "other": 0,
+            "unknown": 71
+          },
+          "mounting:other": {
+            "same": 22,
+            "other": 111,
+            "unknown": 0
+          },
+          "mounting:scroll": {
+            "same": 1,
+            "other": 1,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 7,
+            "other": 88,
+            "unknown": 0
+          },
+          "detached:scroll": {
+            "same": 0,
+            "other": 3,
+            "unknown": 0
+          },
+          "mounted:scroll": {
+            "same": 1,
+            "other": 4,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 16426,
+        "timeOrigin": 1794854271944.8,
+        "publications": 6401,
+        "sampledPublications": 401,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 42,
+            "other": 624,
+            "unknown": 0
+          },
+          "mounted:other": {
+            "same": 4,
+            "other": 33,
+            "unknown": 0
+          },
+          "detached:a11y": {
+            "same": 12,
+            "other": 188,
+            "unknown": 1480
+          },
+          "detached:other": {
+            "same": 0,
+            "other": 0,
+            "unknown": 311
+          },
+          "mounting:other": {
+            "same": 40,
+            "other": 250,
+            "unknown": 0
+          },
+          "mounting:scroll": {
+            "same": 5,
+            "other": 36,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 31,
+            "other": 560,
+            "unknown": 0
+          },
+          "detached:scroll": {
+            "same": 0,
+            "other": 3,
+            "unknown": 46
+          },
+          "mounted:scroll": {
+            "same": 1,
+            "other": 4,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 17935.89999985695,
+        "timeOrigin": 1794854271944.8,
+        "publications": 8193,
+        "sampledPublications": 513,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 42,
+            "other": 624,
+            "unknown": 0
+          },
+          "mounted:other": {
+            "same": 4,
+            "other": 33,
+            "unknown": 0
+          },
+          "detached:a11y": {
+            "same": 12,
+            "other": 188,
+            "unknown": 1787
+          },
+          "detached:other": {
+            "same": 0,
+            "other": 0,
+            "unknown": 384
+          },
+          "mounting:other": {
+            "same": 49,
+            "other": 558,
+            "unknown": 0
+          },
+          "mounting:scroll": {
+            "same": 6,
+            "other": 48,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 80,
+            "other": 1796,
+            "unknown": 0
+          },
+          "detached:scroll": {
+            "same": 0,
+            "other": 3,
+            "unknown": 46
+          },
+          "mounted:scroll": {
+            "same": 1,
+            "other": 4,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 19446.299999952316,
+        "timeOrigin": 1794854271944.8,
+        "publications": 10289,
+        "sampledPublications": 644,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 42,
+            "other": 624,
+            "unknown": 0
+          },
+          "mounted:other": {
+            "same": 4,
+            "other": 33,
+            "unknown": 0
+          },
+          "detached:a11y": {
+            "same": 12,
+            "other": 188,
+            "unknown": 1907
+          },
+          "detached:other": {
+            "same": 0,
+            "other": 0,
+            "unknown": 488
+          },
+          "mounting:other": {
+            "same": 66,
+            "other": 776,
+            "unknown": 0
+          },
+          "mounting:scroll": {
+            "same": 7,
+            "other": 63,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 98,
+            "other": 2474,
+            "unknown": 0
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 61
+          },
+          "mounted:scroll": {
+            "same": 1,
+            "other": 4,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 20987.89999985695,
+        "timeOrigin": 1794854271944.8,
+        "publications": 11553,
+        "sampledPublications": 723,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 42,
+            "other": 624,
+            "unknown": 0
+          },
+          "mounted:other": {
+            "same": 4,
+            "other": 33,
+            "unknown": 0
+          },
+          "detached:a11y": {
+            "same": 12,
+            "other": 188,
+            "unknown": 2615
+          },
+          "detached:other": {
+            "same": 0,
+            "other": 0,
+            "unknown": 894
+          },
+          "mounting:other": {
+            "same": 67,
+            "other": 826,
+            "unknown": 0
+          },
+          "mounting:scroll": {
+            "same": 8,
+            "other": 80,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 106,
+            "other": 2718,
+            "unknown": 0
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 102
+          },
+          "mounted:scroll": {
+            "same": 1,
+            "other": 4,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 22491.599999904633,
+        "timeOrigin": 1794854271944.8,
+        "publications": 12849,
+        "sampledPublications": 804,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 42,
+            "other": 624,
+            "unknown": 0
+          },
+          "mounted:other": {
+            "same": 4,
+            "other": 33,
+            "unknown": 0
+          },
+          "detached:a11y": {
+            "same": 12,
+            "other": 188,
+            "unknown": 2899
+          },
+          "detached:other": {
+            "same": 0,
+            "other": 0,
+            "unknown": 906
+          },
+          "mounting:other": {
+            "same": 80,
+            "other": 1187,
+            "unknown": 0
+          },
+          "mounting:scroll": {
+            "same": 10,
+            "other": 124,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 128,
+            "other": 3468,
+            "unknown": 0
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 102
+          },
+          "mounted:scroll": {
+            "same": 2,
+            "other": 26,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 24657.89999985695,
+        "timeOrigin": 1794854271944.8,
+        "publications": 14145,
+        "sampledPublications": 885,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 42,
+            "other": 624,
+            "unknown": 0
+          },
+          "mounted:other": {
+            "same": 4,
+            "other": 33,
+            "unknown": 0
+          },
+          "detached:a11y": {
+            "same": 12,
+            "other": 188,
+            "unknown": 3412
+          },
+          "detached:other": {
+            "same": 0,
+            "other": 0,
+            "unknown": 966
+          },
+          "mounting:other": {
+            "same": 84,
+            "other": 1443,
+            "unknown": 0
+          },
+          "mounting:scroll": {
+            "same": 12,
+            "other": 170,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 146,
+            "other": 4178,
+            "unknown": 0
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 102
+          },
+          "mounted:scroll": {
+            "same": 2,
+            "other": 26,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 27137.099999904633,
+        "timeOrigin": 1794854271944.8,
+        "publications": 14817,
+        "sampledPublications": 927,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 42,
+            "other": 624,
+            "unknown": 4
+          },
+          "mounted:other": {
+            "same": 4,
+            "other": 33,
+            "unknown": 4
+          },
+          "detached:a11y": {
+            "same": 12,
+            "other": 188,
+            "unknown": 4204
+          },
+          "detached:other": {
+            "same": 0,
+            "other": 0,
+            "unknown": 1388
+          },
+          "mounting:other": {
+            "same": 121,
+            "other": 2101,
+            "unknown": 88
+          },
+          "mounting:scroll": {
+            "same": 12,
+            "other": 170,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 218,
+            "other": 5460,
+            "unknown": 88
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 102
+          },
+          "mounted:scroll": {
+            "same": 2,
+            "other": 26,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 28648,
+        "timeOrigin": 1794854271944.8,
+        "publications": 15441,
+        "sampledPublications": 966,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 42,
+            "other": 624,
+            "unknown": 120
+          },
+          "mounted:other": {
+            "same": 4,
+            "other": 33,
+            "unknown": 68
+          },
+          "detached:a11y": {
+            "same": 12,
+            "other": 188,
+            "unknown": 4417
+          },
+          "detached:other": {
+            "same": 0,
+            "other": 0,
+            "unknown": 1456
+          },
+          "mounting:other": {
+            "same": 125,
+            "other": 2113,
+            "unknown": 88
+          },
+          "mounting:scroll": {
+            "same": 12,
+            "other": 170,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 249,
+            "other": 5595,
+            "unknown": 88
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 102
+          },
+          "mounted:scroll": {
+            "same": 2,
+            "other": 26,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 30176.799999952316,
+        "timeOrigin": 1794854271944.8,
+        "publications": 16289,
+        "sampledPublications": 1019,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 52,
+            "other": 1312,
+            "unknown": 160
+          },
+          "mounted:other": {
+            "same": 14,
+            "other": 446,
+            "unknown": 108
+          },
+          "detached:a11y": {
+            "same": 18,
+            "other": 1084,
+            "unknown": 5464
+          },
+          "detached:other": {
+            "same": 6,
+            "other": 518,
+            "unknown": 1986
+          },
+          "mounting:other": {
+            "same": 139,
+            "other": 2513,
+            "unknown": 128
+          },
+          "mounting:scroll": {
+            "same": 12,
+            "other": 170,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 271,
+            "other": 6489,
+            "unknown": 128
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 102
+          },
+          "mounted:scroll": {
+            "same": 2,
+            "other": 26,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 31739.200000047684,
+        "timeOrigin": 1794854271944.8,
+        "publications": 16673,
+        "sampledPublications": 1043,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 52,
+            "other": 1312,
+            "unknown": 324
+          },
+          "mounted:other": {
+            "same": 14,
+            "other": 446,
+            "unknown": 216
+          },
+          "detached:a11y": {
+            "same": 18,
+            "other": 1084,
+            "unknown": 5646
+          },
+          "detached:other": {
+            "same": 6,
+            "other": 518,
+            "unknown": 2107
+          },
+          "mounting:other": {
+            "same": 144,
+            "other": 2583,
+            "unknown": 128
+          },
+          "mounting:scroll": {
+            "same": 14,
+            "other": 227,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 288,
+            "other": 6724,
+            "unknown": 128
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 33320.299999952316,
+        "timeOrigin": 1794854271944.8,
+        "publications": 17713,
+        "sampledPublications": 1108,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 52,
+            "other": 1312,
+            "unknown": 324
+          },
+          "mounted:other": {
+            "same": 14,
+            "other": 446,
+            "unknown": 216
+          },
+          "detached:a11y": {
+            "same": 18,
+            "other": 1084,
+            "unknown": 6324
+          },
+          "detached:other": {
+            "same": 6,
+            "other": 518,
+            "unknown": 2264
+          },
+          "mounting:other": {
+            "same": 148,
+            "other": 2638,
+            "unknown": 128
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 299,
+            "other": 7410,
+            "unknown": 128
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 34831,
+        "timeOrigin": 1794854271944.8,
+        "publications": 18465,
+        "sampledPublications": 1155,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 52,
+            "other": 1312,
+            "unknown": 324
+          },
+          "mounted:other": {
+            "same": 14,
+            "other": 446,
+            "unknown": 216
+          },
+          "detached:a11y": {
+            "same": 18,
+            "other": 1084,
+            "unknown": 6744
+          },
+          "detached:other": {
+            "same": 6,
+            "other": 518,
+            "unknown": 2593
+          },
+          "mounting:other": {
+            "same": 171,
+            "other": 3469,
+            "unknown": 128
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 314,
+            "other": 7794,
+            "unknown": 128
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 36501,
+        "timeOrigin": 1794854271944.8,
+        "publications": 18625,
+        "sampledPublications": 1165,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 52,
+            "other": 1312,
+            "unknown": 324
+          },
+          "mounted:other": {
+            "same": 14,
+            "other": 446,
+            "unknown": 216
+          },
+          "detached:a11y": {
+            "same": 18,
+            "other": 1084,
+            "unknown": 6744
+          },
+          "detached:other": {
+            "same": 6,
+            "other": 518,
+            "unknown": 2593
+          },
+          "mounting:other": {
+            "same": 171,
+            "other": 3469,
+            "unknown": 128
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 314,
+            "other": 7794,
+            "unknown": 128
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 38081.59999990463,
+        "timeOrigin": 1794854271944.8,
+        "publications": 19313,
+        "sampledPublications": 1208,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 52,
+            "other": 1312,
+            "unknown": 324
+          },
+          "mounted:other": {
+            "same": 14,
+            "other": 446,
+            "unknown": 216
+          },
+          "detached:a11y": {
+            "same": 18,
+            "other": 1084,
+            "unknown": 6860
+          },
+          "detached:other": {
+            "same": 6,
+            "other": 518,
+            "unknown": 2593
+          },
+          "mounting:other": {
+            "same": 171,
+            "other": 3469,
+            "unknown": 128
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 334,
+            "other": 7870,
+            "unknown": 128
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 39592.59999990463,
+        "timeOrigin": 1794854271944.8,
+        "publications": 19633,
+        "sampledPublications": 1228,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 52,
+            "other": 1312,
+            "unknown": 324
+          },
+          "mounted:other": {
+            "same": 14,
+            "other": 446,
+            "unknown": 216
+          },
+          "detached:a11y": {
+            "same": 18,
+            "other": 1084,
+            "unknown": 7043
+          },
+          "detached:other": {
+            "same": 6,
+            "other": 518,
+            "unknown": 2593
+          },
+          "mounting:other": {
+            "same": 171,
+            "other": 3469,
+            "unknown": 128
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 358,
+            "other": 8162,
+            "unknown": 128
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 41093,
+        "timeOrigin": 1794854271944.8,
+        "publications": 20769,
+        "sampledPublications": 1299,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 52,
+            "other": 1312,
+            "unknown": 324
+          },
+          "mounted:other": {
+            "same": 14,
+            "other": 446,
+            "unknown": 216
+          },
+          "detached:a11y": {
+            "same": 18,
+            "other": 1084,
+            "unknown": 7297
+          },
+          "detached:other": {
+            "same": 6,
+            "other": 518,
+            "unknown": 2593
+          },
+          "mounting:other": {
+            "same": 171,
+            "other": 3469,
+            "unknown": 128
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 372,
+            "other": 8849,
+            "unknown": 128
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 42652,
+        "timeOrigin": 1794854271944.8,
+        "publications": 21649,
+        "sampledPublications": 1354,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 52,
+            "other": 1312,
+            "unknown": 324
+          },
+          "mounted:other": {
+            "same": 14,
+            "other": 446,
+            "unknown": 216
+          },
+          "detached:a11y": {
+            "same": 18,
+            "other": 1084,
+            "unknown": 8301
+          },
+          "detached:other": {
+            "same": 6,
+            "other": 518,
+            "unknown": 2593
+          },
+          "mounting:other": {
+            "same": 171,
+            "other": 3469,
+            "unknown": 128
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 378,
+            "other": 9528,
+            "unknown": 128
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 44206.799999952316,
+        "timeOrigin": 1794854271944.8,
+        "publications": 22337,
+        "sampledPublications": 1397,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 52,
+            "other": 1312,
+            "unknown": 324
+          },
+          "mounted:other": {
+            "same": 14,
+            "other": 446,
+            "unknown": 216
+          },
+          "detached:a11y": {
+            "same": 18,
+            "other": 1084,
+            "unknown": 9435
+          },
+          "detached:other": {
+            "same": 6,
+            "other": 518,
+            "unknown": 2593
+          },
+          "mounting:other": {
+            "same": 171,
+            "other": 3469,
+            "unknown": 128
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 384,
+            "other": 10913,
+            "unknown": 128
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 45718.799999952316,
+        "timeOrigin": 1794854271944.8,
+        "publications": 23025,
+        "sampledPublications": 1440,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 52,
+            "other": 1312,
+            "unknown": 324
+          },
+          "mounted:other": {
+            "same": 14,
+            "other": 446,
+            "unknown": 216
+          },
+          "detached:a11y": {
+            "same": 18,
+            "other": 1084,
+            "unknown": 9730
+          },
+          "detached:other": {
+            "same": 6,
+            "other": 518,
+            "unknown": 2593
+          },
+          "mounting:other": {
+            "same": 171,
+            "other": 3469,
+            "unknown": 128
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 394,
+            "other": 13359,
+            "unknown": 128
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 47265.39999985695,
+        "timeOrigin": 1794854271944.8,
+        "publications": 23409,
+        "sampledPublications": 1464,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 52,
+            "other": 1312,
+            "unknown": 324
+          },
+          "mounted:other": {
+            "same": 14,
+            "other": 446,
+            "unknown": 216
+          },
+          "detached:a11y": {
+            "same": 18,
+            "other": 1084,
+            "unknown": 11037
+          },
+          "detached:other": {
+            "same": 6,
+            "other": 518,
+            "unknown": 2593
+          },
+          "mounting:other": {
+            "same": 171,
+            "other": 3469,
+            "unknown": 128
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 396,
+            "other": 13661,
+            "unknown": 128
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 48794.299999952316,
+        "timeOrigin": 1794854271944.8,
+        "publications": 23697,
+        "sampledPublications": 1482,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 52,
+            "other": 1312,
+            "unknown": 324
+          },
+          "mounted:other": {
+            "same": 15,
+            "other": 461,
+            "unknown": 216
+          },
+          "detached:a11y": {
+            "same": 18,
+            "other": 1084,
+            "unknown": 11037
+          },
+          "detached:other": {
+            "same": 6,
+            "other": 518,
+            "unknown": 2593
+          },
+          "mounting:other": {
+            "same": 171,
+            "other": 3469,
+            "unknown": 128
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 402,
+            "other": 14711,
+            "unknown": 128
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 50346.89999985695,
+        "timeOrigin": 1794854271944.8,
+        "publications": 23921,
+        "sampledPublications": 1496,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 52,
+            "other": 1312,
+            "unknown": 324
+          },
+          "mounted:other": {
+            "same": 19,
+            "other": 605,
+            "unknown": 216
+          },
+          "detached:a11y": {
+            "same": 18,
+            "other": 1084,
+            "unknown": 11037
+          },
+          "detached:other": {
+            "same": 6,
+            "other": 518,
+            "unknown": 2593
+          },
+          "mounting:other": {
+            "same": 171,
+            "other": 3469,
+            "unknown": 128
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 402,
+            "other": 14711,
+            "unknown": 128
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 51911.299999952316,
+        "timeOrigin": 1794854271944.8,
+        "publications": 24113,
+        "sampledPublications": 1508,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 52,
+            "other": 1312,
+            "unknown": 324
+          },
+          "mounted:other": {
+            "same": 23,
+            "other": 697,
+            "unknown": 216
+          },
+          "detached:a11y": {
+            "same": 20,
+            "other": 1210,
+            "unknown": 11037
+          },
+          "detached:other": {
+            "same": 6,
+            "other": 518,
+            "unknown": 2593
+          },
+          "mounting:other": {
+            "same": 171,
+            "other": 3469,
+            "unknown": 128
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 402,
+            "other": 14711,
+            "unknown": 128
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 53438.200000047684,
+        "timeOrigin": 1794854271944.8,
+        "publications": 24417,
+        "sampledPublications": 1527,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 78,
+            "other": 2150,
+            "unknown": 388
+          },
+          "mounted:other": {
+            "same": 34,
+            "other": 1118,
+            "unknown": 280
+          },
+          "detached:a11y": {
+            "same": 20,
+            "other": 1210,
+            "unknown": 11037
+          },
+          "detached:other": {
+            "same": 6,
+            "other": 518,
+            "unknown": 2593
+          },
+          "mounting:other": {
+            "same": 171,
+            "other": 3469,
+            "unknown": 128
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 402,
+            "other": 14711,
+            "unknown": 128
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 94241.09999990463,
+        "timeOrigin": 1794854271944.8,
+        "publications": 24673,
+        "sampledPublications": 1543,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 94,
+            "other": 4070,
+            "unknown": 388
+          },
+          "mounted:other": {
+            "same": 36,
+            "other": 1212,
+            "unknown": 280
+          },
+          "detached:a11y": {
+            "same": 24,
+            "other": 1910,
+            "unknown": 11037
+          },
+          "detached:other": {
+            "same": 6,
+            "other": 518,
+            "unknown": 2593
+          },
+          "mounting:other": {
+            "same": 171,
+            "other": 3469,
+            "unknown": 128
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 402,
+            "other": 14711,
+            "unknown": 128
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 114923.5,
+        "timeOrigin": 1794854271944.8,
+        "publications": 24913,
+        "sampledPublications": 1558,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 102,
+            "other": 5006,
+            "unknown": 388
+          },
+          "mounted:other": {
+            "same": 36,
+            "other": 1212,
+            "unknown": 280
+          },
+          "detached:a11y": {
+            "same": 28,
+            "other": 2386,
+            "unknown": 11037
+          },
+          "detached:other": {
+            "same": 6,
+            "other": 518,
+            "unknown": 2593
+          },
+          "mounting:other": {
+            "same": 171,
+            "other": 3469,
+            "unknown": 128
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 402,
+            "other": 14711,
+            "unknown": 128
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 117224.70000004768,
+        "timeOrigin": 1794854271944.8,
+        "publications": 25761,
+        "sampledPublications": 1611,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 102,
+            "other": 5006,
+            "unknown": 388
+          },
+          "mounted:other": {
+            "same": 36,
+            "other": 1212,
+            "unknown": 280
+          },
+          "detached:a11y": {
+            "same": 28,
+            "other": 2386,
+            "unknown": 11037
+          },
+          "detached:other": {
+            "same": 6,
+            "other": 518,
+            "unknown": 2593
+          },
+          "mounting:other": {
+            "same": 171,
+            "other": 3469,
+            "unknown": 128
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 402,
+            "other": 14711,
+            "unknown": 128
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 118736.39999985695,
+        "timeOrigin": 1794854271944.8,
+        "publications": 26529,
+        "sampledPublications": 1659,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 102,
+            "other": 5006,
+            "unknown": 388
+          },
+          "mounted:other": {
+            "same": 36,
+            "other": 1212,
+            "unknown": 280
+          },
+          "detached:a11y": {
+            "same": 28,
+            "other": 2386,
+            "unknown": 11037
+          },
+          "detached:other": {
+            "same": 6,
+            "other": 518,
+            "unknown": 2659
+          },
+          "mounting:other": {
+            "same": 171,
+            "other": 3469,
+            "unknown": 128
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 402,
+            "other": 14711,
+            "unknown": 128
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 120259.70000004768,
+        "timeOrigin": 1794854271944.8,
+        "publications": 27409,
+        "sampledPublications": 1714,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 102,
+            "other": 5006,
+            "unknown": 388
+          },
+          "mounted:other": {
+            "same": 36,
+            "other": 1212,
+            "unknown": 280
+          },
+          "detached:a11y": {
+            "same": 28,
+            "other": 2386,
+            "unknown": 11037
+          },
+          "detached:other": {
+            "same": 6,
+            "other": 518,
+            "unknown": 2727
+          },
+          "mounting:other": {
+            "same": 171,
+            "other": 3469,
+            "unknown": 128
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 402,
+            "other": 14711,
+            "unknown": 128
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 121942.29999995232,
+        "timeOrigin": 1794854271944.8,
+        "publications": 27953,
+        "sampledPublications": 1748,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 102,
+            "other": 5006,
+            "unknown": 388
+          },
+          "mounted:other": {
+            "same": 36,
+            "other": 1212,
+            "unknown": 280
+          },
+          "detached:a11y": {
+            "same": 28,
+            "other": 2386,
+            "unknown": 11037
+          },
+          "detached:other": {
+            "same": 6,
+            "other": 518,
+            "unknown": 2732
+          },
+          "mounting:other": {
+            "same": 172,
+            "other": 3473,
+            "unknown": 128
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 402,
+            "other": 14711,
+            "unknown": 128
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 123444.59999990463,
+        "timeOrigin": 1794854271944.8,
+        "publications": 28017,
+        "sampledPublications": 1752,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 102,
+            "other": 5006,
+            "unknown": 388
+          },
+          "mounted:other": {
+            "same": 36,
+            "other": 1212,
+            "unknown": 280
+          },
+          "detached:a11y": {
+            "same": 28,
+            "other": 2386,
+            "unknown": 11037
+          },
+          "detached:other": {
+            "same": 6,
+            "other": 518,
+            "unknown": 2746
+          },
+          "mounting:other": {
+            "same": 174,
+            "other": 3481,
+            "unknown": 128
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 402,
+            "other": 14711,
+            "unknown": 128
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 125113.59999990463,
+        "timeOrigin": 1794854271944.8,
+        "publications": 28081,
+        "sampledPublications": 1756,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 102,
+            "other": 5006,
+            "unknown": 388
+          },
+          "mounted:other": {
+            "same": 36,
+            "other": 1212,
+            "unknown": 280
+          },
+          "detached:a11y": {
+            "same": 28,
+            "other": 2386,
+            "unknown": 11037
+          },
+          "detached:other": {
+            "same": 6,
+            "other": 518,
+            "unknown": 2760
+          },
+          "mounting:other": {
+            "same": 176,
+            "other": 3493,
+            "unknown": 128
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 402,
+            "other": 14711,
+            "unknown": 128
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 127016.20000004768,
+        "timeOrigin": 1794854271944.8,
+        "publications": 28145,
+        "sampledPublications": 1760,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 102,
+            "other": 5006,
+            "unknown": 388
+          },
+          "mounted:other": {
+            "same": 36,
+            "other": 1212,
+            "unknown": 280
+          },
+          "detached:a11y": {
+            "same": 28,
+            "other": 2386,
+            "unknown": 11037
+          },
+          "detached:other": {
+            "same": 6,
+            "other": 518,
+            "unknown": 2783
+          },
+          "mounting:other": {
+            "same": 177,
+            "other": 3500,
+            "unknown": 128
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 402,
+            "other": 14711,
+            "unknown": 128
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 129006.89999985695,
+        "timeOrigin": 1794854271944.8,
+        "publications": 28209,
+        "sampledPublications": 1764,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 102,
+            "other": 5006,
+            "unknown": 388
+          },
+          "mounted:other": {
+            "same": 36,
+            "other": 1212,
+            "unknown": 280
+          },
+          "detached:a11y": {
+            "same": 28,
+            "other": 2386,
+            "unknown": 11037
+          },
+          "detached:other": {
+            "same": 6,
+            "other": 518,
+            "unknown": 2783
+          },
+          "mounting:other": {
+            "same": 181,
+            "other": 3528,
+            "unknown": 128
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 402,
+            "other": 14711,
+            "unknown": 128
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 130533,
+        "timeOrigin": 1794854271944.8,
+        "publications": 28561,
+        "sampledPublications": 1786,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 102,
+            "other": 5006,
+            "unknown": 388
+          },
+          "mounted:other": {
+            "same": 36,
+            "other": 1212,
+            "unknown": 280
+          },
+          "detached:a11y": {
+            "same": 28,
+            "other": 2386,
+            "unknown": 11037
+          },
+          "detached:other": {
+            "same": 6,
+            "other": 518,
+            "unknown": 2856
+          },
+          "mounting:other": {
+            "same": 182,
+            "other": 3600,
+            "unknown": 128
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 402,
+            "other": 14711,
+            "unknown": 128
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 132179.5,
+        "timeOrigin": 1794854271944.8,
+        "publications": 28721,
+        "sampledPublications": 1796,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 102,
+            "other": 5006,
+            "unknown": 388
+          },
+          "mounted:other": {
+            "same": 36,
+            "other": 1212,
+            "unknown": 280
+          },
+          "detached:a11y": {
+            "same": 28,
+            "other": 2386,
+            "unknown": 11055
+          },
+          "detached:other": {
+            "same": 6,
+            "other": 518,
+            "unknown": 2856
+          },
+          "mounting:other": {
+            "same": 182,
+            "other": 3600,
+            "unknown": 128
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 408,
+            "other": 14749,
+            "unknown": 128
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 133745,
+        "timeOrigin": 1794854271944.8,
+        "publications": 29105,
+        "sampledPublications": 1820,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 102,
+            "other": 5006,
+            "unknown": 388
+          },
+          "mounted:other": {
+            "same": 36,
+            "other": 1212,
+            "unknown": 280
+          },
+          "detached:a11y": {
+            "same": 28,
+            "other": 2386,
+            "unknown": 12784
+          },
+          "detached:other": {
+            "same": 6,
+            "other": 518,
+            "unknown": 4003
+          },
+          "mounting:other": {
+            "same": 184,
+            "other": 3806,
+            "unknown": 160
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 410,
+            "other": 15069,
+            "unknown": 160
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 135295.20000004768,
+        "timeOrigin": 1794854271944.8,
+        "publications": 29393,
+        "sampledPublications": 1838,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 102,
+            "other": 5006,
+            "unknown": 388
+          },
+          "mounted:other": {
+            "same": 36,
+            "other": 1212,
+            "unknown": 280
+          },
+          "detached:a11y": {
+            "same": 28,
+            "other": 2386,
+            "unknown": 14083
+          },
+          "detached:other": {
+            "same": 6,
+            "other": 518,
+            "unknown": 4860
+          },
+          "mounting:other": {
+            "same": 198,
+            "other": 4706,
+            "unknown": 272
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 426,
+            "other": 16498,
+            "unknown": 272
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 136942.79999995232,
+        "timeOrigin": 1794854271944.8,
+        "publications": 29601,
+        "sampledPublications": 1851,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 102,
+            "other": 5006,
+            "unknown": 388
+          },
+          "mounted:other": {
+            "same": 36,
+            "other": 1212,
+            "unknown": 280
+          },
+          "detached:a11y": {
+            "same": 30,
+            "other": 3270,
+            "unknown": 14951
+          },
+          "detached:other": {
+            "same": 8,
+            "other": 1088,
+            "unknown": 5431
+          },
+          "mounting:other": {
+            "same": 200,
+            "other": 4854,
+            "unknown": 288
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 429,
+            "other": 16725,
+            "unknown": 288
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 138462.79999995232,
+        "timeOrigin": 1794854271944.8,
+        "publications": 29713,
+        "sampledPublications": 1858,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 102,
+            "other": 5006,
+            "unknown": 388
+          },
+          "mounted:other": {
+            "same": 36,
+            "other": 1212,
+            "unknown": 280
+          },
+          "detached:a11y": {
+            "same": 30,
+            "other": 3270,
+            "unknown": 16426
+          },
+          "detached:other": {
+            "same": 8,
+            "other": 1088,
+            "unknown": 6481
+          },
+          "mounting:other": {
+            "same": 200,
+            "other": 4854,
+            "unknown": 288
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 429,
+            "other": 16725,
+            "unknown": 288
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 140004.59999990463,
+        "timeOrigin": 1794854271944.8,
+        "publications": 29841,
+        "sampledPublications": 1866,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 102,
+            "other": 5006,
+            "unknown": 388
+          },
+          "mounted:other": {
+            "same": 36,
+            "other": 1212,
+            "unknown": 280
+          },
+          "detached:a11y": {
+            "same": 30,
+            "other": 3270,
+            "unknown": 18377
+          },
+          "detached:other": {
+            "same": 8,
+            "other": 1088,
+            "unknown": 7742
+          },
+          "mounting:other": {
+            "same": 202,
+            "other": 5038,
+            "unknown": 304
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 433,
+            "other": 17013,
+            "unknown": 304
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 141805.5,
+        "timeOrigin": 1794854271944.8,
+        "publications": 30129,
+        "sampledPublications": 1884,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 110,
+            "other": 5946,
+            "unknown": 436
+          },
+          "mounted:other": {
+            "same": 42,
+            "other": 1800,
+            "unknown": 328
+          },
+          "detached:a11y": {
+            "same": 30,
+            "other": 3270,
+            "unknown": 19753
+          },
+          "detached:other": {
+            "same": 8,
+            "other": 1088,
+            "unknown": 8622
+          },
+          "mounting:other": {
+            "same": 215,
+            "other": 6229,
+            "unknown": 400
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 457,
+            "other": 18929,
+            "unknown": 400
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 144393.09999990463,
+        "timeOrigin": 1794854271944.8,
+        "publications": 30513,
+        "sampledPublications": 1908,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 110,
+            "other": 5946,
+            "unknown": 436
+          },
+          "mounted:other": {
+            "same": 42,
+            "other": 1800,
+            "unknown": 328
+          },
+          "detached:a11y": {
+            "same": 34,
+            "other": 3618,
+            "unknown": 20132
+          },
+          "detached:other": {
+            "same": 10,
+            "other": 1302,
+            "unknown": 8867
+          },
+          "mounting:other": {
+            "same": 244,
+            "other": 9244,
+            "unknown": 624
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 510,
+            "other": 23844,
+            "unknown": 624
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 146051.5,
+        "timeOrigin": 1794854271944.8,
+        "publications": 30673,
+        "sampledPublications": 1918,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 110,
+            "other": 5946,
+            "unknown": 436
+          },
+          "mounted:other": {
+            "same": 42,
+            "other": 1800,
+            "unknown": 328
+          },
+          "detached:a11y": {
+            "same": 34,
+            "other": 3618,
+            "unknown": 21697
+          },
+          "detached:other": {
+            "same": 10,
+            "other": 1302,
+            "unknown": 9816
+          },
+          "mounting:other": {
+            "same": 246,
+            "other": 9466,
+            "unknown": 640
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 516,
+            "other": 24236,
+            "unknown": 640
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 147820.5,
+        "timeOrigin": 1794854271944.8,
+        "publications": 30817,
+        "sampledPublications": 1927,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 110,
+            "other": 5946,
+            "unknown": 436
+          },
+          "mounted:other": {
+            "same": 42,
+            "other": 1800,
+            "unknown": 328
+          },
+          "detached:a11y": {
+            "same": 34,
+            "other": 3618,
+            "unknown": 24898
+          },
+          "detached:other": {
+            "same": 10,
+            "other": 1302,
+            "unknown": 11819
+          },
+          "mounting:other": {
+            "same": 248,
+            "other": 9702,
+            "unknown": 656
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 520,
+            "other": 24624,
+            "unknown": 656
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      },
+      {
+        "pageMs": 149581.70000004768,
+        "timeOrigin": 1794854271944.8,
+        "publications": 30945,
+        "sampledPublications": 1935,
+        "sampledCallbacks": {
+          "mounted:a11y": {
+            "same": 110,
+            "other": 5946,
+            "unknown": 436
+          },
+          "mounted:other": {
+            "same": 42,
+            "other": 1800,
+            "unknown": 328
+          },
+          "detached:a11y": {
+            "same": 34,
+            "other": 3618,
+            "unknown": 27086
+          },
+          "detached:other": {
+            "same": 10,
+            "other": 1302,
+            "unknown": 13163
+          },
+          "mounting:other": {
+            "same": 254,
+            "other": 10440,
+            "unknown": 704
+          },
+          "mounting:scroll": {
+            "same": 16,
+            "other": 289,
+            "unknown": 0
+          },
+          "mounting:a11y": {
+            "same": 532,
+            "other": 25848,
+            "unknown": 704
+          },
+          "detached:scroll": {
+            "same": 1,
+            "other": 19,
+            "unknown": 190
+          },
+          "mounted:scroll": {
+            "same": 5,
+            "other": 103,
+            "unknown": 0
+          }
+        }
+      }
+    ],
+    "lastReadiness": {
+      "timeOrigin": 1794854271944.8,
+      "pageMs": 44737,
+      "dateNow": 1794854316681,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-yjwmfnyb65a",
+        "index": 20,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-base-calendar",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-yjwmfnyb65a",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      }
+    },
+    "verdict": {
+      "exit": 1,
+      "passed": 0,
+      "failed": 1,
+      "en": "unselected",
+      "startupPassed": false,
+      "pageErrors": 0,
+      "consoleErrors": 0,
+      "postVerdict": "rejected",
+      "logSHA256": "b6a6e7cdfa48c5a00bc3860b7cc48b25ae934f72cfad823a855b790e03cd82bc",
+      "messages": ["Error: Test timed out in 150000ms."]
+    }
+  },
+  "candidate": {
+    "head": "ef027647c421b593907781b7a9a418a8e2108069",
+    "tree": "726e7e1476f68bff2dc045af1a53175afafd09ab",
+    "parents": [
+      "db532777b6980739fe0bc1bddc7086c9aa11e9cb",
+      "5ea6d398084a17b12e89f813c479b87b71cb9f13"
+    ],
+    "overlaySHA256": "e0477809bbef3f5d0f684a5914d1f5d42d79a25ef570f571b6a8bf76c76fb308",
+    "exactInputsSHA256": {
+      "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "fa9135ee7f883632cd8059a4806d7c5d263725719eb231c6f3caf170c6b8fa6c",
+      "packages/modules/anatomy/src/impl.ts": "c504307f6e1884dcc7e534a637b0b5b087afdd66fb7d9d8587c352ae717598cf"
+    },
+    "versions": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+    "reports": [
+      {
+        "pageMs": 1995.0999999046326,
+        "timeOrigin": 1794855424347.3,
+        "publications": 1,
+        "viewPublications": 0,
+        "stableViewPublications": 0,
+        "deliveredCallbacks": 0,
+        "skippedCallbacks": 0,
+        "lastReport": 1995.0999999046326
+      },
+      {
+        "pageMs": 3642.2999999523163,
+        "timeOrigin": 1794855424347.3,
+        "publications": 318,
+        "viewPublications": 66,
+        "stableViewPublications": 12,
+        "deliveredCallbacks": 424,
+        "skippedCallbacks": 56,
+        "lastReport": 3642.2999999523163
+      },
+      {
+        "pageMs": 5142.700000047684,
+        "timeOrigin": 1794855424347.3,
+        "publications": 504,
+        "viewPublications": 112,
+        "stableViewPublications": 33,
+        "deliveredCallbacks": 2268,
+        "skippedCallbacks": 560,
+        "lastReport": 5142.700000047684
+      },
+      {
+        "pageMs": 6981.700000047684,
+        "timeOrigin": 1794855424347.3,
+        "publications": 650,
+        "viewPublications": 149,
+        "stableViewPublications": 55,
+        "deliveredCallbacks": 5652,
+        "skippedCallbacks": 1620,
+        "lastReport": 6981.700000047684
+      },
+      {
+        "pageMs": 10172.299999952316,
+        "timeOrigin": 1794855424347.3,
+        "publications": 669,
+        "viewPublications": 149,
+        "stableViewPublications": 55,
+        "deliveredCallbacks": 5652,
+        "skippedCallbacks": 1620,
+        "lastReport": 10172.299999952316
+      },
+      {
+        "pageMs": 12109.799999952316,
+        "timeOrigin": 1794855424347.3,
+        "publications": 1313,
+        "viewPublications": 280,
+        "stableViewPublications": 106,
+        "deliveredCallbacks": 22450,
+        "skippedCallbacks": 5242,
+        "lastReport": 12109.799999952316
+      },
+      {
+        "pageMs": 13751.700000047684,
+        "timeOrigin": 1794855424347.3,
+        "publications": 2317,
+        "viewPublications": 523,
+        "stableViewPublications": 110,
+        "deliveredCallbacks": 25304,
+        "skippedCallbacks": 5248,
+        "lastReport": 13751.700000047684
+      },
+      {
+        "pageMs": 15252.899999856949,
+        "timeOrigin": 1794855424347.3,
+        "publications": 3603,
+        "viewPublications": 788,
+        "stableViewPublications": 161,
+        "deliveredCallbacks": 27141,
+        "skippedCallbacks": 5636,
+        "lastReport": 15252.899999856949
+      },
+      {
+        "pageMs": 16753.099999904633,
+        "timeOrigin": 1794855424347.3,
+        "publications": 4798,
+        "viewPublications": 1026,
+        "stableViewPublications": 196,
+        "deliveredCallbacks": 32265,
+        "skippedCallbacks": 6127,
+        "lastReport": 16753.099999904633
+      },
+      {
+        "pageMs": 18253.5,
+        "timeOrigin": 1794855424347.3,
+        "publications": 5862,
+        "viewPublications": 1291,
+        "stableViewPublications": 267,
+        "deliveredCallbacks": 33768,
+        "skippedCallbacks": 6406,
+        "lastReport": 18253.5
+      },
+      {
+        "pageMs": 19821.299999952316,
+        "timeOrigin": 1794855424347.3,
+        "publications": 7326,
+        "viewPublications": 1657,
+        "stableViewPublications": 445,
+        "deliveredCallbacks": 71669,
+        "skippedCallbacks": 12261,
+        "lastReport": 19821.299999952316
+      },
+      {
+        "pageMs": 21322.5,
+        "timeOrigin": 1794855424347.3,
+        "publications": 9127,
+        "viewPublications": 1723,
+        "stableViewPublications": 469,
+        "deliveredCallbacks": 116166,
+        "skippedCallbacks": 13806,
+        "lastReport": 21322.5
+      },
+      {
+        "pageMs": 22839,
+        "timeOrigin": 1794855424347.3,
+        "publications": 11058,
+        "viewPublications": 2358,
+        "stableViewPublications": 634,
+        "deliveredCallbacks": 179730,
+        "skippedCallbacks": 26021,
+        "lastReport": 22839
+      },
+      {
+        "pageMs": 24421.89999985695,
+        "timeOrigin": 1794855424347.3,
+        "publications": 12376,
+        "viewPublications": 2822,
+        "stableViewPublications": 761,
+        "deliveredCallbacks": 217963,
+        "skippedCallbacks": 36001,
+        "lastReport": 24421.89999985695
+      },
+      {
+        "pageMs": 26738.799999952316,
+        "timeOrigin": 1794855424347.3,
+        "publications": 13886,
+        "viewPublications": 3297,
+        "stableViewPublications": 890,
+        "deliveredCallbacks": 281547,
+        "skippedCallbacks": 51009,
+        "lastReport": 26738.799999952316
+      },
+      {
+        "pageMs": 28239.599999904633,
+        "timeOrigin": 1794855424347.3,
+        "publications": 14895,
+        "viewPublications": 3297,
+        "stableViewPublications": 890,
+        "deliveredCallbacks": 307387,
+        "skippedCallbacks": 51009,
+        "lastReport": 28239.599999904633
+      },
+      {
+        "pageMs": 29759.299999952316,
+        "timeOrigin": 1794855424347.3,
+        "publications": 15658,
+        "viewPublications": 3297,
+        "stableViewPublications": 890,
+        "deliveredCallbacks": 376256,
+        "skippedCallbacks": 51009,
+        "lastReport": 29759.299999952316
+      },
+      {
+        "pageMs": 31292.5,
+        "timeOrigin": 1794855424347.3,
+        "publications": 16996,
+        "viewPublications": 3753,
+        "stableViewPublications": 983,
+        "deliveredCallbacks": 405418,
+        "skippedCallbacks": 56506,
+        "lastReport": 31292.5
+      },
+      {
+        "pageMs": 33766.200000047684,
+        "timeOrigin": 1794855424347.3,
+        "publications": 18282,
+        "viewPublications": 4396,
+        "stableViewPublications": 1182,
+        "deliveredCallbacks": 476532,
+        "skippedCallbacks": 85818,
+        "lastReport": 33766.200000047684
+      },
+      {
+        "pageMs": 35266.799999952316,
+        "timeOrigin": 1794855424347.3,
+        "publications": 18899,
+        "viewPublications": 4396,
+        "stableViewPublications": 1182,
+        "deliveredCallbacks": 517200,
+        "skippedCallbacks": 85818,
+        "lastReport": 35266.799999952316
+      },
+      {
+        "pageMs": 36767,
+        "timeOrigin": 1794855424347.3,
+        "publications": 19846,
+        "viewPublications": 4703,
+        "stableViewPublications": 1264,
+        "deliveredCallbacks": 570168,
+        "skippedCallbacks": 99430,
+        "lastReport": 36767
+      },
+      {
+        "pageMs": 38587.799999952316,
+        "timeOrigin": 1794855424347.3,
+        "publications": 20182,
+        "viewPublications": 4871,
+        "stableViewPublications": 1311,
+        "deliveredCallbacks": 587753,
+        "skippedCallbacks": 107957,
+        "lastReport": 38587.799999952316
+      },
+      {
+        "pageMs": 40087.799999952316,
+        "timeOrigin": 1794855424347.3,
+        "publications": 20954,
+        "viewPublications": 5064,
+        "stableViewPublications": 1344,
+        "deliveredCallbacks": 611943,
+        "skippedCallbacks": 113413,
+        "lastReport": 40087.799999952316
+      },
+      {
+        "pageMs": 41588,
+        "timeOrigin": 1794855424347.3,
+        "publications": 21956,
+        "viewPublications": 5314,
+        "stableViewPublications": 1361,
+        "deliveredCallbacks": 622018,
+        "skippedCallbacks": 114610,
+        "lastReport": 41588
+      },
+      {
+        "pageMs": 43091.799999952316,
+        "timeOrigin": 1794855424347.3,
+        "publications": 22896,
+        "viewPublications": 5549,
+        "stableViewPublications": 1414,
+        "deliveredCallbacks": 633427,
+        "skippedCallbacks": 116443,
+        "lastReport": 43091.799999952316
+      },
+      {
+        "pageMs": 44600.59999990463,
+        "timeOrigin": 1794855424347.3,
+        "publications": 23654,
+        "viewPublications": 5739,
+        "stableViewPublications": 1475,
+        "deliveredCallbacks": 647507,
+        "skippedCallbacks": 119229,
+        "lastReport": 44600.59999990463
+      },
+      {
+        "pageMs": 46105.299999952316,
+        "timeOrigin": 1794855424347.3,
+        "publications": 24156,
+        "viewPublications": 5853,
+        "stableViewPublications": 1546,
+        "deliveredCallbacks": 767107,
+        "skippedCallbacks": 135174,
+        "lastReport": 46105.299999952316
+      },
+      {
+        "pageMs": 48372.09999990463,
+        "timeOrigin": 1794855424347.3,
+        "publications": 24578,
+        "viewPublications": 5970,
+        "stableViewPublications": 1603,
+        "deliveredCallbacks": 851510,
+        "skippedCallbacks": 152196,
+        "lastReport": 48372.09999990463
+      },
+      {
+        "pageMs": 49873.200000047684,
+        "timeOrigin": 1794855424347.3,
+        "publications": 25376,
+        "viewPublications": 6169,
+        "stableViewPublications": 1644,
+        "deliveredCallbacks": 868350,
+        "skippedCallbacks": 155884,
+        "lastReport": 49873.200000047684
+      },
+      {
+        "pageMs": 51377.799999952316,
+        "timeOrigin": 1794855424347.3,
+        "publications": 26196,
+        "viewPublications": 6374,
+        "stableViewPublications": 1684,
+        "deliveredCallbacks": 894203,
+        "skippedCallbacks": 161877,
+        "lastReport": 51377.799999952316
+      },
+      {
+        "pageMs": 53637.200000047684,
+        "timeOrigin": 1794855424347.3,
+        "publications": 26478,
+        "viewPublications": 6445,
+        "stableViewPublications": 1732,
+        "deliveredCallbacks": 1000450,
+        "skippedCallbacks": 180682,
+        "lastReport": 53637.200000047684
+      },
+      {
+        "pageMs": 55138,
+        "timeOrigin": 1794855424347.3,
+        "publications": 27156,
+        "viewPublications": 6575,
+        "stableViewPublications": 1802,
+        "deliveredCallbacks": 1011097,
+        "skippedCallbacks": 183059,
+        "lastReport": 55138
+      },
+      {
+        "pageMs": 57468.5,
+        "timeOrigin": 1794855424347.3,
+        "publications": 27486,
+        "viewPublications": 6697,
+        "stableViewPublications": 1874,
+        "deliveredCallbacks": 1021875,
+        "skippedCallbacks": 189251,
+        "lastReport": 57468.5
+      },
+      {
+        "pageMs": 58972.39999985695,
+        "timeOrigin": 1794855424347.3,
+        "publications": 28006,
+        "viewPublications": 6793,
+        "stableViewPublications": 1930,
+        "deliveredCallbacks": 1049988,
+        "skippedCallbacks": 195576,
+        "lastReport": 58972.39999985695
+      },
+      {
+        "pageMs": 60473.5,
+        "timeOrigin": 1794855424347.3,
+        "publications": 28542,
+        "viewPublications": 6960,
+        "stableViewPublications": 2024,
+        "deliveredCallbacks": 1084866,
+        "skippedCallbacks": 211552,
+        "lastReport": 60473.5
+      },
+      {
+        "pageMs": 62064.700000047684,
+        "timeOrigin": 1794855424347.3,
+        "publications": 29042,
+        "viewPublications": 7075,
+        "stableViewPublications": 2090,
+        "deliveredCallbacks": 1128372,
+        "skippedCallbacks": 224749,
+        "lastReport": 62064.700000047684
+      },
+      {
+        "pageMs": 63576.700000047684,
+        "timeOrigin": 1794855424347.3,
+        "publications": 29247,
+        "viewPublications": 7075,
+        "stableViewPublications": 2090,
+        "deliveredCallbacks": 1158565,
+        "skippedCallbacks": 224749,
+        "lastReport": 63576.700000047684
+      },
+      {
+        "pageMs": 65077.59999990463,
+        "timeOrigin": 1794855424347.3,
+        "publications": 29762,
+        "viewPublications": 7264,
+        "stableViewPublications": 2198,
+        "deliveredCallbacks": 1207629,
+        "skippedCallbacks": 253473,
+        "lastReport": 65077.59999990463
+      },
+      {
+        "pageMs": 66577.70000004768,
+        "timeOrigin": 1794855424347.3,
+        "publications": 30089,
+        "viewPublications": 7327,
+        "stableViewPublications": 2234,
+        "deliveredCallbacks": 1253986,
+        "skippedCallbacks": 264206,
+        "lastReport": 66577.70000004768
+      },
+      {
+        "pageMs": 68083,
+        "timeOrigin": 1794855424347.3,
+        "publications": 30254,
+        "viewPublications": 7327,
+        "stableViewPublications": 2234,
+        "deliveredCallbacks": 1286470,
+        "skippedCallbacks": 264206,
+        "lastReport": 68083
+      },
+      {
+        "pageMs": 69602,
+        "timeOrigin": 1794855424347.3,
+        "publications": 30644,
+        "viewPublications": 7482,
+        "stableViewPublications": 2319,
+        "deliveredCallbacks": 1314654,
+        "skippedCallbacks": 289836,
+        "lastReport": 69602
+      },
+      {
+        "pageMs": 73652.09999990463,
+        "timeOrigin": 1794855424347.3,
+        "publications": 30831,
+        "viewPublications": 7533,
+        "stableViewPublications": 2330,
+        "deliveredCallbacks": 1315178,
+        "skippedCallbacks": 290221,
+        "lastReport": 73652.09999990463
+      },
+      {
+        "pageMs": 75158.89999985695,
+        "timeOrigin": 1794855424347.3,
+        "publications": 30963,
+        "viewPublications": 7561,
+        "stableViewPublications": 2330,
+        "deliveredCallbacks": 1316159,
+        "skippedCallbacks": 290221,
+        "lastReport": 75158.89999985695
+      },
+      {
+        "pageMs": 76669.09999990463,
+        "timeOrigin": 1794855424347.3,
+        "publications": 31065,
+        "viewPublications": 7578,
+        "stableViewPublications": 2330,
+        "deliveredCallbacks": 1317155,
+        "skippedCallbacks": 290221,
+        "lastReport": 76669.09999990463
+      },
+      {
+        "pageMs": 78188.59999990463,
+        "timeOrigin": 1794855424347.3,
+        "publications": 31117,
+        "viewPublications": 7604,
+        "stableViewPublications": 2330,
+        "deliveredCallbacks": 1317671,
+        "skippedCallbacks": 290221,
+        "lastReport": 78188.59999990463
+      },
+      {
+        "pageMs": 79692.89999985695,
+        "timeOrigin": 1794855424347.3,
+        "publications": 31893,
+        "viewPublications": 7780,
+        "stableViewPublications": 2330,
+        "deliveredCallbacks": 1317683,
+        "skippedCallbacks": 290221,
+        "lastReport": 79692.89999985695
+      },
+      {
+        "pageMs": 81390,
+        "timeOrigin": 1794855424347.3,
+        "publications": 32207,
+        "viewPublications": 7877,
+        "stableViewPublications": 2330,
+        "deliveredCallbacks": 1321387,
+        "skippedCallbacks": 290221,
+        "lastReport": 81390
+      },
+      {
+        "pageMs": 82968.09999990463,
+        "timeOrigin": 1794855424347.3,
+        "publications": 32415,
+        "viewPublications": 7929,
+        "stableViewPublications": 2350,
+        "deliveredCallbacks": 1322197,
+        "skippedCallbacks": 290451,
+        "lastReport": 82968.09999990463
+      }
+    ],
+    "lastReadiness": {
+      "timeOrigin": 1794855424347.3,
+      "pageMs": 60117.700000047684,
+      "dateNow": 1794855484464,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-g0obuzgtope",
+        "index": 20,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-base-calendar",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-g0obuzgtope",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      }
+    },
+    "verdict": {
+      "exit": 1,
+      "passed": 0,
+      "failed": 1,
+      "en": "unselected",
+      "startupPassed": false,
+      "pageErrors": 0,
+      "consoleErrors": 0,
+      "postVerdict": "budget-expired",
+      "logSHA256": "0586c3c88f5826a839dc2181ba299ac942bcd54f048dc8227c545cfe266e985a",
+      "messages": ["page.waitForFunction: Timeout 60000ms exceeded."]
+    }
+  },
+  "samplingBoundary": "Baseline compares observed scopes in a systematic one-in-16 publication sample. A disjoint sample is not a safe-skip certification. Candidate counters are decisions under its explicit view-event and stable-scope guards. Timings across these separately instrumented runs are not directly attributable to filtering."
+}

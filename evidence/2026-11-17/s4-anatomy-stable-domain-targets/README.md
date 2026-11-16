@@ -1,0 +1,9 @@
+# S4 stable-domain view target notifications
+
+The baseline signed local composition was sampled once per 16 Anatomy target publications in the original full Chinese Matrix. The last retained group counters include 22 same-domain, 411 disjoint and 190 unknown Scroll callback observations. This is a sampled domain classification, not a count of proven-safe omissions.
+
+The local candidate `5ea6d398084a17b12e89f813c479b87b71cb9f13` opts A11y family relations and composed Scroll chrome into current-domain view notifications. It skips only when both known logical roots are established, unchanged and distinct. Structural and capability changes, unknown or changing scopes and legacy subscriptions preserve family delivery. The candidate keeps live callback order and checks publisher movement during dispatch.
+
+In the separate full Chinese S4 diagnostic, the last report at page +82.968 s recorded 290,451 omitted callbacks and 1,322,197 delivered. The original 60-second readiness assertion still timed out. Both diagnostic runs retained 1,268 previews and the 150-second outer limit. English was unselected, and the S4 Dialog interaction and hosted run remain open. The runtime and module checks passed 407 tests in 26 files. A final type-only fixture key adjustment was followed by an exact narrow rerun of all 15 target notification tests and passing workspace and catalog checks.
+
+The old Scroll Area browser expectation failed on the exact baseline and candidate with the same vertical border difference. The current cataloged recipe has only a 1px inward edge. A separate local test commit updates the native check to inspect all four sides and the appropriate transparent color, with other assertions and timing intact. All nine relevant native cases passed in both signed compositions. The two change candidates remain local.
