@@ -1,0 +1,389 @@
+{
+  "source": {
+    "head": "1a47c483dd1b0f6dfaffc4bd2c7f0f3e2aad9ac7",
+    "tree": "56bf553c4579004164a72ab93ab12a5fcde3c837",
+    "parents": [
+      "bd00e9acc9089cebee32a4add3ae6f1dccc728bb",
+      "869172687a4017329d7fab87bdd5c2a0890f95fa"
+    ]
+  },
+  "overlaySHA256": "8fcd19f91e4c05154da088cc5fcc7c98e44da59c217a60aa88eebece4c1a1e70",
+  "versions": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+  "originalStartupLimitMs": 60000,
+  "originalPerCaseLimitMs": 150000,
+  "exactInputsSHA256": {
+    "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "3709992e0210d882fcfd10a5c0e2257752eadc73eadb8a6fd1ec4fcb517514dc",
+    "packages/modules/scroll/src/web/create-web-scroll-host.ts": "076b0605217b61e93f04714ffb98ac08884ac6378d2aeb45c7f694f45a05b733"
+  },
+  "reports": [
+    {
+      "pageMs": 13518.599999904633,
+      "timeOrigin": 1794853862921,
+      "updates": 1,
+      "sameConfigProjection": 1,
+      "totalUpdateMs": 0.5,
+      "totalPolicyMs": 0,
+      "totalObservationMs": 0,
+      "totalLayoutMs": 0.5,
+      "axisEndReads": 0,
+      "axisEndReadMs": 0
+    },
+    {
+      "pageMs": 15152,
+      "timeOrigin": 1794853862921,
+      "updates": 174,
+      "sameConfigProjection": 174,
+      "totalUpdateMs": 169.90000009536743,
+      "totalPolicyMs": 2.200000524520874,
+      "totalObservationMs": 0.7999999523162842,
+      "totalLayoutMs": 166.7999997138977,
+      "axisEndReads": 92,
+      "axisEndReadMs": 26.299999952316284
+    },
+    {
+      "pageMs": 19187.199999809265,
+      "timeOrigin": 1794853862921,
+      "updates": 394,
+      "sameConfigProjection": 394,
+      "totalUpdateMs": 240.8000009059906,
+      "totalPolicyMs": 5.200001001358032,
+      "totalObservationMs": 1.5999999046325684,
+      "totalLayoutMs": 233.90000009536743,
+      "axisEndReads": 203,
+      "axisEndReadMs": 47.799999713897705
+    },
+    {
+      "pageMs": 27104.199999809265,
+      "timeOrigin": 1794853862921,
+      "updates": 554,
+      "sameConfigProjection": 554,
+      "totalUpdateMs": 448.00000071525574,
+      "totalPolicyMs": 8.300002098083496,
+      "totalObservationMs": 2.299999475479126,
+      "totalLayoutMs": 437.199999332428,
+      "axisEndReads": 256,
+      "axisEndReadMs": 89.7000002861023
+    },
+    {
+      "pageMs": 28648.89999985695,
+      "timeOrigin": 1794853862921,
+      "updates": 778,
+      "sameConfigProjection": 778,
+      "totalUpdateMs": 684.8000004291534,
+      "totalPolicyMs": 13.800002813339233,
+      "totalObservationMs": 3.599999189376831,
+      "totalLayoutMs": 667.0999987125397,
+      "axisEndReads": 368,
+      "axisEndReadMs": 89.80000042915344
+    },
+    {
+      "pageMs": 30153.5,
+      "timeOrigin": 1794853862921,
+      "updates": 906,
+      "sameConfigProjection": 906,
+      "totalUpdateMs": 823.1000008583069,
+      "totalPolicyMs": 18.000004053115845,
+      "totalObservationMs": 3.6999990940093994,
+      "totalLayoutMs": 801.0999979972839,
+      "axisEndReads": 432,
+      "axisEndReadMs": 89.80000042915344
+    },
+    {
+      "pageMs": 31907,
+      "timeOrigin": 1794853862921,
+      "updates": 1264,
+      "sameConfigProjection": 1264,
+      "totalUpdateMs": 1277.600001335144,
+      "totalPolicyMs": 28.500003337860107,
+      "totalObservationMs": 4.799999237060547,
+      "totalLayoutMs": 1243.9999990463257,
+      "axisEndReads": 560,
+      "axisEndReadMs": 90.10000038146973
+    },
+    {
+      "pageMs": 34211.59999990463,
+      "timeOrigin": 1794853862921,
+      "updates": 1444,
+      "sameConfigProjection": 1444,
+      "totalUpdateMs": 1368.100001335144,
+      "totalPolicyMs": 32.80000376701355,
+      "totalObservationMs": 5.499999761581421,
+      "totalLayoutMs": 1329.4999980926514,
+      "axisEndReads": 608,
+      "axisEndReadMs": 90.40000009536743
+    },
+    {
+      "pageMs": 36059.699999809265,
+      "timeOrigin": 1794853862921,
+      "updates": 1504,
+      "sameConfigProjection": 1504,
+      "totalUpdateMs": 1429.4000012874603,
+      "totalPolicyMs": 34.80000376701355,
+      "totalObservationMs": 5.599999666213989,
+      "totalLayoutMs": 1388.5999982357025,
+      "axisEndReads": 624,
+      "axisEndReadMs": 90.40000009536743
+    },
+    {
+      "pageMs": 38765.799999952316,
+      "timeOrigin": 1794853862921,
+      "updates": 1692,
+      "sameConfigProjection": 1692,
+      "totalUpdateMs": 1566.00000166893,
+      "totalPolicyMs": 40.2000036239624,
+      "totalObservationMs": 6.09999942779541,
+      "totalLayoutMs": 1519.1999988555908,
+      "axisEndReads": 688,
+      "axisEndReadMs": 90.70000004768372
+    },
+    {
+      "pageMs": 41692.89999985695,
+      "timeOrigin": 1794853862921,
+      "updates": 2108,
+      "sameConfigProjection": 2108,
+      "totalUpdateMs": 2081.6000015735626,
+      "totalPolicyMs": 52.30000448226929,
+      "totalObservationMs": 7.999999761581421,
+      "totalLayoutMs": 2020.7999975681305,
+      "axisEndReads": 896,
+      "axisEndReadMs": 90.79999995231628
+    },
+    {
+      "pageMs": 44229.89999985695,
+      "timeOrigin": 1794853862921,
+      "updates": 2268,
+      "sameConfigProjection": 2268,
+      "totalUpdateMs": 2231.600000858307,
+      "totalPolicyMs": 56.60000443458557,
+      "totalObservationMs": 8.799999713897705,
+      "totalLayoutMs": 2165.599996805191,
+      "axisEndReads": 976,
+      "axisEndReadMs": 90.89999985694885
+    },
+    {
+      "pageMs": 45908.699999809265,
+      "timeOrigin": 1794853862921,
+      "updates": 2492,
+      "sameConfigProjection": 2492,
+      "totalUpdateMs": 2508.400000333786,
+      "totalPolicyMs": 65.00000405311584,
+      "totalObservationMs": 9.09999966621399,
+      "totalLayoutMs": 2433.6999967098236,
+      "axisEndReads": 1088,
+      "axisEndReadMs": 90.99999976158142
+    },
+    {
+      "pageMs": 47487.09999990463,
+      "timeOrigin": 1794853862921,
+      "updates": 2966,
+      "sameConfigProjection": 2966,
+      "totalUpdateMs": 3008.1000006198883,
+      "totalPolicyMs": 78.40000438690186,
+      "totalObservationMs": 10.400000095367432,
+      "totalLayoutMs": 2918.6999962329865,
+      "axisEndReads": 1280,
+      "axisEndReadMs": 91.2999997138977
+    },
+    {
+      "pageMs": 50214.299999952316,
+      "timeOrigin": 1794853862921,
+      "updates": 3102,
+      "sameConfigProjection": 3102,
+      "totalUpdateMs": 3174.000000476837,
+      "totalPolicyMs": 82.80000424385071,
+      "totalObservationMs": 10.599999904632568,
+      "totalLayoutMs": 3079.8999965190887,
+      "axisEndReads": 1328,
+      "axisEndReadMs": 91.2999997138977
+    },
+    {
+      "pageMs": 52728.199999809265,
+      "timeOrigin": 1794853862921,
+      "updates": 3286,
+      "sameConfigProjection": 3286,
+      "totalUpdateMs": 3292.1000006198883,
+      "totalPolicyMs": 88.00000429153442,
+      "totalObservationMs": 11.299999713897705,
+      "totalLayoutMs": 3191.9999969005585,
+      "axisEndReads": 1392,
+      "axisEndReadMs": 91.59999990463257
+    },
+    {
+      "pageMs": 57243.39999985695,
+      "timeOrigin": 1794853862921,
+      "updates": 3378,
+      "sameConfigProjection": 3378,
+      "totalUpdateMs": 3418.5000002384186,
+      "totalPolicyMs": 90.80000448226929,
+      "totalObservationMs": 11.699999332427979,
+      "totalLayoutMs": 3315.099996805191,
+      "axisEndReads": 1424,
+      "axisEndReadMs": 91.59999990463257
+    },
+    {
+      "pageMs": 63459,
+      "timeOrigin": 1794853862921,
+      "updates": 3662,
+      "sameConfigProjection": 3662,
+      "totalUpdateMs": 3610.800000667572,
+      "totalPolicyMs": 99.20000433921814,
+      "totalObservationMs": 12.299998998641968,
+      "totalLayoutMs": 3498.3999977111816,
+      "axisEndReads": 1552,
+      "axisEndReadMs": 94.29999995231628
+    },
+    {
+      "pageMs": 65617,
+      "timeOrigin": 1794853862921,
+      "updates": 4691,
+      "sameConfigProjection": 4691,
+      "totalUpdateMs": 4358.599999427795,
+      "totalPolicyMs": 131.50000262260437,
+      "totalObservationMs": 15.499998807907104,
+      "totalLayoutMs": 4210.299998521805,
+      "axisEndReads": 2032,
+      "axisEndReadMs": 95.29999995231628
+    },
+    {
+      "pageMs": 82001.19999980927,
+      "timeOrigin": 1794853862921,
+      "updates": 5866,
+      "sameConfigProjection": 5866,
+      "totalUpdateMs": 5125.099998474121,
+      "totalPolicyMs": 167.0000011920929,
+      "totalObservationMs": 18.8999981880188,
+      "totalLayoutMs": 4937.499999284744,
+      "axisEndReads": 2512,
+      "axisEndReadMs": 95.59999990463257
+    },
+    {
+      "pageMs": 98041.79999995232,
+      "timeOrigin": 1794853862921,
+      "updates": 6625,
+      "sameConfigProjection": 6625,
+      "totalUpdateMs": 5429.899998664856,
+      "totalPolicyMs": 190.80000066757202,
+      "totalObservationMs": 20.999998092651367,
+      "totalLayoutMs": 5216.199999809265,
+      "axisEndReads": 2832,
+      "axisEndReadMs": 97.49999976158142
+    }
+  ],
+  "readiness": [
+    {
+      "pageMs": 7125.299999952316,
+      "ready": false,
+      "index": 0,
+      "children": null,
+      "runtime": "wc",
+      "demo": "demo-base-accordion",
+      "startupPending": null
+    },
+    {
+      "pageMs": 8586.399999856949,
+      "ready": false,
+      "index": 0,
+      "children": 0,
+      "runtime": "wc",
+      "demo": "demo-base-accordion",
+      "startupPending": true
+    },
+    {
+      "pageMs": 15676.699999809265,
+      "ready": false,
+      "index": 1,
+      "children": 0,
+      "runtime": "react",
+      "demo": "demo-base-accordion",
+      "startupPending": true
+    },
+    {
+      "pageMs": 97762.89999985695,
+      "ready": false,
+      "index": 20,
+      "children": 0,
+      "runtime": "wc",
+      "demo": "demo-base-calendar",
+      "startupPending": true
+    }
+  ],
+  "phases": [
+    {
+      "locale": "zh-cn",
+      "phase": "init-script",
+      "outcome": "begin",
+      "nodeMs": 40684.900583,
+      "nodeTimeOrigin": 1794853822219.225,
+      "dateNow": 1794853862904
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "init-script",
+      "outcome": "return",
+      "nodeMs": 40697.646333,
+      "nodeTimeOrigin": 1794853822219.225,
+      "dateNow": 1794853862916
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "goto",
+      "outcome": "begin",
+      "nodeMs": 40697.748625,
+      "nodeTimeOrigin": 1794853822219.225,
+      "dateNow": 1794853862916
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "goto",
+      "outcome": "return",
+      "nodeMs": 47742.560792,
+      "nodeTimeOrigin": 1794853822219.225,
+      "dateNow": 1794853869961
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "startup-wait",
+      "outcome": "begin",
+      "nodeMs": 47742.87125,
+      "nodeTimeOrigin": 1794853822219.225,
+      "dateNow": 1794853869962
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "startup-wait",
+      "outcome": "error",
+      "nodeMs": 157446.412458,
+      "nodeTimeOrigin": 1794853822219.225,
+      "dateNow": 1794853979665
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "context-close",
+      "outcome": "begin",
+      "nodeMs": 159539.040083,
+      "nodeTimeOrigin": 1794853822219.225,
+      "dateNow": 1794853981758
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "context-close",
+      "outcome": "return",
+      "nodeMs": 160061.842458,
+      "nodeTimeOrigin": 1794853822219.225,
+      "dateNow": 1794853982281
+    }
+  ],
+  "boundary": "Inclusive, synchronous duration through retained reports. Same-config count compares attachment config identity and projection mode only. It does not assert equal geometry, composed targets or callbacks.",
+  "verdict": {
+    "exit": 1,
+    "passed": 0,
+    "failed": 1,
+    "en": "unselected",
+    "startupPassed": false,
+    "pageErrors": 0,
+    "consoleErrors": 0,
+    "collectionOutcome": "budget-expired",
+    "logSHA256": "422baaf816b5b90f296cf45244da7b0992fc0e69d225bc2a6b46270fdcc1aae0",
+    "messages": ["page.waitForFunction: Timeout 60000ms exceeded."]
+  }
+}
