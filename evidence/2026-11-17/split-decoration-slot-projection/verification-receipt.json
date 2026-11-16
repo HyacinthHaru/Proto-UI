@@ -1,0 +1,273 @@
+{
+  "candidate": {
+    "head": "d94a6e0a6859236476c955b2bf444c83b3f1a568",
+    "tree": "3f21645977f21be1031b87329745aba6b38bf527",
+    "parents": ["c05f56df4fb8832f21df4f3def93c52b377bcdd2"],
+    "finalInputs": {
+      "packages/adapters/web-component/test/owned-decoration.integration.test.ts": "c8bcfc53d02984210ad9596471b89934b4e827a78ef33fd39e8cc1227b62db7b",
+      "packages/adapters/web-component/src/runtime/session.ts": "6498b670b5e9fdef4b3c728fe63cb1cccaf6c0d1846c5a80508e0ad9c976e398",
+      "packages/cli/src/services/prototype-style-tokens.ts": "28b41170b0b656a315ae8fa8116ed898e89f3991b5889aa57f191bd8cd7fe977",
+      "packages/cli/test/shadow-template-style.test.ts": "a688d6241ba49ec906ec2ead9d91d0e057957a898c2a68975044967566c50c4d"
+    },
+    "typesExit": 0
+  },
+  "focused": {
+    "parent": "9d90aa88af6c8ab5501172253c2febb50db0257f",
+    "red": 4,
+    "baselinePasses": 117,
+    "passes": 121,
+    "originalInputs": {
+      "packages/adapters/web-component/src/runtime/session.ts": "6498b670b5e9fdef4b3c728fe63cb1cccaf6c0d1846c5a80508e0ad9c976e398",
+      "packages/adapters/web-component/test/owned-decoration.integration.test.ts": "2a9e029f7103f054bbe00f1e40748a65ad5fd36c9bf53e759a2afef930a4de86",
+      "packages/cli/src/services/prototype-style-tokens.ts": "28b41170b0b656a315ae8fa8116ed898e89f3991b5889aa57f191bd8cd7fe977",
+      "packages/cli/test/shadow-template-style.test.ts": "a688d6241ba49ec906ec2ead9d91d0e057957a898c2a68975044967566c50c4d"
+    },
+    "normalizedTestOnly": [
+      "packages/adapters/web-component/test/owned-decoration.integration.test.ts"
+    ],
+    "formatDiffSHA256": "d9dbd27b2626be7238cbcd51d4458bb96b7cb02e7e331d554f9bc6ce6a081177",
+    "baselineLogSHA256": "4211737a2af86297c0c76cb3d4e743bcceda8678d7ef460ce275a038600fe8c2",
+    "exactSignedLogSHA256": "aaea22d20715c38bf02b9dd0184674f519415e889a305065dfb681d7229425ea"
+  },
+  "expanded": {
+    "passes": 707,
+    "failures": 25,
+    "files": 33,
+    "matchedParent": {
+      "parentFailures": 25,
+      "candidateFailures": 25,
+      "newCases": [],
+      "resolved": [],
+      "changedMessage": []
+    },
+    "reportSHA256": "602ba2b316a8883a2a4f86f538bb7567bdc7e6783318e75604a0042add108976"
+  },
+  "chrome": {
+    "probeSHA256": "9116f987caae6ed11d8dc7b12c3a74cbb350021db460e33cb35e7100122fc511",
+    "candidateArtifactSHA256": "6e87b94e4cc5ac05d9c27e40fa827a8e220b29e17ce19387db4a9dde06659042",
+    "baselineExit": 1,
+    "candidateExit": 0,
+    "cases": 4
+  },
+  "dialog": {
+    "head": "a834bd4e30b2cad49509ab6d0c056cc2878663b5",
+    "tree": "5858734d1abefe683eec08bfba7746c3cd52a276",
+    "parents": [
+      "69326eb91f9e31a5ce69e943b8f4f630995c7a3a",
+      "d94a6e0a6859236476c955b2bf444c83b3f1a568"
+    ],
+    "packageCount": 47,
+    "tests": {
+      "scripts/analysis/shadow-s4-journey.mjs": "16c6af53316d131a06657a303c5d8d92138f64835d23495c4ab261d51d90b7b5",
+      "scripts/analysis/shadow-s4-public-browser.mjs": "9d979bed6cce27c1b6628a47dad109670f72dd27aa5a6db336d8ea27c7c1dedd"
+    },
+    "sourceExit": 0,
+    "source": {
+      "result": [
+        {
+          "profile": "light",
+          "requests": 15,
+          "counts": {
+            "root": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "trigger": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "mask": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "content": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "title": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "description": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "close": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "icon": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "header": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "footer": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            }
+          }
+        },
+        {
+          "profile": "split",
+          "requests": 15,
+          "counts": {
+            "root": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "trigger": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "mask": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "content": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "title": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "description": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "close": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "icon": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "header": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "footer": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            }
+          }
+        },
+        {
+          "profile": "mixed",
+          "requests": 15,
+          "counts": {
+            "root": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "trigger": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "mask": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "content": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "title": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "description": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "close": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "icon": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "header": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "footer": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            }
+          }
+        }
+      ],
+      "errors": [],
+      "chrome": "156.0.8078.79"
+    },
+    "distExit": 0,
+    "distLogSHA256": "05bbf2e5a0e32d720dc2e79049267ceda9e847a1e30c357aa33f9479ce115907",
+    "distScope": "Public workspace dist artifacts with the original source-closure assertions."
+  }
+}

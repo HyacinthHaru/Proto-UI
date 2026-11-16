@@ -1,0 +1,7 @@
+# Split native slot concealment and transparent target initializer review
+
+This records the two findings on #1484 at `9d90aa88` and the correction in `d94a6e0a`. Four focused cases reproduced the failures on the parent. All 121 focused cases pass on the signed revision. The checked-in WC test received a formatting-only change from the commit hook. The recovery compared and retained the original and observed bytes, then ran the focused selection again on the actual signed tree. Workspace types passed. The expanded 732-case run produced 707 passes and the same 25 failures, names and first messages as the exact parent receipt.
+
+The fixed split decoration binding checks the native slot and its authored wrapper path for computed layout/paint concealment. The browser fixture reproduced loss of caller layout under a CSS rule hiding the slot or its wrapper on the parent. The fix rejects reuse in both cases, keeps the original caller node assigned, and accepts the visible and inherited-visibility controls. The CLI uses the unwrapped declaration for the existing provenance checks. The actual generated artifact resolved the wrapped declaration's 10% Template paint to 64px in a 640px containing block.
+
+The isolated source and public dist Dialog journeys passed on the signed local combination. It built 47 public packages and passed the original Light, split and mixed interactions. Full matrix startup and hosted acceptance remain open.

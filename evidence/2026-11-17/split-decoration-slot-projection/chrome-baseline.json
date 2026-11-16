@@ -1,0 +1,55 @@
+{
+  "status": "failed",
+  "chrome": "156.0.8078.79",
+  "records": [
+    {
+      "mode": "control",
+      "padding": 64,
+      "before": 1,
+      "callerRects": 1,
+      "slotDisplay": "contents",
+      "slotVisibility": "visible",
+      "wrapperDisplay": "block",
+      "callerValue": "Caller text",
+      "ownership": true,
+      "assigned": true
+    },
+    {
+      "mode": "slot",
+      "padding": 64,
+      "before": 1,
+      "callerRects": 0,
+      "slotDisplay": "none",
+      "slotVisibility": "visible",
+      "wrapperDisplay": "block",
+      "callerValue": "Caller text",
+      "ownership": true,
+      "assigned": true
+    },
+    {
+      "mode": "section",
+      "padding": 64,
+      "before": 1,
+      "callerRects": 0,
+      "slotDisplay": "contents",
+      "slotVisibility": "visible",
+      "wrapperDisplay": "none",
+      "callerValue": "Caller text",
+      "ownership": true,
+      "assigned": true
+    },
+    {
+      "mode": "inherited-owner",
+      "padding": 64,
+      "before": 1,
+      "callerRects": 1,
+      "slotDisplay": "contents",
+      "slotVisibility": "hidden",
+      "wrapperDisplay": "block",
+      "callerValue": "Caller text",
+      "ownership": true,
+      "assigned": true
+    }
+  ],
+  "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'slot',\n+   'section'\n+ ]\n- []\n"
+}
