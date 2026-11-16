@@ -1,0 +1,102 @@
+{
+  "source": "14be33a0a367f478f78de13ca40ca666b460cac9",
+  "tree": "bf42077ed2f6959b29220ae0e9f59968b9bb718b",
+  "executionParent": "7780dba23e3fb14e0138ea4d24a1cbb8096c3cbf",
+  "sourceBinding": "The candidate bytes from the native run match the three changed paths of the signed tree.",
+  "sourceHashes": {
+    "apps/www/src/components/PrototypePreviewer/dialog-close-recipe.test.ts": "b3c58a5bfbc648e70f6577354b2e78b0f517b8063684634ffb505faf14ca623a",
+    "apps/www/src/components/PrototypePreviewer/projection-families.ts": "0ff5db00a7e5a1ab12f8f57ccff4f8e8b00b0045e6d88c7c10d728412ae646b9",
+    "apps/www/src/content/docs/overlay-control-recipes-r94.shared.ts": "02c712c674cac0201a874c1b9c34b5adba177cfeb65ce40ff94c1de0f69ccdee"
+  },
+  "fixtureSha256": "3d3a1f0c99ba2d780a1598a0a1881d45465a08d07b546896f2f0817ef5a4bb07",
+  "runnerSha256": "e904aed7ba5808d556bc4a1a27ca339ffa2d017db9614323db501772db43bf11",
+  "chrome": "156.0.8078.79",
+  "viewport": [900, 700],
+  "native": [
+    {
+      "runtime": "wc",
+      "errors": [],
+      "milestones": [
+        "preview mount",
+        "dialog entered with one command owner",
+        "native Close click and focus return",
+        "reopen and Escape focus return"
+      ],
+      "ownership": {
+        "ref": "close",
+        "nestedCommandCount": 0,
+        "surfaceRef": "closeAppearance",
+        "label": "Close project details"
+      },
+      "status": "passed"
+    },
+    {
+      "runtime": "react",
+      "errors": [],
+      "milestones": [
+        "preview mount",
+        "dialog entered with one command owner",
+        "native Close click and focus return",
+        "reopen and Escape focus return"
+      ],
+      "ownership": {
+        "ref": "close",
+        "nestedCommandCount": 0,
+        "surfaceRef": "closeAppearance",
+        "label": "Close project details"
+      },
+      "status": "passed"
+    },
+    {
+      "runtime": "vue",
+      "errors": [],
+      "milestones": [
+        "preview mount",
+        "dialog entered with one command owner",
+        "native Close click and focus return",
+        "reopen and Escape focus return"
+      ],
+      "ownership": {
+        "ref": "close",
+        "nestedCommandCount": 0,
+        "surfaceRef": "closeAppearance",
+        "label": "Close project details"
+      },
+      "status": "passed"
+    },
+    {
+      "runtime": "vue2",
+      "errors": [],
+      "milestones": [
+        "preview mount",
+        "dialog entered with one command owner",
+        "native Close click and focus return",
+        "reopen and Escape focus return"
+      ],
+      "ownership": {
+        "ref": "close",
+        "nestedCommandCount": 0,
+        "surfaceRef": "closeAppearance",
+        "label": "Close project details"
+      },
+      "status": "passed"
+    }
+  ],
+  "sourceSuite": {
+    "passed": 117,
+    "failed": 0,
+    "files": [
+      "action-appearance.test.ts",
+      "draft-overlay-projections.test.ts",
+      "dialog-close-recipe.test.ts",
+      "projection-families.test.ts",
+      "runtime-preview-surface.test.ts"
+    ]
+  },
+  "captures": {
+    "wc": "6e86fa933568be5d6f5ce8401187968c8cc79ef1d15bfa87a290231dd304cbbc",
+    "react": "6e86fa933568be5d6f5ce8401187968c8cc79ef1d15bfa87a290231dd304cbbc",
+    "vue": "6e86fa933568be5d6f5ce8401187968c8cc79ef1d15bfa87a290231dd304cbbc",
+    "vue2": "6e86fa933568be5d6f5ce8401187968c8cc79ef1d15bfa87a290231dd304cbbc"
+  }
+}
