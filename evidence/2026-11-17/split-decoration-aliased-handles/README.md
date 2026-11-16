@@ -1,0 +1,5 @@
+# Owned-decoration handle provenance
+
+[PR #1484](https://github.com/Proto-UI/Proto-UI/pull/1484) at `913b78bde65c0da51bb9d62f3df5788807cefda6` follows canonical `tw` handle declarations through the existing immutable local and relative-import bindings, including a renamed re-export. Every directly verified targeted argument is counted. A source occurrence qualifies for Template-only placement when its declaration is in the inspected closure and its uses are exclusively proven targeted paint. Independent Root usage, unknown consumers and another unclassified declaration of the same token retain Root preflight.
+
+The previous exact head failed four new positive cases and passed 37. The corrected CLI selection passed 200 tests in five files. Workspace types and the CLI package build passed. The actual built CLI emitted the attached artifact from a separate imported `p-[10%]` handle passed as the second argument after a local alias. Real Chrome measured 64px padding in the 640px layout, retained the caller and rejected the same six surface or connection corruptions. Verification uses a temporary local route with the fixture input hashes in the receipt.

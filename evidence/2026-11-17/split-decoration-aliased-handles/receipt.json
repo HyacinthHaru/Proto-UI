@@ -1,0 +1,26 @@
+{
+  "head": "913b78bde65c0da51bb9d62f3df5788807cefda6",
+  "tree": "c3dab0ead5c6490772a0f8f36aabec60e0acbe2b",
+  "previousHead": "44489203fac531ff52d04ecf46545c393c2bcd97",
+  "red": {
+    "failed": 4,
+    "passed": 37
+  },
+  "green": {
+    "files": 5,
+    "passed": 200
+  },
+  "workspaceTypes": "passed",
+  "builtCli": "1/47",
+  "validatedSourceSHA256": {
+    "packages/cli/src/services/prototype-style-tokens.ts": "100de0fb2dd70df62d1d5403d7a4891a0eadfeccf17cd118f3372317fade095d",
+    "packages/cli/test/shadow-template-style.test.ts": "e6c8ff297d49a000545b1cd6f008416e8c066c28740f59e1f24f0f96501c91eb"
+  },
+  "fixtureSHA256": {
+    "native.mts": "d231fe3fb720924827f2987437baf2a4ece0f04e9b5a5523685dc8ddeae1602a",
+    "used-native.ts": "509c701c80e42adb87909d86447fcfccefa7c4b53fb69ce2a2206353593c04b5",
+    "used-native.astro": "106a7b11c6e0e341ef28943b5f652fad5c1f578a8b7bfd3c33d635d99b88d9f3",
+    "used-native-palette.ts": "43f8e839de543ab60560be34915194fcf3c3bd19e90ced77c60e05d817ce2b90",
+    "used-native-artifact.json": "b3a4f425111a778ff2e153203209295fd0df082fc95db5e0cbae71137d5419cd"
+  }
+}

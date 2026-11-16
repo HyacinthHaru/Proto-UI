@@ -1,0 +1,46 @@
+{
+  "status": "passed",
+  "chrome": "156.0.8078.79",
+  "result": [
+    {
+      "mutation": "hide-surface",
+      "stable": true,
+      "paddingTop": 64,
+      "error": "Error: [WC Adapter] decoration physical blueprint changed",
+      "caller": "Caller input"
+    },
+    {
+      "mutation": "inert-surface",
+      "stable": true,
+      "paddingTop": 64,
+      "error": "Error: [WC Adapter] decoration physical blueprint changed",
+      "caller": "Caller input"
+    },
+    {
+      "mutation": "retag-surface",
+      "stable": true,
+      "paddingTop": 64,
+      "error": "Error: [WC Adapter] decoration physical blueprint changed",
+      "caller": "Caller input"
+    },
+    {
+      "mutation": "remove-indicator",
+      "stable": true,
+      "paddingTop": 64,
+      "error": "Error: [WC Adapter] decoration physical blueprint changed",
+      "caller": "Caller input"
+    },
+    {
+      "mutation": "remove-decoration",
+      "error": "[WC Adapter] decoration physical blueprint changed",
+      "reactions": 1,
+      "caller": "Caller input"
+    },
+    {
+      "mutation": "reorder-slot",
+      "error": "[WC Adapter] decoration physical blueprint changed",
+      "reactions": 1,
+      "caller": "Caller input"
+    }
+  ]
+}
