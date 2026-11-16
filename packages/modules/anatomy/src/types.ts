@@ -74,7 +74,8 @@ export type AnatomyPort = ModulePort & {
   setOrderCallbackDispatcher(dispatch: AnatomyOrderCallbackDispatcher): void;
   subscribeOrder(family: AnatomyFamily, cb: AnatomyOrderChangeCb): Unsubscribe;
   /** Module-internal target readiness/replacement signal; carries no target or data payload.
-   * Domain subscribers narrow view notifications only; topology, cap changes and unknown domains remain family-wide.
+   * Domain subscribers narrow view notifications and cap changes with a retained logical bridge.
+   * Topology changes, bridge replacement and unknown domains remain family-wide.
    */
   subscribeTargets(
     family: AnatomyFamily,

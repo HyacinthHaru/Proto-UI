@@ -30,8 +30,8 @@ criteria:
       zh-CN: mixed ownership 跨 repeatable view detach/remount 保留 claim 与作者订阅声明，宿主顺序观察在 detach 停止、mount 恢复。terminal disposal 删除 owner claim 并释放自身 listener 与 shared observer 参与关系。view detach 本身不删除 logical claim。
   - id: M-ANATOMY-0001-F
     text:
-      en: Standard Runtime installs Anatomy with Expose as a required semantic dependency. Internal own-role/domain/descendant/target ports serve downstream modules without expanding public PartView or turning Anatomy into an arbitrary instance registry. Target notifications are family-wide by default. An internal subscriber may opt into its current domain. A view-target notification may be skipped only when both established domains are known, unchanged and disjoint. Structural and capability changes retain family-wide delivery.
-      zh-CN: standard Runtime 安装 Anatomy，以 Expose 为必需语义依赖。内部 own-role/domain/descendant/target port 服务下游 Module，不扩大公开 PartView，也不使 Anatomy 成为任意 instance registry。 target 通知默认覆盖同一 family；内部订阅方可选当前 domain。仅在双方 domain 均已知、保持不变且互不相同的情况下，可以跳过 view target 通知。结构与 capability 变化仍通知整个 family。
+      en: Standard Runtime installs Anatomy with Expose as a required semantic dependency. Internal own-role/domain/descendant/target ports serve downstream modules without expanding public PartView or turning Anatomy into an arbitrary instance registry. Target notifications are family-wide by default. An internal subscriber may opt into its current domain. A view-target notification may be skipped only when both established domains are known, unchanged and disjoint. Capability notifications may narrow under the same rule if the logical instance and parent getter are retained, including a view capability gap. Structural changes and logical bridge replacement retain family-wide delivery.
+      zh-CN: standard Runtime 安装 Anatomy，以 Expose 为必需语义依赖。内部 own-role/domain/descendant/target port 服务下游 Module，不扩大公开 PartView，也不使 Anatomy 成为任意 instance registry。 target 通知默认覆盖同一 family；内部订阅方可选当前 domain。仅在双方 domain 均已知、保持不变且互不相同的情况下，可以跳过 view target 通知。capability 变化仅在 logical instance 和 parent getter 均保留时使用同一规则，包括临时失去 view capability 的阶段。结构变化与 logical bridge 替换仍通知整个 family。
 satisfies:
   contracts:
     - C-ANATOMY-0001
@@ -98,7 +98,7 @@ openQuestions:
 revisions:
   - version: 0.3.0-alpha.2
     change: revised
-    summary: Defined opt-in delivery for existing internal view target notifications in stable current domains.
+    summary: Defined opt-in delivery for internal view and retained-bridge target notifications in stable current domains.
   - version: 0.3.0-alpha.1
     change: revised
     summary: Exposed the current structural claim role to the A11y part service without moving relationship ownership or expanding author PartView.
