@@ -1,0 +1,68 @@
+{
+  "status": "passed",
+  "chrome": "156.0.8078.79",
+  "cases": [
+    {
+      "mode": "visible",
+      "initial": {
+        "padding": 64,
+        "rects": 1
+      },
+      "leafDisplay": "inline-block",
+      "wrapperDisplay": "block",
+      "opacity": "0.5",
+      "leafRects": 1,
+      "callerRects": 1,
+      "input": "Caller text",
+      "owner": true,
+      "assigned": true
+    },
+    {
+      "mode": "leaf",
+      "initial": {
+        "padding": 64,
+        "rects": 1
+      },
+      "leafDisplay": "none",
+      "wrapperDisplay": "block",
+      "opacity": "0.5",
+      "leafRects": 0,
+      "callerRects": 1,
+      "rejection": "Error: [WC Adapter] decoration physical leaf changed",
+      "input": "Caller text",
+      "owner": true,
+      "assigned": true
+    },
+    {
+      "mode": "wrapper",
+      "initial": {
+        "padding": 64,
+        "rects": 1
+      },
+      "leafDisplay": "inline-block",
+      "wrapperDisplay": "none",
+      "opacity": "0.5",
+      "leafRects": 0,
+      "callerRects": 1,
+      "rejection": "Error: [WC Adapter] decoration physical leaf changed",
+      "input": "Caller text",
+      "owner": true,
+      "assigned": true
+    },
+    {
+      "mode": "transparent",
+      "initial": {
+        "padding": 64,
+        "rects": 1
+      },
+      "leafDisplay": "inline-block",
+      "wrapperDisplay": "block",
+      "opacity": "0",
+      "leafRects": 1,
+      "callerRects": 1,
+      "input": "Caller text",
+      "owner": true,
+      "assigned": true
+    }
+  ]
+}

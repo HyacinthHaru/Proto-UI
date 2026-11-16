@@ -1,0 +1,269 @@
+{
+  "candidate": {
+    "head": "0ab97d07a270e41ddb2bec6303292d1c03f925f4",
+    "tree": "9cac6f5ed98289fcd6c55f12c66b8cc15d66490a",
+    "parents": ["84e5ea15096aa101fa7695b684c22ef67852db8e"],
+    "finalInputs": {
+      "packages/adapters/web-component/src/runtime/session.ts": "a02b7cb8f7cc8698f80b01f4ba7e45234eede7f898cc0cac1a3909397f66edb1",
+      "packages/adapters/web-component/test/owned-decoration.integration.test.ts": "cb341873b396899ea8d65b1647f8c7b8cafdca4cb513dee44948258202c63990",
+      "packages/cli/src/services/prototype-style-tokens.ts": "180ef9e28114a8906a822c654281f8cb544c39381bd04e3f4fa85f1247584e17",
+      "packages/cli/test/shadow-template-style.test.ts": "46dda466c4cb649582bf6d6917bbfc9c6e8c2bef44d667090dbbaf6e13eed3a5"
+    },
+    "typesExit": 0
+  },
+  "focused": {
+    "parent": "d94a6e0a6859236476c955b2bf444c83b3f1a568",
+    "red": 5,
+    "baselinePasses": 122,
+    "passes": 127,
+    "originalInputs": {
+      "packages/adapters/web-component/src/runtime/session.ts": "a02b7cb8f7cc8698f80b01f4ba7e45234eede7f898cc0cac1a3909397f66edb1",
+      "packages/adapters/web-component/test/owned-decoration.integration.test.ts": "cb341873b396899ea8d65b1647f8c7b8cafdca4cb513dee44948258202c63990",
+      "packages/cli/src/services/prototype-style-tokens.ts": "180ef9e28114a8906a822c654281f8cb544c39381bd04e3f4fa85f1247584e17",
+      "packages/cli/test/shadow-template-style.test.ts": "46dda466c4cb649582bf6d6917bbfc9c6e8c2bef44d667090dbbaf6e13eed3a5"
+    },
+    "normalizedTestOnly": [],
+    "baselineLogSHA256": "49406152f5eb6adbbe23338b3cebae06f6fd511b970ac432b15d64983fa3b3e6",
+    "exactSignedLogSHA256": "da3a366a635af5c67c8828db9ab3c215c83a70b32a30e3e7324624a70cca48fc"
+  },
+  "expanded": {
+    "passes": 713,
+    "failures": 25,
+    "files": 33,
+    "matchedParent": {
+      "parentFailures": 25,
+      "candidateFailures": 25,
+      "newCases": [],
+      "resolved": [],
+      "changedMessage": []
+    },
+    "reportSHA256": "ccd62ca53b8504213a2bd3547768f2f10d34aca9f2ad61bd1fa4320ed8963ce2"
+  },
+  "chrome": {
+    "probeSHA256": "0185309fb760431e176bd38b6a3930260381123ab1cf3ad989c4880a907e9594",
+    "candidateArtifactSHA256": "6e87b94e4cc5ac05d9c27e40fa827a8e220b29e17ce19387db4a9dde06659042",
+    "baselineExit": 1,
+    "candidateExit": 0,
+    "cases": 4
+  },
+  "dialog": {
+    "head": "a3d3457f9f772d1c4a2adee5199216e496420b49",
+    "tree": "feb6891eac0e174f9fe3df6b19980df8dd0e4742",
+    "parents": [
+      "a834bd4e30b2cad49509ab6d0c056cc2878663b5",
+      "0ab97d07a270e41ddb2bec6303292d1c03f925f4"
+    ],
+    "packageCount": 47,
+    "tests": {
+      "scripts/analysis/shadow-s4-journey.mjs": "16c6af53316d131a06657a303c5d8d92138f64835d23495c4ab261d51d90b7b5",
+      "scripts/analysis/shadow-s4-public-browser.mjs": "9d979bed6cce27c1b6628a47dad109670f72dd27aa5a6db336d8ea27c7c1dedd"
+    },
+    "sourceExit": 0,
+    "source": {
+      "result": [
+        {
+          "profile": "light",
+          "requests": 15,
+          "counts": {
+            "root": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "trigger": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "mask": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "content": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "title": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "description": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "close": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "icon": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "header": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "footer": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            }
+          }
+        },
+        {
+          "profile": "split",
+          "requests": 15,
+          "counts": {
+            "root": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "trigger": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "mask": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "content": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "title": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "description": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "close": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "icon": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "header": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "footer": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            }
+          }
+        },
+        {
+          "profile": "mixed",
+          "requests": 15,
+          "counts": {
+            "root": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "trigger": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "mask": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "content": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "title": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "description": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "close": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "icon": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "header": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "footer": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            }
+          }
+        }
+      ],
+      "errors": [],
+      "chrome": "156.0.8078.79"
+    },
+    "distExit": 0,
+    "distLogSHA256": "05bbf2e5a0e32d720dc2e79049267ceda9e847a1e30c357aa33f9479ce115907"
+  }
+}
