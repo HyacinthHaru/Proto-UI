@@ -1,0 +1,443 @@
+diff --git a/apps/www/src/components/PrototypePreviewer/demo-renderer.ts b/apps/www/src/components/PrototypePreviewer/demo-renderer.ts
+index 681e86d6a..241d2f4fe 100644
+--- a/apps/www/src/components/PrototypePreviewer/demo-renderer.ts
++++ b/apps/www/src/components/PrototypePreviewer/demo-renderer.ts
+@@ -42,11 +42,15 @@ import { retryableModule } from './runtimes/retryable-module';
+ 
+ const reactAdapter = retryableModule(
+   () => import('@proto.ui/adapter-react'),
+-  runtimeUrls.reactAdapter
++  runtimeUrls.reactAdapter,
++  undefined,
++  'react-adapter'
+ );
+ const reactRuntime = retryableModule(
+   () => import('./runtimes/react-runtime'),
+-  runtimeUrls.reactRuntime
++  runtimeUrls.reactRuntime,
++  undefined,
++  'react-runtime'
+ );
+ const vueAdapter = retryableModule(() => import('@proto.ui/adapter-vue'), runtimeUrls.vueAdapter);
+ const vueRuntime = retryableModule(() => import('./runtimes/vue-runtime'), runtimeUrls.vueRuntime);
+diff --git a/apps/www/src/components/PrototypePreviewer/runtimes/react-runtime.ts b/apps/www/src/components/PrototypePreviewer/runtimes/react-runtime.ts
+index ddb136480..d9a624864 100644
+--- a/apps/www/src/components/PrototypePreviewer/runtimes/react-runtime.ts
++++ b/apps/www/src/components/PrototypePreviewer/runtimes/react-runtime.ts
+@@ -4,11 +4,23 @@ import type { RuntimeAPI } from './ids';
+ import type * as ReactTypes from 'react';
+ import { claimHostMount, releaseHostMount } from './host-mount';
+ 
+-const importReact = retryableModule(() => import('react'), runtimeUrls.react);
+-const reactDomModule = retryableModule(() => import('react-dom'), runtimeUrls.reactDom);
++const importReact = retryableModule(
++  () => import('react'),
++  runtimeUrls.react,
++  undefined,
++  'react-package'
++);
++const reactDomModule = retryableModule(
++  () => import('react-dom'),
++  runtimeUrls.reactDom,
++  undefined,
++  'react-dom-package'
++);
+ const reactDomClientModule = retryableModule(
+   () => import('react-dom/client'),
+-  runtimeUrls.reactDomClient
++  runtimeUrls.reactDomClient,
++  undefined,
++  'react-dom-client-package'
+ );
+ 
+ // Keep the React 18 reader runtime, but deliver the pinned pair through
+diff --git a/apps/www/src/components/PrototypePreviewer/runtimes/retryable-module.ts b/apps/www/src/components/PrototypePreviewer/runtimes/retryable-module.ts
+index 7481a8dc2..79efa2ea9 100644
+--- a/apps/www/src/components/PrototypePreviewer/runtimes/retryable-module.ts
++++ b/apps/www/src/components/PrototypePreviewer/runtimes/retryable-module.ts
+@@ -7,15 +7,54 @@
+ export function retryableModule<T>(
+   load: () => Promise<T>,
+   moduleUrl: string,
+-  importModule: (url: string) => Promise<T> = (url) => import(/* @vite-ignore */ url)
++  importModule: (url: string) => Promise<T> = (url) => import(/* @vite-ignore */ url),
++  diagnosticName?: string
+ ): () => Promise<T> {
+   let pending: Promise<T> | undefined;
+   let attempt = 0;
++  let reused = false;
++  const markAttempt = (stage: string, index: number) => {
++    const target = globalThis as typeof globalThis & {
++      __puiContentsStagingProbe?: boolean;
++      __puiS4HostedTiming?: boolean;
++    };
++    if (!diagnosticName || (!target.__puiContentsStagingProbe && !target.__puiS4HostedTiming))
++      return false;
++    try {
++      const browserMs = performance.now();
++      if (target.__puiContentsStagingProbe)
++        performance.mark('pui-contents:react-dependency:' + diagnosticName + ':' + stage, {
++          detail: { attempt: index },
++        });
++      if (target.__puiS4HostedTiming) {
++        performance.mark('pui:s4:import:' + diagnosticName + ':' + stage + ':' + index);
++        console.info(
++          '[S4 hosted import boundary]',
++          JSON.stringify({
++            asset: diagnosticName,
++            stage,
++            attempt: index,
++            browserMs,
++            browserTimeOrigin: performance.timeOrigin,
++          })
++        );
++      }
++      return true;
++    } catch {
++      return false;
++    }
++  };
+   return () => {
+-    if (pending) return pending;
++    if (pending) {
++      if (!reused) reused = markAttempt('reuse', attempt - 1);
++      return pending;
++    }
+     const currentAttempt = attempt++;
++    reused = false;
++    markAttempt('request', currentAttempt);
+     pending = Promise.resolve()
+       .then(() => {
++        markAttempt('factory', currentAttempt);
+         if (currentAttempt === 0) return load();
+         const url = new URL(moduleUrl, globalThis.location.href);
+         if (url.origin !== globalThis.location.origin || !/^https?:$/.test(url.protocol)) {
+@@ -28,6 +67,12 @@ export function retryableModule<T>(
+         pending = undefined;
+         throw error;
+       });
++    if (diagnosticName) {
++      void pending.then(
++        () => markAttempt('fulfilled', currentAttempt),
++        () => markAttempt('rejected', currentAttempt)
++      );
++    }
+     return pending;
+   };
+ }
+diff --git a/apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts b/apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts
+index 2953f8254..be8a57201 100644
+--- a/apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts
++++ b/apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts
+@@ -9,9 +9,31 @@ import { afterAll, beforeAll, describe, expect, it, onTestFinished } from 'vites
+ import { launchBrowser, startServer, stopServer } from './browser-harness';
+ import { observeS4Startup, installS4InitJournal } from './demo-matrix-observation';
+ import { settleFamilyQueryBatch } from './family-query-observer';
++import { createQueryDispatchTrace } from './query-dispatch-trace.mjs';
+ import { runS4Journey } from '../../../../../../scripts/analysis/shadow-s4-journey.mjs';
+ let browser: Browser;
+ let baseUrl: string;
++const observeHosted = process.env.PROTO_UI_S4_HOSTED_DIAGNOSTIC === '1';
++const hostLog = (
++  suite: string,
++  subject: string,
++  stage: string,
++  fields: Record<string, unknown> = {}
++) => {
++  if (!observeHosted) return;
++  console.info(
++    '[S4 hosted transport]',
++    JSON.stringify({
++      suite,
++      subject,
++      stage,
++      deliveredNodeMs: performance.now(),
++      nodeTimeOrigin: performance.timeOrigin,
++      wallMs: Date.now(),
++      ...fields,
++    })
++  );
++};
+ beforeAll(async () => {
+   baseUrl = await startServer('/zh-cn/internal/demo-matrix/');
+   browser = await launchBrowser();
+@@ -45,8 +67,180 @@ describe.sequential('S4 complete public Dialog settings', () => {
+         }
+       });
+       const page = await context.newPage();
++      const engineDirectory = process.env.PROTO_UI_RUNTIME_EVIDENCE_DIR;
++      const engine = observeHosted && engineDirectory
++        ? createQueryDispatchTrace(page, path.join(engineDirectory, 's4-engine-' + locale))
++        : undefined;
++      let engineStart: Promise<void> | undefined;
++      let engineFinish: Promise<void> | undefined;
++      let engineWindow: ReturnType<typeof setTimeout> | undefined;
++      let saveCpu: (() => Promise<void>) | undefined;
++      const stopEngine = (contextClosed: boolean, reason: string) => {
++        if (!engineStart || !engine) return;
++        clearTimeout(engineWindow);
++        return (engineFinish ??= engineStart.then(() =>
++          engine.finish(contextClosed, { reason, nodeMs: globalThis.performance.now() })
++        ));
++      };
++      if (observeHosted) {
++        const session = await context.newCDPSession(page);
++        const sources = new Map<string, string>();
++        const event = (
++          stage: string,
++          value: {
++            requestId: string;
++            timestamp: number;
++            response?: { status: number };
++            encodedDataLength?: number;
++          }
++        ) => {
++          const asset = sources.get(value.requestId);
++          if (asset)
++            hostLog(locale, asset, stage, {
++              id: value.requestId,
++              chromiumSeconds: value.timestamp,
++              status: value.response?.status,
++              encodedBytes: value.encodedDataLength,
++            });
++        };
++        session.on('Network.requestWillBeSent', (value) => {
++          const route = new URL(value.request.url);
++          const asset = route.pathname.split('/').at(-1) ?? '';
++          if (
++            (route.pathname.includes('/.vite/deps/') &&
++              /^(?:react[._-]|react-dom[._-]|chunk-)/.test(asset)) ||
++            asset === 'react-runtime.ts'
++          ) {
++            sources.set(value.requestId, asset);
++            if (asset === 'react.js' && engine && !engineStart) {
++              engineStart = engine.prepare();
++              engineWindow = setTimeout(() => {
++                void stopEngine(false, '50-second recording window')?.catch((error) =>
++                  hostLog(locale, 'engine', 'error', { reason: String(error) })
++                );
++                void saveCpu?.();
++              }, 50_000);
++            }
++            hostLog(locale, asset, 'request', {
++              id: value.requestId,
++              chromiumSeconds: value.timestamp,
++              chromiumWallSeconds: value.wallTime,
++            });
++          }
++        });
++        session.on('Network.responseReceived', (value) => event('response', value));
++        session.on('Network.loadingFinished', (value) => event('finished', value));
++        session.on('Network.loadingFailed', (value) => {
++          const asset = sources.get(value.requestId);
++          if (asset)
++            hostLog(locale, asset, 'loading-failed', {
++              id: value.requestId,
++              chromiumSeconds: value.timestamp,
++              canceled: value.canceled,
++            });
++        });
++        await session.send('Network.enable');
++        const observedScript = (value: string) => {
++          try {
++            const url = new URL(value);
++            return url.pathname.split('/').at(-1)?.match(
++              /^(?:react(?:-dom(?:_client)?)?\.js|chunk-(?:EK7DFB6S|2MALL255|BUSYA2B4)\.js|react-runtime\.ts)$/
++            )?.[0] ?? null;
++          } catch {
++            return null;
++          }
++        };
++        let scriptEvents = 0;
++        session.on('Debugger.scriptParsed', ({ scriptId, url, isModule, executionContextId }) => {
++          const file = observedScript(url);
++          if (file && ++scriptEvents <= 64)
++            hostLog(locale, 'script:' + file, 'parsed', { scriptId, isModule, executionContextId });
++        });
++        const startProfile = (async () => {
++          await session.send('Debugger.enable');
++          await session.send('Profiler.enable');
++          await session.send('Profiler.setSamplingInterval', { interval: 1_000 });
++          await session.send('Profiler.start');
++          hostLog(locale, 'script-sampling', 'started');
++        })();
++        const observerDeadline = (ms: number) =>
++          new Promise<never>((_, reject) => {
++            const timer = setTimeout(() => reject(new Error('renderer profiling acknowledgement timeout')), ms);
++            timer.unref();
++          });
++        await Promise.race([startProfile, observerDeadline(2500)]).catch((error) =>
++          hostLog(locale, 'script-sampling', 'start observation expired', { reason: String(error) })
++        );
++        let cpuReceipt: Promise<void> | undefined;
++        saveCpu = () => (cpuReceipt ??= (async () => {
++          try {
++            const { profile } = await Promise.race([
++              startProfile.then(() => session.send('Profiler.stop')),
++              observerDeadline(5_000),
++            ]);
++            let timestamp = profile.startTime;
++            const byId = new Map(profile.nodes.map((entry) => [entry.id, entry.callFrame]));
++            const topFrames = new Map<string, { file: string; scriptId: string; functionName: string; samples: number; firstProfileMs: number }>();
++            for (let index = 0; index < (profile.samples?.length ?? 0); index++) {
++              timestamp += profile.timeDeltas?.[index] ?? 0;
++              const frame = byId.get(profile.samples![index]);
++              const file = frame ? observedScript(frame.url) : null;
++              if (!file || !frame) continue;
++              const key = JSON.stringify([file, frame.scriptId, frame.functionName]);
++              const existing = topFrames.get(key);
++              if (existing) existing.samples++;
++              else topFrames.set(key, {
++                file, scriptId: frame.scriptId, functionName: frame.functionName,
++                samples: 1, firstProfileMs: (timestamp - profile.startTime) / 1000,
++              });
++            }
++            hostLog(locale, 'script-sampling', 'captured', {
++              samples: profile.samples?.length ?? 0,
++              durationMs: (profile.endTime - profile.startTime) / 1000,
++              topFrames: [...topFrames.values()].slice(0, 80),
++            });
++          } catch (error) {
++            hostLog(locale, 'script-sampling', 'unavailable', { reason: String(error) });
++          }
++        })());
++        await page.addInitScript(() => {
++          Object.defineProperty(window, '__puiS4HostedTiming', { value: true, configurable: true });
++          let remaining = 80;
++          const resources = new PerformanceObserver((list) => {
++            for (const item of list.getEntries()) {
++              const entry = item as PerformanceResourceTiming;
++              const route = new URL(entry.name, window.location.href);
++              const asset = route.pathname.split('/').at(-1) ?? '';
++              if (
++                route.origin !== window.location.origin ||
++                !route.pathname.includes('/.vite/deps/') ||
++                !/^(?:react[._-]|react-dom[._-]|chunk-)/.test(asset)
++              ) continue;
++              if (remaining === 0) return;
++              remaining--;
++              console.info('[S4 browser resource clock]', JSON.stringify({
++                asset, version: route.searchParams.get('v'),
++                browserTimeOrigin: performance.timeOrigin,
++                browserObservedMs: performance.now(),
++                browserStartMs: entry.startTime,
++                browserResponseEndMs: entry.responseEnd,
++                initiatorType: entry.initiatorType,
++                transferSize: entry.transferSize,
++              }));
++            }
++          });
++          resources.observe({ type: 'resource', buffered: true });
++        });
++      }
+       const errors: string[] = [];
+-      page.on('pageerror', (e) => errors.push(e.message));
++      page.on('pageerror', (error) => {
++        errors.push(error.message);
++        if (errors.length <= 24)
++          hostLog(locale, 'pageerror', 'exception', {
++            message: error.message,
++            stack: error.stack?.slice(0, 8_000),
++          });
++      });
+       let phase = 'created';
+       const note = (next: string, outcome: string) => {
+         phase = next;
+@@ -71,6 +265,26 @@ describe.sequential('S4 complete public Dialog settings', () => {
+       const browserObservation = (message: { text(): string; type(): string }) => {
+         try {
+           const text = message.text();
++          if (text.startsWith('[S4 rejected host] ')) {
++            const mark = JSON.parse(text.slice('[S4 rejected host] '.length));
++            hostLog(locale, 'wc-host', 'rejected', mark);
++            return;
++          }
++          if (text.startsWith('[S4 browser resource clock] ')) {
++            const mark = JSON.parse(text.slice('[S4 browser resource clock] '.length));
++            hostLog(locale, 'resource:' + mark.asset, 'browser-resource-complete', mark);
++            return;
++          }
++          if (text.startsWith('[S4 hosted import boundary] ')) {
++            const mark = JSON.parse(text.slice('[S4 hosted import boundary] '.length));
++            hostLog(locale, 'promise:' + mark.asset, mark.stage, mark);
++            return;
++          }
++          if (text.startsWith('[S4 hosted React phase] ')) {
++            const phase = JSON.parse(text.slice('[S4 hosted React phase] '.length));
++            hostLog(locale, 'react-owner', phase.stage, phase);
++            return;
++          }
+           if (message.type() === 'error') {
+             if (consoleErrors.length < 32) {
+               const row = {
+@@ -148,6 +362,8 @@ describe.sequential('S4 complete public Dialog settings', () => {
+                 page.evaluate(() => ({
+                   startup: (window as any).__puiS4Startup ?? null,
+                   init: (window as any).__puiS4InitJournal ?? null,
++                  importJournal: (window as any).__puiS4ImportJournal ?? null,
++                  importJournalCollectedAt: performance.timeOrigin + performance.now(),
+                 })),
+               ],
+               2000
+@@ -194,6 +410,14 @@ describe.sequential('S4 complete public Dialog settings', () => {
+                 'Actual Node function passed to waitForFunction; not proof of browser execution.',
+               observation,
+               initObservation,
++              importJournal:
++                result.outcomes[0]?.status === 'fulfilled'
++                  ? result.outcomes[0].value.importJournal
++                  : null,
++              importJournalCollectedAt:
++                result.outcomes[0]?.status === 'fulfilled'
++                  ? result.outcomes[0].value.importJournalCollectedAt
++                  : null,
+             };
+             console.log('[S4 startup predicate]', JSON.stringify(evidence));
+             const directory = path.join(
+@@ -239,6 +463,7 @@ describe.sequential('S4 complete public Dialog settings', () => {
+         } finally {
+           try {
+             page.off('console', browserObservation);
++            await stopEngine(true, 'context closed');
+           } catch {
+             /* diagnostic subscription only */
+           }
+diff --git a/apps/www/src/content/docs/zh-cn/query-dispatch-trace.mjs b/apps/www/src/content/docs/zh-cn/query-dispatch-trace.mjs
+index e487254f3..4afd8ed67 100644
+--- a/apps/www/src/content/docs/zh-cn/query-dispatch-trace.mjs
++++ b/apps/www/src/content/docs/zh-cn/query-dispatch-trace.mjs
+@@ -6,7 +6,9 @@ const MAX_BYTES = 32 * 1024 * 1024;
+ const categories = [
+   'devtools',
+   'devtools.timeline',
+-  'disabled-by-default-devtools.timeline',
++  'loading',
++  'blink.user_timing',
++  'v8.execute',
+   'disabled-by-default-v8.compile',
+ ];
+ 
+diff --git a/packages/adapters/web-component/src/adapt.ts b/packages/adapters/web-component/src/adapt.ts
+index 5974b905b..119013a17 100644
+--- a/packages/adapters/web-component/src/adapt.ts
++++ b/packages/adapters/web-component/src/adapt.ts
+@@ -417,6 +417,19 @@ export function AdaptToWebComponent<TProto extends Prototype<any, any>>(
+       try {
+         this._connectOwner(() => this._instanceToken === owner && !!relocation?.());
+       } catch (error) {
++        if (
++          (this.ownerDocument.defaultView as (Window & { __puiS4HostedTiming?: boolean }) | null)?.__puiS4HostedTiming &&
++          error instanceof Error && error.message === '[feedback] owned-decoration unsupported by this adapter'
++        )
++          console.info('[S4 rejected host]', JSON.stringify({
++            tag: this.localName,
++            shadow: Boolean(this.shadowRoot),
++            s3: this.closest('[data-s3-profile]')?.getAttribute('data-s3-profile') ?? null,
++            s4: this.closest('[data-s4-profile]')?.getAttribute('data-s4-profile') ?? null,
++            s5: this.closest('[data-s5-profile]')?.getAttribute('data-s5-profile') ?? null,
++            section: this.closest('[id^="shadow-split-s"]')?.id ?? null,
++            nestedS4Settings: Boolean(this.closest('.s4-settings')),
++          }));
+         // Preserve the synchronous failure; the guarded terminal transaction
+         // also owns partial activation and callback reentry for every profile.
+         if (initializing) void this.retireOwner().catch(() => {});

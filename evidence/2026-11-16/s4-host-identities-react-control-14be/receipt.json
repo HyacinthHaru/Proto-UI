@@ -1,0 +1,271 @@
+{
+  "head": "14be33a0a367f478f78de13ca40ca666b460cac9",
+  "tree": "bf42077ed2f6959b29220ae0e9f59968b9bb718b",
+  "chrome": "156.0.8078.79",
+  "diagnosticPatchSha256": "5b96a2f85cd9c9e8806468702a5a21999d4e2918eca2c402879a9d2d75040f2c",
+  "fullPage": {
+    "locale": "zh-cn",
+    "exit": 1,
+    "source": "14be33a0a367f478f78de13ca40ca666b460cac9",
+    "startupWaitMs": 60000,
+    "outerCaseTimeoutMs": 150000,
+    "englishUnselected": true,
+    "selectedFailed": 1,
+    "postVerdictObservation": "rejected",
+    "affectedHosts": [
+      {
+        "tag": "pui-s3-split-trigger-a-0",
+        "shadow": true,
+        "s3": "split",
+        "s4": null,
+        "s5": null,
+        "section": "shadow-split-s3",
+        "nestedS4Settings": false
+      },
+      {
+        "tag": "pui-s3-split-trigger-d-0",
+        "shadow": true,
+        "s3": "split",
+        "s4": null,
+        "s5": null,
+        "section": "shadow-split-s3",
+        "nestedS4Settings": false
+      },
+      {
+        "tag": "pui-s3-split-trigger-b-0",
+        "shadow": true,
+        "s3": "split",
+        "s4": null,
+        "s5": null,
+        "section": "shadow-split-s3",
+        "nestedS4Settings": false
+      },
+      {
+        "tag": "pui-s3-split-trigger-c-0",
+        "shadow": true,
+        "s3": "split",
+        "s4": null,
+        "s5": null,
+        "section": "shadow-split-s3",
+        "nestedS4Settings": false
+      },
+      {
+        "tag": "pui-s3-mixed-trigger-a-0",
+        "shadow": true,
+        "s3": "mixed",
+        "s4": null,
+        "s5": null,
+        "section": "shadow-split-s3",
+        "nestedS4Settings": false
+      },
+      {
+        "tag": "pui-s3-mixed-trigger-d-0",
+        "shadow": true,
+        "s3": "mixed",
+        "s4": null,
+        "s5": null,
+        "section": "shadow-split-s3",
+        "nestedS4Settings": false
+      },
+      {
+        "tag": "pui-s3-mixed-trigger-b-0",
+        "shadow": true,
+        "s3": "mixed",
+        "s4": null,
+        "s5": null,
+        "section": "shadow-split-s3",
+        "nestedS4Settings": false
+      },
+      {
+        "tag": "pui-s3-mixed-trigger-c-0",
+        "shadow": true,
+        "s3": "mixed",
+        "s4": null,
+        "s5": null,
+        "section": "shadow-split-s3",
+        "nestedS4Settings": false
+      },
+      {
+        "tag": "pui-s3-split-trigger-a-2",
+        "shadow": true,
+        "s3": "split",
+        "s4": "split",
+        "s5": null,
+        "section": "shadow-split-s4",
+        "nestedS4Settings": true
+      },
+      {
+        "tag": "pui-s3-split-trigger-d-2",
+        "shadow": true,
+        "s3": "split",
+        "s4": "split",
+        "s5": null,
+        "section": "shadow-split-s4",
+        "nestedS4Settings": true
+      },
+      {
+        "tag": "pui-s3-split-trigger-b-2",
+        "shadow": true,
+        "s3": "split",
+        "s4": "split",
+        "s5": null,
+        "section": "shadow-split-s4",
+        "nestedS4Settings": true
+      },
+      {
+        "tag": "pui-s3-split-trigger-c-2",
+        "shadow": true,
+        "s3": "split",
+        "s4": "split",
+        "s5": null,
+        "section": "shadow-split-s4",
+        "nestedS4Settings": true
+      },
+      {
+        "tag": "pui-s3-mixed-trigger-a-3",
+        "shadow": true,
+        "s3": "mixed",
+        "s4": "mixed",
+        "s5": null,
+        "section": "shadow-split-s4",
+        "nestedS4Settings": true
+      },
+      {
+        "tag": "pui-s3-mixed-trigger-d-3",
+        "shadow": true,
+        "s3": "mixed",
+        "s4": "mixed",
+        "s5": null,
+        "section": "shadow-split-s4",
+        "nestedS4Settings": true
+      },
+      {
+        "tag": "pui-s3-mixed-trigger-b-3",
+        "shadow": true,
+        "s3": "mixed",
+        "s4": "mixed",
+        "s5": null,
+        "section": "shadow-split-s4",
+        "nestedS4Settings": true
+      },
+      {
+        "tag": "pui-s3-mixed-trigger-c-3",
+        "shadow": true,
+        "s3": "mixed",
+        "s4": "mixed",
+        "s5": null,
+        "section": "shadow-split-s4",
+        "nestedS4Settings": true
+      },
+      {
+        "tag": "pui-s5-split-trigger-a-0",
+        "shadow": true,
+        "s3": null,
+        "s4": null,
+        "s5": "split",
+        "section": "shadow-split-s5",
+        "nestedS4Settings": false
+      },
+      {
+        "tag": "pui-s5-split-trigger-b-0",
+        "shadow": true,
+        "s3": null,
+        "s4": null,
+        "s5": "split",
+        "section": "shadow-split-s5",
+        "nestedS4Settings": false
+      }
+    ],
+    "hostCounts": [
+      {
+        "section": "shadow-split-s3",
+        "profile": "mixed",
+        "count": 4
+      },
+      {
+        "section": "shadow-split-s3",
+        "profile": "split",
+        "count": 4
+      },
+      {
+        "section": "shadow-split-s4",
+        "profile": "mixed",
+        "count": 4
+      },
+      {
+        "section": "shadow-split-s4",
+        "profile": "split",
+        "count": 4
+      },
+      {
+        "section": "shadow-split-s5",
+        "profile": "split",
+        "count": 2
+      }
+    ],
+    "bootstrapProjectionClosureErrors": 0,
+    "scriptParsedReceipts": [
+      {
+        "subject": "script:chunk-BUSYA2B4.js",
+        "isModule": true,
+        "scriptId": "679",
+        "executionContextId": 3
+      },
+      {
+        "subject": "script:react-runtime.ts",
+        "isModule": true,
+        "scriptId": "1102",
+        "executionContextId": 3
+      }
+    ],
+    "profilerStopObservation": "Error: renderer profiling acknowledgement timeout",
+    "trace": {
+      "complete": true,
+      "bytes": 89323,
+      "dataLossOccurred": false,
+      "sha256": "f28fb9887973d9b7a049619b54f4e482d773f0f419bf9e78ef223e7aaefafe7c"
+    },
+    "traceSetupObservation": [
+      {
+        "stage": "prepare",
+        "reason": "Error: trace setup: observation budget expired"
+      }
+    ],
+    "packageImportObserved": {
+      "react-package": ["factory"],
+      "react-dom-package": ["factory"],
+      "react-dom-client-package": ["factory"]
+    }
+  },
+  "isolatedControl": {
+    "scope": "Real Astro route, actual lazy Vite runtime loader, new Chrome context and existing local optimized-dependency cache",
+    "exit": 0,
+    "loaderPatchSha256": "4f169b0e3fc9d0b09e74afe73fef3c3105acf2f4ca2da479ce6faf42a1178f47",
+    "testRunnerSha256": "5ea8cd899601b9e03e221388b53336cc03b159fd8adf5cfa1f6d354c0772b9d1",
+    "routeFixtureSha256": "78e3c6eb6252f9369c6be946b50ff37454863c46670fe727ad2d1bdd3c872999",
+    "results": {
+      "browserElapsedMs": 28.8,
+      "reactVersion": "18.3.1",
+      "createElement": "function",
+      "createRoot": "function",
+      "createPortal": "function"
+    },
+    "packageFactoryToFulfillmentMs": {
+      "react-package": 4.5,
+      "react-dom-package": 28.5,
+      "react-dom-client-package": 28.3
+    },
+    "completedAssetNames": [
+      "react-runtime.ts",
+      "react.js",
+      "react-dom.js",
+      "react-dom_client.js",
+      "chunk-BUSYA2B4.js",
+      "chunk-EK7DFB6S.js",
+      "chunk-2MALL255.js"
+    ],
+    "errorCount": 0,
+    "initialSyntheticPageExit": 1,
+    "initialSyntheticPageReason": "Browser blocked Vite HMR WebSocket for the fulfilled synthetic page; the three import promises had fulfilled before the console assertion"
+  }
+}
