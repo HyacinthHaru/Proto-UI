@@ -1,0 +1,45 @@
+{
+  "head": "8fb2594cc5d456906aa9ac8b16912ade6d913888",
+  "tree": "f66983fc81a493a024d84a3fd689021e06bc517f",
+  "base": "aa6d6b15d4aedb2863a935168dac73ea5f26ace1",
+  "reviewedPriorHead": "928c68550819521a6a0264d57de8a0c647d3f9d2",
+  "testedHashes": {
+    "packages/adapters/web-component/src/commit.ts": "8ee10a408cffa1f843924749c0bf669f80afab45485b090d746300167a8c6704",
+    "packages/adapters/web-component/src/runtime/session.ts": "6b3b2c03ea713255d04edced622db202248d5a84d63918046567d4b1c1c57b0c",
+    "packages/adapters/web-component/test/owned-decoration.integration.test.ts": "991312e954dc052b7e4bec74c6e9e02b723c14102e6dd972c3b9a94106eb3f34",
+    "spec/contracts/C-FEEDBACK-STYLE-OWNED-TARGET-0001.yaml": "3c133017284ef9de10a30b5bdcba537b2134ad12781f4cd6349974c19c1541f0"
+  },
+  "redCases": 3,
+  "focusedPassing": 49,
+  "specAuthoringExit": 0,
+  "workspaceTypesExit": 0,
+  "native": {
+    "cases": [
+      {
+        "mutation": "move surface",
+        "stable": true,
+        "error": "Error: [WC Adapter] stale decoration blueprint lease",
+        "callerRetained": true,
+        "errors": []
+      },
+      {
+        "mutation": "remove text",
+        "stable": true,
+        "error": "Error: [WC Adapter] decoration physical blueprint changed",
+        "callerRetained": true,
+        "errors": []
+      },
+      {
+        "mutation": "edit text",
+        "stable": true,
+        "error": "Error: [WC Adapter] decoration physical blueprint changed",
+        "callerRetained": true,
+        "errors": []
+      }
+    ],
+    "scope": "Real split owner and caller slot in a temporary Astro route",
+    "chrome": "156.0.8078.79",
+    "status": "passed"
+  },
+  "contractRevision": "0.3.0-alpha.2"
+}
