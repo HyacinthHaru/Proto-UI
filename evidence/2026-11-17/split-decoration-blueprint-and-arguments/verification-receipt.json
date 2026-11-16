@@ -1,0 +1,403 @@
+{
+  "candidate": {
+    "head": "9d90aa88af6c8ab5501172253c2febb50db0257f",
+    "tree": "53a0e3405a9f78f664c3d31def36d50fc68abd50",
+    "parents": ["195801ed9a5e5b1b9056daf67a01e5119f33808c"],
+    "inputs": {
+      "packages/adapters/web-component/src/runtime/session.ts": "114e1b4d121f96be3188e03b487b11f75b12fdffae7a9a2ee8b398e4cb3bc987",
+      "packages/adapters/web-component/src/commit.ts": "922c034d70a50dbe693273dc457a044a0441e54b61a768cfe06f8121657d6f85",
+      "packages/adapters/web-component/test/owned-decoration.integration.test.ts": "faa5c0f94abec4800c055edb385f968edb3a5ed23cc9c516c8267ce6fcb792ea",
+      "packages/cli/src/services/prototype-style-tokens.ts": "ac6f257b1deb3323d989a74ae039345ef19fd961a073694291781ec20d767fe6",
+      "packages/cli/test/shadow-template-style.test.ts": "6df24debae73a3cfcb6ecf3e43c4b627c2bbce27305243355d6ad76ec761ff3b",
+      "packages/modules/feedback/src/create.ts": "54c5ed3fffc57c499a0b27cbbb7ccc17486e4f96183b128a4169e1621c70d28f",
+      "packages/modules/feedback/src/types.ts": "26b604199f2bf9616abf5e327ca74c8344ce473bc8472eb0e8f8aed6ae7397ce"
+    },
+    "typesExit": 0
+  },
+  "focused": {
+    "parent": "fe6a32f41ad952adb012b61d65723270a9aaa108",
+    "baselineFailed": 6,
+    "baselinePassed": 111,
+    "candidatePassed": 117,
+    "testSHA256": {
+      "packages/cli/test/shadow-template-style.test.ts": "6df24debae73a3cfcb6ecf3e43c4b627c2bbce27305243355d6ad76ec761ff3b",
+      "packages/adapters/web-component/test/owned-decoration.integration.test.ts": "faa5c0f94abec4800c055edb385f968edb3a5ed23cc9c516c8267ce6fcb792ea"
+    },
+    "initialFixtureCorrections": [
+      "Use the actual temporary fixture module path",
+      "Treat a missing shell after cleanup as unpublished content"
+    ],
+    "baselineLogSHA256": "ab158ecf6f8cd556b18c0d5edf1aa8bc68730ae5717f129836cf95c5ead044c7",
+    "candidateLogSHA256": "30f1567b2d1e892365fb9c3659ee7041e09bcea57e676fc98b87f0958aac8712"
+  },
+  "expanded": {
+    "tested": 728,
+    "passed": 703,
+    "failed": 25,
+    "files": 33,
+    "candidateReportSHA256": "1c5dffc91797bb025003dfed82b22aa38c1e0dc91bb8aa25899c14398b1a84b8",
+    "parentFailedSuiteReportSHA256": "7a84501d9b1dc4855cb057c937145d23f282aef63e4cbc8573923dcf39bb7980",
+    "failedSuiteComparison": {
+      "parentFailures": 25,
+      "candidateFailures": 25,
+      "candidateOnly": [],
+      "parentOnly": [],
+      "changedFailure": []
+    }
+  },
+  "chrome": {
+    "probeSHA256": "4be8cd27ffcad57bcf45d46a371cdd8dfeab122220d81bee393b9e805ebca2c9",
+    "baseline": {
+      "head": "fe6a32f41ad952adb012b61d65723270a9aaa108",
+      "exit": 1
+    },
+    "candidate": {
+      "head": "9d90aa88af6c8ab5501172253c2febb50db0257f",
+      "exit": 0,
+      "cases": 13,
+      "generatedArtifactSHA256": "6e87b94e4cc5ac05d9c27e40fa827a8e220b29e17ce19387db4a9dde06659042"
+    }
+  },
+  "dialogs": {
+    "head": "7ed044575fcfc377239d5f7f79cf4137b512b155",
+    "tree": "152a1efbc0ee27b3dcac6288204b2f08f5635492",
+    "parents": [
+      "d13fd147acefbb15f9b7b7f71bb947ea18b336bb",
+      "9d90aa88af6c8ab5501172253c2febb50db0257f"
+    ],
+    "packageCount": 47,
+    "testSHA256": {
+      "scripts/analysis/shadow-s4-journey.mjs": "16c6af53316d131a06657a303c5d8d92138f64835d23495c4ab261d51d90b7b5",
+      "scripts/analysis/shadow-s4-public-browser.mjs": "9d979bed6cce27c1b6628a47dad109670f72dd27aa5a6db336d8ea27c7c1dedd"
+    },
+    "source": {
+      "exit": 0,
+      "logSHA256": "c1fa6557cdb3193163e54c8aecb33c4af8cbd696ec83df9922b87fc364130450",
+      "report": {
+        "result": [
+          {
+            "profile": "light",
+            "requests": 15,
+            "counts": {
+              "root": {
+                "setup": 2,
+                "mount": 2,
+                "unmount": 1,
+                "dispose": 1
+              },
+              "trigger": {
+                "setup": 2,
+                "mount": 2,
+                "unmount": 1,
+                "dispose": 1
+              },
+              "mask": {
+                "setup": 2,
+                "mount": 6,
+                "unmount": 6,
+                "dispose": 1
+              },
+              "content": {
+                "setup": 2,
+                "mount": 6,
+                "unmount": 6,
+                "dispose": 1
+              },
+              "title": {
+                "setup": 2,
+                "mount": 2,
+                "unmount": 1,
+                "dispose": 1
+              },
+              "description": {
+                "setup": 2,
+                "mount": 2,
+                "unmount": 1,
+                "dispose": 1
+              },
+              "close": {
+                "setup": 2,
+                "mount": 2,
+                "unmount": 1,
+                "dispose": 1
+              },
+              "icon": {
+                "setup": 2,
+                "mount": 2,
+                "unmount": 1,
+                "dispose": 1
+              },
+              "header": {
+                "setup": 2,
+                "mount": 2,
+                "unmount": 1,
+                "dispose": 1
+              },
+              "footer": {
+                "setup": 2,
+                "mount": 2,
+                "unmount": 1,
+                "dispose": 1
+              }
+            }
+          },
+          {
+            "profile": "split",
+            "requests": 15,
+            "counts": {
+              "root": {
+                "setup": 2,
+                "mount": 2,
+                "unmount": 1,
+                "dispose": 1
+              },
+              "trigger": {
+                "setup": 2,
+                "mount": 2,
+                "unmount": 1,
+                "dispose": 1
+              },
+              "mask": {
+                "setup": 2,
+                "mount": 6,
+                "unmount": 6,
+                "dispose": 1
+              },
+              "content": {
+                "setup": 2,
+                "mount": 6,
+                "unmount": 6,
+                "dispose": 1
+              },
+              "title": {
+                "setup": 2,
+                "mount": 2,
+                "unmount": 1,
+                "dispose": 1
+              },
+              "description": {
+                "setup": 2,
+                "mount": 2,
+                "unmount": 1,
+                "dispose": 1
+              },
+              "close": {
+                "setup": 2,
+                "mount": 2,
+                "unmount": 1,
+                "dispose": 1
+              },
+              "icon": {
+                "setup": 2,
+                "mount": 2,
+                "unmount": 1,
+                "dispose": 1
+              },
+              "header": {
+                "setup": 2,
+                "mount": 2,
+                "unmount": 1,
+                "dispose": 1
+              },
+              "footer": {
+                "setup": 2,
+                "mount": 2,
+                "unmount": 1,
+                "dispose": 1
+              }
+            }
+          },
+          {
+            "profile": "mixed",
+            "requests": 15,
+            "counts": {
+              "root": {
+                "setup": 2,
+                "mount": 2,
+                "unmount": 1,
+                "dispose": 1
+              },
+              "trigger": {
+                "setup": 2,
+                "mount": 2,
+                "unmount": 1,
+                "dispose": 1
+              },
+              "mask": {
+                "setup": 2,
+                "mount": 6,
+                "unmount": 6,
+                "dispose": 1
+              },
+              "content": {
+                "setup": 2,
+                "mount": 6,
+                "unmount": 6,
+                "dispose": 1
+              },
+              "title": {
+                "setup": 2,
+                "mount": 2,
+                "unmount": 1,
+                "dispose": 1
+              },
+              "description": {
+                "setup": 2,
+                "mount": 2,
+                "unmount": 1,
+                "dispose": 1
+              },
+              "close": {
+                "setup": 2,
+                "mount": 2,
+                "unmount": 1,
+                "dispose": 1
+              },
+              "icon": {
+                "setup": 2,
+                "mount": 2,
+                "unmount": 1,
+                "dispose": 1
+              },
+              "header": {
+                "setup": 2,
+                "mount": 2,
+                "unmount": 1,
+                "dispose": 1
+              },
+              "footer": {
+                "setup": 2,
+                "mount": 2,
+                "unmount": 1,
+                "dispose": 1
+              }
+            }
+          }
+        ],
+        "errors": [],
+        "chrome": "156.0.8078.79"
+      }
+    },
+    "dist": {
+      "exit": 0,
+      "logSHA256": "05bbf2e5a0e32d720dc2e79049267ceda9e847a1e30c357aa33f9479ce115907",
+      "scope": "The existing esbuild package consumer asserts public dist entry usage and absence of workspace source imports."
+    }
+  },
+  "budgets": {
+    "environment": {
+      "node": "v24.21.0",
+      "zlib": "1.3.2.1-motley-8002e91",
+      "esbuild": "0.25.12",
+      "platform": "darwin",
+      "arch": "arm64"
+    },
+    "policy": {
+      "mode": "finf-development-advisory",
+      "scope": "Proto-UI/Proto-UI Finf #870/#872: current nine whole-entry measurements only",
+      "advisoryEntries": [
+        "packages/prototypes/lucide/src/icons/x.ts",
+        "packages/prototypes/lucide/src/index.ts",
+        "packages/core/src/index.ts",
+        "packages/runtime/src/index.ts",
+        "packages/adapters/react/src/index.ts",
+        "packages/adapters/vue/src/index.ts",
+        "packages/adapters/web-component/src/index.ts",
+        "packages/prototypes/base/src/button/index.ts",
+        "packages/prototypes/shadcn/src/button/index.ts"
+      ],
+      "expiresWhen": "All 68 full-delivery/closeout items are recorded complete, or the explicit Finf opt-in is removed",
+      "ledger": "internal/coverage-matrices/prototype-coverage-matrix.json",
+      "ledgerSha256": "4745d77ccbdc04d4fb65261a4e1759d45af2305b97504c529c2fc67ca80a2ddd",
+      "recordedCompleteItems": 5,
+      "totalItems": 68,
+      "completionIsAcceptance": false
+    },
+    "parentReportSHA256": "dc9d8195e63c5d32e89ca600b7bbd2aaca066393cd330343a242810e0357780b",
+    "candidateReportSHA256": "ef6e5b38169f2f5e9ea7716a381d540db683242b268ed944a07bc648e6d97ff2",
+    "withinBudgets": false,
+    "rows": [
+      {
+        "name": "lucide/icons/x",
+        "parentGzip": 2879,
+        "candidateGzip": 2879,
+        "delta": 0,
+        "passComparison": true,
+        "overBudget": 0,
+        "blocking": false
+      },
+      {
+        "name": "lucide root",
+        "parentGzip": 637306,
+        "candidateGzip": 637306,
+        "delta": 0,
+        "passComparison": true,
+        "overBudget": 0,
+        "blocking": false
+      },
+      {
+        "name": "core root",
+        "parentGzip": 11373,
+        "candidateGzip": 11373,
+        "delta": 0,
+        "passComparison": false,
+        "overBudget": 3773,
+        "blocking": false
+      },
+      {
+        "name": "runtime root",
+        "parentGzip": 100015,
+        "candidateGzip": 100016,
+        "delta": 1,
+        "passComparison": false,
+        "overBudget": 21516,
+        "blocking": false
+      },
+      {
+        "name": "adapter-react root",
+        "parentGzip": 161908,
+        "candidateGzip": 161906,
+        "delta": -2,
+        "passComparison": false,
+        "overBudget": 55906,
+        "blocking": false
+      },
+      {
+        "name": "adapter-vue root",
+        "parentGzip": 160579,
+        "candidateGzip": 160580,
+        "delta": 1,
+        "passComparison": false,
+        "overBudget": 54580,
+        "blocking": false
+      },
+      {
+        "name": "adapter-web-component root",
+        "parentGzip": 190958,
+        "candidateGzip": 191164,
+        "delta": 206,
+        "passComparison": false,
+        "overBudget": 59164,
+        "blocking": false
+      },
+      {
+        "name": "prototypes-base/button",
+        "parentGzip": 5274,
+        "candidateGzip": 5274,
+        "delta": 0,
+        "passComparison": true,
+        "overBudget": 0,
+        "blocking": false
+      },
+      {
+        "name": "prototypes-shadcn/button",
+        "parentGzip": 7803,
+        "candidateGzip": 7803,
+        "delta": 0,
+        "passComparison": false,
+        "overBudget": 803,
+        "blocking": false
+      }
+    ]
+  }
+}

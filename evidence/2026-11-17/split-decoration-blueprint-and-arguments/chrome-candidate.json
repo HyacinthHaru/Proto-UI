@@ -1,0 +1,134 @@
+{
+  "status": "passed",
+  "chrome": "156.0.8078.79",
+  "results": [
+    {
+      "mode": "control",
+      "padding": 64,
+      "opacity": "1",
+      "caller": "Caller text",
+      "focus": true,
+      "assigned": true,
+      "errors": []
+    },
+    {
+      "mode": "translucent",
+      "padding": 64,
+      "opacity": "0.5",
+      "caller": "Caller text",
+      "focus": true,
+      "assigned": true,
+      "errors": []
+    },
+    {
+      "mode": "variable-translucent",
+      "padding": 64,
+      "opacity": "0.5",
+      "caller": "Caller text",
+      "focus": true,
+      "assigned": true,
+      "errors": []
+    },
+    {
+      "mode": "display",
+      "padding": 64,
+      "opacity": "1",
+      "caller": "Caller text",
+      "focus": true,
+      "assigned": true,
+      "rejection": "Error: [WC Adapter] decoration physical blueprint changed",
+      "errors": []
+    },
+    {
+      "mode": "visibility",
+      "padding": 64,
+      "opacity": "1",
+      "caller": "Caller text",
+      "focus": true,
+      "assigned": true,
+      "rejection": "Error: [WC Adapter] decoration physical blueprint changed",
+      "errors": []
+    },
+    {
+      "mode": "opacity",
+      "padding": 64,
+      "opacity": "0",
+      "caller": "Caller text",
+      "focus": true,
+      "assigned": true,
+      "rejection": "Error: [WC Adapter] decoration physical blueprint changed",
+      "errors": []
+    },
+    {
+      "mode": "variable-zero",
+      "padding": 64,
+      "opacity": "0",
+      "caller": "Caller text",
+      "focus": true,
+      "assigned": true,
+      "rejection": "Error: [WC Adapter] decoration physical blueprint changed",
+      "errors": []
+    },
+    {
+      "mode": "variable-display",
+      "padding": 64,
+      "opacity": "1",
+      "hiddenProperty": "display",
+      "hiddenValue": "none",
+      "caller": "Caller text",
+      "focus": true,
+      "assigned": true,
+      "rejection": "Error: [WC Adapter] decoration physical blueprint changed",
+      "errors": []
+    },
+    {
+      "mode": "variable-visibility",
+      "padding": 64,
+      "opacity": "1",
+      "hiddenProperty": "visibility",
+      "hiddenValue": "hidden",
+      "caller": "Caller text",
+      "focus": true,
+      "assigned": true,
+      "rejection": "Error: [WC Adapter] decoration physical blueprint changed",
+      "errors": []
+    },
+    {
+      "mode": "variable-content-visibility",
+      "padding": 64,
+      "opacity": "1",
+      "hiddenProperty": "content-visibility",
+      "hiddenValue": "hidden",
+      "caller": "Caller text",
+      "focus": true,
+      "assigned": true,
+      "rejection": "Error: [WC Adapter] decoration physical blueprint changed",
+      "errors": []
+    },
+    {
+      "mode": "stylesheet-display",
+      "padding": 64,
+      "opacity": "1",
+      "hiddenValue": "none",
+      "caller": "Caller text",
+      "focus": true,
+      "assigned": true,
+      "rejection": "Error: [WC Adapter] decoration physical blueprint changed",
+      "errors": []
+    },
+    {
+      "mode": "remove",
+      "changed": true,
+      "callerOwned": true,
+      "decorationPublished": false,
+      "errors": ["[WC Adapter] decoration physical blueprint changed"]
+    },
+    {
+      "mode": "retag",
+      "changed": true,
+      "callerOwned": true,
+      "decorationPublished": false,
+      "errors": ["[WC Adapter] decoration physical blueprint changed"]
+    }
+  ]
+}

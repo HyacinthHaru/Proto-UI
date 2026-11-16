@@ -1,0 +1,7 @@
+# Split staged blueprint and decoration argument review
+
+The five review items in #1484 are addressed by `9d90aa88`. The two focused suites recorded six failures and 111 passes on the parent, then all 117 passed. The expanded run recorded 703 passes and 25 failures. The two failing source-scanner suites reproduce the identical case names and normalized first errors on the clean parent. Workspace type checking passed.
+
+The same Chrome probe collected all thirteen cases on both sources. The parent acknowledged equal reuse under a hiding Shadow stylesheet and published both constructor-tampered Templates. The fixed source rejects computed surface concealment and rejects staged sibling removal or retagging before publication. Caller ownership is preserved. The validated candidate CLI artifact uses a method-shorthand Rule and a targeted spread argument. The 10% contribution measured 64px in its 640px containing block.
+
+The signed local composition `7ed04457` built all 47 public packages. The original Dialog interaction sequence passed on the isolated source fixture and with dist package artifacts. It covered Light, split and mixed profiles at 15 requests each. Full matrix startup and hosted acceptance remain separate. Same-environment local whole-entry WC gzip changed from 190,958 to 191,164 bytes. The existing numeric comparison is still over its historical ceiling in the active advisory phase. The full receipt records each comparator without changing the policy.
