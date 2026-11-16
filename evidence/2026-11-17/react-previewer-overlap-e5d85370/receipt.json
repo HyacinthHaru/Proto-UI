@@ -1,0 +1,198 @@
+{
+  "scope": "Same unmodified full DemoMatrix S4 Chinese case in separate fresh worktrees. English unselected. Sequential execution.",
+  "chrome": "156.0.8078.79",
+  "pnpm": "10.32.1",
+  "node": "24.21.0",
+  "startupWaitMs": 60000,
+  "outerCaseTimeoutMs": 150000,
+  "fixtureSourceDelta": [
+    "apps/www/src/components/PrototypePreviewer/demo-renderer.ts",
+    "apps/www/src/components/PrototypePreviewer/demo-renderer.import-laziness.test.ts"
+  ],
+  "isolatedUnitMechanism": {
+    "beforeAdapterReleaseOldCalls": 0,
+    "overlapCalls": 3,
+    "existingFocusedPassing": 64,
+    "inheritedBootstrapClosureFailing": 1
+  },
+  "variants": {
+    "baseline": {
+      "head": "24c807fe2e6814fdc9af1b5ffad64820bc7a8584",
+      "tree": "af739da003f97f26add9a3c6785b695d0b2fc915",
+      "parents": [
+        "8fb2594cc5d456906aa9ac8b16912ade6d913888",
+        "14be33a0a367f478f78de13ca40ca666b460cac9",
+        "cdba4fe2d01c338bd3b3f7feac8a8f5acefe0aee"
+      ],
+      "exit": 1,
+      "selectedPassed": 0,
+      "selectedFailed": 1,
+      "unselected": 1,
+      "startupPassed": false,
+      "pageErrors": 0,
+      "consoleErrors": 0,
+      "postVerdictCollection": "rejected",
+      "phases": [
+        {
+          "phase": "init-script",
+          "outcome": "begin"
+        },
+        {
+          "phase": "init-script",
+          "outcome": "return"
+        },
+        {
+          "phase": "goto",
+          "outcome": "begin"
+        },
+        {
+          "phase": "goto",
+          "outcome": "return"
+        },
+        {
+          "phase": "startup-wait",
+          "outcome": "begin"
+        },
+        {
+          "phase": "startup-wait",
+          "outcome": "error"
+        },
+        {
+          "phase": "context-close",
+          "outcome": "begin"
+        },
+        {
+          "phase": "context-close",
+          "outcome": "return"
+        }
+      ],
+      "readinessSamples": [
+        {
+          "pageMs": 7970.2,
+          "count": 1268,
+          "ready": false,
+          "firstMissingIndex": 0,
+          "demo": "demo-base-accordion",
+          "runtime": "wc",
+          "children": null,
+          "pending": null
+        },
+        {
+          "pageMs": 14233.3,
+          "count": 1268,
+          "ready": false,
+          "firstMissingIndex": 0,
+          "demo": "demo-base-accordion",
+          "runtime": "wc",
+          "children": 0,
+          "pending": true
+        },
+        {
+          "pageMs": 25776.9,
+          "count": 1268,
+          "ready": false,
+          "firstMissingIndex": 1,
+          "demo": "demo-base-accordion",
+          "runtime": "react",
+          "children": 0,
+          "pending": true
+        }
+      ],
+      "rawLogSha256": "f087c89f4aefc63665cdd7034cfbc21110e58325554a3b8ed49ecf9488ae72d2",
+      "terminalError": "Error: Test timed out in 150000ms."
+    },
+    "overlap": {
+      "head": "b244f185c3be7e0d80738b8833b86856cf630fba",
+      "tree": "8473a5cc7e71b6a83ced5e29388cb569e446079b",
+      "parents": [
+        "24c807fe2e6814fdc9af1b5ffad64820bc7a8584",
+        "e5d85370ed560be770f4689a378294a720ed4d3e"
+      ],
+      "exit": 1,
+      "selectedPassed": 0,
+      "selectedFailed": 1,
+      "unselected": 1,
+      "startupPassed": false,
+      "pageErrors": 0,
+      "consoleErrors": 0,
+      "postVerdictCollection": "budget-expired",
+      "phases": [
+        {
+          "phase": "init-script",
+          "outcome": "begin"
+        },
+        {
+          "phase": "init-script",
+          "outcome": "return"
+        },
+        {
+          "phase": "goto",
+          "outcome": "begin"
+        },
+        {
+          "phase": "goto",
+          "outcome": "return"
+        },
+        {
+          "phase": "startup-wait",
+          "outcome": "begin"
+        },
+        {
+          "phase": "startup-wait",
+          "outcome": "error"
+        },
+        {
+          "phase": "context-close",
+          "outcome": "begin"
+        },
+        {
+          "phase": "context-close",
+          "outcome": "return"
+        }
+      ],
+      "readinessSamples": [
+        {
+          "pageMs": 7242.9,
+          "count": 1268,
+          "ready": false,
+          "firstMissingIndex": 0,
+          "demo": "demo-base-accordion",
+          "runtime": "wc",
+          "children": null,
+          "pending": null
+        },
+        {
+          "pageMs": 8381.8,
+          "count": 1268,
+          "ready": false,
+          "firstMissingIndex": 0,
+          "demo": "demo-base-accordion",
+          "runtime": "wc",
+          "children": 0,
+          "pending": true
+        },
+        {
+          "pageMs": 34399.8,
+          "count": 1268,
+          "ready": false,
+          "firstMissingIndex": 2,
+          "demo": "demo-base-accordion",
+          "runtime": "vue",
+          "children": 0,
+          "pending": true
+        }
+      ],
+      "rawLogSha256": "fe7a4bdb2f1e7f36b01e6736db8a6efe21cee18e3ae0a5198a5d1841c577fc7a",
+      "terminalError": "page.waitForFunction: Timeout 60000ms exceeded."
+    }
+  },
+  "candidate": "e5d85370ed560be770f4689a378294a720ed4d3e",
+  "candidateTree": "c1d52c17d6da5030d7f258735c2513861760bb0b",
+  "composedFocusedPassing": 65,
+  "types": {
+    "files": 1240,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 31
+  }
+}
