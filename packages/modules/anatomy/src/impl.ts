@@ -273,10 +273,13 @@ function getHookNames(proto: Prototype<any> | null): Set<string> {
   return names;
 }
 
+type TargetListenerScope = { lastDomain: AnatomyInstanceToken | null };
+
 export class AnatomyModuleImpl extends ModuleBase {
   private static nextInstanceOrder = 0;
   private static readonly orderSubscribers = new Map<AnatomyFamily, AnatomyModuleImpl[]>();
   private static readonly targetSubscribers = new Map<AnatomyFamily, AnatomyModuleImpl[]>();
+  private static readonly scopedTargetSubscriberCounts = new Map<AnatomyFamily, number>();
   private static readonly sharedOrderObservers = new Map<
     AnatomyFamily,
     Map<AnatomyInstanceToken, { off: Unsubscribe; listeners: Set<AnatomyModuleImpl> }>
@@ -289,7 +292,11 @@ export class AnatomyModuleImpl extends ModuleBase {
   private claimFamilies = new Set<AnatomyFamily>();
   private orderDispatch: AnatomyOrderCallbackDispatcher = (fn) => fn(undefined);
   private orderListeners = new Map<AnatomyFamily, Set<AnatomyOrderChangeCb>>();
-  private targetListeners = new Map<AnatomyFamily, Set<AnatomyOrderChangeCb>>();
+  private targetListeners = new Map<
+    AnatomyFamily,
+    Map<AnatomyOrderChangeCb, TargetListenerScope | null>
+  >();
+  private publishedTargetDomains = new Map<AnatomyFamily, AnatomyInstanceToken>();
   private observedOrderRoots = new Map<AnatomyFamily, AnatomyInstanceToken>();
   private orderVersionByFamily = new Map<AnatomyFamily, number>();
   private orderSignatureByFamily = new Map<AnatomyFamily, string>();
@@ -533,7 +540,7 @@ export class AnatomyModuleImpl extends ModuleBase {
       for (const family of this.claimFamilies) {
         CENTER.pruneRetiredBoundaries(family);
         AnatomyModuleImpl.notifyStructuralChange(family);
-        AnatomyModuleImpl.notifyTargetChange(family);
+        this.notifyTargetChange(family);
       }
     },
     getDiagnostics: (): readonly AnatomyDiagnostic[] => {
@@ -688,8 +695,8 @@ export class AnatomyModuleImpl extends ModuleBase {
     },
     subscribeOrder: (family: AnatomyFamily, cb: AnatomyOrderChangeCb) =>
       this.subscribeOrder(family, cb),
-    subscribeTargets: (family: AnatomyFamily, cb: AnatomyOrderChangeCb) =>
-      this.subscribeTargets(family, cb),
+    subscribeTargets: (family: AnatomyFamily, cb: AnatomyOrderChangeCb, scope?: 'current-domain') =>
+      this.subscribeTargets(family, cb, scope),
   };
 
   override onProtoPhase(phase: ProtoPhase): void {
@@ -698,7 +705,7 @@ export class AnatomyModuleImpl extends ModuleBase {
       this.port.syncStructure();
     }
     if (phase === 'unmounted') {
-      for (const family of this.claimFamilies) AnatomyModuleImpl.notifyTargetChange(family);
+      for (const family of this.claimFamilies) this.notifyTargetChange(family);
       this.dispose();
     }
   }
@@ -706,7 +713,7 @@ export class AnatomyModuleImpl extends ModuleBase {
   override onMountPhase(phase: MountPhase, epoch: number): void {
     super.onMountPhase(phase, epoch);
     if (phase === 'unmounting' || phase === 'detached') {
-      for (const family of this.claimFamilies) AnatomyModuleImpl.notifyTargetChange(family);
+      for (const family of this.claimFamilies) this.notifyTargetChange(family, true);
       for (const family of Array.from(this.observedOrderRoots.keys())) {
         this.teardownOrderObserver(family);
       }
@@ -714,7 +721,7 @@ export class AnatomyModuleImpl extends ModuleBase {
     }
     if (phase === 'mounted') {
       for (const family of this.orderListeners.keys()) this.ensureOrderObserver(family);
-      for (const family of this.claimFamilies) AnatomyModuleImpl.notifyTargetChange(family);
+      for (const family of this.claimFamilies) this.notifyTargetChange(family, true);
     }
   }
 
@@ -731,7 +738,7 @@ export class AnatomyModuleImpl extends ModuleBase {
         if (claim) claim.getParent = getParent;
       }
     }
-    for (const family of this.claimFamilies) AnatomyModuleImpl.notifyTargetChange(family);
+    for (const family of this.claimFamilies) this.notifyTargetChange(family);
     if (this.mountPhase !== 'mounted') return;
     for (const family of Array.from(this.observedOrderRoots.keys())) {
       this.teardownOrderObserver(family);
@@ -744,8 +751,13 @@ export class AnatomyModuleImpl extends ModuleBase {
     this.disposed = true;
     for (const family of this.orderListeners.keys())
       this.removeSubscriber(AnatomyModuleImpl.orderSubscribers, family);
-    for (const family of this.targetListeners.keys())
+    for (const [family, listeners] of this.targetListeners) {
       this.removeSubscriber(AnatomyModuleImpl.targetSubscribers, family);
+      for (const scope of listeners.values()) {
+        if (scope) AnatomyModuleImpl.adjustScopedTargetCount(family, -1);
+      }
+    }
+    this.publishedTargetDomains.clear();
     for (const family of this.observedOrderRoots.keys()) {
       this.teardownOrderObserver(family);
     }
@@ -820,18 +832,36 @@ export class AnatomyModuleImpl extends ModuleBase {
     };
   }
 
-  private subscribeTargets(family: AnatomyFamily, cb: AnatomyOrderChangeCb): Unsubscribe {
-    let set = this.targetListeners.get(family);
-    if (!set) {
-      set = new Set();
-      this.targetListeners.set(family, set);
+  private static adjustScopedTargetCount(family: AnatomyFamily, change: number): void {
+    const count = (this.scopedTargetSubscriberCounts.get(family) ?? 0) + change;
+    if (count) this.scopedTargetSubscriberCounts.set(family, count);
+    else this.scopedTargetSubscriberCounts.delete(family);
+  }
+
+  private subscribeTargets(
+    family: AnatomyFamily,
+    cb: AnatomyOrderChangeCb,
+    scope?: 'current-domain'
+  ): Unsubscribe {
+    if (this.disposed) return () => {};
+    let listeners = this.targetListeners.get(family);
+    if (!listeners) {
+      listeners = new Map();
+      this.targetListeners.set(family, listeners);
       this.addSubscriber(AnatomyModuleImpl.targetSubscribers, family);
     }
-    set.add(cb);
+    if (!listeners.has(cb)) {
+      const scoped = scope === 'current-domain' ? { lastDomain: null } : null;
+      listeners.set(cb, scoped);
+      if (scoped) AnatomyModuleImpl.adjustScopedTargetCount(family, 1);
+    }
     return () => {
       const current = this.targetListeners.get(family);
-      current?.delete(cb);
-      if (current?.size === 0) {
+      if (!current) return;
+      const scoped = current.get(cb);
+      if (!current.delete(cb)) return;
+      if (scoped) AnatomyModuleImpl.adjustScopedTargetCount(family, -1);
+      if (!current.size) {
         this.targetListeners.delete(family);
         this.removeSubscriber(AnatomyModuleImpl.targetSubscribers, family);
       }
@@ -897,12 +927,61 @@ export class AnatomyModuleImpl extends ModuleBase {
     }
   }
 
-  private static notifyTargetChange(family: AnatomyFamily): void {
-    for (const impl of this.subscribers(this.targetSubscribers, family)) {
+  private readTargetDomain(family: AnatomyFamily): AnatomyInstanceToken | null {
+    if (!this.caps.has(ANATOMY_INSTANCE_TOKEN_CAP) || !this.caps.has(ANATOMY_PARENT_CAP))
+      return null;
+    try {
+      return this.findDomainRoot(this.getSelfToken(), family);
+    } catch {
+      // A domain must be proven to narrow delivery; keep the original callback path.
+      return null;
+    }
+  }
+
+  private canSkipTargetListeners(
+    family: AnatomyFamily,
+    source: AnatomyInstanceToken,
+    listeners: Map<AnatomyOrderChangeCb, TargetListenerScope | null>
+  ): boolean {
+    const last = listeners.values().next().value?.lastDomain;
+    if (!last || last === source) return false;
+    for (const scope of listeners.values()) {
+      if (scope?.lastDomain !== last) return false;
+    }
+    return this.readTargetDomain(family) === last;
+  }
+
+  private notifyTargetChange(family: AnatomyFamily, viewOnly = false): void {
+    const current = AnatomyModuleImpl.scopedTargetSubscriberCounts.has(family)
+      ? this.readTargetDomain(family)
+      : null;
+    let stableSource =
+      viewOnly && current === this.publishedTargetDomains.get(family) ? current : null;
+    if (current) this.publishedTargetDomains.set(family, current);
+    else this.publishedTargetDomains.delete(family);
+    for (const impl of AnatomyModuleImpl.subscribers(AnatomyModuleImpl.targetSubscribers, family)) {
       const listeners = impl.targetListeners.get(family);
       if (!listeners?.size) continue;
+      if (stableSource && impl.canSkipTargetListeners(family, stableSource, listeners)) continue;
       impl.orderDispatch((ctx) => {
-        for (const listener of listeners) listener(ctx);
+        for (const [listener, scope] of listeners) {
+          const domain = scope ? impl.readTargetDomain(family) : null;
+          if (
+            scope &&
+            stableSource &&
+            domain &&
+            domain !== stableSource &&
+            domain === scope.lastDomain
+          )
+            continue;
+          listener(ctx);
+          if (scope) scope.lastDomain = domain;
+          // A callback may move the publisher while later recipients are still waiting.
+          if (stableSource && this.readTargetDomain(family) !== stableSource) {
+            stableSource = null;
+            this.publishedTargetDomains.delete(family);
+          }
+        }
       });
     }
   }
