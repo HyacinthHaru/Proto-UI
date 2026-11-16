@@ -1,0 +1,59 @@
+{
+  "head": "1954cd3566b8f93e388352e282701dd086df2cdd",
+  "tree": "ba5e0c200333677b7e138d5938ec56a97de1efa1",
+  "chrome": "156.0.8078.79",
+  "node": "24.21.0",
+  "pnpm": "10.32.1",
+  "platform": "darwin/arm64",
+  "terminalExit": 0,
+  "completedCases": 24,
+  "repositoryInputs": [
+    {
+      "path": "apps/www/src/content/docs/demo-base-drawer.demo.ts",
+      "sha256": "e4a0c040dd87e03bd7bc8c23140b64f429831c5718f8eb61665caf2db8824476"
+    },
+    {
+      "path": "apps/www/src/content/docs/demo-shadcn-drawer.demo.ts",
+      "sha256": "f1161df733ed799da861f4772f7203d4bb56c2d4724f1723988ea223577626ed"
+    },
+    {
+      "path": "apps/www/src/content/docs/demo-brutalist-drawer.demo.ts",
+      "sha256": "0e3c8f49efbdfa2c302b714d403c31651477e9ae4ada32d68404945f1775a3e2"
+    },
+    {
+      "path": "apps/www/src/content/docs/shadcn-demo-style.ts",
+      "sha256": "41c14e604544dab831f4550f110aab62d2ba8464e65c9debb0c99b607fcafc7d"
+    },
+    {
+      "path": "apps/www/src/content/docs/zh-cn/browser-harness.ts",
+      "sha256": "3033dd603ba75486310cb6f466e72e5e3b02bef111c406b1f68fcf2987247c71"
+    },
+    {
+      "path": "apps/www/src/components/PrototypePreviewer/demo-renderer.ts",
+      "sha256": "03ae4baa2c88a28cf4af5aa1478f249a6f4c3827e2f213a96b926a9e0188f292"
+    },
+    {
+      "path": "apps/www/src/components/PrototypePreviewer/demo-modules.ts",
+      "sha256": "f08659f900322d791d506d1f87ba43fe81793223cfce12a6c10d1f44fa184f87"
+    },
+    {
+      "path": "apps/www/src/components/PrototypePreviewer/prototype-modules.ts",
+      "sha256": "20a4a150084849151a4a6f32677008b95fa33e38c9832ed797c3292f979f6890"
+    },
+    {
+      "path": "apps/www/src/styles/global.css",
+      "sha256": "db3728b305a95003c512d0cdb886a84d320bc7e6220f8bd7753be1cbb24a6864"
+    }
+  ],
+  "executedHarnessSha256": "0986b6fd8d512efced022a3faa472780a477243d4a5c231a7ac5727334aa366e",
+  "publishedHarnessSha256": "becaa2ef3d3c7945ebc375ea6771b330d352b385991e92c4cc2bfe7e6212a6d0",
+  "initialTrial": {
+    "terminalExit": 1,
+    "passingCasesBeforeError": 8,
+    "error": "Drawer recipe changed while opening Shadcn WC fixture",
+    "executedPageSha256": "641c6a515a98e5fac24565b32501b28028bc14b6558482e2d99ef5235a65b078",
+    "reason": "The fixture assumed the grid layout was the demo root. Shadcn nests the layout inside its Rhea style scope."
+  },
+  "executedPageSha256": "4162669d83547199c8e23aa50786d4f5d23761394cbee89713cd7a218c5259bb",
+  "publishedPageSha256": "58273a9d6ac03585d1616a8f78bc3f6fff32edd2c9cf6e2adf160439bbbd89b1"
+}

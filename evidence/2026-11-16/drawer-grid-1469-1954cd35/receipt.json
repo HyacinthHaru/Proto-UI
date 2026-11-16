@@ -1,0 +1,1039 @@
+{
+  "source": "1954cd3566b8f93e388352e282701dd086df2cdd",
+  "tree": "ba5e0c200333677b7e138d5938ec56a97de1efa1",
+  "chrome": "156.0.8078.79",
+  "results": [
+    {
+      "family": "base",
+      "runtime": "wc",
+      "displayContents": false,
+      "layout": {
+        "templateRows": "40px 40px 40px",
+        "gridHeight": 136,
+        "rootIsDirectChild": true,
+        "rootBoxCount": 1,
+        "rootDisplay": "block",
+        "triggerPosition": "absolute",
+        "cells": [
+          {
+            "text": "First",
+            "top": 0,
+            "left": 0
+          },
+          {
+            "text": "Second",
+            "top": 0,
+            "left": 168
+          },
+          {
+            "text": "Third",
+            "top": 48,
+            "left": 168
+          },
+          {
+            "text": "Closed",
+            "top": 96,
+            "left": 0
+          }
+        ]
+      },
+      "role": "dialog",
+      "name": "Drawer settings",
+      "relation": {
+        "title": "Drawer settings",
+        "description": "This panel fits its content. Drag the handle outward to dismiss, or choose Close."
+      },
+      "tabInside": true,
+      "returnedFocus": true
+    },
+    {
+      "family": "base",
+      "runtime": "wc",
+      "displayContents": true,
+      "layout": {
+        "templateRows": "40px 40px",
+        "gridHeight": 88,
+        "rootIsDirectChild": true,
+        "rootBoxCount": 0,
+        "rootDisplay": "contents",
+        "triggerPosition": "absolute",
+        "cells": [
+          {
+            "text": "First",
+            "top": 0,
+            "left": 0
+          },
+          {
+            "text": "Second",
+            "top": 0,
+            "left": 168
+          },
+          {
+            "text": "Third",
+            "top": 48,
+            "left": 0
+          },
+          {
+            "text": "Closed",
+            "top": 48,
+            "left": 168
+          }
+        ]
+      },
+      "role": "dialog",
+      "name": "Drawer settings",
+      "relation": {
+        "title": "Drawer settings",
+        "description": "This panel fits its content. Drag the handle outward to dismiss, or choose Close."
+      },
+      "tabInside": true,
+      "returnedFocus": true
+    },
+    {
+      "family": "base",
+      "runtime": "react",
+      "displayContents": false,
+      "layout": {
+        "templateRows": "40px 40px 40px",
+        "gridHeight": 136,
+        "rootIsDirectChild": true,
+        "rootBoxCount": 1,
+        "rootDisplay": "block",
+        "triggerPosition": "absolute",
+        "cells": [
+          {
+            "text": "First",
+            "top": 0,
+            "left": 0
+          },
+          {
+            "text": "Second",
+            "top": 0,
+            "left": 168
+          },
+          {
+            "text": "Third",
+            "top": 48,
+            "left": 168
+          },
+          {
+            "text": "Closed",
+            "top": 96,
+            "left": 0
+          }
+        ]
+      },
+      "role": "dialog",
+      "name": "Drawer settings",
+      "relation": {
+        "title": "Drawer settings",
+        "description": "This panel fits its content. Drag the handle outward to dismiss, or choose Close."
+      },
+      "tabInside": true,
+      "returnedFocus": true
+    },
+    {
+      "family": "base",
+      "runtime": "react",
+      "displayContents": true,
+      "layout": {
+        "templateRows": "40px 40px",
+        "gridHeight": 88,
+        "rootIsDirectChild": true,
+        "rootBoxCount": 0,
+        "rootDisplay": "contents",
+        "triggerPosition": "absolute",
+        "cells": [
+          {
+            "text": "First",
+            "top": 0,
+            "left": 0
+          },
+          {
+            "text": "Second",
+            "top": 0,
+            "left": 168
+          },
+          {
+            "text": "Third",
+            "top": 48,
+            "left": 0
+          },
+          {
+            "text": "Closed",
+            "top": 48,
+            "left": 168
+          }
+        ]
+      },
+      "role": "dialog",
+      "name": "Drawer settings",
+      "relation": {
+        "title": "Drawer settings",
+        "description": "This panel fits its content. Drag the handle outward to dismiss, or choose Close."
+      },
+      "tabInside": true,
+      "returnedFocus": true
+    },
+    {
+      "family": "base",
+      "runtime": "vue",
+      "displayContents": false,
+      "layout": {
+        "templateRows": "40px 40px 40px",
+        "gridHeight": 136,
+        "rootIsDirectChild": true,
+        "rootBoxCount": 1,
+        "rootDisplay": "block",
+        "triggerPosition": "absolute",
+        "cells": [
+          {
+            "text": "First",
+            "top": 0,
+            "left": 0
+          },
+          {
+            "text": "Second",
+            "top": 0,
+            "left": 168
+          },
+          {
+            "text": "Third",
+            "top": 48,
+            "left": 168
+          },
+          {
+            "text": "Closed",
+            "top": 96,
+            "left": 0
+          }
+        ]
+      },
+      "role": "dialog",
+      "name": "Drawer settings",
+      "relation": {
+        "title": "Drawer settings",
+        "description": "This panel fits its content. Drag the handle outward to dismiss, or choose Close."
+      },
+      "tabInside": true,
+      "returnedFocus": true
+    },
+    {
+      "family": "base",
+      "runtime": "vue",
+      "displayContents": true,
+      "layout": {
+        "templateRows": "40px 40px",
+        "gridHeight": 88,
+        "rootIsDirectChild": true,
+        "rootBoxCount": 0,
+        "rootDisplay": "contents",
+        "triggerPosition": "absolute",
+        "cells": [
+          {
+            "text": "First",
+            "top": 0,
+            "left": 0
+          },
+          {
+            "text": "Second",
+            "top": 0,
+            "left": 168
+          },
+          {
+            "text": "Third",
+            "top": 48,
+            "left": 0
+          },
+          {
+            "text": "Closed",
+            "top": 48,
+            "left": 168
+          }
+        ]
+      },
+      "role": "dialog",
+      "name": "Drawer settings",
+      "relation": {
+        "title": "Drawer settings",
+        "description": "This panel fits its content. Drag the handle outward to dismiss, or choose Close."
+      },
+      "tabInside": true,
+      "returnedFocus": true
+    },
+    {
+      "family": "base",
+      "runtime": "vue2",
+      "displayContents": false,
+      "layout": {
+        "templateRows": "40px 40px 40px",
+        "gridHeight": 136,
+        "rootIsDirectChild": true,
+        "rootBoxCount": 1,
+        "rootDisplay": "block",
+        "triggerPosition": "absolute",
+        "cells": [
+          {
+            "text": "First",
+            "top": 0,
+            "left": 0
+          },
+          {
+            "text": "Second",
+            "top": 0,
+            "left": 168
+          },
+          {
+            "text": "Third",
+            "top": 48,
+            "left": 168
+          },
+          {
+            "text": "Closed",
+            "top": 96,
+            "left": 0
+          }
+        ]
+      },
+      "role": "dialog",
+      "name": "Drawer settings",
+      "relation": {
+        "title": "Drawer settings",
+        "description": "This panel fits its content. Drag the handle outward to dismiss, or choose Close."
+      },
+      "tabInside": true,
+      "returnedFocus": true
+    },
+    {
+      "family": "base",
+      "runtime": "vue2",
+      "displayContents": true,
+      "layout": {
+        "templateRows": "40px 40px",
+        "gridHeight": 88,
+        "rootIsDirectChild": true,
+        "rootBoxCount": 0,
+        "rootDisplay": "contents",
+        "triggerPosition": "absolute",
+        "cells": [
+          {
+            "text": "First",
+            "top": 0,
+            "left": 0
+          },
+          {
+            "text": "Second",
+            "top": 0,
+            "left": 168
+          },
+          {
+            "text": "Third",
+            "top": 48,
+            "left": 0
+          },
+          {
+            "text": "Closed",
+            "top": 48,
+            "left": 168
+          }
+        ]
+      },
+      "role": "dialog",
+      "name": "Drawer settings",
+      "relation": {
+        "title": "Drawer settings",
+        "description": "This panel fits its content. Drag the handle outward to dismiss, or choose Close."
+      },
+      "tabInside": true,
+      "returnedFocus": true
+    },
+    {
+      "family": "shadcn",
+      "runtime": "wc",
+      "displayContents": false,
+      "layout": {
+        "templateRows": "40px 40px 40px",
+        "gridHeight": 136,
+        "rootIsDirectChild": true,
+        "rootBoxCount": 1,
+        "rootDisplay": "block",
+        "triggerPosition": "absolute",
+        "cells": [
+          {
+            "text": "First",
+            "top": 0,
+            "left": 0
+          },
+          {
+            "text": "Second",
+            "top": 0,
+            "left": 168
+          },
+          {
+            "text": "Third",
+            "top": 48,
+            "left": 168
+          },
+          {
+            "text": "Closed",
+            "top": 96,
+            "left": 0
+          }
+        ]
+      },
+      "role": "dialog",
+      "name": "Drawer settings",
+      "relation": {
+        "title": "Drawer settings",
+        "description": "This panel fits its content. Drag the handle outward to dismiss, or choose Close."
+      },
+      "tabInside": true,
+      "returnedFocus": true
+    },
+    {
+      "family": "shadcn",
+      "runtime": "wc",
+      "displayContents": true,
+      "layout": {
+        "templateRows": "40px 40px",
+        "gridHeight": 88,
+        "rootIsDirectChild": true,
+        "rootBoxCount": 0,
+        "rootDisplay": "contents",
+        "triggerPosition": "absolute",
+        "cells": [
+          {
+            "text": "First",
+            "top": 0,
+            "left": 0
+          },
+          {
+            "text": "Second",
+            "top": 0,
+            "left": 168
+          },
+          {
+            "text": "Third",
+            "top": 48,
+            "left": 0
+          },
+          {
+            "text": "Closed",
+            "top": 48,
+            "left": 168
+          }
+        ]
+      },
+      "role": "dialog",
+      "name": "Drawer settings",
+      "relation": {
+        "title": "Drawer settings",
+        "description": "This panel fits its content. Drag the handle outward to dismiss, or choose Close."
+      },
+      "tabInside": true,
+      "returnedFocus": true
+    },
+    {
+      "family": "shadcn",
+      "runtime": "react",
+      "displayContents": false,
+      "layout": {
+        "templateRows": "40px 40px 40px",
+        "gridHeight": 136,
+        "rootIsDirectChild": true,
+        "rootBoxCount": 1,
+        "rootDisplay": "block",
+        "triggerPosition": "absolute",
+        "cells": [
+          {
+            "text": "First",
+            "top": 0,
+            "left": 0
+          },
+          {
+            "text": "Second",
+            "top": 0,
+            "left": 168
+          },
+          {
+            "text": "Third",
+            "top": 48,
+            "left": 168
+          },
+          {
+            "text": "Closed",
+            "top": 96,
+            "left": 0
+          }
+        ]
+      },
+      "role": "dialog",
+      "name": "Drawer settings",
+      "relation": {
+        "title": "Drawer settings",
+        "description": "This panel fits its content. Drag the handle outward to dismiss, or choose Close."
+      },
+      "tabInside": true,
+      "returnedFocus": true
+    },
+    {
+      "family": "shadcn",
+      "runtime": "react",
+      "displayContents": true,
+      "layout": {
+        "templateRows": "40px 40px",
+        "gridHeight": 88,
+        "rootIsDirectChild": true,
+        "rootBoxCount": 0,
+        "rootDisplay": "contents",
+        "triggerPosition": "absolute",
+        "cells": [
+          {
+            "text": "First",
+            "top": 0,
+            "left": 0
+          },
+          {
+            "text": "Second",
+            "top": 0,
+            "left": 168
+          },
+          {
+            "text": "Third",
+            "top": 48,
+            "left": 0
+          },
+          {
+            "text": "Closed",
+            "top": 48,
+            "left": 168
+          }
+        ]
+      },
+      "role": "dialog",
+      "name": "Drawer settings",
+      "relation": {
+        "title": "Drawer settings",
+        "description": "This panel fits its content. Drag the handle outward to dismiss, or choose Close."
+      },
+      "tabInside": true,
+      "returnedFocus": true
+    },
+    {
+      "family": "shadcn",
+      "runtime": "vue",
+      "displayContents": false,
+      "layout": {
+        "templateRows": "40px 40px 40px",
+        "gridHeight": 136,
+        "rootIsDirectChild": true,
+        "rootBoxCount": 1,
+        "rootDisplay": "block",
+        "triggerPosition": "absolute",
+        "cells": [
+          {
+            "text": "First",
+            "top": 0,
+            "left": 0
+          },
+          {
+            "text": "Second",
+            "top": 0,
+            "left": 168
+          },
+          {
+            "text": "Third",
+            "top": 48,
+            "left": 168
+          },
+          {
+            "text": "Closed",
+            "top": 96,
+            "left": 0
+          }
+        ]
+      },
+      "role": "dialog",
+      "name": "Drawer settings",
+      "relation": {
+        "title": "Drawer settings",
+        "description": "This panel fits its content. Drag the handle outward to dismiss, or choose Close."
+      },
+      "tabInside": true,
+      "returnedFocus": true
+    },
+    {
+      "family": "shadcn",
+      "runtime": "vue",
+      "displayContents": true,
+      "layout": {
+        "templateRows": "40px 40px",
+        "gridHeight": 88,
+        "rootIsDirectChild": true,
+        "rootBoxCount": 0,
+        "rootDisplay": "contents",
+        "triggerPosition": "absolute",
+        "cells": [
+          {
+            "text": "First",
+            "top": 0,
+            "left": 0
+          },
+          {
+            "text": "Second",
+            "top": 0,
+            "left": 168
+          },
+          {
+            "text": "Third",
+            "top": 48,
+            "left": 0
+          },
+          {
+            "text": "Closed",
+            "top": 48,
+            "left": 168
+          }
+        ]
+      },
+      "role": "dialog",
+      "name": "Drawer settings",
+      "relation": {
+        "title": "Drawer settings",
+        "description": "This panel fits its content. Drag the handle outward to dismiss, or choose Close."
+      },
+      "tabInside": true,
+      "returnedFocus": true
+    },
+    {
+      "family": "shadcn",
+      "runtime": "vue2",
+      "displayContents": false,
+      "layout": {
+        "templateRows": "40px 40px 40px",
+        "gridHeight": 136,
+        "rootIsDirectChild": true,
+        "rootBoxCount": 1,
+        "rootDisplay": "block",
+        "triggerPosition": "absolute",
+        "cells": [
+          {
+            "text": "First",
+            "top": 0,
+            "left": 0
+          },
+          {
+            "text": "Second",
+            "top": 0,
+            "left": 168
+          },
+          {
+            "text": "Third",
+            "top": 48,
+            "left": 168
+          },
+          {
+            "text": "Closed",
+            "top": 96,
+            "left": 0
+          }
+        ]
+      },
+      "role": "dialog",
+      "name": "Drawer settings",
+      "relation": {
+        "title": "Drawer settings",
+        "description": "This panel fits its content. Drag the handle outward to dismiss, or choose Close."
+      },
+      "tabInside": true,
+      "returnedFocus": true
+    },
+    {
+      "family": "shadcn",
+      "runtime": "vue2",
+      "displayContents": true,
+      "layout": {
+        "templateRows": "40px 40px",
+        "gridHeight": 88,
+        "rootIsDirectChild": true,
+        "rootBoxCount": 0,
+        "rootDisplay": "contents",
+        "triggerPosition": "absolute",
+        "cells": [
+          {
+            "text": "First",
+            "top": 0,
+            "left": 0
+          },
+          {
+            "text": "Second",
+            "top": 0,
+            "left": 168
+          },
+          {
+            "text": "Third",
+            "top": 48,
+            "left": 0
+          },
+          {
+            "text": "Closed",
+            "top": 48,
+            "left": 168
+          }
+        ]
+      },
+      "role": "dialog",
+      "name": "Drawer settings",
+      "relation": {
+        "title": "Drawer settings",
+        "description": "This panel fits its content. Drag the handle outward to dismiss, or choose Close."
+      },
+      "tabInside": true,
+      "returnedFocus": true
+    },
+    {
+      "family": "brutalist",
+      "runtime": "wc",
+      "displayContents": false,
+      "layout": {
+        "templateRows": "40px 40px 40px",
+        "gridHeight": 136,
+        "rootIsDirectChild": true,
+        "rootBoxCount": 1,
+        "rootDisplay": "block",
+        "triggerPosition": "absolute",
+        "cells": [
+          {
+            "text": "First",
+            "top": 0,
+            "left": 0
+          },
+          {
+            "text": "Second",
+            "top": 0,
+            "left": 168
+          },
+          {
+            "text": "Third",
+            "top": 48,
+            "left": 168
+          },
+          {
+            "text": "Closed",
+            "top": 96,
+            "left": 0
+          }
+        ]
+      },
+      "role": "dialog",
+      "name": "Drawer settings",
+      "relation": {
+        "title": "Drawer settings",
+        "description": "This panel fits its content. Drag the handle outward to dismiss, or choose Close."
+      },
+      "tabInside": true,
+      "returnedFocus": true
+    },
+    {
+      "family": "brutalist",
+      "runtime": "wc",
+      "displayContents": true,
+      "layout": {
+        "templateRows": "40px 40px",
+        "gridHeight": 88,
+        "rootIsDirectChild": true,
+        "rootBoxCount": 0,
+        "rootDisplay": "contents",
+        "triggerPosition": "absolute",
+        "cells": [
+          {
+            "text": "First",
+            "top": 0,
+            "left": 0
+          },
+          {
+            "text": "Second",
+            "top": 0,
+            "left": 168
+          },
+          {
+            "text": "Third",
+            "top": 48,
+            "left": 0
+          },
+          {
+            "text": "Closed",
+            "top": 48,
+            "left": 168
+          }
+        ]
+      },
+      "role": "dialog",
+      "name": "Drawer settings",
+      "relation": {
+        "title": "Drawer settings",
+        "description": "This panel fits its content. Drag the handle outward to dismiss, or choose Close."
+      },
+      "tabInside": true,
+      "returnedFocus": true
+    },
+    {
+      "family": "brutalist",
+      "runtime": "react",
+      "displayContents": false,
+      "layout": {
+        "templateRows": "40px 40px 40px",
+        "gridHeight": 136,
+        "rootIsDirectChild": true,
+        "rootBoxCount": 1,
+        "rootDisplay": "block",
+        "triggerPosition": "absolute",
+        "cells": [
+          {
+            "text": "First",
+            "top": 0,
+            "left": 0
+          },
+          {
+            "text": "Second",
+            "top": 0,
+            "left": 168
+          },
+          {
+            "text": "Third",
+            "top": 48,
+            "left": 168
+          },
+          {
+            "text": "Closed",
+            "top": 96,
+            "left": 0
+          }
+        ]
+      },
+      "role": "dialog",
+      "name": "Drawer settings",
+      "relation": {
+        "title": "Drawer settings",
+        "description": "This panel fits its content. Drag the handle outward to dismiss, or choose Close."
+      },
+      "tabInside": true,
+      "returnedFocus": true
+    },
+    {
+      "family": "brutalist",
+      "runtime": "react",
+      "displayContents": true,
+      "layout": {
+        "templateRows": "40px 40px",
+        "gridHeight": 88,
+        "rootIsDirectChild": true,
+        "rootBoxCount": 0,
+        "rootDisplay": "contents",
+        "triggerPosition": "absolute",
+        "cells": [
+          {
+            "text": "First",
+            "top": 0,
+            "left": 0
+          },
+          {
+            "text": "Second",
+            "top": 0,
+            "left": 168
+          },
+          {
+            "text": "Third",
+            "top": 48,
+            "left": 0
+          },
+          {
+            "text": "Closed",
+            "top": 48,
+            "left": 168
+          }
+        ]
+      },
+      "role": "dialog",
+      "name": "Drawer settings",
+      "relation": {
+        "title": "Drawer settings",
+        "description": "This panel fits its content. Drag the handle outward to dismiss, or choose Close."
+      },
+      "tabInside": true,
+      "returnedFocus": true
+    },
+    {
+      "family": "brutalist",
+      "runtime": "vue",
+      "displayContents": false,
+      "layout": {
+        "templateRows": "40px 40px 40px",
+        "gridHeight": 136,
+        "rootIsDirectChild": true,
+        "rootBoxCount": 1,
+        "rootDisplay": "block",
+        "triggerPosition": "absolute",
+        "cells": [
+          {
+            "text": "First",
+            "top": 0,
+            "left": 0
+          },
+          {
+            "text": "Second",
+            "top": 0,
+            "left": 168
+          },
+          {
+            "text": "Third",
+            "top": 48,
+            "left": 168
+          },
+          {
+            "text": "Closed",
+            "top": 96,
+            "left": 0
+          }
+        ]
+      },
+      "role": "dialog",
+      "name": "Drawer settings",
+      "relation": {
+        "title": "Drawer settings",
+        "description": "This panel fits its content. Drag the handle outward to dismiss, or choose Close."
+      },
+      "tabInside": true,
+      "returnedFocus": true
+    },
+    {
+      "family": "brutalist",
+      "runtime": "vue",
+      "displayContents": true,
+      "layout": {
+        "templateRows": "40px 40px",
+        "gridHeight": 88,
+        "rootIsDirectChild": true,
+        "rootBoxCount": 0,
+        "rootDisplay": "contents",
+        "triggerPosition": "absolute",
+        "cells": [
+          {
+            "text": "First",
+            "top": 0,
+            "left": 0
+          },
+          {
+            "text": "Second",
+            "top": 0,
+            "left": 168
+          },
+          {
+            "text": "Third",
+            "top": 48,
+            "left": 0
+          },
+          {
+            "text": "Closed",
+            "top": 48,
+            "left": 168
+          }
+        ]
+      },
+      "role": "dialog",
+      "name": "Drawer settings",
+      "relation": {
+        "title": "Drawer settings",
+        "description": "This panel fits its content. Drag the handle outward to dismiss, or choose Close."
+      },
+      "tabInside": true,
+      "returnedFocus": true
+    },
+    {
+      "family": "brutalist",
+      "runtime": "vue2",
+      "displayContents": false,
+      "layout": {
+        "templateRows": "40px 40px 40px",
+        "gridHeight": 136,
+        "rootIsDirectChild": true,
+        "rootBoxCount": 1,
+        "rootDisplay": "block",
+        "triggerPosition": "absolute",
+        "cells": [
+          {
+            "text": "First",
+            "top": 0,
+            "left": 0
+          },
+          {
+            "text": "Second",
+            "top": 0,
+            "left": 168
+          },
+          {
+            "text": "Third",
+            "top": 48,
+            "left": 168
+          },
+          {
+            "text": "Closed",
+            "top": 96,
+            "left": 0
+          }
+        ]
+      },
+      "role": "dialog",
+      "name": "Drawer settings",
+      "relation": {
+        "title": "Drawer settings",
+        "description": "This panel fits its content. Drag the handle outward to dismiss, or choose Close."
+      },
+      "tabInside": true,
+      "returnedFocus": true
+    },
+    {
+      "family": "brutalist",
+      "runtime": "vue2",
+      "displayContents": true,
+      "layout": {
+        "templateRows": "40px 40px",
+        "gridHeight": 88,
+        "rootIsDirectChild": true,
+        "rootBoxCount": 0,
+        "rootDisplay": "contents",
+        "triggerPosition": "absolute",
+        "cells": [
+          {
+            "text": "First",
+            "top": 0,
+            "left": 0
+          },
+          {
+            "text": "Second",
+            "top": 0,
+            "left": 168
+          },
+          {
+            "text": "Third",
+            "top": 48,
+            "left": 0
+          },
+          {
+            "text": "Closed",
+            "top": 48,
+            "left": 168
+          }
+        ]
+      },
+      "role": "dialog",
+      "name": "Drawer settings",
+      "relation": {
+        "title": "Drawer settings",
+        "description": "This panel fits its content. Drag the handle outward to dismiss, or choose Close."
+      },
+      "tabInside": true,
+      "returnedFocus": true
+    }
+  ]
+}
