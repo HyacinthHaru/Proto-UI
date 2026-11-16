@@ -1,0 +1,37 @@
+{
+  "status": "passed",
+  "chrome": "156.0.8078.79",
+  "results": [
+    {
+      "mode": "control",
+      "caller": "Caller text",
+      "detached": true,
+      "liveSurface": true,
+      "padding": 64,
+      "focus": true,
+      "assigned": true,
+      "errors": []
+    },
+    {
+      "mode": "inert",
+      "caller": "Caller text",
+      "detached": true,
+      "liveSurface": true,
+      "errors": ["[WC Adapter] decoration physical blueprint changed"]
+    },
+    {
+      "mode": "aria-hidden",
+      "caller": "Caller text",
+      "detached": true,
+      "liveSurface": true,
+      "errors": ["[WC Adapter] decoration physical blueprint changed"]
+    },
+    {
+      "mode": "part",
+      "caller": "Caller text",
+      "detached": true,
+      "liveSurface": true,
+      "errors": ["[WC Adapter] decoration physical blueprint changed"]
+    }
+  ]
+}

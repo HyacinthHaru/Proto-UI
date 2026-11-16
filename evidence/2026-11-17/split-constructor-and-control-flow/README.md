@@ -1,0 +1,5 @@
+# Split staging and decoration control flow
+
+[PR #1484](https://github.com/Proto-UI/Proto-UI/pull/1484) at `7f9d2054376e690570e0f33da42657afdab6da4e` captures the live split surface identity before constructing detached template nodes. The staged tree still captures its node list after construction. The CLI verifies targeted style statements in branches, loops and blocks under the same setup or Rule callback, with the actual target declaration and unchanged receiver checks. An unverified nested callback still retains Root preflight.
+
+Seven cases reproduced against the prior exact head. The corrected focused tests passed 84 cases. All 280 tests in ten related files, workspace types and both package builds passed. In Chrome, the staged custom child constructor was detached while the existing split surface was connected. The unmodified control applied a generated Template-only 10% decoration token as 64px in a 640px layout, retaining the caller focus and slot. Constructor writes of inert, aria-hidden or part each rejected the publication, while the host's caller input survived.
