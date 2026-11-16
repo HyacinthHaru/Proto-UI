@@ -1,0 +1,73 @@
+{
+  "candidate": {
+    "head": "fe6a32f41ad952adb012b61d65723270a9aaa108",
+    "tree": "8bddda13e95a53a3d4ed6cd53509535c02dda6bd",
+    "parents": ["49a9f9167bc7371625100c845faa1c8a8d79cdb9"],
+    "testedInputs": {
+      "packages/adapters/web-component/src/runtime/session.ts": "8cd7693667185ead67cfd169328de0f908a21a64dc15282037782702b3203759",
+      "packages/adapters/web-component/test/owned-decoration.integration.test.ts": "e459b08a62de179c1dc62fee78911b508b6c2ab69112acaeb4daa1b92181e433",
+      "packages/cli/src/services/prototype-style-tokens.ts": "58120de5c4d91cddcec406ab058bdc33d2ff5ce2363ffbd714bb231608780c72",
+      "packages/cli/src/services/hook-source-module.ts": "2962ac662b8c61bc509ff677fc889e5106d33699a071c45c50debe4e67c38c6c",
+      "packages/cli/test/shadow-template-style.test.ts": "159d0ea438d8c81317090d1534c315d6b7663dc2ed9e653b8244e74ee7073149"
+    },
+    "typesExit": 0,
+    "cliBuild": 1,
+    "wcDependencyClosureBuild": 39,
+    "workspacePackageTotal": 47
+  },
+  "focused": {
+    "parent": "15386f8c496324d341dc1606aef990570722e14e",
+    "baselineFailed": 5,
+    "baselinePassed": 104,
+    "candidatePassed": 109,
+    "testSHA256": {
+      "packages/cli/test/shadow-template-style.test.ts": "159d0ea438d8c81317090d1534c315d6b7663dc2ed9e653b8244e74ee7073149",
+      "packages/adapters/web-component/test/owned-decoration.integration.test.ts": "e459b08a62de179c1dc62fee78911b508b6c2ab69112acaeb4daa1b92181e433"
+    },
+    "initialFixtureCorrection": "The first DOM mock attempted to set a read-only computed style. The corrected shared regression fixture supplies the expected resolved values to the style-reader seam.",
+    "baselineConsoleSHA256": "7e1ed526e70180620514d22f1f7a6a0283235a62fb168ed27ada1dc2d8fbff99",
+    "candidateConsoleSHA256": "0f607188cd3d707175e7938302e5962d2f78cd546b95d27ce0f943fc1f52bbc2"
+  },
+  "expanded": {
+    "tested": 452,
+    "passed": 427,
+    "failed": 25,
+    "files": 18,
+    "candidateReportSHA256": "57c50f5737e8c3bae8970ee0e1b8191988080eea3df5e69cb8780de100fd1262",
+    "parentFailedSuiteReportSHA256": "e980eff3a9e3149a16d14a882d4624abd2fdbd8b2c1fae5ef6b73efa7c62160e",
+    "failedSuiteComparison": {
+      "parentFailures": 25,
+      "candidateFailures": 25,
+      "candidateOnly": [],
+      "parentOnly": [],
+      "changedFailure": []
+    }
+  },
+  "chromeInputs": {
+    "sharedProbeSHA256": "f10511fbfa95e8e3aa49ddfb0c8298c1db848aa3db05f6cfd9bccab6a7473639",
+    "baseline": {
+      "head": "15386f8c496324d341dc1606aef990570722e14e",
+      "inputSHA256": {
+        "used-native.ts": "a91eca42f65ac6c11ec2c2567507d285fa634046de9479075a986b92cee50f33",
+        "used-native-paint.ts": "ee5d38c2c8bf004f4dc2e2d0532cfefec6e98fd3b598bafb7717417331a65863",
+        "used-native-artifact.json": "b3a4f425111a778ff2e153203209295fd0df082fc95db5e0cbae71137d5419cd",
+        "used-native.astro": "387b7e6fc7270df16dd3ada968c564e90dbd287c596a703f82c9cd81b99a8a04"
+      },
+      "exit": 1,
+      "startedAt": "2026-11-16T19:49:58Z",
+      "finishedAt": "2026-11-16T19:50:40Z"
+    },
+    "candidate": {
+      "head": "fe6a32f41ad952adb012b61d65723270a9aaa108",
+      "inputSHA256": {
+        "used-native.ts": "da2720f990169bdcce1853de25dea9fababc08bd08d907500d9c35234dfab4e1",
+        "used-native-paint.ts": "f1774155868957dc6d856e9714b679d32d50bbbf7b14e7be806b6ef9190ef59e",
+        "used-native-artifact.json": "6e87b94e4cc5ac05d9c27e40fa827a8e220b29e17ce19387db4a9dde06659042",
+        "used-native.astro": "387b7e6fc7270df16dd3ada968c564e90dbd287c596a703f82c9cd81b99a8a04"
+      },
+      "exit": 0,
+      "startedAt": "2026-11-16T19:52:10Z",
+      "finishedAt": "2026-11-16T19:52:55Z"
+    }
+  }
+}
