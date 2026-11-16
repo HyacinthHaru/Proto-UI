@@ -1,0 +1,16 @@
+{
+  "head": "bcbfd689aa6435e78a8c1e55923e3eca727b3df2",
+  "tree": "9b9bcf3975f20a20342a0837a1d046dd52ec1d23",
+  "parent": "1ddddd9d68706d8411f94b44e53b205c6bd95121",
+  "baselineFailures": 2,
+  "baselinePassing": 20,
+  "changedSourceFocusedPassing": 40,
+  "focusedRelocationPassing": 19,
+  "workspaceTypeCheck": "passed",
+  "signedInputSHA256": {
+    "packages/adapters/web-component/src/owned-decoration.ts": "8537955f131cd4ed6ea23b9e9a0f6354bd0259b1cd286b7c9799613ceae6683c",
+    "packages/adapters/web-component/src/runtime/session.ts": "833e847b528014d0eab8d00d1b5293d547f4e45e2fc3ae0d17e2d56c46202c56",
+    "packages/adapters/web-component/test/owned-decoration.integration.test.ts": "7373608cdb360a202a545cfec14fad6327949db4ca56fa36a0418dbfd1b4f2cb",
+    "spec/tests/T-FEEDBACK-STYLE-OWNED-TARGET-0001.yaml": "bf0092974c172958d2815a636266be9f6a5b34fbb51b5886cc7b92fe0e730868"
+  }
+}

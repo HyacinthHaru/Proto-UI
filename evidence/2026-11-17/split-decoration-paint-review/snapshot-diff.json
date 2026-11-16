@@ -1,0 +1,16 @@
+{
+  "from": "0.3.0-alpha.1",
+  "to": "0.3.0-alpha.2",
+  "revised": [
+    {
+      "id": "T-FEEDBACK-STYLE-OWNED-TARGET-0001",
+      "revisions": [
+        {
+          "version": "0.3.0-alpha.2",
+          "change": "revised",
+          "summary": "Mapped explicit split Root binding, native slot preservation and fail-closed reuse to the WC tests."
+        }
+      ]
+    }
+  ]
+}

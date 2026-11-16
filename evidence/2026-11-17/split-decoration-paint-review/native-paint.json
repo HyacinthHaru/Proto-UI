@@ -1,0 +1,23 @@
+{
+  "cases": [
+    {
+      "mutation": "remove paint tokens",
+      "stable": true,
+      "error": "Error: [WC Adapter] decoration physical leaf changed",
+      "currentOpacity": "1",
+      "callerRetained": true,
+      "errors": []
+    },
+    {
+      "mutation": "add inline paint",
+      "stable": true,
+      "error": "Error: [WC Adapter] decoration physical leaf changed",
+      "currentOpacity": "1",
+      "callerRetained": true,
+      "errors": []
+    }
+  ],
+  "scope": "Real split owner and caller slot in a temporary Astro route",
+  "chrome": "156.0.8078.79",
+  "status": "passed"
+}
