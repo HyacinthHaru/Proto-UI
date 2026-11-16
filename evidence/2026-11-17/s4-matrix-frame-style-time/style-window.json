@@ -1,0 +1,40 @@
+{
+  "frame": {
+    "event": "ThreadControllerImpl::RunTask",
+    "cat": "toplevel",
+    "startPageMs": 52460.56649971008,
+    "endPageMs": 61298.733499710084,
+    "wallMs": 8838.167000000001,
+    "threadMs": 8849.9,
+    "source": "cc/trees/proxy_impl.cc",
+    "function": "ScheduledActionSendBeginMainFrame"
+  },
+  "phases": {
+    "Blink.Style.UpdateTime": {
+      "completeEvents": 364,
+      "unionWallMs": 6040.766,
+      "largestSingleMs": 27.044
+    },
+    "UpdateLayoutTree": {
+      "completeEvents": 364,
+      "unionWallMs": 6040.183,
+      "largestSingleMs": 27.042
+    },
+    "Document::updateStyle": {
+      "completeEvents": 364,
+      "unionWallMs": 5771.917,
+      "largestSingleMs": 25.511
+    },
+    "LocalFrameView::performLayout": {
+      "completeEvents": 140,
+      "unionWallMs": 47.788,
+      "largestSingleMs": 0.597
+    },
+    "FrameRequestCallbackCollection::ExecuteFrameCallbacks": {
+      "completeEvents": 1,
+      "unionWallMs": 8691.713,
+      "largestSingleMs": 8691.713
+    }
+  },
+  "note": "Time unions are per event name. Names nest and must not be added across phases. Browser reports trace loss, so missing events are not zero time."
+}

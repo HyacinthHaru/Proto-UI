@@ -1,0 +1,57 @@
+{
+  "source": {
+    "head": "5d4f911370ca5e9cb4e4a17f20eca0b1945d6862",
+    "tree": "84b1020b1d8fdd3511e6f9d4215aad6fa94bf83b",
+    "parents": [
+      "621355701553eb1bded8537b0ae5a1881038d61f",
+      "624b878c166658ee99f798eaba2ee6b20f1a6bd5"
+    ],
+    "suiteOverlaySHA256": "c376fe057ba3584a4961f4cb627ccaab66b505f2f49e41618d28df4ec0738182",
+    "observerSHA256": "b56ec096f72172a42e3f9d05275c82802c641e1fec5574d841a9b17defcc91e6",
+    "htmlSHA256": "9e397ace2d4a9af31b295ea4e4c40d2e1e62ffd6505d4240110dfc2c91fbc7a4"
+  },
+  "environment": {
+    "node": "v24.21.0",
+    "pnpm": "10.32.1",
+    "chrome": "Google Chrome for Testing 156.0.8078.79",
+    "workers": 1
+  },
+  "verdict": {
+    "startupPassed": false,
+    "errors": [],
+    "consoleErrors": [],
+    "collectionOutcome": "rejected",
+    "predicateSha256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684"
+  },
+  "failure": "Error: Test timed out in 150000ms.",
+  "limits": [1268, 60000, 150000],
+  "trace": {
+    "categories": "toplevel,blink,blink.user_timing",
+    "compression": "gzip",
+    "bytes": 83660588,
+    "peakBuffer": 0.9994148015975952,
+    "dataLossOccurred": true,
+    "truncated": false,
+    "requestedEnd": 1794872307257,
+    "sha256": "71426b22026ca567e911ec8bc110ff3494a47cd1c6bdc1f2cd37232a21d9f5e6"
+  },
+  "rawEventCount": 16080116,
+  "marks": [
+    {
+      "name": "pui-s4-sampler:2:12167.799999952316",
+      "ts": 1242966550525,
+      "pid": 17535,
+      "tid": 22482102
+    },
+    {
+      "name": "pui-s4-sampler:3:31483.39999985695",
+      "ts": 1242985866038,
+      "pid": 17535,
+      "tid": 22482102
+    }
+  ],
+  "offsetSpreadMs": 0.08699989318847656,
+  "matrixCompleteEventCount": 1595661,
+  "parserCorrection": "Chrome placed the closing array and metadata trailer after the last event on the same line. The parser was corrected to decode that final event.",
+  "extractionSHA256": "e8c2452f68bd361b5071e923316a24df6a7305c03c04bd674524820133563c4b"
+}

@@ -1,0 +1,7 @@
+# S4 style work inside a Matrix main frame
+
+This probe kept the same static HTML, early React/Vue controls, and original limits as the [thread-binding probe](https://github.com/HyacinthHaru/Proto-UI/tree/2a90978e44bfdc6f39cf1713062acee3a98876c8/evidence/2026-11-17/s4-matrix-renderer-bound). It added Blink category detail and used a gzip transfer. Two surviving user-timing marks bind the same Matrix renderer thread. Chrome reports trace data loss despite the complete local gzip transfer, so the recorded intervals are evidence for the events present and cannot exclude other activity.
+
+In this run, a complete Matrix main-frame task spans 52.46 to 61.30 seconds after navigation. Its recorded wall duration is 8.838 seconds. It contains an 8.692-second requestAnimationFrame callback collection. Within the main-frame task, the trace contains 364 complete style update intervals that cover 6.041 seconds after taking the union of interval times. The 364 `Document::updateStyle` intervals cover 5.772 seconds. The 140 recorded layout intervals cover 47.8 ms. These event classes nest. Their totals must not be added.
+
+The original full-page predicate failed and the Dialog interaction did not run. The two probes do not identify the application call that induced the repeated style work. The restored artifact has the original hashes. See `source-and-verdict.json` for capture bounds and `style-window.json` for the verified event intervals.
