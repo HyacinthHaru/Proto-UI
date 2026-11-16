@@ -1,0 +1,38 @@
+{
+  "status": "passed",
+  "chrome": "156.0.8078.79",
+  "cases": [
+    {
+      "mode": "presence",
+      "inlineOpacity": "0",
+      "assigned": true,
+      "updateError": null,
+      "frames": 1,
+      "errors": []
+    },
+    {
+      "mode": "value",
+      "observed": true,
+      "value": "Reset",
+      "text": "Caller text",
+      "rootRetained": true,
+      "errors": ["[WC Adapter] decoration caller projection changed"]
+    },
+    {
+      "mode": "text",
+      "observed": true,
+      "value": "Caller input",
+      "text": "Reset",
+      "rootRetained": true,
+      "errors": ["[WC Adapter] decoration caller projection changed"]
+    },
+    {
+      "mode": "later-edit",
+      "updateError": null,
+      "value": "Edited",
+      "text": "Updated",
+      "assigned": true,
+      "errors": []
+    }
+  ]
+}

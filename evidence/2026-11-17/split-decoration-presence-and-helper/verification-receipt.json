@@ -1,0 +1,274 @@
+{
+  "candidate": {
+    "head": "70e81458ff802c8dc284439321cc55550766c414",
+    "tree": "538afe50aec768481177f8c891dae47b6ccede02",
+    "parents": ["b293e72bebc7a932be21d948d3b0287414885495"],
+    "finalInputs": {
+      "packages/adapters/base/src/index.ts": "57885287e23b02c5dc0715f65b2038b7c7590c08ee94488a53ac618610634936",
+      "packages/adapters/base/src/motion/web-presence-presentation.ts": "89acecc49f34d5132a16ef1219e8b5feef87ffb5b4ce5bd6d2a3f6c4c4369a1b",
+      "packages/adapters/web-component/src/runtime/session.ts": "e18e66fe1715aae011275fba1132250cbbe4135cf35f1be3de6b8a48f27f8904",
+      "packages/cli/src/services/prototype-style-tokens.ts": "0b0fb8c58054506856c066da013f6196c6ce6a95e24b25725e6bdc13fe307b6b",
+      "packages/cli/test/shadow-template-style.test.ts": "0a1da500c93701fb40f1c7e3cd8bed1b1410adb1ae586de1c8852f7b2aa6d3c3",
+      "packages/adapters/web-component/test/owned-decoration.integration.test.ts": "13643c01c01cae0fd33efc69a727cc3d824c33d4779292a17cf01fba395cbcb2"
+    },
+    "typesExit": 0
+  },
+  "focused": {
+    "parent": "624b878c166658ee99f798eaba2ee6b20f1a6bd5",
+    "red": 5,
+    "baselinePasses": 133,
+    "passes": 138,
+    "originalInputs": {
+      "packages/adapters/base/src/index.ts": "57885287e23b02c5dc0715f65b2038b7c7590c08ee94488a53ac618610634936",
+      "packages/adapters/base/src/motion/web-presence-presentation.ts": "89acecc49f34d5132a16ef1219e8b5feef87ffb5b4ce5bd6d2a3f6c4c4369a1b",
+      "packages/adapters/web-component/src/runtime/session.ts": "e18e66fe1715aae011275fba1132250cbbe4135cf35f1be3de6b8a48f27f8904",
+      "packages/cli/src/services/prototype-style-tokens.ts": "0b0fb8c58054506856c066da013f6196c6ce6a95e24b25725e6bdc13fe307b6b",
+      "packages/cli/test/shadow-template-style.test.ts": "0a1da500c93701fb40f1c7e3cd8bed1b1410adb1ae586de1c8852f7b2aa6d3c3",
+      "packages/adapters/web-component/test/owned-decoration.integration.test.ts": "13643c01c01cae0fd33efc69a727cc3d824c33d4779292a17cf01fba395cbcb2"
+    },
+    "normalizedTestOnly": [],
+    "baselineLogSHA256": "28945091ecad17b36ca44839b9e5e0846df09ab7f2efbc81f17cd01aac929daf",
+    "exactSignedLogSHA256": "11e5b421f114d9f281141fbf286a31d4c41f9bf60e8a113dce4542bc696b3913"
+  },
+  "expanded": {
+    "passes": 731,
+    "failures": 25,
+    "files": 34,
+    "matchedParent": {
+      "parentFailures": 25,
+      "candidateFailures": 25,
+      "newCases": [],
+      "resolved": [],
+      "changedMessage": []
+    },
+    "reportSHA256": "11dd98f76b33668fed52fef944f3ba5c4811f0bc9b0eecb6f9615815237eb16a"
+  },
+  "chrome": {
+    "probeSHA256": "aabfc2138c9c6b942791af5981ac0cfcd7120ecdf1aeef3065878269dec0ca2e",
+    "candidateArtifactSHA256": "b3a4f425111a778ff2e153203209295fd0df082fc95db5e0cbae71137d5419cd",
+    "baselineExit": 1,
+    "candidateExit": 0,
+    "cases": 4,
+    "fixtureCorrection": "The first candidate token-generation input retained an old unused paint helper. The corrected input isolates the active captured-target helper."
+  },
+  "dialog": {
+    "head": "856a1ab4fdc7aee1aafa9546a701fa3fb5e1161c",
+    "tree": "79394f7d9548393b2ebfe297f279d2842d498b73",
+    "parents": [
+      "5d4f911370ca5e9cb4e4a17f20eca0b1945d6862",
+      "70e81458ff802c8dc284439321cc55550766c414"
+    ],
+    "packageCount": 47,
+    "tests": {
+      "scripts/analysis/shadow-s4-journey.mjs": "16c6af53316d131a06657a303c5d8d92138f64835d23495c4ab261d51d90b7b5",
+      "scripts/analysis/shadow-s4-public-browser.mjs": "9d979bed6cce27c1b6628a47dad109670f72dd27aa5a6db336d8ea27c7c1dedd"
+    },
+    "sourceExit": 0,
+    "source": {
+      "result": [
+        {
+          "profile": "light",
+          "requests": 15,
+          "counts": {
+            "root": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "trigger": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "mask": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "content": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "title": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "description": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "close": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "icon": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "header": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "footer": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            }
+          }
+        },
+        {
+          "profile": "split",
+          "requests": 15,
+          "counts": {
+            "root": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "trigger": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "mask": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "content": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "title": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "description": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "close": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "icon": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "header": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "footer": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            }
+          }
+        },
+        {
+          "profile": "mixed",
+          "requests": 15,
+          "counts": {
+            "root": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "trigger": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "mask": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "content": {
+              "setup": 2,
+              "mount": 6,
+              "unmount": 6,
+              "dispose": 1
+            },
+            "title": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "description": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "close": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "icon": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "header": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            },
+            "footer": {
+              "setup": 2,
+              "mount": 2,
+              "unmount": 1,
+              "dispose": 1
+            }
+          }
+        }
+      ],
+      "errors": [],
+      "chrome": "156.0.8078.79"
+    },
+    "distExit": 0,
+    "distLogSHA256": "05bbf2e5a0e32d720dc2e79049267ceda9e847a1e30c357aa33f9479ce115907"
+  }
+}
