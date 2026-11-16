@@ -1,0 +1,24 @@
+{
+  "result": {
+    "expect.poll": {
+      "mode": "expect.poll",
+      "verdict": {
+        "rejected": true,
+        "atMs": 1005.418833
+      },
+      "readsAtVerdict": 1,
+      "readsAfterLateRejection": 2
+    },
+    "vi.waitFor": {
+      "mode": "vi.waitFor",
+      "verdict": {
+        "rejected": true,
+        "atMs": 1000.46675
+      },
+      "readsAtVerdict": 1,
+      "readsAfterLateRejection": 1
+    }
+  },
+  "vitest": "2.1.9",
+  "scope": "A controlled pending callback with delayed rejection. It verifies test read scheduling without making a browser scroll assertion."
+}

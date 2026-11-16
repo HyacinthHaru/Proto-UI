@@ -1,0 +1,127 @@
+{
+  "head": "7e5fdc43fb6d3166e660a963721b261ee08ec8a5",
+  "tree": "53146331dc1cde098a86f977f0fefee88153d877",
+  "carrier": "a91bc3df9b30cc80d755296e9120059abbc8dc0c",
+  "carrierTree": "bf6a83d911499b3d9dbea3f2dad407db0fcdf1a1",
+  "workflow": "ab92daea756c771af2452548d2443cc86b7fe5be",
+  "runId": 43803106335,
+  "jobId": 133087660175,
+  "jobConclusion": "failure",
+  "runConclusion": "failure",
+  "artifactId": 14197499421,
+  "artifactDigest": "sha256:448cd2ca3278ebb595f506b976ff59077203fa7d56556c0c0e2cbdb6c543b46f",
+  "environment": [
+    "workflowSha=ab92daea756c771af2452548d2443cc86b7fe5be",
+    "runId=43803106335",
+    "attempt=1",
+    "slot=browser-1-of-8",
+    "runnerImage=ubuntu26",
+    "runnerImageVersion=20261111.196.1",
+    "Linux 7.0.0-1019-azure x86_64",
+    "cpuCount=4",
+    "AMD EPYC 9V74 80-Core Processor",
+    "Google Chrome for Testing 157.0.8103.50 ",
+    "061f752aa63d26ee05581742df728a2f8f5097446e85e04145ebaea49e469e15",
+    "chromeArchiveSha256=d17167bc092eb495a3b768c7467f27e35f625aa03834233a1663af67dcb668c9",
+    "v24.22.2",
+    "10.32.1"
+  ],
+  "sameOriginalOrder": true,
+  "selectedFileCount": 12,
+  "processExit": 124,
+  "terminal": "failure",
+  "browserLogSha256": "b4e6d6c505dee90605313dd013c2ed20ee82d968f0f6b8b7bdf8e5d3cf464e31",
+  "contentsTransitions": [
+    {
+      "family": "brutalist",
+      "runtime": "react",
+      "originalPassed": true,
+      "originalDurationMs": 480
+    },
+    {
+      "family": "brutalist",
+      "runtime": "vue",
+      "originalPassed": true,
+      "originalDurationMs": 398
+    },
+    {
+      "family": "brutalist",
+      "runtime": "vue2",
+      "originalPassed": true,
+      "originalDurationMs": 356
+    },
+    {
+      "family": "brutalist",
+      "runtime": "wc",
+      "originalPassed": true,
+      "originalDurationMs": 3
+    },
+    {
+      "family": "shadcn",
+      "runtime": "react",
+      "originalPassed": true,
+      "originalDurationMs": 622
+    },
+    {
+      "family": "shadcn",
+      "runtime": "vue",
+      "originalPassed": true,
+      "originalDurationMs": 527
+    },
+    {
+      "family": "shadcn",
+      "runtime": "vue2",
+      "originalPassed": true,
+      "originalDurationMs": 673
+    },
+    {
+      "family": "shadcn",
+      "runtime": "wc",
+      "originalPassed": true,
+      "originalDurationMs": 6
+    }
+  ],
+  "contentsHandbacks": {
+    "total": 24,
+    "ordered": 24,
+    "sha256": "aa035e1a7be44c75e908be2043cc04fb3fd29377ab620523bd93da04cbd3a68d"
+  },
+  "s4": [
+    {
+      "file": "zh-cn.json",
+      "outcome": "budget-expired",
+      "startupPassed": false,
+      "sha256": "728a4e4a5bb42d1c0ca79985714386161eff3e87f3bd33a1aa836f74ede0b05d",
+      "errorTypeCount": 1
+    }
+  ],
+  "caseLog": [
+    "switches every registered homepage group through real adapters, preserving native anchors and theme 46308ms",
+    "uses real family Popover Triggers through all four Docs runtimes with keyboard and exact-source visual evidence 64660ms",
+    "uses the same mobile shell on documentation with independent global navigation and contents 10295ms",
+    "× retains shadcn preference owners and portals through real breakpoint reconnects 180002ms",
+    "× retains brutalist preference owners and portals through real breakpoint reconnects 7502ms",
+    "loads only scoped Proto UI physical styles and mounts every real runtime 56ms",
+    "'wc' 'interaction' projects selection, focus, disabled and theme states through the real family 2309ms",
+    "'react' 'interaction' projects selection, focus, disabled and theme states through the real family 3030ms",
+    "'vue' 'interaction' projects selection, focus, disabled and theme states through the real family 2998ms",
+    "'vue2' 'interaction' projects selection, focus, disabled and theme states through the real family 3313ms"
+  ],
+  "totals": null,
+  "cases": null,
+  "selection": [
+    "apps/workspace/test/lifecycle.browser.test.ts",
+    "apps/www/src/content/docs/zh-cn/contrast-probe.browser.test.ts",
+    "apps/www/src/content/docs/zh-cn/demo-bootstrap-state-controls.browser.test.ts",
+    "apps/www/src/content/docs/zh-cn/demo-collapsible-projections.browser.test.ts",
+    "apps/www/src/content/docs/zh-cn/demo-prototype-style-closure.browser.test.ts",
+    "apps/www/src/content/docs/zh-cn/demo-shadcn-radio-group.browser.test.ts",
+    "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts",
+    "apps/www/src/content/docs/zh-cn/homepage-dogfood.browser.test.ts",
+    "apps/www/src/content/docs/zh-cn/runtime-preview-surface.browser.test.ts",
+    "apps/www/src/content/docs/zh-cn/site-sidebar-disclosure.browser.test.ts",
+    "apps/www/test/message-composition.browser.test.ts",
+    "packages/adapters/vue/test/focus-request-readiness.browser.test.ts"
+  ],
+  "scope": "Archived 12-file runner selection. Carrier changes only the diagnostic shard selector, with product source and tests from the subject head."
+}

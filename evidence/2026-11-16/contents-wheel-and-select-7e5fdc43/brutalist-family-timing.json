@@ -1,0 +1,43 @@
+{
+  "carrier": "a91bc3df9b30cc80d755296e9120059abbc8dc0c",
+  "stage": "family-commit",
+  "pollVerdictMs": 1001.736,
+  "writeMs": [2018.481, 2077.377],
+  "firstMutationDeliveryMs": [2396.881, 2455.777],
+  "lastQueryReturnedMs": 2973.259,
+  "lastQueryValue": "brutalist",
+  "nodeEvents": [
+    {
+      "stage": "node.protocol.send",
+      "afterPollMs": 405.02
+    },
+    {
+      "stage": "cdp.transport.send.before",
+      "afterPollMs": 405.793
+    },
+    {
+      "stage": "cdp.pipe.write.return",
+      "afterPollMs": 407.392,
+      "returned": true,
+      "writableLength": 0,
+      "writableNeedDrain": false
+    },
+    {
+      "stage": "cdp.pipe.write.return",
+      "afterPollMs": 407.45,
+      "returned": true,
+      "writableLength": 0,
+      "writableNeedDrain": false
+    },
+    {
+      "stage": "cdp.pipe.read-dispatch.enter",
+      "afterPollMs": 2972.449
+    }
+  ],
+  "getterCapture": "query-drain-incomplete; getter capture was not collected",
+  "rawSha256": {
+    "brutalist-failure.json": "b404d715593b6a7603e04c8fc45e05cdbc462cc5bbb27a7b2aef1ccce5a36682",
+    "brutalist-sdk-timing.json": "0cdb9a7ff4d04566e6d7b90c88c5abf0f0c421c93d22ae0f1f5e7c507777d53b",
+    "brutalist-query-observation.json": "6a8043ac2616c0715399c6a821747718a7408474cb47fad37316552678c5f84d"
+  }
+}

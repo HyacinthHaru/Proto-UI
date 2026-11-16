@@ -1,0 +1,1217 @@
+{
+  "contents": {
+    "priorRed": {
+      "source": "ed25e0f0713ee7cb3a9f69e9f2830d04e78e7ec6",
+      "diagnosticCarrier": "4fd2ec9a8b6f9ea74b22ddb6cdb6716de9781ad1",
+      "runId": 43674937751,
+      "timeoutMs": 1001.468,
+      "publication": [
+        {
+          "mark": "pui-contents:write:contentsRuntime:react",
+          "afterPollMs": [936.328, 938.887],
+          "afterVerdictMs": [-65.14, -62.581],
+          "afterClickMs": 2331.026
+        },
+        {
+          "mark": "pui-contents:write:contentsGeneration:2",
+          "afterPollMs": [936.401, 938.96],
+          "afterVerdictMs": [-65.067, -62.508],
+          "afterClickMs": 2331.099
+        }
+      ],
+      "runtimeStage": [
+        {
+          "owner": "site-header-surface-1",
+          "afterTrustedClickMs": {
+            "begin": [103.284],
+            "prototypes-ready": [1409.175],
+            "runtime-ready": [1730.931],
+            "dependencies-ready": [1746.037],
+            "render-start": [1746.206],
+            "render-return": [1986.797],
+            "paint-wait-start": [1987.011],
+            "paint-wait-return": [2255.942]
+          },
+          "prototypeMs": 1305.891,
+          "runtimeMs": 1627.647,
+          "combinedDependenciesMs": 1642.753,
+          "renderMs": 240.591,
+          "paintWaitMs": 268.931
+        },
+        {
+          "owner": "site-contents-panel-1-docs-1",
+          "afterTrustedClickMs": {
+            "begin": [113.117],
+            "prototypes-ready": [1409.568],
+            "runtime-ready": [1731.009],
+            "dependencies-ready": [1746.611],
+            "render-start": [1746.744],
+            "render-return": [1991.869],
+            "paint-wait-start": [1992.15],
+            "paint-wait-return": [2256.206]
+          },
+          "prototypeMs": 1296.451,
+          "runtimeMs": 1617.892,
+          "combinedDependenciesMs": 1633.494,
+          "renderMs": 245.125,
+          "paintWaitMs": 264.056
+        }
+      ],
+      "lastQuery": {
+        "query": 5,
+        "cdpId": 4611,
+        "responseObserved": true,
+        "stagesAfterPollMs": {
+          "browserForward": [893.156, 895.715],
+          "rendererEnter": [1029.858, 1032.417],
+          "rendererResponse": [1035.126, 1037.685]
+        },
+        "browserForwardToRendererMs": 136.702,
+        "returnedAfterPollMs": 1038.472,
+        "value": "react"
+      },
+      "rawSha256": {
+        "contents-original-timing.json": "73c9d393cfdeb39e7c750175ee72d86aa0b16f7cfe561487920c4fdc3592addd",
+        "react-staging-reconciled.json": "8e1269528ce28d9eb5f426ade326d5d531c50342d26fdb4745b5834f30c35b27"
+      }
+    },
+    "f9Receipts": [
+      {
+        "arm": "baseline",
+        "run": "run-43686772353",
+        "verdict": "fulfilled",
+        "pollDurationMs": 909.058,
+        "reason": null,
+        "source": "fe68781a54327cb616d4720a33dc983ab0d920e5",
+        "inputSha256": "b3132b5b1c0ea57501c4916cfbc61b771051824a5958ecd889b4f33e98862ebb"
+      },
+      {
+        "arm": "candidate",
+        "run": "run-43686772353",
+        "verdict": null,
+        "pollDurationMs": null,
+        "reason": "No original React poll receipt",
+        "source": null,
+        "inputSha256": "b3132b5b1c0ea57501c4916cfbc61b771051824a5958ecd889b4f33e98862ebb"
+      },
+      {
+        "arm": "baseline",
+        "run": "run-43689387717",
+        "verdict": "fulfilled",
+        "pollDurationMs": 706.415,
+        "reason": null,
+        "source": "19323ade171f83b752dd44394e8df1516ac4f2e8",
+        "inputSha256": "e323d727183545c1bd539359b900d162c1601310127571eb221ad9c534c5bd17"
+      },
+      {
+        "arm": "candidate",
+        "run": "run-43689387717",
+        "verdict": "fulfilled",
+        "pollDurationMs": 641.242,
+        "reason": null,
+        "source": "19323ade171f83b752dd44394e8df1516ac4f2e8",
+        "inputSha256": "e323d727183545c1bd539359b900d162c1601310127571eb221ad9c534c5bd17"
+      },
+      {
+        "arm": "baseline",
+        "run": "run-43692142688",
+        "verdict": "fulfilled",
+        "pollDurationMs": 843.554,
+        "reason": null,
+        "source": "f2b20f8d7f6ed3f31f23db8e09b54fcb7db243ac",
+        "inputSha256": "2d00ca6b832958a169ac61d2f351c780eae814e12dd3c6d910b172aa7bab4b90"
+      },
+      {
+        "arm": "candidate",
+        "run": "run-43692142688",
+        "verdict": null,
+        "pollDurationMs": null,
+        "reason": "No original React poll receipt",
+        "source": null,
+        "inputSha256": "2d00ca6b832958a169ac61d2f351c780eae814e12dd3c6d910b172aa7bab4b90"
+      },
+      {
+        "arm": "repeat",
+        "run": "run-43692142688",
+        "verdict": null,
+        "pollDurationMs": null,
+        "reason": "No original React poll receipt",
+        "source": null,
+        "inputSha256": "2d00ca6b832958a169ac61d2f351c780eae814e12dd3c6d910b172aa7bab4b90"
+      },
+      {
+        "arm": "baseline",
+        "run": "run-43696329285",
+        "verdict": null,
+        "pollDurationMs": null,
+        "reason": "No original React poll receipt",
+        "source": null,
+        "inputSha256": "0d84bb080c8891f28ff34f21d53cda024c8693342ff111221c580d6574c929c7"
+      },
+      {
+        "arm": "candidate",
+        "run": "run-43696329285",
+        "verdict": null,
+        "pollDurationMs": null,
+        "reason": "No original React poll receipt",
+        "source": null,
+        "inputSha256": "0d84bb080c8891f28ff34f21d53cda024c8693342ff111221c580d6574c929c7"
+      }
+    ]
+  },
+  "s4": [
+    {
+      "run": "run-43692142688",
+      "arm": "baseline",
+      "locale": "zh-cn",
+      "verdict": "error",
+      "requestRows": [
+        {
+          "asset": "chunk-BUSYA2B4.js",
+          "requestId": "10185.738",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 6.103,
+          "cdpResponseStampAfterRequestMs": 8.604,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 9.206,
+          "nodeFinishMs": 4280.788095,
+          "finishDeliveryToObservedVerdictMs": 88505.155
+        },
+        {
+          "asset": "react-runtime.ts",
+          "requestId": "10185.1160",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 26.894,
+          "cdpResponseStampAfterRequestMs": 781.514,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 780.219,
+          "nodeFinishMs": 31408.830215,
+          "finishDeliveryToObservedVerdictMs": 61377.113
+        },
+        {
+          "asset": "react.js",
+          "requestId": "10185.4148",
+          "responseStatus": null,
+          "finished": false,
+          "cdpFinishStampAfterRequestMs": null,
+          "cdpResponseStampAfterRequestMs": null,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": null,
+          "nodeFinishMs": null,
+          "finishDeliveryToObservedVerdictMs": null
+        },
+        {
+          "asset": "react-dom.js",
+          "requestId": "10185.4149",
+          "responseStatus": null,
+          "finished": false,
+          "cdpFinishStampAfterRequestMs": null,
+          "cdpResponseStampAfterRequestMs": null,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": null,
+          "nodeFinishMs": null,
+          "finishDeliveryToObservedVerdictMs": null
+        },
+        {
+          "asset": "react-dom_client.js",
+          "requestId": "10185.4150",
+          "responseStatus": null,
+          "finished": false,
+          "cdpFinishStampAfterRequestMs": null,
+          "cdpResponseStampAfterRequestMs": null,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": null,
+          "nodeFinishMs": null,
+          "finishDeliveryToObservedVerdictMs": null
+        }
+      ],
+      "lastObservedFinish": {
+        "asset": "react-runtime.ts",
+        "requestId": "10185.1160",
+        "responseStatus": 200,
+        "finished": true,
+        "cdpFinishStampAfterRequestMs": 26.894,
+        "cdpResponseStampAfterRequestMs": 781.514,
+        "nodeFinishDeliveryAfterRequestDeliveryMs": 780.219,
+        "nodeFinishMs": 31408.830215,
+        "finishDeliveryToObservedVerdictMs": 61377.113
+      },
+      "trackedWithoutFinish": ["react.js", "react-dom.js", "react-dom_client.js"],
+      "observedPromiseStages": {
+        "react-adapter": ["request", "factory", "reuse", "fulfilled"],
+        "react-runtime": ["request", "factory", "reuse", "fulfilled"],
+        "react-package": ["request", "reuse", "factory"],
+        "react-dom-package": ["request", "reuse", "factory"],
+        "react-dom-client-package": ["request", "reuse", "factory"]
+      },
+      "logSha256": "da23c68145d2815f4b56eb7284027587945dad2db2e647ea0020e9beb23be8e4"
+    },
+    {
+      "run": "run-43692142688",
+      "arm": "baseline",
+      "locale": "en",
+      "verdict": null,
+      "requestRows": [
+        {
+          "asset": "chunk-BUSYA2B4.js",
+          "requestId": "10373.738",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 8.458,
+          "cdpResponseStampAfterRequestMs": 9.968,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 11.639,
+          "nodeFinishMs": 107831.902818,
+          "finishDeliveryToObservedVerdictMs": null
+        },
+        {
+          "asset": "react-runtime.ts",
+          "requestId": "10373.1144",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 3.743,
+          "cdpResponseStampAfterRequestMs": 394.711,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 386.541,
+          "nodeFinishMs": 133108.478574,
+          "finishDeliveryToObservedVerdictMs": null
+        },
+        {
+          "asset": "react.js",
+          "requestId": "10373.4132",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 3.521,
+          "cdpResponseStampAfterRequestMs": 11261.803,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 11260.676,
+          "nodeFinishMs": 178655.582915,
+          "finishDeliveryToObservedVerdictMs": null
+        },
+        {
+          "asset": "react-dom.js",
+          "requestId": "10373.4133",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 4.689,
+          "cdpResponseStampAfterRequestMs": 11261.902,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 11261.259,
+          "nodeFinishMs": 178656.235023,
+          "finishDeliveryToObservedVerdictMs": null
+        },
+        {
+          "asset": "react-dom_client.js",
+          "requestId": "10373.4134",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 4.442,
+          "cdpResponseStampAfterRequestMs": 11261.848,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 11261.281,
+          "nodeFinishMs": 178656.31305,
+          "finishDeliveryToObservedVerdictMs": null
+        }
+      ],
+      "lastObservedFinish": {
+        "asset": "react-dom_client.js",
+        "requestId": "10373.4134",
+        "responseStatus": 200,
+        "finished": true,
+        "cdpFinishStampAfterRequestMs": 4.442,
+        "cdpResponseStampAfterRequestMs": 11261.848,
+        "nodeFinishDeliveryAfterRequestDeliveryMs": 11261.281,
+        "nodeFinishMs": 178656.31305,
+        "finishDeliveryToObservedVerdictMs": null
+      },
+      "trackedWithoutFinish": [],
+      "observedPromiseStages": {
+        "react-adapter": ["request", "factory", "reuse", "fulfilled"],
+        "react-runtime": ["request", "factory", "reuse", "fulfilled"],
+        "react-package": ["request", "reuse", "factory"],
+        "react-dom-package": ["request", "reuse", "factory"],
+        "react-dom-client-package": ["request", "reuse", "factory"]
+      },
+      "logSha256": "da23c68145d2815f4b56eb7284027587945dad2db2e647ea0020e9beb23be8e4"
+    },
+    {
+      "run": "run-43692142688",
+      "arm": "candidate",
+      "locale": "zh-cn",
+      "verdict": "error",
+      "requestRows": [
+        {
+          "asset": "chunk-BUSYA2B4.js",
+          "requestId": "17361.738",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 2.087,
+          "cdpResponseStampAfterRequestMs": 7.298,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 10.385,
+          "nodeFinishMs": 4190.827365,
+          "finishDeliveryToObservedVerdictMs": 147538.981
+        },
+        {
+          "asset": "react-runtime.ts",
+          "requestId": "17361.1148",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 33.946,
+          "cdpResponseStampAfterRequestMs": 655.207,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 654.704,
+          "nodeFinishMs": 29941.141304,
+          "finishDeliveryToObservedVerdictMs": 121788.667
+        },
+        {
+          "asset": "react.js",
+          "requestId": "17361.4138",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 1.936,
+          "cdpResponseStampAfterRequestMs": 11564.33,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 11557.936,
+          "nodeFinishMs": 56499.253812,
+          "finishDeliveryToObservedVerdictMs": 95230.554
+        },
+        {
+          "asset": "react-dom.js",
+          "requestId": "17361.4139",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 4.916,
+          "cdpResponseStampAfterRequestMs": 11564.462,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 11558.217,
+          "nodeFinishMs": 56499.587086,
+          "finishDeliveryToObservedVerdictMs": 95230.221
+        },
+        {
+          "asset": "react-dom_client.js",
+          "requestId": "17361.4140",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 4.749,
+          "cdpResponseStampAfterRequestMs": 11564.631,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 11557.472,
+          "nodeFinishMs": 56499.830813,
+          "finishDeliveryToObservedVerdictMs": 95229.977
+        },
+        {
+          "asset": "chunk-EK7DFB6S.js",
+          "requestId": "17361.4146",
+          "responseStatus": null,
+          "finished": false,
+          "cdpFinishStampAfterRequestMs": null,
+          "cdpResponseStampAfterRequestMs": null,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": null,
+          "nodeFinishMs": null,
+          "finishDeliveryToObservedVerdictMs": null
+        },
+        {
+          "asset": "chunk-2MALL255.js",
+          "requestId": "17361.4147",
+          "responseStatus": null,
+          "finished": false,
+          "cdpFinishStampAfterRequestMs": null,
+          "cdpResponseStampAfterRequestMs": null,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": null,
+          "nodeFinishMs": null,
+          "finishDeliveryToObservedVerdictMs": null
+        }
+      ],
+      "lastObservedFinish": {
+        "asset": "react-dom_client.js",
+        "requestId": "17361.4140",
+        "responseStatus": 200,
+        "finished": true,
+        "cdpFinishStampAfterRequestMs": 4.749,
+        "cdpResponseStampAfterRequestMs": 11564.631,
+        "nodeFinishDeliveryAfterRequestDeliveryMs": 11557.472,
+        "nodeFinishMs": 56499.830813,
+        "finishDeliveryToObservedVerdictMs": 95229.977
+      },
+      "trackedWithoutFinish": ["chunk-EK7DFB6S.js", "chunk-2MALL255.js"],
+      "observedPromiseStages": {
+        "react-adapter": ["request", "factory", "reuse", "fulfilled"],
+        "react-runtime": ["request", "factory", "reuse", "fulfilled"],
+        "react-package": ["request", "reuse", "factory"],
+        "react-dom-package": ["request", "reuse", "factory"],
+        "react-dom-client-package": ["request", "reuse", "factory"]
+      },
+      "logSha256": "81839491a03df36400bb755bd874f7200923371dafb88a413d00a98a473e4a44"
+    },
+    {
+      "run": "run-43692142688",
+      "arm": "candidate",
+      "locale": "en",
+      "verdict": null,
+      "requestRows": [
+        {
+          "asset": "chunk-BUSYA2B4.js",
+          "requestId": "17473.739",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 3.424,
+          "cdpResponseStampAfterRequestMs": 14.261,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 14.848,
+          "nodeFinishMs": 167042.700396,
+          "finishDeliveryToObservedVerdictMs": null
+        },
+        {
+          "asset": "react-runtime.ts",
+          "requestId": "17473.1149",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 8.354,
+          "cdpResponseStampAfterRequestMs": 405.379,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 402.887,
+          "nodeFinishMs": 192306.574929,
+          "finishDeliveryToObservedVerdictMs": null
+        },
+        {
+          "asset": "react.js",
+          "requestId": "17473.4137",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 3.241,
+          "cdpResponseStampAfterRequestMs": 8462.71,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 8462.721,
+          "nodeFinishMs": 230810.667105,
+          "finishDeliveryToObservedVerdictMs": null
+        },
+        {
+          "asset": "react-dom.js",
+          "requestId": "17473.4138",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 3.338,
+          "cdpResponseStampAfterRequestMs": 8462.811,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 8462.762,
+          "nodeFinishMs": 230810.775568,
+          "finishDeliveryToObservedVerdictMs": null
+        },
+        {
+          "asset": "react-dom_client.js",
+          "requestId": "17473.4139",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 3.279,
+          "cdpResponseStampAfterRequestMs": 8462.876,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 8463.07,
+          "nodeFinishMs": 230811.192979,
+          "finishDeliveryToObservedVerdictMs": null
+        }
+      ],
+      "lastObservedFinish": {
+        "asset": "react-dom_client.js",
+        "requestId": "17473.4139",
+        "responseStatus": 200,
+        "finished": true,
+        "cdpFinishStampAfterRequestMs": 3.279,
+        "cdpResponseStampAfterRequestMs": 8462.876,
+        "nodeFinishDeliveryAfterRequestDeliveryMs": 8463.07,
+        "nodeFinishMs": 230811.192979,
+        "finishDeliveryToObservedVerdictMs": null
+      },
+      "trackedWithoutFinish": [],
+      "observedPromiseStages": {
+        "react-adapter": ["request", "factory", "reuse", "fulfilled"],
+        "react-runtime": ["request", "factory", "reuse", "fulfilled"],
+        "react-package": ["request", "reuse", "factory"],
+        "react-dom-package": ["request", "reuse", "factory"],
+        "react-dom-client-package": ["request", "reuse", "factory"]
+      },
+      "logSha256": "81839491a03df36400bb755bd874f7200923371dafb88a413d00a98a473e4a44"
+    },
+    {
+      "run": "run-43692142688",
+      "arm": "repeat",
+      "locale": "zh-cn",
+      "verdict": "error",
+      "requestRows": [
+        {
+          "asset": "chunk-BUSYA2B4.js",
+          "requestId": "24401.739",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 2.309,
+          "cdpResponseStampAfterRequestMs": 11.31,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 10.876,
+          "nodeFinishMs": 4178.6595,
+          "finishDeliveryToObservedVerdictMs": 147566.547
+        },
+        {
+          "asset": "react-runtime.ts",
+          "requestId": "24401.1148",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 15.195,
+          "cdpResponseStampAfterRequestMs": 703.875,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 701.816,
+          "nodeFinishMs": 30147.799764,
+          "finishDeliveryToObservedVerdictMs": 121597.407
+        },
+        {
+          "asset": "react.js",
+          "requestId": "24401.4137",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 7.985,
+          "cdpResponseStampAfterRequestMs": 14498.689,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 14488.689,
+          "nodeFinishMs": 59560.52354,
+          "finishDeliveryToObservedVerdictMs": 92184.683
+        },
+        {
+          "asset": "react-dom.js",
+          "requestId": "24401.4138",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 7.781,
+          "cdpResponseStampAfterRequestMs": 14506.57,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 14496.647,
+          "nodeFinishMs": 59568.563315,
+          "finishDeliveryToObservedVerdictMs": 92176.643
+        },
+        {
+          "asset": "react-dom_client.js",
+          "requestId": "24401.4139",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 7.652,
+          "cdpResponseStampAfterRequestMs": 14497.748,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 14488.21,
+          "nodeFinishMs": 59560.19737,
+          "finishDeliveryToObservedVerdictMs": 92185.009
+        },
+        {
+          "asset": "chunk-2MALL255.js",
+          "requestId": "24401.4146",
+          "responseStatus": null,
+          "finished": false,
+          "cdpFinishStampAfterRequestMs": null,
+          "cdpResponseStampAfterRequestMs": null,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": null,
+          "nodeFinishMs": null,
+          "finishDeliveryToObservedVerdictMs": null
+        },
+        {
+          "asset": "chunk-EK7DFB6S.js",
+          "requestId": "24401.4147",
+          "responseStatus": null,
+          "finished": false,
+          "cdpFinishStampAfterRequestMs": null,
+          "cdpResponseStampAfterRequestMs": null,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": null,
+          "nodeFinishMs": null,
+          "finishDeliveryToObservedVerdictMs": null
+        }
+      ],
+      "lastObservedFinish": {
+        "asset": "react-dom.js",
+        "requestId": "24401.4138",
+        "responseStatus": 200,
+        "finished": true,
+        "cdpFinishStampAfterRequestMs": 7.781,
+        "cdpResponseStampAfterRequestMs": 14506.57,
+        "nodeFinishDeliveryAfterRequestDeliveryMs": 14496.647,
+        "nodeFinishMs": 59568.563315,
+        "finishDeliveryToObservedVerdictMs": 92176.643
+      },
+      "trackedWithoutFinish": ["chunk-2MALL255.js", "chunk-EK7DFB6S.js"],
+      "observedPromiseStages": {
+        "react-adapter": ["request", "factory", "reuse", "fulfilled"],
+        "react-runtime": ["request", "factory", "reuse", "fulfilled"],
+        "react-package": ["request", "reuse", "factory"],
+        "react-dom-package": ["request", "reuse", "factory"],
+        "react-dom-client-package": ["request", "reuse", "factory"]
+      },
+      "logSha256": "c99f93bf9939571ddc835cc7c0125d469d60d4ffa691887a8125f0d8835b00e5"
+    },
+    {
+      "run": "run-43692142688",
+      "arm": "repeat",
+      "locale": "en",
+      "verdict": null,
+      "requestRows": [
+        {
+          "asset": "chunk-BUSYA2B4.js",
+          "requestId": "24595.738",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 1.507,
+          "cdpResponseStampAfterRequestMs": 36.575,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 37.923,
+          "nodeFinishMs": 167239.47858,
+          "finishDeliveryToObservedVerdictMs": null
+        },
+        {
+          "asset": "react-runtime.ts",
+          "requestId": "24595.1154",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 4.475,
+          "cdpResponseStampAfterRequestMs": 432.346,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 431.119,
+          "nodeFinishMs": 192511.780166,
+          "finishDeliveryToObservedVerdictMs": null
+        },
+        {
+          "asset": "react.js",
+          "requestId": "24595.4137",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 4.763,
+          "cdpResponseStampAfterRequestMs": 13340.911,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 13340.081,
+          "nodeFinishMs": 240780.991138,
+          "finishDeliveryToObservedVerdictMs": null
+        },
+        {
+          "asset": "react-dom.js",
+          "requestId": "24595.4138",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 4.616,
+          "cdpResponseStampAfterRequestMs": 13341.108,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 13340.174,
+          "nodeFinishMs": 240781.120941,
+          "finishDeliveryToObservedVerdictMs": null
+        },
+        {
+          "asset": "react-dom_client.js",
+          "requestId": "24595.4139",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 5.539,
+          "cdpResponseStampAfterRequestMs": 13341.264,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 13340.423,
+          "nodeFinishMs": 240781.395615,
+          "finishDeliveryToObservedVerdictMs": null
+        }
+      ],
+      "lastObservedFinish": {
+        "asset": "react-dom_client.js",
+        "requestId": "24595.4139",
+        "responseStatus": 200,
+        "finished": true,
+        "cdpFinishStampAfterRequestMs": 5.539,
+        "cdpResponseStampAfterRequestMs": 13341.264,
+        "nodeFinishDeliveryAfterRequestDeliveryMs": 13340.423,
+        "nodeFinishMs": 240781.395615,
+        "finishDeliveryToObservedVerdictMs": null
+      },
+      "trackedWithoutFinish": [],
+      "observedPromiseStages": {
+        "react-adapter": ["request", "factory", "reuse", "fulfilled"],
+        "react-runtime": ["request", "factory", "reuse", "fulfilled"],
+        "react-package": ["request", "reuse", "factory"],
+        "react-dom-package": ["request", "reuse", "factory"],
+        "react-dom-client-package": ["request", "reuse", "factory"]
+      },
+      "logSha256": "c99f93bf9939571ddc835cc7c0125d469d60d4ffa691887a8125f0d8835b00e5"
+    },
+    {
+      "run": "run-43696329285",
+      "arm": "baseline",
+      "locale": "zh-cn",
+      "verdict": "error",
+      "requestRows": [
+        {
+          "asset": "chunk-BUSYA2B4.js",
+          "requestId": "9948.738",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 2.245,
+          "cdpResponseStampAfterRequestMs": 14.619,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 15.676,
+          "nodeFinishMs": 4421.229454,
+          "finishDeliveryToObservedVerdictMs": 117933.793
+        },
+        {
+          "asset": "react-runtime.ts",
+          "requestId": "9948.1154",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 21.062,
+          "cdpResponseStampAfterRequestMs": 661.784,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 688.44,
+          "nodeFinishMs": 33101.387582,
+          "finishDeliveryToObservedVerdictMs": 89253.635
+        },
+        {
+          "asset": "react.js",
+          "requestId": "9948.4160",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 3.853,
+          "cdpResponseStampAfterRequestMs": 2523.608,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 2517.626,
+          "nodeFinishMs": 124796.98134,
+          "finishDeliveryToObservedVerdictMs": -2441.959
+        },
+        {
+          "asset": "react-dom.js",
+          "requestId": "9948.4161",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 5.637,
+          "cdpResponseStampAfterRequestMs": 2523.854,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 2517.672,
+          "nodeFinishMs": 124797.088059,
+          "finishDeliveryToObservedVerdictMs": -2442.066
+        },
+        {
+          "asset": "react-dom_client.js",
+          "requestId": "9948.4162",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 6.062,
+          "cdpResponseStampAfterRequestMs": 2524.007,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 2517.954,
+          "nodeFinishMs": 124797.411963,
+          "finishDeliveryToObservedVerdictMs": -2442.39
+        }
+      ],
+      "lastObservedFinish": {
+        "asset": "react-dom_client.js",
+        "requestId": "9948.4162",
+        "responseStatus": 200,
+        "finished": true,
+        "cdpFinishStampAfterRequestMs": 6.062,
+        "cdpResponseStampAfterRequestMs": 2524.007,
+        "nodeFinishDeliveryAfterRequestDeliveryMs": 2517.954,
+        "nodeFinishMs": 124797.411963,
+        "finishDeliveryToObservedVerdictMs": -2442.39
+      },
+      "trackedWithoutFinish": [],
+      "observedPromiseStages": {
+        "react-adapter": ["request", "factory", "reuse", "fulfilled"],
+        "react-runtime": ["request", "factory", "reuse", "fulfilled"],
+        "react-package": ["request", "reuse", "factory"],
+        "react-dom-package": ["request", "reuse", "factory"],
+        "react-dom-client-package": ["request", "reuse", "factory"]
+      },
+      "logSha256": "88cdb95b011f34bcca28d3085ba428df49088eb94ff0f965e7aff3f7ebb2f23e"
+    },
+    {
+      "run": "run-43696329285",
+      "arm": "baseline",
+      "locale": "en",
+      "verdict": "error",
+      "requestRows": [
+        {
+          "asset": "chunk-BUSYA2B4.js",
+          "requestId": "10063.736",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 6.048,
+          "cdpResponseStampAfterRequestMs": 14.216,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 19.759,
+          "nodeFinishMs": 138396.967107,
+          "finishDeliveryToObservedVerdictMs": 95438.234
+        },
+        {
+          "asset": "react-runtime.ts",
+          "requestId": "10063.1149",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 29.717,
+          "cdpResponseStampAfterRequestMs": 481.68,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 475.38,
+          "nodeFinishMs": 167919.025745,
+          "finishDeliveryToObservedVerdictMs": 65916.175
+        },
+        {
+          "asset": "react.js",
+          "requestId": "10063.4135",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 2.411,
+          "cdpResponseStampAfterRequestMs": 14051.435,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 14049.592,
+          "nodeFinishMs": 219968.799838,
+          "finishDeliveryToObservedVerdictMs": 13866.401
+        },
+        {
+          "asset": "react-dom.js",
+          "requestId": "10063.4136",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 2.665,
+          "cdpResponseStampAfterRequestMs": 14051.547,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 14051.148,
+          "nodeFinishMs": 219970.617268,
+          "finishDeliveryToObservedVerdictMs": 13864.584
+        },
+        {
+          "asset": "react-dom_client.js",
+          "requestId": "10063.4137",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 3.599,
+          "cdpResponseStampAfterRequestMs": 14051.866,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 14051.146,
+          "nodeFinishMs": 219970.688612,
+          "finishDeliveryToObservedVerdictMs": 13864.513
+        }
+      ],
+      "lastObservedFinish": {
+        "asset": "react-dom_client.js",
+        "requestId": "10063.4137",
+        "responseStatus": 200,
+        "finished": true,
+        "cdpFinishStampAfterRequestMs": 3.599,
+        "cdpResponseStampAfterRequestMs": 14051.866,
+        "nodeFinishDeliveryAfterRequestDeliveryMs": 14051.146,
+        "nodeFinishMs": 219970.688612,
+        "finishDeliveryToObservedVerdictMs": 13864.513
+      },
+      "trackedWithoutFinish": [],
+      "observedPromiseStages": {
+        "react-adapter": ["request", "factory", "reuse", "fulfilled"],
+        "react-runtime": ["request", "factory", "reuse", "fulfilled"],
+        "react-package": ["request", "reuse", "factory"],
+        "react-dom-package": ["request", "reuse", "factory"],
+        "react-dom-client-package": ["request", "reuse", "factory"]
+      },
+      "logSha256": "88cdb95b011f34bcca28d3085ba428df49088eb94ff0f965e7aff3f7ebb2f23e"
+    },
+    {
+      "run": "run-43696329285",
+      "arm": "candidate",
+      "locale": "zh-cn",
+      "verdict": "error",
+      "requestRows": [
+        {
+          "asset": "chunk-BUSYA2B4.js",
+          "requestId": "17651.739",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 4.719,
+          "cdpResponseStampAfterRequestMs": 16.432,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 17.882,
+          "nodeFinishMs": 4479.661793,
+          "finishDeliveryToObservedVerdictMs": 107055.85
+        },
+        {
+          "asset": "react-runtime.ts",
+          "requestId": "17651.1150",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 18.744,
+          "cdpResponseStampAfterRequestMs": 729.272,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 725.06,
+          "nodeFinishMs": 34401.943518,
+          "finishDeliveryToObservedVerdictMs": 77133.568
+        },
+        {
+          "asset": "react.js",
+          "requestId": "17651.4148",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 10.817,
+          "cdpResponseStampAfterRequestMs": 2525.699,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 2523.239,
+          "nodeFinishMs": 113127.657514,
+          "finishDeliveryToObservedVerdictMs": -1592.146
+        },
+        {
+          "asset": "react-dom.js",
+          "requestId": "17651.4149",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 10.295,
+          "cdpResponseStampAfterRequestMs": 2524.826,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 2522.934,
+          "nodeFinishMs": 113127.421463,
+          "finishDeliveryToObservedVerdictMs": -1591.91
+        },
+        {
+          "asset": "react-dom_client.js",
+          "requestId": "17651.4150",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 11.053,
+          "cdpResponseStampAfterRequestMs": 2533.217,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 2531.218,
+          "nodeFinishMs": 113135.754445,
+          "finishDeliveryToObservedVerdictMs": -1600.243
+        }
+      ],
+      "lastObservedFinish": {
+        "asset": "react-dom_client.js",
+        "requestId": "17651.4150",
+        "responseStatus": 200,
+        "finished": true,
+        "cdpFinishStampAfterRequestMs": 11.053,
+        "cdpResponseStampAfterRequestMs": 2533.217,
+        "nodeFinishDeliveryAfterRequestDeliveryMs": 2531.218,
+        "nodeFinishMs": 113135.754445,
+        "finishDeliveryToObservedVerdictMs": -1600.243
+      },
+      "trackedWithoutFinish": [],
+      "observedPromiseStages": {
+        "react-adapter": ["request", "factory", "reuse", "fulfilled"],
+        "react-runtime": ["request", "factory", "reuse", "fulfilled"],
+        "react-package": ["request", "reuse", "factory"],
+        "react-dom-package": ["request", "reuse", "factory"],
+        "react-dom-client-package": ["request", "reuse", "factory"]
+      },
+      "logSha256": "d957dd7cf95fd50ab8a70f13d74f4564268f7f1e37c2c396360272a3b03c0aa6"
+    },
+    {
+      "run": "run-43696329285",
+      "arm": "candidate",
+      "locale": "en",
+      "verdict": null,
+      "requestRows": [
+        {
+          "asset": "chunk-BUSYA2B4.js",
+          "requestId": "17756.739",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 1.856,
+          "cdpResponseStampAfterRequestMs": 9.512,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 9.294,
+          "nodeFinishMs": 127803.235706,
+          "finishDeliveryToObservedVerdictMs": null
+        },
+        {
+          "asset": "react-runtime.ts",
+          "requestId": "17756.1153",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 11.809,
+          "cdpResponseStampAfterRequestMs": 470.096,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 464.449,
+          "nodeFinishMs": 158503.386837,
+          "finishDeliveryToObservedVerdictMs": null
+        }
+      ],
+      "lastObservedFinish": {
+        "asset": "react-runtime.ts",
+        "requestId": "17756.1153",
+        "responseStatus": 200,
+        "finished": true,
+        "cdpFinishStampAfterRequestMs": 11.809,
+        "cdpResponseStampAfterRequestMs": 470.096,
+        "nodeFinishDeliveryAfterRequestDeliveryMs": 464.449,
+        "nodeFinishMs": 158503.386837,
+        "finishDeliveryToObservedVerdictMs": null
+      },
+      "trackedWithoutFinish": [],
+      "observedPromiseStages": {
+        "react-adapter": ["request", "factory", "reuse"],
+        "react-runtime": ["request", "factory", "reuse", "fulfilled"]
+      },
+      "logSha256": "d957dd7cf95fd50ab8a70f13d74f4564268f7f1e37c2c396360272a3b03c0aa6"
+    },
+    {
+      "run": "run-43699202851",
+      "arm": "candidate",
+      "locale": "zh-cn",
+      "verdict": "error",
+      "requestRows": [
+        {
+          "asset": "chunk-BUSYA2B4.js",
+          "requestId": "9797.738",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 25.031,
+          "cdpResponseStampAfterRequestMs": 26.446,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 25.225,
+          "nodeFinishMs": 3129.772675,
+          "finishDeliveryToObservedVerdictMs": 148449.539
+        },
+        {
+          "asset": "react-runtime.ts",
+          "requestId": "9797.1144",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 3.321,
+          "cdpResponseStampAfterRequestMs": 516.784,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 520.864,
+          "nodeFinishMs": 26583.7683,
+          "finishDeliveryToObservedVerdictMs": 124995.543
+        },
+        {
+          "asset": "react.js",
+          "requestId": "9797.4132",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 4855.698,
+          "cdpResponseStampAfterRequestMs": 10021.257,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 9984.53,
+          "nodeFinishMs": 48919.885574,
+          "finishDeliveryToObservedVerdictMs": 102659.426
+        },
+        {
+          "asset": "react-dom.js",
+          "requestId": "9797.4133",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 4855.561,
+          "cdpResponseStampAfterRequestMs": 10021.152,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 9984.646,
+          "nodeFinishMs": 48920.052941,
+          "finishDeliveryToObservedVerdictMs": 102659.258
+        },
+        {
+          "asset": "react-dom_client.js",
+          "requestId": "9797.4134",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 4855.445,
+          "cdpResponseStampAfterRequestMs": 10021.093,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 9984.988,
+          "nodeFinishMs": 48920.428882,
+          "finishDeliveryToObservedVerdictMs": 102658.882
+        },
+        {
+          "asset": "chunk-EK7DFB6S.js",
+          "requestId": "9797.4150",
+          "responseStatus": null,
+          "finished": false,
+          "cdpFinishStampAfterRequestMs": null,
+          "cdpResponseStampAfterRequestMs": null,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": null,
+          "nodeFinishMs": null,
+          "finishDeliveryToObservedVerdictMs": null
+        },
+        {
+          "asset": "chunk-2MALL255.js",
+          "requestId": "9797.4151",
+          "responseStatus": null,
+          "finished": false,
+          "cdpFinishStampAfterRequestMs": null,
+          "cdpResponseStampAfterRequestMs": null,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": null,
+          "nodeFinishMs": null,
+          "finishDeliveryToObservedVerdictMs": null
+        }
+      ],
+      "lastObservedFinish": {
+        "asset": "react-dom_client.js",
+        "requestId": "9797.4134",
+        "responseStatus": 200,
+        "finished": true,
+        "cdpFinishStampAfterRequestMs": 4855.445,
+        "cdpResponseStampAfterRequestMs": 10021.093,
+        "nodeFinishDeliveryAfterRequestDeliveryMs": 9984.988,
+        "nodeFinishMs": 48920.428882,
+        "finishDeliveryToObservedVerdictMs": 102658.882
+      },
+      "trackedWithoutFinish": ["chunk-EK7DFB6S.js", "chunk-2MALL255.js"],
+      "observedPromiseStages": {
+        "react-adapter": ["request", "factory", "reuse", "fulfilled"],
+        "react-runtime": ["request", "factory", "reuse", "fulfilled"],
+        "react-package": ["request", "reuse", "factory"],
+        "react-dom-package": ["request", "reuse", "factory"],
+        "react-dom-client-package": ["request", "reuse", "factory"]
+      },
+      "logSha256": "95b0b42204f8b31019b2005af23f1e290c79cbf09eb257a4dc7027d35e6e6dde"
+    },
+    {
+      "run": "run-43699202851",
+      "arm": "candidate",
+      "locale": "en",
+      "verdict": "error",
+      "requestRows": [
+        {
+          "asset": "chunk-BUSYA2B4.js",
+          "requestId": "9984.738",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 21.702,
+          "cdpResponseStampAfterRequestMs": 22.227,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 25.202,
+          "nodeFinishMs": 161233.638063,
+          "finishDeliveryToObservedVerdictMs": 87268.541
+        },
+        {
+          "asset": "react-runtime.ts",
+          "requestId": "9984.1152",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 3.916,
+          "cdpResponseStampAfterRequestMs": 343.835,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 340.875,
+          "nodeFinishMs": 184002.366888,
+          "finishDeliveryToObservedVerdictMs": 64499.812
+        },
+        {
+          "asset": "react.js",
+          "requestId": "9984.4137",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 4.004,
+          "cdpResponseStampAfterRequestMs": 8305.674,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 8304.301,
+          "nodeFinishMs": 220873.14072,
+          "finishDeliveryToObservedVerdictMs": 27629.038
+        },
+        {
+          "asset": "react-dom.js",
+          "requestId": "9984.4138",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 3.877,
+          "cdpResponseStampAfterRequestMs": 8305.658,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 8304.257,
+          "nodeFinishMs": 220873.23373,
+          "finishDeliveryToObservedVerdictMs": 27628.945
+        },
+        {
+          "asset": "react-dom_client.js",
+          "requestId": "9984.4139",
+          "responseStatus": 200,
+          "finished": true,
+          "cdpFinishStampAfterRequestMs": 3.778,
+          "cdpResponseStampAfterRequestMs": 8305.678,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": 8304.239,
+          "nodeFinishMs": 220873.264107,
+          "finishDeliveryToObservedVerdictMs": 27628.915
+        },
+        {
+          "asset": "chunk-EK7DFB6S.js",
+          "requestId": "9984.4150",
+          "responseStatus": null,
+          "finished": false,
+          "cdpFinishStampAfterRequestMs": null,
+          "cdpResponseStampAfterRequestMs": null,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": null,
+          "nodeFinishMs": null,
+          "finishDeliveryToObservedVerdictMs": null
+        },
+        {
+          "asset": "chunk-2MALL255.js",
+          "requestId": "9984.4151",
+          "responseStatus": null,
+          "finished": false,
+          "cdpFinishStampAfterRequestMs": null,
+          "cdpResponseStampAfterRequestMs": null,
+          "nodeFinishDeliveryAfterRequestDeliveryMs": null,
+          "nodeFinishMs": null,
+          "finishDeliveryToObservedVerdictMs": null
+        }
+      ],
+      "lastObservedFinish": {
+        "asset": "react-dom_client.js",
+        "requestId": "9984.4139",
+        "responseStatus": 200,
+        "finished": true,
+        "cdpFinishStampAfterRequestMs": 3.778,
+        "cdpResponseStampAfterRequestMs": 8305.678,
+        "nodeFinishDeliveryAfterRequestDeliveryMs": 8304.239,
+        "nodeFinishMs": 220873.264107,
+        "finishDeliveryToObservedVerdictMs": 27628.915
+      },
+      "trackedWithoutFinish": ["chunk-EK7DFB6S.js", "chunk-2MALL255.js"],
+      "observedPromiseStages": {
+        "react-adapter": ["request", "factory", "reuse", "fulfilled"],
+        "react-runtime": ["request", "factory", "reuse", "fulfilled"],
+        "react-package": ["request", "reuse", "factory"],
+        "react-dom-package": ["request", "reuse", "factory"],
+        "react-dom-client-package": ["request", "reuse", "factory"]
+      },
+      "logSha256": "95b0b42204f8b31019b2005af23f1e290c79cbf09eb257a4dc7027d35e6e6dde"
+    }
+  ],
+  "limits": [
+    "Prior diagnostic carriers retain original assertions. No same-f9 rejected React poll in the audited runs.",
+    "CDP event timestamps and Node receipt elapsed times are different domains. The last observed completion is bounded to the recorded request set.",
+    "Network completion and react-runtime helper settlement do not establish settlement of the three package import promises."
+  ]
+}

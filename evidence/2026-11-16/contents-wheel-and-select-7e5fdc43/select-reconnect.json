@@ -1,0 +1,78 @@
+{
+  "case": "retains shadcn preference owners and portals through real breakpoint reconnects",
+  "failed": [
+    {
+      "mode": "source",
+      "source": "7e5fdc43fb6d3166e660a963721b261ee08ec8a5",
+      "diagnosticDirty": false,
+      "stage": "react-family-desktop",
+      "verdict": "failed",
+      "innerMessage": "Error: Matcher did not succeed in 1000ms",
+      "outerMessage": "Test timed out in 180000ms",
+      "failureCaptureError": "Error: page.evaluate: Target page, context or browser has been closed",
+      "failureSha256": "dd9150ebdd922b6121ecb65dfaa3e4e13587a1943ba1dac8e471fc0049dae75c",
+      "reportSha256": "3c038b93ec711dd9a1eb87191b1f3dc920a4de1df8c79b37f7f78f1728bc82cf"
+    },
+    {
+      "mode": "built preview",
+      "source": "7e5fdc43fb6d3166e660a963721b261ee08ec8a5",
+      "diagnosticDirty": false,
+      "stage": "react-family-desktop",
+      "verdict": "failed",
+      "innerMessage": "Error: Matcher did not succeed in 1000ms",
+      "outerMessage": "Test timed out in 180000ms",
+      "failureCaptureError": "Error: page.evaluate: Target page, context or browser has been closed",
+      "failureSha256": "02fb942867eead898f2c54cde6351c54a7a9b501b6f67d93e5a897667c03c9a8",
+      "reportSha256": "f2a0b83d50f2bcd401c70514593bd75027bc95e53e36a82b446682cfa0debbd9"
+    },
+    {
+      "mode": "isolated source diagnostic",
+      "source": "7e5fdc43fb6d3166e660a963721b261ee08ec8a5",
+      "diagnosticDirty": true,
+      "stage": "react-family-desktop",
+      "verdict": "failed",
+      "innerMessage": "Error: Matcher did not succeed in 1000ms",
+      "outerMessage": "Test timed out in 180000ms",
+      "failureCaptureError": "Error: page.evaluate: Target page, context or browser has been closed",
+      "failureSha256": "6de5dd1ab91163e6c955d9e435dacbd16a2e588c98902aeb73573860b3be61ef",
+      "reportSha256": "809a2638d762127941c3c3a4fda903e57630c6010cef618af1ead2fd22803e45"
+    }
+  ],
+  "selectedRowControl": {
+    "mode": "isolated source diagnostic and selected-row sizeMatch control",
+    "head": "7e5fdc43fb6d3166e660a963721b261ee08ec8a5",
+    "diagnosticTestSha256": "6dbd79c50a57e482f326ce67cc11e0b3110c87e85221cbf3c899222245ff615c",
+    "leaseEvidenceSha256": "42ef12aaa640887d27385e14933f5322433eb57db14feab7750da5aa8f4e7e65",
+    "reportSha256": "eb1d6b33e1a3f435f03f8b1c0b23abf6b02faf3507db6033fe087c8e9958acc7",
+    "sourcePatchSha256": "a57ea0993f0f4e2f011d6542e668dd0d7b5fc51c26d1fb4daf6b44208802b572",
+    "matchedLeaseFacts": {
+      "sameRoot": true,
+      "sameTrigger": true,
+      "connected": true,
+      "visible": true,
+      "expectedLocation": true,
+      "generation": "2",
+      "generationRetained": true,
+      "coordinatesRetained": true,
+      "selectionRetained": true,
+      "publicStateIdentityRetained": true,
+      "focusRetained": true,
+      "portalRetained": true,
+      "selectedOptionRetained": true,
+      "portalId": "pui-select-7-content",
+      "text": "Shadcn",
+      "value": null
+    },
+    "selected": 1,
+    "passed": 1,
+    "exit": 0
+  },
+  "commonDiagnosticPatchSha256": "11342a17f87edd96d9198166d375a4d9682a99f9eba8a8859d0e79bd2cef723b",
+  "mainSelectMerge": "6c9cb26fb6d5fc8ecaa18cf65a88a38ba392a61c",
+  "approvedBehavior": "Every same-list item-aligned row including disabled siblings uses the Trigger-sized lease.",
+  "limits": [
+    "Candidate uses the accepted uniform row contract. Selected-row control was only local, then restored.",
+    "No diagnostic original inspection resolution was recorded before the 1-second matcher failure.",
+    "Does not identify the internal placement operation or distinguish expensive computation from renderer dispatch."
+  ]
+}
