@@ -1,0 +1,1398 @@
+{
+  "source": [
+    "bd00e9acc9089cebee32a4add3ae6f1dccc728bb",
+    "dd157b80ed23138dc01b8c3e5765e8984d951dd8",
+    "0ba01ae75ce3e2454af622d234fe0577672e5252 0baec5a7bd312ce3e4b1c9bb5ca7775dbd20feec"
+  ],
+  "overlaySHA256": "cd52f549721ece6fb1420daca6987e41633bf3d42662b16804549406e8f25b60",
+  "exactInputsSHA256": {
+    "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "b10dc01024db7056166da6de401d2fc8a0181f2c504e9db9e0cbc72793cd784a"
+  },
+  "runtime": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+  "originalStartupMs": 60000,
+  "originalCaseMs": 150000,
+  "originalSamples": [
+    {
+      "browserMs": 7442.599999904633,
+      "nodeReceivedMs": 48512.012666,
+      "count": 1268,
+      "ready": false,
+      "index": 0,
+      "children": null,
+      "runtime": "wc",
+      "demo": "demo-base-accordion",
+      "startupPending": null
+    },
+    {
+      "browserMs": 8889.399999856949,
+      "nodeReceivedMs": 49958.615125,
+      "count": 1268,
+      "ready": false,
+      "index": 0,
+      "children": 0,
+      "runtime": "wc",
+      "demo": "demo-base-accordion",
+      "startupPending": true
+    },
+    {
+      "browserMs": 17515.700000047684,
+      "nodeReceivedMs": 58584.78575,
+      "count": 1268,
+      "ready": false,
+      "index": 1,
+      "children": 0,
+      "runtime": "react",
+      "demo": "demo-base-accordion",
+      "startupPending": true
+    }
+  ],
+  "phaseRows": [
+    {
+      "locale": "zh-cn",
+      "phase": "init-script",
+      "outcome": "begin",
+      "nodeMs": 41054.684583,
+      "nodeTimeOrigin": 1794852788409.627,
+      "dateNow": 1794852829464
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "init-script",
+      "outcome": "return",
+      "nodeMs": 41059.184458,
+      "nodeTimeOrigin": 1794852788409.627,
+      "dateNow": 1794852829468
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "hot-stack-observation",
+      "outcome": "return",
+      "nodeMs": 41066.619458,
+      "nodeTimeOrigin": 1794852788409.627,
+      "dateNow": 1794852829476
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "goto",
+      "outcome": "begin",
+      "nodeMs": 41066.642291,
+      "nodeTimeOrigin": 1794852788409.627,
+      "dateNow": 1794852829476
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "goto",
+      "outcome": "return",
+      "nodeMs": 48416.332041,
+      "nodeTimeOrigin": 1794852788409.627,
+      "dateNow": 1794852836825
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "startup-wait",
+      "outcome": "begin",
+      "nodeMs": 48416.586291,
+      "nodeTimeOrigin": 1794852788409.627,
+      "dateNow": 1794852836826
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "startup-wait",
+      "outcome": "error",
+      "nodeMs": 149192.244,
+      "nodeTimeOrigin": 1794852788409.627,
+      "dateNow": 1794852937601
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "context-close",
+      "outcome": "begin",
+      "nodeMs": 151274.798333,
+      "nodeTimeOrigin": 1794852788409.627,
+      "dateNow": 1794852939684
+    },
+    {
+      "locale": "zh-cn",
+      "phase": "context-close",
+      "outcome": "return",
+      "nodeMs": 151804.13175,
+      "nodeTimeOrigin": 1794852788409.627,
+      "dateNow": 1794852940213
+    }
+  ],
+  "stackRows": [
+    {
+      "stage": "debugger-enabled",
+      "locale": "zh-cn",
+      "nodeMs": 41066.570625,
+      "timeOrigin": 1794852788409.627
+    },
+    {
+      "stage": "pause-requested",
+      "locale": "zh-cn",
+      "nodeMs": 59418.941541,
+      "timeOrigin": 1794852788409.627,
+      "sample": 11000
+    },
+    {
+      "stage": "pause-ack",
+      "locale": "zh-cn",
+      "nodeMs": 59421.736875,
+      "timeOrigin": 1794852788409.627,
+      "sample": 11000
+    },
+    {
+      "stage": "paused",
+      "locale": "zh-cn",
+      "nodeMs": 59424.977458,
+      "timeOrigin": 1794852788409.627,
+      "sample": 11000,
+      "reason": "other",
+      "parsedSourceCount": 3428,
+      "frames": [
+        {
+          "function": "syncSurfaceProps",
+          "scriptId": "158",
+          "file": "/packages/adapters/web-component/src/props.ts",
+          "line": 114,
+          "column": 37
+        },
+        {
+          "function": "setElementProps",
+          "scriptId": "158",
+          "file": "/packages/adapters/web-component/src/props.ts",
+          "line": 42,
+          "column": 3
+        },
+        {
+          "function": "renderDemoNodeWc",
+          "scriptId": "175",
+          "file": "/src/components/PrototypePreviewer/demo-renderer.ts",
+          "line": 236,
+          "column": 3
+        },
+        {
+          "function": "renderDemoNodeWc",
+          "scriptId": "175",
+          "file": "/src/components/PrototypePreviewer/demo-renderer.ts",
+          "line": 241,
+          "column": 29
+        },
+        {
+          "function": "renderDemoNodeWc",
+          "scriptId": "175",
+          "file": "/src/components/PrototypePreviewer/demo-renderer.ts",
+          "line": 241,
+          "column": 29
+        },
+        {
+          "function": "renderDemoNodeWc",
+          "scriptId": "175",
+          "file": "/src/components/PrototypePreviewer/demo-renderer.ts",
+          "line": 221,
+          "column": 32
+        },
+        {
+          "function": "renderDemoNodeWc",
+          "scriptId": "175",
+          "file": "/src/components/PrototypePreviewer/demo-renderer.ts",
+          "line": 221,
+          "column": 32
+        },
+        {
+          "function": "renderDemoNodeWc",
+          "scriptId": "175",
+          "file": "/src/components/PrototypePreviewer/demo-renderer.ts",
+          "line": 221,
+          "column": 32
+        },
+        {
+          "function": "renderDemoWc",
+          "scriptId": "175",
+          "file": "/src/components/PrototypePreviewer/demo-renderer.ts",
+          "line": 376,
+          "column": 3
+        },
+        {
+          "function": "renderDemo",
+          "scriptId": "175",
+          "file": "/src/components/PrototypePreviewer/demo-renderer.ts",
+          "line": 1607,
+          "column": 22
+        },
+        {
+          "function": "switchTo",
+          "scriptId": "729",
+          "file": "/src/components/PrototypePreviewer/previewer-client.ts",
+          "line": 282,
+          "column": 28
+        }
+      ]
+    },
+    {
+      "stage": "resume-ack",
+      "locale": "zh-cn",
+      "nodeMs": 59445.365916,
+      "timeOrigin": 1794852788409.627,
+      "sample": 11000
+    },
+    {
+      "stage": "pause-requested",
+      "locale": "zh-cn",
+      "nodeMs": 72418.142916,
+      "timeOrigin": 1794852788409.627,
+      "sample": 24000
+    },
+    {
+      "stage": "pause-ack",
+      "locale": "zh-cn",
+      "nodeMs": 72418.990916,
+      "timeOrigin": 1794852788409.627,
+      "sample": 24000
+    },
+    {
+      "stage": "paused",
+      "locale": "zh-cn",
+      "nodeMs": 72422.993708,
+      "timeOrigin": 1794852788409.627,
+      "sample": 24000,
+      "reason": "other",
+      "parsedSourceCount": 3825,
+      "frames": [
+        {
+          "function": "applySnapshot",
+          "scriptId": "537",
+          "file": "/packages/modules/a11y/src/web.ts",
+          "line": 907,
+          "column": 3
+        },
+        {
+          "function": "update",
+          "scriptId": "537",
+          "file": "/packages/modules/a11y/src/web.ts",
+          "line": 587,
+          "column": 7
+        },
+        {
+          "function": "projector",
+          "scriptId": "537",
+          "file": "/packages/modules/a11y/src/web.ts",
+          "line": 683,
+          "column": 9
+        },
+        {
+          "function": "projectSnapshot",
+          "scriptId": "534",
+          "file": "/packages/modules/a11y/src/create.ts",
+          "line": 537,
+          "column": 5
+        },
+        {
+          "function": "applyProjection",
+          "scriptId": "534",
+          "file": "/packages/modules/a11y/src/create.ts",
+          "line": 524,
+          "column": 10
+        },
+        {
+          "function": "",
+          "scriptId": "534",
+          "file": "/packages/modules/a11y/src/create.ts",
+          "line": 350,
+          "column": 80
+        },
+        {
+          "function": "",
+          "scriptId": "616",
+          "file": "/packages/modules/anatomy/src/impl.ts",
+          "line": 690,
+          "column": 43
+        },
+        {
+          "function": "",
+          "scriptId": "657",
+          "file": "/packages/runtime/src/instance/instance.ts",
+          "line": 129,
+          "column": 47
+        },
+        {
+          "function": "runInScope",
+          "scriptId": "690",
+          "file": "/packages/runtime/src/instance/execute/callback-scope.ts",
+          "line": 58,
+          "column": 14
+        },
+        {
+          "function": "runNoSync",
+          "scriptId": "690",
+          "file": "/packages/runtime/src/instance/execute/callback-scope.ts",
+          "line": 41,
+          "column": 17
+        },
+        {
+          "function": "",
+          "scriptId": "657",
+          "file": "/packages/runtime/src/instance/instance.ts",
+          "line": 129,
+          "column": 19
+        },
+        {
+          "function": "notifyTargetChange",
+          "scriptId": "616",
+          "file": "/packages/modules/anatomy/src/impl.ts",
+          "line": 689,
+          "column": 12
+        },
+        {
+          "function": "syncStructure",
+          "scriptId": "616",
+          "file": "/packages/modules/anatomy/src/impl.ts",
+          "line": 373,
+          "column": 27
+        },
+        {
+          "function": "_connectOwner",
+          "scriptId": "156",
+          "file": "/packages/adapters/web-component/src/adapt.ts",
+          "line": 319,
+          "column": 30
+        },
+        {
+          "function": "connectedCallback",
+          "scriptId": "156",
+          "file": "/packages/adapters/web-component/src/adapt.ts",
+          "line": 290,
+          "column": 14
+        },
+        {
+          "function": "",
+          "scriptId": "202",
+          "file": "/src/components/PrototypePreviewer/passive-shell-composition.ts",
+          "line": 60,
+          "column": 12
+        },
+        {
+          "function": "withNativeContentLease",
+          "scriptId": "101",
+          "file": "/src/components/PrototypePreviewer/native-content-lease.ts",
+          "line": 43,
+          "column": 3
+        },
+        {
+          "function": "move",
+          "scriptId": "202",
+          "file": "/src/components/PrototypePreviewer/passive-shell-composition.ts",
+          "line": 59,
+          "column": 43
+        },
+        {
+          "function": "publish",
+          "scriptId": "202",
+          "file": "/src/components/PrototypePreviewer/passive-shell-composition.ts",
+          "line": 175,
+          "column": 11
+        },
+        {
+          "function": "materializeGeneration",
+          "scriptId": "121",
+          "file": "/src/components/PrototypePreviewer/projection-scope.ts",
+          "line": 222,
+          "column": 37
+        }
+      ]
+    },
+    {
+      "stage": "resume-ack",
+      "locale": "zh-cn",
+      "nodeMs": 72492.581625,
+      "timeOrigin": 1794852788409.627,
+      "sample": 24000
+    },
+    {
+      "stage": "pause-requested",
+      "locale": "zh-cn",
+      "nodeMs": 87419.446166,
+      "timeOrigin": 1794852788409.627,
+      "sample": 39000
+    },
+    {
+      "stage": "pause-ack",
+      "locale": "zh-cn",
+      "nodeMs": 87423.635291,
+      "timeOrigin": 1794852788409.627,
+      "sample": 39000
+    },
+    {
+      "stage": "paused",
+      "locale": "zh-cn",
+      "nodeMs": 87427.064333,
+      "timeOrigin": 1794852788409.627,
+      "sample": 39000,
+      "reason": "other",
+      "parsedSourceCount": 3836,
+      "frames": [
+        {
+          "function": "releaseScalarAttribute",
+          "scriptId": "537",
+          "file": "/packages/modules/a11y/src/web.ts",
+          "line": 150,
+          "column": 56
+        },
+        {
+          "function": "releaseScalarAttributes",
+          "scriptId": "537",
+          "file": "/packages/modules/a11y/src/web.ts",
+          "line": 156,
+          "column": 56
+        },
+        {
+          "function": "update",
+          "scriptId": "537",
+          "file": "/packages/modules/a11y/src/web.ts",
+          "line": 557,
+          "column": 28
+        },
+        {
+          "function": "projector",
+          "scriptId": "537",
+          "file": "/packages/modules/a11y/src/web.ts",
+          "line": 683,
+          "column": 9
+        },
+        {
+          "function": "projectSnapshot",
+          "scriptId": "534",
+          "file": "/packages/modules/a11y/src/create.ts",
+          "line": 537,
+          "column": 5
+        },
+        {
+          "function": "applyProjection",
+          "scriptId": "534",
+          "file": "/packages/modules/a11y/src/create.ts",
+          "line": 524,
+          "column": 10
+        },
+        {
+          "function": "",
+          "scriptId": "534",
+          "file": "/packages/modules/a11y/src/create.ts",
+          "line": 350,
+          "column": 80
+        },
+        {
+          "function": "",
+          "scriptId": "616",
+          "file": "/packages/modules/anatomy/src/impl.ts",
+          "line": 690,
+          "column": 43
+        },
+        {
+          "function": "",
+          "scriptId": "657",
+          "file": "/packages/runtime/src/instance/instance.ts",
+          "line": 129,
+          "column": 47
+        },
+        {
+          "function": "runInScope",
+          "scriptId": "690",
+          "file": "/packages/runtime/src/instance/execute/callback-scope.ts",
+          "line": 58,
+          "column": 14
+        },
+        {
+          "function": "runNoSync",
+          "scriptId": "690",
+          "file": "/packages/runtime/src/instance/execute/callback-scope.ts",
+          "line": 41,
+          "column": 17
+        },
+        {
+          "function": "",
+          "scriptId": "657",
+          "file": "/packages/runtime/src/instance/instance.ts",
+          "line": 129,
+          "column": 19
+        },
+        {
+          "function": "notifyTargetChange",
+          "scriptId": "616",
+          "file": "/packages/modules/anatomy/src/impl.ts",
+          "line": 689,
+          "column": 12
+        },
+        {
+          "function": "onMountPhase",
+          "scriptId": "616",
+          "file": "/packages/modules/anatomy/src/impl.ts",
+          "line": 535,
+          "column": 66
+        },
+        {
+          "function": "onMountPhase",
+          "scriptId": "538",
+          "file": "/packages/modules/anatomy/src/create.ts",
+          "line": 49,
+          "column": 44
+        },
+        {
+          "function": "setMountPhase",
+          "scriptId": "672",
+          "file": "/packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+          "line": 199,
+          "column": 38
+        },
+        {
+          "function": "setMountPhase",
+          "scriptId": "665",
+          "file": "/packages/runtime/src/instance/session.ts",
+          "line": 129,
+          "column": 15
+        },
+        {
+          "function": "scheduleFinish",
+          "scriptId": "665",
+          "file": "/packages/runtime/src/instance/session.ts",
+          "line": 290,
+          "column": 11
+        },
+        {
+          "function": "",
+          "scriptId": "665",
+          "file": "/packages/runtime/src/instance/session.ts",
+          "line": 304,
+          "column": 14
+        },
+        {
+          "function": "done",
+          "scriptId": "665",
+          "file": "/packages/runtime/src/instance/session.ts",
+          "line": 168,
+          "column": 9
+        },
+        {
+          "function": "finishPendingCommit",
+          "scriptId": "1337",
+          "file": "/packages/adapters/vue2/src/adapt.ts",
+          "line": 888,
+          "column": 17
+        },
+        {
+          "function": "",
+          "scriptId": "1337",
+          "file": "/packages/adapters/vue2/src/adapt.ts",
+          "line": 276,
+          "column": 47
+        },
+        {
+          "function": "",
+          "scriptId": "1827",
+          "file": "/node_modules/.vite/deps/vue2-runtime.js",
+          "line": 1346,
+          "column": 12
+        },
+        {
+          "function": "flushCallbacks",
+          "scriptId": "1827",
+          "file": "/node_modules/.vite/deps/vue2-runtime.js",
+          "line": 1302,
+          "column": 14
+        }
+      ]
+    },
+    {
+      "stage": "resume-ack",
+      "locale": "zh-cn",
+      "nodeMs": 88693.020041,
+      "timeOrigin": 1794852788409.627,
+      "sample": 39000
+    },
+    {
+      "stage": "pause-requested",
+      "locale": "zh-cn",
+      "nodeMs": 105418.45225,
+      "timeOrigin": 1794852788409.627,
+      "sample": 57000
+    },
+    {
+      "stage": "pause-ack",
+      "locale": "zh-cn",
+      "nodeMs": 105420.065916,
+      "timeOrigin": 1794852788409.627,
+      "sample": 57000
+    },
+    {
+      "stage": "paused",
+      "locale": "zh-cn",
+      "nodeMs": 105421.748208,
+      "timeOrigin": 1794852788409.627,
+      "sample": 57000,
+      "reason": "other",
+      "parsedSourceCount": 3845,
+      "frames": [
+        {
+          "function": "releaseScalarAttribute",
+          "scriptId": "537",
+          "file": "/packages/modules/a11y/src/web.ts",
+          "line": 150,
+          "column": 56
+        },
+        {
+          "function": "releaseScalarAttributes",
+          "scriptId": "537",
+          "file": "/packages/modules/a11y/src/web.ts",
+          "line": 156,
+          "column": 56
+        },
+        {
+          "function": "update",
+          "scriptId": "537",
+          "file": "/packages/modules/a11y/src/web.ts",
+          "line": 557,
+          "column": 28
+        },
+        {
+          "function": "projector",
+          "scriptId": "537",
+          "file": "/packages/modules/a11y/src/web.ts",
+          "line": 683,
+          "column": 9
+        },
+        {
+          "function": "projectSnapshot",
+          "scriptId": "534",
+          "file": "/packages/modules/a11y/src/create.ts",
+          "line": 537,
+          "column": 5
+        },
+        {
+          "function": "applyProjection",
+          "scriptId": "534",
+          "file": "/packages/modules/a11y/src/create.ts",
+          "line": 524,
+          "column": 10
+        },
+        {
+          "function": "",
+          "scriptId": "534",
+          "file": "/packages/modules/a11y/src/create.ts",
+          "line": 350,
+          "column": 80
+        },
+        {
+          "function": "",
+          "scriptId": "616",
+          "file": "/packages/modules/anatomy/src/impl.ts",
+          "line": 690,
+          "column": 43
+        },
+        {
+          "function": "",
+          "scriptId": "657",
+          "file": "/packages/runtime/src/instance/instance.ts",
+          "line": 129,
+          "column": 47
+        },
+        {
+          "function": "runInScope",
+          "scriptId": "690",
+          "file": "/packages/runtime/src/instance/execute/callback-scope.ts",
+          "line": 58,
+          "column": 14
+        },
+        {
+          "function": "runNoSync",
+          "scriptId": "690",
+          "file": "/packages/runtime/src/instance/execute/callback-scope.ts",
+          "line": 41,
+          "column": 17
+        },
+        {
+          "function": "",
+          "scriptId": "657",
+          "file": "/packages/runtime/src/instance/instance.ts",
+          "line": 129,
+          "column": 19
+        },
+        {
+          "function": "notifyTargetChange",
+          "scriptId": "616",
+          "file": "/packages/modules/anatomy/src/impl.ts",
+          "line": 689,
+          "column": 12
+        },
+        {
+          "function": "onMountPhase",
+          "scriptId": "616",
+          "file": "/packages/modules/anatomy/src/impl.ts",
+          "line": 535,
+          "column": 66
+        },
+        {
+          "function": "onMountPhase",
+          "scriptId": "538",
+          "file": "/packages/modules/anatomy/src/create.ts",
+          "line": 49,
+          "column": 44
+        },
+        {
+          "function": "setMountPhase",
+          "scriptId": "672",
+          "file": "/packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+          "line": 199,
+          "column": 38
+        },
+        {
+          "function": "setMountPhase",
+          "scriptId": "665",
+          "file": "/packages/runtime/src/instance/session.ts",
+          "line": 129,
+          "column": 15
+        },
+        {
+          "function": "scheduleFinish",
+          "scriptId": "665",
+          "file": "/packages/runtime/src/instance/session.ts",
+          "line": 290,
+          "column": 11
+        },
+        {
+          "function": "",
+          "scriptId": "665",
+          "file": "/packages/runtime/src/instance/session.ts",
+          "line": 304,
+          "column": 14
+        },
+        {
+          "function": "done",
+          "scriptId": "665",
+          "file": "/packages/runtime/src/instance/session.ts",
+          "line": 168,
+          "column": 9
+        },
+        {
+          "function": "runtime.watch.flush",
+          "scriptId": "1342",
+          "file": "/packages/adapters/vue/src/adapt.ts",
+          "line": 457,
+          "column": 27
+        }
+      ]
+    },
+    {
+      "stage": "resume-ack",
+      "locale": "zh-cn",
+      "nodeMs": 105422.7615,
+      "timeOrigin": 1794852788409.627,
+      "sample": 57000
+    },
+    {
+      "stage": "pause-requested",
+      "locale": "zh-cn",
+      "nodeMs": 126419.167625,
+      "timeOrigin": 1794852788409.627,
+      "sample": 78000
+    },
+    {
+      "stage": "pause-ack",
+      "locale": "zh-cn",
+      "nodeMs": 126469.246916,
+      "timeOrigin": 1794852788409.627,
+      "sample": 78000
+    },
+    {
+      "stage": "paused",
+      "locale": "zh-cn",
+      "nodeMs": 126759.853375,
+      "timeOrigin": 1794852788409.627,
+      "sample": 78000,
+      "reason": "other",
+      "parsedSourceCount": 3855,
+      "frames": [
+        {
+          "function": "isAxisAtEnd",
+          "scriptId": "578",
+          "file": "/packages/modules/scroll/src/web/create-web-scroll-host.ts",
+          "line": 349,
+          "column": 28
+        },
+        {
+          "function": "onLayoutChange",
+          "scriptId": "578",
+          "file": "/packages/modules/scroll/src/web/create-web-scroll-host.ts",
+          "line": 533,
+          "column": 66
+        },
+        {
+          "function": "update",
+          "scriptId": "578",
+          "file": "/packages/modules/scroll/src/web/create-web-scroll-host.ts",
+          "line": 929,
+          "column": 13
+        },
+        {
+          "function": "update",
+          "scriptId": "574",
+          "file": "/packages/modules/scroll/src/web/create-bound-web-scroll-host.ts",
+          "line": 187,
+          "column": 19
+        },
+        {
+          "function": "refresh",
+          "scriptId": "643",
+          "file": "/packages/modules/scroll/src/impl.ts",
+          "line": 150,
+          "column": 20
+        },
+        {
+          "function": "",
+          "scriptId": "616",
+          "file": "/packages/modules/anatomy/src/impl.ts",
+          "line": 690,
+          "column": 43
+        },
+        {
+          "function": "",
+          "scriptId": "657",
+          "file": "/packages/runtime/src/instance/instance.ts",
+          "line": 129,
+          "column": 47
+        },
+        {
+          "function": "runInScope",
+          "scriptId": "690",
+          "file": "/packages/runtime/src/instance/execute/callback-scope.ts",
+          "line": 58,
+          "column": 14
+        },
+        {
+          "function": "runNoSync",
+          "scriptId": "690",
+          "file": "/packages/runtime/src/instance/execute/callback-scope.ts",
+          "line": 41,
+          "column": 17
+        },
+        {
+          "function": "",
+          "scriptId": "657",
+          "file": "/packages/runtime/src/instance/instance.ts",
+          "line": 129,
+          "column": 19
+        },
+        {
+          "function": "notifyTargetChange",
+          "scriptId": "616",
+          "file": "/packages/modules/anatomy/src/impl.ts",
+          "line": 689,
+          "column": 12
+        },
+        {
+          "function": "onCapsEpoch",
+          "scriptId": "616",
+          "file": "/packages/modules/anatomy/src/impl.ts",
+          "line": 548,
+          "column": 64
+        },
+        {
+          "function": "",
+          "scriptId": "606",
+          "file": "/packages/modules/base/src/module-base.ts",
+          "line": 11,
+          "column": 12
+        },
+        {
+          "function": "bump",
+          "scriptId": "652",
+          "file": "/packages/modules/base/src/caps-vault/vault.ts",
+          "line": 78,
+          "column": 38
+        },
+        {
+          "function": "resetAttached",
+          "scriptId": "652",
+          "file": "/packages/modules/base/src/caps-vault/vault.ts",
+          "line": 65,
+          "column": 10
+        },
+        {
+          "function": "reset",
+          "scriptId": "672",
+          "file": "/packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+          "line": 174,
+          "column": 15
+        },
+        {
+          "function": "reset",
+          "scriptId": "672",
+          "file": "/packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+          "line": 111,
+          "column": 24
+        },
+        {
+          "function": "resetWired",
+          "scriptId": "381",
+          "file": "/packages/adapters/base/src/wiring/host-wiring.ts",
+          "line": 16,
+          "column": 41
+        },
+        {
+          "function": "replace",
+          "scriptId": "381",
+          "file": "/packages/adapters/base/src/wiring/host-wiring.ts",
+          "line": 29,
+          "column": 7
+        },
+        {
+          "function": "attachView",
+          "scriptId": "387",
+          "file": "/packages/adapters/base/src/host/view-epoch-owner.ts",
+          "line": 97,
+          "column": 16
+        },
+        {
+          "function": "",
+          "scriptId": "1344",
+          "file": "/packages/adapters/react/src/adapt.ts",
+          "line": 713,
+          "column": 37
+        },
+        {
+          "function": "commitHookEffectListMount",
+          "scriptId": "2295",
+          "file": "/node_modules/.vite/deps/chunk-2MALL255.js",
+          "line": 16963,
+          "column": 34
+        },
+        {
+          "function": "commitLayoutEffectOnFiber",
+          "scriptId": "2295",
+          "file": "/node_modules/.vite/deps/chunk-2MALL255.js",
+          "line": 17055,
+          "column": 21
+        },
+        {
+          "function": "commitLayoutMountEffects_complete",
+          "scriptId": "2295",
+          "file": "/node_modules/.vite/deps/chunk-2MALL255.js",
+          "line": 18030,
+          "column": 17
+        },
+        {
+          "function": "commitLayoutEffects_begin",
+          "scriptId": "2295",
+          "file": "/node_modules/.vite/deps/chunk-2MALL255.js",
+          "line": 18019,
+          "column": 15
+        },
+        {
+          "function": "commitLayoutEffects",
+          "scriptId": "2295",
+          "file": "/node_modules/.vite/deps/chunk-2MALL255.js",
+          "line": 17970,
+          "column": 11
+        },
+        {
+          "function": "commitRootImpl",
+          "scriptId": "2295",
+          "file": "/node_modules/.vite/deps/chunk-2MALL255.js",
+          "line": 19406,
+          "column": 13
+        },
+        {
+          "function": "commitRoot",
+          "scriptId": "2295",
+          "file": "/node_modules/.vite/deps/chunk-2MALL255.js",
+          "line": 19330,
+          "column": 13
+        },
+        {
+          "function": "performSyncWorkOnRoot",
+          "scriptId": "2295",
+          "file": "/node_modules/.vite/deps/chunk-2MALL255.js",
+          "line": 18948,
+          "column": 11
+        },
+        {
+          "function": "flushSyncCallbacks",
+          "scriptId": "2295",
+          "file": "/node_modules/.vite/deps/chunk-2MALL255.js",
+          "line": 9166,
+          "column": 30
+        },
+        {
+          "function": "flushSync",
+          "scriptId": "2295",
+          "file": "/node_modules/.vite/deps/chunk-2MALL255.js",
+          "line": 19012,
+          "column": 15
+        },
+        {
+          "function": "flushSync$1",
+          "scriptId": "2295",
+          "file": "/node_modules/.vite/deps/chunk-2MALL255.js",
+          "line": 21596,
+          "column": 18
+        },
+        {
+          "function": "flushReact",
+          "scriptId": "175",
+          "file": "/src/components/PrototypePreviewer/demo-renderer.ts",
+          "line": 905,
+          "column": 64
+        },
+        {
+          "function": "renderDemoReact",
+          "scriptId": "175",
+          "file": "/src/components/PrototypePreviewer/demo-renderer.ts",
+          "line": 909,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "stage": "resume-ack",
+      "locale": "zh-cn",
+      "nodeMs": 127220.735,
+      "timeOrigin": 1794852788409.627,
+      "sample": 78000
+    },
+    {
+      "stage": "pause-requested",
+      "locale": "zh-cn",
+      "nodeMs": 147419.15375,
+      "timeOrigin": 1794852788409.627,
+      "sample": 99000
+    },
+    {
+      "stage": "pause-ack",
+      "locale": "zh-cn",
+      "nodeMs": 147476.330458,
+      "timeOrigin": 1794852788409.627,
+      "sample": 99000
+    },
+    {
+      "stage": "paused",
+      "locale": "zh-cn",
+      "nodeMs": 147479.525208,
+      "timeOrigin": 1794852788409.627,
+      "sample": 99000,
+      "reason": "other",
+      "parsedSourceCount": 3855,
+      "frames": [
+        {
+          "function": "isAxisAtEnd",
+          "scriptId": "578",
+          "file": "/packages/modules/scroll/src/web/create-web-scroll-host.ts",
+          "line": 349,
+          "column": 28
+        },
+        {
+          "function": "onLayoutChange",
+          "scriptId": "578",
+          "file": "/packages/modules/scroll/src/web/create-web-scroll-host.ts",
+          "line": 533,
+          "column": 66
+        },
+        {
+          "function": "update",
+          "scriptId": "578",
+          "file": "/packages/modules/scroll/src/web/create-web-scroll-host.ts",
+          "line": 929,
+          "column": 13
+        },
+        {
+          "function": "update",
+          "scriptId": "574",
+          "file": "/packages/modules/scroll/src/web/create-bound-web-scroll-host.ts",
+          "line": 187,
+          "column": 19
+        },
+        {
+          "function": "refresh",
+          "scriptId": "643",
+          "file": "/packages/modules/scroll/src/impl.ts",
+          "line": 150,
+          "column": 20
+        },
+        {
+          "function": "",
+          "scriptId": "616",
+          "file": "/packages/modules/anatomy/src/impl.ts",
+          "line": 690,
+          "column": 43
+        },
+        {
+          "function": "",
+          "scriptId": "657",
+          "file": "/packages/runtime/src/instance/instance.ts",
+          "line": 129,
+          "column": 47
+        },
+        {
+          "function": "runInScope",
+          "scriptId": "690",
+          "file": "/packages/runtime/src/instance/execute/callback-scope.ts",
+          "line": 58,
+          "column": 14
+        },
+        {
+          "function": "runNoSync",
+          "scriptId": "690",
+          "file": "/packages/runtime/src/instance/execute/callback-scope.ts",
+          "line": 41,
+          "column": 17
+        },
+        {
+          "function": "",
+          "scriptId": "657",
+          "file": "/packages/runtime/src/instance/instance.ts",
+          "line": 129,
+          "column": 19
+        },
+        {
+          "function": "notifyTargetChange",
+          "scriptId": "616",
+          "file": "/packages/modules/anatomy/src/impl.ts",
+          "line": 689,
+          "column": 12
+        },
+        {
+          "function": "onCapsEpoch",
+          "scriptId": "616",
+          "file": "/packages/modules/anatomy/src/impl.ts",
+          "line": 548,
+          "column": 64
+        },
+        {
+          "function": "",
+          "scriptId": "606",
+          "file": "/packages/modules/base/src/module-base.ts",
+          "line": 11,
+          "column": 12
+        },
+        {
+          "function": "bump",
+          "scriptId": "652",
+          "file": "/packages/modules/base/src/caps-vault/vault.ts",
+          "line": 78,
+          "column": 38
+        },
+        {
+          "function": "resetAttached",
+          "scriptId": "652",
+          "file": "/packages/modules/base/src/caps-vault/vault.ts",
+          "line": 65,
+          "column": 10
+        },
+        {
+          "function": "reset",
+          "scriptId": "672",
+          "file": "/packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+          "line": 174,
+          "column": 15
+        },
+        {
+          "function": "reset",
+          "scriptId": "672",
+          "file": "/packages/runtime/src/orchestrator/module-orchestrator/runtime-module-orchestrator.ts",
+          "line": 111,
+          "column": 24
+        },
+        {
+          "function": "resetWired",
+          "scriptId": "381",
+          "file": "/packages/adapters/base/src/wiring/host-wiring.ts",
+          "line": 16,
+          "column": 41
+        },
+        {
+          "function": "replace",
+          "scriptId": "381",
+          "file": "/packages/adapters/base/src/wiring/host-wiring.ts",
+          "line": 29,
+          "column": 7
+        },
+        {
+          "function": "attachView",
+          "scriptId": "387",
+          "file": "/packages/adapters/base/src/host/view-epoch-owner.ts",
+          "line": 97,
+          "column": 16
+        },
+        {
+          "function": "",
+          "scriptId": "1344",
+          "file": "/packages/adapters/react/src/adapt.ts",
+          "line": 713,
+          "column": 37
+        },
+        {
+          "function": "commitHookEffectListMount",
+          "scriptId": "2295",
+          "file": "/node_modules/.vite/deps/chunk-2MALL255.js",
+          "line": 16963,
+          "column": 34
+        },
+        {
+          "function": "commitLayoutEffectOnFiber",
+          "scriptId": "2295",
+          "file": "/node_modules/.vite/deps/chunk-2MALL255.js",
+          "line": 17055,
+          "column": 21
+        },
+        {
+          "function": "commitLayoutMountEffects_complete",
+          "scriptId": "2295",
+          "file": "/node_modules/.vite/deps/chunk-2MALL255.js",
+          "line": 18030,
+          "column": 17
+        },
+        {
+          "function": "commitLayoutEffects_begin",
+          "scriptId": "2295",
+          "file": "/node_modules/.vite/deps/chunk-2MALL255.js",
+          "line": 18019,
+          "column": 15
+        },
+        {
+          "function": "commitLayoutEffects",
+          "scriptId": "2295",
+          "file": "/node_modules/.vite/deps/chunk-2MALL255.js",
+          "line": 17970,
+          "column": 11
+        },
+        {
+          "function": "commitRootImpl",
+          "scriptId": "2295",
+          "file": "/node_modules/.vite/deps/chunk-2MALL255.js",
+          "line": 19406,
+          "column": 13
+        },
+        {
+          "function": "commitRoot",
+          "scriptId": "2295",
+          "file": "/node_modules/.vite/deps/chunk-2MALL255.js",
+          "line": 19330,
+          "column": 13
+        },
+        {
+          "function": "performSyncWorkOnRoot",
+          "scriptId": "2295",
+          "file": "/node_modules/.vite/deps/chunk-2MALL255.js",
+          "line": 18948,
+          "column": 11
+        },
+        {
+          "function": "flushSyncCallbacks",
+          "scriptId": "2295",
+          "file": "/node_modules/.vite/deps/chunk-2MALL255.js",
+          "line": 9166,
+          "column": 30
+        },
+        {
+          "function": "flushSync",
+          "scriptId": "2295",
+          "file": "/node_modules/.vite/deps/chunk-2MALL255.js",
+          "line": 19012,
+          "column": 15
+        },
+        {
+          "function": "flushSync$1",
+          "scriptId": "2295",
+          "file": "/node_modules/.vite/deps/chunk-2MALL255.js",
+          "line": 21596,
+          "column": 18
+        },
+        {
+          "function": "flushReact",
+          "scriptId": "175",
+          "file": "/src/components/PrototypePreviewer/demo-renderer.ts",
+          "line": 905,
+          "column": 64
+        },
+        {
+          "function": "renderDemoReact",
+          "scriptId": "175",
+          "file": "/src/components/PrototypePreviewer/demo-renderer.ts",
+          "line": 909,
+          "column": 3
+        }
+      ]
+    },
+    {
+      "stage": "resume-ack",
+      "locale": "zh-cn",
+      "nodeMs": 147523.155875,
+      "timeOrigin": 1794852788409.627,
+      "sample": 99000
+    }
+  ],
+  "topFrames": [
+    {
+      "function": "releaseScalarAttribute",
+      "file": "/packages/modules/a11y/src/web.ts",
+      "samples": 2
+    },
+    {
+      "function": "isAxisAtEnd",
+      "file": "/packages/modules/scroll/src/web/create-web-scroll-host.ts",
+      "samples": 2
+    },
+    {
+      "function": "syncSurfaceProps",
+      "file": "/packages/adapters/web-component/src/props.ts",
+      "samples": 1
+    },
+    {
+      "function": "applySnapshot",
+      "file": "/packages/modules/a11y/src/web.ts",
+      "samples": 1
+    }
+  ],
+  "deliveredSamples": [
+    {
+      "sample": 11000,
+      "stackToResumeAckMs": 20.388458000001265,
+      "requestToStackNodeMs": 6.035917000001064
+    },
+    {
+      "sample": 24000,
+      "stackToResumeAckMs": 69.58791700001166,
+      "requestToStackNodeMs": 4.850791999997455
+    },
+    {
+      "sample": 39000,
+      "stackToResumeAckMs": 1265.955707999994,
+      "requestToStackNodeMs": 7.618167000007816
+    },
+    {
+      "sample": 57000,
+      "stackToResumeAckMs": 1.0132919999887235,
+      "requestToStackNodeMs": 3.295958000002429
+    },
+    {
+      "sample": 78000,
+      "stackToResumeAckMs": 460.88162499999453,
+      "requestToStackNodeMs": 340.6857500000042
+    },
+    {
+      "sample": 99000,
+      "stackToResumeAckMs": 43.63066699999035,
+      "requestToStackNodeMs": 60.371458000008715
+    }
+  ],
+  "verdict": {
+    "exit": 1,
+    "cases": 1,
+    "passed": 0,
+    "failed": 1,
+    "unselected": 1,
+    "startupPassed": false,
+    "pageErrors": 0,
+    "consoleErrors": 0,
+    "postVerdict": "budget-expired",
+    "verdictLines": ["page.waitForFunction: Timeout 60000ms exceeded."]
+  },
+  "rawLogSHA256": "96abbc4c4cd0c1bd35c08e75cd349c9e79649964bdd34d85ce156368b5c39b9b"
+}
