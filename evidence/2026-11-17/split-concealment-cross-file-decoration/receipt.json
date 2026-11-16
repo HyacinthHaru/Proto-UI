@@ -1,0 +1,39 @@
+{
+  "head": "97c18a7e4c233046958bd93dcf11606d4ab65df6",
+  "commits": [
+    {
+      "head": "97c18a7e4c233046958bd93dcf11606d4ab65df6",
+      "tree": "007d5bd74a1883a85888afbaaf1f8db006ba197d",
+      "parent": "19144d6f02ef1ec644a5b709482631d56ecd6ef0"
+    },
+    {
+      "head": "19144d6f02ef1ec644a5b709482631d56ecd6ef0",
+      "tree": "b01ac49c8928c4e6f1c50b0d8cbdf740a9355073",
+      "parent": "7f9d2054376e690570e0f33da42657afdab6da4e"
+    }
+  ],
+  "priorFocused": {
+    "failed": 4,
+    "passed": 86
+  },
+  "corrected": {
+    "files": 10,
+    "passed": 286
+  },
+  "workspaceTypes": "passed",
+  "builtCli": "1/47",
+  "builtWCAndDependencies": "39/47",
+  "checkedInputsSHA256": {
+    "packages/adapters/web-component/src/runtime/session.ts": "4593fa3eb0ff7240642310dd21cdc356715e745e65c756e3d5e07a2153895617",
+    "packages/adapters/web-component/test/owned-decoration.integration.test.ts": "690b5e820c607d5713e413f10b803d6435e802f11292b91384ddfad38effc86e",
+    "packages/cli/src/services/prototype-style-tokens.ts": "601e57466b2290a87dcce4f9d9329af907c1b3e11869e331542154522468b32a",
+    "packages/cli/test/shadow-template-style.test.ts": "dd462ea254efe1141b50cade2d6a42f7c5242c0fc317758594900491950d1c15"
+  },
+  "nativeFixtureSHA256": {
+    "native.mts": "928c92e600e83e88439493a346663eda7de4c557b5a2990e46c93c85f634fc9e",
+    "used-native.astro": "387b7e6fc7270df16dd3ada968c564e90dbd287c596a703f82c9cd81b99a8a04",
+    "used-native.ts": "e0e346bb96928c6d5b58de778fb1e4e855846165da4026b75dca65291032940e",
+    "used-native-paint.ts": "ad91b39f0bf84dc760d70de943d199b1964b16d80a8779f50a10e7e289fef6e3",
+    "used-native-artifact.json": "b3a4f425111a778ff2e153203209295fd0df082fc95db5e0cbae71137d5419cd"
+  }
+}

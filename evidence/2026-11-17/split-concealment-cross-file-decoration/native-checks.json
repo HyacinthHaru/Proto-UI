@@ -1,0 +1,32 @@
+{
+  "status": "passed",
+  "chrome": "156.0.8078.79",
+  "results": [
+    {
+      "mode": "control",
+      "padding": 64,
+      "caller": "Caller text",
+      "focus": true,
+      "assigned": true,
+      "errors": []
+    },
+    {
+      "mode": "display",
+      "padding": 64,
+      "caller": "Caller text",
+      "focus": true,
+      "assigned": true,
+      "rejection": "Error: [WC Adapter] decoration physical blueprint changed",
+      "errors": []
+    },
+    {
+      "mode": "visibility",
+      "padding": 64,
+      "caller": "Caller text",
+      "focus": true,
+      "assigned": true,
+      "rejection": "Error: [WC Adapter] decoration physical blueprint changed",
+      "errors": []
+    }
+  ]
+}

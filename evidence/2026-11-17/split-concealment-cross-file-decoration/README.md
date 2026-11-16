@@ -1,0 +1,5 @@
+# Split concealment and cross-file decoration proof
+
+[PR #1484](https://github.com/Proto-UI/Proto-UI/pull/1484) at `97c18a7e4c233046958bd93dcf11606d4ab65df6` includes inline concealment in the retained split surface identity without recording unrelated mutable surface paint. The CLI follows proven synchronous helper references across the inspected input files, including a renamed re-export. It carries the exact target declaration through immutable local aliases. Opaque helper callers and shadowed targets retain Root preflight.
+
+Four tested positive behaviors reproduced as failures on the preceding exact head. The corrected related selection passed 286 tests in ten files. Workspace types and both package builds passed. The built CLI generated the attached artifact from a separate exported helper using a target alias. In Chrome, the unmodified control applied 10% padding as 64 px and retained the native input, focus and slot. Physical writes of inline display none and visibility hidden each rejected equivalent split reuse. The native cases used the actual generated CSS and retained the original caller input.
