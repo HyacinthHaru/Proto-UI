@@ -1,0 +1,58 @@
+{
+  "source": "3580a31eab453bfabf503a563b7f6868e4fc1fca",
+  "tree": "3027f5c0047013d46d8b542ccf6b9a0789e6e7dd",
+  "parentsByPr": {
+    "1484": "928c68550819521a6a0264d57de8a0c647d3f9d2",
+    "1483": "14be33a0a367f478f78de13ca40ca666b460cac9",
+    "1485": "cdba4fe2d01c338bd3b3f7feac8a8f5acefe0aee"
+  },
+  "base": "7780dba23e3fb14e0138ea4d24a1cbb8096c3cbf",
+  "scope": "Original full S4 test, no additional diagnostic patch",
+  "runner": {
+    "chrome": "156.0.8078.79",
+    "workers": 1,
+    "node": "24.21.0",
+    "pnpm": "10.32.1"
+  },
+  "cleanSource": true,
+  "exit": 1,
+  "cases": {
+    "zh-cn": {
+      "terminalCaseTimeoutMs": 150000,
+      "startupPassed": false,
+      "journeyStarted": false,
+      "pageErrors": 0,
+      "consoleErrors": 0,
+      "postVerdictCollection": "rejected",
+      "lastSample": {
+        "observedAtBrowserMs": 23307.4,
+        "previewers": 1268,
+        "firstMissingIndex": 1,
+        "firstMissingDemo": "demo-base-accordion",
+        "runtime": "react",
+        "initialized": true,
+        "hostChildren": 0,
+        "startupPending": true
+      }
+    },
+    "en": {
+      "terminalCaseTimeoutMs": 150000,
+      "startupPassed": false,
+      "journeyStarted": false,
+      "pageErrors": 0,
+      "consoleErrors": 0,
+      "postVerdictCollection": "rejected",
+      "lastSample": {
+        "observedAtBrowserMs": 20892.6,
+        "previewers": 1268,
+        "firstMissingIndex": 1,
+        "firstMissingDemo": "demo-base-accordion",
+        "runtime": "react",
+        "initialized": true,
+        "hostChildren": 0,
+        "startupPending": true
+      }
+    }
+  },
+  "localRawLogSha256": "f8965be20bbbdc25f0ef180567542412741c60c056c1cccd8d8d6dd912f04e21"
+}
