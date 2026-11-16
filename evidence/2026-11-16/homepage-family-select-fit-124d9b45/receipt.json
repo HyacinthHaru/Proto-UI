@@ -1,0 +1,103 @@
+{
+  "source": "124d9b4582f64b419420baefa5d56875ea1725ac",
+  "tree": "f769c5b2e1e2b456e2c7c2988202e37a0e0b4240",
+  "browser": "156.0.8078.79",
+  "results": [
+    {
+      "width": 1279,
+      "height": 844,
+      "file": "shadcn-family-1279.png",
+      "triggerBox": {
+        "width": 496,
+        "height": 44
+      },
+      "optionBoxes": [
+        {
+          "text": "Shadcn",
+          "width": 496,
+          "height": 44,
+          "clientWidth": 496,
+          "scrollWidth": 496
+        },
+        {
+          "text": "Brutalist",
+          "width": 496,
+          "height": 44,
+          "clientWidth": 496,
+          "scrollWidth": 496
+        },
+        {
+          "text": "Bootstrap 2.3.2 · WIP",
+          "width": 496,
+          "height": 44,
+          "clientWidth": 496,
+          "scrollWidth": 496
+        }
+      ]
+    },
+    {
+      "width": 1280,
+      "height": 844,
+      "file": "shadcn-family-1280.png",
+      "triggerBox": {
+        "width": 149,
+        "height": 44
+      },
+      "optionBoxes": [
+        {
+          "text": "Shadcn",
+          "width": 149,
+          "height": 44,
+          "clientWidth": 149,
+          "scrollWidth": 149
+        },
+        {
+          "text": "Brutalist",
+          "width": 149,
+          "height": 44,
+          "clientWidth": 149,
+          "scrollWidth": 149
+        },
+        {
+          "text": "Bootstrap 2.3.2 · WIP",
+          "width": 149,
+          "height": 44,
+          "clientWidth": 149,
+          "scrollWidth": 149
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "height": 844,
+      "file": "shadcn-family-1440.png",
+      "triggerBox": {
+        "width": 149,
+        "height": 44
+      },
+      "optionBoxes": [
+        {
+          "text": "Shadcn",
+          "width": 149,
+          "height": 44,
+          "clientWidth": 149,
+          "scrollWidth": 149
+        },
+        {
+          "text": "Brutalist",
+          "width": 149,
+          "height": 44,
+          "clientWidth": 149,
+          "scrollWidth": 149
+        },
+        {
+          "text": "Bootstrap 2.3.2 · WIP",
+          "width": 149,
+          "height": 44,
+          "clientWidth": 149,
+          "scrollWidth": 149
+        }
+      ]
+    }
+  ]
+}
