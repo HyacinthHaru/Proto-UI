@@ -1,0 +1,233 @@
+{
+  "head": "7eea25e36fcdfa94dad8f51058a7d1c1258b7ef8",
+  "tree": "36f2b72b7125298df576453c3e06949b7e1ffb6f",
+  "parents": [
+    "414c833baa60bdf65b49df41f9c6a135770effbe",
+    "d5e5d1239f46ca082ffc6b973f8601f0a19197dc"
+  ],
+  "environment": {
+    "node": "24.21.0",
+    "pnpm": "10.32.1",
+    "configuredChrome": "156.0.8078.79",
+    "workers": 1
+  },
+  "startedAt": "2026-11-16T19:29:41Z",
+  "finishedAt": "2026-11-16T19:30:34Z",
+  "exit": 0,
+  "logSHA256": "ac28702fe525a7c1a9d40db961cdb1f645520361bfd961a8b5da9f514734a396",
+  "reportSHA256": "43e54a8a8d9c8406c3d4bdcbd0b69f0aefb6df369af171c09105ac65e0d3304d",
+  "files": [
+    {
+      "file": "apps/www/src/content/docs/zh-cn/scroll-end-follow.browser.test.ts",
+      "sha256": "401a20d4d786f448cbe675a20fe838ed8b58a9539ce44327d09b717933cdc9d7",
+      "cases": [
+        {
+          "name": "Scroll end-follow / real Chromium realigns offset-only reflow during a stationary trusted touch without pausing",
+          "status": "passed"
+        },
+        {
+          "name": "Scroll end-follow / real Chromium settles public projection watcher requests against the current movement",
+          "status": "passed"
+        },
+        {
+          "name": "Scroll end-follow / real Chromium settles public reentrant watcher requests against the current movement",
+          "status": "passed"
+        },
+        {
+          "name": "Scroll end-follow / real Chromium follows rapid appends only at end and resumes after trusted reader input",
+          "status": "passed"
+        },
+        {
+          "name": "Scroll end-follow / real Chromium preserves native touch departure after pointercancel while the owned touch remains active",
+          "status": "passed"
+        },
+        {
+          "name": "Scroll end-follow / real Chromium ends an unmoved touchcancel session before an immediate test-driven offset change",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "file": "apps/www/src/content/docs/zh-cn/scroll-chrome-display.browser.test.ts",
+      "sha256": "e9ffef9b8bb456695270b47f9382a5f1453faa9f5a259bfe8ccd11f8e5e4c0c6",
+      "cases": [
+        {
+          "name": "Web Scroll chrome display / real Chromium cascade suppresses important author chrome and restores inline=false exactly",
+          "status": "passed"
+        },
+        {
+          "name": "Web Scroll chrome display / real Chromium cascade suppresses important author chrome and restores inline=true exactly",
+          "status": "passed"
+        }
+      ]
+    },
+    {
+      "file": "apps/www/src/content/docs/zh-cn/demo-shadcn-scroll-area.browser.test.ts",
+      "sha256": "6a3bba1c1c79c72a31435322e19d4dda45e1893ea53949ca0f6861b1b936b153",
+      "cases": [
+        {
+          "name": "shadcn Scroll Area browser acceptance renders exact oriented chrome around one host-owned two-axis surface in every runtime",
+          "status": "passed"
+        }
+      ]
+    }
+  ],
+  "geometry": [
+    {
+      "runtime": "wc",
+      "before": {
+        "viewportRect": {
+          "x": 34,
+          "y": 504.5,
+          "width": 252,
+          "height": 190
+        },
+        "scrollOffset": {
+          "x": 0,
+          "y": 1263
+        },
+        "documentRect": {
+          "x": 34,
+          "y": 1767.5,
+          "width": 252,
+          "height": 190
+        }
+      },
+      "after": {
+        "viewportRect": {
+          "x": 34,
+          "y": 504.5,
+          "width": 252,
+          "height": 190
+        },
+        "scrollOffset": {
+          "x": 0,
+          "y": 1263
+        },
+        "documentRect": {
+          "x": 34,
+          "y": 1767.5,
+          "width": 252,
+          "height": 190
+        }
+      }
+    },
+    {
+      "runtime": "react",
+      "before": {
+        "viewportRect": {
+          "x": 34,
+          "y": 504.5,
+          "width": 252,
+          "height": 190
+        },
+        "scrollOffset": {
+          "x": 0,
+          "y": 1263
+        },
+        "documentRect": {
+          "x": 34,
+          "y": 1767.5,
+          "width": 252,
+          "height": 190
+        }
+      },
+      "after": {
+        "viewportRect": {
+          "x": 34,
+          "y": 504.5,
+          "width": 252,
+          "height": 190
+        },
+        "scrollOffset": {
+          "x": 0,
+          "y": 1263
+        },
+        "documentRect": {
+          "x": 34,
+          "y": 1767.5,
+          "width": 252,
+          "height": 190
+        }
+      }
+    },
+    {
+      "runtime": "vue",
+      "before": {
+        "viewportRect": {
+          "x": 34,
+          "y": 504.5,
+          "width": 252,
+          "height": 190
+        },
+        "scrollOffset": {
+          "x": 0,
+          "y": 1263
+        },
+        "documentRect": {
+          "x": 34,
+          "y": 1767.5,
+          "width": 252,
+          "height": 190
+        }
+      },
+      "after": {
+        "viewportRect": {
+          "x": 34,
+          "y": 504.5,
+          "width": 252,
+          "height": 190
+        },
+        "scrollOffset": {
+          "x": 0,
+          "y": 1263
+        },
+        "documentRect": {
+          "x": 34,
+          "y": 1767.5,
+          "width": 252,
+          "height": 190
+        }
+      }
+    },
+    {
+      "runtime": "vue2",
+      "before": {
+        "viewportRect": {
+          "x": 34,
+          "y": 504.5,
+          "width": 252,
+          "height": 190
+        },
+        "scrollOffset": {
+          "x": 0,
+          "y": 1263
+        },
+        "documentRect": {
+          "x": 34,
+          "y": 1767.5,
+          "width": 252,
+          "height": 190
+        }
+      },
+      "after": {
+        "viewportRect": {
+          "x": 34,
+          "y": 504.5,
+          "width": 252,
+          "height": 190
+        },
+        "scrollOffset": {
+          "x": 0,
+          "y": 1263
+        },
+        "documentRect": {
+          "x": 34,
+          "y": 1767.5,
+          "width": 252,
+          "height": 190
+        }
+      }
+    }
+  ]
+}

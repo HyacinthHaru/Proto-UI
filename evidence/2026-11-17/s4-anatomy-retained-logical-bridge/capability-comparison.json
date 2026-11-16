@@ -1,0 +1,4429 @@
+{
+  "candidateSource": {
+    "head": "9b692cc42f00cc53329b8e9ac998264292387a73",
+    "tree": "ec9292e116c296ae56d5f06079da48fe59cf7240",
+    "parent": "5ea6d398084a17b12e89f813c479b87b71cb9f13",
+    "tests": {
+      "files": 26,
+      "passed": 410
+    },
+    "workspaceTypes": "passed",
+    "specAuthoring": "passed",
+    "redSameTest": {
+      "failed": 3,
+      "passed": 15
+    },
+    "inputSHA256": {
+      "packages/modules/anatomy/src/impl.ts": "d69067684053ad28ff0dfa3ed40c5c98ee62d3dec03182130f39e1441fa0f9a9",
+      "packages/modules/anatomy/src/types.ts": "b682f66cd831e541c3e1baad70ed701998797b8a5f1e4ac4af25c2441fb970ee",
+      "packages/modules/anatomy/test/subscriber-fanout.test.ts": "dfee584593446a96436e1b3c4a2accab8519ee06704db8b56344164ff09c6328",
+      "spec/modules/M-ANATOMY-0001.yaml": "82c6f4d53d60b50f8a42904894ebbb4dfa0f1708bd9f166904e76440c9833ed7"
+    }
+  },
+  "originalSuite": {
+    "previewers": 1268,
+    "startupMs": 60000,
+    "outerCaseMs": 150000,
+    "locale": "zh-cn",
+    "en": "unselected"
+  },
+  "baselineLast": {
+    "pageMs": 115987.60000014305,
+    "capPublications": 16165,
+    "capDelivered": 801576,
+    "capSkipped": 0,
+    "capElapsedMs": 30422.299998283386,
+    "groups": {
+      "caps-incomplete": {
+        "publications": 8099,
+        "delivered": 405257,
+        "skipped": 0,
+        "elapsedMs": 16922.89999437332
+      },
+      "caps-first": {
+        "publications": 8066,
+        "delivered": 396319,
+        "skipped": 0,
+        "elapsedMs": 13499.400003910065
+      },
+      "structure": {
+        "publications": 9190,
+        "delivered": 434010,
+        "skipped": 0,
+        "elapsedMs": 10827.500006437302
+      },
+      "mount": {
+        "publications": 8078,
+        "delivered": 130140,
+        "skipped": 292293,
+        "elapsedMs": 8354.19999551773
+      },
+      "unmount": {
+        "publications": 4,
+        "delivered": 0,
+        "skipped": 0,
+        "elapsedMs": 0.09999990463256836
+      },
+      "detach": {
+        "publications": 4,
+        "delivered": 0,
+        "skipped": 0,
+        "elapsedMs": 0
+      }
+    }
+  },
+  "candidateLast": {
+    "pageMs": 121495.90000009537,
+    "capPublications": 17179,
+    "capDelivered": 1133365,
+    "capSkipped": 538959,
+    "capElapsedMs": 30212.200008392334,
+    "groups": {
+      "caps-incomplete": {
+        "publications": 8606,
+        "delivered": 841321,
+        "skipped": 0,
+        "elapsedMs": 17815.600004434586
+      },
+      "caps-first": {
+        "publications": 8573,
+        "delivered": 292044,
+        "skipped": 538959,
+        "elapsedMs": 12396.600003957748
+      },
+      "structure": {
+        "publications": 9965,
+        "delivered": 896086,
+        "skipped": 0,
+        "elapsedMs": 6971.999985456467
+      },
+      "mount": {
+        "publications": 8589,
+        "delivered": 312833,
+        "skipped": 567871,
+        "elapsedMs": 2380.599993467331
+      }
+    }
+  },
+  "baseline": {
+    "head": "ef027647c421b593907781b7a9a418a8e2108069",
+    "tree": "726e7e1476f68bff2dc045af1a53175afafd09ab",
+    "parents": [
+      "db532777b6980739fe0bc1bddc7086c9aa11e9cb",
+      "5ea6d398084a17b12e89f813c479b87b71cb9f13"
+    ],
+    "overlaySHA256": "17706faccb2973ac9a0ee9f9d5f45b5bbc2619eb553b297be36dd2616f05840e",
+    "inputSHA256": {
+      "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "f69fa86ce40b372a7b2b1caa6b37a6a4adf67f56c0c482f9f7675851f44f27e9",
+      "packages/modules/anatomy/src/impl.ts": "e2104465172bdb2b793ea78343067fa0079ec80c2b48814f805c06cae0fe5bea"
+    },
+    "runtime": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+    "reports": [
+      {
+        "pageMs": 2032.5,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 1,
+            "delivered": 0,
+            "skipped": 0,
+            "elapsedMs": 0
+          }
+        }
+      },
+      {
+        "pageMs": 3680.300000190735,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 67,
+            "delivered": 132,
+            "skipped": 0,
+            "elapsedMs": 1.700000286102295
+          },
+          "caps-first": {
+            "publications": 66,
+            "delivered": 116,
+            "skipped": 0,
+            "elapsedMs": 0.8000004291534424
+          },
+          "structure": {
+            "publications": 119,
+            "delivered": 116,
+            "skipped": 0,
+            "elapsedMs": 0.2999999523162842
+          },
+          "mount": {
+            "publications": 66,
+            "delivered": 60,
+            "skipped": 56,
+            "elapsedMs": 0.5999996662139893
+          }
+        }
+      },
+      {
+        "pageMs": 5204.5,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 113,
+            "delivered": 707,
+            "skipped": 0,
+            "elapsedMs": 6.300000429153442
+          },
+          "caps-first": {
+            "publications": 112,
+            "delivered": 707,
+            "skipped": 0,
+            "elapsedMs": 3.3000004291534424
+          },
+          "structure": {
+            "publications": 165,
+            "delivered": 707,
+            "skipped": 0,
+            "elapsedMs": 3.0999996662139893
+          },
+          "mount": {
+            "publications": 112,
+            "delivered": 147,
+            "skipped": 560,
+            "elapsedMs": 1.099999189376831
+          }
+        }
+      },
+      {
+        "pageMs": 7062.600000143051,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 149,
+            "delivered": 1818,
+            "skipped": 0,
+            "elapsedMs": 14.200001239776611
+          },
+          "caps-first": {
+            "publications": 149,
+            "delivered": 1818,
+            "skipped": 0,
+            "elapsedMs": 7.499999761581421
+          },
+          "structure": {
+            "publications": 203,
+            "delivered": 1818,
+            "skipped": 0,
+            "elapsedMs": 7.399999618530273
+          },
+          "mount": {
+            "publications": 149,
+            "delivered": 198,
+            "skipped": 1620,
+            "elapsedMs": 1.9999990463256836
+          }
+        }
+      },
+      {
+        "pageMs": 10328.800000190735,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 150,
+            "delivered": 1818,
+            "skipped": 0,
+            "elapsedMs": 14.200001239776611
+          },
+          "caps-first": {
+            "publications": 149,
+            "delivered": 1818,
+            "skipped": 0,
+            "elapsedMs": 7.499999761581421
+          },
+          "structure": {
+            "publications": 221,
+            "delivered": 1818,
+            "skipped": 0,
+            "elapsedMs": 7.399999618530273
+          },
+          "mount": {
+            "publications": 149,
+            "delivered": 198,
+            "skipped": 1620,
+            "elapsedMs": 1.9999990463256836
+          }
+        }
+      },
+      {
+        "pageMs": 11904.800000190735,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 286,
+            "delivered": 5820,
+            "skipped": 0,
+            "elapsedMs": 43.30000138282776
+          },
+          "caps-first": {
+            "publications": 286,
+            "delivered": 5820,
+            "skipped": 0,
+            "elapsedMs": 26.40000033378601
+          },
+          "structure": {
+            "publications": 427,
+            "delivered": 7533,
+            "skipped": 0,
+            "elapsedMs": 33.59999871253967
+          },
+          "mount": {
+            "publications": 286,
+            "delivered": 578,
+            "skipped": 5242,
+            "elapsedMs": 6.699997663497925
+          }
+        }
+      },
+      {
+        "pageMs": 13418.300000190735,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 396,
+            "delivered": 5824,
+            "skipped": 0,
+            "elapsedMs": 43.40000128746033
+          },
+          "caps-first": {
+            "publications": 395,
+            "delivered": 5824,
+            "skipped": 0,
+            "elapsedMs": 26.40000033378601
+          },
+          "structure": {
+            "publications": 625,
+            "delivered": 12228,
+            "skipped": 0,
+            "elapsedMs": 51.79999780654907
+          },
+          "mount": {
+            "publications": 395,
+            "delivered": 578,
+            "skipped": 5246,
+            "elapsedMs": 6.699997663497925
+          }
+        }
+      },
+      {
+        "pageMs": 14927.600000143051,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 904,
+            "delivered": 6921,
+            "skipped": 0,
+            "elapsedMs": 99.39999961853027
+          },
+          "caps-first": {
+            "publications": 903,
+            "delivered": 6919,
+            "skipped": 0,
+            "elapsedMs": 40.39999961853027
+          },
+          "structure": {
+            "publications": 1133,
+            "delivered": 13323,
+            "skipped": 0,
+            "elapsedMs": 89.0999984741211
+          },
+          "mount": {
+            "publications": 903,
+            "delivered": 1121,
+            "skipped": 5798,
+            "elapsedMs": 15.999998569488525
+          }
+        }
+      },
+      {
+        "pageMs": 16435.700000047684,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 1164,
+            "delivered": 8425,
+            "skipped": 0,
+            "elapsedMs": 192.09999799728394
+          },
+          "caps-first": {
+            "publications": 1162,
+            "delivered": 8421,
+            "skipped": 0,
+            "elapsedMs": 57.40000104904175
+          },
+          "structure": {
+            "publications": 1556,
+            "delivered": 15563,
+            "skipped": 0,
+            "elapsedMs": 127.49999928474426
+          },
+          "mount": {
+            "publications": 1163,
+            "delivered": 1851,
+            "skipped": 6576,
+            "elapsedMs": 20.799998998641968
+          }
+        }
+      },
+      {
+        "pageMs": 19288.5,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 1164,
+            "delivered": 8425,
+            "skipped": 0,
+            "elapsedMs": 192.09999799728394
+          },
+          "caps-first": {
+            "publications": 1162,
+            "delivered": 8421,
+            "skipped": 0,
+            "elapsedMs": 57.40000104904175
+          },
+          "structure": {
+            "publications": 2113,
+            "delivered": 19082,
+            "skipped": 0,
+            "elapsedMs": 315.5999987125397
+          },
+          "mount": {
+            "publications": 1163,
+            "delivered": 1851,
+            "skipped": 6576,
+            "elapsedMs": 20.799998998641968
+          }
+        }
+      },
+      {
+        "pageMs": 20788.60000014305,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 1809,
+            "delivered": 17215,
+            "skipped": 0,
+            "elapsedMs": 424.3999981880188
+          },
+          "caps-first": {
+            "publications": 1805,
+            "delivered": 17131,
+            "skipped": 0,
+            "elapsedMs": 144.39999985694885
+          },
+          "structure": {
+            "publications": 2507,
+            "delivered": 23209,
+            "skipped": 0,
+            "elapsedMs": 393.1000006198883
+          },
+          "mount": {
+            "publications": 1396,
+            "delivered": 3408,
+            "skipped": 8224,
+            "elapsedMs": 33.89999961853027
+          }
+        }
+      },
+      {
+        "pageMs": 22857.700000047684,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 2180,
+            "delivered": 23027,
+            "skipped": 0,
+            "elapsedMs": 522.0999984741211
+          },
+          "caps-first": {
+            "publications": 2175,
+            "delivered": 22943,
+            "skipped": 0,
+            "elapsedMs": 184.49999833106995
+          },
+          "structure": {
+            "publications": 3288,
+            "delivered": 36352,
+            "skipped": 0,
+            "elapsedMs": 716.0000040531158
+          },
+          "mount": {
+            "publications": 2177,
+            "delivered": 6779,
+            "skipped": 17996,
+            "elapsedMs": 100.69999980926514
+          }
+        }
+      },
+      {
+        "pageMs": 24365.300000190735,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 2824,
+            "delivered": 35533,
+            "skipped": 0,
+            "elapsedMs": 1061.00000166893
+          },
+          "caps-first": {
+            "publications": 2818,
+            "delivered": 35293,
+            "skipped": 0,
+            "elapsedMs": 355.09999656677246
+          },
+          "structure": {
+            "publications": 3401,
+            "delivered": 39207,
+            "skipped": 0,
+            "elapsedMs": 813.7000050544739
+          },
+          "mount": {
+            "publications": 2289,
+            "delivered": 7860,
+            "skipped": 19606,
+            "elapsedMs": 113.20000004768372
+          }
+        }
+      },
+      {
+        "pageMs": 25866.200000047684,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 2872,
+            "delivered": 37019,
+            "skipped": 0,
+            "elapsedMs": 1097.0000014305115
+          },
+          "caps-first": {
+            "publications": 2865,
+            "delivered": 36733,
+            "skipped": 0,
+            "elapsedMs": 362.6999957561493
+          },
+          "structure": {
+            "publications": 3932,
+            "delivered": 50608,
+            "skipped": 0,
+            "elapsedMs": 1173.2000043392181
+          },
+          "mount": {
+            "publications": 2821,
+            "delivered": 12423,
+            "skipped": 26608,
+            "elapsedMs": 233.099999666214
+          }
+        }
+      },
+      {
+        "pageMs": 27860.200000047684,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 3195,
+            "delivered": 43713,
+            "skipped": 0,
+            "elapsedMs": 1248.1000022888184
+          },
+          "caps-first": {
+            "publications": 3188,
+            "delivered": 43473,
+            "skipped": 0,
+            "elapsedMs": 431.5999963283539
+          },
+          "structure": {
+            "publications": 4302,
+            "delivered": 59734,
+            "skipped": 0,
+            "elapsedMs": 1296.8000056743622
+          },
+          "mount": {
+            "publications": 3191,
+            "delivered": 13755,
+            "skipped": 34402,
+            "elapsedMs": 249.00000023841858
+          }
+        }
+      },
+      {
+        "pageMs": 29363,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 3381,
+            "delivered": 51570,
+            "skipped": 0,
+            "elapsedMs": 1308.200001001358
+          },
+          "caps-first": {
+            "publications": 3368,
+            "delivered": 50232,
+            "skipped": 0,
+            "elapsedMs": 474.4999964237213
+          },
+          "structure": {
+            "publications": 4485,
+            "delivered": 67702,
+            "skipped": 0,
+            "elapsedMs": 1333.1000051498413
+          },
+          "mount": {
+            "publications": 3374,
+            "delivered": 17325,
+            "skipped": 38800,
+            "elapsedMs": 262.6000008583069
+          }
+        }
+      },
+      {
+        "pageMs": 30863.400000095367,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 3634,
+            "delivered": 58362,
+            "skipped": 0,
+            "elapsedMs": 1401.8999998569489
+          },
+          "caps-first": {
+            "publications": 3609,
+            "delivered": 54756,
+            "skipped": 0,
+            "elapsedMs": 542.5999977588654
+          },
+          "structure": {
+            "publications": 4732,
+            "delivered": 73645,
+            "skipped": 0,
+            "elapsedMs": 1353.60000538826
+          },
+          "mount": {
+            "publications": 3621,
+            "delivered": 19880,
+            "skipped": 42188,
+            "elapsedMs": 269.6000008583069
+          }
+        }
+      },
+      {
+        "pageMs": 32363.5,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 4043,
+            "delivered": 75120,
+            "skipped": 0,
+            "elapsedMs": 1614.1999969482422
+          },
+          "caps-first": {
+            "publications": 4019,
+            "delivered": 71514,
+            "skipped": 0,
+            "elapsedMs": 744.7999987602234
+          },
+          "structure": {
+            "publications": 5140,
+            "delivered": 93629,
+            "skipped": 0,
+            "elapsedMs": 1407.7000064849854
+          },
+          "mount": {
+            "publications": 4029,
+            "delivered": 20210,
+            "skipped": 61842,
+            "elapsedMs": 273.30000019073486
+          }
+        }
+      },
+      {
+        "pageMs": 33865.10000014305,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 4327,
+            "delivered": 105877,
+            "skipped": 0,
+            "elapsedMs": 1887.8999981880188
+          },
+          "caps-first": {
+            "publications": 4302,
+            "delivered": 102271,
+            "skipped": 0,
+            "elapsedMs": 1008.9000000953674
+          },
+          "structure": {
+            "publications": 5358,
+            "delivered": 117905,
+            "skipped": 0,
+            "elapsedMs": 1473.500006198883
+          },
+          "mount": {
+            "publications": 4247,
+            "delivered": 20380,
+            "skipped": 85948,
+            "elapsedMs": 278.00000047683716
+          }
+        }
+      },
+      {
+        "pageMs": 35396.90000009537,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 4416,
+            "delivered": 115011,
+            "skipped": 0,
+            "elapsedMs": 2012.599998474121
+          },
+          "caps-first": {
+            "publications": 4391,
+            "delivered": 111398,
+            "skipped": 0,
+            "elapsedMs": 1124.5000009536743
+          },
+          "structure": {
+            "publications": 5514,
+            "delivered": 137050,
+            "skipped": 0,
+            "elapsedMs": 1523.300006866455
+          },
+          "mount": {
+            "publications": 4403,
+            "delivered": 20582,
+            "skipped": 104891,
+            "elapsedMs": 281.5000002384186
+          }
+        }
+      },
+      {
+        "pageMs": 36897,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 4664,
+            "delivered": 116435,
+            "skipped": 0,
+            "elapsedMs": 2153.2999980449677
+          },
+          "caps-first": {
+            "publications": 4640,
+            "delivered": 112829,
+            "skipped": 0,
+            "elapsedMs": 1261.3000025749207
+          },
+          "structure": {
+            "publications": 5697,
+            "delivered": 138542,
+            "skipped": 0,
+            "elapsedMs": 1528.700006723404
+          },
+          "mount": {
+            "publications": 4585,
+            "delivered": 20756,
+            "skipped": 106209,
+            "elapsedMs": 282.400000333786
+          }
+        }
+      },
+      {
+        "pageMs": 38400.5,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 4770,
+            "delivered": 116475,
+            "skipped": 0,
+            "elapsedMs": 2215.7999980449677
+          },
+          "caps-first": {
+            "publications": 4746,
+            "delivered": 112869,
+            "skipped": 0,
+            "elapsedMs": 1322.300002336502
+          },
+          "structure": {
+            "publications": 5869,
+            "delivered": 138582,
+            "skipped": 0,
+            "elapsedMs": 1590.4000070095062
+          },
+          "mount": {
+            "publications": 4758,
+            "delivered": 20796,
+            "skipped": 106209,
+            "elapsedMs": 343.900000333786
+          }
+        }
+      },
+      {
+        "pageMs": 39913.40000009537,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 4836,
+            "delivered": 116645,
+            "skipped": 0,
+            "elapsedMs": 2457.9999980926514
+          },
+          "caps-first": {
+            "publications": 4811,
+            "delivered": 113039,
+            "skipped": 0,
+            "elapsedMs": 1564.400002002716
+          },
+          "structure": {
+            "publications": 5934,
+            "delivered": 138766,
+            "skipped": 0,
+            "elapsedMs": 1871.8000061511993
+          },
+          "mount": {
+            "publications": 4823,
+            "delivered": 20980,
+            "skipped": 106209,
+            "elapsedMs": 626.1999998092651
+          }
+        }
+      },
+      {
+        "pageMs": 41474.200000047684,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 5126,
+            "delivered": 117299,
+            "skipped": 0,
+            "elapsedMs": 2468.0999977588654
+          },
+          "caps-first": {
+            "publications": 5102,
+            "delivered": 113693,
+            "skipped": 0,
+            "elapsedMs": 1572.4000017642975
+          },
+          "structure": {
+            "publications": 6208,
+            "delivered": 139310,
+            "skipped": 0,
+            "elapsedMs": 1879.1000063419342
+          },
+          "mount": {
+            "publications": 5096,
+            "delivered": 21524,
+            "skipped": 106209,
+            "elapsedMs": 632.7999994754791
+          }
+        }
+      },
+      {
+        "pageMs": 42979.300000190735,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 5357,
+            "delivered": 117299,
+            "skipped": 0,
+            "elapsedMs": 2468.1999979019165
+          },
+          "caps-first": {
+            "publications": 5333,
+            "delivered": 113693,
+            "skipped": 0,
+            "elapsedMs": 1572.6000018119812
+          },
+          "structure": {
+            "publications": 6449,
+            "delivered": 139424,
+            "skipped": 0,
+            "elapsedMs": 1880.9000062942505
+          },
+          "mount": {
+            "publications": 5337,
+            "delivered": 21638,
+            "skipped": 106209,
+            "elapsedMs": 634.2999992370605
+          }
+        }
+      },
+      {
+        "pageMs": 44484.700000047684,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 5504,
+            "delivered": 129207,
+            "skipped": 0,
+            "elapsedMs": 2709.99999833107
+          },
+          "caps-first": {
+            "publications": 5479,
+            "delivered": 125347,
+            "skipped": 0,
+            "elapsedMs": 1794.300001859665
+          },
+          "structure": {
+            "publications": 6602,
+            "delivered": 151615,
+            "skipped": 0,
+            "elapsedMs": 1926.2000062465668
+          },
+          "mount": {
+            "publications": 5491,
+            "delivered": 27535,
+            "skipped": 112503,
+            "elapsedMs": 658.2000012397766
+          }
+        }
+      },
+      {
+        "pageMs": 45994.90000009537,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 5609,
+            "delivered": 153982,
+            "skipped": 0,
+            "elapsedMs": 3060.399998188019
+          },
+          "caps-first": {
+            "publications": 5584,
+            "delivered": 150035,
+            "skipped": 0,
+            "elapsedMs": 2128.400003671646
+          },
+          "structure": {
+            "publications": 6630,
+            "delivered": 157021,
+            "skipped": 0,
+            "elapsedMs": 1950.0000054836273
+          },
+          "mount": {
+            "publications": 5519,
+            "delivered": 30337,
+            "skipped": 115107,
+            "elapsedMs": 675.600001335144
+          }
+        }
+      },
+      {
+        "pageMs": 47499.90000009537,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 5671,
+            "delivered": 172905,
+            "skipped": 0,
+            "elapsedMs": 3316.3999989032745
+          },
+          "caps-first": {
+            "publications": 5646,
+            "delivered": 168895,
+            "skipped": 0,
+            "elapsedMs": 2365.800004005432
+          },
+          "structure": {
+            "publications": 6769,
+            "delivered": 198331,
+            "skipped": 0,
+            "elapsedMs": 2113.60000538826
+          },
+          "mount": {
+            "publications": 5658,
+            "delivered": 50218,
+            "skipped": 136536,
+            "elapsedMs": 776.5000009536743
+          }
+        }
+      },
+      {
+        "pageMs": 49014.300000190735,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 5762,
+            "delivered": 200232,
+            "skipped": 0,
+            "elapsedMs": 3633.299999475479
+          },
+          "caps-first": {
+            "publications": 5737,
+            "delivered": 196152,
+            "skipped": 0,
+            "elapsedMs": 2668.700003385544
+          },
+          "structure": {
+            "publications": 6799,
+            "delivered": 204453,
+            "skipped": 0,
+            "elapsedMs": 2135.800005197525
+          },
+          "mount": {
+            "publications": 5688,
+            "delivered": 52866,
+            "skipped": 140010,
+            "elapsedMs": 787.800000667572
+          }
+        }
+      },
+      {
+        "pageMs": 50662.5,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 5823,
+            "delivered": 222529,
+            "skipped": 0,
+            "elapsedMs": 3889.899999141693
+          },
+          "caps-first": {
+            "publications": 5798,
+            "delivered": 218923,
+            "skipped": 0,
+            "elapsedMs": 2909.9000039100647
+          },
+          "structure": {
+            "publications": 6921,
+            "delivered": 252717,
+            "skipped": 0,
+            "elapsedMs": 2283.3000054359436
+          },
+          "mount": {
+            "publications": 5810,
+            "delivered": 72752,
+            "skipped": 168388,
+            "elapsedMs": 849.0999999046326
+          }
+        }
+      },
+      {
+        "pageMs": 52440.60000014305,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 5868,
+            "delivered": 223070,
+            "skipped": 0,
+            "elapsedMs": 3914.8999993801117
+          },
+          "caps-first": {
+            "publications": 5843,
+            "delivered": 219457,
+            "skipped": 0,
+            "elapsedMs": 2921.0000038146973
+          },
+          "structure": {
+            "publications": 6966,
+            "delivered": 253253,
+            "skipped": 0,
+            "elapsedMs": 2294.60000538826
+          },
+          "mount": {
+            "publications": 5855,
+            "delivered": 73288,
+            "skipped": 168388,
+            "elapsedMs": 860.099999666214
+          }
+        }
+      },
+      {
+        "pageMs": 53948.800000190735,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 5891,
+            "delivered": 223242,
+            "skipped": 0,
+            "elapsedMs": 4269.799999475479
+          },
+          "caps-first": {
+            "publications": 5866,
+            "delivered": 219627,
+            "skipped": 0,
+            "elapsedMs": 3219.0000042915344
+          },
+          "structure": {
+            "publications": 6984,
+            "delivered": 253379,
+            "skipped": 0,
+            "elapsedMs": 2515.700006008148
+          },
+          "mount": {
+            "publications": 5873,
+            "delivered": 73414,
+            "skipped": 168388,
+            "elapsedMs": 1079.4000000953674
+          }
+        }
+      },
+      {
+        "pageMs": 55459.200000047684,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 5921,
+            "delivered": 223512,
+            "skipped": 0,
+            "elapsedMs": 4720.5
+          },
+          "caps-first": {
+            "publications": 5897,
+            "delivered": 219906,
+            "skipped": 0,
+            "elapsedMs": 3670.9000046253204
+          },
+          "structure": {
+            "publications": 6999,
+            "delivered": 253514,
+            "skipped": 0,
+            "elapsedMs": 2735.3000054359436
+          },
+          "mount": {
+            "publications": 5888,
+            "delivered": 73549,
+            "skipped": 168388,
+            "elapsedMs": 1301.900000333786
+          }
+        }
+      },
+      {
+        "pageMs": 56968.5,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 5926,
+            "delivered": 223562,
+            "skipped": 0,
+            "elapsedMs": 4818.899999856949
+          },
+          "caps-first": {
+            "publications": 5902,
+            "delivered": 219956,
+            "skipped": 0,
+            "elapsedMs": 3765.6000044345856
+          },
+          "structure": {
+            "publications": 7025,
+            "delivered": 253753,
+            "skipped": 0,
+            "elapsedMs": 3201.2000048160553
+          },
+          "mount": {
+            "publications": 5914,
+            "delivered": 73788,
+            "skipped": 168388,
+            "elapsedMs": 1760.5999989509583
+          }
+        }
+      },
+      {
+        "pageMs": 58487.10000014305,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 5942,
+            "delivered": 223725,
+            "skipped": 0,
+            "elapsedMs": 5153.899999380112
+          },
+          "caps-first": {
+            "publications": 5918,
+            "delivered": 220119,
+            "skipped": 0,
+            "elapsedMs": 4094.2000048160553
+          },
+          "structure": {
+            "publications": 7038,
+            "delivered": 253883,
+            "skipped": 0,
+            "elapsedMs": 3468.1000044345856
+          },
+          "mount": {
+            "publications": 5927,
+            "delivered": 73918,
+            "skipped": 168388,
+            "elapsedMs": 2028.4999990463257
+          }
+        }
+      },
+      {
+        "pageMs": 59990,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 5972,
+            "delivered": 224070,
+            "skipped": 0,
+            "elapsedMs": 5829.799998283386
+          },
+          "caps-first": {
+            "publications": 5948,
+            "delivered": 220464,
+            "skipped": 0,
+            "elapsedMs": 4754.900004386902
+          },
+          "structure": {
+            "publications": 7038,
+            "delivered": 253883,
+            "skipped": 0,
+            "elapsedMs": 3468.1000044345856
+          },
+          "mount": {
+            "publications": 5927,
+            "delivered": 73918,
+            "skipped": 168388,
+            "elapsedMs": 2028.4999990463257
+          }
+        }
+      },
+      {
+        "pageMs": 61490.5,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 5975,
+            "delivered": 224106,
+            "skipped": 0,
+            "elapsedMs": 5898.4999985694885
+          },
+          "caps-first": {
+            "publications": 5951,
+            "delivered": 220500,
+            "skipped": 0,
+            "elapsedMs": 4821.200004577637
+          },
+          "structure": {
+            "publications": 7062,
+            "delivered": 254171,
+            "skipped": 0,
+            "elapsedMs": 4028.800004005432
+          },
+          "mount": {
+            "publications": 5950,
+            "delivered": 74194,
+            "skipped": 168388,
+            "elapsedMs": 2563.599999189377
+          }
+        }
+      },
+      {
+        "pageMs": 63000,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 5981,
+            "delivered": 224184,
+            "skipped": 0,
+            "elapsedMs": 6068.699998617172
+          },
+          "caps-first": {
+            "publications": 5957,
+            "delivered": 220578,
+            "skipped": 0,
+            "elapsedMs": 4982.90000462532
+          },
+          "structure": {
+            "publications": 7080,
+            "delivered": 254393,
+            "skipped": 0,
+            "elapsedMs": 4496.600004196167
+          },
+          "mount": {
+            "publications": 5968,
+            "delivered": 74415,
+            "skipped": 168388,
+            "elapsedMs": 3032.199999809265
+          }
+        }
+      },
+      {
+        "pageMs": 64842.700000047684,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 5994,
+            "delivered": 224354,
+            "skipped": 0,
+            "elapsedMs": 6449.09999871254
+          },
+          "caps-first": {
+            "publications": 5969,
+            "delivered": 220734,
+            "skipped": 0,
+            "elapsedMs": 5328.200004577637
+          },
+          "structure": {
+            "publications": 7092,
+            "delivered": 254549,
+            "skipped": 0,
+            "elapsedMs": 4838.800003767014
+          },
+          "mount": {
+            "publications": 5981,
+            "delivered": 74584,
+            "skipped": 168388,
+            "elapsedMs": 3401.1999995708466
+          }
+        }
+      },
+      {
+        "pageMs": 66352,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 6014,
+            "delivered": 224637,
+            "skipped": 0,
+            "elapsedMs": 7058.699998140335
+          },
+          "caps-first": {
+            "publications": 5990,
+            "delivered": 221031,
+            "skipped": 0,
+            "elapsedMs": 5962.600004434586
+          },
+          "structure": {
+            "publications": 7093,
+            "delivered": 254564,
+            "skipped": 0,
+            "elapsedMs": 4868.600003957748
+          },
+          "mount": {
+            "publications": 5982,
+            "delivered": 74599,
+            "skipped": 168388,
+            "elapsedMs": 3430.599999666214
+          }
+        }
+      },
+      {
+        "pageMs": 67866.70000004768,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 6029,
+            "delivered": 224862,
+            "skipped": 0,
+            "elapsedMs": 7514.899998188019
+          },
+          "caps-first": {
+            "publications": 6005,
+            "delivered": 221256,
+            "skipped": 0,
+            "elapsedMs": 6413.500003576279
+          },
+          "structure": {
+            "publications": 7103,
+            "delivered": 254714,
+            "skipped": 0,
+            "elapsedMs": 5172.600003957748
+          },
+          "mount": {
+            "publications": 5991,
+            "delivered": 74734,
+            "skipped": 168388,
+            "elapsedMs": 3705.1999995708466
+          }
+        }
+      },
+      {
+        "pageMs": 69383,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 6029,
+            "delivered": 224862,
+            "skipped": 0,
+            "elapsedMs": 7514.899998188019
+          },
+          "caps-first": {
+            "publications": 6005,
+            "delivered": 221256,
+            "skipped": 0,
+            "elapsedMs": 6413.500003576279
+          },
+          "structure": {
+            "publications": 7125,
+            "delivered": 255044,
+            "skipped": 0,
+            "elapsedMs": 5893.600004196167
+          },
+          "mount": {
+            "publications": 6014,
+            "delivered": 75079,
+            "skipped": 168388,
+            "elapsedMs": 4461.399999141693
+          }
+        }
+      },
+      {
+        "pageMs": 70884.70000004768,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 6064,
+            "delivered": 226517,
+            "skipped": 0,
+            "elapsedMs": 7556.499998092651
+          },
+          "caps-first": {
+            "publications": 6040,
+            "delivered": 222911,
+            "skipped": 0,
+            "elapsedMs": 6449.10000371933
+          },
+          "structure": {
+            "publications": 7162,
+            "delivered": 256664,
+            "skipped": 0,
+            "elapsedMs": 6010.900004148483
+          },
+          "mount": {
+            "publications": 6051,
+            "delivered": 75439,
+            "skipped": 169648,
+            "elapsedMs": 4571.299999237061
+          }
+        }
+      },
+      {
+        "pageMs": 72397,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 6308,
+            "delivered": 232808,
+            "skipped": 0,
+            "elapsedMs": 7724.299997091293
+          },
+          "caps-first": {
+            "publications": 6283,
+            "delivered": 229202,
+            "skipped": 0,
+            "elapsedMs": 6602.000004291534
+          },
+          "structure": {
+            "publications": 7406,
+            "delivered": 263112,
+            "skipped": 0,
+            "elapsedMs": 6053.000004291534
+          },
+          "mount": {
+            "publications": 6295,
+            "delivered": 76781,
+            "skipped": 174754,
+            "elapsedMs": 4595.199998617172
+          }
+        }
+      },
+      {
+        "pageMs": 73913.20000004768,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 6391,
+            "delivered": 233825,
+            "skipped": 0,
+            "elapsedMs": 8183.699996471405
+          },
+          "caps-first": {
+            "publications": 6367,
+            "delivered": 230219,
+            "skipped": 0,
+            "elapsedMs": 7050.700003862381
+          },
+          "structure": {
+            "publications": 7483,
+            "delivered": 264020,
+            "skipped": 0,
+            "elapsedMs": 6254.000004768372
+          },
+          "mount": {
+            "publications": 6372,
+            "delivered": 77689,
+            "skipped": 174754,
+            "elapsedMs": 4793.999997854233
+          }
+        }
+      },
+      {
+        "pageMs": 75417.90000009537,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 6476,
+            "delivered": 234906,
+            "skipped": 0,
+            "elapsedMs": 8535.499996423721
+          },
+          "caps-first": {
+            "publications": 6452,
+            "delivered": 231300,
+            "skipped": 0,
+            "elapsedMs": 7152.700002908707
+          },
+          "structure": {
+            "publications": 7573,
+            "delivered": 265220,
+            "skipped": 0,
+            "elapsedMs": 6729.500004053116
+          },
+          "mount": {
+            "publications": 6461,
+            "delivered": 78790,
+            "skipped": 174827,
+            "elapsedMs": 5145.4999969005585
+          }
+        }
+      },
+      {
+        "pageMs": 76976.5,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 6581,
+            "delivered": 237622,
+            "skipped": 0,
+            "elapsedMs": 9241.799994945526
+          },
+          "caps-first": {
+            "publications": 6557,
+            "delivered": 234016,
+            "skipped": 0,
+            "elapsedMs": 7256.300003528595
+          },
+          "structure": {
+            "publications": 7678,
+            "delivered": 267966,
+            "skipped": 0,
+            "elapsedMs": 7032.900003910065
+          },
+          "mount": {
+            "publications": 6566,
+            "delivered": 80296,
+            "skipped": 176062,
+            "elapsedMs": 5184.999996423721
+          }
+        }
+      },
+      {
+        "pageMs": 78489.70000004768,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 6640,
+            "delivered": 254880,
+            "skipped": 0,
+            "elapsedMs": 9618.899994850159
+          },
+          "caps-first": {
+            "publications": 6613,
+            "delivered": 249648,
+            "skipped": 0,
+            "elapsedMs": 7578.700003147125
+          },
+          "structure": {
+            "publications": 7715,
+            "delivered": 271802,
+            "skipped": 0,
+            "elapsedMs": 7059.900004148483
+          },
+          "mount": {
+            "publications": 6604,
+            "delivered": 82183,
+            "skipped": 178042,
+            "elapsedMs": 5193.299996376038
+          }
+        }
+      },
+      {
+        "pageMs": 79997.80000019073,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 6741,
+            "delivered": 268274,
+            "skipped": 0,
+            "elapsedMs": 9911.399994850159
+          },
+          "caps-first": {
+            "publications": 6713,
+            "delivered": 262430,
+            "skipped": 0,
+            "elapsedMs": 7835.300003290176
+          },
+          "structure": {
+            "publications": 7833,
+            "delivered": 297371,
+            "skipped": 0,
+            "elapsedMs": 7149.900004148483
+          },
+          "mount": {
+            "publications": 6722,
+            "delivered": 92477,
+            "skipped": 193317,
+            "elapsedMs": 5231.199995279312
+          }
+        }
+      },
+      {
+        "pageMs": 81501.40000009537,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 6884,
+            "delivered": 283314,
+            "skipped": 0,
+            "elapsedMs": 10246.69999551773
+          },
+          "caps-first": {
+            "publications": 6851,
+            "delivered": 275075,
+            "skipped": 0,
+            "elapsedMs": 8098.800001621246
+          },
+          "structure": {
+            "publications": 7978,
+            "delivered": 311682,
+            "skipped": 0,
+            "elapsedMs": 7199.900003194809
+          },
+          "mount": {
+            "publications": 6867,
+            "delivered": 94737,
+            "skipped": 205368,
+            "elapsedMs": 5241.3999972343445
+          }
+        }
+      },
+      {
+        "pageMs": 83019.40000009537,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 7002,
+            "delivered": 284144,
+            "skipped": 0,
+            "elapsedMs": 10560.499995946884
+          },
+          "caps-first": {
+            "publications": 6970,
+            "delivered": 275932,
+            "skipped": 0,
+            "elapsedMs": 8416.500000715256
+          },
+          "structure": {
+            "publications": 8092,
+            "delivered": 312510,
+            "skipped": 0,
+            "elapsedMs": 7358.00000333786
+          },
+          "mount": {
+            "publications": 6980,
+            "delivered": 94838,
+            "skipped": 206078,
+            "elapsedMs": 5354.799997329712
+          }
+        }
+      },
+      {
+        "pageMs": 84522.30000019073,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 7029,
+            "delivered": 284280,
+            "skipped": 0,
+            "elapsedMs": 10864.89999628067
+          },
+          "caps-first": {
+            "publications": 6997,
+            "delivered": 276068,
+            "skipped": 0,
+            "elapsedMs": 8715.700000286102
+          },
+          "structure": {
+            "publications": 8121,
+            "delivered": 312680,
+            "skipped": 0,
+            "elapsedMs": 7744.800003290176
+          },
+          "mount": {
+            "publications": 7009,
+            "delivered": 95025,
+            "skipped": 206078,
+            "elapsedMs": 5775.8999972343445
+          }
+        }
+      },
+      {
+        "pageMs": 86026,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 7213,
+            "delivered": 296028,
+            "skipped": 0,
+            "elapsedMs": 11033.2999958992
+          },
+          "caps-first": {
+            "publications": 7181,
+            "delivered": 287816,
+            "skipped": 0,
+            "elapsedMs": 8868.200000047684
+          },
+          "structure": {
+            "publications": 8306,
+            "delivered": 323396,
+            "skipped": 0,
+            "elapsedMs": 7789.700002908707
+          },
+          "mount": {
+            "publications": 7195,
+            "delivered": 99584,
+            "skipped": 212235,
+            "elapsedMs": 5791.899997472763
+          }
+        }
+      },
+      {
+        "pageMs": 87538.30000019073,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 7259,
+            "delivered": 314168,
+            "skipped": 0,
+            "elapsedMs": 11516.499995946884
+          },
+          "caps-first": {
+            "publications": 7227,
+            "delivered": 305956,
+            "skipped": 0,
+            "elapsedMs": 9314.499999284744
+          },
+          "structure": {
+            "publications": 8352,
+            "delivered": 342800,
+            "skipped": 0,
+            "elapsedMs": 7938.000003576279
+          },
+          "mount": {
+            "publications": 7241,
+            "delivered": 108701,
+            "skipped": 222522,
+            "elapsedMs": 5896.3999972343445
+          }
+        }
+      },
+      {
+        "pageMs": 89051.90000009537,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 7273,
+            "delivered": 314420,
+            "skipped": 0,
+            "elapsedMs": 12084.19999575615
+          },
+          "caps-first": {
+            "publications": 7240,
+            "delivered": 306190,
+            "skipped": 0,
+            "elapsedMs": 9834.099999427795
+          },
+          "structure": {
+            "publications": 8357,
+            "delivered": 342890,
+            "skipped": 0,
+            "elapsedMs": 8136.200003623962
+          },
+          "mount": {
+            "publications": 7246,
+            "delivered": 108791,
+            "skipped": 222522,
+            "elapsedMs": 6093.299997329712
+          }
+        }
+      },
+      {
+        "pageMs": 90578.90000009537,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 7278,
+            "delivered": 314514,
+            "skipped": 0,
+            "elapsedMs": 12298.899995803833
+          },
+          "caps-first": {
+            "publications": 7245,
+            "delivered": 306283,
+            "skipped": 0,
+            "elapsedMs": 10041.599999666214
+          },
+          "structure": {
+            "publications": 8370,
+            "delivered": 343125,
+            "skipped": 0,
+            "elapsedMs": 8668.400003910065
+          },
+          "mount": {
+            "publications": 7259,
+            "delivered": 109026,
+            "skipped": 222522,
+            "elapsedMs": 6624.599997520447
+          }
+        }
+      },
+      {
+        "pageMs": 92112.60000014305,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 7290,
+            "delivered": 314742,
+            "skipped": 0,
+            "elapsedMs": 12821.399995326996
+          },
+          "caps-first": {
+            "publications": 7258,
+            "delivered": 306530,
+            "skipped": 0,
+            "elapsedMs": 10599.099999904633
+          },
+          "structure": {
+            "publications": 8375,
+            "delivered": 343220,
+            "skipped": 0,
+            "elapsedMs": 8880.700003623962
+          },
+          "mount": {
+            "publications": 7264,
+            "delivered": 109121,
+            "skipped": 222522,
+            "elapsedMs": 6836.699997186661
+          }
+        }
+      },
+      {
+        "pageMs": 93655.70000004768,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 7294,
+            "delivered": 314820,
+            "skipped": 0,
+            "elapsedMs": 13000.799995660782
+          },
+          "caps-first": {
+            "publications": 7262,
+            "delivered": 306608,
+            "skipped": 0,
+            "elapsedMs": 10775.700000047684
+          },
+          "structure": {
+            "publications": 8388,
+            "delivered": 343468,
+            "skipped": 0,
+            "elapsedMs": 9453.2000041008
+          },
+          "mount": {
+            "publications": 7277,
+            "delivered": 109369,
+            "skipped": 222522,
+            "elapsedMs": 7413.699996709824
+          }
+        }
+      },
+      {
+        "pageMs": 95190.10000014305,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 7306,
+            "delivered": 315060,
+            "skipped": 0,
+            "elapsedMs": 13551.599995613098
+          },
+          "caps-first": {
+            "publications": 7273,
+            "delivered": 306828,
+            "skipped": 0,
+            "elapsedMs": 11273.900000095367
+          },
+          "structure": {
+            "publications": 8393,
+            "delivered": 343568,
+            "skipped": 0,
+            "elapsedMs": 9682.200004339218
+          },
+          "mount": {
+            "publications": 7282,
+            "delivered": 109469,
+            "skipped": 222522,
+            "elapsedMs": 7639.999996423721
+          }
+        }
+      },
+      {
+        "pageMs": 96709.5,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 7310,
+            "delivered": 315140,
+            "skipped": 0,
+            "elapsedMs": 13737.499995708466
+          },
+          "caps-first": {
+            "publications": 7278,
+            "delivered": 306928,
+            "skipped": 0,
+            "elapsedMs": 11501.599999666214
+          },
+          "structure": {
+            "publications": 8405,
+            "delivered": 343808,
+            "skipped": 0,
+            "elapsedMs": 10244.80000424385
+          },
+          "mount": {
+            "publications": 7293,
+            "delivered": 109689,
+            "skipped": 222522,
+            "elapsedMs": 8151.0999965667725
+          }
+        }
+      },
+      {
+        "pageMs": 98334.30000019073,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 7311,
+            "delivered": 315245,
+            "skipped": 0,
+            "elapsedMs": 13742.2999958992
+          },
+          "caps-first": {
+            "publications": 7278,
+            "delivered": 306928,
+            "skipped": 0,
+            "elapsedMs": 11501.599999666214
+          },
+          "structure": {
+            "publications": 8405,
+            "delivered": 343808,
+            "skipped": 0,
+            "elapsedMs": 10244.80000424385
+          },
+          "mount": {
+            "publications": 7294,
+            "delivered": 109709,
+            "skipped": 222522,
+            "elapsedMs": 8201.799996614456
+          }
+        }
+      },
+      {
+        "pageMs": 99835,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 7452,
+            "delivered": 317473,
+            "skipped": 0,
+            "elapsedMs": 14125.39999628067
+          },
+          "caps-first": {
+            "publications": 7419,
+            "delivered": 309261,
+            "skipped": 0,
+            "elapsedMs": 11683.900001049042
+          },
+          "structure": {
+            "publications": 8546,
+            "delivered": 346178,
+            "skipped": 0,
+            "elapsedMs": 10340.900004863739
+          },
+          "mount": {
+            "publications": 7435,
+            "delivered": 110377,
+            "skipped": 224224,
+            "elapsedMs": 8218.499996185303
+          }
+        }
+      },
+      {
+        "pageMs": 101344.90000009537,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 7574,
+            "delivered": 323839,
+            "skipped": 0,
+            "elapsedMs": 14382.799996137619
+          },
+          "caps-first": {
+            "publications": 7542,
+            "delivered": 315627,
+            "skipped": 0,
+            "elapsedMs": 11916.60000038147
+          },
+          "structure": {
+            "publications": 8666,
+            "delivered": 351954,
+            "skipped": 0,
+            "elapsedMs": 10375.200005054474
+          },
+          "mount": {
+            "publications": 7555,
+            "delivered": 111125,
+            "skipped": 229252,
+            "elapsedMs": 8236.299996852875
+          }
+        }
+      },
+      {
+        "pageMs": 102845.40000009537,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 7747,
+            "delivered": 329991,
+            "skipped": 0,
+            "elapsedMs": 14593.899995565414
+          },
+          "caps-first": {
+            "publications": 7715,
+            "delivered": 321779,
+            "skipped": 0,
+            "elapsedMs": 12112.200001716614
+          },
+          "structure": {
+            "publications": 8828,
+            "delivered": 356787,
+            "skipped": 0,
+            "elapsedMs": 10438.900005817413
+          },
+          "mount": {
+            "publications": 7717,
+            "delivered": 113009,
+            "skipped": 232201,
+            "elapsedMs": 8286.299996852875
+          }
+        }
+      },
+      {
+        "pageMs": 104351.40000009537,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 7838,
+            "delivered": 346881,
+            "skipped": 0,
+            "elapsedMs": 14897.899996042252
+          },
+          "caps-first": {
+            "publications": 7805,
+            "delivered": 338669,
+            "skipped": 0,
+            "elapsedMs": 12396.90000128746
+          },
+          "structure": {
+            "publications": 8921,
+            "delivered": 374259,
+            "skipped": 0,
+            "elapsedMs": 10494.700005531311
+          },
+          "mount": {
+            "publications": 7810,
+            "delivered": 113103,
+            "skipped": 249579,
+            "elapsedMs": 8290.299997091293
+          }
+        }
+      },
+      {
+        "pageMs": 105859.20000004768,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 7927,
+            "delivered": 368273,
+            "skipped": 0,
+            "elapsedMs": 15237.599995613098
+          },
+          "caps-first": {
+            "publications": 7895,
+            "delivered": 360061,
+            "skipped": 0,
+            "elapsedMs": 12698.600002527237
+          },
+          "structure": {
+            "publications": 9014,
+            "delivered": 392201,
+            "skipped": 0,
+            "elapsedMs": 10554.100006103516
+          },
+          "mount": {
+            "publications": 7902,
+            "delivered": 113192,
+            "skipped": 266776,
+            "elapsedMs": 8294.099995851517
+          }
+        }
+      },
+      {
+        "pageMs": 107367.70000004768,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 7959,
+            "delivered": 389419,
+            "skipped": 0,
+            "elapsedMs": 15631.899995565414
+          },
+          "caps-first": {
+            "publications": 7927,
+            "delivered": 381207,
+            "skipped": 0,
+            "elapsedMs": 13061.500002622604
+          },
+          "structure": {
+            "publications": 9022,
+            "delivered": 397661,
+            "skipped": 0,
+            "elapsedMs": 10579.200006246567
+          },
+          "mount": {
+            "publications": 7911,
+            "delivered": 115709,
+            "skipped": 270375,
+            "elapsedMs": 8301.69999575615
+          }
+        }
+      },
+      {
+        "pageMs": 111174.5,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 7990,
+            "delivered": 394042,
+            "skipped": 0,
+            "elapsedMs": 15731.59999537468
+          },
+          "caps-first": {
+            "publications": 7957,
+            "delivered": 385830,
+            "skipped": 0,
+            "elapsedMs": 13156.80000257492
+          },
+          "structure": {
+            "publications": 9084,
+            "delivered": 423443,
+            "skipped": 0,
+            "elapsedMs": 10667.8000061512
+          },
+          "mount": {
+            "publications": 7973,
+            "delivered": 126285,
+            "skipped": 285581,
+            "elapsedMs": 8339.499995946884
+          }
+        }
+      },
+      {
+        "pageMs": 112676.10000014305,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 8031,
+            "delivered": 394864,
+            "skipped": 0,
+            "elapsedMs": 16587.59999513626
+          },
+          "caps-first": {
+            "publications": 7998,
+            "delivered": 386652,
+            "skipped": 0,
+            "elapsedMs": 13205.500002861023
+          },
+          "structure": {
+            "publications": 9125,
+            "delivered": 424276,
+            "skipped": 0,
+            "elapsedMs": 10789.400007247925
+          },
+          "mount": {
+            "publications": 8014,
+            "delivered": 126308,
+            "skipped": 286391,
+            "elapsedMs": 8341.599995851517
+          }
+        }
+      },
+      {
+        "pageMs": 114456.70000004768,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 8069,
+            "delivered": 394864,
+            "skipped": 0,
+            "elapsedMs": 16587.59999513626
+          },
+          "caps-first": {
+            "publications": 8037,
+            "delivered": 386652,
+            "skipped": 0,
+            "elapsedMs": 13205.700003147125
+          },
+          "structure": {
+            "publications": 9165,
+            "delivered": 424276,
+            "skipped": 0,
+            "elapsedMs": 10789.400007247925
+          },
+          "mount": {
+            "publications": 8053,
+            "delivered": 126308,
+            "skipped": 286391,
+            "elapsedMs": 8341.599995851517
+          },
+          "unmount": {
+            "publications": 1,
+            "delivered": 0,
+            "skipped": 0,
+            "elapsedMs": 0.09999990463256836
+          }
+        }
+      },
+      {
+        "pageMs": 115987.60000014305,
+        "timeOrigin": 1794856346799.1,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 8099,
+            "delivered": 405257,
+            "skipped": 0,
+            "elapsedMs": 16922.89999437332
+          },
+          "caps-first": {
+            "publications": 8066,
+            "delivered": 396319,
+            "skipped": 0,
+            "elapsedMs": 13499.400003910065
+          },
+          "structure": {
+            "publications": 9190,
+            "delivered": 434010,
+            "skipped": 0,
+            "elapsedMs": 10827.500006437302
+          },
+          "mount": {
+            "publications": 8078,
+            "delivered": 130140,
+            "skipped": 292293,
+            "elapsedMs": 8354.19999551773
+          },
+          "unmount": {
+            "publications": 4,
+            "delivered": 0,
+            "skipped": 0,
+            "elapsedMs": 0.09999990463256836
+          },
+          "detach": {
+            "publications": 4,
+            "delivered": 0,
+            "skipped": 0,
+            "elapsedMs": 0
+          }
+        }
+      }
+    ],
+    "lastReadiness": {
+      "timeOrigin": 1794856346799.1,
+      "pageMs": 109029.10000014305,
+      "dateNow": 1794856455828,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-7ewi12bop97",
+        "index": 20,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-base-calendar",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-7ewi12bop97",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      }
+    },
+    "verdict": {
+      "exit": 1,
+      "passed": 0,
+      "failed": 1,
+      "en": "unselected",
+      "startupPassed": false,
+      "pageErrors": 0,
+      "consoleErrors": 0,
+      "postVerdict": "budget-expired",
+      "logSHA256": "512c94014b5dbd9ede67b872a94911406bc9608c97ff54ff23a28d670e5c6361",
+      "messages": ["page.waitForFunction: Timeout 60000ms exceeded."]
+    }
+  },
+  "candidate": {
+    "head": "414c833baa60bdf65b49df41f9c6a135770effbe",
+    "tree": "12a243ca03b1a03a6874cad7d013849e1e9b0a6a",
+    "parents": [
+      "ef027647c421b593907781b7a9a418a8e2108069",
+      "9b692cc42f00cc53329b8e9ac998264292387a73"
+    ],
+    "overlaySHA256": "19bb87e5200d6ec6c4ad04145b5f5dae931f480cdbd2ed126160fd370ba8d1eb",
+    "inputSHA256": {
+      "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "f69fa86ce40b372a7b2b1caa6b37a6a4adf67f56c0c482f9f7675851f44f27e9",
+      "packages/modules/anatomy/src/impl.ts": "d47341a8089edc90dffa12daf578afff21498096f825941f0724dfe7aa378430"
+    },
+    "runtime": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+    "reports": [
+      {
+        "pageMs": 1966.4000000953674,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 1,
+            "delivered": 0,
+            "skipped": 0,
+            "elapsedMs": 0
+          }
+        }
+      },
+      {
+        "pageMs": 3633.7000000476837,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 67,
+            "delivered": 132,
+            "skipped": 0,
+            "elapsedMs": 2.1999998092651367
+          },
+          "caps-first": {
+            "publications": 66,
+            "delivered": 60,
+            "skipped": 56,
+            "elapsedMs": 1.1000003814697266
+          },
+          "structure": {
+            "publications": 119,
+            "delivered": 116,
+            "skipped": 0,
+            "elapsedMs": 0.7000002861022949
+          },
+          "mount": {
+            "publications": 66,
+            "delivered": 60,
+            "skipped": 56,
+            "elapsedMs": 0.4999997615814209
+          }
+        }
+      },
+      {
+        "pageMs": 5159.700000047684,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 113,
+            "delivered": 707,
+            "skipped": 0,
+            "elapsedMs": 6.500000238418579
+          },
+          "caps-first": {
+            "publications": 112,
+            "delivered": 147,
+            "skipped": 560,
+            "elapsedMs": 1.500000238418579
+          },
+          "structure": {
+            "publications": 165,
+            "delivered": 707,
+            "skipped": 0,
+            "elapsedMs": 3.6000001430511475
+          },
+          "mount": {
+            "publications": 112,
+            "delivered": 147,
+            "skipped": 560,
+            "elapsedMs": 1.0000004768371582
+          }
+        }
+      },
+      {
+        "pageMs": 7014.400000095367,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 149,
+            "delivered": 1818,
+            "skipped": 0,
+            "elapsedMs": 14.800000190734863
+          },
+          "caps-first": {
+            "publications": 149,
+            "delivered": 198,
+            "skipped": 1620,
+            "elapsedMs": 2.299999713897705
+          },
+          "structure": {
+            "publications": 203,
+            "delivered": 1818,
+            "skipped": 0,
+            "elapsedMs": 8.099999904632568
+          },
+          "mount": {
+            "publications": 149,
+            "delivered": 198,
+            "skipped": 1620,
+            "elapsedMs": 1.4000000953674316
+          }
+        }
+      },
+      {
+        "pageMs": 10261.200000047684,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 150,
+            "delivered": 1818,
+            "skipped": 0,
+            "elapsedMs": 14.800000190734863
+          },
+          "caps-first": {
+            "publications": 149,
+            "delivered": 198,
+            "skipped": 1620,
+            "elapsedMs": 2.299999713897705
+          },
+          "structure": {
+            "publications": 221,
+            "delivered": 1818,
+            "skipped": 0,
+            "elapsedMs": 8.099999904632568
+          },
+          "mount": {
+            "publications": 149,
+            "delivered": 198,
+            "skipped": 1620,
+            "elapsedMs": 1.4000000953674316
+          }
+        }
+      },
+      {
+        "pageMs": 11802.200000047684,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 290,
+            "delivered": 5820,
+            "skipped": 0,
+            "elapsedMs": 42.00000023841858
+          },
+          "caps-first": {
+            "publications": 290,
+            "delivered": 578,
+            "skipped": 5242,
+            "elapsedMs": 11.699999332427979
+          },
+          "structure": {
+            "publications": 418,
+            "delivered": 6638,
+            "skipped": 0,
+            "elapsedMs": 31.59999966621399
+          },
+          "mount": {
+            "publications": 290,
+            "delivered": 578,
+            "skipped": 5242,
+            "elapsedMs": 4.200000047683716
+          }
+        }
+      },
+      {
+        "pageMs": 13311,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 378,
+            "delivered": 5824,
+            "skipped": 0,
+            "elapsedMs": 42.200000286102295
+          },
+          "caps-first": {
+            "publications": 377,
+            "delivered": 578,
+            "skipped": 5246,
+            "elapsedMs": 11.799999237060547
+          },
+          "structure": {
+            "publications": 613,
+            "delivered": 12228,
+            "skipped": 0,
+            "elapsedMs": 54.09999942779541
+          },
+          "mount": {
+            "publications": 377,
+            "delivered": 578,
+            "skipped": 5246,
+            "elapsedMs": 4.200000047683716
+          }
+        }
+      },
+      {
+        "pageMs": 14817.700000047684,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 871,
+            "delivered": 6630,
+            "skipped": 0,
+            "elapsedMs": 133.1000006198883
+          },
+          "caps-first": {
+            "publications": 870,
+            "delivered": 1100,
+            "skipped": 5530,
+            "elapsedMs": 17.3999981880188
+          },
+          "structure": {
+            "publications": 1106,
+            "delivered": 13034,
+            "skipped": 0,
+            "elapsedMs": 82.99999856948853
+          },
+          "mount": {
+            "publications": 870,
+            "delivered": 1100,
+            "skipped": 5530,
+            "elapsedMs": 7.900000333786011
+          }
+        }
+      },
+      {
+        "pageMs": 16377.600000143051,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 1234,
+            "delivered": 9489,
+            "skipped": 0,
+            "elapsedMs": 194.79999923706055
+          },
+          "caps-first": {
+            "publications": 1227,
+            "delivered": 2184,
+            "skipped": 7030,
+            "elapsedMs": 37.89999985694885
+          },
+          "structure": {
+            "publications": 1470,
+            "delivered": 15727,
+            "skipped": 0,
+            "elapsedMs": 113.69999647140503
+          },
+          "mount": {
+            "publications": 1230,
+            "delivered": 2293,
+            "skipped": 7030,
+            "elapsedMs": 22.799999475479126
+          }
+        }
+      },
+      {
+        "pageMs": 17888.5,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 1427,
+            "delivered": 10280,
+            "skipped": 0,
+            "elapsedMs": 227.29999995231628
+          },
+          "caps-first": {
+            "publications": 1419,
+            "delivered": 2460,
+            "skipped": 7480,
+            "elapsedMs": 66.90000104904175
+          },
+          "structure": {
+            "publications": 1833,
+            "delivered": 17142,
+            "skipped": 0,
+            "elapsedMs": 177.59999704360962
+          },
+          "mount": {
+            "publications": 1423,
+            "delivered": 2634,
+            "skipped": 7480,
+            "elapsedMs": 48.799999475479126
+          }
+        }
+      },
+      {
+        "pageMs": 19402.200000047684,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 1427,
+            "delivered": 10280,
+            "skipped": 0,
+            "elapsedMs": 227.29999995231628
+          },
+          "caps-first": {
+            "publications": 1419,
+            "delivered": 2460,
+            "skipped": 7480,
+            "elapsedMs": 66.90000104904175
+          },
+          "structure": {
+            "publications": 2360,
+            "delivered": 21855,
+            "skipped": 0,
+            "elapsedMs": 375.5999946594238
+          },
+          "mount": {
+            "publications": 1423,
+            "delivered": 2634,
+            "skipped": 7480,
+            "elapsedMs": 48.799999475479126
+          }
+        }
+      },
+      {
+        "pageMs": 22282.200000047684,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 1427,
+            "delivered": 10280,
+            "skipped": 0,
+            "elapsedMs": 227.29999995231628
+          },
+          "caps-first": {
+            "publications": 1419,
+            "delivered": 2460,
+            "skipped": 7480,
+            "elapsedMs": 66.90000104904175
+          },
+          "structure": {
+            "publications": 2641,
+            "delivered": 24574,
+            "skipped": 0,
+            "elapsedMs": 439.1999943256378
+          },
+          "mount": {
+            "publications": 1423,
+            "delivered": 2634,
+            "skipped": 7480,
+            "elapsedMs": 48.799999475479126
+          }
+        }
+      },
+      {
+        "pageMs": 23915.200000047684,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 1878,
+            "delivered": 16674,
+            "skipped": 0,
+            "elapsedMs": 264.2000012397766
+          },
+          "caps-first": {
+            "publications": 1869,
+            "delivered": 2678,
+            "skipped": 13656,
+            "elapsedMs": 86.8999993801117
+          },
+          "structure": {
+            "publications": 3248,
+            "delivered": 31890,
+            "skipped": 0,
+            "elapsedMs": 462.0999925136566
+          },
+          "mount": {
+            "publications": 1873,
+            "delivered": 2852,
+            "skipped": 13656,
+            "elapsedMs": 51.19999980926514
+          }
+        }
+      },
+      {
+        "pageMs": 25416.10000014305,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 2154,
+            "delivered": 33787,
+            "skipped": 0,
+            "elapsedMs": 385.40000200271606
+          },
+          "caps-first": {
+            "publications": 2145,
+            "delivered": 9627,
+            "skipped": 23702,
+            "elapsedMs": 170.69999885559082
+          },
+          "structure": {
+            "publications": 3522,
+            "delivered": 48690,
+            "skipped": 0,
+            "elapsedMs": 528.5999934673309
+          },
+          "mount": {
+            "publications": 2147,
+            "delivered": 9830,
+            "skipped": 23478,
+            "elapsedMs": 82.19999933242798
+          }
+        }
+      },
+      {
+        "pageMs": 26920.60000014305,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 2622,
+            "delivered": 36990,
+            "skipped": 0,
+            "elapsedMs": 788.700003862381
+          },
+          "caps-first": {
+            "publications": 2614,
+            "delivered": 11486,
+            "skipped": 25164,
+            "elapsedMs": 264.1999990940094
+          },
+          "structure": {
+            "publications": 3993,
+            "delivered": 52307,
+            "skipped": 0,
+            "elapsedMs": 759.1999914646149
+          },
+          "mount": {
+            "publications": 2617,
+            "delivered": 11748,
+            "skipped": 25177,
+            "elapsedMs": 174.80000066757202
+          }
+        }
+      },
+      {
+        "pageMs": 28420.900000095367,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 2978,
+            "delivered": 52881,
+            "skipped": 0,
+            "elapsedMs": 1113.5000035762787
+          },
+          "caps-first": {
+            "publications": 2961,
+            "delivered": 16955,
+            "skipped": 33696,
+            "elapsedMs": 450.90000009536743
+          },
+          "structure": {
+            "publications": 4344,
+            "delivered": 67517,
+            "skipped": 0,
+            "elapsedMs": 933.5999927520752
+          },
+          "mount": {
+            "publications": 2969,
+            "delivered": 18320,
+            "skipped": 33815,
+            "elapsedMs": 295.90000009536743
+          }
+        }
+      },
+      {
+        "pageMs": 30444.200000047684,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 3383,
+            "delivered": 75903,
+            "skipped": 0,
+            "elapsedMs": 1297.4000043869019
+          },
+          "caps-first": {
+            "publications": 3366,
+            "delivered": 25870,
+            "skipped": 47819,
+            "elapsedMs": 586.9999995231628
+          },
+          "structure": {
+            "publications": 4749,
+            "delivered": 90995,
+            "skipped": 0,
+            "elapsedMs": 1014.9999918937683
+          },
+          "mount": {
+            "publications": 3374,
+            "delivered": 27445,
+            "skipped": 48168,
+            "elapsedMs": 332.19999861717224
+          }
+        }
+      },
+      {
+        "pageMs": 31948.400000095367,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 3765,
+            "delivered": 85254,
+            "skipped": 0,
+            "elapsedMs": 1548.9000055789948
+          },
+          "caps-first": {
+            "publications": 3749,
+            "delivered": 28523,
+            "skipped": 54517,
+            "elapsedMs": 704.3000004291534
+          },
+          "structure": {
+            "publications": 5129,
+            "delivered": 99582,
+            "skipped": 0,
+            "elapsedMs": 1101.0999920368195
+          },
+          "mount": {
+            "publications": 3753,
+            "delivered": 29637,
+            "skipped": 54187,
+            "elapsedMs": 355.2000000476837
+          }
+        }
+      },
+      {
+        "pageMs": 34152.299999952316,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 4062,
+            "delivered": 115415,
+            "skipped": 0,
+            "elapsedMs": 1846.3000054359436
+          },
+          "caps-first": {
+            "publications": 4045,
+            "delivered": 35064,
+            "skipped": 78137,
+            "elapsedMs": 909.7000007629395
+          },
+          "structure": {
+            "publications": 5428,
+            "delivered": 131240,
+            "skipped": 0,
+            "elapsedMs": 1203.299993276596
+          },
+          "mount": {
+            "publications": 4053,
+            "delivered": 36911,
+            "skipped": 78947,
+            "elapsedMs": 389.69999980926514
+          }
+        }
+      },
+      {
+        "pageMs": 35653.40000009537,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 4458,
+            "delivered": 126028,
+            "skipped": 0,
+            "elapsedMs": 2528.100004196167
+          },
+          "caps-first": {
+            "publications": 4435,
+            "delivered": 38716,
+            "skipped": 82304,
+            "elapsedMs": 1050.900001525879
+          },
+          "structure": {
+            "publications": 5428,
+            "delivered": 131240,
+            "skipped": 0,
+            "elapsedMs": 1203.299993276596
+          },
+          "mount": {
+            "publications": 4053,
+            "delivered": 36911,
+            "skipped": 78947,
+            "elapsedMs": 389.69999980926514
+          }
+        }
+      },
+      {
+        "pageMs": 37157.40000009537,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 4829,
+            "delivered": 149391,
+            "skipped": 0,
+            "elapsedMs": 3048.2000052928925
+          },
+          "caps-first": {
+            "publications": 4804,
+            "delivered": 46956,
+            "skipped": 96957,
+            "elapsedMs": 1353.000001192093
+          },
+          "structure": {
+            "publications": 5428,
+            "delivered": 131240,
+            "skipped": 0,
+            "elapsedMs": 1203.299993276596
+          },
+          "mount": {
+            "publications": 4053,
+            "delivered": 36911,
+            "skipped": 78947,
+            "elapsedMs": 389.69999980926514
+          }
+        }
+      },
+      {
+        "pageMs": 38680.40000009537,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 5028,
+            "delivered": 175166,
+            "skipped": 0,
+            "elapsedMs": 3477.4000039100647
+          },
+          "caps-first": {
+            "publications": 5003,
+            "delivered": 56588,
+            "skipped": 112936,
+            "elapsedMs": 1701.1000015735626
+          },
+          "structure": {
+            "publications": 5428,
+            "delivered": 131240,
+            "skipped": 0,
+            "elapsedMs": 1203.299993276596
+          },
+          "mount": {
+            "publications": 4053,
+            "delivered": 36911,
+            "skipped": 78947,
+            "elapsedMs": 389.69999980926514
+          }
+        }
+      },
+      {
+        "pageMs": 40182.60000014305,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 5338,
+            "delivered": 189336,
+            "skipped": 0,
+            "elapsedMs": 3805.9000039100647
+          },
+          "caps-first": {
+            "publications": 5314,
+            "delivered": 61894,
+            "skipped": 121964,
+            "elapsedMs": 1889.600002527237
+          },
+          "structure": {
+            "publications": 5543,
+            "delivered": 138025,
+            "skipped": 0,
+            "elapsedMs": 1415.8999943733215
+          },
+          "mount": {
+            "publications": 4166,
+            "delivered": 40722,
+            "skipped": 81921,
+            "elapsedMs": 423.7999994754791
+          }
+        }
+      },
+      {
+        "pageMs": 41690.5,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 5338,
+            "delivered": 189336,
+            "skipped": 0,
+            "elapsedMs": 3805.9000039100647
+          },
+          "caps-first": {
+            "publications": 5314,
+            "delivered": 61894,
+            "skipped": 121964,
+            "elapsedMs": 1889.600002527237
+          },
+          "structure": {
+            "publications": 6136,
+            "delivered": 170413,
+            "skipped": 0,
+            "elapsedMs": 2035.8999927043915
+          },
+          "mount": {
+            "publications": 4761,
+            "delivered": 53628,
+            "skipped": 101403,
+            "elapsedMs": 643.99999833107
+          }
+        }
+      },
+      {
+        "pageMs": 43193.799999952316,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 5338,
+            "delivered": 189336,
+            "skipped": 0,
+            "elapsedMs": 3805.9000039100647
+          },
+          "caps-first": {
+            "publications": 5314,
+            "delivered": 61894,
+            "skipped": 121964,
+            "elapsedMs": 1889.600002527237
+          },
+          "structure": {
+            "publications": 6696,
+            "delivered": 214171,
+            "skipped": 0,
+            "elapsedMs": 2469.7999918460846
+          },
+          "mount": {
+            "publications": 5320,
+            "delivered": 70274,
+            "skipped": 127978,
+            "elapsedMs": 837.5999960899353
+          }
+        }
+      },
+      {
+        "pageMs": 44721.200000047684,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 5411,
+            "delivered": 191291,
+            "skipped": 0,
+            "elapsedMs": 3880.700005054474
+          },
+          "caps-first": {
+            "publications": 5386,
+            "delivered": 62619,
+            "skipped": 123111,
+            "elapsedMs": 1902.3000028133392
+          },
+          "structure": {
+            "publications": 6701,
+            "delivered": 214633,
+            "skipped": 0,
+            "elapsedMs": 2471.699991464615
+          },
+          "mount": {
+            "publications": 5326,
+            "delivered": 70538,
+            "skipped": 128713,
+            "elapsedMs": 838.6999962329865
+          }
+        }
+      },
+      {
+        "pageMs": 46223.90000009537,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 5684,
+            "delivered": 207791,
+            "skipped": 0,
+            "elapsedMs": 4295.300005912781
+          },
+          "caps-first": {
+            "publications": 5659,
+            "delivered": 66991,
+            "skipped": 134779,
+            "elapsedMs": 2094.800002336502
+          },
+          "structure": {
+            "publications": 6701,
+            "delivered": 214633,
+            "skipped": 0,
+            "elapsedMs": 2471.699991464615
+          },
+          "mount": {
+            "publications": 5326,
+            "delivered": 70538,
+            "skipped": 128713,
+            "elapsedMs": 838.6999962329865
+          }
+        }
+      },
+      {
+        "pageMs": 47732.90000009537,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 5851,
+            "delivered": 235282,
+            "skipped": 0,
+            "elapsedMs": 4672.700007200241
+          },
+          "caps-first": {
+            "publications": 5826,
+            "delivered": 75224,
+            "skipped": 154580,
+            "elapsedMs": 2390.00000166893
+          },
+          "structure": {
+            "publications": 6701,
+            "delivered": 214633,
+            "skipped": 0,
+            "elapsedMs": 2471.699991464615
+          },
+          "mount": {
+            "publications": 5326,
+            "delivered": 70538,
+            "skipped": 128713,
+            "elapsedMs": 838.6999962329865
+          }
+        }
+      },
+      {
+        "pageMs": 49284.5,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 6017,
+            "delivered": 248763,
+            "skipped": 0,
+            "elapsedMs": 5023.70000743866
+          },
+          "caps-first": {
+            "publications": 5993,
+            "delivered": 75323,
+            "skipped": 167962,
+            "elapsedMs": 2684.0000019073486
+          },
+          "structure": {
+            "publications": 6716,
+            "delivered": 215191,
+            "skipped": 0,
+            "elapsedMs": 2553.3999915122986
+          },
+          "mount": {
+            "publications": 5340,
+            "delivered": 70808,
+            "skipped": 128977,
+            "elapsedMs": 843.4999964237213
+          }
+        }
+      },
+      {
+        "pageMs": 53709.799999952316,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 6018,
+            "delivered": 248763,
+            "skipped": 0,
+            "elapsedMs": 5023.70000743866
+          },
+          "caps-first": {
+            "publications": 5993,
+            "delivered": 75323,
+            "skipped": 167962,
+            "elapsedMs": 2684.0000019073486
+          },
+          "structure": {
+            "publications": 7380,
+            "delivered": 280798,
+            "skipped": 0,
+            "elapsedMs": 2915.799993991852
+          },
+          "mount": {
+            "publications": 6005,
+            "delivered": 84783,
+            "skipped": 180633,
+            "elapsedMs": 933.7999949455261
+          }
+        }
+      },
+      {
+        "pageMs": 55283.299999952316,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 6152,
+            "delivered": 258074,
+            "skipped": 0,
+            "elapsedMs": 5434.800006866455
+          },
+          "caps-first": {
+            "publications": 6121,
+            "delivered": 77623,
+            "skipped": 171403,
+            "elapsedMs": 2777.400002002716
+          },
+          "structure": {
+            "publications": 7380,
+            "delivered": 280798,
+            "skipped": 0,
+            "elapsedMs": 2915.799993991852
+          },
+          "mount": {
+            "publications": 6005,
+            "delivered": 84783,
+            "skipped": 180633,
+            "elapsedMs": 933.7999949455261
+          }
+        }
+      },
+      {
+        "pageMs": 56791.90000009537,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 6481,
+            "delivered": 283622,
+            "skipped": 0,
+            "elapsedMs": 6087.900005102158
+          },
+          "caps-first": {
+            "publications": 6448,
+            "delivered": 88380,
+            "skipped": 184902,
+            "elapsedMs": 3174.900002479553
+          },
+          "structure": {
+            "publications": 7380,
+            "delivered": 280798,
+            "skipped": 0,
+            "elapsedMs": 2915.799993991852
+          },
+          "mount": {
+            "publications": 6005,
+            "delivered": 84783,
+            "skipped": 180633,
+            "elapsedMs": 933.7999949455261
+          }
+        }
+      },
+      {
+        "pageMs": 58324.799999952316,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 6637,
+            "delivered": 295026,
+            "skipped": 0,
+            "elapsedMs": 6320.5000059604645
+          },
+          "caps-first": {
+            "publications": 6604,
+            "delivered": 91763,
+            "skipped": 192750,
+            "elapsedMs": 3363.100001811981
+          },
+          "structure": {
+            "publications": 7380,
+            "delivered": 280798,
+            "skipped": 0,
+            "elapsedMs": 2915.799993991852
+          },
+          "mount": {
+            "publications": 6005,
+            "delivered": 84783,
+            "skipped": 180633,
+            "elapsedMs": 933.7999949455261
+          }
+        }
+      },
+      {
+        "pageMs": 59828.60000014305,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 6829,
+            "delivered": 306474,
+            "skipped": 0,
+            "elapsedMs": 6957.300007104874
+          },
+          "caps-first": {
+            "publications": 6796,
+            "delivered": 95763,
+            "skipped": 200385,
+            "elapsedMs": 3817.000002384186
+          },
+          "structure": {
+            "publications": 7380,
+            "delivered": 280798,
+            "skipped": 0,
+            "elapsedMs": 2915.799993991852
+          },
+          "mount": {
+            "publications": 6005,
+            "delivered": 84783,
+            "skipped": 180633,
+            "elapsedMs": 933.7999949455261
+          }
+        }
+      },
+      {
+        "pageMs": 61807.60000014305,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 6978,
+            "delivered": 334988,
+            "skipped": 0,
+            "elapsedMs": 7511.900007247925
+          },
+          "caps-first": {
+            "publications": 6945,
+            "delivered": 106676,
+            "skipped": 217790,
+            "elapsedMs": 4276.900002002716
+          },
+          "structure": {
+            "publications": 7380,
+            "delivered": 280798,
+            "skipped": 0,
+            "elapsedMs": 2915.799993991852
+          },
+          "mount": {
+            "publications": 6005,
+            "delivered": 84783,
+            "skipped": 180633,
+            "elapsedMs": 933.7999949455261
+          }
+        }
+      },
+      {
+        "pageMs": 63307.90000009537,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 7239,
+            "delivered": 351400,
+            "skipped": 0,
+            "elapsedMs": 8030.8000066280365
+          },
+          "caps-first": {
+            "publications": 7206,
+            "delivered": 112493,
+            "skipped": 228589,
+            "elapsedMs": 4673.200002193451
+          },
+          "structure": {
+            "publications": 7380,
+            "delivered": 280798,
+            "skipped": 0,
+            "elapsedMs": 2915.799993991852
+          },
+          "mount": {
+            "publications": 6005,
+            "delivered": 84783,
+            "skipped": 180633,
+            "elapsedMs": 933.7999949455261
+          }
+        }
+      },
+      {
+        "pageMs": 64854.10000014305,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 7294,
+            "delivered": 356046,
+            "skipped": 0,
+            "elapsedMs": 8120.400006771088
+          },
+          "caps-first": {
+            "publications": 7262,
+            "delivered": 113991,
+            "skipped": 231737,
+            "elapsedMs": 4742.7000024318695
+          },
+          "structure": {
+            "publications": 7579,
+            "delivered": 292250,
+            "skipped": 0,
+            "elapsedMs": 3338.9999945163727
+          },
+          "mount": {
+            "publications": 6203,
+            "delivered": 90896,
+            "skipped": 185972,
+            "elapsedMs": 1014.2999937534332
+          }
+        }
+      },
+      {
+        "pageMs": 66355.10000014305,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 7294,
+            "delivered": 356046,
+            "skipped": 0,
+            "elapsedMs": 8120.400006771088
+          },
+          "caps-first": {
+            "publications": 7262,
+            "delivered": 113991,
+            "skipped": 231737,
+            "elapsedMs": 4742.7000024318695
+          },
+          "structure": {
+            "publications": 8062,
+            "delivered": 333838,
+            "skipped": 0,
+            "elapsedMs": 3979.1999928951263
+          },
+          "mount": {
+            "publications": 6686,
+            "delivered": 107150,
+            "skipped": 211306,
+            "elapsedMs": 1223.2999918460846
+          }
+        }
+      },
+      {
+        "pageMs": 67871.60000014305,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 7294,
+            "delivered": 356046,
+            "skipped": 0,
+            "elapsedMs": 8120.400006771088
+          },
+          "caps-first": {
+            "publications": 7262,
+            "delivered": 113991,
+            "skipped": 231737,
+            "elapsedMs": 4742.7000024318695
+          },
+          "structure": {
+            "publications": 8425,
+            "delivered": 375359,
+            "skipped": 0,
+            "elapsedMs": 4614.799992322922
+          },
+          "mount": {
+            "publications": 7049,
+            "delivered": 123200,
+            "skipped": 236746,
+            "elapsedMs": 1580.3999915122986
+          }
+        }
+      },
+      {
+        "pageMs": 69500,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 7295,
+            "delivered": 356046,
+            "skipped": 0,
+            "elapsedMs": 8120.400006771088
+          },
+          "caps-first": {
+            "publications": 7262,
+            "delivered": 113991,
+            "skipped": 231737,
+            "elapsedMs": 4742.7000024318695
+          },
+          "structure": {
+            "publications": 8653,
+            "delivered": 394454,
+            "skipped": 0,
+            "elapsedMs": 4719.199990510941
+          },
+          "mount": {
+            "publications": 7278,
+            "delivered": 130063,
+            "skipped": 249009,
+            "elapsedMs": 1631.3999938964844
+          }
+        }
+      },
+      {
+        "pageMs": 71000.60000014305,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 7501,
+            "delivered": 370357,
+            "skipped": 0,
+            "elapsedMs": 8475.700007915497
+          },
+          "caps-first": {
+            "publications": 7468,
+            "delivered": 119267,
+            "skipped": 240772,
+            "elapsedMs": 4967.800003767014
+          },
+          "structure": {
+            "publications": 8653,
+            "delivered": 394454,
+            "skipped": 0,
+            "elapsedMs": 4719.199990510941
+          },
+          "mount": {
+            "publications": 7278,
+            "delivered": 130063,
+            "skipped": 249009,
+            "elapsedMs": 1631.3999938964844
+          }
+        }
+      },
+      {
+        "pageMs": 72501.79999995232,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 7596,
+            "delivered": 377008,
+            "skipped": 0,
+            "elapsedMs": 8710.200006961823
+          },
+          "caps-first": {
+            "publications": 7563,
+            "delivered": 119303,
+            "skipped": 247259,
+            "elapsedMs": 5081.400004386902
+          },
+          "structure": {
+            "publications": 8653,
+            "delivered": 394454,
+            "skipped": 0,
+            "elapsedMs": 4719.199990510941
+          },
+          "mount": {
+            "publications": 7278,
+            "delivered": 130063,
+            "skipped": 249009,
+            "elapsedMs": 1631.3999938964844
+          }
+        }
+      },
+      {
+        "pageMs": 74002.70000004768,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 7699,
+            "delivered": 410438,
+            "skipped": 0,
+            "elapsedMs": 9268.30000782013
+          },
+          "caps-first": {
+            "publications": 7667,
+            "delivered": 131591,
+            "skipped": 268529,
+            "elapsedMs": 5534.800004005432
+          },
+          "structure": {
+            "publications": 8653,
+            "delivered": 394454,
+            "skipped": 0,
+            "elapsedMs": 4719.199990510941
+          },
+          "mount": {
+            "publications": 7278,
+            "delivered": 130063,
+            "skipped": 249009,
+            "elapsedMs": 1631.3999938964844
+          }
+        }
+      },
+      {
+        "pageMs": 75506.10000014305,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 7810,
+            "delivered": 420688,
+            "skipped": 0,
+            "elapsedMs": 9585.500008106232
+          },
+          "caps-first": {
+            "publications": 7778,
+            "delivered": 132086,
+            "skipped": 278284,
+            "elapsedMs": 5806.2000041008
+          },
+          "structure": {
+            "publications": 8653,
+            "delivered": 394454,
+            "skipped": 0,
+            "elapsedMs": 4719.199990510941
+          },
+          "mount": {
+            "publications": 7278,
+            "delivered": 130063,
+            "skipped": 249009,
+            "elapsedMs": 1631.3999938964844
+          }
+        }
+      },
+      {
+        "pageMs": 77016,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 7905,
+            "delivered": 431861,
+            "skipped": 0,
+            "elapsedMs": 10011.400006771088
+          },
+          "caps-first": {
+            "publications": 7873,
+            "delivered": 132146,
+            "skipped": 289397,
+            "elapsedMs": 6175.500004291534
+          },
+          "structure": {
+            "publications": 8653,
+            "delivered": 394454,
+            "skipped": 0,
+            "elapsedMs": 4719.199990510941
+          },
+          "mount": {
+            "publications": 7278,
+            "delivered": 130063,
+            "skipped": 249009,
+            "elapsedMs": 1631.3999938964844
+          }
+        }
+      },
+      {
+        "pageMs": 78566.60000014305,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 7973,
+            "delivered": 438778,
+            "skipped": 0,
+            "elapsedMs": 10254.100005626678
+          },
+          "caps-first": {
+            "publications": 7941,
+            "delivered": 132181,
+            "skipped": 296279,
+            "elapsedMs": 6379.900005102158
+          },
+          "structure": {
+            "publications": 8725,
+            "delivered": 397443,
+            "skipped": 0,
+            "elapsedMs": 4840.599990367889
+          },
+          "mount": {
+            "publications": 7349,
+            "delivered": 131026,
+            "skipped": 250918,
+            "elapsedMs": 1655.7999939918518
+          }
+        }
+      },
+      {
+        "pageMs": 84348.20000004768,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 7973,
+            "delivered": 438778,
+            "skipped": 0,
+            "elapsedMs": 10254.100005626678
+          },
+          "caps-first": {
+            "publications": 7941,
+            "delivered": 132181,
+            "skipped": 296279,
+            "elapsedMs": 6379.900005102158
+          },
+          "structure": {
+            "publications": 9333,
+            "delivered": 482204,
+            "skipped": 0,
+            "elapsedMs": 5329.7999901771545
+          },
+          "mount": {
+            "publications": 7957,
+            "delivered": 148763,
+            "skipped": 318059,
+            "elapsedMs": 1786.1999938488007
+          }
+        }
+      },
+      {
+        "pageMs": 86521.79999995232,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 7974,
+            "delivered": 438803,
+            "skipped": 0,
+            "elapsedMs": 10269.000005483627
+          },
+          "caps-first": {
+            "publications": 7941,
+            "delivered": 132181,
+            "skipped": 296279,
+            "elapsedMs": 6379.900005102158
+          },
+          "structure": {
+            "publications": 9333,
+            "delivered": 482204,
+            "skipped": 0,
+            "elapsedMs": 5329.7999901771545
+          },
+          "mount": {
+            "publications": 7957,
+            "delivered": 148763,
+            "skipped": 318059,
+            "elapsedMs": 1786.1999938488007
+          }
+        }
+      },
+      {
+        "pageMs": 88023.60000014305,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 8002,
+            "delivered": 459791,
+            "skipped": 0,
+            "elapsedMs": 10632.300005435944
+          },
+          "caps-first": {
+            "publications": 7970,
+            "delivered": 140821,
+            "skipped": 308652,
+            "elapsedMs": 6680.500004529953
+          },
+          "structure": {
+            "publications": 9362,
+            "delivered": 503217,
+            "skipped": 0,
+            "elapsedMs": 5412.499989271164
+          },
+          "mount": {
+            "publications": 7985,
+            "delivered": 157065,
+            "skipped": 329949,
+            "elapsedMs": 1812.4999935626984
+          }
+        }
+      },
+      {
+        "pageMs": 89654,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 8029,
+            "delivered": 476705,
+            "skipped": 0,
+            "elapsedMs": 10958.400005817413
+          },
+          "caps-first": {
+            "publications": 7996,
+            "delivered": 147318,
+            "skipped": 318194,
+            "elapsedMs": 6928.600004196167
+          },
+          "structure": {
+            "publications": 9375,
+            "delivered": 511589,
+            "skipped": 0,
+            "elapsedMs": 5447.099989414215
+          },
+          "mount": {
+            "publications": 7999,
+            "delivered": 160817,
+            "skipped": 335390,
+            "elapsedMs": 1824.699993610382
+          }
+        }
+      },
+      {
+        "pageMs": 91184,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 8063,
+            "delivered": 504817,
+            "skipped": 0,
+            "elapsedMs": 11433.100005626678
+          },
+          "caps-first": {
+            "publications": 8031,
+            "delivered": 159124,
+            "skipped": 335375,
+            "elapsedMs": 7321.600004434586
+          },
+          "structure": {
+            "publications": 9379,
+            "delivered": 513437,
+            "skipped": 0,
+            "elapsedMs": 5457.399989128113
+          },
+          "mount": {
+            "publications": 8002,
+            "delivered": 161185,
+            "skipped": 335978,
+            "elapsedMs": 1825.8999934196472
+          }
+        }
+      },
+      {
+        "pageMs": 92689.90000009537,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 8088,
+            "delivered": 527717,
+            "skipped": 0,
+            "elapsedMs": 11844.400006055832
+          },
+          "caps-first": {
+            "publications": 8055,
+            "delivered": 168052,
+            "skipped": 348431,
+            "elapsedMs": 7647.000004291534
+          },
+          "structure": {
+            "publications": 9407,
+            "delivered": 539049,
+            "skipped": 0,
+            "elapsedMs": 5554.699988365173
+          },
+          "mount": {
+            "publications": 8031,
+            "delivered": 171953,
+            "skipped": 351714,
+            "elapsedMs": 1860.4999930858612
+          }
+        }
+      },
+      {
+        "pageMs": 94199.70000004768,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 8115,
+            "delivered": 552881,
+            "skipped": 0,
+            "elapsedMs": 12267.100006103516
+          },
+          "caps-first": {
+            "publications": 8083,
+            "delivered": 178588,
+            "skipped": 363975,
+            "elapsedMs": 7971.000004291534
+          },
+          "structure": {
+            "publications": 9417,
+            "delivered": 544689,
+            "skipped": 0,
+            "elapsedMs": 5576.299988269806
+          },
+          "mount": {
+            "publications": 8041,
+            "delivered": 174191,
+            "skipped": 355116,
+            "elapsedMs": 1867.599993467331
+          }
+        }
+      },
+      {
+        "pageMs": 95744.90000009537,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 8131,
+            "delivered": 560853,
+            "skipped": 0,
+            "elapsedMs": 12536.100006580353
+          },
+          "caps-first": {
+            "publications": 8098,
+            "delivered": 181672,
+            "skipped": 368819,
+            "elapsedMs": 8185.800004243851
+          },
+          "structure": {
+            "publications": 9483,
+            "delivered": 604785,
+            "skipped": 0,
+            "elapsedMs": 5769.699987888336
+          },
+          "mount": {
+            "publications": 8107,
+            "delivered": 198383,
+            "skipped": 391020,
+            "elapsedMs": 1942.5999927520752
+          }
+        }
+      },
+      {
+        "pageMs": 97245.79999995232,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 8150,
+            "delivered": 575648,
+            "skipped": 0,
+            "elapsedMs": 12865.90000629425
+          },
+          "caps-first": {
+            "publications": 8118,
+            "delivered": 187543,
+            "skipped": 377787,
+            "elapsedMs": 8472.900004148483
+          },
+          "structure": {
+            "publications": 9510,
+            "delivered": 622742,
+            "skipped": 0,
+            "elapsedMs": 5841.4999878406525
+          },
+          "mount": {
+            "publications": 8133,
+            "delivered": 205056,
+            "skipped": 401321,
+            "elapsedMs": 1964.0999927520752
+          }
+        }
+      },
+      {
+        "pageMs": 98782.29999995232,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 8175,
+            "delivered": 600603,
+            "skipped": 0,
+            "elapsedMs": 13265.300006389618
+          },
+          "caps-first": {
+            "publications": 8142,
+            "delivered": 197113,
+            "skipped": 392159,
+            "elapsedMs": 8758.900004148483
+          },
+          "structure": {
+            "publications": 9534,
+            "delivered": 646684,
+            "skipped": 0,
+            "elapsedMs": 5941.799988031387
+          },
+          "mount": {
+            "publications": 8158,
+            "delivered": 215021,
+            "skipped": 416281,
+            "elapsedMs": 1996.7999923229218
+          }
+        }
+      },
+      {
+        "pageMs": 100609.40000009537,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 8212,
+            "delivered": 622636,
+            "skipped": 0,
+            "elapsedMs": 13555.800005435944
+          },
+          "caps-first": {
+            "publications": 8179,
+            "delivered": 205881,
+            "skipped": 405359,
+            "elapsedMs": 8971.700004577637
+          },
+          "structure": {
+            "publications": 9562,
+            "delivered": 659418,
+            "skipped": 0,
+            "elapsedMs": 6006.399987459183
+          },
+          "mount": {
+            "publications": 8186,
+            "delivered": 220135,
+            "skipped": 423901,
+            "elapsedMs": 2020.4999928474426
+          }
+        }
+      },
+      {
+        "pageMs": 102118,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 8240,
+            "delivered": 652820,
+            "skipped": 0,
+            "elapsedMs": 14127.800006389618
+          },
+          "caps-first": {
+            "publications": 8208,
+            "delivered": 218263,
+            "skipped": 424239,
+            "elapsedMs": 9450.400003433228
+          },
+          "structure": {
+            "publications": 9562,
+            "delivered": 659418,
+            "skipped": 0,
+            "elapsedMs": 6006.399987459183
+          },
+          "mount": {
+            "publications": 8186,
+            "delivered": 220135,
+            "skipped": 423901,
+            "elapsedMs": 2020.4999928474426
+          }
+        }
+      },
+      {
+        "pageMs": 103637.79999995232,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 8272,
+            "delivered": 670599,
+            "skipped": 0,
+            "elapsedMs": 14354.50000667572
+          },
+          "caps-first": {
+            "publications": 8240,
+            "delivered": 225308,
+            "skipped": 434973,
+            "elapsedMs": 9614.900003671646
+          },
+          "structure": {
+            "publications": 9571,
+            "delivered": 669404,
+            "skipped": 0,
+            "elapsedMs": 6057.699987411499
+          },
+          "mount": {
+            "publications": 8194,
+            "delivered": 223629,
+            "skipped": 429261,
+            "elapsedMs": 2032.5999925136566
+          }
+        }
+      },
+      {
+        "pageMs": 105160.60000014305,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 8299,
+            "delivered": 701163,
+            "skipped": 0,
+            "elapsedMs": 14944.80000591278
+          },
+          "caps-first": {
+            "publications": 8267,
+            "delivered": 237323,
+            "skipped": 453522,
+            "elapsedMs": 10090.200003862381
+          },
+          "structure": {
+            "publications": 9571,
+            "delivered": 669404,
+            "skipped": 0,
+            "elapsedMs": 6057.699987411499
+          },
+          "mount": {
+            "publications": 8195,
+            "delivered": 224074,
+            "skipped": 429948,
+            "elapsedMs": 2036.7999925613403
+          }
+        }
+      },
+      {
+        "pageMs": 106743.29999995232,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 8338,
+            "delivered": 727784,
+            "skipped": 0,
+            "elapsedMs": 15338.700005054474
+          },
+          "caps-first": {
+            "publications": 8305,
+            "delivered": 247339,
+            "skipped": 468981,
+            "elapsedMs": 10363.500003814697
+          },
+          "structure": {
+            "publications": 9632,
+            "delivered": 720896,
+            "skipped": 0,
+            "elapsedMs": 6231.799986600876
+          },
+          "mount": {
+            "publications": 8256,
+            "delivered": 244358,
+            "skipped": 461156,
+            "elapsedMs": 2103.799992799759
+          }
+        }
+      },
+      {
+        "pageMs": 108353,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 8358,
+            "delivered": 750974,
+            "skipped": 0,
+            "elapsedMs": 15793.400004863739
+          },
+          "caps-first": {
+            "publications": 8325,
+            "delivered": 256419,
+            "skipped": 483061,
+            "elapsedMs": 10722.600003480911
+          },
+          "structure": {
+            "publications": 9632,
+            "delivered": 720896,
+            "skipped": 0,
+            "elapsedMs": 6231.799986600876
+          },
+          "mount": {
+            "publications": 8256,
+            "delivered": 244358,
+            "skipped": 461156,
+            "elapsedMs": 2103.799992799759
+          }
+        }
+      },
+      {
+        "pageMs": 109856.79999995232,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 8385,
+            "delivered": 764501,
+            "skipped": 0,
+            "elapsedMs": 16087.700005054474
+          },
+          "caps-first": {
+            "publications": 8353,
+            "delivered": 262200,
+            "skipped": 491983,
+            "elapsedMs": 10985.00000333786
+          },
+          "structure": {
+            "publications": 9699,
+            "delivered": 782014,
+            "skipped": 0,
+            "elapsedMs": 6471.399986505508
+          },
+          "mount": {
+            "publications": 8322,
+            "delivered": 267804,
+            "skipped": 497640,
+            "elapsedMs": 2191.5999932289124
+          }
+        }
+      },
+      {
+        "pageMs": 111420.29999995232,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 8436,
+            "delivered": 775317,
+            "skipped": 0,
+            "elapsedMs": 16278.000005483627
+          },
+          "caps-first": {
+            "publications": 8404,
+            "delivered": 266376,
+            "skipped": 498623,
+            "elapsedMs": 11132.900003433228
+          },
+          "structure": {
+            "publications": 9796,
+            "delivered": 829000,
+            "skipped": 0,
+            "elapsedMs": 6651.799986124039
+          },
+          "mount": {
+            "publications": 8419,
+            "delivered": 286610,
+            "skipped": 527008,
+            "elapsedMs": 2262.499993085861
+          }
+        }
+      },
+      {
+        "pageMs": 112936.79999995232,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 8480,
+            "delivered": 797725,
+            "skipped": 0,
+            "elapsedMs": 16656.00000476837
+          },
+          "caps-first": {
+            "publications": 8447,
+            "delivered": 275161,
+            "skipped": 512230,
+            "elapsedMs": 11417.300004005432
+          },
+          "structure": {
+            "publications": 9814,
+            "delivered": 836674,
+            "skipped": 0,
+            "elapsedMs": 6688.999986171722
+          },
+          "mount": {
+            "publications": 8438,
+            "delivered": 289648,
+            "skipped": 531644,
+            "elapsedMs": 2273.999993085861
+          }
+        }
+      },
+      {
+        "pageMs": 114477.5,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 8526,
+            "delivered": 819502,
+            "skipped": 0,
+            "elapsedMs": 17049.600004434586
+          },
+          "caps-first": {
+            "publications": 8494,
+            "delivered": 283733,
+            "skipped": 525451,
+            "elapsedMs": 11728.30000424385
+          },
+          "structure": {
+            "publications": 9841,
+            "delivered": 852988,
+            "skipped": 0,
+            "elapsedMs": 6768.199985980988
+          },
+          "mount": {
+            "publications": 8464,
+            "delivered": 296044,
+            "skipped": 541546,
+            "elapsedMs": 2300.099992990494
+          }
+        }
+      },
+      {
+        "pageMs": 115986,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 8565,
+            "delivered": 840347,
+            "skipped": 0,
+            "elapsedMs": 17423.600004434586
+          },
+          "caps-first": {
+            "publications": 8533,
+            "delivered": 291984,
+            "skipped": 538045,
+            "elapsedMs": 12018.300004005432
+          },
+          "structure": {
+            "publications": 9867,
+            "delivered": 864772,
+            "skipped": 0,
+            "elapsedMs": 6844.199985265732
+          },
+          "mount": {
+            "publications": 8490,
+            "delivered": 300229,
+            "skipped": 547889,
+            "elapsedMs": 2328.2999930381775
+          }
+        }
+      },
+      {
+        "pageMs": 117552.20000004768,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 8576,
+            "delivered": 840549,
+            "skipped": 0,
+            "elapsedMs": 17519.500004529953
+          },
+          "caps-first": {
+            "publications": 8544,
+            "delivered": 291998,
+            "skipped": 538233,
+            "elapsedMs": 12112.300003767014
+          },
+          "structure": {
+            "publications": 9934,
+            "delivered": 895242,
+            "skipped": 0,
+            "elapsedMs": 6967.899985790253
+          },
+          "mount": {
+            "publications": 8558,
+            "delivered": 312775,
+            "skipped": 567085,
+            "elapsedMs": 2379.7999937534332
+          }
+        }
+      },
+      {
+        "pageMs": 119054.60000014305,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 8592,
+            "delivered": 840933,
+            "skipped": 0,
+            "elapsedMs": 17670.100004434586
+          },
+          "caps-first": {
+            "publications": 8560,
+            "delivered": 292020,
+            "skipped": 538595,
+            "elapsedMs": 12257.700004339218
+          },
+          "structure": {
+            "publications": 9951,
+            "delivered": 895654,
+            "skipped": 0,
+            "elapsedMs": 6969.899986028671
+          },
+          "mount": {
+            "publications": 8574,
+            "delivered": 312803,
+            "skipped": 567441,
+            "elapsedMs": 2380.2999935150146
+          }
+        }
+      },
+      {
+        "pageMs": 121495.90000009537,
+        "timeOrigin": 1794857127530.8,
+        "groups": {
+          "caps-incomplete": {
+            "publications": 8606,
+            "delivered": 841321,
+            "skipped": 0,
+            "elapsedMs": 17815.600004434586
+          },
+          "caps-first": {
+            "publications": 8573,
+            "delivered": 292044,
+            "skipped": 538959,
+            "elapsedMs": 12396.600003957748
+          },
+          "structure": {
+            "publications": 9965,
+            "delivered": 896086,
+            "skipped": 0,
+            "elapsedMs": 6971.999985456467
+          },
+          "mount": {
+            "publications": 8589,
+            "delivered": 312833,
+            "skipped": 567871,
+            "elapsedMs": 2380.599993467331
+          }
+        }
+      }
+    ],
+    "lastReadiness": {
+      "timeOrigin": 1794857127530.8,
+      "pageMs": 81318.20000004768,
+      "dateNow": 1794857208849,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-vkmtps5e479",
+        "index": 20,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-base-calendar",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-vkmtps5e479",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      }
+    },
+    "verdict": {
+      "exit": 1,
+      "passed": 0,
+      "failed": 1,
+      "en": "unselected",
+      "startupPassed": false,
+      "pageErrors": 0,
+      "consoleErrors": 0,
+      "postVerdict": "budget-expired",
+      "logSHA256": "2a2e7e2902a699002de637c8750f172fdddee892ce937382d03de27096751186",
+      "messages": ["page.waitForFunction: Timeout 60000ms exceeded."]
+    }
+  },
+  "boundary": "Capability signature is diagnostic and distinct from the product skip guard. Candidate only narrows disjoint delivery with known stable domains and a retained logical bridge. Group durations are inclusive synchronous timings, and last reports need not share elapsed or startup stage."
+}
