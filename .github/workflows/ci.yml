@@ -1,5 +1,5 @@
 name: CI
-run-name: Verify exact Contents wheel guard on original shard
+run-name: Replay the recorded original Contents shard
 
 on: workflow_dispatch
 permissions:
@@ -18,8 +18,8 @@ jobs:
             trace: '1'
             order: candidate
     env:
-      BASELINE_CARRIER: 7e5fdc43fb6d3166e660a963721b261ee08ec8a5
-      CANDIDATE_CARRIER: 7e5fdc43fb6d3166e660a963721b261ee08ec8a5
+      BASELINE_CARRIER: a91bc3df9b30cc80d755296e9120059abbc8dc0c
+      CANDIDATE_CARRIER: a91bc3df9b30cc80d755296e9120059abbc8dc0c
       CHROME_VERSION: 157.0.8103.50
       CHROME_ZIP_SHA256: d17167bc092eb495a3b768c7467f27e35f625aa03834233a1663af67dcb668c9
       PROTO_UI_RUNTIME_PHASE: browser
@@ -113,7 +113,8 @@ jobs:
               git status --porcelain=v1 | tee "$PROTO_UI_RUNTIME_EVIDENCE_DIR/source-status.txt"
               test ! -s "$PROTO_UI_RUNTIME_EVIDENCE_DIR/source-status.txt"
               printf '%s\n' "$GITHUB_SHA" > "$PROTO_UI_RUNTIME_EVIDENCE_DIR/source-sha.txt"
-              git rev-parse HEAD > "$PROTO_UI_RUNTIME_EVIDENCE_DIR/product-parent.txt"
+              git rev-parse HEAD^ > "$PROTO_UI_RUNTIME_EVIDENCE_DIR/product-parent.txt"
+              node --input-type=module -e 'import { selectBrowserShard } from "./scripts/test/runtime-test-plan.mjs"; const list = selectBrowserShard("1/8"); if (list.length !== 12 || list.some(x => /search/i.test(x)) || !list.some(x => x.endsWith("homepage-dogfood.browser.test.ts"))) process.exit(1);'
               git rev-parse 'HEAD^{tree}' > "$PROTO_UI_RUNTIME_EVIDENCE_DIR/source-tree.txt"
               set +e
               timeout --signal=TERM --kill-after=10s 900s \
