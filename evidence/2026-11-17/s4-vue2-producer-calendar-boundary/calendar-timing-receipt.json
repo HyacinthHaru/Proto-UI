@@ -1,0 +1,671 @@
+{
+  "source": [
+    "36d5d84047ce20c5fd19a90a9adda398bab9788f",
+    "7bc3076e4a4b3916617c6a34c71845d9405a3807",
+    "400a26484415ad7995608e2e6082bfee1b1aaa68 bcbfd689aa6435e78a8c1e55923e3eca727b3df2"
+  ],
+  "overlaySHA256": "0a6c35fd9d42327989670e2c791b923c2cc43cc3788523af8226aec707e1d70c",
+  "preloadSHA256": "018089ebb2f78cec39aec47abd2e8e39f5d5234de3d0ae72c7946a356c1079a0",
+  "producer": [
+    {
+      "stage": "request",
+      "asset": "demo-base-calendar.demo.ts",
+      "ordinal": 1,
+      "version": null,
+      "epochMs": 1794849486686.4912,
+      "processMs": 14735.150917,
+      "status": 200,
+      "contentLength": null,
+      "contentEncoding": null
+    },
+    {
+      "stage": "write-head",
+      "asset": "demo-base-calendar.demo.ts",
+      "ordinal": 1,
+      "version": null,
+      "epochMs": 1794849486689.56,
+      "processMs": 14738.215625,
+      "status": 200,
+      "contentLength": null,
+      "contentEncoding": null
+    },
+    {
+      "stage": "finish",
+      "asset": "demo-base-calendar.demo.ts",
+      "ordinal": 1,
+      "version": null,
+      "epochMs": 1794849486689.7852,
+      "processMs": 14738.441,
+      "status": 200,
+      "contentLength": null,
+      "contentEncoding": null
+    },
+    {
+      "stage": "request",
+      "asset": "calendar-demo.shared.ts",
+      "ordinal": 2,
+      "version": null,
+      "epochMs": 1794849488265.6545,
+      "processMs": 16314.310292,
+      "status": 200,
+      "contentLength": null,
+      "contentEncoding": null
+    },
+    {
+      "stage": "write-head",
+      "asset": "calendar-demo.shared.ts",
+      "ordinal": 2,
+      "version": null,
+      "epochMs": 1794849488265.85,
+      "processMs": 16314.505542,
+      "status": 200,
+      "contentLength": null,
+      "contentEncoding": null
+    },
+    {
+      "stage": "finish",
+      "asset": "calendar-demo.shared.ts",
+      "ordinal": 2,
+      "version": null,
+      "epochMs": 1794849488265.9421,
+      "processMs": 16314.597292,
+      "status": 200,
+      "contentLength": null,
+      "contentEncoding": null
+    },
+    {
+      "stage": "request",
+      "asset": "index.ts",
+      "ordinal": 3,
+      "version": null,
+      "epochMs": 1794849488325.0925,
+      "processMs": 16373.748,
+      "status": 200,
+      "contentLength": null,
+      "contentEncoding": null
+    },
+    {
+      "stage": "write-head",
+      "asset": "index.ts",
+      "ordinal": 3,
+      "version": null,
+      "epochMs": 1794849488325.2188,
+      "processMs": 16373.874042,
+      "status": 200,
+      "contentLength": null,
+      "contentEncoding": null
+    },
+    {
+      "stage": "finish",
+      "asset": "index.ts",
+      "ordinal": 3,
+      "version": null,
+      "epochMs": 1794849488325.2922,
+      "processMs": 16373.947458,
+      "status": 200,
+      "contentLength": null,
+      "contentEncoding": null
+    },
+    {
+      "stage": "request",
+      "asset": "calendar.proto.ts",
+      "ordinal": 4,
+      "version": null,
+      "epochMs": 1794849489437.4358,
+      "processMs": 17486.095208,
+      "status": 200,
+      "contentLength": null,
+      "contentEncoding": null
+    },
+    {
+      "stage": "write-head",
+      "asset": "calendar.proto.ts",
+      "ordinal": 4,
+      "version": null,
+      "epochMs": 1794849489437.643,
+      "processMs": 17486.298458,
+      "status": 200,
+      "contentLength": null,
+      "contentEncoding": null
+    },
+    {
+      "stage": "finish",
+      "asset": "calendar.proto.ts",
+      "ordinal": 4,
+      "version": null,
+      "epochMs": 1794849489437.7717,
+      "processMs": 17486.426875,
+      "status": 200,
+      "contentLength": null,
+      "contentEncoding": null
+    },
+    {
+      "stage": "request",
+      "asset": "caption-composition.ts",
+      "ordinal": 5,
+      "version": null,
+      "epochMs": 1794849491967.2732,
+      "processMs": 20015.928667,
+      "status": 200,
+      "contentLength": null,
+      "contentEncoding": null
+    },
+    {
+      "stage": "write-head",
+      "asset": "caption-composition.ts",
+      "ordinal": 5,
+      "version": null,
+      "epochMs": 1794849491967.6692,
+      "processMs": 20016.324458,
+      "status": 200,
+      "contentLength": null,
+      "contentEncoding": null
+    },
+    {
+      "stage": "finish",
+      "asset": "caption-composition.ts",
+      "ordinal": 5,
+      "version": null,
+      "epochMs": 1794849491967.8257,
+      "processMs": 20016.480875,
+      "status": 200,
+      "contentLength": null,
+      "contentEncoding": null
+    },
+    {
+      "stage": "request",
+      "asset": "model.ts",
+      "ordinal": 6,
+      "version": null,
+      "epochMs": 1794849491968.3235,
+      "processMs": 20016.978792,
+      "status": 200,
+      "contentLength": null,
+      "contentEncoding": null
+    },
+    {
+      "stage": "write-head",
+      "asset": "model.ts",
+      "ordinal": 6,
+      "version": null,
+      "epochMs": 1794849491968.5552,
+      "processMs": 20017.210583,
+      "status": 200,
+      "contentLength": null,
+      "contentEncoding": null
+    },
+    {
+      "stage": "finish",
+      "asset": "model.ts",
+      "ordinal": 6,
+      "version": null,
+      "epochMs": 1794849491968.695,
+      "processMs": 20017.350333,
+      "status": 200,
+      "contentLength": null,
+      "contentEncoding": null
+    }
+  ],
+  "cdp": [
+    {
+      "stage": "request",
+      "requestId": "81571.1089",
+      "asset": "demo-base-calendar.demo.ts",
+      "chromiumEpochMs": 1794849486670.166,
+      "receivedEpochMs": 1794849486671.3545
+    },
+    {
+      "stage": "response",
+      "requestId": "81571.1089",
+      "asset": "demo-base-calendar.demo.ts",
+      "status": 200,
+      "chromiumEpochMs": 1794849487282.46,
+      "receivedEpochMs": 1794849487282.5671
+    },
+    {
+      "stage": "finish",
+      "requestId": "81571.1089",
+      "asset": "demo-base-calendar.demo.ts",
+      "bytes": 801,
+      "chromiumEpochMs": 1794849486689.802,
+      "receivedEpochMs": 1794849487282.63
+    },
+    {
+      "stage": "request",
+      "requestId": "81571.1163",
+      "asset": "calendar-demo.shared.ts",
+      "chromiumEpochMs": 1794849488251.3462,
+      "receivedEpochMs": 1794849488251.8438
+    },
+    {
+      "stage": "request",
+      "requestId": "81571.1184",
+      "asset": "index.ts",
+      "chromiumEpochMs": 1794849488268.386,
+      "receivedEpochMs": 1794849488268.5862
+    },
+    {
+      "stage": "response",
+      "requestId": "81571.1163",
+      "asset": "calendar-demo.shared.ts",
+      "status": 200,
+      "chromiumEpochMs": 1794849488362.246,
+      "receivedEpochMs": 1794849488363.4429
+    },
+    {
+      "stage": "finish",
+      "requestId": "81571.1163",
+      "asset": "calendar-demo.shared.ts",
+      "bytes": 39781,
+      "chromiumEpochMs": 1794849488266.0242,
+      "receivedEpochMs": 1794849488363.5225
+    },
+    {
+      "stage": "response",
+      "requestId": "81571.1184",
+      "asset": "index.ts",
+      "status": 200,
+      "chromiumEpochMs": 1794849488365.2417,
+      "receivedEpochMs": 1794849488365.5176
+    },
+    {
+      "stage": "finish",
+      "requestId": "81571.1184",
+      "asset": "index.ts",
+      "bytes": 670,
+      "chromiumEpochMs": 1794849488325.373,
+      "receivedEpochMs": 1794849488365.5837
+    },
+    {
+      "stage": "request",
+      "requestId": "81571.1494",
+      "asset": "calendar.proto.ts",
+      "chromiumEpochMs": 1794849488442.811,
+      "receivedEpochMs": 1794849488443.2505
+    },
+    {
+      "stage": "response",
+      "requestId": "81571.1494",
+      "asset": "calendar.proto.ts",
+      "status": 200,
+      "chromiumEpochMs": 1794849491630.718,
+      "receivedEpochMs": 1794849491631.114
+    },
+    {
+      "stage": "finish",
+      "requestId": "81571.1494",
+      "asset": "calendar.proto.ts",
+      "bytes": 80978,
+      "chromiumEpochMs": 1794849489437.868,
+      "receivedEpochMs": 1794849491631.1938
+    },
+    {
+      "stage": "request",
+      "requestId": "81571.2265",
+      "asset": "model.ts",
+      "chromiumEpochMs": 1794849491953.722,
+      "receivedEpochMs": 1794849491959.9912
+    },
+    {
+      "stage": "request",
+      "requestId": "81571.2266",
+      "asset": "caption-composition.ts",
+      "chromiumEpochMs": 1794849491953.74,
+      "receivedEpochMs": 1794849491960.0693
+    },
+    {
+      "stage": "response",
+      "requestId": "81571.2266",
+      "asset": "caption-composition.ts",
+      "status": 200,
+      "chromiumEpochMs": 1794849492035.5898,
+      "receivedEpochMs": 1794849492037.28
+    },
+    {
+      "stage": "finish",
+      "requestId": "81571.2266",
+      "asset": "caption-composition.ts",
+      "bytes": 11565,
+      "chromiumEpochMs": 1794849491967.876,
+      "receivedEpochMs": 1794849492037.3423
+    },
+    {
+      "stage": "response",
+      "requestId": "81571.2265",
+      "asset": "model.ts",
+      "status": 200,
+      "chromiumEpochMs": 1794849492035.792,
+      "receivedEpochMs": 1794849492037.6362
+    },
+    {
+      "stage": "finish",
+      "requestId": "81571.2265",
+      "asset": "model.ts",
+      "bytes": 10236,
+      "chromiumEpochMs": 1794849491968.743,
+      "receivedEpochMs": 1794849492037.6787
+    }
+  ],
+  "stages": [
+    {
+      "stage": "switch-entry",
+      "owner": "pp-erdbf4htanj",
+      "version": 1,
+      "current": true,
+      "children": 1,
+      "pending": true,
+      "pageMs": 8532,
+      "timeOrigin": 1794849478138,
+      "receivedNodeMs": 48836.705167
+    },
+    {
+      "stage": "demo-import-start",
+      "owner": "pp-erdbf4htanj",
+      "version": 1,
+      "current": true,
+      "children": 0,
+      "pending": true,
+      "pageMs": 8532.099999904633,
+      "timeOrigin": 1794849478138,
+      "receivedNodeMs": 48837.369834
+    },
+    {
+      "stage": "demo-import-return",
+      "owner": "pp-erdbf4htanj",
+      "version": 1,
+      "current": true,
+      "children": 0,
+      "pending": true,
+      "pageMs": 14602.399999856949,
+      "timeOrigin": 1794849478138,
+      "receivedNodeMs": 54907.11575
+    },
+    {
+      "stage": "surface-start",
+      "owner": "pp-erdbf4htanj",
+      "version": 1,
+      "current": true,
+      "children": 0,
+      "pending": true,
+      "pageMs": 14602.5,
+      "timeOrigin": 1794849478138,
+      "receivedNodeMs": 54907.241542
+    },
+    {
+      "stage": "surface-return",
+      "owner": "pp-erdbf4htanj",
+      "version": 1,
+      "current": true,
+      "children": 0,
+      "pending": true,
+      "pageMs": 14602.5,
+      "timeOrigin": 1794849478138,
+      "receivedNodeMs": 54907.26625
+    },
+    {
+      "stage": "prototype-import-start",
+      "owner": "pp-erdbf4htanj",
+      "version": 1,
+      "current": true,
+      "children": 0,
+      "pending": true,
+      "pageMs": 14602.5,
+      "timeOrigin": 1794849478138,
+      "ids": [
+        "base-calendar-root",
+        "base-calendar-caption",
+        "base-calendar-previous",
+        "lucide-chevron-left-icon",
+        "base-select-root",
+        "base-select-trigger",
+        "base-select-value",
+        "lucide-chevron-down-icon",
+        "base-select-content",
+        "base-select-item",
+        "base-calendar-next",
+        "lucide-chevron-right-icon",
+        "base-calendar-heading",
+        "base-calendar-grid",
+        "base-calendar-weekdays",
+        "base-calendar-weekday",
+        "base-calendar-row",
+        "base-calendar-day"
+      ],
+      "receivedNodeMs": 54907.281792
+    }
+  ],
+  "readiness": [
+    {
+      "pageMs": 7337.699999809265,
+      "count": 1268,
+      "ready": false,
+      "index": 0,
+      "children": null,
+      "owner": "pp-l1pgjr7xtj",
+      "runtime": "wc",
+      "demo": "demo-base-accordion",
+      "pending": null
+    },
+    {
+      "pageMs": 8838.5,
+      "count": 1268,
+      "ready": false,
+      "index": 0,
+      "children": 0,
+      "owner": "pp-l1pgjr7xtj",
+      "runtime": "wc",
+      "demo": "demo-base-accordion",
+      "pending": true
+    },
+    {
+      "pageMs": 24491.599999904633,
+      "count": 1268,
+      "ready": false,
+      "index": 1,
+      "children": 0,
+      "owner": "pp-vsoy1g8c10d",
+      "runtime": "react",
+      "demo": "demo-base-accordion",
+      "pending": true
+    },
+    {
+      "pageMs": 40117.799999952316,
+      "count": 1268,
+      "ready": false,
+      "index": 2,
+      "children": 0,
+      "owner": "pp-lke426yckkj",
+      "runtime": "vue",
+      "demo": "demo-base-accordion",
+      "pending": true
+    },
+    {
+      "pageMs": 66051.59999990463,
+      "count": 1268,
+      "ready": false,
+      "index": 3,
+      "children": 0,
+      "owner": "pp-3j3h22duwno",
+      "runtime": "vue2",
+      "demo": "demo-base-accordion",
+      "pending": true
+    },
+    {
+      "pageMs": 110620.5,
+      "count": 1268,
+      "ready": false,
+      "index": 20,
+      "children": 0,
+      "owner": "pp-erdbf4htanj",
+      "runtime": "wc",
+      "demo": "demo-base-calendar",
+      "pending": true
+    }
+  ],
+  "testPhases": [
+    {
+      "phase": "init-script",
+      "outcome": "begin",
+      "nodeMs": 40280.98075
+    },
+    {
+      "phase": "init-script",
+      "outcome": "return",
+      "nodeMs": 40290.118375
+    },
+    {
+      "phase": "calendar-network-observation",
+      "outcome": "return",
+      "nodeMs": 40300.731667
+    },
+    {
+      "phase": "goto",
+      "outcome": "begin",
+      "nodeMs": 40300.777292
+    },
+    {
+      "phase": "goto",
+      "outcome": "return",
+      "nodeMs": 47555.067125
+    },
+    {
+      "phase": "startup-wait",
+      "outcome": "begin",
+      "nodeMs": 47555.325334
+    },
+    {
+      "phase": "startup-wait",
+      "outcome": "error",
+      "nodeMs": 163040.804375
+    },
+    {
+      "phase": "context-close",
+      "outcome": "begin",
+      "nodeMs": 165134.960792
+    },
+    {
+      "phase": "context-close",
+      "outcome": "return",
+      "nodeMs": 165662.206959
+    }
+  ],
+  "originalPendingCalendarStages": [
+    {
+      "stage": "switch-entry",
+      "owner": "pp-erdbf4htanj",
+      "version": 1,
+      "current": true,
+      "children": 1,
+      "pending": true,
+      "pageMs": 8532,
+      "timeOrigin": 1794849478138,
+      "receivedNodeMs": 48836.705167
+    },
+    {
+      "stage": "demo-import-start",
+      "owner": "pp-erdbf4htanj",
+      "version": 1,
+      "current": true,
+      "children": 0,
+      "pending": true,
+      "pageMs": 8532.099999904633,
+      "timeOrigin": 1794849478138,
+      "receivedNodeMs": 48837.369834
+    },
+    {
+      "stage": "demo-import-return",
+      "owner": "pp-erdbf4htanj",
+      "version": 1,
+      "current": true,
+      "children": 0,
+      "pending": true,
+      "pageMs": 14602.399999856949,
+      "timeOrigin": 1794849478138,
+      "receivedNodeMs": 54907.11575
+    },
+    {
+      "stage": "surface-start",
+      "owner": "pp-erdbf4htanj",
+      "version": 1,
+      "current": true,
+      "children": 0,
+      "pending": true,
+      "pageMs": 14602.5,
+      "timeOrigin": 1794849478138,
+      "receivedNodeMs": 54907.241542
+    },
+    {
+      "stage": "surface-return",
+      "owner": "pp-erdbf4htanj",
+      "version": 1,
+      "current": true,
+      "children": 0,
+      "pending": true,
+      "pageMs": 14602.5,
+      "timeOrigin": 1794849478138,
+      "receivedNodeMs": 54907.26625
+    },
+    {
+      "stage": "prototype-import-start",
+      "owner": "pp-erdbf4htanj",
+      "version": 1,
+      "current": true,
+      "children": 0,
+      "pending": true,
+      "pageMs": 14602.5,
+      "timeOrigin": 1794849478138,
+      "ids": [
+        "base-calendar-root",
+        "base-calendar-caption",
+        "base-calendar-previous",
+        "lucide-chevron-left-icon",
+        "base-select-root",
+        "base-select-trigger",
+        "base-select-value",
+        "lucide-chevron-down-icon",
+        "base-select-content",
+        "base-select-item",
+        "base-calendar-next",
+        "lucide-chevron-right-icon",
+        "base-calendar-heading",
+        "base-calendar-grid",
+        "base-calendar-weekdays",
+        "base-calendar-weekday",
+        "base-calendar-row",
+        "base-calendar-day"
+      ],
+      "receivedNodeMs": 54907.281792
+    }
+  ],
+  "latestRetainedCalendarSample": {
+    "pageMs": 110620.5,
+    "count": 1268,
+    "ready": false,
+    "index": 20,
+    "children": 0,
+    "owner": "pp-erdbf4htanj",
+    "runtime": "wc",
+    "demo": "demo-base-calendar",
+    "pending": true
+  },
+  "verdict": {
+    "exit": 1,
+    "startupPassed": false,
+    "casePassed": 0,
+    "caseFailed": 1,
+    "unselected": 1,
+    "pageErrors": 0,
+    "consoleErrors": 0,
+    "postVerdict": "budget-expired",
+    "originalStartupWaitMs": 60000,
+    "originalOuterTestLimitMs": 150000,
+    "rawLogSHA256": "87534bfd080692a9fe12fa558dec77f50d668644688f2b42fbd0194113fb0827"
+  },
+  "versions": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+  "inputSHA256": {
+    "apps/www/src/components/PrototypePreviewer/previewer-client.ts": "59c9bf26834743c4c8914ffed6a63df5c49d9362bbb76a390ead2c56de00d8c0",
+    "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "d822456561c3febfba03fa4962ec66c388bb085e146f3df6f414d43e527d0e34"
+  },
+  "started": "2026-11-16T17:17:15Z",
+  "finished": "2026-11-16T17:20:03Z"
+}

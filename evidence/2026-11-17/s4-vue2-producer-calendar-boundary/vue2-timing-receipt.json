@@ -1,0 +1,539 @@
+{
+  "source": [
+    "36d5d84047ce20c5fd19a90a9adda398bab9788f",
+    "7bc3076e4a4b3916617c6a34c71845d9405a3807",
+    "400a26484415ad7995608e2e6082bfee1b1aaa68 bcbfd689aa6435e78a8c1e55923e3eca727b3df2"
+  ],
+  "traceSHA256": "a29afdcfee560cfff35cd14bc05e49b848623cbd95fb4b59a6226b91438155e8",
+  "overlaySHA256": "f29e08b9ba1a43e32e208fdc46cd8a5df779693dd2e58207b939e9f353cf3ada",
+  "producerPreloadSHA256": "06d42ade46dc2439b4e15f4d23a5f816954123c3cc1562277f4cc2586f8a3099",
+  "optimizerClosure": {
+    "vue2-runtime.js": {
+      "sha256": "bc25a31f51fa184c3b4a71709e97940c39789a9584416c7fcc2e6e5f716db807",
+      "staticImports": ["chunk-BUSYA2B4.js"]
+    },
+    "chunk-BUSYA2B4.js": {
+      "sha256": "efc482031d78ba54060196a3697583e15ae5b95ebc6bb80fc79757a21523687a",
+      "staticImports": []
+    }
+  },
+  "events": {
+    "application": [
+      {
+        "stage": "package-request",
+        "pageMs": 11100.799999952316,
+        "timeOrigin": 1794849160228.6,
+        "receivedNodeMs": 52073.084625,
+        "receivedEpochMs": 1794849171330
+      },
+      {
+        "stage": "package-factory",
+        "pageMs": 11100.900000095367,
+        "timeOrigin": 1794849160228.6,
+        "receivedNodeMs": 52073.2175,
+        "receivedEpochMs": 1794849171330
+      },
+      {
+        "stage": "package-fulfilled",
+        "pageMs": 14736.599999904633,
+        "timeOrigin": 1794849160228.6,
+        "receivedNodeMs": 55708.064542,
+        "receivedEpochMs": 1794849174965
+      },
+      {
+        "stage": "accordion-render-entry",
+        "previewerId": "pp-bll12ynaoli",
+        "children": 0,
+        "pageMs": 53633.40000009537,
+        "timeOrigin": 1794849160228.6,
+        "receivedNodeMs": 94608.259917,
+        "receivedEpochMs": 1794849213865
+      },
+      {
+        "stage": "accordion-package-fulfilled",
+        "previewerId": "pp-bll12ynaoli",
+        "children": 0,
+        "pageMs": 55020.09999990463,
+        "timeOrigin": 1794849160228.6,
+        "receivedNodeMs": 95992.270334,
+        "receivedEpochMs": 1794849215249
+      },
+      {
+        "stage": "accordion-first-child",
+        "previewerId": "pp-bll12ynaoli",
+        "children": 1,
+        "pageMs": 55020.299999952316,
+        "timeOrigin": 1794849160228.6,
+        "receivedNodeMs": 95992.400959,
+        "receivedEpochMs": 1794849215249
+      },
+      {
+        "stage": "accordion-mount-return",
+        "previewerId": "pp-bll12ynaoli",
+        "children": 1,
+        "pageMs": 55024.799999952316,
+        "timeOrigin": 1794849160228.6,
+        "receivedNodeMs": 95996.328125,
+        "receivedEpochMs": 1794849215253
+      }
+    ],
+    "resources": [
+      {
+        "asset": "chunk-BUSYA2B4.js",
+        "startTime": 1971.7000000476837,
+        "requestStart": 1974.2999999523163,
+        "responseStart": 1976.0999999046326,
+        "responseEnd": 1976.0999999046326,
+        "jsNotificationMs": 1981.2000000476837,
+        "timeOrigin": 1794849160228.6,
+        "transferSize": 1699,
+        "encodedBodySize": 1399,
+        "receivedNodeMs": 42956.078584,
+        "receivedEpochMs": 1794849162213
+      },
+      {
+        "asset": "vue2-runtime.js",
+        "startTime": 11101,
+        "requestStart": 12024.799999952316,
+        "responseStart": 12033.299999952316,
+        "responseEnd": 12033.5,
+        "jsNotificationMs": 12844,
+        "timeOrigin": 1794849160228.6,
+        "transferSize": 178852,
+        "encodedBodySize": 178552,
+        "receivedNodeMs": 53818.128375,
+        "receivedEpochMs": 1794849173075
+      }
+    ],
+    "cdp": [
+      {
+        "stage": "request",
+        "requestId": "81105.745",
+        "asset": "chunk-BUSYA2B4.js",
+        "version": "71bef712",
+        "cdpSeconds": 1219880.533636,
+        "cdpWallMs": 1794849162200.177,
+        "receivedNodeMs": 42950.873334,
+        "nodeTimeOrigin": 1794849119257.31
+      },
+      {
+        "stage": "response",
+        "requestId": "81105.745",
+        "asset": "chunk-BUSYA2B4.js",
+        "version": "71bef712",
+        "cdpSeconds": 1219880.542804,
+        "cdpWallMs": 1794849162209.345,
+        "receivedNodeMs": 42955.635292,
+        "nodeTimeOrigin": 1794849119257.31,
+        "status": 200
+      },
+      {
+        "stage": "finished",
+        "requestId": "81105.745",
+        "asset": "chunk-BUSYA2B4.js",
+        "version": "71bef712",
+        "cdpSeconds": 1219880.538127,
+        "cdpWallMs": 1794849162204.668,
+        "receivedNodeMs": 42955.687,
+        "nodeTimeOrigin": 1794849119257.31,
+        "encodedDataLength": 1707
+      },
+      {
+        "stage": "request",
+        "requestId": "81105.1637",
+        "asset": "vue2-runtime.js",
+        "version": "a3e28f0d",
+        "cdpSeconds": 1219889.662954,
+        "cdpWallMs": 1794849171329.4958,
+        "receivedNodeMs": 52073.369084,
+        "nodeTimeOrigin": 1794849119257.31
+      },
+      {
+        "stage": "response",
+        "requestId": "81105.1637",
+        "asset": "vue2-runtime.js",
+        "version": "a3e28f0d",
+        "cdpSeconds": 1219891.199375,
+        "cdpWallMs": 1794849172865.9167,
+        "receivedNodeMs": 53619.348,
+        "nodeTimeOrigin": 1794849119257.31,
+        "status": 200
+      },
+      {
+        "stage": "finished",
+        "requestId": "81105.1637",
+        "asset": "vue2-runtime.js",
+        "version": "a3e28f0d",
+        "cdpSeconds": 1219890.595496,
+        "cdpWallMs": 1794849172262.0378,
+        "receivedNodeMs": 53619.416584,
+        "nodeTimeOrigin": 1794849119257.31,
+        "encodedDataLength": 178865
+      }
+    ],
+    "tests": [
+      {
+        "locale": "zh-cn",
+        "phase": "vue2-network-observation",
+        "outcome": "return",
+        "nodeMs": 40886.721209,
+        "nodeTimeOrigin": 1794849119257.31,
+        "dateNow": 1794849160144
+      },
+      {
+        "locale": "zh-cn",
+        "phase": "init-script",
+        "outcome": "begin",
+        "nodeMs": 40886.825959,
+        "nodeTimeOrigin": 1794849119257.31,
+        "dateNow": 1794849160144
+      },
+      {
+        "locale": "zh-cn",
+        "phase": "init-script",
+        "outcome": "return",
+        "nodeMs": 40893.042125,
+        "nodeTimeOrigin": 1794849119257.31,
+        "dateNow": 1794849160150
+      },
+      {
+        "locale": "zh-cn",
+        "phase": "vue2-resource-observation",
+        "outcome": "return",
+        "nodeMs": 40893.480375,
+        "nodeTimeOrigin": 1794849119257.31,
+        "dateNow": 1794849160150
+      },
+      {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "outcome": "begin",
+        "nodeMs": 40968.82575,
+        "nodeTimeOrigin": 1794849119257.31,
+        "dateNow": 1794849160226
+      },
+      {
+        "locale": "zh-cn",
+        "phase": "goto",
+        "outcome": "return",
+        "nodeMs": 48249.664625,
+        "nodeTimeOrigin": 1794849119257.31,
+        "dateNow": 1794849167506
+      },
+      {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "outcome": "begin",
+        "nodeMs": 48250.39925,
+        "nodeTimeOrigin": 1794849119257.31,
+        "dateNow": 1794849167507
+      },
+      {
+        "locale": "zh-cn",
+        "phase": "startup-wait",
+        "outcome": "error",
+        "nodeMs": 191165.10525,
+        "nodeTimeOrigin": 1794849119257.31,
+        "dateNow": 1794849310422
+      },
+      {
+        "locale": "zh-cn",
+        "phase": "context-close",
+        "outcome": "begin",
+        "nodeMs": 191276.340042,
+        "nodeTimeOrigin": 1794849119257.31,
+        "dateNow": 1794849310533
+      },
+      {
+        "locale": "zh-cn",
+        "phase": "context-close",
+        "outcome": "return",
+        "nodeMs": 191276.358917,
+        "nodeTimeOrigin": 1794849119257.31,
+        "dateNow": 1794849310533
+      }
+    ],
+    "readiness": [
+      {
+        "timeOrigin": 1794849160228.6,
+        "pageMs": 7379.700000047684,
+        "dateNow": 1794849167608,
+        "count": 1268,
+        "ready": false,
+        "firstMissing": {
+          "previewerId": "pp-55izbmrqqhs",
+          "index": 0,
+          "inited": null,
+          "hostChildren": null
+        },
+        "runtime": "wc",
+        "demo": "demo-base-accordion",
+        "pending": null,
+        "receivedNodeMs": 48351.334667,
+        "receivedEpochMs": 1794849167608
+      },
+      {
+        "timeOrigin": 1794849160228.6,
+        "pageMs": 8700.799999952316,
+        "dateNow": 1794849168929,
+        "count": 1268,
+        "ready": false,
+        "firstMissing": {
+          "previewerId": "pp-55izbmrqqhs",
+          "index": 0,
+          "inited": "1",
+          "hostChildren": 0
+        },
+        "runtime": "wc",
+        "demo": "demo-base-accordion",
+        "pending": true,
+        "receivedNodeMs": 49672.272084,
+        "receivedEpochMs": 1794849168929
+      },
+      {
+        "timeOrigin": 1794849160228.6,
+        "pageMs": 59609.40000009537,
+        "dateNow": 1794849219837,
+        "count": 1268,
+        "ready": false,
+        "firstMissing": {
+          "previewerId": "pp-l9p8d22bh6q",
+          "index": 20,
+          "inited": "1",
+          "hostChildren": 0
+        },
+        "runtime": "wc",
+        "demo": "demo-base-calendar",
+        "pending": true,
+        "receivedNodeMs": 100581.137125,
+        "receivedEpochMs": 1794849219838
+      }
+    ],
+    "producer": [
+      {
+        "stage": "request",
+        "asset": "chunk-BUSYA2B4.js",
+        "ordinal": 1,
+        "version": "71bef712",
+        "epochMs": 1794849162203.6355,
+        "processMs": 8504.033208,
+        "status": 200,
+        "contentLength": null,
+        "contentEncoding": null
+      },
+      {
+        "stage": "write-head",
+        "asset": "chunk-BUSYA2B4.js",
+        "ordinal": 1,
+        "version": "71bef712",
+        "epochMs": 1794849162204.328,
+        "processMs": 8504.7185,
+        "status": 200,
+        "contentLength": null,
+        "contentEncoding": null
+      },
+      {
+        "stage": "finish",
+        "asset": "chunk-BUSYA2B4.js",
+        "ordinal": 1,
+        "version": "71bef712",
+        "epochMs": 1794849162204.6682,
+        "processMs": 8505.059,
+        "status": 200,
+        "contentLength": null,
+        "contentEncoding": null
+      },
+      {
+        "stage": "request",
+        "asset": "vue2-runtime.js",
+        "ordinal": 2,
+        "version": "a3e28f0d",
+        "epochMs": 1794849172253.8376,
+        "processMs": 18554.231542,
+        "status": 200,
+        "contentLength": null,
+        "contentEncoding": null
+      },
+      {
+        "stage": "write-head",
+        "asset": "vue2-runtime.js",
+        "ordinal": 2,
+        "version": "a3e28f0d",
+        "epochMs": 1794849172261.5054,
+        "processMs": 18561.895917,
+        "status": 200,
+        "contentLength": null,
+        "contentEncoding": null
+      },
+      {
+        "stage": "finish",
+        "asset": "vue2-runtime.js",
+        "ordinal": 2,
+        "version": "a3e28f0d",
+        "epochMs": 1794849172261.7905,
+        "processMs": 18562.180625,
+        "status": 200,
+        "contentLength": null,
+        "contentEncoding": null
+      }
+    ],
+    "otherCdpAssetCounts": {
+      "vue2-adapter-index": 3,
+      "vue2-wrapper": 3,
+      "chunk-EK7DFB6S.js": 3,
+      "chunk-2MALL255.js": 3
+    }
+  },
+  "engine": {
+    "readMode": "complete individual records in truncated prefix",
+    "totalEvents": 134583,
+    "marks": [],
+    "named": [
+      {
+        "name": "ResourceSendRequest",
+        "category": "devtools.timeline",
+        "phase": "I",
+        "traceMicros": 1219880533636,
+        "durationMicros": null,
+        "thread": [81105, 21865810],
+        "asset": "chunk-BUSYA2B4.js"
+      },
+      {
+        "name": "CorsURLLoader::CorsURLLoader",
+        "category": "loading",
+        "phase": "X",
+        "traceMicros": 1219880533716,
+        "durationMicros": 1,
+        "thread": [81099, 21865649],
+        "asset": "chunk-BUSYA2B4.js"
+      },
+      {
+        "name": "URLLoader::ProcessAcceptCHFrameOnConnected",
+        "category": "loading",
+        "phase": "I",
+        "traceMicros": 1219880536289,
+        "durationMicros": null,
+        "thread": [81099, 21865649],
+        "asset": "chunk-BUSYA2B4.js"
+      },
+      {
+        "name": "network::URLLoader::SendResponseToClient",
+        "category": "loading",
+        "phase": "X",
+        "traceMicros": 1219880538095,
+        "durationMicros": 12,
+        "thread": [81099, 21865649],
+        "asset": "chunk-BUSYA2B4.js"
+      },
+      {
+        "name": "ThrottlingURLLoader::OnReceiveResponse",
+        "category": "loading",
+        "phase": "X",
+        "traceMicros": 1219880538127,
+        "durationMicros": 5,
+        "thread": [81105, 21865828],
+        "asset": "chunk-BUSYA2B4.js"
+      },
+      {
+        "name": "MojoURLLoaderClient::OnReceiveResponse",
+        "category": "loading",
+        "phase": "X",
+        "traceMicros": 1219880538131,
+        "durationMicros": 1,
+        "thread": [81105, 21865828],
+        "asset": "chunk-BUSYA2B4.js"
+      },
+      {
+        "name": "BackgroundProcessor::MaybeStartProcessingResponse",
+        "category": "v8,devtools.timeline,disabled-by-default-v8.compile",
+        "phase": "X",
+        "traceMicros": 1219880542480,
+        "durationMicros": 5,
+        "thread": [81105, 21865828],
+        "asset": "chunk-BUSYA2B4.js"
+      },
+      {
+        "name": "BackgroundJSStreamManager::RunScriptStreamingTask",
+        "category": "v8,devtools.timeline,disabled-by-default-v8.compile",
+        "phase": "X",
+        "traceMicros": 1219880542520,
+        "durationMicros": 29,
+        "thread": [81105, 21865876],
+        "asset": "chunk-BUSYA2B4.js"
+      },
+      {
+        "name": "v8.parseOnBackground",
+        "category": "v8,devtools.timeline,disabled-by-default-v8.compile",
+        "phase": "X",
+        "traceMicros": 1219880542521,
+        "durationMicros": 25,
+        "thread": [81105, 21865876],
+        "asset": "chunk-BUSYA2B4.js"
+      },
+      {
+        "name": "BackgroundJSStreamManager::OnFinishStreaming",
+        "category": "v8,devtools.timeline,disabled-by-default-v8.compile",
+        "phase": "X",
+        "traceMicros": 1219880542564,
+        "durationMicros": 3,
+        "thread": [81105, 21865879],
+        "asset": "chunk-BUSYA2B4.js"
+      },
+      {
+        "name": "v8.compileModule",
+        "category": "v8,devtools.timeline",
+        "phase": "X",
+        "traceMicros": 1219880542814,
+        "durationMicros": 4,
+        "thread": [81105, 21865810],
+        "asset": "chunk-BUSYA2B4.js"
+      }
+    ],
+    "evaluationOnMarkedThread": [],
+    "trace": {
+      "complete": false,
+      "bytes": 33554432,
+      "dataLossOccurred": true,
+      "sha256": "a29afdcfee560cfff35cd14bc05e49b848623cbd95fb4b59a6226b91438155e8"
+    },
+    "cleanup": {
+      "originalContextClosed": false,
+      "streamClosed": true,
+      "sessionDetached": true,
+      "unresolvedTraceOwnership": false
+    },
+    "boundary": "Only intact known-asset records in the truncated prefix. The exact Vue2 asset execution boundary is unobserved."
+  },
+  "vue2ComparisonMs": {
+    "join": "single request for vue2-runtime.js recorded in both logs; verify matching optimizer version",
+    "versions": ["a3e28f0d", "a3e28f0d"],
+    "producerRequestToFinish": 7.9529,
+    "producerFinishToChromiumEncodedFinish": 0.2473,
+    "producerFinishToNodeObservedEvent": 614.936,
+    "chromiumEncodedFinishToNodeObservedEvent": 614.6887,
+    "resourceEndToImportFulfillment": 2703.0999999046326,
+    "resourceEndToResourceObserver": 810.5
+  },
+  "verdict": {
+    "exit": 1,
+    "startupPassed": false,
+    "pageErrors": 0,
+    "consoleErrors": 0,
+    "collectionOutcome": "rejected",
+    "logSHA256": "4c87eceb8a8a8f5d35c0c117f12db3a6dc88272c875e2773bc61f6a8ecb623b2",
+    "originalStartupWaitMs": 60000,
+    "originalOuterTestLimitMs": 150000,
+    "selectedPass": 0,
+    "selectedFail": 1,
+    "unselected": 1
+  },
+  "inputSHA256": {
+    "apps/www/src/components/PrototypePreviewer/demo-renderer.ts": "824e9170a148ef085aa208b000dd0043b8b4739cdc5a12ebe3d4b6a02c607ef8",
+    "apps/www/src/components/PrototypePreviewer/runtimes/vue2-runtime.ts": "f646a875746301037f92149ddec1feccb719e3d65adc12309a10e07e81e1e581",
+    "apps/www/src/content/docs/zh-cn/demo-shadow-split-s4.browser.test.ts": "c356a08e8a5e1e67b620898aa17549178eb5678def75e1c5a516920513eedb5e",
+    "apps/www/src/content/docs/zh-cn/query-dispatch-trace.mjs": "25ad1ce7d28207cf1d01365ab8c334185dcf48be4bbde5b17e9030e62e18decf"
+  },
+  "environment": ["v24.21.0", "10.32.1", "Google Chrome for Testing 156.0.8078.79 "],
+  "started": "2026-11-16T17:11:57Z",
+  "finished": "2026-11-16T17:15:10Z"
+}
