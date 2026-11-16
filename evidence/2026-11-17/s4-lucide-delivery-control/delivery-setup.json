@@ -1,0 +1,22 @@
+{
+  "head": "69326eb91f9e31a5ce69e943b8f4f630995c7a3a",
+  "registry": {
+    "entry": "packages/prototypes/lucide/src/icon/icons.generated.ts",
+    "sha256": "253bfc16249fe973b1c3f394ada02fdf0d126ef8d960fde9a356418ed471c52e",
+    "inputCount": 1699,
+    "bytes": 1143885,
+    "esbuild": "0.25.12"
+  },
+  "smoke": {
+    "status": 200,
+    "responseCharacters": 3490879
+  },
+  "firstAttempt": {
+    "status": 500,
+    "reason": "Vite module runner has been closed.",
+    "scope": "Invalid delivery setup. It did not load the name-based icon registry.",
+    "nativeExit": 1,
+    "testCounts": [0, 1, 1],
+    "consoleErrorCount": 5
+  }
+}

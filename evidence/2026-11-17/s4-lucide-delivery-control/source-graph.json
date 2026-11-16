@@ -1,0 +1,704 @@
+{
+  "test": {
+    "source": {
+      "head": "69326eb91f9e31a5ce69e943b8f4f630995c7a3a",
+      "tree": "64cea4384256acab77aabd62bba3d9403c435d8f",
+      "parents": [
+        "ff1b04ceea8f52808d8ae1fdf8ab4de839e3d73d",
+        "9d90aa88af6c8ab5501172253c2febb50db0257f"
+      ],
+      "overlaySHA256": "8c928959c9580e9acdacf564ec3fb14becf1fce71e4c76fb67f14a681e3341de"
+    },
+    "environment": {
+      "node": "v24.21.0",
+      "pnpm": "10.32.1",
+      "chrome": "Google Chrome for Testing 156.0.8078.79",
+      "workers": 1
+    },
+    "startedAt": "2026-11-16T20:24:48Z",
+    "finishedAt": "2026-11-16T20:27:18Z",
+    "locale": "zh-cn",
+    "otherLocale": "unselected",
+    "previewCount": 1268,
+    "readinessMs": 60000,
+    "outerMs": 150000,
+    "exit": 1,
+    "testCounts": [0, 1, 1],
+    "outcome": {
+      "startupPassed": false,
+      "errors": [],
+      "consoleErrors": [],
+      "collectionOutcome": "budget-expired",
+      "predicateSHA256": "16ebcc79a89797cfbda79f840339004504cfc196864cbfe732e0127b43f8f684"
+    },
+    "messages": ["page.waitForFunction: Timeout 60000ms exceeded."],
+    "lastOriginalReadiness": {
+      "timeOrigin": 1794860731886,
+      "pageMs": 72010.89999985695,
+      "dateNow": 1794860803896,
+      "count": 1268,
+      "ready": false,
+      "firstMissing": {
+        "previewerId": "pp-pai1d1nfuo",
+        "index": 20,
+        "inited": "1",
+        "hostChildren": 0
+      },
+      "firstMissingOwner": {
+        "demoId": "demo-base-calendar",
+        "prototypeId": "",
+        "declaredRuntime": "wc",
+        "projectionMode": null,
+        "projectionState": null,
+        "mounting": null,
+        "hostTag": "DIV",
+        "hostOwner": "pp-pai1d1nfuo",
+        "startupPending": true,
+        "hostOwnInert": true,
+        "hostText": ""
+      }
+    }
+  },
+  "wire": {
+    "recordCount": 4070,
+    "iconModuleRequests": 1695,
+    "iconModuleFinishes": 1695,
+    "genericRegistryRequests": 1,
+    "genericRegistryDeliveredBytes": [868908],
+    "selectedRequests": [
+      {
+        "name": "packages/prototypes/lucide/src/icons/chevron-down.ts",
+        "requestId": "77819.1251",
+        "completed": true,
+        "status": 200,
+        "initiator": "/src/components/PrototypePreviewer/prototype-modules.ts"
+      },
+      {
+        "name": "packages/prototypes/lucide/src/icons/bold.ts",
+        "requestId": "77819.2644",
+        "completed": true,
+        "status": 200,
+        "initiator": "packages/prototypes/lucide/src/icon/icons.generated.ts"
+      },
+      {
+        "name": "packages/prototypes/lucide/src/icons/chevron-left.ts",
+        "requestId": "77819.2797",
+        "completed": true,
+        "status": 200,
+        "initiator": "packages/prototypes/lucide/src/icon/icons.generated.ts"
+      },
+      {
+        "name": "packages/prototypes/lucide/src/icons/chevron-right.ts",
+        "requestId": "77819.2798",
+        "completed": true,
+        "status": 200,
+        "initiator": "packages/prototypes/lucide/src/icon/icons.generated.ts"
+      },
+      {
+        "name": "packages/prototypes/lucide/src/icons/italic.ts",
+        "requestId": "77819.3291",
+        "completed": true,
+        "status": 200,
+        "initiator": "packages/prototypes/lucide/src/icon/icons.generated.ts"
+      },
+      {
+        "name": "packages/prototypes/lucide/src/icons/strikethrough.ts",
+        "requestId": "77819.3918",
+        "completed": true,
+        "status": 200,
+        "initiator": "packages/prototypes/lucide/src/icon/icons.generated.ts"
+      },
+      {
+        "name": "packages/prototypes/lucide/src/icons/underline.ts",
+        "requestId": "77819.4033",
+        "completed": true,
+        "status": 200,
+        "initiator": "packages/prototypes/lucide/src/icon/icons.generated.ts"
+      },
+      {
+        "name": "packages/prototypes/lucide/src/icon/icons.generated.ts",
+        "requestId": "77819.2374",
+        "completed": true,
+        "status": 200,
+        "initiator": "packages/prototypes/lucide/src/icon/icons.ts"
+      }
+    ],
+    "rawSHA256": "7045f908697db0570ca8e4ff40c7130dd96f8cb6103dd1a88cbf556ef20972d2"
+  },
+  "primaryReplicaLastStage": {
+    "react": {
+      "phase": "prototype-imports-begin",
+      "details": [
+        "base-calendar-root",
+        "base-calendar-caption",
+        "base-calendar-previous",
+        "lucide-chevron-left-icon",
+        "base-select-root",
+        "base-select-trigger",
+        "base-select-value",
+        "lucide-chevron-down-icon",
+        "base-select-content",
+        "base-select-item",
+        "base-calendar-next",
+        "lucide-chevron-right-icon",
+        "base-calendar-heading",
+        "base-calendar-grid",
+        "base-calendar-weekdays",
+        "base-calendar-weekday",
+        "base-calendar-row",
+        "base-calendar-day"
+      ],
+      "id": "pp-38vzuxx33fc",
+      "runtime": "react",
+      "pageMs": 13468.299999952316,
+      "timeOrigin": 1794860731886,
+      "children": 0,
+      "inert": true,
+      "receivedNodeMs": 55425.4605
+    },
+    "wc": {
+      "phase": "prototype-imports-begin",
+      "details": [
+        "base-calendar-root",
+        "base-calendar-caption",
+        "base-calendar-previous",
+        "lucide-chevron-left-icon",
+        "base-select-root",
+        "base-select-trigger",
+        "base-select-value",
+        "lucide-chevron-down-icon",
+        "base-select-content",
+        "base-select-item",
+        "base-calendar-next",
+        "lucide-chevron-right-icon",
+        "base-calendar-heading",
+        "base-calendar-grid",
+        "base-calendar-weekdays",
+        "base-calendar-weekday",
+        "base-calendar-row",
+        "base-calendar-day"
+      ],
+      "id": "pp-pai1d1nfuo",
+      "runtime": "wc",
+      "pageMs": 13469.399999856949,
+      "timeOrigin": 1794860731886,
+      "children": 0,
+      "inert": true,
+      "receivedNodeMs": 55426.702917
+    },
+    "vue2": {
+      "phase": "prototype-imports-begin",
+      "details": [
+        "base-calendar-root",
+        "base-calendar-caption",
+        "base-calendar-previous",
+        "lucide-chevron-left-icon",
+        "base-select-root",
+        "base-select-trigger",
+        "base-select-value",
+        "lucide-chevron-down-icon",
+        "base-select-content",
+        "base-select-item",
+        "base-calendar-next",
+        "lucide-chevron-right-icon",
+        "base-calendar-heading",
+        "base-calendar-grid",
+        "base-calendar-weekdays",
+        "base-calendar-weekday",
+        "base-calendar-row",
+        "base-calendar-day"
+      ],
+      "id": "pp-btpov11dmcd",
+      "runtime": "vue2",
+      "pageMs": 13468.699999809265,
+      "timeOrigin": 1794860731886,
+      "children": 0,
+      "inert": true,
+      "receivedNodeMs": 55426.50375
+    },
+    "vue": {
+      "phase": "prototype-imports-begin",
+      "details": [
+        "base-calendar-root",
+        "base-calendar-caption",
+        "base-calendar-previous",
+        "lucide-chevron-left-icon",
+        "base-select-root",
+        "base-select-trigger",
+        "base-select-value",
+        "lucide-chevron-down-icon",
+        "base-select-content",
+        "base-select-item",
+        "base-calendar-next",
+        "lucide-chevron-right-icon",
+        "base-calendar-heading",
+        "base-calendar-grid",
+        "base-calendar-weekdays",
+        "base-calendar-weekday",
+        "base-calendar-row",
+        "base-calendar-day"
+      ],
+      "id": "pp-nqic9q3zpeh",
+      "runtime": "vue",
+      "pageMs": 13468,
+      "timeOrigin": 1794860731886,
+      "children": 0,
+      "inert": true,
+      "receivedNodeMs": 55425.140208
+    }
+  },
+  "calendarImportEvidence": {
+    "base-calendar-heading": [
+      {
+        "stage": "loader-begin",
+        "pageMs": 9943.799999952316,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "join-pending",
+        "pageMs": 9944,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "loader-return",
+        "pageMs": 13469.899999856949,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "registration-return",
+        "pageMs": 13470,
+        "timeOrigin": 1794860731886
+      }
+    ],
+    "base-calendar-grid": [
+      {
+        "stage": "loader-begin",
+        "pageMs": 9943.899999856949,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "join-pending",
+        "pageMs": 9944.099999904633,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "loader-return",
+        "pageMs": 13470,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "registration-return",
+        "pageMs": 13470,
+        "timeOrigin": 1794860731886
+      }
+    ],
+    "base-calendar-row": [
+      {
+        "stage": "loader-begin",
+        "pageMs": 9943.899999856949,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "join-pending",
+        "pageMs": 9944.099999904633,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "loader-return",
+        "pageMs": 13470,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "registration-return",
+        "pageMs": 13470,
+        "timeOrigin": 1794860731886
+      }
+    ],
+    "base-select-root": [
+      {
+        "stage": "loader-begin",
+        "pageMs": 9978.799999952316,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "join-pending",
+        "pageMs": 9979.099999904633,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "loader-return",
+        "pageMs": 10268.699999809265,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "registration-return",
+        "pageMs": 10268.699999809265,
+        "timeOrigin": 1794860731886
+      }
+    ],
+    "base-select-trigger": [
+      {
+        "stage": "loader-begin",
+        "pageMs": 9978.799999952316,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "join-pending",
+        "pageMs": 9979.099999904633,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "loader-return",
+        "pageMs": 10268.799999952316,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "registration-return",
+        "pageMs": 10268.799999952316,
+        "timeOrigin": 1794860731886
+      }
+    ],
+    "base-select-value": [
+      {
+        "stage": "loader-begin",
+        "pageMs": 9978.899999856949,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "join-pending",
+        "pageMs": 9979.099999904633,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "loader-return",
+        "pageMs": 10268.799999952316,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "registration-return",
+        "pageMs": 10268.799999952316,
+        "timeOrigin": 1794860731886
+      }
+    ],
+    "lucide-chevron-down-icon": [
+      {
+        "stage": "loader-begin",
+        "pageMs": 9978.899999856949,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "import-begin",
+        "pageMs": 9979,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "join-pending",
+        "pageMs": 9979.099999904633,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "import-return",
+        "pageMs": 12765.199999809265,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "register-return",
+        "pageMs": 12765.199999809265,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "loader-return",
+        "pageMs": 12765.199999809265,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "registration-return",
+        "pageMs": 12765.299999952316,
+        "timeOrigin": 1794860731886
+      }
+    ],
+    "base-select-content": [
+      {
+        "stage": "loader-begin",
+        "pageMs": 9979,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "join-pending",
+        "pageMs": 9979.099999904633,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "loader-return",
+        "pageMs": 10268.799999952316,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "registration-return",
+        "pageMs": 10268.799999952316,
+        "timeOrigin": 1794860731886
+      }
+    ],
+    "base-select-item": [
+      {
+        "stage": "loader-begin",
+        "pageMs": 9979,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "join-pending",
+        "pageMs": 9979.099999904633,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "loader-return",
+        "pageMs": 10268.799999952316,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "registration-return",
+        "pageMs": 10268.799999952316,
+        "timeOrigin": 1794860731886
+      }
+    ],
+    "lucide-icon": [
+      {
+        "stage": "import-begin",
+        "pageMs": 10056.099999904633,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "import-return",
+        "pageMs": 18907.099999904633,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "register-return",
+        "pageMs": 18907.099999904633,
+        "timeOrigin": 1794860731886
+      }
+    ],
+    "lucide-chevron-left-icon": [
+      {
+        "stage": "loader-begin",
+        "pageMs": 13467.199999809265,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "import-begin",
+        "pageMs": 13467.299999952316,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "join-pending",
+        "pageMs": 13467.699999809265,
+        "timeOrigin": 1794860731886
+      }
+    ],
+    "lucide-chevron-right-icon": [
+      {
+        "stage": "loader-begin",
+        "pageMs": 13467.299999952316,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "import-begin",
+        "pageMs": 13467.299999952316,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "join-pending",
+        "pageMs": 13467.699999809265,
+        "timeOrigin": 1794860731886
+      }
+    ],
+    "base-calendar-root": [
+      {
+        "stage": "loader-begin",
+        "pageMs": 13468,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "join-pending",
+        "pageMs": 13468.399999856949,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "loader-return",
+        "pageMs": 13470,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "registration-return",
+        "pageMs": 13470,
+        "timeOrigin": 1794860731886
+      }
+    ],
+    "base-calendar-caption": [
+      {
+        "stage": "loader-begin",
+        "pageMs": 13468.099999904633,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "join-pending",
+        "pageMs": 13468.399999856949,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "loader-return",
+        "pageMs": 13470,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "registration-return",
+        "pageMs": 13470,
+        "timeOrigin": 1794860731886
+      }
+    ],
+    "base-calendar-previous": [
+      {
+        "stage": "loader-begin",
+        "pageMs": 13468.099999904633,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "join-pending",
+        "pageMs": 13468.399999856949,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "loader-return",
+        "pageMs": 13470.099999904633,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "registration-return",
+        "pageMs": 13470.099999904633,
+        "timeOrigin": 1794860731886
+      }
+    ],
+    "base-calendar-next": [
+      {
+        "stage": "loader-begin",
+        "pageMs": 13468.199999809265,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "join-pending",
+        "pageMs": 13468.399999856949,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "loader-return",
+        "pageMs": 13470.099999904633,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "registration-return",
+        "pageMs": 13470.099999904633,
+        "timeOrigin": 1794860731886
+      }
+    ],
+    "base-calendar-weekdays": [
+      {
+        "stage": "loader-begin",
+        "pageMs": 13468.199999809265,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "join-pending",
+        "pageMs": 13468.399999856949,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "loader-return",
+        "pageMs": 13470.099999904633,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "registration-return",
+        "pageMs": 13470.099999904633,
+        "timeOrigin": 1794860731886
+      }
+    ],
+    "base-calendar-weekday": [
+      {
+        "stage": "loader-begin",
+        "pageMs": 13468.199999809265,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "join-pending",
+        "pageMs": 13468.399999856949,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "loader-return",
+        "pageMs": 13470.099999904633,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "registration-return",
+        "pageMs": 13470.099999904633,
+        "timeOrigin": 1794860731886
+      }
+    ],
+    "base-calendar-day": [
+      {
+        "stage": "loader-begin",
+        "pageMs": 13468.199999809265,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "join-pending",
+        "pageMs": 13468.399999856949,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "loader-return",
+        "pageMs": 13470.099999904633,
+        "timeOrigin": 1794860731886
+      },
+      {
+        "stage": "registration-return",
+        "pageMs": 13470.199999809265,
+        "timeOrigin": 1794860731886
+      }
+    ]
+  },
+  "engine": {
+    "trace": {
+      "complete": false,
+      "bytes": 33554432,
+      "dataLossOccurred": false,
+      "sha256": "ed5ef259bf7555c00f9a54f4a9ef0d1ce1aa0c074e034eb6c049a07f5e33ac94"
+    },
+    "parsedEvents": 83435,
+    "parsedTimeSpanMs": 8121.019,
+    "capturedIconMarks": [],
+    "startAndStopCommands": [
+      {
+        "stage": "Tracing.start.send",
+        "nodeMs": 55427.260875,
+        "nodeTimeOrigin": 1794860689929.278
+      },
+      {
+        "stage": "Tracing.start.return",
+        "nodeMs": 61460.177167,
+        "nodeTimeOrigin": 1794860689929.278
+      },
+      {
+        "stage": "Tracing.end.send",
+        "nodeMs": 69426.623583,
+        "nodeTimeOrigin": 1794860689929.278
+      },
+      {
+        "stage": "Tracing.end.return",
+        "nodeMs": 69427.476417,
+        "nodeTimeOrigin": 1794860689929.278
+      }
+    ]
+  },
+  "logSHA256": "bd70efa7bb9403ba3fca4cd11945943cc2e1575b614acb68821726d478b98ffc"
+}
